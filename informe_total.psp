@@ -1,0 +1,207 @@
+<%
+import time
+from core import *
+from xul import *
+from fecha import *
+
+#Consultas BD
+con=Conection().open()
+hoy=hoy()
+
+req.content_type="application/vnd.mozilla.xul+xml"
+req.write(xulheaderwindowmenu("Posición total"))
+
+if form.has_key('cmbanos')==False:
+    cmbanos=ano(hoy)
+else:
+    cmbanos=form['cmbanos']
+
+tgastos=0
+tingresos=0
+tconsolidado=0
+gastos=[]
+ingresos=[]
+gi=[]
+consolidado=[]
+for i in range(12):
+    #//En gastos se introduce los gastos m谩s los gastos de facturaci贸n de tarjeta
+    gastos.append(Total().saldo_por_tipo_operacion(cmbanos,i+1,1)+Total().saldo_por_tipo_operacion (cmbanos,i+1, 7))
+    ingresos.append(Total().saldo_por_tipo_operacion(cmbanos,i+1,2))
+    gi.append(ingresos[i]+gastos[i])
+    consolidado.append(InversionOperacionHistorica().consolidado_total_mensual(cmbanos,i+1))
+    
+    #Totales
+    tgastos=tgastos+gastos[i];
+    tingresos=tingresos+ingresos[i];
+    tconsolidado=tconsolidado+consolidado[i];
+
+
+
+
+
+
+
+
+mesactual=mes(hoy)
+cuentas=[]
+inversiones=[]
+total=[]
+diferencia=[]
+
+fechafinano=str(int(cmbanos-1))+"-12-31"
+saldofinano=Total().saldo_total(fechafinano)
+saldohoy=Total().saldo_total(hoy)
+tae=100*(saldohoy-saldofinano)/saldofinano
+for i in range(12):
+    if cmbanos==ano(hoy) and mesactual<=i:
+        cuentas.append(0)
+        inversiones.append(0)
+        total.append(0)    
+        diferencia.append(0)
+    else:
+        fecha=ultimo_dia_mes(cmbanos, i+1).isoformat()
+        cuentas.append(Total().saldo_todas_cuentas(fecha))
+        inversiones.append(Total().saldo_todas_inversiones(fecha))
+        total.append(inversiones[i]+cuentas[i])
+        if i==0:
+            diferencia.append(total[i]-saldofinano)
+        else:
+            diferencia.append(total[i]-total[i-1])
+s=       '<label flex="0"  style="text-align: center;font-weight : bold;" value="Saldo a finales del año '+str(cmbanos-1)+': '+ euros(saldofinano)+'." />\n'       
+s= s +       '<label flex="0"  style="text-align: center;font-weight : bold;" value="Saldo a '+hoy+': '+ euros(saldohoy)+'." />\n'        
+s= s + '<label flex="0"  style="text-align: center;font-weight : bold;" value="Beneficio en el año '+str(cmbanos)+': '+ euros(saldohoy-saldofinano)+'." />\n'
+s= s + '<label flex="0"  style="text-align: center;font-weight : bold;" value="TAE en el año '+str(cmbanos)+': '+ tpc(tae)+'." />\n'
+con.Close() 
+%>
+<vbox  flex="5">
+<label id="titulo" value="Informe de Gastos e Ingresos" />
+<hbox>
+</hbox>
+
+<tree id="informegi" flex="1">
+  <treecols>
+    <treecol id="concepto" label="Concepto " flex="1"  style="text-align: left"/>
+    <treecol label="Enero     " flex="1" style="text-align: right"/>
+    <treecol label="Febrero   " flex="1" style="text-align: right"/>
+    <treecol label="Marzo     " flex="1" style="text-align: right"/>
+    <treecol label="Abril     " flex="1" style="text-align: right"/>
+    <treecol label="Mayo      " flex="1" style="text-align: right"/>
+    <treecol label="Junio     " flex="1" style="text-align: right"/>
+    <treecol label="Julio     " flex="1" style="text-align: right"/>
+    <treecol label="Agosto    " flex="1" style="text-align: right"/>
+    <treecol label="Septiembre" flex="1" style="text-align: right"/>
+    <treecol label="Octubre   " flex="1" style="text-align: right"/>
+    <treecol label="Noviembre " flex="1" style="text-align: right"/>
+    <treecol label="Diciembre " flex="1" style="text-align: right"/>
+    <treecol label="Total     " flex="1" style="text-align: right"/>
+  </treecols>
+  <treechildren>
+    <treeitem>
+      <treerow>
+         <treecell label="Gastos" />
+<%
+for  i in range(12):
+    req.write( treecell_euros(gastos[i]))
+req.write( treecell_euros(tgastos))
+%>
+      </treerow>
+    </treeitem>    
+    <treeitem>
+      <treerow>
+         <treecell label="Ingresos" />
+<%
+for i in range (12):
+    req.write( treecell_euros(ingresos[i]))
+req.write( treecell_euros(tingresos))
+%>
+      </treerow>
+    </treeitem>    
+    <treeitem>
+      <treerow>
+         <treecell label="Gastos - Ingresos" />
+<%
+for i in range(12):
+    req.write( treecell_euros(gi[i]))
+req.write( treecell_euros(tingresos+tgastos))
+%>
+      </treerow>
+    </treeitem>    
+    <treeitem>
+      <treerow>
+         <treecell label="Consolidado" />
+<%
+for i in range(12):
+    req.write( treecell_euros(consolidado[i]))
+req.write( treecell_euros(tconsolidado))
+%>
+      </treerow>
+    </treeitem>    
+  </treechildren>
+</tree>
+</vbox>
+<vbox  flex="5">
+<label id="titulo" value="Posición total" />
+<hbox>
+</hbox>
+
+<tree id="informegi" flex="1">
+  <treecols>
+    <treecol id="concepto" label="Concepto " flex="1"  style="text-align: left"/>
+    <treecol label="Enero     " flex="1" style="text-align: right"/>
+    <treecol label="Febrero   " flex="1" style="text-align: right"/>
+    <treecol label="Marzo     " flex="1" style="text-align: right"/>
+    <treecol label="Abril     " flex="1" style="text-align: right"/>
+    <treecol label="Mayo      " flex="1" style="text-align: right"/>
+    <treecol label="Junio     " flex="1" style="text-align: right"/>
+    <treecol label="Julio     " flex="1" style="text-align: right"/>
+    <treecol label="Agosto    " flex="1" style="text-align: right"/>
+    <treecol label="Septiembre" flex="1" style="text-align: right"/>
+    <treecol label="Octubre   " flex="1" style="text-align: right"/>
+    <treecol label="Noviembre " flex="1" style="text-align: right"/>
+    <treecol label="Diciembre " flex="1" style="text-align: right"/>
+  </treecols>
+  <treechildren>
+    <treeitem>
+      <treerow>
+         <treecell label="Cuentas" />
+<%
+for  i in range(12):
+    req.write( treecell_euros(cuentas[i]))
+print
+%>
+      </treerow>
+    </treeitem>    
+    <treeitem>
+      <treerow>
+         <treecell label="Inversiones" />
+<%
+for i in range (12):
+    req.write( treecell_euros(inversiones[i]))
+print
+%>
+      </treerow>
+    </treeitem>    
+    <treeitem>
+      <treerow>
+         <treecell label="Total" />
+<%
+for i in range(12):
+    req.write( treecell_euros(total[i]))
+print
+%>      </treerow>
+    </treeitem>    
+    <treeitem>
+      <treerow>
+         <treecell label="Diferencia mensual" />
+<%
+for i in range(12):
+    req.write( treecell_euros(diferencia[i]))
+print
+%>
+      </treerow>
+    </treeitem>    
+  </treechildren>
+</tree>
+<%=s %>
+</vbox>
+</window>

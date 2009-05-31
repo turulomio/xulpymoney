@@ -1,0 +1,21 @@
+<% 
+from core import *
+
+#Consultas BD
+con=Conection().open()
+c=Cuenta().registro(1)
+con.Close()
+
+#Variables
+test_string = c
+salida="salida"
+%>
+ 
+<html> 
+     <%= test_string %> 
+     <br/> 
+     This is some static content in the page... 
+     <br/> 
+     <% req.write("Hello again!") %>
+<%= salida %> 
+ </html>

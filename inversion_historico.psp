@@ -1,0 +1,60 @@
+<%
+import time
+from core import *
+from xul import *
+from fecha import *
+from config import *
+#Consultas BD
+con=Conection().open()
+
+if form.has_key('cmbanos'):
+   cmbanos=int(form['cmbanos'])
+else:
+    cmbanos=ano(hoy())
+combo=combo_ano(ano_inicio, ano(hoy()),  cmbanos)
+listadoinversiones = Total().xultree_historico_inversiones(cmbanos, True)
+listadodividendos = Total().xultree_historico_dividendos(cmbanos)
+listadorendimientos = Total().xultree_historico_rendimientos(cmbanos)
+con.Close()
+
+req.content_type="application/vnd.mozilla.xul+xml"
+req.write(xulheaderwindowmenu("Histórico de inversiones"))
+
+%>
+<script>
+<![CDATA[
+         
+function cmb_submit(){
+    cmb=document.getElementById("cmbanos");
+    location='inversion_historico.psp?cmbanos='+ cmb.getItemAtIndex(cmb.selectedIndex).label;
+}
+
+
+]]>
+</script>
+<vbox  flex="5">
+<label id="titulo" value="Informe histórico de inversiones" />
+<%=combo%>
+
+
+<tabbox orient="vertical" flex="1">
+<tabs>
+<tab label="Rendimientos" />
+<tab label="Inversiones" />
+<tab label="Dividendos" />
+</tabs>
+<tabpanels flex="1">
+<vbox>
+    <%=listadorendimientos%>
+</vbox>
+<vbox>
+    <%=listadoinversiones%>
+</vbox>
+<vbox>
+    <%=listadodividendos%>
+</vbox>
+</tabpanels>
+</tabbox>
+
+</vbox>
+</window>

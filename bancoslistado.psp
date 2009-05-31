@@ -1,0 +1,52 @@
+<%
+from core import *
+from fecha import *
+from xul import *
+
+con=Conection().open()
+checked=""
+if form.has_key('inactivas'):
+    if form['inactivas']=="on":
+        checked = 'checked="true"'
+        listado = Banco().xultree(True,hoy())
+    else:
+        listado = Banco().xultree(False,hoy())
+else:
+    listado = Banco().xultree(False,hoy())
+con.Close()
+
+req.content_type="application/vnd.mozilla.xul+xml"
+req.write(xulheaderwindowmenu("Listado de Bancos"))
+
+%>
+<script>
+<![CDATA[
+
+var idcuenta=10;
+
+function checkbox_submit(){
+   if (document.getElementById("checkbox").checked==true) {
+     location='bancoslistado.psp?inactivas=on';
+   } else {
+     location='bancoslistado.psp';
+   } 
+}
+
+function tree_getid()
+{
+  var tree = document.getElementById("tree");
+  var selection = tree.contentView.getItemAtIndex(tree.currentIndex);
+  idcuenta = selection.firstChild.firstChild.getAttribute("label");
+}
+]]>
+</script>
+
+
+
+<vbox  flex="6">
+<label id="titulo" flex="0.5" value="Listado de Bancos" />
+<checkbox id="checkbox" label="¿Mostrar las bancos inactivos?" <%=checked%> oncommand="checkbox_submit()" style="text-align: center;" />
+
+<%=listado%>
+</vbox>
+</window>

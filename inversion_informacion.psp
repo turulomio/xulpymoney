@@ -1,0 +1,49 @@
+<% 
+import sys
+from xul import *
+from core import *
+
+req.content_type="application/vnd.mozilla.xul+xml"
+req.write(xulheaderwindowmenu("Información de la Inversión"))
+
+if form.has_key('id_inversiones')==False:
+    sys.exit()
+    
+con=Conection().open()
+listadoIOT=InversionOperacionTemporal().xultree("SELECT * from tmpoperinversiones where ma_Inversiones="+str(form['id_inversiones'])+" order by fecha")
+listadoDiv=Dividendo().xultree("select id_dividendos, cuenta, fecha, liquido, inversione from dividendos, inversiones, cuentas where cuentas.id_cuentas=inversiones.lu_cuentas and dividendos.lu_inversiones=inversiones.id_inversiones and dividendos.lu_inversiones="+str(form['id_inversiones']) + " order by fecha;")
+con.Close()
+
+%>
+<vbox  flex="5">
+<label id="titulo" value="Información de la Inversión" />
+<hbox flex="4">
+<tabbox orient="vertical" flex="1">
+<tabs>
+<tab label="Inversión actual" />
+<tab label="Inversión histórica" />
+<tab label="Dividendos" />
+<tab label="Rendimientos" />
+<tab label="Rendimientos anuales" />
+<tab label="Análisis" />
+<tab label="Actualizaciónes" />
+<tab label="Gráfico" />
+</tabs>
+<tabpanels flex="1">
+<vbox>
+   <%=listadoIOT%>
+</vbox>
+<vbox>
+</vbox>
+<vbox>
+  <%=listadoDiv%>
+</vbox>
+</tabpanels>
+</tabbox>
+
+</hbox>
+
+</vbox>
+<%
+req.write(xulfoot())
+%>
