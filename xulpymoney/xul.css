@@ -1,0 +1,25 @@
+label#titulo { font-weight : bold;
+               text-align: center;
+               font-size: 10mm;
+             }
+
+label#negrita { font-weight : bold;
+             }
+
+menu, menuitem{
+   font-weight: bold !important;
+   font-size: 4mm !important;
+ }
+
+treechildren::-moz-tree-row(odd) { background-color: #EEEEEE; }
+treechildren::-moz-tree-row(selected) { background-color: #4B6983; }
+
+tree#informegi { font-size: 3mm;}
+
+treechildren::-moz-tree-cell-text(negative) {  color: red;}
+
+treechildren::-moz-tree-cell-text(alert) {  color: green;
+                                                                      font-weight : bold;}
+
+treechildren::-moz-tree-cell-text(alertnegative) {  color: red;
+                                                                      font-weight : bold;}
