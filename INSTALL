@@ -1,0 +1,6 @@
+<Directory /var/www/localhost/htdocs/BDAppsWeb/cuentas>
+  AddHandler mod_python .psp
+ PythonPath "sys.path+['/usr/local/lib/cuentas']"
+ PythonHandler mod_python.psp
+ PythonDebug On
+</Directory>
