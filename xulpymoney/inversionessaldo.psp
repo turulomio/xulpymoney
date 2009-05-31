@@ -1,0 +1,64 @@
+<%
+import time
+from core import *
+from xul import *
+from fecha import *
+
+#Consultas BD
+con=Conection().open()
+
+checked=""
+if form.has_key('inactivas'):
+    if form['inactivas']=="on":
+        checked = 'checked="true"'
+        cur=Inversion().cursor_listado(True,hoy())
+    else:
+        cur=Inversion().cursor_listado(False,hoy())
+else:
+        cur=Inversion().cursor_listado(False,hoy())
+listado = Inversion().xul_listado(cur)
+con.Close()
+
+req.content_type="application/vnd.mozilla.xul+xml"
+req.write(xulheaderwindowmenu("Estado de las inversiones"))
+
+%>
+<script>
+<![CDATA[
+
+var idinversion=10;
+
+function checkbox_submit(){
+   if (document.getElementById("checkbox").checked==true) {
+     location='inversionessaldo.psp?inactivas=on';
+   } else {
+     location='inversionessaldo.psp';
+   } 
+}
+
+function tree_getid()
+{
+  var tree = document.getElementById("tree");
+  var selection = tree.contentView.getItemAtIndex(tree.currentIndex);
+  idinversion = selection.firstChild.firstChild.getAttribute("label");
+}
+
+]]>
+</script>
+<popupset>
+  <popup id="treepopup" >
+    <menuitem label="Actualizar el valor" oncommand="location='inversion_actualizacion.psp?id_inversiones=' + idinversion;"  class="menuitem-iconic"  image="images/hotsync.png" />
+    <menuitem label="Modificar la inversión"  oncommand='location="inversion_ibm.psp?id_inversiones=" + idinversion  + "&amp;ibm=modificar&amp;regresando=0";'   class="menuitem-iconic"  image="images/edit.png" />
+    <menuitem label="Estudio de la inversión"  oncommand="location='inversion_informacion.psp?id_inversiones=' + idinversion;"  class="menuitem-iconic"  image="images/toggle_log.png" />
+
+  </popup>
+</popupset>
+
+
+
+<vbox  flex="1">
+<label id="titulo" flex="0" value="Estado de las inversiones" />
+<checkbox id="checkbox" label="¿Mostrar todas las inversiones (inactivas y no cotizan en mercado)?" <%=checked%>  oncommand="checkbox_submit()" style="text-align: center;" />
+<%=listado%>
+</vbox>
+</window>

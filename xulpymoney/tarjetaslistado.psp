@@ -1,0 +1,54 @@
+<%
+from core import *
+from fecha import *
+from xul import *
+
+con=Conection().open()
+checked=""
+if form.has_key('inactivas'):
+    if form['inactivas']=="on":
+        checked = 'checked="true"'
+        cur=Tarjeta().cursor_listado(True,hoy())
+    else:
+        cur=Tarjeta().cursor_listado(False,hoy())
+else:
+    cur=Tarjeta().cursor_listado(False,hoy())
+    
+listado = Tarjeta().xul_listado(cur)
+con.Close()
+
+req.content_type="application/vnd.mozilla.xul+xml"
+req.write(xulheaderwindowmenu("Listado de tarjetas de crédito"))
+
+%>
+<script>
+<![CDATA[
+
+var idcuenta=10;
+
+function checkbox_submit(){
+   if (document.getElementById("checkbox").checked==true) {
+     location='tarjetaslistado.psp?inactivas=on';
+   } else {
+     location='tarjetaslistado.psp';
+   } 
+}
+
+function tree_getid()
+{
+  var tree = document.getElementById("tree");
+  var selection = tree.contentView.getItemAtIndex(tree.currentIndex);
+  idcuenta = selection.firstChild.firstChild.getAttribute("label");
+}
+]]>
+</script>
+
+
+
+<vbox  flex="6">
+<label id="titulo" flex="0.5" value="Listado de tarjetas de crédito" />
+<checkbox id="checkbox" label="¿Mostrar las tarjetas inactivas?" <%=checked%> oncommand="checkbox_submit()" style="text-align: center;" />
+
+<%=listado%>
+</vbox>
+</window>

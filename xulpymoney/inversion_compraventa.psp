@@ -1,0 +1,47 @@
+<%
+import time
+from core import *
+from xul import *
+from fecha import *
+
+#Consultas BD
+con=Conection().open()
+
+checked=""
+if form.has_key('inactivas'):
+    if form['inactivas']=="on":
+        checked = 'checked="true"'
+        cur=Inversion().cursor_listado(True,hoy())
+    else:
+        cur=Inversion().cursor_listado(False,hoy())
+else:
+        cur=Inversion().cursor_listado(False,hoy())
+listado = Inversion().xultree_compraventa()
+con.Close()
+
+req.content_type="application/vnd.mozilla.xul+xml"
+req.write(xulheaderwindowmenu("Compra / Venta de inversiones"))
+
+%>
+<script>
+<![CDATA[
+
+var idinversion=10;
+
+function tree_getid()
+{
+  var tree = document.getElementById("tree");
+  var selection = tree.contentView.getItemAtIndex(tree.currentIndex);
+  idinversion = selection.firstChild.firstChild.getAttribute("label");
+}
+
+]]>
+</script>
+
+
+
+<vbox  flex="1">
+<label id="titulo" flex="0" value="Compra / Venta de inversiones" />
+<%=listado%>
+</vbox>
+</window>

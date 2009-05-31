@@ -1,0 +1,65 @@
+<%
+from core import *
+from fecha import *
+from xul import *
+
+#Consultas BD
+con=Conection().open()
+
+# end
+checked=""
+if form.has_key('inactivas'):
+    if form['inactivas']=="on":
+        checked = 'checked="true"'
+        cur=Cuenta().cursor_listado(True,hoy())
+    else:
+        cur=Cuenta().cursor_listado(False,hoy())
+else:
+    cur=Cuenta().cursor_listado(False,hoy())
+    
+listado = Cuenta().xul_listado(cur)
+con.Close()
+
+req.content_type="application/vnd.mozilla.xul+xml"
+req.write(xulheaderwindowmenu("Listado de cuentas bancarias"))
+
+%>
+<script>
+<![CDATA[
+
+var idcuenta=0;
+
+function checkbox_submit(){
+   if (document.getElementById("checkbox").checked==true) {
+     location='cuentaslistado.psp?inactivas=on';
+   } else {
+     location='cuentaslistado.psp';
+   } 
+}
+
+function tree_getid()
+{
+  var tree = document.getElementById("tree");
+  var selection = tree.contentView.getItemAtIndex(tree.currentIndex);
+  idcuenta = selection.firstChild.firstChild.getAttribute("label");
+}
+]]>
+</script>
+<popupset>
+  <popup id="treepopup" >
+    <menuitem label="Cuenta nueva" oncommand="location='cuentas_ibm.psp?ibm=insertar&amp;regresando=0;'" class="menuitem-iconic"  image="images/item_add.png"/>
+    <menuitem label="Modificar la cuenta"  oncommand='location="cuentas_ibm.psp?id_cuentas=" + idcuenta  + "&amp;ibm=modificar&amp;regresando=0";'   class="menuitem-iconic"  image="images/toggle_log.png"/>
+    <menuitem label="Borrar la cuenta"  oncommand='location="cuentas_ibm.psp?id_cuentas=" + idcuenta  + "&amp;ibm=borrar&amp;regresando=0";'  class="menuitem-iconic" image="images/eventdelete.png"/>
+    <menuseparator/>
+    <menuitem label="Movimientos de cuenta"  oncommand="location='cuentasinformacion.psp?id_cuentas=' + idcuenta;"/>
+  </popup>
+</popupset>
+
+
+<vbox  flex="6">
+<label id="titulo" flex="0.5" value="Listado de cuentas bancarias" />
+<checkbox id="checkbox" label="¿Mostrar todas las cuentas?" <%=checked%> oncommand="checkbox_submit()" style="text-align: center;" />
+
+<%=listado%>
+</vbox>
+</window>

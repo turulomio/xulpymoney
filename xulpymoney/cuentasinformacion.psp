@@ -1,0 +1,63 @@
+<%
+from core import *
+from fecha import *
+from xul import *
+
+#Consultas BD
+con=Conection().open()
+
+if form.has_key('year'):
+   year=form['year']
+else:
+   year=ano(hoy())
+
+if form.has_key('month'):
+   month=form['month']
+else:
+   month=mes(hoy())
+
+cur=CuentaOperacion().cursor_listado(form['id_cuentas'],year,month)
+cmbcuentas=Cuenta().cmb('cmbcuentas','select * from cuentas where cu_activa=true order by cuenta',  form["id_cuentas"],  True)
+listado = CuentaOperacion().xul_listado(cur,  form['id_cuentas'], year,  month)
+con.Close()
+
+req.content_type="application/vnd.mozilla.xul+xml"
+req.write(xulheaderwindowmenu("Información de cuentas"))
+%>
+
+<script><![CDATA[
+
+var idopercuenta=0;
+
+function tree_getid(){
+   var tree = document.getElementById("tree");
+   var selection = tree.contentView.getItemAtIndex(tree.currentIndex);
+   idopercuenta = selection.firstChild.firstChild.getAttribute("label");
+}
+
+function update_list(){
+    var cmbcuentas=document.getElementById("cmbcuentas").value;
+    var year=document.getElementById("fecha").year;
+    var month=document.getElementById("fecha").month+1;
+    location="cuentasinformacion.psp?id_cuentas="+ cmbcuentas + "&year=" +year + "&month="+ month;
+}
+
+
+function cmbcuentas_submit(){
+    var cmbcuentas=document.getElementById("cmbcuentas").value;
+    var year=document.getElementById("fecha").year;
+    var month=document.getElementById("fecha").month+1;
+    location="cuentasinformacion.psp?id_cuentas="+ cmbcuentas + "&year=" +year + "&month="+ month;
+}
+
+
+]]></script>
+
+<vbox align="center">
+   <label id="titulo"  value="Listado de operaciones bancarias" />
+   <%=cmbcuentas%>
+   <datepicker id="fecha" type="grid"  firstdayofweek="1" align="center" onchange="update_list();"/>
+</vbox>
+   <%=listado%>
+
+</window>

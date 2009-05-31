@@ -1,0 +1,142 @@
+<%
+import time
+from core import *
+from xul import *
+from fecha import *
+
+#Consultas BD
+con=Conection().open()
+hoy=hoy()
+checked=""
+id_inversiones=0
+if form.has_key('id_inversiones'):
+    id_inversiones=form['id_inversiones']
+con.Close()
+
+req.content_type="application/vnd.mozilla.xul+xml"
+req.write(xulheaderwindowmenu("Actualizar el valor"))
+
+%>
+<script>
+<![CDATA[
+         
+var id_actuinversiones;
+         
+function borrar_tree() {    
+  var tree= document.getElementById("tree");
+  var treechildren= document.getElementById("mytreechildren");
+    tree.removeChild(treechildren);
+}
+
+function borrar(){
+    var xmlHttp;
+    xmlHttp=new XMLHttpRequest();
+    xmlHttp.onreadystatechange=function(){
+        if(xmlHttp.readyState==4){
+            var ale=xmlHttp.responseText;
+            update_list();
+        }
+    }
+    var url="ajax.psp?ajax=3&id_actuinversiones="+id_actuinversiones;
+    xmlHttp.open("GET",url,true);
+    xmlHttp.send(null);º
+}
+
+
+function get_id_actuinversiones()
+{
+  var tree = document.getElementById("tree");
+  var selection = tree.contentView.getItemAtIndex(tree.currentIndex);
+  id_actuinversiones= selection.firstChild.firstChild.getAttribute("label");
+}
+
+function insert(){
+    var xmlHttp;
+    xmlHttp=new XMLHttpRequest();
+    xmlHttp.onreadystatechange=function(){
+        if(xmlHttp.readyState==4){
+            var ale=xmlHttp.responseText;
+            location="inversionessaldo.psp";
+        }
+    }
+    var valor = document.getElementById("valor").value;
+    var fecha = document.getElementById("fecha").value;
+    var url="ajax.psp?ajax=1&id_inversiones="+<%=id_inversiones %>+"&fecha="+fecha+"&valor="+valor;
+    xmlHttp.open("GET",url,true);
+    xmlHttp.send(null);
+}
+
+function parse_actualizaciones( response) {
+    borrar_tree();
+    var tree = document.getElementById("tree");
+    var treechildren=document.createElement('treechildren');
+    treechildren.setAttribute("id", "mytreechildren");
+    tree.appendChild(treechildren);
+    var paramList = response.getElementsByTagName('actualizacion');
+    for (i = 0; i< paramList.length; i++){
+        var treeitem=document.createElement('treeitem');
+        treechildren.appendChild(treeitem);
+        var treerow= document.createElement('treerow');
+        treeitem.appendChild(treerow);
+        var treecellid= document.createElement('treecell');
+        treerow.appendChild(treecellid);
+        treecellid.setAttribute("label", paramList[i].getAttribute('id_actuinversiones'));
+        var treecellfecha= document.createElement('treecell');
+        treerow.appendChild(treecellfecha);
+        treecellfecha.setAttribute("label", paramList[i].getAttribute('fecha'));
+        var treecellactualizacion= document.createElement('treecell');
+        treerow.appendChild(treecellactualizacion);
+        treecellactualizacion.setAttribute("label", paramList[i].getAttribute('actualizacion')+ " €");
+    }
+}
+
+
+function update_list(){
+    var xmlHttp;
+    xmlHttp=new XMLHttpRequest();
+    xmlHttp.onreadystatechange=function(){
+        if(xmlHttp.readyState==4){
+            var ale=xmlHttp.responseXML;
+            parse_actualizaciones(ale);
+        }
+    }
+    var fecha = document.getElementById("fecha").value.split("-");
+    var url="ajax.psp?ajax=2&id_inversiones="+<%=id_inversiones %>+"&year="+fecha[0]+"&month="+(fecha[1]);
+    xmlHttp.open("GET",url,true);
+    xmlHttp.send(null);
+}
+]]>
+</script>
+
+<popupset>
+  <popup id="treepopup" >    
+  <menuitem label="Ver mes seleccionado"  oncommand='update_list();'  class="menuitem-iconic"  image="images/hotsync.png"/>
+    <menuitem label="Modificar la actualización"  oncommand='location="cuentas_ibm.psp?id_cuentas=" + idcuenta  + "&amp;ibm=modificar&amp;regresando=0";'  class="menuitem-iconic"  image="images/toggle_log.png"/>
+    <menuitem label="Borrar la actualización"  oncommand="borrar();"  class="menuitem-iconic" image="images/eventdelete.png"/>
+  </popup>
+</popupset>
+
+<vbox flex="1">
+
+    <label id="titulo" flex="0" value="Actualizar el valor" />
+    <hbox flex="1">
+    <grid align="center">
+        <rows>
+        <row><label value="Selecciona una fecha"/><datepicker id="fecha" type="grid"  firstdayofweek="1"  /></row>
+        <row><label value="Actualiza el valor" /><hbox><textbox id="valor"/></hbox></row>
+        <row><label value="Pulsa para guardar la actualización" /><hbox><button id="cmd" label="Aceptar" onclick="insert();"/></hbox></row>
+        </rows>
+    </grid>
+    </hbox>
+    <label flex="0" value="Listado de actualizaciones del mes seleccionado" />
+    <tree id="tree" enableColumnDrag="true" flex="3"   context="treepopup"  onselect="get_id_actuinversiones();">
+        <treecols>
+        <treecol label="id" hidden="true" />
+        <treecol label="Fecha" flex="1" />
+        <treecol label="Valor"  flex="1" style="text-align: right"/>
+        </treecols>
+        <treechildren id="mytreechildren">
+        </treechildren>
+    </tree>
+</vbox>
+</window>
