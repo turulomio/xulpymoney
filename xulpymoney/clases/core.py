@@ -1,7 +1,7 @@
 #-*- coding: UTF-8 -*- 
 import sys,  os
 sys.path.append("/usr/local/lib/cuentas/")
-import datetime
+import datetime,  math
 import adodb
 import config
 from fecha import *
@@ -322,10 +322,10 @@ class Inversion:
 
     def cursor_listado(self, inactivas,  fecha):
         if inactivas==True:
-            sql="select id_inversiones, inversione, entidadesbancaria, inversiones_saldo(id_inversiones,'"+fecha+"') as saldo, inversion_actualizacion(id_inversiones,'"+fecha+"') as actualizacion, inversion_pendiente(id_inversiones,'"+fecha+"')  as pendiente, 'rendanual' as rendanual, 'rendtotal' as rendtotal from inversiones, cuentas, entidadesbancarias where cuentas.ma_entidadesbancarias=entidadesbancarias.id_entidadesbancarias and cuentas.id_cuentas=inversiones.lu_cuentas order by inversione;"
+            sql="select id_inversiones, inversione, entidadesbancaria, inversiones_saldo(id_inversiones,'"+fecha+"') as saldo, inversion_actualizacion(id_inversiones,'"+fecha+"') as actualizacion, inversion_pendiente(id_inversiones,'"+fecha+"')  as pendiente, inversion_invertido(id_inversiones,'"+fecha+"')  as invertido, 'rendanual' as rendanual, 'rendtotal' as rendtotal from inversiones, cuentas, entidadesbancarias where cuentas.ma_entidadesbancarias=entidadesbancarias.id_entidadesbancarias and cuentas.id_cuentas=inversiones.lu_cuentas order by inversione;"
 
         else:
-            sql="select id_inversiones, inversione, entidadesbancaria, inversiones_saldo(id_inversiones,'"+fecha+"') as saldo, inversion_actualizacion(id_inversiones,'"+fecha+"') as actualizacion, inversion_pendiente(id_inversiones,'"+fecha+"')  as pendiente, 'rendanual' as rendanual, 'rendtotal' as rendtotal from inversiones, cuentas, entidadesbancarias where cuentas.ma_entidadesbancarias=entidadesbancarias.id_entidadesbancarias and cuentas.id_cuentas=inversiones.lu_cuentas and in_activa='t' order by inversione;"
+            sql="select id_inversiones, inversione, entidadesbancaria, inversiones_saldo(id_inversiones,'"+fecha+"') as saldo, inversion_actualizacion(id_inversiones,'"+fecha+"') as actualizacion, inversion_pendiente(id_inversiones,'"+fecha+"')  as pendiente,  inversion_invertido(id_inversiones,'"+fecha+"')  as invertido, 'rendanual' as rendanual, 'rendtotal' as rendtotal from inversiones, cuentas, entidadesbancarias where cuentas.ma_entidadesbancarias=entidadesbancarias.id_entidadesbancarias and cuentas.id_cuentas=inversiones.lu_cuentas and in_activa='t' order by inversione;"
         return con.Execute(sql); 
         
 
@@ -392,8 +392,8 @@ class Inversion:
         s= s+  '<treecol id="col_valor" label="Valor Acción" flex="2" style="text-align: right" />\n'
         s= s+  '<treecol id="col_valor" label="Saldo" flex="2" style="text-align: right" />\n'
         s= s+  '<treecol id="col_saldo" label="Pendiente" flex="1" style="text-align: right"/>\n'
-        s= s+  '<treecol id="col_saldo" label="Rend.Anual" flex="1" style="text-align: right"/>\n'
-        s= s+  '<treecol id="col_saldo" label="Rend.Total" flex="1" style="text-align: right"/>\n'
+        s= s+  '<treecol label="Invertido" hidden="true"  flex="1" style="text-align: right" />\n'
+        s= s+  '<treecol id="col_saldo" label="Rendimiento" flex="1" style="text-align: right"/>\n'
         s= s+  '</treecols>\n'
         s= s+  '<treechildren>\n'
         while not curs.EOF:
@@ -408,8 +408,8 @@ class Inversion:
             s= s + treecell_euros(row["actualizacion"])
             s= s + treecell_euros(row['saldo'])
             s= s + treecell_euros(row['pendiente'])
-            s= s + treecell_tpc(InversionRendimiento().personal_anual(row['id_inversiones'], ano(hoy())))
-            s= s + treecell_tpc(InversionRendimiento().personal_total(row['id_inversiones']))
+            s= s + treecell_euros(row['invertido'])
+            s= s + treecell_tpc(100*row['pendiente']/row['invertido'])
             s= s + '</treerow>\n'
             s= s + '</treeitem>\n'
             curs.MoveNext()     
