@@ -4,15 +4,15 @@ from config import *
 req.content_type="application/vnd.mozilla.xul+xml"
 req.write(xulheaderwindowmenu("Acerca de cuentas"))
 
-f=os.popen("/usr/bin/uname -a")
+f=os.popen("/usr/bin/uname -s -r -p")
 so=f.read()
 f.close()
 
-f=os.popen("/usr/bin/python -V")
+f=os.popen("/usr/bin/python -V 2>&1")
 py=f.read()
 f.close()
 
-f=os.popen("/usr/bin/xulrunner --version")
+f=os.popen("/usr/bin/xulrunner-1.9 --version 2>&1")
 xu=f.read()
 f.close()
 
