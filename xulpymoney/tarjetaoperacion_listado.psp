@@ -1,0 +1,101 @@
+<%
+from core import *
+from fecha import *
+from xul import *
+from mod_python import util
+
+
+#Consultas BD
+con=Conection().open()
+
+if form.has_key('id_tarjetas'):
+    id_tarjetas=form['id_tarjetas']
+else:
+    util.redirect(req, 'tarjetaslistado.psp')
+
+req.content_type="application/vnd.mozilla.xul+xml"
+req.write(xulheaderwindowmenu("Listado de operaciones con tarjeta"))
+%>
+
+<script><![CDATA[
+var id_opertarjetas=0;
+
+
+function borrar(){
+    var xmlHttp;        
+    var id_tarjetas=<%=form['id_tarjetas']%>;
+    var url='ajax/tarjetaoperacion_borrar.psp?id_opertarjetas=' + id_opertarjetas ;
+    xmlHttp=new XMLHttpRequest();
+    xmlHttp.onreadystatechange=function(){
+        if(xmlHttp.readyState==4){
+            var ale=xmlHttp.responseText;
+            location="tarjetaoperacion_listado.psp?id_tarjetas="+ id_tarjetas;
+        }
+    }
+    xmlHttp.open("GET",url,true);
+    xmlHttp.send(null);
+}
+
+function go_opertarjetas_insertar(){
+    var id_tarjetas=<%=form['id_tarjetas']%>;
+    location="tarjetaoperacion_insertar.psp?id_tarjetas="+ id_tarjetas ;
+}
+
+function tree_getid(){
+   var tree = document.getElementById("tree");
+   var selection = tree.contentView.getItemAtIndex(tree.currentIndex);
+   id_opertarjetas = selection.firstChild.firstChild.getAttribute("label");
+}
+
+
+
+]]></script>
+
+<popupset>
+    <popup id="treepopup" >
+        <menuitem label="Nueva operación de tarjeta" oncommand="go_opertarjetas_insertar();" class="menuitem-iconic"  image="images/item_add.png"/>
+        <menuitem label="Modificar la operación de tarjeta"  oncommand='location="tarjetasoperacion_modificar.psp?id_cuentas=" + idcuenta  + "&amp;ibm=modificar&amp;regresando=0";'   class="menuitem-iconic"  image="images/toggle_log.png"/>
+        <menuitem label="Borrar la operación de tarjeta"  oncommand='borrar();'  class="menuitem-iconic" image="images/eventdelete.png"/>
+        <menuseparator/>
+        <menuitem label="Realizar un pago"  oncommand="location='cuentasinformacion.psp?id_cuentas=' + idcuenta;"/>
+    </popup>
+</popupset>
+
+<vbox align="center">
+   <label id="titulo"  value="Listado de operaciones con tarjeta" />
+</vbox>
+<vbox flex="1">
+    <tree id="tree" flex="3"  context="treepopup"  onselect="tree_getid();">
+        <treecols>
+            <treecol label="Id" flex="1" style="text-align: left" hidden="true" />
+            <treecol label="Fecha" flex="1" style="text-align: left"/>
+            <treecol label="Concepto" flex="2" style="text-align: left"/>
+            <treecol label="Importe" flex="1" style="text-align: right"/>
+            <treecol label="Comentario" flex="3" style="text-align: left"/>
+        </treecols>
+        <treechildren>
+<%
+sumsaldos=0
+sql="SELECT opertarjetas.id_opertarjetas, opertarjetas.fecha, conceptos.concepto, opertarjetas.importe, comentario from opertarjetas, conceptos, tarjetas where tarjetas.id_tarjetas=opertarjetas.ma_tarjetas and opertarjetas.lu_conceptos=conceptos.id_conceptos and opertarjetas.pagado=false and opertarjetas.ma_tarjetas="+str(id_tarjetas)+" order by fecha;"
+curs=con.Execute(sql); 
+s=''
+while not curs.EOF:
+    row = curs.GetRowAssoc(0)   
+    s=s+   '            <treeitem>\n'
+    s=s+   '                <treerow>\n'
+    s=s+   '                    <treecell label="'+ str(row["id_opertarjetas"])+ '" />\n'
+    s=s+   '                    <treecell label="'+ str(row["fecha"])[:-12]+ '" />\n'
+    s=s+   '                    <treecell label="'+ utf82xul(str(row["concepto"]))+ '" />\n'
+    s=s+   '                    ' +    treecell_euros(row['importe']);
+    s=s+   '                    <treecell label="'+ utf82xul(str(row["comentario"]))+ '" />\n'
+    s=s+   '                </treerow>\n'
+    s=s+   '            </treeitem>\n'
+    curs.MoveNext()     
+curs.Close()
+req.write(s)
+con.Close()
+%>
+        </treechildren>
+    </tree>
+</vbox>
+</window>

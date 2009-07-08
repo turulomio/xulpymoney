@@ -1,0 +1,9 @@
+<%#-*- coding: UTF-8 -*-
+from core import *
+con=Conection().open()
+if TarjetaOperacion().insertar(form['fecha'], form['lu_conceptos'], form['lu_tiposoperaciones'], form['importe'], form['comentario'], form['id_tarjetas'])==True:
+    req.write ("Se ha insertado el dato")
+else:
+    req.write ("Ha habido un error al insertar el dato")
+con.Close()
+%>
