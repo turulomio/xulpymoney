@@ -16,6 +16,7 @@ if form.has_key('month'):
 else:
    month=mes(hoy())
 
+id_cuentas=form['id_cuentas']
 cur=CuentaOperacion().cursor_listado(form['id_cuentas'],year,month)
 cmbcuentas=Cuenta().cmb('cmbcuentas','select * from cuentas where cu_activa=true order by cuenta',  form["id_cuentas"],  True)
 listado = CuentaOperacion().xul_listado(cur,  form['id_cuentas'], year,  month)
@@ -26,13 +27,32 @@ req.write(xulheaderwindowmenu("Información de cuentas"))
 %>
 
 <script><![CDATA[
+var id_opercuentas=0;
 
-var idopercuenta=0;
+
+function borrar(){
+    var xmlHttp;        
+    var fecha = document.getElementById("fecha").value;
+    spfecha=fecha.split("-");
+    var id_cuentas=<%=form['id_cuentas']%>;
+    var url='ajax/cuentaoperacion_borrar.psp?id_opercuentas=' + id_opercuentas ;
+    xmlHttp=new XMLHttpRequest();
+    xmlHttp.onreadystatechange=function(){
+        if(xmlHttp.readyState==4){
+            var ale=xmlHttp.responseText;
+            alert (ale);            
+            location="cuentasinformacion.psp?id_cuentas="+ id_cuentas + "&year=" + spfecha[0] + "&month=" + spfecha[1];
+        }
+    }
+
+    xmlHttp.open("GET",url,true);
+    xmlHttp.send(null);
+}
 
 function tree_getid(){
    var tree = document.getElementById("tree");
    var selection = tree.contentView.getItemAtIndex(tree.currentIndex);
-   idopercuenta = selection.firstChild.firstChild.getAttribute("label");
+   id_opercuentas = selection.firstChild.firstChild.getAttribute("label");
 }
 
 function update_list(){
