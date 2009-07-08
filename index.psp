@@ -8,7 +8,7 @@ req.write(xulheaderwindowmenu("Menú del programa"))
 %>
 <vbox  flex="5">
 <label id="titulo" value="Programa cuentas" />
-<label value="<%=version%>" style="text-align : center;"/>
+<label value="<%=version%>" style="text-align : center; "/>
 <label value='Acerca de Cuentas - <%=version%>' style="color : DarkGrey; text-align : right;" onclick="location='about.psp'" />
 
 </vbox>
