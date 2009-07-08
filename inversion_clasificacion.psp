@@ -1,0 +1,46 @@
+<%
+from core import *
+from fecha import *
+from xul import *
+
+#Consultas BD
+con=Conection().open()
+
+req.content_type="application/vnd.mozilla.xul+xml"
+req.write(xulheaderwindowmenu("Información de cuentas"))
+%>
+
+<vbox align="center">
+    <label id="titulo"  value="Clasificación de las inversiones" />
+</vbox>
+<vbox flex="1">
+    <tree id="tree" flex="3">
+        <treecols>
+            <treecol label="Tipo de inversión" flex="2" style="text-align: left"/>
+            <treecol label="Dinero invertido " flex="1" style="text-align: right"/>
+            <treecol label="% invertido      " flex="1" style="text-align: right"/>
+        </treecols>
+        <treechildren>
+<%
+sumsaldos=Total().saldo_todas_inversiones(hoy())
+sql="select * from inversion_saldo_segun_tpcvariable() as a (tpcvariable integer, suma float);"
+curs=con.Execute(sql); 
+s=''
+while not curs.EOF:
+    row = curs.GetRowAssoc(0)   
+    s=s+   '            <treeitem>\n'
+    s=s+   '                <treerow>\n'
+    s=s+   '                    <treecell label="'+ Inversion().nombre_tpcvariable(row["tpcvariable"])+ '" />\n'
+    s=s+   '                    ' +    treecell_euros(row['suma']);
+    s=s+   '                    '  +  treecell_tpc(100*row['suma']/sumsaldos);
+    s=s+   '                </treerow>\n'
+    s=s+   '            </treeitem>\n'
+    curs.MoveNext()     
+curs.Close()
+req.write(s)
+con.Close()
+%>
+        </treechildren>
+    </tree>
+</vbox>
+</window>

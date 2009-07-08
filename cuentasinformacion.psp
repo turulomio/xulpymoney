@@ -40,7 +40,6 @@ function borrar(){
     xmlHttp.onreadystatechange=function(){
         if(xmlHttp.readyState==4){
             var ale=xmlHttp.responseText;
-            alert (ale);            
             location="cuentasinformacion.psp?id_cuentas="+ id_cuentas + "&year=" + spfecha[0] + "&month=" + spfecha[1];
         }
     }
