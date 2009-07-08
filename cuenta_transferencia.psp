@@ -34,7 +34,7 @@ function insert(){
             location="cuentasinformacion.psp?id_cuentas="+ cmbcuentadestino + "&year=" + spfecha[0] + "&month=" + spfecha[1];
         }
     }
-    var url="ajax.psp?ajax=5&cmbcuentaorigen="+cmbcuentaorigen+"&cmbcuentadestino="+cmbcuentadestino+"&fecha="+fecha+"&importe="+importe+"&comision="+comision;
+    var url="ajax/ajax.psp?ajax=5&cmbcuentaorigen="+cmbcuentaorigen+"&cmbcuentadestino="+cmbcuentadestino+"&fecha="+fecha+"&importe="+importe+"&comision="+comision;
     xmlHttp.open("GET",url,true);
     xmlHttp.send(null);
 }
