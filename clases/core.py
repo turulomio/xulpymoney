@@ -234,7 +234,7 @@ class CuentaOperacion:
         s= s+ '      <menuitem label="Modificar la operación"  oncommand=\'location="cuentas_ibm.psp?id_cuentas=" + idcuenta  + "&amp;ibm=modificar&amp;regresando=0";\'/>\n'
         s= s+ '      <menuitem label="Borrar la operación"  oncommand="borrar();" class="menuitem-iconic" image="images/eventdelete.png"/>\n'
         s= s+ '      <menuseparator/>\n'
-        s= s+ '      <menuitem label="Transferencia"  oncommand="location=\'cuentasinformacion.psp?id_cuentas=\' + idcuenta;"/>\n'
+        s=s +  '            <menuitem label="Transferencia bancaria"  onclick="location=\'cuenta_transferencia.psp\';"  class="menuitem-iconic"  image="images/hotsync.png" />\n'
         s= s+ '      <menuseparator/>\n'
         s= s+ '      <menuitem label="Operación de tarjeta"   onclick="location=\'tarjetaslistado.psp\';"   class="menuitem-iconic"  image="images/visa.png"/>\n'
         s= s+ '   </popup>\n'
