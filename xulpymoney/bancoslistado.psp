@@ -12,9 +12,8 @@ if form.has_key('inactivas'):
     else:
         listado = Banco().xultree(False,hoy())
 else:
-    listado = Banco().xultree(False,hoy())
+    listado = Banco().xultree(False,hoy()) 
 con.Close()
-
 req.content_type="application/vnd.mozilla.xul+xml"
 req.write(xulheaderwindowmenu("Listado de Bancos"))
 
@@ -44,7 +43,7 @@ function tree_getid()
 
 
 <vbox  flex="6">
-<label id="titulo" flex="0.5" value="Listado de Bancos" />
+<label id="titulo" flex="0.5" value="Listado de Bancos" />\
 <checkbox id="checkbox" label="¿Mostrar las bancos inactivos?" <%=checked%> oncommand="checkbox_submit()" style="text-align: center;" />
 
 <%=listado%>
