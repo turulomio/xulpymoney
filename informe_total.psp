@@ -16,6 +16,9 @@ if form.has_key('cmbanos')==False:
 else:
     cmbanos=form['cmbanos']
 
+#Actualiza imagen
+Total().grafico_evolucion_total()
+
 tgastos=0
 tingresos=0
 tconsolidado=0
@@ -203,5 +206,6 @@ print
   </treechildren>
 </tree>
 <%=s %>
+<button label="Pulsa para ver un gráfico de evolución de saldos" oncommand='location="informe_total.png";'   />
 </vbox>
 </window>

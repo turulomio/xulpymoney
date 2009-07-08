@@ -10,32 +10,14 @@ from xul import *
 
 class Banco:
     
-    def saldo_cuentas(self, id_entidadesbancarias,fecha):
-        sumsaldos=0;
-#        result=Cuenta::result_entidadbancaria(con,id_entidadesbancarias,1);        
-        while not curs.EOF:
-            row = curs.GetRowAssoc(0)   
-            saldo=Cuenta().saldo(row['id_cuentas'],fecha);
-            sumsaldos=sumsaldos+saldo;
-            curs.MoveNext()     
-        curs.Close()
-        return sumsaldos;
-    
-    def saldo_inversiones(self,id_entidadesbancarias,fecha):
-        sumsaldos=0;
-#    result=Inversion::result_entidadbancaria(con,id_entidadesbancarias,1);
-#    while (row = result->fetchRow(DB_FETCHMODE_ASSOC))
-#    {
-#    saldo=Inversion::saldo(con,row['id_inversiones'],fecha);
-#    sumsaldos=sumsaldos+saldo;
-#    }
-        return sumsaldos;
-    
+  
     def saldo(self,id_entidadesbancarias,fecha):
-#    sumcuentas=EntidadBancaria::saldo_cuentas(con,id_entidadesbancarias,fecha);
-#    suminversiones=EntidadBancaria::saldo_inversiones(con,id_entidadesbancarias,fecha);
-#    saldo=sumcuentas+suminversiones;
-        return saldo;
+        curs = con.Execute('select banco_saldo('+ str(id_entidadesbancarias) + ",'"+fecha+"') as saldo;"); 
+        if curs == None: 
+            print self.cfg.con.ErrorMsg()        
+        row = curs.GetRowAssoc(0)      
+        curs.Close()
+        return row['saldo']
 
     def xultree(self, inactivas,  fecha):
         if inactivas==True:
@@ -47,7 +29,7 @@ class Banco:
         s= '<popupset>\n'
         s= s+ '   <popup id="treepopup" >\n'
         s= s+ '      <menuitem label="Nuevo Banco" oncommand="location=\'cuentas_ibm.psp?ibm=insertar&amp;regresando=0;\'" class="menuitem-iconic"  image="images/item_add.png"/>\n'
-        s= s+ '      <menuitem label="Modificar Banco"  oncommand=\'location="cuentas_ibm.psp?id_cuentas=" + idcuenta  + "&amp;ibm=modificar&amp;regresando=0";\'   class="menuitem-iconic"  image="images/toggle_log.png"/>\n'
+        s= s+ '      <menuitem label="Modificar Banco"  oncommand=\'location="informe_total.svg";\'   class="menuitem-iconic"  image="images/toggle_log.png"/>\n'
         s= s+ '      <menuitem label="Borrar Banco"  oncommand=\'location="cuentas_ibm.psp?id_cuentas=" + idcuenta  + "&amp;ibm=borrar&amp;regresando=0";\'  class="menuitem-iconic" image="images/eventdelete.png"/>\n'
         s= s+ '      <menuseparator/>'
         s= s+ '      <menuitem label="Patrimonio en el banco"  oncommand="location=\'cuentasinformacion.psp?id_cuentas=\' + idcuenta;"/>\n'
@@ -57,24 +39,27 @@ class Banco:
         s= s+ '<tree id="tree" enableColumnDrag="true" flex="6"   context="treepopup"  onselect="tree_getid();">\n'
         s= s+ '<treecols>\n'
         s= s+  '<treecol label="id" hidden="true" />\n'
-        s= s+  '<treecol label="Banco" flex="2"/>\n'
+        s= s+  '<treecol label="Banco" flex="2"/>\n'       
         s= s+  '<treecol label="% saldo total" style="text-align: right" flex="2"/>\n'
         s= s+  '<treecol label="Saldo" style="text-align: right" flex="2"/>\n'
         s= s+  '</treecols>\n'
-        s= s+  '<treechildren>\n'            
+        s= s+  '<treechildren>\n'     
+        total=Total().saldo_total(fecha)
         while not curs.EOF:
             row = curs.GetRowAssoc(0)   
             s= s + '<treeitem>\n'
             s= s + '<treerow>\n'
             s= s + '<treecell label="'+str(row["id_entidadesbancarias"])+ '" />\n'
             s= s + '<treecell label="'+str(row["entidadesbancaria"])+ '" style="text-align: right"/>\n'
-            s= s + treecell_tpc(0)
-            s= s + treecell_euros(0)
+            saldo=Banco().saldo(row["id_entidadesbancarias"], hoy())
+            s= s + treecell_tpc(100*saldo/total)
+            s= s + treecell_euros(saldo)
             s= s + '</treerow>\n'
             s= s + '</treeitem>\n'
             curs.MoveNext()     
         s= s + '</treechildren>\n'
         s= s + '</tree>\n'
+        s= s + '<label flex="1"  style="text-align: center;font-weight : bold;" value="Saldo total: '+ euros(total)+'" />\n'
         curs.Close()
         return s
 
@@ -451,6 +436,8 @@ class InversionActualizacion:
         return True
 
     def insertar(self,  id_inversiones,  fecha,  valor):
+        delete="delete from actuinversiones where ma_inversiones="+str(id_inversiones)+" and fecha ='"+fecha+"';"
+        con.Execute(delete);
         sql="insert into actuinversiones (fecha,ma_inversiones,actualizacion) values ('"+fecha+"',"+id_inversiones+","+valor+")";
         try:
             con.Execute(sql);
@@ -789,6 +776,31 @@ class TipoOperacion:
 
 
 class Total:
+    def grafico_evolucion_total(self):
+        f=open("/tmp/informe_total.plot","w")
+        s='set data style fsteps\n'
+        s=s+"set xlabel 'Fechas'\n"
+        s=s+"set timefmt '%Y-%m-%d'\n"
+        s=s+"set xdata time\n"
+        s=s+"set ylabel 'Valor'\n"
+        s=s+"set yrange [ 0: ]\n"
+        s=s+"set format x '%Y'\n"
+        s=s+"set grid\n"
+        s=s+"set key left\n"
+        s=s+"set terminal png\n"
+        s=s+"set output \"/var/www/localhost/htdocs/xulpymoney/informe_total.png\"\n"
+        s=s+"plot \"/tmp/informe_total.dat\" using 1:2 smooth unique title \"Saldo total\""
+        f.write(s)
+        f.close()
+
+        f=open("/tmp/informe_total.dat","w")
+        for i in range (1997,  2010):
+            f.write(str(i)+"-01-01\t"+str(Total().saldo_total(str(i)+"-01-01"))+"\n")
+        f.write(hoy()+"\t"+str(Total().saldo_total(hoy()))+"\n")
+        f.close()
+        
+        os.popen("gnuplot /tmp/informe_total.plot");
+        
     def saldo_todas_cuentas(self, fecha):
         sql="select saldototalcuentasactivas('"+fecha+"') as saldo;";
         curs=con.Execute(sql); 
@@ -796,7 +808,10 @@ class Total:
         return row['saldo'];
 
     def saldo_total(self,fecha):
-        return self.saldo_todas_cuentas(fecha)+ self.saldo_todas_inversiones(fecha);
+        sql="select saldo_total('"+fecha+"') as saldo;";
+        curs=con.Execute(sql); 
+        row = curs.GetRowAssoc(0)   
+        return row['saldo'];
 
     def saldo_todas_inversiones(self,fecha):
         sql="select saldototalinversionesactivas('"+fecha+"') as saldo;";
