@@ -57,9 +57,9 @@ function tree_getid(){
 
 <popupset>
     <popup id="treepopup" >
-        <menuitem label="Nueva operaci贸n de tarjeta" oncommand="go_opertarjetas_insertar();" class="menuitem-iconic"  image="images/item_add.png"/>
-        <menuitem label="Modificar la operaci贸n de tarjeta"  oncommand='location="tarjetasoperacion_modificar.psp?id_cuentas=" + idcuenta  + "&amp;ibm=modificar&amp;regresando=0";'   class="menuitem-iconic"  image="images/toggle_log.png"/>
-        <menuitem label="Borrar la operaci贸n de tarjeta"  oncommand='borrar();'  class="menuitem-iconic" image="images/eventdelete.png"/>
+        <menuitem label="Nueva operación de tarjeta" oncommand="go_opertarjetas_insertar();" class="menuitem-iconic"  image="images/item_add.png"/>
+        <menuitem label="Modificar la operación de tarjeta"  oncommand='location="tarjetasoperacion_modificar.psp?id_cuentas=" + idcuenta  + "&amp;ibm=modificar&amp;regresando=0";'   class="menuitem-iconic"  image="images/toggle_log.png"/>
+        <menuitem label="Borrar la operación de tarjeta"  oncommand='borrar();'  class="menuitem-iconic" image="images/eventdelete.png"/>
         <menuseparator/>
         <menuitem label="Realizar un pago"  oncommand="location='cuentasinformacion.psp?id_cuentas=' + idcuenta;"/>
     </popup>

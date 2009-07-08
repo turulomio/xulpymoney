@@ -510,6 +510,51 @@ class InversionOperacionHistorica:
         ultima=row['valor_accion_venta'];
         Rendimiento=(ultima-primera)*100/primera;
         return Rendimiento;
+    def xultree(self, sql):
+        """
+            El SQL deberá ser del tipo "SELECT * from tmpoperinversiones where ma_Inversiones=id_inversiones order by fecha"
+        """  
+        sumacciones=0;
+        sumactualizacionesximportes=0;
+        sumactualizacionesxacciones=0
+        sumrendimientosanualesxacciones=0;
+        sumrendimientostotalesxacciones=0;
+        sumrendimientosanualesponderadosxacciones=0;
+        sumpendiente=0;
+        sumimporte=0;
+        curs=con.Execute(sql); 
+        s=     '<vbox flex="1">\n'
+        s=s+ '        <tree id="tree" flex="3" context="treepopup"  onselect="tree_getid();">\n'
+        s=s+ '          <treecols>\n'
+        s=s+ '    <treecol label="Fecha" flex="1"  style="text-align: center"/>\n'
+        s=s+ '    <treecol label="Acciones" flex="1" style="text-align: right" />\n'
+        s=s+ '    <treecol label="Valor compra" flex="1" style="text-align: right"/>\n'
+        s=s+ '    <treecol label="Importe" flex="1" style="text-align: right"/>\n'
+        s=s+ '  </treecols>\n'
+        s=s+ '  <treechildren>\n'
+        while not curs.EOF:
+            row = curs.GetRowAssoc(0)   
+            fecha=row["fecha"];
+            acciones=row['acciones'];
+            actualizacion=row['valor_accion'];
+            importe=acciones*actualizacion;
+
+            s=s+ '    <treeitem>\n'
+            s=s+ '      <treerow>\n'
+            s=s+ '       <treecell label="'+ str(row["fecha"])[:-12]+ '" />\n'
+            s=s+ '       <treecell label="'+ str(row["acciones"])+ '" />\n'
+            s=s+        treecell_euros(row['valor_accion']);
+            s=s+        treecell_euros(importe);
+            s=s+ '      </treerow>\n'
+            s=s+ '    </treeitem>\n'
+            curs.MoveNext()     
+        curs.Close()
+      
+        s=s+ '  </treechildren>\n'
+        s=s+ '</tree>\n'
+        s= s + '</vbox>\n'
+        return s
+        
 
 class InversionOperacionTemporal:
     def pendiente_consolidar(self, id_tmpoperinversiones,id_inversiones,fecha):
@@ -535,7 +580,7 @@ class InversionOperacionTemporal:
         sumimporte=0;
         curs=con.Execute(sql); 
         s=     '<vbox flex="1">\n'
-        s=s+ '        <tree id="tree" flex="3">\n'
+        s=s+ '        <tree id="tree" flex="3" >\n'
         s=s+ '          <treecols>\n'
         s=s+ '    <treecol label="Fecha" flex="1"  style="text-align: center"/>\n'
         s=s+ '    <treecol label="Acciones" flex="1" style="text-align: right" />\n'
