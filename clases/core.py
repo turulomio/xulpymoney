@@ -683,7 +683,7 @@ class Tarjeta:
         s= s+ '      <menuitem label="Modificar la tarjeta"  oncommand=\'location="cuentas_ibm.psp?id_cuentas=" + idcuenta  + "&amp;ibm=modificar&amp;regresando=0";\'   class="menuitem-iconic"  image="images/toggle_log.png"/>\n'
         s= s+ '      <menuitem label="Borrar la tarjeta"  oncommand=\'location="cuentas_ibm.psp?id_cuentas=" + idcuenta  + "&amp;ibm=borrar&amp;regresando=0";\'  class="menuitem-iconic" image="images/eventdelete.png"/>\n'
         s= s+ '      <menuseparator/>'
-        s= s+ '      <menuitem label="Movimientos de la tarjeta"  oncommand="location=\'cuentasinformacion.psp?id_cuentas=\' + idcuenta;"/>\n'
+        s= s+ '      <menuitem label="Movimientos de la tarjeta"  oncommand="location=\'tarjetaoperacion_listado.psp?id_tarjetas=\' + id_tarjetas;"/>\n'
         s= s+ '   </popup>\n'
         s= s+ '</popupset>\n'
         
@@ -714,6 +714,25 @@ class Tarjeta:
         s= s + '</tree>\n'
         curs.Close()
         return s
+
+class TarjetaOperacion:
+    def borrar(self,  id_opertarjetas):
+        sql="delete from opertarjetas where id_opertarjetas="+ str(id_opertarjetas);
+        try:
+            con.Execute(sql);
+        except:
+            return False
+        return True
+        
+    def insertar(self,  fecha, lu_conceptos, lu_tiposoperaciones,  importe,  comentario,  id_tarjetas):
+        sql="insert into opertarjetas (fecha, lu_conceptos, lu_tiposoperaciones, importe, comentario, ma_tarjetas, pagado) values ('" + fecha + "'," + str(lu_conceptos)+","+ str(lu_tiposoperaciones) +","+str(importe)+", '"+comentario+"', "+str(id_tarjetas)+", false)"
+        mylog(sql)
+        try:
+            con.Execute(sql);
+        except:
+            return False
+        return True
+
 
 class TipoOperacion:
     def registro(self,id_tiposoperaciones):

@@ -24,13 +24,13 @@ req.write(xulheaderwindowmenu("Listado de tarjetas de crédito"))
 <script>
 <![CDATA[
 
-var idcuenta=10;
+var id_tarjetas=10;
 
 function checkbox_submit(){
    if (document.getElementById("checkbox").checked==true) {
-     location='tarjetaslistado.psp?inactivas=on';
+     location='tarjeta_listado.psp?inactivas=on';
    } else {
-     location='tarjetaslistado.psp';
+     location='tarjeta_listado.psp';
    } 
 }
 
@@ -38,7 +38,7 @@ function tree_getid()
 {
   var tree = document.getElementById("tree");
   var selection = tree.contentView.getItemAtIndex(tree.currentIndex);
-  idcuenta = selection.firstChild.firstChild.getAttribute("label");
+  id_tarjetas = selection.firstChild.firstChild.getAttribute("label");
 }
 ]]>
 </script>

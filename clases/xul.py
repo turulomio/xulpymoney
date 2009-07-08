@@ -40,7 +40,7 @@ def menu():
     s=s +  '         <menupopup>\n'
     s=s +  '            <menuitem label="Listado" onclick="location=\'cuentaslistado.psp\';"   class="menuitem-iconic"  image="images/toggle_log.png"/>\n'
     s=s +  '            <menuitem label="Evolución de saldos"/>\n'
-    s=s +  '            <menuitem label="Listado de tarjetas"  onclick="location=\'tarjetaslistado.psp\';"   class="menuitem-iconic"  image="images/visa.png"/>\n'
+    s=s +  '            <menuitem label="Listado de tarjetas"  onclick="location=\'tarjeta_listado.psp\';"   class="menuitem-iconic"  image="images/visa.png"/>\n'
     s=s +  '            <menuitem label="Transferencia bancaria"  onclick="location=\'cuenta_transferencia.psp\';"  class="menuitem-iconic"  image="images/hotsync.png" />\n'
     s=s +  '         </menupopup>\n'
     s=s +  '      </menu>\n'
