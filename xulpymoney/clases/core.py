@@ -346,6 +346,16 @@ class Inversion:
         row = curs.GetRowAssoc(0)   
         return row["inversione"]
 
+    def nombre_tpcvariable(self,  tpcvariable):
+        if tpcvariable==-100:
+            return "Fondos de dinero o depósitos"
+        if tpcvariable==0:
+            return "Renta fija"
+        if tpcvariable==50:
+            return "Inversiones expuestas hasta un 50% en renta variable"
+        if tpcvariable==100:
+            return "Inversiones expuestas hasta un 100% en renta variable"
+
     def xultree_compraventa(self):
         sql="select id_inversiones, inversione, inversion_actualizacion(id_inversiones,'"+hoy()+"') as actualizacion, compra, venta from inversiones where venta<> compra and in_activa=true order by inversione;"
         curs=con.Execute(sql); 
