@@ -94,8 +94,11 @@ class Conection:
         con.Close()
 
 class Concepto:
-    def cmb(self, sql,  selected,  js=True):
-        s= '<menulist id="cmbconceptos"  oncommand="cmbconcepto_submit();">\n'
+    def cmb(self, sql,  selected,  js=True):        
+        jstext=""
+        if js:
+            jstext= ' oncommand="cmbconceptos_submit();"'
+        s= '<menulist id="cmbconceptos" '+jstext+'>\n'
         s=s + '<menupopup>\n';
         curs=con.Execute(sql)
         while not curs.EOF:
@@ -154,7 +157,7 @@ class Cuenta:
         while not curs.EOF:
             row = curs.GetRowAssoc(0)   
             sumsaldos=sumsaldos+ dosdecimales(row['saldo'])
-            s= s + '<treeitem>\n'
+            s= s + '<treeitem >\n'
             s= s + '<treerow>\n'
             s= s + '<treecell label="'+str(row["id_cuentas"])+ '" />\n'
             s= s + '<treecell label="'+ row["cuenta"]+ '" />\n'
@@ -188,6 +191,14 @@ class Cuenta:
 
 
 class CuentaOperacion:
+    def borrar(self,  id_opercuentas):
+        sql="delete from opercuentas where id_opercuentas="+ str(id_opercuentas);
+        try:
+            con.Execute(sql);
+        except:
+            return False
+        return True
+        
     def cursor_listado(self, id_cuentas,  year,  month):
         sql="select * from todo_opercuentas where id_cuentas="+str(id_cuentas)+" and date_part('year',fecha)='"+str(year)+"' and date_part('month',fecha)='"+str(month)+"' order by fecha,id_opercuentas";
         return con.Execute(sql); 
@@ -221,7 +232,7 @@ class CuentaOperacion:
         s= s+ '   <popup id="treepopup">\n'
         s= s+ '      <menuitem label="Nueva operación" oncommand="location=\'cuentas_ibm.psp?ibm=insertar&amp;regresando=0&amp;id_cuentas='+str(id_cuentas)+';\'" class="menuitem-iconic"  image="images/item_add.png"/>\n'
         s= s+ '      <menuitem label="Modificar la operación"  oncommand=\'location="cuentas_ibm.psp?id_cuentas=" + idcuenta  + "&amp;ibm=modificar&amp;regresando=0";\'/>\n'
-        s= s+ '      <menuitem label="Borrar la operación"  oncommand=\'location="cuentas_ibm.psp?id_cuentas=" + idcuenta  + "&amp;ibm=borrar&amp;regresando=0";\' class="menuitem-iconic" image="images/eventdelete.png"/>\n'
+        s= s+ '      <menuitem label="Borrar la operación"  oncommand="borrar();" class="menuitem-iconic" image="images/eventdelete.png"/>\n'
         s= s+ '      <menuseparator/>\n'
         s= s+ '      <menuitem label="Transferencia"  oncommand="location=\'cuentasinformacion.psp?id_cuentas=\' + idcuenta;"/>\n'
         s= s+ '      <menuseparator/>\n'

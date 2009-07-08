@@ -11,7 +11,7 @@ install:
 	install -o apache -d $(PREFIXWEB)
 	install -o apache -d $(PREFIXWEB)/tmp
 	install -m 400 -o apache *.psp $(PREFIXWEB)/xulpymoney
-	install -m 400 -o apache *.psp $(PREFIXWEB)/xulpymoney/ajax
+	install -m 400 -o apache ajax/*.psp $(PREFIXWEB)/xulpymoney/ajax
 	install -m 400 -o apache images/*.png $(PREFIXWEB)/xulpymoney/images
 	install -m 400 -o apache images/*.jpg $(PREFIXWEB)/xulpymoney/images
 	install -m 400 -o apache clases/*.py  $(PREFIXPYTHON)/xulpymoney
