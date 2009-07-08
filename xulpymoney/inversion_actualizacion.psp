@@ -37,7 +37,7 @@ function borrar(){
             update_list();
         }
     }
-    var url="ajax.psp?ajax=3&id_actuinversiones="+id_actuinversiones;
+    var url="ajax/ajax.psp?ajax=3&id_actuinversiones="+id_actuinversiones;
     xmlHttp.open("GET",url,true);
     xmlHttp.send(null);º
 }
@@ -61,7 +61,7 @@ function insert(){
     }
     var valor = document.getElementById("valor").value;
     var fecha = document.getElementById("fecha").value;
-    var url="ajax.psp?ajax=1&id_inversiones="+<%=id_inversiones %>+"&fecha="+fecha+"&valor="+valor;
+    var url="ajax/ajax.psp?ajax=1&id_inversiones="+<%=id_inversiones %>+"&fecha="+fecha+"&valor="+valor;
     xmlHttp.open("GET",url,true);
     xmlHttp.send(null);
 }
@@ -101,7 +101,7 @@ function update_list(){
         }
     }
     var fecha = document.getElementById("fecha").value.split("-");
-    var url="ajax.psp?ajax=2&id_inversiones="+<%=id_inversiones %>+"&year="+fecha[0]+"&month="+(fecha[1]);
+    var url="ajax/ajax.psp?ajax=2&id_inversiones="+<%=id_inversiones %>+"&year="+fecha[0]+"&month="+(fecha[1]);
     xmlHttp.open("GET",url,true);
     xmlHttp.send(null);
 }

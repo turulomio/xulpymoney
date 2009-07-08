@@ -27,7 +27,7 @@ function insert(){
     var fecha = document.getElementById("fecha").value;
     spfecha=fecha.split("-");
     var id_cuentas=<%=form['id_cuentas']%>;
-    var url="ajax.psp?ajax=4&fecha="+fecha+"&lu_conceptos="+lu_conceptos+"&lu_tiposoperaciones="+lu_tiposoperaciones+"&importe="+importe+"&comentario="+comentario+"&id_cuentas="+id_cuentas;
+    var url="ajax/ajax.psp?ajax=4&fecha="+fecha+"&lu_conceptos="+lu_conceptos+"&lu_tiposoperaciones="+lu_tiposoperaciones+"&importe="+importe+"&comentario="+comentario+"&id_cuentas="+id_cuentas;
     xmlHttp=new XMLHttpRequest();
     xmlHttp.onreadystatechange=function(){
         if(xmlHttp.readyState==4){
