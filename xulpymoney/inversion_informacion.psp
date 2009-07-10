@@ -16,11 +16,46 @@ listadoDiv=Dividendo().xultree("select id_dividendos, cuenta, fecha, liquido, in
 con.Close()
 
 %>
+<script>
+<![CDATA[
+
+var id_operinversiones=0;
+
+
+function borrar(){
+    var xmlHttp;        
+    var id_inversiones=<%=form['id_inversiones']%>;
+    var url='ajax/inversionoperacion_borrar.psp?id_operinversiones=' + id_operinversiones ;
+    xmlHttp=new XMLHttpRequest();
+    xmlHttp.onreadystatechange=function(){
+        if(xmlHttp.readyState==4){
+            var ale=xmlHttp.responseText;
+            alert(ale);
+            location="inversion_informacion.psp?id_inversiones="+ id_inversiones;
+        }
+    }
+    xmlHttp.open("GET",url,true);
+    xmlHttp.send(null);
+}
+
+function tree_getid()
+{
+  var tree = document.getElementById("tree");
+  var selection = tree.contentView.getItemAtIndex(tree.currentIndex);
+  id_operinversiones = selection.firstChild.firstChild.getAttribute("label");
+}
+
+function go_operinversion_insertar(){
+    var id_inversiones=<%=form['id_inversiones']%>;
+    location="inversionoperacion_insertar.psp?id_inversiones="+ id_inversiones ;
+}
+]]>
+</script>
 
 <popupset>
     <popup id="treepopup" >
         <menuitem label="Nueva operación de inversión" oncommand="go_operinversion_insertar();" class="menuitem-iconic"  image="images/item_add.png"/>
-        <menuitem label="Modificar la operación de inversión"  oncommand='go_operinversion_modificar();'   class="menuitem-iconic"  image="images/toggle_log.png"/>
+        <menuitem label="Modificar la operación de inversión"   class="menuitem-iconic"  image="images/toggle_log.png"/>
         <menuitem label="Borrar la operación de inversión"  oncommand='borrar();'  class="menuitem-iconic" image="images/eventdelete.png"/>
     </popup>
 </popupset>
@@ -31,8 +66,8 @@ con.Close()
 <hbox flex="4">
 <tabbox orient="vertical" flex="1">
 <tabs>
-<tab label="Inversión actual" />
 <tab label="Inversión histórica" />
+<tab label="Inversión actual" />
 <tab label="Dividendos" />
 <tab label="Rendimientos" />
 <tab label="Rendimientos anuales" />
@@ -42,10 +77,10 @@ con.Close()
 </tabs>
 <tabpanels flex="1">
 <vbox>
-   <%=listadoIOT%>
+   <%=listadoIOH%>
 </vbox>
 <vbox>
-   <%=listadoIOH%>
+   <%=listadoIOT%>
 </vbox>
 <vbox>
   <%=listadoDiv%>
