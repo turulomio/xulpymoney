@@ -1,0 +1,87 @@
+<%
+from core import *
+from fecha import *
+from xul import *
+
+if form.has_key('id_inversiones'):
+   id_inversiones=int(form['id_inversiones'])
+else:
+    util.redirect(req, 'inversion_informacion.psp')
+    
+con=Conection().open()
+cmbtiposoperaciones=TipoOperacion().cmb('select * from tiposoperaciones where operinversion=true order by tipo_operacion',  0,  False)
+
+req.content_type="application/vnd.mozilla.xul+xml"
+req.write(xulheaderwindowmenu("Insertando una operación de inversiones"))
+con.Close()
+%>
+<script>
+<![CDATA[
+function insert(){
+    var xmlHttp;    
+    var lu_tiposoperaciones=document.getElementById("cmbtiposoperaciones").value
+    var importe=document.getElementById("importe").value;
+    var comentario= "dddd"
+    var fecha = document.getElementById("fecha").value;
+    var acciones = document.getElementById("acciones").value;
+    var impuestos = document.getElementById("impuestos").value;
+    var comision = document.getElementById("comision").value;
+    var valor_accion = document.getElementById("valor_accion").value;
+    spfecha=fecha.split("-");
+    var id_inversiones=<%=form['id_inversiones']%>;
+    var url="ajax/inversionoperacion_insertar.psp?fecha="+fecha+"&lu_tiposoperaciones="+lu_tiposoperaciones+"&importe="+importe+"&acciones="+acciones+"&impuestos="+impuestos+"&comision="+comision+"&comentario="+comentario+"&valor_accion="+valor_accion+"&ma_inversiones="+id_inversiones;
+    xmlHttp=new XMLHttpRequest();
+    xmlHttp.onreadystatechange=function(){
+        if(xmlHttp.readyState==4){
+            var ale=xmlHttp.responseText;
+            location="inversion_informacion.psp?id_inversiones="+ id_inversiones ;
+        }
+    }
+
+    xmlHttp.open("GET",url,true);
+    xmlHttp.send(null);
+}
+]]>
+</script>
+<label id="titulo" value="Nueva operación de inversiones" />
+<vbox flex="5">
+<grid pack="center">
+    <columns>
+        <column flex="1" />
+        <column flex="1" />
+    </columns>
+    <rows>
+        <row>
+            <label id="negrita" value="Fecha"/>
+            <datepicker id="fecha" type="grid"  firstdayofweek="1"/>
+        </row>
+        <row>
+            <label id="negrita" value="Tipo de operación"/>
+            <%=cmbtiposoperaciones %>
+        </row>
+        <row>
+            <label id="negrita" value="Importe"/>
+            <textbox id="importe" value="3"/>
+        </row>
+        <row>
+            <label id="negrita" value="Acciones"/>
+            <textbox id="acciones" value="3"/>
+        </row>
+        <row>
+            <label id="negrita" value="Impuestos"/>
+            <textbox id="impuestos" value="3"/>
+        </row>
+        <row>
+            <label id="negrita" value="Comisión"/>
+            <textbox id="comision" value="3"/>
+        </row>
+        <row>
+            <label id="negrita" value="Valor de la acción"/>
+            <textbox id="valor_accion" value="3"/>
+        </row>
+    </rows>
+</grid>
+    <button label="Aceptar" oncommand="insert();"/>
+
+</vbox>
+</window>
