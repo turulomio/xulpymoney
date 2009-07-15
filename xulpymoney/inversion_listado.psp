@@ -30,9 +30,9 @@ var idinversion=10;
 
 function checkbox_submit(){
    if (document.getElementById("checkbox").checked==true) {
-     location='inversionessaldo.psp?inactivas=on';
+     location='inversion_listado.psp?inactivas=on';
    } else {
-     location='inversionessaldo.psp';
+     location='inversion_listado.psp';
    } 
 }
 

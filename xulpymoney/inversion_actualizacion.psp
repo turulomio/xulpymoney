@@ -39,7 +39,7 @@ function borrar(){
     }
     var url="ajax/ajax.psp?ajax=3&id_actuinversiones="+id_actuinversiones;
     xmlHttp.open("GET",url,true);
-    xmlHttp.send(null);º
+    xmlHttp.send(null);
 }
 
 
@@ -56,7 +56,7 @@ function insert(){
     xmlHttp.onreadystatechange=function(){
         if(xmlHttp.readyState==4){
             var ale=xmlHttp.responseText;
-            location="inversionessaldo.psp";
+            location="inversion_listado.psp";
         }
     }
     var valor = document.getElementById("valor").value;
@@ -111,7 +111,7 @@ function update_list(){
 <popupset>
   <popup id="treepopup" >    
   <menuitem label="Ver mes seleccionado"  oncommand='update_list();'  class="menuitem-iconic"  image="images/hotsync.png"/>
-    <menuitem label="Modificar la actualización"  oncommand='location="cuentas_ibm.psp?id_cuentas=" + idcuenta  + "&amp;ibm=modificar&amp;regresando=0";'  class="menuitem-iconic"  image="images/toggle_log.png"/>
+    <menuitem label="Modificar la actualización"  oncommand='location="cuenta_ibm.psp?id_cuentas=" + idcuenta  + "&amp;ibm=modificar&amp;regresando=0";'  class="menuitem-iconic"  image="images/toggle_log.png"/>
     <menuitem label="Borrar la actualización"  oncommand="borrar();"  class="menuitem-iconic" image="images/eventdelete.png"/>
   </popup>
 </popupset>
