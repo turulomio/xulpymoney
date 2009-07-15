@@ -318,7 +318,7 @@ class Inversion:
 
     def cursor_listado(self, inactivas,  fecha):
         if inactivas==True:
-            sql="select id_inversiones, inversione, entidadesbancaria, inversiones_saldo(id_inversiones,'"+fecha+"') as saldo, inversion_actualizacion(id_inversiones,'"+fecha+"') as actualizacion, inversion_pendiente(id_inversiones,'"+fecha+"')  as pendiente, inversion_invertido(id_inversiones,'"+fecha+"')  as invertido, from inversiones, cuentas, entidadesbancarias where cuentas.ma_entidadesbancarias=entidadesbancarias.id_entidadesbancarias and cuentas.id_cuentas=inversiones.lu_cuentas order by inversione;"
+            sql="select id_inversiones, inversione, entidadesbancaria, inversiones_saldo(id_inversiones,'"+fecha+"') as saldo, inversion_actualizacion(id_inversiones,'"+fecha+"') as actualizacion, inversion_pendiente(id_inversiones,'"+fecha+"')  as pendiente, inversion_invertido(id_inversiones,'"+fecha+"')  as invertido from inversiones, cuentas, entidadesbancarias where cuentas.ma_entidadesbancarias=entidadesbancarias.id_entidadesbancarias and cuentas.id_cuentas=inversiones.lu_cuentas order by inversione;"
 
         else:
             sql="select id_inversiones, inversione, entidadesbancaria, inversiones_saldo(id_inversiones,'"+fecha+"') as saldo, inversion_actualizacion(id_inversiones,'"+fecha+"') as actualizacion, inversion_pendiente(id_inversiones,'"+fecha+"')  as pendiente,  inversion_invertido(id_inversiones,'"+fecha+"')  as invertido from inversiones, cuentas, entidadesbancarias where cuentas.ma_entidadesbancarias=entidadesbancarias.id_entidadesbancarias and cuentas.id_cuentas=inversiones.lu_cuentas and in_activa='t' order by inversione;"
@@ -415,7 +415,7 @@ class Inversion:
             s= s + treecell_euros(row['saldo'])
             s= s + treecell_euros(row['pendiente'])
             s= s + treecell_euros(row['invertido'])
-            if row['saldo']==0:
+            if row['saldo']==0 or row['invertido']==0:
                 tpc=0
             else:
                 tpc=100*row['pendiente']/row['invertido']
