@@ -399,7 +399,7 @@ class Inversion:
         s= s+  '<treecol id="col_valor" label="Saldo" flex="2" style="text-align: right" />\n'
         s= s+  '<treecol id="col_saldo" label="Pendiente" flex="1" style="text-align: right"/>\n'
         s= s+  '<treecol label="Invertido" hidden="true"  flex="1" style="text-align: right" />\n'
-        s= s+  '<treecol id="col_saldo" label="Rendimiento" flex="1" style="text-align: right"/>\n'
+        s= s+  '<treecol id="col_saldo" label="Rendimiento"   sort="?Rendimiento" sortActive="true" sortDirection="descending" flex="1" style="text-align: right"/>\n'
         s= s+  '</treecols>\n'
         s= s+  '<treechildren>\n'
         while not curs.EOF:
@@ -767,7 +767,6 @@ class Tarjeta:
     def xul_listado(self, curs):
         s= '<popupset>\n'
         s= s+ '   <popup id="treepopup" >\n'
-        s= s+ '      <menuitem label="Tarjeta nueva" oncommand="location=\'cuentas_ibm.psp?ibm=insertar&amp;regresando=0;\'" class="menuitem-iconic"  image="images/item_add.png"/>\n'
         s= s+ '      <menuitem label="Modificar la tarjeta"  oncommand=\'location="cuentas_ibm.psp?id_cuentas=" + idcuenta  + "&amp;ibm=modificar&amp;regresando=0";\'   class="menuitem-iconic"  image="images/toggle_log.png"/>\n'
         s= s+ '      <menuitem label="Borrar la tarjeta"  oncommand=\'location="cuentas_ibm.psp?id_cuentas=" + idcuenta  + "&amp;ibm=borrar&amp;regresando=0";\'  class="menuitem-iconic" image="images/eventdelete.png"/>\n'
         s= s+ '      <menuseparator/>'

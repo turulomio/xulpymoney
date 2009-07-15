@@ -47,7 +47,9 @@ function tree_getid()
 </script>
 <popupset>
   <popup id="treepopup" >
-    <menuitem label="Actualizar el valor" oncommand="location='inversion_actualizacion.psp?id_inversiones=' + idinversion;"  class="menuitem-iconic"  image="images/hotsync.png" />
+    <menuitem label="Actualizar el valor" oncommand="location='inversion_actualizacion.psp?id_inversiones=' + idinversion;"  class="menuitem-iconic"  image="images/hotsync.png" />           
+    <menuseparator/>
+    <menuitem label="Nueva inversión" oncommand="location=\'cuentas_ibm.psp?ibm=insertar&amp;regresando=0;\'" class="menuitem-iconic"  image="images/item_add.png"/>
     <menuitem label="Modificar la inversión"  oncommand='location="inversion_ibm.psp?id_inversiones=" + idinversion  + "&amp;ibm=modificar&amp;regresando=0";'   class="menuitem-iconic"  image="images/edit.png" />
     <menuitem label="Estudio de la inversión"  oncommand="location='inversion_informacion.psp?id_inversiones=' + idinversion;"  class="menuitem-iconic"  image="images/toggle_log.png" />
 
