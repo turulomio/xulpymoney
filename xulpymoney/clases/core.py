@@ -340,9 +340,10 @@ class Inversion:
             return "Inversiones expuestas hasta un 50% en renta variable"
         if tpcvariable==100:
             return "Inversiones expuestas hasta un 100% en renta variable"
+        return None
 
     def xultree_compraventa(self):
-        sql="select id_inversiones, inversione, inversion_actualizacion(id_inversiones,'"+hoy()+"') as actualizacion, compra, venta from inversiones where venta<> compra and in_activa=true order by inversione;"
+        sql="select id_inversiones, inversione, entidadesbancaria,  inversion_actualizacion(id_inversiones,'"+hoy()+"') as actualizacion, compra, venta from inversiones, cuentas, entidadesbancarias where venta<> compra and in_activa=true and cuentas.ma_entidadesbancarias=entidadesbancarias.id_entidadesbancarias and cuentas.id_cuentas=inversiones.lu_cuentas order by inversione;"
         curs=con.Execute(sql); 
         s= '<vbox flex="1">\n'
         s= s+ '<popupset>\n'
@@ -356,6 +357,7 @@ class Inversion:
         s= s+ '<treecols>\n'
         s= s+  '<treecol label="Id" hidden="true" />\n'
         s= s+  '<treecol label="Inversión" flex="2"/>\n'
+        s= s+  '<treecol label="Banco" flex="2"/>\n'
         s= s+  '<treecol label="Valor Acción" flex="1" style="text-align: right" />\n'
         s= s+  '<treecol label="Valor Compra" flex="1" style="text-align: right" />\n'
         s= s+  '<treecol label="Valor Venta " flex="1" style="text-align: right"/>\n'
@@ -371,7 +373,8 @@ class Inversion:
             s= s + '<treerow>\n'
             s= s + '<treecell label="'+str(row["id_inversiones"])+ '" />\n'
             s= s + '<treecell label="'+str(row["inversione"])+ '" />\n'
-            s= s + treecell_euros(row["actualizacion"])
+            s= s + '<treecell label="'+str(row["entidadesbancaria"])+ '" />\n'
+            s= s + treecell_euros(row["actualizacion"],  3)
             s= s + treecell_euros_alerta_compra(row['actualizacion'], row["compra"], 0.10)
             s= s + treecell_euros_alerta_venta(row['actualizacion'], row["venta"], 0.10)
             s= s + treecell_tpc(tpcc)
@@ -411,7 +414,7 @@ class Inversion:
             s= s + '<treecell label="'+str(row["id_inversiones"])+ '" />\n'
             s= s + '<treecell label="'+str(row["inversione"])+ '" />\n'
             s= s + '<treecell label="'+ row["entidadesbancaria"]+ '" />\n'
-            s= s + treecell_euros(row["actualizacion"])
+            s= s + treecell_euros(row["actualizacion"], 3)
             s= s + treecell_euros(row['saldo'])
             s= s + treecell_euros(row['pendiente'])
             s= s + treecell_euros(row['invertido'])
@@ -510,12 +513,17 @@ class InversionOperacionHistorica:
         curs.Close()
         return resultado
     def rendimiento_total(self, id_tmpoperinversioneshistoricas):
+        """
+            Si primera es 0 por ejempleo acciones de ampliaciones de capital que no cuestan nada devuelve 100
+        """ 
         sql="SELECT fecha_inicio, fecha_venta, valor_accion_compra, valor_accion_venta,ma_inversiones from tmpoperinversioneshistoricas where id_tmpoperinversioneshistoricas= "+ str(id_tmpoperinversioneshistoricas)
         curs=con.Execute(sql); 
         row = curs.GetRowAssoc(0)   
         id_inversiones=row['ma_inversiones'];
         primera=row['valor_accion_compra'];
         ultima=row['valor_accion_venta'];
+        if primera==0:
+            return 100
         Rendimiento=(ultima-primera)*100/primera;
         return Rendimiento;
     def xultree(self, sql):

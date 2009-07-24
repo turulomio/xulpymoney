@@ -66,11 +66,11 @@ def menu():
     return s
 
 
-def treecell_euros(importe):
+def treecell_euros(importe,  numdec=2):
     if importe>=0:
-        s='<treecell label="'+euros(importe)+'" />\n';
+        s='<treecell label="'+euros(importe, numdec)+'" />\n';
     else:
-        s='<treecell properties="negative" label="'+euros(importe)+'" />\n';
+        s='<treecell properties="negative" label="'+euros(importe, numdec)+'" />\n';
     return s
     
 def treecell_tpc(importe):
@@ -86,9 +86,9 @@ def treecell_euros_alerta_compra(importeactual, importealerta, tpcalerta):
         Es decir si va desde menor del importealerta hasta un tpc del importe alerta
     """
     if importeactual <= importealerta*(1+tpcalerta):
-        s='<treecell properties="alert" label="'+euros(importealerta)+'" />\n';
+        s='<treecell properties="alert" label="'+euros(importealerta, 3)+'" />\n';
     else:
-        s='<treecell label="'+euros(importealerta)+'" />\n';        
+        s='<treecell label="'+euros(importealerta,  3)+'" />\n';        
     return s
     
 def treecell_euros_alerta_venta(importeactual, importealerta, tpcalerta):
@@ -97,9 +97,9 @@ def treecell_euros_alerta_venta(importeactual, importealerta, tpcalerta):
         Es decir si va desde menor del importealerta hasta un tpc del importe alerta
     """
     if importeactual >= importealerta*(1-tpcalerta):
-        s='<treecell properties="alert" label="'+euros(importealerta)+'" />\n';
+        s='<treecell properties="alert" label="'+euros(importealerta,  3)+'" />\n';
     else:
-        s='<treecell label="'+euros(importealerta)+'" />\n';        
+        s='<treecell label="'+euros(importealerta,  3)+'" />\n';        
     return s
 
 
