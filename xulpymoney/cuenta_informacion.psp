@@ -66,7 +66,7 @@ function cmbcuentas_submit(){
     var cmbcuentas=document.getElementById("cmbcuentas").value;
     var year=document.getElementById("fecha").year;
     var month=document.getElementById("fecha").month+1;
-    location="cuentasinformacion.psp?id_cuentas="+ cmbcuentas + "&year=" +year + "&month="+ month;
+    location="cuenta_informacion.psp?id_cuentas="+ cmbcuentas + "&year=" +year + "&month="+ month;
 }
 
 
