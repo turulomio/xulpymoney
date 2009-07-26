@@ -51,7 +51,7 @@ function tree_getid()
     <menuitem label="Modificar la cuenta"  oncommand='location="cuentas_ibm.psp?id_cuentas=" + idcuenta  + "&amp;ibm=modificar&amp;regresando=0";'   class="menuitem-iconic"  image="images/toggle_log.png"/>
     <menuitem label="Borrar la cuenta"  oncommand='location="cuentas_ibm.psp?id_cuentas=" + idcuenta  + "&amp;ibm=borrar&amp;regresando=0";'  class="menuitem-iconic" image="images/eventdelete.png"/>
     <menuseparator/>
-    <menuitem label="Movimientos de cuenta"  oncommand="location='cuentasinformacion.psp?id_cuentas=' + idcuenta;"/> 
+    <menuitem label="Movimientos de cuenta"  oncommand="location='cuenta_informacion.psp?id_cuentas=' + idcuenta;"/> 
     <menuseparator/>
     <menuitem label="Transferencia bancaria"  onclick="location='cuenta_transferencia.psp';"  class="menuitem-iconic"  image="images/hotsync.png" />
   </popup>
