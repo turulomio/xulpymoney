@@ -215,8 +215,8 @@ class CuentaOperacion:
         saldo=Cuenta().saldo(id_cuentas, diamenos.isoformat())
         s=    '<popupset>\n'
         s= s+ '   <popup id="treepopup">\n'
-        s= s+ '      <menuitem label="Nueva operación" oncommand="location=\'cuentas_ibm.psp?ibm=insertar&amp;regresando=0&amp;id_cuentas='+str(id_cuentas)+';\'" class="menuitem-iconic"  image="images/item_add.png"/>\n'
-        s= s+ '      <menuitem label="Modificar la operación"  oncommand=\'location="cuentas_ibm.psp?id_cuentas=" + idcuenta  + "&amp;ibm=modificar&amp;regresando=0";\'/>\n'
+        s= s+ '      <menuitem label="Nueva operación" oncommand="location=\'cuenta_ibm.psp?ibm=insertar&amp;regresando=0&amp;id_cuentas='+str(id_cuentas)+';\'" class="menuitem-iconic"  image="images/item_add.png"/>\n'
+        s= s+ '      <menuitem label="Modificar la operación"  oncommand=\'location="cuenta_ibm.psp?id_cuentas=" + idcuenta  + "&amp;ibm=modificar&amp;regresando=0";\'/>\n'
         s= s+ '      <menuitem label="Borrar la operación"  oncommand="borrar();" class="menuitem-iconic" image="images/eventdelete.png"/>\n'
         s= s+ '      <menuseparator/>\n'
         s=s +  '            <menuitem label="Transferencia bancaria"  onclick="location=\'cuenta_transferencia.psp\';"  class="menuitem-iconic"  image="images/hotsync.png" />\n'
