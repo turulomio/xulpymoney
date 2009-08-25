@@ -623,7 +623,10 @@ class InversionOperacionTemporal:
             sumpendiente=sumpendiente+pendiente;
             rendimientoanual=InversionOperacionTemporalRendimiento().anual( row['id_tmpoperinversiones'], row['ma_inversiones'],ano(hoy()));
             rendimientototal=InversionOperacionTemporalRendimiento().total( row['id_tmpoperinversiones'], row['ma_inversiones']);
-            rendimientoanualponderado=365*rendimientoanual/(datetime.date.today()-datetime.date(ano(hoy()), 1, 1)).days #La resta es un objeto timedelta
+            if row["fecha"].year==datetime.date.today().year:                
+                rendimientoanualponderado=365*rendimientoanual/(datetime.date.today()-datetime.date(row["fecha"].year, row["fecha"].month, row["fecha"].day)).days 
+            else:
+                rendimientoanualponderado=365*rendimientoanual/(datetime.date.today()-datetime.date(ano(hoy()), 1, 1)).days 
             sumactualizacionesxacciones=sumactualizacionesxacciones+actualizacionxacciones;
             sumrendimientosanualesxacciones=sumrendimientosanualesxacciones+rendimientoanual*acciones;
             sumrendimientostotalesxacciones=sumrendimientostotalesxacciones+rendimientototal*acciones;
@@ -1100,6 +1103,20 @@ class Total:
         s=s+treecell_tpc((beneficiocon)*100/saldototalinicio)
         s=s+ '      </treerow>\n'
         s=s+ '   </treeitem>\n'
+        s=s+ '    <treeitem>\n'
+        s=s+ '      <treerow>\n'
+        s=s+ '          <treecell label="Comisiones" />\n'
+        s=s+treecell_euros(sumcomision);
+        s=s+treecell_tpc(0)
+        s=s+ '      </treerow>\n'
+        s=s+ '   </treeitem>    \n'        
+        s=s+ '    <treeitem>\n'
+        s=s+ '      <treerow>\n'
+        s=s+ '          <treecell label="Impuestos" />\n'
+        s=s+treecell_euros(sumimpuestos);
+        s=s+treecell_tpc(0)
+        s=s+ '      </treerow>\n'
+        s=s+ '   </treeitem>    \n'
         s=s+ '  </treechildren>\n'
         s=s+ '</tree>\n'
         s= s + '<label flex="0"  style="text-align: center;font-weight : bold;" value="Saldo a '+hoy()+': '+ euros(saldototal)+'." />\n'        
