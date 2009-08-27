@@ -624,7 +624,11 @@ class InversionOperacionTemporal:
             rendimientoanual=InversionOperacionTemporalRendimiento().anual( row['id_tmpoperinversiones'], row['ma_inversiones'],ano(hoy()));
             rendimientototal=InversionOperacionTemporalRendimiento().total( row['id_tmpoperinversiones'], row['ma_inversiones']);
             if row["fecha"].year==datetime.date.today().year:                
-                rendimientoanualponderado=365*rendimientoanual/(datetime.date.today()-datetime.date(row["fecha"].year, row["fecha"].month, row["fecha"].day)).days 
+                dias=(datetime.date.today()-datetime.date(row["fecha"].year, row["fecha"].month, row["fecha"].day)).days 
+                if dias==0:
+                    rendimientoanualponderado=365*rendimientoanual
+                else:
+                    rendimientoanualponderado=365*rendimientoanual/dias
             else:
                 rendimientoanualponderado=365*rendimientoanual/(datetime.date.today()-datetime.date(ano(hoy()), 1, 1)).days 
             sumactualizacionesxacciones=sumactualizacionesxacciones+actualizacionxacciones;
