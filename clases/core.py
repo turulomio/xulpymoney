@@ -318,10 +318,10 @@ class Inversion:
 
     def cursor_listado(self, inactivas,  fecha):
         if inactivas==True:
-            sql="select id_inversiones, inversione, entidadesbancaria, inversiones_saldo(id_inversiones,'"+fecha+"') as saldo, inversion_actualizacion(id_inversiones,'"+fecha+"') as actualizacion, inversion_pendiente(id_inversiones,'"+fecha+"')  as pendiente, inversion_invertido(id_inversiones,'"+fecha+"')  as invertido from inversiones, cuentas, entidadesbancarias where cuentas.ma_entidadesbancarias=entidadesbancarias.id_entidadesbancarias and cuentas.id_cuentas=inversiones.lu_cuentas order by inversione;"
+            sql="select id_inversiones, in_activa, inversione, entidadesbancaria, inversiones_saldo(id_inversiones,'"+fecha+"') as saldo, inversion_actualizacion(id_inversiones,'"+fecha+"') as actualizacion, inversion_pendiente(id_inversiones,'"+fecha+"')  as pendiente, inversion_invertido(id_inversiones,'"+fecha+"')  as invertido from inversiones, cuentas, entidadesbancarias where cuentas.ma_entidadesbancarias=entidadesbancarias.id_entidadesbancarias and cuentas.id_cuentas=inversiones.lu_cuentas order by inversione;"
 
         else:
-            sql="select id_inversiones, inversione, entidadesbancaria, inversiones_saldo(id_inversiones,'"+fecha+"') as saldo, inversion_actualizacion(id_inversiones,'"+fecha+"') as actualizacion, inversion_pendiente(id_inversiones,'"+fecha+"')  as pendiente,  inversion_invertido(id_inversiones,'"+fecha+"')  as invertido from inversiones, cuentas, entidadesbancarias where cuentas.ma_entidadesbancarias=entidadesbancarias.id_entidadesbancarias and cuentas.id_cuentas=inversiones.lu_cuentas and in_activa='t' order by inversione;"
+            sql="select id_inversiones, in_activa, inversione, entidadesbancaria, inversiones_saldo(id_inversiones,'"+fecha+"') as saldo, inversion_actualizacion(id_inversiones,'"+fecha+"') as actualizacion, inversion_pendiente(id_inversiones,'"+fecha+"')  as pendiente,  inversion_invertido(id_inversiones,'"+fecha+"')  as invertido from inversiones, cuentas, entidadesbancarias where cuentas.ma_entidadesbancarias=entidadesbancarias.id_entidadesbancarias and cuentas.id_cuentas=inversiones.lu_cuentas and in_activa='t' order by inversione;"
         return con.Execute(sql); 
         
 
@@ -396,6 +396,7 @@ class Inversion:
         s= s+ '<tree id="tree" enableColumnDrag="true" flex="6"   context="treepopup"  onselect="tree_getid();">\n'
         s= s+ '<treecols>\n'
         s= s+  '<treecol id="col_id" label="id" hidden="true" />\n'
+        s= s+  '<treecol id="activa" label="activa" hidden="true" />\n'
         s= s+  '<treecol id="col_cuenta" label="Inversión" sort="?col_inversion" sortActive="true" sortDirection="descending" flex="2"/>\n'
         s= s+  '<treecol id="col_entidad_bancaria" label="Entidad Bancaria"  sort="?col_entidad_bancaria" sortActive="true" sortDirection="descending" flex="2"/>\n'
         s= s+  '<treecol id="col_valor" label="Valor Acción" flex="2" style="text-align: right" />\n'
@@ -412,6 +413,7 @@ class Inversion:
             s= s + '<treeitem>\n'
             s= s + '<treerow>\n'
             s= s + '<treecell label="'+str(row["id_inversiones"])+ '" />\n'
+            s= s + '<treecell label="'+str(row["in_activa"])+ '" />\n'
             s= s + '<treecell label="'+str(row["inversione"])+ '" />\n'
             s= s + '<treecell label="'+ row["entidadesbancaria"]+ '" />\n'
             s= s + treecell_euros(row["actualizacion"], 3)
