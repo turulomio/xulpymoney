@@ -653,7 +653,8 @@ class InversionOperacionTemporal:
         s=s+ '  </treechildren>\n'
         s=s+ '</tree>\n'
         
-        s= s + '<label flex="0"  style="text-align: center;font-weight : bold;" value="Saldo pendiente '+ euros(sumpendiente)+'. " />\n'
+        s= s + '<label flex="0"  style="text-align: center;font-weight : bold;" value="Invertidos '+ euros(sumimporte)+' con un total de '+str(int(sumacciones))+' acciones"/>\n'        
+        s= s + '<label flex="0"  style="text-align: center;font-weight : bold;" value="Saldo pendiente '+ euros(sumpendiente)+'. " />\n'        
         s= s + '</vbox>\n'
         return s
     
