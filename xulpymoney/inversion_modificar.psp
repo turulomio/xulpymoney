@@ -1,0 +1,59 @@
+<%
+import time
+from core import *
+from xul import *
+from fecha import *
+
+#Consultas BD
+con=Conection().open()
+hoy=hoy()
+checked=""
+id_inversiones=0
+if form.has_key('id_inversiones'):
+    id_inversiones=form['id_inversiones']
+
+reg=Inversion().registro(id_inversiones)
+con.Close()
+
+req.content_type="application/vnd.mozilla.xul+xml"
+req.write(xulheaderwindowmenu("Modificar la inversión"))
+
+%>
+<script>
+<![CDATA[
+         
+function insert(){
+    var xmlHttp;
+    xmlHttp=new XMLHttpRequest();
+    xmlHttp.onreadystatechange=function(){
+        if(xmlHttp.readyState==4){
+            var ale=xmlHttp.responseText;
+            location="inversion_compraventa.psp";
+        }
+    }
+    var inversione = document.getElementById("inversione").value;
+    var compra = document.getElementById("compra").value;
+    var venta = document.getElementById("venta").value;
+    var url="ajax/inversion_modificar.psp?id_inversiones="+<%=id_inversiones %>+"&inversione="+inversione+"&compra="+compra+"&venta="+venta;
+    xmlHttp.open("GET",url,true);
+    xmlHttp.send(null);
+}
+
+]]>
+</script>
+
+<vbox flex="1">
+    <label id="titulo" flex="0" value="Modificar la inversión" />
+    <label id="subtitulo" flex="0" value="<%=reg['inversione'] %>" />
+    <hbox flex="1">
+    <grid align="center">
+        <rows>
+        <row><label value="Cambiar el nombre"/><hbox><textbox id="inversione" value="<%=reg['inversione'] %>"/></hbox></row>
+        <row><label value="Actualiza el valor de nueva compra" /><hbox><textbox id="compra" value="<%=reg['compra'] %>"/></hbox></row>        
+        <row><label value="Actualiza el valor de venta" /><hbox><textbox id="venta" value="<%=reg['venta'] %>"/></hbox></row>
+        <row><label value="" /><hbox><button id="cmd" label="Aceptar" onclick="insert();"/></hbox></row>
+        </rows>
+    </grid>
+    </hbox>
+</vbox>
+</window>

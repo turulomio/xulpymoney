@@ -2,6 +2,11 @@ label#titulo { font-weight : bold;
                text-align: center;
                font-size: 10mm;
              }
+             
+label#subtitulo {  color: green;
+               text-align: center;
+               font-size: 6mm;
+             }
 
 label#negrita { font-weight : bold;
              }

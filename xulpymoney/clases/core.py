@@ -323,6 +323,11 @@ class Inversion:
         else:
             sql="select id_inversiones, in_activa, inversione, entidadesbancaria, inversiones_saldo(id_inversiones,'"+fecha+"') as saldo, inversion_actualizacion(id_inversiones,'"+fecha+"') as actualizacion, inversion_pendiente(id_inversiones,'"+fecha+"')  as pendiente,  inversion_invertido(id_inversiones,'"+fecha+"')  as invertido from inversiones, cuentas, entidadesbancarias where cuentas.ma_entidadesbancarias=entidadesbancarias.id_entidadesbancarias and cuentas.id_cuentas=inversiones.lu_cuentas and in_activa='t' order by inversione;"
         return con.Execute(sql); 
+            
+    def modificar(self, id_inversiones, inversione,  compra,  venta):
+        sql="update inversiones set inversione='"+inversione+"', compra="+str(compra)+", venta="+str(venta)+" where id_inversiones="+ str(id_inversiones)
+        curs=con.Execute(sql); 
+        return sql
         
     def modificar_activa(self, id_inversiones,  activa):
         sql="update inversiones set in_activa="+str(activa)+" where id_inversiones="+ str(id_inversiones)
@@ -345,14 +350,20 @@ class Inversion:
         if tpcvariable==100:
             return "Inversiones expuestas hasta un 100% en renta variable"
         return None
-
+        
+    def registro(self, id_inversiones):
+        sql="select * from inversiones where id_inversiones="+ str(id_inversiones)
+        curs=con.Execute(sql); 
+        row = curs.GetRowAssoc(0)   
+        return row
+        
     def xultree_compraventa(self):
         sql="select id_inversiones, inversione, entidadesbancaria,  inversion_actualizacion(id_inversiones,'"+hoy()+"') as actualizacion, compra, venta from inversiones, cuentas, entidadesbancarias where venta<> compra and in_activa=true and cuentas.ma_entidadesbancarias=entidadesbancarias.id_entidadesbancarias and cuentas.id_cuentas=inversiones.lu_cuentas order by inversione;"
         curs=con.Execute(sql); 
         s= '<vbox flex="1">\n'
         s= s+ '<popupset>\n'
         s= s+ '<popup id="treepopup" >\n'
-        s= s+ '<menuitem label="Modificar la inversión"  oncommand=\'location="inversion_ibm.psp?id_inversiones=" + idinversion  + "&amp;ibm=modificar&amp;regresando=0";\'   class="menuitem-iconic"  image="images/edit.png" />\n'
+        s= s+ '    <menuitem label="Modificar la inversión"  oncommand="location=\'inversion_modificar.psp?id_inversiones=\' + idinversion;"   class="menuitem-iconic"  image="images/edit.png" />\n'
         s= s+ '<menuitem label="Estudio de la inversión"  oncommand="location=\'inversion_informacion.psp?id_inversiones=\' + idinversion;"  class="menuitem-iconic"  image="images/toggle_log.png" />\n'
         s= s+ '</popup>\n'
         s= s+ '</popupset>\n'
