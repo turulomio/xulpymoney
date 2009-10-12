@@ -324,7 +324,11 @@ class Inversion:
             sql="select id_inversiones, in_activa, inversione, entidadesbancaria, inversiones_saldo(id_inversiones,'"+fecha+"') as saldo, inversion_actualizacion(id_inversiones,'"+fecha+"') as actualizacion, inversion_pendiente(id_inversiones,'"+fecha+"')  as pendiente,  inversion_invertido(id_inversiones,'"+fecha+"')  as invertido from inversiones, cuentas, entidadesbancarias where cuentas.ma_entidadesbancarias=entidadesbancarias.id_entidadesbancarias and cuentas.id_cuentas=inversiones.lu_cuentas and in_activa='t' order by inversione;"
         return con.Execute(sql); 
         
-
+    def modificar_activa(self, id_inversiones,  activa):
+        sql="update inversiones set in_activa="+str(activa)+" where id_inversiones="+ str(id_inversiones)
+        curs=con.Execute(sql); 
+        return sql
+        
     def nombre(self, id_inversiones):
         sql="select inversione from inversiones where id_inversiones="+ str(id_inversiones)
         curs=con.Execute(sql); 
@@ -395,7 +399,7 @@ class Inversion:
         s= '<vbox flex="1">\n'
         s= s+ '<tree id="tree" enableColumnDrag="true" flex="6"   context="treepopup"  onselect="tree_getid();">\n'
         s= s+ '<treecols>\n'
-        s= s+  '<treecol id="col_id" label="id" hidden="true" />\n'
+        s= s+  '<treecol id="id" label="id" hidden="true" />\n'
         s= s+  '<treecol id="activa" label="activa" hidden="true" />\n'
         s= s+  '<treecol id="col_cuenta" label="Inversión" sort="?col_inversion" sortActive="true" sortDirection="descending" flex="2"/>\n'
         s= s+  '<treecol id="col_entidad_bancaria" label="Entidad Bancaria"  sort="?col_entidad_bancaria" sortActive="true" sortDirection="descending" flex="2"/>\n'
