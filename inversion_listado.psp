@@ -26,7 +26,8 @@ req.write(xulheaderwindowmenu("Estado de las inversiones"))
 <script>
 <![CDATA[
 
-var idinversion=10;
+var id_inversiones=10;
+var tree = document.getElementById("tree");
 
 function checkbox_submit(){
    if (document.getElementById("checkbox").checked==true) {
@@ -38,36 +39,55 @@ function checkbox_submit(){
 
 function tree_getid()
 {
-  var tree = document.getElementById("tree");
-  var selection = tree.contentView.getItemAtIndex(tree.currentIndex);
-  idinversion = selection.firstChild.firstChild.getAttribute("label");
-  
+    var tree = document.getElementById("tree");
+    /*el boolean de un "0" es true y bolean de un 0 es false*/
+    var activa=Boolean(Number(tree.view.getCellText(tree.currentIndex,tree.columns.getNamedColumn("activa"))));
+    id_inversiones=tree.view.getCellText(tree.currentIndex,tree.columns.getNamedColumn("id"));
     var popup = document.getElementById("treepopup");
     if (document.getElementById("popactiva")){
         popup.removeChild(document.getElementById("popactiva"));
     }
     var popactiva=document.createElement('menuitem');
     popactiva.setAttribute("id", "popactiva");
-    
-  if (tree.view.getCellText(selection,tree.columns.getNamedColumn("activa"))==1){
+  if (activa){
     popactiva.setAttribute("label", "Desactivar la inversión");
-    popactiva.setAttribute("checked", "true");
+    popactiva.setAttribute("checked", "false");
+    popactiva.setAttribute("oncommand", "modificar_activa();");
  }else{
     popactiva.setAttribute("label", "Activar la inversión");
-    popactiva.setAttribute("checked", "false");
+    popactiva.setAttribute("checked", "true");
+    popactiva.setAttribute("oncommand", "modificar_activa();");
  }
     popup.appendChild(popactiva);
 }
+
+
+function modificar_activa(){
+var tree = document.getElementById("tree");
+    var xmlHttp;
+    var activa=Boolean(Number(tree.view.getCellText(tree.currentIndex,tree.columns.getNamedColumn("activa"))));
+    xmlHttp=new XMLHttpRequest();
+    xmlHttp.onreadystatechange=function(){
+        if(xmlHttp.readyState==4){
+            var ale=xmlHttp.responseText;
+            location='inversion_listado.psp';
+        }
+    }
+    var url="ajax/inversion_modificar_activa.psp?id_inversiones="+id_inversiones+'&activa='+!activa;
+    xmlHttp.open("GET",url,true);
+    xmlHttp.send(null);
+}
+
 
 ]]>
 </script>
 <popupset>
   <popup id="treepopup" >
-    <menuitem label="Actualizar el valor" oncommand="location='inversion_actualizacion.psp?id_inversiones=' + idinversion;"  class="menuitem-iconic"  image="images/hotsync.png" />           
+    <menuitem label="Actualizar el valor" oncommand="location='inversion_actualizacion.psp?id_inversiones=' + id_inversiones;"  class="menuitem-iconic"  image="images/hotsync.png" />           
     <menuseparator/>
     <menuitem label="Nueva inversión" oncommand="location=\'cuentas_ibm.psp?ibm=insertar&amp;regresando=0;\'" class="menuitem-iconic"  image="images/item_add.png"/>
-    <menuitem label="Modificar la inversión"  oncommand='location="inversion_ibm.psp?id_inversiones=" + idinversion  + "&amp;ibm=modificar&amp;regresando=0";'   class="menuitem-iconic"  image="images/edit.png" />
-    <menuitem label="Estudio de la inversión"  oncommand="location='inversion_informacion.psp?id_inversiones=' + idinversion;"  class="menuitem-iconic"  image="images/toggle_log.png" />
+    <menuitem label="Modificar la inversión"  oncommand='location="inversion_ibm.psp?id_inversiones=" + id_inversiones  + "&amp;ibm=modificar&amp;regresando=0";'   class="menuitem-iconic"  image="images/edit.png" />
+    <menuitem label="Estudio de la inversión"  oncommand="location='inversion_informacion.psp?id_inversiones=' + id_inversiones;"  class="menuitem-iconic"  image="images/toggle_log.png" />
     <menuseparator/>
 
   </popup>
