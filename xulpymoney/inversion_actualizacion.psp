@@ -11,6 +11,7 @@ checked=""
 id_inversiones=0
 if form.has_key('id_inversiones'):
     id_inversiones=form['id_inversiones']
+reg=Inversion().registro(id_inversiones)
 con.Close()
 
 req.content_type="application/vnd.mozilla.xul+xml"
@@ -23,8 +24,8 @@ req.write(xulheaderwindowmenu("Actualizar el valor"))
 var id_actuinversiones;
          
 function borrar_tree() {    
-  var tree= document.getElementById("tree");
-  var treechildren= document.getElementById("mytreechildren");
+    var tree= document.getElementById("tree");
+    var treechildren= document.getElementById("mytreechildren");
     tree.removeChild(treechildren);
 }
 
@@ -119,6 +120,7 @@ function update_list(){
 <vbox flex="1">
 
     <label id="titulo" flex="0" value="Actualizar el valor" />
+    <label id="subtitulo" flex="0" value="<%=reg['inversione'] %>" />
     <hbox flex="1">
     <grid align="center">
         <rows>
