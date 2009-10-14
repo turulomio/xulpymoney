@@ -12,7 +12,7 @@ class Banco:
     
   
     def saldo(self,id_entidadesbancarias,fecha):
-        curs = con.Execute('select banco_saldo('+ str(id_entidadesbancarias) + ",'"+fecha+"') as saldo;"); 
+        curs = con.Execute('select banco_saldo('+ str(id_entidadesbancarias) + ",'"+str(fecha)+"') as saldo;"); 
         if curs == None: 
             print self.cfg.con.ErrorMsg()        
         row = curs.GetRowAssoc(0)      
@@ -51,7 +51,7 @@ class Banco:
             s= s + '<treerow>\n'
             s= s + '<treecell label="'+str(row["id_entidadesbancarias"])+ '" />\n'
             s= s + '<treecell label="'+str(row["entidadesbancaria"])+ '" style="text-align: right"/>\n'
-            saldo=Banco().saldo(row["id_entidadesbancarias"], hoy())
+            saldo=Banco().saldo(row["id_entidadesbancarias"], datetime.date.today())
             s= s + treecell_tpc(100*saldo/total)
             s= s + treecell_euros(saldo)
             s= s + '</treerow>\n'
@@ -318,10 +318,10 @@ class Inversion:
 
     def cursor_listado(self, inactivas,  fecha):
         if inactivas==True:
-            sql="select id_inversiones, in_activa, inversione, entidadesbancaria, inversiones_saldo(id_inversiones,'"+fecha+"') as saldo, inversion_actualizacion(id_inversiones,'"+fecha+"') as actualizacion, inversion_pendiente(id_inversiones,'"+fecha+"')  as pendiente, inversion_invertido(id_inversiones,'"+fecha+"')  as invertido from inversiones, cuentas, entidadesbancarias where cuentas.ma_entidadesbancarias=entidadesbancarias.id_entidadesbancarias and cuentas.id_cuentas=inversiones.lu_cuentas order by inversione;"
+            sql="select id_inversiones, in_activa, inversione, entidadesbancaria, inversiones_saldo(id_inversiones,'"+str(fecha)+"') as saldo, inversion_actualizacion(id_inversiones,'"+str(fecha)+"') as actualizacion, inversion_pendiente(id_inversiones,'"+str(fecha)+"')  as pendiente, inversion_invertido(id_inversiones,'"+str(fecha)+"')  as invertido from inversiones, cuentas, entidadesbancarias where cuentas.ma_entidadesbancarias=entidadesbancarias.id_entidadesbancarias and cuentas.id_cuentas=inversiones.lu_cuentas order by inversione;"
 
         else:
-            sql="select id_inversiones, in_activa, inversione, entidadesbancaria, inversiones_saldo(id_inversiones,'"+fecha+"') as saldo, inversion_actualizacion(id_inversiones,'"+fecha+"') as actualizacion, inversion_pendiente(id_inversiones,'"+fecha+"')  as pendiente,  inversion_invertido(id_inversiones,'"+fecha+"')  as invertido from inversiones, cuentas, entidadesbancarias where cuentas.ma_entidadesbancarias=entidadesbancarias.id_entidadesbancarias and cuentas.id_cuentas=inversiones.lu_cuentas and in_activa='t' order by inversione;"
+            sql="select id_inversiones, in_activa, inversione, entidadesbancaria, inversiones_saldo(id_inversiones,'"+str(fecha)+"') as saldo, inversion_actualizacion(id_inversiones,'"+str(fecha)+"') as actualizacion, inversion_pendiente(id_inversiones,'"+str(fecha)+"')  as pendiente,  inversion_invertido(id_inversiones,'"+str(fecha)+"')  as invertido from inversiones, cuentas, entidadesbancarias where cuentas.ma_entidadesbancarias=entidadesbancarias.id_entidadesbancarias and cuentas.id_cuentas=inversiones.lu_cuentas and in_activa='t' order by inversione;"
         return con.Execute(sql); 
             
     def modificar(self, id_inversiones, inversione,  compra,  venta):
@@ -358,7 +358,7 @@ class Inversion:
         return row
         
     def xultree_compraventa(self):
-        sql="select id_inversiones, inversione, entidadesbancaria,  inversion_actualizacion(id_inversiones,'"+hoy()+"') as actualizacion, compra, venta from inversiones, cuentas, entidadesbancarias where venta<> compra and in_activa=true and cuentas.ma_entidadesbancarias=entidadesbancarias.id_entidadesbancarias and cuentas.id_cuentas=inversiones.lu_cuentas order by inversione;"
+        sql="select id_inversiones, inversione, entidadesbancaria,  inversion_actualizacion(id_inversiones,'"+str(datetime.date.today())+"') as actualizacion, compra, venta from inversiones, cuentas, entidadesbancarias where venta<> compra and in_activa=true and cuentas.ma_entidadesbancarias=entidadesbancarias.id_entidadesbancarias and cuentas.id_cuentas=inversiones.lu_cuentas order by inversione;"
         curs=con.Execute(sql); 
         s= '<vbox flex="1">\n'
         s= s+ '<popupset>\n'
@@ -634,11 +634,11 @@ class InversionOperacionTemporal:
             actualizacion=row['valor_accion'];
             importe=acciones*actualizacion;
             actualizacionxacciones=actualizacion*acciones;
-            pendiente=InversionOperacionTemporal().pendiente_consolidar(row['id_tmpoperinversiones'],row['ma_inversiones'],hoy());
+            pendiente=InversionOperacionTemporal().pendiente_consolidar(row['id_tmpoperinversiones'],row['ma_inversiones'], datetime.date.today());
             sumacciones=sumacciones+acciones;
             sumimporte=sumimporte+importe;
             sumpendiente=sumpendiente+pendiente;
-            rendimientoanual=InversionOperacionTemporalRendimiento().anual( row['id_tmpoperinversiones'], row['ma_inversiones'],ano(hoy()));
+            rendimientoanual=InversionOperacionTemporalRendimiento().anual( row['id_tmpoperinversiones'], row['ma_inversiones'], datetime.date.today().year);
             rendimientototal=InversionOperacionTemporalRendimiento().total( row['id_tmpoperinversiones'], row['ma_inversiones']);
             if row["fecha"].year==datetime.date.today().year:                
                 dias=(datetime.date.today()-datetime.date(row["fecha"].year, row["fecha"].month, row["fecha"].day)).days 
@@ -647,7 +647,7 @@ class InversionOperacionTemporal:
                 else:
                     rendimientoanualponderado=365*rendimientoanual/dias
             else:
-                rendimientoanualponderado=365*rendimientoanual/(datetime.date.today()-datetime.date(ano(hoy()), 1, 1)).days 
+                rendimientoanualponderado=365*rendimientoanual/(datetime.date.today()-datetime.date(datetime.date.today().year, 1, 1)).days 
             sumactualizacionesxacciones=sumactualizacionesxacciones+actualizacionxacciones;
             sumrendimientosanualesxacciones=sumrendimientosanualesxacciones+rendimientoanual*acciones;
             sumrendimientostotalesxacciones=sumrendimientostotalesxacciones+rendimientototal*acciones;
@@ -715,7 +715,7 @@ class InversionOperacionTemporalRendimiento:
         curs=con.Execute(sql); 
         row = curs.GetRowAssoc(0)   
         curs.Close()
-        anobd=ano(str(row['fecha'])[:-12])
+        anobd=row['fecha'].year
         if anobd>year:
             return 0
         
@@ -746,7 +746,7 @@ class InversionOperacionTemporalRendimiento:
         primera= row['valor_accion'];
         if primera==0: 
             return 0; #Evita error de división por 0
-        ultima=InversionActualizacion().ultima(id_inversiones,ano(hoy()));
+        ultima=InversionActualizacion().ultima(id_inversiones,datetime.date.today().year);
         Rendimiento=(ultima[1]-primera)*100/primera;
         return Rendimiento;
 
@@ -902,28 +902,35 @@ class Total:
         f.close()
 
         f=open("/tmp/informe_total.dat","w")
-        for i in range (1997,  ano(hoy())+1):
+        for i in range (self.primera_fecha_con_datos_usuario().year,  datetime.date.today().year+1):
             f.write(str(i)+"-01-01\t"+str(Total().saldo_total(str(i)+"-01-01"))+"\n")
             f.write(str(i)+"-07-01\t"+str(Total().saldo_total(str(i)+"-07-01"))+"\n")
-        f.write(hoy()+"\t"+str(Total().saldo_total(hoy()))+"\n")
+        f.write(str(datetime.date.today())+"\t"+str(Total().saldo_total(datetime.date.today()))+"\n")
         f.close()
         
         os.popen("gnuplot /tmp/informe_total.plot");
-        
+
+    def primera_fecha_con_datos_usuario(self):
+        curs = con.Execute('select fecha from opercuentas UNION select fecha from operinversiones UNION select fecha from opertarjetas order by fecha limit 1;'); 
+        row = curs.GetRowAssoc(0)      
+        curs.Close()
+        return row['fecha']
+    
+
     def saldo_todas_cuentas(self, fecha):
-        sql="select saldototalcuentasactivas('"+fecha+"') as saldo;";
+        sql="select saldototalcuentasactivas('"+str(fecha)+"') as saldo;";
         curs=con.Execute(sql); 
         row = curs.GetRowAssoc(0)   
         return row['saldo'];
 
     def saldo_total(self,fecha):
-        sql="select saldo_total('"+fecha+"') as saldo;";
+        sql="select saldo_total('"+str(fecha)+"') as saldo;";
         curs=con.Execute(sql); 
         row = curs.GetRowAssoc(0)   
         return row['saldo'];
 
     def saldo_todas_inversiones(self,fecha):
-        sql="select saldototalinversionesactivas('"+fecha+"') as saldo;";
+        sql="select saldototalinversionesactivas('"+str(fecha)+"') as saldo;";
         curs=con.Execute(sql); 
         row = curs.GetRowAssoc(0)   
         return row['saldo'];
@@ -1100,7 +1107,7 @@ class Total:
  
         beneficiocon=Inversion().aplicar_tipo_fiscal(sumoperacionespositivas,sumoperacionesnegativas)+sumimpuestos+sumcomision+Dividendo().suma_liquido_todos(inicio,fin)
 
-        saldototal=Total().saldo_total(hoy());
+        saldototal=Total().saldo_total(datetime.date.today());
 
         saldototalinicio=Total().saldo_total(inicio)
 
@@ -1144,7 +1151,7 @@ class Total:
         s=s+ '   </treeitem>    \n'
         s=s+ '  </treechildren>\n'
         s=s+ '</tree>\n'
-        s= s + '<label flex="0"  style="text-align: center;font-weight : bold;" value="Saldo a '+hoy()+': '+ euros(saldototal)+'." />\n'        
+        s= s + '<label flex="0"  style="text-align: center;font-weight : bold;" value="Saldo a '+str(datetime.date.today())+': '+ euros(saldototal)+'." />\n'        
         s= s + '<label flex="0"  style="text-align: center;font-weight : bold;" value="Beneficio en el año '+str(ano)+': '+ euros(saldototal-saldototalinicio)+'." />\n'
         s= s + '</vbox>\n'
         return s        

@@ -2,21 +2,21 @@
 import time
 import datetime
 
-def hoy():
-    return time.strftime("%Y-%m-%d")
+#def datetime.date.today():
+    #return datetime.date.today()
 
-def ano(fecha):
-    return int(fecha[:-6])
+#def ano(fecha):
+    #return int(fecha[:-6])
     
 def anos_entre_fechas(fechaposterior, fechaanterior):
     return float((((fechaposterior-fechaanterior)/3600)/24)/365);
 
-def dia(fecha):
-    return int(dia[8:])
+#def dia(fecha):
+    #return int(dia[8:])
 
 
-def mes(fecha):
-    return int(fecha[5:-3])
+#def mes(fecha):
+    #return int(fecha[5:-3])
 
 #def restar_dia(fecha):
 #    """
@@ -26,6 +26,8 @@ def mes(fecha):
 #    resta= structfecha-datetime.timedelta(days=1)
 #    return resta.strftime("%Y-%m-%d")
 #    #~datettime.date(2002, 12, 4).isoformat()
+
+
 
 def ultimo_dia_mes(ano,  mes):
     if mes<=11:

@@ -6,7 +6,7 @@ from fecha import *
 
 #Consultas BD
 con=Conection().open()
-hoy=hoy()
+hoy=datetime.date.today()
 checked=""
 id_inversiones=0
 if form.has_key('id_inversiones'):
@@ -62,7 +62,7 @@ function insert(){
     }
     var valor = document.getElementById("valor").value;
     var fecha = document.getElementById("fecha").value;
-    var url="ajax/ajax.psp?ajax=1&id_inversiones="+<%=id_inversiones %>+"&fecha="+fecha+"&valor="+valor;
+    var url="ajax/ajax.psp?ajax=1&id_inversiones="+<%=id_inversiones %>+"&fecha="+str(fecha)+"&valor="+valor;
     xmlHttp.open("GET",url,true);
     xmlHttp.send(null);
 }

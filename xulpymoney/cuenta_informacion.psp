@@ -1,4 +1,5 @@
 <%
+import datetime
 from core import *
 from fecha import *
 from xul import *
@@ -9,12 +10,12 @@ con=Conection().open()
 if form.has_key('year'):
    year=form['year']
 else:
-   year=ano(hoy())
+   year=datetime.date.today().year
 
 if form.has_key('month'):
    month=form['month']
 else:
-   month=mes(hoy())
+   month=datetime.date.today().month
 
 id_cuentas=form['id_cuentas']
 cur=CuentaOperacion().cursor_listado(form['id_cuentas'],year,month)

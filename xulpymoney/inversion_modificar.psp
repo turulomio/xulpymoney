@@ -6,7 +6,7 @@ from fecha import *
 
 #Consultas BD
 con=Conection().open()
-hoy=hoy()
+hoy=datetime.date.today()
 checked=""
 id_inversiones=0
 if form.has_key('id_inversiones'):

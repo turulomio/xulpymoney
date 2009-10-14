@@ -5,4 +5,3 @@ dbname='cuentas'
 user='postgres'
 password='xxx'
 type='postgres'
-ano_inicio=1996

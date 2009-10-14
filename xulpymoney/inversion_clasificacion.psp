@@ -22,7 +22,7 @@ req.write(xulheaderwindowmenu("Información de cuentas"))
         </treecols>
         <treechildren>
 <%
-sumsaldos=Total().saldo_todas_inversiones(hoy())
+sumsaldos=Total().saldo_todas_inversiones(datetime.date.today())
 sql="select * from inversion_saldo_segun_tpcvariable() as a (tpcvariable integer, suma float);"
 curs=con.Execute(sql); 
 s=''

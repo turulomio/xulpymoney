@@ -8,11 +8,11 @@ checked=""
 if form.has_key('inactivas'):
     if form['inactivas']=="on":
         checked = 'checked="true"'
-        cur=Tarjeta().cursor_listado(True,hoy())
+        cur=Tarjeta().cursor_listado(True,datetime.date.today())
     else:
-        cur=Tarjeta().cursor_listado(False,hoy())
+        cur=Tarjeta().cursor_listado(False,datetime.date.today())
 else:
-    cur=Tarjeta().cursor_listado(False,hoy())
+    cur=Tarjeta().cursor_listado(False,datetime.date.today())
     
 listado = Tarjeta().xul_listado(cur)
 con.Close()

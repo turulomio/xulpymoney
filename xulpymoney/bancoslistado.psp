@@ -1,4 +1,5 @@
 <%
+import datetime
 from core import *
 from fecha import *
 from xul import *
@@ -8,11 +9,11 @@ checked=""
 if form.has_key('inactivas'):
     if form['inactivas']=="on":
         checked = 'checked="true"'
-        listado = Banco().xultree(True,hoy())
+        listado = Banco().xultree(True,datetime.date.today())
     else:
-        listado = Banco().xultree(False,hoy())
+        listado = Banco().xultree(False,datetime.date.today())
 else:
-    listado = Banco().xultree(False,hoy()) 
+    listado = Banco().xultree(False,datetime.date.today()) 
 con.Close()
 req.content_type="application/vnd.mozilla.xul+xml"
 req.write(xulheaderwindowmenu("Listado de Bancos"))
