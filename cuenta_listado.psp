@@ -31,9 +31,9 @@ var idcuenta=0;
 
 function checkbox_submit(){
    if (document.getElementById("checkbox").checked==true) {
-     location='cuentaslistado.psp?inactivas=on';
+     location='cuenta_listado.psp?inactivas=on';
    } else {
-     location='cuentaslistado.psp';
+     location='cuenta_listado.psp';
    } 
 }
 
