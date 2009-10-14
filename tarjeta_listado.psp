@@ -36,9 +36,18 @@ function checkbox_submit(){
 
 function tree_getid()
 {
-  var tree = document.getElementById("tree");
-  var selection = tree.contentView.getItemAtIndex(tree.currentIndex);
-  id_tarjetas = selection.firstChild.firstChild.getAttribute("label");
+    var tree = document.getElementById("tree");  
+    id_tarjetas=tree.view.getCellText(tree.currentIndex,tree.columns.getNamedColumn("id"));
+    var id_cuentas=tree.view.getCellText(tree.currentIndex,tree.columns.getNamedColumn("id_cuentas"));
+    var diferido=Boolean(Number(tree.view.getCellText(tree.currentIndex,tree.columns.getNamedColumn("diferido"))));
+    var menuitem= document.getElementById("Movimientos");
+    if (diferido==false){
+        menuitem.setAttribute("oncommand", "location='cuenta_ibm.psp?ibm=insertar&comentario=Operación%20de%20tarjeta%20a%20débito&id_cuentas="+id_cuentas+"';");
+        menuitem.setAttribute("label", "Insertar pago a débito");
+    } else {
+        menuitem.setAttribute("oncommand", "location='tarjetaoperacion_listado.psp?id_tarjetas=" + id_tarjetas+"';");
+        menuitem.setAttribute("label", "Movimientos de la tarjeta");
+    }
 }
 ]]>
 </script>
