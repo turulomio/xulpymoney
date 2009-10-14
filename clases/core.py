@@ -1040,7 +1040,7 @@ class Total:
             pendiente=saldofinal-saldoinicio;
             sumimpuestos=sumimpuestos-row['impuestos'];
             sumcomision=sumcomision-row['comision'];
-            anos=anos_entre_fechas(row['fecha_venta'], row['fecha_inicio']);
+            anos=(row['fecha_venta']- row['fecha_inicio']).days/365.0;
             if anos==0:#Operación intradía
                 anos=float(1/365.0);
             rendtotal=InversionOperacionHistorica().rendimiento_total(row['id_tmpoperinversioneshistoricas'])
