@@ -55,7 +55,7 @@ for i in range(12):
         total.append(0)    
         diferencia.append(0)
     else:
-        fecha=ultimo_dia_mes(cmbanos, i+1).isoformat()
+        fecha=datetime.date (cmbanos, i, calendar.monthrange(cmbanos, i)[1])#Último día de mes.
         cuentas.append(Total().saldo_todas_cuentas(fecha))
         inversiones.append(Total().saldo_todas_inversiones(fecha))
         total.append(inversiones[i]+cuentas[i])

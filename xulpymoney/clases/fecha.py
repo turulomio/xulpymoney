@@ -8,8 +8,8 @@ import datetime
 #def ano(fecha):
     #return int(fecha[:-6])
     
-def anos_entre_fechas(fechaposterior, fechaanterior):
-    return float((((fechaposterior-fechaanterior)/3600)/24)/365);
+#def anos_entre_fechas(fechaposterior, fechaanterior):
+#    return float((((fechaposterior-fechaanterior)/3600)/24)/365);
 
 #def dia(fecha):
     #return int(dia[8:])
