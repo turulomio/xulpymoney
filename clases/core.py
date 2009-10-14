@@ -902,8 +902,9 @@ class Total:
         f.close()
 
         f=open("/tmp/informe_total.dat","w")
-        for i in range (1997,  2010):
+        for i in range (1997,  ano(hoy())+1):
             f.write(str(i)+"-01-01\t"+str(Total().saldo_total(str(i)+"-01-01"))+"\n")
+            f.write(str(i)+"-07-01\t"+str(Total().saldo_total(str(i)+"-07-01"))+"\n")
         f.write(hoy()+"\t"+str(Total().saldo_total(hoy()))+"\n")
         f.close()
         
