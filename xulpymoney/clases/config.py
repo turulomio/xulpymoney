@@ -1,5 +1,5 @@
 # -*- coding: UTF-8  -*-
-version="20081022"
+version="20091015"
 host='localhost'
 dbname='cuentas'
 user='postgres'
