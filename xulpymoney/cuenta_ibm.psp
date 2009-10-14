@@ -8,6 +8,11 @@ if form.has_key('concepto'):
 else:
     concepto=""
     
+if form.has_key('comentario'):
+   comentario=form['comentario']
+else:
+    comentario=""
+    
 con=Conection().open()
 cmbconcepto=Concepto().cmb('select * from conceptos where lu_tipooperacion in (1,2) order by concepto',  concepto,  False)
 
@@ -63,7 +68,7 @@ function insert(){
         </row>
         <row>
             <label id="negrita" value="Comentario"/>
-            <textbox id="comentario"/>
+            <textbox id="comentario" value="<%=comentario %>"/>
         </row>
     </rows>
 </grid>

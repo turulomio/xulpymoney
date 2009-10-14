@@ -792,28 +792,29 @@ class InversionRendimiento:
 class Tarjeta:
     def cursor_listado(self, inactivas,  fecha):
         if inactivas==True:
-            sql="select id_tarjetas, tarjeta, cuenta, numero, pago_diferido, saldomaximo from tarjetas,cuentas where tarjetas.lu_cuentas=cuentas.id_cuentas order by tarjetas.tarjeta"
+            sql="select id_tarjetas, lu_cuentas, tarjeta, cuenta, numero, pago_diferido, saldomaximo from tarjetas,cuentas where tarjetas.lu_cuentas=cuentas.id_cuentas order by tarjetas.tarjeta"
         else:
-            sql="select id_tarjetas, tarjeta, cuenta, numero, pago_diferido, saldomaximo from tarjetas,cuentas where tarjetas.lu_cuentas=cuentas.id_cuentas and tarjetas.tj_activa='t' order by tarjetas.tarjeta"
+            sql="select id_tarjetas, lu_cuentas, tarjeta, cuenta, numero, pago_diferido, saldomaximo from tarjetas,cuentas where tarjetas.lu_cuentas=cuentas.id_cuentas and tarjetas.tj_activa=true order by tarjetas.tarjeta"
         return con.Execute(sql); 
 
     def xul_listado(self, curs):
         s= '<popupset>\n'
         s= s+ '   <popup id="treepopup" >\n'
-        s= s+ '      <menuitem label="Modificar la tarjeta"  oncommand=\'location="cuentas_ibm.psp?id_cuentas=" + idcuenta  + "&amp;ibm=modificar&amp;regresando=0";\'   class="menuitem-iconic"  image="images/toggle_log.png"/>\n'
-        s= s+ '      <menuitem label="Borrar la tarjeta"  oncommand=\'location="cuentas_ibm.psp?id_cuentas=" + idcuenta  + "&amp;ibm=borrar&amp;regresando=0";\'  class="menuitem-iconic" image="images/eventdelete.png"/>\n'
+        s= s+ '      <menuitem label="Modificar la tarjeta"  oncommand=\'location="tarjetas_ibm.psp";\'   class="menuitem-iconic"  image="images/toggle_log.png"/>\n'
+        s= s+ '      <menuitem label="Borrar la tarjeta"  oncommand=\'location="tarjetas_ibm.psp";\'  class="menuitem-iconic" image="images/eventdelete.png"/>\n'
         s= s+ '      <menuseparator/>'
-        s= s+ '      <menuitem label="Movimientos de la tarjeta"  oncommand="location=\'tarjetaoperacion_listado.psp?id_tarjetas=\' + id_tarjetas;"/>\n'
+        s= s+ '      <menuitem id="Movimientos"/>\n'
         s= s+ '   </popup>\n'
         s= s+ '</popupset>\n'
         
         s= s+ '<tree id="tree" enableColumnDrag="true" flex="6"   context="treepopup"  onselect="tree_getid();">\n'
         s= s+ '<treecols>\n'
-        s= s+  '<treecol id="col_id" label="id" hidden="true" />\n'
-        s= s+  '<treecol id="col_cuenta" label="Nombre Tarjeta" sort="?col_inversion" sortActive="true" sortDirection="descending" flex="2"/>\n'
+        s= s+  '<treecol id="id" label="id" hidden="true" />\n'
+        s= s+  '<treecol id="id_cuentas" label="id_cuentas" hidden="true" />\n'
+        s= s+  '<treecol label="Nombre Tarjeta"  flex="2"/>\n'
         s= s+  '<treecol label="Cuenta asociada" flex="2"/>\n'
         s= s+  '<treecol label="Número de tarjeta" flex="2" style="text-align: right" />\n'
-        s= s+  '<treecol label="Pago diferido" flex="1" style="text-align: right"/>\n'
+        s= s+  '<treecol type="checkbox" id="diferido" label="Pago diferido" flex="1" style="text-align: right"/>\n'
         s= s+  '<treecol label="Saldo máximo" flex="1" style="text-align: right"/>\n'
         s= s+  '</treecols>\n'
         s= s+  '<treechildren>\n'
@@ -822,10 +823,11 @@ class Tarjeta:
             s= s + '<treeitem>\n'
             s= s + '<treerow>\n'
             s= s + '<treecell label="'+str(row["id_tarjetas"])+ '" />\n'
+            s= s + '<treecell label="'+str(row["lu_cuentas"])+ '" />\n'
             s= s + '<treecell label="'+ row["tarjeta"]+ '" />\n'
             s= s + '<treecell label="'+row["cuenta"]+ '" />\n'
             s= s + '<treecell label="'+ str(row["numero"])+ '" />\n'
-            s= s + '<treecell label="'+ str(row["pago_diferido"])+ '" />\n'
+            s= s + '<treecell properties="'+str(bool(row['pago_diferido']))+'" label="'+ str(row["pago_diferido"])+ '" />\n'
             s= s + treecell_euros(row['saldomaximo'])
             s= s + '</treerow>\n'
             s= s + '</treeitem>\n'

@@ -16,6 +16,7 @@ menu, menuitem{
    font-size: 4mm !important;
  }
 
+ 
 treechildren::-moz-tree-row(odd) { background-color: #EEEEEE; }
 treechildren::-moz-tree-row(selected) { background-color: #4B6983; }
 
@@ -28,3 +29,7 @@ treechildren::-moz-tree-cell-text(alert) {  color: green;
 
 treechildren::-moz-tree-cell-text(alertnegative) {  color: red;
                                                                       font-weight : bold;}
+
+
+treechildren::-moz-tree-checkbox {list-style-image: url("images/checkbox0.png");}
+treechildren::-moz-tree-checkbox(True) {list-style-image: url("images/checkbox1.png");}
