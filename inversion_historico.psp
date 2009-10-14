@@ -10,8 +10,8 @@ con=Conection().open()
 if form.has_key('cmbanos'):
    cmbanos=int(form['cmbanos'])
 else:
-    cmbanos=ano(hoy())
-combo=combo_ano(ano_inicio, ano(hoy()),  cmbanos)
+    cmbanos=datetime.date.today().year
+combo=combo_ano(Total().primera_fecha_con_datos_usuario().year, datetime.date.today().year,  cmbanos)
 listadoinversiones = Total().xultree_historico_inversiones(cmbanos, True)
 listadodividendos = Total().xultree_historico_dividendos(cmbanos)
 listadorendimientos = Total().xultree_historico_rendimientos(cmbanos)

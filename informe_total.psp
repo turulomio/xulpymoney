@@ -6,13 +6,13 @@ from fecha import *
 
 #Consultas BD
 con=Conection().open()
-hoy=hoy()
+hoy=datetime.date.today()
 
 req.content_type="application/vnd.mozilla.xul+xml"
 req.write(xulheaderwindowmenu("Posición total"))
 
 if form.has_key('cmbanos')==False:
-    cmbanos=ano(hoy)
+    cmbanos=datetime.date.today().year
 else:
     cmbanos=form['cmbanos']
 
@@ -38,14 +38,7 @@ for i in range(12):
     tingresos=tingresos+ingresos[i];
     tconsolidado=tconsolidado+consolidado[i];
 
-
-
-
-
-
-
-
-mesactual=mes(hoy)
+mesactual=datetime.date.today().month
 cuentas=[]
 inversiones=[]
 total=[]
@@ -56,7 +49,7 @@ saldofinano=Total().saldo_total(fechafinano)
 saldohoy=Total().saldo_total(hoy)
 tae=100*(saldohoy-saldofinano)/saldofinano
 for i in range(12):
-    if cmbanos==ano(hoy) and mesactual<=i:
+    if cmbanos==datetime.date.today().year and mesactual<=i:
         cuentas.append(0)
         inversiones.append(0)
         total.append(0)    
@@ -71,7 +64,7 @@ for i in range(12):
         else:
             diferencia.append(total[i]-total[i-1])
 s=       '<label flex="0"  style="text-align: center;font-weight : bold;" value="Saldo a finales del año '+str(cmbanos-1)+': '+ euros(saldofinano)+'." />\n'       
-s= s +       '<label flex="0"  style="text-align: center;font-weight : bold;" value="Saldo a '+hoy+': '+ euros(saldohoy)+'." />\n'        
+s= s +       '<label flex="0"  style="text-align: center;font-weight : bold;" value="Saldo a '+str(hoy)+': '+ euros(saldohoy)+'." />\n'        
 s= s + '<label flex="0"  style="text-align: center;font-weight : bold;" value="Beneficio en el año '+str(cmbanos)+': '+ euros(saldohoy-saldofinano)+'." />\n'
 s= s + '<label flex="0"  style="text-align: center;font-weight : bold;" value="TAE en el año '+str(cmbanos)+': '+ tpc(tae)+'." />\n'
 con.Close() 

@@ -11,11 +11,11 @@ checked=""
 if form.has_key('inactivas'):
     if form['inactivas']=="on":
         checked = 'checked="true"'
-        cur=Inversion().cursor_listado(True,hoy())
+        cur=Inversion().cursor_listado(True,datetime.date.today())
     else:
-        cur=Inversion().cursor_listado(False,hoy())
+        cur=Inversion().cursor_listado(False,datetime.date.today())
 else:
-        cur=Inversion().cursor_listado(False,hoy())
+        cur=Inversion().cursor_listado(False,datetime.date.today())
 listado = Inversion().xul_listado(cur)
 con.Close()
 

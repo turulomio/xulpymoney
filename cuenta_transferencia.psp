@@ -7,7 +7,7 @@ from fecha import *
 mylog ("Hola")
 #Consultas BD
 con=Conection().open()
-#hoy=hoy()
+#hoy=datetime.date.today()
 cmbcuentaorigen=Cuenta().cmb('cmbcuentaorigen','select * from cuentas where cu_activa=true order by cuenta',  0,  False)
 cmbcuentadestino=Cuenta().cmb('cmbcuentadestino','select * from cuentas where cu_activa=true order by cuenta',  0,  False)
 con.Close()
@@ -34,7 +34,7 @@ function insert(){
             location="cuenta_informacion.psp?id_cuentas="+ cmbcuentadestino + "&year=" + spfecha[0] + "&month=" + spfecha[1];
         }
     }
-    var url="ajax/ajax.psp?ajax=5&cmbcuentaorigen="+cmbcuentaorigen+"&cmbcuentadestino="+cmbcuentadestino+"&fecha="+fecha+"&importe="+importe+"&comision="+comision;
+    var url="ajax/ajax.psp?ajax=5&cmbcuentaorigen="+cmbcuentaorigen+"&cmbcuentadestino="+cmbcuentadestino+"&fecha="+str(fecha)+"&importe="+importe+"&comision="+comision;
     xmlHttp.open("GET",url,true);
     xmlHttp.send(null);
 }
