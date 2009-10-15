@@ -1,5 +1,5 @@
 <%
-import time
+import time,  calendar
 from core import *
 from xul import *
 from fecha import *
@@ -55,7 +55,7 @@ for i in range(12):
         total.append(0)    
         diferencia.append(0)
     else:
-        fecha=datetime.date (cmbanos, i, calendar.monthrange(cmbanos, i)[1])#Último día de mes.
+        fecha=datetime.date (cmbanos, i+1, calendar.monthrange(cmbanos, i+1)[1])#Último día de mes.
         cuentas.append(Total().saldo_todas_cuentas(fecha))
         inversiones.append(Total().saldo_todas_inversiones(fecha))
         total.append(inversiones[i]+cuentas[i])
