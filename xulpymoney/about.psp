@@ -2,7 +2,7 @@
 from xul import *
 from config import *
 req.content_type="application/vnd.mozilla.xul+xml"
-req.write(xulheaderwindowmenu("Acerca de cuentas"))
+req.write(xulheaderwindowmenu("Acerca de Xulpymoney"))
 
 f=os.popen("/usr/bin/uname -s -r -p")
 so=f.read()
@@ -22,7 +22,7 @@ f.close()
 
 %>
 <vbox  flex="5">
-<label id="titulo" value="Acerca de cuentas" />
+<label id="titulo" value="Acerca de Xulpymoney" />
 <label value="<%=version%>" style="text-align : center;"/>
 
 <spacer flex="1"/>
@@ -93,7 +93,7 @@ f.close()
     </grid>
 </vbox>
 <vbox>
-    <browser id="content" type="content-primary" src="/home/nobu/CVS/cvsphpcuentas/GPL-2"/>
+    <iframe  src="GPL-3.txt" flex="6"/>
 </vbox>
 </tabpanels>
 </tabbox>
