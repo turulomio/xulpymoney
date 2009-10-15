@@ -460,9 +460,9 @@ class InversionActualizacion:
         return True
 
     def insertar(self,  id_inversiones,  fecha,  valor):
-        delete="delete from actuinversiones where ma_inversiones="+str(id_inversiones)+" and fecha ='"+fecha+"';"
+        delete="delete from actuinversiones where ma_inversiones="+str(id_inversiones)+" and fecha ='"+str(fecha)+"';"
         con.Execute(delete);
-        sql="insert into actuinversiones (fecha,ma_inversiones,actualizacion) values ('"+fecha+"',"+id_inversiones+","+valor+")";
+        sql="insert into actuinversiones (fecha,ma_inversiones,actualizacion) values ('"+ str(fecha) +"',"+id_inversiones+","+valor+")";
         try:
             con.Execute(sql);
         except:
