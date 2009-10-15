@@ -16,6 +16,7 @@ install:
 	install -m 400 -o apache images/*.jpg $(PREFIXWEB)/xulpymoney/images
 	install -m 400 -o apache clases/*.py  $(PREFIXPYTHON)/xulpymoney
 	install -m 400 -o apache *.css  $(PREFIXWEB)/xulpymoney
+	install -m 400 -o apache GPL-3.txt  $(PREFIXWEB)/xulpymoney
 
 uninstall:
 	rm -fr $(PREFIXWEB)/xulpymoney
