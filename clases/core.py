@@ -967,6 +967,11 @@ class Total:
         curs.Close()
         return resultado
 
+    def tae_anual(self, saldoinicio,  saldofinal):
+        if saldoinicio==0:
+            return 0
+        return (saldofinal-saldoinicio)*100/saldoinicio
+        
     def xultree_historico_dividendos(self, ano):
         sumsaldos=0
         sql="select id_dividendos, fecha, liquido, inversione, entidadesbancaria from dividendos, inversiones, cuentas, entidadesbancarias where entidadesbancarias.id_entidadesbancarias=cuentas.ma_entidadesbancarias and cuentas.id_cuentas=inversiones.lu_cuentas and dividendos.lu_inversiones=inversiones.id_inversiones and date_part('year',fecha)="+str(ano) + " order by fecha;"

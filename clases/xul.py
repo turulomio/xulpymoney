@@ -55,6 +55,7 @@ def menu():
     s=s +  '         <menupopup>\n'
     s=s +  '            <menuitem label="Clasificación" onclick="location=\'inversion_clasificacion.psp\';"  class="menuitem-iconic" image="images/cakes.png" />\n'
     s=s +  '            <menuitem label="Total" onclick="location=\'informe_total.psp\';"  class="menuitem-iconic" image="images/history.png" />\n'
+    s=s +  '            <menuitem label="Evolución TAE" onclick="location=\'informe_tae.psp\';"  class="menuitem-iconic" image="images/history.png" />\n'
     s=s +  '         </menupopup>\n'
     s=s +  '    </menu>\n'    
     s=s +  '    <menu label="Ayuda">\n'
