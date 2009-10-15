@@ -30,11 +30,38 @@ f.close()
 <spacer flex="5"/>
 <tabbox orient="vertical" flex="1">
 <tabs>
+<tab label="Curiosidades" />
 <tab label="Autores             " />
 <tab label="Tecnología utilizada" />
 <tab label="Licencia de programa" />
 </tabs>
 <tabpanels flex="1">
+<vbox>
+    <grid pack="center">
+        <columns>
+            <column flex="1" />
+            <column flex="1" />
+            <column flex="1" />
+        </columns>
+        <rows>
+            <row>
+                <label id="negrita" value="Operación de bolsa de mayor importe:"/>
+                <label value="Fecha" />
+                <label value="Valor" />
+            </row>
+            <row>
+                <label id="negrita" value="Primera operación de usuario:"/>
+                <label value="Mariano Muñoz" />
+                <label value="turulomio@yahoo.es" />
+            </row>
+            <row>
+                <label id="negrita" value="Mayor saldo:"/>
+                <label value="Mariano Muñoz" />
+                <label value="turulomio@yahoo.es" />
+            </row>
+        </rows>
+    </grid>
+</vbox>
 <vbox>
     <grid pack="center">
         <columns>
@@ -57,11 +84,6 @@ f.close()
                 <label id="negrita" value="Traducción:"/>
                 <label value="Mariano Muñoz" />
                 <label value="turulomio@yahoo.es" />
-            </row>
-            <row>
-                <label id="negrita" value=""/>
-                <label value="Mi tía la del pueblo" />
-                <label value="mitialadelpueblo@yahoo.es" />
             </row>
         </rows>
     </grid>
