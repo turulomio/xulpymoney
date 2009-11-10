@@ -27,7 +27,7 @@ function insert(){
     var fecha = document.getElementById("fecha").value;
     spfecha=fecha.split("-");
     var id_tarjetas=<%=form['id_tarjetas']%>;
-    var url="ajax/tarjetaoperacion_insertar.psp?fecha="+str(fecha)+"&lu_conceptos="+lu_conceptos+"&lu_tiposoperaciones="+lu_tiposoperaciones+"&importe="+importe+"&comentario="+comentario+"&id_tarjetas="+id_tarjetas;
+    var url="ajax/tarjetaoperacion_insertar.psp?fecha="+fecha+"&lu_conceptos="+lu_conceptos+"&lu_tiposoperaciones="+lu_tiposoperaciones+"&importe="+importe+"&comentario="+comentario+"&id_tarjetas="+id_tarjetas;
     xmlHttp=new XMLHttpRequest();
     xmlHttp.onreadystatechange=function(){
         if(xmlHttp.readyState==4){
