@@ -362,7 +362,8 @@ class Inversion:
         curs=con.Execute(sql); 
         s= '<vbox flex="1">\n'
         s= s+ '<popupset>\n'
-        s= s+ '<popup id="treepopup" >\n'
+        s= s+ '<popup id="treepopup" >\n'   
+        s= s+ '    <menuitem label="Actualizar el valor" oncommand="location=\'inversion_actualizacion.psp?id_inversiones=\' + id_inversiones;"  class="menuitem-iconic"  image="images/hotsync.png" />\n'
         s= s+ '    <menuitem label="Modificar la inversión"  oncommand="location=\'inversion_modificar.psp?id_inversiones=\' + idinversion;"   class="menuitem-iconic"  image="images/edit.png" />\n'
         s= s+ '<menuitem label="Estudio de la inversión"  oncommand="location=\'inversion_informacion.psp?id_inversiones=\' + idinversion;"  class="menuitem-iconic"  image="images/toggle_log.png" />\n'
         s= s+ '</popup>\n'
