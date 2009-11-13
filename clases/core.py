@@ -278,13 +278,13 @@ class Dividendo:
         #sql="select id_dividendos, cuenta, fecha, liquido, inversione, entidadesbancaria from dividendos, inversiones, cuentas where cuentas.id_cuentas=inversiones.lu_cuentas and dividendos.lu_inversiones=inversiones.id_inversiones and dividendos.lu_inversiones="+str(id_inversiones) + " order by fecha;"
         curs=con.Execute(sql); 
         s=     '<vbox flex="1">\n'
-        s=s+ '        <tree id="tree" flex="3">\n'
+        s=s+ '        <tree id="tree" flex="3" tooltiptext="Sólo se muestran los dividendos desde la primera operación actual, no desde la primera operación histórica">\n'
         s=s+ '          <treecols>\n'
         s=s+ '    <treecol label="Fecha" flex="1"  style="text-align: center"/>\n'
         s=s+ '    <treecol label="Cuenta cobro" flex="2" style="text-align: left" />\n'
         s=s+ '    <treecol label="Liquido" flex="1" style="text-align: right"/>\n'
         s=s+ '  </treecols>\n'
-        s=s+ '  <treechildren>\n'
+        s=s+ '  <treechildren tooltiptext="Sólo se muestran los dividendos desde la primera operación actual, no desde la primera operación histórica">\n'
         while not curs.EOF:
             row = curs.GetRowAssoc(0)   
             sumsaldos=sumsaldos+dosdecimales(row['liquido'])
@@ -565,6 +565,8 @@ class InversionOperacionHistorica:
         s=s+ '    <treecol label="Acciones" flex="1" style="text-align: right" />\n'
         s=s+ '    <treecol label="Valor compra" flex="1" style="text-align: right"/>\n'
         s=s+ '    <treecol label="Importe" flex="1" style="text-align: right"/>\n'
+        s=s+ '    <treecol label="Comisión" flex="1" style="text-align: right"/>\n'
+        s=s+ '    <treecol label="Impuestos" flex="1" style="text-align: right"/>\n'
         s=s+ '  </treecols>\n'
         s=s+ '  <treechildren>\n'
         while not curs.EOF:
@@ -581,6 +583,8 @@ class InversionOperacionHistorica:
             s=s+ '       <treecell label="'+ str(row["acciones"])+ '" />\n'
             s=s+        treecell_euros(row['valor_accion']);
             s=s+        treecell_euros(importe);
+            s=s+        treecell_euros(row['comision']);
+            s=s+        treecell_euros(row['impuestos']);
             s=s+ '      </treerow>\n'
             s=s+ '    </treeitem>\n'
             curs.MoveNext()     
@@ -593,6 +597,12 @@ class InversionOperacionHistorica:
         
 
 class InversionOperacionTemporal:
+    def fecha_primera_operacion(self,id_inversiones):
+        sql="SELECT fecha  from tmpoperinversiones where ma_inversiones="+str(id_inversiones) + " order by fecha limit 1";
+        curs=con.Execute(sql); 
+        row = curs.GetRowAssoc(0)   
+        return row['fecha'];    
+
     def pendiente_consolidar(self, id_tmpoperinversiones,id_inversiones,fecha):
         sql="SELECT acciones,valor_accion  from tmpoperinversiones where id_tmpoperinversiones="+str(id_tmpoperinversiones);
         curs=con.Execute(sql); 
