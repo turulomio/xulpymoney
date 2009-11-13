@@ -12,7 +12,8 @@ if form.has_key('id_inversiones')==False:
 con=Conection().open()
 listadoIOT=InversionOperacionTemporal().xultree("SELECT * from tmpoperinversiones where ma_Inversiones="+str(form['id_inversiones'])+" order by fecha")
 listadoIOH=InversionOperacionHistorica().xultree("SELECT * from operinversiones where ma_Inversiones="+str(form['id_inversiones'])+" order by fecha")
-listadoDiv=Dividendo().xultree("select id_dividendos, cuenta, fecha, liquido, inversione from dividendos, inversiones, cuentas where cuentas.id_cuentas=inversiones.lu_cuentas and dividendos.lu_inversiones=inversiones.id_inversiones and dividendos.lu_inversiones="+str(form['id_inversiones']) + " order by fecha;")
+fechapo=InversionOperacionTemporal().fecha_primera_operacion(form['id_inversiones'])
+listadoDiv=Dividendo().xultree("select id_dividendos, cuenta, fecha, liquido, inversione from dividendos, inversiones, cuentas where cuentas.id_cuentas=inversiones.lu_cuentas and dividendos.lu_inversiones=inversiones.id_inversiones and dividendos.lu_inversiones="+str(form['id_inversiones']) + " and fecha >='"+str(fechapo)+"' order by fecha;")
 con.Close()
 
 %>
