@@ -14,6 +14,7 @@ listadoIOT=InversionOperacionTemporal().xultree("SELECT * from tmpoperinversione
 listadoIOH=InversionOperacionHistorica().xultree("SELECT * from operinversiones where ma_Inversiones="+str(form['id_inversiones'])+" order by fecha")
 fechapo=InversionOperacionTemporal().fecha_primera_operacion(form['id_inversiones'])
 listadoDiv=Dividendo().xultree("select id_dividendos, cuenta, fecha, liquido, inversione from dividendos, inversiones, cuentas where cuentas.id_cuentas=inversiones.lu_cuentas and dividendos.lu_inversiones=inversiones.id_inversiones and dividendos.lu_inversiones="+str(form['id_inversiones']) + " and fecha >='"+str(fechapo)+"' order by fecha;")
+reg=Inversion().registro(form['id_inversiones'])
 con.Close()
 
 %>
@@ -64,6 +65,7 @@ function go_operinversion_insertar(){
 
 <vbox  flex="5">
 <label id="titulo" value="Información de la Inversión" />
+<label id="subtitulo" flex="0" value="<%=reg['inversione'] %>" />
 <hbox flex="4">
 <tabbox orient="vertical" flex="1">
 <tabs>
