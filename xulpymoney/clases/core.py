@@ -386,13 +386,19 @@ class Inversion:
             tpcc=(row["compra"]-row["actualizacion"])*100/row["actualizacion"]
             tpcv=(row["venta"]-row["actualizacion"])*100/row["actualizacion"]
             s= s + '<treeitem>\n'
-            s= s + '<treerow>\n'
+            if tpcc>5:
+                prop=' properties="rowsoftred"'
+            elif tpcv<5:
+                prop=' properties="rowsoftgreen"'
+            else:
+                prop=''
+            s= s + '<treerow'+prop+'>\n'
             s= s + '<treecell label="'+str(row["id_inversiones"])+ '" />\n'
             s= s + '<treecell label="'+str(row["inversione"])+ '" />\n'
             s= s + '<treecell label="'+str(row["entidadesbancaria"])+ '" />\n'
             s= s + treecell_euros(row["actualizacion"],  3)
-            s= s + treecell_euros_alerta_compra(row['actualizacion'], row["compra"], 0.10)
-            s= s + treecell_euros_alerta_venta(row['actualizacion'], row["venta"], 0.10)
+            s= s + treecell_euros( row["compra"] , 3)
+            s= s + treecell_euros( row["venta"],  3)
             s= s + treecell_tpc(tpcc)
             s= s + treecell_tpc(tpcv)
             s= s + '</treerow>\n'
