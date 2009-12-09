@@ -1,5 +1,4 @@
 # -*- coding: UTF-8  -*-
-from fecha import *
 from formato import *
 
 def xulheader():
