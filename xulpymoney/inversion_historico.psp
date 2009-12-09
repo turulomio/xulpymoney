@@ -36,17 +36,14 @@ function cmb_submit(){
 <label id="titulo" value="Informe histórico de inversiones" />
 <%=combo%>
 
+    <%=listadorendimientos%>
 
 <tabbox orient="vertical" flex="1">
 <tabs>
-<tab label="Rendimientos" />
 <tab label="Inversiones" />
 <tab label="Dividendos" />
 </tabs>
 <tabpanels flex="1">
-<vbox>
-    <%=listadorendimientos%>
-</vbox>
 <vbox>
     <%=listadoinversiones%>
 </vbox>
