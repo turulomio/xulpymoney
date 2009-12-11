@@ -8,12 +8,12 @@ if form.has_key('id_inversiones'):
 else:
     util.redirect(req, 'inversion_informacion.psp')
     
-con=Conection().open()
+con=Conection()
 cmbtiposoperaciones=TipoOperacion().cmb('select * from tiposoperaciones where operinversion=true order by tipo_operacion',  0,  False)
 
 req.content_type="application/vnd.mozilla.xul+xml"
 req.write(xulheaderwindowmenu("Insertando una operación de inversiones"))
-con.Close()
+con.close()
 %>
 <script>
 <![CDATA[

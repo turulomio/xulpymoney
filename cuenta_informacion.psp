@@ -5,7 +5,7 @@ from fecha import *
 from xul import *
 
 #Consultas BD
-con=Conection().open()
+con=Conection()
 
 if form.has_key('year'):
    year=form['year']
@@ -21,7 +21,7 @@ id_cuentas=form['id_cuentas']
 cur=CuentaOperacion().cursor_listado(form['id_cuentas'],year,month)
 cmbcuentas=Cuenta().cmb('cmbcuentas','select * from cuentas where cu_activa=true order by cuenta',  form["id_cuentas"],  True)
 listado = CuentaOperacion().xul_listado(cur,  form['id_cuentas'], year,  month)
-con.Close()
+con.close()
 
 req.content_type="application/vnd.mozilla.xul+xml"
 req.write(xulheaderwindowmenu("Información de cuentas"))

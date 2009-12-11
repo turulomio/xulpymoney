@@ -2,9 +2,9 @@
 from core import *
 
 #Consultas BD
-con=Conection().open()
+con=Conection()
 c=Cuenta().registro(1)
-con.Close()
+con.close()
 
 #Variables
 test_string = c

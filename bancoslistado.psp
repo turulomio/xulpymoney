@@ -4,7 +4,7 @@ from core import *
 from fecha import *
 from xul import *
 
-con=Conection().open()
+con=Conection()
 checked=""
 if form.has_key('inactivas'):
     if form['inactivas']=="on":
@@ -14,7 +14,7 @@ if form.has_key('inactivas'):
         listado = Banco().xultree(False,datetime.date.today())
 else:
     listado = Banco().xultree(False,datetime.date.today()) 
-con.Close()
+con.close()
 req.content_type="application/vnd.mozilla.xul+xml"
 req.write(xulheaderwindowmenu("Listado de Bancos"))
 

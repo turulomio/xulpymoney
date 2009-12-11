@@ -5,11 +5,11 @@ from xul import *
 from fecha import *
 
 #Consultas BD
-con=Conection().open()
+con=Conection()
 #hoy=datetime.date.today()
 cmbcuentaorigen=Cuenta().cmb('cmbcuentaorigen','select * from cuentas where cu_activa=true order by cuenta',  0,  False)
 cmbcuentadestino=Cuenta().cmb('cmbcuentadestino','select * from cuentas where cu_activa=true order by cuenta',  0,  False)
-con.Close()
+con.close()
 
 req.content_type="application/vnd.mozilla.xul+xml"
 req.write(xulheaderwindowmenu("Xulpymoney -> Cuentas -> Transferencia"))
