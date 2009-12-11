@@ -3,7 +3,7 @@ from core import *
 from fecha import *
 from xul import *
 
-con=Conection().open()
+con=Conection()
 checked=""
 if form.has_key('inactivas'):
     if form['inactivas']=="on":
@@ -15,7 +15,7 @@ else:
     cur=Tarjeta().cursor_listado(False,datetime.date.today())
     
 listado = Tarjeta().xul_listado(cur)
-con.Close()
+con.close()
 
 req.content_type="application/vnd.mozilla.xul+xml"
 req.write(xulheaderwindowmenu("Listado de tarjetas de crédito"))

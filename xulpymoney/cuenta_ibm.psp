@@ -13,12 +13,12 @@ if form.has_key('comentario'):
 else:
     comentario=""
     
-con=Conection().open()
+con=Conection()
 cmbconcepto=Concepto().cmb('select * from conceptos where lu_tipooperacion in (1,2) order by concepto',  concepto,  False)
 
 req.content_type="application/vnd.mozilla.xul+xml"
 req.write(xulheaderwindowmenu("Insertando una operación de cuenta"))
-con.Close()
+con.close()
 %>
 <script>
 <![CDATA[

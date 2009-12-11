@@ -6,7 +6,7 @@ from mod_python import util
 
 
 #Consultas BD
-con=Conection().open()
+con=Conection()
 
 if form.has_key('id_tarjetas'):
     id_tarjetas=form['id_tarjetas']
@@ -97,7 +97,7 @@ while not curs.EOF:
     curs.MoveNext()     
 curs.Close()
 req.write(s)
-con.Close()
+con.close()
 %>
         </treechildren>
     </tree>
