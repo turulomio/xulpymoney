@@ -21,6 +21,7 @@ req.write(xulheaderwindowmenu(titulo))
         <treecol  label="Año" flex="1"  style="text-align: center"/>
         <treecol label="Saldo inicial" flex="1" style="text-align: right"/>
         <treecol label="Ganancia" flex="1" style="text-align: right"/>
+        <treecol label="Gasto anual" flex="1" style="text-align: right"/>
         <treecol label="TAE" flex="1" style="text-align: right"/>
     </treecols>
     <treechildren>
@@ -28,14 +29,15 @@ req.write(xulheaderwindowmenu(titulo))
 for i in range(Total().primera_fecha_con_datos_usuario().year,  datetime.date.today().year+1):
     si=Total().saldo_total(datetime.date(i, 1, 1))
     sf=Total().saldo_total(datetime.date(i, 12, 31))
-    req.write('     <treeitem>')
-    req.write('         <treerow>')
-    req.write('             <treecell label="'+str(i)+'"/>')
-    req.write(treecell_euros(si))
-    req.write(treecell_euros(sf-si))
-    req.write(treecell_tpc(Total().tae_anual(si,  sf)))
-    req.write('         </treerow>')
-    req.write('     </treeitem>')
+    req.write('     <treeitem>\n')
+    req.write('         <treerow>\n')
+    req.write('             <treecell label="'+str(i)+'"/>\n')
+    req.write('             ' + treecell_euros(si))
+    req.write('             ' + treecell_euros(sf-si))
+    req.write('             ' + treecell_euros(float(Total().gastos_anuales(i))))
+    req.write('             ' + treecell_tpc(Total().tae_anual(si,  sf)))
+    req.write('         </treerow>\n')
+    req.write('     </treeitem>\n')
 con.Close()
 %>
     </treechildren>
