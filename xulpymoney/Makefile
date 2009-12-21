@@ -1,5 +1,5 @@
 PREFIXPYTHON=/usr/local/lib
-PREFIXWEB=/var/www/localhost/htdocs/
+PREFIXWEB=/var/www/localhost/htdocs
 
 install: 
 	install -o apache -d $(PREFIXPYTHON)/xulpymoney
