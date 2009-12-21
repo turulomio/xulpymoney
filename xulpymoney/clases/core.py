@@ -991,7 +991,7 @@ class Total:
         
     def xultree_historico_dividendos(self, ano):
         sumsaldos=0
-        sql="select id_dividendos, fecha, liquido, inversione, entidadesbancaria from dividendos, inversiones, cuentas, entidadesbancarias where entidadesbancarias.id_entidadesbancarias=cuentas.ma_entidadesbancarias and cuentas.id_cuentas=inversiones.lu_cuentas and dividendos.lu_inversiones=inversiones.id_inversiones and date_part('year',fecha)="+str(ano) + " order by fecha;"
+        sql="select id_dividendos, fecha, liquido, inversione, entidadesbancaria from dividendos, inversiones, cuentas, entidadesbancarias where entidadesbancarias.id_entidadesbancarias=cuentas.ma_entidadesbancarias and cuentas.id_cuentas=inversiones.lu_cuentas and dividendos.lu_inversiones=inversiones.id_inversiones and date_part('year',fecha)="+str(ano) + " order by fecha desc;"
         curs=con.Execute(sql); 
         s=     '<vbox flex="1">\n'
         s=s+ '        <tree id="tree" flex="3">\n'
@@ -1025,7 +1025,7 @@ class Total:
         
         
     def xultree_historico_inversiones(self, ano, desde_ano):
-        sql="select * from tmpoperinversioneshistoricas where date_part('year',fecha_venta)="+str(ano)+" order by fecha_venta";
+        sql="select * from tmpoperinversioneshistoricas where date_part('year',fecha_venta)="+str(ano)+" order by fecha_venta desc";
         curs=con.Execute(sql); 
         sumpendiente=0;
         sumrendponderado=0;
