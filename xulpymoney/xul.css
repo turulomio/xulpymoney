@@ -17,10 +17,12 @@ menu, menuitem{
  }
 
  
-treechildren::-moz-tree-row(rowsoftgreen) { background-color: #C0FFC0; }
-treechildren::-moz-tree-row(rowsoftred) { background-color: #FFA3BC; }
 treechildren::-moz-tree-row(odd) { background-color: #EEEEEE; }
 treechildren::-moz-tree-row(selected) { background-color: #4B6983; }
+
+
+treechildren::-moz-tree-row(rowsoftgreen) { background-color: #C0FFC0; }
+treechildren::-moz-tree-row(rowsoftred) { background-color: #FFA3BC; }
 
 tree#informegi { font-size: 3mm;}
 
