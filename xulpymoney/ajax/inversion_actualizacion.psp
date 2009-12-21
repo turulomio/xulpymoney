@@ -1,0 +1,11 @@
+<%#-*- coding: UTF-8 -*-
+import datetime
+from core import *
+from inversion_actualizacion import *
+con=Conection()
+if InversionActualizacion().insertar(form['id_inversiones'], datetime.date.today(), actualizar(form['inversion']))==True:
+    req.write ("Se ha actualizado la inversión correctamente")
+else:
+    req.write ("Ha habido un error en la actualización de la inversión")
+con.close()
+%>
