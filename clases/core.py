@@ -419,7 +419,7 @@ class Inversion:
         s= s+ '<treecols>\n'
         s= s+  '<treecol id="id" label="id" hidden="true" />\n'
         s= s+  '<treecol id="activa" label="activa" hidden="true" />\n'
-        s= s+  '<treecol id="col_cuenta" label="Inversión" sort="?col_inversion" sortActive="true" sortDirection="descending" flex="2"/>\n'
+        s= s+  '<treecol id="inversion" label="Inversión" sort="?col_inversion" sortActive="true" sortDirection="descending" flex="2"/>\n'
         s= s+  '<treecol id="col_entidad_bancaria" label="Entidad Bancaria"  sort="?col_entidad_bancaria" sortActive="true" sortDirection="descending" flex="2"/>\n'
         s= s+  '<treecol id="col_valor" label="Valor Acción" flex="2" style="text-align: right" />\n'
         s= s+  '<treecol id="col_valor" label="Saldo" flex="2" style="text-align: right" />\n'
@@ -469,7 +469,7 @@ class InversionActualizacion:
     def insertar(self,  id_inversiones,  fecha,  valor):
         delete="delete from actuinversiones where ma_inversiones="+str(id_inversiones)+" and fecha ='"+str(fecha)+"';"
         con.Execute(delete);
-        sql="insert into actuinversiones (fecha,ma_inversiones,actualizacion) values ('"+ str(fecha) +"',"+id_inversiones+","+valor+")";
+        sql="insert into actuinversiones (fecha,ma_inversiones,actualizacion) values ('"+ str(fecha) +"',"+str(id_inversiones)+","+str(valor)+")";
         try:
             con.Execute(sql);
         except:
