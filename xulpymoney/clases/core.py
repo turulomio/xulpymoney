@@ -901,6 +901,18 @@ class TipoOperacion:
 
 
 class Total:
+    def gastos_anuales(self,year):     
+        """
+            Saca la suma de todos los gastos producidos en un año.
+        """
+        sql="select sum(Importe) as importe from opercuentas where importe<0 and date_part('year',fecha) = "+str(year)+" and lu_tiposoperaciones in (1,7);"
+        curs=con.Execute(sql); 
+        row = curs.GetRowAssoc(0)   
+        if row['importe']==None:
+            return 0
+        else:
+            return row['importe'];
+        
     def grafico_evolucion_total(self):
         f=open("/tmp/informe_total.plot","w")
         s='set data style fsteps\n'
