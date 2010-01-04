@@ -271,7 +271,11 @@ class Dividendo:
         if curs == None: 
             print self.cfg.con.ErrorMsg()        
         row = curs.GetRowAssoc(0)      
-        return row['suma'];
+        if row['suma']==None:
+            return 0
+        else:
+            return row['suma'];
+            
         
     def xultree(self, sql):
         sumsaldos=0
