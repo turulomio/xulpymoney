@@ -56,7 +56,7 @@ class Banco:
             s= s + treecell_euros(saldo)
             s= s + '</treerow>\n'
             s= s + '</treeitem>\n'
-            curs.MoveNext()     
+            curs.MoveNext()    
         s= s + '</treechildren>\n'
         s= s + '</tree>\n'
         s= s + '<label flex="1"  style="text-align: center;font-weight : bold;" value="Saldo total: '+ euros(total)+'" />\n'
@@ -65,6 +65,9 @@ class Banco:
 
 
 class Conection:
+    """
+        Funciona para no tener que pasar con a las funciones de core, pero no funciona en conexiones directas desde un psp
+    """
     def __init__(self):
         self.host,self.dbname,self.user,self.password,self.type=config.host, config.dbname, config.user, config.password, config.type
         global con
@@ -77,6 +80,16 @@ class Conection:
         
     def close(self):
         con.Close()
+        
+
+
+class ConectionDirect:
+    def __init__(self):
+        self.con = adodb.NewADOConnection(config.type)
+        self.con.Connect(config.host,config.user,config.password,config.dbname)
+        
+    def close(self):
+        self.con.Close()
 
 class Concepto:
     def cmb(self, sql,  selected,  js=True):        

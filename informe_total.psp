@@ -14,7 +14,7 @@ req.write(xulheaderwindowmenu("Posición total"))
 if form.has_key('cmbanos')==False:
     cmbanos=datetime.date.today().year
 else:
-    cmbanos=form['cmbanos']
+    cmbanos=int(form['cmbanos'])
 
 #Actualiza imagen
 Total().grafico_evolucion_total()
