@@ -64,7 +64,19 @@ class Banco:
         return s
 
 
-
+class Conection:
+    def __init__(self):
+        self.host,self.dbname,self.user,self.password,self.type=config.host, config.dbname, config.user, config.password, config.type
+        global con
+        con=self.open()
+        
+    def open(self):    
+        c = adodb.NewADOConnection(self.type)
+        c.Connect(self.host,self.user,self.password,self.dbname)
+        return c
+        
+    def close(self):
+        con.Close()
 
 class Concepto:
     def cmb(self, sql,  selected,  js=True):        
@@ -1182,16 +1194,6 @@ class Total:
         s= s + '</vbox>\n'
         return s        
 
-def Conection():
-    """
-        Se inicia con: con=Conection().
-        con.Close() Cierra. que es funcion de addobd
-    """
-    self.host,self.dbname,self.user,self.password,self.type=config.host, config.dbname, config.user, config.password, config.type
-    self.con = adodb.NewADOConnection(self.type)
-    self.con.Connect(self.host,self.user,self.password,self.dbname)
-    return self.con
-    
 
 def mylog(text):
     f=open("/tmp/xulpymoney.log","a")
