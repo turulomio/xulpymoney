@@ -27,7 +27,7 @@ ingresos=[]
 gi=[]
 consolidado=[]
 for i in range(12):
-    #//En gastos se introduce los gastos m谩s los gastos de facturaci贸n de tarjeta
+    #//En gastos se introduce los gastos míos los gastos de facturación de tarjeta
     gastos.append(Total().saldo_por_tipo_operacion(cmbanos,i+1,1)+Total().saldo_por_tipo_operacion (cmbanos,i+1, 7))
     ingresos.append(Total().saldo_por_tipo_operacion(cmbanos,i+1,2))
     gi.append(ingresos[i]+gastos[i])
