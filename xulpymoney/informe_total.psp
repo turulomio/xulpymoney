@@ -46,7 +46,14 @@ diferencia=[]
 
 fechafinano=str(int(cmbanos-1))+"-12-31"
 saldofinano=Total().saldo_total(fechafinano)
-saldohoy=Total().saldo_total(hoy)
+if datetime.date.today().year==cmbanos:    
+    nuevohoy=hoy
+    saldohoy=Total().saldo_total(nuevohoy)
+
+else:
+    nuevohoy=datetime.date(cmbanos,  12,  31)
+    saldohoy=Total().saldo_total(nuevohoy)
+
 tae=100*(saldohoy-saldofinano)/saldofinano
 for i in range(12):
     if cmbanos==datetime.date.today().year and mesactual<=i:
@@ -64,7 +71,7 @@ for i in range(12):
         else:
             diferencia.append(total[i]-total[i-1])
 s=       '<label flex="0"  style="text-align: center;font-weight : bold;" value="Saldo a finales del año '+str(cmbanos-1)+': '+ euros(saldofinano)+'." />\n'       
-s= s +       '<label flex="0"  style="text-align: center;font-weight : bold;" value="Saldo a '+str(hoy)+': '+ euros(saldohoy)+'." />\n'        
+s= s +       '<label flex="0"  style="text-align: center;font-weight : bold;" value="Saldo a '+str(nuevohoy)+': '+ euros(saldohoy)+'." />\n'        
 s= s + '<label flex="0"  style="text-align: center;font-weight : bold;" value="Beneficio en el año '+str(cmbanos)+': '+ euros(saldohoy-saldofinano)+'." />\n'
 s= s + '<label flex="0"  style="text-align: center;font-weight : bold;" value="TAE en el año '+str(cmbanos)+': '+ tpc(tae)+'." />\n'
 con.close() 
