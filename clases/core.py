@@ -949,8 +949,9 @@ class Total:
 
         f=open("/tmp/informe_total.dat","w")
         for i in range (self.primera_fecha_con_datos_usuario().year,  datetime.date.today().year+1):
-            f.write(str(i)+"-01-01\t"+str(Total().saldo_total(str(i)+"-01-01"))+"\n")
-            f.write(str(i)+"-07-01\t"+str(Total().saldo_total(str(i)+"-07-01"))+"\n")
+            f.write(str(i)+"-01-01\t"+str(Total().saldo_total(str(i)+"-01-01"))+"\n")               
+	    if datetime.date.today()>datetime.date(i,7,1):
+		f.write(str(i)+"-07-01\t"+str(Total().saldo_total(str(i)+"-07-01"))+"\n")
         f.write(str(datetime.date.today())+"\t"+str(Total().saldo_total(datetime.date.today()))+"\n")
         f.close()
         
