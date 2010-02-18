@@ -673,19 +673,18 @@ class InversionOperacionTemporal:
             sumimporte=sumimporte+importe;
             sumpendiente=sumpendiente+pendiente;
             rendimientoanual=InversionOperacionTemporalRendimiento().anual( row['id_tmpoperinversiones'], row['ma_inversiones'], datetime.date.today().year);
-            rendimientototal=InversionOperacionTemporalRendimiento().total( row['id_tmpoperinversiones'], row['ma_inversiones']);
-            if row["fecha"].year==datetime.date.today().year:                
-                dias=(datetime.date.today()-datetime.date(row["fecha"].year, row["fecha"].month, row["fecha"].day)).days 
-                if dias==0:
-                    rendimientoanualponderado=365*rendimientoanual
-                else:
-                    rendimientoanualponderado=365*rendimientoanual/dias
+            rendimientototal=InversionOperacionTemporalRendimiento().total( row['id_tmpoperinversiones'], row['ma_inversiones']);     
+            #tae
+            dias=(datetime.date.today()-datetime.date(row["fecha"].year, row["fecha"].month, row["fecha"].day)).days 
+            if dias==0:
+                tae=rendimientototal*365/1
             else:
-                rendimientoanualponderado=365*rendimientoanual/(datetime.date.today()-datetime.date(datetime.date.today().year, 1, 1)).days 
+                tae=rendimientototal*365/dias                
+
             sumactualizacionesxacciones=sumactualizacionesxacciones+actualizacionxacciones;
             sumrendimientosanualesxacciones=sumrendimientosanualesxacciones+rendimientoanual*acciones;
             sumrendimientostotalesxacciones=sumrendimientostotalesxacciones+rendimientototal*acciones;
-            sumrendimientosanualesponderadosxacciones=sumrendimientosanualesponderadosxacciones+rendimientoanualponderado*acciones;
+            sumrendimientosanualesponderadosxacciones=sumrendimientosanualesponderadosxacciones+tae*acciones;
             s=s+ '    <treeitem>\n'
             s=s+ '      <treerow>\n'
             s=s+ '       <treecell label="'+ str(row["fecha"])[:-12]+ '" />\n'
@@ -694,7 +693,7 @@ class InversionOperacionTemporal:
             s=s+        treecell_euros(importe);
             s=s+        treecell_euros(pendiente)
             s=s+        treecell_tpc(rendimientoanual)
-            s=s+        treecell_tpc(rendimientoanualponderado)
+            s=s+        treecell_tpc(tae)
             s=s+        treecell_tpc(rendimientototal)
             s=s+ '      </treerow>\n'
             s=s+ '    </treeitem>\n'
