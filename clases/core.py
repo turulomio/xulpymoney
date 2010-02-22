@@ -234,7 +234,7 @@ class CuentaOperacion:
         s= s+ '      <menuseparator/>\n'
         s=s +  '            <menuitem label="Transferencia bancaria"  onclick="location=\'cuenta_transferencia.psp\';"  class="menuitem-iconic"  image="images/hotsync.png" />\n'
         s= s+ '      <menuseparator/>\n'
-        s= s+ '      <menuitem label="Operación de tarjeta"   onclick="location=\'tarjetaslistado.psp\';"   class="menuitem-iconic"  image="images/visa.png"/>\n'
+        s= s+ '      <menuitem label="Operación de tarjeta"   onclick="location=\'tarjeta_listado.psp\';"   class="menuitem-iconic"  image="images/visa.png"/>\n'
         s= s+ '   </popup>\n'
         s= s+ '</popupset>\n'
         s= s+ '<tree id="tree" enableColumnDrag="true" flex="6"   context="treepopup"  onselect="tree_getid();">\n'
