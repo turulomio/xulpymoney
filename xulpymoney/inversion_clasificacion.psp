@@ -4,7 +4,9 @@ from fecha import *
 from xul import *
 
 #Consultas BD
+# Para ver como funciona la funcion ver Inversion.nombre_tpcvariable()
 con=Conection()
+cd=ConectionDirect()
 
 req.content_type="application/vnd.mozilla.xul+xml"
 req.write(xulheaderwindowmenu("Información de cuentas"))
@@ -16,23 +18,31 @@ req.write(xulheaderwindowmenu("Información de cuentas"))
 <vbox flex="1">
     <tree id="tree" flex="3">
         <treecols>
-            <treecol label="Tipo de inversión" flex="2" style="text-align: left"/>
+            <treecol label="Tipo de inversión" flex="4" style="text-align: left"/>
             <treecol label="Dinero invertido " flex="1" style="text-align: right"/>
             <treecol label="% invertido      " flex="1" style="text-align: right"/>
         </treecols>
         <treechildren>
 <%
-sumsaldos=Total().saldo_todas_inversiones(datetime.date.today())
+total=Total().saldo_total(datetime.date.today())
 sql="select * from inversion_saldo_segun_tpcvariable() as a (tpcvariable integer, suma float);"
-curs=con.Execute(sql); 
+curs=cd.con.Execute(sql); 
 s=''
+sumcuentas=Total().saldo_todas_cuentas(datetime.date.today())
+s=s+   '            <treeitem>\n'
+s=s+   '                <treerow>\n'
+s=s+   '                    <treecell label="Cuentas bancarias" />\n'
+s=s+   '                    ' +    treecell_euros(sumcuentas);
+s=s+   '                    '  +  treecell_tpc(100*sumcuentas/total);
+s=s+   '                </treerow>\n'
+s=s+   '            </treeitem>\n'
 while not curs.EOF:
     row = curs.GetRowAssoc(0)   
     s=s+   '            <treeitem>\n'
     s=s+   '                <treerow>\n'
     s=s+   '                    <treecell label="'+ Inversion().nombre_tpcvariable(row["tpcvariable"])+ '" />\n'
     s=s+   '                    ' +    treecell_euros(row['suma']);
-    s=s+   '                    '  +  treecell_tpc(100*row['suma']/sumsaldos);
+    s=s+   '                    '  +  treecell_tpc(100*row['suma']/total);
     s=s+   '                </treerow>\n'
     s=s+   '            </treeitem>\n'
     curs.MoveNext()     
