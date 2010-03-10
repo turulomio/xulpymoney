@@ -359,13 +359,13 @@ class Inversion:
 
     def nombre_tpcvariable(self,  tpcvariable):
         if tpcvariable==-100:
-            return "Fondos de dinero o depósitos"
+            return "ETF Inversos"
         if tpcvariable==0:
-            return "Renta fija"
+            return "Fondos de dinero y depósitos"
         if tpcvariable==50:
-            return "Inversiones expuestas hasta un 50% en renta variable"
+            return "P. Pensiones e inversiones hasta un 50% en renta variable, fondos alternativos y renta fija"
         if tpcvariable==100:
-            return "Inversiones expuestas hasta un 100% en renta variable"
+            return "P. Pensiones e inversiones hasta un 100% en renta variable y acciones"
         return None
         
     def registro(self, id_inversiones):
@@ -403,7 +403,7 @@ class Inversion:
             tpcc=(row["compra"]-row["actualizacion"])*100/row["actualizacion"]
             tpcv=(row["venta"]-row["actualizacion"])*100/row["actualizacion"]
             s= s + '<treeitem>\n'
-            if tpcc>5:
+            if tpcc>0:
                 prop=' properties="rowsoftred"'
             elif tpcv<5:
                 prop=' properties="rowsoftgreen"'
