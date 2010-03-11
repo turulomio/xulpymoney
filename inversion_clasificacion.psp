@@ -36,8 +36,10 @@ s=s+   '                    ' +    treecell_euros(sumcuentas);
 s=s+   '                    '  +  treecell_tpc(100*sumcuentas/total);
 s=s+   '                </treerow>\n'
 s=s+   '            </treeitem>\n'
+sumsaldos=0
 while not curs.EOF:
     row = curs.GetRowAssoc(0)   
+    sumsaldos=sumsaldos+row['suma']
     s=s+   '            <treeitem>\n'
     s=s+   '                <treerow>\n'
     s=s+   '                    <treecell label="'+ Inversion().nombre_tpcvariable(row["tpcvariable"])+ '" />\n'
@@ -47,6 +49,13 @@ while not curs.EOF:
     s=s+   '            </treeitem>\n'
     curs.MoveNext()     
 curs.Close()
+s=s+   '            <treeitem>\n'
+s=s+   '                <treerow>\n'
+s=s+   '                    <treecell label="Total" />\n'
+s=s+   '                    ' +    treecell_euros(sumsaldos);
+s=s+   '                    '  +  treecell_tpc(100);
+s=s+   '                </treerow>\n'
+s=s+   '            </treeitem>\n'
 req.write(s)
 con.close()
 %>
