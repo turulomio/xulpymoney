@@ -541,6 +541,12 @@ class InversionOperacion:
             return False
         return True
         
+    def referencia_ibex35(self, fecha):
+        sql="select cierre from ibex35 where fecha='"+str(fecha) + "'"
+        curs=con.Execute(sql)
+        row = curs.GetRowAssoc(0)   
+        return row['cierre']
+
 class InversionOperacionHistorica:
     def consolidado_total_mensual(self, ano,  mes):
         resultado=0;
@@ -634,7 +640,6 @@ class InversionOperacionTemporal:
         saldofinal=float(row["acciones"])*float(InversionActualizacion().valor(id_inversiones,fecha))
         pendiente=float(saldofinal)-float(saldoinicio);
         return pendiente;    
-        
     def xultree(self, sql):
         """
             El SQL deberá ser del tipo "SELECT * from tmpoperinversiones where ma_Inversiones=id_inversiones order by fecha"
@@ -659,6 +664,7 @@ class InversionOperacionTemporal:
         s=s+ '    <treecol label="% Año" flex="1" style="text-align: right"/>\n'
         s=s+ '    <treecol label="% TAE" flex="1" style="text-align: right"/>\n'
         s=s+ '    <treecol label="% Total" flex="1" style="text-align: right"/>\n'
+        s=s+ '    <treecol label="Ref. Ibex35" flex="1" style="text-align: right"/>\n'
         s=s+ '  </treecols>\n'
         s=s+ '  <treechildren>\n'
         while not curs.EOF:
@@ -695,6 +701,7 @@ class InversionOperacionTemporal:
             s=s+        treecell_tpc(rendimientoanual)
             s=s+        treecell_tpc(tae)
             s=s+        treecell_tpc(rendimientototal)
+            s=s+        treecell_euros(InversionOperacion().referencia_ibex35(fecha))
             s=s+ '      </treerow>\n'
             s=s+ '    </treeitem>\n'
             curs.MoveNext()     
@@ -706,6 +713,46 @@ class InversionOperacionTemporal:
         s= s + '<label flex="0"  style="text-align: center;font-weight : bold;" value="Invertidos '+ euros(sumimporte)+' con un total de '+str(int(sumacciones))+' acciones y un valor medio de '+euros(valormedio)+'"/>\n'        
         s= s + '<label flex="0"  style="text-align: center;font-weight : bold;" value="Saldo pendiente '+ euros(sumpendiente)+'. " />\n'        
         s= s + '</vbox>\n'
+        return s
+        
+    def xultree_referenciaibex(self, sql):
+        # fecha
+        # inversione
+        # importe
+        # ibex35
+        sumimporte=0;
+        curs=con.Execute(sql); 
+        s=     ' <tree id="tree" flex="3" >\n'
+        s=s+ '  <treecols>\n'
+        s=s+ '    <treecol label="Fecha" flex="1"  style="text-align: center"/>\n'
+        s=s+ '    <treecol label="Inversión" flex="1" style="text-align: left" />\n'
+        s=s+ '    <treecol label="Importe" flex="1" style="text-align: right"/>\n'
+        s=s+ '    <treecol label="Ref. Ibex35" flex="1" style="text-align: right"/>\n'
+        s=s+ '  </treecols>\n'
+        s=s+ '  <treechildren>\n'
+        while not curs.EOF:
+            row = curs.GetRowAssoc(0)   
+            sumimporte=sumimporte+row['importe'];
+            s=s+ '    <treeitem>\n'
+            s=s+ '      <treerow>\n'
+            s=s+ '       <treecell label="'+ str(row["fecha"])[:-12]+ '" />\n'
+            s=s+ '       <treecell label="'+ str(row["inversione"])+ '" />\n'
+            s=s+        treecell_euros(row['importe']);
+            s=s+        treecell_euros(row['ibex35']);
+            s=s+ '      </treerow>\n'
+            s=s+ '    </treeitem>\n'
+            curs.MoveNext()     
+        curs.Close()
+        s=s+ '    <treeitem>\n'
+        s=s+ '      <treerow>\n'
+        s=s+ '       <treecell label="" />\n'
+        s=s+ '       <treecell label="TOTAL" />\n'
+        s=s+        treecell_euros(sumimporte);
+        s=s+ '       <treecell label="" />\n'
+        s=s+ '      </treerow>\n'
+        s=s+ '    </treeitem>\n'        
+        s=s+ '  </treechildren>\n'
+        s=s+ '</tree>\n'
         return s
     
     def actualizar(self, id_inversiones):
