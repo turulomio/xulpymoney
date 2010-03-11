@@ -1,3 +1,7 @@
 20090605 Meter en https://localhost/xulpymoney/cuentas_ibm.psp como parametro el año y el mes desde el que se ha invocado un ibm.
 20100123 Para acceder a los movimientos de una cuenta o de una tarjeta permitir que se haga con doble click
 20100311 Para informe referenciado a ibex hay que calcular el total invertido por rango para hacer %
+20100311 Meter el script de instalación de la base de datos
+20100311 Meter en el ebuild el condicional?postgrsql o ? mysql
+20100311 Meeter en el ebuild el DESTDIR para instalar
+20100311 Crear página del proyecto y de usuario en sourceforge
