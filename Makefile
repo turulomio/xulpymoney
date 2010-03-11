@@ -4,6 +4,7 @@ PREFIXPYTHON=${DESTDIR}/lib
 PREFIXWEB=/var/www/localhost/htdocs
 
 install: 
+	echo "Instalando en ${DESTDIR}"
 	install -o apache -d $(PREFIXPYTHON)/xulpymoney
 	install -o apache -d $(PREFIXWEB)
 	install -o apache -d $(PREFIXWEB)/xulpymoney
