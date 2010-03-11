@@ -1,0 +1,80 @@
+<%
+from core import *
+from fecha import *
+from xul import *
+
+#Consultas BD
+# Para ver como funciona la funcion ver Inversion.nombre_tpcvariable()
+con=Conection()
+cd=ConectionDirect()
+
+req.content_type="application/vnd.mozilla.xul+xml"
+req.write(xulheaderwindowmenu("Informe de referencia al Ibex35"))
+%>
+<script>
+<![CDATA[
+
+var rango=1000;
+function ver_detalle()
+{
+    var tree = document.getElementById("tree");
+    /*el boolean de un "0" es true y bolean de un 0 es false*/
+    var rango=Number(tree.view.getCellText(tree.currentIndex,tree.columns.getNamedColumn("rango")));
+    location='informe_referenciaibex_detalle.psp?rango='+ rango;
+}
+
+
+
+]]>
+</script>
+<vbox align="center">
+    <label id="titulo"  value="Informe de referencia al Ibex35" />
+</vbox>
+<vbox flex="1">
+    <tree id="tree" flex="3"  onselect="ver_detalle();">
+        <treecols>
+            <treecol id="rango" label="Intervalo del IBEX" flex="4" style="text-align: right"/>
+            <treecol label="Dinero invertido " flex="1" style="text-align: right"/>
+            <treecol label="% invertido      " flex="1" style="text-align: right"/>
+        </treecols>
+        <treechildren>
+<%
+total=Total().saldo_total(datetime.date.today())
+sql="select distinct(floor(ibex35.cierre/1000))*1000 as miles , sum(importe) as sumimporte from ibex35, tmpoperinversiones where tmpoperinversiones.fecha=ibex35.fecha  group by miles order by miles;"
+curs=cd.con.Execute(sql); 
+s=''
+total=Total().saldo_todas_inversiones(datetime.date.today())
+sumimporte=0
+while not curs.EOF:
+    row = curs.GetRowAssoc(0)   
+    sumimporte=sumimporte+ row['sumimporte']
+    s=s+   '            <treeitem>\n'
+    s=s+   '                <treerow>\n'
+    s=s+   '                    <treecell label="'+str(row['miles'])+'" />\n'
+    s=s+   '                    ' +    treecell_euros(row['sumimporte']);
+    s=s+ '       <treecell label="Total con sumimporte" />\n'#    s=s+   '                    '  +  treecell_tpc(100*row['sumimporte']/total);
+    s=s+   '                </treerow>\n'
+    s=s+   '            </treeitem>\n'
+    curs.MoveNext()     
+curs.Close()
+s=s+   '            <treeitem>\n'
+s=s+   '                <treerow>\n'
+s=s+   '                    <treecell label="Total Invertido" />\n'
+s=s+   '                    ' +    treecell_euros(sumimporte);
+s=s+ '       <treecell label="" />\n'
+s=s+   '                </treerow>\n'
+s=s+   '            </treeitem>\n'
+s=s+   '            <treeitem>\n'
+s=s+   '                <treerow>\n'
+s=s+   '                    <treecell label="Saldo actual" />\n'
+s=s+   '                    ' +    treecell_euros(total);
+s=s+ '       <treecell label="" />\n'
+s=s+   '                </treerow>\n'
+s=s+   '            </treeitem>\n'
+req.write(s)
+con.close()
+%>
+        </treechildren>
+    </tree>
+</vbox>
+</window>
