@@ -1,4 +1,6 @@
-PREFIXPYTHON=/usr/local/lib
+DESTDIR ?= /usr/local
+
+PREFIXPYTHON=${DESTDIR}/lib
 PREFIXWEB=/var/www/localhost/htdocs
 
 install: 
