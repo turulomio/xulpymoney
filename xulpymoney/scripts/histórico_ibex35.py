@@ -13,7 +13,7 @@ con.Execute("delete from ibex35")
 
 # SE DESCARGA UNA NUEVA
 print "* Descargando fichero..."
-os.system ("wget 'http://ichart.yahoo.com/table.csv?s=%5EIBEX&a=01&b=15&c=1993&d=" + str(datetime.date.today().month-1) + "&e=" + str(datetime.date.today().day) + "&f="+ str(datetime.date.today().year) + "&g=d&ignore=.csv' -O /tmp/ibex35.csv &> /dev/null")
+os.system ("wget 'http://ichart.yahoo.com/table.csv?s=%5EIBEX&a=0&b=1&c=1995&d=" + str(datetime.date.today().month-1) + "&e=" + str(datetime.date.today().day) + "&f="+ str(datetime.date.today().year) + "&g=d&ignore=.csv' -O /tmp/ibex35.csv &> /dev/null")
 
 # INSERTA LA NUEVA
 print "* Procesando el fichero..."
