@@ -1,7 +1,9 @@
-DESTDIR ?= /usr/local
+DESTDIR ?= /
 
-PREFIXPYTHON=$(DESTDIR)/lib
-PREFIXWEB=/var/www/localhost/htdocs
+PREFIXBIN=$(DESTDIR)/usr/bin
+PREFIXPYTHON=$(DESTDIR)/usr/lib
+PREFIXWEB=$(DESTDIR)/var/www/localhost/htdocs
+PREFIXCONFIG=$(DESTDIR)/etc/xulpymoney/
 
 install: 
 	echo "Instalando en ${DESTDIR}"
@@ -12,6 +14,7 @@ install:
 	install -o apache -d $(PREFIXWEB)/xulpymoney/images
 	install -o apache -d $(PREFIXWEB)/xulpymoney/languages
 	install -o apache -d $(PREFIXWEB)
+	install -o apache -d $(PREFIXCONFIG)
 	install -o apache -d $(PREFIXWEB)/tmp
 	install -m 400 -o apache *.psp $(PREFIXWEB)/xulpymoney
 	install -m 400 -o apache ajax/*.psp $(PREFIXWEB)/xulpymoney/ajax
@@ -20,9 +23,9 @@ install:
 	install -m 400 -o apache clases/*.py  $(PREFIXPYTHON)/xulpymoney
 	install -m 400 -o apache *.css  $(PREFIXWEB)/xulpymoney
 	install -m 400 -o apache GPL-3.txt  $(PREFIXWEB)/xulpymoney
-	install -m 755 -o apache scripts/xulpymoney* $(DESTDIR)/bin
+	install -m 755 -o apache scripts/xulpymoney* $(PREFIXBIN)
 
 uninstall:
 	rm -fr $(PREFIXWEB)/xulpymoney
 	rm -fr $(PREFIXPYTHON)/xulpymoney
-	rm -fr $(DESTDIR)/bin/xulpymoney*
+	rm -fr $(DESTDIR)/usr/bin/xulpymoney*
