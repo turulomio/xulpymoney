@@ -1,10 +1,9 @@
 #-*- coding: UTF-8 -*- 
 import sys,  os
-sys.path.append("/usr/local/lib/cuentas/")
+sys.path.append("/usr/lib/xulpymoney/")
 import datetime,  math
 import adodb
 import config
-from fecha import *
 from formato import *  
 from xul import *
 
@@ -333,6 +332,21 @@ class Inversion:
             resultado=dif*(1-tipofiscal);
         return resultado;
 
+    def cmb_tpcvariable(self, name,   selected,  js=True):
+        jstext=""
+        if js:
+            jstext= ' oncommand="'+name+'_submit();"'
+        s= '<menulist id="'+name+'" '+jstext+' align="center">\n'
+        s=s + '      <menupopup align="center">\n';
+        for i in (-100, 0, 50, 100) :
+            if i==int(selected):
+                s=s +  '       <menuitem label="'+utf82xul(self.nombre_tpcvariable(i))+'" value="'+str(i)+'" selected="true"/>\n'
+            else:
+                s=s +  '       <menuitem label="'+utf82xul(self.nombre_tpcvariable(i))+'" value="'+str(i)+'"/>\n'
+        s=s +  '     </menupopup>\n'
+        s=s + '</menulist>\n'
+        return s
+
     def cursor_listado(self, inactivas,  fecha):
         if inactivas==True:
             sql="select id_inversiones, in_activa, inversione, entidadesbancaria, inversiones_saldo(id_inversiones,'"+str(fecha)+"') as saldo, inversion_actualizacion(id_inversiones,'"+str(fecha)+"') as actualizacion, inversion_pendiente(id_inversiones,'"+str(fecha)+"')  as pendiente, inversion_invertido(id_inversiones,'"+str(fecha)+"')  as invertido from inversiones, cuentas, entidadesbancarias where cuentas.ma_entidadesbancarias=entidadesbancarias.id_entidadesbancarias and cuentas.id_cuentas=inversiones.lu_cuentas order by inversione;"
@@ -341,8 +355,8 @@ class Inversion:
             sql="select id_inversiones, in_activa, inversione, entidadesbancaria, inversiones_saldo(id_inversiones,'"+str(fecha)+"') as saldo, inversion_actualizacion(id_inversiones,'"+str(fecha)+"') as actualizacion, inversion_pendiente(id_inversiones,'"+str(fecha)+"')  as pendiente,  inversion_invertido(id_inversiones,'"+str(fecha)+"')  as invertido from inversiones, cuentas, entidadesbancarias where cuentas.ma_entidadesbancarias=entidadesbancarias.id_entidadesbancarias and cuentas.id_cuentas=inversiones.lu_cuentas and in_activa='t' order by inversione;"
         return con.Execute(sql); 
             
-    def modificar(self, id_inversiones, inversione,  compra,  venta):
-        sql="update inversiones set inversione='"+inversione+"', compra="+str(compra)+", venta="+str(venta)+" where id_inversiones="+ str(id_inversiones)
+    def modificar(self, id_inversiones, inversione,  compra,  venta,  tpcvariable,  lu_cuentas):
+        sql="update inversiones set inversione='"+inversione+"', compra="+str(compra)+", venta="+str(venta)+", tpcvariable="+str(tpcvariable)+", lu_cuentas="+str(lu_cuentas)+" where id_inversiones="+ str(id_inversiones)
         curs=con.Execute(sql); 
         return sql
         
