@@ -2,7 +2,6 @@
 import time
 from core import *
 from xul import *
-from fecha import *
 
 #Consultas BD
 con=Conection()

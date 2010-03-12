@@ -2,7 +2,6 @@
 import time
 from core import *
 from xul import *
-from fecha import *
 
 #Consultas BD
 con=Conection()
@@ -13,6 +12,8 @@ if form.has_key('id_inversiones'):
     id_inversiones=form['id_inversiones']
 
 reg=Inversion().registro(id_inversiones)
+cmbcuentas=Cuenta().cmb('lu_cuentas','select * from cuentas where cu_activa=true order by cuenta',  reg["lu_cuentas"],  False)
+cmbtpcvariable=Inversion().cmb_tpcvariable('tpcvariable', reg['tpcvariable'], False)
 con.close()
 
 req.content_type="application/vnd.mozilla.xul+xml"
@@ -34,7 +35,9 @@ function insert(){
     var inversione = document.getElementById("inversione").value;
     var compra = document.getElementById("compra").value;
     var venta = document.getElementById("venta").value;
-    var url="ajax/inversion_modificar.psp?id_inversiones="+<%=id_inversiones %>+"&inversione="+inversione+"&compra="+compra+"&venta="+venta;
+    var lu_cuentas = document.getElementById("lu_cuentas").value;
+    var tpcvariable = document.getElementById("tpcvariable").value;
+    var url="ajax/inversion_modificar.psp?id_inversiones="+<%=id_inversiones %>+"&inversione="+inversione+"&compra="+compra+"&venta="+venta+"&lu_cuentas="+lu_cuentas+"&tpcvariable="+tpcvariable;
     xmlHttp.open("GET",url,true);
     xmlHttp.send(null);
 }
@@ -48,9 +51,11 @@ function insert(){
     <hbox flex="1">
     <grid align="center">
         <rows>
+        <row><label value="Cuenta asignada"/><hbox><%=cmbcuentas%></hbox></row>
         <row><label value="Cambiar el nombre"/><hbox><textbox id="inversione" value="<%=reg['inversione'] %>"/></hbox></row>
         <row><label value="Actualiza el valor de nueva compra" /><hbox><textbox id="compra" value="<%=reg['compra'] %>"/></hbox></row>        
         <row><label value="Actualiza el valor de venta" /><hbox><textbox id="venta" value="<%=reg['venta'] %>"/></hbox></row>
+        <row><label value="Tipo de inversión" /><hbox><%=cmbtpcvariable%></hbox></row>
         <row><label value="" /><hbox><button id="cmd" label="Aceptar" onclick="insert();"/></hbox></row>
         </rows>
     </grid>

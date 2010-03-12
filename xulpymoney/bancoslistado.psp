@@ -1,7 +1,6 @@
 <%
 import datetime
 from core import *
-from fecha import *
 from xul import *
 
 con=Conection()

@@ -1,6 +1,5 @@
 <%
 from core import *
-from fecha import *
 from xul import *
 
 if form.has_key('id_inversiones'):
