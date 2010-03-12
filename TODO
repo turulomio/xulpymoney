@@ -3,5 +3,6 @@
 20100311 Para informe referenciado a ibex hay que calcular el total invertido por rango para hacer %
 20100311 Meter el script de instalación de la base de datos
 20100311 Meter en el ebuild el condicional?postgrsql o ? mysql
-20100311 Meeter en el ebuild el DESTDIR para instalar
+20100311 Meeter en el ebuild el DESTDIR para instalar 
+20100311 Meter en el ebuild un enlace a mi página web con las instrucciones
 20100311 Crear página del proyecto y de usuario en sourceforge
