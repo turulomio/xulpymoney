@@ -1,0 +1,6 @@
+<%#-*- coding: UTF-8 -*-
+from core import *
+con=Conection()
+req.write (Inversion().insertar(form['inversione'],  form['compra'],  form['venta'],  form['tpcvariable'],  form['lu_cuentas']))
+con.close()
+%>

@@ -355,6 +355,11 @@ class Inversion:
             sql="select id_inversiones, in_activa, inversione, entidadesbancaria, inversiones_saldo(id_inversiones,'"+str(fecha)+"') as saldo, inversion_actualizacion(id_inversiones,'"+str(fecha)+"') as actualizacion, inversion_pendiente(id_inversiones,'"+str(fecha)+"')  as pendiente,  inversion_invertido(id_inversiones,'"+str(fecha)+"')  as invertido from inversiones, cuentas, entidadesbancarias where cuentas.ma_entidadesbancarias=entidadesbancarias.id_entidadesbancarias and cuentas.id_cuentas=inversiones.lu_cuentas and in_activa='t' order by inversione;"
         return con.Execute(sql); 
             
+    def insertar(self,  inversione,  compra,  venta,  tpcvariable,  lu_cuentas):
+        sql="insert into inversiones (inversione, compra, venta, tpcvariable, lu_cuentas, in_activa, cotizamercado) values ('"+inversione+"', "+str(compra)+", "+str(venta)+", "+str(tpcvariable)+", "+str(lu_cuentas)+", true, true);"
+        curs=con.Execute(sql); 
+        return sql            
+        
     def modificar(self, id_inversiones, inversione,  compra,  venta,  tpcvariable,  lu_cuentas):
         sql="update inversiones set inversione='"+inversione+"', compra="+str(compra)+", venta="+str(venta)+", tpcvariable="+str(tpcvariable)+", lu_cuentas="+str(lu_cuentas)+" where id_inversiones="+ str(id_inversiones)
         curs=con.Execute(sql); 
