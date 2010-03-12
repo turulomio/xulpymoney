@@ -104,7 +104,7 @@ function actualizar_internet(){
     <menuitem label="Actualizar el valor" oncommand="location='inversion_actualizacion.psp?id_inversiones=' + id_inversiones;"  class="menuitem-iconic"  image="images/hotsync.png" />               
     <menuitem label="Actualizar en Internet" oncommand="actualizar_internet();"  class="menuitem-iconic"  image="images/hotsync.png" />           
     <menuseparator/>
-    <menuitem label="Nueva inversión" oncommand="location=\'cuentas_ibm.psp?ibm=insertar&amp;regresando=0;\'" class="menuitem-iconic"  image="images/item_add.png"/>
+    <menuitem label="Nueva inversión" oncommand="location=\'inversion_insertar.psp\'" class="menuitem-iconic"  image="images/item_add.png"/>
     <menuitem label="Modificar la inversión"  oncommand='location="inversion_modificar.psp?id_inversiones=" + id_inversiones;'   class="menuitem-iconic"  image="images/edit.png" />
     <menuitem label="Estudio de la inversión"  oncommand="location='inversion_informacion.psp?id_inversiones=' + id_inversiones;"  class="menuitem-iconic"  image="images/toggle_log.png" />
     <menuseparator/>
