@@ -20,7 +20,7 @@ install:
 	install -m 400 -o apache clases/*.py  $(PREFIXPYTHON)/xulpymoney
 	install -m 400 -o apache *.css  $(PREFIXWEB)/xulpymoney
 	install -m 400 -o apache GPL-3.txt  $(PREFIXWEB)/xulpymoney
-	install -m 400 -o apache scripts/xulpymoney_actualizar_datos_ibex35 $(DESTDIR)/bin
+	install -m 755 -o apache scripts/xulpymoney* $(DESTDIR)/bin
 
 uninstall:
 	rm -fr $(PREFIXWEB)/xulpymoney

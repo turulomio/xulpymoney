@@ -10,6 +10,11 @@ label#subtitulo {  color: green;
 
 label#negrita { font-weight : bold;
              }
+             
+label#resultado { font-weight : bold;
+                color: red;
+                text-align: center;
+             }             
 
 menu, menuitem{
    font-weight: bold !important;

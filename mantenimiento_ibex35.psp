@@ -13,6 +13,29 @@ except:
 req.content_type="application/vnd.mozilla.xul+xml"
 req.write(xulheaderwindowmenu("Xulpymoney > Mantenimiento > Mantenimiento Ibex 35 "))
 %>
+<script>
+<![CDATA[
+         
+function update(){
+    var xmlHttp;
+    xmlHttp=new XMLHttpRequest();
+    xmlHttp.onreadystatechange=function(){
+        if(xmlHttp.readyState==4){
+            var ale=xmlHttp.responseText;
+             document.getElementById("resultado").value=ale;
+        }
+    }
+    document.getElementById("resultado").value="Este proceso puede durar unos minutos. Actualizando desde Internet ...";
+    document.getElementById("button").disabled=true;
+    document.getElementById("subtitulo").value="Última actualización: <%=str(datetime.date.today())%>";
+    var url="ajax/mantenimiento_ibex35.psp";
+    xmlHttp.open("GET",url,true);
+    xmlHttp.send(null);
+}
+
+]]>
+</script>
+
 <vbox align="center">
     <label id="titulo"  value="Mantenimiento datos de Ibex 35" />
     <label id="subtitulo"  value="Última actualización: <%=fecha%>"/>
@@ -21,5 +44,6 @@ req.write(xulheaderwindowmenu("Xulpymoney > Mantenimiento > Mantenimiento Ibex 3
 <label flex="0"  style="text-align: center;font-weight : bold;" value="Para poder realizar estudios comparativos con el IBEX 35 es necesario actualizar los datos históricos en Internet. Para ello pulse en el siguiente botón" />
 
 <label flex="0"  value="" />
-    <button label="Actualizar datos en Internet" oncommand="insert();"/>
+<button id="button" label="Actualizar datos en Internet" oncommand="update();"/>
+<label flex="0"  id="resultado" value="" />
 </window>
