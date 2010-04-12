@@ -23,11 +23,27 @@ con.close()
 
 var id_operinversiones=0;
 
+function inversion_actualizaroperaciones(){
+    var xmlHttp;        
+    var id_inversiones=<%=form['id_inversiones']%>;
+    var url='ajax/inversion_actualizaroperaciones.psp?id_inversiones=' + id_inversiones ;
+    xmlHttp=new XMLHttpRequest();
+    xmlHttp.onreadystatechange=function(){
+        if(xmlHttp.readyState==4){
+            var ale=xmlHttp.responseText;
+            location="inversion_informacion.psp?id_inversiones="+ id_inversiones;
+        }
+    }
+    xmlHttp.open("GET",url,true);
+    xmlHttp.send(null);
+}
 
 function borrar(){
     var xmlHttp;        
+    var tree = document.getElementById("treeIOH");
     var id_inversiones=<%=form['id_inversiones']%>;
-    var url='ajax/inversionoperacion_borrar.psp?id_operinversiones=' + id_operinversiones ;
+    id_operinversiones=tree.view.getCellText(tree.currentIndex,tree.columns.getNamedColumn("id"));
+    var url='ajax/inversionoperacion_borrar.psp?id_operinversiones=' + id_operinversiones +'&id_inversiones=' + id_inversiones;
     xmlHttp=new XMLHttpRequest();
     xmlHttp.onreadystatechange=function(){
         if(xmlHttp.readyState==4){
@@ -58,7 +74,8 @@ function go_operinversion_insertar(){
     <popup id="treepopup" >
         <menuitem label="Nueva operación de inversión" oncommand="go_operinversion_insertar();" class="menuitem-iconic"  image="images/item_add.png"/>
         <menuitem label="Modificar la operación de inversión"   class="menuitem-iconic"  image="images/toggle_log.png"/>
-        <menuitem label="Borrar la operación de inversión"  oncommand='borrar();'  class="menuitem-iconic" image="images/eventdelete.png"/>
+        <menuitem label="Borrar la operación de inversión"  oncommand='borrar();'  class="menuitem-iconic" image="images/eventdelete.png"/>        
+        <menuitem label="Actualizar las operaciones de la inversión"  oncommand='inversion_actualizaroperaciones();'  class="menuitem-iconic" image="images/eventdelete.png"/>
     </popup>
 </popupset>
 

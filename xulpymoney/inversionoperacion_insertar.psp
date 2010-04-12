@@ -28,11 +28,12 @@ function insert(){
     var valor_accion = document.getElementById("valor_accion").value;
     spfecha=fecha.split("-");
     var id_inversiones=<%=form['id_inversiones']%>;
-    var url="ajax/inversionoperacion_insertar.psp?fecha="+str(fecha)+"&lu_tiposoperaciones="+lu_tiposoperaciones+"&importe="+importe+"&acciones="+acciones+"&impuestos="+impuestos+"&comision="+comision+"&comentario="+comentario+"&valor_accion="+valor_accion+"&ma_inversiones="+id_inversiones;
+    var url="ajax/inversionoperacion_insertar.psp?fecha="+fecha+"&lu_tiposoperaciones="+lu_tiposoperaciones+"&importe="+importe+"&acciones="+acciones+"&impuestos="+impuestos+"&comision="+comision+"&comentario="+comentario+"&valor_accion="+valor_accion+"&ma_inversiones="+id_inversiones;
     xmlHttp=new XMLHttpRequest();
     xmlHttp.onreadystatechange=function(){
         if(xmlHttp.readyState==4){
             var ale=xmlHttp.responseText;
+            alert(ale)
             location="inversion_informacion.psp?id_inversiones="+ id_inversiones ;
         }
     }

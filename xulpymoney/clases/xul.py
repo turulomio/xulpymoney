@@ -79,6 +79,11 @@ def treecell_euros(importe,  numdec=2):
     else:
         s='<treecell properties="negative" label="'+euros(importe, numdec)+'" />\n';
     return s
+
+def treecell(content, property=None):
+    if property!=None:
+        property=' properties="'+property+'" '
+    return '<treecell'+properties+'label="'+str(content)+'" />\n';
     
 def treecell_tpc(importe):
     if importe>=0:
