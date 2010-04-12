@@ -294,7 +294,7 @@ class CuentaOperacionHeredadaInversion:
 # */
     def actualizar_una_operacion(self,id_operinversiones):
 #    //Borra la tabla tmpinversionesheredada
-        sqldel="delete from tmpinversionesheredada where id_operinversiones=id_operinversiones";
+        sqldel="delete from tmpinversionesheredada where id_operinversiones="+str(id_operinversiones)
         resultdel=con.Execute(sqldel);
         row = con.Execute('select * from operinversiones where id_operinversiones='+str(id_operinversiones)).GetRowAssoc(0)
         fecha=row['fecha'];
@@ -308,26 +308,26 @@ class CuentaOperacionHeredadaInversion:
 #        //Dependiendo del tipo de operaci�n se ejecuta una operaci�n u otra.
         if row['lu_tiposoperaciones']==4:#Compra Acciones
             #Se pone un registro de compra de acciones que resta el saldo de la opercuenta
-            CuentaOperacionHeredadaInversion().insertar(fecha, 29, 4, -importe, regInversion['inversione']+". Compra de acciones (Id. id_operinversiones)",id_cuentas,id_operinversiones,id_inversiones);
+            CuentaOperacionHeredadaInversion().insertar(fecha, 29, 4, -importe-comision, regInversion['inversione']+". Importe: " + str(importe)+". Comisión: " + str(comision)+ ". Impuestos: " + str(impuestos),id_cuentas,id_operinversiones,id_inversiones);
             #//Si hubiera comisi�n se a�ade la comisi�n.
-            if(comision!=0):
-                CuentaOperacionHeredadaInversion().insertar(con, fecha, 38, 1, -comision, regInversion['inversione']+". Comisión (Id. id_operinversiones)",id_cuentas,id_operinversiones,id_inversiones)
+#            if(comision!=0):
+#                CuentaOperacionHeredadaInversion().insertar(fecha, 38, 1, -comision, regInversion['inversione']+". Comisión (Id. id_operinversiones)",id_cuentas,id_operinversiones,id_inversiones)
         elif row['lu_tiposoperaciones']==5:#// Venta Acciones
             #//Se pone un registro de compra de acciones que resta el saldo de la opercuenta
-            CuentaOperacionHeredadaInversion().insertar(fecha, 35, 5, importe, regInversion['inversione']+". Venta de acciones (Id. id_operinversiones)",id_cuentas,id_operinversiones,id_inversiones);
+            CuentaOperacionHeredadaInversion().insertar(fecha, 35, 5, importe-comision-impuestos, regInversion['inversione']+". Importe: " + str(importe)+". Comisión: " + str(comision)+ ". Impuestos: " + str(impuestos),id_cuentas,id_operinversiones,id_inversiones);
             #//Si hubiera comisi�n se a�ade la comisi�n.
-            if(comision!=0):
-                CuentaOperacionHeredadaInversion().insertar( fecha, 38, 1, -comision, regInversion['inversione']+". Comisión (Id. id_operinversiones)",id_cuentas,id_operinversiones,id_inversiones);
+#            if(comision!=0):
+#                CuentaOperacionHeredadaInversion().insertar( fecha, 38, 1, -comision, regInversion['inversione']+". Comisión (Id. id_operinversiones)",id_cuentas,id_operinversiones,id_inversiones);
             #//Si hubiera pago de impuestos se pone
-            if(impuestos!=0):
-                CuentaOperacionHeredadaInversion().insertar(fecha, 37, 1, -impuestos, regInversion['inversione']+". Pago de impuestos (Id. id_operinversiones)",id_cuentas,id_operinversiones,id_inversiones);
+#            if(impuestos!=0):
+#                CuentaOperacionHeredadaInversion().insertar(fecha, 37, 1, -impuestos, regInversion['inversione']+". Pago de impuestos (Id. id_operinversiones)",id_cuentas,id_operinversiones,id_inversiones);
         elif row['lu_tiposoperaciones']==6:# // A�adido de Acciones
             #//Si hubiera comisi�n se a�ade la comisi�n.
             if(comision!=0):
-                CuentaOperacionHeredadaInversion().insertar(fecha, 38, 1, -comision, regInversion['inversione']+". Comisión (Id. id_operinversiones)",id_cuentas,id_operinversiones,id_inversiones);
+                CuentaOperacionHeredadaInversion().insertar(fecha, 38, 1, -comision-impuestos, regInversion['inversione']+". Importe: " + str(importe)+". Comisión: " + str(comision)+ ". Impuestos: " + str(impuestos), id_cuentas,id_operinversiones,id_inversiones);
             #//Si hubiera pago de impuestos se pone
-            if(impuestos!=0):
-                CuentaOperacionHeredadaInversion().insertar(fecha, 37, 1, -impuestos, regInversion['inversione']+". Pago de impuestos (Id. id_operinversiones)",id_cuentas,id_operinversiones,id_inversiones);
+#            if(impuestos!=0):
+#                CuentaOperacionHeredadaInversion().insertar(fecha, 37, 1, -impuestos, regInversion['inversione']+". Pago de impuestos (Id. id_operinversiones)",id_cuentas,id_operinversiones,id_inversiones);
 
   
     #/**
@@ -391,7 +391,6 @@ class Dividendo:
         
     def xultree(self, sql):
         sumsaldos=0
-        #sql="select id_dividendos, cuenta, fecha, liquido, inversione, entidadesbancaria from dividendos, inversiones, cuentas where cuentas.id_cuentas=inversiones.lu_cuentas and dividendos.lu_inversiones=inversiones.id_inversiones and dividendos.lu_inversiones="+str(id_inversiones) + " order by fecha;"
         curs=con.Execute(sql); 
         s=     '<vbox flex="1">\n'
         s=s+ '        <tree id="tree" flex="3" tooltiptext="Sólo se muestran los dividendos desde la primera operación actual, no desde la primera operación histórica">\n'
@@ -662,26 +661,21 @@ class InversionOperacion:
         except:
             return False
         InversionOperacionHistorica().actualizar (id_inversiones);
-            #FALTA##CuentaOperacionHeredadaInversion::actualizar_una_inversion(con,id_inversiones);//Es una inversion ya que la id_operinversion ya no existe. Se ha borrado
+        CuentaOperacionHeredadaInversion().actualizar_una_inversion(id_inversiones)#Es una inversion ya que la id_operinversion ya no existe. Se ha borrado
         return True
         
     def insertar(self,  fecha,  lu_tiposoperaciones,  importe, acciones,  impuestos,  comision,    comentario, valor_accion,  ma_inversiones):
         sql="insert into operinversiones(fecha,  lu_tiposoperaciones,  importe, acciones,  impuestos,  comision,    comentario, valor_accion,  ma_inversiones) values ('" + str(fecha) + "'," + str(lu_tiposoperaciones) +","+str(importe)+","+ str(acciones) +","+ str(impuestos) +","+ str(comision) +", '"+ str(comentario)+"', "+str(valor_accion)+","+ str(ma_inversiones)+');'
-        print(sql)
-        mylog(sql)
         try:
             con.Execute(sql);
         except:
-            print RuntimeError, TypeError, str(NameError), "error al insertar operinversión"
             return False
-        id_operinversiones=con.Execute("select currval('seq_operinversiones') as seq;").GetRowAssoc(0)["seq"]   
-        
-        mylog( "Insertado sin novedad " +  str(id_operinversiones))
+#        id_operinversiones=con.Execute("select currval('seq_operinversiones') as seq;").GetRowAssoc(0)["seq"]   
         #//Funcion que actualiza la tabla tmpoperinversiones para ver operinversiones activas
         InversionOperacionHistorica().actualizar (ma_inversiones)
         #//Se actualiza la operinversion una funci<F3>n en tmpinversionesheredada que se refleja en opercuentas.
-        #FALTRA####CuentaOperacionHeredadaInversion().actualizar_una_operacion(id_operinversiones)
-        ########return  id_operinversiones;
+#        CuentaOperacionHeredadaInversion().actualizar_una_operacion(id_operinversiones)
+        CuentaOperacionHeredadaInversion().actualizar_una_inversion(ma_inversiones)
         return True
         
     def referencia_ibex35(self, fecha):
@@ -860,8 +854,11 @@ class InversionOperacionTemporal:
     def fecha_primera_operacion(self,id_inversiones):
         sql="SELECT fecha  from tmpoperinversiones where ma_inversiones="+str(id_inversiones) + " order by fecha limit 1";
         curs=con.Execute(sql); 
-        row = curs.GetRowAssoc(0)   
-        return row['fecha'];    
+        if curs.RecordCount()>0:
+            row = curs.GetRowAssoc(0)   
+            return row['fecha'];    
+        else:
+            return None
 
     def insertar(self, ma_operinversiones,id_inversiones, fecha,acciones,lu_tiposoperaciones,importe,impuestos,comision,valor_accion):
         sql="insert into tmpoperinversiones (ma_operinversiones,ma_inversiones,fecha, acciones,lu_tiposoperaciones,importe,impuestos, comision, valor_accion) values ("+str(ma_operinversiones)+", "+str(id_inversiones)+",'"+str(fecha)+"',"+str(acciones)+", "+str(lu_tiposoperaciones)+","+str(importe)+","+str(impuestos)+","+str(comision)+", "+str(valor_accion)+")";
