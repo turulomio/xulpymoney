@@ -360,7 +360,7 @@ class CuentaOperacionHeredadaInversion:
 #     *
 #     *  \param con Conector a la base de datos.
 #     */
-    def actualizar_todas(con):
+    def actualizar_todas(self):
 #    //Borra la tabla tmpinversionesheredada
         sqldel="delete from tmpinversionesheredada";
         con.Execute(sqldel);
@@ -695,7 +695,16 @@ class InversionOperacionHistorica:
         i=0
         while (InversionOperacionHistorica().aux_quitando_negativos(id_inversiones)!=True):#Bucle recursivo.
             i=i+1
-            mylog ("Bucle i<p>")
+            
+    def actualizar_todas(self):
+#    //Se cogen todas las operaciones de inversiones de la base de datos
+        sql="SELECT * from inversiones";
+        curs=con.Execute(sql); 
+        while not curs.EOF:
+            row = curs.GetRowAssoc(0)   
+            self.actualizar(row['id_inversiones']);
+            curs.MoveNext()     
+        curs.Close()
 
 #/**
 # * Funci�n que auxiliar que utiliza actualizar y va quitando negativos de la tabla tmpoper

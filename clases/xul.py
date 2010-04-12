@@ -61,6 +61,7 @@ def menu():
     s=s +  '    <menu label="Mantenimiento">\n'
     s=s +  '      <menupopup>\n'
     s=s +  '        <menuitem label="Datos Ibex 35"  onclick="location=\'mantenimiento_ibex35.psp\';"  class="menuitem-iconic" image="images/history.png" />\n'
+    s=s +  '        <menuitem label="Operaciones de inversión"  onclick="location=\'mantenimiento_operinversiones.psp\';"  class="menuitem-iconic" image="images/history.png" />\n'
     s=s +  '      </menupopup>\n'
     s=s +  '    </menu>\n'    
     s=s +  '    <menu label="Ayuda">\n'

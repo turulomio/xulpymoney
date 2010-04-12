@@ -61,23 +61,23 @@ function insert(){
         </row>
         <row>
             <label id="negrita" value="Importe"/>
-            <textbox id="importe" value="10"/>
+            <textbox id="importe" value="0"/>
         </row>
         <row>
             <label id="negrita" value="Acciones"/>
-            <textbox id="acciones" value="1"/>
+            <textbox id="acciones" value="0"/>
         </row>
         <row>
             <label id="negrita" value="Impuestos"/>
-            <textbox id="impuestos" value="1"/>
+            <textbox id="impuestos" value="0"/>
         </row>
         <row>
             <label id="negrita" value="Comisión"/>
-            <textbox id="comision" value="1"/>
+            <textbox id="comision" value="0"/>
         </row>
         <row>
             <label id="negrita" value="Valor de la acción"/>
-            <textbox id="valor_accion" value="10"/>
+            <textbox id="valor_accion" value="0"/>
         </row>
     </rows>
 </grid>
