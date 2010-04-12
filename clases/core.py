@@ -1,4 +1,4 @@
-#-*- coding: UTF-8 -*- 
+# -*- coding: UTF-8 -*-
 import sys,  os
 sys.path.append("/usr/lib/xulpymoney/")
 import datetime,  math
@@ -275,6 +275,106 @@ class CuentaOperacion:
         curs.Close()
         return s
 
+#/**
+# * Clase parar trabajar con las opercuentas generadas automaticamente por los 
+# * movimientos de las inversiones
+# */
+class CuentaOperacionHeredadaInversion:
+    def insertar(self,  fecha, lu_conceptos, lu_tiposoperaciones, importe, comentario,id_cuentas,id_operinversiones,id_inversiones):
+        sql="insert into tmpinversionesheredada (fecha, lu_conceptos, lu_tiposoperaciones, importe, comentario,ma_cuentas, id_operinversiones,id_inversiones) values ('"+str(fecha)+"', "+str(lu_conceptos)+", "+str(lu_tiposoperaciones)+", "+str(importe)+", '"+str(comentario)+"' ,"+str(id_cuentas)+", "+str(id_operinversiones)+", "+str(id_inversiones)+")"
+        con.Execute(sql);
+
+#/**
+# * Esta funci�n actualiza la tabla tmpinversionesheredada que es una tabla temporal donde
+# * se almacenan las opercuentas automaticas por las operaciones con inversiones. Es una tabla
+# * que se puede actualizar en cualquier momento con esta funci�n
+# *
+# *  \param con Conector a la base de datos.
+# *  \param id_operinversiones Id de la operinversi�n
+# */
+    def actualizar_una_operacion(self,id_operinversiones):
+#    //Borra la tabla tmpinversionesheredada
+        sqldel="delete from tmpinversionesheredada where id_operinversiones=id_operinversiones";
+        resultdel=con.Execute(sqldel);
+        row = con.Execute('select * from operinversiones where id_operinversiones='+str(id_operinversiones)).GetRowAssoc(0)
+        fecha=row['fecha'];
+        importe=row['importe'];
+        id_inversiones=row['ma_inversiones'];
+        regInversion=Inversion().registro(id_inversiones);
+        id_cuentas=regInversion['lu_cuentas']
+        comision=row['comision'];
+        impuestos=row['impuestos'];
+      
+#        //Dependiendo del tipo de operaci�n se ejecuta una operaci�n u otra.
+        if row['lu_tiposoperaciones']==4:#Compra Acciones
+            #Se pone un registro de compra de acciones que resta el saldo de la opercuenta
+            CuentaOperacionHeredadaInversion().insertar(fecha, 29, 4, -importe, regInversion['inversione']+". Compra de acciones (Id. id_operinversiones)",id_cuentas,id_operinversiones,id_inversiones);
+            #//Si hubiera comisi�n se a�ade la comisi�n.
+            if(comision!=0):
+                CuentaOperacionHeredadaInversion().insertar(con, fecha, 38, 1, -comision, regInversion['inversione']+". Comisión (Id. id_operinversiones)",id_cuentas,id_operinversiones,id_inversiones)
+        elif row['lu_tiposoperaciones']==5:#// Venta Acciones
+            #//Se pone un registro de compra de acciones que resta el saldo de la opercuenta
+            CuentaOperacionHeredadaInversion().insertar(fecha, 35, 5, importe, regInversion['inversione']+". Venta de acciones (Id. id_operinversiones)",id_cuentas,id_operinversiones,id_inversiones);
+            #//Si hubiera comisi�n se a�ade la comisi�n.
+            if(comision!=0):
+                CuentaOperacionHeredadaInversion().insertar( fecha, 38, 1, -comision, regInversion['inversione']+". Comisión (Id. id_operinversiones)",id_cuentas,id_operinversiones,id_inversiones);
+            #//Si hubiera pago de impuestos se pone
+            if(impuestos!=0):
+                CuentaOperacionHeredadaInversion().insertar(fecha, 37, 1, -impuestos, regInversion['inversione']+". Pago de impuestos (Id. id_operinversiones)",id_cuentas,id_operinversiones,id_inversiones);
+        elif row['lu_tiposoperaciones']==6:# // A�adido de Acciones
+            #//Si hubiera comisi�n se a�ade la comisi�n.
+            if(comision!=0):
+                CuentaOperacionHeredadaInversion().insertar(fecha, 38, 1, -comision, regInversion['inversione']+". Comisión (Id. id_operinversiones)",id_cuentas,id_operinversiones,id_inversiones);
+            #//Si hubiera pago de impuestos se pone
+            if(impuestos!=0):
+                CuentaOperacionHeredadaInversion().insertar(fecha, 37, 1, -impuestos, regInversion['inversione']+". Pago de impuestos (Id. id_operinversiones)",id_cuentas,id_operinversiones,id_inversiones);
+
+  
+    #/**
+    # * Esta funci�n actualiza la tabla tmpinversionesheredada que es una tabla temporal donde
+    # * se almacenan las opercuentas automaticas por las operaciones con inversiones. Es una tabla
+    # * que se puede actualizar en cualquier momento con esta funci�n
+    # *
+    # *  \param con Conector a la base de datos.
+    # *  \param id_inversiones Id de la inversi�n
+    # */
+    def actualizar_una_inversion(self,id_inversiones):
+#    //Borra la tabla tmpinversionesheredada
+        sqldel="delete from tmpinversionesheredada where id_inversiones="+str(id_inversiones)
+        con.Execute(sqldel);
+
+#    //Se cogen todas las operaciones de inversiones de la base de datos
+        sql="SELECT * from operinversiones where ma_inversiones="+str(id_inversiones)
+        curs=con.Execute(sql); 
+        while not curs.EOF:
+            row = curs.GetRowAssoc(0)   
+            CuentaOperacionHeredadaInversion().actualizar_una_operacion(row['id_operinversiones']);
+            curs.MoveNext()     
+        curs.Close()
+
+
+#    /**
+#     * Esta funci�n actualiza la tabla tmpinversionesheredada que es una tabla temporal donde
+#     * se almacenan las opercuentas automaticas por las operaciones con inversiones. Es una tabla
+#     * que se puede actualizar en cualquier momento con esta funci�n
+#     *
+#     *  \param con Conector a la base de datos.
+#     */
+    def actualizar_todas(con):
+#    //Borra la tabla tmpinversionesheredada
+        sqldel="delete from tmpinversionesheredada";
+        con.Execute(sqldel);
+
+#    //Se cogen todas las operaciones de inversiones de la base de datos
+        sql="SELECT * from operinversiones";
+        curs=con.Execute(sql); 
+        while not curs.EOF:
+            row = curs.GetRowAssoc(0)   
+            CuentaOperacionHeredadaInversion().actualizar_una_operacion(row['id_operinversiones']);
+            curs.MoveNext()     
+        curs.Close()
+
+
 
 class Dividendo:
     def suma_liquido_todos(self, inicio,final):
@@ -386,7 +486,18 @@ class Inversion:
         if tpcvariable==100:
             return "P. Pensiones e inversiones hasta un 100% en renta variable y acciones"
         return None
-        
+            
+    def numero_acciones(self, id_inversiones, fecha):
+        resultado=0;
+        sql="SELECT Acciones from operinversiones where ma_Inversiones="+str(id_inversiones)+" and fecha<='"+str(fecha)+"'"
+        curs=con.Execute(sql); 
+        while not curs.EOF:
+            row = curs.GetRowAssoc(0)   
+            resultado=resultado+ row['acciones']
+            curs.MoveNext()     
+        curs.Close()
+        return resultado
+
     def registro(self, id_inversiones):
         sql="select * from inversiones where id_inversiones="+ str(id_inversiones)
         curs=con.Execute(sql); 
@@ -543,30 +654,120 @@ class InversionActualizacion:
         return s        
 
 class InversionOperacion:
-    def borrar(self,  id_operinversion):
-        sql="delete from operinversiones where id_operinversiones="+ str(id_operinversion);
-        try:
-            con.Execute(sql);
-        except:
-            return False
-        return True
-        
-    def insertar(self,  fecha,  lu_tiposoperaciones,  importe, acciones,  impuestos,  comision,    comentario, valor_accion,  ma_inversiones):
-        sql="insert into operinversiones(fecha,  lu_tiposoperaciones,  importe, acciones,  impuestos,  comision,    comentario, valor_accion,  ma_inversiones) values ('" + fecha + "'," + str(lu_tiposoperaciones) +","+str(importe)+","+ str(acciones) +","+ str(impuestos) +","+ str(comision) +", '"+comentario+"', "+str(valor_accion)+","+ str(ma_inversiones)+');'
+    def borrar(self,  id_operinversiones,  id_inversiones):
+        sql="delete from operinversiones where id_operinversiones="+ str(id_operinversiones);
         mylog(sql)
         try:
             con.Execute(sql);
         except:
             return False
+        InversionOperacionHistorica().actualizar (id_inversiones);
+            #FALTA##CuentaOperacionHeredadaInversion::actualizar_una_inversion(con,id_inversiones);//Es una inversion ya que la id_operinversion ya no existe. Se ha borrado
+        return True
+        
+    def insertar(self,  fecha,  lu_tiposoperaciones,  importe, acciones,  impuestos,  comision,    comentario, valor_accion,  ma_inversiones):
+        sql="insert into operinversiones(fecha,  lu_tiposoperaciones,  importe, acciones,  impuestos,  comision,    comentario, valor_accion,  ma_inversiones) values ('" + str(fecha) + "'," + str(lu_tiposoperaciones) +","+str(importe)+","+ str(acciones) +","+ str(impuestos) +","+ str(comision) +", '"+ str(comentario)+"', "+str(valor_accion)+","+ str(ma_inversiones)+');'
+        print(sql)
+        mylog(sql)
+        try:
+            con.Execute(sql);
+        except:
+            print RuntimeError, TypeError, str(NameError), "error al insertar operinversión"
+            return False
+        id_operinversiones=con.Execute("select currval('seq_operinversiones') as seq;").GetRowAssoc(0)["seq"]   
+        
+        mylog( "Insertado sin novedad " +  str(id_operinversiones))
+        #//Funcion que actualiza la tabla tmpoperinversiones para ver operinversiones activas
+        InversionOperacionHistorica().actualizar (ma_inversiones)
+        #//Se actualiza la operinversion una funci<F3>n en tmpinversionesheredada que se refleja en opercuentas.
+        #FALTRA####CuentaOperacionHeredadaInversion().actualizar_una_operacion(id_operinversiones)
+        ########return  id_operinversiones;
         return True
         
     def referencia_ibex35(self, fecha):
-        sql="select cierre from ibex35 where fecha='"+str(fecha) + "'"
+        sql="select cierre from ibex35 where fecha<='"+str(fecha) + "' limit 1"
         curs=con.Execute(sql)
         row = curs.GetRowAssoc(0)   
         return row['cierre']
 
 class InversionOperacionHistorica:
+    def actualizar(self, id_inversiones):
+        #Borra las tmpooperinversiones de la inversión que existan
+        sql="delete from tmpoperinversioneshistoricas where ma_inversiones="+str(id_inversiones)
+        curs=con.Execute(sql)
+        sql="delete from tmpoperinversiones where ma_Inversiones="+str(id_inversiones)
+        curs=con.Execute(sql)
+        InversionOperacionHistorica().aux_copiando_operinversiones_a_tmpoperinversiones(id_inversiones)
+        i=0
+        while (InversionOperacionHistorica().aux_quitando_negativos(id_inversiones)!=True):#Bucle recursivo.
+            i=i+1
+            mylog ("Bucle i<p>")
+
+#/**
+# * Funci�n que auxiliar que utiliza actualizar y va quitando negativos de la tabla tmpoper
+# * inversiones de forma recursiva hasta que no quede ninguno. Mientras se van insertando en
+# * tmpoperi0nverhistoricos.
+# *
+# * Devuelve false si hay negativos y true si ya no hay.
+# *
+# * OJO DEBE ESTAR MUY BIEN LOS DECIMALES O PETARA.
+# */
+    def aux_quitando_negativos(self,id_inversiones):
+        #Mira si hay negativos y sino sale
+        sqlneg="SELECT * from tmpoperinversiones where ma_Inversiones="+str(id_inversiones)+" and acciones <0 order by fecha";
+        resultneg=con.Execute(sqlneg)
+        if resultneg.RecordCount()==0: #Por si no hubiera negativos
+            return True;
+  
+        rowneg= resultneg.GetRowAssoc(0)   
+        accionesneg=rowneg['acciones'];
+        actuventa=rowneg['valor_accion'];
+    
+        sqlpos="select * from tmpoperinversiones where ma_Inversiones="+str(id_inversiones)+" and acciones >0 order by fecha";
+        resultpos=con.Execute(sqlpos)
+        accionespos=0;
+        while not resultpos.EOF:
+            rowpos = resultpos.GetRowAssoc(0)   
+            accionespos=rowpos['acciones'];
+            dif=accionespos-(-accionesneg);
+            if dif>=-0.1 and dif<=0.1: #Si es 0 se inserta el historico que coincide con la venta y se borra el registro negativo
+                InversionOperacionHistorica().insertar( rowneg['ma_operinversiones'], rowpos['fecha'], rowneg['fecha'], rowneg['lu_tiposoperaciones'], rowneg['ma_inversiones'], accionesneg, -accionesneg*actuventa, rowneg['impuestos'], rowneg['comision'], rowpos['valor_accion'], rowneg['valor_accion'])#; //Se pone acciones neg porque puede venir de <0.
+                InversionOperacionTemporal().borrar(rowneg["id_tmpoperinversiones"]);
+                InversionOperacionTemporal().borrar(rowpos["id_tmpoperinversiones"]);
+                break
+            elif dif<-0.1:#   //Si es <0 es decir hay más acciones negativas que positivas. Se debe introducir en el historico la tmpoperinversion y borrarlo y volver a recorrer el bucle. Restando a accionesneg las acciones ya apuntadas en el historico
+                InversionOperacionHistorica().insertar( rowpos['ma_operinversiones'], rowpos['fecha'], rowneg['fecha'], rowneg['lu_tiposoperaciones'], rowpos['ma_inversiones'], -rowpos['acciones'],  rowpos['acciones']*actuventa, rowneg['impuestos'], rowneg['comision'],rowpos['valor_accion'], rowneg['valor_accion']);
+                InversionOperacionTemporal().borrar(rowpos["id_tmpoperinversiones"]);
+                accionesneg=accionesneg+accionespos#ya que accionesneg es negativo
+            elif(dif>0.1):# //Cuando es >0 es decir hay mas acciones positivos se a�ade el registro en el historico con los datos de la operaci�n negativa en su totalidad. Se borra el registro de negativos y de positivos en tmpoperinversiones y se inserta uno con los datos positivos menos lo quitado por el registro negativo. Y se sale del bucle. //Aqu� no se insert la comisi�n porque solo cuando se acaba las acciones positivos   
+                InversionOperacionHistorica().insertar( rowpos['ma_operinversiones'], rowpos['fecha'], rowneg['fecha'], rowneg['lu_tiposoperaciones'], rowneg['ma_inversiones'], accionesneg, -accionesneg*actuventa, rowneg['impuestos'], rowneg['comision'],rowpos['valor_accion'], rowneg['valor_accion'])#;//Se pone acciones neg porque puede venir de <0.
+                InversionOperacionTemporal().borrar(rowpos["id_tmpoperinversiones"]);
+                InversionOperacionTemporal().borrar(rowneg["id_tmpoperinversiones"]);
+                InversionOperacionTemporal().insertar(rowpos['ma_operinversiones'],rowpos['ma_inversiones'], rowpos['fecha'], rowpos['acciones']-(-accionesneg), rowpos['lu_tiposoperaciones'],(rowpos['acciones']-(-accionesneg))*actuventa,0,0,rowpos['valor_accion']);
+                break;
+            resultpos.MoveNext()     
+        resultpos.Close()
+        #Mira si hay negativos y sino sale debe hacerse otra vez porque aveces se inserta un negativo
+        sqlneg="SELECT * from tmpoperinversiones where ma_Inversiones="+str(id_inversiones)+" and acciones <0 order by fecha";
+        resultneg=con.Execute(sqlneg)   
+        if resultneg.RecordCount()==0:#Para ver si era el ultimo
+            return True;
+        else: 
+            return False;
+
+#/**
+# * Funci�n que auxiliar que utiliza actualizar y copia la tabla operinversiona a tmpoper
+# * inversiones para luego trabajaor con ellos.
+# */
+    def aux_copiando_operinversiones_a_tmpoperinversiones(self, id_inversiones):
+        sql="SELECT * from operinversiones where ma_Inversiones="+str(id_inversiones)+" order by fecha";
+        curs=con.Execute(sql); 
+        while not curs.EOF:
+            row = curs.GetRowAssoc(0)   
+            InversionOperacionTemporal().insertar(row['id_operinversiones'],row['ma_inversiones'], row['fecha'],row['acciones'],row['lu_tiposoperaciones'],row['importe'],row['impuestos'],row['comision'],row['valor_accion']);
+            curs.MoveNext()     
+        curs.Close()
+
     def consolidado_total_mensual(self, ano,  mes):
         resultado=0;
         sql="SELECT * from tmpoperinversioneshistoricas where date_part('year',fecha_venta)="+str(ano)+" and date_part('month',fecha_venta)="+ str(mes);
@@ -578,6 +779,13 @@ class InversionOperacionHistorica:
             curs.MoveNext()     
         curs.Close()
         return resultado
+
+    def insertar(self, ma_operinversiones,fecha_inicio, fecha_venta, lu_tiposoperaciones, id_inversiones, acciones, importe, impuestos, comision, valor_accion_compra, valor_accion_venta):
+# id_cuentas=Inversion::id_cuentas(con, id_inversiones);
+# nombre_inversion=Inversion::nombre(con,id_inversiones);
+        sql="insert into tmpoperinversioneshistoricas (fecha_inicio, fecha_venta,ma_operinversiones, lu_tiposoperaciones, ma_inversiones, acciones, importe, impuestos, comision, valor_accion_compra, valor_accion_venta) values ('"+str(fecha_inicio)+"', '"+str(fecha_venta)+"', "+str(ma_operinversiones)+", "+str(lu_tiposoperaciones)+", "+str(id_inversiones)+", "+str(acciones)+", "+str(importe)+", "+str(impuestos)+", "+str(comision)+", "+str(valor_accion_compra)+", "+str(valor_accion_venta)+")";
+        curs=con.Execute(sql); 
+        
     def rendimiento_total(self, id_tmpoperinversioneshistoricas):
         """
             Si primera es 0 por ejempleo acciones de ampliaciones de capital que no cuestan nada devuelve 100
@@ -606,9 +814,9 @@ class InversionOperacionHistorica:
         sumimporte=0;
         curs=con.Execute(sql); 
         s=     '<vbox flex="1">\n'
-        s=s+ '        <tree id="tree" flex="3" context="treepopup"  onselect="tree_getid();">\n'
+        s=s+ '        <tree id="treeIOH" flex="3" context="treepopup" >\n'
         s=s+ '          <treecols>\n'
-        s=s+ '    <treecol label="Id" flex="1" hidden="true"/>\n'
+        s=s+ '    <treecol id="id" label="id" flex="1" hidden="true"/>\n'
         s=s+ '    <treecol label="Fecha" flex="1"  style="text-align: center"/>\n'
         s=s+ '    <treecol label="Acciones" flex="1" style="text-align: right" />\n'
         s=s+ '    <treecol label="Valor compra" flex="1" style="text-align: right"/>\n'
@@ -645,11 +853,19 @@ class InversionOperacionHistorica:
         
 
 class InversionOperacionTemporal:
+    def borrar(self, id_tmpoperinversiones):
+        sql="delete from tmpoperinversiones where id_tmpoperinversiones="+str(id_tmpoperinversiones)
+        curs=con.Execute(sql); 
+
     def fecha_primera_operacion(self,id_inversiones):
         sql="SELECT fecha  from tmpoperinversiones where ma_inversiones="+str(id_inversiones) + " order by fecha limit 1";
         curs=con.Execute(sql); 
         row = curs.GetRowAssoc(0)   
         return row['fecha'];    
+
+    def insertar(self, ma_operinversiones,id_inversiones, fecha,acciones,lu_tiposoperaciones,importe,impuestos,comision,valor_accion):
+        sql="insert into tmpoperinversiones (ma_operinversiones,ma_inversiones,fecha, acciones,lu_tiposoperaciones,importe,impuestos, comision, valor_accion) values ("+str(ma_operinversiones)+", "+str(id_inversiones)+",'"+str(fecha)+"',"+str(acciones)+", "+str(lu_tiposoperaciones)+","+str(importe)+","+str(impuestos)+","+str(comision)+", "+str(valor_accion)+")";
+        curs=con.Execute(sql); 
 
     def pendiente_consolidar(self, id_tmpoperinversiones,id_inversiones,fecha):
         sql="SELECT acciones,valor_accion  from tmpoperinversiones where id_tmpoperinversiones="+str(id_tmpoperinversiones);
@@ -725,7 +941,10 @@ class InversionOperacionTemporal:
             s=s+ '    </treeitem>\n'
             curs.MoveNext()     
         curs.Close()
-        valormedio=sumactualizacionesxacciones/sumacciones
+        if sumacciones>0:
+            valormedio=sumactualizacionesxacciones/sumacciones
+        else:
+            valormedio=0
         s=s+ '  </treechildren>\n'
         s=s+ '</tree>\n'
         
@@ -775,27 +994,27 @@ class InversionOperacionTemporal:
         return s
     
     def actualizar(self, id_inversiones):
-        sql="delete from tmpoperinversiones where ma_Inversiones=id_inversiones;";
-        curs=con.Execute(sql); 
-        sql="delete from tmpoperinversioneshistoricas where ma_Inversiones=id_inversiones;";
-        curs=con.Execute(sql); 
+        sql="delete from tmpoperinversiones where ma_Inversiones="+ str(id_inversiones)+";"
+        curs=con.Execute(sql)
+        sql="delete from tmpoperinversioneshistoricas where ma_Inversiones="+str(id_inversiones)+";"
+        curs=con.Execute(sql)
         #Calculo el número de acciones con un sum de las acciones
-        numeroacciones=Inversion().numero_acciones(id_inversiones,hoy());
+        numeroacciones=Inversion().numero_acciones(id_inversiones,datetime.date.today())
         #Voy recorriendo el array y a ese total le voy restando las positivas por orden de fecha descendente y las voy insertando en tmpooperinversiones
-        sql="SELECT * from operinversiones where ma_Inversiones=id_inversiones and acciones >=0 order by fecha desc";
+        sql="SELECT * from operinversiones where ma_Inversiones="+str(id_inversiones)+" and acciones >=0 order by fecha desc";
         curs=con.Execute(sql); 
         while not curs.EOF: #Cuando llega a <=0 me paro
             row = curs.GetRowAssoc(0)       
             numeroacciones=numeroacciones-row['acciones'];
             if (numeroacciones==0.0):   #Si es 0 queda como está
-                InversionOperacionTemporal().insertar(con,row["id_operinversiones"],row["ma_inversiones"], row["fecha"],row["acciones"],row['lu_tipos_operaciones'],row['importe'],row['impuestos'],row['comision'],row['valor_accion'])
+                InversionOperacionTemporal().insertar(row["id_operinversiones"],row["ma_inversiones"], row["fecha"],row["acciones"],row['lu_tiposoperaciones'],row['importe'],row['impuestos'],row['comision'],row['valor_accion'])
                 break;
             else:
                 if numeroacciones<0:   #Si es <0 le sumo le quito al numero de acciones de esa inversión la parte negativa
-                    InversionOperacionTemporal().insertar(con,row['id_operinversiones'],row['ma_inversiones'], row['fecha'],row['acciones']+numeroacciones,row['lu_tipos_operaciones'],row['importe'],row['impuestos'],row['comision'],row['valor_accion']);
+                    InversionOperacionTemporal().insertar(row['id_operinversiones'],row['ma_inversiones'], row['fecha'],row['acciones']+numeroacciones,row['lu_tiposoperaciones'],row['importe'],row['impuestos'],row['comision'],row['valor_accion']);
                     break;
                 else: #Cuando es >0
-                    InversionOperacionTemporal().insertar(con,row["id_operinversiones"],row["ma_inversiones"], row["fecha"],row["acciones"],row['lu_tipos_operaciones'],row['importe'],row['impuestos'],row['comision'],row['valor_accion'])
+                    InversionOperacionTemporal().insertar(row["id_operinversiones"],row["ma_inversiones"], row["fecha"],row["acciones"],row['lu_tiposoperaciones'],row['importe'],row['impuestos'],row['comision'],row['valor_accion'])
             curs.MoveNext()     
         curs.Close()
 
@@ -853,7 +1072,7 @@ class InversionOperacionTemporalRendimiento:
 
 class InversionRendimiento:
     def personal_anual(self, id_inversiones,ano):
-#        if (InversionOperacionTemporal::count(con,id_inversiones)==0) return 0;
+#        if (InversionOperacionTemporal().count(id_inversiones)==0) return 0;
         sumatorioAccionesXRendimiento=0; #//Almacena el producto de Saldo de la Operación por su rendimiento.
         sumatorioAcciones=0.0001; #//Almacena la suma de Saldos
         sql="SELECT id_tmpoperinversiones, acciones  from tmpoperinversiones where ma_Inversiones="+ str(id_inversiones)
@@ -1276,5 +1495,5 @@ class Total:
 
 def mylog(text):
     f=open("/tmp/xulpymoney.log","a")
-    f.write(text + "\n")
+    f.write(str(datetime.datetime.now()) + " " + text + "\n")
     f.close()
