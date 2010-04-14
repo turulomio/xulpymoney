@@ -21,21 +21,25 @@ Total().grafico_evolucion_total()
 tgastos=0
 tingresos=0
 tconsolidado=0
+tdividendos=0
 gastos=[]
 ingresos=[]
 gi=[]
 consolidado=[]
+dividendos=[]
 for i in range(12):
     #//En gastos se introduce los gastos míos los gastos de facturación de tarjeta
     gastos.append(Total().saldo_por_tipo_operacion(cmbanos,i+1,1)+Total().saldo_por_tipo_operacion (cmbanos,i+1, 7))
-    ingresos.append(Total().saldo_por_tipo_operacion(cmbanos,i+1,2))
-    gi.append(ingresos[i]+gastos[i])
+    dividendos.append(Dividendo().obtenido_mensual(cmbanos, i+1))
+    ingresos.append(Total().saldo_por_tipo_operacion(cmbanos,i+1,2)-dividendos[i]) #Se quitan los dividendos que luego se suman
+    gi.append(ingresos[i]+dividendos[i]+gastos[i])
     consolidado.append(InversionOperacionHistorica().consolidado_total_mensual(cmbanos,i+1))
-    
     #Totales
     tgastos=tgastos+gastos[i];
-    tingresos=tingresos+ingresos[i];
+    tdividendos=tdividendos+dividendos[i]
+    tingresos=tingresos+ingresos[i]
     tconsolidado=tconsolidado+consolidado[i];
+    tdividendos=tdividendos+dividendos[i]
 
 mesactual=datetime.date.today().month
 cuentas=[]
@@ -82,7 +86,7 @@ con.close()
 
 <tree id="informegi" flex="1">
   <treecols>
-    <treecol id="concepto" label="Concepto " flex="1"  style="text-align: left"/>
+    <treecol id="concepto" label="Concepto " flex="2"  style="text-align: left"/>
     <treecol label="Enero     " flex="1" style="text-align: right"/>
     <treecol label="Febrero   " flex="1" style="text-align: right"/>
     <treecol label="Marzo     " flex="1" style="text-align: right"/>
@@ -98,6 +102,31 @@ con.close()
     <treecol label="Total     " flex="1" style="text-align: right"/>
   </treecols>
   <treechildren>
+
+    <treeitem>
+      <treerow>
+         <treecell label="Ingresos" />
+<%
+for i in range(12):
+    req.write( treecell_euros(ingresos[i]))
+req.write( treecell_euros(tingresos))
+%>
+      </treerow>
+    </treeitem>    
+
+
+    <treeitem>
+      <treerow>
+         <treecell label="Dividendos" />
+<%
+for i in range(12):
+    req.write( treecell_euros(dividendos[i]))
+req.write( treecell_euros(tdividendos))
+%>
+      </treerow>
+    </treeitem>    
+
+
     <treeitem>
       <treerow>
          <treecell label="Gastos" />
@@ -108,19 +137,11 @@ req.write( treecell_euros(tgastos))
 %>
       </treerow>
     </treeitem>    
+
+
     <treeitem>
       <treerow>
-         <treecell label="Ingresos" />
-<%
-for i in range (12):
-    req.write( treecell_euros(ingresos[i]))
-req.write( treecell_euros(tingresos))
-%>
-      </treerow>
-    </treeitem>    
-    <treeitem>
-      <treerow>
-         <treecell label="Gastos - Ingresos" />
+         <treecell label="I + D - G" />
 <%
 for i in range(12):
     req.write( treecell_euros(gi[i]))
@@ -128,6 +149,13 @@ req.write( treecell_euros(tingresos+tgastos))
 %>
       </treerow>
     </treeitem>    
+
+    
+    <treeitem>
+      <treerow>
+      </treerow>
+    </treeitem>    
+
     <treeitem>
       <treerow>
          <treecell label="Consolidado" />
@@ -140,6 +168,8 @@ req.write( treecell_euros(tconsolidado))
     </treeitem>    
   </treechildren>
 </tree>
+
+
 </vbox>
 <vbox  flex="5">
 <label id="titulo" value="Posición total" />

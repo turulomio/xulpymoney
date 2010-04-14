@@ -377,6 +377,18 @@ class CuentaOperacionHeredadaInversion:
 
 
 class Dividendo:
+    def obtenido_mensual(self, ano,  mes):
+        """Dividendo cobrado en un año y mes pasado como parámetro, independientemente de si la inversión esta activa o no"""
+        sql="select sum(liquido) as liquido from dividendos where date_part('year',fecha) = "+str(ano)+" and date_part('month',fecha)= " + str(mes)
+        curs=con.Execute(sql); 
+        row = curs.GetRowAssoc(0)   
+        curs.Close()
+        if row['liquido']==None:
+            resultado=0
+        else:
+            resultado=float(row['liquido'])
+        return resultado
+        
     def suma_liquido_todos(self, inicio,final):
         sql="select sum(liquido) as suma from dividendos where fecha between '"+inicio+"' and '"+final+"';"
         curs = con.Execute(sql); 
@@ -393,7 +405,14 @@ class Dividendo:
         sumsaldos=0
         curs=con.Execute(sql); 
         s=     '<vbox flex="1">\n'
-        s=s+ '        <tree id="tree" flex="3" tooltiptext="Sólo se muestran los dividendos desde la primera operación actual, no desde la primera operación histórica">\n'
+        s= s+ '<popupset>\n'
+        s= s+ '<popup id="treepopup" >\n'   
+        s= s+ '    <menuitem label="Nuevo dividendo" oncommand="location=\'dividendo_insertar.psp?id_inversiones=\' + id_inversiones;"  class="menuitem-iconic"  image="images/hotsync.png" />\n'
+        s= s+ '    <menuitem label="Modificar la inversión"  oncommand="location=\'inversion_modificar.psp?id_inversiones=\' + id_inversiones;"   class="menuitem-iconic"  image="images/edit.png" />\n'
+        s= s+ '<menuitem label="Estudio de la inversión"  oncommand="location=\'inversion_informacion.psp?id_inversiones=\' + id_inversiones;"  class="menuitem-iconic"  image="images/toggle_log.png" />\n'
+        s= s+ '</popup>\n'
+        s= s+ '</popupset>\n'
+        s=s+ '        <tree id="treeDiv" flex="3" tooltiptext="Sólo se muestran los dividendos desde la primera operación actual, no desde la primera operación histórica">\n'
         s=s+ '          <treecols>\n'
         s=s+ '    <treecol label="Fecha" flex="1"  style="text-align: center"/>\n'
         s=s+ '    <treecol label="Cuenta cobro" flex="2" style="text-align: left" />\n'
