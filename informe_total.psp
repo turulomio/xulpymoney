@@ -18,28 +18,24 @@ else:
 #Actualiza imagen
 Total().grafico_evolucion_total()
 
-tgastos=0
-tingresos=0
-tconsolidado=0
-tdividendos=0
-gastos=[]
-ingresos=[]
-gi=[]
-consolidado=[]
-dividendos=[]
+#Todos estos arrays tienen de indices 0..11 los 12 meses y el 12 la suma
+gastos=[0]*13
+ingresos=[0]*13
+gi=[0]*13
+consolidado=[0]*13
+dividendos=[0]*13
 for i in range(12):
-    #//En gastos se introduce los gastos míos los gastos de facturación de tarjeta
-    gastos.append(Total().saldo_por_tipo_operacion(cmbanos,i+1,1)+Total().saldo_por_tipo_operacion (cmbanos,i+1, 7))
-    dividendos.append(Dividendo().obtenido_mensual(cmbanos, i+1))
-    ingresos.append(Total().saldo_por_tipo_operacion(cmbanos,i+1,2)-dividendos[i]) #Se quitan los dividendos que luego se suman
-    gi.append(ingresos[i]+dividendos[i]+gastos[i])
-    consolidado.append(InversionOperacionHistorica().consolidado_total_mensual(cmbanos,i+1))
-    #Totales
-    tgastos=tgastos+gastos[i];
-    tdividendos=tdividendos+dividendos[i]
-    tingresos=tingresos+ingresos[i]
-    tconsolidado=tconsolidado+consolidado[i];
-    tdividendos=tdividendos+dividendos[i]
+    gastos[i]=Total().saldo_por_tipo_operacion(cmbanos,i+1,1)+Total().saldo_por_tipo_operacion (cmbanos,i+1, 7)#Gastos + Facturación de tarjeta
+    dividendos[i]=Dividendo().obtenido_mensual(cmbanos, i+1)
+    ingresos[i]=Total().saldo_por_tipo_operacion(cmbanos,i+1,2)-dividendos[i] #Se quitan los dividendos que luego se suman
+    consolidado[i]=InversionOperacionHistorica().consolidado_total_mensual(cmbanos,i+1)
+    gi[i]=ingresos[i]+dividendos[i]+consolidado[i]+gastos[i]
+
+    gastos[12]=gastos[12]+gastos[i];
+    dividendos[12]=dividendos[12]+dividendos[i]
+    ingresos[12]=ingresos[12]+ingresos[i]
+    consolidado[12]=consolidado[12]+consolidado[i];
+    gi[12]=gi[12]+gi[i]
 
 mesactual=datetime.date.today().month
 cuentas=[]
@@ -107,9 +103,9 @@ con.close()
       <treerow>
          <treecell label="Ingresos" />
 <%
-for i in range(12):
+for i in range(13):
     req.write( treecell_euros(ingresos[i]))
-req.write( treecell_euros(tingresos))
+print
 %>
       </treerow>
     </treeitem>    
@@ -117,11 +113,22 @@ req.write( treecell_euros(tingresos))
 
     <treeitem>
       <treerow>
+         <treecell label="Consolidado" />
+<%
+for i in range(13):
+    req.write( treecell_euros(consolidado[i]))
+print
+%>
+      </treerow>
+    </treeitem>    
+
+    <treeitem>
+      <treerow>
          <treecell label="Dividendos" />
 <%
-for i in range(12):
+for i in range(13):
     req.write( treecell_euros(dividendos[i]))
-req.write( treecell_euros(tdividendos))
+print
 %>
       </treerow>
     </treeitem>    
@@ -131,21 +138,9 @@ req.write( treecell_euros(tdividendos))
       <treerow>
          <treecell label="Gastos" />
 <%
-for  i in range(12):
+for  i in range(13):
     req.write( treecell_euros(gastos[i]))
-req.write( treecell_euros(tgastos))
-%>
-      </treerow>
-    </treeitem>    
-
-
-    <treeitem>
-      <treerow>
-         <treecell label="I + D - G" />
-<%
-for i in range(12):
-    req.write( treecell_euros(gi[i]))
-req.write( treecell_euros(tingresos+tgastos))
+print
 %>
       </treerow>
     </treeitem>    
@@ -154,18 +149,19 @@ req.write( treecell_euros(tingresos+tgastos))
     <treeitem>
       <treerow>
       </treerow>
-    </treeitem>    
+    </treeitem>   
 
     <treeitem>
       <treerow>
-         <treecell label="Consolidado" />
+         <treecell label="I + D + C - G" />
 <%
-for i in range(12):
-    req.write( treecell_euros(consolidado[i]))
-req.write( treecell_euros(tconsolidado))
+for i in range(13):
+    req.write( treecell_euros(gi[i]))
+print
 %>
       </treerow>
     </treeitem>    
+ 
   </treechildren>
 </tree>
 

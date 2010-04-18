@@ -27,9 +27,18 @@ f.close()
 
 
 n=len(arr)-1
-con.Execute ("insert into ibex35 (fecha, cierre, diff) values ('" + arr[n][0] + "', " + str(arr[n][1]) + ", "+ str(arr[n][2])+ ");")
+
+#genera un fichero fecha;cierre;diff
+f=open("/tmp/ibex35.mod.csv","w")
+#necesita un primer registro para calcular la diferencia
+s= arr[n][0] + ";" + str(arr[n][1]) + ";"+ str(arr[n][2])+ "\n"
+#genera un fichero fecha;cierre;diff
 for i in range(0,n):
 	arr[n-1-i]=(arr[n-1-i][0], arr[n-1-i][1], arr[n-1-i][1]-arr[n-i][1])
-        con.Execute ("insert into ibex35 (fecha, cierre, diff) values ('" + arr[n-1-i][0] + "', " + str(arr[n-1-i][1]) + ", "+ str(arr[n-1-i][2])+ ");")
+	s=s + arr[n-1-i][0] + ";" + str(arr[n-1-i][1]) + ";"+ str(arr[n-1-i][2])+ "\n"
+f.write(s)
+f.close()
+os.system("chmod 666 /tmp/ibex35.mod.csv")
+con.Execute("COPY ibex35 FROM '/tmp/ibex35.mod.csv' USING DELIMITERS ';';")
 con.Close()
 print "  - Se han añadido", len (arr), "registros"

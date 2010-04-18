@@ -14,6 +14,8 @@ else:
 
 req.content_type="application/vnd.mozilla.xul+xml"
 req.write(xulheaderwindowmenu("Listado de operaciones con tarjeta"))
+
+nombreTarjeta=c.con.Execute("select tarjeta from tarjetas where id_tarjetas="+ str(id_tarjetas)).GetRowAssoc(0)["tarjeta"]   
 %>
 
 <script><![CDATA[
@@ -66,6 +68,7 @@ function tree_getid(){
 
 <vbox align="center">
    <label id="titulo"  value="Listado de operaciones con tarjeta" />
+  <label id="subtitulo" flex="0" value="<%=nombreTarjeta%>" />
 </vbox>
 <vbox flex="1">
     <tree id="tree" flex="8"  context="treepopup"  onselect="tree_getid();">
