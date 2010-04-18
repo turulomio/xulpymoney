@@ -64,9 +64,7 @@ class Banco:
 
 
 class Conection:
-    """
-        Funciona para no tener que pasar con a las funciones de core, pero no funciona en conexiones directas desde un psp
-    """
+    """Funciona para no tener que pasar con a las funciones de core, pero no funciona en conexiones directas desde un psp"""
     def __init__(self):
         self.host,self.dbname,self.user,self.password,self.type=config.host, config.dbname, config.user, config.password, config.type
         global con
@@ -275,24 +273,19 @@ class CuentaOperacion:
         curs.Close()
         return s
 
-#/**
-# * Clase parar trabajar con las opercuentas generadas automaticamente por los 
-# * movimientos de las inversiones
-# */
+
 class CuentaOperacionHeredadaInversion:
+    """Clase parar trabajar con las opercuentas generadas automaticamente por los movimientos de las inversiones"""
     def insertar(self,  fecha, lu_conceptos, lu_tiposoperaciones, importe, comentario,id_cuentas,id_operinversiones,id_inversiones):
         sql="insert into tmpinversionesheredada (fecha, lu_conceptos, lu_tiposoperaciones, importe, comentario,ma_cuentas, id_operinversiones,id_inversiones) values ('"+str(fecha)+"', "+str(lu_conceptos)+", "+str(lu_tiposoperaciones)+", "+str(importe)+", '"+str(comentario)+"' ,"+str(id_cuentas)+", "+str(id_operinversiones)+", "+str(id_inversiones)+")"
         con.Execute(sql);
 
-#/**
-# * Esta funci�n actualiza la tabla tmpinversionesheredada que es una tabla temporal donde
-# * se almacenan las opercuentas automaticas por las operaciones con inversiones. Es una tabla
-# * que se puede actualizar en cualquier momento con esta funci�n
-# *
-# *  \param con Conector a la base de datos.
-# *  \param id_operinversiones Id de la operinversi�n
-# */
+
     def actualizar_una_operacion(self,id_operinversiones):
+        """Esta función actualiza la tabla tmpinversionesheredada que es una tabla temporal donde 
+        se almacenan las opercuentas automaticas por las operaciones con inversiones. Es una tabla 
+        que se puede actualizar en cualquier momento con esta función"""
+
 #    //Borra la tabla tmpinversionesheredada
         sqldel="delete from tmpinversionesheredada where id_operinversiones="+str(id_operinversiones)
         resultdel=con.Execute(sqldel);
@@ -698,7 +691,7 @@ class InversionOperacion:
         return True
         
     def referencia_ibex35(self, fecha):
-        sql="select cierre from ibex35 where fecha<='"+str(fecha) + "' limit 1"
+        sql="select cierre from ibex35 where fecha<='"+str(fecha) + "' order by fecha desc limit 1"
         curs=con.Execute(sql)
         row = curs.GetRowAssoc(0)   
         return row['cierre']
@@ -823,9 +816,7 @@ class InversionOperacionHistorica:
         Rendimiento=(ultima-primera)*100/primera;
         return Rendimiento;
     def xultree(self, sql):
-        """
-            El SQL deberá ser del tipo "SELECT * from tmpoperinversiones where ma_Inversiones=id_inversiones order by fecha"
-        """  
+        """El SQL deberá ser del tipo "SELECT * from tmpoperinversiones"""  
         sumacciones=0;
         sumactualizacionesximportes=0;
         sumactualizacionesxacciones=0
@@ -1139,6 +1130,13 @@ class Tarjeta:
         else:
             sql="select id_tarjetas, lu_cuentas, tarjeta, cuenta, numero, pago_diferido, saldomaximo from tarjetas,cuentas where tarjetas.lu_cuentas=cuentas.id_cuentas and tarjetas.tj_activa=true order by tarjetas.tarjeta"
         return con.Execute(sql); 
+        
+    def saldo_pendiente(self,id_tarjetas):
+        sql='select sum(importe) as suma from opertarjetas where ma_tarjetas='+ str(id_tarjetas) +' and pagado=false'
+        resultado=con.Execute(sql) .GetRowAssoc(0)["suma"]
+        if resultado==None:
+            return 0
+        return resultado
 
     def xul_listado(self, curs):
         s= '<popupset>\n'
@@ -1159,6 +1157,7 @@ class Tarjeta:
         s= s+  '<treecol label="Número de tarjeta" flex="2" style="text-align: right" />\n'
         s= s+  '<treecol type="checkbox" id="diferido" label="Pago diferido" flex="1" style="text-align: right"/>\n'
         s= s+  '<treecol label="Saldo máximo" flex="1" style="text-align: right"/>\n'
+        s= s+  '<treecol label="Saldo pendiente" flex="1" style="text-align: right"/>\n'
         s= s+  '</treecols>\n'
         s= s+  '<treechildren>\n'
         while not curs.EOF:
@@ -1172,6 +1171,7 @@ class Tarjeta:
             s= s + '<treecell label="'+ str(row["numero"])+ '" />\n'
             s= s + '<treecell properties="'+str(bool(row['pago_diferido']))+'" label="'+ str(row["pago_diferido"])+ '" />\n'
             s= s + treecell_euros(row['saldomaximo'])
+            s= s + treecell_euros(Tarjeta().saldo_pendiente(row['id_tarjetas']))
             s= s + '</treerow>\n'
             s= s + '</treeitem>\n'
             curs.MoveNext()     
