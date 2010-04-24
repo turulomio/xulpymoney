@@ -7,7 +7,25 @@ import config
 from formato import *  
 from xul import *
 
-class Banco:
+class Banco:    
+    def cmb(self, name,  sql,  selected,  js=True):
+        jstext=""
+        if js:
+            jstext= ' oncommand="'+name+'_submit();"'
+        s= '<menulist id="'+name+'" '+jstext+' align="center">\n'
+        s=s + '      <menupopup align="center">\n';
+        curs=con.Execute(sql)
+        while not curs.EOF:
+            row = curs.GetRowAssoc(0)   
+            if int(row['id_entidadesbancarias'])==int(selected):
+                s=s +  '       <menuitem label="'+utf82xul(row['entidadesbancaria'])+'" value="'+str(row['id_entidadesbancarias'])+'" selected="true"/>\n'
+            else:
+                s=s +  '       <menuitem label="'+utf82xul(row['entidadesbancaria'])+'" value="'+str(row['id_entidadesbancarias'])+'"/>\n'
+            curs.MoveNext()     
+        curs.Close()
+        s=s +  '     </menupopup>\n'
+        s=s + '</menulist>\n'
+        return s
     def insertar(self,  entidadesbancaria,  eb_activa):
         sql="insert into entidadesbancarias (entidadesbancaria, eb_activa) values ('" + entidadesbancaria + "'," + str(eb_activa)+")"
         try:
@@ -146,6 +164,14 @@ class Cuenta:
         else:
             sql="select id_cuentas, cuenta, entidadesbancarias.entidadesbancaria, numero_cuenta, cuentas_saldo(id_cuentas,'"+str(fecha)+"') as saldo from cuentas, entidadesbancarias where cuentas.ma_entidadesbancarias=entidadesbancarias.id_entidadesbancarias and cu_activa='t' order by cuenta";
         return con.Execute(sql); 
+        
+    def insertar(self,  id_entidadesbancarias,  cuenta,  numero_cuenta, cu_activa):
+        sql="insert into cuentas (ma_entidadesbancarias, cuenta, numero_cuenta, cu_activa) values (" + str(id_entidadesbancarias )+ ", '" + str(cuenta)+"', '"+ str(numero_cuenta) +"', "+str(cu_activa)+")"
+        try:
+            con.Execute(sql);
+        except:
+            return False
+        return True
 
 
     def xul_listado(self, curs):
@@ -239,8 +265,8 @@ class CuentaOperacion:
         saldo=Cuenta().saldo(id_cuentas, diamenos.isoformat())
         s=    '<popupset>\n'
         s= s+ '   <popup id="treepopup">\n'
-        s= s+ '      <menuitem label="Nueva operación" oncommand="location=\'cuenta_ibm.psp?ibm=insertar&amp;regresando=0&amp;id_cuentas='+str(id_cuentas)+';\'" class="menuitem-iconic"  image="images/item_add.png"/>\n'
-        s= s+ '      <menuitem label="Modificar la operación"  oncommand=\'location="cuenta_ibm.psp?id_cuentas=" + idcuenta  + "&amp;ibm=modificar&amp;regresando=0";\'/>\n'
+        s= s+ '      <menuitem label="Nueva operación" oncommand="location=\'cuentaoperacion_insertar.psp?ibm=insertar&amp;regresando=0&amp;id_cuentas='+str(id_cuentas)+';\'" class="menuitem-iconic"  image="images/item_add.png"/>\n'
+        s= s+ '      <menuitem label="Modificar la operación"  oncommand=\'location="cuentaoperacion_modificar.psp?id_cuentas=" + idcuenta  + "&amp;ibm=modificar&amp;regresando=0";\'/>\n'
         s= s+ '      <menuitem label="Borrar la operación"  oncommand="borrar();" class="menuitem-iconic" image="images/eventdelete.png"/>\n'
         s= s+ '      <menuseparator/>\n'
         s=s +  '            <menuitem label="Transferencia bancaria"  onclick="location=\'cuenta_transferencia.psp\';"  class="menuitem-iconic"  image="images/hotsync.png" />\n'
