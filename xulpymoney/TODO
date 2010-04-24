@@ -1,9 +1,7 @@
-20090605 Meter en https://localhost/xulpymoney/cuentas_ibm.psp como parametro el año y el mes desde el que se ha invocado un ibm.
-20100123 Para acceder a los movimientos de una cuenta o de una tarjeta permitir que se haga con doble click
-20100311 Para informe referenciado a ibex hay que calcular el total invertido por rango para hacer %
-20100311 Meter el script de instalación de la base de datos
-20100311 Meter en el ebuild el condicional?postgrsql o ? mysql
-20100311 Meter en el ebuild el DESTDIR para instalar 
+20090605 Deseo. Meter en https://localhost/xulpymoney/cuentas_ibm.psp como parametro el año y el mes desde el que se ha invocado un ibm.
+20100123 Deseo. Para acceder a los movimientos de una cuenta o de una tarjeta permitir que se haga con doble click
+20100311 Deseo. Para informe referenciado a ibex hay que calcular el total invertido por rango para hacer %
+20100311 Deseo. Meter en el ebuild el condicional?postgrsql o ? mysql
 20100312 Quitar lo de inversiones cotizan mercado cuando prescinda de PHP
 20100412 Deseo. Meter pagar con tarjeta
 20100416 Deseo. Cuando se modifica una inversión desde inversion_compraventa.psp que vuelva a la misma página no a inversion_listado.psp
@@ -13,10 +11,8 @@
 20100424 Deseo. Desarrollar borrar banco
 20100424 Deseo. Desarrollar patrimonio en el banco
 20100424 Deseo. Refactorizar entidadesbancarias por banco
-20100424 Deseo. Desarrollar insertar cuenta
 20100424 Deseo. Desarrollar borrar cuenta
 20100424 Deseo. Desarrollar modificar cuenta
-20100424 Deseo. Desarrollar insertar tarjeta
 20100424 Deseo. Desarrollar borrar tarjeta
 20100424 Deseo. Desarrollar modificar tarjeta
 20100424 Deseo. Refactorizar lu_ ma_ en codigo y bd
