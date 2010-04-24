@@ -33,7 +33,7 @@ def menu():
     s=s +  '   <menubar>\n'
     s=s +  '      <menu label="Bancos">\n'
     s=s +  '         <menupopup>\n'
-    s=s +  '            <menuitem label="Listado"  class="menuitem-iconic"  image="images/toggle_log.png" onclick="location=\'bancoslistado.psp\';" />\n'
+    s=s +  '            <menuitem label="Listado"  class="menuitem-iconic"  image="images/toggle_log.png" onclick="location=\'banco_listado.psp\';" />\n'
     s=s +  '         </menupopup>\n'
     s=s +  '      </menu>\n'
     s=s +  '      <menu label="Cuentas">\n'

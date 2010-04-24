@@ -9,7 +9,7 @@ from xul import *
 
 class Banco:
     def insertar(self,  entidadesbancaria,  eb_activa):
-        sql="insert into entidadesbancarias (entidadesbancaria, eb_activa) values ('" + entidadesbancarias + "'," + str(eb_activa)+")"
+        sql="insert into entidadesbancarias (entidadesbancaria, eb_activa) values ('" + entidadesbancaria + "'," + str(eb_activa)+")"
         try:
             con.Execute(sql);
         except:
