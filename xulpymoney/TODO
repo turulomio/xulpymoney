@@ -20,5 +20,5 @@
 20100424 Deseo. Desarrollar borrar tarjeta
 20100424 Deseo. Desarrollar modificar tarjeta
 20100424 Deseo. Refactorizar lu_ ma_ en codigo y bd
-
+20100424 Bug. Las cuentaoperaciones vinculadas a operinversiones o dividendos no deben ser borradas
 
