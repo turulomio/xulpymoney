@@ -258,6 +258,8 @@ class CuentaOperacion:
             return False
         return True
 
+    def id_opercuentas_insertado_en_session(self):
+        return con.Execute("select currval('seq_opercuentas') as seq;").GetRowAssoc(0)["seq"]
 
     def xul_listado(self, curs,  id_cuentas,  year,  month):
         primeromes=datetime.date(int(year),  int(month),  1)
@@ -1298,7 +1300,15 @@ class TarjetaOperacion:
         except:
             return False
         return True
-
+        
+    def modificar_fechapago(self, id_opertarjetas,  fechapago, id_opercuentas):
+        sql="update opertarjetas set fechapago='"+str(fechapago)+"', pagado=true "+", lu_opercuentas="+str(id_opercuentas)+"  where id_opertarjetas=" +str(id_opertarjetas) 
+        mylog(sql)
+        try:
+            con.Execute(sql);
+        except:
+            return False
+        return True
 
 class TipoOperacion:
     def registro(self,id_tiposoperaciones):

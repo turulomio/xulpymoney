@@ -21,7 +21,9 @@ nombreTarjeta=c.con.Execute("select tarjeta from tarjetas where id_tarjetas="+ s
 <script><![CDATA[
 var id_opertarjetas=0;
 
-
+var suma=0;
+var lista=new Array();
+var puntlista=0;
 function borrar(){
     var xmlHttp;        
     var id_tarjetas=<%=form['id_tarjetas']%>;
@@ -43,13 +45,47 @@ function go_opertarjetas_insertar(){
 }
 
 function pagar(){
-    alert("Falta por desarrollar");
+    var xmlHttp;        
+    var id_tarjetas=<%=form['id_tarjetas']%>;
+    var fechapago = document.getElementById("fechapago").value;
+    var url='ajax/tarjeta_pagar.psp?lista=' + lista + '&suma='+suma + '&id_tarjetas='+ id_tarjetas + '&fechapago='+ fechapago;
+    xmlHttp=new XMLHttpRequest();
+    xmlHttp.onreadystatechange=function(){
+        if(xmlHttp.readyState==4){
+            var ale=xmlHttp.responseText;
+            location="tarjetaoperacion_listado.psp?id_tarjetas="+ id_tarjetas;
+        }
+    }
+    xmlHttp.open("GET",url,true);
+    xmlHttp.send(null);
 }
 
 function tree_getid(){
    var tree = document.getElementById("tree");
    var selection = tree.contentView.getItemAtIndex(tree.currentIndex);
    id_opertarjetas = selection.firstChild.firstChild.getAttribute("label");
+}
+
+function show_selected()
+{
+suma=0;
+puntlista=0;
+lista=new Array();
+var start = new Object();
+var end = new Object();
+var tree = document.getElementById("tree");
+var lblsum = document.getElementById("lblsum");
+var numRanges = tree.view.selection.getRangeCount();
+for (var t = 0; t < numRanges; t++){
+  tree.view.selection.getRangeAt(t,start,end);
+  for (var v = start.value; v <= end.value; v++){
+    suma= suma + parseFloat(tree.view.getCellText(v,tree.columns.getNamedColumn("importe")).split(" ")[0]); 
+    lista[puntlista]=parseInt(tree.view.getCellText(v,tree.columns.getNamedColumn("id")) );
+    puntlista=puntlista+1;
+    
+  }
+}
+lblsum.value="El siguiente pago será de : " + suma + " €. Seleccione una fecha y pulse pagar."; 
 }
 
 
@@ -71,12 +107,12 @@ function tree_getid(){
   <label id="subtitulo" flex="0" value="<%=nombreTarjeta%>" />
 </vbox>
 <vbox flex="1">
-    <tree id="tree" flex="8"  context="treepopup"  onselect="tree_getid();">
+    <tree id="tree" flex="8"  context="treepopup"  onselect="tree_getid(); show_selected();">
         <treecols>
-            <treecol label="Id" flex="1" style="text-align: left" hidden="true" />
+            <treecol id="id" label="Id" flex="1" style="text-align: left" hidden="true" />
             <treecol label="Fecha" flex="1" style="text-align: left"/>
             <treecol label="Concepto" flex="2" style="text-align: left"/>
-            <treecol label="Importe" flex="1" style="text-align: right"/>
+            <treecol id="importe" label="Importe" flex="1" style="text-align: right"/>
             <treecol label="Comentario" flex="3" style="text-align: left"/>
         </treecols>
         <treechildren>
@@ -104,9 +140,8 @@ c.close()
         </treechildren>
     </tree>
     <hbox>
-        <label flex="1"  style="text-align: center;font-weight : bold;" value="Para hacer un pago de tarjeta selecciones las operaciones a pagar, ponga una fecha y pulse pagar" />
-        
-        <datepicker id="fecha" type="grid"  firstdayofweek="1"/>
+        <label flex="1"  id="lblsum" style="text-align: center;font-weight : bold;" value="Para hacer un pago de tarjeta selecciones las operaciones a pagar, ponga una fecha y pulse pagar" />        
+        <datepicker id="fechapago" type="grid"  firstdayofweek="1"/>
         <button label="Pagar" oncommand="pagar();"/>
     </hbox>
 </vbox>
