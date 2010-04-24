@@ -367,9 +367,33 @@ class CuentaOperacionHeredadaInversion:
             curs.MoveNext()     
         curs.Close()
 
-
-
 class Dividendo:
+    def insertar(self,fecha,valorxaccion,bruto,retencion,liquido,id_inversiones):
+        """Insertar un dividendo y una opercuenta vinculada a la tabla dividendos en el campo id_opercuentas"""
+        inv=con.Execute("select * from inversiones where id_inversiones="+ str(id_inversiones)).GetRowAssoc(0)   
+        CuentaOperacion().insertar( fecha, 39, 2, liquido, inv['inversione']+" (Bruto="+str(bruto)+"€. Retención="+str(retencion)+"€.)",inv['lu_cuentas'])
+        id_opercuentas=con.Execute("select currval('seq_opercuentas') as seq;").GetRowAssoc(0)["seq"]   
+        #Añade el dividendo
+        sql="insert into dividendos (fecha, valorxaccion, bruto, retencion, liquido, lu_inversiones,id_opercuentas) values ('"+str(fecha)+"', "+str(valorxaccion)+", "+str(bruto)+", "+str(retencion)+", "+str(liquido)+", "+str(id_inversiones)+", "+str(id_opercuentas)+")"
+        try:
+            con.Execute(sql);
+        except:
+            return False
+        return True
+
+
+    def borrar(self, id_dividendos):
+        """Borra un dividendo, para ello borra el registro de la tabla dividendos 
+            y el asociado en la tabla opercuentas"""
+        div=con.Execute("select * from dividendos where id_dividendos="+ str(id_dividendos)).GetRowAssoc(0)
+        CuentaOperacion().borrar(div['id_opercuentas'])
+        sql="delete from dividendos where id_dividendos="+ str(id_dividendos)
+        try:
+            con.Execute(sql);
+        except:
+            return False
+        return True
+        
     def obtenido_mensual(self, ano,  mes):
         """Dividendo cobrado en un año y mes pasado como parámetro, independientemente de si la inversión esta activa o no"""
         sql="select sum(liquido) as liquido from dividendos where date_part('year',fecha) = "+str(ano)+" and date_part('month',fecha)= " + str(mes)
@@ -394,19 +418,39 @@ class Dividendo:
             return row['suma'];
             
         
-    def xultree(self, sql):
+    def xultree(self, sql, id_inversiones):
         sumsaldos=0
         curs=con.Execute(sql); 
-        s=     '<vbox flex="1">\n'
+        
+        s=  '        <script><![CDATA[\n'
+        s= s+ 'function dividendo_borrar(){\n'
+        s= s+ 'var xmlHttp;        \n'
+        s= s+ '    var tree = document.getElementById("treeDiv");\n'
+        s= s+ '    var id_inversiones='+str(id_inversiones)+';\n'
+        s= s+ '    var id_dividendos=tree.view.getCellText(tree.currentIndex,tree.columns.getNamedColumn("id"));\n'
+        s= s+ '    var url="ajax/dividendo_borrar.psp?id_dividendos=" + id_dividendos;\n'
+        s= s+ '    xmlHttp=new XMLHttpRequest();\n'
+        s= s+ '    xmlHttp.onreadystatechange=function(){\n'
+        s= s+ '        if(xmlHttp.readyState==4){\n'
+        s= s+ '            var ale=xmlHttp.responseText;\n'
+        s= s+ '            location="inversion_informacion.psp?id_inversiones="+ id_inversiones;\n'
+        s= s+ '        }\n'
+        s= s+ '    }\n'
+        s= s+ '    xmlHttp.open("GET",url,true);\n'
+        s= s+ '    xmlHttp.send(null);\n'
+        s= s+ '}\n'
+        s= s+ ']]></script>\n'
+
+        s= s+ '<vbox flex="1">\n'
         s= s+ '<popupset>\n'
-        s= s+ '<popup id="treepopup" >\n'   
-        s= s+ '    <menuitem label="Nuevo dividendo" oncommand="location=\'dividendo_insertar.psp?id_inversiones=\' + id_inversiones;"  class="menuitem-iconic"  image="images/hotsync.png" />\n'
-        s= s+ '    <menuitem label="Modificar la inversión"  oncommand="location=\'inversion_modificar.psp?id_inversiones=\' + id_inversiones;"   class="menuitem-iconic"  image="images/edit.png" />\n'
-        s= s+ '<menuitem label="Estudio de la inversión"  oncommand="location=\'inversion_informacion.psp?id_inversiones=\' + id_inversiones;"  class="menuitem-iconic"  image="images/toggle_log.png" />\n'
+        s= s+ '<popup id="divpopup" >\n'  
+        s= s+ '    <menuitem label="Nuevo dividendo" oncommand="location=\'dividendo_insertar.psp?id_inversiones=\' +'+str(id_inversiones)+' ;"  class="menuitem-iconic"  image="images/item_add.png" />\n'
+        s= s+ '    <menuitem label="Borrar el dividendo"  oncommand="dividendo_borrar();"   class="menuitem-iconic"  image="images/eventdelete.png"/>\n'
         s= s+ '</popup>\n'
         s= s+ '</popupset>\n'
-        s=s+ '        <tree id="treeDiv" flex="3" tooltiptext="Sólo se muestran los dividendos desde la primera operación actual, no desde la primera operación histórica">\n'
+        s=s+ '        <tree id="treeDiv" flex="3" tooltiptext="Sólo se muestran los dividendos desde la primera operación actual, no desde la primera operación histórica" context="divpopup">\n'
         s=s+ '          <treecols>\n'
+        s=s+ '    <treecol id="id" label="id" flex="1" hidden="true"/>\n'
         s=s+ '    <treecol label="Fecha" flex="1"  style="text-align: center"/>\n'
         s=s+ '    <treecol label="Cuenta cobro" flex="2" style="text-align: left" />\n'
         s=s+ '    <treecol label="Liquido" flex="1" style="text-align: right"/>\n'
@@ -417,6 +461,7 @@ class Dividendo:
             sumsaldos=sumsaldos+dosdecimales(row['liquido'])
             s=s+ '    <treeitem>\n'
             s=s+ '      <treerow>\n'
+            s=s+ '       <treecell label="'+ str(row["id_dividendos"])+ '" />\n'
             s=s+ '       <treecell label="'+ str(row["fecha"])[:-12]+ '" />\n'
             s=s+ '       <treecell label="'+ row["cuenta"]+ '" />\n'
             s=s+        treecell_euros(row['liquido']);

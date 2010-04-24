@@ -14,9 +14,9 @@ listadoIOT=InversionOperacionTemporal().xultree("SELECT * from tmpoperinversione
 listadoIOH=InversionOperacionHistorica().xultree("SELECT * from operinversiones where ma_Inversiones="+str(form['id_inversiones'])+" order by fecha")
 fechapo=InversionOperacionTemporal().fecha_primera_operacion(form['id_inversiones'])
 if fechapo==None:
-    listadoDiv=Dividendo().xultree("select id_dividendos, cuenta, fecha, liquido, inversione from dividendos, inversiones, cuentas where  id_dividendos=Null")
+    listadoDiv=Dividendo().xultree("select id_dividendos, cuenta, fecha, liquido, inversione from dividendos, inversiones, cuentas where  id_dividendos=Null", 0)
 else:
-    listadoDiv=Dividendo().xultree("select id_dividendos, cuenta, fecha, liquido, inversione from dividendos, inversiones, cuentas where cuentas.id_cuentas=inversiones.lu_cuentas and dividendos.lu_inversiones=inversiones.id_inversiones and dividendos.lu_inversiones="+str(form['id_inversiones']) + " and fecha >='"+str(fechapo)+"' order by fecha;")
+    listadoDiv=Dividendo().xultree("select id_dividendos, cuenta, fecha, liquido, inversione from dividendos, inversiones, cuentas where cuentas.id_cuentas=inversiones.lu_cuentas and dividendos.lu_inversiones=inversiones.id_inversiones and dividendos.lu_inversiones="+str(form['id_inversiones']) + " and fecha >='"+str(fechapo)+"' order by fecha;",  form['id_inversiones'])
 reg=Inversion().registro(form['id_inversiones'])
 con.close()
 
