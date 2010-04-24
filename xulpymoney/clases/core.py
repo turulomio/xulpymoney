@@ -33,12 +33,21 @@ class Banco:
         except:
             return False
         return True
-       
+        
+    def modificar(self, id_bancos, entidadesbancaria):
+        sql="update entidadesbancarias set entidadesbancaria='"+str(entidadesbancaria)+"' where id_entidadesbancarias="+ str(id_bancos)
+        try:
+            con.Execute(sql);
+        except:
+            return False
+        return True
+        
     def modificar_activa(self, id_bancos,  activa):
         sql="update entidadesbancarias set eb_activa="+str(activa)+" where id_entidadesbancarias="+ str(id_bancos)
         curs=con.Execute(sql); 
         return sql
-  
+
+        
     def saldo(self,id_entidadesbancarias,fecha):
         curs = con.Execute('select banco_saldo('+ str(id_entidadesbancarias) + ",'"+str(fecha)+"') as saldo;"); 
         if curs == None: 
@@ -63,9 +72,31 @@ class Banco:
         s= s+ '     var activa=Boolean(Number(tree.view.getCellText(tree.currentIndex,tree.columns.getNamedColumn( "activa"))));\n'
         s= s+ '     id_bancos=tree.view.getCellText(tree.currentIndex,tree.columns.getNamedColumn("id"));\n'
         s= s+ '     var popup = document.getElementById("popupBancos");\n'
-        s= s+ '     if (document.getElementById("popactiva")){\n'
+        s= s+ '     if (document.getElementById("popmodificar")){\n'#Con que exista este vale
+        s= s+ '         popup.removeChild(document.getElementById("popmodificar"));\n'
+        s= s+ '         popup.removeChild(document.getElementById("popseparator1"));\n'
+        s= s+ '         popup.removeChild(document.getElementById("poppatrimonio"));\n'
+        s= s+ '         popup.removeChild(document.getElementById("popseparator2"));\n'
         s= s+ '         popup.removeChild(document.getElementById("popactiva"));\n'
         s= s+ '     }\n'
+        s= s+ '     var popmodificar=document.createElement("menuitem");\n'
+        s= s+ '     popmodificar.setAttribute("id", "popmodificar");\n'
+        s= s+ '     popmodificar.setAttribute("label", "Modificar el banco");\n'
+        s= s+ '     popmodificar.setAttribute("class", "menuitem-iconic");\n'
+        s= s+ '     popmodificar.setAttribute("image", "images/edit.png");\n'
+        s= s+ '     popmodificar.setAttribute("oncommand", "banco_modificar();");\n'
+        s= s+ '     popup.appendChild(popmodificar);\n'
+        s= s+ '     var popseparator1=document.createElement("menuseparator");\n'
+        s= s+ '     popseparator1.setAttribute("id", "popseparator1");\n'
+        s= s+ '     popup.appendChild(popseparator1);\n'
+        s= s+ '     var poppatrimonio=document.createElement("menuitem");\n'
+        s= s+ '     poppatrimonio.setAttribute("id", "poppatrimonio");\n'
+        s= s+ '     poppatrimonio.setAttribute("label", "Patrimonio en el banco");\n'
+        s= s+ '     poppatrimonio.setAttribute("oncommand", "alert(\'Falta desarrollar\');");\n'
+        s= s+ '     popup.appendChild(poppatrimonio);\n'
+        s= s+ '     var popseparator2=document.createElement("menuseparator");\n'
+        s= s+ '     popseparator2.setAttribute("id", "popseparator2");\n'
+        s= s+ '     popup.appendChild(popseparator2);\n'
         s= s+ '     var popactiva=document.createElement("menuitem");\n'
         s= s+ '     popactiva.setAttribute("id", "popactiva");\n'
         s= s+ '     if (activa){\n'
@@ -80,6 +111,12 @@ class Banco:
         s= s+ '     popup.appendChild(popactiva);\n'
         s= s+ '}\n\n'
 
+        s= s+ 'function banco_modificar(){\n'
+        s= s+ '     var tree = document.getElementById("treeBancos");\n'
+        s= s+ '     id_entidadesbancarias=tree.view.getCellText(tree.currentIndex,tree.columns.getNamedColumn("id"));\n'
+        s= s+ '     location=\'banco_modificar.psp?id_entidadesbancarias=\' + id_entidadesbancarias;\n'
+        s= s+ '}\n\n'
+        
         s= s+ 'function banco_modificar_activa(){\n'
         s= s+ '     var tree = document.getElementById("treeBancos");\n'
         s= s+ '     var xmlHttp;\n'
@@ -99,9 +136,7 @@ class Banco:
         
         s= s+ '<popupset>\n'
         s= s+ '    <popup id="popupBancos" >\n'
-        s= s+ '        <menuitem label="Nuevo Banco" oncommand="location=\'banco_insertar.psp\'" class="menuitem-iconic"  image="images/item_add.png"/>\n'
-        s= s+ '        <menuseparator/>\n'
-        s= s+ '        <menuitem label="Patrimonio en el banco"  oncommand="location=\'cuentasinformacion.psp?id_cuentas=\' + idcuenta;"/>\n'
+        s= s+ '        <menuitem label="Nuevo banco" oncommand="location=\'banco_insertar.psp\'" class="menuitem-iconic"  image="images/item_add.png"/>\n'
         s= s+ '    </popup>\n'
         s= s+ '</popupset>\n'
         

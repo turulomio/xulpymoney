@@ -1,0 +1,46 @@
+<%
+import time
+from core import *
+from xul import *
+
+req.content_type="application/vnd.mozilla.xul+xml"
+req.write(xulheaderwindowmenu("Xulpymoney > Banco > Modificar"))
+
+cd=ConectionDirect()
+row=cd.con.Execute("select * from entidadesbancarias where id_entidadesbancarias="+ form["id_entidadesbancarias"]).GetRowAssoc(0)
+cd.close()
+%>
+
+<script>
+<![CDATA[        
+function banco_modificar(){
+    var xmlHttp;
+    xmlHttp=new XMLHttpRequest();
+    xmlHttp.onreadystatechange=function(){
+        if(xmlHttp.readyState==4){
+            var ale=xmlHttp.responseText;
+            location="banco_listado.psp";
+        }
+    }
+    var id_entidadesbancarias = <%=form['id_entidadesbancarias']%>;
+    var entidadesbancaria = document.getElementById("entidadesbancaria").value;
+    var url="ajax/banco_modificar.psp?id_entidadesbancarias="+id_entidadesbancarias+"&entidadesbancaria="+entidadesbancaria;
+    xmlHttp.open("GET",url,true);
+    xmlHttp.send(null);
+}
+]]>
+</script>
+
+<vbox flex="1">
+    <label id="titulo" flex="0" value="Nuevo banco" />
+    <label value="" />
+    <hbox flex="1">
+    <grid align="center">
+        <rows>
+        <row><label value="Nombre del banco"/><hbox><textbox id="entidadesbancaria" value="<%=row["entidadesbancaria"]%>"/></hbox></row>
+        <row><label value=""/><hbox><button id="cmd" label="Aceptar" onclick="banco_modificar();"/></hbox></row>
+        </rows>
+    </grid>
+    </hbox>
+</vbox>
+</window>
