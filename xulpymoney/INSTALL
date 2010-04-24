@@ -1,6 +1,13 @@
+Se debe configurar el mod_python
+
 <Directory /var/www/localhost/htdocs/BDAppsWeb/cuentas>
   AddHandler mod_python .psp
  PythonPath "sys.path+['/usr/local/lib/cuentas']"
  PythonHandler mod_python.psp
  PythonDebug On
 </Directory>
+
+
+Se debe crear una base de datos en postgresql
+
+psql -U postgres createdbd < sql/pgsql.sql

@@ -1,16 +1,407 @@
+--
+-- PostgreSQL database dump
+--
 
-
-SET client_encoding = 'SQL_ASCII';
+SET statement_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = off;
 SET check_function_bodies = false;
+SET client_min_messages = warning;
+SET escape_string_warning = off;
 
-SET SESSION AUTHORIZATION 'postgres';
+--
+-- Name: plpgsql; Type: PROCEDURAL LANGUAGE; Schema: -; Owner: postgres
+--
+
+CREATE PROCEDURAL LANGUAGE plpgsql;
+
+
+ALTER PROCEDURAL LANGUAGE plpgsql OWNER TO postgres;
+
+SET search_path = public, pg_catalog;
+
+--
+-- Name: banco_saldo(integer, date); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION banco_saldo(id_bancos integer, fechaparametro date) RETURNS double precision
+    LANGUAGE plpgsql
+    AS $$
+DECLARE
+    recCuentas RECORD;
+    recInversiones RECORD;
+    resultado FLOAT;
+BEGIN
+    resultado := 0;
+    FOR recCuentas IN SELECT id_cuentas FROM cuentas where ma_entidadesbancarias=id_bancos LOOP
+        resultado := resultado + cuentas_saldo(recCuentas.id_cuentas, fechaparametro);        
+        FOR recInversiones IN SELECT * FROM inversiones, cuentas where inversiones.lu_cuentas=cuentas.id_cuentas and cuentas.id_cuentas=recCuentas.id_cuentas LOOP
+    resultado := resultado + inversiones_saldo(recInversiones.id_inversiones, fechaparametro);
+        END LOOP;    
+    END LOOP;
+    RETURN resultado;
+END;
+$$;
+
+
+ALTER FUNCTION public.banco_saldo(id_bancos integer, fechaparametro date) OWNER TO postgres;
+
+--
+-- Name: cuentas_saldo(integer, date); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION cuentas_saldo(id_cuentas integer, fechaparametro date) RETURNS double precision
+    LANGUAGE plpgsql
+    AS $$
+DECLARE
+    recCuentas RECORD;
+    resultado FLOAT;
+BEGIN
+    resultado := 0;
+    FOR recCuentas IN SELECT * FROM opercuentas where ma_cuentas=id_cuentas and fecha <= fechaparametro LOOP
+	resultado := resultado + recCuentas.importe;
+    END LOOP;
+    RETURN resultado;
+END;
+$$;
+
+
+ALTER FUNCTION public.cuentas_saldo(id_cuentas integer, fechaparametro date) OWNER TO postgres;
+
+--
+-- Name: inversion_actualizacion(integer, integer, integer); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION inversion_actualizacion(integer, integer, integer) RETURNS double precision
+    LANGUAGE sql
+    AS $_$select actualizacion from actuinversiones where ma_inversiones=$1 and date_part('year',fecha)=$2  and date_part('month',fecha)=$3 order by fecha desc limit 1$_$;
+
+
+ALTER FUNCTION public.inversion_actualizacion(integer, integer, integer) OWNER TO postgres;
+
+--
+-- Name: inversion_actualizacion(integer, date); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION inversion_actualizacion(id_inversiones integer, fechaparametro date) RETURNS double precision
+    LANGUAGE plpgsql
+    AS $$
+DECLARE
+    rec RECORD;
+    resultado FLOAT;
+BEGIN
+    resultado := 0;
+    FOR rec IN SELECT actualizacion from actuinversiones where ma_inversiones=id_inversiones and fecha  <= fechaparametro order by fecha desc limit 1 LOOP
+	resultado:= rec.actualizacion;
+    END LOOP;
+    RETURN resultado;
+END;
+$$;
+
+
+ALTER FUNCTION public.inversion_actualizacion(id_inversiones integer, fechaparametro date) OWNER TO postgres;
+
+--
+-- Name: inversion_invertido(integer, date); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION inversion_invertido(p_id_inversiones integer, p_fecha date) RETURNS double precision
+    LANGUAGE plpgsql
+    AS $$DECLARE
+rec RECORD;
+invertido FLOAT;
+BEGIN
+    invertido := 0;
+    FOR rec IN SELECT fecha, acciones, valor_accion from tmpoperinversiones where ma_Inversiones=p_id_inversiones and Fecha <= p_fecha LOOP
+	invertido := invertido + (rec.acciones * rec.valor_accion);
+    END LOOP;
+    RETURN invertido;
+END;$$;
+
+
+ALTER FUNCTION public.inversion_invertido(p_id_inversiones integer, p_fecha date) OWNER TO postgres;
+
+--
+-- Name: inversion_pendiente(integer, date); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION inversion_pendiente(id_inversiones integer, fechaparametro date) RETURNS double precision
+    LANGUAGE plpgsql
+    AS $$DECLARE
+    rec RECORD;
+    inicio FLOAT;
+    final FLOAT;
+BEGIN
+    final := 0;
+    inicio := 0;
+    FOR rec IN SELECT fecha, acciones, valor_accion from tmpoperinversiones where ma_Inversiones=id_inversiones and Fecha <= fechaparametro LOOP
+	inicio := inicio + (rec.acciones * rec.valor_accion);
+	final := final + (rec.acciones * inversion_actualizacion(id_inversiones, fechaparametro));
+    END LOOP;
+    RETURN final - inicio;
+END;$$;
+
+
+ALTER FUNCTION public.inversion_pendiente(id_inversiones integer, fechaparametro date) OWNER TO postgres;
+
+--
+-- Name: inversion_saldo_medio(date, boolean, boolean); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION inversion_saldo_medio(fechaparametro date, pactiva boolean, pcotiza_mercados boolean) RETURNS double precision
+    LANGUAGE plpgsql
+    AS $$
+DECLARE
+    rec RECORD;
+    recDias RECORD;
+    resultado FLOAT;
+BEGIN
+    resultado := 0;
+    FOR rec IN SELECT * FROM inversiones where in_activa=pactiva  and cotizamercado=pcotiza_mercados LOOP
+       resultado := resultado + inversiones_saldo(rec.id_inversiones,fechaparametro);
+    END LOOP;
+
+    FOR recDias IN SELECT date(now())-fechaparametro as dias LOOP
+       IF int2(recDias.dias)<>0
+          THEN resultado:= resultado/recDias.dias;
+          ELSE resultado := 0;
+       END IF;
+    END LOOP;
+    RETURN resultado;
+END;
+$$;
+
+
+ALTER FUNCTION public.inversion_saldo_medio(fechaparametro date, pactiva boolean, pcotiza_mercados boolean) OWNER TO postgres;
+
+--
+-- Name: inversion_saldo_segun_tpcvariable(); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION inversion_saldo_segun_tpcvariable() RETURNS SETOF record
+    LANGUAGE plpgsql ROWS 4
+    AS $$
+DECLARE
+re RECORD;
+BEGIN
+   FOR re in EXECUTE 'SELECT tpcvariable::integer, sum(inversiones_saldo(id_inversiones, date(now())))  FROM inversiones GROUP BY tpcvariable, in_activa HAVING in_activa=True ORDER BY tpcvariable' LOOP
+    RETURN next re;
+  END LOOP;
+  RETURN;
+END;
+$$;
+
+
+ALTER FUNCTION public.inversion_saldo_segun_tpcvariable() OWNER TO postgres;
+
+--
+-- Name: inversiones_acciones(integer, date); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION inversiones_acciones(id_inversiones integer, fechaparametro date) RETURNS double precision
+    LANGUAGE plpgsql
+    AS $$
+DECLARE
+    recOperInversiones RECORD;
+    resultado FLOAT;
+BEGIN
+    resultado := 0;
+    FOR recOperInversiones IN SELECT acciones FROM operinversiones where ma_inversiones=id_inversiones and fecha <= fechaparametro LOOP
+	resultado := resultado + recOperInversiones.acciones;
+    END LOOP;
+    RETURN resultado;
+END;
+$$;
+
+
+ALTER FUNCTION public.inversiones_acciones(id_inversiones integer, fechaparametro date) OWNER TO postgres;
+
+--
+-- Name: inversiones_saldo(integer, date); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION inversiones_saldo(id_inversiones integer, fechaparametro date) RETURNS double precision
+    LANGUAGE plpgsql
+    AS $$
+DECLARE
+BEGIN
+    RETURN inversiones_acciones(id_inversiones,fechaparametro)* inversion_actualizacion(id_inversiones,fechaparametro);
+END;
+$$;
+
+
+ALTER FUNCTION public.inversiones_saldo(id_inversiones integer, fechaparametro date) OWNER TO postgres;
+
+--
+-- Name: plpgsql_call_handler(); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION plpgsql_call_handler() RETURNS language_handler
+    LANGUAGE c
+    AS '$libdir/plpgsql', 'plpgsql_call_handler';
+
+
+ALTER FUNCTION public.plpgsql_call_handler() OWNER TO postgres;
+
+--
+-- Name: plpgsql_validator(oid); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION plpgsql_validator(oid) RETURNS void
+    LANGUAGE c
+    AS '$libdir/plpgsql', 'plpgsql_validator';
+
+
+ALTER FUNCTION public.plpgsql_validator(oid) OWNER TO postgres;
+
+--
+-- Name: rendimiento_personal_total(integer, integer); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION rendimiento_personal_total(id_inversiones integer, ano integer) RETURNS double precision
+    LANGUAGE plpgsql
+    AS $$
+DECLARE
+    rec RECORD;
+    resultado FLOAT;
+BEGIN
+    resultado := 0;
+    FOR rec IN SELECT actualizacion from actuinversiones where ma_inversiones=id_inversiones and fecha  <= fechaparametro order by fecha desc limit 1 LOOP
+	resultado:= rec.actualizacion;
+    END LOOP;
+    RETURN resultado;
+END;
+$$;
+
+
+ALTER FUNCTION public.rendimiento_personal_total(id_inversiones integer, ano integer) OWNER TO postgres;
+
+--
+-- Name: saldo_total(date); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION saldo_total(fechaparametro date) RETURNS double precision
+    LANGUAGE plpgsql
+    AS $$
+DECLARE
+    recCuentas RECORD;
+    recInversiones RECORD;
+    resultado FLOAT;
+BEGIN
+    resultado := 0;
+    FOR recCuentas IN SELECT id_cuentas FROM cuentas LOOP
+        resultado := resultado + cuentas_saldo(recCuentas.id_cuentas, fechaparametro);        
+        FOR recInversiones IN SELECT * FROM inversiones, cuentas where inversiones.lu_cuentas=cuentas.id_cuentas and cuentas.id_cuentas=recCuentas.id_cuentas LOOP
+    resultado := resultado + inversiones_saldo(recInversiones.id_inversiones, fechaparametro);
+        END LOOP;    
+    END LOOP;
+    RETURN resultado;
+END;
+$$;
+
+
+ALTER FUNCTION public.saldo_total(fechaparametro date) OWNER TO postgres;
+
+--
+-- Name: saldototalcuentasactivas(date); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION saldototalcuentasactivas(fechaparametro date) RETURNS double precision
+    LANGUAGE plpgsql
+    AS $$
+DECLARE
+    recCuentas RECORD;
+    resultado FLOAT;
+BEGIN
+    resultado := 0;
+    FOR recCuentas IN SELECT * FROM cuentas where cu_activa=true LOOP
+	PERFORM 'Refreshing materialized view ' ;
+	resultado := resultado + cuentas_saldo(recCuentas.id_cuentas, fechaparametro);
+    END LOOP;
+    RETURN resultado;
+END;
+$$;
+
+
+ALTER FUNCTION public.saldototalcuentasactivas(fechaparametro date) OWNER TO postgres;
+
+--
+-- Name: saldototalinversionesactivas(date); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION saldototalinversionesactivas(fechaparametro date) RETURNS double precision
+    LANGUAGE plpgsql
+    AS $$
+DECLARE
+    rec RECORD;
+    resultado FLOAT;
+BEGIN
+    resultado := 0;
+    FOR rec IN SELECT * FROM inversiones LOOP
+	resultado := resultado + inversiones_saldo(rec.id_inversiones, fechaparametro);
+    END LOOP;
+    RETURN resultado;
+END;
+$$;
+
+
+ALTER FUNCTION public.saldototalinversionesactivas(fechaparametro date) OWNER TO postgres;
+
+--
+-- Name: transferencia(date, integer, integer, double precision, double precision); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION transferencia(p_fecha date, p_cuentaorigen integer, p_cuentadestino integer, p_importe double precision, p_comision double precision) RETURNS void
+    LANGUAGE plpgsql
+    AS $$DECLARE
+    nombrecuentaorigen text;
+    nombrecuentadestino text;
+BEGIN
+    SELECT cuenta INTO nombrecuentaorigen FROM cuentas WHERE id_cuentas=p_cuentaorigen;
+    SELECT cuenta INTO nombrecuentadestino FROM cuentas WHERE id_cuentas=p_cuentadestino;
+
+    INSERT INTO opercuentas (fecha, lu_conceptos, lu_tiposoperaciones, importe, comentario, ma_cuentas) VALUES (p_fecha, 4, 3, -p_importe-p_comision, 'A ' || nombrecuentadestino || ' (ComisiÃ³n '|| p_comision ||' â‚¬)', p_cuentaorigen); 
+    INSERT INTO opercuentas (fecha, lu_conceptos, lu_tiposoperaciones, importe, comentario, ma_cuentas) VALUES (p_fecha, 5, 3, p_importe, 'De ' || nombrecuentaorigen, p_cuentadestino);    
+END;
+$$;
+
+
+ALTER FUNCTION public.transferencia(p_fecha date, p_cuentaorigen integer, p_cuentadestino integer, p_importe double precision, p_comision double precision) OWNER TO postgres;
+
+SET default_tablespace = '';
+
+SET default_with_oids = true;
+
+--
+-- Name: actuinversiones; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
 
 CREATE TABLE actuinversiones (
-    id_actuinversiones integer DEFAULT nextval('"seq_actuinversiones"'::text) NOT NULL,
+    id_actuinversiones integer DEFAULT nextval(('"seq_actuinversiones"'::text)::regclass) NOT NULL,
     fecha date NOT NULL,
     ma_inversiones integer NOT NULL,
     actualizacion double precision NOT NULL
 );
+
+
+ALTER TABLE public.actuinversiones OWNER TO postgres;
+
+--
+-- Name: bolsa; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE bolsa (
+    empresa name,
+    valor name,
+    fecha name
+);
+
+
+ALTER TABLE public.bolsa OWNER TO postgres;
+
+--
+-- Name: comentarios; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
 
 CREATE TABLE comentarios (
     id_comentarios integer NOT NULL,
@@ -18,6 +409,13 @@ CREATE TABLE comentarios (
     lu_tiposoperaciones integer,
     lu_conceptos integer
 );
+
+
+ALTER TABLE public.comentarios OWNER TO postgres;
+
+--
+-- Name: conceptos; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
 
 CREATE TABLE conceptos (
     id_conceptos integer NOT NULL,
@@ -27,102 +425,29 @@ CREATE TABLE conceptos (
 );
 
 
+ALTER TABLE public.conceptos OWNER TO postgres;
+
+--
+-- Name: cuentas; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
 CREATE TABLE cuentas (
-    id_cuentas integer DEFAULT nextval('"seq_cuentas"'::text) NOT NULL,
+    id_cuentas integer DEFAULT nextval(('"seq_cuentas"'::text)::regclass) NOT NULL,
     cuenta text,
     ma_entidadesbancarias integer,
     cu_activa boolean,
     numero_cuenta character varying(20)
 );
 
-CREATE TABLE entidadesbancarias (
-    id_entidadesbancarias integer DEFAULT nextval('"seq_entidadesbancarias"'::text) NOT NULL,
-    entidadesbancaria text NOT NULL,
-    eb_activa boolean NOT NULL
-);
 
+ALTER TABLE public.cuentas OWNER TO postgres;
 
-
-CREATE TABLE inversiones (
-    id_inversiones integer DEFAULT nextval('"seq_inversiones"'::text) NOT NULL,
-    inversione text NOT NULL,
-    in_activa boolean DEFAULT true NOT NULL,
-    tpcvariable integer NOT NULL,
-    lu_cuentas integer NOT NULL,
-    cotizamercado boolean DEFAULT true NOT NULL
-);
-
-
-CREATE TABLE tiposoperaciones (
-    id_tiposoperaciones integer NOT NULL,
-    tipo_operacion text,
-    modificable boolean,
-    operinversion boolean,
-    opercuentas boolean
-);
-
-
-CREATE TABLE opercuentas (
-    id_opercuentas integer DEFAULT nextval('"seq_opercuentas"'::text) NOT NULL,
-    fecha date NOT NULL,
-    lu_conceptos integer NOT NULL,
-    lu_tiposoperaciones integer NOT NULL,
-    importe double precision NOT NULL,
-    comentario text,
-    ma_cuentas integer NOT NULL
-);
-
-
-
-
-CREATE TABLE operinversiones (
-    id_operinversiones integer DEFAULT nextval('"seq_operinversiones"'::text) NOT NULL,
-    fecha date,
-    lu_tiposoperaciones integer,
-    ma_inversiones integer,
-    acciones double precision,
-    importe double precision,
-    impuestos double precision,
-    comision double precision,
-    valor_accion double precision,
-    comentario text
-);
-
-
-CREATE TABLE opertarjetas (
-    id_opertarjetas integer DEFAULT nextval('"seq_opertarjetas"'::text) NOT NULL,
-    fecha date,
-    lu_conceptos integer NOT NULL,
-    lu_tiposoperaciones integer NOT NULL,
-    importe double precision NOT NULL,
-    comentario text,
-    ma_tarjetas integer NOT NULL,
-    pagado boolean NOT NULL,
-    fechapago date,
-    lu_opercuentas bigint
-);
-
-
-CREATE TABLE tarjetas (
-    id_tarjetas integer DEFAULT nextval('"seq_tarjetas"'::text) NOT NULL,
-    tarjeta text,
-    lu_cuentas integer,
-    numero text,
-    pago_diferido boolean,
-    saldomaximo double precision,
-    tj_activa boolean
-);
-
-
-CREATE SEQUENCE depositos_id_depositos_seq
-    INCREMENT BY 1
-    NO MAXVALUE
-    NO MINVALUE
-    CACHE 1;
-
+--
+-- Name: depositos; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
 
 CREATE TABLE depositos (
-    id_depositos integer DEFAULT nextval('"depositos_id_depositos_seq"'::text) NOT NULL,
+    id_depositos integer DEFAULT nextval(('"depositos_id_depositos_seq"'::text)::regclass) NOT NULL,
     lu_cuentas integer,
     fecha_inicio date,
     cantidad double precision,
@@ -135,32 +460,28 @@ CREATE TABLE depositos (
 );
 
 
-CREATE TABLE tmpdepositosheredada (
-)
-INHERITS (opercuentas);
+ALTER TABLE public.depositos OWNER TO postgres;
 
+--
+-- Name: depositos_id_depositos_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
 
-CREATE TABLE tmpinversionesheredada (
-    id_operinversiones integer NOT NULL,
-    id_inversiones integer NOT NULL
-)
-INHERITS (opercuentas);
-
-
-CREATE SEQUENCE dividendos_id_dividendos_seq
+CREATE SEQUENCE depositos_id_depositos_seq
+    START WITH 1
     INCREMENT BY 1
     NO MAXVALUE
     NO MINVALUE
     CACHE 1;
 
 
+ALTER TABLE public.depositos_id_depositos_seq OWNER TO postgres;
+
 --
--- TOC entry 51 (OID 19559)
--- Name: dividendos; Type: TABLE; Schema: public; Owner: postgres
+-- Name: dividendos; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
 CREATE TABLE dividendos (
-    id_dividendos integer DEFAULT nextval('"dividendos_id_dividendos_seq"'::text) NOT NULL,
+    id_dividendos integer DEFAULT nextval(('"dividendos_id_dividendos_seq"'::text)::regclass) NOT NULL,
     lu_inversiones integer NOT NULL,
     bruto double precision NOT NULL,
     retencion double precision NOT NULL,
@@ -171,9 +492,442 @@ CREATE TABLE dividendos (
 );
 
 
+ALTER TABLE public.dividendos OWNER TO postgres;
+
 --
--- TOC entry 52 (OID 19562)
--- Name: tmpdividendosheredada; Type: TABLE; Schema: public; Owner: postgres
+-- Name: dividendos_id_dividendos_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE dividendos_id_dividendos_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.dividendos_id_dividendos_seq OWNER TO postgres;
+
+--
+-- Name: opercuentas; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE opercuentas (
+    id_opercuentas integer DEFAULT nextval(('"seq_opercuentas"'::text)::regclass) NOT NULL,
+    fecha date NOT NULL,
+    lu_conceptos integer NOT NULL,
+    lu_tiposoperaciones integer NOT NULL,
+    importe double precision NOT NULL,
+    comentario text,
+    ma_cuentas integer NOT NULL
+);
+
+
+ALTER TABLE public.opercuentas OWNER TO postgres;
+
+--
+-- Name: dm_saldocuentas_fechas; Type: VIEW; Schema: public; Owner: postgres
+--
+
+CREATE VIEW dm_saldocuentas_fechas AS
+    SELECT date_part('year'::text, opercuentas.fecha) AS date_part, sum(opercuentas.importe) AS sum, opercuentas.lu_tiposoperaciones FROM opercuentas GROUP BY date_part('year'::text, opercuentas.fecha), opercuentas.lu_tiposoperaciones HAVING ((opercuentas.lu_tiposoperaciones = 1) OR (opercuentas.lu_tiposoperaciones = 2)) ORDER BY date_part('year'::text, opercuentas.fecha);
+
+
+ALTER TABLE public.dm_saldocuentas_fechas OWNER TO postgres;
+
+--
+-- Name: dm_totales; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE dm_totales (
+    fecha date,
+    clave character varying(2),
+    valor double precision
+);
+
+
+ALTER TABLE public.dm_totales OWNER TO postgres;
+
+--
+-- Name: entidadesbancarias; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE entidadesbancarias (
+    id_entidadesbancarias integer DEFAULT nextval(('"seq_entidadesbancarias"'::text)::regclass) NOT NULL,
+    entidadesbancaria text NOT NULL,
+    eb_activa boolean NOT NULL
+);
+
+
+ALTER TABLE public.entidadesbancarias OWNER TO postgres;
+
+SET default_with_oids = false;
+
+--
+-- Name: ibex35; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE ibex35 (
+    fecha date NOT NULL,
+    cierre double precision NOT NULL,
+    diff double precision
+);
+
+
+ALTER TABLE public.ibex35 OWNER TO postgres;
+
+SET default_with_oids = true;
+
+--
+-- Name: inversiones; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE inversiones (
+    id_inversiones integer DEFAULT nextval(('"seq_inversiones"'::text)::regclass) NOT NULL,
+    inversione text NOT NULL,
+    in_activa boolean DEFAULT true NOT NULL,
+    tpcvariable integer NOT NULL,
+    lu_cuentas integer NOT NULL,
+    cotizamercado boolean DEFAULT true NOT NULL,
+    compra double precision DEFAULT 0 NOT NULL,
+    venta double precision DEFAULT 0 NOT NULL
+);
+
+
+ALTER TABLE public.inversiones OWNER TO postgres;
+
+--
+-- Name: operinversiones; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE operinversiones (
+    id_operinversiones integer DEFAULT nextval(('"seq_operinversiones"'::text)::regclass) NOT NULL,
+    fecha date,
+    lu_tiposoperaciones integer,
+    ma_inversiones integer,
+    acciones double precision,
+    importe double precision,
+    impuestos double precision,
+    comision double precision,
+    comentario text,
+    valor_accion double precision
+);
+
+
+ALTER TABLE public.operinversiones OWNER TO postgres;
+
+--
+-- Name: opertarjetas; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE opertarjetas (
+    id_opertarjetas integer DEFAULT nextval(('"seq_opertarjetas"'::text)::regclass) NOT NULL,
+    fecha date,
+    lu_conceptos integer NOT NULL,
+    lu_tiposoperaciones integer NOT NULL,
+    importe double precision NOT NULL,
+    comentario text,
+    ma_tarjetas integer NOT NULL,
+    pagado boolean NOT NULL,
+    fechapago date,
+    lu_opercuentas bigint
+);
+
+
+ALTER TABLE public.opertarjetas OWNER TO postgres;
+
+--
+-- Name: pga_diagrams; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE pga_diagrams (
+    diagramname character varying(64) NOT NULL,
+    diagramtables text,
+    diagramlinks text
+);
+
+
+ALTER TABLE public.pga_diagrams OWNER TO postgres;
+
+--
+-- Name: pga_forms; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE pga_forms (
+    formname character varying(64),
+    formsource text
+);
+
+
+ALTER TABLE public.pga_forms OWNER TO postgres;
+
+--
+-- Name: pga_graphs; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE pga_graphs (
+    graphname character varying(64) NOT NULL,
+    graphsource text,
+    graphcode text
+);
+
+
+ALTER TABLE public.pga_graphs OWNER TO postgres;
+
+--
+-- Name: pga_images; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE pga_images (
+    imagename character varying(64) NOT NULL,
+    imagesource text
+);
+
+
+ALTER TABLE public.pga_images OWNER TO postgres;
+
+--
+-- Name: pga_layout; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE pga_layout (
+    tablename character varying(64),
+    nrcols smallint,
+    colnames text,
+    colwidth text
+);
+
+
+ALTER TABLE public.pga_layout OWNER TO postgres;
+
+--
+-- Name: pga_queries; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE pga_queries (
+    queryname character varying(64),
+    querytype character(1),
+    querycommand text,
+    querytables text,
+    querylinks text,
+    queryresults text,
+    querycomments text
+);
+
+
+ALTER TABLE public.pga_queries OWNER TO postgres;
+
+--
+-- Name: pga_reports; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE pga_reports (
+    reportname character varying(64),
+    reportsource text,
+    reportbody text,
+    reportprocs text,
+    reportoptions text
+);
+
+
+ALTER TABLE public.pga_reports OWNER TO postgres;
+
+--
+-- Name: pga_schema; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE pga_schema (
+    schemaname character varying(64),
+    schematables text,
+    schemalinks text
+);
+
+
+ALTER TABLE public.pga_schema OWNER TO postgres;
+
+--
+-- Name: pga_scripts; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE pga_scripts (
+    scriptname character varying(64),
+    scriptsource text
+);
+
+
+ALTER TABLE public.pga_scripts OWNER TO postgres;
+
+--
+-- Name: seq_actuinversiones; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE seq_actuinversiones
+    START WITH 1
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.seq_actuinversiones OWNER TO postgres;
+
+--
+-- Name: seq_cuentas; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE seq_cuentas
+    START WITH 0
+    INCREMENT BY 1
+    MAXVALUE 1000000
+    MINVALUE 0
+    CACHE 1;
+
+
+ALTER TABLE public.seq_cuentas OWNER TO postgres;
+
+--
+-- Name: seq_entidadesbancarias; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE seq_entidadesbancarias
+    START WITH 0
+    INCREMENT BY 1
+    MAXVALUE 100000000
+    MINVALUE 0
+    CACHE 1;
+
+
+ALTER TABLE public.seq_entidadesbancarias OWNER TO postgres;
+
+--
+-- Name: seq_inversiones; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE seq_inversiones
+    START WITH 1
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.seq_inversiones OWNER TO postgres;
+
+--
+-- Name: seq_opercuentas; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE seq_opercuentas
+    START WITH 1
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.seq_opercuentas OWNER TO postgres;
+
+--
+-- Name: seq_operinversiones; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE seq_operinversiones
+    START WITH 1
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.seq_operinversiones OWNER TO postgres;
+
+--
+-- Name: seq_opertarjetas; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE seq_opertarjetas
+    START WITH 1
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.seq_opertarjetas OWNER TO postgres;
+
+--
+-- Name: seq_tarjetas; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE seq_tarjetas
+    START WITH 1
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.seq_tarjetas OWNER TO postgres;
+
+--
+-- Name: seq_tmpoperinversioneshistoricas; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE seq_tmpoperinversioneshistoricas
+    START WITH 1
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.seq_tmpoperinversioneshistoricas OWNER TO postgres;
+
+--
+-- Name: tarjetas; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE tarjetas (
+    id_tarjetas integer DEFAULT nextval(('"seq_tarjetas"'::text)::regclass) NOT NULL,
+    tarjeta text,
+    lu_cuentas integer,
+    pago_diferido boolean,
+    saldomaximo double precision,
+    tj_activa boolean,
+    numero text
+);
+
+
+ALTER TABLE public.tarjetas OWNER TO postgres;
+
+--
+-- Name: tiposoperaciones; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE tiposoperaciones (
+    id_tiposoperaciones integer NOT NULL,
+    tipo_operacion text,
+    modificable boolean,
+    operinversion boolean,
+    opercuentas boolean
+);
+
+
+ALTER TABLE public.tiposoperaciones OWNER TO postgres;
+
+--
+-- Name: tmpdepositosheredada; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE tmpdepositosheredada (
+)
+INHERITS (opercuentas);
+
+
+ALTER TABLE public.tmpdepositosheredada OWNER TO postgres;
+
+--
+-- Name: tmpdividendosheredada; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
 CREATE TABLE tmpdividendosheredada (
@@ -182,33 +936,27 @@ CREATE TABLE tmpdividendosheredada (
 INHERITS (opercuentas);
 
 
-
-CREATE SEQUENCE seq_actuinversiones
-    INCREMENT BY 1
-    NO MAXVALUE
-    NO MINVALUE
-    CACHE 1;
-
+ALTER TABLE public.tmpdividendosheredada OWNER TO postgres;
 
 --
--- TOC entry 11 (OID 19590)
--- Name: seq_opercuentas; Type: SEQUENCE; Schema: public; Owner: postgres
+-- Name: tmpinversionesheredada; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
-CREATE SEQUENCE seq_opercuentas
-    INCREMENT BY 1
-    NO MAXVALUE
-    NO MINVALUE
-    CACHE 1;
+CREATE TABLE tmpinversionesheredada (
+    id_operinversiones integer NOT NULL,
+    id_inversiones integer NOT NULL
+)
+INHERITS (opercuentas);
 
+
+ALTER TABLE public.tmpinversionesheredada OWNER TO postgres;
 
 --
--- TOC entry 61 (OID 19594)
--- Name: tmpoperinversiones; Type: TABLE; Schema: public; Owner: postgres
+-- Name: tmpoperinversiones; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
 CREATE TABLE tmpoperinversiones (
-    id_tmpoperinversiones serial NOT NULL,
+    id_tmpoperinversiones integer NOT NULL,
     ma_operinversiones integer NOT NULL,
     ma_inversiones integer NOT NULL,
     fecha date NOT NULL,
@@ -216,65 +964,40 @@ CREATE TABLE tmpoperinversiones (
     lu_tiposoperaciones integer,
     importe double precision,
     impuestos double precision,
-    comision double precision
+    comision double precision,
+    valor_accion double precision
 );
 
 
+ALTER TABLE public.tmpoperinversiones OWNER TO postgres;
+
 --
--- TOC entry 13 (OID 19597)
--- Name: seq_tarjetas; Type: SEQUENCE; Schema: public; Owner: postgres
+-- Name: tmpoperinversiones_id_tmpoperinversiones_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
-CREATE SEQUENCE seq_tarjetas
+CREATE SEQUENCE tmpoperinversiones_id_tmpoperinversiones_seq
+    START WITH 1
     INCREMENT BY 1
     NO MAXVALUE
     NO MINVALUE
     CACHE 1;
 
 
+ALTER TABLE public.tmpoperinversiones_id_tmpoperinversiones_seq OWNER TO postgres;
+
 --
--- TOC entry 15 (OID 19599)
--- Name: seq_opertarjetas; Type: SEQUENCE; Schema: public; Owner: postgres
+-- Name: tmpoperinversiones_id_tmpoperinversiones_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
-CREATE SEQUENCE seq_opertarjetas
-    INCREMENT BY 1
-    NO MAXVALUE
-    NO MINVALUE
-    CACHE 1;
+ALTER SEQUENCE tmpoperinversiones_id_tmpoperinversiones_seq OWNED BY tmpoperinversiones.id_tmpoperinversiones;
 
 
 --
--- TOC entry 17 (OID 19601)
--- Name: seq_inversiones; Type: SEQUENCE; Schema: public; Owner: postgres
---
-
-CREATE SEQUENCE seq_inversiones
-    INCREMENT BY 1
-    NO MAXVALUE
-    NO MINVALUE
-    CACHE 1;
-
-
---
--- TOC entry 19 (OID 19603)
--- Name: seq_operinversiones; Type: SEQUENCE; Schema: public; Owner: postgres
---
-
-CREATE SEQUENCE seq_operinversiones
-    INCREMENT BY 1
-    NO MAXVALUE
-    NO MINVALUE
-    CACHE 1;
-
-
---
--- TOC entry 62 (OID 19605)
--- Name: tmpoperinversioneshistoricas; Type: TABLE; Schema: public; Owner: postgres
+-- Name: tmpoperinversioneshistoricas; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
 CREATE TABLE tmpoperinversioneshistoricas (
-    id_tmpoperinversioneshistoricas integer DEFAULT nextval('public.seq_tmpoperinversioneshistoricas'::text),
+    id_tmpoperinversioneshistoricas integer DEFAULT nextval(('public.seq_tmpoperinversioneshistoricas'::text)::regclass),
     ma_operinversiones integer,
     ma_inversiones integer,
     fecha_inicio date,
@@ -289,89 +1012,59 @@ CREATE TABLE tmpoperinversioneshistoricas (
 );
 
 
---
--- TOC entry 21 (OID 19608)
--- Name: seq_tmpoperinversioneshistoricas; Type: SEQUENCE; Schema: public; Owner: postgres
---
-
-CREATE SEQUENCE seq_tmpoperinversioneshistoricas
-    INCREMENT BY 1
-    NO MAXVALUE
-    NO MINVALUE
-    CACHE 1;
-
+ALTER TABLE public.tmpoperinversioneshistoricas OWNER TO postgres;
 
 --
--- TOC entry 23 (OID 198173)
--- Name: seq_entidadesbancarias; Type: SEQUENCE; Schema: public; Owner: postgres
+-- Name: todo_cuentas; Type: VIEW; Schema: public; Owner: postgres
 --
 
-CREATE SEQUENCE seq_entidadesbancarias
-    INCREMENT BY 1
-    MAXVALUE 100000000
-    MINVALUE 0
-    CACHE 1;
-
-
---
--- TOC entry 25 (OID 198363)
--- Name: seq_cuentas; Type: SEQUENCE; Schema: public; Owner: postgres
---
-
-CREATE SEQUENCE seq_cuentas
-    INCREMENT BY 1
-    MAXVALUE 1000000
-    MINVALUE 0
-    CACHE 1;
-
-
-SET SESSION AUTHORIZATION 'postgres';
-
---
--- TOC entry 63 (OID 253541)
--- Name: todocuentas; Type: VIEW; Schema: public; Owner: postgres
---
 CREATE VIEW todo_cuentas AS
- SELECT cuentas.id_cuentas, cuentas.cuenta, cuentas.cu_activa, cuentas.numero_cuenta, entidadesbancarias.id_entidadesbancarias, entidadesbancarias.entidadesbancaria, entidadesbancarias.eb_activa
-   FROM cuentas, entidadesbancarias
-  WHERE cuentas.ma_entidadesbancarias = entidadesbancarias.id_entidadesbancarias;
+    SELECT cuentas.id_cuentas, cuentas.cuenta, cuentas.cu_activa, cuentas.numero_cuenta, entidadesbancarias.id_entidadesbancarias, entidadesbancarias.entidadesbancaria, entidadesbancarias.eb_activa FROM cuentas, entidadesbancarias WHERE (cuentas.ma_entidadesbancarias = entidadesbancarias.id_entidadesbancarias);
 
 
-
-create view todo_tarjetas as  SELECT tarjetas.id_tarjetas, tarjetas.numero, tarjetas.tarjeta, tarjetas.lu_cuentas, tarjetas.pago_diferido, tarjetas.saldomaximo, tarjetas.tj_activa, cuentas.id_cuentas, cuentas.cuenta, cuentas.ma_entidadesbancarias, cuentas.cu_activa, cuentas.numero_cuenta, entidadesbancarias.id_entidadesbancarias, entidadesbancarias.entidadesbancaria, entidadesbancarias.eb_activa
-FROM tarjetas, cuentas, entidadesbancarias WHERE tarjetas.lu_cuentas = cuentas.id_cuentas AND cuentas.ma_entidadesbancarias = entidadesbancarias.id_entidadesbancarias;
+ALTER TABLE public.todo_cuentas OWNER TO postgres;
 
 --
--- TOC entry 64 (OID 253577)
--- Name: dm_saldocuentas_fechas; Type: VIEW; Schema: public; Owner: postgres
+-- Name: todo_opercuentas; Type: VIEW; Schema: public; Owner: postgres
 --
 
-CREATE VIEW dm_saldocuentas_fechas AS
-    SELECT date_part('year'::text, opercuentas.fecha) AS date_part, sum(opercuentas.importe) AS sum, opercuentas.lu_tiposoperaciones FROM opercuentas GROUP BY date_part('year'::text, opercuentas.fecha), opercuentas.lu_tiposoperaciones HAVING ((opercuentas.lu_tiposoperaciones = 1) OR (opercuentas.lu_tiposoperaciones = 2)) ORDER BY date_part('year'::text, opercuentas.fecha);
+CREATE VIEW todo_opercuentas AS
+    SELECT cuentas.id_cuentas, cuentas.cuenta, cuentas.ma_entidadesbancarias, cuentas.cu_activa, cuentas.numero_cuenta, opercuentas.id_opercuentas, opercuentas.fecha, opercuentas.lu_conceptos, opercuentas.lu_tiposoperaciones, opercuentas.importe, opercuentas.comentario, opercuentas.ma_cuentas, conceptos.id_conceptos, conceptos.concepto, conceptos.lu_tipooperacion, entidadesbancarias.id_entidadesbancarias, entidadesbancarias.entidadesbancaria, entidadesbancarias.eb_activa, tiposoperaciones.id_tiposoperaciones, tiposoperaciones.tipo_operacion, tiposoperaciones.modificable, tiposoperaciones.operinversion, tiposoperaciones.opercuentas FROM cuentas, opercuentas, conceptos, entidadesbancarias, tiposoperaciones WHERE ((((cuentas.id_cuentas = opercuentas.ma_cuentas) AND (cuentas.ma_entidadesbancarias = entidadesbancarias.id_entidadesbancarias)) AND (opercuentas.lu_conceptos = conceptos.id_conceptos)) AND (conceptos.lu_tipooperacion = tiposoperaciones.id_tiposoperaciones));
 
 
---
--- TOC entry 91 (OID 253586)
--- Name: inversion_actualizacion(integer, integer, integer); Type: FUNCTION; Schema: public; Owner: postgres
---
-
-CREATE FUNCTION inversion_actualizacion(integer, integer, integer) RETURNS double precision
-    AS 'select actualizacion from actuinversiones where ma_inversiones=$1 and date_part(''year'',fecha)=$2  and date_part(''month'',fecha)=$3 order by fecha desc limit 1'
-    LANGUAGE sql;
-
+ALTER TABLE public.todo_opercuentas OWNER TO postgres;
 
 --
--- TOC entry 92 (OID 253595)
--- Name: inversion_actualizacion(integer, date); Type: FUNCTION; Schema: public; Owner: postgres
+-- Name: todo_operinversiones; Type: VIEW; Schema: public; Owner: postgres
 --
 
-CREATE FUNCTION inversion_actualizacion(integer, date) RETURNS double precision
-    AS 'select actualizacion from actuinversiones where ma_inversiones=$1 and fecha<=$2 order by fecha desc limit 1'
-    LANGUAGE sql;
+CREATE VIEW todo_operinversiones AS
+    SELECT operinversiones.id_operinversiones, operinversiones.fecha, operinversiones.acciones, operinversiones.importe, operinversiones.impuestos, operinversiones.comision, operinversiones.comentario, tiposoperaciones.id_tiposoperaciones, tiposoperaciones.tipo_operacion, inversiones.id_inversiones, inversiones.inversione, inversiones.in_activa, inversiones.tpcvariable, inversiones.lu_cuentas, inversiones.cotizamercado FROM operinversiones, tiposoperaciones, inversiones WHERE ((operinversiones.lu_tiposoperaciones = tiposoperaciones.id_tiposoperaciones) AND (inversiones.id_inversiones = operinversiones.ma_inversiones));
 
+
+ALTER TABLE public.todo_operinversiones OWNER TO postgres;
 
 --
--- TOC entry 65 (OID 253598)
+-- Name: todo_opertarjetas; Type: VIEW; Schema: public; Owner: postgres
+--
+
+CREATE VIEW todo_opertarjetas AS
+    SELECT opertarjetas.id_opertarjetas, opertarjetas.fecha, opertarjetas.lu_conceptos, opertarjetas.lu_tiposoperaciones, opertarjetas.importe, opertarjetas.comentario, opertarjetas.ma_tarjetas, opertarjetas.pagado, opertarjetas.fechapago, opertarjetas.lu_opercuentas, conceptos.id_conceptos, conceptos.concepto, conceptos.lu_tipooperacion, tiposoperaciones.id_tiposoperaciones, tiposoperaciones.tipo_operacion, tiposoperaciones.modificable, tiposoperaciones.operinversion, tiposoperaciones.opercuentas, tarjetas.id_tarjetas, tarjetas.tarjeta, tarjetas.lu_cuentas, tarjetas.pago_diferido, tarjetas.saldomaximo, tarjetas.tj_activa FROM opertarjetas, conceptos, tiposoperaciones, tarjetas WHERE (((conceptos.id_conceptos = opertarjetas.lu_conceptos) AND (tiposoperaciones.id_tiposoperaciones = opertarjetas.lu_tiposoperaciones)) AND (tarjetas.id_tarjetas = opertarjetas.ma_tarjetas));
+
+
+ALTER TABLE public.todo_opertarjetas OWNER TO postgres;
+
+--
+-- Name: todo_tarjetas; Type: VIEW; Schema: public; Owner: postgres
+--
+
+CREATE VIEW todo_tarjetas AS
+    SELECT tarjetas.id_tarjetas, tarjetas.numero, tarjetas.tarjeta, tarjetas.lu_cuentas, tarjetas.pago_diferido, tarjetas.saldomaximo, tarjetas.tj_activa, cuentas.id_cuentas, cuentas.cuenta, cuentas.ma_entidadesbancarias, cuentas.cu_activa, cuentas.numero_cuenta, entidadesbancarias.id_entidadesbancarias, entidadesbancarias.entidadesbancaria, entidadesbancarias.eb_activa FROM tarjetas, cuentas, entidadesbancarias WHERE ((tarjetas.lu_cuentas = cuentas.id_cuentas) AND (cuentas.ma_entidadesbancarias = entidadesbancarias.id_entidadesbancarias));
+
+
+ALTER TABLE public.todo_tarjetas OWNER TO postgres;
+
+--
 -- Name: todoinversiones; Type: VIEW; Schema: public; Owner: postgres
 --
 
@@ -379,223 +1072,294 @@ CREATE VIEW todoinversiones AS
     SELECT operinversiones.importe, operinversiones.fecha, inversion_actualizacion(operinversiones.ma_inversiones, operinversiones.fecha) AS inversion_actualizacion FROM operinversiones;
 
 
+ALTER TABLE public.todoinversiones OWNER TO postgres;
+
 --
--- TOC entry 66 (OID 253710)
--- Name: dm_totales; Type: TABLE; Schema: public; Owner: postgres
+-- Name: id_tmpoperinversiones; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
-CREATE TABLE dm_totales (
-    fecha date,
-    clave character varying(2),
-    valor double precision
-);
-
-
-
-COPY  actuinversiones (id_actuinversiones, fecha, ma_inversiones, actualizacion) FROM stdin;
-1	2005-11-04	1	10
-2	2005-11-05	1	10.1
-3	2005-11-06	1	10.15
-\.
-
-
-
-
-COPY comentarios (id_comentarios, comentario, lu_tiposoperaciones, lu_conceptos) FROM stdin;
-1	Inicio de Aplicación	2	1
-2	Supermercado	1	2
-3	Restaurante	1	3
-4	Recibido de Ibercaja Libreta Ahorro	3	4
-\.
+ALTER TABLE tmpoperinversiones ALTER COLUMN id_tmpoperinversiones SET DEFAULT nextval('tmpoperinversiones_id_tmpoperinversiones_seq'::regclass);
 
 
 --
--- Data for TOC entry 94 (OID 19457)
--- Name: conceptos; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Name: clave_primaria; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
-COPY conceptos (id_conceptos, concepto, lu_tipooperacion) FROM stdin;
-2	Supermercado	1	\N
-3	Restaurante	1	\N
-4	Traspaso Realizado	1	\N
-7	Gasolina	1	\N
-8	Ocio	1	\N
-9	Teléfono	1	\N
-0	Desconocido	1	\N
-13	Alquiler & Comunidad	1	\N
-14	Universidad & Estudios	1	\N
-15	Viajes & Taxi & Autopista	1	\N
-16	Hoteles	1	\N
-18	Regalos	1	\N
-19	Electricidad	1	\N
-20	Gas	1	\N
-21	Intereses Negativos	1	\N
-22	Ropa	1	\N
-17	Loterías	1	\N
-26	Informática	1	\N
-27	Coche	1	\N
-31	Invitaciones	1	\N
-12	Televisión & Video & Cine	1	\N
-23	Médicos & Farmacias & Higiene Personal	1	\N
-34	Compra Casa	1	\N
-36	Infraestructura Casa	1	\N
-37	Pago Impuestos	1	\N
-38	Comisiones bancarias	1	\N
-1	Inicio de Cuenta	2	\N
-5	Traspaso Recibido	3	\N
-6	Devolución Impuestos	2	\N
-10	Nomina	2	\N
-24	Intereses Positivos	2	\N
-25	Loterías Premios	2	\N
-28	Herencia	2	\N
-29	Compra Fondos Inversion	4	\N
-30	Pagas	2	\N
-32	Liquidar Inversion	5	\N
-33	Otros Ingresos	2	\N
-35	Venta Fondos Inversion	5	\N
-39	Dividendos	2	t
-40	Facturacion Tarjeta	7	t
-43	Anadido Fondos Inversion	6	\N
-44	Ajustes Negativos	1	\N
-41	Creación Deposito	8	\N
-42	Vencimiento Depósito	9	\N
-45	Compra Casa (Laura)	2	\N
-46	Prestamo	2	\N
-47	Seguro	1	\N
-\.
-
-COPY cuentas (id_cuentas, cuenta, ma_entidadesbancarias, cu_activa, numero_cuenta) FROM stdin;
-0	Efectivo	0	t	\N
-1	Ejemplo Cuenta	1	t	\N
-\.
-
-COPY opercuentas(id_opercuentas,fecha,lu_conceptos,lu_tiposoperaciones,importe,comentario,ma_cuentas) FROM stdin;
-1	2005-11-03	1	2	1500	Modificame con el importe de inicio de cuenta que quieras	1
-2	2005-11-03	1	2	1500	Modificame con el importe de inicio de cuenta que quieras	0
-3	2005-11-04	29	4	-1000	Compra de Fondo de Inversión	1
-4	2005-11-04	38	1	-5	Comisión	1
-5	2005-10-04	47	1	-5	\N	1
-\.
-
-COPY inversiones (id_inversiones, inversione, in_activa, tpcvariable, lu_cuentas, cotizamercado) FROM stdin;
-1	Ejemplo Inversion	t	100	1	t
-\.
-
-COPY tiposoperaciones (id_tiposoperaciones, tipo_operacion, modificable, operinversion, opercuentas) FROM stdin;
-5	Venta Acciones	\N	t	\N
-3	Trasferencia	\N	\N	\N
-0	Deconocido	\N	\N	\N
-7	Facturacion Tarjeta	\N	\N	\N
-8	Creación Depósito	\N	\N	\N
-9	Vencimiento Depósito	\N	\N	\N
-4	Compra Acciones	\N	t	\N
-6	Añadido de Acciones	\N	t	\N
-10	Traspaso fondo inversión	\N	t	\N
-2	Ingreso	\N	\N	t
-1	Gasto	f	\N	t
-\.
-
-COPY entidadesbancarias (id_entidadesbancarias, entidadesbancaria, eb_activa) FROM stdin;
-0	No Bancos	t
-1	Ejemplo Entidad Bancaria	t
-\.
+ALTER TABLE ONLY ibex35
+    ADD CONSTRAINT clave_primaria PRIMARY KEY (fecha);
 
 
-
-COPY operinversiones (id_operinversiones, fecha, lu_tiposoperaciones, ma_inversiones, acciones, importe, impuestos, comision, valor_accion, comentario) FROM stdin;
-1	2005-11-04	4	1	100	1000	4	5	10	Operación de inversión de prueba
-\.
-
-COPY tmpoperinversiones (id_tmpoperinversiones, ma_operinversiones, ma_inversiones, fecha, acciones, lu_tiposoperaciones, importe, impuestos, comision) FROM stdin;
-1	1	1	2005-11-04	100	4	1000	-4	-5
-\.
-
-
-COPY tarjetas (id_tarjetas, tarjeta, lu_cuentas, pago_diferido, saldomaximo, tj_activa) FROM stdin;
-1	Ejemplo tarjeta diferido	1	t	600	t
-2	Ejemplo tarjeta debito	1	f	600	t
-\.
-
-COPY opertarjetas (id_opertarjetas, fecha, lu_conceptos, lu_tiposoperaciones, importe, comentario, ma_tarjetas, pagado, fechapago, lu_opercuentas) FROM stdin;
-\.
-
-COPY depositos (id_depositos, lu_cuentas, fecha_inicio, cantidad, fecha_fin, intereses, comision, finalizado, comentario, retencion) FROM stdin;
-\.
-
-CREATE UNIQUE INDEX comentarios_id_comentarios ON comentarios USING btree (id_comentarios);
-
-CREATE UNIQUE INDEX conceptos_id_conceptos ON conceptos USING btree (id_conceptos);
-
-CREATE UNIQUE INDEX cuentas_id_cuentas ON cuentas USING btree (id_cuentas);
-
-CREATE UNIQUE INDEX inversiones_id_inversiones ON inversiones USING btree (id_inversiones);
-
-CREATE INDEX tiposoperaciones_id_tiposoperac ON tiposoperaciones USING btree (id_tiposoperaciones);
-
-CREATE UNIQUE INDEX entidadesbancarias_id_entidades ON entidadesbancarias USING btree (id_entidadesbancarias);
-
-CREATE INDEX opercuentas_ma_cuentas ON opercuentas USING btree (ma_cuentas);
-
-CREATE INDEX actuinversiones_fecha ON actuinversiones USING btree (fecha);
-
-CREATE UNIQUE INDEX id_tiposoperaciones_tiposoperaciones_ukey ON tiposoperaciones USING btree (id_tiposoperaciones);
-
-CREATE UNIQUE INDEX id_operinversiones_operinversiones_ukey ON operinversiones USING btree (id_operinversiones);
-
-CREATE INDEX id_operinversiones_operinversiones_key ON operinversiones USING btree (id_operinversiones);
-
-CREATE UNIQUE INDEX id_opercuentas_opercuentas_ukey ON opercuentas USING btree (id_opercuentas);
-
-CREATE INDEX tmpoperinversiones_id_tmpoperinversiones_key ON tmpoperinversiones USING btree (id_tmpoperinversiones);
-
-CREATE INDEX index_actuinversiones_fecha ON actuinversiones USING btree (fecha);
-
-ALTER TABLE ONLY tarjetas
-    ADD CONSTRAINT tarjetas_pkey PRIMARY KEY (id_tarjetas);
-
-ALTER TABLE ONLY opertarjetas
-    ADD CONSTRAINT opertarjetas_pkey PRIMARY KEY (id_opertarjetas);
+--
+-- Name: depositos_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
 
 ALTER TABLE ONLY depositos
     ADD CONSTRAINT depositos_pkey PRIMARY KEY (id_depositos);
 
+
+--
+-- Name: dividendos_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
 ALTER TABLE ONLY dividendos
     ADD CONSTRAINT dividendos_pkey PRIMARY KEY (id_dividendos);
+
+
+--
+-- Name: opertarjetas_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY opertarjetas
+    ADD CONSTRAINT opertarjetas_pkey PRIMARY KEY (id_opertarjetas);
+
+
+--
+-- Name: pga_diagrams_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY pga_diagrams
+    ADD CONSTRAINT pga_diagrams_pkey PRIMARY KEY (diagramname);
+
+
+--
+-- Name: pga_graphs_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY pga_graphs
+    ADD CONSTRAINT pga_graphs_pkey PRIMARY KEY (graphname);
+
+
+--
+-- Name: pga_images_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY pga_images
+    ADD CONSTRAINT pga_images_pkey PRIMARY KEY (imagename);
+
+
+--
+-- Name: tarjetas_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY tarjetas
+    ADD CONSTRAINT tarjetas_pkey PRIMARY KEY (id_tarjetas);
+
+
+--
+-- Name: tmpoperinversiones_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
 
 ALTER TABLE ONLY tmpoperinversiones
     ADD CONSTRAINT tmpoperinversiones_pkey PRIMARY KEY (id_tmpoperinversiones);
 
+
+--
+-- Name: unik_actuinversiones; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
 ALTER TABLE ONLY actuinversiones
     ADD CONSTRAINT unik_actuinversiones UNIQUE (id_actuinversiones);
 
-SELECT pg_catalog.setval('depositos_id_depositos_seq', 1, true);
 
-SELECT pg_catalog.setval('dividendos_id_dividendos_seq', 1, true);
+--
+-- Name: actuinversiones_fecha; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
 
-SELECT pg_catalog.setval('seq_actuinversiones', 1, true);
-
-SELECT pg_catalog.setval('seq_opercuentas', 1, true);
-
-SELECT pg_catalog.setval('tmpoperinversiones_id_tmpoperinversiones_seq', 1, true);
-
-SELECT pg_catalog.setval('seq_tarjetas', 3, true);
-
-SELECT pg_catalog.setval('seq_opertarjetas', 1, true);
-
-SELECT pg_catalog.setval('seq_inversiones', 2, true);
-
-SELECT pg_catalog.setval('seq_operinversiones', 1, true);
-
-SELECT pg_catalog.setval('seq_tmpoperinversioneshistoricas', 1, true);
-
-SELECT pg_catalog.setval('seq_entidadesbancarias', 2, true);
-
-SELECT pg_catalog.setval('seq_cuentas', 2, true);
+CREATE INDEX actuinversiones_fecha ON actuinversiones USING btree (fecha);
 
 
-SET SESSION AUTHORIZATION 'postgres';
+--
+-- Name: comentarios_id_comentarios; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE UNIQUE INDEX comentarios_id_comentarios ON comentarios USING btree (id_comentarios);
 
 
-COMMENT ON SCHEMA public IS 'Standard public schema';
+--
+-- Name: conceptos_id_conceptos; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
 
+CREATE UNIQUE INDEX conceptos_id_conceptos ON conceptos USING btree (id_conceptos);
+
+
+--
+-- Name: cuentas_id_cuentas; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE UNIQUE INDEX cuentas_id_cuentas ON cuentas USING btree (id_cuentas);
+
+
+--
+-- Name: entidadesbancarias_id_entidades; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE UNIQUE INDEX entidadesbancarias_id_entidades ON entidadesbancarias USING btree (id_entidadesbancarias);
+
+
+--
+-- Name: id_opercuentas_opercuentas_ukey; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE UNIQUE INDEX id_opercuentas_opercuentas_ukey ON opercuentas USING btree (id_opercuentas);
+
+
+--
+-- Name: id_operinversiones_operinversiones_key; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX id_operinversiones_operinversiones_key ON operinversiones USING btree (id_operinversiones);
+
+
+--
+-- Name: id_operinversiones_operinversiones_ukey; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE UNIQUE INDEX id_operinversiones_operinversiones_ukey ON operinversiones USING btree (id_operinversiones);
+
+
+--
+-- Name: id_tiposoperaciones_tiposoperaciones_ukey; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE UNIQUE INDEX id_tiposoperaciones_tiposoperaciones_ukey ON tiposoperaciones USING btree (id_tiposoperaciones);
+
+
+--
+-- Name: index_actuinversiones_fecha; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX index_actuinversiones_fecha ON actuinversiones USING btree (fecha);
+
+
+--
+-- Name: inversiones_id_inversiones; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE UNIQUE INDEX inversiones_id_inversiones ON inversiones USING btree (id_inversiones);
+
+
+--
+-- Name: opercuentas_ma_cuentas; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX opercuentas_ma_cuentas ON opercuentas USING btree (ma_cuentas);
+
+
+--
+-- Name: tiposoperaciones_id_tiposoperac; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX tiposoperaciones_id_tiposoperac ON tiposoperaciones USING btree (id_tiposoperaciones);
+
+
+--
+-- Name: tmpoperinversiones_id_tmpoperinversiones_key; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX tmpoperinversiones_id_tmpoperinversiones_key ON tmpoperinversiones USING btree (id_tmpoperinversiones);
+
+
+--
+-- Name: public; Type: ACL; Schema: -; Owner: postgres
+--
+
+REVOKE ALL ON SCHEMA public FROM PUBLIC;
+REVOKE ALL ON SCHEMA public FROM postgres;
+GRANT ALL ON SCHEMA public TO postgres;
+GRANT ALL ON SCHEMA public TO PUBLIC;
+
+
+--
+-- Name: pga_diagrams; Type: ACL; Schema: public; Owner: postgres
+--
+
+REVOKE ALL ON TABLE pga_diagrams FROM PUBLIC;
+REVOKE ALL ON TABLE pga_diagrams FROM postgres;
+GRANT ALL ON TABLE pga_diagrams TO postgres;
+GRANT ALL ON TABLE pga_diagrams TO PUBLIC;
+
+
+--
+-- Name: pga_forms; Type: ACL; Schema: public; Owner: postgres
+--
+
+REVOKE ALL ON TABLE pga_forms FROM PUBLIC;
+REVOKE ALL ON TABLE pga_forms FROM postgres;
+GRANT ALL ON TABLE pga_forms TO postgres;
+GRANT ALL ON TABLE pga_forms TO PUBLIC;
+
+
+--
+-- Name: pga_graphs; Type: ACL; Schema: public; Owner: postgres
+--
+
+REVOKE ALL ON TABLE pga_graphs FROM PUBLIC;
+REVOKE ALL ON TABLE pga_graphs FROM postgres;
+GRANT ALL ON TABLE pga_graphs TO postgres;
+GRANT ALL ON TABLE pga_graphs TO PUBLIC;
+
+
+--
+-- Name: pga_images; Type: ACL; Schema: public; Owner: postgres
+--
+
+REVOKE ALL ON TABLE pga_images FROM PUBLIC;
+REVOKE ALL ON TABLE pga_images FROM postgres;
+GRANT ALL ON TABLE pga_images TO postgres;
+GRANT ALL ON TABLE pga_images TO PUBLIC;
+
+
+--
+-- Name: pga_layout; Type: ACL; Schema: public; Owner: postgres
+--
+
+REVOKE ALL ON TABLE pga_layout FROM PUBLIC;
+REVOKE ALL ON TABLE pga_layout FROM postgres;
+GRANT ALL ON TABLE pga_layout TO postgres;
+GRANT ALL ON TABLE pga_layout TO PUBLIC;
+
+
+--
+-- Name: pga_queries; Type: ACL; Schema: public; Owner: postgres
+--
+
+REVOKE ALL ON TABLE pga_queries FROM PUBLIC;
+REVOKE ALL ON TABLE pga_queries FROM postgres;
+GRANT ALL ON TABLE pga_queries TO postgres;
+GRANT ALL ON TABLE pga_queries TO PUBLIC;
+
+
+--
+-- Name: pga_reports; Type: ACL; Schema: public; Owner: postgres
+--
+
+REVOKE ALL ON TABLE pga_reports FROM PUBLIC;
+REVOKE ALL ON TABLE pga_reports FROM postgres;
+GRANT ALL ON TABLE pga_reports TO postgres;
+GRANT ALL ON TABLE pga_reports TO PUBLIC;
+
+
+--
+-- Name: pga_schema; Type: ACL; Schema: public; Owner: postgres
+--
+
+REVOKE ALL ON TABLE pga_schema FROM PUBLIC;
+REVOKE ALL ON TABLE pga_schema FROM postgres;
+GRANT ALL ON TABLE pga_schema TO postgres;
+GRANT ALL ON TABLE pga_schema TO PUBLIC;
+
+
+--
+-- Name: pga_scripts; Type: ACL; Schema: public; Owner: postgres
+--
+
+REVOKE ALL ON TABLE pga_scripts FROM PUBLIC;
+REVOKE ALL ON TABLE pga_scripts FROM postgres;
+GRANT ALL ON TABLE pga_scripts TO postgres;
+GRANT ALL ON TABLE pga_scripts TO PUBLIC;
+
+
+--
+-- PostgreSQL database dump complete
+--
 
