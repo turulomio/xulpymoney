@@ -1294,7 +1294,6 @@ class TarjetaOperacion:
         
     def insertar(self,  fecha, lu_conceptos, lu_tiposoperaciones,  importe,  comentario,  id_tarjetas):
         sql="insert into opertarjetas (fecha, lu_conceptos, lu_tiposoperaciones, importe, comentario, ma_tarjetas, pagado) values ('" + fecha + "'," + str(lu_conceptos)+","+ str(lu_tiposoperaciones) +","+str(importe)+", '"+comentario+"', "+str(id_tarjetas)+", false)"
-        mylog(sql)
         try:
             con.Execute(sql);
         except:
@@ -1303,7 +1302,6 @@ class TarjetaOperacion:
         
     def modificar_fechapago(self, id_opertarjetas,  fechapago, id_opercuentas):
         sql="update opertarjetas set fechapago='"+str(fechapago)+"', pagado=true "+", lu_opercuentas="+str(id_opercuentas)+"  where id_opertarjetas=" +str(id_opertarjetas) 
-        mylog(sql)
         try:
             con.Execute(sql);
         except:
