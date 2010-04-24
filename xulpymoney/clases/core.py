@@ -701,9 +701,13 @@ class InversionActualizacion:
         resultado = []
         sql="SELECT fecha,Actualizacion from actuinversiones where ma_Inversiones="+str(id_inversiones)+" and  fecha<='"+str(ano)+"-12-31' order by Fecha desc limit 1"
         curs=con.Execute(sql)
-        row = curs.GetRowAssoc(0)   
-        resultado.append(row["fecha"])
-        resultado.append(row["actualizacion"])
+        if curs.RecordCount()==0:
+            resultado.append("1900-1-1")
+            resultado.append(0)
+        else:
+            row = curs.GetRowAssoc(0)   
+            resultado.append(row["fecha"])
+            resultado.append(row["actualizacion"])
         return resultado
         
     def valor(self,id_inversiones,fecha):
@@ -752,8 +756,11 @@ class InversionOperacion:
     def referencia_ibex35(self, fecha):
         sql="select cierre from ibex35 where fecha<='"+str(fecha) + "' order by fecha desc limit 1"
         curs=con.Execute(sql)
-        row = curs.GetRowAssoc(0)   
-        return row['cierre']
+        if curs.RecordCount()==0:
+            return 0
+        else:
+            row = curs.GetRowAssoc(0)   
+            return row['cierre']
 
 class InversionOperacionHistorica:
     def actualizar(self, id_inversiones):
@@ -1545,14 +1552,21 @@ class Total:
         s=s+ '      <treerow>\n'
         s=s+ '          <treecell label="Sin impuestos" />\n'
         s=s+treecell_euros(beneficio);
-        s=s+treecell_tpc((beneficio)*100/saldototalinicio)
+        try:
+            s=s+treecell_tpc((beneficio)*100/saldototalinicio)
+        except ZeroDivisionError:
+            s=s+treecell_tpc(0)
+            
         s=s+ '      </treerow>\n'
         s=s+ '   </treeitem>    \n'
         s=s+ '    <treeitem>\n'
         s=s+ '      <treerow>\n'
         s=s+ '         <treecell label="Con impuestos" />\n'
         s=s+treecell_euros(beneficiocon);
-        s=s+treecell_tpc((beneficiocon)*100/saldototalinicio)
+        try:
+            s=s+treecell_tpc((beneficiocon)*100/saldototalinicio)
+        except ZeroDivisionError:
+            s=s+treecell_tpc(0)
         s=s+ '      </treerow>\n'
         s=s+ '   </treeitem>\n'
         s=s+ '    <treeitem>\n'
