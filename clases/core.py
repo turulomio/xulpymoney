@@ -545,9 +545,9 @@ class Dividendo:
         sumsaldos=0
         curs=con.Execute(sql); 
         
-        s=  '        <script><![CDATA[\n'
+        s=       '<script>\n<![CDATA[\n'
         s= s+ 'function dividendo_borrar(){\n'
-        s= s+ 'var xmlHttp;        \n'
+        s= s+ '    var xmlHttp;        \n'
         s= s+ '    var tree = document.getElementById("treeDiv");\n'
         s= s+ '    var id_inversiones='+str(id_inversiones)+';\n'
         s= s+ '    var id_dividendos=tree.view.getCellText(tree.currentIndex,tree.columns.getNamedColumn("id"));\n'
@@ -562,38 +562,38 @@ class Dividendo:
         s= s+ '    xmlHttp.open("GET",url,true);\n'
         s= s+ '    xmlHttp.send(null);\n'
         s= s+ '}\n'
-        s= s+ ']]></script>\n'
+        s= s+ ']]>\n</script>\n\n'
 
         s= s+ '<vbox flex="1">\n'
         s= s+ '<popupset>\n'
-        s= s+ '<popup id="divpopup" >\n'  
-        s= s+ '    <menuitem label="Nuevo dividendo" oncommand="location=\'dividendo_insertar.psp?id_inversiones=\' +'+str(id_inversiones)+' ;"  class="menuitem-iconic"  image="images/item_add.png" />\n'
-        s= s+ '    <menuitem label="Borrar el dividendo"  oncommand="dividendo_borrar();"   class="menuitem-iconic"  image="images/eventdelete.png"/>\n'
-        s= s+ '</popup>\n'
+        s= s+ '    <popup id="divpopup" >\n'  
+        s= s+ '        <menuitem label="Nuevo dividendo" oncommand="location=\'dividendo_insertar.psp?id_inversiones=\' +'+str(id_inversiones)+' ;"  class="menuitem-iconic"  image="images/item_add.png" />\n'
+        s= s+ '        <menuitem label="Borrar el dividendo"  oncommand="dividendo_borrar();"   class="menuitem-iconic"  image="images/eventdelete.png"/>\n'
+        s= s+ '    </popup>\n'
         s= s+ '</popupset>\n'
-        s=s+ '        <tree id="treeDiv" flex="3" tooltiptext="Sólo se muestran los dividendos desde la primera operación actual, no desde la primera operación histórica" context="divpopup">\n'
-        s=s+ '          <treecols>\n'
-        s=s+ '    <treecol id="id" label="id" flex="1" hidden="true"/>\n'
-        s=s+ '    <treecol label="Fecha" flex="1"  style="text-align: center"/>\n'
-        s=s+ '    <treecol label="Cuenta cobro" flex="2" style="text-align: left" />\n'
-        s=s+ '    <treecol label="Liquido" flex="1" style="text-align: right"/>\n'
-        s=s+ '  </treecols>\n'
-        s=s+ '  <treechildren tooltiptext="Sólo se muestran los dividendos desde la primera operación actual, no desde la primera operación histórica">\n'
+        s=s+ '<tree id="treeDiv" flex="3" tooltiptext="Sólo se muestran los dividendos desde la primera operación actual, no desde la primera operación histórica" context="divpopup">\n'
+        s=s+ '    <treecols>\n'
+        s=s+ '        <treecol id="id" label="id" flex="1" hidden="true"/>\n'
+        s=s+ '        <treecol label="Fecha" flex="1"  style="text-align: center"/>\n'
+        s=s+ '        <treecol label="Cuenta cobro" flex="2" style="text-align: left" />\n'
+        s=s+ '        <treecol label="Liquido" flex="1" style="text-align: right"/>\n'
+        s=s+ '    </treecols>\n'
+        s=s+ '    <treechildren tooltiptext="Sólo se muestran los dividendos desde la primera operación actual, no desde la primera operación histórica">\n'
         while not curs.EOF:
             row = curs.GetRowAssoc(0)   
             sumsaldos=sumsaldos+dosdecimales(row['liquido'])
-            s=s+ '    <treeitem>\n'
-            s=s+ '      <treerow>\n'
-            s=s+ '       <treecell label="'+ str(row["id_dividendos"])+ '" />\n'
-            s=s+ '       <treecell label="'+ str(row["fecha"])[:-12]+ '" />\n'
-            s=s+ '       <treecell label="'+ row["cuenta"]+ '" />\n'
-            s=s+        treecell_euros(row['liquido']);
-            s=s+ '      </treerow>\n'
-            s=s+ '    </treeitem>\n'
+            s=s+ '        <treeitem>\n'
+            s=s+ '            <treerow>\n'
+            s=s+ '                <treecell label="'+ str(row["id_dividendos"])+ '" />\n'
+            s=s+ '                <treecell label="'+ str(row["fecha"])[:-12]+ '" />\n'
+            s=s+ '                <treecell label="'+ row["cuenta"]+ '" />\n'
+            s=s+ '                '+ treecell_euros(row['liquido']);
+            s=s+ '            </treerow>\n'
+            s=s+ '        </treeitem>\n'
             curs.MoveNext()     
         curs.Close()
       
-        s=s+ '  </treechildren>\n'
+        s=s+ '    </treechildren>\n'
         s=s+ '</tree>\n'
         
         s= s + '<label flex="0"  style="text-align: center;font-weight : bold;" value="Suma de dividendos de la inversión: '+ euros(sumsaldos)+'." />\n'
