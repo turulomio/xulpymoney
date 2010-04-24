@@ -1,0 +1,43 @@
+<%
+import time
+from core import *
+from xul import *
+
+req.content_type="application/vnd.mozilla.xul+xml"
+req.write(xulheaderwindowmenu("Xulpymoney > Banco > Nuevo"))
+
+%>
+<script>
+<![CDATA[
+         
+function banco_insert(){
+    var xmlHttp;
+    xmlHttp=new XMLHttpRequest();
+    xmlHttp.onreadystatechange=function(){
+        if(xmlHttp.readyState==4){
+            var ale=xmlHttp.responseText;
+            location="banco_listado.psp";
+        }
+    }
+    var entidadesbancaria = document.getElementById("entidadesbancaria").value;
+    var url="ajax/banco_insertar.psp?entidadesbancaria="+entidadesbancaria+"&eb_activa=true";
+    xmlHttp.open("GET",url,true);
+    xmlHttp.send(null);
+}
+
+]]>
+</script>
+
+<vbox flex="1">
+    <label id="titulo" flex="0" value="Nuevo banco" />
+    <label value="" />
+    <hbox flex="1">
+    <grid align="center">
+        <rows>
+        <row><label value="Nombre del banco"/><hbox><textbox id="entidadesbancaria" value="Nuevo Banco"/></hbox></row>
+        <row><label value="" /><hbox><button id="cmd" label="Aceptar" onclick="banco_insert();"/></hbox></row>
+        </rows>
+    </grid>
+    </hbox>
+</vbox>
+</window>
