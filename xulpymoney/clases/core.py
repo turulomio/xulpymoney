@@ -33,7 +33,11 @@ class Banco:
         except:
             return False
         return True
-    
+       
+    def modificar_activa(self, id_bancos,  activa):
+        sql="update entidadesbancarias set eb_activa="+str(activa)+" where id_entidadesbancarias="+ str(id_bancos)
+        curs=con.Execute(sql); 
+        return sql
   
     def saldo(self,id_entidadesbancarias,fecha):
         curs = con.Execute('select banco_saldo('+ str(id_entidadesbancarias) + ",'"+str(fecha)+"') as saldo;"); 
@@ -52,40 +56,82 @@ class Banco:
         else:
             sql="select * from entidadesbancarias where eb_activa='t' order by entidadesbancaria";
         curs=con.Execute(sql)
+        s=      '<script>\n<![CDATA[\n'
+        s= s+ 'function popupBancos(){\n'
+        s= s+ '     var tree = document.getElementById("treeBancos");\n'
+        #el boolean de un "0" es true y bolean de un 0 es false
+        s= s+ '     var activa=Boolean(Number(tree.view.getCellText(tree.currentIndex,tree.columns.getNamedColumn( "activa"))));\n'
+        s= s+ '     id_bancos=tree.view.getCellText(tree.currentIndex,tree.columns.getNamedColumn("id"));\n'
+        s= s+ '     var popup = document.getElementById("popupBancos");\n'
+        s= s+ '     if (document.getElementById("popactiva")){\n'
+        s= s+ '         popup.removeChild(document.getElementById("popactiva"));\n'
+        s= s+ '     }\n'
+        s= s+ '     var popactiva=document.createElement("menuitem");\n'
+        s= s+ '     popactiva.setAttribute("id", "popactiva");\n'
+        s= s+ '     if (activa){\n'
+        s= s+ '         popactiva.setAttribute("label", "Desactivar el banco");\n'
+        s= s+ '         popactiva.setAttribute("checked", "false");\n'
+        s= s+ '         popactiva.setAttribute("oncommand", "banco_modificar_activa();");\n'
+        s= s+ '     }else{\n'
+        s= s+ '         popactiva.setAttribute("label", "Activar el banco");\n'
+        s= s+ '         popactiva.setAttribute("checked", "true");\n'
+        s= s+ '         popactiva.setAttribute("oncommand", "banco_modificar_activa();");\n'
+        s= s+ '     }\n'
+        s= s+ '     popup.appendChild(popactiva);\n'
+        s= s+ '}\n\n'
+
+        s= s+ 'function banco_modificar_activa(){\n'
+        s= s+ '     var tree = document.getElementById("treeBancos");\n'
+        s= s+ '     var xmlHttp;\n'
+        s= s+ '     var activa=Boolean(Number(tree.view.getCellText(tree.currentIndex,tree.columns.getNamedColumn("activa"))));\n'
+        s= s+ '     xmlHttp=new XMLHttpRequest();\n'
+        s= s+ '     xmlHttp.onreadystatechange=function(){\n'
+        s= s+ '         if(xmlHttp.readyState==4){\n'
+        s= s+ '             var ale=xmlHttp.responseText;\n'
+        s= s+ '             location="banco_listado.psp";\n'
+        s= s+ '         }\n'
+        s= s+ '     }\n'
+        s= s+ '     var url="ajax/banco_modificar_activa.psp?id_bancos="+id_bancos+\'&activa=\'+!activa;\n'
+        s= s+ '     xmlHttp.open("GET",url,true);\n'
+        s= s+ '     xmlHttp.send(null);\n'
+        s= s+ '}\n'
+        s= s+ ']]>\n</script>\n\n'        
         
-        s= '<popupset>\n'
-        s= s+ '   <popup id="treepopup" >\n'
-        s= s+ '      <menuitem label="Nuevo Banco" oncommand="location=\'banco_insertar.psp\'" class="menuitem-iconic"  image="images/item_add.png"/>\n'
-        s= s+ '      <menuseparator/>'
-        s= s+ '      <menuitem label="Patrimonio en el banco"  oncommand="location=\'cuentasinformacion.psp?id_cuentas=\' + idcuenta;"/>\n'
-        s= s+ '   </popup>\n'
+        s= s+ '<popupset>\n'
+        s= s+ '    <popup id="popupBancos" >\n'
+        s= s+ '        <menuitem label="Nuevo Banco" oncommand="location=\'banco_insertar.psp\'" class="menuitem-iconic"  image="images/item_add.png"/>\n'
+        s= s+ '        <menuseparator/>\n'
+        s= s+ '        <menuitem label="Patrimonio en el banco"  oncommand="location=\'cuentasinformacion.psp?id_cuentas=\' + idcuenta;"/>\n'
+        s= s+ '    </popup>\n'
         s= s+ '</popupset>\n'
         
-        s= s+ '<tree id="tree" enableColumnDrag="true" flex="6"   context="treepopup"  onselect="tree_getid();">\n'
-        s= s+ '<treecols>\n'
-        s= s+  '<treecol label="id" hidden="true" />\n'
-        s= s+  '<treecol label="Banco" flex="2"/>\n'       
-        s= s+  '<treecol label="% saldo total" style="text-align: right" flex="2"/>\n'
-        s= s+  '<treecol label="Saldo" style="text-align: right" flex="2"/>\n'
-        s= s+  '</treecols>\n'
-        s= s+  '<treechildren>\n'     
+        s= s+ '<tree id="treeBancos" enableColumnDrag="true" flex="6"   context="popupBancos"  onselect="popupBancos();">\n'
+        s= s+ '    <treecols>\n'
+        s= s+  '        <treecol id="id" label="id" hidden="true" />\n'
+        s= s+  '        <treecol id="activa" label="Activa" hidden="true" />\n'
+        s= s+  '        <treecol label="Banco" flex="2"/>\n'       
+        s= s+  '        <treecol label="% saldo total" style="text-align: right" flex="2"/>\n'
+        s= s+  '        <treecol label="Saldo" style="text-align: right" flex="2"/>\n'
+        s= s+  '    </treecols>\n'
+        s= s+  '    <treechildren>\n'     
         total=Total().saldo_total(fecha)
         while not curs.EOF:
             row = curs.GetRowAssoc(0)   
-            s= s + '<treeitem>\n'
-            s= s + '<treerow>\n'
-            s= s + '<treecell label="'+str(row["id_entidadesbancarias"])+ '" />\n'
-            s= s + '<treecell label="'+str(row["entidadesbancaria"])+ '" style="text-align: right"/>\n'
+            s= s + '        <treeitem>\n'
+            s= s + '            <treerow>\n'
+            s= s + '                <treecell label="'+str(row["id_entidadesbancarias"])+ '" />\n'
+            s= s + '                <treecell label="'+str(row["eb_activa"])+ '" />\n'
+            s= s + '                <treecell label="'+str(row["entidadesbancaria"])+ '" style="text-align: right"/>\n'
             saldo=Banco().saldo(row["id_entidadesbancarias"], datetime.date.today())
             if total==0: # Zero division
-                s= s + treecell_tpc(0)
+                s= s + '                '+treecell_tpc(0)
             else:
-                s= s + treecell_tpc(100*saldo/total)
-            s= s + treecell_euros(saldo)
-            s= s + '</treerow>\n'
-            s= s + '</treeitem>\n'
+                s= s + '                '+treecell_tpc(100*saldo/total)
+            s= s + '                '+treecell_euros(saldo)
+            s= s + '            </treerow>\n'
+            s= s + '        </treeitem>\n'
             curs.MoveNext()    
-        s= s + '</treechildren>\n'
+        s= s + '    </treechildren>\n'
         s= s + '</tree>\n'
         s= s + '<label flex="1"  style="text-align: center;font-weight : bold;" value="Saldo total: '+ euros(total)+'" />\n'
         curs.Close()
