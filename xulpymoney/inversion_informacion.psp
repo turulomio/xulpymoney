@@ -90,23 +90,18 @@ function go_operinversion_insertar(){
 <tabbox orient="vertical" flex="1">
 <tabs>
 <tab label="Inversión actual" />
-<tab label="Inversión histórica" />
+<tab label="Movimientos de inversión" />
 <tab label="Dividendos" />
-<tab label="Rendimientos" />
-<tab label="Rendimientos anuales" />
-<tab label="Análisis" />
-<tab label="Actualizaciónes" />
-<tab label="Gráfico" />
 </tabs>
 <tabpanels flex="1">
 <vbox>
-   <%=listadoIOT%>
+<%=listadoIOT%>
 </vbox>
 <vbox>
-   <%=listadoIOH%>
+<%=listadoIOH%>
 </vbox>
 <vbox>
-  <%=listadoDiv%>
+<%=listadoDiv%>
 </vbox>
 </tabpanels>
 </tabbox>
