@@ -8,6 +8,13 @@ from formato import *
 from xul import *
 
 class Banco:
+    def insertar(self,  entidadesbancaria,  eb_activa):
+        sql="insert into entidadesbancarias (entidadesbancaria, eb_activa) values ('" + entidadesbancarias + "'," + str(eb_activa)+")"
+        try:
+            con.Execute(sql);
+        except:
+            return False
+        return True
     
   
     def saldo(self,id_entidadesbancarias,fecha):
@@ -16,7 +23,10 @@ class Banco:
             print self.cfg.con.ErrorMsg()        
         row = curs.GetRowAssoc(0)      
         curs.Close()
-        return row['saldo']
+        if row['saldo']==None:
+            return 0
+        else:
+            return row['saldo']
 
     def xultree(self, inactivas,  fecha):
         if inactivas==True:
@@ -27,9 +37,7 @@ class Banco:
         
         s= '<popupset>\n'
         s= s+ '   <popup id="treepopup" >\n'
-        s= s+ '      <menuitem label="Nuevo Banco" oncommand="location=\'cuentas_ibm.psp?ibm=insertar&amp;regresando=0;\'" class="menuitem-iconic"  image="images/item_add.png"/>\n'
-        s= s+ '      <menuitem label="Modificar Banco"  oncommand=\'location="informe_total.svg";\'   class="menuitem-iconic"  image="images/toggle_log.png"/>\n'
-        s= s+ '      <menuitem label="Borrar Banco"  oncommand=\'location="cuentas_ibm.psp?id_cuentas=" + idcuenta  + "&amp;ibm=borrar&amp;regresando=0";\'  class="menuitem-iconic" image="images/eventdelete.png"/>\n'
+        s= s+ '      <menuitem label="Nuevo Banco" oncommand="location=\'banco_insertar.psp\'" class="menuitem-iconic"  image="images/item_add.png"/>\n'
         s= s+ '      <menuseparator/>'
         s= s+ '      <menuitem label="Patrimonio en el banco"  oncommand="location=\'cuentasinformacion.psp?id_cuentas=\' + idcuenta;"/>\n'
         s= s+ '   </popup>\n'
@@ -51,7 +59,10 @@ class Banco:
             s= s + '<treecell label="'+str(row["id_entidadesbancarias"])+ '" />\n'
             s= s + '<treecell label="'+str(row["entidadesbancaria"])+ '" style="text-align: right"/>\n'
             saldo=Banco().saldo(row["id_entidadesbancarias"], datetime.date.today())
-            s= s + treecell_tpc(100*saldo/total)
+            if total==0: # Zero division
+                s= s + treecell_tpc(0)
+            else:
+                s= s + treecell_tpc(100*saldo/total)
             s= s + treecell_euros(saldo)
             s= s + '</treerow>\n'
             s= s + '</treeitem>\n'
