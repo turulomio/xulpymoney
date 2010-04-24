@@ -20,23 +20,14 @@ req.write(xulheaderwindowmenu("Listado de Bancos"))
 %>
 <script>
 <![CDATA[
-
-var idcuenta=10;
-
 function checkbox_submit(){
    if (document.getElementById("checkbox").checked==true) {
-     location='bancoslistado.psp?inactivas=on';
+     location='banco_listado.psp?inactivas=on';
    } else {
-     location='bancoslistado.psp';
+     location='banco_listado.psp';
    } 
 }
 
-function tree_getid()
-{
-  var tree = document.getElementById("tree");
-  var selection = tree.contentView.getItemAtIndex(tree.currentIndex);
-  idcuenta = selection.firstChild.firstChild.getAttribute("label");
-}
 ]]>
 </script>
 
