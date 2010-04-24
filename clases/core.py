@@ -1222,7 +1222,15 @@ class Tarjeta:
         else:
             sql="select id_tarjetas, lu_cuentas, tarjeta, cuenta, numero, pago_diferido, saldomaximo from tarjetas,cuentas where tarjetas.lu_cuentas=cuentas.id_cuentas and tarjetas.tj_activa=true order by tarjetas.tarjeta"
         return con.Execute(sql); 
-        
+
+    def insertar(self,  lu_cuentas,  tarjeta,  numero, pago_diferido, saldomaximo, tj_activa):
+        sql="insert into tarjetas (lu_cuentas, tarjeta, numero, pago_diferido, saldomaximo, tj_activa) values ("+ str(lu_cuentas) +", '"+str(tarjeta)+"', '"+str(numero)+"', "+str(pago_diferido)+", " + str(saldomaximo) + ", "+str(tj_activa)+");"
+        try:
+            con.Execute(sql);
+        except:
+            return False
+        return True
+
     def saldo_pendiente(self,id_tarjetas):
         sql='select sum(importe) as suma from opertarjetas where ma_tarjetas='+ str(id_tarjetas) +' and pagado=false'
         resultado=con.Execute(sql) .GetRowAssoc(0)["suma"]
@@ -1233,8 +1241,9 @@ class Tarjeta:
     def xul_listado(self, curs):
         s= '<popupset>\n'
         s= s+ '   <popup id="treepopup" >\n'
-        s= s+ '      <menuitem label="Modificar la tarjeta"  oncommand=\'location="tarjetas_ibm.psp";\'   class="menuitem-iconic"  image="images/toggle_log.png"/>\n'
-        s= s+ '      <menuitem label="Borrar la tarjeta"  oncommand=\'location="tarjetas_ibm.psp";\'  class="menuitem-iconic" image="images/eventdelete.png"/>\n'
+        s= s+ '      <menuitem label="Añadir nueva tarjeta"  oncommand=\'location="tarjeta_insertar.psp";\'   class="menuitem-iconic"  image="images/item_add.png"/>\n'
+        s= s+ '      <menuitem label="Modificar la tarjeta"   class="menuitem-iconic"  image="images/toggle_log.png"/>\n'
+        s= s+ '      <menuitem label="Borrar la tarjeta"  class="menuitem-iconic" image="images/eventdelete.png"/>\n'
         s= s+ '      <menuseparator/>'
         s= s+ '      <menuitem id="Movimientos"/>\n'
         s= s+ '   </popup>\n'
