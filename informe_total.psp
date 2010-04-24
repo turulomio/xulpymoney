@@ -52,8 +52,11 @@ if datetime.date.today().year==cmbanos:
 else:
     nuevohoy=datetime.date(cmbanos,  12,  31)
     saldohoy=Total().saldo_total(nuevohoy)
-
-tae=100*(saldohoy-saldofinano)/saldofinano
+try:
+    tae=100*(saldohoy-saldofinano)/saldofinano
+except ZeroDivisionError:
+    tae=0
+    
 for i in range(12):
     if cmbanos==datetime.date.today().year and mesactual<=i:
         cuentas.append(0)
