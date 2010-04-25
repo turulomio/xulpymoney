@@ -1,0 +1,53 @@
+<%
+import time
+from core import *
+from xul import *
+
+req.content_type="application/vnd.mozilla.xul+xml"
+req.write(xulheaderwindowmenu("Xulpymoney > Cuenta > Modificar"))
+
+cd=ConectionDirect()
+con=Conection()
+row=cd.con.Execute("select * from cuentas where id_cuentas="+ form["id_cuentas"]).GetRowAssoc(0)
+cmbbancos=Banco().cmb('ma_entidadesbancarias','select * from entidadesbancarias where eb_activa=true order by entidadesbancaria',  row['ma_entidadesbancarias'],  False)
+cd.close()
+con.close()
+%>
+
+<script>
+<![CDATA[        
+function cuenta_modificar(){
+    var xmlHttp;
+    xmlHttp=new XMLHttpRequest();
+    xmlHttp.onreadystatechange=function(){
+        if(xmlHttp.readyState==4){
+            var ale=xmlHttp.responseText;
+            location="cuenta_listado.psp";
+        }
+    }
+    var id_cuentas = <%=form['id_cuentas']%>;
+    var cuenta = document.getElementById("cuenta").value;
+    var ma_entidadesbancarias = document.getElementById("ma_entidadesbancarias").value;
+    var numero_cuenta = document.getElementById("numero_cuenta").value;
+    var url="ajax/cuenta_modificar.psp?id_cuentas="+id_cuentas+"&cuenta="+cuenta+"&ma_entidadesbancarias="+ma_entidadesbancarias+"&numero_cuenta="+numero_cuenta;
+    xmlHttp.open("GET",url,true);
+    xmlHttp.send(null);
+}
+]]>
+</script>
+
+<vbox flex="1">
+    <label id="titulo" flex="0" value="Modificar cuenta" />
+    <label value="" />
+    <hbox flex="1">
+    <grid align="center">
+        <rows>
+        <row><label value="Nombre de la cuenta"/><hbox><textbox id="cuenta" value="<%=row["cuenta"]%>"/></hbox></row>
+        <row><label value="Banco al que pertenece"/><hbox><%=cmbbancos%></hbox></row>
+        <row><label value="Número de cuenta" /><hbox><textbox id="numero_cuenta" value="<%=row["numero_cuenta"]%>"/></hbox></row>        
+        <row><label value=""/><hbox><button id="cmd" label="Aceptar" onclick="cuenta_modificar();"/></hbox></row>
+        </rows>
+    </grid>
+    </hbox>
+</vbox>
+</window>

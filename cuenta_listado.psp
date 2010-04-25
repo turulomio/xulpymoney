@@ -10,17 +10,16 @@ checked=""
 if form.has_key('inactivas'):
     if form['inactivas']=="on":
         checked = 'checked="true"'
-        cur=Cuenta().cursor_listado(True,datetime.date.today())
+        listado=Cuenta().xul_listado(True,datetime.date.today())
     else:
-        cur=Cuenta().cursor_listado(False,datetime.date.today())
+        listado=Cuenta().xul_listado(False,datetime.date.today())
 else:
-    cur=Cuenta().cursor_listado(False,datetime.date.today())
+    listado=Cuenta().xul_listado(False,datetime.date.today())
     
-listado = Cuenta().xul_listado(cur)
 con.close()
 
 req.content_type="application/vnd.mozilla.xul+xml"
-req.write(xulheaderwindowmenu("Listado de cuentas bancarias"))
+req.write(xulheaderwindowmenu("Cuentas > Listado"))
 
 %>
 <script>
@@ -36,31 +35,13 @@ function checkbox_submit(){
    } 
 }
 
-function tree_getid()
-{
-  var tree = document.getElementById("tree");
-  var selection = tree.contentView.getItemAtIndex(tree.currentIndex);
-  idcuenta = selection.firstChild.firstChild.getAttribute("label");
-}
 ]]>
 </script>
-<popupset>
-  <popup id="treepopup" >
-    <menuitem label="Cuenta nueva" oncommand="location='cuenta_insertar.psp'" class="menuitem-iconic"  image="images/item_add.png"/>
-    <menuitem label="Modificar la cuenta"  oncommand='location="cuentas_ibm.psp?id_cuentas=" + idcuenta  + "&amp;ibm=modificar&amp;regresando=0";'   class="menuitem-iconic"  image="images/toggle_log.png"/>
-    <menuitem label="Borrar la cuenta"  oncommand='location="cuentas_ibm.psp?id_cuentas=" + idcuenta  + "&amp;ibm=borrar&amp;regresando=0";'  class="menuitem-iconic" image="images/eventdelete.png"/>
-    <menuseparator/>
-    <menuitem label="Movimientos de cuenta"  oncommand="location='cuenta_informacion.psp?id_cuentas=' + idcuenta;"/> 
-    <menuseparator/>
-    <menuitem label="Transferencia bancaria"  onclick="location='cuenta_transferencia.psp';"  class="menuitem-iconic"  image="images/hotsync.png" />
-  </popup>
-</popupset>
 
 
 <vbox  flex="6">
 <label id="titulo" flex="0.5" value="Listado de cuentas bancarias" />
 <checkbox id="checkbox" label="¿Mostrar todas las cuentas?" <%=checked%> oncommand="checkbox_submit()" style="text-align: center;" />
-
 <%=listado%>
 </vbox>
 </window>
