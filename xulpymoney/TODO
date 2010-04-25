@@ -14,5 +14,6 @@
 20100425 Deseo. Seguir creando el manual de usuario
 20100425 Deseo. Al modificar tarjeta comprobar que no tiene registros dependientes y en ese caso no permitirle
 20100425 Deseo. Las inversiones_listado ponerlas con un menu bonito y dinámico
-20100425 Bug. Tener mucho control de las operaciones necesarias
+20100425 Bug. Tener mucho control de las operaciones necesarias, ponerlas en código y anexarlas a las de usuario
 20100425 Bug. Operación necesaria vencimiento de depósito
+20100425 Deseo. Tablas de mantenimiento
