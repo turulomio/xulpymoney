@@ -8,11 +8,10 @@
 20100424 Deseo. Quitar funciones del tipo registro o nombre o id
 20100424 Deseo. Desarrollar patrimonio en el banco
 20100424 Deseo. Refactorizar entidadesbancarias por banco
-20100424 Deseo. Desarrollar borrar cuenta
-20100424 Deseo. Desarrollar modificar cuenta
 20100424 Deseo. Desarrollar borrar tarjeta
 20100424 Deseo. Desarrollar modificar tarjeta
 20100424 Deseo. Refactorizar lu_ ma_ en codigo y bd
 20100424 Bug. Las cuentaoperaciones vinculadas a operinversiones o dividendos, ni tampoco las vinculadas a opertarjetas no deben ser borradas
 20100424 Deseo. Hacer un estudio por conceptos
 20100425 Deseo. Seguir creando el manual de usuario
+20100425 Deseo. Al modificar tarjeta comprobar que no tiene registros dependientes y en ese caso no permitirle

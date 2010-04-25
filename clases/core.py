@@ -1395,13 +1395,6 @@ class InversionRendimiento:
         return resultado
 
 class Tarjeta:
-    def cursor_listado(self, inactivas,  fecha):
-        if inactivas==True:
-            sql="select id_tarjetas, lu_cuentas, tarjeta, cuenta, numero, pago_diferido, saldomaximo from tarjetas,cuentas where tarjetas.lu_cuentas=cuentas.id_cuentas order by tarjetas.tarjeta"
-        else:
-            sql="select id_tarjetas, lu_cuentas, tarjeta, cuenta, numero, pago_diferido, saldomaximo from tarjetas,cuentas where tarjetas.lu_cuentas=cuentas.id_cuentas and tarjetas.tj_activa=true order by tarjetas.tarjeta"
-        return con.Execute(sql); 
-
     def insertar(self,  lu_cuentas,  tarjeta,  numero, pago_diferido, saldomaximo, tj_activa):
         sql="insert into tarjetas (lu_cuentas, tarjeta, numero, pago_diferido, saldomaximo, tj_activa) values ("+ str(lu_cuentas) +", '"+str(tarjeta)+"', '"+str(numero)+"', "+str(pago_diferido)+", " + str(saldomaximo) + ", "+str(tj_activa)+");"
         try:
@@ -1409,7 +1402,21 @@ class Tarjeta:
         except:
             return False
         return True
+        
+    def modificar(self, id_tarjetas, tarjeta,  lu_cuentas,  numero,  pago_diferido,  saldomaximo):
+        sql="update tarjetas set tarjeta='"+str(tarjeta)+"', lu_cuentas="+str(lu_cuentas)+", numero='"+str(numero)+"', pago_diferido="+str(pago_diferido)+", saldomaximo="+str(saldomaximo)+" where id_tarjetas="+ str(id_tarjetas)
+        mylog(sql)
+        try:
+            con.Execute(sql);
+        except:
+            return False
+        return True
 
+    def modificar_activa(self, id_tarjetas,  activa):
+        sql="update tarjetas set tj_activa="+str(activa)+" where id_tarjetas="+ str(id_tarjetas)
+        curs=con.Execute(sql); 
+        return sql
+        
     def saldo_pendiente(self,id_tarjetas):
         sql='select sum(importe) as suma from opertarjetas where ma_tarjetas='+ str(id_tarjetas) +' and pagado=false'
         resultado=con.Execute(sql) .GetRowAssoc(0)["suma"]
@@ -1417,45 +1424,140 @@ class Tarjeta:
             return 0
         return resultado
 
-    def xul_listado(self, curs):
-        s= '<popupset>\n'
-        s= s+ '   <popup id="treepopup" >\n'
-        s= s+ '      <menuitem label="Añadir nueva tarjeta"  oncommand=\'location="tarjeta_insertar.psp";\'   class="menuitem-iconic"  image="images/item_add.png"/>\n'
-        s= s+ '      <menuitem label="Modificar la tarjeta"   class="menuitem-iconic"  image="images/toggle_log.png"/>\n'
-        s= s+ '      <menuitem label="Borrar la tarjeta"  class="menuitem-iconic" image="images/eventdelete.png"/>\n'
-        s= s+ '      <menuseparator/>'
-        s= s+ '      <menuitem id="Movimientos"/>\n'
-        s= s+ '   </popup>\n'
+    def xul_listado(self, inactivas,  fecha):
+        if inactivas==True:
+            sql="select id_tarjetas, lu_cuentas, tj_activa, tarjeta, cuenta, numero, pago_diferido, saldomaximo from tarjetas,cuentas where tarjetas.lu_cuentas=cuentas.id_cuentas order by tarjetas.tarjeta"
+        else:
+            sql="select id_tarjetas, lu_cuentas, tj_activa, tarjeta, cuenta, numero, pago_diferido, saldomaximo from tarjetas,cuentas where tarjetas.lu_cuentas=cuentas.id_cuentas and tarjetas.tj_activa=true order by tarjetas.tarjeta"
+        mylog(sql)
+        curs=con.Execute(sql); 
+        
+        s=      '<script>\n<![CDATA[\n'
+        s= s+ 'function popupTarjetas(){\n'
+        s= s+ '     var tree = document.getElementById("treeTarjetas");\n'
+        #el boolean de un "0" es true y bolean de un 0 es false
+        s= s+ '     var activa=Boolean(Number(tree.view.getCellText(tree.currentIndex,tree.columns.getNamedColumn( "activa"))));\n'
+        s= s+ '     var id_tarjetas=tree.view.getCellText(tree.currentIndex,tree.columns.getNamedColumn("id"));\n'
+        s= s+ '     var diferido=Boolean(Number(tree.view.getCellText(tree.currentIndex,tree.columns.getNamedColumn("diferido"))));\n'
+        s= s+ '     var popup = document.getElementById("popupTarjetas");\n'
+        s= s+ '     if (document.getElementById("popmodificar")){\n'#Con que exista este vale
+        s= s+ '         popup.removeChild(document.getElementById("popmodificar"));\n'
+        s= s+ '         popup.removeChild(document.getElementById("popactiva"));\n'
+        s= s+ '         popup.removeChild(document.getElementById("popseparator1"));\n'
+        s= s+ '         popup.removeChild(document.getElementById("popmovimientos"));\n'
+        s= s+ '         popup.removeChild(document.getElementById("popseparator2"));\n'
+        s= s+ '     }\n'
+        s= s+ '     var popmodificar=document.createElement("menuitem");\n'
+        s= s+ '     popmodificar.setAttribute("id", "popmodificar");\n'
+        s= s+ '     popmodificar.setAttribute("label", "Modificar la tarjeta");\n'
+        s= s+ '     popmodificar.setAttribute("class", "menuitem-iconic");\n'
+        s= s+ '     popmodificar.setAttribute("image", "images/edit.png");\n'
+        s= s+ '     popmodificar.setAttribute("oncommand", "tarjeta_modificar();");\n'
+        s= s+ '     popup.appendChild(popmodificar);\n'
+        s= s+ '     var popseparator1=document.createElement("menuseparator");\n'
+        s= s+ '     popseparator1.setAttribute("id", "popseparator1");\n'
+        s= s+ '     popup.appendChild(popseparator1);\n'
+        s= s+ '     var popactiva=document.createElement("menuitem");\n'
+        s= s+ '     popactiva.setAttribute("id", "popactiva");\n'
+        s= s+ '     if (activa){\n'
+        s= s+ '         popactiva.setAttribute("label", "Desactivar la tarjeta");\n'
+        s= s+ '         popactiva.setAttribute("checked", "false");\n'
+        s= s+ '         popactiva.setAttribute("oncommand", "tarjeta_modificar_activa();");\n'
+        s= s+ '     }else{\n'
+        s= s+ '         popactiva.setAttribute("label", "Activar la tarjeta");\n'
+        s= s+ '         popactiva.setAttribute("checked", "true");\n'
+        s= s+ '         popactiva.setAttribute("oncommand", "tarjeta_modificar_activa();");\n'
+        s= s+ '     }\n'
+        s= s+ '     popup.appendChild(popactiva);\n'
+        s= s+ '     var popseparator2=document.createElement("menuseparator");\n'
+        s= s+ '     popseparator2.setAttribute("id", "popseparator2");\n'
+        s= s+ '     popup.appendChild(popseparator2);\n'
+        s= s+ '     var popmovimientos=document.createElement("menuitem");\n'
+        s= s+ '     popmovimientos.setAttribute("id", "popmovimientos");\n'
+        s= s+ '     if (diferido==false){\n'
+        s= s+ '         popmovimientos.setAttribute("label", "Insertar pago a débito");\n'
+        s= s+ '         popmovimientos.setAttribute("oncommand", "tarjeta_insertar_a_debito();");\n'
+        s= s+ '     }else{\n'
+        s= s+ '         popmovimientos.setAttribute("label", "Movimientos de la tarjeta");\n'
+        s= s+ '         popmovimientos.setAttribute("oncommand", "tarjeta_movimientos();");\n'
+        s= s+ '     }\n'
+        s= s+ '     popup.appendChild(popmovimientos);\n'
+        s= s+ '}\n\n'
+
+        s= s+ 'function tarjeta_modificar(){\n'
+        s= s+ '     var tree = document.getElementById("treeTarjetas");\n'
+        s= s+ '     var id_tarjetas=tree.view.getCellText(tree.currentIndex,tree.columns.getNamedColumn("id"));\n'
+        s= s+ '     location=\'tarjeta_modificar.psp?id_tarjetas=\' + id_tarjetas;\n'
+        s= s+ '}\n\n'
+        
+        s= s+ 'function tarjeta_movimientos(){\n'
+        s= s+ '     var tree = document.getElementById("treeTarjetas");\n'
+        s= s+ '     var id_tarjetas=tree.view.getCellText(tree.currentIndex,tree.columns.getNamedColumn("id"));\n'
+        s= s+ '     location=\'tarjetaoperacion_listado.psp?id_tarjetas=\' + id_tarjetas;\n'
+        s= s+ '}\n\n'
+        
+        s= s+ 'function tarjeta_insertar_a_debito(){\n'
+        s= s+ '     var tree = document.getElementById("treeTarjetas");\n'
+        s= s+ '     var id_cuentas=tree.view.getCellText(tree.currentIndex,tree.columns.getNamedColumn("id_cuentas"));\n'
+        s= s+ '     var comentario="Operacion de tarjeta a débito";\n'
+        s= s+ '     location=\'cuentaoperacion_insertar.psp?comentario=\'+comentario+\'&id_cuentas=\'+id_cuentas;\n'
+        s= s+ '}\n\n'
+        
+        s= s+ 'function tarjeta_modificar_activa(){\n'
+        s= s+ '     var tree = document.getElementById("treeTarjetas");\n'
+        s= s+ '     var xmlHttp;\n'
+        s= s+ '     var activa=Boolean(Number(tree.view.getCellText(tree.currentIndex,tree.columns.getNamedColumn("activa"))));\n'
+        s= s+ '     var id_tarjetas=tree.view.getCellText(tree.currentIndex,tree.columns.getNamedColumn("id"));\n'
+        s= s+ '     xmlHttp=new XMLHttpRequest();\n'
+        s= s+ '     xmlHttp.onreadystatechange=function(){\n'
+        s= s+ '         if(xmlHttp.readyState==4){\n'
+        s= s+ '             var ale=xmlHttp.responseText;\n'
+        s= s+ '             location="tarjeta_listado.psp";\n'
+        s= s+ '         }\n'
+        s= s+ '     }\n'
+        s= s+ '     var url="ajax/tarjeta_modificar_activa.psp?id_tarjetas="+id_tarjetas+\'&activa=\'+!activa;\n'
+        s= s+ '     xmlHttp.open("GET",url,true);\n'
+        s= s+ '     xmlHttp.send(null);\n'
+        s= s+ '}\n'
+        s= s+ ']]>\n</script>\n\n'                   
+        s= s+ '<popupset>\n'
+        s= s+ '     <popup id="popupTarjetas" >\n'
+        s= s+ '          <menuitem label="Añadir nueva tarjeta"  oncommand=\'location="tarjeta_insertar.psp";\'   class="menuitem-iconic"  image="images/item_add.png"/>\n'
+        s= s+ '     </popup>\n'
         s= s+ '</popupset>\n'
         
-        s= s+ '<tree id="tree" enableColumnDrag="true" flex="6"   context="treepopup"  onselect="tree_getid();">\n'
-        s= s+ '<treecols>\n'
-        s= s+  '<treecol id="id" label="id" hidden="true" />\n'
-        s= s+  '<treecol id="id_cuentas" label="id_cuentas" hidden="true" />\n'
-        s= s+  '<treecol label="Nombre Tarjeta"  flex="2"/>\n'
-        s= s+  '<treecol label="Cuenta asociada" flex="2"/>\n'
-        s= s+  '<treecol label="Número de tarjeta" flex="2" style="text-align: right" />\n'
-        s= s+  '<treecol type="checkbox" id="diferido" label="Pago diferido" flex="1" style="text-align: right"/>\n'
-        s= s+  '<treecol label="Saldo máximo" flex="1" style="text-align: right"/>\n'
-        s= s+  '<treecol label="Saldo pendiente" flex="1" style="text-align: right"/>\n'
-        s= s+  '</treecols>\n'
-        s= s+  '<treechildren>\n'
+        s= s+ '<tree id="treeTarjetas" enableColumnDrag="true" flex="6"   context="popupTarjetas"  onselect="popupTarjetas();">\n'
+        s= s+ '     <treecols>\n'
+        s= s+  '          <treecol id="id" label="Id" hidden="true" />\n'
+        s= s+  '          <treecol id="id_cuentas" label="Id_cuentas" hidden="true" />\n'
+        s= s+  '          <treecol id="activa" label="Activa" hidden="true" />\n'
+        s= s+  '          <treecol id="diferido" label="Diferido" hidden="true" />\n'
+        s= s+  '          <treecol label="Nombre Tarjeta"  flex="2"/>\n'
+        s= s+  '          <treecol label="Cuenta asociada" flex="2"/>\n'
+        s= s+  '          <treecol label="Número de tarjeta" flex="2" style="text-align: right" />\n'
+        s= s+  '          <treecol type="checkbox" label="Pago diferido" flex="1" style="text-align: right"/>\n'
+        s= s+  '          <treecol label="Saldo máximo" flex="1" style="text-align: right"/>\n'
+        s= s+  '          <treecol label="Saldo pendiente" flex="1" style="text-align: right"/>\n'
+        s= s+  '     </treecols>\n'
+        s= s+  '     <treechildren>\n'
         while not curs.EOF:
             row = curs.GetRowAssoc(0)   
-            s= s + '<treeitem>\n'
-            s= s + '<treerow>\n'
-            s= s + '<treecell label="'+str(row["id_tarjetas"])+ '" />\n'
-            s= s + '<treecell label="'+str(row["lu_cuentas"])+ '" />\n'
-            s= s + '<treecell label="'+ row["tarjeta"]+ '" />\n'
-            s= s + '<treecell label="'+row["cuenta"]+ '" />\n'
-            s= s + '<treecell label="'+ str(row["numero"])+ '" />\n'
-            s= s + '<treecell properties="'+str(bool(row['pago_diferido']))+'" label="'+ str(row["pago_diferido"])+ '" />\n'
-            s= s + treecell_euros(row['saldomaximo'])
-            s= s + treecell_euros(Tarjeta().saldo_pendiente(row['id_tarjetas']))
-            s= s + '</treerow>\n'
-            s= s + '</treeitem>\n'
+            s= s + '          <treeitem>\n'
+            s= s + '               <treerow>\n'
+            s= s + '                    <treecell label="'+str(row["id_tarjetas"])+ '" />\n'
+            s= s + '                    <treecell label="'+str(row["lu_cuentas"])+ '" />\n'
+            s= s + '                    <treecell label="'+str(row["tj_activa"])+ '" />\n'
+            s= s + '                    <treecell label="'+str(row["pago_diferido"])+ '" />\n'
+            s= s + '                    <treecell label="'+ row["tarjeta"]+ '" />\n'
+            s= s + '                    <treecell label="'+row["cuenta"]+ '" />\n'
+            s= s + '                    <treecell label="'+ str(row["numero"])+ '" />\n'
+            s= s + '                    <treecell properties="'+str(bool(row['pago_diferido']))+'" label="'+ str(row["pago_diferido"])+ '" />\n'
+            s= s + '                    '+ treecell_euros(row['saldomaximo'])
+            s= s + '                    '+ treecell_euros(Tarjeta().saldo_pendiente(row['id_tarjetas']))
+            s= s + '               </treerow>\n'
+            s= s + '          </treeitem>\n'
             curs.MoveNext()     
-        s= s + '</treechildren>\n'
+        s= s + '     </treechildren>\n'
         s= s + '</tree>\n'
         curs.Close()
         return s
