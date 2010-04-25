@@ -7,24 +7,19 @@ checked=""
 if form.has_key('inactivas'):
     if form['inactivas']=="on":
         checked = 'checked="true"'
-        cur=Tarjeta().cursor_listado(True,datetime.date.today())
+        listado=Tarjeta().xul_listado(True,datetime.date.today())
     else:
-        cur=Tarjeta().cursor_listado(False,datetime.date.today())
+        listado=Tarjeta().xul_listado(False,datetime.date.today())
 else:
-    cur=Tarjeta().cursor_listado(False,datetime.date.today())
-    
-listado = Tarjeta().xul_listado(cur)
+    listado=Tarjeta().xul_listado(False,datetime.date.today())
 con.close()
 
 req.content_type="application/vnd.mozilla.xul+xml"
-req.write(xulheaderwindowmenu("Listado de tarjetas de crédito"))
+req.write(xulheaderwindowmenu("Tarjetas > Listado"))
 
 %>
 <script>
 <![CDATA[
-
-var id_tarjetas=10;
-
 function checkbox_submit(){
    if (document.getElementById("checkbox").checked==true) {
      location='tarjeta_listado.psp?inactivas=on';
@@ -32,31 +27,12 @@ function checkbox_submit(){
      location='tarjeta_listado.psp';
    } 
 }
-
-function tree_getid()
-{
-    var tree = document.getElementById("tree");  
-    id_tarjetas=tree.view.getCellText(tree.currentIndex,tree.columns.getNamedColumn("id"));
-    var id_cuentas=tree.view.getCellText(tree.currentIndex,tree.columns.getNamedColumn("id_cuentas"));
-    var diferido=Boolean(Number(tree.view.getCellText(tree.currentIndex,tree.columns.getNamedColumn("diferido"))));
-    var menuitem= document.getElementById("Movimientos");
-    if (diferido==false){
-        menuitem.setAttribute("oncommand", "location='cuenta_ibm.psp?ibm=insertar&comentario=Operación%20de%20tarjeta%20a%20débito&id_cuentas="+id_cuentas+"';");
-        menuitem.setAttribute("label", "Insertar pago a débito");
-    } else {
-        menuitem.setAttribute("oncommand", "location='tarjetaoperacion_listado.psp?id_tarjetas=" + id_tarjetas+"';");
-        menuitem.setAttribute("label", "Movimientos de la tarjeta");
-    }
-}
 ]]>
 </script>
-
-
 
 <vbox  flex="6">
 <label id="titulo" flex="0.5" value="Listado de tarjetas de crédito" />
 <checkbox id="checkbox" label="¿Mostrar las tarjetas inactivas?" <%=checked%> oncommand="checkbox_submit()" style="text-align: center;" />
-
 <%=listado%>
 </vbox>
 </window>
