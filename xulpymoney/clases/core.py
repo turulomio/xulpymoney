@@ -238,13 +238,6 @@ class Cuenta:
         s=s +  '     </menupopup>\n'
         s=s + '</menulist>\n'
         return s
-
-    def cursor_listado(self, inactivas,  fecha):
-        if inactivas==True:
-            sql="select id_cuentas, cuenta, entidadesbancarias.entidadesbancaria, numero_cuenta, cuentas_saldo(id_cuentas,'"+str(fecha)+"') as saldo from cuentas, entidadesbancarias where cuentas.ma_entidadesbancarias=entidadesbancarias.id_entidadesbancarias order by cuenta";
-        else:
-            sql="select id_cuentas, cuenta, entidadesbancarias.entidadesbancaria, numero_cuenta, cuentas_saldo(id_cuentas,'"+str(fecha)+"') as saldo from cuentas, entidadesbancarias where cuentas.ma_entidadesbancarias=entidadesbancarias.id_entidadesbancarias and cu_activa='t' order by cuenta";
-        return con.Execute(sql); 
         
     def insertar(self,  id_entidadesbancarias,  cuenta,  numero_cuenta, cu_activa):
         sql="insert into cuentas (ma_entidadesbancarias, cuenta, numero_cuenta, cu_activa) values (" + str(id_entidadesbancarias )+ ", '" + str(cuenta)+"', '"+ str(numero_cuenta) +"', "+str(cu_activa)+")"
@@ -255,46 +248,149 @@ class Cuenta:
         return True
 
 
-    def xul_listado(self, curs):
+    def xul_listado(self, inactivas,  fecha):
+        if inactivas==True:
+            sql="select id_cuentas, cu_activa, cuenta, entidadesbancarias.entidadesbancaria, numero_cuenta, cuentas_saldo(id_cuentas,'"+str(fecha)+"') as saldo from cuentas, entidadesbancarias where cuentas.ma_entidadesbancarias=entidadesbancarias.id_entidadesbancarias order by cuenta";
+        else:
+            sql="select id_cuentas, cu_activa, cuenta, entidadesbancarias.entidadesbancaria, numero_cuenta, cuentas_saldo(id_cuentas,'"+str(fecha)+"') as saldo from cuentas, entidadesbancarias where cuentas.ma_entidadesbancarias=entidadesbancarias.id_entidadesbancarias and cu_activa='t' order by cuenta";
         sumsaldos=0;
-        s= '<vbox flex="1">\n'
-        s= s+ '<tree id="tree" flex="6"   context="treepopup"  onselect="tree_getid();">\n'
-        s= s+ '<treecols>\n'
-        s= s+  '<treecol id="col_id" label="id" hidden="true" />\n'
-        s= s+  '<treecol id="col_cuenta" label="Cuenta" sort="?col_cuenta"  sortDirection="descending" flex="2"/>\n'
-        s= s+  '<treecol id="col_entidad_bancaria" label="Entidad Bancaria"  sort="?col_entidad_bancaria" sortActive="true"  flex="2"/>\n'
-        s= s+  '<treecol id="col_valor" label="Número de cuenta" flex="2" style="text-align: right" />\n'
-        s= s+  '<treecol id="col_saldo" label="Saldo" flex="1" style="text-align: right"/>\n'
-        s= s+  '</treecols>\n'
-        s= s+  '<treechildren>\n'
+        s=      '<script>\n<![CDATA[\n'
+        s= s+ 'function popupCuentas(){\n'
+        s= s+ '     var tree = document.getElementById("treeCuentas");\n'
+        #el boolean de un "0" es true y bolean de un 0 es false
+        s= s+ '     var activa=Boolean(Number(tree.view.getCellText(tree.currentIndex,tree.columns.getNamedColumn( "activa"))));\n'
+        s= s+ '     id_cuentas=tree.view.getCellText(tree.currentIndex,tree.columns.getNamedColumn("id"));\n'
+        s= s+ '     var popup = document.getElementById("popupCuentas");\n'
+        s= s+ '     if (document.getElementById("popmodificar")){\n'#Con que exista este vale
+        s= s+ '         popup.removeChild(document.getElementById("popmodificar"));\n'
+        s= s+ '         popup.removeChild(document.getElementById("popactiva"));\n'
+        s= s+ '         popup.removeChild(document.getElementById("popseparator1"));\n'
+        s= s+ '         popup.removeChild(document.getElementById("popmovimientos"));\n'
+        s= s+ '     }\n'
+        s= s+ '     var popmodificar=document.createElement("menuitem");\n'
+        s= s+ '     popmodificar.setAttribute("id", "popmodificar");\n'
+        s= s+ '     popmodificar.setAttribute("label", "Modificar la cuenta");\n'
+        s= s+ '     popmodificar.setAttribute("class", "menuitem-iconic");\n'
+        s= s+ '     popmodificar.setAttribute("image", "images/edit.png");\n'
+        s= s+ '     popmodificar.setAttribute("oncommand", "cuenta_modificar();");\n'
+        s= s+ '     popup.appendChild(popmodificar);\n'
+        s= s+ '     var popactiva=document.createElement("menuitem");\n'
+        s= s+ '     popactiva.setAttribute("id", "popactiva");\n'
+        s= s+ '     if (activa){\n'
+        s= s+ '         popactiva.setAttribute("label", "Desactivar la cuenta");\n'
+        s= s+ '         popactiva.setAttribute("checked", "false");\n'
+        s= s+ '         popactiva.setAttribute("oncommand", "cuenta_modificar_activa();");\n'
+        s= s+ '     }else{\n'
+        s= s+ '         popactiva.setAttribute("label", "Activar la cuenta");\n'
+        s= s+ '         popactiva.setAttribute("checked", "true");\n'
+        s= s+ '         popactiva.setAttribute("oncommand", "cuenta_modificar_activa();");\n'
+        s= s+ '     }\n'
+        s= s+ '     popup.appendChild(popactiva);\n'
+        s= s+ '     var popseparator1=document.createElement("menuseparator");\n'
+        s= s+ '     popseparator1.setAttribute("id", "popseparator1");\n'
+        s= s+ '     popup.appendChild(popseparator1);\n'
+        s= s+ '     var popmovimientos=document.createElement("menuitem");\n'
+        s= s+ '     popmovimientos.setAttribute("id", "popmovimientos");\n'
+        s= s+ '     popmovimientos.setAttribute("label", "Movimientos en la cuenta");\n'
+        s= s+ '     popmovimientos.setAttribute("oncommand", "cuenta_movimientos();");\n'
+        s= s+ '     popup.appendChild(popmovimientos);\n'
+        s= s+ '}\n\n'
+
+        s= s+ 'function cuenta_modificar(){\n'
+        s= s+ '     var tree = document.getElementById("treeCuentas");\n'
+        s= s+ '     id_cuentas=tree.view.getCellText(tree.currentIndex,tree.columns.getNamedColumn("id"));\n'
+        s= s+ '     location=\'cuenta_modificar.psp?id_cuentas=\' + id_cuentas;\n'
+        s= s+ '}\n\n'
+        
+        s= s+ 'function cuenta_movimientos(){\n'
+        s= s+ '     var tree = document.getElementById("treeCuentas");\n'
+        s= s+ '     id_cuentas=tree.view.getCellText(tree.currentIndex,tree.columns.getNamedColumn("id"));\n'
+        s= s+ '     location=\'cuenta_informacion.psp?id_cuentas=\' + id_cuentas;\n'
+        s= s+ '}\n\n'
+        
+        s= s+ 'function cuenta_modificar_activa(){\n'
+        s= s+ '     var tree = document.getElementById("treeCuentas");\n'
+        s= s+ '     var xmlHttp;\n'
+        s= s+ '     var activa=Boolean(Number(tree.view.getCellText(tree.currentIndex,tree.columns.getNamedColumn("activa"))));\n'
+        s= s+ '     xmlHttp=new XMLHttpRequest();\n'
+        s= s+ '     xmlHttp.onreadystatechange=function(){\n'
+        s= s+ '         if(xmlHttp.readyState==4){\n'
+        s= s+ '             var ale=xmlHttp.responseText;\n'
+        s= s+ '             location="cuenta_listado.psp";\n'
+        s= s+ '         }\n'
+        s= s+ '     }\n'
+        s= s+ '     var url="ajax/cuenta_modificar_activa.psp?id_cuentas="+id_cuentas+\'&activa=\'+!activa;\n'
+        s= s+ '     xmlHttp.open("GET",url,true);\n'
+        s= s+ '     xmlHttp.send(null);\n'
+        s= s+ '}\n'
+        s= s+ ']]>\n</script>\n\n'                
+        s= s+ '<popupset>\n'
+        s= s+ '     <popup id="popupCuentas" >\n'
+        s= s+ '          <menuitem label="Transferencia bancaria"  onclick="location=\'cuenta_transferencia.psp\';"  class="menuitem-iconic"  image="images/hotsync.png" />\n'
+        s=s + '          <menuitem label="Listado de tarjetas"  onclick="location=\'tarjeta_listado.psp\';"   class="menuitem-iconic"  image="images/visa.png"/>\n'
+        s= s+ '          <menuseparator/>\n'
+        s= s+ '          <menuitem label="Cuenta nueva" oncommand="location=\'cuenta_insertar.psp\'" class="menuitem-iconic"  image="images/item_add.png"/>\n'
+#    <menuitem label="Modificar la cuenta"  oncommand='location="cuentas_ibm.psp?id_cuentas=" + idcuenta  + "&amp;ibm=modificar&amp;regresando=0";'   class="menuitem-iconic"  image="images/toggle_log.png"/>
+#    <menuitem label="Borrar la cuenta"  oncommand='location="cuentas_ibm.psp?id_cuentas=" + idcuenta  + "&amp;ibm=borrar&amp;regresando=0";'  class="menuitem-iconic" image="images/eventdelete.png"/>
+#    <menuitem label="Movimientos de cuenta"  oncommand="location='cuenta_informacion.psp?id_cuentas=' + idcuenta;"/> 
+#    <menuseparator/>
+        s= s+ '     </popup>\n'
+        s= s+ '</popupset>\n'
+
+        s= s+ '<vbox flex="1">\n'
+        s= s+ '<tree id="treeCuentas" flex="6"   context="popupCuentas"  onselect="popupCuentas();">\n'
+        s= s+ '     <treecols>\n'
+        s= s+  '          <treecol id="id" label="Id" hidden="true" />\n'
+        s= s+  '          <treecol id="activa" label="Activa" hidden="true" />\n'
+        s= s+  '          <treecol id="col_cuenta" label="Cuenta" sort="?col_cuenta"  sortDirection="descending" flex="2"/>\n'
+        s= s+  '          <treecol id="col_entidad_bancaria" label="Entidad Bancaria"  sort="?col_entidad_bancaria" sortActive="true"  flex="2"/>\n'
+        s= s+  '          <treecol id="col_valor" label="Número de cuenta" flex="2" style="text-align: right" />\n'
+        s= s+  '          <treecol id="col_saldo" label="Saldo" flex="1" style="text-align: right"/>\n'
+        s= s+  '     </treecols>\n'
+        s= s+  '     <treechildren>\n'
+        curs=con.Execute(sql);         
         while not curs.EOF:
             row = curs.GetRowAssoc(0)   
             sumsaldos=sumsaldos+ dosdecimales(row['saldo'])
-            s= s + '<treeitem >\n'
-            s= s + '<treerow>\n'
-            s= s + '<treecell label="'+str(row["id_cuentas"])+ '" />\n'
-            s= s + '<treecell label="'+ row["cuenta"]+ '" />\n'
-            s= s + '<treecell label="'+row["entidadesbancaria"]+ '" />\n'
-            s= s + '<treecell label="'+ str(row["numero_cuenta"])+ '" />\n'
-            s= s + treecell_euros(row['saldo'])
-            s= s + '</treerow>\n'
-            s= s + '</treeitem>\n'
+            s= s + '          <treeitem >\n'
+            s= s + '               <treerow>\n'
+            s= s + '                    <treecell label="'+str(row["id_cuentas"])+ '" />\n'
+            s= s + '                    <treecell label="'+str(row["cu_activa"])+ '" />\n'
+            s= s + '                    <treecell label="'+ row["cuenta"]+ '" />\n'
+            s= s + '                    <treecell label="'+row["entidadesbancaria"]+ '" />\n'
+            s= s + '                    <treecell label="'+ str(row["numero_cuenta"])+ '" />\n'
+            s= s + '                    '+treecell_euros(row['saldo'])
+            s= s + '               </treerow>\n'
+            s= s + '          </treeitem>\n'
             curs.MoveNext()     
-        s= s + '</treechildren>\n'
+        s= s + '     </treechildren>\n'
         s= s + '</tree>\n'
         s= s + '<label flex="1"  style="text-align: center;font-weight : bold;" value="Saldo total de todas las cuentas: '+ euros(sumsaldos)+'" />\n'
         s= s + '</vbox>\n'
         curs.Close()
         return s
-
-    def registro(self,id_cuentas):
-        curs = con.Execute('select * from cuentas where id_cuentas='+ str(id_cuentas)); 
-        if curs == None: 
-            print self.cfg.con.ErrorMsg()        
-        row = curs.GetRowAssoc(0)      
-        curs.Close()
-        return row
+#
+#    def registro(self,id_cuentas):
+#        curs = con.Execute('select * from cuentas where id_cuentas='+ str(id_cuentas)); 
+#        if curs == None: 
+#            print self.cfg.con.ErrorMsg()        
+#        row = curs.GetRowAssoc(0)      
+#        curs.Close()
+#        return row
         
+    def modificar(self, id_cuentas, cuenta,  ma_entidadesbancarias,  numero_cuenta):
+        sql="update cuentas set cuenta='"+str(cuenta)+"', ma_entidadesbancarias="+str(ma_entidadesbancarias)+", numero_cuenta='"+str(numero_cuenta)+"' where id_cuentas="+ str(id_cuentas)
+        try:
+            con.Execute(sql);
+        except:
+            return False
+        return True
+        
+    def modificar_activa(self, id_cuentas,  activa):
+        sql="update cuentas set cu_activa="+str(activa)+" where id_cuentas="+ str(id_cuentas)
+        curs=con.Execute(sql); 
+        return sql
+
     def saldo(self,id_cuentas,  fecha):
         curs = con.Execute('select sum(importe) as "suma" from opercuentas where ma_cuentas='+ str(id_cuentas) +" and fecha<='"+str(fecha)+"';") 
         if curs == None: 
