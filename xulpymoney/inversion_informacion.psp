@@ -17,7 +17,7 @@ if fechapo==None:
     listadoDiv=Dividendo().xultree("select id_dividendos, cuenta, fecha, liquido, inversione from dividendos, inversiones, cuentas where  id_dividendos=Null", 0)
 else:
     listadoDiv=Dividendo().xultree("select id_dividendos, cuenta, fecha, liquido, inversione from dividendos, inversiones, cuentas where cuentas.id_cuentas=inversiones.lu_cuentas and dividendos.lu_inversiones=inversiones.id_inversiones and dividendos.lu_inversiones="+str(form['id_inversiones']) + " and fecha >='"+str(fechapo)+"' order by fecha;",  form['id_inversiones'])
-reg=Inversion().registro(form['id_inversiones'])
+reg=con.Execute("select * from inversiones where id_inversiones="+ str(form['id_inversiones'])).GetRowAssoc(0)
 con.close()
 
 %>
