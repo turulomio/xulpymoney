@@ -19,8 +19,8 @@ function eb_insert(){
             location="eb_listado.psp";
         }
     }
-    var entidadesbancaria = document.getElementById("entidadesbancaria").value;
-    var url="ajax/eb_insertar.psp?entidadesbancaria="+entidadesbancaria+"&eb_activa=true";
+    var entidadbancaria = document.getElementById("entidadbancaria").value;
+    var url="ajax/eb_insertar.psp?entidadbancaria="+entidadbancaria+"&eb_activa=true";
     xmlHttp.open("GET",url,true);
     xmlHttp.send(null);
 }
@@ -34,7 +34,7 @@ function eb_insert(){
     <hbox flex="1">
     <grid align="center">
         <rows>
-        <row><label value="Nombre de la entidad"/><hbox><textbox id="entidadesbancaria" value="Nuevo Entidad"/></hbox></row>
+        <row><label value="Nombre de la entidad"/><hbox><textbox id="entidadbancaria" value="Nuevo Entidad"/></hbox></row>
         <row><label value="" /><hbox><button id="cmd" label="Aceptar" onclick="eb_insert();"/></hbox></row>
         </rows>
     </grid>

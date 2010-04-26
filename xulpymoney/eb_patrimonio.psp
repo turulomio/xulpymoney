@@ -8,8 +8,8 @@ from xul import *
 con=Conection()
 cd=ConectionDirect()
 regEB=cd.con.Execute("select * from entidadesbancarias where id_entidadesbancarias="+ str(form['id_entidadesbancarias'])).GetRowAssoc(0)
-listadocuentas=Cuenta().xul_listado("select id_cuentas, cu_activa, cuenta, entidadesbancarias.entidadesbancaria, numero_cuenta, cuentas_saldo(id_cuentas,'"+str(datetime.date.today())+"') as saldo from cuentas, entidadesbancarias where cuentas.ma_entidadesbancarias=entidadesbancarias.id_entidadesbancarias and cu_activa='t' and entidadesbancarias.id_entidadesbancarias="+str(form['id_entidadesbancarias'])+" order by cuenta")
-listadoinversiones=Inversion().xul_listado("select id_inversiones, in_activa, inversione, entidadesbancaria, inversiones_saldo(id_inversiones,'"+str(datetime.date.today())+"') as saldo, inversion_actualizacion(id_inversiones,'"+str(datetime.date.today())+"') as actualizacion, inversion_pendiente(id_inversiones,'"+str(datetime.date.today())+"')  as pendiente,  inversion_invertido(id_inversiones,'"+str(datetime.date.today())+"')  as invertido from inversiones, cuentas, entidadesbancarias where cuentas.ma_entidadesbancarias=entidadesbancarias.id_entidadesbancarias and cuentas.id_cuentas=inversiones.lu_cuentas and in_activa='t' and entidadesbancarias.id_entidadesbancarias="+str(form['id_entidadesbancarias'])+" order by inversione;")
+listadocuentas=Cuenta().xul_listado("select id_cuentas, cu_activa, cuenta, entidadesbancarias.entidadbancaria, numero_cuenta, cuentas_saldo(id_cuentas,'"+str(datetime.date.today())+"') as saldo from cuentas, entidadesbancarias where cuentas.id_entidadesbancarias=entidadesbancarias.id_entidadesbancarias and cu_activa='t' and entidadesbancarias.id_entidadesbancarias="+str(form['id_entidadesbancarias'])+" order by cuenta")
+listadoinversiones=Inversion().xul_listado("select id_inversiones, in_activa, inversion, entidadbancaria, inversiones_saldo(id_inversiones,'"+str(datetime.date.today())+"') as saldo, inversion_actualizacion(id_inversiones,'"+str(datetime.date.today())+"') as actualizacion, inversion_pendiente(id_inversiones,'"+str(datetime.date.today())+"')  as pendiente,  inversion_invertido(id_inversiones,'"+str(datetime.date.today())+"')  as invertido from inversiones, cuentas, entidadesbancarias where cuentas.id_entidadesbancarias=entidadesbancarias.id_entidadesbancarias and cuentas.id_cuentas=inversiones.id_cuentas and in_activa='t' and entidadesbancarias.id_entidadesbancarias="+str(form['id_entidadesbancarias'])+" order by inversion;")
 
 con.close()
 cd.close()
@@ -32,7 +32,7 @@ function total(){
 
 <vbox  flex="6">
 <label id="titulo" flex="0.5" value="Patrimonio en la Entidad Bancaria" />
-<label id="subtitulo" flex="0" value="<%=regEB['entidadesbancaria'] %>" />
+<label id="subtitulo" flex="0" value="<%=regEB['entidadbancaria'] %>" />
 
 <%=listadocuentas%>
 <%=listadoinversiones%>

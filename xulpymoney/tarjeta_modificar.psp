@@ -9,7 +9,7 @@ req.write(xulheaderwindowmenu("Xulpymoney > Tarjetas > Modificar"))
 cd=ConectionDirect()
 con=Conection()
 row=cd.con.Execute("select * from tarjetas where id_tarjetas="+ form["id_tarjetas"]).GetRowAssoc(0)
-cmbcuentas=Cuenta().cmb('lu_cuentas','select * from cuentas where cu_activa=true order by cuenta',  row['lu_cuentas'],  False)
+cmbcuentas=Cuenta().cmb('id_cuentas','select * from cuentas where cu_activa=true order by cuenta',  row['id_cuentas'],  False)
 cd.close()
 con.close()
 checked=""
@@ -31,11 +31,11 @@ function tarjeta_modificar(){
     }
     var id_tarjetas = <%=form['id_tarjetas']%>;
     var tarjeta = document.getElementById("tarjeta").value;
-    var lu_cuentas = document.getElementById("lu_cuentas").value;
+    var id_cuentas = document.getElementById("id_cuentas").value;
     var numero = document.getElementById("numero").value;
     var pago_diferido = document.getElementById("pago_diferido").checked;
     var saldomaximo = document.getElementById("saldomaximo").value;
-    var url="ajax/tarjeta_modificar.psp?id_tarjetas="+id_tarjetas+"&tarjeta="+tarjeta+"&lu_cuentas="+lu_cuentas+"&numero="+numero+"&pago_diferido="+pago_diferido+"&saldomaximo="+saldomaximo;
+    var url="ajax/tarjeta_modificar.psp?id_tarjetas="+id_tarjetas+"&tarjeta="+tarjeta+"&id_cuentas="+id_cuentas+"&numero="+numero+"&pago_diferido="+pago_diferido+"&saldomaximo="+saldomaximo;
     xmlHttp.open("GET",url,true);
     xmlHttp.send(null);
 }

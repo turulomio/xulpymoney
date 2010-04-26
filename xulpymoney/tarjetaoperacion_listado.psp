@@ -118,7 +118,7 @@ lblsum.value="El siguiente pago será de : " + suma + " €. Seleccione una fech
         <treechildren>
 <%
 sumsaldos=0
-sql="SELECT opertarjetas.id_opertarjetas, opertarjetas.fecha, conceptos.concepto, opertarjetas.importe, comentario from opertarjetas, conceptos, tarjetas where tarjetas.id_tarjetas=opertarjetas.ma_tarjetas and opertarjetas.lu_conceptos=conceptos.id_conceptos and opertarjetas.pagado=false and opertarjetas.ma_tarjetas="+str(id_tarjetas)+" order by fecha;"
+sql="SELECT opertarjetas.id_opertarjetas, opertarjetas.fecha, conceptos.concepto, opertarjetas.importe, comentario from opertarjetas, conceptos, tarjetas where tarjetas.id_tarjetas=opertarjetas.id_tarjetas and opertarjetas.id_conceptos=conceptos.id_conceptos and opertarjetas.pagado=false and opertarjetas.id_tarjetas="+str(id_tarjetas)+" order by fecha;"
 curs=c.con.Execute(sql); 
 s=''
 while not curs.EOF:

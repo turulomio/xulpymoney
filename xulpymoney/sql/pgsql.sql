@@ -379,7 +379,7 @@ SET default_with_oids = true;
 CREATE TABLE actuinversiones (
     id_actuinversiones integer DEFAULT nextval(('"seq_actuinversiones"'::text)::regclass) NOT NULL,
     fecha date NOT NULL,
-    ma_inversiones integer NOT NULL,
+    id_inversiones integer NOT NULL,
     actualizacion double precision NOT NULL
 );
 
@@ -393,7 +393,7 @@ ALTER TABLE public.actuinversiones OWNER TO postgres;
 CREATE TABLE conceptos (
     id_conceptos integer NOT NULL,
     concepto text,
-    lu_tipooperacion integer,
+    id_tipooperaciones integer,
     inmodificables boolean
 );
 
@@ -407,7 +407,7 @@ ALTER TABLE public.conceptos OWNER TO postgres;
 CREATE TABLE cuentas (
     id_cuentas integer DEFAULT nextval(('"seq_cuentas"'::text)::regclass) NOT NULL,
     cuenta text,
-    ma_entidadesbancarias integer,
+    id_entidadesbancarias integer,
     cu_activa boolean,
     numero_cuenta character varying(20)
 );
@@ -421,7 +421,7 @@ ALTER TABLE public.cuentas OWNER TO postgres;
 
 CREATE TABLE depositos (
     id_depositos integer DEFAULT nextval(('"depositos_id_depositos_seq"'::text)::regclass) NOT NULL,
-    lu_cuentas integer,
+    id_cuentas integer,
     fecha_inicio date,
     cantidad double precision,
     fecha_fin date,
@@ -455,7 +455,7 @@ ALTER TABLE public.depositos_id_depositos_seq OWNER TO postgres;
 
 CREATE TABLE dividendos (
     id_dividendos integer DEFAULT nextval(('"dividendos_id_dividendos_seq"'::text)::regclass) NOT NULL,
-    lu_inversiones integer NOT NULL,
+    id_inversiones integer NOT NULL,
     bruto double precision NOT NULL,
     retencion double precision NOT NULL,
     liquido double precision,
@@ -488,11 +488,11 @@ ALTER TABLE public.dividendos_id_dividendos_seq OWNER TO postgres;
 CREATE TABLE opercuentas (
     id_opercuentas integer DEFAULT nextval(('"seq_opercuentas"'::text)::regclass) NOT NULL,
     fecha date NOT NULL,
-    lu_conceptos integer NOT NULL,
-    lu_tiposoperaciones integer NOT NULL,
+    id_conceptos integer NOT NULL,
+    id_tiposoperaciones integer NOT NULL,
     importe double precision NOT NULL,
     comentario text,
-    ma_cuentas integer NOT NULL
+    id_cuentas integer NOT NULL
 );
 
 
@@ -503,7 +503,7 @@ ALTER TABLE public.opercuentas OWNER TO postgres;
 --
 
 CREATE VIEW dm_saldocuentas_fechas AS
-    SELECT date_part('year'::text, opercuentas.fecha) AS date_part, sum(opercuentas.importe) AS sum, opercuentas.lu_tiposoperaciones FROM opercuentas GROUP BY date_part('year'::text, opercuentas.fecha), opercuentas.lu_tiposoperaciones HAVING ((opercuentas.lu_tiposoperaciones = 1) OR (opercuentas.lu_tiposoperaciones = 2)) ORDER BY date_part('year'::text, opercuentas.fecha);
+    SELECT date_part('year'::text, opercuentas.fecha) AS date_part, sum(opercuentas.importe) AS sum, opercuentas.id_tiposoperaciones AS lu_tiposoperaciones FROM opercuentas GROUP BY date_part('year'::text, opercuentas.fecha), opercuentas.id_tiposoperaciones HAVING ((opercuentas.id_tiposoperaciones = 1) OR (opercuentas.id_tiposoperaciones = 2)) ORDER BY date_part('year'::text, opercuentas.fecha);
 
 
 ALTER TABLE public.dm_saldocuentas_fechas OWNER TO postgres;
@@ -527,7 +527,7 @@ ALTER TABLE public.dm_totales OWNER TO postgres;
 
 CREATE TABLE entidadesbancarias (
     id_entidadesbancarias integer DEFAULT nextval(('"seq_entidadesbancarias"'::text)::regclass) NOT NULL,
-    entidadesbancaria text NOT NULL,
+    entidadbancaria text NOT NULL,
     eb_activa boolean NOT NULL
 );
 
@@ -557,10 +557,10 @@ SET default_with_oids = true;
 
 CREATE TABLE inversiones (
     id_inversiones integer DEFAULT nextval(('"seq_inversiones"'::text)::regclass) NOT NULL,
-    inversione text NOT NULL,
+    inversion text NOT NULL,
     in_activa boolean DEFAULT true NOT NULL,
     tpcvariable integer NOT NULL,
-    lu_cuentas integer NOT NULL,
+    id_cuentas integer NOT NULL,
     compra double precision DEFAULT 0 NOT NULL,
     venta double precision DEFAULT 0 NOT NULL
 );
@@ -575,8 +575,8 @@ ALTER TABLE public.inversiones OWNER TO postgres;
 CREATE TABLE operinversiones (
     id_operinversiones integer DEFAULT nextval(('"seq_operinversiones"'::text)::regclass) NOT NULL,
     fecha date,
-    lu_tiposoperaciones integer,
-    ma_inversiones integer,
+    id_tiposoperaciones integer,
+    id_inversiones integer,
     acciones double precision,
     importe double precision,
     impuestos double precision,
@@ -595,14 +595,14 @@ ALTER TABLE public.operinversiones OWNER TO postgres;
 CREATE TABLE opertarjetas (
     id_opertarjetas integer DEFAULT nextval(('"seq_opertarjetas"'::text)::regclass) NOT NULL,
     fecha date,
-    lu_conceptos integer NOT NULL,
-    lu_tiposoperaciones integer NOT NULL,
+    id_conceptos integer NOT NULL,
+    id_tiposoperaciones integer NOT NULL,
     importe double precision NOT NULL,
     comentario text,
     ma_tarjetas integer NOT NULL,
     pagado boolean NOT NULL,
     fechapago date,
-    lu_opercuentas bigint
+    id_opercuentas bigint
 );
 
 
@@ -862,7 +862,7 @@ ALTER TABLE public.seq_tmpoperinversioneshistoricas OWNER TO postgres;
 CREATE TABLE tarjetas (
     id_tarjetas integer DEFAULT nextval(('"seq_tarjetas"'::text)::regclass) NOT NULL,
     tarjeta text,
-    lu_cuentas integer,
+    id_cuentas integer,
     pago_diferido boolean,
     saldomaximo double precision,
     tj_activa boolean,
@@ -878,7 +878,7 @@ ALTER TABLE public.tarjetas OWNER TO postgres;
 
 CREATE TABLE tiposoperaciones (
     id_tiposoperaciones integer NOT NULL,
-    tipo_operacion text,
+    tipooperacion text,
     modificable boolean,
     operinversion boolean,
     opercuentas boolean
@@ -929,11 +929,11 @@ ALTER TABLE public.tmpinversionesheredada OWNER TO postgres;
 
 CREATE TABLE tmpoperinversiones (
     id_tmpoperinversiones integer NOT NULL,
-    ma_operinversiones integer NOT NULL,
-    ma_inversiones integer NOT NULL,
+    id_operinversiones integer NOT NULL,
+    id_inversiones integer NOT NULL,
     fecha date NOT NULL,
     acciones double precision NOT NULL,
-    lu_tiposoperaciones integer,
+    id_tiposoperaciones integer,
     importe double precision,
     impuestos double precision,
     comision double precision,
@@ -970,11 +970,11 @@ ALTER SEQUENCE tmpoperinversiones_id_tmpoperinversiones_seq OWNED BY tmpoperinve
 
 CREATE TABLE tmpoperinversioneshistoricas (
     id_tmpoperinversioneshistoricas integer DEFAULT nextval(('public.seq_tmpoperinversioneshistoricas'::text)::regclass),
-    ma_operinversiones integer,
-    ma_inversiones integer,
+    id_operinversiones integer,
+    id_inversiones integer,
     fecha_inicio date,
     importe double precision,
-    lu_tiposoperaciones bigint,
+    id_tiposoperaciones bigint,
     acciones double precision,
     comision double precision,
     impuestos double precision,
@@ -991,7 +991,7 @@ ALTER TABLE public.tmpoperinversioneshistoricas OWNER TO postgres;
 --
 
 CREATE VIEW todo_cuentas AS
-    SELECT cuentas.id_cuentas, cuentas.cuenta, cuentas.cu_activa, cuentas.numero_cuenta, entidadesbancarias.id_entidadesbancarias, entidadesbancarias.entidadesbancaria, entidadesbancarias.eb_activa FROM cuentas, entidadesbancarias WHERE (cuentas.ma_entidadesbancarias = entidadesbancarias.id_entidadesbancarias);
+    SELECT cuentas.id_cuentas, cuentas.cuenta, cuentas.cu_activa, cuentas.numero_cuenta, entidadesbancarias.id_entidadesbancarias, entidadesbancarias.entidadbancaria AS entidadesbancaria, entidadesbancarias.eb_activa FROM cuentas, entidadesbancarias WHERE (cuentas.id_entidadesbancarias = entidadesbancarias.id_entidadesbancarias);
 
 
 ALTER TABLE public.todo_cuentas OWNER TO postgres;
@@ -1001,7 +1001,7 @@ ALTER TABLE public.todo_cuentas OWNER TO postgres;
 --
 
 CREATE VIEW todo_opercuentas AS
-    SELECT cuentas.id_cuentas, cuentas.cuenta, cuentas.ma_entidadesbancarias, cuentas.cu_activa, cuentas.numero_cuenta, opercuentas.id_opercuentas, opercuentas.fecha, opercuentas.lu_conceptos, opercuentas.lu_tiposoperaciones, opercuentas.importe, opercuentas.comentario, opercuentas.ma_cuentas, conceptos.id_conceptos, conceptos.concepto, conceptos.lu_tipooperacion, entidadesbancarias.id_entidadesbancarias, entidadesbancarias.entidadesbancaria, entidadesbancarias.eb_activa, tiposoperaciones.id_tiposoperaciones, tiposoperaciones.tipo_operacion, tiposoperaciones.modificable, tiposoperaciones.operinversion, tiposoperaciones.opercuentas FROM cuentas, opercuentas, conceptos, entidadesbancarias, tiposoperaciones WHERE ((((cuentas.id_cuentas = opercuentas.ma_cuentas) AND (cuentas.ma_entidadesbancarias = entidadesbancarias.id_entidadesbancarias)) AND (opercuentas.lu_conceptos = conceptos.id_conceptos)) AND (conceptos.lu_tipooperacion = tiposoperaciones.id_tiposoperaciones));
+    SELECT cuentas.id_cuentas, cuentas.cuenta, cuentas.id_entidadesbancarias AS ma_entidadesbancarias, cuentas.cu_activa, cuentas.numero_cuenta, opercuentas.id_opercuentas, opercuentas.fecha, opercuentas.id_conceptos AS lu_conceptos, opercuentas.id_tiposoperaciones AS lu_tiposoperaciones, opercuentas.importe, opercuentas.comentario, opercuentas.id_cuentas AS ma_cuentas, conceptos.id_conceptos, conceptos.concepto, conceptos.id_tipooperaciones AS lu_tipooperacion, entidadesbancarias.id_entidadesbancarias, entidadesbancarias.entidadbancaria AS entidadesbancaria, entidadesbancarias.eb_activa, tiposoperaciones.id_tiposoperaciones, tiposoperaciones.tipooperacion AS tipo_operacion, tiposoperaciones.modificable, tiposoperaciones.operinversion, tiposoperaciones.opercuentas FROM cuentas, opercuentas, conceptos, entidadesbancarias, tiposoperaciones WHERE ((((cuentas.id_cuentas = opercuentas.id_cuentas) AND (cuentas.id_entidadesbancarias = entidadesbancarias.id_entidadesbancarias)) AND (opercuentas.id_conceptos = conceptos.id_conceptos)) AND (conceptos.id_tipooperaciones = tiposoperaciones.id_tiposoperaciones));
 
 
 ALTER TABLE public.todo_opercuentas OWNER TO postgres;
@@ -1011,7 +1011,7 @@ ALTER TABLE public.todo_opercuentas OWNER TO postgres;
 --
 
 CREATE VIEW todo_opertarjetas AS
-    SELECT opertarjetas.id_opertarjetas, opertarjetas.fecha, opertarjetas.lu_conceptos, opertarjetas.lu_tiposoperaciones, opertarjetas.importe, opertarjetas.comentario, opertarjetas.ma_tarjetas, opertarjetas.pagado, opertarjetas.fechapago, opertarjetas.lu_opercuentas, conceptos.id_conceptos, conceptos.concepto, conceptos.lu_tipooperacion, tiposoperaciones.id_tiposoperaciones, tiposoperaciones.tipo_operacion, tiposoperaciones.modificable, tiposoperaciones.operinversion, tiposoperaciones.opercuentas, tarjetas.id_tarjetas, tarjetas.tarjeta, tarjetas.lu_cuentas, tarjetas.pago_diferido, tarjetas.saldomaximo, tarjetas.tj_activa FROM opertarjetas, conceptos, tiposoperaciones, tarjetas WHERE (((conceptos.id_conceptos = opertarjetas.lu_conceptos) AND (tiposoperaciones.id_tiposoperaciones = opertarjetas.lu_tiposoperaciones)) AND (tarjetas.id_tarjetas = opertarjetas.ma_tarjetas));
+    SELECT opertarjetas.id_opertarjetas, opertarjetas.fecha, opertarjetas.id_conceptos AS lu_conceptos, opertarjetas.id_tiposoperaciones AS lu_tiposoperaciones, opertarjetas.importe, opertarjetas.comentario, opertarjetas.ma_tarjetas, opertarjetas.pagado, opertarjetas.fechapago, opertarjetas.id_opercuentas AS lu_opercuentas, conceptos.id_conceptos, conceptos.concepto, conceptos.id_tipooperaciones AS lu_tipooperacion, tiposoperaciones.id_tiposoperaciones, tiposoperaciones.tipooperacion AS tipo_operacion, tiposoperaciones.modificable, tiposoperaciones.operinversion, tiposoperaciones.opercuentas, tarjetas.id_tarjetas, tarjetas.tarjeta, tarjetas.id_cuentas AS lu_cuentas, tarjetas.pago_diferido, tarjetas.saldomaximo, tarjetas.tj_activa FROM opertarjetas, conceptos, tiposoperaciones, tarjetas WHERE (((conceptos.id_conceptos = opertarjetas.id_conceptos) AND (tiposoperaciones.id_tiposoperaciones = opertarjetas.id_tiposoperaciones)) AND (tarjetas.id_tarjetas = opertarjetas.ma_tarjetas));
 
 
 ALTER TABLE public.todo_opertarjetas OWNER TO postgres;
@@ -1021,7 +1021,7 @@ ALTER TABLE public.todo_opertarjetas OWNER TO postgres;
 --
 
 CREATE VIEW todo_tarjetas AS
-    SELECT tarjetas.id_tarjetas, tarjetas.numero, tarjetas.tarjeta, tarjetas.lu_cuentas, tarjetas.pago_diferido, tarjetas.saldomaximo, tarjetas.tj_activa, cuentas.id_cuentas, cuentas.cuenta, cuentas.ma_entidadesbancarias, cuentas.cu_activa, cuentas.numero_cuenta, entidadesbancarias.id_entidadesbancarias, entidadesbancarias.entidadesbancaria, entidadesbancarias.eb_activa FROM tarjetas, cuentas, entidadesbancarias WHERE ((tarjetas.lu_cuentas = cuentas.id_cuentas) AND (cuentas.ma_entidadesbancarias = entidadesbancarias.id_entidadesbancarias));
+    SELECT tarjetas.id_tarjetas, tarjetas.numero, tarjetas.tarjeta, tarjetas.id_cuentas AS lu_cuentas, tarjetas.pago_diferido, tarjetas.saldomaximo, tarjetas.tj_activa, cuentas.id_cuentas, cuentas.cuenta, cuentas.id_entidadesbancarias AS ma_entidadesbancarias, cuentas.cu_activa, cuentas.numero_cuenta, entidadesbancarias.id_entidadesbancarias, entidadesbancarias.entidadbancaria AS entidadesbancaria, entidadesbancarias.eb_activa FROM tarjetas, cuentas, entidadesbancarias WHERE ((tarjetas.id_cuentas = cuentas.id_cuentas) AND (cuentas.id_entidadesbancarias = entidadesbancarias.id_entidadesbancarias));
 
 
 ALTER TABLE public.todo_tarjetas OWNER TO postgres;
@@ -1031,7 +1031,7 @@ ALTER TABLE public.todo_tarjetas OWNER TO postgres;
 --
 
 CREATE VIEW todoinversiones AS
-    SELECT operinversiones.importe, operinversiones.fecha, inversion_actualizacion(operinversiones.ma_inversiones, operinversiones.fecha) AS inversion_actualizacion FROM operinversiones;
+    SELECT operinversiones.importe, operinversiones.fecha, inversion_actualizacion(operinversiones.id_inversiones, operinversiones.fecha) AS inversion_actualizacion FROM operinversiones;
 
 
 ALTER TABLE public.todoinversiones OWNER TO postgres;
@@ -1197,7 +1197,7 @@ CREATE UNIQUE INDEX inversiones_id_inversiones ON inversiones USING btree (id_in
 -- Name: opercuentas_ma_cuentas; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
 --
 
-CREATE INDEX opercuentas_ma_cuentas ON opercuentas USING btree (ma_cuentas);
+CREATE INDEX opercuentas_ma_cuentas ON opercuentas USING btree (id_cuentas);
 
 
 --

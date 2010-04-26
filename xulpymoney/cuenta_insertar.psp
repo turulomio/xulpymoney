@@ -11,7 +11,7 @@ id_inversiones=0
 if form.has_key('id_inversiones'):
     id_inversiones=form['id_inversiones']
 
-cmbentidadesbancarias=EntidadBancaria().cmb('id_entidadesbancarias','select * from entidadesbancarias where eb_activa=true order by entidadesbancaria',  0,  False)
+cmbentidadesbancarias=EntidadBancaria().cmb('id_entidadesbancarias','select * from entidadesbancarias where eb_activa=true order by entidadbancaria',  0,  False)
 con.close()
 
 req.content_type="application/vnd.mozilla.xul+xml"

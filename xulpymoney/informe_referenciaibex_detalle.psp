@@ -9,7 +9,7 @@ else:
     
 rangostr=str(rango) + " - " + str(rango+1000)
 con=Conection()
-sql="select tmpoperinversiones.fecha, inversiones.inversione, tmpoperinversiones.importe, floor(ibex35.cierre) as ibex35 from inversiones, tmpoperinversiones, ibex35 where tmpoperinversiones.fecha=ibex35.fecha and inversiones.id_inversiones=tmpoperinversiones.ma_inversiones and ibex35.cierre>="+str(rango)+" and ibex35.cierre<"+str(rango+1000)+" order by fecha;"
+sql="select tmpoperinversiones.fecha, inversiones.inversion, tmpoperinversiones.importe, floor(ibex35.cierre) as ibex35 from inversiones, tmpoperinversiones, ibex35 where tmpoperinversiones.fecha=ibex35.fecha and inversiones.id_inversiones=tmpoperinversiones.id_inversiones and ibex35.cierre>="+str(rango)+" and ibex35.cierre<"+str(rango+1000)+" order by fecha;"
 tree=InversionOperacionTemporal().xultree_referenciaibex(sql)
 
 req.content_type="application/vnd.mozilla.xul+xml"

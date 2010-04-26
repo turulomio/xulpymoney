@@ -120,7 +120,7 @@ function update_list(){
 <vbox flex="1">
 
     <label id="titulo" flex="0" value="Actualizar el valor" />
-    <label id="subtitulo" flex="0" value="<%=reg['inversione'] %>" />
+    <label id="subtitulo" flex="0" value="<%=reg['inversion'] %>" />
     <hbox flex="1">
     <grid align="center">
         <rows>

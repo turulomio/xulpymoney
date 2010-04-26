@@ -23,7 +23,7 @@ elif form['ajax']=="3": #InversionActualizacionBorrar
     con.close()
 elif form['ajax']=="4": #CuentaOperacionInsertar
     con=Conection()
-    if CuentaOperacion().insertar(form['fecha'], form['lu_conceptos'], form['lu_tiposoperaciones'], form['importe'], form['comentario'], form['id_cuentas'])==True:
+    if CuentaOperacion().insertar(form['fecha'], form['id_conceptos'], form['id_tiposoperaciones'], form['importe'], form['comentario'], form['id_cuentas'])==True:
         req.write ("Se ha insertado la opercuenta correctamente")
     else:
         req.write ("Ha habido un error en la inserción de la opercuenta")

@@ -13,7 +13,7 @@ else:
     comentario=""
     
 con=Conection()
-cmbconcepto=Concepto().cmb('select * from conceptos where lu_tipooperacion in (1,2) order by concepto',  concepto,  False)
+cmbconcepto=Concepto().cmb('select * from conceptos where id_tipooperacion in (1,2) order by concepto',  concepto,  False)
 
 req.content_type="application/vnd.mozilla.xul+xml"
 req.write(xulheaderwindowmenu("Insertando una operación de cuenta"))
@@ -28,13 +28,13 @@ function insert(){
     var xmlHttp;    
     var sp=document.getElementById("cmbconceptos").value.split(";")
     var importe=document.getElementById("importe").value;
-    var lu_conceptos=sp[0];
-    var lu_tiposoperaciones=sp[1];
+    var id_conceptos=sp[0];
+    var id_tiposoperaciones=sp[1];
     var comentario= document.getElementById("comentario").value;
     var fecha = document.getElementById("fecha").value;
     spfecha=fecha.split("-");
     var id_cuentas=<%=form['id_cuentas']%>;
-    var url="ajax/ajax.psp?ajax=4&fecha="+fecha+"&lu_conceptos="+lu_conceptos+"&lu_tiposoperaciones="+lu_tiposoperaciones+"&importe="+importe+"&comentario="+comentario+"&id_cuentas="+id_cuentas;
+    var url="ajax/ajax.psp?ajax=4&fecha="+fecha+"&id_conceptos="+id_conceptos+"&id_tiposoperaciones="+id_tiposoperaciones+"&importe="+importe+"&comentario="+comentario+"&id_cuentas="+id_cuentas;
     xmlHttp=new XMLHttpRequest();
     xmlHttp.onreadystatechange=function(){
         if(xmlHttp.readyState==4){

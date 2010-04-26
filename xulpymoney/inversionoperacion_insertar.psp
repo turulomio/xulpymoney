@@ -8,7 +8,7 @@ else:
     util.redirect(req, 'inversion_informacion.psp')
     
 con=Conection()
-cmbtiposoperaciones=TipoOperacion().cmb('select * from tiposoperaciones where operinversion=true order by tipo_operacion',  4,  False)
+cmbtiposoperaciones=TipoOperacion().cmb('select * from tiposoperaciones where operinversion=true order by tipooperacion',  4,  False)
 
 req.content_type="application/vnd.mozilla.xul+xml"
 req.write(xulheaderwindowmenu("Insertando una operación de inversiones"))
@@ -18,7 +18,7 @@ con.close()
 <![CDATA[
 function insert(){
     var xmlHttp;    
-    var lu_tiposoperaciones=document.getElementById("cmbtiposoperaciones").value
+    var id_tiposoperaciones=document.getElementById("cmbtiposoperaciones").value
     var importe=document.getElementById("importe").value;
     var comentario= ""
     var fecha = document.getElementById("fecha").value;
@@ -28,7 +28,7 @@ function insert(){
     var valor_accion = document.getElementById("valor_accion").value;
     spfecha=fecha.split("-");
     var id_inversiones=<%=form['id_inversiones']%>;
-    var url="ajax/inversionoperacion_insertar.psp?fecha="+fecha+"&lu_tiposoperaciones="+lu_tiposoperaciones+"&importe="+importe+"&acciones="+acciones+"&impuestos="+impuestos+"&comision="+comision+"&comentario="+comentario+"&valor_accion="+valor_accion+"&ma_inversiones="+id_inversiones;
+    var url="ajax/inversionoperacion_insertar.psp?fecha="+fecha+"&id_tiposoperaciones="+id_tiposoperaciones+"&importe="+importe+"&acciones="+acciones+"&impuestos="+impuestos+"&comision="+comision+"&comentario="+comentario+"&valor_accion="+valor_accion+"&id_inversiones="+id_inversiones;
     xmlHttp=new XMLHttpRequest();
     xmlHttp.onreadystatechange=function(){
         if(xmlHttp.readyState==4){

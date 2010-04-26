@@ -4,8 +4,8 @@ from xul import *
 
 con=Conection()
 cd=ConectionDirect()
-row=cd.con.Execute("select * from opercuentas, conceptos where opercuentas.lu_conceptos=conceptos.id_conceptos and  id_opercuentas="+ form["id_opercuentas"]).GetRowAssoc(0)
-cmbconcepto=Concepto().cmb('select * from conceptos where lu_tipooperacion in (1,2) order by concepto',  row['concepto'],  False)
+row=cd.con.Execute("select * from opercuentas, conceptos where opercuentas.id_conceptos=conceptos.id_conceptos and  id_opercuentas="+ form["id_opercuentas"]).GetRowAssoc(0)
+cmbconcepto=Concepto().cmb('select * from conceptos where id_tipooperacion in (1,2) order by concepto',  row['concepto'],  False)
 
 req.content_type="application/vnd.mozilla.xul+xml"
 req.write(xulheaderwindowmenu("Xulpymoney > Cuenta > Operación > Modificar"))
@@ -21,14 +21,14 @@ function modificar(){
     var xmlHttp;    
     var sp=document.getElementById("cmbconceptos").value.split(";")
     var importe=document.getElementById("importe").value;
-    var lu_conceptos=sp[0];
-    var lu_tiposoperaciones=sp[1];
+    var id_conceptos=sp[0];
+    var id_tiposoperaciones=sp[1];
     var comentario= document.getElementById("comentario").value;
     var fecha = document.getElementById("fecha").value;
     spfecha=fecha.split("-");
     var id_opercuentas=<%=form['id_opercuentas']%>;
-    var id_cuentas=<%=row['ma_cuentas']%>;
-    var url="ajax/cuentaoperacion_modificar.psp?id_opercuentas="+id_opercuentas+"&fecha="+fecha+"&lu_conceptos="+lu_conceptos+"&lu_tiposoperaciones="+lu_tiposoperaciones+"&importe="+importe+"&comentario="+comentario+"&id_cuentas="+id_cuentas;
+    var id_cuentas=<%=row['id_cuentas']%>;
+    var url="ajax/cuentaoperacion_modificar.psp?id_opercuentas="+id_opercuentas+"&fecha="+fecha+"&id_conceptos="+id_conceptos+"&id_tiposoperaciones="+id_tiposoperaciones+"&importe="+importe+"&comentario="+comentario+"&id_cuentas="+id_cuentas;
     xmlHttp=new XMLHttpRequest();
     xmlHttp.onreadystatechange=function(){
         if(xmlHttp.readyState==4){
