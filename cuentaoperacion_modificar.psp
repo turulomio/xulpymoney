@@ -71,7 +71,7 @@ function check_data(){
 
 ]]>
 </script>
-<label id="titulo" value="Nueva operación de cuenta" />
+<label id="titulo" value="Modificar una operación de cuenta" />
 <vbox flex="5">
 <grid pack="center">
     <columns>
@@ -81,7 +81,7 @@ function check_data(){
     <rows>
         <row>
             <label id="negrita" value="Fecha"/>
-            <datepicker id="fecha" type="grid"  firstdayofweek="1"/>
+            <datepicker id="fecha" type="grid"  firstdayofweek="1" value="<%=str(row['fecha'])[:-12]%>"/>
         </row>
         <row>
             <label id="negrita" value="Concepto"/>

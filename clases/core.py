@@ -92,7 +92,7 @@ class Banco:
         s= s+ '     var poppatrimonio=document.createElement("menuitem");\n'
         s= s+ '     poppatrimonio.setAttribute("id", "poppatrimonio");\n'
         s= s+ '     poppatrimonio.setAttribute("label", "Patrimonio en el banco");\n'
-        s= s+ '     poppatrimonio.setAttribute("oncommand", "alert(\'Falta desarrollar\');");\n'
+        s= s+ '     poppatrimonio.setAttribute("oncommand", "banco_patrimonio();");\n'
         s= s+ '     popup.appendChild(poppatrimonio);\n'
         s= s+ '     var popseparator2=document.createElement("menuseparator");\n'
         s= s+ '     popseparator2.setAttribute("id", "popseparator2");\n'
@@ -132,6 +132,11 @@ class Banco:
         s= s+ '     xmlHttp.open("GET",url,true);\n'
         s= s+ '     xmlHttp.send(null);\n'
         s= s+ '}\n'
+        
+
+        s= s+ 'function banco_patrimonio(){\n'
+        s= s+ '     alert(\'Falta desarrollar\');\n'
+        s= s+ '}\n\n'        
         s= s+ ']]>\n</script>\n\n'        
         
         s= s+ '<popupset>\n'
@@ -140,7 +145,7 @@ class Banco:
         s= s+ '    </popup>\n'
         s= s+ '</popupset>\n'
         
-        s= s+ '<tree id="treeBancos" enableColumnDrag="true" flex="6"   context="popupBancos"  onselect="popupBancos();">\n'
+        s= s+ '<tree id="treeBancos" enableColumnDrag="true" flex="6"   context="popupBancos"  onselect="popupBancos();" ondblclick="banco_patrimonio();" >\n'
         s= s+ '    <treecols>\n'
         s= s+  '        <treecol id="id" label="id" hidden="true" />\n'
         s= s+  '        <treecol id="activa" label="Activa" hidden="true" />\n'
@@ -338,7 +343,7 @@ class Cuenta:
         s= s+ '</popupset>\n'
 
         s= s+ '<vbox flex="1">\n'
-        s= s+ '<tree id="treeCuentas" flex="6"   context="popupCuentas"  onselect="popupCuentas();">\n'
+        s= s+ '<tree id="treeCuentas" flex="6"   context="popupCuentas"  onselect="popupCuentas();" ondblclick="cuenta_movimientos();" >\n'
         s= s+ '     <treecols>\n'
         s= s+  '          <treecol id="id" label="Id" hidden="true" />\n'
         s= s+  '          <treecol id="activa" label="Activa" hidden="true" />\n'
@@ -474,11 +479,20 @@ class CuentaOperacion:
         s= s+ '     popup.appendChild(popborrar);\n'
         s= s+ '}\n\n'
 
+        s= s+ 'function opercuenta_insertar(){\n'
+        s= s+ '     var tree = document.getElementById("treeOpercuentas");\n'
+        s= s+ '     var id_opercuentas=tree.view.getCellText(tree.currentIndex,tree.columns.getNamedColumn("id"));\n'
+        s= s+ '     location="cuentaoperacion_insertar.psp?id_cuentas=' +str(id_cuentas) + '&year='+str(year)+'&month='+str(month)+'";\n'
+        s= s+ '}\n\n'
+        
         s= s+ 'function opercuenta_modificar(){\n'
         s= s+ '     var tree = document.getElementById("treeOpercuentas");\n'
         s= s+ '     var id_opercuentas=tree.view.getCellText(tree.currentIndex,tree.columns.getNamedColumn("id"));\n'
         s= s+ '     location=\'cuentaoperacion_modificar.psp?id_opercuentas=\' + id_opercuentas;\n'
         s= s+ '}\n\n'
+        
+        
+        
         
         s= s+ 'function opercuenta_borrar(){\n'
         s= s+ '     var tree = document.getElementById("treeOpercuentas");\n'
@@ -501,7 +515,7 @@ class CuentaOperacion:
         s=s + '        <menuitem label="Transferencia bancaria"  onclick="location=\'cuenta_transferencia.psp\';"  class="menuitem-iconic"  image="images/hotsync.png" />\n'
         s= s+ '        <menuitem label="Operación de tarjeta"   onclick="location=\'tarjeta_listado.psp\';"   class="menuitem-iconic"  image="images/visa.png"/>\n'
         s= s+ '        <menuseparator/>\n'
-        s= s+ '        <menuitem label="Nueva operación" oncommand="location=\'cuentaoperacion_insertar.psp?ibm=insertar&amp;regresando=0&amp;id_cuentas='+str(id_cuentas)+';\'" class="menuitem-iconic"  image="images/item_add.png"/>\n'
+        s= s+ '        <menuitem label="Nueva operación" oncommand="opercuenta_insertar();" class="menuitem-iconic"  image="images/item_add.png"/>\n'
         s= s+ '    </popup>\n'
         s= s+ '</popupset>\n'
         s= s+ '<tree id="treeOpercuentas" enableColumnDrag="true" flex="6"   context="popupOpercuentas"  onselect="popupOpercuentas();">\n'
@@ -888,7 +902,7 @@ class Inversion:
         sumsaldos=0;
         sumpendiente=0
         s= '<vbox flex="1">\n'
-        s= s+ '<tree id="tree" enableColumnDrag="true" flex="6"   context="treepopup"  onselect="tree_getid();">\n'
+        s= s+ '<tree id="tree" enableColumnDrag="true" flex="6"   context="treepopup"  onselect="tree_getid();"  ondblclick="location=\'inversion_informacion.psp?id_inversiones=\' + id_inversiones;" >\n'
         s= s+ '<treecols>\n'
         s= s+  '<treecol id="id" label="id" hidden="true" />\n'
         s= s+  '<treecol id="activa" label="activa" hidden="true" />\n'
