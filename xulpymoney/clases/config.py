@@ -1,7 +1,7 @@
 # -*- coding: UTF-8  -*-
 version="20100424"
 host='localhost'
-dbname='cuentasdev'
+dbname='cuentas'
 user='postgres'
 password='xxx'
 type='postgres'
