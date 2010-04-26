@@ -38,7 +38,7 @@ function checkbox_submit(){
 
 <vbox  flex="1">
 <label id="titulo" flex="0" value="Estado de las inversiones" />
-<checkbox id="checkbox" label="¿Mostrar todas las inversiones (inactivas y no cotizan en mercado)?" <%=checked%>  oncommand="checkbox_submit()" style="text-align: center;" />
+<checkbox id="checkbox" label="¿Mostrar las inversiones inactivas?" <%=checked%>  oncommand="checkbox_submit()" style="text-align: center;" />
 <%=listado%>
 </vbox>
 </window>
