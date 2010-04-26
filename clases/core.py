@@ -423,6 +423,15 @@ class CuentaOperacion:
             return False
         return True
 
+    def modificar(self, id_opercuentas,  fecha, lu_conceptos, lu_tiposoperaciones,  importe,  comentario,  id_cuentas):
+        sql="update opercuentas set fecha='" + fecha + "', lu_conceptos=" + str(lu_conceptos)+", lu_tiposoperaciones="+ str(lu_tiposoperaciones) +", importe="+str(importe)+", comentario='"+comentario+"', ma_cuentas="+str(id_cuentas)+" where id_opercuentas=" + str(id_opercuentas)
+        mylog(sql)
+        try:
+            con.Execute(sql);
+        except:
+            return False
+        return True
+
 
 
     def transferencia(self, fecha,  cmbcuentaorigen,  cmbcuentadestino, importe, comision ):
@@ -441,38 +450,80 @@ class CuentaOperacion:
     def xul_listado(self, curs,  id_cuentas,  year,  month):
         primeromes=datetime.date(int(year),  int(month),  1)
         diamenos=primeromes-datetime.timedelta(days=1)      
-        saldo=Cuenta().saldo(id_cuentas, diamenos.isoformat())
-        s=    '<popupset>\n'
-        s= s+ '   <popup id="treepopup">\n'
-        s= s+ '      <menuitem label="Nueva operación" oncommand="location=\'cuentaoperacion_insertar.psp?ibm=insertar&amp;regresando=0&amp;id_cuentas='+str(id_cuentas)+';\'" class="menuitem-iconic"  image="images/item_add.png"/>\n'
-        s= s+ '      <menuitem label="Modificar la operación"  oncommand=\'location="cuentaoperacion_modificar.psp?id_cuentas=" + idcuenta  + "&amp;ibm=modificar&amp;regresando=0";\'/>\n'
-        s= s+ '      <menuitem label="Borrar la operación"  oncommand="borrar();" class="menuitem-iconic" image="images/eventdelete.png"/>\n'
-        s= s+ '      <menuseparator/>\n'
-        s=s +  '            <menuitem label="Transferencia bancaria"  onclick="location=\'cuenta_transferencia.psp\';"  class="menuitem-iconic"  image="images/hotsync.png" />\n'
-        s= s+ '      <menuseparator/>\n'
-        s= s+ '      <menuitem label="Operación de tarjeta"   onclick="location=\'tarjeta_listado.psp\';"   class="menuitem-iconic"  image="images/visa.png"/>\n'
-        s= s+ '   </popup>\n'
+        saldo=Cuenta().saldo(id_cuentas, diamenos.isoformat()) 
+        s=      '<script>\n<![CDATA[\n'
+        s= s+ 'function popupOpercuentas(){\n'
+        s= s+ '     var tree = document.getElementById("treeOpercuentas");\n'
+        s= s+ '     id_opercuentas=tree.view.getCellText(tree.currentIndex,tree.columns.getNamedColumn("id"));\n'
+        s= s+ '     var popup = document.getElementById("popupOpercuentas");\n'
+        s= s+ '     if (document.getElementById("popmodificar")){\n'#Con que exista este vale
+        s= s+ '         popup.removeChild(document.getElementById("popmodificar"));\n'
+        s= s+ '         popup.removeChild(document.getElementById("popborrar"));\n'
+        s= s+ '     }\n'
+        s= s+ '     var popmodificar=document.createElement("menuitem");\n'
+        s= s+ '     popmodificar.setAttribute("id", "popmodificar");\n'
+        s= s+ '     popmodificar.setAttribute("label", "Modificar la operación");\n'
+        s= s+ '     popmodificar.setAttribute("class", "menuitem-iconic");\n'
+        s= s+ '     popmodificar.setAttribute("image", "images/edit.png");\n'
+        s= s+ '     popmodificar.setAttribute("oncommand", "opercuenta_modificar();");\n'
+        s= s+ '     popup.appendChild(popmodificar);\n'
+        s= s+ '     var popborrar=document.createElement("menuitem");\n'
+        s= s+ '     popborrar.setAttribute("id", "popborrar");\n'
+        s= s+ '     popborrar.setAttribute("label", "Borra la operación");\n'
+        s= s+ '     popborrar.setAttribute("oncommand", "opercuenta_borrar();");\n'
+        s= s+ '     popup.appendChild(popborrar);\n'
+        s= s+ '}\n\n'
+
+        s= s+ 'function opercuenta_modificar(){\n'
+        s= s+ '     var tree = document.getElementById("treeOpercuentas");\n'
+        s= s+ '     var id_opercuentas=tree.view.getCellText(tree.currentIndex,tree.columns.getNamedColumn("id"));\n'
+        s= s+ '     location=\'cuentaoperacion_modificar.psp?id_opercuentas=\' + id_opercuentas;\n'
+        s= s+ '}\n\n'
+        
+        s= s+ 'function opercuenta_borrar(){\n'
+        s= s+ '     var tree = document.getElementById("treeOpercuentas");\n'
+        s= s+ '     var id_opercuentas=tree.view.getCellText(tree.currentIndex,tree.columns.getNamedColumn("id"));\n'
+        s= s+ '     var xmlHttp;\n'
+        s= s+ '     xmlHttp=new XMLHttpRequest();\n'
+        s= s+ '     xmlHttp.onreadystatechange=function(){\n'
+        s= s+ '         if(xmlHttp.readyState==4){\n'
+        s= s+ '             var ale=xmlHttp.responseText;\n'
+        s= s+ '             location="cuenta_informacion.psp?id_cuentas='+str(id_cuentas)+'";\n'
+        s= s+ '         }\n'
+        s= s+ '     }\n'
+        s= s+ '     var url="ajax/cuentaoperacion_borrar.psp?id_opercuentas="+id_opercuentas;\n'
+        s= s+ '     xmlHttp.open("GET",url,true);\n'
+        s= s+ '     xmlHttp.send(null);\n'
+        s= s+ '}\n'
+        s= s+ ']]>\n</script>\n\n'                
+        s= s+ '<popupset>\n'
+        s= s+ '    <popup id="popupOpercuentas">\n'
+        s=s + '        <menuitem label="Transferencia bancaria"  onclick="location=\'cuenta_transferencia.psp\';"  class="menuitem-iconic"  image="images/hotsync.png" />\n'
+        s= s+ '        <menuitem label="Operación de tarjeta"   onclick="location=\'tarjeta_listado.psp\';"   class="menuitem-iconic"  image="images/visa.png"/>\n'
+        s= s+ '        <menuseparator/>\n'
+        s= s+ '        <menuitem label="Nueva operación" oncommand="location=\'cuentaoperacion_insertar.psp?ibm=insertar&amp;regresando=0&amp;id_cuentas='+str(id_cuentas)+';\'" class="menuitem-iconic"  image="images/item_add.png"/>\n'
+        s= s+ '    </popup>\n'
         s= s+ '</popupset>\n'
-        s= s+ '<tree id="tree" enableColumnDrag="true" flex="6"   context="treepopup"  onselect="tree_getid();">\n'
-        s= s+ '   <treecols>\n'
-        s= s+ '      <treecol id="col_id" label="id" hidden="true" />\n'
-        s= s+ '      <treecol label="Fecha" flex="1" style="text-align: center"/>\n'
-        s= s+ '      <treecol label="Concepto"  flex="3"/>\n'
-        s= s+ '      <treecol label="Importe" flex="1" style="text-align: right" />\n'
-        s= s+ '      <treecol label="Saldo" flex="1" style="text-align: right"/>\n'
-        s= s+ '      <treecol label="Comentario" flex="7" style="text-align: left"/>\n'
-        s= s+ '   </treecols>\n'
-        s= s+ '   <treechildren>\n'
-        s= s + '      <treeitem>\n'
-        s= s + '         <treerow>\n'
-        s= s + '            <treecell label="0" />\n'
-        s= s + '            <treecell label="" />\n'
-        s= s + '            <treecell label="Saldo a inicio de mes" />\n'
-        s= s + '            '+ treecell_euros(0)
-        s= s + '            '+ treecell_euros(saldo)
-        s= s + '            <treecell label="" />\n'
-        s= s + '         </treerow>\n'
-        s= s + '      </treeitem>\n'
+        s= s+ '<tree id="treeOpercuentas" enableColumnDrag="true" flex="6"   context="popupOpercuentas"  onselect="popupOpercuentas();">\n'
+        s= s+ '    <treecols>\n'
+        s= s+ '        <treecol id="id" label="id" hidden="true" />\n'
+        s= s+ '        <treecol label="Fecha" flex="1" style="text-align: center"/>\n'
+        s= s+ '        <treecol label="Concepto"  flex="3"/>\n'
+        s= s+ '        <treecol label="Importe" flex="1" style="text-align: right" />\n'
+        s= s+ '        <treecol label="Saldo" flex="1" style="text-align: right"/>\n'
+        s= s+ '        <treecol label="Comentario" flex="7" style="text-align: left"/>\n'
+        s= s+ '    </treecols>\n'
+        s= s+ '    <treechildren>\n'
+        s= s+ '      <treeitem>\n'
+        s= s+ '         <treerow>\n'
+        s= s+ '            <treecell label="0" />\n'
+        s= s+ '            <treecell label="" />\n'
+        s= s+ '            <treecell label="Saldo a inicio de mes" />\n'
+        s= s+ '            '+ treecell_euros(0)
+        s= s+ '            '+ treecell_euros(saldo)
+        s= s+ '            <treecell label="" />\n'
+        s= s+ '         </treerow>\n'
+        s= s+ '      </treeitem>\n'
         while not curs.EOF:
             row = curs.GetRowAssoc(0)   
             saldo=saldo+ dosdecimales(row['importe'])
