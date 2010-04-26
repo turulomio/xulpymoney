@@ -7,7 +7,7 @@ import config
 from formato import *  
 from xul import *
 
-class Banco:    
+class EntidadBancaria:    
     def cmb(self, name,  sql,  selected,  js=True):
         jstext=""
         if js:
@@ -34,22 +34,22 @@ class Banco:
             return False
         return True
         
-    def modificar(self, id_bancos, entidadesbancaria):
-        sql="update entidadesbancarias set entidadesbancaria='"+str(entidadesbancaria)+"' where id_entidadesbancarias="+ str(id_bancos)
+    def modificar(self, id_entidadesbancarias, entidadesbancaria):
+        sql="update entidadesbancarias set entidadesbancaria='"+str(entidadesbancaria)+"' where id_entidadesbancarias="+ str(id_entidadesbancarias)
         try:
             con.Execute(sql);
         except:
             return False
         return True
         
-    def modificar_activa(self, id_bancos,  activa):
-        sql="update entidadesbancarias set eb_activa="+str(activa)+" where id_entidadesbancarias="+ str(id_bancos)
+    def modificar_activa(self, id_entidadesbancarias,  activa):
+        sql="update entidadesbancarias set eb_activa="+str(activa)+" where id_entidadesbancarias="+ str(id_entidadesbancarias)
         curs=con.Execute(sql); 
         return sql
 
         
     def saldo(self,id_entidadesbancarias,fecha):
-        curs = con.Execute('select banco_saldo('+ str(id_entidadesbancarias) + ",'"+str(fecha)+"') as saldo;"); 
+        curs = con.Execute('select eb_saldo('+ str(id_entidadesbancarias) + ",'"+str(fecha)+"') as saldo;"); 
         if curs == None: 
             print self.cfg.con.ErrorMsg()        
         row = curs.GetRowAssoc(0)      
@@ -66,12 +66,12 @@ class Banco:
             sql="select * from entidadesbancarias where eb_activa='t' order by entidadesbancaria";
         curs=con.Execute(sql)
         s=      '<script>\n<![CDATA[\n'
-        s= s+ 'function popupBancos(){\n'
-        s= s+ '     var tree = document.getElementById("treeBancos");\n'
+        s= s+ 'function popupEntidadesBancarias(){\n'
+        s= s+ '     var tree = document.getElementById("treeEntidadesBancarias");\n'
         #el boolean de un "0" es true y bolean de un 0 es false
         s= s+ '     var activa=Boolean(Number(tree.view.getCellText(tree.currentIndex,tree.columns.getNamedColumn( "activa"))));\n'
-        s= s+ '     id_bancos=tree.view.getCellText(tree.currentIndex,tree.columns.getNamedColumn("id"));\n'
-        s= s+ '     var popup = document.getElementById("popupBancos");\n'
+        s= s+ '     id_entidadesbancarias=tree.view.getCellText(tree.currentIndex,tree.columns.getNamedColumn("id"));\n'
+        s= s+ '     var popup = document.getElementById("popupEntidadesBancarias");\n'
         s= s+ '     if (document.getElementById("popmodificar")){\n'#Con que exista este vale
         s= s+ '         popup.removeChild(document.getElementById("popmodificar"));\n'
         s= s+ '         popup.removeChild(document.getElementById("popseparator1"));\n'
@@ -81,18 +81,18 @@ class Banco:
         s= s+ '     }\n'
         s= s+ '     var popmodificar=document.createElement("menuitem");\n'
         s= s+ '     popmodificar.setAttribute("id", "popmodificar");\n'
-        s= s+ '     popmodificar.setAttribute("label", "Modificar el banco");\n'
+        s= s+ '     popmodificar.setAttribute("label", "Modificar la Entidad Bancaria");\n'
         s= s+ '     popmodificar.setAttribute("class", "menuitem-iconic");\n'
         s= s+ '     popmodificar.setAttribute("image", "images/edit.png");\n'
-        s= s+ '     popmodificar.setAttribute("oncommand", "banco_modificar();");\n'
+        s= s+ '     popmodificar.setAttribute("oncommand", "eb_modificar();");\n'
         s= s+ '     popup.appendChild(popmodificar);\n'
         s= s+ '     var popseparator1=document.createElement("menuseparator");\n'
         s= s+ '     popseparator1.setAttribute("id", "popseparator1");\n'
         s= s+ '     popup.appendChild(popseparator1);\n'
         s= s+ '     var poppatrimonio=document.createElement("menuitem");\n'
         s= s+ '     poppatrimonio.setAttribute("id", "poppatrimonio");\n'
-        s= s+ '     poppatrimonio.setAttribute("label", "Patrimonio en el banco");\n'
-        s= s+ '     poppatrimonio.setAttribute("oncommand", "banco_patrimonio();");\n'
+        s= s+ '     poppatrimonio.setAttribute("label", "Patrimonio en la Entidad Bancaria");\n'
+        s= s+ '     poppatrimonio.setAttribute("oncommand", "eb_patrimonio();");\n'
         s= s+ '     popup.appendChild(poppatrimonio);\n'
         s= s+ '     var popseparator2=document.createElement("menuseparator");\n'
         s= s+ '     popseparator2.setAttribute("id", "popseparator2");\n'
@@ -100,58 +100,58 @@ class Banco:
         s= s+ '     var popactiva=document.createElement("menuitem");\n'
         s= s+ '     popactiva.setAttribute("id", "popactiva");\n'
         s= s+ '     if (activa){\n'
-        s= s+ '         popactiva.setAttribute("label", "Desactivar el banco");\n'
+        s= s+ '         popactiva.setAttribute("label", "Desactivar la Entidad Bancaria");\n'
         s= s+ '         popactiva.setAttribute("checked", "false");\n'
-        s= s+ '         popactiva.setAttribute("oncommand", "banco_modificar_activa();");\n'
+        s= s+ '         popactiva.setAttribute("oncommand", "eb_modificar_activa();");\n'
         s= s+ '     }else{\n'
-        s= s+ '         popactiva.setAttribute("label", "Activar el banco");\n'
+        s= s+ '         popactiva.setAttribute("label", "Activar el eb");\n'
         s= s+ '         popactiva.setAttribute("checked", "true");\n'
-        s= s+ '         popactiva.setAttribute("oncommand", "banco_modificar_activa();");\n'
+        s= s+ '         popactiva.setAttribute("oncommand", "eb_modificar_activa();");\n'
         s= s+ '     }\n'
         s= s+ '     popup.appendChild(popactiva);\n'
         s= s+ '}\n\n'
 
-        s= s+ 'function banco_modificar(){\n'
-        s= s+ '     var tree = document.getElementById("treeBancos");\n'
+        s= s+ 'function eb_modificar(){\n'
+        s= s+ '     var tree = document.getElementById("treeEntidadesBancarias");\n'
         s= s+ '     id_entidadesbancarias=tree.view.getCellText(tree.currentIndex,tree.columns.getNamedColumn("id"));\n'
-        s= s+ '     location=\'banco_modificar.psp?id_entidadesbancarias=\' + id_entidadesbancarias;\n'
+        s= s+ '     location=\'eb_modificar.psp?id_entidadesbancarias=\' + id_entidadesbancarias;\n'
         s= s+ '}\n\n'
         
-        s= s+ 'function banco_modificar_activa(){\n'
-        s= s+ '     var tree = document.getElementById("treeBancos");\n'
+        s= s+ 'function eb_modificar_activa(){\n'
+        s= s+ '     var tree = document.getElementById("treeEntidadesBancarias");\n'
         s= s+ '     var xmlHttp;\n'
-        s= s+ '     var activa=Boolean(Number(tree.view.getCellText(tree.currentIndex,tree.columns.getNamedColumn("activa"))));\n'
+        s= s+ '     var activa=Boolean(Number(tree.view.getCellText(tree.currentIndex,tree.columns.getNamedColumn( "activa"))));\n'
         s= s+ '     xmlHttp=new XMLHttpRequest();\n'
         s= s+ '     xmlHttp.onreadystatechange=function(){\n'
         s= s+ '         if(xmlHttp.readyState==4){\n'
         s= s+ '             var ale=xmlHttp.responseText;\n'
-        s= s+ '             location="banco_listado.psp";\n'
+        s= s+ '             location="eb_listado.psp";\n'
         s= s+ '         }\n'
         s= s+ '     }\n'
-        s= s+ '     var url="ajax/banco_modificar_activa.psp?id_bancos="+id_bancos+\'&activa=\'+!activa;\n'
+        s= s+ '     var url="ajax/eb_modificar_activa.psp?id_entidadesbancarias="+id_entidadesbancarias+\'&activa=\'+!activa;\n'
         s= s+ '     xmlHttp.open("GET",url,true);\n'
         s= s+ '     xmlHttp.send(null);\n'
         s= s+ '}\n'
         
 
-        s= s+ 'function banco_patrimonio(){\n'
-        s= s+ '     var tree = document.getElementById("treeBancos");\n'
+        s= s+ 'function eb_patrimonio(){\n'
+        s= s+ '     var tree = document.getElementById("treeEntidadesBancarias");\n'
         s= s+ '     id_entidadesbancarias=tree.view.getCellText(tree.currentIndex,tree.columns.getNamedColumn("id"));\n'
-        s= s+ '     location=\'banco_patrimonio.psp?id_entidadesbancarias=\' + id_entidadesbancarias;\n'
+        s= s+ '     location=\'eb_patrimonio.psp?id_entidadesbancarias=\' + id_entidadesbancarias;\n'
         s= s+ '}\n\n'        
         s= s+ ']]>\n</script>\n\n'        
         
         s= s+ '<popupset>\n'
-        s= s+ '    <popup id="popupBancos" >\n'
-        s= s+ '        <menuitem label="Nuevo banco" oncommand="location=\'banco_insertar.psp\'" class="menuitem-iconic"  image="images/item_add.png"/>\n'
+        s= s+ '    <popup id="popupEntidadesBancarias" >\n'
+        s= s+ '        <menuitem label="Nueva Entidad Bancaria" oncommand="location=\'eb_insertar.psp\'" class="menuitem-iconic"  image="images/item_add.png"/>\n'
         s= s+ '    </popup>\n'
         s= s+ '</popupset>\n'
         
-        s= s+ '<tree id="treeBancos" enableColumnDrag="true" flex="6"   context="popupBancos"  onselect="popupBancos();" ondblclick="banco_patrimonio();" >\n'
+        s= s+ '<tree id="treeEntidadesBancarias" enableColumnDrag="true" flex="6"   context="popupEntidadesBancarias"  onselect="popupEntidadesBancarias();" ondblclick="eb_patrimonio();" >\n'
         s= s+ '    <treecols>\n'
         s= s+  '        <treecol id="id" label="id" hidden="true" />\n'
         s= s+  '        <treecol id="activa" label="Activa" hidden="true" />\n'
-        s= s+  '        <treecol label="Banco" flex="2"/>\n'       
+        s= s+  '        <treecol label="Entidad Bancaria" flex="2"/>\n'       
         s= s+  '        <treecol label="% saldo total" style="text-align: right" flex="2"/>\n'
         s= s+  '        <treecol label="Saldo" style="text-align: right" flex="2"/>\n'
         s= s+  '    </treecols>\n'
@@ -164,7 +164,7 @@ class Banco:
             s= s + '                <treecell label="'+str(row["id_entidadesbancarias"])+ '" />\n'
             s= s + '                <treecell label="'+str(row["eb_activa"])+ '" />\n'
             s= s + '                <treecell label="'+str(row["entidadesbancaria"])+ '" style="text-align: right"/>\n'
-            saldo=Banco().saldo(row["id_entidadesbancarias"], datetime.date.today())
+            saldo=EntidadBancaria().saldo(row["id_entidadesbancarias"], datetime.date.today())
             if total==0: # Zero division
                 s= s + '                '+treecell_tpc(0)
             else:
@@ -839,7 +839,7 @@ class Inversion:
         s= s+ '<treecols>\n'
         s= s+  '<treecol label="Id" hidden="true" />\n'
         s= s+  '<treecol label="Inversión" flex="2"/>\n'
-        s= s+  '<treecol label="Banco" flex="2"/>\n'
+        s= s+  '<treecol label="Entidad Bancaria" flex="2"/>\n'
         s= s+  '<treecol label="Valor Acción" flex="1" style="text-align: right" />\n'
         s= s+  '<treecol label="Valor Compra" flex="1" style="text-align: right" />\n'
         s= s+  '<treecol label="Valor Venta " flex="1" style="text-align: right"/>\n'
@@ -880,8 +880,8 @@ class Inversion:
     def xul_listado(self, sql):
         """Muestra un listado encapusulado de un listado deinversiones.
         En la etiqueta sumatoria del final y huna propiedad que es total y tiene el total numérico."""
-        curs=con.Execute(sql); 
-        sumsaldos=0;
+        curs=con.Execute(sql)
+        sumsaldos=0
         sumpendiente=0       
         s=      '<script>\n<![CDATA[\n'
         s= s+ 'function popupInversiones(){\n'
@@ -1850,7 +1850,7 @@ class Total:
         s=s+ '          <treecols>\n'
         s=s+ '    <treecol label="Fecha" flex="1"  style="text-align: center"/>\n'
         s=s+ '    <treecol label="Inversión" flex="2" style="text-align: left" />\n'
-        s=s+ '    <treecol label="Banco" flex="2" style="text-align: left"/>\n'
+        s=s+ '    <treecol label="Entidad Bancaria" flex="2" style="text-align: left"/>\n'
         s=s+ '    <treecol label="Liquido" flex="1" style="text-align: right"/>\n'
         s=s+ '  </treecols>\n'
         s=s+ '  <treechildren>\n'

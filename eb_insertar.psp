@@ -4,23 +4,23 @@ from core import *
 from xul import *
 
 req.content_type="application/vnd.mozilla.xul+xml"
-req.write(xulheaderwindowmenu("Xulpymoney > Banco > Nuevo"))
+req.write(xulheaderwindowmenu("Xulpymoney > Entidades Bancarias > Nueva"))
 
 %>
 <script>
 <![CDATA[
          
-function banco_insert(){
+function eb_insert(){
     var xmlHttp;
     xmlHttp=new XMLHttpRequest();
     xmlHttp.onreadystatechange=function(){
         if(xmlHttp.readyState==4){
             var ale=xmlHttp.responseText;
-            location="banco_listado.psp";
+            location="eb_listado.psp";
         }
     }
     var entidadesbancaria = document.getElementById("entidadesbancaria").value;
-    var url="ajax/banco_insertar.psp?entidadesbancaria="+entidadesbancaria+"&eb_activa=true";
+    var url="ajax/eb_insertar.psp?entidadesbancaria="+entidadesbancaria+"&eb_activa=true";
     xmlHttp.open("GET",url,true);
     xmlHttp.send(null);
 }
@@ -29,13 +29,13 @@ function banco_insert(){
 </script>
 
 <vbox flex="1">
-    <label id="titulo" flex="0" value="Nuevo banco" />
+    <label id="titulo" flex="0" value="Nueva entidad bancaria" />
     <label value="" />
     <hbox flex="1">
     <grid align="center">
         <rows>
-        <row><label value="Nombre del banco"/><hbox><textbox id="entidadesbancaria" value="Nuevo Banco"/></hbox></row>
-        <row><label value="" /><hbox><button id="cmd" label="Aceptar" onclick="banco_insert();"/></hbox></row>
+        <row><label value="Nombre de la entidad"/><hbox><textbox id="entidadesbancaria" value="Nuevo Entidad"/></hbox></row>
+        <row><label value="" /><hbox><button id="cmd" label="Aceptar" onclick="eb_insert();"/></hbox></row>
         </rows>
     </grid>
     </hbox>

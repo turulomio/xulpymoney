@@ -4,7 +4,7 @@ from core import *
 from xul import *
 
 req.content_type="application/vnd.mozilla.xul+xml"
-req.write(xulheaderwindowmenu("Xulpymoney > Banco > Modificar"))
+req.write(xulheaderwindowmenu("Xulpymoney > Entidades Bancarias > Modificar"))
 
 cd=ConectionDirect()
 row=cd.con.Execute("select * from entidadesbancarias where id_entidadesbancarias="+ form["id_entidadesbancarias"]).GetRowAssoc(0)
@@ -13,18 +13,18 @@ cd.close()
 
 <script>
 <![CDATA[        
-function banco_modificar(){
+function eb_modificar(){
     var xmlHttp;
     xmlHttp=new XMLHttpRequest();
     xmlHttp.onreadystatechange=function(){
         if(xmlHttp.readyState==4){
             var ale=xmlHttp.responseText;
-            location="banco_listado.psp";
+            location="eb_listado.psp";
         }
     }
     var id_entidadesbancarias = <%=form['id_entidadesbancarias']%>;
     var entidadesbancaria = document.getElementById("entidadesbancaria").value;
-    var url="ajax/banco_modificar.psp?id_entidadesbancarias="+id_entidadesbancarias+"&entidadesbancaria="+entidadesbancaria;
+    var url="ajax/eb_modificar.psp?id_entidadesbancarias="+id_entidadesbancarias+"&entidadesbancaria="+entidadesbancaria;
     xmlHttp.open("GET",url,true);
     xmlHttp.send(null);
 }
@@ -32,13 +32,13 @@ function banco_modificar(){
 </script>
 
 <vbox flex="1">
-    <label id="titulo" flex="0" value="Nuevo banco" />
+    <label id="titulo" flex="0" value="Modificar entidad bancaria" />
     <label value="" />
     <hbox flex="1">
     <grid align="center">
         <rows>
-        <row><label value="Nombre del banco"/><hbox><textbox id="entidadesbancaria" value="<%=row["entidadesbancaria"]%>"/></hbox></row>
-        <row><label value=""/><hbox><button id="cmd" label="Aceptar" onclick="banco_modificar();"/></hbox></row>
+        <row><label value="Nombre de la entidad"/><hbox><textbox id="entidadesbancaria" value="<%=row["entidadesbancaria"]%>"/></hbox></row>
+        <row><label value=""/><hbox><button id="cmd" label="Aceptar" onclick="eb_modificar();"/></hbox></row>
         </rows>
     </grid>
     </hbox>

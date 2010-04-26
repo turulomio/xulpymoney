@@ -7,7 +7,7 @@ from xul import *
 
 con=Conection()
 cd=ConectionDirect()
-regBanco=cd.con.Execute("select * from entidadesbancarias where id_entidadesbancarias="+ str(form['id_entidadesbancarias'])).GetRowAssoc(0)
+regEB=cd.con.Execute("select * from entidadesbancarias where id_entidadesbancarias="+ str(form['id_entidadesbancarias'])).GetRowAssoc(0)
 listadocuentas=Cuenta().xul_listado("select id_cuentas, cu_activa, cuenta, entidadesbancarias.entidadesbancaria, numero_cuenta, cuentas_saldo(id_cuentas,'"+str(datetime.date.today())+"') as saldo from cuentas, entidadesbancarias where cuentas.ma_entidadesbancarias=entidadesbancarias.id_entidadesbancarias and cu_activa='t' and entidadesbancarias.id_entidadesbancarias="+str(form['id_entidadesbancarias'])+" order by cuenta")
 listadoinversiones=Inversion().xul_listado("select id_inversiones, in_activa, inversione, entidadesbancaria, inversiones_saldo(id_inversiones,'"+str(datetime.date.today())+"') as saldo, inversion_actualizacion(id_inversiones,'"+str(datetime.date.today())+"') as actualizacion, inversion_pendiente(id_inversiones,'"+str(datetime.date.today())+"')  as pendiente,  inversion_invertido(id_inversiones,'"+str(datetime.date.today())+"')  as invertido from inversiones, cuentas, entidadesbancarias where cuentas.ma_entidadesbancarias=entidadesbancarias.id_entidadesbancarias and cuentas.id_cuentas=inversiones.lu_cuentas and in_activa='t' and entidadesbancarias.id_entidadesbancarias="+str(form['id_entidadesbancarias'])+" order by inversione;")
 
@@ -17,7 +17,7 @@ req.content_type="application/vnd.mozilla.xul+xml"
 #Se ponen encabezados porque se hace un onload
 %>
 
-<window id="main" title="Bancos > Patrimonio" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" onload="total();">
+<window id="main" title="Xulpymoney > Entidades Bancarias > Patrimonio" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" onload="total();">
 <%=menu()%>
 <script>
 <![CDATA[
@@ -25,14 +25,14 @@ function total(){
     var tc=Number(document.getElementById("totalcuentas").getAttribute("total"));
     var ti=Number(document.getElementById("totalinversiones").getAttribute("total"));
     var t=tc+ti
-    document.getElementById("total").value="Saldo total en el Banco: "+ t + " €";
+    document.getElementById("total").value="Saldo total en la entidad: "+ t + " €";
 }
 ]]>
 </script>
 
 <vbox  flex="6">
-<label id="titulo" flex="0.5" value="Patrimonio de Bancos" />
-<label id="subtitulo" flex="0" value="<%=regBanco['entidadesbancaria'] %>" />
+<label id="titulo" flex="0.5" value="Patrimonio en la Entidad Bancaria" />
+<label id="subtitulo" flex="0" value="<%=regEB['entidadesbancaria'] %>" />
 
 <%=listadocuentas%>
 <%=listadoinversiones%>

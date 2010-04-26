@@ -1,0 +1,42 @@
+<%
+import datetime
+from core import *
+from xul import *
+
+con=Conection()
+checked=""
+if form.has_key('inactivas'):
+    if form['inactivas']=="on":
+        checked = 'checked="true"'
+        listado = EntidadBancaria().xultree(True,datetime.date.today())
+    else:
+        listado = EntidadBancaria().xultree(False,datetime.date.today())
+else:
+    listado = EntidadBancaria().xultree(False,datetime.date.today()) 
+con.close()
+req.content_type="application/vnd.mozilla.xul+xml"
+req.write(xulheaderwindowmenu("Xulpymoney > Entidades Bancarias > Listado"))
+
+%>
+<script>
+<![CDATA[
+function checkbox_submit(){
+   if (document.getElementById("checkbox").checked==true) {
+     location='eb_listado.psp?inactivas=on';
+   } else {
+     location='eb_listado.psp';
+   } 
+}
+
+]]>
+</script>
+
+
+
+<vbox  flex="6">
+<label id="titulo" flex="0.5" value="Listado de entidades bancarias" />\
+<checkbox id="checkbox" label="¿Mostrar las entidades bancarias inactivas?" <%=checked%> oncommand="checkbox_submit()" style="text-align: center;" />
+
+<%=listado%>
+</vbox>
+</window>

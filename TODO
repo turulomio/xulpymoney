@@ -1,6 +1,4 @@
 20100311 Deseo. Para informe referenciado a ibex hay que calcular el total invertido por rango para hacer %
-20100416 Deseo. Cuando se modifica una inversión desde inversion_compraventa.psp que vuelva a la misma página no a inversion_listado.psp
-20100424 Deseo. Refactorizar entidadesbancarias por banco
 20100424 Deseo. Refactorizar lu_ ma_ en codigo y bd
 20100424 Bug. Las cuentaoperaciones vinculadas a operinversiones o dividendos, ni tampoco las vinculadas a opertarjetas no deben ser borradas
 20100424 Deseo. Hacer un estudio por conceptos
@@ -10,4 +8,3 @@
 20100425 Bug. Operación necesaria vencimiento de depósito
 20100425 Deseo. Tablas de mantenimiento
 20100426 Deseo. Modificar operinversiones
-20100426 Deseo. En Insertar operinversiones hacer un js con los calculos para comprobar va todo bien
