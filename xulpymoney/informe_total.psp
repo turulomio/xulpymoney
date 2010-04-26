@@ -8,7 +8,7 @@ con=Conection()
 hoy=datetime.date.today()
 
 req.content_type="application/vnd.mozilla.xul+xml"
-req.write(xulheaderwindowmenu("Posición total"))
+req.write(xulheaderwindowmenu("Xulpymoney > Informes > Informe total"))
 
 if form.has_key('cmbanos')==False:
     cmbanos=datetime.date.today().year

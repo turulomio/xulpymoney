@@ -19,7 +19,7 @@ else:
 con.close()
 
 req.content_type="application/vnd.mozilla.xul+xml"
-req.write(xulheaderwindowmenu("Estado de las inversiones"))
+req.write(xulheaderwindowmenu("Xulpymoney > Inversiones > Listado"))
 
 %>
 
