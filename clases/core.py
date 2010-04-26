@@ -577,7 +577,7 @@ class CuentaOperacionHeredadaInversion:
         fecha=row['fecha'];
         importe=row['importe'];
         id_inversiones=row['ma_inversiones'];
-        regInversion=Inversion().registro(id_inversiones);
+        regInversion=con.Execute("select * from inversiones where id_inversiones="+ str(row['ma_inversiones'])).GetRowAssoc(0)
         id_cuentas=regInversion['lu_cuentas']
         comision=row['comision'];
         impuestos=row['impuestos'];
@@ -810,12 +810,6 @@ class Inversion:
         curs=con.Execute(sql); 
         return sql
         
-    def nombre(self, id_inversiones):
-        sql="select inversione from inversiones where id_inversiones="+ str(id_inversiones)
-        curs=con.Execute(sql); 
-        row = curs.GetRowAssoc(0)   
-        return row["inversione"]
-
     def nombre_tpcvariable(self,  tpcvariable):
         if tpcvariable==-100:
             return "ETF Inversos"
@@ -838,11 +832,6 @@ class Inversion:
         curs.Close()
         return resultado
 
-    def registro(self, id_inversiones):
-        sql="select * from inversiones where id_inversiones="+ str(id_inversiones)
-        curs=con.Execute(sql); 
-        row = curs.GetRowAssoc(0)   
-        return row
         
     def xultree_compraventa(self):
         sql="select id_inversiones, inversione, entidadesbancaria,  inversion_actualizacion(id_inversiones,'"+str(datetime.date.today())+"') as actualizacion, compra, venta from inversiones, cuentas, entidadesbancarias where venta<> compra and in_activa=true and cuentas.ma_entidadesbancarias=entidadesbancarias.id_entidadesbancarias and cuentas.id_cuentas=inversiones.lu_cuentas order by inversione;"
@@ -1870,13 +1859,13 @@ class Total:
                 sumoperacionespositivas=sumoperacionespositivas+pendiente; 
             else:
                 sumoperacionesnegativas=sumoperacionesnegativas+pendiente;
-        
-            regTipoOperacion=TipoOperacion().registro(row["lu_tiposoperaciones"])
+            rowinv=con.Execute("select * from inversiones where id_inversiones="+ str(row['ma_inversiones'])).GetRowAssoc(0)
+            regTipoOperacion=con.Execute("select *  from tiposoperaciones where id_tiposoperaciones=" + str(row['lu_tipooperaciones'])).GetRowAssoc(0)
             s=s+ '    <treeitem>\n'
             s=s+ '      <treerow>\n'
             s=s+ '       <treecell label="'+str(row["fecha_venta"])[:-12]+ '" />\n'
             s=s+ '       <treecell label="'+str(dosdecimales(anos))+ '" />\n'
-            s=s+ '       <treecell label="'+Inversion().nombre(row["ma_inversiones"])+ '" />\n'
+            s=s+ '       <treecell label="'+rowinv['inversione']+ '" />\n'
             s=s+ '       <treecell label="'+regTipoOperacion['tipo_operacion']+ '" />\n'
             s=s+        treecell_euros(saldoinicio);
             s=s+        treecell_euros(saldofinal);

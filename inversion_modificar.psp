@@ -11,7 +11,7 @@ id_inversiones=0
 if form.has_key('id_inversiones'):
     id_inversiones=form['id_inversiones']
 
-reg=Inversion().registro(id_inversiones)
+reg=con.Execute("select * from inversiones where id_inversiones="+ str(id_inversiones)).GetRowAssoc(0)
 cmbcuentas=Cuenta().cmb('lu_cuentas','select * from cuentas where cu_activa=true order by cuenta',  reg["lu_cuentas"],  False)
 cmbtpcvariable=Inversion().cmb_tpcvariable('tpcvariable', reg['tpcvariable'], False)
 con.close()

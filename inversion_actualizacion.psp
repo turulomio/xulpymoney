@@ -10,7 +10,7 @@ checked=""
 id_inversiones=0
 if form.has_key('id_inversiones'):
     id_inversiones=form['id_inversiones']
-reg=Inversion().registro(id_inversiones)
+reg=con.Execute("select * from inversiones where id_inversiones="+ str(id_inversiones)).GetRowAssoc(0)
 con.close()
 
 req.content_type="application/vnd.mozilla.xul+xml"

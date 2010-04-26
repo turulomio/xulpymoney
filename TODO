@@ -3,7 +3,6 @@
 20100312 Quitar lo de inversiones cotizan mercado cuando prescinda de PHP
 20100416 Deseo. Cuando se modifica una inversión desde inversion_compraventa.psp que vuelva a la misma página no a inversion_listado.psp
 20100424 Deseo. Simplificar el sistema de xultree, sql y javascript en una misma función
-20100424 Deseo. Quitar funciones del tipo registro o nombre o id
 20100424 Deseo. Desarrollar patrimonio en el banco
 20100424 Deseo. Refactorizar entidadesbancarias por banco
 20100424 Deseo. Refactorizar lu_ ma_ en codigo y bd
