@@ -31,9 +31,9 @@ def xulfoot():
 def menu():
     s=       '<toolbox>\n'
     s=s +  '   <menubar>\n'
-    s=s +  '      <menu label="Bancos">\n'
+    s=s +  '      <menu label="Entidades Bancarias">\n'
     s=s +  '         <menupopup>\n'
-    s=s +  '            <menuitem label="Listado"  class="menuitem-iconic"  image="images/toggle_log.png" onclick="location=\'banco_listado.psp\';" />\n'
+    s=s +  '            <menuitem label="Listado"  class="menuitem-iconic"  image="images/toggle_log.png" onclick="location=\'eb_listado.psp\';" />\n'
     s=s +  '         </menupopup>\n'
     s=s +  '      </menu>\n'
     s=s +  '      <menu label="Cuentas">\n'

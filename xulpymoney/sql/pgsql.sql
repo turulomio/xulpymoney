@@ -21,32 +21,6 @@ ALTER PROCEDURAL LANGUAGE plpgsql OWNER TO postgres;
 SET search_path = public, pg_catalog;
 
 --
--- Name: banco_saldo(integer, date); Type: FUNCTION; Schema: public; Owner: postgres
---
-
-CREATE FUNCTION banco_saldo(id_bancos integer, fechaparametro date) RETURNS double precision
-    LANGUAGE plpgsql
-    AS $$
-DECLARE
-    recCuentas RECORD;
-    recInversiones RECORD;
-    resultado FLOAT;
-BEGIN
-    resultado := 0;
-    FOR recCuentas IN SELECT id_cuentas FROM cuentas where ma_entidadesbancarias=id_bancos LOOP
-        resultado := resultado + cuentas_saldo(recCuentas.id_cuentas, fechaparametro);        
-        FOR recInversiones IN SELECT * FROM inversiones, cuentas where inversiones.lu_cuentas=cuentas.id_cuentas and cuentas.id_cuentas=recCuentas.id_cuentas LOOP
-    resultado := resultado + inversiones_saldo(recInversiones.id_inversiones, fechaparametro);
-        END LOOP;    
-    END LOOP;
-    RETURN resultado;
-END;
-$$;
-
-
-ALTER FUNCTION public.banco_saldo(id_bancos integer, fechaparametro date) OWNER TO postgres;
-
---
 -- Name: cuentas_saldo(integer, date); Type: FUNCTION; Schema: public; Owner: postgres
 --
 
@@ -67,6 +41,32 @@ $$;
 
 
 ALTER FUNCTION public.cuentas_saldo(id_cuentas integer, fechaparametro date) OWNER TO postgres;
+
+--
+-- Name: eb_saldo(integer, date); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION eb_saldo(id_bancos integer, fechaparametro date) RETURNS double precision
+    LANGUAGE plpgsql
+    AS $$
+DECLARE
+    recCuentas RECORD;
+    recInversiones RECORD;
+    resultado FLOAT;
+BEGIN
+    resultado := 0;
+    FOR recCuentas IN SELECT id_cuentas FROM cuentas where ma_entidadesbancarias=id_bancos LOOP
+        resultado := resultado + cuentas_saldo(recCuentas.id_cuentas, fechaparametro);        
+        FOR recInversiones IN SELECT * FROM inversiones, cuentas where inversiones.lu_cuentas=cuentas.id_cuentas and cuentas.id_cuentas=recCuentas.id_cuentas LOOP
+    resultado := resultado + inversiones_saldo(recInversiones.id_inversiones, fechaparametro);
+        END LOOP;    
+    END LOOP;
+    RETURN resultado;
+END;
+$$;
+
+
+ALTER FUNCTION public.eb_saldo(id_bancos integer, fechaparametro date) OWNER TO postgres;
 
 --
 -- Name: inversion_actualizacion(integer, integer, integer); Type: FUNCTION; Schema: public; Owner: postgres

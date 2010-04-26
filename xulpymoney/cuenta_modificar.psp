@@ -9,7 +9,7 @@ req.write(xulheaderwindowmenu("Xulpymoney > Cuenta > Modificar"))
 cd=ConectionDirect()
 con=Conection()
 row=cd.con.Execute("select * from cuentas where id_cuentas="+ form["id_cuentas"]).GetRowAssoc(0)
-cmbbancos=Banco().cmb('ma_entidadesbancarias','select * from entidadesbancarias where eb_activa=true order by entidadesbancaria',  row['ma_entidadesbancarias'],  False)
+cmbentidadesbancarias=EntidadBancaria().cmb('ma_entidadesbancarias','select * from entidadesbancarias where eb_activa=true order by entidadesbancaria',  row['ma_entidadesbancarias'],  False)
 cd.close()
 con.close()
 %>
@@ -60,7 +60,7 @@ function check_data(){
     <grid align="center">
         <rows>
         <row><label value="Nombre de la cuenta"/><hbox><textbox id="cuenta" value="<%=row["cuenta"]%>"/></hbox></row>
-        <row><label value="Banco al que pertenece"/><hbox><%=cmbbancos%></hbox></row>
+        <row><label value="Entidad Bancaria al que pertenece"/><hbox><%=cmbentidadesbancarias%></hbox></row>
         <row><label value="Número de cuenta" /><hbox><textbox id="numero_cuenta" value="<%=row["numero_cuenta"]%>"/></hbox></row>        
         <row><label value=""/><hbox><button id="cmd" label="Aceptar" onclick="cuenta_modificar();"/></hbox></row>
         </rows>
