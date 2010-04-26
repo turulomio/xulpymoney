@@ -786,7 +786,7 @@ class Inversion:
         return s
             
     def insertar(self,  inversione,  compra,  venta,  tpcvariable,  lu_cuentas):
-        sql="insert into inversiones (inversione, compra, venta, tpcvariable, lu_cuentas, in_activa, cotizamercado) values ('"+inversione+"', "+str(compra)+", "+str(venta)+", "+str(tpcvariable)+", "+str(lu_cuentas)+", true, true);"
+        sql="insert into inversiones (inversione, compra, venta, tpcvariable, lu_cuentas, in_activa) values ('"+inversione+"', "+str(compra)+", "+str(venta)+", "+str(tpcvariable)+", "+str(lu_cuentas)+", true);"
         curs=con.Execute(sql); 
         return sql            
         
@@ -878,6 +878,8 @@ class Inversion:
         
 
     def xul_listado(self, sql):
+        """Muestra un listado encapusulado de un listado deinversiones.
+        En la etiqueta sumatoria del final y huna propiedad que es total y tiene el total numérico."""
         curs=con.Execute(sql); 
         sumsaldos=0;
         sumpendiente=0       
@@ -1822,27 +1824,6 @@ class Total:
         curs=con.Execute(sql); 
         row = curs.GetRowAssoc(0)   
         return row['saldo'];
-
-    def saldo_todas_inversiones_cotizan_mercado(self,fecha):
-        resultado=0;
-        sql="SELECT ID_INVERSIONES FROM INVERSIONES where cotizamercado='t'";
-        curs=con.Execute(sql); 
-        while not curs.EOF:
-            row = curs.GetRowAssoc(0)   
-            resultado=resultado + Inversion().saldo(con,row["id_inversiones"],fecha);
-            curs.MoveNext()     
-        curs.Close()
-
-    def saldo_todas_inversiones_no_cotizan_mercado(self,fecha):
-        resultado=0;
-        sql="SELECT ID_INVERSIONES FROM INVERSIONES where cotizamercado='f'";
-        curs=con.Execute(sql); 
-        while not curs.EOF:
-            row = curs.GetRowAssoc(0)   
-            resultado=resultado + Inversion().saldo(con,row["id_inversiones"],fecha);
-            curs.MoveNext()     
-        curs.Close()
-
 
     def saldo_por_tipo_operacion(self, ano,  mes,  tipooperacion):
         sql="select sum(Importe) as importe from opercuentas where lu_tiposoperaciones="+str(tipooperacion)+" and date_part('year',fecha) = "+str(ano)+" and date_part('month',fecha)= " + str(mes);
