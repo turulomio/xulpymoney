@@ -10,12 +10,11 @@ checked=""
 if form.has_key('inactivas'):
     if form['inactivas']=="on":
         checked = 'checked="true"'
-        listado=Cuenta().xul_listado(True,datetime.date.today())
+        listado=Cuenta().xul_listado("select id_cuentas, cu_activa, cuenta, entidadesbancarias.entidadesbancaria, numero_cuenta, cuentas_saldo(id_cuentas,'"+str(datetime.date.today())+"') as saldo from cuentas, entidadesbancarias where cuentas.ma_entidadesbancarias=entidadesbancarias.id_entidadesbancarias order by cuenta")
     else:
-        listado=Cuenta().xul_listado(False,datetime.date.today())
+        listado=Cuenta().xul_listado("select id_cuentas, cu_activa, cuenta, entidadesbancarias.entidadesbancaria, numero_cuenta, cuentas_saldo(id_cuentas,'"+str(datetime.date.today())+"') as saldo from cuentas, entidadesbancarias where cuentas.ma_entidadesbancarias=entidadesbancarias.id_entidadesbancarias and cu_activa='t' order by cuenta")
 else:
-    listado=Cuenta().xul_listado(False,datetime.date.today())
-    
+    listado=Cuenta().xul_listado("select id_cuentas, cu_activa, cuenta, entidadesbancarias.entidadesbancaria, numero_cuenta, cuentas_saldo(id_cuentas,'"+str(datetime.date.today())+"') as saldo from cuentas, entidadesbancarias where cuentas.ma_entidadesbancarias=entidadesbancarias.id_entidadesbancarias and cu_activa='t' order by cuenta")
 con.close()
 
 req.content_type="application/vnd.mozilla.xul+xml"
