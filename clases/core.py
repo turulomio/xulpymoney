@@ -104,7 +104,7 @@ class EntidadBancaria:
         s= s+ '         popactiva.setAttribute("checked", "false");\n'
         s= s+ '         popactiva.setAttribute("oncommand", "eb_modificar_activa();");\n'
         s= s+ '     }else{\n'
-        s= s+ '         popactiva.setAttribute("label", "Activar el eb");\n'
+        s= s+ '         popactiva.setAttribute("label", "Activar la Entidad Bancaria");\n'
         s= s+ '         popactiva.setAttribute("checked", "true");\n'
         s= s+ '         popactiva.setAttribute("oncommand", "eb_modificar_activa();");\n'
         s= s+ '     }\n'
@@ -829,7 +829,7 @@ class Inversion:
         s= '<vbox flex="1">\n'
         s= s+ '<popupset>\n'
         s= s+ '<popup id="treepopup" >\n'   
-        s= s+ '    <menuitem label="Actualizar el valor" oncommand="location=\'inversion_actualizacion.psp?id_inversiones=\' + id_inversiones;"  class="menuitem-iconic"  image="images/hotsync.png" />\n'
+        s= s+ '    <menuitem label="Actualizar el valor" oncommand="location=\'inversion_actualizar.psp?id_inversiones=\' + id_inversiones;"  class="menuitem-iconic"  image="images/hotsync.png" />\n'
         s= s+ '    <menuitem label="Modificar la inversión"  oncommand="location=\'inversion_modificar.psp?id_inversiones=\' + id_inversiones;"   class="menuitem-iconic"  image="images/edit.png" />\n'
         s= s+ '<menuitem label="Estudio de la inversión"  oncommand="location=\'inversion_informacion.psp?id_inversiones=\' + id_inversiones;"  class="menuitem-iconic"  image="images/toggle_log.png" />\n'
         s= s+ '</popup>\n'
@@ -888,7 +888,7 @@ class Inversion:
         s= s+ '     var tree = document.getElementById("treeInversiones");\n'
         #el boolean de un "0" es true y bolean de un 0 es false
         s= s+ '     var activa=Boolean(Number(tree.view.getCellText(tree.currentIndex,tree.columns.getNamedColumn( "activa"))));\n'
-        s= s+ '     id_cuentas=tree.view.getCellText(tree.currentIndex,tree.columns.getNamedColumn("id"));\n'
+        s= s+ '     var id_inversiones=tree.view.getCellText(tree.currentIndex,tree.columns.getNamedColumn("id"));\n'
         s= s+ '     var popup = document.getElementById("popupInversiones");\n'
         s= s+ '     if (document.getElementById("popmodificar")){\n'#Con que exista este vale
         s= s+ '         popup.removeChild(document.getElementById("popmodificar"));\n'
@@ -943,6 +943,12 @@ class Inversion:
         s= s+ '    xmlHttp.send(null);\n'
         s= s+ '}\n\n'
 
+        s= s+ 'function inversion_actualizar(){\n'
+        s= s+ '     var tree = document.getElementById("treeInversiones");\n'
+        s= s+ '     var id_inversiones=tree.view.getCellText(tree.currentIndex,tree.columns.getNamedColumn("id"));\n'
+        s= s+ '     location=\'inversion_actualizar.psp?id_inversiones=\'+ id_inversiones;\n'
+        s= s+ '}\n\n'
+        
         s= s+ 'function inversion_modificar(){\n'
         s= s+ '     var tree = document.getElementById("treeInversiones");\n'
         s= s+ '     var id_inversiones=tree.view.getCellText(tree.currentIndex,tree.columns.getNamedColumn("id"));\n'
@@ -976,7 +982,7 @@ class Inversion:
         s= s+ '<vbox flex="1">\n'
         s= s+ '<popupset>\n'
         s= s+ '    <popup id="popupInversiones" >\n'
-        s= s+ '        <menuitem label="Actualizar el valor" oncommand="location=\'inversion_actualizacion.psp?id_inversiones=\' + id_inversiones;"  class="menuitem-iconic"  image="images/hotsync.png" />               \n'
+        s= s+ '        <menuitem label="Actualizar el valor" oncommand="inversion_actualizar();"  class="menuitem-iconic"  image="images/hotsync.png" />               \n'
         s= s+ '        <menuitem label="Actualizar en Internet" oncommand="actualizar_internet();"  class="menuitem-iconic"  image="images/hotsync.png" />           \n'
         s= s+ '        <menuseparator/>\n'
         s= s+ '        <menuitem label="Nueva inversión" oncommand="location=\'inversion_insertar.psp\'" class="menuitem-iconic"  image="images/item_add.png"/>\n'
@@ -1572,9 +1578,9 @@ class Tarjeta:
 
     def xul_listado(self, inactivas,  fecha):
         if inactivas==True:
-            sql="select id_tarjetas, id_cuentas, tj_activa, tarjeta, cuenta, numero, pago_diferido, saldomaximo from tarjetas,cuentas where tarjetas.id_cuentas=cuentas.id_cuentas order by tarjetas.tarjeta"
+            sql="select id_tarjetas, cuentas.id_cuentas, tj_activa, tarjeta, cuenta, numero, pago_diferido, saldomaximo from tarjetas,cuentas where tarjetas.id_cuentas=cuentas.id_cuentas order by tarjetas.tarjeta"
         else:
-            sql="select id_tarjetas, id_cuentas, tj_activa, tarjeta, cuenta, numero, pago_diferido, saldomaximo from tarjetas,cuentas where tarjetas.id_cuentas=cuentas.id_cuentas and tarjetas.tj_activa=true order by tarjetas.tarjeta"
+            sql="select id_tarjetas, cuentas.id_cuentas, tj_activa, tarjeta, cuenta, numero, pago_diferido, saldomaximo from tarjetas,cuentas where tarjetas.id_cuentas=cuentas.id_cuentas and tarjetas.tj_activa=true order by tarjetas.tarjeta"
         mylog(sql)
         curs=con.Execute(sql); 
         

@@ -24,7 +24,7 @@ SET search_path = public, pg_catalog;
 -- Name: cuentas_saldo(integer, date); Type: FUNCTION; Schema: public; Owner: postgres
 --
 
-CREATE FUNCTION cuentas_saldo(id_cuentas integer, fechaparametro date) RETURNS double precision
+CREATE FUNCTION cuentas_saldo(p_id_cuentas integer, p_fechaparametro date) RETURNS double precision
     LANGUAGE plpgsql
     AS $$
 DECLARE
@@ -32,21 +32,21 @@ DECLARE
     resultado FLOAT;
 BEGIN
     resultado := 0;
-    FOR recCuentas IN SELECT * FROM opercuentas where ma_cuentas=id_cuentas and fecha <= fechaparametro LOOP
-	resultado := resultado + recCuentas.importe;
+    FOR recCuentas IN SELECT * FROM opercuentas where id_cuentas=p_id_cuentas and fecha <= p_fechaparametro LOOP
+resultado := resultado + recCuentas.importe;
     END LOOP;
     RETURN resultado;
 END;
 $$;
 
 
-ALTER FUNCTION public.cuentas_saldo(id_cuentas integer, fechaparametro date) OWNER TO postgres;
+ALTER FUNCTION public.cuentas_saldo(p_id_cuentas integer, p_fechaparametro date) OWNER TO postgres;
 
 --
 -- Name: eb_saldo(integer, date); Type: FUNCTION; Schema: public; Owner: postgres
 --
 
-CREATE FUNCTION eb_saldo(id_bancos integer, fechaparametro date) RETURNS double precision
+CREATE FUNCTION eb_saldo(p_id_bancos integer, fechaparametro date) RETURNS double precision
     LANGUAGE plpgsql
     AS $$
 DECLARE
@@ -55,9 +55,9 @@ DECLARE
     resultado FLOAT;
 BEGIN
     resultado := 0;
-    FOR recCuentas IN SELECT id_cuentas FROM cuentas where ma_entidadesbancarias=id_bancos LOOP
+    FOR recCuentas IN SELECT id_cuentas FROM cuentas where id_entidadesbancarias=p_id_bancos LOOP
         resultado := resultado + cuentas_saldo(recCuentas.id_cuentas, fechaparametro);        
-        FOR recInversiones IN SELECT * FROM inversiones, cuentas where inversiones.lu_cuentas=cuentas.id_cuentas and cuentas.id_cuentas=recCuentas.id_cuentas LOOP
+        FOR recInversiones IN SELECT * FROM inversiones, cuentas where inversiones.id_cuentas=cuentas.id_cuentas and cuentas.id_cuentas=recCuentas.id_cuentas LOOP
     resultado := resultado + inversiones_saldo(recInversiones.id_inversiones, fechaparametro);
         END LOOP;    
     END LOOP;
@@ -66,7 +66,7 @@ END;
 $$;
 
 
-ALTER FUNCTION public.eb_saldo(id_bancos integer, fechaparametro date) OWNER TO postgres;
+ALTER FUNCTION public.eb_saldo(p_id_bancos integer, fechaparametro date) OWNER TO postgres;
 
 --
 -- Name: inversion_actualizacion(integer, integer, integer); Type: FUNCTION; Schema: public; Owner: postgres
@@ -74,7 +74,7 @@ ALTER FUNCTION public.eb_saldo(id_bancos integer, fechaparametro date) OWNER TO 
 
 CREATE FUNCTION inversion_actualizacion(integer, integer, integer) RETURNS double precision
     LANGUAGE sql
-    AS $_$select actualizacion from actuinversiones where ma_inversiones=$1 and date_part('year',fecha)=$2  and date_part('month',fecha)=$3 order by fecha desc limit 1$_$;
+    AS $_$select actualizacion from actuinversiones where id_inversiones=$1 and date_part('year',fecha)=$2  and date_part('month',fecha)=$3 order by fecha desc limit 1$_$;
 
 
 ALTER FUNCTION public.inversion_actualizacion(integer, integer, integer) OWNER TO postgres;
@@ -83,7 +83,7 @@ ALTER FUNCTION public.inversion_actualizacion(integer, integer, integer) OWNER T
 -- Name: inversion_actualizacion(integer, date); Type: FUNCTION; Schema: public; Owner: postgres
 --
 
-CREATE FUNCTION inversion_actualizacion(id_inversiones integer, fechaparametro date) RETURNS double precision
+CREATE FUNCTION inversion_actualizacion(p_id_inversiones integer, fechaparametro date) RETURNS double precision
     LANGUAGE plpgsql
     AS $$
 DECLARE
@@ -91,7 +91,7 @@ DECLARE
     resultado FLOAT;
 BEGIN
     resultado := 0;
-    FOR rec IN SELECT actualizacion from actuinversiones where ma_inversiones=id_inversiones and fecha  <= fechaparametro order by fecha desc limit 1 LOOP
+    FOR rec IN SELECT actualizacion from actuinversiones where id_inversiones=p_id_inversiones and fecha  <= fechaparametro order by fecha desc limit 1 LOOP
 	resultado:= rec.actualizacion;
     END LOOP;
     RETURN resultado;
@@ -99,7 +99,7 @@ END;
 $$;
 
 
-ALTER FUNCTION public.inversion_actualizacion(id_inversiones integer, fechaparametro date) OWNER TO postgres;
+ALTER FUNCTION public.inversion_actualizacion(p_id_inversiones integer, fechaparametro date) OWNER TO postgres;
 
 --
 -- Name: inversion_invertido(integer, date); Type: FUNCTION; Schema: public; Owner: postgres
@@ -112,7 +112,7 @@ rec RECORD;
 invertido FLOAT;
 BEGIN
     invertido := 0;
-    FOR rec IN SELECT fecha, acciones, valor_accion from tmpoperinversiones where ma_Inversiones=p_id_inversiones and Fecha <= p_fecha LOOP
+    FOR rec IN SELECT fecha, acciones, valor_accion from tmpoperinversiones where id_inversiones=p_id_inversiones and Fecha <= p_fecha LOOP
 	invertido := invertido + (rec.acciones * rec.valor_accion);
     END LOOP;
     RETURN invertido;
@@ -125,7 +125,7 @@ ALTER FUNCTION public.inversion_invertido(p_id_inversiones integer, p_fecha date
 -- Name: inversion_pendiente(integer, date); Type: FUNCTION; Schema: public; Owner: postgres
 --
 
-CREATE FUNCTION inversion_pendiente(id_inversiones integer, fechaparametro date) RETURNS double precision
+CREATE FUNCTION inversion_pendiente(p_id_inversiones integer, fechaparametro date) RETURNS double precision
     LANGUAGE plpgsql
     AS $$DECLARE
     rec RECORD;
@@ -134,15 +134,15 @@ CREATE FUNCTION inversion_pendiente(id_inversiones integer, fechaparametro date)
 BEGIN
     final := 0;
     inicio := 0;
-    FOR rec IN SELECT fecha, acciones, valor_accion from tmpoperinversiones where ma_Inversiones=id_inversiones and Fecha <= fechaparametro LOOP
+    FOR rec IN SELECT fecha, acciones, valor_accion from tmpoperinversiones where id_inversiones=p_id_inversiones and Fecha <= fechaparametro LOOP
 	inicio := inicio + (rec.acciones * rec.valor_accion);
-	final := final + (rec.acciones * inversion_actualizacion(id_inversiones, fechaparametro));
+	final := final + (rec.acciones * inversion_actualizacion(p_id_inversiones, fechaparametro));
     END LOOP;
     RETURN final - inicio;
 END;$$;
 
 
-ALTER FUNCTION public.inversion_pendiente(id_inversiones integer, fechaparametro date) OWNER TO postgres;
+ALTER FUNCTION public.inversion_pendiente(p_id_inversiones integer, fechaparametro date) OWNER TO postgres;
 
 --
 -- Name: inversion_saldo_medio(date, boolean, boolean); Type: FUNCTION; Schema: public; Owner: postgres
@@ -198,7 +198,7 @@ ALTER FUNCTION public.inversion_saldo_segun_tpcvariable() OWNER TO postgres;
 -- Name: inversiones_acciones(integer, date); Type: FUNCTION; Schema: public; Owner: postgres
 --
 
-CREATE FUNCTION inversiones_acciones(id_inversiones integer, fechaparametro date) RETURNS double precision
+CREATE FUNCTION inversiones_acciones(p_id_inversiones integer, fechaparametro date) RETURNS double precision
     LANGUAGE plpgsql
     AS $$
 DECLARE
@@ -206,7 +206,7 @@ DECLARE
     resultado FLOAT;
 BEGIN
     resultado := 0;
-    FOR recOperInversiones IN SELECT acciones FROM operinversiones where ma_inversiones=id_inversiones and fecha <= fechaparametro LOOP
+    FOR recOperInversiones IN SELECT acciones FROM operinversiones where id_inversiones=p_id_inversiones and fecha <= fechaparametro LOOP
 	resultado := resultado + recOperInversiones.acciones;
     END LOOP;
     RETURN resultado;
@@ -214,7 +214,7 @@ END;
 $$;
 
 
-ALTER FUNCTION public.inversiones_acciones(id_inversiones integer, fechaparametro date) OWNER TO postgres;
+ALTER FUNCTION public.inversiones_acciones(p_id_inversiones integer, fechaparametro date) OWNER TO postgres;
 
 --
 -- Name: inversiones_saldo(integer, date); Type: FUNCTION; Schema: public; Owner: postgres
@@ -291,7 +291,7 @@ BEGIN
     resultado := 0;
     FOR recCuentas IN SELECT id_cuentas FROM cuentas LOOP
         resultado := resultado + cuentas_saldo(recCuentas.id_cuentas, fechaparametro);        
-        FOR recInversiones IN SELECT * FROM inversiones, cuentas where inversiones.lu_cuentas=cuentas.id_cuentas and cuentas.id_cuentas=recCuentas.id_cuentas LOOP
+        FOR recInversiones IN SELECT * FROM inversiones, cuentas where inversiones.id_cuentas=cuentas.id_cuentas and cuentas.id_cuentas=recCuentas.id_cuentas LOOP
     resultado := resultado + inversiones_saldo(recInversiones.id_inversiones, fechaparametro);
         END LOOP;    
     END LOOP;
@@ -599,7 +599,7 @@ CREATE TABLE opertarjetas (
     id_tiposoperaciones integer NOT NULL,
     importe double precision NOT NULL,
     comentario text,
-    ma_tarjetas integer NOT NULL,
+    id_tarjetas integer NOT NULL,
     pagado boolean NOT NULL,
     fechapago date,
     id_opercuentas bigint
@@ -1011,7 +1011,7 @@ ALTER TABLE public.todo_opercuentas OWNER TO postgres;
 --
 
 CREATE VIEW todo_opertarjetas AS
-    SELECT opertarjetas.id_opertarjetas, opertarjetas.fecha, opertarjetas.id_conceptos AS lu_conceptos, opertarjetas.id_tiposoperaciones AS lu_tiposoperaciones, opertarjetas.importe, opertarjetas.comentario, opertarjetas.ma_tarjetas, opertarjetas.pagado, opertarjetas.fechapago, opertarjetas.id_opercuentas AS lu_opercuentas, conceptos.id_conceptos, conceptos.concepto, conceptos.id_tipooperaciones AS lu_tipooperacion, tiposoperaciones.id_tiposoperaciones, tiposoperaciones.tipooperacion AS tipo_operacion, tiposoperaciones.modificable, tiposoperaciones.operinversion, tiposoperaciones.opercuentas, tarjetas.id_tarjetas, tarjetas.tarjeta, tarjetas.id_cuentas AS lu_cuentas, tarjetas.pago_diferido, tarjetas.saldomaximo, tarjetas.tj_activa FROM opertarjetas, conceptos, tiposoperaciones, tarjetas WHERE (((conceptos.id_conceptos = opertarjetas.id_conceptos) AND (tiposoperaciones.id_tiposoperaciones = opertarjetas.id_tiposoperaciones)) AND (tarjetas.id_tarjetas = opertarjetas.ma_tarjetas));
+    SELECT opertarjetas.id_opertarjetas, opertarjetas.fecha, opertarjetas.id_conceptos AS lu_conceptos, opertarjetas.id_tiposoperaciones AS lu_tiposoperaciones, opertarjetas.importe, opertarjetas.comentario, opertarjetas.id_tarjetas AS ma_tarjetas, opertarjetas.pagado, opertarjetas.fechapago, opertarjetas.id_opercuentas AS lu_opercuentas, conceptos.id_conceptos, conceptos.concepto, conceptos.id_tipooperaciones AS lu_tipooperacion, tiposoperaciones.id_tiposoperaciones, tiposoperaciones.tipooperacion AS tipo_operacion, tiposoperaciones.modificable, tiposoperaciones.operinversion, tiposoperaciones.opercuentas, tarjetas.id_tarjetas, tarjetas.tarjeta, tarjetas.id_cuentas AS lu_cuentas, tarjetas.pago_diferido, tarjetas.saldomaximo, tarjetas.tj_activa FROM opertarjetas, conceptos, tiposoperaciones, tarjetas WHERE (((conceptos.id_conceptos = opertarjetas.id_conceptos) AND (tiposoperaciones.id_tiposoperaciones = opertarjetas.id_tiposoperaciones)) AND (tarjetas.id_tarjetas = opertarjetas.id_tarjetas));
 
 
 ALTER TABLE public.todo_opertarjetas OWNER TO postgres;
