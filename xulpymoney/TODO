@@ -1,5 +1,3 @@
-20090605 Deseo. Meter en https://localhost/xulpymoney/cuentas_ibm.psp como parametro el año y el mes desde el que se ha invocado un ibm.
-20100123 Deseo. Para acceder a los movimientos de una cuenta o de una tarjeta permitir que se haga con doble click
 20100311 Deseo. Para informe referenciado a ibex hay que calcular el total invertido por rango para hacer %
 20100311 Deseo. Meter en el ebuild el condicional?postgrsql o ? mysql
 20100312 Quitar lo de inversiones cotizan mercado cuando prescinda de PHP
@@ -19,4 +17,3 @@
 20100425 Deseo. Tablas de mantenimiento
 20100426 Deseo. Modificar operinversiones
 20100426 Deseo. En Insertar operinversiones hacer un js con los calculos para comprobar va todo bien
-20100426 Deseo. Programar modificación opercuentas

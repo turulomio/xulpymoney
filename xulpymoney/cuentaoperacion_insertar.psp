@@ -87,7 +87,7 @@ function check_data(){
     <rows>
         <row>
             <label id="negrita" value="Fecha"/>
-            <datepicker id="fecha" type="grid"  firstdayofweek="1"/>
+            <datepicker id="fecha" type="grid"  firstdayofweek="1" value="<%=str(form['year'])+'-'+form['month']+'-'+'01'%>"/>
         </row>
         <row>
             <label id="negrita" value="Concepto"/>

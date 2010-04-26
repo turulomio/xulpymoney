@@ -8,8 +8,10 @@ con=Conection()
 
 if form.has_key('year'):
    year=form['year']
+   day=1
 else:
    year=datetime.date.today().year
+   day=datetime.date.today().day
 
 if form.has_key('month'):
    month=form['month']
@@ -75,7 +77,7 @@ function cmbcuentas_submit(){
 <vbox align="center">
    <label id="titulo"  value="Listado de operaciones bancarias" />
    <%=cmbcuentas%>
-   <datepicker id="fecha" type="grid"  firstdayofweek="1" align="center" onchange="update_list();"/>
+   <datepicker id="fecha" type="grid"  firstdayofweek="1" align="center" onchange="update_list();" value="<%=str(year)+'-'+str(month)+'-'+str(day)%>"/>
 </vbox>
    <%=listado%>
 
