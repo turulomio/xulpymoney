@@ -11,7 +11,7 @@ id_inversiones=0
 if form.has_key('id_inversiones'):
     id_inversiones=form['id_inversiones']
 
-cmbcuentas=Cuenta().cmb('lu_cuentas','select * from cuentas where cu_activa=true order by cuenta',  0,  False)
+cmbcuentas=Cuenta().cmb('id_cuentas','select * from cuentas where cu_activa=true order by cuenta',  0,  False)
 cmbtpcvariable=Inversion().cmb_tpcvariable('tpcvariable', 0, False)
 con.close()
 
@@ -31,12 +31,12 @@ function insert(){
             location="inversion_listado.psp";
         }
     }
-    var inversione = document.getElementById("inversione").value;
+    var inversion = document.getElementById("inversion").value;
     var compra = document.getElementById("compra").value;
     var venta = document.getElementById("venta").value;
-    var lu_cuentas = document.getElementById("lu_cuentas").value;
+    var id_cuentas = document.getElementById("id_cuentas").value;
     var tpcvariable = document.getElementById("tpcvariable").value;
-    var url="ajax/inversion_insertar.psp?inversione="+inversione+"&compra="+compra+"&venta="+venta+"&lu_cuentas="+lu_cuentas+"&tpcvariable="+tpcvariable;
+    var url="ajax/inversion_insertar.psp?inversion="+inversion+"&compra="+compra+"&venta="+venta+"&id_cuentas="+id_cuentas+"&tpcvariable="+tpcvariable;
     xmlHttp.open("GET",url,true);
     xmlHttp.send(null);
 }
@@ -51,7 +51,7 @@ function insert(){
     <grid align="center">
         <rows>
         <row><label value="Cuenta asociada"/><hbox><%=cmbcuentas%></hbox></row>
-        <row><label value="Nombre de la inversión"/><hbox><textbox id="inversione" value=""/></hbox></row>
+        <row><label value="Nombre de la inversión"/><hbox><textbox id="inversion" value=""/></hbox></row>
         <row><label value="Valor para realizar una nueva compra" /><hbox><textbox id="compra" value="0"/></hbox></row>        
         <row><label value="Valor para vender la inversión" /><hbox><textbox id="venta" value="0"/></hbox></row>
         <row><label value="Tipo de inversión" /><hbox><%=cmbtpcvariable%></hbox></row>

@@ -9,7 +9,7 @@ req.write(xulheaderwindowmenu("Xulpymoney > Cuenta > Modificar"))
 cd=ConectionDirect()
 con=Conection()
 row=cd.con.Execute("select * from cuentas where id_cuentas="+ form["id_cuentas"]).GetRowAssoc(0)
-cmbentidadesbancarias=EntidadBancaria().cmb('ma_entidadesbancarias','select * from entidadesbancarias where eb_activa=true order by entidadesbancaria',  row['ma_entidadesbancarias'],  False)
+cmbentidadesbancarias=EntidadBancaria().cmb('id_entidadesbancarias','select * from entidadesbancarias where eb_activa=true order by entidadbancaria',  row['id_entidadesbancarias'],  False)
 cd.close()
 con.close()
 %>
@@ -30,9 +30,9 @@ function cuenta_modificar(){
     }
     var id_cuentas = <%=form['id_cuentas']%>;
     var cuenta = document.getElementById("cuenta").value;
-    var ma_entidadesbancarias = document.getElementById("ma_entidadesbancarias").value;
+    var id_entidadesbancarias = document.getElementById("id_entidadesbancarias").value;
     var numero_cuenta = document.getElementById("numero_cuenta").value;
-    var url="ajax/cuenta_modificar.psp?id_cuentas="+id_cuentas+"&cuenta="+cuenta+"&ma_entidadesbancarias="+ma_entidadesbancarias+"&numero_cuenta="+numero_cuenta;
+    var url="ajax/cuenta_modificar.psp?id_cuentas="+id_cuentas+"&cuenta="+cuenta+"&id_entidadesbancarias="+id_entidadesbancarias+"&numero_cuenta="+numero_cuenta;
     xmlHttp.open("GET",url,true);
     xmlHttp.send(null);
 }

@@ -23,8 +23,8 @@ function eb_modificar(){
         }
     }
     var id_entidadesbancarias = <%=form['id_entidadesbancarias']%>;
-    var entidadesbancaria = document.getElementById("entidadesbancaria").value;
-    var url="ajax/eb_modificar.psp?id_entidadesbancarias="+id_entidadesbancarias+"&entidadesbancaria="+entidadesbancaria;
+    var entidadbancaria = document.getElementById("entidadbancaria").value;
+    var url="ajax/eb_modificar.psp?id_entidadesbancarias="+id_entidadesbancarias+"&entidadbancaria="+entidadbancaria;
     xmlHttp.open("GET",url,true);
     xmlHttp.send(null);
 }
@@ -37,7 +37,7 @@ function eb_modificar(){
     <hbox flex="1">
     <grid align="center">
         <rows>
-        <row><label value="Nombre de la entidad"/><hbox><textbox id="entidadesbancaria" value="<%=row["entidadesbancaria"]%>"/></hbox></row>
+        <row><label value="Nombre de la entidad"/><hbox><textbox id="entidadbancaria" value="<%=row["entidadbancaria"]%>"/></hbox></row>
         <row><label value=""/><hbox><button id="cmd" label="Aceptar" onclick="eb_modificar();"/></hbox></row>
         </rows>
     </grid>

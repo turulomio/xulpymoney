@@ -18,24 +18,24 @@ class EntidadBancaria:
         while not curs.EOF:
             row = curs.GetRowAssoc(0)   
             if int(row['id_entidadesbancarias'])==int(selected):
-                s=s +  '       <menuitem label="'+utf82xul(row['entidadesbancaria'])+'" value="'+str(row['id_entidadesbancarias'])+'" selected="true"/>\n'
+                s=s +  '       <menuitem label="'+utf82xul(row['entidadbancaria'])+'" value="'+str(row['id_entidadesbancarias'])+'" selected="true"/>\n'
             else:
-                s=s +  '       <menuitem label="'+utf82xul(row['entidadesbancaria'])+'" value="'+str(row['id_entidadesbancarias'])+'"/>\n'
+                s=s +  '       <menuitem label="'+utf82xul(row['entidadbancaria'])+'" value="'+str(row['id_entidadesbancarias'])+'"/>\n'
             curs.MoveNext()     
         curs.Close()
         s=s +  '     </menupopup>\n'
         s=s + '</menulist>\n'
         return s
-    def insertar(self,  entidadesbancaria,  eb_activa):
-        sql="insert into entidadesbancarias (entidadesbancaria, eb_activa) values ('" + entidadesbancaria + "'," + str(eb_activa)+")"
+    def insertar(self,  entidadbancaria,  eb_activa):
+        sql="insert into entidadesbancarias (entidadbancaria, eb_activa) values ('" + entidadbancaria + "'," + str(eb_activa)+")"
         try:
             con.Execute(sql);
         except:
             return False
         return True
         
-    def modificar(self, id_entidadesbancarias, entidadesbancaria):
-        sql="update entidadesbancarias set entidadesbancaria='"+str(entidadesbancaria)+"' where id_entidadesbancarias="+ str(id_entidadesbancarias)
+    def modificar(self, id_entidadesbancarias, entidadbancaria):
+        sql="update entidadesbancarias set entidadbancaria='"+str(entidadbancaria)+"' where id_entidadesbancarias="+ str(id_entidadesbancarias)
         try:
             con.Execute(sql);
         except:
@@ -61,9 +61,9 @@ class EntidadBancaria:
 
     def xultree(self, inactivas,  fecha):
         if inactivas==True:
-            sql="select * from entidadesbancarias order by entidadesbancaria";
+            sql="select * from entidadesbancarias order by entidadbancaria";
         else:
-            sql="select * from entidadesbancarias where eb_activa='t' order by entidadesbancaria";
+            sql="select * from entidadesbancarias where eb_activa='t' order by entidadbancaria";
         curs=con.Execute(sql)
         s=      '<script>\n<![CDATA[\n'
         s= s+ 'function popupEntidadesBancarias(){\n'
@@ -163,7 +163,7 @@ class EntidadBancaria:
             s= s + '            <treerow>\n'
             s= s + '                <treecell label="'+str(row["id_entidadesbancarias"])+ '" />\n'
             s= s + '                <treecell label="'+str(row["eb_activa"])+ '" />\n'
-            s= s + '                <treecell label="'+str(row["entidadesbancaria"])+ '" style="text-align: right"/>\n'
+            s= s + '                <treecell label="'+str(row["entidadbancaria"])+ '" style="text-align: right"/>\n'
             saldo=EntidadBancaria().saldo(row["id_entidadesbancarias"], datetime.date.today())
             if total==0: # Zero division
                 s= s + '                '+treecell_tpc(0)
@@ -216,9 +216,9 @@ class Concepto:
         while not curs.EOF:
             row = curs.GetRowAssoc(0)   
             if row['id_conceptos']==selected:
-                s=s +  '       <menuitem label="'+utf82xul(row['concepto'])+'" value="'+str(row['id_conceptos'])+";"+str(row['lu_tipooperacion'])+'" selected="true"/>\n'
+                s=s +  '       <menuitem label="'+utf82xul(row['concepto'])+'" value="'+str(row['id_conceptos'])+";"+str(row['id_tipooperacion'])+'" selected="true"/>\n'
             else:
-                s=s +  '       <menuitem label="'+utf82xul(row['concepto'])+'" value="'+str(row['id_conceptos'])+';'+str(row['lu_tipooperacion'])+'"/>\n'
+                s=s +  '       <menuitem label="'+utf82xul(row['concepto'])+'" value="'+str(row['id_conceptos'])+';'+str(row['id_tipooperacion'])+'"/>\n'
             curs.MoveNext()     
         curs.Close()
         s=s +  '     </menupopup>\n'
@@ -247,7 +247,7 @@ class Cuenta:
         return s
         
     def insertar(self,  id_entidadesbancarias,  cuenta,  numero_cuenta, cu_activa):
-        sql="insert into cuentas (ma_entidadesbancarias, cuenta, numero_cuenta, cu_activa) values (" + str(id_entidadesbancarias )+ ", '" + str(cuenta)+"', '"+ str(numero_cuenta) +"', "+str(cu_activa)+")"
+        sql="insert into cuentas (id_entidadesbancarias, cuenta, numero_cuenta, cu_activa) values (" + str(id_entidadesbancarias )+ ", '" + str(cuenta)+"', '"+ str(numero_cuenta) +"', "+str(cu_activa)+")"
         try:
             con.Execute(sql);
         except:
@@ -360,7 +360,7 @@ class Cuenta:
             s= s + '                    <treecell label="'+str(row["id_cuentas"])+ '" />\n'
             s= s + '                    <treecell label="'+str(row["cu_activa"])+ '" />\n'
             s= s + '                    <treecell label="'+ row["cuenta"]+ '" />\n'
-            s= s + '                    <treecell label="'+row["entidadesbancaria"]+ '" />\n'
+            s= s + '                    <treecell label="'+row["entidadbancaria"]+ '" />\n'
             s= s + '                    <treecell label="'+ str(row["numero_cuenta"])+ '" />\n'
             s= s + '                    '+treecell_euros(row['saldo'])
             s= s + '               </treerow>\n'
@@ -381,8 +381,8 @@ class Cuenta:
 #        curs.Close()
 #        return row
         
-    def modificar(self, id_cuentas, cuenta,  ma_entidadesbancarias,  numero_cuenta):
-        sql="update cuentas set cuenta='"+str(cuenta)+"', ma_entidadesbancarias="+str(ma_entidadesbancarias)+", numero_cuenta='"+str(numero_cuenta)+"' where id_cuentas="+ str(id_cuentas)
+    def modificar(self, id_cuentas, cuenta,  id_entidadesbancarias,  numero_cuenta):
+        sql="update cuentas set cuenta='"+str(cuenta)+"', id_entidadesbancarias="+str(id_entidadesbancarias)+", numero_cuenta='"+str(numero_cuenta)+"' where id_cuentas="+ str(id_cuentas)
         try:
             con.Execute(sql);
         except:
@@ -395,7 +395,7 @@ class Cuenta:
         return sql
 
     def saldo(self,id_cuentas,  fecha):
-        curs = con.Execute('select sum(importe) as "suma" from opercuentas where ma_cuentas='+ str(id_cuentas) +" and fecha<='"+str(fecha)+"';") 
+        curs = con.Execute('select sum(importe) as "suma" from opercuentas where id_cuentas='+ str(id_cuentas) +" and fecha<='"+str(fecha)+"';") 
         if curs == None: 
             print self.cfg.con.ErrorMsg()        
         row = curs.GetRowAssoc(0)      
@@ -418,16 +418,16 @@ class CuentaOperacion:
         sql="select * from todo_opercuentas where id_cuentas="+str(id_cuentas)+" and date_part('year',fecha)='"+str(year)+"' and date_part('month',fecha)='"+str(month)+"' order by fecha,id_opercuentas";
         return con.Execute(sql); 
 
-    def insertar(self,  fecha, lu_conceptos, lu_tiposoperaciones,  importe,  comentario,  id_cuentas):
-        sql="insert into opercuentas (fecha, lu_conceptos, lu_tiposoperaciones, importe, comentario, ma_cuentas) values ('" + fecha + "'," + str(lu_conceptos)+","+ str(lu_tiposoperaciones) +","+str(importe)+", '"+comentario+"', "+str(id_cuentas)+")"
+    def insertar(self,  fecha, id_conceptos, id_tiposoperaciones,  importe,  comentario,  id_cuentas):
+        sql="insert into opercuentas (fecha, id_conceptos, id_tiposoperaciones, importe, comentario, id_cuentas) values ('" + fecha + "'," + str(id_conceptos)+","+ str(id_tiposoperaciones) +","+str(importe)+", '"+comentario+"', "+str(id_cuentas)+")"
         try:
             con.Execute(sql);
         except:
             return False
         return True
 
-    def modificar(self, id_opercuentas,  fecha, lu_conceptos, lu_tiposoperaciones,  importe,  comentario,  id_cuentas):
-        sql="update opercuentas set fecha='" + fecha + "', lu_conceptos=" + str(lu_conceptos)+", lu_tiposoperaciones="+ str(lu_tiposoperaciones) +", importe="+str(importe)+", comentario='"+comentario+"', ma_cuentas="+str(id_cuentas)+" where id_opercuentas=" + str(id_opercuentas)
+    def modificar(self, id_opercuentas,  fecha, id_conceptos, id_tiposoperaciones,  importe,  comentario,  id_cuentas):
+        sql="update opercuentas set fecha='" + fecha + "', id_conceptos=" + str(id_conceptos)+", id_tiposoperaciones="+ str(id_tiposoperaciones) +", importe="+str(importe)+", comentario='"+comentario+"', id_cuentas="+str(id_cuentas)+" where id_opercuentas=" + str(id_opercuentas)
         mylog(sql)
         try:
             con.Execute(sql);
@@ -558,8 +558,8 @@ class CuentaOperacion:
 
 class CuentaOperacionHeredadaInversion:
     """Clase parar trabajar con las opercuentas generadas automaticamente por los movimientos de las inversiones"""
-    def insertar(self,  fecha, lu_conceptos, lu_tiposoperaciones, importe, comentario,id_cuentas,id_operinversiones,id_inversiones):
-        sql="insert into tmpinversionesheredada (fecha, lu_conceptos, lu_tiposoperaciones, importe, comentario,ma_cuentas, id_operinversiones,id_inversiones) values ('"+str(fecha)+"', "+str(lu_conceptos)+", "+str(lu_tiposoperaciones)+", "+str(importe)+", '"+str(comentario)+"' ,"+str(id_cuentas)+", "+str(id_operinversiones)+", "+str(id_inversiones)+")"
+    def insertar(self,  fecha, id_conceptos, id_tiposoperaciones, importe, comentario,id_cuentas,id_operinversiones,id_inversiones):
+        sql="insert into tmpinversionesheredada (fecha, id_conceptos, id_tiposoperaciones, importe, comentario,id_cuentas, id_operinversiones,id_inversiones) values ('"+str(fecha)+"', "+str(id_conceptos)+", "+str(id_tiposoperaciones)+", "+str(importe)+", '"+str(comentario)+"' ,"+str(id_cuentas)+", "+str(id_operinversiones)+", "+str(id_inversiones)+")"
         con.Execute(sql);
 
 
@@ -574,35 +574,35 @@ class CuentaOperacionHeredadaInversion:
         row = con.Execute('select * from operinversiones where id_operinversiones='+str(id_operinversiones)).GetRowAssoc(0)
         fecha=row['fecha'];
         importe=row['importe'];
-        id_inversiones=row['ma_inversiones'];
-        regInversion=con.Execute("select * from inversiones where id_inversiones="+ str(row['ma_inversiones'])).GetRowAssoc(0)
-        id_cuentas=regInversion['lu_cuentas']
+        id_inversiones=row['id_inversiones'];
+        regInversion=con.Execute("select * from inversiones where id_inversiones="+ str(row['id_inversiones'])).GetRowAssoc(0)
+        id_cuentas=regInversion['id_cuentas']
         comision=row['comision'];
         impuestos=row['impuestos'];
       
 #        //Dependiendo del tipo de operaci�n se ejecuta una operaci�n u otra.
-        if row['lu_tiposoperaciones']==4:#Compra Acciones
+        if row['id_tiposoperaciones']==4:#Compra Acciones
             #Se pone un registro de compra de acciones que resta el saldo de la opercuenta
-            CuentaOperacionHeredadaInversion().insertar(fecha, 29, 4, -importe-comision, regInversion['inversione']+". Importe: " + str(importe)+". Comisión: " + str(comision)+ ". Impuestos: " + str(impuestos),id_cuentas,id_operinversiones,id_inversiones);
+            CuentaOperacionHeredadaInversion().insertar(fecha, 29, 4, -importe-comision, regInversion['inversion']+". Importe: " + str(importe)+". Comisión: " + str(comision)+ ". Impuestos: " + str(impuestos),id_cuentas,id_operinversiones,id_inversiones);
             #//Si hubiera comisi�n se a�ade la comisi�n.
 #            if(comision!=0):
-#                CuentaOperacionHeredadaInversion().insertar(fecha, 38, 1, -comision, regInversion['inversione']+". Comisión (Id. id_operinversiones)",id_cuentas,id_operinversiones,id_inversiones)
-        elif row['lu_tiposoperaciones']==5:#// Venta Acciones
+#                CuentaOperacionHeredadaInversion().insertar(fecha, 38, 1, -comision, regInversion['inversion']+". Comisión (Id. id_operinversiones)",id_cuentas,id_operinversiones,id_inversiones)
+        elif row['id_tiposoperaciones']==5:#// Venta Acciones
             #//Se pone un registro de compra de acciones que resta el saldo de la opercuenta
-            CuentaOperacionHeredadaInversion().insertar(fecha, 35, 5, importe-comision-impuestos, regInversion['inversione']+". Importe: " + str(importe)+". Comisión: " + str(comision)+ ". Impuestos: " + str(impuestos),id_cuentas,id_operinversiones,id_inversiones);
+            CuentaOperacionHeredadaInversion().insertar(fecha, 35, 5, importe-comision-impuestos, regInversion['inversion']+". Importe: " + str(importe)+". Comisión: " + str(comision)+ ". Impuestos: " + str(impuestos),id_cuentas,id_operinversiones,id_inversiones);
             #//Si hubiera comisi�n se a�ade la comisi�n.
 #            if(comision!=0):
-#                CuentaOperacionHeredadaInversion().insertar( fecha, 38, 1, -comision, regInversion['inversione']+". Comisión (Id. id_operinversiones)",id_cuentas,id_operinversiones,id_inversiones);
+#                CuentaOperacionHeredadaInversion().insertar( fecha, 38, 1, -comision, regInversion['inversion']+". Comisión (Id. id_operinversiones)",id_cuentas,id_operinversiones,id_inversiones);
             #//Si hubiera pago de impuestos se pone
 #            if(impuestos!=0):
-#                CuentaOperacionHeredadaInversion().insertar(fecha, 37, 1, -impuestos, regInversion['inversione']+". Pago de impuestos (Id. id_operinversiones)",id_cuentas,id_operinversiones,id_inversiones);
-        elif row['lu_tiposoperaciones']==6:# // A�adido de Acciones
+#                CuentaOperacionHeredadaInversion().insertar(fecha, 37, 1, -impuestos, regInversion['inversion']+". Pago de impuestos (Id. id_operinversiones)",id_cuentas,id_operinversiones,id_inversiones);
+        elif row['id_tiposoperaciones']==6:# // A�adido de Acciones
             #//Si hubiera comisi�n se a�ade la comisi�n.
             if(comision!=0):
-                CuentaOperacionHeredadaInversion().insertar(fecha, 38, 1, -comision-impuestos, regInversion['inversione']+". Importe: " + str(importe)+". Comisión: " + str(comision)+ ". Impuestos: " + str(impuestos), id_cuentas,id_operinversiones,id_inversiones);
+                CuentaOperacionHeredadaInversion().insertar(fecha, 38, 1, -comision-impuestos, regInversion['inversion']+". Importe: " + str(importe)+". Comisión: " + str(comision)+ ". Impuestos: " + str(impuestos), id_cuentas,id_operinversiones,id_inversiones);
             #//Si hubiera pago de impuestos se pone
 #            if(impuestos!=0):
-#                CuentaOperacionHeredadaInversion().insertar(fecha, 37, 1, -impuestos, regInversion['inversione']+". Pago de impuestos (Id. id_operinversiones)",id_cuentas,id_operinversiones,id_inversiones);
+#                CuentaOperacionHeredadaInversion().insertar(fecha, 37, 1, -impuestos, regInversion['inversion']+". Pago de impuestos (Id. id_operinversiones)",id_cuentas,id_operinversiones,id_inversiones);
 
   
     #/**
@@ -619,7 +619,7 @@ class CuentaOperacionHeredadaInversion:
         con.Execute(sqldel);
 
 #    //Se cogen todas las operaciones de inversiones de la base de datos
-        sql="SELECT * from operinversiones where ma_inversiones="+str(id_inversiones)
+        sql="SELECT * from operinversiones where id_inversiones="+str(id_inversiones)
         curs=con.Execute(sql); 
         while not curs.EOF:
             row = curs.GetRowAssoc(0)   
@@ -653,10 +653,10 @@ class Dividendo:
     def insertar(self,fecha,valorxaccion,bruto,retencion,liquido,id_inversiones):
         """Insertar un dividendo y una opercuenta vinculada a la tabla dividendos en el campo id_opercuentas"""
         inv=con.Execute("select * from inversiones where id_inversiones="+ str(id_inversiones)).GetRowAssoc(0)   
-        CuentaOperacion().insertar( fecha, 39, 2, liquido, inv['inversione']+" (Bruto="+str(bruto)+"€. Retención="+str(retencion)+"€.)",inv['lu_cuentas'])
+        CuentaOperacion().insertar( fecha, 39, 2, liquido, inv['inversion']+" (Bruto="+str(bruto)+"€. Retención="+str(retencion)+"€.)",inv['id_cuentas'])
         id_opercuentas=con.Execute("select currval('seq_opercuentas') as seq;").GetRowAssoc(0)["seq"]   
         #Añade el dividendo
-        sql="insert into dividendos (fecha, valorxaccion, bruto, retencion, liquido, lu_inversiones,id_opercuentas) values ('"+str(fecha)+"', "+str(valorxaccion)+", "+str(bruto)+", "+str(retencion)+", "+str(liquido)+", "+str(id_inversiones)+", "+str(id_opercuentas)+")"
+        sql="insert into dividendos (fecha, valorxaccion, bruto, retencion, liquido, id_inversiones,id_opercuentas) values ('"+str(fecha)+"', "+str(valorxaccion)+", "+str(bruto)+", "+str(retencion)+", "+str(liquido)+", "+str(id_inversiones)+", "+str(id_opercuentas)+")"
         try:
             con.Execute(sql);
         except:
@@ -688,7 +688,7 @@ class Dividendo:
             resultado=float(row['liquido'])
         return resultado
         
-    def suma_liquido_todos(self, inicio,final):
+    def suid_liquido_todos(self, inicio,final):
         sql="select sum(liquido) as suma from dividendos where fecha between '"+inicio+"' and '"+final+"';"
         curs = con.Execute(sql); 
         if curs == None: 
@@ -785,13 +785,13 @@ class Inversion:
         s=s + '</menulist>\n'
         return s
             
-    def insertar(self,  inversione,  compra,  venta,  tpcvariable,  lu_cuentas):
-        sql="insert into inversiones (inversione, compra, venta, tpcvariable, lu_cuentas, in_activa) values ('"+inversione+"', "+str(compra)+", "+str(venta)+", "+str(tpcvariable)+", "+str(lu_cuentas)+", true);"
+    def insertar(self,  inversion,  compra,  venta,  tpcvariable,  id_cuentas):
+        sql="insert into inversiones (inversion, compra, venta, tpcvariable, id_cuentas, in_activa) values ('"+inversion+"', "+str(compra)+", "+str(venta)+", "+str(tpcvariable)+", "+str(id_cuentas)+", true);"
         curs=con.Execute(sql); 
         return sql            
         
-    def modificar(self, id_inversiones, inversione,  compra,  venta,  tpcvariable,  lu_cuentas):
-        sql="update inversiones set inversione='"+inversione+"', compra="+str(compra)+", venta="+str(venta)+", tpcvariable="+str(tpcvariable)+", lu_cuentas="+str(lu_cuentas)+" where id_inversiones="+ str(id_inversiones)
+    def modificar(self, id_inversiones, inversion,  compra,  venta,  tpcvariable,  id_cuentas):
+        sql="update inversiones set inversion='"+inversion+"', compra="+str(compra)+", venta="+str(venta)+", tpcvariable="+str(tpcvariable)+", id_cuentas="+str(id_cuentas)+" where id_inversiones="+ str(id_inversiones)
         curs=con.Execute(sql); 
         return sql
         
@@ -813,7 +813,7 @@ class Inversion:
             
     def numero_acciones(self, id_inversiones, fecha):
         resultado=0;
-        sql="SELECT Acciones from operinversiones where ma_Inversiones="+str(id_inversiones)+" and fecha<='"+str(fecha)+"'"
+        sql="SELECT Acciones from operinversiones where id_Inversiones="+str(id_inversiones)+" and fecha<='"+str(fecha)+"'"
         curs=con.Execute(sql); 
         while not curs.EOF:
             row = curs.GetRowAssoc(0)   
@@ -824,7 +824,7 @@ class Inversion:
 
         
     def xultree_compraventa(self):
-        sql="select id_inversiones, inversione, entidadesbancaria,  inversion_actualizacion(id_inversiones,'"+str(datetime.date.today())+"') as actualizacion, compra, venta from inversiones, cuentas, entidadesbancarias where venta<> compra and in_activa=true and cuentas.ma_entidadesbancarias=entidadesbancarias.id_entidadesbancarias and cuentas.id_cuentas=inversiones.lu_cuentas order by inversione;"
+        sql="select id_inversiones, inversion, entidadbancaria,  inversion_actualizacion(id_inversiones,'"+str(datetime.date.today())+"') as actualizacion, compra, venta from inversiones, cuentas, entidadesbancarias where venta<> compra and in_activa=true and cuentas.id_entidadesbancarias=entidadesbancarias.id_entidadesbancarias and cuentas.id_cuentas=inversiones.id_cuentas order by inversion;"
         curs=con.Execute(sql); 
         s= '<vbox flex="1">\n'
         s= s+ '<popupset>\n'
@@ -860,8 +860,8 @@ class Inversion:
                 prop=''
             s= s + '<treerow'+prop+'>\n'
             s= s + '<treecell label="'+str(row["id_inversiones"])+ '" />\n'
-            s= s + '<treecell label="'+str(row["inversione"])+ '" />\n'
-            s= s + '<treecell label="'+str(row["entidadesbancaria"])+ '" />\n'
+            s= s + '<treecell label="'+str(row["inversion"])+ '" />\n'
+            s= s + '<treecell label="'+str(row["entidadbancaria"])+ '" />\n'
             s= s + treecell_euros(row["actualizacion"],  3)
             s= s + treecell_euros( row["compra"] , 3)
             s= s + treecell_euros( row["venta"],  3)
@@ -1004,8 +1004,8 @@ class Inversion:
             s= s + '            <treerow>\n'
             s= s + '                <treecell label="'+str(row["id_inversiones"])+ '" />\n'
             s= s + '                <treecell label="'+str(row["in_activa"])+ '" />\n'
-            s= s + '                <treecell label="'+str(row["inversione"])+ '" />\n'
-            s= s + '                <treecell label="'+ row["entidadesbancaria"]+ '" />\n'
+            s= s + '                <treecell label="'+str(row["inversion"])+ '" />\n'
+            s= s + '                <treecell label="'+ row["entidadbancaria"]+ '" />\n'
             s= s + '                ' + treecell_euros(row["actualizacion"], 3)
             s= s + '                ' + treecell_euros(row['saldo'])
             s= s + '                ' + treecell_euros(row['pendiente'])
@@ -1035,9 +1035,9 @@ class InversionActualizacion:
         return True
 
     def insertar(self,  id_inversiones,  fecha,  valor):
-        delete="delete from actuinversiones where ma_inversiones="+str(id_inversiones)+" and fecha ='"+str(fecha)+"';"
+        delete="delete from actuinversiones where id_inversiones="+str(id_inversiones)+" and fecha ='"+str(fecha)+"';"
         con.Execute(delete);
-        sql="insert into actuinversiones (fecha,ma_inversiones,actualizacion) values ('"+ str(fecha) +"',"+str(id_inversiones)+","+str(valor)+")";
+        sql="insert into actuinversiones (fecha,id_inversiones,actualizacion) values ('"+ str(fecha) +"',"+str(id_inversiones)+","+str(valor)+")";
         try:
             con.Execute(sql);
         except:
@@ -1045,12 +1045,12 @@ class InversionActualizacion:
         return True
         
     def cursor_listado(self, id_inversiones,  year,  month):
-        sql="select * from actuinversiones where ma_inversiones="+str(id_inversiones)+" and date_part('year',fecha)='"+str(year)+"' and date_part('month',fecha)='"+str(month)+"' order by fecha;"
+        sql="select * from actuinversiones where id_inversiones="+str(id_inversiones)+" and date_part('year',fecha)='"+str(year)+"' and date_part('month',fecha)='"+str(month)+"' order by fecha;"
         return con.Execute(sql); 
         
     def ultima(self,id_inversiones,ano):
         resultado = []
-        sql="SELECT fecha,Actualizacion from actuinversiones where ma_Inversiones="+str(id_inversiones)+" and  fecha<='"+str(ano)+"-12-31' order by Fecha desc limit 1"
+        sql="SELECT fecha,Actualizacion from actuinversiones where id_Inversiones="+str(id_inversiones)+" and  fecha<='"+str(ano)+"-12-31' order by Fecha desc limit 1"
         curs=con.Execute(sql)
         if curs.RecordCount()==0:
             resultado.append("1900-1-1")
@@ -1062,7 +1062,7 @@ class InversionActualizacion:
         return resultado
         
     def valor(self,id_inversiones,fecha):
-        sql="select actualizacion from actuinversiones where ma_Inversiones="+str(id_inversiones)+" and  fecha<='"+str(fecha)+"' order by Fecha desc limit 1"
+        sql="select actualizacion from actuinversiones where id_Inversiones="+str(id_inversiones)+" and  fecha<='"+str(fecha)+"' order by Fecha desc limit 1"
         curs=con.Execute(sql)
         row = curs.GetRowAssoc(0)   
         return row["actualizacion"]
@@ -1090,18 +1090,18 @@ class InversionOperacion:
         CuentaOperacionHeredadaInversion().actualizar_una_inversion(id_inversiones)#Es una inversion ya que la id_operinversion ya no existe. Se ha borrado
         return True
         
-    def insertar(self,  fecha,  lu_tiposoperaciones,  importe, acciones,  impuestos,  comision,    comentario, valor_accion,  ma_inversiones):
-        sql="insert into operinversiones(fecha,  lu_tiposoperaciones,  importe, acciones,  impuestos,  comision,    comentario, valor_accion,  ma_inversiones) values ('" + str(fecha) + "'," + str(lu_tiposoperaciones) +","+str(importe)+","+ str(acciones) +","+ str(impuestos) +","+ str(comision) +", '"+ str(comentario)+"', "+str(valor_accion)+","+ str(ma_inversiones)+');'
+    def insertar(self,  fecha,  id_tiposoperaciones,  importe, acciones,  impuestos,  comision,    comentario, valor_accion,  id_inversiones):
+        sql="insert into operinversiones(fecha,  id_tiposoperaciones,  importe, acciones,  impuestos,  comision,    comentario, valor_accion,  id_inversiones) values ('" + str(fecha) + "'," + str(id_tiposoperaciones) +","+str(importe)+","+ str(acciones) +","+ str(impuestos) +","+ str(comision) +", '"+ str(comentario)+"', "+str(valor_accion)+","+ str(id_inversiones)+');'
         try:
             con.Execute(sql);
         except:
             return False
 #        id_operinversiones=con.Execute("select currval('seq_operinversiones') as seq;").GetRowAssoc(0)["seq"]   
         #//Funcion que actualiza la tabla tmpoperinversiones para ver operinversiones activas
-        InversionOperacionHistorica().actualizar (ma_inversiones)
+        InversionOperacionHistorica().actualizar (id_inversiones)
         #//Se actualiza la operinversion una funci<F3>n en tmpinversionesheredada que se refleja en opercuentas.
 #        CuentaOperacionHeredadaInversion().actualizar_una_operacion(id_operinversiones)
-        CuentaOperacionHeredadaInversion().actualizar_una_inversion(ma_inversiones)
+        CuentaOperacionHeredadaInversion().actualizar_una_inversion(id_inversiones)
         return True
         
     def referencia_ibex35(self, fecha):
@@ -1116,9 +1116,9 @@ class InversionOperacion:
 class InversionOperacionHistorica:
     def actualizar(self, id_inversiones):
         #Borra las tmpooperinversiones de la inversión que existan
-        sql="delete from tmpoperinversioneshistoricas where ma_inversiones="+str(id_inversiones)
+        sql="delete from tmpoperinversioneshistoricas where id_inversiones="+str(id_inversiones)
         curs=con.Execute(sql)
-        sql="delete from tmpoperinversiones where ma_Inversiones="+str(id_inversiones)
+        sql="delete from tmpoperinversiones where id_Inversiones="+str(id_inversiones)
         curs=con.Execute(sql)
         InversionOperacionHistorica().aux_copiando_operinversiones_a_tmpoperinversiones(id_inversiones)
         i=0
@@ -1146,7 +1146,7 @@ class InversionOperacionHistorica:
 # */
     def aux_quitando_negativos(self,id_inversiones):
         #Mira si hay negativos y sino sale
-        sqlneg="SELECT * from tmpoperinversiones where ma_Inversiones="+str(id_inversiones)+" and acciones <0 order by fecha";
+        sqlneg="SELECT * from tmpoperinversiones where id_Inversiones="+str(id_inversiones)+" and acciones <0 order by fecha";
         resultneg=con.Execute(sqlneg)
         if resultneg.RecordCount()==0: #Por si no hubiera negativos
             return True;
@@ -1155,7 +1155,7 @@ class InversionOperacionHistorica:
         accionesneg=rowneg['acciones'];
         actuventa=rowneg['valor_accion'];
     
-        sqlpos="select * from tmpoperinversiones where ma_Inversiones="+str(id_inversiones)+" and acciones >0 order by fecha";
+        sqlpos="select * from tmpoperinversiones where id_Inversiones="+str(id_inversiones)+" and acciones >0 order by fecha";
         resultpos=con.Execute(sqlpos)
         accionespos=0;
         while not resultpos.EOF:
@@ -1163,24 +1163,24 @@ class InversionOperacionHistorica:
             accionespos=rowpos['acciones'];
             dif=accionespos-(-accionesneg);
             if dif>=-0.1 and dif<=0.1: #Si es 0 se inserta el historico que coincide con la venta y se borra el registro negativo
-                InversionOperacionHistorica().insertar( rowneg['ma_operinversiones'], rowpos['fecha'], rowneg['fecha'], rowneg['lu_tiposoperaciones'], rowneg['ma_inversiones'], accionesneg, -accionesneg*actuventa, rowneg['impuestos'], rowneg['comision'], rowpos['valor_accion'], rowneg['valor_accion'])#; //Se pone acciones neg porque puede venir de <0.
+                InversionOperacionHistorica().insertar( rowneg['id_operinversiones'], rowpos['fecha'], rowneg['fecha'], rowneg['id_tiposoperaciones'], rowneg['id_inversiones'], accionesneg, -accionesneg*actuventa, rowneg['impuestos'], rowneg['comision'], rowpos['valor_accion'], rowneg['valor_accion'])#; //Se pone acciones neg porque puede venir de <0.
                 InversionOperacionTemporal().borrar(rowneg["id_tmpoperinversiones"]);
                 InversionOperacionTemporal().borrar(rowpos["id_tmpoperinversiones"]);
                 break
             elif dif<-0.1:#   //Si es <0 es decir hay más acciones negativas que positivas. Se debe introducir en el historico la tmpoperinversion y borrarlo y volver a recorrer el bucle. Restando a accionesneg las acciones ya apuntadas en el historico
-                InversionOperacionHistorica().insertar( rowpos['ma_operinversiones'], rowpos['fecha'], rowneg['fecha'], rowneg['lu_tiposoperaciones'], rowpos['ma_inversiones'], -rowpos['acciones'],  rowpos['acciones']*actuventa, rowneg['impuestos'], rowneg['comision'],rowpos['valor_accion'], rowneg['valor_accion']);
+                InversionOperacionHistorica().insertar( rowpos['id_operinversiones'], rowpos['fecha'], rowneg['fecha'], rowneg['id_tiposoperaciones'], rowpos['id_inversiones'], -rowpos['acciones'],  rowpos['acciones']*actuventa, rowneg['impuestos'], rowneg['comision'],rowpos['valor_accion'], rowneg['valor_accion']);
                 InversionOperacionTemporal().borrar(rowpos["id_tmpoperinversiones"]);
                 accionesneg=accionesneg+accionespos#ya que accionesneg es negativo
             elif(dif>0.1):# //Cuando es >0 es decir hay mas acciones positivos se a�ade el registro en el historico con los datos de la operaci�n negativa en su totalidad. Se borra el registro de negativos y de positivos en tmpoperinversiones y se inserta uno con los datos positivos menos lo quitado por el registro negativo. Y se sale del bucle. //Aqu� no se insert la comisi�n porque solo cuando se acaba las acciones positivos   
-                InversionOperacionHistorica().insertar( rowpos['ma_operinversiones'], rowpos['fecha'], rowneg['fecha'], rowneg['lu_tiposoperaciones'], rowneg['ma_inversiones'], accionesneg, -accionesneg*actuventa, rowneg['impuestos'], rowneg['comision'],rowpos['valor_accion'], rowneg['valor_accion'])#;//Se pone acciones neg porque puede venir de <0.
+                InversionOperacionHistorica().insertar( rowpos['id_operinversiones'], rowpos['fecha'], rowneg['fecha'], rowneg['id_tiposoperaciones'], rowneg['id_inversiones'], accionesneg, -accionesneg*actuventa, rowneg['impuestos'], rowneg['comision'],rowpos['valor_accion'], rowneg['valor_accion'])#;//Se pone acciones neg porque puede venir de <0.
                 InversionOperacionTemporal().borrar(rowpos["id_tmpoperinversiones"]);
                 InversionOperacionTemporal().borrar(rowneg["id_tmpoperinversiones"]);
-                InversionOperacionTemporal().insertar(rowpos['ma_operinversiones'],rowpos['ma_inversiones'], rowpos['fecha'], rowpos['acciones']-(-accionesneg), rowpos['lu_tiposoperaciones'],(rowpos['acciones']-(-accionesneg))*actuventa,0,0,rowpos['valor_accion']);
+                InversionOperacionTemporal().insertar(rowpos['id_operinversiones'],rowpos['id_inversiones'], rowpos['fecha'], rowpos['acciones']-(-accionesneg), rowpos['id_tiposoperaciones'],(rowpos['acciones']-(-accionesneg))*actuventa,0,0,rowpos['valor_accion']);
                 break;
             resultpos.MoveNext()     
         resultpos.Close()
         #Mira si hay negativos y sino sale debe hacerse otra vez porque aveces se inserta un negativo
-        sqlneg="SELECT * from tmpoperinversiones where ma_Inversiones="+str(id_inversiones)+" and acciones <0 order by fecha";
+        sqlneg="SELECT * from tmpoperinversiones where id_Inversiones="+str(id_inversiones)+" and acciones <0 order by fecha";
         resultneg=con.Execute(sqlneg)   
         if resultneg.RecordCount()==0:#Para ver si era el ultimo
             return True;
@@ -1192,11 +1192,11 @@ class InversionOperacionHistorica:
 # * inversiones para luego trabajaor con ellos.
 # */
     def aux_copiando_operinversiones_a_tmpoperinversiones(self, id_inversiones):
-        sql="SELECT * from operinversiones where ma_Inversiones="+str(id_inversiones)+" order by fecha";
+        sql="SELECT * from operinversiones where id_Inversiones="+str(id_inversiones)+" order by fecha";
         curs=con.Execute(sql); 
         while not curs.EOF:
             row = curs.GetRowAssoc(0)   
-            InversionOperacionTemporal().insertar(row['id_operinversiones'],row['ma_inversiones'], row['fecha'],row['acciones'],row['lu_tiposoperaciones'],row['importe'],row['impuestos'],row['comision'],row['valor_accion']);
+            InversionOperacionTemporal().insertar(row['id_operinversiones'],row['id_inversiones'], row['fecha'],row['acciones'],row['id_tiposoperaciones'],row['importe'],row['impuestos'],row['comision'],row['valor_accion']);
             curs.MoveNext()     
         curs.Close()
 
@@ -1212,20 +1212,20 @@ class InversionOperacionHistorica:
         curs.Close()
         return resultado
 
-    def insertar(self, ma_operinversiones,fecha_inicio, fecha_venta, lu_tiposoperaciones, id_inversiones, acciones, importe, impuestos, comision, valor_accion_compra, valor_accion_venta):
+    def insertar(self, id_operinversiones,fecha_inicio, fecha_venta, id_tiposoperaciones, id_inversiones, acciones, importe, impuestos, comision, valor_accion_compra, valor_accion_venta):
 # id_cuentas=Inversion::id_cuentas(con, id_inversiones);
 # nombre_inversion=Inversion::nombre(con,id_inversiones);
-        sql="insert into tmpoperinversioneshistoricas (fecha_inicio, fecha_venta,ma_operinversiones, lu_tiposoperaciones, ma_inversiones, acciones, importe, impuestos, comision, valor_accion_compra, valor_accion_venta) values ('"+str(fecha_inicio)+"', '"+str(fecha_venta)+"', "+str(ma_operinversiones)+", "+str(lu_tiposoperaciones)+", "+str(id_inversiones)+", "+str(acciones)+", "+str(importe)+", "+str(impuestos)+", "+str(comision)+", "+str(valor_accion_compra)+", "+str(valor_accion_venta)+")";
+        sql="insert into tmpoperinversioneshistoricas (fecha_inicio, fecha_venta,id_operinversiones, id_tiposoperaciones, id_inversiones, acciones, importe, impuestos, comision, valor_accion_compra, valor_accion_venta) values ('"+str(fecha_inicio)+"', '"+str(fecha_venta)+"', "+str(id_operinversiones)+", "+str(id_tiposoperaciones)+", "+str(id_inversiones)+", "+str(acciones)+", "+str(importe)+", "+str(impuestos)+", "+str(comision)+", "+str(valor_accion_compra)+", "+str(valor_accion_venta)+")";
         curs=con.Execute(sql); 
         
     def rendimiento_total(self, id_tmpoperinversioneshistoricas):
         """
             Si primera es 0 por ejempleo acciones de ampliaciones de capital que no cuestan nada devuelve 100
         """ 
-        sql="SELECT fecha_inicio, fecha_venta, valor_accion_compra, valor_accion_venta,ma_inversiones from tmpoperinversioneshistoricas where id_tmpoperinversioneshistoricas= "+ str(id_tmpoperinversioneshistoricas)
+        sql="SELECT fecha_inicio, fecha_venta, valor_accion_compra, valor_accion_venta,id_inversiones from tmpoperinversioneshistoricas where id_tmpoperinversioneshistoricas= "+ str(id_tmpoperinversioneshistoricas)
         curs=con.Execute(sql); 
         row = curs.GetRowAssoc(0)   
-        id_inversiones=row['ma_inversiones'];
+        id_inversiones=row['id_inversiones'];
         primera=row['valor_accion_compra'];
         ultima=row['valor_accion_venta'];
         if primera==0:
@@ -1288,7 +1288,7 @@ class InversionOperacionTemporal:
         curs=con.Execute(sql); 
 
     def fecha_primera_operacion(self,id_inversiones):
-        sql="SELECT fecha  from tmpoperinversiones where ma_inversiones="+str(id_inversiones) + " order by fecha limit 1";
+        sql="SELECT fecha  from tmpoperinversiones where id_inversiones="+str(id_inversiones) + " order by fecha limit 1";
         curs=con.Execute(sql); 
         if curs.RecordCount()>0:
             row = curs.GetRowAssoc(0)   
@@ -1296,8 +1296,8 @@ class InversionOperacionTemporal:
         else:
             return None
 
-    def insertar(self, ma_operinversiones,id_inversiones, fecha,acciones,lu_tiposoperaciones,importe,impuestos,comision,valor_accion):
-        sql="insert into tmpoperinversiones (ma_operinversiones,ma_inversiones,fecha, acciones,lu_tiposoperaciones,importe,impuestos, comision, valor_accion) values ("+str(ma_operinversiones)+", "+str(id_inversiones)+",'"+str(fecha)+"',"+str(acciones)+", "+str(lu_tiposoperaciones)+","+str(importe)+","+str(impuestos)+","+str(comision)+", "+str(valor_accion)+")";
+    def insertar(self, id_operinversiones,id_inversiones, fecha,acciones,id_tiposoperaciones,importe,impuestos,comision,valor_accion):
+        sql="insert into tmpoperinversiones (id_operinversiones,id_inversiones,fecha, acciones,id_tiposoperaciones,importe,impuestos, comision, valor_accion) values ("+str(id_operinversiones)+", "+str(id_inversiones)+",'"+str(fecha)+"',"+str(acciones)+", "+str(id_tiposoperaciones)+","+str(importe)+","+str(impuestos)+","+str(comision)+", "+str(valor_accion)+")";
         curs=con.Execute(sql); 
 
     def pendiente_consolidar(self, id_tmpoperinversiones,id_inversiones,fecha):
@@ -1310,7 +1310,7 @@ class InversionOperacionTemporal:
         return pendiente;    
     def xultree(self, sql):
         """
-            El SQL deberá ser del tipo "SELECT * from tmpoperinversiones where ma_Inversiones=id_inversiones order by fecha"
+            El SQL deberá ser del tipo "SELECT * from tmpoperinversiones where id_Inversiones=id_inversiones order by fecha"
         """  
         sumacciones=0;
         sumactualizacionesximportes=0;
@@ -1342,12 +1342,12 @@ class InversionOperacionTemporal:
             actualizacion=row['valor_accion'];
             importe=acciones*actualizacion;
             actualizacionxacciones=actualizacion*acciones;
-            pendiente=InversionOperacionTemporal().pendiente_consolidar(row['id_tmpoperinversiones'],row['ma_inversiones'], datetime.date.today());
+            pendiente=InversionOperacionTemporal().pendiente_consolidar(row['id_tmpoperinversiones'],row['id_inversiones'], datetime.date.today());
             sumacciones=sumacciones+acciones;
             sumimporte=sumimporte+importe;
             sumpendiente=sumpendiente+pendiente;
-            rendimientoanual=InversionOperacionTemporalRendimiento().anual( row['id_tmpoperinversiones'], row['ma_inversiones'], datetime.date.today().year);
-            rendimientototal=InversionOperacionTemporalRendimiento().total( row['id_tmpoperinversiones'], row['ma_inversiones']);     
+            rendimientoanual=InversionOperacionTemporalRendimiento().anual( row['id_tmpoperinversiones'], row['id_inversiones'], datetime.date.today().year);
+            rendimientototal=InversionOperacionTemporalRendimiento().total( row['id_tmpoperinversiones'], row['id_inversiones']);     
             #tae
             dias=(datetime.date.today()-datetime.date(row["fecha"].year, row["fecha"].month, row["fecha"].day)).days 
             if dias==0:
@@ -1388,7 +1388,7 @@ class InversionOperacionTemporal:
         
     def xultree_referenciaibex(self, sql):
         # fecha
-        # inversione
+        # inversion
         # importe
         # ibex35
         sumimporte=0;
@@ -1407,7 +1407,7 @@ class InversionOperacionTemporal:
             s=s+ '    <treeitem>\n'
             s=s+ '      <treerow>\n'
             s=s+ '       <treecell label="'+ str(row["fecha"])[:-12]+ '" />\n'
-            s=s+ '       <treecell label="'+ str(row["inversione"])+ '" />\n'
+            s=s+ '       <treecell label="'+ str(row["inversion"])+ '" />\n'
             s=s+        treecell_euros(row['importe']);
             s=s+        treecell_euros(row['ibex35']);
             s=s+ '      </treerow>\n'
@@ -1427,27 +1427,27 @@ class InversionOperacionTemporal:
         return s
     
     def actualizar(self, id_inversiones):
-        sql="delete from tmpoperinversiones where ma_Inversiones="+ str(id_inversiones)+";"
+        sql="delete from tmpoperinversiones where id_Inversiones="+ str(id_inversiones)+";"
         curs=con.Execute(sql)
-        sql="delete from tmpoperinversioneshistoricas where ma_Inversiones="+str(id_inversiones)+";"
+        sql="delete from tmpoperinversioneshistoricas where id_Inversiones="+str(id_inversiones)+";"
         curs=con.Execute(sql)
         #Calculo el número de acciones con un sum de las acciones
         numeroacciones=Inversion().numero_acciones(id_inversiones,datetime.date.today())
         #Voy recorriendo el array y a ese total le voy restando las positivas por orden de fecha descendente y las voy insertando en tmpooperinversiones
-        sql="SELECT * from operinversiones where ma_Inversiones="+str(id_inversiones)+" and acciones >=0 order by fecha desc";
+        sql="SELECT * from operinversiones where id_Inversiones="+str(id_inversiones)+" and acciones >=0 order by fecha desc";
         curs=con.Execute(sql); 
         while not curs.EOF: #Cuando llega a <=0 me paro
             row = curs.GetRowAssoc(0)       
             numeroacciones=numeroacciones-row['acciones'];
             if (numeroacciones==0.0):   #Si es 0 queda como está
-                InversionOperacionTemporal().insertar(row["id_operinversiones"],row["ma_inversiones"], row["fecha"],row["acciones"],row['lu_tiposoperaciones'],row['importe'],row['impuestos'],row['comision'],row['valor_accion'])
+                InversionOperacionTemporal().insertar(row["id_operinversiones"],row["id_inversiones"], row["fecha"],row["acciones"],row['id_tiposoperaciones'],row['importe'],row['impuestos'],row['comision'],row['valor_accion'])
                 break;
             else:
                 if numeroacciones<0:   #Si es <0 le sumo le quito al numero de acciones de esa inversión la parte negativa
-                    InversionOperacionTemporal().insertar(row['id_operinversiones'],row['ma_inversiones'], row['fecha'],row['acciones']+numeroacciones,row['lu_tiposoperaciones'],row['importe'],row['impuestos'],row['comision'],row['valor_accion']);
+                    InversionOperacionTemporal().insertar(row['id_operinversiones'],row['id_inversiones'], row['fecha'],row['acciones']+numeroacciones,row['id_tiposoperaciones'],row['importe'],row['impuestos'],row['comision'],row['valor_accion']);
                     break;
                 else: #Cuando es >0
-                    InversionOperacionTemporal().insertar(row["id_operinversiones"],row["ma_inversiones"], row["fecha"],row["acciones"],row['lu_tiposoperaciones'],row['importe'],row['impuestos'],row['comision'],row['valor_accion'])
+                    InversionOperacionTemporal().insertar(row["id_operinversiones"],row["id_inversiones"], row["fecha"],row["acciones"],row['id_tiposoperaciones'],row['importe'],row['impuestos'],row['comision'],row['valor_accion'])
             curs.MoveNext()     
         curs.Close()
 
@@ -1508,7 +1508,7 @@ class InversionRendimiento:
 #        if (InversionOperacionTemporal().count(id_inversiones)==0) return 0;
         sumatorioAccionesXRendimiento=0; #//Almacena el producto de Saldo de la Operación por su rendimiento.
         sumatorioAcciones=0.0001; #//Almacena la suma de Saldos
-        sql="SELECT id_tmpoperinversiones, acciones  from tmpoperinversiones where ma_Inversiones="+ str(id_inversiones)
+        sql="SELECT id_tmpoperinversiones, acciones  from tmpoperinversiones where id_Inversiones="+ str(id_inversiones)
         curs=con.Execute(sql); 
         while not curs.EOF:
             row = curs.GetRowAssoc(0)   
@@ -1524,7 +1524,7 @@ class InversionRendimiento:
     def personal_total(self,  id_inversiones):
         sumatorioAccionesXRendimiento=0; #Almacena el producto de Saldo de la Operación por su rendimiento.
         sumatorioAcciones=0; #Almacena la suma de Saldos
-        sql="SELECT id_tmpoperinversiones, acciones  from tmpoperinversiones where ma_Inversiones=" + str(id_inversiones)
+        sql="SELECT id_tmpoperinversiones, acciones  from tmpoperinversiones where id_Inversiones=" + str(id_inversiones)
         curs=con.Execute(sql); 
         while not curs.EOF:
             row = curs.GetRowAssoc(0)   
@@ -1541,16 +1541,16 @@ class InversionRendimiento:
         return resultado
 
 class Tarjeta:
-    def insertar(self,  lu_cuentas,  tarjeta,  numero, pago_diferido, saldomaximo, tj_activa):
-        sql="insert into tarjetas (lu_cuentas, tarjeta, numero, pago_diferido, saldomaximo, tj_activa) values ("+ str(lu_cuentas) +", '"+str(tarjeta)+"', '"+str(numero)+"', "+str(pago_diferido)+", " + str(saldomaximo) + ", "+str(tj_activa)+");"
+    def insertar(self,  id_cuentas,  tarjeta,  numero, pago_diferido, saldomaximo, tj_activa):
+        sql="insert into tarjetas (id_cuentas, tarjeta, numero, pago_diferido, saldomaximo, tj_activa) values ("+ str(id_cuentas) +", '"+str(tarjeta)+"', '"+str(numero)+"', "+str(pago_diferido)+", " + str(saldomaximo) + ", "+str(tj_activa)+");"
         try:
             con.Execute(sql);
         except:
             return False
         return True
         
-    def modificar(self, id_tarjetas, tarjeta,  lu_cuentas,  numero,  pago_diferido,  saldomaximo):
-        sql="update tarjetas set tarjeta='"+str(tarjeta)+"', lu_cuentas="+str(lu_cuentas)+", numero='"+str(numero)+"', pago_diferido="+str(pago_diferido)+", saldomaximo="+str(saldomaximo)+" where id_tarjetas="+ str(id_tarjetas)
+    def modificar(self, id_tarjetas, tarjeta,  id_cuentas,  numero,  pago_diferido,  saldomaximo):
+        sql="update tarjetas set tarjeta='"+str(tarjeta)+"', id_cuentas="+str(id_cuentas)+", numero='"+str(numero)+"', pago_diferido="+str(pago_diferido)+", saldomaximo="+str(saldomaximo)+" where id_tarjetas="+ str(id_tarjetas)
         mylog(sql)
         try:
             con.Execute(sql);
@@ -1564,7 +1564,7 @@ class Tarjeta:
         return sql
         
     def saldo_pendiente(self,id_tarjetas):
-        sql='select sum(importe) as suma from opertarjetas where ma_tarjetas='+ str(id_tarjetas) +' and pagado=false'
+        sql='select sum(importe) as suma from opertarjetas where id_tarjetas='+ str(id_tarjetas) +' and pagado=false'
         resultado=con.Execute(sql) .GetRowAssoc(0)["suma"]
         if resultado==None:
             return 0
@@ -1572,9 +1572,9 @@ class Tarjeta:
 
     def xul_listado(self, inactivas,  fecha):
         if inactivas==True:
-            sql="select id_tarjetas, lu_cuentas, tj_activa, tarjeta, cuenta, numero, pago_diferido, saldomaximo from tarjetas,cuentas where tarjetas.lu_cuentas=cuentas.id_cuentas order by tarjetas.tarjeta"
+            sql="select id_tarjetas, id_cuentas, tj_activa, tarjeta, cuenta, numero, pago_diferido, saldomaximo from tarjetas,cuentas where tarjetas.id_cuentas=cuentas.id_cuentas order by tarjetas.tarjeta"
         else:
-            sql="select id_tarjetas, lu_cuentas, tj_activa, tarjeta, cuenta, numero, pago_diferido, saldomaximo from tarjetas,cuentas where tarjetas.lu_cuentas=cuentas.id_cuentas and tarjetas.tj_activa=true order by tarjetas.tarjeta"
+            sql="select id_tarjetas, id_cuentas, tj_activa, tarjeta, cuenta, numero, pago_diferido, saldomaximo from tarjetas,cuentas where tarjetas.id_cuentas=cuentas.id_cuentas and tarjetas.tj_activa=true order by tarjetas.tarjeta"
         mylog(sql)
         curs=con.Execute(sql); 
         
@@ -1691,7 +1691,7 @@ class Tarjeta:
             s= s + '          <treeitem>\n'
             s= s + '               <treerow>\n'
             s= s + '                    <treecell label="'+str(row["id_tarjetas"])+ '" />\n'
-            s= s + '                    <treecell label="'+str(row["lu_cuentas"])+ '" />\n'
+            s= s + '                    <treecell label="'+str(row["id_cuentas"])+ '" />\n'
             s= s + '                    <treecell label="'+str(row["tj_activa"])+ '" />\n'
             s= s + '                    <treecell label="'+str(row["pago_diferido"])+ '" />\n'
             s= s + '                    <treecell label="'+ row["tarjeta"]+ '" />\n'
@@ -1717,8 +1717,8 @@ class TarjetaOperacion:
             return False
         return True
         
-    def insertar(self,  fecha, lu_conceptos, lu_tiposoperaciones,  importe,  comentario,  id_tarjetas):
-        sql="insert into opertarjetas (fecha, lu_conceptos, lu_tiposoperaciones, importe, comentario, ma_tarjetas, pagado) values ('" + fecha + "'," + str(lu_conceptos)+","+ str(lu_tiposoperaciones) +","+str(importe)+", '"+comentario+"', "+str(id_tarjetas)+", false)"
+    def insertar(self,  fecha, id_conceptos, id_tiposoperaciones,  importe,  comentario,  id_tarjetas):
+        sql="insert into opertarjetas (fecha, id_conceptos, id_tiposoperaciones, importe, comentario, id_tarjetas, pagado) values ('" + fecha + "'," + str(id_conceptos)+","+ str(id_tiposoperaciones) +","+str(importe)+", '"+comentario+"', "+str(id_tarjetas)+", false)"
         try:
             con.Execute(sql);
         except:
@@ -1726,7 +1726,7 @@ class TarjetaOperacion:
         return True
         
     def modificar_fechapago(self, id_opertarjetas,  fechapago, id_opercuentas):
-        sql="update opertarjetas set fechapago='"+str(fechapago)+"', pagado=true "+", lu_opercuentas="+str(id_opercuentas)+"  where id_opertarjetas=" +str(id_opertarjetas) 
+        sql="update opertarjetas set fechapago='"+str(fechapago)+"', pagado=true "+", id_opercuentas="+str(id_opercuentas)+"  where id_opertarjetas=" +str(id_opertarjetas) 
         try:
             con.Execute(sql);
         except:
@@ -1750,9 +1750,9 @@ class TipoOperacion:
         while not curs.EOF:
             row = curs.GetRowAssoc(0)   
             if row['id_tiposoperaciones']==selected:
-                s=s +  '       <menuitem label="'+utf82xul(row['tipo_operacion'])+'" value="'+str(row['id_tiposoperaciones'])+'" selected="true"/>\n'
+                s=s +  '       <menuitem label="'+utf82xul(row['tipooperacion'])+'" value="'+str(row['id_tiposoperaciones'])+'" selected="true"/>\n'
             else:
-                s=s +  '       <menuitem label="'+utf82xul(row['tipo_operacion'])+'" value="'+str(row['id_tiposoperaciones'])+'"/>\n'
+                s=s +  '       <menuitem label="'+utf82xul(row['tipooperacion'])+'" value="'+str(row['id_tiposoperaciones'])+'"/>\n'
             curs.MoveNext()     
         curs.Close()
         s=s +  '     </menupopup>\n'
@@ -1765,7 +1765,7 @@ class Total:
         """
             Saca la suma de todos los gastos producidos en un año.
         """
-        sql="select sum(Importe) as importe from opercuentas where importe<0 and date_part('year',fecha) = "+str(year)+" and lu_tiposoperaciones in (1,7);"
+        sql="select sum(Importe) as importe from opercuentas where importe<0 and date_part('year',fecha) = "+str(year)+" and id_tiposoperaciones in (1,7);"
         curs=con.Execute(sql); 
         row = curs.GetRowAssoc(0)   
         if row['importe']==None:
@@ -1826,7 +1826,7 @@ class Total:
         return row['saldo'];
 
     def saldo_por_tipo_operacion(self, ano,  mes,  tipooperacion):
-        sql="select sum(Importe) as importe from opercuentas where lu_tiposoperaciones="+str(tipooperacion)+" and date_part('year',fecha) = "+str(ano)+" and date_part('month',fecha)= " + str(mes);
+        sql="select sum(Importe) as importe from opercuentas where id_tiposoperaciones="+str(tipooperacion)+" and date_part('year',fecha) = "+str(ano)+" and date_part('month',fecha)= " + str(mes);
         curs=con.Execute(sql); 
         row = curs.GetRowAssoc(0)   
         if row['importe']==None:
@@ -1843,7 +1843,7 @@ class Total:
         
     def xultree_historico_dividendos(self, ano):
         sumsaldos=0
-        sql="select id_dividendos, fecha, liquido, inversione, entidadesbancaria from dividendos, inversiones, cuentas, entidadesbancarias where entidadesbancarias.id_entidadesbancarias=cuentas.ma_entidadesbancarias and cuentas.id_cuentas=inversiones.lu_cuentas and dividendos.lu_inversiones=inversiones.id_inversiones and date_part('year',fecha)="+str(ano) + " order by fecha desc;"
+        sql="select id_dividendos, fecha, liquido, inversion, entidadbancaria from dividendos, inversiones, cuentas, entidadesbancarias where entidadesbancarias.id_entidadesbancarias=cuentas.id_entidadesbancarias and cuentas.id_cuentas=inversiones.id_cuentas and dividendos.id_inversiones=inversiones.id_inversiones and date_part('year',fecha)="+str(ano) + " order by fecha desc;"
         curs=con.Execute(sql); 
         s=     '<vbox flex="1">\n'
         s=s+ '        <tree id="tree" flex="3">\n'
@@ -1860,8 +1860,8 @@ class Total:
             s=s+ '    <treeitem>\n'
             s=s+ '      <treerow>\n'
             s=s+ '       <treecell label="'+ str(row["fecha"])[:-12]+ '" />\n'
-            s=s+ '       <treecell label="'+ row["inversione"]+ '" />\n'
-            s=s+ '       <treecell label="'+ row["entidadesbancaria"]+ '" />\n'
+            s=s+ '       <treecell label="'+ row["inversion"]+ '" />\n'
+            s=s+ '       <treecell label="'+ row["entidadbancaria"]+ '" />\n'
             s=s+        treecell_euros(row['liquido']);
             s=s+ '      </treerow>\n'
             s=s+ '    </treeitem>\n'
@@ -1908,7 +1908,7 @@ class Total:
         s=s+ '  <treechildren>\n'
         while not curs.EOF:
             row = curs.GetRowAssoc(0)   
-            id_inversiones=row['ma_inversiones'];
+            id_inversiones=row['id_inversiones'];
             saldoinicio=-row['acciones']*row['valor_accion_compra'];
             saldofinal=-row['acciones']*row['valor_accion_venta'];
             pendiente=saldofinal-saldoinicio;
@@ -1930,14 +1930,14 @@ class Total:
                 sumoperacionespositivas=sumoperacionespositivas+pendiente; 
             else:
                 sumoperacionesnegativas=sumoperacionesnegativas+pendiente;
-            rowinv=con.Execute("select * from inversiones where id_inversiones="+ str(row['ma_inversiones'])).GetRowAssoc(0)
-            regTipoOperacion=con.Execute("select *  from tiposoperaciones where id_tiposoperaciones=" + str(row['lu_tipooperaciones'])).GetRowAssoc(0)
+            rowinv=con.Execute("select * from inversiones where id_inversiones="+ str(row['id_inversiones'])).GetRowAssoc(0)
+            regTipoOperacion=con.Execute("select *  from tiposoperaciones where id_tiposoperaciones=" + str(row['id_tipooperaciones'])).GetRowAssoc(0)
             s=s+ '    <treeitem>\n'
             s=s+ '      <treerow>\n'
             s=s+ '       <treecell label="'+str(row["fecha_venta"])[:-12]+ '" />\n'
             s=s+ '       <treecell label="'+str(dosdecimales(anos))+ '" />\n'
-            s=s+ '       <treecell label="'+rowinv['inversione']+ '" />\n'
-            s=s+ '       <treecell label="'+regTipoOperacion['tipo_operacion']+ '" />\n'
+            s=s+ '       <treecell label="'+rowinv['inversion']+ '" />\n'
+            s=s+ '       <treecell label="'+regTipoOperacion['tipooperacion']+ '" />\n'
             s=s+        treecell_euros(saldoinicio);
             s=s+        treecell_euros(saldofinal);
             s=s+        treecell_euros(pendiente);
@@ -1979,13 +1979,13 @@ class Total:
             curs.MoveNext()     
         curs.Close()
  
-        beneficiocon=Inversion().aplicar_tipo_fiscal(sumoperacionespositivas,sumoperacionesnegativas)+sumimpuestos+sumcomision+Dividendo().suma_liquido_todos(inicio,fin)
+        beneficiocon=Inversion().aplicar_tipo_fiscal(sumoperacionespositivas,sumoperacionesnegativas)+sumimpuestos+sumcomision+Dividendo().suid_liquido_todos(inicio,fin)
 
         saldototal=Total().saldo_total(datetime.date.today());
 
         saldototalinicio=Total().saldo_total(inicio)
 
-        beneficio=sumoperacionespositivas+sumoperacionesnegativas+sumimpuestos+sumcomision+(Dividendo().suma_liquido_todos(inicio,fin)*1.18)
+        beneficio=sumoperacionespositivas+sumoperacionesnegativas+sumimpuestos+sumcomision+(Dividendo().suid_liquido_todos(inicio,fin)*1.18)
 
         s=      '<vbox flex="1">\n'
         s=s+ ' <tree flex="1">\n'
