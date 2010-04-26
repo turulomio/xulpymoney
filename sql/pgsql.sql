@@ -387,33 +387,6 @@ CREATE TABLE actuinversiones (
 ALTER TABLE public.actuinversiones OWNER TO postgres;
 
 --
--- Name: bolsa; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
---
-
-CREATE TABLE bolsa (
-    empresa name,
-    valor name,
-    fecha name
-);
-
-
-ALTER TABLE public.bolsa OWNER TO postgres;
-
---
--- Name: comentarios; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
---
-
-CREATE TABLE comentarios (
-    id_comentarios integer NOT NULL,
-    comentario text,
-    lu_tiposoperaciones integer,
-    lu_conceptos integer
-);
-
-
-ALTER TABLE public.comentarios OWNER TO postgres;
-
---
 -- Name: conceptos; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -588,7 +561,6 @@ CREATE TABLE inversiones (
     in_activa boolean DEFAULT true NOT NULL,
     tpcvariable integer NOT NULL,
     lu_cuentas integer NOT NULL,
-    cotizamercado boolean DEFAULT true NOT NULL,
     compra double precision DEFAULT 0 NOT NULL,
     venta double precision DEFAULT 0 NOT NULL
 );
@@ -1035,16 +1007,6 @@ CREATE VIEW todo_opercuentas AS
 ALTER TABLE public.todo_opercuentas OWNER TO postgres;
 
 --
--- Name: todo_operinversiones; Type: VIEW; Schema: public; Owner: postgres
---
-
-CREATE VIEW todo_operinversiones AS
-    SELECT operinversiones.id_operinversiones, operinversiones.fecha, operinversiones.acciones, operinversiones.importe, operinversiones.impuestos, operinversiones.comision, operinversiones.comentario, tiposoperaciones.id_tiposoperaciones, tiposoperaciones.tipo_operacion, inversiones.id_inversiones, inversiones.inversione, inversiones.in_activa, inversiones.tpcvariable, inversiones.lu_cuentas, inversiones.cotizamercado FROM operinversiones, tiposoperaciones, inversiones WHERE ((operinversiones.lu_tiposoperaciones = tiposoperaciones.id_tiposoperaciones) AND (inversiones.id_inversiones = operinversiones.ma_inversiones));
-
-
-ALTER TABLE public.todo_operinversiones OWNER TO postgres;
-
---
 -- Name: todo_opertarjetas; Type: VIEW; Schema: public; Owner: postgres
 --
 
@@ -1166,13 +1128,6 @@ ALTER TABLE ONLY actuinversiones
 --
 
 CREATE INDEX actuinversiones_fecha ON actuinversiones USING btree (fecha);
-
-
---
--- Name: comentarios_id_comentarios; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
---
-
-CREATE UNIQUE INDEX comentarios_id_comentarios ON comentarios USING btree (id_comentarios);
 
 
 --
