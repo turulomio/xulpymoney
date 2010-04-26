@@ -22,6 +22,9 @@ con.close()
 <script>
 <![CDATA[
 function insert(){
+    if (check_data()==false){
+        return;
+    }
     var xmlHttp;    
     var sp=document.getElementById("cmbconceptos").value.split(";")
     var importe=document.getElementById("importe").value;
@@ -43,6 +46,34 @@ function insert(){
     xmlHttp.open("GET",url,true);
     xmlHttp.send(null);
 }
+
+function check_data(){
+    resultado=true;    
+    //Comprueba si es un float
+    if (!/^[-+]?[0-9]+(\.[0-9]+)?$/.test(document.getElementById("importe").value)){
+        alert("El importe no es un número decimal");
+        resultado=false;
+    }
+    //Comprueba si tiene comillas
+    if (/[\'\"]/.test(document.getElementById("comentario").value)){
+        alert("No se puede meter ningún tipo de comilla");
+        resultado=false;
+    }   
+    //Comprueba la logica de GI
+    if (document.getElementById("cmbconceptos").value.split(";")[1]==1 && document.getElementById("importe").value>0){
+        alert("El importe debe ser negativo ya que el concepto seleccionado es un gasto");
+        resultado=false;
+    }          
+    if (document.getElementById("cmbconceptos").value.split(";")[1]==2 && document.getElementById("importe").value<0){
+        alert("El importe debe ser positivo ya que el concepto seleccionado es un ingreso");
+        resultado=false;
+    }        
+    
+    
+    return resultado;
+}
+
+
 ]]>
 </script>
 <label id="titulo" value="Nueva operación de cuenta" />
