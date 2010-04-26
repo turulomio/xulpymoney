@@ -5,17 +5,18 @@ from xul import *
 
 #Consultas BD
 con=Conection()
+cd=ConectionDirect()
 hoy=datetime.date.today()
 checked=""
 id_inversiones=0
 if form.has_key('id_inversiones'):
     id_inversiones=form['id_inversiones']
 
-reg=con.Execute("select * from inversiones where id_inversiones="+ str(id_inversiones)).GetRowAssoc(0)
+reg=cd.con.Execute("select * from inversiones where id_inversiones="+ str(id_inversiones)).GetRowAssoc(0)
 cmbcuentas=Cuenta().cmb('lu_cuentas','select * from cuentas where cu_activa=true order by cuenta',  reg["lu_cuentas"],  False)
 cmbtpcvariable=Inversion().cmb_tpcvariable('tpcvariable', reg['tpcvariable'], False)
 con.close()
-
+cd.close()
 req.content_type="application/vnd.mozilla.xul+xml"
 req.write(xulheaderwindowmenu("Xulpymoney > Inversiones > Modificar"))
 

@@ -10,24 +10,21 @@ checked=""
 if form.has_key('inactivas'):
     if form['inactivas']=="on":
         checked = 'checked="true"'
-        cur=Inversion().cursor_listado(True,datetime.date.today())
+        listado=Inversion().xul_listado("select id_inversiones, in_activa, inversione, entidadesbancaria, inversiones_saldo(id_inversiones,'"+str(datetime.date.today())+"') as saldo, inversion_actualizacion(id_inversiones,'"+str(datetime.date.today())+"') as actualizacion, inversion_pendiente(id_inversiones,'"+str(datetime.date.today())+"')  as pendiente, inversion_invertido(id_inversiones,'"+str(datetime.date.today())+"')  as invertido from inversiones, cuentas, entidadesbancarias where cuentas.ma_entidadesbancarias=entidadesbancarias.id_entidadesbancarias and cuentas.id_cuentas=inversiones.lu_cuentas order by inversione;")
     else:
-        cur=Inversion().cursor_listado(False,datetime.date.today())
+        listado=Inversion().xul_listado("select id_inversiones, in_activa, inversione, entidadesbancaria, inversiones_saldo(id_inversiones,'"+str(datetime.date.today())+"') as saldo, inversion_actualizacion(id_inversiones,'"+str(datetime.date.today())+"') as actualizacion, inversion_pendiente(id_inversiones,'"+str(datetime.date.today())+"')  as pendiente,  inversion_invertido(id_inversiones,'"+str(datetime.date.today())+"')  as invertido from inversiones, cuentas, entidadesbancarias where cuentas.ma_entidadesbancarias=entidadesbancarias.id_entidadesbancarias and cuentas.id_cuentas=inversiones.lu_cuentas and in_activa='t' order by inversione;")
 else:
-        cur=Inversion().cursor_listado(False,datetime.date.today())
-listado = Inversion().xul_listado(cur)
+        listado=Inversion().xul_listado("select id_inversiones, in_activa, inversione, entidadesbancaria, inversiones_saldo(id_inversiones,'"+str(datetime.date.today())+"') as saldo, inversion_actualizacion(id_inversiones,'"+str(datetime.date.today())+"') as actualizacion, inversion_pendiente(id_inversiones,'"+str(datetime.date.today())+"')  as pendiente,  inversion_invertido(id_inversiones,'"+str(datetime.date.today())+"')  as invertido from inversiones, cuentas, entidadesbancarias where cuentas.ma_entidadesbancarias=entidadesbancarias.id_entidadesbancarias and cuentas.id_cuentas=inversiones.lu_cuentas and in_activa='t' order by inversione;")
+
 con.close()
 
 req.content_type="application/vnd.mozilla.xul+xml"
 req.write(xulheaderwindowmenu("Estado de las inversiones"))
 
 %>
+
 <script>
 <![CDATA[
-
-var id_inversiones=10;
-var tree = document.getElementById("tree");
-
 function checkbox_submit(){
    if (document.getElementById("checkbox").checked==true) {
      location='inversion_listado.psp?inactivas=on';
@@ -35,83 +32,8 @@ function checkbox_submit(){
      location='inversion_listado.psp';
    } 
 }
-
-function tree_getid()
-{
-    var tree = document.getElementById("tree");
-    /*el boolean de un "0" es true y bolean de un 0 es false*/
-    var activa=Boolean(Number(tree.view.getCellText(tree.currentIndex,tree.columns.getNamedColumn("activa"))));
-    id_inversiones=tree.view.getCellText(tree.currentIndex,tree.columns.getNamedColumn("id"));
-    var popup = document.getElementById("treepopup");
-    if (document.getElementById("popactiva")){
-        popup.removeChild(document.getElementById("popactiva"));
-    }
-    var popactiva=document.createElement('menuitem');
-    popactiva.setAttribute("id", "popactiva");
-  if (activa){
-    popactiva.setAttribute("label", "Desactivar la inversión");
-    popactiva.setAttribute("checked", "false");
-    popactiva.setAttribute("oncommand", "modificar_activa();");
- }else{
-    popactiva.setAttribute("label", "Activar la inversión");
-    popactiva.setAttribute("checked", "true");
-    popactiva.setAttribute("oncommand", "modificar_activa();");
- }
-    popup.appendChild(popactiva);
-}
-
-
-function modificar_activa(){
-var tree = document.getElementById("tree");
-    var xmlHttp;
-    var activa=Boolean(Number(tree.view.getCellText(tree.currentIndex,tree.columns.getNamedColumn("activa"))));
-    xmlHttp=new XMLHttpRequest();
-    xmlHttp.onreadystatechange=function(){
-        if(xmlHttp.readyState==4){
-            var ale=xmlHttp.responseText;
-            location='inversion_listado.psp';
-        }
-    }
-    var url="ajax/inversion_modificar_activa.psp?id_inversiones="+id_inversiones+'&activa='+!activa;
-    xmlHttp.open("GET",url,true);
-    xmlHttp.send(null);
-}
-
-
-function actualizar_internet(){
-    var tree = document.getElementById("tree");
-    var xmlHttp;
-    var nombre=tree.view.getCellText(tree.currentIndex,tree.columns.getNamedColumn("inversion"));
-    xmlHttp=new XMLHttpRequest();
-    xmlHttp.onreadystatechange=function(){
-        if(xmlHttp.readyState==4){
-            var ale=xmlHttp.responseText;
-            alert (ale);
-            location='inversion_listado.psp';
-        }
-    }    
-    var url="ajax/inversion_actualizacion.psp?inversion="+ nombre+ "&id_inversiones="+ id_inversiones ;
-    alert (url);
-    xmlHttp.open("GET",url,true);
-    xmlHttp.send(null);
-}
-
-
 ]]>
 </script>
-<popupset>
-  <popup id="treepopup" >
-    <menuitem label="Actualizar el valor" oncommand="location='inversion_actualizacion.psp?id_inversiones=' + id_inversiones;"  class="menuitem-iconic"  image="images/hotsync.png" />               
-    <menuitem label="Actualizar en Internet" oncommand="actualizar_internet();"  class="menuitem-iconic"  image="images/hotsync.png" />           
-    <menuseparator/>
-    <menuitem label="Nueva inversión" oncommand="location=\'inversion_insertar.psp\'" class="menuitem-iconic"  image="images/item_add.png"/>
-    <menuitem label="Modificar la inversión"  oncommand='location="inversion_modificar.psp?id_inversiones=" + id_inversiones;'   class="menuitem-iconic"  image="images/edit.png" />
-    <menuitem label="Estudio de la inversión"  oncommand="location='inversion_informacion.psp?id_inversiones=' + id_inversiones;"  class="menuitem-iconic"  image="images/toggle_log.png" />
-    <menuseparator/>
-
-  </popup>
-</popupset>
-
 
 
 <vbox  flex="1">

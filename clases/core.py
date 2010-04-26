@@ -135,7 +135,9 @@ class Banco:
         
 
         s= s+ 'function banco_patrimonio(){\n'
-        s= s+ '     alert(\'Falta desarrollar\');\n'
+        s= s+ '     var tree = document.getElementById("treeBancos");\n'
+        s= s+ '     id_entidadesbancarias=tree.view.getCellText(tree.currentIndex,tree.columns.getNamedColumn("id"));\n'
+        s= s+ '     location=\'banco_patrimonio.psp?id_entidadesbancarias=\' + id_entidadesbancarias;\n'
         s= s+ '}\n\n'        
         s= s+ ']]>\n</script>\n\n'        
         
@@ -253,11 +255,7 @@ class Cuenta:
         return True
 
 
-    def xul_listado(self, inactivas,  fecha):
-        if inactivas==True:
-            sql="select id_cuentas, cu_activa, cuenta, entidadesbancarias.entidadesbancaria, numero_cuenta, cuentas_saldo(id_cuentas,'"+str(fecha)+"') as saldo from cuentas, entidadesbancarias where cuentas.ma_entidadesbancarias=entidadesbancarias.id_entidadesbancarias order by cuenta";
-        else:
-            sql="select id_cuentas, cu_activa, cuenta, entidadesbancarias.entidadesbancaria, numero_cuenta, cuentas_saldo(id_cuentas,'"+str(fecha)+"') as saldo from cuentas, entidadesbancarias where cuentas.ma_entidadesbancarias=entidadesbancarias.id_entidadesbancarias and cu_activa='t' order by cuenta";
+    def xul_listado(self, sql):
         sumsaldos=0;
         s=      '<script>\n<![CDATA[\n'
         s= s+ 'function popupCuentas(){\n'
@@ -370,7 +368,7 @@ class Cuenta:
             curs.MoveNext()     
         s= s + '     </treechildren>\n'
         s= s + '</tree>\n'
-        s= s + '<label flex="1"  style="text-align: center;font-weight : bold;" value="Saldo total de todas las cuentas: '+ euros(sumsaldos)+'" />\n'
+        s= s + '<label flex="1"  id="totalcuentas" style="text-align: center;font-weight : bold;" value="Saldo total de todas las cuentas: '+ euros(sumsaldos)+'" total="'+str(sumsaldos)+'" />\n'
         s= s + '</vbox>\n'
         curs.Close()
         return s
@@ -786,14 +784,6 @@ class Inversion:
         s=s +  '     </menupopup>\n'
         s=s + '</menulist>\n'
         return s
-
-    def cursor_listado(self, inactivas,  fecha):
-        if inactivas==True:
-            sql="select id_inversiones, in_activa, inversione, entidadesbancaria, inversiones_saldo(id_inversiones,'"+str(fecha)+"') as saldo, inversion_actualizacion(id_inversiones,'"+str(fecha)+"') as actualizacion, inversion_pendiente(id_inversiones,'"+str(fecha)+"')  as pendiente, inversion_invertido(id_inversiones,'"+str(fecha)+"')  as invertido from inversiones, cuentas, entidadesbancarias where cuentas.ma_entidadesbancarias=entidadesbancarias.id_entidadesbancarias and cuentas.id_cuentas=inversiones.lu_cuentas order by inversione;"
-
-        else:
-            sql="select id_inversiones, in_activa, inversione, entidadesbancaria, inversiones_saldo(id_inversiones,'"+str(fecha)+"') as saldo, inversion_actualizacion(id_inversiones,'"+str(fecha)+"') as actualizacion, inversion_pendiente(id_inversiones,'"+str(fecha)+"')  as pendiente,  inversion_invertido(id_inversiones,'"+str(fecha)+"')  as invertido from inversiones, cuentas, entidadesbancarias where cuentas.ma_entidadesbancarias=entidadesbancarias.id_entidadesbancarias and cuentas.id_cuentas=inversiones.lu_cuentas and in_activa='t' order by inversione;"
-        return con.Execute(sql); 
             
     def insertar(self,  inversione,  compra,  venta,  tpcvariable,  lu_cuentas):
         sql="insert into inversiones (inversione, compra, venta, tpcvariable, lu_cuentas, in_activa, cotizamercado) values ('"+inversione+"', "+str(compra)+", "+str(venta)+", "+str(tpcvariable)+", "+str(lu_cuentas)+", true, true);"
@@ -887,48 +877,148 @@ class Inversion:
         return s
         
 
-    def xul_listado(self, curs):
+    def xul_listado(self, sql):
+        curs=con.Execute(sql); 
         sumsaldos=0;
-        sumpendiente=0
-        s= '<vbox flex="1">\n'
-        s= s+ '<tree id="tree" enableColumnDrag="true" flex="6"   context="treepopup"  onselect="tree_getid();"  ondblclick="location=\'inversion_informacion.psp?id_inversiones=\' + id_inversiones;" >\n'
-        s= s+ '<treecols>\n'
-        s= s+  '<treecol id="id" label="id" hidden="true" />\n'
-        s= s+  '<treecol id="activa" label="activa" hidden="true" />\n'
-        s= s+  '<treecol id="inversion" label="Inversión" sort="?col_inversion" sortActive="true" sortDirection="descending" flex="2"/>\n'
-        s= s+  '<treecol id="col_entidad_bancaria" label="Entidad Bancaria"  sort="?col_entidad_bancaria" sortActive="true" sortDirection="descending" flex="2"/>\n'
-        s= s+  '<treecol id="col_valor" label="Valor Acción" flex="2" style="text-align: right" />\n'
-        s= s+  '<treecol id="col_valor" label="Saldo" flex="2" style="text-align: right" />\n'
-        s= s+  '<treecol id="col_saldo" label="Pendiente" flex="1" style="text-align: right"/>\n'
-        s= s+  '<treecol label="Invertido" hidden="true"  flex="1" style="text-align: right" />\n'
-        s= s+  '<treecol id="col_saldo" label="Rendimiento"   sort="?Rendimiento" sortActive="true" sortDirection="descending" flex="1" style="text-align: right"/>\n'
-        s= s+  '</treecols>\n'
-        s= s+  '<treechildren>\n'
+        sumpendiente=0       
+        s=      '<script>\n<![CDATA[\n'
+        s= s+ 'function popupInversiones(){\n'
+        s= s+ '     var tree = document.getElementById("treeInversiones");\n'
+        #el boolean de un "0" es true y bolean de un 0 es false
+        s= s+ '     var activa=Boolean(Number(tree.view.getCellText(tree.currentIndex,tree.columns.getNamedColumn( "activa"))));\n'
+        s= s+ '     id_cuentas=tree.view.getCellText(tree.currentIndex,tree.columns.getNamedColumn("id"));\n'
+        s= s+ '     var popup = document.getElementById("popupInversiones");\n'
+        s= s+ '     if (document.getElementById("popmodificar")){\n'#Con que exista este vale
+        s= s+ '         popup.removeChild(document.getElementById("popmodificar"));\n'
+        s= s+ '         popup.removeChild(document.getElementById("popactiva"));\n'
+        s= s+ '         popup.removeChild(document.getElementById("popseparator1"));\n'
+        s= s+ '         popup.removeChild(document.getElementById("popestudio"));\n'
+        s= s+ '     }\n'
+        s= s+ '     var popmodificar=document.createElement("menuitem");\n'
+        s= s+ '     popmodificar.setAttribute("id", "popmodificar");\n'
+        s= s+ '     popmodificar.setAttribute("label", "Modificar la inversión");\n'
+        s= s+ '     popmodificar.setAttribute("class", "menuitem-iconic");\n'
+        s= s+ '     popmodificar.setAttribute("image", "images/edit.png");\n'
+        s= s+ '     popmodificar.setAttribute("oncommand", "inversion_modificar();");\n'
+        s= s+ '     popup.appendChild(popmodificar);\n'
+        s= s+ '     var popactiva=document.createElement("menuitem");\n'
+        s= s+ '     popactiva.setAttribute("id", "popactiva");\n'
+        s= s+ '     if (activa){\n'
+        s= s+ '         popactiva.setAttribute("label", "Desactivar la inversión");\n'
+        s= s+ '         popactiva.setAttribute("checked", "false");\n'
+        s= s+ '         popactiva.setAttribute("oncommand", "inversion_modificar_activa();");\n'
+        s= s+ '     }else{\n'
+        s= s+ '         popactiva.setAttribute("label", "Activar la inversión");\n'
+        s= s+ '         popactiva.setAttribute("checked", "true");\n'
+        s= s+ '         popactiva.setAttribute("oncommand", "inversion_modificar_activa();");\n'
+        s= s+ '     }\n'
+        s= s+ '     popup.appendChild(popactiva);\n'
+        s= s+ '     var popseparator1=document.createElement("menuseparator");\n'
+        s= s+ '     popseparator1.setAttribute("id", "popseparator1");\n'
+        s= s+ '     popup.appendChild(popseparator1);\n'
+        s= s+ '     var popestudio=document.createElement("menuitem");\n'
+        s= s+ '     popestudio.setAttribute("id", "popestudio");\n'
+        s= s+ '     popestudio.setAttribute("label", "Estudio de la inversión");\n'
+        s= s+ '     popestudio.setAttribute("oncommand", "inversion_estudio();");\n'
+        s= s+ '     popup.appendChild(popestudio);\n'
+        s= s+ '}\n\n'
+
+        s= s+ 'function actualizar_internet(){\n'
+        s= s+ '    var tree = document.getElementById("tree");\n'
+        s= s+ '    var xmlHttp;\n'
+        s= s+ '    var nombre=tree.view.getCellText(tree.currentIndex,tree.columns.getNamedColumn("inversion"));\n'
+        s= s+ '    xmlHttp=new XMLHttpRequest();\n'
+        s= s+ '    xmlHttp.onreadystatechange=function(){\n'
+        s= s+ '        if(xmlHttp.readyState==4){\n'
+        s= s+ '            var ale=xmlHttp.responseText;\n'
+        s= s+ '            alert (ale);\n'
+        s= s+ '            location=\'inversion_listado.psp\';\n'
+        s= s+ '        }\n'
+        s= s+ '    }    \n'
+        s= s+ '    var url="ajax/inversion_actualizacion.psp?inversion="+ nombre+ "&id_inversiones="+ id_inversiones ;\n'
+        s= s+ '    alert (url);\n'
+        s= s+ '    xmlHttp.open("GET",url,true);\n'
+        s= s+ '    xmlHttp.send(null);\n'
+        s= s+ '}\n\n'
+
+        s= s+ 'function inversion_modificar(){\n'
+        s= s+ '     var tree = document.getElementById("treeInversiones");\n'
+        s= s+ '     var id_inversiones=tree.view.getCellText(tree.currentIndex,tree.columns.getNamedColumn("id"));\n'
+        s= s+ '     location=\'inversion_modificar.psp?id_inversiones=\'+ id_inversiones;\n'
+        s= s+ '}\n\n'
+        
+        s= s+ 'function inversion_estudio(){\n'
+        s= s+ '     var tree = document.getElementById("treeInversiones");\n'
+        s= s+ '     var id_inversiones=tree.view.getCellText(tree.currentIndex,tree.columns.getNamedColumn("id"));\n'
+        s= s+ '     location=\'inversion_informacion.psp?id_inversiones=\' + id_inversiones;\n'
+        s= s+ '}\n\n'
+        
+        s= s+ 'function inversion_modificar_activa(){\n'
+        s= s+ '     var tree = document.getElementById("treeInversiones");\n'
+        s= s+ '     var xmlHttp;\n'
+        s= s+ '     var id_inversiones=tree.view.getCellText(tree.currentIndex,tree.columns.getNamedColumn("id"));\n'
+        s= s+ '     var activa=Boolean(Number(tree.view.getCellText(tree.currentIndex,tree.columns.getNamedColumn( "activa"))));\n'
+        s= s+ '     xmlHttp=new XMLHttpRequest();\n'
+        s= s+ '     xmlHttp.onreadystatechange=function(){\n'
+        s= s+ '         if(xmlHttp.readyState==4){\n'
+        s= s+ '             var ale=xmlHttp.responseText;\n'
+        s= s+ '             location="inversion_listado.psp";\n'
+        s= s+ '         }\n'
+        s= s+ '     }\n'
+        s= s+ '     var url="ajax/inversion_modificar_activa.psp?id_inversiones="+id_inversiones+\'&activa=\'+!activa;\n'
+        s= s+ '     xmlHttp.open("GET",url,true);\n'
+        s= s+ '     xmlHttp.send(null);\n'
+        s= s+ '}\n'
+        s= s+ ']]>\n</script>\n\n'                
+
+        s= s+ '<vbox flex="1">\n'
+        s= s+ '<popupset>\n'
+        s= s+ '    <popup id="popupInversiones" >\n'
+        s= s+ '        <menuitem label="Actualizar el valor" oncommand="location=\'inversion_actualizacion.psp?id_inversiones=\' + id_inversiones;"  class="menuitem-iconic"  image="images/hotsync.png" />               \n'
+        s= s+ '        <menuitem label="Actualizar en Internet" oncommand="actualizar_internet();"  class="menuitem-iconic"  image="images/hotsync.png" />           \n'
+        s= s+ '        <menuseparator/>\n'
+        s= s+ '        <menuitem label="Nueva inversión" oncommand="location=\'inversion_insertar.psp\'" class="menuitem-iconic"  image="images/item_add.png"/>\n'
+        s= s+ '    </popup>\n'
+        s= s+ '</popupset>\n'
+
+        s= s+ '<tree id="treeInversiones" enableColumnDrag="true" flex="6"   context="popupInversiones"  onselect="popupInversiones();"  ondblclick="inversion_estudio();" >\n'
+        s= s+ '    <treecols>\n'
+        s= s+  '        <treecol id="id" label="id" hidden="true" />\n'
+        s= s+  '        <treecol id="activa" label="activa" hidden="true" />\n'
+        s= s+  '        <treecol id="inversion" label="Inversión" sort="?col_inversion" sortActive="true" sortDirection="descending" flex="2"/>\n'
+        s= s+  '        <treecol id="col_entidad_bancaria" label="Entidad Bancaria"  sort="?col_entidad_bancaria" sortActive="true" sortDirection="descending" flex="2"/>\n'
+        s= s+  '        <treecol id="col_valor" label="Valor Acción" flex="2" style="text-align: right" />\n'
+        s= s+  '        <treecol id="col_valor" label="Saldo" flex="2" style="text-align: right" />\n'
+        s= s+  '        <treecol id="col_saldo" label="Pendiente" flex="1" style="text-align: right"/>\n'
+        s= s+  '        <treecol label="Invertido" hidden="true"  flex="1" style="text-align: right" />\n'
+        s= s+  '        <treecol id="col_saldo" label="Rendimiento"   sort="?Rendimiento" sortActive="true" sortDirection="descending" flex="1" style="text-align: right"/>\n'
+        s= s+  '    </treecols>\n'
+        s= s+  '    <treechildren>\n'
         while not curs.EOF:
             row = curs.GetRowAssoc(0)   
             sumsaldos=sumsaldos+ dosdecimales(row['saldo'])
             sumpendiente=sumpendiente+dosdecimales(row['pendiente'])
-            s= s + '<treeitem>\n'
-            s= s + '<treerow>\n'
-            s= s + '<treecell label="'+str(row["id_inversiones"])+ '" />\n'
-            s= s + '<treecell label="'+str(row["in_activa"])+ '" />\n'
-            s= s + '<treecell label="'+str(row["inversione"])+ '" />\n'
-            s= s + '<treecell label="'+ row["entidadesbancaria"]+ '" />\n'
-            s= s + treecell_euros(row["actualizacion"], 3)
-            s= s + treecell_euros(row['saldo'])
-            s= s + treecell_euros(row['pendiente'])
-            s= s + treecell_euros(row['invertido'])
+            s= s + '        <treeitem>\n'
+            s= s + '            <treerow>\n'
+            s= s + '                <treecell label="'+str(row["id_inversiones"])+ '" />\n'
+            s= s + '                <treecell label="'+str(row["in_activa"])+ '" />\n'
+            s= s + '                <treecell label="'+str(row["inversione"])+ '" />\n'
+            s= s + '                <treecell label="'+ row["entidadesbancaria"]+ '" />\n'
+            s= s + '                ' + treecell_euros(row["actualizacion"], 3)
+            s= s + '                ' + treecell_euros(row['saldo'])
+            s= s + '                ' + treecell_euros(row['pendiente'])
+            s= s +'                ' +  treecell_euros(row['invertido'])
             if row['saldo']==0 or row['invertido']==0:
                 tpc=0
             else:
                 tpc=100*row['pendiente']/row['invertido']
             s= s + treecell_tpc(tpc)
-            s= s + '</treerow>\n'
-            s= s + '</treeitem>\n'
+            s= s + '            </treerow>\n'
+            s= s + '        </treeitem>\n'
             curs.MoveNext()     
-        s= s + '</treechildren>\n'
+        s= s + '    </treechildren>\n'
         s= s + '</tree>\n'
-        s= s + '<label flex="0"  style="text-align: center;font-weight : bold;" value="Saldo total de todas las inversiones: '+ euros(sumsaldos)+'. Pendiente de consolidar: '+euros(sumpendiente)+'." />\n'
+        s= s + '<label flex="0"  id="totalinversiones" style="text-align: center;font-weight : bold;" value="Saldo total de todas las inversiones: '+ euros(sumsaldos)+'. Pendiente de consolidar: '+euros(sumpendiente)+'." total="'+str(sumsaldos)+'" />\n'
         s= s + '</vbox>\n'
         curs.Close()
         return s
