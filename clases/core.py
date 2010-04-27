@@ -216,9 +216,9 @@ class Concepto:
         while not curs.EOF:
             row = curs.GetRowAssoc(0)   
             if row['id_conceptos']==selected:
-                s=s +  '       <menuitem label="'+utf82xul(row['concepto'])+'" value="'+str(row['id_conceptos'])+";"+str(row['id_tipooperacion'])+'" selected="true"/>\n'
+                s=s +  '       <menuitem label="'+utf82xul(row['concepto'])+'" value="'+str(row['id_conceptos'])+";"+str(row['id_tiposoperaciones'])+'" selected="true"/>\n'
             else:
-                s=s +  '       <menuitem label="'+utf82xul(row['concepto'])+'" value="'+str(row['id_conceptos'])+';'+str(row['id_tipooperacion'])+'"/>\n'
+                s=s +  '       <menuitem label="'+utf82xul(row['concepto'])+'" value="'+str(row['id_conceptos'])+';'+str(row['id_tiposoperaciones'])+'"/>\n'
             curs.MoveNext()     
         curs.Close()
         s=s +  '     </menupopup>\n'
@@ -228,7 +228,6 @@ class Concepto:
         
     def insertar(self,  concepto,  id_tiposoperaciones):
         sql="insert into conceptos (concepto, id_tiposoperaciones) values ('" + str(concepto)+ "', "+str(id_tiposoperaciones)+")"
-        mylog(sql)
         try:
             con.Execute(sql);
         except:
@@ -244,6 +243,63 @@ class Concepto:
             return False
         return True
         
+    def saldo(self, id_conceptos, year,  month):
+        sql="select sum(importe) as importe from opercuentas where id_conceptos="+str(id_conceptos)+" and date_part('year',fecha)='"+str(year)+"' and date_part('month',fecha)='"+str(month)+"'"
+        saldoopercuentas=con.Execute(sql).GetRowAssoc(0)["importe"]
+        if saldoopercuentas==None:
+            saldoopercuentas=0
+        sql="select sum(importe) as importe from opertarjetas where id_conceptos="+str(id_conceptos)+" and date_part('year',fechapago)='"+str(year)+"' and date_part('month',fechapago)='"+str(month)+"'"
+        saldotarjetas=con.Execute(sql).GetRowAssoc(0)["importe"]        
+        if saldotarjetas==None:
+            saldotarjetas=0
+        return saldoopercuentas+ saldotarjetas
+        
+    def xultree_informe(self, id_conceptos):
+        s=''        
+        s= s+ '<tree id="treeConceptos" flex="6">\n'
+        s= s+ '     <treecols>\n'
+        s= s+ '         <treecol label="Año " flex="1"  style="text-align: left"/>\n'
+        s= s+ '         <treecol label="Enero     " flex="1" style="text-align: right"/>\n'
+        s= s+ '         <treecol label="Febrero   " flex="1" style="text-align: right"/>\n'
+        s= s+ '         <treecol label="Marzo     " flex="1" style="text-align: right"/>\n'
+        s= s+ '         <treecol label="Abril     " flex="1" style="text-align: right"/>\n'
+        s= s+ '         <treecol label="Mayo      " flex="1" style="text-align: right"/>\n'
+        s= s+ '         <treecol label="Junio     " flex="1" style="text-align: right"/>\n'
+        s= s+ '         <treecol label="Julio     " flex="1" style="text-align: right"/>\n'
+        s= s+ '         <treecol label="Agosto    " flex="1" style="text-align: right"/>\n'
+        s= s+ '         <treecol label="Septiembre" flex="1" style="text-align: right"/>\n'
+        s= s+ '         <treecol label="Octubre   " flex="1" style="text-align: right"/>\n'
+        s= s+ '         <treecol label="Noviembre " flex="1" style="text-align: right"/>\n'
+        s= s+ '         <treecol label="Diciembre " flex="1" style="text-align: right"/>\n'
+        s= s+ '         <treecol label="Total     " flex="1" style="text-align: right"/>\n'
+        s= s+  '     </treecols>\n'
+        s= s+  '     <treechildren>\n'
+        fechamenor=con.Execute("select min(fecha) as fecha from opercuentas, conceptos where conceptos.id_conceptos=opercuentas.id_conceptos and conceptos.id_conceptos="+str(id_conceptos)).GetRowAssoc(0)['fecha']
+        sumtotal=0
+        for year in range(fechamenor.year, datetime.date.today().year+1):
+            total=0
+            s= s + '          <treeitem >\n'
+            s= s + '               <treerow>\n'
+            s= s + '                    <treecell label="'+str(year)+ '" />\n'
+            for month in range(1, 13):
+                saldo=Concepto().saldo(id_conceptos, year, month)
+                total=total+saldo
+                sumtotal=sumtotal+saldo
+                s= s + '                    '+treecell_euros(saldo)
+            s= s + '                    '+treecell_euros(total)
+            s= s + '               </treerow>\n'
+            s= s + '          </treeitem>\n'
+        s= s + '     </treechildren>\n'
+        s= s + '</tree>\n'        
+        if(datetime.date.today().year-fechamenor.year)==0:
+            mediamensual=sumtotal/(12)
+            mediaanual=sumtotal
+        else:
+            mediamensual=sumtotal/(12*(datetime.date.today().year-fechamenor.year))
+            mediaanual=sumtotal/(datetime.date.today().year-fechamenor.year)
+        s= s + '<label flex="0"  style="text-align: center;font-weight : bold;" value="Media mensual: '+ euros(mediamensual)+'." />\n'
+        s= s + '<label flex="0"  style="text-align: center;font-weight : bold;" value="Media anual: '+ euros(mediaanual)+'." />\n'
+        return s
 
     def xultree(self, sql):
         sumsaldos=0;
@@ -542,12 +598,16 @@ class CuentaOperacion:
         s=      '<script>\n<![CDATA[\n'
         s= s+ 'function popupOpercuentas(){\n'
         s= s+ '     var tree = document.getElementById("treeOpercuentas");\n'
-        s= s+ '     id_opercuentas=tree.view.getCellText(tree.currentIndex,tree.columns.getNamedColumn("id"));\n'
-        s= s+ '     var popup = document.getElementById("popupOpercuentas");\n'
+        s= s+ '     id_opercuentas=tree.view.getCellText(tree.currentIndex,tree.columns.getNamedColumn("id"));\n'        
+        s= s+ '     var popup = document.getElementById("popupOpercuentas");\n'#se debe borrar antes del if
         s= s+ '     if (document.getElementById("popmodificar")){\n'#Con que exista este vale
         s= s+ '         popup.removeChild(document.getElementById("popmodificar"));\n'
         s= s+ '         popup.removeChild(document.getElementById("popborrar"));\n'
         s= s+ '     }\n'
+        s= s+ '     if(id_opercuentas==0){;\n'
+        s= s+ '         return;\n'
+        s= s+ '     }\n'
+
         s= s+ '     var popmodificar=document.createElement("menuitem");\n'
         s= s+ '     popmodificar.setAttribute("id", "popmodificar");\n'
         s= s+ '     popmodificar.setAttribute("label", "Modificar la operación");\n'
@@ -626,7 +686,12 @@ class CuentaOperacion:
             saldo=saldo+ dosdecimales(row['importe'])
             s= s + '      <treeitem>\n'
             s= s + '         <treerow>\n'
-            s= s + '            <treecell label="'+str(row["id_opercuentas"])+ '" />\n'
+            #Impide la edición de id_opercuentas especiales poniendolo a 0
+            if row["id_tiposoperaciones"] in (0, 4, 5, 6, 7, 8, 9, 10) or row["id_conceptos"]==39: #dividendos
+                id_opercuentas=0
+            else:
+                id_opercuentas=row["id_opercuentas"]
+            s= s + '            <treecell label="'+str(id_opercuentas)+ '" />\n'
             s= s + '            <treecell label="'+ str(row["fecha"])[:-12]+ '" />\n'
             s= s + '            <treecell label="'+utf82xul(row["concepto"])+ '" />\n'
             s= s + '            '+ treecell_euros(row['importe'])
