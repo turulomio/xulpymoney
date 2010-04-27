@@ -1937,7 +1937,7 @@ class Total:
             else:
                 sumoperacionesnegativas=sumoperacionesnegativas+pendiente;
             rowinv=con.Execute("select * from inversiones where id_inversiones="+ str(row['id_inversiones'])).GetRowAssoc(0)
-            regTipoOperacion=con.Execute("select *  from tiposoperaciones where id_tiposoperaciones=" + str(row['id_tipooperaciones'])).GetRowAssoc(0)
+            regTipoOperacion=con.Execute("select *  from tiposoperaciones where id_tiposoperaciones=" + str(row['id_tiposoperaciones'])).GetRowAssoc(0)
             s=s+ '    <treeitem>\n'
             s=s+ '      <treerow>\n'
             s=s+ '       <treecell label="'+str(row["fecha_venta"])[:-12]+ '" />\n'
