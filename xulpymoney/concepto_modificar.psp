@@ -44,7 +44,7 @@ function concepto_modificar(){
     <hbox flex="1">
     <grid align="center">
         <rows>
-        <row><label value="Concepto"/><hbox><textbox id="concepto" value="<%=regcon["concepto"]%>"/></hbox></row>
+        <row><label value="Concepto"/><hbox><textbox id="concepto" value="<%=utf82xul(regcon["concepto"])%>"/></hbox></row>
         <row><label value="Tipo de operación"/><hbox><%=cmbTO%></hbox></row>
         <row><label value="" /><hbox><button id="cmd" label="Aceptar" onclick="concepto_modificar();"/></hbox></row>
         </rows>
