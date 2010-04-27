@@ -391,9 +391,9 @@ ALTER TABLE public.actuinversiones OWNER TO postgres;
 --
 
 CREATE TABLE conceptos (
-    id_conceptos integer NOT NULL,
+    id_conceptos integer DEFAULT nextval(('"seq_conceptos"'::text)::regclass) NOT NULL,
     concepto text,
-    id_tipooperaciones integer,
+    id_tiposoperaciones integer,
     inmodificables boolean
 );
 
@@ -744,6 +744,20 @@ CREATE SEQUENCE seq_actuinversiones
 ALTER TABLE public.seq_actuinversiones OWNER TO postgres;
 
 --
+-- Name: seq_conceptos; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE seq_conceptos
+    START WITH 1
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.seq_conceptos OWNER TO postgres;
+
+--
 -- Name: seq_cuentas; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -1001,7 +1015,7 @@ ALTER TABLE public.todo_cuentas OWNER TO postgres;
 --
 
 CREATE VIEW todo_opercuentas AS
-    SELECT cuentas.id_cuentas, cuentas.cuenta, cuentas.id_entidadesbancarias AS ma_entidadesbancarias, cuentas.cu_activa, cuentas.numero_cuenta, opercuentas.id_opercuentas, opercuentas.fecha, opercuentas.id_conceptos AS lu_conceptos, opercuentas.id_tiposoperaciones AS lu_tiposoperaciones, opercuentas.importe, opercuentas.comentario, opercuentas.id_cuentas AS ma_cuentas, conceptos.id_conceptos, conceptos.concepto, conceptos.id_tipooperaciones AS lu_tipooperacion, entidadesbancarias.id_entidadesbancarias, entidadesbancarias.entidadbancaria AS entidadesbancaria, entidadesbancarias.eb_activa, tiposoperaciones.id_tiposoperaciones, tiposoperaciones.tipooperacion AS tipo_operacion, tiposoperaciones.modificable, tiposoperaciones.operinversion, tiposoperaciones.opercuentas FROM cuentas, opercuentas, conceptos, entidadesbancarias, tiposoperaciones WHERE ((((cuentas.id_cuentas = opercuentas.id_cuentas) AND (cuentas.id_entidadesbancarias = entidadesbancarias.id_entidadesbancarias)) AND (opercuentas.id_conceptos = conceptos.id_conceptos)) AND (conceptos.id_tipooperaciones = tiposoperaciones.id_tiposoperaciones));
+    SELECT cuentas.id_cuentas, cuentas.cuenta, cuentas.id_entidadesbancarias AS ma_entidadesbancarias, cuentas.cu_activa, cuentas.numero_cuenta, opercuentas.id_opercuentas, opercuentas.fecha, opercuentas.id_conceptos AS lu_conceptos, opercuentas.id_tiposoperaciones AS lu_tiposoperaciones, opercuentas.importe, opercuentas.comentario, opercuentas.id_cuentas AS ma_cuentas, conceptos.id_conceptos, conceptos.concepto, conceptos.id_tiposoperaciones AS lu_tipooperacion, entidadesbancarias.id_entidadesbancarias, entidadesbancarias.entidadbancaria AS entidadesbancaria, entidadesbancarias.eb_activa, tiposoperaciones.id_tiposoperaciones, tiposoperaciones.tipooperacion AS tipo_operacion, tiposoperaciones.modificable, tiposoperaciones.operinversion, tiposoperaciones.opercuentas FROM cuentas, opercuentas, conceptos, entidadesbancarias, tiposoperaciones WHERE ((((cuentas.id_cuentas = opercuentas.id_cuentas) AND (cuentas.id_entidadesbancarias = entidadesbancarias.id_entidadesbancarias)) AND (opercuentas.id_conceptos = conceptos.id_conceptos)) AND (conceptos.id_tiposoperaciones = tiposoperaciones.id_tiposoperaciones));
 
 
 ALTER TABLE public.todo_opercuentas OWNER TO postgres;
@@ -1011,7 +1025,7 @@ ALTER TABLE public.todo_opercuentas OWNER TO postgres;
 --
 
 CREATE VIEW todo_opertarjetas AS
-    SELECT opertarjetas.id_opertarjetas, opertarjetas.fecha, opertarjetas.id_conceptos AS lu_conceptos, opertarjetas.id_tiposoperaciones AS lu_tiposoperaciones, opertarjetas.importe, opertarjetas.comentario, opertarjetas.id_tarjetas AS ma_tarjetas, opertarjetas.pagado, opertarjetas.fechapago, opertarjetas.id_opercuentas AS lu_opercuentas, conceptos.id_conceptos, conceptos.concepto, conceptos.id_tipooperaciones AS lu_tipooperacion, tiposoperaciones.id_tiposoperaciones, tiposoperaciones.tipooperacion AS tipo_operacion, tiposoperaciones.modificable, tiposoperaciones.operinversion, tiposoperaciones.opercuentas, tarjetas.id_tarjetas, tarjetas.tarjeta, tarjetas.id_cuentas AS lu_cuentas, tarjetas.pago_diferido, tarjetas.saldomaximo, tarjetas.tj_activa FROM opertarjetas, conceptos, tiposoperaciones, tarjetas WHERE (((conceptos.id_conceptos = opertarjetas.id_conceptos) AND (tiposoperaciones.id_tiposoperaciones = opertarjetas.id_tiposoperaciones)) AND (tarjetas.id_tarjetas = opertarjetas.id_tarjetas));
+    SELECT opertarjetas.id_opertarjetas, opertarjetas.fecha, opertarjetas.id_conceptos AS lu_conceptos, opertarjetas.id_tiposoperaciones AS lu_tiposoperaciones, opertarjetas.importe, opertarjetas.comentario, opertarjetas.id_tarjetas AS ma_tarjetas, opertarjetas.pagado, opertarjetas.fechapago, opertarjetas.id_opercuentas AS lu_opercuentas, conceptos.id_conceptos, conceptos.concepto, conceptos.id_tiposoperaciones AS lu_tipooperacion, tiposoperaciones.id_tiposoperaciones, tiposoperaciones.tipooperacion AS tipo_operacion, tiposoperaciones.modificable, tiposoperaciones.operinversion, tiposoperaciones.opercuentas, tarjetas.id_tarjetas, tarjetas.tarjeta, tarjetas.id_cuentas AS lu_cuentas, tarjetas.pago_diferido, tarjetas.saldomaximo, tarjetas.tj_activa FROM opertarjetas, conceptos, tiposoperaciones, tarjetas WHERE (((conceptos.id_conceptos = opertarjetas.id_conceptos) AND (tiposoperaciones.id_tiposoperaciones = opertarjetas.id_tiposoperaciones)) AND (tarjetas.id_tarjetas = opertarjetas.id_tarjetas));
 
 
 ALTER TABLE public.todo_opertarjetas OWNER TO postgres;
