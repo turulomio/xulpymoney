@@ -224,7 +224,99 @@ class Concepto:
         s=s +  '     </menupopup>\n'
         s=s + '</menulist>\n'
         return s
+        
+        
+    def insertar(self,  concepto,  id_tiposoperaciones):
+        sql="insert into conceptos (concepto, id_tiposoperaciones) values ('" + str(concepto)+ "', "+str(id_tiposoperaciones)+")"
+        mylog(sql)
+        try:
+            con.Execute(sql);
+        except:
+            return False
+        return True
+        
+    def modificar(self, id_conceptos, concepto,  id_tiposoperaciones):
+        sql="update conceptos set concepto='"+str(concepto)+"', id_tiposoperaciones="+str(id_tiposoperaciones)+" where id_conceptos="+ str(id_conceptos)
+        try:
+            con.Execute(sql);
+        except:
+            mylog("Error: " + sql)
+            return False
+        return True
+        
 
+    def xultree(self, sql):
+        sumsaldos=0;
+        s=      '<script>\n<![CDATA[\n'
+        s= s+ 'function popupConceptos(){\n'
+        s= s+ '     var tree = document.getElementById("treeConceptos");\n'
+        s= s+ '     id_conceptos=tree.view.getCellText(tree.currentIndex,tree.columns.getNamedColumn("id"));\n'
+        s= s+ '     var popup = document.getElementById("popupConceptos");\n'
+        s= s+ '     if (document.getElementById("popmodificar")){\n'#Con que exista este vale
+        s= s+ '         popup.removeChild(document.getElementById("popmodificar"));\n'
+#        s= s+ '         popup.removeChild(document.getElementById("popborrar"));\n'
+        s= s+ '     }\n'
+        s= s+ '     var popmodificar=document.createElement("menuitem");\n'
+        s= s+ '     popmodificar.setAttribute("id", "popmodificar");\n'
+        s= s+ '     popmodificar.setAttribute("label", "Modificar el concepto");\n'
+        s= s+ '     popmodificar.setAttribute("class", "menuitem-iconic");\n'
+        s= s+ '     popmodificar.setAttribute("image", "images/edit.png");\n'
+        s= s+ '     popmodificar.setAttribute("oncommand", "concepto_modificar();");\n'
+        s= s+ '     popup.appendChild(popmodificar);\n'
+#        s= s+ '     var popborrar=document.createElement("menuitem");\n'
+#        s= s+ '     popborrar.setAttribute("id", "popborrar");\n'
+#        s= s+ '     popborrar.setAttribute("label", "Borrar el concepto");\n'
+#        s= s+ '     popborrar.setAttribute("oncommand", "concepto_borrar();");\n'
+#        s= s+ '     popup.appendChild(popborrar);\n'
+        s= s+ '}\n\n'
+
+#        s= s+ 'function concepto_borrar(){\n'
+#        s= s+ '     var tree = document.getElementById("treeConceptos");\n'
+#        s= s+ '     id_conceptos=tree.view.getCellText(tree.currentIndex,tree.columns.getNamedColumn("id"));\n'
+#        s= s+ '     location=\'concepto_borrar.psp?id_conceptos=\' + id_conceptos;\n'
+#        s= s+ '}\n\n'
+        
+        s= s+ 'function concepto_modificar(){\n'
+        s= s+ '     var tree = document.getElementById("treeConceptos");\n'
+        s= s+ '     id_conceptos=tree.view.getCellText(tree.currentIndex,tree.columns.getNamedColumn("id"));\n'
+        s= s+ '     location=\'concepto_modificar.psp?id_conceptos=\' + id_conceptos;\n'
+        s= s+ '}\n\n'
+        
+        s= s+ 'function concepto_insertar(){\n'
+        s= s+ '     var tree = document.getElementById("treeConceptos");\n'
+        s= s+ '     id_conceptos=tree.view.getCellText(tree.currentIndex,tree.columns.getNamedColumn("id"));\n'
+        s= s+ '     location=\'concepto_insertar.psp\';\n'
+        s= s+ '}\n'
+        s= s+ ']]>\n</script>\n\n'                
+
+        s= s+ '<popupset>\n'
+        s= s+ '     <popup id="popupConceptos" >\n'
+        s= s+ '          <menuitem label="Nuevo concepto" oncommand="location=\'concepto_insertar.psp\'" class="menuitem-iconic"  image="images/item_add.png"/>\n'
+        s= s+ '     </popup>\n'
+        s= s+ '</popupset>\n'
+
+        s= s+ '<tree id="treeConceptos" flex="6"   context="popupConceptos"  onselect="popupConceptos();" >\n'
+        s= s+ '     <treecols>\n'
+        s= s+  '          <treecol id="id" label="Id" hidden="true" />\n'
+        s= s+  '          <treecol label="Concepto"  flex="2"/>\n'
+        s= s+  '          <treecol label="Tipo de operación"  flex="2"/>\n'
+        s= s+  '     </treecols>\n'
+        s= s+  '     <treechildren>\n'
+        curs=con.Execute(sql);         
+        while not curs.EOF:
+            row = curs.GetRowAssoc(0)   
+            s= s + '          <treeitem >\n'
+            s= s + '               <treerow>\n'
+            s= s + '                    <treecell label="'+str(row["id_conceptos"])+ '" />\n'
+            s= s + '                    <treecell label="'+ utf82xul(row["concepto"])+ '" />\n'
+            s= s + '                    <treecell label="'+ row["tipooperacion"]+ '" />\n'
+            s= s + '               </treerow>\n'
+            s= s + '          </treeitem>\n'
+            curs.MoveNext()     
+        s= s + '     </treechildren>\n'
+        s= s + '</tree>\n'
+        curs.Close()
+        return s
 
 class Cuenta:
     def cmb(self, name,  sql,  selected,  js=True):
@@ -372,14 +464,7 @@ class Cuenta:
         s= s + '</vbox>\n'
         curs.Close()
         return s
-#
-#    def registro(self,id_cuentas):
-#        curs = con.Execute('select * from cuentas where id_cuentas='+ str(id_cuentas)); 
-#        if curs == None: 
-#            print self.cfg.con.ErrorMsg()        
-#        row = curs.GetRowAssoc(0)      
-#        curs.Close()
-#        return row
+
         
     def modificar(self, id_cuentas, cuenta,  id_entidadesbancarias,  numero_cuenta):
         sql="update cuentas set cuenta='"+str(cuenta)+"', id_entidadesbancarias="+str(id_entidadesbancarias)+", numero_cuenta='"+str(numero_cuenta)+"' where id_cuentas="+ str(id_cuentas)

@@ -1,106 +1,26 @@
---
--- PostgreSQL database dump
---
-
 SET statement_timeout = 0;
 SET client_encoding = 'UTF8';
 SET standard_conforming_strings = off;
 SET check_function_bodies = false;
 SET client_min_messages = warning;
 SET escape_string_warning = off;
-
 SET search_path = public, pg_catalog;
-
---
--- Name: depositos_id_depositos_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
 SELECT pg_catalog.setval('depositos_id_depositos_seq', 1, true);
-
-
---
--- Name: dividendos_id_dividendos_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
 SELECT pg_catalog.setval('dividendos_id_dividendos_seq', 1, true);
-
-
---
--- Name: seq_actuinversiones; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
 SELECT pg_catalog.setval('seq_actuinversiones', 1, true);
-
-
---
--- Name: seq_cuentas; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
 SELECT pg_catalog.setval('seq_cuentas', 2, true);
-
-
---
--- Name: seq_entidadesbancarias; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
 SELECT pg_catalog.setval('seq_entidadesbancarias', 2, true);
-
-
---
--- Name: seq_inversiones; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
 SELECT pg_catalog.setval('seq_inversiones', 1, true);
-
-
---
--- Name: seq_opercuentas; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
 SELECT pg_catalog.setval('seq_opercuentas', 1, true);
-
-
---
--- Name: seq_operinversiones; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
 SELECT pg_catalog.setval('seq_operinversiones', 1, true);
-
-
---
--- Name: seq_opertarjetas; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
 SELECT pg_catalog.setval('seq_opertarjetas', 1, true);
-
-
---
--- Name: seq_tarjetas; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
 SELECT pg_catalog.setval('seq_tarjetas', 1, true);
-
-
---
--- Name: seq_tmpoperinversioneshistoricas; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
 SELECT pg_catalog.setval('seq_tmpoperinversioneshistoricas', 1, true);
-
-
---
--- Name: tmpoperinversiones_id_tmpoperinversiones_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
 SELECT pg_catalog.setval('tmpoperinversiones_id_tmpoperinversiones_seq', 1, true);
+SELECT pg_catalog.setval('tmpoperinversiones_id_tmpoperinversiones_seq', 60, true);
+SELECT pg_catalog.setval('seq_conceptos', 60, true);
 
-
-
---
--- Data for Name: conceptos; Type: TABLE DATA; Schema: public; Owner: postgres
---
-
-COPY conceptos (id_conceptos, concepto, lu_tipooperacion, inmodificables) FROM stdin;
+COPY conceptos (id_conceptos, concepto, id_tiposoperaciones, inmodificables) FROM stdin;
 2	Supermercado	1	\N
 3	Restaurante	1	\N
 4	Traspaso Realizado	1	\N
@@ -160,33 +80,15 @@ COPY conceptos (id_conceptos, concepto, lu_tipooperacion, inmodificables) FROM s
 51	Otros Ingresos Pareja	2	\N
 \.
 
-
---
--- Data for Name: cuentas; Type: TABLE DATA; Schema: public; Owner: postgres
---
-
-COPY cuentas (id_cuentas, cuenta, ma_entidadesbancarias, cu_activa, numero_cuenta) FROM stdin;
+COPY cuentas (id_cuentas, cuenta, id_entidadesbancarias, cu_activa, numero_cuenta) FROM stdin;
 1	Efectivo	1	t	\N
 \.
 
-
-
---
--- Data for Name: entidadesbancarias; Type: TABLE DATA; Schema: public; Owner: postgres
---
-
-COPY entidadesbancarias (id_entidadesbancarias, entidadesbancaria, eb_activa) FROM stdin;
+COPY entidadesbancarias (id_entidadesbancarias, entidadbancaria, eb_activa) FROM stdin;
 1	Control no bancario	t
 \.
 
-
-
-
---
--- Data for Name: tiposoperaciones; Type: TABLE DATA; Schema: public; Owner: postgres
---
-
-COPY tiposoperaciones (id_tiposoperaciones, tipo_operacion, modificable, operinversion, opercuentas) FROM stdin;
+COPY tiposoperaciones (id_tiposoperaciones, tipooperacion, modificable, operinversion, opercuentas) FROM stdin;
 5	Venta Acciones	\N	t	\N
 3	Trasferencia	\N	\N	\N
 0	Deconocido	\N	\N	\N
