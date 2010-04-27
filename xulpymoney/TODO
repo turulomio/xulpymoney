@@ -1,9 +1,6 @@
 20100311 Deseo. Para informe referenciado a ibex hay que calcular el total invertido por rango para hacer %
-20100424 Bug. Las cuentaoperaciones vinculadas a operinversiones o dividendos, ni tampoco las vinculadas a opertarjetas no deben ser borradas
-20100424 Deseo. Hacer un estudio por conceptos
 20100425 Deseo. Seguir creando el manual de usuario
 20100425 Deseo. Al modificar tarjeta comprobar que no tiene registros dependientes y en ese caso no permitirle
 20100425 Bug. Tener mucho control de las operaciones necesarias, ponerlas en código y anexarlas a las de usuario
 20100425 Bug. Operación necesaria vencimiento de depósito
-20100425 Deseo. Tablas de mantenimiento
 20100426 Deseo. Modificar operinversiones
