@@ -1,0 +1,89 @@
+<%
+from core import *
+from xul import *
+
+#if form.has_key('id_inversiones'):
+#   id_inversiones=int(form['id_inversiones'])
+#else:
+#    util.redirect(req, 'inversion_informacion.psp')
+con=Conection()
+cd=ConectionDirect()
+row=cd.con.Execute("select * from operinversiones where id_operinversiones="+ form["id_operinversiones"]).GetRowAssoc(0)
+cmbtiposoperaciones=TipoOperacion().cmb('select * from tiposoperaciones where operinversion=true order by tipooperacion',  row['id_operinversiones'],  False)
+req.content_type="application/vnd.mozilla.xul+xml"
+req.write(xulheaderwindowmenu("Xulpymoney > Inversiones > Operaciónes > Modificar"))
+con.close()
+cd.close()
+%>
+<script>
+<![CDATA[
+function modificar(){
+    var xmlHttp;    
+    var id_operinversiones = <%=form['id_operinversiones']%>;
+    var id_tiposoperaciones=document.getElementById("cmbtiposoperaciones").value
+    var importe=document.getElementById("importe").value;
+    var comentario= ""
+    var fecha = document.getElementById("fecha").value;
+    var acciones = document.getElementById("acciones").value;
+    var impuestos = document.getElementById("impuestos").value;
+    var comision = document.getElementById("comision").value;
+    var valor_accion = document.getElementById("valor_accion").value;
+    spfecha=fecha.split("-");
+    var id_inversiones=<%=row['id_inversiones']%>;
+    var url="ajax/inversionoperacion_modificar.psp?id_operinversiones="+id_operinversiones+"&fecha="+fecha+"&id_tiposoperaciones="+id_tiposoperaciones+"&importe="+importe+"&acciones="+acciones+"&impuestos="+impuestos+"&comision="+comision+"&comentario="+comentario+"&valor_accion="+valor_accion+"&id_inversiones="+id_inversiones;
+alert(url);
+    xmlHttp=new XMLHttpRequest();
+    xmlHttp.onreadystatechange=function(){
+        if(xmlHttp.readyState==4){
+            var ale=xmlHttp.responseText;
+alert(ale)
+            location="inversion_informacion.psp?id_inversiones="+ id_inversiones ;
+        }
+    }
+    xmlHttp.open("GET",url,true);
+    xmlHttp.send(null);
+}
+]]>
+</script>
+<label id="titulo" value="Modificar una operación de inversión" />
+<vbox flex="5">
+<grid pack="center">
+    <columns>
+        <column flex="1" />
+        <column flex="1" />
+    </columns>
+    <rows>
+        <row>
+            <label id="negrita" value="Fecha"/>
+            <datepicker id="fecha" type="grid"  firstdayofweek="1" value="<%=row['fecha']%>"/>
+        </row>
+        <row>
+            <label id="negrita" value="Tipo de operación"/>
+            <%=cmbtiposoperaciones %>
+        </row>
+        <row>
+            <label id="negrita" value="Importe"/>
+            <textbox id="importe" value="<%=row['importe']%>"/>
+        </row>
+        <row>
+            <label id="negrita" value="Acciones"/>
+            <textbox id="acciones"  value="<%=row['acciones']%>"/>
+        </row>
+        <row>
+            <label id="negrita" value="Impuestos"/>
+            <textbox id="impuestos" value="<%=row['impuestos']%>"/>
+        </row>
+        <row>
+            <label id="negrita" value="Comisión"/>
+            <textbox id="comision" value="<%=row['comision']%>"/>
+        </row>
+        <row>
+            <label id="negrita" value="Valor de la acción"/>
+            <textbox id="valor_accion" value="<%=row['valor_accion']%>"/>
+        </row>
+    </rows>
+</grid>
+    <button label="Aceptar" oncommand="modificar();"/>
+
+</vbox>
+</window>
