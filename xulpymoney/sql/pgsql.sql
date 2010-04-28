@@ -360,8 +360,8 @@ BEGIN
     SELECT cuenta INTO nombrecuentaorigen FROM cuentas WHERE id_cuentas=p_cuentaorigen;
     SELECT cuenta INTO nombrecuentadestino FROM cuentas WHERE id_cuentas=p_cuentadestino;
 
-    INSERT INTO opercuentas (fecha, lu_conceptos, lu_tiposoperaciones, importe, comentario, ma_cuentas) VALUES (p_fecha, 4, 3, -p_importe-p_comision, 'A ' || nombrecuentadestino || ' (Comisión '|| p_comision ||' €)', p_cuentaorigen); 
-    INSERT INTO opercuentas (fecha, lu_conceptos, lu_tiposoperaciones, importe, comentario, ma_cuentas) VALUES (p_fecha, 5, 3, p_importe, 'De ' || nombrecuentaorigen, p_cuentadestino);    
+    INSERT INTO opercuentas (fecha, id_conceptos, id_tiposoperaciones, importe, comentario, id_cuentas) VALUES (p_fecha, 4, 3, -p_importe-p_comision, 'A ' || nombrecuentadestino || ' (Comisión '|| p_comision ||' €)', p_cuentaorigen); 
+    INSERT INTO opercuentas (fecha, id_conceptos, id_tiposoperaciones, importe, comentario, id_cuentas) VALUES (p_fecha, 5, 3, p_importe, 'De ' || nombrecuentaorigen, p_cuentadestino);    
 END;
 $$;
 

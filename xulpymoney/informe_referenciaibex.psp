@@ -24,57 +24,43 @@ function ver_detalle()
 </script>
 <vbox align="center">
     <label id="titulo"  value="Informe de referencia al Ibex35" />
+    <label/>
 </vbox>
-<spacer flex="0" />
-<hbox flex="2">      
-    <spacer flex="2" />
+<vbox flex="1">
     <tree id="tree" flex="3"  onselect="ver_detalle();">
         <treecols>
-            <treecol id="rango" label="Intervalo del IBEX" flex="4" style="text-align: left"/>
+            <treecol id="rango" label="id" hidden="true"/>
+            <treecol  label="Intervalo del IBEX" flex="4" style="text-align: left"/>
             <treecol label="Dinero invertido " flex="1" style="text-align: right"/>
             <treecol label="% invertido      " flex="1" style="text-align: right"/>
         </treecols>
         <treechildren>
 <%
 total=Total().saldo_total(datetime.date.today())
-sql="select distinct(floor(ibex35.cierre/1000))*1000 as miles , sum(importe) as sumimporte from ibex35, tmpoperinversiones where tmpoperinversiones.fecha=ibex35.fecha  group by miles order by miles;"
+sql="select distinct(floor(ibex35.cierre/1000))*1000 as miles , sum(importe) as sumimporte from ibex35, tmpoperinversiones where tmpoperinversiones.fecha=ibex35.fecha  group by miles order by miles desc;"
 curs=cd.con.Execute(sql); 
 s=''
-total=Total().saldo_todas_inversiones(datetime.date.today())
+actual=Total().saldo_todas_inversiones(datetime.date.today())#saldo actual
+total=cd.con.Execute("select sum(importe) as importe from tmpoperinversiones;").GetRowAssoc(0)["importe"]#total invertido
 sumimporte=0
 while not curs.EOF:
     row = curs.GetRowAssoc(0)   
-    sumimporte=sumimporte+ row['sumimporte']
     s=s+   '            <treeitem>\n'
     s=s+   '                <treerow>\n'
-    s=s+   '                    <treecell label="'+str(row['miles'])+'" />\n'
+    s=s+   '                    <treecell label="'+str(row['miles']) +'" />\n'
+    s=s+   '                    <treecell label="'+str(int(row['miles'])) + " - " + str(int(row['miles']+1000))+'" />\n'
     s=s+   '                    ' +    treecell_euros(row['sumimporte']);
-    s=s+ '       <treecell label="No desarrollado %" />\n'# Total con sumimporte   s=s+   '                    '  +  treecell_tpc(100*row['sumimporte']/total);
+    s=s+   '                    '  +  treecell_tpc(100*row['sumimporte']/total);
     s=s+   '                </treerow>\n'
     s=s+   '            </treeitem>\n'
     curs.MoveNext()     
 curs.Close()
-s=s+   '            <treeitem>\n'
-s=s+   '                <treerow>\n'
-s=s+   '                    <treecell label="Total Invertido" />\n'
-s=s+   '                    ' +    treecell_euros(sumimporte);
-s=s+ '       <treecell label="" />\n'
-s=s+   '                </treerow>\n'
-s=s+   '            </treeitem>\n'
-s= s + '<label flex="0"  style="text-align: center;font-weight : bold;" value="Saldo actual de las inversiones: '+ euros(sumimporte)+'" />\n'
-s=s+   '            <treeitem>\n'
-s=s+   '                <treerow>\n'
-s=s+   '                    <treecell label="Saldo actual" />\n'
-s=s+   '                    ' +    treecell_euros(total);
-s=s+ '       <treecell label="" />\n'
-s=s+   '                </treerow>\n'
-s=s+   '            </treeitem>\n'
 req.write(s)
 con.close()
 %>
         </treechildren>
     </tree>        
-    <spacer flex="2" />
-</hbox>
-<spacer flex="1" />
+    <label flex="0"  style="text-align: center;font-weight : bold;" value="Saldo actual de las inversiones: <%=euros(actual)%>" />
+    <label flex="0"  style="text-align: center;font-weight : bold;" value="Saldo invertido: <%=euros(total)%>" />
+</vbox>
 </window>

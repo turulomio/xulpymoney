@@ -12,7 +12,7 @@ if form.has_key('id_inversiones')==False:
 con=Conection()
 cd=ConectionDirect()
 listadoIOT=InversionOperacionTemporal().xultree("SELECT * from tmpoperinversiones where id_Inversiones="+str(form['id_inversiones'])+" order by fecha")
-listadoIOH=InversionOperacionHistorica().xultree("SELECT * from operinversiones where id_Inversiones="+str(form['id_inversiones'])+" order by fecha")
+listadoIOH=InversionOperacionHistorica().xultree("SELECT * from operinversiones where id_Inversiones="+str(form['id_inversiones'])+" order by fecha",  form['id_inversiones'])
 fechapo=InversionOperacionTemporal().fecha_primera_operacion(form['id_inversiones'])
 if fechapo==None:
     listadoDiv=Dividendo().xultree("select id_dividendos, cuenta, fecha, liquido, inversion from dividendos, inversiones, cuentas where  id_dividendos=Null", 0)
@@ -24,8 +24,6 @@ cd .close()
 %>
 <script>
 <![CDATA[
-
-var id_operinversiones=0;
 
 function inversion_actualizaroperaciones(){
     var xmlHttp;        
@@ -46,7 +44,7 @@ function borrar(){
     var xmlHttp;        
     var tree = document.getElementById("treeIOH");
     var id_inversiones=<%=form['id_inversiones']%>;
-    id_operinversiones=tree.view.getCellText(tree.currentIndex,tree.columns.getNamedColumn("id"));
+    var id_operinversiones=tree.view.getCellText(tree.currentIndex,tree.columns.getNamedColumn("id"));
     var url='ajax/inversionoperacion_borrar.psp?id_operinversiones=' + id_operinversiones +'&id_inversiones=' + id_inversiones;
     xmlHttp=new XMLHttpRequest();
     xmlHttp.onreadystatechange=function(){
@@ -60,55 +58,33 @@ function borrar(){
     xmlHttp.send(null);
 }
 
-function tree_getid()
-{
-  var tree = document.getElementById("tree");
-  var selection = tree.contentView.getItemAtIndex(tree.currentIndex);
-  id_operinversiones = selection.firstChild.firstChild.getAttribute("label");
-}
-
-function go_operinversion_insertar(){
-    var id_inversiones=<%=form['id_inversiones']%>;
-    location="inversionoperacion_insertar.psp?id_inversiones="+ id_inversiones ;
-}
 ]]>
 </script>
 
-<popupset>
-    <popup id="treepopup" >
-        <menuitem label="Nueva operación de inversión" oncommand="go_operinversion_insertar();" class="menuitem-iconic"  image="images/item_add.png"/>
-        <menuitem label="Modificar la operación de inversión"   class="menuitem-iconic"  image="images/toggle_log.png"/>
-        <menuitem label="Borrar la operación de inversión"  oncommand='borrar();'  class="menuitem-iconic" image="images/eventdelete.png"/>        
-        <menuitem label="Actualizar las operaciones de la inversión"  oncommand='inversion_actualizaroperaciones();'  class="menuitem-iconic" image="images/eventdelete.png"/>
-    </popup>
-</popupset>
-
 
 <vbox  flex="5">
-<label id="titulo" value="Información de la Inversión" />
-<label id="subtitulo" flex="0" value="<%=reg['inversion'] %>" />
-<hbox flex="4">
-<tabbox orient="vertical" flex="1">
-<tabs>
-<tab label="Inversión actual" />
-<tab label="Movimientos de inversión" />
-<tab label="Dividendos" />
-</tabs>
-<tabpanels flex="1">
-<vbox>
-<%=listadoIOT%>
-</vbox>
-<vbox>
-<%=listadoIOH%>
-</vbox>
-<vbox>
-<%=listadoDiv%>
-</vbox>
-</tabpanels>
-</tabbox>
-
-</hbox>
-
+    <label id="titulo" value="Información de la Inversión" />
+    <label id="subtitulo" flex="0" value="<%=reg['inversion'] %>" />
+    <hbox flex="4">
+        <tabbox orient="vertical" flex="1">
+            <tabs>
+                <tab label="Inversión actual" />
+                <tab label="Movimientos de inversión" />
+                <tab label="Dividendos" />
+            </tabs>
+            <tabpanels flex="1">
+                <vbox>
+                    <%=listadoIOT%>
+                </vbox>
+                <vbox>
+                    <%=listadoIOH%>
+                </vbox>
+                <vbox>
+                    <%=listadoDiv%>
+                </vbox>
+            </tabpanels>
+         </tabbox>
+    </hbox>
 </vbox>
 <%
 req.write(xulfoot())

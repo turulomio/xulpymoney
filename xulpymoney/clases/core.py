@@ -584,7 +584,6 @@ class CuentaOperacion:
         try:
             con.Execute(sql);
         except:
-            mylog ("CuentaOperacion::transferencia: "+ self.cfg.con.ErrorMsg() )       
             return False
         return True
 
@@ -1220,6 +1219,8 @@ class InversionActualizacion:
     def valor(self,id_inversiones,fecha):
         sql="select actualizacion from actuinversiones where id_Inversiones="+str(id_inversiones)+" and  fecha<='"+str(fecha)+"' order by Fecha desc limit 1"
         curs=con.Execute(sql)
+        if curs.RecordCount()==0:
+            return 0
         row = curs.GetRowAssoc(0)   
         return row["actualizacion"]
 
@@ -1257,6 +1258,18 @@ class InversionOperacion:
         InversionOperacionHistorica().actualizar (id_inversiones)
         #//Se actualiza la operinversion una funci<F3>n en tmpinversionesheredada que se refleja en opercuentas.
 #        CuentaOperacionHeredadaInversion().actualizar_una_operacion(id_operinversiones)
+        CuentaOperacionHeredadaInversion().actualizar_una_inversion(id_inversiones)
+        return True
+        
+    def modificar(self, id_operinversiones,  fecha,  id_tiposoperaciones,  importe, acciones,  impuestos,  comision,    comentario, valor_accion,  id_inversiones):
+        sql="update operinversiones set fecha='" + str(fecha) + "', id_tiposoperaciones=" + str(id_tiposoperaciones) +", importe="+str(importe)+", acciones="+ str(acciones) +", impuestos="+ str(impuestos) +", comision="+ str(comision) +", comentario='"+ str(comentario)+"',  valor_accion="+str(valor_accion)+", id_Inversiones="+ str(id_inversiones)+' where id_operinversiones='+str(id_operinversiones)
+        try:
+            con.Execute(sql);
+        except:
+            return False
+        #//Funcion que actualiza la tabla tmpoperinversiones para ver operinversiones activas
+        InversionOperacionHistorica().actualizar (id_inversiones)
+        #//Se actualiza la operinversion una funci<F3>n en tmpinversionesheredada que se refleja en opercuentas.
         CuentaOperacionHeredadaInversion().actualizar_una_inversion(id_inversiones)
         return True
         
@@ -1388,7 +1401,8 @@ class InversionOperacionHistorica:
             return 100
         Rendimiento=(ultima-primera)*100/primera;
         return Rendimiento;
-    def xultree(self, sql):
+        
+    def xultree(self, sql,  id_inversiones):
         """El SQL deberá ser del tipo "SELECT * from tmpoperinversiones"""  
         sumacciones=0;
         sumactualizacionesximportes=0;
@@ -1398,9 +1412,71 @@ class InversionOperacionHistorica:
         sumrendimientosanualesponderadosxacciones=0;
         sumpendiente=0;
         sumimporte=0;
-        curs=con.Execute(sql); 
-        s=     '<vbox flex="1">\n'
-        s=s+ '        <tree id="treeIOH" flex="3" context="treepopup" >\n'
+        curs=con.Execute(sql);         
+        s=      '<script>\n<![CDATA[\n'
+        s= s+ 'function popupOperInversiones(){\n'
+        s= s+ '     var tree = document.getElementById("treeOperInversiones");\n'
+        #el boolean de un "0" es true y bolean de un 0 es false
+        s= s+ '     var id_operinversiones=tree.view.getCellText(tree.currentIndex,tree.columns.getNamedColumn("id"));\n'
+        s= s+ '     var popup = document.getElementById("popupOperInversiones");\n'
+        s= s+ '     if (document.getElementById("popmodificar")){\n'#Con que exista este vale
+        s= s+ '         popup.removeChild(document.getElementById("popmodificar"));\n'
+        s= s+ '         popup.removeChild(document.getElementById("popborrar"));\n'
+        s= s+ '     }\n'
+        s= s+ '     var popmodificar=document.createElement("menuitem");\n'
+        s= s+ '     popmodificar.setAttribute("id", "popmodificar");\n'
+        s= s+ '     popmodificar.setAttribute("label", "Modificar la operación de inversión");\n'
+        s= s+ '     popmodificar.setAttribute("class", "menuitem-iconic");\n'
+        s= s+ '     popmodificar.setAttribute("image", "images/edit.png");\n'
+        s= s+ '     popmodificar.setAttribute("oncommand", "inversionoperacion_modificar();");\n'
+        s= s+ '     popup.appendChild(popmodificar);\n'
+        s= s+ '     var popborrar=document.createElement("menuitem");\n'
+        s= s+ '     popborrar.setAttribute("id", "popborrar");\n'
+        s= s+ '     popborrar.setAttribute("label", "Borrar la operación de inversión");\n'
+        s= s+ '     popborrar.setAttribute("oncommand", "inversionoperacion_borrar();");\n'
+        s= s+ '     popborrar.setAttribute("class", "menuitem-iconic");\n'
+        s= s+ '     popborrar.setAttribute("image", "images/eventdelete.png");\n'
+        s= s+ '     popup.appendChild(popborrar);\n'
+        s= s+ '}\n\n'
+                
+        s= s+ 'function inversionoperacion_insertar(){\n'
+        s= s+ '     var tree = document.getElementById("treeOperInversiones");\n'
+        s= s+ '     location=\'inversionoperacion_insertar.psp?id_inversiones=\'+'+str(id_inversiones)+';\n'
+        s= s+ '}\n\n'
+        
+        s= s+ 'function inversionoperacion_modificar(){\n'
+        s= s+ '     var tree = document.getElementById("treeOperInversiones");\n'
+        s= s+ '     var id_operinversiones=tree.view.getCellText(tree.currentIndex,tree.columns.getNamedColumn("id"));\n'
+        s= s+ '     location=\'inversionoperacion_modificar.psp?id_operinversiones=\'+ id_operinversiones;\n'
+        s= s+ '}\n\n'
+        
+        s= s+ 'function inversionoperacion_borrar(){\n'
+        s= s+ '     var tree = document.getElementById("treeOperInversiones");\n'
+        s= s+ '     var xmlHttp;\n'
+        s= s+ '     var id_operinversiones=tree.view.getCellText(tree.currentIndex,tree.columns.getNamedColumn("id"));\n'
+        s= s+ '     xmlHttp=new XMLHttpRequest();\n'
+        s= s+ '     xmlHttp.onreadystatechange=function(){\n'
+        s= s+ '         if(xmlHttp.readyState==4){\n'
+        s= s+ '             var ale=xmlHttp.responseText;\n'
+        s= s+ '             location="inversion_informacion.psp?id_inversiones='+str(id_inversiones)+'";\n'
+        s= s+ '         }\n'
+        s= s+ '     }\n'
+        s= s+ '     var url="ajax/inversionoperacion_borrar.psp?id_operinversiones="+id_operinversiones + "&id_inversiones='+str(id_inversiones)+'";\n'
+        s= s+ '     xmlHttp.open("GET",url,true);\n'
+        s= s+ '     xmlHttp.send(null);\n'
+        s= s+ '}\n'
+        s= s+ ']]>\n</script>\n\n'                
+
+        s=s+ '<popupset>\n'
+        s=s+ '    <popup id="popupOperInversiones" >\n'
+        s=s+ '        <menuitem label="Actualizar las operaciones de la inversión"  oncommand="inversion_actualizaroperaciones();"  />\n'
+        s=s+ '        <menuseparator/>\n'
+        s=s+ '        <menuitem label="Nueva operación de inversión" oncommand="operinversion_insertar();" class="menuitem-iconic"  image="images/item_add.png"/>\n'
+        s=s+ '    </popup>\n'
+        s=s+ '</popupset>\n'
+
+        s=s+ '<vbox flex="1">\n'
+        s=s+ '        <tree id="treeOperInversiones" flex="3" context="popupOperInversiones" onselect="popupOperInversiones();"  >\n'
         s=s+ '          <treecols>\n'
         s=s+ '    <treecol id="id" label="id" flex="1" hidden="true"/>\n'
         s=s+ '    <treecol label="Fecha" flex="1"  style="text-align: center"/>\n'
