@@ -9,7 +9,7 @@ from xul import *
 con=Conection()
 cd=ConectionDirect()
 row=cd.con.Execute("select * from operinversiones where id_operinversiones="+ form["id_operinversiones"]).GetRowAssoc(0)
-cmbtiposoperaciones=TipoOperacion().cmb('select * from tiposoperaciones where operinversion=true order by tipooperacion',  row['id_operinversiones'],  False)
+cmbtiposoperaciones=TipoOperacion().cmb('select * from tiposoperaciones where operinversion=true order by tipooperacion',  row['id_tiposoperaciones'],  False)
 req.content_type="application/vnd.mozilla.xul+xml"
 req.write(xulheaderwindowmenu("Xulpymoney > Inversiones > Operaciónes > Modificar"))
 con.close()
@@ -55,7 +55,7 @@ alert(ale)
     <rows>
         <row>
             <label id="negrita" value="Fecha"/>
-            <datepicker id="fecha" type="grid"  firstdayofweek="1" value="<%=row['fecha']%>"/>
+            <datepicker id="fecha" type="grid"  firstdayofweek="1" value="<%=str(row['fecha'])%>"/>
         </row>
         <row>
             <label id="negrita" value="Tipo de operación"/>

@@ -1417,7 +1417,7 @@ class InversionOperacionHistorica:
         s= s+ 'function popupOperInversiones(){\n'
         s= s+ '     var tree = document.getElementById("treeOperInversiones");\n'
         #el boolean de un "0" es true y bolean de un 0 es false
-        s= s+ '     var id_operinversiones=tree.view.getCellText(tree.currentIndex,tree.columns.getNamedColumn("id"));\n'
+        s= s+ '     var id_operinversiones=tree.view.getCellText(tree.currentIndex,tree.columns.getNamedColumn( "id"));\n'
         s= s+ '     var popup = document.getElementById("popupOperInversiones");\n'
         s= s+ '     if (document.getElementById("popmodificar")){\n'#Con que exista este vale
         s= s+ '         popup.removeChild(document.getElementById("popmodificar"));\n'
@@ -1471,7 +1471,7 @@ class InversionOperacionHistorica:
         s=s+ '    <popup id="popupOperInversiones" >\n'
         s=s+ '        <menuitem label="Actualizar las operaciones de la inversión"  oncommand="inversion_actualizaroperaciones();"  />\n'
         s=s+ '        <menuseparator/>\n'
-        s=s+ '        <menuitem label="Nueva operación de inversión" oncommand="operinversion_insertar();" class="menuitem-iconic"  image="images/item_add.png"/>\n'
+        s=s+ '        <menuitem label="Nueva operación de inversión" oncommand="inversionoperacion_insertar();" class="menuitem-iconic"  image="images/item_add.png"/>\n'
         s=s+ '    </popup>\n'
         s=s+ '</popupset>\n'
 
@@ -2037,8 +2037,7 @@ class Total:
         row = curs.GetRowAssoc(0)      
         curs.Close()
         return row['fecha']
-    
-
+        
     def saldo_todas_cuentas(self, fecha):
         sql="select saldototalcuentasactivas('"+str(fecha)+"') as saldo;";
         curs=con.Execute(sql); 
