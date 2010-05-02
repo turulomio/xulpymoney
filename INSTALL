@@ -1,13 +1,17 @@
-Se debe configurar el mod_python
+En el /etc/conf.d/apache poner -D PYTHON
 
-<Directory /var/www/localhost/htdocs/BDAppsWeb/cuentas>
+Se debe configurar el mod_python en /etc/apache2/vhosts.d/default_vhost.include 
+
+<Directory /var/www/localhost/htdocs/xulpymoney>
   AddHandler mod_python .psp
- PythonPath "sys.path+['/usr/local/lib/cuentas']"
+  PythonPath "sys.path+['/usr/lib/xulpymoney']"
  PythonHandler mod_python.psp
- PythonDebug On
+# PythonDebug On
 </Directory>
 
 
-Se debe crear una base de datos en postgresql
+Se debe crear una base de datos en postgresql llamada por ejemplo xulpymoney
 
-psql -U postgres createdbd < sql/pgsql.sql
+createdb -U postgres xulpymoney
+psql -U postgres xulpymoney < sql/pgsql.sql
+psql -U postgres xulpymoney < sql/pgsql.data
