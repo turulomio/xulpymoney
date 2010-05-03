@@ -1,7 +1,7 @@
 <% 
 import os
 from xul import *
-from config import *
+from core import *
 req.content_type="application/vnd.mozilla.xul+xml"
 req.write(xulheaderwindowmenu("Menú del programa"))
 
