@@ -2020,11 +2020,11 @@ class Total:
             return row['importe'];
         
     def grafico_evolucion_total(self):
+        #Genera informe_total.plot
         f=open("/tmp/informe_total.plot","w")
         s='set encoding utf8\n'
         s=s+'set title "Evolución temporal del patrimonio"\n'
         s=s+'set style data fsteps\n'
-#        s=s+"set xlabel 'Fechas'\n"
         s=s+"set timefmt '%Y-%m-%d'\n"
         s=s+"set xdata time\n"
         s=s+"set ylabel 'Patrimonio (€)'\n"
@@ -2032,12 +2032,13 @@ class Total:
         s=s+"set format x '%Y'\n"
         s=s+"set grid\n"
         s=s+"set key left\n"
-        s=s+'set term svg size 1280,1024 font "/usr/share/fonts/dejavu/DejaVuSans.ttf"\n'
+        s=s+'set term svg size 1000,500 font "/usr/share/fonts/dejavu/DejaVuSans.ttf"\n'
         s=s+"set output \"/tmp/informe_total.svg\"\n"
         s=s+"plot \"/tmp/informe_total.dat\" using 1:2 smooth unique title \"Patrimonio\""
         f.write(s)
         f.close()
 
+        #Genera informe_total.dat
         f=open("/tmp/informe_total.dat","w")
         for i in range (self.primera_fecha_con_datos_usuario().year,  datetime.date.today().year+1):
             f.write(str(i)+"-01-01\t"+str(Total().saldo_total(str(i)+"-01-01"))+"\n")               
@@ -2045,8 +2046,56 @@ class Total:
                 f.write(str(i)+"-07-01\t"+str(Total().saldo_total(str(i)+"-07-01"))+"\n")
         f.write(str(datetime.date.today())+"\t"+str(Total().saldo_total(datetime.date.today()))+"\n")
         f.close()
-        
+       
+        #Genera informe_total.svg y lo devuleve como string 
         os.popen("gnuplot /tmp/informe_total.plot; chown apache:apache /tmp/informe_total.svg");
+        f=open("/tmp/informe_total.svg", "r")
+        f.readline()
+        f.readline()
+        f.readline()
+        f.readline()
+        s='<svg id="informetotal.svg" flex="1" width="100%" height="100%" viewBox="0 0 1000 500"\n'+f.read()
+        f.close()
+        return s
+
+    def grafico_inversion_clasificacion(self):
+        #Genera informe_total.plot
+        f=open("/tmp/inversion_clasificacion.plot","w")
+        s='set encoding utf8\n'
+        s=s+'set title "Clasificación de las inversiones"\n'
+        s=s+'set style data fsteps\n'
+        s=s+"set timefmt '%Y-%m-%d'\n"
+        s=s+"set xdata time\n"
+        s=s+"set ylabel 'Patrimonio (€)'\n"
+        s=s+"set yrange [ 0: ]\n"
+        s=s+"set format x '%Y'\n"
+        s=s+"set grid\n"
+        s=s+"set key left\n"
+        s=s+'set term svg size 1000,500 font "/usr/share/fonts/dejavu/DejaVuSans.ttf"\n'
+        s=s+"set output \"/tmp/inversion_clasificacion.svg\"\n"
+        s=s+"plot \"/tmp/informe_total.dat\" using 1:2 smooth unique title \"Patrimonio\""
+        f.write(s)
+        f.close()
+
+        #Genera informe_total.dat
+        f=open("/tmp/inversion_clasificacion.dat","w")
+        for i in range (self.primera_fecha_con_datos_usuario().year,  datetime.date.today().year+1):
+            f.write(str(i)+"-01-01\t"+str(Total().saldo_total(str(i)+"-01-01"))+"\n")               
+            if datetime.date.today()>datetime.date(i,7,1):
+                f.write(str(i)+"-07-01\t"+str(Total().saldo_total(str(i)+"-07-01"))+"\n")
+        f.write(str(datetime.date.today())+"\t"+str(Total().saldo_total(datetime.date.today()))+"\n")
+        f.close()
+       
+        #Genera informe_total.svg y lo devuleve como string 
+        os.popen("gnuplot /tmp/inversion_clasificacion.plot; chown apache:apache /tmp/inversion_clasificacion.svg");
+        f=open("/tmp/inversion_clasificacion.svg", "r")
+        f.readline()
+        f.readline()
+        f.readline()
+        f.readline()
+        s='<svg id="informetotal.svg" flex="2" width="100%" height="100%" viewBox="0 0 1000 500"\n'+f.read()
+        f.close()
+        return s
 
     def primera_fecha_con_datos_usuario(self):
         curs = con.Execute('select fecha from opercuentas UNION select fecha from operinversiones UNION select fecha from opertarjetas order by fecha limit 1;'); 

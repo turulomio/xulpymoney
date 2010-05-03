@@ -7,14 +7,14 @@ from xul import *
 #Consultas BD
 con=Conection()
 hoy=datetime.date.today()
-Total().grafico_evolucion_total()
+svg=Total().grafico_evolucion_total()
 
 con.close()
 req.content_type="application/vnd.mozilla.xul+xml"
 req.write(xulheaderwindowmenu("Xulpymoney > Informes > Total > Gráfico"))
 %>
-<vbox  flex="5"  style="overflow: auto">
-    <%=svg2string("/tmp/informe_total.svg")%>
+<vbox  flex=""  style="overflow: auto">
+    <%=svg%>
     <label value=""/>
 </vbox>
 </window>
