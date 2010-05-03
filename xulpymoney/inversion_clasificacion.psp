@@ -1,21 +1,23 @@
 <%
 from core import *
 from xul import *
+import svg
 
 #Consultas BD
 # Para ver como funciona la funcion ver Inversion.nombre_tpcvariable()
 con=Conection()
 cd=ConectionDirect()
 
+#svg=Total().grafico_inversion_clasificacion()
 req.content_type="application/vnd.mozilla.xul+xml"
 req.write(xulheaderwindowmenu("Información de cuentas"))
+arrValor=[]
 %>
-
 <vbox align="center">
     <label id="titulo"  value="Clasificación de las inversiones" />
 </vbox>
 <vbox flex="1">
-    <tree id="tree" flex="3">
+    <tree id="tree" flex="1">
         <treecols>
             <treecol label="Tipo de inversión" flex="4" style="text-align: left"/>
             <treecol label="Dinero invertido " flex="1" style="text-align: right"/>
@@ -31,6 +33,7 @@ sumcuentas=Total().saldo_todas_cuentas(datetime.date.today())
 s=s+   '            <treeitem>\n'
 s=s+   '                <treerow>\n'
 s=s+   '                    <treecell label="Cuentas bancarias" />\n'
+arrValor.append(("Cuentas bancarias", float(sumcuentas)))
 s=s+   '                    ' +    treecell_euros(sumcuentas);
 s=s+   '                    '  +  treecell_tpc(100*sumcuentas/total);
 s=s+   '                </treerow>\n'
@@ -41,7 +44,9 @@ while not curs.EOF:
     sumsaldos=sumsaldos+row['suma']
     s=s+   '            <treeitem>\n'
     s=s+   '                <treerow>\n'
-    s=s+   '                    <treecell label="'+ Inversion().nombre_tpcvariable(row["tpcvariable"])+ '" />\n'
+    name= Inversion().nombre_tpcvariable(row["tpcvariable"])
+    arrValor.append((name, float(row['suma'])))
+    s=s+   '                    <treecell label="'+name+ '" />\n'
     s=s+   '                    ' +    treecell_euros(row['suma']);
     s=s+   '                    '  +  treecell_tpc(100*row['suma']/total);
     s=s+   '                </treerow>\n'
@@ -60,5 +65,7 @@ con.close()
 %>
         </treechildren>
     </tree>
+    <%=svg.piechart(arrValor)%>
+    <label value=""/>
 </vbox>
 </window>
