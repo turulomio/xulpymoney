@@ -1897,14 +1897,26 @@ class Tarjeta:
         s= s+ '     xmlHttp.open("GET",url,true);\n'
         s= s+ '     xmlHttp.send(null);\n'
         s= s+ '}\n'
+        
+        s= s+ 'function treeTarjetas_doubleclick(){\n'
+        s= s+ '     var tree = document.getElementById("treeTarjetas");\n'
+        s= s+ '     var diferido=Boolean(Number(tree.view.getCellText(tree.currentIndex,tree.columns.getNamedColumn("diferido"))));\n'
+        s= s+ '     if (diferido==false){\n'
+        s= s+ '         tarjeta_insertar_a_debito();\n'
+        s= s+ '     }else{\n'
+        s= s+ '         tarjeta_movimientos();\n'
+        s= s+ '     }\n'        
+        s= s+ '}\n\n'        
+        
         s= s+ ']]>\n</script>\n\n'                   
+        
         s= s+ '<popupset>\n'
         s= s+ '     <popup id="popupTarjetas" >\n'
         s= s+ '          <menuitem label="Añadir nueva tarjeta"  oncommand=\'location="tarjeta_insertar.psp";\'   class="menuitem-iconic"  image="images/item_add.png"/>\n'
         s= s+ '     </popup>\n'
         s= s+ '</popupset>\n'
         
-        s= s+ '<tree id="treeTarjetas" enableColumnDrag="true" flex="6"   context="popupTarjetas"  onselect="popupTarjetas();">\n'
+        s= s+ '<tree id="treeTarjetas" enableColumnDrag="true" flex="6"   context="popupTarjetas"  onselect="popupTarjetas();"  ondblclick="treeTarjetas_doubleclick();" >\n'
         s= s+ '     <treecols>\n'
         s= s+  '          <treecol id="id" label="Id" hidden="true" />\n'
         s= s+  '          <treecol id="id_cuentas" label="Id_cuentas" hidden="true" />\n'
