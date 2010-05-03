@@ -4,3 +4,5 @@ dbname='cuentasdev'
 user='postgres'
 password='xxx'
 type='postgres'
+screenwidth="1200"
+screenheight="800"
