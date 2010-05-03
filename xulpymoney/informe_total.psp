@@ -15,8 +15,7 @@ if form.has_key('cmbanos')==False:
 else:
     cmbanos=int(form['cmbanos'])
 
-#Actualiza imagen
-Total().grafico_evolucion_total()
+combo=combo_ano(Total().primera_fecha_con_datos_usuario().year, datetime.date.today().year,  cmbanos)
 
 #Todos estos arrays tienen de indices 0..11 los 12 meses y el 12 la suma
 gastos=[0]*13
@@ -78,11 +77,20 @@ s= s + '<label flex="0"  style="text-align: center;font-weight : bold;" value="B
 s= s + '<label flex="0"  style="text-align: center;font-weight : bold;" value="TAE en el año '+str(cmbanos)+': '+ tpc(tae)+'." />\n'
 con.close() 
 %>
+<script>
+<![CDATA[
+         
+function cmb_submit(){
+    cmb=document.getElementById("cmbanos");
+    location='informe_total.psp?cmbanos='+ cmb.getItemAtIndex(cmb.selectedIndex).label;
+}
+
+
+]]>
+</script>
 <vbox  flex="5">
 <label id="titulo" value="Informe de Gastos e Ingresos" />
-<hbox>
-</hbox>
-
+<%=combo%>
 <tree id="informegi" flex="1">
   <treecols>
     <treecol id="concepto" label="Concepto " flex="2"  style="text-align: left"/>
@@ -234,6 +242,6 @@ print
   </treechildren>
 </tree>
 <%=s %>
-<button label="Pulsa para ver un gráfico de evolución de saldos" oncommand='location="informe_total.png";'   />
+<button label="Pulsa para ver un gráfico de evolución de saldos" oncommand='location="informe_total_grafico.psp";'   />
 </vbox>
 </window>

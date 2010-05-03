@@ -2021,30 +2021,32 @@ class Total:
         
     def grafico_evolucion_total(self):
         f=open("/tmp/informe_total.plot","w")
-        s='set data style fsteps\n'
-        s=s+"set xlabel 'Fechas'\n"
+        s='set encoding utf8\n'
+        s=s+'set title "Evolución temporal del patrimonio"\n'
+        s=s+'set style data fsteps\n'
+#        s=s+"set xlabel 'Fechas'\n"
         s=s+"set timefmt '%Y-%m-%d'\n"
         s=s+"set xdata time\n"
-        s=s+"set ylabel 'Valor'\n"
+        s=s+"set ylabel 'Patrimonio (€)'\n"
         s=s+"set yrange [ 0: ]\n"
         s=s+"set format x '%Y'\n"
         s=s+"set grid\n"
         s=s+"set key left\n"
-        s=s+"set terminal png\n"
-        s=s+"set output \"/var/www/localhost/htdocs/xulpymoney/informe_total.png\"\n"
-        s=s+"plot \"/tmp/informe_total.dat\" using 1:2 smooth unique title \"Saldo total\""
+        s=s+'set term svg size 1280,1024 font "/usr/share/fonts/dejavu/DejaVuSans.ttf"\n'
+        s=s+"set output \"/tmp/informe_total.svg\"\n"
+        s=s+"plot \"/tmp/informe_total.dat\" using 1:2 smooth unique title \"Patrimonio\""
         f.write(s)
         f.close()
 
         f=open("/tmp/informe_total.dat","w")
         for i in range (self.primera_fecha_con_datos_usuario().year,  datetime.date.today().year+1):
             f.write(str(i)+"-01-01\t"+str(Total().saldo_total(str(i)+"-01-01"))+"\n")               
-	    if datetime.date.today()>datetime.date(i,7,1):
-		f.write(str(i)+"-07-01\t"+str(Total().saldo_total(str(i)+"-07-01"))+"\n")
+            if datetime.date.today()>datetime.date(i,7,1):
+                f.write(str(i)+"-07-01\t"+str(Total().saldo_total(str(i)+"-07-01"))+"\n")
         f.write(str(datetime.date.today())+"\t"+str(Total().saldo_total(datetime.date.today()))+"\n")
         f.close()
         
-        os.popen("gnuplot /tmp/informe_total.plot");
+        os.popen("gnuplot /tmp/informe_total.plot; chown apache:apache /tmp/informe_total.svg");
 
     def primera_fecha_con_datos_usuario(self):
         curs = con.Execute('select fecha from opercuentas UNION select fecha from operinversiones UNION select fecha from opertarjetas order by fecha limit 1;'); 
