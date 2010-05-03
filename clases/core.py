@@ -1,6 +1,8 @@
 # -*- coding: UTF-8 -*-
 import sys,  os
 sys.path.append("/usr/lib/xulpymoney/")
+sys.path.append("/etc/xulpymoney/")
+version="20100503"
 import datetime,  math
 import adodb
 import config

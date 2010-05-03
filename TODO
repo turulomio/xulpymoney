@@ -6,4 +6,3 @@
 20100501 Deseo. En insertar operinversiones validar los campos cuando es compra y venta
 20100501 Deseo. Desarrollar ver movimientos antiguos y quitar pago de opertarjetas
 20100501 Bug. Despues de borrar una opercuenta no se respeta la visualización en el mes y año
-20100503 Deseo. Crear un config.py en /etc/xulpymoney

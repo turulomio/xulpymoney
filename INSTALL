@@ -15,3 +15,6 @@ Se debe crear una base de datos en postgresql llamada por ejemplo xulpymoney
 createdb -U postgres xulpymoney
 psql -U postgres xulpymoney < sql/pgsql.sql
 psql -U postgres xulpymoney < sql/pgsql.data
+
+Modificar las opciones en /etc/xulpymoney/config.py habiendolo copiado de 
+/etc/xulpymoney/config.py.distrib
