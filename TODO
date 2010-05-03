@@ -3,7 +3,7 @@
 20100425 Bug. Tener mucho control de las operaciones necesarias, ponerlas en código y anexarlas a las de usuario
 20100425 Bug. Operación necesaria vencimiento de depósito
 20100428 Deseo. Poner un combobox año en informe total
-20100428 Bug. Falla la fecha en modificación de operinversiones
 20100501 Deseo. En insertar operinversiones validar los campos cuando es compra y venta
 20100501 Deseo. Desarrollar ver movimientos antiguos y quitar pago de opertarjetas
 20100501 Bug. Despues de borrar una opercuenta no se respeta la visualización en el mes y año
+20100503 Deseo. Crear un config.py en /etc/xulpymoney
