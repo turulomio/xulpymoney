@@ -3,69 +3,34 @@ from core import *
 from xul import *
 import svg
 
-#Consultas BD
-# Para ver como funciona la funcion ver Inversion.nombre_tpcvariable()
 con=Conection()
 cd=ConectionDirect()
 
-#svg=Total().grafico_inversion_clasificacion()
 req.content_type="application/vnd.mozilla.xul+xml"
-req.write(xulheaderwindowmenu("Información de cuentas"))
+req.write(xulheaderwindowmenu("Xulpymoney > Informes > Clasificación de las inversiones"))
 arrValor=[]
 %>
 <vbox align="center">
     <label id="titulo"  value="Clasificación de las inversiones" />
 </vbox>
 <vbox flex="1">
-    <tree id="tree" flex="1">
-        <treecols>
-            <treecol label="Tipo de inversión" flex="4" style="text-align: left"/>
-            <treecol label="Dinero invertido " flex="1" style="text-align: right"/>
-            <treecol label="% invertido      " flex="1" style="text-align: right"/>
-        </treecols>
-        <treechildren>
 <%
 total=Total().saldo_total(datetime.date.today())
 sql="select * from inversion_saldo_segun_tpcvariable() as a (tpcvariable integer, suma float);"
 curs=cd.con.Execute(sql); 
-s=''
+
 sumcuentas=Total().saldo_todas_cuentas(datetime.date.today())
-s=s+   '            <treeitem>\n'
-s=s+   '                <treerow>\n'
-s=s+   '                    <treecell label="Cuentas bancarias" />\n'
-arrValor.append(("Cuentas bancarias", float(sumcuentas)))
-s=s+   '                    ' +    treecell_euros(sumcuentas);
-s=s+   '                    '  +  treecell_tpc(100*sumcuentas/total);
-s=s+   '                </treerow>\n'
-s=s+   '            </treeitem>\n'
+arrValor.append(("Cuentas bancarias", float(round(sumcuentas, 2))))
 sumsaldos=0
 while not curs.EOF:
     row = curs.GetRowAssoc(0)   
     sumsaldos=sumsaldos+row['suma']
-    s=s+   '            <treeitem>\n'
-    s=s+   '                <treerow>\n'
     name= Inversion().nombre_tpcvariable(row["tpcvariable"])
-    arrValor.append((name, float(row['suma'])))
-    s=s+   '                    <treecell label="'+name+ '" />\n'
-    s=s+   '                    ' +    treecell_euros(row['suma']);
-    s=s+   '                    '  +  treecell_tpc(100*row['suma']/total);
-    s=s+   '                </treerow>\n'
-    s=s+   '            </treeitem>\n'
+    arrValor.append((name, float(round(row['suma'], 2))))
     curs.MoveNext()     
 curs.Close()
-s=s+   '            <treeitem>\n'
-s=s+   '                <treerow>\n'
-s=s+   '                    <treecell label="Total" />\n'
-s=s+   '                    ' +    treecell_euros(sumsaldos);
-s=s+   '                    '  +  treecell_tpc(100);
-s=s+   '                </treerow>\n'
-s=s+   '            </treeitem>\n'
-req.write(s)
+req.write(Total().grafico_inversion_clasificacion(arrValor))
 con.close()
 %>
-        </treechildren>
-    </tree>
-    <%=svg.piechart(arrValor)%>
-    <label value=""/>
 </vbox>
 </window>

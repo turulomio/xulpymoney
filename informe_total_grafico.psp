@@ -13,8 +13,8 @@ con.close()
 req.content_type="application/vnd.mozilla.xul+xml"
 req.write(xulheaderwindowmenu("Xulpymoney > Informes > Total > Gráfico"))
 %>
-<vbox  flex=""  style="overflow: auto">
-    <%=svg%>
-    <label value=""/>
+<vbox  flex="1"  style="overflow: auto">
+<%=svg%>
+<label value=""/>
 </vbox>
 </window>

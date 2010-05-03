@@ -2018,7 +2018,53 @@ class Total:
             return 0
         else:
             return row['importe'];
+
+    def grafico_concepto_mensual(self,  sectors):
+        """Recibe un arrays con dos columans la primera la descripción y la segunda el valor"""
+        s='<svg flex="2" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" version="1.1">\n'
+        total = 0
+        i = 0
+        seg = 0
+        radius = 150
+        startx = 200   # The screen x-origin: center of pie chart
+        starty = 200   # The screen y-origin: center of pie chart
+        lastx = radius # Starting coordinates of 
+        lasty = 0      # the first arc
+        ykey = 35
+        xkey= 375
+        colors = ['red','blue','yellow','magenta','orange','slateblue','slategrey','greenyellow','wheat','lime','darkgreen','green', 'gray',  'black',  'white',  'pink','blue','yellow','magenta','orange','slateblue','slategrey','greenyellow','wheat','lime','darkgreen','green', 'gray',  'black',  'white',  'pink']
+
+        for n in sectors:
+            total = total + n[1]  # we have to do this ahead, since we need the total for the next for loop
         
+        for n in sectors:
+            if i==12:
+                ykey=35
+                xkey=775
+            arc = "0"                   # default is to draw short arc (< 180 degrees)
+            seg = n[1]/total * 360 + seg   # this angle will be current plus all previous
+            if ((n[1]/total * 360) > 180): # just in case this piece is > 180 degrees
+                arc = "1"
+            radseg = math.radians(seg)  # we need to convert to radians for cosine, sine functions
+            nextx = int(math.cos(radseg) * radius)
+            nexty = int(math.sin(radseg) * radius)
+        
+            # The weirdly placed minus signs [eg, (-(lasty))] are due to the fact that our calculations are for a graph with positive Y values going up, but on the screen positive Y values go down.
+        
+            s=s+'<path d="M '+str(startx)+','+str(starty) + ' l '+str(lastx)+','+str(-(lasty))+' a' + str(radius) + ',' + str(radius) + ' 0 ' + arc + ',0 '+str(nextx - lastx)+','+str(-(nexty - lasty))+ ' z" \n'
+            s=s+'fill="'+colors[i]+'" stroke="black" stroke-width="2" stroke-linejoin="round" />\n'
+            # We are writing the XML commands one segment at a time, so we abandon old points we don't need anymore, and nextx becomes lastx for the next segment
+            s=s+'<rect x="'+str(xkey)+'" y="'+ str(ykey) + '" width="40" height="30" fill="'+colors[i] + '" stroke="black" stroke-width="1"/><text x="'+str(xkey+50)+'" y="'+str(ykey+20)+'"	style="font-family:verdana, arial, sans-serif;			font-size: 12;			fill: black;			stroke: none">'+n[0]+ ". " +  str(n[1])+ " €. (" +  str(round(n[1]*100/total, 2))+' %)</text>\n'
+            ykey = ykey + 35
+            lastx = nextx
+            lasty = nexty
+            i += 1        
+        s=s+'<text x="'+str(xkey+50)+'" y="'+str(ykey+20)+'"	style="font-family:verdana, arial, sans-serif;			font-size: 16;			fill: black;			stroke: none">TOTAL: ' +  str(round(total, 2))+ ' €.</text>\n'
+        s=s+'</svg>'        # End tag for the SVG file
+        return s
+
+
+
     def grafico_evolucion_total(self):
         #Genera informe_total.plot
         f=open("/tmp/informe_total.plot","w")
@@ -2054,48 +2100,50 @@ class Total:
         f.readline()
         f.readline()
         f.readline()
-        s='<svg id="informetotal.svg" flex="1" width="100%" height="100%" viewBox="0 0 1000 500"\n'+f.read()
+        s='<svg id="informetotal.svg" flex="1" width="100%" height="100%"  version="1.1"  viewBox="0 0 1000 500"'+f.read()
         f.close()
         return s
 
-    def grafico_inversion_clasificacion(self):
-        #Genera informe_total.plot
-        f=open("/tmp/inversion_clasificacion.plot","w")
-        s='set encoding utf8\n'
-        s=s+'set title "Clasificación de las inversiones"\n'
-        s=s+'set style data fsteps\n'
-        s=s+"set timefmt '%Y-%m-%d'\n"
-        s=s+"set xdata time\n"
-        s=s+"set ylabel 'Patrimonio (€)'\n"
-        s=s+"set yrange [ 0: ]\n"
-        s=s+"set format x '%Y'\n"
-        s=s+"set grid\n"
-        s=s+"set key left\n"
-        s=s+'set term svg size 1000,500 font "/usr/share/fonts/dejavu/DejaVuSans.ttf"\n'
-        s=s+"set output \"/tmp/inversion_clasificacion.svg\"\n"
-        s=s+"plot \"/tmp/informe_total.dat\" using 1:2 smooth unique title \"Patrimonio\""
-        f.write(s)
-        f.close()
+    def grafico_inversion_clasificacion(self,  sectors):
+        """Recibe un arrays con dos columans la primera la descripción y la segunda el valor"""
+        s='<svg flex="2" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" version="1.1">\n'
+        total = 0
+        i = 0
+        seg = 0
+        radius = 150
+        startx = 200   # The screen x-origin: center of pie chart
+        starty = 200   # The screen y-origin: center of pie chart
+        lastx = radius # Starting coordinates of 
+        lasty = 0      # the first arc
+        ykey = 125
+        colors = ['red','blue','yellow','magenta','orange','slateblue','slategrey','greenyellow','wheat']
 
-        #Genera informe_total.dat
-        f=open("/tmp/inversion_clasificacion.dat","w")
-        for i in range (self.primera_fecha_con_datos_usuario().year,  datetime.date.today().year+1):
-            f.write(str(i)+"-01-01\t"+str(Total().saldo_total(str(i)+"-01-01"))+"\n")               
-            if datetime.date.today()>datetime.date(i,7,1):
-                f.write(str(i)+"-07-01\t"+str(Total().saldo_total(str(i)+"-07-01"))+"\n")
-        f.write(str(datetime.date.today())+"\t"+str(Total().saldo_total(datetime.date.today()))+"\n")
-        f.close()
-       
-        #Genera informe_total.svg y lo devuleve como string 
-        os.popen("gnuplot /tmp/inversion_clasificacion.plot; chown apache:apache /tmp/inversion_clasificacion.svg");
-        f=open("/tmp/inversion_clasificacion.svg", "r")
-        f.readline()
-        f.readline()
-        f.readline()
-        f.readline()
-        s='<svg id="informetotal.svg" flex="2" width="100%" height="100%" viewBox="0 0 1000 500"\n'+f.read()
-        f.close()
+        for n in sectors:
+            total = total + n[1]  # we have to do this ahead, since we need the total for the next for loop
+        
+        for n in sectors:
+            arc = "0"                   # default is to draw short arc (< 180 degrees)
+            seg = n[1]/total * 360 + seg   # this angle will be current plus all previous
+            if ((n[1]/total * 360) > 180): # just in case this piece is > 180 degrees
+                arc = "1"
+            radseg = math.radians(seg)  # we need to convert to radians for cosine, sine functions
+            nextx = int(math.cos(radseg) * radius)
+            nexty = int(math.sin(radseg) * radius)
+        
+            # The weirdly placed minus signs [eg, (-(lasty))] are due to the fact that our calculations are for a graph with positive Y values going up, but on the screen positive Y values go down.
+        
+            s=s+'<path d="M '+str(startx)+','+str(starty) + ' l '+str(lastx)+','+str(-(lasty))+' a' + str(radius) + ',' + str(radius) + ' 0 ' + arc + ',0 '+str(nextx - lastx)+','+str(-(nexty - lasty))+ ' z" \n'
+            s=s+'fill="'+colors[i]+'" stroke="black" stroke-width="2" stroke-linejoin="round" />\n'
+            # We are writing the XML commands one segment at a time, so we abandon old points we don't need anymore, and nextx becomes lastx for the next segment
+            s=s+'<rect x="375" y="'+ str(ykey) + '" width="40" height="30" fill="'+colors[i] + '" stroke="black" stroke-width="1"/><text x="425" y="'+str(ykey+20)+'"	style="font-family:verdana, arial, sans-serif;			font-size: 14;			fill: black;			stroke: none">'+n[0]+ ". " +  str(n[1])+ " €. (" +  str(round(n[1]*100/total, 2))+' %)</text>\n'
+            ykey = ykey + 35
+            lastx = nextx
+            lasty = nexty
+            i += 1        
+        s=s+'<text x="425" y="'+str(ykey+20)+'"	style="font-family:verdana, arial, sans-serif;			font-size: 16;			fill: black;			stroke: none">TOTAL: ' +  str(round(total, 2))+ ' €.</text>\n'
+        s=s+'</svg>'        # End tag for the SVG file
         return s
+
 
     def primera_fecha_con_datos_usuario(self):
         curs = con.Execute('select fecha from opercuentas UNION select fecha from operinversiones UNION select fecha from opertarjetas order by fecha limit 1;'); 
