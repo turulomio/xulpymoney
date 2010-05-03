@@ -31,7 +31,6 @@ function modificar(){
     spfecha=fecha.split("-");
     var id_inversiones=<%=row['id_inversiones']%>;
     var url="ajax/inversionoperacion_modificar.psp?id_operinversiones="+id_operinversiones+"&fecha="+fecha+"&id_tiposoperaciones="+id_tiposoperaciones+"&importe="+importe+"&acciones="+acciones+"&impuestos="+impuestos+"&comision="+comision+"&comentario="+comentario+"&valor_accion="+valor_accion+"&id_inversiones="+id_inversiones;
-alert(url);
     xmlHttp=new XMLHttpRequest();
     xmlHttp.onreadystatechange=function(){
         if(xmlHttp.readyState==4){
@@ -54,8 +53,8 @@ alert(ale)
     </columns>
     <rows>
         <row>
-            <label id="negrita" value="Fecha"/>
-            <datepicker id="fecha" type="grid"  firstdayofweek="1" value="<%=str(row['fecha'])%>"/>
+            <label id="negrita" value="Fecha <%=str(row['fecha'])[:-12]%>"/>
+            <datepicker id="fecha" type="grid"  firstdayofweek="1" value="<%=str(row['fecha'])[:-12]%>"/>
         </row>
         <row>
             <label id="negrita" value="Tipo de operación"/>
