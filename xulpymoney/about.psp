@@ -1,5 +1,6 @@
 <% 
 from xul import *
+from core import *
 from config import *
 req.content_type="application/vnd.mozilla.xul+xml"
 req.write(xulheaderwindowmenu("Acerca de Xulpymoney"))

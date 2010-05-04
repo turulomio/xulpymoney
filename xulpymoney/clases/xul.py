@@ -13,7 +13,7 @@ def xulheaderwindowmenu(title):
     return str(s)
 
 def xulventanaymenu(title):
-    s='<window id="main" title="'+ title +'"       xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">\n'
+    s='<window id="main" title="'+ title +'"       xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"  >\n'
     s= s + menu();
     return s
 

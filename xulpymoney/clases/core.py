@@ -2019,28 +2019,45 @@ class Total:
         else:
             return row['importe'];
 
-    def grafico_concepto_mensual(self,  sectors):
+
+
+
+
+
+
+
+
+    def grafico_concepto_mensual(self, id,  sectors):
         """Recibe un arrays con dos columans la primera la descripción y la segunda el valor"""
-        s='<svg flex="2" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" version="1.1">\n'
+        js=       '<script type="text/ecmascript">\n<![CDATA[\n'
+        js= js+ 'function '+str(id)+'showCheese(i){\n'        
+        js= js+ '     	document.getElementById("'+str(id)+'tpc").firstChild.nodeValue = document.getElementById("'+str(id)+'cheese" +  i).getAttribute("tpc");\n'
+        js= js+ '     	document.getElementById("'+str(id)+'valor").firstChild.nodeValue = document.getElementById("'+str(id)+'cheese" +  i).getAttribute("valor");\n'
+        js= js+ '}\n\n'        
+        
+        js= js+ 'function '+str(id)+'unshow(i){\n'        
+        js= js+ '     	document.getElementById("'+str(id)+'tpc").firstChild.nodeValue = "";\n'
+        js= js+ '     	document.getElementById("'+str(id)+'valor").firstChild.nodeValue =  "";\n'
+        js= js+ '}\n\n'
+        js= js+ ']]>\n</script>\n\n'           
+        
+        header='<svg flex="2" id="'+str(id)+'" width="800" height="340"  viewBox="0 0 800 340"  xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" >\n'
+
         total = 0
         i = 0
         seg = 0
-        radius = 150
-        startx = 200   # The screen x-origin: center of pie chart
-        starty = 200   # The screen y-origin: center of pie chart
+        radius = 160
+        startx = 160   # The screen x-origin: center of pie chart
+        starty = 170   # The screen y-origin: center of pie chart
         lastx = radius # Starting coordinates of 
         lasty = 0      # the first arc
-        ykey = 35
-        xkey= 375
-        colors = ['red','blue','yellow','magenta','orange','slateblue','slategrey','greenyellow','wheat','lime','darkgreen','green', 'gray',  'black',  'white',  'pink','blue','yellow','magenta','orange','slateblue','slategrey','greenyellow','wheat','lime','darkgreen','green', 'gray',  'black',  'white',  'pink']
+        colors = ['red','blue','yellow','magenta',' thistle ','orange','slateblue','coral','slategrey','greenyellow','wheat','darksalmon','lime','olive', 'darkgreen','orangered', 'violet','brown','mediumslateblue','green', 'gray',  'black', 'gold','salmon',   'white',   'saddlebrown','pink']
 
         for n in sectors:
             total = total + n[1]  # we have to do this ahead, since we need the total for the next for loop
-        
+            
+        s='    <defs>\n'        
         for n in sectors:
-            if i==12:
-                ykey=35
-                xkey=775
             arc = "0"                   # default is to draw short arc (< 180 degrees)
             seg = n[1]/total * 360 + seg   # this angle will be current plus all previous
             if ((n[1]/total * 360) > 180): # just in case this piece is > 180 degrees
@@ -2049,19 +2066,166 @@ class Total:
             nextx = int(math.cos(radseg) * radius)
             nexty = int(math.sin(radseg) * radius)
         
-            # The weirdly placed minus signs [eg, (-(lasty))] are due to the fact that our calculations are for a graph with positive Y values going up, but on the screen positive Y values go down.
-        
-            s=s+'<path d="M '+str(startx)+','+str(starty) + ' l '+str(lastx)+','+str(-(lasty))+' a' + str(radius) + ',' + str(radius) + ' 0 ' + arc + ',0 '+str(nextx - lastx)+','+str(-(nexty - lasty))+ ' z" \n'
-            s=s+'fill="'+colors[i]+'" stroke="black" stroke-width="2" stroke-linejoin="round" />\n'
-            # We are writing the XML commands one segment at a time, so we abandon old points we don't need anymore, and nextx becomes lastx for the next segment
-            s=s+'<rect x="'+str(xkey)+'" y="'+ str(ykey) + '" width="40" height="30" fill="'+colors[i] + '" stroke="black" stroke-width="1"/><text x="'+str(xkey+50)+'" y="'+str(ykey+20)+'"	style="font-family:verdana, arial, sans-serif;			font-size: 12;			fill: black;			stroke: none">'+n[0]+ ". " +  str(n[1])+ " €. (" +  str(round(n[1]*100/total, 2))+' %)</text>\n'
-            ykey = ykey + 35
+            s=s+'        <symbol id="'+str(id)+'def'+str("cheese"+str(i))+'" overflow="visible">\n'
+            s=s+'            <path  d="M '+str(startx)+','+str(starty) + ' l '+str(lastx)+','+str(-(lasty))+' a' + str(radius) + ',' + str(radius) + ' 0 ' + arc + ',0 '+str(nextx - lastx)+','+str(-(nexty - lasty))+ ' z" fill="'+colors[i]+'" stroke="black" stroke-width="2" stroke-linejoin="round"/>\n'
+            s=s+'        </symbol>\n'          
             lastx = nextx
             lasty = nexty
             i += 1        
-        s=s+'<text x="'+str(xkey+50)+'" y="'+str(ykey+20)+'"	style="font-family:verdana, arial, sans-serif;			font-size: 16;			fill: black;			stroke: none">TOTAL: ' +  str(round(total, 2))+ ' €.</text>\n'
+        s=s+'    </defs>\n' 
+
+        i=0
+        for n in sectors:
+            s=s+'        <use id="'+str(id)+str("cheese"+str(i))+'" x="0" y="0"   xlink:href="#'+str(id)+'def'+str("cheese"+str(i))+'" onmouseover="'+str(id)+'showCheese('+str(i)+');"   onmouseout="'+str(id)+'unshow();" valor="Importe: '+str(round(n[1], 2))+' € ('+str(round(n[1]*100/total,2))+' %)" tpc="Concepto: '+str(n[0])+'" />\n'
+            i += 1        
+
+        s=s+'        <text id="'+str(id)+'tpc" x="400" y="100"  font-family="Verdana" font-size="14" fill="grey"> </text>\n'
+        s=s+'        <text id="'+str(id)+'valor" x="400" y="120"  font-family="Verdana" font-size="14" fill="grey"> </text>\n'
+        s=s+'        <text id="'+str(id)+'total" x="400" y="180" font-family="Verdana" font-size="24" fill="blue">Total: '+str(round(total, 2))+' €</text>\n'
         s=s+'</svg>'        # End tag for the SVG file
-        return s
+        
+        mylog(s)
+        f=open("/tmp/informe_conceptos_mensual.svg","w")
+        f.write('<?xml version="1.0" encoding="utf-8"  standalone="no"?>\n<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"\n "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">\n'+header +js+ s)
+        f.close()
+        return js + header + s
+
+
+
+
+
+
+
+#
+#
+#
+#
+#    def grafico_concepto_mensual_conprefix(self,  sectors):
+#        """Recibe un arrays con dos columans la primera la descripción y la segunda el valor"""
+#        
+#        s='<svg:svg flex="2" width="10cm" height="10cm"  viewBox="0 0 1000 500" >\n'
+#        
+##        s= s+ '<script>\n<![CDATA[\n'
+##        s= s+ 'function showCheese(i){\n'
+##        s= s+ '     alert("showcheese"+i+'+str(len(sectors))+');\n'
+##        s= s+ '}\n\n'
+##
+##        s= s+ ']]>\n</script>\n\n'               
+#        total = 0
+#        i = 0
+#        seg = 0
+#        radius = 150
+#        startx = 200   # The screen x-origin: center of pie chart
+#        starty = 200   # The screen y-origin: center of pie chart
+#        lastx = radius # Starting coordinates of 
+#        lasty = 0      # the first arc
+##        ykey = 35
+##        xkey= 375
+#        colors = ['red','blue','yellow','magenta',' thistle ','orange','slateblue','coral','slategrey','greenyellow','wheat','darksalmon','lime','olive', 'darkgreen','orangered', 'violet','brown','mediumslateblue','green', 'gray',  'black', 'gold','salmon',   'white',   'saddlebrown','pink']
+#
+#        for n in sectors:
+#            total = total + n[1]  # we have to do this ahead, since we need the total for the next for loop
+#            
+#        s=s+'    <svg:defs>\n'        
+#        
+#        for n in sectors:
+#            arc = "0"                   # default is to draw short arc (< 180 degrees)
+#            seg = n[1]/total * 360 + seg   # this angle will be current plus all previous
+#            if ((n[1]/total * 360) > 180): # just in case this piece is > 180 degrees
+#                arc = "1"
+#            radseg = math.radians(seg)  # we need to convert to radians for cosine, sine functions
+#            nextx = int(math.cos(radseg) * radius)
+#            nexty = int(math.sin(radseg) * radius)
+#        
+#            s=s+'        <svg:symbol id="def'+str("cheese"+str(i))+'" overflow="visible">\n'
+#            s=s+'            <svg:path  d="M '+str(startx)+','+str(starty) + ' l '+str(lastx)+','+str(-(lasty))+' a' + str(radius) + ',' + str(radius) + ' 0 ' + arc + ',0 '+str(nextx - lastx)+','+str(-(nexty - lasty))+ ' z" fill="'+colors[i]+'" stroke="black" stroke-width="2" stroke-linejoin="round" />\n'
+#            s=s+'        </svg:symbol>\n'          
+#            lastx = nextx
+#            lasty = nexty
+#            i += 1        
+#        s=s+'    </svg:defs>\n' 
+#
+#
+#        i=0
+##        s=s+'    <g id="cheeses">\n'
+#        for n in sectors:
+#            s=s+'        <svg:use id="'+str("cheese"+str(i))+'" x="0" y="0"   xlink:href="#def'+str("cheese"+str(i))+'" />\n'
+#            #onmouseover="showCheese('+str(i)+')" onclick="alert(\''+str("cheese"+str(i))+'\');"
+#            i += 1        
+##        s=s+'    </g>\n'
+#
+#        s=s+'    <svg:g id="data" transform="translate(48 24)">\n'
+#        s=s+'        <svg:rect x="" y="200" width="360" height="200" fill="#FFEF95" fill-opacity="0.7"/>\n'
+#        s=s+'        <svg:g id="cityText" font-size="10" font-family="Arial,Helvetica">\n'
+#        s=s+'            <svg:text x="100" y="150">City:</svg:text>\n'
+#        s=s+'            <svg:text id="varCity" x="33" y="15">PRUEBA</svg:text>\n'
+#        s=s+'        </svg:g>\n'
+#        s=s+'    </svg:g>\n'
+#        s=s+'</svg:svg>'        # End tag for the SVG file
+#        
+#        mylog(s)
+#        f=open("/tmp/svg.svg","w")
+#        f.write('<?xml version="1.0" encoding="utf-8"  standalone="no"?>\n<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"\n "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">\n'+s)
+#        f.close()
+#        return s
+#
+#
+#
+
+
+
+
+
+
+
+#
+#
+#
+#
+#
+#
+#    def grafico_concepto_mensual_bueno(self,  sectors):
+#        """Recibe un arrays con dos columans la primera la descripción y la segunda el valor"""
+#        s='<svg flex="2" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" version="1.1">\n'
+#        total = 0
+#        i = 0
+#        seg = 0
+#        radius = 150
+#        startx = 200   # The screen x-origin: center of pie chart
+#        starty = 200   # The screen y-origin: center of pie chart
+#        lastx = radius # Starting coordinates of 
+#        lasty = 0      # the first arc
+#        ykey = 35
+#        xkey= 375
+#        colors = ['red','blue','yellow','magenta',' thistle ','orange','slateblue','coral','slategrey','greenyellow','wheat','darksalmon','lime','olive', 'darkgreen','orangered', 'violet','brown','mediumslateblue','green', 'gray',  'black', 'gold','salmon',   'white',   'saddlebrown','pink']
+#
+#        for n in sectors:
+#            total = total + n[1]  # we have to do this ahead, since we need the total for the next for loop
+#        
+#        for n in sectors:
+#            if i==12:
+#                ykey=35
+#                xkey=775
+#            arc = "0"                   # default is to draw short arc (< 180 degrees)
+#            seg = n[1]/total * 360 + seg   # this angle will be current plus all previous
+#            if ((n[1]/total * 360) > 180): # just in case this piece is > 180 degrees
+#                arc = "1"
+#            radseg = math.radians(seg)  # we need to convert to radians for cosine, sine functions
+#            nextx = int(math.cos(radseg) * radius)
+#            nexty = int(math.sin(radseg) * radius)
+#        
+#            # The weirdly placed minus signs [eg, (-(lasty))] are due to the fact that our calculations are for a graph with positive Y values going up, but on the screen positive Y values go down.
+#        
+#            s=s+'<path d="M '+str(startx)+','+str(starty) + ' l '+str(lastx)+','+str(-(lasty))+' a' + str(radius) + ',' + str(radius) + ' 0 ' + arc + ',0 '+str(nextx - lastx)+','+str(-(nexty - lasty))+ ' z" fill="'+colors[i]+'" stroke="black" stroke-width="2" stroke-linejoin="round" />\n'
+#            # We are writing the XML commands one segment at a time, so we abandon old points we don't need anymore, and nextx becomes lastx for the next segment
+#            s=s+'<rect x="'+str(xkey)+'" y="'+ str(ykey) + '" width="40" height="30" fill="'+colors[i] + '" stroke="black" stroke-width="1"/><text x="'+str(xkey+50)+'" y="'+str(ykey+20)+'"	style="font-family:verdana, arial, sans-serif;			font-size: 12;			fill: black;			stroke: none">'+n[0]+ ". " +  str(n[1])+ " €. (" +  str(round(n[1]*100/total, 2))+' %)</text>\n'
+#            ykey = ykey + 35
+#            lastx = nextx
+#            lasty = nexty
+#            i += 1        
+#        s=s+'<text x="'+str(xkey+50)+'" y="'+str(ykey+20)+'"	style="font-family:verdana, arial, sans-serif;			font-size: 16;			fill: black;			stroke: none">TOTAL: ' +  str(round(total, 2))+ ' €.</text>\n'
+#        s=s+'</svg>'        # End tag for the SVG file
+#        return s
 
 
 
@@ -2105,8 +2269,8 @@ class Total:
         return s
 
     def grafico_inversion_clasificacion(self,  sectors):
-        """Recibe un arrays con dos columans la primera la descripción y la segunda el valor"""
-        s='<svg flex="2" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" version="1.1">\n'
+        """Recibe un arrays con dos columans la primera la descripción y la segunda el valor"""        
+        s='<svg xml:space="svg" flex="2" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" version="1.1">\n'
         total = 0
         i = 0
         seg = 0
