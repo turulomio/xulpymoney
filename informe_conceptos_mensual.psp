@@ -43,8 +43,8 @@ while not curs.EOF:
 curs.Close()
 
 
-gastos=Total().grafico_concepto_mensual(arrG)
-ingresos=Total().grafico_concepto_mensual(arrI)
+gastos=Total().grafico_concepto_mensual("gg",arrG)
+ingresos=Total().grafico_concepto_mensual("gi",arrI)
 con.close()
 %>
         <tabbox orient="vertical" flex="1"  style="overflow: auto;">
@@ -54,10 +54,10 @@ con.close()
             </tabs>
             <tabpanels flex="1">
                 <vbox  style="overflow: auto;">
-                    <%=gastos%>
+<%=gastos%>
                 </vbox>
                 <vbox  style="overflow: auto;">
-                    <%=ingresos%>
+<%=ingresos%>
                 </vbox>
             </tabpanels>
          </tabbox>
