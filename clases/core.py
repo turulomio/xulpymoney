@@ -571,7 +571,6 @@ class CuentaOperacion:
 
     def modificar(self, id_opercuentas,  fecha, id_conceptos, id_tiposoperaciones,  importe,  comentario,  id_cuentas):
         sql="update opercuentas set fecha='" + fecha + "', id_conceptos=" + str(id_conceptos)+", id_tiposoperaciones="+ str(id_tiposoperaciones) +", importe="+str(importe)+", comentario='"+comentario+"', id_cuentas="+str(id_cuentas)+" where id_opercuentas=" + str(id_opercuentas)
-        mylog(sql)
         try:
             con.Execute(sql);
         except:
@@ -1240,7 +1239,6 @@ class InversionActualizacion:
 class InversionOperacion:
     def borrar(self,  id_operinversiones,  id_inversiones):
         sql="delete from operinversiones where id_operinversiones="+ str(id_operinversiones);
-        mylog(sql)
         try:
             con.Execute(sql);
         except:
@@ -1785,7 +1783,6 @@ class Tarjeta:
         
     def modificar(self, id_tarjetas, tarjeta,  id_cuentas,  numero,  pago_diferido,  saldomaximo):
         sql="update tarjetas set tarjeta='"+str(tarjeta)+"', id_cuentas="+str(id_cuentas)+", numero='"+str(numero)+"', pago_diferido="+str(pago_diferido)+", saldomaximo="+str(saldomaximo)+" where id_tarjetas="+ str(id_tarjetas)
-        mylog(sql)
         try:
             con.Execute(sql);
         except:
@@ -1809,7 +1806,6 @@ class Tarjeta:
             sql="select id_tarjetas, cuentas.id_cuentas, tj_activa, tarjeta, cuenta, numero, pago_diferido, saldomaximo from tarjetas,cuentas where tarjetas.id_cuentas=cuentas.id_cuentas order by tarjetas.tarjeta"
         else:
             sql="select id_tarjetas, cuentas.id_cuentas, tj_activa, tarjeta, cuenta, numero, pago_diferido, saldomaximo from tarjetas,cuentas where tarjetas.id_cuentas=cuentas.id_cuentas and tarjetas.tj_activa=true order by tarjetas.tarjeta"
-        mylog(sql)
         curs=con.Execute(sql); 
         
         s=      '<script>\n<![CDATA[\n'
@@ -2042,6 +2038,7 @@ class Total:
         js= js+ ']]>\n</script>\n\n'           
         
         header='<svg flex="2" id="'+str(id)+'" width="800" height="340"  viewBox="0 0 800 340"  xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" >\n'
+        header=header + '<!-- Gráfico que muestra importes por conceptos. http://xulpymoney.sourcefore.net -->\n'
 
         total = 0
         i = 0
@@ -2084,7 +2081,6 @@ class Total:
         s=s+'        <text id="'+str(id)+'total" x="400" y="180" font-family="Verdana" font-size="24" fill="blue">Total: '+str(round(total, 2))+' €</text>\n'
         s=s+'</svg>'        # End tag for the SVG file
         
-        mylog(s)
         f=open("/tmp/informe_conceptos_mensual.svg","w")
         f.write('<?xml version="1.0" encoding="utf-8"  standalone="no"?>\n<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"\n "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">\n'+header +js+ s)
         f.close()
@@ -2307,6 +2303,147 @@ class Total:
         s=s+'<text x="425" y="'+str(ykey+20)+'"	style="font-family:verdana, arial, sans-serif;			font-size: 16;			fill: black;			stroke: none">TOTAL: ' +  str(round(total, 2))+ ' €.</text>\n'
         s=s+'</svg>'        # End tag for the SVG file
         return s
+
+
+
+
+
+
+
+
+
+
+
+
+
+    def grafico_inversionoperacion_refibex(self, ibex,  points,  miles):
+        """Recibe dos arrays del tipo operinversiones, ibex, calculos por miles
+            points ((row["inversion"], row['fecha'], row['acciones'], row['importe'],referencia_ibex35(row['fecha']) )) 
+            ibex((row["fecha"], row['cierre']))
+            miles(row['miles'], row['importe'],  round(100*row['sumimporte']/total, 2))"""
+ 
+        
+        def fecha2x(fecha):
+            """Función que cambia una fecha a una posicion x"""
+            i=0
+            for ib in ibex:
+                if ib[0]==fecha:
+                    return i
+                else:
+                    i=i+xstep
+                
+        def maximoibex():
+            """Calculamos el máximo del ibex"""
+            max=0
+            for ib in ibex:
+                if ib[1]>max:
+                    max=ib[1]
+            return (int(max/1000)+1)*1000                
+        def minimoibex():
+            """Calculamos el miniimo del ibex"""
+            min=1000000
+            for ib in ibex:
+                if ib[1]<min:
+                    min=ib[1]
+            return (int(min/1000))*1000
+            
+        xstep=20#Avance en x por cada avance en fecha del ibex
+        margin=3000#Margen que rodea el grafico por todos los lados
+        maxibex=maximoibex()
+        minibex=minimoibex()
+        maxy=maxibex-minibex  #Maximo del ibex
+        maxx=len(ibex)*20  #Maximo del ibex
+        mylog(str(maxibex) +" "+str(minibex) +" "+str(maxy) +" "+str(maxx))
+        firstyear=ibex[0][0].year#Año de la primea operación. 
+
+        js=       '<script type="text/ecmascript">\n<![CDATA[\n'        
+        js= js+ 'function gioriShowData(i){\n'        
+        js= js+ '     	document.getElementById("gioriover").firstChild.nodeValue = document.getElementById("gioricircle" +  i).getAttribute("inversion") + ". " + document.getElementById("gioricircle" +  i).getAttribute("importe")+ " €. Ibex="  + document.getElementById("gioricircle" +  i).getAttribute("ibex") +" €";\n'
+        js= js+ '}\n\n'        
+
+        js= js+ 'function gioriShowMiles(i){\n'        
+        js= js+ '     	document.getElementById("gioriover").firstChild.nodeValue = "Rango " + i + "000 - " + (i+1) + "000: "+ ". " + document.getElementById("giorirect" +  i).getAttribute("importe")+ " €. ("  + document.getElementById("giorirect" +  i).getAttribute("tpc") +" %)";\n'
+        js= js+ '     	document.getElementById("giorirect"+i).setAttribute("style","stroke: none; fill: salmon;fill-opacity: 0.5;");\n'
+        js= js+ '}\n\n'                    
+
+        js= js+ 'function ver_detalle(i){\n'
+        js= js+ '    location=\'informe_referenciaibex_detalle.psp?rango=\'+ (i*1000);\n'
+        js= js+ '}\n'
+
+        js= js+ 'function gioriUnshowMiles(i){\n'        
+        js= js+ '     	document.getElementById("gioriover").firstChild.nodeValue = "";\n'
+        js= js+ '     	document.getElementById("giorirect"+i).setAttribute("style","stroke: none; fill: gray;fill-opacity: 0;");\n'
+        js= js+ '}\n\n'        
+
+        js= js+ 'function gioriUnshow(){\n'        
+        js= js+ '     	document.getElementById("gioriover").firstChild.nodeValue = "";\n'
+        js= js+ '}\n\n'
+        js= js+ ']]>\n</script>\n\n'          
+        
+        header='<svg flex="1" id="giori" width="1000" height="500"  viewBox="-'+str(margin)+' -'+str(margin)+' '+ str(len(ibex)*xstep+2*margin) +' '+str(maxy+2*margin)+'"  xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" >\n'
+        header=header + '<!-- Gráfico que muestra las inversionoperacion refernciadas al ibex35. http://xulpymoney.sourcefore.net -->\n'
+
+        circles='<!-- Circulos de operinversiones -->\n'
+        for p in range(len(points)):
+            circles=circles+'<circle id="gioricircle'+str(p)+'" cx="'+str(fecha2x(points[p][1]))+'" cy="'+str(maxibex-points[p][4])+'" r="200" style="stroke: black; stroke-width: 10; fill: lime;" inversion="'+str(points[p][0])+'" fecha="'+ str(points[p][1])[:-12] +'" acciones="'+ str(points[p][2]) +'" importe="'+str(points[p][3])+'"  ibex="'+str(points[p][4])+'"  onmouseover="gioriShowData('+str(p)+');"   onmouseout="gioriUnshow();" />\n'
+                
+        libex='<!-- Linea del Ibex -->\n<polyline points="' 
+        for i in range(len(ibex)):
+            libex=libex+ str(i*xstep) + " " + str(maxibex-ibex[i][1]) + ", "
+        libex=libex[:-2]+'" style="stroke: blue; stroke-width: 30; fill: none;" />\n'
+        
+        rvertical='<!-- Rallado vertical -->\n'        
+        rvertical=rvertical+'<line x1="0" y1="'+str(maxy)+'" x2="0" y2="0" style="stroke: black; stroke-width: 30; fill: none;" />\n'
+        p_year=firstyear
+        for ib in ibex:
+            if p_year==ib[0].year and ib[0].month==1:
+                x=fecha2x(ib[0])
+                rvertical=rvertical+'<line x1="'+str(x)+'" y1="'+str(0)+'" x2="'+ str(x) +'" y2="'+str(maxy)+'" style="stroke: gray; stroke-width: 30; fill: none;" />\n'
+                rvertical=rvertical+'<text x="'+str(-1000)+'" y="'+str(maxy +2000)+'" style=" font-size: 12;" transform="scale(50)">'+str(p_year)+'</text>\n' 
+                p_year=p_year+1
+
+        rhorizontal='<!-- Rallado horizontal y sectores horizontales -->\n'       
+        rhorizontal=rhorizontal+'<line x1="0" y1="'+str(maxy)+'" x2="'+ str(maxx) +'" y2="'+str(maxy)+'" style="stroke: black; stroke-width: 30; fill: none;" />\n'
+
+        p_miles=0
+        for p in range(int(minibex/1000), int(maxibex/1000)):
+            rhorizontal=rhorizontal+'<rect id="giorirect'+str(p)+'" x="0" y="'+str(maxibex-p*1000)+'" width="'+str(maxx)+'" height="1000" style="stroke: none; fill: gray;fill-opacity: 0;" />\n'
+            #  onmouseover="gioriShowMiles('+str(p_miles)+');" onmouseout="gioriUnshowMiles('+str(p_miles)+');"  onclick="ver_detalle('+str(p_miles)+');"  importe="'+str(mi[1])+'"  tpc="'+str(mi[2])+'"
+            rhorizontal=rhorizontal+'<line x1="0" y1="'+str(maxibex-p*1000)+'" x2="'+str(maxx)+'" y2="'+str(maxibex-p*1000)+'" style="stroke: gray; stroke-width: 30; fill: none;" />\n'
+            p_miles=p_miles+1
+                        
+
+        panel='<!-- Panel de resultados dinámico -->\n'       
+        panel=panel+'<line x1="100" y1="400" x2="1000" y2="400" style="stroke: black; stroke-width: 30; fill: none;" />\n'
+        panel=panel+'<text x="25" y="13"	style=" font-size: 12;"   transform="scale(50)">Ibex 35</text>\n' 
+        panel=panel+'<circle cx="600" cy="1000" r="150" style="stroke: black; stroke-width: 10; fill: lime;" />\n'
+        panel=panel+'<text x="25" y="28"	style=" font-size: 12;"   transform="scale(50)">Operación de inversión</text>\n' 
+        panel=panel+'<text id="gioriover" x="25" y="43"	style=" font-size: 12;"   transform="scale(50)"> </text>\n' 
+       
+
+        foot='</svg>'              
+        
+        f=open("/tmp/inversionoperacion_refibex.svg","w")
+        f.write('<?xml version="1.0" encoding="utf-8"  standalone="no"?>\n<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"\n "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">\n'+header +js+  rhorizontal + rvertical +circles +libex+panel+foot)
+        f.close()
+        return js + header + rhorizontal + rvertical +circles +libex+panel+foot
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     def primera_fecha_con_datos_usuario(self):

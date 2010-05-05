@@ -10,56 +10,51 @@ cd=ConectionDirect()
 req.content_type="application/vnd.mozilla.xul+xml"
 req.write(xulheaderwindowmenu("Informe de referencia al Ibex35"))
 %>
-<script>
-<![CDATA[
-var rango=1000;
-function ver_detalle()
-{
-    var tree = document.getElementById("tree");
-    var rango=Number(tree.view.getCellText(tree.currentIndex,tree.columns.getNamedColumn("rango")));
-    location='informe_referenciaibex_detalle.psp?rango='+ rango;
-}
 
-]]>
-</script>
 <vbox align="center">
     <label id="titulo"  value="Informe de referencia al Ibex35" />
     <label/>
 </vbox>
 <vbox flex="1">
-    <tree id="tree" flex="3"  onselect="ver_detalle();">
-        <treecols>
-            <treecol id="rango" label="id" hidden="true"/>
-            <treecol  label="Intervalo del IBEX" flex="4" style="text-align: left"/>
-            <treecol label="Dinero invertido " flex="1" style="text-align: right"/>
-            <treecol label="% invertido      " flex="1" style="text-align: right"/>
-        </treecols>
-        <treechildren>
 <%
+arrP=[]
+sql="select * from tmpoperinversiones, inversiones where tmpoperinversiones.id_inversiones=inversiones.id_inversiones order by fecha"
+curs=cd.con.Execute(sql);
+while not curs.EOF:
+    row = curs.GetRowAssoc(0)
+    arrP.append((row["inversion"], row['fecha'], row['acciones'], row['importe'],  InversionOperacion().referencia_ibex35(row['fecha'])))
+    curs.MoveNext()
+curs.Close()
+
+firstyear=arrP[0][1].year#Por lo menos 3 años
+if datetime.date.today().year-firstyear<3:
+    firstyear=datetime.date.today().year-3#Año de la primea operación. 
+
+arrI=[]
+sql="select * from ibex35 where fecha>='"+str(firstyear)+"-01-01' order by fecha"
+curs=cd.con.Execute(sql);
+while not curs.EOF:
+    row = curs.GetRowAssoc(0)
+    arrI.append((row["fecha"], row['cierre']))
+    curs.MoveNext()
+curs.Close()
+
+arrM=[]
 total=Total().saldo_total(datetime.date.today())
-sql="select distinct(floor(ibex35.cierre/1000))*1000 as miles , sum(importe) as sumimporte from ibex35, tmpoperinversiones where tmpoperinversiones.fecha=ibex35.fecha  group by miles order by miles desc;"
+sql="select distinct(floor(ibex35.cierre/1000))*1000 as miles , sum(importe) as sumimporte from ibex35, tmpoperinversiones where tmpoperinversiones.fecha=ibex35.fecha  group by miles order by miles;"
 curs=cd.con.Execute(sql); 
-s=''
 actual=Total().saldo_todas_inversiones(datetime.date.today())#saldo actual
 total=cd.con.Execute("select sum(importe) as importe from tmpoperinversiones;").GetRowAssoc(0)["importe"]#total invertido
-sumimporte=0
 while not curs.EOF:
     row = curs.GetRowAssoc(0)   
-    s=s+   '            <treeitem>\n'
-    s=s+   '                <treerow>\n'
-    s=s+   '                    <treecell label="'+str(row['miles']) +'" />\n'
-    s=s+   '                    <treecell label="'+str(int(row['miles'])) + " - " + str(int(row['miles']+1000))+'" />\n'
-    s=s+   '                    ' +    treecell_euros(row['sumimporte']);
-    s=s+   '                    '  +  treecell_tpc(100*row['sumimporte']/total);
-    s=s+   '                </treerow>\n'
-    s=s+   '            </treeitem>\n'
+    arrM.append((row['miles'], row['sumimporte'],  round(100*row['sumimporte']/total, 2)))
     curs.MoveNext()     
 curs.Close()
-req.write(s)
 con.close()
+
+grafico=Total().grafico_inversionoperacion_refibex(arrI,arrP, arrM)
 %>
-        </treechildren>
-    </tree>        
+    <%=grafico%>
     <label flex="0"  style="text-align: center;font-weight : bold;" value="Saldo actual de las inversiones: <%=euros(actual)%>" />
     <label flex="0"  style="text-align: center;font-weight : bold;" value="Saldo invertido: <%=euros(total)%>" />
 </vbox>

@@ -1,12 +1,11 @@
 #!/usr/bin/python    
 # -*- coding: utf-8 -*-  
-import os, adodb, datetime
+import os, adodb, datetime, sys
 
 cwd=os.getcwd()
 
-dsn = "dbname=programas host=localhost port=5432 user=postgres password=***"
 con = adodb.NewADOConnection("postgres")
-con.Connect("127.0.0.1","postgres","*","cuentas")
+con.Connect("127.0.0.1","postgres","*", sys.argv[1])
 
 # BORRA LA BASE DE DATOS
 con.Execute("delete from ibex35")
