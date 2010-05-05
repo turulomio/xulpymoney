@@ -1,5 +1,6 @@
 <%#-*- coding: UTF-8 -*-
-registros=int(os.popen("xulpymoney_actualizar_datos_ibex35| grep registros").read().split(" ")[6])
+from core import *
+registros=int(os.popen("xulpymoney_actualizar_datos_ibex35 "+config.dbname+"| grep registros").read().split(" ")[6])
 
 if registros==0:
     req.write ("Ha habido un error en la obtención de datos")
