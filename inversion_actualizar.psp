@@ -18,10 +18,10 @@ req.content_type="application/vnd.mozilla.xul+xml"
 req.write(xulheaderwindowmenu("Actualizar el valor"))
 
 %>
+<script src="js/validar.js"></script>
 <script>
 <![CDATA[
          
-var id_actuinversiones;
          
 function borrar_tree() {    
     var tree= document.getElementById("tree");
@@ -30,42 +30,45 @@ function borrar_tree() {
 }
 
 function borrar(){
+    var tree = document.getElementById("tree");
+    var selection = tree.contentView.getItemAtIndex(tree.currentIndex);
+    var id_actuinversiones= selection.firstChild.firstChild.getAttribute("label");
     var xmlHttp;
     xmlHttp=new XMLHttpRequest();
     xmlHttp.onreadystatechange=function(){
         if(xmlHttp.readyState==4){
             var ale=xmlHttp.responseText;
+	    parse_ale(ale,"","");
             update_list();
         }
     }
-    var url="ajax/ajax.psp?ajax=3&id_actuinversiones="+id_actuinversiones;
+    var url="ajax/inversionactualizacion_borrar.psp?id_actuinversiones="+id_actuinversiones;
     xmlHttp.open("GET",url,true);
     xmlHttp.send(null);
 }
 
 
-function get_id_actuinversiones()
-{
-  var tree = document.getElementById("tree");
-  var selection = tree.contentView.getItemAtIndex(tree.currentIndex);
-  id_actuinversiones= selection.firstChild.firstChild.getAttribute("label");
-}
 
 function insert(){
+    if (isFloat(document.getElementById("valor").value,"valor")==false){
+        return;
+    }
     var xmlHttp;
     xmlHttp=new XMLHttpRequest();
     xmlHttp.onreadystatechange=function(){
         if(xmlHttp.readyState==4){
             var ale=xmlHttp.responseText;
-            location="inversion_listado.psp";
+            parse_ale(ale,"inversion_listado.psp","");
         }
     }
     var valor = document.getElementById("valor").value;
     var fecha = document.getElementById("fecha").value;
-    var url="ajax/ajax.psp?ajax=1&id_inversiones="+<%=id_inversiones %>+"&fecha="+fecha+"&valor="+valor;
+    var id_inversiones=parseInt(<%=id_inversiones %>)
+    var url="ajax/inversionactualizacion_insertar.psp?id_inversiones="+id_inversiones+"&fecha="+fecha+"&valor="+valor;
     xmlHttp.open("GET",url,true);
     xmlHttp.send(null);
 }
+
 
 function parse_actualizaciones( response) {
     borrar_tree();
@@ -111,8 +114,6 @@ function update_list(){
 
 <popupset>
   <popup id="treepopup" >    
-  <menuitem label="Ver mes seleccionado"  oncommand='update_list();'  class="menuitem-iconic"  image="images/hotsync.png"/>
-    <menuitem label="Modificar la actualización"  oncommand='location="cuenta_ibm.psp?id_cuentas=" + idcuenta  + "&amp;ibm=modificar&amp;regresando=0";'  class="menuitem-iconic"  image="images/toggle_log.png"/>
     <menuitem label="Borrar la actualización"  oncommand="borrar();"  class="menuitem-iconic" image="images/eventdelete.png"/>
   </popup>
 </popupset>
@@ -130,7 +131,7 @@ function update_list(){
         </rows>
     </grid>
     </hbox>
-    <label flex="0" value="Listado de actualizaciones del mes seleccionado" />
+    <button id="cmd" label="Ver los datos del mes seleccionado"  class="menuitem-iconic" image="images/hotsync.png" onclick="update_list();"/>
     <tree id="tree" enableColumnDrag="true" flex="3"   context="treepopup"  onselect="get_id_actuinversiones();">
         <treecols>
         <treecol label="id" hidden="true" />

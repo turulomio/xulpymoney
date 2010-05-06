@@ -1,25 +1,11 @@
 <%
 #-*- coding: UTF-8 -*-
-
 from core import *
-if form['ajax']=="1": #InversionActualizacionInsertar
-    con=Conection()
-    if InversionActualizacion().insertar(form['id_inversiones'], form['fecha'], form['valor'])==True:
-        req.write ("Se ha actualizado la inversión correctamente")
-    else:
-        req.write ("Ha habido un error en la actualización de la inversión")
-    con.close()
-elif form['ajax']=="2": #InversionActualizacionListado
+import validar, sys
+if form['ajax']=="2": #InversionActualizacionListado
     req.content_type="text/xml"
     con=Conection()
     req.write(InversionActualizacion().xml_listado(InversionActualizacion().cursor_listado(form['id_inversiones'], form['year'], form['month'])))
-    con.close()
-elif form['ajax']=="3": #InversionActualizacionBorrar
-    con=Conection()
-    if InversionActualizacion().borrar(form['id_actuinversiones'])==True:
-        req.write ("Se ha borrado el dato")
-    else:
-        req.write ("Ha habido un error en el borrado del dato")
     con.close()
 elif form['ajax']=="4": #CuentaOperacionInsertar
     con=Conection()
