@@ -19,9 +19,9 @@ else:
    month=datetime.date.today().month
 
 id_cuentas=form['id_cuentas']
-cur=CuentaOperacion().cursor_listado(form['id_cuentas'],year,month)
+cur=CuentaOperacion().xul_listado(form['id_cuentas'],year,month)
 cmbcuentas=Cuenta().cmb('cmbcuentas','select * from cuentas where cu_activa=true order by cuenta',  form["id_cuentas"],  True)
-listado = CuentaOperacion().xul_listado(cur,  form['id_cuentas'], year,  month)
+listado = CuentaOperacion().xul_listado( form['id_cuentas'], year,  month)
 con.close()
 
 req.content_type="application/vnd.mozilla.xul+xml"
