@@ -6,8 +6,9 @@ cd=ConectionDirect()
 
 try:
     fecha=cd.con.Execute("select fecha from ibex35 order by fecha desc limit 1;").GetRowAssoc(0)['fecha'].date
+    fecha="El último registro del Ibex35 es del " + str(fecha)
 except:
-    fecha="Nunca"
+    fecha="Nunca se ha actualizado los datos del Ibex35"
 
 req.content_type="application/vnd.mozilla.xul+xml"
 req.write(xulheaderwindowmenu("Xulpymoney > Mantenimiento > Mantenimiento Ibex 35 "))
@@ -22,11 +23,12 @@ function update(){
         if(xmlHttp.readyState==4){
             var ale=xmlHttp.responseText;
              document.getElementById("resultado").value=ale;
+  	     document.getElementById("subtitulo").value=ale;
+	     document.getElementById("button").disabled=false;
         }
     }
     document.getElementById("resultado").value="Este proceso puede durar unos minutos. Actualizando desde Internet ...";
     document.getElementById("button").disabled=true;
-    document.getElementById("subtitulo").value="Última actualización: <%=str(datetime.date.today())%>";
     var url="ajax/mantenimiento_ibex35.psp";
     xmlHttp.open("GET",url,true);
     xmlHttp.send(null);
@@ -37,7 +39,7 @@ function update(){
 
 <vbox align="center">
     <label id="titulo"  value="Mantenimiento datos de Ibex 35" />
-    <label id="subtitulo"  value="Última actualización: <%=fecha%>"/>
+    <label id="subtitulo"  value="<%=fecha%>"/>
 </vbox>
 <label flex="0"  value="" />
 <label flex="0"  style="text-align: center;font-weight : bold;" value="Para poder realizar estudios comparativos con el IBEX 35 es necesario actualizar los datos históricos en Internet. Para ello pulse en el siguiente botón" />
