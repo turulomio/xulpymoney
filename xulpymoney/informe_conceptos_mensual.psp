@@ -23,7 +23,7 @@ arrI=[]
 </vbox>
 <vbox flex="1" >
 <%
-sql="select concepto, sum (importe) as suma from opercuentas, conceptos where conceptos.id_conceptos=opercuentas.id_conceptos and date_part('year',fecha) = "+str(year)+" and date_part('month',fecha)="+str(month)+" and opercuentas.id_tiposoperaciones=1 group by conceptos.concepto order by suma"
+sql="select concepto, sum (importe) as suma from opercuentastarjetas, conceptos where conceptos.id_conceptos=opercuentastarjetas.id_conceptos and date_part('year',fecha) = "+str(year)+" and date_part('month',fecha)="+str(month)+" and opercuentastarjetas.id_tiposoperaciones=1 group by conceptos.concepto order by suma"
 curs=cd.con.Execute(sql); 
 
 while not curs.EOF:
@@ -32,7 +32,7 @@ while not curs.EOF:
     curs.MoveNext()     
 curs.Close()
 
-sql="select concepto, sum (importe) as suma from opercuentas, conceptos where conceptos.id_conceptos=opercuentas.id_conceptos and date_part('year',fecha) ="+str(year)+" and date_part('month',fecha)="+str(month)+" and opercuentas.id_tiposoperaciones=2 group by conceptos.concepto order by suma desc"
+sql="select concepto, sum (importe) as suma from opercuentastarjetas, conceptos where conceptos.id_conceptos=opercuentastarjetas.id_conceptos and date_part('year',fecha) ="+str(year)+" and date_part('month',fecha)="+str(month)+" and opercuentastarjetas.id_tiposoperaciones=2 group by conceptos.concepto order by suma desc"
 
 curs=cd.con.Execute(sql);
 

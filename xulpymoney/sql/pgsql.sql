@@ -593,7 +593,7 @@ ALTER TABLE public.opertarjetas OWNER TO postgres;
 --
 
 CREATE VIEW opercuentastarjetas AS
-    SELECT 'c', opercuentas.fecha, opercuentas.id_conceptos, opercuentas.id_tiposoperaciones, opercuentas.importe, opercuentas.comentario FROM opercuentas UNION SELECT 't', opertarjetas.fechapago AS fecha, opertarjetas.id_conceptos, opertarjetas.id_tiposoperaciones, opertarjetas.importe, opertarjetas.comentario FROM opertarjetas WHERE (opertarjetas.pagado = true) ORDER BY 2;
+    SELECT 'c', opercuentas.fecha, opercuentas.id_conceptos, opercuentas.id_tiposoperaciones, opercuentas.importe, opercuentas.comentario FROM opercuentas WHERE (opercuentas.id_tiposoperaciones <> 7) UNION SELECT 't', opertarjetas.fechapago AS fecha, opertarjetas.id_conceptos, opertarjetas.id_tiposoperaciones, opertarjetas.importe, opertarjetas.comentario FROM opertarjetas WHERE (opertarjetas.pagado = true) ORDER BY 2;
 
 
 ALTER TABLE public.opercuentastarjetas OWNER TO postgres;

@@ -246,15 +246,11 @@ class Concepto:
         return True
         
     def saldo(self, id_conceptos, year,  month):
-        sql="select sum(importe) as importe from opercuentas where id_conceptos="+str(id_conceptos)+" and date_part('year',fecha)='"+str(year)+"' and date_part('month',fecha)='"+str(month)+"'"
-        saldoopercuentas=con.Execute(sql).GetRowAssoc(0)["importe"]
-        if saldoopercuentas==None:
-            saldoopercuentas=0
-        sql="select sum(importe) as importe from opertarjetas where id_conceptos="+str(id_conceptos)+" and date_part('year',fechapago)='"+str(year)+"' and date_part('month',fechapago)='"+str(month)+"'"
-        saldotarjetas=con.Execute(sql).GetRowAssoc(0)["importe"]        
-        if saldotarjetas==None:
-            saldotarjetas=0
-        return saldoopercuentas+ saldotarjetas
+        sql="select sum(importe) as importe from opercuentastarjetas where id_conceptos="+str(id_conceptos)+" and date_part('year',fecha)='"+str(year)+"' and date_part('month',fecha)='"+str(month)+"'"
+        saldoopercuentastarjetas=con.Execute(sql).GetRowAssoc(0)["importe"]
+        if saldoopercuentastarjetas==None:
+            saldoopercuentastarjetas=0
+        return saldoopercuentastarjetas
         
     def xultree_informe(self, id_conceptos):
         s=''        
@@ -276,7 +272,7 @@ class Concepto:
         s= s+ '         <treecol label="Total     " flex="1" style="text-align: right"/>\n'
         s= s+  '     </treecols>\n'
         s= s+  '     <treechildren>\n'
-        fechamenor=con.Execute("select min(fecha) as fecha from opercuentas, conceptos where conceptos.id_conceptos=opercuentas.id_conceptos and conceptos.id_conceptos="+str(id_conceptos)).GetRowAssoc(0)['fecha']
+        fechamenor=con.Execute("select min(fecha) as fecha from opercuentastarjetas where id_conceptos="+str(id_conceptos)).GetRowAssoc(0)['fecha']
         sumtotal=0
         for year in range(fechamenor.year, datetime.date.today().year+1):
             total=0
@@ -559,6 +555,8 @@ class CuentaOperacion:
         
     def cursor_listado(self, id_cuentas,  year,  month):
         sql="select * from todo_opercuentas where id_cuentas="+str(id_cuentas)+" and date_part('year',fecha)='"+str(year)+"' and date_part('month',fecha)='"+str(month)+"' order by fecha,id_opercuentas";
+        
+#        BEUENO  SELECT cuentas.id_cuentas, cuentas.cuenta, cuentas.id_entidadesbancarias AS ma_entidadesbancarias, cuentas.cu_activa, cuentas.numero_cuenta, opercuentas.id_opercuentas, opercuentas.fecha, opercuentas.id_conceptos AS lu_conceptos, opercuentas.id_tiposoperaciones AS lu_tiposoperaciones, opercuentas.importe, opercuentas.comentario, opercuentas.id_cuentas AS ma_cuentas, conceptos.id_conceptos, conceptos.concepto, conceptos.id_tiposoperaciones AS lu_tipooperacion, entidadesbancarias.id_entidadesbancarias, entidadesbancarias.entidadbancaria AS entidadesbancaria, entidadesbancarias.eb_activa, tiposoperaciones.id_tiposoperaciones, tiposoperaciones.tipooperacion AS tipo_operacion, tiposoperaciones.modificable, tiposoperaciones.operinversion, tiposoperaciones.opercuentas   FROM cuentas, opercuentas, conceptos, entidadesbancarias, tiposoperaciones  WHERE cuentas.id_cuentas = opercuentas.id_cuentas AND cuentas.id_entidadesbancarias = entidadesbancarias.id_entidadesbancarias AND opercuentas.id_conceptos = conceptos.id_conceptos AND conceptos.id_tiposoperaciones = tiposoperaciones.id_tiposoperaciones;
         return con.Execute(sql); 
 
     def insertar(self,  fecha, id_conceptos, id_tiposoperaciones,  importe,  comentario,  id_cuentas):
@@ -2359,11 +2357,13 @@ class Total:
         js=       '<script type="text/ecmascript">\n<![CDATA[\n'        
         js= js+ 'function gioriShowData(i){\n'        
         js= js+ '     	document.getElementById("gioriover").firstChild.nodeValue = document.getElementById("gioricircle" +  i).getAttribute("inversion") + ". " + document.getElementById("gioricircle" +  i).getAttribute("importe")+ " €. Ibex="  + document.getElementById("gioricircle" +  i).getAttribute("ibex") +" €";\n'
+        js= js+ '     	document.getElementById("gioricircle"+i).setAttribute("r","300");\n'
+        js= js+ '     	document.getElementById("gioricircle"+i).setAttribute("style","stroke: black; stroke-width: 10; fill: deeppink;fill-opacity: 0.5;");\n'
         js= js+ '}\n\n'        
 
         js= js+ 'function gioriShowMiles(i){\n'        
         js= js+ '     	document.getElementById("gioriover").firstChild.nodeValue = "Rango " + i + "000 - " + (i+1) + "000: "+ ". " + document.getElementById("giorirect" +  i).getAttribute("importe")+ " €. ("  + document.getElementById("giorirect" +  i).getAttribute("tpc") +" %)";\n'
-        js= js+ '     	document.getElementById("giorirect"+i).setAttribute("style","stroke: none; fill: salmon;fill-opacity: 0.5;");\n'
+        js= js+ '     	document.getElementById("giorirect"+i).setAttribute("style","stroke: none; fill: deeppink;fill-opacity: 0.5;");\n'
         js= js+ '}\n\n'                    
 
         js= js+ 'function ver_detalle(i){\n'
@@ -2375,8 +2375,10 @@ class Total:
         js= js+ '     	document.getElementById("giorirect"+i).setAttribute("style","stroke: none; fill: gray;fill-opacity: 0;");\n'
         js= js+ '}\n\n'        
 
-        js= js+ 'function gioriUnshow(){\n'        
+        js= js+ 'function gioriUnshow(i){\n'        
         js= js+ '     	document.getElementById("gioriover").firstChild.nodeValue = "";\n'
+        js= js+ '     	document.getElementById("gioricircle"+i).setAttribute("r","200");\n'
+        js= js+ '     	document.getElementById("gioricircle"+i).setAttribute("style","stroke: black; stroke-width: 10; fill: lime;");\n'
         js= js+ '}\n\n'
         js= js+ ']]>\n</script>\n\n'          
         
@@ -2385,7 +2387,7 @@ class Total:
 
         circles='<!-- Circulos de operinversiones -->\n'
         for p in range(len(points)):
-            circles=circles+'<circle id="gioricircle'+str(p)+'" cx="'+str(fecha2x(points[p][1]))+'" cy="'+str(maxibex-points[p][4])+'" r="200" style="stroke: black; stroke-width: 10; fill: lime;" inversion="'+str(points[p][0])+'" fecha="'+ str(points[p][1])[:-12] +'" acciones="'+ str(points[p][2]) +'" importe="'+str(points[p][3])+'"  ibex="'+str(points[p][4])+'"  onmouseover="gioriShowData('+str(p)+');"   onmouseout="gioriUnshow();" />\n'
+            circles=circles+'<circle id="gioricircle'+str(p)+'" cx="'+str(fecha2x(points[p][1]))+'" cy="'+str(maxibex-points[p][4])+'" r="200" style="stroke: black; stroke-width: 10; fill: lime;" inversion="'+str(points[p][0])+'" fecha="'+ str(points[p][1])[:-12] +'" acciones="'+ str(points[p][2]) +'" importe="'+str(points[p][3])+'"  ibex="'+str(points[p][4])+'"  onmouseover="gioriShowData('+str(p)+');"   onmouseout="gioriUnshow('+str(p)+');" />\n'
                 
         libex='<!-- Linea del Ibex -->\n<polyline points="' 
         for i in range(len(ibex)):
