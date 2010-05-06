@@ -553,11 +553,7 @@ class CuentaOperacion:
             return False
         return True
         
-    def cursor_listado(self, id_cuentas,  year,  month):
-        sql="select * from todo_opercuentas where id_cuentas="+str(id_cuentas)+" and date_part('year',fecha)='"+str(year)+"' and date_part('month',fecha)='"+str(month)+"' order by fecha,id_opercuentas";
-        
-#        BEUENO  SELECT cuentas.id_cuentas, cuentas.cuenta, cuentas.id_entidadesbancarias AS ma_entidadesbancarias, cuentas.cu_activa, cuentas.numero_cuenta, opercuentas.id_opercuentas, opercuentas.fecha, opercuentas.id_conceptos AS lu_conceptos, opercuentas.id_tiposoperaciones AS lu_tiposoperaciones, opercuentas.importe, opercuentas.comentario, opercuentas.id_cuentas AS ma_cuentas, conceptos.id_conceptos, conceptos.concepto, conceptos.id_tiposoperaciones AS lu_tipooperacion, entidadesbancarias.id_entidadesbancarias, entidadesbancarias.entidadbancaria AS entidadesbancaria, entidadesbancarias.eb_activa, tiposoperaciones.id_tiposoperaciones, tiposoperaciones.tipooperacion AS tipo_operacion, tiposoperaciones.modificable, tiposoperaciones.operinversion, tiposoperaciones.opercuentas   FROM cuentas, opercuentas, conceptos, entidadesbancarias, tiposoperaciones  WHERE cuentas.id_cuentas = opercuentas.id_cuentas AND cuentas.id_entidadesbancarias = entidadesbancarias.id_entidadesbancarias AND opercuentas.id_conceptos = conceptos.id_conceptos AND conceptos.id_tiposoperaciones = tiposoperaciones.id_tiposoperaciones;
-        return con.Execute(sql); 
+
 
     def insertar(self,  fecha, id_conceptos, id_tiposoperaciones,  importe,  comentario,  id_cuentas):
         sql="insert into opercuentas (fecha, id_conceptos, id_tiposoperaciones, importe, comentario, id_cuentas) values ('" + fecha + "'," + str(id_conceptos)+","+ str(id_tiposoperaciones) +","+str(importe)+", '"+comentario+"', "+str(id_cuentas)+")"
@@ -589,7 +585,10 @@ class CuentaOperacion:
     def id_opercuentas_insertado_en_session(self):
         return con.Execute("select currval('seq_opercuentas') as seq;").GetRowAssoc(0)["seq"]
 
-    def xul_listado(self, curs,  id_cuentas,  year,  month):
+    def xul_listado(self,   id_cuentas,  year,  month):
+        sql="SELECT cuentas.id_cuentas, cuentas.cuenta, cuentas.id_entidadesbancarias AS ma_entidadesbancarias, cuentas.cu_activa, cuentas.numero_cuenta, opercuentas.id_opercuentas, opercuentas.fecha, opercuentas.id_conceptos AS lu_conceptos, opercuentas.id_tiposoperaciones AS lu_tiposoperaciones, opercuentas.importe, opercuentas.comentario, opercuentas.id_cuentas AS ma_cuentas, conceptos.id_conceptos, conceptos.concepto, conceptos.id_tiposoperaciones AS lu_tipooperacion, entidadesbancarias.id_entidadesbancarias, entidadesbancarias.entidadbancaria AS entidadesbancaria, entidadesbancarias.eb_activa, tiposoperaciones.id_tiposoperaciones, tiposoperaciones.tipooperacion AS tipo_operacion, tiposoperaciones.modificable, tiposoperaciones.operinversion, tiposoperaciones.opercuentas   FROM cuentas, opercuentas, conceptos, entidadesbancarias, tiposoperaciones where cuentas.id_cuentas = opercuentas.id_cuentas AND cuentas.id_entidadesbancarias = entidadesbancarias.id_entidadesbancarias AND opercuentas.id_conceptos = conceptos.id_conceptos AND conceptos.id_tiposoperaciones = tiposoperaciones.id_tiposoperaciones and opercuentas.id_cuentas="+str(id_cuentas)+" and date_part('year',fecha)='"+str(year)+"' and date_part('month',fecha)='"+str(month)+"' order by opercuentas.fecha, opercuentas.id_opercuentas";
+        
+        curs= con.Execute(sql);         
         primeromes=datetime.date(int(year),  int(month),  1)
         diamenos=primeromes-datetime.timedelta(days=1)      
         saldo=Cuenta().saldo(id_cuentas, diamenos.isoformat()) 
