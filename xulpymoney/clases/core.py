@@ -3,6 +3,7 @@ import sys,  os
 sys.path.append("/usr/lib/xulpymoney/")
 sys.path.append("/etc/xulpymoney/")
 version="20100503"
+resultadovalidar=""
 import datetime,  math
 import adodb
 import config
@@ -2695,5 +2696,5 @@ class Total:
 
 def mylog(text):
     f=open("/tmp/xulpymoney.log","a")
-    f.write(str(datetime.datetime.now()) + " " + text + "\n")
+    f.write(str(datetime.datetime.now()) + "|" + text + "\n")
     f.close()
