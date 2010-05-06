@@ -2348,7 +2348,7 @@ class Total:
             return (int(min/1000))*1000
             
         xstep=20#Avance en x por cada avance en fecha del ibex
-        margin=3000#Margen que rodea el grafico por todos los lados
+        margin=2000#Margen que rodea el grafico por todos los lados
         maxibex=maximoibex()
         minibex=minimoibex()
         maxy=maxibex-minibex  #Maximo del ibex
@@ -2380,7 +2380,7 @@ class Total:
         js= js+ '}\n\n'
         js= js+ ']]>\n</script>\n\n'          
         
-        header='<svg flex="1" id="giori" width="1000" height="500"  viewBox="-'+str(margin)+' -'+str(margin)+' '+ str(len(ibex)*xstep+2*margin) +' '+str(maxy+2*margin)+'"  xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" >\n'
+        header='<svg flex="1" id="giori" width="1000" height="500"  viewBox="-'+str(margin)+' -'+str(margin)+' '+ str(len(ibex)*xstep+2*margin) +' '+str(maxy+2*margin)+'" preserveAspectRatio="xMidYMid meet"  xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" >\n'
         header=header + '<!-- Gráfico que muestra las inversionoperacion refernciadas al ibex35. http://xulpymoney.sourcefore.net -->\n'
 
         circles='<!-- Circulos de operinversiones -->\n'
@@ -2393,40 +2393,49 @@ class Total:
         libex=libex[:-2]+'" style="stroke: blue; stroke-width: 30; fill: none;" />\n'
         
         rvertical='<!-- Rallado vertical -->\n'        
-        rvertical=rvertical+'<line x1="0" y1="'+str(maxy)+'" x2="0" y2="0" style="stroke: black; stroke-width: 30; fill: none;" />\n'
+        scalatexto=30
+        rvertical=rvertical+'<line x1="0" y1="'+str(maxy)+'" x2="0" y2="0" style="stroke: black; stroke-width: 60; fill: none;" />\n'
+        rvertical=rvertical+'<line x1="'+str(maxx)+'" y1="'+str(maxy)+'" x2="'+str(maxx)+'" y2="0" style="stroke: black; stroke-width: 60; fill: none;" />\n'
         p_year=firstyear
         for ib in ibex:
             if p_year==ib[0].year and ib[0].month==1:
                 x=fecha2x(ib[0])
                 rvertical=rvertical+'<line x1="'+str(x)+'" y1="'+str(0)+'" x2="'+ str(x) +'" y2="'+str(maxy)+'" style="stroke: gray; stroke-width: 30; fill: none;" />\n'
-                rvertical=rvertical+'<text x="'+str(-1000)+'" y="'+str(maxy +2000)+'" style=" font-size: 12;" transform="scale(50)">'+str(p_year)+'</text>\n' 
+                rvertical=rvertical+'<text x="'+str(x/scalatexto)+'" y="'+str((maxy + 1000)/scalatexto)+'" transform="scale(30)">'+str(p_year)+'</text>\n' 
                 p_year=p_year+1
 
-        rhorizontal='<!-- Rallado horizontal y sectores horizontales -->\n'       
-        rhorizontal=rhorizontal+'<line x1="0" y1="'+str(maxy)+'" x2="'+ str(maxx) +'" y2="'+str(maxy)+'" style="stroke: black; stroke-width: 30; fill: none;" />\n'
-
-        p_miles=0
-        for p in range(int(minibex/1000), int(maxibex/1000)):
-            rhorizontal=rhorizontal+'<rect id="giorirect'+str(p)+'" x="0" y="'+str(maxibex-p*1000)+'" width="'+str(maxx)+'" height="1000" style="stroke: none; fill: gray;fill-opacity: 0;" />\n'
-            #  onmouseover="gioriShowMiles('+str(p_miles)+');" onmouseout="gioriUnshowMiles('+str(p_miles)+');"  onclick="ver_detalle('+str(p_miles)+');"  importe="'+str(mi[1])+'"  tpc="'+str(mi[2])+'"
-            rhorizontal=rhorizontal+'<line x1="0" y1="'+str(maxibex-p*1000)+'" x2="'+str(maxx)+'" y2="'+str(maxibex-p*1000)+'" style="stroke: gray; stroke-width: 30; fill: none;" />\n'
-            p_miles=p_miles+1
+        rhorizontal='<!-- Rallado horizontal -->\n'       
+        for id in range(minibex/1000,  maxibex/1000):
+            rhorizontal=rhorizontal+'<line x1="0" y1="'+str(maxibex-id*1000)+'" x2="'+str(maxx)+'" y2="'+str(maxibex-id*1000)+'" style="stroke: gray; stroke-width: 30; fill: none;" />\n'
+            rhorizontal=rhorizontal+'<text x="'+str(-1600/scalatexto)+'" y="'+str((maxibex-id*1000)/scalatexto)+'" transform="scale(30)">'+str(id*1000)+'</text>\n' 
                         
+        ahorizontal='<!-- Áreas horizontales -->\n'       
+        scalatexto=30
+        for mi in miles:
+            id=int(mi[0]/1000)
+            ahorizontal=ahorizontal+'<rect id="giorirect'+str(id)+'" x="0" y="'+str(maxibex-(id+1)*1000)+'" width="'+str(maxx)+'" height="1000" style="stroke: none; fill: gray;fill-opacity: 0;" onmouseover="gioriShowMiles('+str(id)+');" onmouseout="gioriUnshowMiles('+str(id)+');"  onclick="ver_detalle('+str(id)+');"  importe="'+str(mi[1])+'"  tpc="'+str(mi[2])+'" />\n'
+        
+        marco='<!-- Marco de ejes -->\n'       
+        marco=marco+'<line x1="0" y1="'+str(maxy)+'" x2="'+ str(maxx) +'" y2="'+str(maxy)+'" style="stroke: black; stroke-width: 60; fill: none;" />\n' 
+        marco=marco+'<line x1="0" y1="'+str(0)+'" x2="'+ str(maxx) +'" y2="'+str(0)+'" style="stroke: black; stroke-width: 60; fill: none;" />\n'
+        marco=marco+'<line x1="0" y1="'+str(maxy)+'" x2="'+ str(maxx) +'" y2="'+str(maxy)+'" style="stroke: black; stroke-width: 60; fill: none;" />\n' 
+        marco=marco+'<line x1="0" y1="'+str(0)+'" x2="'+ str(maxx) +'" y2="'+str(0)+'" style="stroke: black; stroke-width: 60; fill: none;" />\n'
+
 
         panel='<!-- Panel de resultados dinámico -->\n'       
         panel=panel+'<line x1="100" y1="400" x2="1000" y2="400" style="stroke: black; stroke-width: 30; fill: none;" />\n'
-        panel=panel+'<text x="25" y="13"	style=" font-size: 12;"   transform="scale(50)">Ibex 35</text>\n' 
+        panel=panel+'<text x="25" y="13"	   transform="scale(50)">Ibex 35</text>\n' 
         panel=panel+'<circle cx="600" cy="1000" r="150" style="stroke: black; stroke-width: 10; fill: lime;" />\n'
-        panel=panel+'<text x="25" y="28"	style=" font-size: 12;"   transform="scale(50)">Operación de inversión</text>\n' 
-        panel=panel+'<text id="gioriover" x="25" y="43"	style=" font-size: 12;"   transform="scale(50)"> </text>\n' 
+        panel=panel+'<text x="25" y="28"  transform="scale(50)">Operación de inversión</text>\n' 
+        panel=panel+'<text id="gioriover" x="25" y="43"  transform="scale(50)"> </text>\n' 
        
 
         foot='</svg>'              
         
         f=open("/tmp/inversionoperacion_refibex.svg","w")
-        f.write('<?xml version="1.0" encoding="utf-8"  standalone="no"?>\n<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"\n "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">\n'+header +js+  rhorizontal + rvertical +circles +libex+panel+foot)
+        f.write('<?xml version="1.0" encoding="utf-8"  standalone="no"?>\n<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"\n "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">\n'+header +js+ marco + rhorizontal + rvertical + ahorizontal + circles +libex+panel+foot)
         f.close()
-        return js + header + rhorizontal + rvertical +circles +libex+panel+foot
+        return js + header + marco + rhorizontal + ahorizontal + rvertical +circles +libex+panel+foot
 
 
 
