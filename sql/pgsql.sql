@@ -569,26 +569,6 @@ CREATE TABLE inversiones (
 ALTER TABLE public.inversiones OWNER TO postgres;
 
 --
--- Name: operinversiones; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
---
-
-CREATE TABLE operinversiones (
-    id_operinversiones integer DEFAULT nextval(('"seq_operinversiones"'::text)::regclass) NOT NULL,
-    fecha date,
-    id_tiposoperaciones integer,
-    id_inversiones integer,
-    acciones double precision,
-    importe double precision,
-    impuestos double precision,
-    comision double precision,
-    comentario text,
-    valor_accion double precision
-);
-
-
-ALTER TABLE public.operinversiones OWNER TO postgres;
-
---
 -- Name: opertarjetas; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -607,6 +587,36 @@ CREATE TABLE opertarjetas (
 
 
 ALTER TABLE public.opertarjetas OWNER TO postgres;
+
+--
+-- Name: opercuentastarjetas; Type: VIEW; Schema: public; Owner: postgres
+--
+
+CREATE VIEW opercuentastarjetas AS
+    SELECT 'c', opercuentas.fecha, opercuentas.id_conceptos, opercuentas.id_tiposoperaciones, opercuentas.importe, opercuentas.comentario FROM opercuentas UNION SELECT 't', opertarjetas.fechapago AS fecha, opertarjetas.id_conceptos, opertarjetas.id_tiposoperaciones, opertarjetas.importe, opertarjetas.comentario FROM opertarjetas WHERE (opertarjetas.pagado = true) ORDER BY 2;
+
+
+ALTER TABLE public.opercuentastarjetas OWNER TO postgres;
+
+--
+-- Name: operinversiones; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE operinversiones (
+    id_operinversiones integer DEFAULT nextval(('"seq_operinversiones"'::text)::regclass) NOT NULL,
+    fecha date,
+    id_tiposoperaciones integer,
+    id_inversiones integer,
+    acciones double precision,
+    importe double precision,
+    impuestos double precision,
+    comision double precision,
+    comentario text,
+    valor_accion double precision
+);
+
+
+ALTER TABLE public.operinversiones OWNER TO postgres;
 
 --
 -- Name: pga_diagrams; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
