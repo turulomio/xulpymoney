@@ -454,7 +454,7 @@ class Cuenta:
         s= s+ 'function cuenta_movimientos(){\n'
         s= s+ '     var tree = document.getElementById("treeCuentas");\n'
         s= s+ '     id_cuentas=tree.view.getCellText(tree.currentIndex,tree.columns.getNamedColumn("id"));\n'
-        s= s+ '     location=\'cuenta_informacion.psp?id_cuentas=\' + id_cuentas;\n'
+        s= s+ '     location=\'cuentaoperacion_listado.psp?id_cuentas=\' + id_cuentas;\n'
         s= s+ '}\n\n'
         
         s= s+ 'function cuenta_modificar_activa(){\n'
@@ -481,7 +481,7 @@ class Cuenta:
         s= s+ '          <menuitem label="Cuenta nueva" oncommand="location=\'cuenta_insertar.psp\'" class="menuitem-iconic"  image="images/item_add.png"/>\n'
 #    <menuitem label="Modificar la cuenta"  oncommand='location="cuentas_ibm.psp?id_cuentas=" + idcuenta  + "&amp;ibm=modificar&amp;regresando=0";'   class="menuitem-iconic"  image="images/toggle_log.png"/>
 #    <menuitem label="Borrar la cuenta"  oncommand='location="cuentas_ibm.psp?id_cuentas=" + idcuenta  + "&amp;ibm=borrar&amp;regresando=0";'  class="menuitem-iconic" image="images/eventdelete.png"/>
-#    <menuitem label="Movimientos de cuenta"  oncommand="location='cuenta_informacion.psp?id_cuentas=' + idcuenta;"/> 
+#    <menuitem label="Movimientos de cuenta"  oncommand="location='cuentaoperacion_listado.psp?id_cuentas=' + idcuenta;"/> 
 #    <menuseparator/>
         s= s+ '     </popup>\n'
         s= s+ '</popupset>\n'
@@ -642,7 +642,7 @@ class CuentaOperacion:
         s= s+ '     xmlHttp.onreadystatechange=function(){\n'
         s= s+ '         if(xmlHttp.readyState==4){\n'
         s= s+ '             var ale=xmlHttp.responseText;\n'
-        s= s+ '             location="cuenta_informacion.psp?id_cuentas='+str(id_cuentas)+'";\n'
+        s= s+ '             location="cuentaoperacion_listado.psp?id_cuentas='+str(id_cuentas)+'";\n'
         s= s+ '         }\n'
         s= s+ '     }\n'
         s= s+ '     var url="ajax/cuentaoperacion_borrar.psp?id_opercuentas="+id_opercuentas;\n'
@@ -862,7 +862,7 @@ class Dividendo:
         s= s+ '    xmlHttp.onreadystatechange=function(){\n'
         s= s+ '        if(xmlHttp.readyState==4){\n'
         s= s+ '            var ale=xmlHttp.responseText;\n'
-        s= s+ '            location="inversion_informacion.psp?id_inversiones="+ id_inversiones;\n'
+        s= s+ '            location="inversionoperacion_listado.psp?id_inversiones="+ id_inversiones;\n'
         s= s+ '        }\n'
         s= s+ '    }\n'
         s= s+ '    xmlHttp.open("GET",url,true);\n'
@@ -978,7 +978,7 @@ class Inversion:
         s= s+ '<popup id="treepopup" >\n'   
         s= s+ '    <menuitem label="Actualizar el valor" oncommand="location=\'inversion_actualizar.psp?id_inversiones=\' + id_inversiones;"  class="menuitem-iconic"  image="images/hotsync.png" />\n'
         s= s+ '    <menuitem label="Modificar la inversión"  oncommand="location=\'inversion_modificar.psp?id_inversiones=\' + id_inversiones;"   class="menuitem-iconic"  image="images/edit.png" />\n'
-        s= s+ '<menuitem label="Estudio de la inversión"  oncommand="location=\'inversion_informacion.psp?id_inversiones=\' + id_inversiones;"  class="menuitem-iconic"  image="images/toggle_log.png" />\n'
+        s= s+ '<menuitem label="Estudio de la inversión"  oncommand="location=\'inversionoperacion_listado.psp?id_inversiones=\' + id_inversiones;"  class="menuitem-iconic"  image="images/toggle_log.png" />\n'
         s= s+ '</popup>\n'
         s= s+ '</popupset>\n'
 
@@ -1105,7 +1105,7 @@ class Inversion:
         s= s+ 'function inversion_estudio(){\n'
         s= s+ '     var tree = document.getElementById("treeInversiones");\n'
         s= s+ '     var id_inversiones=tree.view.getCellText(tree.currentIndex,tree.columns.getNamedColumn("id"));\n'
-        s= s+ '     location=\'inversion_informacion.psp?id_inversiones=\' + id_inversiones;\n'
+        s= s+ '     location=\'inversionoperacion_listado.psp?id_inversiones=\' + id_inversiones;\n'
         s= s+ '}\n\n'
         
         s= s+ 'function inversion_modificar_activa(){\n'
@@ -1455,7 +1455,7 @@ class InversionOperacionHistorica:
         s= s+ '     xmlHttp.onreadystatechange=function(){\n'
         s= s+ '         if(xmlHttp.readyState==4){\n'
         s= s+ '             var ale=xmlHttp.responseText;\n'
-        s= s+ '             location="inversion_informacion.psp?id_inversiones='+str(id_inversiones)+'";\n'
+        s= s+ '             location="inversionoperacion_listado.psp?id_inversiones='+str(id_inversiones)+'";\n'
         s= s+ '         }\n'
         s= s+ '     }\n'
         s= s+ '     var url="ajax/inversionoperacion_borrar.psp?id_operinversiones="+id_operinversiones + "&id_inversiones='+str(id_inversiones)+'";\n'
