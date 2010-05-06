@@ -8,5 +8,5 @@
 20100501 Bug. Despues de borrar una opercuenta no se respeta la visualización en el mes y año
 20100503 Bug. Validar la entrada de actualizar inversion y el ""
 20100506 Deseo. Cuando haga actualizar inversión que informe de cuanto se ha ganado y desde cuando
-20100506 Bug. Las fechas en mantenimiento de ibex fallan
 20100506 Deseo. Quitar los depósitos que tengo en todas las tablas para borrarlas de mi bd y simplificar esquema bd en las futuras.
+20100506 Deseo. En aquellos informes que se necesiten datos del ibex redirigirlo y no dejarle entrar
