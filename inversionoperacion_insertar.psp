@@ -34,7 +34,7 @@ function insert(){
         if(xmlHttp.readyState==4){
             var ale=xmlHttp.responseText;
             alert(ale)
-            location="inversion_informacion.psp?id_inversiones="+ id_inversiones ;
+            location="inversionoperacion_listado.psp?id_inversiones="+ id_inversiones ;
         }
     }
 

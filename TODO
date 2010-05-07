@@ -15,3 +15,4 @@
 20100507 Deseo. En transferencia validar que no sea a la misma cuenta.
 20100507 Bug. Opercuenta_insertar #No se puede chequear parametros porque comentario es "" y no lo mete en el field
 
+20100507 Bug. No dejar insertar inversionoperacion si acciones=0
