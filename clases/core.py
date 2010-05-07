@@ -576,10 +576,10 @@ class CuentaOperacion:
 
     def transferencia(self, fecha,  cmbcuentaorigen,  cmbcuentadestino, importe, comision ):
         sql="select transferencia('"+fecha+"', "+ str(cmbcuentaorigen) +', ' + str(cmbcuentadestino)+', '+str(importe) +', '+str(comision)+');'
-        mylog ("CuentaOperacion::transferencia: SQL: "+ sql)       
         try:
             con.Execute(sql);
         except:
+            mylog("BDError|CuentaOperacion.transferencia|" +sql)
             return False
         return True
 

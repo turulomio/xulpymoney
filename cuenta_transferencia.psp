@@ -29,10 +29,12 @@ function insert(){
     xmlHttp.onreadystatechange=function(){
         if(xmlHttp.readyState==4){
             var ale=xmlHttp.responseText;
-            location="cuenta_informacion.psp?id_cuentas="+ cmbcuentadestino + "&year=" + spfecha[0] + "&month=" + spfecha[1];
+alert(ale);
+            location="cuentaoperacion_listado.psp?id_cuentas="+ cmbcuentadestino + "&year=" + spfecha[0] + "&month=" + spfecha[1];
         }
     }
-    var url="ajax/ajax.psp?ajax=5&cmbcuentaorigen="+cmbcuentaorigen+"&cmbcuentadestino="+cmbcuentadestino+"&fecha="+fecha+"&importe="+importe+"&comision="+comision;
+    var url="ajax/cuenta_transferencia.psp?cmbcuentaorigen="+cmbcuentaorigen+"&cmbcuentadestino="+cmbcuentadestino+"&fecha="+fecha+"&importe="+importe+"&comision="+comision;
+alert(url);
     xmlHttp.open("GET",url,true);
     xmlHttp.send(null);
 }
