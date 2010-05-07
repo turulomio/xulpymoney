@@ -33,11 +33,9 @@ def isDate(a):
 def isStrDB(a):
     try:
         str(a)
+        if a.find('"')!=-1 or a.find("'")!=-1:
+            return False
     except:
-        mylog("Error de validación: " + str(a) + " no es un strdb,  es un " + str(a.__class__))
-        return False
-    if a.find('"')==-1 and a.find("'")==-1:
-        mylog("Error de validación: " + str(a) + " contiene caracteres nodb")
         return False
     return True
 
