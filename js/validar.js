@@ -23,10 +23,10 @@ function parse_ale(ale, loctrue, locfalse){
     }
 }
 
-function isFloat(number, name){
+function isFloat(number, ale){
     var resultado=true;    
     if (!/^[-+]?[0-9]+(\.[0-9]+)?$/.test(number)){
-        alert("El "+name+" no es un número decimal");
+        alert(ale);
         resultado=false;
     }
     return resultado;
