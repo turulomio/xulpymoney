@@ -18,5 +18,7 @@
 20100507 Bug. No dejar insertar inversionoperacion si acciones=0
 20100508 Bug. El grafico del quesito falla cuando solo hay uno
 20100508 Deseo. En el quesito al hacer click que vaya a la evolución historica
-20100508 Deseo. En los dividendos calcular el % de lo invertido por operación y final
 20100508 Deseo. Que es la tabla tmp dividendos heredada?
+20100508 Bug. El informe de referencia al Ibex peta si no hay datos, por no haber habido conexión avisar que se actualice. y redirigir
+20100508 Deseo. Estudiar la necesidad de operacioninversionhistorica xq no usar solo operinversiones
+20100508 Deseo. Quitar el campo comentario de operinversiones del esquema

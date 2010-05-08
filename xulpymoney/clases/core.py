@@ -1250,18 +1250,14 @@ class InversionOperacion:
         CuentaOperacionHeredadaInversion().actualizar_una_inversion(id_inversiones)#Es una inversion ya que la id_operinversion ya no existe. Se ha borrado
         return True
         
-    def insertar(self,  fecha,  id_tiposoperaciones,  importe, acciones,  impuestos,  comision,    comentario, valor_accion,  id_inversiones):
-        sql="insert into operinversiones(fecha,  id_tiposoperaciones,  importe, acciones,  impuestos,  comision,    comentario, valor_accion,  id_inversiones) values ('" + str(fecha) + "'," + str(id_tiposoperaciones) +","+str(importe)+","+ str(acciones) +","+ str(impuestos) +","+ str(comision) +", '"+ str(comentario)+"', "+str(valor_accion)+","+ str(id_inversiones)+');'
+    def insertar(self,  fecha,  id_tiposoperaciones,  importe, acciones,  impuestos,  comision, valor_accion,  id_inversiones):
+        sql="insert into operinversiones(fecha,  id_tiposoperaciones,  importe, acciones,  impuestos,  comision,  valor_accion,  id_inversiones) values ('" + str(fecha) + "'," + str(id_tiposoperaciones) +","+str(importe)+","+ str(acciones) +","+ str(impuestos) +","+ str(comision) +", "+str(valor_accion)+","+ str(id_inversiones)+');'
         try:
             con.Execute(sql);
+            InversionOperacionHistorica().actualizar (id_inversiones)
+            CuentaOperacionHeredadaInversion().actualizar_una_inversion(id_inversiones)            
         except:
             return False
-#        id_operinversiones=con.Execute("select currval('seq_operinversiones') as seq;").GetRowAssoc(0)["seq"]   
-        #//Funcion que actualiza la tabla tmpoperinversiones para ver operinversiones activas
-        InversionOperacionHistorica().actualizar (id_inversiones)
-        #//Se actualiza la operinversion una funci<F3>n en tmpinversionesheredada que se refleja en opercuentas.
-#        CuentaOperacionHeredadaInversion().actualizar_una_operacion(id_operinversiones)
-        CuentaOperacionHeredadaInversion().actualizar_una_inversion(id_inversiones)
         return True
         
     def modificar(self, id_operinversiones,  fecha,  id_tiposoperaciones,  importe, acciones,  impuestos,  comision,    comentario, valor_accion,  id_inversiones):
@@ -2363,7 +2359,6 @@ class Total:
         minibex=minimoibex()
         maxy=maxibex-minibex  #Maximo del ibex
         maxx=len(ibex)*20  #Maximo del ibex
-        mylog(str(maxibex) +" "+str(minibex) +" "+str(maxy) +" "+str(maxx))
         firstyear=ibex[0][0].year#Año de la primea operación. 
 
         js=       '<script type="text/ecmascript">\n<![CDATA[\n'        
