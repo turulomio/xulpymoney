@@ -903,7 +903,12 @@ class Dividendo:
         s=s+ '    </treechildren>\n'
         s=s+ '</tree>\n'
         
-        s= s + '<label flex="0"  style="text-align: center;font-weight : bold;" value="Suma de dividendos de la inversión: '+ euros(sumsaldos)+'." />\n'
+        importeinvertido=InversionOperacionTemporal().importe_invertido(id_inversiones)
+        dias=(datetime.date.today()-InversionOperacionTemporal().fecha_primera_operacion(id_inversiones)).days
+        dtpc=100*sumsaldos/importeinvertido
+        dtae=365*dtpc/abs(dias)
+        s= s + '<label flex="0"  style="text-align: center;font-weight : bold;" value="Suma de dividendos de la inversión: '+ euros(sumsaldos)+'." />\n'        
+        s= s + '<label flex="0"  style="text-align: center;font-weight : bold;" value="% de lo invertido: '+tpc(dtpc)+'. %TAE de lo invertido: '+ tpc(dtae)+'." />\n'
         s= s + '</vbox>\n'
         return s
         
@@ -1526,6 +1531,12 @@ class InversionOperacionTemporal:
         else:
             return None
 
+    def importe_invertido(self, id_inversiones):
+        sql="SELECT sum(importe) as suma  from tmpoperinversiones where id_inversiones="+str(id_inversiones);
+        curs=con.Execute(sql); 
+        row = curs.GetRowAssoc(0)   
+        return row['suma'];    
+
     def insertar(self, id_operinversiones,id_inversiones, fecha,acciones,id_tiposoperaciones,importe,impuestos,comision,valor_accion):
         sql="insert into tmpoperinversiones (id_operinversiones,id_inversiones,fecha, acciones,id_tiposoperaciones,importe,impuestos, comision, valor_accion) values ("+str(id_operinversiones)+", "+str(id_inversiones)+",'"+str(fecha)+"',"+str(acciones)+", "+str(id_tiposoperaciones)+","+str(importe)+","+str(impuestos)+","+str(comision)+", "+str(valor_accion)+")";
         curs=con.Execute(sql); 
@@ -1538,6 +1549,7 @@ class InversionOperacionTemporal:
         saldofinal=float(row["acciones"])*float(InversionActualizacion().valor(id_inversiones,fecha))
         pendiente=float(saldofinal)-float(saldoinicio);
         return pendiente;    
+        
     def xultree(self, sql):
         """
             El SQL deberá ser del tipo "SELECT * from tmpoperinversiones where id_Inversiones=id_inversiones order by fecha"
