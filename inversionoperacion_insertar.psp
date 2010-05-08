@@ -14,13 +14,28 @@ req.content_type="application/vnd.mozilla.xul+xml"
 req.write(xulheaderwindowmenu("Insertando una operación de inversiones"))
 con.close()
 %>
+
+<script src="js/validar.js"></script>
 <script>
 <![CDATA[
 function insert(){
+    if (isISODate(document.getElementById("fecha").value,"La fecha no es válida")==false ||
+        isFloat(document.getElementById("importe").value,"El importe no es un decimal")==false ||
+        isFloat(document.getElementById("acciones").value,"El número de acciones no es un decimal")==false ||
+        isFloat(document.getElementById("impuestos").value,"El campo de impuestos no es un decimal")==false ||
+        isFloat(document.getElementById("comision").value,"La comision no es un decimal")==false ||
+        isFloat(document.getElementById("valor_accion").value,"El valor de la acción no es un decimal")==false
+        ){
+        return;
+    }
+    if (document.getElementById("acciones").value==0 ){
+        alert("El número de acciones no puede ser 0");
+        return;
+    }
+
     var xmlHttp;    
     var id_tiposoperaciones=document.getElementById("cmbtiposoperaciones").value
     var importe=document.getElementById("importe").value;
-    var comentario= ""
     var fecha = document.getElementById("fecha").value;
     var acciones = document.getElementById("acciones").value;
     var impuestos = document.getElementById("impuestos").value;
@@ -28,13 +43,12 @@ function insert(){
     var valor_accion = document.getElementById("valor_accion").value;
     spfecha=fecha.split("-");
     var id_inversiones=<%=form['id_inversiones']%>;
-    var url="ajax/inversionoperacion_insertar.psp?fecha="+fecha+"&id_tiposoperaciones="+id_tiposoperaciones+"&importe="+importe+"&acciones="+acciones+"&impuestos="+impuestos+"&comision="+comision+"&comentario="+comentario+"&valor_accion="+valor_accion+"&id_inversiones="+id_inversiones;
+    var url="ajax/inversionoperacion_insertar.psp?fecha="+fecha+"&id_tiposoperaciones="+id_tiposoperaciones+"&importe="+importe+"&acciones="+acciones+"&impuestos="+impuestos+"&comision="+comision+"&valor_accion="+valor_accion+"&id_inversiones="+id_inversiones;
     xmlHttp=new XMLHttpRequest();
     xmlHttp.onreadystatechange=function(){
         if(xmlHttp.readyState==4){
             var ale=xmlHttp.responseText;
-            alert(ale)
-            location="inversionoperacion_listado.psp?id_inversiones="+ id_inversiones ;
+            parse_ale(ale,"inversionoperacion_listado.psp?id_inversiones="+ id_inversiones , '' )
         }
     }
 
