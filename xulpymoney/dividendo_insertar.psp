@@ -30,7 +30,7 @@ function insert(){
     xmlHttp.onreadystatechange=function(){
         if(xmlHttp.readyState==4){
             var ale=xmlHttp.responseText;
-            location="inversion_informacion.psp?id_inversiones="+id_inversiones;
+            location="inversionoperacion_listado.psp?id_inversiones="+id_inversiones;
         }
     }
     var url="ajax/dividendo_insertar.psp?fecha="+fecha+"&valorxaccion="+valorxaccion+"&bruto="+bruto+"&retencion="+retencion+"&liquido="+liquido+"&id_inversiones="+id_inversiones;
