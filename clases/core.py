@@ -1178,6 +1178,7 @@ class Inversion:
         curs=con.Execute(sql)
         sumsaldos=0
         sumpendiente=0       
+        sumdifdiaria=0
         internet=[]
         bolsamadrid(internet)
         s=''
@@ -1209,7 +1210,12 @@ class Inversion:
             s= s + '                <treecell label="'+ row["entidadbancaria"]+ '" />\n'
             s= s + '                ' + treecell_euros(row["actualizacion"], 3)
             s= s + '                ' + treecell_euros(getvalor(internet, str(row["internet"])), 3)
-            s= s + '                ' + treecell_euros((getvalor(internet, str(row["internet"]))-row["actualizacion"])*row["acciones"])
+            if getvalor(internet, str(row["internet"]))==0:
+                difdiaria=0
+            else:
+                difdiaria=(getvalor(internet, str(row["internet"]))-row["actualizacion"])*row["acciones"]
+            sumdifdiaria=sumdifdiaria+difdiaria
+            s= s + '                ' + treecell_euros(difdiaria)
             s= s + '                ' + treecell_euros(row['saldo'])
             s= s + '                ' + treecell_euros(row['pendiente'])
             s= s +'                ' +  treecell_euros(row['invertido'])
@@ -1223,7 +1229,7 @@ class Inversion:
             curs.MoveNext()     
         s= s + '    </treechildren>\n'
         s= s + '</tree>\n'
-        s= s + '<label flex="0"  id="totalinversiones" style="text-align: center;font-weight : bold;" value="Saldo total de todas las inversiones: '+ euros(sumsaldos)+'. Pendiente de consolidar: '+euros(sumpendiente)+'." total="'+str(sumsaldos)+'" />\n'
+        s= s + '<label flex="0"  id="totalinversiones" style="text-align: center;font-weight : bold;" value="Saldo total de todas las inversiones: '+ euros(sumsaldos)+'. Pendiente de consolidar: '+euros(sumpendiente)+'. Diferencia diaria: '+euros(sumdifdiaria)+'" total="'+str(sumsaldos)+'" />\n'
         s= s + '</vbox>\n'
         curs.Close()
         return s
