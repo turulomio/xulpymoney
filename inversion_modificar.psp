@@ -38,7 +38,8 @@ function insert(){
     var venta = document.getElementById("venta").value;
     var id_cuentas = document.getElementById("id_cuentas").value;
     var tpcvariable = document.getElementById("tpcvariable").value;
-    var url="ajax/inversion_modificar.psp?id_inversiones="+<%=id_inversiones %>+"&inversion="+inversion+"&compra="+compra+"&venta="+venta+"&id_cuentas="+id_cuentas+"&tpcvariable="+tpcvariable;
+    var internet = document.getElementById("internet").value;
+    var url="ajax/inversion_modificar.psp?id_inversiones="+<%=id_inversiones %>+"&inversion="+inversion+"&compra="+compra+"&venta="+venta+"&id_cuentas="+id_cuentas+"&tpcvariable="+tpcvariable +"&internet="+internet;
     xmlHttp.open("GET",url,true);
     xmlHttp.send(null);
 }
@@ -57,6 +58,7 @@ function insert(){
         <row><label value="Actualiza el valor de nueva compra" /><hbox><textbox id="compra" value="<%=reg['compra'] %>"/></hbox></row>        
         <row><label value="Actualiza el valor de venta" /><hbox><textbox id="venta" value="<%=reg['venta'] %>"/></hbox></row>
         <row><label value="Tipo de inversión" /><hbox><%=cmbtpcvariable%></hbox></row>
+        <row><label value="Nombre de Internet" /><hbox><textbox id="internet" value="<%=reg['internet'] %>"/></hbox></row>        
         <row><label value="" /><hbox><button id="cmd" label="Aceptar" onclick="insert();"/></hbox></row>
         </rows>
     </grid>
