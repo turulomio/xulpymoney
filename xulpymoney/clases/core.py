@@ -8,6 +8,7 @@ import datetime,  math
 import adodb
 import config
 from formato import *  
+from inversion_actualizacion import *
 from xul import *
 
 class EntidadBancaria:    
@@ -938,13 +939,13 @@ class Inversion:
         s=s + '</menulist>\n'
         return s
             
-    def insertar(self,  inversion,  compra,  venta,  tpcvariable,  id_cuentas):
-        sql="insert into inversiones (inversion, compra, venta, tpcvariable, id_cuentas, in_activa) values ('"+inversion+"', "+str(compra)+", "+str(venta)+", "+str(tpcvariable)+", "+str(id_cuentas)+", true);"
+    def insertar(self,  inversion,  compra,  venta,  tpcvariable,  id_cuentas,  internet):
+        sql="insert into inversiones (inversion, compra, venta, tpcvariable, id_cuentas, in_activa, internet) values ('"+inversion+"', "+str(compra)+", "+str(venta)+", "+str(tpcvariable)+", "+str(id_cuentas)+", true,'"+str(internet)+"');"
         curs=con.Execute(sql); 
         return sql            
         
-    def modificar(self, id_inversiones, inversion,  compra,  venta,  tpcvariable,  id_cuentas):
-        sql="update inversiones set inversion='"+inversion+"', compra="+str(compra)+", venta="+str(venta)+", tpcvariable="+str(tpcvariable)+", id_cuentas="+str(id_cuentas)+" where id_inversiones="+ str(id_inversiones)
+    def modificar(self, id_inversiones, inversion,  compra,  venta,  tpcvariable,  id_cuentas,  internet):
+        sql="update inversiones set inversion='"+inversion+"', compra="+str(compra)+", venta="+str(venta)+", tpcvariable="+str(tpcvariable)+", id_cuentas="+str(id_cuentas)+", internet='"+str(internet)+"' where id_inversiones="+ str(id_inversiones)
         curs=con.Execute(sql); 
         return sql
         
@@ -1079,21 +1080,8 @@ class Inversion:
         s= s+ '}\n\n'
 
         s= s+ 'function actualizar_internet(){\n'
-        s= s+ '    var tree = document.getElementById("tree");\n'
-        s= s+ '    var xmlHttp;\n'
-        s= s+ '    var nombre=tree.view.getCellText(tree.currentIndex,tree.columns.getNamedColumn("inversion"));\n'
-        s= s+ '    xmlHttp=new XMLHttpRequest();\n'
-        s= s+ '    xmlHttp.onreadystatechange=function(){\n'
-        s= s+ '        if(xmlHttp.readyState==4){\n'
-        s= s+ '            var ale=xmlHttp.responseText;\n'
-        s= s+ '            alert (ale);\n'
-        s= s+ '            location=\'inversion_listado.psp\';\n'
-        s= s+ '        }\n'
-        s= s+ '    }    \n'
-        s= s+ '    var url="ajax/inversion_actualizacion.psp?inversion="+ nombre+ "&id_inversiones="+ id_inversiones ;\n'
-        s= s+ '    alert (url);\n'
-        s= s+ '    xmlHttp.open("GET",url,true);\n'
-        s= s+ '    xmlHttp.send(null);\n'
+        s= s+ '     var tree = document.getElementById("treeInversiones");\n'
+        s= s+ '     location=\'inversion_actualizar_internet.psp\';\n'
         s= s+ '}\n\n'
 
         s= s+ 'function inversion_actualizar(){\n'
@@ -1183,7 +1171,63 @@ class Inversion:
         s= s + '</vbox>\n'
         curs.Close()
         return s
-        
+
+    def xul_listado_internet(self, sql):
+        """Muestra un listado encapusulado de un listado deinversiones.
+        En la etiqueta sumatoria del final y huna propiedad que es total y tiene el total numérico."""
+        curs=con.Execute(sql)
+        sumsaldos=0
+        sumpendiente=0       
+        internet=[]
+        bolsamadrid(internet)
+        s=''
+        s= s+ '<vbox flex="1">\n'
+        s= s+ '<tree id="treeInversiones" enableColumnDrag="true" flex="6"   context="popupInversiones"  onselect="popupInversiones();"  ondblclick="inversion_estudio();" >\n'
+        s= s+ '    <treecols>\n'
+        s= s+  '        <treecol id="id" label="id" hidden="true" />\n'
+        s= s+  '        <treecol id="activa" label="activa" hidden="true" />\n'
+        s= s+  '        <treecol id="inversion" label="Inversión" sort="?col_inversion" sortActive="true" sortDirection="descending" flex="2"/>\n'
+        s= s+  '        <treecol id="col_entidad_bancaria" label="Entidad Bancaria"  sort="?col_entidad_bancaria" sortActive="true" sortDirection="descending" flex="2"/>\n'
+        s= s+  '        <treecol id="col_valor" label="Valor Acción" flex="2" style="text-align: right" />\n'
+        s= s+  '        <treecol id="col_valor" label="Valor Internet" flex="2" style="text-align: right" />\n'
+        s= s+  '        <treecol id="col_valor" label="Ganancia diaria" flex="2" style="text-align: right" />\n'
+        s= s+  '        <treecol id="col_valor" label="Saldo" flex="2" style="text-align: right" />\n'
+        s= s+  '        <treecol id="col_saldo" label="Pendiente" flex="1" style="text-align: right"/>\n'
+        s= s+  '        <treecol label="Invertido" hidden="true"  flex="1" style="text-align: right" />\n'
+        s= s+  '        <treecol id="col_saldo" label="Rendimiento"   sort="?Rendimiento" sortActive="true" sortDirection="descending" flex="1" style="text-align: right"/>\n'
+        s= s+  '    </treecols>\n'
+        s= s+  '    <treechildren>\n'
+        while not curs.EOF:
+            row = curs.GetRowAssoc(0)   
+            sumsaldos=sumsaldos+ dosdecimales(row['saldo'])
+            sumpendiente=sumpendiente+dosdecimales(row['pendiente'])
+            s= s + '        <treeitem>\n'
+            s= s + '            <treerow>\n'
+            s= s + '                <treecell label="'+str(row["id_inversiones"])+ '" />\n'
+            s= s + '                <treecell label="'+str(row["in_activa"])+ '" />\n'
+            s= s + '                <treecell label="'+str(row["inversion"])+ '" />\n'
+            s= s + '                <treecell label="'+ row["entidadbancaria"]+ '" />\n'
+            s= s + '                ' + treecell_euros(row["actualizacion"], 3)
+            s= s + '                ' + treecell_euros(getvalor(internet, str(row["internet"])), 3)
+            s= s + '                ' + treecell_euros((getvalor(internet, str(row["internet"]))-row["actualizacion"])*row["acciones"])
+            s= s + '                ' + treecell_euros(row['saldo'])
+            s= s + '                ' + treecell_euros(row['pendiente'])
+            s= s +'                ' +  treecell_euros(row['invertido'])
+            if row['saldo']==0 or row['invertido']==0:
+                tpc=0
+            else:
+                tpc=100*row['pendiente']/row['invertido']
+            s= s + treecell_tpc(tpc)
+            s= s + '            </treerow>\n'
+            s= s + '        </treeitem>\n'
+            curs.MoveNext()     
+        s= s + '    </treechildren>\n'
+        s= s + '</tree>\n'
+        s= s + '<label flex="0"  id="totalinversiones" style="text-align: center;font-weight : bold;" value="Saldo total de todas las inversiones: '+ euros(sumsaldos)+'. Pendiente de consolidar: '+euros(sumpendiente)+'." total="'+str(sumsaldos)+'" />\n'
+        s= s + '</vbox>\n'
+        curs.Close()
+        return s
+                
 class InversionActualizacion:
     def borrar(self,  id_actuinversiones):
         sql="delete from actuinversiones where id_actuinversiones="+ str(id_actuinversiones);

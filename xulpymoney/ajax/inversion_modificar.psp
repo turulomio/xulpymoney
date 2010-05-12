@@ -1,6 +1,6 @@
 <%#-*- coding: UTF-8 -*-
 from core import *
 con=Conection()
-req.write (Inversion().modificar(form['id_inversiones'],  form['inversion'],  form['compra'],  form['venta'],  form['tpcvariable'],  form['id_cuentas']))
+req.write (Inversion().modificar(form['id_inversiones'],  form['inversion'],  form['compra'],  form['venta'],  form['tpcvariable'],  form['id_cuentas'],  form['internet']))
 con.close()
 %>

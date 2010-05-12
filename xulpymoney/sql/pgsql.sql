@@ -562,7 +562,8 @@ CREATE TABLE inversiones (
     tpcvariable integer NOT NULL,
     id_cuentas integer NOT NULL,
     compra double precision DEFAULT 0 NOT NULL,
-    venta double precision DEFAULT 0 NOT NULL
+    venta double precision DEFAULT 0 NOT NULL,
+    internet text
 );
 
 
