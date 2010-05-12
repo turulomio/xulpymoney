@@ -5,7 +5,10 @@ def comaporpunto(cadena):
     return cadena.replace(',','.')
     
 def bolsamadrid(arr):
-    web=urllib.urlopen('http://www.bolsamadrid.es/esp/mercados/acciones/accmerc2_c.htm')
+    try:
+        web=urllib.urlopen('http://www.bolsamadrid.es/esp/mercados/acciones/accmerc2_c.htm')
+    except:
+        return arr
     lineainv=""
     for i in range(30):
         web.readline()
