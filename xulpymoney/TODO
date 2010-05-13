@@ -6,12 +6,10 @@
 20100501 Deseo. En insertar operinversiones validar los campos cuando es compra y venta
 20100501 Deseo. Desarrollar ver movimientos antiguos y quitar pago de opertarjetas
 20100501 Bug. Despues de borrar una opercuenta no se respeta la visualización en el mes y año
-20100506 Deseo. Cuando haga actualizar inversión que informe de cuanto se ha ganado y desde cuando
 20100506 Deseo. Quitar los depósitos que tengo en todas las tablas para borrarlas de mi bd y simplificar esquema bd en las futuras.
 20100506 Deseo. En aquellos informes que se necesiten datos del ibex redirigirlo y no dejarle entrar
-20100506 Deseo. Validar en servidor, todo.
 20100506 Deseo. Añadir autenticación no se cómo.
-20100507 Deseo. En transferencia validar que no sea a la misma cuenta.
+20100507 Deseo. En transferencia validar que no sea misma cuenta ni comision ni importe negativo en servidor.
 20100507 Bug. Opercuenta_insertar #No se puede chequear parametros porque comentario es "" y no lo mete en el field
 20100508 Bug. El grafico del quesito falla cuando solo hay uno
 20100508 Deseo. En el quesito al hacer click que vaya a la evolución historica

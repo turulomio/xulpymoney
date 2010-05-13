@@ -18,6 +18,9 @@ req.write(xulheaderwindowmenu("Xulpymoney -> Cuentas -> Transferencia"))
 <![CDATA[
 
 function insert(){
+    if (check_data()==false){
+        return;
+    }
     var xmlHttp;    
     var fecha = document.getElementById("fecha").value;
     var cmbcuentaorigen=document.getElementById("cmbcuentaorigen").value;
@@ -37,6 +40,22 @@ function insert(){
     xmlHttp.send(null);
 }
 
+function check_data(){
+    var resultado=true;
+    if (document.getElementById("cmbcuentaorigen").value==document.getElementById("cmbcuentadestino").value){
+        alert("La cuenta origen y destino no pueden ser la misma");
+        resultado=false;
+    }
+    if (document.getElementById("importe").value<=0){
+        alert("El importe no puede ser negativo ni cero");
+        resultado=false;
+    }
+    if (document.getElementById("comision").value<0){
+        alert("La comision no puede ser negativa");
+        resultado=false;
+    }
+    return resultado;
+}
 ]]>
 </script>
 
@@ -61,7 +80,7 @@ function insert(){
 <row>
     <label value="Cantidad a transferir" />
 <hbox>
-    <textbox id="importe"/>
+    <textbox id="importe" value="0"/>
 </hbox>
 </row>
 <row>
