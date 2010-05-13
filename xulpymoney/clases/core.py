@@ -903,11 +903,14 @@ class Dividendo:
       
         s=s+ '    </treechildren>\n'
         s=s+ '</tree>\n'
-        
-        importeinvertido=InversionOperacionTemporal().importe_invertido(id_inversiones)
-        dias=(datetime.date.today()-InversionOperacionTemporal().fecha_primera_operacion(id_inversiones)).days
-        dtpc=100*sumsaldos/importeinvertido
-        dtae=365*dtpc/abs(dias)
+        if curs.RecordCount()!=0:
+            importeinvertido=InversionOperacionTemporal().importe_invertido(id_inversiones)
+            dias=(datetime.date.today()-InversionOperacionTemporal().fecha_primera_operacion(id_inversiones)).days
+            dtpc=100*sumsaldos/importeinvertido
+            dtae=365*dtpc/abs(dias)
+        else:
+            dtpc=0
+            dtae=0
         s= s + '<label flex="0"  style="text-align: center;font-weight : bold;" value="Suma de dividendos de la inversión: '+ euros(sumsaldos)+'." />\n'        
         s= s + '<label flex="0"  style="text-align: center;font-weight : bold;" value="% de lo invertido: '+tpc(dtpc)+'. %TAE de lo invertido: '+ tpc(dtae)+'." />\n'
         s= s + '</vbox>\n'

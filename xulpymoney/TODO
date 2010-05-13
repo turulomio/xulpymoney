@@ -10,15 +10,14 @@
 20100506 Deseo. Quitar los depósitos que tengo en todas las tablas para borrarlas de mi bd y simplificar esquema bd en las futuras.
 20100506 Deseo. En aquellos informes que se necesiten datos del ibex redirigirlo y no dejarle entrar
 20100506 Deseo. Validar en servidor, todo.
-20100506 Quitar el ajax/ajax.psp
 20100506 Deseo. Añadir autenticación no se cómo.
 20100507 Deseo. En transferencia validar que no sea a la misma cuenta.
 20100507 Bug. Opercuenta_insertar #No se puede chequear parametros porque comentario es "" y no lo mete en el field
-
-20100507 Bug. No dejar insertar inversionoperacion si acciones=0
 20100508 Bug. El grafico del quesito falla cuando solo hay uno
 20100508 Deseo. En el quesito al hacer click que vaya a la evolución historica
 20100508 Deseo. Que es la tabla tmp dividendos heredada?
 20100508 Bug. El informe de referencia al Ibex peta si no hay datos, por no haber habido conexión avisar que se actualice. y redirigir
 20100508 Deseo. Estudiar la necesidad de operacioninversionhistorica xq no usar solo operinversiones
 20100508 Deseo. Quitar el campo comentario de operinversiones del esquema
+20100513 Bug. inversionoperacion_listado falla por una fecha Null cuando no hay registros
+20100513 Bug. Cuando no hay opercuetnas falla dividendo historico en algo de fecha
