@@ -17,4 +17,4 @@ psql -U postgres xulpymoney < sql/pgsql.sql
 psql -U postgres xulpymoney < sql/pgsql.data
 
 Modificar las opciones en /etc/xulpymoney/config.py habiendolo copiado de 
-/etc/xulpymoney/config.py.distrib
+/etc/xulpymoney/config.py.distrib y dandole los permisos apropiados por ejemplo apache:root
