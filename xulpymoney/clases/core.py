@@ -1184,17 +1184,42 @@ class Inversion:
         sumdifdiaria=0
         internet=[]
         bolsamadrid(internet)
-        s=''
+        bankintergestion(internet)
+        carmignacpatrimoinea(internet)
+        LyxorETFXBearEUROSTOXX50(internet)
+        s=      '<script>\n<![CDATA[\n'
+        s= s+ 'function actualizar_inversion(){\n'
+        s= s+ '     var tree = document.getElementById("treeInversiones");\n'
+        s= s+ '     var id_inversiones=tree.view.getCellText(tree.currentIndex,tree.columns.getNamedColumn("id"));\n'
+        s= s+ '     var antiguo=tree.view.getCellText(tree.currentIndex,tree.columns.getNamedColumn("internet"));\n'        
+        s= s+ '     var valor=tree.view.getCellText(tree.currentIndex,tree.columns.getNamedColumn("internet")).split(" ")[0];\n'
+        s= s+ '    var xmlHttp;\n'
+        s= s+ '    xmlHttp=new XMLHttpRequest();\n'
+        s= s+ '    xmlHttp.onreadystatechange=function(){\n'
+        s= s+ '        if(xmlHttp.readyState==4){\n'
+        s= s+ '            var ale=xmlHttp.responseText;\n'
+        s= s+ '            parse_ale(ale,"","");\n'
+        s= s+ '            tree.view.setCellText(tree.currentIndex,tree.columns.getNamedColumn("valor_accion"),antiguo);\n'
+        s= s+ '            tree.view.setCellText(tree.currentIndex,tree.columns.getNamedColumn("ganancia"),"Actualizado");\n'
+        s= s+ '        }\n'
+        s= s+ '    }\n'
+        s= s+ '    var f = new Date;var fecha=f.getFullYear()+"-" +(f.getMonth()+1)+"-"+f.getDate();\n'
+        s= s+ '    var url="ajax/inversionactualizacion_insertar.psp?id_inversiones="+id_inversiones+  "&fecha=" + fecha + "&valor=" + valor;\n'
+        s= s+ '    xmlHttp.open("GET",url,true);\n'
+        s= s+ '    xmlHttp.send(null);\n'
+        s= s+ '}\n'
+
+        s= s+ ']]>\n</script>\n\n'               
         s= s+ '<vbox flex="1">\n'
-        s= s+ '<tree id="treeInversiones" enableColumnDrag="true" flex="6"   context="popupInversiones"  onselect="popupInversiones();"  ondblclick="inversion_estudio();" >\n'
+        s= s+ '<tree id="treeInversiones" enableColumnDrag="true" flex="6"  ondblclick="actualizar_inversion();">\n'
         s= s+ '    <treecols>\n'
         s= s+  '        <treecol id="id" label="id" hidden="true" />\n'
         s= s+  '        <treecol id="activa" label="activa" hidden="true" />\n'
         s= s+  '        <treecol id="inversion" label="Inversión" sort="?col_inversion" sortActive="true" sortDirection="descending" flex="2"/>\n'
-        s= s+  '        <treecol id="col_entidad_bancaria" label="Entidad Bancaria"  sort="?col_entidad_bancaria" sortActive="true" sortDirection="descending" flex="2"/>\n'
-        s= s+  '        <treecol id="col_valor" label="Valor Acción" flex="2" style="text-align: right" />\n'
-        s= s+  '        <treecol id="col_valor" label="Valor Internet" flex="2" style="text-align: right" />\n'
-        s= s+  '        <treecol id="col_valor" label="Ganancia diaria" flex="2" style="text-align: right" />\n'
+        s= s+  '        <treecol label="Entidad Bancaria"  sort="?col_entidad_bancaria" sortActive="true" sortDirection="descending" flex="2"/>\n'
+        s= s+  '        <treecol  id="valor_accion" label="Valor Acción" flex="2" style="text-align: right" />\n'
+        s= s+  '        <treecol id="internet" label="Valor Internet" flex="2" style="text-align: right" />\n'
+        s= s+  '        <treecol id="ganancia" label="Ganancia diaria" flex="2" style="text-align: right" />\n'
         s= s+  '        <treecol id="col_valor" label="Saldo" flex="2" style="text-align: right" />\n'
         s= s+  '        <treecol id="col_saldo" label="Pendiente" flex="1" style="text-align: right"/>\n'
         s= s+  '        <treecol label="Invertido" hidden="true"  flex="1" style="text-align: right" />\n'
@@ -1211,8 +1236,8 @@ class Inversion:
             s= s + '                <treecell label="'+str(row["in_activa"])+ '" />\n'
             s= s + '                <treecell label="'+str(row["inversion"])+ '" />\n'
             s= s + '                <treecell label="'+ row["entidadbancaria"]+ '" />\n'
-            s= s + '                ' + treecell_euros(row["actualizacion"], 3)
-            s= s + '                ' + treecell_euros(getvalor(internet, str(row["internet"])), 3)
+            s= s + '                ' + treecell_euros(row["actualizacion"], 5)
+            s= s +'                 <treecell id="rowinternet" label="'+euros(getvalor(internet, str(row["internet"])), 5)+'" />\n';
             if getvalor(internet, str(row["internet"]))==0:
                 difdiaria=0
             else:
