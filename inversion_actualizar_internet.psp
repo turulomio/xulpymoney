@@ -15,6 +15,7 @@ req.write(xulheaderwindowmenu("Xulpymoney > Inversiones > Actualizar Internet"))
 
 %>
 
+<script src="js/validar.js"></script>
 
 <vbox  flex="1">
 <label id="titulo" flex="0" value="Actualizar valor de las inversiones en Internet" />
