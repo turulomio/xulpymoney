@@ -22,5 +22,7 @@ def xul2utf8(cadena):
     return cadena
     
 def utf82xul(cadena):
+    if cadena==None:
+        return ""
     cadena=string.replace(cadena,'&','&amp;')
     return cadena

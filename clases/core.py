@@ -799,6 +799,7 @@ class CuentaOperacionHeredadaInversion:
         curs.Close()
 
 class Dividendo:
+    
     def insertar(self,fecha,valorxaccion,bruto,retencion,liquido,id_inversiones):
         """Insertar un dividendo y una opercuenta vinculada a la tabla dividendos en el campo id_opercuentas"""
         inv=con.Execute("select * from inversiones where id_inversiones="+ str(id_inversiones)).GetRowAssoc(0)   

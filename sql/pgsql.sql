@@ -924,18 +924,6 @@ INHERITS (opercuentas);
 ALTER TABLE public.tmpdepositosheredada OWNER TO postgres;
 
 --
--- Name: tmpdividendosheredada; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
---
-
-CREATE TABLE tmpdividendosheredada (
-    id_dividendos integer NOT NULL
-)
-INHERITS (opercuentas);
-
-
-ALTER TABLE public.tmpdividendosheredada OWNER TO postgres;
-
---
 -- Name: tmpinversionesheredada; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
