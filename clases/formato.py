@@ -15,8 +15,11 @@ def euros(num,  numdec=2):
         return "%.5f €" %num
     
 def tpc(num):
+    if round(num, 1)==-100:
+        return "- %"
     str="%.2f " %num
     return str+"%"
+    
 def xul2utf8(cadena):
     cadena=string.replace(cadena,'&amp;','&')
     return cadena

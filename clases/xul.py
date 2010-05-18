@@ -95,7 +95,7 @@ def treecell(content, property=None):
     return '<treecell'+properties+'label="'+str(content)+'" />\n';
     
 def treecell_tpc(importe):
-    if importe>=0:
+    if importe>=0 or round(importe, 1)==-100:
         s='<treecell label="'+tpc(importe)+'" />\n';
     else:
         s='<treecell properties="negative" label="'+tpc(importe)+'" />\n';

@@ -1189,7 +1189,20 @@ class Inversion:
         carmignacpatrimoinea(internet)
         LyxorETFXBearEUROSTOXX50(internet)
         s=      '<script>\n<![CDATA[\n'
+        s= s+ 'function check_data(){\n'
+        s= s+ '    resultado=true;\n'
+        s= s+ '     var tree = document.getElementById("treeInversiones");\n'
+        s= s+ '    if (tree.view.getCellText(tree.currentIndex,tree.columns.getNamedColumn("internet")).split(" ")[0]==0){\n'
+        s= s+ '        alert("Esta inversión no se ha podido actualizar en Internet");\n'
+        s= s+ '        resultado=false;\n'
+        s= s+ '    }\n'
+        s= s+ '    return resultado;\n'
+        s= s+ '}\n'
+                                    
         s= s+ 'function actualizar_inversion(){\n'
+        s= s+ '    if (check_data()==false){\n'
+        s= s+ '        return;\n'
+        s= s+ '    }\n'                             
         s= s+ '     var tree = document.getElementById("treeInversiones");\n'
         s= s+ '     var id_inversiones=tree.view.getCellText(tree.currentIndex,tree.columns.getNamedColumn("id"));\n'
         s= s+ '     var antiguo=tree.view.getCellText(tree.currentIndex,tree.columns.getNamedColumn("internet"));\n'        
@@ -1213,52 +1226,70 @@ class Inversion:
         s= s+ ']]>\n</script>\n\n'               
         s= s+ '<vbox flex="1">\n'
         s= s+ '<tree id="treeInversiones" enableColumnDrag="true" flex="6"  ondblclick="actualizar_inversion();">\n'
-        s= s+ '    <treecols>\n'
-        s= s+  '        <treecol id="id" label="id" hidden="true" />\n'
-        s= s+  '        <treecol id="activa" label="activa" hidden="true" />\n'
-        s= s+  '        <treecol id="inversion" label="Inversión" sort="?col_inversion" sortActive="true" sortDirection="descending" flex="2"/>\n'
-        s= s+  '        <treecol label="Entidad Bancaria"  sort="?col_entidad_bancaria" sortActive="true" sortDirection="descending" flex="2"/>\n'
-        s= s+  '        <treecol  id="valor_accion" label="Valor Acción" flex="2" style="text-align: right" />\n'
+        s= s+ '<treecols>\n'
+        s= s+  '<treecol id="id" label="Id" hidden="true" />\n'
+        s= s+  '<treecol label="Inversión" flex="2"/>\n'
+        s= s+  '<treecol label="Entidad Bancaria" flex="2"/>\n'
+        s= s+  '<treecol id="valor_accion" label="Valor Acción" flex="1" style="text-align: right" />\n'
         s= s+  '        <treecol id="internet" label="Valor Internet" flex="2" style="text-align: right" />\n'
-        s= s+  '        <treecol id="ganancia" label="Ganancia diaria" flex="2" style="text-align: right" />\n'
-        s= s+  '        <treecol id="col_valor" label="Saldo" flex="2" style="text-align: right" />\n'
-        s= s+  '        <treecol id="col_saldo" label="Pendiente" flex="1" style="text-align: right"/>\n'
-        s= s+  '        <treecol label="Invertido" hidden="true"  flex="1" style="text-align: right" />\n'
-        s= s+  '        <treecol id="col_saldo" label="Rendimiento"   sort="?Rendimiento" sortActive="true" sortDirection="descending" flex="1" style="text-align: right"/>\n'
-        s= s+  '    </treecols>\n'
+        s= s+  '        <treecol id="ganancia" label="Diferencia" flex="2" style="text-align: right" />\n'
+        s= s+  '        <treecol label="%" flex="2" style="text-align: right" />\n'
+        s= s+  '<treecol label="Valor Compra" flex="1" style="text-align: right"  hidden="true" />\n'
+        s= s+  '<treecol label="Valor Venta " flex="1" style="text-align: right" hidden="true" />\n'
+        s= s+  '<treecol label="% Compra    " flex="1" style="text-align: right"/>\n'
+        s= s+  '<treecol label="% Venta     " flex="1" style="text-align: right"/>\n'
+        s= s+  '</treecols>\n'
         s= s+  '    <treechildren>\n'
         while not curs.EOF:
             row = curs.GetRowAssoc(0)   
-            sumsaldos=sumsaldos+ dosdecimales(row['saldo'])
-            sumpendiente=sumpendiente+dosdecimales(row['pendiente'])
-            s= s + '        <treeitem>\n'
-            s= s + '            <treerow>\n'
-            s= s + '                <treecell label="'+str(row["id_inversiones"])+ '" />\n'
-            s= s + '                <treecell label="'+str(row["in_activa"])+ '" />\n'
-            s= s + '                <treecell label="'+str(row["inversion"])+ '" />\n'
-            s= s + '                <treecell label="'+ row["entidadbancaria"]+ '" />\n'
-            s= s + '                ' + treecell_euros(row["actualizacion"], 5)
-            s= s +'                 <treecell id="rowinternet" label="'+euros(getvalor(internet, str(row["internet"])), 5)+'" />\n';
-            if getvalor(internet, str(row["internet"]))==0:
+            valorInternet=getvalor(internet, str(row["internet"]))            
+            if row['actualizacion']==0:
                 difdiaria=0
-            else:
-                difdiaria=(getvalor(internet, str(row["internet"]))-row["actualizacion"])*row["acciones"]
-            sumdifdiaria=sumdifdiaria+difdiaria
-            s= s + '                ' + treecell_euros(difdiaria)
-            s= s + '                ' + treecell_euros(row['saldo'])
-            s= s + '                ' + treecell_euros(row['pendiente'])
-            s= s +'                ' +  treecell_euros(row['invertido'])
-            if row['saldo']==0 or row['invertido']==0:
+                sumsaldos=sumsaldos
+                tpcc=0
+                tpcv=0
                 tpc=0
             else:
-                tpc=100*row['pendiente']/row['invertido']
+                if valorInternet==0:
+                    difdiaria=0
+                    sumsaldos=sumsaldos+ dosdecimales(row['acciones']*row["actualizacion"])
+                    tpcc=(row["compra"]-row["actualizacion"])*100/row["actualizacion"]
+                    tpcv=(row["venta"]-row["actualizacion"])*100/row["actualizacion"]
+                    tpc=0
+                else:
+                    difdiaria=(valorInternet-row["actualizacion"])*row["acciones"]
+                    sumsaldos=sumsaldos+ dosdecimales(row['acciones']*valorInternet)
+                    tpcc=(row["compra"]-valorInternet)*100/valorInternet
+                    tpcv=(row["venta"]-valorInternet)*100/valorInternet
+                    tpc=100*(valorInternet-row["actualizacion"])/row["actualizacion"]
+                sumdifdiaria=sumdifdiaria+difdiaria            
+            if tpcc>0:
+                prop=' properties="rowsoftred"'
+            elif tpcv<5:
+                prop=' properties="rowsoftgreen"'
+            else:
+                prop=''
+            if row['compra']==row['venta']:
+                prop=''
+            s= s + '<treeitem>\n'
+            s= s + '<treerow'+prop+'>\n'
+            s= s + '<treecell label="'+str(row["id_inversiones"])+ '" />\n'
+            s= s + '<treecell label="'+str(row["inversion"])+ '" />\n'
+            s= s + '<treecell label="'+str(row["entidadbancaria"])+ '" />\n'
+            s= s + treecell_euros(row["actualizacion"],  3)
+            s= s +'<treecell id="rowinternet" label="'+euros(valorInternet, 5)+'" />\n';
+            s= s + treecell_euros(difdiaria)
             s= s + treecell_tpc(tpc)
-            s= s + '            </treerow>\n'
-            s= s + '        </treeitem>\n'
+            s= s + treecell_euros( row["compra"] , 3)
+            s= s + treecell_euros( row["venta"],  3)
+            s= s + treecell_tpc(tpcc)
+            s= s + treecell_tpc(tpcv)
+            s= s + '</treerow>\n'
+            s= s + '</treeitem>\n'
             curs.MoveNext()     
         s= s + '    </treechildren>\n'
         s= s + '</tree>\n'
-        s= s + '<label flex="0"  id="totalinversiones" style="text-align: center;font-weight : bold;" value="Saldo total de todas las inversiones: '+ euros(sumsaldos)+'. Pendiente de consolidar: '+euros(sumpendiente)+'. Diferencia diaria: '+euros(sumdifdiaria)+'" total="'+str(sumsaldos)+'" />\n'
+        s= s + '<label flex="0"  id="totalinversiones" style="text-align: center;font-weight : bold;" value="Saldo total de todas las inversiones: '+ euros(sumsaldos)+'. Diferencia diaria: '+euros(sumdifdiaria)+'" total="'+str(sumsaldos)+'" />\n'
         s= s + '</vbox>\n'
         curs.Close()
         return s
