@@ -6,8 +6,8 @@ from xul import *
 #Consultas BD
 con=Conection()
 
-listado=Inversion().xul_listado_internet("select internet, id_inversiones, in_activa, inversion, entidadbancaria, inversiones_saldo(id_inversiones,'"+str(datetime.date.today())+"') as saldo, inversion_actualizacion(id_inversiones,'"+str(datetime.date.today())+"') as actualizacion, inversion_pendiente(id_inversiones,'"+str(datetime.date.today())+"')  as pendiente,  inversiones_acciones(id_inversiones,'"+str(datetime.date.today())+"')  as acciones,  inversion_invertido(id_inversiones,'"+str(datetime.date.today())+"')  as invertido from inversiones, cuentas, entidadesbancarias where cuentas.id_entidadesbancarias=entidadesbancarias.id_entidadesbancarias and cuentas.id_cuentas=inversiones.id_cuentas and in_activa='t' order by inversion;")
-
+listado=Inversion().xul_listado_internet("select internet, id_inversiones, inversion, entidadbancaria,  inversion_actualizacion(id_inversiones,'"+str(datetime.date.today())+"') as actualizacion, compra, inversiones_acciones(id_inversiones,'"+str(datetime.date.today())+"')  as acciones,  venta from inversiones, cuentas, entidadesbancarias where  in_activa=true and cuentas.id_entidadesbancarias=entidadesbancarias.id_entidadesbancarias and cuentas.id_cuentas=inversiones.id_cuentas order by inversion;")
+#venta<> compra and
 con.close()
 
 req.content_type="application/vnd.mozilla.xul+xml"
