@@ -1,7 +1,7 @@
-INSTRUCCIONES PARA GENTOO
--------------------------
+GENTOO INSTRUCTIONS
+-------------------
 
-En el /etc/conf.d/apache poner -D PYTHON
+You have to edit /etc/conf.d/apache and put -D PYTHON
 
 Se debe configurar el mod_python en /etc/apache2/vhosts.d/default_vhost.include 
 
