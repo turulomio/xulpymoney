@@ -1,0 +1,26 @@
+Estadísticas del proyecto
+
+Total:
+	Segmentos	0
+	Palabras	0
+	Caracteres (sin espacios)	0
+	Caracteres (con espacios)	0
+Únicos pendientes:
+	Segmentos	0
+	Palabras	0
+	Caracteres (sin espacios)	0
+	Caracteres (con espacios)	0
+Únicos:
+	Segmentos	0
+	Palabras	0
+	Caracteres (sin espacios)	0
+	Caracteres (con espacios)	0
+Únicos pendientes:
+	Segmentos	0
+	Palabras	0
+	Caracteres (sin espacios)	0
+	Caracteres (con espacios)	0
+
+Estadísticas por archivo:
+
+Nombre de archivo	Palabras en total	Palabras pendientes	Caracteres en total (sin espacios)	Caracteres pendientes (sin espacios)	Caracteres en total (con espacios)	Caracteres pendientes (con espacios)

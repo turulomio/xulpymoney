@@ -1,0 +1,6 @@
+#!/bin/bash
+echo "Solo modifica los -ES"
+echo "Acuerdate de generar los ficheros finales"
+cp omegat-en/target/INSTALL-ES INSTALL-EN
+cp omegat-en/target/RELEASES-ES RELEASES-EN
+cp omegat-en/target/CHANGELOG-ES CHANGELOG-EN

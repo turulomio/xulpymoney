@@ -18,8 +18,9 @@
 20100508 Deseo. Quitar el campo comentario de operinversiones del esquema
 20100513 Bug. inversionoperacion_listado falla por una fecha Null cuando no hay registros
 20100513 Bug. Cuando no hay opercuetnas falla dividendo historico en algo de fecha
+20100513 Deseo. Añadir tooltips en los formularios
 20100515 Deseo. En la tabla de inversión de operación historica poner el tipo de operación
 20100515 Bug. El concepto dividendo no debe ser público
 20100515 Deseo. Hacer el sistema de transferencias y calidad en mis datos
-20100518 Deseo. Sacar una primera beta y añadir screenshots
 20100519 Deseo. En actualizar en internet poner fecha de la última actualización
+20100606 Deseo. Internacionalizar todo, ficheros y programa
