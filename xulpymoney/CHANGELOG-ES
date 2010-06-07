@@ -1,6 +1,7 @@
 xulpymoney 0.2
 ==============
 - Añadida internacionalización con omegat
+- Solucionado bug al actualizar las inversiones desde internet en www.bolsamadrid.es
 
 Xulpymoney 0.1
 ==============

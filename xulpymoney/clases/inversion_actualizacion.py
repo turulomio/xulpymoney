@@ -31,9 +31,13 @@ def bolsamadrid(arr):
         web.readline()
     for line in web.readlines():    
         if line.find("fichavalor.asp") != -1:
-            nombre=line.split("BORDER=0> ")[1].split("</A>")[0]
-            valor=float(comaporpunto(line.split("</A></TD><TD>")[1].split("</TD>")[0]))
-            arr.append((nombre, valor))
+            try:
+                nombre=line.split("BORDER=0> ")[1].split("</A>")[0]
+                valor=float(comaporpunto(line.split("</A></TD><TD>")[1].split("</TD>")[0]))
+#                print (nombre +" "+  str(valor))
+                arr.append((nombre, valor))
+            except:
+                pass
     return arr
 
 def carmignacpatrimoinea(arr):
