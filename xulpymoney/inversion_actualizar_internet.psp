@@ -1,5 +1,5 @@
 <%
-import time
+import datetime
 from core import *
 from xul import *
 
@@ -19,6 +19,7 @@ req.write(xulheaderwindowmenu("Xulpymoney > Inversiones > Actualizar Internet"))
 
 <vbox  flex="1">
 <label id="titulo" flex="0" value="Actualizar valor de las inversiones en Internet" />
+<label id="subtitulo" flex="0" value="Última actualización: <%=datetime.datetime.now().isoformat(' ')%>" />
 <%=listado%>
 </vbox>
 </window>
