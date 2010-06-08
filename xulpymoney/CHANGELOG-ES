@@ -1,10 +1,11 @@
-xulpymoney 0.2
-==============
+xulpymoney 0.2 XXXXXXXX
+=======================
 - Añadida internacionalización con omegat
 - Solucionado bug al actualizar las inversiones desde internet en www.bolsamadrid.es
 - En la actualización por internet se ha añadido la fecha en la que se realiza
+- Se permite actualizar desde internet desde varios contextos más
 
-Xulpymoney 0.1
-==============
+Xulpymoney 0.1 20100605
+=======================
 - Funcionalidades básicas del programa
 - Primera versión

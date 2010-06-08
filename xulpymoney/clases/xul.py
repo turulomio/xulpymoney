@@ -48,6 +48,8 @@ def menu():
     s=s +  '            <menuitem label="Estado"  onclick="location=\'inversion_listado.psp\';"  class="menuitem-iconic"  image="images/toggle_log.png"/>\n'
     s=s +  '            <menuitem label="Compra / Venta"  onclick="location=\'inversion_compraventa.psp\';"  class="menuitem-iconic"  image="images/toggle_log.png"/>\n'
     s=s +  '            <menuitem label="Histórico" onclick="location=\'inversion_historico.psp\';" class="menuitem-iconic" image="images/history.png" />\n'
+    s= s+ '        <menuseparator/>\n'
+    s= s+ '        <menuitem label="Actualizar en Internet" oncommand="location=\'inversion_actualizar_internet.psp\';"  class="menuitem-iconic"  image="images/hotsync.png" />           \n'
     s=s +  '         </menupopup>\n'
     s=s +  '      </menu>\n'
     s=s +  '      <menu label="Informes">\n'

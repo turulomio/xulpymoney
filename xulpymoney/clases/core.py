@@ -984,10 +984,19 @@ class Inversion:
     def xultree_compraventa(self):
         sql="select id_inversiones, inversion, entidadbancaria,  inversion_actualizacion(id_inversiones,'"+str(datetime.date.today())+"') as actualizacion, compra, venta from inversiones, cuentas, entidadesbancarias where venta<> compra and in_activa=true and cuentas.id_entidadesbancarias=entidadesbancarias.id_entidadesbancarias and cuentas.id_cuentas=inversiones.id_cuentas order by inversion;"
         curs=con.Execute(sql); 
-        s= '<vbox flex="1">\n'
+        s=      '<script>\n<![CDATA[\n'
+        s= s+ 'function actualizar_internet(){\n'
+        s= s+ '     var tree = document.getElementById("treeInversiones");\n'
+        s= s+ '     location=\'inversion_actualizar_internet.psp\';\n'
+        s= s+ '}\n\n'
+        s= s+ ']]>\n</script>\n\n'    
+
+        s= s+ '<vbox flex="1">\n'
         s= s+ '<popupset>\n'
         s= s+ '<popup id="treepopup" >\n'   
         s= s+ '    <menuitem label="Actualizar el valor" oncommand="location=\'inversion_actualizar.psp?id_inversiones=\' + id_inversiones;"  class="menuitem-iconic"  image="images/hotsync.png" />\n'
+        s= s+ '        <menuitem label="Actualizar en Internet" oncommand="actualizar_internet();"  class="menuitem-iconic"  image="images/hotsync.png" />           \n'
+        s= s+ '        <menuseparator/>\n'
         s= s+ '    <menuitem label="Modificar la inversión"  oncommand="location=\'inversion_modificar.psp?id_inversiones=\' + id_inversiones;"   class="menuitem-iconic"  image="images/edit.png" />\n'
         s= s+ '<menuitem label="Estudio de la inversión"  oncommand="location=\'inversionoperacion_listado.psp?id_inversiones=\' + id_inversiones;"  class="menuitem-iconic"  image="images/toggle_log.png" />\n'
         s= s+ '</popup>\n'
