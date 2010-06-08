@@ -1,25 +1,25 @@
 Estadísticas del proyecto
 
 Total:
-	Segmentos	152
-	Palabras	2615
-	Caracteres (sin espacios)	12538
-	Caracteres (con espacios)	14990
+	Segmentos	25
+	Palabras	132
+	Caracteres (sin espacios)	984
+	Caracteres (con espacios)	1075
 Únicos pendientes:
-	Segmentos	127
-	Palabras	2483
-	Caracteres (sin espacios)	11554
-	Caracteres (con espacios)	13915
+	Segmentos	0
+	Palabras	0
+	Caracteres (sin espacios)	0
+	Caracteres (con espacios)	0
 Únicos:
-	Segmentos	151
-	Palabras	2615
-	Caracteres (sin espacios)	12524
-	Caracteres (con espacios)	14976
+	Segmentos	24
+	Palabras	132
+	Caracteres (sin espacios)	970
+	Caracteres (con espacios)	1061
 Únicos pendientes:
-	Segmentos	127
-	Palabras	2483
-	Caracteres (sin espacios)	11554
-	Caracteres (con espacios)	13915
+	Segmentos	0
+	Palabras	0
+	Caracteres (sin espacios)	0
+	Caracteres (con espacios)	0
 
 Estadísticas por archivo:
 
@@ -27,4 +27,3 @@ Nombre de archivo	Palabras en total	Palabras pendientes	Caracteres en total (sin
 CHANGELOG-ES	14	0	140	0	152	0
 INSTALL-ES	106	0	738	0	809	0
 RELEASES-ES	12	0	106	0	114	0
-xulpymoney-es.odt	2483	2483	11554	11554	13915	13915
