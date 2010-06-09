@@ -1,0 +1,12 @@
+﻿xulpymoney 0.2 XXXXXXXX
+=======================
+- Omegat translation added
+- Fixed bug when updating investments from www.bolsamadrid.es
+- Added update time to the Internet update page
+- You can make Internet update from several more contexts
+
+{0Xulpymoney 0.1 20100605<}100{>Xulpymoney 0.1 20100605<0}
+=======================
+- Basic functionality of the program
+- First version.
+
