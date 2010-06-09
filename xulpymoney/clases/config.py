@@ -4,3 +4,4 @@ dbname='xulpymoney'
 user='postgres'
 password='xxx'
 type='postgres'
+language='es'# es|en
