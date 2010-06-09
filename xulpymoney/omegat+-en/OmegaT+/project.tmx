@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tmx SYSTEM "tmx14.dtd">
+<tmx version="1.4">
+  <header
+    creationtool="OmegaT+"
+    creationtoolversion="1.0"
+    segtype="sentence"
+    o-tmf="OmegaT+ TMX"
+    adminlang="en-US"
+    srclang="es"
+    datatype="plaintext"
+  >
+  </header>
+  <body>
+    <tu>
+      <tuv xml:lang="es">
+        <seg>xulpymoney-0.1 &lt;==&gt;  svn -r 525 co https://xulpymoney.svn.sourceforge.net/svnroot/xulpymoney/xulpymoney xulpymoney</seg>
+      </tuv>
+      <tuv xml:lang="en">
+        <seg>xulpymoney-0.1 &lt;===&gt;  svn -r 525 co https://xulpymoney.svn.sourceforge.net/svnroot/xulpymoney/xulpymoney xulpymoney</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="es">
+        <seg>Índice de contenido</seg>
+      </tuv>
+      <tuv xml:lang="en">
+        <seg>Contents</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="es">
+        <seg>¿Qué es &lt;is0/&gt;&lt;is1/&gt;&lt;is2/&gt;&lt;is3/&gt;&lt;is4/&gt;Xulpymoney&lt;ie5/&gt;&lt;ie6/&gt;&lt;ie7/&gt;&lt;ie8/&gt;&lt;ie9/&gt;?</seg>
+      </tuv>
+      <tuv xml:lang="en">
+        <seg>What is &lt;is0/&gt;&lt;is1/&gt;&lt;is2/&gt;&lt;is3/&gt;&lt;is4/&gt;Xulpymoney&lt;ie5/&gt;&lt;ie6/&gt;&lt;ie7/&gt;&lt;ie8/&gt;&lt;ie9/&gt;?</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="es">
+        <seg>¿Quien lo está desarrollando?</seg>
+      </tuv>
+      <tuv xml:lang="en">
+        <seg>Who are the developers?</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="es">
+        <seg>Este programa ha sido desarrollado por Mariano Muñoz, como un proyecto de I+D para aprender la tecnología XUL y mod_python, pero también para solucionar mis problemas de contabilidad doméstica.</seg>
+      </tuv>
+      <tuv xml:lang="en">
+        <seg>This program has been developed by Mariano Muñoz. It's a I+D project to learn the use of XUL and mod_python technology. Morever, it tries to solve my home accounting needs.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="es">
+        <seg>¿Que licencia tiene?</seg>
+      </tuv>
+      <tuv xml:lang="en">
+        <seg>Which is its license?</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="es">
+        <seg>La licencia de &lt;is0/&gt;Xulpymoney&lt;ie1/&gt; está basada en código abierto y es GPL v3.</seg>
+      </tuv>
+      <tuv xml:lang="en">
+        <seg>&lt;is0/&gt;Xulpymoney&lt;ie1/&gt;, has an opensource license named GPL v3.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="es">
+        <seg>El código fuente lo puedes encontrar en la página &lt;f2&gt;web del proyecto en &lt;s3/&gt;&lt;/f2&gt;&lt;a4&gt;&lt;f5&gt;&lt;f6&gt;http://xulpymoney.sourceforge.net&lt;/f6&gt;&lt;/f5&gt;&lt;/a4&gt;&lt;f7&gt;&lt;f8&gt; no obstante para bajarte el código puedes utilizar el siguiente comando &lt;s9/&gt;&lt;/f8&gt;&lt;/f7&gt;</seg>
+      </tuv>
+      <tuv xml:lang="en">
+        <seg>You can find the code in the &lt;f2&gt;project page at &lt;s3/&gt;&lt;/f2&gt;&lt;a4&gt;&lt;f5&gt;&lt;f6&gt;http://xulpymoney.sourceforge.net&lt;/f6&gt;&lt;/f5&gt;&lt;/a4&gt;&lt;f7&gt;&lt;f8&gt;. Nevertheless, you can get use this command to get the last release&lt;s9/&gt;&lt;/f8&gt;&lt;/f7&gt;</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="es">
+        <seg>¿Cómo puedo contribuir?</seg>
+      </tuv>
+      <tuv xml:lang="en">
+        <seg>How can you help me?</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="es">
+        <seg>Instalación</seg>
+      </tuv>
+      <tuv xml:lang="en">
+        <seg>Installation</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="es">
+        <seg>Base de datos &lt;is0/&gt;&lt;is1/&gt;&lt;is2/&gt;&lt;is3/&gt;&lt;is4/&gt;PostgreSQL</seg>
+      </tuv>
+      <tuv xml:lang="en">
+        <seg>Postgresql database &lt;is0/&gt;&lt;is1/&gt;&lt;is2/&gt;&lt;is3/&gt;&lt;is4/&gt;</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="es">
+        <seg>Los ficheros pgsql.sql y pgsql.data se encuentran en el código fuente.</seg>
+      </tuv>
+      <tuv xml:lang="en">
+        <seg>The files pgsql.sql and pgsql.data are in the source code.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="es">
+        <seg>Servidor Web &lt;is0/&gt;&lt;is1/&gt;&lt;is2/&gt;&lt;is3/&gt;&lt;is4/&gt;Apache</seg>
+      </tuv>
+      <tuv xml:lang="en">
+        <seg>Apache Web Server&lt;is0/&gt;&lt;is1/&gt;&lt;is2/&gt;&lt;is3/&gt;&lt;is4/&gt;</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="es">
+        <seg>INSTRUCCIONES PARA GENTOO
+-------------------------</seg>
+      </tuv>
+      <tuv xml:lang="en">
+        <seg>GENTOO INSTRUCTIONS
+-------------------</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="es">
+        <seg>En el /etc/conf.d/apache poner -D PYTHON</seg>
+      </tuv>
+      <tuv xml:lang="en">
+        <seg>You must put in /etc/conf.d/apache: -D PYTHON</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="es">
+        <seg>Se debe configurar el mod_python en /etc/apache2/vhosts.d/default_vhost.include</seg>
+      </tuv>
+      <tuv xml:lang="en">
+        <seg>You must configure mod_python at /etc/apache2/vhosts.d/default_vhost.include</seg>
+      </tuv>
+    </tu>
+  </body>
+</tmx>
