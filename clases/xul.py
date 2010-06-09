@@ -1,6 +1,6 @@
 # -*- coding: UTF-8  -*-
 from formato import *
-
+import config
 def xulheader():
     s=       '<?xml version="1.0" encoding="UTF-8" ?>\n'
     s=s +  '<?xml-stylesheet href="xul.css" type="text/css"?>\n'
@@ -76,7 +76,7 @@ def menu():
     s=s +  '    <menu label="Ayuda">\n'
     s=s +  '      <menupopup>\n'
     s=s +  '        <menuitem label="Acerca de"  onclick="location=\'about.psp\';"  class="menuitem-iconic" image="images/history.png" />\n'    
-    s=s +  '        <menuitem label="Manual de usuario"  onclick="location=\'xulpymoney.pdf\';"  class="menuitem-iconic" image="images/history.png" />\n'
+    s=s +  '        <menuitem label="Manual de usuario"  onclick="location=\'xulpymoney-'+config.language+'.odt\';"  class="menuitem-iconic" image="images/history.png" />\n'
     s=s +  '      </menupopup>\n'
     s=s +  '    </menu>\n'
     s=s +  '  </menubar>\n'
