@@ -1,0 +1,43 @@
+<%
+import time
+from core import *
+from xul import *
+
+req.content_type="application/vnd.mozilla.xul+xml"
+req.write(xulheaderwindowmenu("Xulpymoney > Entidades Bancarias > Nueva"))
+
+%>
+<script>
+<![CDATA[
+         
+function eb_insert(){
+    var xmlHttp;
+    xmlHttp=new XMLHttpRequest();
+    xmlHttp.onreadystatechange=function(){
+        if(xmlHttp.readyState==4){
+            var ale=xmlHttp.responseText;
+            location="eb_listado.py";
+        }
+    }
+    var entidadbancaria = document.getElementById("entidadbancaria").value;
+    var url="ajax/eb_insertar.py?entidadbancaria="+entidadbancaria+"&eb_activa=true";
+    xmlHttp.open("GET",url,true);
+    xmlHttp.send(null);
+}
+
+]]>
+</script>
+
+<vbox flex="1">
+    <label id="titulo" flex="0" value="Nueva entidad bancaria" />
+    <label value="" />
+    <hbox flex="1">
+    <grid align="center">
+        <rows>
+        <row><label value="Nombre de la entidad"/><hbox><textbox id="entidadbancaria" value="Nuevo Entidad"/></hbox></row>
+        <row><label value="" /><hbox><button id="cmd" label="Aceptar" onclick="eb_insert();"/></hbox></row>
+        </rows>
+    </grid>
+    </hbox>
+</vbox>
+</window>

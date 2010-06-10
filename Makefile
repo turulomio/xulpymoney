@@ -21,10 +21,10 @@ install:
 	install -o apache -d $(PREFIXWEB)/tmp
 	install -d $(PREFIXBIN)
 	install -m 644 -o root po/en.mo $(PREFIXPO)/en/LC_MESSAGES/xulpymoney.mo
-	install -m 400 -o apache *.psp $(PREFIXWEB)/xulpymoney
+	install -m 400 -o apache *.py $(PREFIXWEB)/xulpymoney
 	install -m 400 -o apache xulpymoney*.odt $(PREFIXWEB)/xulpymoney
 	install -m 400 -o apache js/*.js $(PREFIXWEB)/xulpymoney/js
-	install -m 400 -o apache ajax/*.psp $(PREFIXWEB)/xulpymoney/ajax
+	install -m 400 -o apache ajax/*.py $(PREFIXWEB)/xulpymoney/ajax
 	install -m 400 -o apache images/*.png $(PREFIXWEB)/xulpymoney/images
 	install -m 400 -o apache images/*.jpg $(PREFIXWEB)/xulpymoney/images
 	install -m 400 -o apache clases/*.py  $(PREFIXPYTHON)/xulpymoney
@@ -38,5 +38,5 @@ uninstall:
 	rm -fr $(PREFIXWEB)/xulpymoney
 	rm -fr $(PREFIXPYTHON)/xulpymoney
 	rm -fr $(DESTDIR)/usr/bin/xulpymoney*
-	rm $(PREFIXPO)/en/LC_MESSAGES/recovermypartition.mo
+	rm $(PREFIXPO)/en/LC_MESSAGES/xulpymoney.mo
 

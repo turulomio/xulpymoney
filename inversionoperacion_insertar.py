@@ -1,0 +1,101 @@
+<%
+from core import *
+from xul import *
+
+if form.has_key('id_inversiones'):
+   id_inversiones=int(form['id_inversiones'])
+else:
+    util.redirect(req, 'inversion_informacion.py')
+    
+con=Conection()
+cmbtiposoperaciones=TipoOperacion().cmb('select * from tiposoperaciones where operinversion=true order by tipooperacion',  4,  False)
+
+req.content_type="application/vnd.mozilla.xul+xml"
+req.write(xulheaderwindowmenu("Insertando una operación de inversiones"))
+con.close()
+%>
+
+<script src="js/validar.js"></script>
+<script>
+<![CDATA[
+function insert(){
+    if (isISODate(document.getElementById("fecha").value,"La fecha no es válida")==false ||
+        isFloat(document.getElementById("importe").value,"El importe no es un decimal")==false ||
+        isFloat(document.getElementById("acciones").value,"El número de acciones no es un decimal")==false ||
+        isFloat(document.getElementById("impuestos").value,"El campo de impuestos no es un decimal")==false ||
+        isFloat(document.getElementById("comision").value,"La comision no es un decimal")==false ||
+        isFloat(document.getElementById("valor_accion").value,"El valor de la acción no es un decimal")==false
+        ){
+        return;
+    }
+    if (document.getElementById("acciones").value==0 ){
+        alert("El número de acciones no puede ser 0");
+        return;
+    }
+
+    var xmlHttp;    
+    var id_tiposoperaciones=document.getElementById("cmbtiposoperaciones").value
+    var importe=document.getElementById("importe").value;
+    var fecha = document.getElementById("fecha").value;
+    var acciones = document.getElementById("acciones").value;
+    var impuestos = document.getElementById("impuestos").value;
+    var comision = document.getElementById("comision").value;
+    var valor_accion = document.getElementById("valor_accion").value;
+    spfecha=fecha.split("-");
+    var id_inversiones=<%=form['id_inversiones']%>;
+    var url="ajax/inversionoperacion_insertar.py?fecha="+fecha+"&id_tiposoperaciones="+id_tiposoperaciones+"&importe="+importe+"&acciones="+acciones+"&impuestos="+impuestos+"&comision="+comision+"&valor_accion="+valor_accion+"&id_inversiones="+id_inversiones;
+    xmlHttp=new XMLHttpRequest();
+    xmlHttp.onreadystatechange=function(){
+        if(xmlHttp.readyState==4){
+            var ale=xmlHttp.responseText;
+            parse_ale(ale,"inversionoperacion_listado.py?id_inversiones="+ id_inversiones , '' )
+        }
+    }
+
+    xmlHttp.open("GET",url,true);
+    xmlHttp.send(null);
+}
+]]>
+</script>
+<label id="titulo" value="Nueva operación de inversiones" />
+<vbox flex="5">
+<grid pack="center">
+    <columns>
+        <column flex="1" />
+        <column flex="1" />
+    </columns>
+    <rows>
+        <row>
+            <label id="negrita" value="Fecha"/>
+            <datepicker id="fecha" type="grid"  firstdayofweek="1"/>
+        </row>
+        <row>
+            <label id="negrita" value="Tipo de operación"/>
+            <%=cmbtiposoperaciones %>
+        </row>
+        <row>
+            <label id="negrita" value="Importe"/>
+            <textbox id="importe" value="0"/>
+        </row>
+        <row>
+            <label id="negrita" value="Acciones"/>
+            <textbox id="acciones" value="0"/>
+        </row>
+        <row>
+            <label id="negrita" value="Impuestos"/>
+            <textbox id="impuestos" value="0"/>
+        </row>
+        <row>
+            <label id="negrita" value="Comisión"/>
+            <textbox id="comision" value="0"/>
+        </row>
+        <row>
+            <label id="negrita" value="Valor de la acción"/>
+            <textbox id="valor_accion" value="0"/>
+        </row>
+    </rows>
+</grid>
+    <button label="Aceptar" oncommand="insert();"/>
+
+</vbox>
+</window>

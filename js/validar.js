@@ -18,7 +18,7 @@ function parse_ale(ale, loctrue, locfalse){
             alert(ale.split("|")[1]);
         }
         if (locfalse!=""){
-            location="index.psp"; 
+            location="index.py"; 
         }
     }
 }

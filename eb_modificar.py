@@ -1,0 +1,46 @@
+<%
+import time
+from core import *
+from xul import *
+
+req.content_type="application/vnd.mozilla.xul+xml"
+req.write(xulheaderwindowmenu("Xulpymoney > Entidades Bancarias > Modificar"))
+
+cd=ConectionDirect()
+row=cd.con.Execute("select * from entidadesbancarias where id_entidadesbancarias="+ form["id_entidadesbancarias"]).GetRowAssoc(0)
+cd.close()
+%>
+
+<script>
+<![CDATA[        
+function eb_modificar(){
+    var xmlHttp;
+    xmlHttp=new XMLHttpRequest();
+    xmlHttp.onreadystatechange=function(){
+        if(xmlHttp.readyState==4){
+            var ale=xmlHttp.responseText;
+            location="eb_listado.py";
+        }
+    }
+    var id_entidadesbancarias = <%=form['id_entidadesbancarias']%>;
+    var entidadbancaria = document.getElementById("entidadbancaria").value;
+    var url="ajax/eb_modificar.py?id_entidadesbancarias="+id_entidadesbancarias+"&entidadbancaria="+entidadbancaria;
+    xmlHttp.open("GET",url,true);
+    xmlHttp.send(null);
+}
+]]>
+</script>
+
+<vbox flex="1">
+    <label id="titulo" flex="0" value="Modificar entidad bancaria" />
+    <label value="" />
+    <hbox flex="1">
+    <grid align="center">
+        <rows>
+        <row><label value="Nombre de la entidad"/><hbox><textbox id="entidadbancaria" value="<%=row["entidadbancaria"]%>"/></hbox></row>
+        <row><label value=""/><hbox><button id="cmd" label="Aceptar" onclick="eb_modificar();"/></hbox></row>
+        </rows>
+    </grid>
+    </hbox>
+</vbox>
+</window>

@@ -124,7 +124,7 @@ class EntidadBancaria:
         s= s+ 'function eb_modificar(){\n'
         s= s+ '     var tree = document.getElementById("treeEntidadesBancarias");\n'
         s= s+ '     id_entidadesbancarias=tree.view.getCellText(tree.currentIndex,tree.columns.getNamedColumn("id"));\n'
-        s= s+ '     location=\'eb_modificar.psp?id_entidadesbancarias=\' + id_entidadesbancarias;\n'
+        s= s+ '     location=\'eb_modificar.py?id_entidadesbancarias=\' + id_entidadesbancarias;\n'
         s= s+ '}\n\n'
         
         s= s+ 'function eb_modificar_activa(){\n'
@@ -135,10 +135,10 @@ class EntidadBancaria:
         s= s+ '     xmlHttp.onreadystatechange=function(){\n'
         s= s+ '         if(xmlHttp.readyState==4){\n'
         s= s+ '             var ale=xmlHttp.responseText;\n'
-        s= s+ '             location="eb_listado.psp";\n'
+        s= s+ '             location="eb_listado.py";\n'
         s= s+ '         }\n'
         s= s+ '     }\n'
-        s= s+ '     var url="ajax/eb_modificar_activa.psp?id_entidadesbancarias="+id_entidadesbancarias+\'&activa=\'+!activa;\n'
+        s= s+ '     var url="ajax/eb_modificar_activa.py?id_entidadesbancarias="+id_entidadesbancarias+\'&activa=\'+!activa;\n'
         s= s+ '     xmlHttp.open("GET",url,true);\n'
         s= s+ '     xmlHttp.send(null);\n'
         s= s+ '}\n'
@@ -147,13 +147,13 @@ class EntidadBancaria:
         s= s+ 'function eb_patrimonio(){\n'
         s= s+ '     var tree = document.getElementById("treeEntidadesBancarias");\n'
         s= s+ '     id_entidadesbancarias=tree.view.getCellText(tree.currentIndex,tree.columns.getNamedColumn("id"));\n'
-        s= s+ '     location=\'eb_patrimonio.psp?id_entidadesbancarias=\' + id_entidadesbancarias;\n'
+        s= s+ '     location=\'eb_patrimonio.py?id_entidadesbancarias=\' + id_entidadesbancarias;\n'
         s= s+ '}\n\n'        
         s= s+ ']]>\n</script>\n\n'        
         
         s= s+ '<popupset>\n'
         s= s+ '    <popup id="popupEntidadesBancarias" >\n'
-        s= s+ '        <menuitem label="Nueva Entidad Bancaria" oncommand="location=\'eb_insertar.psp\'" class="menuitem-iconic"  image="images/item_add.png"/>\n'
+        s= s+ '        <menuitem label="Nueva Entidad Bancaria" oncommand="location=\'eb_insertar.py\'" class="menuitem-iconic"  image="images/item_add.png"/>\n'
         s= s+ '    </popup>\n'
         s= s+ '</popupset>\n'
         
@@ -335,25 +335,25 @@ class Concepto:
 #        s= s+ 'function concepto_borrar(){\n'
 #        s= s+ '     var tree = document.getElementById("treeConceptos");\n'
 #        s= s+ '     id_conceptos=tree.view.getCellText(tree.currentIndex,tree.columns.getNamedColumn("id"));\n'
-#        s= s+ '     location=\'concepto_borrar.psp?id_conceptos=\' + id_conceptos;\n'
+#        s= s+ '     location=\'concepto_borrar.py?id_conceptos=\' + id_conceptos;\n'
 #        s= s+ '}\n\n'
         
         s= s+ 'function concepto_modificar(){\n'
         s= s+ '     var tree = document.getElementById("treeConceptos");\n'
         s= s+ '     id_conceptos=tree.view.getCellText(tree.currentIndex,tree.columns.getNamedColumn("id"));\n'
-        s= s+ '     location=\'concepto_modificar.psp?id_conceptos=\' + id_conceptos;\n'
+        s= s+ '     location=\'concepto_modificar.py?id_conceptos=\' + id_conceptos;\n'
         s= s+ '}\n\n'
         
         s= s+ 'function concepto_insertar(){\n'
         s= s+ '     var tree = document.getElementById("treeConceptos");\n'
         s= s+ '     id_conceptos=tree.view.getCellText(tree.currentIndex,tree.columns.getNamedColumn("id"));\n'
-        s= s+ '     location=\'concepto_insertar.psp\';\n'
+        s= s+ '     location=\'concepto_insertar.py\';\n'
         s= s+ '}\n'
         s= s+ ']]>\n</script>\n\n'                
 
         s= s+ '<popupset>\n'
         s= s+ '     <popup id="popupConceptos" >\n'
-        s= s+ '          <menuitem label="'+_('Nuevo concepto')+'" oncommand="location=\'concepto_insertar.psp\'" class="menuitem-iconic"  image="images/item_add.png"/>\n'
+        s= s+ '          <menuitem label="'+_('Nuevo concepto')+'" oncommand="location=\'concepto_insertar.py\'" class="menuitem-iconic"  image="images/item_add.png"/>\n'
         s= s+ '     </popup>\n'
         s= s+ '</popupset>\n'
 
@@ -456,13 +456,13 @@ class Cuenta:
         s= s+ 'function cuenta_modificar(){\n'
         s= s+ '     var tree = document.getElementById("treeCuentas");\n'
         s= s+ '     id_cuentas=tree.view.getCellText(tree.currentIndex,tree.columns.getNamedColumn("id"));\n'
-        s= s+ '     location=\'cuenta_modificar.psp?id_cuentas=\' + id_cuentas;\n'
+        s= s+ '     location=\'cuenta_modificar.py?id_cuentas=\' + id_cuentas;\n'
         s= s+ '}\n\n'
         
         s= s+ 'function cuenta_movimientos(){\n'
         s= s+ '     var tree = document.getElementById("treeCuentas");\n'
         s= s+ '     id_cuentas=tree.view.getCellText(tree.currentIndex,tree.columns.getNamedColumn("id"));\n'
-        s= s+ '     location=\'cuentaoperacion_listado.psp?id_cuentas=\' + id_cuentas;\n'
+        s= s+ '     location=\'cuentaoperacion_listado.py?id_cuentas=\' + id_cuentas;\n'
         s= s+ '}\n\n'
         
         s= s+ 'function cuenta_modificar_activa(){\n'
@@ -473,23 +473,23 @@ class Cuenta:
         s= s+ '     xmlHttp.onreadystatechange=function(){\n'
         s= s+ '         if(xmlHttp.readyState==4){\n'
         s= s+ '             var ale=xmlHttp.responseText;\n'
-        s= s+ '             location="cuenta_listado.psp";\n'
+        s= s+ '             location="cuenta_listado.py";\n'
         s= s+ '         }\n'
         s= s+ '     }\n'
-        s= s+ '     var url="ajax/cuenta_modificar_activa.psp?id_cuentas="+id_cuentas+\'&activa=\'+!activa;\n'
+        s= s+ '     var url="ajax/cuenta_modificar_activa.py?id_cuentas="+id_cuentas+\'&activa=\'+!activa;\n'
         s= s+ '     xmlHttp.open("GET",url,true);\n'
         s= s+ '     xmlHttp.send(null);\n'
         s= s+ '}\n'
         s= s+ ']]>\n</script>\n\n'                
         s= s+ '<popupset>\n'
         s= s+ '     <popup id="popupCuentas" >\n'
-        s= s+ '          <menuitem label="'+_('Transferencia bancaria')+'"  onclick="location=\'cuenta_transferencia.psp\';"  class="menuitem-iconic"  image="images/hotsync.png" />\n'
-        s=s + '          <menuitem label="'+_('Listado de tarjetas')+'"  onclick="location=\'tarjeta_listado.psp\';"   class="menuitem-iconic"  image="images/visa.png"/>\n'
+        s= s+ '          <menuitem label="'+_('Transferencia bancaria')+'"  onclick="location=\'cuenta_transferencia.py\';"  class="menuitem-iconic"  image="images/hotsync.png" />\n'
+        s=s + '          <menuitem label="'+_('Listado de tarjetas')+'"  onclick="location=\'tarjeta_listado.py\';"   class="menuitem-iconic"  image="images/visa.png"/>\n'
         s= s+ '          <menuseparator/>\n'
-        s= s+ '          <menuitem label="'+_('Cuenta nueva')+'" oncommand="location=\'cuenta_insertar.psp\'" class="menuitem-iconic"  image="images/item_add.png"/>\n'
-#    <menuitem label="Modificar la cuenta"  oncommand='location="cuentas_ibm.psp?id_cuentas=" + idcuenta  + "&amp;ibm=modificar&amp;regresando=0";'   class="menuitem-iconic"  image="images/toggle_log.png"/>
-#    <menuitem label="Borrar la cuenta"  oncommand='location="cuentas_ibm.psp?id_cuentas=" + idcuenta  + "&amp;ibm=borrar&amp;regresando=0";'  class="menuitem-iconic" image="images/eventdelete.png"/>
-#    <menuitem label="Movimientos de cuenta"  oncommand="location='cuentaoperacion_listado.psp?id_cuentas=' + idcuenta;"/> 
+        s= s+ '          <menuitem label="'+_('Cuenta nueva')+'" oncommand="location=\'cuenta_insertar.py\'" class="menuitem-iconic"  image="images/item_add.png"/>\n'
+#    <menuitem label="Modificar la cuenta"  oncommand='location="cuentas_ibm.py?id_cuentas=" + idcuenta  + "&amp;ibm=modificar&amp;regresando=0";'   class="menuitem-iconic"  image="images/toggle_log.png"/>
+#    <menuitem label="Borrar la cuenta"  oncommand='location="cuentas_ibm.py?id_cuentas=" + idcuenta  + "&amp;ibm=borrar&amp;regresando=0";'  class="menuitem-iconic" image="images/eventdelete.png"/>
+#    <menuitem label="Movimientos de cuenta"  oncommand="location='cuentaoperacion_listado.py?id_cuentas=' + idcuenta;"/> 
 #    <menuseparator/>
         s= s+ '     </popup>\n'
         s= s+ '</popupset>\n'
@@ -630,13 +630,13 @@ class CuentaOperacion:
         s= s+ 'function opercuenta_insertar(){\n'
         s= s+ '     var tree = document.getElementById("treeOpercuentas");\n'
         s= s+ '     var id_opercuentas=tree.view.getCellText(tree.currentIndex,tree.columns.getNamedColumn("id"));\n'
-        s= s+ '     location="cuentaoperacion_insertar.psp?id_cuentas=' +str(id_cuentas) + '&year='+str(year)+'&month='+str(month)+'";\n'
+        s= s+ '     location="cuentaoperacion_insertar.py?id_cuentas=' +str(id_cuentas) + '&year='+str(year)+'&month='+str(month)+'";\n'
         s= s+ '}\n\n'
         
         s= s+ 'function opercuenta_modificar(){\n'
         s= s+ '     var tree = document.getElementById("treeOpercuentas");\n'
         s= s+ '     var id_opercuentas=tree.view.getCellText(tree.currentIndex,tree.columns.getNamedColumn("id"));\n'
-        s= s+ '     location=\'cuentaoperacion_modificar.psp?id_opercuentas=\' + id_opercuentas;\n'
+        s= s+ '     location=\'cuentaoperacion_modificar.py?id_opercuentas=\' + id_opercuentas;\n'
         s= s+ '}\n\n'
         
         
@@ -650,18 +650,18 @@ class CuentaOperacion:
         s= s+ '     xmlHttp.onreadystatechange=function(){\n'
         s= s+ '         if(xmlHttp.readyState==4){\n'
         s= s+ '             var ale=xmlHttp.responseText;\n'
-        s= s+ '             location="cuentaoperacion_listado.psp?id_cuentas='+str(id_cuentas)+'";\n'
+        s= s+ '             location="cuentaoperacion_listado.py?id_cuentas='+str(id_cuentas)+'";\n'
         s= s+ '         }\n'
         s= s+ '     }\n'
-        s= s+ '     var url="ajax/cuentaoperacion_borrar.psp?id_opercuentas="+id_opercuentas;\n'
+        s= s+ '     var url="ajax/cuentaoperacion_borrar.py?id_opercuentas="+id_opercuentas;\n'
         s= s+ '     xmlHttp.open("GET",url,true);\n'
         s= s+ '     xmlHttp.send(null);\n'
         s= s+ '}\n'
         s= s+ ']]>\n</script>\n\n'                
         s= s+ '<popupset>\n'
         s= s+ '    <popup id="popupOpercuentas">\n'
-        s=s + '        <menuitem label="'+_('Transferencia bancaria')+'"  onclick="location=\'cuenta_transferencia.psp\';"  class="menuitem-iconic"  image="images/hotsync.png" />\n'
-        s= s+ '        <menuitem label="'+_('Operación de tarjeta')+'"   onclick="location=\'tarjeta_listado.psp\';"   class="menuitem-iconic"  image="images/visa.png"/>\n'
+        s=s + '        <menuitem label="'+_('Transferencia bancaria')+'"  onclick="location=\'cuenta_transferencia.py\';"  class="menuitem-iconic"  image="images/hotsync.png" />\n'
+        s= s+ '        <menuitem label="'+_('Operación de tarjeta')+'"   onclick="location=\'tarjeta_listado.py\';"   class="menuitem-iconic"  image="images/visa.png"/>\n'
         s= s+ '        <menuseparator/>\n'
         s= s+ '        <menuitem label="'+_('Nueva operación')+'" oncommand="opercuenta_insertar();" class="menuitem-iconic"  image="images/item_add.png"/>\n'
         s= s+ '    </popup>\n'
@@ -738,13 +738,13 @@ class CuentaOperacionHeredadaInversion:
 #        //Dependiendo del tipo de operaci�n se ejecuta una operaci�n u otra.
         if row['id_tiposoperaciones']==4:#Compra Acciones
             #Se pone un registro de compra de acciones que resta el saldo de la opercuenta
-            CuentaOperacionHeredadaInversion().insertar(fecha, 29, 4, -importe-comision, regInversion['inversion']+'. '+_('Importe')+': ' + str(importe)+". Comisión: " + str(comision)+ ". Impuestos: " + str(impuestos),id_cuentas,id_operinversiones,id_inversiones);
+            CuentaOperacionHeredadaInversion().insertar(fecha, 29, 4, -importe-comision, regInversion['inversion']+'. '+_('Importe')+': ' + str(importe)+". "+_('Comisión')+": " + str(comision)+ ". "+_('Impuestos')+": " + str(impuestos),id_cuentas,id_operinversiones,id_inversiones);
             #//Si hubiera comisi�n se a�ade la comisi�n.
 #            if(comision!=0):
 #                CuentaOperacionHeredadaInversion().insertar(fecha, 38, 1, -comision, regInversion['inversion']+". Comisión (Id. id_operinversiones)",id_cuentas,id_operinversiones,id_inversiones)
         elif row['id_tiposoperaciones']==5:#// Venta Acciones
             #//Se pone un registro de compra de acciones que resta el saldo de la opercuenta
-            CuentaOperacionHeredadaInversion().insertar(fecha, 35, 5, importe-comision-impuestos, regInversion['inversion']+". Importe: " + str(importe)+". Comisión: " + str(comision)+ ". Impuestos: " + str(impuestos),id_cuentas,id_operinversiones,id_inversiones);
+            CuentaOperacionHeredadaInversion().insertar(fecha, 35, 5, importe-comision-impuestos, regInversion['inversion']+". "+_('Importe')+": " + str(importe)+". "+_('Comisión')+": " + str(comision)+ ". "+_('Impuestos')+": " + str(impuestos),id_cuentas,id_operinversiones,id_inversiones);
             #//Si hubiera comisi�n se a�ade la comisi�n.
 #            if(comision!=0):
 #                CuentaOperacionHeredadaInversion().insertar( fecha, 38, 1, -comision, regInversion['inversion']+". Comisión (Id. id_operinversiones)",id_cuentas,id_operinversiones,id_inversiones);
@@ -754,7 +754,7 @@ class CuentaOperacionHeredadaInversion:
         elif row['id_tiposoperaciones']==6:# // A�adido de Acciones
             #//Si hubiera comisi�n se a�ade la comisi�n.
             if(comision!=0):
-                CuentaOperacionHeredadaInversion().insertar(fecha, 38, 1, -comision-impuestos, regInversion['inversion']+". Importe: " + str(importe)+". Comisión: " + str(comision)+ ". Impuestos: " + str(impuestos), id_cuentas,id_operinversiones,id_inversiones);
+                CuentaOperacionHeredadaInversion().insertar(fecha, 38, 1, -comision-impuestos, regInversion['inversion']+". "+_('Importe')+": " + str(importe)+". "+_('Comisión')+": " + str(comision)+ ". "+_('Impuestos')+": " + str(impuestos), id_cuentas,id_operinversiones,id_inversiones);
             #//Si hubiera pago de impuestos se pone
 #            if(impuestos!=0):
 #                CuentaOperacionHeredadaInversion().insertar(fecha, 37, 1, -impuestos, regInversion['inversion']+". Pago de impuestos (Id. id_operinversiones)",id_cuentas,id_operinversiones,id_inversiones);
@@ -809,7 +809,7 @@ class Dividendo:
     def insertar(self,fecha,valorxaccion,bruto,retencion,liquido,id_inversiones):
         """Insertar un dividendo y una opercuenta vinculada a la tabla dividendos en el campo id_opercuentas"""
         inv=con.Execute("select * from inversiones where id_inversiones="+ str(id_inversiones)).GetRowAssoc(0)   
-        CuentaOperacion().insertar( fecha, 39, 2, liquido, inv['inversion']+" (Bruto="+str(bruto)+"€. Retención="+str(retencion)+"€.)",inv['id_cuentas'])
+        CuentaOperacion().insertar( fecha, 39, 2, liquido, inv['inversion']+" ("+_('Bruto')+"="+str(bruto)+"€. "+_('Retención')+"="+str(retencion)+"€.)",inv['id_cuentas'])
         id_opercuentas=con.Execute("select currval('seq_opercuentas') as seq;").GetRowAssoc(0)["seq"]   
         #Añade el dividendo
         sql="insert into dividendos (fecha, valorxaccion, bruto, retencion, liquido, id_inversiones,id_opercuentas) values ('"+str(fecha)+"', "+str(valorxaccion)+", "+str(bruto)+", "+str(retencion)+", "+str(liquido)+", "+str(id_inversiones)+", "+str(id_opercuentas)+")"
@@ -866,12 +866,12 @@ class Dividendo:
         s= s+ '    var tree = document.getElementById("treeDiv");\n'
         s= s+ '    var id_inversiones='+str(id_inversiones)+';\n'
         s= s+ '    var id_dividendos=tree.view.getCellText(tree.currentIndex,tree.columns.getNamedColumn("id"));\n'
-        s= s+ '    var url="ajax/dividendo_borrar.psp?id_dividendos=" + id_dividendos;\n'
+        s= s+ '    var url="ajax/dividendo_borrar.py?id_dividendos=" + id_dividendos;\n'
         s= s+ '    xmlHttp=new XMLHttpRequest();\n'
         s= s+ '    xmlHttp.onreadystatechange=function(){\n'
         s= s+ '        if(xmlHttp.readyState==4){\n'
         s= s+ '            var ale=xmlHttp.responseText;\n'
-        s= s+ '            location="inversionoperacion_listado.psp?id_inversiones="+ id_inversiones;\n'
+        s= s+ '            location="inversionoperacion_listado.py?id_inversiones="+ id_inversiones;\n'
         s= s+ '        }\n'
         s= s+ '    }\n'
         s= s+ '    xmlHttp.open("GET",url,true);\n'
@@ -882,18 +882,18 @@ class Dividendo:
         s= s+ '<vbox flex="1">\n'
         s= s+ '<popupset>\n'
         s= s+ '    <popup id="divpopup" >\n'  
-        s= s+ '        <menuitem label="Nuevo dividendo" oncommand="location=\'dividendo_insertar.psp?id_inversiones=\' +'+str(id_inversiones)+' ;"  class="menuitem-iconic"  image="images/item_add.png" />\n'
+        s= s+ '        <menuitem label="Nuevo dividendo" oncommand="location=\'dividendo_insertar.py?id_inversiones=\' +'+str(id_inversiones)+' ;"  class="menuitem-iconic"  image="images/item_add.png" />\n'
         s= s+ '        <menuitem label="Borrar el dividendo"  oncommand="dividendo_borrar();"   class="menuitem-iconic"  image="images/eventdelete.png"/>\n'
         s= s+ '    </popup>\n'
         s= s+ '</popupset>\n'
-        s=s+ '<tree id="treeDiv" flex="3" tooltiptext="Sólo se muestran los dividendos desde la primera operación actual, no desde la primera operación histórica" context="divpopup">\n'
+        s=s+ '<tree id="treeDiv" flex="3" tooltiptext="'+_('Sólo se muestran los dividendos desde la primera operación actual, no desde la primera operación histórica')+'" context="divpopup">\n'
         s=s+ '    <treecols>\n'
         s=s+ '        <treecol id="id" label="id" flex="1" hidden="true"/>\n'
-        s=s+ '        <treecol label="Fecha" flex="1"  style="text-align: center"/>\n'
-        s=s+ '        <treecol label="Cuenta cobro" flex="2" style="text-align: left" />\n'
-        s=s+ '        <treecol label="Liquido" flex="1" style="text-align: right"/>\n'
+        s=s+ '        <treecol label="'+_('Fecha')+'" flex="1"  style="text-align: center"/>\n'
+        s=s+ '        <treecol label="'+_('Cuenta cobro')+'" flex="2" style="text-align: left" />\n'
+        s=s+ '        <treecol label="'+_('Liquido')+'" flex="1" style="text-align: right"/>\n'
         s=s+ '    </treecols>\n'
-        s=s+ '    <treechildren tooltiptext="Sólo se muestran los dividendos desde la primera operación actual, no desde la primera operación histórica">\n'
+        s=s+ '    <treechildren tooltiptext="'+_('Sólo se muestran los dividendos desde la primera operación actual, no desde la primera operación histórica')+'">\n'
         while not curs.EOF:
             row = curs.GetRowAssoc(0)   
             sumsaldos=sumsaldos+dosdecimales(row['liquido'])
@@ -918,8 +918,8 @@ class Dividendo:
         else:
             dtpc=0
             dtae=0
-        s= s + '<label flex="0"  style="text-align: center;font-weight : bold;" value="Suma de dividendos de la inversión: '+ euros(sumsaldos)+'." />\n'        
-        s= s + '<label flex="0"  style="text-align: center;font-weight : bold;" value="% de lo invertido: '+tpc(dtpc)+'. %TAE de lo invertido: '+ tpc(dtae)+'." />\n'
+        s= s + '<label flex="0"  style="text-align: center;font-weight : bold;" value="'+_('Suma de dividendos de la inversión')+': '+ euros(sumsaldos)+'." />\n'        
+        s= s + '<label flex="0"  style="text-align: center;font-weight : bold;" value="% '+_('de lo invertido')+': '+tpc(dtpc)+'. %'+_('TAE de lo invertido')+': '+ tpc(dtae)+'." />\n'
         s= s + '</vbox>\n'
         return s
         
@@ -957,13 +957,13 @@ class Inversion:
         
     def nombre_tpcvariable(self,  tpcvariable):
         if tpcvariable==-100:
-            return "ETF Inversos"
+            return _('ETF Inversos')
         if tpcvariable==0:
-            return "Fondos de dinero y depósitos"
+            return _("Fondos de dinero y depósitos")
         if tpcvariable==50:
-            return "P. Pensiones e inversiones hasta un 50% en renta variable, fondos alternativos y renta fija"
+            return _("P. Pensiones e inversiones hasta un 50% en renta variable, fondos alternativos y renta fija")
         if tpcvariable==100:
-            return "P. Pensiones e inversiones hasta un 100% en renta variable y acciones"
+            return _("P. Pensiones e inversiones hasta un 100% en renta variable y acciones")
         return None
             
     def numero_acciones(self, id_inversiones, fecha):
@@ -984,31 +984,31 @@ class Inversion:
         s=      '<script>\n<![CDATA[\n'
         s= s+ 'function actualizar_internet(){\n'
         s= s+ '     var tree = document.getElementById("treeInversiones");\n'
-        s= s+ '     location=\'inversion_actualizar_internet.psp\';\n'
+        s= s+ '     location=\'inversion_actualizar_internet.py\';\n'
         s= s+ '}\n\n'
         s= s+ ']]>\n</script>\n\n'    
 
         s= s+ '<vbox flex="1">\n'
         s= s+ '<popupset>\n'
         s= s+ '<popup id="treepopup" >\n'   
-        s= s+ '    <menuitem label="Actualizar el valor" oncommand="location=\'inversion_actualizar.psp?id_inversiones=\' + id_inversiones;"  class="menuitem-iconic"  image="images/hotsync.png" />\n'
-        s= s+ '        <menuitem label="Actualizar en Internet" oncommand="actualizar_internet();"  class="menuitem-iconic"  image="images/hotsync.png" />           \n'
+        s= s+ '    <menuitem label="'+_('Actualizar el valor')+'" oncommand="location=\'inversion_actualizar.py?id_inversiones=\' + id_inversiones;"  class="menuitem-iconic"  image="images/hotsync.png" />\n'
+        s= s+ '        <menuitem label="'+_('Actualizar en Internet')+'" oncommand="actualizar_internet();"  class="menuitem-iconic"  image="images/hotsync.png" />           \n'
         s= s+ '        <menuseparator/>\n'
-        s= s+ '    <menuitem label="Modificar la inversión"  oncommand="location=\'inversion_modificar.psp?id_inversiones=\' + id_inversiones;"   class="menuitem-iconic"  image="images/edit.png" />\n'
-        s= s+ '<menuitem label="Estudio de la inversión"  oncommand="location=\'inversionoperacion_listado.psp?id_inversiones=\' + id_inversiones;"  class="menuitem-iconic"  image="images/toggle_log.png" />\n'
+        s= s+ '    <menuitem label="'+_('Modificar la inversión')+'"  oncommand="location=\'inversion_modificar.py?id_inversiones=\' + id_inversiones;"   class="menuitem-iconic"  image="images/edit.png" />\n'
+        s= s+ '<menuitem label="'+_('Estudio de la inversión')+'"  oncommand="location=\'inversionoperacion_listado.py?id_inversiones=\' + id_inversiones;"  class="menuitem-iconic"  image="images/toggle_log.png" />\n'
         s= s+ '</popup>\n'
         s= s+ '</popupset>\n'
 
         s= s+ '<tree id="tree" flex="6"   context="treepopup"  onselect="tree_getid();">\n'
         s= s+ '<treecols>\n'
         s= s+  '<treecol label="Id" hidden="true" />\n'
-        s= s+  '<treecol label="Inversión" flex="2"/>\n'
-        s= s+  '<treecol label="Entidad Bancaria" flex="2"/>\n'
-        s= s+  '<treecol label="Valor Acción" flex="1" style="text-align: right" />\n'
-        s= s+  '<treecol label="Valor Compra" flex="1" style="text-align: right" />\n'
-        s= s+  '<treecol label="Valor Venta " flex="1" style="text-align: right"/>\n'
-        s= s+  '<treecol label="% Compra    " flex="1" style="text-align: right"/>\n'
-        s= s+  '<treecol label="% Venta     " flex="1" style="text-align: right"/>\n'
+        s= s+  '<treecol label="'+_('Inversión')+'" flex="2"/>\n'
+        s= s+  '<treecol label="'+_('Entidad Bancaria')+'" flex="2"/>\n'
+        s= s+  '<treecol label="'+_('Valor Acción')+'" flex="1" style="text-align: right" />\n'
+        s= s+  '<treecol label="'+_('Valor Compra')+'" flex="1" style="text-align: right" />\n'
+        s= s+  '<treecol label="'+_('Valor Venta')+' " flex="1" style="text-align: right"/>\n'
+        s= s+  '<treecol label="% '+_('Compra    ')+'" flex="1" style="text-align: right"/>\n'
+        s= s+  '<treecol label="% '+_('Venta     ')+'" flex="1" style="text-align: right"/>\n'
         s= s+  '</treecols>\n'
         s= s+  '<treechildren>\n'
         while not curs.EOF:
@@ -1062,7 +1062,7 @@ class Inversion:
         s= s+ '     }\n'
         s= s+ '     var popmodificar=document.createElement("menuitem");\n'
         s= s+ '     popmodificar.setAttribute("id", "popmodificar");\n'
-        s= s+ '     popmodificar.setAttribute("label", "Modificar la inversión");\n'
+        s= s+ '     popmodificar.setAttribute("label", "'+_('Modificar la inversión')+'");\n'
         s= s+ '     popmodificar.setAttribute("class", "menuitem-iconic");\n'
         s= s+ '     popmodificar.setAttribute("image", "images/edit.png");\n'
         s= s+ '     popmodificar.setAttribute("oncommand", "inversion_modificar();");\n'
@@ -1070,11 +1070,11 @@ class Inversion:
         s= s+ '     var popactiva=document.createElement("menuitem");\n'
         s= s+ '     popactiva.setAttribute("id", "popactiva");\n'
         s= s+ '     if (activa){\n'
-        s= s+ '         popactiva.setAttribute("label", "Desactivar la inversión");\n'
+        s= s+ '         popactiva.setAttribute("label", "'+_('Desactivar la inversión')+'");\n'
         s= s+ '         popactiva.setAttribute("checked", "false");\n'
         s= s+ '         popactiva.setAttribute("oncommand", "inversion_modificar_activa();");\n'
         s= s+ '     }else{\n'
-        s= s+ '         popactiva.setAttribute("label", "Activar la inversión");\n'
+        s= s+ '         popactiva.setAttribute("label", "'+_('Activar la inversión')+'");\n'
         s= s+ '         popactiva.setAttribute("checked", "true");\n'
         s= s+ '         popactiva.setAttribute("oncommand", "inversion_modificar_activa();");\n'
         s= s+ '     }\n'
@@ -1084,32 +1084,32 @@ class Inversion:
         s= s+ '     popup.appendChild(popseparator1);\n'
         s= s+ '     var popestudio=document.createElement("menuitem");\n'
         s= s+ '     popestudio.setAttribute("id", "popestudio");\n'
-        s= s+ '     popestudio.setAttribute("label", "Estudio de la inversión");\n'
+        s= s+ '     popestudio.setAttribute("label", "'+_('Estudio de la inversión')+'");\n'
         s= s+ '     popestudio.setAttribute("oncommand", "inversion_estudio();");\n'
         s= s+ '     popup.appendChild(popestudio);\n'
         s= s+ '}\n\n'
 
         s= s+ 'function actualizar_internet(){\n'
         s= s+ '     var tree = document.getElementById("treeInversiones");\n'
-        s= s+ '     location=\'inversion_actualizar_internet.psp\';\n'
+        s= s+ '     location=\'inversion_actualizar_internet.py\';\n'
         s= s+ '}\n\n'
 
         s= s+ 'function inversion_actualizar(){\n'
         s= s+ '     var tree = document.getElementById("treeInversiones");\n'
         s= s+ '     var id_inversiones=tree.view.getCellText(tree.currentIndex,tree.columns.getNamedColumn("id"));\n'
-        s= s+ '     location=\'inversion_actualizar.psp?id_inversiones=\'+ id_inversiones;\n'
+        s= s+ '     location=\'inversion_actualizar.py?id_inversiones=\'+ id_inversiones;\n'
         s= s+ '}\n\n'
         
         s= s+ 'function inversion_modificar(){\n'
         s= s+ '     var tree = document.getElementById("treeInversiones");\n'
         s= s+ '     var id_inversiones=tree.view.getCellText(tree.currentIndex,tree.columns.getNamedColumn("id"));\n'
-        s= s+ '     location=\'inversion_modificar.psp?id_inversiones=\'+ id_inversiones;\n'
+        s= s+ '     location=\'inversion_modificar.py?id_inversiones=\'+ id_inversiones;\n'
         s= s+ '}\n\n'
         
         s= s+ 'function inversion_estudio(){\n'
         s= s+ '     var tree = document.getElementById("treeInversiones");\n'
         s= s+ '     var id_inversiones=tree.view.getCellText(tree.currentIndex,tree.columns.getNamedColumn("id"));\n'
-        s= s+ '     location=\'inversionoperacion_listado.psp?id_inversiones=\' + id_inversiones;\n'
+        s= s+ '     location=\'inversionoperacion_listado.py?id_inversiones=\' + id_inversiones;\n'
         s= s+ '}\n\n'
         
         s= s+ 'function inversion_modificar_activa(){\n'
@@ -1121,10 +1121,10 @@ class Inversion:
         s= s+ '     xmlHttp.onreadystatechange=function(){\n'
         s= s+ '         if(xmlHttp.readyState==4){\n'
         s= s+ '             var ale=xmlHttp.responseText;\n'
-        s= s+ '             location="inversion_listado.psp";\n'
+        s= s+ '             location="inversion_listado.py";\n'
         s= s+ '         }\n'
         s= s+ '     }\n'
-        s= s+ '     var url="ajax/inversion_modificar_activa.psp?id_inversiones="+id_inversiones+\'&activa=\'+!activa;\n'
+        s= s+ '     var url="ajax/inversion_modificar_activa.py?id_inversiones="+id_inversiones+\'&activa=\'+!activa;\n'
         s= s+ '     xmlHttp.open("GET",url,true);\n'
         s= s+ '     xmlHttp.send(null);\n'
         s= s+ '}\n'
@@ -1133,24 +1133,24 @@ class Inversion:
         s= s+ '<vbox flex="1">\n'
         s= s+ '<popupset>\n'
         s= s+ '    <popup id="popupInversiones" >\n'
-        s= s+ '        <menuitem label="Actualizar el valor" oncommand="inversion_actualizar();"  class="menuitem-iconic"  image="images/hotsync.png" />               \n'
-        s= s+ '        <menuitem label="Actualizar en Internet" oncommand="actualizar_internet();"  class="menuitem-iconic"  image="images/hotsync.png" />           \n'
+        s= s+ '        <menuitem label="'+_('Actualizar el valor')+'" oncommand="inversion_actualizar();"  class="menuitem-iconic"  image="images/hotsync.png" />               \n'
+        s= s+ '        <menuitem label="'+_('Actualizar en Internet')+'" oncommand="actualizar_internet();"  class="menuitem-iconic"  image="images/hotsync.png" />           \n'
         s= s+ '        <menuseparator/>\n'
-        s= s+ '        <menuitem label="Nueva inversión" oncommand="location=\'inversion_insertar.psp\'" class="menuitem-iconic"  image="images/item_add.png"/>\n'
+        s= s+ '        <menuitem label="'+_('Nueva inversión')+'" oncommand="location=\'inversion_insertar.py\'" class="menuitem-iconic"  image="images/item_add.png"/>\n'
         s= s+ '    </popup>\n'
         s= s+ '</popupset>\n'
 
         s= s+ '<tree id="treeInversiones" enableColumnDrag="true" flex="6"   context="popupInversiones"  onselect="popupInversiones();"  ondblclick="inversion_estudio();" >\n'
         s= s+ '    <treecols>\n'
         s= s+  '        <treecol id="id" label="id" hidden="true" />\n'
-        s= s+  '        <treecol id="activa" label="activa" hidden="true" />\n'
-        s= s+  '        <treecol id="inversion" label="Inversión" sort="?col_inversion" sortActive="true" sortDirection="descending" flex="2"/>\n'
-        s= s+  '        <treecol id="col_entidad_bancaria" label="Entidad Bancaria"  sort="?col_entidad_bancaria" sortActive="true" sortDirection="descending" flex="2"/>\n'
-        s= s+  '        <treecol id="col_valor" label="Valor Acción" flex="2" style="text-align: right" />\n'
-        s= s+  '        <treecol id="col_valor" label="Saldo" flex="2" style="text-align: right" />\n'
-        s= s+  '        <treecol id="col_saldo" label="Pendiente" flex="1" style="text-align: right"/>\n'
-        s= s+  '        <treecol label="Invertido" hidden="true"  flex="1" style="text-align: right" />\n'
-        s= s+  '        <treecol id="col_saldo" label="Rendimiento"   sort="?Rendimiento" sortActive="true" sortDirection="descending" flex="1" style="text-align: right"/>\n'
+        s= s+  '        <treecol id="activa" label="'+_('activa')+'" hidden="true" />\n'
+        s= s+  '        <treecol id="inversion" label="'+_('Inversión')+'" sort="?col_inversion" sortActive="true" sortDirection="descending" flex="2"/>\n'
+        s= s+  '        <treecol id="col_entidad_bancaria" label="'+_('Entidad Bancaria')+'"  sort="?col_entidad_bancaria" sortActive="true" sortDirection="descending" flex="2"/>\n'
+        s= s+  '        <treecol id="col_valor" label="'+_('Valor Acción')+'" flex="2" style="text-align: right" />\n'
+        s= s+  '        <treecol id="col_valor" label="'+_('Saldo')+'" flex="2" style="text-align: right" />\n'
+        s= s+  '        <treecol id="col_saldo" label="'+_('Pendiente')+'" flex="1" style="text-align: right"/>\n'
+        s= s+  '        <treecol label="'+_('Invertido')+'" hidden="true"  flex="1" style="text-align: right" />\n'
+        s= s+  '        <treecol id="col_saldo" label="'+_('Rendimiento')+'"   sort="?Rendimiento" sortActive="true" sortDirection="descending" flex="1" style="text-align: right"/>\n'
         s= s+  '    </treecols>\n'
         s= s+  '    <treechildren>\n'
         while not curs.EOF:
@@ -1177,7 +1177,7 @@ class Inversion:
             curs.MoveNext()     
         s= s + '    </treechildren>\n'
         s= s + '</tree>\n'
-        s= s + '<label flex="0"  id="totalinversiones" style="text-align: center;font-weight : bold;" value="Saldo total de todas las inversiones: '+ euros(sumsaldos)+'. Pendiente de consolidar: '+euros(sumpendiente)+'." total="'+str(sumsaldos)+'" />\n'
+        s= s + '<label flex="0"  id="totalinversiones" style="text-align: center;font-weight : bold;" value="'+_('Saldo total de todas las inversiones')+': '+ euros(sumsaldos)+'. '+_('Pendiente de consolidar')+': '+euros(sumpendiente)+'." total="'+str(sumsaldos)+'" />\n'
         s= s + '</vbox>\n'
         curs.Close()
         return s
@@ -1199,7 +1199,7 @@ class Inversion:
         s= s+ '    resultado=true;\n'
         s= s+ '     var tree = document.getElementById("treeInversiones");\n'
         s= s+ '    if (tree.view.getCellText(tree.currentIndex,tree.columns.getNamedColumn("internet")).split(" ")[0]==0){\n'
-        s= s+ '        alert("Esta inversión no se ha podido actualizar en Internet");\n'
+        s= s+ '        alert("'+_('Esta inversión no se ha podido actualizar en Internet')+'");\n'
         s= s+ '        resultado=false;\n'
         s= s+ '    }\n'
         s= s+ '    return resultado;\n'
@@ -1224,7 +1224,7 @@ class Inversion:
         s= s+ '        }\n'
         s= s+ '    }\n'
         s= s+ '    var f = new Date;var fecha=f.getFullYear()+"-" +(f.getMonth()+1)+"-"+f.getDate();\n'
-        s= s+ '    var url="ajax/inversionactualizacion_insertar.psp?id_inversiones="+id_inversiones+  "&fecha=" + fecha + "&valor=" + valor;\n'
+        s= s+ '    var url="ajax/inversionactualizacion_insertar.py?id_inversiones="+id_inversiones+  "&fecha=" + fecha + "&valor=" + valor;\n'
         s= s+ '    xmlHttp.open("GET",url,true);\n'
         s= s+ '    xmlHttp.send(null);\n'
         s= s+ '}\n'
@@ -1234,16 +1234,16 @@ class Inversion:
         s= s+ '<tree id="treeInversiones" enableColumnDrag="true" flex="6"  ondblclick="actualizar_inversion();">\n'
         s= s+ '<treecols>\n'
         s= s+  '<treecol id="id" label="Id" hidden="true" />\n'
-        s= s+  '<treecol label="Inversión" flex="2"/>\n'
-        s= s+  '<treecol label="Entidad Bancaria" flex="2"/>\n'
-        s= s+  '<treecol id="valor_accion" label="Valor Acción" flex="1" style="text-align: right" />\n'
-        s= s+  '        <treecol id="internet" label="Valor Internet" flex="2" style="text-align: right" />\n'
-        s= s+  '        <treecol id="ganancia" label="Diferencia" flex="2" style="text-align: right" />\n'
+        s= s+  '<treecol label="'+_('Inversión')+'" flex="2"/>\n'
+        s= s+  '<treecol label="'+_('Entidad Bancaria')+'" flex="2"/>\n'
+        s= s+  '<treecol id="valor_accion" label="'+_('Valor Acción')+'" flex="1" style="text-align: right" />\n'
+        s= s+  '        <treecol id="internet" label="'+_('Valor Internet')+'" flex="2" style="text-align: right" />\n'
+        s= s+  '        <treecol id="ganancia" label="'+_('Diferencia')+'" flex="2" style="text-align: right" />\n'
         s= s+  '        <treecol label="%" flex="2" style="text-align: right" />\n'
-        s= s+  '<treecol label="Valor Compra" flex="1" style="text-align: right"  hidden="true" />\n'
-        s= s+  '<treecol label="Valor Venta " flex="1" style="text-align: right" hidden="true" />\n'
-        s= s+  '<treecol label="% Compra    " flex="1" style="text-align: right"/>\n'
-        s= s+  '<treecol label="% Venta     " flex="1" style="text-align: right"/>\n'
+        s= s+  '<treecol label="'+_('Valor Compra')+'" flex="1" style="text-align: right"  hidden="true" />\n'
+        s= s+  '<treecol label="'+_('Valor Venta ')+'" flex="1" style="text-align: right" hidden="true" />\n'
+        s= s+  '<treecol label="% '+_('Compra    ')+'" flex="1" style="text-align: right"/>\n'
+        s= s+  '<treecol label="% '+_('Venta     ')+'" flex="1" style="text-align: right"/>\n'
         s= s+  '</treecols>\n'
         s= s+  '    <treechildren>\n'
         while not curs.EOF:
@@ -1295,7 +1295,7 @@ class Inversion:
             curs.MoveNext()     
         s= s + '    </treechildren>\n'
         s= s + '</tree>\n'
-        s= s + '<label flex="0"  id="totalinversiones" style="text-align: center;font-weight : bold;" value="Saldo total de todas las inversiones: '+ euros(sumsaldos)+'. Diferencia diaria: '+euros(sumdifdiaria)+'" total="'+str(sumsaldos)+'" />\n'
+        s= s + '<label flex="0"  id="totalinversiones" style="text-align: center;font-weight : bold;" value="'+_('Saldo total de todas las inversiones')+': '+ euros(sumsaldos)+'. '+_('Diferencia diaria')+': '+euros(sumdifdiaria)+'" total="'+str(sumsaldos)+'" />\n'
         s= s + '</vbox>\n'
         curs.Close()
         return s
@@ -1540,14 +1540,14 @@ class InversionOperacionHistorica:
         s= s+ '     }\n'
         s= s+ '     var popmodificar=document.createElement("menuitem");\n'
         s= s+ '     popmodificar.setAttribute("id", "popmodificar");\n'
-        s= s+ '     popmodificar.setAttribute("label", "Modificar la operación de inversión");\n'
+        s= s+ '     popmodificar.setAttribute("label", "'+_('Modificar la operación de inversión')+'");\n'
         s= s+ '     popmodificar.setAttribute("class", "menuitem-iconic");\n'
         s= s+ '     popmodificar.setAttribute("image", "images/edit.png");\n'
         s= s+ '     popmodificar.setAttribute("oncommand", "inversionoperacion_modificar();");\n'
         s= s+ '     popup.appendChild(popmodificar);\n'
         s= s+ '     var popborrar=document.createElement("menuitem");\n'
         s= s+ '     popborrar.setAttribute("id", "popborrar");\n'
-        s= s+ '     popborrar.setAttribute("label", "Borrar la operación de inversión");\n'
+        s= s+ '     popborrar.setAttribute("label", "'+_('Borrar la operación de inversión')+'");\n'
         s= s+ '     popborrar.setAttribute("oncommand", "inversionoperacion_borrar();");\n'
         s= s+ '     popborrar.setAttribute("class", "menuitem-iconic");\n'
         s= s+ '     popborrar.setAttribute("image", "images/eventdelete.png");\n'
@@ -1556,13 +1556,13 @@ class InversionOperacionHistorica:
                 
         s= s+ 'function inversionoperacion_insertar(){\n'
         s= s+ '     var tree = document.getElementById("treeOperInversiones");\n'
-        s= s+ '     location=\'inversionoperacion_insertar.psp?id_inversiones=\'+'+str(id_inversiones)+';\n'
+        s= s+ '     location=\'inversionoperacion_insertar.py?id_inversiones=\'+'+str(id_inversiones)+';\n'
         s= s+ '}\n\n'
         
         s= s+ 'function inversionoperacion_modificar(){\n'
         s= s+ '     var tree = document.getElementById("treeOperInversiones");\n'
         s= s+ '     var id_operinversiones=tree.view.getCellText(tree.currentIndex,tree.columns.getNamedColumn("id"));\n'
-        s= s+ '     location=\'inversionoperacion_modificar.psp?id_operinversiones=\'+ id_operinversiones;\n'
+        s= s+ '     location=\'inversionoperacion_modificar.py?id_operinversiones=\'+ id_operinversiones;\n'
         s= s+ '}\n\n'
         
         s= s+ 'function inversionoperacion_borrar(){\n'
@@ -1573,10 +1573,10 @@ class InversionOperacionHistorica:
         s= s+ '     xmlHttp.onreadystatechange=function(){\n'
         s= s+ '         if(xmlHttp.readyState==4){\n'
         s= s+ '             var ale=xmlHttp.responseText;\n'
-        s= s+ '             location="inversionoperacion_listado.psp?id_inversiones='+str(id_inversiones)+'";\n'
+        s= s+ '             location="inversionoperacion_listado.py?id_inversiones='+str(id_inversiones)+'";\n'
         s= s+ '         }\n'
         s= s+ '     }\n'
-        s= s+ '     var url="ajax/inversionoperacion_borrar.psp?id_operinversiones="+id_operinversiones + "&id_inversiones='+str(id_inversiones)+'";\n'
+        s= s+ '     var url="ajax/inversionoperacion_borrar.py?id_operinversiones="+id_operinversiones + "&id_inversiones='+str(id_inversiones)+'";\n'
         s= s+ '     xmlHttp.open("GET",url,true);\n'
         s= s+ '     xmlHttp.send(null);\n'
         s= s+ '}\n'
@@ -1584,9 +1584,9 @@ class InversionOperacionHistorica:
 
         s=s+ '<popupset>\n'
         s=s+ '    <popup id="popupOperInversiones" >\n'
-        s=s+ '        <menuitem label="Actualizar las operaciones de la inversión"  oncommand="inversion_actualizaroperaciones();"  />\n'
+        s=s+ '        <menuitem label="'+_('Actualizar las operaciones de la inversión')+'"  oncommand="inversion_actualizaroperaciones();"  />\n'
         s=s+ '        <menuseparator/>\n'
-        s=s+ '        <menuitem label="Nueva operación de inversión" oncommand="inversionoperacion_insertar();" class="menuitem-iconic"  image="images/item_add.png"/>\n'
+        s=s+ '        <menuitem label="'+_('Nueva operación de inversión')+'" oncommand="inversionoperacion_insertar();" class="menuitem-iconic"  image="images/item_add.png"/>\n'
         s=s+ '    </popup>\n'
         s=s+ '</popupset>\n'
 
@@ -1594,12 +1594,12 @@ class InversionOperacionHistorica:
         s=s+ '        <tree id="treeOperInversiones" flex="3" context="popupOperInversiones" onselect="popupOperInversiones();"  >\n'
         s=s+ '          <treecols>\n'
         s=s+ '    <treecol id="id" label="id" flex="1" hidden="true"/>\n'
-        s=s+ '    <treecol label="Fecha" flex="1"  style="text-align: center"/>\n'
-        s=s+ '    <treecol label="Acciones" flex="1" style="text-align: right" />\n'
-        s=s+ '    <treecol label="Valor compra" flex="1" style="text-align: right"/>\n'
-        s=s+ '    <treecol label="Importe" flex="1" style="text-align: right"/>\n'
-        s=s+ '    <treecol label="Comisión" flex="1" style="text-align: right"/>\n'
-        s=s+ '    <treecol label="Impuestos" flex="1" style="text-align: right"/>\n'
+        s=s+ '    <treecol label="'+_('Fecha')+'" flex="1"  style="text-align: center"/>\n'
+        s=s+ '    <treecol label="'+_('Acciones')+'" flex="1" style="text-align: right" />\n'
+        s=s+ '    <treecol label="'+_('Valor compra')+'" flex="1" style="text-align: right"/>\n'
+        s=s+ '    <treecol label="'+_('Importe')+'" flex="1" style="text-align: right"/>\n'
+        s=s+ '    <treecol label="'+_('Comisión')+'" flex="1" style="text-align: right"/>\n'
+        s=s+ '    <treecol label="'+_('Impuestos')+'" flex="1" style="text-align: right"/>\n'
         s=s+ '  </treecols>\n'
         s=s+ '  <treechildren>\n'
         while not curs.EOF:
@@ -1678,15 +1678,15 @@ class InversionOperacionTemporal:
         s=     '<vbox flex="1">\n'
         s=s+ '        <tree id="tree" flex="3" >\n'
         s=s+ '          <treecols>\n'
-        s=s+ '    <treecol label="Fecha" flex="1"  style="text-align: center"/>\n'
-        s=s+ '    <treecol label="Acciones" flex="1" style="text-align: right" />\n'
-        s=s+ '    <treecol label="Valor compra" flex="1" style="text-align: right"/>\n'
-        s=s+ '    <treecol label="Importe" flex="1" style="text-align: right"/>\n'
-        s=s+ '    <treecol label="Pendiente consolidar" flex="1" style="text-align: right"/>\n'
-        s=s+ '    <treecol label="% Año" flex="1" style="text-align: right"/>\n'
-        s=s+ '    <treecol label="% TAE" flex="1" style="text-align: right"/>\n'
-        s=s+ '    <treecol label="% Total" flex="1" style="text-align: right"/>\n'
-        s=s+ '    <treecol label="Ref. Ibex35" flex="1" style="text-align: right"/>\n'
+        s=s+ '    <treecol label="'+_('Fecha')+'" flex="1"  style="text-align: center"/>\n'
+        s=s+ '    <treecol label="'+_('Acciones')+'" flex="1" style="text-align: right" />\n'
+        s=s+ '    <treecol label="'+_('Valor compra')+'" flex="1" style="text-align: right"/>\n'
+        s=s+ '    <treecol label="'+_('Importe')+'" flex="1" style="text-align: right"/>\n'
+        s=s+ '    <treecol label="'+_('Pendiente consolidar')+'" flex="1" style="text-align: right"/>\n'
+        s=s+ '    <treecol label="% '+_('Año')+'" flex="1" style="text-align: right"/>\n'
+        s=s+ '    <treecol label="% '+_('TAE')+'" flex="1" style="text-align: right"/>\n'
+        s=s+ '    <treecol label="% '+_('Total')+'" flex="1" style="text-align: right"/>\n'
+        s=s+ '    <treecol label="'+_('Ref. Ibex35')+'" flex="1" style="text-align: right"/>\n'
         s=s+ '  </treecols>\n'
         s=s+ '  <treechildren>\n'
         while not curs.EOF:
@@ -1735,8 +1735,8 @@ class InversionOperacionTemporal:
         s=s+ '  </treechildren>\n'
         s=s+ '</tree>\n'
         
-        s= s + '<label flex="0"  style="text-align: center;font-weight : bold;" value="Invertidos '+ euros(sumimporte)+' con un total de '+str(int(sumacciones))+' acciones y un valor medio de '+euros(valormedio)+'"/>\n'        
-        s= s + '<label flex="0"  style="text-align: center;font-weight : bold;" value="Saldo pendiente '+ euros(sumpendiente)+'. " />\n'        
+        s= s + '<label flex="0"  style="text-align: center;font-weight : bold;" value="'+_('Invertidos')+' '+ euros(sumimporte)+' '+_('con un total de')+' '+str(int(sumacciones))+' '+_('acciones y un valor medio de')+' '+euros(valormedio)+'"/>\n'        
+        s= s + '<label flex="0"  style="text-align: center;font-weight : bold;" value="'+_('Saldo pendiente')+' '+ euros(sumpendiente)+'. " />\n'        
         s= s + '</vbox>\n'
         return s
         
@@ -1749,10 +1749,10 @@ class InversionOperacionTemporal:
         curs=con.Execute(sql); 
         s=     ' <tree id="tree" flex="3" >\n'
         s=s+ '  <treecols>\n'
-        s=s+ '    <treecol label="Fecha" flex="1"  style="text-align: center"/>\n'
-        s=s+ '    <treecol label="Inversión" flex="1" style="text-align: left" />\n'
-        s=s+ '    <treecol label="Importe" flex="1" style="text-align: right"/>\n'
-        s=s+ '    <treecol label="Ref. Ibex35" flex="1" style="text-align: right"/>\n'
+        s=s+ '    <treecol label="'+_('Fecha')+'" flex="1"  style="text-align: center"/>\n'
+        s=s+ '    <treecol label="'+_('Inversión')+'" flex="1" style="text-align: left" />\n'
+        s=s+ '    <treecol label="'+_('Importe')+'" flex="1" style="text-align: right"/>\n'
+        s=s+ '    <treecol label="'+_('Ref. Ibex35')+'" flex="1" style="text-align: right"/>\n'
         s=s+ '  </treecols>\n'
         s=s+ '  <treechildren>\n'
         while not curs.EOF:
@@ -1771,7 +1771,7 @@ class InversionOperacionTemporal:
         s=s+ '    <treeitem>\n'
         s=s+ '      <treerow>\n'
         s=s+ '       <treecell label="" />\n'
-        s=s+ '       <treecell label="TOTAL" />\n'
+        s=s+ '       <treecell label="'+_('TOTAL')+'" />\n'
         s=s+        treecell_euros(sumimporte);
         s=s+ '       <treecell label="" />\n'
         s=s+ '      </treerow>\n'
@@ -1947,7 +1947,7 @@ class Tarjeta:
         s= s+ '     }\n'
         s= s+ '     var popmodificar=document.createElement("menuitem");\n'
         s= s+ '     popmodificar.setAttribute("id", "popmodificar");\n'
-        s= s+ '     popmodificar.setAttribute("label", "Modificar la tarjeta");\n'
+        s= s+ '     popmodificar.setAttribute("label", "'+_('Modificar la tarjeta')+'");\n'
         s= s+ '     popmodificar.setAttribute("class", "menuitem-iconic");\n'
         s= s+ '     popmodificar.setAttribute("image", "images/edit.png");\n'
         s= s+ '     popmodificar.setAttribute("oncommand", "tarjeta_modificar();");\n'
@@ -1958,11 +1958,11 @@ class Tarjeta:
         s= s+ '     var popactiva=document.createElement("menuitem");\n'
         s= s+ '     popactiva.setAttribute("id", "popactiva");\n'
         s= s+ '     if (activa){\n'
-        s= s+ '         popactiva.setAttribute("label", "Desactivar la tarjeta");\n'
+        s= s+ '         popactiva.setAttribute("label", "'+_('Desactivar la tarjeta')+'");\n'
         s= s+ '         popactiva.setAttribute("checked", "false");\n'
         s= s+ '         popactiva.setAttribute("oncommand", "tarjeta_modificar_activa();");\n'
         s= s+ '     }else{\n'
-        s= s+ '         popactiva.setAttribute("label", "Activar la tarjeta");\n'
+        s= s+ '         popactiva.setAttribute("label", "'+_('Activar la tarjeta')+'");\n'
         s= s+ '         popactiva.setAttribute("checked", "true");\n'
         s= s+ '         popactiva.setAttribute("oncommand", "tarjeta_modificar_activa();");\n'
         s= s+ '     }\n'
@@ -1973,10 +1973,10 @@ class Tarjeta:
         s= s+ '     var popmovimientos=document.createElement("menuitem");\n'
         s= s+ '     popmovimientos.setAttribute("id", "popmovimientos");\n'
         s= s+ '     if (diferido==false){\n'
-        s= s+ '         popmovimientos.setAttribute("label", "Insertar pago a débito");\n'
+        s= s+ '         popmovimientos.setAttribute("label", "'+_('Insertar pago a débito')+'");\n'
         s= s+ '         popmovimientos.setAttribute("oncommand", "tarjeta_insertar_a_debito();");\n'
         s= s+ '     }else{\n'
-        s= s+ '         popmovimientos.setAttribute("label", "Movimientos de la tarjeta");\n'
+        s= s+ '         popmovimientos.setAttribute("label", "'+_('Movimientos de la tarjeta')+'");\n'
         s= s+ '         popmovimientos.setAttribute("oncommand", "tarjeta_movimientos();");\n'
         s= s+ '     }\n'
         s= s+ '     popup.appendChild(popmovimientos);\n'
@@ -1985,20 +1985,20 @@ class Tarjeta:
         s= s+ 'function tarjeta_modificar(){\n'
         s= s+ '     var tree = document.getElementById("treeTarjetas");\n'
         s= s+ '     var id_tarjetas=tree.view.getCellText(tree.currentIndex,tree.columns.getNamedColumn("id"));\n'
-        s= s+ '     location=\'tarjeta_modificar.psp?id_tarjetas=\' + id_tarjetas;\n'
+        s= s+ '     location=\'tarjeta_modificar.py?id_tarjetas=\' + id_tarjetas;\n'
         s= s+ '}\n\n'
         
         s= s+ 'function tarjeta_movimientos(){\n'
         s= s+ '     var tree = document.getElementById("treeTarjetas");\n'
         s= s+ '     var id_tarjetas=tree.view.getCellText(tree.currentIndex,tree.columns.getNamedColumn("id"));\n'
-        s= s+ '     location=\'tarjetaoperacion_listado.psp?id_tarjetas=\' + id_tarjetas;\n'
+        s= s+ '     location=\'tarjetaoperacion_listado.py?id_tarjetas=\' + id_tarjetas;\n'
         s= s+ '}\n\n'
         
         s= s+ 'function tarjeta_insertar_a_debito(){\n'
         s= s+ '     var tree = document.getElementById("treeTarjetas");\n'
         s= s+ '     var id_cuentas=tree.view.getCellText(tree.currentIndex,tree.columns.getNamedColumn("id_cuentas"));\n'
         s= s+ '     var comentario="Operacion de tarjeta a débito";\n'
-        s= s+ '     location=\'cuentaoperacion_insertar.psp?comentario=\'+comentario+\'&id_cuentas=\'+id_cuentas;\n'
+        s= s+ '     location=\'cuentaoperacion_insertar.py?comentario=\'+comentario+\'&id_cuentas=\'+id_cuentas;\n'
         s= s+ '}\n\n'
         
         s= s+ 'function tarjeta_modificar_activa(){\n'
@@ -2010,10 +2010,10 @@ class Tarjeta:
         s= s+ '     xmlHttp.onreadystatechange=function(){\n'
         s= s+ '         if(xmlHttp.readyState==4){\n'
         s= s+ '             var ale=xmlHttp.responseText;\n'
-        s= s+ '             location="tarjeta_listado.psp";\n'
+        s= s+ '             location="tarjeta_listado.py";\n'
         s= s+ '         }\n'
         s= s+ '     }\n'
-        s= s+ '     var url="ajax/tarjeta_modificar_activa.psp?id_tarjetas="+id_tarjetas+\'&activa=\'+!activa;\n'
+        s= s+ '     var url="ajax/tarjeta_modificar_activa.py?id_tarjetas="+id_tarjetas+\'&activa=\'+!activa;\n'
         s= s+ '     xmlHttp.open("GET",url,true);\n'
         s= s+ '     xmlHttp.send(null);\n'
         s= s+ '}\n'
@@ -2032,7 +2032,7 @@ class Tarjeta:
         
         s= s+ '<popupset>\n'
         s= s+ '     <popup id="popupTarjetas" >\n'
-        s= s+ '          <menuitem label="Añadir nueva tarjeta"  oncommand=\'location="tarjeta_insertar.psp";\'   class="menuitem-iconic"  image="images/item_add.png"/>\n'
+        s= s+ '          <menuitem label="Añadir nueva tarjeta"  oncommand=\'location="tarjeta_insertar.py";\'   class="menuitem-iconic"  image="images/item_add.png"/>\n'
         s= s+ '     </popup>\n'
         s= s+ '</popupset>\n'
         
@@ -2040,14 +2040,14 @@ class Tarjeta:
         s= s+ '     <treecols>\n'
         s= s+  '          <treecol id="id" label="Id" hidden="true" />\n'
         s= s+  '          <treecol id="id_cuentas" label="Id_cuentas" hidden="true" />\n'
-        s= s+  '          <treecol id="activa" label="Activa" hidden="true" />\n'
-        s= s+  '          <treecol id="diferido" label="Diferido" hidden="true" />\n'
-        s= s+  '          <treecol label="Nombre Tarjeta"  flex="2"/>\n'
-        s= s+  '          <treecol label="Cuenta asociada" flex="2"/>\n'
-        s= s+  '          <treecol label="Número de tarjeta" flex="2" style="text-align: right" />\n'
-        s= s+  '          <treecol type="checkbox" label="Pago diferido" flex="1" style="text-align: right"/>\n'
-        s= s+  '          <treecol label="Saldo máximo" flex="1" style="text-align: right"/>\n'
-        s= s+  '          <treecol label="Saldo pendiente" flex="1" style="text-align: right"/>\n'
+        s= s+  '          <treecol id="activa" label="'+_('Activa')+'" hidden="true" />\n'
+        s= s+  '          <treecol id="diferido" label="'+_('Diferido')+'" hidden="true" />\n'
+        s= s+  '          <treecol label="'+_('Nombre Tarjeta')+'"  flex="2"/>\n'
+        s= s+  '          <treecol label="'+_('Cuenta asociada')+'" flex="2"/>\n'
+        s= s+  '          <treecol label="'+_('Número de tarjeta')+'" flex="2" style="text-align: right" />\n'
+        s= s+  '          <treecol type="checkbox" label="'+_('Pago diferido')+'" flex="1" style="text-align: right"/>\n'
+        s= s+  '          <treecol label="'+_('Saldo máximo')+'" flex="1" style="text-align: right"/>\n'
+        s= s+  '          <treecol label="'+_('Saldo pendiente')+'" flex="1" style="text-align: right"/>\n'
         s= s+  '     </treecols>\n'
         s= s+  '     <treechildren>\n'
         while not curs.EOF:
@@ -2138,13 +2138,6 @@ class Total:
             return row['importe'];
 
 
-
-
-
-
-
-
-
     def grafico_concepto_mensual(self, id,  sectors):
         """Recibe un arrays con dos columans la primera la descripción y la segunda el valor"""
         js=       '<script type="text/ecmascript">\n<![CDATA[\n'
@@ -2195,12 +2188,12 @@ class Total:
 
         i=0
         for n in sectors:
-            s=s+'        <use id="'+str(id)+str("cheese"+str(i))+'" x="0" y="0"   xlink:href="#'+str(id)+'def'+str("cheese"+str(i))+'" onmouseover="'+str(id)+'showCheese('+str(i)+');"   onmouseout="'+str(id)+'unshow();" valor="Importe: '+str(round(n[1], 2))+' € ('+str(round(n[1]*100/total,2))+' %)" tpc="Concepto: '+str(n[0])+'" />\n'
+            s=s+'        <use id="'+str(id)+str("cheese"+str(i))+'" x="0" y="0"   xlink:href="#'+str(id)+'def'+str("cheese"+str(i))+'" onmouseover="'+str(id)+'showCheese('+str(i)+');"   onmouseout="'+str(id)+'unshow();" valor="'+_('Importe')+': '+str(round(n[1], 2))+' € ('+str(round(n[1]*100/total,2))+' %)" tpc="'+_('Concepto')+': '+str(n[0])+'" />\n'
             i += 1        
 
         s=s+'        <text id="'+str(id)+'tpc" x="400" y="100"  font-family="Verdana" font-size="14" fill="grey"> </text>\n'
         s=s+'        <text id="'+str(id)+'valor" x="400" y="120"  font-family="Verdana" font-size="14" fill="grey"> </text>\n'
-        s=s+'        <text id="'+str(id)+'total" x="400" y="180" font-family="Verdana" font-size="24" fill="blue">Total: '+str(round(total, 2))+' €</text>\n'
+        s=s+'        <text id="'+str(id)+'total" x="400" y="180" font-family="Verdana" font-size="24" fill="blue">'+_('Total')+': '+str(round(total, 2))+' €</text>\n'
         s=s+'</svg>'        # End tag for the SVG file
         
         f=open("/tmp/informe_conceptos_mensual.svg","w")
@@ -2214,155 +2207,24 @@ class Total:
 
 
 
-#
-#
-#
-#
-#    def grafico_concepto_mensual_conprefix(self,  sectors):
-#        """Recibe un arrays con dos columans la primera la descripción y la segunda el valor"""
-#        
-#        s='<svg:svg flex="2" width="10cm" height="10cm"  viewBox="0 0 1000 500" >\n'
-#        
-##        s= s+ '<script>\n<![CDATA[\n'
-##        s= s+ 'function showCheese(i){\n'
-##        s= s+ '     alert("showcheese"+i+'+str(len(sectors))+');\n'
-##        s= s+ '}\n\n'
-##
-##        s= s+ ']]>\n</script>\n\n'               
-#        total = 0
-#        i = 0
-#        seg = 0
-#        radius = 150
-#        startx = 200   # The screen x-origin: center of pie chart
-#        starty = 200   # The screen y-origin: center of pie chart
-#        lastx = radius # Starting coordinates of 
-#        lasty = 0      # the first arc
-##        ykey = 35
-##        xkey= 375
-#        colors = ['red','blue','yellow','magenta',' thistle ','orange','slateblue','coral','slategrey','greenyellow','wheat','darksalmon','lime','olive', 'darkgreen','orangered', 'violet','brown','mediumslateblue','green', 'gray',  'black', 'gold','salmon',   'white',   'saddlebrown','pink']
-#
-#        for n in sectors:
-#            total = total + n[1]  # we have to do this ahead, since we need the total for the next for loop
-#            
-#        s=s+'    <svg:defs>\n'        
-#        
-#        for n in sectors:
-#            arc = "0"                   # default is to draw short arc (< 180 degrees)
-#            seg = n[1]/total * 360 + seg   # this angle will be current plus all previous
-#            if ((n[1]/total * 360) > 180): # just in case this piece is > 180 degrees
-#                arc = "1"
-#            radseg = math.radians(seg)  # we need to convert to radians for cosine, sine functions
-#            nextx = int(math.cos(radseg) * radius)
-#            nexty = int(math.sin(radseg) * radius)
-#        
-#            s=s+'        <svg:symbol id="def'+str("cheese"+str(i))+'" overflow="visible">\n'
-#            s=s+'            <svg:path  d="M '+str(startx)+','+str(starty) + ' l '+str(lastx)+','+str(-(lasty))+' a' + str(radius) + ',' + str(radius) + ' 0 ' + arc + ',0 '+str(nextx - lastx)+','+str(-(nexty - lasty))+ ' z" fill="'+colors[i]+'" stroke="black" stroke-width="2" stroke-linejoin="round" />\n'
-#            s=s+'        </svg:symbol>\n'          
-#            lastx = nextx
-#            lasty = nexty
-#            i += 1        
-#        s=s+'    </svg:defs>\n' 
-#
-#
-#        i=0
-##        s=s+'    <g id="cheeses">\n'
-#        for n in sectors:
-#            s=s+'        <svg:use id="'+str("cheese"+str(i))+'" x="0" y="0"   xlink:href="#def'+str("cheese"+str(i))+'" />\n'
-#            #onmouseover="showCheese('+str(i)+')" onclick="alert(\''+str("cheese"+str(i))+'\');"
-#            i += 1        
-##        s=s+'    </g>\n'
-#
-#        s=s+'    <svg:g id="data" transform="translate(48 24)">\n'
-#        s=s+'        <svg:rect x="" y="200" width="360" height="200" fill="#FFEF95" fill-opacity="0.7"/>\n'
-#        s=s+'        <svg:g id="cityText" font-size="10" font-family="Arial,Helvetica">\n'
-#        s=s+'            <svg:text x="100" y="150">City:</svg:text>\n'
-#        s=s+'            <svg:text id="varCity" x="33" y="15">PRUEBA</svg:text>\n'
-#        s=s+'        </svg:g>\n'
-#        s=s+'    </svg:g>\n'
-#        s=s+'</svg:svg>'        # End tag for the SVG file
-#        
-#        mylog(s)
-#        f=open("/tmp/svg.svg","w")
-#        f.write('<?xml version="1.0" encoding="utf-8"  standalone="no"?>\n<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"\n "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">\n'+s)
-#        f.close()
-#        return s
-#
-#
-#
-
-
-
-
-
-
-
-#
-#
-#
-#
-#
-#
-#    def grafico_concepto_mensual_bueno(self,  sectors):
-#        """Recibe un arrays con dos columans la primera la descripción y la segunda el valor"""
-#        s='<svg flex="2" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" version="1.1">\n'
-#        total = 0
-#        i = 0
-#        seg = 0
-#        radius = 150
-#        startx = 200   # The screen x-origin: center of pie chart
-#        starty = 200   # The screen y-origin: center of pie chart
-#        lastx = radius # Starting coordinates of 
-#        lasty = 0      # the first arc
-#        ykey = 35
-#        xkey= 375
-#        colors = ['red','blue','yellow','magenta',' thistle ','orange','slateblue','coral','slategrey','greenyellow','wheat','darksalmon','lime','olive', 'darkgreen','orangered', 'violet','brown','mediumslateblue','green', 'gray',  'black', 'gold','salmon',   'white',   'saddlebrown','pink']
-#
-#        for n in sectors:
-#            total = total + n[1]  # we have to do this ahead, since we need the total for the next for loop
-#        
-#        for n in sectors:
-#            if i==12:
-#                ykey=35
-#                xkey=775
-#            arc = "0"                   # default is to draw short arc (< 180 degrees)
-#            seg = n[1]/total * 360 + seg   # this angle will be current plus all previous
-#            if ((n[1]/total * 360) > 180): # just in case this piece is > 180 degrees
-#                arc = "1"
-#            radseg = math.radians(seg)  # we need to convert to radians for cosine, sine functions
-#            nextx = int(math.cos(radseg) * radius)
-#            nexty = int(math.sin(radseg) * radius)
-#        
-#            # The weirdly placed minus signs [eg, (-(lasty))] are due to the fact that our calculations are for a graph with positive Y values going up, but on the screen positive Y values go down.
-#        
-#            s=s+'<path d="M '+str(startx)+','+str(starty) + ' l '+str(lastx)+','+str(-(lasty))+' a' + str(radius) + ',' + str(radius) + ' 0 ' + arc + ',0 '+str(nextx - lastx)+','+str(-(nexty - lasty))+ ' z" fill="'+colors[i]+'" stroke="black" stroke-width="2" stroke-linejoin="round" />\n'
-#            # We are writing the XML commands one segment at a time, so we abandon old points we don't need anymore, and nextx becomes lastx for the next segment
-#            s=s+'<rect x="'+str(xkey)+'" y="'+ str(ykey) + '" width="40" height="30" fill="'+colors[i] + '" stroke="black" stroke-width="1"/><text x="'+str(xkey+50)+'" y="'+str(ykey+20)+'"	style="font-family:verdana, arial, sans-serif;			font-size: 12;			fill: black;			stroke: none">'+n[0]+ ". " +  str(n[1])+ " €. (" +  str(round(n[1]*100/total, 2))+' %)</text>\n'
-#            ykey = ykey + 35
-#            lastx = nextx
-#            lasty = nexty
-#            i += 1        
-#        s=s+'<text x="'+str(xkey+50)+'" y="'+str(ykey+20)+'"	style="font-family:verdana, arial, sans-serif;			font-size: 16;			fill: black;			stroke: none">TOTAL: ' +  str(round(total, 2))+ ' €.</text>\n'
-#        s=s+'</svg>'        # End tag for the SVG file
-#        return s
-
 
 
     def grafico_evolucion_total(self):
         #Genera informe_total.plot
         f=open("/tmp/informe_total.plot","w")
         s='set encoding utf8\n'
-        s=s+'set title "Evolución temporal del patrimonio"\n'
+        s=s+'set title "'+_('Evolución temporal del patrimonio')+'"\n'
         s=s+'set style data fsteps\n'
         s=s+"set timefmt '%Y-%m-%d'\n"
         s=s+"set xdata time\n"
-        s=s+"set ylabel 'Patrimonio (€)'\n"
+        s=s+"set ylabel '"+_('Patrimonio')+" (€)'\n"
         s=s+"set yrange [ 0: ]\n"
         s=s+"set format x '%Y'\n"
         s=s+"set grid\n"
         s=s+"set key left\n"
         s=s+'set term svg size 1000,500 font "/usr/share/fonts/dejavu/DejaVuSans.ttf"\n'
         s=s+"set output \"/tmp/informe_total.svg\"\n"
-        s=s+"plot \"/tmp/informe_total.dat\" using 1:2 smooth unique title \"Patrimonio\""
+        s=s+"plot \"/tmp/informe_total.dat\" using 1:2 smooth unique title \""+_('Patrimonio')+"\""
         f.write(s)
         f.close()
 
@@ -2422,7 +2284,7 @@ class Total:
             lastx = nextx
             lasty = nexty
             i += 1        
-        s=s+'<text x="425" y="'+str(ykey+20)+'"	style="font-family:verdana, arial, sans-serif;			font-size: 16;			fill: black;			stroke: none">TOTAL: ' +  str(round(total, 2))+ ' €.</text>\n'
+        s=s+'<text x="425" y="'+str(ykey+20)+'"	style="font-family:verdana, arial, sans-serif;			font-size: 16;			fill: black;			stroke: none">'+_('TOTAL')+': ' +  str(round(total, 2))+ ' €.</text>\n'
         s=s+'</svg>'        # End tag for the SVG file
         return s
 
@@ -2485,12 +2347,12 @@ class Total:
         js= js+ '}\n\n'        
 
         js= js+ 'function gioriShowMiles(i){\n'        
-        js= js+ '     	document.getElementById("gioriover").firstChild.nodeValue = "Rango " + i + "000 - " + (i+1) + "000: "+ ". " + document.getElementById("giorirect" +  i).getAttribute("importe")+ " €. ("  + document.getElementById("giorirect" +  i).getAttribute("tpc") +" %)";\n'
+        js= js+ '     	document.getElementById("gioriover").firstChild.nodeValue = "'+_('Rango')+' " + i + "000 - " + (i+1) + "000: "+ ". " + document.getElementById("giorirect" +  i).getAttribute("importe")+ " €. ("  + document.getElementById("giorirect" +  i).getAttribute("tpc") +" %)";\n'
         js= js+ '     	document.getElementById("giorirect"+i).setAttribute("style","stroke: none; fill: deeppink;fill-opacity: 0.5;");\n'
         js= js+ '}\n\n'                    
 
         js= js+ 'function ver_detalle(i){\n'
-        js= js+ '    location=\'informe_referenciaibex_detalle.psp?rango=\'+ (i*1000);\n'
+        js= js+ '    location=\'informe_referenciaibex_detalle.py?rango=\'+ (i*1000);\n'
         js= js+ '}\n'
 
         js= js+ 'function gioriUnshowMiles(i){\n'        
@@ -2551,7 +2413,7 @@ class Total:
         panel=panel+'<line x1="100" y1="400" x2="1000" y2="400" style="stroke: black; stroke-width: 30; fill: none;" />\n'
         panel=panel+'<text x="25" y="13"	   transform="scale(50)">Ibex 35</text>\n' 
         panel=panel+'<circle cx="600" cy="1000" r="150" style="stroke: black; stroke-width: 10; fill: lime;" />\n'
-        panel=panel+'<text x="25" y="28"  transform="scale(50)">Operación de inversión</text>\n' 
+        panel=panel+'<text x="25" y="28"  transform="scale(50)">'+_('Operación de inversión')+'</text>\n' 
         panel=panel+'<text id="gioriover" x="25" y="43"  transform="scale(50)"> </text>\n' 
        
 
@@ -2674,15 +2536,15 @@ class Total:
         s='<vbox flex="1">\n'
         s=s+ '        <tree id="tree" enableColumnDrag="true" flex="3"   context="treepopup"  onselect="tree_getid();">\n'
         s=s+ '          <treecols>\n'
-        s=s+ '<treecol id="col_fecha_venta" label="Fecha venta" sort="?col_inversion" sortActive="true" sortDirection="descending" flex="0"  style="text-align: center"/>\n'
-        s=s+ '    <treecol id="col_anos_inversion" label="Años"  sort="?col_entidad_bancaria" sortActive="true" sortDirection="descending" flex="0"  style="text-align: center"/>\n'
-        s=s+ '    <treecol id="col_valor" label="Inversión" flex="2" style="text-align: left" />\n'
-        s=s+ '    <treecol id="col_saldo" label="Tipo Operación" flex="2" style="text-align: left"/>\n'
-        s=s+ '    <treecol id="col_pendiente" label="Saldo inicio" flex="0" style="text-align: right"/>\n'
-        s=s+ '    <treecol id="col_rend_anual" label="Saldo final" flex="0" style="text-align: right"/>\n'
-        s=s+ '    <treecol id="col_rend_anual" label="Consolidado" flex="0" style="text-align: right"/>\n'
-        s=s+ '    <treecol id="col_rend_total" label="Rend. ponderado" flex="0" style="text-align: right"/>\n'
-        s=s+ '    <treecol id="col_rend_total" label="Rend. total" flex="0" style="text-align: right"/>\n'
+        s=s+ '<treecol id="col_fecha_venta" label="'+_('Fecha venta')+'" sort="?col_inversion" sortActive="true" sortDirection="descending" flex="0"  style="text-align: center"/>\n'
+        s=s+ '    <treecol id="col_anos_inversion" label="'+_('Años')+'"  sort="?col_entidad_bancaria" sortActive="true" sortDirection="descending" flex="0"  style="text-align: center"/>\n'
+        s=s+ '    <treecol id="col_valor" label="'+_('Inversión')+'" flex="2" style="text-align: left" />\n'
+        s=s+ '    <treecol id="col_saldo" label="'+_('Tipo Operación')+'" flex="2" style="text-align: left"/>\n'
+        s=s+ '    <treecol id="col_pendiente" label="'+_('Saldo inicio')+'" flex="0" style="text-align: right"/>\n'
+        s=s+ '    <treecol id="col_rend_anual" label="'+_('Saldo final')+'" flex="0" style="text-align: right"/>\n'
+        s=s+ '    <treecol id="col_rend_anual" label="'+_('Consolidado')+'" flex="0" style="text-align: right"/>\n'
+        s=s+ '    <treecol id="col_rend_total" label="'+_('Rend. ponderado')+'" flex="0" style="text-align: right"/>\n'
+        s=s+ '    <treecol id="col_rend_total" label="'+_('Rend. total')+'" flex="0" style="text-align: right"/>\n'
         s=s+ '  </treecols>\n'
         s=s+ '  <treechildren>\n'
         while not curs.EOF:
@@ -2729,7 +2591,7 @@ class Total:
       
         s=s+ '  </treechildren>\n'
         s=s+ '</tree>\n'
-        s= s + '<label flex="0"  style="text-align: center;font-weight : bold;" value="Suma de saldos consolidados en el año '+str(ano)+': '+ euros(sumpendiente)+'." />\n'
+        s= s + '<label flex="0"  style="text-align: center;font-weight : bold;" value="'+_('Suma de saldos consolidados en el año')+' '+str(ano)+': '+ euros(sumpendiente)+'." />\n'
         s= s + '</vbox>\n'
         return s
         
@@ -2775,8 +2637,8 @@ class Total:
         s=s+ ' <tree flex="1">\n'
         s=s+ '  <treecols>\n'
         s=s+ '    <treecol flex="1"  style="text-align: left"/>\n'
-        s=s+ '    <treecol label="Beneficio" flex="1" style="text-align: center"/>\n'
-        s=s+ '    <treecol label="'+_('% TAE desde')+' '+inicio+' ('+euros(saldototalinicio)+')" flex="1" style="text-align: center"/>\n'
+        s=s+ '    <treecol label="'+_('Beneficio')+'" flex="1" style="text-align: center"/>\n'
+        s=s+ '    <treecol label="% '+_('TAE desde')+' '+inicio+' ('+euros(saldototalinicio)+')" flex="1" style="text-align: center"/>\n'
         s=s+ ' </treecols>\n'
         s=s+ '  <treechildren>\n'
         
@@ -2793,7 +2655,7 @@ class Total:
 
         s=s+ '    <treeitem>\n'
         s=s+ '      <treerow>\n'
-        s=s+ '          <treecell label="Dividendos sin retenciones" />\n'
+        s=s+ '          <treecell label="'+_('Dividendos sin retenciones')+'" />\n'
         s=s+treecell_euros(dividendossinretencion);
         try:
             s=s+treecell_tpc((dividendossinretencion)*100/saldototalinicio)
@@ -2806,7 +2668,7 @@ class Total:
         
         s=s+ '    <treeitem>\n'
         s=s+ '      <treerow>\n'
-        s=s+ '          <treecell label="Comisiones en operaciones de inversión" />\n'
+        s=s+ '          <treecell label="'+_('Comisiones en operaciones de inversión')+'" />\n'
         s=s+treecell_euros(sumcomision);
         try:
             s=s+treecell_tpc((sumcomision)*100/saldototalinicio)
@@ -2817,7 +2679,7 @@ class Total:
         
         s=s+ '    <treeitem>\n'
         s=s+ '      <treerow>\n'
-        s=s+ '          <treecell label="Comisiones de custodia" />\n'
+        s=s+ '          <treecell label="'+_('Comisiones de custodia')+'" />\n'
         s=s+treecell_euros(sumcomisioncustodia);
         try:
             s=s+treecell_tpc((sumcomisioncustodia)*100/saldototalinicio)
@@ -2830,7 +2692,7 @@ class Total:
                 
         s=s+ '    <treeitem>\n'
         s=s+ '      <treerow>\n'
-        s=s+ '          <treecell label="Retenciones venta fondos inversión al '+str(config.taxcapitalappreciation*100)+'%" />\n'
+        s=s+ '          <treecell label="'+_('Retenciones venta fondos inversión al')+' '+str(config.taxcapitalappreciation*100)+'%" />\n'
         s=s+treecell_euros(sumimpuestos);
         try:
             s=s+treecell_tpc((sumimpuestos)*100/saldototalinicio)
@@ -2841,7 +2703,7 @@ class Total:
         
         s=s+ '    <treeitem>\n'
         s=s+ '      <treerow>\n'
-        s=s+ '          <treecell label="Retenciones de los dividendos al '+str(config.dividendwithholding*100)+'%" />\n'
+        s=s+ '          <treecell label="'+_('Retenciones de los dividendos al')+' '+str(config.dividendwithholding*100)+'%" />\n'
         s=s+treecell_euros(dividendosconretencion-dividendossinretencion);
         try:
             s=s+treecell_tpc((dividendosconretencion-dividendossinretencion)*100/saldototalinicio)
@@ -2852,7 +2714,7 @@ class Total:
                
         s=s+ '    <treeitem>\n'
         s=s+ '      <treerow>\n'
-        s=s+ '          <treecell label="Pago impuestos plusvalias al '+str(config.taxcapitalappreciation*100)+'%" />\n'
+        s=s+ '          <treecell label="'+_('Pago impuestos plusvalias al')+' '+str(config.taxcapitalappreciation*100)+'%" />\n'
         s=s+treecell_euros(-plusvalias*config.taxcapitalappreciation);
         try:
             s=s+treecell_tpc((-plusvalias*config.taxcapitalappreciation)*100/saldototalinicio)
@@ -2865,7 +2727,7 @@ class Total:
         
         s=s+ '    <treeitem>\n'
         s=s+ '      <treerow>\n'
-        s=s+ '         <treecell label="Beneficio sin impuestos" />\n'
+        s=s+ '         <treecell label="'+_('Beneficio sin impuestos')+'" />\n'
         s=s+treecell_euros(beneficiosin);
         try:
             s=s+treecell_tpc((beneficiosin)*100/saldototalinicio)
@@ -2876,7 +2738,7 @@ class Total:
         
         s=s+ '    <treeitem>\n'
         s=s+ '      <treerow>\n'
-        s=s+ '         <treecell label="Beneficio pagando impuestos" />\n'
+        s=s+ '         <treecell label="'+_('Beneficio pagando impuestos')+'" />\n'
         s=s+treecell_euros(beneficiopag);
         try:
             s=s+treecell_tpc((beneficiopag)*100/saldototalinicio)
@@ -2887,7 +2749,7 @@ class Total:
         
         s=s+ '  </treechildren>\n'
         s=s+ '</tree>\n'
-        s= s + '<label flex="0"  style="text-align: center;font-weight : bold;" value="Valor de mi patrimonio a '+str(datetime.date.today())+': '+ euros(saldototal)+' ( '+ euros(saldototal-saldototalinicio)+' en este año )" />\n'
+        s= s + '<label flex="0"  style="text-align: center;font-weight : bold;" value="'+_('Valor de mi patrimonio a')+' '+str(datetime.date.today())+': '+ euros(saldototal)+' ( '+ euros(saldototal-saldototalinicio)+' '+_('en este año')+' )" />\n'
         s= s + '</vbox>\n'
         return s        
 
