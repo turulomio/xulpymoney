@@ -1,0 +1,1 @@
+- Cambiar en clases/core.py la variable versión
