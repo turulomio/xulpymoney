@@ -67,7 +67,7 @@ function check_data(){
         resultado=false;
     }
     //Comprueba si tiene comillas
-    if (/[\'\"]/.test(document.getElementById("comentario").value)){
+    if (/[\'\"]/.test(document.getElementById("comentario").value)){//Error gettext "'
         alert("No se puede meter ningún tipo de comilla");
         resultado=false;
     }   

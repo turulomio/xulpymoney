@@ -1,6 +1,7 @@
 xulpymoney 0.2 XXXXXXXX
 =======================
-- Se ha añadido en el fichero config.py la opcion del lenguage
+- Se ha mejorado los resultados del informe historico
+- Se ha añadido en el fichero config.py la opcion del lenguage, dividendwithholding, taxcapitalappreciation
 - El formato del fichero de ayuda de usuario ha pasado a ser odt (Openoffice)
 - Añadida internacionalización con omegat+
 - Solucionado bug al actualizar las inversiones desde internet en www.bolsamadrid.es
