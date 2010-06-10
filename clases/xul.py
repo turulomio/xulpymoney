@@ -1,6 +1,9 @@
 # -*- coding: UTF-8  -*-
 from formato import *
+import sys
+sys.path.append("/etc/xulpymoney/")
 import config
+
 def xulheader():
     s=       '<?xml version="1.0" encoding="UTF-8" ?>\n'
     s=s +  '<?xml-stylesheet href="xul.css" type="text/css"?>\n'

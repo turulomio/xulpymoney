@@ -2,7 +2,7 @@
 import sys,  os
 sys.path.append("/usr/lib/xulpymoney/")
 sys.path.append("/etc/xulpymoney/")
-version="20100503"
+version="0.2"
 resultadovalidar=""
 import datetime,  math
 import adodb
