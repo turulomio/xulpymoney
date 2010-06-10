@@ -1,12 +1,18 @@
 # -*- coding: UTF-8 -*-
-import sys,  os
+import sys,  os,  gettext
 sys.path.append("/usr/lib/xulpymoney/")
 sys.path.append("/etc/xulpymoney/")
+import config
+
 version="0.2"
+gettext.bindtextdomain('xulpymoney','/usr/share/locale/')
+gettext.textdomain('xulpymoney')
+os.environ["LC_ALL"]=config.language
 resultadovalidar=""
+
+from translate import  _
 import datetime,  math
 import adodb
-import config
 from formato import *  
 from inversion_actualizacion import *
 from xul import *
@@ -85,7 +91,7 @@ class EntidadBancaria:
         s= s+ '     }\n'
         s= s+ '     var popmodificar=document.createElement("menuitem");\n'
         s= s+ '     popmodificar.setAttribute("id", "popmodificar");\n'
-        s= s+ '     popmodificar.setAttribute("label", "Modificar la Entidad Bancaria");\n'
+        s= s+ '     popmodificar.setAttribute("label", "'+_('Modificar la Entidad Bancaria')+'");\n'
         s= s+ '     popmodificar.setAttribute("class", "menuitem-iconic");\n'
         s= s+ '     popmodificar.setAttribute("image", "images/edit.png");\n'
         s= s+ '     popmodificar.setAttribute("oncommand", "eb_modificar();");\n'
@@ -95,7 +101,7 @@ class EntidadBancaria:
         s= s+ '     popup.appendChild(popseparator1);\n'
         s= s+ '     var poppatrimonio=document.createElement("menuitem");\n'
         s= s+ '     poppatrimonio.setAttribute("id", "poppatrimonio");\n'
-        s= s+ '     poppatrimonio.setAttribute("label", "Patrimonio en la Entidad Bancaria");\n'
+        s= s+ '     poppatrimonio.setAttribute("label", "'+_('Patrimonio en la Entidad Bancaria')+'");\n'
         s= s+ '     poppatrimonio.setAttribute("oncommand", "eb_patrimonio();");\n'
         s= s+ '     popup.appendChild(poppatrimonio);\n'
         s= s+ '     var popseparator2=document.createElement("menuseparator");\n'
@@ -104,11 +110,11 @@ class EntidadBancaria:
         s= s+ '     var popactiva=document.createElement("menuitem");\n'
         s= s+ '     popactiva.setAttribute("id", "popactiva");\n'
         s= s+ '     if (activa){\n'
-        s= s+ '         popactiva.setAttribute("label", "Desactivar la Entidad Bancaria");\n'
+        s= s+ '         popactiva.setAttribute("label", "'+_('Desactivar la Entidad Bancaria')+'");\n'
         s= s+ '         popactiva.setAttribute("checked", "false");\n'
         s= s+ '         popactiva.setAttribute("oncommand", "eb_modificar_activa();");\n'
         s= s+ '     }else{\n'
-        s= s+ '         popactiva.setAttribute("label", "Activar la Entidad Bancaria");\n'
+        s= s+ '         popactiva.setAttribute("label", "'+_('Activar la Entidad Bancaria')+'");\n'
         s= s+ '         popactiva.setAttribute("checked", "true");\n'
         s= s+ '         popactiva.setAttribute("oncommand", "eb_modificar_activa();");\n'
         s= s+ '     }\n'
@@ -154,10 +160,10 @@ class EntidadBancaria:
         s= s+ '<tree id="treeEntidadesBancarias" enableColumnDrag="true" flex="6"   context="popupEntidadesBancarias"  onselect="popupEntidadesBancarias();" ondblclick="eb_patrimonio();" >\n'
         s= s+ '    <treecols>\n'
         s= s+  '        <treecol id="id" label="id" hidden="true" />\n'
-        s= s+  '        <treecol id="activa" label="Activa" hidden="true" />\n'
-        s= s+  '        <treecol label="Entidad Bancaria" flex="2"/>\n'       
-        s= s+  '        <treecol label="% saldo total" style="text-align: right" flex="2"/>\n'
-        s= s+  '        <treecol label="Saldo" style="text-align: right" flex="2"/>\n'
+        s= s+  '        <treecol id="activa" label="'+_('Activa')+'" hidden="true" />\n'
+        s= s+  '        <treecol label="'+_('Entidad Bancaria')+'" flex="2"/>\n'       
+        s= s+  '        <treecol label="% '+_('saldo total')+'" style="text-align: right" flex="2"/>\n'
+        s= s+  '        <treecol label="'+_('Saldo')+'" style="text-align: right" flex="2"/>\n'
         s= s+  '    </treecols>\n'
         s= s+  '    <treechildren>\n'     
         total=Total().saldo_total(fecha)
@@ -179,7 +185,7 @@ class EntidadBancaria:
             curs.MoveNext()    
         s= s + '    </treechildren>\n'
         s= s + '</tree>\n'
-        s= s + '<label flex="1"  style="text-align: center;font-weight : bold;" value="Saldo total: '+ euros(total)+'" />\n'
+        s= s + '<label flex="1"  style="text-align: center;font-weight : bold;" value="'+_('Saldo total')+': '+ euros(total)+'" />\n'
         curs.Close()
         return s
 
@@ -258,20 +264,20 @@ class Concepto:
         s=''        
         s= s+ '<tree id="treeConceptos" flex="6">\n'
         s= s+ '     <treecols>\n'
-        s= s+ '         <treecol label="Año " flex="1"  style="text-align: left"/>\n'
-        s= s+ '         <treecol label="Enero     " flex="1" style="text-align: right"/>\n'
-        s= s+ '         <treecol label="Febrero   " flex="1" style="text-align: right"/>\n'
-        s= s+ '         <treecol label="Marzo     " flex="1" style="text-align: right"/>\n'
-        s= s+ '         <treecol label="Abril     " flex="1" style="text-align: right"/>\n'
-        s= s+ '         <treecol label="Mayo      " flex="1" style="text-align: right"/>\n'
-        s= s+ '         <treecol label="Junio     " flex="1" style="text-align: right"/>\n'
-        s= s+ '         <treecol label="Julio     " flex="1" style="text-align: right"/>\n'
-        s= s+ '         <treecol label="Agosto    " flex="1" style="text-align: right"/>\n'
-        s= s+ '         <treecol label="Septiembre" flex="1" style="text-align: right"/>\n'
-        s= s+ '         <treecol label="Octubre   " flex="1" style="text-align: right"/>\n'
-        s= s+ '         <treecol label="Noviembre " flex="1" style="text-align: right"/>\n'
-        s= s+ '         <treecol label="Diciembre " flex="1" style="text-align: right"/>\n'
-        s= s+ '         <treecol label="Total     " flex="1" style="text-align: right"/>\n'
+        s= s+ '         <treecol label="'+_('Año ')+'" flex="1"  style="text-align: left"/>\n'
+        s= s+ '         <treecol label="'+_('Enero     ')+'" flex="1" style="text-align: right"/>\n'
+        s= s+ '         <treecol label="'+_('Febrero   ')+'" flex="1" style="text-align: right"/>\n'
+        s= s+ '         <treecol label="'+_('Marzo     ')+'" flex="1" style="text-align: right"/>\n'
+        s= s+ '         <treecol label="'+_('Abril     ')+'" flex="1" style="text-align: right"/>\n'
+        s= s+ '         <treecol label="'+_('Mayo      ')+'" flex="1" style="text-align: right"/>\n'
+        s= s+ '         <treecol label="'+_('Junio     ')+'" flex="1" style="text-align: right"/>\n'
+        s= s+ '         <treecol label="'+_('Julio     ')+'" flex="1" style="text-align: right"/>\n'
+        s= s+ '         <treecol label="'+_('Agosto    ')+'" flex="1" style="text-align: right"/>\n'
+        s= s+ '         <treecol label="'+_('Septiembre')+'" flex="1" style="text-align: right"/>\n'
+        s= s+ '         <treecol label="'+_('Octubre   ')+'" flex="1" style="text-align: right"/>\n'
+        s= s+ '         <treecol label="'+_('Noviembre ')+'" flex="1" style="text-align: right"/>\n'
+        s= s+ '         <treecol label="'+_('Diciembre ')+'" flex="1" style="text-align: right"/>\n'
+        s= s+ '         <treecol label="'+_('Total     ')+'" flex="1" style="text-align: right"/>\n'
         s= s+  '     </treecols>\n'
         s= s+  '     <treechildren>\n'
         fechamenor=con.Execute("select min(fecha) as fecha from opercuentastarjetas where id_conceptos="+str(id_conceptos)).GetRowAssoc(0)['fecha']
@@ -297,8 +303,8 @@ class Concepto:
         else:
             mediamensual=sumtotal/(12*(datetime.date.today().year-fechamenor.year))
             mediaanual=sumtotal/(datetime.date.today().year-fechamenor.year)
-        s= s + '<label flex="0"  style="text-align: center;font-weight : bold;" value="Media mensual: '+ euros(mediamensual)+'." />\n'
-        s= s + '<label flex="0"  style="text-align: center;font-weight : bold;" value="Media anual: '+ euros(mediaanual)+'." />\n'
+        s= s + '<label flex="0"  style="text-align: center;font-weight : bold;" value="'+_('Media mensual')+': '+ euros(mediamensual)+'." />\n'
+        s= s + '<label flex="0"  style="text-align: center;font-weight : bold;" value="'+_('Media anual')+': '+ euros(mediaanual)+'." />\n'
         return s
 
     def xultree(self, sql):
@@ -314,7 +320,7 @@ class Concepto:
         s= s+ '     }\n'
         s= s+ '     var popmodificar=document.createElement("menuitem");\n'
         s= s+ '     popmodificar.setAttribute("id", "popmodificar");\n'
-        s= s+ '     popmodificar.setAttribute("label", "Modificar el concepto");\n'
+        s= s+ '     popmodificar.setAttribute("label", "'+_('Modificar el concepto')+'");\n'
         s= s+ '     popmodificar.setAttribute("class", "menuitem-iconic");\n'
         s= s+ '     popmodificar.setAttribute("image", "images/edit.png");\n'
         s= s+ '     popmodificar.setAttribute("oncommand", "concepto_modificar();");\n'
@@ -347,15 +353,15 @@ class Concepto:
 
         s= s+ '<popupset>\n'
         s= s+ '     <popup id="popupConceptos" >\n'
-        s= s+ '          <menuitem label="Nuevo concepto" oncommand="location=\'concepto_insertar.psp\'" class="menuitem-iconic"  image="images/item_add.png"/>\n'
+        s= s+ '          <menuitem label="'+_('Nuevo concepto')+'" oncommand="location=\'concepto_insertar.psp\'" class="menuitem-iconic"  image="images/item_add.png"/>\n'
         s= s+ '     </popup>\n'
         s= s+ '</popupset>\n'
 
         s= s+ '<tree id="treeConceptos" flex="6"   context="popupConceptos"  onselect="popupConceptos();" >\n'
         s= s+ '     <treecols>\n'
         s= s+  '          <treecol id="id" label="Id" hidden="true" />\n'
-        s= s+  '          <treecol label="Concepto"  flex="2"/>\n'
-        s= s+  '          <treecol label="Tipo de operación"  flex="2"/>\n'
+        s= s+  '          <treecol label="'+_('Concepto')+'"  flex="2"/>\n'
+        s= s+  '          <treecol label="'+_('Tipo de operación')+'"  flex="2"/>\n'
         s= s+  '     </treecols>\n'
         s= s+  '     <treechildren>\n'
         curs=con.Execute(sql);         
@@ -420,7 +426,7 @@ class Cuenta:
         s= s+ '     }\n'
         s= s+ '     var popmodificar=document.createElement("menuitem");\n'
         s= s+ '     popmodificar.setAttribute("id", "popmodificar");\n'
-        s= s+ '     popmodificar.setAttribute("label", "Modificar la cuenta");\n'
+        s= s+ '     popmodificar.setAttribute("label", "'+_('Modificar la cuenta')+'");\n'
         s= s+ '     popmodificar.setAttribute("class", "menuitem-iconic");\n'
         s= s+ '     popmodificar.setAttribute("image", "images/edit.png");\n'
         s= s+ '     popmodificar.setAttribute("oncommand", "cuenta_modificar();");\n'
@@ -428,11 +434,11 @@ class Cuenta:
         s= s+ '     var popactiva=document.createElement("menuitem");\n'
         s= s+ '     popactiva.setAttribute("id", "popactiva");\n'
         s= s+ '     if (activa){\n'
-        s= s+ '         popactiva.setAttribute("label", "Desactivar la cuenta");\n'
+        s= s+ '         popactiva.setAttribute("label", "'+_('Desactivar la cuenta')+'");\n'
         s= s+ '         popactiva.setAttribute("checked", "false");\n'
         s= s+ '         popactiva.setAttribute("oncommand", "cuenta_modificar_activa();");\n'
         s= s+ '     }else{\n'
-        s= s+ '         popactiva.setAttribute("label", "Activar la cuenta");\n'
+        s= s+ '         popactiva.setAttribute("label", "'+_('Activar la cuenta')+'");\n'
         s= s+ '         popactiva.setAttribute("checked", "true");\n'
         s= s+ '         popactiva.setAttribute("oncommand", "cuenta_modificar_activa();");\n'
         s= s+ '     }\n'
@@ -442,7 +448,7 @@ class Cuenta:
         s= s+ '     popup.appendChild(popseparator1);\n'
         s= s+ '     var popmovimientos=document.createElement("menuitem");\n'
         s= s+ '     popmovimientos.setAttribute("id", "popmovimientos");\n'
-        s= s+ '     popmovimientos.setAttribute("label", "Movimientos en la cuenta");\n'
+        s= s+ '     popmovimientos.setAttribute("label", "'+_('Movimientos en la cuenta')+'");\n'
         s= s+ '     popmovimientos.setAttribute("oncommand", "cuenta_movimientos();");\n'
         s= s+ '     popup.appendChild(popmovimientos);\n'
         s= s+ '}\n\n'
@@ -477,10 +483,10 @@ class Cuenta:
         s= s+ ']]>\n</script>\n\n'                
         s= s+ '<popupset>\n'
         s= s+ '     <popup id="popupCuentas" >\n'
-        s= s+ '          <menuitem label="Transferencia bancaria"  onclick="location=\'cuenta_transferencia.psp\';"  class="menuitem-iconic"  image="images/hotsync.png" />\n'
-        s=s + '          <menuitem label="Listado de tarjetas"  onclick="location=\'tarjeta_listado.psp\';"   class="menuitem-iconic"  image="images/visa.png"/>\n'
+        s= s+ '          <menuitem label="'+_('Transferencia bancaria')+'"  onclick="location=\'cuenta_transferencia.psp\';"  class="menuitem-iconic"  image="images/hotsync.png" />\n'
+        s=s + '          <menuitem label="'+_('Listado de tarjetas')+'"  onclick="location=\'tarjeta_listado.psp\';"   class="menuitem-iconic"  image="images/visa.png"/>\n'
         s= s+ '          <menuseparator/>\n'
-        s= s+ '          <menuitem label="Cuenta nueva" oncommand="location=\'cuenta_insertar.psp\'" class="menuitem-iconic"  image="images/item_add.png"/>\n'
+        s= s+ '          <menuitem label="'+_('Cuenta nueva')+'" oncommand="location=\'cuenta_insertar.psp\'" class="menuitem-iconic"  image="images/item_add.png"/>\n'
 #    <menuitem label="Modificar la cuenta"  oncommand='location="cuentas_ibm.psp?id_cuentas=" + idcuenta  + "&amp;ibm=modificar&amp;regresando=0";'   class="menuitem-iconic"  image="images/toggle_log.png"/>
 #    <menuitem label="Borrar la cuenta"  oncommand='location="cuentas_ibm.psp?id_cuentas=" + idcuenta  + "&amp;ibm=borrar&amp;regresando=0";'  class="menuitem-iconic" image="images/eventdelete.png"/>
 #    <menuitem label="Movimientos de cuenta"  oncommand="location='cuentaoperacion_listado.psp?id_cuentas=' + idcuenta;"/> 
@@ -492,11 +498,11 @@ class Cuenta:
         s= s+ '<tree id="treeCuentas" flex="6"   context="popupCuentas"  onselect="popupCuentas();" ondblclick="cuenta_movimientos();" >\n'
         s= s+ '     <treecols>\n'
         s= s+  '          <treecol id="id" label="Id" hidden="true" />\n'
-        s= s+  '          <treecol id="activa" label="Activa" hidden="true" />\n'
-        s= s+  '          <treecol id="col_cuenta" label="Cuenta" sort="?col_cuenta"  sortDirection="descending" flex="2"/>\n'
-        s= s+  '          <treecol id="col_entidad_bancaria" label="Entidad Bancaria"  sort="?col_entidad_bancaria" sortActive="true"  flex="2"/>\n'
-        s= s+  '          <treecol id="col_valor" label="Número de cuenta" flex="2" style="text-align: right" />\n'
-        s= s+  '          <treecol id="col_saldo" label="Saldo" flex="1" style="text-align: right"/>\n'
+        s= s+  '          <treecol id="activa" label="'+_('Activa')+'" hidden="true" />\n'
+        s= s+  '          <treecol id="col_cuenta" label="'+_('Cuenta')+'" sort="?col_cuenta"  sortDirection="descending" flex="2"/>\n'
+        s= s+  '          <treecol id="col_entidad_bancaria" label="'+_('Entidad Bancaria')+'"  sort="?col_entidad_bancaria" sortActive="true"  flex="2"/>\n'
+        s= s+  '          <treecol id="col_valor" label="'+_('Número de cuenta')+'" flex="2" style="text-align: right" />\n'
+        s= s+  '          <treecol id="col_saldo" label="'+_('Saldo')+'" flex="1" style="text-align: right"/>\n'
         s= s+  '     </treecols>\n'
         s= s+  '     <treechildren>\n'
         curs=con.Execute(sql);         
@@ -516,7 +522,7 @@ class Cuenta:
             curs.MoveNext()     
         s= s + '     </treechildren>\n'
         s= s + '</tree>\n'
-        s= s + '<label flex="1"  id="totalcuentas" style="text-align: center;font-weight : bold;" value="Saldo total de todas las cuentas: '+ euros(sumsaldos)+'" total="'+str(sumsaldos)+'" />\n'
+        s= s + '<label flex="1"  id="totalcuentas" style="text-align: center;font-weight : bold;" value="'+_('Saldo total de todas las cuentas')+': '+ euros(sumsaldos)+'" total="'+str(sumsaldos)+'" />\n'
         s= s + '</vbox>\n'
         curs.Close()
         return s
@@ -609,14 +615,14 @@ class CuentaOperacion:
 
         s= s+ '     var popmodificar=document.createElement("menuitem");\n'
         s= s+ '     popmodificar.setAttribute("id", "popmodificar");\n'
-        s= s+ '     popmodificar.setAttribute("label", "Modificar la operación");\n'
+        s= s+ '     popmodificar.setAttribute("label", "'+_('Modificar la operación')+'");\n'
         s= s+ '     popmodificar.setAttribute("class", "menuitem-iconic");\n'
         s= s+ '     popmodificar.setAttribute("image", "images/edit.png");\n'
         s= s+ '     popmodificar.setAttribute("oncommand", "opercuenta_modificar();");\n'
         s= s+ '     popup.appendChild(popmodificar);\n'
         s= s+ '     var popborrar=document.createElement("menuitem");\n'
         s= s+ '     popborrar.setAttribute("id", "popborrar");\n'
-        s= s+ '     popborrar.setAttribute("label", "Borra la operación");\n'
+        s= s+ '     popborrar.setAttribute("label", "'+_('Borra la operación')+'");\n'
         s= s+ '     popborrar.setAttribute("oncommand", "opercuenta_borrar();");\n'
         s= s+ '     popup.appendChild(popborrar);\n'
         s= s+ '}\n\n'
@@ -654,27 +660,27 @@ class CuentaOperacion:
         s= s+ ']]>\n</script>\n\n'                
         s= s+ '<popupset>\n'
         s= s+ '    <popup id="popupOpercuentas">\n'
-        s=s + '        <menuitem label="Transferencia bancaria"  onclick="location=\'cuenta_transferencia.psp\';"  class="menuitem-iconic"  image="images/hotsync.png" />\n'
-        s= s+ '        <menuitem label="Operación de tarjeta"   onclick="location=\'tarjeta_listado.psp\';"   class="menuitem-iconic"  image="images/visa.png"/>\n'
+        s=s + '        <menuitem label="'+_('Transferencia bancaria')+'"  onclick="location=\'cuenta_transferencia.psp\';"  class="menuitem-iconic"  image="images/hotsync.png" />\n'
+        s= s+ '        <menuitem label="'+_('Operación de tarjeta')+'"   onclick="location=\'tarjeta_listado.psp\';"   class="menuitem-iconic"  image="images/visa.png"/>\n'
         s= s+ '        <menuseparator/>\n'
-        s= s+ '        <menuitem label="Nueva operación" oncommand="opercuenta_insertar();" class="menuitem-iconic"  image="images/item_add.png"/>\n'
+        s= s+ '        <menuitem label="'+_('Nueva operación')+'" oncommand="opercuenta_insertar();" class="menuitem-iconic"  image="images/item_add.png"/>\n'
         s= s+ '    </popup>\n'
         s= s+ '</popupset>\n'
         s= s+ '<tree id="treeOpercuentas" enableColumnDrag="true" flex="6"   context="popupOpercuentas"  onselect="popupOpercuentas();">\n'
         s= s+ '    <treecols>\n'
         s= s+ '        <treecol id="id" label="id" hidden="true" />\n'
-        s= s+ '        <treecol label="Fecha" flex="1" style="text-align: center"/>\n'
-        s= s+ '        <treecol label="Concepto"  flex="3"/>\n'
-        s= s+ '        <treecol label="Importe" flex="1" style="text-align: right" />\n'
-        s= s+ '        <treecol label="Saldo" flex="1" style="text-align: right"/>\n'
-        s= s+ '        <treecol label="Comentario" flex="7" style="text-align: left"/>\n'
+        s= s+ '        <treecol label="'+_('Fecha')+'" flex="1" style="text-align: center"/>\n'
+        s= s+ '        <treecol label="'+_('Concepto')+'"  flex="3"/>\n'
+        s= s+ '        <treecol label="'+_('Importe')+'" flex="1" style="text-align: right" />\n'
+        s= s+ '        <treecol label="'+_('Saldo')+'" flex="1" style="text-align: right"/>\n'
+        s= s+ '        <treecol label="'+_('Comentario')+'" flex="7" style="text-align: left"/>\n'
         s= s+ '    </treecols>\n'
         s= s+ '    <treechildren>\n'
         s= s+ '      <treeitem>\n'
         s= s+ '         <treerow>\n'
         s= s+ '            <treecell label="0" />\n'
         s= s+ '            <treecell label="" />\n'
-        s= s+ '            <treecell label="Saldo a inicio de mes" />\n'
+        s= s+ '            <treecell label="'+_('Saldo a inicio de mes')+'" />\n'
         s= s+ '            '+ treecell_euros(0)
         s= s+ '            '+ treecell_euros(saldo)
         s= s+ '            <treecell label="" />\n'
@@ -732,7 +738,7 @@ class CuentaOperacionHeredadaInversion:
 #        //Dependiendo del tipo de operaci�n se ejecuta una operaci�n u otra.
         if row['id_tiposoperaciones']==4:#Compra Acciones
             #Se pone un registro de compra de acciones que resta el saldo de la opercuenta
-            CuentaOperacionHeredadaInversion().insertar(fecha, 29, 4, -importe-comision, regInversion['inversion']+". Importe: " + str(importe)+". Comisión: " + str(comision)+ ". Impuestos: " + str(impuestos),id_cuentas,id_operinversiones,id_inversiones);
+            CuentaOperacionHeredadaInversion().insertar(fecha, 29, 4, -importe-comision, regInversion['inversion']+'. '+_('Importe')+': ' + str(importe)+". Comisión: " + str(comision)+ ". Impuestos: " + str(impuestos),id_cuentas,id_operinversiones,id_inversiones);
             #//Si hubiera comisi�n se a�ade la comisi�n.
 #            if(comision!=0):
 #                CuentaOperacionHeredadaInversion().insertar(fecha, 38, 1, -comision, regInversion['inversion']+". Comisión (Id. id_operinversiones)",id_cuentas,id_operinversiones,id_inversiones)
@@ -919,15 +925,6 @@ class Dividendo:
         
 
 class Inversion:
-    def aplicar_tipo_fiscal(self, plusvalias,minusvalias):
-        tipofiscal=0.18;
-        dif=plusvalias+minusvalias;
-        if (dif<=0):
-            resultado=dif;
-        else:
-            resultado=dif*(1-tipofiscal);
-        return resultado;
-
     def cmb_tpcvariable(self, name,   selected,  js=True):
         jstext=""
         if js:
@@ -2760,62 +2757,137 @@ class Total:
                 sumoperacionesnegativas=sumoperacionesnegativas+pendiente;
             curs.MoveNext()     
         curs.Close()
- 
-        beneficiocon=Inversion().aplicar_tipo_fiscal(sumoperacionespositivas,sumoperacionesnegativas)+sumimpuestos+sumcomision+Dividendo().suid_liquido_todos(inicio,fin)
+        sumcomisioncustodia=con.Execute("select sum(importe) as suma from opercuentas where id_conceptos=59 and date_part('year',fecha)="+str(ano)).GetRowAssoc(0)["suma"]
+        
 
+        plusvalias=sumoperacionespositivas+sumoperacionesnegativas
+        dividendosconretencion=Dividendo().suid_liquido_todos(inicio,fin)
+        dividendossinretencion=dividendosconretencion*(1+config.dividendwithholding)
         saldototal=Total().saldo_total(datetime.date.today());
-
         saldototalinicio=Total().saldo_total(inicio)
-
-        beneficio=sumoperacionespositivas+sumoperacionesnegativas+sumimpuestos+sumcomision+(Dividendo().suid_liquido_todos(inicio,fin)*1.18)
+        beneficiosin=plusvalias+sumcomision+sumcomisioncustodia+dividendossinretencion
+        if plusvalias>0:
+            beneficiopag=plusvalias*(1-config.taxcapitalappreciation)+sumimpuestos+sumcomision+sumcomisioncustodia+dividendosconretencion
+        else:            
+            beneficiopag=plusvalias+sumimpuestos+sumcomision+sumcomisioncustodia+dividendosconretencion
 
         s=      '<vbox flex="1">\n'
         s=s+ ' <tree flex="1">\n'
         s=s+ '  <treecols>\n'
         s=s+ '    <treecol flex="1"  style="text-align: left"/>\n'
         s=s+ '    <treecol label="Beneficio" flex="1" style="text-align: center"/>\n'
-        s=s+ '    <treecol label="% TAE desde '+inicio+' ('+euros(saldototalinicio)+')" flex="1" style="text-align: center"/>\n'
+        s=s+ '    <treecol label="'+_('% TAE desde')+' '+inicio+' ('+euros(saldototalinicio)+')" flex="1" style="text-align: center"/>\n'
         s=s+ ' </treecols>\n'
         s=s+ '  <treechildren>\n'
+        
         s=s+ '    <treeitem>\n'
         s=s+ '      <treerow>\n'
-        s=s+ '          <treecell label="Sin impuestos" />\n'
-        s=s+treecell_euros(beneficio);
+        s=s+ '          <treecell label="'+_('Plusvalías de inversiones')+'" />\n'
+        s=s+treecell_euros(plusvalias);
         try:
-            s=s+treecell_tpc((beneficio)*100/saldototalinicio)
+            s=s+treecell_tpc((plusvalias)*100/saldototalinicio)
         except ZeroDivisionError:
             s=s+treecell_tpc(0)
-            
         s=s+ '      </treerow>\n'
         s=s+ '   </treeitem>    \n'
+
         s=s+ '    <treeitem>\n'
         s=s+ '      <treerow>\n'
-        s=s+ '         <treecell label="Con impuestos" />\n'
-        s=s+treecell_euros(beneficiocon);
+        s=s+ '          <treecell label="Dividendos sin retenciones" />\n'
+        s=s+treecell_euros(dividendossinretencion);
         try:
-            s=s+treecell_tpc((beneficiocon)*100/saldototalinicio)
+            s=s+treecell_tpc((dividendossinretencion)*100/saldototalinicio)
+        except ZeroDivisionError:
+            s=s+treecell_tpc(0)
+        s=s+ '      </treerow>\n'
+        s=s+ '   </treeitem>    \n'
+        
+
+        
+        s=s+ '    <treeitem>\n'
+        s=s+ '      <treerow>\n'
+        s=s+ '          <treecell label="Comisiones en operaciones de inversión" />\n'
+        s=s+treecell_euros(sumcomision);
+        try:
+            s=s+treecell_tpc((sumcomision)*100/saldototalinicio)
+        except ZeroDivisionError:
+            s=s+treecell_tpc(0)
+        s=s+ '      </treerow>\n'
+        s=s+ '   </treeitem>    \n'        
+        
+        s=s+ '    <treeitem>\n'
+        s=s+ '      <treerow>\n'
+        s=s+ '          <treecell label="Comisiones de custodia" />\n'
+        s=s+treecell_euros(sumcomisioncustodia);
+        try:
+            s=s+treecell_tpc((sumcomisioncustodia)*100/saldototalinicio)
+        except ZeroDivisionError:
+            s=s+treecell_tpc(0)
+        s=s+ '      </treerow>\n'
+        s=s+ '   </treeitem>    \n'        
+                
+        s=s+ '    <treeitem><treerow><treecell label="" /><treecell label="" /><treecell label="" /></treerow></treeitem>    \n'     
+                
+        s=s+ '    <treeitem>\n'
+        s=s+ '      <treerow>\n'
+        s=s+ '          <treecell label="Retenciones venta fondos inversión al '+str(config.taxcapitalappreciation*100)+'%" />\n'
+        s=s+treecell_euros(sumimpuestos);
+        try:
+            s=s+treecell_tpc((sumimpuestos)*100/saldototalinicio)
+        except ZeroDivisionError:
+            s=s+treecell_tpc(0)
+        s=s+ '      </treerow>\n'
+        s=s+ '   </treeitem>    \n'
+        
+        s=s+ '    <treeitem>\n'
+        s=s+ '      <treerow>\n'
+        s=s+ '          <treecell label="Retenciones de los dividendos al '+str(config.dividendwithholding*100)+'%" />\n'
+        s=s+treecell_euros(dividendosconretencion-dividendossinretencion);
+        try:
+            s=s+treecell_tpc((dividendosconretencion-dividendossinretencion)*100/saldototalinicio)
+        except ZeroDivisionError:
+            s=s+treecell_tpc(0)
+        s=s+ '      </treerow>\n'
+        s=s+ '   </treeitem>    \n'
+               
+        s=s+ '    <treeitem>\n'
+        s=s+ '      <treerow>\n'
+        s=s+ '          <treecell label="Pago impuestos plusvalias al '+str(config.taxcapitalappreciation*100)+'%" />\n'
+        s=s+treecell_euros(-plusvalias*config.taxcapitalappreciation);
+        try:
+            s=s+treecell_tpc((-plusvalias*config.taxcapitalappreciation)*100/saldototalinicio)
+        except ZeroDivisionError:
+            s=s+treecell_tpc(0)
+        s=s+ '      </treerow>\n'
+        s=s+ '   </treeitem>    \n'
+        
+        s=s+ '    <treeitem><treerow><treecell label="" /><treecell label="" /><treecell label="" /></treerow></treeitem>    \n'     
+        
+        s=s+ '    <treeitem>\n'
+        s=s+ '      <treerow>\n'
+        s=s+ '         <treecell label="Beneficio sin impuestos" />\n'
+        s=s+treecell_euros(beneficiosin);
+        try:
+            s=s+treecell_tpc((beneficiosin)*100/saldototalinicio)
         except ZeroDivisionError:
             s=s+treecell_tpc(0)
         s=s+ '      </treerow>\n'
         s=s+ '   </treeitem>\n'
+        
         s=s+ '    <treeitem>\n'
         s=s+ '      <treerow>\n'
-        s=s+ '          <treecell label="Comisiones" />\n'
-        s=s+treecell_euros(sumcomision);
-        s=s+treecell_tpc(0)
+        s=s+ '         <treecell label="Beneficio pagando impuestos" />\n'
+        s=s+treecell_euros(beneficiopag);
+        try:
+            s=s+treecell_tpc((beneficiopag)*100/saldototalinicio)
+        except ZeroDivisionError:
+            s=s+treecell_tpc(0)
         s=s+ '      </treerow>\n'
-        s=s+ '   </treeitem>    \n'        
-        s=s+ '    <treeitem>\n'
-        s=s+ '      <treerow>\n'
-        s=s+ '          <treecell label="Impuestos" />\n'
-        s=s+treecell_euros(sumimpuestos);
-        s=s+treecell_tpc(0)
-        s=s+ '      </treerow>\n'
-        s=s+ '   </treeitem>    \n'
+        s=s+ '   </treeitem>\n'
+        
         s=s+ '  </treechildren>\n'
         s=s+ '</tree>\n'
-        s= s + '<label flex="0"  style="text-align: center;font-weight : bold;" value="Saldo a '+str(datetime.date.today())+': '+ euros(saldototal)+'." />\n'        
-        s= s + '<label flex="0"  style="text-align: center;font-weight : bold;" value="Beneficio en el año '+str(ano)+': '+ euros(saldototal-saldototalinicio)+'." />\n'
+        s= s + '<label flex="0"  style="text-align: center;font-weight : bold;" value="Valor de mi patrimonio a '+str(datetime.date.today())+': '+ euros(saldototal)+' ( '+ euros(saldototal-saldototalinicio)+' en este año )" />\n'
         s= s + '</vbox>\n'
         return s        
 

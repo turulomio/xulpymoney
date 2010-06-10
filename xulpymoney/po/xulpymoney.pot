@@ -1,0 +1,286 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-06-10 15:29+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../about.psp:7
+msgid "Acerca de Xulpymoney"
+msgstr ""
+
+#: ../clases/core.py:94
+msgid "Modificar la Entidad Bancaria"
+msgstr ""
+
+#: ../clases/core.py:104
+msgid "Patrimonio en la Entidad Bancaria"
+msgstr ""
+
+#: ../clases/core.py:113
+msgid "Desactivar la Entidad Bancaria"
+msgstr ""
+
+#: ../clases/core.py:117
+msgid "Activar la Entidad Bancaria"
+msgstr ""
+
+#: ../clases/core.py:163 ../clases/core.py:501
+msgid "Activa"
+msgstr ""
+
+#: ../clases/core.py:164 ../clases/core.py:503
+msgid "Entidad Bancaria"
+msgstr ""
+
+#: ../clases/core.py:165
+msgid "saldo total"
+msgstr ""
+
+#: ../clases/core.py:166 ../clases/core.py:505
+msgid "Saldo"
+msgstr ""
+
+#: ../clases/core.py:188
+msgid "Saldo total"
+msgstr ""
+
+#: ../clases/core.py:267
+msgid "Año "
+msgstr ""
+
+#: ../clases/core.py:268
+msgid "Enero     "
+msgstr ""
+
+#: ../clases/core.py:269
+msgid "Febrero   "
+msgstr ""
+
+#: ../clases/core.py:270
+msgid "Marzo     "
+msgstr ""
+
+#: ../clases/core.py:271
+msgid "Abril     "
+msgstr ""
+
+#: ../clases/core.py:272
+msgid "Mayo      "
+msgstr ""
+
+#: ../clases/core.py:273
+msgid "Junio     "
+msgstr ""
+
+#: ../clases/core.py:274
+msgid "Julio     "
+msgstr ""
+
+#: ../clases/core.py:275
+msgid "Agosto    "
+msgstr ""
+
+#: ../clases/core.py:276
+msgid "Septiembre"
+msgstr ""
+
+#: ../clases/core.py:277
+msgid "Octubre   "
+msgstr ""
+
+#: ../clases/core.py:278
+msgid "Noviembre "
+msgstr ""
+
+#: ../clases/core.py:279
+msgid "Diciembre "
+msgstr ""
+
+#: ../clases/core.py:280
+msgid "Total     "
+msgstr ""
+
+#: ../clases/core.py:306
+msgid "Media mensual"
+msgstr ""
+
+#: ../clases/core.py:307
+msgid "Media anual"
+msgstr ""
+
+#: ../clases/core.py:323
+msgid "Modificar el concepto"
+msgstr ""
+
+#: ../clases/core.py:356
+msgid "Nuevo concepto"
+msgstr ""
+
+#: ../clases/core.py:363
+msgid "Concepto"
+msgstr ""
+
+#: ../clases/core.py:364
+msgid "Tipo de operación"
+msgstr ""
+
+#: ../clases/core.py:429
+msgid "Modificar la cuenta"
+msgstr ""
+
+#: ../clases/core.py:437
+msgid "Desactivar la cuenta"
+msgstr ""
+
+#: ../clases/core.py:441
+msgid "Activar la cuenta"
+msgstr ""
+
+#: ../clases/core.py:451
+msgid "Movimientos en la cuenta"
+msgstr ""
+
+#: ../clases/core.py:486 ../clases/core.py:663 ../clases/xul.py:47
+msgid "Transferencia bancaria"
+msgstr ""
+
+#: ../clases/core.py:487 ../clases/xul.py:46
+msgid "Listado de tarjetas"
+msgstr ""
+
+#: ../clases/core.py:489
+msgid "Cuenta nueva"
+msgstr ""
+
+#: ../clases/core.py:502
+msgid "Cuenta"
+msgstr ""
+
+#: ../clases/core.py:504
+msgid "Número de cuenta"
+msgstr ""
+
+#: ../clases/core.py:525
+msgid "Saldo total de todas las cuentas"
+msgstr ""
+
+#: ../clases/core.py:618
+msgid "Modificar la operación"
+msgstr ""
+
+#: ../clases/core.py:625
+msgid "Borra la operación"
+msgstr ""
+
+#: ../clases/core.py:2779
+msgid "% TAE desde"
+msgstr ""
+
+#: ../clases/core.py:2785
+msgid "Plusvalías de inversiones"
+msgstr ""
+
+#: ../clases/xul.py:38
+msgid "Entidades Bancarias"
+msgstr ""
+
+#: ../clases/xul.py:40 ../clases/xul.py:45
+msgid "Listado"
+msgstr ""
+
+#: ../clases/xul.py:43
+msgid "Cuentas"
+msgstr ""
+
+#: ../clases/xul.py:50
+msgid "Inversiones"
+msgstr ""
+
+#: ../clases/xul.py:52
+msgid "Estado"
+msgstr ""
+
+#: ../clases/xul.py:53
+msgid "Compra / Venta"
+msgstr ""
+
+#: ../clases/xul.py:54
+msgid "Histórico"
+msgstr ""
+
+#: ../clases/xul.py:56
+msgid "Actualizar en Internet"
+msgstr ""
+
+#: ../clases/xul.py:59
+msgid "Informes"
+msgstr ""
+
+#: ../clases/xul.py:61
+msgid "Clasificación"
+msgstr ""
+
+#: ../clases/xul.py:62
+msgid "Conceptos"
+msgstr ""
+
+#: ../clases/xul.py:64
+msgid "Estudio mensual"
+msgstr ""
+
+#: ../clases/xul.py:65
+msgid "Evolución histórica"
+msgstr ""
+
+#: ../clases/xul.py:68
+msgid "Evolución TAE"
+msgstr ""
+
+#: ../clases/xul.py:69
+msgid "Referencia a IBEX"
+msgstr ""
+
+#: ../clases/xul.py:70
+msgid "Total"
+msgstr ""
+
+#: ../clases/xul.py:73
+msgid "Mantenimiento"
+msgstr ""
+
+#: ../clases/xul.py:75
+msgid "Datos Ibex 35"
+msgstr ""
+
+#: ../clases/xul.py:76
+msgid "Operaciones de inversión"
+msgstr ""
+
+#: ../clases/xul.py:77
+msgid "Tablas auxiliares"
+msgstr ""
+
+#: ../clases/xul.py:82
+msgid "Acerca de"
+msgstr ""
+
+#: ../clases/xul.py:83
+msgid "Manual de usuario"
+msgstr ""
+
+#: ../clases/xul.py:135
+msgid "Selecciona un año"
+msgstr ""

@@ -1,9 +1,10 @@
 <% 
-from xul import *
 from core import *
-from config import *
+from xul import *
+from translate import  _
+
 req.content_type="application/vnd.mozilla.xul+xml"
-req.write(xulheaderwindowmenu("Acerca de Xulpymoney"))
+req.write(xulheaderwindowmenu(_("Acerca de Xulpymoney")))
 
 f=os.popen("/usr/bin/uname -s -r -p")
 so=f.read()
@@ -24,7 +25,7 @@ f.close()
 %>
 <vbox  flex="5">
 <label id="titulo" value="Acerca de Xulpymoney" />
-<label value="<%=version%>" style="text-align : center;"/>
+<label value="<%=version %>" style="text-align : center;"/>
 
 <spacer flex="1"/>
 <hbox flex="4">
