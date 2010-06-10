@@ -1,5 +1,7 @@
 xulpymoney 0.2 XXXXXXXX
 =======================
+- Se ha sustituido el uso de mod_python.psp (.psp) por mod_python.publisher (*.py) para facilitar la internacionalización e incluso la limpieza de código
+- Se ha empezado a traducir a inglés la applicación
 - Se ha mejorado los resultados del informe historico
 - Se ha añadido en el fichero config.py la opcion del lenguage, dividendwithholding, taxcapitalappreciation
 - El formato del fichero de ayuda de usuario ha pasado a ser odt (Openoffice)

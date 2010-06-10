@@ -1,0 +1,70 @@
+<%
+import time
+from core import *
+from xul import *
+
+req.content_type="application/vnd.mozilla.xul+xml"
+req.write(xulheaderwindowmenu("Xulpymoney > Cuenta > Modificar"))
+
+cd=ConectionDirect()
+con=Conection()
+row=cd.con.Execute("select * from cuentas where id_cuentas="+ form["id_cuentas"]).GetRowAssoc(0)
+cmbentidadesbancarias=EntidadBancaria().cmb('id_entidadesbancarias','select * from entidadesbancarias where eb_activa=true order by entidadbancaria',  row['id_entidadesbancarias'],  False)
+cd.close()
+con.close()
+%>
+
+<script>
+<![CDATA[        
+function cuenta_modificar(){
+    if (check_data()==false){
+        return;
+    }
+    var xmlHttp;
+    xmlHttp=new XMLHttpRequest();
+    xmlHttp.onreadystatechange=function(){
+        if(xmlHttp.readyState==4){
+            var ale=xmlHttp.responseText;
+            location="cuenta_listado.py";
+        }
+    }
+    var id_cuentas = <%=form['id_cuentas']%>;
+    var cuenta = document.getElementById("cuenta").value;
+    var id_entidadesbancarias = document.getElementById("id_entidadesbancarias").value;
+    var numero_cuenta = document.getElementById("numero_cuenta").value;
+    var url="ajax/cuenta_modificar.py?id_cuentas="+id_cuentas+"&cuenta="+cuenta+"&id_entidadesbancarias="+id_entidadesbancarias+"&numero_cuenta="+numero_cuenta;
+    xmlHttp.open("GET",url,true);
+    xmlHttp.send(null);
+}
+
+function check_data(){
+    resultado=true;
+    if (document.getElementById("numero_cuenta").value.length!=20){
+        alert("El número de cuenta debe tener 20 caractéres");
+        resultado=false;
+    }
+    if (document.getElementById("numero_cuenta").value.search(/[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]/)==-1){
+        alert("Todos los caracteres deben ser numéricos");
+        resultado=false;
+    }    
+    return resultado;
+}
+
+]]>
+</script>
+
+<vbox flex="1">
+    <label id="titulo" flex="0" value="Modificar cuenta" />
+    <label value="" />
+    <hbox flex="1">
+    <grid align="center">
+        <rows>
+        <row><label value="Nombre de la cuenta"/><hbox><textbox id="cuenta" value="<%=row["cuenta"]%>"/></hbox></row>
+        <row><label value="Entidad Bancaria al que pertenece"/><hbox><%=cmbentidadesbancarias%></hbox></row>
+        <row><label value="Número de cuenta" /><hbox><textbox id="numero_cuenta" value="<%=row["numero_cuenta"]%>"/></hbox></row>        
+        <row><label value=""/><hbox><button id="cmd" label="Aceptar" onclick="cuenta_modificar();"/></hbox></row>
+        </rows>
+    </grid>
+    </hbox>
+</vbox>
+</window>

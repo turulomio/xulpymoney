@@ -1,0 +1,50 @@
+<%
+from core import *
+from xul import *
+
+cd=ConectionDirect()
+
+try:
+    fecha=cd.con.Execute("select fecha from ibex35 order by fecha desc limit 1;").GetRowAssoc(0)['fecha'].date
+    fecha="El último registro del Ibex35 es del " + str(fecha)
+except:
+    fecha="Nunca se ha actualizado los datos del Ibex35"
+
+req.content_type="application/vnd.mozilla.xul+xml"
+req.write(xulheaderwindowmenu("Xulpymoney > Mantenimiento > Mantenimiento Ibex 35 "))
+%>
+<script>
+<![CDATA[
+         
+function update(){
+    var xmlHttp;
+    xmlHttp=new XMLHttpRequest();
+    xmlHttp.onreadystatechange=function(){
+        if(xmlHttp.readyState==4){
+            var ale=xmlHttp.responseText;
+             document.getElementById("resultado").value=ale;
+  	     document.getElementById("subtitulo").value=ale;
+	     document.getElementById("button").disabled=false;
+        }
+    }
+    document.getElementById("resultado").value="Este proceso puede durar unos minutos. Actualizando desde Internet ...";
+    document.getElementById("button").disabled=true;
+    var url="ajax/mantenimiento_ibex35.py";
+    xmlHttp.open("GET",url,true);
+    xmlHttp.send(null);
+}
+
+]]>
+</script>
+
+<vbox align="center">
+    <label id="titulo"  value="Mantenimiento datos de Ibex 35" />
+    <label id="subtitulo"  value="<%=fecha%>"/>
+</vbox>
+<label flex="0"  value="" />
+<label flex="0"  style="text-align: center;font-weight : bold;" value="Para poder realizar estudios comparativos con el IBEX 35 es necesario actualizar los datos históricos en Internet. Para ello pulse en el siguiente botón" />
+
+<label flex="0"  value="" />
+<button id="button" label="Actualizar datos en Internet" oncommand="update();"/>
+<label flex="0"  id="resultado" value="" />
+</window>

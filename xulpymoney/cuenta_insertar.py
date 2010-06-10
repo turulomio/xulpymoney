@@ -1,0 +1,58 @@
+<%
+import time
+from core import *
+from xul import *
+
+#Consultas BD
+con=Conection()
+hoy=datetime.date.today()
+checked=""
+id_inversiones=0
+if form.has_key('id_inversiones'):
+    id_inversiones=form['id_inversiones']
+
+cmbentidadesbancarias=EntidadBancaria().cmb('id_entidadesbancarias','select * from entidadesbancarias where eb_activa=true order by entidadbancaria',  0,  False)
+con.close()
+
+req.content_type="application/vnd.mozilla.xul+xml"
+req.write(xulheaderwindowmenu("Xulpymoney > Cuentas > Nueva"))
+
+%>
+<script>
+<![CDATA[
+         
+function cuenta_insert(){
+    var xmlHttp;
+    xmlHttp=new XMLHttpRequest();
+    xmlHttp.onreadystatechange=function(){
+        if(xmlHttp.readyState==4){
+            var ale=xmlHttp.responseText;
+            location="cuenta_listado.py";
+        }
+    }
+    var id_entidadesbancarias = document.getElementById("id_entidadesbancarias").value;
+    var cuenta = document.getElementById("cuenta").value;
+    var numero_cuenta = document.getElementById("numero_cuenta").value;
+    var url="ajax/cuenta_insertar.py?id_entidadesbancarias="+id_entidadesbancarias+"&cuenta="+cuenta+"&numero_cuenta="+numero_cuenta;
+    xmlHttp.open("GET",url,true);
+    xmlHttp.send(null);
+}
+
+]]>
+</script>
+
+<vbox flex="1">
+    <label id="titulo" flex="0" value="Nueva cuenta" />
+    <label value="" />
+    <hbox flex="1">
+    <grid align="center">
+        <rows>
+        <row><label value="Entidad Bancaria al que pertenece"/><hbox><%=cmbentidadesbancarias%></hbox></row>
+        <row><label value="Nombre de la cuenta"/><hbox><textbox id="cuenta" value="Nueva cuenta"/></hbox></row>
+        <row><label value="Número de cuenta" /><hbox><textbox id="numero_cuenta" value="XXXXXXXXXXXXXXXXXXX"/></hbox></row>        
+        <row><label value="" /><hbox><button id="cmd" label="Aceptar" onclick="cuenta_insert();"/></hbox></row>
+        </rows>
+    </grid>
+    </hbox>
+</vbox>
+</window>

@@ -1,0 +1,65 @@
+<%
+import time
+from core import *
+from xul import *
+
+#Consultas BD
+con=Conection()
+hoy=datetime.date.today()
+checked=""
+id_inversiones=0
+if form.has_key('id_inversiones'):
+    id_inversiones=form['id_inversiones']
+
+cmbcuentas=Cuenta().cmb('id_cuentas','select * from cuentas where cu_activa=true order by cuenta',  0,  False)
+cmbtpcvariable=Inversion().cmb_tpcvariable('tpcvariable', 0, False)
+con.close()
+
+req.content_type="application/vnd.mozilla.xul+xml"
+req.write(xulheaderwindowmenu("Xulpymoney > Inversiones > Nueva"))
+
+%>
+<script>
+<![CDATA[
+         
+function insert(){
+    var xmlHttp;
+    xmlHttp=new XMLHttpRequest();
+    xmlHttp.onreadystatechange=function(){
+        if(xmlHttp.readyState==4){
+            var ale=xmlHttp.responseText;
+            location="inversion_listado.py";
+        }
+    }
+    var inversion = document.getElementById("inversion").value;
+    var compra = document.getElementById("compra").value;
+    var venta = document.getElementById("venta").value;
+    var id_cuentas = document.getElementById("id_cuentas").value;
+    var tpcvariable = document.getElementById("tpcvariable").value;
+    var internet = document.getElementById("internet").value;
+    var url="ajax/inversion_insertar.py?inversion="+inversion+"&compra="+compra+"&venta="+venta+"&id_cuentas="+id_cuentas+"&tpcvariable="+tpcvariable+"&internet="+internet;
+    xmlHttp.open("GET",url,true);
+    xmlHttp.send(null);
+}
+
+]]>
+</script>
+
+<vbox flex="1">
+    <label id="titulo" flex="0" value="Nueva inversión" />
+    <label value="" />
+    <hbox flex="1">
+    <grid align="center">
+        <rows>
+        <row><label value="Cuenta asociada"/><hbox><%=cmbcuentas%></hbox></row>
+        <row><label value="Nombre de la inversión"/><hbox><textbox id="inversion" value=""/></hbox></row>
+        <row><label value="Valor para realizar una nueva compra" /><hbox><textbox id="compra" value="0"/></hbox></row>        
+        <row><label value="Valor para vender la inversión" /><hbox><textbox id="venta" value="0"/></hbox></row>
+        <row><label value="Tipo de inversión" /><hbox><%=cmbtpcvariable%></hbox></row>
+        <row><label value="Nombre en Internet" /><hbox><textbox id="internet" value=""/></hbox></row>
+        <row><label value="" /><hbox><button id="cmd" label="Aceptar" onclick="insert();"/></hbox></row>
+        </rows>
+    </grid>
+    </hbox>
+</vbox>
+</window>

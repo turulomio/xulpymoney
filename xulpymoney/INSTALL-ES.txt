@@ -6,10 +6,9 @@ En el /etc/conf.d/apache poner -D PYTHON
 Se debe configurar el mod_python en /etc/apache2/vhosts.d/default_vhost.include 
 
 <Directory /var/www/localhost/htdocs/xulpymoney>
-  AddHandler mod_python .psp
-  PythonPath "sys.path+['/usr/lib/xulpymoney']"
- PythonHandler mod_python.psp
-# PythonDebug On
+   AddHandler mod_python .py
+   PythonHandler mod_python.publisher
+   PythonPath "sys.path+['/usr/lib/xulpymoney']"
 </Directory>
 
 
