@@ -1,88 +1,90 @@
-<%
+# -*- coding: UTF-8 -*-
+from mod_python import util
 from core import *
 from xul import *
 
-#if form.has_key('id_inversiones'):
-#   id_inversiones=int(form['id_inversiones'])
-#else:
-#    util.redirect(req, 'inversion_informacion.psp')
-con=Conection()
-cd=ConectionDirect()
-row=cd.con.Execute("select * from operinversiones where id_operinversiones="+ form["id_operinversiones"]).GetRowAssoc(0)
-cmbtiposoperaciones=TipoOperacion().cmb('select * from tiposoperaciones where operinversion=true order by tipooperacion',  row['id_tiposoperaciones'],  False)
-req.content_type="application/vnd.mozilla.xul+xml"
-req.write(xulheaderwindowmenu("Xulpymoney > Inversiones > Operaciónes > Modificar"))
-con.close()
-cd.close()
-%>
-<script>
-<![CDATA[
-function modificar(){
-    var xmlHttp;    
-    var id_operinversiones = <%=form['id_operinversiones']%>;
-    var id_tiposoperaciones=document.getElementById("cmbtiposoperaciones").value
-    var importe=document.getElementById("importe").value;
-    var comentario= ""
-    var fecha = document.getElementById("fecha").value;
-    var acciones = document.getElementById("acciones").value;
-    var impuestos = document.getElementById("impuestos").value;
-    var comision = document.getElementById("comision").value;
-    var valor_accion = document.getElementById("valor_accion").value;
-    spfecha=fecha.split("-");
-    var id_inversiones=<%=row['id_inversiones']%>;
-    var url="ajax/inversionoperacion_modificar.psp?id_operinversiones="+id_operinversiones+"&fecha="+fecha+"&id_tiposoperaciones="+id_tiposoperaciones+"&importe="+importe+"&acciones="+acciones+"&impuestos="+impuestos+"&comision="+comision+"&comentario="+comentario+"&valor_accion="+valor_accion+"&id_inversiones="+id_inversiones;
-    xmlHttp=new XMLHttpRequest();
-    xmlHttp.onreadystatechange=function(){
-        if(xmlHttp.readyState==4){
-            var ale=xmlHttp.responseText;
-alert(ale)
-            location="inversion_informacion.psp?id_inversiones="+ id_inversiones ;
-        }
-    }
-    xmlHttp.open("GET",url,true);
-    xmlHttp.send(null);
-}
-]]>
-</script>
-<label id="titulo" value="Modificar una operación de inversión" />
-<vbox flex="5">
-<grid pack="center">
-    <columns>
-        <column flex="1" />
-        <column flex="1" />
-    </columns>
-    <rows>
-        <row>
-            <label id="negrita" value="Fecha <%=str(row['fecha'])[:-12]%>"/>
-            <datepicker id="fecha" type="grid"  firstdayofweek="1" value="<%=str(row['fecha'])[:-12]%>"/>
-        </row>
-        <row>
-            <label id="negrita" value="Tipo de operación"/>
-            <%=cmbtiposoperaciones %>
-        </row>
-        <row>
-            <label id="negrita" value="Importe"/>
-            <textbox id="importe" value="<%=row['importe']%>"/>
-        </row>
-        <row>
-            <label id="negrita" value="Acciones"/>
-            <textbox id="acciones"  value="<%=row['acciones']%>"/>
-        </row>
-        <row>
-            <label id="negrita" value="Impuestos"/>
-            <textbox id="impuestos" value="<%=row['impuestos']%>"/>
-        </row>
-        <row>
-            <label id="negrita" value="Comisión"/>
-            <textbox id="comision" value="<%=row['comision']%>"/>
-        </row>
-        <row>
-            <label id="negrita" value="Valor de la acción"/>
-            <textbox id="valor_accion" value="<%=row['valor_accion']%>"/>
-        </row>
-    </rows>
-</grid>
-    <button label="Aceptar" oncommand="modificar();"/>
+def index(req):
+    #if form.has_key('id_inversiones'):
+    #   id_inversiones=int(form['id_inversiones'])
+    #else:
+    #    util.redirect(req, 'inversion_informacion.psp')
+    con=Conection()
+    cd=ConectionDirect()
+    row=cd.con.Execute("select * from operinversiones where id_operinversiones="+ form["id_operinversiones"]).GetRowAssoc(0)
+    cmbtiposoperaciones=TipoOperacion().cmb('select * from tiposoperaciones where operinversion=true order by tipooperacion',  row['id_tiposoperaciones'],  False)
+    req.content_type="application/vnd.mozilla.xul+xml"
+    req.write(xulheaderwindowmenu("Xulpymoney > Inversiones > Operaciónes > Modificar"))
+    con.close()
+    cd.close()
 
-</vbox>
-</window>
+    req.write('<script>\n')
+    req.write('<![CDATA[\n')
+    req.write('function modificar(){\n')
+    req.write('    var xmlHttp;    \n')
+    req.write('    var id_operinversiones ='+str(form['id_operinversiones'])+' ;\n')
+    req.write('    var id_tiposoperaciones=document.getElementById("cmbtiposoperaciones").value\n')
+    req.write('    var importe=document.getElementById("importe").value;\n')
+    req.write('    var comentario= ""\n')
+    req.write('    var fecha = document.getElementById("fecha").value;\n')
+    req.write('    var acciones = document.getElementById("acciones").value;\n')
+    req.write('    var impuestos = document.getElementById("impuestos").value;\n')
+    req.write('    var comision = document.getElementById("comision").value;\n')
+    req.write('    var valor_accion = document.getElementById("valor_accion").value;\n')
+    req.write('    spfecha=fecha.split("-");\n')
+    req.write('    var id_inversiones='+str(row['id_inversiones'])+';\n')
+    req.write('    var url="ajax/inversionoperacion_modificar.psp?id_operinversiones="+id_operinversiones+"&fecha="+fecha+"&id_tiposoperaciones="+id_tiposoperaciones+"&importe="+importe+"&acciones="+acciones+"&impuestos="+impuestos+"&comision="+comision+"&comentario="+comentario+"&valor_accion="+valor_accion+"&id_inversiones="+id_inversiones;\n')
+    req.write('    xmlHttp=new XMLHttpRequest();\n')
+    req.write('    xmlHttp.onreadystatechange=function(){\n')
+    req.write('        if(xmlHttp.readyState==4){\n')
+    req.write('            var ale=xmlHttp.responseText;\n')
+    req.write('alert(ale)\n')
+    req.write('            location="inversion_informacion.psp?id_inversiones="+ id_inversiones ;\n')
+    req.write('        }\n')
+    req.write('    }\n')
+    req.write('    xmlHttp.open("GET",url,true);\n')
+    req.write('    xmlHttp.send(null);\n')
+    req.write('}\n')
+    req.write(']]>\n')
+    req.write('</script>\n')
+    req.write('<label id="titulo" value="Modificar una operación de inversión" />\n')
+    req.write('<vbox flex="5">\n')
+    req.write('<grid pack="center">\n')
+    req.write('    <columns>\n')
+    req.write('        <column flex="1" />\n')
+    req.write('        <column flex="1" />\n')
+    req.write('    </columns>\n')
+    req.write('    <rows>\n')
+    req.write('        <row>\n')
+    req.write('            <label id="negrita" value="Fecha '+str(row['fecha'])[:-12]+'"/>\n')
+    req.write('            <datepicker id="fecha" type="grid"  firstdayofweek="1" value="'+str(row['fecha'])[:-12]+'"/>\n')
+    req.write('        </row>\n')
+    req.write('        <row>\n')
+    req.write('            <label id="negrita" value="Tipo de operación"/>\n')
+    req.write(cmbtiposoperaciones)
+    req.write('        </row>\n')
+    req.write('        <row>\n')
+    req.write('            <label id="negrita" value="Importe"/>\n')
+    req.write('            <textbox id="importe" value="'+str(row['importe'])+'"/>\n')
+    req.write('        </row>\n')
+    req.write('        <row>\n')
+    req.write('            <label id="negrita" value="Acciones"/>\n')
+    req.write('            <textbox id="acciones"  value="'+str(row['acciones'])+'"/>\n')
+    req.write('        </row>\n')
+    req.write('        <row>\n')
+    req.write('            <label id="negrita" value="Impuestos"/>\n')
+    req.write('            <textbox id="impuestos" value="'+str(row['impuestos'])+'"/>\n')
+    req.write('        </row>\n')
+    req.write('        <row>\n')
+    req.write('            <label id="negrita" value="Comisión"/>\n')
+    req.write('            <textbox id="comision" value="'+str(row['comision'])+'"/>\n')
+    req.write('        </row>\n')
+    req.write('        <row>\n')
+    req.write('            <label id="negrita" value="Valor de la acción"/>\n')
+    req.write('            <textbox id="valor_accion" value="'+str(row['valor_accion'])+'"/>\n')
+    req.write('        </row>\n')
+    req.write('    </rows>\n')
+    req.write('</grid>\n')
+    req.write('    <button label="Aceptar" oncommand="modificar();"/>\n')
+
+    req.write('</vbox>\n')
+    req.write('</window>\n')

@@ -12,7 +12,7 @@ def index(req):
 
         s=s+'function inversion_actualizaroperaciones(){\n'
         s=s+'    var xmlHttp;        \n'
-        s=s+'    var id_inversiones='+form['id_Inversiones']+';\n'
+        s=s+'    var id_inversiones='+form['id_inversiones']+';\n'
         s=s+'    var url=\'ajax/inversion_actualizaroperaciones.psp?id_inversiones=\' + id_inversiones ;\n'
         s=s+'    xmlHttp=new XMLHttpRequest();\n'
         s=s+'    xmlHttp.onreadystatechange=function(){\n'

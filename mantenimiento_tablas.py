@@ -1,33 +1,32 @@
-<% 
+# -*- coding: UTF-8 -*-
+from mod_python import util
 import sys
 from xul import *
 from core import *
 
-req.content_type="application/vnd.mozilla.xul+xml"
-req.write(xulheaderwindowmenu("Xulpymoney > Mantenimiento > Tablas auxiliares"))
+def index(req):
+    req.content_type="application/vnd.mozilla.xul+xml"
+    req.write(xulheaderwindowmenu("Xulpymoney > Mantenimiento > Tablas auxiliares"))
+    
+    con=Conection()
+    lstConceptos=Concepto().xultree("select * from conceptos, tiposoperaciones where conceptos.id_tiposoperaciones=tiposoperaciones.id_tiposoperaciones order by concepto" )
+    con.close()
 
-con=Conection()
-lstConceptos=Concepto().xultree("select * from conceptos, tiposoperaciones where conceptos.id_tiposoperaciones=tiposoperaciones.id_tiposoperaciones order by concepto" )
-con.close()
-%>
+    req.write('<vbox  flex="5">\n')
+    req.write('<label id="titulo" value="Tablas auxiliares"/>\n')
+    req.write('<hbox flex="4">\n')
+    req.write('<tabbox orient="vertical" flex="1">\n')
+    req.write('<tabs>\n')
+    req.write('<tab label="Conceptos" />\n')
+    req.write('</tabs>\n')
+    req.write('<tabpanels flex="1">\n')
+    req.write('<vbox>\n')
+    req.write(lstConceptos)
+    req.write('</vbox>\n')
+    req.write('</tabpanels>\n')
+    req.write('</tabbox>\n')
 
-<vbox  flex="5">
-<label id="titulo" value="Tablas auxiliares"/>
-<hbox flex="4">
-<tabbox orient="vertical" flex="1">
-<tabs>
-<tab label="Conceptos" />
-</tabs>
-<tabpanels flex="1">
-<vbox>
-<%=lstConceptos%>
-</vbox>
-</tabpanels>
-</tabbox>
+    req.write('</hbox>\n')
 
-</hbox>
-
-</vbox>
-<%
-req.write(xulfoot())
-%>
+    req.write('</vbox>\n')
+    req.write(xulfoot())
