@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: recovermypartition 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-06-12 04:41+0200\n"
+"POT-Creation-Date: 2010-06-12 10:59+0200\n"
 "PO-Revision-Date: 2010-05-18 21:06+0200\n"
 "Last-Translator: root <turulomio@yahoo.es>\n"
 "Language-Team: Spanish\n"
@@ -41,6 +41,131 @@ msgstr "Program license"
 #: ../index.py:8
 msgid "Menú del programa"
 msgstr "Menu program"
+
+#: ../informe_total.py:26
+msgid "Xulpymoney > Informes > Informe total"
+msgstr "Xulpymoney > Reports > Total report"
+
+#: ../informe_total.py:89
+msgid "Saldo a finales del año"
+msgstr "End of year Balance"
+
+#: ../informe_total.py:90
+msgid "Saldo a"
+msgstr "Balance"
+
+#: ../informe_total.py:91
+msgid "Beneficio en el año"
+msgstr "Profit in the year"
+
+#: ../informe_total.py:92
+msgid "TAE en el año"
+msgstr "APR in the year"
+
+#: ../informe_total.py:106
+msgid "Informe de Gastos e Ingresos"
+msgstr "Revenue and expenditure report"
+
+#: ../informe_total.py:111 ../informe_total.py:200 ../clases/core.py:268
+msgid "Enero     "
+msgstr "January   "
+
+#: ../informe_total.py:112 ../informe_total.py:201 ../clases/core.py:269
+msgid "Febrero   "
+msgstr "February  "
+
+#: ../informe_total.py:113 ../informe_total.py:202 ../clases/core.py:270
+msgid "Marzo     "
+msgstr "March     "
+
+#: ../informe_total.py:114 ../informe_total.py:203 ../clases/core.py:271
+msgid "Abril     "
+msgstr "April     "
+
+#: ../informe_total.py:115 ../informe_total.py:204 ../clases/core.py:272
+msgid "Mayo      "
+msgstr "May       "
+
+#: ../informe_total.py:116 ../informe_total.py:205 ../clases/core.py:273
+msgid "Junio     "
+msgstr "June      "
+
+#: ../informe_total.py:117 ../informe_total.py:206 ../clases/core.py:274
+msgid "Julio     "
+msgstr "July      "
+
+#: ../informe_total.py:118 ../informe_total.py:207 ../clases/core.py:275
+msgid "Agosto    "
+msgstr "August    "
+
+#: ../informe_total.py:119 ../informe_total.py:208 ../clases/core.py:276
+msgid "Septiembre"
+msgstr "September "
+
+#: ../informe_total.py:120 ../informe_total.py:209 ../clases/core.py:277
+msgid "Octubre   "
+msgstr "October   "
+
+#: ../informe_total.py:121 ../informe_total.py:210 ../clases/core.py:278
+msgid "Noviembre "
+msgstr "November  "
+
+#: ../informe_total.py:122 ../informe_total.py:211 ../clases/core.py:279
+msgid "Diciembre "
+msgstr "December  "
+
+#: ../informe_total.py:123 ../clases/core.py:280
+msgid "Total     "
+msgstr "Total"
+
+#: ../informe_total.py:129
+msgid "Ingresos"
+msgstr "Inconme"
+
+#: ../informe_total.py:140 ../clases/core.py:2545
+msgid "Consolidado"
+msgstr "Consolidated"
+
+#: ../informe_total.py:151
+msgid "Dividendos"
+msgstr "Dividends"
+
+#: ../informe_total.py:162
+msgid "Gastos"
+msgstr "Expenses"
+
+#: ../informe_total.py:179
+msgid "I + D + C - G"
+msgstr "I + D + C - E"
+
+#: ../informe_total.py:193
+msgid "Posición total"
+msgstr "Total position"
+
+#: ../informe_total.py:199
+msgid "Concepto "
+msgstr "Concept "
+
+#: ../informe_total.py:216 ../clases/xul.py:43
+msgid "Cuentas"
+msgstr "Accounts"
+
+#: ../informe_total.py:225 ../clases/xul.py:50
+msgid "Inversiones"
+msgstr "Investments"
+
+#: ../informe_total.py:233 ../clases/core.py:1688 ../clases/core.py:2196
+#: ../clases/xul.py:70
+msgid "Total"
+msgstr "Total"
+
+#: ../informe_total.py:242
+msgid "Diferencia mensual"
+msgstr "Monthly diference"
+
+#: ../informe_total.py:252
+msgid "Pulsa para ver un gráfico de evolución de saldos"
+msgstr "Click to see a graph of the balance evolution"
 
 #: ../inversion_listado.py:24
 msgid "Xulpymoney > Inversiones > Listado"
@@ -95,58 +220,6 @@ msgstr "Total balance"
 #: ../clases/core.py:267
 msgid "Año "
 msgstr "Year"
-
-#: ../clases/core.py:268
-msgid "Enero     "
-msgstr "January   "
-
-#: ../clases/core.py:269
-msgid "Febrero   "
-msgstr "February  "
-
-#: ../clases/core.py:270
-msgid "Marzo     "
-msgstr "March     "
-
-#: ../clases/core.py:271
-msgid "Abril     "
-msgstr "April     "
-
-#: ../clases/core.py:272
-msgid "Mayo      "
-msgstr "May       "
-
-#: ../clases/core.py:273
-msgid "Junio     "
-msgstr "June      "
-
-#: ../clases/core.py:274
-msgid "Julio     "
-msgstr "July      "
-
-#: ../clases/core.py:275
-msgid "Agosto    "
-msgstr "August    "
-
-#: ../clases/core.py:276
-msgid "Septiembre"
-msgstr "September "
-
-#: ../clases/core.py:277
-msgid "Octubre   "
-msgstr "October   "
-
-#: ../clases/core.py:278
-msgid "Noviembre "
-msgstr "November  "
-
-#: ../clases/core.py:279
-msgid "Diciembre "
-msgstr "December  "
-
-#: ../clases/core.py:280
-msgid "Total     "
-msgstr "Total"
 
 #: ../clases/core.py:306
 msgid "Media mensual"
@@ -440,10 +513,6 @@ msgstr "Year"
 msgid "TAE"
 msgstr "APR"
 
-#: ../clases/core.py:1688 ../clases/core.py:2196 ../clases/xul.py:70
-msgid "Total"
-msgstr "Total"
-
 #: ../clases/core.py:1689 ../clases/core.py:1755
 msgid "Ref. Ibex35"
 msgstr "Ibex35 Ref."
@@ -482,7 +551,7 @@ msgstr "Activate credit card"
 
 #: ../clases/core.py:1976
 msgid "Insertar pago a débito"
-msgstr ""
+msgstr "Insert debit payment"
 
 #: ../clases/core.py:1979
 msgid "Movimientos de la tarjeta"
@@ -490,7 +559,7 @@ msgstr "Credit card movements"
 
 #: ../clases/core.py:2044
 msgid "Diferido"
-msgstr ""
+msgstr "Deferred"
 
 #: ../clases/core.py:2045
 msgid "Nombre Tarjeta"
@@ -506,19 +575,19 @@ msgstr "Credit card number"
 
 #: ../clases/core.py:2048
 msgid "Pago diferido"
-msgstr ""
+msgstr "Deferred payment"
 
 #: ../clases/core.py:2049
 msgid "Saldo máximo"
-msgstr ""
+msgstr "Maximum balance"
 
 #: ../clases/core.py:2216
 msgid "Evolución temporal del patrimonio"
-msgstr ""
+msgstr "Temporal evolution of the heritage"
 
 #: ../clases/core.py:2220 ../clases/core.py:2227
 msgid "Patrimonio"
-msgstr ""
+msgstr "Heritage"
 
 #: ../clases/core.py:2350
 msgid "Rango"
@@ -548,25 +617,21 @@ msgstr "Inicial balance"
 msgid "Saldo final"
 msgstr "Final balance"
 
-#: ../clases/core.py:2545
-msgid "Consolidado"
-msgstr "Consolidated"
-
 #: ../clases/core.py:2546
 msgid "Rend. ponderado"
-msgstr ""
+msgstr "Ponderated Perf."
 
 #: ../clases/core.py:2547
 msgid "Rend. total"
-msgstr ""
+msgstr "Total Perf."
 
 #: ../clases/core.py:2594
 msgid "Suma de saldos consolidados en el año"
-msgstr ""
+msgstr "sum of the year consolidated balance"
 
 #: ../clases/core.py:2640
 msgid "Beneficio"
-msgstr ""
+msgstr "Profit"
 
 #: ../clases/core.py:2641
 msgid "TAE desde"
@@ -578,39 +643,39 @@ msgstr "Investment gains"
 
 #: ../clases/core.py:2658
 msgid "Dividendos sin retenciones"
-msgstr ""
+msgstr "Dividends without decuctions"
 
 #: ../clases/core.py:2671
 msgid "Comisiones en operaciones de inversión"
-msgstr ""
+msgstr "Invesment operation fees"
 
 #: ../clases/core.py:2682
 msgid "Comisiones de custodia"
-msgstr ""
+msgstr "Custody fees"
 
 #: ../clases/core.py:2695
 msgid "Retenciones venta fondos inversión al"
-msgstr ""
+msgstr "Withholding tax on sale of investment funds in"
 
 #: ../clases/core.py:2706
 msgid "Retenciones de los dividendos al"
-msgstr ""
+msgstr "Withholding tax of dividends in"
 
 #: ../clases/core.py:2717
 msgid "Pago impuestos plusvalias al"
-msgstr ""
+msgstr "Paying tax on capital appreciation in"
 
 #: ../clases/core.py:2730
 msgid "Beneficio sin impuestos"
-msgstr ""
+msgstr "Without tax benefit"
 
 #: ../clases/core.py:2741
 msgid "Beneficio pagando impuestos"
-msgstr ""
+msgstr "Paying profit taxes"
 
 #: ../clases/core.py:2752
 msgid "Valor de mi patrimonio a"
-msgstr ""
+msgstr "Value of my property in"
 
 #: ../clases/core.py:2752
 msgid "en este año"
@@ -623,14 +688,6 @@ msgstr "Banks"
 #: ../clases/xul.py:40 ../clases/xul.py:45
 msgid "Listado"
 msgstr "List"
-
-#: ../clases/xul.py:43
-msgid "Cuentas"
-msgstr "Accounts"
-
-#: ../clases/xul.py:50
-msgid "Inversiones"
-msgstr "Investments"
 
 #: ../clases/xul.py:52
 msgid "Estado"
@@ -703,15 +760,3 @@ msgstr "User handbook"
 #: ../clases/xul.py:135
 msgid "Selecciona un año"
 msgstr "Pick a year"
-
-#~ msgid "P. Pensiones e inversiones hasta un 50\\% en renta variable, fondos alternativos y renta fija"
-#~ msgstr "P. Pensions and investments up to 50\\% in equities, fixed income and alternative funds"
-
-#~ msgid "P. Pensiones e inversiones hasta un 100\\% en renta variable y acciones"
-#~ msgstr "P. Pensions and investments up to 100\\% in equities and shares"
-
-#~ msgid "P. Pensiones e inversiones hasta un 50% en renta variable, fondos alternativos y renta fija"
-#~ msgstr "P. Pensions and investments up to 50% in equities, fixed income and alternative funds"
-
-#~ msgid "P. Pensiones e inversiones hasta un 100% en renta variable y acciones"
-#~ msgstr "P. Pensions and investments up 100% in equities and shares"
