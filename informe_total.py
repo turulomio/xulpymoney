@@ -1,17 +1,27 @@
 # -*- coding: UTF-8 -*-
-from mod_python import util
-import time,  calendar
+import time,  calendar,  cgi
 from core import *
 from xul import *
 
+s="Variable global"
+    
+    
 def index(req):
 
-    form=util.FieldStorage(req)    
+    form=req.form
+#    return cgi.escape(form['cmbanos'])
+#    return req.form.getfirst('word', '')
+#    return req.form.getlist('cmbanos')
+#https://localhost/xulpymoney/informe_total.py/index
+#https://localhost/xulpymoney/informe_total.py/s
+
+
+
 
     con=Conection()
     hoy=datetime.date.today()
-    
-    req.content_type="application/vnd.mozilla.xul+xml"
+
+    req.content_type="application/vnd.mozilla.xul+xml"    
     req.write(xulheaderwindowmenu("Xulpymoney > Informes > Informe total"))
     
     if form.has_key('cmbanos')==False:

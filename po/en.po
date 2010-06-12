@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: recovermypartition 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-06-10 20:09+0200\n"
+"POT-Creation-Date: 2010-06-12 04:41+0200\n"
 "PO-Revision-Date: 2010-05-18 21:06+0200\n"
 "Last-Translator: root <turulomio@yahoo.es>\n"
 "Language-Team: Spanish\n"
@@ -299,13 +299,13 @@ msgstr "Money funds and deposits"
 
 #: ../clases/core.py:964
 #, python-format
-msgid "P. Pensiones e inversiones hasta un 50% en renta variable, fondos alternativos y renta fija"
-msgstr "P. Pensions and investments up to 50% in equities, fixed income and alternative funds"
+msgid "P. Pensiones e inversiones hasta un %s en renta variable, fondos alternativos y renta fija"
+msgstr "P. Pensions and investments up to %s in equities, fixed income and alternative funds"
 
 #: ../clases/core.py:966
 #, python-format
-msgid "P. Pensiones e inversiones hasta un 100% en renta variable y acciones"
-msgstr "P. Pensions and investments up 100% in equities and shares"
+msgid "P. Pensiones e inversiones hasta un %s en renta variable y acciones"
+msgstr "P. Pensions and investments up to %s in equities and shares"
 
 #: ../clases/core.py:994 ../clases/core.py:1136
 msgid "Actualizar el valor"
@@ -704,3 +704,14 @@ msgstr "User handbook"
 msgid "Selecciona un año"
 msgstr "Pick a year"
 
+#~ msgid "P. Pensiones e inversiones hasta un 50\\% en renta variable, fondos alternativos y renta fija"
+#~ msgstr "P. Pensions and investments up to 50\\% in equities, fixed income and alternative funds"
+
+#~ msgid "P. Pensiones e inversiones hasta un 100\\% en renta variable y acciones"
+#~ msgstr "P. Pensions and investments up to 100\\% in equities and shares"
+
+#~ msgid "P. Pensiones e inversiones hasta un 50% en renta variable, fondos alternativos y renta fija"
+#~ msgstr "P. Pensions and investments up to 50% in equities, fixed income and alternative funds"
+
+#~ msgid "P. Pensiones e inversiones hasta un 100% en renta variable y acciones"
+#~ msgstr "P. Pensions and investments up 100% in equities and shares"

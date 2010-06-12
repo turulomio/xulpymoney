@@ -961,9 +961,9 @@ class Inversion:
         if tpcvariable==0:
             return _("Fondos de dinero y depósitos")
         if tpcvariable==50:
-            return _("P. Pensiones e inversiones hasta un 50% en renta variable, fondos alternativos y renta fija")
+            return _("P. Pensiones e inversiones hasta un %s en renta variable, fondos alternativos y renta fija") % "100 %"
         if tpcvariable==100:
-            return _("P. Pensiones e inversiones hasta un 100% en renta variable y acciones")
+            return _("P. Pensiones e inversiones hasta un %s en renta variable y acciones") % "50 %"
         return None
             
     def numero_acciones(self, id_inversiones, fecha):
