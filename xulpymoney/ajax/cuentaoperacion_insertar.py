@@ -5,7 +5,9 @@ from validar import *
 def index(req):
     form=util.FieldStorage(req)    
     con=Conection()
-    
+
+    if form.has_key("comentario")==False:
+        form['comentario']=""
     arr=("fecha","id_conceptos","id_tiposoperaciones", "importe", "comentario", "id_cuentas")
     if hasReferer(req) : #No se puede chequear parametros porque comentario es "" y no lo mete en el field
         if isDate(form['fecha']) and isInt(form['id_conceptos']) and isInt(form['id_tiposoperaciones']) and isFloat(form['importe']) and isStrDB(form['comentario']) and isInt(form['id_cuentas']) :

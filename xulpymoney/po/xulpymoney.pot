@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-06-11 08:02+0200\n"
+"POT-Creation-Date: 2010-06-12 10:24+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -298,12 +298,12 @@ msgstr ""
 
 #: ../clases/core.py:964
 #, python-format
-msgid "P. Pensiones e inversiones hasta un 50% en renta variable, fondos alternativos y renta fija"
+msgid "P. Pensiones e inversiones hasta un %s en renta variable, fondos alternativos y renta fija"
 msgstr ""
 
 #: ../clases/core.py:966
 #, python-format
-msgid "P. Pensiones e inversiones hasta un 100% en renta variable y acciones"
+msgid "P. Pensiones e inversiones hasta un %s en renta variable y acciones"
 msgstr ""
 
 #: ../clases/core.py:994 ../clases/core.py:1136
