@@ -131,7 +131,7 @@ def treecell_euros_alerta_venta(importeactual, importealerta, tpcalerta):
 
 
 def combo_ano(inicio,fin, selected,  js=True):
-    s="<hbox>"
+    s="<hbox align='center'>"
     s=s + '<label value="'+_('Selecciona un año')+'"/>\n'
     s= s + '<menulist id="cmbanos" label="'+str(fin)+'" oncommand="cmb_submit();">\n'
     s=s + '<menupopup>\n';

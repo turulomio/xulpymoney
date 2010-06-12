@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-06-12 10:24+0200\n"
+"POT-Creation-Date: 2010-06-12 10:59+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -39,6 +39,131 @@ msgstr ""
 
 #: ../index.py:8
 msgid "Menú del programa"
+msgstr ""
+
+#: ../informe_total.py:26
+msgid "Xulpymoney > Informes > Informe total"
+msgstr ""
+
+#: ../informe_total.py:89
+msgid "Saldo a finales del año"
+msgstr ""
+
+#: ../informe_total.py:90
+msgid "Saldo a"
+msgstr ""
+
+#: ../informe_total.py:91
+msgid "Beneficio en el año"
+msgstr ""
+
+#: ../informe_total.py:92
+msgid "TAE en el año"
+msgstr ""
+
+#: ../informe_total.py:106
+msgid "Informe de Gastos e Ingresos"
+msgstr ""
+
+#: ../informe_total.py:111 ../informe_total.py:200 ../clases/core.py:268
+msgid "Enero     "
+msgstr ""
+
+#: ../informe_total.py:112 ../informe_total.py:201 ../clases/core.py:269
+msgid "Febrero   "
+msgstr ""
+
+#: ../informe_total.py:113 ../informe_total.py:202 ../clases/core.py:270
+msgid "Marzo     "
+msgstr ""
+
+#: ../informe_total.py:114 ../informe_total.py:203 ../clases/core.py:271
+msgid "Abril     "
+msgstr ""
+
+#: ../informe_total.py:115 ../informe_total.py:204 ../clases/core.py:272
+msgid "Mayo      "
+msgstr ""
+
+#: ../informe_total.py:116 ../informe_total.py:205 ../clases/core.py:273
+msgid "Junio     "
+msgstr ""
+
+#: ../informe_total.py:117 ../informe_total.py:206 ../clases/core.py:274
+msgid "Julio     "
+msgstr ""
+
+#: ../informe_total.py:118 ../informe_total.py:207 ../clases/core.py:275
+msgid "Agosto    "
+msgstr ""
+
+#: ../informe_total.py:119 ../informe_total.py:208 ../clases/core.py:276
+msgid "Septiembre"
+msgstr ""
+
+#: ../informe_total.py:120 ../informe_total.py:209 ../clases/core.py:277
+msgid "Octubre   "
+msgstr ""
+
+#: ../informe_total.py:121 ../informe_total.py:210 ../clases/core.py:278
+msgid "Noviembre "
+msgstr ""
+
+#: ../informe_total.py:122 ../informe_total.py:211 ../clases/core.py:279
+msgid "Diciembre "
+msgstr ""
+
+#: ../informe_total.py:123 ../clases/core.py:280
+msgid "Total     "
+msgstr ""
+
+#: ../informe_total.py:129
+msgid "Ingresos"
+msgstr ""
+
+#: ../informe_total.py:140 ../clases/core.py:2545
+msgid "Consolidado"
+msgstr ""
+
+#: ../informe_total.py:151
+msgid "Dividendos"
+msgstr ""
+
+#: ../informe_total.py:162
+msgid "Gastos"
+msgstr ""
+
+#: ../informe_total.py:179
+msgid "I + D + C - G"
+msgstr ""
+
+#: ../informe_total.py:193
+msgid "Posición total"
+msgstr ""
+
+#: ../informe_total.py:199
+msgid "Concepto "
+msgstr ""
+
+#: ../informe_total.py:216 ../clases/xul.py:43
+msgid "Cuentas"
+msgstr ""
+
+#: ../informe_total.py:225 ../clases/xul.py:50
+msgid "Inversiones"
+msgstr ""
+
+#: ../informe_total.py:233 ../clases/core.py:1688 ../clases/core.py:2196
+#: ../clases/xul.py:70
+msgid "Total"
+msgstr ""
+
+#: ../informe_total.py:242
+msgid "Diferencia mensual"
+msgstr ""
+
+#: ../informe_total.py:252
+msgid "Pulsa para ver un gráfico de evolución de saldos"
 msgstr ""
 
 #: ../inversion_listado.py:24
@@ -93,58 +218,6 @@ msgstr ""
 
 #: ../clases/core.py:267
 msgid "Año "
-msgstr ""
-
-#: ../clases/core.py:268
-msgid "Enero     "
-msgstr ""
-
-#: ../clases/core.py:269
-msgid "Febrero   "
-msgstr ""
-
-#: ../clases/core.py:270
-msgid "Marzo     "
-msgstr ""
-
-#: ../clases/core.py:271
-msgid "Abril     "
-msgstr ""
-
-#: ../clases/core.py:272
-msgid "Mayo      "
-msgstr ""
-
-#: ../clases/core.py:273
-msgid "Junio     "
-msgstr ""
-
-#: ../clases/core.py:274
-msgid "Julio     "
-msgstr ""
-
-#: ../clases/core.py:275
-msgid "Agosto    "
-msgstr ""
-
-#: ../clases/core.py:276
-msgid "Septiembre"
-msgstr ""
-
-#: ../clases/core.py:277
-msgid "Octubre   "
-msgstr ""
-
-#: ../clases/core.py:278
-msgid "Noviembre "
-msgstr ""
-
-#: ../clases/core.py:279
-msgid "Diciembre "
-msgstr ""
-
-#: ../clases/core.py:280
-msgid "Total     "
 msgstr ""
 
 #: ../clases/core.py:306
@@ -439,10 +512,6 @@ msgstr ""
 msgid "TAE"
 msgstr ""
 
-#: ../clases/core.py:1688 ../clases/core.py:2196 ../clases/xul.py:70
-msgid "Total"
-msgstr ""
-
 #: ../clases/core.py:1689 ../clases/core.py:1755
 msgid "Ref. Ibex35"
 msgstr ""
@@ -547,10 +616,6 @@ msgstr ""
 msgid "Saldo final"
 msgstr ""
 
-#: ../clases/core.py:2545
-msgid "Consolidado"
-msgstr ""
-
 #: ../clases/core.py:2546
 msgid "Rend. ponderado"
 msgstr ""
@@ -621,14 +686,6 @@ msgstr ""
 
 #: ../clases/xul.py:40 ../clases/xul.py:45
 msgid "Listado"
-msgstr ""
-
-#: ../clases/xul.py:43
-msgid "Cuentas"
-msgstr ""
-
-#: ../clases/xul.py:50
-msgid "Inversiones"
 msgstr ""
 
 #: ../clases/xul.py:52

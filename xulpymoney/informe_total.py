@@ -2,6 +2,7 @@
 import time,  calendar,  cgi
 from core import *
 from xul import *
+from translate import _
 
 s="Variable global"
     
@@ -22,14 +23,14 @@ def index(req):
     hoy=datetime.date.today()
 
     req.content_type="application/vnd.mozilla.xul+xml"    
-    req.write(xulheaderwindowmenu("Xulpymoney > Informes > Informe total"))
+    req.write(xulheaderwindowmenu(_("Xulpymoney > Informes > Informe total")))
     
     if form.has_key('cmbanos')==False:
         cmbanos=datetime.date.today().year
     else:
         cmbanos=int(form['cmbanos'])
     
-    combo=combo_ano(Total().primera_fecha_con_datos_usuario().year, datetime.date.today().year,  cmbanos)
+    combo='<vbox align="center">' + combo_ano(Total().primera_fecha_con_datos_usuario().year, datetime.date.today().year,  cmbanos) + '</vbox>'
     
     #Todos estos arrays tienen de indices 0..11 los 12 meses y el 12 la suma
     gastos=[0]*13
@@ -85,10 +86,10 @@ def index(req):
                 diferencia.append(total[i]-saldofinano)
             else:
                 diferencia.append(total[i]-total[i-1])
-    s=       '<label flex="0"  style="text-align: center;font-weight : bold;" value="Saldo a finales del año '+str(cmbanos-1)+': '+ euros(saldofinano)+'." />\n'       
-    s= s +       '<label flex="0"  style="text-align: center;font-weight : bold;" value="Saldo a '+str(nuevohoy)+': '+ euros(saldohoy)+'." />\n'        
-    s= s + '<label flex="0"  style="text-align: center;font-weight : bold;" value="Beneficio en el año '+str(cmbanos)+': '+ euros(saldohoy-saldofinano)+'." />\n'
-    s= s + '<label flex="0"  style="text-align: center;font-weight : bold;" value="TAE en el año '+str(cmbanos)+': '+ tpc(tae)+'." />\n'
+    s=       '<label flex="0"  style="text-align: center;font-weight : bold;" value="'+_('Saldo a finales del año')+' '+str(cmbanos-1)+': '+ euros(saldofinano)+'." />\n'       
+    s= s +       '<label flex="0"  style="text-align: center;font-weight : bold;" value="'+_('Saldo a')+' '+str(nuevohoy)+': '+ euros(saldohoy)+'." />\n'        
+    s= s + '<label flex="0"  style="text-align: center;font-weight : bold;" value="'+_('Beneficio en el año')+' '+str(cmbanos)+': '+ euros(saldohoy-saldofinano)+'." />\n'
+    s= s + '<label flex="0"  style="text-align: center;font-weight : bold;" value="'+_('TAE en el año')+' '+str(cmbanos)+': '+ tpc(tae)+'." />\n'
     con.close() 
     
     req.write('    <script>\n')
@@ -102,30 +103,30 @@ def index(req):
     req.write('    ]]>\n')
     req.write('    </script>\n')
     req.write('    <vbox  flex="5">\n')
-    req.write('    <label id="titulo" value="Informe de Gastos e Ingresos" />\n')
+    req.write('    <label id="titulo" value="'+_('Informe de Gastos e Ingresos')+'" />\n')
     req.write(combo)
     req.write('    <tree id="informegi" flex="1">\n')
     req.write('      <treecols>\n')
-    req.write('        <treecol id="concepto" label="Concepto " flex="2"  style="text-align: left"/>\n')
-    req.write('        <treecol label="Enero     " flex="1" style="text-align: right"/>\n')
-    req.write('        <treecol label="Febrero   " flex="1" style="text-align: right"/>\n')
-    req.write('        <treecol label="Marzo     " flex="1" style="text-align: right"/>\n')
-    req.write('        <treecol label="Abril     " flex="1" style="text-align: right"/>\n')
-    req.write('        <treecol label="Mayo      " flex="1" style="text-align: right"/>\n')
-    req.write('        <treecol label="Junio     " flex="1" style="text-align: right"/>\n')
-    req.write('        <treecol label="Julio     " flex="1" style="text-align: right"/>\n')
-    req.write('        <treecol label="Agosto    " flex="1" style="text-align: right"/>\n')
-    req.write('        <treecol label="Septiembre" flex="1" style="text-align: right"/>\n')
-    req.write('        <treecol label="Octubre   " flex="1" style="text-align: right"/>\n')
-    req.write('        <treecol label="Noviembre " flex="1" style="text-align: right"/>\n')
-    req.write('        <treecol label="Diciembre " flex="1" style="text-align: right"/>\n')
-    req.write('        <treecol label="Total     " flex="1" style="text-align: right"/>\n')
+    req.write('        <treecol id="concepto" label="'+_('Concepto')+' " flex="2"  style="text-align: left"/>\n')
+    req.write('        <treecol label="'+_('Enero     ')+'" flex="1" style="text-align: right"/>\n')
+    req.write('        <treecol label="'+_('Febrero   ')+'" flex="1" style="text-align: right"/>\n')
+    req.write('        <treecol label="'+_('Marzo     ')+'" flex="1" style="text-align: right"/>\n')
+    req.write('        <treecol label="'+_('Abril     ')+'" flex="1" style="text-align: right"/>\n')
+    req.write('        <treecol label="'+_('Mayo      ')+'" flex="1" style="text-align: right"/>\n')
+    req.write('        <treecol label="'+_('Junio     ')+'" flex="1" style="text-align: right"/>\n')
+    req.write('        <treecol label="'+_('Julio     ')+'" flex="1" style="text-align: right"/>\n')
+    req.write('        <treecol label="'+_('Agosto    ')+'" flex="1" style="text-align: right"/>\n')
+    req.write('        <treecol label="'+_('Septiembre')+'" flex="1" style="text-align: right"/>\n')
+    req.write('        <treecol label="'+_('Octubre   ')+'" flex="1" style="text-align: right"/>\n')
+    req.write('        <treecol label="'+_('Noviembre ')+'" flex="1" style="text-align: right"/>\n')
+    req.write('        <treecol label="'+_('Diciembre ')+'" flex="1" style="text-align: right"/>\n')
+    req.write('        <treecol label="'+_('Total     ')+'" flex="1" style="text-align: right"/>\n')
     req.write('      </treecols>\n')
     req.write('      <treechildren>\n')
     
     req.write('        <treeitem>\n')
     req.write('          <treerow>\n')
-    req.write('             <treecell label="Ingresos" />\n')
+    req.write('             <treecell label="'+_('Ingresos')+'" />\n')
     for i in range(13):
         req.write( treecell_euros(ingresos[i]))
     print
@@ -136,7 +137,7 @@ def index(req):
     
     req.write('        <treeitem>\n')
     req.write('          <treerow>\n')
-    req.write('             <treecell label="Consolidado" />\n')
+    req.write('             <treecell label="'+_('Consolidado')+'" />\n')
     
     for i in range(13):
         req.write( treecell_euros(consolidado[i]))
@@ -147,7 +148,7 @@ def index(req):
     
     req.write('        <treeitem>\n')
     req.write('          <treerow>\n')
-    req.write('             <treecell label="Dividendos" />\n')
+    req.write('             <treecell label="'+_('Dividendos')+'" />\n')
     
     for i in range(13):
         req.write( treecell_euros(dividendos[i]))
@@ -158,7 +159,7 @@ def index(req):
     
     req.write('        <treeitem>\n')
     req.write('          <treerow>\n')
-    req.write('             <treecell label="Gastos" />\n')
+    req.write('             <treecell label="'+_('Gastos')+'" />\n')
     
     for  i in range(13):
         req.write( treecell_euros(gastos[i]))
@@ -175,7 +176,7 @@ def index(req):
     
     req.write('        <treeitem>\n')
     req.write('          <treerow>\n')
-    req.write('             <treecell label="I + D + C - G" />\n')
+    req.write('             <treecell label="'+_('I + D + C - G')+'" />\n')
     
     for i in range(13):
         req.write( treecell_euros(gi[i]))
@@ -189,30 +190,30 @@ def index(req):
     
     req.write('    </vbox>\n')
     req.write('    <vbox  flex="5">\n')
-    req.write('    <label id="titulo" value="Posición total" />\n')
+    req.write('    <label id="titulo" value="'+_('Posición total')+'" />\n')
     req.write('    <hbox>\n')
     req.write('    </hbox>\n')
     
     req.write('    <tree id="informegi" flex="1">\n')
     req.write('      <treecols>\n')
-    req.write('        <treecol id="concepto" label="Concepto " flex="1"  style="text-align: left"/>\n')
-    req.write('        <treecol label="Enero     " flex="1" style="text-align: right"/>\n')
-    req.write('        <treecol label="Febrero   " flex="1" style="text-align: right"/>\n')
-    req.write('        <treecol label="Marzo     " flex="1" style="text-align: right"/>\n')
-    req.write('        <treecol label="Abril     " flex="1" style="text-align: right"/>\n')
-    req.write('        <treecol label="Mayo      " flex="1" style="text-align: right"/>\n')
-    req.write('        <treecol label="Junio     " flex="1" style="text-align: right"/>\n')
-    req.write('        <treecol label="Julio     " flex="1" style="text-align: right"/>\n')
-    req.write('        <treecol label="Agosto    " flex="1" style="text-align: right"/>\n')
-    req.write('        <treecol label="Septiembre" flex="1" style="text-align: right"/>\n')
-    req.write('        <treecol label="Octubre   " flex="1" style="text-align: right"/>\n')
-    req.write('        <treecol label="Noviembre " flex="1" style="text-align: right"/>\n')
-    req.write('        <treecol label="Diciembre " flex="1" style="text-align: right"/>\n')
+    req.write('        <treecol id="concepto" label="'+_('Concepto ')+'" flex="1"  style="text-align: left"/>\n')
+    req.write('        <treecol label="'+_('Enero     ')+'" flex="1" style="text-align: right"/>\n')
+    req.write('        <treecol label="'+_('Febrero   ')+'" flex="1" style="text-align: right"/>\n')
+    req.write('        <treecol label="'+_('Marzo     ')+'" flex="1" style="text-align: right"/>\n')
+    req.write('        <treecol label="'+_('Abril     ')+'" flex="1" style="text-align: right"/>\n')
+    req.write('        <treecol label="'+_('Mayo      ')+'" flex="1" style="text-align: right"/>\n')
+    req.write('        <treecol label="'+_('Junio     ')+'" flex="1" style="text-align: right"/>\n')
+    req.write('        <treecol label="'+_('Julio     ')+'" flex="1" style="text-align: right"/>\n')
+    req.write('        <treecol label="'+_('Agosto    ')+'" flex="1" style="text-align: right"/>\n')
+    req.write('        <treecol label="'+_('Septiembre')+'" flex="1" style="text-align: right"/>\n')
+    req.write('        <treecol label="'+_('Octubre   ')+'" flex="1" style="text-align: right"/>\n')
+    req.write('        <treecol label="'+_('Noviembre ')+'" flex="1" style="text-align: right"/>\n')
+    req.write('        <treecol label="'+_('Diciembre ')+'" flex="1" style="text-align: right"/>\n')
     req.write('      </treecols>\n')
     req.write('      <treechildren>\n')
     req.write('        <treeitem>\n')
     req.write('          <treerow>\n')
-    req.write('             <treecell label="Cuentas" />\n')
+    req.write('             <treecell label="'+_('Cuentas')+'" />\n')
 
     for  i in range(12):
         req.write( treecell_euros(cuentas[i]))
@@ -221,7 +222,7 @@ def index(req):
     req.write('        </treeitem>    \n')
     req.write('        <treeitem>\n')
     req.write('          <treerow>\n')
-    req.write('             <treecell label="Inversiones" />\n')
+    req.write('             <treecell label="'+_('Inversiones')+'" />\n')
     for i in range (12):
         req.write( treecell_euros(inversiones[i]))
     
@@ -229,7 +230,7 @@ def index(req):
     req.write('        </treeitem>    \n')
     req.write('        <treeitem>\n')
     req.write('          <treerow>\n')
-    req.write('             <treecell label="Total" />\n')
+    req.write('             <treecell label="'+_('Total')+'" />\n')
     
     for i in range(12):
         req.write( treecell_euros(total[i]))
@@ -238,7 +239,7 @@ def index(req):
     req.write('        </treeitem>    \n')
     req.write('        <treeitem>\n')
     req.write('          <treerow>\n')
-    req.write('             <treecell label="Diferencia mensual" />\n')
+    req.write('             <treecell label="'+_('Diferencia mensual')+'" />\n')
     
     for i in range(12):
         req.write( treecell_euros(diferencia[i]))
@@ -248,7 +249,7 @@ def index(req):
     req.write('      </treechildren>\n')
     req.write('    </tree>\n')
     req.write(s)
-    req.write('    <button label="Pulsa para ver un gráfico de evolución de saldos" oncommand=\'location="informe_total_grafico.py";\'   />\n')
+    req.write('    <button label="'+_('Pulsa para ver un gráfico de evolución de saldos')+'" oncommand=\'location="informe_total_grafico.py";\'   />\n')
     req.write('    </vbox>\n')
     req.write('    </window>\n')
     

@@ -1,5 +1,7 @@
 xulpymoney 0.2 XXXXXXXX
 =======================
+- Solucionados pequeños bugs
+- Mejorado el interfaz
 - Se ha sustituido el uso de mod_python.psp (.psp) por mod_python.publisher (*.py) para facilitar la internacionalización e incluso la limpieza de código
 - Se ha empezado a traducir a inglés la applicación
 - Se ha mejorado los resultados del informe historico
