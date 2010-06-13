@@ -1,10 +1,11 @@
 # -*- coding: UTF-8 -*-
-from mod_python import util
 import time
 from core import *
 from xul import *
+from translate import _
 
 def index(req):
+    form=req.form
     #Consultas BD
     con=Conection()
     hoy=datetime.date.today()
@@ -53,11 +54,11 @@ def index(req):
     req.write('    <hbox flex="1">\n')
     req.write('    <grid align="center">\n')
     req.write('        <rows>\n')
-    req.write('        <row><label value="Cuenta asociada"/><hbox><%=cmbcuentas%></hbox></row>\n')
+    req.write('        <row><label value="Cuenta asociada"/><hbox>'+cmbcuentas+'</hbox></row>\n')
     req.write('        <row><label value="Nombre de la inversión"/><hbox><textbox id="inversion" value=""/></hbox></row>\n')
     req.write('        <row><label value="Valor para realizar una nueva compra" /><hbox><textbox id="compra" value="0"/></hbox></row>        \n')
     req.write('        <row><label value="Valor para vender la inversión" /><hbox><textbox id="venta" value="0"/></hbox></row>\n')
-    req.write('        <row><label value="Tipo de inversión" /><hbox><%=cmbtpcvariable%></hbox></row>\n')
+    req.write('        <row><label value="Tipo de inversión" /><hbox>'+cmbtpcvariable+'</hbox></row>\n')
     req.write('        <row><label value="Nombre en Internet" /><hbox><textbox id="internet" value=""/></hbox></row>\n')
     req.write('        <row><label value="" /><hbox><button id="cmd" label="Aceptar" onclick="insert();"/></hbox></row>\n')
     req.write('        </rows>\n')

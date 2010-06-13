@@ -4,6 +4,7 @@ from core import *
 from xul import *
 
 def index(req):
+    form=req.form
     if form.has_key('id_inversiones'):
        id_inversiones=int(form['id_inversiones'])
     else:
@@ -50,7 +51,7 @@ def index(req):
     req.write('    xmlHttp.onreadystatechange=function(){\n')
     req.write('        if(xmlHttp.readyState==4){\n')
     req.write('            var ale=xmlHttp.responseText;\n')
-    req.write('            parse_ale(ale,"inversionoperacion_listado.py?id_inversiones="+ id_inversiones , '' )\n')
+    req.write('            parse_ale(ale,"inversionoperacion_listado.py?id_inversiones="+ id_inversiones )\n')
     req.write('        }\n')
     req.write('    }\n')
 
