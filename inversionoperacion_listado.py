@@ -3,10 +3,11 @@ from mod_python import util
 import sys
 from xul import *
 from core import *
+from translate import _
 
 def index(req):
     def page():
-        s=xulheaderwindowmenu("Información de la Inversión")
+        s=xulheaderwindowmenu(_("Xulpymoney > Inversiones > Listado de operaciones"))
         s=s+'<script>\n'
         s=s+'<![CDATA[\n'
 
@@ -48,14 +49,14 @@ def index(req):
 
 
         s=s+'<vbox  flex="5">\n'
-        s=s+'    <label id="titulo" value="Información de la Inversión" />\n'
+        s=s+'    <label id="titulo" value="'+_('Listado de operaciones de inversión')+'" />\n'
         s=s+'    <label id="subtitulo" flex="0" value="'+reg['inversion']+'" />\n'
         s=s+'    <hbox flex="4">\n'
         s=s+'        <tabbox orient="vertical" flex="1">\n'
         s=s+'            <tabs>\n'
-        s=s+'                <tab label="Inversión actual" />\n'
-        s=s+'                <tab label="Movimientos de inversión" />\n'
-        s=s+'                <tab label="Dividendos" />\n'
+        s=s+'                <tab label="'+_('Inversión actual')+'" />\n'
+        s=s+'                <tab label="'+_('Movimientos de inversión')+'" />\n'
+        s=s+'                <tab label="'+_('Dividendos')+'" />\n'
         s=s+'            </tabs>\n'
         s=s+'            <tabpanels flex="1">\n'
         s=s+'                <vbox>\n'
@@ -84,10 +85,10 @@ def index(req):
     con=Conection()
     cd=ConectionDirect()
     listadoIOT=InversionOperacionTemporal().xultree("SELECT * from tmpoperinversiones where id_Inversiones="+str(form['id_inversiones'])+" order by fecha")
-    listadoIOH=InversionOperacionHistorica().xultree("SELECT * from operinversiones where id_Inversiones="+str(form['id_inversiones'])+" order by fecha",  form['id_inversiones'])
+    listadoIOH=InversionOperacionHistorica().xultree("SELECT * from operinversiones, tiposoperaciones where id_Inversiones="+str(form['id_inversiones'])+" and operinversiones.id_tiposoperaciones=tiposoperaciones.id_tiposoperaciones order by fecha",  form['id_inversiones'])
     fechapo=InversionOperacionTemporal().fecha_primera_operacion(form['id_inversiones'])
     if fechapo==None:
-        listadoDiv=Dividendo().xultree("select id_dividendos, cuenta, fecha, liquido, inversion from dividendos, inversiones, cuentas where  id_dividendos=Null", 0)
+        listadoDiv='<vbox align="center"><label value="'+_('No puede haber dividendos si no existen acciones')+'" /></vbox>\n'       
     else:
         listadoDiv=Dividendo().xultree("select id_dividendos, cuenta, fecha, liquido, inversion from dividendos, inversiones, cuentas where cuentas.id_cuentas=inversiones.id_cuentas and dividendos.id_inversiones=inversiones.id_inversiones and dividendos.id_inversiones="+str(form['id_inversiones']) + " and fecha >='"+str(fechapo)+"' order by fecha;",  form['id_inversiones'])
     reg=cd.con.Execute("select * from inversiones where id_inversiones="+ str(form['id_inversiones'])).GetRowAssoc(0)

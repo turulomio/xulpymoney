@@ -1595,6 +1595,7 @@ class InversionOperacionHistorica:
         s=s+ '          <treecols>\n'
         s=s+ '    <treecol id="id" label="id" flex="1" hidden="true"/>\n'
         s=s+ '    <treecol label="'+_('Fecha')+'" flex="1"  style="text-align: center"/>\n'
+        s=s+ '    <treecol label="'+_('Tipo de operación')+'" flex="1" style="text-align: right" />\n'
         s=s+ '    <treecol label="'+_('Acciones')+'" flex="1" style="text-align: right" />\n'
         s=s+ '    <treecol label="'+_('Valor compra')+'" flex="1" style="text-align: right"/>\n'
         s=s+ '    <treecol label="'+_('Importe')+'" flex="1" style="text-align: right"/>\n'
@@ -1613,6 +1614,7 @@ class InversionOperacionHistorica:
             s=s+ '      <treerow>\n'
             s=s+ '       <treecell label="'+ str(row["id_operinversiones"])+ '" />\n'
             s=s+ '       <treecell label="'+ str(row["fecha"])[:-12]+ '" />\n'
+            s=s+ '       <treecell label="'+ str(row["tipooperacion"])+ '" />\n'
             s=s+ '       <treecell label="'+ str(row["acciones"])+ '" />\n'
             s=s+        treecell_euros(row['valor_accion']);
             s=s+        treecell_euros(importe);
@@ -2098,11 +2100,11 @@ class TarjetaOperacion:
         return True
 
 class TipoOperacion:
-    def registro(self,id_tiposoperaciones):
-        sql="select *  from tiposoperaciones where id_tiposoperaciones=" + str(id_tiposoperaciones)
-        curs=con.Execute(sql); 
-        row = curs.GetRowAssoc(0)   
-        return row
+#    def registro(self,id_tiposoperaciones):
+#        sql="select *  from tiposoperaciones where id_tiposoperaciones=" + str(id_tiposoperaciones)
+#        curs=con.Execute(sql); 
+#        row = curs.GetRowAssoc(0)   
+#        return row
 
     def cmb(self, sql,  selected,  js=True):        
         jstext=""

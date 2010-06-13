@@ -6,25 +6,18 @@
 20100501 Deseo. Desarrollar ver movimientos antiguos y quitar pago de opertarjetas
 20100501 Bug. Despues de borrar una opercuenta no se respeta la visualización en el mes y año
 20100506 Deseo. Quitar los depósitos que tengo en todas las tablas para borrarlas de mi bd y simplificar esquema bd en las futuras.
-20100506 Deseo. En aquellos informes que se necesiten datos del ibex redirigirlo y no dejarle entrar
+20100506 Deseo. En aquellos informes que se necesiten datos del ibex hacer una pregunta de si se quiere actualizar antes de mostrar
 20100506 Deseo. Añadir session y autenticación no se cómo.http://www.modpython.org/live/current/doc-html/pyapi-sess-classes.html
                 http://www.modpython.org/live/current/doc-html/tut-more-complicated.html
 20100507 Deseo. En transferencia validar que no sea misma cuenta ni comision ni importe negativo en servidor.
-20100507 Bug. Opercuenta_insertar #No se puede chequear parametros porque comentario es "" y no lo mete en el field
 20100508 Bug. El grafico del quesito falla cuando solo hay uno
 20100508 Deseo. En el quesito al hacer click que vaya a la evolución historica
-20100508 Bug. El informe de referencia al Ibex peta si no hay datos, por no haber habido conexión avisar que se actualice. y redirigir
 20100508 Deseo. Estudiar la necesidad de operacioninversionhistorica xq no usar solo operinversiones
-20100508 Deseo. Quitar el campo comentario de operinversiones del esquema
-20100513 Bug. inversionoperacion_listado falla por una fecha Null cuando no hay registros
-20100513 Bug. Cuando no hay opercuetnas falla dividendo historico en algo de fecha
 20100513 Deseo. Añadir tooltips en los formularios
-20100515 Deseo. En la tabla de inversión de operación historica poner el tipo de operación
 20100515 Bug. El concepto dividendo no debe ser público
 20100515 Deseo. Hacer el sistema de transferencias y calidad en mis datos
 20100609 Deseo. Seguir traduciendo al inglés con OmegaT+
 20100609 Deseo. Validar parametros con index(req, params).
-20100612 map(lambda color: cgi.escape(color), colors)
 20100612 Mis propios códigos de error http://www.modpython.org/live/current/doc-html/tut-404-handler.html
 20100612 cookie signed para language
-
+20100612 Poner el dividendo estimado, y ojo que es estimación a primeros de año.

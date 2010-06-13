@@ -3,15 +3,16 @@ from mod_python import util
 import time,  calendar
 from core import *
 from xul import *
+from translate import _
 
 def index(req):
     con=Conection().open()
-    titulo="Xulpymoney > Informes > Informe TAE"
+    titulo=_("Xulpymoney > Informes > Informe TAE")
     req.content_type="application/vnd.mozilla.xul+xml"
     req.write(xulheaderwindowmenu(titulo))
 
     req.write('<vbox  flex="5">\n')
-    req.write('<label id="titulo" value="<%=titulo%>" />\n')
+    req.write('<label id="titulo" value="'+titulo+'" />\n')
     req.write('<hbox>\n')
     req.write('</hbox>\n')
 

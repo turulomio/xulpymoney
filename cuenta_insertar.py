@@ -3,6 +3,7 @@ from mod_python import util
 import time
 from core import *
 from xul import *
+from translate import _
 
 def index(req):
     def page():
@@ -36,7 +37,7 @@ def index(req):
         s=s+'    <hbox flex="1">\n'
         s=s+'    <grid align="center">\n'
         s=s+'        <rows>\n'
-        s=s+'        <row><label value="Entidad Bancaria al que pertenece"/><hbox><%=cmbentidadesbancarias%></hbox></row>\n'
+        s=s+'        <row><label value="Entidad Bancaria al que pertenece"/><hbox>'+cmbentidadesbancarias+'</hbox></row>\n'
         s=s+'        <row><label value="Nombre de la cuenta"/><hbox><textbox id="cuenta" value="Nueva cuenta"/></hbox></row>\n'
         s=s+'        <row><label value="Número de cuenta" /><hbox><textbox id="numero_cuenta" value="XXXXXXXXXXXXXXXXXXX"/></hbox></row>        \n'
         s=s+'        <row><label value="" /><hbox><button id="cmd" label="Aceptar" onclick="cuenta_insert();"/></hbox></row>\n'

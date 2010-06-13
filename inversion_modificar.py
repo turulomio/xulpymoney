@@ -6,6 +6,7 @@ from xul import *
 
 def index(req):
     #Consultas BD
+    form=req.form
     con=Conection()
     cd=ConectionDirect()
     hoy=datetime.date.today()
@@ -55,10 +56,10 @@ def index(req):
     req.write('    <hbox flex="1">\n')
     req.write('    <grid align="center">\n')
     req.write('        <rows>\n')
-    req.write('        <row><label value="Cuenta asignada"/><hbox><%=cmbcuentas%></hbox></row>\n')
+    req.write('        <row><label value="Cuenta asignada"/><hbox>'+cmbcuentas+'</hbox></row>\n')
     req.write('        <row><label value="Cambiar el nombre"/><hbox><textbox id="inversion" value="'+reg['inversion'] +'"/></hbox></row>\n')
-    req.write('        <row><label value="Actualiza el valor de nueva compra" /><hbox><textbox id="compra" value="'+reg['compra']+'"/></hbox></row>        \n')
-    req.write('        <row><label value="Actualiza el valor de venta" /><hbox><textbox id="venta" value="'+reg['venta']+'"/></hbox></row>\n')
+    req.write('        <row><label value="Actualiza el valor de nueva compra" /><hbox><textbox id="compra" value="'+str(reg['compra'])+'"/></hbox></row>        \n')
+    req.write('        <row><label value="Actualiza el valor de venta" /><hbox><textbox id="venta" value="'+str(reg['venta'])+'"/></hbox></row>\n')
     req.write('        <row><label value="Tipo de inversión" /><hbox>'+cmbtpcvariable+'</hbox></row>\n')
     req.write('        <row><label value="Nombre de Internet" /><hbox><textbox id="internet" value="'+reg['internet']+'"/></hbox></row>        \n')
     req.write('        <row><label value="" /><hbox><button id="cmd" label="Aceptar" onclick="insert();"/></hbox></row>\n')

@@ -612,7 +612,6 @@ CREATE TABLE operinversiones (
     importe double precision,
     impuestos double precision,
     comision double precision,
-    comentario text,
     valor_accion double precision
 );
 
