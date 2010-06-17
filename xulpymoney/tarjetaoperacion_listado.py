@@ -1,11 +1,9 @@
 # -*- coding: UTF-8 -*-
-from mod_python import util
 from core import *
 from xul import *
-from mod_python import util
 
 def index(req):
-
+    form=req.form
     #Consultas BD
     c=ConectionDirect()
     

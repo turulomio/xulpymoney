@@ -16,12 +16,12 @@ def index(req):
         s=s+'var fecha = document.getElementById("fecha").value;\n'
         s=s+'spfecha=fecha.split("-");\n'
         s=s+'var id_cuentas='+str(form['id_cuentas'])+';\n'
-        s=s+'var url=\'ajax/cuentaoperacion_borrar.psp?id_opercuentas=\' + id_opercuentas ;\n'
+        s=s+'var url=\'ajax/cuentaoperacion_borrar.py?id_opercuentas=\' + id_opercuentas ;\n'
         s=s+'xmlHttp=new XMLHttpRequest();\n'
         s=s+'xmlHttp.onreadystatechange=function(){\n'
         s=s+'if(xmlHttp.readyState==4){\n'
         s=s+'var ale=xmlHttp.responseText;\n'
-        s=s+'location="cuentaoperacion_listado.psp?id_cuentas="+ id_cuentas + "&year=" + spfecha[0] + "&month=" + spfecha[1];\n'
+        s=s+'location="cuentaoperacion_listado.py?id_cuentas="+ id_cuentas + "&year=" + spfecha[0] + "&month=" + spfecha[1];\n'
         s=s+'}\n'
         s=s+'}\n'
 
@@ -39,7 +39,7 @@ def index(req):
         s=s+'    var cmbcuentas=document.getElementById("cmbcuentas").value;\n'
         s=s+'    var year=document.getElementById("fecha").year;\n'
         s=s+'    var month=document.getElementById("fecha").month+1;\n'
-        s=s+'    location="cuentaoperacion_listado.psp?id_cuentas="+ cmbcuentas + "&year=" +year + "&month="+ month;\n'
+        s=s+'    location="cuentaoperacion_listado.py?id_cuentas="+ cmbcuentas + "&year=" +year + "&month="+ month;\n'
         s=s+'}\n'
 
 
@@ -47,7 +47,7 @@ def index(req):
         s=s+'    var cmbcuentas=document.getElementById("cmbcuentas").value;\n'
         s=s+'    var year=document.getElementById("fecha").year;\n'
         s=s+'    var month=document.getElementById("fecha").month+1;\n'
-        s=s+'    location="cuentaoperacion_listado.psp?id_cuentas="+ cmbcuentas + "&year=" +year + "&month="+ month;\n'
+        s=s+'    location="cuentaoperacion_listado.py?id_cuentas="+ cmbcuentas + "&year=" +year + "&month="+ month;\n'
         s=s+'}\n'
         
 

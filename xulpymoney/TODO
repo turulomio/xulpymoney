@@ -21,3 +21,6 @@
 20100612 Mis propios códigos de error http://www.modpython.org/live/current/doc-html/tut-404-handler.html
 20100612 cookie signed para language
 20100612 Poner el dividendo estimado, y ojo que es estimación a primeros de año.
+20100614 Bug. Al modificar una inversión si borras el precio de compra y no es 0 falla.
+20100614 Deseo. Permitir en el grafico de referencia al IBEX seleccionar años, por defecto 5
+20100615 Deseo. Comprabar últimos y primeros días en el gráfico de referencia al IBEX

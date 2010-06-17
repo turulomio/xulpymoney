@@ -1,8 +1,8 @@
 # -*- coding: UTF-8 -*-
-from mod_python import util
 import time
 from core import *
 from xul import *
+from translate import _
 
 def index(req):
     #Consultas BD
@@ -42,7 +42,9 @@ def index(req):
     req.write('    var id_cuentas = document.getElementById("id_cuentas").value;\n')
     req.write('    var tpcvariable = document.getElementById("tpcvariable").value;\n')
     req.write('    var internet = document.getElementById("internet").value;\n')
-    req.write('    var url="ajax/inversion_modificar.py?id_inversiones="+'+str(id_inversiones )+'+"&inversion="+inversion+"&compra="+compra+"&venta="+venta+"&id_cuentas="+id_cuentas+"&tpcvariable="+tpcvariable +"&internet="+internet;\n')
+    req.write('    var fechadividendo = document.getElementById("fechadividendo").value;\n')
+    req.write('    var dividendo = document.getElementById("dividendo").value;\n')
+    req.write('    var url="ajax/inversion_modificar.py?id_inversiones="+'+str(id_inversiones )+'+"&inversion="+inversion+"&compra="+compra+"&venta="+venta+"&id_cuentas="+id_cuentas+"&tpcvariable="+tpcvariable +"&internet="+internet+"&fechadividendo="+fechadividendo+"&dividendo="+dividendo;\n')
     req.write('    xmlHttp.open("GET",url,true);\n')
     req.write('    xmlHttp.send(null);\n')
     req.write('}\n')
@@ -61,7 +63,9 @@ def index(req):
     req.write('        <row><label value="Actualiza el valor de nueva compra" /><hbox><textbox id="compra" value="'+str(reg['compra'])+'"/></hbox></row>        \n')
     req.write('        <row><label value="Actualiza el valor de venta" /><hbox><textbox id="venta" value="'+str(reg['venta'])+'"/></hbox></row>\n')
     req.write('        <row><label value="Tipo de inversión" /><hbox>'+cmbtpcvariable+'</hbox></row>\n')
-    req.write('        <row><label value="Nombre de Internet" /><hbox><textbox id="internet" value="'+reg['internet']+'"/></hbox></row>        \n')
+    req.write('        <row><label value="Nombre de Internet" /><hbox><textbox id="internet" value="'+reg['internet']+'"/></hbox></row>\n')
+    req.write('        <row><label value="'+_('Fecha revisión dividendo')+'" align="center" /><datepicker id="fechadividendo" type="grid"  firstdayofweek="1" value="'+str(reg['fechadividendo'])+'"/></row>\n')
+    req.write('        <row><label value="'+_('Dividendo')+'" /><hbox><textbox id="dividendo" value="'+str(reg['dividendo'])+'"/></hbox></row>\n')
     req.write('        <row><label value="" /><hbox><button id="cmd" label="Aceptar" onclick="insert();"/></hbox></row>\n')
     req.write('        </rows>\n')
     req.write('    </grid>\n')

@@ -1,5 +1,4 @@
 # -*- coding: UTF-8 -*-
-from mod_python import util
 from core import *
 from xul import *
 
@@ -8,6 +7,7 @@ def index(req):
     #   id_inversiones=int(form['id_inversiones'])
     #else:
     #    util.redirect(req, 'inversion_informacion.psp')
+    form=req.form
     con=Conection()
     cd=ConectionDirect()
     row=cd.con.Execute("select * from operinversiones where id_operinversiones="+ form["id_operinversiones"]).GetRowAssoc(0)
@@ -32,13 +32,13 @@ def index(req):
     req.write('    var valor_accion = document.getElementById("valor_accion").value;\n')
     req.write('    spfecha=fecha.split("-");\n')
     req.write('    var id_inversiones='+str(row['id_inversiones'])+';\n')
-    req.write('    var url="ajax/inversionoperacion_modificar.psp?id_operinversiones="+id_operinversiones+"&fecha="+fecha+"&id_tiposoperaciones="+id_tiposoperaciones+"&importe="+importe+"&acciones="+acciones+"&impuestos="+impuestos+"&comision="+comision+"&comentario="+comentario+"&valor_accion="+valor_accion+"&id_inversiones="+id_inversiones;\n')
+    req.write('    var url="ajax/inversionoperacion_modificar.py?id_operinversiones="+id_operinversiones+"&fecha="+fecha+"&id_tiposoperaciones="+id_tiposoperaciones+"&importe="+importe+"&acciones="+acciones+"&impuestos="+impuestos+"&comision="+comision+"&valor_accion="+valor_accion+"&id_inversiones="+id_inversiones;\n')
     req.write('    xmlHttp=new XMLHttpRequest();\n')
     req.write('    xmlHttp.onreadystatechange=function(){\n')
     req.write('        if(xmlHttp.readyState==4){\n')
     req.write('            var ale=xmlHttp.responseText;\n')
     req.write('alert(ale)\n')
-    req.write('            location="inversion_informacion.psp?id_inversiones="+ id_inversiones ;\n')
+    req.write('            location="inversion_listado.py?id_inversiones="+ id_inversiones ;\n')
     req.write('        }\n')
     req.write('    }\n')
     req.write('    xmlHttp.open("GET",url,true);\n')

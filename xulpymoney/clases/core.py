@@ -945,8 +945,8 @@ class Inversion:
         curs=con.Execute(sql); 
         return sql            
         
-    def modificar(self, id_inversiones, inversion,  compra,  venta,  tpcvariable,  id_cuentas,  internet):
-        sql="update inversiones set inversion='"+inversion+"', compra="+str(compra)+", venta="+str(venta)+", tpcvariable="+str(tpcvariable)+", id_cuentas="+str(id_cuentas)+", internet='"+str(internet)+"' where id_inversiones="+ str(id_inversiones)
+    def modificar(self, id_inversiones, inversion,  compra,  venta,  tpcvariable,  id_cuentas,  internet,  fechadividendo,  dividendo):
+        sql="update inversiones set inversion='"+inversion+"', compra="+str(compra)+", venta="+str(venta)+", tpcvariable="+str(tpcvariable)+", id_cuentas="+str(id_cuentas)+", internet='"+str(internet)+"', fechadividendo='"+str(fechadividendo)+"', dividendo="+str(dividendo)+" where id_inversiones="+ str(id_inversiones)
         curs=con.Execute(sql); 
         return sql
         
@@ -1151,6 +1151,8 @@ class Inversion:
         s= s+  '        <treecol id="col_saldo" label="'+_('Pendiente')+'" flex="1" style="text-align: right"/>\n'
         s= s+  '        <treecol label="'+_('Invertido')+'" hidden="true"  flex="1" style="text-align: right" />\n'
         s= s+  '        <treecol id="col_saldo" label="'+_('Rendimiento')+'"   sort="?Rendimiento" sortActive="true" sortDirection="descending" flex="1" style="text-align: right"/>\n'
+        s= s+  '        <treecol label="'+_('Fecha revisión dividendo')+'" flex="1" style="text-align: right"/>\n'
+        s= s+  '        <treecol label="'+_('Dividendo')+'" flex="1" style="text-align: right"/>\n'
         s= s+  '    </treecols>\n'
         s= s+  '    <treechildren>\n'
         while not curs.EOF:
@@ -1166,12 +1168,14 @@ class Inversion:
             s= s + '                ' + treecell_euros(row["actualizacion"], 3)
             s= s + '                ' + treecell_euros(row['saldo'])
             s= s + '                ' + treecell_euros(row['pendiente'])
-            s= s +'                ' +  treecell_euros(row['invertido'])
+            s= s + '                ' +  treecell_euros(row['invertido'])
             if row['saldo']==0 or row['invertido']==0:
                 tpc=0
             else:
                 tpc=100*row['pendiente']/row['invertido']
-            s= s + treecell_tpc(tpc)
+            s= s + '                ' +  treecell_tpc(tpc)
+            s= s + '                <treecell label="'+str(row["fechadividendo"])[:-12]+ '" />\n'
+            s= s + '                ' +  treecell_tpc(row['dividendo'])
             s= s + '            </treerow>\n'
             s= s + '        </treeitem>\n'
             curs.MoveNext()     
@@ -1376,8 +1380,8 @@ class InversionOperacion:
             return False
         return True
         
-    def modificar(self, id_operinversiones,  fecha,  id_tiposoperaciones,  importe, acciones,  impuestos,  comision,    comentario, valor_accion,  id_inversiones):
-        sql="update operinversiones set fecha='" + str(fecha) + "', id_tiposoperaciones=" + str(id_tiposoperaciones) +", importe="+str(importe)+", acciones="+ str(acciones) +", impuestos="+ str(impuestos) +", comision="+ str(comision) +", comentario='"+ str(comentario)+"',  valor_accion="+str(valor_accion)+", id_Inversiones="+ str(id_inversiones)+' where id_operinversiones='+str(id_operinversiones)
+    def modificar(self, id_operinversiones,  fecha,  id_tiposoperaciones,  importe, acciones,  impuestos,  comision,  valor_accion,  id_inversiones):
+        sql="update operinversiones set fecha='" + str(fecha) + "', id_tiposoperaciones=" + str(id_tiposoperaciones) +", importe="+str(importe)+", acciones="+ str(acciones) +", impuestos="+ str(impuestos) +", comision="+ str(comision) +",  valor_accion="+str(valor_accion)+", id_Inversiones="+ str(id_inversiones)+' where id_operinversiones='+str(id_operinversiones)
         try:
             con.Execute(sql);
         except:

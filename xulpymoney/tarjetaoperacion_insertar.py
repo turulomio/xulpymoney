@@ -1,9 +1,9 @@
 # -*- coding: UTF-8 -*-
-from mod_python import util
 from core import *
 from xul import *
 
 def index(req):
+    form=req.form
     if form.has_key('concepto'):
        concepto=int(form['concepto'])
     else:
