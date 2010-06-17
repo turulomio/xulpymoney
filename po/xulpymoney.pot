@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-06-17 08:53+0200\n"
+"POT-Creation-Date: 2010-06-17 12:16+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -199,11 +199,11 @@ msgstr ""
 msgid "¿Mostrar las inversiones inactivas?"
 msgstr ""
 
-#: ../inversion_modificar.py:67 ../clases/core.py:1154
+#: ../inversion_modificar.py:67
 msgid "Fecha revisión dividendo"
 msgstr ""
 
-#: ../inversion_modificar.py:68 ../clases/core.py:1155
+#: ../inversion_modificar.py:68
 msgid "Dividendo"
 msgstr ""
 
@@ -247,8 +247,8 @@ msgstr ""
 msgid "Activa"
 msgstr ""
 
-#: ../clases/core.py:164 ../clases/core.py:503 ../clases/core.py:1006
-#: ../clases/core.py:1148 ../clases/core.py:1242
+#: ../clases/core.py:164 ../clases/core.py:503 ../clases/core.py:1010
+#: ../clases/core.py:1152 ../clases/core.py:1242
 msgid "Entidad Bancaria"
 msgstr ""
 
@@ -257,7 +257,7 @@ msgid "saldo total"
 msgstr ""
 
 #: ../clases/core.py:166 ../clases/core.py:505 ../clases/core.py:675
-#: ../clases/core.py:1150
+#: ../clases/core.py:1154
 msgid "Saldo"
 msgstr ""
 
@@ -394,102 +394,106 @@ msgstr ""
 msgid "Liquido"
 msgstr ""
 
-#: ../clases/core.py:921
+#: ../clases/core.py:923
+msgid "El dividendo estimado según la compañía a {0} es de {1} %"
+msgstr ""
+
+#: ../clases/core.py:925
 msgid "Suma de dividendos de la inversión"
 msgstr ""
 
-#: ../clases/core.py:922
+#: ../clases/core.py:926
 msgid "de lo invertido"
 msgstr ""
 
-#: ../clases/core.py:922
+#: ../clases/core.py:926
 msgid "TAE de lo invertido"
 msgstr ""
 
-#: ../clases/core.py:960
+#: ../clases/core.py:964
 msgid "ETF Inversos"
 msgstr ""
 
-#: ../clases/core.py:962
+#: ../clases/core.py:966
 msgid "Fondos de dinero y depósitos"
 msgstr ""
 
-#: ../clases/core.py:964
+#: ../clases/core.py:968
 #, python-format
 msgid "P. Pensiones e inversiones hasta un %s en renta variable, fondos alternativos y renta fija"
 msgstr ""
 
-#: ../clases/core.py:966
+#: ../clases/core.py:970
 #, python-format
 msgid "P. Pensiones e inversiones hasta un %s en renta variable y acciones"
 msgstr ""
 
-#: ../clases/core.py:994 ../clases/core.py:1136
+#: ../clases/core.py:998 ../clases/core.py:1140
 msgid "Actualizar el valor"
 msgstr ""
 
-#: ../clases/core.py:995 ../clases/core.py:1137 ../clases/xul.py:56
+#: ../clases/core.py:999 ../clases/core.py:1141 ../clases/xul.py:56
 msgid "Actualizar en Internet"
 msgstr ""
 
-#: ../clases/core.py:997 ../clases/core.py:1065
+#: ../clases/core.py:1001 ../clases/core.py:1069
 msgid "Modificar la inversión"
 msgstr ""
 
-#: ../clases/core.py:998 ../clases/core.py:1087
+#: ../clases/core.py:1002 ../clases/core.py:1091
 msgid "Estudio de la inversión"
 msgstr ""
 
-#: ../clases/core.py:1005 ../clases/core.py:1147 ../clases/core.py:1241
+#: ../clases/core.py:1009 ../clases/core.py:1151 ../clases/core.py:1241
 #: ../clases/core.py:1759 ../clases/core.py:2547
 msgid "Inversión"
 msgstr ""
 
-#: ../clases/core.py:1007 ../clases/core.py:1149 ../clases/core.py:1243
+#: ../clases/core.py:1011 ../clases/core.py:1153 ../clases/core.py:1243
 msgid "Valor Acción"
 msgstr ""
 
-#: ../clases/core.py:1008 ../clases/core.py:1247
+#: ../clases/core.py:1012 ../clases/core.py:1247
 msgid "Valor Compra"
 msgstr ""
 
-#: ../clases/core.py:1009
+#: ../clases/core.py:1013
 msgid "Valor Venta"
 msgstr ""
 
-#: ../clases/core.py:1010 ../clases/core.py:1249
+#: ../clases/core.py:1014 ../clases/core.py:1249
 msgid "Compra    "
 msgstr ""
 
-#: ../clases/core.py:1011 ../clases/core.py:1250
+#: ../clases/core.py:1015 ../clases/core.py:1250
 msgid "Venta     "
 msgstr ""
 
-#: ../clases/core.py:1073
+#: ../clases/core.py:1077
 msgid "Desactivar la inversión"
 msgstr ""
 
-#: ../clases/core.py:1077
+#: ../clases/core.py:1081
 msgid "Activar la inversión"
 msgstr ""
 
-#: ../clases/core.py:1139
+#: ../clases/core.py:1143
 msgid "Nueva inversión"
 msgstr ""
 
-#: ../clases/core.py:1146
+#: ../clases/core.py:1150
 msgid "activa"
 msgstr ""
 
-#: ../clases/core.py:1151
+#: ../clases/core.py:1155
 msgid "Pendiente"
 msgstr ""
 
-#: ../clases/core.py:1152
+#: ../clases/core.py:1156
 msgid "Invertido"
 msgstr ""
 
-#: ../clases/core.py:1153
+#: ../clases/core.py:1157
 msgid "Rendimiento"
 msgstr ""
 
