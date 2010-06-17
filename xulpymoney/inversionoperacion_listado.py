@@ -90,7 +90,7 @@ def index(req):
     if fechapo==None:
         listadoDiv='<vbox align="center"><label value="'+_('No puede haber dividendos si no existen acciones')+'" /></vbox>\n'       
     else:
-        listadoDiv=Dividendo().xultree("select id_dividendos, cuenta, fecha, liquido, inversion from dividendos, inversiones, cuentas where cuentas.id_cuentas=inversiones.id_cuentas and dividendos.id_inversiones=inversiones.id_inversiones and dividendos.id_inversiones="+str(form['id_inversiones']) + " and fecha >='"+str(fechapo)+"' order by fecha;",  form['id_inversiones'])
+        listadoDiv=Dividendo().xultree("select * from dividendos, inversiones, cuentas where cuentas.id_cuentas=inversiones.id_cuentas and dividendos.id_inversiones=inversiones.id_inversiones and dividendos.id_inversiones="+str(form['id_inversiones']) + " and fecha >='"+str(fechapo)+"' order by fecha;",  form['id_inversiones'])
     reg=cd.con.Execute("select * from inversiones where id_inversiones="+ str(form['id_inversiones'])).GetRowAssoc(0)
     con.close()
     cd .close()    

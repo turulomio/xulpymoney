@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: recovermypartition 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-06-14 09:52+0200\n"
+"POT-Creation-Date: 2010-06-17 12:16+0200\n"
 "PO-Revision-Date: 2010-05-18 21:06+0200\n"
 "Last-Translator: root <turulomio@yahoo.es>\n"
 "Language-Team: Spanish\n"
@@ -200,11 +200,11 @@ msgstr "Investment state"
 msgid "¿Mostrar las inversiones inactivas?"
 msgstr "¿Do you want me to show inactive investments?"
 
-#: ../inversion_modificar.py:67 ../clases/core.py:1154
+#: ../inversion_modificar.py:67
 msgid "Fecha revisión dividendo"
 msgstr "Date dividend review"
 
-#: ../inversion_modificar.py:68 ../clases/core.py:1155
+#: ../inversion_modificar.py:68
 msgid "Dividendo"
 msgstr "Dividend"
 
@@ -248,8 +248,8 @@ msgstr "Activate Bank"
 msgid "Activa"
 msgstr "Active"
 
-#: ../clases/core.py:164 ../clases/core.py:503 ../clases/core.py:1006
-#: ../clases/core.py:1148 ../clases/core.py:1242
+#: ../clases/core.py:164 ../clases/core.py:503 ../clases/core.py:1010
+#: ../clases/core.py:1152 ../clases/core.py:1242
 msgid "Entidad Bancaria"
 msgstr "Bank"
 
@@ -258,7 +258,7 @@ msgid "saldo total"
 msgstr "total balance"
 
 #: ../clases/core.py:166 ../clases/core.py:505 ../clases/core.py:675
-#: ../clases/core.py:1150
+#: ../clases/core.py:1154
 msgid "Saldo"
 msgstr "Balance"
 
@@ -395,102 +395,106 @@ msgstr "Charge account"
 msgid "Liquido"
 msgstr "Liquid"
 
-#: ../clases/core.py:921
+#: ../clases/core.py:923
+msgid "El dividendo estimado según la compañía a {0} es de {1} %"
+msgstr ""
+
+#: ../clases/core.py:925
 msgid "Suma de dividendos de la inversión"
 msgstr "Sum of investment dividends"
 
-#: ../clases/core.py:922
+#: ../clases/core.py:926
 msgid "de lo invertido"
 msgstr "on investments"
 
-#: ../clases/core.py:922
+#: ../clases/core.py:926
 msgid "TAE de lo invertido"
 msgstr "APR on investments"
 
-#: ../clases/core.py:960
+#: ../clases/core.py:964
 msgid "ETF Inversos"
 msgstr "Inverse ETF"
 
-#: ../clases/core.py:962
+#: ../clases/core.py:966
 msgid "Fondos de dinero y depósitos"
 msgstr "Money funds and deposits"
 
-#: ../clases/core.py:964
+#: ../clases/core.py:968
 #, python-format
 msgid "P. Pensiones e inversiones hasta un %s en renta variable, fondos alternativos y renta fija"
 msgstr "P. Pensions and investments up to %s in equities, fixed income and alternative funds"
 
-#: ../clases/core.py:966
+#: ../clases/core.py:970
 #, python-format
 msgid "P. Pensiones e inversiones hasta un %s en renta variable y acciones"
 msgstr "P. Pensions and investments up to %s in equities and shares"
 
-#: ../clases/core.py:994 ../clases/core.py:1136
+#: ../clases/core.py:998 ../clases/core.py:1140
 msgid "Actualizar el valor"
 msgstr "Update share"
 
-#: ../clases/core.py:995 ../clases/core.py:1137 ../clases/xul.py:56
+#: ../clases/core.py:999 ../clases/core.py:1141 ../clases/xul.py:56
 msgid "Actualizar en Internet"
 msgstr "Internet update"
 
-#: ../clases/core.py:997 ../clases/core.py:1065
+#: ../clases/core.py:1001 ../clases/core.py:1069
 msgid "Modificar la inversión"
 msgstr "Edit investment"
 
-#: ../clases/core.py:998 ../clases/core.py:1087
+#: ../clases/core.py:1002 ../clases/core.py:1091
 msgid "Estudio de la inversión"
 msgstr "Investment analysis"
 
-#: ../clases/core.py:1005 ../clases/core.py:1147 ../clases/core.py:1241
+#: ../clases/core.py:1009 ../clases/core.py:1151 ../clases/core.py:1241
 #: ../clases/core.py:1759 ../clases/core.py:2547
 msgid "Inversión"
 msgstr "Investmen"
 
-#: ../clases/core.py:1007 ../clases/core.py:1149 ../clases/core.py:1243
+#: ../clases/core.py:1011 ../clases/core.py:1153 ../clases/core.py:1243
 msgid "Valor Acción"
 msgstr "Share"
 
-#: ../clases/core.py:1008 ../clases/core.py:1247
+#: ../clases/core.py:1012 ../clases/core.py:1247
 msgid "Valor Compra"
 msgstr "Purchase value"
 
-#: ../clases/core.py:1009
+#: ../clases/core.py:1013
 msgid "Valor Venta"
 msgstr "Retail value"
 
-#: ../clases/core.py:1010 ../clases/core.py:1249
+#: ../clases/core.py:1014 ../clases/core.py:1249
 msgid "Compra    "
 msgstr "Purchase  "
 
-#: ../clases/core.py:1011 ../clases/core.py:1250
+#: ../clases/core.py:1015 ../clases/core.py:1250
 msgid "Venta     "
 msgstr "Retail    "
 
-#: ../clases/core.py:1073
+#: ../clases/core.py:1077
 msgid "Desactivar la inversión"
 msgstr "Deactivate investment"
 
-#: ../clases/core.py:1077
+#: ../clases/core.py:1081
 msgid "Activar la inversión"
 msgstr "Activate investment"
 
-#: ../clases/core.py:1139
+#: ../clases/core.py:1143
 msgid "Nueva inversión"
 msgstr "New investment"
 
-#: ../clases/core.py:1146
+#: ../clases/core.py:1150
 msgid "activa"
 msgstr "active"
 
-#: ../clases/core.py:1151
+#: ../clases/core.py:1155
 msgid "Pendiente"
 msgstr "Pending"
 
-#: ../clases/core.py:1152
+#: ../clases/core.py:1156
 msgid "Invertido"
 msgstr "Invested"
 
-#: ../clases/core.py:1153
+#: ../clases/core.py:1157
 msgid "Rendimiento"
 msgstr "Performance"
 

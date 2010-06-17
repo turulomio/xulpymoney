@@ -918,6 +918,10 @@ class Dividendo:
         else:
             dtpc=0
             dtae=0
+        
+#        reg=cd.con.Execute("select * from inversiones where id_inversiones="+ str(id_inversiones)).GetRowAssoc(0)
+        divteorico=_("El dividendo estimado según la compañía a {0} es de {1} %").format(str(row['fechadividendo'])[:-12],  str(row['dividendo']))
+        s= s + '<label flex="0"  style="text-align: center;font-weight : bold;" value="'+divteorico+'" />\n'       
         s= s + '<label flex="0"  style="text-align: center;font-weight : bold;" value="'+_('Suma de dividendos de la inversión')+': '+ euros(sumsaldos)+'." />\n'        
         s= s + '<label flex="0"  style="text-align: center;font-weight : bold;" value="% '+_('de lo invertido')+': '+tpc(dtpc)+'. %'+_('TAE de lo invertido')+': '+ tpc(dtae)+'." />\n'
         s= s + '</vbox>\n'
@@ -1151,8 +1155,6 @@ class Inversion:
         s= s+  '        <treecol id="col_saldo" label="'+_('Pendiente')+'" flex="1" style="text-align: right"/>\n'
         s= s+  '        <treecol label="'+_('Invertido')+'" hidden="true"  flex="1" style="text-align: right" />\n'
         s= s+  '        <treecol id="col_saldo" label="'+_('Rendimiento')+'"   sort="?Rendimiento" sortActive="true" sortDirection="descending" flex="1" style="text-align: right"/>\n'
-        s= s+  '        <treecol label="'+_('Fecha revisión dividendo')+'" flex="1" style="text-align: right"/>\n'
-        s= s+  '        <treecol label="'+_('Dividendo')+'" flex="1" style="text-align: right"/>\n'
         s= s+  '    </treecols>\n'
         s= s+  '    <treechildren>\n'
         while not curs.EOF:
@@ -1174,8 +1176,6 @@ class Inversion:
             else:
                 tpc=100*row['pendiente']/row['invertido']
             s= s + '                ' +  treecell_tpc(tpc)
-            s= s + '                <treecell label="'+str(row["fechadividendo"])[:-12]+ '" />\n'
-            s= s + '                ' +  treecell_tpc(row['dividendo'])
             s= s + '            </treerow>\n'
             s= s + '        </treeitem>\n'
             curs.MoveNext()     
