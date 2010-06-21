@@ -919,8 +919,8 @@ class Dividendo:
             dtpc=0
             dtae=0
         
-#        reg=cd.con.Execute("select * from inversiones where id_inversiones="+ str(id_inversiones)).GetRowAssoc(0)
-        divteorico=_("El dividendo estimado según la compañía a {0} es de {1} %").format(str(row['fechadividendo'])[:-12],  str(row['dividendo']))
+        reg=con.Execute("select * from inversiones where id_inversiones="+ str(id_inversiones)).GetRowAssoc(0)
+        divteorico=_("El dividendo estimado según la compañía a {0} es de {1} %").format(str(reg['fechadividendo'])[:-12],  str(reg['dividendo']))
         s= s + '<label flex="0"  style="text-align: center;font-weight : bold;" value="'+divteorico+'" />\n'       
         s= s + '<label flex="0"  style="text-align: center;font-weight : bold;" value="'+_('Suma de dividendos de la inversión')+': '+ euros(sumsaldos)+'." />\n'        
         s= s + '<label flex="0"  style="text-align: center;font-weight : bold;" value="% '+_('de lo invertido')+': '+tpc(dtpc)+'. %'+_('TAE de lo invertido')+': '+ tpc(dtae)+'." />\n'
