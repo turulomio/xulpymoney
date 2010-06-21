@@ -141,7 +141,7 @@ msgstr "Total"
 
 #: ../informe_total.py:129
 msgid "Ingresos"
-msgstr "Inconme"
+msgstr "Income"
 
 #: ../informe_total.py:140 ../clases/core.py:2551
 msgid "Consolidado"

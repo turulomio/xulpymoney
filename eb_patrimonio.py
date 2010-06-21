@@ -6,6 +6,7 @@ from xul import *
 
 def index(req):
     def page():
+        s=''
         s=s+'<?xml version="1.0" encoding="UTF-8" ?>\n'
         s=s+'<?xml-stylesheet href="xul.css" type="text/css"?>\n'
         s=s+'<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>\n'
