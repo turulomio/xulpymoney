@@ -1,6 +1,6 @@
 # -*- coding: UTF-8  -*-
 from formato import *
-import sys
+import sys,  datetime
 sys.path.append("/etc/xulpymoney/")
 import config
 from translate import  _
@@ -66,7 +66,7 @@ def menu():
     s=s +  '         </menupopup>\n'
     s=s +  '      </menu>\n'    
     s=s +  '            <menuitem label="'+_('Evolución TAE')+'" onclick="location=\'informe_tae.py\';"  class="menuitem-iconic" image="images/history.png" />\n'
-    s=s +  '            <menuitem label="'+_('Referencia a IBEX')+'" onclick="location=\'informe_referenciaibex.py\';"  class="menuitem-iconic" image="images/history.png" />\n'
+    s=s +  '            <menuitem label="'+_('Referencia a IBEX')+'" onclick="location=\'informe_referenciaibex.py?cmbanos='+str(datetime.date.today().year-4)+'\';"  class="menuitem-iconic" image="images/history.png" />\n'
     s=s +  '            <menuitem label="'+_('Total')+'" onclick="location=\'informe_total.py\';"  class="menuitem-iconic" image="images/history.png" />\n'
     s=s +  '         </menupopup>\n'
     s=s +  '    </menu>\n'    
@@ -130,19 +130,20 @@ def treecell_euros_alerta_venta(importeactual, importealerta, tpcalerta):
     return s
 
 
-def combo_ano(inicio,fin, selected,  js=True):
-    s="<hbox align='center'>"
-    s=s + '<label value="'+_('Selecciona un año')+'"/>\n'
-    s= s + '<menulist id="cmbanos" label="'+str(fin)+'" oncommand="cmb_submit();">\n'
-    s=s + '<menupopup>\n';
+def combo_ano(name, inicio,fin, selected,  js=True):
+    """Si js=true, el combo hace un oncommand a la funcion name_submit()"""
+    s="<hbox align='center'>\n"
+    s= s + '    <label value="'+_('Selecciona un año')+'"/>\n'
+    s= s + '    <menulist id="'+name+'" oncommand="'+name+'_submit();">\n'
+    s= s + '        <menupopup>\n';
     i=inicio
     while (i<=fin):
         if i==selected:
-            s=s +  '       <menuitem label="'+str(i)+'" selected="true"/>\n'
+            s=s +  '            <menuitem label="'+str(i)+'" selected="true"/>\n'
         else:
-            s=s +  '       <menuitem label="'+str(i)+'"/>\n'
+            s=s +  '            <menuitem label="'+str(i)+'"/>\n'
         i=i+1
-    s=s +  '     </menupopup>\n'
-    s=s + '</menulist>\n'
+    s=s +  '        </menupopup>\n'
+    s=s + '    </menulist>\n'
     s=s + '</hbox>\n'
     return s

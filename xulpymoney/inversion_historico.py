@@ -52,7 +52,7 @@ def index(req):
        cmbanos=int(form['cmbanos'])
     else:
         cmbanos=datetime.date.today().year
-    combo=combo_ano(Total().primera_fecha_con_datos_usuario().year, datetime.date.today().year,  cmbanos)
+    combo=combo_ano("cmbanos",  Total().primera_fecha_con_datos_usuario().year, datetime.date.today().year,  cmbanos)
     listadoinversiones = Total().xultree_historico_inversiones(cmbanos, True)
     listadodividendos = Total().xultree_historico_dividendos(cmbanos)
     listadorendimientos = Total().xultree_historico_rendimientos(cmbanos)

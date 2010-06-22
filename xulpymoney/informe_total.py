@@ -30,7 +30,7 @@ def index(req):
     else:
         cmbanos=int(form['cmbanos'])
     
-    combo='<vbox align="center">' + combo_ano(Total().primera_fecha_con_datos_usuario().year, datetime.date.today().year,  cmbanos) + '</vbox>'
+    combo='<vbox align="center">' + combo_ano("cmbanos", Total().primera_fecha_con_datos_usuario().year, datetime.date.today().year,  cmbanos) + '</vbox>'
     
     #Todos estos arrays tienen de indices 0..11 los 12 meses y el 12 la suma
     gastos=[0]*13

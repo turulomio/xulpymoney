@@ -2321,6 +2321,7 @@ class Total:
                     return i
                 else:
                     i=i+xstep
+            return 0 # Para colocarlo al inicio, queda bien
                 
         def maximoibex():
             """Calculamos el máximo del ibex"""
