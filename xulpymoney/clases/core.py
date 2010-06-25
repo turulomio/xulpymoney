@@ -2311,17 +2311,28 @@ class Total:
             points ((row["inversion"], row['fecha'], row['acciones'], row['importe'],referencia_ibex35(row['fecha']) )) 
             ibex((row["fecha"], row['cierre']))
             miles(row['miles'], row['importe'],  round(100*row['sumimporte']/total, 2))"""
- 
+         
+        def datedictionary():
+            """Función que cambia una fecha a una posicion x"""  
+            xx={}
+            inicio=datetime.date(ibex[0][0].year,  ibex[0][0].month,  ibex[0][0].day)
+            final=datetime.date.today()
+            dias= (final - inicio).days +1 
+            dia=datetime.timedelta(days=1)
+            puntarr=xstep
+            for i in range (dias):
+                if (inicio + datetime.timedelta(days=i)).weekday()<5:
+                    xx[str(inicio + datetime.timedelta(days=i))]=puntarr+xstep
+                    puntarr=puntarr+xstep
+            return xx
         
         def fecha2x(fecha):
-            """Función que cambia una fecha a una posicion x"""
-            i=0
-            for ib in ibex:
-                if ib[0]==fecha:
-                    return i
-                else:
-                    i=i+xstep
-            return 0 # Para colocarlo al inicio, queda bien
+            fecha=datetime.date(fecha.year, fecha.month,  fecha.day)
+            try:
+                return int(xx[str(fecha)])
+            except:
+                return xstep
+
                 
         def maximoibex():
             """Calculamos el máximo del ibex"""
@@ -2338,27 +2349,30 @@ class Total:
                     min=ib[1]
             return (int(min/1000))*1000
             
+
         xstep=20#Avance en x por cada avance en fecha del ibex
         margin=2000#Margen que rodea el grafico por todos los lados
         maxibex=maximoibex()
         minibex=minimoibex()
-        maxy=maxibex-minibex  #Maximo del ibex
-        maxx=len(ibex)*20  #Maximo del ibex
+        maxy=maxibex-minibex  #Maximo del ibex       
+        xx=datedictionary() #dictionary de fechas xx[fecha]=posx
+        maxx=len(xx)*xstep
         firstyear=ibex[0][0].year#Año de la primea operación. 
 
-        js=       '<script type="text/ecmascript">\n<![CDATA[\n'        
-        js= js+ 'function gioriShowData(i){\n'        
-        js= js+ '     	document.getElementById("gioriover").firstChild.nodeValue = document.getElementById("gioricircle" +  i).getAttribute("inversion") + ". " + document.getElementById("gioricircle" +  i).getAttribute("importe")+ " €. Ibex="  + document.getElementById("gioricircle" +  i).getAttribute("ibex") +" €";\n'
+        js=       '<script type="text/ecmascript" >\n<![CDATA[\n'        
+        js= js+ 'function gioriShowData(i){\n'  
+        js= js+ '     	document.getElementById("gioriover").firstChild.nodeValue = document.getElementById("gioricircle" +  i).getAttribute("inversion") + " ( "+document.getElementById("gioricircle" +  i).getAttribute("fecha")+" ). " + document.getElementById("gioricircle" +  i).getAttribute("importe")+ " €. Ibex="  + document.getElementById("gioricircle" +  i).getAttribute("ibex") +" €";\n'
         js= js+ '     	document.getElementById("gioricircle"+i).setAttribute("r","300");\n'
         js= js+ '     	document.getElementById("gioricircle"+i).setAttribute("style","stroke: black; stroke-width: 10; fill: deeppink;fill-opacity: 0.5;");\n'
         js= js+ '}\n\n'        
 
         js= js+ 'function gioriShowMiles(i){\n'        
-        js= js+ '     	document.getElementById("gioriover").firstChild.nodeValue = "'+_('Rango')+' " + i + "000 - " + (i+1) + "000: "+ ". " + document.getElementById("giorirect" +  i).getAttribute("importe")+ " €. ("  + document.getElementById("giorirect" +  i).getAttribute("tpc") +" %)";\n'
+        js= js+ '     	document.getElementById("gioriover").firstChild.nodeValue = "'+_('Rango')+' " + i + "000 - " + (i+1) + "000: " + document.getElementById("giorirect" +  i).getAttribute("importe")+ " €. ("  + document.getElementById("giorirect" +  i).getAttribute("tpc") +" %)";\n'
         js= js+ '     	document.getElementById("giorirect"+i).setAttribute("style","stroke: none; fill: deeppink;fill-opacity: 0.5;");\n'
         js= js+ '}\n\n'                    
 
         js= js+ 'function ver_detalle(i){\n'
+        js= js+ '    gioriUnshowMiles(i);\n'
         js= js+ '    location=\'informe_referenciaibex_detalle.py?rango=\'+ (i*1000);\n'
         js= js+ '}\n'
 
@@ -2374,7 +2388,7 @@ class Total:
         js= js+ '}\n\n'
         js= js+ ']]>\n</script>\n\n'          
         
-        header='<svg flex="1" id="giori" width="1000" height="500"  viewBox="-'+str(margin)+' -'+str(margin)+' '+ str(len(ibex)*xstep+2*margin) +' '+str(maxy+2*margin)+'" preserveAspectRatio="xMidYMid meet"  xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" >\n'
+        header='<svg flex="1" id="giori" width="1000" height="500"  viewBox="-'+str(margin)+' -'+str(margin)+' '+ str(maxx+2*margin) +' '+str(maxy+2*margin)+'" preserveAspectRatio="xMidYMid meet"  xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" >\n'
         header=header + '<!-- Gráfico que muestra las inversionoperacion refernciadas al ibex35. http://xulpymoney.sourcefore.net -->\n'
 
         circles='<!-- Circulos de operinversiones -->\n'
@@ -2383,7 +2397,7 @@ class Total:
                 
         libex='<!-- Linea del Ibex -->\n<polyline points="' 
         for i in range(len(ibex)):
-            libex=libex+ str(i*xstep) + " " + str(maxibex-ibex[i][1]) + ", "
+            libex=libex+ str(fecha2x(ibex[i][0])) + " " + str(maxibex-ibex[i][1]) + ", "
         libex=libex[:-2]+'" style="stroke: blue; stroke-width: 30; fill: none;" />\n'
         
         rvertical='<!-- Rallado vertical -->\n'        
@@ -2395,7 +2409,7 @@ class Total:
             if p_year==ib[0].year and ib[0].month==1:
                 x=fecha2x(ib[0])
                 rvertical=rvertical+'<line x1="'+str(x)+'" y1="'+str(0)+'" x2="'+ str(x) +'" y2="'+str(maxy)+'" style="stroke: gray; stroke-width: 30; fill: none;" />\n'
-                rvertical=rvertical+'<text x="'+str(x/scalatexto)+'" y="'+str((maxy + 1000)/scalatexto)+'" transform="scale(30)">'+str(p_year)+'</text>\n' 
+                rvertical=rvertical+'<text x="'+str(x/scalatexto)+'" y="'+str((maxy + 600)/scalatexto)+'" transform="scale(30)">'+str(p_year)+'</text>\n' 
                 p_year=p_year+1
 
         rhorizontal='<!-- Rallado horizontal -->\n'       
@@ -2415,13 +2429,13 @@ class Total:
         marco=marco+'<line x1="0" y1="'+str(maxy)+'" x2="'+ str(maxx) +'" y2="'+str(maxy)+'" style="stroke: black; stroke-width: 60; fill: none;" />\n' 
         marco=marco+'<line x1="0" y1="'+str(0)+'" x2="'+ str(maxx) +'" y2="'+str(0)+'" style="stroke: black; stroke-width: 60; fill: none;" />\n'
 
-
+#        textscale=50
         panel='<!-- Panel de resultados dinámico -->\n'       
-        panel=panel+'<line x1="100" y1="400" x2="1000" y2="400" style="stroke: black; stroke-width: 30; fill: none;" />\n'
-        panel=panel+'<text x="25" y="13"	   transform="scale(50)">Ibex 35</text>\n' 
-        panel=panel+'<circle cx="600" cy="1000" r="150" style="stroke: black; stroke-width: 10; fill: lime;" />\n'
-        panel=panel+'<text x="25" y="28"  transform="scale(50)">'+_('Operación de inversión')+'</text>\n' 
-        panel=panel+'<text id="gioriover" x="25" y="43"  transform="scale(50)"> </text>\n' 
+#        panel=panel+'<line x1="100" y1="400" x2="1000" y2="400" style="stroke: black; stroke-width: 30; fill: none;" />\n'
+#        panel=panel+'<text x="'+str(maxx/(2*textscale))+'" y="13" style="text-anchor: middle;" transform="scale(' + str(textscale) + ')">Ibex 35</text>\n' 
+#        panel=panel+'<circle cx="600" cy="1000" r="150" style="stroke: black; stroke-width: 10; fill: lime;" />\n'
+#        panel=panel+'<text x="'+str(maxx/(2*textscale))+'" y="28"  style="text-anchor: middle;" transform="scale(' + str(textscale) + ')">'+_('Operación de inversión')+'</text>\n' 
+        panel=panel+'<text id="gioriover" x="'+str(maxx/(2*scalatexto))+'" y="'+str((maxy + 1200)/scalatexto)+'"  style="text-anchor: middle;"  transform="scale(' + str(scalatexto) + ')"> </text>\n' 
        
 
         foot='</svg>'              

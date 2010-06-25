@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: recovermypartition 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-06-22 08:28+0200\n"
+"POT-Creation-Date: 2010-06-25 09:21+0200\n"
 "PO-Revision-Date: 2010-05-18 21:06+0200\n"
 "Last-Translator: root <turulomio@yahoo.es>\n"
 "Language-Team: Spanish\n"
@@ -143,7 +143,7 @@ msgstr "Total"
 msgid "Ingresos"
 msgstr "Income"
 
-#: ../informe_total.py:140 ../clases/core.py:2552
+#: ../informe_total.py:140 ../clases/core.py:2566
 msgid "Consolidado"
 msgstr "Consolidated"
 
@@ -446,7 +446,7 @@ msgid "Estudio de la inversión"
 msgstr "Investment analysis"
 
 #: ../clases/core.py:1009 ../clases/core.py:1151 ../clases/core.py:1241
-#: ../clases/core.py:1759 ../clases/core.py:2548
+#: ../clases/core.py:1759 ../clases/core.py:2562
 msgid "Inversión"
 msgstr "Investmen"
 
@@ -638,95 +638,91 @@ msgstr "Temporal evolution of the heritage"
 msgid "Patrimonio"
 msgstr "Heritage"
 
-#: ../clases/core.py:2357
+#: ../clases/core.py:2370
 msgid "Rango"
 msgstr "Range"
 
-#: ../clases/core.py:2423
-msgid "Operación de inversión"
-msgstr "Investment operation"
-
-#: ../clases/core.py:2546
+#: ../clases/core.py:2560
 msgid "Fecha venta"
 msgstr "Retail date"
 
-#: ../clases/core.py:2547
+#: ../clases/core.py:2561
 msgid "Años"
 msgstr "Years"
 
-#: ../clases/core.py:2549
+#: ../clases/core.py:2563
 msgid "Tipo Operación"
 msgstr "Operation type"
 
-#: ../clases/core.py:2550
+#: ../clases/core.py:2564
 msgid "Saldo inicio"
 msgstr "Inicial balance"
 
-#: ../clases/core.py:2551
+#: ../clases/core.py:2565
 msgid "Saldo final"
 msgstr "Final balance"
 
-#: ../clases/core.py:2553
+#: ../clases/core.py:2567
 msgid "Rend. ponderado"
 msgstr "Ponderated Perf."
 
-#: ../clases/core.py:2554
+#: ../clases/core.py:2568
 msgid "Rend. total"
 msgstr "Total Perf."
 
-#: ../clases/core.py:2601
+#: ../clases/core.py:2615
 msgid "Suma de saldos consolidados en el año"
 msgstr "sum of the year consolidated balance"
 
-#: ../clases/core.py:2647
+#: ../clases/core.py:2661
 msgid "Beneficio"
 msgstr "Profit"
 
-#: ../clases/core.py:2648
+#: ../clases/core.py:2662
 msgid "TAE desde"
 msgstr "APR from"
 
-#: ../clases/core.py:2654
+#: ../clases/core.py:2668
 msgid "Plusvalías de inversiones"
 msgstr "Investment gains"
 
-#: ../clases/core.py:2665
+#: ../clases/core.py:2679
 msgid "Dividendos sin retenciones"
 msgstr "Dividends without decuctions"
 
-#: ../clases/core.py:2678
+#: ../clases/core.py:2692
 msgid "Comisiones en operaciones de inversión"
 msgstr "Invesment operation fees"
 
-#: ../clases/core.py:2689
+#: ../clases/core.py:2703
 msgid "Comisiones de custodia"
 msgstr "Custody fees"
 
-#: ../clases/core.py:2702
+#: ../clases/core.py:2716
 msgid "Retenciones venta fondos inversión al"
 msgstr "Withholding tax on sale of investment funds in"
 
-#: ../clases/core.py:2713
+#: ../clases/core.py:2727
 msgid "Retenciones de los dividendos al"
 msgstr "Withholding tax of dividends in"
 
-#: ../clases/core.py:2724
+#: ../clases/core.py:2738
 msgid "Pago impuestos plusvalias al"
 msgstr "Paying tax on capital appreciation in"
 
-#: ../clases/core.py:2737
+#: ../clases/core.py:2751
 msgid "Beneficio sin impuestos"
 msgstr "Without tax benefit"
 
-#: ../clases/core.py:2748
+#: ../clases/core.py:2762
 msgid "Beneficio pagando impuestos"
 msgstr "Paying profit taxes"
 
-#: ../clases/core.py:2759
+#: ../clases/core.py:2773
 msgid "Valor de mi patrimonio a"
 msgstr "Value of my property in"
 
-#: ../clases/core.py:2759
+#: ../clases/core.py:2773
 msgid "en este año"
 msgstr "in this year"
 
@@ -809,3 +805,6 @@ msgstr "User handbook"
 #: ../clases/xul.py:136
 msgid "Selecciona un año"
 msgstr "Pick a year"
+
+#~ msgid "Operación de inversión"
+#~ msgstr "Investment operation"
