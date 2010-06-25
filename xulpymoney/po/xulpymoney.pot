@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-06-25 09:22+0200\n"
+"POT-Creation-Date: 2010-06-25 09:36+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -35,6 +35,54 @@ msgstr ""
 
 #: ../about.py:37
 msgid "Licencia de programa"
+msgstr ""
+
+#: ../about.py:49
+msgid "Operación de bolsa de mayor importe:"
+msgstr ""
+
+#: ../about.py:54
+msgid "Primera operación de usuario:"
+msgstr ""
+
+#: ../about.py:59
+msgid "Mayor saldo:"
+msgstr ""
+
+#: ../about.py:75
+msgid "Idea:"
+msgstr ""
+
+#: ../about.py:80
+msgid "Desarrollo:"
+msgstr ""
+
+#: ../about.py:85
+msgid "Traducción:"
+msgstr ""
+
+#: ../about.py:100
+msgid "Sistema Operativo:"
+msgstr ""
+
+#: ../about.py:112
+msgid "Base de datos:"
+msgstr ""
+
+#: ../concepto_insertar.py:10
+msgid "Xulpymoney > Concepto > Nuevo"
+msgstr ""
+
+#: ../concepto_insertar.py:34 ../concepto_insertar.py:39 ../clases/core.py:356
+msgid "Nuevo concepto"
+msgstr ""
+
+#: ../concepto_insertar.py:40 ../clases/core.py:364 ../clases/core.py:1602
+msgid "Tipo de operación"
+msgstr ""
+
+#: ../concepto_insertar.py:41
+msgid "Aceptar"
 msgstr ""
 
 #: ../index.py:8
@@ -279,14 +327,6 @@ msgstr ""
 
 #: ../clases/core.py:323
 msgid "Modificar el concepto"
-msgstr ""
-
-#: ../clases/core.py:356
-msgid "Nuevo concepto"
-msgstr ""
-
-#: ../clases/core.py:364 ../clases/core.py:1602
-msgid "Tipo de operación"
 msgstr ""
 
 #: ../clases/core.py:429

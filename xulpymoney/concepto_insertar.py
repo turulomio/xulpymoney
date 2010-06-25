@@ -3,10 +3,11 @@ from mod_python import util
 import time
 from core import *
 from xul import *
+from translate import  _
 
 def index(req):
     def page():
-        s=xulheaderwindowmenu("Xulpymoney > Concepto > Nueva")
+        s=xulheaderwindowmenu(_("Xulpymoney > Concepto > Nuevo"))
         s=s+'<script>\n'
         s=s+'<![CDATA[\n'
          
@@ -30,14 +31,14 @@ def index(req):
         s=s+'</script>\n'
 
         s=s+'<vbox flex="1">\n'
-        s=s+'    <label id="titulo" flex="0" value="Nuevo concepto" />\n'
+        s=s+'    <label id="titulo" flex="0" value="'+_('Nuevo concepto')+'" />\n'
         s=s+'    <label value="" />\n'
         s=s+'    <hbox flex="1">\n'
         s=s+'    <grid align="center">\n'
         s=s+'        <rows>\n'
-        s=s+'        <row><label value="Concepto"/><hbox><textbox id="concepto" value="Nuevo concepto"/></hbox></row>\n'
-        s=s+'        <row><label value="Tipo de operación"/><hbox>'+cmbTO+'</hbox></row>\n'
-        s=s+'        <row><label value="" /><hbox><button id="cmd" label="Aceptar" onclick="concepto_insert();"/></hbox></row>\n'
+        s=s+'        <row><label value="Concepto"/><hbox><textbox id="concepto" value="'+_('Nuevo concepto')+'"/></hbox></row>\n'
+        s=s+'        <row><label value="'+_('Tipo de operación')+'"/><hbox>'+cmbTO+'</hbox></row>\n'
+        s=s+'        <row><label value="" /><hbox><button id="cmd" label="'+_('Aceptar')+'" onclick="concepto_insert();"/></hbox></row>\n'
         s=s+'        </rows>\n'
         s=s+'    </grid>\n'
         s=s+'    </hbox>\n'
