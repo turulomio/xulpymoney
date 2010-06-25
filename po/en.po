@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: recovermypartition 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-06-25 09:21+0200\n"
+"POT-Creation-Date: 2010-06-25 09:31+0200\n"
 "PO-Revision-Date: 2010-05-18 21:06+0200\n"
 "Last-Translator: root <turulomio@yahoo.es>\n"
 "Language-Team: Spanish\n"
@@ -37,6 +37,54 @@ msgstr "Tecnology used"
 #: ../about.py:37
 msgid "Licencia de programa"
 msgstr "Program license"
+
+#: ../about.py:49
+msgid "Operación de bolsa de mayor importe:"
+msgstr "Higher brokerage transaction amount:"
+
+#: ../about.py:54
+msgid "Primera operación de usuario:"
+msgstr "User first operation:"
+
+#: ../about.py:59
+msgid "Mayor saldo:"
+msgstr "Bigger balance:"
+
+#: ../about.py:75
+msgid "Idea:"
+msgstr "Idea:"
+
+#: ../about.py:80
+msgid "Desarrollo:"
+msgstr "Developed by:"
+
+#: ../about.py:85
+msgid "Traducción:"
+msgstr "Translation:"
+
+#: ../about.py:100
+msgid "Sistema Operativo:"
+msgstr "Operating system:"
+
+#: ../about.py:112
+msgid "Base de datos:"
+msgstr "Database:"
+
+#: ../concepto_insertar.py:10
+msgid "Xulpymoney > Concepto > Nuevo"
+msgstr "Xulpymoney > Concept > New"
+
+#: ../concepto_insertar.py:34 ../concepto_insertar.py:39 ../clases/core.py:356
+msgid "Nuevo concepto"
+msgstr "New concept"
+
+#: ../concepto_insertar.py:40 ../clases/core.py:364 ../clases/core.py:1602
+msgid "Tipo de operación"
+msgstr "Type of operation"
+
+#: ../concepto_insertar.py:41
+msgid "Aceptar"
+msgstr "Accept"
 
 #: ../index.py:8
 msgid "Menú del programa"
@@ -282,14 +330,6 @@ msgstr "Yearly average"
 msgid "Modificar el concepto"
 msgstr "Edit concept"
 
-#: ../clases/core.py:356
-msgid "Nuevo concepto"
-msgstr "New concept"
-
-#: ../clases/core.py:364 ../clases/core.py:1602
-msgid "Tipo de operación"
-msgstr "Type of operation"
-
 #: ../clases/core.py:429
 msgid "Modificar la cuenta"
 msgstr "Edit account"
@@ -397,7 +437,7 @@ msgstr "Liquid"
 
 #: ../clases/core.py:923
 msgid "El dividendo estimado según la compañía a {0} es de {1} %"
-msgstr ""
+msgstr "The dividend as the company estimated at {0} is {1} %"
 
 #: ../clases/core.py:925
 msgid "Suma de dividendos de la inversión"
@@ -805,6 +845,3 @@ msgstr "User handbook"
 #: ../clases/xul.py:136
 msgid "Selecciona un año"
 msgstr "Pick a year"
-
-#~ msgid "Operación de inversión"
-#~ msgstr "Investment operation"
