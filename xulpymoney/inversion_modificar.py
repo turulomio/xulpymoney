@@ -63,7 +63,7 @@ def index(req):
     req.write('        <row><label value="Actualiza el valor de nueva compra" /><hbox><textbox id="compra" value="'+str(reg['compra'])+'"/></hbox></row>        \n')
     req.write('        <row><label value="Actualiza el valor de venta" /><hbox><textbox id="venta" value="'+str(reg['venta'])+'"/></hbox></row>\n')
     req.write('        <row><label value="Tipo de inversión" /><hbox>'+cmbtpcvariable+'</hbox></row>\n')
-    req.write('        <row><label value="Nombre de Internet" /><hbox><textbox id="internet" value="'+reg['internet']+'"/></hbox></row>\n')
+    req.write('        <row><label value="Nombre de Internet" /><hbox><textbox id="internet" value="'+str(reg['internet'])+'"/></hbox></row>\n')
     req.write('        <row><label value="'+_('Fecha revisión dividendo')+'" align="center" /><datepicker id="fechadividendo" type="grid"  firstdayofweek="1" value="'+str(reg['fechadividendo'])+'"/></row>\n')
     req.write('        <row><label value="'+_('Dividendo')+'" /><hbox><textbox id="dividendo" value="'+str(reg['dividendo'])+'"/></hbox></row>\n')
     req.write('        <row><label value="" /><hbox><button id="cmd" label="Aceptar" onclick="insert();"/></hbox></row>\n')
