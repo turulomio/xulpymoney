@@ -11,7 +11,7 @@ def index(req):
 
         s=s+'function cmbconceptos_submit(){\n'
         s=s+'    var cmbconceptos=document.getElementById("cmbconceptos").value;\n'
-        s=s+'    location="informe_conceptos.psp?id_conceptos="+ cmbconceptos.split(";")[0];\n'
+        s=s+'    location="informe_conceptos.py?id_conceptos="+ cmbconceptos.split(";")[0];\n'
         s=s+'}\n'
 
         s=s+']]></script>\n'

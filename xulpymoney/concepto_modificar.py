@@ -37,7 +37,7 @@ def index(req):
         s=s+'    <hbox flex="1">\n'
         s=s+'    <grid align="center">\n'
         s=s+'        <rows>\n'
-        s=s+'        <row><label value="Concepto"/><hbox><textbox id="concepto" value="<%=utf82xul(regcon["concepto"])%>"/></hbox></row>\n'
+        s=s+'        <row><label value="Concepto"/><hbox><textbox id="concepto" value="'+utf82xul(regcon["concepto"])+'"/></hbox></row>\n'
         s=s+'        <row><label value="Tipo de operación"/><hbox>'+cmbTO+'</hbox></row>\n'
         s=s+'        <row><label value="" /><hbox><button id="cmd" label="Aceptar" onclick="concepto_modificar();"/></hbox></row>\n'
         s=s+'        </rows>\n'
