@@ -1,0 +1,122 @@
+#!/usr/bin/python    
+# -*- coding: utf-8 -*-  
+import os, adodb, datetime, sys
+sys.path.append("/usr/lib/xulpymoney")
+from core import *
+
+##1 bd
+##2 paso
+##3 clave=inverso bolsa todo 9000
+
+
+class Color:
+    esc_seq = "\x1b["
+    codes={}
+    codes["reset"]     = esc_seq + "39;49;00m"
+    codes["bold"]      = esc_seq + "01m"
+    codes["faint"]     = esc_seq + "02m"
+    codes["standout"]  = esc_seq + "03m"
+    codes["underline"] = esc_seq + "04m"
+    codes["blink"]     = esc_seq + "05m"
+    codes["overline"]  = esc_seq + "06m"  # Who made this up? Seriously.
+    codes["teal"]      = esc_seq + "36m"
+    codes["turquoise"] = esc_seq + "36;01m"
+    codes["fuchsia"]   = esc_seq + "35;01m"
+    codes["purple"]    = esc_seq + "35m"
+    codes["blue"]      = esc_seq + "34;01m"
+    codes["darkblue"]  = esc_seq + "34m"
+    codes["green"]     = esc_seq + "32;01m"
+    codes["darkgreen"] = esc_seq + "32m"
+    codes["yellow"]    = esc_seq + "33;01m"
+    codes["brown"]     = esc_seq + "33m"
+    codes["red"]       = esc_seq + "31;01m"
+    codes["darkred"]   = esc_seq + "31m"
+    
+    def resetColor(self, ):
+        return self.codes["reset"]
+    def ctext(self, color,text):
+        return self.codes[ctext]+text+self.codes["reset"]
+    def bold(self, text):
+        return self.codes["bold"]+text+self.codes["reset"]
+    def white(self, text):
+        return bold(text)
+    def teal(self, text):
+        return self.codes["teal"]+text+self.codes["reset"]
+    def turquoise(self, text):
+        return self.codes["turquoise"]+text+self.codes["reset"]
+    def darkteal(self, text):
+        return turquoise(text)
+    def fuchsia(self, text):
+        return self.codes["fuchsia"]+text+self.codes["reset"]
+    def purple(self, text):
+        return self.codes["purple"]+text+self.codes["reset"]
+    def blue(self, text):
+        return self.codes["blue"]+text+self.codes["reset"]
+    def darkblue(self, text):
+        return self.codes["darkblue"]+text+self.codes["reset"]
+    def green(self, text):
+        return self.codes["green"]+text+self.codes["reset"]
+    def darkgreen(self, text):
+        return self.codes["darkgreen"]+text+self.codes["reset"]
+    def yellow(self, text):
+        return self.codes["yellow"]+text+self.codes["reset"]
+    def brown(self, text):
+        return self.codes["brown"]+text+self.codes["reset"]
+    def darkyellow(self, text):
+        return brown(text)
+    def red(self, text):
+        return self.codes["red"]+text+self.codes["reset"]
+    def darkred(self, text):
+        return self.codes["darkred"]+text+self.codes["reset"]
+
+
+def inversiones(arr,min,max):
+    resultado=""
+    for i in arr:
+        if i[0]>=min and i[0]<max:
+            resultado=resultado + i[1] + " (" + str(i[2]) + "€ a " + str(i[3]) + "€)" + ", "
+    return resultado[:-2]
+
+con = adodb.NewADOConnection("postgres")
+con.Connect("127.0.0.1","postgres","*", sys.argv[1])
+
+
+paso=int(sys.argv[2])
+ultimoibex=con.Execute("select * from ibex35 where fecha<='"+ str(datetime.date.today()) + "' order by fecha desc limit 1").GetRowAssoc(0)
+
+print Color().fuchsia("IBEX ("+str(ultimoibex['fecha'])[:-12]+") = ")+ Color().yellow(str(int(ultimoibex['cierre'])) + "€") 
+
+arr=[]
+if sys.argv[3]=="inverso":
+    where="and inversiones.tpcvariable in (-100)"
+elif sys.argv[3]=="bolsa":
+    where="and inversiones.tpcvariable in (100)"
+elif sys.argv[3]=="todo":
+    where=""
+elif sys.argv[3]=="9000":
+    where="and inversiones.tpcvariable in (100) and importe>9000"
+
+
+
+sql='select * from tmpoperinversiones, inversiones where inversiones.id_Inversiones=tmpoperinversiones.id_inversiones '+ where + ' order by fecha'
+curs=con.Execute(sql)
+while not curs.EOF:
+    row = curs.GetRowAssoc(0)   
+    ibex=con.Execute("select cierre from ibex35 where fecha<='"+str(row['fecha']) + "' order by fecha desc limit 1").GetRowAssoc(0)['cierre']
+    arr.append ((ibex, row['inversion'], row['importe'], row['valor_accion']))
+    curs.MoveNext()
+curs.Close()
+arr.sort()
+maximo= int(max(arr)[0]/1000)*1000+1000
+minimo=int(min(arr)[0]/1000)*1000
+pasos=int((maximo-minimo)/paso)
+for i in range(pasos):
+    formin=minimo+i*paso
+    formax=minimo+(i+1)*paso
+    if ultimoibex['cierre']>formin and ultimoibex['cierre']<formax:
+        rango=Color().red(str(formin)+"-"+str(formax)+": ")
+    else:
+        rango=Color().green(str(formin)+"-"+str(formax)+": ")
+    print rango + inversiones(arr,formin, formax)
+con.Close()
+sys.exit(0)
