@@ -1,8 +1,10 @@
 #!/usr/bin/python    
 # -*- coding: utf-8 -*-  
 import os, adodb, datetime, sys
-
-
+## 1 xulpymoney
+## 2 id_inversiones
+## 3 importe
+## 4 valor desinversion
 class Color:
     esc_seq = "\x1b["
     codes={}
@@ -79,21 +81,82 @@ def strexcesocapital():
 con = adodb.NewADOConnection("postgres")
 con.Connect("127.0.0.1","postgres","*", sys.argv[1])
 
+id_inversiones=int(sys.argv[2])
+desinvertir=int(sys.argv[3])
+try:
+    valor=float(sys.argv[4])
+    strvalor=Color().green(str(valor))
 
-sql='select inversion, dividendo, inversion_invertido(inversiones.id_inversiones, \''+str(datetime.date.today())+'\') as invertido from inversiones, cuentas, entidadesbancarias where inversiones.id_cuentas=cuentas.id_cuentas and cuentas.id_entidadesbancarias=entidadesbancarias.id_entidadesbancarias and inversiones.in_activa=true and inversiones.tpcvariable in (100, -100) order by inversion'
+except:
+    valor=con.Execute("select inversion_actualizacion("+str(id_inversiones)+", date(now())) as valor").GetRowAssoc(0)['valor']
+    strvalor=Color().green(str(valor)+ " (último de la base de datos)")
+
+reg=con.Execute("select * from cuentas, inversiones, entidadesbancarias where entidadesbancarias.id_entidadesbancarias=cuentas.id_entidadesbancarias and inversiones.id_cuentas=cuentas.id_cuentas and id_inversiones="+ str(id_inversiones)).GetRowAssoc(0)
+
+
+sql='select * from tmpoperinversiones where id_inversiones=' + str(id_inversiones) +' order by fecha'
+op=[]
+sell=[]
+left=[]
+operaciones=""
+sumimporte=0
 curs=con.Execute(sql)
 while not curs.EOF:
-    row = curs.GetRowAssoc(0)   
-    dividendomalo=False
-    excesocapital=False
-
-    if row['dividendo']<3:
-        dividendomalo=True    
-    if row['invertido']>60000:
-        excesocapital=True
-
-    print row['inversion'] + strdividendomalo() + strexcesocapital()
-    curs.MoveNext()     
+    row = curs.GetRowAssoc(0)
+    op.append(row)
+    sumimporte=sumimporte+float(row['importe'])
+    operaciones= operaciones + "      - " + str(row['fecha'])[:-12] +": "+ str(row['acciones']) + " acciones a " + str( row['valor_accion']) + "\n"
+    curs.MoveNext()
 curs.Close()
 
+
+print "Realizando estudio de desinversión para " + Color().yellow(reg['inversion'])
+print "   + Entidad bancaria:", Color().green(reg['entidadbancaria'])
+print "   + Capital invertido:", Color().green(str(sumimporte))
+print "   + Valor desinversion:", strvalor
+print "   + Importe a desinvertir y se liberaría:", Color().green(str(desinvertir))
+print "   + Operaciones realizadas"
+print operaciones[:-1]
+
+
+#Quitando capital
+valorcompra=0
+valorventa=0
+mydesinvertir=desinvertir
+addleft=False
+for i in op:
+    if addleft==True:
+        left.append((i['fecha'],i['acciones'],i['valor_accion']))
+    elif i['acciones']*valor<mydesinvertir:
+        sell.append((i['acciones']))
+        valorcompra=valorcompra+i['acciones']*i['valor_accion']
+        mydesinvertir=mydesinvertir - i['acciones']*valor
+    elif i['acciones']*valor==mydesinvertir:	
+        sell.append((i['acciones']))
+        valorcompra=valorcompra+i['acciones']*i['valor_accion']
+        mydesinvertir=0
+        addleft=True # Es como un break pero para que se aññadan a left las que quedan
+    elif i['acciones']*valor>mydesinvertir:
+        acciones=int(mydesinvertir/valor)
+        sell.append((acciones))
+        left.append((i['fecha'],i['acciones']-acciones,i['valor_accion']))
+        valorcompra=valorcompra+acciones*i['valor_accion']
+        mydesinvertir=0
+        addleft=True
+
+
+print "   + Acciones que se venderían:"
+for i in sell:
+    print "      - " + str(i) + " acciones a " + str(valor) 
+
+print "   + Acciones que quedarían:"
+sumleft=0
+for i in left:
+    print "      - " + str(i[0])[:-12] + ": " + str(i[1]) + " acciones a " + str(i[2])
+    sumleft=sumleft + i[1]*i[2]
+
+valorventa=sum(sell)*valor
+print "   + Dinero que se perdería:", Color().green(str(valorcompra - valorventa))
+
+print "   + Capital que quedaría invertido:", Color().green(str(sumleft))
 sys.exit(0)
