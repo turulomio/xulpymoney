@@ -27,7 +27,7 @@ def index(req):
         s=s+'    xmlHttp.onreadystatechange=function(){\n'
         s=s+'        if(xmlHttp.readyState==4){\n'
         s=s+'            var ale=xmlHttp.responseText;\n'
-        s=s+'            location="cuenta_informacion.py?id_cuentas="+ id_cuentas + "&year=" + spfecha[0] + "&month=" + spfecha[1];\n'
+        s=s+'            location="cuentaoperacion_listado.py?id_cuentas="+ id_cuentas + "&year=" + spfecha[0] + "&month=" + spfecha[1];\n'
         s=s+'        }\n'
         s=s+'    }\n'
 

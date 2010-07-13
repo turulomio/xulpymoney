@@ -24,3 +24,4 @@
 20100614 Bug. Al modificar una inversión si borras el precio de compra y no es 0 falla.
 20100614 Deseo. Permitir en el grafico de referencia al IBEX seleccionar años, por defecto 5
 20100615 Deseo. Comprabar últimos y primeros días en el gráfico de referencia al IBEX
+20100701 Deseo. Los objetos fechas datetime cambiarlos solo a date en la bd
