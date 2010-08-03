@@ -77,6 +77,16 @@ def inversiones(arr,min,max):
             resultado=resultado + i[1] + " (" + str(i[2]) + "€ a " + str(i[3]) + "€)" + ", "
     return resultado[:-2]
 
+def minimo():
+    if sys.argv[3]=="inverso":
+        minimomov=int(min(arr)[0]/1000)*1000
+        if minimomov<12000:
+            return minimomov
+        else:
+            return 12000
+    else:
+        return 0
+
 con = adodb.NewADOConnection("postgres")
 con.Connect("127.0.0.1","postgres","*", sys.argv[1])
 
@@ -108,7 +118,8 @@ while not curs.EOF:
 curs.Close()
 arr.sort()
 maximo= int(max(arr)[0]/1000)*1000+1000
-minimo=int(min(arr)[0]/1000)*1000
+#minimo=int(min(arr)[0]/1000)*1000
+minimo=minimo()
 pasos=int((maximo-minimo)/paso)
 for i in range(pasos):
     formin=minimo+i*paso
@@ -119,4 +130,6 @@ for i in range(pasos):
         rango=Color().green(str(formin)+"-"+str(formax)+": ")
     print rango + inversiones(arr,formin, formax)
 con.Close()
+print
+print "Número total de pasos: %d" % pasos
 sys.exit(0)
