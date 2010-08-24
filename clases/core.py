@@ -1736,13 +1736,35 @@ class InversionOperacionTemporal:
         curs.Close()
         if sumacciones>0:
             valormedio=sumactualizacionesxacciones/sumacciones
+            rendimientoanualmedio=sumrendimientosanualesxacciones/sumacciones
+            rendimientotaemedio=sumrendimientosanualesponderadosxacciones/sumacciones
+            rendimientototalmedio=sumrendimientostotalesxacciones/sumacciones
         else:
             valormedio=0
+            rendimientoanualmedio=0
+            rendimientotaemedio=0
+            rendimientototalmedio=0
+        s=s+ '    <treeitem>\n'
+        s=s+ '      <treerow>\n'
+        s=s+ '       <treecell label="TOTAL / MEDIA" />\n'
+        s=s+ '       <treecell label="'+ str(round(sumacciones, 5))+ '" />\n'
+        s=s+        treecell_euros(valormedio);
+        s=s+        treecell_euros(sumimporte);
+        s=s+        treecell_euros(sumpendiente)
+#        s=s+        treecell_tpc(rendimientoanualmedio)
+#        s=s+        treecell_tpc(rendimientotaemedio)
+#        s=s+        treecell_tpc(rendimientototalmedio)
+        s=s+ '       <treecell label="" />\n'
+        s=s+ '       <treecell label="" />\n'
+        s=s+ '       <treecell label="" />\n'
+        s=s+ '       <treecell label="" />\n'
+        s=s+ '      </treerow>\n'
+        s=s+ '    </treeitem>\n'            
         s=s+ '  </treechildren>\n'
         s=s+ '</tree>\n'
-        
-        s= s + '<label flex="0"  style="text-align: center;font-weight : bold;" value="'+_('Invertidos')+' '+ euros(sumimporte)+' '+_('con un total de')+' '+str(int(sumacciones))+' '+_('acciones y un valor medio de')+' '+euros(valormedio)+'"/>\n'        
-        s= s + '<label flex="0"  style="text-align: center;font-weight : bold;" value="'+_('Saldo pendiente')+' '+ euros(sumpendiente)+'. " />\n'        
+#        
+#        s= s + '<label flex="0"  style="text-align: center;font-weight : bold;" value="'+_('Invertidos')+' '+ euros(sumimporte)+' '+_('con un total de')+' '+str(round(sumacciones, 5))+' '+_('acciones y un valor medio de')+' '+euros(valormedio)+'"/>\n'        
+#        s= s + '<label flex="0"  style="text-align: center;font-weight : bold;" value="'+_('Saldo pendiente')+' '+ euros(sumpendiente)+'. " />\n'        
         s= s + '</vbox>\n'
         return s
         
