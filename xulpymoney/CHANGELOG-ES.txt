@@ -1,5 +1,6 @@
 xulpymoney 0.2 XXXXXXXX
 =======================
+- El número de acciones en inversionoperacion_listado.py se redondea a 5 decimales
 - Se ha añadido al informe de referencia al ibex35, un selector de años, para hacerlo más dinámico
 - Se ha solucionado error en el informe de referencia al ibex35, cuando no había datos
 - Se ha quitado el campo comentario de la tabla operinversiones, por no ser útil
