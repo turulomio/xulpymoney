@@ -1,0 +1,129 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+import os, datetime, sys, psycopg2,  psycopg2.extras
+sys.path.append("/usr/lib/xulpymoney/")
+sys.path.append("/etc/xulpymoney/")
+import config
+
+
+class Color:
+    esc_seq = "\x1b["
+    codes={}
+    codes["reset"]     = esc_seq + "39;49;00m"
+    codes["bold"]      = esc_seq + "01m"
+    codes["faint"]     = esc_seq + "02m"
+    codes["standout"]  = esc_seq + "03m"
+    codes["underline"] = esc_seq + "04m"
+    codes["blink"]     = esc_seq + "05m"
+    codes["overline"]  = esc_seq + "06m"  # Who made this up? Seriously.
+    codes["teal"]      = esc_seq + "36m"
+    codes["turquoise"] = esc_seq + "36;01m"
+    codes["fuchsia"]   = esc_seq + "35;01m"
+    codes["purple"]    = esc_seq + "35m"
+    codes["blue"]      = esc_seq + "34;01m"
+    codes["darkblue"]  = esc_seq + "34m"
+    codes["green"]     = esc_seq + "32;01m"
+    codes["darkgreen"] = esc_seq + "32m"
+    codes["yellow"]    = esc_seq + "33;01m"
+    codes["brown"]     = esc_seq + "33m"
+    codes["red"]       = esc_seq + "31;01m"
+    codes["darkred"]   = esc_seq + "31m"
+
+    def resetColor(self, ):
+        return self.codes["reset"]
+    def ctext(self, color,text):
+        return self.codes[ctext]+text+self.codes["reset"]
+    def bold(self, text):
+        return self.codes["bold"]+text+self.codes["reset"]
+    def white(self, text):
+        return bold(text)
+    def teal(self, text):
+        return self.codes["teal"]+text+self.codes["reset"]
+    def turquoise(self, text):
+        return self.codes["turquoise"]+text+self.codes["reset"]
+    def darkteal(self, text):
+        return turquoise(text)
+    def fuchsia(self, text):
+        return self.codes["fuchsia"]+text+self.codes["reset"]
+    def purple(self, text):
+        return self.codes["purple"]+text+self.codes["reset"]
+    def blue(self, text):
+        return self.codes["blue"]+text+self.codes["reset"]
+    def darkblue(self, text):
+        return self.codes["darkblue"]+text+self.codes["reset"]
+    def green(self, text):
+        return self.codes["green"]+text+self.codes["reset"]
+    def darkgreen(self, text):
+        return self.codes["darkgreen"]+text+self.codes["reset"]
+    def yellow(self, text):
+        return self.codes["yellow"]+text+self.codes["reset"]
+    def brown(self, text):
+        return self.codes["brown"]+text+self.codes["reset"]
+    def darkyellow(self, text):
+        return brown(text)
+    def red(self, text):
+        return self.codes["red"]+text+self.codes["reset"]
+    def darkred(self, text):
+        return self.codes["darkred"]+text+self.codes["reset"]
+        
+def connect():        
+        strcon="dbname='%s' port='%d' user='%s' host='%s' password='%s'" % (config.dbname,  config.port, config.user, config.host,  config.password)
+        try:
+            mycon=psycopg2.extras.DictConnection(strcon)
+        except psycopg2.Error,  e:
+            print "Error en la conexión"
+	    sys.exit()
+	return mycon
+        
+def disconnect():
+        con.close()
+#        print "La conexion tiene valor",  con
+
+# CODIGO #####################################################################33
+
+con=connect()
+
+cur = con.cursor()
+cur.execute("select * from ibex35 order by fecha limit 1")
+first=cur.fetchone()
+cur.close()
+
+
+cur = con.cursor()
+cur.execute("select * from ibex35 order by fecha desc limit 1")
+last=cur.fetchone()
+cur.close()
+
+
+cur = con.cursor()
+cur.execute("select * from ibex35 order by cierre desc limit 1")
+max=cur.fetchone()
+cur.close()
+
+cur = con.cursor()
+cur.execute("select * from ibex35 order by cierre limit 1")
+min=cur.fetchone()
+cur.close()
+
+cur = con.cursor()
+cur.execute("select * from ibex35 where date_part('year',fecha)=%s order by cierre desc limit 1",(datetime.date.today().year,))
+maxanual=cur.fetchone()
+cur.close()               
+
+cur = con.cursor()
+cur.execute("select * from ibex35 where date_part('year',fecha)=%s order by cierre limit 1",(datetime.date.today().year,))
+minanual=cur.fetchone()
+cur.close()
+
+
+cur = con.cursor()
+cur.execute("select * from ibex35 where date_part('year',fecha)=%s order by fecha desc limit 1",(datetime.date.today().year-1,))
+inicioanual=cur.fetchone()
+cur.close()
+
+disconnect()
+
+print Color().fuchsia("Esto es un script que analiza datos sobre el ibex desde el "+  str(first['fecha']) + " hasta el " +  str(last['fecha']))
+print Color().green("Limites históricos: ") +  "%d-%d" % (min['cierre'], max['cierre']) + " ( conseguidos el %s y el %s respectivamente )" % (str(min['fecha']), str(max['fecha']))
+print Color().green("Limites en el año "+str(datetime.date.today().year)+ ": ") +  "%d-%d" % (minanual['cierre'], maxanual['cierre']) + " ( conseguidos el %s y el %s respectivamente )" % (str(minanual['fecha']), str(maxanual['fecha']))
+print Color().green("El ibex al empezar el año %d valia %.2f. El ibex ha variado en lo que llevamos de año un %.2f%%" % (datetime.date.today().year, inicioanual['cierre'], 100*(last['cierre']-inicioanual['cierre'])/inicioanual['cierre']))
