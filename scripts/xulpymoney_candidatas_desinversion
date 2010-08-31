@@ -1,7 +1,8 @@
 #!/usr/bin/python    
 # -*- coding: utf-8 -*-  
 import os, adodb, datetime, sys
-
+sys.path.append("/etc/xulpymoney")
+import config
 
 class Color:
     esc_seq = "\x1b["
@@ -77,8 +78,8 @@ def strexcesocapital():
         return ""
 
 
-con = adodb.NewADOConnection("postgres")
-con.Connect("127.0.0.1","postgres","*", sys.argv[1])
+con = adodb.NewADOConnection(config.type)
+con.Connect(config.host,config.user,config.password, config.dbname)
 
 
 sql='select id_inversiones, inversion, dividendo, inversion_invertido(inversiones.id_inversiones, \''+str(datetime.date.today())+'\') as invertido from inversiones, cuentas, entidadesbancarias where inversiones.id_cuentas=cuentas.id_cuentas and cuentas.id_entidadesbancarias=entidadesbancarias.id_entidadesbancarias and inversiones.in_activa=true and inversiones.tpcvariable in (100, -100) order by inversion'

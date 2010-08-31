@@ -1762,7 +1762,7 @@ class InversionOperacionTemporal:
         s=s+ '    </treeitem>\n'            
         s=s+ '  </treechildren>\n'
         s=s+ '</tree>\n'
-#        
+
 #        s= s + '<label flex="0"  style="text-align: center;font-weight : bold;" value="'+_('Invertidos')+' '+ euros(sumimporte)+' '+_('con un total de')+' '+str(round(sumacciones, 5))+' '+_('acciones y un valor medio de')+' '+euros(valormedio)+'"/>\n'        
 #        s= s + '<label flex="0"  style="text-align: center;font-weight : bold;" value="'+_('Saldo pendiente')+' '+ euros(sumpendiente)+'. " />\n'        
         s= s + '</vbox>\n'
