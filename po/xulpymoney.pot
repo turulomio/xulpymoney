@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-08-31 20:22+0200\n"
+"POT-Creation-Date: 2010-10-01 13:42+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -77,7 +77,7 @@ msgstr ""
 msgid "Nuevo concepto"
 msgstr ""
 
-#: ../concepto_insertar.py:40 ../clases/core.py:364 ../clases/core.py:1602
+#: ../concepto_insertar.py:40 ../clases/core.py:364 ../clases/core.py:1604
 msgid "Tipo de operación"
 msgstr ""
 
@@ -130,7 +130,7 @@ msgid "Informe de Gastos e Ingresos"
 msgstr ""
 
 #: ../informe_total.py:110 ../clases/core.py:363 ../clases/core.py:673
-#: ../clases/core.py:2219
+#: ../clases/core.py:2221
 msgid "Concepto"
 msgstr ""
 
@@ -190,7 +190,7 @@ msgstr ""
 msgid "Ingresos"
 msgstr ""
 
-#: ../informe_total.py:140 ../clases/core.py:2588
+#: ../informe_total.py:140 ../clases/core.py:2590
 msgid "Consolidado"
 msgstr ""
 
@@ -222,7 +222,7 @@ msgstr ""
 msgid "Inversiones"
 msgstr ""
 
-#: ../informe_total.py:233 ../clases/core.py:1694 ../clases/core.py:2224
+#: ../informe_total.py:233 ../clases/core.py:1696 ../clases/core.py:2226
 #: ../clases/xul.py:70
 msgid "Total"
 msgstr ""
@@ -291,12 +291,12 @@ msgstr ""
 msgid "Activar la Entidad Bancaria"
 msgstr ""
 
-#: ../clases/core.py:163 ../clases/core.py:501 ../clases/core.py:2071
+#: ../clases/core.py:163 ../clases/core.py:501 ../clases/core.py:2073
 msgid "Activa"
 msgstr ""
 
 #: ../clases/core.py:164 ../clases/core.py:503 ../clases/core.py:1010
-#: ../clases/core.py:1152 ../clases/core.py:1242
+#: ../clases/core.py:1152 ../clases/core.py:1244
 msgid "Entidad Bancaria"
 msgstr ""
 
@@ -385,14 +385,14 @@ msgstr ""
 msgid "Nueva operación"
 msgstr ""
 
-#: ../clases/core.py:672 ../clases/core.py:892 ../clases/core.py:1601
-#: ../clases/core.py:1687 ../clases/core.py:1780
+#: ../clases/core.py:672 ../clases/core.py:892 ../clases/core.py:1603
+#: ../clases/core.py:1689 ../clases/core.py:1782
 msgid "Fecha"
 msgstr ""
 
 #: ../clases/core.py:674 ../clases/core.py:741 ../clases/core.py:747
-#: ../clases/core.py:757 ../clases/core.py:1605 ../clases/core.py:1690
-#: ../clases/core.py:1782 ../clases/core.py:2219
+#: ../clases/core.py:757 ../clases/core.py:1607 ../clases/core.py:1692
+#: ../clases/core.py:1784 ../clases/core.py:2221
 msgid "Importe"
 msgstr ""
 
@@ -405,12 +405,12 @@ msgid "Saldo a inicio de mes"
 msgstr ""
 
 #: ../clases/core.py:741 ../clases/core.py:747 ../clases/core.py:757
-#: ../clases/core.py:1606
+#: ../clases/core.py:1608
 msgid "Comisión"
 msgstr ""
 
 #: ../clases/core.py:741 ../clases/core.py:747 ../clases/core.py:757
-#: ../clases/core.py:1607
+#: ../clases/core.py:1609
 msgid "Impuestos"
 msgstr ""
 
@@ -484,16 +484,16 @@ msgstr ""
 msgid "Estudio de la inversión"
 msgstr ""
 
-#: ../clases/core.py:1009 ../clases/core.py:1151 ../clases/core.py:1241
-#: ../clases/core.py:1781 ../clases/core.py:2584
+#: ../clases/core.py:1009 ../clases/core.py:1151 ../clases/core.py:1243
+#: ../clases/core.py:1783 ../clases/core.py:2586
 msgid "Inversión"
 msgstr ""
 
-#: ../clases/core.py:1011 ../clases/core.py:1153 ../clases/core.py:1243
+#: ../clases/core.py:1011 ../clases/core.py:1153 ../clases/core.py:1245
 msgid "Valor Acción"
 msgstr ""
 
-#: ../clases/core.py:1012 ../clases/core.py:1247
+#: ../clases/core.py:1012 ../clases/core.py:1249
 msgid "Valor Compra"
 msgstr ""
 
@@ -501,11 +501,11 @@ msgstr ""
 msgid "Valor Venta"
 msgstr ""
 
-#: ../clases/core.py:1014 ../clases/core.py:1249
+#: ../clases/core.py:1014 ../clases/core.py:1251
 msgid "Compra    "
 msgstr ""
 
-#: ../clases/core.py:1015 ../clases/core.py:1250
+#: ../clases/core.py:1015 ../clases/core.py:1252
 msgid "Venta     "
 msgstr ""
 
@@ -537,7 +537,7 @@ msgstr ""
 msgid "Rendimiento"
 msgstr ""
 
-#: ../clases/core.py:1184 ../clases/core.py:1302
+#: ../clases/core.py:1184 ../clases/core.py:1304
 msgid "Saldo total de todas las inversiones"
 msgstr ""
 
@@ -545,211 +545,211 @@ msgstr ""
 msgid "Pendiente de consolidar"
 msgstr ""
 
-#: ../clases/core.py:1206
+#: ../clases/core.py:1208
 msgid "Esta inversión no se ha podido actualizar en Internet"
 msgstr ""
 
-#: ../clases/core.py:1244
+#: ../clases/core.py:1246
 msgid "Valor Internet"
 msgstr ""
 
-#: ../clases/core.py:1245
+#: ../clases/core.py:1247
 msgid "Diferencia"
 msgstr ""
 
-#: ../clases/core.py:1248
+#: ../clases/core.py:1250
 msgid "Valor Venta "
 msgstr ""
 
-#: ../clases/core.py:1302
+#: ../clases/core.py:1304
 msgid "Diferencia diaria"
 msgstr ""
 
-#: ../clases/core.py:1547
+#: ../clases/core.py:1549
 msgid "Modificar la operación de inversión"
 msgstr ""
 
-#: ../clases/core.py:1554
+#: ../clases/core.py:1556
 msgid "Borrar la operación de inversión"
 msgstr ""
 
-#: ../clases/core.py:1591
+#: ../clases/core.py:1593
 msgid "Actualizar las operaciones de la inversión"
 msgstr ""
 
-#: ../clases/core.py:1593
+#: ../clases/core.py:1595
 msgid "Nueva operación de inversión"
 msgstr ""
 
-#: ../clases/core.py:1603 ../clases/core.py:1688
+#: ../clases/core.py:1605 ../clases/core.py:1690
 msgid "Acciones"
 msgstr ""
 
-#: ../clases/core.py:1604 ../clases/core.py:1689
+#: ../clases/core.py:1606 ../clases/core.py:1691
 msgid "Valor compra"
 msgstr ""
 
-#: ../clases/core.py:1691
+#: ../clases/core.py:1693
 msgid "Pendiente consolidar"
 msgstr ""
 
-#: ../clases/core.py:1692
+#: ../clases/core.py:1694
 msgid "Año"
 msgstr ""
 
-#: ../clases/core.py:1693
+#: ../clases/core.py:1695
 msgid "TAE"
 msgstr ""
 
-#: ../clases/core.py:1695 ../clases/core.py:1783
+#: ../clases/core.py:1697 ../clases/core.py:1785
 msgid "Ref. Ibex35"
 msgstr ""
 
-#: ../clases/core.py:1802 ../clases/core.py:2315
+#: ../clases/core.py:1804 ../clases/core.py:2317
 msgid "TOTAL"
 msgstr ""
 
-#: ../clases/core.py:1978
+#: ../clases/core.py:1980
 msgid "Modificar la tarjeta"
 msgstr ""
 
-#: ../clases/core.py:1989
+#: ../clases/core.py:1991
 msgid "Desactivar la tarjeta"
 msgstr ""
 
-#: ../clases/core.py:1993
+#: ../clases/core.py:1995
 msgid "Activar la tarjeta"
 msgstr ""
 
-#: ../clases/core.py:2004
+#: ../clases/core.py:2006
 msgid "Insertar pago a débito"
 msgstr ""
 
-#: ../clases/core.py:2007
+#: ../clases/core.py:2009
 msgid "Movimientos de la tarjeta"
 msgstr ""
 
-#: ../clases/core.py:2072
+#: ../clases/core.py:2074
 msgid "Diferido"
 msgstr ""
 
-#: ../clases/core.py:2073
+#: ../clases/core.py:2075
 msgid "Nombre Tarjeta"
 msgstr ""
 
-#: ../clases/core.py:2074
+#: ../clases/core.py:2076
 msgid "Cuenta asociada"
 msgstr ""
 
-#: ../clases/core.py:2075
+#: ../clases/core.py:2077
 msgid "Número de tarjeta"
 msgstr ""
 
-#: ../clases/core.py:2076
+#: ../clases/core.py:2078
 msgid "Pago diferido"
 msgstr ""
 
-#: ../clases/core.py:2077
+#: ../clases/core.py:2079
 msgid "Saldo máximo"
 msgstr ""
 
-#: ../clases/core.py:2078
+#: ../clases/core.py:2080
 msgid "Saldo pendiente"
 msgstr ""
 
-#: ../clases/core.py:2244
+#: ../clases/core.py:2246
 msgid "Evolución temporal del patrimonio"
 msgstr ""
 
-#: ../clases/core.py:2248 ../clases/core.py:2255
+#: ../clases/core.py:2250 ../clases/core.py:2257
 msgid "Patrimonio"
 msgstr ""
 
-#: ../clases/core.py:2392
+#: ../clases/core.py:2394
 msgid "Rango"
 msgstr ""
 
-#: ../clases/core.py:2582
+#: ../clases/core.py:2584
 msgid "Fecha venta"
 msgstr ""
 
-#: ../clases/core.py:2583
+#: ../clases/core.py:2585
 msgid "Años"
 msgstr ""
 
-#: ../clases/core.py:2585
+#: ../clases/core.py:2587
 msgid "Tipo Operación"
 msgstr ""
 
-#: ../clases/core.py:2586
+#: ../clases/core.py:2588
 msgid "Saldo inicio"
 msgstr ""
 
-#: ../clases/core.py:2587
+#: ../clases/core.py:2589
 msgid "Saldo final"
 msgstr ""
 
-#: ../clases/core.py:2589
+#: ../clases/core.py:2591
 msgid "Rend. ponderado"
 msgstr ""
 
-#: ../clases/core.py:2590
+#: ../clases/core.py:2592
 msgid "Rend. total"
 msgstr ""
 
-#: ../clases/core.py:2637
+#: ../clases/core.py:2639
 msgid "Suma de saldos consolidados en el año"
 msgstr ""
 
-#: ../clases/core.py:2683
+#: ../clases/core.py:2685
 msgid "Beneficio"
 msgstr ""
 
-#: ../clases/core.py:2684
+#: ../clases/core.py:2686
 msgid "TAE desde"
 msgstr ""
 
-#: ../clases/core.py:2690
+#: ../clases/core.py:2692
 msgid "Plusvalías de inversiones"
 msgstr ""
 
-#: ../clases/core.py:2701
+#: ../clases/core.py:2703
 msgid "Dividendos sin retenciones"
 msgstr ""
 
-#: ../clases/core.py:2714
+#: ../clases/core.py:2716
 msgid "Comisiones en operaciones de inversión"
 msgstr ""
 
-#: ../clases/core.py:2725
+#: ../clases/core.py:2727
 msgid "Comisiones de custodia"
 msgstr ""
 
-#: ../clases/core.py:2738
+#: ../clases/core.py:2740
 msgid "Retenciones venta fondos inversión al"
 msgstr ""
 
-#: ../clases/core.py:2749
+#: ../clases/core.py:2751
 msgid "Retenciones de los dividendos al"
 msgstr ""
 
-#: ../clases/core.py:2760
+#: ../clases/core.py:2762
 msgid "Pago impuestos plusvalias al"
 msgstr ""
 
-#: ../clases/core.py:2773
+#: ../clases/core.py:2775
 msgid "Beneficio sin impuestos"
 msgstr ""
 
-#: ../clases/core.py:2784
+#: ../clases/core.py:2786
 msgid "Beneficio pagando impuestos"
 msgstr ""
 
-#: ../clases/core.py:2795
+#: ../clases/core.py:2797
 msgid "Valor de mi patrimonio a"
 msgstr ""
 
-#: ../clases/core.py:2795
+#: ../clases/core.py:2797
 msgid "en este año"
 msgstr ""
 

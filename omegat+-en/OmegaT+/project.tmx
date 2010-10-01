@@ -14,14 +14,6 @@
   <body>
     <tu>
       <tuv xml:lang="es">
-        <seg>xulpymoney-0.1 &lt;==&gt;  svn -r 525 co https://xulpymoney.svn.sourceforge.net/svnroot/xulpymoney/xulpymoney xulpymoney</seg>
-      </tuv>
-      <tuv xml:lang="en">
-        <seg>xulpymoney-0.1 &lt;==&gt;  svn -r 525 co https://xulpymoney.svn.sourceforge.net/svnroot/xulpymoney/xulpymoney xulpymoney</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv xml:lang="es">
         <seg>Xulpymoney</seg>
       </tuv>
       <tuv xml:lang="en">

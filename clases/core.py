@@ -1198,6 +1198,7 @@ class Inversion:
         bankintergestion(internet)
         carmignacpatrimoinea(internet)
         LyxorETFXBearEUROSTOXX50(internet)
+        LVE(internet)
         s=      '<script>\n<![CDATA[\n'
         s= s+ 'function check_data(){\n'
         s= s+ '    resultado=true;\n'
@@ -2241,7 +2242,7 @@ class Total:
         #Genera informe_total.plot
         f=open("/tmp/informe_total.plot","w")
         s='set encoding utf8\n'
-        s=s+'set title "'+_('Evolución temporal del patrimonio')+'"\n'
+        s=s+'set title "'+_(u'Evolución temporal del patrimonio')+'"\n'
         s=s+'set style data fsteps\n'
         s=s+"set timefmt '%Y-%m-%d'\n"
         s=s+"set xdata time\n"
