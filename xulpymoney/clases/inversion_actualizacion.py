@@ -66,6 +66,18 @@ def LyxorETFXBearEUROSTOXX50(arr):
             arr.append((nombre, valor))
     return arr
 
+def LVE(arr):
+    try:
+        web=urllib.urlopen('http://www.bloomberg.com/apps/quote?ticker=LVE:EU')
+    except:
+        return arr
+    for line in web.readlines():
+        if line.find('PRICE') != -1:
+            nombre="LVE"
+            valor=float(line.split('amount">')[1].split("</span>")[0])
+            arr.append((nombre, valor))
+    return arr
+
 
 def getvalor(arr, valor):
     for i in arr:

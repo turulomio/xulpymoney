@@ -73,7 +73,7 @@ def strdividendomalo():
 
 def strexcesocapital():
     if excesocapital==True:
-        return " " + Color().fuchsia("Inversión >60.000€")
+        return " " + Color().fuchsia("Inversión >20.000€")
     else:
         return ""
 
@@ -91,7 +91,7 @@ while not curs.EOF:
 
     if row['dividendo']<3:
         dividendomalo=True    
-    if row['invertido']>60000:
+    if row['invertido']>20000:
         excesocapital=True
     if strdividendomalo()+strexcesocapital()!="":
         print str(row['id_inversiones'])+ " " + row['inversion'] + strdividendomalo() + strexcesocapital() 

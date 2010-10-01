@@ -7,10 +7,10 @@ Total
   Caracteres:    7260 :+espacios
 
 Restantes
-   Segmentos:     159
-    Palabras:     804
-  Caracteres:    4244 :-espacios
-  Caracteres:    4882 :+espacios
+   Segmentos:     160
+    Palabras:     816
+  Caracteres:    4350 :-espacios
+  Caracteres:    4996 :+espacios
 
 únicos
    Segmentos:     176
@@ -19,17 +19,17 @@ Restantes
   Caracteres:    7117 :+espacios
 
 únicos restantes
-   Segmentos:     127
-    Palabras:     770
-  Caracteres:    4738 :-espacios
-  Caracteres:    4824 :+espacios
+   Segmentos:     128
+    Palabras:     782
+  Caracteres:    4844 :-espacios
+  Caracteres:    4938 :+espacios
 
 Mediciones del documento
 
     TW      RW      TCNS    RCNS    TC      RC     Documento
       75      66     492     396     565     461 - CHANGELOG-EN.txt
      106       0     747       0     824       0 - INSTALL-EN.txt
-      12       0     106       0     114       0 - RELEASES-EN.txt
+      12      12     106     106     114     114 - RELEASES-EN.txt
      931     738    5038    3848    5757    4421 - xulpymoney-en.odt
 
 Clave
