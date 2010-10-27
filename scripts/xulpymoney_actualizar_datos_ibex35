@@ -1,11 +1,13 @@
 #!/usr/bin/python    
 # -*- coding: utf-8 -*-  
 import os, adodb, datetime, sys
+sys.path.append("/etc/xulpymoney")
+import config
 
 cwd=os.getcwd()
 
 con = adodb.NewADOConnection("postgres")
-con.Connect("127.0.0.1","postgres","*", sys.argv[1])
+con.Connect(config.host,config.user,config.password, config.dbname)
 
 # BORRA LA BASE DE DATOS
 con.Execute("delete from ibex35")

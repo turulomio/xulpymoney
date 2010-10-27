@@ -13,7 +13,7 @@ SET escape_string_warning = off;
 -- Name: plpgsql; Type: PROCEDURAL LANGUAGE; Schema: -; Owner: postgres
 --
 
-CREATE PROCEDURAL LANGUAGE plpgsql;
+CREATE OR REPLACE PROCEDURAL LANGUAGE plpgsql;
 
 
 ALTER PROCEDURAL LANGUAGE plpgsql OWNER TO postgres;
@@ -69,17 +69,6 @@ $$;
 ALTER FUNCTION public.eb_saldo(p_id_bancos integer, fechaparametro date) OWNER TO postgres;
 
 --
--- Name: inversion_actualizacion(integer, integer, integer); Type: FUNCTION; Schema: public; Owner: postgres
---
-
-CREATE FUNCTION inversion_actualizacion(integer, integer, integer) RETURNS double precision
-    LANGUAGE sql
-    AS $_$select actualizacion from actuinversiones where id_inversiones=$1 and date_part('year',fecha)=$2  and date_part('month',fecha)=$3 order by fecha desc limit 1$_$;
-
-
-ALTER FUNCTION public.inversion_actualizacion(integer, integer, integer) OWNER TO postgres;
-
---
 -- Name: inversion_actualizacion(integer, date); Type: FUNCTION; Schema: public; Owner: postgres
 --
 
@@ -100,6 +89,17 @@ $$;
 
 
 ALTER FUNCTION public.inversion_actualizacion(p_id_inversiones integer, fechaparametro date) OWNER TO postgres;
+
+--
+-- Name: inversion_actualizacion(integer, integer, integer); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION inversion_actualizacion(integer, integer, integer) RETURNS double precision
+    LANGUAGE sql
+    AS $_$select actualizacion from actuinversiones where id_inversiones=$1 and date_part('year',fecha)=$2  and date_part('month',fecha)=$3 order by fecha desc limit 1$_$;
+
+
+ALTER FUNCTION public.inversion_actualizacion(integer, integer, integer) OWNER TO postgres;
 
 --
 -- Name: inversion_invertido(integer, date); Type: FUNCTION; Schema: public; Owner: postgres
@@ -442,8 +442,8 @@ ALTER TABLE public.depositos OWNER TO postgres;
 CREATE SEQUENCE depositos_id_depositos_seq
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -474,8 +474,8 @@ ALTER TABLE public.dividendos OWNER TO postgres;
 CREATE SEQUENCE dividendos_id_dividendos_seq
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -748,8 +748,8 @@ ALTER TABLE public.pga_scripts OWNER TO postgres;
 CREATE SEQUENCE seq_actuinversiones
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -762,8 +762,8 @@ ALTER TABLE public.seq_actuinversiones OWNER TO postgres;
 CREATE SEQUENCE seq_conceptos
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -776,8 +776,8 @@ ALTER TABLE public.seq_conceptos OWNER TO postgres;
 CREATE SEQUENCE seq_cuentas
     START WITH 0
     INCREMENT BY 1
-    MAXVALUE 1000000
     MINVALUE 0
+    MAXVALUE 1000000
     CACHE 1;
 
 
@@ -790,8 +790,8 @@ ALTER TABLE public.seq_cuentas OWNER TO postgres;
 CREATE SEQUENCE seq_entidadesbancarias
     START WITH 0
     INCREMENT BY 1
-    MAXVALUE 100000000
     MINVALUE 0
+    MAXVALUE 100000000
     CACHE 1;
 
 
@@ -804,8 +804,8 @@ ALTER TABLE public.seq_entidadesbancarias OWNER TO postgres;
 CREATE SEQUENCE seq_inversiones
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -818,8 +818,8 @@ ALTER TABLE public.seq_inversiones OWNER TO postgres;
 CREATE SEQUENCE seq_opercuentas
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -832,8 +832,8 @@ ALTER TABLE public.seq_opercuentas OWNER TO postgres;
 CREATE SEQUENCE seq_operinversiones
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -846,8 +846,8 @@ ALTER TABLE public.seq_operinversiones OWNER TO postgres;
 CREATE SEQUENCE seq_opertarjetas
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -860,8 +860,8 @@ ALTER TABLE public.seq_opertarjetas OWNER TO postgres;
 CREATE SEQUENCE seq_tarjetas
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -874,8 +874,8 @@ ALTER TABLE public.seq_tarjetas OWNER TO postgres;
 CREATE SEQUENCE seq_tmpoperinversioneshistoricas
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -964,8 +964,8 @@ ALTER TABLE public.tmpoperinversiones OWNER TO postgres;
 CREATE SEQUENCE tmpoperinversiones_id_tmpoperinversiones_seq
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -999,6 +999,21 @@ CREATE TABLE tmpoperinversioneshistoricas (
 
 
 ALTER TABLE public.tmpoperinversioneshistoricas OWNER TO postgres;
+
+SET default_with_oids = false;
+
+--
+-- Name: valores; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE valores (
+    fecha date NOT NULL,
+    valor text NOT NULL,
+    precio double precision NOT NULL
+);
+
+
+ALTER TABLE public.valores OWNER TO postgres;
 
 --
 -- Name: id_tmpoperinversiones; Type: DEFAULT; Schema: public; Owner: postgres

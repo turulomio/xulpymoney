@@ -34,10 +34,9 @@ def bolsamadrid(arr):
             try:
                 nombre=line.split("BORDER=0> ")[1].split("</A>")[0]
                 valor=float(comaporpunto(line.split("</A></TD><TD>")[1].split("</TD>")[0]))
-#                print (nombre +" "+  str(valor))
-                arr.append((nombre, valor))
+                arr.append((nombre.encode("UTF-8"), valor))
             except:
-                pass
+                print "  - Se ha descartado el valor ", nombre
     return arr
 
 def carmignacpatrimoinea(arr):

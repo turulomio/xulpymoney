@@ -20,6 +20,7 @@ install:
 	install -o apache -d $(PREFIXCONFIG)
 	install -o apache -d $(PREFIXWEB)/tmp
 	install -d $(PREFIXBIN)
+	install -m 644 -o root xulpymoney.crontab /etc/cron.d
 	install -m 644 -o root po/en.mo $(PREFIXPO)/en/LC_MESSAGES/xulpymoney.mo
 	install -m 400 -o apache *.py $(PREFIXWEB)/xulpymoney
 	install -m 400 -o apache xulpymoney*.odt $(PREFIXWEB)/xulpymoney
@@ -35,6 +36,7 @@ install:
 	rm -fr $(PREFIXPYTHON)/xulpymoney/config.py
 
 uninstall:
+	rm /etc/cron.d/xulpymoney.crontab
 	rm -fr $(PREFIXWEB)/xulpymoney
 	rm -fr $(PREFIXPYTHON)/xulpymoney
 	rm -fr $(DESTDIR)/usr/bin/xulpymoney*
