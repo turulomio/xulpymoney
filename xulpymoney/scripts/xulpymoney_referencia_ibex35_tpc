@@ -100,7 +100,7 @@ arr=[]
 if sys.argv[3]=="inverso":
     where="and inversiones.tpcvariable in (-100)"
 elif sys.argv[3]=="bolsa":
-    where="and inversiones.tpcvariable in (100)"
+    where="and inversiones.tpcvariable in (100, -100)"
 elif sys.argv[3]=="todo":
     where=""
 elif sys.argv[3]=="9000":

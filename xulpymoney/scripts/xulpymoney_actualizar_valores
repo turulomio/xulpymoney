@@ -1,0 +1,45 @@
+#!/usr/bin/python    
+# -*- coding: utf-8 -*-  
+import os, adodb, datetime, sys
+sys.path.append("/etc/xulpymoney")
+sys.path.append("/usr/lib/xulpymoney")
+
+import config
+from inversion_actualizacion import *
+
+cwd=os.getcwd()
+
+con = adodb.NewADOConnection("postgres")
+con.Connect(config.host,config.user,config.password, config.dbname)
+
+# BORRA LA BASE DE DATOS
+con.Execute("delete from valores")
+
+
+# SE DESCARGAN LOS DATOS
+print "* Xulpymoney actualizando valores..."
+internet=[]
+bolsamadrid(internet)
+bankintergestion(internet)
+carmignacpatrimoinea(internet)
+LyxorETFXBearEUROSTOXX50(internet)
+LVE(internet)
+
+s=""
+fic="/tmp/xulpymoney.datos.csv"
+#genera un fichero fecha;cierre;diff
+f=open(fic,"w")
+#genera un fichero fecha;valor;precio
+for i in internet:
+        s=s + str("1111-11-11") + "|" + i[0] + "|"+ str(i[1])+ "\n"
+f.write(s)
+os.fchmod(0,644)
+f.close()
+
+fd = os.open( fic, os.O_RDONLY )
+os.fchmod( fd, 0644)
+os.close( fd )
+
+con.Execute("COPY valores FROM '"+ fic +"' USING DELIMITERS '|';")
+con.Close()
+print "  - Se han añadido", len (internet), "registros"
