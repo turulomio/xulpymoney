@@ -7,6 +7,10 @@ sys.path.append("/usr/lib/xulpymoney")
 import config
 from inversion_actualizacion import *
 
+if check_internet_html()==False:
+    print (str(datetime.datetime.now()) + " " + "No se puede actualizar porque no hay Internet")
+    sys.exit(255)
+
 cwd=os.getcwd()
 
 con = adodb.NewADOConnection("postgres")
@@ -17,7 +21,7 @@ con.Execute("delete from valores")
 
 
 # SE DESCARGAN LOS DATOS
-print "* Xulpymoney actualizando valores..."
+print str(datetime.datetime.now()) + " Xulpymoney actualizando valores..."
 internet=[]
 bolsamadrid(internet)
 bankintergestion(internet)

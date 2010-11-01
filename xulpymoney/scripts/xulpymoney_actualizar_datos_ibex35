@@ -2,7 +2,16 @@
 # -*- coding: utf-8 -*-  
 import os, adodb, datetime, sys
 sys.path.append("/etc/xulpymoney")
+sys.path.append("/usr/lib/xulpymoney")
 import config
+
+from inversion_actualizacion import *
+
+if check_internet_html()==False:
+    print (str(datetime.datetime.now()) + " " + "No se puede actualizar porque no hay Internet")
+    sys.exit(255)
+
+
 
 cwd=os.getcwd()
 

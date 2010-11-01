@@ -6,7 +6,6 @@
 20100501 Deseo. Desarrollar ver movimientos antiguos y quitar pago de opertarjetas
 20100501 Bug. Despues de borrar una opercuenta no se respeta la visualización en el mes y año
 20100506 Deseo. Quitar los depósitos que tengo en todas las tablas para borrarlas de mi bd y simplificar esquema bd en las futuras.
-20100506 Deseo. En aquellos informes que se necesiten datos del ibex hacer una pregunta de si se quiere actualizar antes de mostrar
 20100506 Deseo. Añadir session y autenticación no se cómo.http://www.modpython.org/live/current/doc-html/pyapi-sess-classes.html
                 http://www.modpython.org/live/current/doc-html/tut-more-complicated.html
 20100507 Deseo. En transferencia validar que no sea misma cuenta ni comision ni importe negativo en servidor.
@@ -24,7 +23,8 @@
 20100614 Bug. Al modificar una inversión si borras el precio de compra y no es 0 falla.
 20100614 Deseo. Permitir en el grafico de referencia al IBEX seleccionar años, por defecto 5
 20100615 Deseo. Comprabar últimos y primeros días en el gráfico de referencia al IBEX
-
 20100701 Deseo. Los objetos fechas datetime cambiarlos solo a date en la bd
 20100813 Deseo. Actualizar en Internet que se haga con threads
 20101026 Deseo. Las actualizaciones de datos debe hacerse poniendo un fichero cron en daily y hourly y quitarlo de la aplicación
+20101027 Deseo. Poner un checkbox para que muestre todos los dividendos historios de una inversión
+20101101 Deseo. Hacer un fichero init.d que lleve un cron con scheduler Timer incluido, comprobando si hay internet

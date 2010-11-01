@@ -1,5 +1,6 @@
 xulpymoney 0.2 XXXXXXXX
 =======================
+- Se ha añadido el soporte para detectar si hay Internet antes de actualizar datos en Internet
 - Se ha añadido el fichero xulpymoney.crontab para que en el cron del sistema se actualicen automáticamente los datos de valores e índices
 - El número de acciones en inversionoperacion_listado.py se redondea a 5 decimales
 - Se ha añadido al informe de referencia al ibex35, un selector de años, para hacerlo más dinámico

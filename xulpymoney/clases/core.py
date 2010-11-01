@@ -1193,12 +1193,12 @@ class Inversion:
         sumsaldos=0
         sumpendiente=0       
         sumdifdiaria=0
-        internet=[]
-        bolsamadrid(internet)
-        bankintergestion(internet)
-        carmignacpatrimoinea(internet)
-        LyxorETFXBearEUROSTOXX50(internet)
-        LVE(internet)
+#        internet=[]
+#        bolsamadrid(internet)
+#        bankintergestion(internet)
+#        carmignacpatrimoinea(internet)
+#        LyxorETFXBearEUROSTOXX50(internet)
+#        LVE(internet)
         s=      '<script>\n<![CDATA[\n'
         s= s+ 'function check_data(){\n'
         s= s+ '    resultado=true;\n'
@@ -1253,7 +1253,7 @@ class Inversion:
         s= s+  '    <treechildren>\n'
         while not curs.EOF:
             row = curs.GetRowAssoc(0)   
-            valorInternet=getvalor(internet, str(row["internet"]))            
+            valorInternet=getvalor(con,str(row["internet"]))            
             if row['actualizacion']==0:
                 difdiaria=0
                 sumsaldos=sumsaldos
