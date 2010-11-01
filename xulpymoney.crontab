@@ -2,5 +2,5 @@ SHELL=/bin/bash
 PATH=/usr/bin
 
 45   7 * * *     root    xulpymoney_actualizar_datos_ibex35 
-*/5  * * * *     root    xulpymoney_actualizar_valores
+*/15  * * * *     root    xulpymoney_actualizar_valores
 

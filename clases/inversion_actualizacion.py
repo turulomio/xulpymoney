@@ -1,5 +1,14 @@
 # -*- coding: UTF-8  -*-
-import urllib
+import urllib, urllib2
+
+def check_internet_html():
+    req = urllib2.Request('http://www.python.org')
+    try:
+        urllib2.urlopen(req)
+    except:
+        return False
+    return True
+
 
 def comaporpunto(cadena):
     cadena=cadena.replace('.','')#Quita puntos
@@ -78,8 +87,9 @@ def LVE(arr):
     return arr
 
 
-def getvalor(arr, valor):
-    for i in arr:
-        if i[0]==valor:
-            return i[1]
-    return 0
+def getvalor(con,valor):
+    try: 
+        resultado=con.Execute("select precio from valores where valor='"+valor+"'").GetRowAssoc(0)['precio']
+    except:
+        resultado=0
+    return resultado
