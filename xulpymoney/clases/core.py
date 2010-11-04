@@ -935,6 +935,72 @@ class Dividendo:
         return s
         
 
+    def xultree_informe(self, sql):
+        """Muestra un listado encapsulado de las inversiones y un informe de dividendos."""
+        curs=con.Execute(sql)
+        sumsaldos=0
+        sumpendiente=0       
+        s=      '<script>\n<![CDATA[\n'
+        s= s+ ']]>\n</script>\n\n'                
+
+        s= s+ '<vbox flex="1">\n'
+        s= s+ '<tree id="informeDividendos" enableColumnDrag="true" flex="6"  ondblclick="inversion_estudio();" >\n'
+        s= s+ '    <treecols>\n'
+        s= s+  '        <treecol id="id" label="id" hidden="true" />\n'
+        s= s+  '        <treecol id="activa" label="'+_('activa')+'" hidden="true" />\n'
+        s= s+  '        <treecol id="inversion" label="'+_('Inversión')+'" flex="2"/>\n'
+        s= s+  '        <treecol id="col_entidad_bancaria" label="'+_('Entidad Bancaria')+'"  flex="2"/>\n'
+        s= s+  '        <treecol id="col_valor" label="'+_('Valor Acción')+'" flex="2" style="text-align: right" hidden="true"/>\n'
+        s= s+  '        <treecol id="tpc" label="'+_('% Dividendo anual')+'" flex="2" style="text-align: right"  sort="?tpc" sortActive="true" sortDirection="descending" />\n'
+        s= s+  '        <treecol id="col_saldo" label="'+_('Pendiente')+'" flex="1" style="text-align: right"/>\n'
+        s= s+  '        <treecol label="'+_('Invertido')+'" hidden="true"  flex="1" style="text-align: right" />\n'
+        s= s+  '        <treecol id="rendimiento" label="'+_('Rendimiento')+'" flex="1" style="text-align: right"/>\n'
+        s= s+  '    </treecols>\n'
+        s= s+  '    <treechildren>\n'
+        while not curs.EOF:
+            row = curs.GetRowAssoc(0)   
+            sumsaldos=sumsaldos+ dosdecimales(row['saldo'])
+            sumpendiente=sumpendiente+dosdecimales(row['pendiente'])
+            try:
+                diasnoactualizados=datetime.date.today()-row['fechadividendo']
+            except:
+                diasnoactualizados=1000
+            if diasnoactualizados>100:
+                prop=' properties="rowsoftred"'
+            else:
+                prop=''            
+
+            try:
+                tpcdividendo=100*row['dividendo']/InversionActualizacion().valor(row["id_inversiones"],  datetime.date.today())
+            except:
+                tpcdividendo=0
+
+            s= s + '        <treeitem>\n'
+            s= s + '            <treerow '+prop+' >\n'
+            s= s + '                <treecell label="'+str(row["id_inversiones"])+ '" />\n'
+            s= s + '                <treecell label="'+str(row["in_activa"])+ '" />\n'
+            s= s + '                <treecell label="'+str(row["inversion"])+ '" />\n'
+            s= s + '                <treecell label="'+ row["entidadbancaria"]+ '" />\n'
+            s= s + '                ' + treecell_euros(row["actualizacion"], 3)
+            s= s + '                ' + treecell_tpc(tpcdividendo)
+            s= s + '                ' + treecell_euros(diasnoactualizados)
+            s= s + '                ' +  treecell_euros(row['invertido'])
+            if row['saldo']==0 or row['invertido']==0:
+                tpc=0
+            else:
+                tpc=100*row['pendiente']/row['invertido']
+            s= s + '                ' +  treecell_tpc(tpc)
+            s= s + '            </treerow>\n'
+            s= s + '        </treeitem>\n'
+            curs.MoveNext()     
+        s= s + '    </treechildren>\n'
+        s= s + '</tree>\n'
+        s= s + '<label flex="0"  id="totalinversiones" style="text-align: center;font-weight : bold;" value="'+_('Saldo total de todas las inversiones')+': '+ euros(sumsaldos)+'. '+_('Pendiente de consolidar')+': '+euros(sumpendiente)+'." total="'+str(sumsaldos)+'" />\n'
+        s= s + '</vbox>\n'
+        curs.Close()
+        return s        
+        
+
 class Inversion:
     def cmb_tpcvariable(self, name,   selected,  js=True):
         jstext=""
