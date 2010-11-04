@@ -65,6 +65,7 @@ def menu():
     s=s +  '            <menuitem label="'+_(u'Evolución histórica')+'" onclick="location=\'informe_conceptos.py?id_conceptos=1\';"  class="menuitem-iconic" image="images/history.png" />\n'
     s=s +  '         </menupopup>\n'
     s=s +  '      </menu>\n'    
+    s=s +  '            <menuitem label="'+_(u'Dividendos')+'" onclick="location=\'informe_dividendos.py\';"  class="menuitem-iconic" image="images/history.png" />\n'
     s=s +  '            <menuitem label="'+_(u'Evolución TAE')+'" onclick="location=\'informe_tae.py\';"  class="menuitem-iconic" image="images/history.png" />\n'
     s=s +  '            <menuitem label="'+_('Referencia a IBEX')+'" onclick="location=\'informe_referenciaibex.py?cmbanos='+str(datetime.date.today().year-4)+'\';"  class="menuitem-iconic" image="images/history.png" />\n'
     s=s +  '            <menuitem label="'+_('Total')+'" onclick="location=\'informe_total.py\';"  class="menuitem-iconic" image="images/history.png" />\n'
