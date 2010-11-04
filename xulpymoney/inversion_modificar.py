@@ -1,5 +1,4 @@
 # -*- coding: UTF-8 -*-
-import time
 from core import *
 from xul import *
 from translate import _
@@ -9,8 +8,6 @@ def index(req):
     form=req.form
     con=Conection()
     cd=ConectionDirect()
-    hoy=datetime.date.today()
-    checked=""
     id_inversiones=0
     if form.has_key('id_inversiones'):
         id_inversiones=form['id_inversiones']
@@ -65,7 +62,7 @@ def index(req):
     req.write('        <row><label value="Tipo de inversión" /><hbox>'+cmbtpcvariable+'</hbox></row>\n')
     req.write('        <row><label value="Nombre de Internet" /><hbox><textbox id="internet" value="'+str(reg['internet'])+'"/></hbox></row>\n')
     req.write('        <row><label value="'+_('Fecha revisión dividendo')+'" align="center" /><datepicker id="fechadividendo" type="grid"  firstdayofweek="1" value="'+str(reg['fechadividendo'])+'"/></row>\n')
-    req.write('        <row><label value="'+_('Dividendo')+'" /><hbox><textbox id="dividendo" value="'+str(reg['dividendo'])+'"/></hbox></row>\n')
+    req.write('        <row><label value="'+_('Dividendo por acción anual estimado')+'" /><hbox><textbox id="dividendo" value="'+str(reg['dividendo'])+'"/></hbox></row>\n')
     req.write('        <row><label value="" /><hbox><button id="cmd" label="Aceptar" onclick="insert();"/></hbox></row>\n')
     req.write('        </rows>\n')
     req.write('    </grid>\n')

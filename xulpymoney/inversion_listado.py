@@ -1,6 +1,5 @@
 # -*- coding: UTF-8 -*-
 from mod_python import util
-import time
 from core import *
 from xul import *
 from translate import _
