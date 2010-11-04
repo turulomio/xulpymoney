@@ -60,8 +60,7 @@ class EntidadBancaria:
         
     def saldo(self,id_entidadesbancarias,fecha):
         curs = con.Execute('select eb_saldo('+ str(id_entidadesbancarias) + ",'"+str(fecha)+"') as saldo;"); 
-        if curs == None: 
-            print self.cfg.con.ErrorMsg()        
+  
         row = curs.GetRowAssoc(0)      
         curs.Close()
         if row['saldo']==None:
@@ -920,10 +919,18 @@ class Dividendo:
             dtae=0
         
         reg=con.Execute("select * from inversiones where id_inversiones="+ str(id_inversiones)).GetRowAssoc(0)
-        divteorico=_("El dividendo estimado según la compañía a {0} es de {1} %").format(str(reg['fechadividendo'])[:-12],  str(reg['dividendo']))
+        tpccalculado=100*reg['dividendo']/InversionActualizacion().valor(id_inversiones,  datetime.date.today())
+        acciones=Inversion().numero_acciones(id_inversiones, datetime.date.today())
+        divteorico=_("El dividendo anual estimado, según el valor actual de la acción es del {0} % ({1}€ por acción)").format(str(round(tpccalculado, 2)),  str(reg['dividendo']))
         s= s + '<label flex="0"  style="text-align: center;font-weight : bold;" value="'+divteorico+'" />\n'       
-        s= s + '<label flex="0"  style="text-align: center;font-weight : bold;" value="'+_('Suma de dividendos de la inversión')+': '+ euros(sumsaldos)+'." />\n'        
-        s= s + '<label flex="0"  style="text-align: center;font-weight : bold;" value="% '+_('de lo invertido')+': '+tpc(dtpc)+'. %'+_('TAE de lo invertido')+': '+ tpc(dtae)+'." />\n'
+        s= s + '<label flex="0"  style="text-align: center;font-weight : bold;" value="'+_('Fecha de la última revisión del dividendo: ')+': '+ str(reg['fechadividendo'])[:-12]+'" />\n'        
+        s= s + '<label flex="0"  style="text-align: center;font-weight : bold;" value="" />\n'       
+        misacciones=_("Mis {0} acciones generarán un total de {1}€ ({2}€ después de impuestos)").format(str(acciones),  str(round(acciones*reg['dividendo'], 2)),  str(round(acciones*reg['dividendo']*(1-config.dividendwithholding), 2)))
+        s= s + '<label flex="0"  style="text-align: center;font-weight : bold;" value="'+misacciones+'" />\n'       
+        s= s + '<label flex="0"  style="text-align: center;font-weight : bold;" value="" />\n'               
+        s= s + '<label flex="0"  style="text-align: center;font-weight : bold;" value="'+_('Suma de dividendos de la inversión')+': '+ euros(sumsaldos)+'" />\n'        
+        s= s + '<label flex="0"  style="text-align: center;font-weight : bold;" value="% '+_('de lo invertido')+': '+tpc(dtpc)+'" />\n'
+        s= s + '<label flex="0"  style="text-align: center;font-weight : bold;" value="% '+_('TAE de lo invertido')+': '+ tpc(dtae)+'" />\n'
         s= s + '</vbox>\n'
         return s
         

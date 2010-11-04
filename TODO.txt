@@ -28,3 +28,5 @@
 20101026 Deseo. Las actualizaciones de datos debe hacerse poniendo un fichero cron en daily y hourly y quitarlo de la aplicación
 20101027 Deseo. Poner un checkbox para que muestre todos los dividendos historios de una inversión
 20101101 Deseo. Hacer un fichero init.d que lleve un cron con scheduler Timer incluido, comprobando si hay internet
+20101104 Deseo. Los calculos para calcular los dividendos deben hacerse con euros no con %
+20101104 Deseo. En las cuentas tarjetas, inversiones poner un campo que se divisas, hacer un combo que sea selector, no crear tabla
