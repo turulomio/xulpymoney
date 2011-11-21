@@ -2,6 +2,8 @@
 # -*- coding: utf-8 -*-  
 import os, adodb, datetime, sys
 sys.path.append("/usr/lib/xulpymoney")
+sys.path.append("/etc/xulpymoney")
+import config
 from core import *
 
 ##1 bd

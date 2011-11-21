@@ -1,36 +1,36 @@
 Mediciones del proyecto
 
 Total
-   Segmentos:     214
+   Segmentos:     188
     Palabras:    1124
-  Caracteres:    7144 :-espacios
-  Caracteres:    7260 :+espacios
+  Caracteres:    7125 :-espacios
+  Caracteres:    7280 :+espacios
 
 Restantes
-   Segmentos:     160
-    Palabras:     816
-  Caracteres:    4350 :-espacios
-  Caracteres:    4996 :+espacios
+   Segmentos:     141
+    Palabras:     932
+  Caracteres:    5150 :-espacios
+  Caracteres:    5931 :+espacios
 
 únicos
-   Segmentos:     176
-    Palabras:    1079
-  Caracteres:    6993 :-espacios
-  Caracteres:    7117 :+espacios
+   Segmentos:     150
+    Palabras:    1080
+  Caracteres:    6974 :-espacios
+  Caracteres:    7123 :+espacios
 
 únicos restantes
-   Segmentos:     128
-    Palabras:     782
-  Caracteres:    4844 :-espacios
-  Caracteres:    4938 :+espacios
+   Segmentos:     109
+    Palabras:     899
+  Caracteres:    5720 :-espacios
+  Caracteres:    5859 :+espacios
 
 Mediciones del documento
 
     TW      RW      TCNS    RCNS    TC      RC     Documento
-      75      66     492     396     565     461 - CHANGELOG-EN.txt
-     106       0     747       0     824       0 - INSTALL-EN.txt
+      75      75     482     482     555     555 - CHANGELOG-EN.txt
+     106      57     738     447     809     482 - INSTALL-EN.txt
       12      12     106     106     114     114 - RELEASES-EN.txt
-     931     738    5038    3848    5757    4421 - xulpymoney-en.odt
+     931     788    5038    4115    5802    4780 - xulpymoney-en.odt
 
 Clave
     TW: Total palabras
