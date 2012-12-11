@@ -1,5 +1,0 @@
-xgettext --no-wrap --language=Python --from-code=UTF-8 -o xulpymoney.pot  ../*.py ../clases/*.py ../ajax/*.py
-#msginit --output-file en.po #para nueva traducción
-msgmerge -N --no-wrap -U en.po xulpymoney.pot 
-msgfmt -cv -o en.mo en.po
-
