@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>wdgAPR</class>
+ <widget class="QWidget" name="wdgAPR">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>559</width>
+    <height>388</height>
+   </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QHBoxLayout" name="horizontalLayout_2">
+   <item>
+    <layout class="QVBoxLayout" name="verticalLayout">
+     <item>
+      <widget class="QLabel" name="lbl">
+       <property name="font">
+        <font>
+         <pointsize>14</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>Informe de patrimonio - Estudio TAE</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="myQTableWidget" name="table">
+       <property name="editTriggers">
+        <set>QAbstractItemView::NoEditTriggers</set>
+       </property>
+       <property name="selectionMode">
+        <enum>QAbstractItemView::SingleSelection</enum>
+       </property>
+       <attribute name="verticalHeaderVisible">
+        <bool>false</bool>
+       </attribute>
+       <column>
+        <property name="text">
+         <string>Año</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>Saldo inicial</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>Saldo final</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>Diferencia Saldo</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>Ingresos</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>Consolidado</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>Dividendos</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>Gastos</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>I+C+D-G</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>% TAE</string>
+        </property>
+       </column>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>myQTableWidget</class>
+   <extends>QTableWidget</extends>
+   <header location="global">myqtablewidget</header>
+  </customwidget>
+ </customwidgets>
+ <resources>
+  <include location="../images/xulpymoney.qrc"/>
+ </resources>
+ <connections/>
+</ui>

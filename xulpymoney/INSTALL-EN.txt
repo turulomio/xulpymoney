@@ -1,0 +1,25 @@
+GENTOO INSTRUCTIONS
+-------------------
+
+You must put in /etc/conf.d/apache: -D PYTHON
+
+You must configure mod_python at /etc/apache2/vhosts.d/default_vhost.include 
+
+<Directory /var/www/localhost/htdocs/xulpymoney>
+  AddHandler mod_python .psp
+  PythonPath "sys.path+['/usr/lib/xulpymoney']"
+ PythonHandler mod_python.psp
+# PythonDebug On
+</Directory>
+
+
+Se debe crear una base de datos en postgresql llamada por ejemplo xulpymoney
+
+createdb -U postgres xulpymoney
+psql -U postgres xulpymoney < sql/pgsql.sql
+psql -U postgres xulpymoney < sql/pgsql.data
+
+You must edit your options at /etc/xulpymoney/config.py  after copying it from /etc/xulpymoney/config.py.distrib, giving it apropiated permissions, for example, apache:root 
+
+
+Run Mozilla Firefox (You can't use other browsers) and open http://localhost/xulpymoney/index.psp

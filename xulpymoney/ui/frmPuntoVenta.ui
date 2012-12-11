@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>frmPuntoVenta</class>
+ <widget class="QDialog" name="frmPuntoVenta">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1148</width>
+    <height>680</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Xulpymoney &gt; Inversiones &gt; Punto de venta</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="../images/xulpymoney.qrc">
+    <normaloff>:/xulpymoney/tools-wizard.png</normaloff>:/xulpymoney/tools-wizard.png</iconset>
+  </property>
+  <property name="sizeGripEnabled">
+   <bool>true</bool>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout_2">
+   <item>
+    <layout class="QVBoxLayout" name="verticalLayout">
+     <item>
+      <widget class="QLabel" name="lblTitulo">
+       <property name="font">
+        <font>
+         <pointsize>14</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: rgb(0, 128, 0);</string>
+       </property>
+       <property name="text">
+        <string>Cálculo del punto de venta</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_2">
+       <item>
+        <widget class="QRadioButton" name="radTPC">
+         <property name="text">
+          <string>Selecciona un porcentaje de ganancia de lo invertido</string>
+         </property>
+         <property name="checked">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QComboBox" name="cmbTPC">
+         <property name="currentIndex">
+          <number>2</number>
+         </property>
+         <item>
+          <property name="text">
+           <string>2.5 %</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>5 %</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>7.5 %</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>10 %</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>15 %</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>20 %</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>25 %</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout">
+       <item>
+        <widget class="QRadioButton" name="radGanancia">
+         <property name="text">
+          <string>Selecciona una ganancia</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="myQLineEdit" name="txtGanancia">
+         <property name="toolTip">
+          <string>Introduce la ganancia</string>
+         </property>
+         <property name="text">
+          <string>1000</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <widget class="QCheckBox" name="chkPonderanAll">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
+       <property name="text">
+        <string>¿Ponderan las acciones de todas inversiones del mismo activo?</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QCheckBox" name="chkPonderanAdded">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
+       <property name="text">
+        <string>¿Ponderan las acciones añadidas a coste cero?</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="myQTableWidget" name="table">
+       <column>
+        <property name="text">
+         <string>Día</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>Inversión (Entidad Bancaria)</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>Tipo Operación</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>Acciones</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>Valor compra</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>Invertido</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>Pendiente</string>
+        </property>
+       </column>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="cmd">
+       <property name="text">
+        <string>Asignar el punto de venta de 0 €</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>myQTableWidget</class>
+   <extends>QTableWidget</extends>
+   <header location="global">myqtablewidget</header>
+  </customwidget>
+  <customwidget>
+   <class>myQLineEdit</class>
+   <extends>QLineEdit</extends>
+   <header location="global">myqlineedit</header>
+  </customwidget>
+ </customwidgets>
+ <resources>
+  <include location="../images/xulpymoney.qrc"/>
+ </resources>
+ <connections>
+  <connection>
+   <sender>radGanancia</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>chkPonderanAll</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>30</x>
+     <y>70</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>106</x>
+     <y>98</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>radGanancia</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>chkPonderanAdded</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>74</x>
+     <y>69</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>73</x>
+     <y>128</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>

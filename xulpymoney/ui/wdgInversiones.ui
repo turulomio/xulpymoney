@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>wdgInversiones</class>
+ <widget class="QWidget" name="wdgInversiones">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>754</width>
+    <height>525</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout_3">
+   <item>
+    <layout class="QVBoxLayout" name="verticalLayout_2">
+     <item>
+      <layout class="QVBoxLayout" name="verticalLayout">
+       <item>
+        <widget class="QLabel" name="lbl">
+         <property name="font">
+          <font>
+           <pointsize>14</pointsize>
+           <weight>75</weight>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="text">
+          <string>Listado de inversiones</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="chkInactivas">
+         <property name="text">
+          <string>Mostrar inversiones inactivas</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="myQTableWidget" name="tblInversiones">
+         <property name="contextMenuPolicy">
+          <enum>Qt::CustomContextMenu</enum>
+         </property>
+         <property name="editTriggers">
+          <set>QAbstractItemView::NoEditTriggers</set>
+         </property>
+         <property name="alternatingRowColors">
+          <bool>true</bool>
+         </property>
+         <property name="selectionMode">
+          <enum>QAbstractItemView::SingleSelection</enum>
+         </property>
+         <property name="selectionBehavior">
+          <enum>QAbstractItemView::SelectRows</enum>
+         </property>
+         <attribute name="verticalHeaderVisible">
+          <bool>false</bool>
+         </attribute>
+         <column>
+          <property name="text">
+           <string>Inversión</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Última fecha</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Último valor</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Dif. diaria</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>% diario</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Saldo</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Pendiente</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>%</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>% Venta</string>
+          </property>
+         </column>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <widget class="QWidget" name="wdgIBM" native="true"/>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QLabel" name="lblTotal">
+     <property name="font">
+      <font>
+       <pointsize>9</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+   </item>
+  </layout>
+  <action name="actionInversionNueva">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/add.png</normaloff>:/xulpymoney/add.png</iconset>
+   </property>
+   <property name="text">
+    <string>Nueva Inversion</string>
+   </property>
+  </action>
+  <action name="actionInversionEstudio">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/report2.png</normaloff>:/xulpymoney/report2.png</iconset>
+   </property>
+   <property name="text">
+    <string>Estudio de la Inversión</string>
+   </property>
+  </action>
+  <action name="actionOrdenarTPCDiario">
+   <property name="icon">
+    <iconset>
+     <normaloff>:/xulpmoney/document-preview.png</normaloff>:/xulpmoney/document-preview.png</iconset>
+   </property>
+   <property name="text">
+    <string>% Diario</string>
+   </property>
+  </action>
+  <action name="actionOrdenarTPCVenta">
+   <property name="icon">
+    <iconset>
+     <normaloff>:/xulpmoney/document-preview.png</normaloff>:/xulpmoney/document-preview.png</iconset>
+   </property>
+   <property name="text">
+    <string>% Venta</string>
+   </property>
+   <property name="toolTip">
+    <string>% Venta</string>
+   </property>
+  </action>
+  <action name="actionOrdenarTPC">
+   <property name="icon">
+    <iconset>
+     <normaloff>:/xulpmoney/document-preview.png</normaloff>:/xulpmoney/document-preview.png</iconset>
+   </property>
+   <property name="text">
+    <string>%</string>
+   </property>
+   <property name="toolTip">
+    <string>%</string>
+   </property>
+  </action>
+  <action name="actionOrdenarName">
+   <property name="icon">
+    <iconset>
+     <normaloff>:/xulpmoney/document-preview.png</normaloff>:/xulpmoney/document-preview.png</iconset>
+   </property>
+   <property name="text">
+    <string>Nombre</string>
+   </property>
+  </action>
+  <action name="actionOrdenarHora">
+   <property name="icon">
+    <iconset>
+     <normaloff>:/xulpmoney/document-preview.png</normaloff>:/xulpmoney/document-preview.png</iconset>
+   </property>
+   <property name="text">
+    <string>Hora</string>
+   </property>
+  </action>
+  <action name="actionActiva">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>¿Está activa?</string>
+   </property>
+   <property name="toolTip">
+    <string>¿Está activa?</string>
+   </property>
+  </action>
+  <action name="actionMyquotes">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/kmplot.jpg</normaloff>:/xulpymoney/kmplot.jpg</iconset>
+   </property>
+   <property name="text">
+    <string>Estudio MyQuotes</string>
+   </property>
+   <property name="toolTip">
+    <string>Estudio MyQuotes</string>
+   </property>
+  </action>
+  <action name="actionMyquotesManual">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/books.png</normaloff>:/xulpymoney/books.png</iconset>
+   </property>
+   <property name="text">
+    <string>Añadir cotización a Myquotes</string>
+   </property>
+   <property name="toolTip">
+    <string>Añadir cotización a Myquotes</string>
+   </property>
+  </action>
+  <action name="actionInversionBorrar">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/list-remove.png</normaloff>:/xulpymoney/list-remove.png</iconset>
+   </property>
+   <property name="text">
+    <string>Borrar inversión</string>
+   </property>
+   <property name="toolTip">
+    <string>Borrar la inversión seleccionada</string>
+   </property>
+  </action>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>myQTableWidget</class>
+   <extends>QTableWidget</extends>
+   <header location="global">myqtablewidget</header>
+  </customwidget>
+ </customwidgets>
+ <resources>
+  <include location="../images/xulpymoney.qrc"/>
+  <include location="../images/xulpymoney.qrc"/>
+ </resources>
+ <connections/>
+</ui>
