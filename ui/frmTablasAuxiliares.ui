@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>frmTablasAuxiliares</class>
+ <widget class="QDialog" name="frmTablasAuxiliares">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>633</width>
+    <height>533</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Xulpymoney &gt; Tablas auxiliares</string>
+  </property>
+  <layout class="QHBoxLayout" name="horizontalLayout">
+   <item>
+    <layout class="QVBoxLayout" name="verticalLayout">
+     <item>
+      <widget class="QLabel" name="label">
+       <property name="font">
+        <font>
+         <pointsize>14</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>Tablas Auxiliares</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QTabWidget" name="tabWidget">
+       <property name="currentIndex">
+        <number>0</number>
+       </property>
+       <widget class="QWidget" name="tabConceptos">
+        <attribute name="title">
+         <string>Conceptos de gastos e ingresos</string>
+        </attribute>
+        <layout class="QHBoxLayout" name="horizontalLayout_2">
+         <item>
+          <widget class="myQTableWidget" name="tblConceptos">
+           <property name="contextMenuPolicy">
+            <enum>Qt::CustomContextMenu</enum>
+           </property>
+           <property name="alternatingRowColors">
+            <bool>true</bool>
+           </property>
+           <attribute name="verticalHeaderVisible">
+            <bool>false</bool>
+           </attribute>
+           <column>
+            <property name="text">
+             <string>Conceptos</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>Tipo de operación</string>
+            </property>
+           </column>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+  <action name="actionConceptosNuevo">
+   <property name="icon">
+    <iconset>
+     <normaloff>:/xulpmoney/dialog-ok-apply.png</normaloff>:/xulpmoney/dialog-ok-apply.png</iconset>
+   </property>
+   <property name="text">
+    <string>Nuevo concepto</string>
+   </property>
+   <property name="toolTip">
+    <string>Nuevo concepto</string>
+   </property>
+  </action>
+  <action name="actionConceptosBorrar">
+   <property name="icon">
+    <iconset>
+     <normaloff>:/xulpmoney/list-remove.png</normaloff>:/xulpmoney/list-remove.png</iconset>
+   </property>
+   <property name="text">
+    <string>Borrar concepto</string>
+   </property>
+   <property name="toolTip">
+    <string>Borrar concepto</string>
+   </property>
+  </action>
+  <action name="actionConceptosModificar">
+   <property name="icon">
+    <iconset>
+     <normaloff>:/xulpmoney/document-edit.png</normaloff>:/xulpmoney/document-edit.png</iconset>
+   </property>
+   <property name="text">
+    <string>Modificar concepto</string>
+   </property>
+   <property name="toolTip">
+    <string>Modificar concepto</string>
+   </property>
+  </action>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>myQTableWidget</class>
+   <extends>QTableWidget</extends>
+   <header location="global">myqtablewidget</header>
+  </customwidget>
+ </customwidgets>
+ <resources>
+  <include location="../images/xulpymoney.qrc"/>
+ </resources>
+ <connections/>
+</ui>

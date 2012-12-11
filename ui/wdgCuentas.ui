@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>wdgCuentas</class>
+ <widget class="QWidget" name="wdgCuentas">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>579</width>
+    <height>318</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout_3">
+   <item>
+    <layout class="QVBoxLayout" name="verticalLayout_2">
+     <item>
+      <layout class="QVBoxLayout" name="verticalLayout">
+       <item>
+        <widget class="QLabel" name="lbl">
+         <property name="font">
+          <font>
+           <pointsize>14</pointsize>
+           <weight>75</weight>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="text">
+          <string>Listado de cuentas bancarias</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="chkInactivas">
+         <property name="text">
+          <string>Mostrar cuentas inactivas</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="myQTableWidget" name="tblCuentas">
+         <property name="contextMenuPolicy">
+          <enum>Qt::CustomContextMenu</enum>
+         </property>
+         <property name="alternatingRowColors">
+          <bool>true</bool>
+         </property>
+         <property name="selectionMode">
+          <enum>QAbstractItemView::SingleSelection</enum>
+         </property>
+         <property name="selectionBehavior">
+          <enum>QAbstractItemView::SelectRows</enum>
+         </property>
+         <property name="sortingEnabled">
+          <bool>true</bool>
+         </property>
+         <attribute name="verticalHeaderVisible">
+          <bool>false</bool>
+         </attribute>
+         <attribute name="verticalHeaderCascadingSectionResizes">
+          <bool>false</bool>
+         </attribute>
+         <column>
+          <property name="text">
+           <string>Id</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Cuenta</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Entidad bancaria</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Número de cuenta</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Saldo</string>
+          </property>
+         </column>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <widget class="QWidget" name="wdgIBM" native="true"/>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QLabel" name="lblTotal">
+     <property name="font">
+      <font>
+       <pointsize>12</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+   </item>
+  </layout>
+  <action name="actionCuentaNueva">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/add.png</normaloff>:/xulpymoney/add.png</iconset>
+   </property>
+   <property name="text">
+    <string>Nueva Cuenta</string>
+   </property>
+   <property name="toolTip">
+    <string>Nueva Cuenta</string>
+   </property>
+  </action>
+  <action name="actionCuentaEstudio">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/report2.png</normaloff>:/xulpymoney/report2.png</iconset>
+   </property>
+   <property name="text">
+    <string>Estudio de la Cuenta</string>
+   </property>
+   <property name="toolTip">
+    <string>Estudio de la Cuenta</string>
+   </property>
+  </action>
+  <action name="actionCuentaBorrar">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/list-remove.png</normaloff>:/xulpymoney/list-remove.png</iconset>
+   </property>
+   <property name="text">
+    <string>Borrar cuenta bancaria</string>
+   </property>
+   <property name="toolTip">
+    <string>Borrar cuenta bancaria</string>
+   </property>
+  </action>
+  <action name="actionActiva">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>¿Está activa?</string>
+   </property>
+   <property name="toolTip">
+    <string>¿Está activa?</string>
+   </property>
+  </action>
+  <action name="actionTransferencia">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/transfer.png</normaloff>:/xulpymoney/transfer.png</iconset>
+   </property>
+   <property name="text">
+    <string>Transferencia</string>
+   </property>
+   <property name="toolTip">
+    <string>Transferencia</string>
+   </property>
+  </action>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>myQTableWidget</class>
+   <extends>QTableWidget</extends>
+   <header location="global">myqtablewidget</header>
+  </customwidget>
+ </customwidgets>
+ <resources>
+  <include location="../images/xulpymoney.qrc"/>
+ </resources>
+ <connections/>
+</ui>

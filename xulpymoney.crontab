@@ -1,6 +1,0 @@
-SHELL=/bin/bash
-PATH=/usr/bin
-
-45   7 * * *     root    xulpymoney_actualizar_datos_ibex35 
-*/15  * * * *     root    xulpymoney_actualizar_valores
-

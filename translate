@@ -1,4 +1,4 @@
-4#!/bin/bash
+#!/bin/bash
 echo "Este escript lo hace todo, copia, lanza omegat y copia resultado"
 rm -Rf omegat+-en/originals/
 rm -Rf omegat+-en/translations/

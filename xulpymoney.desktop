@@ -1,0 +1,12 @@
+[Desktop Entry]
+Name=Xulpymoney
+Type=Application
+Comment=Accounting system with MyQuotes support
+Exec=xulpymoney
+TryExec=xulpymoney
+Icon=/usr/share/pixmaps/xulpymoney.png
+Categories=Office;
+GenericName=Contabilidad doméstica y financiera
+GenericName[en]=Home and financial accounting system
+GenericName[es]=Contabilidad doméstica y financiera
+

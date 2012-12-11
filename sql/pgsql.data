@@ -1,104 +1,171 @@
+--
+-- PostgreSQL database dump
+--
+
 SET statement_timeout = 0;
 SET client_encoding = 'UTF8';
-SET standard_conforming_strings = off;
+SET standard_conforming_strings = on;
 SET check_function_bodies = false;
 SET client_min_messages = warning;
-SET escape_string_warning = off;
+
 SET search_path = public, pg_catalog;
-SELECT pg_catalog.setval('depositos_id_depositos_seq', 1, true);
-SELECT pg_catalog.setval('dividendos_id_dividendos_seq', 1, true);
-SELECT pg_catalog.setval('seq_actuinversiones', 1, true);
-SELECT pg_catalog.setval('seq_cuentas', 2, true);
-SELECT pg_catalog.setval('seq_entidadesbancarias', 2, true);
-SELECT pg_catalog.setval('seq_inversiones', 1, true);
-SELECT pg_catalog.setval('seq_opercuentas', 1, true);
-SELECT pg_catalog.setval('seq_operinversiones', 1, true);
-SELECT pg_catalog.setval('seq_opertarjetas', 1, true);
-SELECT pg_catalog.setval('seq_tarjetas', 1, true);
-SELECT pg_catalog.setval('seq_tmpoperinversioneshistoricas', 1, true);
-SELECT pg_catalog.setval('tmpoperinversiones_id_tmpoperinversiones_seq', 1, true);
-SELECT pg_catalog.setval('tmpoperinversiones_id_tmpoperinversiones_seq', 60, true);
-SELECT pg_catalog.setval('seq_conceptos', 60, true);
 
-COPY conceptos (id_conceptos, concepto, id_tiposoperaciones, inmodificables) FROM stdin;
-2	Supermercado	1	\N
-3	Restaurante	1	\N
-4	Traspaso Realizado	1	\N
-7	Gasolina	1	\N
-8	Ocio	1	\N
-9	Teléfono	1	\N
-0	Desconocido	1	\N
-14	Universidad & Estudios	1	\N
-15	Viajes & Taxi & Autopista	1	\N
-16	Hoteles	1	\N
-18	Regalos	1	\N
-19	Electricidad	1	\N
-20	Gas	1	\N
-21	Intereses Negativos	1	\N
-22	Ropa	1	\N
-17	Loterías	1	\N
-26	Informática	1	\N
-27	Coche	1	\N
-31	Invitaciones	1	\N
-12	Televisión & Video & Cine	1	\N
-23	Médicos & Farmacias & Higiene Personal	1	\N
-34	Compra Casa	1	\N
-36	Infraestructura Casa	1	\N
-37	Pago Impuestos	1	\N
-38	Comisiones bancarias	1	\N
-1	Inicio de Cuenta	2	\N
-5	Traspaso Recibido	3	\N
-6	Devolución Impuestos	2	\N
-10	Nomina	2	\N
-24	Intereses Positivos	2	\N
-25	Loterías Premios	2	\N
-28	Herencia	2	\N
-29	Compra Fondos Inversion	4	\N
-30	Pagas	2	\N
-32	Liquidar Inversion	5	\N
-33	Otros Ingresos	2	\N
-35	Venta Fondos Inversion	5	\N
-43	Anadido Fondos Inversion	6	\N
-44	Ajustes Negativos	1	\N
-41	Creación Deposito	8	\N
-42	Vencimiento Depósito	9	\N
-46	Prestamo	2	\N
-47	Seguro	1	\N
-48	Boda	1	\N
-39	Dividendos	2	t
-40	Facturacion Tarjeta	7	t
-50	Prima asistencia	2	\N
-49	Regalo Boda	2	\N
-52	Asistenta	1	\N
-53	Taxi	1	\N
-54	Copas	1	f
-55	Gimnasio	1	f
-56	Divorcio	1	\N
-57	Donaciones	1	\N
-13	Alquiler. Comunidad	1	\N
-45	Compra Casa Pareja	2	\N
-51	Otros Ingresos Pareja	2	\N
+--
+-- Name: seq_conceptos; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('seq_conceptos', 63, true);
+
+
+--
+-- Name: seq_cuentas; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('seq_cuentas', 50, true);
+
+
+--
+-- Name: seq_dividendos; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('seq_dividendos', 216, true);
+
+
+--
+-- Name: seq_entidadesbancarias; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('seq_entidadesbancarias', 22, true);
+
+
+--
+-- Name: seq_inversiones; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('seq_inversiones', 203, true);
+
+
+--
+-- Name: seq_opercuentas; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('seq_opercuentas', 194871, true);
+
+
+--
+-- Name: seq_operinversiones; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('seq_operinversiones', 1512, true);
+
+
+--
+-- Name: seq_operinversionesactual; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('seq_operinversionesactual', 100495, true);
+
+
+--
+-- Name: seq_operinversioneshistoricas; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('seq_operinversioneshistoricas', 32867, true);
+
+
+--
+-- Name: seq_opertarjetas; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('seq_opertarjetas', 1320, true);
+
+
+--
+-- Name: seq_tarjetas; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('seq_tarjetas', 23, true);
+
+
+COPY conceptos (id_conceptos, concepto, id_tiposoperaciones, editable) FROM stdin;
+39	Dividendos	2	f
+40	Facturacion Tarjeta	7	f
+62	Dividendos. Venta derechos	2	f
+54	Copas	1	t
+55	Gimnasio	1	t
+2	Supermercado	1	t
+3	Restaurante	1	t
+7	Gasolina	1	t
+8	Ocio	1	t
+9	Teléfono	1	t
+0	Desconocido	1	t
+14	Universidad & Estudios	1	t
+16	Hoteles	1	t
+18	Regalos	1	t
+19	Electricidad	1	t
+20	Gas	1	t
+21	Intereses Negativos	1	t
+22	Ropa	1	t
+17	Loterías	1	t
+26	Informática	1	t
+27	Coche	1	t
+31	Invitaciones	1	t
+12	Televisión & Video & Cine	1	t
+34	Compra Casa	1	t
+36	Infraestructura Casa	1	t
+37	Pago Impuestos	1	t
+28	Herencia	2	t
+38	Comisiones bancarias	1	t
+6	Devolución Impuestos	2	t
+24	Intereses Positivos	2	t
+25	Loterías Premios	2	t
+30	Pagas	2	t
+33	Otros Ingresos	2	t
+47	Seguro	1	t
+48	Boda	1	t
+50	Prima asistencia	2	t
+49	Regalo Boda	2	t
+52	Asistenta	1	t
+53	Taxi	1	t
+56	Divorcio	1	t
+57	Donaciones	1	t
+45	Compra Casa Pareja	2	t
+51	Otros Ingresos Pareja	2	t
+58	Garage	1	t
+15	Viajes (Billetes y autopistas)	1	t
+23	Médicos 	1	t
+61	Alquiler de inmuebles	1	t
+13	Comunidad de la vivienda	1	t
+10	Nómina	2	t
+44	Ajustes negativos	1	t
+46	Préstamo	2	t
+1	Inicio de Cuenta	2	f
+4	Traspaso Realizado	3	f
+5	Traspaso Recibido	3	f
+29	Compra producto de inversión	4	f
+32	Liquidar Inversion	5	f
+35	Venta producto de inversión	5	f
+41	Creación Deposito	8	f
+43	Añadido de acciones	6	f
+59	Comisión de custodia de valores	1	f
 \.
 
-COPY cuentas (id_cuentas, cuenta, id_entidadesbancarias, cu_activa, numero_cuenta) FROM stdin;
-1	Efectivo	1	t	\N
+
+--
+-- Data for Name: cuentas; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY cuentas (id_cuentas, cuenta, id_entidadesbancarias, cu_activa, numerocuenta, currency) FROM stdin;
+4	Efectivo	3	t	\N	EUR
 \.
+
 
 COPY entidadesbancarias (id_entidadesbancarias, entidadbancaria, eb_activa) FROM stdin;
-1	Control no bancario	t
+3	Control personal	t
 \.
 
-COPY tiposoperaciones (id_tiposoperaciones, tipooperacion, modificable, operinversion, opercuentas) FROM stdin;
-5	Venta Acciones	\N	t	\N
-3	Trasferencia	\N	\N	\N
-0	Deconocido	\N	\N	\N
-7	Facturacion Tarjeta	\N	\N	\N
-8	Creación Depósito	\N	\N	\N
-9	Vencimiento Depósito	\N	\N	\N
-4	Compra Acciones	\N	t	\N
-6	Añadido de Acciones	\N	t	\N
-10	Traspaso fondo inversión	\N	t	\N
-2	Ingreso	\N	\N	t
-1	Gasto	f	\N	t
-\.
+
+--
+-- PostgreSQL database dump complete
+--
 

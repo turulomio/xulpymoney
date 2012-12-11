@@ -1,0 +1,327 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <author>Mariano Muñoz</author>
+ <class>frmMain</class>
+ <widget class="QMainWindow" name="frmMain">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1186</width>
+    <height>625</height>
+   </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="cursor">
+   <cursorShape>PointingHandCursor</cursorShape>
+  </property>
+  <property name="windowTitle">
+   <string>Xulpymoney 2010-2012 ©</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="../images/xulpymoney.qrc">
+    <normaloff>:/xulpymoney/coins.png</normaloff>:/xulpymoney/coins.png</iconset>
+  </property>
+  <widget class="QWidget" name="central">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <layout class="QHBoxLayout" name="horizontalLayout">
+    <item>
+     <layout class="QVBoxLayout" name="layout"/>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menuBar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1186</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuAyuda">
+    <property name="title">
+     <string>A&amp;yuda</string>
+    </property>
+    <addaction name="actionAcercaDe"/>
+    <addaction name="separator"/>
+    <addaction name="actionMemoria"/>
+    <addaction name="separator"/>
+    <addaction name="actionTablasAuxiliares"/>
+    <addaction name="actionSettings"/>
+    <addaction name="separator"/>
+    <addaction name="actionSalir"/>
+   </widget>
+   <widget class="QMenu" name="menuBancos">
+    <property name="title">
+     <string>Bancos</string>
+    </property>
+    <addaction name="actionBancos"/>
+   </widget>
+   <widget class="QMenu" name="menuInformes">
+    <property name="title">
+     <string>Informes</string>
+    </property>
+    <addaction name="actionConceptos"/>
+    <addaction name="actionInformeDividendos"/>
+    <addaction name="actionIndexRange"/>
+    <addaction name="actionInformeHistorico"/>
+    <addaction name="actionInformeTotal"/>
+   </widget>
+   <widget class="QMenu" name="menuCuentas">
+    <property name="title">
+     <string>Cuentas</string>
+    </property>
+    <addaction name="actionCuentas"/>
+    <addaction name="separator"/>
+    <addaction name="actionTransferencia"/>
+   </widget>
+   <widget class="QMenu" name="menuInversiones">
+    <property name="title">
+     <string>Inversiones</string>
+    </property>
+    <addaction name="actionInversiones"/>
+    <addaction name="actionInformeClases"/>
+   </widget>
+   <addaction name="menuBancos"/>
+   <addaction name="menuCuentas"/>
+   <addaction name="menuInversiones"/>
+   <addaction name="menuInformes"/>
+   <addaction name="menuAyuda"/>
+  </widget>
+  <widget class="QToolBar" name="toolBar">
+   <property name="windowTitle">
+    <string>toolBar</string>
+   </property>
+   <property name="iconSize">
+    <size>
+     <width>48</width>
+     <height>33</height>
+    </size>
+   </property>
+   <property name="toolButtonStyle">
+    <enum>Qt::ToolButtonTextUnderIcon</enum>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="actionBancos"/>
+   <addaction name="actionCuentas"/>
+   <addaction name="actionInversiones"/>
+   <addaction name="separator"/>
+   <addaction name="actionIndexRange"/>
+   <addaction name="actionConceptos"/>
+   <addaction name="actionInformeHistorico"/>
+   <addaction name="actionEstudioTAE"/>
+   <addaction name="actionInformeTotal"/>
+   <addaction name="separator"/>
+   <addaction name="actionSalir"/>
+  </widget>
+  <widget class="QStatusBar" name="status"/>
+  <action name="actionSalir">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/exit.png</normaloff>:/xulpymoney/exit.png</iconset>
+   </property>
+   <property name="text">
+    <string>S&amp;alir</string>
+   </property>
+  </action>
+  <action name="actionAcercaDe">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/coins.png</normaloff>:/xulpymoney/coins.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Acerca de</string>
+   </property>
+  </action>
+  <action name="actionIndexRange">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/report.png</normaloff>:/xulpymoney/report.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Rangos de un índice</string>
+   </property>
+   <property name="toolTip">
+    <string>Rangos de un índice</string>
+   </property>
+  </action>
+  <action name="actionInversiones">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/bundle.png</normaloff>:/xulpymoney/bundle.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Listado de inversiones</string>
+   </property>
+   <property name="toolTip">
+    <string>Listado de inversiones</string>
+   </property>
+  </action>
+  <action name="actionTablasAuxiliares">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/table.png</normaloff>:/xulpymoney/table.png</iconset>
+   </property>
+   <property name="text">
+    <string>Tablas Auxiliares</string>
+   </property>
+  </action>
+  <action name="actionInformeDividendos">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/dinero.png</normaloff>:/xulpymoney/dinero.png</iconset>
+   </property>
+   <property name="text">
+    <string>Estudio de dividendos</string>
+   </property>
+  </action>
+  <action name="actionEstudioTAE">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/statistics.png</normaloff>:/xulpymoney/statistics.png</iconset>
+   </property>
+   <property name="text">
+    <string>Estudio TAE del patrimonio</string>
+   </property>
+   <property name="toolTip">
+    <string>Estudio TAE del patrimonio</string>
+   </property>
+  </action>
+  <action name="actionInformeTotal">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/report2.png</normaloff>:/xulpymoney/report2.png</iconset>
+   </property>
+   <property name="text">
+    <string>Informe &amp;Total</string>
+   </property>
+   <property name="toolTip">
+    <string>Informe total</string>
+   </property>
+  </action>
+  <action name="actionInformeHistorico">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/history2.png</normaloff>:/xulpymoney/history2.png</iconset>
+   </property>
+   <property name="text">
+    <string>Informe Histórico</string>
+   </property>
+  </action>
+  <action name="actionCuentas">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/coins.png</normaloff>:/xulpymoney/coins.png</iconset>
+   </property>
+   <property name="text">
+    <string>Listado de cuentas</string>
+   </property>
+  </action>
+  <action name="actionBancos">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/bank.png</normaloff>:/xulpymoney/bank.png</iconset>
+   </property>
+   <property name="text">
+    <string>Listado de Bancos</string>
+   </property>
+  </action>
+  <action name="actionInformeClases">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/pie.png</normaloff>:/xulpymoney/pie.png</iconset>
+   </property>
+   <property name="text">
+    <string>Informe de tipos de inversión</string>
+   </property>
+  </action>
+  <action name="actionTransferencia">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/transfer.png</normaloff>:/xulpymoney/transfer.png</iconset>
+   </property>
+   <property name="text">
+    <string>Transferencia</string>
+   </property>
+   <property name="toolTip">
+    <string>Transferencia</string>
+   </property>
+  </action>
+  <action name="actionConceptos">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/hucha.png</normaloff>:/xulpymoney/hucha.png</iconset>
+   </property>
+   <property name="text">
+    <string>Estudio de conceptos</string>
+   </property>
+   <property name="toolTip">
+    <string>Estudio de conceptos</string>
+   </property>
+  </action>
+  <action name="actionMemoria">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/transfer.png</normaloff>:/xulpymoney/transfer.png</iconset>
+   </property>
+   <property name="text">
+    <string>Actualizar memoria</string>
+   </property>
+   <property name="toolTip">
+    <string>Actualizar memoria</string>
+   </property>
+  </action>
+  <action name="actionSettings">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/configure.png</normaloff>:/xulpymoney/configure.png</iconset>
+   </property>
+   <property name="text">
+    <string>Preferencias</string>
+   </property>
+   <property name="toolTip">
+    <string>Configuración de preferencias</string>
+   </property>
+  </action>
+ </widget>
+ <resources>
+  <include location="../images/xulpymoney.qrc"/>
+ </resources>
+ <connections>
+  <connection>
+   <sender>frmMain</sender>
+   <signal>destroyed()</signal>
+   <receiver>actionSalir</receiver>
+   <slot>trigger()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>276</x>
+     <y>236</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>

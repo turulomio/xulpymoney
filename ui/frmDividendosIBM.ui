@@ -1,0 +1,310 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>frmDividendosIBM</class>
+ <widget class="QDialog" name="frmDividendosIBM">
+  <property name="windowModality">
+   <enum>Qt::WindowModal</enum>
+  </property>
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>393</width>
+    <height>389</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Dividendos</string>
+  </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>:/xulpmoney/document-edit.png</normaloff>:/xulpmoney/document-edit.png</iconset>
+  </property>
+  <property name="modal">
+   <bool>true</bool>
+  </property>
+  <layout class="QHBoxLayout" name="_2">
+   <item>
+    <layout class="QVBoxLayout" name="verticalLayout">
+     <item>
+      <widget class="QLabel" name="lblTitulo">
+       <property name="font">
+        <font>
+         <pointsize>14</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: rgb(0, 128, 0);</string>
+       </property>
+       <property name="text">
+        <string>Añadir dividendo</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QCalendarWidget" name="cal">
+       <property name="firstDayOfWeek">
+        <enum>Qt::Monday</enum>
+       </property>
+       <property name="verticalHeaderFormat">
+        <enum>QCalendarWidget::NoVerticalHeader</enum>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QCheckBox" name="chk">
+       <property name="text">
+        <string>¿Son venta de derechos (Dividendo especie)?</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_3">
+       <item>
+        <widget class="QLabel" name="lblLiquido_3">
+         <property name="text">
+          <string>Introduce el importe bruto</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="myQLineEdit" name="txtBruto">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>150</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>0</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_4">
+       <item>
+        <widget class="QLabel" name="lblLiquido_4">
+         <property name="text">
+          <string>Introduce el importe de la retención</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="myQLineEdit" name="txtRetencion">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>150</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>0</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_5">
+       <item>
+        <widget class="QLabel" name="lblLiquido_5">
+         <property name="text">
+          <string>Introduce el dividendo por acción</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="myQLineEdit" name="txtDPA">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>150</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>0</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout">
+       <item>
+        <widget class="QLabel" name="lblLiquido">
+         <property name="text">
+          <string>Introduce la comisión bancaria</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="myQLineEdit" name="txtComision">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>150</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>0</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_7">
+       <item>
+        <widget class="QLabel" name="lblLiquido_7">
+         <property name="text">
+          <string>El importe neto a cobrar</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="txtNeto">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>150</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <widget class="QLabel" name="lblTPC">
+       <property name="text">
+        <string>Tiene una retención del 0%</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="cmd"/>
+     </item>
+    </layout>
+   </item>
+  </layout>
+  <action name="actionMovimientoNuevo">
+   <property name="icon">
+    <iconset>
+     <normaloff>:/xulpmoney/document-edit.png</normaloff>:/xulpmoney/document-edit.png</iconset>
+   </property>
+   <property name="text">
+    <string>Nuevo movimiento</string>
+   </property>
+  </action>
+  <action name="actionMovimientoBorrar">
+   <property name="icon">
+    <iconset>
+     <normaloff>:/xulpmoney/list-remove.png</normaloff>:/xulpmoney/list-remove.png</iconset>
+   </property>
+   <property name="text">
+    <string>Borrar el movimiento</string>
+   </property>
+  </action>
+  <action name="actionTarjetaNueva">
+   <property name="icon">
+    <iconset>
+     <normaloff>:/xulpmoney/contact-new.png</normaloff>:/xulpmoney/contact-new.png</iconset>
+   </property>
+   <property name="text">
+    <string>Nueva Tarjeta</string>
+   </property>
+  </action>
+  <action name="actionTarjetaBorrar">
+   <property name="icon">
+    <iconset>
+     <normaloff>:/xulpmoney/list-remove.png</normaloff>:/xulpmoney/list-remove.png</iconset>
+   </property>
+   <property name="text">
+    <string>Borrar Tarjeta</string>
+   </property>
+  </action>
+  <action name="actionOperTarjetaNueva">
+   <property name="icon">
+    <iconset>
+     <normaloff>:/xulpmoney/document-edit.png</normaloff>:/xulpmoney/document-edit.png</iconset>
+   </property>
+   <property name="text">
+    <string>Nueva Operación de Tarjeta</string>
+   </property>
+  </action>
+  <action name="actionOperTarjetaBorrar">
+   <property name="icon">
+    <iconset>
+     <normaloff>:/xulpmoney/list-remove.png</normaloff>:/xulpmoney/list-remove.png</iconset>
+   </property>
+   <property name="text">
+    <string>Borrar Operación de Tarjeta</string>
+   </property>
+  </action>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>myQLineEdit</class>
+   <extends>QLineEdit</extends>
+   <header location="global">myqlineedit</header>
+  </customwidget>
+ </customwidgets>
+ <resources>
+  <include location="../images/xulpymoney.qrc"/>
+ </resources>
+ <connections/>
+</ui>

@@ -1,0 +1,659 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>frmInversionesEstudio</class>
+ <widget class="QDialog" name="frmInversionesEstudio">
+  <property name="windowModality">
+   <enum>Qt::WindowModal</enum>
+  </property>
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>878</width>
+    <height>394</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Estudio de la inversión seleccionada</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="../images/xulpymoney.qrc">
+    <normaloff>:/xulpymoney/report2.png</normaloff>:/xulpymoney/report2.png</iconset>
+  </property>
+  <property name="modal">
+   <bool>true</bool>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout_10">
+   <item>
+    <layout class="QVBoxLayout" name="verticalLayout_9">
+     <item>
+      <widget class="QLabel" name="lblTitulo">
+       <property name="font">
+        <font>
+         <pointsize>14</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: rgb(0, 128, 0);</string>
+       </property>
+       <property name="text">
+        <string>TextLabel</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QTabWidget" name="tab">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
+       <property name="currentIndex">
+        <number>1</number>
+       </property>
+       <widget class="QWidget" name="tab_12">
+        <attribute name="title">
+         <string>Datos de la inversión</string>
+        </attribute>
+        <layout class="QHBoxLayout" name="horizontalLayout_16">
+         <item>
+          <layout class="QVBoxLayout" name="verticalLayout">
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_2">
+             <item>
+              <widget class="QLabel" name="label">
+               <property name="text">
+                <string>Selecciona la cuenta asociada</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QComboBox" name="cmbCuenta">
+               <property name="layoutDirection">
+                <enum>Qt::RightToLeft</enum>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_3">
+             <item>
+              <widget class="QLabel" name="label_2">
+               <property name="text">
+                <string>Nombre de la inversión</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLineEdit" name="txtInversion">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="text">
+                <string>Nueva inversión</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_5">
+             <item>
+              <widget class="QLabel" name="label_4">
+               <property name="text">
+                <string>Valor de venta</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="myQLineEdit" name="txtVenta">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="text">
+                <string>0</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QToolButton" name="cmdPuntoVenta">
+               <property name="text">
+                <string/>
+               </property>
+               <property name="icon">
+                <iconset resource="../images/xulpymoney.qrc">
+                 <normaloff>:/xulpymoney/tools-wizard.png</normaloff>:/xulpymoney/tools-wizard.png</iconset>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_8">
+             <item>
+              <widget class="investmentSelector" name="ise" native="true">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <widget class="QPushButton" name="cmdInversion">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
+             <property name="text">
+              <string>Modificar la inversión seleccionada</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QWidget" name="tabInversionActual">
+        <attribute name="title">
+         <string>Inversión actual</string>
+        </attribute>
+        <layout class="QHBoxLayout" name="horizontalLayout">
+         <item>
+          <layout class="QVBoxLayout" name="verticalLayout_6">
+           <item>
+            <widget class="myQTableWidget" name="tblInversionActual">
+             <property name="contextMenuPolicy">
+              <enum>Qt::CustomContextMenu</enum>
+             </property>
+             <property name="alternatingRowColors">
+              <bool>true</bool>
+             </property>
+             <property name="selectionMode">
+              <enum>QAbstractItemView::SingleSelection</enum>
+             </property>
+             <property name="selectionBehavior">
+              <enum>QAbstractItemView::SelectRows</enum>
+             </property>
+             <attribute name="verticalHeaderVisible">
+              <bool>false</bool>
+             </attribute>
+            </widget>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QWidget" name="tabOperacionesHistoricas">
+        <attribute name="title">
+         <string>Operaciones</string>
+        </attribute>
+        <layout class="QHBoxLayout" name="horizontalLayout_9">
+         <item>
+          <layout class="QVBoxLayout" name="verticalLayout_7">
+           <item>
+            <widget class="QCheckBox" name="chkOperaciones">
+             <property name="text">
+              <string>Muestra todas las operaciones registradas</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="myQTableWidget" name="tblOperaciones">
+             <property name="contextMenuPolicy">
+              <enum>Qt::CustomContextMenu</enum>
+             </property>
+             <property name="alternatingRowColors">
+              <bool>true</bool>
+             </property>
+             <property name="selectionMode">
+              <enum>QAbstractItemView::SingleSelection</enum>
+             </property>
+             <property name="selectionBehavior">
+              <enum>QAbstractItemView::SelectRows</enum>
+             </property>
+             <attribute name="verticalHeaderVisible">
+              <bool>false</bool>
+             </attribute>
+             <column>
+              <property name="text">
+               <string>Id</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>Día</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>Tipo de operación</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>Acciones</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>Valor</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>Saldo</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>Comisión</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>Impuestos</string>
+              </property>
+             </column>
+            </widget>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QWidget" name="tab_2">
+        <attribute name="title">
+         <string>Operaciones Históricas</string>
+        </attribute>
+        <layout class="QHBoxLayout" name="horizontalLayout_4">
+         <item>
+          <widget class="myQTableWidget" name="tblInversionHistorica">
+           <property name="contextMenuPolicy">
+            <enum>Qt::CustomContextMenu</enum>
+           </property>
+           <property name="editTriggers">
+            <set>QAbstractItemView::NoEditTriggers</set>
+           </property>
+           <property name="alternatingRowColors">
+            <bool>true</bool>
+           </property>
+           <property name="selectionMode">
+            <enum>QAbstractItemView::NoSelection</enum>
+           </property>
+           <attribute name="verticalHeaderVisible">
+            <bool>false</bool>
+           </attribute>
+           <column>
+            <property name="text">
+             <string>Fecha</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>Años</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>Inversión</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>Tipo de operación</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>Saldo inicial</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>Saldo final</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>Consolidado bruto</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>Comisiones</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>Impuestos</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>Consolidado neto</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>% TAE neto</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>% Total neto</string>
+            </property>
+           </column>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QWidget" name="tabDividendos">
+        <attribute name="title">
+         <string>Dividendos</string>
+        </attribute>
+        <layout class="QHBoxLayout" name="horizontalLayout_7">
+         <item>
+          <layout class="QVBoxLayout" name="verticalLayout_5">
+           <item>
+            <widget class="QCheckBox" name="chkDividendosHistoricos">
+             <property name="text">
+              <string>Mostrar todos los dividendos históricos de esta inversión</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="myQTableWidget" name="tblDividendos">
+             <property name="contextMenuPolicy">
+              <enum>Qt::CustomContextMenu</enum>
+             </property>
+             <property name="alternatingRowColors">
+              <bool>true</bool>
+             </property>
+             <property name="selectionMode">
+              <enum>QAbstractItemView::SingleSelection</enum>
+             </property>
+             <property name="selectionBehavior">
+              <enum>QAbstractItemView::SelectRows</enum>
+             </property>
+             <attribute name="verticalHeaderVisible">
+              <bool>false</bool>
+             </attribute>
+             <column>
+              <property name="text">
+               <string>Día</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>Concepto</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>Bruto</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>Retención</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>Comisión bancaria</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>Neto</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>DPA</string>
+              </property>
+             </column>
+            </widget>
+           </item>
+           <item>
+            <layout class="QVBoxLayout" name="verticalLayout_4">
+             <item>
+              <widget class="QGroupBox" name="grpDividendosEstimacion">
+               <property name="title">
+                <string>Estimación</string>
+               </property>
+               <layout class="QHBoxLayout" name="horizontalLayout_11">
+                <item>
+                 <layout class="QVBoxLayout" name="verticalLayout_2">
+                  <item>
+                   <widget class="QLabel" name="lblDivAnualEstimado">
+                    <property name="text">
+                     <string>DAE</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLabel" name="lblDivFechaRevision">
+                    <property name="text">
+                     <string>Fecha revision</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLabel" name="lblDivSaldoEstimado">
+                    <property name="text">
+                     <string>Saldo estimado</string>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </item>
+               </layout>
+              </widget>
+             </item>
+             <item>
+              <widget class="QGroupBox" name="grpDividendosEfectivos">
+               <property name="title">
+                <string>Dividendos consolidados</string>
+               </property>
+               <layout class="QHBoxLayout" name="horizontalLayout_13">
+                <item>
+                 <layout class="QVBoxLayout" name="verticalLayout_3">
+                  <item>
+                   <widget class="QLabel" name="lblDivTPC">
+                    <property name="text">
+                     <string>% de lo invertido</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLabel" name="lblDivTAE">
+                    <property name="text">
+                     <string>% TAE</string>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </item>
+               </layout>
+              </widget>
+             </item>
+            </layout>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </widget>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+  <action name="actionMovimientoNuevo">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/add.png</normaloff>:/xulpymoney/add.png</iconset>
+   </property>
+   <property name="text">
+    <string>Añadir nuevo movimiento</string>
+   </property>
+  </action>
+  <action name="actionMovimientoBorrar">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/list-remove.png</normaloff>:/xulpymoney/list-remove.png</iconset>
+   </property>
+   <property name="text">
+    <string>Borrar movimiento</string>
+   </property>
+   <property name="toolTip">
+    <string>Borrar movimiento</string>
+   </property>
+  </action>
+  <action name="actionDividendoNuevo">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/add.png</normaloff>:/xulpymoney/add.png</iconset>
+   </property>
+   <property name="text">
+    <string>Añadir nuevo dividendo</string>
+   </property>
+   <property name="toolTip">
+    <string>Añadir nuevo dividendo</string>
+   </property>
+  </action>
+  <action name="actionDividendoBorrar">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/list-remove.png</normaloff>:/xulpymoney/list-remove.png</iconset>
+   </property>
+   <property name="text">
+    <string>Borrar dividendo</string>
+   </property>
+   <property name="toolTip">
+    <string>Borrar dividendo</string>
+   </property>
+  </action>
+  <action name="actionMovimientoModificar">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/editar.png</normaloff>:/xulpymoney/editar.png</iconset>
+   </property>
+   <property name="text">
+    <string>Modificar movimiento</string>
+   </property>
+   <property name="toolTip">
+    <string>Modificar movimiento</string>
+   </property>
+  </action>
+  <action name="actionMovimientoActualizar">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/tools-wizard.png</normaloff>:/xulpymoney/tools-wizard.png</iconset>
+   </property>
+   <property name="text">
+    <string>Actualizar movimientos</string>
+   </property>
+  </action>
+  <action name="actionDesReinversion">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/history2.png</normaloff>:/xulpymoney/history2.png</iconset>
+   </property>
+   <property name="text">
+    <string>Estudio de desinversión / reinversión</string>
+   </property>
+   <property name="toolTip">
+    <string>Estudio de desinversión / reinversión</string>
+   </property>
+  </action>
+  <action name="actionPuntoVenta">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/tools-wizard.png</normaloff>:/xulpymoney/tools-wizard.png</iconset>
+   </property>
+   <property name="text">
+    <string>Cálculo de punto de venta</string>
+   </property>
+   <property name="toolTip">
+    <string>Cálculo de punto de venta</string>
+   </property>
+  </action>
+  <action name="actionDividendoModificar">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/editar.png</normaloff>:/xulpymoney/editar.png</iconset>
+   </property>
+   <property name="text">
+    <string>Modificar dividendo</string>
+   </property>
+   <property name="toolTip">
+    <string>Modificar dividendo</string>
+   </property>
+  </action>
+  <action name="actionDeshacerTraspasoValores">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/list-remove.png</normaloff>:/xulpymoney/list-remove.png</iconset>
+   </property>
+   <property name="text">
+    <string>Deshacer traspaso de valores a otra Entidad</string>
+   </property>
+   <property name="toolTip">
+    <string>Deshacer traspaso de valores a otra Entidad</string>
+   </property>
+  </action>
+  <action name="actionTraspasoValores">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/transfer.png</normaloff>:/xulpymoney/transfer.png</iconset>
+   </property>
+   <property name="text">
+    <string>Traspaso de valores a otra Entidad</string>
+   </property>
+   <property name="toolTip">
+    <string>Traspaso de valores a otra Entidad</string>
+   </property>
+  </action>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>myQTableWidget</class>
+   <extends>QTableWidget</extends>
+   <header location="global">myqtablewidget</header>
+  </customwidget>
+  <customwidget>
+   <class>investmentSelector</class>
+   <extends>QWidget</extends>
+   <header location="global">investmentSelector</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>myQLineEdit</class>
+   <extends>QLineEdit</extends>
+   <header location="global">myqlineedit</header>
+  </customwidget>
+ </customwidgets>
+ <resources>
+  <include location="../images/xulpymoney.qrc"/>
+ </resources>
+ <connections/>
+</ui>

@@ -1,44 +1,64 @@
 DESTDIR ?= /
 
+PREFIXETC=$(DESTDIR)/etc/xulpymoney
 PREFIXBIN=$(DESTDIR)/usr/bin
-PREFIXPYTHON=$(DESTDIR)/usr/lib
-PREFIXWEB=$(DESTDIR)/var/www/localhost/htdocs
-PREFIXCONFIG=$(DESTDIR)/etc/xulpymoney
-PREFIXPO=$(DESTDIR)/usr/share/locale
+PREFIXLIB=$(DESTDIR)/usr/lib/xulpymoney
+PREFIXSHARE=$(DESTDIR)/usr/share/xulpymoney
+PREFIXPIXMAPS=$(DESTDIR)/usr/share/pixmaps
+PREFIXAPPLICATIONS=$(DESTDIR)/usr/share/applications
 
-install: 
-	echo "Instalando en ${DESTDIR}"
-	cd po; ./translate; cd ..
-	install -o apache -d $(PREFIXPYTHON)/xulpymoney
-	install -o apache -d $(PREFIXWEB)
-	install -o apache -d $(PREFIXWEB)/xulpymoney
-	install -o apache -d $(PREFIXWEB)/xulpymoney/ajax
-	install -o apache -d $(PREFIXWEB)/xulpymoney/images
-	install -o apache -d $(PREFIXWEB)/xulpymoney/js
-	install -o apache -d $(PREFIXWEB)/xulpymoney/languages
-	install -o root -d $(PREFIXPO)/en/LC_MESSAGES/
-	install -o apache -d $(PREFIXCONFIG)
-	install -o apache -d $(PREFIXWEB)/tmp
-	install -d $(PREFIXBIN)
-	install -m 644 -o root xulpymoney.crontab /etc/cron.d
-	install -m 644 -o root po/en.mo $(PREFIXPO)/en/LC_MESSAGES/xulpymoney.mo
-	install -m 400 -o apache *.py $(PREFIXWEB)/xulpymoney
-	install -m 400 -o apache xulpymoney*.odt $(PREFIXWEB)/xulpymoney
-	install -m 400 -o apache js/*.js $(PREFIXWEB)/xulpymoney/js
-	install -m 400 -o apache ajax/*.py $(PREFIXWEB)/xulpymoney/ajax
-	install -m 400 -o apache images/*.png $(PREFIXWEB)/xulpymoney/images
-	install -m 400 -o apache images/*.jpg $(PREFIXWEB)/xulpymoney/images
-	install -m 400 -o apache clases/*.py  $(PREFIXPYTHON)/xulpymoney
-	install -m 400 -o apache clases/config.py  $(PREFIXCONFIG)/config.py.distrib
-	install -m 400 -o apache *.css  $(PREFIXWEB)/xulpymoney
-	install -m 400 -o apache GPL-3.txt  $(PREFIXWEB)/xulpymoney
-	install -m 755 -o apache scripts/xulpymoney* $(PREFIXBIN)/
-	rm -fr $(PREFIXPYTHON)/xulpymoney/config.py
+
+all: compile install
+compile:
+	pyrcc4 -py3 images/xulpymoney.qrc > images/xulpymoney_rc.py
+	pyuic4 ui/frmAbout.ui > ui/Ui_frmAbout.py 
+	pyuic4 ui/frmMain.ui > ui/Ui_frmMain.py
+	pyuic4 ui/frmOperCuentas.ui > ui/Ui_frmOperCuentas.py
+	pyuic4 ui/frmTablasAuxiliares.ui > ui/Ui_frmTablasAuxiliares.py
+	pyuic4 ui/wdgBancos.ui > ui/Ui_wdgBancos.py
+	pyuic4 ui/wdgConceptos.ui > ui/Ui_wdgConceptos.py
+	pyuic4 ui/wdgCuentas.ui > ui/Ui_wdgCuentas.py
+	pyuic4 ui/wdgDesReinversion.ui > ui/Ui_wdgDesReinversion.py
+	pyuic4 ui/frmCuentasIBM.ui > ui/Ui_frmCuentasIBM.py
+	pyuic4 ui/wdgInformeClases.ui > ui/Ui_wdgInformeClases.py
+	pyuic4 ui/wdgInformeHistorico.ui > ui/Ui_wdgInformeHistorico.py
+	pyuic4 ui/wdgInformeDividendos.ui > ui/Ui_wdgInformeDividendos.py
+	pyuic4 ui/wdgAPR.ui > ui/Ui_wdgAPR.py
+	pyuic4 ui/wdgIndexRange.ui > ui/Ui_wdgIndexRange.py
+	pyuic4 ui/wdgInversiones.ui > ui/Ui_wdgInversiones.py
+	pyuic4 ui/frmDividendosIBM.ui > ui/Ui_frmDividendosIBM.py
+	pyuic4 ui/frmInversionesEstudio.ui > ui/Ui_frmInversionesEstudio.py
+	pyuic4 ui/frmInversionesIBM.ui > ui/Ui_frmInversionesIBM.py
+	pyuic4 ui/frmPuntoVenta.ui > ui/Ui_frmPuntoVenta.py
+	pyuic4 ui/frmSettings.ui > ui/Ui_frmSettings.py
+	pyuic4 ui/frmTarjetasIBM.ui > ui/Ui_frmTarjetasIBM.py
+	pyuic4 ui/frmTransferencia.ui > ui/Ui_frmTransferencia.py
+	pyuic4 ui/frmTraspasoValores.ui > ui/Ui_frmTraspasoValores.py
+	pyuic4 ui/wdgTotal.ui > ui/Ui_wdgTotal.py
+	pylupdate4 -noobsolete xulpymoney.pro
+	lrelease xulpymoney.pro
+
+install:
+	install -o root -d $(PREFIXETC)
+	install -o root -d $(PREFIXBIN)
+	install -o root -d $(PREFIXLIB)
+	install -o root -d $(PREFIXSHARE)
+	install -o root -d $(PREFIXPIXMAPS)
+	install -o root -d $(PREFIXAPPLICATIONS)
+
+	install -m 755 -o root xulpymoney.py $(PREFIXBIN)/xulpymoney
+	install -m 644 -o root ui/*.py $(PREFIXLIB)
+	install -m 644 -o root images/*.py $(PREFIXLIB)
+	install -m 644 -o root i18n/*.qm $(PREFIXLIB)
+	install -m 644 -o root config.py $(PREFIXETC)/config.py.dist
+	install -m 644 -o root xulpymoney.desktop $(PREFIXAPPLICATIONS)
+	install -m 644 -o root images/dinero.png $(PREFIXPIXMAPS)/xulpymoney.png
 
 uninstall:
-	rm /etc/cron.d/xulpymoney.crontab
-	rm -fr $(PREFIXWEB)/xulpymoney
-	rm -fr $(PREFIXPYTHON)/xulpymoney
-	rm -fr $(DESTDIR)/usr/bin/xulpymoney*
-	rm $(PREFIXPO)/en/LC_MESSAGES/xulpymoney.mo
+	rm $(PREFIXBIN)/xulpymoney
+	rm -Rf $(PREFIXLIB)
+	rm -Rf $(PREFIXSHARE)
+	rm $(PREFIXETC)/config.py.dist
+	rm -fr $(PREFIXPIXMAPS)/xulpymoney.png
+	rm -fr $(PREFIXAPPLICATIONS)/xulpymoney.desktop
 
