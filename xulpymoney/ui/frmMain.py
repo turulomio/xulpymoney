@@ -55,27 +55,21 @@ class frmMain(QMainWindow, Ui_frmMain):
         curmq.close()
         cur.close()     
         
+        self.tupdatedata=TUpdateData(self.cfg)
+        self.tupdatedata.start()
+        
+        
         self.mytimer = QTimer()
         QObject.connect(self.mytimer, SIGNAL("timeout()"), self.update_quotes)
-        self.mytimer.start(120000)      
+        self.mytimer.start(60000)      
+
+    def update_quotes(self):
+        if self.tupdatedata.isAlive()==False:
+            QCoreApplication.processEvents()
+            self.tupdatedata=TUpdateData(self.cfg)
+            self.tupdatedata.start()      
         
 
-        
-                   
-    def update_quotes(self):
-        QApplication.setOverrideCursor(QCursor(Qt.WaitCursor));
-        mq=self.cfg.connect_myquotes()
-        curmq=mq.cursor()       
-        print("Actualizando quotes",  datetime.datetime.now()) 
-        self.mytimer.stop()
-        self.cfg.indicereferencia.quotes.get_basic(curmq)
-        for k, v in self.cfg.dic_mqinversiones.items():
-            QCoreApplication.processEvents()
-            v.quotes.get_basic(curmq)
-        curmq.close()
-        self.cfg.disconnect_myquotes(mq)
-        self.mytimer.start()
-        QApplication.restoreOverrideCursor ()
         
     @pyqtSignature("")
     def on_actionAcercaDe_activated(self):

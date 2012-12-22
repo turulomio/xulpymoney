@@ -1,4 +1,4 @@
-import sys,  os,  datetime
+import sys,  os,  datetime,  threading
 from decimal import *
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
@@ -1760,6 +1760,26 @@ class Patrimonio:
         for i in cfg.inversiones.arr:        
             resultado=resultado+i.op_historica.consolidado_neto(year, month)
         return resultado        
+
+
+
+class TUpdateData(threading.Thread):
+    def __init__(self, cfg):
+        threading.Thread.__init__(self)
+        self.cfg=cfg
+    
+    def run(self):    
+        inicio=datetime.datetime.now()
+        mq=self.cfg.connect_myquotes()
+        curmq=mq.cursor()       
+        self.cfg.indicereferencia.quotes.get_basic(curmq)
+        for k, v in self.cfg.dic_mqinversiones.items():
+            v.quotes.get_basic(curmq)
+        curmq.close()
+        self.cfg.disconnect_myquotes(mq)
+
+        print("Update quotes took",  datetime.datetime.now()-inicio) 
+
 
 def mylog(text):
     f=open("/tmp/xulpymoney.log","a")
