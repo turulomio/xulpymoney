@@ -27,11 +27,11 @@ class frmPuntoVenta(QDialog, Ui_frmPuntoVenta):
     def __calcular(self):
         sumacciones=0
         suminvertido=0
-        self.table.setRowCount(len(self.operinversiones))
+        self.table.setRowCount(len(self.operinversiones)+1)
         for i, rec in enumerate(self.operinversiones):
             if self.chkPonderanAdded.checkState()==Qt.Checked:
                 sumacciones=sumacciones+rec.acciones
-                suminvertido=suminvertido+rec.importe
+                suminvertido=suminvertido+rec.invertido()
             elif rec.tipooperacion.id!=6:
                     sumacciones=sumacciones+rec.acciones
                     suminvertido=suminvertido+rec.importe
@@ -42,6 +42,10 @@ class frmPuntoVenta(QDialog, Ui_frmPuntoVenta):
             self.table.setItem(i, 4, self.inversion.mq.currency.qtablewidgetitem(rec.valor_accion))
             self.table.setItem(i, 5, self.inversion.mq.currency.qtablewidgetitem(rec.importe))
             self.table.setItem(i, 6, self.inversion.mq.currency.qtablewidgetitem(rec.pendiente(self.inversion.mq.quotes.last)))
+        self.table.setItem(len(self.operinversiones), 1, qright("Total"))        
+        self.table.setItem(len(self.operinversiones), 3, qright(str(sumacciones)))
+        self.table.setItem(len(self.operinversiones), 4, self.inversion.mq.currency.qtablewidgetitem(suminvertido/sumacciones))
+        self.table.setItem(len(self.operinversiones), 5, qright(str(suminvertido)))
             
         if sumacciones==0:
             self.puntoventa=0

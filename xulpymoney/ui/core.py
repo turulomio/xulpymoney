@@ -875,7 +875,9 @@ class InversionOperacionActual:
         return self.referenciaindice
         
     def invertido(self):
-        """Función que devuelve el importe invertido teniendo en cuenta las acciones actuales de la operinversión y el valor de compra"""
+        """Función que devuelve el importe invertido teniendo en cuenta las acciones actuales de la operinversión y el valor de compra
+        Si se usa  el importe no fuNCIONA PASO CON EL PUNTOI DE VENTA.
+        """
         return self.acciones*self.valor_accion
         
     def saldo(self,  lastquote):
