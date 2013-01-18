@@ -145,6 +145,9 @@
      </item>
      <item>
       <widget class="myQTableWidget" name="table">
+       <attribute name="verticalHeaderVisible">
+        <bool>false</bool>
+       </attribute>
        <column>
         <property name="text">
          <string>Día</string>

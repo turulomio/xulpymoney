@@ -45,7 +45,7 @@ class frmPuntoVenta(QDialog, Ui_frmPuntoVenta):
         self.table.setItem(len(self.operinversiones), 1, qright("Total"))        
         self.table.setItem(len(self.operinversiones), 3, qright(str(sumacciones)))
         self.table.setItem(len(self.operinversiones), 4, self.inversion.mq.currency.qtablewidgetitem(suminvertido/sumacciones))
-        self.table.setItem(len(self.operinversiones), 5, qright(str(suminvertido)))
+        self.table.setItem(len(self.operinversiones), 5, self.inversion.mq.currency.qtablewidgetitem(str(suminvertido)))
             
         if sumacciones==0:
             self.puntoventa=0
