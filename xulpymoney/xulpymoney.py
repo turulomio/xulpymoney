@@ -11,13 +11,9 @@ try:
     os.makedirs( os.environ['HOME']+"/.xulpymoney/")
 except:
     pass
-    
-#Creamos la aplicacion principal y conectamos la señal lastWindowClosed()
-#(ultima ventana cerrada) con la funcion quit() (salir de la aplicacion)
+
 app = QApplication(sys.argv)
 QTextCodec.setCodecForTr(QTextCodec.codecForName("UTF-8"));
-#for k, v in globals().items():             
-#    print ("GOLABAS", k, "=", v)
 
 translator = QTranslator(app)
 locale=QLocale()
