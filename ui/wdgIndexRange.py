@@ -73,7 +73,7 @@ class wdgIndexRange(QWidget, Ui_wdgIndexRange):
             variacion=0
         else:
             variacion=(self.cfg.indicereferencia.quotes.last.quote-self.cfg.indicereferencia.quotes.penultimate.quote)*100/self.cfg.indicereferencia.quotes.penultimate.quote
-        self.lblTotal.setText(("Tengo cubierto hasta el %d del Indice de referencia. Valor actual del indice de referencia (%s): %d (%.2f %%)" %( indexcover, self.cfg.indicereferencia.name,   int(self.cfg.indicereferencia.quotes.last.quote),  variacion)))
+        self.lblTotal.setText(("Tengo cubierto hasta el %d del índice de referencia (%s). Su valor a %s es %d (%.2f %%)" %( indexcover, self.cfg.indicereferencia.name, self.cfg.indicereferencia.quotes.last.datetime,   int(self.cfg.indicereferencia.quotes.last.quote),  variacion)))
         cur.close()     
         self.cfg.disconnect_xulpymoney(con) 
         curmq.close()
@@ -82,10 +82,20 @@ class wdgIndexRange(QWidget, Ui_wdgIndexRange):
 
     def on_cmd_pressed(self):
         self.load_data()
-#
-#    def on_cmdShowIndex_pressed(self):
-#        w=frmAnalisis(self.cfg, self.indice(self.cmbIndex.currentIndex()), self)
-#        w.exec_()
+
+    def on_cmdIRAnalisis_pressed(self):
+        w=frmAnalisis(self.cfg, self.cfg.indicereferencia, self)
+        w.exec_()
+        
+    def on_cmdIRInsertar_pressed(self):
+        w=frmQuotesIBM(self.cfg, self.cfg.indicereferencia,  self)
+        w.exec_()
+        mq=self.cfg.connect_myquotes()
+        curmq=mq.cursor()       
+        self.cfg.indicereferencia.quotes.get_basic(curmq)
+        curmq.close()
+        self.cfg.disconnect_myquotes(mq)     
+        self.load_data()
         
     def on_table_cellDoubleClicked(self, row, column):
         if column==1:
