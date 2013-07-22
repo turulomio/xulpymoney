@@ -18,7 +18,7 @@ class frmDividendosIBM(QDialog, Ui_frmDividendosIBM):
         self.neto=0
         self.tpc=0
         if dividendo==None:#insertar
-            self.dividendo=Dividendo()
+            self.dividendo=Dividendo(self.cfg)
             self.dividendo.inversion=inversion
             self.cmd.setText(self.trUtf8("Insertar nuevo dividendo"))
         else:#modificar
@@ -56,9 +56,9 @@ class frmDividendosIBM(QDialog, Ui_frmDividendosIBM):
     def on_cmd_pressed(self):
         try:
             if self.chk.checkState()==Qt.Checked:
-                self.dividendo.concepto=self.cfg.conceptos(62)
+                self.dividendo.concepto=self.cfg.conceptos.find(62)
             else:
-                self.dividendo.concepto=self.cfg.conceptos(39)
+                self.dividendo.concepto=self.cfg.conceptos.find(39)
             self.dividendo.bruto=Decimal(self.txtBruto.text())
             self.dividendo.retencion=Decimal(self.txtRetencion.text())
             self.dividendo.neto=self.neto

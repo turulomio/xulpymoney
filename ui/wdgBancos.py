@@ -14,6 +14,8 @@ class wdgBancos(QWidget, Ui_wdgBancos):
         self.selCuenta=None #id_cuentas
         self.selInversion=None #Registro
         
+        self.load_data_from_db()
+        
         self.ebs=None
         self.inversiones=None
         self.cuentas=None
@@ -23,6 +25,18 @@ class wdgBancos(QWidget, Ui_wdgBancos):
         self.tblInversiones.settings("wdgBancos",  self.cfg.inifile)
         
         self.on_chkInactivas_stateChanged(Qt.Unchecked)#Carga eb
+                
+    def load_data_from_db(self):
+        inicio=datetime.datetime.now()
+        self.data_ebs=SetEBs(self.cfg)
+        self.data_ebs.load_from_db("select * from entidadesbancarias where eb_activa=true")
+        self.data_cuentas=SetCuentas(self.cfg, self.data_ebs)
+        self.data_cuentas.load_from_db("select * from cuentas where cu_activa=true")
+        self.data_investments=SetMQInvestments(self.cfg)
+        self.data_investments.load_from_db("select distinct(myquotesid) from inversiones where in_activa=true")
+        self.data_inversiones=SetInversiones(self.cfg, self.data_cuentas, self.data_investments)
+        self.data_inversiones.load_from_db("select * from inversiones where in_activa=true")
+        print("\n","Cargando data en wdgInversiones",  datetime.datetime.now()-inicio)
         
     def load_eb(self):
 
@@ -32,7 +46,7 @@ class wdgBancos(QWidget, Ui_wdgBancos):
         for i,  e in enumerate(self.ebs):
             self.tblEB.setItem(i, 0, QTableWidgetItem(e.name))
             self.tblEB.setItem(i, 1, qbool(e.activa))
-            saldo=e.saldo(self.cfg.dic_cuentas, self.cfg.inversiones)
+            saldo=e.saldo(self.data_cuentas, self.data_inversiones)
             self.tblEB.setItem(i, 2, self.cfg.localcurrency.qtablewidgetitem(saldo))
             sumsaldos=sumsaldos+saldo     
         self.tblEB.setItem(len(self.ebs), 0, QTableWidgetItem(self.tr('TOTAL')))
@@ -67,7 +81,7 @@ class wdgBancos(QWidget, Ui_wdgBancos):
         
     def on_chkInactivas_stateChanged(self, state):
         if state==Qt.Unchecked:
-            self.ebs=self.cfg.ebs_activas()
+            self.ebs=self.data_ebs.arr
         else:
             self.ebs=self.cfg.ebs_activas(False)
         self.ebs=sorted(self.ebs, key=lambda eb: eb.name,  reverse=False) 
@@ -100,12 +114,12 @@ class wdgBancos(QWidget, Ui_wdgBancos):
         if self.chkInactivas.checkState()==Qt.Unchecked:
             activas=True
             
-        for i in self.cfg.inversiones.arr:
+        for i in self.data_inversiones.arr:
             if i.activa==activas and i.cuenta.eb.id==self.selEB.id:
                 self.inversiones.append(i)
         self.inversiones=sorted(self.inversiones, key=lambda inve: inve.name,  reverse=False) 
         
-        for k, v in self.cfg.dic_cuentas.items():
+        for v in self.data_cuentas.arr:
             if v.activa==activas and v.eb.id==self.selEB.id:
                 self.cuentas.append(v)
         self.cuentas=sorted(self.cuentas, key=lambda c: c.name,  reverse=False) 

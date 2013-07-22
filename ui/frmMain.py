@@ -47,9 +47,11 @@ class frmMain(QMainWindow, Ui_frmMain):
         
         self.cfg.actualizar_memoria(cur, curmq) ##CARGA TODOS LOS DATOS Y LOS VINCULA       
         
-        ids2protect=[i.id for i in self.cfg.mqinversiones()]##Protege registros de myquotes
-        if len(ids2protect)>0:
-            Investment.changeDeletable(curmq,  ids2protect,  False)
+        
+        print ("ARREGLAR PORQUE AHORA NO PROTEGE MQINVERSIONES")
+        #ids2protect=[i.id for i in self.cfg.mqinversiones()]##Protege registros de myquotes
+        #if len(ids2protect)>0:
+         #   Investment.changeDeletable(curmq,  ids2protect,  False)
         self.cfg.conmq.commit()
 
         curmq.close()
@@ -68,9 +70,7 @@ class frmMain(QMainWindow, Ui_frmMain):
             QCoreApplication.processEvents()
             self.tupdatedata=TUpdateData(self.cfg)
             self.tupdatedata.start()      
-        
-
-        
+                
     @pyqtSignature("")
     def on_actionAcercaDe_activated(self):
         fr=frmAbout(self, "frmabout")

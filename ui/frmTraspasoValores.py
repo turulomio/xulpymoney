@@ -23,14 +23,14 @@ class frmTraspasoValores(QDialog, Ui_frmTraspasoValores):
             m.exec_()  
             return
             
-        if self.txtComision.decimal<0:
+        if self.txtComision.decimal()<Decimal('0'):
             m=QMessageBox()
             m.setIcon(QMessageBox.Information)
             m.setText(self.trUtf8("La comisión debe ser un número positivo"))
             m.exec_()
             return            
             
-        if self.cfg.inversiones.traspaso_valores(self.origen, destino, self.txtAcciones.decimal, self.txtComision.decimal)==False: 
+        if self.cfg.inversiones.traspaso_valores(self.origen, destino, self.txtAcciones.decimal(), self.txtComision.decimal())==False: 
             m=QMessageBox()
             m.setIcon(QMessageBox.Information)
             m.setText(self.trUtf8("No se ha podido hacer el traspaso de valores"))

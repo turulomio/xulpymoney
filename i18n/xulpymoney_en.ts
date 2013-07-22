@@ -288,7 +288,7 @@ p, li { white-space: pre-wrap; }
         <translation>Edit credit card</translation>
     </message>
     <message>
-        <location filename="ui/frmCuentasIBM.py" line="146"/>
+        <location filename="ui/frmCuentasIBM.py" line="149"/>
         <source>No se ha borrado la tarjeta por tener registros dependientes</source>
         <translation>No card has been deleted due to have dependent records</translation>
     </message>
@@ -353,17 +353,17 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmCuentasIBM.py" line="51"/>
+        <location filename="ui/frmCuentasIBM.py" line="53"/>
         <source>Datos de la nueva cuenta bancaria</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmCuentasIBM.py" line="57"/>
+        <location filename="ui/frmCuentasIBM.py" line="59"/>
         <source>Insertar nueva cuenta bancaria</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmCuentasIBM.py" line="68"/>
+        <location filename="ui/frmCuentasIBM.py" line="73"/>
         <source>Modificar los datos de la cuenta bancaria</source>
         <translation type="unfinished"></translation>
     </message>
@@ -624,7 +624,7 @@ p, li { white-space: pre-wrap; }
         <translation>Edit selected investment</translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="ui/frmInversionesEstudio.py" line="33"/>
+        <location filename="ui/frmInversionesEstudio.py" line="34"/>
         <source>Añadir una nueva inversión</source>
         <translation>Add a new investment</translation>
     </message>
@@ -769,12 +769,12 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="ui/frmInversionesEstudio.py" line="270"/>
+        <location filename="ui/frmInversionesEstudio.py" line="263"/>
         <source>Debe seleccionar una inversión de MyQuotes para continuar</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="ui/frmInversionesEstudio.py" line="173"/>
+        <location filename="ui/frmInversionesEstudio.py" line="166"/>
         <source>Simulación de Desinversión / Reinversión</source>
         <translation type="unfinished"></translation>
     </message>
@@ -799,7 +799,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmInversionesEstudio.py" line="203"/>
+        <location filename="ui/frmInversionesEstudio.py" line="196"/>
         <source>No se ha podiddo deshacer el traspaso de valores</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1068,27 +1068,27 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmOperCuentas.py" line="68"/>
+        <location filename="ui/frmOperCuentas.py" line="69"/>
         <source>Un gasto no puede tener un importe positivo</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmOperCuentas.py" line="75"/>
+        <location filename="ui/frmOperCuentas.py" line="76"/>
         <source>Un ingreso no puede tener un importe negativo</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="ui/frmOperCuentas.py" line="26"/>
+        <location filename="ui/frmOperCuentas.py" line="27"/>
         <source>Modificación de una operación de tarjeta</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="ui/frmOperCuentas.py" line="37"/>
+        <location filename="ui/frmOperCuentas.py" line="38"/>
         <source>Nueva operación de tarjeta</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="ui/frmOperCuentas.py" line="43"/>
+        <location filename="ui/frmOperCuentas.py" line="44"/>
         <source>Modificación de un movimiento de cuenta</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1103,7 +1103,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="ui/frmOperCuentas.py" line="27"/>
+        <location filename="ui/frmOperCuentas.py" line="28"/>
         <source>Modificación de un operación de tarjeta</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1590,7 +1590,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgAPR.py" line="77"/>
+        <location filename="ui/wdgAPR.py" line="90"/>
         <source>TOTAL</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1643,7 +1643,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished">Investment</translation>
     </message>
     <message>
-        <location filename="ui/wdgBancos.py" line="64"/>
+        <location filename="ui/wdgBancos.py" line="78"/>
         <source>TOTAL</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1678,7 +1678,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgBancos.py" line="190"/>
+        <location filename="ui/wdgBancos.py" line="204"/>
         <source>Este banco tiene cuentas dependientes y no puede ser borrado</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1691,7 +1691,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>wdgConceptos</name>
     <message>
-        <location filename="ui/wdgConceptos.py" line="78"/>
+        <location filename="ui/wdgConceptos.py" line="69"/>
         <source>TOTAL</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1879,7 +1879,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished">¿Is active?</translation>
     </message>
     <message>
-        <location filename="ui/wdgCuentas.py" line="54"/>
+        <location filename="ui/wdgCuentas.py" line="64"/>
         <source>Esta cuenta tiene inversiones, tarjetas o movimientos dependientes y no puede ser borrada</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2210,17 +2210,17 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="ui/wdgIndexRange.py" line="110"/>
+        <location filename="ui/wdgIndexRange.py" line="125"/>
         <source>············································································································</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="ui/wdgIndexRange.py" line="105"/>
+        <location filename="ui/wdgIndexRange.py" line="120"/>
         <source>Para llegar al punto de inversión seleccionado, el indice debe variar un {0}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgIndexRange.py" line="22"/>
+        <location filename="ui/wdgIndexRange.py" line="37"/>
         <source>{0} {1}: {2} {3} ( {4} acciones a {5} {6} )
 </source>
         <translation type="unfinished"></translation>
@@ -2470,7 +2470,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished">% APR</translation>
     </message>
     <message>
-        <location filename="ui/wdgInformeHistorico.py" line="148"/>
+        <location filename="ui/wdgInformeHistorico.py" line="158"/>
         <source>Saldo a {0}, {1}</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2667,22 +2667,22 @@ Sólo se contabilizará cuando se vendan las acciones</source>
         <translation type="unfinished">Investment</translation>
     </message>
     <message>
-        <location filename="ui/wdgInversiones.py" line="17"/>
+        <location filename="ui/wdgInversiones.py" line="18"/>
         <source>Recibiendo datos solicitados</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgInversiones.py" line="17"/>
+        <location filename="ui/wdgInversiones.py" line="18"/>
         <source>Cancelar</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgInversiones.py" line="19"/>
+        <location filename="ui/wdgInversiones.py" line="20"/>
         <source>Recibiendo datos...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgInversiones.py" line="68"/>
+        <location filename="ui/wdgInversiones.py" line="81"/>
         <source>No hay patrimonio invertido</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2707,12 +2707,12 @@ Sólo se contabilizará cuando se vendan las acciones</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgInversiones.py" line="232"/>
+        <location filename="ui/wdgInversiones.py" line="245"/>
         <source>Valor medio de compra: {0}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgInversiones.py" line="238"/>
+        <location filename="ui/wdgInversiones.py" line="251"/>
         <source>Valor de venta: {0}</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2865,7 +2865,7 @@ Sólo se contabilizará cuando se vendan las acciones</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="ui/wdgTotal.py" line="236"/>
+        <location filename="ui/wdgTotal.py" line="245"/>
         <source>La suma de consolidado y dividendos  de este mes es {0}. En el año su valor asciende a {1}</source>
         <translation type="unfinished"></translation>
     </message>

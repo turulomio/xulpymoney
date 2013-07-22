@@ -46,7 +46,7 @@ class frmInversionesIBM(QDialog, Ui_frmInversionesIBM):
         zone=(self.cmbTZ.currentText())
         if id_tiposoperaciones==5: #Venta
             self.operinversion.importe=Decimal(self.txtImporteBruto.text())
-            if self.operinversion.acciones>0:
+            if self.operinversion.acciones>Decimal('0'):
                 m=QMessageBox()
                 m.setIcon(QMessageBox.Information)
                 m.setText(self.trUtf8("El número de acciones en una venta debe ser negativo"))
@@ -63,9 +63,9 @@ class frmInversionesIBM(QDialog, Ui_frmInversionesIBM):
         elif id_tiposoperaciones==6: #Añadido    
             self.operinversion.importe=Decimal(self.txtImporte.text())            
         elif id_tiposoperaciones==8: #Traspaso fondos
-            self.operinversion.importe=self.txtImporte.decimal
+            self.operinversion.importe=self.txtImporte.decimal()
         
-        if self.operinversion.impuestos<0 or  self.operinversion.comision<0 or self.operinversion.valor_accion<0:            
+        if self.operinversion.impuestos<Decimal('0') or  self.operinversion.comision<Decimal('0') or self.operinversion.valor_accion<Decimal('0'):            
             m=QMessageBox()
             m.setIcon(QMessageBox.Information)
             m.setText(self.trUtf8("El valor de la acción, los impuestos y la comisión deben ser positivos"))

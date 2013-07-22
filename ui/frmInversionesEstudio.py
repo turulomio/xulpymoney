@@ -9,8 +9,8 @@ from frmTraspasoValores import *
 from core import *
 
 class frmInversionesEstudio(QDialog, Ui_frmInversionesEstudio):
-    def __init__(self, cfg, selInversion=None,  parent=None):
-        
+    def __init__(self, cfg, cuentas, selInversion=None,  parent=None):
+        """Cuentas es un set cuentas"""
         """TIPOS DE ENTRADAS:        
          1   : Inserción de Opercuentas
          2   selInversion=x"""
@@ -18,6 +18,7 @@ class frmInversionesEstudio(QDialog, Ui_frmInversionesEstudio):
         self.setupUi(self)
         self.showMaximized()
         self.cfg=cfg
+        self.data_cuentas=cuentas
         self.selInversion=selInversion
         self.currentIndex=79329
         self.selDividendo=None#Dividendo seleccionado
@@ -54,7 +55,7 @@ class frmInversionesEstudio(QDialog, Ui_frmInversionesEstudio):
         self.tblInversionHistorica.settings("frmInversionesEstudio",  self.cfg.inifile)
         self.tblDividendos.settings("frmInversionesEstudio",  self.cfg.inifile)
         
-        qcombobox_loadcuentas(self.cmbCuenta, self.cfg.cuentas_activas())
+        qcombobox_loadcuentas(self.cmbCuenta, self.data_cuentas)
 
         if self.tipo==2:
             self.cmbCuenta.setCurrentIndex(self.cmbCuenta.findData(self.selInversion.cuenta.id))
@@ -123,21 +124,13 @@ class frmInversionesEstudio(QDialog, Ui_frmInversionesEstudio):
         myqtablewidget_loads_SetInversionOperacion(self.tblOperaciones, self.op)
             
         
-    def update_tables(self):      
-        
+    def update_tables(self):             
         #Actualiza el indice de referencia porque ha cambiado
-        mq=self.cfg.connect_myquotes()
-        curmq=mq.cursor()        
-        self.selInversion.op_actual.get_valor_indicereferencia(curmq, self.cfg.indicereferencia)
-        curmq.close()
-        self.cfg.disconnect_myquotes(mq)
-            
-#        myqtablewidget_loads_SetInversionOperacion(self.tblOperaciones, self.op)
+        self.selInversion.op_actual.get_valor_indicereferencia()
         self.on_chkOperaciones_stateChanged(self.chkOperaciones.checkState())
         myqtablewidget_loads_SetInversionOperacionActual(self.tblInversionActual, self.selInversion.op_actual,  "frmInversionesEstudio", self.cfg)
         myqtablewidget_loads_SetInversionOperacionHistorica(self.tblInversionHistorica,  self.selInversion.op_historica.arr)
         self.on_chkDividendosHistoricos_stateChanged(self.chkDividendosHistoricos.checkState())
-#        self.load_tblDividendos() 
     
 
     @QtCore.pyqtSlot() 
@@ -245,8 +238,8 @@ class frmInversionesEstudio(QDialog, Ui_frmInversionesEstudio):
         for d in cur:
             cur2.execute("select * from opercuentas where id_opercuentas=%s", (d['id_opercuentas'], ))
             oc=cur2.fetchone()
-            opercuenta=CuentaOperacion().init__db_row( oc, self.cfg.conceptos(oc['id_conceptos']),self.cfg.tiposoperaciones(oc['id_tiposoperaciones']), self.selInversion.cuenta  )
-            self.dividendos.append(Dividendo().init__db_row(d, self.selInversion, opercuenta, self.cfg.conceptos(d['id_conceptos'])))        
+            opercuenta=CuentaOperacion().init__db_row( oc, self.cfg.conceptos.find(oc['id_conceptos']),self.cfg.tiposoperaciones.find(oc['id_tiposoperaciones']), self.selInversion.cuenta  )
+            self.dividendos.append(Dividendo(self.cfg).init__db_row(d, self.selInversion, opercuenta, self.cfg.conceptos.find(d['id_conceptos'])))        
         cur.close()       
         cur2.close()
         self.cfg.disconnect_xulpymoney(con)         
@@ -294,14 +287,14 @@ class frmInversionesEstudio(QDialog, Ui_frmInversionesEstudio):
         if self.tipo==1:        #insertar
             con=self.cfg.connect_xulpymoney()
             cur = con.cursor()
-            i=Inversion().create(inversion,   venta,  self.cfg.cuentas(id_cuentas),  self.cfg.mqinversiones(myquotesid))      
+            i=Inversion(self.cfg).create(inversion,   venta,  self.cfg.cuentas(id_cuentas),  self.cfg.mqinversiones(myquotesid))      
             i.save(cur)
             con.commit()
             cur.close()        
             self.cfg.disconnect_xulpymoney(con)
             ##Se añade a cfg y vincula. No carga datos porque myquotesid debe existir            
             #Lo añade con las operaciones vacias pero calculadas.
-            i.op=SetInversionOperacion()
+            i.op=SetInversionOperacion(self.cfg)
             (i.op_actual, i.op_historica)=i.op.calcular()
             self.cfg.inversiones.arr.append(i)
             self.done(0)
