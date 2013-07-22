@@ -23,10 +23,10 @@ class wdgDesReinversion(QWidget, Ui_wdgDesReinversion):
         self.tblInversionesHistoricas.settings("wdgDesReinversion",  self.cfg.inifile)         
         
  
-        self.operinversiones=SetInversionOperacion()
+        self.operinversiones=SetInversionOperacion(self.cfg)
         for o in self.inversion.op.arr:
             if o.datetime>=self.inversion.op_actual.arr[0].datetime:
-                self.operinversiones.append(InversionOperacion().init__clone(o))
+                self.operinversiones.append(o.clone())
 
         self.txtValorAccion.setText(str(self.inversion.mq.quotes.last.quote))
         self.tabResultados.setCurrentIndex(1)
@@ -39,7 +39,7 @@ class wdgDesReinversion(QWidget, Ui_wdgDesReinversion):
        
         if self.radDes.isChecked():#DESINVERSION
             (operinversionesactual, operinversioneshistoricas)=self.operinversiones.calcular()
-            q=Quote().init__create(self.inversion.mq, datetime.datetime.now(pytz.timezone(config.localzone)), self.txtValorAccion.decimal)
+            q=Quote().init__create(self.inversion.mq, datetime.datetime.now(pytz.timezone(config.localzone)), self.txtValorAccion.decimal())
             for rec in operinversionesactual.arr:
                 pendiente=rec.pendiente(q)
                 if perdida+pendiente==0:
@@ -57,7 +57,7 @@ class wdgDesReinversion(QWidget, Ui_wdgDesReinversion):
                     resultado=resultado+Decimal(acciones)#Se resta porque se debe calcular antes de quitarse el pendiente
                     break
         else:#REINVERSION
-            resultado=Decimal(int(self.txtSimulacion.decimal/self.txtValorAccion.decimal))
+            resultado=Decimal(int(self.txtSimulacion.decimal()/self.txtValorAccion.decimal()))
         return resultado
             
     @QtCore.pyqtSlot() 
@@ -73,7 +73,7 @@ class wdgDesReinversion(QWidget, Ui_wdgDesReinversion):
         self.lblValor.setText(self.trUtf8("Valor de compra"))
    
     def on_cmd_released(self):
-        if self.txtSimulacion.decimal<=0:
+        if self.txtSimulacion.decimal()<=Decimal('0'):
             m=QMessageBox()
             m.setIcon(QMessageBox.Information)
             m.setText(self.trUtf8("El valor de la simulación debe ser positivo"))
@@ -95,9 +95,7 @@ class wdgDesReinversion(QWidget, Ui_wdgDesReinversion):
         (operinversionesactualantes, operinversioneshistoricasantes)=self.operinversiones.calcular()
 
         #Creamos un nuevo operinversiones 
-        operaciones=SetInversionOperacion()
-        for o in self.operinversiones.arr:
-            operaciones.arr.append(InversionOperacion().init__clone(o))
+        operaciones=self.operinversiones.clone()
         d=InversionOperacion()
         id_operinversiones=self.operinversiones.arr[len(self.operinversiones.arr)-1].id+1 ##Para simular un id_operinversiones real, le asignamos uno
         if self.radDes.isChecked():#DESINVERSION

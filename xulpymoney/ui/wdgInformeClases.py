@@ -74,7 +74,7 @@ class wdgInformeClases(QWidget, Ui_wdgInformeClases):
         
         con=self.cfg.connect_xulpymoney()
         cur = con.cursor()          
-        self.cuentas=Patrimonio().saldo_todas_cuentas(cur, self.hoy)
+        self.cuentas=Patrimonio(self.cfg).saldo_todas_cuentas(cur, self.hoy)
         cur.close()
         self.cfg.disconnect_xulpymoney(con)
         

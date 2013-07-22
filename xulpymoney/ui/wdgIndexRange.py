@@ -5,14 +5,29 @@ from core import *
 from frmAnalisis import *
 
 class wdgIndexRange(QWidget, Ui_wdgIndexRange):
-    def __init__(self,cfg,  parent=None):
+    def __init__(self,cfg, parent=None):
         QWidget.__init__(self, parent)
         self.setupUi(self)
         self.cfg=cfg
+        
+        self.load_data_from_db()
         self.quote_lastindex=None
         self.table.settings("wdgIndexRange",  self.cfg.inifile)
         self.load_data()
-            
+                    
+    def load_data_from_db(self):
+        inicio=datetime.datetime.now()
+        self.data_ebs=SetEBs(self.cfg)
+        self.data_ebs.load_from_db("select * from entidadesbancarias where eb_activa=true")
+        self.data_cuentas=SetCuentas(self.cfg, self.data_ebs)
+        self.data_cuentas.load_from_db("select * from cuentas where cu_activa=true")
+        self.data_investments=SetMQInvestments(self.cfg)
+        self.data_investments.load_from_db("select distinct(myquotesid) from inversiones where in_activa=true")
+        self.data_inversiones=SetInversiones(self.cfg, self.data_cuentas, self.data_investments)
+        self.data_inversiones.load_from_db("select * from inversiones where in_activa=true")
+        print("\n","Cargando data en wdgInversiones",  datetime.datetime.now()-inicio)
+        
+        
     def load_data(self):
         def inversiones(arr,min,max):
             resultado=""
@@ -25,7 +40,7 @@ class wdgIndexRange(QWidget, Ui_wdgIndexRange):
 
         arr=[]
 
-        for i in self.cfg.inversiones_activas(True):
+        for i in self.data_inversiones.arr:
             if i.mq.tpc!=0:
                 for o in i.op_actual.arr:
                     arr.append((o.referenciaindice.quote, o))
@@ -41,7 +56,7 @@ class wdgIndexRange(QWidget, Ui_wdgIndexRange):
         curmq=mq.cursor()
         
         maximo= int(max(arr)[0]*(1+ Decimal(self.spin.value()/200.0)))
-        riesgocero=Patrimonio().patrimonio_riesgo_cero(self.cfg,  cur, curmq, datetime.date.today())
+        riesgocero=Patrimonio(self.cfg).patrimonio_riesgo_cero(self.data_inversiones, datetime.date.today())
         pasos=int(riesgocero/Decimal(self.txtInvertir.text()))
         last=maximo
         rangos=0

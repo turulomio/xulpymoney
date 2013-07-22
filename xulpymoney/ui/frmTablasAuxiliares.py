@@ -23,7 +23,7 @@ class frmTablasAuxiliares(QDialog, Ui_frmTablasAuxiliares):
         
         self.conceptos=[]
         self.selConcepto=None
-        for c in self.cfg.conceptos():
+        for c in self.cfg.conceptos.list():
             if c.editable==True:
                 self.conceptos.append(c)
  
@@ -35,7 +35,7 @@ class frmTablasAuxiliares(QDialog, Ui_frmTablasAuxiliares):
 #        con=self.cfg.connect_xulpymoney()
 #        cur =con.cursor()
 #        
-#        if Concepto().tiene_registros_dependientes(cur, id_conceptos)==False:
+#        if Concepto(self.cfg).tiene_registros_dependientes(cur, id_conceptos)==False:
 #            cur.execute("delete from conceptos where id_conceptos=%s", (id_conceptos, ))
 #            con.commit()
 #        else:

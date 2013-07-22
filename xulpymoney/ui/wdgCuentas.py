@@ -11,10 +11,20 @@ class wdgCuentas(QWidget, Ui_wdgCuentas):
         self.cfg=cfg
         self.tblCuentas.settings("wdgCuentas",  self.cfg.inifile)
         self.tblCuentas.setColumnHidden(0, True)
-        self.cuentas=self.cfg.cuentas_activas()
+        self.load_data_from_db()
+        self.cuentas=self.data_cuentas.arr
         self.selCuenta=None
         self.load_data()
-
+        
+        
+        
+    def load_data_from_db(self):
+        inicio=datetime.datetime.now()
+        self.data_ebs=SetEBs(self.cfg)
+        self.data_ebs.load_from_db("select * from entidadesbancarias where eb_activa=true")
+        self.data_cuentas=SetCuentas(self.cfg, self.data_ebs)
+        self.data_cuentas.load_from_db("select * from cuentas where cu_activa=true")
+        print("\n","Cargando data en wdgCuentas",  datetime.datetime.now()-inicio)
 
     def load_data(self):
         """Función que carga la tabla de cuentas"""
@@ -32,7 +42,7 @@ class wdgCuentas(QWidget, Ui_wdgCuentas):
         
     @QtCore.pyqtSlot() 
     def on_actionCuentaEstudio_activated(self):
-        w=frmCuentasIBM(self.cfg, self.selCuenta, self)
+        w=frmCuentasIBM(self.cfg, self.data_ebs,  self.data_cuentas,  self.selCuenta, self)
         w.exec_()
         self.on_chkInactivas_stateChanged(Qt.Unchecked)
         self.load_data()
@@ -65,7 +75,7 @@ class wdgCuentas(QWidget, Ui_wdgCuentas):
         
     def on_chkInactivas_stateChanged(self, state):
         if state==Qt.Unchecked:
-            self.cuentas=self.cfg.cuentas_activas()
+            self.cuentas=self.data_cuentas.arr
         else:
             self.cuentas=self.cfg.cuentas_activas(False)
         self.load_data()

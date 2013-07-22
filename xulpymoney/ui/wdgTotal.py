@@ -65,11 +65,8 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         for i in range(0, 13):
             self.sumpopup.append(0)
 
-        con=self.cfg.connect_xulpymoney()
-        cur = con.cursor()        
-        fechainicio=Patrimonio().primera_fecha_con_datos_usuario(cur)      
-        cur.close()     
-        self.cfg.disconnect_xulpymoney(con)          
+        fechainicio=Patrimonio(self.cfg).primera_fecha_con_datos_usuario()         
+        self.load_data_from_db()
       
         if fechainicio==None: #Base de datos vacía
             self.tab.setEnabled(False)
@@ -91,6 +88,18 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         self.tabGraphTotal.addWidget(self.ntb)
         self.on_tab_currentChanged(0)
 
+    def load_data_from_db(self):
+        inicio=datetime.datetime.now()
+        self.data_ebs=SetEBs(self.cfg)
+        self.data_ebs.load_from_db("select * from entidadesbancarias where eb_activa=true")
+        self.data_cuentas=SetCuentas(self.cfg, self.data_ebs)
+        self.data_cuentas.load_from_db("select * from cuentas where cu_activa=true")
+        self.data_investments_all=SetMQInvestments(self.cfg)
+        self.data_investments_all.load_from_db("select distinct(myquotesid) from inversiones ")
+        self.data_inversiones_all=SetInversiones(self.cfg, self.data_cuentas, self.data_investments_all)
+        self.data_inversiones_all.load_from_db("select * from inversiones ")
+        print("\n","Cargando data en wdgInversiones",  datetime.datetime.now()-inicio)
+        
     def load_data(self, cur, curmq):        
         self.table.clearContents()
         inicio=datetime.datetime.now()     
@@ -101,17 +110,17 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         sumconsolidado=0
         (sumdiferencia, sumsaldoaccionescostecero)=(0, 0)
         
-        totallastmonth=Patrimonio().saldo_total(self.cfg, cur, curmq,  datetime.date(cmbanos-1, 12, 31))#Mes de 12 31 año anteriro
+        totallastmonth=Patrimonio(self.cfg).saldo_total(self.data_inversiones_all,  datetime.date(cmbanos-1, 12, 31))#Mes de 12 31 año anteriro
         self.label.setText("Saldo a {0}-12-31: {1}.    Selecciona una año:".format(cmbanos, self.cfg.localcurrency.string(totallastmonth)))
         inicioano=totallastmonth
 
         for i in range(12): 
-            gastos=Patrimonio().saldo_por_tipo_operacion(cur, cmbanos,i+1,1)#La facturación de tarjeta dentro esta por el union
-            dividendos=Inversion().dividendos_neto(cur,  cmbanos, i+1)
-            ingresos=Patrimonio().saldo_por_tipo_operacion(cur,  cmbanos,i+1,2)-dividendos #Se quitan los dividendos que luego se suman
+            gastos=Patrimonio(self.cfg).saldo_por_tipo_operacion( cmbanos,i+1,1)#La facturación de tarjeta dentro esta por el union
+            dividendos=Inversion(self.cfg).dividendos_neto(  cmbanos, i+1)
+            ingresos=Patrimonio(self.cfg).saldo_por_tipo_operacion(  cmbanos,i+1,2)-dividendos #Se quitan los dividendos que luego se suman
             
 #            consolidado=InversionOperacionHistorica().consolidado_total_mensual(cur, cmbanos,i+1)
-            consolidado=Patrimonio().consolidado_neto(self.cfg, cmbanos, i+1)
+            consolidado=Patrimonio(self.cfg).consolidado_neto(self.data_inversiones_all, cmbanos, i+1)
             gi=ingresos+dividendos+consolidado+gastos
             self.sumpopup[i]=consolidado+dividendos
             
@@ -129,8 +138,8 @@ class wdgTotal(QWidget, Ui_wdgTotal):
                 tpc=0
             else:
                 fecha=datetime.date (cmbanos, i+1, calendar.monthrange(cmbanos, i+1)[1])#Último día de mes.
-                cuentas=Patrimonio().saldo_todas_cuentas(cur, fecha)
-                inversiones=Patrimonio().saldo_todas_inversiones(self.cfg,curmq,  fecha)
+                cuentas=Patrimonio(self.cfg).saldo_todas_cuentas( fecha)
+                inversiones=Patrimonio(self.cfg).saldo_todas_inversiones(self.data_inversiones_all,  fecha)
                 total=cuentas+inversiones
                 diferencia=total-totallastmonth
                 sumdiferencia=sumdiferencia+diferencia
@@ -195,8 +204,8 @@ class wdgTotal(QWidget, Ui_wdgTotal):
                     date=datetime.date.today()
                 if date.month>datetime.date.today().month and date.year>=datetime.date.today().year:
                     break
-                data.append( (date,Patrimonio().saldo_total(self.cfg, cur, curmq, date)) )
-                zero.append( (date,Patrimonio().patrimonio_riesgo_cero(self.cfg,  cur, curmq, date) ))
+                data.append( (date,Patrimonio(self.cfg).saldo_total(self.data_inversiones_all, date)) )
+                zero.append( (date,Patrimonio(self.cfg).patrimonio_riesgo_cero(self.data_inversiones_all, date) ))
         self.canvas.mydraw(self.cfg, data, zero)
         print ("wdgTotal > load_graphic: {0}".format(datetime.datetime.now()-inicio))
 

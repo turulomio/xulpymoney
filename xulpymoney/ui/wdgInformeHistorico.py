@@ -19,11 +19,9 @@ class wdgInformeHistorico(QWidget, Ui_wdgInformeHistorico):
         self.totalDividendosBrutos=0
         self.totalDividendosRetenciones=0
         
-        con=self.cfg.connect_xulpymoney()
-        cur = con.cursor()     
-        mq=self.cfg.connect_myquotes()
-        curmq=mq.cursor()        
-        anoinicio=Patrimonio().primera_fecha_con_datos_usuario(cur).year       
+        self.load_data_from_db()
+        
+        anoinicio=Patrimonio(self.cfg).primera_fecha_con_datos_usuario().year       
 
         ran=datetime.date.today().year-anoinicio+1
         for i in range(ran):
@@ -31,25 +29,32 @@ class wdgInformeHistorico(QWidget, Ui_wdgInformeHistorico):
         self.cmbYears.setCurrentIndex(datetime.date.today().year-anoinicio)
 
         self.ano=int(self.cmbYears.currentText())
-        self.load(cur, curmq)
-        cur.close()     
-        self.cfg.disconnect_xulpymoney(con)       
-        curmq.close()
-        self.cfg.disconnect_myquotes(mq)        
+        self.load()   
         self.tab.setCurrentIndex(0)
 
-
-    def load(self, cur, curmq):
+    def load_data_from_db(self):
         inicio=datetime.datetime.now()
-        self.load_dividendos(cur)
-        self.load_historicas(cur)
-        self.load_added(cur, curmq)
-        self.load_rendimientos(cur, curmq)
+        self.data_ebs=SetEBs(self.cfg)
+        self.data_ebs.load_from_db("select * from entidadesbancarias where eb_activa=true")
+        self.data_cuentas=SetCuentas(self.cfg, self.data_ebs)
+        self.data_cuentas.load_from_db("select * from cuentas where cu_activa=true")
+        self.data_investments=SetMQInvestments(self.cfg)
+        self.data_investments.load_from_db("select distinct(myquotesid) from inversiones")#Todas no solo activas
+        self.data_inversiones=SetInversiones(self.cfg, self.data_cuentas, self.data_investments)
+        self.data_inversiones.load_from_db("select * from inversiones") #Todas no solo activas
+        print("\n","Cargando data en wdgInversiones",  datetime.datetime.now()-inicio)
+
+    def load(self):
+        inicio=datetime.datetime.now()
+        self.load_dividendos()
+        self.load_historicas()
+        self.load_added()
+        self.load_rendimientos()
         print("wdgInformeHistorico > load: {0}".format(datetime.datetime.now()-inicio))
         
-    def load_added(self, cur, curmq):
+    def load_added(self):
         operaciones=[]
-        for i in self.cfg.inversiones.arr:
+        for i in self.data_inversiones.arr:
             for o in i.op.arr:
                 if o.tipooperacion.id==6 and o.datetime.year==int(self.cmbYears.currentText()):
                     operaciones.append(o)    
@@ -57,6 +62,7 @@ class wdgInformeHistorico(QWidget, Ui_wdgInformeHistorico):
                     
         self.tblAdded.setRowCount(len(operaciones)+1)
         sumsaldo=0        
+        curmq=self.cfg.conmq.cursor()
         for i,  o in enumerate(operaciones):
             valor=Quote().init__from_query(curmq, o.inversion.mq, o.datetime).quote
             if valor==None:
@@ -69,10 +75,12 @@ class wdgInformeHistorico(QWidget, Ui_wdgInformeHistorico):
             self.tblAdded.setItem(i, 2, QTableWidgetItem(self.cfg.tiposoperaciones(6).name))
             self.tblAdded.setItem(i, 3, qright(str(o.acciones)))
             self.tblAdded.setItem(i, 4, self.cfg.localcurrency.qtablewidgetitem(saldo))
+        curmq.close()
         self.tblAdded.setItem(len(operaciones), 3, QTableWidgetItem(("TOTAL")))
         self.tblAdded.setItem(len(operaciones), 4, self.cfg.localcurrency.qtablewidgetitem(sumsaldo))
    
-    def load_dividendos(self, cur):
+    def load_dividendos(self):
+        cur=self.cfg.con.cursor()
         self.totalDividendosNetos=0
         self.totalDividendosBrutos=0
         self.totalDividendosRetenciones=0
@@ -80,7 +88,7 @@ class wdgInformeHistorico(QWidget, Ui_wdgInformeHistorico):
         cur.execute(sql); 
         dividendos=[]
         for row in  cur:
-            dividendos.append(Dividendo().init__db_row(row, self.cfg.inversiones.inversion(row['id_inversiones']), None,  None))#Creación incompleta por no ser necesario con None
+            dividendos.append(Dividendo(self.cfg).init__db_row(row, self.data_inversiones.find(row['id_inversiones']), None,  None))#Creación incompleta por no ser necesario con None
         self.tblDividendos.clearContents()
         self.tblDividendos.setRowCount(len(dividendos)+1)
         for i, d in enumerate(dividendos):
@@ -94,10 +102,11 @@ class wdgInformeHistorico(QWidget, Ui_wdgInformeHistorico):
         self.tblDividendos.setItem(len(dividendos), 2,QTableWidgetItem(("TOTAL")))
         self.tblDividendos.setItem(len(dividendos), 3,self.cfg.localcurrency.qtablewidgetitem(self.totalDividendosNetos))
         self.tblDividendos.setCurrentCell(len(dividendos), 3)
+        cur.close()
 
-    def load_historicas(self, cur):
-        operaciones=[]
-        for i in self.cfg.inversiones.arr:
+    def load_historicas(self):
+        operaciones=[]   
+        for i in self.data_inversiones.arr:
             for o in i.op_historica.arr:
                 if o.fecha_venta.year==int(self.cmbYears.currentText()) and o.tipooperacion.id in (5, 8):#Venta y traspaso fondos inversion
                     operaciones.append(o)
@@ -106,15 +115,16 @@ class wdgInformeHistorico(QWidget, Ui_wdgInformeHistorico):
 
 
 
-    def load_rendimientos(self, cur, curmq ):
+    def load_rendimientos(self):
         inicio=datetime.date(self.ano-1, 12, 31)
+        cur=self.cfg.con.cursor()
         cur.execute("select sum(importe) as suma from opercuentas where id_conceptos=59 and date_part('year',fecha)="+str(self.ano))
         sumcomisioncustodia=cur.fetchone()[0]        
         if sumcomisioncustodia==None:
             sumcomisioncustodia=0
             
-        saldototal=Patrimonio().saldo_total(self.cfg, cur, curmq,  datetime.date.today());
-        saldototalinicio=Patrimonio().saldo_total(self.cfg, cur, curmq, inicio)
+        saldototal=Patrimonio(self.cfg).saldo_total(self.data_inversiones ,  datetime.date.today());
+        saldototalinicio=Patrimonio(self.cfg).saldo_total( self.data_inversiones, inicio)
         if self.totalBruto>0:
             impxplus=-self.totalBruto*config.taxcapitalappreciation
         else:            
@@ -192,18 +202,12 @@ class wdgInformeHistorico(QWidget, Ui_wdgInformeHistorico):
             self.tblEstudio.setItem(16, 1,qtpc((saldototal-saldototalinicio)*100/saldototalinicio))            
         except:
             self.tblEstudio.setItem(16, 1,qtpc(None))     
+            
+        cur.close()
 
 
-    def on_cmd_pressed(self):
-        con=self.cfg.connect_xulpymoney()
-        cur = con.cursor()     
-        mq=self.cfg.connect_myquotes()
-        curmq=mq.cursor()                
-        self.load(cur, curmq)
-        cur.close()     
-        self.cfg.disconnect_xulpymoney(con)       
-        curmq.close()
-        self.cfg.disconnect_myquotes(mq)       
+    def on_cmd_pressed(self):          
+        self.load() 
 
     @QtCore.pyqtSlot(str) 
     def on_cmbYears_currentIndexChanged(self, text):

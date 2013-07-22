@@ -13,6 +13,7 @@ class wdgInversiones(QWidget, Ui_wdgInversiones):
         self.cfg=cfg
         self.inversiones=[]
         self.selInversion=None##Apunta a un objeto inversión
+        self.load_data_from_db()
 
         self.progress = QProgressDialog(self.tr("Recibiendo datos solicitados"), self.tr("Cancelar"), 0,0)
         self.progress.setModal(True)
@@ -20,6 +21,18 @@ class wdgInversiones(QWidget, Ui_wdgInversiones):
         self.progress.setMinimumDuration(0)                 
         self.tblInversiones.settings("wdgInversiones",  self.cfg.inifile)
         self.on_chkInactivas_stateChanged(self.chkInactivas.checkState())#Carga la tabla
+        
+    def load_data_from_db(self):
+        inicio=datetime.datetime.now()
+        self.data_ebs=SetEBs(self.cfg)
+        self.data_ebs.load_from_db("select * from entidadesbancarias where eb_activa=true")
+        self.data_cuentas=SetCuentas(self.cfg, self.data_ebs)
+        self.data_cuentas.load_from_db("select * from cuentas where cu_activa=true")
+        self.data_investments=SetMQInvestments(self.cfg)
+        self.data_investments.load_from_db("select distinct(myquotesid) from inversiones where in_activa=true")
+        self.data_inversiones=SetInversiones(self.cfg, self.data_cuentas, self.data_investments)
+        self.data_inversiones.load_from_db("select * from inversiones where in_activa=true")
+        print("\n","Cargando data en wdgInversiones",  datetime.datetime.now()-inicio)
 
     def tblInversiones_load(self):
         """Función que carga la tabla de inversiones con el orden que tenga el arr serl.inversiones"""
@@ -112,7 +125,7 @@ class wdgInversiones(QWidget, Ui_wdgInversiones):
         
     @QtCore.pyqtSlot() 
     def on_actionInversionEstudio_activated(self):
-        w=frmInversionesEstudio(self.cfg, self.selInversion, self)
+        w=frmInversionesEstudio(self.cfg, self.data_cuentas,  self.selInversion, self)
         w.exec_()
         self.on_chkInactivas_stateChanged(self.chkInactivas.checkState())#Carga la tabla
             
@@ -170,7 +183,7 @@ class wdgInversiones(QWidget, Ui_wdgInversiones):
         
     def on_chkInactivas_stateChanged(self, state):
         if state==Qt.Unchecked:
-            self.inversiones=self.cfg.inversiones_activas()
+            self.inversiones=self.data_inversiones.arr
             self.on_actionOrdenarTPCVenta_activated()
             self.tblInversiones_load()
         else:
