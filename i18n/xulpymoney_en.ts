@@ -1453,12 +1453,12 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmTransferencia.py" line="40"/>
+        <location filename="ui/frmTransferencia.py" line="41"/>
         <source>Se ha producido un error al introducir los datos</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmTransferencia.py" line="46"/>
+        <location filename="ui/frmTransferencia.py" line="47"/>
         <source>La cuenta origen y destino no puede ser la misma</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2357,7 +2357,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="ui/wdgInformeDividendos.py" line="60"/>
+        <location filename="ui/wdgInformeDividendos.py" line="73"/>
         <source>Si mantuviera la inversión un año obtendría {0} €</source>
         <translation type="unfinished"></translation>
     </message>

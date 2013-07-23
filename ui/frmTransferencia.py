@@ -16,16 +16,17 @@ class frmTransferencia(QDialog, Ui_frmTransferencia):
         self.origen=origen
         self.destino=destino
         
-        cuentas=self.cfg.cuentas_activas()
-        cuentas=sorted(cuentas, key=lambda c: c.name,  reverse=False) 
-        for c in cuentas:
-            self.cmbOrigen.addItem(c.name, c.id)
-            self.cmbDestino.addItem(c.name, c.id)
-        
-        if origen!=None:
-            self.cmbOrigen.setCurrentIndex(self.cmbOrigen.findData(origen.id))
-        if destino!=None:
-            self.cmbDestino.setCurrentIndex(self.cmbDestino.findData(destino.id))
+        self.load_data_from_db()
+        qcombobox_loadcuentas(self.cmbOrigen, self.data_cuentas,  origen)
+        qcombobox_loadcuentas(self.cmbDestino, self.data_cuentas,  destino)
+
+    def load_data_from_db(self):
+        inicio=datetime.datetime.now()
+        self.data_ebs=SetEBs(self.cfg)
+        self.data_ebs.load_from_db("select * from entidadesbancarias where eb_activa=true")
+        self.data_cuentas=SetCuentas(self.cfg, self.data_ebs)
+        self.data_cuentas.load_from_db("select * from cuentas where cu_activa=true")
+        print("\n","Cargando data en frmTransferencia",  datetime.datetime.now()-inicio)
 
     def on_cmd_pressed(self):
         try:
@@ -45,11 +46,9 @@ class frmTransferencia(QDialog, Ui_frmTransferencia):
             m.setIcon(QMessageBox.Information)
             m.setText(self.trUtf8("La cuenta origen y destino no puede ser la misma"))
             m.exec_()             
-            return
-        con=self.cfg.connect_xulpymoney()
-        cur = con.cursor()    
-        Cuenta().transferencia(cur,  fecha,  self.cfg.cuentas(id_origen), self.cfg.cuentas(id_destino),  importe,  comision)
-        con.commit()     
-        cur.close()     
-        self.cfg.disconnect_xulpymoney(con)        
+            return 
+            
+        Cuenta(self.cfg).transferencia(fecha,  self.cfg.cuentas(id_origen), self.cfg.cuentas(id_destino),  importe,  comision)
+        self.cfg.con.commit()##Para commit la transferencia   
+        
         self.done(0)

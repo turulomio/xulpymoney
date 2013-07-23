@@ -366,7 +366,7 @@ class SetCuentas:
         cur2=self.cfg.con.cursor()
         cur.execute(sql)#"Select * from cuentas"
         for row in cur:
-            c=Cuenta().init__db_row(self.cfg, row, self.ebs.find(row['id_entidadesbancarias']))
+            c=Cuenta(self.cfg).init__db_row(self.cfg, row, self.ebs.find(row['id_entidadesbancarias']))
             c.saldo_from_db(cur2)
             self.arr.append(c)
         cur.close()
@@ -655,7 +655,7 @@ class SetInversionOperacionActual(SetCommon):
                 elif ioa.acciones-accionesventa<Decimal('0'):#<0 Se historiza todo y se restan acciones venta
                     comisiones=comisiones+ioa.comision
                     impuestos=impuestos+ioa.impuestos
-                    sioh.arr.append(InversionOperacionHistorica(self.cfg).init__create(ioa, io.inversion, ioa.datetime.date(), -ioa.acciones*io.valor_accion, io.tipooperacion, -ioa.acciones, 0, 0, io.datetime.date(), ioa.valor_accion, io.valor_accion))
+                    sioh.arr.append(InversionOperacionHistorica(self.cfg).init__create(ioa, io.inversion, ioa.datetime.date(), -ioa.acciones*io.valor_accion, io.tipooperacion, -ioa.acciones, Decimal('0'), Decimal('0'), io.datetime.date(), ioa.valor_accion, io.valor_accion))
                     accionesventa=accionesventa-ioa.acciones                    
                     self.arr.remove(ioa)
                     
@@ -1271,7 +1271,8 @@ class EntidadBancaria:
             cur.execute("delete from entidadesbancarias where id_entidadesbancarias=%s", (self.id, ))  
             
 class Cuenta:
-    def __init__(self):
+    def __init__(self, cfg):
+        self.cfg=cfg
         self.id=None
         self.name=None
         self.eb=None
@@ -1353,12 +1354,14 @@ class Cuenta:
         if self.es_borrable(cur)==True:
             cur.execute("delete from cuentas where id_cuentas=%s", (self.id, ))
 
-    def transferencia(self, cur,  fecha,  cuentaorigen,  cuentadestino, importe, comision ):
+    def transferencia(self, fecha,  cuentaorigen,  cuentadestino, importe, comision ):
         """Cuenta origen y cuenta destino son objetos cuenta"""
+        cur=self.cfg.con.cursor()
         sql="select transferencia('"+str(fecha)+"', "+ str(cuentaorigen.id) +', ' + str(cuentadestino.id)+', '+str(importe) +', '+str(comision)+');'
         cur.execute(sql)
         cuentaorigen.saldo_from_db(cur)
         cuentadestino.saldo_from_db(cur)
+        cur.close()
         
 class Inversion:
     """Clase que encapsula todas las funciones que se pueden realizar con una Inversión
@@ -2051,12 +2054,14 @@ def myqtablewidget_loads_SetInversionOperacionHistorica(tabla, arr):
         tabla.setCurrentCell(rownumber, 4)       
     return (sumbruto, sumcomision, sumimpuestos, sumneto)
 
-def qcombobox_loadcuentas(combo, cuentas):
+def qcombobox_loadcuentas(combo, cuentas,  cuenta=None):
     """Función que carga en un combo pasado como parámetro y con un SetCuentas pasado como parametro
-        Se ordena por nombre""" 
+        Se ordena por nombre y se se pasa el tercer parametro que es un objeto Cuenta lo selecciona""" 
     cuentas.sort()
     for cu in cuentas.arr:
         combo.addItem(cu.name, cu.id)
+    if cuenta!=None:
+            combo.setCurrentIndex(combo.findData(cuenta.id))
         
 
 def qcombobox_loadebs(combo, ebs):
