@@ -13,9 +13,24 @@ class wdgInformeDividendos(QWidget, Ui_wdgInformeDividendos):
         self.cfg=cfg
         self.inversiones=[]
 
+        self.load_data_from_db()
         self.tblInversiones.settings("wdgInformeDividendos",  self.cfg.inifile)
         
         self.on_chkInactivas_stateChanged(Qt.Unchecked)
+        
+        
+            
+    def load_data_from_db(self):
+        inicio=datetime.datetime.now()
+        self.data_ebs=SetEBs(self.cfg)
+        self.data_ebs.load_from_db("select * from entidadesbancarias where eb_activa=true")
+        self.data_cuentas=SetCuentas(self.cfg, self.data_ebs)
+        self.data_cuentas.load_from_db("select * from cuentas where cu_activa=true")
+        self.data_investments=SetMQInvestments(self.cfg)
+        self.data_investments.load_from_db("select distinct(myquotesid) from inversiones where in_activa=true")
+        self.data_inversiones=SetInversiones(self.cfg, self.data_cuentas, self.data_investments)
+        self.data_inversiones.load_from_db("select * from inversiones where in_activa=true")
+        print("\n","Cargando data en wdgInversiones",  datetime.datetime.now()-inicio)
 
     @QtCore.pyqtSlot()  
     def on_actionModificarDPA_activated(self):
@@ -27,18 +42,16 @@ class wdgInformeDividendos(QWidget, Ui_wdgInformeDividendos):
 
     def on_chkInactivas_stateChanged(self,  state):               
         if state==Qt.Checked:
-            self.inversiones=self.cfg.inversiones_activas(False)
+            self.inversiones=self.data_inversiones
         else:
-            self.inversiones=self.cfg.inversiones_activas(True)
+            self.inversiones=self.data_inversiones
         self.load_inversiones()
         
     def load_inversiones(self):    
-        self.inversiones=sorted(self.inversiones, key=lambda inv: inv.mq.estimaciones[str(datetime.date.today().year)].tpc_dpa(),  reverse=True) 
-
         self.tblInversiones.clearContents()
-        self.tblInversiones.setRowCount(len(self.inversiones));
+        self.tblInversiones.setRowCount(len(self.inversiones.arr));
         sumdiv=Decimal(0)
-        for i, inv in enumerate(self.inversiones):
+        for i, inv in enumerate(self.inversiones.arr):
             estimacion=inv.mq.estimaciones[str(datetime.date.today().year)]
             self.tblInversiones.setItem(i, 0,QTableWidgetItem(inv.name))
             self.tblInversiones.setItem(i, 1, QTableWidgetItem(inv.cuenta.eb.name))
