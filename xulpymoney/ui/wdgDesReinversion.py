@@ -2,6 +2,7 @@ from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 from Ui_wdgDesReinversion import *
 from core import *
+from decimal import *
 
 class wdgDesReinversion(QWidget, Ui_wdgDesReinversion):
     def __init__(self, cfg, inversion,  parent=None):
@@ -79,9 +80,9 @@ class wdgDesReinversion(QWidget, Ui_wdgDesReinversion):
             m.setText(self.trUtf8("El valor de la simulación debe ser positivo"))
             m.exec_()    
             return
-        valor_accion=Decimal(self.txtValorAccion.text())
+        valor_accion=self.txtValorAccion.decimal()
         impuestos=0
-        comision=Decimal(self.txtComision.text())
+        comision=self.txtComision.decimal()
         if valor_accion==0:
             m=QMessageBox()
             m.setIcon(QMessageBox.Information)
@@ -92,7 +93,7 @@ class wdgDesReinversion(QWidget, Ui_wdgDesReinversion):
         importe=valor_accion*acciones
         self.txtAcciones.setText(str(acciones))
         self.txtImporte.setText(str(importe))
-        (operinversionesactualantes, operinversioneshistoricasantes)=self.operinversiones.calcular()
+        (operinversionesactualantes, operinversioneshistoricasantes)=self.operinversiones.calcular_new()
 
         #Creamos un nuevo operinversiones 
         operaciones=self.operinversiones.clone()
@@ -105,7 +106,8 @@ class wdgDesReinversion(QWidget, Ui_wdgDesReinversion):
             d.init__create(self.cfg.tiposoperaciones.find(4), datetime.datetime.now(pytz.timezone(config.localzone)), self.inversion, acciones, importe, impuestos, comision, valor_accion, "",  id_operinversiones)
         operaciones.arr.append(d)
 
-        (operinversionesactual, operinversioneshistoricas)=operaciones.calcular()
+
+        (operinversionesactual, operinversioneshistoricas)=operaciones.calcular_new()
         myqtablewidget_loads_SetInversionOperacion(self.tblOperaciones, operaciones.arr)
         myqtablewidget_loads_SetInversionOperacionActual(self.tblInversionesActualAntes, self.inversion.op_actual, "wdgDesReinversion", self.cfg )
         myqtablewidget_loads_SetInversionOperacionActual(self.tblInversionesActualDespues, operinversionesactual,  "wdgDesReinversion", self.cfg)

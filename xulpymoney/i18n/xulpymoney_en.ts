@@ -1907,7 +1907,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished">0</translation>
     </message>
     <message>
-        <location filename="ui/wdgDesReinversion.py" line="67"/>
+        <location filename="ui/wdgDesReinversion.py" line="68"/>
         <source>Valor de venta</source>
         <translation type="unfinished">Sales value</translation>
     </message>
@@ -2037,12 +2037,12 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished">Historic operations</translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="ui/wdgDesReinversion.py" line="66"/>
+        <location filename="ui/wdgDesReinversion.py" line="67"/>
         <source>Pérdida aproximada a asumir en la desinversión</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="ui/wdgDesReinversion.py" line="88"/>
+        <location filename="ui/wdgDesReinversion.py" line="89"/>
         <source>El valor de la acción no puede ser 0</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2062,7 +2062,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="ui/wdgDesReinversion.py" line="16"/>
+        <location filename="ui/wdgDesReinversion.py" line="17"/>
         <source>Actualmente no hay acciones disponibles en esta Inversión</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2102,22 +2102,22 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="ui/wdgDesReinversion.py" line="65"/>
+        <location filename="ui/wdgDesReinversion.py" line="66"/>
         <source>Estudio de desinversión de {0}</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="ui/wdgDesReinversion.py" line="71"/>
+        <location filename="ui/wdgDesReinversion.py" line="72"/>
         <source>Estudio de reinversión de {0}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgDesReinversion.py" line="72"/>
+        <location filename="ui/wdgDesReinversion.py" line="73"/>
         <source>Importe a reinvertir</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="ui/wdgDesReinversion.py" line="79"/>
+        <location filename="ui/wdgDesReinversion.py" line="80"/>
         <source>El valor de la simulación debe ser positivo</source>
         <translation type="unfinished"></translation>
     </message>
