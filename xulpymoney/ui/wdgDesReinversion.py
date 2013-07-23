@@ -96,12 +96,13 @@ class wdgDesReinversion(QWidget, Ui_wdgDesReinversion):
 
         #Creamos un nuevo operinversiones 
         operaciones=self.operinversiones.clone()
-        d=InversionOperacion()
+        d=InversionOperacion(self.cfg)
         id_operinversiones=self.operinversiones.arr[len(self.operinversiones.arr)-1].id+1 ##Para simular un id_operinversiones real, le asignamos uno
         if self.radDes.isChecked():#DESINVERSION
-            d.init__create(self.cfg.tiposoperaciones(5), datetime.datetime.now(pytz.timezone(config.localzone)), self.inversion, -acciones, importe, impuestos, comision, valor_accion, "", id_operinversiones)
+            d.init__create(self.cfg.tiposoperaciones.find(5), datetime.datetime.now(pytz.timezone(config.localzone)), self.inversion, -acciones, importe, impuestos, comision, valor_accion, "", id_operinversiones)
         else:#REINVERSION
-            d.init__create(self.cfg.tiposoperaciones(4), datetime.datetime.now(pytz.timezone(config.localzone)), self.inversion, acciones, importe, impuestos, comision, valor_accion, "",  id_operinversiones)
+            d.init__create(self.cfg.tiposoperaciones.find(4), datetime.datetime.now(pytz.timezone(config.localzone)), self.inversion, acciones, importe, impuestos, comision, valor_accion, "",  id_operinversiones)
+            d.init__create(self.cfg.tiposoperaciones.find(4), datetime.datetime.now(pytz.timezone(config.localzone)), self.inversion, acciones, importe, impuestos, comision, valor_accion, "",  id_operinversiones)
         operaciones.arr.append(d)
 
         (operinversionesactual, operinversioneshistoricas)=operaciones.calcular()

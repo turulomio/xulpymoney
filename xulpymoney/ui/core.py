@@ -30,6 +30,7 @@ class ConfigXulpy(ConfigMQ):
         inicio=datetime.datetime.now()
         print ("Cargando estáticos")
         self.tiposoperaciones=SetTiposOperaciones(self)
+        self.tiposoperaciones.load()
         self.conceptos=SetConceptos(self, self.tiposoperaciones)
         self.conceptos.load_from_db()
         self.localcurrency=self.currencies(config.localcurrency) #Currency definido en config
@@ -37,48 +38,7 @@ class ConfigXulpy(ConfigMQ):
         self.indicereferencia.quotes.get_basic(curmq)
         print(datetime.datetime.now()-inicio)
         
-#        print ("Cargando entidades bancarias", )
-#        self.carga_ebs(cur)
-#        print (datetime.datetime.now()-inicio)
-#        
-#        print ("Cargando cuentas", )
-#        self.carga_cuentas(cur)
-#        print (datetime.datetime.now()-inicio)
-#        
-#        print ("Cargando tarjetas y opertarjetas", )
-#        self.carga_tarjetas(cur)
-#        for t in self.tarjetas_activas(True):
-#            if t.pagodiferido==True:
-#                t.get_opertarjetas_diferidas_pendientes(cur, self)
-#        print (datetime.datetime.now()-inicio)
-#
-#        print ("Cargando inversiones mq", )
-#        self.carga_mqinversiones(cur, curmq)
-#        print (datetime.datetime.now()-inicio)
-#        
-#        print ("Cargando inversiones", )
-#        self.inversiones.carga()
-#        print (datetime.datetime.now()-inicio)
-#        
-#        
-#        
-#        print ("Obteniendo quotes y operaciones", )
-#        num=len(self.inversiones.arr)
-#        punt=0
-#        for i in self.inversiones.arr:
-#            i.get_operinversiones(cur, self)
-#            i.op_actual.get_valor_indicereferencia(curmq, self.indicereferencia)
-#            punt=punt+1
-#            sys.stdout.write("\b\b\b\b\b\b\b\b\b{0}/{1}: ".format(punt, num) )
-#            sys.stdout.flush()
-#        print (datetime.datetime.now()-inicio)
-#        
-#        print ("Cargando saldos", )
-#        for k, v in self.dic_cuentas.items():
-#            v.saldo_from_db(cur)
-#        print (datetime.datetime.now()-inicio)
 
-        
         
     def connect_xulpymoney(self):        
         strcon="dbname='%s' port='%s' user='%s' host='%s' password='%s'" % (self.db,  self.port, self.user, self.server,  self.password)
@@ -108,41 +68,18 @@ class ConfigXulpy(ConfigMQ):
     def disconnect_myquotes(self,  mq):
         mq.close()
 
-#class Concepto:
-#    ids_noeditables=[29, 43, 59, 38, 44, 0, 39, 40, 1, 21, 24, 32, 4,5,35]
-
-
-        
-#    def es_editable(self,  id_conceptos):
-#        """Función que devuelve si el concepto puede ser borrado o editado"""
-#        if id_conceptos in Concepto.ids_noeditables:
-#            return False
-#        return True
-        
-#    def insertar(self,  concepto,  id_tiposoperaciones):
-#        sql="insert into conceptos (concepto, id_tiposoperaciones) values ('" + str(concepto)+ "', "+str(id_tiposoperaciones)+")"
-#        try:
-#            con.Execute(sql);
-#        except:
-#            return False
-#        return True
-#        
-#    def modificar(self, id_conceptos, concepto,  id_tiposoperaciones):
-#        sql="update conceptos set concepto='"+str(concepto)+"', id_tiposoperaciones="+str(id_tiposoperaciones)+" where id_conceptos="+ str(id_conceptos)
-#        try:
-#            con.Execute(sql);
-#        except:
-#            mylog("Error: " + sql)
-#            return False
-#        return True
-
-
 
 class CuentaOperacionHeredadaInversion:
     """Clase parar trabajar con las opercuentas generadas automaticamente por los movimientos de las inversiones"""
-    def insertar(self,  cur, fecha, id_conceptos, id_tiposoperaciones, importe, comentario,id_cuentas,id_operinversiones,id_inversiones):
+    
+
+    def __init__(self, cfg):
+        self.cfg=cfg    
+    def insertar(self,  fecha, id_conceptos, id_tiposoperaciones, importe, comentario,id_cuentas,id_operinversiones,id_inversiones):
+        cur=self.cfg.con.cursor()
         sql="insert into tmpinversionesheredada (fecha, id_conceptos, id_tiposoperaciones, importe, comentario,id_cuentas, id_operinversiones,id_inversiones) values ('"+str(fecha)+"', "+str(id_conceptos)+", "+str(id_tiposoperaciones)+", "+str(importe)+", '"+str(comentario)+"' ,"+str(id_cuentas)+", "+str(id_operinversiones)+", "+str(id_inversiones)+")"
         cur.execute(sql);
+        cur.close()
 
 
     def actualizar_una_operacion(self,cur, id_operinversiones):
@@ -168,14 +105,14 @@ class CuentaOperacionHeredadaInversion:
 #row['inversion']+". "+str('Importe')+": " + str(importe)+". "+str('Comisión')+": " + str(comision)+ ". "+str('Impuestos')+": " + str(impuestos)            
 #row['inversion']+". "+str('Importe')+": " + str(importe)+". "+str('Comisión')+": " + str(comision)+ ". "+str('Impuestos')+": " + str(impuestos), 
             #Se pone un registro de compra de acciones que resta el saldo de la opercuenta
-            CuentaOperacionHeredadaInversion(self.cfg).insertar(cur, fecha, 29, 4, -importe-comision, comentario,id_cuentas,id_operinversiones,id_inversiones);
+            CuentaOperacionHeredadaInversion(self.cfg).insertar(fecha, 29, 4, -importe-comision, comentario,id_cuentas,id_operinversiones,id_inversiones);
         elif row['id_tiposoperaciones']==5:#// Venta Acciones
             #//Se pone un registro de compra de acciones que resta el saldo de la opercuenta
-            CuentaOperacionHeredadaInversion(self.cfg).insertar(cur, fecha, 35, 5, importe-comision-impuestos,comentario,id_cuentas,id_operinversiones,id_inversiones);
+            CuentaOperacionHeredadaInversion(self.cfg).insertar(fecha, 35, 5, importe-comision-impuestos,comentario,id_cuentas,id_operinversiones,id_inversiones);
         elif row['id_tiposoperaciones']==6:# // Añadido de Acciones
             #//Si hubiera comisión se añade la comisión.
             if(comision!=0):
-                CuentaOperacionHeredadaInversion(self.cfg).insertar(cur, fecha, 38, 1, -comision-impuestos, comentario,  id_cuentas,id_operinversiones,id_inversiones);
+                CuentaOperacionHeredadaInversion(self.cfg).insertar(fecha, 38, 1, -comision-impuestos, comentario,  id_cuentas,id_operinversiones,id_inversiones);
 
 
     def actualizar_una_inversion(self,cur, cur2, id_inversiones):
@@ -287,13 +224,13 @@ class SetInversiones:
         else:
             comentario="{0}|{1}".format(destino.id, "None")
         
-        op_origen=InversionOperacion().init__create( self.cfg.tiposoperaciones(9), now, origen,  -numacciones, 0,0, comision, 0, comentario)
+        op_origen=InversionOperacion(self.cfg).init__create( self.cfg.tiposoperaciones(9), now, origen,  -numacciones, 0,0, comision, 0, comentario)
         op_origen.save(cur, cur2, False)      
 
         #NO ES OPTIMO YA QUE POR CADA SAVE SE CALCULA TODO
         comentario="{0}".format(op_origen.id)
         for o in origen.op_actual.arr:
-            op_destino=InversionOperacion().init__create( self.cfg.tiposoperaciones(10), now, destino,  o.acciones, o.importe, o.impuestos, o.comision, o.valor_accion, comentario)
+            op_destino=InversionOperacion(self.cfg).init__create( self.cfg.tiposoperaciones(10), now, destino,  o.acciones, o.importe, o.impuestos, o.comision, o.valor_accion, comentario)
             op_destino.save(cur, cur2, False)
             
             
@@ -478,15 +415,19 @@ class SetInversionOperacion(SetCommon):
         
     def calcular_new(self):
         """Realiza los c´alculos y devuelve dos arrays"""
-        operinversioneshistorica=SetInversionOperacionHistorica()
-        operinversionesactual=SetInversionOperacionActual(self.cfg)       
-        for o in self.arr:
-            if o.acciones>=0:
-                operinversionesactual.comprar(o)
-            else:
-                operinversionesactual.vender(o)
-                
-        return (operinversionesactual, operinversioneshistorica)
+        sioh=SetInversionOperacionHistorica(self.cfg)
+        sioa=SetInversionOperacionActual(self.cfg)       
+        for o in self.arr:      
+#            print ("Despues ",  sioa.acciones(), o)              
+            if o.acciones>=0:#Compra
+                sioa.arr.append(InversionOperacionActual(self.cfg).init__create(o, o.tipooperacion, o.datetime, o.inversion, o.acciones, o.importe, o.impuestos, o.comision, o.valor_accion,  o.id))
+            else:#Venta
+                if abs(o.acciones)>sioa.acciones():
+                    print (o.acciones, sioa.acciones(),  o)
+                    print("No puedo vender m´as acciones que las que tengo. EEEEEEEEEERRRRRRRRRRRROOOOORRRRR")
+                    sys.exit(0)
+                sioa.historizar(o, sioh)
+        return (sioa, sioh)
         
     def calcular(self ):
         """Realiza los calculos y devuelve dos arrys."""
@@ -522,7 +463,7 @@ class SetInversionOperacion(SetCommon):
 
             
         ##########################################
-        operinversioneshistorica=SetInversionOperacionHistorica()
+        operinversioneshistorica=SetInversionOperacionHistorica(self.cfg)
         #Crea un array copia de self.arr, porque eran vinculos 
         arr=[]
         for a in self.arr:   
@@ -551,12 +492,12 @@ class SetInversionOperacion(SetCommon):
                 dif=p.acciones+n.acciones
                 (impuestos, comisiones)=comisiones_impuestos(dif, p, n)
                 if dif==0: #Si es 0 se inserta el historico que coincide con la venta y se borra el registro negativ
-                    operinversioneshistorica.append(InversionOperacionHistorica().init__create(n, n.inversion, p.datetime.date(), -n.acciones*n.valor_accion,n.tipooperacion, n.acciones, comisiones, impuestos, n.datetime.date(), p.valor_accion, n.valor_accion))
+                    operinversioneshistorica.append(InversionOperacionHistorica(self.cfg).init__create(n, n.inversion, p.datetime.date(), -n.acciones*n.valor_accion,n.tipooperacion, n.acciones, comisiones, impuestos, n.datetime.date(), p.valor_accion, n.valor_accion))
                     arr.remove(n)
                     arr.remove(p)
                     break
                 elif dif<0:#   //Si es <0 es decir hay más acciones negativas que positivas. Se debe introducir en el historico la tmpoperinversion y borrarlo y volver a recorrer el bucle. Restando a n.acciones las acciones ya apuntadas en el historico
-                    operinversioneshistorica.append(InversionOperacionHistorica().init__create(p, p.inversion, p.datetime.date(), p.acciones*n.valor_accion,n.tipooperacion, -p.acciones, comisiones, impuestos, n.datetime.date(), p.valor_accion, n.valor_accion))
+                    operinversioneshistorica.append(InversionOperacionHistorica(self.cfg).init__create(p, p.inversion, p.datetime.date(), p.acciones*n.valor_accion,n.tipooperacion, -p.acciones, comisiones, impuestos, n.datetime.date(), p.valor_accion, n.valor_accion))
                     arr.remove(p)
                     n.acciones=n.acciones+p.acciones#ya que n.acciones es negativo
 
@@ -566,10 +507,10 @@ class SetInversionOperacion(SetCommon):
                     de positivos en operinversionesactual y se inserta uno con los datos positivos menos lo 
                     quitado por el registro negativo. Y se sale del bucle. 
                     //Aqui no se inserta la comision porque solo cuando se acaba las acciones positivos   """
-                    operinversioneshistorica.append(InversionOperacionHistorica().init__create(p, n.inversion, p.datetime.date(), -n.acciones*n.valor_accion,n.tipooperacion, n.acciones, comisiones, impuestos, n.datetime.date(), p.valor_accion, n.valor_accion))
+                    operinversioneshistorica.append(InversionOperacionHistorica(self.cfg).init__create(p, n.inversion, p.datetime.date(), -n.acciones*n.valor_accion,n.tipooperacion, n.acciones, comisiones, impuestos, n.datetime.date(), p.valor_accion, n.valor_accion))
                     arr.remove(p)
                     arr.remove(n)
-                    arr.append(InversionOperacion().init__create( p.tipooperacion, p.datetime, p.inversion,  p.acciones-(-n.acciones), (p.acciones-(-n.acciones))*n.valor_accion,  0, 0, p.valor_accion, "",  p.id))
+                    arr.append(InversionOperacion(self.cfg).init__create( p.tipooperacion, p.datetime, p.inversion,  p.acciones-(-n.acciones), (p.acciones-(-n.acciones))*n.valor_accion,  0, 0, p.valor_accion, "",  p.id))
                     arr=sorted(arr, key=lambda a:a.id)              
                     break;
         #Crea array operinversionesactual, ya que arr es operinversiones
@@ -586,6 +527,21 @@ class SetInversionOperacion(SetCommon):
             resultado.arr.append(io.clone())
         return resultado
         
+#    def hayNegativas(self):
+#        """Funci´on que devuelve si hay operaciones negativos en el array"""
+#        for io in self.arr:
+#            if io.acciones<0:
+#                return True
+#        return False
+#    def saldoNegativo(self):
+#        """Funci´on que devuelve el n´umero de acciones de venta. 
+#        Devuelve un n´umero positivo.
+#        Deber´a ignorar las archivadas"""
+#        resultado=Decimal('0')
+#        for io in self.arr:
+#            if io.acciones<0:
+#                resultado=resultado-(io.acciones)
+#        return resultado
 
 class SetInversionOperacionActual(SetCommon):       
     """Clase es un array ordenado de objetos newInversionOperacion"""
@@ -593,7 +549,11 @@ class SetInversionOperacionActual(SetCommon):
         SetCommon.__init__(self)
         self.cfg=cfg
     def __repr__(self):
-        return ("SetIOA. Número registros: {0}. N´umero de acciones: {1}".format( len(self.arr), self.acciones()))
+        try:
+            inversion=self.arr[0].inversion.id
+        except:
+            inversion="Desconocido"
+        return ("SetIOA Inv: {0}. N.Registros: {1}. N.Acciones: {2}. Invertido: {3}. Valor medio:{4}".format(inversion,  len(self.arr), self.acciones(),  self.invertido(),  self.valor_medio_compra()))
         
     def fecha_primera_operacion(self):
         if len(self.arr)==0:
@@ -662,55 +622,70 @@ class SetInversionOperacionActual(SetCommon):
         if numacciones==0:
             return 0
         return numaccionesxvalor/numacciones
-    
-    def comprar(self,  operinversion):
-        #TODO: Sustituir sistema de compra venta
-        self.arr.append(InversionOperacionActual(self.cfg).init__create(operinversion.id, operinversion.tipooperacion, operinversion.datetime, operinversion.inversion,  operinversion.acciones, operinversion.importe,  operinversion.impuestos, operinversion.comision, operinversion.valor_accion))
-    
-    def vender(self,  operinversion):
-        """Funci´on que vende acciones y devuelve un array con operinversiones historicas generadas por la venta"""
-        resultadohistoricas=[]
-        comisiones=0
-        impuestos=0
-        quedan=0
-        for p in self.arr:
-            dif=operinversion.acciones+p.acciones
-            if dif==0:
-                resultadohistoricas.append(InversionOperacionHistorica().init__create(operinversion, operinversion.inversion, p.datetime.date(), -operinversion.acciones*operinversion.valor_accion,operinversion.tipooperacion, operinversion.acciones, comisiones, impuestos, operinversion.datetime.date(), p.valor_accion, operinversion.valor_accion))
-            elif dif<0:
-                resultadohistoricas.append(InversionOperacionHistorica().init__create(p, p.inversion, p.datetime.date(), p.acciones*operinversion.valor_accion,operinversion.tipooperacion, -p.acciones, comisiones, impuestos, operinversion.datetime.date(), p.valor_accion, operinversion.valor_accion))
-                quedan=quedan+p.acciones#ya que n.acciones es negativo                
-                self.arr.remove(p)
-            
-#                dif=p.acciones+n.acciones
-#                (impuestos, comisiones)=comisiones_impuestos(dif, p, n)
-#                if dif==0: #Si es 0 se inserta el historico que coincide con la venta y se borra el registro negativ
-#                    operinversioneshistorica.append(InversionOperacionHistorica().init__create(n, n.inversion, p.datetime.date(), -n.acciones*n.valor_accion,n.tipooperacion, n.acciones, comisiones, impuestos, n.datetime.date(), p.valor_accion, n.valor_accion))
-#                    arr.remove(n)
-#                    arr.remove(p)
-#                    break
-#                elif dif<0:#   //Si es <0 es decir hay más acciones negativas que positivas. Se debe introducir en el historico la tmpoperinversion y borrarlo y volver a recorrer el bucle. Restando a n.acciones las acciones ya apuntadas en el historico
-#                    operinversioneshistorica.append(InversionOperacionHistorica().init__create(p, p.inversion, p.datetime.date(), p.acciones*n.valor_accion,n.tipooperacion, -p.acciones, comisiones, impuestos, n.datetime.date(), p.valor_accion, n.valor_accion))
-#                    arr.remove(p)
-#                    n.acciones=n.acciones+p.acciones#ya que n.acciones es negativo
-#
-#                elif(dif>0):
-#                    """Cuando es >0 es decir hay mas acciones positivos se añade el registro en el historico 
-#                    con los datos de la operacion negativa en su totalidad. Se borra el registro de negativos y 
-#                    de positivos en operinversionesactual y se inserta uno con los datos positivos menos lo 
-#                    quitado por el registro negativo. Y se sale del bucle. 
-#                    //Aqui no se inserta la comision porque solo cuando se acaba las acciones positivos   """
-#                    operinversioneshistorica.append(InversionOperacionHistorica().init__create(p, n.inversion, p.datetime.date(), -n.acciones*n.valor_accion,n.tipooperacion, n.acciones, comisiones, impuestos, n.datetime.date(), p.valor_accion, n.valor_accion))
-#                    arr.remove(p)
-#                    arr.remove(n)
-#                    arr.append(InversionOperacion().init__create( p.tipooperacion, p.datetime, p.inversion,  p.acciones-(-n.acciones), (p.acciones-(-n.acciones))*n.valor_accion,  0, 0, p.valor_accion, "",  p.id))
-#                    arr=sorted(arr, key=lambda a:a.id)              
-#                    break;
+ 
+    def historizar(self, io,  sioh):
+        """
+        io es una Inversionoperacion de venta
+        1 Pasa al set de inversion operacion historica tantas inversionoperacionesactual como acciones tenga
+       la inversion operacion de venta
+      2 Si no ha sido un n´umero exacto y se ha partido la ioactual, añade la difrencia al setIOA y lo quitado a SIOH
+      
+        Las comisiones se cobran se evaluan (ya estan en io) para ioh cuando sale con Decimal('0'), esdecir
+        cuando acaba la venta
         
+        """
+        self.sort()
+        
+        inicio=self.acciones()
+        
+        accionesventa=abs(io.acciones)
+        comisiones=Decimal('0')
+        impuestos=Decimal('0')
+        while accionesventa!=Decimal('0'):
+            while True:###nO SE RECORRE EL ARRAY SE RECORRE Con I PORQUE HAY INSERCIONES Y BORRADOS daba problemas de no repetir al insertar
+                ioa=self.arr[0]
+                if ioa.acciones-accionesventa>Decimal('0'):#>0Se vende todo y se crea un ioa de resto, y se historiza lo restado
+                    comisiones=comisiones+io.comision+ioa.comision
+                    impuestos=impuestos+io.impuestos+ioa.impuestos
+                    sioh.arr.append(InversionOperacionHistorica(self.cfg).init__create(ioa, io.inversion, ioa.datetime.date(), io.acciones*io.valor_accion, io.tipooperacion, io.acciones, comisiones, impuestos, io.datetime.date(), ioa.valor_accion, io.valor_accion))
+                    self.arr.insert(0, InversionOperacionActual(self.cfg).init__create(ioa, ioa.tipooperacion, ioa.datetime, ioa.inversion,  ioa.acciones-abs(accionesventa), (ioa.acciones-abs(accionesventa))*ioa.valor_accion,  0, 0, ioa.valor_accion, ioa.id))
+                    self.arr.remove(ioa)
+                    accionesventa=Decimal('0')#Sale bucle
+                    break
+                elif ioa.acciones-accionesventa<Decimal('0'):#<0 Se historiza todo y se restan acciones venta
+                    comisiones=comisiones+ioa.comision
+                    impuestos=impuestos+ioa.impuestos
+                    sioh.arr.append(InversionOperacionHistorica(self.cfg).init__create(ioa, io.inversion, ioa.datetime.date(), -ioa.acciones*io.valor_accion, io.tipooperacion, -ioa.acciones, 0, 0, io.datetime.date(), ioa.valor_accion, io.valor_accion))
+                    accionesventa=accionesventa-ioa.acciones                    
+                    self.arr.remove(ioa)
+                    
+                elif ioa.acciones-accionesventa==Decimal('0'):#Se historiza todo y se restan acciones venta y se sale
+                    comisiones=comisiones+io.comision+ioa.comision
+                    impuestos=impuestos+io.impuestos+ioa.impuestos
+                    sioh.arr.append(InversionOperacionHistorica(self.cfg).init__create(ioa, io.inversion, ioa.datetime.date(), ioa.acciones*io.valor_accion, io.tipooperacion, -ioa.acciones, comisiones, impuestos, io.datetime.date(), ioa.valor_accion, io.valor_accion))
+                    self.arr.remove(ioa)                    
+                    accionesventa=Decimal('0')#Sale bucle                    
+                    break
+        if inicio-self.acciones()-abs(io.acciones)!=Decimal('0'):
+            print ("Error en historizar. diff ", inicio-self.acciones()-abs(io.acciones),  "inicio",  inicio,  "fin", self.acciones(), io)
+                
+        
+    def print_list(self):
+        self.sort()
+        print ("\n Imprimiendo SIOA",  self)
+        for oia in self.arr:
+            print ("  - ", oia)
+        
+        
+    def sort(self):
+        """Ordena por datetime"""
+        self.arr=sorted(self.arr, key=lambda o:o.datetime)
+ 
 class SetInversionOperacionHistorica(SetCommon):       
     """Clase es un array ordenado de objetos newInversionOperacion"""
-    def __init__(self):
+    def __init__(self, cfg):
         SetCommon.__init__(self)
+        self.cfg=cfg
         
     def consolidado_bruto(self,  year=None,  month=None):
         resultado=0
@@ -756,7 +731,8 @@ class SetInversionOperacionHistorica(SetCommon):
 
         
 class InversionOperacionHistorica:
-    def __init__(self): 
+    def __init__(self, cfg):
+        self.cfg=cfg 
         self.id=None
         self.operinversion=None
         self.inversion=None
@@ -854,6 +830,9 @@ class InversionOperacionActual:
         self.comision=None
         self.valor_accion=None
         self.referenciaindice=None##Debera cargarse desde fuera. No se carga con row.. Almacena un Quote, para comprobar si es el indice correcto ver self.referenciaindice.id
+        
+    def __repr__(self):
+        return ("IOA {0}. {1} {2}. Acciones: {3}. Valor:{4}".format(self.inversion.name,  self.datetime, self.tipooperacion.name,  self.acciones,  self.valor_accion))
         
     def init__create(self, operinversion, tipooperacion, datetime, inversion, acciones, importe, impuestos, comision, valor_accion, id=None):
         """Inversion es un objeto Inversion"""
@@ -1141,7 +1120,8 @@ class Dividendo:
         self.inversion.cuenta.saldo_from_db(cur)
 
 class InversionOperacion:
-    def __init__(self): 
+    def __init__(self, cfg):
+        self.cfg=cfg
         self.id=None
         self.tipooperacion=None
         self.inversion=None
@@ -1152,6 +1132,10 @@ class InversionOperacion:
         self.valor_accion=None
         self.datetime=None
         self.comentario=None
+        self.archivada=None
+        
+    def __repr__(self):
+        return ("IO {0} ({1}). {2} {3}. Acciones: {4}. Valor:{5}".format(self.inversion.name, self.inversion.id,  self.datetime, self.tipooperacion.name,  self.acciones,  self.valor_accion))
         
     def init__db_row(self,  row, inversion,  tipooperacion):
         self.id=row['id_operinversiones']
@@ -1181,7 +1165,7 @@ class InversionOperacion:
     
     def clone(self):
         """Crea una inversion operacion desde otra inversionoepracion. NO es un enlace es un objeto clone"""
-        resultado=InversionOperacion()
+        resultado=InversionOperacion(self.cfg)
         resultado.init__create(self.tipooperacion, self.datetime, self.inversion, self.acciones, self.importe, self.impuestos, self.comision, self.valor_accion, self.comentario, self.id)
         return resultado
                 
@@ -1192,7 +1176,9 @@ class InversionOperacion:
         else:
             return self.comentario
 
-    def save(self, cur, cur2, recalculate=True):
+    def save(self, recalculate=True):
+        cur=self.cfg.con.cursor()
+        cur2=self.cfg.con.cursor()
         if self.id==None:#insertar
             cur.execute("insert into operinversiones(datetime, id_tiposoperaciones,  importe, acciones,  impuestos,  comision,  valor_accion, comentario, id_inversiones) values (%s, %s, %s, %s, %s, %s, %s, %s,%s) returning id_operinversiones", (self.datetime, self.tipooperacion.id, self.importe, self.acciones, self.impuestos, self.comision, self.valor_accion, self.comentario, self.inversion.id))
             self.id=cur.fetchone()[0]
@@ -1203,20 +1189,27 @@ class InversionOperacion:
             (self.inversion.op_actual,  self.inversion.op_historica)=self.inversion.op.calcular()   
             CuentaOperacionHeredadaInversion(self.cfg).actualizar_una_inversion(cur, cur2,  self.inversion.id)  
             self.inversion.cuenta.saldo_from_db(cur2)
+        self.cfg.con.commit()
+        cur.close()
+        cur2.close()
         
-    def borrar(self, cur, cur2):
+    def borrar(self):
+        cur=self.cfg.con.cursor()
+        cur2=self.cfg.con.cursor()
         cur.execute("delete from operinversiones where id_operinversiones=%s",(self.id, ))
         self.inversion.op.arr.remove(self)
         (self.inversion.op_actual,  self.inversion.op_historica)=self.inversion.op.calcular()
         CuentaOperacionHeredadaInversion(self.cfg).actualizar_una_inversion(cur, cur2,  self.inversion.id)#Es una inversion ya que la id_operinversion ya no existe. Se ha borrado
         self.inversion.cuenta.saldo_from_db(cur2)
+        cur.close()
+        cur2.close()
         
     def tpc_anual(self,  last,  endlastyear):
         return
     
     def tpc_total(self,  last):
         return
-
+   
 class EntidadBancaria:
     """Clase que encapsula todas las funciones que se pueden realizar con una Entidad bancaria o banco"""
     def __init__(self):
@@ -1438,13 +1431,33 @@ class Inversion:
         """Funci`on que carga un array con objetos inversion operacion y con ellos calcula el set de actual e historicas"""
         cur=self.cfg.con.cursor()
         self.op=SetInversionOperacion(self.cfg)
-        cur.execute("SELECT * from operinversiones where id_inversiones=%s order by id_operinversiones", (self.id, ))
+        cur.execute("SELECT * from operinversiones where id_inversiones=%s order by datetime", (self.id, ))
         for row in cur:
-            self.op.append(InversionOperacion().init__db_row(row, self, self.cfg.tiposoperaciones.find(row['id_tiposoperaciones'])))
-        (self.op_actual, self.op_historica)=self.op.calcular()
-        (self.op_actual_new,  self.op_historica_new)=self.op.calcular_new()
-        print (self.op_actual)
-        print (self.op_actual_new)
+            self.op.append(InversionOperacion(self.cfg).init__db_row(row, self, self.cfg.tiposoperaciones.find(row['id_tiposoperaciones'])))
+#        print ("\n")
+#        print ("acciones antes",  self.acciones(datetime.datetime(2011, 9, 22)),  self.acciones(datetime.datetime(2011, 9, 24)))
+#        inicio=datetime.datetime.now()
+#        (self.op_actual, self.op_historica)=self.op.calcular()
+#        print (datetime.datetime.now()-inicio, self.op_actual)
+#        inicio=datetime.datetime.now()        
+#        (self.op_actual_new,  self.op_historica_new)=self.op.calcular_new()
+#        print (datetime.datetime.now()-inicio, self.op_actual_new)
+        
+#        
+#        
+#        
+        #AL FINAL ME QUEDO CON PARA PRUEBAS :
+        (self.op_actual,  self.op_historica)=self.op.calcular_new()
+        
+#        if (self.id==80):
+#            print (self.op_actual.print_list())
+#            print (self.op_actual_new.print_list())
+        
+        
+        
+        
+        
+        
         cur.close()
         
 
@@ -1688,7 +1701,7 @@ class Patrimonio:
     def primera_fecha_con_datos_usuario(self):        
         """Devuelve la fecha actual si no hay datos. Base de datos vacía"""
         cur=self.cfg.con.cursor()
-        sql='select fecha from opercuentas UNION select fecha from operinversiones UNION select fecha from opertarjetas order by fecha limit 1;'
+        sql='select fecha from opercuentas UNION select datetime::date from operinversiones UNION select fecha from opertarjetas order by fecha limit 1;'
         cur.execute(sql)
         if cur.rowcount==0:
             return datetime.date.today()
@@ -1832,7 +1845,6 @@ class SetTiposOperaciones:
     def __init__(self, cfg):
         self.dic_arr={}
         self.cfg=cfg     
-        self.load()
         
     def load(self):
         self.dic_arr['1']=TipoOperacion().init__create( "Gasto", 1)
@@ -1844,7 +1856,8 @@ class SetTiposOperaciones:
         self.dic_arr['7']=TipoOperacion().init__create( "Facturacion Tarjeta", 7)
         self.dic_arr['8']=TipoOperacion().init__create( "Traspaso fondo inversión", 8) #Se contabilizan como ganancia
         self.dic_arr['9']=TipoOperacion().init__create( "Traspaso de valores. Origen", 9) #No se contabiliza
-        self.dic_arr['10']=TipoOperacion().init__create( "Traspaso de valores. Destino", 10) #No se contabiliza        
+        self.dic_arr['10']=TipoOperacion().init__create( "Traspaso de valores. Destino", 10) #No se contabiliza     
+        
     def find(self, id):
         return self.dic_arr[str(id)]
         
@@ -1853,13 +1866,13 @@ class SetTiposOperaciones:
         lista=sorted(lista, key=lambda t:t.name, reverse=False)
         return lista
         
-    def tiposoperaciones_operinversiones(self):
+    def clone_only_operinversiones(self):
         """Devuelve los tipos de operación específicos de operinversiones. en un arr de la forma"""
-        resultado=[]
-        for key,  t in self.dic_tiposoperaciones.items():
+        resultado=SetTiposOperaciones(self.cfg)
+        for key,  t in self.dic_arr.items():
             if key in ('4', '5', '6', '8'):
-                resultado.append(t)
-        return sorted(resultado, key=lambda t: t.name,  reverse=False)                     
+                resultado.dic_arr[str(key)]=t
+        return resultado
             
 class TUpdateData(threading.Thread):
     def __init__(self, cfg):
@@ -1936,8 +1949,6 @@ def myqtablewidget_loads_SetInversionOperacionActual( tabla,  setinversionoperac
         suminvertido=suminvertido+invertido
         sum_accionesXvalor=sum_accionesXvalor+a.acciones*a.valor_accion
 
-        decimal_check(sum_accionesXvalor)      
-        decimal_check(sumacciones)        
         tabla.setItem(rownumber, 0, qdatetime(a.datetime))
         tabla.setItem(rownumber, 1, qright("{0:.6f}".format(a.acciones)))
         tabla.setItem(rownumber, 2, inversion.mq.currency.qtablewidgetitem(a.valor_accion, numdigitos))
@@ -1957,7 +1968,6 @@ def myqtablewidget_loads_SetInversionOperacionActual( tabla,  setinversionoperac
     if sumacciones==0:
         tabla.setItem(rownumber, 2, inversion.mq.currency.qtablewidgetitem(0))
     else:
-        decimal_check(sum_accionesXvalor/sumacciones)   
         tabla.setItem(rownumber, 2, inversion.mq.currency.qtablewidgetitem(sum_accionesXvalor/sumacciones, numdigitos))
     tabla.setItem(rownumber, 3, inversion.mq.currency.qtablewidgetitem(suminvertido))
     tabla.setItem(rownumber, 4, inversion.mq.currency.qtablewidgetitem(sumsaldo))
