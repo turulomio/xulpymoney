@@ -36,7 +36,7 @@ class wdgInformeDividendos(QWidget, Ui_wdgInformeDividendos):
     def on_actionModificarDPA_activated(self):
         d=frmDividendoEstimacionIBM(self.cfg, self.selInversion)
         d.exec_()
-        self.selInversion.mq.estimaciones[d.txtYear.text()].dpa=d.txtDPA.text()
+        self.selInversion.mq.estimaciones[d.txtYear.text()].dpa=d.txtDPA.decimal()
         self.on_chkInactivas_stateChanged(self.chkInactivas.checkState())
         self.tblInversiones.clearSelection()
 
@@ -90,6 +90,6 @@ class wdgInformeDividendos(QWidget, Ui_wdgInformeDividendos):
     def on_tblInversiones_itemSelectionChanged(self):
         self.selInversion=None
         for i in self.tblInversiones.selectedItems():#itera por cada item no row.
-            self.selInversion=self.inversiones[i.row()]
+            self.selInversion=self.inversiones.arr[i.row()]
         print ("Seleccionado: " +  str(self.selInversion))
 

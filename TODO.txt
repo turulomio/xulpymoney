@@ -33,11 +33,11 @@
 20120727 Mostrar tipo de dividendo en frmHistorico y ver si se calcula bien el neto y el bruto
 20120802 Hacer un formulario de inicio que genere el settings en home y pregunte idioma y lo cambie
 20120803 Quitar primera fecha de inicio y ponerlo en config por defecto y quitar la función de union de patrimonio, al empezar una nueva base de datos es un coñazo
-20120803 Ver como solucionar que haya 0.00 y 0 para mismas columnas
 20120806 En operinversion opercuenta poner el número de acciones y precio de compra en comeentario bonito
 20120815 Des inversion falla cuando hay ventas anteriores ver lyxor, puede que sea de calcular aunque no estoy seguro
 20120815 Poner calculo de inversión cuando esté con un precio probablemente en desreinversion
 20130103 Cuando se genera un dividendo acciones y se mete comisión se cuenta en Ingresos quizás porque es neto
 20130103 Cuando se inserta un operinversión, hay que poner el indice de referencia y se debe insertar en myquotes el valor con microseconds=5
-20130718 Convertir todo a Decimal, fallan operaciones a3tv
 20130723 Poner datetime en ioh
+20130723 No funciona estimación de dividendo
+
