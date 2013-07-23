@@ -11,11 +11,11 @@ class frmInversionesIBM(QDialog, Ui_frmInversionesIBM):
         self.inversion=inversion
         self.operinversion=operinversion
   
-        qcombobox_loadtiposoperaciones(self.cmbTiposOperaciones, self.cfg.tiposoperaciones_operinversiones())
+        qcombobox_loadtiposoperaciones(self.cmbTiposOperaciones, self.cfg.tiposoperaciones.clone_only_operinversiones())
 
         
         if self.operinversion==None:#nuevo movimiento
-            self.operinversion=InversionOperacion()
+            self.operinversion=InversionOperacion(self.cfg)
             self.operinversion.inversion=self.inversion
             self.lblTitulo.setText(self.trUtf8("Nuevo movimiento de {0}".format(self.inversion.name)))
             t=datetime.datetime.now()
@@ -38,7 +38,7 @@ class frmInversionesIBM(QDialog, Ui_frmInversionesIBM):
         hora=self.timeedit.time().toPyTime()
         
         id_tiposoperaciones=int(self.cmbTiposOperaciones.itemData(self.cmbTiposOperaciones.currentIndex()))
-        self.operinversion.tipooperacion=self.cfg.tiposoperaciones(id_tiposoperaciones)
+        self.operinversion.tipooperacion=self.cfg.tiposoperaciones.find(id_tiposoperaciones)
         self.operinversion.impuestos=Decimal(self.txtImpuestos.text())
         self.operinversion.comision=Decimal(self.txtComision.text())
         self.operinversion.valor_accion=Decimal(self.txtValorAccion.text())
@@ -75,14 +75,8 @@ class frmInversionesIBM(QDialog, Ui_frmInversionesIBM):
         dat=dt(fecha,  hora, zone ) 
         self.operinversion.datetime=dat
         
-        con=self.cfg.connect_xulpymoney()
-        cur = con.cursor()    
-        cur2= con.cursor()
-        self.operinversion.save(cur, cur2)        
-        con.commit()        
-        cur.close()     
-        cur2.close()
-        self.cfg.disconnect_xulpymoney(con)        
+        self.operinversion.save()    
+        self.cfg.con.commit()#Guarda todos los cambios en bd.
         self.done(0)
 
 

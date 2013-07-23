@@ -72,7 +72,7 @@ class frmCuentasIBM(QDialog, Ui_frmCuentasIBM):
             self.chkActiva.setChecked(b2c(self.selCuenta.activa))
             self.cmdDatos.setText(self.trUtf8("Modificar los datos de la cuenta bancaria"))
 
-            anoinicio=Patrimonio(self.cfg).primera_fecha_con_datos_usuario(cur).year       
+            anoinicio=Patrimonio(self.cfg).primera_fecha_con_datos_usuario().year       
     
             for i in range(datetime.date.today().year-anoinicio+1):
                 self.cmbYear.addItem(str(anoinicio+i))       

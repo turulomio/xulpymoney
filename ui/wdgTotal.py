@@ -119,7 +119,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
             dividendos=Inversion(self.cfg).dividendos_neto(  cmbanos, i+1)
             ingresos=Patrimonio(self.cfg).saldo_por_tipo_operacion(  cmbanos,i+1,2)-dividendos #Se quitan los dividendos que luego se suman
             
-#            consolidado=InversionOperacionHistorica().consolidado_total_mensual(cur, cmbanos,i+1)
+#            consolidado=InversionOperacionHistorica(self.cfg).consolidado_total_mensual(cur, cmbanos,i+1)
             consolidado=Patrimonio(self.cfg).consolidado_neto(self.data_inversiones_all, cmbanos, i+1)
             gi=ingresos+dividendos+consolidado+gastos
             self.sumpopup[i]=consolidado+dividendos

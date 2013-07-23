@@ -88,7 +88,7 @@ class frmOperCuentas(QDialog, Ui_frmOperCuentas):
             self.opercuenta.tipooperacion=self.cfg.tiposoperaciones.find(id_tiposoperaciones)
             self.opercuenta.importe=importe
             self.opercuenta.comentario=comentario
-            self.opercuenta.cuenta=self.cfg.cuentas(id_cuentas)#Se puede cambiar
+            self.opercuenta.cuenta=self.data_cuentas.find(id_cuentas)#Se puede cambiar
             self.opercuenta.save(cur)
             con.commit()        #Se debe hacer el commit antes para que al actualizar con el signal salga todos los datos
             self.emit(SIGNAL("OperCuentaIBMed"), ())
@@ -98,7 +98,7 @@ class frmOperCuentas(QDialog, Ui_frmOperCuentas):
             self.opercuenta.tipooperacion=self.cfg.tiposoperaciones.find(id_tiposoperaciones)
             self.opercuenta.importe=importe
             self.opercuenta.comentario=comentario
-            self.opercuenta.cuenta=self.cfg.cuentas(id_cuentas)#Se puede cambiar
+            self.opercuenta.cuenta=self.data_cuentas.find(id_cuentas)#Se puede cambiar
             self.opercuenta.save(cur)
             con.commit()        #Se debe hacer el commit antes para que al actualizar con el signal salga todos los datos
             self.emit(SIGNAL("OperCuentaIBMed"), ())
