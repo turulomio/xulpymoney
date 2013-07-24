@@ -122,7 +122,7 @@ class investmentDialog(QDialog):
                 
         self.tblInversiones.setRowCount(cur.rowcount)
         for i in cur:
-            inv=Investment()
+            inv=Investment(self.cfg)
             inv.init__db_row(self.cfg, i)
             self.inversiones.append(inv)
             self.tblInversiones.setItem(cur.rownumber-1, 0, QTableWidgetItem(inv.name.upper()))

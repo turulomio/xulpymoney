@@ -1,13 +1,13 @@
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
-from Ui_wdgInversiones import *
+from Ui_wdgInversiones2 import *
 from frmAnalisis import *
 from libxulpymoney import *
 from frmQuotesIBM import *
 from wdgMergeCodes import *
 from frmDividendoEstimacionIBM import *
 
-class wdgInversiones2(QWidget, Ui_wdgInversiones):
+class wdgInversiones2(QWidget, Ui_wdgInversiones2):
     def __init__(self, cfg,  sql,  parent=None):
         QWidget.__init__(self, parent)
         self.setupUi(self)
@@ -49,8 +49,8 @@ class wdgInversiones2(QWidget, Ui_wdgInversiones):
             else:
                 self.progress.setValue(self.progress.value()+1)       
                 
-            inv=Investment()
-            inv.init__db_row(self.cfg, i)
+            inv=Investment(self.cfg)
+            inv.init__db_row(i)
             inv.quotes.get_basic(cur2)
             self.inversionesmq.append(inv)
         cur.close()     

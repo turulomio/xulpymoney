@@ -32,11 +32,11 @@ if __name__ == '__main__':
     cur2 = con.cursor()   
 
     con.commit()
-    if Global().get_database_init_date(cur)=='2000-01-01':
-        Global().set_database_init_date(cur, str(datetime.date.today()))  
+    if Global(self.cfg).get_database_init_date(cur)=='2000-01-01':
+        Global(self.cfg).set_database_init_date(cur, str(datetime.date.today()))  
         con.commit()
     cfg.actualizar_memoria(cur)
-    cfg.dbinitdate=Global().get_database_init_date(cur)
+    cfg.dbinitdate=Global(self.cfg).get_database_init_date(cur)
     cfg.carga_ia(cur)
     cur.close()                
     cur2.close()                

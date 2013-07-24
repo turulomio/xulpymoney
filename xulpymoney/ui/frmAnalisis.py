@@ -53,7 +53,7 @@ class frmAnalisis(QDialog, Ui_frmAnalisis):
         self.cmbBolsa.cargar_datos(self.cfg)
         
         if self.investment==None:
-            self.investment=Investment()
+            self.investment=Investment(self.cfg)
             self.tab.setTabEnabled(1, False)
             self.tab.setTabEnabled(2, False)
             self.tab.setTabEnabled(3, False)
@@ -71,9 +71,9 @@ class frmAnalisis(QDialog, Ui_frmAnalisis):
         self.layHistorical.addWidget(self.canvasHistorical)
         self.layHistorical.addWidget(self.ntbHistorical)
         
-        qcombobox_loadcurrencies(self.cmbCurrency, self.cfg)
+        self.cfg.currencies.load_qcombobox(self.cmbCurrency)
         qcombobox_loadapalancamiento(self.cmbApalancado, self.cfg.apalancamientos())
-        qcombobox_loadtypes(self.cmbTipo, self.cfg.types())
+        qcombobox_loadtypes(self.cmbTipo, self.cfg.types.find())
 
         if self.investment.id!=None:#Si no est´a definido petaba el timer por no saber cual es
             self.mytimer = QTimer()
@@ -352,8 +352,8 @@ class frmAnalisis(QDialog, Ui_frmAnalisis):
     def on_cmdSave_pressed(self):
         self.investment.name=self.txtName.text()
         self.investment.isin=self.txtISIN.text()
-        self.investment.currency=self.cfg.currencies(self.cmbCurrency.itemData(self.cmbCurrency.currentIndex()))
-        self.investment.type=self.cfg.types(self.cmbTipo.itemData(self.cmbTipo.currentIndex()))
+        self.investment.currency=self.cfg.currencies.find(self.cmbCurrency.itemData(self.cmbCurrency.currentIndex()))
+        self.investment.type=self.cfg.types.find(self.cmbTipo.itemData(self.cmbTipo.currentIndex()))
         self.investment.agrupations=SetAgrupation(self.cfg).init__create_from_combo(self.cmbAgrupations)
         self.investment.active=c2b(self.chkActive.checkState())
         self.investment.obsolete=c2b(self.chkObsolete.checkState())

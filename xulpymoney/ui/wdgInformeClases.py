@@ -144,7 +144,7 @@ class wdgInformeClases(QWidget, Ui_wdgInformeClases):
         labels=[]
         data=[]
         explode=[]
-        for t in self.cfg.types():
+        for t in self.cfg.types.find():
 #            id_type=int(id_type)
             total=0
             for i in self.data_inversiones.arr:

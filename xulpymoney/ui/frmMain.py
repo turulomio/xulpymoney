@@ -40,12 +40,10 @@ class frmMain(QMainWindow, Ui_frmMain):
         QObject.connect(access.cmdYN, SIGNAL("rejected()"), self, SLOT("on_actionSalir_activated()"))
         access.exec_()
 
-        self.cfg.con=self.cfg.connect_xulpymoney()
-        cur = self.cfg.con.cursor()                   
+        self.cfg.con=self.cfg.connect_xulpymoney()  
         self.cfg.conmq=self.cfg.connect_myquotes()
-        curmq=self.cfg.conmq.cursor()        
         
-        self.cfg.actualizar_memoria(cur, curmq) ##CARGA TODOS LOS DATOS Y LOS VINCULA       
+        self.cfg.actualizar_memoria() ##CARGA TODOS LOS DATOS Y LOS VINCULA       
         
         
         print ("ARREGLAR PORQUE AHORA NO PROTEGE MQINVERSIONES")
@@ -53,9 +51,6 @@ class frmMain(QMainWindow, Ui_frmMain):
         #if len(ids2protect)>0:
          #   Investment.changeDeletable(curmq,  ids2protect,  False)
         self.cfg.conmq.commit()
-
-        curmq.close()
-        cur.close()     
         
         self.tupdatedata=TUpdateData(self.cfg)
         self.tupdatedata.start()
