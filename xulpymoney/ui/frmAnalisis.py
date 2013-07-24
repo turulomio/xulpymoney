@@ -54,13 +54,13 @@ class frmAnalisis(QDialog, Ui_frmAnalisis):
             self.tab.setTabEnabled(3, False)
             self.cmdSave.setText(self.trUtf8("Añadir nueva inversión"))
 
-        self.canvasIntraday=canvasChartIntraday(self)
+        self.canvasIntraday=canvasChartIntraday( self.cfg, self)
         self.canvasIntraday.settings("canvasIntraday", self.cfg.inifile)
         self.ntbIntraday = NavigationToolbar(self.canvasIntraday, self)
         self.layIntraday.addWidget(self.canvasIntraday)
         self.layIntraday.addWidget(self.ntbIntraday)
         
-        self.canvasHistorical=canvasChartHistorical(self)
+        self.canvasHistorical=canvasChartHistorical( self.cfg, self)
         self.canvasHistorical.settings("canvasHistorical", self.cfg.inifile)
         self.ntbHistorical=NavigationToolbar(self.canvasHistorical, self)
         self.layHistorical.addWidget(self.canvasHistorical)

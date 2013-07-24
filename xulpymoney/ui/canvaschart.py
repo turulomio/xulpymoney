@@ -32,7 +32,6 @@ class canvasChart(FigureCanvas):
     objeto.settings
     objeto.load_data"""
     def __init__(self, parent):
-
             
         # setup Matplotlib Figure and Axis
         self.fig = Figure()
@@ -508,7 +507,8 @@ class canvasChart(FigureCanvas):
 # }
 
 class canvasChartIntraday(canvasChart):
-    def __init__(self,  parent):
+    def __init__(self, cfg,  parent):
+        self.cfg=cfg
         canvasChart.__init__(self, parent)
         self.setupUi()
         
@@ -559,7 +559,8 @@ class canvasChartIntraday(canvasChart):
         self.common_actions()
 class canvasChartHistorical(canvasChart):
     
-    def __init__(self,  parent):
+    def __init__(self, cfg,   parent):
+        self.cfg=cfg
         canvasChart.__init__(self, parent)
         self.num=50#Numero de items a mostrar
         self.setupUi()

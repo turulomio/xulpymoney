@@ -2307,7 +2307,7 @@ seleccionados por el usuario</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmQuotesIBM.py" line="40"/>
+        <location filename="ui/frmQuotesIBM.py" line="41"/>
         <source>Datos incorrectos. Vuelva a introducirlos</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3377,12 +3377,12 @@ Se necesitan al menos 24 horas de funcionamiento del demonio myquotesd para que 
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="ui/wdgIndexRange.py" line="125"/>
+        <location filename="ui/wdgIndexRange.py" line="120"/>
         <source>············································································································</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="ui/wdgIndexRange.py" line="120"/>
+        <location filename="ui/wdgIndexRange.py" line="115"/>
         <source>Para llegar al punto de inversión seleccionado, el indice debe variar un {0}</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3874,12 +3874,12 @@ Sólo se contabilizará cuando se vendan las acciones</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgInversiones.py" line="241"/>
+        <location filename="ui/wdgInversiones.py" line="240"/>
         <source>Valor medio de compra: {0}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgInversiones.py" line="247"/>
+        <location filename="ui/wdgInversiones.py" line="246"/>
         <source>Valor de venta: {0}</source>
         <translation type="unfinished"></translation>
     </message>

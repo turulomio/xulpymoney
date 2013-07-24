@@ -85,3 +85,11 @@
 		 yahoo, y purge yahoo
 		indices y purge indices
 20130103 En Clase bolsas poner hora de apertura y hora de cierre. para cuando se añadan fondos.
+
+
+
+
+
+
+========== NUEVO ================
+Bolsa de paris no sale al añadir un quoteibm
