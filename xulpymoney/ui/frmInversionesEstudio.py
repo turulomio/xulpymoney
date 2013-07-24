@@ -263,8 +263,8 @@ class frmInversionesEstudio(QDialog, Ui_frmInversionesEstudio):
             m.setText(self.trUtf8("Debe seleccionar una inversión de MyQuotes para continuar"))
             m.exec_()     
             return
-        inversion=(self.txtInversion.text())
-        venta=Decimal(self.txtVenta.text())
+        inversion=self.txtInversion.text()
+        venta=self.txtVenta.decimal()
         id_cuentas=int(self.cmbCuenta.itemData(self.cmbCuenta.currentIndex()))
         myquotesid=(self.ise.selected.id)
         
