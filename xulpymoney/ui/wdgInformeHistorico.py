@@ -64,7 +64,7 @@ class wdgInformeHistorico(QWidget, Ui_wdgInformeHistorico):
         sumsaldo=0        
         curmq=self.cfg.conmq.cursor()
         for i,  o in enumerate(operaciones):
-            valor=Quote().init__from_query(curmq, o.inversion.mq, o.datetime).quote
+            valor=Quote(self.cfg).init__from_query(curmq, o.inversion.mq, o.datetime).quote
             if valor==None:
                 print("wdgInformeHistorico > load_added: {0} en {1} da nulo".format(o.inversion.mq.id, o.datetime))
                 valor=0

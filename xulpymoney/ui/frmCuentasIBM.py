@@ -198,7 +198,7 @@ class frmCuentasIBM(QDialog, Ui_frmCuentasIBM):
         year= int(self.cmbYear.currentText())
         month=self.cmbMonth.currentIndex()+1
         self.opercuentas=[]
-        self.saldoiniciomensual=self.selCuenta.saldo_from_db(cur, str(datetime.date(year, month, 1)-datetime.timedelta(days=1)))         
+        self.saldoiniciomensual=self.selCuenta.saldo_from_db( str(datetime.date(year, month, 1)-datetime.timedelta(days=1)))         
         if self.saldoiniciomensual==None:
             self.saldoiniciomensual=0
         cur.execute("select * from opercuentas where id_cuentas="+str(self.selCuenta.id)+" and date_part('year',fecha)="+str(year)+" and date_part('month',fecha)="+str(month)+" order by fecha, id_opercuentas")
