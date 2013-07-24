@@ -72,7 +72,7 @@ class frmAnalisis(QDialog, Ui_frmAnalisis):
         self.layHistorical.addWidget(self.ntbHistorical)
         
         self.cfg.currencies.load_qcombobox(self.cmbCurrency)
-        qcombobox_loadapalancamiento(self.cmbApalancado, self.cfg.apalancamientos())
+        qcombobox_loadapalancamiento(self.cmbApalancado, self.cfg.apalancamientos.list())
         qcombobox_loadtypes(self.cmbTipo, self.cfg.types.find())
 
         if self.investment.id!=None:#Si no est´a definido petaba el timer por no saber cual es
@@ -363,12 +363,12 @@ class frmAnalisis(QDialog, Ui_frmAnalisis):
         self.investment.mail=self.txtMail.text()
         self.investment.tpc=int(self.txtTPC.text())
         self.investment.pci=self.cmbPCI.itemData(self.cmbPCI.currentIndex())
-        self.investment.apalancado=self.cfg.apalancamientos(self.cmbApalancado.itemData(self.cmbApalancado.currentIndex()))
-        self.investment.bolsa=self.cfg.bolsas(self.cmbBolsa.itemData(self.cmbBolsa.currentIndex()))
+        self.investment.apalancado=self.cfg.apalancamientos.find(self.cmbApalancado.itemData(self.cmbApalancado.currentIndex()))
+        self.investment.bolsa=self.cfg.bolsas.find(self.cmbBolsa.itemData(self.cmbBolsa.currentIndex()))
         self.investment.yahoo=self.txtYahoo.text()
         self.investment.system=False
-        self.investment.priority=SetPriority(self.cfg).init__create_from_combo(self.cmbPriority)
-        self.investment.priorityhistorical=SetPriorityHistorical(self.cfg).init__create_from_combo(self.cmbPriorityHistorical)
+        self.investment.priority=SetPriorities(self.cfg).init__create_from_combo(self.cmbPriority)
+        self.investment.priorityhistorical=SetPrioritiesHistorical(self.cfg).init__create_from_combo(self.cmbPriorityHistorical)
         self.investment.comentario=self.txtComentario.text()
         
         insertarquote=False#se hace antes porque id despues de save ya tiene valor
@@ -410,11 +410,11 @@ class frmAnalisis(QDialog, Ui_frmAnalisis):
 
     def on_cmdPriority_released(self):
         if self.investment.id==None:#Insertar nueva inversión
-            selected=SetPriority(self.cfg)
+            selected=SetPriorities(self.cfg)
         else:
             selected=self.investment.priority
         
-        f=frmSelector(self.cfg, SetPriority(self.cfg).init__all(), selected)
+        f=frmSelector(self.cfg, SetPriorities(self.cfg).init__all(), selected)
         f.lbl.setText("Selector de Prioridades")
         f.exec_()
         self.cmbPriority.clear()
@@ -423,11 +423,11 @@ class frmAnalisis(QDialog, Ui_frmAnalisis):
 
     def on_cmdPriorityHistorical_released(self):
         if self.investment.id==None:#Insertar nueva inversión
-            selected=SetPriorityHistorical(self.cfg)
+            selected=SetPrioritiesHistorical(self.cfg)
         else:
             selected=self.investment.priorityhistorical
         
-        f=frmSelector(self.cfg, SetPriorityHistorical(self.cfg).init__all(),  selected) 
+        f=frmSelector(self.cfg, SetPrioritiesHistorical(self.cfg).init__all(),  selected) 
         f.lbl.setText("Selector de Prioridades de datos históricos")
         f.exec_()
         self.cmbPriorityHistorical.clear()

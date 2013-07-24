@@ -2121,6 +2121,7 @@ def qcombobox_loadtiposoperaciones(combo, tipos):
         combo.addItem(t.name,  t.id)
 
 class SetAgrupations:
+    """Se usa para meter en cfg las agrupaciones, pero tambi´en para crear agrupaciones en las inversiones"""
     def __init__(self, cfg):
         """Usa la variable cfg.Agrupations"""
         self.cfg=cfg
@@ -2128,28 +2129,28 @@ class SetAgrupations:
         
         
     def load_all(self):
-        self.dic_arr["ERROR"]=Agrupation().init__create( "ERROR","Agrupación errónea", self.cfg.types.find(3), self.cfg.bolsas.find(1) )
-        self.dic_arr["IBEX"]=Agrupation().init__create( "IBEX","Ibex 35", self.cfg.types.find(3), self.cfg.bolsas.find(1) )
-        self.dic_arr["MERCADOCONTINUO" ]=Agrupation().init__create( "MERCADOCONTINUO","Mercado continuo español", self.cfg.types.find(3), self.cfg.bolsas.find(1) )
-        self.dic_arr[ "CAC"]=Agrupation().init__create("CAC",  "CAC 40 de Par´is", self.cfg.types.find(3),self.cfg.bolsas.find(3) )
-        self.dic_arr["EUROSTOXX"]=Agrupation().init__create( "EUROSTOXX","Eurostoxx 50", self.cfg.types.find(3),self.cfg.bolsas.find(10)  )
-        self.dic_arr["DAX"]=Agrupation().init__create( "DAX","DAX", self.cfg.types.find(3), self.cfg.bolsas.find(5)  )
-        self.dic_arr["SP500"]=Agrupation().init__create("SP500",  "Standard & Poors 500", self.cfg.types.find(3), self.cfg.bolsas.find(2)  )
-        self.dic_arr["NASDAQ100"]=Agrupation().init__create( "NASDAQ100","Nasdaq 100", self.cfg.types.find(3), self.cfg.bolsas.find(2)  )
-        self.dic_arr["EURONEXT"]=Agrupation().init__create( "EURONEXT",  "EURONEXT", self.cfg.types.find(3), self.cfg.bolsas.find(10)  )
-        self.dic_arr["DEUTSCHEBOERSE"]=Agrupation().init__create( "DEUTSCHEBOERSE",  "DEUTSCHEBOERSE", self.cfg.types.find(3), self.cfg.bolsas.find(5)  )
+        self.dic_arr["ERROR"]=Agrupation(self.cfg).init__create( "ERROR","Agrupación errónea", self.cfg.types.find(3), self.cfg.bolsas.find(1) )
+        self.dic_arr["IBEX"]=Agrupation(self.cfg).init__create( "IBEX","Ibex 35", self.cfg.types.find(3), self.cfg.bolsas.find(1) )
+        self.dic_arr["MERCADOCONTINUO" ]=Agrupation(self.cfg).init__create( "MERCADOCONTINUO","Mercado continuo español", self.cfg.types.find(3), self.cfg.bolsas.find(1) )
+        self.dic_arr[ "CAC"]=Agrupation(self.cfg).init__create("CAC",  "CAC 40 de Par´is", self.cfg.types.find(3),self.cfg.bolsas.find(3) )
+        self.dic_arr["EUROSTOXX"]=Agrupation(self.cfg).init__create( "EUROSTOXX","Eurostoxx 50", self.cfg.types.find(3),self.cfg.bolsas.find(10)  )
+        self.dic_arr["DAX"]=Agrupation(self.cfg).init__create( "DAX","DAX", self.cfg.types.find(3), self.cfg.bolsas.find(5)  )
+        self.dic_arr["SP500"]=Agrupation(self.cfg).init__create("SP500",  "Standard & Poors 500", self.cfg.types.find(3), self.cfg.bolsas.find(2)  )
+        self.dic_arr["NASDAQ100"]=Agrupation(self.cfg).init__create( "NASDAQ100","Nasdaq 100", self.cfg.types.find(3), self.cfg.bolsas.find(2)  )
+        self.dic_arr["EURONEXT"]=Agrupation(self.cfg).init__create( "EURONEXT",  "EURONEXT", self.cfg.types.find(3), self.cfg.bolsas.find(10)  )
+        self.dic_arr["DEUTSCHEBOERSE"]=Agrupation(self.cfg).init__create( "DEUTSCHEBOERSE",  "DEUTSCHEBOERSE", self.cfg.types.find(3), self.cfg.bolsas.find(5)  )
 
 
-        self.dic_arr["e_fr_LYXOR"]=Agrupation().init__create( "e_fr_LYXOR","LYXOR", self.cfg.types.find(4),self.cfg.bolsas.find(3)  )
-        self.dic_arr["e_de_DBXTRACKERS"]=Agrupation().init__create( "e_de_DBXTRACKERS","Deutsche Bank X-Trackers", self.cfg.types.find(4),self.cfg.bolsas.find(5)  )
+        self.dic_arr["e_fr_LYXOR"]=Agrupation(self.cfg).init__create( "e_fr_LYXOR","LYXOR", self.cfg.types.find(4),self.cfg.bolsas.find(3)  )
+        self.dic_arr["e_de_DBXTRACKERS"]=Agrupation(self.cfg).init__create( "e_de_DBXTRACKERS","Deutsche Bank X-Trackers", self.cfg.types.find(4),self.cfg.bolsas.find(5)  )
         
-        self.dic_arr["f_es_0014"]=Agrupation().init__create("f_es_0014",  "Gestora BBVA", self.cfg.types.find(2), self.cfg.bolsas.find(1) )
-        self.dic_arr["f_es_0043"]=Agrupation().init__create( "f_es_0043","Gestora Renta 4", self.cfg.types.find(2), self.cfg.bolsas.find(1))
-        self.dic_arr["f_es_0055"]=Agrupation().init__create("f_es_0055","Gestora Bankinter", self.cfg.types.find(2),self.cfg.bolsas.find(1) )
-        self.dic_arr["f_es_BMF"]=Agrupation().init__create( "f_es_BMF","Fondos de la bolsa de Madrid", self.cfg.types.find(2), self.cfg.bolsas.find(1) )
+        self.dic_arr["f_es_0014"]=Agrupation(self.cfg).init__create("f_es_0014",  "Gestora BBVA", self.cfg.types.find(2), self.cfg.bolsas.find(1) )
+        self.dic_arr["f_es_0043"]=Agrupation(self.cfg).init__create( "f_es_0043","Gestora Renta 4", self.cfg.types.find(2), self.cfg.bolsas.find(1))
+        self.dic_arr["f_es_0055"]=Agrupation(self.cfg).init__create("f_es_0055","Gestora Bankinter", self.cfg.types.find(2),self.cfg.bolsas.find(1) )
+        self.dic_arr["f_es_BMF"]=Agrupation(self.cfg).init__create( "f_es_BMF","Fondos de la bolsa de Madrid", self.cfg.types.find(2), self.cfg.bolsas.find(1) )
 
-        self.dic_arr["w_fr_SG"]=Agrupation().init__create( "w_fr_SG","Warrants Societe Generale", self.cfg.types.find(5),self.cfg.bolsas.find(3) )
-        self.dic_arr["w_es_BNP"]=Agrupation().init__create("w_es_BNP","Warrants BNP Paribas", self.cfg.types.find(5),self.cfg.bolsas.find(1))
+        self.dic_arr["w_fr_SG"]=Agrupation(self.cfg).init__create( "w_fr_SG","Warrants Societe Generale", self.cfg.types.find(5),self.cfg.bolsas.find(3) )
+        self.dic_arr["w_es_BNP"]=Agrupation(self.cfg).init__create("w_es_BNP","Warrants BNP Paribas", self.cfg.types.find(5),self.cfg.bolsas.find(1))
 
     def find(self, id):
         try:
@@ -2196,11 +2197,12 @@ class SetAgrupations:
         
     def init__create_from_dbstring(self, dbstr):
         """Convierte la cadena de la base datos en un array de objetos agrupation"""
+        resultado=SetAgrupations(self.cfg)
         if dbstr==None or dbstr=="":
-            self.arr=[]
+            pass
         else:
             for item in dbstr[1:-1].split("|"):
-                self.arr.append(self.cfg.agrupations(item))
+                resultado.dic_arr[item]=self.cfg.agrupations.find(item)
         return self
         
     def combo(self, combo):
@@ -2223,20 +2225,56 @@ class SetAgrupations:
             self.arr.append(self.cfg.agrupations(cmb.itemData(i)))
         return self
 
-class SetPriority:
+class SetApalancamientos:
     def __init__(self, cfg):
         """Usa la variable cfg.Agrupations"""
         self.cfg=cfg
-        self.arr=[]
+        self.dic_arr={}
+                
+        
+    def load_all(self):
+        self.dic_arr["0"]=Apalancamiento(self.cfg).init__create(0 ,QApplication.translate("Core","No apalancado"))
+        self.dic_arr["1"]=Apalancamiento(self.cfg).init__create( 1,QApplication.translate("Core","Apalancamiento variable (Warrants)"))
+        self.dic_arr["2"]=Apalancamiento(self.cfg).init__create( 2,QApplication.translate("Core","Apalancamiento x2"))
+        self.dic_arr["3"]=Apalancamiento(self.cfg).init__create( 3,QApplication.translate("Core","Apalancamiento x3"))
+        self.dic_arr["4"]=Apalancamiento(self.cfg).init__create( 4,QApplication.translate("Core","Apalancamiento x4"))
+               
+
+    def list(self):
+        return dic2list(self.dic_arr)
+    def find(self, id):
+        return self.dic_arr[str(id)]
+
+class SetPriorities:
+    def __init__(self, cfg):
+        """Usa la variable cfg.Agrupations"""
+        self.cfg=cfg
+        self.dic_arr={}
+                
+    def load_all(self):
+        self.dic_arr["1"]=Priority().init__create(1,"Yahoo Financials. 200 pc.")
+        self.dic_arr["2"]=Priority().init__create(2,"Fondos de la bolsa de Madrid. Todos pc.")
+        self.dic_arr["3"]=Priority().init__create(3,"Borrar")#SANTGES ERA 3, para que no se repitan
+        self.dic_arr["7"]=Priority().init__create(7,"Bond alemán desde http://jcbcarc.dyndns.org. 3 pc.")#SANTGES ERA 3, para que no se repitan
+        self.dic_arr["4"]=Priority().init__create(4,"Infobolsa. índices internacionales. 20 pc.")
+        self.dic_arr["5"]=Priority().init__create(5,"Productos cotizados bonus. 20 pc.")
+        self.dic_arr["6"]=Priority().init__create(6,"Societe Generale Warrants. Todos pc.")
+                        
+    
+    def list(self):
+        return dic2list(self.dic_arr)
+    def find(self, id):
+        return self.dic_arr[str(id)]
         
     def init__create_from_db(self, arr):
         """Convierte el array de enteros de la base datos en un array de objetos priority"""
+        resultado=SetPriorities(self.cfg)
         if arr==None or len(arr)==0:
-            self.arr=[]
+            resultado.dic_arr={}
         else:
             for a in arr:
-                self.arr.append(self.cfg.priorities(a))
-        return self
+                resultado.dic_arr[str(a)]=self.cfg.priorities.find(a)
+        return resultado
     
     def dbstring(self):
         if len(self.arr)==0:
@@ -2256,24 +2294,35 @@ class SetPriority:
     def init__all(self):
         self.arr=self.cfg.priorities()
         return self
-class SetPriorityHistorical:
+class SetPrioritiesHistorical:
     def __init__(self, cfg):
         """Usa la variable cfg.Agrupations"""
         self.cfg=cfg
-        self.arr=[]
+        self.dic_arr={}
         
+            
+    def load_all(self):
+        self.dic_arr["3"]=PriorityHistorical().init__create(3,"Individual. Yahoo historicals")
+    
+    def list(self):
+        return dic2list(self.dic_arr)
+        
+    def find(self, id):
+        return self.dic_arr[str(id)]
+            
     def init__create_from_db(self, arr):
         """Convierte el array de enteros de la base datos en un array de objetos priority"""
+        resultado=SetPrioritiesHistorical(self.cfg)
         if arr==None or len(arr)==0:
-            self.arr=[]
+            resultado.dic_arr={}
         else:
             for a in arr:
-                self.arr.append(self.cfg.prioritieshistorical(a))
-        return self
+                resultado.dic_arr[str(a)]=self.cfg.prioritieshistorical.find(a)
+        return resultado
             
-    def init__all(self):
-        self.arr=self.cfg.prioritieshistorical()
-        return self
+#    def init__all(self):
+#        self.arr=self.cfg.prioritieshistorical()
+#        return self
         
     def dbstring(self):
         if len(self.arr)==0:
@@ -3310,7 +3359,7 @@ class Investment:
         self.isin=row['isin']
         self.currency=self.cfg.currencies.find(row['currency'])
         self.type=self.cfg.types.find(row['type'])
-        self.agrupations=SetAgrupation(self.cfg).init__create_from_dbstring(row['agrupations'])
+        self.agrupations=SetAgrupations(self.cfg).init__create_from_dbstring(row['agrupations'])
         self.active=row['active']
         self.id=row['id']
         self.web=row['web']
@@ -3319,11 +3368,11 @@ class Investment:
         self.mail=row['mail']
         self.tpc=row['tpc']
         self.pci=row['pci']
-        self.apalancado=self.cfg.apalancamientos(row['apalancado'])
-        self.bolsa=self.cfg.bolsas(row['id_bolsas'])
+        self.apalancado=self.cfg.apalancamientos.find(row['apalancado'])
+        self.bolsa=self.cfg.bolsas.find(row['id_bolsas'])
         self.yahoo=row['yahoo']
-        self.priority=SetPriority(self.cfg).init__create_from_db(row['priority'])
-        self.priorityhistorical=SetPriorityHistorical(self.cfg).init__create_from_db(row['priorityhistorical'])
+        self.priority=SetPriorities(self.cfg).init__create_from_db(row['priority'])
+        self.priorityhistorical=SetPrioritiesHistorical(self.cfg).init__create_from_db(row['priorityhistorical'])
         self.comentario=row['comentario']
         self.obsolete=row['obsolete']
         self.deletable=row['deletable']
@@ -3334,7 +3383,7 @@ class Investment:
         
                 
     def init__create(self, name,  isin, currency, type, agrupations, active, web, address, phone, mail, tpc, pci, apalancado, bolsa, yahoo, priority, priorityhistorical, comentario, obsolete, deletable, system, id=None):
-        """agrupations es un setagrupation, priority un setpriority y priorityhistorical un setpriorityhistorical"""
+        """agrupations es un setagrupation, priority un SetPriorities y priorityhistorical un SetPrioritieshistorical"""
         self.name=name
         self.isin=isin
         self.currency=currency
@@ -3963,7 +4012,7 @@ class QuotesResult:
 
 
 class Apalancamiento:
-    def __init__(self):
+    def __init__(self, cfg):
         self.id=None
         self.name=None
     def init__create(self, id, name):
@@ -4005,7 +4054,8 @@ class Type:
 class Agrupation:
     """Una inversión pertenece a una lista de agrupaciones ibex, indices europeos
     fondo europeo, fondo barclays. Hat tantas agrupaciones como clasificaciones . grupos en kaddressbook similar"""
-    def __init__(self):
+    def __init__(self,  cfg):
+        self.cfg=cfg
         self.id=None
         self.name=None
         self.type=None
@@ -4074,10 +4124,10 @@ class ConfigMQ:
         self.currencies=SetCurrencies(self)
         self.types=SetTypes(self)
         self.agrupations=SetAgrupations(self)
-        self.dic_apalancamientos={}
-        self.dic_priorities={}
-        self.dic_prioritieshistorical={}
-        self.dic_zones={}
+        self.apalancamientos=SetApalancamientos(self)
+        self.priorities=SetPriorities(self)
+        self.prioritieshistorical=SetPrioritiesHistorical(self)
+        self.zones=SetZones(self)
         
         
         
@@ -4086,27 +4136,13 @@ class ConfigMQ:
         print ("Cargando ConfigMQ")
         self.countries.load_all()
         self.currencies.load_all()
+        self.priorities.load_all()
+        self.prioritieshistorical.load_all()
         self.types.load_all()
         self.bolsas.load_all_from_db()
         self.agrupations.load_all()
-        self.carga_apalancamientos()
-        self.carga_priorities()
-        self.carga_prioritieshistorical()
-        
-        
-    def carga_apalancamientos(self):
-        self.dic_apalancamientos["0"]=Apalancamiento().init__create(0 ,QApplication.translate("Core","No apalancado"))
-        self.dic_apalancamientos["1"]=Apalancamiento().init__create( 1,QApplication.translate("Core","Apalancamiento variable (Warrants)"))
-        self.dic_apalancamientos["2"]=Apalancamiento().init__create( 2,QApplication.translate("Core","Apalancamiento x2"))
-        self.dic_apalancamientos["3"]=Apalancamiento().init__create( 3,QApplication.translate("Core","Apalancamiento x3"))
-        self.dic_apalancamientos["4"]=Apalancamiento().init__create( 4,QApplication.translate("Core","Apalancamiento x4"))
-               
-
-    def apalancamientos(self, id=None):
-        if id==None:
-            return dic2list(self.dic_apalancamientos)
-        else:
-            return self.dic_apalancamientos[str(id)]
+        self.apalancamientos.load_all()
+        self.zones.load_all()
 
 
 
@@ -4151,31 +4187,7 @@ class ConfigMQ:
         else:
             return self.dic_activas[str(id)]
                         
-        
-    def carga_priorities(self):
-        self.dic_priorities["1"]=Priority().init__create(1,"Yahoo Financials. 200 pc.")
-        self.dic_priorities["2"]=Priority().init__create(2,"Fondos de la bolsa de Madrid. Todos pc.")
-        self.dic_priorities["7"]=Priority().init__create(7,"Bond alemán desde http://jcbcarc.dyndns.org. 3 pc.")#SANTGES ERA 3, para que no se repitan
-        self.dic_priorities["4"]=Priority().init__create(4,"Infobolsa. índices internacionales. 20 pc.")
-        self.dic_priorities["5"]=Priority().init__create(5,"Productos cotizados bonus. 20 pc.")
-        self.dic_priorities["6"]=Priority().init__create(6,"Societe Generale Warrants. Todos pc.")
-                        
-    
-    def priorities(self, id=None):
-        if id==None:
-            return dic2list(self.dic_priorities)
-        else:
-            return self.dic_priorities[str(id)]
-            
-    def carga_prioritieshistorical(self):
-        self.dic_prioritieshistorical["3"]=PriorityHistorical().init__create(3,"Individual. Yahoo historicals")
-    
-    def prioritieshistorical(self, id=None):
-        if id==None:
-            return dic2list(self.dic_prioritieshistorical)
-        else:
-            return self.dic_prioritieshistorical[str(id)]
-            
+
             
 class ConfigXulpy(ConfigMQ):
     def __init__(self):
@@ -4356,6 +4368,19 @@ class Global:
         cur.close()
         return resultado
 
+
+class Zone:
+    def __init__(self, cfg):
+        self.cfg=cfg
+        self.name=None
+        
+class SetZones:
+    def __init__(self, cfg):
+        self.cfg=cfg
+        self.dic_arr={}
+        
+    def load_all(self):
+        self.dic_arr["Europe/Madrid"]=Type().init__create(1,'Europe/Madrid')
 
 def arr_split(arr, wanted_parts=1):
     length = len(arr)
