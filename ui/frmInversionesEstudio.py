@@ -273,8 +273,8 @@ class frmInversionesEstudio(QDialog, Ui_frmInversionesEstudio):
         if self.data_investments.find(myquotesid)==None:
             print ("Cargando otro mqinversiones")
             curmq=self.cfg.conmq.cursor()        
-            inv=Investment().init__db(self.cfg, curmq, myquotesid)
-            self.cfg.dic_mqinversiones[str(rowmq['id'])]=Investment().init__db_row(self.cfg, rowmq)
+            inv=Investment(self.cfg).init__db(self.cfg, curmq, myquotesid)
+            self.cfg.dic_mqinversiones[str(rowmq['id'])]=Investment(self.cfg).init__db_row(self.cfg, rowmq)
             self.cfg.dic_mqinversiones[str(rowmq['id'])].load_estimacion(curmq)
             self.cfg.dic_mqinversiones[str(rowmq['id'])].quotes.get_basic(curmq)
             curmq.close()

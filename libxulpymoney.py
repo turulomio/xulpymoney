@@ -1,6 +1,6 @@
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
-import datetime,  time,  pytz,   psycopg2,  psycopg2.extras,  sys,  gettext,  codecs,  urllib.request,    os,  configparser,  threading
+import datetime,  time,  pytz,   psycopg2,  psycopg2.extras,  sys,  codecs,  urllib.request,    os,  configparser,  threading
 
 sys.path.append("/etc/xulpymoney")
 import config
@@ -254,7 +254,7 @@ class SetMQInvestments:
         ##Carga los investments
         curmq.execute("select * from investments where id in ("+lista+")" )
         for rowmq in curmq:
-            inv=Investment().init__db_row(self.cfg, rowmq)
+            inv=Investment(self.cfg).init__db_row(self.cfg, rowmq)
             inv.load_estimacion(curmq2)
             inv.quotes.get_basic(curmq2)
             self.arr.append(inv)
@@ -270,6 +270,24 @@ class SetMQInvestments:
             if a.id==id:
                 return a
         return None
+        
+class SetBolsas:
+    def __init__(self, cfg):
+        self.dic_arr={}
+        self.cfg=cfg     
+    
+    def load_all_from_db(self):
+        curmq=self.cfg.conmq.cursor()
+        curmq.execute("Select * from bolsas")
+        for row in curmq:
+            self.dic_arr[str(row['id_bolsas'])]=Bolsa(self.cfg).init__db_row(row, self.cfg.countries.find(row['country']))
+        curmq.close()
+            
+    def find(self, id):
+        return self.dic_arr[str(id)]
+        
+    def list(self):
+        return dic2list(self.dic_arr)
         
 class SetCommon:
     def __init__(self):
@@ -319,6 +337,34 @@ class SetConceptos:
         resultado=sorted(resultado, key=lambda c: c.name  ,  reverse=False)  
         return resultado
 
+
+class SetCountries:
+    def __init__(self, cfg):
+        self.dic_arr={}
+        self.cfg=cfg   
+        
+    def load_all(self):
+        self.dic_arr['es']=Country().init__create("es",QApplication.translate("Core","España"))
+        self.dic_arr['be']=Country().init__create("be",QApplication.translate("Core","Bélgica"))
+        self.dic_arr['cn']=Country().init__create("cn",QApplication.translate("Core","China"))
+        self.dic_arr['de']=Country().init__create("de",QApplication.translate("Core","Alemania"))
+        self.dic_arr['en']=Country().init__create("en",QApplication.translate("Core","Reino Unido"))
+        self.dic_arr['eu']=Country().init__create("eu",QApplication.translate("Core","Europa"))
+        self.dic_arr['fi']=Country().init__create("fi",QApplication.translate("Core","Finlandia"))
+        self.dic_arr['fr']=Country().init__create("fr",QApplication.translate("Core","Francia"))
+        self.dic_arr['ie']=Country().init__create("ie",QApplication.translate("Core","Irlanda"))
+        self.dic_arr['it']=Country().init__create("it",QApplication.translate("Core","Italia"))
+        self.dic_arr['jp']=Country().init__create("jp",QApplication.translate("Core","Japón"))
+        self.dic_arr['nl']=Country().init__create("nl",QApplication.translate("Core","Países Bajos"))
+        self.dic_arr['pt']=Country().init__create("pt",QApplication.translate("Core","Portugal"))
+        self.dic_arr['us']=Country().init__create("us",QApplication.translate("Core","Estados Unidos"))
+                
+
+    def list(self):
+        return dic2list(self.dic_arr)
+    def find(self, id):
+        return self.dic_arr[str(id)]
+
 class SetCuentas:     
     def __init__(self, cfg,  setebs):
         self.arr=[]
@@ -345,6 +391,36 @@ class SetCuentas:
         self.arr=sorted(self.arr, key=lambda c: c.name,  reverse=False)         
     
     
+class SetCurrencies:
+    def __init__(self, cfg):
+        self.dic_arr={}
+        self.cfg=cfg   
+    
+    def load_all(self):
+        self.dic_arr["CNY"]=Currency().init__create(QApplication.translate("Core","Yoanes chino"), "¥", 'CNY')
+        self.dic_arr['EUR']=Currency().init__create(QApplication.translate("Core","Euro"), "€", "EUR")
+        self.dic_arr['GBP']=Currency().init__create(QApplication.translate("Core","Libra esterlina"),"£", 'GBP')
+        self.dic_arr['JPY']=Currency().init__create(QApplication.translate("Core","Yen Japonés"), '¥', "JPY")
+        self.dic_arr['USD']=Currency().init__create(QApplication.translate("Core","Dólar americano"), '$', 'USD')
+        self.dic_arr['u']=Currency().init__create(QApplication.translate("Core","Unidades"), 'u', 'u')
+
+    def list_orderby_id(self):
+        """Devuelve una lista ordenada por id"""
+        currencies=dic2list(self.dic_arr)
+        currencies=sorted(currencies, key=lambda c: c.id,  reverse=False)         
+        return currencies
+
+    def find(self, id):
+        return self.dic_arr[str(id)]
+        
+
+
+    def load_qcombobox(combo, selectedcurrency=None):
+        """Función que carga en un combo pasado como parámetro las currencies"""
+        for c in self.list_orderby_id():
+            combo.addItem("{0} - {1} ({2})".format(c.id, c.name, c.symbol), c.id)
+        #NO SE PUEDE PONER C COMO VARIANT YA QUE LUEGO EL FIND NO ENCUENTRA EL OBJETO.
+
 class SetEBs:     
     def __init__(self, cfg):
         self.arr=[]
@@ -1249,13 +1325,13 @@ class Cuenta:
     def __repr__(self):
         return ("Instancia de Cuenta: {0} ({1})".format( self.name, self.id))
         
-    def init__db_row(self, cfg,  row, eb):
+    def init__db_row(self, row, eb):
         self.id=row['id_cuentas']
         self.name=row['cuenta']
         self.eb=eb
         self.activa=row['cu_activa']
         self.numero=row['numerocuenta']
-        self.currency=cfg.currencies(row['currency'])
+        self.currency=self.cfg.currencies.find(row['currency'])
         return self
     
     def saldo_from_db(self,cur,  fecha=None):
@@ -2044,11 +2120,53 @@ def qcombobox_loadtiposoperaciones(combo, tipos):
     for t in tipos.list():
         combo.addItem(t.name,  t.id)
 
-class SetAgrupation:
+class SetAgrupations:
     def __init__(self, cfg):
         """Usa la variable cfg.Agrupations"""
         self.cfg=cfg
-        self.arr=[]
+        self.dic_arr={}
+        
+        
+    def load_all(self):
+        self.dic_arr["ERROR"]=Agrupation().init__create( "ERROR","Agrupación errónea", self.cfg.types.find(3), self.cfg.bolsas.find(1) )
+        self.dic_arr["IBEX"]=Agrupation().init__create( "IBEX","Ibex 35", self.cfg.types.find(3), self.cfg.bolsas.find(1) )
+        self.dic_arr["MERCADOCONTINUO" ]=Agrupation().init__create( "MERCADOCONTINUO","Mercado continuo español", self.cfg.types.find(3), self.cfg.bolsas.find(1) )
+        self.dic_arr[ "CAC"]=Agrupation().init__create("CAC",  "CAC 40 de Par´is", self.cfg.types.find(3),self.cfg.bolsas.find(3) )
+        self.dic_arr["EUROSTOXX"]=Agrupation().init__create( "EUROSTOXX","Eurostoxx 50", self.cfg.types.find(3),self.cfg.bolsas.find(10)  )
+        self.dic_arr["DAX"]=Agrupation().init__create( "DAX","DAX", self.cfg.types.find(3), self.cfg.bolsas.find(5)  )
+        self.dic_arr["SP500"]=Agrupation().init__create("SP500",  "Standard & Poors 500", self.cfg.types.find(3), self.cfg.bolsas.find(2)  )
+        self.dic_arr["NASDAQ100"]=Agrupation().init__create( "NASDAQ100","Nasdaq 100", self.cfg.types.find(3), self.cfg.bolsas.find(2)  )
+        self.dic_arr["EURONEXT"]=Agrupation().init__create( "EURONEXT",  "EURONEXT", self.cfg.types.find(3), self.cfg.bolsas.find(10)  )
+        self.dic_arr["DEUTSCHEBOERSE"]=Agrupation().init__create( "DEUTSCHEBOERSE",  "DEUTSCHEBOERSE", self.cfg.types.find(3), self.cfg.bolsas.find(5)  )
+
+
+        self.dic_arr["e_fr_LYXOR"]=Agrupation().init__create( "e_fr_LYXOR","LYXOR", self.cfg.types.find(4),self.cfg.bolsas.find(3)  )
+        self.dic_arr["e_de_DBXTRACKERS"]=Agrupation().init__create( "e_de_DBXTRACKERS","Deutsche Bank X-Trackers", self.cfg.types.find(4),self.cfg.bolsas.find(5)  )
+        
+        self.dic_arr["f_es_0014"]=Agrupation().init__create("f_es_0014",  "Gestora BBVA", self.cfg.types.find(2), self.cfg.bolsas.find(1) )
+        self.dic_arr["f_es_0043"]=Agrupation().init__create( "f_es_0043","Gestora Renta 4", self.cfg.types.find(2), self.cfg.bolsas.find(1))
+        self.dic_arr["f_es_0055"]=Agrupation().init__create("f_es_0055","Gestora Bankinter", self.cfg.types.find(2),self.cfg.bolsas.find(1) )
+        self.dic_arr["f_es_BMF"]=Agrupation().init__create( "f_es_BMF","Fondos de la bolsa de Madrid", self.cfg.types.find(2), self.cfg.bolsas.find(1) )
+
+        self.dic_arr["w_fr_SG"]=Agrupation().init__create( "w_fr_SG","Warrants Societe Generale", self.cfg.types.find(5),self.cfg.bolsas.find(3) )
+        self.dic_arr["w_es_BNP"]=Agrupation().init__create("w_es_BNP","Warrants BNP Paribas", self.cfg.types.find(5),self.cfg.bolsas.find(1))
+
+    def find(self, id):
+        try:
+            return self.dic_arr[str(id)]        
+        except:
+            return self.dic_arr["ERROR"]
+                
+    def list (self, id=None):
+        return dic2list(self.dic_arr)
+    
+    def agrupations_por_tipo(self,  type):
+        """Muestra las agrupaciónes de un tipo pasado como par´ametro. El par´ametro type es un objeto Type"""
+        resultado=[]
+        for a in self.agrupations():
+            if a.type==type:
+                resultado.append(a)
+        return resultado
         
     def init__all(self):
         self.arr=self.cfg.agrupations()
@@ -2056,23 +2174,23 @@ class SetAgrupation:
         
     def init__etfs(self):
         """Función que filtra el diccionario a según el país y el fondo """
-        self.arr=self.cfg.agrupations_por_tipo(self.cfg.types(4))
+        self.arr=self.cfg.agrupations_por_tipo(self.cfg.types.find(4))
         return self
         
 #        return {k:v for k,v in self.cfg.Agrupations.items() if k[0]=='e' and  k[2]==country[0] and k[3]==country[1]}
     def init__warrants(self):
         """Función que filtra el diccionario a según el país y el fondo """
-        self.arr=self.cfg.agrupations_por_tipo(self.cfg.types(5))
+        self.arr=self.cfg.agrupations_por_tipo(self.cfg.types.find(5))
         return self
         
     def init__fondos(self):
         """Función que filtra el diccionario a según el país y el fondo """
-        self.arr=self.cfg.agrupations_por_tipo(self.cfg.types(2))
+        self.arr=self.cfg.agrupations_por_tipo(self.cfg.types.find(2))
         return self
         
     def init__acciones(self):
         """Función que filtra el diccionario a según el país y el fondo """
-        self.arr=self.cfg.agrupations_por_tipo(self.cfg.types(1))
+        self.arr=self.cfg.agrupations_por_tipo(self.cfg.types.find(1))
         return self
         
         
@@ -2173,7 +2291,8 @@ class SetPriorityHistorical:
         return self
 
 class Bolsa:
-    def __init__(self):
+    def __init__(self, cfg):
+        self.cfg=cfg
         self.id=None
         self.name=None
         self.country=None
@@ -2257,11 +2376,10 @@ class Color:
     def darkred(self, text):
         return self.codes["darkred"]+text+self.codes["reset"]
 
-def _(cadena):
-    return gettext.gettext(cadena)
 
-def softwareversion():
-    return "20110409"
+#
+#def softwareversion():
+#    return "20110409"
 
 class Currency:
     """Clase que almacena el concepto divisa"""
@@ -2341,7 +2459,7 @@ class Money:
         return
 
 
-class newEstimacion:
+class Estimacion:
     def __init__(self):
         self.year=None
         self.dpa=None
@@ -2381,6 +2499,8 @@ class newEstimacion:
     
 
 class DividendoEstimacion:
+    def __init__(self, cfg):
+        self.cfg=cfg
     def dpa(cur, investment,  currentyear):
         cur.execute("select dpa from estimaciones where id=%s and year=%s", (investment.id, currentyear))
         if cur.rowcount==1:
@@ -2395,14 +2515,16 @@ class DividendoEstimacion:
         else:
             return None
             
-    def insertar(cur, id,  year, dpa, fechaestimacion=datetime.date.today(), fuente='Internet',  manual=True):
+    def insertar(id,  year, dpa, fechaestimacion=datetime.date.today(), fuente='Internet',  manual=True):
         """Función que comprueba si existe el registro para insertar o modificarlo según proceda"""
-        cur.execute("select count(*) from estimaciones where id=%s and year=%s", (id, year))
-        if cur.fetchone()[0]==0:
-            cur.execute("insert into estimaciones (id, year, dpa, fechaestimacion, fuente, manual) values (%s,%s,%s,%s,%s,%s)", (id, year, dpa, fechaestimacion, fuente, manual))
+        curmq=self.cfg.conmq.cursor()
+        curmq.execute("select count(*) from estimaciones where id=%s and year=%s", (id, year))
+        if curmq.fetchone()[0]==0:
+            curmq.execute("insert into estimaciones (id, year, dpa, fechaestimacion, fuente, manual) values (%s,%s,%s,%s,%s,%s)", (id, year, dpa, fechaestimacion, fuente, manual))
         else:
-            cur.execute("update estimaciones set dpa=%s, fechaestimacion=%s, fuente=%s, manual=%s where id=%s and year=%s", (dpa, fechaestimacion, fuente, manual, id, year))
-
+            curmq.execute("update estimaciones set dpa=%s, fechaestimacion=%s, fuente=%s, manual=%s where id=%s and year=%s", (dpa, fechaestimacion, fuente, manual, id, year))
+        curmq.close()
+        
 #class Gen:#Solo cuando hay que hacer arrays para una operacion como yahoo
 #    yahoo1=1
 #    yahoo2=2
@@ -2525,7 +2647,7 @@ class Source:
         else:
             cur.execute("select * from investments where (select count(*) from quotes where id=investments.id and datetime>now()::date-%s)=0 and active=false and priorityhistorical[1]=%s;", (dias,  idpriority))   
         for row in cur:
-            resultado.append(Investment().init__db_row(self.cfg, row))
+            resultado.append(Investment(self.cfg).init__db_row(self.cfg, row))
         return resultado
         
     def find_ids(self):
@@ -2624,7 +2746,7 @@ class Source:
                 if self.debug==True:
                     for i in self.arr_quote(row['code']):
                         print (i)
-    #                log("S_SOCIETEGENERALEWARRANTS_STATICS", gettext.gettext("%d de %d" %(cur.rownumber, cur.rowcount)))
+    #                log("S_SOCIETEGENERALEWARRANTS_STATICS", QApplication.translate("Core",("%d de %d" %(cur.rownumber, cur.rowcount)))
                 else:
                     Quote(self.cfg).insert_cdtv(self.arr_quote(row['code']), self.name)
                 status_update(cur2, self.name, "Update step quotes", status='Waiting step',  statuschange=datetime.datetime.now())
@@ -2719,7 +2841,7 @@ class Source:
 #                if self.debug==True:
 #                    for i in self.arr_static(row['code']):
 #                        print (i)
-#    #                log("S_SOCIETEGENERALEWARRANTS_STATICS", gettext.gettext("%d de %d" %(cur.rownumber, cur.rowcount)))
+#    #                log("S_SOCIETEGENERALEWARRANTS_STATICS", QApplication.translate("Core",("%d de %d" %(cur.rownumber, cur.rowcount)))
 #                else:
 #                    Investment(self.cfg).update_static(self.arr_static(row['code']), self.name)
 #
@@ -2945,7 +3067,7 @@ class Source:
 #                            resultado.add(isin)
 #
 #            if len(resultado)==-1:
-#                texto=gettext.gettext("No están todos los del cac40, reintentando")
+#                texto=QApplication.translate("Core",("No están todos los del cac40, reintentando")
 #                log(self.name,"SET_CAC40_ISIN", texto)
 #                time.sleep(60)
 #            else:
@@ -2971,7 +3093,7 @@ class Source:
 #                    continue    
 #                line=web.readline().decode()
 #            if len(resultado)==-1:#<10:
-#                log(self.name,"SET_DAX_ISIN", gettext.gettext("No están todos, reintentando"))
+#                log(self.name,"SET_DAX_ISIN", QApplication.translate("Core",("No están todos, reintentando"))
 #                time.sleep(60)
 #            else:
 #                break
@@ -2992,7 +3114,7 @@ class Source:
 #                except:
 #                    continue    
 #            if len(resultado)<10:
-#                log(self.name,"SET_IBEX", gettext.gettext("No están todos los del ibex, reintentando"))
+#                log(self.name,"SET_IBEX", QApplication.translate("Core",("No están todos los del ibex, reintentando"))
 #                time.sleep(60)
 #            else:
 #                break
@@ -3017,7 +3139,7 @@ class Source:
 #                    continue    
 #                line=web.readline().decode()
 #            if len(resultado)==-1:#<10:
-#                log(self.name,"SET_EUROSTOXX_ISIN",gettext.gettext("No están todos, reintentando"))
+#                log(self.name,"SET_EUROSTOXX_ISIN",QApplication.translate("Core",("No están todos, reintentando"))
 #                time.sleep(60)
 #            else:
 #                break
@@ -3036,7 +3158,7 @@ class Source:
 #                if len (arr[1])>0:
 #                    resultado.add(arr[1])
 #            if len(resultado)<10:
-#                log(self.name,"SET_NYSE",gettext.gettext("No están todos, reintentando"))
+#                log(self.name,"SET_NYSE",QApplication.translate("Core",("No están todos, reintentando"))
 #                time.sleep(60)
 #            else:
 #                break
@@ -3107,7 +3229,7 @@ class Source:
 #            if d['date']>inicio: #Para no insertar el que se puso para que no fallara por vacio
 #                resultado.append(d)
 #        if error>0:
-#            log("YAHOO_HISTORICAL", "",  gettext.gettext("Error al parsear %(code)s desde %(name)s") % {"code":code.replace("\n", ""),  "name":self.name})       
+#            log("YAHOO_HISTORICAL", "",  QApplication.translate("Core",("Error al parsear %(code)s desde %(name)s") % {"code":code.replace("\n", ""),  "name":self.name})       
 #        return resultado
 #        
 #    def yahoo_quotes(self,  quotes,  precode=''):
@@ -3147,11 +3269,12 @@ class Source:
 #                error=error +1
 #                continue
 ##    if error>0:
-##        log("YAHOO_QUOTES", gettext.gettext("Han habido %(errores)d errores en el parseo de s_yahoo() desde la url %(url)s" %{ "errores":error, "url":comand}))
+##        log("YAHOO_QUOTES", QApplication.translate("Core",("Han habido %(errores)d errores en el parseo de s_yahoo() desde la url %(url)s" %{ "errores":error, "url":comand}))
 #        return (resultado,  error)
 
 class Investment:
-    def __init__(self):
+    def __init__(self, cfg):
+        self.cfg=cfg
         self.name=None
         self.isin=None
         self.currency=None #Apunta a un objeto currency
@@ -3181,13 +3304,13 @@ class Investment:
     def __repr__(self):
         return "{0} ({1}) de la {2}".format(self.name , self.id, self.bolsa.name)
                 
-    def init__db_row(self, cfg, row):
+    def init__db_row(self, row):
         """row es una fila de un pgcursro de investmentes"""
         self.name=row['name']
         self.isin=row['isin']
-        self.currency=cfg.currencies(row['currency'])
-        self.type=cfg.types(row['type'])
-        self.agrupations=SetAgrupation(cfg).init__create_from_dbstring(row['agrupations'])
+        self.currency=self.cfg.currencies.find(row['currency'])
+        self.type=self.cfg.types.find(row['type'])
+        self.agrupations=SetAgrupation(self.cfg).init__create_from_dbstring(row['agrupations'])
         self.active=row['active']
         self.id=row['id']
         self.web=row['web']
@@ -3196,11 +3319,11 @@ class Investment:
         self.mail=row['mail']
         self.tpc=row['tpc']
         self.pci=row['pci']
-        self.apalancado=cfg.apalancamientos(row['apalancado'])
-        self.bolsa=cfg.bolsas(row['id_bolsas'])
+        self.apalancado=self.cfg.apalancamientos(row['apalancado'])
+        self.bolsa=self.cfg.bolsas(row['id_bolsas'])
         self.yahoo=row['yahoo']
-        self.priority=SetPriority(cfg).init__create_from_db(row['priority'])
-        self.priorityhistorical=SetPriorityHistorical(cfg).init__create_from_db(row['priorityhistorical'])
+        self.priority=SetPriority(self.cfg).init__create_from_db(row['priority'])
+        self.priorityhistorical=SetPriorityHistorical(self.cfg).init__create_from_db(row['priorityhistorical'])
         self.comentario=row['comentario']
         self.obsolete=row['obsolete']
         self.deletable=row['deletable']
@@ -3238,14 +3361,17 @@ class Investment:
         self.quotes=QuotesResult(self)
         return self        
 
-    def init__db(self, cfg,  curmq, id):
+    def init__db(self, id):
         """Se pasa id porque se debe usar cuando todavía no se ha generado."""
+        curmq=self.cfg.conmq.cursor()
         curmq.execute("select * from investments where id=%s", (id, ))
         row=curmq.fetchone()
-        return self.init__db_row(cfg, row)
+        curmq.close()
+        return self.init__db_row(row)
         
-    def load_estimacion(self, curmq, year=None):
+    def load_estimacion(self, year=None):
         """Si year es none carga todas las estimaciones de la inversionmq"""
+        curmq=self.cfg.conmq.cursor()
         if year==None:
             year=datetime.date.today().year
         curmq.execute("select * from estimaciones where year=%s and id=%s", (year, self.id))
@@ -3254,10 +3380,13 @@ class Investment:
         else:
             e=newEstimacion().init__db_row(curmq.fetchone(), self)
         self.estimaciones[str(e.year)]=e
+        curmq.close()
         
-    def save(self, cur):
+    def save(self):
         """Esta función inserta una inversión manual"""
         """Los arrays deberan pasarse como parametros ARRAY[1,2,,3,] o None"""
+        
+        cur=self.cfg.conmq.cursor()
         if self.id==None:
             cur.execute(" select min(id)-1 from investments;")
             id=cur.fetchone()[0]
@@ -3266,12 +3395,14 @@ class Investment:
         else:
             sql="update investments set name='{0}', isin='{1}',currency='{2}',type={3}, agrupations='{4}', active={5}, web='{6}', address='{7}', phone='{8}', mail='{9}', tpc={10}, pci='{11}', apalancado={12}, id_bolsas={13}, yahoo='{14}', priority={15}, priorityhistorical={16}, comentario='{17}', obsolete={18} where id={19}".format( self.name,  self.isin,  self.currency.id,  self.type.id,  self.agrupations.dbstring(),  self.active,  self.web, self.address,  self.phone, self.mail, self.tpc, self.pci,  self.apalancado.id, self.bolsa.id, self.yahoo, self.priority.dbstring(), self.priorityhistorical.dbstring() , self.comentario, self.obsolete,  self.id)
             cur.execute(sql)
+        cur.close()
     
-    def changeDeletable(cur,  ids,  deletable):
+    def changeDeletable(ids,  deletable):
         """Modifica a deletable"""
+        curmq=self.cfg.conmq.cursor()
         sql="update investments set deletable={0} where id in ({1})".format( deletable,  str(ids)[1:-1])
-        print (sql)
-        cur.execute(sql)
+        curmq.execute(sql)
+        curmq.close()
         
     def priority_change(self, cur):
         """Cambia la primera prioridad y la pone en último lugar, necesita un commit()"""
@@ -3302,7 +3433,7 @@ class QuotesSet:
         """
         (insertados, buscados, modificados)=(0, 0, 0)
         if len(self.arr)==0:
-            log("QUOTES",source,  gettext.gettext("No se ha parseado nada"))
+            log("QUOTES",source,  QApplication.translate("Core","No se ha parseado nada"))
             return
             
         for p in self.arr:
@@ -3315,7 +3446,7 @@ class QuotesSet:
                 modificados=modificados+1
 
         if insertados>0 or modificados>0:
-            log("QUOTES" , source,  gettext.gettext("Se han buscado %(b)d, modificado %(m)d e insertado %(i)d registros de %(c)s") %{"b":buscados, "m": modificados,   "i":insertados,  "c":source})
+            log("QUOTES" , source,  QApplication.translate("Core","Se han buscado %(b)d, modificado %(m)d e insertado %(i)d registros de %(c)s") %{"b":buscados, "m": modificados,   "i":insertados,  "c":source})
         #        return resultado
         
     def append(self, quote):
@@ -3427,7 +3558,7 @@ class QuotesGenOHCL:
         cur=self.mem.con.cursor()
         cur.execute("select * from investments where type in (1,3,4,5) order by name")
         for row in cur:
-            inv=Investment().init__db_row(self.mem, row)
+            inv=Investment(self.cfg).init__db_row(self.mem, row)
             print (inv.name,  cur.rownumber, cur.rowcount)
             self.recalculateInvestmentDelete(inv, False)
         cur.close()
@@ -3860,7 +3991,7 @@ class PriorityHistorical:
         return self
         
 
-class newType:
+class Type:
     def __init__(self):
         self.id=None
         self.name=None
@@ -3888,11 +4019,34 @@ class Agrupation:
         self.bolsa=bolsa
         return self
         
-class Type:
+class SetTypes:
     def __init__(self, cfg):
         self.cfg=cfg
+        self.dic_arr={}
+        
+            
+    def load_all(self):
+        self.dic_arr["1"]=Type().init__create(1,QApplication.translate("Core","Acciones"))
+        self.dic_arr["2"]=Type().init__create(2,QApplication.translate("Core","Fondos de inversión"))
+        self.dic_arr["3"]=Type().init__create(3,QApplication.translate("Core","índices"))
+        self.dic_arr["4"]=Type().init__create(4,QApplication.translate("Core","ETFs"))
+        self.dic_arr["5"]=Type().init__create(5,QApplication.translate("Core","Warrants"))
+        self.dic_arr["6"]=Type().init__create(6,QApplication.translate("Core","Divisas"))
+        self.dic_arr["7"]=Type().init__create(7,QApplication.translate("Core","Deuda Pública"))
+        self.dic_arr["8"]=Type().init__create(8,QApplication.translate("Core","Planes de pensiones"))
+        self.dic_arr["9"]=Type().init__create(9,QApplication.translate("Core","Deuda Privada"))
+        self.dic_arr["10"]=Type().init__create(10,QApplication.translate("Core","Depósitos"))
+        self.dic_arr["11"]=Type().init__create(11,QApplication.translate("Core","Cuentas bancarias"))
+
+
+    def list(self):
+        return dic2list(self.dic_arr)
+
+    def find(self, id):
+        return self.dic_arr[str(id)]        
+        
     def investments(self):
-        return {k:v for k,v in self.cfg.Types.items() if k in ("1", "2", "4", "5", "7","8")}
+        return {k:v for k,v in self.dic_arr.items() if k in ("1", "2", "4", "5", "7","8")}
 
 
 class ConfigMQ:
@@ -3905,7 +4059,6 @@ class ConfigMQ:
         self.consqlite=None#Update internetquery fro Process
         self.cac40=set([])
         self.dax=set([])
-        self.con=None
         self.eurostoxx=set([])
         self.ibex=set([])
         self.nyse=set([])
@@ -3914,76 +4067,39 @@ class ConfigMQ:
         self.inittime=datetime.datetime.now()#Tiempo arranca el config
         self.dbinitdate=None#Fecha de inicio bd.
         self.dic_activas={}#Diccionario cuyo indice es el id de la inversión id['1'] corresponde a la IvestmenActive(1) #se usa en myquotesd
-        self.dic_bolsas={}
-        self.dic_currencies={}
-        self.dic_countries={}
-        self.dic_agrupations={}
+        
+        self.conmq=None#Conexión a myquotes
+        self.countries=SetCountries(self)
+        self.bolsas=SetBolsas(self)
+        self.currencies=SetCurrencies(self)
+        self.types=SetTypes(self)
+        self.agrupations=SetAgrupations(self)
         self.dic_apalancamientos={}
         self.dic_priorities={}
         self.dic_prioritieshistorical={}
-        self.dic_types={}
         self.dic_zones={}
         
         
         
-    def actualizar_memoria(self, curmq):
+    def actualizar_memoria(self):
+        ###Esto debe ejecutarse una vez establecida la conexi´on
         print ("Cargando ConfigMQ")
+        self.countries.load_all()
+        self.currencies.load_all()
+        self.types.load_all()
+        self.bolsas.load_all_from_db()
+        self.agrupations.load_all()
         self.carga_apalancamientos()
-        self.carga_countries()
-        self.carga_currencies()
         self.carga_priorities()
         self.carga_prioritieshistorical()
-        self.carga_bolsas(curmq)
-        self.carga_types()
-        self.carga_agrupations()
         
-    def carga_agrupations(self):
-        self.dic_agrupations["ERROR"]=Agrupation().init__create( "ERROR","Agrupación errónea", self.types(3), self.bolsas(1) )
-        self.dic_agrupations["IBEX"]=Agrupation().init__create( "IBEX","Ibex 35", self.types(3), self.bolsas(1) )
-        self.dic_agrupations["MERCADOCONTINUO" ]=Agrupation().init__create( "MERCADOCONTINUO","Mercado continuo español", self.types(3), self.bolsas(1) )
-        self.dic_agrupations[ "CAC"]=Agrupation().init__create("CAC",  "CAC 40 de Par´is", self.types(3),self.bolsas(3) )
-        self.dic_agrupations["EUROSTOXX"]=Agrupation().init__create( "EUROSTOXX","Eurostoxx 50", self.types(3),self.bolsas(10)  )
-        self.dic_agrupations["DAX"]=Agrupation().init__create( "DAX","DAX", self.types(3), self.bolsas(5)  )
-        self.dic_agrupations["SP500"]=Agrupation().init__create("SP500",  "Standard & Poors 500", self.types(3), self.bolsas(2)  )
-        self.dic_agrupations["NASDAQ100"]=Agrupation().init__create( "NASDAQ100","Nasdaq 100", self.types(3), self.bolsas(2)  )
-        self.dic_agrupations["EURONEXT"]=Agrupation().init__create( "EURONEXT",  "EURONEXT", self.types(3), self.bolsas(10)  )
-        self.dic_agrupations["DEUTSCHEBOERSE"]=Agrupation().init__create( "DEUTSCHEBOERSE",  "DEUTSCHEBOERSE", self.types(3), self.bolsas(5)  )
-
-
-        self.dic_agrupations["e_fr_LYXOR"]=Agrupation().init__create( "e_fr_LYXOR","LYXOR", self.types(4),self.bolsas(3)  )
-        self.dic_agrupations["e_de_DBXTRACKERS"]=Agrupation().init__create( "e_de_DBXTRACKERS","Deutsche Bank X-Trackers", self.types(4),self.bolsas(5)  )
-        
-        self.dic_agrupations["f_es_0014"]=Agrupation().init__create("f_es_0014",  "Gestora BBVA", self.types(2), self.bolsas(1) )
-        self.dic_agrupations["f_es_0043"]=Agrupation().init__create( "f_es_0043","Gestora Renta 4", self.types(2), self.bolsas(1))
-        self.dic_agrupations["f_es_0055"]=Agrupation().init__create("f_es_0055","Gestora Bankinter", self.types(2),self.bolsas(1) )
-        self.dic_agrupations["f_es_BMF"]=Agrupation().init__create( "f_es_BMF","Fondos de la bolsa de Madrid", self.types(2), self.bolsas(1) )
-
-        self.dic_agrupations["w_fr_SG"]=Agrupation().init__create( "w_fr_SG","Warrants Societe Generale", self.types(5),self.bolsas(3) )
-        self.dic_agrupations["w_es_BNP"]=Agrupation().init__create("w_es_BNP","Warrants BNP Paribas", self.types(5),self.bolsas(1))
-
-    def agrupations(self, id=None):
-        if id==None:
-            return dic2list(self.dic_agrupations)
-        else:
-            try:
-                return self.dic_agrupations[str(id)]        
-            except:
-                return self.dic_agrupations["ERROR"]
-                
-    def agrupations_por_tipo(self,  type):
-        """Muestra las agrupaciónes de un tipo pasado como par´ametro. El par´ametro type es un objeto Type"""
-        resultado=[]
-        for a in self.agrupations():
-            if a.type==type:
-                resultado.append(a)
-        return resultado
         
     def carga_apalancamientos(self):
-        self.dic_apalancamientos["0"]=Apalancamiento().init__create(0 ,gettext.gettext("No apalancado"))
-        self.dic_apalancamientos["1"]=Apalancamiento().init__create( 1,gettext.gettext("Apalancamiento variable (Warrants)"))
-        self.dic_apalancamientos["2"]=Apalancamiento().init__create( 2,gettext.gettext("Apalancamiento x2"))
-        self.dic_apalancamientos["3"]=Apalancamiento().init__create( 3,gettext.gettext("Apalancamiento x3"))
-        self.dic_apalancamientos["4"]=Apalancamiento().init__create( 4,gettext.gettext("Apalancamiento x4"))
+        self.dic_apalancamientos["0"]=Apalancamiento().init__create(0 ,QApplication.translate("Core","No apalancado"))
+        self.dic_apalancamientos["1"]=Apalancamiento().init__create( 1,QApplication.translate("Core","Apalancamiento variable (Warrants)"))
+        self.dic_apalancamientos["2"]=Apalancamiento().init__create( 2,QApplication.translate("Core","Apalancamiento x2"))
+        self.dic_apalancamientos["3"]=Apalancamiento().init__create( 3,QApplication.translate("Core","Apalancamiento x3"))
+        self.dic_apalancamientos["4"]=Apalancamiento().init__create( 4,QApplication.translate("Core","Apalancamiento x4"))
                
 
     def apalancamientos(self, id=None):
@@ -3991,61 +4107,8 @@ class ConfigMQ:
             return dic2list(self.dic_apalancamientos)
         else:
             return self.dic_apalancamientos[str(id)]
-            
-    def carga_countries(self):
-        self.dic_countries['es']=Country().init__create("es",gettext.gettext("España"))
-        self.dic_countries['be']=Country().init__create("be",gettext.gettext("Bélgica"))
-        self.dic_countries['cn']=Country().init__create("cn",gettext.gettext("China"))
-        self.dic_countries['de']=Country().init__create("de",gettext.gettext("Alemania"))
-        self.dic_countries['en']=Country().init__create("en",gettext.gettext("Reino Unido"))
-        self.dic_countries['eu']=Country().init__create("eu",gettext.gettext("Europa"))
-        self.dic_countries['fi']=Country().init__create("fi",gettext.gettext("Finlandia"))
-        self.dic_countries['fr']=Country().init__create("fr",gettext.gettext("Francia"))
-        self.dic_countries['ie']=Country().init__create("ie",gettext.gettext("Irlanda"))
-        self.dic_countries['it']=Country().init__create("it",gettext.gettext("Italia"))
-        self.dic_countries['jp']=Country().init__create("jp",gettext.gettext("Japón"))
-        self.dic_countries['nl']=Country().init__create("nl",gettext.gettext("Países Bajos"))
-        self.dic_countries['pt']=Country().init__create("pt",gettext.gettext("Portugal"))
-        self.dic_countries['us']=Country().init__create("us",gettext.gettext("Estados Unidos"))
-                
 
-    def countries(self, id=None):
-        if id==None:
-            return dic2list(self.dic_countries)
-        else:
-            return self.dic_countries[str(id)]
-            
-    def carga_types(self):
-        self.dic_types["1"]=newType().init__create(1,gettext.gettext("Acciones"))
-        self.dic_types["2"]=newType().init__create(2,gettext.gettext("Fondos de inversión"))
-        self.dic_types["3"]=newType().init__create(3,gettext.gettext("índices"))
-        self.dic_types["4"]=newType().init__create(4,gettext.gettext("ETFs"))
-        self.dic_types["5"]=newType().init__create(5,gettext.gettext("Warrants"))
-        self.dic_types["6"]=newType().init__create(6,gettext.gettext("Divisas"))
-        self.dic_types["7"]=newType().init__create(7,gettext.gettext("Deuda Pública"))
-        self.dic_types["8"]=newType().init__create(8,gettext.gettext("Planes de pensiones"))
-        self.dic_types["9"]=newType().init__create(9,gettext.gettext("Deuda Privada"))
-        self.dic_types["10"]=newType().init__create(10,gettext.gettext("Depósitos"))
-        self.dic_types["11"]=newType().init__create(11,gettext.gettext("Cuentas bancarias"))
 
-    def types(self, id=None):
-        if id==None:
-            return dic2list(self.dic_types)
-        else:
-            return self.dic_types[str(id)]
-    def carga_currencies(self):
-        self.dic_currencies["CNY"]=Currency().init__create(gettext.gettext("Yoanes chino"), "¥", 'CNY')
-        self.dic_currencies['EUR']=Currency().init__create(gettext.gettext("Euro"), "€", "EUR")
-        self.dic_currencies['GBP']=Currency().init__create(gettext.gettext("Libra esterlina"),"£", 'GBP')
-        self.dic_currencies['JPY']=Currency().init__create(gettext.gettext("Yen Japonés"), '¥', "JPY")
-        self.dic_currencies['USD']=Currency().init__create(gettext.gettext("Dólar americano"), '$', 'USD')
-        self.dic_currencies['u']=Currency().init__create(gettext.gettext("Unidades"), 'u', 'u')
-
-    def currencies(self, id=None):
-        if id==None:
-            return dic2list(self.dic_currencies)
-        else:
-            return self.dic_currencies[str(id)]
 
     def connect_myquotesd(self):        
         strcon="dbname='%s' port='%s' user='%s' host='%s' password='%s'" % (config.dbname,  config.port, config.user, config.host,  config.password)
@@ -4079,7 +4142,7 @@ class ConfigMQ:
         where="where priority=5"""
         cur.execute("select * from investments {0}".format(where))
         for row in cur:
-            self.dic_activas[str(row['id'])]=Investment().init__db_row(self, row)
+            self.dic_activas[str(row['id'])]=Investment(self.cfg).init__db_row(self, row)
             
 
     def activas(self, id=None):
@@ -4113,23 +4176,11 @@ class ConfigMQ:
         else:
             return self.dic_prioritieshistorical[str(id)]
             
-    def carga_bolsas(self, cur):
-        cur.execute("Select * from bolsas")
-        for row in cur:
-            self.dic_bolsas[str(row['id_bolsas'])]=Bolsa().init__db_row(row, self.countries(row['country']))
-            
-    
-    def bolsas(self, id=None):
-        if id==None:
-            return dic2list(self.dic_bolsas)
-        else:
-            return self.dic_bolsas[str(id)]
             
 class ConfigXulpy(ConfigMQ):
     def __init__(self):
         ConfigMQ.__init__(self)
         self.con=None#Conexión a xulpymoney
-        self.conmq=None#Conexión a myquotes
         self.inifile=os.environ['HOME']+ "/.xulpymoney/xulpymoney.cfg"
         
     def __del__(self):
@@ -4139,20 +4190,20 @@ class ConfigXulpy(ConfigMQ):
 
 
 
-    def actualizar_memoria(self, cur, curmq):
+    def actualizar_memoria(self):
         """Solo se cargan datos  de myquotes y operinversiones en las activas
         Pero se general el InversionMQ de las inactivas
         Se vinculan todas"""
-        super(ConfigXulpy, self).actualizar_memoria(curmq)
+        super(ConfigXulpy, self).actualizar_memoria()
         inicio=datetime.datetime.now()
         print ("Cargando estáticos")
         self.tiposoperaciones=SetTiposOperaciones(self)
         self.tiposoperaciones.load()
         self.conceptos=SetConceptos(self, self.tiposoperaciones)
         self.conceptos.load_from_db()
-        self.localcurrency=self.currencies(config.localcurrency) #Currency definido en config
-        self.indicereferencia=Investment().init__db(self,  curmq, config.indicereferencia)
-        self.indicereferencia.quotes.get_basic(curmq)
+        self.localcurrency=self.currencies.find(config.localcurrency) #Currency definido en config
+        self.indicereferencia=Investment(self.cfg).init__db(self,  config.indicereferencia)
+        self.indicereferencia.quotes.get_basic()
         print(datetime.datetime.now()-inicio)
         
 
@@ -4202,67 +4253,90 @@ class Country:
         
     def qpixmap(self):
         if self.id=="be":
-            return QPixmap(":/images/belgium.gif")
+            return QPixmap(":/countries/belgium.gif")
         elif self.id=="cn":
-            return QPixmap(":/images/china.gif")
+            return QPixmap(":/countries/china.gif")
         elif self.id=="fr":
-            return QPixmap(":/images/france.gif")
+            return QPixmap(":/countries/france.gif")
         elif self.id=="ie":
-            return QPixmap(":/images/ireland.gif")
+            return QPixmap(":/countries/ireland.gif")
         elif self.id=="it":
-            return QPixmap(":/images/italy.gif")
+            return QPixmap(":/countries/italy.gif")
         elif self.id=="es":
-            return QPixmap(":/images/spain.gif")
+            return QPixmap(":/countries/spain.gif")
         elif self.id=="eu":
-            return QPixmap(":/images/eu.gif")
+            return QPixmap(":/countries/eu.gif")
         elif self.id=="de":
-            return QPixmap(":/images/germany.gif")
+            return QPixmap(":/countries/germany.gif")
         elif self.id=="fi":
-            return QPixmap(":/images/fi.jpg")
+            return QPixmap(":/countries/fi.jpg")
         elif self.id=="nl":
-            return QPixmap(":/images/nethland.gif")
+            return QPixmap(":/countries/nethland.gif")
         elif self.id=="en":
-            return QPixmap(":/images/uk.gif")
+            return QPixmap(":/countries/uk.gif")
         elif self.id=="jp":
-            return QPixmap(":/images/japan.gif")
+            return QPixmap(":/countries/japan.gif")
         elif self.id=="pt":
-            return QPixmap(":/images/portugal.gif")
+            return QPixmap(":/countries/portugal.gif")
         elif self.id=="us":
-            return QPixmap(":/images/usa.gif")
+            return QPixmap(":/countries/usa.gif")
         else:
-            return QPixmap(":/images/star.gif")
+            return QPixmap(":/xulpymoney/star.gif")
             
 class Global:
-    def get_database_version(self, cur):
+    def __init__(self, cfg):
+        self.cfg=cfg
+    def get_database_version(self):
+        cur=self.cfg.conmq.cursor()
         cur.execute("select value from globals where id_globals=1;")
-        return cur.fetchone()['value']
+        resultado=cur.fetchone()['value']
+        cur.close()
+        return resultado
 
-    def get_database_init_date(self, cur):
+    def get_database_init_date(self):
+        cur=self.cfg.conmq.cursor()
         cur.execute("select value from globals where id_globals=5;")
-        return cur.fetchone()['value']
+        resultado=cur.fetchone()['value']
+        cur.close()
+        return resultado
 
-    def get_session_counter(self, cur):
+    def get_session_counter(self):
+        cur=self.cfg.conmq.cursor()
         cur.execute("select value from globals where id_globals=3;")
-        return int(cur.fetchone()['value'])
+        resultado=cur.fetchone()['value']
+        cur.close()
+        return resultado
 
-    def get_system_counter(self, cur):
+    def get_system_counter(self):
+        cur=self.cfg.conmq.cursor()
         cur.execute("select value from globals where id_globals=2;")
-        return int(cur.fetchone()['value'])
+        resultado=cur.fetchone()['value']
+        cur.close()
+        return resultado
 
-    def set_database_init_date(self, cur, valor):
+    def set_database_init_date(self, valor):
+        cur=self.cfg.conmq.cursor()
         cur.execute("update globals set value=%s where id_globals=5;", (valor, ))
+        cur.close()
 
-    def set_database_version(self, cur, valor):
+    def set_database_version(self, valor):
+        cur=self.cfg.conmq.cursor()
         cur.execute("update globals set value=%s where id_globals=1;", (valor, ))
+        cur.close()
 
-    def set_session_counter(self, cur,  valor):
+    def set_session_counter(self, valor):
+        cur=self.cfg.conmq.cursor()
         cur.execute("update globals set value=%s where id_globals=3;", (valor, ))
+        cur.close()
 
-    def set_system_counter(self, cur,  valor):
+    def set_system_counter(self, valor):
+        cur=self.cfg.conmq.cursor()
         cur.execute("update globals set value=%s where id_globals=2;", (valor, ))
+        cur.close()
     
-    def set_sourceforge_version(self, cur):
-#        try:
+    def set_sourceforge_version(self):
+        cur=self.cfg.conmq.cursor()
+        try:
             serverversion=""
             comand='http://myquotes.svn.sourceforge.net/viewvc/myquotes/libxulpymoney.py'
             web=urllib.request.urlopen(comand)
@@ -4271,13 +4345,16 @@ class Global:
                     if len(line.decode().split('"')[1])==8:
                         serverversion=line.decode().split('"')[1]        
                         cur.execute("update globals set value=%s where id_globals=4;", (serverversion, ))
-                        log("VERSION-SOURCEFORGE", "", gettext.gettext("Sourceforge version detected: %s") % serverversion)
-#        except:
-#            log("VERSION-SOURCEFORGE", "", gettext.gettext("Error buscando la versión actual de Sourceforge"))                    
-
-    def get_sourceforge_version(self, cur):
+                        log("VERSION-SOURCEFORGE", "", QApplication.translate("Core","Sourceforge version detected: %s") % serverversion)
+        except:
+            log("VERSION-SOURCEFORGE", "", QApplication.translate("Core","Error buscando la versión actual de Sourceforge"))                    
+        cur.close()
+    def get_sourceforge_version(self):
+        cur=self.cfg.conmq.cursor()
         cur.execute("select value from globals where id_globals=4;")
-        return cur.fetchone()['value']
+        resultado=cur.fetchone()['value']
+        cur.close()
+        return resultado
 
 
 def arr_split(arr, wanted_parts=1):
@@ -4453,14 +4530,6 @@ def comaporpunto(cadena):
     cadena=cadena.replace(b'.',b'')#Quita puntos
     cadena=cadena.replace(b',',b'.')#Cambia coma por punto
     return cadena
-
-def qcombobox_loadcurrencies(combo, cfg):
-    """Función que carga en un combo pasado como parámetro las currencies"""
-    currencies=cfg.currencies()
-    currencies=sorted(currencies, key=lambda c: c.id,  reverse=False)          
-    for c in currencies:
-        combo.addItem("{0} - {1} ({2})".format(c.id, c.name, c.symbol), c.id)
-    #NO SE PUEDE PONER C COMO VARIANT YA QUE LUEGO EL FIND NO ENCUENTRA EL OBJETO.
 
 
 def qcombobox_loadapalancamiento(combo, arr):

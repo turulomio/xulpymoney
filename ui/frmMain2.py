@@ -35,29 +35,24 @@ class frmMain2(QMainWindow, Ui_frmMain2):#
 
         
         
-        con=self.cfg.connect_myquotes()
-        cur = con.cursor()    
-        
-        self.cfg.actualizar_memoria(cur)
-        self.cfg.con=self.cfg.connect_myquotes()
+        self.cfg.conmq=self.cfg.connect_myquotes()
+        self.cfg.actualizar_memoria()
 #        gen=QuotesGenOHCL(self.cfg)
 #        gen.recalculateAllAndDelete()
-#        vivendi=Investment().init__db(self.cfg, cur, 78020)
+#        vivendi=Investment(self.cfg).init__db(self.cfg, cur, 78020)
 #        print ("ya")
 #        gen.recalculateBooleansAllTime(vivendi)#, datetime.date(2013, 1, 2))
 #        gen.deleteUnnecesary(vivendi)
 #        print ("ya")
         
-        if Global().get_sourceforge_version(cur)>softwareversion():
+        if Global(self.cfg).get_sourceforge_version()>version:
             m=QMessageBox()
             m.setText(QApplication.translate("myquotes","Hay una nueva versión publicada en http://myquotes.sourceforge.net"))
             m.exec_()        
-        if Global().get_database_init_date(cur)==str(datetime.date.today()):
+        if Global(self.cfg).get_database_init_date()==str(datetime.date.today()):
             m=QMessageBox()
             m.setText(QApplication.translate("myquotes","La base de datos se acaba de iniciar.\n\nSe necesitan al menos 24 horas de funcionamiento del demonio myquotesd para que esta aplicación tenga todos los datos disponibles."))
-            m.exec_()                    
-        cur.close()     
-        self.cfg.disconnect_myquotesd(con)       
+            m.exec_()       
         
         self.w=wdgInversiones2(self.cfg,  "select * from investments where name='VACIO' order by name")
 

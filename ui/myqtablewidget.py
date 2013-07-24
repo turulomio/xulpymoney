@@ -58,7 +58,7 @@ class myQTableWidget(QTableWidget):
                 resultado.append(config.getint(section, (table.objectName())+'_column'+str(i)))
             return resultado
         except:
-            print (gettext.gettext("No hay fichero de configuración")    )
+            print (QApplication.translate("Core",("No hay fichero de configuración")    ))
             return []
     
     

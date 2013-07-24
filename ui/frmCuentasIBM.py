@@ -40,7 +40,7 @@ class frmCuentasIBM(QDialog, Ui_frmCuentasIBM):
     
         self.calPago.setDate(QDate.currentDate())
         
-        qcombobox_loadcurrencies(self.cmbCurrency, self.cfg)
+        self.cfg.currencies.load_qcombobox(self.cmbCurrency)
         qcombobox_loadebs(self.cmbEB, self.data_ebs)
         
         con=self.cfg.connect_xulpymoney()
@@ -172,7 +172,7 @@ class frmCuentasIBM(QDialog, Ui_frmCuentasIBM):
         currency=self.cmbCurrency.itemData(self.cmbCurrency.currentIndex())
 
         if self.selCuenta==None:
-            cu=Cuenta(self.cfg).init__create(cuenta, self.cfg.ebs(id_entidadesbancarias), cu_activa, numerocuenta, self.cfg.currencies(currency))
+            cu=Cuenta(self.cfg).init__create(cuenta, self.cfg.ebs(id_entidadesbancarias), cu_activa, numerocuenta, self.cfg.currencies.find(currency))
             cu.save(cur)
             self.cfg.dic_cuentas[str(cu.id)]=cu
         else:
@@ -180,7 +180,7 @@ class frmCuentasIBM(QDialog, Ui_frmCuentasIBM):
             self.selCuenta.name=cuenta
             self.selCuenta.numero=numerocuenta
             self.selCuenta.activa=cu_activa
-            self.selCuenta.currency=self.cfg.currencies(currency)
+            self.selCuenta.currency=self.cfg.currencies.find(currency)
             self.selCuenta.save(cur)
             self.lblTitulo.setText(self.selCuenta.name)
         con.commit()

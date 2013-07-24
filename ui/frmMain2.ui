@@ -207,8 +207,8 @@
   <widget class="QStatusBar" name="status"/>
   <action name="actionSalir">
    <property name="icon">
-    <iconset>
-     <normaloff>:/images/exit.png</normaloff>:/images/exit.png</iconset>
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/exit.png</normaloff>:/xulpymoney/exit.png</iconset>
    </property>
    <property name="text">
     <string>S&amp;alir</string>
@@ -216,8 +216,8 @@
   </action>
   <action name="actionAcercaDe">
    <property name="icon">
-    <iconset>
-     <normaloff>:/images/kmplot.jpg</normaloff>:/images/kmplot.jpg</iconset>
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/kmplot.jpg</normaloff>:/xulpymoney/kmplot.jpg</iconset>
    </property>
    <property name="text">
     <string>&amp;Acerca de</string>
@@ -237,8 +237,8 @@
   </action>
   <action name="actionIndexes">
    <property name="icon">
-    <iconset>
-     <normaloff>:/images/kmplot.jpg</normaloff>:/images/kmplot.jpg</iconset>
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/kmplot.jpg</normaloff>:/xulpymoney/kmplot.jpg</iconset>
    </property>
    <property name="text">
     <string>Todos los índices</string>
@@ -264,8 +264,8 @@
   </action>
   <action name="actionIbex35">
    <property name="icon">
-    <iconset>
-     <normaloff>:/images/spain.gif</normaloff>:/images/spain.gif</iconset>
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/countries/spain.gif</normaloff>:/countries/spain.gif</iconset>
    </property>
    <property name="text">
     <string>Ibex 35</string>
@@ -681,8 +681,8 @@
   </action>
   <action name="actionFavoritos">
    <property name="icon">
-    <iconset>
-     <normaloff>:/images/star.png</normaloff>:/images/star.png</iconset>
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/star.png</normaloff>:/xulpymoney/star.png</iconset>
    </property>
    <property name="text">
     <string>Mostrar favoritos</string>
