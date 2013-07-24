@@ -104,13 +104,8 @@ class wdgIndexRange(QWidget, Ui_wdgIndexRange):
         
     def on_cmdIRInsertar_pressed(self):
         w=frmQuotesIBM(self.cfg, self.cfg.indicereferencia,  self)
-        w.exec_()
-        mq=self.cfg.connect_myquotes()
-        curmq=mq.cursor()       
-        self.cfg.indicereferencia.quotes.get_basic(curmq)
-        curmq.close()
-        self.cfg.disconnect_myquotes(mq)     
-        self.load_data()
+        w.exec_() 
+        self.cfg.indicereferencia.quotes.get_basic()
         
     def on_table_cellDoubleClicked(self, row, column):
         if column==1:

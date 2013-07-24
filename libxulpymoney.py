@@ -1657,7 +1657,7 @@ class Inversion:
             if acciones==0:
                 curmq.close()
                 return Decimal('0')
-            quote=Quote(self.cfg).init__from_query(curmq, self.mq, day_end_from_date(fecha, self.cfg.localzone.name))
+            quote=Quote(self.cfg).init__from_query(curmq, self.mq, day_end_from_date(fecha, self.cfg.localzone))
             if quote.datetime==None:
                 print ("Inversion saldo: {0} ({1}) en {2} no tiene valor".format(self.name, self.mq.id, fecha))
                 curmq.close()
@@ -4495,10 +4495,9 @@ class SetZones:
         for a in self.list():
             combo.addItem(a.name, a.name)      
         if zone!=None:
-            self.cmbZone.setCurrentIndex(self.cmbZone.findText(self.investment.bolsa.zone))
+            combo.setCurrentIndex(combo.findText(zone.name))
         
     def find(self, id):
-        print(id)
         return self.dic_arr[str(id)]        
         
     def list(self):

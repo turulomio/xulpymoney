@@ -15,6 +15,7 @@ class frmQuotesIBM(QDialog, Ui_frmQuotesIBM):
         t=datetime.datetime.now()
         self.txtTime.setTime(QTime(t.hour, t.minute))
 
+        self.cfg.zones.load_qcombobox(self.cmbZone, self.cfg.localzone)
         if self.investment.type.id in (2, 8):
             self.chkNone.setCheckState(Qt.Checked)            
 
@@ -33,7 +34,7 @@ class frmQuotesIBM(QDialog, Ui_frmQuotesIBM):
         try:
             fecha=self.calendar.selectedDate().toPyDate()
             quote=float(self.txtQuote.text())
-            zone=self.cmbZone.currentText()
+            zone=self.cfg.zones.find(self.cmbZone.currentText())
         except:
             m=QMessageBox()
             m.setIcon(QMessageBox.Information)
@@ -41,7 +42,7 @@ class frmQuotesIBM(QDialog, Ui_frmQuotesIBM):
             m.exec_()    
             return
         if self.chkNone.checkState()==Qt.Checked:
-            da=dt(fecha, self.investment.bolsa.ends.replace(microsecond=4), self.investment.bolsa.zone)+datetime.timedelta(minutes=10)
+            da=dt(fecha, self.investment.bolsa.close.replace(microsecond=4), self.investment.bolsa.zone)
         else:
             time=self.txtTime.time().toPyTime()
             da=dt(fecha, time, zone)

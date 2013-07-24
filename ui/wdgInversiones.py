@@ -232,7 +232,6 @@ class wdgInversiones(QWidget, Ui_wdgInversiones):
         self.selInversion=None
         for i in self.tblInversiones.selectedItems():#itera por cada item no row.
             self.selInversion=self.inversiones[i.row()]
-        print (self.selInversion)
         
     def on_tblInversiones_cellDoubleClicked(self, row, column):
         if column==7:#TPC inversion
