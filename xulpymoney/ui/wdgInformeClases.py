@@ -164,7 +164,7 @@ class wdgInformeClases(QWidget, Ui_wdgInformeClases):
         data=[]
         explode=[]
                 
-        for a in self.cfg.apalancamientos():
+        for a in self.cfg.apalancamientos.list():
             total=0
             for i in self.data_inversiones.arr:
                 if i.mq.apalancado==a:

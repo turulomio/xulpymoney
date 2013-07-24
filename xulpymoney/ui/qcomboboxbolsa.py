@@ -12,7 +12,7 @@ class QComboBoxBolsa(QComboBox):
         """Se crea esta función porque desde designer no se puede pasar self.cfg"""
         self.cfg=cfg
         arr=[]
-        arr=sorted(self.cfg.bolsas(), key=lambda b: b.name,  reverse=False)          
+        arr=sorted(self.cfg.bolsas.list(), key=lambda b: b.name,  reverse=False)          
         for b in arr:
             self.addItem(b.country.qicon(),  b.name,  b.id)
 
