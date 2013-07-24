@@ -179,7 +179,7 @@ class SetInversiones:
 #            def init__create(self, fecha, concepto, tipooperacion, importe,  comentario, cuenta, id=None):
 
         if comision!=0:
-            op_cuenta=CuentaOperacion().init__create(now.date(), self.cfg.conceptos.find(38), self.cfg.tiposoperaciones(1), -comision, "Traspaso de valores", origen.cuenta)
+            op_cuenta=CuentaOperacion(self.cfg).init__create(now.date(), self.cfg.conceptos.find(38), self.cfg.tiposoperaciones(1), -comision, "Traspaso de valores", origen.cuenta)
             op_cuenta.save(cur)       
             origen.cuenta.saldo_from_db(cur2)        
             comentario="{0}|{1}".format(destino.id, op_cuenta.id)
@@ -291,7 +291,6 @@ class SetInvestmentsModes:
     def list(self):
         """Lista ordenada por nombre"""
         lista=dic2list(self.dic_arr)
-        print (lista)
         lista=sorted(lista, key=lambda c: c.name  ,  reverse=False)    
         return lista
         
@@ -490,23 +489,16 @@ class SetEntidadesBancarias:
         cur.execute(sql)#"select * from entidadesbancarias"
         for row in cur:
             self.arr.append(EntidadBancaria().init__db_row(row))
-        cur.close()                                    
+        cur.close()            
+        
     def find(self, id):
         for a in self.arr:
             if a.id==id:
                 return a
-            
-#    def ebs_activas(self, activa=True):
-#        """Función que devuelve una lista con objetos EntidadBancaria activos o no según el parametro"""
-#        resultado=[]
-#        for e in self.ebs():
-#            if e.activa==activa:
-#                resultado.append(e)
-#        return resultado
-        
+                   
     def load_qcombobox(self, combo):
         """Carga entidades bancarias en combo. Es un SetEbs"""
-        self.arr.sort()
+        self.sort()
         for e in self.arr:
             combo.addItem(e.name, e.id)   
             
@@ -1091,7 +1083,8 @@ class Concepto:
         return suma
 
 class CuentaOperacion:
-    def __init__(self):
+    def __init__(self, cfg):
+        self.cfg=cfg
         self.id=None
         self.fecha=None
         self.concepto=None
@@ -1113,12 +1106,13 @@ class CuentaOperacion:
     def init__db_row(self, row, concepto,  tipooperacion, cuenta):
         return self.init__create(row['fecha'],  concepto,  tipooperacion,  row['importe'],  row['comentario'],  cuenta,  row['id_opercuentas'])
 
-    def borrar(self, cur):
-        
+    def borrar(self):
+        cur=self.cfg.con.cursor()
         print ("cuenta borrar before",  self.cuenta.saldo)
         cur.execute("delete from opercuentas where id_opercuentas=%s", (self.id, ))
-        self.cuenta.saldo_from_db(cur)
+        self.cuenta.saldo_from_db()
         print ("cuenta borrar after",  self.cuenta.saldo)
+        cur.close()
         
     def comentariobonito(self):
         """Función que genera un comentario parseado según el tipo de operación o concepto"""
@@ -1145,13 +1139,15 @@ class CuentaOperacion:
             return False
         return True
         
-    def save(self, cur):
+    def save(self):
+        cur=self.cfg.con.cursor()
         if self.id==None:
             cur.execute("insert into opercuentas (fecha, id_conceptos, id_tiposoperaciones, importe, comentario, id_cuentas) values ( %s,%s,%s,%s,%s,%s) returning id_opercuentas",(self.fecha, self.concepto.id, self.tipooperacion.id, self.importe, self.comentario, self.cuenta.id))
             self.id=cur.fetchone()[0]
         else:
             cur.execute("update opercuentas set fecha=%s, id_conceptos=%s, id_tiposoperaciones=%s, importe=%s, comentario=%s, id_cuentas=%s where id_opercuentas=%s", (self.fecha, self.concepto.id, self.tipooperacion.id,  self.importe,  self.comentario,  self.cuenta.id,  self.id))
-        self.cuenta.saldo_from_db(cur)
+        cur.close()
+        self.cuenta.saldo_from_db()
         
 class Dividendo:
     def __init__(self, cfg):
@@ -1209,7 +1205,7 @@ class Dividendo:
         """
         comentario="{0}|{1}|{2}|{3}".format(self.inversion.name, self.bruto, self.retencion, self.comision)
         if self.id==None:#Insertar
-            oc=CuentaOperacion().init__create( self.fecha,self.concepto, self.concepto.tipooperacion, self.neto, comentario, self.inversion.cuenta)
+            oc=CuentaOperacion(self.cfg).init__create( self.fecha,self.concepto, self.concepto.tipooperacion, self.neto, comentario, self.inversion.cuenta)
             oc.save(cur)
             self.opercuenta=oc
             #Añade el dividendo
@@ -1692,7 +1688,8 @@ class Inversion:
 
 
 class Tarjeta:    
-    def __init__(self):
+    def __init__(self, cfg):
+        self.cfg=cfg
         self.id=None
         self.name=None
         self.id_cuentas=None
@@ -1720,24 +1717,29 @@ class Tarjeta:
         self.init__create(row['tarjeta'], cuenta, row['pagodiferido'], row['saldomaximo'], row['tj_activa'], row['numero'], row['id_tarjetas'])
         return self
                     
-    def borrar(self,  cur):
+    def borrar(self):
         """
             Devuelve False si no ha podido borrarse por haber dependientes.
         """
+        cur=self.cfg.con.cursor()
         cur.execute("select count(*) from opertarjetas where id_tarjetas=%s", (self.id, ))
         if cur.fetchone()['count']>0: # tiene dependientes
+            cur.close()
             return False
         else:
             sql="delete from tarjetas where id_tarjetas="+ str(self.id);
             cur.execute(sql)
+            cur.close()
             return True
         
-    def get_opertarjetas_diferidas_pendientes(self, cur, cfg):
+    def get_opertarjetas_diferidas_pendientes(self):
         """Funci`on que carga un array con objetos inversion operacion y con ellos calcula el set de actual e historicas"""
+        cur=self.cfg.con.cursor()
         self.op_diferido=[]
         cur.execute("SELECT * from opertarjetas where id_tarjetas=%s and pagado=false", (self.id, ))
         for row in cur:
-            self.op_diferido.append(TarjetaOperacion().init__db_row(row, cfg.conceptos.find(row['id_conceptos']), cfg.tiposoperaciones.find(row['id_tiposoperaciones']), self))
+            self.op_diferido.append(TarjetaOperacion(self.cfg).init__db_row(row, self.cfg.conceptos.find(row['id_conceptos']), self.cfg.tiposoperaciones.find(row['id_tiposoperaciones']), self))
+        cur.close()
         
     def saldo_pendiente(self):
         """Es el saldo solo de operaciones difreidas sin pagar"""
@@ -1748,8 +1750,9 @@ class Tarjeta:
 
 
 class TarjetaOperacion:
-    def __init__(self):
+    def __init__(self, cfg):
         """Tarjeta es un objeto TarjetaOperacion. pagado, fechapago y opercuenta solo se rellena cuando se paga"""
+        self.cfg=cfg
         self.id=None
         self.fecha=None
         self.concepto=None
@@ -1778,11 +1781,14 @@ class TarjetaOperacion:
     def init__db_row(self, row, concepto, tipooperacion, tarjeta, opercuenta=None):
         return self.init__create(row['fecha'],  concepto, tipooperacion, row['importe'], row['comentario'], tarjeta, row['pagado'], row['fechapago'], opercuenta, row['id_opertarjetas'])
         
-    def borrar(self,  cur):
+    def borrar(self):
+        cur=self.cfg.con.cursor()
         sql="delete from opertarjetas where id_opertarjetas="+ str(self.id)
         cur.execute(sql)
+        cur.close()
         
-    def save(self, cur):
+    def save(self):
+        cur=self.cfg.con.cursor()
         if self.id==None:#insertar
             sql="insert into opertarjetas (fecha, id_conceptos, id_tiposoperaciones, importe, comentario, id_tarjetas, pagado) values ('" + str(self.fecha) + "'," + str(self.concepto.id)+","+ str(self.tipooperacion.id) +","+str(self.importe)+", '"+self.comentario+"', "+str(self.tarjeta.id)+", "+str(self.pagado)+") returning id_opertarjetas"
             cur.execute(sql);
@@ -1792,7 +1798,7 @@ class TarjetaOperacion:
                 cur.execute("update opertarjetas set fecha=%s, id_conceptos=%s, id_tiposoperaciones=%s, importe=%s, comentario=%s, id_tarjetas=%s, pagado=%s, fechapago=%s, id_opercuentas=%s where id_opertarjetas=%s", (self.fecha, self.concepto.id, self.tipooperacion.id,  self.importe,  self.comentario, self.tarjeta.id, self.pagado, self.fechapago, None, self.id))
             else:
                 cur.execute("update opertarjetas set fecha=%s, id_conceptos=%s, id_tiposoperaciones=%s, importe=%s, comentario=%s, id_tarjetas=%s, pagado=%s, fechapago=%s, id_opercuentas=%s where id_opertarjetas=%s", (self.fecha, self.concepto.id, self.tipooperacion.id,  self.importe,  self.comentario, self.tarjeta.id, self.pagado, self.fechapago, self.opercuenta.id, self.id))
-
+        cur.close()
         
 class TipoOperacion:
     def __init__(self):
@@ -1921,16 +1927,14 @@ class SetTarjetas:
 
     def load_from_db(self, sql):
         cur=self.cfg.con.cursor()
-        cur2=self.cfg.con.cursor()
         cur.execute(sql)#"Select * from tarjetas")
         for row in cur:
-            t=Tarjeta().init__db_row(row, self.cuentas.find(row['id_cuentas']))
+            t=Tarjeta(self.cfg).init__db_row(row, self.cuentas.find(row['id_cuentas']))
             if t.pagodiferido==True:
-                t.get_opertarjetas_diferidas_pendientes(cur2, self.cfg)
+                t.get_opertarjetas_diferidas_pendientes()
             self.dic_arr[str(t.id)]=t
             self.arr.append(t)
         cur.close()
-        cur2.close()
             
 
 
@@ -2616,21 +2620,25 @@ class Estimacion:
 class DividendoEstimacion:
     def __init__(self, cfg):
         self.cfg=cfg
-    def dpa(cur, investment,  currentyear):
-        cur.execute("select dpa from estimaciones where id=%s and year=%s", (investment.id, currentyear))
-        if cur.rowcount==1:
-            return cur.fetchone()[0]
-        else:
-            return None
-    def registro(cur, investment,  currentyear):
+    def dpa(self,  investment,  currentyear):
+        resultado=None
+        curmq=self.cfg.conmq.cursor()
+        curmq.execute("select dpa from estimaciones where id=%s and year=%s", (investment.id, currentyear))
+        if curmq.rowcount==1:
+            resultado=curmq.fetchone()[0]
+        curmq.close()
+        return resultado
+    def registro(self, cur, investment,  currentyear):
         """Saca el registro sin code ni year, que fueron pasados como parámetro"""
+        resultado=None
+        cur=self.cfg.conmq.cursor()
         cur.execute("select dpa,fechaestimacion,fuente,manual from estimaciones where id=%s and year=%s", (investment.id, currentyear))
         if cur.rowcount==1:
-            return cur.fetchone()
-        else:
-            return None
+            resultado=cur.fetchone()
+        cur.close()
+        return resultado
             
-    def insertar(id,  year, dpa, fechaestimacion=datetime.date.today(), fuente='Internet',  manual=True):
+    def insertar(self, id,  year, dpa, fechaestimacion=datetime.date.today(), fuente='Internet',  manual=True):
         """Función que comprueba si existe el registro para insertar o modificarlo según proceda"""
         curmq=self.cfg.conmq.cursor()
         curmq.execute("select count(*) from estimaciones where id=%s and year=%s", (id, year))
@@ -2640,12 +2648,7 @@ class DividendoEstimacion:
             curmq.execute("update estimaciones set dpa=%s, fechaestimacion=%s, fuente=%s, manual=%s where id=%s and year=%s", (dpa, fechaestimacion, fuente, manual, id, year))
         curmq.close()
         
-#class Gen:#Solo cuando hay que hacer arrays para una operacion como yahoo
-#    yahoo1=1
-#    yahoo2=2
-#
-#    
-    
+   
 class SourceNew:
     """Clase nueva para todas las sources
     Debera:
@@ -3797,7 +3800,7 @@ class QuotesResult:
             else:
                 self.penultimate=Quote(self.cfg).init__create(self.investment, None, None)
             self.endlastyear=Quote(self.cfg).init__from_query(curmq,  self.investment,  datetime.datetime(datetime.date.today().year-1, 12, 31, 23, 59, 59, tzinfo=pytz.timezone('UTC')))
-        self.lastdpa=DividendoEstimacion.dpa(curmq, self.investment, datetime.date.today().year)
+        self.lastdpa=DividendoEstimacion(self.cfg).dpa(self.investment, datetime.date.today().year)
         curmq.close()
 
 
@@ -3810,7 +3813,7 @@ class QuotesResult:
         self.penultimate=self.find_quote_in_all(dtpenultimate)
         dtendlastyear=dt(datetime.date(self.last.datetime.year-1, 12, 31),  datetime.time(23, 59, 59), self.investment.bolsa.zone)
         self.endlastyear=self.find_quote_in_all(dtendlastyear)
-#        self.lastdpa=DividendoEstimacion.dpa(curmq, self.investment, datetime.date.today().year)
+#        self.lastdpa=DividendoEstimacion(self.cfg).dpa(curmq, self.investment, datetime.date.today().year)
         
 #        
 #    def get_analisis_from_all(self, curmq, limit):
@@ -4051,7 +4054,7 @@ class QuotesResult:
         
     def get_dpa(self, curmq, year):
         """Busca el dpa y lo amacena en dpa"""
-        return DividendoEstimacion.dpa(cur2, self.investment.id, year)
+        return DividendoEstimacion(self.cfg).dpa(cur2, self.investment.id, year)
 
     def tpc_diario(self):
         if self.hasBasic():

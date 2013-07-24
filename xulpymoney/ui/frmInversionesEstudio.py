@@ -239,7 +239,7 @@ class frmInversionesEstudio(QDialog, Ui_frmInversionesEstudio):
         for d in cur:
             cur2.execute("select * from opercuentas where id_opercuentas=%s", (d['id_opercuentas'], ))
             oc=cur2.fetchone()
-            opercuenta=CuentaOperacion().init__db_row( oc, self.cfg.conceptos.find(oc['id_conceptos']),self.cfg.tiposoperaciones.find(oc['id_tiposoperaciones']), self.selInversion.cuenta  )
+            opercuenta=CuentaOperacion(self.cfg).init__db_row( oc, self.cfg.conceptos.find(oc['id_conceptos']),self.cfg.tiposoperaciones.find(oc['id_tiposoperaciones']), self.selInversion.cuenta  )
             self.dividendos.append(Dividendo(self.cfg).init__db_row(d, self.selInversion, opercuenta, self.cfg.conceptos.find(d['id_conceptos'])))        
         cur.close()       
         cur2.close()

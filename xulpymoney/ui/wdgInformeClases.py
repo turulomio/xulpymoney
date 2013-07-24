@@ -114,25 +114,17 @@ class wdgInformeClases(QWidget, Ui_wdgInformeClases):
 
 
     def scriptPCI(self):
-        def name(pci):
-            if mode=="c":
-                return "Call"
-            elif mode=="i":
-                return "Inline"
-            elif mode=="p":
-                return "Put"
-
         labels=[]
         data=[]
         explode=[]
 
-        for letter in "mode":
+        for m in self.cfg.investmentsmodes.list():
             total=0
             for i in self.data_inversiones.arr:
-                if i.mq.mode==letter:
+                if i.mq.mode==m:
                     total=total+i.saldo()
-            labels.append(name(letter))
-            if letter=='c':
+            labels.append(m.name)
+            if m.id=='c':
                 data.append(total+self.cuentas)
             else:
                 data.append(total)
@@ -144,7 +136,7 @@ class wdgInformeClases(QWidget, Ui_wdgInformeClases):
         labels=[]
         data=[]
         explode=[]
-        for t in self.cfg.types.find():
+        for t in self.cfg.types.list():
 #            id_type=int(id_type)
             total=0
             for i in self.data_inversiones.arr:
@@ -182,7 +174,7 @@ class wdgInformeClases(QWidget, Ui_wdgInformeClases):
         data=[]
         explode=[]
                 
-        for c in self.cfg.countries():
+        for c in self.cfg.countries.list():
             total=0
             for i in self.data_inversiones.arr:
                 if i.mq.bolsa.country==c:

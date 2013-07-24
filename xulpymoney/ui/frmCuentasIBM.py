@@ -203,7 +203,7 @@ class frmCuentasIBM(QDialog, Ui_frmCuentasIBM):
             self.saldoiniciomensual=0
         cur.execute("select * from opercuentas where id_cuentas="+str(self.selCuenta.id)+" and date_part('year',fecha)="+str(year)+" and date_part('month',fecha)="+str(month)+" order by fecha, id_opercuentas")
         for o in cur:
-            self.opercuentas.append(CuentaOperacion().init__db_row(o, self.cfg.conceptos.find(o['id_conceptos']), self.cfg.tiposoperaciones.find(o['id_tiposoperaciones']), self.selCuenta))
+            self.opercuentas.append(CuentaOperacion(self.cfg).init__db_row(o, self.cfg.conceptos.find(o['id_conceptos']), self.cfg.tiposoperaciones.find(o['id_tiposoperaciones']), self.selCuenta))
         cur.close()     
         self.cfg.disconnect_xulpymoney(con)                 
         self.load_tblOperaciones()  
@@ -409,7 +409,7 @@ class frmCuentasIBM(QDialog, Ui_frmCuentasIBM):
         comentario="{0}|{1}".format(self.selTarjeta.name, len(self.setSelOperTarjetas))
 #        comentario="Tarjeta " + self.selTarjeta.name+ ". Pagos: "+ pagos[:-1]
         fechapago=self.calPago.date().toPyDate()
-        c=CuentaOperacion().init__create(fechapago, self.cfg.conceptos.find(40), self.cfg.tiposoperaciones.find(7), self.totalOperTarjetas, comentario, self.selCuenta)
+        c=CuentaOperacion(self.cfg).init__create(fechapago, self.cfg.conceptos.find(40), self.cfg.tiposoperaciones.find(7), self.totalOperTarjetas, comentario, self.selCuenta)
         c.save(cur)
         
         #Modifica el registro y lo pone como pagado y la fecha de pago y añade la opercuenta

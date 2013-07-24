@@ -39,9 +39,9 @@ class frmTarjetasIBM(QDialog, Ui_frmTarjetasIBM):
         numero=(self.txtNumero.text())
 
         if self.tipo==1:#insertar
-            Tarjeta().insertar( cur,  id_cuentas,  tarjeta,  numero, pagodiferido, saldomaximo, True)
+            Tarjeta(self.cfg).insertar( cur,  id_cuentas,  tarjeta,  numero, pagodiferido, saldomaximo, True)
         else:#Modificar
-            Tarjeta().modificar( cur,  self.tarjeta['id_tarjetas'], tarjeta,  numero,  pagodiferido,  saldomaximo)
+            Tarjeta(self.cfg).modificar( cur,  self.tarjeta['id_tarjetas'], tarjeta,  numero,  pagodiferido,  saldomaximo)
         con.commit()        
         cur.close()     
         self.cfg.disconnect_xulpymoney(con)        
