@@ -1,9 +1,7 @@
-## -*- coding: utf-8 -*-
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 from Ui_frmQuotesIBM import *
 from libxulpymoney import *
-from qcomboboxtz import *
 
 class frmQuotesIBM(QDialog, Ui_frmQuotesIBM):
     def __init__(self, cfg, investment,  selDate=None,   parent = None, name = None, modal = False):
@@ -19,7 +17,16 @@ class frmQuotesIBM(QDialog, Ui_frmQuotesIBM):
 
         if self.investment.type.id in (2, 8):
             self.chkNone.setCheckState(Qt.Checked)            
-        self.cmbZone.setCurrentIndex(self.cmbZone.findText(self.investment.bolsa.zone))
+
+    def on_chkNone_stateChanged(self, state):
+        if state==Qt.Checked:          
+            self.txtTime.setTime(self.investment.bolsa.close)
+            self.txtTime.setEnabled(False)
+        else:
+            t=datetime.datetime.now()
+            self.txtTime.setTime(QTime(t.hour, t.minute))
+            self.txtTime.setEnabled(True)
+            
 
 
     def on_cmd_pressed(self):
@@ -40,10 +47,7 @@ class frmQuotesIBM(QDialog, Ui_frmQuotesIBM):
             da=dt(fecha, time, zone)
 
         mq=Quote(self.cfg).init__create(self.investment, da, quote)
-        con=self.cfg.connect_myquotes()
-        cur = con.cursor()
-        mq.save(cur)
-        con.commit()
-        cur.close()
-        self.cfg.disconnect_myquotes(con)
+        mq.save()
+        self.cfg.conmq.commit()
+        
         self.done(0)

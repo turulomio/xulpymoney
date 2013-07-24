@@ -21,8 +21,8 @@ class frmOperCuentas(QDialog, Ui_frmOperCuentas):
         self.opertarjeta=opertarjeta
         self.data_cuentas=cuentas
 
-        qcombobox_loadconceptos(self.cmbConceptos, self.cfg.conceptos)
-        qcombobox_loadcuentas(self.cmbCuentas, self.data_cuentas)
+        self.cfg.conceptos.load_qcombobox(self.cmbConceptos)
+        self.data_cuentas.load_qcombobox(self.cmbCuentas)
 
         if opertarjeta!=None:
             self.setWindowTitle(self.trUtf8("Modificación de una operación de tarjeta"))

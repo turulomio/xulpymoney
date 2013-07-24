@@ -35,7 +35,7 @@ class frmPuntoVenta(QDialog, Ui_frmPuntoVenta):
             elif rec.tipooperacion.id!=6:
                     sumacciones=sumacciones+rec.acciones
                     suminvertido=suminvertido+rec.importe
-            self.table.setItem(i, 0, qdatetime(rec.datetime))
+            self.table.setItem(i, 0, qdatetime(rec.datetime, rec.inversion.mq.bolsa.zone))
             self.table.setItem(i, 1, QTableWidgetItem("{0} ({1})".format(rec.inversion.name, rec.inversion.cuenta.eb.name)))
             self.table.setItem(i, 2,  QTableWidgetItem(rec.tipooperacion.name))
             self.table.setItem(i, 3, qright(str(rec.acciones)))

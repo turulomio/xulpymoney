@@ -1,4 +1,3 @@
-## -*- coding: utf-8 -*-
 from decimal import *
 dividendwithholding=Decimal('0.21')
 taxcapitalappreciation=Decimal('0.21')

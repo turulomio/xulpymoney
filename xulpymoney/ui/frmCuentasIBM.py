@@ -41,7 +41,7 @@ class frmCuentasIBM(QDialog, Ui_frmCuentasIBM):
         self.calPago.setDate(QDate.currentDate())
         
         self.cfg.currencies.load_qcombobox(self.cmbCurrency)
-        qcombobox_loadebs(self.cmbEB, self.data_ebs)
+        self.data_ebs.load_qcombobox(self.cmbEB)
         
         con=self.cfg.connect_xulpymoney()
         cur = con.cursor()      

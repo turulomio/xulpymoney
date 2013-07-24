@@ -17,12 +17,12 @@ class frmTransferencia(QDialog, Ui_frmTransferencia):
         self.destino=destino
         
         self.load_data_from_db()
-        qcombobox_loadcuentas(self.cmbOrigen, self.data_cuentas,  origen)
-        qcombobox_loadcuentas(self.cmbDestino, self.data_cuentas,  destino)
+        self.data_cuentas.load_qcombobox(self.cmbOrigen,  origen)
+        self.data_cuentas.load_qcombobox(self.cmbDestino,  destino)
 
     def load_data_from_db(self):
         inicio=datetime.datetime.now()
-        self.data_ebs=SetEBs(self.cfg)
+        self.data_ebs=SetEntidadesBancarias(self.cfg)
         self.data_ebs.load_from_db("select * from entidadesbancarias where eb_activa=true")
         self.data_cuentas=SetCuentas(self.cfg, self.data_ebs)
         self.data_cuentas.load_from_db("select * from cuentas where cu_activa=true")

@@ -20,7 +20,7 @@ class wdgCuentas(QWidget, Ui_wdgCuentas):
         
     def load_data_from_db(self):
         inicio=datetime.datetime.now()
-        self.data_ebs=SetEBs(self.cfg)
+        self.data_ebs=SetEntidadesBancarias(self.cfg)
         self.data_ebs.load_from_db("select * from entidadesbancarias where eb_activa=true")
         self.data_cuentas=SetCuentas(self.cfg, self.data_ebs)
         self.data_cuentas.load_from_db("select * from cuentas where cu_activa=true")

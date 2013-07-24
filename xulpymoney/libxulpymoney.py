@@ -175,7 +175,7 @@ class SetInversiones:
             return False
         cur=self.cfg.con.cursor()
         cur2=self.cfg.con.cursor()
-        now=datetime.datetime.now(pytz.timezone(config.localzone))
+        now=self.cfg.localzone.now()
 #            def init__create(self, fecha, concepto, tipooperacion, importe,  comentario, cuenta, id=None):
 
         if comision!=0:
@@ -234,7 +234,7 @@ class SetInversiones:
 #        except:
 #            return False
         
-class SetMQInvestments:
+class SetInvestments:
     def __init__(self, cfg):
         self.arr=[]
         self.cfg=cfg
@@ -269,6 +269,33 @@ class SetMQInvestments:
                 return a
         return None
         
+class SetInvestmentsModes:
+    """Agrupa los mode"""
+    def __init__(self, cfg):
+        self.dic_arr={}
+        self.cfg=cfg     
+    
+    def load_all(self):
+        self.dic_arr['p']=InvestmentMode(self.cfg).init__create("p",QApplication.translate("Core","Put"))
+        self.dic_arr['c']=InvestmentMode(self.cfg).init__create("c",QApplication.translate("Core","Call"))
+        self.dic_arr['i']=InvestmentMode(self.cfg).init__create("i",QApplication.translate("Core","Inline"))
+        
+    def load_qcombobox(self, combo):
+        """Carga conceptos operaciones 1,2,3"""
+        for c in self.list():
+            combo.addItem(c.name, c.id)
+
+    def find(self, id):
+        return self.dic_arr[str(id)]
+        
+    def list(self):
+        """Lista ordenada por nombre"""
+        lista=dic2list(self.dic_arr)
+        print (lista)
+        lista=sorted(lista, key=lambda c: c.name  ,  reverse=False)    
+        return lista
+        
+        
 class SetBolsas:
     def __init__(self, cfg):
         self.dic_arr={}
@@ -280,6 +307,11 @@ class SetBolsas:
         for row in curmq:
             self.dic_arr[str(row['id_bolsas'])]=Bolsa(self.cfg).init__db_row(row, self.cfg.countries.find(row['country']))
         curmq.close()
+            
+    def load_qcombobox(self, combo):
+        """Carga conceptos operaciones 1,2,3"""
+        for c in self.list():
+            combo.addItem(c.name, c.id)
             
     def find(self, id):
         return self.dic_arr[str(id)]
@@ -319,10 +351,17 @@ class SetConceptos:
             self.dic_arr[str(row['id_conceptos'])]=Concepto(self.cfg).init__db_row(row, self.tiposoperaciones.find(row['id_tiposoperaciones']))
         cur.close()
             
+    def load_qcombobox(self, combo):
+        """Carga conceptos operaciones 1,2,3"""
+        for c in self.list():
+            if c.tipooperacion.id in (1, 2, 3):
+                combo.addItem("{0} -- {1}".format(  c.name,  c.tipooperacion.name),  "{0};{1}".format(c.id, c.tipooperacion.id)   )#id_conceptos;id_tiposopeera ciones
+
     def find(self, id):
         return self.dic_arr[str(id)]
         
     def list(self):
+        """Lista ordenada por nombre"""
         lista=dic2list(self.dic_arr)
         lista=sorted(lista, key=lambda c: c.name  ,  reverse=False)    
         return lista
@@ -359,10 +398,24 @@ class SetCountries:
                 
 
     def list(self):
-        return dic2list(self.dic_arr)
+        """Devuelve una lista ordenada por name"""
+        currencies=dic2list(self.dic_arr)
+        currencies=sorted(currencies, key=lambda c: c.name,  reverse=False)         
+        return currencies
+        
     def find(self, id):
         return self.dic_arr[str(id)]
+    def load_qcombobox(self, combo,  country=None):
+        """Función que carga en un combo pasado como parámetro y con un SetCuentas pasado como parametro
+        Se ordena por nombre y se se pasa el tercer parametro que es un objeto Cuenta lo selecciona""" 
+        self.sort()
+        for cu in self.list():
+            icon = QIcon()
+            icon.addPixmap(qpixmap_pais(cu.id), QIcon.Normal, QIcon.Off)
+            self.addItem(icon, cu.name, cu.id)
 
+        if country!=None:
+                combo.setCurrentIndex(combo.findData(country.id))
 class SetCuentas:     
     def __init__(self, cfg,  setebs):
         self.arr=[]
@@ -380,6 +433,15 @@ class SetCuentas:
         cur.close()
         cur2.close()
                                
+    def load_qcombobox(self, combo,  cuenta=None):
+        """Función que carga en un combo pasado como parámetro y con un SetCuentas pasado como parametro
+        Se ordena por nombre y se se pasa el tercer parametro que es un objeto Cuenta lo selecciona""" 
+        self.sort()
+        for cu in self.arr:
+            combo.addItem(cu.name, cu.id)
+        if cuenta!=None:
+                combo.setCurrentIndex(combo.findData(cuenta.id))
+        
     def find(self, id):
         for a in self.arr:
             if a.id==id:
@@ -402,7 +464,7 @@ class SetCurrencies:
         self.dic_arr['USD']=Currency().init__create(QApplication.translate("Core","Dólar americano"), '$', 'USD')
         self.dic_arr['u']=Currency().init__create(QApplication.translate("Core","Unidades"), 'u', 'u')
 
-    def list_orderby_id(self):
+    def list(self):
         """Devuelve una lista ordenada por id"""
         currencies=dic2list(self.dic_arr)
         currencies=sorted(currencies, key=lambda c: c.id,  reverse=False)         
@@ -413,13 +475,13 @@ class SetCurrencies:
         
 
 
-    def load_qcombobox(combo, selectedcurrency=None):
+    def load_qcombobox(self, combo, selectedcurrency=None):
         """Función que carga en un combo pasado como parámetro las currencies"""
-        for c in self.list_orderby_id():
+        for c in self.list():
             combo.addItem("{0} - {1} ({2})".format(c.id, c.name, c.symbol), c.id)
         #NO SE PUEDE PONER C COMO VARIANT YA QUE LUEGO EL FIND NO ENCUENTRA EL OBJETO.
 
-class SetEBs:     
+class SetEntidadesBancarias:     
     def __init__(self, cfg):
         self.arr=[]
         self.cfg=cfg   
@@ -434,14 +496,20 @@ class SetEBs:
             if a.id==id:
                 return a
             
-    def ebs_activas(self, activa=True):
-        """Función que devuelve una lista con objetos EntidadBancaria activos o no según el parametro"""
-        resultado=[]
-        for e in self.ebs():
-            if e.activa==activa:
-                resultado.append(e)
-        return resultado
+#    def ebs_activas(self, activa=True):
+#        """Función que devuelve una lista con objetos EntidadBancaria activos o no según el parametro"""
+#        resultado=[]
+#        for e in self.ebs():
+#            if e.activa==activa:
+#                resultado.append(e)
+#        return resultado
         
+    def load_qcombobox(self, combo):
+        """Carga entidades bancarias en combo. Es un SetEbs"""
+        self.arr.sort()
+        for e in self.arr:
+            combo.addItem(e.name, e.id)   
+            
     def sort(self):       
         self.arr=sorted(self.arr, key=lambda e: e.name,  reverse=False) 
 
@@ -1556,9 +1624,9 @@ class Inversion:
     def acciones(self, fecha=None):
         """Función que saca el número de acciones de las self.op_actual"""
         if fecha==None:
-            dat=datetime.datetime.now(pytz.timezone(config.localzone))
+            dat=self.cfg.localzone.now()
         else:
-            dat=day_end_from_date(fecha, config.localzone)
+            dat=day_end_from_date(fecha, self.cfg.localzone)
         resultado=Decimal('0')
 
         for o in self.op.arr:
@@ -1589,7 +1657,7 @@ class Inversion:
             if acciones==0:
                 curmq.close()
                 return Decimal('0')
-            quote=Quote(self.cfg).init__from_query(curmq, self.mq, day_end_from_date(fecha, config.localzone))
+            quote=Quote(self.cfg).init__from_query(curmq, self.mq, day_end_from_date(fecha, self.cfg.localzone.name))
             if quote.datetime==None:
                 print ("Inversion saldo: {0} ({1}) en {2} no tiene valor".format(self.name, self.mq.id, fecha))
                 curmq.close()
@@ -1901,10 +1969,17 @@ class SetTiposOperaciones:
         self.dic_arr['9']=TipoOperacion().init__create( "Traspaso de valores. Origen", 9) #No se contabiliza
         self.dic_arr['10']=TipoOperacion().init__create( "Traspaso de valores. Destino", 10) #No se contabiliza     
         
+
+
+    def load_qcombobox(self, combo):
+        for t in self.clone_only_operinversiones().list():
+            combo.addItem(t.name,  t.id)
+
     def find(self, id):
         return self.dic_arr[str(id)]
         
     def list(self):
+        """Lista ordenada por nombre"""
         lista=dic2list(self.dic_arr)
         lista=sorted(lista, key=lambda t:t.name, reverse=False)
         return lista
@@ -1987,7 +2062,7 @@ def myqtablewidget_loads_SetInversionOperacionActual( tabla,  setinversionoperac
         suminvertido=suminvertido+invertido
         sum_accionesXvalor=sum_accionesXvalor+a.acciones*a.valor_accion
 
-        tabla.setItem(rownumber, 0, qdatetime(a.datetime))
+        tabla.setItem(rownumber, 0, qdatetime(a.datetime, inversion.mq.bolsa.zone))
         tabla.setItem(rownumber, 1, qright("{0:.6f}".format(a.acciones)))
         tabla.setItem(rownumber, 2, inversion.mq.currency.qtablewidgetitem(a.valor_accion, numdigitos))
         tabla.setItem(rownumber, 3, inversion.mq.currency.qtablewidgetitem(invertido))
@@ -2019,7 +2094,7 @@ def myqtablewidget_loads_SetInversionOperacion(tabla,  arr):
     rownumber=0
     for a in arr:
         tabla.setItem(rownumber, 0, QTableWidgetItem(str(a.id)))
-        tabla.setItem(rownumber, 1, qdatetime(a.datetime))
+        tabla.setItem(rownumber, 1, qdatetime(a.datetime, a.inversion.mq.bolsa.zone))
         tabla.setItem(rownumber, 2, QTableWidgetItem(a.tipooperacion.name))
         tabla.setItem(rownumber, 3, qright(str(a.acciones)))
         tabla.setItem(rownumber, 4, a.inversion.mq.currency.qtablewidgetitem(a.valor_accion))
@@ -2089,31 +2164,8 @@ def myqtablewidget_loads_SetInversionOperacionHistorica(tabla, arr):
         tabla.setCurrentCell(rownumber, 4)       
     return (sumbruto, sumcomision, sumimpuestos, sumneto)
 
-def qcombobox_loadcuentas(combo, cuentas,  cuenta=None):
-    """Función que carga en un combo pasado como parámetro y con un SetCuentas pasado como parametro
-        Se ordena por nombre y se se pasa el tercer parametro que es un objeto Cuenta lo selecciona""" 
-    cuentas.sort()
-    for cu in cuentas.arr:
-        combo.addItem(cu.name, cu.id)
-    if cuenta!=None:
-            combo.setCurrentIndex(combo.findData(cuenta.id))
-        
 
-def qcombobox_loadebs(combo, ebs):
-    """Carga entidades bancarias en combo. Es un SetEbs"""
-    ebs.sort()
-    for e in ebs.arr:
-        combo.addItem(e.name, e.id)        
 
-def qcombobox_loadconceptos(combo, conceptos):
-    """conceptos es un array de objetos concepto"""
-    for c in conceptos.list():
-        if c.tipooperacion.id in (1, 2, 3):
-            combo.addItem("{0} -- {1}".format(  c.name,  c.tipooperacion.name),  "{0};{1}".format(c.id, c.tipooperacion.id)   )#id_conceptos;id_tiposopeera ciones
-
-def qcombobox_loadtiposoperaciones(combo, tipos):
-    for t in tipos.list():
-        combo.addItem(t.name,  t.id)
 
 class SetAgrupations:
     """Se usa para meter en cfg las agrupaciones, pero tambi´en para crear agrupaciones en las inversiones"""
@@ -2235,8 +2287,17 @@ class SetApalancamientos:
         self.dic_arr["4"]=Apalancamiento(self.cfg).init__create( 4,QApplication.translate("Core","Apalancamiento x4"))
                
 
+    def load_qcombobox(self, combo):
+        """Carga entidades bancarias en combo"""
+        for a in self.list():
+            combo.addItem(a.name, a.id)      
+        
     def list(self):
-        return dic2list(self.dic_arr)
+        """Devuelve una lista ordenada por nombre """
+        arr=dic2list(self.dic_arr)
+        arr=sorted(arr, key=lambda a: a.name,  reverse=False)         
+        return arr
+        
     def find(self, id):
         return self.dic_arr[str(id)]
 
@@ -2355,11 +2416,9 @@ class Bolsa:
         self.starts=row['starts']
         self.ends=row['ends']
         self.close=row['close']
-        self.zone=row['zone']#Intente hacer objeto pero era absurdo.
+        self.zone=self.cfg.zones.find(row['zone'])#Intente hacer objeto pero era absurdo.
         return self
 
-
-#configfile_myquotesuser=os.environ['HOME']+"/.myquotes/myquotes.cfg"
 class Color:
     esc_seq = "\x1b["
     codes={}
@@ -2461,6 +2520,18 @@ class Currency:
             a.setTextColor(QColor(255, 0, 0))
         return a
 
+class InvestmentMode:
+    def __init__(self, cfg):
+        self.cfg=cfg
+        self.id=None
+        self.name=None
+        
+    def init__create(self, id, name):
+        self.id=id
+        self.name=name
+        return self
+        
+        
 class Money:
     "Permite operar con dinero y divisas teniendo en cuenta la fecha de la operación mirando la divisa en myquotes"
     def __init__(self):
@@ -3331,7 +3402,7 @@ class Investment:
         self.phone=None
         self.mail=None
         self.tpc=None
-        self.pci=None
+        self.mode=None#Anterior mode investmentmode
         self.apalancado=None
         self.bolsa=None
         self.yahoo=None
@@ -3362,7 +3433,7 @@ class Investment:
         self.phone=row['phone']
         self.mail=row['mail']
         self.tpc=row['tpc']
-        self.pci=row['pci']
+        self.mode=self.cfg.investmentsmodes.find(row['pci'])
         self.apalancado=self.cfg.apalancamientos.find(row['apalancado'])
         self.bolsa=self.cfg.bolsas.find(row['id_bolsas'])
         self.yahoo=row['yahoo']
@@ -3377,7 +3448,7 @@ class Investment:
         return self
         
                 
-    def init__create(self, name,  isin, currency, type, agrupations, active, web, address, phone, mail, tpc, pci, apalancado, bolsa, yahoo, priority, priorityhistorical, comentario, obsolete, deletable, system, id=None):
+    def init__create(self, name,  isin, currency, type, agrupations, active, web, address, phone, mail, tpc, mode, apalancado, bolsa, yahoo, priority, priorityhistorical, comentario, obsolete, deletable, system, id=None):
         """agrupations es un setagrupation, priority un SetPriorities y priorityhistorical un SetPrioritieshistorical"""
         self.name=name
         self.isin=isin
@@ -3391,7 +3462,7 @@ class Investment:
         self.phone=phone
         self.mail=mail
         self.tpc=tpc
-        self.pci=pci
+        self.mode=mode
         self.apalancado=apalancado        
         self.bolsa=id_bolsas
         self.yahoo=yahoo
@@ -3523,21 +3594,24 @@ class Quote:
             return (False,  None)
         return (True,  curmq.fetchone()['quote'])
         
-    def save(self, curmq):
+    def save(self):
         """Función que graba el quotes si coincide todo lo ignora. Si no coincide lo inserta o actualiza.
         No hace commit a la conexión
         Devuelve un número 1 si insert 2, update, 0  exisitia
         """
-        
+        curmq=self.cfg.conmq.cursor()
         exists=self.exists(curmq)
         if exists[0]==False:
             curmq.execute('insert into quotes (id, datetime, quote) values (%s,%s,%s)', ( self.investment.id, self.datetime, self.quote))
+            curmq.close()
             return 1
         else:
             if exists[1]!=self.quote:
                 curmq.execute("update quotes set quote=%swhere id=%s and datetime=%s", (self.quote, self.investment.id, self.datetime))
+                curmq.close()
                 return 2
             else:
+                curmq.close()
                 return 3
                 
     def delete(self, curmq):
@@ -3570,7 +3644,7 @@ class Quote:
        Devuelve un array de Quote en el que arr[0] es endlastyear, [1] es penultimate y [2] es last
       Si no devuelve tres Quotes devuelve None y debera´a calcularse de otra forma"""
         curmq=self.cfg.conmq.cursor()
-        endlastyear=dt(datetime.date(datetime.date.today().year -1, 12, 31), datetime.time(23, 59, 59), config.localzone)
+        endlastyear=dt(datetime.date(datetime.date.today().year -1, 12, 31), datetime.time(23, 59, 59), self.cfg.localzone)
         curmq.execute("select * from quote (%s, now()) union select * from penultimate(%s) union select * from quote(%s,%s) order by datetime", (investment.id, investment.id, investment.id,  endlastyear))
         if curmq.rowcount!=3:
             curmq.close()
@@ -3717,13 +3791,12 @@ class QuotesResult:
             self.last=triplete[2]
 #            print ("Por triplete {0}".format(str(datetime.datetime.now()-inicio)))
         else:
-            self.last=Quote(self.cfg).init__from_query(curmq,  self.investment,  datetime.datetime.now(pytz.timezone(config.localzone)))
+            self.last=Quote(self.cfg).init__from_query(curmq,  self.investment,  self.cfg.localzone.now())
             if self.last.datetime!=None: #Solo si hay last puede haber penultimate
-                self.penultimate=Quote(self.cfg).init__from_query_penultima(curmq,  self.investment, dt_changes_tz(self.last.datetime, config.localzone).date())
+                self.penultimate=Quote(self.cfg).init__from_query_penultima(curmq,  self.investment, dt_changes_tz(self.last.datetime, self.cfg.localzone).date())
             else:
                 self.penultimate=Quote(self.cfg).init__create(self.investment, None, None)
             self.endlastyear=Quote(self.cfg).init__from_query(curmq,  self.investment,  datetime.datetime(datetime.date.today().year-1, 12, 31, 23, 59, 59, tzinfo=pytz.timezone('UTC')))
-#            print ("Por tres consultad {0}".format(str(datetime.datetime.now()-inicio)))
         self.lastdpa=DividendoEstimacion.dpa(curmq, self.investment, datetime.date.today().year)
         curmq.close()
 
@@ -3781,28 +3854,28 @@ class QuotesResult:
     def __first(self, interval, dt):
         """Función que devuelve un first redondeado trabaja con utc aunque no lo tiene"""
         if interval==datetime.timedelta(days=1):
-            return datetime.datetime(dt.year, dt.month, dt.day, 0, 0, 0, 0, pytz.timezone(config.localzone))
+            return datetime.datetime(dt.year, dt.month, dt.day, 0, 0, 0, 0, pytz.timezone(self.cfg.localzone.name))
         elif interval==datetime.timedelta(days=7):
-            dt=datetime.datetime(dt.year, dt.month, dt.day, 0, 0, 0, 0, pytz.timezone(config.localzone))
+            dt=datetime.datetime(dt.year, dt.month, dt.day, 0, 0, 0, 0, pytz.timezone(self.cfg.localzone.name))
             while dt.weekday()!=0:
                 dt=dt-datetime.timedelta(days=1)
             return dt
         elif interval==datetime.timedelta(days=30):
-            return datetime.datetime(dt.year, dt.month, 1, 0, 0, 0, 0, pytz.timezone(config.localzone))
+            return datetime.datetime(dt.year, dt.month, 1, 0, 0, 0, 0, pytz.timezone(self.cfg.localzone.name))
         elif interval==datetime.timedelta(days=365):
-            return datetime.datetime(dt.year, 1, 1, 0, 0, 0, 0, pytz.timezone(config.localzone))
+            return datetime.datetime(dt.year, 1, 1, 0, 0, 0, 0, pytz.timezone(self.cfg.localzone.name))
                 
     def __last(self, interval, dt):
         """Función que devuelve un first redondeado"""
         if interval==datetime.timedelta(days=1):
-            return datetime.datetime(dt.year, dt.month, dt.day, 0, 0, 0, 0, pytz.timezone(config.localzone))+interval
+            return datetime.datetime(dt.year, dt.month, dt.day, 0, 0, 0, 0, pytz.timezone(self.cfg.localzone.name))+interval
         elif interval==datetime.timedelta(days=7):
             return self.__first(interval, dt)+datetime.timedelta(days=7)
         elif interval==datetime.timedelta(days=30):
-            sumomes=datetime.datetime(dt.year, dt.month, 1, 0, 0, 0, 0, pytz.timezone(config.localzone))+datetime.timedelta(days=31)
+            sumomes=datetime.datetime(dt.year, dt.month, 1, 0, 0, 0, 0, pytz.timezone(self.cfg.localzone.name))+datetime.timedelta(days=31)
             return sumomes.replace(day=1)
         elif interval==datetime.timedelta(days=365):
-            sumoano=datetime.datetime(dt.year, 1, 1, 0, 0, 0, 0, pytz.timezone(config.localzone))+datetime.timedelta(days=366)
+            sumoano=datetime.datetime(dt.year, 1, 1, 0, 0, 0, 0, pytz.timezone(self.cfg.localzone.name))+datetime.timedelta(days=366)
             return sumoano.replace(day=1).replace(month=1)
         
     def __find_ochl_date(self, date):
@@ -4090,9 +4163,15 @@ class SetTypes:
         self.dic_arr["10"]=Type().init__create(10,QApplication.translate("Core","Depósitos"))
         self.dic_arr["11"]=Type().init__create(11,QApplication.translate("Core","Cuentas bancarias"))
 
-
+    def load_qcombobox(self, combo):
+        """Carga entidades bancarias en combo"""
+        for a in self.list():
+            combo.addItem(a.name, a.id)        
+            
     def list(self):
-        return dic2list(self.dic_arr)
+        resultado=dic2list(self.dic_arr)
+        resultado=sorted(resultado, key=lambda c: c.name  ,  reverse=False)    
+        return resultado
 
     def find(self, id):
         return self.dic_arr[str(id)]        
@@ -4109,6 +4188,7 @@ class ConfigMQ:
         self.server=None
         self.password=None
         self.consqlite=None#Update internetquery fro Process
+        self.localzone=None
         self.cac40=set([])
         self.dax=set([])
         self.eurostoxx=set([])
@@ -4130,6 +4210,7 @@ class ConfigMQ:
         self.priorities=SetPriorities(self)
         self.prioritieshistorical=SetPrioritiesHistorical(self)
         self.zones=SetZones(self)
+        self.investmentsmodes=SetInvestmentsModes(self)
         
         
         
@@ -4138,13 +4219,18 @@ class ConfigMQ:
         print ("Cargando ConfigMQ")
         self.countries.load_all()
         self.currencies.load_all()
+        self.investmentsmodes.load_all()
+        self.zones.load_all()
+        
+        self.localzone=self.zones.find(config.localzone)
+        
+        print(self.localzone)
         self.priorities.load_all()
         self.prioritieshistorical.load_all()
         self.types.load_all()
         self.bolsas.load_all_from_db()
         self.agrupations.load_all()
         self.apalancamientos.load_all()
-        self.zones.load_all()
 
 
 
@@ -4374,7 +4460,19 @@ class Global:
 class Zone:
     def __init__(self, cfg):
         self.cfg=cfg
+        self.id=None
         self.name=None
+        
+    def init__create(self, id, name):
+        self.id=id
+        self.name=name
+        return self
+        
+    def timezone(self):
+        return pytz.timezone(self.name)
+        
+    def now(self):
+        return datetime.datetime.now(pytz.timezone(self.name))
         
 class SetZones:
     def __init__(self, cfg):
@@ -4382,7 +4480,33 @@ class SetZones:
         self.dic_arr={}
         
     def load_all(self):
-        self.dic_arr["Europe/Madrid"]=Type().init__create(1,'Europe/Madrid')
+        self.dic_arr["Europe/Madrid"]=Zone(self.cfg).init__create(1,'Europe/Madrid')#ALGUN DIA HABR´A QUE CAMBIAR LAS ZONES POR ID_ZONESº
+        self.dic_arr["Europe/Lisbon"]=Zone(self.cfg).init__create(2,'Europe/Lisbon')
+        self.dic_arr["Europe/Rome"]=Zone(self.cfg).init__create(3,'Europe/Rome')
+        self.dic_arr["Europe/London"]=Zone(self.cfg).init__create(4,'Europe/London')
+        self.dic_arr['Asia/Tokyo']=Zone(self.cfg).init__create(5,'Asia/Tokyo')
+        self.dic_arr["Europe/Berlin"]=Zone(self.cfg).init__create(6,'Europe/Berlin')
+        self.dic_arr["America/New_York"]=Zone(self.cfg).init__create(7,'America/New_York')
+        self.dic_arr["Europe/Paris"]=Zone(self.cfg).init__create(8,'Europe/Paris')
+        self.dic_arr["Asia/Hong_Kong"]=Zone(self.cfg).init__create(9,'Asia/Hong_Kong')
+
+    def load_qcombobox(self, combo, zone=None):
+        """Carga entidades bancarias en combo"""
+        for a in self.list():
+            combo.addItem(a.name, a.name)      
+        if zone!=None:
+            self.cmbZone.setCurrentIndex(self.cmbZone.findText(self.investment.bolsa.zone))
+        
+    def find(self, id):
+        print(id)
+        return self.dic_arr[str(id)]        
+        
+    def list(self):
+        """Devuelve una lista ordenada por nombre """
+        arr=dic2list(self.dic_arr)
+        arr=sorted(arr, key=lambda a: a.name,  reverse=False)         
+        return arr        
+        
 
 def arr_split(arr, wanted_parts=1):
     length = len(arr)
@@ -4437,7 +4561,7 @@ def dt_changes_tz(dt,  tztarjet):
     """Cambia el zoneinfo del dt a tztarjet. El dt del parametre tiene un zoneinfo"""
     if dt==None:
         return None
-    tzt=pytz.timezone(tztarjet)
+    tzt=pytz.timezone(tztarjet.name)
     tarjet=tzt.normalize(dt.astimezone(tzt))
     return tarjet
 
@@ -4494,7 +4618,7 @@ def status_update(cur, source,  process, status=None,  statuschange=None,  inter
 
 
 
-def qdatetime(dt, pixmap=True):
+def qdatetime(dt, zone,  pixmap=True):
     """dt es un datetime con timezone
     dt, tiene timezone, 
     Convierte un datetime a string, teniendo en cuenta los microsehgundos, para ello se convierte a datetime local
@@ -4504,7 +4628,7 @@ def qdatetime(dt, pixmap=True):
     if dt==None:
         resultado="None"
     else:    
-        dt=dt_changes_tz(dt,  config.localzone)#sE CONVIERTE A LOCAL DE dt_changes_tz 2012-07-11 08:52:31.311368-04:00 2012-07-11 14:52:31.311368+02:00
+        dt=dt_changes_tz(dt,  zone)#sE CONVIERTE A LOCAL DE dt_changes_tz 2012-07-11 08:52:31.311368-04:00 2012-07-11 14:52:31.311368+02:00
         if dt.microsecond==4 or (dt.hour==23 and dt.minute==59 and dt.second==59):
             resultado=str(dt.date())
         elif dt.second>0:
@@ -4559,17 +4683,6 @@ def comaporpunto(cadena):
     return cadena
 
 
-def qcombobox_loadapalancamiento(combo, arr):
-    """Carga entidades bancarias en combo"""
-    arr=sorted(arr, key=lambda a: a.name,  reverse=False) 
-    for a in arr:
-        combo.addItem(a.name, a.id)       
-
-def qcombobox_loadtypes(combo, arr):
-    """Carga entidades bancarias en combo"""
-    arr=sorted(arr, key=lambda a: a.name,  reverse=False) 
-    for a in arr:
-        combo.addItem(a.name, a.id)        
 
 def day_end(dattime, zone):
     """Saca cuando acaba el dia de un dattime en una zona concreta"""
@@ -4594,7 +4707,7 @@ def dic2list(dic):
 
 def dt(date, hour, zone):
     """Función que devuleve un datetime con zone info"""    
-    z=pytz.timezone(zone)
+    z=pytz.timezone(zone.name)
     a=datetime.datetime(date.year,  date.month,  date.day,  hour.hour,  hour.minute,  hour.second, hour.microsecond)
     a=z.localize(a)
     return a

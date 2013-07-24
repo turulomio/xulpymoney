@@ -2,8 +2,6 @@ from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 import threading 
 from myqtablewidget import *
-from qcomboboxbolsa import *
-from qcomboboxpci import *
 from libxulpymoney import *
 from frmSelector import *
 from Ui_frmAnalisis import *
@@ -48,10 +46,7 @@ class frmAnalisis(QDialog, Ui_frmAnalisis):
         self.tblIntradia.settings("frmAnalisis",  self.cfg.inifile)    
         self.tblMensuales.settings("frmAnalisis",  self.cfg.inifile)    
         self.tblDividendosEstimaciones.settings("frmAnalisis",  self.cfg.inifile)    
-        
-        #Aquí datos que afectan a insertar y editar
-        self.cmbBolsa.cargar_datos(self.cfg)
-        
+                
         if self.investment==None:
             self.investment=Investment(self.cfg)
             self.tab.setTabEnabled(1, False)
@@ -71,9 +66,11 @@ class frmAnalisis(QDialog, Ui_frmAnalisis):
         self.layHistorical.addWidget(self.canvasHistorical)
         self.layHistorical.addWidget(self.ntbHistorical)
         
+        self.cfg.bolsas.load_qcombobox(self.cmbBolsa)
+        self.cfg.investmentsmodes.load_qcombobox(self.cmbPCI)
         self.cfg.currencies.load_qcombobox(self.cmbCurrency)
-        qcombobox_loadapalancamiento(self.cmbApalancado, self.cfg.apalancamientos.list())
-        qcombobox_loadtypes(self.cmbTipo, self.cfg.types.find())
+        self.cfg.apalancamientos.load_qcombobox(self.cmbApalancado)
+        self.cfg.types.load_qcombobox(self.cmbTipo)
 
         if self.investment.id!=None:#Si no est´a definido petaba el timer por no saber cual es
             self.mytimer = QTimer()
@@ -84,12 +81,12 @@ class frmAnalisis(QDialog, Ui_frmAnalisis):
         def row_tblTPV(quote,  row):
             if quote==None:
                 return
-            self.tblTPC.setItem(row, 0, qdatetime(quote.datetime, config.localzone))
+            self.tblTPC.setItem(row, 0, qdatetime(quote.datetime, self.cfg.localzone))
             self.tblTPC.setItem(row, 1, self.investment.currency.qtablewidgetitem(quote.quote, 6))
 
             try:
                 tpc=(self.result.last.quote-quote.quote)*100/quote.quote
-                days=(datetime.datetime.now(pytz.timezone(config.localzone))-quote.datetime).days+1
+                days=(datetime.datetime.now(pytz.timezone(self.cfg.localzone.name))-quote.datetime).days+1
                 self.tblTPC.setItem(row, 2, qtpc(round(tpc, 2)))    
                 self.tblTPC.setItem(row, 3,  qtpc(round(tpc*365/days, 2)))
             except:
@@ -103,10 +100,10 @@ class frmAnalisis(QDialog, Ui_frmAnalisis):
         except:
             print ("Error con agrupations")
         self.cmbPriority.clear()
-        for p in self.investment.priority.arr:
+        for p in self.investment.priority.list():
             self.cmbPriority.addItem(p.name,  p.id)
         self.cmbPriorityHistorical.clear()
-        for p in self.investment.priorityhistorical.arr:
+        for p in self.investment.priorityhistorical.list():
             self.cmbPriorityHistorical.addItem(p.name,  p.id)
 
         self.lblInversion.setText(("%s ( %s )" %(self.investment.name, self.investment.id)))
@@ -128,18 +125,18 @@ class frmAnalisis(QDialog, Ui_frmAnalisis):
 
         self.cmbBolsa.setCurrentIndex(self.cmbBolsa.findData(self.investment.bolsa.id))
         self.cmbCurrency.setCurrentIndex(self.cmbCurrency.findData(self.investment.currency.id))
-        self.cmbPCI.setCurrentIndex(self.cmbPCI.findData(self.investment.pci))
+        self.cmbPCI.setCurrentIndex(self.cmbPCI.findData(self.investment.mode))
         self.cmbTipo.setCurrentIndex(self.cmbTipo.findData(self.investment.type.id))
         self.cmbApalancado.setCurrentIndex(self.cmbApalancado.findData(self.investment.apalancado.id))
         
-        now=datetime.datetime.now(pytz.timezone(config.localzone))
+        now=self.cfg.localzone.now()
         penultimate=self.result.penultimate
         iniciosemana=self.result.find_quote_in_all(day_end(now-datetime.timedelta(days=datetime.date.today().weekday()+1), self.investment.bolsa.zone))
         iniciomes=self.result.find_quote_in_all(dt(datetime.date(now.year, now.month, 1), datetime.time(0, 0), self.investment.bolsa.zone))
         inicioano=self.result.find_quote_in_all(dt(datetime.date(now.year, 1, 1), datetime.time(0, 0), self.investment.bolsa.zone))             
         docemeses=self.result.find_quote_in_all(day_end(now-datetime.timedelta(days=365), self.investment.bolsa.zone))             
             
-        self.tblTPC.setItem(0, 0, qdatetime(self.result.last.datetime))   
+        self.tblTPC.setItem(0, 0, qdatetime(self.result.last.datetime, self.investment.bolsa.zone))   
         self.tblTPC.setItem(0, 1, self.investment.currency.qtablewidgetitem(self.result.last.quote,  6))
         
         row_tblTPV(penultimate, 1)
@@ -204,7 +201,7 @@ class frmAnalisis(QDialog, Ui_frmAnalisis):
             table.setRowCount(len(data))
             for punt, d in enumerate(data):
                 #dt=i[0].replace(microsecond=4)#Para que salga entero
-                table.setItem(punt, 0, qdatetime(d.datetime)) 
+                table.setItem(punt, 0, qdatetime(d.datetime, self.investment.bolsa.zone)) 
                 table.setItem(punt, 1, self.investment.currency.qtablewidgetitem(d.close,6))
                 table.setItem(punt, 2, self.investment.currency.qtablewidgetitem(d.open,6))
                 table.setItem(punt, 3, self.investment.currency.qtablewidgetitem(d.high,6))
@@ -362,7 +359,7 @@ class frmAnalisis(QDialog, Ui_frmAnalisis):
         self.investment.phone=self.txtPhone.text()
         self.investment.mail=self.txtMail.text()
         self.investment.tpc=int(self.txtTPC.text())
-        self.investment.pci=self.cmbPCI.itemData(self.cmbPCI.currentIndex())
+        self.investment.mode=self.cmbPCI.itemData(self.cmbPCI.currentIndex())
         self.investment.apalancado=self.cfg.apalancamientos.find(self.cmbApalancado.itemData(self.cmbApalancado.currentIndex()))
         self.investment.bolsa=self.cfg.bolsas.find(self.cmbBolsa.itemData(self.cmbBolsa.currentIndex()))
         self.investment.yahoo=self.txtYahoo.text()

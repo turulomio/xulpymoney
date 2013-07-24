@@ -18,11 +18,11 @@ class wdgAPR(QWidget, Ui_wdgAPR):
 
     def load_data_from_db(self):
         inicio=datetime.datetime.now()
-        self.data_ebs=SetEBs(self.cfg)
+        self.data_ebs=SetEntidadesBancarias(self.cfg)
         self.data_ebs.load_from_db("select * from entidadesbancarias where eb_activa=true")
         self.data_cuentas=SetCuentas(self.cfg, self.data_ebs)
         self.data_cuentas.load_from_db("select * from cuentas where cu_activa=true")
-        self.data_investments_all=SetMQInvestments(self.cfg)
+        self.data_investments_all=SetInvestments(self.cfg)
         self.data_investments_all.load_from_db("select distinct(myquotesid) from inversiones ")
         self.data_inversiones_all=SetInversiones(self.cfg, self.data_cuentas, self.data_investments_all)
         self.data_inversiones_all.load_from_db("select * from inversiones ")

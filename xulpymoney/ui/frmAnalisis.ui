@@ -10,7 +10,7 @@
     <x>0</x>
     <y>0</y>
     <width>1102</width>
-    <height>746</height>
+    <height>748</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -194,7 +194,7 @@
                   </widget>
                  </item>
                  <item>
-                  <widget class="QComboBoxBolsa" name="cmbBolsa"/>
+                  <widget class="QComboBox" name="cmbBolsa"/>
                  </item>
                 </layout>
                </item>
@@ -363,7 +363,7 @@
                   </widget>
                  </item>
                  <item>
-                  <widget class="QComboBoxPCI" name="cmbPCI"/>
+                  <widget class="QComboBox" name="cmbPCI"/>
                  </item>
                 </layout>
                </item>
@@ -1346,16 +1346,6 @@ correspondiente en la tabla</string>
    <class>myQTableWidget</class>
    <extends>QTableWidget</extends>
    <header location="global">myqtablewidget</header>
-  </customwidget>
-  <customwidget>
-   <class>QComboBoxBolsa</class>
-   <extends>QComboBox</extends>
-   <header location="global">qcomboboxbolsa</header>
-  </customwidget>
-  <customwidget>
-   <class>QComboBoxPCI</class>
-   <extends>QComboBox</extends>
-   <header location="global">qcomboboxpci</header>
   </customwidget>
  </customwidgets>
  <resources>

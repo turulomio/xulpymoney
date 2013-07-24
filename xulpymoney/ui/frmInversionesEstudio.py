@@ -56,7 +56,7 @@ class frmInversionesEstudio(QDialog, Ui_frmInversionesEstudio):
         self.tblInversionHistorica.settings("frmInversionesEstudio",  self.cfg.inifile)
         self.tblDividendos.settings("frmInversionesEstudio",  self.cfg.inifile)
         
-        qcombobox_loadcuentas(self.cmbCuenta, self.data_cuentas)
+        self.data_cuentas.load_qcombobox(self.cmbCuenta)
 
         if self.tipo==2:
             self.cmbCuenta.setCurrentIndex(self.cmbCuenta.findData(self.selInversion.cuenta.id))
@@ -272,13 +272,10 @@ class frmInversionesEstudio(QDialog, Ui_frmInversionesEstudio):
         
         if self.data_investments.find(myquotesid)==None:
             print ("Cargando otro mqinversiones")
-            curmq=self.cfg.conmq.cursor()        
-            inv=Investment(self.cfg).init__db(self.cfg, curmq, myquotesid)
-            self.cfg.dic_mqinversiones[str(rowmq['id'])]=Investment(self.cfg).init__db_row(self.cfg, rowmq)
-            self.cfg.dic_mqinversiones[str(rowmq['id'])].load_estimacion(curmq)
-            self.cfg.dic_mqinversiones[str(rowmq['id'])].quotes.get_basic(curmq)
-            curmq.close()
-            self.cfg.disconnect_myquotes(mq)
+            inv=Investment(self.cfg).init__db(myquotesid)
+            inv.load_estimacion()
+            inv.quotes.get_basic()
+            self.cfg.dic_mqinversiones[str(rowmq['id'])]=inv
             
         
 

@@ -41,7 +41,7 @@
 20130723 Poner datetime en ioh
 20130723 No funciona estimación de dividendo
 20130723 Error al modificar inversión, meter data_investmentes
-
+20130724 El config pasarlo a .ini
 
 
 
