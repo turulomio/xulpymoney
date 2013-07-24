@@ -93,3 +93,4 @@
 
 ========== NUEVO ================
 Bolsa de paris no sale al añadir un quoteibm
+Cambiar el objeto DividendoEstimacion y comprobar que funciona el informedividenods ibm
