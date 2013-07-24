@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>wdgInversiones2</class>
+ <widget class="QWidget" name="wdgInversiones2">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>748</width>
+    <height>516</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QHBoxLayout" name="horizontalLayout_2">
+   <item>
+    <layout class="QVBoxLayout" name="verticalLayout">
+     <item>
+      <widget class="QLabel" name="lbl">
+       <property name="font">
+        <font>
+         <pointsize>14</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>Listado de inversiones</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout">
+       <item>
+        <spacer name="horizontalSpacer">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <widget class="QLabel" name="label">
+         <property name="text">
+          <string>Búsqueda por código, ISIN o nombre de la inversión</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="txt"/>
+       </item>
+       <item>
+        <widget class="QPushButton" name="cmd">
+         <property name="text">
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset>
+           <normaloff>:/images/document-preview.png</normaloff>:/images/document-preview.png</iconset>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <widget class="myQTableWidget" name="tblInversiones">
+       <property name="contextMenuPolicy">
+        <enum>Qt::CustomContextMenu</enum>
+       </property>
+       <property name="alternatingRowColors">
+        <bool>true</bool>
+       </property>
+       <attribute name="horizontalHeaderStretchLastSection">
+        <bool>false</bool>
+       </attribute>
+       <attribute name="verticalHeaderVisible">
+        <bool>false</bool>
+       </attribute>
+       <column>
+        <property name="text">
+         <string>Code</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>Inversión</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>ISIN</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>Última actualización</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>Cotización</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>% Diario</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>% Inicio año</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>% Dividendo</string>
+        </property>
+       </column>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="lblFound">
+       <property name="text">
+        <string>Registros encontrados</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+  <action name="actionInversionEstudio">
+   <property name="icon">
+    <iconset>
+     <normaloff>:/xulpmoney/document-edit.png</normaloff>:/xulpmoney/document-edit.png</iconset>
+   </property>
+   <property name="text">
+    <string>Estudio de la Inversión</string>
+   </property>
+  </action>
+  <action name="actionOrdenarTPCDiario">
+   <property name="icon">
+    <iconset>
+     <normaloff>:/images/document-preview.png</normaloff>:/images/document-preview.png</iconset>
+   </property>
+   <property name="text">
+    <string>% Diario</string>
+   </property>
+  </action>
+  <action name="actionOrdenarTPCAnual">
+   <property name="icon">
+    <iconset>
+     <normaloff>:/images/document-preview.png</normaloff>:/images/document-preview.png</iconset>
+   </property>
+   <property name="text">
+    <string>% Anual</string>
+   </property>
+  </action>
+  <action name="actionOrdenarName">
+   <property name="icon">
+    <iconset>
+     <normaloff>:/images/document-preview.png</normaloff>:/images/document-preview.png</iconset>
+   </property>
+   <property name="text">
+    <string>Nombre</string>
+   </property>
+  </action>
+  <action name="actionOrdenarDividendo">
+   <property name="icon">
+    <iconset>
+     <normaloff>:/images/document-preview.png</normaloff>:/images/document-preview.png</iconset>
+   </property>
+   <property name="text">
+    <string>Dividendo</string>
+   </property>
+  </action>
+  <action name="actionOrdenarHora">
+   <property name="icon">
+    <iconset>
+     <normaloff>:/images/document-preview.png</normaloff>:/images/document-preview.png</iconset>
+   </property>
+   <property name="text">
+    <string>Hora</string>
+   </property>
+  </action>
+  <action name="actionIbex35">
+   <property name="icon">
+    <iconset>
+     <normaloff>:/images/spain.gif</normaloff>:/images/spain.gif</iconset>
+   </property>
+   <property name="text">
+    <string>Ibex 35</string>
+   </property>
+  </action>
+  <action name="actionInversionNueva">
+   <property name="icon">
+    <iconset>
+     <normaloff>:/images/item_add.png</normaloff>:/images/item_add.png</iconset>
+   </property>
+   <property name="text">
+    <string>Nueva Inversión manual</string>
+   </property>
+   <property name="toolTip">
+    <string>El sistema crea las inversiones automáticamente
+según los Sources seleccionados en /etc/myquotes/config.py.
+Si quiere introducir una inversión manualmente y meter los
+datos manualmente, seleccione esta opción.</string>
+   </property>
+  </action>
+  <action name="actionInversionModificar">
+   <property name="icon">
+    <iconset>
+     <normaloff>:/images/edit.png</normaloff>:/images/edit.png</iconset>
+   </property>
+   <property name="text">
+    <string>Editar Inversión manual</string>
+   </property>
+   <property name="toolTip">
+    <string>El sistema crea las inversiones automáticamente
+según los Sources seleccionados en /etc/myquotes/config.py.
+Si quiere modificar una inversión insertada manualmente,
+seleccione esta opción.</string>
+   </property>
+  </action>
+  <action name="actionInversionBorrar">
+   <property name="icon">
+    <iconset>
+     <normaloff>:/images/eventdelete.png</normaloff>:/images/eventdelete.png</iconset>
+   </property>
+   <property name="text">
+    <string>Borrar Inversión</string>
+   </property>
+   <property name="toolTip">
+    <string>Si esta inversión es automática se borrará pero el sistema 
+volvera a generarla.
+
+Si esta inversión es manual se borrará y desaparecerá del
+sistema.</string>
+   </property>
+  </action>
+  <action name="actionFavoritos">
+   <property name="icon">
+    <iconset>
+     <normaloff>:/images/star.png</normaloff>:/images/star.png</iconset>
+   </property>
+   <property name="text">
+    <string>Añadir a favoritos</string>
+   </property>
+   <property name="toolTip">
+    <string>Añadir a favoritos</string>
+   </property>
+  </action>
+  <action name="actionMergeCodes">
+   <property name="icon">
+    <iconset>
+     <normaloff>:/images/cakes.png</normaloff>:/images/cakes.png</iconset>
+   </property>
+   <property name="text">
+    <string>Combina códigos seleccionados</string>
+   </property>
+  </action>
+  <action name="actionQuoteNew">
+   <property name="icon">
+    <iconset>
+     <normaloff>:/images/item_add.png</normaloff>:/images/item_add.png</iconset>
+   </property>
+   <property name="text">
+    <string>Nueva cotización</string>
+   </property>
+   <property name="toolTip">
+    <string>Nueva cotización</string>
+   </property>
+  </action>
+  <action name="actionDividendoEstimacionNueva">
+   <property name="icon">
+    <iconset>
+     <normaloff>:/images/item_add.png</normaloff>:/images/item_add.png</iconset>
+   </property>
+   <property name="text">
+    <string>Nueva estimación de dividendo</string>
+   </property>
+   <property name="toolTip">
+    <string>Nueva estimación de dividendo</string>
+   </property>
+  </action>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>myQTableWidget</class>
+   <extends>QTableWidget</extends>
+   <header location="global">myqtablewidget</header>
+  </customwidget>
+ </customwidgets>
+ <tabstops>
+  <tabstop>txt</tabstop>
+  <tabstop>cmd</tabstop>
+  <tabstop>tblInversiones</tabstop>
+ </tabstops>
+ <resources>
+  <include location="../images/xulpymoney.qrc"/>
+ </resources>
+ <connections/>
+</ui>

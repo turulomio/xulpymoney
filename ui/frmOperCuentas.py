@@ -2,7 +2,7 @@
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 from Ui_frmOperCuentas import *
-from core import *
+from libxulpymoney import *
 
 class frmOperCuentas(QDialog, Ui_frmOperCuentas):
     def __init__(self, cfg, cuentas, cuenta, opercuenta=None, tarjeta=None ,  opertarjeta=None ,  parent=None):

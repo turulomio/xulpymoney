@@ -1,6 +1,6 @@
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
-from core import *
+from libxulpymoney import *
 from Ui_frmTablasAuxiliares import *
 
 class frmTablasAuxiliares(QDialog, Ui_frmTablasAuxiliares):

@@ -1,7 +1,7 @@
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 import datetime
-from core import *
+from libxulpymoney import *
 from Ui_wdgInformeDividendos import *
 from frmInversionesEstudio import *
 from frmDividendoEstimacionIBM import *

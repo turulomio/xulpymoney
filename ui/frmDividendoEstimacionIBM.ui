@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>frmDividendoEstimacionIBM</class>
+ <widget class="QDialog" name="frmDividendoEstimacionIBM">
+  <property name="windowModality">
+   <enum>Qt::ApplicationModal</enum>
+  </property>
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>376</width>
+    <height>141</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Nueva estimación de dividendo</string>
+  </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>:/images/dinero.png</normaloff>:/images/dinero.png</iconset>
+  </property>
+  <property name="modal">
+   <bool>true</bool>
+  </property>
+  <layout class="QHBoxLayout" name="horizontalLayout_4">
+   <item>
+    <layout class="QVBoxLayout" name="verticalLayout">
+     <item>
+      <widget class="QLabel" name="lbl">
+       <property name="font">
+        <font>
+         <pointsize>12</pointsize>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: rgb(0, 192, 0);</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout">
+       <item>
+        <widget class="QLabel" name="label">
+         <property name="text">
+          <string>Introduce el año</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="txtYear">
+         <property name="alignment">
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_2">
+       <item>
+        <widget class="QLabel" name="label_2">
+         <property name="text">
+          <string>Introduce el DPA</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="myQLineEdit" name="txtDPA">
+         <property name="text">
+          <string>0</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_3">
+       <item>
+        <widget class="QLabel" name="label_3">
+         <property name="text">
+          <string>Introduce la fuente</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QComboBoxTZ" name="cmbSource"/>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <widget class="QPushButton" name="cmd">
+       <property name="text">
+        <string>Guardar Dividendo</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>QComboBoxTZ</class>
+   <extends>QComboBox</extends>
+   <header location="global">qcomboboxtz</header>
+  </customwidget>
+  <customwidget>
+   <class>myQLineEdit</class>
+   <extends>QLineEdit</extends>
+   <header location="global">myqlineedit</header>
+  </customwidget>
+ </customwidgets>
+ <tabstops>
+  <tabstop>txtDPA</tabstop>
+  <tabstop>txtYear</tabstop>
+  <tabstop>cmbSource</tabstop>
+  <tabstop>cmd</tabstop>
+ </tabstops>
+ <resources>
+  <include location="../images/xulpymoney.qrc"/>
+ </resources>
+ <connections/>
+</ui>

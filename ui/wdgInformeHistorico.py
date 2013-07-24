@@ -2,7 +2,7 @@
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 #from apoyo import *
-from core import *
+from libxulpymoney import *
 from Ui_wdgInformeHistorico import *
 
 class wdgInformeHistorico(QWidget, Ui_wdgInformeHistorico):

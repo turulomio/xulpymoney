@@ -1,10 +1,10 @@
-from core import *
+from libxulpymoney import *
 sys.path.append(config.myquoteslib)
 import   math
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 from Ui_wdgInformeClases import *
-from libmyquotes import *
+from libxulpymoney import *
 
 from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure

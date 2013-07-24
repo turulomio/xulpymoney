@@ -1,7 +1,7 @@
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 from Ui_frmTraspasoValores import *
-from core import *
+from libxulpymoney import *
 
 class frmTraspasoValores(QDialog, Ui_frmTraspasoValores):
     def __init__(self, cfg, origen,   parent=None):

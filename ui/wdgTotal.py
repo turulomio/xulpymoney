@@ -1,7 +1,7 @@
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
-from core import *
-from libmyquotes import *
+from libxulpymoney import *
+from libxulpymoney import *
 from matplotlib.finance import *
 
 from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg as FigureCanvas

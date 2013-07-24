@@ -6,12 +6,13 @@ PREFIXLIB=$(DESTDIR)/usr/lib/xulpymoney
 PREFIXSHARE=$(DESTDIR)/usr/share/xulpymoney
 PREFIXPIXMAPS=$(DESTDIR)/usr/share/pixmaps
 PREFIXAPPLICATIONS=$(DESTDIR)/usr/share/applications
-
+PREFIXINITD=$(DESTDIR)/etc/init.d
 
 all: compile install
 compile:
 	pyrcc4 -py3 images/xulpymoney.qrc > images/xulpymoney_rc.py
-	pyuic4 ui/frmAbout.ui > ui/Ui_frmAbout.py 
+	pyuic4 ui/frmAbout.ui > ui/Ui_frmAbout.py
+	pyuic4 ui/frmAccess.ui > ui/Ui_frmAccess.py
 	pyuic4 ui/frmMain.ui > ui/Ui_frmMain.py
 	pyuic4 ui/frmOperCuentas.ui > ui/Ui_frmOperCuentas.py
 	pyuic4 ui/frmTablasAuxiliares.ui > ui/Ui_frmTablasAuxiliares.py
@@ -35,6 +36,17 @@ compile:
 	pyuic4 ui/frmTransferencia.ui > ui/Ui_frmTransferencia.py
 	pyuic4 ui/frmTraspasoValores.ui > ui/Ui_frmTraspasoValores.py
 	pyuic4 ui/wdgTotal.ui > ui/Ui_wdgTotal.py
+
+	pyuic4 ui/frmAnalisis.ui > ui/Ui_frmAnalisis.py 
+	pyuic4 ui/frmQuotesIBM.ui > ui/Ui_frmQuotesIBM.py
+	pyuic4 ui/frmMain2.ui > ui/Ui_frmMain2.py
+	pyuic4 ui/frmSelector.ui > ui/Ui_frmSelector.py
+	pyuic4 ui/frmDividendoEstimacionIBM.ui > ui/Ui_frmDividendoEstimacionIBM.py
+	pyuic4 ui/wdgInversiones2.ui > ui/Ui_wdgInversiones2.py
+	pyuic4 ui/wdgChart.ui > ui/Ui_wdgChart.py
+	pyuic4 ui/wdgLog.ui > ui/Ui_wdgLog.py
+	pyuic4 ui/wdgMergeCodes.ui > ui/Ui_wdgMergeCodes.py
+
 	pylupdate4 -noobsolete xulpymoney.pro
 	lrelease xulpymoney.pro
 
@@ -43,22 +55,41 @@ install:
 	install -o root -d $(PREFIXBIN)
 	install -o root -d $(PREFIXLIB)
 	install -o root -d $(PREFIXSHARE)
+	install -o root -d $(PREFIXSHARE)/sql
+	install -o root -d $(PREFIXSHARE)/scripts
 	install -o root -d $(PREFIXPIXMAPS)
 	install -o root -d $(PREFIXAPPLICATIONS)
 
 	install -m 755 -o root xulpymoney.py $(PREFIXBIN)/xulpymoney
-	install -m 644 -o root ui/*.py $(PREFIXLIB)
-	install -m 644 -o root images/*.py $(PREFIXLIB)
+	install -m 644 -o root ui/*.py libxulpymoney.py images/*.py  $(PREFIXLIB)
 	install -m 644 -o root i18n/*.qm $(PREFIXLIB)
 	install -m 644 -o root config.py $(PREFIXETC)/config.py.dist
 	install -m 644 -o root xulpymoney.desktop $(PREFIXAPPLICATIONS)
 	install -m 644 -o root images/dinero.png $(PREFIXPIXMAPS)/xulpymoney.png
 
+	install -m 755 -o root mystocksd.py $(PREFIXBIN)/mystocksd
+	install -m 755 -o root sources/mq.*.py $(PREFIXBIN)/
+	install -m 755 -o root mystocks.py $(PREFIXBIN)/mystocks
+	install -m 755 -o root mystocks.initd $(PREFIXINITD)/myquotes
+	install -m 644 -o root GPL-3.txt CHANGELOG-* AUTHORS-* RELEASES-* xulpymoney-*.odt $(PREFIXSHARE)
+	install -m 644 -o root sql/*.data sql/*.sql $(PREFIXSHARE)/sql
+	install -m 644 -o root images/kmplot.jpg $(PREFIXPIXMAPS)/mystocks.jpg
+	install -m 644 -o root scripts/*.py $(PREFIXSHARE)/scripts
+	install -m 644 -o root sources/*.py $(PREFIXLIB)
+	install -m 644 -o root mystocks.desktop $(PREFIXAPPLICATIONS)
+
+
+
 uninstall:
+	rm $(PREFIXBIN)/mystocks
+	rm $(PREFIXBIN)/mystocksd
+	rm $(PREFIXBIN)/mq.*.py
 	rm $(PREFIXBIN)/xulpymoney
 	rm -Rf $(PREFIXLIB)
 	rm -Rf $(PREFIXSHARE)
 	rm $(PREFIXETC)/config.py.dist
 	rm -fr $(PREFIXPIXMAPS)/xulpymoney.png
+	rm -fr $(PREFIXPIXMAPS)/mystocks.jpg
 	rm -fr $(PREFIXAPPLICATIONS)/xulpymoney.desktop
+	rm -fr $(PREFIXAPPLICATIONS)/mystocks.desktop
 

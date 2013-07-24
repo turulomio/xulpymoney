@@ -1,4 +1,4 @@
-from core import *
+from libxulpymoney import *
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 from Ui_wdgInversiones import *
@@ -125,7 +125,7 @@ class wdgInversiones(QWidget, Ui_wdgInversiones):
         
     @QtCore.pyqtSlot() 
     def on_actionInversionEstudio_activated(self):
-        w=frmInversionesEstudio(self.cfg, self.data_cuentas,  self.selInversion, self)
+        w=frmInversionesEstudio(self.cfg, self.data_cuentas, self.data_investments, self.selInversion, self)
         w.exec_()
         self.on_chkInactivas_stateChanged(self.chkInactivas.checkState())#Carga la tabla
             

@@ -1,7 +1,7 @@
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 from Ui_wdgAPR import *
-from core import *
+from libxulpymoney import *
 
 class wdgAPR(QWidget, Ui_wdgAPR):
     def __init__(self, cfg,  parent=None):

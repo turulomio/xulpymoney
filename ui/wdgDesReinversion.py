@@ -1,7 +1,7 @@
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 from Ui_wdgDesReinversion import *
-from core import *
+from libxulpymoney import *
 from decimal import *
 
 class wdgDesReinversion(QWidget, Ui_wdgDesReinversion):

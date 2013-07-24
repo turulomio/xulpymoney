@@ -1,0 +1,12 @@
+[Desktop Entry]
+Name=MyStocks
+Type=Application
+Comment=Financial stock prices from open source pages in Internet
+Exec=mystocks
+TryExec=mystocks
+Icon=/usr/share/pixmaps/mystocks.jpg
+Categories=Office;
+GenericName=Cotizaciones de productos financieros
+GenericName[en]=Financial stock prices
+GenericName[es]=Cotizaciones de productos financieros
+

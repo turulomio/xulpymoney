@@ -1,7 +1,7 @@
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 from Ui_frmPuntoVenta import *
-from core import *
+from libxulpymoney import *
 from decimal import Decimal
 
 class frmPuntoVenta(QDialog, Ui_frmPuntoVenta):

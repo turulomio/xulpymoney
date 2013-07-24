@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>frmAccess</class>
+ <widget class="QDialog" name="frmAccess">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>287</width>
+    <height>256</height>
+   </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>:/images/kmplot.jpg</normaloff>:/images/kmplot.jpg</iconset>
+  </property>
+  <layout class="QHBoxLayout" name="horizontalLayout_2">
+   <item>
+    <layout class="QVBoxLayout" name="verticalLayout_3">
+     <item>
+      <widget class="QLabel" name="lbl">
+       <property name="text">
+        <string/>
+       </property>
+       <property name="pixmap">
+        <pixmap resource="../images/xulpymoney.qrc">:/xulpymoney/keko.png</pixmap>
+       </property>
+       <property name="scaledContents">
+        <bool>false</bool>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout">
+       <item>
+        <layout class="QVBoxLayout" name="verticalLayout">
+         <item>
+          <widget class="QLabel" name="lblServer">
+           <property name="text">
+            <string>Servidor</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="lblPort">
+           <property name="text">
+            <string>Puerto</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="lblDatabase">
+           <property name="text">
+            <string>Base de datos</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="lblUser">
+           <property name="text">
+            <string>Usuario</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="lblPass">
+           <property name="text">
+            <string>Contraseña</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QVBoxLayout" name="verticalLayout_2">
+         <item>
+          <widget class="QLineEdit" name="txtServer">
+           <property name="inputMethodHints">
+            <set>Qt::ImhNone</set>
+           </property>
+           <property name="text">
+            <string>127.0.0.1</string>
+           </property>
+           <property name="echoMode">
+            <enum>QLineEdit::Normal</enum>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="txtPort">
+           <property name="text">
+            <string>5432</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="txtDB"/>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="txtUser"/>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="txtPass">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="inputMethodHints">
+            <set>Qt::ImhHiddenText|Qt::ImhNoAutoUppercase|Qt::ImhNoPredictiveText</set>
+           </property>
+           <property name="echoMode">
+            <enum>QLineEdit::Password</enum>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <widget class="QDialogButtonBox" name="cmdYN">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="standardButtons">
+        <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+       </property>
+       <property name="centerButtons">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <tabstops>
+  <tabstop>txtUser</tabstop>
+  <tabstop>txtPass</tabstop>
+  <tabstop>cmdYN</tabstop>
+  <tabstop>txtServer</tabstop>
+  <tabstop>txtPort</tabstop>
+  <tabstop>txtDB</tabstop>
+ </tabstops>
+ <resources>
+  <include location="../images/xulpymoney.qrc"/>
+  <include location="../images/xulpymoney.qrc"/>
+  <include location="../images/xulpymoney.qrc"/>
+  <include location="../images/xulpymoney.qrc"/>
+ </resources>
+ <connections/>
+</ui>
