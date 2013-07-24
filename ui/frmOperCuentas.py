@@ -119,7 +119,7 @@ class frmOperCuentas(QDialog, Ui_frmOperCuentas):
             con.commit()        #Se debe hacer el commit antes para que al actualizar con el signal salga todos los datos
             self.emit(SIGNAL("OperTarjetaIBMed"), ())
             self.done(0)            
-        self.cuenta.saldo_from_db(cur)
+        self.cuenta.saldo_from_db()
         cur.close()     
         self.cfg.disconnect_xulpymoney(con)        
     

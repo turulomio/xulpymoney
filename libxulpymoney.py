@@ -242,7 +242,6 @@ class SetMQInvestments:
         """sql es una query sobre la tabla inversiones"""
         cur=self.cfg.con.cursor()
         curmq=self.cfg.conmq.cursor()
-        curmq2=self.cfg.conmq.cursor()
         cur.execute(sql)#"Select distinct(myquotesid) from inversiones"
         
         ##Conviert cur a lista separada comas
@@ -254,15 +253,14 @@ class SetMQInvestments:
         ##Carga los investments
         curmq.execute("select * from investments where id in ("+lista+")" )
         for rowmq in curmq:
-            inv=Investment(self.cfg).init__db_row(self.cfg, rowmq)
-            inv.load_estimacion(curmq2)
-            inv.quotes.get_basic(curmq2)
+            inv=Investment(self.cfg).init__db_row(rowmq)
+            inv.load_estimacion()
+            inv.quotes.get_basic()
             self.arr.append(inv)
             sys.stdout.write("\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\bInvestment {0}/{1}: ".format(curmq.rownumber, curmq.rowcount) )
             sys.stdout.flush()
         cur.close()
         curmq.close()
-        curmq2.close()
                            
     def find(self, id):
         """Devuelve el objeto investment con id pasado como par´ametro y None si no lo encuentra"""
@@ -376,8 +374,8 @@ class SetCuentas:
         cur2=self.cfg.con.cursor()
         cur.execute(sql)#"Select * from cuentas"
         for row in cur:
-            c=Cuenta(self.cfg).init__db_row(self.cfg, row, self.ebs.find(row['id_entidadesbancarias']))
-            c.saldo_from_db(cur2)
+            c=Cuenta(self.cfg).init__db_row(row, self.ebs.find(row['id_entidadesbancarias']))
+            c.saldo_from_db()
             self.arr.append(c)
         cur.close()
         cur2.close()
@@ -905,9 +903,9 @@ class InversionOperacionActual:
         """Función que devuelve un Quote con la referencia del indice.
         Si no existe devuelve un Quote con quote 0"""
         curmq=self.cfg.conmq.cursor()
-        quote=Quote().init__from_query(curmq, self.cfg.indicereferencia, self.datetime)
+        quote=Quote(self.cfg).init__from_query(curmq, self.cfg.indicereferencia, self.datetime)
         if quote==None:
-            self.referenciaindice= Quote().init__create(self.cfg.indicereferencia, self.datetime, 0)
+            self.referenciaindice= Quote(self.cfg).init__create(self.cfg.indicereferencia, self.datetime, 0)
         else:
             self.referenciaindice=quote
         curmq.close()
@@ -1334,7 +1332,7 @@ class Cuenta:
         self.currency=self.cfg.currencies.find(row['currency'])
         return self
     
-    def saldo_from_db(self,cur,  fecha=None):
+    def saldo_from_db(self,fecha=None):
         """Función que calcula el saldo de una cuenta
         Solo asigna saldo al atributo saldo si la fecha es actual, es decir la actual
         Parámetros:
@@ -1343,15 +1341,17 @@ class Cuenta:
         Devuelve:
             - Decimal saldo Valor del saldo
         """
-        
+        cur=self.cfg.con.cursor()
         if fecha==None:
             fecha=datetime.date.today()
         cur.execute('select sum(importe)  from opercuentas where id_cuentas='+ str(self.id) +" and fecha<='"+str(fecha)+"';") 
         saldo=cur.fetchone()[0]
         if saldo==None:
+            cur.close()
             return 0        
         if fecha==datetime.date.today():
             self.saldo=saldo
+        cur.close()
         return saldo
             
     def init__create(self, name,  eb, activa, numero, currency, id=None):
@@ -1589,7 +1589,7 @@ class Inversion:
             if acciones==0:
                 curmq.close()
                 return Decimal('0')
-            quote=Quote().init__from_query(curmq, self.mq, day_end_from_date(fecha, config.localzone))
+            quote=Quote(self.cfg).init__from_query(curmq, self.mq, day_end_from_date(fecha, config.localzone))
             if quote.datetime==None:
                 print ("Inversion saldo: {0} ({1}) en {2} no tiene valor".format(self.name, self.mq.id, fecha))
                 curmq.close()
@@ -1924,14 +1924,9 @@ class TUpdateData(threading.Thread):
     
     def run(self):    
         inicio=datetime.datetime.now()
-        mq=self.cfg.connect_myquotes()
-        curmq=mq.cursor()       
-        self.cfg.indicereferencia.quotes.get_basic(curmq)
+        self.cfg.indicereferencia.quotes.get_basic()
 #        for k, v in self.cfg.dic_mqinversiones.items():
 #            v.quotes.get_basic(curmq)
-        curmq.close()
-        self.cfg.disconnect_myquotes(mq)
-
         print("Update quotes took",  datetime.datetime.now()-inicio) 
 
 
@@ -3378,7 +3373,7 @@ class Investment:
         self.deletable=row['deletable']
         self.system=row['system']
         
-        self.quotes=QuotesResult(self)
+        self.quotes=QuotesResult(self.cfg,self)
         return self
         
                 
@@ -3407,7 +3402,7 @@ class Investment:
         self.deletable=deletable
         self.system=system
         
-        self.quotes=QuotesResult(self)
+        self.quotes=QuotesResult(self.cfg,self)
         return self        
 
     def init__db(self, id):
@@ -3425,9 +3420,9 @@ class Investment:
             year=datetime.date.today().year
         curmq.execute("select * from estimaciones where year=%s and id=%s", (year, self.id))
         if curmq.rowcount==0:        
-            e=newEstimacion().init__create(year, 0, datetime.date(2012, 7, 3), "Vacio por código", False, 0, self)
+            e=Estimacion().init__create(year, 0, datetime.date(2012, 7, 3), "Vacio por código", False, 0, self)
         else:
-            e=newEstimacion().init__db_row(curmq.fetchone(), self)
+            e=Estimacion().init__db_row(curmq.fetchone(), self)
         self.estimaciones[str(e.year)]=e
         curmq.close()
         
@@ -3503,7 +3498,8 @@ class QuotesSet:
         
 class Quote:
     """"Un quote no puede estar duplicado en un datetime solo puede haber uno"""
-    def __init__(self):
+    def __init__(self, cfg):
+        self.cfg=cfg
         self.investment=None
         self.quote=None
         self.datetime=None
@@ -3569,20 +3565,23 @@ class Quote:
         else:
             curmq.execute("select * from penultimate(%s,%s)", (investment.id, lastdate ))
         return self.init__db_row(curmq.fetchone(), None)        
-    def init__from_query_triplete(self, curmq, investment): 
+    def init__from_query_triplete(self, investment): 
         """Función que busca el last, penultimate y endlastyear de golpe
        Devuelve un array de Quote en el que arr[0] es endlastyear, [1] es penultimate y [2] es last
       Si no devuelve tres Quotes devuelve None y debera´a calcularse de otra forma"""
-      
+        curmq=self.cfg.conmq.cursor()
         endlastyear=dt(datetime.date(datetime.date.today().year -1, 12, 31), datetime.time(23, 59, 59), config.localzone)
         curmq.execute("select * from quote (%s, now()) union select * from penultimate(%s) union select * from quote(%s,%s) order by datetime", (investment.id, investment.id, investment.id,  endlastyear))
         if curmq.rowcount!=3:
+            curmq.close()
             return None
         resultado=[]
         for row in  curmq:
             if row['datetime']==None: #Pierde el orden y no se sabe cual es cual
+                curmq.close()
                 return None
-            resultado.append(Quote().init__db_row(row, investment))
+            resultado.append(Quote(self.cfg).init__db_row(row, investment))
+        curmq.close()
         return resultado
 
 class OCHL:
@@ -3672,7 +3671,8 @@ class QuotesGenOHCL:
         
 class QuotesResult:
     """Función que consigue resultados de myquotes de un id pasado en el constructor"""
-    def __init__(self, investment):
+    def __init__(self,cfg,  investment):
+        self.cfg=cfg
         self.investment=investment
         self.last=None
         self.lastdpa=None
@@ -3706,24 +3706,26 @@ class QuotesResult:
             return False
         return True
     
-    def get_basic(self, curmq):
+    def get_basic(self):
         """Función que calcula last, penultimate y lastdate y el lastdpa"""
 #        inicio=datetime.datetime.now()
-        triplete=Quote().init__from_query_triplete(curmq, self.investment)
+        curmq=self.cfg.conmq.cursor()
+        triplete=Quote(self.cfg).init__from_query_triplete(self.investment)
         if triplete!=None:
             self.endlastyear=triplete[0]
             self.penultimate=triplete[1]
             self.last=triplete[2]
 #            print ("Por triplete {0}".format(str(datetime.datetime.now()-inicio)))
         else:
-            self.last=Quote().init__from_query(curmq,  self.investment,  datetime.datetime.now(pytz.timezone(config.localzone)))
+            self.last=Quote(self.cfg).init__from_query(curmq,  self.investment,  datetime.datetime.now(pytz.timezone(config.localzone)))
             if self.last.datetime!=None: #Solo si hay last puede haber penultimate
-                self.penultimate=Quote().init__from_query_penultima(curmq,  self.investment, dt_changes_tz(self.last.datetime, config.localzone).date())
+                self.penultimate=Quote(self.cfg).init__from_query_penultima(curmq,  self.investment, dt_changes_tz(self.last.datetime, config.localzone).date())
             else:
-                self.penultimate=Quote().init__create(self.investment, None, None)
-            self.endlastyear=Quote().init__from_query(curmq,  self.investment,  datetime.datetime(datetime.date.today().year-1, 12, 31, 23, 59, 59, tzinfo=pytz.timezone('UTC')))
+                self.penultimate=Quote(self.cfg).init__create(self.investment, None, None)
+            self.endlastyear=Quote(self.cfg).init__from_query(curmq,  self.investment,  datetime.datetime(datetime.date.today().year-1, 12, 31, 23, 59, 59, tzinfo=pytz.timezone('UTC')))
 #            print ("Por tres consultad {0}".format(str(datetime.datetime.now()-inicio)))
         self.lastdpa=DividendoEstimacion.dpa(curmq, self.investment, datetime.date.today().year)
+        curmq.close()
 
 
     
@@ -3763,7 +3765,7 @@ class QuotesResult:
         siguientedia=iniciodia+datetime.timedelta(days=1)
         curmq.execute("select * from quotes where id=%s and datetime>=%s and datetime<%s order by datetime", (self.investment.id,  iniciodia, siguientedia))
         for row in curmq:
-            resultado.append(Quote().init__db_row(row,  self.investment))
+            resultado.append(Quote(self.cfg).init__db_row(row,  self.investment))
         return resultado
             
                 
@@ -3867,7 +3869,7 @@ class QuotesResult:
         else:
             curmq.execute("select * from quotes where id=%s and datetime>%s order by datetime;", (self.investment.id, self.all[len(self.all)-1].datetime))
         for row in curmq:
-            self.all.append(Quote().init__db_row(row,  self.investment))
+            self.all.append(Quote(self.cfg).init__db_row(row,  self.investment))
         print ("Descarga de {0} datos: {1}".format(curmq.rowcount,   datetime.datetime.now()-inicio))
         self.get_basic_in_all()
         
@@ -4214,7 +4216,7 @@ class ConfigXulpy(ConfigMQ):
         self.conceptos=SetConceptos(self, self.tiposoperaciones)
         self.conceptos.load_from_db()
         self.localcurrency=self.currencies.find(config.localcurrency) #Currency definido en config
-        self.indicereferencia=Investment(self.cfg).init__db(self,  config.indicereferencia)
+        self.indicereferencia=Investment(self).init__db( config.indicereferencia)
         self.indicereferencia.quotes.get_basic()
         print(datetime.datetime.now()-inicio)
         

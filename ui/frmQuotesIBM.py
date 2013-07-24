@@ -39,7 +39,7 @@ class frmQuotesIBM(QDialog, Ui_frmQuotesIBM):
             time=self.txtTime.time().toPyTime()
             da=dt(fecha, time, zone)
 
-        mq=Quote().init__create(self.investment, da, quote)
+        mq=Quote(self.cfg).init__create(self.investment, da, quote)
         con=self.cfg.connect_myquotes()
         cur = con.cursor()
         mq.save(cur)

@@ -164,7 +164,7 @@ class frmMain(QMainWindow, Ui_frmMain):
     @QtCore.pyqtSlot()  
     def on_actionInversiones_activated(self):
         self.w.close()
-        self.w=wdgInversiones2(self.cfg)
+        self.w=wdgInversiones(self.cfg)
                
         self.layout.addWidget(self.w)
         self.w.show()

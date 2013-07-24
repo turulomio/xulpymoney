@@ -40,7 +40,7 @@ class wdgDesReinversion(QWidget, Ui_wdgDesReinversion):
        
         if self.radDes.isChecked():#DESINVERSION
             (operinversionesactual, operinversioneshistoricas)=self.operinversiones.calcular()
-            q=Quote().init__create(self.inversion.mq, datetime.datetime.now(pytz.timezone(config.localzone)), self.txtValorAccion.decimal())
+            q=Quote(self.cfg).init__create(self.inversion.mq, datetime.datetime.now(pytz.timezone(config.localzone)), self.txtValorAccion.decimal())
             for rec in operinversionesactual.arr:
                 pendiente=rec.pendiente(q)
                 if perdida+pendiente==0:

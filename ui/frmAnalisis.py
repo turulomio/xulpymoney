@@ -27,7 +27,7 @@ class frmAnalisis(QDialog, Ui_frmAnalisis):
         self.cfg=cfg
         self.investment=investment
 
-        self.result=QuotesResult(self.investment)
+        self.result=QuotesResult(self.cfg,self.investment)
         
         #Son usados para las tablas
         self.intradia=[]
