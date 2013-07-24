@@ -11,7 +11,7 @@ class frmInversionesIBM(QDialog, Ui_frmInversionesIBM):
         self.inversion=inversion
         self.operinversion=operinversion
   
-        qcombobox_loadtiposoperaciones(self.cmbTiposOperaciones, self.cfg.tiposoperaciones.clone_only_operinversiones())
+        self.cfg.tiposoperaciones.load_qcombobox(self.cmbTiposOperaciones)
 
         
         if self.operinversion==None:#nuevo movimiento
@@ -23,7 +23,7 @@ class frmInversionesIBM(QDialog, Ui_frmInversionesIBM):
         else:#editar movimiento
             self.lblTitulo.setText(self.trUtf8("Edición del movimiento seleccionado de {0}".format(self.inversion.name)))
             self.cmbTiposOperaciones.setCurrentIndex(self.cmbTiposOperaciones.findData(self.operinversion.tipooperacion.id))
-            dt=dt_changes_tz(self.operinversion.datetime, config.localzone)
+            dt=dt_changes_tz(self.operinversion.datetime, self.cfg.localzone.name)
             self.calendar.setSelectedDate(dt.date())
             self.timeedit.setTime(dt.time())
             self.txtImporte.setText(str(self.operinversion.importe))
@@ -31,7 +31,7 @@ class frmInversionesIBM(QDialog, Ui_frmInversionesIBM):
             self.txtComision.setText(str(self.operinversion.comision))
             self.txtValorAccion.setText(str(self.operinversion.valor_accion))
             self.txtAcciones.setText(str(self.operinversion.acciones))
-            self.cmbTZ.setCurrentIndex(self.cmbTZ.findText(config.localzone))
+            self.cmbTZ.setCurrentIndex(self.cmbTZ.findText(self.cfg.localzone.name))
 
     def on_cmd_released(self):
         fecha=self.calendar.selectedDate().toPyDate()

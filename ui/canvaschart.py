@@ -243,8 +243,8 @@ class canvasChart(FigureCanvas):
         interval=(last-first).days
 #        print ("Interval get locators",  interval)
         if interval==0:
-            self.ax.xaxis.set_major_locator(HourLocator(interval=1 , tz=pytz.timezone(config.localzone)))
-            self.ax.xaxis.set_minor_locator(HourLocator(interval=1 , tz=pytz.timezone(config.localzone)))
+            self.ax.xaxis.set_major_locator(HourLocator(interval=1 , tz=pytz.timezone(self.cfg.localzone.name)))
+            self.ax.xaxis.set_minor_locator(HourLocator(interval=1 , tz=pytz.timezone(self.cfg.localzone.name)))
             self.ax.xaxis.set_major_formatter(DateFormatter('%H:%M'))            
         elif interval<365:
             self.ax.xaxis.set_minor_locator(MonthLocator())
@@ -291,7 +291,7 @@ class canvasChart(FigureCanvas):
             quotes.append(q.quote)
 
         self._get_locators(datetimes[0],  datetimes[len(datetimes)-1], len(datetimes))
-        self.ax.plot_date(datetimes, quotes, '-',  tz=pytz.timezone(config.localzone))
+        self.ax.plot_date(datetimes, quotes, '-',  tz=pytz.timezone(self.cfg.localzone.name))
         
         self._draw_sma50(datetimes, quotes)
         self._draw_sma200(datetimes, quotes)
@@ -302,8 +302,8 @@ class canvasChart(FigureCanvas):
 #        print ("Una vez")
 #        self.ochl(datetime.timedelta(minutes=5))
 #
-#        self.ax.xaxis.set_major_locator(HourLocator(interval=1 , tz=pytz.timezone(config.localzone)))
-#        self.ax.xaxis.set_minor_locator(HourLocator(interval=1, tz=pytz.timezone(config.localzone)))
+#        self.ax.xaxis.set_major_locator(HourLocator(interval=1 , tz=pytz.timezone(self.cfg.localzone.name)))
+#        self.ax.xaxis.set_minor_locator(HourLocator(interval=1, tz=pytz.timezone(self.cfg.localzone.name)))
 #        self.ax.xaxis.set_major_formatter(DateFormatter('%H:%M'))      
 #        self.ax.autoscale_view()
 #        self.ax.fmt_xdata = DateFormatter('%Y-%m-%d')

@@ -24,11 +24,11 @@ class wdgInversiones(QWidget, Ui_wdgInversiones):
         
     def load_data_from_db(self):
         inicio=datetime.datetime.now()
-        self.data_ebs=SetEBs(self.cfg)
+        self.data_ebs=SetEntidadesBancarias(self.cfg)
         self.data_ebs.load_from_db("select * from entidadesbancarias where eb_activa=true")
         self.data_cuentas=SetCuentas(self.cfg, self.data_ebs)
         self.data_cuentas.load_from_db("select * from cuentas where cu_activa=true")
-        self.data_investments=SetMQInvestments(self.cfg)
+        self.data_investments=SetInvestments(self.cfg)
         self.data_investments.load_from_db("select distinct(myquotesid) from inversiones where in_activa=true")
         self.data_inversiones=SetInversiones(self.cfg, self.data_cuentas, self.data_investments)
         self.data_inversiones.load_from_db("select * from inversiones where in_activa=true")
@@ -46,7 +46,7 @@ class wdgInversiones(QWidget, Ui_wdgInversiones):
         sumnegativos=0
         for inv in self.inversiones:
             self.tblInversiones.setItem(i, 0, QTableWidgetItem("{0} ({1})".format(inv.name, inv.cuenta.name)))
-            self.tblInversiones.setItem(i, 1, qdatetime(inv.mq.quotes.last.datetime))
+            self.tblInversiones.setItem(i, 1, qdatetime(inv.mq.quotes.last.datetime, inv.mq.bolsa.zone))
             self.tblInversiones.setItem(i, 2, inv.mq.currency.qtablewidgetitem(inv.mq.quotes.last.quote,  6))#Se debería recibir el parametro currency
             
             diario=inv.diferencia_saldo_diario()
@@ -141,11 +141,7 @@ class wdgInversiones(QWidget, Ui_wdgInversiones):
     def on_actionMyquotesManual_activated(self):
         w=frmQuotesIBM(self.cfg, self.selInversion.mq,  self)
         w.exec_()
-        mq=self.cfg.connect_myquotes()
-        curmq=mq.cursor()       
-        self.selInversion.mq.quotes.get_basic(curmq)
-        curmq.close()
-        self.cfg.disconnect_myquotes(mq)     
+        self.selInversion.mq.quotes.get_basic()
         self.on_chkInactivas_stateChanged(self.chkInactivas.checkState())#Carga la tabla
 
     @QtCore.pyqtSlot() 

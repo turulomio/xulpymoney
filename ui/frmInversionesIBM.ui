@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>474</width>
-    <height>434</height>
+    <width>578</width>
+    <height>524</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -80,7 +80,7 @@
         <widget class="QTimeEdit" name="timeedit"/>
        </item>
        <item>
-        <widget class="QComboBoxTZ" name="cmbTZ"/>
+        <widget class="QComboBox" name="cmbTZ"/>
        </item>
       </layout>
      </item>
@@ -260,11 +260,6 @@
   </layout>
  </widget>
  <customwidgets>
-  <customwidget>
-   <class>QComboBoxTZ</class>
-   <extends>QComboBox</extends>
-   <header location="global">qcomboboxtz</header>
-  </customwidget>
   <customwidget>
    <class>myQLineEdit</class>
    <extends>QLineEdit</extends>

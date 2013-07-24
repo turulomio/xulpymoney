@@ -10,7 +10,7 @@
     <x>0</x>
     <y>0</y>
     <width>376</width>
-    <height>141</height>
+    <height>168</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -90,7 +90,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QComboBoxTZ" name="cmbSource"/>
+        <widget class="QComboBox" name="cmbSource"/>
        </item>
       </layout>
      </item>
@@ -106,11 +106,6 @@
   </layout>
  </widget>
  <customwidgets>
-  <customwidget>
-   <class>QComboBoxTZ</class>
-   <extends>QComboBox</extends>
-   <header location="global">qcomboboxtz</header>
-  </customwidget>
   <customwidget>
    <class>myQLineEdit</class>
    <extends>QLineEdit</extends>

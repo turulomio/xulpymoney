@@ -34,11 +34,11 @@ class wdgInformeHistorico(QWidget, Ui_wdgInformeHistorico):
 
     def load_data_from_db(self):
         inicio=datetime.datetime.now()
-        self.data_ebs=SetEBs(self.cfg)
+        self.data_ebs=SetEntidadesBancarias(self.cfg)
         self.data_ebs.load_from_db("select * from entidadesbancarias where eb_activa=true")
         self.data_cuentas=SetCuentas(self.cfg, self.data_ebs)
         self.data_cuentas.load_from_db("select * from cuentas where cu_activa=true")
-        self.data_investments=SetMQInvestments(self.cfg)
+        self.data_investments=SetInvestments(self.cfg)
         self.data_investments.load_from_db("select distinct(myquotesid) from inversiones")#Todas no solo activas
         self.data_inversiones=SetInversiones(self.cfg, self.data_cuentas, self.data_investments)
         self.data_inversiones.load_from_db("select * from inversiones") #Todas no solo activas
@@ -70,7 +70,7 @@ class wdgInformeHistorico(QWidget, Ui_wdgInformeHistorico):
                 valor=0
             saldo=valor*o.acciones
             sumsaldo=sumsaldo+saldo
-            self.tblAdded.setItem(i, 0, qdatetime(o.datetime))
+            self.tblAdded.setItem(i, 0, qdatetime(o.datetime,  o.inversion.mq.bolsa.zone))
             self.tblAdded.setItem(i, 1, QTableWidgetItem(o.inversion.name))
             self.tblAdded.setItem(i, 2, QTableWidgetItem(self.cfg.tiposoperaciones(6).name))
             self.tblAdded.setItem(i, 3, qright(str(o.acciones)))

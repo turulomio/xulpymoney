@@ -51,7 +51,7 @@ class wdgInversiones2(QWidget, Ui_wdgInversiones2):
                 
             inv=Investment(self.cfg)
             inv.init__db_row(i)
-            inv.quotes.get_basic(cur2)
+            inv.quotes.get_basic()
             self.inversionesmq.append(inv)
         cur.close()     
         cur2.close()
@@ -76,7 +76,7 @@ class wdgInversiones2(QWidget, Ui_wdgInversiones2):
             self.tblInversiones.setItem(i, 1, QTableWidgetItem(str(inv.name).upper()))
             self.tblInversiones.item(i, 1).setIcon(inv.bolsa.country.qicon())
             self.tblInversiones.setItem(i, 2, QTableWidgetItem(inv.isin))
-            self.tblInversiones.setItem(i, 3, qdatetime(inv.quotes.last.datetime))#, config.localzone)))
+            self.tblInversiones.setItem(i, 3, qdatetime(inv.quotes.last.datetime, inv.bolsa.zone))#, self.cfg.localzone.name)))
             self.tblInversiones.setItem(i, 4, inv.currency.qtablewidgetitem(inv.quotes.last.quote, 6 ))
             self.tblInversiones.setItem(i, 5, qtpc(inv.quotes.tpc_diario()))
             self.tblInversiones.setItem(i, 6, qtpc(inv.quotes.tpc_anual()))

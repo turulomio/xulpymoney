@@ -40,7 +40,7 @@ class wdgDesReinversion(QWidget, Ui_wdgDesReinversion):
        
         if self.radDes.isChecked():#DESINVERSION
             (operinversionesactual, operinversioneshistoricas)=self.operinversiones.calcular()
-            q=Quote(self.cfg).init__create(self.inversion.mq, datetime.datetime.now(pytz.timezone(config.localzone)), self.txtValorAccion.decimal())
+            q=Quote(self.cfg).init__create(self.inversion.mq, datetime.datetime.now(pytz.timezone(self.cfg.localzone.name)), self.txtValorAccion.decimal())
             for rec in operinversionesactual.arr:
                 pendiente=rec.pendiente(q)
                 if perdida+pendiente==0:
@@ -100,10 +100,10 @@ class wdgDesReinversion(QWidget, Ui_wdgDesReinversion):
         d=InversionOperacion(self.cfg)
         id_operinversiones=self.operinversiones.arr[len(self.operinversiones.arr)-1].id+1 ##Para simular un id_operinversiones real, le asignamos uno
         if self.radDes.isChecked():#DESINVERSION
-            d.init__create(self.cfg.tiposoperaciones.find(5), datetime.datetime.now(pytz.timezone(config.localzone)), self.inversion, -acciones, importe, impuestos, comision, valor_accion, "", id_operinversiones)
+            d.init__create(self.cfg.tiposoperaciones.find(5), datetime.datetime.now(pytz.timezone(self.cfg.localzone.name)), self.inversion, -acciones, importe, impuestos, comision, valor_accion, "", id_operinversiones)
         else:#REINVERSION
-            d.init__create(self.cfg.tiposoperaciones.find(4), datetime.datetime.now(pytz.timezone(config.localzone)), self.inversion, acciones, importe, impuestos, comision, valor_accion, "",  id_operinversiones)
-            d.init__create(self.cfg.tiposoperaciones.find(4), datetime.datetime.now(pytz.timezone(config.localzone)), self.inversion, acciones, importe, impuestos, comision, valor_accion, "",  id_operinversiones)
+            d.init__create(self.cfg.tiposoperaciones.find(4), datetime.datetime.now(pytz.timezone(self.cfg.localzone.name)), self.inversion, acciones, importe, impuestos, comision, valor_accion, "",  id_operinversiones)
+            d.init__create(self.cfg.tiposoperaciones.find(4), datetime.datetime.now(pytz.timezone(self.cfg.localzone.name)), self.inversion, acciones, importe, impuestos, comision, valor_accion, "",  id_operinversiones)
         operaciones.arr.append(d)
 
 

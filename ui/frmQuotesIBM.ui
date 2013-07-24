@@ -97,7 +97,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QComboBoxTZ" name="cmbZone"/>
+        <widget class="QComboBox" name="cmbZone"/>
        </item>
       </layout>
      </item>
@@ -114,33 +114,11 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>QComboBoxTZ</class>
-   <extends>QComboBox</extends>
-   <header location="global">qcomboboxtz</header>
-  </customwidget>
-  <customwidget>
    <class>myQLineEdit</class>
    <extends>QLineEdit</extends>
    <header location="global">myqlineedit</header>
   </customwidget>
  </customwidgets>
  <resources/>
- <connections>
-  <connection>
-   <sender>chkNone</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>txtTime</receiver>
-   <slot>setDisabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>313</x>
-     <y>233</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>179</x>
-     <y>235</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+ <connections/>
 </ui>
