@@ -6,10 +6,10 @@ from frmDividendosIBM import *
 from frmPuntoVenta import *
 from wdgDesReinversion import *
 from frmTraspasoValores import *
-from core import *
+from libxulpymoney import *
 
 class frmInversionesEstudio(QDialog, Ui_frmInversionesEstudio):
-    def __init__(self, cfg, cuentas, selInversion=None,  parent=None):
+    def __init__(self, cfg, cuentas, investments,  selInversion=None,  parent=None):
         """Cuentas es un set cuentas"""
         """TIPOS DE ENTRADAS:        
          1   : Inserción de Opercuentas
@@ -19,6 +19,7 @@ class frmInversionesEstudio(QDialog, Ui_frmInversionesEstudio):
         self.showMaximized()
         self.cfg=cfg
         self.data_cuentas=cuentas
+        self.data_investments=investments##Para modificar investments
         self.selInversion=selInversion
         self.currentIndex=79329
         self.selDividendo=None#Dividendo seleccionado
@@ -266,16 +267,13 @@ class frmInversionesEstudio(QDialog, Ui_frmInversionesEstudio):
         inversion=self.txtInversion.text()
         venta=self.txtVenta.decimal()
         id_cuentas=int(self.cmbCuenta.itemData(self.cmbCuenta.currentIndex()))
-        myquotesid=(self.ise.selected.id)
+        myquotesid=int(self.ise.selected.id)
         
-        try:#Comprueba se esta cargada la investment en el diccionario en caso negativo lo carga antes de insertar
-            print(self.cfg.dic_mqinversiones[str(myquotesid)])
-        except:
+        
+        if self.data_investments.find(myquotesid)==None:
             print ("Cargando otro mqinversiones")
-            mq=self.cfg.connect_myquotes()
-            curmq=mq.cursor()        
-            curmq.execute("select * from investments where id=%s", (myquotesid, ))
-            rowmq=curmq.fetchone()
+            curmq=self.cfg.conmq.cursor()        
+            inv=Investment().init__db(self.cfg, curmq, myquotesid)
             self.cfg.dic_mqinversiones[str(rowmq['id'])]=Investment().init__db_row(self.cfg, rowmq)
             self.cfg.dic_mqinversiones[str(rowmq['id'])].load_estimacion(curmq)
             self.cfg.dic_mqinversiones[str(rowmq['id'])].quotes.get_basic(curmq)

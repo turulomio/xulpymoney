@@ -1,0 +1,49 @@
+## -*- coding: utf-8 -*-
+from PyQt4.QtCore import *
+from PyQt4.QtGui import *
+from Ui_frmQuotesIBM import *
+from libxulpymoney import *
+from qcomboboxtz import *
+
+class frmQuotesIBM(QDialog, Ui_frmQuotesIBM):
+    def __init__(self, cfg, investment,  selDate=None,   parent = None, name = None, modal = False):
+        # tipo 1 - Insertar selDate=None
+        # tipo2 - Modificar selDate!=None
+        QDialog.__init__(self,  parent)
+        self.setupUi(self)   
+        self.investment=investment
+        self.cfg=cfg
+        self.lblInversion.setText("{0} ({1})".format(self.investment.name,  self.investment.id))
+        t=datetime.datetime.now()
+        self.txtTime.setTime(QTime(t.hour, t.minute))
+
+        if self.investment.type.id in (2, 8):
+            self.chkNone.setCheckState(Qt.Checked)            
+        self.cmbZone.setCurrentIndex(self.cmbZone.findText(self.investment.bolsa.zone))
+
+
+    def on_cmd_pressed(self):
+        try:
+            fecha=self.calendar.selectedDate().toPyDate()
+            quote=float(self.txtQuote.text())
+            zone=self.cmbZone.currentText()
+        except:
+            m=QMessageBox()
+            m.setIcon(QMessageBox.Information)
+            m.setText(self.trUtf8("Datos incorrectos. Vuelva a introducirlos"))
+            m.exec_()    
+            return
+        if self.chkNone.checkState()==Qt.Checked:
+            da=dt(fecha, self.investment.bolsa.ends.replace(microsecond=4), self.investment.bolsa.zone)+datetime.timedelta(minutes=10)
+        else:
+            time=self.txtTime.time().toPyTime()
+            da=dt(fecha, time, zone)
+
+        mq=Quote().init__create(self.investment, da, quote)
+        con=self.cfg.connect_myquotes()
+        cur = con.cursor()
+        mq.save(cur)
+        con.commit()
+        cur.close()
+        self.cfg.disconnect_myquotes(con)
+        self.done(0)

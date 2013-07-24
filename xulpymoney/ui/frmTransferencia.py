@@ -5,7 +5,7 @@ from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 from Ui_frmTransferencia import *
 #from apoyo import *
-from core import *
+from libxulpymoney import *
 
 class frmTransferencia(QDialog, Ui_frmTransferencia):
     def __init__(self, cfg, origen=None, destino=None,   parent=None):

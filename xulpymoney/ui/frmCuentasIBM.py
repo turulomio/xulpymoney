@@ -1,9 +1,7 @@
-## -*- coding: utf-8 -*-
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
-from core import *
+from libxulpymoney import *
 from Ui_frmCuentasIBM import *
-
 from frmOperCuentas import *
 from frmTarjetasIBM import *
 

@@ -1,7 +1,7 @@
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 from Ui_frmTarjetasIBM import *
-from core import *
+from libxulpymoney import *
 
 class frmTarjetasIBM(QDialog, Ui_frmTarjetasIBM):
     def __init__(self, cfg,  cuenta,  tarjeta,  parent=None):

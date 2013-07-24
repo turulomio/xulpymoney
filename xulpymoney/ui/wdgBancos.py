@@ -1,6 +1,6 @@
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
-from core import *
+from libxulpymoney import *
 from frmCuentasIBM import *
 from frmInversionesEstudio import *
 from Ui_wdgBancos import *

@@ -1,6 +1,8 @@
 SOURCES         = xulpymoney.py \
                   ui/frmAbout.py \
                   ui/Ui_frmAbout.py \
+                  ui/frmAccess.py \
+                  ui/Ui_frmAccess.py \
                   ui/frmOperCuentas.py \
                   ui/Ui_frmOperCuentas.py \
                   ui/frmMain.py \
@@ -46,9 +48,38 @@ SOURCES         = xulpymoney.py \
                   ui/Ui_frmSettings.py \
                   ui/frmSettings.py \
                   ui/wdgTotal.py \
-                  ui/Ui_wdgTotal.py
+                  ui/Ui_wdgTotal.py \
+                  mystocks.py \
+                  investmentSelector.py \
+                  ui/wdgpie.py \
+                  ui/qcomboboxcountry.py \
+                  ui/qcomboboxtz.py \
+                  ui/qcomboboxbolsa.py \
+                  ui/qcomboboxpci.py \
+                  ui/myqtablewidget.py \
+                  libxulpymoney.py \
+                  ui/frmAnalisis.py \
+                  ui/Ui_frmAnalisis.py \
+                  ui/frmMain2.py \
+                  ui/Ui_frmMain2.py \
+                  ui/frmQuotesIBM.py \
+                  ui/Ui_frmQuotesIBM.py
+                  ui/frmSelector.py \
+                  ui/Ui_frmSelector.py \
+                  ui/frmDividendoEstimacionIBM.py \
+                  ui/Ui_frmDividendoEstimacionIBM.py \
+                  ui/wdgInversiones2.py \
+                  ui/Ui_wdgInversiones2.py \
+                  ui/wdgMergeCodes.py \
+                  ui/Ui_wdgMergeCodes.py \
+                  ui/wdgChart.py \
+                  ui/wdgChart.ui \
+                  ui/wdgLog.py \
+                  ui/Ui_wdgLog.py \
+                  mystocksd.py
 
 FORMS           = ui/frmAbout.ui \
+                  ui/frmAccess.ui \
                   ui/frmDividendosIBM.ui \
                   ui/frmMain.ui \
                   ui/frmOperCuentas.ui \
@@ -70,6 +101,19 @@ FORMS           = ui/frmAbout.ui \
                   ui/frmSettings.ui \
                   ui/frmTransferencia.ui \
                   ui/frmTraspasoValores.ui \
-                  ui/wdgTotal.ui
+                  ui/wdgTotal.ui \
+                  ui/frmAnalisis.ui \
+                  ui/frmQuotesIBM.ui \
+                  ui/frmMain2.ui \
+                  ui/frmSelector.ui \
+                  ui/wdgInversiones2.ui \
+                  ui/wdgMergeCodes.ui \
+                  ui/wdgChart.ui
+                  ui/wdgLog.ui
 
-TRANSLATIONS    = i18n/xulpymoney_en.ts
+TRANSLATIONS    = i18n/xulpymoney_en.ts \
+                  i18n/xulpymoney_fr.ts \
+                  i18n/xulpymoney_ru.ts \
+                  i18n/xulpymoney_ro.ts 
+
+CODECFORTR= UTF-8

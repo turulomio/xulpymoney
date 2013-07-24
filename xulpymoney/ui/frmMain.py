@@ -3,7 +3,7 @@ from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 from Ui_frmMain import *
 from frmAbout import *
-from core import *
+from libxulpymoney import *
 from frmAccess import *
 from wdgTotal import *
 from wdgInformeDividendos import *
@@ -169,7 +169,7 @@ class frmMain(QMainWindow, Ui_frmMain):
     @QtCore.pyqtSlot()  
     def on_actionInversiones_activated(self):
         self.w.close()
-        self.w=wdgInversiones(self.cfg)
+        self.w=wdgInversiones2(self.cfg)
                
         self.layout.addWidget(self.w)
         self.w.show()
