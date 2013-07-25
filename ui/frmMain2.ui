@@ -21,8 +21,8 @@
    <cursorShape>PointingHandCursor</cursorShape>
   </property>
   <property name="windowIcon">
-   <iconset>
-    <normaloff>:/images/kmplot.jpg</normaloff>:/images/kmplot.jpg</iconset>
+   <iconset resource="../images/xulpymoney.qrc">
+    <normaloff>:/xulpymoney/kmplot.jpg</normaloff>:/xulpymoney/kmplot.jpg</iconset>
   </property>
   <widget class="QWidget" name="central">
    <property name="enabled">
@@ -46,7 +46,7 @@
      <x>0</x>
      <y>0</y>
      <width>1180</width>
-     <height>20</height>
+     <height>25</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuAyuda">
@@ -273,8 +273,8 @@
   </action>
   <action name="actionEurostoxx50">
    <property name="icon">
-    <iconset>
-     <normaloff>:/images/eu.gif</normaloff>:/images/eu.gif</iconset>
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/countries/eu.gif</normaloff>:/countries/eu.gif</iconset>
    </property>
    <property name="text">
     <string>Eurostoxx 50</string>
@@ -282,8 +282,8 @@
   </action>
   <action name="actionSP500">
    <property name="icon">
-    <iconset>
-     <normaloff>:/images/usa.gif</normaloff>:/images/usa.gif</iconset>
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/countries/usa.gif</normaloff>:/countries/usa.gif</iconset>
    </property>
    <property name="text">
     <string>S&amp;&amp;P 500</string>
@@ -597,8 +597,8 @@
   </action>
   <action name="actionLog">
    <property name="icon">
-    <iconset>
-     <normaloff>:/images/tools-wizard.png</normaloff>:/images/tools-wizard.png</iconset>
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/history2.png</normaloff>:/xulpymoney/history2.png</iconset>
    </property>
    <property name="text">
     <string>Registro del sistema</string>
@@ -669,8 +669,8 @@
   </action>
   <action name="actionDivisas">
    <property name="icon">
-    <iconset>
-     <normaloff>:/images/kmplot.jpg</normaloff>:/images/kmplot.jpg</iconset>
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/Money.png</normaloff>:/xulpymoney/Money.png</iconset>
    </property>
    <property name="text">
     <string>Todas las divisas</string>
@@ -706,8 +706,8 @@ seleccionados por el usuario</string>
   </action>
   <action name="actionActive">
    <property name="icon">
-    <iconset>
-     <normaloff>:/images/dialog-ok-apply.png</normaloff>:/images/dialog-ok-apply.png</iconset>
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/star.png</normaloff>:/xulpymoney/star.png</iconset>
    </property>
    <property name="text">
     <string>Todas las activas</string>

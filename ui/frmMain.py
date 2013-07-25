@@ -68,7 +68,7 @@ class frmMain(QMainWindow, Ui_frmMain):
                 
     @pyqtSignature("")
     def on_actionAcercaDe_activated(self):
-        fr=frmAbout(self, "frmabout")
+        fr=frmAbout(self.cfg, self, "frmabout")
         fr.open()
 
     @QtCore.pyqtSlot()  
