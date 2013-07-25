@@ -2,9 +2,6 @@ from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 import datetime,  time,  pytz,   psycopg2,  psycopg2.extras,  sys,  codecs,  urllib.request,    os,  configparser,  threading
 
-sys.path.append("/etc/xulpymoney")
-import config
-
 pathGraphIntraday=os.environ['HOME']+"/.myquotes/graphIntraday.png"
 pathGraphHistorical=os.environ['HOME']+"/.myquotes/graphHistorical.png"
 pathGraphPieTPC=os.environ['HOME']+"/.myquotes/graphPieTPC.png"
@@ -33,7 +30,7 @@ class CuentaOperacionHeredadaInversion:
 #    //Borra la tabla tmpinversionesheredada
         sqldel="delete from tmpinversionesheredada where id_operinversiones="+str(id_operinversiones)
         cur.execute(sqldel);
-        cur.execute('select datetime, inversiones.id_cuentas as id_cuentas, inversion, fecha, importe, inversiones.id_inversiones as id_inversiones, comision, impuestos, id_tiposoperaciones from operinversiones,inversiones where inversiones.id_inversiones=operinversiones.id_inversiones and id_operinversiones='+str(id_operinversiones))
+        cur.execute('select datetime, inversiones.id_cuentas as id_cuentas, inversion, importe, inversiones.id_inversiones as id_inversiones, comision, impuestos, id_tiposoperaciones from operinversiones,inversiones where inversiones.id_inversiones=operinversiones.id_inversiones and id_operinversiones='+str(id_operinversiones))
         row=cur.fetchone()
         fecha=row['datetime'].date();
         importe=row['importe'];
@@ -1448,7 +1445,7 @@ class InversionOperacion:
         if recalculate==True:
             (self.inversion.op_actual,  self.inversion.op_historica)=self.inversion.op.calcular()   
             CuentaOperacionHeredadaInversion(self.cfg).actualizar_una_inversion(cur, cur2,  self.inversion.id)  
-            self.inversion.cuenta.saldo_from_db(cur2)
+            self.inversion.cuenta.saldo_from_db()
         self.cfg.con.commit()
         cur.close()
         cur2.close()
@@ -4213,23 +4210,28 @@ class SetTypes:
 
 class ConfigMyStock:
     def __init__(self):
-        self.user=None
-        self.db=None
-        self.port=None
-        self.server=None
-        self.password=None
+        self.password=""
+        self.password2=""
+        
         self.consqlite=None#Update internetquery fro Process
+        
         self.localzone=None
+        
         self.cac40=set([])
         self.dax=set([])
         self.eurostoxx=set([])
         self.ibex=set([])
         self.nyse=set([])
+        
         self.debug=False
-        self.file=os.environ['HOME']+ "/.xulpymoney/mystocks.cfg"
-        self.file_ui=os.environ['HOME']+ "/.xulpymoney/mystocks_ui.cfg"
+        
+        self.file=os.environ['HOME']+ "/.xulpymoney/xulpymoney.cfg"
+        self.file_ui=os.environ['HOME']+ "/.xulpymoney/xulpymoney_ui.cfg"
+        self.configs_load()
+        
         self.inittime=datetime.datetime.now()#Tiempo arranca el config
         self.dbinitdate=None#Fecha de inicio bd.
+        
         self.dic_activas={}#Diccionario cuyo indice es el id de la inversión id['1'] corresponde a la IvestmenActive(1) #se usa en myquotesd
         
         self.conms=None#Conexión a myquotes
@@ -4243,19 +4245,72 @@ class ConfigMyStock:
         self.prioritieshistorical=SetPrioritiesHistorical(self)
         self.zones=SetZones(self)
         self.investmentsmodes=SetInvestmentsModes(self)
+
+    def __del__(self):
+        self.disconnect_myquotes(self.conms)
+    
+    def configs_load( self):
+        """Carga el fichero xulpimoney.cfg o mystocks.cfg"""
+        self.config = configparser.ConfigParser()
+        try:
+            self.config.read(self.file)    
+            #Se ponen algunas para comprobar est´a actualizado
+            self.config.get("frmAccess", "server")
+            self.config.get("frmAccess2", "server")
+        except:#Valores por defecto
+            print(self.file, "poniendo valores por defecto")
+            self.config['frmAccess'] = {'db': 'xulpymoney', 'port': '5432','user': 'postgres', 'server': '127.0.0.1'}
+            self.config['frmAccess2'] = {'db': 'myquotes', 'port': '5432','user': 'postgres', 'server': '127.0.0.1'}
+            self.config['settings']={'dividendwithholding':'0.21', 'taxcapitalappreciation':'0.21',  'localcurrency':'EUR', 'localzone':'Europe/Madrid', 'indicereferencia':'79329'}
+            
+        self.config_ui=configparser.ConfigParser()
+        try:
+            self.config_ui.read(self.file_ui)
+            #Se ponen algunas para comprobar est´a actualizado
+            self.config.get("canvasIntraday", "sma200")
+        except:#Valores por defecto
+            self.config_ui['canvasIntraday'] = {'sma50': 'True', 'type': '0','sma200': 'True'}
+            self.config_ui['canvasHistorical'] = {'sma50': 'True', 'type': '1','sma200': 'True'}
+            print(self.file_ui, "poniendo valores por defecto")
+            
+        self.configs_save()
+            
+    
+    def configs_save(self):
+        f=open(self.file, "w")
+        self.config.write(f)
+        f.close()
         
-    def load(self):
-        pass
+        u=open(self.file_ui, "w")
+        self.config_ui.write(u)
+        u.close()
         
-    def save(self):
-        pass
+    def config_load_list(self, config,  section,  name):
+        """Carga una section name parseada con strings y separadas por | y devuelve un arr"""
+        try:
+            cadena=config.get(section, name )
+            return cadena.split("|")
+        except:
+            print ("No hay fichero de configuración")
+            return []
+    
+    def config_set_list(self, config, section,  name,  list):
+        """Establece, no ggraba, una cadena en formato str|str para luego ser parseado en lista"""
+        if config.has_section(section)==False:
+            config.add_section(section)
+        cadena=""
+        for item in list:
+            cadena=cadena+str(item)+'|'
+        config.set(section,  name,  cadena[:-1])
+            
+    def config_set_value(self, config, section, name, value):
+        if config.has_section(section)==False:
+            config.add_section(section)
+        config.set(section,  name,  str(value))
         
-    def load_ui(self):
-        pass
-        
-    def save_ui(self):
-        pass
-        
+    def config_load_value(self, config, section, name):
+        return config.get(section,  name)
+                
     def actualizar_memoria(self):
         ###Esto debe ejecutarse una vez establecida la conexión
         print ("Cargando ConfigMyStock")
@@ -4264,7 +4319,9 @@ class ConfigMyStock:
         self.investmentsmodes.load_all()
         self.zones.load_all()
         
-        self.localzone=self.zones.find(config.localzone)
+        self.localzone=self.zones.find(self.config.get("settings", "localzone"))
+        self.dividendwithholding=Decimal(self.config.get("settings", "dividendwithholding"))
+        self.taxcapitalappreciation=Decimal(self.config.get("settings", "taxcapitalappreciation"))
         
         print(self.localzone)
         self.priorities.load_all()
@@ -4289,8 +4346,8 @@ class ConfigMyStock:
     def disconnect_myquotesd(self, con):
         con.close()
 
-    def connect_myquotes(self):        
-        strmq="dbname='%s' port='%s' user='%s' host='%s' password='%s'" % (self.db,  self.port, self.user, self.server,  self.password)
+    def connect_myquotes(self):             
+        strmq="dbname='%s' port='%s' user='%s' host='%s' password='%s'" % (self.config.get("frmAccess2", "db"),  self.config.get("frmAccess2", "port"), self.config.get("frmAccess2", "user"), self.config.get("frmAccess2", "server"),  self.password)
         try:
             mq=psycopg2.extras.DictConnection(strmq)
             return mq
@@ -4323,26 +4380,11 @@ class ConfigXulpymoney(ConfigMyStock):
     def __init__(self):
         ConfigMyStock.__init__(self)
         self.con=None#Conexión a xulpymoney
-        self.file=os.environ['HOME']+ "/.xulpymoney/xulpymoney.cfg"
-        self.file_ui=os.environ['HOME']+ "/.xulpymoney/xulpymoney_ui.cfg"
         
     def __del__(self):
         self.disconnect_myquotes(self.conms)
         self.disconnect_xulpymoney(self.con)
         
-
-        
-    def load(self):
-        pass
-        
-    def save(self):
-        pass
-        
-    def load_ui(self):
-        pass
-        
-    def save_ui(self):
-        pass
 
     def actualizar_memoria(self):
         """Solo se cargan datos  de myquotes y operinversiones en las activas
@@ -4355,15 +4397,15 @@ class ConfigXulpymoney(ConfigMyStock):
         self.tiposoperaciones.load()
         self.conceptos=SetConceptos(self, self.tiposoperaciones)
         self.conceptos.load_from_db()
-        self.localcurrency=self.currencies.find(config.localcurrency) #Currency definido en config
-        self.indicereferencia=Investment(self).init__db( config.indicereferencia)
+        self.localcurrency=self.currencies.find(self.config.get("settings", "localcurrency")) #Currency definido en config
+        self.indicereferencia=Investment(self).init__db(self.config.get("settings", "indicereferencia" ))
         self.indicereferencia.quotes.get_basic()
         print(datetime.datetime.now()-inicio)
         
 
         
     def connect_xulpymoney(self):        
-        strcon="dbname='%s' port='%s' user='%s' host='%s' password='%s'" % (self.db,  self.port, self.user, self.server,  self.password)
+        strcon="dbname='%s' port='%s' user='%s' host='%s' password='%s'" % (self.config.get("frmAccess", "db"),  self.config.get("frmAccess", "port"), self.config.get("frmAccess", "user"), self.config.get("frmAccess", "server"),  self.password)
         try:
             con=psycopg2.extras.DictConnection(strcon)
         except psycopg2.Error:
@@ -4376,19 +4418,6 @@ class ConfigXulpymoney(ConfigMyStock):
     def disconnect_xulpymoney(self, con):
         con.close()
  
-    def connect_myquotes(self):        
-        strmq="dbname='%s' port='%s' user='%s' host='%s' password='%s'" % (config.dbname,  config.port, config.user, config.host,  config.password)
-        try:
-            mq=psycopg2.extras.DictConnection(strmq)
-        except psycopg2.Error:
-            m=QMessageBox()
-            m.setText(QApplication.translate("Config","Error en la conexión a myquotes, vuelva a entrar"))
-            m.exec_()        
-            sys.exit()
-        return mq
-        
-    def disconnect_myquotes(self,  mq):
-        mq.close()
 
 class Country:
     def __init__(self):
@@ -4618,34 +4647,6 @@ def dt_changes_tz(dt,  tztarjet):
     tarjet=tzt.normalize(dt.astimezone(tzt))
     return tarjet
 
-    
-def list_loadprops(file,  section,  name):
-    """Carga una section name parseada con strings y separadas por | y devuelve un arr"""
-    config = configparser.ConfigParser()
-    config.read(file)
-    try:
-        cadena=config.get(section, name )
-#        print cadena.split("|")
-        return cadena.split("|")
-    except:
-        print ("No hay fichero de configuración")
-        return []
-
-def list_saveprops(file, section,  name,  list):
-    """Graba una cadena en formato str|str para luego ser parseado en lista"""
-    config = configparser.ConfigParser()
-    config.read(file)
-#    print config.has_section(section)
-    if config.has_section(section)==False:
-        config.add_section(section)
-    cadena=""
-    for item in list:
-        cadena=cadena+str(item)+'|'
-#        config.remove_option(section, (table.objectName())+'_column'+str(i))
-    config.set(section,  name,  cadena[:-1])
-    # Writing our configuration file to 'example.cfg'
-    with open(file, 'w') as configfile:
-        config.write(configfile)
 
 def status_insert(cur,  source,  process):
 #    try:

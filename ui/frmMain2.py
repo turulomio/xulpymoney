@@ -28,7 +28,7 @@ class frmMain2(QMainWindow, Ui_frmMain2):#
         self.w=QWidget()       
         self.w.setAttribute(Qt.WA_DeleteOnClose) 
         access=frmAccess(self.cfg)
-        access.setWindowTitle(self.trUtf8("MyQuotes - Acceso"))
+        access.setWindowTitle(self.trUtf8("MyStocks - Acceso"))
         QObject.connect(access.cmdYN, SIGNAL("rejected()"), self, SLOT("close()"))
         access.exec_()
         self.w.close()

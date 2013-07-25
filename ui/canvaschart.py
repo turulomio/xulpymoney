@@ -63,14 +63,6 @@ class canvasChart(FigureCanvas):
         self.file=file
         self.section=section
 
-        #Crea seccion
-        config = configparser.ConfigParser()
-        config.read(self.file)
-        if config.has_section(self.section)==False:
-            config.add_section(self.section)
-            with open(self.file, 'w') as configfile:
-                config.write(configfile)        
-
         try:
             self.type=config.getint(section, "type" )
         except:
@@ -86,74 +78,6 @@ class canvasChart(FigureCanvas):
         except:
             self.actionSMA200.setChecked(False)
             
-#    def setCurrency(self, currency):
-#        """Función que modifica el valor de la divisa por defecto es EUR (statics.Currencies)"""
-#        self.currency=currency
-        
-#
-#    def format_data(self,  columns, interval=None):
-#        """Puede ser columns 2 o 6
-#        Cuando es 6 hat que dar el valor al formato
-#        parte de self.original
-#        interval es un timedelta"""
-#
-#        
-#        def to_ochl(tmp, puntdt):
-#            """Función que recibe un array de la forma data2 y lo convierte a un registro de la forma data 6"""
-#            if len(tmp)==0:
-#                return None
-#            dt=puntdt
-#            first=tmp[0][1]
-#            last=tmp[len(tmp)-1][1]
-#            (datestimes, quotes)=zip(*tmp)
-#            high=max(quotes)
-#            low=min(quotes)
-#            volumen=0
-#            return (dt, first,  last, high,  low,  volumen)
-#        
-#        data=self.original
-#        if len(data)==0:
-#            return data
-#            
-#        if columns==2 and len(data[0])==2:
-#            return data        
-#        if columns==6 and len(data[0])==6:
-#            return data
-#        if columns==2 and len(data[0])==6:
-#            resultado=[]
-#            for d in data:
-#                   #data.append((i['date'],  i['first'], i['last'],  i['high'], i['low'], 0))    
-#                date=datetime.datetime(d[0].year, d[0].month, d[0].day)
-#                resultado.append((date.replace(microsecond=1), d[1]))
-#                resultado.append((date.replace(microsecond=4), d[1]))
-#                resultado.append((date.replace(microsecond=3), d[1]))
-#                resultado.append((date.replace(microsecond=2), d[1]))
-#            return resultado
-#        if columns==6 and len(data[0])==2:
-#            resultado=[]
-#            first=data[0][0]
-#            last=data[len(data)-1][0]
-##            diff=last-first
-##            print(diff)
-#            puntdt=first
-#            while puntdt<=last:
-#                tmp=[]
-#                for d in data:
-#                    if puntdt<=d[0] and d[0]<puntdt+interval:
-#                        tmp.append(d)
-#                        data.remove(d)
-#                o=to_ochl(tmp, puntdt)
-#                if o!=None:
-#                    resultado.append(o)
-##                    print (o)
-#                puntdt=puntdt+interval
-##            print (data)
-##            print (puntdt)
-#            return resultado
-
-
-
-
     def on_actionLinesIntraday_activated(self):
         self._settings_saveprop("type", self.type)
         (dates, quotes)=zip(*self.data)
@@ -168,23 +92,15 @@ class canvasChart(FigureCanvas):
             self._draw_lines_from_ochl(self.result.ochlDaily[len(self.result.ochlDaily)-1-self.num:len(self.result.ochlDaily)])      
         else:
             self._draw_lines_from_ochl(self.result.ochlDaily)     
-#     
-#        if len(self.result.ochlDaily)>self.num:             
-#            dates, open, close, high,  low, volumen=zip(*self.result.ochlDaily[len(self.result.ochlDaily)-1-self.num:len(self.result.ochlDaily)])  
-##            self.ochl(self.result.ochlDaily[len(self.result.ochlDaily)-1-self.num:len(self.result.ochlDaily)], datetime.timedelta(days=1))       
-#        else:   
-#            dates, open, close, high,  low, volumen=zip(*self.result.ochlDaily)
-##            self.ochl(self.result.ochlDaily, datetime.timedelta(days=1))          
-
         self.draw()
 
-    def _settings_saveprop(self, prop, value):
-        config = configparser.ConfigParser()
-        config.read(self.file)
-        config.set(self.section,  prop, str(value))
-        f=open(self.file, 'w')
-        config.write(f)
-        f.close()
+#    def _settings_saveprop(self, prop, value):
+#        config = configparser.ConfigParser()
+#        config.read(self.file)
+#        config.set(self.section,  prop, str(value))
+#        f=open(self.file, 'w')
+#        config.write(f)
+#        f.close()
 
         
         

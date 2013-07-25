@@ -80,3 +80,5 @@ Bolsa de paris no sale al añadir un quoteibm
 Cambiar el objeto DividendoEstimacion y comprobar que funciona el informedividenods ibm
 20130725 Hacer un config para ui y un config para settings
 20130725 Hacer SetDividendoEstimaciones y quitar mq.estimaciones
+20130726 Si mantengo las dos bases de datos hay que autenticarse con frmAccess en las dos, para password2
+20130725 Al hacer inactiva una inversion no refresca pero lo hae

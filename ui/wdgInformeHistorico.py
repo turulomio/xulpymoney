@@ -105,12 +105,12 @@ class wdgInformeHistorico(QWidget, Ui_wdgInformeHistorico):
         cur.close()
 
     def load_historicas(self):
-        operaciones=[]   
+        operaciones=SetInversionOperacionHistorica(self.cfg)
         for i in self.data_inversiones.arr:
             for o in i.op_historica.arr:
                 if o.fecha_venta.year==int(self.cmbYears.currentText()) and o.tipooperacion.id in (5, 8):#Venta y traspaso fondos inversion
-                    operaciones.append(o)
-        operaciones=sorted(operaciones, key=lambda o: o.fecha_venta,  reverse=False)      
+                    operaciones.arr.append(o)
+        operaciones.arr=sorted(operaciones.arr, key=lambda o: o.fecha_venta,  reverse=False)      
         (self.totalBruto, self.totalComisiones, self.totalImpuestos, self.totalNeto)=operaciones.load_myqtablewidget(self.tblInversiones, "wdgInformeHistorico")
 
 
@@ -126,7 +126,7 @@ class wdgInformeHistorico(QWidget, Ui_wdgInformeHistorico):
         saldototal=Patrimonio(self.cfg).saldo_total(self.data_inversiones ,  datetime.date.today());
         saldototalinicio=Patrimonio(self.cfg).saldo_total( self.data_inversiones, inicio)
         if self.totalBruto>0:
-            impxplus=-self.totalBruto*config.taxcapitalappreciation
+            impxplus=-self.totalBruto*self.cfg.taxcapitalappreciation
         else:            
             impxplus=0
         
