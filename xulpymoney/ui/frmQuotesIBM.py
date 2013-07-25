@@ -49,6 +49,6 @@ class frmQuotesIBM(QDialog, Ui_frmQuotesIBM):
 
         mq=Quote(self.cfg).init__create(self.investment, da, quote)
         mq.save()
-        self.cfg.conmq.commit()
+        self.cfg.conms.commit()
         
         self.done(0)

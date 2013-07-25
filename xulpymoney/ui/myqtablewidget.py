@@ -1,15 +1,13 @@
-## -*- coding: utf-8 -*-
 import configparser
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 from libxulpymoney import *
 
-#print (dir(libxulpymoney))
 class myQTableWidget(QTableWidget):
     def __init__(self, parent):
         QTableWidget.__init__(self, parent)
         self.mytimer = QTimer()
-        self.inifile=None
+        self.file=None
         self.section=None
         self.inisettings=[]    
         self.verticalHeader().setResizeMode(QHeaderView.ResizeToContents)
@@ -20,17 +18,17 @@ class myQTableWidget(QTableWidget):
         print ("Parando el timer por destrucción de myqtablewidget")
         self.mytimer.stop()
         
-    def settings(self, section,  inifile):		
+    def settings(self, section,  file):		
         """Esta funcion debe ejecutarse despues de haber creado las columnas
-        If section=NOne and inifile=None, se usa resizemode por defecto
+        If section=NOne and file=None, se usa resizemode por defecto
         """
-        if section==None and inifile==None:
+        if section==None and file==None:
             self.horizontalHeader().setResizeMode(QHeaderView.ResizeToContents)
             
         else:
-            self.inifile=inifile
+            self.file=file
             self.section=section
-            self.inisettings=self.qtablewidget_loadprops(  self,  self.section,  self.inifile)
+            self.inisettings=self.qtablewidget_loadprops(  self,  self.section,  self.file)
             self.mytimer.start(5000)
         
     def checksettings(self):
@@ -39,13 +37,13 @@ class myQTableWidget(QTableWidget):
         for i in range(self.columnCount()):
             if self.columnWidth(i)!=self.inisettings[i]:
                 self.savesettings()
-                print (self.inifile,self.section, "settings saved")
+                print (self.file,self.section, "settings saved")
                 return
                 
  
     def savesettings(self):
-        self.qtablewidget_saveprops(  self,  self.section, self.inifile)    
-        self.inisettings=self.qtablewidget_loadprops(  self,  self.section,  self.inifile)
+        self.qtablewidget_saveprops(  self,  self.section, self.file)    
+        self.inisettings=self.qtablewidget_loadprops(  self,  self.section,  self.file)
 
     
     def qtablewidget_loadprops( self,  table,  section,  file):

@@ -53,22 +53,22 @@ class canvasChart(FigureCanvas):
         self.ax = self.fig.add_subplot(111)
         
         #Para grabar settings
-        self.inifile=None
+        self.file=None
         self.section=None
         
           
         
-    def settings(self, section,  inifile):		
+    def settings(self, section,  file):		
         """Esta funcion debe ejecutarse despues de haber creado las columnas"""
-        self.inifile=inifile
+        self.file=file
         self.section=section
 
         #Crea seccion
         config = configparser.ConfigParser()
-        config.read(self.inifile)
+        config.read(self.file)
         if config.has_section(self.section)==False:
             config.add_section(self.section)
-            with open(self.inifile, 'w') as configfile:
+            with open(self.file, 'w') as configfile:
                 config.write(configfile)        
 
         try:
@@ -180,9 +180,9 @@ class canvasChart(FigureCanvas):
 
     def _settings_saveprop(self, prop, value):
         config = configparser.ConfigParser()
-        config.read(self.inifile)
+        config.read(self.file)
         config.set(self.section,  prop, str(value))
-        f=open(self.inifile, 'w')
+        f=open(self.file, 'w')
         config.write(f)
         f.close()
 
@@ -265,7 +265,7 @@ class canvasChart(FigureCanvas):
 #            tick.label.set_rotation('vertical')
 #            
     def _draw_lines_from_ochl(self, data):
-        """Aqu´i  data es un array de OCHL"""
+        """Aquí  data es un array de OCHL"""
         self.ax.clear()      
         dates=[]
         quotes=[]
@@ -282,7 +282,7 @@ class canvasChart(FigureCanvas):
         self.draw()
         
     def _draw_lines_from_quotes(self, data):
-        """Deben estar con tz, se recibe data porque puede recortarese seg´un zoom"""
+        """Deben estar con tz, se recibe data porque puede recortarese según zoom"""
         self.ax.clear()
         (datetimes, quotes)=([], [])
         for q in data:

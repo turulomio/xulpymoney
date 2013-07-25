@@ -51,10 +51,10 @@ class frmInversionesEstudio(QDialog, Ui_frmInversionesEstudio):
             self.ise.setSelected(self.selInversion.mq)
             self.cmdPuntoVenta.setEnabled(True)
 
-        self.tblOperaciones.settings("frmInversionesEstudio",  self.cfg.inifile)
+        self.tblOperaciones.settings("frmInversionesEstudio",  self.cfg.file)
         self.tblOperaciones.setColumnHidden(0, True)    
-        self.tblInversionHistorica.settings("frmInversionesEstudio",  self.cfg.inifile)
-        self.tblDividendos.settings("frmInversionesEstudio",  self.cfg.inifile)
+        self.tblInversionHistorica.settings("frmInversionesEstudio",  self.cfg.file)
+        self.tblDividendos.settings("frmInversionesEstudio",  self.cfg.file)
         
         self.data_cuentas.load_qcombobox(self.cmbCuenta)
 
@@ -275,7 +275,7 @@ class frmInversionesEstudio(QDialog, Ui_frmInversionesEstudio):
             inv=Investment(self.cfg).init__db(myquotesid)
             inv.load_estimacion()
             inv.quotes.get_basic()
-            self.cfg.dic_mqinversiones[str(rowmq['id'])]=inv
+            self.cfg.dic_mqinversiones[str(rowms['id'])]=inv
             
         
 

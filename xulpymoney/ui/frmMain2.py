@@ -23,11 +23,11 @@ class frmMain2(QMainWindow, Ui_frmMain2):#
         self.setupUi(self)
         self.showMaximized()
         self.setWindowTitle(self.trUtf8("MyQuotes 2010-{0} ©".format(str(datetime.date.today().year))))
-        self.cfg=ConfigMQ()
+        self.cfg=ConfigMyStock()
         
         self.w=QWidget()       
         self.w.setAttribute(Qt.WA_DeleteOnClose) 
-        access=frmAccess(self.cfg, self.cfg.inifile)
+        access=frmAccess(self.cfg, self.cfg.file)
         access.setWindowTitle(self.trUtf8("MyQuotes - Acceso"))
         QObject.connect(access.cmdYN, SIGNAL("rejected()"), self, SLOT("close()"))
         access.exec_()
@@ -35,7 +35,7 @@ class frmMain2(QMainWindow, Ui_frmMain2):#
 
         
         
-        self.cfg.conmq=self.cfg.connect_myquotes()
+        self.cfg.conms=self.cfg.connect_myquotes()
         self.cfg.actualizar_memoria()
 #        gen=QuotesGenOHCL(self.cfg)
 #        gen.recalculateAllAndDelete()
@@ -60,7 +60,7 @@ class frmMain2(QMainWindow, Ui_frmMain2):#
         self.w.show()
         
     def __del__(self):
-        print ("Saliendo de la aplicaci´on")
+        print ("Saliendo de la aplicación")
         self.cfg.disconnect_myquotes(self.cfg.con)
         
     @pyqtSignature("")
@@ -192,7 +192,7 @@ class frmMain2(QMainWindow, Ui_frmMain2):#
 
     @QtCore.pyqtSlot()  
     def on_actionFavoritos_activated(self):
-        favoritos=list_loadprops(self.cfg.inifile,"wdgInversiones",  "favoritos")
+        favoritos=list_loadprops(self.cfg.file,"wdgInversiones",  "favoritos")
         if len(favoritos)==0:
             m=QMessageBox()
             m.setIcon(QMessageBox.Information)

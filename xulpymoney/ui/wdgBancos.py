@@ -20,9 +20,9 @@ class wdgBancos(QWidget, Ui_wdgBancos):
         self.inversiones=None
         self.cuentas=None
 
-        self.tblEB.settings("wdgBancos",  self.cfg.inifile)
-        self.tblCuentas.settings("wdgBancos",  self.cfg.inifile)
-        self.tblInversiones.settings("wdgBancos",  self.cfg.inifile)
+        self.tblEB.settings("wdgBancos",  self.cfg.file)
+        self.tblCuentas.settings("wdgBancos",  self.cfg.file)
+        self.tblInversiones.settings("wdgBancos",  self.cfg.file)
         
         self.on_chkInactivas_stateChanged(Qt.Unchecked)#Carga eb
                 

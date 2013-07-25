@@ -26,11 +26,11 @@ class frmMain(QMainWindow, Ui_frmMain):
         self.setupUi(self)
         self.showMaximized()
         
-        self.cfg=ConfigXulpy()
+        self.cfg=ConfigXulpymoney()
         
         self.w=QWidget()       
         
-        access=frmAccess(self.cfg, self.cfg.inifile)        
+        access=frmAccess(self.cfg, self.cfg.file)        
         icon = QtGui.QIcon()
         pix=QtGui.QPixmap(":xulpymoney/coins.png")
         icon.addPixmap(pix, QtGui.QIcon.Normal, QtGui.QIcon.Off)
@@ -41,7 +41,7 @@ class frmMain(QMainWindow, Ui_frmMain):
         access.exec_()
 
         self.cfg.con=self.cfg.connect_xulpymoney()  
-        self.cfg.conmq=self.cfg.connect_myquotes()
+        self.cfg.conms=self.cfg.connect_myquotes()
         
         self.cfg.actualizar_memoria() ##CARGA TODOS LOS DATOS Y LOS VINCULA       
         
@@ -49,8 +49,8 @@ class frmMain(QMainWindow, Ui_frmMain):
         print ("ARREGLAR PORQUE AHORA NO PROTEGE MQINVERSIONES")
         #ids2protect=[i.id for i in self.cfg.mqinversiones()]##Protege registros de myquotes
         #if len(ids2protect)>0:
-         #   Investment.changeDeletable(curmq,  ids2protect,  False)
-        self.cfg.conmq.commit()
+         #   Investment.changeDeletable(curms,  ids2protect,  False)
+        self.cfg.conms.commit()
         
         self.tupdatedata=TUpdateData(self.cfg)
         self.tupdatedata.start()
@@ -99,11 +99,11 @@ class frmMain(QMainWindow, Ui_frmMain):
         con=self.cfg.connect_xulpymoney()
         cur = con.cursor()                   
         mq=self.cfg.connect_myquotes()
-        curmq=mq.cursor()        
+        curms=mq.cursor()        
         
-        self.cfg.actualizar_memoria(cur, curmq) 
+        self.cfg.actualizar_memoria(cur, curms) 
 
-        curmq.close()
+        curms.close()
         self.cfg.disconnect_myquotes(mq)
         cur.close()     
         self.cfg.disconnect_xulpymoney(con)        

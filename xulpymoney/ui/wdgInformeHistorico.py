@@ -10,10 +10,10 @@ class wdgInformeHistorico(QWidget, Ui_wdgInformeHistorico):
         QWidget.__init__(self, parent)
         self.setupUi(self)
         self.cfg=cfg
-        self.tblEstudio.settings("wdgInformeHistorico",  self.cfg.inifile)
-        self.tblDividendos.settings("wdgInformeHistorico",  self.cfg.inifile)
-        self.tblInversiones.settings("wdgInformeHistorico",  self.cfg.inifile)
-        self.tblAdded.settings("wdgInformeHistorico",  self.cfg.inifile)
+        self.tblEstudio.settings("wdgInformeHistorico",  self.cfg.file)
+        self.tblDividendos.settings("wdgInformeHistorico",  self.cfg.file)
+        self.tblInversiones.settings("wdgInformeHistorico",  self.cfg.file)
+        self.tblAdded.settings("wdgInformeHistorico",  self.cfg.file)
         
         self.totalDividendosNetos=0
         self.totalDividendosBrutos=0
@@ -62,9 +62,9 @@ class wdgInformeHistorico(QWidget, Ui_wdgInformeHistorico):
                     
         self.tblAdded.setRowCount(len(operaciones)+1)
         sumsaldo=0        
-        curmq=self.cfg.conmq.cursor()
+        curms=self.cfg.conms.cursor()
         for i,  o in enumerate(operaciones):
-            valor=Quote(self.cfg).init__from_query(curmq, o.inversion.mq, o.datetime).quote
+            valor=Quote(self.cfg).init__from_query(curms, o.inversion.mq, o.datetime).quote
             if valor==None:
                 print("wdgInformeHistorico > load_added: {0} en {1} da nulo".format(o.inversion.mq.id, o.datetime))
                 valor=0
@@ -75,7 +75,7 @@ class wdgInformeHistorico(QWidget, Ui_wdgInformeHistorico):
             self.tblAdded.setItem(i, 2, QTableWidgetItem(self.cfg.tiposoperaciones(6).name))
             self.tblAdded.setItem(i, 3, qright(str(o.acciones)))
             self.tblAdded.setItem(i, 4, self.cfg.localcurrency.qtablewidgetitem(saldo))
-        curmq.close()
+        curms.close()
         self.tblAdded.setItem(len(operaciones), 3, QTableWidgetItem(("TOTAL")))
         self.tblAdded.setItem(len(operaciones), 4, self.cfg.localcurrency.qtablewidgetitem(sumsaldo))
    

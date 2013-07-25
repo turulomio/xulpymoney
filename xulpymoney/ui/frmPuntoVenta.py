@@ -21,7 +21,7 @@ class frmPuntoVenta(QDialog, Ui_frmPuntoVenta):
         self.puntoventa=0#Guarda el resultado de los cálculos
         self.operinversiones=list(self.inversion.op_actual.arr)            #0-fecha, 1-banco, 2-acciones, 3-valor-compra, 4-invertido, 5 pendiente, 6-tipooper
         self.txtGanancia.setValidator(QDoubleValidator(self))
-        self.table.settings("frmPuntoVenta",  self.cfg.inifile)
+        self.table.settings("frmPuntoVenta",  self.cfg.file)
         self.on_radTPC_toggled(True)
         
     def __calcular(self):

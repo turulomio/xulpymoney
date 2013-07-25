@@ -9,7 +9,7 @@ class wdgCuentas(QWidget, Ui_wdgCuentas):
         QWidget.__init__(self, parent)
         self.setupUi(self)
         self.cfg=cfg
-        self.tblCuentas.settings("wdgCuentas",  self.cfg.inifile)
+        self.tblCuentas.settings("wdgCuentas",  self.cfg.file)
         self.tblCuentas.setColumnHidden(0, True)
         self.load_data_from_db()
         self.cuentas=self.data_cuentas.arr

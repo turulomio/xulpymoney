@@ -12,7 +12,7 @@ class wdgIndexRange(QWidget, Ui_wdgIndexRange):
         
         self.load_data_from_db()
         self.quote_lastindex=None
-        self.table.settings("wdgIndexRange",  self.cfg.inifile)
+        self.table.settings("wdgIndexRange",  self.cfg.file)
         self.load_data()
                     
     def load_data_from_db(self):
@@ -53,7 +53,7 @@ class wdgIndexRange(QWidget, Ui_wdgIndexRange):
         con=self.cfg.connect_xulpymoney()
         cur = con.cursor()        
         mq=self.cfg.connect_myquotes()
-        curmq=mq.cursor()
+        curms=mq.cursor()
         
         maximo= int(max(arr)[0]*(1+ Decimal(self.spin.value()/200.0)))
         riesgocero=Patrimonio(self.cfg).patrimonio_riesgo_cero(self.data_inversiones, datetime.date.today())
@@ -91,7 +91,7 @@ class wdgIndexRange(QWidget, Ui_wdgIndexRange):
         self.lblTotal.setText(("Tengo cubierto hasta el %d del índice de referencia (%s). Su valor a %s es %d (%.2f %%)" %( indexcover, self.cfg.indicereferencia.name, self.cfg.indicereferencia.quotes.last.datetime,   int(self.cfg.indicereferencia.quotes.last.quote),  variacion)))
         cur.close()     
         self.cfg.disconnect_xulpymoney(con) 
-        curmq.close()
+        curms.close()
         self.cfg.disconnect_myquotes(mq)
         print ("wdgIndexRange > load_data: {0}".format(datetime.datetime.now()-inicio))
 

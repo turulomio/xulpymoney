@@ -14,7 +14,7 @@ class wdgMergeCodes(QWidget, Ui_wdgMergeCodes):
             self.setObjectName(name)
         self.setupUi(self)
 
-        self.table.settings("wdgMergeCodes",  self.cfg.inifile)    
+        self.table.settings("wdgMergeCodes",  self.cfg.file)    
         self.reload()
         
     def on_cmdInterchange_released(self):
