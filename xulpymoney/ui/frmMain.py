@@ -31,7 +31,7 @@ class frmMain(QMainWindow, Ui_frmMain):
         
         self.w=QWidget()       
         
-        access=frmAccess(self.cfg)        
+        access=frmAccess(self.cfg, 2)        
         icon = QtGui.QIcon()
         pix=QtGui.QPixmap(":xulpymoney/coins.png")
         icon.addPixmap(pix, QtGui.QIcon.Normal, QtGui.QIcon.Off)
@@ -40,6 +40,18 @@ class frmMain(QMainWindow, Ui_frmMain):
         access.setWindowTitle(self.trUtf8("Xulpymoney - Acceso"))
         QObject.connect(access.cmdYN, SIGNAL("rejected()"), self, SLOT("on_actionSalir_activated()"))
         access.exec_()
+
+
+        access2=frmAccess(self.cfg, 1)        
+        icon = QtGui.QIcon()
+        pix=QtGui.QPixmap(":xulpymoney/kmplot.jpg")
+        icon.addPixmap(pix, QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        access.setWindowIcon(icon)        
+        access.lbl.setPixmap(pix)
+        access.setWindowTitle(self.trUtf8("MyStocks - Acceso"))
+        QObject.connect(access.cmdYN, SIGNAL("rejected()"), self, SLOT("on_actionSalir_activated()"))
+        access2.exec_()
+
 
         self.cfg.con=self.cfg.connect_xulpymoney()  
         self.cfg.conms=self.cfg.connect_myquotes()

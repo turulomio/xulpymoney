@@ -12,6 +12,7 @@ class frmInversionesIBM(QDialog, Ui_frmInversionesIBM):
         self.operinversion=operinversion
   
         self.cfg.tiposoperaciones.load_qcombobox(self.cmbTiposOperaciones)
+        self.cfg.zones.load_qcombobox(self.cmbTZ, self.cfg.localzone)
 
         
         if self.operinversion==None:#nuevo movimiento
@@ -43,7 +44,7 @@ class frmInversionesIBM(QDialog, Ui_frmInversionesIBM):
         self.operinversion.comision=Decimal(self.txtComision.text())
         self.operinversion.valor_accion=Decimal(self.txtValorAccion.text())
         self.operinversion.acciones=Decimal(self.txtAcciones.text())
-        zone=(self.cmbTZ.currentText())
+        zone=self.cfg.zones.find(self.cmbTZ.currentText())
         if id_tiposoperaciones==5: #Venta
             self.operinversion.importe=Decimal(self.txtImporteBruto.text())
             if self.operinversion.acciones>Decimal('0'):

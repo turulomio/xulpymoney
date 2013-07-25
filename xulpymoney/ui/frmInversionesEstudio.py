@@ -108,7 +108,7 @@ class frmInversionesEstudio(QDialog, Ui_frmInversionesEstudio):
             tpccalculado=100*estimacion.dpa/self.selInversion.mq.quotes.last.quote
             self.lblDivAnualEstimado.setText(("El dividendo anual estimado, según el valor actual de la acción es del {0} % ({1}€ por acción)".format(str(round(tpccalculado, 2)),  str(estimacion.dpa))))
             self.lblDivFechaRevision.setText(('Fecha de la última revisión del dividendo: '+ str(estimacion.fechaestimacion)))
-            self.lblDivSaldoEstimado.setText(("Saldo estimado: {0}€ ({1}€ después de impuestos)".format( str(round(acciones*estimacion.dpa, 2)),  str(round(acciones*estimacion.dpa*(1-config.dividendwithholding))), 2)))
+            self.lblDivSaldoEstimado.setText(("Saldo estimado: {0}€ ({1}€ después de impuestos)".format( str(round(acciones*estimacion.dpa, 2)),  str(round(acciones*estimacion.dpa*(1-self.cfg.dividendwithholding))), 2)))
             self.lblDivTPC.setText(("% de lo invertido: "+tpc(dtpc)))
             self.lblDivTAE.setText(("% TAE de lo invertido: "+tpc(dtae)))        
             self.grpDividendosEstimacion.show()
@@ -219,7 +219,7 @@ class frmInversionesEstudio(QDialog, Ui_frmInversionesEstudio):
 
     def on_chkDividendosHistoricos_stateChanged(self, state):
         self.dividendos=[]
-        fechapo=self.selInversion.op_actual.datetime_primera_operacion().date()
+        fechapo=self.selInversion.op_actual.datetime_primera_operacion()
         if fechapo==None and self.chkDividendosHistoricos.checkState()==Qt.Unchecked:
             self.load_tblDividendos()
             return
@@ -231,7 +231,7 @@ class frmInversionesEstudio(QDialog, Ui_frmInversionesEstudio):
         self.selDividendo=None        
 
         if state==Qt.Unchecked:   
-            strfechapo=" and fecha >='{0}' ".format(fechapo)
+            strfechapo=" and fecha >='{0}' ".format(fechapo.date())
         else:
             strfechapo=""  
         sql="select * from dividendos where dividendos.id_inversiones="+str(self.selInversion.id) + strfechapo+" order by fecha;"
