@@ -38,14 +38,7 @@
 20120815 Poner calculo de inversión cuando esté con un precio probablemente en desreinversion
 20130103 Cuando se genera un dividendo acciones y se mete comisión se cuenta en Ingresos quizás porque es neto
 20130103 Cuando se inserta un operinversión, hay que poner el indice de referencia y se debe insertar en myquotes el valor con microseconds=5
-20130723 Poner datetime en ioh
-20130723 No funciona estimación de dividendo
 20130723 Error al modificar inversión, meter data_investmentes
-20130724 El config pasarlo a .ini
-
-
-
-
 
 ==============MYQUOTES=================
 20110228 Al avisar nueva versión que sea con un hyperlink a download de myquotes
@@ -66,9 +59,6 @@
 20120406 Permitir bajarse a local todos los datos a un xml y analizarlo gráficamente por ejemplo 20120405 Telefónica 74756 y solo actualizar el intradía en descarga online
 20120410 Si tiene roll administrador solo determinadas opciones.
 20120711 Ids siempre con todos datos indices y divisas
-20120711 Sustituir qcombobox  por load-__
-20120711 Hacer un cargar_zones solo con las utiles
-20120711 Quitar lo de los microsegundos y poner 23.59.59 dentro del dia localizado
 20120713 Poner en myquotes borrar historicos. debe borrar todo cuyo microsecond==4, comprobando que está en yahoo ya que se podría borrar los fondos.
 20120713 Se podr´ia generar un a clase madre resultquotes que debendan dbresultquotes y file resultquotes, con funciones de calculo en padre
 20120713 Hacer estudio de las activas de inversi´on por medias....
@@ -84,12 +74,6 @@
 	- Se debería hacer un proceso:
 		 yahoo, y purge yahoo
 		indices y purge indices
-20130103 En Clase bolsas poner hora de apertura y hora de cierre. para cuando se añadan fondos.
-
-
-
-
-
 
 ========== NUEVO ================
 Bolsa de paris no sale al añadir un quoteibm

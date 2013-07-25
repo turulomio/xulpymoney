@@ -33,10 +33,10 @@ class frmCuentasIBM(QDialog, Ui_frmCuentasIBM):
         
         self.saldoiniciomensual=0#Almacena el inicio según on_cmdMovimientos_released
           
-        self.tblOperaciones.settings("frmCuentasIBM",  self.cfg.file)
-        self.tblTarjetas.settings("frmCuentasIBM",  self.cfg.file)
-        self.tblOperTarjetas.settings("frmCuentasIBM",  self.cfg.file)
-        self.tblOpertarjetasHistoricas.settings("frmCuentasIBM",  self.cfg.file)
+        self.tblOperaciones.settings("frmCuentasIBM",  self.cfg.file_ui)
+        self.tblTarjetas.settings("frmCuentasIBM",  self.cfg.file_ui)
+        self.tblOperTarjetas.settings("frmCuentasIBM",  self.cfg.file_ui)
+        self.tblOpertarjetasHistoricas.settings("frmCuentasIBM",  self.cfg.file_ui)
     
         self.calPago.setDate(QDate.currentDate())
         

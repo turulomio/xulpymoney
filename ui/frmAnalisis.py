@@ -39,13 +39,13 @@ class frmAnalisis(QDialog, Ui_frmAnalisis):
         self.tabGraphics.setCurrentIndex(0)
         self.tabHistorical.setCurrentIndex(0)
         
-        self.tblTPC.settings("frmAnalisis",  self.cfg.file)    
-        self.tblDaily.settings("frmAnalisis",  self.cfg.file)    
-        self.tblMonthly.settings("frmAnalisis",  self.cfg.file)    
-        self.tblYearly.settings("frmAnalisis",  self.cfg.file)    
-        self.tblIntradia.settings("frmAnalisis",  self.cfg.file)    
-        self.tblMensuales.settings("frmAnalisis",  self.cfg.file)    
-        self.tblDividendosEstimaciones.settings("frmAnalisis",  self.cfg.file)    
+        self.tblTPC.settings("frmAnalisis",  self.cfg.file_ui)    
+        self.tblDaily.settings("frmAnalisis",  self.cfg.file_ui)    
+        self.tblMonthly.settings("frmAnalisis",  self.cfg.file_ui)    
+        self.tblYearly.settings("frmAnalisis",  self.cfg.file_ui)    
+        self.tblIntradia.settings("frmAnalisis",  self.cfg.file_ui)    
+        self.tblMensuales.settings("frmAnalisis",  self.cfg.file_ui)    
+        self.tblDividendosEstimaciones.settings("frmAnalisis",  self.cfg.file_ui)    
                 
         if self.investment==None:
             self.investment=Investment(self.cfg)
@@ -55,13 +55,13 @@ class frmAnalisis(QDialog, Ui_frmAnalisis):
             self.cmdSave.setText(self.trUtf8("Añadir nueva inversión"))
 
         self.canvasIntraday=canvasChartIntraday( self.cfg, self)
-        self.canvasIntraday.settings("canvasIntraday", self.cfg.file)
+        self.canvasIntraday.settings("canvasIntraday", self.cfg.file_ui)
         self.ntbIntraday = NavigationToolbar(self.canvasIntraday, self)
         self.layIntraday.addWidget(self.canvasIntraday)
         self.layIntraday.addWidget(self.ntbIntraday)
         
         self.canvasHistorical=canvasChartHistorical( self.cfg, self)
-        self.canvasHistorical.settings("canvasHistorical", self.cfg.file)
+        self.canvasHistorical.settings("canvasHistorical", self.cfg.file_ui)
         self.ntbHistorical=NavigationToolbar(self.canvasHistorical, self)
         self.layHistorical.addWidget(self.canvasHistorical)
         self.layHistorical.addWidget(self.ntbHistorical)

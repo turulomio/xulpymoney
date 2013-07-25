@@ -111,7 +111,7 @@ class wdgPie(QWidget):
         self.verticalLayout.addLayout(self.horizontalLayout)
         self.verticalLayout_3.addLayout(self.verticalLayout)
 
-        self.table.settings(name+"wdgPie_table",  self.cfg.file)
+        self.table.settings(name+"wdgPie_table",  self.cfg.file_ui)
         QtCore.QMetaObject.connectSlotsByName(self)
 
     def save_plot(self):

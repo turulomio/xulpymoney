@@ -12,7 +12,7 @@ class wdgIndexRange(QWidget, Ui_wdgIndexRange):
         
         self.load_data_from_db()
         self.quote_lastindex=None
-        self.table.settings("wdgIndexRange",  self.cfg.file)
+        self.table.settings("wdgIndexRange",  self.cfg.file_ui)
         self.load_data()
                     
     def load_data_from_db(self):
