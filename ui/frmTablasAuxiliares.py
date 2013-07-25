@@ -19,7 +19,7 @@ class frmTablasAuxiliares(QDialog, Ui_frmTablasAuxiliares):
         self.setupUi(self)
         self.cfg=cfg
 
-        self.tblConceptos.settings("frmTablasAuxiliares",  self.cfg.inifile)
+        self.tblConceptos.settings("frmTablasAuxiliares",  self.cfg.file)
         
         self.conceptos=[]
         self.selConcepto=None

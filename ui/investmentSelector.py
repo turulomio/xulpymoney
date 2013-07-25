@@ -35,7 +35,7 @@ class investmentSelector(QWidget):
         self.setSelected(d.selected)
             
     def setSelected(self, investment):
-        """Recibe un objeto Investment. No se usar´a posteriormente, por lo que puede no estar completo con get_basic.:."""
+        """Recibe un objeto Investment. No se usará posteriormente, por lo que puede no estar completo con get_basic.:."""
         self.selected=investment
         if self.selected==None:
             self.txt.setText(self.trUtf8("No seleccionado"))
@@ -80,7 +80,7 @@ class investmentDialog(QDialog):
         self.tblInversiones.setAlternatingRowColors(True)
         self.tblInversiones.setColumnCount(4)
         self.tblInversiones.setRowCount(0)
-        self.tblInversiones.settings("investmentSelector",  self.cfg.inifile)    
+        self.tblInversiones.settings("investmentSelector",  self.cfg.file)    
         self.tblInversiones.setHorizontalHeaderItem(0, QTableWidgetItem(self.trUtf8("Inversión")))
         self.tblInversiones.setHorizontalHeaderItem(1, QTableWidgetItem(self.trUtf8("Id")))
         self.tblInversiones.setHorizontalHeaderItem(2, QTableWidgetItem(self.trUtf8("ISIN")))

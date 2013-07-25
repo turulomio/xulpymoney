@@ -22,6 +22,6 @@ class frmDividendoEstimacionIBM(QDialog, Ui_frmDividendoEstimacionIBM):
         d.fuente="Internet"
         d.fechaestimacion=datetime.date.today()
         d.save()
-        self.cfg.conmq.commit()      
+        self.cfg.conms.commit()      
 #######        self.investment.estimaciones[d.txtYear.text()].dpa=d.txtDPA.decimal()
         self.accept()

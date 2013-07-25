@@ -18,10 +18,10 @@ class wdgDesReinversion(QWidget, Ui_wdgDesReinversion):
             m.exec_()     
             return
         
-        self.tblInversionesActualDespues.settings("wdgDesReinversion",  self.cfg.inifile)
-        self.tblInversionesActualAntes.settings("wdgDesReinversion",  self.cfg.inifile)
-        self.tblOperaciones.settings("wdgDesReinversion",  self.cfg.inifile)        
-        self.tblInversionesHistoricas.settings("wdgDesReinversion",  self.cfg.inifile)         
+        self.tblInversionesActualDespues.settings("wdgDesReinversion",  self.cfg.file)
+        self.tblInversionesActualAntes.settings("wdgDesReinversion",  self.cfg.file)
+        self.tblOperaciones.settings("wdgDesReinversion",  self.cfg.file)        
+        self.tblInversionesHistoricas.settings("wdgDesReinversion",  self.cfg.file)         
         
  
         self.operinversiones=SetInversionOperacion(self.cfg)

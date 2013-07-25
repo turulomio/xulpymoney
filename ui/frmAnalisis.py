@@ -39,13 +39,13 @@ class frmAnalisis(QDialog, Ui_frmAnalisis):
         self.tabGraphics.setCurrentIndex(0)
         self.tabHistorical.setCurrentIndex(0)
         
-        self.tblTPC.settings("frmAnalisis",  self.cfg.inifile)    
-        self.tblDaily.settings("frmAnalisis",  self.cfg.inifile)    
-        self.tblMonthly.settings("frmAnalisis",  self.cfg.inifile)    
-        self.tblYearly.settings("frmAnalisis",  self.cfg.inifile)    
-        self.tblIntradia.settings("frmAnalisis",  self.cfg.inifile)    
-        self.tblMensuales.settings("frmAnalisis",  self.cfg.inifile)    
-        self.tblDividendosEstimaciones.settings("frmAnalisis",  self.cfg.inifile)    
+        self.tblTPC.settings("frmAnalisis",  self.cfg.file)    
+        self.tblDaily.settings("frmAnalisis",  self.cfg.file)    
+        self.tblMonthly.settings("frmAnalisis",  self.cfg.file)    
+        self.tblYearly.settings("frmAnalisis",  self.cfg.file)    
+        self.tblIntradia.settings("frmAnalisis",  self.cfg.file)    
+        self.tblMensuales.settings("frmAnalisis",  self.cfg.file)    
+        self.tblDividendosEstimaciones.settings("frmAnalisis",  self.cfg.file)    
                 
         if self.investment==None:
             self.investment=Investment(self.cfg)
@@ -55,13 +55,13 @@ class frmAnalisis(QDialog, Ui_frmAnalisis):
             self.cmdSave.setText(self.trUtf8("Añadir nueva inversión"))
 
         self.canvasIntraday=canvasChartIntraday( self.cfg, self)
-        self.canvasIntraday.settings("canvasIntraday", self.cfg.inifile)
+        self.canvasIntraday.settings("canvasIntraday", self.cfg.file)
         self.ntbIntraday = NavigationToolbar(self.canvasIntraday, self)
         self.layIntraday.addWidget(self.canvasIntraday)
         self.layIntraday.addWidget(self.ntbIntraday)
         
         self.canvasHistorical=canvasChartHistorical( self.cfg, self)
-        self.canvasHistorical.settings("canvasHistorical", self.cfg.inifile)
+        self.canvasHistorical.settings("canvasHistorical", self.cfg.file)
         self.ntbHistorical=NavigationToolbar(self.canvasHistorical, self)
         self.layHistorical.addWidget(self.canvasHistorical)
         self.layHistorical.addWidget(self.ntbHistorical)
@@ -72,7 +72,7 @@ class frmAnalisis(QDialog, Ui_frmAnalisis):
         self.cfg.apalancamientos.load_qcombobox(self.cmbApalancado)
         self.cfg.types.load_qcombobox(self.cmbTipo)
 
-        if self.investment.id!=None:#Si no est´a definido petaba el timer por no saber cual es
+        if self.investment.id!=None:#Si no está definido petaba el timer por no saber cual es
             self.mytimer = QTimer()
             QObject.connect(self.mytimer, SIGNAL("timeout()"), self.on_cmdUpdate_pressed     )    
             self.mytimer.start(60000)            

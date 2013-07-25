@@ -72,7 +72,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
             self.tab.setEnabled(False)
             return
         
-        self.table.settings("wdgTotal",  self.cfg.inifile)
+        self.table.settings("wdgTotal",  self.cfg.file)
         
         ran=datetime.date.today().year-fechainicio.year+1
         for i in range(ran):
@@ -100,7 +100,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         self.data_inversiones_all.load_from_db("select * from inversiones ")
         print("\n","Cargando data en wdgInversiones",  datetime.datetime.now()-inicio)
         
-    def load_data(self, cur, curmq):        
+    def load_data(self, cur, curms):        
         self.table.clearContents()
         inicio=datetime.datetime.now()     
         cmbanos=int(self.cmbYears.currentText())
@@ -177,7 +177,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         print ("wdgTotal > load_data: {0}".format(final-inicio))
 
 
-    def load_graphic(self, cur, curmq):          
+    def load_graphic(self, cur, curms):          
         inicio=datetime.datetime.now()  
         data=[]#date,valor
         zero=[]#date, valor zero
@@ -213,22 +213,22 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         con=self.cfg.connect_xulpymoney()
         cur = con.cursor()        
         mq=self.cfg.connect_myquotes()
-        curmq=mq.cursor()        
-        self.load_data(cur, curmq) 
+        curms=mq.cursor()        
+        self.load_data(cur, curms) 
         cur.close()     
         self.cfg.disconnect_xulpymoney(con)       
-        curmq.close()
+        curms.close()
         self.cfg.disconnect_myquotes(mq)        
         
     def on_cmdG_pressed(self):
         con=self.cfg.connect_xulpymoney()
         cur = con.cursor()        
         mq=self.cfg.connect_myquotes()
-        curmq=mq.cursor()        
-        self.load_graphic(cur, curmq)
+        curms=mq.cursor()        
+        self.load_graphic(cur, curms)
         cur.close()     
         self.cfg.disconnect_xulpymoney(con)       
-        curmq.close()
+        curms.close()
         self.cfg.disconnect_myquotes(mq)        
         
 

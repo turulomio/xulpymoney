@@ -12,7 +12,7 @@ class wdgAPR(QWidget, Ui_wdgAPR):
         self.progress.setModal(True)
         self.progress.setWindowTitle(self.trUtf8("Calculando datos..."))
         self.progress.setMinimumDuration(0)        
-        self.table.settings("wdgAPR",  self.cfg.inifile)
+        self.table.settings("wdgAPR",  self.cfg.file)
         self.load_data_from_db()
         self.load_data()
 
@@ -34,7 +34,7 @@ class wdgAPR(QWidget, Ui_wdgAPR):
 #        con=self.cfg.connect_xulpymoney()
 #        cur = con.cursor()
 #        mq=self.cfg.connect_myquotes()
-#        curmq=mq.cursor()                
+#        curms=mq.cursor()                
         anoinicio=Patrimonio(self.cfg).primera_fecha_con_datos_usuario().year       
         anofinal=datetime.date.today().year+1        
         
@@ -85,7 +85,7 @@ class wdgAPR(QWidget, Ui_wdgAPR):
             lastsaldo=sf
 #        cur.close()     
 #        self.cfg.disconnect_xulpymoney(con)     
-#        curmq.close()
+#        curms.close()
 #        self.cfg.disconnect_myquotes(mq)     
         self.table.setItem(anofinal-anoinicio, 0, qcenter((self.tr("TOTAL"))))
         self.table.setItem(anofinal-anoinicio, 4, self.cfg.localcurrency.qtablewidgetitem(sumingresos))

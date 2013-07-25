@@ -11,9 +11,9 @@ class wdgConceptos(QWidget, Ui_wdgConceptos):
         self.cfg=cfg
 
         self.tblGastos.setColumnHidden(0, True)
-        self.tblGastos.settings("wdgConceptos",  self.cfg.inifile)
+        self.tblGastos.settings("wdgConceptos",  self.cfg.file)
         self.tblIngresos.setColumnHidden(0, True)
-        self.tblIngresos.settings("wdgConceptos",  self.cfg.inifile)
+        self.tblIngresos.settings("wdgConceptos",  self.cfg.file)
         
         fechainicio=Patrimonio(self.cfg).primera_fecha_con_datos_usuario()         
         if fechainicio==None: #No hay datos y petaba por db vacía
