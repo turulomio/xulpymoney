@@ -2620,6 +2620,23 @@ class Estimacion:
 class DividendoEstimacion:
     def __init__(self, cfg):
         self.cfg=cfg
+        self.investment=None#pk
+        self.year=None#pk
+        self.fechaestimacion=None
+        self.fuente=None
+        self.manual=None
+        self.dpa=None
+        
+    def init__create(self, investment, year, fechaestimacion, fuente, manual, dpa):
+        self.investment=investment
+        self.year=year
+        self.fechaestimacion=fechaestimacion
+        self.fuente=fuente
+        self.manual=manual
+        self.dpa=dpa
+        return self
+        
+        
     def dpa(self,  investment,  currentyear):
         resultado=None
         curmq=self.cfg.conmq.cursor()
@@ -2628,24 +2645,27 @@ class DividendoEstimacion:
             resultado=curmq.fetchone()[0]
         curmq.close()
         return resultado
-    def registro(self, cur, investment,  currentyear):
-        """Saca el registro sin code ni year, que fueron pasados como parámetro"""
-        resultado=None
+        
+    def init__from_db(self, investment,  currentyear):
+        """Saca el registro  o uno en blanco si no lo encuentra, que fueron pasados como parámetro"""
         cur=self.cfg.conmq.cursor()
         cur.execute("select dpa,fechaestimacion,fuente,manual from estimaciones where id=%s and year=%s", (investment.id, currentyear))
         if cur.rowcount==1:
-            resultado=cur.fetchone()
-        cur.close()
-        return resultado
+            row=cur.fetchone()
+            self.init__create(investment, currentyear, row['fechaestimacion'], row['fuente'], row['manual'], row['dpa'])
+            cur.close()
+        else:
+            self.init__create(investment, currentyear, None, None, None, None)
+        return self
             
-    def insertar(self, id,  year, dpa, fechaestimacion=datetime.date.today(), fuente='Internet',  manual=True):
+    def save(self):
         """Función que comprueba si existe el registro para insertar o modificarlo según proceda"""
         curmq=self.cfg.conmq.cursor()
-        curmq.execute("select count(*) from estimaciones where id=%s and year=%s", (id, year))
+        curmq.execute("select count(*) from estimaciones where id=%s and year=%s", (self.investment.id, self.year))
         if curmq.fetchone()[0]==0:
-            curmq.execute("insert into estimaciones (id, year, dpa, fechaestimacion, fuente, manual) values (%s,%s,%s,%s,%s,%s)", (id, year, dpa, fechaestimacion, fuente, manual))
-        else:
-            curmq.execute("update estimaciones set dpa=%s, fechaestimacion=%s, fuente=%s, manual=%s where id=%s and year=%s", (dpa, fechaestimacion, fuente, manual, id, year))
+            curmq.execute("insert into estimaciones (id, year, dpa, fechaestimacion, fuente, manual) values (%s,%s,%s,%s,%s,%s)", (self.investment.id, self.year, self.dpa, self.fechaestimacion, self.fuente, self.manual))
+        elif self.dpa!=None:            
+            curmq.execute("update estimaciones set dpa=%s, fechaestimacion=%s, fuente=%s, manual=%s where id=%s and year=%s", (self.dpa, self.fechaestimacion, self.fuente, self.manual, self.id, self.year))
         curmq.close()
         
    
@@ -3800,7 +3820,7 @@ class QuotesResult:
             else:
                 self.penultimate=Quote(self.cfg).init__create(self.investment, None, None)
             self.endlastyear=Quote(self.cfg).init__from_query(curmq,  self.investment,  datetime.datetime(datetime.date.today().year-1, 12, 31, 23, 59, 59, tzinfo=pytz.timezone('UTC')))
-        self.lastdpa=DividendoEstimacion(self.cfg).dpa(self.investment, datetime.date.today().year)
+        self.lastdpa=DividendoEstimacion(self.cfg).init__from_db(self.investment, datetime.date.today().year)
         curmq.close()
 
 

@@ -94,3 +94,5 @@
 ========== NUEVO ================
 Bolsa de paris no sale al añadir un quoteibm
 Cambiar el objeto DividendoEstimacion y comprobar que funciona el informedividenods ibm
+20130725 Hacer un config para ui y un config para settings
+20130725 Hacer SetDividendoEstimaciones y quitar mq.estimaciones

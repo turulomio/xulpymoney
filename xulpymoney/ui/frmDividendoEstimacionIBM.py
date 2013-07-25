@@ -1,5 +1,4 @@
 import datetime
-from decimal import Decimal
 from libxulpymoney import *
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
@@ -17,8 +16,12 @@ class frmDividendoEstimacionIBM(QDialog, Ui_frmDividendoEstimacionIBM):
         
 
     def on_cmd_released(self):
-        year=int(self.txtYear.text())
-        dpa=Decimal(self.txtDPA.text())
-        DividendoEstimacion(self.cfg).insertar(self.investment.id,  year, dpa)
+        d=DividendoEstimacion(self.cfg).init__from_db(self.investment, int(self.txtYear.text()) )##Lo carga si existe de la base de datos
+        d.dpa=self.txtDPA.text()
+        d.manual=True
+        d.fuente="Internet"
+        d.fechaestimacion=datetime.date.today()
+        d.save()
         self.cfg.conmq.commit()      
+#######        self.investment.estimaciones[d.txtYear.text()].dpa=d.txtDPA.decimal()
         self.accept()
