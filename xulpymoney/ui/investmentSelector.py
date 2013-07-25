@@ -80,7 +80,7 @@ class investmentDialog(QDialog):
         self.tblInversiones.setAlternatingRowColors(True)
         self.tblInversiones.setColumnCount(4)
         self.tblInversiones.setRowCount(0)
-        self.tblInversiones.settings("investmentSelector",  self.cfg.file)    
+        self.tblInversiones.settings("investmentSelector",  self.cfg.file_ui)    
         self.tblInversiones.setHorizontalHeaderItem(0, QTableWidgetItem(self.trUtf8("Inversión")))
         self.tblInversiones.setHorizontalHeaderItem(1, QTableWidgetItem(self.trUtf8("Id")))
         self.tblInversiones.setHorizontalHeaderItem(2, QTableWidgetItem(self.trUtf8("ISIN")))

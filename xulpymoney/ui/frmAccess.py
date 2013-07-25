@@ -5,15 +5,14 @@ import sys, psycopg2,  psycopg2.extras,  configparser
 from Ui_frmAccess import *
 
 class frmAccess(QDialog, Ui_frmAccess):
-    def __init__(self, cfg, configfile, parent = None, name = None, modal = False):
+    def __init__(self, cfg, parent = None, name = None, modal = False):
         QDialog.__init__(self,  parent)
         self.cfg=cfg
-        self.configfile=configfile
         if name:
             self.setObjectName(name)
         self.setModal(True)
         self.setupUi(self)
-        self.configfile_load(configfile)
+        self.configfile_load(self.cfg.file)
 
 
     
@@ -66,7 +65,7 @@ class frmAccess(QDialog, Ui_frmAccess):
             m.setText(self.trUtf8("Error en la conexión, vuelva a entrar"))
             m.exec_()        
             sys.exit(255)
-        self.configfile_save(self.configfile)
+        self.configfile_save(self.cfg.file)
         self.done(0)
 
     @pyqtSignature("")

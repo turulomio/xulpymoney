@@ -19,7 +19,7 @@ class wdgInversiones(QWidget, Ui_wdgInversiones):
         self.progress.setModal(True)
         self.progress.setWindowTitle(self.trUtf8("Recibiendo datos..."))
         self.progress.setMinimumDuration(0)                 
-        self.tblInversiones.settings("wdgInversiones",  self.cfg.file)
+        self.tblInversiones.settings("wdgInversiones",  self.cfg.file_ui)
         self.on_chkInactivas_stateChanged(self.chkInactivas.checkState())#Carga la tabla
         
     def load_data_from_db(self):

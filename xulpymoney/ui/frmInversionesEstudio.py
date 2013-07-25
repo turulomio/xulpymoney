@@ -51,10 +51,10 @@ class frmInversionesEstudio(QDialog, Ui_frmInversionesEstudio):
             self.ise.setSelected(self.selInversion.mq)
             self.cmdPuntoVenta.setEnabled(True)
 
-#        self.tblOperaciones.settings("frmInversionesEstudio",  self.cfg.file)
+#        self.tblOperaciones.settings("frmInversionesEstudio",  self.cfg.file_ui)
 #        self.tblOperaciones.setColumnHidden(0, True)    
-        self.tblInversionHistorica.settings("frmInversionesEstudio",  self.cfg.file)
-        self.tblDividendos.settings("frmInversionesEstudio",  self.cfg.file)
+        self.tblInversionHistorica.settings("frmInversionesEstudio",  self.cfg.file_ui)
+        self.tblDividendos.settings("frmInversionesEstudio",  self.cfg.file_ui)
         
         self.data_cuentas.load_qcombobox(self.cmbCuenta)
 

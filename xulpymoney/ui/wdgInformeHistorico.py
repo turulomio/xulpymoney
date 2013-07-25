@@ -10,10 +10,10 @@ class wdgInformeHistorico(QWidget, Ui_wdgInformeHistorico):
         QWidget.__init__(self, parent)
         self.setupUi(self)
         self.cfg=cfg
-        self.tblEstudio.settings("wdgInformeHistorico",  self.cfg.file)
-        self.tblDividendos.settings("wdgInformeHistorico",  self.cfg.file)
-        self.tblInversiones.settings("wdgInformeHistorico",  self.cfg.file)
-        self.tblAdded.settings("wdgInformeHistorico",  self.cfg.file)
+        self.tblEstudio.settings("wdgInformeHistorico",  self.cfg.file_ui)
+        self.tblDividendos.settings("wdgInformeHistorico",  self.cfg.file_ui)
+        self.tblInversiones.settings("wdgInformeHistorico",  self.cfg.file_ui)
+        self.tblAdded.settings("wdgInformeHistorico",  self.cfg.file_ui)
         
         self.totalDividendosNetos=0
         self.totalDividendosBrutos=0

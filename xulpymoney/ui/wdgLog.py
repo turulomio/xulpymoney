@@ -11,7 +11,7 @@ class wdgLog(QWidget, Ui_wdgLog):
         self.setupUi(self)
         self.cfg=cfg
         self.filtro=''
-        self.table.settings("wdgLog",  self.cfg.file)    
+        self.table.settings("wdgLog",  self.cfg.file_ui)    
         self.timerStatus = QTimer()
         self.timerLog = QTimer()
         QObject.connect(self.timerStatus, SIGNAL("timeout()"), self.updateStatus)    

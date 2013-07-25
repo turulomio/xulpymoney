@@ -25,12 +25,13 @@ class frmMain(QMainWindow, Ui_frmMain):
         QMainWindow.__init__(self, None)
         self.setupUi(self)
         self.showMaximized()
+        self.setWindowTitle(self.trUtf8("Xulpymoney 2010-{0} ©".format(version[:4])))
         
         self.cfg=ConfigXulpymoney()
         
         self.w=QWidget()       
         
-        access=frmAccess(self.cfg, self.cfg.file)        
+        access=frmAccess(self.cfg)        
         icon = QtGui.QIcon()
         pix=QtGui.QPixmap(":xulpymoney/coins.png")
         icon.addPixmap(pix, QtGui.QIcon.Normal, QtGui.QIcon.Off)

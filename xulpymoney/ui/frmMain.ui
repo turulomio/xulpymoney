@@ -20,9 +20,6 @@
   <property name="cursor">
    <cursorShape>PointingHandCursor</cursorShape>
   </property>
-  <property name="windowTitle">
-   <string>Xulpymoney 2010-2013 ©</string>
-  </property>
   <property name="windowIcon">
    <iconset resource="../images/xulpymoney.qrc">
     <normaloff>:/xulpymoney/coins.png</normaloff>:/xulpymoney/coins.png</iconset>

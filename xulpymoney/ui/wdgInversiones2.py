@@ -15,7 +15,7 @@ class wdgInversiones2(QWidget, Ui_wdgInversiones2):
         self.inversionesmq=[]#Es una lista de inversionesmq
         self.selInvestment=None##Objeto de inversion seleccionado
         self.tblInversiones.setColumnHidden(0, True)
-        self.tblInversiones.settings("wdgInversiones",  self.cfg.file)    
+        self.tblInversiones.settings("wdgInversiones",  self.cfg.file_ui)    
         self.setFavoritos=set(list_loadprops(self.cfg.file, "wdgInversiones", "favoritos"))
         self.progress = QProgressDialog(self.tr("Recibiendo datos solicitados"), self.tr("Cancelar"), 0,0)
         self.progress.setModal(True)
