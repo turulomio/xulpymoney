@@ -51,8 +51,8 @@ class frmInversionesEstudio(QDialog, Ui_frmInversionesEstudio):
             self.ise.setSelected(self.selInversion.mq)
             self.cmdPuntoVenta.setEnabled(True)
 
-        self.tblOperaciones.settings("frmInversionesEstudio",  self.cfg.file)
-        self.tblOperaciones.setColumnHidden(0, True)    
+#        self.tblOperaciones.settings("frmInversionesEstudio",  self.cfg.file)
+#        self.tblOperaciones.setColumnHidden(0, True)    
         self.tblInversionHistorica.settings("frmInversionesEstudio",  self.cfg.file)
         self.tblDividendos.settings("frmInversionesEstudio",  self.cfg.file)
         
@@ -96,7 +96,7 @@ class frmInversionesEstudio(QDialog, Ui_frmInversionesEstudio):
         if self.chkDividendosHistoricos.checkState()==Qt.Unchecked:
             if len(self.dividendos)>0:
                 importeinvertido=self.selInversion.invertido()
-                dias=(datetime.date.today()-self.selInversion.op_actual.fecha_primera_operacion()).days+1
+                dias=(datetime.date.today()-self.selInversion.op_actual.datetime_primera_operacion().date()).days+1
                 dtpc=100*sumbruto/importeinvertido
                 dtae=365*dtpc/abs(dias)
             else:
@@ -119,18 +119,18 @@ class frmInversionesEstudio(QDialog, Ui_frmInversionesEstudio):
        
     def on_chkOperaciones_stateChanged(self, state):
         if state==Qt.Unchecked:
-            self.op=self.selInversion.op.arr_from_fecha(self.selInversion.op_actual.fecha_primera_operacion())
+            self.op=self.selInversion.op.clone_from_datetime(self.selInversion.op_actual.datetime_primera_operacion())
         else:
-            self.op=self.selInversion.op.arr
-        myqtablewidget_loads_SetInversionOperacion(self.tblOperaciones, self.op)
+            self.op=self.selInversion.op
+        self.op.load_myqtablewidget(self.tblOperaciones, "frmInversionesEstudio")
             
         
     def update_tables(self):             
         #Actualiza el indice de referencia porque ha cambiado
         self.selInversion.op_actual.get_valor_indicereferencia()
         self.on_chkOperaciones_stateChanged(self.chkOperaciones.checkState())
-        myqtablewidget_loads_SetInversionOperacionActual(self.tblInversionActual, self.selInversion.op_actual,  "frmInversionesEstudio", self.cfg)
-        myqtablewidget_loads_SetInversionOperacionHistorica(self.tblInversionHistorica,  self.selInversion.op_historica.arr)
+        self.selInversion.op_actual.load_myqtablewidget(self.tblInversionActual,  "frmInversionesEstudio")
+        self.selInversion.op_historica.load_myqtablewidget(self.tblInversionHistorica,  "frmInversionesEstudio"  )
         self.on_chkDividendosHistoricos_stateChanged(self.chkDividendosHistoricos.checkState())
     
 
@@ -219,7 +219,7 @@ class frmInversionesEstudio(QDialog, Ui_frmInversionesEstudio):
 
     def on_chkDividendosHistoricos_stateChanged(self, state):
         self.dividendos=[]
-        fechapo=self.selInversion.op_actual.fecha_primera_operacion()
+        fechapo=self.selInversion.op_actual.datetime_primera_operacion().date()
         if fechapo==None and self.chkDividendosHistoricos.checkState()==Qt.Unchecked:
             self.load_tblDividendos()
             return

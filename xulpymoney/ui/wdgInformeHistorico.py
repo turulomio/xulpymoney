@@ -111,7 +111,7 @@ class wdgInformeHistorico(QWidget, Ui_wdgInformeHistorico):
                 if o.fecha_venta.year==int(self.cmbYears.currentText()) and o.tipooperacion.id in (5, 8):#Venta y traspaso fondos inversion
                     operaciones.append(o)
         operaciones=sorted(operaciones, key=lambda o: o.fecha_venta,  reverse=False)      
-        (self.totalBruto, self.totalComisiones, self.totalImpuestos, self.totalNeto)=myqtablewidget_loads_SetInversionOperacionHistorica(self.tblInversiones, operaciones)
+        (self.totalBruto, self.totalComisiones, self.totalImpuestos, self.totalNeto)=operaciones.load_myqtablewidget(self.tblInversiones, "wdgInformeHistorico")
 
 
 

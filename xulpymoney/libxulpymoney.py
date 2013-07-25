@@ -298,23 +298,7 @@ class SetBolsas:
         
     def list(self):
         return dic2list(self.dic_arr)
-        
-class SetCommon:
-    def __init__(self):
-        self.arr=[]
-    def append(self, objeto):
-        self.arr.append(objeto)
-    def arr_from_fecha(self, date):
-        """Función que saca del arr las que tienen fecha mayor o igual a la pasada como parametro."""
-        resultado=[]
-        if date==None:
-            return resultado
-        for a in self.arr:
-            if a.datetime.date()>=date:
-                resultado.append(a)
-        return resultado
-        
-        
+
         
         
 class SetConceptos:      
@@ -486,11 +470,24 @@ class SetEntidadesBancarias:
     def sort(self):       
         self.arr=sorted(self.arr, key=lambda e: e.name,  reverse=False) 
 
-class SetInversionOperacion(SetCommon):       
+class SetInversionOperacion:       
     """Clase es un array ordenado de objetos newInversionOperacion"""
     def __init__(self, cfg):
-        SetCommon.__init__(self)
         self.cfg=cfg
+        self.arr=[]
+        
+    def append(self, objeto):
+        self.arr.append(objeto)
+        
+    def clone_from_datetime(self, dt):
+        """Función que devuelve otro SetInversionOperacion con las oper que tienen datetime mayor o igual a la pasada como parametro."""
+        resultado=SetInversionOperacion(self.cfg)
+        if dt==None:
+            return resultado
+        for a in self.arr:
+            if a.datetime>=dt:
+                resultado.append(a)
+        return resultado
         
     def calcular_new(self):
         """Realiza los cálculos y devuelve dos arrays"""
@@ -606,27 +603,47 @@ class SetInversionOperacion(SetCommon):
             resultado.arr.append(io.clone())
         return resultado
         
-#    def hayNegativas(self):
-#        """Función que devuelve si hay operaciones negativos en el array"""
-#        for io in self.arr:
-#            if io.acciones<0:
-#                return True
-#        return False
-#    def saldoNegativo(self):
-#        """Función que devuelve el número de acciones de venta. 
-#        Devuelve un número positivo.
-#        Deberá ignorar las archivadas"""
-#        resultado=Decimal('0')
-#        for io in self.arr:
-#            if io.acciones<0:
-#                resultado=resultado-(io.acciones)
-#        return resultado
+    def load_myqtablewidget(self, tabla, section):
+        """Section es donde guardar en el config file, coincide con el nombre del formulario en el que est´a la tabla"""
+        tabla.setColumnCount(7)
+        tabla.setHorizontalHeaderItem(0, QTableWidgetItem(QApplication.translate(section, "Fecha", None, QApplication.UnicodeUTF8)))
+        tabla.setHorizontalHeaderItem(1, QTableWidgetItem(QApplication.translate(section, "Tipo de operación", None, QApplication.UnicodeUTF8)))
+        tabla.setHorizontalHeaderItem(2, QTableWidgetItem(QApplication.translate(section, "Acciones", None, QApplication.UnicodeUTF8)))
+        tabla.setHorizontalHeaderItem(3, QTableWidgetItem(QApplication.translate(section, "Valor acción", None, QApplication.UnicodeUTF8)))
+        tabla.setHorizontalHeaderItem(4, QTableWidgetItem(QApplication.translate(section, "Importe", None, QApplication.UnicodeUTF8)))
+        tabla.setHorizontalHeaderItem(5, QTableWidgetItem(QApplication.translate(section, "Comisión", None, QApplication.UnicodeUTF8)))
+        tabla.setHorizontalHeaderItem(6, QTableWidgetItem(QApplication.translate(section, "Impuestos", None, QApplication.UnicodeUTF8)))
+        #DATA
+        tabla.settings(section,  self.cfg.file_ui)        
+        tabla.clearContents()
+        tabla.setRowCount(len(self.arr))
+        for rownumber, a in enumerate(self.arr):
+            tabla.setItem(rownumber, 0, qdatetime(a.datetime, a.inversion.mq.bolsa.zone))
+            tabla.setItem(rownumber, 1, QTableWidgetItem(a.tipooperacion.name))
+            tabla.setItem(rownumber, 2, qright(str(a.acciones)))
+            tabla.setItem(rownumber, 3, a.inversion.mq.currency.qtablewidgetitem(a.valor_accion))
+            tabla.setItem(rownumber, 4, a.inversion.mq.currency.qtablewidgetitem(a.importe))
+            tabla.setItem(rownumber, 5, a.inversion.mq.currency.qtablewidgetitem(a.comision))
+            tabla.setItem(rownumber, 6, a.inversion.mq.currency.qtablewidgetitem(a.impuestos))
 
-class SetInversionOperacionActual(SetCommon):       
+
+
+class SetInversionOperacionActual:    
     """Clase es un array ordenado de objetos newInversionOperacion"""
     def __init__(self, cfg):
-        SetCommon.__init__(self)
         self.cfg=cfg
+        self.arr=[]
+    def append(self, objeto):
+        self.arr.append(objeto)
+    def arr_from_fecha(self, date):
+        """Función que saca del arr las que tienen fecha mayor o igual a la pasada como parametro."""
+        resultado=[]
+        if date==None:
+            return resultado
+        for a in self.arr:
+            if a.datetime.date()>=date:
+                resultado.append(a)
+        return resultado
     def __repr__(self):
         try:
             inversion=self.arr[0].inversion.id
@@ -634,10 +651,10 @@ class SetInversionOperacionActual(SetCommon):
             inversion="Desconocido"
         return ("SetIOA Inv: {0}. N.Registros: {1}. N.Acciones: {2}. Invertido: {3}. Valor medio:{4}".format(inversion,  len(self.arr), self.acciones(),  self.invertido(),  self.valor_medio_compra()))
         
-    def fecha_primera_operacion(self):
+    def datetime_primera_operacion(self):
         if len(self.arr)==0:
             return None
-        return self.arr[0].datetime.date()
+        return self.arr[0].datetime
         
     def acciones(self):
         """Devuelve el número de acciones de la inversión actual"""
@@ -653,6 +670,81 @@ class SetInversionOperacionActual(SetCommon):
             resultado=resultado+o.invertido()
         return resultado
         
+    def load_myqtablewidget(self,  tabla,  section ):
+        """Función que rellena una tabla pasada como parámetro con datos procedentes de un array de objetos
+        InversionOperacionActual y dos valores de myquotes para rellenar los tpc correspodientes
+        
+        Se dibujan las columnas pero las propiedad alternate color... deben ser en designer
+        
+        Parámetros
+            - tabla myQTableWidget en la que rellenar los datos
+            - setoperinversion. Vincula a una inversión que  Debe tener cargado mq con get_basic y las operaciones de inversión calculadas
+        last es el último quote de la inversión"""
+        #UI
+        tabla.setColumnCount(10)
+        tabla.setHorizontalHeaderItem(0, QTableWidgetItem(QApplication.translate(section, "Día", None, QApplication.UnicodeUTF8)))
+        tabla.setHorizontalHeaderItem(1, QTableWidgetItem(QApplication.translate(section, "Acciones", None, QApplication.UnicodeUTF8)))
+        tabla.setHorizontalHeaderItem(2, QTableWidgetItem(QApplication.translate(section, "Valor compra", None, QApplication.UnicodeUTF8)))
+        tabla.setHorizontalHeaderItem(3, QTableWidgetItem(QApplication.translate(section, "Invertido", None, QApplication.UnicodeUTF8)))
+        tabla.setHorizontalHeaderItem(4, QTableWidgetItem(QApplication.translate(section, "Saldo actual", None, QApplication.UnicodeUTF8)))
+        tabla.setHorizontalHeaderItem(5, QTableWidgetItem(QApplication.translate(section, "Pendiente", None, QApplication.UnicodeUTF8)))
+        tabla.setHorizontalHeaderItem(6, QTableWidgetItem(QApplication.translate(section, "% anual", None, QApplication.UnicodeUTF8)))
+        tabla.setHorizontalHeaderItem(7, QTableWidgetItem(QApplication.translate(section, "% TAE", None, QApplication.UnicodeUTF8)))
+        tabla.setHorizontalHeaderItem(8, QTableWidgetItem(QApplication.translate(section, "% Total", None, QApplication.UnicodeUTF8)))
+        tabla.setHorizontalHeaderItem(9, QTableWidgetItem(QApplication.translate(section, "Índice de referencia", None, QApplication.UnicodeUTF8)))
+        #DATA
+        tabla.settings(section,  self.cfg.file_ui)
+        if len(self.arr)==0:
+            tabla.setRowCount(0)
+            return
+        inversion=self.arr[0].inversion
+        numdigitos=inversion.mq.quotes.decimalesSignificativos()
+        sumacciones=Decimal('0')
+        sum_accionesXvalor=Decimal('0')
+        sumsaldo=Decimal('0')
+        sumpendiente=Decimal('0')
+        suminvertido=Decimal('0')
+        tabla.clearContents()
+        tabla.setRowCount(len(self.arr)+1)
+        rownumber=0
+        for rownumber, a in enumerate(self.arr):
+            sumacciones=Decimal(sumacciones)+Decimal(str(a.acciones))
+            saldo=a.saldo(inversion.mq.quotes.last)
+            pendiente=a.pendiente(inversion.mq.quotes.last)
+            invertido=a.invertido()
+    
+            sumsaldo=sumsaldo+saldo
+            sumpendiente=sumpendiente+pendiente
+            suminvertido=suminvertido+invertido
+            sum_accionesXvalor=sum_accionesXvalor+a.acciones*a.valor_accion
+    
+            tabla.setItem(rownumber, 0, qdatetime(a.datetime, inversion.mq.bolsa.zone))
+            tabla.setItem(rownumber, 1, qright("{0:.6f}".format(a.acciones)))
+            tabla.setItem(rownumber, 2, inversion.mq.currency.qtablewidgetitem(a.valor_accion, numdigitos))
+            tabla.setItem(rownumber, 3, inversion.mq.currency.qtablewidgetitem(invertido))
+            tabla.setItem(rownumber, 4, inversion.mq.currency.qtablewidgetitem(saldo))
+            tabla.setItem(rownumber, 5, inversion.mq.currency.qtablewidgetitem(pendiente))
+            tabla.setItem(rownumber, 6, qtpc(a.tpc_anual(inversion.mq.quotes.last.quote, inversion.mq.quotes.endlastyear.quote)))
+            tabla.setItem(rownumber, 7, qtpc(a.tpc_tae(inversion.mq.quotes.last.quote)))
+            tabla.setItem(rownumber, 8, qtpc(a.tpc_total(inversion.mq.quotes.last.quote)))
+            if a.referenciaindice==None:
+                tabla.setItem(rownumber, 9, inversion.mq.currency.qtablewidgetitem(None))
+            else:
+                tabla.setItem(rownumber, 9, inversion.mq.currency.qtablewidgetitem(a.referenciaindice.quote))
+            rownumber=rownumber+1
+        tabla.setItem(rownumber, 0, QTableWidgetItem(("TOTAL")))
+        tabla.setItem(rownumber, 1, qright(str(sumacciones)))
+        if sumacciones==0:
+            tabla.setItem(rownumber, 2, inversion.mq.currency.qtablewidgetitem(0))
+        else:
+            tabla.setItem(rownumber, 2, inversion.mq.currency.qtablewidgetitem(sum_accionesXvalor/sumacciones, numdigitos))
+        tabla.setItem(rownumber, 3, inversion.mq.currency.qtablewidgetitem(suminvertido))
+        tabla.setItem(rownumber, 4, inversion.mq.currency.qtablewidgetitem(sumsaldo))
+        tabla.setItem(rownumber, 5, inversion.mq.currency.qtablewidgetitem(sumpendiente))
+        tabla.setItem(rownumber, 7, qtpc(self.tpc_tae(inversion.mq.quotes.last.quote)))
+        tabla.setItem(rownumber, 8, qtpc(self.tpc_total(sumpendiente, suminvertido)))
+            
+
     def pendiente(self, lastquote):
         resultado=0
         for o in self.arr:
@@ -760,11 +852,22 @@ class SetInversionOperacionActual(SetCommon):
         """Ordena por datetime"""
         self.arr=sorted(self.arr, key=lambda o:o.datetime)
  
-class SetInversionOperacionHistorica(SetCommon):       
+class SetInversionOperacionHistorica:       
     """Clase es un array ordenado de objetos newInversionOperacion"""
     def __init__(self, cfg):
-        SetCommon.__init__(self)
         self.cfg=cfg
+        self.arr=[]
+    def append(self, objeto):
+        self.arr.append(objeto)
+    def arr_from_fecha(self, date):
+        """Función que saca del arr las que tienen fecha mayor o igual a la pasada como parametro."""
+        resultado=[]
+        if date==None:
+            return resultado
+        for a in self.arr:
+            if a.datetime.date()>=date:
+                resultado.append(a)
+        return resultado
         
     def consolidado_bruto(self,  year=None,  month=None):
         resultado=0
@@ -807,6 +910,80 @@ class SetInversionOperacionHistorica(SetCommon):
                     if o.fecha_venta.year==year and o.fecha_venta.month==month:
                         resultado=resultado+o.consolidado_neto_antes_impuestos()
         return resultado
+    def load_myqtablewidget(self, tabla, section):
+        """Rellena datos de un array de objetos de InversionOperacionHistorica, devuelve totales ver código"""
+        tabla.setColumnCount(11)
+        tabla.setHorizontalHeaderItem(0, QTableWidgetItem(QApplication.translate(section, "Fecha", None, QApplication.UnicodeUTF8)))
+        tabla.setHorizontalHeaderItem(1, QTableWidgetItem(QApplication.translate(section, "Años", None, QApplication.UnicodeUTF8)))
+        tabla.setHorizontalHeaderItem(2, QTableWidgetItem(QApplication.translate(section, "Inversi´on", None, QApplication.UnicodeUTF8)))
+        tabla.setHorizontalHeaderItem(3, QTableWidgetItem(QApplication.translate(section, "Tipo operaci´on", None, QApplication.UnicodeUTF8)))
+        tabla.setHorizontalHeaderItem(4, QTableWidgetItem(QApplication.translate(section, "Importe inicial", None, QApplication.UnicodeUTF8)))
+        tabla.setHorizontalHeaderItem(5, QTableWidgetItem(QApplication.translate(section, "Consolidado bruto", None, QApplication.UnicodeUTF8)))
+        tabla.setHorizontalHeaderItem(6, QTableWidgetItem(QApplication.translate(section, "Comisiones", None, QApplication.UnicodeUTF8)))
+        tabla.setHorizontalHeaderItem(7, QTableWidgetItem(QApplication.translate(section, "Impuestos", None, QApplication.UnicodeUTF8)))
+        tabla.setHorizontalHeaderItem(8, QTableWidgetItem(QApplication.translate(section, "Consolidado neto", None, QApplication.UnicodeUTF8)))
+        tabla.setHorizontalHeaderItem(9, QTableWidgetItem(QApplication.translate(section, "% TAE neto", None, QApplication.UnicodeUTF8)))
+        tabla.setHorizontalHeaderItem(10, QTableWidgetItem(QApplication.translate(section, "% Total neto", None, QApplication.UnicodeUTF8)))
+        #DATA
+        tabla.settings(section,  self.cfg.file_ui)        
+        
+        
+        (sumbruto, sumneto)=(0, 0);
+        sumsaldosinicio=0;
+        sumsaldosfinal=0;
+    
+        sumoperacionespositivas=0;
+        sumoperacionesnegativas=0;
+        sumimpuestos=0;
+        sumcomision=0;        
+        tabla.clearContents()
+        tabla.setRowCount(len(self.arr)+1)
+        for rownumber, a in enumerate(self.arr):
+            saldoinicio=a.bruto_compra()
+            saldofinal=a.bruto_venta()
+            bruto=a.consolidado_bruto()
+            sumimpuestos=sumimpuestos-Decimal(str(a.impuestos))
+            sumcomision=sumcomision-Decimal(str(a.comision))
+            neto=a.consolidado_neto()
+            
+    
+            sumbruto=sumbruto+bruto;
+            sumneto=sumneto+neto
+            sumsaldosinicio=sumsaldosinicio+saldoinicio;
+            sumsaldosfinal=sumsaldosfinal+saldofinal;
+    
+            #Calculo de operaciones positivas y negativas
+            if bruto>0:
+                sumoperacionespositivas=sumoperacionespositivas+bruto 
+            else:
+                sumoperacionesnegativas=sumoperacionesnegativas+bruto
+    
+            tabla.setItem(rownumber, 0,QTableWidgetItem(str(a.fecha_venta)))    
+            tabla.setItem(rownumber, 1,QTableWidgetItem(str(round(a.years(), 2))))    
+            tabla.setItem(rownumber, 2,QTableWidgetItem(a.inversion.name))
+            tabla.setItem(rownumber, 3,QTableWidgetItem(a.tipooperacion.name))
+            tabla.setItem(rownumber, 4,a.inversion.mq.currency.qtablewidgetitem(saldoinicio))
+            tabla.setItem(rownumber, 5,a.inversion.mq.currency.qtablewidgetitem(saldofinal))
+            tabla.setItem(rownumber, 6,a.inversion.mq.currency.qtablewidgetitem(bruto))
+            tabla.setItem(rownumber, 7,a.inversion.mq.currency.qtablewidgetitem(a.comision))
+            tabla.setItem(rownumber, 8,a.inversion.mq.currency.qtablewidgetitem(a.impuestos))
+            tabla.setItem(rownumber, 9,a.inversion.mq.currency.qtablewidgetitem(neto))
+            tabla.setItem(rownumber, 10,qtpc(a.tpc_tae_neto()))
+            tabla.setItem(rownumber, 11,qtpc(a.tpc_total_neto()))
+            rownumber=rownumber+1
+        tabla.setItem(rownumber, 2,QTableWidgetItem("TOTAL"))    
+        if len(self.arr)>0:
+            currency=self.arr[0].inversion.mq.currency
+            tabla.setItem(rownumber, 4,currency.qtablewidgetitem(sumsaldosinicio))    
+            tabla.setItem(rownumber, 5,currency.qtablewidgetitem(sumsaldosfinal))    
+            tabla.setItem(rownumber, 6,currency.qtablewidgetitem(sumbruto))    
+            tabla.setItem(rownumber, 7,currency.qtablewidgetitem(sumcomision))    
+            tabla.setItem(rownumber, 8,currency.qtablewidgetitem(sumimpuestos))    
+            tabla.setItem(rownumber, 9,currency.qtablewidgetitem(sumneto))    
+            tabla.setCurrentCell(rownumber, 4)       
+        return (sumbruto, sumcomision, sumimpuestos, sumneto)
+    
+
 
         
 class InversionOperacionHistorica:
@@ -1468,8 +1645,8 @@ class Inversion:
         self.cuenta=None#Vincula a un objeto  Cuenta
         self.activa=None
         self.op=None#Es un objeto SetInversionOperacion
-        self.op_actual=None#Es un objeto newSetoperinversionesactual
-        self.op_historica=None#newoperinversioneshistorica
+        self.op_actual=None#Es un objeto Setoperinversionesactual
+        self.op_historica=None#setoperinversioneshistorica
         
         
     def create(self, name, venta, cuenta, inversionmq):
@@ -1998,158 +2175,8 @@ def mylog(text):
 def decimal_check(dec):
     print ("Decimal check", dec, dec.__class__,  dec.__repr__(),  "prec:",  getcontext().prec)
     
-def myqtablewidget_loads_SetInversionOperacionActual( tabla,  setinversionoperacionactual,  settingsname, cfg):
-    """Función que rellena una tabla pasada como parámetro con datos procedentes de un array de objetos
-    InversionOperacionActual y dos valores de myquotes para rellenar los tpc correspodientes
+
     
-    Se dibujan las columnas pero las propiedad alternate color... deben ser en designer
-    
-    Parámetros
-        - tabla myQTableWidget en la que rellenar los datos
-        - setoperinversion. Vincula a una inversión que  Debe tener cargado mq con get_basic y las operaciones de inversión calculadas
-    last es el último quote de la inversión"""
-    #UI
-    tabla.setColumnCount(10)
-    tabla.setHorizontalHeaderItem(0, QTableWidgetItem(QApplication.translate(settingsname, "Día", None, QApplication.UnicodeUTF8)))
-    tabla.setHorizontalHeaderItem(1, QTableWidgetItem(QApplication.translate(settingsname, "Acciones", None, QApplication.UnicodeUTF8)))
-    tabla.setHorizontalHeaderItem(2, QTableWidgetItem(QApplication.translate(settingsname, "Valor compra", None, QApplication.UnicodeUTF8)))
-    tabla.setHorizontalHeaderItem(3, QTableWidgetItem(QApplication.translate(settingsname, "Invertido", None, QApplication.UnicodeUTF8)))
-    tabla.setHorizontalHeaderItem(4, QTableWidgetItem(QApplication.translate(settingsname, "Saldo actual", None, QApplication.UnicodeUTF8)))
-    tabla.setHorizontalHeaderItem(5, QTableWidgetItem(QApplication.translate(settingsname, "Pendiente", None, QApplication.UnicodeUTF8)))
-    tabla.setHorizontalHeaderItem(6, QTableWidgetItem(QApplication.translate(settingsname, "% anual", None, QApplication.UnicodeUTF8)))
-    tabla.setHorizontalHeaderItem(7, QTableWidgetItem(QApplication.translate(settingsname, "% TAE", None, QApplication.UnicodeUTF8)))
-    tabla.setHorizontalHeaderItem(8, QTableWidgetItem(QApplication.translate(settingsname, "% Total", None, QApplication.UnicodeUTF8)))
-    tabla.setHorizontalHeaderItem(9, QTableWidgetItem(QApplication.translate(settingsname, "Índice de referencia", None, QApplication.UnicodeUTF8)))
-    #DATA
-    tabla.settings(settingsname,  cfg.file)
-    if len(setinversionoperacionactual.arr)==0:
-        tabla.setRowCount(0)
-        return
-    inversion=setinversionoperacionactual.arr[0].inversion
-    numdigitos=inversion.mq.quotes.decimalesSignificativos()
-    sumacciones=Decimal('0')
-    sum_accionesXvalor=Decimal('0')
-#        sum_accionesXtae=0
-    sumsaldo=Decimal('0')
-    sumpendiente=Decimal('0')
-    suminvertido=Decimal('0')
-    tabla.clearContents()
-    tabla.setRowCount(len(setinversionoperacionactual.arr)+1)
-    rownumber=0
-    for a in setinversionoperacionactual.arr:
-        sumacciones=Decimal(sumacciones)+Decimal(str(a.acciones))
-        saldo=a.saldo(inversion.mq.quotes.last)
-        pendiente=a.pendiente(inversion.mq.quotes.last)
-        invertido=a.invertido()
-
-        sumsaldo=sumsaldo+saldo
-        sumpendiente=sumpendiente+pendiente
-        suminvertido=suminvertido+invertido
-        sum_accionesXvalor=sum_accionesXvalor+a.acciones*a.valor_accion
-
-        tabla.setItem(rownumber, 0, qdatetime(a.datetime, inversion.mq.bolsa.zone))
-        tabla.setItem(rownumber, 1, qright("{0:.6f}".format(a.acciones)))
-        tabla.setItem(rownumber, 2, inversion.mq.currency.qtablewidgetitem(a.valor_accion, numdigitos))
-        tabla.setItem(rownumber, 3, inversion.mq.currency.qtablewidgetitem(invertido))
-        tabla.setItem(rownumber, 4, inversion.mq.currency.qtablewidgetitem(saldo))
-        tabla.setItem(rownumber, 5, inversion.mq.currency.qtablewidgetitem(pendiente))
-        tabla.setItem(rownumber, 6, qtpc(a.tpc_anual(inversion.mq.quotes.last.quote, inversion.mq.quotes.endlastyear.quote)))
-        tabla.setItem(rownumber, 7, qtpc(a.tpc_tae(inversion.mq.quotes.last.quote)))
-        tabla.setItem(rownumber, 8, qtpc(a.tpc_total(inversion.mq.quotes.last.quote)))
-        if a.referenciaindice==None:
-            tabla.setItem(rownumber, 9, inversion.mq.currency.qtablewidgetitem(None))
-        else:
-            tabla.setItem(rownumber, 9, inversion.mq.currency.qtablewidgetitem(a.referenciaindice.quote))
-        rownumber=rownumber+1
-    tabla.setItem(rownumber, 0, QTableWidgetItem(("TOTAL")))
-    tabla.setItem(rownumber, 1, qright(str(sumacciones)))
-    if sumacciones==0:
-        tabla.setItem(rownumber, 2, inversion.mq.currency.qtablewidgetitem(0))
-    else:
-        tabla.setItem(rownumber, 2, inversion.mq.currency.qtablewidgetitem(sum_accionesXvalor/sumacciones, numdigitos))
-    tabla.setItem(rownumber, 3, inversion.mq.currency.qtablewidgetitem(suminvertido))
-    tabla.setItem(rownumber, 4, inversion.mq.currency.qtablewidgetitem(sumsaldo))
-    tabla.setItem(rownumber, 5, inversion.mq.currency.qtablewidgetitem(sumpendiente))
-    tabla.setItem(rownumber, 7, qtpc(setinversionoperacionactual.tpc_tae(inversion.mq.quotes.last.quote)))
-    tabla.setItem(rownumber, 8, qtpc(setinversionoperacionactual.tpc_total(sumpendiente, suminvertido)))
-        
-def myqtablewidget_loads_SetInversionOperacion(tabla,  arr):
-    tabla.clearContents()
-    tabla.setRowCount(len(arr))
-    rownumber=0
-    for a in arr:
-        tabla.setItem(rownumber, 0, QTableWidgetItem(str(a.id)))
-        tabla.setItem(rownumber, 1, qdatetime(a.datetime, a.inversion.mq.bolsa.zone))
-        tabla.setItem(rownumber, 2, QTableWidgetItem(a.tipooperacion.name))
-        tabla.setItem(rownumber, 3, qright(str(a.acciones)))
-        tabla.setItem(rownumber, 4, a.inversion.mq.currency.qtablewidgetitem(a.valor_accion))
-        tabla.setItem(rownumber, 5, a.inversion.mq.currency.qtablewidgetitem(a.importe))
-        tabla.setItem(rownumber, 6, a.inversion.mq.currency.qtablewidgetitem(a.comision))
-        tabla.setItem(rownumber, 7, a.inversion.mq.currency.qtablewidgetitem(a.impuestos))
-        rownumber=rownumber+1
-
-
-        
-    
-def myqtablewidget_loads_SetInversionOperacionHistorica(tabla, arr):
-    """Rellena datos de un array de objetos de InversionOperacionHistorica, devuelve totales ver código"""
-    (sumbruto, sumneto)=(0, 0);
-    sumsaldosinicio=0;
-    sumsaldosfinal=0;
-
-    sumoperacionespositivas=0;
-    sumoperacionesnegativas=0;
-    sumimpuestos=0;
-    sumcomision=0;        
-    tabla.clearContents()
-    tabla.setRowCount(len(arr)+1)
-    rownumber=0
-    for a in arr:
-        saldoinicio=a.bruto_compra()
-        saldofinal=a.bruto_venta()
-        bruto=a.consolidado_bruto()
-        sumimpuestos=sumimpuestos-Decimal(str(a.impuestos))
-        sumcomision=sumcomision-Decimal(str(a.comision))
-        neto=a.consolidado_neto()
-        
-
-        sumbruto=sumbruto+bruto;
-        sumneto=sumneto+neto
-        sumsaldosinicio=sumsaldosinicio+saldoinicio;
-        sumsaldosfinal=sumsaldosfinal+saldofinal;
-
-        #Calculo de operaciones positivas y negativas
-        if bruto>0:
-            sumoperacionespositivas=sumoperacionespositivas+bruto 
-        else:
-            sumoperacionesnegativas=sumoperacionesnegativas+bruto
-
-        tabla.setItem(rownumber, 0,QTableWidgetItem(str(a.fecha_venta)))    
-        tabla.setItem(rownumber, 1,QTableWidgetItem(str(round(a.years(), 2))))    
-        tabla.setItem(rownumber, 2,QTableWidgetItem(a.inversion.name))
-        tabla.setItem(rownumber, 3,QTableWidgetItem(a.tipooperacion.name))
-        tabla.setItem(rownumber, 4,a.inversion.mq.currency.qtablewidgetitem(saldoinicio))
-        tabla.setItem(rownumber, 5,a.inversion.mq.currency.qtablewidgetitem(saldofinal))
-        tabla.setItem(rownumber, 6,a.inversion.mq.currency.qtablewidgetitem(bruto))
-        tabla.setItem(rownumber, 7,a.inversion.mq.currency.qtablewidgetitem(a.comision))
-        tabla.setItem(rownumber, 8,a.inversion.mq.currency.qtablewidgetitem(a.impuestos))
-        tabla.setItem(rownumber, 9,a.inversion.mq.currency.qtablewidgetitem(neto))
-        tabla.setItem(rownumber, 10,qtpc(a.tpc_tae_neto()))
-        tabla.setItem(rownumber, 11,qtpc(a.tpc_total_neto()))
-        rownumber=rownumber+1
-    tabla.setItem(rownumber, 2,QTableWidgetItem("TOTAL"))    
-    if len(arr)>0:
-        currency=arr[0].inversion.mq.currency
-        tabla.setItem(rownumber, 4,currency.qtablewidgetitem(sumsaldosinicio))    
-        tabla.setItem(rownumber, 5,currency.qtablewidgetitem(sumsaldosfinal))    
-        tabla.setItem(rownumber, 6,currency.qtablewidgetitem(sumbruto))    
-        tabla.setItem(rownumber, 7,currency.qtablewidgetitem(sumcomision))    
-        tabla.setItem(rownumber, 8,currency.qtablewidgetitem(sumimpuestos))    
-        tabla.setItem(rownumber, 9,currency.qtablewidgetitem(sumneto))    
-        tabla.setCurrentCell(rownumber, 4)       
-    return (sumbruto, sumcomision, sumimpuestos, sumneto)
-
-
 
 
 class SetAgrupations:
