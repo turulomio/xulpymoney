@@ -115,15 +115,14 @@ class investmentDialog(QDialog):
             return
 
         self.inversiones=[]
-        con=self.cfg.connect_myquotes()
-        cur = con.cursor()
+        cur = self.cfg.conms.cursor()
         cur.execute("select * from investments where id::text like '%"+(self.txt.text().upper())+"%' or upper(name) like '%"+(self.txt.text().upper())+"%' or upper(isin) like '%"+(self.txt.text().upper())+"%' or upper(comentario) like '%"+(self.txt.text().upper())+"%' order by name")
         self.lblFound.setText(self.tr("Encontrados {0} registros".format(cur.rowcount)))
                 
         self.tblInversiones.setRowCount(cur.rowcount)
         for i in cur:
             inv=Investment(self.cfg)
-            inv.init__db_row(self.cfg, i)
+            inv.init__db_row(i)
             self.inversiones.append(inv)
             self.tblInversiones.setItem(cur.rownumber-1, 0, QTableWidgetItem(inv.name.upper()))
             self.tblInversiones.setItem(cur.rownumber-1, 1, QTableWidgetItem(str(inv.id)))
@@ -131,7 +130,6 @@ class investmentDialog(QDialog):
             self.tblInversiones.setItem(cur.rownumber-1, 2, QTableWidgetItem(inv.isin))
             self.tblInversiones.setItem(cur.rownumber-1, 3, QTableWidgetItem(inv.yahoo))
         cur.close()     
-        self.cfg.disconnect_myquotesd(con)   
         
     def on_tblInversiones_cellDoubleClicked(self, row, column):
         self.done(0)

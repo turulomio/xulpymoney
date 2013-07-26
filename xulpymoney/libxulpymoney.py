@@ -480,7 +480,7 @@ class SetInversionOperacion:
         """Función que devuelve otro SetInversionOperacion con las oper que tienen datetime mayor o igual a la pasada como parametro."""
         resultado=SetInversionOperacion(self.cfg)
         if dt==None:
-            return resultado
+            return self.clone()
         for a in self.arr:
             if a.datetime>=dt:
                 resultado.append(a)
@@ -968,8 +968,8 @@ class SetInversionOperacionHistorica:
             tabla.setItem(rownumber, 10,qtpc(a.tpc_tae_neto()))
             tabla.setItem(rownumber, 11,qtpc(a.tpc_total_neto()))
             rownumber=rownumber+1
-        tabla.setItem(rownumber, 2,QTableWidgetItem("TOTAL"))    
         if len(self.arr)>0:
+            tabla.setItem(len(self.arr), 2,QTableWidgetItem("TOTAL"))    
             currency=self.arr[0].inversion.mq.currency
             tabla.setItem(len(self.arr), 4,currency.qtablewidgetitem(sumsaldosinicio))    
             tabla.setItem(len(self.arr), 5,currency.qtablewidgetitem(sumsaldosfinal))    
@@ -2214,44 +2214,45 @@ class SetAgrupations:
         except:
             return self.dic_arr["ERROR"]
                 
-    def list (self, id=None):
+    def list (self):
         return dic2list(self.dic_arr)
     
-    def agrupations_por_tipo(self,  type):
-        """Muestra las agrupaciónes de un tipo pasado como parámetro. El parámetro type es un objeto Type"""
-        resultado=[]
-        for a in self.agrupations():
-            if a.type==type:
-                resultado.append(a)
+    def clone(self):
+        resultado=SetAgrupations(self.cfg)
+        for k, a in self.dic_arr.items():
+            resultado.dic_arr[k]=a
         return resultado
+    
+    def clone_by_type(self,  type):
+        """Muestra las agrupaciónes de un tipo pasado como parámetro. El parámetro type es un objeto Type"""
+        resultado=SetAgrupations(self.cfg)
+        for k, a in self.dic_arr.items():
+            print (a.type, type)
+            if a.type==type:
+                resultado.dic_arr[k]=a
+        print (resultado.dic_arr)
+        return resultado
+
         
-    def init__all(self):
-        self.arr=self.cfg.agrupations()
-        return self
-        
-    def init__etfs(self):
+    def clone_etfs(self):
         """Función que filtra el diccionario a según el país y el fondo """
-        self.arr=self.cfg.agrupations_por_tipo(self.cfg.types.find(4))
-        return self
+        return self.clone_by_type(self.cfg.types.find(4))
         
 #        return {k:v for k,v in self.cfg.Agrupations.items() if k[0]=='e' and  k[2]==country[0] and k[3]==country[1]}
-    def init__warrants(self):
+    def clone_warrants(self):
         """Función que filtra el diccionario a según el país y el fondo """
-        self.arr=self.cfg.agrupations_por_tipo(self.cfg.types.find(5))
-        return self
+        return self.clone_by_type(self.cfg.types.find(5))
         
-    def init__fondos(self):
+    def clone_fondos(self):
         """Función que filtra el diccionario a según el país y el fondo """
-        self.arr=self.cfg.agrupations_por_tipo(self.cfg.types.find(2))
-        return self
+        return self.clone_by_type(self.cfg.types.find(2))
         
-    def init__acciones(self):
+    def clone_acciones(self):
         """Función que filtra el diccionario a según el país y el fondo """
-        self.arr=self.cfg.agrupations_por_tipo(self.cfg.types.find(1))
-        return self
+        return self.clone_by_type(self.cfg.types.find(1))
         
         
-    def init__create_from_dbstring(self, dbstr):
+    def clone_from_dbstring(self, dbstr):
         """Convierte la cadena de la base datos en un array de objetos agrupation"""
         resultado=SetAgrupations(self.cfg)
         if dbstr==None or dbstr=="":
@@ -2261,9 +2262,9 @@ class SetAgrupations:
                 resultado.dic_arr[item]=self.cfg.agrupations.find(item)
         return self
         
-    def combo(self, combo):
+    def load_qcombobox(self, combo):
         combo.clear()
-        for a in self.arr:
+        for a in self.list():
             combo.addItem(a.name, a.id)
             
     def dbstring(self):
@@ -2275,11 +2276,12 @@ class SetAgrupations:
         return resultado
         
         
-    def init__create_from_combo(self, cmb):
+    def clone_from_combo(self, cmb):
         """Función que convierte un combo de agrupations a un array de agrupations"""
+        resultado=SetAgrupations(self.cfg)
         for i in range (cmb.count()):
-            self.arr.append(self.cfg.agrupations(cmb.itemData(i)))
-        return self
+            resultado.dic_arr[str(cmb.itemData(i))]=self.cfg.agrupations.find(cmb.itemData(i))
+        return resultado
 
 class SetApalancamientos:
     def __init__(self, cfg):
@@ -3422,7 +3424,7 @@ class Investment:
         self.isin=None
         self.currency=None #Apunta a un objeto currency
         self.type=None
-        self.agrupations=None #Es un objeto SetAgrupation
+        self.agrupations=None #Es un objeto SetAgrupations
         self.active=None
         self.id=None
         self.web=None
@@ -3453,7 +3455,7 @@ class Investment:
         self.isin=row['isin']
         self.currency=self.cfg.currencies.find(row['currency'])
         self.type=self.cfg.types.find(row['type'])
-        self.agrupations=SetAgrupations(self.cfg).init__create_from_dbstring(row['agrupations'])
+        self.agrupations=SetAgrupations(self.cfg).clone_from_dbstring(row['agrupations'])
         self.active=row['active']
         self.id=row['id']
         self.web=row['web']
@@ -4323,7 +4325,6 @@ class ConfigMyStock:
         self.dividendwithholding=Decimal(self.config.get("settings", "dividendwithholding"))
         self.taxcapitalappreciation=Decimal(self.config.get("settings", "taxcapitalappreciation"))
         
-        print(self.localzone)
         self.priorities.load_all()
         self.prioritieshistorical.load_all()
         self.types.load_all()

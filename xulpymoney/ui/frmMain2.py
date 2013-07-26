@@ -6,7 +6,7 @@ from frmAbout import *
 from frmAccess import *
 from wdgInversiones2 import *
 from wdgLog import *
-from config import *
+ 
 
 class frmMain2(QMainWindow, Ui_frmMain2):#    
     def __init__(self, parent = 0,  flags = False):
@@ -23,11 +23,12 @@ class frmMain2(QMainWindow, Ui_frmMain2):#
         self.setupUi(self)
         self.showMaximized()
         self.setWindowTitle(self.trUtf8("MyStocks 2010-{0} ©".format(version[:4])))
+        
         self.cfg=ConfigMyStock()
         
         self.w=QWidget()       
         self.w.setAttribute(Qt.WA_DeleteOnClose) 
-        access=frmAccess(self.cfg)
+        access=frmAccess(self.cfg, 1)
         access.setWindowTitle(self.trUtf8("MyStocks - Acceso"))
         QObject.connect(access.cmdYN, SIGNAL("rejected()"), self, SLOT("close()"))
         access.exec_()
@@ -192,7 +193,7 @@ class frmMain2(QMainWindow, Ui_frmMain2):#
 
     @QtCore.pyqtSlot()  
     def on_actionFavoritos_activated(self):
-        favoritos=list_loadprops(self.cfg.file,"wdgInversiones",  "favoritos")
+        favoritos=self.cfg.config_load_list(self.cfg.config,"wdgInversiones2",  "favoritos")
         if len(favoritos)==0:
             m=QMessageBox()
             m.setIcon(QMessageBox.Information)

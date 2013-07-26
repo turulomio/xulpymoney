@@ -9,7 +9,7 @@ from frmTraspasoValores import *
 from libxulpymoney import *
 
 class frmInversionesEstudio(QDialog, Ui_frmInversionesEstudio):
-    def __init__(self, cfg, cuentas, investments,  selInversion=None,  parent=None):
+    def __init__(self, cfg, cuentas, inversiones,  investments,  selInversion=None,  parent=None):
         """Cuentas es un set cuentas"""
         """TIPOS DE ENTRADAS:        
          1   : Inserción de Opercuentas
@@ -19,6 +19,7 @@ class frmInversionesEstudio(QDialog, Ui_frmInversionesEstudio):
         self.showMaximized()
         self.cfg=cfg
         self.data_cuentas=cuentas
+        self.data_inversiones=inversiones
         self.data_investments=investments##Para modificar investments
         self.selInversion=selInversion
         self.currentIndex=79329
@@ -275,13 +276,13 @@ class frmInversionesEstudio(QDialog, Ui_frmInversionesEstudio):
             inv=Investment(self.cfg).init__db(myquotesid)
             inv.load_estimacion()
             inv.quotes.get_basic()
-            self.cfg.dic_mqinversiones[str(rowms['id'])]=inv
+            self.data_investments.arr.append(inv)
             
         
 
         if self.tipo==1:        #insertar
             cur = self.cfg.con.cursor()
-            i=Inversion(self.cfg).create(inversion,   venta,  self.cfg.cuentas(id_cuentas),  self.cfg.mqinversiones(myquotesid))      
+            i=Inversion(self.cfg).create(inversion,   venta,  self.data_cuentas.find(id_cuentas),  self.data_investments.find(myquotesid))      
             i.save(cur)
             self.cfg.con.commit()
             cur.close()        
@@ -289,7 +290,7 @@ class frmInversionesEstudio(QDialog, Ui_frmInversionesEstudio):
             #Lo añade con las operaciones vacias pero calculadas.
             i.op=SetInversionOperacion(self.cfg)
             (i.op_actual, i.op_historica)=i.op.calcular()
-            self.cfg.inversiones.arr.append(i)
+            self.data_inversiones.arr.append(i)
             self.done(0)
         elif self.tipo==2:
             cur = self.cfg.con.cursor()
@@ -322,9 +323,10 @@ class frmInversionesEstudio(QDialog, Ui_frmInversionesEstudio):
 
 
     def on_tblOperaciones_itemSelectionChanged(self):
+#        self.selMovimiento=self.op.find[i.row()]
         try:
             for i in self.tblOperaciones.selectedItems():#itera por cada item no row.
-                self.selMovimiento=self.op[i.row()]
+                self.selMovimiento=self.op.arr[i.row()]
         except:
             self.selMovimiento=None
         print ("Seleccionado: " +  str(self.selMovimiento))

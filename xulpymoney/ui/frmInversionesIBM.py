@@ -24,7 +24,7 @@ class frmInversionesIBM(QDialog, Ui_frmInversionesIBM):
         else:#editar movimiento
             self.lblTitulo.setText(self.trUtf8("Edición del movimiento seleccionado de {0}".format(self.inversion.name)))
             self.cmbTiposOperaciones.setCurrentIndex(self.cmbTiposOperaciones.findData(self.operinversion.tipooperacion.id))
-            dt=dt_changes_tz(self.operinversion.datetime, self.cfg.localzone.name)
+            dt=dt_changes_tz(self.operinversion.datetime, self.cfg.localzone)
             self.calendar.setSelectedDate(dt.date())
             self.timeedit.setTime(dt.time())
             self.txtImporte.setText(str(self.operinversion.importe))
