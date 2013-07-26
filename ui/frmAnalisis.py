@@ -351,7 +351,7 @@ class frmAnalisis(QDialog, Ui_frmAnalisis):
         self.investment.isin=self.txtISIN.text()
         self.investment.currency=self.cfg.currencies.find(self.cmbCurrency.itemData(self.cmbCurrency.currentIndex()))
         self.investment.type=self.cfg.types.find(self.cmbTipo.itemData(self.cmbTipo.currentIndex()))
-        self.investment.agrupations=SetAgrupation(self.cfg).init__create_from_combo(self.cmbAgrupations)
+        self.investment.agrupations=SetAgrupations(self.cfg).init__create_from_combo(self.cmbAgrupations)
         self.investment.active=c2b(self.chkActive.checkState())
         self.investment.obsolete=c2b(self.chkObsolete.checkState())
         self.investment.web=self.txtWeb.text()
@@ -386,24 +386,25 @@ class frmAnalisis(QDialog, Ui_frmAnalisis):
     
 
     def on_cmdAgrupations_released(self):
+        ##Se debe clonar, porque selector borra
         if self.cmbTipo.itemData(self.cmbTipo.currentIndex())==2:#Fondos de inversión
-            agr=SetAgrupation(self.cfg).init__fondos()
+            agr=self.cfg.agrupations.clone_fondos()
         elif self.cmbTipo.itemData(self.cmbTipo.currentIndex())==1:#Acciones
-            agr=SetAgrupation(self.cfg).init__acciones()
+            agr=self.cfg.agrupations.clone_acciones()
         elif self.cmbTipo.itemData(self.cmbTipo.currentIndex())==4:#ETFs
-            agr=SetAgrupation(self.cfg).init__etfs()
+            agr=self.cfg.agrupations.clone_etfs()
         elif self.cmbTipo.itemData(self.cmbTipo.currentIndex())==5:#ETFs
-            agr=SetAgrupation(self.cfg).init__warrants()
+            agr=self.cfg.agrupations.clone_warrants()
         else:
-            agr=SetAgrupation(self.cfg).init__all()
+            agr=self.cfg.agrupations.clone()
         if self.investment.agrupations==None:
-            selected=SetAgrupation(self.cfg)
+            selected=SetAgrupations(self.cfg)#Vacio
         else:
             selected=self.investment.agrupations
         f=frmSelector(self.cfg, agr, selected)
         f.lbl.setText("Selector de Agrupaciones")
         f.exec_()
-        f.selected.combo(self.cmbAgrupations)
+        f.selected.load_qcombobox(self.cmbAgrupations)
 
     def on_cmdPriority_released(self):
         if self.investment.id==None:#Insertar nueva inversión

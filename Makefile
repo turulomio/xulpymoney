@@ -63,7 +63,6 @@ install:
 	install -m 755 -o root xulpymoney.py $(PREFIXBIN)/xulpymoney
 	install -m 644 -o root ui/*.py libxulpymoney.py images/*.py  $(PREFIXLIB)
 	install -m 644 -o root i18n/*.qm $(PREFIXLIB)
-	install -m 644 -o root config.py $(PREFIXETC)/config.py.dist
 	install -m 644 -o root xulpymoney.desktop $(PREFIXAPPLICATIONS)
 	install -m 644 -o root images/dinero.png $(PREFIXPIXMAPS)/xulpymoney.png
 

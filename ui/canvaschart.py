@@ -79,13 +79,13 @@ class canvasChart(FigureCanvas):
             self.actionSMA200.setChecked(False)
             
     def on_actionLinesIntraday_activated(self):
-        self._settings_saveprop("type", self.type)
+        self.cfg.config_set_value(self.cfg.config_ui, self.section, "type",   self.type)
         (dates, quotes)=zip(*self.data)
         self._draw_lines_from_quotes(dates, quotes)
                 
 
     def on_actionLines1d_activated(self):
-        self._settings_saveprop("type", ChartType.lines)
+        self.cfg.config_set_value(self.cfg.config_ui, self.section, "type",   ChartType.lines)
         self.currentMatrizDataLength=len(self.result.ochlDaily)
         
         if len(self.result.ochlDaily)>self.num:              

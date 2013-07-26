@@ -15,8 +15,8 @@ class wdgInversiones2(QWidget, Ui_wdgInversiones2):
         self.inversionesmq=[]#Es una lista de inversionesmq
         self.selInvestment=None##Objeto de inversion seleccionado
         self.tblInversiones.setColumnHidden(0, True)
-        self.tblInversiones.settings("wdgInversiones",  self.cfg.file_ui)    
-        self.setFavoritos=set(list_loadprops(self.cfg.file, "wdgInversiones", "favoritos"))
+        self.tblInversiones.settings("wdgInversiones2",  self.cfg.file_ui)    
+        self.setFavoritos=set(self.cfg.config_load_list(self.cfg.config, "wdgInversiones2", "favoritos"))
         self.progress = QProgressDialog(self.tr("Recibiendo datos solicitados"), self.tr("Cancelar"), 0,0)
         self.progress.setModal(True)
         self.progress.setWindowTitle(self.trUtf8("Recibiendo datos..."))
@@ -80,7 +80,7 @@ class wdgInversiones2(QWidget, Ui_wdgInversiones2):
             self.tblInversiones.setItem(i, 4, inv.currency.qtablewidgetitem(inv.quotes.last.quote, 6 ))
             self.tblInversiones.setItem(i, 5, qtpc(inv.quotes.tpc_diario()))
             self.tblInversiones.setItem(i, 6, qtpc(inv.quotes.tpc_anual()))
-            self.tblInversiones.setItem(i, 7, qtpc(inv.quotes.lastdpa))
+            self.tblInversiones.setItem(i, 7, qtpc(inv.quotes.lastdpa.dpa))
             if inv.quotes.lastdpa==None:#dividendo
                 self.tblInversiones.item(i, 7).setBackgroundColor( QColor(255, 182, 182))          
             if inv.active==False:#Active

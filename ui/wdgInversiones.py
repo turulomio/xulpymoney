@@ -106,26 +106,24 @@ class wdgInversiones(QWidget, Ui_wdgInversiones):
             
     @QtCore.pyqtSlot() 
     def on_actionInversionBorrar_activated(self):
-        con=self.cfg.connect_xulpymoney()
-        cur = con.cursor()
+        cur = self.cfg.con.cursor()
         self.selInversion.borrar(cur)
-        con.commit()
-        self.cfg.inversiones.arr.remove(self.selInversion)
+        self.cfg.con.commit()
+        self.data_inversiones.arr.remove(self.selInversion)
         self.inversiones.remove(self.selInversion)
         cur.close()
-        self.cfg.disconnect_xulpymoney(con)
         self.on_chkInactivas_stateChanged(self.chkInactivas.checkState())#Carga la tabla
 
           
     @QtCore.pyqtSlot() 
     def on_actionInversionNueva_activated(self):
-        w=frmInversionesEstudio(self.cfg, None, self)
+        w=frmInversionesEstudio(self.cfg, self.data_cuentas, self.data_inversiones, self.data_investments,  None, self)
         w.exec_()
         self.on_chkInactivas_stateChanged(self.chkInactivas.checkState())#Carga la tabla
         
     @QtCore.pyqtSlot() 
     def on_actionInversionEstudio_activated(self):
-        w=frmInversionesEstudio(self.cfg, self.data_cuentas, self.data_investments, self.selInversion, self)
+        w=frmInversionesEstudio(self.cfg, self.data_cuentas, self.data_inversiones, self.data_investments, self.selInversion, self)
         w.exec_()
         self.on_chkInactivas_stateChanged(self.chkInactivas.checkState())#Carga la tabla
             

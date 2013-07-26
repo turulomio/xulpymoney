@@ -3,7 +3,7 @@ import  sys,    multiprocessing,  gettext, os
 
 sys.path.append("/usr/lib/myquotes")
 from libxulpymoney import *
-from config import *
+ 
 from conjuntos import *
 from yahoo import *
 from bolsamadridfondos import *
