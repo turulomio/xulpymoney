@@ -280,13 +280,11 @@ class frmInversionesEstudio(QDialog, Ui_frmInversionesEstudio):
         
 
         if self.tipo==1:        #insertar
-            con=self.cfg.connect_xulpymoney()
-            cur = con.cursor()
+            cur = self.cfg.con.cursor()
             i=Inversion(self.cfg).create(inversion,   venta,  self.cfg.cuentas(id_cuentas),  self.cfg.mqinversiones(myquotesid))      
             i.save(cur)
-            con.commit()
+            self.cfg.con.commit()
             cur.close()        
-            self.cfg.disconnect_xulpymoney(con)
             ##Se añade a cfg y vincula. No carga datos porque myquotesid debe existir            
             #Lo añade con las operaciones vacias pero calculadas.
             i.op=SetInversionOperacion(self.cfg)
@@ -294,15 +292,13 @@ class frmInversionesEstudio(QDialog, Ui_frmInversionesEstudio):
             self.cfg.inversiones.arr.append(i)
             self.done(0)
         elif self.tipo==2:
-            con=self.cfg.connect_xulpymoney()
-            cur = con.cursor()
+            cur = self.cfg.con.cursor()
             self.selInversion.name=inversion
             self.selInversion.venta=venta
-            self.selInversion.mq=self.cfg.mqinversiones(myquotesid)
+            self.selInversion.mq=self.data_investments.find(myquotesid)
             self.selInversion.save(cur)##El id y el id_cuentas no se pueden modificar
-            con.commit()
+            self.cfg.con.commit()
             cur.close()        
-            self.cfg.disconnect_xulpymoney(con)
             self.cmdInversion.setEnabled(False)
         
     def on_tblOperaciones_customContextMenuRequested(self,  pos):
