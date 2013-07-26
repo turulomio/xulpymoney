@@ -971,13 +971,13 @@ class SetInversionOperacionHistorica:
         tabla.setItem(rownumber, 2,QTableWidgetItem("TOTAL"))    
         if len(self.arr)>0:
             currency=self.arr[0].inversion.mq.currency
-            tabla.setItem(rownumber, 4,currency.qtablewidgetitem(sumsaldosinicio))    
-            tabla.setItem(rownumber, 5,currency.qtablewidgetitem(sumsaldosfinal))    
-            tabla.setItem(rownumber, 6,currency.qtablewidgetitem(sumbruto))    
-            tabla.setItem(rownumber, 7,currency.qtablewidgetitem(sumcomision))    
-            tabla.setItem(rownumber, 8,currency.qtablewidgetitem(sumimpuestos))    
-            tabla.setItem(rownumber, 9,currency.qtablewidgetitem(sumneto))    
-            tabla.setCurrentCell(rownumber, 4)       
+            tabla.setItem(len(self.arr), 4,currency.qtablewidgetitem(sumsaldosinicio))    
+            tabla.setItem(len(self.arr), 5,currency.qtablewidgetitem(sumsaldosfinal))    
+            tabla.setItem(len(self.arr), 6,currency.qtablewidgetitem(sumbruto))    
+            tabla.setItem(len(self.arr), 7,currency.qtablewidgetitem(sumcomision))    
+            tabla.setItem(len(self.arr), 8,currency.qtablewidgetitem(sumimpuestos))    
+            tabla.setItem(len(self.arr), 9,currency.qtablewidgetitem(sumneto))    
+            tabla.setCurrentCell(len(self.arr), 4)       
         return (sumbruto, sumcomision, sumimpuestos, sumneto)
     
 
