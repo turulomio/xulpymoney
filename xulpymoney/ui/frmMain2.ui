@@ -51,28 +51,10 @@
    </property>
    <widget class="QMenu" name="menuAyuda">
     <property name="title">
-     <string>MyQuotes</string>
+     <string>MyStocks</string>
     </property>
-    <widget class="QMenu" name="menuMantenimiento">
-     <property name="title">
-      <string>Informes</string>
-     </property>
-     <addaction name="actionDividendos"/>
-     <addaction name="actionInversionesManual"/>
-     <addaction name="actionInversionesDesaparecidas"/>
-     <addaction name="actionInversionesSinActualizar"/>
-     <addaction name="actionInversionesSinActualizarHistoricos"/>
-     <addaction name="actionInversionesSinISIN"/>
-     <addaction name="actionInversionesSinNombre"/>
-    </widget>
-    <addaction name="actionActive"/>
-    <addaction name="separator"/>
-    <addaction name="actionLog"/>
-    <addaction name="separator"/>
     <addaction name="actionImportar"/>
     <addaction name="actionExportar"/>
-    <addaction name="separator"/>
-    <addaction name="menuMantenimiento"/>
     <addaction name="separator"/>
     <addaction name="actionSalir"/>
    </widget>
@@ -94,39 +76,6 @@
     <property name="title">
      <string>Fondos</string>
     </property>
-    <widget class="QMenu" name="menuFrancia">
-     <property name="title">
-      <string>Francia</string>
-     </property>
-     <addaction name="actionGestoraCarmignac"/>
-    </widget>
-    <widget class="QMenu" name="menuEspa_a">
-     <property name="title">
-      <string>España</string>
-     </property>
-     <addaction name="actionGestoraAG"/>
-     <addaction name="actionGestoraAhorroCorporation"/>
-     <addaction name="actionGestoraAllianz"/>
-     <addaction name="actionGestoraAlphaPlus"/>
-     <addaction name="actionGestoraAmistra"/>
-     <addaction name="actionGestoraAmundi"/>
-     <addaction name="actionGestoraAtlasCapital"/>
-     <addaction name="actionGestoraAviva"/>
-     <addaction name="actionGestoraBancaja"/>
-     <addaction name="actionGestoraBankinter"/>
-     <addaction name="actionGestoraBankoa"/>
-     <addaction name="actionGestoraBankpyme"/>
-     <addaction name="actionGestoraBansabadell"/>
-     <addaction name="actionGestoraBarclaysES"/>
-     <addaction name="actionGestoraBBK"/>
-     <addaction name="actionGestoraBBVA"/>
-     <addaction name="actionGestoraGESMADRID"/>
-     <addaction name="actionGestoraIbercaja"/>
-     <addaction name="actionGestoraRenta4"/>
-    </widget>
-    <addaction name="menuEspa_a"/>
-    <addaction name="menuFrancia"/>
-    <addaction name="separator"/>
     <addaction name="actionFondos"/>
    </widget>
    <widget class="QMenu" name="menuETFs">
@@ -139,21 +88,11 @@
     <property name="title">
      <string>Warrants</string>
     </property>
-    <widget class="QMenu" name="menuFrancia_2">
-     <property name="title">
-      <string>Francia</string>
-     </property>
-     <widget class="QMenu" name="menuSociete_Generale">
-      <property name="title">
-       <string>Societe Generale</string>
-      </property>
-      <addaction name="actionSGWTurbo"/>
-      <addaction name="actionSGWInline"/>
-     </widget>
-     <addaction name="menuSociete_Generale"/>
-    </widget>
-    <addaction name="menuFrancia_2"/>
+    <addaction name="actionWarrantsCall"/>
+    <addaction name="actionWarrantsPut"/>
+    <addaction name="actionWarrantsInline"/>
     <addaction name="separator"/>
+    <addaction name="actionWarrants"/>
    </widget>
    <widget class="QMenu" name="menu_Divisas">
     <property name="title">
@@ -166,13 +105,48 @@
      <string>Ayuda</string>
     </property>
     <addaction name="actionAcercaDe"/>
+    <addaction name="separator"/>
+   </widget>
+   <widget class="QMenu" name="menuRenta_Fija">
+    <property name="title">
+     <string>Renta Fija</string>
+    </property>
+    <addaction name="actionDeudaPublica"/>
+    <addaction name="actionDeudaPrivada"/>
+    <addaction name="separator"/>
+    <addaction name="actionRentaFija"/>
+   </widget>
+   <widget class="QMenu" name="menuAcciones">
+    <property name="title">
+     <string>Acciones</string>
+    </property>
+    <addaction name="actionAcciones"/>
+   </widget>
+   <widget class="QMenu" name="menuTodas">
+    <property name="title">
+     <string>Todas</string>
+    </property>
+    <addaction name="actionActive"/>
+    <addaction name="separator"/>
+    <addaction name="actionDividendos"/>
+    <addaction name="separator"/>
+    <addaction name="actionInversionesManual"/>
+    <addaction name="actionInversionesDesaparecidas"/>
+    <addaction name="actionInversionesSinActualizarHistoricos"/>
+    <addaction name="separator"/>
+    <addaction name="actionInversionesSinISIN"/>
+    <addaction name="actionInversionesSinNombre"/>
+    <addaction name="actionInversionesSinActualizar"/>
    </widget>
    <addaction name="menuAyuda"/>
    <addaction name="menuIndices"/>
-   <addaction name="menu_Divisas"/>
+   <addaction name="menuAcciones"/>
    <addaction name="menuETFs"/>
    <addaction name="menuFondos"/>
    <addaction name="menuWarrants"/>
+   <addaction name="menuRenta_Fija"/>
+   <addaction name="menu_Divisas"/>
+   <addaction name="menuTodas"/>
    <addaction name="menuMyQuotes"/>
   </widget>
   <widget class="QToolBar" name="toolBar">
@@ -201,8 +175,6 @@
    <addaction name="actionFavoritos"/>
    <addaction name="separator"/>
    <addaction name="actionInversionesManual"/>
-   <addaction name="separator"/>
-   <addaction name="actionLog"/>
    <addaction name="separator"/>
    <addaction name="actionSalir"/>
   </widget>
@@ -291,28 +263,10 @@
     <string>S&amp;&amp;P 500</string>
    </property>
   </action>
-  <action name="actionGestoraBankinter">
-   <property name="icon">
-    <iconset>
-     <normaloff>:/images/spain.gif</normaloff>:/images/spain.gif</iconset>
-   </property>
-   <property name="text">
-    <string>Gestora Bankinter</string>
-   </property>
-  </action>
-  <action name="actionGestoraCarmignac">
-   <property name="icon">
-    <iconset>
-     <normaloff>:/images/france.gif</normaloff>:/images/france.gif</iconset>
-   </property>
-   <property name="text">
-    <string>Gestora Carmignac</string>
-   </property>
-  </action>
   <action name="actionCAC40">
    <property name="icon">
-    <iconset>
-     <normaloff>:/images/france.gif</normaloff>:/images/france.gif</iconset>
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/countries/france.gif</normaloff>:/countries/france.gif</iconset>
    </property>
    <property name="text">
     <string>CAC 40</string>
@@ -320,8 +274,8 @@
   </action>
   <action name="actionNasdaq100">
    <property name="icon">
-    <iconset>
-     <normaloff>:/images/usa.gif</normaloff>:/images/usa.gif</iconset>
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/countries/usa.gif</normaloff>:/countries/usa.gif</iconset>
    </property>
    <property name="text">
     <string>Nasdaq 100</string>
@@ -329,8 +283,8 @@
   </action>
   <action name="actionMC">
    <property name="icon">
-    <iconset>
-     <normaloff>:/images/spain.gif</normaloff>:/images/spain.gif</iconset>
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/countries/spain.gif</normaloff>:/countries/spain.gif</iconset>
    </property>
    <property name="text">
     <string>Mercado Continuo</string>
@@ -338,83 +292,11 @@
   </action>
   <action name="actionXetra">
    <property name="icon">
-    <iconset>
-     <normaloff>:/images/germany.gif</normaloff>:/images/germany.gif</iconset>
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/countries/germany.gif</normaloff>:/countries/germany.gif</iconset>
    </property>
    <property name="text">
     <string>Xetra</string>
-   </property>
-  </action>
-  <action name="actionGestoraAhorroCorporation">
-   <property name="icon">
-    <iconset>
-     <normaloff>:/images/spain.gif</normaloff>:/images/spain.gif</iconset>
-   </property>
-   <property name="text">
-    <string>Gestora Ahorro Corporación</string>
-   </property>
-   <property name="toolTip">
-    <string>Gestora Ahorro Corporación</string>
-   </property>
-  </action>
-  <action name="actionGestoraAG">
-   <property name="icon">
-    <iconset>
-     <normaloff>:/images/spain.gif</normaloff>:/images/spain.gif</iconset>
-   </property>
-   <property name="text">
-    <string>Gestora A &amp;&amp; G</string>
-   </property>
-   <property name="toolTip">
-    <string>Gestora A &amp;&amp; G</string>
-   </property>
-  </action>
-  <action name="actionGestoraAllianz">
-   <property name="icon">
-    <iconset>
-     <normaloff>:/images/spain.gif</normaloff>:/images/spain.gif</iconset>
-   </property>
-   <property name="text">
-    <string>Gestora Allianz</string>
-   </property>
-   <property name="toolTip">
-    <string>Gestora Allianz</string>
-   </property>
-  </action>
-  <action name="actionGestoraGESMADRID">
-   <property name="icon">
-    <iconset>
-     <normaloff>:/images/spain.gif</normaloff>:/images/spain.gif</iconset>
-   </property>
-   <property name="text">
-    <string>Gestora GESMADRID</string>
-   </property>
-   <property name="toolTip">
-    <string>Gestora GESMADRID</string>
-   </property>
-  </action>
-  <action name="actionGestoraIbercaja">
-   <property name="icon">
-    <iconset>
-     <normaloff>:/images/spain.gif</normaloff>:/images/spain.gif</iconset>
-   </property>
-   <property name="text">
-    <string>Gestora Ibercaja Gestión</string>
-   </property>
-   <property name="toolTip">
-    <string>Gestora Ibercaja Gestión</string>
-   </property>
-  </action>
-  <action name="actionGestoraRenta4">
-   <property name="icon">
-    <iconset>
-     <normaloff>:/images/spain.gif</normaloff>:/images/spain.gif</iconset>
-   </property>
-   <property name="text">
-    <string>Gestora Renta 4</string>
-   </property>
-   <property name="toolTip">
-    <string>Gestora Renta 4</string>
    </property>
   </action>
   <action name="actionInversionesSinNombre">
@@ -429,90 +311,6 @@
     <string>Inversiones sin nombre</string>
    </property>
   </action>
-  <action name="actionGestoraBancaja">
-   <property name="icon">
-    <iconset>
-     <normaloff>:/images/spain.gif</normaloff>:/images/spain.gif</iconset>
-   </property>
-   <property name="text">
-    <string>Gestora Bancaja Fondos</string>
-   </property>
-   <property name="toolTip">
-    <string>Gestora Bancaja Fondos</string>
-   </property>
-  </action>
-  <action name="actionGestoraBBK">
-   <property name="icon">
-    <iconset>
-     <normaloff>:/images/spain.gif</normaloff>:/images/spain.gif</iconset>
-   </property>
-   <property name="text">
-    <string>Gestora BBK Gestión</string>
-   </property>
-   <property name="toolTip">
-    <string>Gestora BBK Gestión</string>
-   </property>
-  </action>
-  <action name="actionGestoraBBVA">
-   <property name="icon">
-    <iconset>
-     <normaloff>:/images/spain.gif</normaloff>:/images/spain.gif</iconset>
-   </property>
-   <property name="text">
-    <string>Gestora BBVA Asset Manager</string>
-   </property>
-   <property name="toolTip">
-    <string>Gestora BBVA Asset Manager</string>
-   </property>
-  </action>
-  <action name="actionGestoraAlphaPlus">
-   <property name="icon">
-    <iconset>
-     <normaloff>:/images/spain.gif</normaloff>:/images/spain.gif</iconset>
-   </property>
-   <property name="text">
-    <string>Gestora Alpha Plus</string>
-   </property>
-   <property name="toolTip">
-    <string>Gestora Alpha Plus</string>
-   </property>
-  </action>
-  <action name="actionGestoraAmistra">
-   <property name="icon">
-    <iconset>
-     <normaloff>:/images/spain.gif</normaloff>:/images/spain.gif</iconset>
-   </property>
-   <property name="text">
-    <string>Gestora Amistra SGIIC</string>
-   </property>
-   <property name="toolTip">
-    <string>Gestora Amistra SGIIC</string>
-   </property>
-  </action>
-  <action name="actionGestoraAmundi">
-   <property name="icon">
-    <iconset>
-     <normaloff>:/images/spain.gif</normaloff>:/images/spain.gif</iconset>
-   </property>
-   <property name="text">
-    <string>Gestora Amundi Iberia SGIIC</string>
-   </property>
-   <property name="toolTip">
-    <string>Gestora Amundi Iberia SGIIC</string>
-   </property>
-  </action>
-  <action name="actionGestoraAtlasCapital">
-   <property name="icon">
-    <iconset>
-     <normaloff>:/images/spain.gif</normaloff>:/images/spain.gif</iconset>
-   </property>
-   <property name="text">
-    <string>Gestora Atlas Capital</string>
-   </property>
-   <property name="toolTip">
-    <string>Gestora Atlas Capital</string>
-   </property>
-  </action>
   <action name="actionInversionesSinActualizar">
    <property name="icon">
     <iconset>
@@ -525,54 +323,6 @@
     <string>Inversiones sin actualizar</string>
    </property>
   </action>
-  <action name="actionGestoraAviva">
-   <property name="icon">
-    <iconset>
-     <normaloff>:/images/spain.gif</normaloff>:/images/spain.gif</iconset>
-   </property>
-   <property name="text">
-    <string>Gestora Aviva Gestión</string>
-   </property>
-   <property name="toolTip">
-    <string>Gestora Aviva Gestión</string>
-   </property>
-  </action>
-  <action name="actionGestoraBankoa">
-   <property name="icon">
-    <iconset>
-     <normaloff>:/images/spain.gif</normaloff>:/images/spain.gif</iconset>
-   </property>
-   <property name="text">
-    <string>Gestora Bankoa Gestión</string>
-   </property>
-   <property name="toolTip">
-    <string>Gestora Bankoa Gestión</string>
-   </property>
-  </action>
-  <action name="actionGestoraBankpyme">
-   <property name="icon">
-    <iconset>
-     <normaloff>:/images/spain.gif</normaloff>:/images/spain.gif</iconset>
-   </property>
-   <property name="text">
-    <string>Gestora Bankpyme</string>
-   </property>
-   <property name="toolTip">
-    <string>Gestora Bankpyme</string>
-   </property>
-  </action>
-  <action name="actionGestoraBansabadell">
-   <property name="icon">
-    <iconset>
-     <normaloff>:/images/spain.gif</normaloff>:/images/spain.gif</iconset>
-   </property>
-   <property name="text">
-    <string>Gestora Bansabadell Inversión</string>
-   </property>
-   <property name="toolTip">
-    <string>Gestora Bansabadell Inversión</string>
-   </property>
-  </action>
   <action name="actionInversionesDesaparecidas">
    <property name="icon">
     <iconset>
@@ -583,30 +333,6 @@
    </property>
    <property name="toolTip">
     <string>Inversiones desaparecidas</string>
-   </property>
-  </action>
-  <action name="actionGestoraBarclaysES">
-   <property name="icon">
-    <iconset>
-     <normaloff>:/images/spain.gif</normaloff>:/images/spain.gif</iconset>
-   </property>
-   <property name="text">
-    <string>Gestora Barclays Wealth Manager España</string>
-   </property>
-   <property name="toolTip">
-    <string>Gestora Barclays Wealth Manager España</string>
-   </property>
-  </action>
-  <action name="actionLog">
-   <property name="icon">
-    <iconset resource="../images/xulpymoney.qrc">
-     <normaloff>:/xulpymoney/history2.png</normaloff>:/xulpymoney/history2.png</iconset>
-   </property>
-   <property name="text">
-    <string>Registro del sistema</string>
-   </property>
-   <property name="toolTip">
-    <string>Registro del sistema</string>
    </property>
   </action>
   <action name="actionExportar">
@@ -631,30 +357,6 @@
    </property>
    <property name="toolTip">
     <string>Importar tabla quotes</string>
-   </property>
-  </action>
-  <action name="actionSGWInline">
-   <property name="icon">
-    <iconset>
-     <normaloff>:/images/france.gif</normaloff>:/images/france.gif</iconset>
-   </property>
-   <property name="text">
-    <string>Warrants Inline</string>
-   </property>
-   <property name="toolTip">
-    <string>Warrants Inline</string>
-   </property>
-  </action>
-  <action name="actionSGWTurbo">
-   <property name="icon">
-    <iconset>
-     <normaloff>:/images/france.gif</normaloff>:/images/france.gif</iconset>
-   </property>
-   <property name="text">
-    <string>Turbo Warrants</string>
-   </property>
-   <property name="toolTip">
-    <string>Turbo Warrants</string>
    </property>
   </action>
   <action name="actionInversionesManual">
@@ -728,6 +430,93 @@ seleccionados por el usuario</string>
    </property>
    <property name="toolTip">
     <string>Mayores dividendos</string>
+   </property>
+  </action>
+  <action name="actionWarrantsCall">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/coins.png</normaloff>:/xulpymoney/coins.png</iconset>
+   </property>
+   <property name="text">
+    <string>Todos los Warrants Call</string>
+   </property>
+  </action>
+  <action name="actionWarrantsPut">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/coins.png</normaloff>:/xulpymoney/coins.png</iconset>
+   </property>
+   <property name="text">
+    <string>Todos los Warrants Put</string>
+   </property>
+  </action>
+  <action name="actionWarrantsInline">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/coins.png</normaloff>:/xulpymoney/coins.png</iconset>
+   </property>
+   <property name="text">
+    <string>Todos los Warrants Inline</string>
+   </property>
+  </action>
+  <action name="actionRentaFija">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/history2.png</normaloff>:/xulpymoney/history2.png</iconset>
+   </property>
+   <property name="text">
+    <string>Toda la Renta Fija</string>
+   </property>
+   <property name="toolTip">
+    <string>Toda la Renta Fija</string>
+   </property>
+  </action>
+  <action name="actionAcciones">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/kmplot.jpg</normaloff>:/xulpymoney/kmplot.jpg</iconset>
+   </property>
+   <property name="text">
+    <string>Todas las acciones</string>
+   </property>
+   <property name="toolTip">
+    <string>Todas las acciones</string>
+   </property>
+  </action>
+  <action name="actionDeudaPublica">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/history2.png</normaloff>:/xulpymoney/history2.png</iconset>
+   </property>
+   <property name="text">
+    <string>Toda la deuda pública</string>
+   </property>
+   <property name="toolTip">
+    <string>Toda la deuda pública</string>
+   </property>
+  </action>
+  <action name="actionDeudaPrivada">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/history2.png</normaloff>:/xulpymoney/history2.png</iconset>
+   </property>
+   <property name="text">
+    <string>Toda la deuda privada</string>
+   </property>
+   <property name="toolTip">
+    <string>Toda la deuda privada</string>
+   </property>
+  </action>
+  <action name="actionWarrants">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/coins.png</normaloff>:/xulpymoney/coins.png</iconset>
+   </property>
+   <property name="text">
+    <string>Todos los Warrants</string>
+   </property>
+   <property name="toolTip">
+    <string>Todos los Warrants</string>
    </property>
   </action>
  </widget>
