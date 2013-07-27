@@ -1618,8 +1618,8 @@ class Cuenta:
         cur=self.cfg.con.cursor()
         sql="select transferencia('"+str(fecha)+"', "+ str(cuentaorigen.id) +', ' + str(cuentadestino.id)+', '+str(importe) +', '+str(comision)+');'
         cur.execute(sql)
-        cuentaorigen.saldo_from_db(cur)
-        cuentadestino.saldo_from_db(cur)
+        cuentaorigen.saldo_from_db()
+        cuentadestino.saldo_from_db()
         cur.close()
         
 class Inversion:
@@ -4251,31 +4251,36 @@ class ConfigMyStock:
     def __del__(self):
         self.disconnect_myquotes(self.conms)
     
+    
+    def configs_set_default_values(self):
+        self.config = configparser.ConfigParser()
+        print("poniendo valores por defecto")
+        self.config['frmAccess'] = {'db': 'xulpymoney', 'port': '5432','user': 'postgres', 'server': '127.0.0.1'}
+        self.config['frmAccess2'] = {'db': 'myquotes', 'port': '5432','user': 'postgres', 'server': '127.0.0.1'}
+        self.config['settings']={'dividendwithholding':'0.21', 'taxcapitalappreciation':'0.21',  'localcurrency':'EUR', 'localzone':'Europe/Madrid', 'indicereferencia':'79329'}
+            
+        self.config_ui=configparser.ConfigParser()
+        self.config_ui['canvasIntraday'] = {'sma50': 'True', 'type': '0','sma200': 'True'}
+        self.config_ui['canvasHistorical'] = {'sma50': 'True', 'type': '1','sma200': 'True'}
+        self.configs_save()
+
+    
+    
     def configs_load( self):
         """Carga el fichero xulpimoney.cfg o mystocks.cfg"""
         self.config = configparser.ConfigParser()
+        self.config_ui=configparser.ConfigParser()
         try:
             self.config.read(self.file)    
+            self.config_ui.read(self.file_ui)
             #Se ponen algunas para comprobar est´a actualizado
             self.config.get("frmAccess", "server")
             self.config.get("frmAccess2", "server")
+            #Se ponen algunas para comprobar est´a actualizado de _ui
+            self.config_ui.get("canvasIntraday", "sma200")
         except:#Valores por defecto
-            print(self.file, "poniendo valores por defecto")
-            self.config['frmAccess'] = {'db': 'xulpymoney', 'port': '5432','user': 'postgres', 'server': '127.0.0.1'}
-            self.config['frmAccess2'] = {'db': 'myquotes', 'port': '5432','user': 'postgres', 'server': '127.0.0.1'}
-            self.config['settings']={'dividendwithholding':'0.21', 'taxcapitalappreciation':'0.21',  'localcurrency':'EUR', 'localzone':'Europe/Madrid', 'indicereferencia':'79329'}
+            self.configs_set_default_values()
             
-        self.config_ui=configparser.ConfigParser()
-        try:
-            self.config_ui.read(self.file_ui)
-            #Se ponen algunas para comprobar est´a actualizado
-            self.config.get("canvasIntraday", "sma200")
-        except:#Valores por defecto
-            self.config_ui['canvasIntraday'] = {'sma50': 'True', 'type': '0','sma200': 'True'}
-            self.config_ui['canvasHistorical'] = {'sma50': 'True', 'type': '1','sma200': 'True'}
-            print(self.file_ui, "poniendo valores por defecto")
-            
-        self.configs_save()
             
     
     def configs_save(self):
@@ -4361,20 +4366,20 @@ class ConfigMyStock:
     def disconnect_myquotes(self,  mq):
         mq.close()
     
-    def carga_ia(self, cur,  where=""):
-        """La variable where sera del tipo:
-        where="where priority=5"""
-        cur.execute("select * from investments {0}".format(where))
-        for row in cur:
-            self.dic_activas[str(row['id'])]=Investment(self.cfg).init__db_row(self, row)
-            
-
-    def activas(self, id=None):
-        if id==None:
-            return dic2list(self.dic_activas)
-        else:
-            return self.dic_activas[str(id)]
-                        
+#    def carga_ia(self, cur,  where=""):
+#        """La variable where sera del tipo:
+#        where="where priority=5"""
+#        cur.execute("select * from investments {0}".format(where))
+#        for row in cur:
+#            self.dic_activas[str(row['id'])]=Investment(self.cfg).init__db_row(self, row)
+#            
+#
+#    def activas(self, id=None):
+#        if id==None:
+#            return dic2list(self.dic_activas)
+#        else:
+#            return self.dic_activas[str(id)]
+#                        
 
             
 class ConfigXulpymoney(ConfigMyStock):

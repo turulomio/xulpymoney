@@ -8,12 +8,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4357"/>
+        <location filename="libxulpymoney.py" line="4362"/>
         <source>Error en la conexi&#xc3;&#xb3;n, vuelva a entrar</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4414"/>
+        <location filename="libxulpymoney.py" line="4419"/>
         <source>Error en la conexi&#xc3;&#xb3;n a xulpymoney, vuelva a entrar</source>
         <translation type="unfinished"></translation>
     </message>
@@ -211,12 +211,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4532"/>
+        <location filename="libxulpymoney.py" line="4537"/>
         <source>Sourceforge version detected: %s</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4534"/>
+        <location filename="libxulpymoney.py" line="4539"/>
         <source>Error buscando la versi&#xc3;&#xb3;n actual de Sourceforge</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2582,12 +2582,12 @@ seleccionados por el usuario</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmTransferencia.py" line="41"/>
+        <location filename="ui/frmTransferencia.py" line="38"/>
         <source>Se ha producido un error al introducir los datos</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmTransferencia.py" line="47"/>
+        <location filename="ui/frmTransferencia.py" line="44"/>
         <source>La cuenta origen y destino no puede ser la misma</source>
         <translation type="unfinished"></translation>
     </message>

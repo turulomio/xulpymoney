@@ -86,3 +86,4 @@ Cambiar el objeto DividendoEstimacion y comprobar que funciona el informedividen
 
 20130728 Poner en dividendos el gasto total en el concepto en el año seleccionado en el combo.
 20130728 No ufncionaa las inactivas en wdgInvesrsionews
+20130728 En wdgIH,falta una columna

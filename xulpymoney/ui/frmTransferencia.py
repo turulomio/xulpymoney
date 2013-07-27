@@ -1,10 +1,7 @@
-## -*- coding: utf-8 -*-
-#from apoyo import *
-
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 from Ui_frmTransferencia import *
-#from apoyo import *
+
 from libxulpymoney import *
 
 class frmTransferencia(QDialog, Ui_frmTransferencia):
@@ -33,8 +30,8 @@ class frmTransferencia(QDialog, Ui_frmTransferencia):
             fecha=self.calendar.selectedDate().toPyDate()
             id_origen=int(self.cmbOrigen.itemData(self.cmbOrigen.currentIndex()))
             id_destino=int(self.cmbDestino.itemData(self.cmbDestino.currentIndex()))
-            importe=abs(Decimal(self.txtImporte.text()))
-            comision=abs(Decimal(self.txtComision.text()))
+            importe=abs(self.txtImporte.decimal())
+            comision=abs(self.txtComision.decimal())
         except:
             m=QMessageBox()
             m.setIcon(QMessageBox.Information)
@@ -48,7 +45,7 @@ class frmTransferencia(QDialog, Ui_frmTransferencia):
             m.exec_()             
             return 
             
-        Cuenta(self.cfg).transferencia(fecha,  self.cfg.cuentas(id_origen), self.cfg.cuentas(id_destino),  importe,  comision)
+        Cuenta(self.cfg).transferencia(fecha,  self.data_cuentas.find(id_origen), self.data_cuentas.find(id_destino),  importe,  comision)
         self.cfg.con.commit()##Para commit la transferencia   
         
         self.done(0)
