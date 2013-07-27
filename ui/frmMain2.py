@@ -38,13 +38,6 @@ class frmMain2(QMainWindow, Ui_frmMain2):#
         
         self.cfg.conms=self.cfg.connect_myquotes()
         self.cfg.actualizar_memoria()
-#        gen=QuotesGenOHCL(self.cfg)
-#        gen.recalculateAllAndDelete()
-#        vivendi=Investment(self.cfg).init__db(self.cfg, cur, 78020)
-#        print ("ya")
-#        gen.recalculateBooleansAllTime(vivendi)#, datetime.date(2013, 1, 2))
-#        gen.deleteUnnecesary(vivendi)
-#        print ("ya")
         
         if Global(self.cfg).get_sourceforge_version()>version:
             m=QMessageBox()
@@ -138,23 +131,7 @@ class frmMain2(QMainWindow, Ui_frmMain2):#
         m=QMessageBox()
         m.setText("Ha tardado %s y ha salido con mensaje de estado %s" % (str(fin-inicio),  estado))
         m.exec_()            
-#        numcommit=0
-#        print ("Detectados %d registros distintos" %  cur.rowcount)
-#        for i in cur:
-#            cur2.execute("insert into quotes (select * from export where code=%s and date=%s)",  (i['code'], i['date']))
-#            numcommit=numcommit+1
-#            if numcommit>100:
-#                con.commit()
-#                print ("Se han procesado %d registros e insertado otros %d registros"%( cur.rownumber,  numcommit ))
-#                numcommit=0
-#        con.commit()
-#        print ("Se han procesado %d registros e insertado otros %d registros"%( cur.rownumber,  numcommit ))
-#
-##insert into quotes( select * from export where code=%s except select * from quotes  where code=%s)", (i['code'], i['code']))
-#        cur.close()     
-#        cur2.close()
-#        cur3.close()   
-        
+
 
         
     @QtCore.pyqtSlot()  
@@ -200,8 +177,6 @@ class frmMain2(QMainWindow, Ui_frmMain2):#
             m.setText(self.trUtf8("No se ha seleccionado ningún favorito"))
             m.exec_()     
             return
-#        for f in favoritos:
-#            quotedlist=quotedlist+" '"+f+"',"
         self.w.close()
         self.w=wdgInversiones2(self.cfg,  "select * from investments where id in ("+str(favoritos)[1:-1]+") order by name, id")
 
@@ -211,171 +186,74 @@ class frmMain2(QMainWindow, Ui_frmMain2):#
                         
 
     @QtCore.pyqtSlot()  
+    def on_actionAcciones_activated(self):
+        self.w.close()
+        self.w=wdgInversiones2(self.cfg,  "select * from investments where type=1 order by name, id")
+
+        self.layout.addWidget(self.w)
+        self.w.show()          
+    @QtCore.pyqtSlot()  
+    def on_actionWarrants_activated(self):
+        self.w.close()
+        self.w=wdgInversiones2(self.cfg,  "select * from investments where type=5 order by name, id")
+
+        self.layout.addWidget(self.w)
+        self.w.show()          
+        
+    @QtCore.pyqtSlot()  
+    def on_actionWarrantsCall_activated(self):
+        self.w.close()
+        self.w=wdgInversiones2(self.cfg,  "select * from investments where type=5 and pci='c' order by name, id")
+
+        self.layout.addWidget(self.w)
+        self.w.show()              
+    @QtCore.pyqtSlot()  
+    def on_actionWarrantsPut_activated(self):
+        self.w.close()
+        self.w=wdgInversiones2(self.cfg,  "select * from investments where type=5 and pci='p' order by name, id")
+
+        self.layout.addWidget(self.w)
+        self.w.show()              
+    @QtCore.pyqtSlot()  
+    def on_actionWarrantsInline_activated(self):
+        self.w.close()
+        self.w=wdgInversiones2(self.cfg,  "select * from investments where type=5 and pci='i' order by name, id")
+
+        self.layout.addWidget(self.w)
+        self.w.show()      
+    @QtCore.pyqtSlot()  
     def on_actionFondos_activated(self):
         self.w.close()
         self.w=wdgInversiones2(self.cfg,  "select * from investments where type=2 order by name, id")
 
         self.layout.addWidget(self.w)
-        self.w.show()
+        self.w.show()                        
 
-                
     @QtCore.pyqtSlot()  
-    def on_actionGestoraAG_activated(self):
+    def on_actionDeudaPublica_activated(self):
         self.w.close()
-        self.w=wdgInversiones2(self.cfg,  "select * from investments where agrupations='|BMF|0195|' order by name,id")
+        self.w=wdgInversiones2(self.cfg,  "select * from investments where type=7 order by name, id")
+
+        self.layout.addWidget(self.w)
+        self.w.show()                        
+
+    @QtCore.pyqtSlot()  
+    def on_actionDeudaPrivada_activated(self):
+        self.w.close()
+        self.w=wdgInversiones2(self.cfg,  "select * from investments where type=9 order by name, id")
 
         self.layout.addWidget(self.w)
         self.w.show()
-                                
-    @QtCore.pyqtSlot()  
-    def on_actionGestoraAhorroCorporation_activated(self):
-        self.w.close()
-        self.w=wdgInversiones2(self.cfg,  "select * from investments where agrupations='|BMF|0128|' order by name,id")
 
-        self.layout.addWidget(self.w)
-        self.w.show()
-                                                
-    @QtCore.pyqtSlot()  
-    def on_actionGestoraAllianz_activated(self):
-        self.w.close()
-        self.w=wdgInversiones2(self.cfg,  "select * from investments where agrupations='|BMF|0168|' order by name,id")
-
-        self.layout.addWidget(self.w)
-        self.w.show()                                                
-    @QtCore.pyqtSlot()  
-    def on_actionGestoraAlphaPlus_activated(self):
-        self.w.close()
-        self.w=wdgInversiones2(self.cfg,  "select * from investments where agrupations='|BMF|0225|' order by name,id")
-
-        self.layout.addWidget(self.w)
-        self.w.show()                                   
-    @QtCore.pyqtSlot()  
-    def on_actionGestoraAmistra_activated(self):
-        self.w.close()
-        self.w=wdgInversiones2(self.cfg,  "select * from investments where agrupations='|BMF|0232|' order by name,id")
-
-        self.layout.addWidget(self.w)
-        self.w.show()                           
-    @QtCore.pyqtSlot()  
-    def on_actionGestoraAmundi_activated(self):
-        self.w.close()
-        self.w=wdgInversiones2(self.cfg,  "select * from investments where agrupations='|BMF|0131|' order by name,id")
-
-        self.layout.addWidget(self.w)
-        self.w.show()    
-    @QtCore.pyqtSlot()  
-    def on_actionGestoraAtlasCapital_activated(self):
-        self.w.close()
-        self.w=wdgInversiones2(self.cfg,  "select * from investments where agrupations='|BMF|0210|' order by name,id")
-
-        self.layout.addWidget(self.w)
-        self.w.show()
-    @QtCore.pyqtSlot()  
-    def on_actionGestoraAviva_activated(self):
-        self.w.close()
-        self.w=wdgInversiones2(self.cfg,  "select * from investments where agrupations='|BMF|0191|' order by name,id")
-
-        self.layout.addWidget(self.w)
-        self.w.show()
-                            
-    @QtCore.pyqtSlot()  
-    def on_actionGestoraBancaja_activated(self):
-        self.w.close()
-        self.w=wdgInversiones2(self.cfg,  "select * from investments where agrupations='|BMF|0083|' order by name,id")
-
-        self.layout.addWidget(self.w)
-        self.w.show()
-                
-            
-    @QtCore.pyqtSlot()  
-    def on_actionGestoraBankinter_activated(self):
-        self.w.close()
-        self.w=wdgInversiones2(self.cfg,  "select * from investments where agrupations='%|f_es_0055|%' order by name,id")
-
-        self.layout.addWidget(self.w)
-        self.w.show()
-                                                                            
-    @QtCore.pyqtSlot()  
-    def on_actionGestoraBankoa_activated(self):
-        self.w.close()
-        self.w=wdgInversiones2(self.cfg,  "select * from investments where agrupations='|BMF|0035|' order by name,id")
-
-        self.layout.addWidget(self.w)
-        self.w.show()
-                                                                
-    @QtCore.pyqtSlot()  
-    def on_actionGestoraBankpyme_activated(self):
-        self.w.close()
-        self.w=wdgInversiones2(self.cfg,  "select * from investments where agrupations='|BMF|0024|' order by name,id")
-
-        self.layout.addWidget(self.w)
-        self.w.show()
-                                                                                                                                
-    @QtCore.pyqtSlot()  
-    def on_actionGestoraBansabadell_activated(self):
-        self.w.close()
-        self.w=wdgInversiones2(self.cfg,  "select * from investments where agrupations='|BMF|0081|' order by name,id")
-
-        self.layout.addWidget(self.w)
-        self.w.show()
-                                                                                                                                                                                                
-    @QtCore.pyqtSlot()  
-    def on_actionGestoraBarclaysES_activated(self):
-        self.w.close()
-        self.w=wdgInversiones2(self.cfg,  "select * from investments where agrupations='|BMF|0063|' order by name,id")
-
-        self.layout.addWidget(self.w)
-        self.w.show()
-                                                                
-    @QtCore.pyqtSlot()  
-    def on_actionGestoraBBK_activated(self):
-        self.w.close()
-        self.w=wdgInversiones2(self.cfg,  "select * from investments where agrupations='|BMF|0095|' order by name,id")
-
-        self.layout.addWidget(self.w)
-        self.w.show()                         
         
     @QtCore.pyqtSlot()  
-    def on_actionGestoraBBVA_activated(self):
+    def on_actionRentaFija_activated(self):
         self.w.close()
-        self.w=wdgInversiones2(self.cfg,  "select * from investments where agrupations like '%|f_es_0014|%' order by name,id")
+        self.w=wdgInversiones2(self.cfg,  "select * from investments where type in (7,9) order by name, id")
 
         self.layout.addWidget(self.w)
         self.w.show()
-                            
-    @QtCore.pyqtSlot()  
-    def on_actionGestoraCarmignac_activated(self):
-        self.w.close()
-        self.w=wdgInversiones2(self.cfg,  "select * from investments where agrupations like '%|CARMIGNAC|%' order by name,id")
 
-        self.layout.addWidget(self.w)
-        self.w.show()
-            
-    @QtCore.pyqtSlot()  
-    def on_actionGestoraGESMADRID_activated(self):
-        self.w.close()
-        self.w=wdgInversiones2(self.cfg,  "select * from investments where agrupations='|BMF|0085|' order by name,id")
-
-        self.layout.addWidget(self.w)
-        self.w.show()
-        
-            
-    @QtCore.pyqtSlot()  
-    def on_actionGestoraIbercaja_activated(self):
-        self.w.close()
-        self.w=wdgInversiones2(self.cfg,  "select * from investments where agrupations='|BMF|0084|' order by name,id")
-
-        self.layout.addWidget(self.w)
-        self.w.show()
-                
-            
-    @QtCore.pyqtSlot()  
-    def on_actionGestoraRenta4_activated(self):
-        self.w.close()
-        self.w=wdgInversiones2(self.cfg,  "select * from investments where agrupations like'%|f_es_0043|%' order by name,id")
-
-        self.layout.addWidget(self.w)
-        self.w.show()
         
 
     @QtCore.pyqtSlot()  
@@ -385,6 +263,7 @@ class frmMain2(QMainWindow, Ui_frmMain2):#
 
         self.layout.addWidget(self.w)
         self.w.show()
+        
     @QtCore.pyqtSlot()  
     def on_actionIndexes_activated(self):
         self.w.close()
@@ -401,22 +280,6 @@ class frmMain2(QMainWindow, Ui_frmMain2):#
         self.layout.addWidget(self.w)
         self.w.show()
     
-    @QtCore.pyqtSlot()  
-    def on_actionSGWInline_activated(self):
-        self.w.close()
-        self.w=wdgInversiones2(self.cfg,  "select * from investments where agrupations like '%|SGW|%' and upper(name) like upper('%inline%') order by name,id")
-
-        self.layout.addWidget(self.w)
-        self.w.show()
-        
-    @QtCore.pyqtSlot()  
-    def on_actionSGWTurbo_activated(self):
-        self.w.close()
-        self.w=wdgInversiones2(self.cfg,  "select * from investments where agrupations like '%|SGW|%' and upper(name) like upper('%turbo%') order by name,id")
-
-        self.layout.addWidget(self.w)
-        self.w.show()
-
     @QtCore.pyqtSlot()  
     def on_actionInversionesDesaparecidas_activated(self):
         self.w.close()
@@ -465,14 +328,7 @@ class frmMain2(QMainWindow, Ui_frmMain2):#
 
         self.layout.addWidget(self.w)
         self.w.show()
-                
-    @QtCore.pyqtSlot()  
-    def on_actionLog_activated(self):
-        self.w.close()
-        self.w=wdgLog(self.cfg)
 
-        self.layout.addWidget(self.w)
-        self.w.show()
         
     @QtCore.pyqtSlot()  
     def on_actionTablasAuxiliares_activated(self):
