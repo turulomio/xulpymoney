@@ -13,6 +13,7 @@ class wdgInversiones(QWidget, Ui_wdgInversiones):
         self.cfg=cfg
         self.inversiones=[]
         self.selInversion=None##Apunta a un objeto inversión
+        self.loadedinactive=False
         self.load_data_from_db()
 
         self.progress = QProgressDialog(self.tr("Recibiendo datos solicitados"), self.tr("Cancelar"), 0,0)
@@ -24,16 +25,42 @@ class wdgInversiones(QWidget, Ui_wdgInversiones):
         
     def load_data_from_db(self):
         inicio=datetime.datetime.now()
+        self.indicereferencia=Investment(self.cfg).init__db(self.cfg.config.get("settings", "indicereferencia" ))
+        self.indicereferencia.quotes.get_basic()
         self.data_ebs=SetEntidadesBancarias(self.cfg)
         self.data_ebs.load_from_db("select * from entidadesbancarias where eb_activa=true")
         self.data_cuentas=SetCuentas(self.cfg, self.data_ebs)
         self.data_cuentas.load_from_db("select * from cuentas where cu_activa=true")
         self.data_investments=SetInvestments(self.cfg)
         self.data_investments.load_from_db("select distinct(myquotesid) from inversiones where in_activa=true")
-        self.data_inversiones=SetInversiones(self.cfg, self.data_cuentas, self.data_investments)
+        self.data_inversiones=SetInversiones(self.cfg, self.data_cuentas, self.data_investments, self.indicereferencia)
         self.data_inversiones.load_from_db("select * from inversiones where in_activa=true")
         print("\n","Cargando data en wdgInversiones",  datetime.datetime.now()-inicio)
-
+        
+    def load_inactive_data_from_db(self):
+        if self.loadedinactive==False:
+            inicio=datetime.datetime.now()
+            
+            self.data_ebs_inactive=SetEntidadesBancarias(self.cfg)
+            self.data_ebs_inactive.load_from_db("select * from entidadesbancarias where eb_activa=false")
+            self.data_ebs_all=self.data_ebs.union(self.data_ebs_inactive)
+            
+            self.data_cuentas_inactive=SetCuentas(self.cfg, self.data_ebs_all)
+            self.data_cuentas_inactive.load_from_db("select * from cuentas where cu_activa=false")
+            self.data_cuentas_all=self.data_cuentas.union(self.data_cuentas_inactive)
+            
+            self.data_investments_inactive=SetInvestments(self.cfg)
+            self.data_investments_inactive.load_from_db("select distinct(myquotesid) from inversiones where in_activa=false")
+            self.data_investments_all=self.data_investments.union(self.data_investments_inactive)
+            
+            self.data_inversiones_inactive=SetInversiones(self.cfg, self.data_cuentas_all, self.data_investments_all, self.indicereferencia)
+            self.data_inversiones_inactive.load_from_db("select * from inversiones where in_activa=false")
+            self.data_inversiones_all=self.data_inversiones.union(self.data_inversiones_inactive)
+            
+            print("\n","Cargando data en wdgInversiones",  datetime.datetime.now()-inicio)
+            self.loadedinactive=True
+        print (self.trUtf8("Ya se hab´ian cargado las inactivas"))
+        
     def tblInversiones_load(self):
         """Función que carga la tabla de inversiones con el orden que tenga el arr serl.inversiones"""
         self.tblInversiones.setRowCount(len(self.inversiones))
@@ -84,23 +111,28 @@ class wdgInversiones(QWidget, Ui_wdgInversiones):
         """Función que carga la tabla de inversiones con el orden que tenga el arr serl.inversiones"""
         self.tblInversiones.setRowCount(len(self.inversiones))
         self.tblInversiones.clearContents()
-        i=0
-        for inv in self.inversiones:
+        for i, inv in enumerate(self.inversiones):
             self.tblInversiones.setItem(i, 0, QTableWidgetItem("{0} ({1})".format(inv.name, inv.cuenta.name)))
-            i=i+1
+            self.tblInversiones.setItem(i, 5, inv.mq.currency.qtablewidgetitem(inv.saldo()))
 
     @QtCore.pyqtSlot() 
     def on_actionActiva_activated(self):
-        con=self.cfg.connect_xulpymoney()
-        cur = con.cursor()      
         if self.actionActiva.isChecked()==True:
             self.selInversion.activa=True
         else:
             self.selInversion.activa=False
-        self.selInversion.save(cur)
-        con.commit()
-        cur.close()     
-        self.cfg.disconnect_xulpymoney(con)       
+        self.selInversion.save()
+        self.cfg.con.commit()     
+        #Recoloca en los SetInversiones
+        if self.selInversion.activa==True:#Est´a todav´ia en inactivas
+            self.data_inversiones.arr.append(self.selInversion)
+            self.data_inversiones_inactive.arr.remove(self.selInversion)
+        else:#Est´a todav´ia en activas
+            self.data_inversiones.arr.remove(self.selInversion)
+            self.data_inversiones_inactive.arr.append(self.selInversion)
+        self.data_inversiones_all=self.data_inversiones.union(self.data_inversiones_inactive)
+        
+        
         self.on_chkInactivas_stateChanged(self.chkInactivas.checkState())#Carga la tabla
 
             
@@ -181,7 +213,8 @@ class wdgInversiones(QWidget, Ui_wdgInversiones):
             self.on_actionOrdenarTPCVenta_activated()
             self.tblInversiones_load()
         else:
-            self.inversiones=self.cfg.inversiones_activas(False)
+            self.load_inactive_data_from_db()
+            self.inversiones=self.data_inversiones_inactive.arr
             self.on_actionOrdenarName_activated()
             self.tblInversiones_load_inactivas()
         self.tblInversiones.clearSelection()
