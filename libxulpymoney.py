@@ -467,7 +467,7 @@ class SetEntidadesBancarias:
         cur=self.cfg.con.cursor()
         cur.execute(sql)#"select * from entidadesbancarias"
         for row in cur:
-            self.arr.append(EntidadBancaria().init__db_row(row))
+            self.arr.append(EntidadBancaria(self.cfg).init__db_row(row))
         cur.close()            
         
     def find(self, id):
@@ -1492,8 +1492,9 @@ class InversionOperacion:
    
 class EntidadBancaria:
     """Clase que encapsula todas las funciones que se pueden realizar con una Entidad bancaria o banco"""
-    def __init__(self):
+    def __init__(self, cfg):
         """Constructor que inicializa los atributos a None"""
+        self.cfg=cfg
         self.id=None
         self.name=None
         self.activa=None
@@ -1515,13 +1516,15 @@ class EntidadBancaria:
         self.activa=row['eb_activa']
         return self
         
-    def save(self, cur):
+    def save(self):
         """Función que inserta si self.id es nulo y actualiza si no es nulo"""
+        cur=self.cfg.con.cursor()
         if self.id==None:
             cur.execute("insert into entidadesbancarias (entidadbancaria, eb_activa) values (%s,%s) returning id_entidadesbancarias", (self.name, self.activa))
             self.id=cur.fetchone()[0]
         else:
             cur.execute("update entidadesbancarias set entidadbancaria=%s, eb_activa=%s where id_entidadesbancarias=%s", (self.name, self.activa, self.id))
+        cur.close()
         
     def saldo(self, setcuentas,  setinversiones):
         resultado=0
@@ -2222,8 +2225,17 @@ class SetAgrupations:
         except:
             return self.dic_arr["ERROR"]
                 
-    def list (self):
-        return dic2list(self.dic_arr)
+    def list_sortby_id(self):
+        """Devuelve una lista ordenada por id """
+        resultado=dic2list(self.dic_arr)
+        resultado=sorted(resultado, key=lambda c: c.id,  reverse=False)     
+        return resultado
+        
+    def list(self):
+        """Devuelve una lista ordenada por name"""
+        resultado=dic2list(self.dic_arr)
+        resultado=sorted(resultado, key=lambda c: c.name,  reverse=False)     
+        return resultado
     
     def clone(self):
         resultado=SetAgrupations(self.cfg)
@@ -2277,7 +2289,7 @@ class SetAgrupations:
             
     def dbstring(self):
         resultado="|"
-        for a in self.arr:
+        for a in self.list():
             resultado=resultado+a.id+"|"
         if resultado=="|":
             return ""
@@ -2352,11 +2364,11 @@ class SetPriorities:
         return resultado
     
     def dbstring(self):
-        if len(self.arr)==0:
+        if len(self.dic_arr)==0:
             return "NULL"
         else:
             resultado=[]
-            for a in self.arr:
+            for a in self.list():
                 resultado.append(a.id)
             return "ARRAY"+str(resultado)
         
@@ -2400,11 +2412,11 @@ class SetPrioritiesHistorical:
 #        return self
         
     def dbstring(self):
-        if len(self.arr)==0:
+        if len(self.dic_arr)==0:
             return "NULL"
         else:
             resultado=[]
-            for a in self.arr:
+            for a in self.list():
                 resultado.append(a.id)
             return "ARRAY"+str(resultado)
         
@@ -3543,10 +3555,10 @@ class Investment:
         if self.id==None:
             cur.execute(" select min(id)-1 from investments;")
             id=cur.fetchone()[0]
-            cur.execute("insert into investments (id, name,  isin,  currency,  type,  agrupations,  active,  web, address,  phone, mail, tpc, pci,  apalancado, id_bolsas, yahoo, priority, priorityhistorical , comentario,  obsolete, system) values ({0}, '{1}', '{2}', '{3}', {4}, '{5}', {6}, '{7}', '{8}', '{9}', '{10}', {11}, '{12}', {13}, {14}, '{15}', {16}, {17}, '{18}', {19}, {20})".format(id, self.name,  self.isin,  self.currency.id,  self.type.id,  self.agrupations.dbstring(),  self.active,  self.web, self.address,  self.phone, self.mail, self.tpc, self.pci,  self.apalancado.id, self.bolsa.id, self.yahoo, self.priority.dbstring(), self.priorityhistorical.dbstring() , self.comentario, self.obsolete, False))
+            cur.execute("insert into investments (id, name,  isin,  currency,  type,  agrupations,  active,  web, address,  phone, mail, tpc, pci,  apalancado, id_bolsas, yahoo, priority, priorityhistorical , comentario,  obsolete, system) values ({0}, '{1}', '{2}', '{3}', {4}, '{5}', {6}, '{7}', '{8}', '{9}', '{10}', {11}, '{12}', {13}, {14}, '{15}', {16}, {17}, '{18}', {19}, {20})".format(id, self.name,  self.isin,  self.currency.id,  self.type.id,  self.agrupations.dbstring(),  self.active,  self.web, self.address,  self.phone, self.mail, self.tpc, self.mode.id,  self.apalancado.id, self.bolsa.id, self.yahoo, self.priority.dbstring(), self.priorityhistorical.dbstring() , self.comentario, self.obsolete, False))
             self.id=id
         else:
-            sql="update investments set name='{0}', isin='{1}',currency='{2}',type={3}, agrupations='{4}', active={5}, web='{6}', address='{7}', phone='{8}', mail='{9}', tpc={10}, pci='{11}', apalancado={12}, id_bolsas={13}, yahoo='{14}', priority={15}, priorityhistorical={16}, comentario='{17}', obsolete={18} where id={19}".format( self.name,  self.isin,  self.currency.id,  self.type.id,  self.agrupations.dbstring(),  self.active,  self.web, self.address,  self.phone, self.mail, self.tpc, self.pci,  self.apalancado.id, self.bolsa.id, self.yahoo, self.priority.dbstring(), self.priorityhistorical.dbstring() , self.comentario, self.obsolete,  self.id)
+            sql="update investments set name='{0}', isin='{1}',currency='{2}',type={3}, agrupations='{4}', active={5}, web='{6}', address='{7}', phone='{8}', mail='{9}', tpc={10}, pci='{11}', apalancado={12}, id_bolsas={13}, yahoo='{14}', priority={15}, priorityhistorical={16}, comentario='{17}', obsolete={18} where id={19}".format( self.name,  self.isin,  self.currency.id,  self.type.id,  self.agrupations.dbstring(),  self.active,  self.web, self.address,  self.phone, self.mail, self.tpc, self.mode.id,  self.apalancado.id, self.bolsa.id, self.yahoo, self.priority.dbstring(), self.priorityhistorical.dbstring() , self.comentario, self.obsolete,  self.id)
             cur.execute(sql)
         cur.close()
     

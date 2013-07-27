@@ -23,7 +23,7 @@ class wdgCuentas(QWidget, Ui_wdgCuentas):
         self.data_ebs=SetEntidadesBancarias(self.cfg)
         self.data_ebs.load_from_db("select * from entidadesbancarias where eb_activa=true")
         self.data_cuentas=SetCuentas(self.cfg, self.data_ebs)
-        self.data_cuentas.load_from_db("select * from cuentas where cu_activa=true")
+        self.data_cuentas.load_from_db("select * from cuentas where cu_activa=true order by cuenta")
         print("Cargando data en wdgCuentas",  datetime.datetime.now()-inicio)
         
     def load_inactive_data_from_db(self):
@@ -35,7 +35,7 @@ class wdgCuentas(QWidget, Ui_wdgCuentas):
             self.data_ebs_all=self.data_ebs.union(self.data_ebs_inactive)
             
             self.data_cuentas_inactive=SetCuentas(self.cfg, self.data_ebs_all)
-            self.data_cuentas_inactive.load_from_db("select * from cuentas where cu_activa=false")
+            self.data_cuentas_inactive.load_from_db("select * from cuentas where cu_activa=false order by cuenta")
             self.data_cuentas_all=self.data_cuentas.union(self.data_cuentas_inactive)
             
             print("Cargando inactive data en wdgCuentas",  datetime.datetime.now()-inicio)

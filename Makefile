@@ -86,7 +86,6 @@ uninstall:
 	rm $(PREFIXBIN)/xulpymoney
 	rm -Rf $(PREFIXLIB)
 	rm -Rf $(PREFIXSHARE)
-	rm $(PREFIXETC)/config.py.dist
 	rm -fr $(PREFIXPIXMAPS)/xulpymoney.png
 	rm -fr $(PREFIXPIXMAPS)/mystocks.jpg
 	rm -fr $(PREFIXAPPLICATIONS)/xulpymoney.desktop

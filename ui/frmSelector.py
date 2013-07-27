@@ -34,7 +34,6 @@ class frmSelector(QDialog, Ui_frmSelector):
                 break
         
     def load_tbl(self):
-        print (len(self.set.dic_arr))
         self.tbl.setRowCount(len(self.set.dic_arr))
         for i, l in enumerate(self.set.list()):
                 self.tbl.setItem(i, 0, QTableWidgetItem(str(l.id)))

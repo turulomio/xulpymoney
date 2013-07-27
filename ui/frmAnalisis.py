@@ -351,7 +351,7 @@ class frmAnalisis(QDialog, Ui_frmAnalisis):
         self.investment.isin=self.txtISIN.text()
         self.investment.currency=self.cfg.currencies.find(self.cmbCurrency.itemData(self.cmbCurrency.currentIndex()))
         self.investment.type=self.cfg.types.find(self.cmbTipo.itemData(self.cmbTipo.currentIndex()))
-        self.investment.agrupations=SetAgrupations(self.cfg).init__create_from_combo(self.cmbAgrupations)
+        self.investment.agrupations=SetAgrupations(self.cfg).clone_from_combo(self.cmbAgrupations)
         self.investment.active=c2b(self.chkActive.checkState())
         self.investment.obsolete=c2b(self.chkObsolete.checkState())
         self.investment.web=self.txtWeb.text()
@@ -359,7 +359,7 @@ class frmAnalisis(QDialog, Ui_frmAnalisis):
         self.investment.phone=self.txtPhone.text()
         self.investment.mail=self.txtMail.text()
         self.investment.tpc=int(self.txtTPC.text())
-        self.investment.mode=self.cmbPCI.itemData(self.cmbPCI.currentIndex())
+        self.investment.mode=self.cfg.investmentsmodes.find(self.cmbPCI.itemData(self.cmbPCI.currentIndex()))
         self.investment.apalancado=self.cfg.apalancamientos.find(self.cmbApalancado.itemData(self.cmbApalancado.currentIndex()))
         self.investment.bolsa=self.cfg.bolsas.find(self.cmbBolsa.itemData(self.cmbBolsa.currentIndex()))
         self.investment.yahoo=self.txtYahoo.text()
@@ -372,12 +372,8 @@ class frmAnalisis(QDialog, Ui_frmAnalisis):
         if self.investment.id==None:
             insertarquote=True
             
-        con=self.cfg.connect_myquotes()
-        cur = con.cursor()
-        self.investment.save(cur)
-        con.commit()  
-        cur.close() 
-        self.cfg.disconnect_myquotes(con)  
+        self.investment.save()
+        self.cfg.conms.commit()  
         
         if insertarquote==True:
             w=frmQuotesIBM(self.cfg,  self.investment)
