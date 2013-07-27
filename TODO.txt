@@ -70,6 +70,4 @@
 		 yahoo, y purge yahoo
 		indices y purge indices
 20130727 Bolsa de paris no sale al añadir un quoteibm
-20130724 Cambiar el objeto DividendoEstimacion y comprobar que funciona el informedividenods ibm
-20130725 Hacer SetDividendoEstimaciones y quitar mq.estimaciones
 20130728 Poner en dividendos el gasto total en el concepto en el año seleccionado en el combo.

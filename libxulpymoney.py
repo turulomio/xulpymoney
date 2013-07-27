@@ -4320,6 +4320,7 @@ class ConfigMyStock:
         self.config['frmAccess'] = {'db': 'xulpymoney', 'port': '5432','user': 'postgres', 'server': '127.0.0.1'}
         self.config['frmAccess2'] = {'db': 'myquotes', 'port': '5432','user': 'postgres', 'server': '127.0.0.1'}
         self.config['settings']={'dividendwithholding':'0.21', 'taxcapitalappreciation':'0.21',  'localcurrency':'EUR', 'localzone':'Europe/Madrid', 'indicereferencia':'79329'}
+        self.config['wdgInversiones2']={'favoritos':""}
             
         self.config_ui=configparser.ConfigParser()
         self.config_ui['canvasIntraday'] = {'sma50': 'True', 'type': '0','sma200': 'True'}
@@ -4358,9 +4359,11 @@ class ConfigMyStock:
         """Carga una section name parseada con strings y separadas por | y devuelve un arr"""
         try:
             cadena=config.get(section, name )
+            if cadena=="":
+                return []
             return cadena.split("|")
         except:
-            print ("No hay fichero de configuración")
+            print ("Error en config_load_list")
             return []
     
     def config_set_list(self, config, section,  name,  list):
