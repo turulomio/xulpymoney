@@ -100,7 +100,7 @@ class wdgInversiones2(QWidget, Ui_wdgInversiones2):
                 return True
             return False
             
-        favoritos=list_loadprops(self.cfg.file,"wdgInversiones",  "favoritos")
+        favoritos=list_loadprops(self.cfg.file,"wdgInversiones2",  "favoritos")
         print (favoritos)
         if str(self.selInvestment.id) in favoritos:
             if wdgInversiones_esta_mostrando_favoritos(favoritos)==True:
@@ -110,7 +110,7 @@ class wdgInversiones2(QWidget, Ui_wdgInversiones2):
                 self.build_table()
         else:
             favoritos.append(self.selInvestment.id)
-        list_saveprops(self.cfg.file,"wdgInversiones",  "favoritos",  favoritos)
+        list_saveprops(self.cfg.file,"wdgInversiones",  "favoritos2",  favoritos)
         self.setFavoritos=set(favoritos)
 
 

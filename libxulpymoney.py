@@ -932,18 +932,19 @@ class SetInversionOperacionHistorica:
         return resultado
     def load_myqtablewidget(self, tabla, section):
         """Rellena datos de un array de objetos de InversionOperacionHistorica, devuelve totales ver código"""
-        tabla.setColumnCount(11)
+        tabla.setColumnCount(12)
         tabla.setHorizontalHeaderItem(0, QTableWidgetItem(QApplication.translate(section, "Fecha", None, QApplication.UnicodeUTF8)))
         tabla.setHorizontalHeaderItem(1, QTableWidgetItem(QApplication.translate(section, "Años", None, QApplication.UnicodeUTF8)))
         tabla.setHorizontalHeaderItem(2, QTableWidgetItem(QApplication.translate(section, "Inversi´on", None, QApplication.UnicodeUTF8)))
         tabla.setHorizontalHeaderItem(3, QTableWidgetItem(QApplication.translate(section, "Tipo operaci´on", None, QApplication.UnicodeUTF8)))
-        tabla.setHorizontalHeaderItem(4, QTableWidgetItem(QApplication.translate(section, "Importe inicial", None, QApplication.UnicodeUTF8)))
-        tabla.setHorizontalHeaderItem(5, QTableWidgetItem(QApplication.translate(section, "Consolidado bruto", None, QApplication.UnicodeUTF8)))
-        tabla.setHorizontalHeaderItem(6, QTableWidgetItem(QApplication.translate(section, "Comisiones", None, QApplication.UnicodeUTF8)))
-        tabla.setHorizontalHeaderItem(7, QTableWidgetItem(QApplication.translate(section, "Impuestos", None, QApplication.UnicodeUTF8)))
-        tabla.setHorizontalHeaderItem(8, QTableWidgetItem(QApplication.translate(section, "Consolidado neto", None, QApplication.UnicodeUTF8)))
-        tabla.setHorizontalHeaderItem(9, QTableWidgetItem(QApplication.translate(section, "% TAE neto", None, QApplication.UnicodeUTF8)))
-        tabla.setHorizontalHeaderItem(10, QTableWidgetItem(QApplication.translate(section, "% Total neto", None, QApplication.UnicodeUTF8)))
+        tabla.setHorizontalHeaderItem(4, QTableWidgetItem(QApplication.translate(section, "Saldo inicial", None, QApplication.UnicodeUTF8)))
+        tabla.setHorizontalHeaderItem(5, QTableWidgetItem(QApplication.translate(section, "Saldo final", None, QApplication.UnicodeUTF8)))
+        tabla.setHorizontalHeaderItem(6, QTableWidgetItem(QApplication.translate(section, "Consolidado bruto", None, QApplication.UnicodeUTF8)))
+        tabla.setHorizontalHeaderItem(7, QTableWidgetItem(QApplication.translate(section, "Comisiones", None, QApplication.UnicodeUTF8)))
+        tabla.setHorizontalHeaderItem(8, QTableWidgetItem(QApplication.translate(section, "Impuestos", None, QApplication.UnicodeUTF8)))
+        tabla.setHorizontalHeaderItem(9, QTableWidgetItem(QApplication.translate(section, "Consolidado neto", None, QApplication.UnicodeUTF8)))
+        tabla.setHorizontalHeaderItem(10, QTableWidgetItem(QApplication.translate(section, "% TAE neto", None, QApplication.UnicodeUTF8)))
+        tabla.setHorizontalHeaderItem(11, QTableWidgetItem(QApplication.translate(section, "% Total neto", None, QApplication.UnicodeUTF8)))
         #DATA
         tabla.settings(section,  self.cfg.file_ui)        
         
