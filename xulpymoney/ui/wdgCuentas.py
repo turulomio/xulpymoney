@@ -14,8 +14,8 @@ class wdgCuentas(QWidget, Ui_wdgCuentas):
         self.load_data_from_db()
         self.cuentas=self.data_cuentas.arr
         self.selCuenta=None
-        self.load_data()
-        
+        self.load_table()
+        self.loadedinactive=False
         
         
     def load_data_from_db(self):
@@ -24,9 +24,24 @@ class wdgCuentas(QWidget, Ui_wdgCuentas):
         self.data_ebs.load_from_db("select * from entidadesbancarias where eb_activa=true")
         self.data_cuentas=SetCuentas(self.cfg, self.data_ebs)
         self.data_cuentas.load_from_db("select * from cuentas where cu_activa=true")
-        print("\n","Cargando data en wdgCuentas",  datetime.datetime.now()-inicio)
-
-    def load_data(self):
+        print("Cargando data en wdgCuentas",  datetime.datetime.now()-inicio)
+        
+    def load_inactive_data_from_db(self):
+        if self.loadedinactive==False:
+            inicio=datetime.datetime.now()
+            
+            self.data_ebs_inactive=SetEntidadesBancarias(self.cfg)
+            self.data_ebs_inactive.load_from_db("select * from entidadesbancarias where eb_activa=false")
+            self.data_ebs_all=self.data_ebs.union(self.data_ebs_inactive)
+            
+            self.data_cuentas_inactive=SetCuentas(self.cfg, self.data_ebs_all)
+            self.data_cuentas_inactive.load_from_db("select * from cuentas where cu_activa=false")
+            self.data_cuentas_all=self.data_cuentas.union(self.data_cuentas_inactive)
+            
+            print("Cargando inactive data en wdgCuentas",  datetime.datetime.now()-inicio)
+            self.loadedinactive=True
+        print (self.trUtf8("Ya se hab´ian cargado las inactivas"))
+    def load_table(self):
         """Función que carga la tabla de cuentas"""
         self.tblCuentas.setRowCount(len(self.cuentas));
         sumsaldos=0
@@ -45,14 +60,14 @@ class wdgCuentas(QWidget, Ui_wdgCuentas):
         w=frmCuentasIBM(self.cfg, self.data_ebs,  self.data_cuentas,  self.selCuenta, self)
         w.exec_()
         self.on_chkInactivas_stateChanged(Qt.Unchecked)
-        self.load_data()
+        self.load_table()
         
     @QtCore.pyqtSlot() 
     def on_actionCuentaNueva_activated(self):
         w=frmCuentasIBM(self.cfg, None)
         w.exec_()
         self.on_chkInactivas_stateChanged(Qt.Unchecked)
-        self.load_data()
+        self.load_table()
       
     @QtCore.pyqtSlot() 
     def on_actionCuentaBorrar_activated(self):
@@ -71,14 +86,15 @@ class wdgCuentas(QWidget, Ui_wdgCuentas):
         cur.close()
         self.cfg.disconnect_xulpymoney(con)
         self.on_chkInactivas_stateChanged(Qt.Unchecked)
-        self.load_data()
+        self.load_table()
         
     def on_chkInactivas_stateChanged(self, state):
+        self.load_inactive_data_from_db()
         if state==Qt.Unchecked:
             self.cuentas=self.data_cuentas.arr
         else:
-            self.cuentas=self.cfg.cuentas_activas(False)
-        self.load_data()
+            self.cuentas=self.data_cuentas_inactive.arr
+        self.load_table()
         
 
     def on_tblCuentas_customContextMenuRequested(self,  pos):
@@ -87,6 +103,7 @@ class wdgCuentas(QWidget, Ui_wdgCuentas):
         menu.addAction(self.actionCuentaBorrar)
         menu.addSeparator()
         menu.addAction(self.actionActiva)
+        self.actionActiva.setChecked(self.selCuenta.activa)
         menu.addSeparator()
         menu.addAction(self.actionTransferencia)
         menu.addSeparator()
@@ -96,21 +113,25 @@ class wdgCuentas(QWidget, Ui_wdgCuentas):
         
     @QtCore.pyqtSlot() 
     def on_actionActiva_activated(self):
-        con=self.cfg.connect_xulpymoney()
-        cur = con.cursor()      
+        self.load_inactive_data_from_db()#Debe tenerlas para borrarla luego
         self.selCuenta.activa=self.chkInactivas.isChecked()
-        self.selCuenta.save(cur)
-        con.commit()   
-        cur.close()       
-        self.cuentas.remove(self.selCuenta)##Se quita por que ya no se visualiza
-        self.load_data()
-        self.cfg.disconnect_xulpymoney(con)     
+        self.selCuenta.save()
+        self.cfg.con.commit()     
+        #Recoloca en los Setcuentas
+        if self.selCuenta.activa==True:#Est´a todav´ia en inactivas
+            self.data_cuentas.arr.append(self.selCuenta)
+            self.data_cuentas_inactive.arr.remove(self.selCuenta)
+        else:#Est´a todav´ia en activas
+            self.data_cuentas.arr.remove(self.selCuenta)
+            self.data_cuentas_inactive.arr.append(self.selCuenta)
+        self.data_cuentas_all=self.data_cuentas.union(self.data_cuentas_inactive)        
+        self.load_table()
 
     @QtCore.pyqtSlot()  
     def on_actionTransferencia_activated(self):
         w=frmTransferencia(self.cfg, self.selCuenta)
         w.exec_()
-        self.load_data()
+        self.load_table()
 
     def on_tblCuentas_itemSelectionChanged(self):
         for i in self.tblCuentas.selectedItems():#itera por cada item no row.

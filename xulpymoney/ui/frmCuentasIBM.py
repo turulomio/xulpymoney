@@ -163,8 +163,6 @@ class frmCuentasIBM(QDialog, Ui_frmCuentasIBM):
         self.tblTarjetas.clearSelection()
 
     def on_cmdDatos_released(self):
-        con=self.cfg.connect_xulpymoney()
-        cur = con.cursor()      
         id_entidadesbancarias=int(self.cmbEB.itemData(self.cmbEB.currentIndex()))
         cuenta=self.txtCuenta.text()
         numerocuenta=self.txtNumero.text()
@@ -173,7 +171,7 @@ class frmCuentasIBM(QDialog, Ui_frmCuentasIBM):
 
         if self.selCuenta==None:
             cu=Cuenta(self.cfg).init__create(cuenta, self.cfg.ebs(id_entidadesbancarias), cu_activa, numerocuenta, self.cfg.currencies.find(currency))
-            cu.save(cur)
+            cu.save()
             self.cfg.dic_cuentas[str(cu.id)]=cu
         else:
             self.selCuenta.eb=self.cfg.ebs(id_entidadesbancarias)
@@ -181,11 +179,9 @@ class frmCuentasIBM(QDialog, Ui_frmCuentasIBM):
             self.selCuenta.numero=numerocuenta
             self.selCuenta.activa=cu_activa
             self.selCuenta.currency=self.cfg.currencies.find(currency)
-            self.selCuenta.save(cur)
+            self.selCuenta.save()
             self.lblTitulo.setText(self.selCuenta.name)
-        con.commit()
-        cur.close()     
-        self.cfg.disconnect_xulpymoney(con)     
+        self.cfg.con.commit()
         
         if self.selCuenta==None:
             self.done(0)

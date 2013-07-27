@@ -38,15 +38,11 @@
 20120815 Poner calculo de inversión cuando esté con un precio probablemente en desreinversion
 20130103 Cuando se genera un dividendo acciones y se mete comisión se cuenta en Ingresos quizás porque es neto
 20130103 Cuando se inserta un operinversión, hay que poner el indice de referencia y se debe insertar en myquotes el valor con microseconds=5
-20130723 Error al modificar inversión, meter data_investmentes
-
-==============MYQUOTES=================
 20110228 Al avisar nueva versión que sea con un hyperlink a download de myquotes
 20110421 Consultas de isin duplicados
 20110421 Se puede hacer update_historicals en carmignac ver página web
 20110526 Crear la funcionalidad de divisas importantes
 20110822 Poner en el gráfico histórico la opción del punto de venta
-20110917 myquotes.cfg no debería ser python
 20111013 En las etiquetas de graficos poner el valor del máximo, minimo y apertura
 20111027 Hacer particiones a las tablas, quizas por años. http://www.postgresql.org/docs/9.1/static/ddl-partitioning.html
 20120217 Ver como trato el volumen si en yahoo historical pero debe almacenar las ultimas y con el planteamiento de yaoo historical no se puede.
@@ -74,9 +70,7 @@
 	- Se debería hacer un proceso:
 		 yahoo, y purge yahoo
 		indices y purge indices
-
-========== NUEVO ================
-2013Bolsa de paris no sale al añadir un quoteibm
+20130727 Bolsa de paris no sale al añadir un quoteibm
 20130724 Cambiar el objeto DividendoEstimacion y comprobar que funciona el informedividenods ibm
 20130725 Hacer SetDividendoEstimaciones y quitar mq.estimaciones
 20130727 Poner el selector mes año
