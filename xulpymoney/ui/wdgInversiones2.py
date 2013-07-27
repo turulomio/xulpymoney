@@ -82,7 +82,7 @@ class wdgInversiones2(QWidget, Ui_wdgInversiones2):
             self.tblInversiones.setItem(i, 5, qtpc(inv.quotes.tpc_diario()))
             self.tblInversiones.setItem(i, 6, qtpc(inv.quotes.tpc_anual()))
             self.tblInversiones.setItem(i, 7, qtpc(inv.quotes.lastdpa.dpa))
-            if inv.quotes.lastdpa==None:#dividendo
+            if inv.estimacionesdividendo.find(datetime.date.today().year)==None:#dividendo
                 self.tblInversiones.item(i, 7).setBackgroundColor( QColor(255, 182, 182))          
             if inv.active==False:#Active
                 for j in range(8):

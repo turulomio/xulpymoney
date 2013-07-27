@@ -4,6 +4,7 @@ import datetime
 from libxulpymoney import *
 from Ui_wdgInformeDividendos import *
 from frmInversionesEstudio import *
+from frmAnalisis import *
 from frmDividendoEstimacionIBM import *
 
 class wdgInformeDividendos(QWidget, Ui_wdgInformeDividendos):
@@ -36,7 +37,7 @@ class wdgInformeDividendos(QWidget, Ui_wdgInformeDividendos):
 
     @QtCore.pyqtSlot()  
     def on_actionModificarDPA_activated(self):
-        d=frmDividendoEstimacionIBM(self.cfg, self.selInversion)
+        d=frmDividendoEstimacionIBM(self.cfg, self.selInversion.investment)
         d.exec_()
         self.on_chkInactivas_stateChanged(self.chkInactivas.checkState())
         self.tblInversiones.clearSelection()
@@ -53,39 +54,51 @@ class wdgInformeDividendos(QWidget, Ui_wdgInformeDividendos):
         self.tblInversiones.setRowCount(len(self.inversiones.arr));
         sumdiv=Decimal(0)
         for i, inv in enumerate(self.inversiones.arr):
-            estimacion=inv.mq.estimaciones[str(datetime.date.today().year)]
+            if inv.investment.estimacionesdividendo.find(datetime.date.today().year)==None:
+                dpa=0
+                tpc=0
+                divestimado=0
+            else:
+                dpa=inv.investment.estimacionesdividendo.find(datetime.date.today().year).dpa
+                tpc=inv.investment.estimacionesdividendo.find(datetime.date.today().year).tpc_dpa()
+                divestimado=inv.dividendo_bruto_estimado()
+            
             self.tblInversiones.setItem(i, 0,QTableWidgetItem(inv.name))
             self.tblInversiones.setItem(i, 1, QTableWidgetItem(inv.cuenta.eb.name))
-            self.tblInversiones.setItem(i, 2, inv.mq.currency.qtablewidgetitem(inv.mq.quotes.last.quote))
-            self.tblInversiones.setItem(i, 3, inv.mq.currency.qtablewidgetitem(estimacion.dpa))    
+            self.tblInversiones.setItem(i, 2, inv.investment.currency.qtablewidgetitem(inv.investment.quotes.last.quote))
+            self.tblInversiones.setItem(i, 3, inv.investment.currency.qtablewidgetitem(dpa))    
             self.tblInversiones.setItem(i, 4, qright(str(inv.acciones())))
-            divestimado=inv.dividendo_bruto_estimado()
             sumdiv=sumdiv+divestimado
-            self.tblInversiones.setItem(i, 5, inv.mq.currency.qtablewidgetitem(divestimado))
-            self.tblInversiones.setItem(i, 6, qtpc(estimacion.tpc_dpa()))
+            self.tblInversiones.setItem(i, 5, inv.investment.currency.qtablewidgetitem(divestimado))
+            self.tblInversiones.setItem(i, 6, qtpc(tpc))
                 
             #Colorea si está desactualizado
-            try:
-                diassinactualizar=(datetime.date.today()-estimacion.fechaestimacion).days
-            except:
-                diassinactualizar=0
-            if diassinactualizar>self.spin.value() or estimacion.fechaestimacion==None:
+            if inv.investment.estimacionesdividendo.dias_sin_actualizar()>self.spin.value():
                 self.tblInversiones.item(i, 3).setBackgroundColor(QColor(255, 146, 148))
-        self.lblTotal.setText(self.trUtf8("Si mantuviera la inversión un año obtendría {0} €".format(sumdiv) ))
+        self.lblTotal.setText(self.trUtf8("Si mantuviera la inversión un año obtendría {0}".format( self.cfg.localcurrency.string(sumdiv)) ))
             
         
     @QtCore.pyqtSlot() 
     def on_actionInversionEstudio_activated(self):
-        w=frmInversionesEstudio(self.cfg, self.selInversion)
+        w=frmInversionesEstudio(self.cfg, self.data_cuentas, self.data_inversiones, self.data_investments, self.selInversion, self)
         w.exec_()
         
+            
+    @QtCore.pyqtSlot() 
+    def on_actionMyStocks_activated(self):
+        w=frmAnalisis(self.cfg, self.selInversion.investment, self)
+        w.load_data_from_db()
+        w.exec_()
+                    
     def on_cmd_pressed(self):
             self.on_chkInactivas_stateChanged(self.chkInactivas.checkState())
 
     def on_tblInversiones_customContextMenuRequested(self,  pos):        
         menu=QMenu()
         menu.addAction(self.actionModificarDPA)
-        menu.addAction(self.actionInversionEstudio)    
+        menu.addSeparator()
+        menu.addAction(self.actionInversionEstudio) 
+        menu.addAction(self.actionMyStocks)    
         menu.exec_(self.tblInversiones.mapToGlobal(pos))
 
     def on_tblInversiones_itemSelectionChanged(self):

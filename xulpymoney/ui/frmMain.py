@@ -46,7 +46,7 @@ class frmMain(QMainWindow, Ui_frmMain):
         
         
         print ("ARREGLAR PORQUE AHORA NO PROTEGE MQINVERSIONES")
-        #ids2protect=[i.id for i in self.cfg.mqinversiones()]##Protege registros de myquotes
+        #ids2protect=[i.id for i in self.cfg.investmentinversiones()]##Protege registros de myquotes
         #if len(ids2protect)>0:
          #   Investment.changeDeletable(curms,  ids2protect,  False)
         self.cfg.conms.commit()

@@ -17,11 +17,11 @@ class frmDividendoEstimacionIBM(QDialog, Ui_frmDividendoEstimacionIBM):
 
     def on_cmd_released(self):
         d=DividendoEstimacion(self.cfg).init__from_db(self.investment, int(self.txtYear.text()) )##Lo carga si existe de la base de datos
-        d.dpa=self.txtDPA.text()
+        d.dpa=self.txtDPA.decimal()
         d.manual=True
         d.fuente="Internet"
         d.fechaestimacion=datetime.date.today()
         d.save()
         self.cfg.conms.commit()      
-#######        self.investment.estimaciones[d.txtYear.text()].dpa=d.txtDPA.decimal()
+        self.investment.estimacionesdividendo.dic_arr[self.txtYear.text()]=d
         self.accept()

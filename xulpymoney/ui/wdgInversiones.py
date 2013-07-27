@@ -73,17 +73,17 @@ class wdgInversiones(QWidget, Ui_wdgInversiones):
         sumnegativos=0
         for inv in self.inversiones:
             self.tblInversiones.setItem(i, 0, QTableWidgetItem("{0} ({1})".format(inv.name, inv.cuenta.name)))
-            self.tblInversiones.setItem(i, 1, qdatetime(inv.mq.quotes.last.datetime, inv.mq.bolsa.zone))
-            self.tblInversiones.setItem(i, 2, inv.mq.currency.qtablewidgetitem(inv.mq.quotes.last.quote,  6))#Se debería recibir el parametro currency
+            self.tblInversiones.setItem(i, 1, qdatetime(inv.investment.quotes.last.datetime, inv.investment.bolsa.zone))
+            self.tblInversiones.setItem(i, 2, inv.investment.currency.qtablewidgetitem(inv.investment.quotes.last.quote,  6))#Se debería recibir el parametro currency
             
             diario=inv.diferencia_saldo_diario()
             try:
                 sumdiario=sumdiario+diario
             except:
                 pass
-            self.tblInversiones.setItem(i, 3, inv.mq.currency.qtablewidgetitem(diario))
-            self.tblInversiones.setItem(i, 4, qtpc(inv.mq.quotes.tpc_diario()))
-            self.tblInversiones.setItem(i, 5, inv.mq.currency.qtablewidgetitem(inv.saldo()))
+            self.tblInversiones.setItem(i, 3, inv.investment.currency.qtablewidgetitem(diario))
+            self.tblInversiones.setItem(i, 4, qtpc(inv.investment.quotes.tpc_diario()))
+            self.tblInversiones.setItem(i, 5, inv.investment.currency.qtablewidgetitem(inv.saldo()))
             suminvertido=suminvertido+inv.invertido()
             pendiente=inv.pendiente()
             if pendiente>0:
@@ -91,7 +91,7 @@ class wdgInversiones(QWidget, Ui_wdgInversiones):
             else:
                 sumnegativos=sumnegativos+pendiente
             sumpendiente=sumpendiente+pendiente
-            self.tblInversiones.setItem(i, 6, inv.mq.currency.qtablewidgetitem(pendiente))
+            self.tblInversiones.setItem(i, 6, inv.investment.currency.qtablewidgetitem(pendiente))
             tpc_invertido=inv.tpc_invertido()
             self.tblInversiones.setItem(i, 7, qtpc(tpc_invertido))
             tpc_venta=inv.tpc_venta()
@@ -113,7 +113,7 @@ class wdgInversiones(QWidget, Ui_wdgInversiones):
         self.tblInversiones.clearContents()
         for i, inv in enumerate(self.inversiones):
             self.tblInversiones.setItem(i, 0, QTableWidgetItem("{0} ({1})".format(inv.name, inv.cuenta.name)))
-            self.tblInversiones.setItem(i, 5, inv.mq.currency.qtablewidgetitem(inv.saldo()))
+            self.tblInversiones.setItem(i, 5, inv.investment.currency.qtablewidgetitem(inv.saldo()))
 
     @QtCore.pyqtSlot() 
     def on_actionActiva_activated(self):
@@ -161,7 +161,7 @@ class wdgInversiones(QWidget, Ui_wdgInversiones):
             
     @QtCore.pyqtSlot() 
     def on_actionMyquotes_activated(self):
-        w=frmAnalisis(self.cfg, self.selInversion.mq, self)
+        w=frmAnalisis(self.cfg, self.selInversion.investment, self)
         w.load_data_from_db()
         w.exec_()
         self.on_chkInactivas_stateChanged(self.chkInactivas.checkState())#Carga la tabla
@@ -169,14 +169,14 @@ class wdgInversiones(QWidget, Ui_wdgInversiones):
             
     @QtCore.pyqtSlot() 
     def on_actionMyquotesManual_activated(self):
-        w=frmQuotesIBM(self.cfg, self.selInversion.mq,  self)
+        w=frmQuotesIBM(self.cfg, self.selInversion.investment,  self)
         w.exec_()
-        self.selInversion.mq.quotes.get_basic()
+        self.selInversion.investment.quotes.get_basic()
         self.on_chkInactivas_stateChanged(self.chkInactivas.checkState())#Carga la tabla
 
     @QtCore.pyqtSlot() 
     def on_actionOrdenarTPCDiario_activated(self):
-        self.inversiones=sorted(self.inversiones, key=lambda inv: inv.mq.quotes.tpc_diario(),  reverse=True) 
+        self.inversiones=sorted(self.inversiones, key=lambda inv: inv.investment.quotes.tpc_diario(),  reverse=True) 
         self.tblInversiones_reload_after_order()
         
     @QtCore.pyqtSlot() 
@@ -191,7 +191,7 @@ class wdgInversiones(QWidget, Ui_wdgInversiones):
         
     @QtCore.pyqtSlot() 
     def on_actionOrdenarHora_activated(self):
-        self.inversiones=sorted(self.inversiones, key=lambda inv: inv.mq.quotes.last.datetime,  reverse=False) 
+        self.inversiones=sorted(self.inversiones, key=lambda inv: inv.investment.quotes.last.datetime,  reverse=False) 
         self.tblInversiones_reload_after_order()
         
     @QtCore.pyqtSlot() 
@@ -268,12 +268,12 @@ class wdgInversiones(QWidget, Ui_wdgInversiones):
         if column==7:#TPC inversion
             m=QMessageBox()
             m.setIcon(QMessageBox.Information)
-            m.setText(self.trUtf8("Valor medio de compra: {0}".format(self.selInversion.mq.currency.string(self.selInversion.op_actual.valor_medio_compra()))))
+            m.setText(self.trUtf8("Valor medio de compra: {0}".format(self.selInversion.investment.currency.string(self.selInversion.op_actual.valor_medio_compra()))))
             m.exec_()           
             return
         if column==8:#TPC venta
             m=QMessageBox()
             m.setIcon(QMessageBox.Information)
-            m.setText(self.trUtf8("Valor de venta: {0}".format(self.selInversion.mq.currency.string(self.selInversion.venta))))
+            m.setText(self.trUtf8("Valor de venta: {0}".format(self.selInversion.investment.currency.string(self.selInversion.venta))))
             m.exec_()           
             return     

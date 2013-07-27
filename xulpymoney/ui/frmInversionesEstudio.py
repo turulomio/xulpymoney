@@ -52,7 +52,7 @@ class frmInversionesEstudio(QDialog, Ui_frmInversionesEstudio):
             self.lblTitulo.setText((self.selInversion.name))
             self.txtInversion.setText((self.selInversion.name))
             self.txtVenta.setText(str((self.selInversion.venta)))
-            self.ise.setSelected(self.selInversion.mq)
+            self.ise.setSelected(self.selInversion.investment)
             self.cmdPuntoVenta.setEnabled(True)
 
 #        self.tblOperaciones.settings("frmInversionesEstudio",  self.cfg.file_ui)
@@ -86,16 +86,16 @@ class frmInversionesEstudio(QDialog, Ui_frmInversionesEstudio):
             sumcomision=sumcomision+d.comision
             self.tblDividendos.setItem(i, 0, QTableWidgetItem(str(d.fecha)))
             self.tblDividendos.setItem(i, 1, QTableWidgetItem(str(d.opercuenta.concepto.name)))
-            self.tblDividendos.setItem(i, 2, self.selInversion.mq.currency.qtablewidgetitem(d.bruto))
-            self.tblDividendos.setItem(i, 3, self.selInversion.mq.currency.qtablewidgetitem(d.retencion))
-            self.tblDividendos.setItem(i, 4, self.selInversion.mq.currency.qtablewidgetitem(d.comision))
-            self.tblDividendos.setItem(i, 5, self.selInversion.mq.currency.qtablewidgetitem(d.neto))
-            self.tblDividendos.setItem(i, 6, self.selInversion.mq.currency.qtablewidgetitem(d.dpa))
+            self.tblDividendos.setItem(i, 2, self.selInversion.investment.currency.qtablewidgetitem(d.bruto))
+            self.tblDividendos.setItem(i, 3, self.selInversion.investment.currency.qtablewidgetitem(d.retencion))
+            self.tblDividendos.setItem(i, 4, self.selInversion.investment.currency.qtablewidgetitem(d.comision))
+            self.tblDividendos.setItem(i, 5, self.selInversion.investment.currency.qtablewidgetitem(d.neto))
+            self.tblDividendos.setItem(i, 6, self.selInversion.investment.currency.qtablewidgetitem(d.dpa))
         self.tblDividendos.setItem(len(self.dividendos), 1, QTableWidgetItem("TOTAL"))
-        self.tblDividendos.setItem(len(self.dividendos), 2, self.selInversion.mq.currency.qtablewidgetitem(sumbruto))
-        self.tblDividendos.setItem(len(self.dividendos), 3, self.selInversion.mq.currency.qtablewidgetitem(sumretencion))
-        self.tblDividendos.setItem(len(self.dividendos), 4, self.selInversion.mq.currency.qtablewidgetitem(sumcomision))
-        self.tblDividendos.setItem(len(self.dividendos), 5, self.selInversion.mq.currency.qtablewidgetitem(sumneto))
+        self.tblDividendos.setItem(len(self.dividendos), 2, self.selInversion.investment.currency.qtablewidgetitem(sumbruto))
+        self.tblDividendos.setItem(len(self.dividendos), 3, self.selInversion.investment.currency.qtablewidgetitem(sumretencion))
+        self.tblDividendos.setItem(len(self.dividendos), 4, self.selInversion.investment.currency.qtablewidgetitem(sumcomision))
+        self.tblDividendos.setItem(len(self.dividendos), 5, self.selInversion.investment.currency.qtablewidgetitem(sumneto))
         
         if self.chkDividendosHistoricos.checkState()==Qt.Unchecked:
             if len(self.dividendos)>0:
@@ -107,9 +107,9 @@ class frmInversionesEstudio(QDialog, Ui_frmInversionesEstudio):
                 dtpc=0
                 dtae=0
 
-            estimacion=self.selInversion.mq.estimaciones[str(datetime.date.today().year)]
+            estimacion=self.selInversion.investment.estimacionesdividendo[str(datetime.date.today().year)]
             acciones=self.selInversion.acciones()
-            tpccalculado=100*estimacion.dpa/self.selInversion.mq.quotes.last.quote
+            tpccalculado=100*estimacion.dpa/self.selInversion.investment.quotes.last.quote
             self.lblDivAnualEstimado.setText(("El dividendo anual estimado, según el valor actual de la acción es del {0} % ({1}€ por acción)".format(str(round(tpccalculado, 2)),  str(estimacion.dpa))))
             self.lblDivFechaRevision.setText(('Fecha de la última revisión del dividendo: '+ str(estimacion.fechaestimacion)))
             self.lblDivSaldoEstimado.setText(("Saldo estimado: {0}€ ({1}€ después de impuestos)".format( str(round(acciones*estimacion.dpa, 2)),  str(round(acciones*estimacion.dpa*(1-self.cfg.dividendwithholding))), 2)))
@@ -277,7 +277,7 @@ class frmInversionesEstudio(QDialog, Ui_frmInversionesEstudio):
         if self.data_investments.find(myquotesid)==None:
             print ("Cargando otro mqinversiones")
             inv=Investment(self.cfg).init__db(myquotesid)
-            inv.load_estimacion()
+            inv.estimaciondividendo.load_from_db()
             inv.quotes.get_basic()
             self.data_investments.arr.append(inv)
             
@@ -296,7 +296,7 @@ class frmInversionesEstudio(QDialog, Ui_frmInversionesEstudio):
         elif self.tipo==2:
             self.selInversion.name=inversion
             self.selInversion.venta=venta
-            self.selInversion.mq=self.data_investments.find(myquotesid)
+            self.selInversion.investment=self.data_investments.find(myquotesid)
             self.selInversion.save()##El id y el id_cuentas no se pueden modificar
             self.cfg.con.commit()
             self.cmdInversion.setEnabled(False)

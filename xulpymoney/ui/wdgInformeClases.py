@@ -102,7 +102,7 @@ class wdgInformeClases(QWidget, Ui_wdgInformeClases):
         for r in range(0, 11):
             total=0
             for i in self.data_inversiones.arr:
-                if math.ceil(i.mq.tpc/10.0)==r:
+                if math.ceil(i.investment.tpc/10.0)==r:
                     total=total+i.saldo()
             if r==0:
                 total=total+self.cuentas
@@ -122,7 +122,7 @@ class wdgInformeClases(QWidget, Ui_wdgInformeClases):
         for m in self.cfg.investmentsmodes.list():
             total=0
             for i in self.data_inversiones.arr:
-                if i.mq.mode==m:
+                if i.investment.mode==m:
                     total=total+i.saldo()
             labels.append(m.name)
             if m.id=='c':
@@ -141,7 +141,7 @@ class wdgInformeClases(QWidget, Ui_wdgInformeClases):
 #            id_type=int(id_type)
             total=0
             for i in self.data_inversiones.arr:
-                if i.mq.type==t:
+                if i.investment.type==t:
                     total=total+i.saldo()
             if t.id==11:#Cuentas
                 total=total+self.cuentas
@@ -160,7 +160,7 @@ class wdgInformeClases(QWidget, Ui_wdgInformeClases):
         for a in self.cfg.apalancamientos.list():
             total=0
             for i in self.data_inversiones.arr:
-                if i.mq.apalancado==a:
+                if i.investment.apalancado==a:
                     total=total+i.saldo()
             if a.id==0:#Cuentas
                 total=total+self.cuentas
@@ -178,7 +178,7 @@ class wdgInformeClases(QWidget, Ui_wdgInformeClases):
         for c in self.cfg.countries.list():
             total=0
             for i in self.data_inversiones.arr:
-                if i.mq.bolsa.country==c:
+                if i.investment.bolsa.country==c:
                     total=total+i.saldo()
             if total>0:
                 labels.append(c.name)

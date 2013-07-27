@@ -11,7 +11,7 @@ class frmTraspasoValores(QDialog, Ui_frmTraspasoValores):
         self.origen=origen#Clase inversión
         self.lbl.setText(self.trUtf8("Traspaso de valores desde\n{0}".format(self.origen.name)))
         self.txtAcciones.setText(str(self.origen.acciones()))
-        self.cfg.inversiones.qcombobox_same_investmentmq(self.combo, self.origen.mq)
+        self.cfg.inversiones.qcombobox_same_investmentmq(self.combo, self.origen.investment)
 
     @QtCore.pyqtSlot()  
     def on_buttons_accepted(self):

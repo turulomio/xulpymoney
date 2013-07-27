@@ -35,17 +35,17 @@ class frmPuntoVenta(QDialog, Ui_frmPuntoVenta):
             elif rec.tipooperacion.id!=6:
                     sumacciones=sumacciones+rec.acciones
                     suminvertido=suminvertido+rec.importe
-            self.table.setItem(i, 0, qdatetime(rec.datetime, rec.inversion.mq.bolsa.zone))
+            self.table.setItem(i, 0, qdatetime(rec.datetime, rec.inversion.investment.bolsa.zone))
             self.table.setItem(i, 1, QTableWidgetItem("{0} ({1})".format(rec.inversion.name, rec.inversion.cuenta.eb.name)))
             self.table.setItem(i, 2,  QTableWidgetItem(rec.tipooperacion.name))
             self.table.setItem(i, 3, qright(str(rec.acciones)))
-            self.table.setItem(i, 4, self.inversion.mq.currency.qtablewidgetitem(rec.valor_accion))
-            self.table.setItem(i, 5, self.inversion.mq.currency.qtablewidgetitem(rec.importe))
-            self.table.setItem(i, 6, self.inversion.mq.currency.qtablewidgetitem(rec.pendiente(self.inversion.mq.quotes.last)))
+            self.table.setItem(i, 4, self.inversion.investment.currency.qtablewidgetitem(rec.valor_accion))
+            self.table.setItem(i, 5, self.inversion.investment.currency.qtablewidgetitem(rec.importe))
+            self.table.setItem(i, 6, self.inversion.investment.currency.qtablewidgetitem(rec.pendiente(self.inversion.investment.quotes.last)))
         self.table.setItem(len(self.operinversiones), 1, qright("Total"))        
         self.table.setItem(len(self.operinversiones), 3, qright(str(sumacciones)))
-        self.table.setItem(len(self.operinversiones), 4, self.inversion.mq.currency.qtablewidgetitem(suminvertido/sumacciones))
-        self.table.setItem(len(self.operinversiones), 5, self.inversion.mq.currency.qtablewidgetitem(suminvertido))
+        self.table.setItem(len(self.operinversiones), 4, self.inversion.investment.currency.qtablewidgetitem(suminvertido/sumacciones))
+        self.table.setItem(len(self.operinversiones), 5, self.inversion.investment.currency.qtablewidgetitem(suminvertido))
             
         if sumacciones==0:
             self.puntoventa=0
@@ -62,7 +62,7 @@ class frmPuntoVenta(QDialog, Ui_frmPuntoVenta):
         """Recibe un sql y calcula las operinversiones, pueden ser de diferentes inversiones"""
         arr=[]
         for  inv in self.cfg.inversiones_activas():
-            if inv.mq.id==self.inversion.mq.id:
+            if inv.investment.id==self.inversion.investment.id:
                 for op in inv.op_actual.arr:
                     arr.append(op)
         return arr
