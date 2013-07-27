@@ -15,7 +15,7 @@ class myQTableWidget(QTableWidget):
         QObject.connect(self.mytimer, SIGNAL("timeout()"), self.checksettings)        
         
     def __del__(self):
-        print ("Parando el timer por destrucción de myqtablewidget")
+#        print ("Parando el timer por destrucción de myqtablewidget")
         self.mytimer.stop()
         
     def settings(self, section,  file):		

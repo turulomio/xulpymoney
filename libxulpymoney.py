@@ -2248,10 +2248,8 @@ class SetAgrupations:
         """Muestra las agrupaciónes de un tipo pasado como parámetro. El parámetro type es un objeto Type"""
         resultado=SetAgrupations(self.cfg)
         for k, a in self.dic_arr.items():
-            print (a.type, type)
             if a.type==type:
                 resultado.dic_arr[k]=a
-        print (resultado.dic_arr)
         return resultado
 
         
@@ -2281,7 +2279,7 @@ class SetAgrupations:
         else:
             for item in dbstr[1:-1].split("|"):
                 resultado.dic_arr[item]=self.cfg.agrupations.find(item)
-        return self
+        return resultado
         
     def load_qcombobox(self, combo):
         combo.clear()
@@ -2335,96 +2333,117 @@ class SetApalancamientos:
 
 class SetPriorities:
     def __init__(self, cfg):
-        """Usa la variable cfg.Agrupations"""
+        """Usa la variable cfg.Agrupations. Debe ser una lista no un diccionario porque importa el orden"""
         self.cfg=cfg
-        self.dic_arr={}
+        self.arr=[]
                 
     def load_all(self):
-        self.dic_arr["1"]=Priority().init__create(1,"Yahoo Financials. 200 pc.")
-        self.dic_arr["2"]=Priority().init__create(2,"Fondos de la bolsa de Madrid. Todos pc.")
-        self.dic_arr["3"]=Priority().init__create(3,"Borrar")#SANTGES ERA 3, para que no se repitan
-        self.dic_arr["7"]=Priority().init__create(7,"Bond alemán desde http://jcbcarc.dyndns.org. 3 pc.")#SANTGES ERA 3, para que no se repitan
-        self.dic_arr["4"]=Priority().init__create(4,"Infobolsa. índices internacionales. 20 pc.")
-        self.dic_arr["5"]=Priority().init__create(5,"Productos cotizados bonus. 20 pc.")
-        self.dic_arr["6"]=Priority().init__create(6,"Societe Generale Warrants. Todos pc.")
-                        
-    
-    def list(self):
-        return dic2list(self.dic_arr)
+        self.arr.append(Priority().init__create(1,"Yahoo Financials. 200 pc."))
+        self.arr.append(Priority().init__create(2,"Fondos de la bolsa de Madrid. Todos pc."))
+        self.arr.append(Priority().init__create(3,"Borrar"))#SANTGES ERA 3, para que no se repitan
+        self.arr.append(Priority().init__create(7,"Bond alemán desde http://jcbcarc.dyndns.org. 3 pc."))#SANTGES ERA 3, para que no se repitan
+        self.arr.append(Priority().init__create(4,"Infobolsa. índices internacionales. 20 pc."))
+        self.arr.append(Priority().init__create(5,"Productos cotizados bonus. 20 pc."))
+        self.arr.append(Priority().init__create(6,"Societe Generale Warrants. Todos pc."))
+
+    def load_qcombobox(self, combo):
+        combo.clear()
+        for a in self.arr:
+            combo.addItem(a.name, a.id)
+            
     def find(self, id):
-        return self.dic_arr[str(id)]
+        for a in self.arr:
+            if a.id==id:
+                return a
+        return None
         
     def init__create_from_db(self, arr):
         """Convierte el array de enteros de la base datos en un array de objetos priority"""
         resultado=SetPriorities(self.cfg)
         if arr==None or len(arr)==0:
-            resultado.dic_arr={}
+            resultado.arr=[]
         else:
             for a in arr:
-                resultado.dic_arr[str(a)]=self.cfg.priorities.find(a)
+                resultado.arr.append(self.cfg.priorities.find(a))
         return resultado
-    
+        
+    def clone(self):
+        """Devuelve los tipos de operación específicos de operinversiones. en un arr de la forma"""
+        resultado=SetPriorities(self.cfg)
+        for a in self.arr:
+            resultado.arr.append(a)
+        return resultado
+
     def dbstring(self):
-        if len(self.dic_arr)==0:
+        if len(self.arr)==0:
             return "NULL"
         else:
             resultado=[]
-            for a in self.list():
+            for a in self.arr:
                 resultado.append(a.id)
             return "ARRAY"+str(resultado)
         
     def init__create_from_combo(self, cmb):
         """Función que convierte un combo de agrupations a un array de agrupations"""
         for i in range (cmb.count()):
-            self.arr.append(self.cfg.priorities(cmb.itemData(i)))
+            self.arr.append(self.cfg.priorities.find(cmb.itemData(i)))
         return self
                 
-    def init__all(self):
-        self.arr=self.cfg.priorities()
-        return self
 class SetPrioritiesHistorical:
     def __init__(self, cfg):
         """Usa la variable cfg.Agrupations"""
         self.cfg=cfg
-        self.dic_arr={}
+        self.arr=[]
         
             
     def load_all(self):
-        self.dic_arr["3"]=PriorityHistorical().init__create(3,"Individual. Yahoo historicals")
-    
-    def list(self):
-        return dic2list(self.dic_arr)
+        self.arr.append(PriorityHistorical().init__create(3,"Individual. Yahoo historicals"))
+        
+        
+
+    def load_qcombobox(self, combo):
+        combo.clear()
+        for a in self.arr:
+            combo.addItem(a.name, a.id)
+                    
+    def clone(self):
+        """Devuelve los tipos de operación específicos de operinversiones. en un arr de la forma"""
+        resultado=SetPrioritiesHistorical(self.cfg)
+        for a in self.arr:
+            resultado.arr.append(a)
+        return resultado
+
         
     def find(self, id):
-        return self.dic_arr[str(id)]
+        for a in self.arr:
+            if a.id==id:
+                return a
+        return None
             
     def init__create_from_db(self, arr):
         """Convierte el array de enteros de la base datos en un array de objetos priority"""
         resultado=SetPrioritiesHistorical(self.cfg)
         if arr==None or len(arr)==0:
-            resultado.dic_arr={}
+            resultado.arr=[]
         else:
             for a in arr:
-                resultado.dic_arr[str(a)]=self.cfg.prioritieshistorical.find(a)
+                resultado.arr.append(self.cfg.prioritieshistorical.find(a))
         return resultado
-            
-#    def init__all(self):
-#        self.arr=self.cfg.prioritieshistorical()
-#        return self
+
         
     def dbstring(self):
-        if len(self.dic_arr)==0:
+        if len(self.arr)==0:
             return "NULL"
         else:
             resultado=[]
-            for a in self.list():
+            for a in self.arr:
                 resultado.append(a.id)
             return "ARRAY"+str(resultado)
         
     def init__create_from_combo(self, cmb):
         """Función que convierte un combo de agrupations a un array de agrupations"""
         for i in range (cmb.count()):
-            self.arr.append(self.cfg.prioritieshistorical(cmb.itemData(i)))
+            self.arr.append(self.cfg.prioritieshistorical.find(cmb.itemData(i)))
         return self
 
 class Bolsa:
@@ -3476,7 +3495,7 @@ class Investment:
         self.isin=row['isin']
         self.currency=self.cfg.currencies.find(row['currency'])
         self.type=self.cfg.types.find(row['type'])
-        self.agrupations=SetAgrupations(self.cfg).clone_from_dbstring(row['agrupations'])
+        self.agrupations=self.cfg.agrupations.clone_from_dbstring(row['agrupations'])
         self.active=row['active']
         self.id=row['id']
         self.web=row['web']

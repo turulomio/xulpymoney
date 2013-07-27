@@ -12,15 +12,39 @@ class frmSelector(QDialog, Ui_frmSelector):
         self.cfg=cfg
         self.selected=selectedset
         self.set=set
-        for k, a in self.set.dic_arr.items():
-            if k in self.selected.dic_arr:
-                del self.set.dic_arr[k]
+        
+        tmpset=self.set.clone()##Lo uso para no borrar mientras itero sale error
+        #¢arga datos y desactiva botones
+        if self.typeofset()==1:#dic
+            self.cmdDown.setEnabled(False)
+            self.cmdUp.setEnabled(False)
+            for k,  v in tmpset.dic_arr.items():
+                if  k in self.selected.dic_arr:
+                    del self.set.dic_arr[k]            
+        else:#list
+            self.cmdDown.setEnabled(True)
+            self.cmdUp.setEnabled(True)
+        
         self.load_tbl()
         self.load_tblSelected()
         
+        
+    def typeofset(self):
+        """Returns 1 si es diccionario y 2 si es un list set"""
+        try:
+            len(self.set.dic_arr)
+            return 1
+        except:
+            return 2
+        
+        
     def load_tblSelected(self):        
-        self.tblSelected.setRowCount(len(self.selected.dic_arr))
-        for i, l in enumerate(self.selected.list()):
+        if self.typeofset()==1:#dic
+            lista=self.selected.list()
+        else:
+            lista=self.selected.arr
+        self.tblSelected.setRowCount(len(lista))
+        for i, l in enumerate(lista):
             try:
                 self.tblSelected.setItem(i, 0, QTableWidgetItem(str(l.id)))
                 self.tblSelected.setItem(i, 1, QTableWidgetItem(l.name))
@@ -34,30 +58,54 @@ class frmSelector(QDialog, Ui_frmSelector):
                 break
         
     def load_tbl(self):
-        self.tbl.setRowCount(len(self.set.dic_arr))
-        for i, l in enumerate(self.set.list()):
+        if self.typeofset()==1:#dic
+            lista=self.set.list()
+        else:
+            lista=self.set.arr
+        self.tbl.setRowCount(len(lista))
+        for i, l in enumerate(lista):
                 self.tbl.setItem(i, 0, QTableWidgetItem(str(l.id)))
                 self.tbl.setItem(i, 1, QTableWidgetItem(l.name))
 
     def on_cmdLeft_released(self):
-        try:
-            for i in self.tbl.selectedItems():
-                sel=self.set.dic_arr[i.row()]
-        except:
-            return
-        self.selected.append(sel)
-        self.lista.remove(sel)
+        if self.typeofset()==1:# dict
+            try:
+                for i in self.tbl.selectedItems():
+                    key=self.tbl.item(i.row(),0).text()
+                sel=self.set.dic_arr[key]
+                self.selected.dic_arr[key]=sel
+                del self.set.dic_arr[key]
+            except:
+                return
+        else:#lista
+            try:
+                for i in self.tbl.selectedItems():
+                    sel=self.set.arr[i.row()]
+                self.selected.arr.append(sel)
+                self.set.arr.remove(sel)
+            except:
+                return
         self.load_tbl()
         self.load_tblSelected()
         
-    def on_cmdRight_released(self):
-        try:
-            for i in self.tblSelected.selectedItems():
-                sel=self.selected[i.row()]
-        except:
-            return
-        self.selected.remove(sel)
-        self.lista.append(sel)        
+    def on_cmdRight_released(self):        
+        if self.typeofset()==1:# dict
+            try:
+                for i in self.tblSelected.selectedItems():
+                    key=self.tblSelected.item(i.row(), 0).text()
+                sel=self.selected.dic_arr[key]
+                self.set.dic_arr[key]=sel
+                del self.selected.dic_arr[key]
+            except:
+                return
+        else:#lista
+            try:
+                for i in self.tblSelected.selectedItems():
+                    sel=self.selected.arr[i.row()]
+                self.set.arr.append(sel)       
+                self.selected.arr.remove(sel) 
+            except:
+                return
         self.load_tbl()
         self.load_tblSelected()
         
@@ -69,9 +117,9 @@ class frmSelector(QDialog, Ui_frmSelector):
         pos=None
         for i in self.tblSelected.selectedItems():
             pos=i.row()
-        tmp=self.selected[pos]
-        self.selected[pos]=self.selected[pos-1]
-        self.selected[pos-1]=tmp
+        tmp=self.selected.arr[pos]
+        self.selected.arr[pos]=self.selected.arr[pos-1]
+        self.selected.arr[pos-1]=tmp
         self.load_tbl()
         self.load_tblSelected()             
         
@@ -79,9 +127,9 @@ class frmSelector(QDialog, Ui_frmSelector):
         pos=None
         for i in self.tblSelected.selectedItems():
             pos=i.row()
-        tmp=self.selected[pos+1]
-        self.selected[pos+1]=self.selected[pos]
-        self.selected[pos]=tmp
+        tmp=self.selected.arr[pos+1]
+        self.selected.arr[pos+1]=self.selected.arr[pos]
+        self.selected.arr[pos]=tmp
         self.load_tbl()
         self.load_tblSelected()        
         

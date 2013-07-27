@@ -181,7 +181,7 @@ class wdgInversiones(QWidget, Ui_wdgInversiones):
         
     @QtCore.pyqtSlot() 
     def on_actionOrdenarTPCVenta_activated(self):
-        self.inversiones=sorted(self.inversiones, key=lambda inv: inv.tpc_venta(),  reverse=False) 
+        self.inversiones=sorted(self.inversiones, key=lambda inv: ( inv.tpc_venta(), -inv.tpc_invertido()),  reverse=False) #Ordenado por dos criterios
         self.tblInversiones_reload_after_order()
         
     @QtCore.pyqtSlot() 
