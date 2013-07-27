@@ -50,6 +50,8 @@ class wdgInformeDividendos(QWidget, Ui_wdgInformeDividendos):
         self.load_inversiones()
         
     def load_inversiones(self):    
+        self.inversiones.sort_by_tpc_dpa()#Se ordena self.inversiones.arr
+        
         self.tblInversiones.clearContents()
         self.tblInversiones.setRowCount(len(self.inversiones.arr));
         sumdiv=Decimal(0)
@@ -59,8 +61,8 @@ class wdgInformeDividendos(QWidget, Ui_wdgInformeDividendos):
                 tpc=0
                 divestimado=0
             else:
-                dpa=inv.investment.estimacionesdividendo.find(datetime.date.today().year).dpa
-                tpc=inv.investment.estimacionesdividendo.find(datetime.date.today().year).tpc_dpa()
+                dpa=inv.investment.estimacionesdividendo.currentYear().dpa
+                tpc=inv.investment.estimacionesdividendo.currentYear().tpc_dpa()
                 divestimado=inv.dividendo_bruto_estimado()
             
             self.tblInversiones.setItem(i, 0,QTableWidgetItem(inv.name))

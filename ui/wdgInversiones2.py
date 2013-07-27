@@ -12,7 +12,7 @@ class wdgInversiones2(QWidget, Ui_wdgInversiones2):
         QWidget.__init__(self, parent)
         self.setupUi(self)
         self.cfg=cfg
-        self.inversionesmq=[]#Es una lista de inversionesmq
+        self.investments=[]#Es una lista de investments
         self.selInvestment=None##Objeto de inversion seleccionado
         self.tblInversiones.setColumnHidden(0, True)
         self.tblInversiones.settings("wdgInversiones2",  self.cfg.file_ui)    
@@ -30,7 +30,7 @@ class wdgInversiones2(QWidget, Ui_wdgInversiones2):
     def build_array(self, sql):
         inicio=datetime.datetime.now()
         self.sql=sql
-        self.inversionesmq=[]
+        self.investments=[]
         con=self.cfg.connect_myquotes()
         cur = con.cursor()
         cur.execute(sql)
@@ -52,18 +52,19 @@ class wdgInversiones2(QWidget, Ui_wdgInversiones2):
             inv=Investment(self.cfg)
             inv.init__db_row(i)
             inv.quotes.get_basic()
-            self.inversionesmq.append(inv)
+            inv.estimacionesdividendo.load_from_db()
+            self.investments.append(inv)
 #            print ("wdgInversiones2",  inv.agrupations.dic_arr)
         cur.close()     
         cur2.close()
         self.cfg.disconnect_myquotesd(con)   
-        if len(self.inversionesmq)!=0:      
+        if len(self.investments)!=0:      
             diff=datetime.datetime.now()-inicio
-            print("wdgInversiones > build_array: {0} ({1} cada uno)".format(str(diff), diff/len(self.inversionesmq)))
+            print("wdgInversiones > build_array: {0} ({1} cada uno)".format(str(diff), diff/len(self.investments)))
         
 
     def build_table(self):
-        self.tblInversiones.setRowCount(len(self.inversionesmq))
+        self.tblInversiones.setRowCount(len(self.investments))
         #mete a datos
         i=0
         gris = QtGui.QBrush(QtGui.QColor(160, 160, 160))
@@ -71,7 +72,7 @@ class wdgInversiones2(QWidget, Ui_wdgInversiones2):
                     
         tachado = QtGui.QFont()
         tachado.setStrikeOut(True)        #Fuente tachada
-        for inv in self.inversionesmq:
+        for inv in self.investments:
 #            bolsa=self.cfg.bolsas[str(inv.id_bolsas)]
             self.tblInversiones.setItem(i, 0, QTableWidgetItem((str(inv.id))))
             self.tblInversiones.setItem(i, 1, QTableWidgetItem(str(inv.name).upper()))
@@ -81,9 +82,13 @@ class wdgInversiones2(QWidget, Ui_wdgInversiones2):
             self.tblInversiones.setItem(i, 4, inv.currency.qtablewidgetitem(inv.quotes.last.quote, 6 ))
             self.tblInversiones.setItem(i, 5, qtpc(inv.quotes.tpc_diario()))
             self.tblInversiones.setItem(i, 6, qtpc(inv.quotes.tpc_anual()))
-            self.tblInversiones.setItem(i, 7, qtpc(inv.quotes.lastdpa.dpa))
-            if inv.estimacionesdividendo.find(datetime.date.today().year)==None:#dividendo
+            
+            if inv.estimacionesdividendo.currentYear()==None:
+                self.tblInversiones.setItem(i, 7, qtpc(None))
                 self.tblInversiones.item(i, 7).setBackgroundColor( QColor(255, 182, 182))          
+            else:
+                self.tblInversiones.setItem(i, 7, qtpc(inv.estimacionesdividendo.currentYear().tpc_dpa()))  
+                
             if inv.active==False:#Active
                 for j in range(8):
                     self.tblInversiones.item(i, j).setForeground(gris)
@@ -119,7 +124,7 @@ class wdgInversiones2(QWidget, Ui_wdgInversiones2):
     @QtCore.pyqtSlot()  
     def on_actionIbex35_activated(self):
         self.build_array("select * from investments where agrupations like '%|IBEX35|%' and code not in ('EURONEXT#LU0323134006', 'EURONEXT#ES0113790531', 'EURONEXT#ES0113900J37', 'EURONEXT#ES0182870214') order by name,code")
-        self.inversionesmq=sorted(self.inversionesmq, key=lambda row: row[2],  reverse=False) 
+        self.investments=sorted(self.investments, key=lambda row: row[2],  reverse=False) 
         self.build_table()       
 
     @QtCore.pyqtSlot() 
@@ -167,27 +172,27 @@ class wdgInversiones2(QWidget, Ui_wdgInversiones2):
         
     @QtCore.pyqtSlot() 
     def on_actionOrdenarTPCDiario_activated(self):
-        self.inversionesmq=sorted(self.inversionesmq, key=lambda inv: inv.quotes.tpc_diario(),  reverse=True) 
+        self.investments=sorted(self.investments, key=lambda inv: inv.quotes.tpc_diario(),  reverse=True) 
         self.build_table()        
         
     @QtCore.pyqtSlot() 
     def on_actionOrdenarTPCAnual_activated(self):
-        self.inversionesmq=sorted(self.inversionesmq, key=lambda inv: inv.quotes.tpc_anual(),  reverse=True) 
+        self.investments=sorted(self.investments, key=lambda inv: inv.quotes.tpc_anual(),  reverse=True) 
         self.build_table()    
         
     @QtCore.pyqtSlot() 
     def on_actionOrdenarHora_activated(self):
-        self.inversionesmq=sorted(self.inversionesmq, key=lambda inv: inv.quotes.last.datetime,  reverse=False) 
+        self.investments=sorted(self.investments, key=lambda inv: inv.quotes.last.datetime,  reverse=False) 
         self.build_table()        
         
     @QtCore.pyqtSlot() 
     def on_actionOrdenarName_activated(self):
-        self.inversionesmq=sorted(self.inversionesmq, key=lambda inv: inv.name,  reverse=False) 
+        self.investments=sorted(self.investments, key=lambda inv: inv.name,  reverse=False) 
         self.build_table()        
         
     @QtCore.pyqtSlot() 
     def on_actionOrdenarDividendo_activated(self):
-        self.inversionesmq=sorted(self.inversionesmq, key=lambda inv: inv.quotes.tpc_dpa(),  reverse=True) 
+        self.investments=sorted(self.investments, key=lambda inv: inv.estimacionesdividendo.currentYear().tpc_dpa(),  reverse=True) 
         self.build_table()        
         
     def on_txt_returnPressed(self):
@@ -201,7 +206,7 @@ class wdgInversiones2(QWidget, Ui_wdgInversiones2):
             return
             
         self.build_array("select * from investments where id::text like '%"+(self.txt.text().upper())+"%' or upper(name) like '%"+(self.txt.text().upper())+"%' or upper(isin) like '%"+(self.txt.text().upper())+"%' or upper(comentario) like '%"+(self.txt.text().upper())+"%' ")
-        self.inversionesmq=sorted(self.inversionesmq, key=lambda inv: inv.name,  reverse=False) 
+        self.investments=sorted(self.investments, key=lambda inv: inv.name,  reverse=False) 
         self.build_table()          
 
 
@@ -296,7 +301,7 @@ class wdgInversiones2(QWidget, Ui_wdgInversiones2):
         if self.selectedRows==1:
             for i in self.tblInversiones.selectedItems():#itera por cada item no row.
 #                self.selInvestment.id=(self.tblInversiones.item(i.row(), 0).text())
-                self.selInvestment=self.inversionesmq[i.row()]
+                self.selInvestment=self.investments[i.row()]
 
     @pyqtSignature("")
     def on_actionQuoteNew_activated(self):
