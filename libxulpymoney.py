@@ -1,6 +1,6 @@
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
-import datetime,  time,  pytz,   psycopg2,  psycopg2.extras,  sys,  codecs,  urllib.request,    os,  configparser,  threading
+import datetime,  time,  pytz,   psycopg2,  psycopg2.extras,  sys,  codecs,  urllib.request,    os,  configparser
 
 pathGraphIntraday=os.environ['HOME']+"/.myquotes/graphIntraday.png"
 pathGraphHistorical=os.environ['HOME']+"/.myquotes/graphHistorical.png"
@@ -69,11 +69,12 @@ class CuentaOperacionHeredadaInversion:
 
       
 class SetInversiones:
-    def __init__(self, cfg, cuentas, investments):
+    def __init__(self, cfg, cuentas, investments, indicereferencia):
         self.arr=[]
         self.cfg=cfg
         self.cuentas=cuentas
         self.investments=investments
+        self.indicereferencia=indicereferencia  ##Objeto investment
             
     def load_from_db(self, sql):
         cur=self.cfg.con.cursor()
@@ -81,7 +82,7 @@ class SetInversiones:
         for row in cur:
             inv=Inversion(self.cfg).init__db_row(row,  self.cuentas.find(row['id_cuentas']), self.investments.find(row['myquotesid']))
             inv.get_operinversiones()
-            inv.op_actual.get_valor_indicereferencia()
+            inv.op_actual.get_valor_indicereferencia(self.indicereferencia)
             self.arr.append(inv)
             sys.stdout.write("\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\bInversión {0}/{1}: ".format(cur.rownumber, cur.rowcount) )
             sys.stdout.flush()
@@ -94,7 +95,13 @@ class SetInversiones:
         print ("No se ha encontrado la inversión {0} en SetInversiones.inversion".format(id))
         return None
         
-                
+                        
+    def union(self, list2):
+        """Devuelve un SetEbs con la union del set1 y del set2"""
+        resultado=SetInversiones(self.cfg, self.cuentas, self.investments, self.indicereferencia)
+        resultado.arr=self.arr+list2.arr
+        return resultado
+
 
     def qcombobox_same_investmentmq(self, combo,  investmentmq):
         """Muestra las inversiones activas que tienen el mq pasado como parametro"""
@@ -209,8 +216,6 @@ class SetInversiones:
         destino.get_operinversiones(cur, self.cfg)
         cur.close()
         return True
-#        except:
-#            return False
         
 class SetInvestments:
     def __init__(self, cfg):
@@ -246,7 +251,13 @@ class SetInvestments:
             if a.id==id:
                 return a
         return None
-        
+                
+    def union(self, list2):
+        """Devuelve un SetEbs con la union del set1 y del set2"""
+        resultado=SetInvestments(self.cfg)
+        resultado.arr=self.arr+list2.arr
+        return resultado
+
 class SetInvestmentsModes:
     """Agrupa los mode"""
     def __init__(self, cfg):
@@ -411,7 +422,13 @@ class SetCuentas:
     def sort(self):
         self.arr=sorted(self.arr, key=lambda c: c.name,  reverse=False)         
     
-    
+            
+    def union(self,  list2):
+        """Devuelve un SetEbs con la union del set1 y del set2"""
+        resultado=SetCuentas(self.cfg, self.ebs)
+        resultado.arr=self.arr+list2.arr
+        return resultado
+
 class SetCurrencies:
     def __init__(self, cfg):
         self.dic_arr={}
@@ -466,6 +483,12 @@ class SetEntidadesBancarias:
             
     def sort(self):       
         self.arr=sorted(self.arr, key=lambda e: e.name,  reverse=False) 
+        
+    def union(self,  list2):
+        """Devuelve un SetEbs con la union del set1 y del set2"""
+        resultado=SetEntidadesBancarias(self.cfg)
+        resultado.arr=self.arr+list2.arr
+        return resultado
 
 class SetInversionOperacion:       
     """Clase es un array ordenado de objetos newInversionOperacion"""
@@ -774,10 +797,10 @@ class SetInversionOperacionActual:
             return None
         return sumpendiente*100/suminvertido
     
-    def get_valor_indicereferencia(self):
+    def get_valor_indicereferencia(self, indice):
         curms=self.cfg.conms.cursor()
         for o in self.arr:
-            o.get_referencia_indice()
+            o.get_referencia_indice(indice)
         curms.close()
     
     def valor_medio_compra(self):
@@ -1114,13 +1137,13 @@ class InversionOperacionActual:
         self.valor_accion=row['valor_accion']
         return self
                 
-    def get_referencia_indice(self):
+    def get_referencia_indice(self, indice):
         """Función que devuelve un Quote con la referencia del indice.
         Si no existe devuelve un Quote con quote 0"""
         curms=self.cfg.conms.cursor()
-        quote=Quote(self.cfg).init__from_query(curms, self.cfg.indicereferencia, self.datetime)
+        quote=Quote(self.cfg).init__from_query(curms, indice, self.datetime)
         if quote==None:
-            self.referenciaindice= Quote(self.cfg).init__create(self.cfg.indicereferencia, self.datetime, 0)
+            self.referenciaindice= Quote(self.cfg).init__create(indice, self.datetime, 0)
         else:
             self.referenciaindice=quote
         curms.close()
@@ -1581,12 +1604,6 @@ class Cuenta:
         self.numero=numero
         self.currency=currency
         return self
-    
-#    def init__db_extended_row(self, row):
-#        """Carga de un row que tiene eb, cuentas inversiones"""
-#        self.init__db_row(row)
-#        self.eb=EntidadBancaria().init__db_row(row)
-#        return self
         
     def save(self, cur):
         if self.id==None:
@@ -1655,13 +1672,15 @@ class Inversion:
         return self
     
     
-    def save(self, cur):
+    def save(self):
         """Inserta o actualiza la inversión dependiendo de si id=None o no"""
+        cur=self.cfg.con.cursor()
         if self.id==None:
             cur.execute("insert into inversiones (inversion, venta, id_cuentas, in_activa, myquotesid) values (%s, %s,%s,%s,%s) returning id_inversiones", (self.name, self.venta, self.cuenta.id, self.activa, self.mq.id))    
             self.id=cur.fetchone()[0]
         else:
             cur.execute("update inversiones set inversion=%s, venta=%s, id_cuentas=%s, in_activa=%s, myquotesid=%s where id_inversiones=%s", (self.name, self.venta, self.cuenta.id, self.activa, self.mq.id, self.id))
+        cur.close()
 
     def __repr__(self):
         return ("Instancia de Inversion: {0} ({1})".format( self.name, self.id))
@@ -2150,18 +2169,6 @@ class SetTiposOperaciones:
             if key in ('4', '5', '6', '8'):
                 resultado.dic_arr[str(key)]=t
         return resultado
-            
-class TUpdateData(threading.Thread):
-    def __init__(self, cfg):
-        threading.Thread.__init__(self)
-        self.cfg=cfg
-    
-    def run(self):    
-        inicio=datetime.datetime.now()
-        self.cfg.indicereferencia.quotes.get_basic()
-#        for k, v in self.cfg.dic_mqinversiones.items():
-#            v.quotes.get_basic(curms)
-        print("Update quotes took",  datetime.datetime.now()-inicio) 
 
 
 def mylog(text):
@@ -4404,8 +4411,8 @@ class ConfigXulpymoney(ConfigMyStock):
         self.conceptos=SetConceptos(self, self.tiposoperaciones)
         self.conceptos.load_from_db()
         self.localcurrency=self.currencies.find(self.config.get("settings", "localcurrency")) #Currency definido en config
-        self.indicereferencia=Investment(self).init__db(self.config.get("settings", "indicereferencia" ))
-        self.indicereferencia.quotes.get_basic()
+#        self.indicereferencia=Investment(self).init__db(self.config.get("settings", "indicereferencia" ))
+#        self.indicereferencia.quotes.get_basic()
         print(datetime.datetime.now()-inicio)
         
 

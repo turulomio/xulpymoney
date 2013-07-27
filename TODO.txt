@@ -76,14 +76,9 @@
 		indices y purge indices
 
 ========== NUEVO ================
-Bolsa de paris no sale al añadir un quoteibm
-Cambiar el objeto DividendoEstimacion y comprobar que funciona el informedividenods ibm
-20130725 Hacer un config para ui y un config para settings
+2013Bolsa de paris no sale al añadir un quoteibm
+20130724 Cambiar el objeto DividendoEstimacion y comprobar que funciona el informedividenods ibm
 20130725 Hacer SetDividendoEstimaciones y quitar mq.estimaciones
-20130726 Si mantengo las dos bases de datos hay que autenticarse con frmAccess en las dos, para password2
-20130725 Al hacer inactiva una inversion no refresca pero lo hae
 20130727 Poner el selector mes año
-
 20130728 Poner en dividendos el gasto total en el concepto en el año seleccionado en el combo.
-20130728 No ufncionaa las inactivas en wdgInvesrsionews
 20130728 En wdgIH,falta una columna

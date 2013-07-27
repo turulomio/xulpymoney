@@ -22,7 +22,10 @@ class frmInversionesEstudio(QDialog, Ui_frmInversionesEstudio):
         self.data_inversiones=inversiones
         self.data_investments=investments##Para modificar investments
         self.selInversion=selInversion
-        self.currentIndex=79329
+        
+        self.indicereferencia=Investment(self.cfg).init__db(self.cfg.config.get("settings", "indicereferencia" ))
+        self.indicereferencia.quotes.get_basic()
+#        self.currentIndex=79329
         self.selDividendo=None#Dividendo seleccionado
         
         #arrays asociados a tablas
@@ -128,7 +131,7 @@ class frmInversionesEstudio(QDialog, Ui_frmInversionesEstudio):
         
     def update_tables(self):             
         #Actualiza el indice de referencia porque ha cambiado
-        self.selInversion.op_actual.get_valor_indicereferencia()
+        self.selInversion.op_actual.get_valor_indicereferencia(self.indicereferencia)
         self.on_chkOperaciones_stateChanged(self.chkOperaciones.checkState())
         self.selInversion.op_actual.load_myqtablewidget(self.tblInversionActual,  "frmInversionesEstudio")
         self.selInversion.op_historica.load_myqtablewidget(self.tblInversionHistorica,  "frmInversionesEstudio"  )
@@ -281,11 +284,9 @@ class frmInversionesEstudio(QDialog, Ui_frmInversionesEstudio):
         
 
         if self.tipo==1:        #insertar
-            cur = self.cfg.con.cursor()
             i=Inversion(self.cfg).create(inversion,   venta,  self.data_cuentas.find(id_cuentas),  self.data_investments.find(myquotesid))      
-            i.save(cur)
+            i.save()
             self.cfg.con.commit()
-            cur.close()        
             ##Se añade a cfg y vincula. No carga datos porque myquotesid debe existir            
             #Lo añade con las operaciones vacias pero calculadas.
             i.op=SetInversionOperacion(self.cfg)
@@ -293,13 +294,11 @@ class frmInversionesEstudio(QDialog, Ui_frmInversionesEstudio):
             self.data_inversiones.arr.append(i)
             self.done(0)
         elif self.tipo==2:
-            cur = self.cfg.con.cursor()
             self.selInversion.name=inversion
             self.selInversion.venta=venta
             self.selInversion.mq=self.data_investments.find(myquotesid)
-            self.selInversion.save(cur)##El id y el id_cuentas no se pueden modificar
+            self.selInversion.save()##El id y el id_cuentas no se pueden modificar
             self.cfg.con.commit()
-            cur.close()        
             self.cmdInversion.setEnabled(False)
         
     def on_tblOperaciones_customContextMenuRequested(self,  pos):
