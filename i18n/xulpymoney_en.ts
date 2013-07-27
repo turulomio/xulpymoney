@@ -8,12 +8,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4369"/>
+        <location filename="libxulpymoney.py" line="4370"/>
         <source>Error en la conexi&#xc3;&#xb3;n, vuelva a entrar</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4426"/>
+        <location filename="libxulpymoney.py" line="4427"/>
         <source>Error en la conexi&#xc3;&#xb3;n a xulpymoney, vuelva a entrar</source>
         <translation type="unfinished"></translation>
     </message>
@@ -121,102 +121,102 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="3588"/>
+        <location filename="libxulpymoney.py" line="3589"/>
         <source>No se ha parseado nada</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="3601"/>
+        <location filename="libxulpymoney.py" line="3602"/>
         <source>Se han buscado %(b)d, modificado %(m)d e insertado %(i)d registros de %(c)s</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4191"/>
+        <location filename="libxulpymoney.py" line="4192"/>
         <source>Acciones</source>
         <translation type="unfinished">Shares</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4192"/>
+        <location filename="libxulpymoney.py" line="4193"/>
         <source>Fondos de inversi&#xc3;&#xb3;n</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4193"/>
+        <location filename="libxulpymoney.py" line="4194"/>
         <source>&#xc3;&#xad;ndices</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4194"/>
+        <location filename="libxulpymoney.py" line="4195"/>
         <source>ETFs</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4195"/>
+        <location filename="libxulpymoney.py" line="4196"/>
         <source>Warrants</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4196"/>
+        <location filename="libxulpymoney.py" line="4197"/>
         <source>Divisas</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4197"/>
+        <location filename="libxulpymoney.py" line="4198"/>
         <source>Deuda P&#xc3;&#xba;blica</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4198"/>
+        <location filename="libxulpymoney.py" line="4199"/>
         <source>Planes de pensiones</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4199"/>
+        <location filename="libxulpymoney.py" line="4200"/>
         <source>Deuda Privada</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4200"/>
+        <location filename="libxulpymoney.py" line="4201"/>
         <source>Dep&#xc3;&#xb3;sitos</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4201"/>
+        <location filename="libxulpymoney.py" line="4202"/>
         <source>Cuentas bancarias</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="2301"/>
+        <location filename="libxulpymoney.py" line="2302"/>
         <source>No apalancado</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="2302"/>
+        <location filename="libxulpymoney.py" line="2303"/>
         <source>Apalancamiento variable (Warrants)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="2303"/>
+        <location filename="libxulpymoney.py" line="2304"/>
         <source>Apalancamiento x2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="2304"/>
+        <location filename="libxulpymoney.py" line="2305"/>
         <source>Apalancamiento x3</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="2305"/>
+        <location filename="libxulpymoney.py" line="2306"/>
         <source>Apalancamiento x4</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4544"/>
+        <location filename="libxulpymoney.py" line="4545"/>
         <source>Sourceforge version detected: %s</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4546"/>
+        <location filename="libxulpymoney.py" line="4547"/>
         <source>Error buscando la versi&#xc3;&#xb3;n actual de Sourceforge</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1007,12 +1007,12 @@ correspondiente en la tabla</source>
         <translation>Activate Credit Card</translation>
     </message>
     <message>
-        <location filename="ui/frmCuentasIBM.py" line="343"/>
+        <location filename="ui/frmCuentasIBM.py" line="339"/>
         <source>Desactivar tarjeta</source>
         <translation>Deactivate Credit Card</translation>
     </message>
     <message>
-        <location filename="ui/frmCuentasIBM.py" line="345"/>
+        <location filename="ui/frmCuentasIBM.py" line="341"/>
         <source>Activar tarjeta</source>
         <translation>Activate Credit Card</translation>
     </message>
@@ -1047,17 +1047,17 @@ correspondiente en la tabla</source>
         <translation>Return the payment</translation>
     </message>
     <message>
-        <location filename="ui/frmCuentasIBM.py" line="263"/>
+        <location filename="ui/frmCuentasIBM.py" line="259"/>
         <source>Tarjeta {0}. </source>
         <translation>Credit card {0}. </translation>
     </message>
     <message>
-        <location filename="ui/frmCuentasIBM.py" line="278"/>
+        <location filename="ui/frmCuentasIBM.py" line="274"/>
         <source>Tarjeta {0}</source>
         <translation>Credit Card {0}</translation>
     </message>
     <message>
-        <location filename="ui/frmCuentasIBM.py" line="481"/>
+        <location filename="ui/frmCuentasIBM.py" line="477"/>
         <source>Pago efectuado el {0} de {1}</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3041,13 +3041,18 @@ Se necesitan al menos 24 horas de funcionamiento del demonio myquotesd para que 
         <translation type="unfinished">¿Is active?</translation>
     </message>
     <message>
-        <location filename="ui/wdgCuentas.py" line="64"/>
+        <location filename="ui/wdgCuentas.py" line="79"/>
         <source>Esta cuenta tiene inversiones, tarjetas o movimientos dependientes y no puede ser borrada</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/Ui_wdgCuentas.py" line="135"/>
         <source>Transferencia</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message encoding="UTF-8">
+        <location filename="ui/wdgCuentas.py" line="43"/>
+        <source>Ya se hab´ian cargado las inactivas</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -1605,13 +1605,14 @@ class Cuenta:
         self.currency=currency
         return self
         
-    def save(self, cur):
+    def save(self):
+        cur=self.cfg.con.cursor()
         if self.id==None:
             cur.execute("insert into cuentas (id_entidadesbancarias, cuenta, numerocuenta, cu_activa,currency) values (%s,%s,%s,%s,%s) returning id_cuentas", (self.eb.id, self.name, self.numero, self.activa, self.currency.id))
             self.id=cur.fetchone()[0]
         else:
             cur.execute("update cuentas set cuenta=%s, id_entidadesbancarias=%s, numerocuenta=%s, cu_activa=%s, currency=%s where id_cuentas=%s", (self.name, self.eb.id, self.numero, self.activa, self.currency.id, self.id))
-
+        cur.close()
 
     def es_borrable(self, cur):
         """Función que devuelve un booleano si una cuenta es borrable, es decir, que no tenga registros dependientes."""
