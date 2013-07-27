@@ -1,6 +1,5 @@
 20111214 Cuando se inicia cuenta nueva en un mes y se añade la suma de saldos falla por el inicio de mes anterior
 20111201 En transferencias poner textos localizadosy ID vinculado a transferencia
-20120104 Hacer dialogo para traspaso de fondos de inversión, 
 20120104 Hacer dialogo de split y contrasplit.
 20120105 Al hacer operaciones historicas solo se grabará la diferencia entre el actual y el precio de compra
                  Si las contabilizo ahora luegoal vender sería doble contabilidad pensarlo bien y documentarlo.

@@ -62,7 +62,7 @@ class frmMain2(QMainWindow, Ui_frmMain2):#
         
     def __del__(self):
         print ("Saliendo de la aplicación")
-        self.cfg.disconnect_myquotes(self.cfg.con)
+        self.cfg.disconnect_myquotes(self.cfg.conms)
         
     @pyqtSignature("")
     def on_actionAcercaDe_activated(self):

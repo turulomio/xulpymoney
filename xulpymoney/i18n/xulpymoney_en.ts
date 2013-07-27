@@ -8,12 +8,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4370"/>
+        <location filename="libxulpymoney.py" line="4382"/>
         <source>Error en la conexi&#xc3;&#xb3;n, vuelva a entrar</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4427"/>
+        <location filename="libxulpymoney.py" line="4439"/>
         <source>Error en la conexi&#xc3;&#xb3;n a xulpymoney, vuelva a entrar</source>
         <translation type="unfinished"></translation>
     </message>
@@ -121,102 +121,102 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="3589"/>
+        <location filename="libxulpymoney.py" line="3601"/>
         <source>No se ha parseado nada</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="3602"/>
+        <location filename="libxulpymoney.py" line="3614"/>
         <source>Se han buscado %(b)d, modificado %(m)d e insertado %(i)d registros de %(c)s</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4192"/>
+        <location filename="libxulpymoney.py" line="4204"/>
         <source>Acciones</source>
         <translation type="unfinished">Shares</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4193"/>
+        <location filename="libxulpymoney.py" line="4205"/>
         <source>Fondos de inversi&#xc3;&#xb3;n</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4194"/>
+        <location filename="libxulpymoney.py" line="4206"/>
         <source>&#xc3;&#xad;ndices</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4195"/>
+        <location filename="libxulpymoney.py" line="4207"/>
         <source>ETFs</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4196"/>
+        <location filename="libxulpymoney.py" line="4208"/>
         <source>Warrants</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4197"/>
+        <location filename="libxulpymoney.py" line="4209"/>
         <source>Divisas</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4198"/>
+        <location filename="libxulpymoney.py" line="4210"/>
         <source>Deuda P&#xc3;&#xba;blica</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4199"/>
+        <location filename="libxulpymoney.py" line="4211"/>
         <source>Planes de pensiones</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4200"/>
+        <location filename="libxulpymoney.py" line="4212"/>
         <source>Deuda Privada</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4201"/>
+        <location filename="libxulpymoney.py" line="4213"/>
         <source>Dep&#xc3;&#xb3;sitos</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4202"/>
+        <location filename="libxulpymoney.py" line="4214"/>
         <source>Cuentas bancarias</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="2302"/>
+        <location filename="libxulpymoney.py" line="2314"/>
         <source>No apalancado</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="2303"/>
+        <location filename="libxulpymoney.py" line="2315"/>
         <source>Apalancamiento variable (Warrants)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="2304"/>
+        <location filename="libxulpymoney.py" line="2316"/>
         <source>Apalancamiento x2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="2305"/>
+        <location filename="libxulpymoney.py" line="2317"/>
         <source>Apalancamiento x3</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="2306"/>
+        <location filename="libxulpymoney.py" line="2318"/>
         <source>Apalancamiento x4</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4545"/>
+        <location filename="libxulpymoney.py" line="4557"/>
         <source>Sourceforge version detected: %s</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4547"/>
+        <location filename="libxulpymoney.py" line="4559"/>
         <source>Error buscando la versi&#xc3;&#xb3;n actual de Sourceforge</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2787,7 +2787,7 @@ Se necesitan al menos 24 horas de funcionamiento del demonio myquotesd para que 
         <translation type="unfinished">Investment</translation>
     </message>
     <message>
-        <location filename="ui/wdgBancos.py" line="80"/>
+        <location filename="ui/wdgBancos.py" line="105"/>
         <source>TOTAL</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2822,13 +2822,18 @@ Se necesitan al menos 24 horas de funcionamiento del demonio myquotesd para que 
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgBancos.py" line="206"/>
+        <location filename="ui/wdgBancos.py" line="231"/>
         <source>Este banco tiene cuentas dependientes y no puede ser borrado</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
         <location filename="ui/Ui_wdgBancos.py" line="178"/>
         <source>¿Está activo?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message encoding="UTF-8">
+        <location filename="ui/wdgBancos.py" line="67"/>
+        <source>Ya se hab´ian cargado las inactivas</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
