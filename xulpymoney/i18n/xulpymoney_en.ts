@@ -8,12 +8,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4382"/>
+        <location filename="libxulpymoney.py" line="4383"/>
         <source>Error en la conexi&#xc3;&#xb3;n, vuelva a entrar</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4439"/>
+        <location filename="libxulpymoney.py" line="4440"/>
         <source>Error en la conexi&#xc3;&#xb3;n a xulpymoney, vuelva a entrar</source>
         <translation type="unfinished"></translation>
     </message>
@@ -121,102 +121,102 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="3601"/>
+        <location filename="libxulpymoney.py" line="3602"/>
         <source>No se ha parseado nada</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="3614"/>
+        <location filename="libxulpymoney.py" line="3615"/>
         <source>Se han buscado %(b)d, modificado %(m)d e insertado %(i)d registros de %(c)s</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4204"/>
+        <location filename="libxulpymoney.py" line="4205"/>
         <source>Acciones</source>
         <translation type="unfinished">Shares</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4205"/>
+        <location filename="libxulpymoney.py" line="4206"/>
         <source>Fondos de inversi&#xc3;&#xb3;n</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4206"/>
+        <location filename="libxulpymoney.py" line="4207"/>
         <source>&#xc3;&#xad;ndices</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4207"/>
+        <location filename="libxulpymoney.py" line="4208"/>
         <source>ETFs</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4208"/>
+        <location filename="libxulpymoney.py" line="4209"/>
         <source>Warrants</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4209"/>
+        <location filename="libxulpymoney.py" line="4210"/>
         <source>Divisas</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4210"/>
+        <location filename="libxulpymoney.py" line="4211"/>
         <source>Deuda P&#xc3;&#xba;blica</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4211"/>
+        <location filename="libxulpymoney.py" line="4212"/>
         <source>Planes de pensiones</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4212"/>
+        <location filename="libxulpymoney.py" line="4213"/>
         <source>Deuda Privada</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4213"/>
+        <location filename="libxulpymoney.py" line="4214"/>
         <source>Dep&#xc3;&#xb3;sitos</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4214"/>
+        <location filename="libxulpymoney.py" line="4215"/>
         <source>Cuentas bancarias</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="2314"/>
+        <location filename="libxulpymoney.py" line="2315"/>
         <source>No apalancado</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="2315"/>
+        <location filename="libxulpymoney.py" line="2316"/>
         <source>Apalancamiento variable (Warrants)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="2316"/>
+        <location filename="libxulpymoney.py" line="2317"/>
         <source>Apalancamiento x2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="2317"/>
+        <location filename="libxulpymoney.py" line="2318"/>
         <source>Apalancamiento x3</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="2318"/>
+        <location filename="libxulpymoney.py" line="2319"/>
         <source>Apalancamiento x4</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4557"/>
+        <location filename="libxulpymoney.py" line="4558"/>
         <source>Sourceforge version detected: %s</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4559"/>
+        <location filename="libxulpymoney.py" line="4560"/>
         <source>Error buscando la versi&#xc3;&#xb3;n actual de Sourceforge</source>
         <translation type="unfinished"></translation>
     </message>
