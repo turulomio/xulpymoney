@@ -200,6 +200,8 @@
    <addaction name="separator"/>
    <addaction name="actionFavoritos"/>
    <addaction name="separator"/>
+   <addaction name="actionInversionesManual"/>
+   <addaction name="separator"/>
    <addaction name="actionLog"/>
    <addaction name="separator"/>
    <addaction name="actionSalir"/>
@@ -657,8 +659,8 @@
   </action>
   <action name="actionInversionesManual">
    <property name="icon">
-    <iconset>
-     <normaloff>:/images/document-edit.png</normaloff>:/images/document-edit.png</iconset>
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/keko.png</normaloff>:/xulpymoney/keko.png</iconset>
    </property>
    <property name="text">
     <string>Inversiones de edición manual</string>

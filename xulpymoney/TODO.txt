@@ -73,4 +73,3 @@
 20130724 Cambiar el objeto DividendoEstimacion y comprobar que funciona el informedividenods ibm
 20130725 Hacer SetDividendoEstimaciones y quitar mq.estimaciones
 20130728 Poner en dividendos el gasto total en el concepto en el año seleccionado en el combo.
-20130729 Arreglar las fechas del seletor

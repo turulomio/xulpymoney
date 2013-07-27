@@ -8,12 +8,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4383"/>
+        <location filename="libxulpymoney.py" line="4402"/>
         <source>Error en la conexi&#xc3;&#xb3;n, vuelva a entrar</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4440"/>
+        <location filename="libxulpymoney.py" line="4459"/>
         <source>Error en la conexi&#xc3;&#xb3;n a xulpymoney, vuelva a entrar</source>
         <translation type="unfinished"></translation>
     </message>
@@ -121,102 +121,102 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="3602"/>
+        <location filename="libxulpymoney.py" line="3621"/>
         <source>No se ha parseado nada</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="3615"/>
+        <location filename="libxulpymoney.py" line="3634"/>
         <source>Se han buscado %(b)d, modificado %(m)d e insertado %(i)d registros de %(c)s</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4205"/>
+        <location filename="libxulpymoney.py" line="4224"/>
         <source>Acciones</source>
         <translation type="unfinished">Shares</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4206"/>
+        <location filename="libxulpymoney.py" line="4225"/>
         <source>Fondos de inversi&#xc3;&#xb3;n</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4207"/>
+        <location filename="libxulpymoney.py" line="4226"/>
         <source>&#xc3;&#xad;ndices</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4208"/>
+        <location filename="libxulpymoney.py" line="4227"/>
         <source>ETFs</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4209"/>
+        <location filename="libxulpymoney.py" line="4228"/>
         <source>Warrants</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4210"/>
+        <location filename="libxulpymoney.py" line="4229"/>
         <source>Divisas</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4211"/>
+        <location filename="libxulpymoney.py" line="4230"/>
         <source>Deuda P&#xc3;&#xba;blica</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4212"/>
+        <location filename="libxulpymoney.py" line="4231"/>
         <source>Planes de pensiones</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4213"/>
+        <location filename="libxulpymoney.py" line="4232"/>
         <source>Deuda Privada</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4214"/>
+        <location filename="libxulpymoney.py" line="4233"/>
         <source>Dep&#xc3;&#xb3;sitos</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4215"/>
+        <location filename="libxulpymoney.py" line="4234"/>
         <source>Cuentas bancarias</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="2315"/>
+        <location filename="libxulpymoney.py" line="2313"/>
         <source>No apalancado</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="2316"/>
+        <location filename="libxulpymoney.py" line="2314"/>
         <source>Apalancamiento variable (Warrants)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="2317"/>
+        <location filename="libxulpymoney.py" line="2315"/>
         <source>Apalancamiento x2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="2318"/>
+        <location filename="libxulpymoney.py" line="2316"/>
         <source>Apalancamiento x3</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="2319"/>
+        <location filename="libxulpymoney.py" line="2317"/>
         <source>Apalancamiento x4</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4558"/>
+        <location filename="libxulpymoney.py" line="4577"/>
         <source>Sourceforge version detected: %s</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4560"/>
+        <location filename="libxulpymoney.py" line="4579"/>
         <source>Error buscando la versi&#xc3;&#xb3;n actual de Sourceforge</source>
         <translation type="unfinished"></translation>
     </message>
@@ -319,8 +319,18 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="ui/frmAccess.py" line="45"/>
+        <location filename="ui/frmAccess.py" line="55"/>
         <source>Error en la conexión, vuelva a entrar</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/frmAccess.py" line="21"/>
+        <source>MyStocks - Acceso</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/frmAccess.py" line="32"/>
+        <source>Xulpymoney - Acceso</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -749,7 +759,7 @@ correspondiente en la tabla</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="ui/frmAnalisis.py" line="270"/>
+        <location filename="ui/frmAnalisis.py" line="260"/>
         <source>Año </source>
         <translation type="unfinished"></translation>
     </message>
@@ -1724,11 +1734,6 @@ correspondiente en la tabla</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmMain.py" line="40"/>
-        <source>Xulpymoney - Acceso</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="ui/Ui_frmMain.py" line="217"/>
         <source>Actualizar memoria</source>
         <translation type="unfinished"></translation>
@@ -1748,312 +1753,307 @@ correspondiente en la tabla</source>
         <source>Xulpymoney 2010-{0} ©</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <location filename="ui/frmMain.py" line="51"/>
-        <source>MyStocks - Acceso</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>frmMain2</name>
     <message>
-        <location filename="ui/Ui_frmMain2.py" line="344"/>
+        <location filename="ui/Ui_frmMain2.py" line="346"/>
         <source>MyQuotes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain2.py" line="345"/>
+        <location filename="ui/Ui_frmMain2.py" line="347"/>
         <source>Informes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain2.py" line="346"/>
+        <location filename="ui/Ui_frmMain2.py" line="348"/>
         <source>Indices</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain2.py" line="347"/>
+        <location filename="ui/Ui_frmMain2.py" line="349"/>
         <source>Fondos</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain2.py" line="352"/>
+        <location filename="ui/Ui_frmMain2.py" line="354"/>
         <source>Francia</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain2.py" line="349"/>
+        <location filename="ui/Ui_frmMain2.py" line="351"/>
         <source>Espa&#xc3;&#xb1;a</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain2.py" line="350"/>
+        <location filename="ui/Ui_frmMain2.py" line="352"/>
         <source>ETFs</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain2.py" line="351"/>
+        <location filename="ui/Ui_frmMain2.py" line="353"/>
         <source>Warrants</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain2.py" line="353"/>
+        <location filename="ui/Ui_frmMain2.py" line="355"/>
         <source>Societe Generale</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain2.py" line="354"/>
+        <location filename="ui/Ui_frmMain2.py" line="356"/>
         <source>&amp;Divisas</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain2.py" line="355"/>
+        <location filename="ui/Ui_frmMain2.py" line="357"/>
         <source>Ayuda</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain2.py" line="356"/>
+        <location filename="ui/Ui_frmMain2.py" line="358"/>
         <source>toolBar</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain2.py" line="357"/>
+        <location filename="ui/Ui_frmMain2.py" line="359"/>
         <source>S&amp;alir</source>
         <translation type="unfinished">E&amp;xit</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain2.py" line="358"/>
+        <location filename="ui/Ui_frmMain2.py" line="360"/>
         <source>&amp;Acerca de</source>
         <translation type="unfinished">&amp;About</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain2.py" line="360"/>
+        <location filename="ui/Ui_frmMain2.py" line="362"/>
         <source>Inversiones sin ISIN</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain2.py" line="361"/>
+        <location filename="ui/Ui_frmMain2.py" line="363"/>
         <source>Todos los &#xc3;&#xad;ndices</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain2.py" line="362"/>
+        <location filename="ui/Ui_frmMain2.py" line="364"/>
         <source>Todos los fondos</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain2.py" line="363"/>
+        <location filename="ui/Ui_frmMain2.py" line="365"/>
         <source>Todos los ETF</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain2.py" line="364"/>
+        <location filename="ui/Ui_frmMain2.py" line="366"/>
         <source>Ibex 35</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain2.py" line="365"/>
+        <location filename="ui/Ui_frmMain2.py" line="367"/>
         <source>Eurostoxx 50</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain2.py" line="366"/>
+        <location filename="ui/Ui_frmMain2.py" line="368"/>
         <source>S&amp;&amp;P 500</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain2.py" line="367"/>
+        <location filename="ui/Ui_frmMain2.py" line="369"/>
         <source>Gestora Bankinter</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain2.py" line="368"/>
+        <location filename="ui/Ui_frmMain2.py" line="370"/>
         <source>Gestora Carmignac</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain2.py" line="369"/>
+        <location filename="ui/Ui_frmMain2.py" line="371"/>
         <source>CAC 40</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain2.py" line="370"/>
+        <location filename="ui/Ui_frmMain2.py" line="372"/>
         <source>Nasdaq 100</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain2.py" line="371"/>
+        <location filename="ui/Ui_frmMain2.py" line="373"/>
         <source>Mercado Continuo</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain2.py" line="372"/>
+        <location filename="ui/Ui_frmMain2.py" line="374"/>
         <source>Xetra</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain2.py" line="374"/>
+        <location filename="ui/Ui_frmMain2.py" line="376"/>
         <source>Gestora Ahorro Corporaci&#xc3;&#xb3;n</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain2.py" line="376"/>
+        <location filename="ui/Ui_frmMain2.py" line="378"/>
         <source>Gestora A &amp;&amp; G</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain2.py" line="378"/>
+        <location filename="ui/Ui_frmMain2.py" line="380"/>
         <source>Gestora Allianz</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain2.py" line="380"/>
+        <location filename="ui/Ui_frmMain2.py" line="382"/>
         <source>Gestora GESMADRID</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain2.py" line="382"/>
+        <location filename="ui/Ui_frmMain2.py" line="384"/>
         <source>Gestora Ibercaja Gesti&#xc3;&#xb3;n</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain2.py" line="384"/>
+        <location filename="ui/Ui_frmMain2.py" line="386"/>
         <source>Gestora Renta 4</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain2.py" line="386"/>
+        <location filename="ui/Ui_frmMain2.py" line="388"/>
         <source>Inversiones sin nombre</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain2.py" line="388"/>
+        <location filename="ui/Ui_frmMain2.py" line="390"/>
         <source>Gestora Bancaja Fondos</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain2.py" line="390"/>
+        <location filename="ui/Ui_frmMain2.py" line="392"/>
         <source>Gestora BBK Gesti&#xc3;&#xb3;n</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain2.py" line="392"/>
+        <location filename="ui/Ui_frmMain2.py" line="394"/>
         <source>Gestora BBVA Asset Manager</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain2.py" line="394"/>
+        <location filename="ui/Ui_frmMain2.py" line="396"/>
         <source>Gestora Alpha Plus</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain2.py" line="396"/>
+        <location filename="ui/Ui_frmMain2.py" line="398"/>
         <source>Gestora Amistra SGIIC</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain2.py" line="398"/>
+        <location filename="ui/Ui_frmMain2.py" line="400"/>
         <source>Gestora Amundi Iberia SGIIC</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain2.py" line="400"/>
+        <location filename="ui/Ui_frmMain2.py" line="402"/>
         <source>Gestora Atlas Capital</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain2.py" line="402"/>
+        <location filename="ui/Ui_frmMain2.py" line="404"/>
         <source>Inversiones sin actualizar</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain2.py" line="404"/>
+        <location filename="ui/Ui_frmMain2.py" line="406"/>
         <source>Gestora Aviva Gesti&#xc3;&#xb3;n</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain2.py" line="406"/>
+        <location filename="ui/Ui_frmMain2.py" line="408"/>
         <source>Gestora Bankoa Gesti&#xc3;&#xb3;n</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain2.py" line="408"/>
+        <location filename="ui/Ui_frmMain2.py" line="410"/>
         <source>Gestora Bankpyme</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain2.py" line="410"/>
+        <location filename="ui/Ui_frmMain2.py" line="412"/>
         <source>Gestora Bansabadell Inversi&#xc3;&#xb3;n</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain2.py" line="412"/>
+        <location filename="ui/Ui_frmMain2.py" line="414"/>
         <source>Inversiones desaparecidas</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain2.py" line="414"/>
+        <location filename="ui/Ui_frmMain2.py" line="416"/>
         <source>Gestora Barclays Wealth Manager Espa&#xc3;&#xb1;a</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain2.py" line="416"/>
+        <location filename="ui/Ui_frmMain2.py" line="418"/>
         <source>Registro del sistema</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain2.py" line="418"/>
+        <location filename="ui/Ui_frmMain2.py" line="420"/>
         <source>Exportar tabla quotes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain2.py" line="420"/>
+        <location filename="ui/Ui_frmMain2.py" line="422"/>
         <source>Importar tabla quotes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain2.py" line="422"/>
+        <location filename="ui/Ui_frmMain2.py" line="424"/>
         <source>Warrants Inline</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain2.py" line="424"/>
+        <location filename="ui/Ui_frmMain2.py" line="426"/>
         <source>Turbo Warrants</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain2.py" line="426"/>
+        <location filename="ui/Ui_frmMain2.py" line="428"/>
         <source>Inversiones de edici&#xc3;&#xb3;n manual</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain2.py" line="428"/>
+        <location filename="ui/Ui_frmMain2.py" line="430"/>
         <source>Todas las divisas</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain2.py" line="429"/>
+        <location filename="ui/Ui_frmMain2.py" line="431"/>
         <source>Mostrar favoritos</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain2.py" line="430"/>
+        <location filename="ui/Ui_frmMain2.py" line="432"/>
         <source>Muestra los productos favoritos
 seleccionados por el usuario</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain2.py" line="433"/>
+        <location filename="ui/Ui_frmMain2.py" line="435"/>
         <source>Inversiones sin actualizar hist&#xc3;&#xb3;ricos</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain2.py" line="435"/>
+        <location filename="ui/Ui_frmMain2.py" line="437"/>
         <source>Todas las activas</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain2.py" line="437"/>
+        <location filename="ui/Ui_frmMain2.py" line="439"/>
         <source>Mayores dividendos</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2320,42 +2320,42 @@ seleccionados por el usuario</source>
         <translation type="unfinished">Investment</translation>
     </message>
     <message>
-        <location filename="ui/frmSelector.ui" line="110"/>
+        <location filename="ui/frmSelector.ui" line="122"/>
         <source>Id</source>
         <translation type="unfinished">Id</translation>
     </message>
     <message>
-        <location filename="ui/frmSelector.ui" line="60"/>
+        <location filename="ui/frmSelector.ui" line="66"/>
         <source>Elementos seleccionados</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmSelector.ui" line="70"/>
+        <location filename="ui/frmSelector.ui" line="76"/>
         <source>^</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmSelector.ui" line="77"/>
+        <location filename="ui/frmSelector.ui" line="83"/>
         <source>&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmSelector.ui" line="84"/>
+        <location filename="ui/frmSelector.ui" line="90"/>
         <source>&lt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmSelector.ui" line="91"/>
+        <location filename="ui/frmSelector.ui" line="97"/>
         <source>V</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmSelector.ui" line="115"/>
+        <location filename="ui/frmSelector.ui" line="127"/>
         <source>Elementos</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="ui/frmSelector.ui" line="125"/>
+        <location filename="ui/frmSelector.ui" line="137"/>
         <source>Aceptar la selección</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3297,87 +3297,87 @@ Se necesitan al menos 24 horas de funcionamiento del demonio myquotesd para que 
 <context>
     <name>wdgIndexRange</name>
     <message>
-        <location filename="ui/Ui_wdgIndexRange.py" line="186"/>
+        <location filename="ui/Ui_wdgIndexRange.py" line="187"/>
         <source>Form</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="ui/Ui_wdgIndexRange.py" line="187"/>
+        <location filename="ui/Ui_wdgIndexRange.py" line="188"/>
         <source>Inversiones por rango de un índice</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgIndexRange.py" line="189"/>
+        <location filename="ui/Ui_wdgIndexRange.py" line="190"/>
         <source>Selecciona % entre rangos</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgIndexRange.py" line="190"/>
+        <location filename="ui/Ui_wdgIndexRange.py" line="191"/>
         <source> %</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgIndexRange.py" line="197"/>
+        <location filename="ui/Ui_wdgIndexRange.py" line="198"/>
         <source>Rango</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="ui/Ui_wdgIndexRange.py" line="199"/>
+        <location filename="ui/Ui_wdgIndexRange.py" line="200"/>
         <source>Punto de Inversión</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgIndexRange.py" line="201"/>
+        <location filename="ui/Ui_wdgIndexRange.py" line="202"/>
         <source>Inversiones</source>
         <translation type="unfinished">Investments</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgIndexRange.py" line="202"/>
+        <location filename="ui/Ui_wdgIndexRange.py" line="203"/>
         <source>Total rangos %s cubierto hasta %s</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="ui/Ui_wdgIndexRange.py" line="207"/>
+        <location filename="ui/Ui_wdgIndexRange.py" line="208"/>
         <source>Factura a cliente genérico</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgIndexRange.py" line="208"/>
+        <location filename="ui/Ui_wdgIndexRange.py" line="209"/>
         <source>Modificar factura</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgIndexRange.py" line="209"/>
+        <location filename="ui/Ui_wdgIndexRange.py" line="210"/>
         <source>Borrar factura</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgIndexRange.py" line="188"/>
+        <location filename="ui/Ui_wdgIndexRange.py" line="189"/>
         <source>Datos del estudio</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgIndexRange.py" line="191"/>
+        <location filename="ui/Ui_wdgIndexRange.py" line="192"/>
         <source>Dinero a invertir</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgIndexRange.py" line="192"/>
+        <location filename="ui/Ui_wdgIndexRange.py" line="193"/>
         <source>10000</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="ui/Ui_wdgIndexRange.py" line="193"/>
+        <location filename="ui/Ui_wdgIndexRange.py" line="194"/>
         <source>Limite inferior del índice</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgIndexRange.py" line="194"/>
+        <location filename="ui/Ui_wdgIndexRange.py" line="195"/>
         <source>1000</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgIndexRange.py" line="195"/>
+        <location filename="ui/Ui_wdgIndexRange.py" line="196"/>
         <source>Calcular los rangos</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3398,17 +3398,17 @@ Se necesitan al menos 24 horas de funcionamiento del demonio myquotesd para que 
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgIndexRange.py" line="203"/>
+        <location filename="ui/Ui_wdgIndexRange.py" line="204"/>
         <source>Ver an&#xc3;&#xa1;lisis del &#xc3;&#xad;ndice de referencia</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgIndexRange.py" line="206"/>
+        <location filename="ui/Ui_wdgIndexRange.py" line="207"/>
         <source>...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgIndexRange.py" line="205"/>
+        <location filename="ui/Ui_wdgIndexRange.py" line="206"/>
         <source>A&#xc3;&#xb1;adir cotizaci&#xc3;&#xb3;n al &#xc3;&#xad;ndice de referencia</source>
         <translation type="unfinished"></translation>
     </message>

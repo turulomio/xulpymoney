@@ -71,11 +71,11 @@ class frmAnalisis(QDialog, Ui_frmAnalisis):
         self.cfg.currencies.load_qcombobox(self.cmbCurrency)
         self.cfg.apalancamientos.load_qcombobox(self.cmbApalancado)
         self.cfg.types.load_qcombobox(self.cmbTipo)
-
-        if self.investment.id!=None:#Si no está definido petaba el timer por no saber cual es
-            self.mytimer = QTimer()
-            QObject.connect(self.mytimer, SIGNAL("timeout()"), self.on_cmdUpdate_pressed     )    
-            self.mytimer.start(60000)            
+#
+#        if self.investment.id!=None:#Si no está definido petaba el timer por no saber cual es
+#            self.mytimer = QTimer()
+#            QObject.connect(self.mytimer, SIGNAL("timeout()"), self.on_cmdUpdate_pressed     )    
+#            self.mytimer.start(60000)            
         
     def __load_information(self):
         def row_tblTPV(quote,  row):
@@ -93,18 +93,10 @@ class frmAnalisis(QDialog, Ui_frmAnalisis):
                 self.tblTPC.setItem(row, 2, qtpc(None))    
                 self.tblTPC.setItem(row, 3,  qtpc(None))     
                 
-        self.cmbAgrupations.clear()
-        try:
-            for a in self.investment.agrupations.arr:
-                self.cmbAgrupations.addItem(a.name, a.id)
-        except:
-            print ("Error con agrupations")
-        self.cmbPriority.clear()
-        for p in self.investment.priority.list():
-            self.cmbPriority.addItem(p.name,  p.id)
-        self.cmbPriorityHistorical.clear()
-        for p in self.investment.priorityhistorical.list():
-            self.cmbPriorityHistorical.addItem(p.name,  p.id)
+                
+        self.investment.agrupations.load_qcombobox(self.cmbAgrupations)
+        self.investment.priority.load_qcombobox(self.cmbPriority)
+        self.investment.priorityhistorical.load_qcombobox(self.cmbPriorityHistorical)
 
         self.lblInversion.setText(("%s ( %s )" %(self.investment.name, self.investment.id)))
         self.txtTPC.setText(str(self.investment.tpc))
@@ -119,13 +111,12 @@ class frmAnalisis(QDialog, Ui_frmAnalisis):
 
         if self.investment.active==True:
             self.chkActive.setCheckState(Qt.Checked)
-
         if self.investment.obsolete==True:
             self.chkObsolete.setCheckState(Qt.Checked)          
 
         self.cmbBolsa.setCurrentIndex(self.cmbBolsa.findData(self.investment.bolsa.id))
         self.cmbCurrency.setCurrentIndex(self.cmbCurrency.findData(self.investment.currency.id))
-        self.cmbPCI.setCurrentIndex(self.cmbPCI.findData(self.investment.mode))
+        self.cmbPCI.setCurrentIndex(self.cmbPCI.findData(self.investment.mode.id))
         self.cmbTipo.setCurrentIndex(self.cmbTipo.findData(self.investment.type.id))
         self.cmbApalancado.setCurrentIndex(self.cmbApalancado.findData(self.investment.apalancado.id))
         
@@ -151,7 +142,7 @@ class frmAnalisis(QDialog, Ui_frmAnalisis):
         
     def load_data_from_db(self):
         if self.investment.id!=None:
-            self.mytimer.stop()
+#            self.mytimer.stop()
             con=self.cfg.connect_myquotes()
             cur = con.cursor()
             self.result.get_all(cur)
@@ -160,11 +151,10 @@ class frmAnalisis(QDialog, Ui_frmAnalisis):
             cur.close()     
             self.cfg.disconnect_myquotes(con)  
             self.update_due_to_all_change()
-            self.mytimer.start()
+#            self.mytimer.start()
         
     def update_due_to_all_change(self):
         self.result.get_basic_in_all()
-        print (self.result.last.quote, self.result.penultimate.quote)
         self.result.calculate_ochl_diary()#necesario para usar luego ochl_otros
         inicio=datetime.datetime.now()
         self.__load_information()
@@ -404,12 +394,12 @@ class frmAnalisis(QDialog, Ui_frmAnalisis):
 
     def on_cmdPriority_released(self):
         if self.investment.id==None:#Insertar nueva inversión
-            selected=SetPriorities(self.cfg)
+            selected=SetPriorities(self.cfg)#Esta vacio
         else:
             selected=self.investment.priority
         
-        f=frmSelector(self.cfg, SetPriorities(self.cfg).init__all(), selected)
-        f.lbl.setText("Selector de Prioridades")
+        f=frmSelector(self.cfg, self.cfg.priorities.clone(), selected)
+        f.lbl.setText("Selector de prioridades")
         f.exec_()
         self.cmbPriority.clear()
         for item in f.selected.arr:
@@ -417,12 +407,12 @@ class frmAnalisis(QDialog, Ui_frmAnalisis):
 
     def on_cmdPriorityHistorical_released(self):
         if self.investment.id==None:#Insertar nueva inversión
-            selected=SetPrioritiesHistorical(self.cfg)
+            selected=SetPrioritiesHistorical(self.cfg)#“acio
         else:
             selected=self.investment.priorityhistorical
         
-        f=frmSelector(self.cfg, SetPrioritiesHistorical(self.cfg).init__all(),  selected) 
-        f.lbl.setText("Selector de Prioridades de datos históricos")
+        f=frmSelector(self.cfg, self.cfg.prioritieshistorical.clone(),  selected) 
+        f.lbl.setText("Selector de prioridades de datos históricos")
         f.exec_()
         self.cmbPriorityHistorical.clear()
         for item in f.selected.arr:

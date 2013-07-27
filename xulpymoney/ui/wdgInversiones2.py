@@ -53,6 +53,7 @@ class wdgInversiones2(QWidget, Ui_wdgInversiones2):
             inv.init__db_row(i)
             inv.quotes.get_basic()
             self.inversionesmq.append(inv)
+#            print ("wdgInversiones2",  inv.agrupations.dic_arr)
         cur.close()     
         cur2.close()
         self.cfg.disconnect_myquotesd(con)   
@@ -162,7 +163,7 @@ class wdgInversiones2(QWidget, Ui_wdgInversiones2):
         w.exec_()        
         self.build_array(self.sql)
         self.build_table()
-        w.mytimer.stop()
+#        w.mytimer.stop()
         
     @QtCore.pyqtSlot() 
     def on_actionOrdenarTPCDiario_activated(self):
