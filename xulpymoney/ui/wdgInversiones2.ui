@@ -139,8 +139,8 @@
   </layout>
   <action name="actionInversionEstudio">
    <property name="icon">
-    <iconset>
-     <normaloff>:/xulpmoney/document-edit.png</normaloff>:/xulpmoney/document-edit.png</iconset>
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/history.png</normaloff>:/xulpymoney/history.png</iconset>
    </property>
    <property name="text">
     <string>Estudio de la Inversión</string>
@@ -193,8 +193,8 @@
   </action>
   <action name="actionIbex35">
    <property name="icon">
-    <iconset>
-     <normaloff>:/images/spain.gif</normaloff>:/images/spain.gif</iconset>
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/countries/spain.gif</normaloff>:/countries/spain.gif</iconset>
    </property>
    <property name="text">
     <string>Ibex 35</string>
@@ -202,8 +202,8 @@
   </action>
   <action name="actionInversionNueva">
    <property name="icon">
-    <iconset>
-     <normaloff>:/images/item_add.png</normaloff>:/images/item_add.png</iconset>
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/add.png</normaloff>:/xulpymoney/add.png</iconset>
    </property>
    <property name="text">
     <string>Nueva Inversión manual</string>
@@ -217,8 +217,8 @@ datos manualmente, seleccione esta opción.</string>
   </action>
   <action name="actionInversionModificar">
    <property name="icon">
-    <iconset>
-     <normaloff>:/images/edit.png</normaloff>:/images/edit.png</iconset>
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/document-edit.png</normaloff>:/xulpymoney/document-edit.png</iconset>
    </property>
    <property name="text">
     <string>Editar Inversión manual</string>
@@ -232,8 +232,8 @@ seleccione esta opción.</string>
   </action>
   <action name="actionInversionBorrar">
    <property name="icon">
-    <iconset>
-     <normaloff>:/images/eventdelete.png</normaloff>:/images/eventdelete.png</iconset>
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/list-remove.png</normaloff>:/xulpymoney/list-remove.png</iconset>
    </property>
    <property name="text">
     <string>Borrar Inversión</string>
@@ -248,8 +248,8 @@ sistema.</string>
   </action>
   <action name="actionFavoritos">
    <property name="icon">
-    <iconset>
-     <normaloff>:/images/star.png</normaloff>:/images/star.png</iconset>
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/star.png</normaloff>:/xulpymoney/star.png</iconset>
    </property>
    <property name="text">
     <string>Añadir a favoritos</string>
@@ -269,8 +269,8 @@ sistema.</string>
   </action>
   <action name="actionQuoteNew">
    <property name="icon">
-    <iconset>
-     <normaloff>:/images/item_add.png</normaloff>:/images/item_add.png</iconset>
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/add.png</normaloff>:/xulpymoney/add.png</iconset>
    </property>
    <property name="text">
     <string>Nueva cotización</string>

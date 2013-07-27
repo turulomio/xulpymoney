@@ -106,17 +106,21 @@ class wdgInversiones2(QWidget, Ui_wdgInversiones2):
                 return True
             return False
             
-        favoritos=list_loadprops(self.cfg.file,"wdgInversiones2",  "favoritos")
-        print (favoritos)
+        favoritos=self.cfg.config_load_list(self.cfg.config,"wdgInversiones2",  "favoritos")
         if str(self.selInvestment.id) in favoritos:
             if wdgInversiones_esta_mostrando_favoritos(favoritos)==True:
-                favoritos.remove(self.selInvestment.id)
-                self.sql="select * from investments where id in ("+str(favoritos)[1:-1]+") order by name, id"
+                favoritos.remove(str(self.selInvestment.id))
+                if len(favoritos)==0:
+                    self.sql="select * from investments where id=-999999999"
+                else:
+                    self.sql="select * from investments where id in ("+str(favoritos)[1:-1]+") order by name, id"
                 self.build_array(self.sql)
                 self.build_table()
         else:
             favoritos.append(self.selInvestment.id)
-        list_saveprops(self.cfg.file,"wdgInversiones",  "favoritos2",  favoritos)
+        print ("Favoritos", favoritos)
+        self.cfg.config_set_list(self.cfg.config,"wdgInversiones2",  "favoritos",  favoritos)
+        self.cfg.configs_save()
         self.setFavoritos=set(favoritos)
 
 
