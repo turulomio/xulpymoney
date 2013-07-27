@@ -217,6 +217,10 @@ class SetInversiones:
         cur.close()
         return True
         
+    def sort_by_tpc_dpa(self):
+        self.arr=sorted(self.arr, key=lambda inv: inv.investment.estimacionesdividendo.currentYear().tpc_dpa(),  reverse=True) 
+        
+        
 class SetInvestments:
     def __init__(self, cfg):
         self.arr=[]
@@ -481,6 +485,9 @@ class SetDividendosEstimaciones:
             return self.dic_arr[str(year)]
         except:
             return None
+            
+    def currentYear(self):
+        return self.find(datetime.date.today().year)
 
     def dias_sin_actualizar(self):
         ultima=datetime.date(1990, 1, 1)
@@ -489,6 +496,7 @@ class SetDividendosEstimaciones:
                 ultima=v.fechaestimacion
         return (datetime.date.today()-ultima).days
 
+        
 class SetEntidadesBancarias:     
     def __init__(self, cfg):
         self.arr=[]
@@ -2707,14 +2715,14 @@ class DividendoEstimacion:
         return self
         
         
-    def dpa(self,  investment,  currentyear):
-        resultado=None
-        curms=self.cfg.conms.cursor()
-        curms.execute("select dpa from estimaciones where id=%s and year=%s", (investment.id, currentyear))
-        if curms.rowcount==1:
-            resultado=curms.fetchone()[0]
-        curms.close()
-        return resultado
+#    def dpa(self,  investment,  currentyear):
+#        resultado=None
+#        curms=self.cfg.conms.cursor()
+#        curms.execute("select dpa from estimaciones where id=%s and year=%s", (investment.id, currentyear))
+#        if curms.rowcount==1:
+#            resultado=curms.fetchone()[0]
+#        curms.close()
+#        return resultado
         
     def init__from_db(self, investment,  currentyear):
         """Saca el registro  o uno en blanco si no lo encuentra, que fueron pasados como parámetro"""
@@ -2747,7 +2755,17 @@ class DividendoEstimacion:
             return 0
         else:
             return self.dpa/self.investment.quotes.endlastyear.quote*100
-   
+        
+
+    
+#    def tpc_dpa(self):
+#        """Calcula el tpc del dpa del utlimo año lastdpa"""
+#        last=self.investment.quotes.last
+#        estimacion=self.find(datetime.date.today().year)
+#        if estimacion!=None and last!=None and last.quote!=0:
+#                return 100*estimacion.dpa/last.quote
+#        else:
+#            return None       
 class SourceNew:
     """Clase nueva para todas las sources
     Debera:
@@ -3852,7 +3870,7 @@ class QuotesResult:
         self.cfg=cfg
         self.investment=investment
         self.last=None
-        self.lastdpa=None
+#        self.lastdpa=None
         self.penultimate=None
         self.endlastyear=None
         self.limit=None
@@ -3884,7 +3902,7 @@ class QuotesResult:
         return True
     
     def get_basic(self):
-        """Función que calcula last, penultimate y lastdate y el lastdpa"""
+        """Función que calcula last, penultimate y lastdate """
 #        inicio=datetime.datetime.now()
         curms=self.cfg.conms.cursor()
         triplete=Quote(self.cfg).init__from_query_triplete(self.investment)
@@ -3900,39 +3918,18 @@ class QuotesResult:
             else:
                 self.penultimate=Quote(self.cfg).init__create(self.investment, None, None)
             self.endlastyear=Quote(self.cfg).init__from_query(curms,  self.investment,  datetime.datetime(datetime.date.today().year-1, 12, 31, 23, 59, 59, tzinfo=pytz.timezone('UTC')))
-        self.lastdpa=DividendoEstimacion(self.cfg).init__from_db(self.investment, datetime.date.today().year)
         curms.close()
 
 
     
     def get_basic_in_all(self):
-        """Función que calcula last, penultimate y lastdate y el lastdpa"""
+        """Función que calcula last, penultimate y lastdate """
         self.last=self.all[len(self.all)-1]
         #penultimate es el ultimo del penultimo dia localizado
         dtpenultimate=day_end(self.last.datetime-datetime.timedelta(days=1), self.investment.bolsa.zone)
         self.penultimate=self.find_quote_in_all(dtpenultimate)
         dtendlastyear=dt(datetime.date(self.last.datetime.year-1, 12, 31),  datetime.time(23, 59, 59), self.investment.bolsa.zone)
         self.endlastyear=self.find_quote_in_all(dtendlastyear)
-#        self.lastdpa=DividendoEstimacion(self.cfg).dpa(curms, self.investment, datetime.date.today().year)
-        
-#        
-#    def get_analisis_from_all(self, curms, limit):
-#        """Función que calcula current..., year, month desde la fecha pasada como parámetro"""
-#        self.iniciosemana=self.__find_quote_date(datetime.date.today()-datetime.timedelta(days=datetime.date.today().weekday()+1))
-#        self.semana=self.__find_quote_date(datetime.date.today()-datetime.timedelta(7))
-#        self.mes=self.__find_quote_date(datetime.date.today()-datetime.timedelta(30))
-#        self.meses3=self.__find_quote_date(datetime.date.today()-datetime.timedelta(90))
-#        self.meses6=self.__find_quote_date(datetime.date.today()-datetime.timedelta(180))
-#        self.ano1=self.__find_quote_date(datetime.date.today()-datetime.timedelta(365))
-#        self.inicioano=self.__find_quote_date(datetime.date(datetime.date.today().year-1, 12, 31))
-#        self.ano2=self.__find_quote_date(datetime.date.today()-datetime.timedelta(365*2))
-#        self.ano3=self.__find_quote_date(datetime.date.today()-datetime.timedelta(365*3))
-#        self.ano4=self.__find_quote_date(datetime.date.today()-datetime.timedelta(365*4))
-#        self.ano5=self.__find_quote_date(datetime.date.today()-datetime.timedelta(365*5))
-#        self.ano10=self.__find_quote_date(datetime.date.today()-datetime.timedelta(365*10))
-#        self.ano20=self.__find_quote_date(datetime.date.today()-datetime.timedelta(365*20))
-#        self.ano30=self.__find_quote_date(datetime.date.today()-datetime.timedelta(365*30))      
-
 
     def get_intraday(self, curms, date,  tzinfo):
         """Función que devuelve un array ordenado de objetos Quote"""
@@ -4152,9 +4149,9 @@ class QuotesResult:
   
         
         
-    def get_dpa(self, curms, year):
-        """Busca el dpa y lo amacena en dpa"""
-        return DividendoEstimacion(self.cfg).dpa(cur2, self.investment.id, year)
+#    def get_dpa(self, curms, year):
+#        """Busca el dpa y lo amacena en dpa"""
+#        return DividendoEstimacion(self.cfg).dpa(cur2, self.investment.id, year)
 
     def tpc_diario(self):
         if self.hasBasic():
@@ -4176,14 +4173,6 @@ class QuotesResult:
                 return None
             else:
                 return round((self.last.quote-self.endlastyear.quote)*100/self.endlastyear.quote, 2)       
-    
-    def tpc_dpa(self):
-        """Calcula el tpc del dpa del utlimo año lastdpa"""
-        if self.hasBasic():
-            if self.lastdpa!=None and self.last.quote!=None and self.last.quote!=0:
-                return 100*self.lastdpa/self.last.quote
-            else:
-                return None    
 
 
 

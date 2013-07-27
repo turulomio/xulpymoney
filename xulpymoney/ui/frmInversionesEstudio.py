@@ -107,7 +107,7 @@ class frmInversionesEstudio(QDialog, Ui_frmInversionesEstudio):
                 dtpc=0
                 dtae=0
 
-            estimacion=self.selInversion.investment.estimacionesdividendo[str(datetime.date.today().year)]
+            estimacion=self.selInversion.investment.estimacionesdividendo.currentYear()
             acciones=self.selInversion.acciones()
             tpccalculado=100*estimacion.dpa/self.selInversion.investment.quotes.last.quote
             self.lblDivAnualEstimado.setText(("El dividendo anual estimado, según el valor actual de la acción es del {0} % ({1}€ por acción)".format(str(round(tpccalculado, 2)),  str(estimacion.dpa))))
