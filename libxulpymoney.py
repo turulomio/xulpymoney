@@ -107,8 +107,8 @@ class SetInversiones:
         """Muestra las inversiones activas que tienen el mq pasado como parametro"""
         arr=[]
         for i in self.arr:
-            print (i.mq, investmentmq)
-            if i.activa==True and i.mq==investmentmq:
+            print (i.investment, investmentmq)
+            if i.activa==True and i.investment==investmentmq:
                 arr.append(("{0} - {1}".format(i.cuenta.eb.name, i.name), i.id))
                         
         arr=sorted(arr, key=lambda a: a[0]  ,  reverse=False)  
@@ -156,7 +156,7 @@ class SetInversiones:
         ACTUALMENTE SOLO HACE UN TRASLADO TOTAL
         """
         #Comprueba que el subyacente de origen y destino sea el mismo
-        if origen.mq!=destino.mq:
+        if origen.investment!=destino.investment:
             return False
         cur=self.cfg.con.cursor()
         cur2=self.cfg.con.cursor()
@@ -237,7 +237,7 @@ class SetInvestments:
         curms.execute("select * from investments where id in ("+lista+")" )
         for rowms in curms:
             inv=Investment(self.cfg).init__db_row(rowms)
-            inv.load_estimacion()
+            inv.estimacionesdividendo.load_from_db()
             inv.quotes.get_basic()
             self.arr.append(inv)
             sys.stdout.write("\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\bInvestment {0}/{1}: ".format(curms.rownumber, curms.rowcount) )
@@ -459,6 +459,36 @@ class SetCurrencies:
             combo.addItem("{0} - {1} ({2})".format(c.id, c.name, c.symbol), c.id)
         #NO SE PUEDE PONER C COMO VARIANT YA QUE LUEGO EL FIND NO ENCUENTRA EL OBJETO.
 
+class SetDividendosEstimaciones:
+    def __init__(self, cfg,  investment):
+        self.dic_arr={}
+        self.cfg=cfg   
+        self.investment=investment
+    
+#    def EstimacionNula(self, year):
+#        return DividendoEstimacion(self.cfg).init__create(self, year, datetime.date.today())
+    
+    def load_from_db(self):
+        cur=self.cfg.conms.cursor()
+        cur.execute( "select * from estimaciones where id=%s order by year", (self.investment.id, ))
+        for row in cur:
+            self.dic_arr[str(row['year'])]=DividendoEstimacion(self.cfg).init__from_db(self.investment, row['year'])
+        cur.close()            
+        
+    def find(self, year):
+        """Como puede no haber todos los años se usa find que devuelve una estimacion nula sino existe"""
+        try:
+            return self.dic_arr[str(year)]
+        except:
+            return None
+
+    def dias_sin_actualizar(self):
+        ultima=datetime.date(1990, 1, 1)
+        for k, v in self.dic_arr.items():
+            if v.fechaestimacion>ultima:
+                ultima=v.fechaestimacion
+        return (datetime.date.today()-ultima).days
+
 class SetEntidadesBancarias:     
     def __init__(self, cfg):
         self.arr=[]
@@ -638,13 +668,13 @@ class SetInversionOperacion:
         tabla.clearContents()
         tabla.setRowCount(len(self.arr))
         for rownumber, a in enumerate(self.arr):
-            tabla.setItem(rownumber, 0, qdatetime(a.datetime, a.inversion.mq.bolsa.zone))
+            tabla.setItem(rownumber, 0, qdatetime(a.datetime, a.inversion.investment.bolsa.zone))
             tabla.setItem(rownumber, 1, QTableWidgetItem(a.tipooperacion.name))
             tabla.setItem(rownumber, 2, qright(str(a.acciones)))
-            tabla.setItem(rownumber, 3, a.inversion.mq.currency.qtablewidgetitem(a.valor_accion))
-            tabla.setItem(rownumber, 4, a.inversion.mq.currency.qtablewidgetitem(a.importe))
-            tabla.setItem(rownumber, 5, a.inversion.mq.currency.qtablewidgetitem(a.comision))
-            tabla.setItem(rownumber, 6, a.inversion.mq.currency.qtablewidgetitem(a.impuestos))
+            tabla.setItem(rownumber, 3, a.inversion.investment.currency.qtablewidgetitem(a.valor_accion))
+            tabla.setItem(rownumber, 4, a.inversion.investment.currency.qtablewidgetitem(a.importe))
+            tabla.setItem(rownumber, 5, a.inversion.investment.currency.qtablewidgetitem(a.comision))
+            tabla.setItem(rownumber, 6, a.inversion.investment.currency.qtablewidgetitem(a.impuestos))
 
 
 
@@ -718,7 +748,7 @@ class SetInversionOperacionActual:
             tabla.setRowCount(0)
             return
         inversion=self.arr[0].inversion
-        numdigitos=inversion.mq.quotes.decimalesSignificativos()
+        numdigitos=inversion.investment.quotes.decimalesSignificativos()
         sumacciones=Decimal('0')
         sum_accionesXvalor=Decimal('0')
         sumsaldo=Decimal('0')
@@ -729,8 +759,8 @@ class SetInversionOperacionActual:
         rownumber=0
         for rownumber, a in enumerate(self.arr):
             sumacciones=Decimal(sumacciones)+Decimal(str(a.acciones))
-            saldo=a.saldo(inversion.mq.quotes.last)
-            pendiente=a.pendiente(inversion.mq.quotes.last)
+            saldo=a.saldo(inversion.investment.quotes.last)
+            pendiente=a.pendiente(inversion.investment.quotes.last)
             invertido=a.invertido()
     
             sumsaldo=sumsaldo+saldo
@@ -738,30 +768,30 @@ class SetInversionOperacionActual:
             suminvertido=suminvertido+invertido
             sum_accionesXvalor=sum_accionesXvalor+a.acciones*a.valor_accion
     
-            tabla.setItem(rownumber, 0, qdatetime(a.datetime, inversion.mq.bolsa.zone))
+            tabla.setItem(rownumber, 0, qdatetime(a.datetime, inversion.investment.bolsa.zone))
             tabla.setItem(rownumber, 1, qright("{0:.6f}".format(a.acciones)))
-            tabla.setItem(rownumber, 2, inversion.mq.currency.qtablewidgetitem(a.valor_accion, numdigitos))
-            tabla.setItem(rownumber, 3, inversion.mq.currency.qtablewidgetitem(invertido))
-            tabla.setItem(rownumber, 4, inversion.mq.currency.qtablewidgetitem(saldo))
-            tabla.setItem(rownumber, 5, inversion.mq.currency.qtablewidgetitem(pendiente))
-            tabla.setItem(rownumber, 6, qtpc(a.tpc_anual(inversion.mq.quotes.last.quote, inversion.mq.quotes.endlastyear.quote)))
-            tabla.setItem(rownumber, 7, qtpc(a.tpc_tae(inversion.mq.quotes.last.quote)))
-            tabla.setItem(rownumber, 8, qtpc(a.tpc_total(inversion.mq.quotes.last.quote)))
+            tabla.setItem(rownumber, 2, inversion.investment.currency.qtablewidgetitem(a.valor_accion, numdigitos))
+            tabla.setItem(rownumber, 3, inversion.investment.currency.qtablewidgetitem(invertido))
+            tabla.setItem(rownumber, 4, inversion.investment.currency.qtablewidgetitem(saldo))
+            tabla.setItem(rownumber, 5, inversion.investment.currency.qtablewidgetitem(pendiente))
+            tabla.setItem(rownumber, 6, qtpc(a.tpc_anual(inversion.investment.quotes.last.quote, inversion.investment.quotes.endlastyear.quote)))
+            tabla.setItem(rownumber, 7, qtpc(a.tpc_tae(inversion.investment.quotes.last.quote)))
+            tabla.setItem(rownumber, 8, qtpc(a.tpc_total(inversion.investment.quotes.last.quote)))
             if a.referenciaindice==None:
-                tabla.setItem(rownumber, 9, inversion.mq.currency.qtablewidgetitem(None))
+                tabla.setItem(rownumber, 9, inversion.investment.currency.qtablewidgetitem(None))
             else:
-                tabla.setItem(rownumber, 9, inversion.mq.currency.qtablewidgetitem(a.referenciaindice.quote))
+                tabla.setItem(rownumber, 9, inversion.investment.currency.qtablewidgetitem(a.referenciaindice.quote))
             rownumber=rownumber+1
         tabla.setItem(rownumber, 0, QTableWidgetItem(("TOTAL")))
         tabla.setItem(rownumber, 1, qright(str(sumacciones)))
         if sumacciones==0:
-            tabla.setItem(rownumber, 2, inversion.mq.currency.qtablewidgetitem(0))
+            tabla.setItem(rownumber, 2, inversion.investment.currency.qtablewidgetitem(0))
         else:
-            tabla.setItem(rownumber, 2, inversion.mq.currency.qtablewidgetitem(sum_accionesXvalor/sumacciones, numdigitos))
-        tabla.setItem(rownumber, 3, inversion.mq.currency.qtablewidgetitem(suminvertido))
-        tabla.setItem(rownumber, 4, inversion.mq.currency.qtablewidgetitem(sumsaldo))
-        tabla.setItem(rownumber, 5, inversion.mq.currency.qtablewidgetitem(sumpendiente))
-        tabla.setItem(rownumber, 7, qtpc(self.tpc_tae(inversion.mq.quotes.last.quote)))
+            tabla.setItem(rownumber, 2, inversion.investment.currency.qtablewidgetitem(sum_accionesXvalor/sumacciones, numdigitos))
+        tabla.setItem(rownumber, 3, inversion.investment.currency.qtablewidgetitem(suminvertido))
+        tabla.setItem(rownumber, 4, inversion.investment.currency.qtablewidgetitem(sumsaldo))
+        tabla.setItem(rownumber, 5, inversion.investment.currency.qtablewidgetitem(sumpendiente))
+        tabla.setItem(rownumber, 7, qtpc(self.tpc_tae(inversion.investment.quotes.last.quote)))
         tabla.setItem(rownumber, 8, qtpc(self.tpc_total(sumpendiente, suminvertido)))
             
 
@@ -983,18 +1013,18 @@ class SetInversionOperacionHistorica:
             tabla.setItem(rownumber, 1,QTableWidgetItem(str(round(a.years(), 2))))    
             tabla.setItem(rownumber, 2,QTableWidgetItem(a.inversion.name))
             tabla.setItem(rownumber, 3,QTableWidgetItem(a.tipooperacion.name))
-            tabla.setItem(rownumber, 4,a.inversion.mq.currency.qtablewidgetitem(saldoinicio))
-            tabla.setItem(rownumber, 5,a.inversion.mq.currency.qtablewidgetitem(saldofinal))
-            tabla.setItem(rownumber, 6,a.inversion.mq.currency.qtablewidgetitem(bruto))
-            tabla.setItem(rownumber, 7,a.inversion.mq.currency.qtablewidgetitem(a.comision))
-            tabla.setItem(rownumber, 8,a.inversion.mq.currency.qtablewidgetitem(a.impuestos))
-            tabla.setItem(rownumber, 9,a.inversion.mq.currency.qtablewidgetitem(neto))
+            tabla.setItem(rownumber, 4,a.inversion.investment.currency.qtablewidgetitem(saldoinicio))
+            tabla.setItem(rownumber, 5,a.inversion.investment.currency.qtablewidgetitem(saldofinal))
+            tabla.setItem(rownumber, 6,a.inversion.investment.currency.qtablewidgetitem(bruto))
+            tabla.setItem(rownumber, 7,a.inversion.investment.currency.qtablewidgetitem(a.comision))
+            tabla.setItem(rownumber, 8,a.inversion.investment.currency.qtablewidgetitem(a.impuestos))
+            tabla.setItem(rownumber, 9,a.inversion.investment.currency.qtablewidgetitem(neto))
             tabla.setItem(rownumber, 10,qtpc(a.tpc_tae_neto()))
             tabla.setItem(rownumber, 11,qtpc(a.tpc_total_neto()))
             rownumber=rownumber+1
         if len(self.arr)>0:
             tabla.setItem(len(self.arr), 2,QTableWidgetItem("TOTAL"))    
-            currency=self.arr[0].inversion.mq.currency
+            currency=self.arr[0].inversion.investment.currency
             tabla.setItem(len(self.arr), 4,currency.qtablewidgetitem(sumsaldosinicio))    
             tabla.setItem(len(self.arr), 5,currency.qtablewidgetitem(sumsaldosfinal))    
             tabla.setItem(len(self.arr), 6,currency.qtablewidgetitem(sumbruto))    
@@ -1660,7 +1690,7 @@ class Inversion:
         self.name=None
         self.venta=None
 #        self.id_cuentas=None
-        self.mq=None#Puntero a objeto MQInversion
+        self.investment=None#Puntero a objeto MQInversion
         self.cuenta=None#Vincula a un objeto  Cuenta
         self.activa=None
         self.op=None#Es un objeto SetInversionOperacion
@@ -1672,7 +1702,7 @@ class Inversion:
         self.name=name
         self.venta=venta
         self.cuenta=cuenta
-        self.mq=inversionmq
+        self.investment=inversionmq
         self.activa=True
         return self
     
@@ -1681,10 +1711,10 @@ class Inversion:
         """Inserta o actualiza la inversión dependiendo de si id=None o no"""
         cur=self.cfg.con.cursor()
         if self.id==None:
-            cur.execute("insert into inversiones (inversion, venta, id_cuentas, in_activa, myquotesid) values (%s, %s,%s,%s,%s) returning id_inversiones", (self.name, self.venta, self.cuenta.id, self.activa, self.mq.id))    
+            cur.execute("insert into inversiones (inversion, venta, id_cuentas, in_activa, myquotesid) values (%s, %s,%s,%s,%s) returning id_inversiones", (self.name, self.venta, self.cuenta.id, self.activa, self.investment.id))    
             self.id=cur.fetchone()[0]
         else:
-            cur.execute("update inversiones set inversion=%s, venta=%s, id_cuentas=%s, in_activa=%s, myquotesid=%s where id_inversiones=%s", (self.name, self.venta, self.cuenta.id, self.activa, self.mq.id, self.id))
+            cur.execute("update inversiones set inversion=%s, venta=%s, id_cuentas=%s, in_activa=%s, myquotesid=%s where id_inversiones=%s", (self.name, self.venta, self.cuenta.id, self.activa, self.investment.id, self.id))
         cur.close()
 
     def __repr__(self):
@@ -1695,7 +1725,7 @@ class Inversion:
         self.name=row['inversion']
         self.venta=row['venta']
         self.cuenta=cuenta
-        self.mq=mqinvestment
+        self.investment=mqinvestment
         self.activa=row['in_activa']
         return self
 
@@ -1756,14 +1786,14 @@ class Inversion:
                 - La estimacion de dividendos mq"""
         if year==None:
             year=datetime.date.today().year
-        return self.acciones()*self.mq.estimaciones[str(year)].dpa
+        return self.acciones()*self.investment.estimacionesdividendo.find(year).dpa
         
         
     def diferencia_saldo_diario(self):
         """Función que calcula la diferencia de saldo entre last y penultimate
         Necesita haber cargado mq getbasic y operinversionesactual"""
         try:
-            return self.acciones()*(self.mq.quotes.last.quote-self.mq.quotes.penultimate.quote)
+            return self.acciones()*(self.investment.quotes.last.quote-self.investment.quotes.penultimate.quote)
         except:
             return None
             
@@ -1822,19 +1852,19 @@ class Inversion:
             Si el curms es None se calcula el actual 
                 Necesita haber cargado mq getbasic y operinversionesactual"""     
 #        print (self.name)
-#        print (self.mq.quotes.endlastyear,  self.mq.quotes.penultimate, self.mq.quotes.last)       
+#        print (self.investment.quotes.endlastyear,  self.investment.quotes.penultimate, self.investment.quotes.last)       
         curms=self.cfg.conms.cursor()
         if fecha==None:
             curms.close()
-            return self.acciones()*self.mq.quotes.last.quote
+            return self.acciones()*self.investment.quotes.last.quote
         else:
             acciones=self.acciones(fecha)
             if acciones==0:
                 curms.close()
                 return Decimal('0')
-            quote=Quote(self.cfg).init__from_query(curms, self.mq, day_end_from_date(fecha, self.cfg.localzone))
+            quote=Quote(self.cfg).init__from_query(curms, self.investment, day_end_from_date(fecha, self.cfg.localzone))
             if quote.datetime==None:
-                print ("Inversion saldo: {0} ({1}) en {2} no tiene valor".format(self.name, self.mq.id, fecha))
+                print ("Inversion saldo: {0} ({1}) en {2} no tiene valor".format(self.name, self.investment.id, fecha))
                 curms.close()
                 return Decimal('0')
             curms.close()
@@ -1858,9 +1888,9 @@ class Inversion:
     def tpc_venta(self):       
         """Función que calcula el tpc venta partiendo de las el last y el valor_venta
         Necesita haber cargado mq getbasic y operinversionesactual"""
-        if self.venta==0 or self.venta==None or self.mq.quotes.last.quote==None or self.mq.quotes.last.quote==0:
+        if self.venta==0 or self.venta==None or self.investment.quotes.last.quote==None or self.investment.quotes.last.quote==0:
             return 0
-        return (self.venta-self.mq.quotes.last.quote)*100/self.mq.quotes.last.quote
+        return (self.venta-self.investment.quotes.last.quote)*100/self.investment.quotes.last.quote
 
         
 
@@ -2035,7 +2065,7 @@ class Patrimonio:
         resultado=0
         inicio=datetime.datetime.now()
         for inv in setinversiones.arr:
-            if inv.mq.tpc==0:        
+            if inv.investment.tpc==0:        
                 if fecha==None:
                     resultado=resultado+inv.saldo()
                 else:
@@ -2623,46 +2653,39 @@ class Money:
 
     def suma(self,money, quote):
         return
-
-
-class Estimacion:
-    def __init__(self):
-        self.year=None
-        self.dpa=None
-        self.fechaestimacion=None
-        self.fuente=None
-        self.manual=None
-        self.investment=None# Objeto inversion mq
-        self.bpa=None
-        
-    def init__db_row(self, row, inversionmq):
-        self.year=row['year']
-        self.dpa=row['dpa']
-        self.fechaestimacion=row['fechaestimacion']
-        self.fuente=row['fuente']
-        self.manual=row['manual']
-        self.bpa=row['bpa']
-        self.investment=inversionmq #Permite acceder a todo el objeto desde la estimación
-        return self
-        
-    def init__create(self, year, dpa, fechaestimacion, fuente, manual, bpa, inversionmq):
-        self.year=year
-        self.dpa=dpa
-        self.fechaestimacion=fechaestimacion
-        self.fuente=fuente
-        self.manual=manual
-        self.bpa=bpa
-        self.investment=inversionmq #Permite acceder a todo el objeto desde la estimación
-        return self
-        
-    def tpc_dpa(self):
-        """Hay que tener presente que endlastyear (Objeto Quote) es el endlastyear del año actual
-        Necesita tener cargado en id el endlastyear """
-        if self.investment.quotes.endlastyear.quote==0 or self.investment.quotes.endlastyear.quote==None:
-            return 0
-        else:
-            return self.dpa/self.investment.quotes.endlastyear.quote*100
-    
+#
+#
+#class Estimacion:
+#    def __init__(self):
+#        self.year=None
+#        self.dpa=None
+#        self.fechaestimacion=None
+#        self.fuente=None
+#        self.manual=None
+#        self.investment=None# Objeto inversion mq
+#        self.bpa=None
+#        
+#    def init__db_row(self, row, inversionmq):
+#        self.year=row['year']
+#        self.dpa=row['dpa']
+#        self.fechaestimacion=row['fechaestimacion']
+#        self.fuente=row['fuente']
+#        self.manual=row['manual']
+#        self.bpa=row['bpa']
+#        self.investment=inversionmq #Permite acceder a todo el objeto desde la estimación
+#        return self
+#        
+#    def init__create(self, year, dpa, fechaestimacion, fuente, manual, bpa, inversionmq):
+#        self.year=year
+#        self.dpa=dpa
+#        self.fechaestimacion=fechaestimacion
+#        self.fuente=fuente
+#        self.manual=manual
+#        self.bpa=bpa
+#        self.investment=inversionmq #Permite acceder a todo el objeto desde la estimación
+#        return self
+#        
+#    
 
 class DividendoEstimacion:
     def __init__(self, cfg):
@@ -2711,10 +2734,19 @@ class DividendoEstimacion:
         curms.execute("select count(*) from estimaciones where id=%s and year=%s", (self.investment.id, self.year))
         if curms.fetchone()[0]==0:
             curms.execute("insert into estimaciones (id, year, dpa, fechaestimacion, fuente, manual) values (%s,%s,%s,%s,%s,%s)", (self.investment.id, self.year, self.dpa, self.fechaestimacion, self.fuente, self.manual))
+
+            print (curms.mogrify("insert into estimaciones (id, year, dpa, fechaestimacion, fuente, manual) values (%s,%s,%s,%s,%s,%s)", (self.investment.id, self.year, self.dpa, self.fechaestimacion, self.fuente, self.manual)))
         elif self.dpa!=None:            
-            curms.execute("update estimaciones set dpa=%s, fechaestimacion=%s, fuente=%s, manual=%s where id=%s and year=%s", (self.dpa, self.fechaestimacion, self.fuente, self.manual, self.id, self.year))
+            curms.execute("update estimaciones set dpa=%s, fechaestimacion=%s, fuente=%s, manual=%s where id=%s and year=%s", (self.dpa, self.fechaestimacion, self.fuente, self.manual, self.investment.id, self.year))
         curms.close()
         
+    def tpc_dpa(self):
+        """Hay que tener presente que endlastyear (Objeto Quote) es el endlastyear del año actual
+        Necesita tener cargado en id el endlastyear """
+        if self.investment.quotes.endlastyear.quote==0 or self.investment.quotes.endlastyear.quote==None:
+            return 0
+        else:
+            return self.dpa/self.investment.quotes.endlastyear.quote*100
    
 class SourceNew:
     """Clase nueva para todas las sources
@@ -3484,7 +3516,7 @@ class Investment:
         self.system=None
         
         self.quotes=None#Variable en la que se almacena QuotesResult
-        self.estimaciones={}#Es un diccionario que guarda objetos estimaciones con clave el año
+        self.estimacionesdividendo=SetDividendosEstimaciones(self.cfg, self)#Es un diccionario que guarda objetos estimaciones con clave el año
 
     def __repr__(self):
         return "{0} ({1}) de la {2}".format(self.name , self.id, self.bolsa.name)
@@ -3554,18 +3586,19 @@ class Investment:
         curms.close()
         return self.init__db_row(row)
         
-    def load_estimacion(self, year=None):
-        """Si year es none carga todas las estimaciones de la inversionmq"""
-        curms=self.cfg.conms.cursor()
-        if year==None:
-            year=datetime.date.today().year
-        curms.execute("select * from estimaciones where year=%s and id=%s", (year, self.id))
-        if curms.rowcount==0:        
-            e=Estimacion().init__create(year, 0, datetime.date(2012, 7, 3), "Vacio por código", False, 0, self)
-        else:
-            e=Estimacion().init__db_row(curms.fetchone(), self)
-        self.estimaciones[str(e.year)]=e
-        curms.close()
+#    def load_estimacion(self, year=None):
+#        """Si year es none carga todas las estimaciones de la inversionmq"""
+#        curms=self.cfg.conms.cursor()
+#        if year==None:
+#            year=datetime.date.today().year
+#        curms.execute("select * from estimaciones where year=%s and id=%s", (year, self.id))
+#        if curms.rowcount==0:        
+#            e=DividendoEstimacion(self.cfg).init__create(self, year, datetime.date.today(),  "Vacio por código", False, 0)
+##            e=DividendoEstimacion(self.cfg).init__create(year, 0, datetime.date(2012, 7, 3), "Vacio por código", False, 0, self)
+#        else:
+#            e=DividendoEstimacion(self.cfg). init__from_db( investment,  currentyear):
+#        self.estimacionesdividendo[str(e.year)]=e
+#        curms.close()
         
     def save(self):
         """Esta función inserta una inversión manual"""

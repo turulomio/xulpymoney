@@ -8,12 +8,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4402"/>
+        <location filename="libxulpymoney.py" line="4435"/>
         <source>Error en la conexi&#xc3;&#xb3;n, vuelva a entrar</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4459"/>
+        <location filename="libxulpymoney.py" line="4492"/>
         <source>Error en la conexi&#xc3;&#xb3;n a xulpymoney, vuelva a entrar</source>
         <translation type="unfinished"></translation>
     </message>
@@ -121,102 +121,102 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="3621"/>
+        <location filename="libxulpymoney.py" line="3654"/>
         <source>No se ha parseado nada</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="3634"/>
+        <location filename="libxulpymoney.py" line="3667"/>
         <source>Se han buscado %(b)d, modificado %(m)d e insertado %(i)d registros de %(c)s</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4224"/>
+        <location filename="libxulpymoney.py" line="4257"/>
         <source>Acciones</source>
         <translation type="unfinished">Shares</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4225"/>
+        <location filename="libxulpymoney.py" line="4258"/>
         <source>Fondos de inversi&#xc3;&#xb3;n</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4226"/>
+        <location filename="libxulpymoney.py" line="4259"/>
         <source>&#xc3;&#xad;ndices</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4227"/>
+        <location filename="libxulpymoney.py" line="4260"/>
         <source>ETFs</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4228"/>
+        <location filename="libxulpymoney.py" line="4261"/>
         <source>Warrants</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4229"/>
+        <location filename="libxulpymoney.py" line="4262"/>
         <source>Divisas</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4230"/>
+        <location filename="libxulpymoney.py" line="4263"/>
         <source>Deuda P&#xc3;&#xba;blica</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4231"/>
+        <location filename="libxulpymoney.py" line="4264"/>
         <source>Planes de pensiones</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4232"/>
+        <location filename="libxulpymoney.py" line="4265"/>
         <source>Deuda Privada</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4233"/>
+        <location filename="libxulpymoney.py" line="4266"/>
         <source>Dep&#xc3;&#xb3;sitos</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4234"/>
+        <location filename="libxulpymoney.py" line="4267"/>
         <source>Cuentas bancarias</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="2313"/>
+        <location filename="libxulpymoney.py" line="2343"/>
         <source>No apalancado</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="2314"/>
+        <location filename="libxulpymoney.py" line="2344"/>
         <source>Apalancamiento variable (Warrants)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="2315"/>
+        <location filename="libxulpymoney.py" line="2345"/>
         <source>Apalancamiento x2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="2316"/>
+        <location filename="libxulpymoney.py" line="2346"/>
         <source>Apalancamiento x3</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="2317"/>
+        <location filename="libxulpymoney.py" line="2347"/>
         <source>Apalancamiento x4</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4577"/>
+        <location filename="libxulpymoney.py" line="4610"/>
         <source>Sourceforge version detected: %s</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4579"/>
+        <location filename="libxulpymoney.py" line="4612"/>
         <source>Error buscando la versi&#xc3;&#xb3;n actual de Sourceforge</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3454,83 +3454,88 @@ Se necesitan al menos 24 horas de funcionamiento del demonio myquotesd para que 
 <context encoding="UTF-8">
     <name>wdgInformeDividendos</name>
     <message>
-        <location filename="ui/Ui_wdgInformeDividendos.py" line="122"/>
+        <location filename="ui/Ui_wdgInformeDividendos.py" line="127"/>
         <source>Form</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="ui/Ui_wdgInformeDividendos.py" line="129"/>
+        <location filename="ui/Ui_wdgInformeDividendos.py" line="134"/>
         <source>Inversión</source>
         <translation>Investment</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgInformeDividendos.py" line="131"/>
+        <location filename="ui/Ui_wdgInformeDividendos.py" line="136"/>
         <source>Banco</source>
         <translation>Bank</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgInformeDividendos.py" line="141"/>
+        <location filename="ui/Ui_wdgInformeDividendos.py" line="146"/>
         <source>% Dividendo anual</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgInformeDividendos.py" line="123"/>
+        <location filename="ui/Ui_wdgInformeDividendos.py" line="128"/>
         <source>Estudio de dividendos</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgInformeDividendos.py" line="126"/>
+        <location filename="ui/Ui_wdgInformeDividendos.py" line="131"/>
         <source>Mostrar inversiones inactivas</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="ui/Ui_wdgInformeDividendos.py" line="143"/>
+        <location filename="ui/Ui_wdgInformeDividendos.py" line="148"/>
         <source>Modificar Dividendo por Acción</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgInformeDividendos.py" line="135"/>
+        <location filename="ui/Ui_wdgInformeDividendos.py" line="140"/>
         <source>DPA</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgInformeDividendos.py" line="137"/>
+        <location filename="ui/Ui_wdgInformeDividendos.py" line="142"/>
         <source>Acciones</source>
         <translation>Shares</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgInformeDividendos.py" line="139"/>
+        <location filename="ui/Ui_wdgInformeDividendos.py" line="144"/>
         <source>Estimado</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgInformeDividendos.py" line="142"/>
+        <location filename="ui/Ui_wdgInformeDividendos.py" line="147"/>
         <source>TextLabel</source>
         <translation type="unfinished">Etiqueta</translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="ui/Ui_wdgInformeDividendos.py" line="133"/>
+        <location filename="ui/Ui_wdgInformeDividendos.py" line="138"/>
         <source>Valor acción</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="ui/Ui_wdgInformeDividendos.py" line="124"/>
+        <location filename="ui/Ui_wdgInformeDividendos.py" line="129"/>
         <source>Los dividendos por acción (DPA) que aparecerán marcados de rojo cuando estén desactualizados más de</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="ui/Ui_wdgInformeDividendos.py" line="125"/>
+        <location filename="ui/Ui_wdgInformeDividendos.py" line="130"/>
         <source> días</source>
         <translation>days</translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="ui/Ui_wdgInformeDividendos.py" line="145"/>
+        <location filename="ui/Ui_wdgInformeDividendos.py" line="150"/>
         <source>Estudio de la inversión</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location filename="ui/Ui_wdgInformeDividendos.py" line="152"/>
+        <source>Informe de MyStocks</source>
+        <translation type="unfinished"></translation>
+    </message>
     <message encoding="UTF-8">
-        <location filename="ui/wdgInformeDividendos.py" line="74"/>
-        <source>Si mantuviera la inversión un año obtendría {0} €</source>
+        <location filename="ui/wdgInformeDividendos.py" line="78"/>
+        <source>Si mantuviera la inversión un año obtendría {0}</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -76,8 +76,8 @@
        <item>
         <widget class="QPushButton" name="cmd">
          <property name="icon">
-          <iconset>
-           <normaloff>:/xulpmoney/tools-wizard.png</normaloff>:/xulpmoney/tools-wizard.png</iconset>
+          <iconset resource="../images/xulpymoney.qrc">
+           <normaloff>:/xulpymoney/tools-wizard.png</normaloff>:/xulpymoney/tools-wizard.png</iconset>
          </property>
         </widget>
        </item>
@@ -189,6 +189,18 @@
    </property>
    <property name="toolTip">
     <string>Estudio de la inversión</string>
+   </property>
+  </action>
+  <action name="actionMyStocks">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/kmplot.jpg</normaloff>:/xulpymoney/kmplot.jpg</iconset>
+   </property>
+   <property name="text">
+    <string>Informe de MyStocks</string>
+   </property>
+   <property name="toolTip">
+    <string>Informe de MyStocks</string>
    </property>
   </action>
  </widget>

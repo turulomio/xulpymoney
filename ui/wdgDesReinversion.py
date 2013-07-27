@@ -29,7 +29,7 @@ class wdgDesReinversion(QWidget, Ui_wdgDesReinversion):
             if o.datetime>=self.inversion.op_actual.arr[0].datetime:
                 self.operinversiones.append(o.clone())
 
-        self.txtValorAccion.setText(str(self.inversion.mq.quotes.last.quote))
+        self.txtValorAccion.setText(str(self.inversion.investment.quotes.last.quote))
         self.tabResultados.setCurrentIndex(1)
         self.on_radDes_clicked()
 
@@ -40,7 +40,7 @@ class wdgDesReinversion(QWidget, Ui_wdgDesReinversion):
        
         if self.radDes.isChecked():#DESINVERSION
             (operinversionesactual, operinversioneshistoricas)=self.operinversiones.calcular()
-            q=Quote(self.cfg).init__create(self.inversion.mq, datetime.datetime.now(pytz.timezone(self.cfg.localzone.name)), self.txtValorAccion.decimal())
+            q=Quote(self.cfg).init__create(self.inversion.investment, datetime.datetime.now(pytz.timezone(self.cfg.localzone.name)), self.txtValorAccion.decimal())
             for rec in operinversionesactual.arr:
                 pendiente=rec.pendiente(q)
                 if perdida+pendiente==0:

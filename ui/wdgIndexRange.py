@@ -38,14 +38,14 @@ class wdgIndexRange(QWidget, Ui_wdgIndexRange):
             for i in arr:
                 if i[0]>=min and i[0]<max:
                     o=i[1]
-                    resultado=resultado+ self.trUtf8("{0} {1}: {2} {3} ( {4} acciones a {5} {6} )\n".format(str(o.datetime)[:19], o.inversion.name, o.importe, o.inversion.mq.currency.symbol, int (o.acciones),  o.valor_accion,  o.inversion.mq.currency.symbol))
+                    resultado=resultado+ self.trUtf8("{0} {1}: {2} {3} ( {4} acciones a {5} {6} )\n".format(str(o.datetime)[:19], o.inversion.name, o.importe, o.inversion.investment.currency.symbol, int (o.acciones),  o.valor_accion,  o.inversion.investment.currency.symbol))
             return resultado[:-1]
         inicio=datetime.datetime.now()
 
         arr=[]
 
         for i in self.data_inversiones.arr:
-            if i.mq.tpc!=0:
+            if i.investment.tpc!=0:
                 for o in i.op_actual.arr:
                     arr.append((o.referenciaindice.quote, o))
 
