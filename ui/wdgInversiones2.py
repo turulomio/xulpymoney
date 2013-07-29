@@ -67,8 +67,8 @@ class wdgInversiones2(QWidget, Ui_wdgInversiones2):
         self.tblInversiones.setRowCount(len(self.investments))
         #mete a datos
         i=0
-        gris = QtGui.QBrush(QtGui.QColor(160, 160, 160))
-        gris.setStyle(QtCore.Qt.NoBrush)
+#        gris = QtGui.QBrush(QtGui.QColor(160, 160, 160))
+#        gris.setStyle(QtCore.Qt.NoBrush)
                     
         tachado = QtGui.QFont()
         tachado.setStrikeOut(True)        #Fuente tachada
@@ -89,9 +89,9 @@ class wdgInversiones2(QWidget, Ui_wdgInversiones2):
             else:
                 self.tblInversiones.setItem(i, 7, qtpc(inv.estimacionesdividendo.currentYear().tpc_dpa()))  
                 
-            if inv.active==False:#Active
-                for j in range(8):
-                    self.tblInversiones.item(i, j).setForeground(gris)
+            if inv.active==True:#Active
+#                for j in range(8):
+                self.tblInversiones.item(i, 4).setIcon(QIcon(":/xulpymoney/transfer.png"))
             if inv.obsolete==True:#Obsolete
                 self.tblInversiones.item(i, 1).setFont(tachado)
             i=i+1        

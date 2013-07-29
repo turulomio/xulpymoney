@@ -277,7 +277,7 @@ class frmInversionesEstudio(QDialog, Ui_frmInversionesEstudio):
         if self.data_investments.find(myquotesid)==None:
             print ("Cargando otro mqinversiones")
             inv=Investment(self.cfg).init__db(myquotesid)
-            inv.estimaciondividendo.load_from_db()
+            inv.estimacionesdividendo.load_from_db()
             inv.quotes.get_basic()
             self.data_investments.arr.append(inv)
             

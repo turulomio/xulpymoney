@@ -2306,7 +2306,7 @@ class SetAgrupations:
         
     def clone_acciones(self):
         """Función que filtra el diccionario a según el país y el fondo """
-        return self.clone_by_type(self.cfg.types.find(1))
+        return self.clone_by_type(self.cfg.types.find(3))
         
         
     def clone_from_dbstring(self, dbstr):
