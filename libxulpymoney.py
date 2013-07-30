@@ -87,6 +87,21 @@ class SetInversiones:
             sys.stdout.write("\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\bInversión {0}/{1}: ".format(cur.rownumber, cur.rowcount) )
             sys.stdout.flush()
         cur.close()  
+        
+    def list_distinct_myquotesid(self):
+        """Funci´on que devuelve una lista con los distintos myquotesid """
+        resultado=set([])
+        for inv in self.arr:
+            resultado.add(inv.investment.id)
+        return list(resultado)
+            
+            
+                
+        ##Conviert cur a lista separada comas
+        lista=""
+        for row in cur:
+            lista=lista+ str(row['myquotesid']) + ", "
+        lista=lista[:-2]
             
     def find(self, id):
         for i in self.arr:
@@ -225,12 +240,10 @@ class SetInvestments:
     def __init__(self, cfg):
         self.arr=[]
         self.cfg=cfg
-    def load_from_db(self, sql):
+    def load_from_inversiones_query(self, sql):
         """sql es una query sobre la tabla inversiones"""
         cur=self.cfg.con.cursor()
-        curms=self.cfg.conms.cursor()
         cur.execute(sql)#"Select distinct(myquotesid) from inversiones"
-        
         ##Conviert cur a lista separada comas
         lista=""
         for row in cur:
@@ -238,7 +251,13 @@ class SetInvestments:
         lista=lista[:-2]
         
         ##Carga los investments
-        curms.execute("select * from investments where id in ("+lista+")" )
+        self.load_from_db("select * from investments where id in ("+lista+")" )
+        cur.close()
+        
+    def load_from_db(self, sql):
+        """sql es una query sobre la tabla inversiones"""
+        curms=self.cfg.conms.cursor()
+        curms.execute(sql)#"select * from investments where id in ("+lista+")" 
         for rowms in curms:
             inv=Investment(self.cfg).init__db_row(rowms)
             inv.estimacionesdividendo.load_from_db()
@@ -246,7 +265,6 @@ class SetInvestments:
             self.arr.append(inv)
             sys.stdout.write("\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\bInvestment {0}/{1}: ".format(curms.rownumber, curms.rowcount) )
             sys.stdout.flush()
-        cur.close()
         curms.close()
                            
     def find(self, id):
@@ -2491,8 +2509,7 @@ class Bolsa:
         self.name=None
         self.country=None
         self.starts=None
-        self.ends=None
-        self.close=None
+        self.closes=None
         self.zone=None
         
     def __repr__(self):
@@ -2503,8 +2520,7 @@ class Bolsa:
         self.name=row['name']
         self.country=country
         self.starts=row['starts']
-        self.ends=row['ends']
-        self.close=row['close']
+        self.closes=row['closes']
         self.zone=self.cfg.zones.find(row['zone'])#Intente hacer objeto pero era absurdo.
         return self
 
@@ -2887,6 +2903,7 @@ class Source:
         
     def find_ids(self):
         """Devuelve un array con los objetos de Investment que cumplen"""
+        print ("find_ids es obsoleto hacer con query")
         self.ids=[]
         for inv in self.cfg.activas():
             if inv.active==True: #Debe ser activa
@@ -2952,13 +2969,13 @@ class Source:
                 return None
         else:
             return None
-        con=self.cfg.connect_myquotesd()
-        cur=con.cursor()
-        self.internetquerys=self.internetquerys+1
-        status_update(cur, self.name, "Update quotes", internets=self.internetquerys)
-        con.commit()
-        cur.close()
-        self.cfg.disconnect_myquotesd(con)    
+#        con=self.cfg.connect_myquotesd()
+#        cur=con.cursor()
+#        self.internetquerys=self.internetquerys+1
+#        status_update(cur, self.name, "Update quotes", internets=self.internetquerys)
+#        con.commit()
+#        cur.close()
+#        self.cfg.disconnect_myquotesd(con)    
         return web
 
     def update_step_quotes(self, sql):
@@ -3653,16 +3670,28 @@ class Investment:
         self.priorityhistorical.remove(idtochange)
         self.priorityhistorical.append(idtochange)
         cur.execute("update investments set priorityhistorical=%s", (str(self.priorityhistorical)))
-        return
+
+    def fecha_ultima_actualizacion_historica(self):
+        year=int(self.cfg.config_load_value(self.cfg.config, "settings_mystocks", "fillfromyear"))
+        resultado=datetime.date(year, 1, 1)
+        cur=self.cfg.conms.cursor()
+        cur.execute("select max(datetime)::date as date from quotes where date_part('microsecond',datetime)=4 and id=%s order by date", (self.id, ))
+        if cur.rowcount==1:
+            dat=cur.fetchone()[0]
+            if dat!=None:
+                resultado=dat
+        cur.close()
+        return resultado
 
 
         
 class QuotesSet:
     """Clase que agrupa quotes un una lista arr. Util para operar con ellas como por ejemplo insertar"""
-    def __init__(self):
+    def __init__(self, cfg):
+        self.cfg=cfg
         self.arr=[]
     
-    def save(self, curms,  source):
+    def save(self,  source):
         """Recibe con code,  date,  time, value, zone
             Para poner el dato en close, el valor de time debe ser None
             Devuelve una tripleta (insertado,buscados,modificados)
@@ -3673,7 +3702,7 @@ class QuotesSet:
             return
             
         for p in self.arr:
-            ibm=p.save(curms)
+            ibm=p.save()
             if ibm==0:
                 buscados=buscados+1
             elif ibm==1:
@@ -3683,7 +3712,6 @@ class QuotesSet:
 
         if insertados>0 or modificados>0:
             log("QUOTES" , source,  QApplication.translate("Core","Se han buscado %(b)d, modificado %(m)d e insertado %(i)d registros de %(c)s") %{"b":buscados, "m": modificados,   "i":insertados,  "c":source})
-        #        return resultado
         
     def append(self, quote):
         self.arr.append(quote)
@@ -4325,6 +4353,7 @@ class ConfigMyStock:
         self.config_ui=configparser.ConfigParser()
         self.config_ui['canvasIntraday'] = {'sma50': 'True', 'type': '0','sma200': 'True'}
         self.config_ui['canvasHistorical'] = {'sma50': 'True', 'type': '1','sma200': 'True'}
+        self.config_ui['settings_mystocks'] = {'fillfromyear': '2005'}
         self.configs_save()
 
     
@@ -4404,18 +4433,19 @@ class ConfigMyStock:
 
 
 
-    def connect_myquotesd(self):        
-        strcon="dbname='%s' port='%s' user='%s' host='%s' password='%s'" % (config.dbname,  config.port, config.user, config.host,  config.password)
+    def connect_myquotesd(self, pw):        
+        """usa tambi´en la variables self.conms"""              
+        strmq="dbname='%s' port='%s' user='%s' host='%s' password='%s'" % (self.config.get("frmAccess2", "db"),  self.config.get("frmAccess2", "port"), self.config.get("frmAccess2", "user"), self.config.get("frmAccess2", "server"),  pw)
         while True:
             try:
-                con=psycopg2.extras.DictConnection(strcon)
-                return con
+                self.conms=psycopg2.extras.DictConnection(strmq)
+                return self.conms
             except psycopg2.Error:
                 print ("Error en la conexion, esperando 10 segundos")
                 time.sleep(10)
 
-    def disconnect_myquotesd(self, con):
-        con.close()
+    def disconnect_myquotesd(self):
+        self.conms.close()
 
     def connect_myquotes(self):             
         strmq="dbname='%s' port='%s' user='%s' host='%s' password='%s'" % (self.config.get("frmAccess2", "db"),  self.config.get("frmAccess2", "port"), self.config.get("frmAccess2", "user"), self.config.get("frmAccess2", "server"),  self.password)
@@ -4754,7 +4784,7 @@ def qdatetime(dt, zone,  pixmap=True):
         resultado="None"
     else:    
         dt=dt_changes_tz(dt,  zone)#sE CONVIERTE A LOCAL DE dt_changes_tz 2012-07-11 08:52:31.311368-04:00 2012-07-11 14:52:31.311368+02:00
-        if dt.microsecond==4 or (dt.hour==23 and dt.minute==59 and dt.second==59):
+        if dt.microsecond==4 :
             resultado=str(dt.date())
         elif dt.second>0:
             resultado=str(dt.date())+" "+str(dt.hour).zfill(2)+":"+str(dt.minute).zfill(2)+":"+str(dt.second).zfill(2)
@@ -4765,6 +4795,16 @@ def qdatetime(dt, zone,  pixmap=True):
         a.setTextColor(QColor(0, 0, 255))
     a.setTextAlignment(Qt.AlignVCenter|Qt.AlignRight)
     return a
+
+def list2string(lista):
+        ##Conviert cur a lista separada comas
+        #HACER PARA STRINGS, INT, ... MIRANDO CLASS
+        
+        #FLOAT
+        resultado=""
+        for l in lista:
+            resultado=resultado+ str(L) + ", "
+        return resultado[:-2]
 
 def log(tipo, funcion,  mensaje):
     """Tipo es una letra mayuscula S sistema H historico D diario"""

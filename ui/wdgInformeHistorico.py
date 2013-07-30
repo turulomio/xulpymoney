@@ -41,7 +41,7 @@ class wdgInformeHistorico(QWidget, Ui_wdgInformeHistorico):
         self.data_cuentas=SetCuentas(self.cfg, self.data_ebs)
         self.data_cuentas.load_from_db("select * from cuentas where cu_activa=true")
         self.data_investments=SetInvestments(self.cfg)
-        self.data_investments.load_from_db("select distinct(myquotesid) from inversiones")#Todas no solo activas
+        self.data_investments.load_from_inversiones_query("select distinct(myquotesid) from inversiones")#Todas no solo activas
         self.data_inversiones=SetInversiones(self.cfg, self.data_cuentas, self.data_investments, self.indicereferencia)
         self.data_inversiones.load_from_db("select * from inversiones") #Todas no solo activas
         print("\n","Cargando data en wdgInversiones",  datetime.datetime.now()-inicio)

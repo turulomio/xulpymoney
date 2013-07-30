@@ -1,8 +1,7 @@
 #!/usr/bin/python3
 import sys
-sys.path.append("/usr/lib/myquotes")
-from libmyquotes import *
-from config import *
+sys.path.append("/usr/lib/xulpymoney")
+from libxulpymoney import *
 """Este script saca información de la pagina productoscotizados.com"""
 
 
@@ -14,88 +13,61 @@ class WorkerYahooHistorical(Source):
         self.id_source=3
         self.ids=[]
         self.name="YAHOOHISTORICAL"
-
-    def start(self):
-        print(self.name)
-        while (True):
-            time.sleep(5)#time before            
-            self.ids=self.find_ids_historical()
-            log (self.name, "FILTROS",  "Han pasado los filtros {0} inversiones".format(len(self.ids)))
-            for inv in self.ids:
-                con=self.cfg.connect_myquotesd()
-                cur = con.cursor()     
-                cur.execute("select max(datetime)::date as date from quotes where date_part('microsecond',datetime)=4 and id=%s order by date", (inv.id, ))
-                inicio=cur.fetchone()[0]
-
-                if inicio==None:
-                    inicio=datetime.date(config.fillfromyear, 1, 1)
-
-                (set, errors)=self.execute(cur, inv, inicio, datetime.date.today())
-
-                set.save(cur,self.name)
-
-                con.commit()
-                cur.close()                
-                self.cfg.disconnect_myquotesd(con)
-                time.sleep(30)#time step
-            time.sleep(60*60*24) #time after
+        self.investments=SetInvestments(self.cfg)
+        self.investments.load_from_db("select * from investments where active=true and priorityhistorical[1]=3")
         
-    def execute(self, cur,  investment, inicio, fin):
+    def start(self):
+        log (self.name, "FILTROS",  "Se van a actualizar {0} inversiones".format(len(self.investments.arr)))
+        for i,  inv in enumerate(self.investments.arr):
+            sys.stdout.write("\b"*1000+"mq.yahoohistorical {0}/{1} {2}: ".format(i, len(self.investments.arr), inv) )
+            sys.stdout.flush()
+            ultima=inv.fecha_ultima_actualizacion_historica()
+            if ultima==datetime.date.today()-datetime.timedelta(days=1):
+                continue
+            print (inv, ultima)
+            (set, errors)=self.execute(inv, inv.fecha_ultima_actualizacion_historica()+datetime.timedelta(days=1), datetime.date.today())
+            set.save(self.name)
+            self.cfg.conms.commit()  
+            time.sleep(10)#time step
+        
+    def execute(self,  investment, inicio, fin):
         """inico y fin son dos dates entre los que conseguir los datos."""
         url='http://ichart.finance.yahoo.com/table.csv?s='+investment.yahoo+'&a='+str(inicio.month-1)+'&b='+str(inicio.day)+'&c='+str(inicio.year)+'&d='+str(fin.month-1)+'&e='+str(fin.day)+'&f='+str(fin.year)+'&g=d&ignore=.csv'
-        (set, error)=(QuotesSet(), [])
+        (set, error)=(QuotesSet(self.cfg), [])
         web=self.download(url, 'YAHOO_HISTORICAL')
         if web==None:
             return (set, error)
         web.readline()
         for i in web.readlines(): 
-#            try:  
                 i=b2s(i)
                 datos=i.split(",")
                 fecha=datos[0].split("-")
                 date=datetime.date(int(fecha[0]), int(fecha[1]),  int(fecha[2]))
-		#Calcula el datetime del low y del high, min y maxdatetime respectivamente
-                iniciodia=dt(date,datetime.time(0,0),investment.bolsa.zone)
-                findia=dt(date,datetime.time(23,59,59), investment.bolsa.zone)
-                cur.execute("select datetime,quote from quotes where id=%s and datetime>=%s and datetime<=%s order by datetime",(investment.id,iniciodia,findia))
-                if cur.rowcount>0:
-                    maxquote=0
-                    maxdatetime=None
-                    minquote=1000000
-                    mindatetime=None
-                    for q in cur:
-                        if q['quote']>=maxquote:
-                            maxquote=q['quote']
-                            maxdatetime=q['datetime']
-                        if q['quote']<=minquote:
-                            minquote=q['quote']
-                            mindatetime=q['datetime']
-                else:
-                    maxdatetime=dt(date,investment.bolsa.close,investment.bolsa.zone)-datetime.timedelta(seconds=1)
-                    mindatetime=dt(date,investment.bolsa.starts,investment.bolsa.zone)+datetime.timedelta(seconds=1)
+                
+                datestart=dt(date,investment.bolsa.starts,investment.bolsa.zone)
+                dateends=dt(date,investment.bolsa.closes,investment.bolsa.zone)
+                datetimefirst=datestart-datetime.timedelta(seconds=1)+datetime.timedelta(microseconds=1)
+                datetimelow=(datestart+(dateends-datestart)*1/3).replace(microsecond=2)
+                datetimehigh=(datestart+(dateends-datestart)*2/3).replace(microsecond=3)
+                datetimelast=dateends+datetime.timedelta(microseconds=4)
 
-                set.append(Quote().init__create(investment,dt(date,investment.bolsa.close,investment.bolsa.zone), float(datos[4])))#close
-                set.append(Quote().init__create(investment,mindatetime, float(datos[3])))#low
-                set.append(Quote().init__create(investment,maxdatetime, float(datos[2])))#high
-                set.append(Quote().init__create(investment,dt(date,investment.bolsa.starts,investment.bolsa.zone), float(datos[1])))#open
-        if inicio==datetime.date(config.fillfromyear, 1, 1) and len(set.arr)<10:
-            print ("No hay YAHOO HISTORICALS DE:",  id, inicio, fin, url)
+                set.append(Quote(self.cfg).init__create(investment,datetimelast, float(datos[4])))#closes
+                set.append(Quote(self.cfg).init__create(investment,datetimelow, float(datos[3])))#low
+                set.append(Quote(self.cfg).init__create(investment,datetimehigh, float(datos[2])))#high
+                set.append(Quote(self.cfg).init__create(investment, datetimefirst, float(datos[1])))#open
         return (set,  error)
 
-
 if __name__ == '__main__':
-    cfg=ConfigMQ()
-    if len(sys.argv)>1:
-        if sys.argv[1]=="debug":
+    cfg=ConfigMyStock()
+    if len(sys.argv)>2:
+        if sys.argv[2]=="debug":
             log("STARTING", "","Debugging")
             cfg.debug=True
 
-    con=cfg.connect_myquotesd()
-    cur = con.cursor()
-    cfg.actualizar_memoria(cur)
-    cfg.carga_ia(cur, "where priority[1]=1")
-    cur.close()
-    cfg.disconnect_myquotesd(con)
+    cfg.connect_myquotesd(sys.argv[1])
+    cfg.actualizar_memoria()
 
     w=WorkerYahooHistorical(cfg)
     w.start()
+
+    cfg.disconnect_myquotesd()
