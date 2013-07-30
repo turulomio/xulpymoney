@@ -32,7 +32,7 @@ class wdgInversiones(QWidget, Ui_wdgInversiones):
         self.data_cuentas=SetCuentas(self.cfg, self.data_ebs)
         self.data_cuentas.load_from_db("select * from cuentas where cu_activa=true")
         self.data_investments=SetInvestments(self.cfg)
-        self.data_investments.load_from_db("select distinct(myquotesid) from inversiones where in_activa=true")
+        self.data_investments.load_from_inversiones_query("select distinct(myquotesid) from inversiones where in_activa=true")
         self.data_inversiones=SetInversiones(self.cfg, self.data_cuentas, self.data_investments, self.indicereferencia)
         self.data_inversiones.load_from_db("select * from inversiones where in_activa=true")
         print("\n","Cargando data en wdgInversiones",  datetime.datetime.now()-inicio)
@@ -50,7 +50,7 @@ class wdgInversiones(QWidget, Ui_wdgInversiones):
             self.data_cuentas_all=self.data_cuentas.union(self.data_cuentas_inactive)
             
             self.data_investments_inactive=SetInvestments(self.cfg)
-            self.data_investments_inactive.load_from_db("select distinct(myquotesid) from inversiones where in_activa=false")
+            self.data_investments_inactive.load_from_inversiones_query("select distinct(myquotesid) from inversiones where in_activa=false")
             self.data_investments_all=self.data_investments.union(self.data_investments_inactive)
             
             self.data_inversiones_inactive=SetInversiones(self.cfg, self.data_cuentas_all, self.data_investments_all, self.indicereferencia)

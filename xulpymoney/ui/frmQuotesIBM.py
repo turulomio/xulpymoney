@@ -21,7 +21,7 @@ class frmQuotesIBM(QDialog, Ui_frmQuotesIBM):
 
     def on_chkNone_stateChanged(self, state):
         if state==Qt.Checked:          
-            self.txtTime.setTime(self.investment.bolsa.close)
+            self.txtTime.setTime(self.investment.bolsa.closes)
             self.txtTime.setEnabled(False)
         else:
             t=datetime.datetime.now()
@@ -42,7 +42,7 @@ class frmQuotesIBM(QDialog, Ui_frmQuotesIBM):
             m.exec_()    
             return
         if self.chkNone.checkState()==Qt.Checked:
-            da=dt(fecha, self.investment.bolsa.close.replace(microsecond=4), self.investment.bolsa.zone)
+            da=dt(fecha, self.investment.bolsa.closes, self.investment.bolsa.zone)
         else:
             time=self.txtTime.time().toPyTime()
             da=dt(fecha, time, zone)

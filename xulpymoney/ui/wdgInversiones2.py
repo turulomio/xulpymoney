@@ -57,7 +57,7 @@ class wdgInversiones2(QWidget, Ui_wdgInversiones2):
 #            print ("wdgInversiones2",  inv.agrupations.dic_arr)
         cur.close()     
         cur2.close()
-        self.cfg.disconnect_myquotesd(con)   
+        self.cfg.disconnect_myquotes(con)   
         if len(self.investments)!=0:      
             diff=datetime.datetime.now()-inicio
             print("wdgInversiones > build_array: {0} ({1} cada uno)".format(str(diff), diff/len(self.investments)))
