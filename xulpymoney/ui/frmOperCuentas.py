@@ -102,7 +102,7 @@ class frmOperCuentas(QDialog, Ui_frmOperCuentas):
             self.emit(SIGNAL("OperCuentaIBMed"), ())
             self.done(0)
         elif self.tipo==3:
-            self.opertarjeta=TarjetaOperacion(self.cfg).init__create(fecha, self.cfg.conceptos(id_conceptos), self.cfg.tiposoperaciones(id_tiposoperaciones), importe, comentario, self.tarjeta, False, None, None )
+            self.opertarjeta=TarjetaOperacion(self.cfg).init__create(fecha, self.cfg.conceptos.find(id_conceptos), self.cfg.tiposoperaciones.find(id_tiposoperaciones), importe, comentario, self.tarjeta, False, None, None )
             self.opertarjeta.save()
             self.cfg.con.commit()        
             self.tarjeta.op_diferido.append(self.opertarjeta)

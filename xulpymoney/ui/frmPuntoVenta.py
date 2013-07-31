@@ -5,12 +5,21 @@ from libxulpymoney import *
 from decimal import Decimal
 
 class frmPuntoVenta(QDialog, Ui_frmPuntoVenta):
-    def __init__(self, cfg, inversion ,   parent=None):
+    def __init__(self, cfg, setinversiones,  inversion ,   parent=None):
         QWidget.__init__(self, parent)
         self.setupUi(self)
+        self.showMaximized()
         self.cfg=cfg
         self.inversion=inversion
+        self.data_inversiones=setinversiones
+        self.ponderan_all_inversiones=[]
         
+        if self.inversion.id==None:
+            m=QMessageBox()
+            m.setIcon(QMessageBox.Information)
+            m.setText(self.trUtf8("No se puede asignar el punto de venta a una inversi´on no guardada"))
+            m.exec_()     
+            return
         if len(self.inversion.op_actual.arr)==0:
             m=QMessageBox()
             m.setIcon(QMessageBox.Information)
@@ -29,12 +38,12 @@ class frmPuntoVenta(QDialog, Ui_frmPuntoVenta):
         suminvertido=0
         self.table.setRowCount(len(self.operinversiones)+1)
         for i, rec in enumerate(self.operinversiones):
-            if self.chkPonderanAdded.checkState()==Qt.Checked:
-                sumacciones=sumacciones+rec.acciones
-                suminvertido=suminvertido+rec.invertido()
-            elif rec.tipooperacion.id!=6:
-                    sumacciones=sumacciones+rec.acciones
-                    suminvertido=suminvertido+rec.importe
+#            if self.chkPonderanAdded.checkState()==Qt.Checked:
+            sumacciones=sumacciones+rec.acciones
+            suminvertido=suminvertido+rec.invertido()
+#            elif rec.tipooperacion.id!=6:
+#                    sumacciones=sumacciones+rec.acciones
+#                    suminvertido=suminvertido+rec.importe
             self.table.setItem(i, 0, qdatetime(rec.datetime, rec.inversion.investment.bolsa.zone))
             self.table.setItem(i, 1, QTableWidgetItem("{0} ({1})".format(rec.inversion.name, rec.inversion.cuenta.eb.name)))
             self.table.setItem(i, 2,  QTableWidgetItem(rec.tipooperacion.name))
@@ -50,28 +59,30 @@ class frmPuntoVenta(QDialog, Ui_frmPuntoVenta):
         if sumacciones==0:
             self.puntoventa=0
         else:
-            
             if self.radTPC.isChecked()==True:
                 tpc=Decimal(self.cmbTPC.currentText().replace(" %", ""))
                 self.puntoventa=round(suminvertido*(1+tpc/100)/sumacciones, 2)
             else:
-                self.puntoventa=round((Decimal(self.txtGanancia.text())+suminvertido)/sumacciones, 2)
-        self.cmd.setText("Asignar el punto de venta de {0} € para ganar {1} €".format(self.puntoventa, round(sumacciones*self.puntoventa-suminvertido, 2)))
+                self.puntoventa=round((self.txtGanancia.decimal()+suminvertido)/sumacciones, 2)
+        
+        if self.chkPonderanAll.checkState()==Qt.Checked:
+            self.cmd.setText("Grabar el punto de venta a todas las inversiones de {0} € para ganar {1} €".format(self.puntoventa, round(sumacciones*self.puntoventa-suminvertido, 2)))
+        else:
+            self.cmd.setText("Asignar el punto de venta de {0} € para ganar {1} €".format(self.puntoventa, round(sumacciones*self.puntoventa-suminvertido, 2)))
         
     def load_operinversionesactualmismoactivo(self):
         """Recibe un sql y calcula las operinversiones, pueden ser de diferentes inversiones"""
         arr=[]
-        for  inv in self.cfg.inversiones_activas():
+        self.ponderan_all_inversiones=[]
+        for  inv in self.data_inversiones.arr:
             if inv.investment.id==self.inversion.investment.id:
+                self.ponderan_all_inversiones.append(inv)
                 for op in inv.op_actual.arr:
                     arr.append(op)
         return arr
 
     def on_radTPC_toggled(self, toggle):
         self.cmbTPC.setEnabled(toggle)
-        if toggle==True:
-            self.chkPonderanAdded.setCheckState(Qt.Checked)
-        print ("toggled")
         self.__calcular()
         
     @QtCore.pyqtSlot(str) 
@@ -79,9 +90,6 @@ class frmPuntoVenta(QDialog, Ui_frmPuntoVenta):
         self.__calcular()
         
     def on_txtGanancia_textChanged(self):
-        self.__calcular()
-    
-    def on_chkPonderanAdded_stateChanged(self, state):
         self.__calcular()
         
     def on_chkPonderanAll_stateChanged(self, state):
@@ -94,4 +102,9 @@ class frmPuntoVenta(QDialog, Ui_frmPuntoVenta):
                 
     @QtCore.pyqtSlot() 
     def on_cmd_released(self):
+        if self.chkPonderanAll.checkState()==Qt.Checked:
+            for inv in self.ponderan_all_inversiones:
+                inv.venta=self.puntoventa
+                inv.save()
+            self.cfg.con.commit()
         self.done(0)

@@ -397,49 +397,34 @@ class frmCuentasIBM(QDialog, Ui_frmCuentasIBM):
         self.lblPago.setText(self.cfg.localcurrency.string(self.totalOperTarjetas, 2))
  
     def on_cmdPago_released(self):
-        con=self.cfg.connect_xulpymoney()
-        cur = con.cursor()              
-#        pagos=""
-#        for o in self.setSelOperTarjetas:
-#            pagos=pagos+str(o.id)+"|"
         comentario="{0}|{1}".format(self.selTarjeta.name, len(self.setSelOperTarjetas))
-#        comentario="Tarjeta " + self.selTarjeta.name+ ". Pagos: "+ pagos[:-1]
         fechapago=self.calPago.date().toPyDate()
         c=CuentaOperacion(self.cfg).init__create(fechapago, self.cfg.conceptos.find(40), self.cfg.tiposoperaciones.find(7), self.totalOperTarjetas, comentario, self.selCuenta)
-        c.save(cur)
+        c.save()
         
         #Modifica el registro y lo pone como pagado y la fecha de pago y añade la opercuenta
         for o in self.setSelOperTarjetas:
             o.fechapago=fechapago
             o.pagado=True
             o.opercuenta=c
-            o.save(cur)
+            o.save()
             self.selTarjeta.op_diferido.remove(o)
-        con.commit()
+        self.cfg.con.commit()
         self.load_tabOperTarjetas()         
         self.on_cmdMovimientos_released()    
-        
-        cur.close()     
-        self.cfg.disconnect_xulpymoney(con)      
 
     
     def on_cmdDevolverPago_released(self):
         print ("solo uno")
         id_opercuentas=self.cmbFechasPago.itemData(int(self.cmbFechasPago.currentIndex()))
-        con=self.cfg.connect_xulpymoney()
-        cur = con.cursor()              
-        cur2=con.cursor()
+        cur = self.cfg.con.cursor()      
         cur.execute("delete from opercuentas where id_opercuentas=%s", (id_opercuentas, ))#No merece crear objeto
         cur.execute("update opertarjetas set fechapago=null, pagado=false, id_opercuentas=null where id_opercuentas=%s", (id_opercuentas, ) )
-        con.commit()
-        self.selTarjeta.get_opertarjetas_diferidas_pendientes(cur, self.cfg)
-        
+        self.cfg.con.commit()
+        self.selTarjeta.get_opertarjetas_diferidas_pendientes()
         self.on_cmdMovimientos_released()
         self.load_tabOperTarjetas()
-        
         cur.close()     
-        cur2.close()
-        self.cfg.disconnect_xulpymoney(con)          
         self.tabOpertarjetasDiferidas.setCurrentIndex(0)     
         
     @QtCore.pyqtSlot(int) 
