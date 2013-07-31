@@ -19,12 +19,11 @@ class WorkerYahooHistorical(Source):
     def start(self):
         log (self.name, "FILTROS",  "Se van a actualizar {0} inversiones".format(len(self.investments.arr)))
         for i,  inv in enumerate(self.investments.arr):
-            sys.stdout.write("\b"*1000+"mq.yahoohistorical {0}/{1} {2}: ".format(i, len(self.investments.arr), inv) )
+            sys.stdout.write("\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\bmq.yahoohistorical {0}/{1} {2}: ".format(i, len(self.investments.arr), inv) )
             sys.stdout.flush()
             ultima=inv.fecha_ultima_actualizacion_historica()
             if ultima==datetime.date.today()-datetime.timedelta(days=1):
                 continue
-            print (inv, ultima)
             (set, errors)=self.execute(inv, inv.fecha_ultima_actualizacion_historica()+datetime.timedelta(days=1), datetime.date.today())
             set.save(self.name)
             self.cfg.conms.commit()  
@@ -39,22 +38,22 @@ class WorkerYahooHistorical(Source):
             return (set, error)
         web.readline()
         for i in web.readlines(): 
-                i=b2s(i)
-                datos=i.split(",")
-                fecha=datos[0].split("-")
-                date=datetime.date(int(fecha[0]), int(fecha[1]),  int(fecha[2]))
-                
-                datestart=dt(date,investment.bolsa.starts,investment.bolsa.zone)
-                dateends=dt(date,investment.bolsa.closes,investment.bolsa.zone)
-                datetimefirst=datestart-datetime.timedelta(seconds=1)+datetime.timedelta(microseconds=1)
-                datetimelow=(datestart+(dateends-datestart)*1/3).replace(microsecond=2)
-                datetimehigh=(datestart+(dateends-datestart)*2/3).replace(microsecond=3)
-                datetimelast=dateends+datetime.timedelta(microseconds=4)
+            i=b2s(i)
+            datos=i.split(",")
+            fecha=datos[0].split("-")
+            date=datetime.date(int(fecha[0]), int(fecha[1]),  int(fecha[2]))
+            
+            datestart=dt(date,investment.bolsa.starts,investment.bolsa.zone)
+            dateends=dt(date,investment.bolsa.closes,investment.bolsa.zone)
+            datetimefirst=datestart-datetime.timedelta(seconds=1)+datetime.timedelta(microseconds=1)
+            datetimelow=(datestart+(dateends-datestart)*1/3).replace(microsecond=2)
+            datetimehigh=(datestart+(dateends-datestart)*2/3).replace(microsecond=3)
+            datetimelast=dateends+datetime.timedelta(microseconds=4)
 
-                set.append(Quote(self.cfg).init__create(investment,datetimelast, float(datos[4])))#closes
-                set.append(Quote(self.cfg).init__create(investment,datetimelow, float(datos[3])))#low
-                set.append(Quote(self.cfg).init__create(investment,datetimehigh, float(datos[2])))#high
-                set.append(Quote(self.cfg).init__create(investment, datetimefirst, float(datos[1])))#open
+            set.append(Quote(self.cfg).init__create(investment,datetimelast, float(datos[4])))#closes
+            set.append(Quote(self.cfg).init__create(investment,datetimelow, float(datos[3])))#low
+            set.append(Quote(self.cfg).init__create(investment,datetimehigh, float(datos[2])))#high
+            set.append(Quote(self.cfg).init__create(investment, datetimefirst, float(datos[1])))#open
         return (set,  error)
 
 if __name__ == '__main__':

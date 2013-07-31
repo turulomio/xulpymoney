@@ -5,31 +5,20 @@
                  Si las contabilizo ahora luegoal vender sería doble contabilidad pensarlo bien y documentarlo.
                 ojo que la fecha de calculo de saldo es la de añadido
 20120106 Crear widget para pasar meses y seleccionar meses y años y sustituir. donde corresponda
-20120126 Hacer estudio de estimación de venta, para ver si es posible sustituir los ficheros ods. Deberá poner porcentajes
-                del banco mio, estimación venta y ganancia. con tablas de 166, 333, 666, 1000 y permitir editarlo, con una opción de cambiar 
-                precio de ventqa.
 20120127 Poner en wdgIndexRange el criterio de coloreado de verde
         - Sumatorio de invertido en rango < 9000
         - No haya registros
 20120222 La restauración de los datos deberá comprobar si ya están insertados y preguntar si quiere borrar los anteriores o incluirlos
-20120311 Capturar errores en inversión recien insertada sin valores en myquotes y optimizar codigo en wdginversiones
+20120311 Capturar errores en inversión recien insertada sin valores en myquotes
 20120320 Si no hay operinversiones ni dividendos la cuenta de una inversión debería poder cambiarse
 20120413 Santander en saldo no contabiliza los añadidos, ver que pasa en wdgInversiones
-20120420 En wdgInversiones añadir un action que junte todas las acciones de todos los bancos y de un punto de venta con una ganancia a poner en un dialogo
-                permitirá buscar precios de venta conjuntos para inversiones iguales
-                A lo mejor, en vez de punto de venta hay que poner la ganancia esperada.
-                PONER EN INVERSION GANANCIA BRUTA Y SI PONDERAN ACCIONES AÑADIDAS
 20120523 Hacer una clases de inversiones no con actual sino con invertido.
-20120628 Chequeos hay saldo en cuentas o inversiones inactivas.
 20120803 Hacer splash con emit de como va cargando.
-20120804 Hacer dividenods en bruto y cotizarlo en totales
 20120704 Estudiar si podemos quitar de opercuentas tipos de operación, al estar asociado a concepto
-20120705 Añadir medias ponderadas a tabla actual de inversión
 20120706 cuenta operacion heredada de inversion deberia crearse como con dividendos una opercuenta antes
 20120726 Quitar importe de newOperinversionHistorica en funciones 
-20120706 En inversiones inactivas mostrar numero operaciones. ultima operacion y saldo actual y medio de compra
 20120707 Cuando se mete una comision en transferencia no se contabiliza luego. Ver si sacarla.
-20120727 Mostrar tipo de dividendo en frmHistorico y ver si se calcula bien el neto y el bruto
+20120730 Meter tipo de dividendo en informe histórico
 20120802 Hacer un formulario de inicio que genere el settings en home y pregunte idioma y lo cambie
 20120803 Quitar primera fecha de inicio y ponerlo en config por defecto y quitar la función de union de patrimonio, al empezar una nueva base de datos es un coñazo
 20120806 En operinversion opercuenta poner el número de acciones y precio de compra en comeentario bonito
