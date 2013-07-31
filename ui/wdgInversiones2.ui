@@ -59,13 +59,10 @@
         <widget class="QLineEdit" name="txt"/>
        </item>
        <item>
-        <widget class="QPushButton" name="cmd">
-         <property name="text">
-          <string/>
-         </property>
+        <widget class="QToolButton" name="cmd">
          <property name="icon">
-          <iconset>
-           <normaloff>:/images/document-preview.png</normaloff>:/images/document-preview.png</iconset>
+          <iconset resource="../images/xulpymoney.qrc">
+           <normaloff>:/xulpymoney/search.png</normaloff>:/xulpymoney/search.png</iconset>
          </property>
         </widget>
        </item>
@@ -301,7 +298,6 @@ sistema.</string>
  </customwidgets>
  <tabstops>
   <tabstop>txt</tabstop>
-  <tabstop>cmd</tabstop>
   <tabstop>tblInversiones</tabstop>
  </tabstops>
  <resources>

@@ -1,20 +1,16 @@
 20111214 Cuando se inicia cuenta nueva en un mes y se añade la suma de saldos falla por el inicio de mes anterior
 20111201 En transferencias poner textos localizadosy ID vinculado a transferencia
 20120104 Hacer dialogo de split y contrasplit en myquotes para cotizaciones y en xulpymoney para operacciones
-20120105 Al hacer operaciones historicas solo se grabará la diferencia entre el actual y el precio de compra
-                 Si las contabilizo ahora luegoal vender sería doble contabilidad pensarlo bien y documentarlo.
-                ojo que la fecha de calculo de saldo es la de añadido
 20120106 Crear widget para pasar meses y seleccionar meses y años y sustituir. donde corresponda
 20120127 Poner en wdgIndexRange el criterio de coloreado de verde
         - Sumatorio de invertido en rango < 9000
         - No haya registros
 20120222 La restauración de los datos deberá comprobar si ya están insertados y preguntar si quiere borrar los anteriores o incluirlos
-20120311 Capturar errores en inversión recien insertada sin valores en myquotes
 20120320 Si no hay operinversiones ni dividendos la cuenta de una inversión debería poder cambiarse
 20120413 Santander en saldo no contabiliza los añadidos, ver que pasa en wdgInversiones
 20120523 Hacer una clases de inversiones no con actual sino con invertido.
 20120803 Hacer splash con emit de como va cargando.
-20120704 Estudiar si podemos quitar de opercuentas tipos de operación, al estar asociado a concepto
+20120704 Estudiar si podemos quitar de opercuentas tipos de operación, al estar asociado a concepto, ojo con (1,2,3) que hay bastante en codigo
 20120706 cuenta operacion heredada de inversion deberia crearse como con dividendos una opercuenta antes
 20120726 Quitar importe de newOperinversionHistorica en funciones 
 20120707 Cuando se mete una comision en transferencia no se contabiliza luego. Ver si sacarla.
@@ -34,7 +30,6 @@
 20111027 Hacer particiones a las tablas, quizas por años. http://www.postgresql.org/docs/9.1/static/ddl-partitioning.html
 20120217 Crear menú automático Bolsas y que liste todo desde bolsas
 20120307 Cuando haya ochl en los datos intradia, dibujar una raya de maximo y minimo gris discontinuo, con punto gris de inicio  y punto gris de final
-20120309 En consultas masivas a quote hacer un buzón y un id[], en el que se metan todas y devuelva un diccionario ubzon[id]o
 20120405 En la misma tabla de dividendos estimados poner el bpa, para poder calcular el PER
 20120406 Permitir bajarse a local todos los datos a un xml y analizarlo gráficamente por ejemplo 20120405 Telefónica 74756 y solo actualizar el intradía en descarga online
 20120713 Se podr´ia generar un a clase madre resultquotes que debendan dbresultquotes y file resultquotes, con funciones de calculo en padre
