@@ -41,6 +41,5 @@
 20120801 Cambiar Yahoo por ticker
 20120815 No se calcula bien las medias móviles ver renta4 monetario
 20130103 Hacer desde interfaz, purga que deje los datos 1,2,3,4 o los ohcl que existan borrando los demás
-20130727 Bolsa de paris no sale al añadir un quoteibm
 20130728 Poner en dividendos el gasto total en el concepto en el año seleccionado en el combo.
 20130729 Quitar los logs de myquots
