@@ -120,21 +120,22 @@ class frmAnalisis(QDialog, Ui_frmAnalisis):
         self.cmbTipo.setCurrentIndex(self.cmbTipo.findData(self.investment.type.id))
         self.cmbApalancado.setCurrentIndex(self.cmbApalancado.findData(self.investment.apalancado.id))
         
-        now=self.cfg.localzone.now()
-        penultimate=self.result.penultimate
-        iniciosemana=self.result.find_quote_in_all(day_end(now-datetime.timedelta(days=datetime.date.today().weekday()+1), self.investment.bolsa.zone))
-        iniciomes=self.result.find_quote_in_all(dt(datetime.date(now.year, now.month, 1), datetime.time(0, 0), self.investment.bolsa.zone))
-        inicioano=self.result.find_quote_in_all(dt(datetime.date(now.year, 1, 1), datetime.time(0, 0), self.investment.bolsa.zone))             
-        docemeses=self.result.find_quote_in_all(day_end(now-datetime.timedelta(days=365), self.investment.bolsa.zone))             
+        if len(self.result.all)!=0:
+            now=self.cfg.localzone.now()
+            penultimate=self.result.penultimate
+            iniciosemana=self.result.find_quote_in_all(day_end(now-datetime.timedelta(days=datetime.date.today().weekday()+1), self.investment.bolsa.zone))
+            iniciomes=self.result.find_quote_in_all(dt(datetime.date(now.year, now.month, 1), datetime.time(0, 0), self.investment.bolsa.zone))
+            inicioano=self.result.find_quote_in_all(dt(datetime.date(now.year, 1, 1), datetime.time(0, 0), self.investment.bolsa.zone))             
+            docemeses=self.result.find_quote_in_all(day_end(now-datetime.timedelta(days=365), self.investment.bolsa.zone))             
+                
+            self.tblTPC.setItem(0, 0, qdatetime(self.result.last.datetime, self.investment.bolsa.zone))   
+            self.tblTPC.setItem(0, 1, self.investment.currency.qtablewidgetitem(self.result.last.quote,  6))
             
-        self.tblTPC.setItem(0, 0, qdatetime(self.result.last.datetime, self.investment.bolsa.zone))   
-        self.tblTPC.setItem(0, 1, self.investment.currency.qtablewidgetitem(self.result.last.quote,  6))
-        
-        row_tblTPV(penultimate, 1)
-        row_tblTPV(iniciosemana, 2)## Para que sea el domingo
-        row_tblTPV(iniciomes, 3)
-        row_tblTPV(inicioano, 4)
-        row_tblTPV(docemeses, 5)
+            row_tblTPV(penultimate, 1)
+            row_tblTPV(iniciosemana, 2)## Para que sea el domingo
+            row_tblTPV(iniciomes, 3)
+            row_tblTPV(inicioano, 4)
+            row_tblTPV(docemeses, 5)
 
             
     def load_data_from_file(self, file ):
@@ -142,7 +143,6 @@ class frmAnalisis(QDialog, Ui_frmAnalisis):
         
     def load_data_from_db(self):
         if self.investment.id!=None:
-#            self.mytimer.stop()
             con=self.cfg.connect_myquotes()
             cur = con.cursor()
             self.result.get_all(cur)
@@ -151,20 +151,20 @@ class frmAnalisis(QDialog, Ui_frmAnalisis):
             cur.close()     
             self.cfg.disconnect_myquotes(con)  
             self.update_due_to_all_change()
-#            self.mytimer.start()
         
     def update_due_to_all_change(self):
         self.result.get_basic_in_all()
         self.result.calculate_ochl_diary()#necesario para usar luego ochl_otros
         inicio=datetime.datetime.now()
         self.__load_information()
-        print ("Datos informacion cargados:",  datetime.datetime.now()-inicio)
-        self.load_graphics()
-        print ("Datos gráficos cargados:",  datetime.datetime.now()-inicio)
-        self.load_historicas()
-        print ("Datos historicos cargados:",  datetime.datetime.now()-inicio)
-        self.load_mensuales()
-        print ("Datos mensuales cargados:",  datetime.datetime.now()-inicio)
+        if len(self.result.all)!=0:
+            print ("Datos informacion cargados:",  datetime.datetime.now()-inicio)
+            self.load_graphics()
+            print ("Datos gráficos cargados:",  datetime.datetime.now()-inicio)
+            self.load_historicas()
+            print ("Datos historicos cargados:",  datetime.datetime.now()-inicio)
+            self.load_mensuales()
+            print ("Datos mensuales cargados:",  datetime.datetime.now()-inicio)
 
 
         
