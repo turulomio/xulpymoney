@@ -319,9 +319,8 @@ class SetBolsas:
         curms.close()
             
     def load_qcombobox(self, combo):
-        """Carga conceptos operaciones 1,2,3"""
         for c in self.list():
-            combo.addItem(c.name, c.id)
+            combo.addItem(c.country.qicon(), c.name, c.id)
             
     def find(self, id):
         return self.dic_arr[str(id)]
@@ -404,9 +403,7 @@ class SetCountries:
         Se ordena por nombre y se se pasa el tercer parametro que es un objeto Cuenta lo selecciona""" 
         self.sort()
         for cu in self.list():
-            icon = QIcon()
-            icon.addPixmap(qpixmap_pais(cu.id), QIcon.Normal, QIcon.Off)
-            self.addItem(icon, cu.name, cu.id)
+            self.addItem(cu.qicon(), cu.name, cu.id)
 
         if country!=None:
                 combo.setCurrentIndex(combo.findData(country.id))
@@ -4651,10 +4648,12 @@ class Zone:
         self.cfg=cfg
         self.id=None
         self.name=None
+        self.country=None
         
-    def init__create(self, id, name):
+    def init__create(self, id, name, country):
         self.id=id
         self.name=name
+        self.country=country
         return self
         
     def timezone(self):
@@ -4669,20 +4668,21 @@ class SetZones:
         self.dic_arr={}
         
     def load_all(self):
-        self.dic_arr["Europe/Madrid"]=Zone(self.cfg).init__create(1,'Europe/Madrid')#ALGUN DIA HABRá QUE CAMBIAR LAS ZONES POR ID_ZONESº
-        self.dic_arr["Europe/Lisbon"]=Zone(self.cfg).init__create(2,'Europe/Lisbon')
-        self.dic_arr["Europe/Rome"]=Zone(self.cfg).init__create(3,'Europe/Rome')
-        self.dic_arr["Europe/London"]=Zone(self.cfg).init__create(4,'Europe/London')
-        self.dic_arr['Asia/Tokyo']=Zone(self.cfg).init__create(5,'Asia/Tokyo')
-        self.dic_arr["Europe/Berlin"]=Zone(self.cfg).init__create(6,'Europe/Berlin')
-        self.dic_arr["America/New_York"]=Zone(self.cfg).init__create(7,'America/New_York')
-        self.dic_arr["Europe/Paris"]=Zone(self.cfg).init__create(8,'Europe/Paris')
-        self.dic_arr["Asia/Hong_Kong"]=Zone(self.cfg).init__create(9,'Asia/Hong_Kong')
+        self.dic_arr["Europe/Madrid"]=Zone(self.cfg).init__create(1,'Europe/Madrid', self.cfg.countries.find("es"))#ALGUN DIA HABRá QUE CAMBIAR LAS ZONES POR ID_ZONESº
+        self.dic_arr["Europe/Lisbon"]=Zone(self.cfg).init__create(2,'Europe/Lisbon', self.cfg.countries.find("pt"))
+        self.dic_arr["Europe/Rome"]=Zone(self.cfg).init__create(3,'Europe/Rome', self.cfg.countries.find("it"))
+        self.dic_arr["Europe/London"]=Zone(self.cfg).init__create(4,'Europe/London', self.cfg.countries.find("en"))
+        self.dic_arr['Asia/Tokyo']=Zone(self.cfg).init__create(5,'Asia/Tokyo', self.cfg.countries.find("jp"))
+        self.dic_arr["Europe/Berlin"]=Zone(self.cfg).init__create(6,'Europe/Berlin', self.cfg.countries.find("de"))
+        self.dic_arr["America/New_York"]=Zone(self.cfg).init__create(7,'America/New_York', self.cfg.countries.find("us"))
+        self.dic_arr["Europe/Paris"]=Zone(self.cfg).init__create(8,'Europe/Paris', self.cfg.countries.find("fr"))
+        self.dic_arr["Asia/Hong_Kong"]=Zone(self.cfg).init__create(9,'Asia/Hong_Kong', self.cfg.countries.find("cn"))
 
     def load_qcombobox(self, combo, zone=None):
         """Carga entidades bancarias en combo"""
         for a in self.list():
-            combo.addItem(a.name, a.name)      
+            combo.addItem(a.country.qicon(), a.name, a.name)
+
         if zone!=None:
             combo.setCurrentIndex(combo.findText(zone.name))
         

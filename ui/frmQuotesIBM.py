@@ -15,7 +15,7 @@ class frmQuotesIBM(QDialog, Ui_frmQuotesIBM):
         t=datetime.datetime.now()
         self.txtTime.setTime(QTime(t.hour, t.minute))
 
-        self.cfg.zones.load_qcombobox(self.cmbZone, self.cfg.localzone)
+        self.cfg.zones.load_qcombobox(self.cmbZone, self.investment.bolsa.zone)
         if self.investment.type.id in (2, 8):
             self.chkNone.setCheckState(Qt.Checked)            
 
