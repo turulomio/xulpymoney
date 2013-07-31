@@ -23,6 +23,7 @@ class frmMain2(QMainWindow, Ui_frmMain2):#
         self.setupUi(self)
         self.showMaximized()
         self.setWindowTitle(self.trUtf8("MyStocks 2010-{0} ©".format(version[:4])))
+        self.sqlvacio="select * from investments where id=-999999"
         
         self.cfg=ConfigMyStock()
         
@@ -48,7 +49,7 @@ class frmMain2(QMainWindow, Ui_frmMain2):#
             m.setText(QApplication.translate("myquotes","La base de datos se acaba de iniciar.\n\nSe necesitan al menos 24 horas de funcionamiento del demonio myquotesd para que esta aplicación tenga todos los datos disponibles."))
             m.exec_()       
         
-        self.w=wdgInversiones2(self.cfg,  "select * from investments where name='VACIO' order by name")
+        self.w=wdgInversiones2(self.cfg,  self.sqlvacio)
 
         self.layout.addWidget(self.w)
         self.w.show()
@@ -142,6 +143,23 @@ class frmMain2(QMainWindow, Ui_frmMain2):#
         self.layout.addWidget(self.w)
         self.w.show()
             
+    @QtCore.pyqtSlot()  
+    def on_actionISINDuplicado_activated(self):
+        self.w.close()
+        cur=self.cfg.conms.cursor()
+        #ßaca los isin duplicados buscando distintct isin, bolsa con mas de dos registros
+        cur.execute("select isin, id_bolsas, count(*) as num from investments  where isin!='' group by isin, id_bolsas having count(*)>1 order by num desc;")
+        isins=set([])
+        for row in cur:
+            isins.add(row['isin'] )
+        if len(isins)>0:
+            self.w=wdgInversiones2(self.cfg,  "select * from investments where isin in ("+list2string(list(isins))+") order by isin, id_bolsas")
+        else:
+            self.w=wdgInversiones2(self.cfg, self.sqlvacio)
+
+        self.layout.addWidget(self.w)
+        self.w.show()
+        
     @QtCore.pyqtSlot()  
     def on_actionMC_activated(self):
         self.w.close()

@@ -1,5 +1,4 @@
-# -*- coding: UTF-8  -*-
-import multiprocessing,  gettext
+import gettext
 from libmyquotes import *
 
 class WorkerBonoAleman(Source):

@@ -46,7 +46,7 @@
      <x>0</x>
      <y>0</y>
      <width>1180</width>
-     <height>25</height>
+     <height>20</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuAyuda">
@@ -133,6 +133,8 @@
     <addaction name="actionInversionesManual"/>
     <addaction name="actionInversionesDesaparecidas"/>
     <addaction name="actionInversionesSinActualizarHistoricos"/>
+    <addaction name="separator"/>
+    <addaction name="actionISINDuplicado"/>
     <addaction name="separator"/>
     <addaction name="actionInversionesSinISIN"/>
     <addaction name="actionInversionesSinNombre"/>
@@ -517,6 +519,18 @@ seleccionados por el usuario</string>
    </property>
    <property name="toolTip">
     <string>Todos los Warrants</string>
+   </property>
+  </action>
+  <action name="actionISINDuplicado">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/document-preview-archive.png</normaloff>:/xulpymoney/document-preview-archive.png</iconset>
+   </property>
+   <property name="text">
+    <string>Inversiones con ISIN duplicado</string>
+   </property>
+   <property name="toolTip">
+    <string>Inversiones con ISIN duplicado</string>
    </property>
   </action>
  </widget>

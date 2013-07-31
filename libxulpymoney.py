@@ -3951,6 +3951,9 @@ class QuotesResult:
     
     def get_basic_in_all(self):
         """Función que calcula last, penultimate y lastdate """
+        if len(self.all)==0:
+            print ("No hay quotes para la inversi´on",  self.investment)
+            return
         self.last=self.all[len(self.all)-1]
         #penultimate es el ultimo del penultimo dia localizado
         dtpenultimate=day_end(self.last.datetime-datetime.timedelta(days=1), self.investment.bolsa.zone)
@@ -4012,6 +4015,9 @@ class QuotesResult:
         return None
         
     def find_quote_in_all(self, datetime):
+        if len(self.all)==0:
+            print ("No hay quotes para la inversi´on",  self.investment)
+            return
         return self.all[self.get_all_position(datetime)]
 
         
@@ -4796,14 +4802,19 @@ def qdatetime(dt, zone,  pixmap=True):
     return a
 
 def list2string(lista):
-        ##Conviert cur a lista separada comas
-        #HACER PARA STRINGS, INT, ... MIRANDO CLASS
-        
-        #FLOAT
-        resultado=""
-        for l in lista:
-            resultado=resultado+ str(L) + ", "
-        return resultado[:-2]
+        """Covierte lista a string"""
+        if  len(lista)==0:
+            return ""
+        if str(lista[0].__class__) in ["<class 'int'>", "<class 'float'>"]:
+            resultado=""
+            for l in lista:
+                resultado=resultado+ str(l) + ", "
+            return resultado[:-2]
+        elif str(lista[0].__class__) in ["<class 'str'>",]:
+            resultado=""
+            for l in lista:
+                resultado=resultado+ "'" + str(l) + "', "
+            return resultado[:-2]
 
 def log(tipo, funcion,  mensaje):
     """Tipo es una letra mayuscula S sistema H historico D diario"""

@@ -1,6 +1,6 @@
 20111214 Cuando se inicia cuenta nueva en un mes y se añade la suma de saldos falla por el inicio de mes anterior
 20111201 En transferencias poner textos localizadosy ID vinculado a transferencia
-20120104 Hacer dialogo de split y contrasplit.
+20120104 Hacer dialogo de split y contrasplit en myquotes para cotizaciones y en xulpymoney para operacciones
 20120105 Al hacer operaciones historicas solo se grabará la diferencia entre el actual y el precio de compra
                  Si las contabilizo ahora luegoal vender sería doble contabilidad pensarlo bien y documentarlo.
                 ojo que la fecha de calculo de saldo es la de añadido
@@ -28,7 +28,6 @@
 20130103 Cuando se genera un dividendo acciones y se mete comisión se cuenta en Ingresos quizás porque es neto
 20130103 Cuando se inserta un operinversión, hay que poner el indice de referencia y se debe insertar en myquotes el valor con microseconds=5
 20110228 Al avisar nueva versión que sea con un hyperlink a download de myquotes
-20110421 Consultas de isin duplicados con la misma bolsa
 20110526 Crear la funcionalidad de divisas importantes
 20110822 Poner en el gráfico histórico la opción del punto de venta
 20111013 En las etiquetas de graficos poner el valor del máximo, minimo y apertura
@@ -38,7 +37,6 @@
 20120309 En consultas masivas a quote hacer un buzón y un id[], en el que se metan todas y devuelva un diccionario ubzon[id]o
 20120405 En la misma tabla de dividendos estimados poner el bpa, para poder calcular el PER
 20120406 Permitir bajarse a local todos los datos a un xml y analizarlo gráficamente por ejemplo 20120405 Telefónica 74756 y solo actualizar el intradía en descarga online
-20120711 Ids siempre con todos datos indices y divisas
 20120713 Se podr´ia generar un a clase madre resultquotes que debendan dbresultquotes y file resultquotes, con funciones de calculo en padre
 20120801 Cambiar Yahoo por ticker
 20120815 No se calcula bien las medias móviles ver renta4 monetario
