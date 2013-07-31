@@ -2959,13 +2959,12 @@ class Source:
             try:                 
                 web=urllib.request.urlopen(url)
             except:            
-                con=self.cfg.connect_myquotesd()
-                cur=con.cursor()
-                status_update(cur, self.name, "Update quotes", status='Downloading error',  statuschange=datetime.datetime.now())
-                con.commit()
-                cur.close()
-                self.cfg.disconnect_myquotesd(con)    
-                time.sleep(60)
+#                cur=con.cursor()
+#                status_update(cur, self.name, "Update quotes", status='Downloading error',  statuschange=datetime.datetime.now())
+#                con.commit()
+#                cur.close()
+#                self.cfg.disconnect_myquotesd(con)    
+#                time.sleep(60)
                 return None
         else:
             return None
