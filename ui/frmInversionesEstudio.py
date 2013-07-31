@@ -205,7 +205,7 @@ class frmInversionesEstudio(QDialog, Ui_frmInversionesEstudio):
 
     @QtCore.pyqtSlot() 
     def on_cmdPuntoVenta_released(self):
-        f=frmPuntoVenta(self.cfg, self.selInversion)
+        f=frmPuntoVenta(self.cfg, self.data_inversiones, self.selInversion)
         f.exec_()
         self.txtVenta.setText(str(f.puntoventa))
 

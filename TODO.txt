@@ -18,6 +18,7 @@
 20120706 cuenta operacion heredada de inversion deberia crearse como con dividendos una opercuenta antes
 20120726 Quitar importe de newOperinversionHistorica en funciones 
 20120707 Cuando se mete una comision en transferencia no se contabiliza luego. Ver si sacarla.
+20120727 Mostrar tipo de dividendo en frmHistorico y ver si se calcula bien el neto y el bruto. Añadir pago de bono
 20120730 Meter tipo de dividendo en informe histórico
 20120802 Hacer un formulario de inicio que genere el settings en home y pregunte idioma y lo cambie
 20120803 Quitar primera fecha de inicio y ponerlo en config por defecto y quitar la función de union de patrimonio, al empezar una nueva base de datos es un coñazo
@@ -27,37 +28,21 @@
 20130103 Cuando se genera un dividendo acciones y se mete comisión se cuenta en Ingresos quizás porque es neto
 20130103 Cuando se inserta un operinversión, hay que poner el indice de referencia y se debe insertar en myquotes el valor con microseconds=5
 20110228 Al avisar nueva versión que sea con un hyperlink a download de myquotes
-20110421 Consultas de isin duplicados
-20110421 Se puede hacer update_historicals en carmignac ver página web
+20110421 Consultas de isin duplicados con la misma bolsa
 20110526 Crear la funcionalidad de divisas importantes
 20110822 Poner en el gráfico histórico la opción del punto de venta
 20111013 En las etiquetas de graficos poner el valor del máximo, minimo y apertura
 20111027 Hacer particiones a las tablas, quizas por años. http://www.postgresql.org/docs/9.1/static/ddl-partitioning.html
-20120217 Ver como trato el volumen si en yahoo historical pero debe almacenar las ultimas y con el planteamiento de yaoo historical no se puede.
 20120217 Crear menú automático Bolsas y que liste todo desde bolsas
 20120307 Cuando haya ochl en los datos intradia, dibujar una raya de maximo y minimo gris discontinuo, con punto gris de inicio  y punto gris de final
-20120307 En productos cotizados que no pone la hora se debería poner un last con el valor y compararlo, si es el mismo no se pone, pensarlo bien
 20120309 En consultas masivas a quote hacer un buzón y un id[], en el que se metan todas y devuelva un diccionario ubzon[id]o
-20120311 No permitir grabar fuera de horario.
 20120405 En la misma tabla de dividendos estimados poner el bpa, para poder calcular el PER
 20120406 Permitir bajarse a local todos los datos a un xml y analizarlo gráficamente por ejemplo 20120405 Telefónica 74756 y solo actualizar el intradía en descarga online
-20120410 Si tiene roll administrador solo determinadas opciones.
 20120711 Ids siempre con todos datos indices y divisas
-20120713 Poner en myquotes borrar historicos. debe borrar todo cuyo microsecond==4, comprobando que está en yahoo ya que se podría borrar los fondos.
 20120713 Se podr´ia generar un a clase madre resultquotes que debendan dbresultquotes y file resultquotes, con funciones de calculo en padre
-20120713 Hacer estudio de las activas de inversi´on por medias....
 20120801 Cambiar Yahoo por ticker
 20120815 No se calcula bien las medias móviles ver renta4 monetario
-20130103 Cambios extratégicos
-	- Solo se grabará mq.historicos de todos los que active
-	- El sistema permitirá meter cualquier cotización y a cualquier hora, pero de forma manual
-	- Se actualizarán los grupos
-	- Las que no sean de yahoo, lo mismo solo finales
-	- Cuando no quiera que se purge un dato después de 7 días, se debe poner microseconds=5
-	- Cuando se cambia a activa se debe recargar los mq. hacer un signal para recargar.
-	- Se debería hacer un proceso:
-		 yahoo, y purge yahoo
-		indices y purge indices
+20130103 Hacer desde interfaz, purga que deje los datos 1,2,3,4 o los ohcl que existan borrando los demás
 20130727 Bolsa de paris no sale al añadir un quoteibm
 20130728 Poner en dividendos el gasto total en el concepto en el año seleccionado en el combo.
 20130729 Quitar los logs de myquots
