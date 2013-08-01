@@ -35,6 +35,7 @@ compile:
 	pyuic4 ui/frmTarjetasIBM.ui > ui/Ui_frmTarjetasIBM.py
 	pyuic4 ui/frmTransferencia.ui > ui/Ui_frmTransferencia.py
 	pyuic4 ui/frmTraspasoValores.ui > ui/Ui_frmTraspasoValores.py
+
 	pyuic4 ui/wdgTotal.ui > ui/Ui_wdgTotal.py
 
 	pyuic4 ui/frmAnalisis.ui > ui/Ui_frmAnalisis.py 
@@ -46,7 +47,7 @@ compile:
 	pyuic4 ui/wdgChart.ui > ui/Ui_wdgChart.py
 	pyuic4 ui/wdgLog.ui > ui/Ui_wdgLog.py
 	pyuic4 ui/wdgMergeCodes.ui > ui/Ui_wdgMergeCodes.py
-
+	pyuic4 ui/wdgYearMonth.ui > ui/Ui_wdgYearMonth.py
 	pylupdate4 -noobsolete xulpymoney.pro
 	lrelease xulpymoney.pro
 

@@ -49,7 +49,7 @@
      <item>
       <widget class="QTabWidget" name="tab">
        <property name="currentIndex">
-        <number>2</number>
+        <number>1</number>
        </property>
        <widget class="QWidget" name="tabDatos">
         <attribute name="title">
@@ -154,97 +154,11 @@
         <attribute name="title">
          <string>Movimientos de la cuenta</string>
         </attribute>
-        <layout class="QHBoxLayout" name="horizontalLayout_7">
+        <layout class="QHBoxLayout" name="horizontalLayout">
          <item>
           <layout class="QVBoxLayout" name="verticalLayout_3">
            <item>
-            <layout class="QHBoxLayout" name="horizontalLayout">
-             <item>
-              <widget class="QLabel" name="label_4">
-               <property name="text">
-                <string>Selecciona el mes y el año de los datos a visualizar</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QComboBox" name="cmbMonth">
-               <item>
-                <property name="text">
-                 <string>Enero</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>Febrero</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>Marzo</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>Abril</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>Mayo</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>Junio</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>Julio</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>Agosto</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>Septiembre</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>Octubre</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>Noviembre</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>Diciembre</string>
-                </property>
-               </item>
-              </widget>
-             </item>
-             <item>
-              <widget class="QComboBox" name="cmbYear"/>
-             </item>
-             <item>
-              <widget class="QToolButton" name="cmdMovimientos">
-               <property name="text">
-                <string/>
-               </property>
-               <property name="icon">
-                <iconset resource="../images/xulpymoney.qrc">
-                 <normaloff>:/xulpymoney/search.png</normaloff>:/xulpymoney/search.png</iconset>
-               </property>
-              </widget>
-             </item>
-            </layout>
+            <widget class="wdgYearMonth" name="wdgYM" native="true"/>
            </item>
            <item>
             <widget class="myQTableWidget" name="tblOperaciones">
@@ -721,6 +635,12 @@
    <class>myQTableWidget</class>
    <extends>QTableWidget</extends>
    <header location="global">myqtablewidget</header>
+  </customwidget>
+  <customwidget>
+   <class>wdgYearMonth</class>
+   <extends>QWidget</extends>
+   <header location="global">wdgYearMonth</header>
+   <container>1</container>
   </customwidget>
  </customwidgets>
  <resources>

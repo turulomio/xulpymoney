@@ -1,7 +1,6 @@
 20111214 Cuando se inicia cuenta nueva en un mes y se añade la suma de saldos falla por el inicio de mes anterior
 20111201 En transferencias poner textos localizadosy ID vinculado a transferencia
 20120104 Hacer dialogo de split y contrasplit en myquotes para cotizaciones y en xulpymoney para operacciones
-20120106 Crear widget para pasar meses y seleccionar meses y años y sustituir. donde corresponda
 20120127 Poner en wdgIndexRange el criterio de coloreado de verde
         - Sumatorio de invertido en rango < 9000
         - No haya registros
@@ -37,4 +36,4 @@
 20120815 No se calcula bien las medias móviles ver renta4 monetario
 20130103 Hacer desde interfaz, purga que deje los datos 1,2,3,4 o los ohcl que existan borrando los demás
 20130728 Poner en dividendos el gasto total en el concepto en el año seleccionado en el combo.
-20130729 Quitar los logs de myquots
+20130729 Hacer que un error en config por nuevo tag no afecte a todas las configuraciones

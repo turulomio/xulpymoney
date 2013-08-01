@@ -767,337 +767,272 @@ correspondiente en la tabla</source>
 <context>
     <name>frmCuentasIBM</name>
     <message>
-        <location filename="ui/Ui_frmCuentasIBM.py" line="376"/>
+        <location filename="ui/Ui_frmCuentasIBM.py" line="348"/>
         <source>Estudio de la Cuenta seleccionada</source>
         <translation>Selected account report</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmCuentasIBM.py" line="383"/>
+        <location filename="ui/Ui_frmCuentasIBM.py" line="355"/>
         <source>Actualizar</source>
         <translation>Update</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmCuentasIBM.py" line="450"/>
+        <location filename="ui/Ui_frmCuentasIBM.py" line="409"/>
         <source>Saldo</source>
         <translation>Balance</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmCuentasIBM.py" line="442"/>
+        <location filename="ui/Ui_frmCuentasIBM.py" line="401"/>
         <source>Id</source>
         <translation>Id</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmCuentasIBM.py" line="377"/>
+        <location filename="ui/Ui_frmCuentasIBM.py" line="349"/>
         <source>TextLabel</source>
         <translation>Etiqueta</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmCuentasIBM.py" line="384"/>
+        <location filename="ui/Ui_frmCuentasIBM.py" line="356"/>
         <source>Datos de la Cuenta</source>
         <translation>Account data</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmCuentasIBM.py" line="378"/>
+        <location filename="ui/Ui_frmCuentasIBM.py" line="350"/>
         <source>Selecciona la entidad bancaria a la que pertenece</source>
         <translation>Select the bank it belongs to</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmCuentasIBM.py" line="379"/>
+        <location filename="ui/Ui_frmCuentasIBM.py" line="351"/>
         <source>Nombre de la Cuenta</source>
         <translation>Account name</translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="ui/Ui_frmCuentasIBM.py" line="381"/>
+        <location filename="ui/Ui_frmCuentasIBM.py" line="353"/>
         <source>Número de cuenta</source>
         <translation>Account number</translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="ui/Ui_frmCuentasIBM.py" line="382"/>
+        <location filename="ui/Ui_frmCuentasIBM.py" line="354"/>
         <source>¿Está activa?</source>
         <translation>¿Is active?</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmCuentasIBM.py" line="408"/>
+        <location filename="ui/Ui_frmCuentasIBM.py" line="367"/>
         <source>Movimientos de la cuenta</source>
         <translation>Account movements</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmCuentasIBM.py" line="454"/>
+        <location filename="ui/Ui_frmCuentasIBM.py" line="413"/>
         <source>Tarjetas asociadas</source>
         <translation>Associated credit cards</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmCuentasIBM.py" line="444"/>
+        <location filename="ui/Ui_frmCuentasIBM.py" line="403"/>
         <source>Fecha</source>
         <translation>Date</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmCuentasIBM.py" line="446"/>
+        <location filename="ui/Ui_frmCuentasIBM.py" line="405"/>
         <source>Concepto</source>
         <translation>Concept</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmCuentasIBM.py" line="448"/>
+        <location filename="ui/Ui_frmCuentasIBM.py" line="407"/>
         <source>Importe</source>
         <translation>Amount</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmCuentasIBM.py" line="452"/>
+        <location filename="ui/Ui_frmCuentasIBM.py" line="411"/>
         <source>Comentario</source>
         <translation>Comment</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmCuentasIBM.py" line="412"/>
+        <location filename="ui/Ui_frmCuentasIBM.py" line="371"/>
         <source>Tarjeta</source>
         <translation>Credit Card</translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="ui/Ui_frmCuentasIBM.py" line="414"/>
+        <location filename="ui/Ui_frmCuentasIBM.py" line="373"/>
         <source>Número</source>
         <translation>Number</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmCuentasIBM.py" line="418"/>
+        <location filename="ui/Ui_frmCuentasIBM.py" line="377"/>
         <source>Pago diferido</source>
         <translation>Deferred payment</translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="ui/Ui_frmCuentasIBM.py" line="420"/>
+        <location filename="ui/Ui_frmCuentasIBM.py" line="379"/>
         <source>Saldo máximo</source>
         <translation>Maximum balance</translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="ui/Ui_frmCuentasIBM.py" line="385"/>
-        <source>Selecciona el mes y el año de los datos a visualizar</source>
-        <translation>Select a year and a month of the data to show</translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_frmCuentasIBM.py" line="386"/>
-        <source>Enero</source>
-        <translation>January</translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_frmCuentasIBM.py" line="387"/>
-        <source>Febrero</source>
-        <translation>February</translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_frmCuentasIBM.py" line="388"/>
-        <source>Marzo</source>
-        <translation>March</translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_frmCuentasIBM.py" line="389"/>
-        <source>Abril</source>
-        <translation>April</translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_frmCuentasIBM.py" line="390"/>
-        <source>Mayo</source>
-        <translation>May</translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_frmCuentasIBM.py" line="391"/>
-        <source>Junio</source>
-        <translation>June</translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_frmCuentasIBM.py" line="392"/>
-        <source>Julio</source>
-        <translation>July</translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_frmCuentasIBM.py" line="393"/>
-        <source>Agosto</source>
-        <translation>August</translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_frmCuentasIBM.py" line="394"/>
-        <source>Septiembre</source>
-        <translation>September</translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_frmCuentasIBM.py" line="395"/>
-        <source>Octubre</source>
-        <translation>October</translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_frmCuentasIBM.py" line="396"/>
-        <source>Noviembre</source>
-        <translation>November</translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_frmCuentasIBM.py" line="397"/>
-        <source>Diciembre</source>
-        <translation>December</translation>
-    </message>
-    <message encoding="UTF-8">
-        <location filename="ui/Ui_frmCuentasIBM.py" line="410"/>
+        <location filename="ui/Ui_frmCuentasIBM.py" line="369"/>
         <source>¿Mostrar tarjetas inactivas?</source>
         <translation>Show inactive credit cards?</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmCuentasIBM.py" line="455"/>
+        <location filename="ui/Ui_frmCuentasIBM.py" line="414"/>
         <source>Nuevo movimiento</source>
         <translation>New movement</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmCuentasIBM.py" line="456"/>
+        <location filename="ui/Ui_frmCuentasIBM.py" line="415"/>
         <source>Borrar el movimiento</source>
         <translation>Delete movement</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmCuentasIBM.py" line="409"/>
+        <location filename="ui/Ui_frmCuentasIBM.py" line="368"/>
         <source>Listado de tarjetas asociadas a la cuenta</source>
         <translation>List of cards associated with the account</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmCuentasIBM.py" line="432"/>
+        <location filename="ui/Ui_frmCuentasIBM.py" line="391"/>
         <source>Pago diferido de operaciones seleccionadas</source>
         <translation>Deferred payment of selected operations</translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="ui/Ui_frmCuentasIBM.py" line="433"/>
+        <location filename="ui/Ui_frmCuentasIBM.py" line="392"/>
         <source>XXXX €</source>
         <translation>XXXX €</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmCuentasIBM.py" line="434"/>
+        <location filename="ui/Ui_frmCuentasIBM.py" line="393"/>
         <source>Selecciona la fecha de pago</source>
         <translation>Select payment date</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmCuentasIBM.py" line="435"/>
+        <location filename="ui/Ui_frmCuentasIBM.py" line="394"/>
         <source>yyyy/MM/dd</source>
         <translation>Xulpymoney-qt</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmCuentasIBM.py" line="436"/>
+        <location filename="ui/Ui_frmCuentasIBM.py" line="395"/>
         <source>Pagar</source>
         <translation>Pay</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmCuentasIBM.py" line="437"/>
+        <location filename="ui/Ui_frmCuentasIBM.py" line="396"/>
         <source>Operaciones diferidas de la tarjeta seleccionada</source>
         <translation>Deferred operations of the selected card</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmCuentasIBM.py" line="457"/>
+        <location filename="ui/Ui_frmCuentasIBM.py" line="416"/>
         <source>Nueva Tarjeta</source>
         <translation>New Credit Card</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmCuentasIBM.py" line="458"/>
+        <location filename="ui/Ui_frmCuentasIBM.py" line="417"/>
         <source>Borrar Tarjeta</source>
         <translation>Delete Credit Card</translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="ui/Ui_frmCuentasIBM.py" line="459"/>
+        <location filename="ui/Ui_frmCuentasIBM.py" line="418"/>
         <source>Nueva Operación de Tarjeta</source>
         <translation>New Credit Card Operation</translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="ui/Ui_frmCuentasIBM.py" line="460"/>
+        <location filename="ui/Ui_frmCuentasIBM.py" line="419"/>
         <source>Borrar Operación de Tarjeta</source>
         <translation>Delete Credit Card Operation</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmCuentasIBM.py" line="462"/>
+        <location filename="ui/Ui_frmCuentasIBM.py" line="421"/>
         <source>Modificar Tarjeta</source>
         <translation>Edit credit card</translation>
     </message>
     <message>
-        <location filename="ui/frmCuentasIBM.py" line="147"/>
+        <location filename="ui/frmCuentasIBM.py" line="133"/>
         <source>No se ha borrado la tarjeta por tener registros dependientes</source>
         <translation>No card has been deleted due to have dependent records</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmCuentasIBM.py" line="463"/>
+        <location filename="ui/Ui_frmCuentasIBM.py" line="422"/>
         <source>ActivarTarjeta</source>
         <translation>Activate Credit Card</translation>
     </message>
     <message>
-        <location filename="ui/frmCuentasIBM.py" line="339"/>
+        <location filename="ui/frmCuentasIBM.py" line="322"/>
         <source>Desactivar tarjeta</source>
         <translation>Deactivate Credit Card</translation>
     </message>
     <message>
-        <location filename="ui/frmCuentasIBM.py" line="341"/>
+        <location filename="ui/frmCuentasIBM.py" line="324"/>
         <source>Activar tarjeta</source>
         <translation>Activate Credit Card</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmCuentasIBM.py" line="464"/>
+        <location filename="ui/Ui_frmCuentasIBM.py" line="423"/>
         <source>Modificar movimiento</source>
         <translation>Edit movement</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmCuentasIBM.py" line="465"/>
+        <location filename="ui/Ui_frmCuentasIBM.py" line="424"/>
         <source>Modificar Movimiento</source>
         <translation>Edit movement</translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="ui/Ui_frmCuentasIBM.py" line="453"/>
+        <location filename="ui/Ui_frmCuentasIBM.py" line="412"/>
         <source>Histórico de pagos diferidos de la tarjeta seleccionada</source>
         <translation>Historical deferred payments of the selected card</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmCuentasIBM.py" line="438"/>
+        <location filename="ui/Ui_frmCuentasIBM.py" line="397"/>
         <source>Selecciona un pago</source>
         <translation>Select a payment</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmCuentasIBM.py" line="439"/>
+        <location filename="ui/Ui_frmCuentasIBM.py" line="398"/>
         <source>Para devolver el pago</source>
         <translation>To return the payment</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmCuentasIBM.py" line="440"/>
+        <location filename="ui/Ui_frmCuentasIBM.py" line="399"/>
         <source>Devolver el pago</source>
         <translation>Return the payment</translation>
     </message>
     <message>
-        <location filename="ui/frmCuentasIBM.py" line="259"/>
+        <location filename="ui/frmCuentasIBM.py" line="242"/>
         <source>Tarjeta {0}. </source>
         <translation>Credit card {0}. </translation>
     </message>
     <message>
-        <location filename="ui/frmCuentasIBM.py" line="274"/>
+        <location filename="ui/frmCuentasIBM.py" line="257"/>
         <source>Tarjeta {0}</source>
         <translation>Credit Card {0}</translation>
     </message>
     <message>
-        <location filename="ui/frmCuentasIBM.py" line="462"/>
+        <location filename="ui/frmCuentasIBM.py" line="445"/>
         <source>Pago efectuado el {0} de {1}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmCuentasIBM.py" line="51"/>
+        <location filename="ui/frmCuentasIBM.py" line="45"/>
         <source>Datos de la nueva cuenta bancaria</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmCuentasIBM.py" line="57"/>
+        <location filename="ui/frmCuentasIBM.py" line="51"/>
         <source>Insertar nueva cuenta bancaria</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmCuentasIBM.py" line="71"/>
+        <location filename="ui/frmCuentasIBM.py" line="65"/>
         <source>Modificar los datos de la cuenta bancaria</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmCuentasIBM.py" line="380"/>
+        <location filename="ui/Ui_frmCuentasIBM.py" line="352"/>
         <source>Seleccione la divisa de la cuenta</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmCuentasIBM.py" line="416"/>
+        <location filename="ui/Ui_frmCuentasIBM.py" line="375"/>
         <source>Activa</source>
         <translation>Active</translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="ui/Ui_frmCuentasIBM.py" line="467"/>
+        <location filename="ui/Ui_frmCuentasIBM.py" line="426"/>
         <source>Modificar Operación de Tarjeta</source>
         <translation>Edit credit card operation</translation>
     </message>
@@ -3852,87 +3787,87 @@ Sólo se contabilizará cuando se vendan las acciones</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgInversiones2.ui" line="90"/>
+        <location filename="ui/wdgInversiones2.ui" line="87"/>
         <source>Code</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="ui/wdgInversiones2.ui" line="95"/>
+        <location filename="ui/wdgInversiones2.ui" line="92"/>
         <source>Inversión</source>
         <translation type="unfinished">Investment</translation>
     </message>
     <message>
-        <location filename="ui/wdgInversiones2.ui" line="100"/>
+        <location filename="ui/wdgInversiones2.ui" line="97"/>
         <source>ISIN</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="ui/wdgInversiones2.ui" line="105"/>
+        <location filename="ui/wdgInversiones2.ui" line="102"/>
         <source>Última actualización</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="ui/wdgInversiones2.ui" line="110"/>
+        <location filename="ui/wdgInversiones2.ui" line="107"/>
         <source>Cotización</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgInversiones2.ui" line="155"/>
+        <location filename="ui/wdgInversiones2.ui" line="152"/>
         <source>% Diario</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="ui/wdgInversiones2.ui" line="120"/>
+        <location filename="ui/wdgInversiones2.ui" line="117"/>
         <source>% Inicio año</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgInversiones2.ui" line="125"/>
+        <location filename="ui/wdgInversiones2.ui" line="122"/>
         <source>% Dividendo</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgInversiones2.ui" line="133"/>
+        <location filename="ui/wdgInversiones2.ui" line="130"/>
         <source>Registros encontrados</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="ui/wdgInversiones2.ui" line="146"/>
+        <location filename="ui/wdgInversiones2.ui" line="143"/>
         <source>Estudio de la Inversión</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgInversiones2.ui" line="164"/>
+        <location filename="ui/wdgInversiones2.ui" line="161"/>
         <source>% Anual</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgInversiones2.ui" line="173"/>
+        <location filename="ui/wdgInversiones2.ui" line="170"/>
         <source>Nombre</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgInversiones2.ui" line="182"/>
+        <location filename="ui/wdgInversiones2.ui" line="179"/>
         <source>Dividendo</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgInversiones2.ui" line="191"/>
+        <location filename="ui/wdgInversiones2.ui" line="188"/>
         <source>Hora</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgInversiones2.ui" line="200"/>
+        <location filename="ui/wdgInversiones2.ui" line="197"/>
         <source>Ibex 35</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="ui/wdgInversiones2.ui" line="209"/>
+        <location filename="ui/wdgInversiones2.ui" line="206"/>
         <source>Nueva Inversión manual</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="ui/wdgInversiones2.ui" line="212"/>
+        <location filename="ui/wdgInversiones2.ui" line="209"/>
         <source>El sistema crea las inversiones automáticamente
 según los Sources seleccionados en /etc/myquotes/config.py.
 Si quiere introducir una inversión manualmente y meter los
@@ -3940,12 +3875,12 @@ datos manualmente, seleccione esta opción.</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="ui/wdgInversiones2.ui" line="224"/>
+        <location filename="ui/wdgInversiones2.ui" line="221"/>
         <source>Editar Inversión manual</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="ui/wdgInversiones2.ui" line="227"/>
+        <location filename="ui/wdgInversiones2.ui" line="224"/>
         <source>El sistema crea las inversiones automáticamente
 según los Sources seleccionados en /etc/myquotes/config.py.
 Si quiere modificar una inversión insertada manualmente,
@@ -3953,12 +3888,12 @@ seleccione esta opción.</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="ui/wdgInversiones2.ui" line="239"/>
+        <location filename="ui/wdgInversiones2.ui" line="236"/>
         <source>Borrar Inversión</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="ui/wdgInversiones2.ui" line="242"/>
+        <location filename="ui/wdgInversiones2.ui" line="239"/>
         <source>Si esta inversión es automática se borrará pero el sistema 
 volvera a generarla.
 
@@ -3967,22 +3902,22 @@ sistema.</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="ui/wdgInversiones2.ui" line="258"/>
+        <location filename="ui/wdgInversiones2.ui" line="255"/>
         <source>Añadir a favoritos</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="ui/wdgInversiones2.ui" line="267"/>
+        <location filename="ui/wdgInversiones2.ui" line="264"/>
         <source>Combina códigos seleccionados</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="ui/wdgInversiones2.ui" line="279"/>
+        <location filename="ui/wdgInversiones2.ui" line="276"/>
         <source>Nueva cotización</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="ui/wdgInversiones2.ui" line="291"/>
+        <location filename="ui/wdgInversiones2.ui" line="288"/>
         <source>Nueva estimación de dividendo</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4205,6 +4140,89 @@ sistema.</source>
     <message>
         <location filename="ui/Ui_wdgTotal.py" line="181"/>
         <source>I+C+D-G</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>wdgYearMonth</name>
+    <message>
+        <location filename="ui/wdgYearMonth.ui" line="14"/>
+        <source>Form</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/wdgYearMonth.ui" line="22"/>
+        <source>Select a month and a year</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/wdgYearMonth.ui" line="29"/>
+        <source>&lt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/wdgYearMonth.ui" line="37"/>
+        <source>January</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/wdgYearMonth.ui" line="42"/>
+        <source>February</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/wdgYearMonth.ui" line="47"/>
+        <source>March</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/wdgYearMonth.ui" line="52"/>
+        <source>April</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/wdgYearMonth.ui" line="57"/>
+        <source>May</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/wdgYearMonth.ui" line="62"/>
+        <source>June</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/wdgYearMonth.ui" line="67"/>
+        <source>July</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/wdgYearMonth.ui" line="72"/>
+        <source>August</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/wdgYearMonth.ui" line="77"/>
+        <source>September</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/wdgYearMonth.ui" line="82"/>
+        <source>October</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/wdgYearMonth.ui" line="87"/>
+        <source>November</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/wdgYearMonth.ui" line="92"/>
+        <source>December</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/wdgYearMonth.ui" line="103"/>
+        <source>&gt;</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

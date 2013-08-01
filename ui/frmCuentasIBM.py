@@ -10,12 +10,11 @@ class frmCuentasIBM(QDialog, Ui_frmCuentasIBM):
         """
             selIdCuenta=None Inserción de cuentas
             selIdCuenta=X. Modificación de cuentas cuando click en cmd y resto de trabajos"""
-            
-
-            
         QWidget.__init__(self, parent)
         self.setupUi(self)
         self.showMaximized()
+        self.cmdDatos.setEnabled(False)     
+        
         self.cfg=cfg
         self.data_ebs=ebs
         self.data_cuentas=cuentas
@@ -27,7 +26,6 @@ class frmCuentasIBM(QDialog, Ui_frmCuentasIBM):
         
         self.opercuentas=[]#Array de objetos CUentaOperacion
         self.tarjetas=[]
-#        self.opertarjetas=[]#Opertarjetas diferidas listadas.
         
         self.totalOperTarjetas=0
         
@@ -42,11 +40,7 @@ class frmCuentasIBM(QDialog, Ui_frmCuentasIBM):
         
         self.cfg.currencies.load_qcombobox(self.cmbCurrency)
         self.data_ebs.load_qcombobox(self.cmbEB)
-        
-        con=self.cfg.connect_xulpymoney()
-        cur = con.cursor()      
-        cur2 = con.cursor()
-            
+                    
         if self.selCuenta==None:
             self.lblTitulo.setText(self.trUtf8("Datos de la nueva cuenta bancaria"))
             self.tab.setCurrentIndex(0)
@@ -71,19 +65,11 @@ class frmCuentasIBM(QDialog, Ui_frmCuentasIBM):
             self.cmdDatos.setText(self.trUtf8("Modificar los datos de la cuenta bancaria"))
 
             anoinicio=Patrimonio(self.cfg).primera_fecha_con_datos_usuario().year       
-    
-            for i in range(datetime.date.today().year-anoinicio+1):
-                self.cmbYear.addItem(str(anoinicio+i))       
-            self.cmbYear.setCurrentIndex(self.cmbYear.findText(str(datetime.date.today().year)))
-            self.cmbMonth.setCurrentIndex(datetime.date.today().month-1)
+            self.wdgYM.initiate(anoinicio,  datetime.date.today().year, datetime.date.today().year, datetime.date.today().month)
+            QObject.connect(self.wdgYM, SIGNAL("changed"), self.on_wdgYM_changed)
 
-            self.on_cmdMovimientos_released()
-            self.on_chkTarjetas_stateChanged(self.chkTarjetas.checkState())
-            
-            self.cmdDatos.setEnabled(False)   
-        cur.close()     
-        cur2.close()
-        self.cfg.disconnect_xulpymoney(con)        
+            self.on_wdgYM_changed()
+            self.on_chkTarjetas_stateChanged(self.chkTarjetas.checkState())             
 
     def load_tabOperTarjetas(self):     
         self.selTarjeta.op_diferido=sorted(self.selTarjeta.op_diferido, key=lambda o:o.fecha)
@@ -148,7 +134,7 @@ class frmCuentasIBM(QDialog, Ui_frmCuentasIBM):
             m.exec_()                 
         con.commit()
         cur.close()     
-        self.cfg.disconnect_xulpymoney(con)        
+        self.cfg.disconnect_xulpymoney(con)
         self.on_chkTarjetas_stateChanged(self.chkTarjetas.checkState())
 
     def on_chkTarjetas_stateChanged(self, state):
@@ -186,18 +172,16 @@ class frmCuentasIBM(QDialog, Ui_frmCuentasIBM):
         if self.selCuenta==None:
             self.done(0)
         self.cmdDatos.setEnabled(False)   
-        
-    def on_cmdMovimientos_released(self):
-        
+
+    @pyqtSlot()
+    def on_wdgYM_changed(self):
         con=self.cfg.connect_xulpymoney()
         cur = con.cursor()      
-        year= int(self.cmbYear.currentText())
-        month=self.cmbMonth.currentIndex()+1
         self.opercuentas=[]
-        self.saldoiniciomensual=self.selCuenta.saldo_from_db( str(datetime.date(year, month, 1)-datetime.timedelta(days=1)))         
+        self.saldoiniciomensual=self.selCuenta.saldo_from_db( str(datetime.date(self.wdgYM.year, self.wdgYM.month, 1)-datetime.timedelta(days=1)))         
         if self.saldoiniciomensual==None:
             self.saldoiniciomensual=0
-        cur.execute("select * from opercuentas where id_cuentas="+str(self.selCuenta.id)+" and date_part('year',fecha)="+str(year)+" and date_part('month',fecha)="+str(month)+" order by fecha, id_opercuentas")
+        cur.execute("select * from opercuentas where id_cuentas="+str(self.selCuenta.id)+" and date_part('year',fecha)="+str(self.wdgYM.year)+" and date_part('month',fecha)="+str(self.wdgYM.month)+" order by fecha, id_opercuentas")
         for o in cur:
             self.opercuentas.append(CuentaOperacion(self.cfg).init__db_row(o, self.cfg.conceptos.find(o['id_conceptos']), self.cfg.tiposoperaciones.find(o['id_tiposoperaciones']), self.selCuenta))
         cur.close()     
@@ -222,7 +206,6 @@ class frmCuentasIBM(QDialog, Ui_frmCuentasIBM):
         w=frmOperCuentas(self.cfg, self.data_cuentas,  self.selCuenta, None, None)
         self.connect(w, SIGNAL("OperCuentaIBMed"), self.on_cmdMovimientos_released)
         w.exec_()
-#        self.opercuentas.append(w.opercuenta)
         self.load_tblOperaciones()
         self.tblOperaciones.clearSelection()
         self.selOperCuenta=None
