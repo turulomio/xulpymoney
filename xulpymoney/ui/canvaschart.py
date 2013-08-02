@@ -12,7 +12,7 @@ from matplotlib.figure import Figure
 
 class ChartType:
     lines=0
-    ochl=1
+    ohcl=1
     candles=2
 
 
@@ -58,23 +58,22 @@ class canvasChart(FigureCanvas):
         
           
         
-    def settings(self, section,  file):		
+    def settings(self, section):		
         """Esta funcion debe ejecutarse despues de haber creado las columnas"""
-        self.file=file
         self.section=section
 
         try:
-            self.type=config.getint(section, "type" )
+            self.type=self.cfg.config_ui.getint(section, "type" )
         except:
             self.type=ChartType.lines
             
         try:
-            self.actionSMA50.setChecked(config.getboolean(section, "sma50" ))
+            self.actionSMA50.setChecked(self.cfg.config_ui.getboolean(section, "sma50" ))
         except:
             self.actionSMA50.setChecked(False)
 
         try:
-            self.actionSMA200.setChecked(config.getboolean(section, "sma200" ))
+            self.actionSMA200.setChecked(self.cfg.config_ui.getboolean(section, "sma200" ))
         except:
             self.actionSMA200.setChecked(False)
             
@@ -86,35 +85,31 @@ class canvasChart(FigureCanvas):
 
     def on_actionLines1d_activated(self):
         self.cfg.config_set_value(self.cfg.config_ui, self.section, "type",   ChartType.lines)
-        self.currentMatrizDataLength=len(self.result.ochlDaily)
+        self.currentMatrizDataLength=len(self.result.ohclDaily.arr)
         
-        if len(self.result.ochlDaily)>self.num:              
-            self._draw_lines_from_ochl(self.result.ochlDaily[len(self.result.ochlDaily)-1-self.num:len(self.result.ochlDaily)])      
+        if len(self.result.ohclDaily.arr)>self.num:              
+            self._draw_lines_from_ohcl(self.result.ohclDaily.arr[len(self.result.ohclDaily.arr)-1-self.num:len(self.result.ohclDaily.arr)])      
         else:
-            self._draw_lines_from_ochl(self.result.ochlDaily)     
+            self._draw_lines_from_ohcl(self.result.ohclDaily.arr)     
         self.draw()
 
-#    def _settings_saveprop(self, prop, value):
-#        config = configparser.ConfigParser()
-#        config.read(self.file)
-#        config.set(self.section,  prop, str(value))
-#        f=open(self.file, 'w')
-#        config.write(f)
-#        f.close()
-
-        
+      
         
         
     @pyqtSignature("")
     def on_actionSMA50_activated(self):
-        self._settings_saveprop("sma50", self.actionSMA50.isChecked())
-        self._draw()
+        self.cfg.config_set_value(self.cfg.config_ui, self.section, "sma50",   self.actionSMA50.isChecked())
+#        self._settings_saveprop("sma50", self.actionSMA50.isChecked())
+        self.cfg.configs_save()
+#        self._draw()
                 
         
     @pyqtSignature("")
     def on_actionSMA200_activated(self):
-        self._settings_saveprop("sma200", self.actionSMA200.isChecked())
-        self._draw()
+        self.cfg.config_set_value(self.cfg.config_ui, self.section, "sma200",   self.actionSMA200.isChecked())
+        self.cfg.configs_save()
+#        self._settings_saveprop("sma200", self.actionSMA200.isChecked())
+#        self._draw()
         
         
     def _draw_sma50(self,  datime, quotes):
@@ -148,7 +143,7 @@ class canvasChart(FigureCanvas):
         self.ax.plot_date(dat, sma, '-', color="red")    
 
 
-#    def _draw_lines_ochl(self):
+#    def _draw_lines_ohcl(self):
 #        return
         
         
@@ -180,14 +175,15 @@ class canvasChart(FigureCanvas):
 #            tick.label.set_fontsize(9) 
 #            tick.label.set_rotation('vertical')
 #            
-    def _draw_lines_from_ochl(self, data):
+    def _draw_lines_from_ohcl(self, data):
         """Aquí  data es un array de OHCL"""
         self.ax.clear()      
         dates=[]
         quotes=[]
-        for ochl in data:
-            dates.append(ochl.datetime)
-            quotes.append(ochl.close)
+        for ohcl in data:
+            dates.append(ohcl.datetime())
+            
+            quotes.append(ohcl.close)
 #        for i in range(len(data)):
 #            dates[i]=datetime.datetime.combine(dates[i], datetime.time(0, 0))
 
@@ -215,7 +211,7 @@ class canvasChart(FigureCanvas):
 #    @pyqtSignature("")
 #    def on_actionOHCL5m_activated(self):
 #        print ("Una vez")
-#        self.ochl(datetime.timedelta(minutes=5))
+#        self.ohcl(datetime.timedelta(minutes=5))
 #
 #        self.ax.xaxis.set_major_locator(HourLocator(interval=1 , tz=pytz.timezone(self.cfg.localzone.name)))
 #        self.ax.xaxis.set_minor_locator(HourLocator(interval=1, tz=pytz.timezone(self.cfg.localzone.name)))
@@ -226,20 +222,21 @@ class canvasChart(FigureCanvas):
         
     @pyqtSignature("")
     def on_actionOHCL1d_activated(self):
-        self._settings_saveprop("type", ChartType.ochl)
-        self.currentMatrizDataLength=len(self.result.ochlDaily)
+#        self._settings_saveprop("type", ChartType.ohcl)
+        self.cfg.config_set_value(self.cfg.config_ui, self.section, "type", ChartType.ohcl)
+        self.currentMatrizDataLength=len(self.result.ohclDaily.arr)
         
-        if len(self.result.ochlDaily)>self.num:            
-            self.ochl(self.result.ochlDaily[len(self.result.ochlDaily)-1-self.num:len(self.result.ochlDaily)], datetime.timedelta(days=1))       
+        if len(self.result.ohclDaily.arr)>self.num:            
+            self.ohcl(self.result.ohclDaily.arr[len(self.result.ohclDaily.arr)-1-self.num:len(self.result.ohclDaily.arr)], datetime.timedelta(days=1))       
         else:
-            self.ochl(self.result.ochlDaily, datetime.timedelta(days=1))     
+            self.ohcl(self.result.ohclDaily.arr, datetime.timedelta(days=1))     
      
         self.draw()
                 
 #    @pyqtSignature("")
 #    def on_actionOHCL30d_activated(self):
 #        print ("Una vez")
-#        self.ochl(datetime.timedelta(days=30))
+#        self.ohcl(datetime.timedelta(days=30))
 #        if len(self.data)<60:
 #            self.ax.xaxis.set_minor_locator(DayLocator())
 #            self.ax.xaxis.set_major_locator(MonthLocator())
@@ -251,23 +248,23 @@ class canvasChart(FigureCanvas):
 #        self.ax.fmt_xdata = DateFormatter('%Y-%m-%d')
 #        self.draw()
         
-    def ochl(self, ochldata,  interval):
+    def ohcl(self, ohcldata,  interval):
         self.ax.clear()
             
-#        dates, open,  close, high, low, volumen=zip(*ochldata)
+#        dates, open,  close, high, low, volumen=zip(*ohcldata)
         quotes=[]
         dates=[]
         close=[]
-        self._get_locators(ochldata[0].datetime,  ochldata[len(ochldata)-1].datetime, len(ochldata))
-        for d in ochldata:
-            quotes.append((d.datetime.toordinal(), d.open, d.close,  d.high, d.low))         #ESTE ES EL CAUSEANTE NO SE VEA MENOR DE DIARIO TOOARDIANL
-            dates.append(d.datetime)
+        self._get_locators(ohcldata[0].datetime(),  ohcldata[len(ohcldata)-1].datetime(), len(ohcldata))
+        for d in ohcldata:
+            quotes.append((d.datetime().toordinal(), d.open, d.close,  d.high, d.low))         #ESTE ES EL CAUSEANTE NO SE VEA MENOR DE DIARIO TOOARDIANL
+            dates.append(d.datetime())
             close.append(d.close)
 
 #        self.ax.autoscale_view()
         self.ax.fmt_xdata = DateFormatter('%Y-%m-%d')
-        left=ochldata[0].datetime.toordinal()-interval.days#De margen
-        right=ochldata[len(ochldata)-1].datetime.toordinal()+interval.days
+        left=ohcldata[0].datetime().toordinal()-interval.days#De margen
+        right=ohcldata[len(ohcldata)-1].datetime().toordinal()+interval.days
         self.ax.set_xlim(left, right)
         plot_day_summary(self.ax, quotes,  ticksize=4)
         self._draw_sma50(dates, close)
@@ -326,7 +323,7 @@ class canvasChart(FigureCanvas):
 #        return True
 #        
 #        
-#    def quita_ochl(self, data):
+#    def quita_ohcl(self, data):
 #        resultado=[]
 #        for d in self.data:
 #            if d[0].microsecond in (1, 2, 3, 4):
@@ -335,7 +332,7 @@ class canvasChart(FigureCanvas):
 #                resultado.append(d)
 #        return resultado
         
-#    def dibuja_ochl(self, data):
+#    def dibuja_ohcl(self, data):
 #        return
 #    
     def common_actions(self):
@@ -427,6 +424,7 @@ class canvasChartIntraday(canvasChart):
         self.cfg=cfg
         canvasChart.__init__(self, parent)
         self.setupUi()
+        self.settings("canvasIntraday")
         
 
     def price(self, x): 
@@ -434,20 +432,21 @@ class canvasChartIntraday(canvasChart):
 #        return '{0}{1}{2}'.format(round(x, 2), self.investment.currency.symbol,  (self.penultimate.quote-x)*100/self.penultimate.quote)
         return  (self.penultimate.quote-x)*100/self.penultimate.quote
         
-    def load_data_intraday(self, investment,  dataintraday,  penultimate):
-        self.data=dataintraday
-        self.penultimate=penultimate
+    def load_data_intraday(self, investment):
+        self.result=investment.result
+        self.data=self.result.intradia.arr
+        self.penultimate=self.result.penultimate
         self.investment=investment
         self._draw_lines_from_quotes(self.data)
         
     def on_customContextMenuRequested(self, pos):
         menu=QMenu()
-        ochl=QMenu("OHCL")
-        ochl.addAction(self.actionOHCL5m)
-        ochl.addAction(self.actionOHCL10m)
-        ochl.addAction(self.actionOHCL30m)
-        ochl.addAction(self.actionOHCL60m)
-        menu.addMenu(ochl)        
+        ohcl=QMenu("OHCL")
+        ohcl.addAction(self.actionOHCL5m)
+        ohcl.addAction(self.actionOHCL10m)
+        ohcl.addAction(self.actionOHCL30m)
+        ohcl.addAction(self.actionOHCL60m)
+        menu.addMenu(ohcl)        
         lines=QMenu("Líneas")
         lines.addAction(self.actionLinesIntraday)
         lines.addAction(self.actionLines5m)
@@ -480,11 +479,12 @@ class canvasChartHistorical(canvasChart):
         canvasChart.__init__(self, parent)
         self.num=50#Numero de items a mostrar
         self.setupUi()
+        self.settings("canvasHistorical")
         
     def __draw(self):
         if self.type==ChartType.lines:
             self.on_actionLines1d_activated()
-        elif self.type==ChartType.ochl:
+        elif self.type==ChartType.ohcl:
             self.on_actionOHCL1d_activated()
         elif self.type==ChartType.candles:
             self.on_actionCandles1d_activated()
@@ -565,50 +565,50 @@ class canvasChartHistorical(canvasChart):
 #    figzoom.canvas.draw()
     @pyqtSignature("")
     def on_actionOHCL7d_activated(self):
-        self._settings_saveprop("type", ChartType.ochl)
-        ochlWeekly=self.result.ochlWeekly()
-        self.currentMatrizDataLength=len(ochlWeekly)
+        self._settings_saveprop("type", ChartType.ohcl)
+        ohclWeekly=self.result.ohclWeekly()
+        self.currentMatrizDataLength=len(ohclWeekly)
         
-        if len(ochlWeekly)>self.num:            
-            self.ochl(ochlWeekly[len(ochlWeekly)-1-self.num:len(ochlWeekly)], datetime.timedelta(days=7))       
+        if len(ohclWeekly)>self.num:            
+            self.ohcl(ohclWeekly[len(ohclWeekly)-1-self.num:len(ohclWeekly)], datetime.timedelta(days=7))       
         else:
-            self.ochl(ochlWeekly, datetime.timedelta(days=7))     
+            self.ohcl(ohclWeekly, datetime.timedelta(days=7))     
         self.draw()
     @pyqtSignature("")
     def on_actionOHCL30d_activated(self):
-        self._settings_saveprop("type", ChartType.ochl)
-        ochlMonthly=self.result.ochlMonthly()
-        self.currentMatrizDataLength=len(ochlMonthly)
+        self._settings_saveprop("type", ChartType.ohcl)
+        ohclMonthly=self.result.ohclMonthly()
+        self.currentMatrizDataLength=len(ohclMonthly)
         
-        if len(ochlMonthly)>self.num:            
-            self.ochl(ochlMonthly[len(ochlMonthly)-1-self.num:len(ochlMonthly)], datetime.timedelta(days=30))       
+        if len(ohclMonthly)>self.num:            
+            self.ohcl(ohclMonthly[len(ohclMonthly)-1-self.num:len(ohclMonthly)], datetime.timedelta(days=30))       
         else:
-            self.ochl(ochlMonthly, datetime.timedelta(days=30))     
+            self.ohcl(ohclMonthly, datetime.timedelta(days=30))     
         self.draw()
     @pyqtSignature("")
     def on_actionOHCL365d_activated(self):
-        self._settings_saveprop("type", ChartType.ochl)
-        ochlYearly=self.result.ochlYearly()
-        self.currentMatrizDataLength=len(ochlYearly)
+        self._settings_saveprop("type", ChartType.ohcl)
+        ohclYearly=self.result.ohclYearly()
+        self.currentMatrizDataLength=len(ohclYearly)
         
-        if len(ochlYearly)>self.num:            
-            self.ochl(ochlYearly[len(ochlYearly)-1-self.num:len(ochlYearly)], datetime.timedelta(days=365))       
+        if len(ohclYearly)>self.num:            
+            self.ohcl(ohclYearly[len(ohclYearly)-1-self.num:len(ohclYearly)], datetime.timedelta(days=365))       
         else:
-            self.ochl(ochlYearly, datetime.timedelta(days=365))     
+            self.ohcl(ohclYearly, datetime.timedelta(days=365))     
         self.draw()
         
     def on_customContextMenuRequested(self, pos):
         menu=QMenu()
-        ochl=QMenu("OHCL")
-        ochl.addAction(self.actionOHCL5m)
-        ochl.addAction(self.actionOHCL10m)
-        ochl.addAction(self.actionOHCL30m)
-        ochl.addAction(self.actionOHCL60m)
-        ochl.addAction(self.actionOHCL1d)
-        ochl.addAction(self.actionOHCL7d)
-        ochl.addAction(self.actionOHCL30d)
-        ochl.addAction(self.actionOHCL365d)
-        menu.addMenu(ochl)        
+        ohcl=QMenu("OHCL")
+        ohcl.addAction(self.actionOHCL5m)
+        ohcl.addAction(self.actionOHCL10m)
+        ohcl.addAction(self.actionOHCL30m)
+        ohcl.addAction(self.actionOHCL60m)
+        ohcl.addAction(self.actionOHCL1d)
+        ohcl.addAction(self.actionOHCL7d)
+        ohcl.addAction(self.actionOHCL30d)
+        ohcl.addAction(self.actionOHCL365d)
+        menu.addMenu(ohcl)        
         lines=QMenu("Líneas")
         lines.addAction(self.actionLines5m)
         lines.addAction(self.actionLines10m)

@@ -36,3 +36,4 @@
 20130829 Meter el importe de inversion desinversion en config
 20130829 En punto de venta poner antes y después set
 20130829 Load dividendos de frmAnalisis ca<mbiar por Set
+20130829 Hacer view weekly

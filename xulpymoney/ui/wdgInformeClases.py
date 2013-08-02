@@ -84,7 +84,7 @@ class wdgInformeClases(QWidget, Ui_wdgInformeClases):
     def load_data_from_db(self):
         inicio=datetime.datetime.now()
         self.indicereferencia=Investment(self.cfg).init__db(self.cfg.config.get("settings", "indicereferencia" ))
-        self.indicereferencia.quotes.get_basic()
+        self.indicereferencia.result.get_basic()
         self.data_ebs=SetEntidadesBancarias(self.cfg)
         self.data_ebs.load_from_db("select * from entidadesbancarias where eb_activa=true")
         self.data_cuentas=SetCuentas(self.cfg, self.data_ebs)
