@@ -24,7 +24,7 @@ class frmInversionesEstudio(QDialog, Ui_frmInversionesEstudio):
         self.selInversion=selInversion
         
         self.indicereferencia=Investment(self.cfg).init__db(self.cfg.config.get("settings", "indicereferencia" ))
-        self.indicereferencia.quotes.get_basic()
+        self.indicereferencia.result.get_basic()
 #        self.currentIndex=79329
         self.selDividendo=None#Dividendo seleccionado
         
@@ -109,7 +109,7 @@ class frmInversionesEstudio(QDialog, Ui_frmInversionesEstudio):
 
             estimacion=self.selInversion.investment.estimacionesdividendo.currentYear()
             acciones=self.selInversion.acciones()
-            tpccalculado=100*estimacion.dpa/self.selInversion.investment.quotes.last.quote
+            tpccalculado=100*estimacion.dpa/self.selInversion.investment.result.last.quote
             self.lblDivAnualEstimado.setText(("El dividendo anual estimado, según el valor actual de la acción es del {0} % ({1}€ por acción)".format(str(round(tpccalculado, 2)),  str(estimacion.dpa))))
             self.lblDivFechaRevision.setText(('Fecha de la última revisión del dividendo: '+ str(estimacion.fechaestimacion)))
             self.lblDivSaldoEstimado.setText(("Saldo estimado: {0}€ ({1}€ después de impuestos)".format( str(round(acciones*estimacion.dpa, 2)),  str(round(acciones*estimacion.dpa*(1-self.cfg.dividendwithholding))), 2)))
@@ -278,7 +278,7 @@ class frmInversionesEstudio(QDialog, Ui_frmInversionesEstudio):
             print ("Cargando otro mqinversiones")
             inv=Investment(self.cfg).init__db(myquotesid)
             inv.estimacionesdividendo.load_from_db()
-            inv.quotes.get_basic()
+            inv.result.get_basic()
             self.data_investments.arr.append(inv)
             
         

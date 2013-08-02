@@ -35,7 +35,7 @@ class wdgInformeHistorico(QWidget, Ui_wdgInformeHistorico):
     def load_data_from_db(self):
         inicio=datetime.datetime.now()
         self.indicereferencia=Investment(self.cfg).init__db(self.cfg.config.get("settings", "indicereferencia" ))
-        self.indicereferencia.quotes.get_basic()
+        self.indicereferencia.result.get_basic()
         self.data_ebs=SetEntidadesBancarias(self.cfg)
         self.data_ebs.load_from_db("select * from entidadesbancarias where eb_activa=true")
         self.data_cuentas=SetCuentas(self.cfg, self.data_ebs)
@@ -66,7 +66,7 @@ class wdgInformeHistorico(QWidget, Ui_wdgInformeHistorico):
         sumsaldo=0        
         curms=self.cfg.conms.cursor()
         for i,  o in enumerate(operaciones):
-            valor=Quote(self.cfg).init__from_query(curms, o.inversion.investment, o.datetime).quote
+            valor=Quote(self.cfg).init__from_query(o.inversion.investment, o.datetime).quote
             if valor==None:
                 print("wdgInformeHistorico > load_added: {0} en {1} da nulo".format(o.inversion.investment.id, o.datetime))
                 valor=0

@@ -50,7 +50,7 @@ class frmPuntoVenta(QDialog, Ui_frmPuntoVenta):
             self.table.setItem(i, 3, qright(str(rec.acciones)))
             self.table.setItem(i, 4, self.inversion.investment.currency.qtablewidgetitem(rec.valor_accion))
             self.table.setItem(i, 5, self.inversion.investment.currency.qtablewidgetitem(rec.importe))
-            self.table.setItem(i, 6, self.inversion.investment.currency.qtablewidgetitem(rec.pendiente(self.inversion.investment.quotes.last)))
+            self.table.setItem(i, 6, self.inversion.investment.currency.qtablewidgetitem(rec.pendiente(self.inversion.investment.result.last)))
         self.table.setItem(len(self.operinversiones), 1, qright("Total"))        
         self.table.setItem(len(self.operinversiones), 3, qright(str(sumacciones)))
         self.table.setItem(len(self.operinversiones), 4, self.inversion.investment.currency.qtablewidgetitem(suminvertido/sumacciones))

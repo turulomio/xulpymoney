@@ -69,7 +69,7 @@
 #        variosdias=varios_dias(data)
 #        if len(data[0])==6:
 #            #Carga posibles graficos
-#            print ("datos tipo ochl")
+#            print ("datos tipo ohcl")
 #            self.carga_combos(6, variosdias)
 #            self.setPeriodo(3)
 #            self.setType(0)
