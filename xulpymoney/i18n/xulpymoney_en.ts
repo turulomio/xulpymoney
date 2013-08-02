@@ -3923,6 +3923,64 @@ sistema.</source>
     </message>
 </context>
 <context>
+    <name>wdgLog</name>
+    <message>
+        <location filename="ui/wdgLog.ui" line="14"/>
+        <source>Form</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/wdgLog.ui" line="29"/>
+        <source>Log de myquotesd</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/wdgLog.ui" line="43"/>
+        <source>Estado de myquotesd</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/wdgLog.ui" line="59"/>
+        <source>Fuente</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/wdgLog.ui" line="64"/>
+        <source>Proceso</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/wdgLog.ui" line="69"/>
+        <source>Estado</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message encoding="UTF-8">
+        <location filename="ui/wdgLog.ui" line="74"/>
+        <source>Último cambio estado</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message encoding="UTF-8">
+        <location filename="ui/wdgLog.ui" line="79"/>
+        <source>Número consultas internet</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/wdgLog.ui" line="101"/>
+        <source>Registro de myquotesd</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/wdgLog.ui" line="124"/>
+        <source>Introduzca un texto para realizar un filtro</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/wdgLog.ui" line="150"/>
+        <source>Registros encontrados</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>wdgMergeCodes</name>
     <message>
         <location filename="ui/wdgMergeCodes.ui" line="14"/>
