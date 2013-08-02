@@ -53,12 +53,7 @@ class wdgIndexRange(QWidget, Ui_wdgIndexRange):
         
         if len (arr)==0: #Peta en base de datos vacía
             return
-        
-        con=self.cfg.connect_xulpymoney()
-        cur = con.cursor()        
-        mq=self.cfg.connect_myquotes()
-        curms=mq.cursor()
-        
+                
         maximo= int(max(arr)[0]*(1+ Decimal(self.spin.value()/200.0)))
         riesgocero=Patrimonio(self.cfg).patrimonio_riesgo_cero(self.data_inversiones, datetime.date.today())
         pasos=int(riesgocero/Decimal(self.txtInvertir.text()))
@@ -93,10 +88,7 @@ class wdgIndexRange(QWidget, Ui_wdgIndexRange):
         else:
             variacion=(self.indicereferencia.quotes.last.quote-self.indicereferencia.quotes.penultimate.quote)*100/self.indicereferencia.quotes.penultimate.quote
         self.lblTotal.setText(("Tengo cubierto hasta el %d del índice de referencia (%s). Su valor a %s es %d (%.2f %%)" %( indexcover, self.indicereferencia.name, self.indicereferencia.quotes.last.datetime,   int(self.indicereferencia.quotes.last.quote),  variacion)))
-        cur.close()     
-        self.cfg.disconnect_xulpymoney(con) 
-        curms.close()
-        self.cfg.disconnect_myquotes(mq)
+
         print ("wdgIndexRange > load_data: {0}".format(datetime.datetime.now()-inicio))
 
     def on_cmd_pressed(self):
@@ -110,6 +102,7 @@ class wdgIndexRange(QWidget, Ui_wdgIndexRange):
         w=frmQuotesIBM(self.cfg, self.indicereferencia,  self)
         w.exec_() 
         self.indicereferencia.quotes.get_basic()
+        self.load_data()
         
     def on_table_cellDoubleClicked(self, row, column):
         if column==1:

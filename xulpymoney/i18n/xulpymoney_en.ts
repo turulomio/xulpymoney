@@ -3323,12 +3323,12 @@ Se necesitan al menos 24 horas de funcionamiento del demonio myquotesd para que 
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="ui/wdgIndexRange.py" line="124"/>
+        <location filename="ui/wdgIndexRange.py" line="117"/>
         <source>············································································································</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="ui/wdgIndexRange.py" line="119"/>
+        <location filename="ui/wdgIndexRange.py" line="112"/>
         <source>Para llegar al punto de inversión seleccionado, el indice debe variar un {0}</source>
         <translation type="unfinished"></translation>
     </message>
