@@ -24,10 +24,7 @@ class wdgDesReinversion(QWidget, Ui_wdgDesReinversion):
         self.tblInversionesHistoricas.settings("wdgDesReinversion",  self.cfg.file_ui)         
         
  
-        self.operinversiones=SetInversionOperacion(self.cfg)
-        for o in self.inversion.op.arr:
-            if o.datetime>=self.inversion.op_actual.arr[0].datetime:
-                self.operinversiones.append(o.clone())
+        self.operinversiones=self.inversion.op.clone()#No hacer clone_from_datetime porque falla por haber borrado un actual por venta de saldo operaci´on
 
         self.txtValorAccion.setText(str(self.inversion.investment.quotes.last.quote))
         self.tabResultados.setCurrentIndex(1)
@@ -54,7 +51,6 @@ class wdgDesReinversion(QWidget, Ui_wdgDesReinversion):
                     # X                                queda la perdida
 #                    saldo=abs(perdida*rec.invertido()/pendiente)
                     acciones=abs(int(perdida*rec.acciones/pendiente))
-                    print ("acciones a liverar",  acciones)
                     resultado=resultado+Decimal(acciones)#Se resta porque se debe calcular antes de quitarse el pendiente
                     break
         else:#REINVERSION

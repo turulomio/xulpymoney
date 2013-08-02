@@ -9,7 +9,7 @@ class wdgYearMonth(QWidget, Ui_wdgYearMonth):
         
         
     def initiate(self, firstyear,  lastyear, currentyear, currentmonth):
-        """Debe ser la primera funci´on despu´es del constructor"""
+        """Debe ser la primera función después del constructor"""
         self.firstyear=firstyear
         self.lastyear=lastyear
         for year in range(firstyear, lastyear+1):
