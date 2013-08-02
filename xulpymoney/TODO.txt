@@ -20,7 +20,6 @@
 20120815 Poner calculo de inversión cuando esté con un precio probablemente en desreinversion
 20130103 Cuando se genera un dividendo acciones y se mete comisión se cuenta en Ingresos quizás porque es neto
 20130103 Cuando se inserta un operinversión, hay que poner el indice de referencia y se debe insertar en myquotes el valor con microseconds=5
-20110228 Al avisar nueva versión que sea con un hyperlink a download de myquotes
 20110526 Crear la funcionalidad de divisas importantes
 20110822 Poner en el gráfico histórico la opción del punto de venta
 20111013 En las etiquetas de graficos poner el valor del máximo, minimo y apertura

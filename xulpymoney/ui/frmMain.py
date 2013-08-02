@@ -31,10 +31,10 @@ class frmMain(QMainWindow, Ui_frmMain):
         self.w=QWidget()       
         
         access=frmAccess(self.cfg, 2)        
-        QObject.connect(access.cmdYN, SIGNAL("rejected()"), self, SLOT("on_actionSalir_activated()"))
+        QObject.connect(access.cmdYN, SIGNAL("rejected()"), self, SLOT("close()"))
         access.exec_()
         access2=frmAccess(self.cfg, 1)        
-        QObject.connect(access2.cmdYN, SIGNAL("rejected()"), self, SLOT("on_actionSalir_activated()"))
+        QObject.connect(access2.cmdYN, SIGNAL("rejected()"), self, SLOT("close()"))
         access2.exec_()
 
 
@@ -44,11 +44,15 @@ class frmMain(QMainWindow, Ui_frmMain):
         self.cfg.actualizar_memoria() ##CARGA TODOS LOS DATOS Y LOS VINCULA       
         
         
-        print ("ARREGLAR PORQUE AHORA NO PROTEGE MQINVERSIONES")
-        #ids2protect=[i.id for i in self.cfg.investmentinversiones()]##Protege registros de myquotes
-        #if len(ids2protect)>0:
-         #   Investment.changeDeletable(curms,  ids2protect,  False)
-#        self.cfg.conms.commit()
+        print ("Protecting investments needed in xulpymoney")
+        cur=self.cfg.con.cursor()
+        cur.execute("select distinct(myquotesid) from inversiones;")
+        ids2protect=[]
+        for row in cur:
+            ids2protect.append(row[0])
+        if len(ids2protect)>0:
+            Investment(self.cfg).changeDeletable(  ids2protect,  False)
+        self.cfg.conms.commit()
         
 #        self.tupdatedata=TUpdateData(self.cfg)
 #        self.tupdatedata.start()
@@ -64,6 +68,11 @@ class frmMain(QMainWindow, Ui_frmMain):
 #            self.tupdatedata=TUpdateData(self.cfg)
 #            self.tupdatedata.start()      
                 
+    def __del__(self):
+        print ("Saliendo de la aplicación")
+        self.cfg.disconnect_myquotes(self.cfg.conms)
+        self.cfg.disconnect_xulpymoney(self.cfg.con)
+        
     @pyqtSignature("")
     def on_actionAcercaDe_activated(self):
         fr=frmAbout(self.cfg, self, "frmabout")
