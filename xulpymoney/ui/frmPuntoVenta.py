@@ -17,7 +17,7 @@ class frmPuntoVenta(QDialog, Ui_frmPuntoVenta):
         if self.inversion.id==None:
             m=QMessageBox()
             m.setIcon(QMessageBox.Information)
-            m.setText(self.trUtf8("No se puede asignar el punto de venta a una inversi´on no guardada"))
+            m.setText(self.trUtf8("No se puede asignar el punto de venta a una inversión no guardada"))
             m.exec_()     
             return
         if len(self.inversion.op_actual.arr)==0:

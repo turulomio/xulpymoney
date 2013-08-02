@@ -89,7 +89,7 @@ class SetInversiones:
         cur.close()  
         
     def list_distinct_myquotesid(self):
-        """Funci´on que devuelve una lista con los distintos myquotesid """
+        """Función que devuelve una lista con los distintos myquotesid """
         resultado=set([])
         for inv in self.arr:
             resultado.add(inv.investment.id)
@@ -677,7 +677,7 @@ class SetInversionOperacion:
         return resultado
         
     def load_myqtablewidget(self, tabla, section):
-        """Section es donde guardar en el config file, coincide con el nombre del formulario en el que est´a la tabla"""
+        """Section es donde guardar en el config file, coincide con el nombre del formulario en el que está la tabla"""
         tabla.setColumnCount(7)
         tabla.setHorizontalHeaderItem(0, QTableWidgetItem(QApplication.translate(section, "Fecha", None, QApplication.UnicodeUTF8)))
         tabla.setHorizontalHeaderItem(1, QTableWidgetItem(QApplication.translate(section, "Tipo de operación", None, QApplication.UnicodeUTF8)))
@@ -984,19 +984,20 @@ class SetInversionOperacionHistorica:
         return resultado
     def load_myqtablewidget(self, tabla, section):
         """Rellena datos de un array de objetos de InversionOperacionHistorica, devuelve totales ver código"""
-        tabla.setColumnCount(12)
+        tabla.setColumnCount(13)
         tabla.setHorizontalHeaderItem(0, QTableWidgetItem(QApplication.translate(section, "Fecha", None, QApplication.UnicodeUTF8)))
         tabla.setHorizontalHeaderItem(1, QTableWidgetItem(QApplication.translate(section, "Años", None, QApplication.UnicodeUTF8)))
-        tabla.setHorizontalHeaderItem(2, QTableWidgetItem(QApplication.translate(section, "Inversi´on", None, QApplication.UnicodeUTF8)))
-        tabla.setHorizontalHeaderItem(3, QTableWidgetItem(QApplication.translate(section, "Tipo operaci´on", None, QApplication.UnicodeUTF8)))
-        tabla.setHorizontalHeaderItem(4, QTableWidgetItem(QApplication.translate(section, "Saldo inicial", None, QApplication.UnicodeUTF8)))
-        tabla.setHorizontalHeaderItem(5, QTableWidgetItem(QApplication.translate(section, "Saldo final", None, QApplication.UnicodeUTF8)))
-        tabla.setHorizontalHeaderItem(6, QTableWidgetItem(QApplication.translate(section, "Consolidado bruto", None, QApplication.UnicodeUTF8)))
-        tabla.setHorizontalHeaderItem(7, QTableWidgetItem(QApplication.translate(section, "Comisiones", None, QApplication.UnicodeUTF8)))
-        tabla.setHorizontalHeaderItem(8, QTableWidgetItem(QApplication.translate(section, "Impuestos", None, QApplication.UnicodeUTF8)))
-        tabla.setHorizontalHeaderItem(9, QTableWidgetItem(QApplication.translate(section, "Consolidado neto", None, QApplication.UnicodeUTF8)))
-        tabla.setHorizontalHeaderItem(10, QTableWidgetItem(QApplication.translate(section, "% TAE neto", None, QApplication.UnicodeUTF8)))
-        tabla.setHorizontalHeaderItem(11, QTableWidgetItem(QApplication.translate(section, "% Total neto", None, QApplication.UnicodeUTF8)))
+        tabla.setHorizontalHeaderItem(2, QTableWidgetItem(QApplication.translate(section, "Inversión", None, QApplication.UnicodeUTF8)))
+        tabla.setHorizontalHeaderItem(3, QTableWidgetItem(QApplication.translate(section, "Tipo operación", None, QApplication.UnicodeUTF8)))
+        tabla.setHorizontalHeaderItem(4, QTableWidgetItem(QApplication.translate(section, "Acciones", None, QApplication.UnicodeUTF8)))
+        tabla.setHorizontalHeaderItem(5, QTableWidgetItem(QApplication.translate(section, "Saldo inicial", None, QApplication.UnicodeUTF8)))
+        tabla.setHorizontalHeaderItem(6, QTableWidgetItem(QApplication.translate(section, "Saldo final", None, QApplication.UnicodeUTF8)))
+        tabla.setHorizontalHeaderItem(7, QTableWidgetItem(QApplication.translate(section, "Consolidado bruto", None, QApplication.UnicodeUTF8)))
+        tabla.setHorizontalHeaderItem(8, QTableWidgetItem(QApplication.translate(section, "Comisiones", None, QApplication.UnicodeUTF8)))
+        tabla.setHorizontalHeaderItem(9, QTableWidgetItem(QApplication.translate(section, "Impuestos", None, QApplication.UnicodeUTF8)))
+        tabla.setHorizontalHeaderItem(10, QTableWidgetItem(QApplication.translate(section, "Consolidado neto", None, QApplication.UnicodeUTF8)))
+        tabla.setHorizontalHeaderItem(11, QTableWidgetItem(QApplication.translate(section, "% TAE neto", None, QApplication.UnicodeUTF8)))
+        tabla.setHorizontalHeaderItem(12, QTableWidgetItem(QApplication.translate(section, "% Total neto", None, QApplication.UnicodeUTF8)))
         #DATA
         tabla.settings(section,  self.cfg.file_ui)        
         
@@ -1035,24 +1036,25 @@ class SetInversionOperacionHistorica:
             tabla.setItem(rownumber, 1,QTableWidgetItem(str(round(a.years(), 2))))    
             tabla.setItem(rownumber, 2,QTableWidgetItem(a.inversion.name))
             tabla.setItem(rownumber, 3,QTableWidgetItem(a.tipooperacion.name))
-            tabla.setItem(rownumber, 4,a.inversion.investment.currency.qtablewidgetitem(saldoinicio))
-            tabla.setItem(rownumber, 5,a.inversion.investment.currency.qtablewidgetitem(saldofinal))
-            tabla.setItem(rownumber, 6,a.inversion.investment.currency.qtablewidgetitem(bruto))
-            tabla.setItem(rownumber, 7,a.inversion.investment.currency.qtablewidgetitem(a.comision))
-            tabla.setItem(rownumber, 8,a.inversion.investment.currency.qtablewidgetitem(a.impuestos))
-            tabla.setItem(rownumber, 9,a.inversion.investment.currency.qtablewidgetitem(neto))
-            tabla.setItem(rownumber, 10,qtpc(a.tpc_tae_neto()))
-            tabla.setItem(rownumber, 11,qtpc(a.tpc_total_neto()))
+            tabla.setItem(rownumber, 4,qright(a.acciones))
+            tabla.setItem(rownumber, 5,a.inversion.investment.currency.qtablewidgetitem(saldoinicio))
+            tabla.setItem(rownumber, 6,a.inversion.investment.currency.qtablewidgetitem(saldofinal))
+            tabla.setItem(rownumber, 7,a.inversion.investment.currency.qtablewidgetitem(bruto))
+            tabla.setItem(rownumber, 8,a.inversion.investment.currency.qtablewidgetitem(a.comision))
+            tabla.setItem(rownumber, 9,a.inversion.investment.currency.qtablewidgetitem(a.impuestos))
+            tabla.setItem(rownumber, 10,a.inversion.investment.currency.qtablewidgetitem(neto))
+            tabla.setItem(rownumber, 11,qtpc(a.tpc_tae_neto()))
+            tabla.setItem(rownumber, 12,qtpc(a.tpc_total_neto()))
             rownumber=rownumber+1
         if len(self.arr)>0:
             tabla.setItem(len(self.arr), 2,QTableWidgetItem("TOTAL"))    
             currency=self.arr[0].inversion.investment.currency
-            tabla.setItem(len(self.arr), 4,currency.qtablewidgetitem(sumsaldosinicio))    
-            tabla.setItem(len(self.arr), 5,currency.qtablewidgetitem(sumsaldosfinal))    
-            tabla.setItem(len(self.arr), 6,currency.qtablewidgetitem(sumbruto))    
-            tabla.setItem(len(self.arr), 7,currency.qtablewidgetitem(sumcomision))    
-            tabla.setItem(len(self.arr), 8,currency.qtablewidgetitem(sumimpuestos))    
-            tabla.setItem(len(self.arr), 9,currency.qtablewidgetitem(sumneto))    
+            tabla.setItem(len(self.arr), 5,currency.qtablewidgetitem(sumsaldosinicio))    
+            tabla.setItem(len(self.arr), 6,currency.qtablewidgetitem(sumsaldosfinal))    
+            tabla.setItem(len(self.arr), 7,currency.qtablewidgetitem(sumbruto))    
+            tabla.setItem(len(self.arr), 8,currency.qtablewidgetitem(sumcomision))    
+            tabla.setItem(len(self.arr), 9,currency.qtablewidgetitem(sumimpuestos))    
+            tabla.setItem(len(self.arr), 10,currency.qtablewidgetitem(sumneto))    
             tabla.setCurrentCell(len(self.arr), 4)       
         return (sumbruto, sumcomision, sumimpuestos, sumneto)
     
@@ -3948,7 +3950,7 @@ class QuotesResult:
     def get_basic_in_all(self):
         """Función que calcula last, penultimate y lastdate """
         if len(self.all)==0:
-            print ("No hay quotes para la inversi´on",  self.investment)
+            print ("No hay quotes para la inversión",  self.investment)
             return
         self.last=self.all[len(self.all)-1]
         #penultimate es el ultimo del penultimo dia localizado
@@ -4012,7 +4014,7 @@ class QuotesResult:
         
     def find_quote_in_all(self, datetime):
         if len(self.all)==0:
-            print ("No hay quotes para la inversi´on",  self.investment)
+            print ("No hay quotes para la inversión",  self.investment)
             return
         return self.all[self.get_all_position(datetime)]
 
@@ -4365,10 +4367,10 @@ class ConfigMyStock:
         try:
             self.config.read(self.file)    
             self.config_ui.read(self.file_ui)
-            #Se ponen algunas para comprobar est´a actualizado
+            #Se ponen algunas para comprobar está actualizado
             self.config.get("frmAccess", "server")
             self.config.get("frmAccess2", "server")
-            #Se ponen algunas para comprobar est´a actualizado de _ui
+            #Se ponen algunas para comprobar está actualizado de _ui
             self.config_ui.get("canvasIntraday", "sma200")
         except:#Valores por defecto
             self.configs_set_default_values()
@@ -4434,7 +4436,7 @@ class ConfigMyStock:
 
 
     def connect_myquotesd(self, pw):        
-        """usa tambi´en la variables self.conms"""              
+        """usa también la variables self.conms"""              
         strmq="dbname='%s' port='%s' user='%s' host='%s' password='%s'" % (self.config.get("frmAccess2", "db"),  self.config.get("frmAccess2", "port"), self.config.get("frmAccess2", "user"), self.config.get("frmAccess2", "server"),  pw)
         while True:
             try:
@@ -4920,12 +4922,12 @@ def qbool(bool):
     return a
 
 def qcenter(string):
-    a=QTableWidgetItem((string))
+    a=QTableWidgetItem(str(string))
     a.setTextAlignment(Qt.AlignVCenter|Qt.AlignCenter)
     return a
 
 def qright(string):
-    a=QTableWidgetItem((string))
+    a=QTableWidgetItem(str(string))
     a.setTextAlignment(Qt.AlignVCenter|Qt.AlignRight)
     return a
 

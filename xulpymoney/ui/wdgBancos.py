@@ -64,7 +64,7 @@ class wdgBancos(QWidget, Ui_wdgBancos):
             
             print("\n","Cargando data en wdgInversiones",  datetime.datetime.now()-inicio)
             self.loadedinactive=True
-        print (self.trUtf8("Ya se hab´ian cargado las inactivas"))
+        print (self.trUtf8("Ya se habían cargado las inactivas"))
         
     def load_eb(self):
         self.tblEB.clearContents()
@@ -274,10 +274,10 @@ class wdgBancos(QWidget, Ui_wdgBancos):
         self.cfg.con.commit()   
         
         #Recoloca en los SetInversiones
-        if self.selEB.activa==True:#Est´a todav´ia en inactivas
+        if self.selEB.activa==True:#Está todavía en inactivas
             self.data_ebs.arr.append(self.selEB)
             self.data_ebs_inactive.arr.remove(self.selEB)
-        else:#Est´a todav´ia en activas
+        else:#Está todavía en activas
             self.data_ebs.arr.remove(self.selEB)
             self.data_ebs_inactive.arr.append(self.selEB)
         self.data_ebs_all=self.data_ebs.union(self.data_ebs_inactive)

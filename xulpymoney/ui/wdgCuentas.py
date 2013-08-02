@@ -40,7 +40,7 @@ class wdgCuentas(QWidget, Ui_wdgCuentas):
             
             print("Cargando inactive data en wdgCuentas",  datetime.datetime.now()-inicio)
             self.loadedinactive=True
-        print (self.trUtf8("Ya se hab´ian cargado las inactivas"))
+        print (self.trUtf8("Ya se habían cargado las inactivas"))
     def load_table(self):
         """Función que carga la tabla de cuentas"""
         self.tblCuentas.setRowCount(len(self.cuentas));
@@ -118,10 +118,10 @@ class wdgCuentas(QWidget, Ui_wdgCuentas):
         self.selCuenta.save()
         self.cfg.con.commit()     
         #Recoloca en los Setcuentas
-        if self.selCuenta.activa==True:#Est´a todav´ia en inactivas
+        if self.selCuenta.activa==True:#Está todavía en inactivas
             self.data_cuentas.arr.append(self.selCuenta)
             self.data_cuentas_inactive.arr.remove(self.selCuenta)
-        else:#Est´a todav´ia en activas
+        else:#Está todavía en activas
             self.data_cuentas.arr.remove(self.selCuenta)
             self.data_cuentas_inactive.arr.append(self.selCuenta)
         self.data_cuentas_all=self.data_cuentas.union(self.data_cuentas_inactive)        

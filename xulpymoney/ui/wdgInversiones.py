@@ -59,7 +59,7 @@ class wdgInversiones(QWidget, Ui_wdgInversiones):
             
             print("\n","Cargando data en wdgInversiones",  datetime.datetime.now()-inicio)
             self.loadedinactive=True
-        print (self.trUtf8("Ya se hab´ian cargado las inactivas"))
+        print (self.trUtf8("Ya se habían cargado las inactivas"))
         
     def tblInversiones_load(self):
         """Función que carga la tabla de inversiones con el orden que tenga el arr serl.inversiones"""
@@ -124,11 +124,11 @@ class wdgInversiones(QWidget, Ui_wdgInversiones):
         self.selInversion.save()
         self.cfg.con.commit()     
         #Recoloca en los SetInversiones
-        if self.selInversion.activa==True:#Est´a todav´ia en inactivas
+        if self.selInversion.activa==True:#Está todavía en inactivas
             self.data_inversiones.arr.append(self.selInversion)
             if self.data_inversiones_inactive!=None:#Puede que no se haya cargado
                 self.data_inversiones_inactive.arr.remove(self.selInversion)
-        else:#Est´a todav´ia en activas
+        else:#Está todavía en activas
             self.data_inversiones.arr.remove(self.selInversion)
             if self.data_inversiones_inactive!=None:#Puede que no se haya cargado
                 self.data_inversiones_inactive.arr.append(self.selInversion)
