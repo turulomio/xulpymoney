@@ -1684,7 +1684,7 @@ correspondiente en la tabla</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="ui/frmMain.py" line="28"/>
+        <location filename="ui/frmMain.py" line="27"/>
         <source>Xulpymoney 2010-{0} ©</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2513,6 +2513,77 @@ seleccionados por el usuario</source>
     <message encoding="UTF-8">
         <location filename="ui/frmTraspasoValores.py" line="29"/>
         <source>La comisión debe ser un número positivo</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context encoding="UTF-8">
+    <name>investmentDialog</name>
+    <message encoding="UTF-8">
+        <location filename="ui/investmentSelector.py" line="84"/>
+        <source>Inversión</source>
+        <translation type="unfinished">Investment</translation>
+    </message>
+    <message>
+        <location filename="ui/investmentSelector.py" line="85"/>
+        <source>Id</source>
+        <translation type="unfinished">Id</translation>
+    </message>
+    <message>
+        <location filename="ui/investmentSelector.py" line="86"/>
+        <source>ISIN</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/investmentSelector.py" line="87"/>
+        <source>Ticker</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message encoding="UTF-8">
+        <location filename="ui/investmentSelector.py" line="98"/>
+        <source>Selecciona una inversión</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/investmentSelector.py" line="99"/>
+        <source>Listado de inversiones</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message encoding="UTF-8">
+        <location filename="ui/investmentSelector.py" line="100"/>
+        <source>Búsqueda por código, ISIN o nombre de la inversión</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/investmentSelector.py" line="101"/>
+        <source>Registros encontrados</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message encoding="UTF-8">
+        <location filename="ui/investmentSelector.py" line="113"/>
+        <source>Búsqueda demasiado extensa. Necesita más de 3 caracteres</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/investmentSelector.py" line="120"/>
+        <source>Encontrados {0} registros</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>investmentSelector</name>
+    <message encoding="UTF-8">
+        <location filename="ui/investmentSelector.py" line="17"/>
+        <source>Selecciona una inversión de MyQuotes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message encoding="UTF-8">
+        <location filename="ui/investmentSelector.py" line="22"/>
+        <source>Pulsa en el botón de búsqueda</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/investmentSelector.py" line="41"/>
+        <source>No seleccionado</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

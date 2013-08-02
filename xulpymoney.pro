@@ -50,12 +50,8 @@ SOURCES         = xulpymoney.py \
                   ui/wdgTotal.py \
                   ui/Ui_wdgTotal.py \
                   mystocks.py \
-                  investmentSelector.py \
+                  ui/investmentSelector.py \
                   ui/wdgpie.py \
-                  ui/qcomboboxcountry.py \
-                  ui/qcomboboxtz.py \
-                  ui/qcomboboxbolsa.py \
-                  ui/qcomboboxpci.py \
                   ui/myqtablewidget.py \
                   libxulpymoney.py \
                   ui/frmAnalisis.py \
@@ -73,7 +69,7 @@ SOURCES         = xulpymoney.py \
                   ui/wdgMergeCodes.py \
                   ui/Ui_wdgMergeCodes.py \
                   ui/wdgChart.py \
-                  ui/wdgChart.ui \
+                  ui/Ui_wdgChart.py \
                   ui/wdgLog.py \
                   ui/Ui_wdgLog.py \
                   ui/wdgYearMonth.py \
@@ -117,6 +113,7 @@ FORMS           = ui/frmAbout.ui \
 TRANSLATIONS    = i18n/xulpymoney_en.ts \
                   i18n/xulpymoney_fr.ts \
                   i18n/xulpymoney_ru.ts \
-                  i18n/xulpymoney_ro.ts 
+                  i18n/xulpymoney_ro.ts
 
-CODECFORTR= UTF-8
+CODECFORTR = UTF-8
+CODECFORSRC = UTF-8
