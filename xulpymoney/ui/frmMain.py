@@ -1,4 +1,3 @@
-import sys
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 from Ui_frmMain import *
@@ -49,7 +48,7 @@ class frmMain(QMainWindow, Ui_frmMain):
         #ids2protect=[i.id for i in self.cfg.investmentinversiones()]##Protege registros de myquotes
         #if len(ids2protect)>0:
          #   Investment.changeDeletable(curms,  ids2protect,  False)
-        self.cfg.conms.commit()
+#        self.cfg.conms.commit()
         
 #        self.tupdatedata=TUpdateData(self.cfg)
 #        self.tupdatedata.start()
@@ -107,10 +106,10 @@ class frmMain(QMainWindow, Ui_frmMain):
         cur.close()     
         self.cfg.disconnect_xulpymoney(con)        
     
-    @QtCore.pyqtSlot()      
-    def on_actionSalir_activated(self):
-        self.cfg.__del__()
-        sys.exit()
+#    @QtCore.pyqtSlot()      
+#    def on_actionSalir_activated(self):
+#        self.cfg.__del__()
+#        sys.exit()
 
     @QtCore.pyqtSlot()  
     def on_actionInformeDividendos_activated(self):
@@ -184,5 +183,5 @@ class frmMain(QMainWindow, Ui_frmMain):
         w.exec_()
         self.on_actionCuentas_activated()
 
-    def closeEvent(self,  event):
-        self.on_actionSalir_activated()
+#    def closeEvent(self,  event):
+#        self.on_actionSalir_activated()

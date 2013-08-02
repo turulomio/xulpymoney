@@ -305,18 +305,18 @@
  </resources>
  <connections>
   <connection>
-   <sender>frmMain</sender>
-   <signal>destroyed()</signal>
-   <receiver>actionSalir</receiver>
-   <slot>trigger()</slot>
+   <sender>actionSalir</sender>
+   <signal>activated()</signal>
+   <receiver>frmMain</receiver>
+   <slot>close()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>276</x>
      <y>236</y>
     </hint>
     <hint type="destinationlabel">
-     <x>-1</x>
-     <y>-1</y>
+     <x>592</x>
+     <y>312</y>
     </hint>
    </hints>
   </connection>
