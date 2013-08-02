@@ -891,7 +891,7 @@ class SetInversionOperacionActual:
                 if ioa.acciones-accionesventa>Decimal('0'):#>0Se vende todo y se crea un ioa de resto, y se historiza lo restado
                     comisiones=comisiones+io.comision+ioa.comision
                     impuestos=impuestos+io.impuestos+ioa.impuestos
-                    sioh.arr.append(InversionOperacionHistorica(self.cfg).init__create(ioa, io.inversion, ioa.datetime.date(), io.acciones*io.valor_accion, io.tipooperacion, io.acciones, comisiones, impuestos, io.datetime.date(), ioa.valor_accion, io.valor_accion))
+                    sioh.arr.append(InversionOperacionHistorica(self.cfg).init__create(ioa, io.inversion, ioa.datetime.date(), -accionesventa*io.valor_accion, io.tipooperacion, -accionesventa, comisiones, impuestos, io.datetime.date(), ioa.valor_accion, io.valor_accion))
                     self.arr.insert(0, InversionOperacionActual(self.cfg).init__create(ioa, ioa.tipooperacion, ioa.datetime, ioa.inversion,  ioa.acciones-abs(accionesventa), (ioa.acciones-abs(accionesventa))*ioa.valor_accion,  0, 0, ioa.valor_accion, ioa.id))
                     self.arr.remove(ioa)
                     accionesventa=Decimal('0')#Sale bucle
@@ -902,7 +902,6 @@ class SetInversionOperacionActual:
                     sioh.arr.append(InversionOperacionHistorica(self.cfg).init__create(ioa, io.inversion, ioa.datetime.date(), -ioa.acciones*io.valor_accion, io.tipooperacion, -ioa.acciones, Decimal('0'), Decimal('0'), io.datetime.date(), ioa.valor_accion, io.valor_accion))
                     accionesventa=accionesventa-ioa.acciones                    
                     self.arr.remove(ioa)
-                    
                 elif ioa.acciones-accionesventa==Decimal('0'):#Se historiza todo y se restan acciones venta y se sale
                     comisiones=comisiones+io.comision+ioa.comision
                     impuestos=impuestos+io.impuestos+ioa.impuestos
@@ -1016,8 +1015,8 @@ class SetInversionOperacionHistorica:
             saldoinicio=a.bruto_compra()
             saldofinal=a.bruto_venta()
             bruto=a.consolidado_bruto()
-            sumimpuestos=sumimpuestos-Decimal(str(a.impuestos))
-            sumcomision=sumcomision-Decimal(str(a.comision))
+            sumimpuestos=sumimpuestos+Decimal(str(a.impuestos))
+            sumcomision=sumcomision+Decimal(str(a.comision))
             neto=a.consolidado_neto()
             
     
@@ -4309,7 +4308,6 @@ class ConfigMyStock:
         
         self.consqlite=None#Update internetquery fro Process
         
-        self.localzone=None
         
         self.cac40=set([])
         self.dax=set([])

@@ -37,3 +37,7 @@
 20130103 Hacer desde interfaz, purga que deje los datos 1,2,3,4 o los ohcl que existan borrando los demás
 20130728 Poner en dividendos el gasto total en el concepto en el año seleccionado en el combo.
 20130729 Hacer que un error en config por nuevo tag no afecte a todas las configuraciones
+20130829 Meter el importe de inversion desinversion en config
+20130829 En punto de venta poner antes y después set
+20130801 Después de nsertar ibex en wdgRange no refresca
+20130802 Al salir a vecer hay un core dump o lo que sea

@@ -126,13 +126,13 @@ class wdgInversiones(QWidget, Ui_wdgInversiones):
         #Recoloca en los SetInversiones
         if self.selInversion.activa==True:#Est´a todav´ia en inactivas
             self.data_inversiones.arr.append(self.selInversion)
-            self.data_inversiones_inactive.arr.remove(self.selInversion)
+            if self.data_inversiones_inactive!=None:#Puede que no se haya cargado
+                self.data_inversiones_inactive.arr.remove(self.selInversion)
         else:#Est´a todav´ia en activas
             self.data_inversiones.arr.remove(self.selInversion)
-            self.data_inversiones_inactive.arr.append(self.selInversion)
+            if self.data_inversiones_inactive!=None:#Puede que no se haya cargado
+                self.data_inversiones_inactive.arr.append(self.selInversion)
         self.data_inversiones_all=self.data_inversiones.union(self.data_inversiones_inactive)
-        
-        
         self.on_chkInactivas_stateChanged(self.chkInactivas.checkState())#Carga la tabla
 
             
