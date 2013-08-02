@@ -15,7 +15,7 @@ class WorkerYahoo(Source):
             con=self.cfg.connect_myquotesd()
             cur = con.cursor()     
             self.ids=self.filtrar_horario_bolsa(self.find_ids())
-            (p,e)=(QuotesSet(),[])
+            (p,e)=(SetQuotes(),[])
 #            print (arr_split(self.ids, math.ceil(float(len(self.ids))/180)))
             for a in arr_split(self.ids, math.ceil(float(len(self.ids))/180)):
                 (parsed, errors)=self.execute(a)
@@ -42,7 +42,7 @@ class WorkerYahoo(Source):
             
     
     def execute(self, ids):
-        (resultado, error)=(QuotesSet(), [])
+        (resultado, error)=(SetQuotes(), [])
         
         web=self.download('http://download.finance.yahoo.com/d/quotes.csv?s=' + strnames(self.ids2yahoo(ids)) + '&f=sl1d1t1&e=.csv', 'YAHOO_QUOTES')
         print ('http://download.finance.yahoo.com/d/quotes.csv?s=' + strnames(self.ids2yahoo(ids)) + '&f=sl1d1t1&e=.csv')

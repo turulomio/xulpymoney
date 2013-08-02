@@ -35,3 +35,4 @@
 20130729 Hacer que un error en config por nuevo tag no afecte a todas las configuraciones
 20130829 Meter el importe de inversion desinversion en config
 20130829 En punto de venta poner antes y después set
+20130829 Load dividendos de frmAnalisis ca<mbiar por Set

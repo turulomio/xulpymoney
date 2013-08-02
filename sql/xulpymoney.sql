@@ -181,64 +181,7 @@ ALTER FUNCTION public.transferencia(p_fecha date, p_cuentaorigen integer, p_cuen
 
 SET default_tablespace = '';
 
-SET default_with_oids = true;
-
---
--- Name: BORRARoperinversionesactual; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
---
-
-CREATE TABLE "BORRARoperinversionesactual" (
-    id_operinversionesactual integer NOT NULL,
-    id_operinversiones integer NOT NULL,
-    id_inversiones integer NOT NULL,
-    fecha date NOT NULL,
-    acciones numeric(100,6) NOT NULL,
-    id_tiposoperaciones integer,
-    importe numeric(100,2),
-    impuestos numeric(100,2),
-    comision numeric(100,2),
-    valor_accion numeric(100,6),
-    hora time without time zone DEFAULT '00:00:00'::time without time zone NOT NULL
-);
-
-
-ALTER TABLE public."BORRARoperinversionesactual" OWNER TO postgres;
-
---
--- Name: BORRARoperinversioneshistoricas; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
---
-
-CREATE TABLE "BORRARoperinversioneshistoricas" (
-    id_operinversioneshistoricas integer DEFAULT nextval(('public.seq_operinversioneshistoricas'::text)::regclass) NOT NULL,
-    id_operinversiones integer,
-    id_inversiones integer,
-    fecha_inicio date,
-    importe numeric(100,2),
-    id_tiposoperaciones bigint,
-    acciones numeric(100,6),
-    comision numeric(100,2),
-    impuestos numeric(100,2),
-    fecha_venta date,
-    valor_accion_compra numeric(100,6),
-    valor_accion_venta numeric(100,6)
-);
-
-
-ALTER TABLE public."BORRARoperinversioneshistoricas" OWNER TO postgres;
-
 SET default_with_oids = false;
-
---
--- Name: borrar; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
---
-
-CREATE TABLE borrar (
-    id integer,
-    datetime timestamp with time zone
-);
-
-
-ALTER TABLE public.borrar OWNER TO postgres;
 
 --
 -- Name: conceptos; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -273,6 +216,17 @@ CREATE TABLE cuentas (
 ALTER TABLE public.cuentas OWNER TO postgres;
 
 SET default_with_oids = false;
+
+--
+-- Name: datetimes; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE datetimes (
+    datetime timestamp with time zone
+);
+
+
+ALTER TABLE public.datetimes OWNER TO postgres;
 
 --
 -- Name: dividendos; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -354,7 +308,6 @@ SET default_with_oids = false;
 
 CREATE TABLE operinversiones (
     id_operinversiones integer DEFAULT nextval(('"seq_operinversiones"'::text)::regclass) NOT NULL,
-    fecha date,
     id_tiposoperaciones integer,
     id_inversiones integer,
     acciones numeric(100,6),
@@ -364,7 +317,8 @@ CREATE TABLE operinversiones (
     valor_accion numeric(100,6),
     hora time without time zone DEFAULT '00:00:00'::time without time zone NOT NULL,
     divisa numeric(10,6) DEFAULT NULL::numeric,
-    datetime timestamp with time zone
+    datetime timestamp with time zone,
+    comentario text
 );
 
 
@@ -505,27 +459,6 @@ CREATE SEQUENCE seq_operinversiones
 ALTER TABLE public.seq_operinversiones OWNER TO postgres;
 
 --
--- Name: seq_operinversionesactual; Type: SEQUENCE; Schema: public; Owner: postgres
---
-
-CREATE SEQUENCE seq_operinversionesactual
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE public.seq_operinversionesactual OWNER TO postgres;
-
---
--- Name: seq_operinversionesactual; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
---
-
-ALTER SEQUENCE seq_operinversionesactual OWNED BY "BORRARoperinversionesactual".id_operinversionesactual;
-
-
---
 -- Name: seq_operinversioneshistoricas; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -598,13 +531,6 @@ INHERITS (opercuentas);
 ALTER TABLE public.tmpinversionesheredada OWNER TO postgres;
 
 --
--- Name: id_operinversionesactual; Type: DEFAULT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY "BORRARoperinversionesactual" ALTER COLUMN id_operinversionesactual SET DEFAULT nextval('seq_operinversionesactual'::regclass);
-
-
---
 -- Name: id_opercuentas; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -660,27 +586,11 @@ ALTER TABLE ONLY operinversiones
 
 
 --
--- Name: pk_operinversioneshistoricas; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
---
-
-ALTER TABLE ONLY "BORRARoperinversioneshistoricas"
-    ADD CONSTRAINT pk_operinversioneshistoricas PRIMARY KEY (id_operinversioneshistoricas);
-
-
---
 -- Name: tarjetas_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
 ALTER TABLE ONLY tarjetas
     ADD CONSTRAINT tarjetas_pkey PRIMARY KEY (id_tarjetas);
-
-
---
--- Name: tmpoperinversiones_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
---
-
-ALTER TABLE ONLY "BORRARoperinversionesactual"
-    ADD CONSTRAINT tmpoperinversiones_pkey PRIMARY KEY (id_operinversionesactual);
 
 
 --
@@ -751,34 +661,6 @@ CREATE INDEX "operinversiones-id_inversiones-index" ON operinversiones USING btr
 --
 
 CREATE UNIQUE INDEX "operinversiones-id_operinversiones-index" ON operinversiones USING btree (id_operinversiones);
-
-
---
--- Name: operinversionesactual-id_inversiones-index; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
---
-
-CREATE INDEX "operinversionesactual-id_inversiones-index" ON "BORRARoperinversionesactual" USING btree (id_inversiones);
-
-
---
--- Name: operinversionesactual-id_operinversionesactual-index; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
---
-
-CREATE INDEX "operinversionesactual-id_operinversionesactual-index" ON "BORRARoperinversionesactual" USING btree (id_operinversionesactual);
-
-
---
--- Name: operinversioneshistoricas-id_inversiones-index; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
---
-
-CREATE INDEX "operinversioneshistoricas-id_inversiones-index" ON "BORRARoperinversioneshistoricas" USING btree (id_inversiones);
-
-
---
--- Name: operinversioneshistoricas-id_operinversioneshistoricas-index; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
---
-
-CREATE INDEX "operinversioneshistoricas-id_operinversioneshistoricas-index" ON "BORRARoperinversioneshistoricas" USING btree (id_operinversioneshistoricas);
 
 
 --

@@ -168,7 +168,6 @@ class wdgInversiones2(QWidget, Ui_wdgInversiones2):
     @QtCore.pyqtSlot() 
     def on_actionInversionEstudio_activated(self):
         w=frmAnalisis(self.cfg, self.selInvestment, self)
-        w.load_data_from_db()
         w.exec_()        
         self.build_array(self.sql)
         self.build_table()

@@ -19,7 +19,7 @@
 #        self.cmbPeriodo.clear()
 #        type={}
 #        type["0"]="Líneas"
-#        type["1"]="OCHL"
+#        type["1"]="OHCL"
 #        type["2"]="Velas"
 #            
 #        periodo={}                
