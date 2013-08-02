@@ -45,7 +45,7 @@ class WorkerIndices(Source):
             return None
     
     def execute(self):    
-        (resultado, error)=(QuotesSet(), [])
+        (resultado, error)=(SetQuotes(), [])
 
         web=self.download('http://infobolsa.es/indices-internacionales.htm', 'ARR_QUOTES')
         if web==None:

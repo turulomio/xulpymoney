@@ -58,7 +58,7 @@ class WorkerProductosCotizados(Source):
         return None
 
     def execute(self):
-        (set, error)=(QuotesSet(), [])
+        (set, error)=(SetQuotes(), [])
         
         web=self.download('http://www.productoscotizados.com/es/Bonus.aspx', 'PRODUCTOSCOTIZADOS_QUOTES')
         if web==None:

@@ -181,7 +181,7 @@ class canvasChart(FigureCanvas):
 #            tick.label.set_rotation('vertical')
 #            
     def _draw_lines_from_ochl(self, data):
-        """Aquí  data es un array de OCHL"""
+        """Aquí  data es un array de OHCL"""
         self.ax.clear()      
         dates=[]
         quotes=[]
@@ -213,7 +213,7 @@ class canvasChart(FigureCanvas):
         self.draw()
 
 #    @pyqtSignature("")
-#    def on_actionOCHL5m_activated(self):
+#    def on_actionOHCL5m_activated(self):
 #        print ("Una vez")
 #        self.ochl(datetime.timedelta(minutes=5))
 #
@@ -225,7 +225,7 @@ class canvasChart(FigureCanvas):
 #        self.draw()
         
     @pyqtSignature("")
-    def on_actionOCHL1d_activated(self):
+    def on_actionOHCL1d_activated(self):
         self._settings_saveprop("type", ChartType.ochl)
         self.currentMatrizDataLength=len(self.result.ochlDaily)
         
@@ -237,7 +237,7 @@ class canvasChart(FigureCanvas):
         self.draw()
                 
 #    @pyqtSignature("")
-#    def on_actionOCHL30d_activated(self):
+#    def on_actionOHCL30d_activated(self):
 #        print ("Una vez")
 #        self.ochl(datetime.timedelta(days=30))
 #        if len(self.data)<60:
@@ -366,22 +366,22 @@ class canvasChart(FigureCanvas):
         self.actionLines60m.setEnabled(False)
         
         
-        self.actionOCHL5m=QAction(self)
-        self.actionOCHL5m.setText(self.trUtf8("5 minutos"))
-        self.actionOCHL5m.setObjectName(self.trUtf8("actionOCHL5m"))
-        self.actionOCHL5m.setEnabled(False)
-        self.actionOCHL10m=QAction(self)
-        self.actionOCHL10m.setText(self.trUtf8("10 minutos"))
-        self.actionOCHL10m.setEnabled(False)
-        self.actionOCHL10m.setObjectName(self.trUtf8("actionOCHL10m"))
-        self.actionOCHL30m=QAction(self)
-        self.actionOCHL30m.setText(self.trUtf8("30 minutos"))
-        self.actionOCHL30m.setEnabled(False)
-        self.actionOCHL30m.setObjectName(self.trUtf8("actionOCHL30m"))
-        self.actionOCHL60m=QAction(self)
-        self.actionOCHL60m.setText(self.trUtf8("1 hora"))
-        self.actionOCHL60m.setEnabled(False)
-        self.actionOCHL60m.setObjectName(self.trUtf8("actionOCHL60m"))
+        self.actionOHCL5m=QAction(self)
+        self.actionOHCL5m.setText(self.trUtf8("5 minutos"))
+        self.actionOHCL5m.setObjectName(self.trUtf8("actionOHCL5m"))
+        self.actionOHCL5m.setEnabled(False)
+        self.actionOHCL10m=QAction(self)
+        self.actionOHCL10m.setText(self.trUtf8("10 minutos"))
+        self.actionOHCL10m.setEnabled(False)
+        self.actionOHCL10m.setObjectName(self.trUtf8("actionOHCL10m"))
+        self.actionOHCL30m=QAction(self)
+        self.actionOHCL30m.setText(self.trUtf8("30 minutos"))
+        self.actionOHCL30m.setEnabled(False)
+        self.actionOHCL30m.setObjectName(self.trUtf8("actionOHCL30m"))
+        self.actionOHCL60m=QAction(self)
+        self.actionOHCL60m.setText(self.trUtf8("1 hora"))
+        self.actionOHCL60m.setEnabled(False)
+        self.actionOHCL60m.setObjectName(self.trUtf8("actionOHCL60m"))
         
         self.actionCandles5m=QAction(self)
         self.actionCandles5m.setText(self.trUtf8("5 minutos"))
@@ -442,11 +442,11 @@ class canvasChartIntraday(canvasChart):
         
     def on_customContextMenuRequested(self, pos):
         menu=QMenu()
-        ochl=QMenu("OCHL")
-        ochl.addAction(self.actionOCHL5m)
-        ochl.addAction(self.actionOCHL10m)
-        ochl.addAction(self.actionOCHL30m)
-        ochl.addAction(self.actionOCHL60m)
+        ochl=QMenu("OHCL")
+        ochl.addAction(self.actionOHCL5m)
+        ochl.addAction(self.actionOHCL10m)
+        ochl.addAction(self.actionOHCL30m)
+        ochl.addAction(self.actionOHCL60m)
         menu.addMenu(ochl)        
         lines=QMenu("Líneas")
         lines.addAction(self.actionLinesIntraday)
@@ -485,7 +485,7 @@ class canvasChartHistorical(canvasChart):
         if self.type==ChartType.lines:
             self.on_actionLines1d_activated()
         elif self.type==ChartType.ochl:
-            self.on_actionOCHL1d_activated()
+            self.on_actionOHCL1d_activated()
         elif self.type==ChartType.candles:
             self.on_actionCandles1d_activated()
             
@@ -513,18 +513,18 @@ class canvasChartHistorical(canvasChart):
         self.actionLines365d.setObjectName(self.trUtf8("actionLines365d"))        
         self.actionLines365d.setEnabled(False)
         
-        self.actionOCHL1d=QAction(self)
-        self.actionOCHL1d.setText(self.trUtf8("1 dia"))
-        self.actionOCHL1d.setObjectName(self.trUtf8("actionOCHL1d"))
-        self.actionOCHL7d=QAction(self)
-        self.actionOCHL7d.setText(self.trUtf8("1 semana"))
-        self.actionOCHL7d.setObjectName(self.trUtf8("actionOCHL7d"))
-        self.actionOCHL30d=QAction(self)
-        self.actionOCHL30d.setText(self.trUtf8("1 mes"))
-        self.actionOCHL30d.setObjectName(self.trUtf8("actionOCHL30d"))
-        self.actionOCHL365d=QAction(self)
-        self.actionOCHL365d.setText(self.trUtf8("1 año"))
-        self.actionOCHL365d.setObjectName(self.trUtf8("actionOCHL365d"))
+        self.actionOHCL1d=QAction(self)
+        self.actionOHCL1d.setText(self.trUtf8("1 dia"))
+        self.actionOHCL1d.setObjectName(self.trUtf8("actionOHCL1d"))
+        self.actionOHCL7d=QAction(self)
+        self.actionOHCL7d.setText(self.trUtf8("1 semana"))
+        self.actionOHCL7d.setObjectName(self.trUtf8("actionOHCL7d"))
+        self.actionOHCL30d=QAction(self)
+        self.actionOHCL30d.setText(self.trUtf8("1 mes"))
+        self.actionOHCL30d.setObjectName(self.trUtf8("actionOHCL30d"))
+        self.actionOHCL365d=QAction(self)
+        self.actionOHCL365d.setText(self.trUtf8("1 año"))
+        self.actionOHCL365d.setObjectName(self.trUtf8("actionOHCL365d"))
         
         self.actionCandles1d=QAction(self)
         self.actionCandles1d.setText(self.trUtf8("1 dia"))
@@ -564,7 +564,7 @@ class canvasChartHistorical(canvasChart):
         self.__draw()
 #    figzoom.canvas.draw()
     @pyqtSignature("")
-    def on_actionOCHL7d_activated(self):
+    def on_actionOHCL7d_activated(self):
         self._settings_saveprop("type", ChartType.ochl)
         ochlWeekly=self.result.ochlWeekly()
         self.currentMatrizDataLength=len(ochlWeekly)
@@ -575,7 +575,7 @@ class canvasChartHistorical(canvasChart):
             self.ochl(ochlWeekly, datetime.timedelta(days=7))     
         self.draw()
     @pyqtSignature("")
-    def on_actionOCHL30d_activated(self):
+    def on_actionOHCL30d_activated(self):
         self._settings_saveprop("type", ChartType.ochl)
         ochlMonthly=self.result.ochlMonthly()
         self.currentMatrizDataLength=len(ochlMonthly)
@@ -586,7 +586,7 @@ class canvasChartHistorical(canvasChart):
             self.ochl(ochlMonthly, datetime.timedelta(days=30))     
         self.draw()
     @pyqtSignature("")
-    def on_actionOCHL365d_activated(self):
+    def on_actionOHCL365d_activated(self):
         self._settings_saveprop("type", ChartType.ochl)
         ochlYearly=self.result.ochlYearly()
         self.currentMatrizDataLength=len(ochlYearly)
@@ -599,15 +599,15 @@ class canvasChartHistorical(canvasChart):
         
     def on_customContextMenuRequested(self, pos):
         menu=QMenu()
-        ochl=QMenu("OCHL")
-        ochl.addAction(self.actionOCHL5m)
-        ochl.addAction(self.actionOCHL10m)
-        ochl.addAction(self.actionOCHL30m)
-        ochl.addAction(self.actionOCHL60m)
-        ochl.addAction(self.actionOCHL1d)
-        ochl.addAction(self.actionOCHL7d)
-        ochl.addAction(self.actionOCHL30d)
-        ochl.addAction(self.actionOCHL365d)
+        ochl=QMenu("OHCL")
+        ochl.addAction(self.actionOHCL5m)
+        ochl.addAction(self.actionOHCL10m)
+        ochl.addAction(self.actionOHCL30m)
+        ochl.addAction(self.actionOHCL60m)
+        ochl.addAction(self.actionOHCL1d)
+        ochl.addAction(self.actionOHCL7d)
+        ochl.addAction(self.actionOHCL30d)
+        ochl.addAction(self.actionOHCL365d)
         menu.addMenu(ochl)        
         lines=QMenu("Líneas")
         lines.addAction(self.actionLines5m)

@@ -21,7 +21,7 @@ class WorkerYahooInactive(WorkerYahoo):
             cur = con.cursor()     
             self.ids=self.filtrar_ids_inactivos_no_actualizados(cur,  1, 7,  False)      
             print (self.ids)
-            (p, e)=(newQuotesSet(), [])
+            (p, e)=(newSetQuotes(), [])
             for a in arr_split(self.ids, math.ceil(float(len(self.ids))/180)):
                 (parsed, errors)=self.execute(a)
                 p.arr=p.arr+parsed.arr

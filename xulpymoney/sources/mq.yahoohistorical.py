@@ -32,7 +32,7 @@ class WorkerYahooHistorical(Source):
     def execute(self,  investment, inicio, fin):
         """inico y fin son dos dates entre los que conseguir los datos."""
         url='http://ichart.finance.yahoo.com/table.csv?s='+investment.yahoo+'&a='+str(inicio.month-1)+'&b='+str(inicio.day)+'&c='+str(inicio.year)+'&d='+str(fin.month-1)+'&e='+str(fin.day)+'&f='+str(fin.year)+'&g=d&ignore=.csv'
-        (set, error)=(QuotesSet(self.cfg), [])
+        (set, error)=(SetQuotes(self.cfg), [])
         web=self.download(url, 'YAHOO_HISTORICAL')
         if web==None:
             return (set, error)

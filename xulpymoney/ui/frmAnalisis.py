@@ -71,6 +71,8 @@ class frmAnalisis(QDialog, Ui_frmAnalisis):
         self.cfg.currencies.load_qcombobox(self.cmbCurrency)
         self.cfg.apalancamientos.load_qcombobox(self.cmbApalancado)
         self.cfg.types.load_qcombobox(self.cmbTipo)
+        
+        self.update_due_to_quotes_change()
 #
 #        if self.investment.id!=None:#Si no está definido petaba el timer por no saber cual es
 #            self.mytimer = QTimer()
@@ -140,21 +142,13 @@ class frmAnalisis(QDialog, Ui_frmAnalisis):
             
     def load_data_from_file(self, file ):
         return
+#        
+#    def load_data_from_db(self):
         
-    def load_data_from_db(self):
+    def update_due_to_quotes_change(self):
         if self.investment.id!=None:
-            con=self.cfg.connect_myquotes()
-            cur = con.cursor()
-            self.result.get_all(cur)
-            self.result.decimalesSignificativos() 
-            self.load_dividendos(cur)
-            cur.close()     
-            self.cfg.disconnect_myquotes(con)  
-            self.update_due_to_all_change()
-        
-    def update_due_to_all_change(self):
-        self.result.get_basic_in_all()
-        self.result.calculate_ochl_diary()#necesario para usar luego ochl_otros
+            self.result.get_basic_ohcls()
+            self.load_dividendos()
         inicio=datetime.datetime.now()
         self.__load_information()
         if len(self.result.all)!=0:
@@ -169,7 +163,10 @@ class frmAnalisis(QDialog, Ui_frmAnalisis):
 
         
         
-    def load_dividendos(self,  cur):
+    def load_dividendos(self):
+        
+        ###
+        cur=self.cfg.conms.cursor()
         cur.execute("select year,dpa from estimaciones where id=%s order by year", (self.investment.id, ) )
         self.tblDividendosEstimaciones.setRowCount(cur.rowcount)
         for reg in cur:
@@ -182,6 +179,7 @@ class frmAnalisis(QDialog, Ui_frmAnalisis):
                 self.tblDividendosEstimaciones.setItem(cur.rownumber-1, 2, qtpc(None))    
         self.tblDividendosEstimaciones.setCurrentCell(cur.rowcount-1, 0)
         self.tblDividendosEstimaciones.setFocus()
+        cur.close()
 
 
 
@@ -296,7 +294,7 @@ class frmAnalisis(QDialog, Ui_frmAnalisis):
             cur = con.cursor()
             cur.execute("delete from estimaciones where code=%s and year=%s", (self.investment.id, year))
             con.commit()
-            self.load_dividendos(cur)
+            self.load_dividendos()
             cur.close() 
             self.cfg.disconnect_myquotes(con)  
         
@@ -307,7 +305,7 @@ class frmAnalisis(QDialog, Ui_frmAnalisis):
         if d.result()==QDialog.Accepted:
             con=self.cfg.connect_myquotes()
             cur = con.cursor()
-            self.load_dividendos(cur)
+            self.load_dividendos()
             cur.close() 
             self.cfg.disconnect_myquotes(con)  
 
@@ -316,7 +314,7 @@ class frmAnalisis(QDialog, Ui_frmAnalisis):
     def on_actionQuoteNew_activated(self):
         w=frmQuotesIBM(self.cfg,  self.investment)
         w.exec_()   
-        self.load_data_from_db()
+        self.update_due_to_quotes_change()
 
     @pyqtSignature("")
     def on_actionQuoteDelete_activated(self):
@@ -329,7 +327,7 @@ class frmAnalisis(QDialog, Ui_frmAnalisis):
         con.commit()
         cur.close() 
         self.cfg.disconnect_myquotes(con)  
-        self.update_due_to_all_change()
+        self.update_due_to_quotes_change()
 
 
 
@@ -418,13 +416,13 @@ class frmAnalisis(QDialog, Ui_frmAnalisis):
         for item in f.selected.arr:
             self.cmbPriorityHistorical.addItem(item.name, item.id)
 
-    def on_cmdUpdate_pressed(self):
-        
-        t1 = threading.Thread(target=self.load_data_from_db,   args=())
-        t1.start()
-        if t1.isAlive()==False:
-            QCoreApplication.processEvents()
-        t1.join()        
+#    def on_cmdUpdate_pressed(self):
+#        
+#        t1 = threading.Thread(target=self.load_data_from_db,   args=())
+#        t1.start()
+#        if t1.isAlive()==False:
+#            QCoreApplication.processEvents()
+#        t1.join()        
 
     def on_tblIntradia_customContextMenuRequested(self,  pos):
         menu=QMenu()
