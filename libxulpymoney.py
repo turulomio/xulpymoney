@@ -3647,7 +3647,7 @@ class Investment:
             cur.execute(sql)
         cur.close()
     
-    def changeDeletable(ids,  deletable):
+    def changeDeletable(self, ids,  deletable):
         """Modifica a deletable"""
         curms=self.cfg.conms.cursor()
         sql="update investments set deletable={0} where id in ({1})".format( deletable,  str(ids)[1:-1])
