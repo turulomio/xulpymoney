@@ -204,7 +204,7 @@ class frmCuentasIBM(QDialog, Ui_frmCuentasIBM):
     @QtCore.pyqtSlot() 
     def on_actionMovimientoNuevo_activated(self):
         w=frmOperCuentas(self.cfg, self.data_cuentas,  self.selCuenta, None, None)
-        self.connect(w, SIGNAL("OperCuentaIBMed"), self.on_cmdMovimientos_released)
+        self.connect(w, SIGNAL("OperCuentaIBMed"), self.on_wdgYM_changed)
         w.exec_()
         self.load_tblOperaciones()
         self.tblOperaciones.clearSelection()
@@ -214,7 +214,7 @@ class frmCuentasIBM(QDialog, Ui_frmCuentasIBM):
     def on_actionMovimientoModificar_activated(self):
 
         w=frmOperCuentas(self.cfg, self.data_cuentas,  self.selCuenta, self.selOperCuenta, None)
-        self.connect(w, SIGNAL("OperCuentaIBMed"), self.on_cmdMovimientos_released)#Actualiza movimientos como si cmd
+        self.connect(w, SIGNAL("OperCuentaIBMed"), self.on_wdgYM_changed)#Actualiza movimientos como si cmd
         w.exec_()
         self.load_tblOperaciones()
         self.tblOperaciones.clearSelection()
@@ -237,7 +237,7 @@ class frmCuentasIBM(QDialog, Ui_frmCuentasIBM):
     def on_actionOperTarjetaNueva_activated(self):
         if self.selTarjeta.pagodiferido==False:
             w=frmOperCuentas(self.cfg, self.data_cuentas, self.selCuenta, None)
-            self.connect(w, SIGNAL("OperCuentaIBMed"), self.on_cmdMovimientos_released)
+            self.connect(w, SIGNAL("OperCuentaIBMed"), self.on_wdgYM_changed)
             w.lblTitulo.setText(((self.selTarjeta.name)))
             w.txtComentario.setText(self.tr("Tarjeta {0}. ".format((self.selTarjeta.name))))
             w.exec_()
