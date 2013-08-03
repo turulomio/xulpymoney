@@ -771,7 +771,7 @@ class SetInversionOperacionActual:
             tabla.setRowCount(0)
             return
         inversion=self.arr[0].inversion
-        numdigitos=inversion.investment.result.decimalesSignificativos()
+#        numdigitos=inversion.investment.result.decimalesSignificativos()
         sumacciones=Decimal('0')
         sum_accionesXvalor=Decimal('0')
         sumsaldo=Decimal('0')
@@ -793,7 +793,7 @@ class SetInversionOperacionActual:
     
             tabla.setItem(rownumber, 0, qdatetime(a.datetime, inversion.investment.bolsa.zone))
             tabla.setItem(rownumber, 1, qright("{0:.6f}".format(a.acciones)))
-            tabla.setItem(rownumber, 2, inversion.investment.currency.qtablewidgetitem(a.valor_accion, numdigitos))
+            tabla.setItem(rownumber, 2, inversion.investment.currency.qtablewidgetitem(a.valor_accion, 6))
             tabla.setItem(rownumber, 3, inversion.investment.currency.qtablewidgetitem(invertido))
             tabla.setItem(rownumber, 4, inversion.investment.currency.qtablewidgetitem(saldo))
             tabla.setItem(rownumber, 5, inversion.investment.currency.qtablewidgetitem(pendiente))
@@ -810,7 +810,7 @@ class SetInversionOperacionActual:
         if sumacciones==0:
             tabla.setItem(rownumber, 2, inversion.investment.currency.qtablewidgetitem(0))
         else:
-            tabla.setItem(rownumber, 2, inversion.investment.currency.qtablewidgetitem(sum_accionesXvalor/sumacciones, numdigitos))
+            tabla.setItem(rownumber, 2, inversion.investment.currency.qtablewidgetitem(sum_accionesXvalor/sumacciones, 6))
         tabla.setItem(rownumber, 3, inversion.investment.currency.qtablewidgetitem(suminvertido))
         tabla.setItem(rownumber, 4, inversion.investment.currency.qtablewidgetitem(sumsaldo))
         tabla.setItem(rownumber, 5, inversion.investment.currency.qtablewidgetitem(sumpendiente))
@@ -2231,27 +2231,28 @@ def decimal_check(dec):
     
 
     
-def decimalesSignificativos(arraynum):
-    """ESta función busca en quotes_basic para calcular los bits significativos de los quotes, para poder mostrarlos mejor"""
-    
-    ##DEBE CAMBIARSE A ARRAY DE NUMEROS
-    resultado=2
-    if self.last==None or self.penultimate==None or self.endlastyear==None:
-#            print ("mal",  resultado)
-        return resultado
-    
-    for num in [self.last.quote, self.penultimate.quote, self.endlastyear.quote]:
-        decimales=str(num).split(".")
-        if len(decimales)==2:
-            cadena=decimales[1]
-            while len(cadena)>=2:
-                if cadena[len(cadena)-1]=="0":
-                    cadena=cadena[:-1]
-                else:
-                    resultado=len(cadena)
-                    break
-#        print ("significativos",  self.last.quote,  self.penultimate.quote,  self.endlastyear.quote,  resultado)
-    return resultado
+#def decimalesSignificativos(arraynum):
+#    """ESta función busca en quotes_basic para calcular los bits significativos de los quotes, para poder mostrarlos mejor"""
+#    return 6
+#    
+#    ##DEBE CAMBIARSE A ARRAY DE NUMEROS
+#    resultado=2
+#    if self.last==None or self.penultimate==None or self.endlastyear==None:
+##            print ("mal",  resultado)
+#        return resultado
+#    
+#    for num in [self.last.quote, self.penultimate.quote, self.endlastyear.quote]:
+#        decimales=str(num).split(".")
+#        if len(decimales)==2:
+#            cadena=decimales[1]
+#            while len(cadena)>=2:
+#                if cadena[len(cadena)-1]=="0":
+#                    cadena=cadena[:-1]
+#                else:
+#                    resultado=len(cadena)
+#                    break
+##        print ("significativos",  self.last.quote,  self.penultimate.quote,  self.endlastyear.quote,  resultado)
+#    return resultado
 
 class SetAgrupations:
     """Se usa para meter en cfg las agrupaciones, pero también para crear agrupaciones en las inversiones"""
