@@ -191,12 +191,12 @@ class frmAnalisis(QDialog, Ui_frmAnalisis):
                 table.setItem(punt, 2, self.investment.currency.qtablewidgetitem(d.open,6))
                 table.setItem(punt, 3, self.investment.currency.qtablewidgetitem(d.high,6))
                 table.setItem(punt, 4, self.investment.currency.qtablewidgetitem(d.low,6))
-                #łtable.setItem(punt, 5, 0,'' , 0))
+                table.setItem(punt, 5, qcenter(str(d.datetime())))
             table.setCurrentCell(len(data.arr)-1, 0)
             table.setFocus()
         ## load_historicas
         setTable(self.tblDaily, self.investment.result.ohclDaily)
-#        setTable(self.tblWeekly, self.investment.result.ohclWeekly)
+        setTable(self.tblWeekly, self.investment.result.ohclWeekly)
         setTable(self.tblMonthly, self.investment.result.ohclMonthly)
         setTable(self.tblYearly, self.investment.result.ohclYearly)
         

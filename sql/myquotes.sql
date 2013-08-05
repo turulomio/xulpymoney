@@ -599,6 +599,26 @@ CREATE VIEW ohlcmonthly AS
 ALTER TABLE public.ohlcmonthly OWNER TO postgres;
 
 --
+-- Name: tmpohlcweekly; Type: VIEW; Schema: public; Owner: postgres
+--
+
+CREATE VIEW tmpohlcweekly AS
+    SELECT quotes.id, date_part('year'::text, quotes.datetime) AS year, date_part('week'::text, quotes.datetime) AS week, max(quotes.quote) AS high, min(quotes.quote) AS low, min(quotes.datetime) AS first, max(quotes.datetime) AS last FROM quotes GROUP BY quotes.id, date_part('year'::text, quotes.datetime), date_part('week'::text, quotes.datetime);
+
+
+ALTER TABLE public.tmpohlcweekly OWNER TO postgres;
+
+--
+-- Name: ohlcweekly; Type: VIEW; Schema: public; Owner: postgres
+--
+
+CREATE VIEW ohlcweekly AS
+    SELECT tmpohlcweekly.id, tmpohlcweekly.year, tmpohlcweekly.week, (SELECT quote.quote FROM quote(tmpohlcweekly.id, tmpohlcweekly.first) quote(id, datetime, quote)) AS first, tmpohlcweekly.low, tmpohlcweekly.high, (SELECT quote.quote FROM quote(tmpohlcweekly.id, tmpohlcweekly.last) quote(id, datetime, quote)) AS last FROM tmpohlcweekly;
+
+
+ALTER TABLE public.ohlcweekly OWNER TO postgres;
+
+--
 -- Name: tmpohlcyearly; Type: VIEW; Schema: public; Owner: postgres
 --
 
