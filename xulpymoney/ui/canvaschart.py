@@ -565,8 +565,8 @@ class canvasChartHistorical(canvasChart):
 #    figzoom.canvas.draw()
     @pyqtSignature("")
     def on_actionOHCL7d_activated(self):
-        self._settings_saveprop("type", ChartType.ohcl)
-        ohclWeekly=self.result.ohclWeekly()
+        self.cfg.config_set_value(self.cfg.config_ui, self.section, "type", ChartType.ohcl)
+        ohclWeekly=self.result.ohclWeekly.arr
         self.currentMatrizDataLength=len(ohclWeekly)
         
         if len(ohclWeekly)>self.num:            
@@ -576,8 +576,8 @@ class canvasChartHistorical(canvasChart):
         self.draw()
     @pyqtSignature("")
     def on_actionOHCL30d_activated(self):
-        self._settings_saveprop("type", ChartType.ohcl)
-        ohclMonthly=self.result.ohclMonthly()
+        self.cfg.config_set_value(self.cfg.config_ui, self.section, "type", ChartType.ohcl)
+        ohclMonthly=self.result.ohclMonthly.arr
         self.currentMatrizDataLength=len(ohclMonthly)
         
         if len(ohclMonthly)>self.num:            
@@ -587,8 +587,8 @@ class canvasChartHistorical(canvasChart):
         self.draw()
     @pyqtSignature("")
     def on_actionOHCL365d_activated(self):
-        self._settings_saveprop("type", ChartType.ohcl)
-        ohclYearly=self.result.ohclYearly()
+        self.cfg.config_set_value(self.cfg.config_ui, self.section, "type", ChartType.ohcl)
+        ohclYearly=self.result.ohclYearly.arr
         self.currentMatrizDataLength=len(ohclYearly)
         
         if len(ohclYearly)>self.num:            

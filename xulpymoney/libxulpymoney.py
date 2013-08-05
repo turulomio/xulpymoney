@@ -3872,7 +3872,39 @@ class OHCLMonthly:
     def datetime(self):
         """Devuelve un datetime usado para dibujar en gr´aficos, pongo el d´ia 28 para no calcular el ´ultimo"""
         return day_end_from_date(datetime.date(self.year, self.month, 28), self.investment.bolsa.zone)
+                
+class OHCLWeekly:
+    def __init__(self, cfg):
+        self.cfg=cfg
+        self.investment=None
+        self.year=None
+        self.week=None
+        self.open=None
+        self.close=None
+        self.high=None
+        self.low=None
         
+    def init__from_dbrow(self, row, investment):
+        self.investment=investment
+        self.year=int(row['year'])
+        self.week=int(row['week'])
+        self.open=row['first']
+        self.close=row['last']
+        self.high=row['high']
+        self.low=row['low']
+        return self
+                
+    def datetime(self):
+        """Devuelve un datetime usado para dibujar en gr´aficos, con el ´ultimo d´ia de la semana"""
+        d = datetime.date(self.year,1,1)
+        d = d - datetime.timedelta(d.weekday())
+        dlt = datetime.timedelta(days = (self.week-1)*7)
+#        return d + dlt,  d + dlt + timedelta(days=6) ## first day, end day
+        lastday= d + dlt + datetime.timedelta(days=6)
+        return day_end_from_date(lastday, self.investment.bolsa.zone)
+        
+    def print_time(self):
+        return "{0}-{1}".format(self.year, self.week)
 class OHCLYearly:
     def __init__(self, cfg):
         self.cfg=cfg
@@ -3897,6 +3929,18 @@ class OHCLYearly:
         return day_end_from_date(datetime.date(self.year, 12, 31), self.investment.bolsa.zone)
     def print_time(self):
         return "{0}".format(int(self.year))
+class SetOHCLWeekly:
+    def __init__(self, cfg, investment):
+        self.cfg=cfg
+        self.investment=investment
+        self.arr=[]
+    def load_from_db(self, sql):
+        """El sql debe estar ordenado por fecha"""
+        cur=self.cfg.conms.cursor()
+        cur.execute(sql)#select * from ohclyearly where id=79329 order by year
+        for row in cur:
+            self.arr.append(OHCLWeekly(self.cfg).init__from_dbrow(row, self.investment))
+        cur.close()  
         
 class SetOHCLYearly:
     def __init__(self, cfg, investment):
@@ -4056,6 +4100,7 @@ class QuotesResult:
         self.ohclDaily=SetOHCLDaily(self.cfg, self.investment)
         self.ohclMonthly=SetOHCLMonthly(self.cfg, self.investment)
         self.ohclYearly=SetOHCLYearly(self.cfg, self.investment)
+        self.ohclWeekly=SetOHCLWeekly(self.cfg, self.investment)
     
     
     
@@ -4098,6 +4143,7 @@ class QuotesResult:
         self.get_basic()
         self.ohclDaily.load_from_db("select * from ohlcdaily where id={0} order by date".format(self.investment.id))#necesario para usar luego ohcl_otros
         self.ohclMonthly.load_from_db("select * from ohlcMonthly where id={0} order by year,month".format(self.investment.id))
+        self.ohclWeekly.load_from_db("select * from ohlcWeekly where id={0} order by year,week".format(self.investment.id))
         self.ohclYearly.load_from_db("select * from ohlcYearly where id={0} order by year".format(self.investment.id))
         print ("Datos db cargados:",  datetime.datetime.now()-inicio)
     

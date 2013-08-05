@@ -10,7 +10,7 @@
     <x>0</x>
     <y>0</y>
     <width>1102</width>
-    <height>748</height>
+    <height>741</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -71,7 +71,7 @@
         <enum>QTabWidget::West</enum>
        </property>
        <property name="currentIndex">
-        <number>0</number>
+        <number>2</number>
        </property>
        <widget class="QWidget" name="tabInformacion">
         <attribute name="title">
@@ -878,7 +878,7 @@
                   </column>
                   <column>
                    <property name="text">
-                    <string>Volumen</string>
+                    <string>Día y hora visualización</string>
                    </property>
                   </column>
                  </widget>
@@ -940,7 +940,7 @@
                   </column>
                   <column>
                    <property name="text">
-                    <string>Volumen</string>
+                    <string>Día y hora visualización</string>
                    </property>
                   </column>
                  </widget>
@@ -1002,7 +1002,7 @@
                   </column>
                   <column>
                    <property name="text">
-                    <string>Volumen</string>
+                    <string>Día y hora visualización</string>
                    </property>
                   </column>
                  </widget>
@@ -1064,7 +1064,7 @@
                   </column>
                   <column>
                    <property name="text">
-                    <string>Volumen</string>
+                    <string>Día y hora visualización</string>
                    </property>
                   </column>
                  </widget>
