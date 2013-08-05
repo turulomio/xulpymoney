@@ -1,33 +1,35 @@
 20111214 Cuando se inicia cuenta nueva en un mes y se añade la suma de saldos falla por el inicio de mes anterior
+
 20111201 En transferencias poner textos localizadosy ID vinculado a transferencia
+
 20120104 Hacer dialogo de split y contrasplit en myquotes para cotizaciones y en xulpymoney para operacciones
-20120127 Poner en wdgIndexRange el criterio de coloreado de verde
-        - Sumatorio de invertido en rango < 9000
-        - No haya registros
+
 20120222 La restauración de los datos deberá comprobar si ya están insertados y preguntar si quiere borrar los anteriores o incluirlos
 20120320 Si no hay operinversiones ni dividendos la cuenta de una inversión debería poder cambiarse
 20120523 Hacer una clases de inversiones no con actual sino con invertido.
 20120803 Hacer splash con emit de como va cargando.
+
 20120704 Estudiar si podemos quitar de opercuentas tipos de operación, al estar asociado a concepto, ojo con (1,2,3) que hay bastante en codigo
+
 20120706 cuenta operacion heredada de inversion deberia crearse como con dividendos una opercuenta antes
 20120726 Quitar importe de newOperinversionHistorica en funciones 
 20120707 Cuando se mete una comision en transferencia no se contabiliza luego. Ver si sacarla.
+
 20120727 Mostrar tipo de dividendo en frmHistorico y ver si se calcula bien el neto y el bruto. Añadir pago de bono
 20120730 Meter tipo de dividendo en informe histórico
+
 20120802 Hacer un formulario de inicio que genere el settings en home y pregunte idioma y lo cambie
 20120803 Quitar primera fecha de inicio y ponerlo en config por defecto y quitar la función de union de patrimonio, al empezar una nueva base de datos es un coñazo
 20120806 En operinversion opercuenta poner el número de acciones y precio de compra en comeentario bonito
-20120815 Poner calculo de inversión cuando esté con un precio probablemente en desreinversion
 20130103 Cuando se genera un dividendo acciones y se mete comisión se cuenta en Ingresos quizás porque es neto
 20130103 Cuando se inserta un operinversión, hay que poner el indice de referencia y se debe insertar en myquotes el valor con microseconds=5
 20110526 Crear la funcionalidad de divisas importantes
 20110822 Poner en el gráfico histórico la opción del punto de venta
 20111013 En las etiquetas de graficos poner el valor del máximo, minimo y apertura
 20111027 Hacer particiones a las tablas, quizas por años. http://www.postgresql.org/docs/9.1/static/ddl-partitioning.html
-20120217 Crear menú automático Bolsas y que liste todo desde bolsas
+20120217 En busquedas cuando se haga es:search, buscará en bolsa española
 20120307 Cuando haya ochl en los datos intradia, dibujar una raya de maximo y minimo gris discontinuo, con punto gris de inicio  y punto gris de final
 20120405 En la misma tabla de dividendos estimados poner el bpa, para poder calcular el PER
-20120713 Se podr´ia generar un a clase madre resultquotes que debendan dbresultquotes y file resultquotes, con funciones de calculo en padre
 20120801 Cambiar Yahoo por ticker
 20120815 No se calcula bien las medias móviles ver renta4 monetario
 20130103 Hacer desde interfaz, purga que deje los datos 1,2,3,4 o los ohcl que existan borrando los demás
@@ -36,4 +38,3 @@
 20130829 Meter el importe de inversion desinversion en config
 20130829 En punto de venta poner antes y después set
 20130829 Load dividendos de frmAnalisis ca<mbiar por Set
-20130829 Hacer view weekly
