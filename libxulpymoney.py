@@ -233,7 +233,8 @@ class SetInversiones:
         return True
         
     def sort_by_tpc_dpa(self):
-        self.arr=sorted(self.arr, key=lambda inv: inv.investment.estimacionesdividendo.currentYear().tpc_dpa(),  reverse=True) 
+        if inv.investment.estimacionesdividendo.currentYear()!=None:
+            self.arr=sorted(self.arr, key=lambda inv: inv.investment.estimacionesdividendo.currentYear().tpc_dpa(),  reverse=True) 
         
         
 class SetInvestments:
