@@ -17,17 +17,20 @@ class WorkerYahooHistorical(Source):
         self.investments.load_from_db("select * from investments where active=true and priorityhistorical[1]=3")
         
     def start(self):
-        log (self.name, "FILTROS",  "Se van a actualizar {0} inversiones".format(len(self.investments.arr)))
+#        log (self.name, "FILTROS",  "Se van a actualizar {0} inversiones".format(len(self.investments.arr)))
         for i,  inv in enumerate(self.investments.arr):
-            sys.stdout.write("\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\bmq.yahoohistorical {0}/{1} {2}: ".format(i, len(self.investments.arr), inv) )
-            sys.stdout.flush()
             ultima=inv.fecha_ultima_actualizacion_historica()
             if ultima==datetime.date.today()-datetime.timedelta(days=1):
                 continue
             (set, errors)=self.execute(inv, inv.fecha_ultima_actualizacion_historica()+datetime.timedelta(days=1), datetime.date.today())
-            set.save(self.name)
+            (ins, b, m)=set.save(self.name)
+            
+            stri="{0}: {1}/{2} {3}. Inserted: {4}. Modified:{5}          ".format(function_name(self), i+1, len(self.investments.arr), inv, ins, m) 
+            sys.stdout.write("\b"*1000+stri)
+            sys.stdout.flush()
             self.cfg.conms.commit()  
             time.sleep(10)#time step
+        print("")
         
     def execute(self,  investment, inicio, fin):
         """inico y fin son dos dates entre los que conseguir los datos."""
