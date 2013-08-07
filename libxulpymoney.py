@@ -1,6 +1,6 @@
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
-import datetime,  time,  pytz,   psycopg2,  psycopg2.extras,  sys,  codecs,  urllib.request,    os,  configparser
+import datetime,  time,  pytz,   psycopg2,  psycopg2.extras,  sys,  codecs,  urllib.request,    os,  configparser,  inspect
 
 pathGraphIntraday=os.environ['HOME']+"/.myquotes/graphIntraday.png"
 pathGraphHistorical=os.environ['HOME']+"/.myquotes/graphHistorical.png"
@@ -84,7 +84,8 @@ class SetInversiones:
             inv.get_operinversiones()
             inv.op_actual.get_valor_indicereferencia(self.indicereferencia)
             self.arr.append(inv)
-            sys.stdout.write("\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\bInversión {0}/{1}: ".format(cur.rownumber, cur.rowcount) )
+            stri="{0}: {1}/{2}          ".format(function_name(self), cur.rownumber, cur.rowcount)
+            sys.stdout.write("\b"*1000+stri)
             sys.stdout.flush()
         cur.close()  
         
@@ -250,10 +251,10 @@ class SetInvestments:
         for row in cur:
             lista=lista+ str(row['myquotesid']) + ", "
         lista=lista[:-2]
+        cur.close()
         
         ##Carga los investments
         self.load_from_db("select * from investments where id in ("+lista+")" )
-        cur.close()
         
     def load_from_db(self, sql):
         """sql es una query sobre la tabla inversiones"""
@@ -264,8 +265,10 @@ class SetInvestments:
             inv.estimacionesdividendo.load_from_db()
             inv.result.get_basic()
             self.arr.append(inv)
-            sys.stdout.write("\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\bInvestment {0}/{1}: ".format(curms.rownumber, curms.rowcount) )
+            stri="{0}: {1}/{2}          ".format(function_name(self), curms.rownumber, curms.rowcount)
+            sys.stdout.write("\b"*1000+stri)
             sys.stdout.flush()
+        print("")
         curms.close()
                            
     def find(self, id):
@@ -3708,8 +3711,8 @@ class SetQuotes:
         """
         (insertados, buscados, modificados)=(0, 0, 0)
         if len(self.arr)==0:
-            log("QUOTES",source,  QApplication.translate("Core","No se ha parseado nada"))
-            return
+            return  (insertados, buscados, modificados)
+            
             
         for p in self.arr:
             ibm=p.save()
@@ -3721,7 +3724,8 @@ class SetQuotes:
                 modificados=modificados+1
 
         if insertados>0 or modificados>0:
-            log("QUOTES" , source,  QApplication.translate("Core","Se han buscado %(b)d, modificado %(m)d e insertado %(i)d registros de %(c)s") %{"b":buscados, "m": modificados,   "i":insertados,  "c":source})
+             return (insertados, buscados, modificados)
+#            log("QUOTES" , source,  QApplication.translate("Core","Se han buscado %(b)d, modificado %(m)d e insertado %(i)d registros de %(c)s") %{"b":buscados, "m": modificados,   "i":insertados,  "c":source})
         
     def append(self, quote):
         self.arr.append(quote)
@@ -5142,3 +5146,11 @@ def web2utf8(cadena):
     cadena=cadena.replace('&Ntilde;','Ñ')
     
     return cadena
+    
+def function_name(clas):
+#    print (inspect.stack()[0][0].f_code.co_name)
+#    print (inspect.stack()[0][3],  inspect.stack())
+#    print (inspect.stack()[1][3],  inspect.stack())
+#    print (clas.__class__.__name__)
+#    print (clas.__module__)
+    return "{0}.{1}".format(clas.__class__.__name__,inspect.stack()[1][3])
