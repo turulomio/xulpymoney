@@ -126,16 +126,20 @@ class frmAnalisis(QDialog, Ui_frmAnalisis):
             iniciosemana=Quote(self.cfg).init__from_query(self.investment,  day_end(now-datetime.timedelta(days=datetime.date.today().weekday()+1), self.investment.bolsa.zone))
             iniciomes=Quote(self.cfg).init__from_query(self.investment, dt(datetime.date(now.year, now.month, 1), datetime.time(0, 0), self.investment.bolsa.zone))
             inicioano=Quote(self.cfg).init__from_query(self.investment, dt(datetime.date(now.year, 1, 1), datetime.time(0, 0), self.investment.bolsa.zone))             
-            docemeses=Quote(self.cfg).init__from_query(self.investment, day_end(now-datetime.timedelta(days=365), self.investment.bolsa.zone))             
+            docemeses=Quote(self.cfg).init__from_query(self.investment, day_end(now-datetime.timedelta(days=365), self.investment.bolsa.zone))          
+            unmes=Quote(self.cfg).init__from_query(self.investment, day_end(now-datetime.timedelta(days=30), self.investment.bolsa.zone))          
+            unasemana=Quote(self.cfg).init__from_query(self.investment, day_end(now-datetime.timedelta(days=7), self.investment.bolsa.zone))             
                 
             self.tblTPC.setItem(0, 0, qdatetime(self.investment.result.last.datetime, self.investment.bolsa.zone))   
             self.tblTPC.setItem(0, 1, self.investment.currency.qtablewidgetitem(self.investment.result.last.quote,  6))
             
-            row_tblTPV(penultimate, 1)
-            row_tblTPV(iniciosemana, 2)## Para que sea el domingo
-            row_tblTPV(iniciomes, 3)
-            row_tblTPV(inicioano, 4)
-            row_tblTPV(docemeses, 5)
+            row_tblTPV(penultimate, 2)
+            row_tblTPV(iniciosemana, 3)## Para que sea el domingo
+            row_tblTPV(iniciomes, 4)
+            row_tblTPV(inicioano, 5)
+            row_tblTPV(unasemana, 7)
+            row_tblTPV(unmes, 8)
+            row_tblTPV(docemeses, 9)
 
             
 #    def load_data_from_file(self, file ):

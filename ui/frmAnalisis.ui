@@ -71,7 +71,7 @@
         <enum>QTabWidget::West</enum>
        </property>
        <property name="currentIndex">
-        <number>2</number>
+        <number>0</number>
        </property>
        <widget class="QWidget" name="tabInformacion">
         <attribute name="title">
@@ -552,6 +552,11 @@
                   </row>
                   <row>
                    <property name="text">
+                    <string/>
+                   </property>
+                  </row>
+                  <row>
+                   <property name="text">
                     <string>Variación en un día</string>
                    </property>
                   </row>
@@ -568,6 +573,21 @@
                   <row>
                    <property name="text">
                     <string>Variación en este año</string>
+                   </property>
+                  </row>
+                  <row>
+                   <property name="text">
+                    <string/>
+                   </property>
+                  </row>
+                  <row>
+                   <property name="text">
+                    <string>Variación últimos 7 días</string>
+                   </property>
+                  </row>
+                  <row>
+                   <property name="text">
+                    <string>Variación últimos 30 días</string>
                    </property>
                   </row>
                   <row>
