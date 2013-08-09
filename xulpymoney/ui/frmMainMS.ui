@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
  <author>Mariano Muñoz</author>
- <class>frmMain2</class>
- <widget class="QMainWindow" name="frmMain2">
+ <class>frmMainMS</class>
+ <widget class="QMainWindow" name="frmMainMS">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -541,7 +541,7 @@ seleccionados por el usuario</string>
   <connection>
    <sender>actionSalir</sender>
    <signal>activated()</signal>
-   <receiver>frmMain2</receiver>
+   <receiver>frmMainMS</receiver>
    <slot>close()</slot>
    <hints>
     <hint type="sourcelabel">

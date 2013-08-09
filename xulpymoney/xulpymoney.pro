@@ -56,16 +56,16 @@ SOURCES         = xulpymoney.py \
                   libxulpymoney.py \
                   ui/frmAnalisis.py \
                   ui/Ui_frmAnalisis.py \
-                  ui/frmMain2.py \
-                  ui/Ui_frmMain2.py \
+                  ui/frmMainMS.py \
+                  ui/Ui_frmMainMS.py \
                   ui/frmQuotesIBM.py \
                   ui/Ui_frmQuotesIBM.py
                   ui/frmSelector.py \
                   ui/Ui_frmSelector.py \
                   ui/frmDividendoEstimacionIBM.py \
                   ui/Ui_frmDividendoEstimacionIBM.py \
-                  ui/wdgInversiones2.py \
-                  ui/Ui_wdgInversiones2.py \
+                  ui/wdgInversionesMS.py \
+                  ui/Ui_wdgInversionesMS.py \
                   ui/wdgMergeCodes.py \
                   ui/Ui_wdgMergeCodes.py \
                   ui/wdgChart.py \
@@ -105,7 +105,7 @@ FORMS           = ui/frmAbout.ui \
                   ui/frmQuotesIBM.ui \
                   ui/frmMain2.ui \
                   ui/frmSelector.ui \
-                  ui/wdgInversiones2.ui \
+                  ui/wdgInversionesMS.ui \
                   ui/wdgMergeCodes.ui \
                   ui/wdgChart.ui \
                   ui/wdgLog.ui

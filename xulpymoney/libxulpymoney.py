@@ -4526,9 +4526,9 @@ class ConfigMyStock:
         self.config = configparser.ConfigParser()
         print("poniendo valores por defecto")
         self.config['frmAccess'] = {'db': 'xulpymoney', 'port': '5432','user': 'postgres', 'server': '127.0.0.1'}
-        self.config['frmAccess2'] = {'db': 'myquotes', 'port': '5432','user': 'postgres', 'server': '127.0.0.1'}
+        self.config['frmAccessMS'] = {'db': 'myquotes', 'port': '5432','user': 'postgres', 'server': '127.0.0.1'}
         self.config['settings']={'dividendwithholding':'0.21', 'taxcapitalappreciation':'0.21',  'localcurrency':'EUR', 'localzone':'Europe/Madrid', 'indicereferencia':'79329'}
-        self.config['wdgInversiones2']={'favoritos':""}
+        self.config['wdgInversionesMS']={'favoritos':""}
             
         self.config_ui=configparser.ConfigParser()
         self.config_ui['canvasIntraday'] = {'sma50': 'True', 'type': '0','sma200': 'True'}
@@ -4547,7 +4547,7 @@ class ConfigMyStock:
             self.config_ui.read(self.file_ui)
             #Se ponen algunas para comprobar está actualizado
             self.config.get("frmAccess", "server")
-            self.config.get("frmAccess2", "server")
+            self.config.get("frmAccessMS", "server")
             #Se ponen algunas para comprobar está actualizado de _ui
             self.config_ui.get("canvasIntraday", "sma200")
         except:#Valores por defecto
@@ -4615,7 +4615,7 @@ class ConfigMyStock:
 
     def connect_myquotesd(self, pw):        
         """usa también la variables self.conms"""              
-        strmq="dbname='%s' port='%s' user='%s' host='%s' password='%s'" % (self.config.get("frmAccess2", "db"),  self.config.get("frmAccess2", "port"), self.config.get("frmAccess2", "user"), self.config.get("frmAccess2", "server"),  pw)
+        strmq="dbname='%s' port='%s' user='%s' host='%s' password='%s'" % (self.config.get("frmAccessMS", "db"),  self.config.get("frmAccessMS", "port"), self.config.get("frmAccessMS", "user"), self.config.get("frmAccessMS", "server"),  pw)
         while True:
             try:
                 self.conms=psycopg2.extras.DictConnection(strmq)
@@ -4628,7 +4628,7 @@ class ConfigMyStock:
         self.conms.close()
 
     def connect_myquotes(self):             
-        strmq="dbname='%s' port='%s' user='%s' host='%s' password='%s'" % (self.config.get("frmAccess2", "db"),  self.config.get("frmAccess2", "port"), self.config.get("frmAccess2", "user"), self.config.get("frmAccess2", "server"),  self.password)
+        strmq="dbname='%s' port='%s' user='%s' host='%s' password='%s'" % (self.config.get("frmAccessMS", "db"),  self.config.get("frmAccessMS", "port"), self.config.get("frmAccessMS", "user"), self.config.get("frmAccessMS", "server"),  self.password)
         try:
             mq=psycopg2.extras.DictConnection(strmq)
             return mq

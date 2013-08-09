@@ -141,11 +141,6 @@ class frmAnalisis(QDialog, Ui_frmAnalisis):
             row_tblTPV(unmes, 8)
             row_tblTPV(docemeses, 9)
 
-            
-#    def load_data_from_file(self, file ):
-#        return
-#        
-#    def load_data_from_db(self):
         
     def update_due_to_quotes_change(self):
         if self.investment.id!=None:
