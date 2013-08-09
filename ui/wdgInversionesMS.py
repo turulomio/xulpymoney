@@ -1,13 +1,13 @@
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
-from Ui_wdgInversiones2 import *
+from Ui_wdgInversionesMS import *
 from frmAnalisis import *
 from libxulpymoney import *
 from frmQuotesIBM import *
 from wdgMergeCodes import *
 from frmDividendoEstimacionIBM import *
 
-class wdgInversiones2(QWidget, Ui_wdgInversiones2):
+class wdgInversionesMS(QWidget, Ui_wdgInversionesMS):
     def __init__(self, cfg,  sql,  parent=None):
         QWidget.__init__(self, parent)
         self.setupUi(self)
@@ -15,8 +15,8 @@ class wdgInversiones2(QWidget, Ui_wdgInversiones2):
         self.investments=[]#Es una lista de investments
         self.selInvestment=None##Objeto de inversion seleccionado
         self.tblInversiones.setColumnHidden(0, True)
-        self.tblInversiones.settings("wdgInversiones2",  self.cfg.file_ui)    
-        self.setFavoritos=set(self.cfg.config_load_list(self.cfg.config, "wdgInversiones2", "favoritos"))
+        self.tblInversiones.settings("wdgInversionesMS",  self.cfg.file_ui)    
+        self.setFavoritos=set(self.cfg.config_load_list(self.cfg.config, "wdgInversionesMS", "favoritos"))
         self.progress = QProgressDialog(self.tr("Recibiendo datos solicitados"), self.tr("Cancelar"), 0,0)
         self.progress.setModal(True)
         self.progress.setWindowTitle(self.trUtf8("Recibiendo datos..."))
@@ -54,7 +54,7 @@ class wdgInversiones2(QWidget, Ui_wdgInversiones2):
             inv.result.get_basic()
             inv.estimacionesdividendo.load_from_db()
             self.investments.append(inv)
-#            print ("wdgInversiones2",  inv.agrupations.dic_arr)
+#            print ("wdgInversionesMS",  inv.agrupations.dic_arr)
         cur.close()     
         cur2.close()
         self.cfg.disconnect_myquotes(con)   
@@ -106,7 +106,7 @@ class wdgInversiones2(QWidget, Ui_wdgInversiones2):
                 return True
             return False
             
-        favoritos=self.cfg.config_load_list(self.cfg.config,"wdgInversiones2",  "favoritos")
+        favoritos=self.cfg.config_load_list(self.cfg.config,"wdgInversionesMS",  "favoritos")
         if str(self.selInvestment.id) in favoritos:
             if wdgInversiones_esta_mostrando_favoritos(favoritos)==True:
                 favoritos.remove(str(self.selInvestment.id))
@@ -119,7 +119,7 @@ class wdgInversiones2(QWidget, Ui_wdgInversiones2):
         else:
             favoritos.append(self.selInvestment.id)
         print ("Favoritos", favoritos)
-        self.cfg.config_set_list(self.cfg.config,"wdgInversiones2",  "favoritos",  favoritos)
+        self.cfg.config_set_list(self.cfg.config,"wdgInversionesMS",  "favoritos",  favoritos)
         self.cfg.configs_save()
         self.setFavoritos=set(favoritos)
 

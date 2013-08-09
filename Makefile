@@ -40,10 +40,10 @@ compile:
 
 	pyuic4 ui/frmAnalisis.ui > ui/Ui_frmAnalisis.py 
 	pyuic4 ui/frmQuotesIBM.ui > ui/Ui_frmQuotesIBM.py
-	pyuic4 ui/frmMain2.ui > ui/Ui_frmMain2.py
+	pyuic4 ui/frmMainMS.ui > ui/Ui_frmMainMS.py
 	pyuic4 ui/frmSelector.ui > ui/Ui_frmSelector.py
 	pyuic4 ui/frmDividendoEstimacionIBM.ui > ui/Ui_frmDividendoEstimacionIBM.py
-	pyuic4 ui/wdgInversiones2.ui > ui/Ui_wdgInversiones2.py
+	pyuic4 ui/wdgInversionesMS.ui > ui/Ui_wdgInversionesMS.py
 	pyuic4 ui/wdgChart.ui > ui/Ui_wdgChart.py
 	pyuic4 ui/wdgLog.ui > ui/Ui_wdgLog.py
 	pyuic4 ui/wdgMergeCodes.ui > ui/Ui_wdgMergeCodes.py

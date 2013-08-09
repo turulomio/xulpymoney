@@ -6,7 +6,7 @@ sys.path.append("/usr/lib/xulpymoney")
 
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
-from frmMain2 import *
+from frmMainMS import *
 from libxulpymoney import *
 
 try:
@@ -31,7 +31,7 @@ tmp=QApplication.translate("xulpymoney", "Lenguage local detectado: {0}".format(
 print ((tmp))
 
 
-frmMain = frmMain2() 
+frmMain = frmMainMS() 
 frmMain.show()
 
 sys.exit(app.exec_())

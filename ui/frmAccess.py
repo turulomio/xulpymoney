@@ -19,10 +19,10 @@ class frmAccess(QDialog, Ui_frmAccess):
             self.setWindowIcon(icon)        
             self.lbl.setPixmap(pix)
             self.setWindowTitle(self.trUtf8("MyStocks - Acceso"))
-            self.txtDB.setText(self.cfg.config.get("frmAccess2", "db" ))
-            self.txtPort.setText(self.cfg.config.get("frmAccess2", "port" ))
-            self.txtUser.setText(self.cfg.config.get("frmAccess2", "user" ))
-            self.txtServer.setText(self.cfg.config.get("frmAccess2", "server" ))
+            self.txtDB.setText(self.cfg.config.get("frmAccessMS", "db" ))
+            self.txtPort.setText(self.cfg.config.get("frmAccessMS", "port" ))
+            self.txtUser.setText(self.cfg.config.get("frmAccessMS", "user" ))
+            self.txtServer.setText(self.cfg.config.get("frmAccessMS", "server" ))
         elif self.app==2:
             icon = QtGui.QIcon()
             pix=QtGui.QPixmap(":xulpymoney/coins.png")
@@ -57,10 +57,10 @@ class frmAccess(QDialog, Ui_frmAccess):
             sys.exit(255)
 
         if self.app==1:
-            self.cfg.config_set_value(self.cfg.config, "frmAccess2", "db", self.txtDB.text() )
-            self.cfg.config_set_value(self.cfg.config, "frmAccess2", "port",  self.txtPort.text())
-            self.cfg.config_set_value(self.cfg.config, "frmAccess2", "user" ,  self.txtUser.text())
-            self.cfg.config_set_value(self.cfg.config, "frmAccess2", "server", self.txtServer.text())    
+            self.cfg.config_set_value(self.cfg.config, "frmAccessMS", "db", self.txtDB.text() )
+            self.cfg.config_set_value(self.cfg.config, "frmAccessMS", "port",  self.txtPort.text())
+            self.cfg.config_set_value(self.cfg.config, "frmAccessMS", "user" ,  self.txtUser.text())
+            self.cfg.config_set_value(self.cfg.config, "frmAccessMS", "server", self.txtServer.text())    
         elif self.app==2:
             self.cfg.config_set_value(self.cfg.config, "frmAccess", "db", self.txtDB.text() )
             self.cfg.config_set_value(self.cfg.config, "frmAccess", "port",  self.txtPort.text())
