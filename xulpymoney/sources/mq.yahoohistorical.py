@@ -17,7 +17,6 @@ class WorkerYahooHistorical(Source):
         self.investments.load_from_db("select * from investments where active=true and priorityhistorical[1]=3")
         
     def start(self):
-#        log (self.name, "FILTROS",  "Se van a actualizar {0} inversiones".format(len(self.investments.arr)))
         for i,  inv in enumerate(self.investments.arr):
             ultima=inv.fecha_ultima_actualizacion_historica()
             if ultima==datetime.date.today()-datetime.timedelta(days=1):
