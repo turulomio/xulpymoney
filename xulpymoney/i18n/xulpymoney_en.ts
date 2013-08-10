@@ -8,12 +8,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4638"/>
+        <location filename="libxulpymoney.py" line="4640"/>
         <source>Error en la conexi&#xc3;&#xb3;n, vuelva a entrar</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4695"/>
+        <location filename="libxulpymoney.py" line="4697"/>
         <source>Error en la conexi&#xc3;&#xb3;n a xulpymoney, vuelva a entrar</source>
         <translation type="unfinished"></translation>
     </message>
@@ -21,207 +21,207 @@
 <context>
     <name>Core</name>
     <message>
-        <location filename="libxulpymoney.py" line="381"/>
+        <location filename="libxulpymoney.py" line="383"/>
         <source>Espa&#xc3;&#xb1;a</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="382"/>
+        <location filename="libxulpymoney.py" line="384"/>
         <source>B&#xc3;&#xa9;lgica</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="383"/>
+        <location filename="libxulpymoney.py" line="385"/>
         <source>China</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="384"/>
+        <location filename="libxulpymoney.py" line="386"/>
         <source>Alemania</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="385"/>
+        <location filename="libxulpymoney.py" line="387"/>
         <source>Reino Unido</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="386"/>
+        <location filename="libxulpymoney.py" line="388"/>
         <source>Europa</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="387"/>
+        <location filename="libxulpymoney.py" line="389"/>
         <source>Finlandia</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="388"/>
+        <location filename="libxulpymoney.py" line="390"/>
         <source>Francia</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="389"/>
+        <location filename="libxulpymoney.py" line="391"/>
         <source>Irlanda</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="390"/>
+        <location filename="libxulpymoney.py" line="392"/>
         <source>Italia</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="391"/>
+        <location filename="libxulpymoney.py" line="393"/>
         <source>Jap&#xc3;&#xb3;n</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="392"/>
+        <location filename="libxulpymoney.py" line="394"/>
         <source>Pa&#xc3;&#xad;ses Bajos</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="393"/>
+        <location filename="libxulpymoney.py" line="395"/>
         <source>Portugal</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="394"/>
+        <location filename="libxulpymoney.py" line="396"/>
         <source>Estados Unidos</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="461"/>
+        <location filename="libxulpymoney.py" line="463"/>
         <source>Yoanes chino</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="462"/>
+        <location filename="libxulpymoney.py" line="464"/>
         <source>Euro</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="463"/>
+        <location filename="libxulpymoney.py" line="465"/>
         <source>Libra esterlina</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="464"/>
+        <location filename="libxulpymoney.py" line="466"/>
         <source>Yen Japon&#xc3;&#xa9;s</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="465"/>
+        <location filename="libxulpymoney.py" line="467"/>
         <source>D&#xc3;&#xb3;lar americano</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="466"/>
+        <location filename="libxulpymoney.py" line="468"/>
         <source>Unidades</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4455"/>
+        <location filename="libxulpymoney.py" line="4457"/>
         <source>Acciones</source>
         <translation type="unfinished">Shares</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4456"/>
+        <location filename="libxulpymoney.py" line="4458"/>
         <source>Fondos de inversi&#xc3;&#xb3;n</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4457"/>
+        <location filename="libxulpymoney.py" line="4459"/>
         <source>&#xc3;&#xad;ndices</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4458"/>
+        <location filename="libxulpymoney.py" line="4460"/>
         <source>ETFs</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4459"/>
+        <location filename="libxulpymoney.py" line="4461"/>
         <source>Warrants</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4460"/>
+        <location filename="libxulpymoney.py" line="4462"/>
         <source>Divisas</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4461"/>
+        <location filename="libxulpymoney.py" line="4463"/>
         <source>Deuda P&#xc3;&#xba;blica</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4462"/>
+        <location filename="libxulpymoney.py" line="4464"/>
         <source>Planes de pensiones</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4463"/>
+        <location filename="libxulpymoney.py" line="4465"/>
         <source>Deuda Privada</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4464"/>
+        <location filename="libxulpymoney.py" line="4466"/>
         <source>Dep&#xc3;&#xb3;sitos</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4465"/>
+        <location filename="libxulpymoney.py" line="4467"/>
         <source>Cuentas bancarias</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="2383"/>
+        <location filename="libxulpymoney.py" line="2385"/>
         <source>No apalancado</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="2384"/>
+        <location filename="libxulpymoney.py" line="2386"/>
         <source>Apalancamiento variable (Warrants)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="2385"/>
+        <location filename="libxulpymoney.py" line="2387"/>
         <source>Apalancamiento x2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="2386"/>
+        <location filename="libxulpymoney.py" line="2388"/>
         <source>Apalancamiento x3</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="2387"/>
+        <location filename="libxulpymoney.py" line="2389"/>
         <source>Apalancamiento x4</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4813"/>
+        <location filename="libxulpymoney.py" line="4815"/>
         <source>Sourceforge version detected: %s</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4815"/>
+        <location filename="libxulpymoney.py" line="4817"/>
         <source>Error buscando la versi&#xc3;&#xb3;n actual de Sourceforge</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="294"/>
+        <location filename="libxulpymoney.py" line="296"/>
         <source>Put</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="295"/>
+        <location filename="libxulpymoney.py" line="297"/>
         <source>Call</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="296"/>
+        <location filename="libxulpymoney.py" line="298"/>
         <source>Inline</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3483,107 +3483,107 @@ Se necesitan al menos 24 horas de funcionamiento del demonio myquotesd para que 
 <context>
     <name>wdgInformeHistorico</name>
     <message>
-        <location filename="ui/Ui_wdgInformeHistorico.py" line="236"/>
+        <location filename="ui/Ui_wdgInformeHistorico.py" line="244"/>
         <source>Form</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="ui/Ui_wdgInformeHistorico.py" line="237"/>
+        <location filename="ui/Ui_wdgInformeHistorico.py" line="245"/>
         <source>Estudio de inversiones histórico</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="ui/Ui_wdgInformeHistorico.py" line="312"/>
+        <location filename="ui/Ui_wdgInformeHistorico.py" line="320"/>
         <source>Inversión</source>
         <translation type="unfinished">Investment</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgInformeHistorico.py" line="300"/>
+        <location filename="ui/Ui_wdgInformeHistorico.py" line="308"/>
         <source>Banco</source>
         <translation>Bank</translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="ui/Ui_wdgInformeHistorico.py" line="238"/>
+        <location filename="ui/Ui_wdgInformeHistorico.py" line="246"/>
         <source>Selecciona un año</source>
         <translation>Select year</translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="ui/Ui_wdgInformeHistorico.py" line="243"/>
+        <location filename="ui/Ui_wdgInformeHistorico.py" line="251"/>
         <source>Comisiones en operaciones de inversión</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgInformeHistorico.py" line="255"/>
+        <location filename="ui/Ui_wdgInformeHistorico.py" line="263"/>
         <source>Comisiones de custodia</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgInformeHistorico.py" line="251"/>
+        <location filename="ui/Ui_wdgInformeHistorico.py" line="259"/>
         <source>Retenciones de dividendos</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgInformeHistorico.py" line="259"/>
+        <location filename="ui/Ui_wdgInformeHistorico.py" line="267"/>
         <source>Beneficio sin pagar impuestos</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="ui/Ui_wdgInformeHistorico.py" line="261"/>
+        <location filename="ui/Ui_wdgInformeHistorico.py" line="269"/>
         <source>Beneficio después de pagar impuestos</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="ui/Ui_wdgInformeHistorico.py" line="265"/>
+        <location filename="ui/Ui_wdgInformeHistorico.py" line="273"/>
         <source>€</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgInformeHistorico.py" line="293"/>
+        <location filename="ui/Ui_wdgInformeHistorico.py" line="301"/>
         <source>Inversiones</source>
         <translation type="unfinished">Investments</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgInformeHistorico.py" line="296"/>
+        <location filename="ui/Ui_wdgInformeHistorico.py" line="304"/>
         <source>Fecha</source>
         <translation type="unfinished">Date</translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="ui/Ui_wdgInformeHistorico.py" line="272"/>
+        <location filename="ui/Ui_wdgInformeHistorico.py" line="280"/>
         <source>Años</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="ui/Ui_wdgInformeHistorico.py" line="276"/>
+        <location filename="ui/Ui_wdgInformeHistorico.py" line="284"/>
         <source>Tipo de operación</source>
         <translation type="unfinished">Operation type</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgInformeHistorico.py" line="278"/>
+        <location filename="ui/Ui_wdgInformeHistorico.py" line="286"/>
         <source>Saldo inicial</source>
         <translation type="unfinished">Initial balance</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgInformeHistorico.py" line="280"/>
+        <location filename="ui/Ui_wdgInformeHistorico.py" line="288"/>
         <source>Saldo final</source>
         <translation type="unfinished">Last balance</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgInformeHistorico.py" line="303"/>
+        <location filename="ui/Ui_wdgInformeHistorico.py" line="311"/>
         <source>Dividendos</source>
         <translation type="unfinished">Dividends</translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="ui/Ui_wdgInformeHistorico.py" line="268"/>
+        <location filename="ui/Ui_wdgInformeHistorico.py" line="276"/>
         <source>Estudio histórico</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgInformeHistorico.py" line="263"/>
+        <location filename="ui/Ui_wdgInformeHistorico.py" line="271"/>
         <source>Saldo Actual</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgInformeHistorico.py" line="267"/>
+        <location filename="ui/Ui_wdgInformeHistorico.py" line="275"/>
         <source>% TAE</source>
         <translation type="unfinished">% APR</translation>
     </message>
@@ -3593,82 +3593,82 @@ Se necesitan al menos 24 horas de funcionamiento del demonio myquotesd para que 
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgInformeHistorico.py" line="282"/>
+        <location filename="ui/Ui_wdgInformeHistorico.py" line="290"/>
         <source>Consolidado bruto</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgInformeHistorico.py" line="284"/>
+        <location filename="ui/Ui_wdgInformeHistorico.py" line="292"/>
         <source>Comisiones</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgInformeHistorico.py" line="286"/>
+        <location filename="ui/Ui_wdgInformeHistorico.py" line="294"/>
         <source>Impuestos</source>
         <translation type="unfinished">Taxes</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgInformeHistorico.py" line="288"/>
+        <location filename="ui/Ui_wdgInformeHistorico.py" line="296"/>
         <source>Consolidado neto</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="ui/Ui_wdgInformeHistorico.py" line="241"/>
+        <location filename="ui/Ui_wdgInformeHistorico.py" line="249"/>
         <source>Plusvalías brutas de inversiones</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="ui/Ui_wdgInformeHistorico.py" line="245"/>
+        <location filename="ui/Ui_wdgInformeHistorico.py" line="253"/>
         <source>Impuestos en operaciones de inversión</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="ui/Ui_wdgInformeHistorico.py" line="247"/>
+        <location filename="ui/Ui_wdgInformeHistorico.py" line="255"/>
         <source>Plusvalías netas de inversiones</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgInformeHistorico.py" line="249"/>
+        <location filename="ui/Ui_wdgInformeHistorico.py" line="257"/>
         <source>Dividendos brutos</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgInformeHistorico.py" line="253"/>
+        <location filename="ui/Ui_wdgInformeHistorico.py" line="261"/>
         <source>Dividendos netos</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgInformeHistorico.py" line="257"/>
+        <location filename="ui/Ui_wdgInformeHistorico.py" line="265"/>
         <source>Pago IRPF</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="ui/Ui_wdgInformeHistorico.py" line="319"/>
+        <location filename="ui/Ui_wdgInformeHistorico.py" line="327"/>
         <source>Añadidos de acciones</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="ui/Ui_wdgInformeHistorico.py" line="310"/>
+        <location filename="ui/Ui_wdgInformeHistorico.py" line="318"/>
         <source>Día</source>
         <translation type="unfinished">Day</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgInformeHistorico.py" line="316"/>
+        <location filename="ui/Ui_wdgInformeHistorico.py" line="324"/>
         <source>Acciones</source>
         <translation type="unfinished">Shares</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgInformeHistorico.py" line="318"/>
+        <location filename="ui/Ui_wdgInformeHistorico.py" line="326"/>
         <source>Saldo</source>
         <translation type="unfinished">Balance</translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="ui/Ui_wdgInformeHistorico.py" line="314"/>
+        <location filename="ui/Ui_wdgInformeHistorico.py" line="322"/>
         <source>Tipo Operación</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="ui/Ui_wdgInformeHistorico.py" line="304"/>
+        <location filename="ui/Ui_wdgInformeHistorico.py" line="312"/>
         <source>En este listado se muestran los añadidos de acciones a coste cero que se han producido en el año
 
 Es  un listado informativo y no serán contabilizadas en los informes ya que se produciría una doble contabilidad
@@ -3677,17 +3677,17 @@ Sólo se contabilizará cuando se vendan las acciones</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgInformeHistorico.py" line="302"/>
+        <location filename="ui/Ui_wdgInformeHistorico.py" line="310"/>
         <source>Neto antes de impuestos</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgInformeHistorico.py" line="290"/>
+        <location filename="ui/Ui_wdgInformeHistorico.py" line="298"/>
         <source>% TAE neto</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgInformeHistorico.py" line="292"/>
+        <location filename="ui/Ui_wdgInformeHistorico.py" line="300"/>
         <source>% Total neto</source>
         <translation type="unfinished"></translation>
     </message>

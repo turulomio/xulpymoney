@@ -234,8 +234,10 @@ class SetInversiones:
         return True
         
     def sort_by_tpc_dpa(self):
-        if inv.investment.estimacionesdividendo.currentYear()!=None:
+        try:
             self.arr=sorted(self.arr, key=lambda inv: inv.investment.estimacionesdividendo.currentYear().tpc_dpa(),  reverse=True) 
+        except:
+            print ("No se ha podido ordenar por haber estimaciones de dividendo nulas")
         
         
 class SetInvestments:
