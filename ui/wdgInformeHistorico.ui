@@ -52,7 +52,7 @@
         <widget class="QComboBox" name="cmbYears"/>
        </item>
        <item>
-        <widget class="QPushButton" name="cmd">
+        <widget class="QToolButton" name="cmd">
          <property name="icon">
           <iconset resource="../images/xulpymoney.qrc">
            <normaloff>:/xulpymoney/search.png</normaloff>:/xulpymoney/search.png</iconset>
@@ -64,9 +64,13 @@
      <item>
       <widget class="QTabWidget" name="tab">
        <property name="currentIndex">
-        <number>1</number>
+        <number>0</number>
        </property>
        <widget class="QWidget" name="tab_3">
+        <attribute name="icon">
+         <iconset resource="../images/xulpymoney.qrc">
+          <normaloff>:/xulpymoney/history.png</normaloff>:/xulpymoney/history.png</iconset>
+        </attribute>
         <attribute name="title">
          <string>Estudio histórico</string>
         </attribute>
@@ -214,6 +218,10 @@ font: 75 12pt &quot;Sans Serif&quot;;</string>
         </layout>
        </widget>
        <widget class="QWidget" name="tab_5">
+        <attribute name="icon">
+         <iconset resource="../images/xulpymoney.qrc">
+          <normaloff>:/xulpymoney/history2.png</normaloff>:/xulpymoney/history2.png</iconset>
+        </attribute>
         <attribute name="title">
          <string>Inversiones</string>
         </attribute>
@@ -303,6 +311,10 @@ font: 75 12pt &quot;Sans Serif&quot;;</string>
         </layout>
        </widget>
        <widget class="QWidget" name="tab_2">
+        <attribute name="icon">
+         <iconset resource="../images/xulpymoney.qrc">
+          <normaloff>:/xulpymoney/coins.png</normaloff>:/xulpymoney/coins.png</iconset>
+        </attribute>
         <attribute name="title">
          <string>Dividendos</string>
         </attribute>
@@ -355,6 +367,10 @@ font: 75 12pt &quot;Sans Serif&quot;;</string>
         </layout>
        </widget>
        <widget class="QWidget" name="tab_4">
+        <attribute name="icon">
+         <iconset resource="../images/xulpymoney.qrc">
+          <normaloff>:/xulpymoney/add.png</normaloff>:/xulpymoney/add.png</iconset>
+        </attribute>
         <attribute name="title">
          <string>Añadidos de acciones</string>
         </attribute>
