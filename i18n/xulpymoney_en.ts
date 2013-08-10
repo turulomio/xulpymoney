@@ -8,12 +8,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4637"/>
+        <location filename="libxulpymoney.py" line="4638"/>
         <source>Error en la conexi&#xc3;&#xb3;n, vuelva a entrar</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4694"/>
+        <location filename="libxulpymoney.py" line="4695"/>
         <source>Error en la conexi&#xc3;&#xb3;n a xulpymoney, vuelva a entrar</source>
         <translation type="unfinished"></translation>
     </message>
@@ -201,12 +201,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4812"/>
+        <location filename="libxulpymoney.py" line="4813"/>
         <source>Sourceforge version detected: %s</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4814"/>
+        <location filename="libxulpymoney.py" line="4815"/>
         <source>Error buscando la versi&#xc3;&#xb3;n actual de Sourceforge</source>
         <translation type="unfinished"></translation>
     </message>
@@ -327,414 +327,414 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>frmAnalisis</name>
     <message>
-        <location filename="ui/Ui_frmAnalisis.py" line="722"/>
+        <location filename="ui/Ui_frmAnalisis.py" line="729"/>
         <source>MyQuotes - An&#xc3;&#xa1;lisis de inversi&#xc3;&#xb3;n</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmAnalisis.py" line="723"/>
+        <location filename="ui/Ui_frmAnalisis.py" line="730"/>
         <source>Inversi&#xc3;&#xb3;n</source>
         <translation type="unfinished">Investment</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmAnalisis.py" line="724"/>
+        <location filename="ui/Ui_frmAnalisis.py" line="731"/>
         <source>Pulse para actualizar los datos</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmAnalisis.py" line="747"/>
+        <location filename="ui/Ui_frmAnalisis.py" line="732"/>
         <source>...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmAnalisis.py" line="779"/>
+        <location filename="ui/Ui_frmAnalisis.py" line="783"/>
         <source>Informaci&#xc3;&#xb3;n de la inversi&#xc3;&#xb3;n</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmAnalisis.py" line="726"/>
+        <location filename="ui/Ui_frmAnalisis.py" line="733"/>
         <source>Informaci&#xc3;&#xb3;n</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmAnalisis.py" line="727"/>
+        <location filename="ui/Ui_frmAnalisis.py" line="734"/>
         <source>Nombre de la inversi&#xc3;&#xb3;n</source>
         <translation type="unfinished">Investment name</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmAnalisis.py" line="728"/>
+        <location filename="ui/Ui_frmAnalisis.py" line="735"/>
         <source>C&#xc3;&#xb3;digo ISIN</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmAnalisis.py" line="729"/>
+        <location filename="ui/Ui_frmAnalisis.py" line="736"/>
         <source>Divisa</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmAnalisis.py" line="730"/>
+        <location filename="ui/Ui_frmAnalisis.py" line="737"/>
         <source>Tipo de inversi&#xc3;&#xb3;n</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmAnalisis.py" line="731"/>
+        <location filename="ui/Ui_frmAnalisis.py" line="738"/>
         <source>Bolsa a la que pertenece</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmAnalisis.py" line="732"/>
+        <location filename="ui/Ui_frmAnalisis.py" line="739"/>
         <source>Agrupaciones a las que pertenece</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmAnalisis.py" line="734"/>
+        <location filename="ui/Ui_frmAnalisis.py" line="740"/>
         <source>Activaci&#xc3;&#xb3;n de actualizaci&#xc3;&#xb3;n autom&#xc3;&#xa1;tica</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmAnalisis.py" line="735"/>
+        <location filename="ui/Ui_frmAnalisis.py" line="741"/>
         <source>P&#xc3;&#xa1;gina web</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmAnalisis.py" line="736"/>
+        <location filename="ui/Ui_frmAnalisis.py" line="742"/>
         <source>Direcci&#xc3;&#xb3;n postal</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmAnalisis.py" line="737"/>
+        <location filename="ui/Ui_frmAnalisis.py" line="743"/>
         <source>Correo electr&#xc3;&#xb3;nico</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmAnalisis.py" line="738"/>
+        <location filename="ui/Ui_frmAnalisis.py" line="744"/>
         <source>Tanto por ciento variable</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmAnalisis.py" line="739"/>
+        <location filename="ui/Ui_frmAnalisis.py" line="745"/>
         <source>100</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmAnalisis.py" line="740"/>
+        <location filename="ui/Ui_frmAnalisis.py" line="746"/>
         <source>Put / Call / Inline</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmAnalisis.py" line="741"/>
+        <location filename="ui/Ui_frmAnalisis.py" line="747"/>
         <source>Tel&#xc3;&#xa9;fono</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmAnalisis.py" line="742"/>
+        <location filename="ui/Ui_frmAnalisis.py" line="748"/>
         <source>Apalancado</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmAnalisis.py" line="743"/>
+        <location filename="ui/Ui_frmAnalisis.py" line="749"/>
         <source>C&#xc3;&#xb3;digo Yahoo</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmAnalisis.py" line="744"/>
+        <location filename="ui/Ui_frmAnalisis.py" line="750"/>
         <source>Prioridad diaria</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmAnalisis.py" line="746"/>
+        <location filename="ui/Ui_frmAnalisis.py" line="751"/>
         <source>Prioridad hist&#xc3;&#xb3;rica</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmAnalisis.py" line="748"/>
+        <location filename="ui/Ui_frmAnalisis.py" line="752"/>
         <source>Comentario</source>
         <translation type="unfinished">Comment</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmAnalisis.py" line="749"/>
+        <location filename="ui/Ui_frmAnalisis.py" line="753"/>
         <source>Inversi&#xc3;&#xb3;n obsoleta</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmAnalisis.py" line="750"/>
+        <location filename="ui/Ui_frmAnalisis.py" line="754"/>
         <source>Actualizar</source>
         <translation type="unfinished">Update</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmAnalisis.py" line="751"/>
+        <location filename="ui/Ui_frmAnalisis.py" line="755"/>
         <source>% hist&#xc3;&#xb3;ricos</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmAnalisis.py" line="753"/>
+        <location filename="ui/Ui_frmAnalisis.py" line="757"/>
         <source>&#xc3;&#x9a;ltima cotizaci&#xc3;&#xb3;n</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmAnalisis.py" line="755"/>
+        <location filename="ui/Ui_frmAnalisis.py" line="759"/>
         <source>Variaci&#xc3;&#xb3;n en un d&#xc3;&#xad;a</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmAnalisis.py" line="757"/>
+        <location filename="ui/Ui_frmAnalisis.py" line="761"/>
         <source>Variaci&#xc3;&#xb3;n en esta semana</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmAnalisis.py" line="759"/>
+        <location filename="ui/Ui_frmAnalisis.py" line="763"/>
         <source>Variaci&#xc3;&#xb3;n en este mes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmAnalisis.py" line="761"/>
+        <location filename="ui/Ui_frmAnalisis.py" line="765"/>
         <source>Variaci&#xc3;&#xb3;n en este a&#xc3;&#xb1;o</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmAnalisis.py" line="767"/>
+        <location filename="ui/Ui_frmAnalisis.py" line="771"/>
         <source>Variaci&#xc3;&#xb3;n &#xc3;&#xba;ltimos 12 meses</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmAnalisis.py" line="769"/>
+        <location filename="ui/Ui_frmAnalisis.py" line="773"/>
         <source>Fecha de c&#xc3;&#xa1;lculo</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmAnalisis.py" line="897"/>
+        <location filename="ui/Ui_frmAnalisis.py" line="901"/>
         <source>Valor</source>
         <translation type="unfinished">Value</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmAnalisis.py" line="899"/>
+        <location filename="ui/Ui_frmAnalisis.py" line="903"/>
         <source>%</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmAnalisis.py" line="775"/>
+        <location filename="ui/Ui_frmAnalisis.py" line="779"/>
         <source>% TAE</source>
         <translation type="unfinished">% APR</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmAnalisis.py" line="791"/>
+        <location filename="ui/Ui_frmAnalisis.py" line="795"/>
         <source>Gr&#xc3;&#xa1;ficos</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmAnalisis.py" line="788"/>
+        <location filename="ui/Ui_frmAnalisis.py" line="792"/>
         <source>Intrad&#xc3;&#xad;a</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmAnalisis.py" line="834"/>
+        <location filename="ui/Ui_frmAnalisis.py" line="838"/>
         <source>Cotizaciones de la inversi&#xc3;&#xb3;n</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmAnalisis.py" line="782"/>
+        <location filename="ui/Ui_frmAnalisis.py" line="786"/>
         <source>Hora</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmAnalisis.py" line="784"/>
+        <location filename="ui/Ui_frmAnalisis.py" line="788"/>
         <source>Cotizaci&#xc3;&#xb3;n</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmAnalisis.py" line="786"/>
+        <location filename="ui/Ui_frmAnalisis.py" line="790"/>
         <source>% Diario</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmAnalisis.py" line="787"/>
+        <location filename="ui/Ui_frmAnalisis.py" line="791"/>
         <source>Gr&#xc3;&#xa1;fico de cotizaciones diarias</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmAnalisis.py" line="790"/>
+        <location filename="ui/Ui_frmAnalisis.py" line="794"/>
         <source>Hist&#xc3;&#xb3;ricos</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmAnalisis.py" line="789"/>
+        <location filename="ui/Ui_frmAnalisis.py" line="793"/>
         <source>Gr&#xc3;&#xa1;fico de cotizaciones hist&#xc3;&#xb3;ricas</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmAnalisis.py" line="880"/>
+        <location filename="ui/Ui_frmAnalisis.py" line="884"/>
         <source>Cotizaciones hist&#xc3;&#xb3;ricas</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmAnalisis.py" line="805"/>
+        <location filename="ui/Ui_frmAnalisis.py" line="809"/>
         <source>Diarias</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmAnalisis.py" line="836"/>
+        <location filename="ui/Ui_frmAnalisis.py" line="840"/>
         <source>Fecha</source>
         <translation type="unfinished">Date</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmAnalisis.py" line="840"/>
+        <location filename="ui/Ui_frmAnalisis.py" line="844"/>
         <source>Apertura</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmAnalisis.py" line="842"/>
+        <location filename="ui/Ui_frmAnalisis.py" line="846"/>
         <source>M&#xc3;&#xa1;s alto</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmAnalisis.py" line="844"/>
+        <location filename="ui/Ui_frmAnalisis.py" line="848"/>
         <source>M&#xc3;&#xa1;s bajo</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmAnalisis.py" line="819"/>
+        <location filename="ui/Ui_frmAnalisis.py" line="823"/>
         <source>Semanales</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmAnalisis.py" line="833"/>
+        <location filename="ui/Ui_frmAnalisis.py" line="837"/>
         <source>Mensuales</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmAnalisis.py" line="847"/>
+        <location filename="ui/Ui_frmAnalisis.py" line="851"/>
         <source>Anuales</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmAnalisis.py" line="879"/>
+        <location filename="ui/Ui_frmAnalisis.py" line="883"/>
         <source>Rendimientos mensuales</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmAnalisis.py" line="848"/>
+        <location filename="ui/Ui_frmAnalisis.py" line="852"/>
         <source>Estos datos se han calculado con la &#xc3;&#xba;ltima cotizaci&#xc3;&#xb3;n
 del mes anterior y la &#xc3;&#xba;ltima cotizaci&#xc3;&#xb3;n del mes 
 correspondiente en la tabla</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmAnalisis.py" line="895"/>
+        <location filename="ui/Ui_frmAnalisis.py" line="899"/>
         <source>A&#xc3;&#xb1;o</source>
         <translation type="unfinished">Year</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmAnalisis.py" line="854"/>
+        <location filename="ui/Ui_frmAnalisis.py" line="858"/>
         <source>Enero</source>
         <translation type="unfinished">January</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmAnalisis.py" line="856"/>
+        <location filename="ui/Ui_frmAnalisis.py" line="860"/>
         <source>Febrero</source>
         <translation type="unfinished">February</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmAnalisis.py" line="858"/>
+        <location filename="ui/Ui_frmAnalisis.py" line="862"/>
         <source>Marzo</source>
         <translation type="unfinished">March</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmAnalisis.py" line="860"/>
+        <location filename="ui/Ui_frmAnalisis.py" line="864"/>
         <source>Abril</source>
         <translation type="unfinished">April</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmAnalisis.py" line="862"/>
+        <location filename="ui/Ui_frmAnalisis.py" line="866"/>
         <source>Mayo</source>
         <translation type="unfinished">May</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmAnalisis.py" line="864"/>
+        <location filename="ui/Ui_frmAnalisis.py" line="868"/>
         <source>Junio</source>
         <translation type="unfinished">June</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmAnalisis.py" line="866"/>
+        <location filename="ui/Ui_frmAnalisis.py" line="870"/>
         <source>Julio</source>
         <translation type="unfinished">July</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmAnalisis.py" line="868"/>
+        <location filename="ui/Ui_frmAnalisis.py" line="872"/>
         <source>Agosto</source>
         <translation type="unfinished">August</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmAnalisis.py" line="870"/>
+        <location filename="ui/Ui_frmAnalisis.py" line="874"/>
         <source>Septiembre</source>
         <translation type="unfinished">September</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmAnalisis.py" line="872"/>
+        <location filename="ui/Ui_frmAnalisis.py" line="876"/>
         <source>Octubre</source>
         <translation type="unfinished">October</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmAnalisis.py" line="874"/>
+        <location filename="ui/Ui_frmAnalisis.py" line="878"/>
         <source>Noviembre</source>
         <translation type="unfinished">November</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmAnalisis.py" line="876"/>
+        <location filename="ui/Ui_frmAnalisis.py" line="880"/>
         <source>Diciembre</source>
         <translation type="unfinished">December</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmAnalisis.py" line="878"/>
+        <location filename="ui/Ui_frmAnalisis.py" line="882"/>
         <source>Total</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmAnalisis.py" line="907"/>
+        <location filename="ui/Ui_frmAnalisis.py" line="911"/>
         <source>Estimaciones</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmAnalisis.py" line="893"/>
+        <location filename="ui/Ui_frmAnalisis.py" line="897"/>
         <source>Dividendos</source>
         <translation type="unfinished">Dividends</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmAnalisis.py" line="901"/>
+        <location filename="ui/Ui_frmAnalisis.py" line="905"/>
         <source>Fecha anotaci&#xc3;&#xb3;n</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmAnalisis.py" line="903"/>
+        <location filename="ui/Ui_frmAnalisis.py" line="907"/>
         <source>Fuente</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmAnalisis.py" line="905"/>
+        <location filename="ui/Ui_frmAnalisis.py" line="909"/>
         <source>Manual</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmAnalisis.py" line="906"/>
+        <location filename="ui/Ui_frmAnalisis.py" line="910"/>
         <source>BPA</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmAnalisis.py" line="909"/>
+        <location filename="ui/Ui_frmAnalisis.py" line="913"/>
         <source>Nueva cotizaci&#xc3;&#xb3;n</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmAnalisis.py" line="911"/>
+        <location filename="ui/Ui_frmAnalisis.py" line="915"/>
         <source>Borrar cotizaci&#xc3;&#xb3;n del d&#xc3;&#xad;a seleccionado</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmAnalisis.py" line="913"/>
+        <location filename="ui/Ui_frmAnalisis.py" line="917"/>
         <source>Nueva estimaci&#xc3;&#xb3;n de dividendos</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmAnalisis.py" line="915"/>
+        <location filename="ui/Ui_frmAnalisis.py" line="919"/>
         <source>Borrar estimaci&#xc3;&#xb3;n de dividendos</source>
         <translation type="unfinished"></translation>
     </message>
@@ -749,17 +749,17 @@ correspondiente en la tabla</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmAnalisis.py" line="846"/>
+        <location filename="ui/Ui_frmAnalisis.py" line="850"/>
         <source>D&#xc3;&#xad;a y hora visualizaci&#xc3;&#xb3;n</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmAnalisis.py" line="763"/>
+        <location filename="ui/Ui_frmAnalisis.py" line="767"/>
         <source>Variaci&#xc3;&#xb3;n &#xc3;&#xba;ltimos 7 d&#xc3;&#xad;as</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmAnalisis.py" line="765"/>
+        <location filename="ui/Ui_frmAnalisis.py" line="769"/>
         <source>Variaci&#xc3;&#xb3;n &#xc3;&#xba;ltimos 30 d&#xc3;&#xad;as</source>
         <translation type="unfinished"></translation>
     </message>

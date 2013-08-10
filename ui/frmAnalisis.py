@@ -311,15 +311,13 @@ class frmAnalisis(QDialog, Ui_frmAnalisis):
 
     @pyqtSignature("")
     def on_actionQuoteDelete_activated(self):
-        con=self.cfg.connect_myquotes()
-        cur = con.cursor()
+        cur = self.cfg.conms.cursor()
         for q in self.setSelIntraday:
             q.delete(cur)
-            self.intradia.remove(q)
-            self.investment.result.all.remove(q)
-        con.commit()
+            self.investment.result.intradia.arr.remove(q)
+#            self.investment.result.all.remove(q)
+        self.cfg.conms.commit()
         cur.close() 
-        self.cfg.disconnect_myquotes(con)  
         self.update_due_to_quotes_change()
 
 
@@ -428,11 +426,10 @@ class frmAnalisis(QDialog, Ui_frmAnalisis):
         try:
             for i in self.tblIntradia.selectedItems():#itera por cada item no row.
                 if i.column()==0:
-                    sel.append(self.intradia[i.row()])
+                    sel.append(self.investment.result.intradia.arr[i.row()])
             self.setSelIntraday=set(sel)
         except:
-            self.setSelIntraday=None
-
+            self.setSelIntraday=set([])
             
     def on_tblDividendosEstimaciones_customContextMenuRequested(self,  pos):
         menu=QMenu()
