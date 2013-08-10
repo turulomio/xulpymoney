@@ -4528,12 +4528,13 @@ class ConfigMyStock:
         self.config['frmAccess'] = {'db': 'xulpymoney', 'port': '5432','user': 'postgres', 'server': '127.0.0.1'}
         self.config['frmAccessMS'] = {'db': 'myquotes', 'port': '5432','user': 'postgres', 'server': '127.0.0.1'}
         self.config['settings']={'dividendwithholding':'0.21', 'taxcapitalappreciation':'0.21',  'localcurrency':'EUR', 'localzone':'Europe/Madrid', 'indicereferencia':'79329'}
-        self.config['wdgInversionesMS']={'favoritos':""}
+        self.config['wdgInversionesMS']={'favoritos':""}        
+        self.config['settings_mystocks'] = {'fillfromyear': '2005'}
             
         self.config_ui=configparser.ConfigParser()
         self.config_ui['canvasIntraday'] = {'sma50': 'True', 'type': '0','sma200': 'True'}
         self.config_ui['canvasHistorical'] = {'sma50': 'True', 'type': '1','sma200': 'True'}
-        self.config_ui['settings_mystocks'] = {'fillfromyear': '2005'}
+
         self.configs_save()
 
     
