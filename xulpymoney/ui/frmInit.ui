@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>frmAccess</class>
- <widget class="QDialog" name="frmAccess">
+ <class>frmInit</class>
+ <widget class="QDialog" name="frmInit">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>277</width>
-    <height>274</height>
+    <width>480</width>
+    <height>261</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -16,23 +16,27 @@
     <verstretch>0</verstretch>
    </sizepolicy>
   </property>
+  <property name="windowTitle">
+   <string>Initializating Xulpymoney databases</string>
+  </property>
   <property name="windowIcon">
-   <iconset>
-    <normaloff>:/images/kmplot.jpg</normaloff>:/images/kmplot.jpg</iconset>
+   <iconset resource="../images/xulpymoney.qrc">
+    <normaloff>:/xulpymoney/configure.png</normaloff>:/xulpymoney/configure.png</iconset>
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout_2">
    <item>
     <layout class="QVBoxLayout" name="verticalLayout">
      <item>
-      <widget class="QLabel" name="lbl">
+      <widget class="QLabel" name="label_4">
+       <property name="font">
+        <font>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
        <property name="text">
-        <string/>
-       </property>
-       <property name="pixmap">
-        <pixmap resource="../images/xulpymoney.qrc">:/xulpymoney/keko.png</pixmap>
-       </property>
-       <property name="scaledContents">
-        <bool>false</bool>
+        <string>Pressing OK, you will create needed database to run Xulpymoney.
+ They'll be created in the language selected</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
@@ -44,80 +48,6 @@
        <property name="fieldGrowthPolicy">
         <enum>QFormLayout::ExpandingFieldsGrow</enum>
        </property>
-       <item row="2" column="0">
-        <widget class="QLabel" name="lblServer">
-         <property name="text">
-          <string>Servidor</string>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="1">
-        <widget class="QLineEdit" name="txtServer">
-         <property name="inputMethodHints">
-          <set>Qt::ImhNone</set>
-         </property>
-         <property name="text">
-          <string>127.0.0.1</string>
-         </property>
-         <property name="echoMode">
-          <enum>QLineEdit::Normal</enum>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="0">
-        <widget class="QLabel" name="lblPort">
-         <property name="text">
-          <string>Puerto</string>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="1">
-        <widget class="QLineEdit" name="txtPort">
-         <property name="text">
-          <string>5432</string>
-         </property>
-        </widget>
-       </item>
-       <item row="4" column="0">
-        <widget class="QLabel" name="lblDatabase">
-         <property name="text">
-          <string>Base de datos</string>
-         </property>
-        </widget>
-       </item>
-       <item row="5" column="0">
-        <widget class="QLabel" name="lblUser">
-         <property name="text">
-          <string>Usuario</string>
-         </property>
-        </widget>
-       </item>
-       <item row="5" column="1">
-        <widget class="QLineEdit" name="txtUser"/>
-       </item>
-       <item row="6" column="0">
-        <widget class="QLabel" name="lblPass">
-         <property name="text">
-          <string>Contraseña</string>
-         </property>
-        </widget>
-       </item>
-       <item row="6" column="1">
-        <widget class="QLineEdit" name="txtPass">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="inputMethodHints">
-          <set>Qt::ImhHiddenText|Qt::ImhNoAutoUppercase|Qt::ImhNoPredictiveText</set>
-         </property>
-         <property name="echoMode">
-          <enum>QLineEdit::Password</enum>
-         </property>
-        </widget>
-       </item>
        <item row="0" column="0">
         <widget class="QLabel" name="label">
          <property name="text">
@@ -160,12 +90,104 @@
          </property>
         </widget>
        </item>
+       <item row="2" column="0">
+        <widget class="QLabel" name="lblServer">
+         <property name="text">
+          <string>Servidor</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1">
+        <widget class="QLineEdit" name="txtServer">
+         <property name="inputMethodHints">
+          <set>Qt::ImhNone</set>
+         </property>
+         <property name="text">
+          <string>127.0.0.1</string>
+         </property>
+         <property name="echoMode">
+          <enum>QLineEdit::Normal</enum>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="0">
+        <widget class="QLabel" name="lblPort">
+         <property name="text">
+          <string>Puerto</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="1">
+        <widget class="QLineEdit" name="txtPort">
+         <property name="text">
+          <string>5432</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="0">
+        <widget class="QLabel" name="lblUser">
+         <property name="text">
+          <string>Usuario</string>
+         </property>
+        </widget>
+       </item>
        <item row="4" column="1">
-        <layout class="QHBoxLayout" name="horizontalLayout">
-         <item>
-          <widget class="QLineEdit" name="txtDB"/>
-         </item>
-        </layout>
+        <widget class="QLineEdit" name="txtUser">
+         <property name="text">
+          <string>postgres</string>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="0">
+        <widget class="QLabel" name="lblPass">
+         <property name="text">
+          <string>Contraseña</string>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="1">
+        <widget class="QLineEdit" name="txtPass">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="inputMethodHints">
+          <set>Qt::ImhHiddenText|Qt::ImhNoAutoUppercase|Qt::ImhNoPredictiveText</set>
+         </property>
+         <property name="echoMode">
+          <enum>QLineEdit::Password</enum>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="0">
+        <widget class="QLabel" name="label_2">
+         <property name="text">
+          <string>MyStocks Database</string>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="1">
+        <widget class="QLineEdit" name="txtMyStocks">
+         <property name="text">
+          <string>pruebams</string>
+         </property>
+        </widget>
+       </item>
+       <item row="7" column="0">
+        <widget class="QLabel" name="label_3">
+         <property name="text">
+          <string>Xulpymoney Database</string>
+         </property>
+        </widget>
+       </item>
+       <item row="7" column="1">
+        <widget class="QLineEdit" name="txtXulpymoney">
+         <property name="text">
+          <string>pruebaxulpymoney</string>
+         </property>
+        </widget>
        </item>
       </layout>
      </item>
@@ -188,8 +210,6 @@
     </layout>
    </item>
   </layout>
-  <zorder>formLayoutWidget</zorder>
-  <zorder>txtDB</zorder>
  </widget>
  <tabstops>
   <tabstop>txtUser</tabstop>
@@ -204,5 +224,22 @@
   <include location="../images/xulpymoney.qrc"/>
   <include location="../images/xulpymoney.qrc"/>
  </resources>
- <connections/>
+ <connections>
+  <connection>
+   <sender>cmdYN</sender>
+   <signal>rejected()</signal>
+   <receiver>frmInit</receiver>
+   <slot>close()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>298</x>
+     <y>255</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>479</x>
+     <y>47</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>
