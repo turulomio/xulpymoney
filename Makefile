@@ -13,6 +13,7 @@ compile:
 	pyrcc4 -py3 images/xulpymoney.qrc > images/xulpymoney_rc.py
 	pyuic4 ui/frmAbout.ui > ui/Ui_frmAbout.py
 	pyuic4 ui/frmAccess.ui > ui/Ui_frmAccess.py
+	pyuic4 ui/frmInit.ui > ui/Ui_frmInit.py
 	pyuic4 ui/frmMain.ui > ui/Ui_frmMain.py
 	pyuic4 ui/frmOperCuentas.ui > ui/Ui_frmOperCuentas.py
 	pyuic4 ui/frmTablasAuxiliares.ui > ui/Ui_frmTablasAuxiliares.py
@@ -61,7 +62,9 @@ install:
 	install -o root -d $(PREFIXPIXMAPS)
 	install -o root -d $(PREFIXAPPLICATIONS)
 
+
 	install -m 755 -o root xulpymoney.py $(PREFIXBIN)/xulpymoney
+	install -m 755 -o root xulpymoney_init.py $(PREFIXBIN)/xulpymoney_init
 	install -m 644 -o root ui/*.py libxulpymoney.py images/*.py  $(PREFIXLIB)
 	install -m 644 -o root i18n/*.qm $(PREFIXLIB)
 	install -m 644 -o root xulpymoney.desktop $(PREFIXAPPLICATIONS)
@@ -85,6 +88,7 @@ uninstall:
 	rm $(PREFIXBIN)/mystocksd
 	rm $(PREFIXBIN)/mq.*.py
 	rm $(PREFIXBIN)/xulpymoney
+	rm $(PREFIXBIN)/xulpymoney_init
 	rm -Rf $(PREFIXLIB)
 	rm -Rf $(PREFIXSHARE)
 	rm -fr $(PREFIXPIXMAPS)/xulpymoney.png

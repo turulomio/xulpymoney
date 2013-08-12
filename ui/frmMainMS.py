@@ -35,9 +35,6 @@ class frmMainMS(QMainWindow, Ui_frmMainMS):#
         access.exec_()
         self.w.close()
 
-        
-        
-        self.cfg.conms=self.cfg.connect_myquotes()
         self.cfg.actualizar_memoria()
         
         if Global(self.cfg).get_sourceforge_version()>version:

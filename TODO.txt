@@ -31,7 +31,6 @@
 20120307 Cuando haya ochl en los datos intradia, dibujar una raya de maximo y minimo gris discontinuo, con punto gris de inicio  y punto gris de final
 20120405 En la misma tabla de dividendos estimados poner el bpa, para poder calcular el PER
 20120801 Cambiar Yahoo por ticker
-20120815 No se calcula bien las medias móviles ver renta4 monetario
 20130103 Hacer desde interfaz, purga que deje los datos 1,2,3,4 o los ohcl que existan borrando los demás
 20130728 Poner en dividendos el gasto total en el concepto en el año seleccionado en el combo.
 20130729 Hacer que un error en config por nuevo tag no afecte a todas las configuraciones

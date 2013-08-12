@@ -3,7 +3,7 @@
 <context>
     <name>Config</name>
     <message>
-        <location filename="ui/frmMainMS.py" line="107"/>
+        <location filename="ui/frmMainMS.py" line="104"/>
         <source>Se ha exportado con &#xc3;&#xa9;xito la tabla quotes</source>
         <translation type="unfinished"></translation>
     </message>
@@ -274,53 +274,68 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>frmAccess</name>
     <message>
-        <location filename="ui/Ui_frmAccess.py" line="118"/>
+        <location filename="ui/Ui_frmAccess.py" line="137"/>
         <source>Servidor</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmAccess.py" line="119"/>
+        <location filename="ui/Ui_frmAccess.py" line="139"/>
         <source>Puerto</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmAccess.py" line="120"/>
+        <location filename="ui/Ui_frmAccess.py" line="141"/>
         <source>Base de datos</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmAccess.py" line="121"/>
+        <location filename="ui/Ui_frmAccess.py" line="142"/>
         <source>Usuario</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="ui/Ui_frmAccess.py" line="122"/>
+        <location filename="ui/Ui_frmAccess.py" line="143"/>
         <source>Contraseña</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmAccess.py" line="123"/>
+        <location filename="ui/Ui_frmAccess.py" line="138"/>
         <source>127.0.0.1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmAccess.py" line="124"/>
+        <location filename="ui/Ui_frmAccess.py" line="140"/>
         <source>5432</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="ui/frmAccess.py" line="55"/>
+        <location filename="ui/frmAccess.py" line="65"/>
         <source>Error en la conexión, vuelva a entrar</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmAccess.py" line="21"/>
+        <location filename="ui/frmAccess.py" line="20"/>
         <source>MyStocks - Acceso</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmAccess.py" line="32"/>
+        <location filename="ui/frmAccess.py" line="31"/>
         <source>Xulpymoney - Acceso</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_frmAccess.py" line="144"/>
+        <source>Language</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_frmAccess.py" line="145"/>
+        <source>Espa&#xc3;&#xb1;ol</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_frmAccess.py" line="146"/>
+        <source>English</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1156,6 +1171,115 @@ correspondiente en la tabla</source>
     </message>
 </context>
 <context>
+    <name>frmInit</name>
+    <message>
+        <location filename="ui/Ui_frmInit.py" line="142"/>
+        <source>Initializating Xulpymoney databases</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_frmInit.py" line="143"/>
+        <source>Pressing OK, you will create needed database to run Xulpymoney.
+ They&apos;ll be created in the language selected</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_frmInit.py" line="145"/>
+        <source>Language</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_frmInit.py" line="146"/>
+        <source>Espa&#xc3;&#xb1;ol</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_frmInit.py" line="147"/>
+        <source>English</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_frmInit.py" line="148"/>
+        <source>Servidor</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_frmInit.py" line="149"/>
+        <source>127.0.0.1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_frmInit.py" line="150"/>
+        <source>Puerto</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_frmInit.py" line="151"/>
+        <source>5432</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_frmInit.py" line="152"/>
+        <source>Usuario</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_frmInit.py" line="153"/>
+        <source>postgres</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_frmInit.py" line="154"/>
+        <source>Contrase&#xc3;&#xb1;a</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_frmInit.py" line="155"/>
+        <source>MyStocks Database</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_frmInit.py" line="157"/>
+        <source>Xulpymoney Database</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/frmInit.py" line="26"/>
+        <source>Database created, please login again</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/frmInit.py" line="19"/>
+        <source>Error creating databases</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/frmInit.py" line="15"/>
+        <source>Do you want to create Xulpymoney needed databases in {0}?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_frmInit.py" line="156"/>
+        <source>pruebams</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_frmInit.py" line="158"/>
+        <source>pruebaxulpymoney</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/frmInit.py" line="74"/>
+        <source>Personal Management</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/frmInit.py" line="75"/>
+        <source>Cash</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>frmInversionesEstudio</name>
     <message encoding="UTF-8">
         <location filename="ui/Ui_frmInversionesEstudio.py" line="336"/>
@@ -1559,138 +1683,148 @@ correspondiente en la tabla</source>
 <context>
     <name>frmMain</name>
     <message>
-        <location filename="ui/Ui_frmMain.py" line="190"/>
+        <location filename="ui/Ui_frmMain.py" line="200"/>
         <source>A&amp;yuda</source>
         <translation>H&amp;elp</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain.py" line="195"/>
+        <location filename="ui/Ui_frmMain.py" line="206"/>
         <source>toolBar</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain.py" line="196"/>
+        <location filename="ui/Ui_frmMain.py" line="207"/>
         <source>S&amp;alir</source>
         <translation>E&amp;xit</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain.py" line="197"/>
+        <location filename="ui/Ui_frmMain.py" line="208"/>
         <source>&amp;Acerca de</source>
         <translation>&amp;About</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain.py" line="202"/>
+        <location filename="ui/Ui_frmMain.py" line="213"/>
         <source>Tablas Auxiliares</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain.py" line="191"/>
+        <location filename="ui/Ui_frmMain.py" line="201"/>
         <source>Bancos</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain.py" line="192"/>
+        <location filename="ui/Ui_frmMain.py" line="202"/>
         <source>Informes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain.py" line="203"/>
+        <location filename="ui/Ui_frmMain.py" line="214"/>
         <source>Estudio de dividendos</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain.py" line="193"/>
+        <location filename="ui/Ui_frmMain.py" line="203"/>
         <source>Cuentas</source>
         <translation type="unfinished">Accounts</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain.py" line="194"/>
+        <location filename="ui/Ui_frmMain.py" line="204"/>
         <source>Inversiones</source>
         <translation type="unfinished">Investments</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain.py" line="200"/>
+        <location filename="ui/Ui_frmMain.py" line="211"/>
         <source>&amp;Listado de inversiones</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain.py" line="201"/>
+        <location filename="ui/Ui_frmMain.py" line="212"/>
         <source>Listado de inversiones</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="ui/Ui_frmMain.py" line="198"/>
+        <location filename="ui/Ui_frmMain.py" line="209"/>
         <source>&amp;Rangos de un índice</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="ui/Ui_frmMain.py" line="199"/>
+        <location filename="ui/Ui_frmMain.py" line="210"/>
         <source>Rangos de un índice</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain.py" line="205"/>
+        <location filename="ui/Ui_frmMain.py" line="216"/>
         <source>Estudio TAE del patrimonio</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain.py" line="206"/>
+        <location filename="ui/Ui_frmMain.py" line="217"/>
         <source>Informe &amp;Total</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain.py" line="207"/>
+        <location filename="ui/Ui_frmMain.py" line="218"/>
         <source>Informe total</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="ui/Ui_frmMain.py" line="208"/>
+        <location filename="ui/Ui_frmMain.py" line="219"/>
         <source>Informe Histórico</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain.py" line="209"/>
+        <location filename="ui/Ui_frmMain.py" line="220"/>
         <source>Listado de cuentas</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain.py" line="210"/>
+        <location filename="ui/Ui_frmMain.py" line="221"/>
         <source>Listado de Bancos</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="ui/Ui_frmMain.py" line="211"/>
+        <location filename="ui/Ui_frmMain.py" line="222"/>
         <source>Informe de tipos de inversión</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain.py" line="213"/>
+        <location filename="ui/Ui_frmMain.py" line="224"/>
         <source>Transferencia</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain.py" line="215"/>
+        <location filename="ui/Ui_frmMain.py" line="226"/>
         <source>Estudio de conceptos</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain.py" line="217"/>
+        <location filename="ui/Ui_frmMain.py" line="228"/>
         <source>Actualizar memoria</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain.py" line="218"/>
+        <location filename="ui/Ui_frmMain.py" line="229"/>
         <source>Preferencias</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="ui/Ui_frmMain.py" line="219"/>
+        <location filename="ui/Ui_frmMain.py" line="230"/>
         <source>Configuración de preferencias</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
         <location filename="ui/frmMain.py" line="27"/>
         <source>Xulpymoney 2010-{0} ©</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_frmMain.py" line="205"/>
+        <source>Xulpymoney</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_frmMain.py" line="232"/>
+        <source>Help</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1707,12 +1841,12 @@ correspondiente en la tabla</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmMainMS.py" line="112"/>
+        <location filename="ui/frmMainMS.py" line="109"/>
         <source>Selecciona el fichero a importar</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="ui/frmMainMS.py" line="195"/>
+        <location filename="ui/frmMainMS.py" line="192"/>
         <source>No se ha seleccionado ningún favorito</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2595,12 +2729,12 @@ seleccionados por el usuario</source>
 <context>
     <name>myquotes</name>
     <message>
-        <location filename="ui/frmMainMS.py" line="45"/>
+        <location filename="ui/frmMainMS.py" line="42"/>
         <source>Hay una nueva versi&#xc3;&#xb3;n publicada en http://myquotes.sourceforge.net</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmMainMS.py" line="49"/>
+        <location filename="ui/frmMainMS.py" line="46"/>
         <source>La base de datos se acaba de iniciar.
 
 Se necesitan al menos 24 horas de funcionamiento del demonio myquotesd para que esta aplicaci&#xc3;&#xb3;n tenga todos los datos disponibles.</source>

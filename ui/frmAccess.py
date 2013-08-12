@@ -1,6 +1,5 @@
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
-import sys, psycopg2,  psycopg2.extras
 from Ui_frmAccess import *
 
 class frmAccess(QDialog, Ui_frmAccess):
@@ -37,38 +36,35 @@ class frmAccess(QDialog, Ui_frmAccess):
 
 
 
-    def check_connection(self):
-        strmq="dbname='{0}' port='{1}' user='{2}' host='{3}' password='{4}'".format(self.txtDB.text(),  self.txtPort.text(), self.txtUser.text(), self.txtServer.text(),  self.txtPass.text())
-        print (strmq)
+    def make_connection(self):
+        """Funci´on que realiza la conexi´on devolviendo true o false con el ´exito"""
         try:
-            con=psycopg2.extras.DictConnection(strmq)
-            con.close()
+            if self.app==1:
+                self.cfg.config_set_value(self.cfg.config, "frmAccessMS", "db", self.txtDB.text() )
+                self.cfg.config_set_value(self.cfg.config, "frmAccessMS", "port",  self.txtPort.text())
+                self.cfg.config_set_value(self.cfg.config, "frmAccessMS", "user" ,  self.txtUser.text())
+                self.cfg.config_set_value(self.cfg.config, "frmAccessMS", "server", self.txtServer.text())      
+                self.cfg.configs_save()    
+                self.cfg.conms=self.cfg.connect_myquotes()      
+            elif self.app==2:
+                self.cfg.config_set_value(self.cfg.config, "frmAccess", "db", self.txtDB.text() )
+                self.cfg.config_set_value(self.cfg.config, "frmAccess", "port",  self.txtPort.text())
+                self.cfg.config_set_value(self.cfg.config, "frmAccess", "user" ,  self.txtUser.text())
+                self.cfg.config_set_value(self.cfg.config, "frmAccess", "server", self.txtServer.text())     
+                self.cfg.configs_save()    
+                self.cfg.con=self.cfg.connect_xulpymoney()   
             return True
-        except psycopg2.Error:
+        except:
             return False
 
     
     @pyqtSignature("")
     def on_cmdYN_accepted(self):
-        if self.check_connection()==False:
+        if self.make_connection()==False:
             m=QMessageBox()
             m.setText(self.trUtf8("Error en la conexión, vuelva a entrar"))
             m.exec_()        
-            sys.exit(255)
+            self.reject()
+        self.accept()
 
-        if self.app==1:
-            self.cfg.config_set_value(self.cfg.config, "frmAccessMS", "db", self.txtDB.text() )
-            self.cfg.config_set_value(self.cfg.config, "frmAccessMS", "port",  self.txtPort.text())
-            self.cfg.config_set_value(self.cfg.config, "frmAccessMS", "user" ,  self.txtUser.text())
-            self.cfg.config_set_value(self.cfg.config, "frmAccessMS", "server", self.txtServer.text())    
-        elif self.app==2:
-            self.cfg.config_set_value(self.cfg.config, "frmAccess", "db", self.txtDB.text() )
-            self.cfg.config_set_value(self.cfg.config, "frmAccess", "port",  self.txtPort.text())
-            self.cfg.config_set_value(self.cfg.config, "frmAccess", "user" ,  self.txtUser.text())
-            self.cfg.config_set_value(self.cfg.config, "frmAccess", "server", self.txtServer.text())            
-        self.cfg.configs_save()
-        self.done(0)
 
-    @pyqtSignature("")
-    def on_cmdYN_rejected(self):
-        sys.exit(255)

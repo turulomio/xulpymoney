@@ -30,16 +30,13 @@ class frmMain(QMainWindow, Ui_frmMain):
         
         self.w=QWidget()       
         
-        access=frmAccess(self.cfg, 2)        
-        QObject.connect(access.cmdYN, SIGNAL("rejected()"), self, SLOT("close()"))
-        access.exec_()
         access2=frmAccess(self.cfg, 1)        
         QObject.connect(access2.cmdYN, SIGNAL("rejected()"), self, SLOT("close()"))
         access2.exec_()
+        access=frmAccess(self.cfg, 2)        
+        QObject.connect(access.cmdYN, SIGNAL("rejected()"), self, SLOT("close()"))
+        access.exec_()
 
-
-        self.cfg.con=self.cfg.connect_xulpymoney()  
-        self.cfg.conms=self.cfg.connect_myquotes()
         
         self.cfg.actualizar_memoria() ##CARGA TODOS LOS DATOS Y LOS VINCULA       
         
@@ -70,8 +67,7 @@ class frmMain(QMainWindow, Ui_frmMain):
                 
     def __del__(self):
         print ("Saliendo de la aplicación")
-        self.cfg.disconnect_myquotes(self.cfg.conms)
-        self.cfg.disconnect_xulpymoney(self.cfg.con)
+        del self.cfg
         
     @pyqtSignature("")
     def on_actionAcercaDe_activated(self):
