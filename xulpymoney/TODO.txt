@@ -15,9 +15,6 @@
 20120726 Quitar importe de newOperinversionHistorica en funciones 
 20120707 Cuando se mete una comision en transferencia no se contabiliza luego. Ver si sacarla.
 
-20120727 Mostrar tipo de dividendo en frmHistorico y ver si se calcula bien el neto y el bruto. Añadir pago de bono
-20120730 Meter tipo de dividendo en informe histórico
-
 20120802 Hacer un formulario de inicio que genere el settings en home y pregunte idioma y lo cambie
 20120803 Quitar primera fecha de inicio y ponerlo en config por defecto y quitar la función de union de patrimonio, al empezar una nueva base de datos es un coñazo
 20120806 En operinversion opercuenta poner el número de acciones y precio de compra en comeentario bonito

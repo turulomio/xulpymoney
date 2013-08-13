@@ -113,7 +113,7 @@ FORMS           = ui/frmAbout.ui \
                   ui/wdgChart.ui \
                   ui/wdgLog.ui
 
-TRANSLATIONS    = i18n/xulpymoney_en.ts \
+TRANSLATIONS    = i18n/xulpymoney_es.ts \
                   i18n/xulpymoney_fr.ts \
                   i18n/xulpymoney_ru.ts \
                   i18n/xulpymoney_ro.ts

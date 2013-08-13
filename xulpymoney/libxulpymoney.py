@@ -343,6 +343,10 @@ class SetConceptos:
         self.cfg=cfg     
         self.tiposoperaciones=tiposoperaciones
         
+    def strct2ct(self, strct):
+        """Returns Concepto y TipoOperacion of parameter string"""
+        (id_conceptos, id_tiposoperaciones)=strct.split(";")
+        return (self.cfg.conceptos.find(id_conceptos), self.cfg.tiposoperaciones.find(id_tiposoperaciones))
                  
     def load_from_db(self):
         cur=self.cfg.con.cursor()
@@ -355,7 +359,23 @@ class SetConceptos:
         """Carga conceptos operaciones 1,2,3"""
         for c in self.list():
             if c.tipooperacion.id in (1, 2, 3):
-                combo.addItem("{0} -- {1}".format(  c.name,  c.tipooperacion.name),  "{0};{1}".format(c.id, c.tipooperacion.id)   )#id_conceptos;id_tiposopeera ciones
+                combo.addItem("{0} -- {1}".format(  c.name,  c.tipooperacion.name),  c.strct()  )
+
+    def load_dividend_qcombobox(self, combo,  select=None):
+        """Select es un class Concepto"""
+        for n in (39, 50,  62):
+            c=self.find(n)
+            combo.addItem("{0} -- {1}".format(  c.name,  c.tipooperacion.name),  c.strct()   )
+        if select!=None:
+            combo.setCurrentIndex(combo.findData(select.strct()))
+    def load_bonds_qcombobox(self, combo,  select=None):
+        """Carga conceptos operaciones 1,2,3"""
+        for n in (50, 63, 65, 66):
+            c=self.find(n)
+            combo.addItem("{0} -- {1}".format(  c.name,  c.tipooperacion.name),  c.strct()  )
+        if select!=None:
+            print ("Select",  select.strct())
+            combo.setCurrentIndex(combo.findData(select.strct()))
 
     def find(self, id):
         return self.dic_arr[str(id)]
@@ -1258,6 +1278,11 @@ class Concepto:
     def __repr__(self):
         return ("Instancia de Concepto: {0} ({1})".format( self.name, self.id))
 
+    def strct(self):
+        """Junta en una string el concepto y el tipo separado por coma"""
+        return "{0};{1}".format(self.id, self.tipooperacion.id)
+        
+
     def init__create(self, name, tipooperacion, editable,  id=None):
         self.id=id
         self.name=name
@@ -1354,7 +1379,7 @@ class CuentaOperacion:
         
     def comentariobonito(self):
         """Función que genera un comentario parseado según el tipo de operación o concepto"""
-        if self.concepto.id in (62, 39) and len(self.comentario.split("|"))==4:#"{0}|{1}|{2}|{3}".format(self.inversion.name, self.bruto, self.retencion, self.comision)
+        if self.concepto.id in (62, 39, 50, 63, 65) and len(self.comentario.split("|"))==4:#"{0}|{1}|{2}|{3}".format(self.inversion.name, self.bruto, self.retencion, self.comision)
             return QApplication.translate("Core","Dividendo de {0[0]}. Bruto: {0[1]} {1}. Retención: {0[2]} {1}. Comisión: {0[3]} {1}".format(self.comentario.split("|"), self.cuenta.currency.symbol))
         elif self.concepto.id in (29, 35, 38) and len(self.comentario.split("|"))==4:#{0}|{1}|{2}|{3}".format(row['inversion'], importe, comision, impuestos)
             return QApplication.translate("Core","Operación de {0[0]}. Importe: {0[1]} {1}. Comisión: {0[2]} {1}. Impuestos: {0[3]} {1}".format(self.comentario.split("|"), self.cuenta.currency.symbol))        
@@ -1370,10 +1395,13 @@ class CuentaOperacion:
         7 facturación de tarjeta
         29 y 35 compraventa productos de inversión
         39 dividendos
-        40 facturación de tarjeta"""
+        40 facturación de tarjeta
+        50 prima de asistencia
+        62 Vemta derechos de dividendos
+        63 y 65,66 renta fija cuponcorrido"""
         if self.concepto==None:
             return False
-        if self.concepto.id in (7, 29, 35, 39, 40, 62):#div, factur tarj:
+        if self.concepto.id in (7, 29, 35, 39, 40, 50,  62, 63, 65):#div, factur tarj:
             return False
         return True
         
@@ -1421,19 +1449,21 @@ class Dividendo:
     def init__db_row(self, row, inversion,  opercuenta,  concepto):
         return self.init__create(inversion,  row['bruto'],  row['retencion'], row['neto'],  row['valorxaccion'],  row['fecha'],   row['comision'],  concepto, opercuenta, row['id_dividendos'])
         
-    def borrar(self, cur):
+    def borrar(self):
         """Borra un dividendo, para ello borra el registro de la tabla dividendos 
             y el asociado en la tabla opercuentas
             
             También actualiza el saldo de la cuenta."""
-        self.opercuenta.borrar(cur)
+        cur=self.cfg.con.cursor()
+        self.opercuenta.borrar()
         cur.execute("delete from dividendos where id_dividendos=%s", (self.id, ))
-        self.inversion.cuenta.saldo_from_db(cur)
+        self.inversion.cuenta.saldo_from_db()
+        cur.close()
         
     def neto_antes_impuestos(self):
         return self.bruto-self.comision
     
-    def save(self,cur):
+    def save(self):
         """Insertar un dividendo y una opercuenta vinculada a la tabla dividendos en el campo id_opercuentas
         Cuando se inserta el campo comentario de opercuenta tiene la forma (nombreinversion|bruto\retencion|comision)
         
@@ -1441,10 +1471,11 @@ class Dividendo:
         
         Actualiza la cuenta 
         """
+        cur=self.cfg.con.cursor()
         comentario="{0}|{1}|{2}|{3}".format(self.inversion.name, self.bruto, self.retencion, self.comision)
         if self.id==None:#Insertar
             oc=CuentaOperacion(self.cfg).init__create( self.fecha,self.concepto, self.concepto.tipooperacion, self.neto, comentario, self.inversion.cuenta)
-            oc.save(cur)
+            oc.save()
             self.opercuenta=oc
             #Añade el dividendo
             sql="insert into dividendos (fecha, valorxaccion, bruto, retencion, neto, id_inversiones,id_opercuentas, comision, id_conceptos) values ('"+str(self.fecha)+"', "+str(self.dpa)+", "+str(self.bruto)+", "+str(self.retencion)+", "+str(self.neto)+", "+str(self.inversion.id)+", "+str(self.opercuenta.id)+", "+str(self.comision)+", "+str(self.concepto.id)+")"
@@ -1455,9 +1486,10 @@ class Dividendo:
             self.opercuenta.comentario=comentario
             self.opercuenta.concepto=self.concepto
             self.opercuenta.tipooperacion=self.concepto.tipooperacion
-            self.opercuenta.save(cur)
+            self.opercuenta.save()
             cur.execute("update dividendos set fecha=%s, valorxaccion=%s, bruto=%s, retencion=%s, neto=%s, id_inversiones=%s, id_opercuentas=%s, comision=%s, id_conceptos=%s where id_dividendos=%s", (self.fecha, self.dpa, self.bruto, self.retencion, self.neto, self.inversion.id, self.opercuenta.id, self.comision, self.concepto.id, self.id))
-        self.inversion.cuenta.saldo_from_db(cur)
+        self.inversion.cuenta.saldo_from_db()
+        cur.close()
 
 class InversionOperacion:
     def __init__(self, cfg):
