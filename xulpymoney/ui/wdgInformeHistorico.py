@@ -14,12 +14,13 @@ class wdgInformeHistorico(QWidget, Ui_wdgInformeHistorico):
         self.tblInversiones.settings("wdgInformeHistorico",  self.cfg.file_ui)
         self.tblAdded.settings("wdgInformeHistorico",  self.cfg.file_ui)
         
+        
+        self.cfg.data.load_inactives()
+        
         self.totalDividendosNetos=0
         self.totalDividendosBrutos=0
         self.totalDividendosRetenciones=0
-        
-        self.load_data_from_db()
-        
+                
         anoinicio=Patrimonio(self.cfg).primera_fecha_con_datos_usuario().year       
 
         ran=datetime.date.today().year-anoinicio+1
@@ -31,19 +32,6 @@ class wdgInformeHistorico(QWidget, Ui_wdgInformeHistorico):
         self.load()   
         self.tab.setCurrentIndex(0)
 
-    def load_data_from_db(self):
-        inicio=datetime.datetime.now()
-        self.indicereferencia=Investment(self.cfg).init__db(self.cfg.config.get("settings", "indicereferencia" ))
-        self.indicereferencia.result.get_basic()
-        self.data_ebs=SetEntidadesBancarias(self.cfg)
-        self.data_ebs.load_from_db("select * from entidadesbancarias where eb_activa=true")
-        self.data_cuentas=SetCuentas(self.cfg, self.data_ebs)
-        self.data_cuentas.load_from_db("select * from cuentas where cu_activa=true")
-        self.data_investments=SetInvestments(self.cfg)
-        self.data_investments.load_from_inversiones_query("select distinct(myquotesid) from inversiones")#Todas no solo activas
-        self.data_inversiones=SetInversiones(self.cfg, self.data_cuentas, self.data_investments, self.indicereferencia)
-        self.data_inversiones.load_from_db("select * from inversiones") #Todas no solo activas
-        print("\n","Cargando data en wdgInversiones",  datetime.datetime.now()-inicio)
 
     def load(self):
         inicio=datetime.datetime.now()
@@ -55,7 +43,7 @@ class wdgInformeHistorico(QWidget, Ui_wdgInformeHistorico):
         
     def load_added(self):
         operaciones=[]
-        for i in self.data_inversiones.arr:
+        for i in self.cfg.data.inversiones_active.arr:
             for o in i.op.arr:
                 if o.tipooperacion.id==6 and o.datetime.year==int(self.cmbYears.currentText()):
                     operaciones.append(o)    
@@ -89,7 +77,7 @@ class wdgInformeHistorico(QWidget, Ui_wdgInformeHistorico):
         cur.execute(sql); 
         dividendos=[]
         for row in  cur:
-            dividendos.append(Dividendo(self.cfg).init__db_row(row, self.data_inversiones.find(row['id_inversiones']), None,  self.cfg.conceptos.find(row['id_conceptos'])))#Creación incompleta por no ser necesario con None
+            dividendos.append(Dividendo(self.cfg).init__db_row(row, self.cfg.data.inversiones_all().find(row['id_inversiones']), None,  self.cfg.conceptos.find(row['id_conceptos'])))#Creación incompleta por no ser necesario con None
         self.tblDividendos.clearContents()
         self.tblDividendos.setRowCount(len(dividendos)+1)
         for i, d in enumerate(dividendos):
@@ -108,7 +96,7 @@ class wdgInformeHistorico(QWidget, Ui_wdgInformeHistorico):
 
     def load_historicas(self):
         operaciones=SetInversionOperacionHistorica(self.cfg)
-        for i in self.data_inversiones.arr:
+        for i in self.cfg.data.inversiones_active.arr:
             for o in i.op_historica.arr:
                 if o.fecha_venta.year==int(self.cmbYears.currentText()) and o.tipooperacion.id in (5, 8):#Venta y traspaso fondos inversion
                     operaciones.arr.append(o)
@@ -125,8 +113,8 @@ class wdgInformeHistorico(QWidget, Ui_wdgInformeHistorico):
         if sumcomisioncustodia==None:
             sumcomisioncustodia=0
             
-        saldototal=Patrimonio(self.cfg).saldo_total(self.data_inversiones ,  datetime.date.today());
-        saldototalinicio=Patrimonio(self.cfg).saldo_total( self.data_inversiones, inicio)
+        saldototal=Patrimonio(self.cfg).saldo_total(self.cfg.data.inversiones_active ,  datetime.date.today());
+        saldototalinicio=Patrimonio(self.cfg).saldo_total( self.cfg.data.inversiones_active, inicio)
         if self.totalBruto>0:
             impxplus=-self.totalBruto*self.cfg.taxcapitalappreciation
         else:            

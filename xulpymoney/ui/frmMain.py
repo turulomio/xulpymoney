@@ -100,23 +100,9 @@ class frmMain(QMainWindow, Ui_frmMain):
         self.w.show()
     
     def on_actionMemoria_activated(self):        
-        con=self.cfg.connect_xulpymoney()
-        cur = con.cursor()                   
-        mq=self.cfg.connect_myquotes()
-        curms=mq.cursor()        
+        self.cfg.data.reload()
         
-        self.cfg.actualizar_memoria(cur, curms) 
-
-        curms.close()
-        self.cfg.disconnect_myquotes(mq)
-        cur.close()     
-        self.cfg.disconnect_xulpymoney(con)        
-    
-#    @QtCore.pyqtSlot()      
-#    def on_actionSalir_activated(self):
-#        self.cfg.__del__()
-#        sys.exit()
-
+        
     @QtCore.pyqtSlot()  
     def on_actionInformeDividendos_activated(self):
         self.w.close()

@@ -14,26 +14,13 @@ class wdgInformeDividendos(QWidget, Ui_wdgInformeDividendos):
         self.cfg=cfg
         self.inversiones=[]
 
-        self.load_data_from_db()
         self.tblInversiones.settings("wdgInformeDividendos",  self.cfg.file_ui)
         
         self.on_chkInactivas_stateChanged(Qt.Unchecked)
         
         
             
-    def load_data_from_db(self):
-        inicio=datetime.datetime.now()
-        self.indicereferencia=Investment(self.cfg).init__db(self.cfg.config.get("settings", "indicereferencia" ))
-        self.indicereferencia.result.get_basic()
-        self.data_ebs=SetEntidadesBancarias(self.cfg)
-        self.data_ebs.load_from_db("select * from entidadesbancarias where eb_activa=true")
-        self.data_cuentas=SetCuentas(self.cfg, self.data_ebs)
-        self.data_cuentas.load_from_db("select * from cuentas where cu_activa=true")
-        self.data_investments=SetInvestments(self.cfg)
-        self.data_investments.load_from_inversiones_query("select distinct(myquotesid) from inversiones where in_activa=true")
-        self.data_inversiones=SetInversiones(self.cfg, self.data_cuentas, self.data_investments, self.indicereferencia)
-        self.data_inversiones.load_from_db("select * from inversiones where in_activa=true")
-        print("\n","Cargando data en wdgInversiones",  datetime.datetime.now()-inicio)
+
 
     @QtCore.pyqtSlot()  
     def on_actionModificarDPA_activated(self):
@@ -44,9 +31,10 @@ class wdgInformeDividendos(QWidget, Ui_wdgInformeDividendos):
 
     def on_chkInactivas_stateChanged(self,  state):               
         if state==Qt.Checked:
-            self.inversiones=self.data_inversiones
+            self.cfg.data.load_inactives()
+            self.inversiones=self.cfg.data.inversiones_inactive
         else:
-            self.inversiones=self.data_inversiones
+            self.inversiones=self.cfg.data.inversiones_active
         self.load_inversiones()
         
     def load_inversiones(self):    
@@ -82,7 +70,7 @@ class wdgInformeDividendos(QWidget, Ui_wdgInformeDividendos):
         
     @QtCore.pyqtSlot() 
     def on_actionInversionEstudio_activated(self):
-        w=frmInversionesEstudio(self.cfg, self.data_cuentas, self.data_inversiones, self.data_investments, self.selInversion, self)
+        w=frmInversionesEstudio(self.cfg, self.selInversion, self)
         w.exec_()
         
             

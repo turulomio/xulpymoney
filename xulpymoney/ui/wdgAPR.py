@@ -13,24 +13,11 @@ class wdgAPR(QWidget, Ui_wdgAPR):
         self.progress.setWindowTitle(self.trUtf8("Calculando datos..."))
         self.progress.setMinimumDuration(0)        
         self.table.settings("wdgAPR",  self.cfg.file_ui)
-        self.load_data_from_db()
+        
+        self.cfg.data.load_inactives()
         self.load_data()
 
-    def load_data_from_db(self):
-        inicio=datetime.datetime.now()
-        self.indicereferencia=Investment(self.cfg).init__db(self.cfg.config.get("settings", "indicereferencia" ))
-        self.indicereferencia.result.get_basic()
-        self.data_ebs=SetEntidadesBancarias(self.cfg)
-        self.data_ebs.load_from_db("select * from entidadesbancarias where eb_activa=true")
-        self.data_cuentas=SetCuentas(self.cfg, self.data_ebs)
-        self.data_cuentas.load_from_db("select * from cuentas where cu_activa=true")
-        self.data_investments_all=SetInvestments(self.cfg)
-        self.data_investments_all.load_from_inversiones_query("select distinct(myquotesid) from inversiones ")
-        self.data_inversiones_all=SetInversiones(self.cfg, self.data_cuentas, self.data_investments_all, self.indicereferencia)
-        self.data_inversiones_all.load_from_db("select * from inversiones ")
-        print("\n","Cargando data en wdgInversiones",  datetime.datetime.now()-inicio)
-        
-        
+
     def load_data(self):        
         inicio=datetime.datetime.now()
 #        con=self.cfg.connect_xulpymoney()
@@ -58,11 +45,11 @@ class wdgAPR(QWidget, Ui_wdgAPR):
             else:
                 self.progress.setValue(self.progress.value()+1)                     
             si=lastsaldo
-            sf=Patrimonio(self.cfg).saldo_total(self.data_inversiones_all,  datetime.date(i, 12, 31))
+            sf=Patrimonio(self.cfg).saldo_total(self.cfg.data.inversiones_all(),  datetime.date(i, 12, 31))
             gastos=Patrimonio(self.cfg).saldo_anual_por_tipo_operacion( i,1)#+Patrimonio(self.cfg).saldo_anual_por_tipo_operacion (cur,i, 7)#Gastos + Facturación de tarjeta
             dividendos=Inversion(self.cfg).dividendos_bruto( i)
             ingresos=Patrimonio(self.cfg).saldo_anual_por_tipo_operacion(  i,2)-dividendos #Se quitan los dividendos que luego se suman
-            consolidado=Patrimonio(self.cfg).consolidado_neto(self.data_inversiones_all,  i)
+            consolidado=Patrimonio(self.cfg).consolidado_neto(self.cfg.data.inversiones_all(),  i)
 
             gi=ingresos+dividendos+consolidado+gastos     
             self.table.setItem(i-anoinicio, 0, qcenter(str(i)))

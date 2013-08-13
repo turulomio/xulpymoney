@@ -39,4 +39,3 @@ mc20111214 Cuando se inicia cuenta nueva en un mes y se añade la suma de saldos
 20130813 Cuando se intenta editar una opercuenta desde una inversión inactiva, peta, ver que hacer si desactivar en inactivas
 20130813 Quitar dividendos y renta fija de conceptos de opercuenta a la hora de insertar no a la hora de visualizar
 20130813 No se puede activar una cuenta o inversión, si la cuenta o entidad bancaria es inactiva, ponerlas todas a activas
-20130813 Poder visualizar tarjetas inactivas

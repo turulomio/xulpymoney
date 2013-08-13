@@ -19,10 +19,10 @@ class frmOperCuentas(QDialog, Ui_frmOperCuentas):
         self.opercuenta=opercuenta
         self.tarjeta=tarjeta
         self.opertarjeta=opertarjeta
-        self.data_cuentas=cuentas
+        self.cfg.data.cuentas_active=cuentas
 
         self.cfg.conceptos.load_qcombobox(self.cmbConceptos)
-        self.data_cuentas.load_qcombobox(self.cmbCuentas)
+        self.cfg.data.cuentas_active.load_qcombobox(self.cmbCuentas)
 
         if opertarjeta!=None:
             self.setWindowTitle(self.trUtf8("Modificación de una operación de tarjeta"))
@@ -86,7 +86,7 @@ class frmOperCuentas(QDialog, Ui_frmOperCuentas):
             self.opercuenta.tipooperacion=self.cfg.tiposoperaciones.find(id_tiposoperaciones)
             self.opercuenta.importe=importe
             self.opercuenta.comentario=comentario
-            self.opercuenta.cuenta=self.data_cuentas.find(id_cuentas)#Se puede cambiar
+            self.opercuenta.cuenta=self.cfg.data.cuentas_active.find(id_cuentas)#Se puede cambiar
             self.opercuenta.save()
             self.cfg.con.commit()        #Se debe hacer el commit antes para que al actualizar con el signal salga todos los datos
             self.emit(SIGNAL("OperCuentaIBMed"), ())
@@ -96,7 +96,7 @@ class frmOperCuentas(QDialog, Ui_frmOperCuentas):
             self.opercuenta.tipooperacion=self.cfg.tiposoperaciones.find(id_tiposoperaciones)
             self.opercuenta.importe=importe
             self.opercuenta.comentario=comentario
-            self.opercuenta.cuenta=self.data_cuentas.find(id_cuentas)#Se puede cambiar
+            self.opercuenta.cuenta=self.cfg.data.cuentas_active.find(id_cuentas)#Se puede cambiar
             self.opercuenta.save()
             self.cfg.con.commit()        #Se debe hacer el commit antes para que al actualizar con el signal salga todos los datos
             self.emit(SIGNAL("OperCuentaIBMed"), ())

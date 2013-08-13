@@ -10,27 +10,11 @@ class wdgIndexRange(QWidget, Ui_wdgIndexRange):
         self.setupUi(self)
         self.cfg=cfg
         
-        self.load_data_from_db()
         self.quote_lastindex=None
         self.table.settings("wdgIndexRange",  self.cfg.file_ui)
         self.load_data()
                     
-    def load_data_from_db(self):
-        inicio=datetime.datetime.now()
-        self.indicereferencia=Investment(self.cfg).init__db(self.cfg.config.get("settings", "indicereferencia" ))
-        self.indicereferencia.result.get_basic()
-        self.data_ebs=SetEntidadesBancarias(self.cfg)
-        self.data_ebs.load_from_db("select * from entidadesbancarias where eb_activa=true")
-        self.data_cuentas=SetCuentas(self.cfg, self.data_ebs)
-        self.data_cuentas.load_from_db("select * from cuentas where cu_activa=true")
-        self.data_investments=SetInvestments(self.cfg)
-        self.data_investments.load_from_inversiones_query("select distinct(myquotesid) from inversiones where in_activa=true")
-        self.data_inversiones=SetInversiones(self.cfg, self.data_cuentas, self.data_investments, self.indicereferencia)
-        self.data_inversiones.load_from_db("select * from inversiones where in_activa=true")
-        
-        
-        print("\n","Cargando data en wdgInversiones",  datetime.datetime.now()-inicio)
-        
+
         
     def load_data(self):
         def inversiones(arr,min,max):
@@ -44,7 +28,7 @@ class wdgIndexRange(QWidget, Ui_wdgIndexRange):
 
         arr=[]
 
-        for i in self.data_inversiones.arr:
+        for i in self.cfg.data.inversiones_active.arr:
             if i.investment.tpc!=0:
                 for o in i.op_actual.arr:
                     arr.append((o.referenciaindice.quote, o))
@@ -55,7 +39,7 @@ class wdgIndexRange(QWidget, Ui_wdgIndexRange):
             return
                 
         maximo= int(max(arr)[0]*(1+ Decimal(self.spin.value()/200.0)))
-        riesgocero=Patrimonio(self.cfg).patrimonio_riesgo_cero(self.data_inversiones, datetime.date.today())
+        riesgocero=Patrimonio(self.cfg).patrimonio_riesgo_cero(self.cfg.data.inversiones_active, datetime.date.today())
         pasos=int(riesgocero/Decimal(self.txtInvertir.text()))
         last=maximo
         rangos=0
@@ -71,7 +55,7 @@ class wdgIndexRange(QWidget, Ui_wdgIndexRange):
             self.table.setItem(rangos-1, 0,qcenter(str(int(formin))+"-"+str(int(formax))))
             self.table.setItem(rangos-1, 1,qcenter(str(int((formax+formin)/2))))            
             self.table.setItem(rangos-1, 2,QTableWidgetItem((inversiones(arr, formin, formax))))
-            if self.indicereferencia.result.last.quote>formin and self.indicereferencia.result.last.quote<formax:
+            if self.cfg.data.indicereferencia.result.last.quote>formin and self.cfg.data.indicereferencia.result.last.quote<formax:
                 self.table.item(rangos-1, 0).setBackgroundColor(QColor(255, 148, 148))
                 rangoindexactual=rangos-1
             last=formin
@@ -83,11 +67,11 @@ class wdgIndexRange(QWidget, Ui_wdgIndexRange):
                 pasos=pasos-1
                 
         #Variación del índice hoy
-        if self.indicereferencia.result.penultimate.quote==0 or self.indicereferencia.result.penultimate.quote==None:
+        if self.cfg.data.indicereferencia.result.penultimate.quote==0 or self.cfg.data.indicereferencia.result.penultimate.quote==None:
             variacion=0
         else:
-            variacion=(self.indicereferencia.result.last.quote-self.indicereferencia.result.penultimate.quote)*100/self.indicereferencia.result.penultimate.quote
-        self.lblTotal.setText(("Tengo cubierto hasta el %d del índice de referencia (%s). Su valor a %s es %d (%.2f %%)" %( indexcover, self.indicereferencia.name, self.indicereferencia.result.last.datetime,   int(self.indicereferencia.result.last.quote),  variacion)))
+            variacion=(self.cfg.data.indicereferencia.result.last.quote-self.cfg.data.indicereferencia.result.penultimate.quote)*100/self.cfg.data.indicereferencia.result.penultimate.quote
+        self.lblTotal.setText(("Tengo cubierto hasta el %d del índice de referencia (%s). Su valor a %s es %d (%.2f %%)" %( indexcover, self.cfg.data.indicereferencia.name, self.cfg.data.indicereferencia.result.last.datetime,   int(self.cfg.data.indicereferencia.result.last.quote),  variacion)))
 
         print ("wdgIndexRange > load_data: {0}".format(datetime.datetime.now()-inicio))
 
@@ -95,13 +79,13 @@ class wdgIndexRange(QWidget, Ui_wdgIndexRange):
         self.load_data()
 
     def on_cmdIRAnalisis_pressed(self):
-        w=frmAnalisis(self.cfg, self.indicereferencia, self)
+        w=frmAnalisis(self.cfg, self.cfg.data.indicereferencia, self)
         w.exec_()
         
     def on_cmdIRInsertar_pressed(self):
-        w=frmQuotesIBM(self.cfg, self.indicereferencia,  self)
+        w=frmQuotesIBM(self.cfg, self.cfg.data.indicereferencia,  self)
         w.exec_() 
-        self.indicereferencia.result.get_basic()
+        self.cfg.data.indicereferencia.result.get_basic()
         self.load_data()
         
     def on_table_cellDoubleClicked(self, row, column):
@@ -109,7 +93,7 @@ class wdgIndexRange(QWidget, Ui_wdgIndexRange):
             puntoinversion=Decimal(self.table.item(row, column).text())
             m=QMessageBox()
             m.setIcon(QMessageBox.Information)
-            m.setText(self.trUtf8("Para llegar al punto de inversión seleccionado, el indice debe variar un {0}".format(tpc((puntoinversion-self.indicereferencia.result.last.quote)*100/self.indicereferencia.result.last.quote))))
+            m.setText(self.trUtf8("Para llegar al punto de inversión seleccionado, el indice debe variar un {0}".format(tpc((puntoinversion-self.cfg.data.indicereferencia.result.last.quote)*100/self.cfg.data.indicereferencia.result.last.quote))))
             m.exec_()           
         elif column==2:
             inversiones=self.table.item(row, column).text().split(", ")

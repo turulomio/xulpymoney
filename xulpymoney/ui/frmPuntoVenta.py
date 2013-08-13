@@ -11,7 +11,7 @@ class frmPuntoVenta(QDialog, Ui_frmPuntoVenta):
         self.showMaximized()
         self.cfg=cfg
         self.inversion=inversion
-        self.data_inversiones=setinversiones
+        self.cfg.data.inversiones_active=setinversiones
         self.ponderan_all_inversiones=[]
         
         if self.inversion.id==None:
@@ -74,7 +74,7 @@ class frmPuntoVenta(QDialog, Ui_frmPuntoVenta):
         """Recibe un sql y calcula las operinversiones, pueden ser de diferentes inversiones"""
         arr=[]
         self.ponderan_all_inversiones=[]
-        for  inv in self.data_inversiones.arr:
+        for  inv in self.cfg.data.inversiones_active.arr:
             if inv.investment.id==self.inversion.investment.id:
                 self.ponderan_all_inversiones.append(inv)
                 for op in inv.op_actual.arr:
