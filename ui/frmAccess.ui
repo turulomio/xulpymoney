@@ -188,15 +188,15 @@
     </layout>
    </item>
   </layout>
-  <zorder>formLayoutWidget</zorder>
-  <zorder>txtDB</zorder>
  </widget>
  <tabstops>
-  <tabstop>txtUser</tabstop>
-  <tabstop>txtPass</tabstop>
   <tabstop>cmdYN</tabstop>
+  <tabstop>cmbLanguage</tabstop>
   <tabstop>txtServer</tabstop>
   <tabstop>txtPort</tabstop>
+  <tabstop>txtDB</tabstop>
+  <tabstop>txtUser</tabstop>
+  <tabstop>txtPass</tabstop>
  </tabstops>
  <resources>
   <include location="../images/xulpymoney.qrc"/>

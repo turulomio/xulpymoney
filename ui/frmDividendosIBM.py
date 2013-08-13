@@ -18,12 +18,19 @@ class frmDividendosIBM(QDialog, Ui_frmDividendosIBM):
         self.neto=0
         self.tpc=0
         if dividendo==None:#insertar
+            if self.inversion.investment.type.id in (7, 9):#Bonds
+                self.cfg.conceptos.load_bonds_qcombobox(self.cmb)
+            else:
+                self.cfg.conceptos.load_dividend_qcombobox(self.cmb)
             self.dividendo=Dividendo(self.cfg)
             self.dividendo.inversion=inversion
             self.cmd.setText(self.trUtf8("Insertar nuevo dividendo"))
-        else:#modificar
-            if self.dividendo.concepto.id==62:
-                self.chk.setCheckState(Qt.Checked)            
+        else:#modificar 
+            print ( self.dividendo.concepto.strct())
+            if self.inversion.investment.type.id in (7, 9):#Bonds
+                self.cfg.conceptos.load_bonds_qcombobox(self.cmb, self.dividendo.concepto) 
+            else:
+                self.cfg.conceptos.load_dividend_qcombobox(self.cmb, self.dividendo.concepto) 
             self.cal.setSelectedDate(self.dividendo.fecha)
             self.txtBruto.setText(str(self.dividendo.bruto))
             self.txtNeto.setText(str(self.dividendo.neto))
@@ -41,8 +48,21 @@ class frmDividendosIBM(QDialog, Ui_frmDividendosIBM):
         
     def calcular(self):
         try:
-            self.neto=Decimal(self.txtBruto.text())-Decimal(self.txtRetencion.text())-Decimal(self.txtComision.text())
-            self.tpc=100*Decimal(self.txtRetencion.text())/Decimal(self.txtBruto.text())
+            if self.txtBruto.decimal()<Decimal('0') or self.txtNeto.decimal()<Decimal('0'):
+                self.txtRetencion.setEnabled(False)
+                self.txtDPA.setEnabled(False)
+                self.txtComision.setEnabled(False)
+                self.txtRetencion.setText('0')
+                self.txtDPA.setText('0')
+                self.txtComision.setText('0')
+                self.neto=self.txtBruto.decimal()-self.txtComision.decimal()
+                self.tpc=0
+            else:
+                self.txtRetencion.setEnabled(True)
+                self.txtDPA.setEnabled(True)
+                self.txtComision.setEnabled(True)
+                self.neto=self.txtBruto.decimal()-self.txtRetencion.decimal()-self.txtComision.decimal()
+                self.tpc=100*self.txtRetencion.decimal()/self.txtBruto.decimal()
             self.txtNeto.setText(str(self.neto))
             self.lblTPC.setText(self.trUtf8("{0} % de retención".format(round(self.tpc, 2))))
             self.cmd.setEnabled(True)
@@ -54,36 +74,46 @@ class frmDividendosIBM(QDialog, Ui_frmDividendosIBM):
 
 
     def on_cmd_pressed(self):
+        
+        (concepto, tipooperacion)=self.cfg.conceptos.strct2ct(self.cmb.itemData(self.cmb.currentIndex()))
+                        
+        if tipooperacion.id==1 and (self.txtBruto.decimal()>Decimal('0') or self.txtNeto.decimal()>Decimal('0')):
+            m=QMessageBox()
+            m.setIcon(QMessageBox.Information)
+            m.setText(self.trUtf8("Un gasto no puede tener un importe positivo"))
+            m.exec_()    
+            return
+            
+        if tipooperacion.id==2 and (self.txtBruto.decimal()<Decimal('0') or self.txtNeto.decimal()<Decimal('0')):
+            m=QMessageBox()
+            m.setIcon(QMessageBox.Information)
+            m.setText(self.trUtf8("Un ingreso no puede tener un importe negativo"))
+            m.exec_()
+            return
+        if self.txtRetencion.decimal()<Decimal('0') or self.txtDPA.decimal()<Decimal('0') or self.txtComision.decimal()<Decimal('0'):
+            m=QMessageBox()
+            m.setIcon(QMessageBox.Information)
+            m.setText(self.trUtf8("Retention, earnings por share and commission must be greater than zero"))
+            m.exec_()    
+            return
+        
+        
         try:
-            if self.chk.checkState()==Qt.Checked:
-                self.dividendo.concepto=self.cfg.conceptos.find(62)
-            else:
-                self.dividendo.concepto=self.cfg.conceptos.find(39)
-            self.dividendo.bruto=Decimal(self.txtBruto.text())
-            self.dividendo.retencion=Decimal(self.txtRetencion.text())
+            self.dividendo.concepto=concepto
+            self.dividendo.bruto=self.txtBruto.decimal()
+            self.dividendo.retencion=self.txtRetencion.decimal()
             self.dividendo.neto=self.neto
-            self.dividendo.dpa=Decimal(self.txtDPA.text())
+            self.dividendo.dpa=self.txtDPA.decimal()
             self.dividendo.fecha=self.cal.selectedDate().toPyDate()
-            self.dividendo.comision=Decimal(self.txtComision.text())
+            self.dividendo.comision=self.txtComision.decimal()
         except:            
             m=QMessageBox()
             m.setIcon(QMessageBox.Information)
             m.setText(self.trUtf8("Error al introducir los datos. Compruébelos"))
             m.exec_()    
             return
+
         
-        if self.dividendo.bruto<0 or self.dividendo.retencion<0 or self.dividendo.neto<0 or self.dividendo.dpa<0 or self.dividendo.comision<0:
-            m=QMessageBox()
-            m.setIcon(QMessageBox.Information)
-            m.setText(self.trUtf8("Todos los campos deben ser positivos. Revíselos"))
-            m.exec_()    
-            return
-        
-        
-        con=self.cfg.connect_xulpymoney()
-        cur = con.cursor()
-        self.dividendo.save(cur)
-        con.commit()
-        cur.close()      
-        self.cfg.disconnect_xulpymoney(con)                  
+        self.dividendo.save()
+        self.cfg.con.commit()
         self.done(0)

@@ -1,4 +1,3 @@
-## -*- coding: utf-8 -*-
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 #from apoyo import *
@@ -90,7 +89,7 @@ class wdgInformeHistorico(QWidget, Ui_wdgInformeHistorico):
         cur.execute(sql); 
         dividendos=[]
         for row in  cur:
-            dividendos.append(Dividendo(self.cfg).init__db_row(row, self.data_inversiones.find(row['id_inversiones']), None,  None))#Creación incompleta por no ser necesario con None
+            dividendos.append(Dividendo(self.cfg).init__db_row(row, self.data_inversiones.find(row['id_inversiones']), None,  self.cfg.conceptos.find(row['id_conceptos'])))#Creación incompleta por no ser necesario con None
         self.tblDividendos.clearContents()
         self.tblDividendos.setRowCount(len(dividendos)+1)
         for i, d in enumerate(dividendos):
@@ -98,12 +97,13 @@ class wdgInformeHistorico(QWidget, Ui_wdgInformeHistorico):
             self.totalDividendosBrutos=self.totalDividendosBrutos+d.bruto
             self.totalDividendosRetenciones=self.totalDividendosRetenciones+d.retencion
             self.tblDividendos.setItem(i, 0,QTableWidgetItem(str(d.fecha)))
-            self.tblDividendos.setItem(i, 1,QTableWidgetItem(d.inversion.name))
-            self.tblDividendos.setItem(i, 2,QTableWidgetItem(d.inversion.cuenta.eb.name))
-            self.tblDividendos.setItem(i, 3,self.cfg.localcurrency.qtablewidgetitem(d.neto_antes_impuestos()))
-        self.tblDividendos.setItem(len(dividendos), 2,QTableWidgetItem(("TOTAL")))
-        self.tblDividendos.setItem(len(dividendos), 3,self.cfg.localcurrency.qtablewidgetitem(self.totalDividendosNetos))
-        self.tblDividendos.setCurrentCell(len(dividendos), 3)
+            self.tblDividendos.setItem(i, 1,QTableWidgetItem(d.concepto.name))
+            self.tblDividendos.setItem(i, 2,QTableWidgetItem(d.inversion.name))
+            self.tblDividendos.setItem(i, 3,QTableWidgetItem(d.inversion.cuenta.name))
+            self.tblDividendos.setItem(i, 4,self.cfg.localcurrency.qtablewidgetitem(d.neto_antes_impuestos()))
+        self.tblDividendos.setItem(len(dividendos), 3,QTableWidgetItem(("TOTAL")))
+        self.tblDividendos.setItem(len(dividendos), 4,self.cfg.localcurrency.qtablewidgetitem(self.totalDividendosNetos))
+        self.tblDividendos.setCurrentCell(len(dividendos), 4)
         cur.close()
 
     def load_historicas(self):

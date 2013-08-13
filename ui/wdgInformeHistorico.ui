@@ -44,7 +44,7 @@
        <item>
         <widget class="QLabel" name="label">
          <property name="text">
-          <string>Selecciona un año</string>
+          <string>Select a year</string>
          </property>
         </widget>
        </item>
@@ -64,7 +64,7 @@
      <item>
       <widget class="QTabWidget" name="tab">
        <property name="currentIndex">
-        <number>0</number>
+        <number>2</number>
        </property>
        <widget class="QWidget" name="tab_3">
         <attribute name="icon">
@@ -344,17 +344,22 @@ font: 75 12pt &quot;Sans Serif&quot;;</string>
            </attribute>
            <column>
             <property name="text">
-             <string>Fecha</string>
+             <string>Date</string>
             </property>
            </column>
            <column>
             <property name="text">
-             <string>Inversión</string>
+             <string>Concepto</string>
             </property>
            </column>
            <column>
             <property name="text">
-             <string>Banco</string>
+             <string>Investment</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>Account</string>
             </property>
            </column>
            <column>
