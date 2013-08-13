@@ -37,3 +37,6 @@
 20130829 Meter el importe de inversion desinversion en config
 20130829 En punto de venta poner antes y después set
 20130829 Load dividendos de frmAnalisis ca<mbiar por Set
+20130829 Quitar concepto liquidar inversion de frminit, de bd y de todo
+20130813 Quitar concepto 41 crear deposito
+20130813 En frmInit poner también actualizar ddatos, para investments, incluso dividendos y bolsas para futuras versiones
