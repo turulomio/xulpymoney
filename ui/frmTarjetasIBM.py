@@ -4,7 +4,7 @@ from Ui_frmTarjetasIBM import *
 from libxulpymoney import *
 
 class frmTarjetasIBM(QDialog, Ui_frmTarjetasIBM):
-    def __init__(self, cfg,  cuenta,  tarjeta,  parent=None):
+    def __init__(self, cfg,  cuenta,  tarjetas, tarjeta,  parent=None):
         """
             Cuenta es registro
             Si tarjeta=None # Insertar
@@ -14,36 +14,35 @@ class frmTarjetasIBM(QDialog, Ui_frmTarjetasIBM):
         self.setupUi(self)
         self.cfg=cfg
         self.cuenta=cuenta
-        self.tarjeta=tarjeta
+        self.data_tarjetas=tarjetas
+        
+            
 
         if tarjeta==None:
             self.tipo=1#Insertar
-            self.lblTitulo.setText(self.tr("Nueva tarjeta de {0}".format((self.cuenta['cuenta']))))
+            self.tarjeta=Tarjeta(self.cfg)
+            self.lblTitulo.setText(self.tr("Nueva tarjeta de {0}".format(self.cuenta.name)))
         else:
             self.tipo=2#Modificar
-            self.lblTitulo.setText(self.tr("Modificando la tarjeta {0}".format((self.tarjeta['tarjeta']))))
-            self.txtTarjeta.setText((self.tarjeta['tarjeta']))
-            self.chkPagoDiferido.setChecked(b2c(self.tarjeta['tj_activa']))
-            self.txtSaldoMaximo.setText(str(self.tarjeta['saldomaximo']))
-            self.txtNumero.setText(str(self.tarjeta['numero']))
+            self.tarjeta=tarjeta
+            self.lblTitulo.setText(self.tr("Modificando la tarjeta {0}".format(self.tarjeta.name)))
+            self.txtTarjeta.setText(self.tarjeta.name)
+            self.chkPagoDiferido.setChecked(b2c(self.tarjeta.activa))
+            self.txtSaldoMaximo.setText(str(self.tarjeta.saldomaximo))
+            self.txtNumero.setText(self.tarjeta.numero)
             
     def on_cmd_pressed(self):
-        con=self.cfg.connect_xulpymoney()
-        cur = con.cursor()    
-        id_cuentas=self.cuenta['id_cuentas']
-        tarjeta=(self.txtTarjeta.text())
-        pagodiferido=False
-        if self.chkPagoDiferido.checkState()==Qt.Checked:
-            pagodiferido=True
-        saldomaximo=Decimal(self.txtSaldoMaximo.text())
-        numero=(self.txtNumero.text())
-
+        self.tarjeta.name=self.txtTarjeta.text()
+        self.tarjeta.cuenta=self.cuenta
+        self.tarjeta.pagodiferido=c2b(self.chkPagoDiferido.checkState())
+        self.tarjeta.saldomaximo=self.txtSaldoMaximo.decimal()
+        self.tarjeta.numero=self.txtNumero.text()
+        self.tarjeta.activa=True
+        self.tarjeta.save()
+        self.cfg.con.commit()        
+        
         if self.tipo==1:#insertar
-            Tarjeta(self.cfg).insertar( cur,  id_cuentas,  tarjeta,  numero, pagodiferido, saldomaximo, True)
-        else:#Modificar
-            Tarjeta(self.cfg).modificar( cur,  self.tarjeta['id_tarjetas'], tarjeta,  numero,  pagodiferido,  saldomaximo)
-        con.commit()        
-        cur.close()     
-        self.cfg.disconnect_xulpymoney(con)        
+            self.data_tarjetas.arr.append(self.tarjeta)
+        
         self.done(0)
     

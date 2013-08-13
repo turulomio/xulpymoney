@@ -34,7 +34,9 @@ mc20111214 Cuando se inicia cuenta nueva en un mes y se añade la suma de saldos
 20130829 Meter el importe de inversion desinversion en config
 20130829 En punto de venta poner antes y después set
 20130829 Load dividendos de frmAnalisis ca<mbiar por Set
-20130829 Quitar concepto liquidar inversion de frminit, de bd y de todo
-20130813 Quitar concepto 41 crear deposito
 20130813 En frmInit poner también actualizar ddatos, para investments, incluso dividendos y bolsas para futuras versiones
 20130813 Quitar concepto.strct, ya no hace falta con objetos
+20130813 Cuando se intenta editar una opercuenta desde una inversión inactiva, peta, ver que hacer si desactivar en inactivas
+20130813 Quitar dividendos y renta fija de conceptos de opercuenta a la hora de insertar no a la hora de visualizar
+20130813 No se puede activar una cuenta o inversión, si la cuenta o entidad bancaria es inactiva, ponerlas todas a activas
+20130813 Poder visualizar tarjetas inactivas
