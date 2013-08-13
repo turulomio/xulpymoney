@@ -9,7 +9,7 @@ from frmTraspasoValores import *
 from libxulpymoney import *
 
 class frmInversionesEstudio(QDialog, Ui_frmInversionesEstudio):
-    def __init__(self, cfg, cuentas, inversiones,  investments,  selInversion=None,  parent=None):
+    def __init__(self, cfg, selInversion=None,  parent=None):
         """Cuentas es un set cuentas"""
         """TIPOS DE ENTRADAS:        
          1   : Inserción de Opercuentas
@@ -18,9 +18,6 @@ class frmInversionesEstudio(QDialog, Ui_frmInversionesEstudio):
         self.setupUi(self)
         self.showMaximized()
         self.cfg=cfg
-        self.cfg.data.cuentas_active=cuentas
-        self.cfg.data.inversiones_active=inversiones
-        self.cfg.data.investments_active=investments##Para modificar investments
         self.selInversion=selInversion
         
 #        self.currentIndex=79329
@@ -53,8 +50,6 @@ class frmInversionesEstudio(QDialog, Ui_frmInversionesEstudio):
             self.ise.setSelected(self.selInversion.investment)
             self.cmdPuntoVenta.setEnabled(True)
 
-#        self.tblOperaciones.settings("frmInversionesEstudio",  self.cfg.file_ui)
-#        self.tblOperaciones.setColumnHidden(0, True)    
         self.tblInversionHistorica.settings("frmInversionesEstudio",  self.cfg.file_ui)
         self.tblDividendos.settings("frmInversionesEstudio",  self.cfg.file_ui)
         
