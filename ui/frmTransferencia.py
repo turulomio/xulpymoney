@@ -14,15 +14,15 @@ class frmTransferencia(QDialog, Ui_frmTransferencia):
         self.destino=destino
         
         self.load_data_from_db()
-        self.data_cuentas.load_qcombobox(self.cmbOrigen,  origen)
-        self.data_cuentas.load_qcombobox(self.cmbDestino,  destino)
+        self.cfg.data.cuentas_active.load_qcombobox(self.cmbOrigen,  origen)
+        self.cfg.data.cuentas_active.load_qcombobox(self.cmbDestino,  destino)
 
     def load_data_from_db(self):
         inicio=datetime.datetime.now()
         self.data_ebs=SetEntidadesBancarias(self.cfg)
-        self.data_ebs.load_from_db("select * from entidadesbancarias where eb_activa=true")
-        self.data_cuentas=SetCuentas(self.cfg, self.data_ebs)
-        self.data_cuentas.load_from_db("select * from cuentas where cu_activa=true")
+        self.cfg.data.ebs_active.load_from_db("select * from entidadesbancarias where eb_activa=true")
+        self.cfg.data.cuentas_active=SetCuentas(self.cfg, self.data_ebs)
+        self.cfg.data.cuentas_active.load_from_db("select * from cuentas where cu_activa=true")
         print("\n","Cargando data en frmTransferencia",  datetime.datetime.now()-inicio)
 
     def on_cmd_pressed(self):
@@ -45,7 +45,7 @@ class frmTransferencia(QDialog, Ui_frmTransferencia):
             m.exec_()             
             return 
             
-        Cuenta(self.cfg).transferencia(fecha,  self.data_cuentas.find(id_origen), self.data_cuentas.find(id_destino),  importe,  comision)
+        Cuenta(self.cfg).transferencia(fecha,  self.cfg.data.cuentas_active.find(id_origen), self.cfg.data.cuentas_active.find(id_destino),  importe,  comision)
         self.cfg.con.commit()##Para commit la transferencia   
         
         self.done(0)

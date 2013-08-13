@@ -11,36 +11,12 @@ class wdgCuentas(QWidget, Ui_wdgCuentas):
         self.cfg=cfg
         self.tblCuentas.settings("wdgCuentas",  self.cfg.file_ui)
         self.tblCuentas.setColumnHidden(0, True)
-        self.load_data_from_db()
-        self.cuentas=self.data_cuentas.arr
+        self.cuentas=self.cfg.data.cuentas_active.arr
         self.selCuenta=None
         self.load_table()
         self.loadedinactive=False
         
-        
-    def load_data_from_db(self):
-        inicio=datetime.datetime.now()
-        self.data_ebs=SetEntidadesBancarias(self.cfg)
-        self.data_ebs.load_from_db("select * from entidadesbancarias where eb_activa=true")
-        self.data_cuentas=SetCuentas(self.cfg, self.data_ebs)
-        self.data_cuentas.load_from_db("select * from cuentas where cu_activa=true order by cuenta")
-        print("Cargando data en wdgCuentas",  datetime.datetime.now()-inicio)
-        
-    def load_inactive_data_from_db(self):
-        if self.loadedinactive==False:
-            inicio=datetime.datetime.now()
-            
-            self.data_ebs_inactive=SetEntidadesBancarias(self.cfg)
-            self.data_ebs_inactive.load_from_db("select * from entidadesbancarias where eb_activa=false")
-            self.data_ebs_all=self.data_ebs.union(self.data_ebs_inactive)
-            
-            self.data_cuentas_inactive=SetCuentas(self.cfg, self.data_ebs_all)
-            self.data_cuentas_inactive.load_from_db("select * from cuentas where cu_activa=false order by cuenta")
-            self.data_cuentas_all=self.data_cuentas.union(self.data_cuentas_inactive)
-            
-            print("Cargando inactive data en wdgCuentas",  datetime.datetime.now()-inicio)
-            self.loadedinactive=True
-        print (self.trUtf8("Ya se habían cargado las inactivas"))
+
     def load_table(self):
         """Función que carga la tabla de cuentas"""
         self.tblCuentas.setRowCount(len(self.cuentas));
@@ -57,7 +33,7 @@ class wdgCuentas(QWidget, Ui_wdgCuentas):
         
     @QtCore.pyqtSlot() 
     def on_actionCuentaEstudio_activated(self):
-        w=frmCuentasIBM(self.cfg, self.data_ebs,  self.data_cuentas,  self.selCuenta, self)
+        w=frmCuentasIBM(self.cfg,   self.selCuenta, self)
         w.exec_()
         self.on_chkInactivas_stateChanged(Qt.Unchecked)
         self.load_table()
@@ -89,11 +65,11 @@ class wdgCuentas(QWidget, Ui_wdgCuentas):
         self.load_table()
         
     def on_chkInactivas_stateChanged(self, state):
-        self.load_inactive_data_from_db()
+        self.cfg.data.load_inactives()
         if state==Qt.Unchecked:
-            self.cuentas=self.data_cuentas.arr
+            self.cuentas=self.cfg.data.cuentas_active.arr
         else:
-            self.cuentas=self.data_cuentas_inactive.arr
+            self.cuentas=self.cfg.data.cuentas_inactive.arr
         self.load_table()
         
 
@@ -113,18 +89,17 @@ class wdgCuentas(QWidget, Ui_wdgCuentas):
         
     @QtCore.pyqtSlot() 
     def on_actionActiva_activated(self):
-        self.load_inactive_data_from_db()#Debe tenerlas para borrarla luego
+        self.cfg.data.load_inactives()#Debe tenerlas para borrarla luego
         self.selCuenta.activa=self.chkInactivas.isChecked()
         self.selCuenta.save()
         self.cfg.con.commit()     
         #Recoloca en los Setcuentas
         if self.selCuenta.activa==True:#Está todavía en inactivas
-            self.data_cuentas.arr.append(self.selCuenta)
-            self.data_cuentas_inactive.arr.remove(self.selCuenta)
+            self.cfg.data.cuentas_active.arr.append(self.selCuenta)
+            self.cfg.data.cuentas_inactive.arr.remove(self.selCuenta)
         else:#Está todavía en activas
-            self.data_cuentas.arr.remove(self.selCuenta)
-            self.data_cuentas_inactive.arr.append(self.selCuenta)
-        self.data_cuentas_all=self.data_cuentas.union(self.data_cuentas_inactive)        
+            self.cfg.data.cuentas_active.arr.remove(self.selCuenta)
+            self.cfg.data.cuentas_inactive.arr.append(self.selCuenta)    
         self.load_table()
 
     @QtCore.pyqtSlot()  

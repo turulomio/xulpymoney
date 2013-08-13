@@ -18,13 +18,11 @@ class frmInversionesEstudio(QDialog, Ui_frmInversionesEstudio):
         self.setupUi(self)
         self.showMaximized()
         self.cfg=cfg
-        self.data_cuentas=cuentas
-        self.data_inversiones=inversiones
-        self.data_investments=investments##Para modificar investments
+        self.cfg.data.cuentas_active=cuentas
+        self.cfg.data.inversiones_active=inversiones
+        self.cfg.data.investments_active=investments##Para modificar investments
         self.selInversion=selInversion
         
-        self.indicereferencia=Investment(self.cfg).init__db(self.cfg.config.get("settings", "indicereferencia" ))
-        self.indicereferencia.result.get_basic()
 #        self.currentIndex=79329
         self.selDividendo=None#Dividendo seleccionado
         
@@ -60,7 +58,7 @@ class frmInversionesEstudio(QDialog, Ui_frmInversionesEstudio):
         self.tblInversionHistorica.settings("frmInversionesEstudio",  self.cfg.file_ui)
         self.tblDividendos.settings("frmInversionesEstudio",  self.cfg.file_ui)
         
-        self.data_cuentas.load_qcombobox(self.cmbCuenta)
+        self.cfg.data.cuentas_active.load_qcombobox(self.cmbCuenta)
 
         if self.tipo==2:
             self.cmbCuenta.setCurrentIndex(self.cmbCuenta.findData(self.selInversion.cuenta.id))
@@ -131,7 +129,7 @@ class frmInversionesEstudio(QDialog, Ui_frmInversionesEstudio):
         
     def update_tables(self):             
         #Actualiza el indice de referencia porque ha cambiado
-        self.selInversion.op_actual.get_valor_indicereferencia(self.indicereferencia)
+        self.selInversion.op_actual.get_valor_indicereferencia(self.cfg.data.indicereferencia)
         self.on_chkOperaciones_stateChanged(self.chkOperaciones.checkState())
         self.selInversion.op_actual.load_myqtablewidget(self.tblInversionActual,  "frmInversionesEstudio")
         self.selInversion.op_historica.load_myqtablewidget(self.tblInversionHistorica,  "frmInversionesEstudio"  )
@@ -201,7 +199,7 @@ class frmInversionesEstudio(QDialog, Ui_frmInversionesEstudio):
 
     @QtCore.pyqtSlot() 
     def on_cmdPuntoVenta_released(self):
-        f=frmPuntoVenta(self.cfg, self.data_inversiones, self.selInversion)
+        f=frmPuntoVenta(self.cfg, self.cfg.data.inversiones_active, self.selInversion)
         f.exec_()
         self.txtVenta.setText(str(f.puntoventa))
 
@@ -270,29 +268,29 @@ class frmInversionesEstudio(QDialog, Ui_frmInversionesEstudio):
         myquotesid=int(self.ise.selected.id)
         
         
-        if self.data_investments.find(myquotesid)==None:
+        if self.cfg.data.investments_active.find(myquotesid)==None:
             print ("Cargando otro mqinversiones")
             inv=Investment(self.cfg).init__db(myquotesid)
             inv.estimacionesdividendo.load_from_db()
             inv.result.get_basic()
-            self.data_investments.arr.append(inv)
+            self.cfg.data.investments_active.arr.append(inv)
             
         
 
         if self.tipo==1:        #insertar
-            i=Inversion(self.cfg).create(inversion,   venta,  self.data_cuentas.find(id_cuentas),  self.data_investments.find(myquotesid))      
+            i=Inversion(self.cfg).create(inversion,   venta,  self.cfg.data.cuentas_active.find(id_cuentas),  self.cfg.data.investments_active.find(myquotesid))      
             i.save()
             self.cfg.con.commit()
             ##Se añade a cfg y vincula. No carga datos porque myquotesid debe existir            
             #Lo añade con las operaciones vacias pero calculadas.
             i.op=SetInversionOperacion(self.cfg)
             (i.op_actual, i.op_historica)=i.op.calcular()
-            self.data_inversiones.arr.append(i)
+            self.cfg.data.inversiones_active.arr.append(i)
             self.done(0)
         elif self.tipo==2:
             self.selInversion.name=inversion
             self.selInversion.venta=venta
-            self.selInversion.investment=self.data_investments.find(myquotesid)
+            self.selInversion.investment=self.cfg.data.investments_active.find(myquotesid)
             self.selInversion.save()##El id y el id_cuentas no se pueden modificar
             self.cfg.con.commit()
             self.cmdInversion.setEnabled(False)

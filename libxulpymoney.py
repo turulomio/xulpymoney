@@ -113,7 +113,7 @@ class SetInversiones:
         
                         
     def union(self, list2):
-        """Devuelve un SetEbs con la union del set1 y del set2"""
+        """Devuelve un SetEntidadesBancarias con la union del set1 y del set2"""
         resultado=SetInversiones(self.cfg, self.cuentas, self.investments, self.indicereferencia)
         resultado.arr=self.arr+list2.arr
         return resultado
@@ -282,7 +282,7 @@ class SetInvestments:
         return None
                 
     def union(self, list2):
-        """Devuelve un SetEbs con la union del set1 y del set2"""
+        """Devuelve un SetEntidadesBancarias con la union del set1 y del set2"""
         resultado=SetInvestments(self.cfg)
         resultado.arr=self.arr+list2.arr
         return resultado
@@ -469,7 +469,7 @@ class SetCuentas:
     
             
     def union(self,  list2):
-        """Devuelve un SetEbs con la union del set1 y del set2"""
+        """Devuelve un SetEntidadesBancarias con la union del set1 y del set2"""
         resultado=SetCuentas(self.cfg, self.ebs)
         resultado.arr=self.arr+list2.arr
         return resultado
@@ -555,7 +555,7 @@ class SetEntidadesBancarias:
                 return a
                    
     def load_qcombobox(self, combo):
-        """Carga entidades bancarias en combo. Es un SetEbs"""
+        """Carga entidades bancarias en combo. Es un SetEntidadesBancarias"""
         self.sort()
         for e in self.arr:
             combo.addItem(e.name, e.id)   
@@ -564,7 +564,7 @@ class SetEntidadesBancarias:
         self.arr=sorted(self.arr, key=lambda e: e.name,  reverse=False) 
         
     def union(self,  list2):
-        """Devuelve un SetEbs con la union del set1 y del set2"""
+        """Devuelve un SetEntidadesBancarias con la union del set1 y del set2"""
         resultado=SetEntidadesBancarias(self.cfg)
         resultado.arr=self.arr+list2.arr
         return resultado
@@ -1414,6 +1414,76 @@ class CuentaOperacion:
         cur.close()
         self.cuenta.saldo_from_db()
         
+class DBData:
+    def __init__(self, cfg):
+        self.cfg=cfg
+        self.ebs_active=SetEntidadesBancarias(self.cfg)
+        self.ebs_inactive=SetEntidadesBancarias(self.cfg)
+        self.cuentas_active=None
+        self.cuentas_inactive=None
+        self.investments_active=None
+        self.investments_inactive=None
+        self.inversiones_active=None
+        self.inversiones_inactive=None
+        self.loaded_inactive=False
+        self.indicereferencia=None
+        
+    def load_actives(self):
+        inicio=datetime.datetime.now()
+        self.indicereferencia=Investment(self.cfg).init__db(self.cfg.config.get("settings", "indicereferencia" ))
+        self.indicereferencia.result.get_basic()
+        self.ebs_active=SetEntidadesBancarias(self.cfg)
+        self.ebs_active.load_from_db("select * from entidadesbancarias where eb_activa=true")
+        self.cuentas_active=SetCuentas(self.cfg, self.ebs_active)
+        self.cuentas_active.load_from_db("select * from cuentas where cu_activa=true")
+        self.investments_active=SetInvestments(self.cfg)
+        self.investments_active.load_from_inversiones_query("select distinct(myquotesid) from inversiones where in_activa=true")
+        self.inversiones_active=SetInversiones(self.cfg, self.cuentas_active, self.investments_active, self.indicereferencia)
+        self.inversiones_active.load_from_db("select * from inversiones where in_activa=true")
+        print("\n","Cargando actives",  datetime.datetime.now()-inicio)
+        
+    def load_inactives(self, force=False):
+        def load():
+            inicio=datetime.datetime.now()
+            
+            self.ebs_inactive=SetEntidadesBancarias(self.cfg)
+            self.ebs_inactive.load_from_db("select * from entidadesbancarias where eb_activa=false")
+            
+            self.cuentas_inactive=SetCuentas(self.cfg, self.ebs_all())
+            self.cuentas_inactive.load_from_db("select * from cuentas where cu_activa=false")
+            
+            self.investments_inactive=SetInvestments(self.cfg)
+            self.investments_inactive.load_from_inversiones_query("select distinct(myquotesid) from inversiones where in_activa=false")
+
+            self.inversiones_inactive=SetInversiones(self.cfg, self.cuentas_all(), self.investments_all(), self.indicereferencia)
+            self.inversiones_inactive.load_from_db("select * from inversiones where in_activa=false")
+            
+            print("\n","Cargando inactives",  datetime.datetime.now()-inicio)
+            self.loaded_inactive=True
+        #######################3
+        if force==False:
+            if self.loaded_inactive==True:
+                print ("Ya est´a cargada las inactives")
+                return
+            else:
+                load()
+        else:#No est´an cargadas
+            load()
+        
+    def reload(self):
+        self.load_actives()
+        self.load_inactives()
+        
+    def ebs_all(self):
+        return self.ebs_active.union(self.ebs_inactive)
+    def cuentas_all(self):
+        return self.cuentas_active.union(self.cuentas_inactive)
+    def inversiones_all(self):
+        return self.inversiones_active.union(self.inversiones_inactive)
+    def investments_all(self):
+        return self.investments_active.union(self.investments_inactive)
+
+        
 class Dividendo:
     def __init__(self, cfg):
         self.cfg=cfg
@@ -2007,8 +2077,10 @@ class Tarjeta:
         cur=self.cfg.con.cursor()
         if self.id==None:
             cur.execute("insert into tarjetas (tarjeta,id_cuentas,pagodiferido,saldomaximo,tj_activa,numero) values (%s, %s, %s,%s,%s,%s) returning id_tarjetas", (self.name, self.cuenta.id,  self.pagodiferido ,  self.saldomaximo, self.activa, self.numero))
+            self.id=cur.fetchone()[0]
         else:
             cur.execute("update tarjetas set tarjeta=%s, id_cuentas=%s, pagodiferido=%s, saldomaximo=%s, tj_activa=%s, numero=%s where id_tarjetas=%s", (self.name, self.cuenta.id,  self.pagodiferido ,  self.saldomaximo, self.activa, self.numero, self.id))
+
         cur.close()
         
     def saldo_pendiente(self):
@@ -2224,7 +2296,7 @@ class SetTarjetas:
         return resultado
                     
     def union(self,  list2, cuentasunion):
-        """Devuelve un SetEbs con la union del set1 y del set2"""
+        """Devuelve un SetEntidadesBancarias con la union del set1 y del set2"""
         resultado=SetTarjetas(self.cfg, cuentasunion)
         resultado.arr=self.arr+list2.arr
         return resultado
@@ -4708,6 +4780,7 @@ class ConfigXulpymoney(ConfigMyStock):
     def __init__(self):
         ConfigMyStock.__init__(self)
         self.con=None#Conexión a xulpymoney
+        self.data=DBData(self)
         
     def __del__(self):
         self.disconnect_myquotes(self.conms)
@@ -4728,6 +4801,7 @@ class ConfigXulpymoney(ConfigMyStock):
         self.localcurrency=self.currencies.find(self.config.get("settings", "localcurrency")) #Currency definido en config
 #        self.indicereferencia=Investment(self).init__db(self.config.get("settings", "indicereferencia" ))
 #        self.indicereferencia.result.get_basic()
+        self.data.load_actives()
         print(datetime.datetime.now()-inicio)
         
 

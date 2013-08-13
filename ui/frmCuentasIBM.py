@@ -6,7 +6,7 @@ from frmOperCuentas import *
 from frmTarjetasIBM import *
 
 class frmCuentasIBM(QDialog, Ui_frmCuentasIBM):
-    def __init__(self, cfg, ebs,  cuentas,  cuenta,  parent=None):
+    def __init__(self, cfg, cuenta,  parent=None):
         """
             selIdCuenta=None Inserción de cuentas
             selIdCuenta=X. Modificación de cuentas cuando click en cmd y resto de trabajos"""
@@ -17,11 +17,7 @@ class frmCuentasIBM(QDialog, Ui_frmCuentasIBM):
         
         self.cfg=cfg
         self.loadedinactive=False
-        
-        
-        self.data_ebs=ebs
-        self.data_cuentas=cuentas
-        
+                
         self.selOperCuenta=None #Registro de oper cuentas
         self.selTarjeta=None#Registro de Tarjeta seleccionada
         self.setSelOperTarjetas=set([])#Conjunto de oper tarjetas diferidas seleccionadas
@@ -42,7 +38,7 @@ class frmCuentasIBM(QDialog, Ui_frmCuentasIBM):
         self.calPago.setDate(QDate.currentDate())
         
         self.cfg.currencies.load_qcombobox(self.cmbCurrency)
-        self.data_ebs.load_qcombobox(self.cmbEB)
+        self.cfg.data.ebs_active.load_qcombobox(self.cmbEB)
                     
         if self.selCuenta==None:
             self.lblTitulo.setText(self.trUtf8("Datos de la nueva cuenta bancaria"))
@@ -76,30 +72,19 @@ class frmCuentasIBM(QDialog, Ui_frmCuentasIBM):
         
     def load_data_from_db(self):
         inicio=datetime.datetime.now()
-        self.data_tarjetas=SetTarjetas(self.cfg, self.data_cuentas)
+        self.data_tarjetas=SetTarjetas(self.cfg, self.cfg.data.cuentas_active)
         self.data_tarjetas.load_from_db("select * from tarjetas where tj_activa=true and id_cuentas={0}".format(self.selCuenta.id))
         print("\n","Cargando data en wdgInversiones",  datetime.datetime.now()-inicio)
             
     def load_inactive_data_from_db(self):
         if self.loadedinactive==False:
-            inicio=datetime.datetime.now()
-            
-            self.data_ebs_inactive=SetEntidadesBancarias(self.cfg)
-            self.data_ebs_inactive.load_from_db("select * from entidadesbancarias where eb_activa=false")
-            self.data_ebs_all=self.data_ebs.union(self.data_ebs_inactive)
-            
-            self.data_cuentas_inactive=SetCuentas(self.cfg, self.data_ebs_all)
-            self.data_cuentas_inactive.load_from_db("select * from cuentas where cu_activa=false")
-            self.data_cuentas_all=self.data_cuentas.union(self.data_cuentas_inactive)
-            
-            self.data_tarjetas_inactive=SetTarjetas(self.cfg, self.data_cuentas_all)
+            inicio=datetime.datetime.now()            
+            self.data_tarjetas_inactive=SetTarjetas(self.cfg, self.cfg.data.cuentas_all())
             self.data_tarjetas_inactive.load_from_db("select * from tarjetas where tj_activa=false and id_cuentas={0}".format(self.selCuenta.id))
-            self.data_tarjetas_all=self.data_tarjetas.union(self.data_tarjetas_inactive, self.data_cuentas_all)
-
-            
-            
+            self.data_tarjetas_all=self.data_tarjetas.union(self.data_tarjetas_inactive, self.cfg.data.cuentas_all())
             print("\n","Cargando data en wdgInversiones",  datetime.datetime.now()-inicio)
             self.loadedinactive=True
+            
         print (self.trUtf8("Ya se habían cargado las inactivas"))
     def load_tabOperTarjetas(self):     
         self.selTarjeta.op_diferido=sorted(self.selTarjeta.op_diferido, key=lambda o:o.fecha)
@@ -136,17 +121,23 @@ class frmCuentasIBM(QDialog, Ui_frmCuentasIBM):
     def on_actionTarjetaModificar_activated(self):
         w=frmTarjetasIBM(self.cfg, self.selCuenta,self.data_tarjetas,  self.selTarjeta, self)
         w.exec_()
+        self.tblTarjetas.clearSelection()
         self.on_chkTarjetas_stateChanged(self.chkTarjetas.checkState())
         
     @QtCore.pyqtSlot() 
     def on_actionTarjetaActivar_activated(self):
 #        self.actionTarjetaActivar.setChecked()
-        if self.actionTarjetaActivar.isChecked():
+        if self.actionTarjetaActivar.isChecked():#Ha pasado de inactiva a activa
             self.selTarjeta.activa=True
+            self.data_tarjetas_inactive.arr.remove(self.selTarjeta)
+            self.data_tarjetas.arr.append(self.selTarjeta)
         else:
             self.selTarjeta.activa=False
+            self.data_tarjetas_inactive.arr.append(self.selTarjeta)
+            self.data_tarjetas.arr.remove(self.selTarjeta)
         self.selTarjeta.save()
         self.cfg.con.commit()
+        
         self.on_chkTarjetas_stateChanged(self.chkTarjetas.checkState())
                 
     @QtCore.pyqtSlot() 
@@ -158,6 +149,7 @@ class frmCuentasIBM(QDialog, Ui_frmCuentasIBM):
             m.exec_()                 
         self.cfg.con.commit()
         self.data_tarjetas.arr.remove(self.selTarjeta)
+        self.tblTarjetas.clearSelection()
         self.on_chkTarjetas_stateChanged(self.chkTarjetas.checkState())
 
     def on_chkTarjetas_stateChanged(self, state):
@@ -225,7 +217,7 @@ class frmCuentasIBM(QDialog, Ui_frmCuentasIBM):
 
     @QtCore.pyqtSlot() 
     def on_actionMovimientoNuevo_activated(self):
-        w=frmOperCuentas(self.cfg, self.data_cuentas,  self.selCuenta, None, None)
+        w=frmOperCuentas(self.cfg, self.cfg.data.cuentas_active,  self.selCuenta, None, None)
         self.connect(w, SIGNAL("OperCuentaIBMed"), self.on_wdgYM_changed)
         w.exec_()
         self.load_tblOperaciones()
@@ -235,7 +227,7 @@ class frmCuentasIBM(QDialog, Ui_frmCuentasIBM):
     @QtCore.pyqtSlot() 
     def on_actionMovimientoModificar_activated(self):
 
-        w=frmOperCuentas(self.cfg, self.data_cuentas,  self.selCuenta, self.selOperCuenta, None)
+        w=frmOperCuentas(self.cfg, self.cfg.data.cuentas_active,  self.selCuenta, self.selOperCuenta, None)
         self.connect(w, SIGNAL("OperCuentaIBMed"), self.on_wdgYM_changed)#Actualiza movimientos como si cmd
         w.exec_()
         self.load_tblOperaciones()
@@ -258,13 +250,13 @@ class frmCuentasIBM(QDialog, Ui_frmCuentasIBM):
     @QtCore.pyqtSlot() 
     def on_actionOperTarjetaNueva_activated(self):
         if self.selTarjeta.pagodiferido==False:
-            w=frmOperCuentas(self.cfg, self.data_cuentas, self.selCuenta, None)
+            w=frmOperCuentas(self.cfg, self.cfg.data.cuentas_active, self.selCuenta, None)
             self.connect(w, SIGNAL("OperCuentaIBMed"), self.on_wdgYM_changed)
             w.lblTitulo.setText(((self.selTarjeta.name)))
             w.txtComentario.setText(self.tr("Tarjeta {0}. ".format((self.selTarjeta.name))))
             w.exec_()
         else:            
-            w=frmOperCuentas(self.cfg, self.data_cuentas,  self.selCuenta, None, self.selTarjeta)
+            w=frmOperCuentas(self.cfg, self.cfg.data.cuentas_active,  self.selCuenta, None, self.selTarjeta)
             self.connect(w, SIGNAL("OperTarjetaIBMed"), self.load_tabOperTarjetas)
             w.lblTitulo.setText(self.tr("Tarjeta {0}".format((self.selTarjeta.name))))
             w.exec_()
@@ -274,7 +266,7 @@ class frmCuentasIBM(QDialog, Ui_frmCuentasIBM):
         #Como es unico
         for s in self.setSelOperTarjetas:
             selOperTarjeta=s
-        w=frmOperCuentas(self.cfg, self.data_cuentas,  self.selCuenta, None, self.selTarjeta, selOperTarjeta)
+        w=frmOperCuentas(self.cfg, self.cfg.data.cuentas_active,  self.selCuenta, None, self.selTarjeta, selOperTarjeta)
         self.connect(w, SIGNAL("OperTarjetaIBMed"), self.load_tabOperTarjetas)
         w.lblTitulo.setText(self.tr("Tarjeta {0}".format((self.selTarjeta.name))))
         w.exec_()
@@ -341,9 +333,9 @@ class frmCuentasIBM(QDialog, Ui_frmCuentasIBM):
             self.actionTarjetaModificar.setEnabled(True)
             self.actionTarjetaActivar.setEnabled(True)
             if self.selTarjeta.activa==True:
-                self.actionTarjetaActivar.setText(self.tr("Desactivar tarjeta"))
+                self.actionTarjetaActivar.setChecked(True)
             else:
-                self.actionTarjetaActivar.setText(self.tr("Activar tarjeta"))
+                self.actionTarjetaActivar.setChecked(False)
         menu.exec_(self.tblTarjetas.mapToGlobal(pos))
 
 
@@ -355,8 +347,9 @@ class frmCuentasIBM(QDialog, Ui_frmCuentasIBM):
         except:
             self.selTarjeta=None
             self.tblOperTarjetas.setRowCount(0)
-            return
             
+        if self.selTarjeta==None:
+            return
         if self.selTarjeta.pagodiferido==True:
             self.load_tabOperTarjetas()         
         else:

@@ -16,7 +16,6 @@ class wdgBancos(QWidget, Ui_wdgBancos):
         
         self.loadedinactive=False
         
-        self.load_data_from_db()
         
         self.ebs=None
         self.inversiones=None
@@ -27,44 +26,7 @@ class wdgBancos(QWidget, Ui_wdgBancos):
         self.tblInversiones.settings("wdgBancos",  self.cfg.file_ui)
         
         self.on_chkInactivas_stateChanged(Qt.Unchecked)#Carga eb
-                
-    def load_data_from_db(self):
-        inicio=datetime.datetime.now()
-        self.indicereferencia=Investment(self.cfg).init__db(self.cfg.config.get("settings", "indicereferencia" ))
-        self.indicereferencia.result.get_basic()
-        self.data_ebs=SetEntidadesBancarias(self.cfg)
-        self.data_ebs.load_from_db("select * from entidadesbancarias where eb_activa=true order by entidadbancaria")
-        self.data_cuentas=SetCuentas(self.cfg, self.data_ebs)
-        self.data_cuentas.load_from_db("select * from cuentas where cu_activa=true order by cuenta")
-        self.data_investments=SetInvestments(self.cfg)
-        self.data_investments.load_from_inversiones_query("select distinct(myquotesid) from inversiones where in_activa=true")
-        self.data_inversiones=SetInversiones(self.cfg, self.data_cuentas, self.data_investments, self.indicereferencia)
-        self.data_inversiones.load_from_db("select * from inversiones where in_activa=true order by inversion")
-        print("\n","Cargando data en wdgInversiones",  datetime.datetime.now()-inicio)
-            
-    def load_inactive_data_from_db(self):
-        if self.loadedinactive==False:
-            inicio=datetime.datetime.now()
-            
-            self.data_ebs_inactive=SetEntidadesBancarias(self.cfg)
-            self.data_ebs_inactive.load_from_db("select * from entidadesbancarias where eb_activa=false order by entidadbancaria")
-            self.data_ebs_all=self.data_ebs.union(self.data_ebs_inactive)
-            
-            self.data_cuentas_inactive=SetCuentas(self.cfg, self.data_ebs_all)
-            self.data_cuentas_inactive.load_from_db("select * from cuentas where cu_activa=false order by cuenta")
-            self.data_cuentas_all=self.data_cuentas.union(self.data_cuentas_inactive)
-            
-            self.data_investments_inactive=SetInvestments(self.cfg)
-            self.data_investments_inactive.load_from_inversiones_query("select distinct(myquotesid) from inversiones where in_activa=false")
-            self.data_investments_all=self.data_investments.union(self.data_investments_inactive)
-            
-            self.data_inversiones_inactive=SetInversiones(self.cfg, self.data_cuentas_all, self.data_investments_all, self.indicereferencia)
-            self.data_inversiones_inactive.load_from_db("select * from inversiones where in_activa=false order by inversion")
-            self.data_inversiones_all=self.data_inversiones.union(self.data_inversiones_inactive)
-            
-            print("\n","Cargando data en wdgInversiones",  datetime.datetime.now()-inicio)
-            self.loadedinactive=True
-        print (self.trUtf8("Ya se habían cargado las inactivas"))
+
         
     def load_eb(self):
         self.tblEB.clearContents()
@@ -73,7 +35,7 @@ class wdgBancos(QWidget, Ui_wdgBancos):
         for i,  e in enumerate(self.ebs):
             self.tblEB.setItem(i, 0, QTableWidgetItem(e.name))
             self.tblEB.setItem(i, 1, qbool(e.activa))
-            saldo=e.saldo(self.data_cuentas, self.data_inversiones)
+            saldo=e.saldo(self.cfg.data.cuentas_active, self.cfg.data.inversiones_active)
             self.tblEB.setItem(i, 2, self.cfg.localcurrency.qtablewidgetitem(saldo))
             sumsaldos=sumsaldos+saldo     
         self.tblEB.setItem(len(self.ebs), 0, QTableWidgetItem(self.tr('TOTAL')))
@@ -107,11 +69,11 @@ class wdgBancos(QWidget, Ui_wdgBancos):
         
         
     def on_chkInactivas_stateChanged(self, state):
-        self.load_inactive_data_from_db()
+        self.cfg.data.load_inactives()
         if state==Qt.Unchecked:
-            self.ebs=self.data_ebs.arr
+            self.ebs=self.cfg.data.ebs_active.arr
         else:
-            self.ebs=self.data_ebs_inactive.arr
+            self.ebs=self.cfg.data.ebs_inactive.arr
         self.load_eb()
         self.tblEB.clearSelection()   
         self.tblCuentas.setRowCount(0)
@@ -141,12 +103,12 @@ class wdgBancos(QWidget, Ui_wdgBancos):
         if self.chkInactivas.checkState()==Qt.Unchecked:
             activas=True
             
-        for i in self.data_inversiones.arr:
+        for i in self.cfg.data.inversiones_active.arr:
             if i.activa==activas and i.cuenta.eb.id==self.selEB.id:
                 self.inversiones.append(i)
         self.inversiones=sorted(self.inversiones, key=lambda inve: inve.name,  reverse=False) 
         
-        for v in self.data_cuentas.arr:
+        for v in self.cfg.data.cuentas_active.arr:
             if v.activa==activas and v.eb.id==self.selEB.id:
                 self.cuentas.append(v)
         self.cuentas=sorted(self.cuentas, key=lambda c: c.name,  reverse=False) 
@@ -179,13 +141,13 @@ class wdgBancos(QWidget, Ui_wdgBancos):
         
     @QtCore.pyqtSlot() 
     def on_actionCuentaEstudio_activated(self):
-        w=frmCuentasIBM(self.cfg, self.data_ebs,  self.data_cuentas, self.selCuenta)
+        w=frmCuentasIBM(self.cfg, self.selCuenta)
         w.exec_()        
         self.load_cuentas()
 
     @QtCore.pyqtSlot() 
     def on_actionInversionEstudio_activated(self):
-        w=frmInversionesEstudio(self.cfg, self.data_cuentas, self.data_inversiones, self.data_investments,  self.selInversion)
+        w=frmInversionesEstudio(self.cfg,   self.selInversion)
         w.exec_()
         self.load_inversiones()
 
@@ -250,8 +212,8 @@ class wdgBancos(QWidget, Ui_wdgBancos):
             eb.save()
             self.cfg.con.commit()  
             self.ebs.append(eb)
-            self.data_ebs.arr.append(eb)
-            self.data_ebs.sort()
+            self.cfg.data.ebs_active.arr.append(eb)
+            self.cfg.data.ebs_active.sort()
             
             self.load_eb()
 
@@ -263,7 +225,7 @@ class wdgBancos(QWidget, Ui_wdgBancos):
             self.selEB.name=tipo[0]
             self.selEB.save()
             self.cfg.con.commit()
-            self.data_ebs.sort()
+            self.cfg.data.ebs_active.sort()
             
             self.load_eb()   
         
@@ -275,11 +237,10 @@ class wdgBancos(QWidget, Ui_wdgBancos):
         
         #Recoloca en los SetInversiones
         if self.selEB.activa==True:#Está todavía en inactivas
-            self.data_ebs.arr.append(self.selEB)
-            self.data_ebs_inactive.arr.remove(self.selEB)
+            self.cfg.data.ebs_active.arr.append(self.selEB)
+            self.cfg.data.ebs_inactive.arr.remove(self.selEB)
         else:#Está todavía en activas
-            self.data_ebs.arr.remove(self.selEB)
-            self.data_ebs_inactive.arr.append(self.selEB)
-        self.data_ebs_all=self.data_ebs.union(self.data_ebs_inactive)
+            self.cfg.data.ebs_active.arr.remove(self.selEB)
+            self.cfg.data.ebs_inactive.arr.append(self.selEB)
         
         self.load_eb()

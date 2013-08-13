@@ -9,7 +9,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>738</width>
+    <width>813</width>
     <height>607</height>
    </rect>
   </property>
@@ -754,8 +754,11 @@
    </property>
   </action>
   <action name="actionTarjetaActivar">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="text">
-    <string>ActivarTarjeta</string>
+    <string>Is active?</string>
    </property>
   </action>
   <action name="actionMovimientoModificar">
