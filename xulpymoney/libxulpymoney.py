@@ -1954,7 +1954,6 @@ class Tarjeta:
         self.cfg=cfg
         self.id=None
         self.name=None
-        self.id_cuentas=None
         self.cuenta=None
         self.pagodiferido=None
         self.saldomaximo=None
@@ -2003,13 +2002,21 @@ class Tarjeta:
             self.op_diferido.append(TarjetaOperacion(self.cfg).init__db_row(row, self.cfg.conceptos.find(row['id_conceptos']), self.cfg.tiposoperaciones.find(row['id_tiposoperaciones']), self))
         cur.close()
         
+        
+    def save(self):
+        cur=self.cfg.con.cursor()
+        if self.id==None:
+            cur.execute("insert into tarjetas (tarjeta,id_cuentas,pagodiferido,saldomaximo,tj_activa,numero) values (%s, %s, %s,%s,%s,%s) returning id_tarjetas", (self.name, self.cuenta.id,  self.pagodiferido ,  self.saldomaximo, self.activa, self.numero))
+        else:
+            cur.execute("update tarjetas set tarjeta=%s, id_cuentas=%s, pagodiferido=%s, saldomaximo=%s, tj_activa=%s, numero=%s where id_tarjetas=%s", (self.name, self.cuenta.id,  self.pagodiferido ,  self.saldomaximo, self.activa, self.numero, self.id))
+        cur.close()
+        
     def saldo_pendiente(self):
         """Es el saldo solo de operaciones difreidas sin pagar"""
         resultado=0
         for o in self.op_diferido:
             resultado=resultado+ o.importe
         return resultado
-
 
 class TarjetaOperacion:
     def __init__(self, cfg):
@@ -2215,7 +2222,12 @@ class SetTarjetas:
             if i.activa==activa:
                 resultado.append(i)
         return resultado
-        
+                    
+    def union(self,  list2, cuentasunion):
+        """Devuelve un SetEbs con la union del set1 y del set2"""
+        resultado=SetTarjetas(self.cfg, cuentasunion)
+        resultado.arr=self.arr+list2.arr
+        return resultado
         
         
 class SetTiposOperaciones:      

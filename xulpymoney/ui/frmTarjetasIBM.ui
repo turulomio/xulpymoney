@@ -9,15 +9,15 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>581</width>
-    <height>300</height>
+    <width>426</width>
+    <height>170</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Nueva tarjeta</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="../images/xulpymoney.qrc">
+   <iconset>
     <normaloff>:/xulpmoney/document-edit.png</normaloff>:/xulpmoney/document-edit.png</iconset>
   </property>
   <property name="modal">
@@ -85,7 +85,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QLineEdit" name="txtSaldoMaximo">
+        <widget class="myQLineEdit" name="txtSaldoMaximo">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -128,6 +128,13 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>myQLineEdit</class>
+   <extends>QLineEdit</extends>
+   <header location="global">myqlineedit</header>
+  </customwidget>
+ </customwidgets>
  <resources>
   <include location="../images/xulpymoney.qrc"/>
  </resources>
