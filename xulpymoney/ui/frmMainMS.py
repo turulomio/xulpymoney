@@ -37,14 +37,14 @@ class frmMainMS(QMainWindow, Ui_frmMainMS):#
 
         self.cfg.actualizar_memoria()
         
-        if Global(self.cfg).get_sourceforge_version()>version:
-            m=QMessageBox()
-            m.setText(QApplication.translate("myquotes","Hay una nueva versión publicada en http://myquotes.sourceforge.net"))
-            m.exec_()        
-        if Global(self.cfg).get_database_init_date()==str(datetime.date.today()):
-            m=QMessageBox()
-            m.setText(QApplication.translate("myquotes","La base de datos se acaba de iniciar.\n\nSe necesitan al menos 24 horas de funcionamiento del demonio myquotesd para que esta aplicación tenga todos los datos disponibles."))
-            m.exec_()       
+#        if Global(self.cfg).get_sourceforge_version()>version:
+#            m=QMessageBox()
+#            m.setText(QApplication.translate("myquotes","Hay una nueva versión publicada en http://myquotes.sourceforge.net"))
+#            m.exec_()        
+#        if Global(self.cfg).get_database_init_date()==str(datetime.date.today()):
+#            m=QMessageBox()
+#            m.setText(QApplication.translate("myquotes","La base de datos se acaba de iniciar.\n\nSe necesitan al menos 24 horas de funcionamiento del demonio myquotesd para que esta aplicación tenga todos los datos disponibles."))
+#            m.exec_()       
         
         self.w=wdgInversionesMS(self.cfg,  self.sqlvacio)
 

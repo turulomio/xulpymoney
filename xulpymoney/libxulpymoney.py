@@ -256,7 +256,8 @@ class SetInvestments:
         cur.close()
         
         ##Carga los investments
-        self.load_from_db("select * from investments where id in ("+lista+")" )
+        if len(lista)>0:
+            self.load_from_db("select * from investments where id in ("+lista+")" )
         
     def load_from_db(self, sql):
         """sql es una query sobre la tabla inversiones"""

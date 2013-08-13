@@ -8,12 +8,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4640"/>
+        <location filename="libxulpymoney.py" line="4641"/>
         <source>Error en la conexi&#xc3;&#xb3;n, vuelva a entrar</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4697"/>
+        <location filename="libxulpymoney.py" line="4698"/>
         <source>Error en la conexi&#xc3;&#xb3;n a xulpymoney, vuelva a entrar</source>
         <translation type="unfinished"></translation>
     </message>
@@ -21,207 +21,207 @@
 <context>
     <name>Core</name>
     <message>
-        <location filename="libxulpymoney.py" line="383"/>
+        <location filename="libxulpymoney.py" line="384"/>
         <source>Espa&#xc3;&#xb1;a</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="384"/>
+        <location filename="libxulpymoney.py" line="385"/>
         <source>B&#xc3;&#xa9;lgica</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="385"/>
+        <location filename="libxulpymoney.py" line="386"/>
         <source>China</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="386"/>
+        <location filename="libxulpymoney.py" line="387"/>
         <source>Alemania</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="387"/>
+        <location filename="libxulpymoney.py" line="388"/>
         <source>Reino Unido</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="388"/>
+        <location filename="libxulpymoney.py" line="389"/>
         <source>Europa</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="389"/>
+        <location filename="libxulpymoney.py" line="390"/>
         <source>Finlandia</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="390"/>
+        <location filename="libxulpymoney.py" line="391"/>
         <source>Francia</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="391"/>
+        <location filename="libxulpymoney.py" line="392"/>
         <source>Irlanda</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="392"/>
+        <location filename="libxulpymoney.py" line="393"/>
         <source>Italia</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="393"/>
+        <location filename="libxulpymoney.py" line="394"/>
         <source>Jap&#xc3;&#xb3;n</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="394"/>
+        <location filename="libxulpymoney.py" line="395"/>
         <source>Pa&#xc3;&#xad;ses Bajos</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="395"/>
+        <location filename="libxulpymoney.py" line="396"/>
         <source>Portugal</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="396"/>
+        <location filename="libxulpymoney.py" line="397"/>
         <source>Estados Unidos</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="463"/>
+        <location filename="libxulpymoney.py" line="464"/>
         <source>Yoanes chino</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="464"/>
+        <location filename="libxulpymoney.py" line="465"/>
         <source>Euro</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="465"/>
+        <location filename="libxulpymoney.py" line="466"/>
         <source>Libra esterlina</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="466"/>
+        <location filename="libxulpymoney.py" line="467"/>
         <source>Yen Japon&#xc3;&#xa9;s</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="467"/>
+        <location filename="libxulpymoney.py" line="468"/>
         <source>D&#xc3;&#xb3;lar americano</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="468"/>
+        <location filename="libxulpymoney.py" line="469"/>
         <source>Unidades</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4457"/>
+        <location filename="libxulpymoney.py" line="4458"/>
         <source>Acciones</source>
         <translation type="unfinished">Shares</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4458"/>
+        <location filename="libxulpymoney.py" line="4459"/>
         <source>Fondos de inversi&#xc3;&#xb3;n</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4459"/>
+        <location filename="libxulpymoney.py" line="4460"/>
         <source>&#xc3;&#xad;ndices</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4460"/>
+        <location filename="libxulpymoney.py" line="4461"/>
         <source>ETFs</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4461"/>
+        <location filename="libxulpymoney.py" line="4462"/>
         <source>Warrants</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4462"/>
+        <location filename="libxulpymoney.py" line="4463"/>
         <source>Divisas</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4463"/>
+        <location filename="libxulpymoney.py" line="4464"/>
         <source>Deuda P&#xc3;&#xba;blica</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4464"/>
+        <location filename="libxulpymoney.py" line="4465"/>
         <source>Planes de pensiones</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4465"/>
+        <location filename="libxulpymoney.py" line="4466"/>
         <source>Deuda Privada</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4466"/>
+        <location filename="libxulpymoney.py" line="4467"/>
         <source>Dep&#xc3;&#xb3;sitos</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4467"/>
+        <location filename="libxulpymoney.py" line="4468"/>
         <source>Cuentas bancarias</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="2385"/>
+        <location filename="libxulpymoney.py" line="2386"/>
         <source>No apalancado</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="2386"/>
+        <location filename="libxulpymoney.py" line="2387"/>
         <source>Apalancamiento variable (Warrants)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="2387"/>
+        <location filename="libxulpymoney.py" line="2388"/>
         <source>Apalancamiento x2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="2388"/>
+        <location filename="libxulpymoney.py" line="2389"/>
         <source>Apalancamiento x3</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="2389"/>
+        <location filename="libxulpymoney.py" line="2390"/>
         <source>Apalancamiento x4</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4815"/>
+        <location filename="libxulpymoney.py" line="4816"/>
         <source>Sourceforge version detected: %s</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4817"/>
+        <location filename="libxulpymoney.py" line="4818"/>
         <source>Error buscando la versi&#xc3;&#xb3;n actual de Sourceforge</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="296"/>
+        <location filename="libxulpymoney.py" line="297"/>
         <source>Put</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="297"/>
+        <location filename="libxulpymoney.py" line="298"/>
         <source>Call</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="298"/>
+        <location filename="libxulpymoney.py" line="299"/>
         <source>Inline</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1244,11 +1244,6 @@ correspondiente en la tabla</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmInit.py" line="26"/>
-        <source>Database created, please login again</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="ui/frmInit.py" line="19"/>
         <source>Error creating databases</source>
         <translation type="unfinished"></translation>
@@ -1276,6 +1271,61 @@ correspondiente en la tabla</source>
     <message>
         <location filename="ui/frmInit.py" line="75"/>
         <source>Cash</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/frmInit.py" line="76"/>
+        <source>Initiating bank account</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/frmInit.py" line="77"/>
+        <source>Transfer. Origin</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/frmInit.py" line="78"/>
+        <source>Transfer. Destination</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/frmInit.py" line="79"/>
+        <source>Purchase investment product</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/frmInit.py" line="80"/>
+        <source>Investment product sales</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/frmInit.py" line="81"/>
+        <source>Dividends</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/frmInit.py" line="82"/>
+        <source>Credit card billing</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/frmInit.py" line="83"/>
+        <source>Added shares</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/frmInit.py" line="84"/>
+        <source>Custody commission</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/frmInit.py" line="85"/>
+        <source>Dividends. Sale of rights</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/frmInit.py" line="26"/>
+        <source>Database created, please login in MyStocks or Xulpymoney</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2723,21 +2773,6 @@ seleccionados por el usuario</source>
     <message>
         <location filename="ui/investmentSelector.py" line="41"/>
         <source>No seleccionado</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>myquotes</name>
-    <message>
-        <location filename="ui/frmMainMS.py" line="42"/>
-        <source>Hay una nueva versi&#xc3;&#xb3;n publicada en http://myquotes.sourceforge.net</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/frmMainMS.py" line="46"/>
-        <source>La base de datos se acaba de iniciar.
-
-Se necesitan al menos 24 horas de funcionamiento del demonio myquotesd para que esta aplicaci&#xc3;&#xb3;n tenga todos los datos disponibles.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
