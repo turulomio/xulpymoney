@@ -6,8 +6,8 @@ MYDATABASE=${4:-mystocks}
 
 echo "Debe ejecutarse desde el directorio sql"
 pg_dump -s -U $MYUSER -h $MYHOST -p $MYPORT $MYDATABASE > myquotes.sql
-pg_dump -a -U $MYUSER -h $MYHOST -p $MYPORT $MYDATABASE -t investments > myquotes.data
-pg_dump -a -U $MYUSER -h $MYHOST -p $MYPORT $MYDATABASE -t bolsas >> myquotes.data
+pg_dump -a -U $MYUSER -h $MYHOST -p $MYPORT $MYDATABASE -t investments --insert > myquotes.data
+pg_dump -a -U $MYUSER -h $MYHOST -p $MYPORT $MYDATABASE -t bolsas --insert >> myquotes.data
 echo "update investments set deletable=true;" >> myquotes.data
 
 
