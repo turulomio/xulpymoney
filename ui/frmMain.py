@@ -17,6 +17,7 @@ from wdgInversiones import *
 from frmTablasAuxiliares import *
 from frmTransferencia import *
 from frmSettings import *
+from frmHelp import *
 
 class frmMain(QMainWindow, Ui_frmMain):
     """Clase principal del programa"""
@@ -156,6 +157,10 @@ class frmMain(QMainWindow, Ui_frmMain):
         self.layout.addWidget(self.w)
         self.w.show()
         
+    @QtCore.pyqtSlot()  
+    def on_actionHelp_activated(self):
+        w=frmHelp(self.cfg)
+        w.exec_()
     @QtCore.pyqtSlot()  
     def on_actionIndexRange_activated(self):
         self.w.close()
