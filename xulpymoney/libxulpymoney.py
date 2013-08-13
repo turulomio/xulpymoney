@@ -374,7 +374,6 @@ class SetConceptos:
             c=self.find(n)
             combo.addItem("{0} -- {1}".format(  c.name,  c.tipooperacion.name),  c.strct()  )
         if select!=None:
-            print ("Select",  select.strct())
             combo.setCurrentIndex(combo.findData(select.strct()))
 
     def find(self, id):

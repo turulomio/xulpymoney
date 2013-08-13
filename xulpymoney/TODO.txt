@@ -1,4 +1,4 @@
-20111214 Cuando se inicia cuenta nueva en un mes y se añade la suma de saldos falla por el inicio de mes anterior
+mc20111214 Cuando se inicia cuenta nueva en un mes y se añade la suma de saldos falla por el inicio de mes anterior
 
 20111201 En transferencias poner textos localizadosy ID vinculado a transferencia
 
@@ -37,3 +37,4 @@
 20130829 Quitar concepto liquidar inversion de frminit, de bd y de todo
 20130813 Quitar concepto 41 crear deposito
 20130813 En frmInit poner también actualizar ddatos, para investments, incluso dividendos y bolsas para futuras versiones
+20130813 Quitar concepto.strct, ya no hace falta con objetos
