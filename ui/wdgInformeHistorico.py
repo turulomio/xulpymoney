@@ -43,7 +43,7 @@ class wdgInformeHistorico(QWidget, Ui_wdgInformeHistorico):
         
     def load_added(self):
         operaciones=[]
-        for i in self.cfg.data.inversiones_active.arr:
+        for i in self.cfg.data.inversiones_all().arr:
             for o in i.op.arr:
                 if o.tipooperacion.id==6 and o.datetime.year==int(self.cmbYears.currentText()):
                     operaciones.append(o)    
@@ -61,7 +61,7 @@ class wdgInformeHistorico(QWidget, Ui_wdgInformeHistorico):
             sumsaldo=sumsaldo+saldo
             self.tblAdded.setItem(i, 0, qdatetime(o.datetime,  o.inversion.investment.bolsa.zone))
             self.tblAdded.setItem(i, 1, QTableWidgetItem(o.inversion.name))
-            self.tblAdded.setItem(i, 2, QTableWidgetItem(self.cfg.tiposoperaciones(6).name))
+            self.tblAdded.setItem(i, 2, QTableWidgetItem(self.cfg.tiposoperaciones.find(6).name))
             self.tblAdded.setItem(i, 3, qright(str(o.acciones)))
             self.tblAdded.setItem(i, 4, self.cfg.localcurrency.qtablewidgetitem(saldo))
         curms.close()
@@ -96,7 +96,7 @@ class wdgInformeHistorico(QWidget, Ui_wdgInformeHistorico):
 
     def load_historicas(self):
         operaciones=SetInversionOperacionHistorica(self.cfg)
-        for i in self.cfg.data.inversiones_active.arr:
+        for i in self.cfg.data.inversiones_all().arr:
             for o in i.op_historica.arr:
                 if o.fecha_venta.year==int(self.cmbYears.currentText()) and o.tipooperacion.id in (5, 8):#Venta y traspaso fondos inversion
                     operaciones.arr.append(o)
