@@ -14,7 +14,6 @@ class wdgBancos(QWidget, Ui_wdgBancos):
         self.selCuenta=None #id_cuentas
         self.selInversion=None #Registro
         
-        self.loadedinactive=False
         
         
         self.ebs=None
@@ -69,10 +68,10 @@ class wdgBancos(QWidget, Ui_wdgBancos):
         
         
     def on_chkInactivas_stateChanged(self, state):
-        self.cfg.data.load_inactives()
         if state==Qt.Unchecked:
             self.ebs=self.cfg.data.ebs_active.arr
         else:
+            self.cfg.data.load_inactives()
             self.ebs=self.cfg.data.ebs_inactive.arr
         self.load_eb()
         self.tblEB.clearSelection()   

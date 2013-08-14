@@ -355,11 +355,12 @@ class SetConceptos:
             self.dic_arr[str(row['id_conceptos'])]=Concepto(self.cfg).init__db_row(row, self.tiposoperaciones.find(row['id_tiposoperaciones']))
         cur.close()
             
-    def load_qcombobox(self, combo):
-        """Carga conceptos operaciones 1,2,3"""
+    def load_opercuentas_qcombobox(self, combo):
+        """Carga conceptos operaciones 1,2,3, menos dividendos y renta fija, no pueden ser editados, luego no se necesitan"""
         for c in self.list():
             if c.tipooperacion.id in (1, 2, 3):
-                combo.addItem("{0} -- {1}".format(  c.name,  c.tipooperacion.name),  c.strct()  )
+                if c.id not in (39, 50, 62, 63, 65, 66):
+                    combo.addItem("{0} -- {1}".format(  c.name,  c.tipooperacion.name),  c.strct()  )
 
     def load_dividend_qcombobox(self, combo,  select=None):
         """Select es un class Concepto"""
@@ -1680,6 +1681,14 @@ class EntidadBancaria:
         self.activa=row['eb_activa']
         return self
         
+    def qmessagebox_inactive(self):
+        if self.activa==False:
+            m=QMessageBox()
+            m.setIcon(QMessageBox.Information)
+            m.setText(QApplication.translate("Core", "The associated bank is not active. You must activate it first"))
+            m.exec_()    
+            return True
+        return False
     def save(self):
         """Función que inserta si self.id es nulo y actualiza si no es nulo"""
         cur=self.cfg.con.cursor()
@@ -1806,7 +1815,15 @@ class Cuenta:
         cuentaorigen.saldo_from_db()
         cuentadestino.saldo_from_db()
         cur.close()
-        
+    def qmessagebox_inactive(self):
+        if self.activa==False:
+            m=QMessageBox()
+            m.setIcon(QMessageBox.Information)
+            m.setText(QApplication.translate("Core", "The associated account is not active. You must activate it first"))
+            m.exec_()    
+            return True
+        return False
+            
 class Inversion:
     """Clase que encapsula todas las funciones que se pueden realizar con una Inversión
     
@@ -1980,6 +1997,14 @@ class Inversion:
                 Necesita haber cargado mq getbasic y operinversionesactual"""
         return self.saldo()-self.invertido()
         
+    def qmessagebox_inactive(self):
+        if self.activa==False:
+            m=QMessageBox()
+            m.setIcon(QMessageBox.Information)
+            m.setText(QApplication.translate("Core", "The associated investment is not active. You must activate it first"))
+            m.exec_()    
+            return True
+        return False
     def saldo(self, fecha=None):
         """Función que calcula el saldo de la inversión
             Si el curms es None se calcula el actual 
@@ -2075,6 +2100,14 @@ class Tarjeta:
             self.op_diferido.append(TarjetaOperacion(self.cfg).init__db_row(row, self.cfg.conceptos.find(row['id_conceptos']), self.cfg.tiposoperaciones.find(row['id_tiposoperaciones']), self))
         cur.close()
         
+    def qmessagebox_inactive(self):
+        if self.activa==False:
+            m=QMessageBox()
+            m.setIcon(QMessageBox.Information)
+            m.setText(QApplication.translate("Core", "The associated credit card is not active. You must activate it first"))
+            m.exec_()    
+            return True
+        return False
         
     def save(self):
         cur=self.cfg.con.cursor()
@@ -2886,6 +2919,7 @@ class DividendoEstimacion:
         else:
             self.init__create(investment, currentyear, None, None, None, None)
         return self
+            
             
     def save(self):
         """Función que comprueba si existe el registro para insertar o modificarlo según proceda"""

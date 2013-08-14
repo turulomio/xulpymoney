@@ -78,6 +78,9 @@ class wdgInversiones(QWidget, Ui_wdgInversiones):
 
     @QtCore.pyqtSlot() 
     def on_actionActiva_activated(self):
+        if self.selInversion.cuenta.eb.qmessagebox_inactive()  or self.selInversion.cuenta.qmessagebox_inactive():
+            return  
+        
         if self.actionActiva.isChecked()==True:
             self.selInversion.activa=True
         else:

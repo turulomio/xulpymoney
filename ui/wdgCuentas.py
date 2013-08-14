@@ -35,20 +35,21 @@ class wdgCuentas(QWidget, Ui_wdgCuentas):
     def on_actionCuentaEstudio_activated(self):
         w=frmCuentasIBM(self.cfg,   self.selCuenta, self)
         w.exec_()
-        self.on_chkInactivas_stateChanged(Qt.Unchecked)
+        self.on_chkInactivas_stateChanged(self.chkInactivas.checkState())
         self.load_table()
         
     @QtCore.pyqtSlot() 
     def on_actionCuentaNueva_activated(self):
         w=frmCuentasIBM(self.cfg, None)
         w.exec_()
-        self.on_chkInactivas_stateChanged(Qt.Unchecked)
+        self.on_chkInactivas_stateChanged(self.chkInactivas.checkState())
         self.load_table()
       
     @QtCore.pyqtSlot() 
     def on_actionCuentaBorrar_activated(self):
-        con=self.cfg.connect_xulpymoney()
-        cur = con.cursor()
+        if self.selCuenta.eb.qmessagebox_inactive() or self.selCuenta.qmessagebox_inactive():
+            return
+        cur = self.cfg.con.cursor()
         if self.selCuenta.es_borrable(cur)==False:
             m=QMessageBox()
             m.setIcon(QMessageBox.Information)
@@ -56,12 +57,11 @@ class wdgCuentas(QWidget, Ui_wdgCuentas):
             m.exec_()
         else:
             self.selCuenta.borrar(cur)
-            con.commit()
-            del self.cfg.dic_cuentas[str(self.selCuenta.id)]
+            self.cfg.con.commit()
+            self.cfg.data.cuentas_active.arr.remove(self.selCuenta)
             self.cuentas.remove(self.selCuenta)
         cur.close()
-        self.cfg.disconnect_xulpymoney(con)
-        self.on_chkInactivas_stateChanged(Qt.Unchecked)
+        self.on_chkInactivas_stateChanged(self.chkInactivas.checkState())
         self.load_table()
         
     def on_chkInactivas_stateChanged(self, state):
@@ -89,6 +89,9 @@ class wdgCuentas(QWidget, Ui_wdgCuentas):
         
     @QtCore.pyqtSlot() 
     def on_actionActiva_activated(self):
+        if self.selCuenta.eb.qmessagebox_inactive()==True:
+            return
+        
         self.cfg.data.load_inactives()#Debe tenerlas para borrarla luego
         self.selCuenta.activa=self.chkInactivas.isChecked()
         self.selCuenta.save()
@@ -104,6 +107,8 @@ class wdgCuentas(QWidget, Ui_wdgCuentas):
 
     @QtCore.pyqtSlot()  
     def on_actionTransferencia_activated(self):
+        if self.selCuenta.eb.qmessagebox_inactive() or self.selCuenta.qmessagebox_inactive():
+            return
         w=frmTransferencia(self.cfg, self.selCuenta)
         w.exec_()
         self.load_table()

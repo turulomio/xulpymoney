@@ -28,7 +28,7 @@
           </font>
          </property>
          <property name="text">
-          <string>Listado de inversiones</string>
+          <string>Investments list</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignCenter</set>
@@ -38,7 +38,7 @@
        <item>
         <widget class="QCheckBox" name="chkInactivas">
          <property name="text">
-          <string>Mostrar inversiones inactivas</string>
+          <string>Show inactive investments</string>
          </property>
         </widget>
        </item>
@@ -64,27 +64,27 @@
          </attribute>
          <column>
           <property name="text">
-           <string>Inversión</string>
+           <string>Investment</string>
           </property>
          </column>
          <column>
           <property name="text">
-           <string>Última fecha</string>
+           <string>Last datetime</string>
           </property>
          </column>
          <column>
           <property name="text">
-           <string>Último valor</string>
+           <string>Last value</string>
           </property>
          </column>
          <column>
           <property name="text">
-           <string>Dif. diaria</string>
+           <string>Daily difference</string>
           </property>
          </column>
          <column>
           <property name="text">
-           <string>% diario</string>
+           <string>% Intraday</string>
           </property>
          </column>
          <column>
@@ -208,10 +208,10 @@
     <bool>true</bool>
    </property>
    <property name="text">
-    <string>¿Está activa?</string>
+    <string>Is it active?</string>
    </property>
    <property name="toolTip">
-    <string>¿Está activa?</string>
+    <string>Is it active?</string>
    </property>
   </action>
   <action name="actionMyquotes">

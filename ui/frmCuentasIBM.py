@@ -78,7 +78,8 @@ class frmCuentasIBM(QDialog, Ui_frmCuentasIBM):
             
     def load_inactive_data_from_db(self):
         if self.loadedinactive==False:
-            inicio=datetime.datetime.now()            
+            inicio=datetime.datetime.now()        
+            self.cfg.data.load_inactives()
             self.data_tarjetas_inactive=SetTarjetas(self.cfg, self.cfg.data.cuentas_all())
             self.data_tarjetas_inactive.load_from_db("select * from tarjetas where tj_activa=false and id_cuentas={0}".format(self.selCuenta.id))
             self.data_tarjetas_all=self.data_tarjetas.union(self.data_tarjetas_inactive, self.cfg.data.cuentas_all())
@@ -126,7 +127,9 @@ class frmCuentasIBM(QDialog, Ui_frmCuentasIBM):
         
     @QtCore.pyqtSlot() 
     def on_actionTarjetaActivar_activated(self):
-#        self.actionTarjetaActivar.setChecked()
+        if self.selCuenta.qmessagebox_inactive() or self.selCuenta.eb.qmessagebox_inactive():
+            return
+            
         if self.actionTarjetaActivar.isChecked():#Ha pasado de inactiva a activa
             self.selTarjeta.activa=True
             self.data_tarjetas_inactive.arr.remove(self.selTarjeta)
@@ -285,7 +288,10 @@ class frmCuentasIBM(QDialog, Ui_frmCuentasIBM):
         self.cfg.disconnect_xulpymoney(con)              
         
 
-    def on_tblOperaciones_customContextMenuRequested(self,  pos):       
+    def on_tblOperaciones_customContextMenuRequested(self,  pos):      
+        if self.selCuenta.qmessagebox_inactive() or self.selCuenta.eb.qmessagebox_inactive():
+            return
+            
         if self.selOperCuenta==None:
             self.actionMovimientoBorrar.setEnabled(False)
             self.actionMovimientoModificar.setEnabled(False)   
@@ -301,6 +307,8 @@ class frmCuentasIBM(QDialog, Ui_frmCuentasIBM):
         menu.addAction(self.actionMovimientoNuevo)
         menu.addAction(self.actionMovimientoModificar)
         menu.addAction(self.actionMovimientoBorrar)
+        
+        
         menu.exec_(self.tblOperaciones.mapToGlobal(pos))
 
 
@@ -315,6 +323,8 @@ class frmCuentasIBM(QDialog, Ui_frmCuentasIBM):
         
 
     def on_tblTarjetas_customContextMenuRequested(self,  pos):
+        if self.selCuenta.qmessagebox_inactive():
+            return 
         menu=QMenu()
         menu.addAction(self.actionOperTarjetaNueva)
         menu.addSeparator()
@@ -360,7 +370,13 @@ class frmCuentasIBM(QDialog, Ui_frmCuentasIBM):
 
 
 
+
+
     def on_tblOperTarjetas_customContextMenuRequested(self,  pos):
+        
+        if self.selCuenta.qmessagebox_inactive() or self.selCuenta.eb.qmessagebox_inactive() or self.selTarjeta.qmessagebox_inactive():
+            return
+        
         if len(self.setSelOperTarjetas)!=1: # 0 o más de 1
             self.actionOperTarjetaBorrar.setEnabled(False)
             self.actionOperTarjetaModificar.setEnabled(False)
@@ -372,6 +388,10 @@ class frmCuentasIBM(QDialog, Ui_frmCuentasIBM):
         menu.addAction(self.actionOperTarjetaNueva)
         menu.addAction(self.actionOperTarjetaModificar)
         menu.addAction(self.actionOperTarjetaBorrar)
+        
+        
+            
+        
         menu.exec_(self.tblOperTarjetas.mapToGlobal(pos))
 
 
