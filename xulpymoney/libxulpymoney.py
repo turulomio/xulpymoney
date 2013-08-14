@@ -343,10 +343,10 @@ class SetConceptos:
         self.cfg=cfg     
         self.tiposoperaciones=tiposoperaciones
         
-    def strct2ct(self, strct):
-        """Returns Concepto y TipoOperacion of parameter string"""
-        (id_conceptos, id_tiposoperaciones)=strct.split(";")
-        return (self.cfg.conceptos.find(id_conceptos), self.cfg.tiposoperaciones.find(id_tiposoperaciones))
+#    def strct2ct(self, strct):
+#        """Returns Concepto y TipoOperacion of parameter string"""
+#        (id_conceptos, id_tiposoperaciones)=strct.split(";")
+#        return (self.cfg.conceptos.find(id_conceptos), self.cfg.tiposoperaciones.find(id_tiposoperaciones))
                  
     def load_from_db(self):
         cur=self.cfg.con.cursor()
@@ -360,22 +360,22 @@ class SetConceptos:
         for c in self.list():
             if c.tipooperacion.id in (1, 2, 3):
                 if c.id not in (39, 50, 62, 63, 65, 66):
-                    combo.addItem("{0} -- {1}".format(  c.name,  c.tipooperacion.name),  c.strct()  )
+                    combo.addItem("{0} -- {1}".format(  c.name,  c.tipooperacion.name),  c.id  )
 
     def load_dividend_qcombobox(self, combo,  select=None):
         """Select es un class Concepto"""
         for n in (39, 50,  62):
             c=self.find(n)
-            combo.addItem("{0} -- {1}".format(  c.name,  c.tipooperacion.name),  c.strct()   )
+            combo.addItem("{0} -- {1}".format(  c.name,  c.tipooperacion.name),  c.id   )
         if select!=None:
-            combo.setCurrentIndex(combo.findData(select.strct()))
+            combo.setCurrentIndex(combo.findData(select.id))
     def load_bonds_qcombobox(self, combo,  select=None):
         """Carga conceptos operaciones 1,2,3"""
         for n in (50, 63, 65, 66):
             c=self.find(n)
-            combo.addItem("{0} -- {1}".format(  c.name,  c.tipooperacion.name),  c.strct()  )
+            combo.addItem("{0} -- {1}".format(  c.name,  c.tipooperacion.name),  c.id )
         if select!=None:
-            combo.setCurrentIndex(combo.findData(select.strct()))
+            combo.setCurrentIndex(combo.findData(select.id))
 
     def find(self, id):
         return self.dic_arr[str(id)]
@@ -1276,11 +1276,11 @@ class Concepto:
         self.editable=None
 
     def __repr__(self):
-        return ("Instancia de Concepto: {0} ({1})".format( self.name, self.id))
+        return ("Instancia de Concepto: {0} -- {1} ({2})".format( self.name, self.tipooperacion.name,  self.id))
 
-    def strct(self):
-        """Junta en una string el concepto y el tipo separado por coma"""
-        return "{0};{1}".format(self.id, self.tipooperacion.id)
+#    def strct(self):
+#        """Junta en una string el concepto y el tipo separado por coma"""
+#        return "{0};{1}".format(self.id, self.tipooperacion.id)
         
 
     def init__create(self, name, tipooperacion, editable,  id=None):
@@ -1371,10 +1371,8 @@ class CuentaOperacion:
 
     def borrar(self):
         cur=self.cfg.con.cursor()
-        print ("cuenta borrar before",  self.cuenta.saldo)
         cur.execute("delete from opercuentas where id_opercuentas=%s", (self.id, ))
         self.cuenta.saldo_from_db()
-        print ("cuenta borrar after",  self.cuenta.saldo)
         cur.close()
         
     def comentariobonito(self):

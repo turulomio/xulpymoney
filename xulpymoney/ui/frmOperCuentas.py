@@ -30,7 +30,7 @@ class frmOperCuentas(QDialog, Ui_frmOperCuentas):
             self.cmbCuentas.hide()
             self.tipo=4            
             self.calendar.setSelectedDate(self.opertarjeta.fecha)
-            self.cmbConceptos.setCurrentIndex(self.cmbConceptos.findData(str(self.opertarjeta.concepto.id)+";"+str( self.opertarjeta.tipooperacion.id)  ))
+            self.cmbConceptos.setCurrentIndex(self.cmbConceptos.findData(self.opertarjeta.concepto.id))
             self.cmbCuentas.setCurrentIndex(self.cmbCuentas.findData(self.opertarjeta.tarjeta.cuenta.id))
             self.txtImporte.setText(str(self.opertarjeta.importe))
             self.txtComentario.setText(self.opertarjeta.comentario)
@@ -44,7 +44,7 @@ class frmOperCuentas(QDialog, Ui_frmOperCuentas):
             self.setWindowTitle(self.trUtf8("Modificación de un movimiento de cuenta"))
             self.lblTitulo.setText(self.trUtf8("Modificación de un movimiento de cuenta"))
             self.calendar.setSelectedDate(self.opercuenta.fecha)
-            self.cmbConceptos.setCurrentIndex(self.cmbConceptos.findData(str(self.opercuenta.concepto.id)+";"+str( self.opercuenta.tipooperacion.id)  ))
+            self.cmbConceptos.setCurrentIndex(self.cmbConceptos.findData(self.opercuenta.concepto.id))
             self.cmbCuentas.setCurrentIndex(self.cmbCuentas.findData(self.opercuenta.cuenta.id))
             self.txtImporte.setText(str(self.opercuenta.importe))
             self.txtComentario.setText((self.opercuenta.comentario))    
@@ -57,21 +57,19 @@ class frmOperCuentas(QDialog, Ui_frmOperCuentas):
         
     def on_cmd_released(self):
         fecha=self.calendar.selectedDate().toPyDate()
-        arr=self.cmbConceptos.itemData(self.cmbConceptos.currentIndex()).split(";")
-        id_conceptos=int(arr[0])
-        id_tiposoperaciones=int(arr[1])
-        importe=Decimal(self.txtImporte.text())
-        comentario=(self.txtComentario.text())        
+        concepto=self.cfg.conceptos.find(self.cmbConceptos.itemData(self.cmbConceptos.currentIndex()))
+        importe=self.txtImporte.decimal()
+        comentario=self.txtComentario.text()
         id_cuentas=self.cmbCuentas.itemData(self.cmbCuentas.currentIndex()) #Sólo se usará en 1 y 2.
         
-        if id_tiposoperaciones==1 and importe>0:
+        if concepto.tipooperacion.id==1 and importe>0:
             m=QMessageBox()
             m.setIcon(QMessageBox.Information)
             m.setText(self.trUtf8("Un gasto no puede tener un importe positivo"))
             m.exec_()    
             return
             
-        if id_tiposoperaciones==2 and importe<0:
+        if concepto.tipooperacion.id==2 and importe<0:
             m=QMessageBox()
             m.setIcon(QMessageBox.Information)
             m.setText(self.trUtf8("Un ingreso no puede tener un importe negativo"))
@@ -82,8 +80,8 @@ class frmOperCuentas(QDialog, Ui_frmOperCuentas):
             self.opercuenta=CuentaOperacion(self.cfg)
             self.opercuenta.cuenta=self.cuenta
             self.opercuenta.fecha=fecha
-            self.opercuenta.concepto=self.cfg.conceptos.find(id_conceptos)
-            self.opercuenta.tipooperacion=self.cfg.tiposoperaciones.find(id_tiposoperaciones)
+            self.opercuenta.concepto=concepto
+            self.opercuenta.tipooperacion=concepto.tipooperacion
             self.opercuenta.importe=importe
             self.opercuenta.comentario=comentario
             self.opercuenta.cuenta=self.cfg.data.cuentas_active.find(id_cuentas)#Se puede cambiar
@@ -92,8 +90,8 @@ class frmOperCuentas(QDialog, Ui_frmOperCuentas):
             self.emit(SIGNAL("OperCuentaIBMed"), ())
         elif self.tipo==2:            
             self.opercuenta.fecha=fecha
-            self.opercuenta.concepto=self.cfg.conceptos.find(id_conceptos)
-            self.opercuenta.tipooperacion=self.cfg.tiposoperaciones.find(id_tiposoperaciones)
+            self.opercuenta.concepto=concepto
+            self.opercuenta.tipooperacion=concepto.tipooperacion
             self.opercuenta.importe=importe
             self.opercuenta.comentario=comentario
             self.opercuenta.cuenta=self.cfg.data.cuentas_active.find(id_cuentas)#Se puede cambiar
@@ -109,8 +107,8 @@ class frmOperCuentas(QDialog, Ui_frmOperCuentas):
             self.emit(SIGNAL("OperTarjetaIBMed"), (True))
         elif self.tipo==4:            
             self.opertarjeta.fecha=fecha
-            self.opertarjeta.concepto=self.cfg.conceptos.find(id_conceptos)
-            self.opertarjeta.tipooperacion=self.cfg.tiposoperaciones.find(id_tiposoperaciones)
+            self.opertarjeta.concepto=concepto
+            self.opertarjeta.tipooperacion=concepto.tipooperacion
             self.opertarjeta.importe=importe
             self.opertarjeta.comentario=comentario
             self.opertarjeta.save()
