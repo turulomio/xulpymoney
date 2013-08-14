@@ -52,23 +52,13 @@ class frmMain(QMainWindow, Ui_frmMain):
             Investment(self.cfg).changeDeletable(  ids2protect,  False)
         self.cfg.conms.commit()
         
-#        self.tupdatedata=TUpdateData(self.cfg)
-#        self.tupdatedata.start()
-#        
-#        
-#        self.mytimer = QTimer()
-#        QObject.connect(self.mytimer, SIGNAL("timeout()"), self.update_quotes)
-#        self.mytimer.start(60000)      
-#
-#    def update_quotes(self):
-#        if self.tupdatedata.isAlive()==False:
-#            QCoreApplication.processEvents()
-#            self.tupdatedata=TUpdateData(self.cfg)
-#            self.tupdatedata.start()      
+        
+        
                 
     def __del__(self):
+        self.cfg.__del__()
+        self.close()
         print ("Saliendo de la aplicación")
-        del self.cfg
         
     @pyqtSignature("")
     def on_actionAcercaDe_activated(self):

@@ -1,8 +1,7 @@
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
-from Ui_frmDividendosIBM import *
 from libxulpymoney import *
-from decimal import Decimal
+from Ui_frmDividendosIBM import *
 
 class frmDividendosIBM(QDialog, Ui_frmDividendosIBM):
     def __init__(self, cfg, inversion, dividendo=None,  parent=None):
@@ -47,13 +46,13 @@ class frmDividendosIBM(QDialog, Ui_frmDividendosIBM):
         
     def calcular(self):
         try:
-            if self.txtBruto.decimal()<Decimal('0') or self.txtNeto.decimal()<Decimal('0'):
+            if self.txtBruto.decimal()<Decimal(0):
                 self.txtRetencion.setEnabled(False)
                 self.txtDPA.setEnabled(False)
                 self.txtComision.setEnabled(False)
-                self.txtRetencion.setText('0')
-                self.txtDPA.setText('0')
-                self.txtComision.setText('0')
+                self.txtRetencion.setText(0)
+                self.txtDPA.setText(0)
+                self.txtComision.Decimal(0)
                 self.neto=self.txtBruto.decimal()-self.txtComision.decimal()
                 self.tpc=0
             else:

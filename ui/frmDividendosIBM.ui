@@ -182,6 +182,12 @@
            <verstretch>0</verstretch>
           </sizepolicy>
          </property>
+         <property name="text">
+          <string>0</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
          <property name="readOnly">
           <bool>true</bool>
          </property>
@@ -330,6 +336,16 @@
    <header location="global">myqlineedit</header>
   </customwidget>
  </customwidgets>
+ <tabstops>
+  <tabstop>cal</tabstop>
+  <tabstop>cmb</tabstop>
+  <tabstop>txtBruto</tabstop>
+  <tabstop>txtRetencion</tabstop>
+  <tabstop>txtDPA</tabstop>
+  <tabstop>txtComision</tabstop>
+  <tabstop>cmd</tabstop>
+  <tabstop>txtNeto</tabstop>
+ </tabstops>
  <resources>
   <include location="../images/xulpymoney.qrc"/>
  </resources>
