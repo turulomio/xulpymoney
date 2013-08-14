@@ -1,7 +1,7 @@
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
-from Ui_frmInversionesIBM import *
 from libxulpymoney import *
+from Ui_frmInversionesIBM import *
 
 class frmInversionesIBM(QDialog, Ui_frmInversionesIBM):
     def __init__(self, cfg, inversion, operinversion,   parent=None):

@@ -1,13 +1,13 @@
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
-import datetime,  time,  pytz,   psycopg2,  psycopg2.extras,  sys,  codecs,  urllib.request,    os,  configparser,  inspect
+import datetime,  time,  pytz,   psycopg2,  psycopg2.extras,  sys,  codecs,  urllib.request,    os,  configparser,  inspect,  threading
 
 pathGraphIntraday=os.environ['HOME']+"/.myquotes/graphIntraday.png"
 pathGraphHistorical=os.environ['HOME']+"/.myquotes/graphHistorical.png"
 pathGraphPieTPC=os.environ['HOME']+"/.myquotes/graphPieTPC.png"
 
 from decimal import *
-version="20130724"
+version="20130814"
 
 class CuentaOperacionHeredadaInversion:
     """Clase parar trabajar con las opercuentas generadas automaticamente por los movimientos de las inversiones"""
@@ -1417,16 +1417,17 @@ class CuentaOperacion:
 class DBData:
     def __init__(self, cfg):
         self.cfg=cfg
-        self.ebs_active=SetEntidadesBancarias(self.cfg)
-        self.ebs_inactive=SetEntidadesBancarias(self.cfg)
-        self.cuentas_active=None
-        self.cuentas_inactive=None
-        self.investments_active=None
-        self.investments_inactive=None
-        self.inversiones_active=None
-        self.inversiones_inactive=None
+        
         self.loaded_inactive=False
-        self.indicereferencia=None
+                
+        self.tupdatedata=TUpdateData(self.cfg)
+        
+    def __del__(self):
+        self.tupdatedata.join()
+        print ("TUpdateData closed")
+        
+        
+        
         
     def load_actives(self):
         inicio=datetime.datetime.now()
@@ -1440,7 +1441,9 @@ class DBData:
         self.investments_active.load_from_inversiones_query("select distinct(myquotesid) from inversiones where in_activa=true")
         self.inversiones_active=SetInversiones(self.cfg, self.cuentas_active, self.investments_active, self.indicereferencia)
         self.inversiones_active.load_from_db("select * from inversiones where in_activa=true")
-        print("\n","Cargando actives",  datetime.datetime.now()-inicio)
+        print("\n")
+        self.tupdatedata.start()        
+        print("Cargando actives",  datetime.datetime.now()-inicio)
         
     def load_inactives(self, force=False):
         def load():
@@ -1460,7 +1463,7 @@ class DBData:
             
             print("\n","Cargando inactives",  datetime.datetime.now()-inicio)
             self.loaded_inactive=True
-        #######################3
+        #######################
         if force==False:
             if self.loaded_inactive==True:
                 print ("Ya est´a cargada las inactives")
@@ -4533,6 +4536,41 @@ class PriorityHistorical:
         self.name=name
         return self
         
+class TUpdateData(threading.Thread):
+    """Hilo que actualiza las investments, solo el getBasic, cualquier cambio no de last, deber´a ser desarrollado por c´odigo"""
+    def __init__(self, cfg):
+        threading.Thread.__init__(self)
+        self.cfg=cfg
+        
+    def run(self):
+        print ("TUpdateData started")
+        while True:
+            inicio=datetime.datetime.now()
+            
+            ##Selecting investments to update
+            if self.cfg.data.loaded_inactive==False:
+                investments=self.cfg.data.investments_active
+            else:
+                investments=self.cfg.data.investments_all()
+                
+            self.cfg.data.indicereferencia.result.get_basic()
+            
+            ##Update loop
+            for inv in investments.arr:
+                if self.cfg.closing==True:
+                    return
+                inv.result.get_basic()
+            print("TUpdateData loop took", datetime.datetime.now()-inicio)
+            
+            ##Wait loop
+            for i in range(60):
+                if self.cfg.closing==True:
+                    return
+                time.sleep(1)
+            
+            
+        
+
 
 class Type:
     def __init__(self):
@@ -4781,8 +4819,12 @@ class ConfigXulpymoney(ConfigMyStock):
         ConfigMyStock.__init__(self)
         self.con=None#Conexión a xulpymoney
         self.data=DBData(self)
+        self.closing=False#Used to close threads
         
     def __del__(self):
+        self.closing=True
+        self.data.__del__()
+        
         self.disconnect_myquotes(self.conms)
         self.disconnect_xulpymoney(self.con)
         
@@ -4793,14 +4835,12 @@ class ConfigXulpymoney(ConfigMyStock):
         Se vinculan todas"""
         super(ConfigXulpymoney, self).actualizar_memoria()
         inicio=datetime.datetime.now()
-        print ("Cargando estáticos")
+        print ("Loading static data")
         self.tiposoperaciones=SetTiposOperaciones(self)
         self.tiposoperaciones.load()
         self.conceptos=SetConceptos(self, self.tiposoperaciones)
         self.conceptos.load_from_db()
         self.localcurrency=self.currencies.find(self.config.get("settings", "localcurrency")) #Currency definido en config
-#        self.indicereferencia=Investment(self).init__db(self.config.get("settings", "indicereferencia" ))
-#        self.indicereferencia.result.get_basic()
         self.data.load_actives()
         print(datetime.datetime.now()-inicio)
         

@@ -32,3 +32,8 @@ class myQLineEdit(QLineEdit):
             return float(self.text())
         except:
             return None
+            
+    def setText(self, num):
+        """This funcion  overrides QLineEdit settext and lets enter numbers, int, float, decimals"""
+        super(myQLineEdit, self).setText(str(num))
+        
