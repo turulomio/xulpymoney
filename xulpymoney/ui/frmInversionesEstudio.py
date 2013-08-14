@@ -291,6 +291,10 @@ class frmInversionesEstudio(QDialog, Ui_frmInversionesEstudio):
             self.cmdInversion.setEnabled(False)
         
     def on_tblOperaciones_customContextMenuRequested(self,  pos):
+        
+        if self.selInversion.qmessagebox_inactive() or self.selInversion.cuenta.qmessagebox_inactive()or self.selInversion.eb.qmessagebox_inactive():
+            return
+        
         menu=QMenu()
         menu.addAction(self.actionMovimientoNuevo)
         menu.addAction(self.actionMovimientoModificar)
@@ -301,12 +305,17 @@ class frmInversionesEstudio(QDialog, Ui_frmInversionesEstudio):
         menu.exec_(self.tblOperaciones.mapToGlobal(pos))
 
     def on_tblInversionActual_customContextMenuRequested(self,  pos):
+        
+        if self.selInversion.qmessagebox_inactive() or self.selInversion.cuenta.qmessagebox_inactive() or self.selInversion.cuenta.eb.qmessagebox_inactive():
+            return
         menu=QMenu()
         menu.addAction(self.actionDesReinversion)
         menu.addSeparator()
         menu.addAction(self.actionMovimientoNuevo)
         menu.addSeparator()
         menu.addAction(self.actionTraspasoValores)
+        
+        
         menu.exec_(self.tblInversionActual.mapToGlobal(pos))
 
 
@@ -321,6 +330,9 @@ class frmInversionesEstudio(QDialog, Ui_frmInversionesEstudio):
         
         
     def on_tblDividendos_customContextMenuRequested(self,  pos):
+        if self.selInversion.qmessagebox_inactive() or self.selInversion.cuenta.qmessagebox_inactive()or self.selInversion.eb.qmessagebox_inactive():
+            return
+        
         if self.selDividendo==None:
             self.actionDividendoBorrar.setEnabled(False)
             self.actionDividendoModificar.setEnabled(False)

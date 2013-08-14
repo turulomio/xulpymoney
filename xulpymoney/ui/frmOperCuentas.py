@@ -21,7 +21,7 @@ class frmOperCuentas(QDialog, Ui_frmOperCuentas):
         self.opertarjeta=opertarjeta
         self.cfg.data.cuentas_active=cuentas
 
-        self.cfg.conceptos.load_qcombobox(self.cmbConceptos)
+        self.cfg.conceptos.load_opercuentas_qcombobox(self.cmbConceptos)
         self.cfg.data.cuentas_active.load_qcombobox(self.cmbCuentas)
 
         if opertarjeta!=None:
