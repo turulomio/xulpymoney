@@ -1,3 +1,9 @@
+CORE
+====
+
+
+XULPYMONEY
+==========
 20111201 En transferencias poner textos localizadosy ID vinculado a transferencia
 20120104 Hacer dialogo de split y contrasplit en myquotes para cotizaciones y en xulpymoney para operacciones
 20120320 Si no hay operinversiones ni dividendos la cuenta de una inversión debería poder cambiarse
@@ -16,13 +22,23 @@
 20111013 En las etiquetas de graficos poner el valor del máximo, minimo y apertura
 20111027 Hacer particiones a las tablas, quizas por años. http://www.postgresql.org/docs/9.1/static/ddl-partitioning.html
 20120217 En busquedas cuando se haga es:search, buscará en bolsa española
-20120307 Cuando haya ochl en los datos intradia, dibujar una raya de maximo y minimo gris discontinuo, con punto gris de inicio  y punto gris de final
-20120405 En la misma tabla de dividendos estimados poner el bpa, para poder calcular el PER
-20120801 Cambiar Yahoo por ticker
 20130103 Hacer desde interfaz, purga que deje los datos 1,2,3,4 o los ohcl que existan borrando los demás
 20130728 Poner en dividendos el gasto total en el concepto en el año seleccionado en el combo.
 20130729 Hacer que un error en config por nuevo tag no afecte a todas las configuraciones
 20130829 Meter el importe de inversion desinversion en config
 20130829 En punto de venta poner antes y después set
 20130829 Load dividendos de frmAnalisis ca<mbiar por Set
+
+
+
+MYSTOCKS
+========
+20120801 Cambiar Yahoo por ticker
+20130103 Hacer desde interfaz, purga que deje los datos 1,2,3,4 o los ohcl que existan borrando los demás
+20120405 En la misma tabla de dividendos estimados poner el bpa, para poder calcular el PER
+20120307 Cuando haya ochl en los datos intradia, dibujar una raya de maximo y minimo gris discontinuo, con punto gris de inicio  y punto gris de final
+
+
+XULPYMONEY_INIT
+===============
 20130813 En frmInit poner también actualizar ddatos, para investments, incluso dividendos y bolsas para futuras versiones
