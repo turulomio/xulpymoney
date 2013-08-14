@@ -26,4 +26,3 @@
 20130829 En punto de venta poner antes y después set
 20130829 Load dividendos de frmAnalisis ca<mbiar por Set
 20130813 En frmInit poner también actualizar ddatos, para investments, incluso dividendos y bolsas para futuras versiones
-20130813 Quitar concepto.strct, ya no hace falta con objetos

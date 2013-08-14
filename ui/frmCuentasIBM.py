@@ -229,7 +229,6 @@ class frmCuentasIBM(QDialog, Ui_frmCuentasIBM):
 
     @QtCore.pyqtSlot() 
     def on_actionMovimientoModificar_activated(self):
-
         w=frmOperCuentas(self.cfg, self.cfg.data.cuentas_active,  self.selCuenta, self.selOperCuenta, None)
         self.connect(w, SIGNAL("OperCuentaIBMed"), self.on_wdgYM_changed)#Actualiza movimientos como si cmd
         w.exec_()
@@ -239,12 +238,8 @@ class frmCuentasIBM(QDialog, Ui_frmCuentasIBM):
 
     @QtCore.pyqtSlot() 
     def on_actionMovimientoBorrar_activated(self):
-        con=self.cfg.connect_xulpymoney()
-        cur = con.cursor()      
-        self.selOperCuenta.borrar(cur) 
-        con.commit()
-        cur.close()     
-        self.cfg.disconnect_xulpymoney(con)            
+        self.selOperCuenta.borrar() 
+        self.cfg.con.commit()  
         self.opercuentas.remove(self.selOperCuenta)         
         self.load_tblOperaciones()
         self.tblOperaciones.clearSelection()
