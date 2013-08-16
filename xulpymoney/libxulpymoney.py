@@ -402,29 +402,32 @@ class SetConceptos:
         4) Monthly average from first operation
         
         Returns three fields:
-        1) dictionary arr, whith above values
+        1) dictionary arr, whith above values, sort by concepto.name
         2) total expenses of all concepts
         3) total average expenses of all conceptos
         """
         ##Fills column 0 and 1, 3 and gets totalexpenses
-        dic_arr={}
+        arr=[]
         totalexpenses=Decimal(0)
         totalmedia_mensual=Decimal(0)
         for k, v in self.dic_arr.items():
             thismonth=v.mensual(year, month)
+            if thismonth==Decimal(0):
+                continue
             totalexpenses=totalexpenses+thismonth
             media_mensual=v.media_mensual()
             totalmedia_mensual=totalmedia_mensual+media_mensual
-            dic_arr[k]=[v, thismonth, None,  media_mensual]
+            arr.append([v, thismonth, None,  media_mensual])
         
         ##Fills column 2 and calculates percentage
-        for  k, v in dic_arr.items():
+        for  v in arr:
             if totalexpenses==Decimal(0):
                 v[2]=Decimal(0)
             else:
                 v[2]=Decimal(100)*v[1]/totalexpenses
         
-        return (dic_arr, totalexpenses,  totalmedia_mensual)
+        arr=sorted(arr, key=lambda o:o[0].name)
+        return (arr, totalexpenses,  totalmedia_mensual)
             
 
 

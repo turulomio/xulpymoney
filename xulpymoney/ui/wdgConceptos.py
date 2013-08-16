@@ -22,52 +22,49 @@ class wdgConceptos(QWidget, Ui_wdgConceptos):
         self.on_wdgYM_changed()
         
     def load_gastos(self,  year,  month):
+        
+        (arr, totalexpenses,  totalaverageexpenses)=self.expenses.percentage_monthly(year, month)
         self.tblExpenses.clearContents()
-        self.tblExpenses.setRowCount(len(self.expenses.dic_arr)+1)
+        self.tblExpenses.setRowCount(len(arr)+1)
         
-        (dic, totalexpenses,  totalaverageexpenses)=self.expenses.percentage_monthly(year, month)
-        
-        
-        for i, c in enumerate(self.expenses.list()):
-            self.tblExpenses.setItem(i, 0, QTableWidgetItem(c.name))
-            self.tblExpenses.setItem(i, 2, self.cfg.localcurrency.qtablewidgetitem(dic[str(c.id)][1]))
-            self.tblExpenses.setItem(i, 3, qtpc(dic[str(c.id)][2]))
-            self.tblExpenses.setItem(i, 4, self.cfg.localcurrency.qtablewidgetitem(dic[str(c.id)][3]))
+        for i, a in enumerate(arr):
+            self.tblExpenses.setItem(i, 0, QTableWidgetItem(a[0].name))
+            self.tblExpenses.setItem(i, 2, self.cfg.localcurrency.qtablewidgetitem(a[1]))
+            self.tblExpenses.setItem(i, 3, qtpc(a[2]))
+            self.tblExpenses.setItem(i, 4, self.cfg.localcurrency.qtablewidgetitem(a[3]))
             
-            if dic[str(c.id)][1]!=0:
-                if dic[str(c.id)][1]>dic[str(c.id)][3]:
+            if a[1]!=0:
+                if a[1]>a[3]:
                     self.tblExpenses.item(i, 2).setBackgroundColor( QColor(182, 255, 182))          
                 else:
                     self.tblExpenses.item(i, 2).setBackgroundColor( QColor(255, 182, 182))      
                 
-        self.tblExpenses.setItem(len(self.expenses.dic_arr), 0, QTableWidgetItem(self.tr('TOTAL')))
-        self.tblExpenses.setItem(len(self.expenses.dic_arr), 2, self.cfg.localcurrency.qtablewidgetitem(totalexpenses))    
-        self.tblExpenses.setItem(len(self.expenses.dic_arr), 3, qtpc(100))    
-        self.tblExpenses.setItem(len(self.expenses.dic_arr), 4, self.cfg.localcurrency.qtablewidgetitem(totalaverageexpenses))       
+        self.tblExpenses.setItem(len(arr), 0, QTableWidgetItem(self.tr('TOTAL')))
+        self.tblExpenses.setItem(len(arr), 2, self.cfg.localcurrency.qtablewidgetitem(totalexpenses))    
+        self.tblExpenses.setItem(len(arr), 3, qtpc(100))    
+        self.tblExpenses.setItem(len(arr), 4, self.cfg.localcurrency.qtablewidgetitem(totalaverageexpenses))       
 
     def load_ingresos(self,  year,  month):
+        (arr, totalincomes,  totalaverageincomes)=self.incomes.percentage_monthly(year, month)
         self.tblIncomes.clearContents()
-        self.tblIncomes.setRowCount(len(self.incomes.dic_arr)+1)
+        self.tblIncomes.setRowCount(len(arr)+1)
         
-        (dic, totalincomes,  totalaverageincomes)=self.incomes.percentage_monthly(year, month)
-        
-        
-        for i, c in enumerate(self.incomes.list()):
-            self.tblIncomes.setItem(i, 0, QTableWidgetItem(c.name))
-            self.tblIncomes.setItem(i, 2, self.cfg.localcurrency.qtablewidgetitem(dic[str(c.id)][1]))
-            self.tblIncomes.setItem(i, 3, qtpc(dic[str(c.id)][2]))
-            self.tblIncomes.setItem(i, 4, self.cfg.localcurrency.qtablewidgetitem(dic[str(c.id)][3]))
+        for i, a in enumerate(arr):
+            self.tblIncomes.setItem(i, 0, QTableWidgetItem(a[0].name))
+            self.tblIncomes.setItem(i, 2, self.cfg.localcurrency.qtablewidgetitem(a[1]))
+            self.tblIncomes.setItem(i, 3, qtpc(a[2]))
+            self.tblIncomes.setItem(i, 4, self.cfg.localcurrency.qtablewidgetitem(a[3]))
             
-            if dic[str(c.id)][1]!=0:
-                if dic[str(c.id)][1]>dic[str(c.id)][3]:
+            if a[1]!=0:
+                if a[1]>a[3]:
                     self.tblIncomes.item(i, 2).setBackgroundColor( QColor(182, 255, 182))          
                 else:
                     self.tblIncomes.item(i, 2).setBackgroundColor( QColor(255, 182, 182))      
                 
-        self.tblIncomes.setItem(len(self.incomes.dic_arr), 0, QTableWidgetItem(self.tr('TOTAL')))
-        self.tblIncomes.setItem(len(self.incomes.dic_arr), 2, self.cfg.localcurrency.qtablewidgetitem(totalincomes))    
-        self.tblIncomes.setItem(len(self.incomes.dic_arr), 3, qtpc(100))    
-        self.tblIncomes.setItem(len(self.incomes.dic_arr), 4, self.cfg.localcurrency.qtablewidgetitem(totalaverageincomes))       
+        self.tblIncomes.setItem(len(arr), 0, QTableWidgetItem(self.tr('TOTAL')))
+        self.tblIncomes.setItem(len(arr), 2, self.cfg.localcurrency.qtablewidgetitem(totalincomes))    
+        self.tblIncomes.setItem(len(arr), 3, qtpc(100))    
+        self.tblIncomes.setItem(len(arr), 4, self.cfg.localcurrency.qtablewidgetitem(totalaverageincomes))         
 
 
         
