@@ -338,10 +338,10 @@ class SetBolsas:
         
         
 class SetConceptos:      
-    def __init__(self, cfg, tiposoperaciones):
+    def __init__(self, cfg):
         self.dic_arr={}
-        self.cfg=cfg     
-        self.tiposoperaciones=tiposoperaciones
+        self.cfg=cfg 
+#        self.cfg.tiposoperaciones=tiposoperaciones
         
 #    def strct2ct(self, strct):
 #        """Returns Concepto y TipoOperacion of parameter string"""
@@ -352,7 +352,7 @@ class SetConceptos:
         cur=self.cfg.con.cursor()
         cur.execute("Select * from conceptos")
         for row in cur:
-            self.dic_arr[str(row['id_conceptos'])]=Concepto(self.cfg).init__db_row(row, self.tiposoperaciones.find(row['id_tiposoperaciones']))
+            self.dic_arr[str(row['id_conceptos'])]=Concepto(self.cfg).init__db_row(row, self.cfg.tiposoperaciones.find(row['id_tiposoperaciones']))
         cur.close()
             
     def load_opercuentas_qcombobox(self, combo):
@@ -386,13 +386,46 @@ class SetConceptos:
         lista=sorted(lista, key=lambda c: c.name  ,  reverse=False)    
         return lista
 
-    def list_x_tipooperacion(self, id_tiposoperaciones):
-        resultado=[]
+    def clone_x_tipooperacion(self, id_tiposoperaciones):
+        resultado=SetConceptos(self.cfg)
         for k, v in self.dic_arr.items():
             if v.tipooperacion.id==id_tiposoperaciones:
-                resultado.append(v)
-        resultado=sorted(resultado, key=lambda c: c.name  ,  reverse=False)  
+                resultado.dic_arr[k]=v
         return resultado
+        
+        
+    def percentage_monthly(self, year, month):
+        """ Generates an arr with:
+        1) Concepto:
+        2) Monthly expense
+        3) Percentage expenses of all conceptos this month
+        4) Monthly average from first operation
+        
+        Returns three fields:
+        1) dictionary arr, whith above values
+        2) total expenses of all concepts
+        3) total average expenses of all conceptos
+        """
+        ##Fills column 0 and 1, 3 and gets totalexpenses
+        dic_arr={}
+        totalexpenses=Decimal(0)
+        totalmedia_mensual=Decimal(0)
+        for k, v in self.dic_arr.items():
+            thismonth=v.mensual(year, month)
+            totalexpenses=totalexpenses+thismonth
+            media_mensual=v.media_mensual()
+            totalmedia_mensual=totalmedia_mensual+media_mensual
+            dic_arr[k]=[v, thismonth, None,  media_mensual]
+        
+        ##Fills column 2 and calculates percentage
+        for  k, v in dic_arr.items():
+            if totalexpenses==Decimal(0):
+                v[2]=Decimal(0)
+            else:
+                v[2]=Decimal(100)*v[1]/totalexpenses
+        
+        return (dic_arr, totalexpenses,  totalmedia_mensual)
+            
 
 
 class SetCountries:
@@ -1326,15 +1359,16 @@ class Concepto:
         else:
             primerafecha=res['fecha']
         cur.execute("select sum(importe) as suma from opercuentas where id_conceptos=%s union select sum(importe) as suma from opertarjetas where id_conceptos=%s", (self.id, self.id))
-        suma=0
+        suma=Decimal(0)
         for i in cur:
             if i['suma']==None:
                 continue
             suma=suma+i['suma']
         cur.close()
-        return 30*suma/((datetime.date.today()-primerafecha).days+1)
+        return Decimal(30)*suma/((datetime.date.today()-primerafecha).days+1)
         
-    def mensual(self,   year,  month):            
+    def mensual(self,   year,  month):  
+        """Saca el gasto mensual de este concepto"""
         cur=self.cfg.con.cursor()
         cur.execute("select sum(importe) as suma from opercuentas where id_conceptos=%s and date_part('month',fecha)=%s and date_part('year', fecha)=%s union select sum(importe) as suma from opertarjetas where id_conceptos=%s  and date_part('month',fecha)=%s and date_part('year', fecha)=%s", (self.id,  month, year,  self.id,  month, year  ))
         suma=0
@@ -4870,7 +4904,7 @@ class ConfigXulpymoney(ConfigMyStock):
         print ("Loading static data")
         self.tiposoperaciones=SetTiposOperaciones(self)
         self.tiposoperaciones.load()
-        self.conceptos=SetConceptos(self, self.tiposoperaciones)
+        self.conceptos=SetConceptos(self)
         self.conceptos.load_from_db()
         self.localcurrency=self.currencies.find(self.config.get("settings", "localcurrency")) #Currency definido en config
         self.data.load_actives()

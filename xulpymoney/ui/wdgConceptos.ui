@@ -13,7 +13,152 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <layout class="QHBoxLayout" name="horizontalLayout_4">
+  <layout class="QVBoxLayout" name="verticalLayout_2">
+   <item>
+    <layout class="QVBoxLayout" name="verticalLayout">
+     <item>
+      <widget class="QLabel" name="lbl">
+       <property name="font">
+        <font>
+         <pointsize>14</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>Concepts report</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="wdgYearMonth" name="wdgYM" native="true"/>
+     </item>
+     <item>
+      <widget class="QTabWidget" name="tabWidget">
+       <property name="currentIndex">
+        <number>0</number>
+       </property>
+       <widget class="QWidget" name="tab">
+        <attribute name="title">
+         <string>Expenses</string>
+        </attribute>
+        <layout class="QHBoxLayout" name="horizontalLayout">
+         <item>
+          <widget class="myQTableWidget" name="tblExpenses">
+           <property name="contextMenuPolicy">
+            <enum>Qt::CustomContextMenu</enum>
+           </property>
+           <property name="alternatingRowColors">
+            <bool>true</bool>
+           </property>
+           <property name="selectionMode">
+            <enum>QAbstractItemView::SingleSelection</enum>
+           </property>
+           <property name="selectionBehavior">
+            <enum>QAbstractItemView::SelectRows</enum>
+           </property>
+           <property name="sortingEnabled">
+            <bool>true</bool>
+           </property>
+           <attribute name="verticalHeaderVisible">
+            <bool>false</bool>
+           </attribute>
+           <attribute name="verticalHeaderCascadingSectionResizes">
+            <bool>false</bool>
+           </attribute>
+           <column>
+            <property name="text">
+             <string>Concept</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string/>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>Monthly expenses</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>% Montly expenses</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>Monthly average</string>
+            </property>
+           </column>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QWidget" name="tab_2">
+        <attribute name="title">
+         <string>Income</string>
+        </attribute>
+        <layout class="QHBoxLayout" name="horizontalLayout_2">
+         <item>
+          <widget class="myQTableWidget" name="tblIncomes">
+           <property name="contextMenuPolicy">
+            <enum>Qt::CustomContextMenu</enum>
+           </property>
+           <property name="alternatingRowColors">
+            <bool>true</bool>
+           </property>
+           <property name="selectionMode">
+            <enum>QAbstractItemView::SingleSelection</enum>
+           </property>
+           <property name="selectionBehavior">
+            <enum>QAbstractItemView::SelectRows</enum>
+           </property>
+           <property name="sortingEnabled">
+            <bool>true</bool>
+           </property>
+           <attribute name="verticalHeaderVisible">
+            <bool>false</bool>
+           </attribute>
+           <attribute name="verticalHeaderCascadingSectionResizes">
+            <bool>false</bool>
+           </attribute>
+           <column>
+            <property name="text">
+             <string>Concept</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string/>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>Monthly expenses</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>% Montly expenses</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>Monthly average</string>
+            </property>
+           </column>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </widget>
+     </item>
+    </layout>
+   </item>
    <item>
     <widget class="QLabel" name="lblTotal">
      <property name="font">
@@ -30,224 +175,6 @@
       <set>Qt::AlignCenter</set>
      </property>
     </widget>
-   </item>
-   <item>
-    <layout class="QVBoxLayout" name="verticalLayout">
-     <item>
-      <widget class="QLabel" name="lbl">
-       <property name="font">
-        <font>
-         <pointsize>14</pointsize>
-         <weight>75</weight>
-         <bold>true</bold>
-        </font>
-       </property>
-       <property name="text">
-        <string>Estudio de conceptos</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignCenter</set>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <layout class="QHBoxLayout" name="horizontalLayout_3">
-       <item>
-        <widget class="QLabel" name="label_4">
-         <property name="text">
-          <string>Selecciona el mes y el año de los datos a visualizar</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QComboBox" name="cmbMonth">
-         <item>
-          <property name="text">
-           <string>Enero</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Febrero</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Marzo</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Abril</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Mayo</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Junio</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Julio</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Agosto</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Septiembre</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Octubre</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Noviembre</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Diciembre</string>
-          </property>
-         </item>
-        </widget>
-       </item>
-       <item>
-        <widget class="QComboBox" name="cmbYear"/>
-       </item>
-       <item>
-        <widget class="QToolButton" name="cmd">
-         <property name="icon">
-          <iconset resource="../images/xulpymoney.qrc">
-           <normaloff>:/xulpymoney/search.png</normaloff>:/xulpymoney/search.png</iconset>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </item>
-     <item>
-      <widget class="QTabWidget" name="tabWidget">
-       <property name="currentIndex">
-        <number>0</number>
-       </property>
-       <widget class="QWidget" name="tab">
-        <attribute name="title">
-         <string>Gastos</string>
-        </attribute>
-        <layout class="QHBoxLayout" name="horizontalLayout">
-         <item>
-          <widget class="myQTableWidget" name="tblGastos">
-           <property name="contextMenuPolicy">
-            <enum>Qt::CustomContextMenu</enum>
-           </property>
-           <property name="alternatingRowColors">
-            <bool>true</bool>
-           </property>
-           <property name="selectionMode">
-            <enum>QAbstractItemView::SingleSelection</enum>
-           </property>
-           <property name="selectionBehavior">
-            <enum>QAbstractItemView::SelectRows</enum>
-           </property>
-           <property name="sortingEnabled">
-            <bool>true</bool>
-           </property>
-           <attribute name="verticalHeaderVisible">
-            <bool>false</bool>
-           </attribute>
-           <attribute name="verticalHeaderCascadingSectionResizes">
-            <bool>false</bool>
-           </attribute>
-           <column>
-            <property name="text">
-             <string>Concepto</string>
-            </property>
-           </column>
-           <column>
-            <property name="text">
-             <string>Mensual</string>
-            </property>
-           </column>
-           <column>
-            <property name="text">
-             <string>% gastos mensuales</string>
-            </property>
-           </column>
-           <column>
-            <property name="text">
-             <string>Media mensual</string>
-            </property>
-           </column>
-          </widget>
-         </item>
-        </layout>
-       </widget>
-       <widget class="QWidget" name="tab_2">
-        <attribute name="title">
-         <string>Ingresos</string>
-        </attribute>
-        <layout class="QHBoxLayout" name="horizontalLayout_2">
-         <item>
-          <widget class="myQTableWidget" name="tblIngresos">
-           <property name="contextMenuPolicy">
-            <enum>Qt::CustomContextMenu</enum>
-           </property>
-           <property name="alternatingRowColors">
-            <bool>true</bool>
-           </property>
-           <property name="selectionMode">
-            <enum>QAbstractItemView::SingleSelection</enum>
-           </property>
-           <property name="selectionBehavior">
-            <enum>QAbstractItemView::SelectRows</enum>
-           </property>
-           <property name="sortingEnabled">
-            <bool>true</bool>
-           </property>
-           <attribute name="verticalHeaderVisible">
-            <bool>false</bool>
-           </attribute>
-           <attribute name="verticalHeaderCascadingSectionResizes">
-            <bool>false</bool>
-           </attribute>
-           <column>
-            <property name="text">
-             <string>Concepto</string>
-            </property>
-           </column>
-           <column>
-            <property name="text">
-             <string>Mensual</string>
-            </property>
-           </column>
-           <column>
-            <property name="text">
-             <string>% ingresos mensuales</string>
-            </property>
-           </column>
-           <column>
-            <property name="text">
-             <string>Media mensual</string>
-            </property>
-           </column>
-          </widget>
-         </item>
-        </layout>
-       </widget>
-      </widget>
-     </item>
-    </layout>
    </item>
   </layout>
   <action name="actionCuentaNueva">
@@ -280,6 +207,12 @@
    <class>myQTableWidget</class>
    <extends>QTableWidget</extends>
    <header location="global">myqtablewidget</header>
+  </customwidget>
+  <customwidget>
+   <class>wdgYearMonth</class>
+   <extends>QWidget</extends>
+   <header location="global">wdgYearMonth</header>
+   <container>1</container>
   </customwidget>
  </customwidgets>
  <resources>

@@ -73,7 +73,6 @@ class wdgInversionesMS(QWidget, Ui_wdgInversionesMS):
         tachado = QtGui.QFont()
         tachado.setStrikeOut(True)        #Fuente tachada
         for inv in self.investments:
-#            bolsa=self.cfg.bolsas[str(inv.id_bolsas)]
             self.tblInversiones.setItem(i, 0, QTableWidgetItem((str(inv.id))))
             self.tblInversiones.setItem(i, 1, QTableWidgetItem(str(inv.name).upper()))
             self.tblInversiones.item(i, 1).setIcon(inv.bolsa.country.qicon())
