@@ -49,7 +49,7 @@
      <item>
       <widget class="QTabWidget" name="tab">
        <property name="currentIndex">
-        <number>0</number>
+        <number>2</number>
        </property>
        <widget class="QWidget" name="tabDatos">
         <attribute name="icon">
@@ -57,7 +57,7 @@
           <normaloff>:/xulpymoney/bank.png</normaloff>:/xulpymoney/bank.png</iconset>
         </attribute>
         <attribute name="title">
-         <string>Datos de la Cuenta</string>
+         <string>Account data</string>
         </attribute>
         <layout class="QHBoxLayout" name="horizontalLayout_3">
          <item>
@@ -271,7 +271,7 @@
           <normaloff>:/xulpymoney/books.png</normaloff>:/xulpymoney/books.png</iconset>
         </attribute>
         <attribute name="title">
-         <string>Movimientos de la cuenta</string>
+         <string>Account movements</string>
         </attribute>
         <layout class="QHBoxLayout" name="horizontalLayout_7">
          <item>
@@ -369,7 +369,7 @@
           <normaloff>:/xulpymoney/visa2.png</normaloff>:/xulpymoney/visa2.png</iconset>
         </attribute>
         <attribute name="title">
-         <string>Tarjetas asociadas</string>
+         <string>Associated credit cards</string>
         </attribute>
         <layout class="QHBoxLayout" name="horizontalLayout_8">
          <item>
@@ -377,7 +377,7 @@
            <item>
             <widget class="QGroupBox" name="groupBox_3">
              <property name="title">
-              <string>Listado de tarjetas asociadas a la cuenta</string>
+              <string>Credit card list</string>
              </property>
              <layout class="QHBoxLayout" name="horizontalLayout_9">
               <item>
@@ -385,7 +385,7 @@
                 <item>
                  <widget class="QCheckBox" name="chkTarjetas">
                   <property name="text">
-                   <string>¿Mostrar tarjetas inactivas?</string>
+                   <string>Show inactive credit cards</string>
                   </property>
                  </widget>
                 </item>
@@ -408,17 +408,17 @@
                   </attribute>
                   <column>
                    <property name="text">
-                    <string>Tarjeta</string>
+                    <string>Credit card</string>
                    </property>
                   </column>
                   <column>
                    <property name="text">
-                    <string>Número</string>
+                    <string>Number</string>
                    </property>
                   </column>
                   <column>
                    <property name="text">
-                    <string>Activa</string>
+                    <string>Active</string>
                    </property>
                   </column>
                   <column>
@@ -489,12 +489,12 @@
                       </attribute>
                       <column>
                        <property name="text">
-                        <string>Fecha</string>
+                        <string>Date</string>
                        </property>
                       </column>
                       <column>
                        <property name="text">
-                        <string>Concepto</string>
+                        <string>Concept</string>
                        </property>
                       </column>
                       <column>
@@ -504,7 +504,7 @@
                       </column>
                       <column>
                        <property name="text">
-                        <string>Comentario</string>
+                        <string>Comment</string>
                        </property>
                       </column>
                      </widget>
