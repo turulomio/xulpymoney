@@ -81,6 +81,7 @@ class wdgInversiones(QWidget, Ui_wdgInversiones):
         if self.selInversion.cuenta.eb.qmessagebox_inactive()  or self.selInversion.cuenta.qmessagebox_inactive():
             return  
         
+        self.cfg.data.load_inactives()
         if self.actionActiva.isChecked()==True:
             self.selInversion.activa=True
         else:

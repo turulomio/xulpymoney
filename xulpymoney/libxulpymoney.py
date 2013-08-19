@@ -1680,7 +1680,7 @@ class InversionOperacion:
         self.inversion.op.arr.remove(self)
         (self.inversion.op_actual,  self.inversion.op_historica)=self.inversion.op.calcular()
         CuentaOperacionHeredadaInversion(self.cfg).actualizar_una_inversion(cur, cur2,  self.inversion.id)#Es una inversion ya que la id_operinversion ya no existe. Se ha borrado
-        self.inversion.cuenta.saldo_from_db(cur2)
+        self.inversion.cuenta.saldo_from_db()
         cur.close()
         cur2.close()
         
