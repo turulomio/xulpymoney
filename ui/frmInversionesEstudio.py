@@ -200,14 +200,8 @@ class frmInversionesEstudio(QDialog, Ui_frmInversionesEstudio):
 
     @QtCore.pyqtSlot() 
     def on_actionMovimientoBorrar_activated(self):
-        con=self.cfg.connect_xulpymoney()
-        cur = con.cursor()      
-        cur2 = con.cursor()  
-        self.selMovimiento.borrar(cur, cur2)
-        con.commit()
-        cur.close()     
-        cur2.close()     
-        self.cfg.disconnect_xulpymoney(con)             
+        self.selMovimiento.borrar()
+        self.cfg.con.commit()     
         self.update_tables()
 
     def on_chkDividendosHistoricos_stateChanged(self, state):
