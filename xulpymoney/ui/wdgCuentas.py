@@ -65,10 +65,10 @@ class wdgCuentas(QWidget, Ui_wdgCuentas):
         self.load_table()
         
     def on_chkInactivas_stateChanged(self, state):
-        self.cfg.data.load_inactives()
         if state==Qt.Unchecked:
             self.cuentas=self.cfg.data.cuentas_active.arr
         else:
+            self.cfg.data.load_inactives()
             self.cuentas=self.cfg.data.cuentas_inactive.arr
         self.load_table()
         

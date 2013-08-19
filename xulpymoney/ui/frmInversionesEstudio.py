@@ -292,7 +292,7 @@ class frmInversionesEstudio(QDialog, Ui_frmInversionesEstudio):
         
     def on_tblOperaciones_customContextMenuRequested(self,  pos):
         
-        if self.selInversion.qmessagebox_inactive() or self.selInversion.cuenta.qmessagebox_inactive()or self.selInversion.eb.qmessagebox_inactive():
+        if self.selInversion.qmessagebox_inactive() or self.selInversion.cuenta.qmessagebox_inactive()or self.selInversion.cuenta.eb.qmessagebox_inactive():
             return
         
         menu=QMenu()
