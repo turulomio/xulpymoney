@@ -192,8 +192,7 @@ class frmCuentasIBM(QDialog, Ui_frmCuentasIBM):
 
     @pyqtSlot()
     def on_wdgYM_changed(self):
-        con=self.cfg.connect_xulpymoney()
-        cur = con.cursor()      
+        cur = self.cfg.con.cursor()      
         self.opercuentas=[]
         self.saldoiniciomensual=self.selCuenta.saldo_from_db( str(datetime.date(self.wdgYM.year, self.wdgYM.month, 1)-datetime.timedelta(days=1)))         
         if self.saldoiniciomensual==None:
@@ -202,7 +201,6 @@ class frmCuentasIBM(QDialog, Ui_frmCuentasIBM):
         for o in cur:
             self.opercuentas.append(CuentaOperacion(self.cfg).init__db_row(o, self.cfg.conceptos.find(o['id_conceptos']), self.cfg.tiposoperaciones.find(o['id_tiposoperaciones']), self.selCuenta))
         cur.close()     
-        self.cfg.disconnect_xulpymoney(con)                 
         self.load_tblOperaciones()  
             
     def load_tblOperaciones(self):
@@ -424,7 +422,7 @@ class frmCuentasIBM(QDialog, Ui_frmCuentasIBM):
             self.selTarjeta.op_diferido.remove(o)
         self.cfg.con.commit()
         self.load_tabOperTarjetas()         
-        self.on_cmdMovimientos_released()    
+        self.on_wdgYM_changed()  
 
     
     def on_cmdDevolverPago_released(self):
