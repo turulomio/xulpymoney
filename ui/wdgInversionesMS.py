@@ -232,6 +232,8 @@ class wdgInversionesMS(QWidget, Ui_wdgInversionesMS):
                 self.actionFavoritos.setText(self.trUtf8("Añadir a favoritos"))
         menu.addSeparator()
         menu.addAction(self.actionInversionEstudio)
+        menu.addAction(self.actionPurge)
+        
         if self.selInvestment!=None:
             if self.selInvestment.id=='^IBEX':
                 menu.addSeparator()
@@ -302,7 +304,6 @@ class wdgInversionesMS(QWidget, Ui_wdgInversionesMS):
         
         if self.selectedRows==1:
             for i in self.tblInversiones.selectedItems():#itera por cada item no row.
-#                self.selInvestment.id=(self.tblInversiones.item(i.row(), 0).text())
                 self.selInvestment=self.investments[i.row()]
 
     @pyqtSignature("")
