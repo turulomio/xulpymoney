@@ -71,11 +71,11 @@
         <enum>QTabWidget::West</enum>
        </property>
        <property name="currentIndex">
-        <number>3</number>
+        <number>0</number>
        </property>
        <widget class="QWidget" name="tabInformacion">
         <attribute name="title">
-         <string>Información de la inversión</string>
+         <string>Investment information</string>
         </attribute>
         <layout class="QHBoxLayout" name="horizontalLayout_16">
          <item>
@@ -669,7 +669,7 @@
        </widget>
        <widget class="QWidget" name="tabGraficos">
         <attribute name="title">
-         <string>Gráficos</string>
+         <string>Charts</string>
         </attribute>
         <layout class="QHBoxLayout" name="horizontalLayout_6">
          <item>
@@ -1206,7 +1206,7 @@ correspondiente en la tabla</string>
               <normaloff>:/xulpymoney/coins.png</normaloff>:/xulpymoney/coins.png</iconset>
             </attribute>
             <attribute name="title">
-             <string>Dividendos</string>
+             <string>Dividends</string>
             </attribute>
             <layout class="QHBoxLayout" name="horizontalLayout_13">
              <item>
