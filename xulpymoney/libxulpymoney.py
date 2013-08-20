@@ -5331,6 +5331,12 @@ def qcenter(string):
     a.setTextAlignment(Qt.AlignVCenter|Qt.AlignCenter)
     return a
 
+def qmessagebox_developing():
+    m=QMessageBox()
+    m.setIcon(QMessageBox.Information)
+    m.setText(QApplication.translate("Core", "This option is being developed"))
+    m.exec_()    
+    
 def qright(string):
     a=QTableWidgetItem(str(string))
     a.setTextAlignment(Qt.AlignVCenter|Qt.AlignRight)

@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1102</width>
-    <height>748</height>
+    <width>1103</width>
+    <height>658</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -659,6 +659,13 @@
                  </widget>
                 </item>
                </layout>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="cmdSplit">
+               <property name="text">
+                <string>Make Split / Contrasplit</string>
+               </property>
               </widget>
              </item>
             </layout>

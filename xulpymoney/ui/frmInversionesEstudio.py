@@ -57,7 +57,7 @@ class frmInversionesEstudio(QDialog, Ui_frmInversionesEstudio):
 
         if self.tipo==2:
             self.cmbCuenta.setCurrentIndex(self.cmbCuenta.findData(self.selInversion.cuenta.id))
-            self.selMovimiento=0
+            self.selMovimiento=None
             self.on_chkOperaciones_stateChanged(Qt.Unchecked)
             self.update_tables()
  
@@ -116,9 +116,13 @@ class frmInversionesEstudio(QDialog, Ui_frmInversionesEstudio):
        
     def on_chkOperaciones_stateChanged(self, state):
         if state==Qt.Unchecked:
-            self.op=self.selInversion.op.clone_from_datetime(self.selInversion.op_actual.datetime_primera_operacion())
+            primera=self.selInversion.op_actual.datetime_primera_operacion()
+            if primera==None:
+                primera=self.cfg.localzone.now()
+            self.op=self.selInversion.op.clone_from_datetime(primera)
         else:
             self.op=self.selInversion.op
+        self.selMovimiento=None
         self.op.load_myqtablewidget(self.tblOperaciones, "frmInversionesEstudio")
             
         
@@ -175,13 +179,16 @@ class frmInversionesEstudio(QDialog, Ui_frmInversionesEstudio):
         w.exec_()
         self.update_tables() 
 
-                        
+    @QtCore.pyqtSlot() 
+    def on_actionSplit_activated(self):
+        qmessagebox_developing()
+        
     @QtCore.pyqtSlot() 
     def on_actionTraspasoValores_activated(self):
-
         w=frmTraspasoValores(self.cfg, self.selInversion, self)
         w.exec_()
         self.update_tables()                               
+
     @QtCore.pyqtSlot() 
     def on_actionDeshacerTraspasoValores_activated(self):
         if self.cfg.inversiones.traspaso_valores_deshacer(self.selMovimiento)==False:
@@ -285,17 +292,30 @@ class frmInversionesEstudio(QDialog, Ui_frmInversionesEstudio):
             self.cmdInversion.setEnabled(False)
         
     def on_tblOperaciones_customContextMenuRequested(self,  pos):
-        
         if self.selInversion.qmessagebox_inactive() or self.selInversion.cuenta.qmessagebox_inactive()or self.selInversion.cuenta.eb.qmessagebox_inactive():
             return
+            
+            
         
         menu=QMenu()
         menu.addAction(self.actionMovimientoNuevo)
+        
         menu.addAction(self.actionMovimientoModificar)
         menu.addAction(self.actionMovimientoBorrar)
-        if self.selMovimiento.tipooperacion.id==9:#Traspaso valores origen
-            menu.addSeparator()
-            menu.addAction(self.actionDeshacerTraspasoValores)
+        if self.selMovimiento==None:
+            self.actionMovimientoBorrar.setEnabled(False)
+            self.actionMovimientoModificar.setEnabled(False)
+        else:
+            self.actionMovimientoBorrar.setEnabled(True)
+            self.actionMovimientoModificar.setEnabled(True)
+        
+        if self.selMovimiento!=None:
+            if self.selMovimiento.tipooperacion.id==9:#Traspaso valores origen
+                menu.addSeparator()
+                menu.addAction(self.actionDeshacerTraspasoValores)
+                
+        menu.addSeparator()
+        menu.addAction(self.actionSplit)
         menu.exec_(self.tblOperaciones.mapToGlobal(pos))
 
     def on_tblInversionActual_customContextMenuRequested(self,  pos):
@@ -314,7 +334,6 @@ class frmInversionesEstudio(QDialog, Ui_frmInversionesEstudio):
 
 
     def on_tblOperaciones_itemSelectionChanged(self):
-#        self.selMovimiento=self.op.find[i.row()]
         try:
             for i in self.tblOperaciones.selectedItems():#itera por cada item no row.
                 self.selMovimiento=self.op.arr[i.row()]
