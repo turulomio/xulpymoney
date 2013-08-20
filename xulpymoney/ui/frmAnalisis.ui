@@ -10,7 +10,7 @@
     <x>0</x>
     <y>0</y>
     <width>1103</width>
-    <height>658</height>
+    <height>689</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -46,20 +46,6 @@
          </property>
          <property name="textInteractionFlags">
           <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByMouse</set>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QToolButton" name="cmdUpdate">
-         <property name="toolTip">
-          <string>Pulse para actualizar los datos</string>
-         </property>
-         <property name="text">
-          <string>...</string>
-         </property>
-         <property name="icon">
-          <iconset>
-           <normaloff>:/images/tools-wizard.png</normaloff>:/images/tools-wizard.png</iconset>
          </property>
         </widget>
        </item>
@@ -534,6 +520,19 @@
                  </property>
                 </widget>
                </item>
+               <item>
+                <spacer name="verticalSpacer">
+                 <property name="orientation">
+                  <enum>Qt::Vertical</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>20</width>
+                   <height>40</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
               </layout>
              </item>
             </layout>
@@ -659,6 +658,16 @@
                  </widget>
                 </item>
                </layout>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="cmdPurge">
+               <property name="toolTip">
+                <string>Purge investment from innecesary quotes. Leaves high, low, open and close quotes</string>
+               </property>
+               <property name="text">
+                <string>Purge investment</string>
+               </property>
               </widget>
              </item>
              <item>
@@ -1372,6 +1381,18 @@ correspondiente en la tabla</string>
    </property>
    <property name="toolTip">
     <string>Borrar estimación de dividendos</string>
+   </property>
+  </action>
+  <action name="actionPurgeDay">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/tools-wizard.png</normaloff>:/xulpymoney/tools-wizard.png</iconset>
+   </property>
+   <property name="text">
+    <string>Purge Day</string>
+   </property>
+   <property name="toolTip">
+    <string>Purge Day from innecesary quotes. Leaves high, low, open and close quotes</string>
    </property>
   </action>
  </widget>

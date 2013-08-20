@@ -56,6 +56,8 @@
     <addaction name="actionImportar"/>
     <addaction name="actionExportar"/>
     <addaction name="separator"/>
+    <addaction name="actionPurgeAll"/>
+    <addaction name="separator"/>
     <addaction name="actionSalir"/>
    </widget>
    <widget class="QMenu" name="menuIndices">
@@ -531,6 +533,18 @@ seleccionados por el usuario</string>
    </property>
    <property name="toolTip">
     <string>Inversiones con ISIN duplicado</string>
+   </property>
+  </action>
+  <action name="actionPurgeAll">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/tools-wizard.png</normaloff>:/xulpymoney/tools-wizard.png</iconset>
+   </property>
+   <property name="text">
+    <string>Purge all investments</string>
+   </property>
+   <property name="toolTip">
+    <string>Purge all investments</string>
    </property>
   </action>
  </widget>

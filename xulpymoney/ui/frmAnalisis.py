@@ -24,14 +24,7 @@ class frmAnalisis(QDialog, Ui_frmAnalisis):
 
         self.cfg=cfg
         self.investment=investment
-
-#        self.investment.result.=QuotesResult(self.cfg,self.investment)
-        
-        #Son usados para las tablas
-#        self.intradia=[]
         self.setSelIntraday=None
-#        self.ohclMonthly=[]# Se guarda porque luego se usa en load_mensuales
-#        self.investment.result.ohclYearly=[]# Se guarda porque luego se usa en load_mensuales
         
         self.selDate=None #Fecha seleccionado en datos historicos
         self.selDateTime=None #Datetime seleccionado para borrar quote no es el mismo procedimiento de borrado
@@ -69,13 +62,8 @@ class frmAnalisis(QDialog, Ui_frmAnalisis):
         self.cfg.currencies.load_qcombobox(self.cmbCurrency)
         self.cfg.apalancamientos.load_qcombobox(self.cmbApalancado)
         self.cfg.types.load_qcombobox(self.cmbTipo)
-        
-        self.update_due_to_quotes_change()
-#
-#        if self.investment.id!=None:#Si no está definido petaba el timer por no saber cual es
-#            self.mytimer = QTimer()
-#            QObject.connect(self.mytimer, SIGNAL("timeout()"), self.on_cmdUpdate_pressed     )    
-#            self.mytimer.start(60000)            
+
+        self.update_due_to_quotes_change()    
         
     def __load_information(self):
         def row_tblTPV(quote,  row):
@@ -204,7 +192,7 @@ class frmAnalisis(QDialog, Ui_frmAnalisis):
     def load_graphics(self):
         t2 = threading.Thread(target=self.canvasHistorical.load_data,  args=(self.investment,  self.investment.result))
         t2.start()
-        self.investment.result.get_intraday(self.calendar.selectedDate().toPyDate(), self.investment.bolsa.zone)
+        self.investment.result.intradia.load_from_db(self.calendar.selectedDate().toPyDate(), self.investment)
         if len(self.investment.result.intradia.arr)==0:
             self.tblIntradia.setRowCount(0)
             self.canvasIntraday.clear()
@@ -304,6 +292,12 @@ class frmAnalisis(QDialog, Ui_frmAnalisis):
 
 
     @pyqtSignature("")
+    def on_actionPurgeDay_activated(self):
+        self.investment.result.intradia.purge()
+        self.cfg.conms.commit()
+        self.load_graphics()#OHLC ya estaba cargado, no var´ia por lo que no uso update_due_to_quotes_change
+        
+    @pyqtSignature("")
     def on_actionQuoteNew_activated(self):
         w=frmQuotesIBM(self.cfg,  self.investment)
         w.exec_()   
@@ -326,6 +320,9 @@ class frmAnalisis(QDialog, Ui_frmAnalisis):
         self.load_graphics()
 
     def on_cmdSplit_pressed(self):
+        qmessagebox_developing()
+        
+    def on_cmdPurge_pressed(self):
         qmessagebox_developing()
         
     def on_cmdSave_pressed(self):
@@ -410,18 +407,20 @@ class frmAnalisis(QDialog, Ui_frmAnalisis):
         for item in f.selected.arr:
             self.cmbPriorityHistorical.addItem(item.name, item.id)
 
-#    def on_cmdUpdate_pressed(self):
-#        
-#        t1 = threading.Thread(target=self.load_data_from_db,   args=())
-#        t1.start()
-#        if t1.isAlive()==False:
-#            QCoreApplication.processEvents()
-#        t1.join()        
+
 
     def on_tblIntradia_customContextMenuRequested(self,  pos):
         menu=QMenu()
         menu.addAction(self.actionQuoteNew)
-        menu.addAction(self.actionQuoteDelete)
+
+        menu.addAction(self.actionQuoteDelete)        
+        if len (self.setSelIntraday)>0:
+            self.actionQuoteDelete.setEnabled(True)
+        else:
+            self.actionQuoteDelete.setEnabled(False)
+            
+        menu.addSeparator()
+        menu.addAction(self.actionPurgeDay)
         menu.exec_(self.tblIntradia.mapToGlobal(pos))
 
     def on_tblIntradia_itemSelectionChanged(self):

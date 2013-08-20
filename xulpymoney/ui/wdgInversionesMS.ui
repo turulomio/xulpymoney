@@ -288,6 +288,18 @@ sistema.</string>
     <string>Nueva estimación de dividendo</string>
    </property>
   </action>
+  <action name="actionPurge">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/tools-wizard.png</normaloff>:/xulpymoney/tools-wizard.png</iconset>
+   </property>
+   <property name="text">
+    <string>Purge investment</string>
+   </property>
+   <property name="toolTip">
+    <string>Deletes quotes innecesary. Leaves open, high, low and close quotes.</string>
+   </property>
+  </action>
  </widget>
  <customwidgets>
   <customwidget>
