@@ -260,6 +260,9 @@ class frmMainMS(QMainWindow, Ui_frmMainMS):#
         self.layout.addWidget(self.w)
         self.w.show()
 
+    @QtCore.pyqtSlot()  
+    def on_actionPurgeAll_activated(self):
+        qmessagebox_developing()
         
     @QtCore.pyqtSlot()  
     def on_actionRentaFija_activated(self):

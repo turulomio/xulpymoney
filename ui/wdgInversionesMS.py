@@ -306,6 +306,10 @@ class wdgInversionesMS(QWidget, Ui_wdgInversionesMS):
                 self.selInvestment=self.investments[i.row()]
 
     @pyqtSignature("")
+    def on_actionPurge_activated(self):
+        qmessagebox_developing()
+
+    @pyqtSignature("")
     def on_actionQuoteNew_activated(self):
         w=frmQuotesIBM(self.cfg,  self.selInvestment)
         w.exec_()               

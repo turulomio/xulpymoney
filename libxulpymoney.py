@@ -3916,6 +3916,102 @@ class SetQuotes:
         
     def append(self, quote):
         self.arr.append(quote)
+                
+class SetQuotesIntraday:
+    """Clase que agrupa quotes un una lista arr de una misma inversi´on y de un mismo d´ia. """
+    def __init__(self, cfg):
+        self.cfg=cfg
+        self.arr=[]
+        self.investment=None
+        self.date=None
+        
+    def load_from_db(self,  date, investment):
+        """Función que mete en setquotesintradia ordenado de objetos Quote, no es el ultimo d´ia es un d´ia"""
+        self.arr=[]
+        self.investment=investment
+        self.date=date
+        curms=self.cfg.conms.cursor()
+        iniciodia=day_start_from_date(date, self.investment.bolsa.zone)
+        siguientedia=iniciodia+datetime.timedelta(days=1)
+        curms.execute("select * from quotes where id=%s and datetime>=%s and datetime<%s order by datetime", (self.investment.id,  iniciodia, siguientedia))
+        for row in curms:
+            self.arr.append(Quote(self.cfg).init__db_row(row,  self.investment))
+        curms.close()
+        
+    def open(self):
+        """Devuelve el quote cuyo datetime es menor"""
+        if len(self.arr)>0:
+            return self.arr[0]
+            
+    def close(self):
+        """Devuelve el quote cuyo datetime es mayor"""
+        if len(self.arr)>0:
+            return self.arr[len(self.arr)-1]
+            
+    def high(self):
+        """Devuelve el quote cuyo quote es mayor"""
+        high=Quote(self.cfg).init__create(self.investment, day_start_from_date(self.date, self.investment.bolsa.zone), Decimal('0'))
+        for q in self.arr:
+            if q.quote>high.quote:
+                high=q
+        return high
+        
+    def low(self):
+        """Devuelve el quote cuyo quote es menor"""
+        low=Quote(self.cfg).init__create(self.investment, day_start_from_date(self.date, self.investment.bolsa.zone), Decimal('1000000'))
+        for q in self.arr:
+            if q.quote<low.quote:
+                low=q
+        return low
+        
+    def find(self, dt):
+        for q in self.arr:
+            if q.datetime==dt:
+                return q
+        print (function_name(self), "Quote not found")
+        return None
+        
+    def purge(self):
+        """Funci´on que purga una inversi´on en un d´ia dado, dejando ohlc y microsecond=5, que son los no borrables.
+        Devuelve el n´umero que se han quitado
+        Esta funci´on no hace un commit.
+        """
+        todelete=[]
+        protected=[self.open(), self.close(), self.high(), self.low()]
+        for q in self.arr:
+            if q not in protected:
+                if q.datetime.microsecond!=5:
+                    todelete.append(q)
+
+        for q in todelete:
+            self.arr.remove(q)
+            q.delete()
+            print (q)
+            
+        ##Reescribe microseconds si ya el close ten´ia un 4
+        if self.close().datetime.microsecond==4:
+            self.rewrite_microseconds()
+        return len(todelete)
+        
+    def rewrite_microseconds(self):
+        """Reescribe los microseconds de high, low,...
+        Los escribe en orden de importancia"""
+        l=self.low()
+        l.delete()#Si no lo borro lo cambio de datetime y lo duplico
+        l.datetime=l.datetime.replace(microsecond=2)
+        l.save()
+        h=self.high()
+        h.delete()
+        h.datetime=h.datetime.replace(microsecond=3)
+        h.save()
+        o=self.open()
+        o.delete()
+        o.datetime=o.datetime.replace(microsecond=1)
+        o.save()
+        c=self.close()
+        c.delete()
+        c.datetime=c.datetime.replace(microsecond=4)
+        c.save()
         
 class Quote:
     """"Un quote no puede estar duplicado en un datetime solo puede haber uno"""
@@ -3964,8 +4060,10 @@ class Quote:
                 curms.close()
                 return 3
                 
-    def delete(self, curms):
+    def delete(self):
+        curms=self.cfg.conms.cursor()
         curms.execute("delete from quotes where id=%s and datetime=%s", (self.investment.id, self.datetime))
+        curms.close()
 
     def init__db_row(self, row, investment,   datetimeasked=None):
         """si datetimeasked es none se pone la misma fecha"""
@@ -4287,7 +4385,7 @@ class QuotesResult:
 #        self.currentmonth=None
 #        self.currentyear=None
 #        self.several=[]
-        self.intradia=SetQuotes(self.cfg)
+        self.intradia=SetQuotesIntraday(self.cfg)
         self.all=SetQuotes(self.cfg)
         self.ohclDaily=SetOHCLDaily(self.cfg, self.investment)
         self.ohclMonthly=SetOHCLMonthly(self.cfg, self.investment)
@@ -4351,20 +4449,6 @@ class QuotesResult:
         dtendlastyear=dt(datetime.date(self.last.datetime.year-1, 12, 31),  datetime.time(23, 59, 59), self.investment.bolsa.zone)
         self.endlastyear=self.find_quote_in_all(dtendlastyear)
 
-    def get_intraday(self, date,  tzinfo):
-        """Función que mete en self.intradia un SetQuotes ordenado de objetos Quote, no es el ultimo d´ia es un d´ia"""
-        self.intradia.arr=[]
-        curms=self.cfg.conms.cursor()
-        iniciodia=day_start_from_date(date, self.investment.bolsa.zone)
-        siguientedia=iniciodia+datetime.timedelta(days=1)
-        curms.execute("select * from quotes where id=%s and datetime>=%s and datetime<%s order by datetime", (self.investment.id,  iniciodia, siguientedia))
-        for row in curms:
-            self.intradia.arr.append(Quote(self.cfg).init__db_row(row,  self.investment))
-        curms.close()
-        
-            
-
-                    
             
 #    def __first(self, interval, dt):
 #        """Función que devuelve un first redondeado trabaja con utc aunque no lo tiene"""
