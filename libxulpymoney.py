@@ -2022,9 +2022,6 @@ class Inversion:
         for o in self.op.arr:
             if o.datetime<=dat:
                 resultado=resultado+o.acciones
-                    
-#        print ("Inversion >  Acciones de {0} el {1}: {2}".format(self.name, fecha,  resultado))
-
         return resultado
         
     def pendiente(self):

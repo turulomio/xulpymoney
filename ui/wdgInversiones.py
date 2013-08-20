@@ -231,12 +231,12 @@ class wdgInversiones(QWidget, Ui_wdgInversiones):
         if column==7:#TPC inversion
             m=QMessageBox()
             m.setIcon(QMessageBox.Information)
-            m.setText(self.trUtf8("Valor medio de compra: {0}".format(self.selInversion.investment.currency.string(self.selInversion.op_actual.valor_medio_compra()))))
+            m.setText(self.trUtf8("Shares number: {0}".format(self.selInversion.acciones()))+"\n"+self.trUtf8("Purchase price average: {0}".format(self.selInversion.investment.currency.string(self.selInversion.op_actual.valor_medio_compra()))))
             m.exec_()           
             return
         if column==8:#TPC venta
             m=QMessageBox()
             m.setIcon(QMessageBox.Information)
-            m.setText(self.trUtf8("Valor de venta: {0}".format(self.selInversion.investment.currency.string(self.selInversion.venta))))
+            m.setText(self.trUtf8("Selling price: {0}".format(self.selInversion.investment.currency.string(self.selInversion.venta)))+"\n"+self.trUtf8("Gain obtained: {0}").format(self.selInversion.investment.currency.string(self.selInversion.acciones()*(self.selInversion.venta-self.selInversion.op_actual.valor_medio_compra()))))
             m.exec_()           
             return     
