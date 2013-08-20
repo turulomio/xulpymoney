@@ -325,6 +325,9 @@ class frmAnalisis(QDialog, Ui_frmAnalisis):
     def on_calendar_selectionChanged(self):
         self.load_graphics()
 
+    def on_cmdSplit_pressed(self):
+        qmessagebox_developing()
+        
     def on_cmdSave_pressed(self):
         self.investment.name=self.txtName.text()
         self.investment.isin=self.txtISIN.text()
