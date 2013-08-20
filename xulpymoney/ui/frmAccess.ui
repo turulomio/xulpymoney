@@ -2,12 +2,15 @@
 <ui version="4.0">
  <class>frmAccess</class>
  <widget class="QDialog" name="frmAccess">
+  <property name="windowModality">
+   <enum>Qt::WindowModal</enum>
+  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
     <width>277</width>
-    <height>274</height>
+    <height>291</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -19,6 +22,9 @@
   <property name="windowIcon">
    <iconset>
     <normaloff>:/images/kmplot.jpg</normaloff>:/images/kmplot.jpg</iconset>
+  </property>
+  <property name="modal">
+   <bool>true</bool>
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout_3">
    <item>
@@ -95,7 +101,7 @@
        <item row="2" column="0">
         <widget class="QLabel" name="lblServer">
          <property name="text">
-          <string>Servidor</string>
+          <string>Server</string>
          </property>
         </widget>
        </item>
@@ -115,7 +121,7 @@
        <item row="3" column="0">
         <widget class="QLabel" name="lblPort">
          <property name="text">
-          <string>Puerto</string>
+          <string>Port</string>
          </property>
         </widget>
        </item>
@@ -129,14 +135,14 @@
        <item row="4" column="0">
         <widget class="QLabel" name="lblDatabase">
          <property name="text">
-          <string>Base de datos</string>
+          <string>Database</string>
          </property>
         </widget>
        </item>
        <item row="5" column="0">
         <widget class="QLabel" name="lblUser">
          <property name="text">
-          <string>Usuario</string>
+          <string>User</string>
          </property>
         </widget>
        </item>
@@ -146,7 +152,7 @@
        <item row="6" column="0">
         <widget class="QLabel" name="lblPass">
          <property name="text">
-          <string>Contraseña</string>
+          <string>Password</string>
          </property>
         </widget>
        </item>
@@ -224,6 +230,9 @@
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
+       </property>
+       <property name="locale">
+        <locale language="English" country="UnitedKingdom"/>
        </property>
        <property name="standardButtons">
         <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>

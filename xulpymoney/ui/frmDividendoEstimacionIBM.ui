@@ -46,7 +46,7 @@
        <item>
         <widget class="QLabel" name="label">
          <property name="text">
-          <string>Introduce el año</string>
+          <string>Add a year</string>
          </property>
         </widget>
        </item>
@@ -85,7 +85,7 @@
        <item>
         <widget class="QLabel" name="label_3">
          <property name="text">
-          <string>Introduce la fuente</string>
+          <string>Add a source</string>
          </property>
         </widget>
        </item>
@@ -97,7 +97,7 @@
      <item>
       <widget class="QPushButton" name="cmd">
        <property name="text">
-        <string>Guardar Dividendo</string>
+        <string>Save dividend</string>
        </property>
       </widget>
      </item>

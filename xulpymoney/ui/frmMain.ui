@@ -51,7 +51,7 @@
    </property>
    <widget class="QMenu" name="menuAyuda">
     <property name="title">
-     <string>A&amp;yuda</string>
+     <string>Help</string>
     </property>
     <addaction name="actionAcercaDe"/>
     <addaction name="separator"/>
@@ -59,13 +59,13 @@
    </widget>
    <widget class="QMenu" name="menuBancos">
     <property name="title">
-     <string>Bancos</string>
+     <string>Banks</string>
     </property>
     <addaction name="actionBancos"/>
    </widget>
    <widget class="QMenu" name="menuInformes">
     <property name="title">
-     <string>Informes</string>
+     <string>Reports</string>
     </property>
     <addaction name="actionConceptos"/>
     <addaction name="actionInformeDividendos"/>
@@ -75,7 +75,7 @@
    </widget>
    <widget class="QMenu" name="menuCuentas">
     <property name="title">
-     <string>Cuentas</string>
+     <string>Accounts</string>
     </property>
     <addaction name="actionCuentas"/>
     <addaction name="separator"/>
@@ -83,7 +83,7 @@
    </widget>
    <widget class="QMenu" name="menuInversiones">
     <property name="title">
-     <string>Inversiones</string>
+     <string>Investments</string>
     </property>
     <addaction name="actionInversiones"/>
     <addaction name="actionInformeClases"/>
@@ -145,7 +145,10 @@
      <normaloff>:/xulpymoney/exit.png</normaloff>:/xulpymoney/exit.png</iconset>
    </property>
    <property name="text">
-    <string>S&amp;alir</string>
+    <string>E&amp;xit</string>
+   </property>
+   <property name="toolTip">
+    <string>Exit</string>
    </property>
    <property name="shortcut">
     <string>Esc</string>
@@ -157,7 +160,10 @@
      <normaloff>:/xulpymoney/coins.png</normaloff>:/xulpymoney/coins.png</iconset>
    </property>
    <property name="text">
-    <string>&amp;Acerca de</string>
+    <string>&amp;About</string>
+   </property>
+   <property name="toolTip">
+    <string>About</string>
    </property>
    <property name="shortcut">
     <string>F10</string>
@@ -181,10 +187,10 @@
      <normaloff>:/xulpymoney/bundle.png</normaloff>:/xulpymoney/bundle.png</iconset>
    </property>
    <property name="text">
-    <string>&amp;Listado de inversiones</string>
+    <string>Investments</string>
    </property>
    <property name="toolTip">
-    <string>Listado de inversiones</string>
+    <string>Investments</string>
    </property>
   </action>
   <action name="actionTablasAuxiliares">
@@ -193,7 +199,10 @@
      <normaloff>:/xulpymoney/table.png</normaloff>:/xulpymoney/table.png</iconset>
    </property>
    <property name="text">
-    <string>Tablas Auxiliares</string>
+    <string>Auxiliar tables</string>
+   </property>
+   <property name="toolTip">
+    <string>Auxiliar tables</string>
    </property>
   </action>
   <action name="actionInformeDividendos">
@@ -244,7 +253,10 @@
      <normaloff>:/xulpymoney/coins.png</normaloff>:/xulpymoney/coins.png</iconset>
    </property>
    <property name="text">
-    <string>Listado de cuentas</string>
+    <string>Accounts</string>
+   </property>
+   <property name="toolTip">
+    <string>Accounts</string>
    </property>
   </action>
   <action name="actionBancos">
@@ -253,7 +265,10 @@
      <normaloff>:/xulpymoney/bank.png</normaloff>:/xulpymoney/bank.png</iconset>
    </property>
    <property name="text">
-    <string>Listado de Bancos</string>
+    <string>Banks</string>
+   </property>
+   <property name="toolTip">
+    <string>Banks</string>
    </property>
   </action>
   <action name="actionInformeClases">
@@ -283,10 +298,10 @@
      <normaloff>:/xulpymoney/hucha.png</normaloff>:/xulpymoney/hucha.png</iconset>
    </property>
    <property name="text">
-    <string>Estudio de conceptos</string>
+    <string>Concepts</string>
    </property>
    <property name="toolTip">
-    <string>Estudio de conceptos</string>
+    <string>Concepts</string>
    </property>
   </action>
   <action name="actionMemoria">
@@ -295,10 +310,10 @@
      <normaloff>:/xulpymoney/transfer.png</normaloff>:/xulpymoney/transfer.png</iconset>
    </property>
    <property name="text">
-    <string>Actualizar memoria</string>
+    <string>Update memory</string>
    </property>
    <property name="toolTip">
-    <string>Actualizar memoria</string>
+    <string>Update memory</string>
    </property>
   </action>
   <action name="actionSettings">
@@ -307,10 +322,10 @@
      <normaloff>:/xulpymoney/configure.png</normaloff>:/xulpymoney/configure.png</iconset>
    </property>
    <property name="text">
-    <string>Preferencias</string>
+    <string>Settings</string>
    </property>
    <property name="toolTip">
-    <string>Configuración de preferencias</string>
+    <string>Settings</string>
    </property>
   </action>
   <action name="actionHelp">

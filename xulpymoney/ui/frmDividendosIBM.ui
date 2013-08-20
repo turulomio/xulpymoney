@@ -63,6 +63,9 @@
        </item>
        <item>
         <widget class="QCalendarWidget" name="cal">
+         <property name="locale">
+          <locale language="English" country="UnitedStates"/>
+         </property>
          <property name="firstDayOfWeek">
           <enum>Qt::Monday</enum>
          </property>
