@@ -307,7 +307,7 @@ class frmAnalisis(QDialog, Ui_frmAnalisis):
     def on_actionQuoteDelete_activated(self):
         cur = self.cfg.conms.cursor()
         for q in self.setSelIntraday:
-            q.delete(cur)
+            q.delete()
             self.investment.result.intradia.arr.remove(q)
 #            self.investment.result.all.remove(q)
         self.cfg.conms.commit()
