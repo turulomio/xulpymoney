@@ -41,11 +41,15 @@ class frmQuotesIBM(QDialog, Ui_frmQuotesIBM):
             m.setText(self.trUtf8("Datos incorrectos. Vuelva a introducirlos"))
             m.exec_()    
             return
+        
         if self.chkNone.checkState()==Qt.Checked:
             da=dt(fecha, self.investment.bolsa.closes, self.investment.bolsa.zone)
         else:
             time=self.txtTime.time().toPyTime()
             da=dt(fecha, time, zone)
+            
+        if self.chkCanBePurged.checkState()==Qt.Unchecked:#No puede ser purgado
+            da=da.replace(microsecond=5)
 
         mq=Quote(self.cfg).init__create(self.investment, da, quote)
         mq.save()
