@@ -21,6 +21,7 @@ XULPYMONEY
 20130829 Load dividendos de frmAnalisis ca<mbiar por Set
 20130829 Si se da varias veces a update memory peta thread
 20130829 Poner frmAbout myquotes en tab de xulpymoney
+20130829 Update memory debe recargar inacctive si es distinto de None
 
 MYSTOCKS
 ========
