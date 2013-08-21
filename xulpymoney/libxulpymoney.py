@@ -3917,6 +3917,101 @@ class SetQuotes:
     def append(self, quote):
         self.arr.append(quote)
                 
+                
+class SetQuotesAll:
+    """Class that groups all quotes of the database. It's an array of SetQuotesIntraday"""
+    def __init__(self, cfg):
+        self.cfg=cfg
+        self.investment=None
+                
+    def load_from_db(self,  investment):
+        """Función que mete en setquotesintradia ordenado de objetos Quote, no es el ultimo d´ia es un d´ia"""
+        self.arr=[]
+        self.investment=investment
+        curms=self.cfg.conms.cursor()
+        curms.execute("select * from quotes where id=%s order by datetime", (self.investment.id,  ))
+        
+        intradayarr=[]
+        dt_end=None
+        for row in curms:
+            if dt_end==None:#Loads the first datetime
+                dt_end=day_end(row['datetime'], self.investment.bolsa.zone)
+            if row['datetime']>dt_end:#Cambio de SetQuotesIntraday
+                self.arr.append(SetQuotesIntraday(self.cfg).init__create(self.investment, dt_end.date(), intradayarr))
+                dt_end=day_end(row['datetime'], self.investment.bolsa.zone)
+                #crea otro intradayarr
+                del intradayarr
+                intradayarr=[]
+                intradayarr.append(Quote(self.cfg).init__db_row(row, self.investment))
+            else:
+                intradayarr.append(Quote(self.cfg).init__db_row(row, self.investment))
+#        print ("SetQuotesIntraday created: {0}".format(len(self.arr)))
+        curms.close()
+
+        
+    def find(self, dattime):
+        """Recorro de mayor a menor"""
+        for i,  sqi in enumerate(reverse(self.arr)):
+            if sqi.date<=dattime.date():
+                return sql.find(dattime)
+        print (function_name(self), "Quote not found")
+        return None
+            
+            
+    def purge(self, progress=False):
+        """Purga todas las quotes de la inversi´on. Si progress es true muestra un QProgressDialog. 
+        Devuelve el numero de quotes purgadas
+        Si devuelve None, es que ha sido cancelado por el usuario, y no deber´ia hacerse un comiti en el UI
+        Sólo purga fichas menores a hoy()-30"""
+        if progress==True:
+            pd= QProgressDialog(QApplication.translate("Core","Purging innecesary data"), QApplication.translate("Core","Cancel"), 0,len(self.arr))
+            pd.setModal(True)
+            pd.setWindowTitle(QApplication.translate("Core","Purging quotes"))
+            pd.setMinimumDuration(0)          
+        counter=0
+        for i, sqi in enumerate(self.arr):
+            if progress==True:
+                pd.setValue(i)
+                pd.setLabelText(QApplication.translate("Core","Purged {0} quotes from {1}".format(counter, self.investment.name)))
+                pd.update()
+                QApplication.processEvents()
+                if pd.wasCanceled():
+                    return None
+                QApplication.processEvents()
+            if sqi.date<datetime.date.today()-datetime.timedelta(days=30):
+                counter=counter+sqi.purge()
+        return counter
+
+#        
+#    def get_all_obsolet_incremental(self, curms):
+#        """Función que devuelve un array ordenado de objetos Quote
+#        actualiza o carga todo según haya registros
+#        Actualiza get_basic_in_all
+#        """
+#        inicio=datetime.datetime.now()
+#        if len(self.all.arr)==0:
+#            curms.execute("select * from quotes where id=%s order by datetime;", (self.investment.id, ))
+#        else:
+#            curms.execute("select * from quotes where id=%s and datetime>%s order by datetime;", (self.investment.id, self.all[len(self.all)-1].datetime))
+#        for row in curms:
+#            self.all.arr.append(Quote(self.cfg).init__db_row(row,  self.investment))
+#        print ("Descarga de {0} datos: {1}".format(curms.rowcount,   datetime.datetime.now()-inicio))
+#        self.get_basic_in_all()
+        
+            
+#    def get_basic_OBSOLET(self):
+#        """Función que calcula last, penultimate y lastdate """
+#        if len(self.all.arr)==0:
+#            print ("No hay quotes para la inversión",  self.investment)
+#            return
+#        self.last=self.all.arr[len(self.all.arr)-1]
+#        #penultimate es el ultimo del penultimo dia localizado
+#        dtpenultimate=day_end(self.last.datetime-datetime.timedelta(days=1), self.investment.bolsa.zone)
+#        self.penultimate=self.find_quote_in_all(dtpenultimate)
+#        dtendlastyear=dt(datetime.date(self.last.datetime.year-1, 12, 31),  datetime.time(23, 59, 59), self.investment.bolsa.zone)
+#        self.endlastyear=self.find_quote_in_all(dtendlastyear)
+
+        
 class SetQuotesIntraday:
     """Clase que agrupa quotes un una lista arr de una misma inversi´on y de un mismo d´ia. """
     def __init__(self, cfg):
@@ -3938,18 +4033,29 @@ class SetQuotesIntraday:
             self.arr.append(Quote(self.cfg).init__db_row(row,  self.investment))
         curms.close()
         
+    def init__create(self, investment, date, arrquotes):
+        self.investment=investment
+        self.date=date
+        for q in arrquotes:
+            self.arr.append(q)
+        return self
+        
     def open(self):
         """Devuelve el quote cuyo datetime es menor"""
         if len(self.arr)>0:
             return self.arr[0]
+        return None
             
     def close(self):
         """Devuelve el quote cuyo datetime es mayor"""
         if len(self.arr)>0:
             return self.arr[len(self.arr)-1]
+        return None
             
     def high(self):
         """Devuelve el quote cuyo quote es mayor"""
+        if len(self.arr)==0:
+            return None
         high=Quote(self.cfg).init__create(self.investment, day_start_from_date(self.date, self.investment.bolsa.zone), Decimal('0'))
         for q in self.arr:
             if q.quote>high.quote:
@@ -3958,6 +4064,8 @@ class SetQuotesIntraday:
         
     def low(self):
         """Devuelve el quote cuyo quote es menor"""
+        if len(self.arr)==0:
+            return None
         low=Quote(self.cfg).init__create(self.investment, day_start_from_date(self.date, self.investment.bolsa.zone), Decimal('1000000'))
         for q in self.arr:
             if q.quote<low.quote:
@@ -3965,11 +4073,16 @@ class SetQuotesIntraday:
         return low
         
     def find(self, dt):
-        for q in self.arr:
-            if q.datetime==dt:
+        for q in reverse(self.arr):
+            if q.datetime<=dt:
                 return q
         print (function_name(self), "Quote not found")
         return None
+
+            
+            
+            
+            
         
     def purge(self):
         """Funci´on que purga una inversi´on en un d´ia dado, dejando ohlc y microsecond=5, que son los no borrables.
@@ -3983,35 +4096,26 @@ class SetQuotesIntraday:
                 if q.datetime.microsecond!=5:
                     todelete.append(q)
 
-        for q in todelete:
-            self.arr.remove(q)
-            q.delete()
-            print (q)
-            
-        ##Reescribe microseconds si ya el close ten´ia un 4
-        if self.close().datetime.microsecond==4:
-            self.rewrite_microseconds()
+        if len(todelete)>0:
+            for q in todelete:
+                self.arr.remove(q)
+                q.delete()
+#                print ("Purged", q)
+                
+            ##Reescribe microseconds si ya el close ten´ia un 4
+            if self.close().datetime.microsecond==4 : #SOLO SI TODELETE >0
+                self.rewrite_microseconds()
+                
         return len(todelete)
         
     def rewrite_microseconds(self):
-        """Reescribe los microseconds de high, low,...
+        """Reescribe los microseconds de close,...
         Los escribe en orden de importancia"""
-        l=self.low()
-        l.delete()#Si no lo borro lo cambio de datetime y lo duplico
-        l.datetime=l.datetime.replace(microsecond=2)
-        l.save()
-        h=self.high()
-        h.delete()
-        h.datetime=h.datetime.replace(microsecond=3)
-        h.save()
-        o=self.open()
-        o.delete()
-        o.datetime=o.datetime.replace(microsecond=1)
-        o.save()
         c=self.close()
-        c.delete()
-        c.datetime=c.datetime.replace(microsecond=4)
-        c.save()
+        if c!=None:
+            c.delete()
+            c.datetime=c.datetime.replace(microsecond=4)
+            c.save()
         
 class Quote:
     """"Un quote no puede estar duplicado en un datetime solo puede haber uno"""
@@ -4257,7 +4361,7 @@ class SetOHCLMonthly:
         for row in cur:
             self.arr.append(OHCLMonthly(self.cfg).init__from_dbrow(row, self.investment))
         cur.close()
-        
+
 class SetOHCLDaily:
     def __init__(self, cfg, investment):
         self.cfg=cfg
@@ -4375,18 +4479,13 @@ class QuotesResult:
     def __init__(self,cfg,  investment):
         self.cfg=cfg
         self.investment=investment
+        
         self.last=None
         self.penultimate=None
         self.endlastyear=None
-#        self.limit=None
-#        self.year=[] #ordinados de forma inversa
-#        self.month=[]
-#        self.currentweek=None
-#        self.currentmonth=None
-#        self.currentyear=None
-#        self.several=[]
+
         self.intradia=SetQuotesIntraday(self.cfg)
-        self.all=SetQuotes(self.cfg)
+        self.all=SetQuotesAll(self.cfg)
         self.ohclDaily=SetOHCLDaily(self.cfg, self.investment)
         self.ohclMonthly=SetOHCLMonthly(self.cfg, self.investment)
         self.ohclYearly=SetOHCLYearly(self.cfg, self.investment)
@@ -4404,11 +4503,11 @@ class QuotesResult:
 #        if len(self.year)==0:
 #            return False
 #        return True
-    def hasAll(self):
-        """Función que devuelve si se han descargado datos básicos"""
-        if len(self.all)==0:
-            return False
-        return True
+#    def hasAll(self):
+#        """Función que devuelve si se han descargado datos básicos"""
+#        if len(self.all)==0:
+#            return False
+#        return True
     
     def get_basic(self):
         """Función que calcula last, penultimate y lastdate """
@@ -4437,17 +4536,6 @@ class QuotesResult:
         self.ohclYearly.load_from_db("select * from ohlcYearly where id={0} order by year".format(self.investment.id))
         print ("Datos db cargados:",  datetime.datetime.now()-inicio)
     
-    def get_basic_in_all(self):
-        """Función que calcula last, penultimate y lastdate """
-        if len(self.all.arr)==0:
-            print ("No hay quotes para la inversión",  self.investment)
-            return
-        self.last=self.all.arr[len(self.all.arr)-1]
-        #penultimate es el ultimo del penultimo dia localizado
-        dtpenultimate=day_end(self.last.datetime-datetime.timedelta(days=1), self.investment.bolsa.zone)
-        self.penultimate=self.find_quote_in_all(dtpenultimate)
-        dtendlastyear=dt(datetime.date(self.last.datetime.year-1, 12, 31),  datetime.time(23, 59, 59), self.investment.bolsa.zone)
-        self.endlastyear=self.find_quote_in_all(dtendlastyear)
 
             
 #    def __first(self, interval, dt):
@@ -4478,53 +4566,6 @@ class QuotesResult:
 #            return sumoano.replace(day=1).replace(month=1)
         
 
-        
-    def find_quote_in_all(self, datetime):
-        if len(self.all.arr)==0:
-            print ("No hay quotes para la inversión",  self.investment)
-            return
-        return self.all.arr[self.get_all_position(datetime)]
-
-        
-    def get_intraday_from_all(self, date, tzinfo):        
-        """Función que devuelve un array ordenado de objetos Quote"""
-        resultado=[]
-        iniciodia=dt(date, datetime.time(0, 0),   tzinfo)
-        siguientedia=iniciodia+datetime.timedelta(days=1)
-        for i in range(self.get_all_position(iniciodia), len(self.all.arr)):
-            if self.all.arr[i].datetime>=iniciodia and self.all.arr[i].datetime<siguientedia:
-                resultado.append(self.all.arr[i])
-        return resultado
-
-
-
-    def get_all_position(self,  dattime):
-        """Saca la posición en el array all, en el que se encuentra el datetime
-        dattime tiene pytz"""
-        if len(self.all.arr)<2:#Si es 0,1 o 2 que lo recorra
-            return 0
-        for i,  q in enumerate(self.all.arr):
-            if q.datetime==dattime:
-                return i
-            elif q.datetime>dattime:
-                return i-1
-        return 0
-        
-        
-    def get_all(self, curms):
-        """Función que devuelve un array ordenado de objetos Quote
-        actualiza o carga todo según haya registros
-        Actualiza get_basic_in_all
-        """
-        inicio=datetime.datetime.now()
-        if len(self.all.arr)==0:
-            curms.execute("select * from quotes where id=%s order by datetime;", (self.investment.id, ))
-        else:
-            curms.execute("select * from quotes where id=%s and datetime>%s order by datetime;", (self.investment.id, self.all[len(self.all)-1].datetime))
-        for row in curms:
-            self.all.arr.append(Quote(self.cfg).init__db_row(row,  self.investment))
-        print ("Descarga de {0} datos: {1}".format(curms.rowcount,   datetime.datetime.now()-inicio))
-        self.get_basic_in_all()
 #        
 #    def calculate_ohcl_diary(self):
 #        """Este el que se calcula por defecto, el resto se calcula a partir de este"""            

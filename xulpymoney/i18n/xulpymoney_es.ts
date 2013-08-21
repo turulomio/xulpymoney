@@ -3,12 +3,12 @@
 <context>
     <name>Config</name>
     <message>
-        <location filename="libxulpymoney.py" line="4944"/>
+        <location filename="libxulpymoney.py" line="4985"/>
         <source>Error en la conexi&#xc3;&#xb3;n, vuelva a entrar</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5005"/>
+        <location filename="libxulpymoney.py" line="5046"/>
         <source>Error en la conexi&#xc3;&#xb3;n a xulpymoney, vuelva a entrar</source>
         <translation type="unfinished"></translation>
     </message>
@@ -161,67 +161,67 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4761"/>
+        <location filename="libxulpymoney.py" line="4802"/>
         <source>Acciones</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4762"/>
+        <location filename="libxulpymoney.py" line="4803"/>
         <source>Fondos de inversi&#xc3;&#xb3;n</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4763"/>
+        <location filename="libxulpymoney.py" line="4804"/>
         <source>&#xc3;&#xad;ndices</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4764"/>
+        <location filename="libxulpymoney.py" line="4805"/>
         <source>ETFs</source>
         <translation type="unfinished">ETFs</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4765"/>
+        <location filename="libxulpymoney.py" line="4806"/>
         <source>Warrants</source>
         <translation type="unfinished">Warrants</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4766"/>
+        <location filename="libxulpymoney.py" line="4807"/>
         <source>Divisas</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4767"/>
+        <location filename="libxulpymoney.py" line="4808"/>
         <source>Deuda P&#xc3;&#xba;blica</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4768"/>
+        <location filename="libxulpymoney.py" line="4809"/>
         <source>Planes de pensiones</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4769"/>
+        <location filename="libxulpymoney.py" line="4810"/>
         <source>Deuda Privada</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4770"/>
+        <location filename="libxulpymoney.py" line="4811"/>
         <source>Dep&#xc3;&#xb3;sitos</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4771"/>
+        <location filename="libxulpymoney.py" line="4812"/>
         <source>Cuentas bancarias</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5123"/>
+        <location filename="libxulpymoney.py" line="5164"/>
         <source>Sourceforge version detected: %s</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5125"/>
+        <location filename="libxulpymoney.py" line="5166"/>
         <source>Error buscando la versi&#xc3;&#xb3;n actual de Sourceforge</source>
         <translation type="unfinished"></translation>
     </message>
@@ -246,8 +246,33 @@
         <translation>La tarjeta de crédito está inactiva. Debes activarla primero</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5421"/>
+        <location filename="libxulpymoney.py" line="5462"/>
         <source>This option is being developed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="libxulpymoney.py" line="3967"/>
+        <source>Purging innecesary data</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/frmMainMS.py" line="274"/>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="libxulpymoney.py" line="3969"/>
+        <source>Purging quotes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/frmMainMS.py" line="274"/>
+        <source>Purging innecesary data from all investments</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/frmMainMS.py" line="276"/>
+        <source>Purging quotes from all investments</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -816,6 +841,11 @@ correspondiente en la tabla</source>
     <message>
         <location filename="ui/Ui_frmAnalisis.py" line="929"/>
         <source>Purge Day from innecesary quotes. Leaves high, low, open and close quotes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/frmAnalisis.py" line="333"/>
+        <source>{0} quotes have been purged from {1}</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1823,27 +1853,27 @@ correspondiente en la tabla</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmInversionesIBM.py" line="21"/>
+        <location filename="ui/frmInversionesIBM.py" line="23"/>
         <source>Nuevo movimiento de {0}</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="ui/frmInversionesIBM.py" line="25"/>
+        <location filename="ui/frmInversionesIBM.py" line="28"/>
         <source>Edición del movimiento seleccionado de {0}</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="ui/frmInversionesIBM.py" line="53"/>
+        <location filename="ui/frmInversionesIBM.py" line="56"/>
         <source>El número de acciones en una venta debe ser negativo</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="ui/frmInversionesIBM.py" line="61"/>
+        <location filename="ui/frmInversionesIBM.py" line="64"/>
         <source>El número de acciones en una compra debe ser positivo</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="ui/frmInversionesIBM.py" line="72"/>
+        <location filename="ui/frmInversionesIBM.py" line="75"/>
         <source>El valor de la acción, los impuestos y la comisión deben ser positivos</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2244,6 +2274,11 @@ seleccionados por el usuario</source>
         <source>Purge all investments</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location filename="ui/frmMainMS.py" line="302"/>
+        <source>{0} quotes have been purged from {1} investments</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>frmOperCuentas</name>
@@ -2449,38 +2484,43 @@ seleccionados por el usuario</source>
 <context>
     <name>frmQuotesIBM</name>
     <message>
-        <location filename="ui/Ui_frmQuotesIBM.py" line="91"/>
+        <location filename="ui/Ui_frmQuotesIBM.py" line="117"/>
         <source>A&#xc3;&#xb1;ade una cotizaci&#xc3;&#xb3;n manualmente</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmQuotesIBM.py" line="92"/>
+        <location filename="ui/Ui_frmQuotesIBM.py" line="118"/>
         <source>Introduce la hora</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmQuotesIBM.py" line="93"/>
+        <location filename="ui/Ui_frmQuotesIBM.py" line="119"/>
         <source>Cotizaci&#xc3;&#xb3;n de cierre</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmQuotesIBM.py" line="94"/>
+        <location filename="ui/Ui_frmQuotesIBM.py" line="120"/>
         <source>Introduce la cotizaci&#xc3;&#xb3;n</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmQuotesIBM.py" line="95"/>
+        <location filename="ui/Ui_frmQuotesIBM.py" line="121"/>
         <source>Introduce la zona horaria</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmQuotesIBM.py" line="96"/>
+        <location filename="ui/Ui_frmQuotesIBM.py" line="123"/>
         <source>Guardar cotizaci&#xc3;&#xb3;n</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/frmQuotesIBM.py" line="41"/>
         <source>Datos incorrectos. Vuelva a introducirlos</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_frmQuotesIBM.py" line="122"/>
+        <source>Can be purged?</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

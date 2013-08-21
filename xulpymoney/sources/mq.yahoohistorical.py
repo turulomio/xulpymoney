@@ -47,9 +47,9 @@ class WorkerYahooHistorical(Source):
             
             datestart=dt(date,investment.bolsa.starts,investment.bolsa.zone)
             dateends=dt(date,investment.bolsa.closes,investment.bolsa.zone)
-            datetimefirst=datestart-datetime.timedelta(seconds=1)+datetime.timedelta(microseconds=1)
-            datetimelow=(datestart+(dateends-datestart)*1/3).replace(microsecond=2)
-            datetimehigh=(datestart+(dateends-datestart)*2/3).replace(microsecond=3)
+            datetimefirst=datestart-datetime.timedelta(seconds=1)
+            datetimelow=(datestart+(dateends-datestart)*1/3)
+            datetimehigh=(datestart+(dateends-datestart)*2/3)
             datetimelast=dateends+datetime.timedelta(microseconds=4)
 
             set.append(Quote(self.cfg).init__create(investment,datetimelast, float(datos[4])))#closes

@@ -308,7 +308,18 @@ class wdgInversionesMS(QWidget, Ui_wdgInversionesMS):
 
     @pyqtSignature("")
     def on_actionPurge_activated(self):
-        qmessagebox_developing()
+        all=SetQuotesAll(self.cfg)
+        all.load_from_db(self.selInvestment)
+        numpurged=all.purge(progress=True)
+        if numpurged!=None:#Canceled
+            self.cfg.conms.commit()
+            m=QMessageBox()
+            m.setIcon(QMessageBox.Information)
+            m.setText(self.trUtf8("{0} quotes have been purged from {1}".format(numpurged, self.selInvestment.name)))
+            m.exec_()    
+        else:
+            self.cfg.conms.rollback()
+        
 
     @pyqtSignature("")
     def on_actionQuoteNew_activated(self):

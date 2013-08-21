@@ -262,7 +262,45 @@ class frmMainMS(QMainWindow, Ui_frmMainMS):#
 
     @QtCore.pyqtSlot()  
     def on_actionPurgeAll_activated(self):
-        qmessagebox_developing()
+        """Purga todas las quotes de todas inversi´on. """
+        investments=[]
+        curms=self.cfg.conms.cursor()
+        curms.execute("select * from investments order by name")
+        for row in curms:
+            investments.append(Investment(self.cfg).init__db_row(row))
+        curms.close()
+               
+        
+        pd= QProgressDialog(QApplication.translate("Core","Purging innecesary data from all investments"), QApplication.translate("Core","Cancel"), 0,len(investments))
+        pd.setModal(True)
+        pd.setWindowTitle(QApplication.translate("Core","Purging quotes from all investments"))
+        pd.setMinimumDuration(0)          
+        counter=0      
+        
+        for i, inv in enumerate(investments):
+            pd.setValue(i)
+            pd.setLabelText(QApplication.translate("Core","Purging quotes from {0}.\nTotal purged in global process: {1}".format(inv.name,  counter)))
+            pd.update()
+            QApplication.processEvents()
+            if pd.wasCanceled():
+                self.cfg.conms.rollback()
+                return
+            pd.update()
+            QApplication.processEvents()
+            pd.update()            
+            inv.result.all.load_from_db(inv)
+            invcounter=inv.result.all.purge(progress=True)
+            if invcounter==None:#Pulsado cancelar
+                self.cfg.conms.rollback()
+                break
+            else:
+                counter=counter+invcounter
+                self.cfg.conms.commit()
+        
+        m=QMessageBox()
+        m.setIcon(QMessageBox.Information)
+        m.setText(self.trUtf8("{0} quotes have been purged from {1} investments".format(counter, len(investments))))
+        m.exec_()    
         
     @QtCore.pyqtSlot()  
     def on_actionRentaFija_activated(self):

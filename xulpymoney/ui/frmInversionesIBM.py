@@ -1,6 +1,7 @@
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 from libxulpymoney import *
+from frmAnalisis import *
 from Ui_frmInversionesIBM import *
 
 class frmInversionesIBM(QDialog, Ui_frmInversionesIBM):
@@ -16,12 +17,14 @@ class frmInversionesIBM(QDialog, Ui_frmInversionesIBM):
 
         
         if self.operinversion==None:#nuevo movimiento
+            self.type=1
             self.operinversion=InversionOperacion(self.cfg)
             self.operinversion.inversion=self.inversion
             self.lblTitulo.setText(self.trUtf8("Nuevo movimiento de {0}".format(self.inversion.name)))
             t=datetime.datetime.now()
             self.timeedit.setTime(QTime(t.hour, t.minute))
         else:#editar movimiento
+            self.type=2
             self.lblTitulo.setText(self.trUtf8("Edición del movimiento seleccionado de {0}".format(self.inversion.name)))
             self.cmbTiposOperaciones.setCurrentIndex(self.cmbTiposOperaciones.findData(self.operinversion.tipooperacion.id))
             dt=dt_changes_tz(self.operinversion.datetime, self.cfg.localzone)
@@ -78,6 +81,19 @@ class frmInversionesIBM(QDialog, Ui_frmInversionesIBM):
         
         self.operinversion.save()    
         self.cfg.con.commit()#Guarda todos los cambios en bd.
+        
+        ##Mete indice referencia.
+        if self.type==1:
+            w=frmQuotesIBM(self.cfg, self.cfg.data.indicereferencia,  self)
+            #Quita un minuto para que enganche con operaci´on
+            menosminuto=dat-datetime.timedelta(minutes=1)
+            w.txtTime.setTime(QTime(menosminuto.hour, menosminuto.minute))
+            w.calendar.setSelectedDate(self.calendar.selectedDate())
+            w.chkCanBePurged.setCheckState(Qt.Unchecked)
+            w.txtQuote.setFocus()
+            w.exec_() 
+            self.cfg.data.indicereferencia.result.get_basic()        
+        
         self.done(0)
 
 
