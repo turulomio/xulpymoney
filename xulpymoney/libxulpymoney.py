@@ -76,17 +76,26 @@ class SetInversiones:
         self.investments=investments
         self.indicereferencia=indicereferencia  ##Objeto investment
             
-    def load_from_db(self, sql):
+    def load_from_db(self, sql,  progress=False):
         cur=self.cfg.con.cursor()
         cur.execute(sql)#"Select * from inversiones"
+        if progress==True:
+            pd= QProgressDialog(QApplication.translate("Core","Loading {0} investments from database".format(cur.rowcount)),None, 0,cur.rowcount)
+            pd.setModal(True)
+            pd.setWindowTitle(QApplication.translate("Core","Loading investments..."))
+            pd.forceShow()
         for row in cur:
+            if progress==True:
+                pd.setValue(cur.rownumber)
+                pd.update()
+                QApplication.processEvents()
             inv=Inversion(self.cfg).init__db_row(row,  self.cuentas.find(row['id_cuentas']), self.investments.find(row['myquotesid']))
             inv.get_operinversiones()
             inv.op_actual.get_valor_indicereferencia(self.indicereferencia)
             self.arr.append(inv)
-            stri="{0}: {1}/{2}          ".format(function_name(self), cur.rownumber, cur.rowcount)
-            sys.stdout.write("\b"*1000+stri)
-            sys.stdout.flush()
+#            stri="{0}: {1}/{2}          ".format(function_name(self), cur.rownumber, cur.rowcount)
+#            sys.stdout.write("\b"*1000+stri)
+#            sys.stdout.flush()
         cur.close()  
         
     def list_distinct_myquotesid(self):
@@ -257,22 +266,32 @@ class SetInvestments:
         
         ##Carga los investments
         if len(lista)>0:
-            self.load_from_db("select * from investments where id in ("+lista+")" )
+            self.load_from_db("select * from investments where id in ("+lista+")", progress=True )
         
-    def load_from_db(self, sql):
+    def load_from_db(self, sql,  progress=False):
         """sql es una query sobre la tabla inversiones"""
         curms=self.cfg.conms.cursor()
         curms.execute(sql)#"select * from investments where id in ("+lista+")" 
+        if progress==True:
+            pd= QProgressDialog(QApplication.translate("Core","Loading {0} MyStocks investments from database".format(curms.rowcount)),None, 0,curms.rowcount)
+            pd.setModal(True)
+            pd.setWindowTitle(QApplication.translate("Core","Loading MyStocks investments..."))
+            pd.forceShow()
         for rowms in curms:
+            if progress==True:
+                pd.setValue(curms.rownumber)
+                pd.update()
+                QApplication.processEvents()
+                
             inv=Investment(self.cfg).init__db_row(rowms)
             inv.estimacionesdividendo.load_from_db()
             inv.result.get_basic()
             self.arr.append(inv)
-            stri="{0}: {1}/{2}          ".format(function_name(self), curms.rownumber, curms.rowcount)
-            sys.stdout.write("\b"*1000+stri)
-            sys.stdout.flush()
-        print("")
         curms.close()
+#            stri="{0}: {1}/{2}          ".format(function_name(self), curms.rownumber, curms.rowcount)
+#            sys.stdout.write("\b"*1000+stri)
+#            sys.stdout.flush()
+#        print("")
                            
     def find(self, id):
         """Devuelve el objeto investment con id pasado como parámetro y None si no lo encuentra"""
@@ -1476,7 +1495,7 @@ class DBData:
         self.investments_active=SetInvestments(self.cfg)
         self.investments_active.load_from_inversiones_query("select distinct(myquotesid) from inversiones where in_activa=true")
         self.inversiones_active=SetInversiones(self.cfg, self.cuentas_active, self.investments_active, self.indicereferencia)
-        self.inversiones_active.load_from_db("select * from inversiones where in_activa=true")
+        self.inversiones_active.load_from_db("select * from inversiones where in_activa=true", True)
         print("\n")
         self.tupdatedata.start()        
         print("Cargando actives",  datetime.datetime.now()-inicio)
@@ -1495,7 +1514,7 @@ class DBData:
             self.investments_inactive.load_from_inversiones_query("select distinct(myquotesid) from inversiones where in_activa=false")
 
             self.inversiones_inactive=SetInversiones(self.cfg, self.cuentas_all(), self.investments_all(), self.indicereferencia)
-            self.inversiones_inactive.load_from_db("select * from inversiones where in_activa=false")
+            self.inversiones_inactive.load_from_db("select * from inversiones where in_activa=false",  True)
             
             print("\n","Cargando inactives",  datetime.datetime.now()-inicio)
             self.loaded_inactive=True
