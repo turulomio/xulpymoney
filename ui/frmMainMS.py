@@ -265,7 +265,7 @@ class frmMainMS(QMainWindow, Ui_frmMainMS):#
         """Purga todas las quotes de todas inversi´on. """
         investments=[]
         curms=self.cfg.conms.cursor()
-        curms.execute("select * from investments order by name")
+        curms.execute("select * from investments where id in ( select distinct( id) from quotes) order by name;")
         for row in curms:
             investments.append(Investment(self.cfg).init__db_row(row))
         curms.close()

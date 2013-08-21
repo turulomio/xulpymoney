@@ -309,7 +309,6 @@ class frmAnalisis(QDialog, Ui_frmAnalisis):
         for q in self.setSelIntraday:
             q.delete()
             self.investment.result.intradia.arr.remove(q)
-#            self.investment.result.all.remove(q)
         self.cfg.conms.commit()
         cur.close() 
         self.update_due_to_quotes_change()
@@ -324,13 +323,13 @@ class frmAnalisis(QDialog, Ui_frmAnalisis):
         
     def on_cmdPurge_pressed(self):
         all=SetQuotesAll(self.cfg)
-        all.load_from_db(self.selInvestment)
+        all.load_from_db(self.investment)
         numpurged=all.purge(progress=True)
         if numpurged!=None:#Canceled
             self.cfg.conms.commit()
             m=QMessageBox()
             m.setIcon(QMessageBox.Information)
-            m.setText(self.trUtf8("{0} quotes have been purged from {1}".format(numpurged, self.selInvestment.name)))
+            m.setText(self.trUtf8("{0} quotes have been purged from {1}".format(numpurged, self.investment.name)))
             m.exec_()    
         else:
             self.cfg.conms.rollback()
