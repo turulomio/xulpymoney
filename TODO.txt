@@ -19,6 +19,8 @@ XULPYMONEY
 20130829 Meter el importe de inversion desinversion en config
 20130829 En punto de venta poner antes y después set
 20130829 Load dividendos de frmAnalisis ca<mbiar por Set
+20130829 Si se da varias veces a update memory peta thread
+20130829 Poner frmAbout myquotes en tab de xulpymoney
 
 MYSTOCKS
 ========
@@ -30,6 +32,7 @@ MYSTOCKS
 20120217 En busquedas cuando se haga es:search, buscará en bolsa española
 20120104 Hacer dialogo de split y contrasplit en myquotes para cotizaciones y en xulpymoney para operacciones
 20130821 Hacer SetQuotesBasic, probablemente  ResultQuotes  poner punteros self.basic, self.all, self.intraday, self.ohcl...
+20130821 Editar L'oreal peta por la comilla
 
 XULPYMONEY_INIT
 ===============
