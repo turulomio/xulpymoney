@@ -4403,6 +4403,8 @@ class SetOHCLWeekly:
         self.arr=[]
     def load_from_db(self, sql):
         """El sql debe estar ordenado por fecha"""
+        del self.arr
+        self.arr=[]
         cur=self.cfg.conms.cursor()
         cur.execute(sql)#select * from ohclyearly where id=79329 order by year
         for row in cur:
@@ -4416,6 +4418,8 @@ class SetOHCLYearly:
         self.arr=[]
     def load_from_db(self, sql):
         """El sql debe estar ordenado por fecha"""
+        del self.arr
+        self.arr=[]
         cur=self.cfg.conms.cursor()
         cur.execute(sql)#select * from ohclyearly where id=79329 order by year
         for row in cur:
@@ -4429,6 +4433,8 @@ class SetOHCLMonthly:
         self.arr=[]
     def load_from_db(self, sql):
         """El sql debe estar ordenado por year, month"""
+        del self.arr
+        self.arr=[]
         cur=self.cfg.conms.cursor()
         cur.execute(sql)#select * from ohclyearly where id=79329 order by year,mont
         for row in cur:
@@ -4444,6 +4450,9 @@ class SetOHCLDaily:
            
     def load_from_db(self, sql):
         """El sql debe estar ordenado por date"""
+        
+        del self.arr
+        self.arr=[]
         cur=self.cfg.conms.cursor()
         cur.execute(sql)#select * from ohclyearly where id=79329 order by date
         for row in cur:
