@@ -6,6 +6,7 @@ from libxulpymoney import *
 from frmSelector import *
 from Ui_frmAnalisis import *
 from frmQuotesIBM import *
+from frmSplit import *
 from frmDividendoEstimacionIBM import *
 from canvaschart import *
 from matplotlib.backends.backend_qt4agg import NavigationToolbar2QTAgg as NavigationToolbar
@@ -319,7 +320,15 @@ class frmAnalisis(QDialog, Ui_frmAnalisis):
         self.load_graphics()
 
     def on_cmdSplit_pressed(self):
-        qmessagebox_developing()
+        w=frmSplit(self.cfg)
+        w.exec_()   
+        if w.result()==QDialog.Accepted:
+            all=SetQuotesAll(self.cfg)
+            all.load_from_db(self.investment)
+            for setquoteintraday in all.arr:
+                w.split.updateQuotes(setquoteintraday.arr)         
+            self.cfg.conms.commit()
+            self.update_due_to_quotes_change()
         
     def on_cmdPurge_pressed(self):
         all=SetQuotesAll(self.cfg)

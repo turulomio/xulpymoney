@@ -43,6 +43,8 @@ SOURCES         = xulpymoney.py \
                   ui/Ui_frmInversionesEstudio.py \
                   ui/frmInversionesIBM.py \
                   ui/Ui_frmInversionesIBM.py \
+                  ui/frmSplit.py \
+                  ui/Ui_frmSplit.py \
                   ui/frmTransferencia.py \
                   ui/Ui_frmTransferencia.py \
                   ui/frmTraspasoValores.py \
@@ -87,6 +89,7 @@ FORMS           = ui/frmAbout.ui \
                   ui/frmHelp.ui \
                   ui/frmMain.ui \
                   ui/frmOperCuentas.ui \
+                  ui/frmSplit.ui \
                   ui/frmTablasAuxiliares.ui \
                   ui/frmTarjetasIBM.ui \
                   ui/wdgBancos.ui \

@@ -31,7 +31,6 @@ MYSTOCKS
 20120405 En la misma tabla de dividendos estimados poner el bpa, para poder calcular el PER
 20120307 Cuando haya ochl en los datos intradia, dibujar una raya de maximo y minimo gris discontinuo, con punto gris de inicio  y punto gris de final
 20120217 En busquedas cuando se haga es:search, buscará en bolsa española
-20120104 Hacer dialogo de split y contrasplit en myquotes para cotizaciones y en xulpymoney para operacciones
 20130821 Editar L'oreal peta por la comilla
 
 XULPYMONEY_INIT
