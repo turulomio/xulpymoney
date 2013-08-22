@@ -262,7 +262,7 @@ class frmMainMS(QMainWindow, Ui_frmMainMS):#
 
     @QtCore.pyqtSlot()  
     def on_actionPurgeAll_activated(self):
-        """Purga todas las quotes de todas inversi´on. """
+        """Purga todas las quotes de todas inversión. """
         investments=[]
         curms=self.cfg.conms.cursor()
         curms.execute("select * from investments where id in ( select distinct( id) from quotes) order by name;")

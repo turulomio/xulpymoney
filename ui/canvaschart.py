@@ -435,7 +435,7 @@ class canvasChartIntraday(canvasChart):
     def load_data_intraday(self, investment):
         self.result=investment.result
         self.data=self.result.intradia.arr
-        self.penultimate=self.result.penultimate
+        self.penultimate=self.result.basic.penultimate
         self.investment=investment
         self._draw_lines_from_quotes(self.data)
         

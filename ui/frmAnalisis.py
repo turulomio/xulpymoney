@@ -73,7 +73,7 @@ class frmAnalisis(QDialog, Ui_frmAnalisis):
             self.tblTPC.setItem(row, 1, self.investment.currency.qtablewidgetitem(quote.quote, 6))
 
             try:
-                tpc=(self.investment.result.last.quote-quote.quote)*100/quote.quote
+                tpc=(self.investment.result.basic.last.quote-quote.quote)*100/quote.quote
                 days=(datetime.datetime.now(pytz.timezone(self.cfg.localzone.name))-quote.datetime).days+1
                 self.tblTPC.setItem(row, 2, qtpc(round(tpc, 2)))    
                 self.tblTPC.setItem(row, 3,  qtpc(round(tpc*365/days, 2)))
@@ -110,7 +110,7 @@ class frmAnalisis(QDialog, Ui_frmAnalisis):
         
         if len(self.investment.result.ohclDaily.arr)!=0:
             now=self.cfg.localzone.now()
-            penultimate=self.investment.result.penultimate
+            penultimate=self.investment.result.basic.penultimate
             iniciosemana=Quote(self.cfg).init__from_query(self.investment,  day_end(now-datetime.timedelta(days=datetime.date.today().weekday()+1), self.investment.bolsa.zone))
             iniciomes=Quote(self.cfg).init__from_query(self.investment, dt(datetime.date(now.year, now.month, 1), datetime.time(0, 0), self.investment.bolsa.zone))
             inicioano=Quote(self.cfg).init__from_query(self.investment, dt(datetime.date(now.year, 1, 1), datetime.time(0, 0), self.investment.bolsa.zone))             
@@ -118,8 +118,8 @@ class frmAnalisis(QDialog, Ui_frmAnalisis):
             unmes=Quote(self.cfg).init__from_query(self.investment, day_end(now-datetime.timedelta(days=30), self.investment.bolsa.zone))          
             unasemana=Quote(self.cfg).init__from_query(self.investment, day_end(now-datetime.timedelta(days=7), self.investment.bolsa.zone))             
                 
-            self.tblTPC.setItem(0, 0, qdatetime(self.investment.result.last.datetime, self.investment.bolsa.zone))   
-            self.tblTPC.setItem(0, 1, self.investment.currency.qtablewidgetitem(self.investment.result.last.quote,  6))
+            self.tblTPC.setItem(0, 0, qdatetime(self.investment.result.basic.last.datetime, self.investment.bolsa.zone))   
+            self.tblTPC.setItem(0, 1, self.investment.currency.qtablewidgetitem(self.investment.result.basic.last.quote,  6))
             
             row_tblTPV(penultimate, 2)
             row_tblTPV(iniciosemana, 3)## Para que sea el domingo
@@ -158,7 +158,7 @@ class frmAnalisis(QDialog, Ui_frmAnalisis):
             self.tblDividendosEstimaciones.setItem(cur.rownumber-1, 0, qcenter(str(reg['year'])))
             self.tblDividendosEstimaciones.setItem(cur.rownumber-1, 1, self.investment.currency.qtablewidgetitem(reg['dpa'], 6))       
             try:
-                tpc=reg['dpa']*100/self.investment.result.last.quote
+                tpc=reg['dpa']*100/self.investment.result.basic.last.quote
                 self.tblDividendosEstimaciones.setItem(cur.rownumber-1, 2, qtpc(round(tpc, 2)))    
             except:      
                 self.tblDividendosEstimaciones.setItem(cur.rownumber-1, 2, qtpc(None))    
@@ -210,7 +210,7 @@ class frmAnalisis(QDialog, Ui_frmAnalisis):
                 self.tblIntradia.setItem(i, 0, qcenter(str(q.datetime)[11:-6]))
                 self.tblIntradia.setItem(i, 1, self.investment.currency.qtablewidgetitem(q.quote,6))       
                 try:
-                    tpc=(q.quote-self.investment.result.penultimate.quote)*100/q.quote
+                    tpc=(q.quote-self.investment.result.basic.penultimate.quote)*100/q.quote
                     self.tblIntradia.setItem(i, 2, qtpc(round(tpc, 2)))    
                 except:       
                     self.tblIntradia.setItem(i, 2, qtpc(None))    
@@ -295,7 +295,7 @@ class frmAnalisis(QDialog, Ui_frmAnalisis):
     def on_actionPurgeDay_activated(self):
         self.investment.result.intradia.purge()
         self.cfg.conms.commit()
-        self.load_graphics()#OHLC ya estaba cargado, no var´ia por lo que no uso update_due_to_quotes_change
+        self.load_graphics()#OHLC ya estaba cargado, no varía por lo que no uso update_due_to_quotes_change
         
     @pyqtSignature("")
     def on_actionQuoteNew_activated(self):

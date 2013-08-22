@@ -37,7 +37,7 @@ class frmAccess(QDialog, Ui_frmAccess):
 
 
     def make_connection(self):
-        """Funci´on que realiza la conexi´on devolviendo true o false con el ´exito"""
+        """Función que realiza la conexión devolviendo true o false con el éxito"""
         try:
             if self.app==1:
                 self.cfg.config_set_value(self.cfg.config, "frmAccessMS", "db", self.txtDB.text() )

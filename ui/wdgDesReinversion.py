@@ -24,9 +24,9 @@ class wdgDesReinversion(QWidget, Ui_wdgDesReinversion):
         self.tblInversionesHistoricas.settings("wdgDesReinversion",  self.cfg.file_ui)         
         
  
-        self.operinversiones=self.inversion.op.clone()#No hacer clone_from_datetime porque falla por haber borrado un actual por venta de saldo operaci´on
+        self.operinversiones=self.inversion.op.clone()#No hacer clone_from_datetime porque falla por haber borrado un actual por venta de saldo operación
 
-        self.txtValorAccion.setText(str(self.inversion.investment.result.last.quote))
+        self.txtValorAccion.setText(str(self.inversion.investment.result.basic.last.quote))
         self.tabResultados.setCurrentIndex(1)
         self.on_radDes_clicked()
 

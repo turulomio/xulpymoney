@@ -55,7 +55,7 @@ class wdgIndexRange(QWidget, Ui_wdgIndexRange):
             self.table.setItem(rangos-1, 0,qcenter(str(int(formin))+"-"+str(int(formax))))
             self.table.setItem(rangos-1, 1,qcenter(str(int((formax+formin)/2))))            
             self.table.setItem(rangos-1, 2,QTableWidgetItem((inversiones(arr, formin, formax))))
-            if self.cfg.data.indicereferencia.result.last.quote>formin and self.cfg.data.indicereferencia.result.last.quote<formax:
+            if self.cfg.data.indicereferencia.result.basic.last.quote>formin and self.cfg.data.indicereferencia.result.basic.last.quote<formax:
                 self.table.item(rangos-1, 0).setBackgroundColor(QColor(255, 148, 148))
                 rangoindexactual=rangos-1
             last=formin
@@ -67,11 +67,11 @@ class wdgIndexRange(QWidget, Ui_wdgIndexRange):
                 pasos=pasos-1
                 
         #Variación del índice hoy
-        if self.cfg.data.indicereferencia.result.penultimate.quote==0 or self.cfg.data.indicereferencia.result.penultimate.quote==None:
+        if self.cfg.data.indicereferencia.result.basic.penultimate.quote==0 or self.cfg.data.indicereferencia.result.basic.penultimate.quote==None:
             variacion=0
         else:
-            variacion=(self.cfg.data.indicereferencia.result.last.quote-self.cfg.data.indicereferencia.result.penultimate.quote)*100/self.cfg.data.indicereferencia.result.penultimate.quote
-        self.lblTotal.setText(("Tengo cubierto hasta el %d del índice de referencia (%s). Su valor a %s es %d (%.2f %%)" %( indexcover, self.cfg.data.indicereferencia.name, self.cfg.data.indicereferencia.result.last.datetime,   int(self.cfg.data.indicereferencia.result.last.quote),  variacion)))
+            variacion=(self.cfg.data.indicereferencia.result.basic.last.quote-self.cfg.data.indicereferencia.result.basic.penultimate.quote)*100/self.cfg.data.indicereferencia.result.basic.penultimate.quote
+        self.lblTotal.setText(("Tengo cubierto hasta el %d del índice de referencia (%s). Su valor a %s es %d (%.2f %%)" %( indexcover, self.cfg.data.indicereferencia.name, self.cfg.data.indicereferencia.result.basic.last.datetime,   int(self.cfg.data.indicereferencia.result.basic.last.quote),  variacion)))
 
         print ("wdgIndexRange > load_data: {0}".format(datetime.datetime.now()-inicio))
 
@@ -85,7 +85,7 @@ class wdgIndexRange(QWidget, Ui_wdgIndexRange):
     def on_cmdIRInsertar_pressed(self):
         w=frmQuotesIBM(self.cfg, self.cfg.data.indicereferencia,  self)
         w.exec_() 
-        self.cfg.data.indicereferencia.result.get_basic()
+        self.cfg.data.indicereferencia.result.basic.load_from_db()
         self.load_data()
         
     def on_table_cellDoubleClicked(self, row, column):
@@ -93,7 +93,7 @@ class wdgIndexRange(QWidget, Ui_wdgIndexRange):
             puntoinversion=Decimal(self.table.item(row, column).text())
             m=QMessageBox()
             m.setIcon(QMessageBox.Information)
-            m.setText(self.trUtf8("Para llegar al punto de inversión seleccionado, el indice debe variar un {0}".format(tpc((puntoinversion-self.cfg.data.indicereferencia.result.last.quote)*100/self.cfg.data.indicereferencia.result.last.quote))))
+            m.setText(self.trUtf8("Para llegar al punto de inversión seleccionado, el indice debe variar un {0}".format(tpc((puntoinversion-self.cfg.data.indicereferencia.result.basic.last.quote)*100/self.cfg.data.indicereferencia.result.basic.last.quote))))
             m.exec_()           
         elif column==2:
             inversiones=self.table.item(row, column).text().split(", ")
