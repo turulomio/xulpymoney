@@ -285,7 +285,7 @@ class SetInvestments:
                 
             inv=Investment(self.cfg).init__db_row(rowms)
             inv.estimacionesdividendo.load_from_db()
-            inv.result.get_basic()
+            inv.result.basic.load_from_db()
             self.arr.append(inv)
         curms.close()
 #            stri="{0}: {1}/{2}          ".format(function_name(self), curms.rownumber, curms.rowcount)
@@ -864,8 +864,8 @@ class SetInversionOperacionActual:
         rownumber=0
         for rownumber, a in enumerate(self.arr):
             sumacciones=Decimal(sumacciones)+Decimal(str(a.acciones))
-            saldo=a.saldo(inversion.investment.result.last)
-            pendiente=a.pendiente(inversion.investment.result.last)
+            saldo=a.saldo(inversion.investment.result.basic.last)
+            pendiente=a.pendiente(inversion.investment.result.basic.last)
             invertido=a.invertido()
     
             sumsaldo=sumsaldo+saldo
@@ -879,9 +879,9 @@ class SetInversionOperacionActual:
             tabla.setItem(rownumber, 3, inversion.investment.currency.qtablewidgetitem(invertido))
             tabla.setItem(rownumber, 4, inversion.investment.currency.qtablewidgetitem(saldo))
             tabla.setItem(rownumber, 5, inversion.investment.currency.qtablewidgetitem(pendiente))
-            tabla.setItem(rownumber, 6, qtpc(a.tpc_anual(inversion.investment.result.last.quote, inversion.investment.result.endlastyear.quote)))
-            tabla.setItem(rownumber, 7, qtpc(a.tpc_tae(inversion.investment.result.last.quote)))
-            tabla.setItem(rownumber, 8, qtpc(a.tpc_total(inversion.investment.result.last.quote)))
+            tabla.setItem(rownumber, 6, qtpc(a.tpc_anual(inversion.investment.result.basic.last.quote, inversion.investment.result.basic.endlastyear.quote)))
+            tabla.setItem(rownumber, 7, qtpc(a.tpc_tae(inversion.investment.result.basic.last.quote)))
+            tabla.setItem(rownumber, 8, qtpc(a.tpc_total(inversion.investment.result.basic.last.quote)))
             if a.referenciaindice==None:
                 tabla.setItem(rownumber, 9, inversion.investment.currency.qtablewidgetitem(None))
             else:
@@ -896,7 +896,7 @@ class SetInversionOperacionActual:
         tabla.setItem(rownumber, 3, inversion.investment.currency.qtablewidgetitem(suminvertido))
         tabla.setItem(rownumber, 4, inversion.investment.currency.qtablewidgetitem(sumsaldo))
         tabla.setItem(rownumber, 5, inversion.investment.currency.qtablewidgetitem(sumpendiente))
-        tabla.setItem(rownumber, 7, qtpc(self.tpc_tae(inversion.investment.result.last.quote)))
+        tabla.setItem(rownumber, 7, qtpc(self.tpc_tae(inversion.investment.result.basic.last.quote)))
         tabla.setItem(rownumber, 8, qtpc(self.tpc_total(sumpendiente, suminvertido)))
             
 
@@ -1487,7 +1487,7 @@ class DBData:
     def load_actives(self):
         inicio=datetime.datetime.now()
         self.indicereferencia=Investment(self.cfg).init__db(self.cfg.config.get("settings", "indicereferencia" ))
-        self.indicereferencia.result.get_basic()
+        self.indicereferencia.result.basic.load_from_db()
         self.ebs_active=SetEntidadesBancarias(self.cfg)
         self.ebs_active.load_from_db("select * from entidadesbancarias where eb_activa=true")
         self.cuentas_active=SetCuentas(self.cfg, self.ebs_active)
@@ -1521,11 +1521,11 @@ class DBData:
         #######################
         if force==False:
             if self.loaded_inactive==True:
-                print ("Ya est´a cargada las inactives")
+                print ("Ya está cargada las inactives")
                 return
             else:
                 load()
-        else:#No est´an cargadas
+        else:#No están cargadas
             load()
         
     def reload(self):
@@ -1997,7 +1997,7 @@ class Inversion:
         """Función que calcula la diferencia de saldo entre last y penultimate
         Necesita haber cargado mq getbasic y operinversionesactual"""
         try:
-            return self.acciones()*(self.investment.result.last.quote-self.investment.result.penultimate.quote)
+            return self.acciones()*(self.investment.result.basic.last.quote-self.investment.result.basic.penultimate.quote)
         except:
             return None
             
@@ -2061,7 +2061,7 @@ class Inversion:
             Si el curms es None se calcula el actual 
                 Necesita haber cargado mq getbasic y operinversionesactual"""     
         if fecha==None:
-            return self.acciones()*self.investment.result.last.quote
+            return self.acciones()*self.investment.result.basic.last.quote
         else:
             acciones=self.acciones(fecha)
             if acciones==0:
@@ -2090,9 +2090,9 @@ class Inversion:
     def tpc_venta(self):       
         """Función que calcula el tpc venta partiendo de las el last y el valor_venta
         Necesita haber cargado mq getbasic y operinversionesactual"""
-        if self.venta==0 or self.venta==None or self.investment.result.last.quote==None or self.investment.result.last.quote==0:
+        if self.venta==0 or self.venta==None or self.investment.result.basic.last.quote==None or self.investment.result.basic.last.quote==0:
             return 0
-        return (self.venta-self.investment.result.last.quote)*100/self.investment.result.last.quote
+        return (self.venta-self.investment.result.basic.last.quote)*100/self.investment.result.basic.last.quote
 
         
 
@@ -2987,16 +2987,16 @@ class DividendoEstimacion:
     def tpc_dpa(self):
         """Hay que tener presente que endlastyear (Objeto Quote) es el endlastyear del año actual
         Necesita tener cargado en id el endlastyear """
-        if self.investment.result.endlastyear.quote==0 or self.investment.result.endlastyear.quote==None:
+        if self.investment.result.basic.endlastyear.quote==0 or self.investment.result.basic.endlastyear.quote==None:
             return 0
         else:
-            return self.dpa/self.investment.result.endlastyear.quote*100
+            return self.dpa/self.investment.result.basic.endlastyear.quote*100
         
 
     
 #    def tpc_dpa(self):
 #        """Calcula el tpc del dpa del utlimo año lastdpa"""
-#        last=self.investment.result.last
+#        last=self.investment.result.basic.last
 #        estimacion=self.find(datetime.date.today().year)
 #        if estimacion!=None and last!=None and last.quote!=0:
 #                return 100*estimacion.dpa/last.quote
@@ -3944,7 +3944,7 @@ class SetQuotesAll:
         self.investment=None
                 
     def load_from_db(self,  investment):
-        """Función que mete en setquotesintradia ordenado de objetos Quote, no es el ultimo d´ia es un d´ia"""
+        """Función que mete en setquotesintradia ordenado de objetos Quote, no es el ultimo día es un día"""
         self.arr=[]
         self.investment=investment
         curms=self.cfg.conms.cursor()
@@ -3970,7 +3970,7 @@ class SetQuotesAll:
         
     def find(self, dattime):
         """Recorro de mayor a menor"""
-        for i,  sqi in enumerate(reverse(self.arr)):
+        for i,  sqi in enumerate(reversed(self.arr)):
             if sqi.date<=dattime.date():
                 return sql.find(dattime)
         print (function_name(self), "Quote not found")
@@ -3978,9 +3978,9 @@ class SetQuotesAll:
             
             
     def purge(self, progress=False):
-        """Purga todas las quotes de la inversi´on. Si progress es true muestra un QProgressDialog. 
+        """Purga todas las quotes de la inversión. Si progress es true muestra un QProgressDialog. 
         Devuelve el numero de quotes purgadas
-        Si devuelve None, es que ha sido cancelado por el usuario, y no deber´ia hacerse un comiti en el UI
+        Si devuelve None, es que ha sido cancelado por el usuario, y no debería hacerse un comiti en el UI
         Sólo purga fichas menores a hoy()-30"""
         if progress==True:
             pd= QProgressDialog(QApplication.translate("Core","Purging innecesary data"), QApplication.translate("Core","Cancel"), 0,len(self.arr))
@@ -4031,8 +4031,57 @@ class SetQuotesAll:
 #        self.endlastyear=self.find_quote_in_all(dtendlastyear)
 
         
+class SetQuotesBasic:
+    """Clase que agrupa quotes basic, last penultimate, lastyear """
+    def __init__(self, cfg, investment):
+        self.cfg=cfg
+        self.endlastyear=None
+        self.last=None
+        self.penultimate=None
+        self.investment=investment       
+        
+    def init__create(self, last,  penultimate, endlastyear):
+        self.last=last
+        self.penultimate=penultimate
+        self.endlastyear=endlastyear
+        return self
+       
+    
+    def load_from_db(self):
+        """Función que calcula last, penultimate y lastdate """
+        triplete=Quote(self.cfg).init__from_query_triplete(self.investment)
+        if triplete!=None:
+            self.endlastyear=triplete[0]
+            self.penultimate=triplete[1]
+            self.last=triplete[2]
+#            print ("Por triplete {0}".format(str(datetime.datetime.now()-inicio)))
+        else:
+            self.last=Quote(self.cfg).init__from_query(self.investment,  self.cfg.localzone.now())
+            if self.last.datetime!=None: #Solo si hay last puede haber penultimate
+                self.penultimate=Quote(self.cfg).init__from_query_penultima(self.investment, dt_changes_tz(self.last.datetime, self.cfg.localzone).date())
+            else:
+                self.penultimate=Quote(self.cfg).init__create(self.investment, None, None)
+            self.endlastyear=Quote(self.cfg).init__from_query(self.investment,  datetime.datetime(datetime.date.today().year-1, 12, 31, 23, 59, 59, tzinfo=pytz.timezone('UTC')))
+
+
+
+    def tpc_diario(self):
+        if self.penultimate.quote==None or self.penultimate.quote==0 or self.last.quote==None:
+            return None
+        else:
+            return round((self.last.quote-self.penultimate.quote)*100/self.penultimate.quote, 2)
+        
+            
+    def tpc_anual(self):
+        if self.endlastyear.quote==None or self.endlastyear.quote==0 or self.last.quote==None:
+            return None
+        else:
+            return round((self.last.quote-self.endlastyear.quote)*100/self.endlastyear.quote, 2)       
+
+
+     
 class SetQuotesIntraday:
-    """Clase que agrupa quotes un una lista arr de una misma inversi´on y de un mismo d´ia. """
+    """Clase que agrupa quotes un una lista arr de una misma inversión y de un mismo día. """
     def __init__(self, cfg):
         self.cfg=cfg
         self.arr=[]
@@ -4040,7 +4089,7 @@ class SetQuotesIntraday:
         self.date=None
         
     def load_from_db(self,  date, investment):
-        """Función que mete en setquotesintradia ordenado de objetos Quote, no es el ultimo d´ia es un d´ia"""
+        """Función que mete en setquotesintradia ordenado de objetos Quote, no es el ultimo día es un día"""
         self.arr=[]
         self.investment=investment
         self.date=date
@@ -4092,7 +4141,7 @@ class SetQuotesIntraday:
         return low
         
     def find(self, dt):
-        for q in reverse(self.arr):
+        for q in reversed(self.arr):
             if q.datetime<=dt:
                 return q
         print (function_name(self), "Quote not found")
@@ -4104,9 +4153,9 @@ class SetQuotesIntraday:
             
         
     def purge(self):
-        """Funci´on que purga una inversi´on en un d´ia dado, dejando ohlc y microsecond=5, que son los no borrables.
-        Devuelve el n´umero que se han quitado
-        Esta funci´on no hace un commit.
+        """Función que purga una inversión en un día dado, dejando ohlc y microsecond=5, que son los no borrables.
+        Devuelve el número que se han quitado
+        Esta función no hace un commit.
         """
         todelete=[]
         protected=[self.open(), self.close(), self.high(), self.low()]
@@ -4121,7 +4170,7 @@ class SetQuotesIntraday:
                 q.delete()
 #                print ("Purged", q)
                 
-            ##Reescribe microseconds si ya el close ten´ia un 4
+            ##Reescribe microseconds si ya el close tenía un 4
             if self.close().datetime.microsecond==4 : #SOLO SI TODELETE >0
                 self.rewrite_microseconds()
                 
@@ -4253,10 +4302,11 @@ class OHCLDaily:
         self.low=row['low']
         return self
     def datetime(self):
-        """Devuelve un datetime usado para dibujar en gr´aficos"""
+        """Devuelve un datetime usado para dibujar en gráficos"""
         return day_end_from_date(self.date, self.investment.bolsa.zone)
     def print_time(self):
         return "{0}".format(self.date)
+        
         
         
 class OHCLMonthly:
@@ -4283,7 +4333,7 @@ class OHCLMonthly:
         
         
     def datetime(self):
-        """Devuelve un datetime usado para dibujar en gr´aficos, pongo el d´ia 28 para no calcular el ´ultimo"""
+        """Devuelve un datetime usado para dibujar en gráficos, pongo el día 28 para no calcular el último"""
         return day_end_from_date(datetime.date(self.year, self.month, 28), self.investment.bolsa.zone)
                 
 class OHCLWeekly:
@@ -4308,7 +4358,7 @@ class OHCLWeekly:
         return self
                 
     def datetime(self):
-        """Devuelve un datetime usado para dibujar en gr´aficos, con el ´ultimo d´ia de la semana"""
+        """Devuelve un datetime usado para dibujar en gráficos, con el último día de la semana"""
         d = datetime.date(self.year,1,1)
         d = d - datetime.timedelta(d.weekday())
         dlt = datetime.timedelta(days = (self.week-1)*7)
@@ -4338,7 +4388,7 @@ class OHCLYearly:
         return self
                 
     def datetime(self):
-        """Devuelve un datetime usado para dibujar en gr´aficos"""
+        """Devuelve un datetime usado para dibujar en gráficos"""
         return day_end_from_date(datetime.date(self.year, 12, 31), self.investment.bolsa.zone)
     def print_time(self):
         return "{0}".format(int(self.year))
@@ -4395,19 +4445,33 @@ class SetOHCLDaily:
         for row in cur:
             self.arr.append(OHCLDaily(self.cfg).init__from_dbrow(row, self.investment))
         cur.close()
-                
-    def __find_ohclDiary_since_date(self, date):
-        resultado=[]
-        date=datetime.datetime(date.year, date.month, date.day)
-        for d in self.ohclDaily:
-            if d[0]>=date:
-                resultado.append(d)
-        return resultado
-    def __find_ohcl_date(self, date):
-        for i in range(len(self.ohclDaily)-1,  -1, -1):
-            if self.ohclDaily[i][0]<=date:
-                return {"date":self.ohclDaily[i][0],  "open":self.ohclDaily[i][1],  "high":self.ohclDaily[i][3],  "low":self.ohclDaily[i][4],  "close":self.ohclDaily[i][2],  "volumen":self.ohclDaily[i][5]}
+#                
+#    def __find_ohclDiary_since_date(self, date):
+#        resultado=[]
+#        date=datetime.datetime(date.year, date.month, date.day)
+#        for d in self.ohclDaily:
+#            if d[0]>=date:
+#                resultado.append(d)
+#        return resultado
+        
+    def find(self, date):
+        """Fucnción que busca un ohcldaily con fecha igual o menor de la pasada como parametro"""
+        for ohcl in reversed(self.arr):
+            if ohcl.date<=date:
+                return ohcl
         return None
+        
+
+    def setquotesbasic(self):
+        """Returns a SetQuotesBasic con los datos del setohcldairy"""
+        ohcl=self.arr[len(self.arr)-1]#last
+        last=Quote(self.cfg).init__create(self.investment, dt(ohcl.date, self.investment.bolsa.closes,  self.investment.bolsa.zone), ohcl.close)
+        ohcl=self.find(ohcl.date-datetime.timedelta(days=1))#penultimate
+        penultimate=Quote(self.cfg).init__create(self.investment, dt(ohcl.date, self.investment.bolsa.closes,  self.investment.bolsa.zone), ohcl.close)
+        ohcl=self.find(datetime.date(datetime.date.today().year-1, 12, 31))#endlastyear
+        endlastyear=Quote(self.cfg).init__create(self.investment, dt(ohcl.date, self.investment.bolsa.closes,  self.investment.bolsa.zone), ohcl.close)        
+        return SetQuotesBasic(self.cfg, self.investment).init__create(last, penultimate, endlastyear)
+        
 class OHCL:
     def __init__(self, investment, datetime, open, close, high, low ):
         self.investment=investment
@@ -4420,78 +4484,7 @@ class OHCL:
     def get_interval(self, ohclposterior):
         """Calcula el intervalo entre dos ohcl. El posteror es el que se pasa como parámetro"""
         return ohclposterior.datetime-self.datetime
-        
-#class QuotesGenOHCL:
-#    def __init__(self, mem):
-#        self.mem=mem
-#        
-#    def recalculateAllAndDelete(self):
-#        """REcalcula todo y borra los innecesarios"""
-#        cur=self.mem.con.cursor()
-#        cur.execute("select * from investments where type in (1,3,4,5) order by name")
-#        for row in cur:
-#            inv=Investment(self.cfg).init__db_row(self.mem, row)
-#            print (inv.name,  cur.rownumber, cur.rowcount)
-#            self.recalculateInvestmentDelete(inv, False)
-#        cur.close()
-#        
-#    def recalculateInvestmentDelete(self, investment, regenerate=False):
-#        self.recalculateInvestment(investment, regenerate)
-#        self.deleteUnnecesary(investment)
-#        
-#    def recalculateInvestment(self, investment,  regenerate=False):
-#        cur=self.mem.con.cursor()
-#        if regenerate==False:
-#            cur.execute("select distinct(datetime::date) from quotes where id=%s and open=false and low=false and close=false and high=false and important=false", (investment.id, ))
-#        else:
-#            cur.execute("select distinct(datetime::date) from quotes where id=%s", (investment.id, ))
-#
-#        for row in cur:
-#            sys.stdout.write("\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b  - {0}/{1}: ".format(cur.rownumber, cur.rowcount) )
-#            sys.stdout.flush()
-#            self.recalculateInvestmentDay(investment, row[0])
-#        cur.close()
-#        
-#    def recalculateInvestmentDay(self, investment,  date):
-#        """Función que recalcula los booleanos, partiendo del localconfig de la bolsa que pertenece
-#        """
-#        if investment.type not in (2, ):#Son intradia
-#            iniciodia=dt(date,datetime.time(0,0),investment.bolsa.zone)
-#            findia=dt(date,datetime.time(23,59,59), investment.bolsa.zone)
-#            cur=self.mem.con.cursor()
-#            cur.execute("select datetime,quote from quotes where id=%s and datetime>=%s and datetime<=%s order by datetime",(investment.id,iniciodia,findia))
-#            rows=cur.fetchall()
-#            if len(rows)>0:        
-#                firstdatetime=rows[0][0]
-#                lastdatetime=rows[len(rows)-1][0]        
-#                maxquote=-1
-#                maxdatetime=None
-#                minquote=10000000
-#                mindatetime=None
-#                for q in rows:
-#                    if q[1]>=maxquote:
-#                        maxquote=q[1]
-#                        maxdatetime=q[0]
-#                    if q[1]<=minquote:
-#                        minquote=q[1]
-#                        mindatetime=q[0]        
-#                cur.execute("update quotes set open=false, low=false, high=false, close=false where id=%s and datetime>=%s and datetime<=%s",(investment.id,iniciodia,findia))
-#                cur.execute("update quotes set open=true where id=%s and datetime=%s", (investment.id, firstdatetime))        
-#                cur.execute("update quotes set low=true where id=%s and datetime=%s", (investment.id, mindatetime))      
-#                cur.execute("update quotes set high=true where id=%s and datetime=%s", (investment.id, maxdatetime))      
-#                cur.execute("update quotes set close=true where id=%s and datetime=%s", (investment.id, lastdatetime))                        
-#
-#                cur.close()                
-#                self.mem.con.commit()
-#            else:
-#                print ("No recalcula booleanos por no haber datos intradia")
-#    def deleteUnnecesary(self, investment):
-#        """Borra de una inversión los innecesarios de todas las fechas menos los últimos 7 dias"""
-#        cur=self.mem.con.cursor()
-#        cur.execute("delete from quotes where open=false and low=false and high=false and close=false and important=false and id=%s and datetime::date< now()::date- interval '7 days'", (investment.id, ))
-#        self.mem.con.commit()
-#        cur.close()
-    
+
         
 class QuotesResult:
     """Función que consigue resultados de myquotes de un id pasado en el constructor"""
@@ -4499,223 +4492,23 @@ class QuotesResult:
         self.cfg=cfg
         self.investment=investment
         
-        self.last=None
-        self.penultimate=None
-        self.endlastyear=None
-
         self.intradia=SetQuotesIntraday(self.cfg)
         self.all=SetQuotesAll(self.cfg)
+        self.basic=SetQuotesBasic(self.cfg, self.investment)
         self.ohclDaily=SetOHCLDaily(self.cfg, self.investment)
         self.ohclMonthly=SetOHCLMonthly(self.cfg, self.investment)
         self.ohclYearly=SetOHCLYearly(self.cfg, self.investment)
         self.ohclWeekly=SetOHCLWeekly(self.cfg, self.investment)
-    
-    
-    
-    def hasBasic(self):
-        """Función que devuelve si se han descargado datos básicos"""
-        if self.last==None:
-            return False
-        return True
-#    def hasAnalisis(self):
-#        """Función que devuelve si se han descargado datos básicos"""
-#        if len(self.year)==0:
-#            return False
-#        return True
-#    def hasAll(self):
-#        """Función que devuelve si se han descargado datos básicos"""
-#        if len(self.all)==0:
-#            return False
-#        return True
-    
-    def get_basic(self):
-        """Función que calcula last, penultimate y lastdate """
-#        inicio=datetime.datetime.now()
-        triplete=Quote(self.cfg).init__from_query_triplete(self.investment)
-        if triplete!=None:
-            self.endlastyear=triplete[0]
-            self.penultimate=triplete[1]
-            self.last=triplete[2]
-#            print ("Por triplete {0}".format(str(datetime.datetime.now()-inicio)))
-        else:
-            self.last=Quote(self.cfg).init__from_query(self.investment,  self.cfg.localzone.now())
-            if self.last.datetime!=None: #Solo si hay last puede haber penultimate
-                self.penultimate=Quote(self.cfg).init__from_query_penultima(self.investment, dt_changes_tz(self.last.datetime, self.cfg.localzone).date())
-            else:
-                self.penultimate=Quote(self.cfg).init__create(self.investment, None, None)
-            self.endlastyear=Quote(self.cfg).init__from_query(self.investment,  datetime.datetime(datetime.date.today().year-1, 12, 31, 23, 59, 59, tzinfo=pytz.timezone('UTC')))
-
+        
     def get_basic_ohcls(self):
         """Tambien sirve para recargar"""
         inicio=datetime.datetime.now()
-        self.get_basic()
         self.ohclDaily.load_from_db("select * from ohlcdaily where id={0} order by date".format(self.investment.id))#necesario para usar luego ohcl_otros
         self.ohclMonthly.load_from_db("select * from ohlcMonthly where id={0} order by year,month".format(self.investment.id))
         self.ohclWeekly.load_from_db("select * from ohlcWeekly where id={0} order by year,week".format(self.investment.id))
         self.ohclYearly.load_from_db("select * from ohlcYearly where id={0} order by year".format(self.investment.id))
+        self.basic=self.ohclDaily.setquotesbasic()
         print ("Datos db cargados:",  datetime.datetime.now()-inicio)
-    
-
-            
-#    def __first(self, interval, dt):
-#        """Función que devuelve un first redondeado trabaja con utc aunque no lo tiene"""
-#        if interval==datetime.timedelta(days=1):
-#            return datetime.datetime(dt.year, dt.month, dt.day, 0, 0, 0, 0, pytz.timezone(self.cfg.localzone.name))
-#        elif interval==datetime.timedelta(days=7):
-#            dt=datetime.datetime(dt.year, dt.month, dt.day, 0, 0, 0, 0, pytz.timezone(self.cfg.localzone.name))
-#            while dt.weekday()!=0:
-#                dt=dt-datetime.timedelta(days=1)
-#            return dt
-#        elif interval==datetime.timedelta(days=30):
-#            return datetime.datetime(dt.year, dt.month, 1, 0, 0, 0, 0, pytz.timezone(self.cfg.localzone.name))
-#        elif interval==datetime.timedelta(days=365):
-#            return datetime.datetime(dt.year, 1, 1, 0, 0, 0, 0, pytz.timezone(self.cfg.localzone.name))
-#                
-#    def __last(self, interval, dt):
-#        """Función que devuelve un first redondeado"""
-#        if interval==datetime.timedelta(days=1):
-#            return datetime.datetime(dt.year, dt.month, dt.day, 0, 0, 0, 0, pytz.timezone(self.cfg.localzone.name))+interval
-#        elif interval==datetime.timedelta(days=7):
-#            return self.__first(interval, dt)+datetime.timedelta(days=7)
-#        elif interval==datetime.timedelta(days=30):
-#            sumomes=datetime.datetime(dt.year, dt.month, 1, 0, 0, 0, 0, pytz.timezone(self.cfg.localzone.name))+datetime.timedelta(days=31)
-#            return sumomes.replace(day=1)
-#        elif interval==datetime.timedelta(days=365):
-#            sumoano=datetime.datetime(dt.year, 1, 1, 0, 0, 0, 0, pytz.timezone(self.cfg.localzone.name))+datetime.timedelta(days=366)
-#            return sumoano.replace(day=1).replace(month=1)
-        
-
-#        
-#    def calculate_ohcl_diary(self):
-#        """Este el que se calcula por defecto, el resto se calcula a partir de este"""            
-#        def to_ohcl(  quot, puntdt):
-#            if len(quot)==0:
-#                return None
-#            dt=puntdt#siempre debe ser un datetime para matplotlib
-#            open=quot[0]
-#            close=quot[len(quot)-1]
-#            high=max(quot)
-#            low=min(quot)
-#            return OHCL(self.investment, dt, open, close, high, low )
-#
-#
-#
-#        if len(self.all)==0:
-#            return []
-#        inicio=datetime.datetime.now()
-#        interval=datetime.timedelta(days=1)
-#        self.ohclDaily=[].
-#        first=self.__first(interval, self.all[0].datetime)
-#        last=self.__last(interval, self.all[len(self.all)-1].datetime)
-#        puntdt=first#puntero datetime
-#        pudb=0#puntero db desde el que leer
-##        parsed=0
-#        while puntdt<=last:
-#            tmpQuot=[]
-#            newpunt=puntdt+interval
-#            for i in range (pudb, len(self.all)):
-#                if self.all[i].datetime>=newpunt:
-#                    break
-#                tmpQuot.append(self.all[i].quote)
-##                parsed=parsed+1
-#                pudb=i+1
-#
-#            o=to_ohcl( tmpQuot, puntdt)
-#            if o!=None:
-#                self.ohclDaily.append(o)
-#            puntdt=newpunt
-#        print ("Calculo de ohclDiario con {0} datos: {1}".format(len(self.all),   datetime.datetime.now()-inicio))
-
-#    def __calculate_ohcl_from_ohclDaily(self, interval):
-#        """Este el que se calcula por defecto, el resto se calcula a partir de este"""
-##   
-##        def to_ohcl(  quot, puntdt):
-##            if len(quot)==0:
-##                return None
-##            dt=puntdt#siempre debe ser un datetime para matplotlib
-##            open=quot[0]
-##            close=quot[len(quot)-1]
-##            high=max(quot)
-##            low=min(quot)
-##            return OHCL(self.investment, dt, open, close, high, low )
-#
-#        def to_ohcl_from_ohcl(  ohcl, puntdt):
-#            if len(ohcl)==0:
-#                return None
-##            datetimes, open,  close, high, low, volumen=zip(*ohcl)
-##            dt=puntdt#siempre debe ser un datetime para matplotlib
-#            open=ohcl[0].open
-#            close=ohcl[len(ohcl)-1].close
-#            ma=max(ohcl,key=lambda o: o.high) 
-#            mi=min(ohcl,key=lambda o: o.low) 
-#            return OHCL(self.investment, puntdt, open, close, ma.high, mi.low)
-#
-#
-#
-#        def __next(puntdt, interval):
-#            """Función que devuelve la suma del siguiente intervale"""
-#            if interval==datetime.timedelta(days=7): #Saca el siguiente lunes
-#                return puntdt+interval #solo suma ya que puntdt viene lkos lunes
-#            elif interval==datetime.timedelta(days=30):
-#                return (puntdt+datetime.timedelta(days=31)).replace(day=1)
-#            elif interval==datetime.timedelta(days=365):
-#                return puntdt.replace(year=puntdt.year+1)
-#        ## def generate_ohcl_from_ohcl
-#        if len(self.ohclDaily)==0:
-#            return []
-#            
-#        resultado=[]
-#        first=self.__first(interval, self.ohclDaily[0].datetime)
-#        last=self.__last(interval, self.ohclDaily[len(self.ohclDaily)-1].datetime)
-#        puntdt=first#puntero datetime
-#        pudb=0#puntero db desde el que leer
-##        parsed=0
-#        while puntdt<=last:
-#            tmpQuot=[]
-#            newpunt=__next(puntdt, interval)
-#            for i in range (pudb, len(self.ohclDaily)):
-#                if self.ohclDaily[i].datetime>=newpunt:
-#                    break
-#                tmpQuot.append(self.ohclDaily[i])
-##                parsed=parsed+1
-#                pudb=i+1
-#
-#            o=to_ohcl_from_ohcl( tmpQuot, puntdt)
-#            if o!=None:
-#                resultado.append(o)
-#            puntdt=newpunt
-##            print ("Han quedado sin parsear ",  len(self.ohclDaily)-parsed)
-#        return resultado            
-#  
-        
-        
-#    def get_dpa(self, curms, year):
-#        """Busca el dpa y lo amacena en dpa"""
-#        return DividendoEstimacion(self.cfg).dpa(cur2, self.investment.id, year)
-
-    def tpc_diario(self):
-        if self.hasBasic():
-            if self.penultimate.quote==None or self.penultimate.quote==0 or self.last.quote==None:
-                return None
-            else:
-                return round((self.last.quote-self.penultimate.quote)*100/self.penultimate.quote, 2)
-            
-#    def ohclWeekly(self):
-#        return self.__calculate_ohcl_from_ohclDaily(datetime.timedelta(days=7))
-#    def ohclMonthly(self):
-#        return self.__calculate_ohcl_from_ohclDaily(datetime.timedelta(days=30))
-#    def ohclYearly(self):
-#        return self.__calculate_ohcl_from_ohclDaily(datetime.timedelta(days=365))
-            
-    def tpc_anual(self):
-        if self.hasBasic():
-            if self.endlastyear.quote==None or self.endlastyear.quote==0 or self.last.quote==None:
-                return None
-            else:
-                return round((self.last.quote-self.endlastyear.quote)*100/self.endlastyear.quote, 2)       
-
-
-
 
 
 class Apalancamiento:
@@ -4747,7 +4540,7 @@ class PriorityHistorical:
         return self
         
 class TUpdateData(threading.Thread):
-    """Hilo que actualiza las investments, solo el getBasic, cualquier cambio no de last, deber´a ser desarrollado por c´odigo"""
+    """Hilo que actualiza las investments, solo el getBasic, cualquier cambio no de last, deberá ser desarrollado por código"""
     def __init__(self, cfg):
         threading.Thread.__init__(self)
         self.cfg=cfg
@@ -4763,13 +4556,13 @@ class TUpdateData(threading.Thread):
             else:
                 investments=self.cfg.data.investments_all()
                 
-            self.cfg.data.indicereferencia.result.get_basic()
+            self.cfg.data.indicereferencia.result.basic.load_from_db()
             
             ##Update loop
             for inv in investments.arr:
                 if self.cfg.closing==True:
                     return
-                inv.result.get_basic()
+                inv.result.basic.load_from_db()
             print("TUpdateData loop took", datetime.datetime.now()-inicio)
             
             ##Wait loop

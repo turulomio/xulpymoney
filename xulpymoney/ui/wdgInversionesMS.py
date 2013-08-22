@@ -51,7 +51,7 @@ class wdgInversionesMS(QWidget, Ui_wdgInversionesMS):
                 
             inv=Investment(self.cfg)
             inv.init__db_row(i)
-            inv.result.get_basic()
+            inv.result.basic.load_from_db()
             inv.estimacionesdividendo.load_from_db()
             self.investments.append(inv)
 #            print ("wdgInversionesMS",  inv.agrupations.dic_arr)
@@ -77,10 +77,10 @@ class wdgInversionesMS(QWidget, Ui_wdgInversionesMS):
             self.tblInversiones.setItem(i, 1, QTableWidgetItem(str(inv.name).upper()))
             self.tblInversiones.item(i, 1).setIcon(inv.bolsa.country.qicon())
             self.tblInversiones.setItem(i, 2, QTableWidgetItem(inv.isin))
-            self.tblInversiones.setItem(i, 3, qdatetime(inv.result.last.datetime, inv.bolsa.zone))#, self.cfg.localzone.name)))
-            self.tblInversiones.setItem(i, 4, inv.currency.qtablewidgetitem(inv.result.last.quote, 6 ))
-            self.tblInversiones.setItem(i, 5, qtpc(inv.result.tpc_diario()))
-            self.tblInversiones.setItem(i, 6, qtpc(inv.result.tpc_anual()))
+            self.tblInversiones.setItem(i, 3, qdatetime(inv.result.basic.last.datetime, inv.bolsa.zone))#, self.cfg.localzone.name)))
+            self.tblInversiones.setItem(i, 4, inv.currency.qtablewidgetitem(inv.result.basic.last.quote, 6 ))
+            self.tblInversiones.setItem(i, 5, qtpc(inv.result.basic.tpc_diario()))
+            self.tblInversiones.setItem(i, 6, qtpc(inv.result.basic.tpc_anual()))
             
             if inv.estimacionesdividendo.currentYear()==None:
                 self.tblInversiones.setItem(i, 7, qtpc(None))
@@ -174,17 +174,17 @@ class wdgInversionesMS(QWidget, Ui_wdgInversionesMS):
         
     @QtCore.pyqtSlot() 
     def on_actionOrdenarTPCDiario_activated(self):
-        self.investments=sorted(self.investments, key=lambda inv: inv.result.tpc_diario(),  reverse=True) 
+        self.investments=sorted(self.investments, key=lambda inv: inv.result.basic.tpc_diario(),  reverse=True) 
         self.build_table()        
         
     @QtCore.pyqtSlot() 
     def on_actionOrdenarTPCAnual_activated(self):
-        self.investments=sorted(self.investments, key=lambda inv: inv.result.tpc_anual(),  reverse=True) 
+        self.investments=sorted(self.investments, key=lambda inv: inv.result.basic.tpc_anual(),  reverse=True) 
         self.build_table()    
         
     @QtCore.pyqtSlot() 
     def on_actionOrdenarHora_activated(self):
-        self.investments=sorted(self.investments, key=lambda inv: inv.result.last.datetime,  reverse=False) 
+        self.investments=sorted(self.investments, key=lambda inv: inv.result.basic.last.datetime,  reverse=False) 
         self.build_table()        
         
     @QtCore.pyqtSlot() 

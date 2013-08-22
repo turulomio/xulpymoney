@@ -55,7 +55,7 @@ class wdgInformeDividendos(QWidget, Ui_wdgInformeDividendos):
             
             self.tblInversiones.setItem(i, 0,QTableWidgetItem(inv.name))
             self.tblInversiones.setItem(i, 1, QTableWidgetItem(inv.cuenta.eb.name))
-            self.tblInversiones.setItem(i, 2, inv.investment.currency.qtablewidgetitem(inv.investment.result.last.quote))
+            self.tblInversiones.setItem(i, 2, inv.investment.currency.qtablewidgetitem(inv.investment.result.basic.last.quote))
             self.tblInversiones.setItem(i, 3, inv.investment.currency.qtablewidgetitem(dpa))    
             self.tblInversiones.setItem(i, 4, qright(str(inv.acciones())))
             sumdiv=sumdiv+divestimado
