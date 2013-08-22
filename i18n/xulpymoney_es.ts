@@ -3,12 +3,12 @@
 <context>
     <name>Config</name>
     <message>
-        <location filename="libxulpymoney.py" line="4797"/>
+        <location filename="libxulpymoney.py" line="4853"/>
         <source>Error en la conexi&#xc3;&#xb3;n, vuelva a entrar</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4858"/>
+        <location filename="libxulpymoney.py" line="4914"/>
         <source>Error en la conexi&#xc3;&#xb3;n a xulpymoney, vuelva a entrar</source>
         <translation type="unfinished"></translation>
     </message>
@@ -161,67 +161,67 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4614"/>
+        <location filename="libxulpymoney.py" line="4670"/>
         <source>Acciones</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4615"/>
+        <location filename="libxulpymoney.py" line="4671"/>
         <source>Fondos de inversi&#xc3;&#xb3;n</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4616"/>
+        <location filename="libxulpymoney.py" line="4672"/>
         <source>&#xc3;&#xad;ndices</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4617"/>
+        <location filename="libxulpymoney.py" line="4673"/>
         <source>ETFs</source>
         <translation type="unfinished">ETFs</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4618"/>
+        <location filename="libxulpymoney.py" line="4674"/>
         <source>Warrants</source>
         <translation type="unfinished">Warrants</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4619"/>
+        <location filename="libxulpymoney.py" line="4675"/>
         <source>Divisas</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4620"/>
+        <location filename="libxulpymoney.py" line="4676"/>
         <source>Deuda P&#xc3;&#xba;blica</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4621"/>
+        <location filename="libxulpymoney.py" line="4677"/>
         <source>Planes de pensiones</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4622"/>
+        <location filename="libxulpymoney.py" line="4678"/>
         <source>Deuda Privada</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4623"/>
+        <location filename="libxulpymoney.py" line="4679"/>
         <source>Dep&#xc3;&#xb3;sitos</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4624"/>
+        <location filename="libxulpymoney.py" line="4680"/>
         <source>Cuentas bancarias</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4976"/>
+        <location filename="libxulpymoney.py" line="5032"/>
         <source>Sourceforge version detected: %s</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4978"/>
+        <location filename="libxulpymoney.py" line="5034"/>
         <source>Error buscando la versi&#xc3;&#xb3;n actual de Sourceforge</source>
         <translation type="unfinished"></translation>
     </message>
@@ -246,12 +246,12 @@
         <translation>La tarjeta de crédito está inactiva. Debes activarla primero</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5274"/>
+        <location filename="libxulpymoney.py" line="5330"/>
         <source>This option is being developed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="3986"/>
+        <location filename="libxulpymoney.py" line="3990"/>
         <source>Purging innecesary data</source>
         <translation type="unfinished"></translation>
     </message>
@@ -261,7 +261,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="3988"/>
+        <location filename="libxulpymoney.py" line="3992"/>
         <source>Purging quotes</source>
         <translation type="unfinished"></translation>
     </message>
@@ -804,12 +804,12 @@ correspondiente en la tabla</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="ui/frmAnalisis.py" line="48"/>
+        <location filename="ui/frmAnalisis.py" line="49"/>
         <source>Añadir nueva inversión</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="ui/frmAnalisis.py" line="239"/>
+        <location filename="ui/frmAnalisis.py" line="240"/>
         <source>Año </source>
         <translation type="unfinished"></translation>
     </message>
@@ -854,7 +854,7 @@ correspondiente en la tabla</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmAnalisis.py" line="332"/>
+        <location filename="ui/frmAnalisis.py" line="341"/>
         <source>{0} quotes have been purged from {1}</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1250,22 +1250,22 @@ correspondiente en la tabla</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmDividendosIBM.py" line="80"/>
+        <location filename="ui/frmDividendosIBM.py" line="81"/>
         <source>Un gasto no puede tener un importe positivo</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmDividendosIBM.py" line="87"/>
+        <location filename="ui/frmDividendosIBM.py" line="88"/>
         <source>Un ingreso no puede tener un importe negativo</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmDividendosIBM.py" line="93"/>
+        <location filename="ui/frmDividendosIBM.py" line="94"/>
         <source>Retention, earnings por share and commission must be greater than zero</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="ui/frmDividendosIBM.py" line="109"/>
+        <location filename="ui/frmDividendosIBM.py" line="110"/>
         <source>Error al introducir los datos. Compruébelos</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1765,7 +1765,7 @@ correspondiente en la tabla</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="ui/frmInversionesEstudio.py" line="34"/>
+        <location filename="ui/frmInversionesEstudio.py" line="33"/>
         <source>Añadir una nueva inversión</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1775,12 +1775,12 @@ correspondiente en la tabla</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmInversionesEstudio.py" line="197"/>
+        <location filename="ui/frmInversionesEstudio.py" line="203"/>
         <source>No se ha podiddo deshacer el traspaso de valores</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="ui/frmInversionesEstudio.py" line="258"/>
+        <location filename="ui/frmInversionesEstudio.py" line="264"/>
         <source>Debe seleccionar una inversión de MyQuotes para continuar</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2667,6 +2667,44 @@ seleccionados por el usuario</source>
     <message>
         <location filename="ui/Ui_frmSettings.py" line="201"/>
         <source>Impuesto por plusval&#xc3;&#xad;as</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>frmSplit</name>
+    <message>
+        <location filename="ui/Ui_frmSplit.py" line="109"/>
+        <source>Split / Contrasplit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_frmSplit.py" line="110"/>
+        <source>Current Shares</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_frmSplit.py" line="111"/>
+        <source>1</source>
+        <translation type="unfinished">1</translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_frmSplit.py" line="112"/>
+        <source>Final Shares</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_frmSplit.py" line="113"/>
+        <source>10</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message encoding="UTF-8">
+        <location filename="ui/frmSplit.py" line="30"/>
+        <source>If you have 1000 shares of 10 € of price, you will have {0:.6f} shares of {1:.6f} € of price after the {2}</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_frmSplit.py" line="108"/>
+        <source>Split / Contrasplit relation</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

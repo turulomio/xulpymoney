@@ -72,7 +72,8 @@ class frmDividendosIBM(QDialog, Ui_frmDividendosIBM):
 
 
     def on_cmd_pressed(self):
-        
+        concepto=self.cfg.conceptos.find(self.cmb.itemData(self.cmb.currentIndex()))
+        tipooperacion=concepto.tipooperacion
                         
         if tipooperacion.id==1 and (self.txtBruto.decimal()>Decimal('0') or self.txtNeto.decimal()>Decimal('0')):
             m=QMessageBox()
@@ -96,7 +97,7 @@ class frmDividendosIBM(QDialog, Ui_frmDividendosIBM):
         
         
         try:
-            self.dividendo.concepto=self.cfg.conceptos.find(self.cmb.itemData(self.cmb.currentIndex()))
+            self.dividendo.concepto=concepto
             self.dividendo.bruto=self.txtBruto.decimal()
             self.dividendo.retencion=self.txtRetencion.decimal()
             self.dividendo.neto=self.neto

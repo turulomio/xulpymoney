@@ -16,6 +16,7 @@ compile:
 	pyuic4 ui/frmHelp.ui > ui/Ui_frmHelp.py
 	pyuic4 ui/frmInit.ui > ui/Ui_frmInit.py
 	pyuic4 ui/frmMain.ui > ui/Ui_frmMain.py
+	pyuic4 ui/frmSplit.ui > ui/Ui_frmSplit.py
 	pyuic4 ui/frmOperCuentas.ui > ui/Ui_frmOperCuentas.py
 	pyuic4 ui/frmTablasAuxiliares.ui > ui/Ui_frmTablasAuxiliares.py
 	pyuic4 ui/wdgBancos.ui > ui/Ui_wdgBancos.py
@@ -37,9 +38,7 @@ compile:
 	pyuic4 ui/frmTarjetasIBM.ui > ui/Ui_frmTarjetasIBM.py
 	pyuic4 ui/frmTransferencia.ui > ui/Ui_frmTransferencia.py
 	pyuic4 ui/frmTraspasoValores.ui > ui/Ui_frmTraspasoValores.py
-
 	pyuic4 ui/wdgTotal.ui > ui/Ui_wdgTotal.py
-
 	pyuic4 ui/frmAnalisis.ui > ui/Ui_frmAnalisis.py 
 	pyuic4 ui/frmQuotesIBM.ui > ui/Ui_frmQuotesIBM.py
 	pyuic4 ui/frmMainMS.ui > ui/Ui_frmMainMS.py

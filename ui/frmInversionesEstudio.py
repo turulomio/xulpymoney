@@ -9,18 +9,17 @@ from frmTraspasoValores import *
 from libxulpymoney import *
 
 class frmInversionesEstudio(QDialog, Ui_frmInversionesEstudio):
-    def __init__(self, cfg, selInversion=None,  parent=None):
+    def __init__(self, cfg, inversion=None,  parent=None):
         """Cuentas es un set cuentas"""
         """TIPOS DE ENTRADAS:        
          1   : Inserción de Opercuentas
-         2   selInversion=x"""
+         2   inversion=x"""
         QWidget.__init__(self, parent)
         self.setupUi(self)
         self.showMaximized()
         self.cfg=cfg
-        self.selInversion=selInversion
+        self.inversion=inversion
         
-#        self.currentIndex=79329
         self.selDividendo=None#Dividendo seleccionado
         
         #arrays asociados a tablas
@@ -29,11 +28,11 @@ class frmInversionesEstudio(QDialog, Ui_frmInversionesEstudio):
         
         self.ise.setupUi(self.cfg)
         
-        if selInversion==None:
+        if inversion==None:
             self.tipo=1
             self.cmdInversion.setText(self.trUtf8("Añadir una nueva inversión"))
             self.lblTitulo.setText(self.trUtf8("Nueva inversión"))
-            self.selInversion=None
+            self.inversion=None
             self.tab.setCurrentIndex(0)
             self.tabDividendos.setEnabled(False)
             self.tabOperacionesHistoricas.setEnabled(False)
@@ -44,10 +43,10 @@ class frmInversionesEstudio(QDialog, Ui_frmInversionesEstudio):
             self.tipo=2    
             self.cmbCuenta.setEnabled(False)
             self.tab.setCurrentIndex(1)
-            self.lblTitulo.setText((self.selInversion.name))
-            self.txtInversion.setText((self.selInversion.name))
-            self.txtVenta.setText(str((self.selInversion.venta)))
-            self.ise.setSelected(self.selInversion.investment)
+            self.lblTitulo.setText((self.inversion.name))
+            self.txtInversion.setText((self.inversion.name))
+            self.txtVenta.setText(str((self.inversion.venta)))
+            self.ise.setSelected(self.inversion.investment)
             self.cmdPuntoVenta.setEnabled(True)
 
         self.tblInversionHistorica.settings("frmInversionesEstudio",  self.cfg.file_ui)
@@ -56,7 +55,7 @@ class frmInversionesEstudio(QDialog, Ui_frmInversionesEstudio):
         self.cfg.data.cuentas_active.load_qcombobox(self.cmbCuenta)
 
         if self.tipo==2:
-            self.cmbCuenta.setCurrentIndex(self.cmbCuenta.findData(self.selInversion.cuenta.id))
+            self.cmbCuenta.setCurrentIndex(self.cmbCuenta.findData(self.inversion.cuenta.id))
             self.selMovimiento=None
             self.on_chkOperaciones_stateChanged(Qt.Unchecked)
             self.update_tables()
@@ -79,33 +78,34 @@ class frmInversionesEstudio(QDialog, Ui_frmInversionesEstudio):
             sumcomision=sumcomision+d.comision
             self.tblDividendos.setItem(i, 0, QTableWidgetItem(str(d.fecha)))
             self.tblDividendos.setItem(i, 1, QTableWidgetItem(str(d.opercuenta.concepto.name)))
-            self.tblDividendos.setItem(i, 2, self.selInversion.investment.currency.qtablewidgetitem(d.bruto))
-            self.tblDividendos.setItem(i, 3, self.selInversion.investment.currency.qtablewidgetitem(d.retencion))
-            self.tblDividendos.setItem(i, 4, self.selInversion.investment.currency.qtablewidgetitem(d.comision))
-            self.tblDividendos.setItem(i, 5, self.selInversion.investment.currency.qtablewidgetitem(d.neto))
-            self.tblDividendos.setItem(i, 6, self.selInversion.investment.currency.qtablewidgetitem(d.dpa))
+            self.tblDividendos.setItem(i, 2, self.inversion.investment.currency.qtablewidgetitem(d.bruto))
+            self.tblDividendos.setItem(i, 3, self.inversion.investment.currency.qtablewidgetitem(d.retencion))
+            self.tblDividendos.setItem(i, 4, self.inversion.investment.currency.qtablewidgetitem(d.comision))
+            self.tblDividendos.setItem(i, 5, self.inversion.investment.currency.qtablewidgetitem(d.neto))
+            self.tblDividendos.setItem(i, 6, self.inversion.investment.currency.qtablewidgetitem(d.dpa))
         self.tblDividendos.setItem(len(self.dividendos), 1, QTableWidgetItem("TOTAL"))
-        self.tblDividendos.setItem(len(self.dividendos), 2, self.selInversion.investment.currency.qtablewidgetitem(sumbruto))
-        self.tblDividendos.setItem(len(self.dividendos), 3, self.selInversion.investment.currency.qtablewidgetitem(sumretencion))
-        self.tblDividendos.setItem(len(self.dividendos), 4, self.selInversion.investment.currency.qtablewidgetitem(sumcomision))
-        self.tblDividendos.setItem(len(self.dividendos), 5, self.selInversion.investment.currency.qtablewidgetitem(sumneto))
+        self.tblDividendos.setItem(len(self.dividendos), 2, self.inversion.investment.currency.qtablewidgetitem(sumbruto))
+        self.tblDividendos.setItem(len(self.dividendos), 3, self.inversion.investment.currency.qtablewidgetitem(sumretencion))
+        self.tblDividendos.setItem(len(self.dividendos), 4, self.inversion.investment.currency.qtablewidgetitem(sumcomision))
+        self.tblDividendos.setItem(len(self.dividendos), 5, self.inversion.investment.currency.qtablewidgetitem(sumneto))
         
         if self.chkDividendosHistoricos.checkState()==Qt.Unchecked:
             if len(self.dividendos)>0:
-                importeinvertido=self.selInversion.invertido()
-                dias=(datetime.date.today()-self.selInversion.op_actual.datetime_primera_operacion().date()).days+1
+                importeinvertido=self.inversion.invertido()
+                dias=(datetime.date.today()-self.inversion.op_actual.datetime_primera_operacion().date()).days+1
                 dtpc=100*sumbruto/importeinvertido
                 dtae=365*dtpc/abs(dias)
             else:
                 dtpc=0
                 dtae=0
-
-            estimacion=self.selInversion.investment.estimacionesdividendo.currentYear()
-            acciones=self.selInversion.acciones()
-            tpccalculado=100*estimacion.dpa/self.selInversion.investment.result.basic.last.quote
-            self.lblDivAnualEstimado.setText(("El dividendo anual estimado, según el valor actual de la acción es del {0} % ({1}€ por acción)".format(str(round(tpccalculado, 2)),  str(estimacion.dpa))))
-            self.lblDivFechaRevision.setText(('Fecha de la última revisión del dividendo: '+ str(estimacion.fechaestimacion)))
-            self.lblDivSaldoEstimado.setText(("Saldo estimado: {0}€ ({1}€ después de impuestos)".format( str(round(acciones*estimacion.dpa, 2)),  str(round(acciones*estimacion.dpa*(1-self.cfg.dividendwithholding))), 2)))
+            
+            estimacion=self.inversion.investment.estimacionesdividendo.currentYear()
+            if estimacion!=None:
+                acciones=self.inversion.acciones()
+                tpccalculado=100*estimacion.dpa/self.inversion.investment.result.basic.last.quote
+                self.lblDivAnualEstimado.setText(("El dividendo anual estimado, según el valor actual de la acción es del {0} % ({1}€ por acción)".format(str(round(tpccalculado, 2)),  str(estimacion.dpa))))
+                self.lblDivFechaRevision.setText(('Fecha de la última revisión del dividendo: '+ str(estimacion.fechaestimacion)))
+                self.lblDivSaldoEstimado.setText(("Saldo estimado: {0}€ ({1}€ después de impuestos)".format( str(round(acciones*estimacion.dpa, 2)),  str(round(acciones*estimacion.dpa*(1-self.cfg.dividendwithholding))), 2)))
             self.lblDivTPC.setText(("% de lo invertido: "+tpc(dtpc)))
             self.lblDivTAE.setText(("% TAE de lo invertido: "+tpc(dtae)))        
             self.grpDividendosEstimacion.show()
@@ -116,35 +116,35 @@ class frmInversionesEstudio(QDialog, Ui_frmInversionesEstudio):
        
     def on_chkOperaciones_stateChanged(self, state):
         if state==Qt.Unchecked:
-            primera=self.selInversion.op_actual.datetime_primera_operacion()
+            primera=self.inversion.op_actual.datetime_primera_operacion()
             if primera==None:
                 primera=self.cfg.localzone.now()
-            self.op=self.selInversion.op.clone_from_datetime(primera)
+            self.op=self.inversion.op.clone_from_datetime(primera)
         else:
-            self.op=self.selInversion.op
+            self.op=self.inversion.op
         self.selMovimiento=None
         self.op.load_myqtablewidget(self.tblOperaciones, "frmInversionesEstudio")
             
         
     def update_tables(self):             
         #Actualiza el indice de referencia porque ha cambiado
-        self.selInversion.op_actual.get_valor_indicereferencia(self.cfg.data.indicereferencia)
+        self.inversion.op_actual.get_valor_indicereferencia(self.cfg.data.indicereferencia)
         self.on_chkOperaciones_stateChanged(self.chkOperaciones.checkState())
-        self.selInversion.op_actual.load_myqtablewidget(self.tblInversionActual,  "frmInversionesEstudio")
-        self.selInversion.op_historica.load_myqtablewidget(self.tblInversionHistorica,  "frmInversionesEstudio"  )
+        self.inversion.op_actual.load_myqtablewidget(self.tblInversionActual,  "frmInversionesEstudio")
+        self.inversion.op_historica.load_myqtablewidget(self.tblInversionHistorica,  "frmInversionesEstudio"  )
         self.on_chkDividendosHistoricos_stateChanged(self.chkDividendosHistoricos.checkState())
     
 
     @QtCore.pyqtSlot() 
     def on_actionDividendoNuevo_activated(self):
-        w=frmDividendosIBM(self.cfg, self.selInversion,  None)
+        w=frmDividendosIBM(self.cfg, self.inversion,  None)
         w.exec_()
         self.on_chkDividendosHistoricos_stateChanged(self.chkDividendosHistoricos.checkState())
         self.load_tblDividendos() 
         
     @QtCore.pyqtSlot() 
     def on_actionDividendoModificar_activated(self):
-        w=frmDividendosIBM(self.cfg, self.selInversion, self.selDividendo)
+        w=frmDividendosIBM(self.cfg, self.inversion, self.selDividendo)
         w.exec_()
         self.on_chkDividendosHistoricos_stateChanged(self.chkDividendosHistoricos.checkState())
         self.load_tblDividendos() 
@@ -162,30 +162,36 @@ class frmInversionesEstudio(QDialog, Ui_frmInversionesEstudio):
         d=QDialog(self)       
         d.showMaximized() 
         d.setWindowTitle(self.trUtf8("Simulación de Desinversión / Reinversión"))
-        w=wdgDesReinversion(self.cfg, self.selInversion)
+        w=wdgDesReinversion(self.cfg, self.inversion)
         lay = QVBoxLayout(d)
         lay.addWidget(w)
         d.exec_()
         
     @QtCore.pyqtSlot() 
     def on_actionMovimientoNuevo_activated(self):
-        w=frmInversionesIBM(self.cfg, self.selInversion, None, self)
+        w=frmInversionesIBM(self.cfg, self.inversion, None, self)
         w.exec_()
         self.update_tables()    
         
     @QtCore.pyqtSlot() 
     def on_actionMovimientoModificar_activated(self):
-        w=frmInversionesIBM(self.cfg, self.selInversion, self.selMovimiento, self)
+        w=frmInversionesIBM(self.cfg, self.inversion, self.selMovimiento, self)
         w.exec_()
         self.update_tables() 
 
     @QtCore.pyqtSlot() 
     def on_actionSplit_activated(self):
-        qmessagebox_developing()
+        w=frmSplit(self.cfg)
+        w.exec_()   
+        if w.result()==QDialog.Accepted:
+            w.split.updateOperInversiones(self.inversion.op.arr)         
+            w.split.updateDividendos(self.dividendos)         
+            self.cfg.con.commit()
+            self.update_tables()
         
     @QtCore.pyqtSlot() 
     def on_actionTraspasoValores_activated(self):
-        w=frmTraspasoValores(self.cfg, self.selInversion, self)
+        w=frmTraspasoValores(self.cfg, self.inversion, self)
         w.exec_()
         self.update_tables()                               
 
@@ -201,7 +207,7 @@ class frmInversionesEstudio(QDialog, Ui_frmInversionesEstudio):
 
     @QtCore.pyqtSlot() 
     def on_cmdPuntoVenta_released(self):
-        f=frmPuntoVenta(self.cfg, self.cfg.data.inversiones_active, self.selInversion)
+        f=frmPuntoVenta(self.cfg, self.cfg.data.inversiones_active, self.inversion)
         f.exec_()
         self.txtVenta.setText(str(f.puntoventa))
 
@@ -213,7 +219,7 @@ class frmInversionesEstudio(QDialog, Ui_frmInversionesEstudio):
 
     def on_chkDividendosHistoricos_stateChanged(self, state):
         self.dividendos=[]
-        fechapo=self.selInversion.op_actual.datetime_primera_operacion()
+        fechapo=self.inversion.op_actual.datetime_primera_operacion()
         if fechapo==None and self.chkDividendosHistoricos.checkState()==Qt.Unchecked:
             self.load_tblDividendos()
             return
@@ -228,13 +234,13 @@ class frmInversionesEstudio(QDialog, Ui_frmInversionesEstudio):
             strfechapo=" and fecha >='{0}' ".format(fechapo.date())
         else:
             strfechapo=""  
-        sql="select * from dividendos where dividendos.id_inversiones="+str(self.selInversion.id) + strfechapo+" order by fecha;"
+        sql="select * from dividendos where dividendos.id_inversiones="+str(self.inversion.id) + strfechapo+" order by fecha;"
         cur.execute(sql) 
         for d in cur:
             cur2.execute("select * from opercuentas where id_opercuentas=%s", (d['id_opercuentas'], ))
             oc=cur2.fetchone()
-            opercuenta=CuentaOperacion(self.cfg).init__db_row( oc, self.cfg.conceptos.find(oc['id_conceptos']),self.cfg.tiposoperaciones.find(oc['id_tiposoperaciones']), self.selInversion.cuenta  )
-            self.dividendos.append(Dividendo(self.cfg).init__db_row(d, self.selInversion, opercuenta, self.cfg.conceptos.find(d['id_conceptos'])))        
+            opercuenta=CuentaOperacion(self.cfg).init__db_row( oc, self.cfg.conceptos.find(oc['id_conceptos']),self.cfg.tiposoperaciones.find(oc['id_tiposoperaciones']), self.inversion.cuenta  )
+            self.dividendos.append(Dividendo(self.cfg).init__db_row(d, self.inversion, opercuenta, self.cfg.conceptos.find(d['id_conceptos'])))        
         cur.close()       
         cur2.close()
         self.cfg.disconnect_xulpymoney(con)         
@@ -284,15 +290,15 @@ class frmInversionesEstudio(QDialog, Ui_frmInversionesEstudio):
             self.cfg.data.inversiones_active.arr.append(i)
             self.done(0)
         elif self.tipo==2:
-            self.selInversion.name=inversion
-            self.selInversion.venta=venta
-            self.selInversion.investment=self.cfg.data.investments_active.find(myquotesid)
-            self.selInversion.save()##El id y el id_cuentas no se pueden modificar
+            self.inversion.name=inversion
+            self.inversion.venta=venta
+            self.inversion.investment=self.cfg.data.investments_active.find(myquotesid)
+            self.inversion.save()##El id y el id_cuentas no se pueden modificar
             self.cfg.con.commit()
             self.cmdInversion.setEnabled(False)
         
     def on_tblOperaciones_customContextMenuRequested(self,  pos):
-        if self.selInversion.qmessagebox_inactive() or self.selInversion.cuenta.qmessagebox_inactive()or self.selInversion.cuenta.eb.qmessagebox_inactive():
+        if self.inversion.qmessagebox_inactive() or self.inversion.cuenta.qmessagebox_inactive()or self.inversion.cuenta.eb.qmessagebox_inactive():
             return
             
             
@@ -320,7 +326,7 @@ class frmInversionesEstudio(QDialog, Ui_frmInversionesEstudio):
 
     def on_tblInversionActual_customContextMenuRequested(self,  pos):
         
-        if self.selInversion.qmessagebox_inactive() or self.selInversion.cuenta.qmessagebox_inactive() or self.selInversion.cuenta.eb.qmessagebox_inactive():
+        if self.inversion.qmessagebox_inactive() or self.inversion.cuenta.qmessagebox_inactive() or self.inversion.cuenta.eb.qmessagebox_inactive():
             return
         menu=QMenu()
         menu.addAction(self.actionDesReinversion)
@@ -343,7 +349,7 @@ class frmInversionesEstudio(QDialog, Ui_frmInversionesEstudio):
         
         
     def on_tblDividendos_customContextMenuRequested(self,  pos):
-        if self.selInversion.qmessagebox_inactive() or self.selInversion.cuenta.qmessagebox_inactive()or self.selInversion.eb.qmessagebox_inactive():
+        if self.inversion.qmessagebox_inactive() or self.inversion.cuenta.qmessagebox_inactive()or self.inversion.cuenta.eb.qmessagebox_inactive():
             return
         
         if self.selDividendo==None:

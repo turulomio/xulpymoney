@@ -3964,6 +3964,10 @@ class SetQuotesAll:
                 intradayarr.append(Quote(self.cfg).init__db_row(row, self.investment))
             else:
                 intradayarr.append(Quote(self.cfg).init__db_row(row, self.investment))
+        #No entraba si hay dos d´ias en el primer d´ia
+        if len(intradayarr)!=0:
+            self.arr.append(SetQuotesIntraday(self.cfg).init__create(self.investment, dt_end.date(), intradayarr))
+            
 #        print ("SetQuotesIntraday created: {0}".format(len(self.arr)))
         curms.close()
 
@@ -4464,12 +4468,17 @@ class SetOHCLDaily:
 
     def setquotesbasic(self):
         """Returns a SetQuotesBasic con los datos del setohcldairy"""
+        last=None
+        penultimate=None
+        endlastyear=None
         ohcl=self.arr[len(self.arr)-1]#last
         last=Quote(self.cfg).init__create(self.investment, dt(ohcl.date, self.investment.bolsa.closes,  self.investment.bolsa.zone), ohcl.close)
         ohcl=self.find(ohcl.date-datetime.timedelta(days=1))#penultimate
-        penultimate=Quote(self.cfg).init__create(self.investment, dt(ohcl.date, self.investment.bolsa.closes,  self.investment.bolsa.zone), ohcl.close)
+        if ohcl!=None:
+            penultimate=Quote(self.cfg).init__create(self.investment, dt(ohcl.date, self.investment.bolsa.closes,  self.investment.bolsa.zone), ohcl.close)
         ohcl=self.find(datetime.date(datetime.date.today().year-1, 12, 31))#endlastyear
-        endlastyear=Quote(self.cfg).init__create(self.investment, dt(ohcl.date, self.investment.bolsa.closes,  self.investment.bolsa.zone), ohcl.close)        
+        if ohcl!=None:
+            endlastyear=Quote(self.cfg).init__create(self.investment, dt(ohcl.date, self.investment.bolsa.closes,  self.investment.bolsa.zone), ohcl.close)        
         return SetQuotesBasic(self.cfg, self.investment).init__create(last, penultimate, endlastyear)
         
 class OHCL:
@@ -4538,6 +4547,53 @@ class PriorityHistorical:
         self.id=id
         self.name=name
         return self
+        
+        
+class Split:
+    """Class to make calculations with splits or contrasplits"""
+    def __init__(self, cfg, sharesinitial,  sharesfinal):
+        self.cfg=cfg
+        self.initial=sharesinitial
+        self.final=sharesfinal
+    
+    def convertShares(self, actions):
+        """Function to calculate new shares just pass the number you need to convert"""
+        return actions*self.final/self.initial
+        
+    def convertPrices(self, price):
+        return price*self.initial/self.final
+        
+    def convertDPA(self, dpa):
+        """Converts the dividend por share"""
+        return self.convertPrices(dpa)
+    
+    def updateQuotes(self, arr):
+        """Transforms de price of the quotes of the array"""
+        for q in arr:
+            q.quote=self.convertPrices(q.quote)
+            q.save()
+        
+        
+    def updateOperInversiones(self, arr):
+        """Transforms de number of shares and its price of the array of InversionOperacion"""
+        for oi in arr:
+            oi.acciones=self.convertShares(oi.acciones)
+            oi.valor_accion=self.convertPrices(oi.valor_accion)
+            oi.save()
+        
+    def updateDividendos(self, arr):
+        """Transforms de dpa of an array of dividends"""
+        for d in arr:
+            d.dpa=self.convertDPA(d.dpa)
+            d.save()
+        
+    def type(self):
+        """Funci´on que devuelve si es un Split o contrasplit"""
+        if self.initial>self.final:
+            return "Contrasplit"
+        else:
+            return "Split"
+        
         
 class TUpdateData(threading.Thread):
     """Hilo que actualiza las investments, solo el getBasic, cualquier cambio no de last, deberá ser desarrollado por código"""
