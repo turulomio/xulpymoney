@@ -23,7 +23,7 @@ XULPYMONEY
 20130829 Poner frmAbout myquotes en tab de xulpymoney
 20130829 Update memory debe recargar inacctive si es distinto de None
 20130829 No funciona traspaso de valores
-
+20130829 Actualizar memoria lo hace dos veces
 
 MYSTOCKS
 ========
@@ -36,7 +36,8 @@ MYSTOCKS
 20130821 Editar L'oreal peta por la comilla
 20130822 Permitir editr quotes en frmAnalisis
 20130822 Permitir borrar quotes desde ohcldiary seleccionando varios
-
+20130822 Progress bar en status bar, al cargar frmAnalisis
+20130822 Hacer dividendos pagados para grafico quitando dividendos
 
 XULPYMONEY_INIT
 ===============
