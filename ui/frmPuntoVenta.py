@@ -27,23 +27,19 @@ class frmPuntoVenta(QDialog, Ui_frmPuntoVenta):
             m.exec_()     
             return
         
-        self.puntoventa=0#Guarda el resultado de los cálculos
+        self.puntoventa=Decimal(0)#Guarda el resultado de los cálculos
         self.operinversiones=list(self.inversion.op_actual.arr)            #0-fecha, 1-banco, 2-acciones, 3-valor-compra, 4-invertido, 5 pendiente, 6-tipooper
-        self.txtGanancia.setValidator(QDoubleValidator(self))
+
         self.table.settings("frmPuntoVenta",  self.cfg.file_ui)
         self.on_radTPC_toggled(True)
         
     def __calcular(self):
-        sumacciones=0
-        suminvertido=0
+        sumacciones=Decimal(0)
+        suminvertido=Decimal(0)
         self.table.setRowCount(len(self.operinversiones)+1)
         for i, rec in enumerate(self.operinversiones):
-#            if self.chkPonderanAdded.checkState()==Qt.Checked:
             sumacciones=sumacciones+rec.acciones
             suminvertido=suminvertido+rec.invertido()
-#            elif rec.tipooperacion.id!=6:
-#                    sumacciones=sumacciones+rec.acciones
-#                    suminvertido=suminvertido+rec.importe
             self.table.setItem(i, 0, qdatetime(rec.datetime, rec.inversion.investment.bolsa.zone))
             self.table.setItem(i, 1, QTableWidgetItem("{0} ({1})".format(rec.inversion.name, rec.inversion.cuenta.eb.name)))
             self.table.setItem(i, 2,  QTableWidgetItem(rec.tipooperacion.name))
@@ -56,6 +52,8 @@ class frmPuntoVenta(QDialog, Ui_frmPuntoVenta):
         self.table.setItem(len(self.operinversiones), 4, self.inversion.investment.currency.qtablewidgetitem(suminvertido/sumacciones))
         self.table.setItem(len(self.operinversiones), 5, self.inversion.investment.currency.qtablewidgetitem(suminvertido))
             
+            
+        
         if sumacciones==0:
             self.puntoventa=0
         else:
@@ -63,7 +61,12 @@ class frmPuntoVenta(QDialog, Ui_frmPuntoVenta):
                 tpc=Decimal(self.cmbTPC.currentText().replace(" %", ""))
                 self.puntoventa=round(suminvertido*(1+tpc/100)/sumacciones, 2)
             else:
-                self.puntoventa=round((self.txtGanancia.decimal()+suminvertido)/sumacciones, 2)
+                if self.txtGanancia.isValid():#Si hay un numero bien
+                    self.puntoventa=round((self.txtGanancia.decimal()+suminvertido)/sumacciones, 2)
+                    self.cmd.setEnabled(True)
+                else:
+                    self.puntoventa=0
+                    self.cmd.setEnabled(False)
         
         if self.chkPonderanAll.checkState()==Qt.Checked:
             self.cmd.setText("Grabar el punto de venta a todas las inversiones de {0} € para ganar {1} €".format(self.puntoventa, round(sumacciones*self.puntoventa-suminvertido, 2)))
