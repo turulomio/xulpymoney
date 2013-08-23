@@ -1891,52 +1891,52 @@ correspondiente en la tabla</source>
 <context>
     <name>frmMain</name>
     <message>
-        <location filename="ui/Ui_frmMain.py" line="206"/>
+        <location filename="ui/Ui_frmMain.py" line="205"/>
         <source>toolBar</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain.py" line="213"/>
+        <location filename="ui/Ui_frmMain.py" line="212"/>
         <source>&amp;Rangos de un &#xc3;&#xad;ndice</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain.py" line="214"/>
+        <location filename="ui/Ui_frmMain.py" line="213"/>
         <source>Rangos de un &#xc3;&#xad;ndice</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain.py" line="219"/>
+        <location filename="ui/Ui_frmMain.py" line="218"/>
         <source>Estudio de dividendos</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain.py" line="221"/>
+        <location filename="ui/Ui_frmMain.py" line="220"/>
         <source>Estudio TAE del patrimonio</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain.py" line="222"/>
+        <location filename="ui/Ui_frmMain.py" line="221"/>
         <source>Informe &amp;Total</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain.py" line="223"/>
+        <location filename="ui/Ui_frmMain.py" line="222"/>
         <source>Informe total</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain.py" line="224"/>
+        <location filename="ui/Ui_frmMain.py" line="223"/>
         <source>Informe Hist&#xc3;&#xb3;rico</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain.py" line="229"/>
+        <location filename="ui/Ui_frmMain.py" line="228"/>
         <source>Informe de tipos de inversi&#xc3;&#xb3;n</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain.py" line="231"/>
+        <location filename="ui/Ui_frmMain.py" line="230"/>
         <source>Transferencia</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1946,87 +1946,87 @@ correspondiente en la tabla</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain.py" line="205"/>
+        <location filename="ui/Ui_frmMain.py" line="204"/>
         <source>Xulpymoney</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain.py" line="209"/>
+        <location filename="ui/Ui_frmMain.py" line="208"/>
         <source>Esc</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain.py" line="212"/>
+        <location filename="ui/Ui_frmMain.py" line="211"/>
         <source>F10</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain.py" line="239"/>
+        <location filename="ui/Ui_frmMain.py" line="238"/>
         <source>Help</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain.py" line="240"/>
+        <location filename="ui/Ui_frmMain.py" line="239"/>
         <source>F1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain.py" line="228"/>
+        <location filename="ui/Ui_frmMain.py" line="227"/>
         <source>Banks</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain.py" line="202"/>
+        <location filename="ui/Ui_frmMain.py" line="201"/>
         <source>Reports</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain.py" line="226"/>
+        <location filename="ui/Ui_frmMain.py" line="225"/>
         <source>Accounts</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain.py" line="216"/>
+        <location filename="ui/Ui_frmMain.py" line="215"/>
         <source>Investments</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain.py" line="207"/>
+        <location filename="ui/Ui_frmMain.py" line="206"/>
         <source>E&amp;xit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain.py" line="208"/>
+        <location filename="ui/Ui_frmMain.py" line="207"/>
         <source>Exit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain.py" line="210"/>
+        <location filename="ui/Ui_frmMain.py" line="209"/>
         <source>&amp;About</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain.py" line="211"/>
+        <location filename="ui/Ui_frmMain.py" line="210"/>
         <source>About</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain.py" line="218"/>
+        <location filename="ui/Ui_frmMain.py" line="217"/>
         <source>Auxiliar tables</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain.py" line="233"/>
+        <location filename="ui/Ui_frmMain.py" line="232"/>
         <source>Concepts</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain.py" line="235"/>
+        <location filename="ui/Ui_frmMain.py" line="234"/>
         <source>Update memory</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain.py" line="237"/>
+        <location filename="ui/Ui_frmMain.py" line="236"/>
         <source>Settings</source>
         <translation type="unfinished"></translation>
     </message>
