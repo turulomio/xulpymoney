@@ -55,14 +55,13 @@ class frmMain(QMainWindow, Ui_frmMain):
         
         
                 
-    def __del__(self):
-        self.cfg.__del__()
-        self.close()
-        print ("App correctly closed")
+#    def __del__(self):
         
-    @pyqtSignature("")
+    @QtCore.pyqtSlot()  
     def on_actionSalir_activated(self):
-        self.__del__()
+        self.cfg.__del__()
+        print ("App correctly closed")
+        self.close()
         
     @pyqtSignature("")
     def on_actionAcercaDe_activated(self):
