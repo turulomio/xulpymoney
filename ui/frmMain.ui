@@ -46,7 +46,7 @@
      <x>0</x>
      <y>0</y>
      <width>1186</width>
-     <height>20</height>
+     <height>25</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuAyuda">
@@ -347,22 +347,5 @@
  <resources>
   <include location="../images/xulpymoney.qrc"/>
  </resources>
- <connections>
-  <connection>
-   <sender>actionSalir</sender>
-   <signal>activated()</signal>
-   <receiver>frmMain</receiver>
-   <slot>close()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>-1</x>
-     <y>-1</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>592</x>
-     <y>312</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+ <connections/>
 </ui>
