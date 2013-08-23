@@ -1496,8 +1496,8 @@ class DBData:
         self.investments_active.load_from_inversiones_query("select distinct(myquotesid) from inversiones where in_activa=true")
         self.inversiones_active=SetInversiones(self.cfg, self.cuentas_active, self.investments_active, self.indicereferencia)
         self.inversiones_active.load_from_db("select * from inversiones where in_activa=true", True)
-        print("\n")
-        self.tupdatedata.start()        
+        if not self.tupdatedata.isAlive():#Necesary because, can be thrown from actionUpdateMemory
+            self.tupdatedata.start()        
         print("Cargando actives",  datetime.datetime.now()-inicio)
         
     def load_inactives(self, force=False):

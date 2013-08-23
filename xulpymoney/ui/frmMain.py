@@ -89,6 +89,7 @@ class frmMain(QMainWindow, Ui_frmMain):
         self.layout.addWidget(self.w)
         self.w.show()
     
+    @QtCore.pyqtSlot()  
     def on_actionMemoria_activated(self):        
         self.cfg.data.reload()
         

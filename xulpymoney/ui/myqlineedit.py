@@ -4,21 +4,32 @@ from decimal import Decimal
 
 class myQLineEdit(QLineEdit):
     def __init__(self, parent):
-        QWidget.__init__(self, parent)
-        self.selected=None
+        QWidget.__init__(self, parent)       
+        self.setValidator(QDoubleValidator(self))
+        self.setMaxLength(12)
         self.connect(self,SIGNAL('textChanged(QString)'), self.on_textChanged)
+        
+        
+    def isValid(self):
+        """Devuelve si el textedit es un float o un decimal valido"""
+        try:
+            Decimal(self.text())
+            return True
+        except:
+            return False
         
     @pyqtSignature("")
     def on_textChanged(self, text):
+        pos=self.cursorPosition()
         text=text.replace(",", ".")
-        text=text.strip()
+        text=text.replace("e", "0")#Avoids scientific numbers
         self.setText(text)
-        css=""
-        try:
-            Decimal(text)
-        except:
+        if self.isValid():        
+            css=""
+        else:
             css = """QLineEdit { background-color: rgb(255, 182, 182); }"""
         self.setStyleSheet(css)
+        self.setCursorPosition(pos)
 
     def decimal(self):
         """Devuelve el decimal o un None si hay error"""

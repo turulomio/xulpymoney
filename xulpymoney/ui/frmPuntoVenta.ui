@@ -226,5 +226,22 @@
  <resources>
   <include location="../images/xulpymoney.qrc"/>
  </resources>
- <connections/>
+ <connections>
+  <connection>
+   <sender>txtGanancia</sender>
+   <signal>textEdited(QString)</signal>
+   <receiver>radGanancia</receiver>
+   <slot>toggle()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>231</x>
+     <y>98</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>63</x>
+     <y>103</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>
