@@ -210,7 +210,6 @@ class wdgBancos(QWidget, Ui_wdgBancos):
             eb=EntidadBancaria(self.cfg).init__create(tipo[0])
             eb.save()
             self.cfg.con.commit()  
-            self.ebs.append(eb)
             self.cfg.data.ebs_active.arr.append(eb)
             self.cfg.data.ebs_active.sort()
             

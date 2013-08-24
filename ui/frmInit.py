@@ -78,6 +78,7 @@ class frmInit(QDialog, Ui_frmInit):
         cur.execute("insert into conceptos values(5,'{0}',3,false)".format(self.trUtf8("Transfer. Destination")))
         cur.execute("insert into conceptos values(29,'{0}',4,false)".format(self.trUtf8("Purchase investment product")))
         cur.execute("insert into conceptos values(35,'{0}',5,false)".format(self.trUtf8("Investment product sales")))
+        cur.execute("insert into conceptos values(38,'{0}',1,false)".format(self.trUtf8("Bank commissions")))
         cur.execute("insert into conceptos values(39,'{0}',2,false)".format(self.trUtf8("Dividends")))
         cur.execute("insert into conceptos values(40,'{0}',7,false)".format(self.trUtf8("Credit card billing")))
         cur.execute("insert into conceptos values(43,'{0}',6,false)".format(self.trUtf8("Added shares")))

@@ -197,7 +197,7 @@ class frmInversionesEstudio(QDialog, Ui_frmInversionesEstudio):
 
     @QtCore.pyqtSlot() 
     def on_actionDeshacerTraspasoValores_activated(self):
-        if self.cfg.inversiones.traspaso_valores_deshacer(self.selMovimiento)==False:
+        if self.cfg.data.inversiones_active.traspaso_valores_deshacer(self.selMovimiento)==False:
             m=QMessageBox()
             m.setIcon(QMessageBox.Information)
             m.setText(self.trUtf8("No se ha podiddo deshacer el traspaso de valores"))
@@ -303,17 +303,23 @@ class frmInversionesEstudio(QDialog, Ui_frmInversionesEstudio):
             
             
         
+        if self.selMovimiento==None:
+            self.actionMovimientoBorrar.setEnabled(False)
+            self.actionMovimientoModificar.setEnabled(False)
+        else:
+            if self.selMovimiento.tipooperacion.id==10:#Traspaso valores destino
+                self.actionMovimientoBorrar.setEnabled(False)
+                self.actionMovimientoModificar.setEnabled(False)
+            else:
+                self.actionMovimientoBorrar.setEnabled(True)
+                self.actionMovimientoModificar.setEnabled(True)
+            
+            
         menu=QMenu()
         menu.addAction(self.actionMovimientoNuevo)
         
         menu.addAction(self.actionMovimientoModificar)
         menu.addAction(self.actionMovimientoBorrar)
-        if self.selMovimiento==None:
-            self.actionMovimientoBorrar.setEnabled(False)
-            self.actionMovimientoModificar.setEnabled(False)
-        else:
-            self.actionMovimientoBorrar.setEnabled(True)
-            self.actionMovimientoModificar.setEnabled(True)
         
         if self.selMovimiento!=None:
             if self.selMovimiento.tipooperacion.id==9:#Traspaso valores origen

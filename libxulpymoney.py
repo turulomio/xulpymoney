@@ -183,38 +183,29 @@ class SetInversiones:
         #Comprueba que el subyacente de origen y destino sea el mismo
         if origen.investment!=destino.investment:
             return False
-        cur=self.cfg.con.cursor()
-        cur2=self.cfg.con.cursor()
         now=self.cfg.localzone.now()
-#            def init__create(self, fecha, concepto, tipooperacion, importe,  comentario, cuenta, id=None):
 
         if comision!=0:
-            op_cuenta=CuentaOperacion(self.cfg).init__create(now.date(), self.cfg.conceptos.find(38), self.cfg.tiposoperaciones(1), -comision, "Traspaso de valores", origen.cuenta)
-            op_cuenta.save(cur)       
-            origen.cuenta.saldo_from_db(cur2)        
+            op_cuenta=CuentaOperacion(self.cfg).init__create(now.date(), self.cfg.conceptos.find(38), self.cfg.tiposoperaciones.find(1), -comision, "Traspaso de valores", origen.cuenta)
+            op_cuenta.save()       
+            origen.cuenta.saldo_from_db()        
             comentario="{0}|{1}".format(destino.id, op_cuenta.id)
         else:
             comentario="{0}|{1}".format(destino.id, "None")
         
-        op_origen=InversionOperacion(self.cfg).init__create( self.cfg.tiposoperaciones(9), now, origen,  -numacciones, 0,0, comision, 0, comentario)
-        op_origen.save(cur, cur2, False)      
+        op_origen=InversionOperacion(self.cfg).init__create( self.cfg.tiposoperaciones.find(9), now, origen,  -numacciones, 0,0, comision, 0, comentario)
+        op_origen.save( False)      
 
         #NO ES OPTIMO YA QUE POR CADA SAVE SE CALCULA TODO
         comentario="{0}".format(op_origen.id)
         for o in origen.op_actual.arr:
-            op_destino=InversionOperacion(self.cfg).init__create( self.cfg.tiposoperaciones(10), now, destino,  o.acciones, o.importe, o.impuestos, o.comision, o.valor_accion, comentario)
-            op_destino.save(cur, cur2, False)
-            
+            op_destino=InversionOperacion(self.cfg).init__create( self.cfg.tiposoperaciones.find(10), now, destino,  o.acciones, o.importe, o.impuestos, o.comision, o.valor_accion, comentario)
+            op_destino.save( False)
             
         #Vuelvo a introducir el comentario de la opercuenta
-        
-
         self.cfg.con.commit()
         (origen.op_actual,  origen.op_historica)=origen.op.calcular()   
         (destino.op_actual,  destino.op_historica)=destino.op.calcular()   
-#        CuentaOperacionHeredadaInversion(self.cfg).actualizar_una_inversion(cur, cur2,  self.inversion.id)  
-        cur.close()
-        cur2.close()
         return True
         
     def traspaso_valores_deshacer(self, operinversionorigen):
@@ -226,7 +217,7 @@ class SetInversiones:
 #        try:
         (id_inversiondestino, id_opercuentacomision)=operinversionorigen.comentario.split("|")
         origen=operinversionorigen.inversion
-        destino=self.cfg.inversiones.inversion(int(id_inversiondestino))
+        destino=self.find(int(id_inversiondestino))
         cur=self.cfg.con.cursor()
 #        print (cur.mogrify("delete from operinversiones where id_tiposoperaciones=10 and id_inversiones=%s and comentario=%s", (id_inversiondestino, str(operinversionorigen.id))))
 
@@ -234,11 +225,11 @@ class SetInversiones:
         cur.execute("delete from operinversiones where id_operinversiones=%s", (operinversionorigen.id, ))
         if id_opercuentacomision!="None":
             cur.execute("delete from opercuentas where id_opercuentas=%s", (int(id_opercuentacomision), ))
-            origen.cuenta.saldo_from_db(cur)
+            origen.cuenta.saldo_from_db()
             
         self.cfg.con.commit()
-        origen.get_operinversiones(cur, self.cfg)
-        destino.get_operinversiones(cur, self.cfg)
+        origen.get_operinversiones()
+        destino.get_operinversiones()
         cur.close()
         return True
         
