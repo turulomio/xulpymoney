@@ -20,7 +20,7 @@ XULPYMONEY
 20130829 En punto de venta poner antes y después set
 20130829 Load dividendos de frmAnalisis ca<mbiar por Set
 20130829 Poner frmAbout myquotes en tab de xulpymoney
-20130829 No funciona traspaso de valores
+20130829 Cuando quotes está vacio y se inserta xulpymoney inversion peta por None en quote
 
 MYSTOCKS
 ========

@@ -11,11 +11,11 @@ class frmTraspasoValores(QDialog, Ui_frmTraspasoValores):
         self.origen=origen#Clase inversión
         self.lbl.setText(self.trUtf8("Traspaso de valores desde\n{0}".format(self.origen.name)))
         self.txtAcciones.setText(str(self.origen.acciones()))
-        self.cfg.inversiones.qcombobox_same_investmentmq(self.combo, self.origen.investment)
+        self.cfg.data.inversiones_active.qcombobox_same_investmentmq(self.combo, self.origen.investment)
 
     @QtCore.pyqtSlot()  
     def on_buttons_accepted(self):
-        destino=self.cfg.inversiones.inversion(self.combo.itemData(self.combo.currentIndex()))
+        destino=self.cfg.data.inversiones_active.find(self.combo.itemData(self.combo.currentIndex()))
         if self.origen==destino:            
             m=QMessageBox()
             m.setIcon(QMessageBox.Information)
@@ -30,7 +30,7 @@ class frmTraspasoValores(QDialog, Ui_frmTraspasoValores):
             m.exec_()
             return            
             
-        if self.cfg.inversiones.traspaso_valores(self.origen, destino, self.txtAcciones.decimal(), self.txtComision.decimal())==False: 
+        if self.cfg.data.inversiones_active.traspaso_valores(self.origen, destino, self.txtAcciones.decimal(), self.txtComision.decimal())==False: 
             m=QMessageBox()
             m.setIcon(QMessageBox.Information)
             m.setText(self.trUtf8("No se ha podido hacer el traspaso de valores"))

@@ -74,12 +74,25 @@ class wdgCuentas(QWidget, Ui_wdgCuentas):
         
 
     def on_tblCuentas_customContextMenuRequested(self,  pos):
+        if self.selCuenta==None:
+            self.actionCuentaBorrar.setEnabled(False)
+            self.actionCuentaEstudio.setEnabled(False)
+            self.actionActiva.setEnabled(False)
+            self.actionCuentaEstudio.setEnabled(False)
+        else:
+            self.actionCuentaBorrar.setEnabled(True)
+            self.actionCuentaEstudio.setEnabled(True)
+            self.actionActiva.setEnabled(True)
+            self.actionCuentaEstudio.setEnabled(True)
+            self.actionActiva.setChecked(self.selCuenta.activa)
+        
+        
+        
         menu=QMenu()
         menu.addAction(self.actionCuentaNueva)
         menu.addAction(self.actionCuentaBorrar)
         menu.addSeparator()
         menu.addAction(self.actionActiva)
-        self.actionActiva.setChecked(self.selCuenta.activa)
         menu.addSeparator()
         menu.addAction(self.actionTransferencia)
         menu.addSeparator()
@@ -107,13 +120,14 @@ class wdgCuentas(QWidget, Ui_wdgCuentas):
 
     @QtCore.pyqtSlot()  
     def on_actionTransferencia_activated(self):
-        if self.selCuenta.eb.qmessagebox_inactive() or self.selCuenta.qmessagebox_inactive():
-            return
         w=frmTransferencia(self.cfg, self.selCuenta)
         w.exec_()
         self.load_table()
 
     def on_tblCuentas_itemSelectionChanged(self):
+        self.selCuenta=None
         for i in self.tblCuentas.selectedItems():#itera por cada item no row.
-            self.selCuenta=self.cuentas[i.row()]
+            if i.column()==0:
+                self.selCuenta=self.cuentas[i.row()]
+                break
         print (self.selCuenta)

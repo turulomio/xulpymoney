@@ -173,11 +173,11 @@ class frmCuentasIBM(QDialog, Ui_frmCuentasIBM):
         currency=self.cmbCurrency.itemData(self.cmbCurrency.currentIndex())
 
         if self.selCuenta==None:
-            cu=Cuenta(self.cfg).init__create(cuenta, self.cfg.ebs(id_entidadesbancarias), cu_activa, numerocuenta, self.cfg.currencies.find(currency))
+            cu=Cuenta(self.cfg).init__create(cuenta, self.cfg.data.ebs_active.find(id_entidadesbancarias), cu_activa, numerocuenta, self.cfg.currencies.find(currency))
             cu.save()
-            self.cfg.dic_cuentas[str(cu.id)]=cu
+            self.cfg.data.cuentas_active.arr.append(cu)
         else:
-            self.selCuenta.eb=self.cfg.ebs(id_entidadesbancarias)
+            self.selCuenta.eb=self.cfg.data.ebs_active.find(id_entidadesbancarias)
             self.selCuenta.name=cuenta
             self.selCuenta.numero=numerocuenta
             self.selCuenta.activa=cu_activa
