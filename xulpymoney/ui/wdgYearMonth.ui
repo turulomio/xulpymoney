@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>616</width>
+    <width>558</width>
     <height>33</height>
    </rect>
   </property>
@@ -101,6 +101,20 @@
       <widget class="QToolButton" name="cmdNext">
        <property name="text">
         <string>&gt;</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="Line" name="line">
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="cmdCurrent">
+       <property name="text">
+        <string>Current month</string>
        </property>
       </widget>
      </item>

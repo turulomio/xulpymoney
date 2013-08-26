@@ -1,5 +1,6 @@
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
+import datetime
 from Ui_wdgYearMonth import *
 
 class wdgYearMonth(QWidget, Ui_wdgYearMonth):
@@ -65,4 +66,10 @@ class wdgYearMonth(QWidget, Ui_wdgYearMonth):
         else:
             self.month=self.month-1
         self.set(self.year, self.month)
+        
+    @pyqtSlot()      
+    def on_cmdCurrent_pressed(self):
+        self.set(datetime.date.today().year, datetime.date.today().month)
+        
+        
 
