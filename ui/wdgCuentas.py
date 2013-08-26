@@ -10,7 +10,6 @@ class wdgCuentas(QWidget, Ui_wdgCuentas):
         self.setupUi(self)
         self.cfg=cfg
         self.tblCuentas.settings("wdgCuentas",  self.cfg.file_ui)
-        self.tblCuentas.setColumnHidden(0, True)
         self.cuentas=self.cfg.data.cuentas_active.arr
         self.selCuenta=None
         self.load_table()
@@ -22,11 +21,10 @@ class wdgCuentas(QWidget, Ui_wdgCuentas):
         self.tblCuentas.setRowCount(len(self.cuentas));
         sumsaldos=0
         for i, c in enumerate(self.cuentas):
-            self.tblCuentas.setItem(i, 0, QTableWidgetItem(str(c.id)))
-            self.tblCuentas.setItem(i, 1, QTableWidgetItem((c.name)))
-            self.tblCuentas.setItem(i, 2, QTableWidgetItem((c.eb.name)))
-            self.tblCuentas.setItem(i, 3, QTableWidgetItem((c.numero)))
-            self.tblCuentas.setItem(i, 4, c.currency.qtablewidgetitem(c.saldo))
+            self.tblCuentas.setItem(i, 0, QTableWidgetItem((c.name)))
+            self.tblCuentas.setItem(i, 1, QTableWidgetItem((c.eb.name)))
+            self.tblCuentas.setItem(i, 2, QTableWidgetItem((c.numero)))
+            self.tblCuentas.setItem(i, 3, c.currency.qtablewidgetitem(c.saldo))
             sumsaldos=sumsaldos+c.saldo  
         self.lblTotal.setText(("Saldo en las cuentas: %s" % (self.cfg.localcurrency.string(sumsaldos))))
         self.tblCuentas.clearSelection()
