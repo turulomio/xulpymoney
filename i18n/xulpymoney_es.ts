@@ -862,187 +862,152 @@ correspondiente en la tabla</source>
 <context>
     <name>frmCuentasIBM</name>
     <message>
-        <location filename="ui/Ui_frmCuentasIBM.py" line="386"/>
+        <location filename="ui/Ui_frmCuentasIBM.py" line="393"/>
         <source>Estudio de la Cuenta seleccionada</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmCuentasIBM.py" line="387"/>
+        <location filename="ui/Ui_frmCuentasIBM.py" line="394"/>
         <source>TextLabel</source>
         <translation type="unfinished">TextLabel</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmCuentasIBM.py" line="388"/>
-        <source>Actualice los datos</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_frmCuentasIBM.py" line="389"/>
-        <source>Nombre de la Cuenta</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_frmCuentasIBM.py" line="390"/>
-        <source>Seleccione la divisa de la cuenta</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_frmCuentasIBM.py" line="391"/>
-        <source>N&#xc3;&#xba;mero de cuenta</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_frmCuentasIBM.py" line="392"/>
-        <source>&#xc2;&#xbf;Est&#xc3;&#xa1; activa?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_frmCuentasIBM.py" line="393"/>
-        <source>Selecciona la entidad bancaria a la que pertenece</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_frmCuentasIBM.py" line="394"/>
-        <source>Actualizar</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_frmCuentasIBM.py" line="442"/>
+        <location filename="ui/Ui_frmCuentasIBM.py" line="449"/>
         <source>Fecha</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmCuentasIBM.py" line="444"/>
+        <location filename="ui/Ui_frmCuentasIBM.py" line="451"/>
         <source>Concepto</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmCuentasIBM.py" line="446"/>
+        <location filename="ui/Ui_frmCuentasIBM.py" line="453"/>
         <source>Importe</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmCuentasIBM.py" line="448"/>
+        <location filename="ui/Ui_frmCuentasIBM.py" line="455"/>
         <source>Saldo</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmCuentasIBM.py" line="450"/>
+        <location filename="ui/Ui_frmCuentasIBM.py" line="457"/>
         <source>Comentario</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmCuentasIBM.py" line="416"/>
+        <location filename="ui/Ui_frmCuentasIBM.py" line="423"/>
         <source>Pago diferido</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmCuentasIBM.py" line="418"/>
+        <location filename="ui/Ui_frmCuentasIBM.py" line="425"/>
         <source>Saldo m&#xc3;&#xa1;ximo</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmCuentasIBM.py" line="435"/>
+        <location filename="ui/Ui_frmCuentasIBM.py" line="442"/>
         <source>Operaciones diferidas de la tarjeta seleccionada</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmCuentasIBM.py" line="430"/>
+        <location filename="ui/Ui_frmCuentasIBM.py" line="437"/>
         <source>Pago diferido de operaciones seleccionadas</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmCuentasIBM.py" line="431"/>
+        <location filename="ui/Ui_frmCuentasIBM.py" line="438"/>
         <source>XXXX &#xe2;&#x82;&#xac;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmCuentasIBM.py" line="432"/>
+        <location filename="ui/Ui_frmCuentasIBM.py" line="439"/>
         <source>Selecciona la fecha de pago</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmCuentasIBM.py" line="433"/>
+        <location filename="ui/Ui_frmCuentasIBM.py" line="440"/>
         <source>yyyy/MM/dd</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmCuentasIBM.py" line="434"/>
+        <location filename="ui/Ui_frmCuentasIBM.py" line="441"/>
         <source>Pagar</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmCuentasIBM.py" line="451"/>
+        <location filename="ui/Ui_frmCuentasIBM.py" line="458"/>
         <source>Hist&#xc3;&#xb3;rico de pagos diferidos de la tarjeta seleccionada</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmCuentasIBM.py" line="436"/>
+        <location filename="ui/Ui_frmCuentasIBM.py" line="443"/>
         <source>Selecciona un pago</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmCuentasIBM.py" line="437"/>
+        <location filename="ui/Ui_frmCuentasIBM.py" line="444"/>
         <source>Para devolver el pago</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmCuentasIBM.py" line="438"/>
+        <location filename="ui/Ui_frmCuentasIBM.py" line="445"/>
         <source>Devolver el pago</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmCuentasIBM.py" line="440"/>
+        <location filename="ui/Ui_frmCuentasIBM.py" line="447"/>
         <source>Id</source>
         <translation type="unfinished">Id</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmCuentasIBM.py" line="453"/>
+        <location filename="ui/Ui_frmCuentasIBM.py" line="460"/>
         <source>Nuevo movimiento</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmCuentasIBM.py" line="454"/>
+        <location filename="ui/Ui_frmCuentasIBM.py" line="461"/>
         <source>Borrar el movimiento</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmCuentasIBM.py" line="455"/>
+        <location filename="ui/Ui_frmCuentasIBM.py" line="462"/>
         <source>Nueva Tarjeta</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmCuentasIBM.py" line="456"/>
+        <location filename="ui/Ui_frmCuentasIBM.py" line="463"/>
         <source>Borrar Tarjeta</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmCuentasIBM.py" line="457"/>
+        <location filename="ui/Ui_frmCuentasIBM.py" line="464"/>
         <source>Nueva Operaci&#xc3;&#xb3;n de Tarjeta</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmCuentasIBM.py" line="458"/>
+        <location filename="ui/Ui_frmCuentasIBM.py" line="465"/>
         <source>Borrar Operaci&#xc3;&#xb3;n de Tarjeta</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmCuentasIBM.py" line="460"/>
+        <location filename="ui/Ui_frmCuentasIBM.py" line="467"/>
         <source>Modificar Tarjeta</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmCuentasIBM.py" line="462"/>
+        <location filename="ui/Ui_frmCuentasIBM.py" line="469"/>
         <source>Modificar movimiento</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmCuentasIBM.py" line="463"/>
+        <location filename="ui/Ui_frmCuentasIBM.py" line="470"/>
         <source>Modificar Movimiento</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmCuentasIBM.py" line="465"/>
+        <location filename="ui/Ui_frmCuentasIBM.py" line="472"/>
         <source>Modificar Operaci&#xc3;&#xb3;n de Tarjeta</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1087,7 +1052,7 @@ correspondiente en la tabla</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmCuentasIBM.py" line="461"/>
+        <location filename="ui/Ui_frmCuentasIBM.py" line="468"/>
         <source>Is active?</source>
         <translation>¿Está activa?</translation>
     </message>
@@ -1097,54 +1062,94 @@ correspondiente en la tabla</source>
         <translation>Datos de la cuenta</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmCuentasIBM.py" line="406"/>
+        <location filename="ui/Ui_frmCuentasIBM.py" line="402"/>
         <source>Account movements</source>
         <translation>Movimientos de la cuenta</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmCuentasIBM.py" line="452"/>
+        <location filename="ui/Ui_frmCuentasIBM.py" line="459"/>
         <source>Associated credit cards</source>
         <translation>Tarjetas de crédito asociadas</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmCuentasIBM.py" line="407"/>
+        <location filename="ui/Ui_frmCuentasIBM.py" line="414"/>
         <source>Credit card list</source>
         <translation>Listado de tarjetas de crédito</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmCuentasIBM.py" line="408"/>
+        <location filename="ui/Ui_frmCuentasIBM.py" line="415"/>
         <source>Show inactive credit cards</source>
         <translation>Mostrar tarjetas de crédito inactivas</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmCuentasIBM.py" line="410"/>
+        <location filename="ui/Ui_frmCuentasIBM.py" line="417"/>
         <source>Credit card</source>
         <translation>Tarjeta de crédito</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmCuentasIBM.py" line="412"/>
+        <location filename="ui/Ui_frmCuentasIBM.py" line="419"/>
         <source>Number</source>
         <translation>Número</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmCuentasIBM.py" line="414"/>
+        <location filename="ui/Ui_frmCuentasIBM.py" line="421"/>
         <source>Active</source>
         <translation>Activa</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmCuentasIBM.py" line="423"/>
+        <location filename="ui/Ui_frmCuentasIBM.py" line="430"/>
         <source>Date</source>
         <translation>Fecha</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmCuentasIBM.py" line="425"/>
+        <location filename="ui/Ui_frmCuentasIBM.py" line="432"/>
         <source>Concept</source>
         <translation>Concepto</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmCuentasIBM.py" line="429"/>
+        <location filename="ui/Ui_frmCuentasIBM.py" line="436"/>
         <source>Comment</source>
         <translation>Comentario</translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_frmCuentasIBM.py" line="413"/>
+        <source>Account</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_frmCuentasIBM.py" line="396"/>
+        <source>Select the bank it belongs to</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_frmCuentasIBM.py" line="397"/>
+        <source>Account name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_frmCuentasIBM.py" line="398"/>
+        <source>Account currency</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_frmCuentasIBM.py" line="399"/>
+        <source>Account number</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_frmCuentasIBM.py" line="401"/>
+        <source>Update</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_frmCuentasIBM.py" line="408"/>
+        <source>Amount</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_frmCuentasIBM.py" line="410"/>
+        <source>Balance</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
