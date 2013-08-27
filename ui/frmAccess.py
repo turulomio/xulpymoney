@@ -18,10 +18,10 @@ class frmAccess(QDialog, Ui_frmAccess):
             self.setWindowIcon(icon)        
             self.lbl.setPixmap(pix)
             self.setWindowTitle(self.trUtf8("MyStocks - Acceso"))
-            self.txtDB.setText(self.cfg.config.get("frmAccessMS", "db" ))
-            self.txtPort.setText(self.cfg.config.get("frmAccessMS", "port" ))
-            self.txtUser.setText(self.cfg.config.get("frmAccessMS", "user" ))
-            self.txtServer.setText(self.cfg.config.get("frmAccessMS", "server" ))
+            self.txtDB.setText(self.cfg.config.get_value("frmAccessMS", "db" ))
+            self.txtPort.setText(self.cfg.config.get_value("frmAccessMS", "port" ))
+            self.txtUser.setText(self.cfg.config.get_value("frmAccessMS", "user" ))
+            self.txtServer.setText(self.cfg.config.get_value("frmAccessMS", "server" ))
         elif self.app==2:
             icon = QtGui.QIcon()
             pix=QtGui.QPixmap(":xulpymoney/coins.png")
@@ -29,10 +29,10 @@ class frmAccess(QDialog, Ui_frmAccess):
             self.setWindowIcon(icon)        
             self.lbl.setPixmap(pix)
             self.setWindowTitle(self.trUtf8("Xulpymoney - Acceso"))
-            self.txtDB.setText(self.cfg.config.get("frmAccess", "db" ))
-            self.txtPort.setText(self.cfg.config.get("frmAccess", "port" ))
-            self.txtUser.setText(self.cfg.config.get("frmAccess", "user" ))
-            self.txtServer.setText(self.cfg.config.get("frmAccess", "server" ))
+            self.txtDB.setText(self.cfg.config.get_value("frmAccess", "db" ))
+            self.txtPort.setText(self.cfg.config.get_value("frmAccess", "port" ))
+            self.txtUser.setText(self.cfg.config.get_value("frmAccess", "user" ))
+            self.txtServer.setText(self.cfg.config.get_value("frmAccess", "server" ))
 
 
 
@@ -40,18 +40,18 @@ class frmAccess(QDialog, Ui_frmAccess):
         """Función que realiza la conexión devolviendo true o false con el éxito"""
         try:
             if self.app==1:
-                self.cfg.config_set_value(self.cfg.config, "frmAccessMS", "db", self.txtDB.text() )
-                self.cfg.config_set_value(self.cfg.config, "frmAccessMS", "port",  self.txtPort.text())
-                self.cfg.config_set_value(self.cfg.config, "frmAccessMS", "user" ,  self.txtUser.text())
-                self.cfg.config_set_value(self.cfg.config, "frmAccessMS", "server", self.txtServer.text())      
-                self.cfg.configs_save()    
+                self.cfg.config.set_value("frmAccessMS", "db", self.txtDB.text() )
+                self.cfg.config.set_value("frmAccessMS", "port",  self.txtPort.text())
+                self.cfg.config.set_value("frmAccessMS", "user" ,  self.txtUser.text())
+                self.cfg.config.set_value("frmAccessMS", "server", self.txtServer.text())      
+                self.cfg.config.save()    
                 self.cfg.conms=self.cfg.connect_myquotes()      
             elif self.app==2:
-                self.cfg.config_set_value(self.cfg.config, "frmAccess", "db", self.txtDB.text() )
-                self.cfg.config_set_value(self.cfg.config, "frmAccess", "port",  self.txtPort.text())
-                self.cfg.config_set_value(self.cfg.config, "frmAccess", "user" ,  self.txtUser.text())
-                self.cfg.config_set_value(self.cfg.config, "frmAccess", "server", self.txtServer.text())     
-                self.cfg.configs_save()    
+                self.cfg.config.set_value("frmAccess", "db", self.txtDB.text() )
+                self.cfg.config.set_value("frmAccess", "port",  self.txtPort.text())
+                self.cfg.config.set_value("frmAccess", "user" ,  self.txtUser.text())
+                self.cfg.config.set_value("frmAccess", "server", self.txtServer.text())     
+                self.cfg.config.save()    
                 self.cfg.con=self.cfg.connect_xulpymoney()   
             return True
         except:

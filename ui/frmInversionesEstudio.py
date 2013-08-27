@@ -49,8 +49,8 @@ class frmInversionesEstudio(QDialog, Ui_frmInversionesEstudio):
             self.ise.setSelected(self.inversion.investment)
             self.cmdPuntoVenta.setEnabled(True)
 
-        self.tblInversionHistorica.settings("frmInversionesEstudio",  self.cfg.file_ui)
-        self.tblDividendos.settings("frmInversionesEstudio",  self.cfg.file_ui)
+        self.tblInversionHistorica.settings("frmInversionesEstudio",  self.cfg)
+        self.tblDividendos.settings("frmInversionesEstudio",  self.cfg)
         
         self.cfg.data.cuentas_active.load_qcombobox(self.cmbCuenta)
 

@@ -3,12 +3,12 @@
 <context>
     <name>Config</name>
     <message>
-        <location filename="libxulpymoney.py" line="4853"/>
+        <location filename="libxulpymoney.py" line="4896"/>
         <source>Error en la conexi&#xc3;&#xb3;n, vuelva a entrar</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4914"/>
+        <location filename="libxulpymoney.py" line="4957"/>
         <source>Error en la conexi&#xc3;&#xb3;n a xulpymoney, vuelva a entrar</source>
         <translation type="unfinished"></translation>
     </message>
@@ -201,12 +201,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5032"/>
+        <location filename="libxulpymoney.py" line="5075"/>
         <source>Sourceforge version detected: %s</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5034"/>
+        <location filename="libxulpymoney.py" line="5077"/>
         <source>Error buscando la versi&#xc3;&#xb3;n actual de Sourceforge</source>
         <translation type="unfinished"></translation>
     </message>
@@ -246,7 +246,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5330"/>
+        <location filename="libxulpymoney.py" line="5379"/>
         <source>This option is being developed</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3573,11 +3573,6 @@ seleccionados por el usuario</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgIndexRange.py" line="193"/>
-        <source>10000</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="ui/Ui_wdgIndexRange.py" line="194"/>
         <source>Limite inferior del &#xc3;&#xad;ndice</source>
         <translation type="unfinished"></translation>
@@ -3643,19 +3638,24 @@ seleccionados por el usuario</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgIndexRange.py" line="25"/>
+        <location filename="ui/wdgIndexRange.py" line="30"/>
         <source>{0} {1}: {2} {3} ( {4} acciones a {5} {6} )
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="ui/wdgIndexRange.py" line="96"/>
+        <location filename="ui/wdgIndexRange.py" line="110"/>
         <source>Para llegar al punto de inversión seleccionado, el indice debe variar un {0}</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="ui/wdgIndexRange.py" line="101"/>
+        <location filename="ui/wdgIndexRange.py" line="115"/>
         <source>············································································································</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_wdgIndexRange.py" line="193"/>
+        <source>4000</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

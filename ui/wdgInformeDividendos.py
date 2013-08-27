@@ -14,7 +14,7 @@ class wdgInformeDividendos(QWidget, Ui_wdgInformeDividendos):
         self.cfg=cfg
         self.inversiones=[]
 
-        self.tblInversiones.settings("wdgInformeDividendos",  self.cfg.file_ui)
+        self.tblInversiones.settings("wdgInformeDividendos",  self.cfg)
         
         self.on_chkInactivas_stateChanged(Qt.Unchecked)
         

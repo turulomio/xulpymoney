@@ -15,8 +15,8 @@ class wdgInversionesMS(QWidget, Ui_wdgInversionesMS):
         self.investments=[]#Es una lista de investments
         self.selInvestment=None##Objeto de inversion seleccionado
         self.tblInversiones.setColumnHidden(0, True)
-        self.tblInversiones.settings("wdgInversionesMS",  self.cfg.file_ui)    
-        self.setFavoritos=set(self.cfg.config_load_list(self.cfg.config, "wdgInversionesMS", "favoritos"))
+        self.tblInversiones.settings("wdgInversionesMS",  self.cfg)    
+        self.setFavoritos=set(self.cfg.config.get_list( "wdgInversionesMS", "favoritos"))
         self.progress = QProgressDialog(self.tr("Recibiendo datos solicitados"), self.tr("Cancelar"), 0,0)
         self.progress.setModal(True)
         self.progress.setWindowTitle(self.trUtf8("Recibiendo datos..."))
@@ -105,7 +105,7 @@ class wdgInversionesMS(QWidget, Ui_wdgInversionesMS):
                 return True
             return False
             
-        favoritos=self.cfg.config_load_list(self.cfg.config,"wdgInversionesMS",  "favoritos")
+        favoritos=self.cfg.config.get_list("wdgInversionesMS",  "favoritos")
         if str(self.selInvestment.id) in favoritos:
             if wdgInversiones_esta_mostrando_favoritos(favoritos)==True:
                 favoritos.remove(str(self.selInvestment.id))
@@ -118,8 +118,8 @@ class wdgInversionesMS(QWidget, Ui_wdgInversionesMS):
         else:
             favoritos.append(self.selInvestment.id)
         print ("Favoritos", favoritos)
-        self.cfg.config_set_list(self.cfg.config,"wdgInversionesMS",  "favoritos",  favoritos)
-        self.cfg.configs_save()
+        self.cfg.config.set_list("wdgInversionesMS",  "favoritos",  favoritos)
+        self.cfg.config.save()
         self.setFavoritos=set(favoritos)
 
 

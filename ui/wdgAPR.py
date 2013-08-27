@@ -12,7 +12,7 @@ class wdgAPR(QWidget, Ui_wdgAPR):
         self.progress.setModal(True)
         self.progress.setWindowTitle(self.trUtf8("Calculando datos..."))
         self.progress.setMinimumDuration(0)        
-        self.table.settings("wdgAPR",  self.cfg.file_ui)
+        self.table.settings("wdgAPR",  self.cfg)
         
         self.cfg.data.load_inactives()
         self.load_data()
