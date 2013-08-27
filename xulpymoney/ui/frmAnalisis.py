@@ -33,13 +33,13 @@ class frmAnalisis(QDialog, Ui_frmAnalisis):
         self.tabGraphics.setCurrentIndex(0)
         self.tabHistorical.setCurrentIndex(0)
         
-        self.tblTPC.settings("frmAnalisis",  self.cfg.file_ui)    
-        self.tblDaily.settings("frmAnalisis",  self.cfg.file_ui)    
-        self.tblMonthly.settings("frmAnalisis",  self.cfg.file_ui)    
-        self.tblYearly.settings("frmAnalisis",  self.cfg.file_ui)    
-        self.tblIntradia.settings("frmAnalisis",  self.cfg.file_ui)    
-        self.tblMensuales.settings("frmAnalisis",  self.cfg.file_ui)    
-        self.tblDividendosEstimaciones.settings("frmAnalisis",  self.cfg.file_ui)    
+        self.tblTPC.settings("frmAnalisis",  self.cfg)    
+        self.tblDaily.settings("frmAnalisis",  self.cfg)    
+        self.tblMonthly.settings("frmAnalisis",  self.cfg)    
+        self.tblYearly.settings("frmAnalisis",  self.cfg)    
+        self.tblIntradia.settings("frmAnalisis",  self.cfg)    
+        self.tblMensuales.settings("frmAnalisis",  self.cfg)    
+        self.tblDividendosEstimaciones.settings("frmAnalisis",  self.cfg)    
                 
         if self.investment==None:
             self.investment=Investment(self.cfg)

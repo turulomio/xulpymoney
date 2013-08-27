@@ -121,7 +121,7 @@
                  </size>
                 </property>
                 <property name="text">
-                 <string>10000</string>
+                 <string>4000</string>
                 </property>
                 <property name="alignment">
                  <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>

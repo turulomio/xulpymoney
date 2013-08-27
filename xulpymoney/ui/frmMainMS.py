@@ -185,7 +185,7 @@ class frmMainMS(QMainWindow, Ui_frmMainMS):#
 
     @QtCore.pyqtSlot()  
     def on_actionFavoritos_activated(self):
-        favoritos=self.cfg.config_load_list(self.cfg.config,"wdgInversionesMS",  "favoritos")
+        favoritos=self.cfg.config.get_list("wdgInversionesMS",  "favoritos")
         if len(favoritos)==0:
             m=QMessageBox()
             m.setIcon(QMessageBox.Information)

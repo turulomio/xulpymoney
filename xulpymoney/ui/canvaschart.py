@@ -63,28 +63,28 @@ class canvasChart(FigureCanvas):
         self.section=section
 
         try:
-            self.type=self.cfg.config_ui.getint(section, "type" )
+            self.type=int(self.cfg.config_ui.get_value(section, "type" ))
         except:
             self.type=ChartType.lines
             
         try:
-            self.actionSMA50.setChecked(self.cfg.config_ui.getboolean(section, "sma50" ))
+            self.actionSMA50.setChecked(str2bool(self.cfg.config_ui.get_value(section, "sma50" )))
         except:
             self.actionSMA50.setChecked(False)
 
         try:
-            self.actionSMA200.setChecked(self.cfg.config_ui.getboolean(section, "sma200" ))
+            self.actionSMA200.setChecked(str2bool(self.cfg.config_ui.get_value(section, "sma200" )))
         except:
             self.actionSMA200.setChecked(False)
             
     def on_actionLinesIntraday_activated(self):
-        self.cfg.config_set_value(self.cfg.config_ui, self.section, "type",   self.type)
+        self.cfg.config_ui.set_value(self.section, "type",   self.type)
         (dates, quotes)=zip(*self.data)
         self._draw_lines_from_quotes(dates, quotes)
                 
 
     def on_actionLines1d_activated(self):
-        self.cfg.config_set_value(self.cfg.config_ui, self.section, "type",   ChartType.lines)
+        self.cfg.config_ui.set_value(self.section, "type",   ChartType.lines)
         self.currentMatrizDataLength=len(self.result.ohclDaily.arr)
         
         if len(self.result.ohclDaily.arr)>self.num:              
@@ -98,16 +98,16 @@ class canvasChart(FigureCanvas):
         
     @pyqtSignature("")
     def on_actionSMA50_activated(self):
-        self.cfg.config_set_value(self.cfg.config_ui, self.section, "sma50",   self.actionSMA50.isChecked())
+        self.cfg.config_ui.set_value(self.section, "sma50",   self.actionSMA50.isChecked())
 #        self._settings_saveprop("sma50", self.actionSMA50.isChecked())
-        self.cfg.configs_save()
+        self.cfg.config_ui.save()
 #        self._draw()
                 
         
     @pyqtSignature("")
     def on_actionSMA200_activated(self):
-        self.cfg.config_set_value(self.cfg.config_ui, self.section, "sma200",   self.actionSMA200.isChecked())
-        self.cfg.configs_save()
+        self.cfg.config_ui.set_value(self.section, "sma200",   self.actionSMA200.isChecked())
+        self.cfg.config_ui.save()
 #        self._settings_saveprop("sma200", self.actionSMA200.isChecked())
 #        self._draw()
         
@@ -142,9 +142,6 @@ class canvasChart(FigureCanvas):
             sma.append(sum(quotes[i-200:i])/Decimal(200))
         self.ax.plot_date(dat, sma, '-', color="red")    
 
-
-#    def _draw_lines_ohcl(self):
-#        return
         
         
     def _get_locators(self, first,  last,  count):
@@ -223,7 +220,7 @@ class canvasChart(FigureCanvas):
     @pyqtSignature("")
     def on_actionOHCL1d_activated(self):
 #        self._settings_saveprop("type", ChartType.ohcl)
-        self.cfg.config_set_value(self.cfg.config_ui, self.section, "type", ChartType.ohcl)
+        self.cfg.config_ui.set_value(self.section, "type", ChartType.ohcl)
         self.currentMatrizDataLength=len(self.result.ohclDaily.arr)
         
         if len(self.result.ohclDaily.arr)>self.num:            
@@ -565,7 +562,7 @@ class canvasChartHistorical(canvasChart):
 #    figzoom.canvas.draw()
     @pyqtSignature("")
     def on_actionOHCL7d_activated(self):
-        self.cfg.config_set_value(self.cfg.config_ui, self.section, "type", ChartType.ohcl)
+        self.cfg.config_ui.set_value(self.section, "type", ChartType.ohcl)
         ohclWeekly=self.result.ohclWeekly.arr
         self.currentMatrizDataLength=len(ohclWeekly)
         
@@ -576,7 +573,7 @@ class canvasChartHistorical(canvasChart):
         self.draw()
     @pyqtSignature("")
     def on_actionOHCL30d_activated(self):
-        self.cfg.config_set_value(self.cfg.config_ui, self.section, "type", ChartType.ohcl)
+        self.cfg.config_ui.set_value(self.section, "type", ChartType.ohcl)
         ohclMonthly=self.result.ohclMonthly.arr
         self.currentMatrizDataLength=len(ohclMonthly)
         
@@ -587,7 +584,7 @@ class canvasChartHistorical(canvasChart):
         self.draw()
     @pyqtSignature("")
     def on_actionOHCL365d_activated(self):
-        self.cfg.config_set_value(self.cfg.config_ui, self.section, "type", ChartType.ohcl)
+        self.cfg.config_ui.set_value(self.section, "type", ChartType.ohcl)
         ohclYearly=self.result.ohclYearly.arr
         self.currentMatrizDataLength=len(ohclYearly)
         

@@ -30,7 +30,7 @@ class frmPuntoVenta(QDialog, Ui_frmPuntoVenta):
         self.puntoventa=Decimal(0)#Guarda el resultado de los cálculos
         self.operinversiones=list(self.inversion.op_actual.arr)            #0-fecha, 1-banco, 2-acciones, 3-valor-compra, 4-invertido, 5 pendiente, 6-tipooper
 
-        self.table.settings("frmPuntoVenta",  self.cfg.file_ui)
+        self.table.settings("frmPuntoVenta",  self.cfg)
         self.on_radTPC_toggled(True)
         
     def __calcular(self):

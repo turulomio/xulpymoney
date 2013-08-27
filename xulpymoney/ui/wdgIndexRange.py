@@ -11,7 +11,12 @@ class wdgIndexRange(QWidget, Ui_wdgIndexRange):
         self.cfg=cfg
         
         self.quote_lastindex=None
-        self.table.settings("wdgIndexRange",  self.cfg.file_ui)
+        self.table.settings("wdgIndexRange",  self.cfg)
+        
+        self.spin.setValue(float(self.cfg.config.get_value("wdgIndexRange", "spin")))
+        self.txtInvertir.setText(self.cfg.config.get_value("wdgIndexRange", "txtInvertir"))
+        self.txtMinimo.setText(self.cfg.config.get_value("wdgIndexRange", "txtMinimo"))
+        
         self.load_data()
                     
 
@@ -76,6 +81,15 @@ class wdgIndexRange(QWidget, Ui_wdgIndexRange):
         print ("wdgIndexRange > load_data: {0}".format(datetime.datetime.now()-inicio))
 
     def on_cmd_pressed(self):
+        if self.spin.value()!=float(self.cfg.config.get_value("wdgIndexRange", "spin")):
+            self.cfg.config.set_value("wdgIndexRange", "spin", self.spin.value())
+            self.cfg.config.save()
+        if self.txtInvertir.text()!=self.cfg.config.get_value("wdgIndexRange", "txtInvertir"):
+            self.cfg.config.set_value("wdgIndexRange", "txtInvertir", self.txtInvertir.text())
+            self.cfg.config.save()
+        if self.txtMinimo.text()!=self.cfg.config.get_value("wdgIndexRange", "txtMinimo"):
+            self.cfg.config.set_value("wdgIndexRange", "txtMinimo", self.txtMinimo.text())
+            self.cfg.config.save()
         self.load_data()
 
     def on_cmdIRAnalisis_pressed(self):

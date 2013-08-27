@@ -9,7 +9,7 @@ class wdgCuentas(QWidget, Ui_wdgCuentas):
         QWidget.__init__(self, parent)
         self.setupUi(self)
         self.cfg=cfg
-        self.tblCuentas.settings("wdgCuentas",  self.cfg.file_ui)
+        self.tblCuentas.settings("wdgCuentas",  self.cfg)
         self.cuentas=self.cfg.data.cuentas_active.arr
         self.selCuenta=None
         self.load_table()

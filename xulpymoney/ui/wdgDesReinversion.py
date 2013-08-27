@@ -18,10 +18,10 @@ class wdgDesReinversion(QWidget, Ui_wdgDesReinversion):
             m.exec_()     
             return
         
-        self.tblInversionesActualDespues.settings("wdgDesReinversion",  self.cfg.file_ui)
-        self.tblInversionesActualAntes.settings("wdgDesReinversion",  self.cfg.file_ui)
-        self.tblOperaciones.settings("wdgDesReinversion",  self.cfg.file_ui)        
-        self.tblInversionesHistoricas.settings("wdgDesReinversion",  self.cfg.file_ui)         
+        self.tblInversionesActualDespues.settings("wdgDesReinversion",  self.cfg)
+        self.tblInversionesActualAntes.settings("wdgDesReinversion",  self.cfg)
+        self.tblOperaciones.settings("wdgDesReinversion",  self.cfg)        
+        self.tblInversionesHistoricas.settings("wdgDesReinversion",  self.cfg)         
         
  
         self.operinversiones=self.inversion.op.clone()#No hacer clone_from_datetime porque falla por haber borrado un actual por venta de saldo operación

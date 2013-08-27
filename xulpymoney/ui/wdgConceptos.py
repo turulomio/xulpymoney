@@ -12,8 +12,8 @@ class wdgConceptos(QWidget, Ui_wdgConceptos):
         self.expenses=self.cfg.conceptos.clone_x_tipooperacion(1)
         self.incomes=self.cfg.conceptos.clone_x_tipooperacion(2)
 
-        self.tblExpenses.settings("wdgConceptos",  self.cfg.file_ui)
-        self.tblIncomes.settings("wdgConceptos",  self.cfg.file_ui)
+        self.tblExpenses.settings("wdgConceptos",  self.cfg)
+        self.tblIncomes.settings("wdgConceptos",  self.cfg)
         
         anoinicio=Patrimonio(self.cfg).primera_fecha_con_datos_usuario().year       
         self.wdgYM.initiate(anoinicio,  datetime.date.today().year, datetime.date.today().year, datetime.date.today().month)
