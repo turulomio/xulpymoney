@@ -12,7 +12,7 @@ from canvaschart import *
 from matplotlib.backends.backend_qt4agg import NavigationToolbar2QTAgg as NavigationToolbar
 
 class frmAnalisis(QDialog, Ui_frmAnalisis):
-    def __init__(self, cfg,  investment, parent = None, name = None, modal = False):
+    def __init__(self, cfg,  investment, inversion=None, parent = None, name = None, modal = False):
         """
             investment=None #insertar
             investment es un objeto newInversioQ#modificar
@@ -25,6 +25,7 @@ class frmAnalisis(QDialog, Ui_frmAnalisis):
 
         self.cfg=cfg
         self.investment=investment
+        self.inversion=inversion#Used to generate puntos de venta, punto de compra....
         self.setSelIntraday=None
         
         self.selDate=None #Fecha seleccionado en datos historicos
@@ -191,7 +192,7 @@ class frmAnalisis(QDialog, Ui_frmAnalisis):
         
 
     def load_graphics(self):
-        t2 = threading.Thread(target=self.canvasHistorical.load_data,  args=(self.investment,  self.investment.result))
+        t2 = threading.Thread(target=self.canvasHistorical.load_data,  args=(self.investment,  self.investment.result, self.inversion))
         t2.start()
         self.investment.result.intradia.load_from_db(self.calendar.selectedDate().toPyDate(), self.investment)
         if len(self.investment.result.intradia.arr)==0:

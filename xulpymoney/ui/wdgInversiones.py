@@ -125,7 +125,7 @@ class wdgInversiones(QWidget, Ui_wdgInversiones):
             
     @QtCore.pyqtSlot() 
     def on_actionMyquotes_activated(self):
-        w=frmAnalisis(self.cfg, self.selInversion.investment, self)
+        w=frmAnalisis(self.cfg, self.selInversion.investment, self.selInversion, self)
         w.exec_()
         self.on_chkInactivas_stateChanged(self.chkInactivas.checkState())#Carga la tabla
             

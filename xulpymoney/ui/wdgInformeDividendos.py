@@ -76,7 +76,7 @@ class wdgInformeDividendos(QWidget, Ui_wdgInformeDividendos):
             
     @QtCore.pyqtSlot() 
     def on_actionMyStocks_activated(self):
-        w=frmAnalisis(self.cfg, self.selInversion.investment, self)
+        w=frmAnalisis(self.cfg, self.selInversion.investment, self.selInversion, self)
         w.load_data_from_db()
         w.exec_()
                     

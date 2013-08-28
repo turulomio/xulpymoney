@@ -824,12 +824,12 @@ correspondiente en la tabla</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="ui/frmAnalisis.py" line="49"/>
+        <location filename="ui/frmAnalisis.py" line="50"/>
         <source>Añadir nueva inversión</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="ui/frmAnalisis.py" line="250"/>
+        <location filename="ui/frmAnalisis.py" line="251"/>
         <source>Año </source>
         <translation type="unfinished"></translation>
     </message>
@@ -889,7 +889,7 @@ correspondiente en la tabla</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmAnalisis.py" line="359"/>
+        <location filename="ui/frmAnalisis.py" line="360"/>
         <source>{0} quotes have been purged from {1}</source>
         <translation type="unfinished"></translation>
     </message>

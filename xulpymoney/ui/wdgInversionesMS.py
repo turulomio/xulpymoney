@@ -166,7 +166,7 @@ class wdgInversionesMS(QWidget, Ui_wdgInversionesMS):
         
     @QtCore.pyqtSlot() 
     def on_actionInversionEstudio_activated(self):
-        w=frmAnalisis(self.cfg, self.selInvestment, self)
+        w=frmAnalisis(self.cfg, self.selInvestment, None,  self)
         w.exec_()        
         self.build_array(self.sql)
         self.build_table()
