@@ -24,9 +24,15 @@ class frmInversionesEstudio(QDialog, Ui_frmInversionesEstudio):
         
         #arrays asociados a tablas
         self.op=[]#Necesario porque puede acortarse el original
-        self.dividendos=[]#Necesario porque pueden visualizarse o no historicos
+        self.dividendos=SetDividends(self.cfg,self.inversion)
         
         self.ise.setupUi(self.cfg)
+        self.tblInversionHistorica.settings("frmInversionesEstudio",  self.cfg)
+        self.tblDividendos.settings("frmInversionesEstudio",  self.cfg)
+        self.cmdInversion.setEnabled(False)                                                                                                                                                                                            
+        self.connect(self.ise.cmd,SIGNAL('released()'),  self.on_cmdISE_released)         
+        
+        self.cfg.data.cuentas_active.load_qcombobox(self.cmbCuenta)
         
         if inversion==None:
             self.tipo=1
@@ -41,56 +47,29 @@ class frmInversionesEstudio(QDialog, Ui_frmInversionesEstudio):
             self.cmdPuntoVenta.setEnabled(False)
         else:
             self.tipo=2    
-            self.cmbCuenta.setEnabled(False)
             self.tab.setCurrentIndex(1)
             self.lblTitulo.setText((self.inversion.name))
             self.txtInversion.setText((self.inversion.name))
             self.txtVenta.setText(str((self.inversion.venta)))
             self.ise.setSelected(self.inversion.investment)
             self.cmdPuntoVenta.setEnabled(True)
-
-        self.tblInversionHistorica.settings("frmInversionesEstudio",  self.cfg)
-        self.tblDividendos.settings("frmInversionesEstudio",  self.cfg)
-        
-        self.cfg.data.cuentas_active.load_qcombobox(self.cmbCuenta)
-
-        if self.tipo==2:
             self.cmbCuenta.setCurrentIndex(self.cmbCuenta.findData(self.inversion.cuenta.id))
             self.selMovimiento=None
-            self.on_chkOperaciones_stateChanged(Qt.Unchecked)
-            self.update_tables()
- 
+            self.on_chkOperaciones_stateChanged(self.chkOperaciones.checkState())
+            self.on_chkDividendosHistoricos_stateChanged(self.chkDividendosHistoricos.checkState())
+            
+            if len(self.op.arr)!=0 or len(self.dividendos.arr)!=0:#CmbCuenta est´a desabilitado si hay dividendos o operinversiones
+                self.cmbCuenta.setEnabled(False)
+            
+            self.inversion.op_actual.get_valor_indicereferencia(self.cfg.data.indicereferencia)
+            self.inversion.op_actual.load_myqtablewidget(self.tblInversionActual,  "frmInversionesEstudio")
+            self.inversion.op_historica.load_myqtablewidget(self.tblInversionHistorica,  "frmInversionesEstudio"  )
+   
 
-        self.cmdInversion.setEnabled(False)                                                                                                                                                                                            
-        self.connect(self.ise.cmd,SIGNAL('released()'),  self.on_cmdISE_released)            
-
-    def load_tblDividendos(self):        
-
-        self.tblDividendos.setRowCount(len(self.dividendos)+1)
-        sumneto=0
-        sumbruto=0
-        sumretencion=0
-        sumcomision=0
-        for i, d in enumerate(self.dividendos):
-            sumneto=sumneto+d.neto
-            sumbruto=sumbruto+d.bruto
-            sumretencion=sumretencion+d.retencion
-            sumcomision=sumcomision+d.comision
-            self.tblDividendos.setItem(i, 0, QTableWidgetItem(str(d.fecha)))
-            self.tblDividendos.setItem(i, 1, QTableWidgetItem(str(d.opercuenta.concepto.name)))
-            self.tblDividendos.setItem(i, 2, self.inversion.investment.currency.qtablewidgetitem(d.bruto))
-            self.tblDividendos.setItem(i, 3, self.inversion.investment.currency.qtablewidgetitem(d.retencion))
-            self.tblDividendos.setItem(i, 4, self.inversion.investment.currency.qtablewidgetitem(d.comision))
-            self.tblDividendos.setItem(i, 5, self.inversion.investment.currency.qtablewidgetitem(d.neto))
-            self.tblDividendos.setItem(i, 6, self.inversion.investment.currency.qtablewidgetitem(d.dpa))
-        self.tblDividendos.setItem(len(self.dividendos), 1, QTableWidgetItem("TOTAL"))
-        self.tblDividendos.setItem(len(self.dividendos), 2, self.inversion.investment.currency.qtablewidgetitem(sumbruto))
-        self.tblDividendos.setItem(len(self.dividendos), 3, self.inversion.investment.currency.qtablewidgetitem(sumretencion))
-        self.tblDividendos.setItem(len(self.dividendos), 4, self.inversion.investment.currency.qtablewidgetitem(sumcomision))
-        self.tblDividendos.setItem(len(self.dividendos), 5, self.inversion.investment.currency.qtablewidgetitem(sumneto))
-        
+    def load_tabDividendos(self):        
+        (sumneto, sumbruto, sumretencion, sumcomision)=self.dividendos.load_myqtablewidget(self.tblDividendos, "frmInversionesEstudio")
         if self.chkDividendosHistoricos.checkState()==Qt.Unchecked:
-            if len(self.dividendos)>0:
+            if len(self.dividendos.arr)>0:
                 importeinvertido=self.inversion.invertido()
                 dias=(datetime.date.today()-self.inversion.op_actual.datetime_primera_operacion().date()).days+1
                 dtpc=100*sumbruto/importeinvertido
@@ -132,7 +111,7 @@ class frmInversionesEstudio(QDialog, Ui_frmInversionesEstudio):
         self.on_chkOperaciones_stateChanged(self.chkOperaciones.checkState())
         self.inversion.op_actual.load_myqtablewidget(self.tblInversionActual,  "frmInversionesEstudio")
         self.inversion.op_historica.load_myqtablewidget(self.tblInversionHistorica,  "frmInversionesEstudio"  )
-        self.on_chkDividendosHistoricos_stateChanged(self.chkDividendosHistoricos.checkState())
+        self.load_tabDividendos()
     
 
     @QtCore.pyqtSlot() 
@@ -140,21 +119,21 @@ class frmInversionesEstudio(QDialog, Ui_frmInversionesEstudio):
         w=frmDividendosIBM(self.cfg, self.inversion,  None)
         w.exec_()
         self.on_chkDividendosHistoricos_stateChanged(self.chkDividendosHistoricos.checkState())
-        self.load_tblDividendos() 
+
         
     @QtCore.pyqtSlot() 
     def on_actionDividendoModificar_activated(self):
         w=frmDividendosIBM(self.cfg, self.inversion, self.selDividendo)
         w.exec_()
         self.on_chkDividendosHistoricos_stateChanged(self.chkDividendosHistoricos.checkState())
-        self.load_tblDividendos() 
+
         
     @QtCore.pyqtSlot() 
     def on_actionDividendoBorrar_activated(self):
         self.selDividendo.borrar()
         self.cfg.con.commit()
         self.on_chkDividendosHistoricos_stateChanged(self.chkDividendosHistoricos.checkState())
-        self.load_tblDividendos() 
+
                 
     @QtCore.pyqtSlot() 
     def on_actionDesReinversion_activated(self):
@@ -218,33 +197,16 @@ class frmInversionesEstudio(QDialog, Ui_frmInversionesEstudio):
         self.update_tables()
 
     def on_chkDividendosHistoricos_stateChanged(self, state):
-        self.dividendos=[]
         fechapo=self.inversion.op_actual.datetime_primera_operacion()
-        if fechapo==None and self.chkDividendosHistoricos.checkState()==Qt.Unchecked:
-            self.load_tblDividendos()
-            return
-            
-        con=self.cfg.connect_xulpymoney()
-        cur = con.cursor()        
-        cur2=con.cursor()
+
         self.tblDividendos.clearSelection()
         self.selDividendo=None        
 
-        if state==Qt.Unchecked:   
-            strfechapo=" and fecha >='{0}' ".format(fechapo.date())
+        if state==Qt.Unchecked and fechapo!=None:   
+            self.dividendos.load_from_db("select * from dividendos where id_inversiones={0} and fecha >='{1}'  order by fecha".format(self.inversion.id, fechapo.date()))
         else:
-            strfechapo=""  
-        sql="select * from dividendos where dividendos.id_inversiones="+str(self.inversion.id) + strfechapo+" order by fecha;"
-        cur.execute(sql) 
-        for d in cur:
-            cur2.execute("select * from opercuentas where id_opercuentas=%s", (d['id_opercuentas'], ))
-            oc=cur2.fetchone()
-            opercuenta=CuentaOperacion(self.cfg).init__db_row( oc, self.cfg.conceptos.find(oc['id_conceptos']),self.cfg.tiposoperaciones.find(oc['id_tiposoperaciones']), self.inversion.cuenta  )
-            self.dividendos.append(Dividendo(self.cfg).init__db_row(d, self.inversion, opercuenta, self.cfg.conceptos.find(d['id_conceptos'])))        
-        cur.close()       
-        cur2.close()
-        self.cfg.disconnect_xulpymoney(con)         
-        self.load_tblDividendos()
+            self.dividendos.load_from_db("select * from dividendos where id_inversiones={0} order by fecha".format(self.inversion.id ))  
+        self.load_tabDividendos()
 
     def on_cmdISE_released(self):
         self.cmdInversion.setEnabled(True)

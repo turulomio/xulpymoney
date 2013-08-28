@@ -542,14 +542,70 @@ class SetCurrencies:
 
     def find(self, id):
         return self.dic_arr[str(id)]
-        
-
 
     def load_qcombobox(self, combo, selectedcurrency=None):
         """Función que carga en un combo pasado como parámetro las currencies"""
         for c in self.list():
             combo.addItem("{0} - {1} ({2})".format(c.id, c.name, c.symbol), c.id)
         #NO SE PUEDE PONER C COMO VARIANT YA QUE LUEGO EL FIND NO ENCUENTRA EL OBJETO.
+
+class SetDividends:
+    """Class that  groups dividends from a Xulpymoney Investment"""
+    def __init__(self, cfg,  inversion):
+        self.inversion=inversion
+        self.cfg=cfg
+        self.arr=[]
+        
+    def load_from_db(self, sql):    
+        del self.arr
+        self.arr=[]
+        cur=self.cfg.con.cursor()
+        cur.execute( sql)#"select * from dividendos where id_inversiones=%s order by fecha", (self.inversion.id, )
+        for row in cur:
+            oc=CuentaOperacion(self.cfg).init__db_query(row['id_opercuentas'], self.inversion.cuenta)
+            self.arr.append(Dividendo(self.cfg).init__db_row(row, self.inversion, oc, self.cfg.conceptos.find(row['id_conceptos']) ))
+        cur.close()      
+        
+    def load_myqtablewidget(self, table, section):
+        """Section es donde guardar en el config file, coincide con el nombre del formulario en el que está la table
+        Devuelve sumatorios"""
+        table.setColumnCount(7)
+        table.setHorizontalHeaderItem(0, QTableWidgetItem(QApplication.translate("Core", "Date", None, QApplication.UnicodeUTF8)))
+        table.setHorizontalHeaderItem(1, QTableWidgetItem(QApplication.translate("Core", "Concept", None, QApplication.UnicodeUTF8)))
+        table.setHorizontalHeaderItem(2, QTableWidgetItem(QApplication.translate("Core", "Bruto", None, QApplication.UnicodeUTF8)))
+        table.setHorizontalHeaderItem(3, QTableWidgetItem(QApplication.translate("Core", "Retenci´on", None, QApplication.UnicodeUTF8)))
+        table.setHorizontalHeaderItem(4, QTableWidgetItem(QApplication.translate("Core", "Comission", None, QApplication.UnicodeUTF8)))
+        table.setHorizontalHeaderItem(5, QTableWidgetItem(QApplication.translate("Core", "Neto", None, QApplication.UnicodeUTF8)))
+        table.setHorizontalHeaderItem(6, QTableWidgetItem(QApplication.translate("Core", "DPA", None, QApplication.UnicodeUTF8)))
+        #DATA
+        table.settings(section,  self.cfg)        
+        table.clearContents()
+
+
+        table.setRowCount(len(self.arr)+1)
+        sumneto=0
+        sumbruto=0
+        sumretencion=0
+        sumcomision=0
+        for i, d in enumerate(self.arr):
+            sumneto=sumneto+d.neto
+            sumbruto=sumbruto+d.bruto
+            sumretencion=sumretencion+d.retencion
+            sumcomision=sumcomision+d.comision
+            table.setItem(i, 0, QTableWidgetItem(str(d.fecha)))
+            table.setItem(i, 1, QTableWidgetItem(str(d.opercuenta.concepto.name)))
+            table.setItem(i, 2, self.inversion.investment.currency.qtablewidgetitem(d.bruto))
+            table.setItem(i, 3, self.inversion.investment.currency.qtablewidgetitem(d.retencion))
+            table.setItem(i, 4, self.inversion.investment.currency.qtablewidgetitem(d.comision))
+            table.setItem(i, 5, self.inversion.investment.currency.qtablewidgetitem(d.neto))
+            table.setItem(i, 6, self.inversion.investment.currency.qtablewidgetitem(d.dpa))
+        table.setItem(len(self.arr), 1, QTableWidgetItem("TOTAL"))
+        table.setItem(len(self.arr), 2, self.inversion.investment.currency.qtablewidgetitem(sumbruto))
+        table.setItem(len(self.arr), 3, self.inversion.investment.currency.qtablewidgetitem(sumretencion))
+        table.setItem(len(self.arr), 4, self.inversion.investment.currency.qtablewidgetitem(sumcomision))
+        table.setItem(len(self.arr), 5, self.inversion.investment.currency.qtablewidgetitem(sumneto))
+        return (sumneto, sumbruto, sumretencion, sumcomision)
+        
 
 class SetDividendosEstimaciones:
     def __init__(self, cfg,  investment):
@@ -1415,6 +1471,18 @@ class CuentaOperacion:
         
     def init__db_row(self, row, concepto,  tipooperacion, cuenta):
         return self.init__create(row['fecha'],  concepto,  tipooperacion,  row['importe'],  row['comentario'],  cuenta,  row['id_opercuentas'])
+
+
+    def init__db_query(self, id_opercuentas,  cuenta):
+        """Creates a CuentaOperacion querying database for an id_opercuentas"""
+        resultado=None
+        cur=self.cfg.con.cursor()
+        cur.execute("select * from opercuentas where id_opercuentas=%s", (id_opercuentas, ))
+        for row in cur:
+            concepto=self.cfg.conceptos.find(row['id_conceptos'])
+            resultado=self.init__db_row(row, concepto, concepto.tipooperacion, cuenta)
+        cur.close()
+        return resultado
 
     def borrar(self):
         cur=self.cfg.con.cursor()
