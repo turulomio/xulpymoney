@@ -5,7 +5,7 @@ from matplotlib.finance import *
 from decimal import Decimal
 from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.dates import *
-
+from matplotlib.pyplot import *
 # Matplotlib Figure object
 from matplotlib.figure import Figure
 
@@ -142,7 +142,7 @@ class canvasChart(FigureCanvas):
             sma.append(sum(quotes[i-200:i])/Decimal(200))
         self.ax.plot_date(dat, sma, '-', color="red")    
 
-        
+
         
     def _get_locators(self, first,  last,  count):
         if count==0:
@@ -266,6 +266,8 @@ class canvasChart(FigureCanvas):
         plot_day_summary(self.ax, quotes,  ticksize=4)
         self._draw_sma50(dates, close)
         self._draw_sma200(dates, close)
+        self._draw_selling_point()
+        self._draw_purchase_points()
 
     @pyqtSignature("")
     def on_actionCandles1d_activated(self):
@@ -469,13 +471,16 @@ class canvasChartIntraday(canvasChart):
         self.actionLinesIntraday.setText(self.trUtf8("Intradia"))
         self.actionLinesIntraday.setObjectName(self.trUtf8("actionLinesIntraday"))
         self.common_actions()
+        
+        
 class canvasChartHistorical(canvasChart):
-    
     def __init__(self, cfg,   parent):
         self.cfg=cfg
         canvasChart.__init__(self, parent)
-        self.num=50#Numero de items a mostrar
+        self.num=60#Numero de items a mostrar
         self.setupUi()
+        self.purchase=None
+        self.selling=None
         self.settings("canvasHistorical")
         
     def __draw(self):
@@ -594,6 +599,22 @@ class canvasChartHistorical(canvasChart):
             self.ohcl(ohclYearly, datetime.timedelta(days=365))     
         self.draw()
         
+    def ohcl(self, ohcldata, interval):
+        """Overrides ohcl function of canvasChart"""
+        self.draw_selling_point()
+        self.draw_purchase_points()
+                
+    def draw_selling_point(self):
+#        self.ax.plot(linewidth=4, color='r')
+#        self.ax.axhline(y=self.inversion.venta)
+        self.purchase=self.ax.plot(None, None,  "r--")
+        self.purchase.set_xdata(5, )
+        self.purchase.set_xdata(10, 100)
+        self.ax.draw_artist(self.purchase)
+        #self.ax.axhline(y=self.inversion.venta)
+    def draw_puchase_points(self):
+        pass
+        
     def on_customContextMenuRequested(self, pos):
         menu=QMenu()
         ohcl=QMenu("OHCL")
@@ -633,7 +654,8 @@ class canvasChartHistorical(canvasChart):
         menu.addMenu(indicadores)            
         menu.exec_(self.mapToGlobal(pos)) 
 
-    def load_data(self, investment,  result):
+    def load_data(self, investment,  result,  inversion=None):
         self.investment=investment
         self.result=result
+        self.inversion=inversion
         self.__draw()
