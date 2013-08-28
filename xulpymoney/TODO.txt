@@ -23,8 +23,6 @@ MYSTOCKS
 20120405 En la misma tabla de dividendos estimados poner el bpa, para poder calcular el PER
 20120307 Cuando haya ochl en los datos intradia, dibujar una raya de maximo y minimo gris discontinuo, con punto gris de inicio  y punto gris de final
 20120217 En busquedas cuando se haga es:search, buscará en bolsa española
-20130821 Editar L'oreal peta por la comilla
-20130822 Permitir borrar quotes desde ohcldiary seleccionando varios
 20130822 Progress bar en status bar, al cargar frmAnalisis
 20130822 Hacer dividendos pagados para grafico quitando dividendos
 

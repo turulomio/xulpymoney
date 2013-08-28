@@ -2708,14 +2708,23 @@ class SetPriorities:
             resultado.arr.append(a)
         return resultado
 
-    def dbstring(self):
-        if len(self.arr)==0:
-            return "NULL"
-        else:
-            resultado=[]
-            for a in self.arr:
-                resultado.append(a.id)
-            return "ARRAY"+str(resultado)
+
+    def array_of_id(self):
+        """Used to psycopg.execute automatical pare"""
+        resultado=[]
+        for p in self.arr:
+            resultado.append(p.id)
+        return resultado
+            
+
+#    def dbstring(self):
+#        if len(self.arr)==0:
+#            return "NULL"
+#        else:
+#            resultado=[]
+#            for a in self.arr:
+#                resultado.append(a.id)
+#            return "ARRAY"+str(resultado)
         
     def init__create_from_combo(self, cmb):
         """Función que convierte un combo de agrupations a un array de agrupations"""
@@ -2764,15 +2773,21 @@ class SetPrioritiesHistorical:
                 resultado.arr.append(self.cfg.prioritieshistorical.find(a))
         return resultado
 
+    def array_of_id(self):
+        """Used to psycopg.execute automatical pare"""
+        resultado=[]
+        for p in self.arr:
+            resultado.append(p.id)
+        return resultado
         
-    def dbstring(self):
-        if len(self.arr)==0:
-            return "NULL"
-        else:
-            resultado=[]
-            for a in self.arr:
-                resultado.append(a.id)
-            return "ARRAY"+str(resultado)
+#    def dbstring(self):
+#        if len(self.arr)==0:
+#            return "NULL"
+#        else:
+#            resultado=[]
+#            for a in self.arr:
+#                resultado.append(a.id)
+#            return "ARRAY"+str(resultado)
         
     def init__create_from_combo(self, cmb):
         """Función que convierte un combo de agrupations a un array de agrupations"""
@@ -3921,11 +3936,10 @@ class Investment:
         if self.id==None:
             cur.execute(" select min(id)-1 from investments;")
             id=cur.fetchone()[0]
-            cur.execute("insert into investments (id, name,  isin,  currency,  type,  agrupations,  active,  web, address,  phone, mail, tpc, pci,  apalancado, id_bolsas, yahoo, priority, priorityhistorical , comentario,  obsolete, system) values ({0}, '{1}', '{2}', '{3}', {4}, '{5}', {6}, '{7}', '{8}', '{9}', '{10}', {11}, '{12}', {13}, {14}, '{15}', {16}, {17}, '{18}', {19}, {20})".format(id, self.name,  self.isin,  self.currency.id,  self.type.id,  self.agrupations.dbstring(),  self.active,  self.web, self.address,  self.phone, self.mail, self.tpc, self.mode.id,  self.apalancado.id, self.bolsa.id, self.yahoo, self.priority.dbstring(), self.priorityhistorical.dbstring() , self.comentario, self.obsolete, False))
+            cur.execute("insert into investments (id, name,  isin,  currency,  type,  agrupations,  active,  web, address,  phone, mail, tpc, pci,  apalancado, id_bolsas, yahoo, priority, priorityhistorical , comentario,  obsolete, system) values (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",  (id, self.name,  self.isin,  self.currency.id,  self.type.id,  self.agrupations.dbstring(),  self.active,  self.web, self.address,  self.phone, self.mail, self.tpc, self.mode.id,  self.apalancado.id, self.bolsa.id, self.yahoo, self.priority.array_of_id(), self.priorityhistorical.array_of_id() , self.comentario, self.obsolete, False))
             self.id=id
         else:
-            sql="update investments set name='{0}', isin='{1}',currency='{2}',type={3}, agrupations='{4}', active={5}, web='{6}', address='{7}', phone='{8}', mail='{9}', tpc={10}, pci='{11}', apalancado={12}, id_bolsas={13}, yahoo='{14}', priority={15}, priorityhistorical={16}, comentario='{17}', obsolete={18} where id={19}".format( self.name,  self.isin,  self.currency.id,  self.type.id,  self.agrupations.dbstring(),  self.active,  self.web, self.address,  self.phone, self.mail, self.tpc, self.mode.id,  self.apalancado.id, self.bolsa.id, self.yahoo, self.priority.dbstring(), self.priorityhistorical.dbstring() , self.comentario, self.obsolete,  self.id)
-            cur.execute(sql)
+            cur.execute("update investments set name=%s, isin=%s,currency=%s,type=%s, agrupations=%s, active=%s, web=%s, address=%s, phone=%s, mail=%s, tpc=%s, pci=%s, apalancado=%s, id_bolsas=%s, yahoo=%s, priority=%s, priorityhistorical=%s, comentario=%s, obsolete=%s where id=%s", ( self.name,  self.isin,  self.currency.id,  self.type.id,  self.agrupations.dbstring(),  self.active,  self.web, self.address,  self.phone, self.mail, self.tpc, self.mode.id,  self.apalancado.id, self.bolsa.id, self.yahoo, self.priority.array_of_id(), self.priorityhistorical.array_of_id() , self.comentario, self.obsolete,  self.id))
         cur.close()
     
     def changeDeletable(self, ids,  deletable):
@@ -4539,6 +4553,8 @@ class SetOHCLDaily:
         last=None
         penultimate=None
         endlastyear=None
+        if len(self.arr)==0:
+            return SetQuotesBasic(self.cfg, self.investment).init__create(None, None,  None)
         ohcl=self.arr[len(self.arr)-1]#last
         last=Quote(self.cfg).init__create(self.investment, dt(ohcl.date, self.investment.bolsa.closes,  self.investment.bolsa.zone), ohcl.close)
         ohcl=self.find(ohcl.date-datetime.timedelta(days=1))#penultimate
@@ -5451,6 +5467,8 @@ def qright(string):
     a=QTableWidgetItem(str(string))
     a.setTextAlignment(Qt.AlignVCenter|Qt.AlignRight)
     return a
+
+
 
 
 
