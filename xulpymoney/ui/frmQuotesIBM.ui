@@ -135,6 +135,9 @@
        </item>
        <item>
         <widget class="QCheckBox" name="chkCanBePurged">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
          <property name="text">
           <string>Can be purged?</string>
          </property>
@@ -159,9 +162,9 @@
           </spacer>
          </item>
          <item>
-          <widget class="QPushButton" name="cmd">
-           <property name="text">
-            <string>Guardar cotización</string>
+          <widget class="QDialogButtonBox" name="buttonbox">
+           <property name="standardButtons">
+            <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
            </property>
           </widget>
          </item>
@@ -195,7 +198,6 @@
  </customwidgets>
  <tabstops>
   <tabstop>txtQuote</tabstop>
-  <tabstop>cmd</tabstop>
   <tabstop>calendar</tabstop>
   <tabstop>txtTime</tabstop>
   <tabstop>chkNone</tabstop>

@@ -69,7 +69,7 @@
            <property name="orientation">
             <enum>Qt::Horizontal</enum>
            </property>
-           <widget class="QWidget" name="">
+           <widget class="QWidget" name="layoutWidget">
             <layout class="QVBoxLayout" name="verticalLayout_5">
              <item>
               <spacer name="verticalSpacer">
@@ -695,11 +695,6 @@
           </widget>
          </item>
         </layout>
-        <zorder>splitter_2</zorder>
-        <zorder>grpHistoricos</zorder>
-        <zorder>cmdSplit</zorder>
-        <zorder>verticalSpacer</zorder>
-        <zorder>verticalSpacer_2</zorder>
        </widget>
        <widget class="QWidget" name="tabGraficos">
         <attribute name="title">
@@ -1411,6 +1406,18 @@ correspondiente en la tabla</string>
    </property>
    <property name="toolTip">
     <string>Purge Day from innecesary quotes. Leaves high, low, open and close quotes</string>
+   </property>
+  </action>
+  <action name="actionQuoteEdit">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/editar.png</normaloff>:/xulpymoney/editar.png</iconset>
+   </property>
+   <property name="text">
+    <string>Edit Quote</string>
+   </property>
+   <property name="toolTip">
+    <string>Edit Quote</string>
    </property>
   </action>
  </widget>

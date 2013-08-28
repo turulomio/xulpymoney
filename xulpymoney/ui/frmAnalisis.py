@@ -208,7 +208,14 @@ class frmAnalisis(QDialog, Ui_frmAnalisis):
     
             #Construlle tabla
             for i , q in enumerate(self.investment.result.intradia.arr):
-                self.tblIntradia.setItem(i, 0, qcenter(str(q.datetime)[11:-6]))
+                if q.datetime.microsecond==5:
+                    self.tblIntradia.setItem(i, 0, qcenter(str(q.datetime)[11:-13]))
+                    self.tblIntradia.item(i, 0).setBackgroundColor(QColor(255, 255, 148))
+                elif q.datetime.microsecond==4:
+                    self.tblIntradia.setItem(i, 0, qcenter(str(q.datetime)[11:-13]))
+                    self.tblIntradia.item(i, 0).setBackgroundColor(QColor(148, 148, 148))
+                else:
+                    self.tblIntradia.setItem(i, 0, qcenter(str(q.datetime)[11:-6]))
                 self.tblIntradia.setItem(i, 1, self.investment.currency.qtablewidgetitem(q.quote,6))       
                 try:
                     tpc=(q.quote-self.investment.result.basic.penultimate.quote)*100/q.quote
@@ -218,7 +225,9 @@ class frmAnalisis(QDialog, Ui_frmAnalisis):
                 if q==ma:
                     self.tblIntradia.item(i, 1).setBackgroundColor(QColor(148, 255, 148))
                 elif q==mi:
-                    self.tblIntradia.item(i, 1).setBackgroundColor( QColor(255, 148, 148))                
+                    self.tblIntradia.item(i, 1).setBackgroundColor( QColor(255, 148, 148))  
+      
+                    
         
         t1 = threading.Thread(target=self.canvasIntraday.load_data_intraday,   args=(self.investment, ))
         t1.start()
@@ -227,6 +236,7 @@ class frmAnalisis(QDialog, Ui_frmAnalisis):
         t2.join()  
         self.tblIntradia.setFocus()
         self.tblIntradia.setCurrentCell(len(self.investment.result.intradia.arr)-1, 0)
+        self.tblIntradia.clearSelection()
 
 
 
@@ -299,19 +309,27 @@ class frmAnalisis(QDialog, Ui_frmAnalisis):
         self.load_graphics()#OHLC ya estaba cargado, no varía por lo que no uso update_due_to_quotes_change
         
     @pyqtSignature("")
+    def on_actionQuoteEdit_activated(self):
+        for quote in self.setSelIntraday:##Only is one, but i don't know how to refer to quote
+            w=frmQuotesIBM(self.cfg,  self.investment, quote)
+            w.exec_()   
+            if w.result()==QDialog.Accepted:
+                self.update_due_to_quotes_change()
+        
+        
+    @pyqtSignature("")
     def on_actionQuoteNew_activated(self):
         w=frmQuotesIBM(self.cfg,  self.investment)
         w.exec_()   
-        self.update_due_to_quotes_change()
+        if w.result()==QDialog.Accepted:
+            self.update_due_to_quotes_change()
 
     @pyqtSignature("")
     def on_actionQuoteDelete_activated(self):
-        cur = self.cfg.conms.cursor()
         for q in self.setSelIntraday:
             q.delete()
             self.investment.result.intradia.arr.remove(q)
         self.cfg.conms.commit()
-        cur.close() 
         self.update_due_to_quotes_change()
 
 
@@ -428,15 +446,20 @@ class frmAnalisis(QDialog, Ui_frmAnalisis):
 
 
     def on_tblIntradia_customContextMenuRequested(self,  pos):
-        menu=QMenu()
-        menu.addAction(self.actionQuoteNew)
-
-        menu.addAction(self.actionQuoteDelete)        
         if len (self.setSelIntraday)>0:
             self.actionQuoteDelete.setEnabled(True)
         else:
             self.actionQuoteDelete.setEnabled(False)
+
+        if len(self.setSelIntraday)==1:
+            self.actionQuoteEdit.setEnabled(True)
+        else:
+            self.actionQuoteEdit.setEnabled(False)
             
+        menu=QMenu()
+        menu.addAction(self.actionQuoteNew)
+        menu.addAction(self.actionQuoteEdit)
+        menu.addAction(self.actionQuoteDelete)        
         menu.addSeparator()
         menu.addAction(self.actionPurgeDay)
         menu.exec_(self.tblIntradia.mapToGlobal(pos))
