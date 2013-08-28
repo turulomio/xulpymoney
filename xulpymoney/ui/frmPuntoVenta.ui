@@ -159,45 +159,108 @@
       </widget>
      </item>
      <item>
-      <widget class="myQTableWidget" name="table">
-       <attribute name="verticalHeaderVisible">
-        <bool>false</bool>
-       </attribute>
-       <column>
-        <property name="text">
-         <string>Día</string>
-        </property>
-       </column>
-       <column>
-        <property name="text">
-         <string>Inversión (Entidad Bancaria)</string>
-        </property>
-       </column>
-       <column>
-        <property name="text">
-         <string>Tipo Operación</string>
-        </property>
-       </column>
-       <column>
-        <property name="text">
-         <string>Acciones</string>
-        </property>
-       </column>
-       <column>
-        <property name="text">
-         <string>Valor compra</string>
-        </property>
-       </column>
-       <column>
-        <property name="text">
-         <string>Invertido</string>
-        </property>
-       </column>
-       <column>
-        <property name="text">
-         <string>Pendiente</string>
-        </property>
-       </column>
+      <widget class="QTabWidget" name="tabWidget">
+       <property name="currentIndex">
+        <number>0</number>
+       </property>
+       <widget class="QWidget" name="tab">
+        <attribute name="title">
+         <string>Current state</string>
+        </attribute>
+        <layout class="QHBoxLayout" name="horizontalLayout_5">
+         <item>
+          <widget class="myQTableWidget" name="table">
+           <attribute name="verticalHeaderVisible">
+            <bool>false</bool>
+           </attribute>
+           <column>
+            <property name="text">
+             <string>Día</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>Inversión (Entidad Bancaria)</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>Tipo Operación</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>Acciones</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>Valor compra</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>Invertido</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>Pendiente</string>
+            </property>
+           </column>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QWidget" name="tab_2">
+        <attribute name="title">
+         <string>Selling point state</string>
+        </attribute>
+        <layout class="QHBoxLayout" name="horizontalLayout_6">
+         <item>
+          <widget class="myQTableWidget" name="tableSP">
+           <attribute name="verticalHeaderVisible">
+            <bool>false</bool>
+           </attribute>
+           <column>
+            <property name="text">
+             <string>Día</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>Inversión (Entidad Bancaria)</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>Tipo Operación</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>Acciones</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>Valor compra</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>Invertido</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>Pendiente</string>
+            </property>
+           </column>
+          </widget>
+         </item>
+        </layout>
+       </widget>
       </widget>
      </item>
      <item>
