@@ -192,12 +192,12 @@ class frmAnalisis(QDialog, Ui_frmAnalisis):
         
 
     def load_graphics(self):
-        t2 = threading.Thread(target=self.canvasHistorical.load_data,  args=(self.investment,  self.investment.result, self.inversion))
+        t2 = threading.Thread(target=self.canvasHistorical.load_data,  args=(self.investment, self.inversion))
         t2.start()
         self.investment.result.intradia.load_from_db(self.calendar.selectedDate().toPyDate(), self.investment)
         if len(self.investment.result.intradia.arr)==0:
             self.tblIntradia.setRowCount(0)
-            self.canvasIntraday.clear()
+            self.canvasIntraday.ax.clear()
             t2.join()
             return
         else:
