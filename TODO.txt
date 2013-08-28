@@ -4,7 +4,6 @@ CORE
 XULPYMONEY
 ==========
 20111201 En transferencias poner textos localizadosy ID vinculado a transferencia
-20120320 Si no hay operinversiones ni dividendos la cuenta de una inversión debería poder cambiarse
 20120523 Hacer una clases de inversiones no con actual sino con invertido.
 20120803 Hacer splash con emit de como va cargando.
 20120706 cuenta operacion heredada de inversion deberia crearse como con dividendos una opercuenta antes
@@ -16,7 +15,6 @@ XULPYMONEY
 20110526 Crear la funcionalidad de divisas importantes
 20110822 Poner en el gráfico histórico la opción del punto de venta
 20130829 En punto de venta poner antes y después set
-20130829 Load dividendos de frmAnalisis ca<mbiar por Set
 20130829 Poner frmAbout myquotes en tab de xulpymoney
 20130829 Cuando quotes está vacio y se inserta xulpymoney inversion peta por None en quote
 
