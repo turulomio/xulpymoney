@@ -14,7 +14,6 @@ XULPYMONEY
 20130103 Cuando se genera un dividendo acciones y se mete comisión se cuenta en Ingresos quizás porque es neto
 20110526 Crear la funcionalidad de divisas importantes
 20110822 Poner en el gráfico histórico la opción del punto de venta
-20130829 En punto de venta poner antes y después set
 20130829 Poner frmAbout myquotes en tab de xulpymoney
 20130829 Cuando quotes está vacio y se inserta xulpymoney inversion peta por None en quote
 

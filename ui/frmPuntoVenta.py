@@ -31,28 +31,35 @@ class frmPuntoVenta(QDialog, Ui_frmPuntoVenta):
         self.operinversiones=list(self.inversion.op_actual.arr)            #0-fecha, 1-banco, 2-acciones, 3-valor-compra, 4-invertido, 5 pendiente, 6-tipooper
 
         self.table.settings("frmPuntoVenta",  self.cfg)
+        self.tableSP.settings("frmPuntoVenta",  self.cfg)
         self.on_radTPC_toggled(True)
         
     def __calcular(self):
-        sumacciones=Decimal(0)
-        suminvertido=Decimal(0)
-        self.table.setRowCount(len(self.operinversiones)+1)
-        for i, rec in enumerate(self.operinversiones):
-            sumacciones=sumacciones+rec.acciones
-            suminvertido=suminvertido+rec.invertido()
-            self.table.setItem(i, 0, qdatetime(rec.datetime, rec.inversion.investment.bolsa.zone))
-            self.table.setItem(i, 1, QTableWidgetItem("{0} ({1})".format(rec.inversion.name, rec.inversion.cuenta.eb.name)))
-            self.table.setItem(i, 2,  QTableWidgetItem(rec.tipooperacion.name))
-            self.table.setItem(i, 3, qright(str(rec.acciones)))
-            self.table.setItem(i, 4, self.inversion.investment.currency.qtablewidgetitem(rec.valor_accion))
-            self.table.setItem(i, 5, self.inversion.investment.currency.qtablewidgetitem(rec.importe))
-            self.table.setItem(i, 6, self.inversion.investment.currency.qtablewidgetitem(rec.pendiente(self.inversion.investment.result.basic.last)))
-        self.table.setItem(len(self.operinversiones), 1, qright("Total"))        
-        self.table.setItem(len(self.operinversiones), 3, qright(str(sumacciones)))
-        self.table.setItem(len(self.operinversiones), 4, self.inversion.investment.currency.qtablewidgetitem(suminvertido/sumacciones))
-        self.table.setItem(len(self.operinversiones), 5, self.inversion.investment.currency.qtablewidgetitem(suminvertido))
+        def load_table(table, current_value):
+            sumacciones=Decimal(0)
+            suminvertido=Decimal(0)
+            sumpendiente=Decimal(0)
+            table.setRowCount(len(self.operinversiones)+1)
+            for i, rec in enumerate(self.operinversiones):
+                sumacciones=sumacciones+rec.acciones
+                suminvertido=suminvertido+rec.invertido()
+                pendiente=rec.pendiente(current_value)
+                sumpendiente=sumpendiente+pendiente
+                table.setItem(i, 0, qdatetime(rec.datetime, rec.inversion.investment.bolsa.zone))
+                table.setItem(i, 1, QTableWidgetItem("{0} ({1})".format(rec.inversion.name, rec.inversion.cuenta.eb.name)))
+                table.setItem(i, 2,  QTableWidgetItem(rec.tipooperacion.name))
+                table.setItem(i, 3, qright(str(rec.acciones)))
+                table.setItem(i, 4, self.inversion.investment.currency.qtablewidgetitem(rec.valor_accion))
+                table.setItem(i, 5, self.inversion.investment.currency.qtablewidgetitem(rec.importe))
+                table.setItem(i, 6, self.inversion.investment.currency.qtablewidgetitem(pendiente))
+            table.setItem(len(self.operinversiones), 1, qright("Total"))        
+            table.setItem(len(self.operinversiones), 3, qright(str(sumacciones)))
+            table.setItem(len(self.operinversiones), 4, self.inversion.investment.currency.qtablewidgetitem(suminvertido/sumacciones))
+            table.setItem(len(self.operinversiones), 5, self.inversion.investment.currency.qtablewidgetitem(suminvertido))
+            table.setItem(len(self.operinversiones), 6, self.inversion.investment.currency.qtablewidgetitem(sumpendiente))
+            return (sumacciones, suminvertido, sumpendiente)
             
-            
+        (sumacciones, suminvertido, sumpendiente)=load_table(self.table, self.inversion.investment.result.basic.last)
         
         if sumacciones==0:
             self.puntoventa=0
@@ -67,11 +74,13 @@ class frmPuntoVenta(QDialog, Ui_frmPuntoVenta):
                 else:
                     self.puntoventa=0
                     self.cmd.setEnabled(False)
+
+        (sumacciones, suminvertido, sumpendiente)=load_table(self.tableSP, Quote(self.cfg).init__create(self.inversion.investment, self.cfg.localzone.now(), self.puntoventa))                    
         
         if self.chkPonderanAll.checkState()==Qt.Checked:
-            self.cmd.setText("Grabar el punto de venta a todas las inversiones de {0} € para ganar {1} €".format(self.puntoventa, round(sumacciones*self.puntoventa-suminvertido, 2)))
+            self.cmd.setText("Grabar el punto de venta a todas las inversiones de {0} € para ganar {1}".format(self.puntoventa, self.inversion.investment.currency.string(sumpendiente)))
         else:
-            self.cmd.setText("Asignar el punto de venta de {0} € para ganar {1} €".format(self.puntoventa, round(sumacciones*self.puntoventa-suminvertido, 2)))
+            self.cmd.setText("Asignar el punto de venta de {0} € para ganar {1} €".format(self.puntoventa, self.inversion.investment.currency.string(sumpendiente)))
         
     def load_operinversionesactualmismoactivo(self):
         """Recibe un sql y calcula las operinversiones, pueden ser de diferentes inversiones"""
