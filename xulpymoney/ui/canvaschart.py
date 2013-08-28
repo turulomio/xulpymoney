@@ -9,14 +9,10 @@ from matplotlib.pyplot import *
 # Matplotlib Figure object
 from matplotlib.figure import Figure
 
-
 class ChartType:
     lines=0
     ohcl=1
     candles=2
-
-
-        
 
 class canvasChart(FigureCanvas):
     """
@@ -26,71 +22,32 @@ class canvasChart(FigureCanvas):
     type 0:lineas
             since: datetime desde el que mostrar datos
             period: forma en que se muestran 0:5 minutos, 1: 15 minutos, 2:1 hora,3:diario,4:semanal,5 mensual
-            
-            
+
     Se crea el objeto
     objeto.settings
     objeto.load_data"""
     def __init__(self, parent):
-            
         # setup Matplotlib Figure and Axis
         self.fig = Figure()
         FigureCanvas.__init__(self, self.fig)
         # we define the widget as expandable
         FigureCanvas.setSizePolicy(self,QSizePolicy.Expanding, QSizePolicy.Expanding)
         # notify the system of updated policy
-        FigureCanvas.updateGeometry(self)
-        self.original=None#Almacena los datos originales
-        self.currentMatrizDataLength=0#Almacena la longitud de los datos dibujados
-#        self.since=None #Muestra todos los datos
-#        self.periodo=None
+        FigureCanvas.updateGeometry(self)        
         
-        
-        self.type=None
         self.ax = self.fig.add_subplot(111)
         
         self.plot_sma200=None
         self.plot_sma50=None
-                
-          
-        
+ 
+    def price(self, x): 
+        return self.investment.currency.string(x)
+
     def settings(self, section):		
         self.section=section
+        self.actionSMA50.setChecked(str2bool(self.cfg.config_ui.get_value(section, "sma50" )))
+        self.actionSMA200.setChecked(str2bool(self.cfg.config_ui.get_value(section, "sma200" )))           
 
-        try:
-            self.type=int(self.cfg.config_ui.get_value(section, "type" ))
-        except:
-            self.type=ChartType.lines
-            
-        try:
-            self.actionSMA50.setChecked(str2bool(self.cfg.config_ui.get_value(section, "sma50" )))
-        except:
-            self.actionSMA50.setChecked(False)
-
-        try:
-            self.actionSMA200.setChecked(str2bool(self.cfg.config_ui.get_value(section, "sma200" )))
-        except:
-            self.actionSMA200.setChecked(False)
-            
-    def on_actionLinesIntraday_activated(self):
-        self.cfg.config_ui.set_value(self.section, "type",   self.type)
-        (dates, quotes)=zip(*self.data)
-        self.draw_lines_from_quotes(dates, quotes)
-                
-
-    def on_actionLines1d_activated(self):
-        self.cfg.config_ui.set_value(self.section, "type",   ChartType.lines)
-        self.currentMatrizDataLength=len(self.investment.result.ohclDaily.arr)
-        
-        if len(self.investment.result.ohclDaily.arr)>self.num:              
-            self.draw_lines_from_ohcl(self.investment.result.ohclDaily.arr[len(self.investment.result.ohclDaily.arr)-1-self.num:len(self.investment.result.ohclDaily.arr)])      
-        else:
-            self.draw_lines_from_ohcl(self.investment.result.ohclDaily.arr)     
-        self.draw()
-
-      
-        
-        
     @pyqtSignature("")
     def on_actionSMA50_activated(self):
         self.cfg.config_ui.set_value(self.section, "sma50",   self.actionSMA50.isChecked())
@@ -100,8 +57,7 @@ class canvasChart(FigureCanvas):
     def on_actionSMA200_activated(self):
         self.cfg.config_ui.set_value(self.section, "sma200",   self.actionSMA200.isChecked())
         self.cfg.config_ui.save()
-        
-        
+
     def draw_sma50(self,  datime, quotes):
         #Calculamos según
         """
@@ -141,19 +97,22 @@ class canvasChart(FigureCanvas):
         if interval==0:
             self.ax.xaxis.set_major_locator(HourLocator(interval=1 , tz=pytz.timezone(self.cfg.localzone.name)))
             self.ax.xaxis.set_minor_locator(HourLocator(interval=1 , tz=pytz.timezone(self.cfg.localzone.name)))
-            self.ax.xaxis.set_major_formatter(DateFormatter('%H:%M'))            
+            self.ax.xaxis.set_major_formatter(DateFormatter('%H:%M'))    
+            self.ax.fmt_xdata=DateFormatter('%H:%M')        
         elif interval<365:
             self.ax.xaxis.set_minor_locator(MonthLocator())
             self.ax.xaxis.set_major_locator(MonthLocator())
             self.ax.xaxis.set_major_formatter( DateFormatter('%Y-%m-%d'))   
+            self.ax.fmt_xdata=DateFormatter('%Y-%m-%d')
         elif interval>=365:
             self.ax.xaxis.set_minor_locator(MonthLocator())
             self.ax.xaxis.set_major_locator(YearLocator())   
             self.ax.xaxis.set_major_formatter( DateFormatter('%Y'))        
-            self.ax.fmt_xdata=DateFormatter('%Y-%m-%d')
+            self.ax.fmt_xdata=DateFormatter('%Y')
                         
         self.ax.fmt_ydata = self.price  
         self.ax.grid(True)
+        
     def draw_lines_from_ohcl(self, data):
         """Aquí  data es un array de OHCL"""
         self.ax.clear()      
@@ -161,10 +120,7 @@ class canvasChart(FigureCanvas):
         quotes=[]
         for ohcl in data:
             dates.append(ohcl.datetime())
-            
             quotes.append(ohcl.close)
-#        for i in range(len(data)):
-#            dates[i]=datetime.datetime.combine(dates[i], datetime.time(0, 0))
 
         self.get_locators(dates[0],  dates[len(dates)-1], len(dates))
         self.ax.plot_date(dates, quotes, '-')
@@ -186,17 +142,7 @@ class canvasChart(FigureCanvas):
         self.draw_sma50(datetimes, quotes)
         self.draw_sma200(datetimes, quotes)
         self.draw()
-        
-    @pyqtSignature("")
-    def on_actionOHCL1d_activated(self):
-        self.cfg.config_ui.set_value(self.section, "type", ChartType.ohcl)
-        self.currentMatrizDataLength=len(self.investment.result.ohclDaily.arr)
-        
-        if len(self.investment.result.ohclDaily.arr)>self.num:            
-            self.ohcl(self.investment.result.ohclDaily.arr[len(self.investment.result.ohclDaily.arr)-1-self.num:len(self.investment.result.ohclDaily.arr)], datetime.timedelta(days=1))       
-        else:
-            self.ohcl(self.investment.result.ohclDaily.arr, datetime.timedelta(days=1))     
-        self.draw()
+
         
     def ohcl(self, ohcldata,  interval):
         self.ax.clear()
@@ -208,8 +154,6 @@ class canvasChart(FigureCanvas):
             quotes.append((d.datetime().toordinal(), d.open, d.close,  d.high, d.low))         #ESTE ES EL CAUSEANTE NO SE VEA MENOR DE DIARIO TOOARDIANL
             dates.append(d.datetime())
             close.append(d.close)
-
-#        self.ax.autoscale_view()
         self.ax.fmt_xdata = DateFormatter('%Y-%m-%d')
         left=ohcldata[0].datetime().toordinal()-interval.days#De margen
         right=ohcldata[len(ohcldata)-1].datetime().toordinal()+interval.days
@@ -218,19 +162,6 @@ class canvasChart(FigureCanvas):
         self.draw_sma50(dates, close)
         self.draw_sma200(dates, close)
 
-    @pyqtSignature("")
-    def on_actionCandles1d_activated(self):
-        self.candles(datetime.timedelta(days=1))
-        if len(self.data)<1000:
-            self.ax.xaxis.set_minor_locator(DayLocator())
-            self.ax.xaxis.set_major_locator(MonthLocator())
-            self.ax.xaxis.set_major_formatter( DateFormatter('%Y-%m-%d'))   
-        else:
-            self.ax.xaxis.set_minor_locator(MonthLocator())
-            self.ax.xaxis.set_major_locator(YearLocator())
-        self.ax.autoscale_view()
-        self.mydraw()
-        
     def candles(self, interval):
         """Interval 0.05 5minutos
         1 1 dia"""
@@ -312,35 +243,29 @@ class canvasChart(FigureCanvas):
         self.actionCandles60m.setEnabled(False)
         self.actionCandles60m.setObjectName(self.trUtf8("actionCandles60m"))
         
-        
-#        self.plots=[]
         self.labels=[]#Array de tuplas (plot,label)
-        self.showlegend=True
+
         
         QMetaObject.connectSlotsByName(self)
         self.setContextMenuPolicy(Qt.CustomContextMenu)
         self.connect(self,SIGNAL('customContextMenuRequested(QPoint)'), self.on_customContextMenuRequested)
 
-    def makeLegend(self):
-        pass
-
-    def showLegend(self, bool):
-        ##Create legend
+#    def makeLegend(self):
+#        pass
+   
+    def showLegend(self):
+        """Alterna mostrando y desmostrando legend, empieza con s´i"""
         self.makeLegend()
-        
-        
-        if bool==False:
-            self.showlegend=False
-            self.ax.legend_=None
-        else:
+                
+        if self.ax.legend_==None:
             (plots, labels)=zip(*self.labels)
             self.ax.legend(plots, labels, "upper left")
-            self.showlegend=True
-        self.draw()      
-            
+        else:
+            self.ax.legend_=None
+        self.draw()
 
     def mouseReleaseEvent(self,  event):
-        self.showLegend(not self.showlegend)
+        self.showLegend()
 
 class canvasChartIntraday(canvasChart):
     def __init__(self, cfg,  parent):
@@ -348,17 +273,18 @@ class canvasChartIntraday(canvasChart):
         canvasChart.__init__(self, parent)
         self.setupUi()
         self.settings("canvasIntraday")
-        
 
-    def price(self, x):  
-        """Se sobreescribe para mostrar el % de inicio"""
-        return  (self.investment.result.basic.penultimate.quote-x)*100/self.investment.result.basic.penultimate.quote
-        
     def load_data_intraday(self, investment):
         """Needs basic e Intraday"""
         self.investment=investment
         self.draw_lines_from_quotes(self.investment.result.intradia.arr)
-        
+    
+    def on_actionLinesIntraday_activated(self):
+        self.cfg.config_ui.set_value(self.section, "type",   ChartType.lines)
+        (dates, quotes)=zip(*self.data)
+        self.draw_lines_from_quotes(dates, quotes)
+
+       
     def on_customContextMenuRequested(self, pos):
         menu=QMenu()
         ohcl=QMenu("OHCL")
@@ -400,8 +326,9 @@ class canvasChartHistorical(canvasChart):
         canvasChart.__init__(self, parent)
         self.num=60#Numero de items a mostrar
         self.setupUi()
-        self.plot_selling=None
+        self.data=None#Array de Datos to show, variar´a seg´un ohclDaily, Monthly,, no se usa en Intradia, sale todo
         self.plot_average=None
+        self.plot_selling=None
         self.settings("canvasHistorical")
     
     def makeLegend(self):
@@ -411,18 +338,37 @@ class canvasChartHistorical(canvasChart):
             self.labels.append((self.plot_selling, self.trUtf8("Selling price")))
             self.labels.append((self.plot_average, self.trUtf8("Average purchase price")))
             
+    def setData(self, arr):
+        if self.num<60:
+            QApplication.beep()
+            self.num=60
+        elif self.num>=len(arr):
+            QApplication.beep()
+            self.num=len(arr)
+
+        return arr[len(arr)-self.num:len(arr)]
+
     def mydraw(self):
-        if self.type==ChartType.lines:
-            self.on_actionLines1d_activated()
-        elif self.type==ChartType.ohcl:
-            self.on_actionOHCL1d_activated()
-        elif self.type==ChartType.candles:
+        """Punto de entrada de inicio, cambio de rueda, """
+        type=int(self.cfg.config_ui.get_value(self.section, "type"))
+        interval=int(self.cfg.config_ui.get_value(self.section, "interval"))
+        if type==ChartType.lines:
+            if interval==1:
+                self.on_actionLines1d_activated()
+        elif type==ChartType.ohcl:
+            if interval==1:
+                self.on_actionOHCL1d_activated()
+            if interval==7:
+                self.on_actionOHCL7d_activated()
+            if interval==30:
+                self.on_actionOHCL30d_activated()
+            if interval==365:
+                self.on_actionOHCL365d_activated()
+        elif type==ChartType.candles:
             self.on_actionCandles1d_activated()
-            
-           
-    def price(self, x): 
-        return '{0} {1}'.format(round(x, 2), self.investment.currency.symbol)
-        
+        self.draw()
+
+
     def setupUi(self):
         self.actionLinesIntraday=QAction(self)
         self.actionLinesIntraday.setText(self.trUtf8("Intradia"))
@@ -477,68 +423,85 @@ class canvasChartHistorical(canvasChart):
         self.common_actions()
         self.fig.canvas.mpl_connect('scroll_event', self.on_wheelEvent)
         
+    @pyqtSignature("")
     def on_wheelEvent(self, event):
         if event.button=='up':
-            self.num=self.num-120
+            self.num=self.num-360 
         else:
-            self.num=self.num+120
-        if self.num<50:
-            QApplication.beep()
-            self.num=50
-            return
-        elif self.num>=self.currentMatrizDataLength:
-            QApplication.beep()
-            self.num=self.currentMatrizDataLength
-            return
+            self.num=self.num+360
         self.mydraw()
+        
+    @pyqtSignature("")
+    def on_actionOHCL1d_activated(self):
+        self.cfg.config_ui.set_value(self.section, "type", ChartType.ohcl)
+        self.cfg.config_ui.set_value(self.section, "interval",   "1")
+        self.data=self.setData(self.investment.result.ohclDaily.arr)
+        self.ohcl(self.data, datetime.timedelta(days=1))     
+        self.draw_selling_point()
+        self.draw_average_purchase_price()
+        self.showLegend()
+
+    @pyqtSignature("")
+    def on_actionLines1d_activated(self):
+        self.cfg.config_ui.set_value(self.section, "type",   ChartType.lines)
+        self.cfg.config_ui.set_value(self.section, "interval",   "1")
+        self.data=self.setData(self.investment.result.ohclDaily.arr)
+        self.draw_lines_from_ohcl(self.data)     
+        self.draw_selling_point()
+        self.draw_average_purchase_price()
+        self.showLegend()
+
+    @pyqtSignature("")
+    def on_actionCandles1d_activated(self):
+        self.cfg.config_ui.set_value(self.section, "type",   ChartType.candles)
+        self.cfg.config_ui.set_value(self.section, "interval",   "1")
+        self.data=self.setData(self.investment.result.ohclDaily.arr)
+        self.candles(datetime.timedelta(days=1))
+        if len(self.data)<1000:
+            self.ax.xaxis.set_minor_locator(DayLocator())
+            self.ax.xaxis.set_major_locator(MonthLocator())
+            self.ax.xaxis.set_major_formatter( DateFormatter('%Y-%m-%d'))   
+        else:
+            self.ax.xaxis.set_minor_locator(MonthLocator())
+            self.ax.xaxis.set_major_locator(YearLocator())
+        self.ax.autoscale_view()
 
     @pyqtSignature("")
     def on_actionOHCL7d_activated(self):
         self.cfg.config_ui.set_value(self.section, "type", ChartType.ohcl)
-        ohclWeekly=self.investment.result.ohclWeekly.arr
-        self.currentMatrizDataLength=len(ohclWeekly)
-        
-        if len(ohclWeekly)>self.num:            
-            self.ohcl(ohclWeekly[len(ohclWeekly)-1-self.num:len(ohclWeekly)], datetime.timedelta(days=7))       
-        else:
-            self.ohcl(ohclWeekly, datetime.timedelta(days=7))     
-        self.draw()
+        self.cfg.config_ui.set_value(self.section, "interval",   "7")
+        self.data=self.setData(self.investment.result.ohclWeekly.arr)
+        self.ohcl(self.data, datetime.timedelta(days=7))     
+        self.draw_selling_point()
+        self.draw_average_purchase_price()
+        self.showLegend()   
+
     @pyqtSignature("")
     def on_actionOHCL30d_activated(self):
         self.cfg.config_ui.set_value(self.section, "type", ChartType.ohcl)
-        ohclMonthly=self.investment.result.ohclMonthly.arr
-        self.currentMatrizDataLength=len(ohclMonthly)
-        
-        if len(ohclMonthly)>self.num:            
-            self.ohcl(ohclMonthly[len(ohclMonthly)-1-self.num:len(ohclMonthly)], datetime.timedelta(days=30))       
-        else:
-            self.ohcl(ohclMonthly, datetime.timedelta(days=30))     
-        self.draw()
+        self.cfg.config_ui.set_value(self.section, "interval",   "30")
+        self.data=self.setData(self.investment.result.ohclMonthly.arr)
+        self.ohcl(self.data, datetime.timedelta(days=30))     
+        self.draw_selling_point()
+        self.draw_average_purchase_price()
+        self.showLegend()   
+
     @pyqtSignature("")
     def on_actionOHCL365d_activated(self):
         self.cfg.config_ui.set_value(self.section, "type", ChartType.ohcl)
-        ohclYearly=self.investment.result.ohclYearly.arr
-        self.currentMatrizDataLength=len(ohclYearly)
-        
-        if len(ohclYearly)>self.num:            
-            self.ohcl(ohclYearly[len(ohclYearly)-1-self.num:len(ohclYearly)], datetime.timedelta(days=365))       
-        else:
-            self.ohcl(ohclYearly, datetime.timedelta(days=365))     
-        self.draw()
-        
-    def ohcl(self, ohcldata, interval):
-        """Overrides ohcl function of canvasChart"""
-        super(canvasChartHistorical, self).ohcl(ohcldata, interval)
+        self.cfg.config_ui.set_value(self.section, "interval",   "365")
+        self.data=self.setData(self.investment.result.ohclYearly.arr)
+        self.ohcl(self.data, datetime.timedelta(days=365))     
         self.draw_selling_point()
         self.draw_average_purchase_price()
-        self.showLegend(self.showlegend)
-                
+        self.showLegend()   
+
     def draw_selling_point(self):
         """Draws an horizontal line with the selling point price"""
-        if self.inversion.venta!=0:
+        if self.inversion.venta!=0 and len(self.data)>0:
             dates=[]
             quotes=[]
-            dates.append(self.investment.result.ohclDaily.arr[len(self.investment.result.ohclDaily.arr)-1-self.num].date-datetime.timedelta(days=1))
+            dates.append(self.data[0].datetime().date()-datetime.timedelta(days=1))
             dates.append(datetime.date.today()+datetime.timedelta(days=1))
             quotes.append(self.inversion.venta)
             quotes.append(self.inversion.venta)
@@ -548,11 +511,10 @@ class canvasChartHistorical(canvasChart):
         
     def draw_average_purchase_price(self):
         """Draws an horizontal line with the average purchase price"""
-        if self.inversion!=None:
+        if self.inversion!=None and len(self.data)>0:
             dates=[]
             quotes=[]
-            ##Add to points
-            dates.append(self.investment.result.ohclDaily.arr[len(self.investment.result.ohclDaily.arr)-1-self.num].date-datetime.timedelta(days=1))
+            dates.append(self.data[0].datetime().date()-datetime.timedelta(days=1))
             dates.append(datetime.date.today()+datetime.timedelta(days=1))
             average=self.inversion.op_actual.valor_medio_compra()
             quotes.append(average)
