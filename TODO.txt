@@ -17,7 +17,6 @@ XULPYMONEY
 
 MYSTOCKS
 ========
-20111013 En las etiquetas de graficos daily poner el valor del máximo, minimo y apertura
 20120801 Cambiar Yahoo por ticker
 20120405 En la misma tabla de dividendos estimados poner el bpa, para poder calcular el PER
 20120217 En busquedas cuando se haga es:search, buscará en bolsa española
