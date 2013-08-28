@@ -4809,11 +4809,7 @@ class ConfigFile:
         for key in self.config:
             for item in self.config[key]:
                 print (key,  item)    
-    
 
-
-    
-    
     def load( self):
         try:
             self.config.read(self.file)    
@@ -4854,7 +4850,10 @@ class ConfigFile:
         
     def get_value(self, section, name):
         try:
-            return self.config.get(section,  name)
+            resultado=self.config.get(section,  name)
+            if resultado==None:
+                return self.set_default_value(section, name)
+            return resultado
         except:
             return self.set_default_value(section, name)
             
@@ -4926,6 +4925,7 @@ class ConfigMyStock:
         d['canvasHistorical#sma50']='True'
         d['canvasHistorical#type']='1'
         d['canvasHistorical#sma200']='True'
+        d['canvasHistorical#interval']='1'
         return d
         
 
