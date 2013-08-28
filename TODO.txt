@@ -9,7 +9,6 @@ XULPYMONEY
 20120706 cuenta operacion heredada de inversion deberia crearse como con dividendos una opercuenta antes
 20120707 Cuando se mete una comision en transferencia no se contabiliza luego. Ver si sacarla.
 20120802 Hacer un formulario de inicio que genere el settings en home y pregunte idioma y lo cambie
-20120803 Quitar primera fecha de inicio y ponerlo en config por defecto y quitar la función de union de patrimonio, al empezar una nueva base de datos es un coñazo
 20120806 En operinversion opercuenta poner el número de acciones y precio de compra en comeentario bonito
 20130103 Cuando se genera un dividendo acciones y se mete comisión se cuenta en Ingresos quizás porque es neto
 20110526 Crear la funcionalidad de divisas importantes
@@ -19,18 +18,15 @@ XULPYMONEY
 
 MYSTOCKS
 ========
-20111013 En las etiquetas de graficos poner el valor del máximo, minimo y apertura
-20111027 Hacer particiones a las tablas, quizas por años. http://www.postgresql.org/docs/9.1/static/ddl-partitioning.html
+20111013 En las etiquetas de graficos daily poner el valor del máximo, minimo y apertura
 20120801 Cambiar Yahoo por ticker
 20120405 En la misma tabla de dividendos estimados poner el bpa, para poder calcular el PER
 20120307 Cuando haya ochl en los datos intradia, dibujar una raya de maximo y minimo gris discontinuo, con punto gris de inicio  y punto gris de final
 20120217 En busquedas cuando se haga es:search, buscará en bolsa española
 20130821 Editar L'oreal peta por la comilla
-20130822 Permitir editr quotes en frmAnalisis
 20130822 Permitir borrar quotes desde ohcldiary seleccionando varios
 20130822 Progress bar en status bar, al cargar frmAnalisis
 20130822 Hacer dividendos pagados para grafico quitando dividendos
-20130823 Poner button box en frmQuotesIBM
 
 XULPYMONEY_INIT
 ===============
