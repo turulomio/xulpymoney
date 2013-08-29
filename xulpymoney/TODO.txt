@@ -1,5 +1,6 @@
 CORE
 ====
+20130829 frmAccess treat reject exit
 
 XULPYMONEY
 ==========

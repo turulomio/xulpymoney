@@ -2,12 +2,12 @@ from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 import datetime,  time,  pytz,   psycopg2,  psycopg2.extras,  sys,  codecs,  urllib.request,    os,  configparser,  inspect,  threading
 
-pathGraphIntraday=os.environ['HOME']+"/.myquotes/graphIntraday.png"
-pathGraphHistorical=os.environ['HOME']+"/.myquotes/graphHistorical.png"
-pathGraphPieTPC=os.environ['HOME']+"/.myquotes/graphPieTPC.png"
+#pathGraphIntraday=os.environ['HOME']+"/.myquotes/graphIntraday.png"
+#pathGraphHistorical=os.environ['HOME']+"/.myquotes/graphHistorical.png"
+#pathGraphPieTPC=os.environ['HOME']+"/.myquotes/graphPieTPC.png"
 
 from decimal import *
-version="20130814"
+version="20130829"
 
 class CuentaOperacionHeredadaInversion:
     """Clase parar trabajar con las opercuentas generadas automaticamente por los movimientos de las inversiones"""
