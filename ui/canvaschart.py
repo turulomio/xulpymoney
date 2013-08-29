@@ -250,9 +250,6 @@ class canvasChart(FigureCanvas):
         self.setContextMenuPolicy(Qt.CustomContextMenu)
         self.connect(self,SIGNAL('customContextMenuRequested(QPoint)'), self.on_customContextMenuRequested)
 
-#    def makeLegend(self):
-#        pass
-   
     def showLegend(self):
         """Alterna mostrando y desmostrando legend, empieza con s´i"""
         self.makeLegend()

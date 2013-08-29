@@ -14,19 +14,22 @@ import calendar,  datetime
 # Matplotlib Figure object
 from matplotlib.figure import Figure
 class canvasTotal(FigureCanvas):
-    def __init__(self, parent):
+    def __init__(self, cfg, parent):
+        self.cfg=cfg
         self.fig = Figure()
         FigureCanvas.__init__(self, self.fig)
         FigureCanvas.setSizePolicy(self,QSizePolicy.Expanding, QSizePolicy.Expanding)
         FigureCanvas.updateGeometry(self)
         self.ax = self.fig.add_subplot(111)
+        self.labels=[]
+        self.plot_main=None
+        self.plot_zero=None
         
     
+    def price(self, x): 
+        return self.cfg.localcurrency.string(x)
+        
     def mydraw(self, cfg, data, zero):
-        #data y zeroes un arr del tipo (fecha, saldo)
-        def price(x): 
-            return '$%1.2f'%x
-
         self.ax.clear()
 
         (dates, total)=zip(*data)
@@ -43,20 +46,39 @@ class canvasTotal(FigureCanvas):
         
         # format the coords message box
         self.ax.fmt_xdata = DateFormatter('%Y-%m-%d')
-        self.ax.fmt_ydata = price
+        self.ax.fmt_ydata = self.price
         self.ax.grid(True)
         self.fig.autofmt_xdate()
-        self.ax.plot_date(dates, total, '-')
-        self.ax.plot_date(datesz, zero, '-')
+        self.plot_main, =self.ax.plot_date(dates, total, '-')
+        self.plot_zero, =self.ax.plot_date(datesz, zero, '-')
+        self.showLegend()
         self.draw()
+        
+    def showLegend(self):
+        """Alterna mostrando y desmostrando legend, empieza con s´i"""
+        self.makeLegend()
+                
+        if self.ax.legend_==None:
+            (plots, labels)=zip(*self.labels)
+            self.ax.legend(plots, labels, "upper left")
+        else:
+            self.ax.legend_=None
 
+    def mouseReleaseEvent(self,  event):
+        self.showLegend()
+        self.draw()
+    
+    def makeLegend(self):
+        if len(self.labels)==0:
+            self.labels.append((self.plot_main, self.trUtf8("Total assets")))
+            self.labels.append((self.plot_zero,self.trUtf8("Zero risk assets")))
 
 class wdgTotal(QWidget, Ui_wdgTotal):
     def __init__(self, cfg,  parent=None):
         QWidget.__init__(self, parent)
         self.setupUi(self)
         self.cfg=cfg
-        self.pathGraphTotal=os.environ['HOME']+"/.xulpymoney/graphTotal.png"
+#        self.pathGraphTotal=os.environ['HOME']+"/.xulpymoney/graphTotal.png"
         self.progress = QProgressDialog(self.tr("Rellenando los datos del informe"), self.tr("Cancelar"), 0,0)
         self.progress.setModal(True)
         self.progress.setWindowTitle(self.trUtf8("Calculando datos..."))
@@ -81,7 +103,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         self.cmbYears.setCurrentIndex(datetime.date.today().year-fechainicio.year)
         self.cmbYearsG.setCurrentIndex(datetime.date.today().year-fechainicio.year)
 
-        self.canvas=canvasTotal(self)
+        self.canvas=canvasTotal(self.cfg,  self)
         self.ntb = NavigationToolbar(self.canvas, self)
         
         self.tabGraphTotal.addWidget(self.canvas)

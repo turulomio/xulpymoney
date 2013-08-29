@@ -322,6 +322,19 @@
     </message>
 </context>
 <context>
+    <name>canvasTotal</name>
+    <message>
+        <location filename="ui/wdgTotal.py" line="73"/>
+        <source>Total assets</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/wdgTotal.py" line="74"/>
+        <source>Zero risk assets</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>frmAbout</name>
     <message>
         <location filename="ui/Ui_frmAbout.py" line="244"/>
@@ -4602,22 +4615,22 @@ sistema.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgTotal.py" line="60"/>
+        <location filename="ui/wdgTotal.py" line="82"/>
         <source>Rellenando los datos del informe</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgTotal.py" line="60"/>
+        <location filename="ui/wdgTotal.py" line="82"/>
         <source>Cancelar</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgTotal.py" line="62"/>
+        <location filename="ui/wdgTotal.py" line="84"/>
         <source>Calculando datos...</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="ui/wdgTotal.py" line="234"/>
+        <location filename="ui/wdgTotal.py" line="256"/>
         <source>La suma de consolidado y dividendos  de este mes es {0}. En el año su valor asciende a {1}</source>
         <translation type="unfinished"></translation>
     </message>
