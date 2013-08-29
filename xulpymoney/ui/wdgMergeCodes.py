@@ -25,7 +25,7 @@ class wdgMergeCodes(QWidget, Ui_wdgMergeCodes):
     
     def reload(self):
         #Carga tabla origen
-        con=self.cfg.connect_myquotes()
+        con=self.cfg.connect_mystocks()
         cur = con.cursor()
         cur.execute("select * from investments where id=%s", (self.iddestino, ))
         d=cur.fetchone()
@@ -58,7 +58,7 @@ class wdgMergeCodes(QWidget, Ui_wdgMergeCodes):
         cur.execute("select count(*) from estimaciones where id=%s", (self.idorigen, ))
         self.table.setItem(1, 5, QTableWidgetItem(str(cur.fetchone()[0])))
         cur.close()     
-        self.cfg.disconnect_myquotesd(con)         
+        self.cfg.disconnect_mystocksd(con)         
         
         if o['deletable']==False:
             m=QMessageBox()
@@ -72,10 +72,10 @@ class wdgMergeCodes(QWidget, Ui_wdgMergeCodes):
         
   
     def on_cmd_released(self):
-        con=self.cfg.connect_myquotes()
+        con=self.cfg.connect_mystocks()
         cur = con.cursor()
         cur.execute("select merge_codes(%s,%s)",(self.iddestino, self.idorigen ))
         con.commit()
         cur.close()     
-        self.cfg.disconnect_myquotesd(con)         
+        self.cfg.disconnect_mystocksd(con)         
         self.cmd.setEnabled(False)

@@ -57,646 +57,479 @@
         <enum>QTabWidget::West</enum>
        </property>
        <property name="currentIndex">
-        <number>0</number>
+        <number>3</number>
        </property>
        <widget class="QWidget" name="tabInformacion">
         <attribute name="title">
          <string>Investment information</string>
         </attribute>
-        <layout class="QHBoxLayout" name="horizontalLayout_16">
+        <layout class="QHBoxLayout" name="horizontalLayout_39">
          <item>
-          <widget class="QSplitter" name="splitter_2">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <widget class="QWidget" name="layoutWidget">
-            <layout class="QVBoxLayout" name="verticalLayout_5">
-             <item>
-              <spacer name="verticalSpacer">
-               <property name="orientation">
-                <enum>Qt::Vertical</enum>
-               </property>
-               <property name="sizeHint" stdset="0">
-                <size>
-                 <width>20</width>
-                 <height>40</height>
-                </size>
-               </property>
-              </spacer>
-             </item>
-             <item>
-              <widget class="QGroupBox" name="groupBox_7">
-               <property name="title">
-                <string>Información</string>
-               </property>
-               <layout class="QHBoxLayout" name="horizontalLayout_26">
+          <layout class="QVBoxLayout" name="verticalLayout_5">
+           <item>
+            <widget class="QGroupBox" name="groupBox_7">
+             <property name="title">
+              <string>Información</string>
+             </property>
+             <layout class="QHBoxLayout" name="horizontalLayout_26">
+              <item>
+               <layout class="QVBoxLayout" name="verticalLayout_2">
                 <item>
-                 <layout class="QVBoxLayout" name="verticalLayout_2">
+                 <layout class="QHBoxLayout" name="horizontalLayout_10">
                   <item>
-                   <layout class="QHBoxLayout" name="horizontalLayout_10">
-                    <item>
-                     <widget class="QLabel" name="label">
-                      <property name="text">
-                       <string>Nombre de la inversión</string>
-                      </property>
-                     </widget>
-                    </item>
-                    <item>
-                     <widget class="QLineEdit" name="txtName">
-                      <property name="sizePolicy">
-                       <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-                        <horstretch>0</horstretch>
-                        <verstretch>0</verstretch>
-                       </sizepolicy>
-                      </property>
-                      <property name="minimumSize">
-                       <size>
-                        <width>230</width>
-                        <height>0</height>
-                       </size>
-                      </property>
-                      <property name="alignment">
-                       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-                      </property>
-                     </widget>
-                    </item>
-                   </layout>
-                  </item>
-                  <item>
-                   <layout class="QHBoxLayout" name="horizontalLayout_21">
-                    <item>
-                     <widget class="QLabel" name="label_10">
-                      <property name="text">
-                       <string>Código ISIN</string>
-                      </property>
-                     </widget>
-                    </item>
-                    <item>
-                     <widget class="QLineEdit" name="txtISIN">
-                      <property name="sizePolicy">
-                       <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-                        <horstretch>0</horstretch>
-                        <verstretch>0</verstretch>
-                       </sizepolicy>
-                      </property>
-                      <property name="minimumSize">
-                       <size>
-                        <width>230</width>
-                        <height>0</height>
-                       </size>
-                      </property>
-                      <property name="alignment">
-                       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-                      </property>
-                     </widget>
-                    </item>
-                   </layout>
-                  </item>
-                  <item>
-                   <layout class="QHBoxLayout" name="horizontalLayout_15">
-                    <item>
-                     <widget class="QLabel" name="label_9">
-                      <property name="text">
-                       <string>Divisa</string>
-                      </property>
-                     </widget>
-                    </item>
-                    <item>
-                     <widget class="QComboBox" name="cmbCurrency"/>
-                    </item>
-                   </layout>
-                  </item>
-                  <item>
-                   <layout class="QHBoxLayout" name="horizontalLayout_23">
-                    <item>
-                     <widget class="QLabel" name="label_12">
-                      <property name="text">
-                       <string>Tipo de inversión</string>
-                      </property>
-                     </widget>
-                    </item>
-                    <item>
-                     <widget class="QComboBox" name="cmbTipo"/>
-                    </item>
-                   </layout>
-                  </item>
-                  <item>
-                   <layout class="QHBoxLayout" name="horizontalLayout_30">
-                    <item>
-                     <widget class="QLabel" name="label_16">
-                      <property name="text">
-                       <string>Bolsa a la que pertenece</string>
-                      </property>
-                     </widget>
-                    </item>
-                    <item>
-                     <widget class="QComboBox" name="cmbBolsa"/>
-                    </item>
-                   </layout>
-                  </item>
-                  <item>
-                   <layout class="QHBoxLayout" name="horizontalLayout_24">
-                    <item>
-                     <widget class="QLabel" name="label_13">
-                      <property name="text">
-                       <string>Agrupaciones a las que pertenece</string>
-                      </property>
-                     </widget>
-                    </item>
-                    <item>
-                     <widget class="QComboBox" name="cmbAgrupations"/>
-                    </item>
-                    <item>
-                     <widget class="QToolButton" name="cmdAgrupations">
-                      <property name="icon">
-                       <iconset resource="../images/xulpymoney.qrc">
-                        <normaloff>:/xulpymoney/search.png</normaloff>:/xulpymoney/search.png</iconset>
-                      </property>
-                     </widget>
-                    </item>
-                   </layout>
-                  </item>
-                  <item>
-                   <layout class="QHBoxLayout" name="horizontalLayout_25">
-                    <item>
-                     <widget class="QCheckBox" name="chkActive">
-                      <property name="text">
-                       <string>Activación de actualización automática</string>
-                      </property>
-                     </widget>
-                    </item>
-                   </layout>
-                  </item>
-                  <item>
-                   <layout class="QHBoxLayout" name="horizontalLayout_14">
-                    <item>
-                     <widget class="QLabel" name="label_3">
-                      <property name="text">
-                       <string>Página web</string>
-                      </property>
-                     </widget>
-                    </item>
-                    <item>
-                     <widget class="QLineEdit" name="txtWeb">
-                      <property name="sizePolicy">
-                       <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-                        <horstretch>0</horstretch>
-                        <verstretch>0</verstretch>
-                       </sizepolicy>
-                      </property>
-                      <property name="minimumSize">
-                       <size>
-                        <width>230</width>
-                        <height>0</height>
-                       </size>
-                      </property>
-                      <property name="alignment">
-                       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-                      </property>
-                     </widget>
-                    </item>
-                   </layout>
-                  </item>
-                  <item>
-                   <layout class="QHBoxLayout" name="horizontalLayout_17">
-                    <item>
-                     <widget class="QLabel" name="label_4">
-                      <property name="text">
-                       <string>Dirección postal</string>
-                      </property>
-                     </widget>
-                    </item>
-                    <item>
-                     <widget class="QLineEdit" name="txtAddress">
-                      <property name="sizePolicy">
-                       <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-                        <horstretch>0</horstretch>
-                        <verstretch>0</verstretch>
-                       </sizepolicy>
-                      </property>
-                      <property name="minimumSize">
-                       <size>
-                        <width>230</width>
-                        <height>0</height>
-                       </size>
-                      </property>
-                      <property name="alignment">
-                       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-                      </property>
-                     </widget>
-                    </item>
-                   </layout>
-                  </item>
-                  <item>
-                   <layout class="QHBoxLayout" name="horizontalLayout_27">
-                    <item>
-                     <widget class="QLabel" name="lblMail">
-                      <property name="text">
-                       <string>Correo electrónico</string>
-                      </property>
-                     </widget>
-                    </item>
-                    <item>
-                     <widget class="QLineEdit" name="txtMail">
-                      <property name="sizePolicy">
-                       <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-                        <horstretch>0</horstretch>
-                        <verstretch>0</verstretch>
-                       </sizepolicy>
-                      </property>
-                      <property name="minimumSize">
-                       <size>
-                        <width>230</width>
-                        <height>0</height>
-                       </size>
-                      </property>
-                      <property name="alignment">
-                       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-                      </property>
-                     </widget>
-                    </item>
-                   </layout>
-                  </item>
-                  <item>
-                   <layout class="QHBoxLayout" name="horizontalLayout_28">
-                    <item>
-                     <widget class="QLabel" name="label_14">
-                      <property name="text">
-                       <string>Tanto por ciento variable</string>
-                      </property>
-                     </widget>
-                    </item>
-                    <item>
-                     <widget class="QLineEdit" name="txtTPC">
-                      <property name="sizePolicy">
-                       <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-                        <horstretch>0</horstretch>
-                        <verstretch>0</verstretch>
-                       </sizepolicy>
-                      </property>
-                      <property name="minimumSize">
-                       <size>
-                        <width>230</width>
-                        <height>0</height>
-                       </size>
-                      </property>
-                      <property name="text">
-                       <string>100</string>
-                      </property>
-                      <property name="alignment">
-                       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-                      </property>
-                     </widget>
-                    </item>
-                   </layout>
-                  </item>
-                  <item>
-                   <layout class="QHBoxLayout" name="horizontalLayout_38">
-                    <item>
-                     <widget class="QLabel" name="label_22">
-                      <property name="text">
-                       <string>Put / Call / Inline</string>
-                      </property>
-                     </widget>
-                    </item>
-                    <item>
-                     <widget class="QComboBox" name="cmbPCI"/>
-                    </item>
-                   </layout>
-                  </item>
-                  <item>
-                   <layout class="QHBoxLayout" name="horizontalLayout_18">
-                    <item>
-                     <widget class="QLabel" name="label_5">
-                      <property name="text">
-                       <string>Teléfono</string>
-                      </property>
-                     </widget>
-                    </item>
-                    <item>
-                     <widget class="QLineEdit" name="txtPhone">
-                      <property name="sizePolicy">
-                       <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-                        <horstretch>0</horstretch>
-                        <verstretch>0</verstretch>
-                       </sizepolicy>
-                      </property>
-                      <property name="minimumSize">
-                       <size>
-                        <width>230</width>
-                        <height>0</height>
-                       </size>
-                      </property>
-                      <property name="alignment">
-                       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-                      </property>
-                     </widget>
-                    </item>
-                   </layout>
-                  </item>
-                  <item>
-                   <layout class="QHBoxLayout" name="horizontalLayout_29">
-                    <item>
-                     <widget class="QLabel" name="label_15">
-                      <property name="text">
-                       <string>Apalancado</string>
-                      </property>
-                     </widget>
-                    </item>
-                    <item>
-                     <widget class="QComboBox" name="cmbApalancado"/>
-                    </item>
-                   </layout>
-                  </item>
-                  <item>
-                   <layout class="QHBoxLayout" name="horizontalLayout_31">
-                    <item>
-                     <widget class="QLabel" name="label_8">
-                      <property name="text">
-                       <string>Código Yahoo</string>
-                      </property>
-                     </widget>
-                    </item>
-                    <item>
-                     <widget class="QLineEdit" name="txtYahoo">
-                      <property name="sizePolicy">
-                       <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-                        <horstretch>0</horstretch>
-                        <verstretch>0</verstretch>
-                       </sizepolicy>
-                      </property>
-                      <property name="minimumSize">
-                       <size>
-                        <width>230</width>
-                        <height>0</height>
-                       </size>
-                      </property>
-                      <property name="alignment">
-                       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-                      </property>
-                     </widget>
-                    </item>
-                   </layout>
-                  </item>
-                  <item>
-                   <layout class="QHBoxLayout" name="horizontalLayout_32">
-                    <item>
-                     <widget class="QLabel" name="label_17">
-                      <property name="text">
-                       <string>Prioridad diaria</string>
-                      </property>
-                     </widget>
-                    </item>
-                    <item>
-                     <widget class="QComboBox" name="cmbPriority"/>
-                    </item>
-                    <item>
-                     <widget class="QToolButton" name="cmdPriority">
-                      <property name="icon">
-                       <iconset resource="../images/xulpymoney.qrc">
-                        <normaloff>:/xulpymoney/search.png</normaloff>:/xulpymoney/search.png</iconset>
-                      </property>
-                     </widget>
-                    </item>
-                   </layout>
-                  </item>
-                  <item>
-                   <layout class="QHBoxLayout" name="horizontalLayout_34">
-                    <item>
-                     <widget class="QLabel" name="label_19">
-                      <property name="text">
-                       <string>Prioridad histórica</string>
-                      </property>
-                     </widget>
-                    </item>
-                    <item>
-                     <widget class="QComboBox" name="cmbPriorityHistorical"/>
-                    </item>
-                    <item>
-                     <widget class="QToolButton" name="cmdPriorityHistorical">
-                      <property name="icon">
-                       <iconset resource="../images/xulpymoney.qrc">
-                        <normaloff>:/xulpymoney/search.png</normaloff>:/xulpymoney/search.png</iconset>
-                      </property>
-                     </widget>
-                    </item>
-                   </layout>
-                  </item>
-                  <item>
-                   <layout class="QHBoxLayout" name="horizontalLayout_36">
-                    <item>
-                     <widget class="QLabel" name="label_21">
-                      <property name="text">
-                       <string>Comentario</string>
-                      </property>
-                     </widget>
-                    </item>
-                    <item>
-                     <widget class="QLineEdit" name="txtComentario">
-                      <property name="sizePolicy">
-                       <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-                        <horstretch>0</horstretch>
-                        <verstretch>0</verstretch>
-                       </sizepolicy>
-                      </property>
-                      <property name="minimumSize">
-                       <size>
-                        <width>230</width>
-                        <height>0</height>
-                       </size>
-                      </property>
-                      <property name="alignment">
-                       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-                      </property>
-                     </widget>
-                    </item>
-                   </layout>
-                  </item>
-                  <item>
-                   <layout class="QHBoxLayout" name="horizontalLayout_33">
-                    <item>
-                     <widget class="QCheckBox" name="chkObsolete">
-                      <property name="text">
-                       <string>Inversión obsoleta</string>
-                      </property>
-                     </widget>
-                    </item>
-                   </layout>
-                  </item>
-                  <item>
-                   <widget class="QPushButton" name="cmdSave">
+                   <widget class="QLabel" name="label">
                     <property name="text">
-                     <string>Actualizar</string>
+                     <string>Nombre de la inversión</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLineEdit" name="txtName">
+                    <property name="sizePolicy">
+                     <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                      <horstretch>0</horstretch>
+                      <verstretch>0</verstretch>
+                     </sizepolicy>
+                    </property>
+                    <property name="minimumSize">
+                     <size>
+                      <width>230</width>
+                      <height>0</height>
+                     </size>
+                    </property>
+                    <property name="alignment">
+                     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
                     </property>
                    </widget>
                   </item>
                  </layout>
                 </item>
-               </layout>
-              </widget>
-             </item>
-             <item>
-              <spacer name="verticalSpacer_2">
-               <property name="orientation">
-                <enum>Qt::Vertical</enum>
-               </property>
-               <property name="sizeHint" stdset="0">
-                <size>
-                 <width>20</width>
-                 <height>40</height>
-                </size>
-               </property>
-              </spacer>
-             </item>
-            </layout>
-           </widget>
-           <widget class="QWidget" name="layoutWidget">
-            <layout class="QVBoxLayout" name="verticalLayout_4">
-             <item>
-              <widget class="QGroupBox" name="grpHistoricos">
-               <property name="title">
-                <string>% históricos</string>
-               </property>
-               <layout class="QHBoxLayout" name="horizontalLayout_19">
                 <item>
-                 <widget class="myQTableWidget" name="tblTPC">
-                  <row>
-                   <property name="text">
-                    <string>Última cotización</string>
-                   </property>
-                  </row>
-                  <row>
-                   <property name="text">
-                    <string/>
-                   </property>
-                  </row>
-                  <row>
-                   <property name="text">
-                    <string>Variación en un día</string>
-                   </property>
-                  </row>
-                  <row>
-                   <property name="text">
-                    <string>Variación en esta semana</string>
-                   </property>
-                  </row>
-                  <row>
-                   <property name="text">
-                    <string>Variación en este mes</string>
-                   </property>
-                  </row>
-                  <row>
-                   <property name="text">
-                    <string>Variación en este año</string>
-                   </property>
-                  </row>
-                  <row>
-                   <property name="text">
-                    <string/>
-                   </property>
-                  </row>
-                  <row>
-                   <property name="text">
-                    <string>Variación últimos 7 días</string>
-                   </property>
-                  </row>
-                  <row>
-                   <property name="text">
-                    <string>Variación últimos 30 días</string>
-                   </property>
-                  </row>
-                  <row>
-                   <property name="text">
-                    <string>Variación últimos 12 meses</string>
-                   </property>
-                  </row>
-                  <column>
-                   <property name="text">
-                    <string>Fecha de cálculo</string>
-                   </property>
-                  </column>
-                  <column>
-                   <property name="text">
-                    <string>Valor</string>
-                   </property>
-                  </column>
-                  <column>
-                   <property name="text">
-                    <string>%</string>
-                   </property>
-                  </column>
-                  <column>
-                   <property name="text">
-                    <string>% TAE</string>
-                   </property>
-                  </column>
-                  <item row="0" column="0">
-                   <property name="text">
-                    <string/>
-                   </property>
-                   <property name="font">
-                    <font>
-                     <strikeout>false</strikeout>
-                    </font>
-                   </property>
+                 <layout class="QHBoxLayout" name="horizontalLayout_21">
+                  <item>
+                   <widget class="QLabel" name="label_10">
+                    <property name="text">
+                     <string>Código ISIN</string>
+                    </property>
+                   </widget>
                   </item>
-                  <item row="0" column="2">
-                   <property name="text">
-                    <string/>
-                   </property>
-                   <property name="background">
-                    <brush brushstyle="BDiagPattern">
-                     <color alpha="255">
-                      <red>0</red>
-                      <green>0</green>
-                      <blue>0</blue>
-                     </color>
-                    </brush>
-                   </property>
+                  <item>
+                   <widget class="QLineEdit" name="txtISIN">
+                    <property name="sizePolicy">
+                     <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                      <horstretch>0</horstretch>
+                      <verstretch>0</verstretch>
+                     </sizepolicy>
+                    </property>
+                    <property name="minimumSize">
+                     <size>
+                      <width>230</width>
+                      <height>0</height>
+                     </size>
+                    </property>
+                    <property name="alignment">
+                     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                    </property>
+                   </widget>
                   </item>
-                  <item row="0" column="3">
-                   <property name="text">
-                    <string/>
-                   </property>
-                   <property name="background">
-                    <brush brushstyle="BDiagPattern">
-                     <color alpha="255">
-                      <red>0</red>
-                      <green>0</green>
-                      <blue>0</blue>
-                     </color>
-                    </brush>
-                   </property>
+                 </layout>
+                </item>
+                <item>
+                 <layout class="QHBoxLayout" name="horizontalLayout_15">
+                  <item>
+                   <widget class="QLabel" name="label_9">
+                    <property name="text">
+                     <string>Divisa</string>
+                    </property>
+                   </widget>
                   </item>
+                  <item>
+                   <widget class="QComboBox" name="cmbCurrency"/>
+                  </item>
+                 </layout>
+                </item>
+                <item>
+                 <layout class="QHBoxLayout" name="horizontalLayout_23">
+                  <item>
+                   <widget class="QLabel" name="label_12">
+                    <property name="text">
+                     <string>Tipo de inversión</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QComboBox" name="cmbTipo"/>
+                  </item>
+                 </layout>
+                </item>
+                <item>
+                 <layout class="QHBoxLayout" name="horizontalLayout_30">
+                  <item>
+                   <widget class="QLabel" name="label_16">
+                    <property name="text">
+                     <string>Bolsa a la que pertenece</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QComboBox" name="cmbBolsa"/>
+                  </item>
+                 </layout>
+                </item>
+                <item>
+                 <layout class="QHBoxLayout" name="horizontalLayout_24">
+                  <item>
+                   <widget class="QLabel" name="label_13">
+                    <property name="text">
+                     <string>Agrupaciones a las que pertenece</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QComboBox" name="cmbAgrupations"/>
+                  </item>
+                  <item>
+                   <widget class="QToolButton" name="cmdAgrupations">
+                    <property name="icon">
+                     <iconset resource="../images/xulpymoney.qrc">
+                      <normaloff>:/xulpymoney/search.png</normaloff>:/xulpymoney/search.png</iconset>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </item>
+                <item>
+                 <layout class="QHBoxLayout" name="horizontalLayout_25">
+                  <item>
+                   <widget class="QCheckBox" name="chkActive">
+                    <property name="text">
+                     <string>Activación de actualización automática</string>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </item>
+                <item>
+                 <layout class="QHBoxLayout" name="horizontalLayout_14">
+                  <item>
+                   <widget class="QLabel" name="label_3">
+                    <property name="text">
+                     <string>Página web</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLineEdit" name="txtWeb">
+                    <property name="sizePolicy">
+                     <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                      <horstretch>0</horstretch>
+                      <verstretch>0</verstretch>
+                     </sizepolicy>
+                    </property>
+                    <property name="minimumSize">
+                     <size>
+                      <width>230</width>
+                      <height>0</height>
+                     </size>
+                    </property>
+                    <property name="alignment">
+                     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </item>
+                <item>
+                 <layout class="QHBoxLayout" name="horizontalLayout_17">
+                  <item>
+                   <widget class="QLabel" name="label_4">
+                    <property name="text">
+                     <string>Dirección postal</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLineEdit" name="txtAddress">
+                    <property name="sizePolicy">
+                     <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                      <horstretch>0</horstretch>
+                      <verstretch>0</verstretch>
+                     </sizepolicy>
+                    </property>
+                    <property name="minimumSize">
+                     <size>
+                      <width>230</width>
+                      <height>0</height>
+                     </size>
+                    </property>
+                    <property name="alignment">
+                     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </item>
+                <item>
+                 <layout class="QHBoxLayout" name="horizontalLayout_27">
+                  <item>
+                   <widget class="QLabel" name="lblMail">
+                    <property name="text">
+                     <string>Correo electrónico</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLineEdit" name="txtMail">
+                    <property name="sizePolicy">
+                     <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                      <horstretch>0</horstretch>
+                      <verstretch>0</verstretch>
+                     </sizepolicy>
+                    </property>
+                    <property name="minimumSize">
+                     <size>
+                      <width>230</width>
+                      <height>0</height>
+                     </size>
+                    </property>
+                    <property name="alignment">
+                     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </item>
+                <item>
+                 <layout class="QHBoxLayout" name="horizontalLayout_28">
+                  <item>
+                   <widget class="QLabel" name="label_14">
+                    <property name="text">
+                     <string>Tanto por ciento variable</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLineEdit" name="txtTPC">
+                    <property name="sizePolicy">
+                     <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                      <horstretch>0</horstretch>
+                      <verstretch>0</verstretch>
+                     </sizepolicy>
+                    </property>
+                    <property name="minimumSize">
+                     <size>
+                      <width>230</width>
+                      <height>0</height>
+                     </size>
+                    </property>
+                    <property name="text">
+                     <string>100</string>
+                    </property>
+                    <property name="alignment">
+                     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </item>
+                <item>
+                 <layout class="QHBoxLayout" name="horizontalLayout_38">
+                  <item>
+                   <widget class="QLabel" name="label_22">
+                    <property name="text">
+                     <string>Put / Call / Inline</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QComboBox" name="cmbPCI"/>
+                  </item>
+                 </layout>
+                </item>
+                <item>
+                 <layout class="QHBoxLayout" name="horizontalLayout_18">
+                  <item>
+                   <widget class="QLabel" name="label_5">
+                    <property name="text">
+                     <string>Teléfono</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLineEdit" name="txtPhone">
+                    <property name="sizePolicy">
+                     <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                      <horstretch>0</horstretch>
+                      <verstretch>0</verstretch>
+                     </sizepolicy>
+                    </property>
+                    <property name="minimumSize">
+                     <size>
+                      <width>230</width>
+                      <height>0</height>
+                     </size>
+                    </property>
+                    <property name="alignment">
+                     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </item>
+                <item>
+                 <layout class="QHBoxLayout" name="horizontalLayout_29">
+                  <item>
+                   <widget class="QLabel" name="label_15">
+                    <property name="text">
+                     <string>Apalancado</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QComboBox" name="cmbApalancado"/>
+                  </item>
+                 </layout>
+                </item>
+                <item>
+                 <layout class="QHBoxLayout" name="horizontalLayout_31">
+                  <item>
+                   <widget class="QLabel" name="label_8">
+                    <property name="text">
+                     <string>Código Yahoo</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLineEdit" name="txtYahoo">
+                    <property name="sizePolicy">
+                     <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                      <horstretch>0</horstretch>
+                      <verstretch>0</verstretch>
+                     </sizepolicy>
+                    </property>
+                    <property name="minimumSize">
+                     <size>
+                      <width>230</width>
+                      <height>0</height>
+                     </size>
+                    </property>
+                    <property name="alignment">
+                     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </item>
+                <item>
+                 <layout class="QHBoxLayout" name="horizontalLayout_32">
+                  <item>
+                   <widget class="QLabel" name="label_17">
+                    <property name="text">
+                     <string>Prioridad diaria</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QComboBox" name="cmbPriority"/>
+                  </item>
+                  <item>
+                   <widget class="QToolButton" name="cmdPriority">
+                    <property name="icon">
+                     <iconset resource="../images/xulpymoney.qrc">
+                      <normaloff>:/xulpymoney/search.png</normaloff>:/xulpymoney/search.png</iconset>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </item>
+                <item>
+                 <layout class="QHBoxLayout" name="horizontalLayout_34">
+                  <item>
+                   <widget class="QLabel" name="label_19">
+                    <property name="text">
+                     <string>Prioridad histórica</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QComboBox" name="cmbPriorityHistorical"/>
+                  </item>
+                  <item>
+                   <widget class="QToolButton" name="cmdPriorityHistorical">
+                    <property name="icon">
+                     <iconset resource="../images/xulpymoney.qrc">
+                      <normaloff>:/xulpymoney/search.png</normaloff>:/xulpymoney/search.png</iconset>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </item>
+                <item>
+                 <layout class="QHBoxLayout" name="horizontalLayout_36">
+                  <item>
+                   <widget class="QLabel" name="label_21">
+                    <property name="text">
+                     <string>Comentario</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLineEdit" name="txtComentario">
+                    <property name="sizePolicy">
+                     <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                      <horstretch>0</horstretch>
+                      <verstretch>0</verstretch>
+                     </sizepolicy>
+                    </property>
+                    <property name="minimumSize">
+                     <size>
+                      <width>230</width>
+                      <height>0</height>
+                     </size>
+                    </property>
+                    <property name="alignment">
+                     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </item>
+                <item>
+                 <layout class="QHBoxLayout" name="horizontalLayout_33">
+                  <item>
+                   <widget class="QCheckBox" name="chkObsolete">
+                    <property name="text">
+                     <string>Inversión obsoleta</string>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="cmdSave">
+                  <property name="text">
+                   <string>Update investment</string>
+                  </property>
+                  <property name="icon">
+                   <iconset resource="../images/xulpymoney.qrc">
+                    <normaloff>:/xulpymoney/save.png</normaloff>:/xulpymoney/save.png</iconset>
+                  </property>
                  </widget>
                 </item>
                </layout>
-              </widget>
-             </item>
-             <item>
-              <widget class="QPushButton" name="cmdPurge">
-               <property name="toolTip">
-                <string>Purge investment from innecesary quotes. Leaves high, low, open and close quotes</string>
-               </property>
-               <property name="text">
-                <string>Purge investment</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QPushButton" name="cmdSplit">
-               <property name="text">
-                <string>Make Split / Contrasplit</string>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </widget>
-          </widget>
+              </item>
+             </layout>
+            </widget>
+           </item>
+          </layout>
          </item>
         </layout>
        </widget>
        <widget class="QWidget" name="tabGraficos">
+        <attribute name="icon">
+         <iconset resource="../images/xulpymoney.qrc">
+          <normaloff>:/xulpymoney/pie.png</normaloff>:/xulpymoney/pie.png</iconset>
+        </attribute>
         <attribute name="title">
          <string>Charts</string>
         </attribute>
@@ -704,7 +537,7 @@
          <item>
           <widget class="QTabWidget" name="tabGraphics">
            <property name="currentIndex">
-            <number>0</number>
+            <number>1</number>
            </property>
            <widget class="QWidget" name="tabGraphicsIntraday">
             <attribute name="title">
@@ -874,368 +707,556 @@
         </attribute>
         <layout class="QHBoxLayout" name="horizontalLayout_5">
          <item>
-          <widget class="QTabWidget" name="tabHistorical">
-           <property name="currentIndex">
-            <number>0</number>
-           </property>
-           <widget class="QWidget" name="tab_5">
-            <attribute name="title">
-             <string>Diarias</string>
-            </attribute>
-            <layout class="QHBoxLayout" name="horizontalLayout_3">
-             <item>
-              <widget class="QGroupBox" name="groupBox">
-               <property name="title">
-                <string>Cotizaciones de la inversión</string>
-               </property>
-               <layout class="QVBoxLayout" name="verticalLayout_9">
-                <item>
-                 <widget class="myQTableWidget" name="tblDaily">
-                  <property name="contextMenuPolicy">
-                   <enum>Qt::CustomContextMenu</enum>
-                  </property>
-                  <property name="alternatingRowColors">
-                   <bool>true</bool>
-                  </property>
-                  <property name="selectionBehavior">
-                   <enum>QAbstractItemView::SelectRows</enum>
-                  </property>
-                  <attribute name="verticalHeaderVisible">
-                   <bool>false</bool>
-                  </attribute>
-                  <column>
-                   <property name="text">
-                    <string>Fecha</string>
-                   </property>
-                  </column>
-                  <column>
-                   <property name="text">
-                    <string>Valor</string>
-                   </property>
-                  </column>
-                  <column>
-                   <property name="text">
-                    <string>Apertura</string>
-                   </property>
-                  </column>
-                  <column>
-                   <property name="text">
-                    <string>Más alto</string>
-                   </property>
-                  </column>
-                  <column>
-                   <property name="text">
-                    <string>Más bajo</string>
-                   </property>
-                  </column>
-                  <column>
-                   <property name="text">
-                    <string>Día y hora visualización</string>
-                   </property>
-                  </column>
-                 </widget>
+          <layout class="QVBoxLayout" name="verticalLayout_4">
+           <item>
+            <widget class="QGroupBox" name="grpHistoricos">
+             <property name="title">
+              <string>Report of historic prices</string>
+             </property>
+             <layout class="QHBoxLayout" name="horizontalLayout_19">
+              <item>
+               <widget class="myQTableWidget" name="tblTPC">
+                <row>
+                 <property name="text">
+                  <string>Última cotización</string>
+                 </property>
+                </row>
+                <row>
+                 <property name="text">
+                  <string/>
+                 </property>
+                </row>
+                <row>
+                 <property name="text">
+                  <string>Variación en un día</string>
+                 </property>
+                </row>
+                <row>
+                 <property name="text">
+                  <string>Variación en esta semana</string>
+                 </property>
+                </row>
+                <row>
+                 <property name="text">
+                  <string>Variación en este mes</string>
+                 </property>
+                </row>
+                <row>
+                 <property name="text">
+                  <string>Variación en este año</string>
+                 </property>
+                </row>
+                <row>
+                 <property name="text">
+                  <string/>
+                 </property>
+                </row>
+                <row>
+                 <property name="text">
+                  <string>Variación últimos 7 días</string>
+                 </property>
+                </row>
+                <row>
+                 <property name="text">
+                  <string>Variación últimos 30 días</string>
+                 </property>
+                </row>
+                <row>
+                 <property name="text">
+                  <string>Variación últimos 12 meses</string>
+                 </property>
+                </row>
+                <column>
+                 <property name="text">
+                  <string>Fecha de cálculo</string>
+                 </property>
+                </column>
+                <column>
+                 <property name="text">
+                  <string>Valor</string>
+                 </property>
+                </column>
+                <column>
+                 <property name="text">
+                  <string>%</string>
+                 </property>
+                </column>
+                <column>
+                 <property name="text">
+                  <string>% TAE</string>
+                 </property>
+                </column>
+                <item row="0" column="0">
+                 <property name="text">
+                  <string/>
+                 </property>
+                 <property name="font">
+                  <font>
+                   <strikeout>false</strikeout>
+                  </font>
+                 </property>
                 </item>
-               </layout>
-              </widget>
-             </item>
-            </layout>
-           </widget>
-           <widget class="QWidget" name="tab_14">
-            <attribute name="title">
-             <string>Semanales</string>
-            </attribute>
-            <layout class="QHBoxLayout" name="horizontalLayout_37">
-             <item>
-              <widget class="QGroupBox" name="groupBox_6">
-               <property name="title">
-                <string>Cotizaciones de la inversión</string>
-               </property>
-               <layout class="QVBoxLayout" name="verticalLayout_13">
-                <item>
-                 <widget class="myQTableWidget" name="tblWeekly">
-                  <property name="contextMenuPolicy">
-                   <enum>Qt::CustomContextMenu</enum>
-                  </property>
-                  <property name="alternatingRowColors">
-                   <bool>true</bool>
-                  </property>
-                  <property name="selectionBehavior">
-                   <enum>QAbstractItemView::SelectRows</enum>
-                  </property>
-                  <attribute name="verticalHeaderVisible">
-                   <bool>false</bool>
-                  </attribute>
-                  <column>
-                   <property name="text">
-                    <string>Fecha</string>
-                   </property>
-                  </column>
-                  <column>
-                   <property name="text">
-                    <string>Valor</string>
-                   </property>
-                  </column>
-                  <column>
-                   <property name="text">
-                    <string>Apertura</string>
-                   </property>
-                  </column>
-                  <column>
-                   <property name="text">
-                    <string>Más alto</string>
-                   </property>
-                  </column>
-                  <column>
-                   <property name="text">
-                    <string>Más bajo</string>
-                   </property>
-                  </column>
-                  <column>
-                   <property name="text">
-                    <string>Día y hora visualización</string>
-                   </property>
-                  </column>
-                 </widget>
+                <item row="0" column="2">
+                 <property name="text">
+                  <string/>
+                 </property>
+                 <property name="background">
+                  <brush brushstyle="BDiagPattern">
+                   <color alpha="255">
+                    <red>0</red>
+                    <green>0</green>
+                    <blue>0</blue>
+                   </color>
+                  </brush>
+                 </property>
                 </item>
-               </layout>
-              </widget>
-             </item>
-            </layout>
-           </widget>
-           <widget class="QWidget" name="tab_3">
-            <attribute name="title">
-             <string>Mensuales</string>
-            </attribute>
-            <layout class="QHBoxLayout" name="horizontalLayout_2">
-             <item>
-              <widget class="QGroupBox" name="groupBox_4">
-               <property name="title">
-                <string>Cotizaciones de la inversión</string>
-               </property>
-               <layout class="QVBoxLayout" name="verticalLayout_11">
-                <item>
-                 <widget class="myQTableWidget" name="tblMonthly">
-                  <property name="contextMenuPolicy">
-                   <enum>Qt::CustomContextMenu</enum>
-                  </property>
-                  <property name="alternatingRowColors">
-                   <bool>true</bool>
-                  </property>
-                  <property name="selectionBehavior">
-                   <enum>QAbstractItemView::SelectRows</enum>
-                  </property>
-                  <attribute name="verticalHeaderVisible">
-                   <bool>false</bool>
-                  </attribute>
-                  <column>
-                   <property name="text">
-                    <string>Fecha</string>
-                   </property>
-                  </column>
-                  <column>
-                   <property name="text">
-                    <string>Valor</string>
-                   </property>
-                  </column>
-                  <column>
-                   <property name="text">
-                    <string>Apertura</string>
-                   </property>
-                  </column>
-                  <column>
-                   <property name="text">
-                    <string>Más alto</string>
-                   </property>
-                  </column>
-                  <column>
-                   <property name="text">
-                    <string>Más bajo</string>
-                   </property>
-                  </column>
-                  <column>
-                   <property name="text">
-                    <string>Día y hora visualización</string>
-                   </property>
-                  </column>
-                 </widget>
+                <item row="0" column="3">
+                 <property name="text">
+                  <string/>
+                 </property>
+                 <property name="background">
+                  <brush brushstyle="BDiagPattern">
+                   <color alpha="255">
+                    <red>0</red>
+                    <green>0</green>
+                    <blue>0</blue>
+                   </color>
+                  </brush>
+                 </property>
                 </item>
-               </layout>
-              </widget>
-             </item>
-            </layout>
-           </widget>
-           <widget class="QWidget" name="tab_13">
-            <attribute name="title">
-             <string>Anuales</string>
-            </attribute>
-            <layout class="QHBoxLayout" name="horizontalLayout_4">
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_16">
              <item>
-              <widget class="QGroupBox" name="groupBox_5">
-               <property name="title">
-                <string>Cotizaciones de la inversión</string>
-               </property>
-               <layout class="QVBoxLayout" name="verticalLayout_12">
-                <item>
-                 <widget class="myQTableWidget" name="tblYearly">
-                  <property name="contextMenuPolicy">
-                   <enum>Qt::CustomContextMenu</enum>
-                  </property>
-                  <property name="alternatingRowColors">
-                   <bool>true</bool>
-                  </property>
-                  <property name="selectionBehavior">
-                   <enum>QAbstractItemView::SelectRows</enum>
-                  </property>
-                  <attribute name="verticalHeaderVisible">
-                   <bool>false</bool>
-                  </attribute>
-                  <column>
-                   <property name="text">
-                    <string>Fecha</string>
-                   </property>
-                  </column>
-                  <column>
-                   <property name="text">
-                    <string>Valor</string>
-                   </property>
-                  </column>
-                  <column>
-                   <property name="text">
-                    <string>Apertura</string>
-                   </property>
-                  </column>
-                  <column>
-                   <property name="text">
-                    <string>Más alto</string>
-                   </property>
-                  </column>
-                  <column>
-                   <property name="text">
-                    <string>Más bajo</string>
-                   </property>
-                  </column>
-                  <column>
-                   <property name="text">
-                    <string>Día y hora visualización</string>
-                   </property>
-                  </column>
-                 </widget>
-                </item>
-               </layout>
-              </widget>
-             </item>
-            </layout>
-           </widget>
-           <widget class="QWidget" name="tab_6">
-            <attribute name="title">
-             <string>Rendimientos mensuales</string>
-            </attribute>
-            <layout class="QHBoxLayout" name="horizontalLayout_9">
-             <item>
-              <widget class="myQTableWidget" name="tblMensuales">
+              <widget class="QPushButton" name="cmdPurge">
                <property name="toolTip">
-                <string>Estos datos se han calculado con la última cotización
+                <string>Purge investment from innecesary quotes. Leaves high, low, open and close quotes</string>
+               </property>
+               <property name="text">
+                <string>Purge investment</string>
+               </property>
+               <property name="icon">
+                <iconset resource="../images/xulpymoney.qrc">
+                 <normaloff>:/xulpymoney/button_cancel.png</normaloff>:/xulpymoney/button_cancel.png</iconset>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="cmdSplit">
+               <property name="text">
+                <string>Make Split / Contrasplit</string>
+               </property>
+               <property name="icon">
+                <iconset resource="../images/xulpymoney.qrc">
+                 <normaloff>:/xulpymoney/history2.png</normaloff>:/xulpymoney/history2.png</iconset>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <widget class="QTabWidget" name="tabHistorical">
+             <property name="currentIndex">
+              <number>4</number>
+             </property>
+             <property name="elideMode">
+              <enum>Qt::ElideMiddle</enum>
+             </property>
+             <widget class="QWidget" name="tab_5">
+              <attribute name="title">
+               <string>Diarias</string>
+              </attribute>
+              <layout class="QHBoxLayout" name="horizontalLayout_3">
+               <item>
+                <widget class="QGroupBox" name="groupBox">
+                 <property name="title">
+                  <string>Cotizaciones de la inversión</string>
+                 </property>
+                 <layout class="QVBoxLayout" name="verticalLayout_9">
+                  <item>
+                   <widget class="myQTableWidget" name="tblDaily">
+                    <property name="contextMenuPolicy">
+                     <enum>Qt::CustomContextMenu</enum>
+                    </property>
+                    <property name="alternatingRowColors">
+                     <bool>true</bool>
+                    </property>
+                    <property name="selectionBehavior">
+                     <enum>QAbstractItemView::SelectRows</enum>
+                    </property>
+                    <attribute name="verticalHeaderVisible">
+                     <bool>false</bool>
+                    </attribute>
+                    <column>
+                     <property name="text">
+                      <string>Fecha</string>
+                     </property>
+                    </column>
+                    <column>
+                     <property name="text">
+                      <string>Valor</string>
+                     </property>
+                    </column>
+                    <column>
+                     <property name="text">
+                      <string>Apertura</string>
+                     </property>
+                    </column>
+                    <column>
+                     <property name="text">
+                      <string>Más alto</string>
+                     </property>
+                    </column>
+                    <column>
+                     <property name="text">
+                      <string>Más bajo</string>
+                     </property>
+                    </column>
+                    <column>
+                     <property name="text">
+                      <string>Día y hora visualización</string>
+                     </property>
+                    </column>
+                   </widget>
+                  </item>
+                 </layout>
+                </widget>
+               </item>
+              </layout>
+             </widget>
+             <widget class="QWidget" name="tab_14">
+              <attribute name="title">
+               <string>Semanales</string>
+              </attribute>
+              <layout class="QHBoxLayout" name="horizontalLayout_37">
+               <item>
+                <widget class="QGroupBox" name="groupBox_6">
+                 <property name="title">
+                  <string>Cotizaciones de la inversión</string>
+                 </property>
+                 <layout class="QVBoxLayout" name="verticalLayout_13">
+                  <item>
+                   <widget class="myQTableWidget" name="tblWeekly">
+                    <property name="contextMenuPolicy">
+                     <enum>Qt::CustomContextMenu</enum>
+                    </property>
+                    <property name="alternatingRowColors">
+                     <bool>true</bool>
+                    </property>
+                    <property name="selectionBehavior">
+                     <enum>QAbstractItemView::SelectRows</enum>
+                    </property>
+                    <attribute name="verticalHeaderVisible">
+                     <bool>false</bool>
+                    </attribute>
+                    <column>
+                     <property name="text">
+                      <string>Fecha</string>
+                     </property>
+                    </column>
+                    <column>
+                     <property name="text">
+                      <string>Valor</string>
+                     </property>
+                    </column>
+                    <column>
+                     <property name="text">
+                      <string>Apertura</string>
+                     </property>
+                    </column>
+                    <column>
+                     <property name="text">
+                      <string>Más alto</string>
+                     </property>
+                    </column>
+                    <column>
+                     <property name="text">
+                      <string>Más bajo</string>
+                     </property>
+                    </column>
+                    <column>
+                     <property name="text">
+                      <string>Día y hora visualización</string>
+                     </property>
+                    </column>
+                   </widget>
+                  </item>
+                 </layout>
+                </widget>
+               </item>
+              </layout>
+             </widget>
+             <widget class="QWidget" name="tab_3">
+              <attribute name="title">
+               <string>Mensuales</string>
+              </attribute>
+              <layout class="QHBoxLayout" name="horizontalLayout_2">
+               <item>
+                <widget class="QGroupBox" name="groupBox_4">
+                 <property name="title">
+                  <string>Cotizaciones de la inversión</string>
+                 </property>
+                 <layout class="QVBoxLayout" name="verticalLayout_11">
+                  <item>
+                   <widget class="myQTableWidget" name="tblMonthly">
+                    <property name="contextMenuPolicy">
+                     <enum>Qt::CustomContextMenu</enum>
+                    </property>
+                    <property name="alternatingRowColors">
+                     <bool>true</bool>
+                    </property>
+                    <property name="selectionBehavior">
+                     <enum>QAbstractItemView::SelectRows</enum>
+                    </property>
+                    <attribute name="verticalHeaderVisible">
+                     <bool>false</bool>
+                    </attribute>
+                    <column>
+                     <property name="text">
+                      <string>Fecha</string>
+                     </property>
+                    </column>
+                    <column>
+                     <property name="text">
+                      <string>Valor</string>
+                     </property>
+                    </column>
+                    <column>
+                     <property name="text">
+                      <string>Apertura</string>
+                     </property>
+                    </column>
+                    <column>
+                     <property name="text">
+                      <string>Más alto</string>
+                     </property>
+                    </column>
+                    <column>
+                     <property name="text">
+                      <string>Más bajo</string>
+                     </property>
+                    </column>
+                    <column>
+                     <property name="text">
+                      <string>Día y hora visualización</string>
+                     </property>
+                    </column>
+                   </widget>
+                  </item>
+                 </layout>
+                </widget>
+               </item>
+              </layout>
+             </widget>
+             <widget class="QWidget" name="tab_13">
+              <attribute name="title">
+               <string>Anuales</string>
+              </attribute>
+              <layout class="QHBoxLayout" name="horizontalLayout_4">
+               <item>
+                <widget class="QGroupBox" name="groupBox_5">
+                 <property name="title">
+                  <string>Cotizaciones de la inversión</string>
+                 </property>
+                 <layout class="QVBoxLayout" name="verticalLayout_12">
+                  <item>
+                   <widget class="myQTableWidget" name="tblYearly">
+                    <property name="contextMenuPolicy">
+                     <enum>Qt::CustomContextMenu</enum>
+                    </property>
+                    <property name="alternatingRowColors">
+                     <bool>true</bool>
+                    </property>
+                    <property name="selectionBehavior">
+                     <enum>QAbstractItemView::SelectRows</enum>
+                    </property>
+                    <attribute name="verticalHeaderVisible">
+                     <bool>false</bool>
+                    </attribute>
+                    <column>
+                     <property name="text">
+                      <string>Fecha</string>
+                     </property>
+                    </column>
+                    <column>
+                     <property name="text">
+                      <string>Valor</string>
+                     </property>
+                    </column>
+                    <column>
+                     <property name="text">
+                      <string>Apertura</string>
+                     </property>
+                    </column>
+                    <column>
+                     <property name="text">
+                      <string>Más alto</string>
+                     </property>
+                    </column>
+                    <column>
+                     <property name="text">
+                      <string>Más bajo</string>
+                     </property>
+                    </column>
+                    <column>
+                     <property name="text">
+                      <string>Día y hora visualización</string>
+                     </property>
+                    </column>
+                   </widget>
+                  </item>
+                 </layout>
+                </widget>
+               </item>
+              </layout>
+             </widget>
+             <widget class="QWidget" name="tab_6">
+              <attribute name="icon">
+               <iconset resource="../images/xulpymoney.qrc">
+                <normaloff>:/xulpymoney/tools-wizard.png</normaloff>:/xulpymoney/tools-wizard.png</iconset>
+              </attribute>
+              <attribute name="title">
+               <string>Rendimientos mensuales</string>
+              </attribute>
+              <layout class="QHBoxLayout" name="horizontalLayout_9">
+               <item>
+                <widget class="myQTableWidget" name="tblMensuales">
+                 <property name="toolTip">
+                  <string>Estos datos se han calculado con la última cotización
 del mes anterior y la última cotización del mes 
 correspondiente en la tabla</string>
-               </property>
-               <attribute name="verticalHeaderVisible">
-                <bool>false</bool>
-               </attribute>
-               <column>
-                <property name="text">
-                 <string>Año</string>
-                </property>
-               </column>
-               <column>
-                <property name="text">
-                 <string>Enero</string>
-                </property>
-               </column>
-               <column>
-                <property name="text">
-                 <string>Febrero</string>
-                </property>
-               </column>
-               <column>
-                <property name="text">
-                 <string>Marzo</string>
-                </property>
-               </column>
-               <column>
-                <property name="text">
-                 <string>Abril</string>
-                </property>
-               </column>
-               <column>
-                <property name="text">
-                 <string>Mayo</string>
-                </property>
-               </column>
-               <column>
-                <property name="text">
-                 <string>Junio</string>
-                </property>
-               </column>
-               <column>
-                <property name="text">
-                 <string>Julio</string>
-                </property>
-               </column>
-               <column>
-                <property name="text">
-                 <string>Agosto</string>
-                </property>
-               </column>
-               <column>
-                <property name="text">
-                 <string>Septiembre</string>
-                </property>
-               </column>
-               <column>
-                <property name="text">
-                 <string>Octubre</string>
-                </property>
-               </column>
-               <column>
-                <property name="text">
-                 <string>Noviembre</string>
-                </property>
-               </column>
-               <column>
-                <property name="text">
-                 <string>Diciembre</string>
-                </property>
-               </column>
-               <column>
-                <property name="text">
-                 <string>Total</string>
-                </property>
-               </column>
-              </widget>
-             </item>
-            </layout>
-           </widget>
-          </widget>
+                 </property>
+                 <attribute name="verticalHeaderVisible">
+                  <bool>false</bool>
+                 </attribute>
+                 <column>
+                  <property name="text">
+                   <string>Año</string>
+                  </property>
+                 </column>
+                 <column>
+                  <property name="text">
+                   <string>Enero</string>
+                  </property>
+                 </column>
+                 <column>
+                  <property name="text">
+                   <string>Febrero</string>
+                  </property>
+                 </column>
+                 <column>
+                  <property name="text">
+                   <string>Marzo</string>
+                  </property>
+                 </column>
+                 <column>
+                  <property name="text">
+                   <string>Abril</string>
+                  </property>
+                 </column>
+                 <column>
+                  <property name="text">
+                   <string>Mayo</string>
+                  </property>
+                 </column>
+                 <column>
+                  <property name="text">
+                   <string>Junio</string>
+                  </property>
+                 </column>
+                 <column>
+                  <property name="text">
+                   <string>Julio</string>
+                  </property>
+                 </column>
+                 <column>
+                  <property name="text">
+                   <string>Agosto</string>
+                  </property>
+                 </column>
+                 <column>
+                  <property name="text">
+                   <string>Septiembre</string>
+                  </property>
+                 </column>
+                 <column>
+                  <property name="text">
+                   <string>Octubre</string>
+                  </property>
+                 </column>
+                 <column>
+                  <property name="text">
+                   <string>Noviembre</string>
+                  </property>
+                 </column>
+                 <column>
+                  <property name="text">
+                   <string>Diciembre</string>
+                  </property>
+                 </column>
+                 <column>
+                  <property name="text">
+                   <string>Total</string>
+                  </property>
+                 </column>
+                </widget>
+               </item>
+              </layout>
+             </widget>
+            </widget>
+           </item>
+          </layout>
          </item>
         </layout>
        </widget>
-       <widget class="QWidget" name="tabEstimaciones">
+       <widget class="QWidget" name="tabOther">
         <attribute name="title">
-         <string>Estimaciones</string>
+         <string>Other data</string>
         </attribute>
         <layout class="QHBoxLayout" name="horizontalLayout_12">
          <item>
           <widget class="QTabWidget" name="tabEstimaciones">
            <property name="currentIndex">
-            <number>0</number>
+            <number>2</number>
            </property>
+           <widget class="QWidget" name="tab_2">
+            <attribute name="icon">
+             <iconset resource="../images/xulpymoney.qrc">
+              <normaloff>:/xulpymoney/coins.png</normaloff>:/xulpymoney/coins.png</iconset>
+            </attribute>
+            <attribute name="title">
+             <string>DPS Paid</string>
+            </attribute>
+            <layout class="QHBoxLayout" name="horizontalLayout_40">
+             <item>
+              <widget class="myQTableWidget" name="tblDPSPaid">
+               <property name="contextMenuPolicy">
+                <enum>Qt::CustomContextMenu</enum>
+               </property>
+               <property name="alternatingRowColors">
+                <bool>true</bool>
+               </property>
+               <property name="selectionBehavior">
+                <enum>QAbstractItemView::SelectRows</enum>
+               </property>
+               <attribute name="verticalHeaderVisible">
+                <bool>false</bool>
+               </attribute>
+              </widget>
+             </item>
+            </layout>
+           </widget>
            <widget class="QWidget" name="tab_8">
             <attribute name="icon">
              <iconset resource="../images/xulpymoney.qrc">
               <normaloff>:/xulpymoney/coins.png</normaloff>:/xulpymoney/coins.png</iconset>
             </attribute>
             <attribute name="title">
-             <string>Dividends</string>
+             <string>DPS Estimations</string>
             </attribute>
             <layout class="QHBoxLayout" name="horizontalLayout_13">
              <item>
@@ -1287,12 +1308,16 @@ correspondiente en la tabla</string>
             </layout>
            </widget>
            <widget class="QWidget" name="tab_9">
+            <attribute name="icon">
+             <iconset resource="../images/xulpymoney.qrc">
+              <normaloff>:/xulpymoney/star.png</normaloff>:/xulpymoney/star.png</iconset>
+            </attribute>
             <attribute name="title">
-             <string>BPA</string>
+             <string>EPS Estimations</string>
             </attribute>
             <layout class="QHBoxLayout" name="horizontalLayout_20">
              <item>
-              <widget class="myQTableWidget" name="tblDividendosEstimaciones_2">
+              <widget class="myQTableWidget" name="tblEPS">
                <property name="contextMenuPolicy">
                 <enum>Qt::CustomContextMenu</enum>
                </property>
@@ -1372,7 +1397,7 @@ correspondiente en la tabla</string>
     <string>Borrar cotización del día seleccionado</string>
    </property>
   </action>
-  <action name="actionDividendoEstimacionNueva">
+  <action name="actionEstimationDPSNew">
    <property name="icon">
     <iconset resource="../images/xulpymoney.qrc">
      <normaloff>:/xulpymoney/add.png</normaloff>:/xulpymoney/add.png</iconset>
@@ -1384,7 +1409,7 @@ correspondiente en la tabla</string>
     <string>Nueva estimación de dividendos</string>
    </property>
   </action>
-  <action name="actionDividendoEstimacionBorrar">
+  <action name="actionEstimationDPSDelete">
    <property name="icon">
     <iconset resource="../images/xulpymoney.qrc">
      <normaloff>:/xulpymoney/list-remove.png</normaloff>:/xulpymoney/list-remove.png</iconset>
@@ -1418,6 +1443,30 @@ correspondiente en la tabla</string>
    </property>
    <property name="toolTip">
     <string>Edit Quote</string>
+   </property>
+  </action>
+  <action name="actionEstimationEPSNew">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/add.png</normaloff>:/xulpymoney/add.png</iconset>
+   </property>
+   <property name="text">
+    <string>Nueva estimación de BPA</string>
+   </property>
+   <property name="toolTip">
+    <string>Nueva estimación de BPA</string>
+   </property>
+  </action>
+  <action name="actionEstimationEPSDelete">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/list-remove.png</normaloff>:/xulpymoney/list-remove.png</iconset>
+   </property>
+   <property name="text">
+    <string>Borrar estimación de BPA</string>
+   </property>
+   <property name="toolTip">
+    <string>Borrar estimación de BPA</string>
    </property>
   </action>
  </widget>

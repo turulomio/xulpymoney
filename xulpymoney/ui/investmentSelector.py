@@ -14,7 +14,7 @@ class investmentSelector(QWidget):
         self.horizontalLayout_2 = QHBoxLayout(self)
         self.horizontalLayout = QHBoxLayout()
         self.label = QLabel(self)
-        self.label.setText(self.trUtf8("Selecciona una inversión de MyQuotes"))
+        self.label.setText(self.trUtf8("Selecciona una inversión de MyStocks"))
         self.horizontalLayout.addWidget(self.label)                                                                                                                                 
         self.txt = QLineEdit(self)                                                                                                                                       
         self.txt.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)                                                                             
@@ -128,7 +128,7 @@ class investmentDialog(QDialog):
             self.tblInversiones.setItem(cur.rownumber-1, 1, QTableWidgetItem(str(inv.id)))
             self.tblInversiones.item(cur.rownumber-1, 0).setIcon(inv.bolsa.country.qicon())
             self.tblInversiones.setItem(cur.rownumber-1, 2, QTableWidgetItem(inv.isin))
-            self.tblInversiones.setItem(cur.rownumber-1, 3, QTableWidgetItem(inv.yahoo))
+            self.tblInversiones.setItem(cur.rownumber-1, 3, QTableWidgetItem(inv.ticker))
         cur.close()     
         
     def on_tblInversiones_cellDoubleClicked(self, row, column):

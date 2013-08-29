@@ -124,14 +124,14 @@ class wdgInversiones(QWidget, Ui_wdgInversiones):
         self.on_chkInactivas_stateChanged(self.chkInactivas.checkState())#Carga la tabla
             
     @QtCore.pyqtSlot() 
-    def on_actionMyquotes_activated(self):
+    def on_actionMystocks_activated(self):
         w=frmAnalisis(self.cfg, self.selInversion.investment, self.selInversion, self)
         w.exec_()
         self.on_chkInactivas_stateChanged(self.chkInactivas.checkState())#Carga la tabla
             
             
     @QtCore.pyqtSlot() 
-    def on_actionMyquotesManual_activated(self):
+    def on_actionMystocksManual_activated(self):
         w=frmQuotesIBM(self.cfg, self.selInversion.investment,None,  self)
         w.exec_()
         self.selInversion.investment.result.basic.load_from_db()
@@ -188,11 +188,11 @@ class wdgInversiones(QWidget, Ui_wdgInversiones):
             self.actionInversionEstudio.setEnabled(False)
             self.actionInversionBorrar.setEnabled(False)
             self.actionActiva.setEnabled(False)
-            self.actionMyquotes.setEnabled(False)
+            self.actionMystocks.setEnabled(False)
         else:
             self.actionInversionEstudio.setEnabled(True)
             self.actionActiva.setEnabled(True)       
-            self.actionMyquotes.setEnabled(True)
+            self.actionMystocks.setEnabled(True)
             if self.selInversion.es_borrable()==True:
                 self.actionInversionBorrar.setEnabled(True)
             else:
@@ -207,9 +207,9 @@ class wdgInversiones(QWidget, Ui_wdgInversiones):
         menu.addAction(self.actionInversionBorrar)   
         menu.addSeparator()   
         menu.addAction(self.actionInversionEstudio)        
-        menu.addAction(self.actionMyquotes)
+        menu.addAction(self.actionMystocks)
         menu.addSeparator()
-        menu.addAction(self.actionMyquotesManual)
+        menu.addAction(self.actionMystocksManual)
         menu.addSeparator()
         menu.addAction(self.actionActiva)
         menu.addSeparator()        

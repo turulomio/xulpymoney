@@ -17,8 +17,6 @@ XULPYMONEY
 
 MYSTOCKS
 ========
-20120801 Cambiar Yahoo por ticker
-20120405 En la misma tabla de dividendos estimados poner el bpa, para poder calcular el PER
 20120217 En busquedas cuando se haga es:search, buscará en bolsa española
 20130822 Progress bar en status bar, al cargar frmAnalisis
 20130822 Hacer dividendos pagados para grafico quitando dividendos

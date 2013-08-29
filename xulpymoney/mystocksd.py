@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 import  sys,    multiprocessing,  gettext, os
 
-sys.path.append("/usr/lib/myquotes")
+sys.path.append("/usr/lib/mystocks")
 from libxulpymoney import *
  
 from conjuntos import *
@@ -10,11 +10,11 @@ from bolsamadridfondos import *
 from bonoaleman import *
 from indices import *
   
-gettext.bindtextdomain('myquotes','/usr/share/locale/')
-gettext.textdomain('myquotes')
+gettext.bindtextdomain('mystocks','/usr/share/locale/')
+gettext.textdomain('mystocks')
 
 try:
-    os.remove("/tmp/myquotes.log")
+    os.remove("/tmp/mystocks.log")
 except:
     pass
 
@@ -27,7 +27,7 @@ if __name__ == '__main__':
             cfg.debug=True
 
 
-    con=cfg.connect_myquotesd()
+    con=cfg.connect_mystocksd()
     cur = con.cursor()   
     cur2 = con.cursor()   
 
@@ -40,7 +40,7 @@ if __name__ == '__main__':
     cfg.carga_ia(cur)
     cur.close()                
     cur2.close()                
-    cfg.disconnect_myquotesd(con)
+    cfg.disconnect_mystocksd(con)
     
     wy=WorkerYahoo(cfg)
     p1 = multiprocessing.Process(target=wy.start, args=())

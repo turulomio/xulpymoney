@@ -51,7 +51,7 @@ class frmMain(QMainWindow, Ui_frmMain):
         
         print ("Protecting investments needed in xulpymoney")
         cur=self.cfg.con.cursor()
-        cur.execute("select distinct(myquotesid) from inversiones;")
+        cur.execute("select distinct(mystocksid) from inversiones;")
         ids2protect=[]
         for row in cur:
             ids2protect.append(row[0])

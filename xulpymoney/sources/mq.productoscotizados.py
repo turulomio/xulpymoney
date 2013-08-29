@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 import sys
-sys.path.append("/usr/lib/myquotes")
-from libmyquotes import *
+sys.path.append("/usr/lib/mystocks")
+from libmystocks import *
 from config import *
 """Este script saca información de la pagina productoscotizados.com"""
 
@@ -17,7 +17,7 @@ class WorkerProductosCotizados(Source):
     def start(self):
         print (self.name)
         while (True):
-            con=self.cfg.connect_myquotesd()
+            con=self.cfg.connect_mystocksd()
             cur = con.cursor()     
             self.ids=self.find_ids()
             self.ids=self.filtrar_horario_bolsa(self.ids)
@@ -30,7 +30,7 @@ class WorkerProductosCotizados(Source):
                 set.save(cur, self.name)
             con.commit()
             cur.close()
-            self.cfg.disconnect_myquotesd(con)
+            self.cfg.disconnect_mystocksd(con)
             time.sleep(120)
 
     def parse_resultado(self, set):
@@ -83,12 +83,12 @@ if __name__ == '__main__':
             log("STARTING", "","Debugging")
             cfg.debug=True
 
-    con=cfg.connect_myquotesd()
+    con=cfg.connect_mystocksd()
     cur = con.cursor()
     cfg.actualizar_memoria(cur)
     cfg.carga_ia(cur, "where priority[1]=5")
     cur.close()
-    cfg.disconnect_myquotesd(con)
+    cfg.disconnect_mystocksd(con)
 
     w=WorkerProductosCotizados(cfg)
     w.start()

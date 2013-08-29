@@ -2,9 +2,9 @@ from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 import datetime,  time,  pytz,   psycopg2,  psycopg2.extras,  sys,  codecs,  urllib.request,    os,  configparser,  inspect,  threading
 
-#pathGraphIntraday=os.environ['HOME']+"/.myquotes/graphIntraday.png"
-#pathGraphHistorical=os.environ['HOME']+"/.myquotes/graphHistorical.png"
-#pathGraphPieTPC=os.environ['HOME']+"/.myquotes/graphPieTPC.png"
+#pathGraphIntraday=os.environ['HOME']+"/.mystocks/graphIntraday.png"
+#pathGraphHistorical=os.environ['HOME']+"/.mystocks/graphHistorical.png"
+#pathGraphPieTPC=os.environ['HOME']+"/.mystocks/graphPieTPC.png"
 
 from decimal import *
 version="20130829"
@@ -89,7 +89,7 @@ class SetInversiones:
                 pd.setValue(cur.rownumber)
                 pd.update()
                 QApplication.processEvents()
-            inv=Inversion(self.cfg).init__db_row(row,  self.cuentas.find(row['id_cuentas']), self.investments.find(row['myquotesid']))
+            inv=Inversion(self.cfg).init__db_row(row,  self.cuentas.find(row['id_cuentas']), self.investments.find(row['mystocksid']))
             inv.get_operinversiones()
             inv.op_actual.get_valor_indicereferencia(self.indicereferencia)
             self.arr.append(inv)
@@ -98,8 +98,8 @@ class SetInversiones:
 #            sys.stdout.flush()
         cur.close()  
         
-    def list_distinct_myquotesid(self):
-        """Función que devuelve una lista con los distintos myquotesid """
+    def list_distinct_mystocksid(self):
+        """Función que devuelve una lista con los distintos mystocksid """
         resultado=set([])
         for inv in self.arr:
             resultado.add(inv.investment.id)
@@ -110,7 +110,7 @@ class SetInversiones:
         ##Conviert cur a lista separada comas
         lista=""
         for row in cur:
-            lista=lista+ str(row['myquotesid']) + ", "
+            lista=lista+ str(row['mystocksid']) + ", "
         lista=lista[:-2]
             
     def find(self, id):
@@ -235,7 +235,7 @@ class SetInversiones:
         
     def sort_by_tpc_dpa(self):
         try:
-            self.arr=sorted(self.arr, key=lambda inv: inv.investment.estimacionesdividendo.currentYear().tpc_dpa(),  reverse=True) 
+            self.arr=sorted(self.arr, key=lambda inv: inv.investment.estimations_dps.currentYear().tpc_dpa(),  reverse=True) 
         except:
             print ("No se ha podido ordenar por haber estimaciones de dividendo nulas")
         
@@ -247,11 +247,11 @@ class SetInvestments:
     def load_from_inversiones_query(self, sql):
         """sql es una query sobre la tabla inversiones"""
         cur=self.cfg.con.cursor()
-        cur.execute(sql)#"Select distinct(myquotesid) from inversiones"
+        cur.execute(sql)#"Select distinct(mystocksid) from inversiones"
         ##Conviert cur a lista separada comas
         lista=""
         for row in cur:
-            lista=lista+ str(row['myquotesid']) + ", "
+            lista=lista+ str(row['mystocksid']) + ", "
         lista=lista[:-2]
         cur.close()
         
@@ -260,7 +260,9 @@ class SetInvestments:
             self.load_from_db("select * from investments where id in ("+lista+")", progress=True )
         
     def load_from_db(self, sql,  progress=False):
-        """sql es una query sobre la tabla inversiones"""
+        """sql es una query sobre la tabla inversiones
+        Carga estimations_dbs, y basic
+        """
         curms=self.cfg.conms.cursor()
         curms.execute(sql)#"select * from investments where id in ("+lista+")" 
         if progress==True:
@@ -275,7 +277,7 @@ class SetInvestments:
                 QApplication.processEvents()
                 
             inv=Investment(self.cfg).init__db_row(rowms)
-            inv.estimacionesdividendo.load_from_db()
+            inv.estimations_dps.load_from_db()
             inv.result.basic.load_from_db()
             self.arr.append(inv)
         curms.close()
@@ -607,28 +609,30 @@ class SetDividends:
         return (sumneto, sumbruto, sumretencion, sumcomision)
         
 
-class SetDividendosEstimaciones:
+class SetEstimationsDPS:
     def __init__(self, cfg,  investment):
-        self.dic_arr={}
+        self.arr=[]
         self.cfg=cfg   
         self.investment=investment
     
-#    def EstimacionNula(self, year):
-#        return DividendoEstimacion(self.cfg).init__create(self, year, datetime.date.today())
+    def EstimacionNula(self, year):
+        return EstimationDPS(self.cfg).init__create(self, year, datetime.date.today(), "None Estimation", None, None)
     
     def load_from_db(self):
+        del self.arr
+        self.arr=[]
         cur=self.cfg.conms.cursor()
-        cur.execute( "select * from estimaciones where id=%s order by year", (self.investment.id, ))
+        cur.execute( "select * from estimations_dps where id=%s order by year", (self.investment.id, ))
         for row in cur:
-            self.dic_arr[str(row['year'])]=DividendoEstimacion(self.cfg).init__from_db(self.investment, row['year'])
+            self.arr.append(EstimationDPS(self.cfg).init__from_db(self.investment, row['year']))
         cur.close()            
         
     def find(self, year):
         """Como puede no haber todos los años se usa find que devuelve una estimacion nula sino existe"""
-        try:
-            return self.dic_arr[str(year)]
-        except:
-            return None
+        for e in self.arr:
+            if e.year==year:
+                return e
+        return self.EstimacionNula(year)
             
     def currentYear(self):
         return self.find(datetime.date.today().year)
@@ -636,9 +640,73 @@ class SetDividendosEstimaciones:
     def dias_sin_actualizar(self):
         ultima=datetime.date(1990, 1, 1)
         for k, v in self.dic_arr.items():
-            if v.fechaestimacion>ultima:
-                ultima=v.fechaestimacion
+            if v.date_estimation>ultima:
+                ultima=v.date_estimation
         return (datetime.date.today()-ultima).days
+        
+        
+    def load_myqtablewidget(self, table):
+        table.clearContents()
+        table.setRowCount(len(self.arr))
+        for i, e in enumerate(self.arr):
+            table.setItem(i, 0, qcenter(str(e.year)))
+            table.setItem(i, 1, self.investment.currency.qtablewidgetitem(e.estimation, 6))       
+            try:
+                tpc=e.estimation*100/self.investment.result.basic.last.quote
+                table.setItem(i, 2, qtpc(round(tpc, 2)))    
+            except:      
+                table.setItem(i, 2, qtpc(None))    
+        table.setCurrentCell(len(self.arr)-1, 0)
+        table.setFocus()
+class SetEstimationsEPS:
+    def __init__(self, cfg,  investment):
+        self.arr=[]
+        self.cfg=cfg   
+        self.investment=investment
+    
+    def EstimacionNula(self, year):
+        return EstimationEPS(self.cfg).init__create(self, year, datetime.date.today(), "None Estimation", None, None)
+    
+    def load_from_db(self):
+        del self.arr
+        self.arr=[]
+        cur=self.cfg.conms.cursor()
+        cur.execute( "select * from estimations_eps where id=%s order by year", (self.investment.id, ))
+        for row in cur:
+            self.arr.append(EstimationEPS(self.cfg).init__from_db(self.investment, row['year']))
+        cur.close()            
+        
+    def find(self, year):
+        """Como puede no haber todos los años se usa find que devuelve una estimacion nula sino existe"""
+        for e in self.arr:
+            if e.year==year:
+                return e
+        return self.EstimacionNula(year)
+            
+    def currentYear(self):
+        return self.find(datetime.date.today().year)
+
+    def dias_sin_actualizar(self):
+        ultima=datetime.date(1990, 1, 1)
+        for k, v in self.dic_arr.items():
+            if v.date_estimation>ultima:
+                ultima=v.date_estimation
+        return (datetime.date.today()-ultima).days
+        
+        
+    def load_myqtablewidget(self, table):
+        table.clearContents()
+        table.setRowCount(len(self.arr))
+        for i, e in enumerate(self.arr):
+            table.setItem(i, 0, qcenter(str(e.year)))
+            table.setItem(i, 1, self.investment.currency.qtablewidgetitem(e.estimation, 6))       
+            try:
+                tpc=e.estimation*100/self.investment.result.basic.last.quote
+                table.setItem(i, 2, qtpc(round(tpc, 2)))    
+            except:      
+                table.setItem(i, 2, qtpc(None))    
+        table.setCurrentCell(len(self.arr)-1, 0)
+        table.setFocus()
 
         
 class SetEntidadesBancarias:     
@@ -874,7 +942,7 @@ class SetInversionOperacionActual:
         
     def load_myqtablewidget(self,  tabla,  section ):
         """Función que rellena una tabla pasada como parámetro con datos procedentes de un array de objetos
-        InversionOperacionActual y dos valores de myquotes para rellenar los tpc correspodientes
+        InversionOperacionActual y dos valores de mystocks para rellenar los tpc correspodientes
         
         Se dibujan las columnas pero las propiedad alternate color... deben ser en designer
         
@@ -1553,7 +1621,7 @@ class DBData:
         self.cuentas_active=SetCuentas(self.cfg, self.ebs_active)
         self.cuentas_active.load_from_db("select * from cuentas where cu_activa=true")
         self.investments_active=SetInvestments(self.cfg)
-        self.investments_active.load_from_inversiones_query("select distinct(myquotesid) from inversiones where in_activa=true")
+        self.investments_active.load_from_inversiones_query("select distinct(mystocksid) from inversiones where in_activa=true")
         self.inversiones_active=SetInversiones(self.cfg, self.cuentas_active, self.investments_active, self.indicereferencia)
         self.inversiones_active.load_from_db("select * from inversiones where in_activa=true", True)
         if not self.tupdatedata.isAlive():#Necesary because, can be thrown from actionUpdateMemory
@@ -1571,7 +1639,7 @@ class DBData:
             self.cuentas_inactive.load_from_db("select * from cuentas where cu_activa=false")
             
             self.investments_inactive=SetInvestments(self.cfg)
-            self.investments_inactive.load_from_inversiones_query("select distinct(myquotesid) from inversiones where in_activa=false")
+            self.investments_inactive.load_from_inversiones_query("select distinct(mystocksid) from inversiones where in_activa=false")
 
             self.inversiones_inactive=SetInversiones(self.cfg, self.cuentas_all(), self.investments_all(), self.indicereferencia)
             self.inversiones_inactive.load_from_db("select * from inversiones where in_activa=false",  True)
@@ -1975,10 +2043,10 @@ class Inversion:
         """Inserta o actualiza la inversión dependiendo de si id=None o no"""
         cur=self.cfg.con.cursor()
         if self.id==None:
-            cur.execute("insert into inversiones (inversion, venta, id_cuentas, in_activa, myquotesid) values (%s, %s,%s,%s,%s) returning id_inversiones", (self.name, self.venta, self.cuenta.id, self.activa, self.investment.id))    
+            cur.execute("insert into inversiones (inversion, venta, id_cuentas, in_activa, mystocksid) values (%s, %s,%s,%s,%s) returning id_inversiones", (self.name, self.venta, self.cuenta.id, self.activa, self.investment.id))    
             self.id=cur.fetchone()[0]
         else:
-            cur.execute("update inversiones set inversion=%s, venta=%s, id_cuentas=%s, in_activa=%s, myquotesid=%s where id_inversiones=%s", (self.name, self.venta, self.cuenta.id, self.activa, self.investment.id, self.id))
+            cur.execute("update inversiones set inversion=%s, venta=%s, id_cuentas=%s, in_activa=%s, mystocksid=%s where id_inversiones=%s", (self.name, self.venta, self.cuenta.id, self.activa, self.investment.id, self.id))
         cur.close()
 
     def __repr__(self):
@@ -2050,7 +2118,7 @@ class Inversion:
                 - La estimacion de dividendos mq"""
         if year==None:
             year=datetime.date.today().year
-        return self.acciones()*self.investment.estimacionesdividendo.find(year).dpa
+        return self.acciones()*self.investment.estimations_dps.find(year).estimation
         
         
     def diferencia_saldo_diario(self):
@@ -2932,7 +3000,7 @@ class InvestmentMode:
         
         
 class Money:
-    "Permite operar con dinero y divisas teniendo en cuenta la fecha de la operación mirando la divisa en myquotes"
+    "Permite operar con dinero y divisas teniendo en cuenta la fecha de la operación mirando la divisa en mystocks"
     def __init__(self):
         self.number=None
         self.currency=None
@@ -2971,92 +3039,131 @@ class Money:
 
     def suma(self,money, quote):
         return
-#
-#
-#class Estimacion:
-#    def __init__(self):
-#        self.year=None
-#        self.dpa=None
-#        self.fechaestimacion=None
-#        self.fuente=None
-#        self.manual=None
-#        self.investment=None# Objeto inversion mq
-#        self.bpa=None
-#        
-#    def init__db_row(self, row, inversionmq):
-#        self.year=row['year']
-#        self.dpa=row['dpa']
-#        self.fechaestimacion=row['fechaestimacion']
-#        self.fuente=row['fuente']
-#        self.manual=row['manual']
-#        self.bpa=row['bpa']
-#        self.investment=inversionmq #Permite acceder a todo el objeto desde la estimación
-#        return self
-#        
-#    def init__create(self, year, dpa, fechaestimacion, fuente, manual, bpa, inversionmq):
-#        self.year=year
-#        self.dpa=dpa
-#        self.fechaestimacion=fechaestimacion
-#        self.fuente=fuente
-#        self.manual=manual
-#        self.bpa=bpa
-#        self.investment=inversionmq #Permite acceder a todo el objeto desde la estimación
-#        return self
-#        
-#    
 
-class DividendoEstimacion:
+
+class SetDPS:
+    pass
+
+class DPS:
+    """Dividendo por acci´on pagados. Se usa para pintar gr´aficos sin dividendos"""
+    def __init__(self, cfg,  investment):
+        self.cfg=cfg
+        self.investment=investment
+        self.id=None#id_dps
+        self.date=None#pk
+        self.bruto=None
+        
+    def init__create(self, date, bruto, id=None):
+        self.date=date
+        self.bruto=bruto
+        self.id=id
+        return self
+
+class EstimationEPS:
+    """Beneficio por acci´on. Earnings per share Beneficio por acci´on. Para los calculos usaremos
+    esto, aunque sean estimaciones."""
+
     def __init__(self, cfg):
         self.cfg=cfg
         self.investment=None#pk
         self.year=None#pk
-        self.fechaestimacion=None
-        self.fuente=None
+        self.date_estimation=None
+        self.source=None
+        self.estimation=None
         self.manual=None
-        self.dpa=None
         
-    def init__create(self, investment, year, fechaestimacion, fuente, manual, dpa):
+    def init__create(self, investment, year, date_estimation, source, manual, estimation):
         self.investment=investment
         self.year=year
-        self.fechaestimacion=fechaestimacion
-        self.fuente=fuente
+        self.date_estimation=date_estimation
+        self.source=source
         self.manual=manual
-        self.dpa=dpa
+        self.estimation=estimation
         return self
-        
-        
-#    def dpa(self,  investment,  currentyear):
-#        resultado=None
-#        curms=self.cfg.conms.cursor()
-#        curms.execute("select dpa from estimaciones where id=%s and year=%s", (investment.id, currentyear))
-#        if curms.rowcount==1:
-#            resultado=curms.fetchone()[0]
-#        curms.close()
-#        return resultado
-        
+
     def init__from_db(self, investment,  currentyear):
         """Saca el registro  o uno en blanco si no lo encuentra, que fueron pasados como parámetro"""
         cur=self.cfg.conms.cursor()
-        cur.execute("select dpa,fechaestimacion,fuente,manual from estimaciones where id=%s and year=%s", (investment.id, currentyear))
+        cur.execute("select estimation, date_estimation ,source,manual from estimations_eps where id=%s and year=%s", (investment.id, currentyear))
         if cur.rowcount==1:
             row=cur.fetchone()
-            self.init__create(investment, currentyear, row['fechaestimacion'], row['fuente'], row['manual'], row['dpa'])
+            self.init__create(investment, currentyear, row['date_estimation'], row['source'], row['manual'], row['estimation'])
             cur.close()
         else:
             self.init__create(investment, currentyear, None, None, None, None)
         return self
             
             
+    def borrar(self):
+        cur=self.cfg.conms.cursor()
+        cur.execute("delete from estimations_eps where id=%s and year=%s", (self.investment.id, self.year))
+        cur.close()
+            
     def save(self):
         """Función que comprueba si existe el registro para insertar o modificarlo según proceda"""
         curms=self.cfg.conms.cursor()
-        curms.execute("select count(*) from estimaciones where id=%s and year=%s", (self.investment.id, self.year))
+        curms.execute("select count(*) from estimations_eps where id=%s and year=%s", (self.investment.id, self.year))
         if curms.fetchone()[0]==0:
-            curms.execute("insert into estimaciones (id, year, dpa, fechaestimacion, fuente, manual) values (%s,%s,%s,%s,%s,%s)", (self.investment.id, self.year, self.dpa, self.fechaestimacion, self.fuente, self.manual))
+            curms.execute("insert into estimations_eps(id, year, estimation, date_estimation, source, manual) values (%s,%s,%s,%s,%s,%s)", (self.investment.id, self.year, self.estimation, self.date_estimation, self.source, self.manual))
 
-            print (curms.mogrify("insert into estimaciones (id, year, dpa, fechaestimacion, fuente, manual) values (%s,%s,%s,%s,%s,%s)", (self.investment.id, self.year, self.dpa, self.fechaestimacion, self.fuente, self.manual)))
-        elif self.dpa!=None:            
-            curms.execute("update estimaciones set dpa=%s, fechaestimacion=%s, fuente=%s, manual=%s where id=%s and year=%s", (self.dpa, self.fechaestimacion, self.fuente, self.manual, self.investment.id, self.year))
+            print (curms.mogrify("insert into estimations_eps (id, year, estimation, date_estimation, source, manual) values (%s,%s,%s,%s,%s,%s)", (self.investment.id, self.year, self.estimation, self.date_estimation, self.source, self.manual)))
+        elif self.estimation!=None:            
+            curms.execute("update estimations_eps set estimation=%s, date_estimation=%s, source=%s, manual=%s where id=%s and year=%s", (self.estimation, self.date_estimation, self.source, self.manual, self.investment.id, self.year))
+        curms.close()
+        
+        
+    def PER(self):
+        """Price to Earnings Ratio"""
+        return self.investment.result.basic.last.quote/self.estimation
+
+class EstimationDPS:
+    """Dividendos por acchi´on"""
+    def __init__(self, cfg):
+        self.cfg=cfg
+        self.investment=None#pk
+        self.year=None#pk
+        self.date_estimation=None
+        self.source=None
+        self.estimation=None
+        self.manual=None
+        
+    def init__create(self, investment, year, date_estimation, source, manual, estimation):
+        self.investment=investment
+        self.year=year
+        self.date_estimation=date_estimation
+        self.source=source
+        self.manual=manual
+        self.estimation=estimation
+        return self
+
+    def init__from_db(self, investment,  currentyear):
+        """Saca el registro  o uno en blanco si no lo encuentra, que fueron pasados como parámetro"""
+        cur=self.cfg.conms.cursor()
+        cur.execute("select estimation, date_estimation ,source,manual from estimations_dps where id=%s and year=%s", (investment.id, currentyear))
+        if cur.rowcount==1:
+            row=cur.fetchone()
+            self.init__create(investment, currentyear, row['date_estimation'], row['source'], row['manual'], row['estimation'])
+            cur.close()
+        else:
+            self.init__create(investment, currentyear, None, None, None, None)
+        return self
+            
+            
+    def borrar(self):
+        cur=self.cfg.conms.cursor()
+        cur.execute("delete from estimations_dps where id=%s and year=%s", (self.investment.id, self.year))
+        cur.close()
+            
+    def save(self):
+        """Función que comprueba si existe el registro para insertar o modificarlo según proceda"""
+        curms=self.cfg.conms.cursor()
+        curms.execute("select count(*) from estimations_dps where id=%s and year=%s", (self.investment.id, self.year))
+        if curms.fetchone()[0]==0:
+            curms.execute("insert into estimations_dps(id, year, estimation, date_estimation, source, manual) values (%s,%s,%s,%s,%s,%s)", (self.investment.id, self.year, self.estimation, self.date_estimation, self.source, self.manual))
+
+            print (curms.mogrify("insert into estimations_dps (id, year, estimation, date_estimation, source, manual) values (%s,%s,%s,%s,%s,%s)", (self.investment.id, self.year, self.estimation, self.date_estimation, self.source, self.manual)))
+        elif self.estimation!=None:            
+            curms.execute("update estimations_dps set estimation=%s, date_estimation=%s, source=%s, manual=%s where id=%s and year=%s", (self.estimation, self.date_estimation, self.source, self.manual, self.investment.id, self.year))
         curms.close()
         
     def tpc_dpa(self):
@@ -3065,18 +3172,8 @@ class DividendoEstimacion:
         if self.investment.result.basic.endlastyear.quote==0 or self.investment.result.basic.endlastyear.quote==None:
             return 0
         else:
-            return self.dpa/self.investment.result.basic.endlastyear.quote*100
+            return self.estimation/self.investment.result.basic.endlastyear.quote*100
         
-
-    
-#    def tpc_dpa(self):
-#        """Calcula el tpc del dpa del utlimo año lastdpa"""
-#        last=self.investment.result.basic.last
-#        estimacion=self.find(datetime.date.today().year)
-#        if estimacion!=None and last!=None and last.quote!=0:
-#                return 100*estimacion.dpa/last.quote
-#        else:
-#            return None       
 class SourceNew:
     """Clase nueva para todas las sources
     Debera:
@@ -3172,7 +3269,7 @@ class Source:
         
     def filtrar_ids_primerregistro_ge_iniciodb(self,  ids):
         """Filtra aquellos ids cuyo primer registro es mayor que el inicio de la base de datos. Es decir que no se han buscado historicos"""
-        con=self.cfg.connect_myquotesd()
+        con=self.cfg.connect_mystocksd()
         cur = con.cursor()     
         resultado=[]
         for id in ids:
@@ -3180,11 +3277,11 @@ class Source:
             if cur.fetchone()[0]==0:
                 resultado.append(id)
         cur.close()                
-        self.cfg.disconnect_myquotesd(con)
+        self.cfg.disconnect_mystocksd(con)
         return resultado
                 
     def filtrar_ids_inactivos_no_actualizados(self, cur,  idpriority, dias,  priorityhistorical=False):
-        """Filtra aquellos ids consultando a la base de datos, que tengan activa un id_prioridad
+        """Filtra aquellos ids consultando a la base dpe datos, que tengan activa un id_prioridad
         o un id_prioridadhistorical si priorityhistorical=True y que no hayan sido actualizados desde now()-dias
         y que esten inactivo"""
         resultado=[]
@@ -3206,7 +3303,7 @@ class Source:
                     if inv.priority.arr[0].id==self.id_source: #Seleccion generica
                         #particularidades
                         if self.id_source==1 : #Caso de yahoo
-                            if inv.yahoo!=None or inv.yahoo!='':#Comprueba que tiene yahoo
+                            if inv.ticker!=None or inv.ticker!='':#Comprueba que tiene ticker
                                 self.ids.append(inv)
                         else:
                                 self.ids.append(inv)
@@ -3222,7 +3319,7 @@ class Source:
                     if inv.priorityhistorical.arr[0].id==self.id_source: #Seleccion generica
                         #particularidades
                         if  self.id_source==3: #Caso de yahoo
-                            if inv.yahoo!=None or inv.yahoo!='':#Comprueba que tiene yahoo
+                            if inv.ticker!=None or inv.ticker!='':#Comprueba que tiene yahoo
                                 self.ids.append(inv)
                         else:
                                 self.ids.append(inv)
@@ -3258,31 +3355,31 @@ class Source:
 #                status_update(cur, self.name, "Update quotes", status='Downloading error',  statuschange=datetime.datetime.now())
 #                con.commit()
 #                cur.close()
-#                self.cfg.disconnect_myquotesd(con)    
+#                self.cfg.disconnect_mystocksd(con)    
 #                time.sleep(60)
                 return None
         else:
             return None
-#        con=self.cfg.connect_myquotesd()
+#        con=self.cfg.connect_mystocksd()
 #        cur=con.cursor()
 #        self.internetquerys=self.internetquerys+1
 #        status_update(cur, self.name, "Update quotes", internets=self.internetquerys)
 #        con.commit()
 #        cur.close()
-#        self.cfg.disconnect_myquotesd(con)    
+#        self.cfg.disconnect_mystocksd(con)    
         return web
 
     def update_step_quotes(self, sql):
         """Hace un bucle con los distintos codes del sql."""
-        con=self.cfg.connect_myquotesd()
+        con=self.cfg.connect_mystocksd()
         cur=con.cursor()
         status_insert(cur, self.name, "Update stepcode quotes")
         con.commit()
         cur.close()
-        cfg.disconnect_myquotesd(con)   
+        cfg.disconnect_mystocksd(con)   
         while True:
             time.sleep(self.time_before_quotes)
-            con=self.cfg.connect_myquotesd()
+            con=self.cfg.connect_mystocksd()
             cur=con.cursor()
             cur2=con.cursor()
             status_update(cur, self.name, "Update step quotes", status='Working',  statuschange=datetime.datetime.now())
@@ -3303,81 +3400,81 @@ class Source:
             con.commit()
             cur.close()
             cur2.close()
-            cfg.disconnect_myquotesd(con)    
+            cfg.disconnect_mystocksd(con)    
             time.sleep( self.time_after_statics)
         
 #        
 #    def update_quotes(self):
-#        con=self.cfg.connect_myquotesd()
+#        con=self.cfg.connect_mystocksd()
 #        cur=con.cursor()
 #        status_insert(cur, self.name, "Update quotes")
 #        status_update(cur, self.name, "Update quotes", status='Waiting before',  statuschange=datetime.datetime.now())
 #        con.commit()
 #        cur.close()
-#        self.cfg.disconnect_myquotesd(con)   
+#        self.cfg.disconnect_mystocksd(con)   
 #        time.sleep(self.time_before_quotes)      
 #        while True:      
-#            con=self.cfg.connect_myquotesd()
+#            con=self.cfg.connect_mystocksd()
 #            cur=con.cursor()
 #            status_update(cur, self.name, "Update quotes", status='Working',  statuschange=datetime.datetime.now())
 #            con.commit()
 #            cur.close()
-#            self.cfg.disconnect_myquotesd(con)    
+#            self.cfg.disconnect_mystocksd(con)    
 #            if self.debug==True:
 #                for i in self.arr_quotes():
 #                    print (i)
 #            else:
 #                Quote(self.cfg).insert_cdtv(self.arr_quotes(), self.name)
-#            con=self.cfg.connect_myquotesd()
+#            con=self.cfg.connect_mystocksd()
 #            cur=con.cursor()
 #            status_update(cur, self.name, "Update quotes", status='Waiting after',  statuschange=datetime.datetime.now())
 #            con.commit()
 #            cur.close()
-#            self.cfg.disconnect_myquotesd(con)               
+#            self.cfg.disconnect_mystocksd(con)               
 #            time.sleep(self.time_after_quotes)
 
 
 #    def update_statics(self):
-#        con=self.cfg.connect_myquotesd()
+#        con=self.cfg.connect_mystocksd()
 #        cur=con.cursor()
 #        status_insert(cur, self.name, "Update statics")
 #        status_update(cur, self.name, "Update statics", status='Waiting before',  statuschange=datetime.datetime.now())
 #        con.commit()
 #        cur.close()
-#        self.cfg.disconnect_myquotesd(con)   
+#        self.cfg.disconnect_mystocksd(con)   
 #        time.sleep(self.time_before_statics)
 #        while True:            
-#            con=self.cfg.connect_myquotesd()
+#            con=self.cfg.connect_mystocksd()
 #            cur=con.cursor()
 #            status_update(cur, self.name, "Update statics", status='Working',  statuschange=datetime.datetime.now())
 #            con.commit()
 #            cur.close()
-#            self.cfg.disconnect_myquotesd(con)    
+#            self.cfg.disconnect_mystocksd(con)    
 #            if self.debug==True:
 #                for i in self.arr_statics():
 #                    print (i)
 #            else:
 #                Investment(self.cfg).update_static(self.arr_statics(), self.name)
-#            con=self.cfg.connect_myquotesd()
+#            con=self.cfg.connect_mystocksd()
 #            cur=con.cursor()
 #            status_update(cur, self.name, "Update statics", status='Waiting after',  statuschange=datetime.datetime.now())
 #            con.commit()
 #            cur.close()
-#            self.cfg.disconnect_myquotesd(con)                     
+#            self.cfg.disconnect_mystocksd(con)                     
 #            time.sleep(self.time_after_statics)
             
 #    def update_step_statics(self, sql):
 #        """Hace un bucle con los distintos codes del sql."""
-#        con=self.cfg.connect_myquotesd()
+#        con=self.cfg.connect_mystocksd()
 #        cur=con.cursor()
 #        status_insert(cur, self.name, "Update step statics")
 #        status_update(cur, self.name, "Update step statics", status='Waiting before',  statuschange=datetime.datetime.now())
 #        con.commit()
 #        cur.close()
-#        self.cfg.disconnect_myquotesd(con)    
+#        self.cfg.disconnect_mystocksd(con)    
 #        time.sleep(self.time_before_statics)
 #        while True:
-#            con=self.cfg.connect_myquotesd()
+#            con=self.cfg.connect_mystocksd()
 #            cur=con.cursor()
 #            cur2=con.cursor()
 #            status_update(cur, self.name, "Update statics", status='Working',  statuschange=datetime.datetime.now())
@@ -3399,18 +3496,18 @@ class Source:
 #            con.commit()
 #            cur.close()
 #            cur2.close()
-#            self.cfg.disconnect_myquotesd(con)    
+#            self.cfg.disconnect_mystocksd(con)    
 #            time.sleep( self.time_after_statics)
 #            
 #    def update_stepcode_statics(self, listcode):
 #        """Hace un bucle con los distintos codes del listcode."""        
-##        con=self.cfg.connect_myquotesd()
+##        con=self.cfg.connect_mystocksd()
 ##        cur=con.cursor()
 ##        status_insert(cur, self.name, "Update stepcode statics")
 ##        status_update(cur, self.name, "Update stepcode statics", status='Waiting before',  statuschange=datetime.datetime.now())
 ##        con.commit()
 ##        cur.close()
-##        self.cfg.disconnect_myquotesd(con)   
+##        self.cfg.disconnect_mystocksd(con)   
 #        time.sleep(self.time_before_statics)
 #        while True:
 #            for code in listcode:
@@ -3423,21 +3520,21 @@ class Source:
 #            time.sleep( self.time_after_statics)
 #
 #    def update_step_historicals(self, listcodes):
-#        con=self.cfg.connect_myquotesd()
+#        con=self.cfg.connect_mystocksd()
 #        cur=con.cursor()
 #        status_insert(cur, self.name, "Update step historicals")
 #        status_update(cur, self.name, "Update step historicals", status='Waiting before',  statuschange=datetime.datetime.now())
 #        con.commit()
 #        cur.close()
-#        self.cfg.disconnect_myquotesd(con)   
+#        self.cfg.disconnect_mystocksd(con)   
 #        time.sleep(self.time_before_historicals)
 #        while True:
-#            con=self.cfg.connect_myquotesd()
+#            con=self.cfg.connect_mystocksd()
 #            cur=con.cursor()
 #            status_update(cur, self.name, "Update step historicals", status='Working',  statuschange=datetime.datetime.now())
 #            con.commit()
 #            cur.close()
-#            self.cfg.disconnect_myquotesd(con)                
+#            self.cfg.disconnect_mystocksd(con)                
 #            for code in listcodes:
 ##                print code,  listcodes
 #                if self.debug==True:
@@ -3446,34 +3543,34 @@ class Source:
 #                else:                
 ##                    print "Ha llegado"
 #                    Quote(self.cfg).insert_cdtohclv(self.arr_historical(code, ''),  self.name)
-#                con=self.cfg.connect_myquotesd()
+#                con=self.cfg.connect_mystocksd()
 #                cur=con.cursor()
 #                status_update(cur, self.name, "Update step historicals", status='Waiting step',  statuschange=datetime.datetime.now())
 #                con.commit()
 #                cur.close()
-#                self.cfg.disconnect_myquotesd(con)       
+#                self.cfg.disconnect_mystocksd(con)       
 #                time.sleep(self.time_step_historical)
 #
-#            con=self.cfg.connect_myquotesd()
+#            con=self.cfg.connect_mystocksd()
 #            cur=con.cursor()
 #            status_update(cur, self.name, "Update step historicals", status='Waiting after',  statuschange=datetime.datetime.now())
 #            con.commit()
 #            cur.close()
-#            self.cfg.disconnect_myquotesd(con)                       
+#            self.cfg.disconnect_mystocksd(con)                       
 #            time.sleep(self.time_after_historicals)
 #
 #    def update_step_historicals_by_isin(self, sql):
 #        """Sql debe devolver isin solamente"""
-#        con=self.cfg.connect_myquotesd()
+#        con=self.cfg.connect_mystocksd()
 #        cur=con.cursor()
 #        status_insert(cur, self.name, "Update step historicals by isin")
 #        status_update(cur, self.name, "Update step historicals by isin", status='Waiting before',  statuschange=datetime.datetime.now())
 #        con.commit()
 #        cur.close()
-#        self.cfg.disconnect_myquotesd(con)   
+#        self.cfg.disconnect_mystocksd(con)   
 #        time.sleep(self.time_before_historicals)
 #        while True:
-#            con=self.cfg.connect_myquotesd()
+#            con=self.cfg.connect_mystocksd()
 #            cur=con.cursor()
 #            status_update(cur, self.name, "Update step historicals", status='Working',  statuschange=datetime.datetime.now())
 #            con.commit()            
@@ -3482,7 +3579,7 @@ class Source:
 #            for i in cur:
 #                lista.append(i['isin'])
 #            cur.close()
-#            self.cfg.disconnect_myquotesd(con)         
+#            self.cfg.disconnect_mystocksd(con)         
 #            
 #            for isin in lista:
 #                yahoocode=self.isin2yahoocode(isin)
@@ -3496,54 +3593,54 @@ class Source:
 #                    else:                
 #    #                    print "Ha llegado"
 #                        Quote(self.cfg).insert_cdtohclv(self.arr_historical(yahoocode, isin),  self.name)                
-#                    con=self.cfg.connect_myquotesd()
+#                    con=self.cfg.connect_mystocksd()
 #                    cur=con.cursor()
 #                    status_update(cur, self.name, "Update step historicals", status='Waiting step',  statuschange=datetime.datetime.now())
 #                    con.commit()
 #                    cur.close()
-#                    self.cfg.disconnect_myquotesd(con)       
+#                    self.cfg.disconnect_mystocksd(con)       
 #                    time.sleep(self.time_step_historical)
 #
-#            con=self.cfg.connect_myquotesd()
+#            con=self.cfg.connect_mystocksd()
 #            cur=con.cursor()
 #            status_update(cur, self.name, "Update step historicals", status='Waiting after',  statuschange=datetime.datetime.now())
 #            con.commit()
 #            cur.close()
-#            self.cfg.disconnect_myquotesd(con)                          
+#            self.cfg.disconnect_mystocksd(con)                          
 #            time.sleep(self.time_after_historicals)
 
 #    def update_step_dividends(self, sql):
-##        con=self.cfg.connect_myquotesd()
+##        con=self.cfg.connect_mystocksd()
 ##        cur=con.cursor()
 ##        status_insert(cur, self.name, "Update step dividends")
 ##        con.commit()
 ##        cur.close()
-##        self.cfg.disconnect_myquotesd(con)   
+##        self.cfg.disconnect_mystocksd(con)   
 #        return
 #        
 #    def update_dividends(self):   
-#        con=self.cfg.connect_myquotesd()
+#        con=self.cfg.connect_mystocksd()
 #        cur=con.cursor()
 #        status_insert(cur, self.name, "Update dividends")
 #        status_update(cur, self.name, "Update dividends", status='Waiting before',  statuschange=datetime.datetime.now())
 #        con.commit()
 #        cur.close()
-#        self.cfg.disconnect_myquotesd(con)    
+#        self.cfg.disconnect_mystocksd(con)    
 #        time.sleep(self.time_before_dividends)        
 #        while True:                   
-#            con=self.cfg.connect_myquotesd()
+#            con=self.cfg.connect_mystocksd()
 #            cur=con.cursor()
 #            status_update(cur, self.name, "Update dividends", status='Working',  statuschange=datetime.datetime.now())
 #            con.commit()
 #            cur.close()
-#            self.cfg.disconnect_myquotesd(con)                     
+#            self.cfg.disconnect_mystocksd(con)                     
 #            Investment(self.cfg).update_dividends( self.arr_dividends(),  self.name)
-#            con=self.cfg.connect_myquotesd()
+#            con=self.cfg.connect_mystocksd()
 #            cur=con.cursor()
 #            status_update(cur, self.name, "Update dividends", status='Waiting after',  statuschange=datetime.datetime.now())
 #            con.commit()
 #            cur.close()
-#            self.cfg.disconnect_myquotesd(con)                     
+#            self.cfg.disconnect_mystocksd(con)                     
 #            time.sleep(self.time_after_dividends)
 #           
 #           
@@ -3717,9 +3814,9 @@ class Source:
 #            print ("Ha habido un cambio de día para calcular el datetime",  time,  zone)
 #        return salida[1]
         
-    def yahoo2investment(self, yahoo, investments):
+    def ticker2investment(self, ticker, investments):
         for inv in investments:
-            if inv.yahoo==yahoo:
+            if inv.ticker==ticker:
                 return inv
         return None
 #
@@ -3727,7 +3824,7 @@ class Source:
 #        """If othercode se pone como code othercode, util cuando se busca por code de yahoo pero en la base de datos en deutchbore#de00000000"""
 #        def fecha_ultimo_registro(code):
 #            cfg=ConfigMyStock()
-#            con=cfg.connect_myquotesd()
+#            con=cfg.connect_mystocksd()
 #            cur = con.cursor()     
 #            resultado=None
 #            cur.execute("select max(date) as fecha from quotes where code=%s and last='close'", (code, ))
@@ -3735,7 +3832,7 @@ class Source:
 #                resultado=i['fecha']
 #            con.commit()    
 #            cur.close()                
-#            self.cfg.disconnect_myquotesd(con)
+#            self.cfg.disconnect_mystocksd(con)
 #            if resultado==None:
 #                resultado=datetime.date(config.fillfromyear, 1, 1)
 #            return resultado    
@@ -3836,7 +3933,7 @@ class Investment:
         self.mode=None#Anterior mode investmentmode
         self.apalancado=None
         self.bolsa=None
-        self.yahoo=None
+        self.ticker=None
         self.priority=None
         self.priorityhistorical=None
         self.comentario=None
@@ -3845,7 +3942,8 @@ class Investment:
         self.system=None
         
         self.result=None#Variable en la que se almacena QuotesResult
-        self.estimacionesdividendo=SetDividendosEstimaciones(self.cfg, self)#Es un diccionario que guarda objetos estimaciones con clave el año
+        self.estimations_dps=SetEstimationsDPS(self.cfg, self)#Es un diccionario que guarda objetos estimaciones con clave el año
+        self.estimations_eps=SetEstimationsEPS(self.cfg, self)
 
     def __repr__(self):
         return "{0} ({1}) de la {2}".format(self.name , self.id, self.bolsa.name)
@@ -3867,7 +3965,7 @@ class Investment:
         self.mode=self.cfg.investmentsmodes.find(row['pci'])
         self.apalancado=self.cfg.apalancamientos.find(row['apalancado'])
         self.bolsa=self.cfg.bolsas.find(row['id_bolsas'])
-        self.yahoo=row['yahoo']
+        self.ticker=row['ticker']
         self.priority=SetPriorities(self.cfg).init__create_from_db(row['priority'])
         self.priorityhistorical=SetPrioritiesHistorical(self.cfg).init__create_from_db(row['priorityhistorical'])
         self.comentario=row['comentario']
@@ -3879,7 +3977,7 @@ class Investment:
         return self
         
                 
-    def init__create(self, name,  isin, currency, type, agrupations, active, web, address, phone, mail, tpc, mode, apalancado, bolsa, yahoo, priority, priorityhistorical, comentario, obsolete, deletable, system, id=None):
+    def init__create(self, name,  isin, currency, type, agrupations, active, web, address, phone, mail, tpc, mode, apalancado, bolsa, ticker, priority, priorityhistorical, comentario, obsolete, deletable, system, id=None):
         """agrupations es un setagrupation, priority un SetPriorities y priorityhistorical un SetPrioritieshistorical"""
         self.name=name
         self.isin=isin
@@ -3896,7 +3994,7 @@ class Investment:
         self.mode=mode
         self.apalancado=apalancado        
         self.bolsa=id_bolsas
-        self.yahoo=yahoo
+        self.ticker=ticker
         self.priority=priority
         self.priorityhistorical=priorityhistorical
         self.comentario=comentario
@@ -3922,11 +4020,11 @@ class Investment:
 #            year=datetime.date.today().year
 #        curms.execute("select * from estimaciones where year=%s and id=%s", (year, self.id))
 #        if curms.rowcount==0:        
-#            e=DividendoEstimacion(self.cfg).init__create(self, year, datetime.date.today(),  "Vacio por código", False, 0)
-##            e=DividendoEstimacion(self.cfg).init__create(year, 0, datetime.date(2012, 7, 3), "Vacio por código", False, 0, self)
+#            e=EstimationEPS(self.cfg).init__create(self, year, datetime.date.today(),  "Vacio por código", False, 0)
+##            e=EstimationEPS(self.cfg).init__create(year, 0, datetime.date(2012, 7, 3), "Vacio por código", False, 0, self)
 #        else:
-#            e=DividendoEstimacion(self.cfg). init__from_db( investment,  currentyear):
-#        self.estimacionesdividendo[str(e.year)]=e
+#            e=EstimationEPS(self.cfg). init__from_db( investment,  currentyear):
+#        self.estimations_dps[str(e.year)]=e
 #        curms.close()
         
     def save(self):
@@ -3937,10 +4035,10 @@ class Investment:
         if self.id==None:
             cur.execute(" select min(id)-1 from investments;")
             id=cur.fetchone()[0]
-            cur.execute("insert into investments (id, name,  isin,  currency,  type,  agrupations,  active,  web, address,  phone, mail, tpc, pci,  apalancado, id_bolsas, yahoo, priority, priorityhistorical , comentario,  obsolete, system) values (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",  (id, self.name,  self.isin,  self.currency.id,  self.type.id,  self.agrupations.dbstring(),  self.active,  self.web, self.address,  self.phone, self.mail, self.tpc, self.mode.id,  self.apalancado.id, self.bolsa.id, self.yahoo, self.priority.array_of_id(), self.priorityhistorical.array_of_id() , self.comentario, self.obsolete, False))
+            cur.execute("insert into investments (id, name,  isin,  currency,  type,  agrupations,  active,  web, address,  phone, mail, tpc, pci,  apalancado, id_bolsas, ticker, priority, priorityhistorical , comentario,  obsolete, system) values (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",  (id, self.name,  self.isin,  self.currency.id,  self.type.id,  self.agrupations.dbstring(),  self.active,  self.web, self.address,  self.phone, self.mail, self.tpc, self.mode.id,  self.apalancado.id, self.bolsa.id, self.ticker, self.priority.array_of_id(), self.priorityhistorical.array_of_id() , self.comentario, self.obsolete, False))
             self.id=id
         else:
-            cur.execute("update investments set name=%s, isin=%s,currency=%s,type=%s, agrupations=%s, active=%s, web=%s, address=%s, phone=%s, mail=%s, tpc=%s, pci=%s, apalancado=%s, id_bolsas=%s, yahoo=%s, priority=%s, priorityhistorical=%s, comentario=%s, obsolete=%s where id=%s", ( self.name,  self.isin,  self.currency.id,  self.type.id,  self.agrupations.dbstring(),  self.active,  self.web, self.address,  self.phone, self.mail, self.tpc, self.mode.id,  self.apalancado.id, self.bolsa.id, self.yahoo, self.priority.array_of_id(), self.priorityhistorical.array_of_id() , self.comentario, self.obsolete,  self.id))
+            cur.execute("update investments set name=%s, isin=%s,currency=%s,type=%s, agrupations=%s, active=%s, web=%s, address=%s, phone=%s, mail=%s, tpc=%s, pci=%s, apalancado=%s, id_bolsas=%s, ticker=%s, priority=%s, priorityhistorical=%s, comentario=%s, obsolete=%s where id=%s", ( self.name,  self.isin,  self.currency.id,  self.type.id,  self.agrupations.dbstring(),  self.active,  self.web, self.address,  self.phone, self.mail, self.tpc, self.mode.id,  self.apalancado.id, self.bolsa.id, self.ticker, self.priority.array_of_id(), self.priorityhistorical.array_of_id() , self.comentario, self.obsolete,  self.id))
         cur.close()
     
     def changeDeletable(self, ids,  deletable):
@@ -4581,7 +4679,7 @@ class OHCL:
 
         
 class QuotesResult:
-    """Función que consigue resultados de myquotes de un id pasado en el constructor"""
+    """Función que consigue resultados de mystocks de un id pasado en el constructor"""
     def __init__(self,cfg,  investment):
         self.cfg=cfg
         self.investment=investment
@@ -4669,7 +4767,7 @@ class Split:
     def updateDividendos(self, arr):
         """Transforms de dpa of an array of dividends"""
         for d in arr:
-            d.dpa=self.convertDPA(d.dpa)
+            d.estimation=self.convertDPA(d.estimation)
             d.save()
         
     def type(self):
@@ -4881,9 +4979,9 @@ class ConfigMyStock:
         self.inittime=datetime.datetime.now()#Tiempo arranca el config
         self.dbinitdate=None#Fecha de inicio bd.
         
-        self.dic_activas={}#Diccionario cuyo indice es el id de la inversión id['1'] corresponde a la IvestmenActive(1) #se usa en myquotesd
+        self.dic_activas={}#Diccionario cuyo indice es el id de la inversión id['1'] corresponde a la IvestmenActive(1) #se usa en mystocksd
         
-        self.conms=None#Conexión a myquotes
+        self.conms=None#Conexión a mystocks
         self.countries=SetCountries(self)
         self.bolsas=SetBolsas(self)
         self.currencies=SetCurrencies(self)
@@ -4932,7 +5030,7 @@ class ConfigMyStock:
 
     def __del__(self):
         if self.conms:#Cierre por reject en frmAccess
-            self.disconnect_myquotes(self.conms)
+            self.disconnect_mystocks(self.conms)
     
     
 
@@ -4958,7 +5056,7 @@ class ConfigMyStock:
 
 
 
-    def connect_myquotesd(self, pw):        
+    def connect_mystocksd(self, pw):        
         """usa también la variables self.conms"""              
         strmq="dbname='%s' port='%s' user='%s' host='%s' password='%s'" % (self.config.get_value("frmAccessMS", "db"),  self.config.get_value("frmAccessMS", "port"), self.config.get_value("frmAccessMS", "user"), self.config.get_value("frmAccessMS", "server"),  pw)
         while True:
@@ -4969,10 +5067,10 @@ class ConfigMyStock:
                 print (QApplication.translate("Core","Error conecting to MyStocksd, waiting 10 seconds"))
                 time.sleep(10)
 
-    def disconnect_myquotesd(self):
+    def disconnect_mystocksd(self):
         self.conms.close()
 
-    def connect_myquotes(self):             
+    def connect_mystocks(self):             
         strmq="dbname='%s' port='%s' user='%s' host='%s' password='%s'" % (self.config.get_value("frmAccessMS", "db"),  self.config.get_value("frmAccessMS", "port"), self.config.get_value("frmAccessMS", "user"), self.config.get_value("frmAccessMS", "server"),  self.password)
         try:
             mq=psycopg2.extras.DictConnection(strmq)
@@ -4984,7 +5082,7 @@ class ConfigMyStock:
             m.exec_()
             sys.exit()
 
-    def disconnect_myquotes(self,  mq):
+    def disconnect_mystocks(self,  mq):
         mq.close()
     
 #    def carga_ia(self, cur,  where=""):
@@ -5015,13 +5113,13 @@ class ConfigXulpymoney(ConfigMyStock):
         self.data.__del__()
         
         if self.conms:#Cierre por reject en frmAccess
-            self.disconnect_myquotes(self.conms)
+            self.disconnect_mystocks(self.conms)
         if self.con:
             self.disconnect_xulpymoney(self.con)
         
 
     def actualizar_memoria(self):
-        """Solo se cargan datos  de myquotes y operinversiones en las activas
+        """Solo se cargan datos  de mystocks y operinversiones en las activas
         Pero se general el InversionMQ de las inactivas
         Se vinculan todas"""
         super(ConfigXulpymoney, self).actualizar_memoria()
@@ -5155,7 +5253,7 @@ class Global:
         cur=self.cfg.conms.cursor()
         try:
             serverversion=""
-            comand='http://myquotes.svn.sourceforge.net/viewvc/myquotes/libxulpymoney.py'
+            comand='http://mystocks.svn.sourceforge.net/viewvc/mystocks/libxulpymoney.py'
             web=urllib.request.urlopen(comand)
             for line in web:
                 if line.decode().find('return "20')!=-1:
@@ -5351,7 +5449,7 @@ def log(tipo, funcion,  mensaje):
     """Tipo es una letra mayuscula S sistema H historico D diario"""
     if funcion!="":
         funcion= funcion + " "
-    f=codecs.open("/tmp/myquotes.log",  "a", "utf-8-sig")
+    f=codecs.open("/tmp/mystocks.log",  "a", "utf-8-sig")
     message=str(datetime.datetime.now())[:-7]+" "+ tipo +" " + funcion + mensaje + "\n"
     printmessage=str(datetime.datetime.now())[:-7]+" "+ Color().green(tipo) + " "+ funcion +  mensaje + "\n"
     f.write(message)

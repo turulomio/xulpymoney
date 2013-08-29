@@ -68,8 +68,8 @@ SOURCES         = xulpymoney.py \
                   ui/Ui_frmQuotesIBM.py
                   ui/frmSelector.py \
                   ui/Ui_frmSelector.py \
-                  ui/frmDividendoEstimacionIBM.py \
-                  ui/Ui_frmDividendoEstimacionIBM.py \
+                  ui/frmEstimationsAdd.py \
+                  ui/Ui_frmEstimationsAdd.py \
                   ui/wdgInversionesMS.py \
                   ui/Ui_wdgInversionesMS.py \
                   ui/wdgMergeCodes.py \

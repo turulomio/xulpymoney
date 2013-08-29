@@ -7,7 +7,7 @@ from frmSelector import *
 from Ui_frmAnalisis import *
 from frmQuotesIBM import *
 from frmSplit import *
-from frmDividendoEstimacionIBM import *
+from frmEstimationsAdd import *
 from canvaschart import *
 from matplotlib.backends.backend_qt4agg import NavigationToolbar2QTAgg as NavigationToolbar
 
@@ -28,11 +28,16 @@ class frmAnalisis(QDialog, Ui_frmAnalisis):
         self.inversion=inversion#Used to generate puntos de venta, punto de compra....
         self.setSelIntraday=None
         
+#        self.investment.estimations_dps=SetEstimationsDPS(self.cfg, self.investment)
+        self.selEstimationDPS=None
+#        self.estimations_eps=SetEstimationsEPS(self.cfg, self.investment)
+        self.selEstimationEPS=None
+        
         self.selDate=None #Fecha seleccionado en datos historicos
         self.selDateTime=None #Datetime seleccionado para borrar quote no es el mismo procedimiento de borrado
-        self.tab.setCurrentIndex(0)
-        self.tabGraphics.setCurrentIndex(0)
-        self.tabHistorical.setCurrentIndex(0)
+        self.tab.setCurrentIndex(1)
+        self.tabGraphics.setCurrentIndex(1)
+        self.tabHistorical.setCurrentIndex(4)
         
         self.tblTPC.settings("frmAnalisis",  self.cfg)    
         self.tblDaily.settings("frmAnalisis",  self.cfg)    
@@ -92,7 +97,7 @@ class frmAnalisis(QDialog, Ui_frmAnalisis):
         self.txtTPC.setText(str(self.investment.tpc))
         self.txtName.setText((self.investment.name))
         self.txtISIN.setText((self.investment.isin))
-        self.txtYahoo.setText(str(self.investment.yahoo))
+        self.txtYahoo.setText(str(self.investment.ticker))
         self.txtComentario.setText(self.investment.comentario)
         self.txtAddress.setText(self.investment.address)
         self.txtWeb.setText(self.investment.web)
@@ -135,7 +140,10 @@ class frmAnalisis(QDialog, Ui_frmAnalisis):
     def update_due_to_quotes_change(self):
         if self.investment.id!=None:
             self.investment.result.get_basic_ohcls()
-            self.load_dividendos()
+            self.investment.estimations_eps.load_from_db()#No cargada por defecto en investment
+
+            self.investment.estimations_dps.load_myqtablewidget(self.tblDividendosEstimaciones)   
+            self.investment.estimations_eps.load_myqtablewidget(self.tblEPS)            
         inicio=datetime.datetime.now()
         self.__load_information()
         if len(self.investment.result.ohclDaily.arr)!=0:
@@ -148,25 +156,25 @@ class frmAnalisis(QDialog, Ui_frmAnalisis):
             print ("Datos mensuales cargados:",  datetime.datetime.now()-inicio)
 
 
-        
-        
-    def load_dividendos(self):
-        
-        ###
-        cur=self.cfg.conms.cursor()
-        cur.execute("select year,dpa from estimaciones where id=%s order by year", (self.investment.id, ) )
-        self.tblDividendosEstimaciones.setRowCount(cur.rowcount)
-        for reg in cur:
-            self.tblDividendosEstimaciones.setItem(cur.rownumber-1, 0, qcenter(str(reg['year'])))
-            self.tblDividendosEstimaciones.setItem(cur.rownumber-1, 1, self.investment.currency.qtablewidgetitem(reg['dpa'], 6))       
-            try:
-                tpc=reg['dpa']*100/self.investment.result.basic.last.quote
-                self.tblDividendosEstimaciones.setItem(cur.rownumber-1, 2, qtpc(round(tpc, 2)))    
-            except:      
-                self.tblDividendosEstimaciones.setItem(cur.rownumber-1, 2, qtpc(None))    
-        self.tblDividendosEstimaciones.setCurrentCell(cur.rowcount-1, 0)
-        self.tblDividendosEstimaciones.setFocus()
-        cur.close()
+#        
+#        
+#    def load_dividendos(self):
+#        
+#        ###
+#        cur=self.cfg.conms.cursor()
+#        cur.execute("select year,dpa from estimaciones where id=%s order by year", (self.investment.id, ) )
+#        self.tblDividendosEstimaciones.setRowCount(cur.rowcount)
+#        for reg in cur:
+#            self.tblDividendosEstimaciones.setItem(cur.rownumber-1, 0, qcenter(str(reg['year'])))
+#            self.tblDividendosEstimaciones.setItem(cur.rownumber-1, 1, self.investment.currency.qtablewidgetitem(reg['estimation'], 6))       
+#            try:
+#                tpc=reg['estimation']*100/self.investment.result.basic.last.quote
+#                self.tblDividendosEstimaciones.setItem(cur.rownumber-1, 2, qtpc(round(tpc, 2)))    
+#            except:      
+#                self.tblDividendosEstimaciones.setItem(cur.rownumber-1, 2, qtpc(None))    
+#        self.tblDividendosEstimaciones.setCurrentCell(cur.rowcount-1, 0)
+#        self.tblDividendosEstimaciones.setFocus()
+#        cur.close()
 
 
 
@@ -276,32 +284,32 @@ class frmAnalisis(QDialog, Ui_frmAnalisis):
 
 
     @pyqtSignature("")
-    def on_actionDividendoEstimacionBorrar_activated(self):
-        try:
-            for i in self.tblDividendosEstimaciones.selectedItems():#itera por cada item no row.        
-                year=int(self.tblDividendosEstimaciones.item(i.row(), 0).text())
-        except:
-            year=None
-        if year!=None:
-            con=self.cfg.connect_myquotes()
-            cur = con.cursor()
-            cur.execute("delete from estimaciones where code=%s and year=%s", (self.investment.id, year))
-            con.commit()
-            self.load_dividendos()
-            cur.close() 
-            self.cfg.disconnect_myquotes(con)  
+    def on_actionEstimationDPSDelete_activated(self):
+        if self.selEstimationDPS!=None:
+            self.selEstimationDPS.borrar()
+            self.investment.estimations_dps.arr.remove(self.selEstimationDPS)
+            self.cfg.conms.commit()
+            self.investment.estimations_dps.load_myqtablewidget(self.tblDividendosEstimaciones)
         
     @pyqtSignature("")
-    def on_actionDividendoEstimacionNueva_activated(self):
-        d=frmDividendoEstimacionIBM(self.cfg, self.investment)
+    def on_actionEstimationDPSNew_activated(self):
+        d=frmEstimationsAdd(self.cfg, self.investment, "dps")
         d.exec_()
-        if d.result()==QDialog.Accepted:
-            con=self.cfg.connect_myquotes()
-            cur = con.cursor()
-            self.load_dividendos()
-            cur.close() 
-            self.cfg.disconnect_myquotes(con)  
+        self.investment.estimations_dps.load_myqtablewidget(self.tblDividendosEstimaciones)
 
+    @pyqtSignature("")
+    def on_actionEstimationEPSDelete_activated(self):
+        if self.selEstimationEPS!=None:
+            self.selEstimationEPS.borrar()
+            self.investment.estimations_eps.arr.remove(self.selEstimationEPS)
+            self.cfg.conms.commit()
+            self.investment.estimations_eps.load_myqtablewidget(self.tblEPS)
+        
+    @pyqtSignature("")
+    def on_actionEstimationEPSNew_activated(self):
+        d=frmEstimationsAdd(self.cfg, self.investment, "eps")
+        d.exec_()
+        self.investment.estimations_eps.load_myqtablewidget(self.tblEPS)
 
     @pyqtSignature("")
     def on_actionPurgeDay_activated(self):
@@ -378,7 +386,7 @@ class frmAnalisis(QDialog, Ui_frmAnalisis):
         self.investment.mode=self.cfg.investmentsmodes.find(self.cmbPCI.itemData(self.cmbPCI.currentIndex()))
         self.investment.apalancado=self.cfg.apalancamientos.find(self.cmbApalancado.itemData(self.cmbApalancado.currentIndex()))
         self.investment.bolsa=self.cfg.bolsas.find(self.cmbBolsa.itemData(self.cmbBolsa.currentIndex()))
-        self.investment.yahoo=self.txtYahoo.text()
+        self.investment.ticker=self.txtYahoo.text()
         self.investment.system=False
         self.investment.priority=SetPriorities(self.cfg).init__create_from_combo(self.cmbPriority)
         self.investment.priorityhistorical=SetPrioritiesHistorical(self.cfg).init__create_from_combo(self.cmbPriorityHistorical)
@@ -475,8 +483,40 @@ class frmAnalisis(QDialog, Ui_frmAnalisis):
         except:
             self.setSelIntraday=set([])
             
+            
+    def on_tblDividendosEstimaciones_itemSelectionChanged(self):
+        try:
+            for i in self.tblDividendosEstimaciones.selectedItems():#itera por cada item no row.        
+                if i.column()==0:
+                    self.selEstimationDPS=self.investment.estimations_dps.arr[i.row()]
+        except:
+            self.selEstimationDPS=None
+            
     def on_tblDividendosEstimaciones_customContextMenuRequested(self,  pos):
+        if self.selEstimationDPS==None:
+            self.actionEstimationDPSDelete.setEnabled(False)
+        else:
+            self.actionEstimationDPSDelete.setEnabled(True)
         menu=QMenu()
-        menu.addAction(self.actionDividendoEstimacionNueva)
-        menu.addAction(self.actionDividendoEstimacionBorrar)    
+        menu.addAction(self.actionEstimationDPSNew)
+        menu.addAction(self.actionEstimationDPSDelete)    
         menu.exec_(self.tblDividendosEstimaciones.mapToGlobal(pos))
+            
+            
+    def on_tblEPS_itemSelectionChanged(self):
+        try:
+            for i in self.tblEPS.selectedItems():#itera por cada item no row.        
+                if i.column()==0:
+                    self.selEstimationEPS=self.investment.estimations_eps.arr[i.row()]
+        except:
+            self.selEstimationEPS=None
+            
+    def on_tblEPS_customContextMenuRequested(self,  pos):
+        if self.selEstimationEPS==None:
+            self.actionEstimationEPSDelete.setEnabled(False)
+        else:
+            self.actionEstimationEPSDelete.setEnabled(True)
+        menu=QMenu()
+        menu.addAction(self.actionEstimationEPSNew)
+        menu.addAction(self.actionEstimationEPSDelete)    
+        menu.exec_(self.tblEPS.mapToGlobal(pos))

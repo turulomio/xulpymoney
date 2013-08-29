@@ -43,7 +43,7 @@ compile:
 	pyuic4 ui/frmQuotesIBM.ui > ui/Ui_frmQuotesIBM.py
 	pyuic4 ui/frmMainMS.ui > ui/Ui_frmMainMS.py
 	pyuic4 ui/frmSelector.ui > ui/Ui_frmSelector.py
-	pyuic4 ui/frmDividendoEstimacionIBM.ui > ui/Ui_frmDividendoEstimacionIBM.py
+	pyuic4 ui/frmEstimationsAdd.ui > ui/Ui_frmEstimationsAdd.py
 	pyuic4 ui/wdgInversionesMS.ui > ui/Ui_wdgInversionesMS.py
 	pyuic4 ui/wdgChart.ui > ui/Ui_wdgChart.py
 	pyuic4 ui/wdgLog.ui > ui/Ui_wdgLog.py
@@ -73,7 +73,7 @@ install:
 	install -m 755 -o root mystocksd.py $(PREFIXBIN)/mystocksd
 	install -m 755 -o root sources/mq.*.py $(PREFIXBIN)/
 	install -m 755 -o root mystocks.py $(PREFIXBIN)/mystocks
-	install -m 755 -o root mystocks.initd $(PREFIXINITD)/myquotes
+	install -m 755 -o root mystocks.initd $(PREFIXINITD)/mystocks
 	install -m 644 -o root GPL-3.txt CHANGELOG-* AUTHORS-* RELEASES-* xulpymoney-*.odt $(PREFIXSHARE)
 	install -m 644 -o root sql/*.data sql/*.sql $(PREFIXSHARE)/sql
 	install -m 644 -o root images/kmplot.jpg $(PREFIXPIXMAPS)/mystocks.jpg
