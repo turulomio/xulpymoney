@@ -13,6 +13,7 @@ compile:
 	pyrcc4 -py3 images/xulpymoney.qrc > images/xulpymoney_rc.py
 	pyuic4 ui/frmAbout.ui > ui/Ui_frmAbout.py
 	pyuic4 ui/frmAccess.ui > ui/Ui_frmAccess.py
+	pyuic4 ui/frmDPSAdd.ui > ui/Ui_frmDPSAdd.py
 	pyuic4 ui/frmHelp.ui > ui/Ui_frmHelp.py
 	pyuic4 ui/frmInit.ui > ui/Ui_frmInit.py
 	pyuic4 ui/frmMain.ui > ui/Ui_frmMain.py

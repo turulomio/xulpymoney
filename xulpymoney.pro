@@ -3,6 +3,8 @@ SOURCES         = xulpymoney.py \
                   ui/Ui_frmAbout.py \
                   ui/frmAccess.py \
                   ui/Ui_frmAccess.py \
+                  ui/frmDPSAdd.py \
+                  ui/Ui_frmDPSAdd.py \
                   ui/frmInit.py \
                   ui/Ui_frmInit.py \
                   ui/frmHelp.py \
@@ -85,6 +87,7 @@ SOURCES         = xulpymoney.py \
 FORMS           = ui/frmAbout.ui \
                   ui/frmAccess.ui \
                   ui/frmDividendosIBM.ui \
+                  ui/frmDPSAdd.ui \
                   ui/frmInit.ui \
                   ui/frmHelp.ui \
                   ui/frmMain.ui \

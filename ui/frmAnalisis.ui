@@ -1221,7 +1221,7 @@ correspondiente en la tabla</string>
          <item>
           <widget class="QTabWidget" name="tabEstimaciones">
            <property name="currentIndex">
-            <number>2</number>
+            <number>0</number>
            </property>
            <widget class="QWidget" name="tab_2">
             <attribute name="icon">
@@ -1467,6 +1467,30 @@ correspondiente en la tabla</string>
    </property>
    <property name="toolTip">
     <string>Borrar estimación de BPA</string>
+   </property>
+  </action>
+  <action name="actionDPSNew">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/add.png</normaloff>:/xulpymoney/add.png</iconset>
+   </property>
+   <property name="text">
+    <string>New DPS</string>
+   </property>
+   <property name="toolTip">
+    <string>New DPS</string>
+   </property>
+  </action>
+  <action name="actionDPSDelete">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/list-remove.png</normaloff>:/xulpymoney/list-remove.png</iconset>
+   </property>
+   <property name="text">
+    <string>Remove DPS</string>
+   </property>
+   <property name="toolTip">
+    <string>Remove DPS</string>
    </property>
   </action>
  </widget>
