@@ -1,4 +1,4 @@
-import   os
+import   os, sys
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 from Ui_frmMainMS import *
@@ -31,8 +31,13 @@ class frmMainMS(QMainWindow, Ui_frmMainMS):#
         self.w.setAttribute(Qt.WA_DeleteOnClose) 
         access=frmAccess(self.cfg, 1)
         access.setWindowTitle(self.trUtf8("MyStocks - Acceso"))
-        QObject.connect(access.cmdYN, SIGNAL("rejected()"), self, SLOT("close()"))
         access.exec_()
+                
+        if access.result()==QDialog.Rejected:
+            self.close()
+            sys.exit(1)
+            return
+            
         self.w.close()
 
         self.cfg.actualizar_memoria()
@@ -101,7 +106,7 @@ class frmMainMS(QMainWindow, Ui_frmMainMS):#
     def on_actionExportar_activated(self):
         os.popen("pg_dump -U postgres -t quotes myquotes | sed -e 's:quotes:export:' | gzip > "+os.environ['HOME']+"/.myquotes/dump-%s.txt.gz" % str(datetime.date.today()))
         m=QMessageBox()
-        m.setText(QApplication.translate("Config","Se ha exportado con éxito la tabla quotes"))
+        m.setText(QApplication.translate("Core","Se ha exportado con éxito la tabla quotes"))
         m.exec_()      
 
     @QtCore.pyqtSlot()  

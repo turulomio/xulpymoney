@@ -58,13 +58,15 @@ class frmAccess(QDialog, Ui_frmAccess):
             return False
 
     
-    @pyqtSignature("")
+    @QtCore.pyqtSlot() 
     def on_cmdYN_accepted(self):
         if self.make_connection()==False:
-            m=QMessageBox()
-            m.setText(self.trUtf8("Error en la conexión, vuelva a entrar"))
-            m.exec_()        
             self.reject()
+            return
         self.accept()
 
+
+    @QtCore.pyqtSlot() 
+    def on_cmdYN_rejected(self):
+        self.reject()
 
