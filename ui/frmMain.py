@@ -1,5 +1,6 @@
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
+import sys
 from Ui_frmMain import *
 from frmAbout import *
 from libxulpymoney import *
@@ -32,11 +33,17 @@ class frmMain(QMainWindow, Ui_frmMain):
         self.w=QWidget()       
         
         access2=frmAccess(self.cfg, 1)        
-        QObject.connect(access2.cmdYN, SIGNAL("rejected()"), self, SLOT("close()"))
         access2.exec_()
+        if access2.result()==QDialog.Rejected:
+            self.on_actionSalir_activated()
+            sys.exit(1)
+
         access=frmAccess(self.cfg, 2)        
-        QObject.connect(access.cmdYN, SIGNAL("rejected()"), self, SLOT("close()"))
         access.exec_()
+        
+        if access.result()==QDialog.Rejected:
+            self.on_actionSalir_activated()
+            sys.exit(1)
 
         
         self.cfg.actualizar_memoria() ##CARGA TODOS LOS DATOS Y LOS VINCULA       
@@ -52,10 +59,6 @@ class frmMain(QMainWindow, Ui_frmMain):
             Investment(self.cfg).changeDeletable(  ids2protect,  False)
         self.cfg.conms.commit()
         
-        
-        
-                
-#    def __del__(self):
         
     @QtCore.pyqtSlot()  
     def on_actionSalir_activated(self):

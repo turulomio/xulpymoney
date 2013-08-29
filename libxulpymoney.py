@@ -1537,8 +1537,9 @@ class DBData:
         self.tupdatedata=TUpdateData(self.cfg)
         
     def __del__(self):
-        self.tupdatedata.join()
-        print ("TUpdateData closed")
+        if self.tupdatedata.isAlive():
+            self.tupdatedata.join()
+            print ("TUpdateData closed")
         
         
         
@@ -4930,7 +4931,8 @@ class ConfigMyStock:
         
 
     def __del__(self):
-        self.disconnect_myquotes(self.conms)
+        if self.conms:#Cierre por reject en frmAccess
+            self.disconnect_myquotes(self.conms)
     
     
 
@@ -4964,7 +4966,7 @@ class ConfigMyStock:
                 self.conms=psycopg2.extras.DictConnection(strmq)
                 return self.conms
             except psycopg2.Error:
-                print ("Error en la conexion, esperando 10 segundos")
+                print (QApplication.translate("Core","Error conecting to MyStocksd, waiting 10 seconds"))
                 time.sleep(10)
 
     def disconnect_myquotesd(self):
@@ -4977,7 +4979,8 @@ class ConfigMyStock:
             return mq
         except psycopg2.Error:
             m=QMessageBox()
-            m.setText(QApplication.translate("Config","Error en la conexión, vuelva a entrar"))
+            m.setText(QApplication.translate("Core","Error conecting to MyStocks"))
+            m.setIcon(QMessageBox.Information)
             m.exec_()
             sys.exit()
 
@@ -5011,8 +5014,10 @@ class ConfigXulpymoney(ConfigMyStock):
         self.closing=True
         self.data.__del__()
         
-        self.disconnect_myquotes(self.conms)
-        self.disconnect_xulpymoney(self.con)
+        if self.conms:#Cierre por reject en frmAccess
+            self.disconnect_myquotes(self.conms)
+        if self.con:
+            self.disconnect_xulpymoney(self.con)
         
 
     def actualizar_memoria(self):
@@ -5038,7 +5043,8 @@ class ConfigXulpymoney(ConfigMyStock):
             con=psycopg2.extras.DictConnection(strcon)
         except psycopg2.Error:
             m=QMessageBox()
-            m.setText(QApplication.translate("Config","Error en la conexión a xulpymoney, vuelva a entrar"))
+            m.setText(QApplication.translate("Core","Error conecting to Xulpymoney"))
+            m.setIcon(QMessageBox.Information)
             m.exec_()        
             sys.exit()
         return con
