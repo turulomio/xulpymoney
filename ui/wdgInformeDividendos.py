@@ -5,7 +5,7 @@ from libxulpymoney import *
 from Ui_wdgInformeDividendos import *
 from frmInversionesEstudio import *
 from frmAnalisis import *
-from frmDividendoEstimacionIBM import *
+from frmEstimationsAdd import *
 
 class wdgInformeDividendos(QWidget, Ui_wdgInformeDividendos):
     def __init__(self, cfg,  parent=None):
@@ -24,7 +24,7 @@ class wdgInformeDividendos(QWidget, Ui_wdgInformeDividendos):
 
     @QtCore.pyqtSlot()  
     def on_actionModificarDPA_activated(self):
-        d=frmDividendoEstimacionIBM(self.cfg, self.selInversion.investment)
+        d=frmEstimationsAdd(self.cfg, self.selInversion.investment)
         d.exec_()
         self.on_chkInactivas_stateChanged(self.chkInactivas.checkState())
         self.tblInversiones.clearSelection()
@@ -44,13 +44,13 @@ class wdgInformeDividendos(QWidget, Ui_wdgInformeDividendos):
         self.tblInversiones.setRowCount(len(self.inversiones.arr));
         sumdiv=Decimal(0)
         for i, inv in enumerate(self.inversiones.arr):
-            if inv.investment.estimacionesdividendo.find(datetime.date.today().year)==None:
+            if inv.investment.estimations_dps.find(datetime.date.today().year)==None:
                 dpa=0
                 tpc=0
                 divestimado=0
             else:
-                dpa=inv.investment.estimacionesdividendo.currentYear().dpa
-                tpc=inv.investment.estimacionesdividendo.currentYear().tpc_dpa()
+                dpa=inv.investment.estimations_dps.currentYear().estimation
+                tpc=inv.investment.estimations_dps.currentYear().tpc_dpa()
                 divestimado=inv.dividendo_bruto_estimado()
             
             self.tblInversiones.setItem(i, 0,QTableWidgetItem(inv.name))
@@ -63,7 +63,7 @@ class wdgInformeDividendos(QWidget, Ui_wdgInformeDividendos):
             self.tblInversiones.setItem(i, 6, qtpc(tpc))
                 
             #Colorea si está desactualizado
-            if inv.investment.estimacionesdividendo.dias_sin_actualizar()>self.spin.value():
+            if inv.investment.estimations_dps.dias_sin_actualizar()>self.spin.value():
                 self.tblInversiones.item(i, 3).setBackgroundColor(QColor(255, 146, 148))
         self.lblTotal.setText(self.trUtf8("Si mantuviera la inversión un año obtendría {0}".format( self.cfg.localcurrency.string(sumdiv)) ))
             

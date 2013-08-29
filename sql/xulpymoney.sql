@@ -218,17 +218,6 @@ ALTER TABLE public.cuentas OWNER TO postgres;
 SET default_with_oids = false;
 
 --
--- Name: datetimes; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
---
-
-CREATE TABLE datetimes (
-    datetime timestamp with time zone
-);
-
-
-ALTER TABLE public.datetimes OWNER TO postgres;
-
---
 -- Name: dividendos; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -275,7 +264,7 @@ CREATE TABLE inversiones (
     in_activa boolean DEFAULT true NOT NULL,
     id_cuentas integer NOT NULL,
     venta numeric(100,6) DEFAULT 0 NOT NULL,
-    myquotesid integer
+    mystocksid integer
 );
 
 

@@ -44,11 +44,11 @@ class frmMainMS(QMainWindow, Ui_frmMainMS):#
         
 #        if Global(self.cfg).get_sourceforge_version()>version:
 #            m=QMessageBox()
-#            m.setText(QApplication.translate("myquotes","Hay una nueva versión publicada en http://myquotes.sourceforge.net"))
+#            m.setText(QApplication.translate("mystocks","Hay una nueva versión publicada en http://mystocks.sourceforge.net"))
 #            m.exec_()        
 #        if Global(self.cfg).get_database_init_date()==str(datetime.date.today()):
 #            m=QMessageBox()
-#            m.setText(QApplication.translate("myquotes","La base de datos se acaba de iniciar.\n\nSe necesitan al menos 24 horas de funcionamiento del demonio myquotesd para que esta aplicación tenga todos los datos disponibles."))
+#            m.setText(QApplication.translate("mystocks","La base de datos se acaba de iniciar.\n\nSe necesitan al menos 24 horas de funcionamiento del demonio mystocksd para que esta aplicación tenga todos los datos disponibles."))
 #            m.exec_()       
         
         self.w=wdgInversionesMS(self.cfg,  self.sqlvacio)
@@ -58,7 +58,7 @@ class frmMainMS(QMainWindow, Ui_frmMainMS):#
         
     def __del__(self):
         print ("Saliendo de la aplicación")
-        self.cfg.disconnect_myquotes(self.cfg.conms)
+        self.cfg.disconnect_mystocks(self.cfg.conms)
         
     @pyqtSignature("")
     def on_actionAcercaDe_activated(self):
@@ -104,19 +104,19 @@ class frmMainMS(QMainWindow, Ui_frmMainMS):#
 
     @QtCore.pyqtSlot()  
     def on_actionExportar_activated(self):
-        os.popen("pg_dump -U postgres -t quotes myquotes | sed -e 's:quotes:export:' | gzip > "+os.environ['HOME']+"/.myquotes/dump-%s.txt.gz" % str(datetime.date.today()))
+        os.popen("pg_dump -U postgres -t quotes mystocks | sed -e 's:quotes:export:' | gzip > "+os.environ['HOME']+"/.mystocks/dump-%s.txt.gz" % str(datetime.date.today()))
         m=QMessageBox()
         m.setText(QApplication.translate("Core","Se ha exportado con éxito la tabla quotes"))
         m.exec_()      
 
     @QtCore.pyqtSlot()  
     def on_actionImportar_activated(self):
-        filename=(QFileDialog.getOpenFileName(self, self.tr("Selecciona el fichero a importar"), os.environ['HOME']+ "/.myquotes/", "Gzipped text (*.txt.gz)"))
+        filename=(QFileDialog.getOpenFileName(self, self.tr("Selecciona el fichero a importar"), os.environ['HOME']+ "/.mystocks/", "Gzipped text (*.txt.gz)"))
         inicio=datetime.datetime.now()
-        con=self.cfg.connect_myquotes()
+        con=self.cfg.connect_mystocks()
         cur = con.cursor()
         print ("Importando la tabla export")
-        os.popen("zcat " + filename  + " | psql -U postgres myquotes")
+        os.popen("zcat " + filename  + " | psql -U postgres mystocks")
         cur.execute("insert into quotes(select * from export where code||date::text in (select code||date::text from export except select code||date::text from quotes));") #solo los que faltan no los modificados que sería select * en los dos lados
         con.commit()
         estado=cur.statusmessage
@@ -128,7 +128,7 @@ class frmMainMS(QMainWindow, Ui_frmMainMS):#
         cur.execute("DROP INDEX index_export_unik2;")
         con.commit()
         cur.close()
-        self.cfg.disconnect_myquotesd(con)      
+        self.cfg.disconnect_mystocksd(con)      
         fin=datetime.datetime.now()
         
         m=QMessageBox()

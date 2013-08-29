@@ -1,5 +1,5 @@
 # -*- coding: UTF-8  -*-
-from libmyquotes import *
+from libmystocks import *
 
 class Conjuntos(Source):
     def __init__(self,  cfg):

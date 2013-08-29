@@ -223,24 +223,24 @@ class wdgTotal(QWidget, Ui_wdgTotal):
     def on_cmd_pressed(self):
         con=self.cfg.connect_xulpymoney()
         cur = con.cursor()        
-        mq=self.cfg.connect_myquotes()
+        mq=self.cfg.connect_mystocks()
         curms=mq.cursor()        
         self.load_data(cur, curms) 
         cur.close()     
         self.cfg.disconnect_xulpymoney(con)       
         curms.close()
-        self.cfg.disconnect_myquotes(mq)        
+        self.cfg.disconnect_mystocks(mq)        
         
     def on_cmdG_pressed(self):
         con=self.cfg.connect_xulpymoney()
         cur = con.cursor()        
-        mq=self.cfg.connect_myquotes()
+        mq=self.cfg.connect_mystocks()
         curms=mq.cursor()        
         self.load_graphic(cur, curms)
         cur.close()     
         self.cfg.disconnect_xulpymoney(con)       
         curms.close()
-        self.cfg.disconnect_myquotes(mq)        
+        self.cfg.disconnect_mystocks(mq)        
         
 
     def on_tab_currentChanged(self, index):

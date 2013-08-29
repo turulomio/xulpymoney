@@ -1,5 +1,5 @@
 import gettext
-from libmyquotes import *
+from libmystocks import *
 
 class WorkerBonoAleman(Source):
     def __init__(self,  cfg):
@@ -11,13 +11,13 @@ class WorkerBonoAleman(Source):
         print (self.name)
         while (True):
             (parsed, errors)=self.execute()
-            con=self.cfg.connect_myquotesd()
+            con=self.cfg.connect_mystocksd()
             cur = con.cursor()
             self.parse_errors(cur,  errors)
             Quote(self.cfg).insert(cur, parsed, self.name)
             con.commit()
             cur.close()                
-            self.cfg.disconnect_myquotesd(con)
+            self.cfg.disconnect_mystocksd(con)
             time.sleep(60)
 
 

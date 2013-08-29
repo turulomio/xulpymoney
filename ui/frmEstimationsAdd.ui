@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>frmDividendoEstimacionIBM</class>
- <widget class="QDialog" name="frmDividendoEstimacionIBM">
+ <class>frmEstimationsAdd</class>
+ <widget class="QDialog" name="frmEstimationsAdd">
   <property name="windowModality">
    <enum>Qt::ApplicationModal</enum>
   </property>
@@ -14,7 +14,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Nueva estimación de dividendo</string>
+   <string>New estimation</string>
   </property>
   <property name="windowIcon">
    <iconset>
@@ -64,7 +64,7 @@
        <item>
         <widget class="QLabel" name="label_2">
          <property name="text">
-          <string>Introduce el DPA</string>
+          <string>Add a estimation</string>
          </property>
         </widget>
        </item>
@@ -97,7 +97,11 @@
      <item>
       <widget class="QPushButton" name="cmd">
        <property name="text">
-        <string>Save dividend</string>
+        <string>Save estimation</string>
+       </property>
+       <property name="icon">
+        <iconset resource="../images/xulpymoney.qrc">
+         <normaloff>:/xulpymoney/save.png</normaloff>:/xulpymoney/save.png</iconset>
        </property>
       </widget>
      </item>

@@ -22,7 +22,7 @@ class wdgLog(QWidget, Ui_wdgLog):
         self.timerLog.start(20000)
         
     def updateLog(self):
-        f=os.popen("cat /tmp/myquotes.log| grep -i '%s'" % self.filtro)
+        f=os.popen("cat /tmp/mystocks.log| grep -i '%s'" % self.filtro)
         self.lst.clear()
         self.lst.addItems(f.read().split('\n'))
         f.close()
@@ -32,7 +32,7 @@ class wdgLog(QWidget, Ui_wdgLog):
     def updateStatus(self ):		
         self.table.clearContents()
         now=datetime.datetime.now()
-        con=self.cfg.connect_myquotes()
+        con=self.cfg.connect_mystocks()
         cur = con.cursor()
         cur.execute("select * from status order by source, process;")
         self.table.setRowCount(cur.rowcount+1)
@@ -60,7 +60,7 @@ class wdgLog(QWidget, Ui_wdgLog):
         self.table.setItem(cur.rownumber, 0, qcenter("TOTAL"))
         self.table.setItem(cur.rownumber, 4, qright(str(numinternet)))
         cur.close()     
-        self.cfg.disconnect_myquotesd(con)         
+        self.cfg.disconnect_mystocksd(con)         
         self.lblLastUpdateStatus.setText(self.trUtf8("Última actualización: {0}".format(str(now)[:-7])))
         
     def on_cmd_pressed(self):

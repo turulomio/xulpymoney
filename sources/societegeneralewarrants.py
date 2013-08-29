@@ -1,6 +1,6 @@
 # -*- coding: UTF-8  -*-
 import gettext,  multiprocessing
-from libmyquotes import *
+from libmystocks import *
 
     
 class SocieteGeneraleWarrants(Source):
@@ -29,7 +29,7 @@ class SocieteGeneraleWarrants(Source):
     
     def arr_dividends(self):
         resultado=[]
-        con=self.cfg.connect_myquotesd()
+        con=self.cfg.connect_mystocksd()
         cur=con.cursor()
         cur.execute("select code from investments where dividend is null and code like 'SGW#%'")
         if cur.rowcount!=0:
@@ -37,7 +37,7 @@ class SocieteGeneraleWarrants(Source):
                 d={"code":row['code'], "dividend": 0}
                 resultado.append(d)
         cur.close()
-        self.cfg.disconnect_myquotesd(con)            
+        self.cfg.disconnect_mystocksd(con)            
         return resultado
         
     

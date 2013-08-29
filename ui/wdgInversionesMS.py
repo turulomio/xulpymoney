@@ -5,7 +5,7 @@ from frmAnalisis import *
 from libxulpymoney import *
 from frmQuotesIBM import *
 from wdgMergeCodes import *
-from frmDividendoEstimacionIBM import *
+from frmEstimationEPSIBM import *
 
 class wdgInversionesMS(QWidget, Ui_wdgInversionesMS):
     def __init__(self, cfg,  sql,  parent=None):
@@ -31,7 +31,7 @@ class wdgInversionesMS(QWidget, Ui_wdgInversionesMS):
         inicio=datetime.datetime.now()
         self.sql=sql
         self.investments=[]
-        con=self.cfg.connect_myquotes()
+        con=self.cfg.connect_mystocks()
         cur = con.cursor()
         cur.execute(sql)
         cur2=con.cursor()
@@ -52,12 +52,12 @@ class wdgInversionesMS(QWidget, Ui_wdgInversionesMS):
             inv=Investment(self.cfg)
             inv.init__db_row(i)
             inv.result.basic.load_from_db()
-            inv.estimacionesdividendo.load_from_db()
+            inv.estimations_dps.load_from_db()
             self.investments.append(inv)
 #            print ("wdgInversionesMS",  inv.agrupations.dic_arr)
         cur.close()     
         cur2.close()
-        self.cfg.disconnect_myquotes(con)   
+        self.cfg.disconnect_mystocks(con)   
         if len(self.investments)!=0:      
             diff=datetime.datetime.now()-inicio
             print("wdgInversiones > build_array: {0} ({1} cada uno)".format(str(diff), diff/len(self.investments)))
@@ -82,11 +82,11 @@ class wdgInversionesMS(QWidget, Ui_wdgInversionesMS):
             self.tblInversiones.setItem(i, 5, qtpc(inv.result.basic.tpc_diario()))
             self.tblInversiones.setItem(i, 6, qtpc(inv.result.basic.tpc_anual()))
             
-            if inv.estimacionesdividendo.currentYear()==None:
+            if inv.estimations_dps.currentYear()==None:
                 self.tblInversiones.setItem(i, 7, qtpc(None))
                 self.tblInversiones.item(i, 7).setBackgroundColor( QColor(255, 182, 182))          
             else:
-                self.tblInversiones.setItem(i, 7, qtpc(inv.estimacionesdividendo.currentYear().tpc_dpa()))  
+                self.tblInversiones.setItem(i, 7, qtpc(inv.estimations_dps.currentYear().tpc_dpa()))  
                 
             if inv.active==True:#Active
 #                for j in range(8):
@@ -134,20 +134,20 @@ class wdgInversionesMS(QWidget, Ui_wdgInversionesMS):
     def on_actionInversionBorrar_activated(self):
         if self.selInvestment.deletable==False:
             m=QMessageBox()
-            m.setText(QApplication.translate("myquotes","Esta inversión no puede borrarse porque está marcada como NO BORRABLE"))
+            m.setText(QApplication.translate("mystocks","Esta inversión no puede borrarse porque está marcada como NO BORRABLE"))
             m.exec_()    
             return
 
-        respuesta = QMessageBox.warning(self, self.tr("MyQuotes"), self.trUtf8("Se borrarán los datos de la inversión seleccionada ({0}). Tenga en cuenta que si es el tipo de actualización es manual, no recuperará los datos. ¿Quiere continuar?".format(self.selInvestment.id)), QMessageBox.Ok | QMessageBox.Cancel)
+        respuesta = QMessageBox.warning(self, self.tr("MyStocks"), self.trUtf8("Se borrarán los datos de la inversión seleccionada ({0}). Tenga en cuenta que si es el tipo de actualización es manual, no recuperará los datos. ¿Quiere continuar?".format(self.selInvestment.id)), QMessageBox.Ok | QMessageBox.Cancel)
         if respuesta==QMessageBox.Ok:
-            con=self.cfg.connect_myquotes()
+            con=self.cfg.connect_mystocks()
             cur = con.cursor()
             cur.execute("delete from investments where id=%s", (self.selInvestment.id, ))
             cur.execute("delete from quotes where id=%s", (self.selInvestment.id, ))
             cur.execute("delete from estimaciones where id=%s", (self.selInvestment.id, ))
             con.commit()
             cur.close()     
-            self.cfg.disconnect_myquotes(con)    
+            self.cfg.disconnect_mystocks(con)    
             self.build_array(self.sql)
             self.build_table()  
             
@@ -194,7 +194,7 @@ class wdgInversionesMS(QWidget, Ui_wdgInversionesMS):
         
     @QtCore.pyqtSlot() 
     def on_actionOrdenarDividendo_activated(self):
-        self.investments=sorted(self.investments, key=lambda inv: inv.estimacionesdividendo.currentYear().tpc_dpa(),  reverse=True) 
+        self.investments=sorted(self.investments, key=lambda inv: inv.estimations_dps.currentYear().tpc_dpa(),  reverse=True) 
         self.build_table()        
         
     def on_txt_returnPressed(self):
@@ -221,7 +221,7 @@ class wdgInversionesMS(QWidget, Ui_wdgInversionesMS):
         menu.addAction(self.actionInversionBorrar)
         menu.addSeparator()
         menu.addAction(self.actionQuoteNew)
-        menu.addAction(self.actionDividendoEstimacionNueva)
+        menu.addAction(self.actionEstimationEPSNueva)
         menu.addSeparator()
         menu.addAction(self.actionMergeCodes)
         menu.addAction(self.actionFavoritos)
@@ -256,7 +256,7 @@ class wdgInversionesMS(QWidget, Ui_wdgInversionesMS):
             self.actionInversionEstudio.setEnabled(True)
             self.actionIbex35.setEnabled(True)
             self.actionQuoteNew.setEnabled(True)
-            self.actionDividendoEstimacionNueva.setEnabled(True)
+            self.actionEstimationEPSNueva.setEnabled(True)
         else:
             self.actionMergeCodes.setEnabled(False)
             self.actionInversionModificar.setEnabled(False)
@@ -265,7 +265,7 @@ class wdgInversionesMS(QWidget, Ui_wdgInversionesMS):
             self.actionInversionEstudio.setEnabled(False)
             self.actionIbex35.setEnabled(False)
             self.actionQuoteNew.setEnabled(False)
-            self.actionDividendoEstimacionNueva.setEnabled(False)
+            self.actionEstimationEPSNueva.setEnabled(False)
         
         if self.selectedRows==2:
             self.actionMergeCodes.setEnabled(True)
@@ -329,8 +329,8 @@ class wdgInversionesMS(QWidget, Ui_wdgInversionesMS):
         self.build_table()  
 
     @pyqtSignature("")
-    def on_actionDividendoEstimacionNueva_activated(self):
-        d=frmDividendoEstimacionIBM(self.cfg, self.selInvestment)
+    def on_actionEstimationEPSNueva_activated(self):
+        d=frmEstimationEPSIBM(self.cfg, self.selInvestment)
         d.exec_()
         if d.result()==QDialog.Accepted:
             self.build_array(self.sql)

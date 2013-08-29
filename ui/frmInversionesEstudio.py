@@ -78,13 +78,13 @@ class frmInversionesEstudio(QDialog, Ui_frmInversionesEstudio):
                 dtpc=0
                 dtae=0
             
-            estimacion=self.inversion.investment.estimacionesdividendo.currentYear()
+            estimacion=self.inversion.investment.estimations_dps.currentYear()
             if estimacion!=None:
                 acciones=self.inversion.acciones()
-                tpccalculado=100*estimacion.dpa/self.inversion.investment.result.basic.last.quote
-                self.lblDivAnualEstimado.setText(("El dividendo anual estimado, según el valor actual de la acción es del {0} % ({1}€ por acción)".format(str(round(tpccalculado, 2)),  str(estimacion.dpa))))
-                self.lblDivFechaRevision.setText(('Fecha de la última revisión del dividendo: '+ str(estimacion.fechaestimacion)))
-                self.lblDivSaldoEstimado.setText(("Saldo estimado: {0}€ ({1}€ después de impuestos)".format( str(round(acciones*estimacion.dpa, 2)),  str(round(acciones*estimacion.dpa*(1-self.cfg.dividendwithholding))), 2)))
+                tpccalculado=100*estimacion.estimation/self.inversion.investment.result.basic.last.quote
+                self.lblDivAnualEstimado.setText(("El dividendo anual estimado, según el valor actual de la acción es del {0} % ({1}€ por acción)".format(str(round(tpccalculado, 2)),  str(estimacion.estimation))))
+                self.lblDivFechaRevision.setText(('Fecha de la última revisión del dividendo: '+ str(estimacion.date_estimation)))
+                self.lblDivSaldoEstimado.setText(("Saldo estimado: {0}€ ({1}€ después de impuestos)".format( str(round(acciones*estimacion.estimation, 2)),  str(round(acciones*estimacion.estimation*(1-self.cfg.dividendwithholding))), 2)))
             self.lblDivTPC.setText(("% de lo invertido: "+tpc(dtpc)))
             self.lblDivTAE.setText(("% TAE de lo invertido: "+tpc(dtae)))        
             self.grpDividendosEstimacion.show()
@@ -223,29 +223,29 @@ class frmInversionesEstudio(QDialog, Ui_frmInversionesEstudio):
         if self.ise.selected==None:
             m=QMessageBox()
             m.setIcon(QMessageBox.Information)
-            m.setText(self.trUtf8("Debe seleccionar una inversión de MyQuotes para continuar"))
+            m.setText(self.trUtf8("Debe seleccionar una inversión de MyStocks para continuar"))
             m.exec_()     
             return
         inversion=self.txtInversion.text()
         venta=self.txtVenta.decimal()
         id_cuentas=int(self.cmbCuenta.itemData(self.cmbCuenta.currentIndex()))
-        myquotesid=int(self.ise.selected.id)
+        mystocksid=int(self.ise.selected.id)
         
         
-        if self.cfg.data.investments_active.find(myquotesid)==None:
+        if self.cfg.data.investments_active.find(mystocksid)==None:
             print ("Cargando otro mqinversiones")
-            inv=Investment(self.cfg).init__db(myquotesid)
-            inv.estimacionesdividendo.load_from_db()
+            inv=Investment(self.cfg).init__db(mystocksid)
+            inv.estimations_dps.load_from_db()
             inv.result.basic.load_from_db()
             self.cfg.data.investments_active.arr.append(inv)
             
         
 
         if self.tipo==1:        #insertar
-            i=Inversion(self.cfg).create(inversion,   venta,  self.cfg.data.cuentas_active.find(id_cuentas),  self.cfg.data.investments_active.find(myquotesid))      
+            i=Inversion(self.cfg).create(inversion,   venta,  self.cfg.data.cuentas_active.find(id_cuentas),  self.cfg.data.investments_active.find(mystocksid))      
             i.save()
             self.cfg.con.commit()
-            ##Se añade a cfg y vincula. No carga datos porque myquotesid debe existir            
+            ##Se añade a cfg y vincula. No carga datos porque mystocksid debe existir            
             #Lo añade con las operaciones vacias pero calculadas.
             i.op=SetInversionOperacion(self.cfg)
             (i.op_actual, i.op_historica)=i.op.calcular()
@@ -254,7 +254,7 @@ class frmInversionesEstudio(QDialog, Ui_frmInversionesEstudio):
         elif self.tipo==2:
             self.inversion.name=inversion
             self.inversion.venta=venta
-            self.inversion.investment=self.cfg.data.investments_active.find(myquotesid)
+            self.inversion.investment=self.cfg.data.investments_active.find(mystocksid)
             self.inversion.save()##El id y el id_cuentas no se pueden modificar
             self.cfg.con.commit()
             self.cmdInversion.setEnabled(False)

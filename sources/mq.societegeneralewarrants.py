@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 import sys
-sys.path.append("/usr/lib/myquotes")
-from libmyquotes import *
+sys.path.append("/usr/lib/mystocks")
+from libmystocks import *
 from config import *
 """Este script saca información de la pagina productoscotizados.com"""
 
@@ -17,7 +17,7 @@ class WorkerSGWarrants(Source):
     def start(self):
         print (self.name)
         while (True):
-            con=self.cfg.connect_myquotesd()
+            con=self.cfg.connect_mystocksd()
             cur = con.cursor()     
             self.ids=self.find_ids()
 
@@ -31,7 +31,7 @@ class WorkerSGWarrants(Source):
                 Quotes(self.cfg).insert(cur, p, self.name)
             con.commit()
             cur.close()
-            self.cfg.disconnect_myquotesd(con)
+            self.cfg.disconnect_mystocksd(con)
             time.sleep(120)
 
     def parse_resultado(self, resultado):
@@ -89,13 +89,13 @@ if __name__ == '__main__':
             log ("File must be temp.xls")
             sys.exit(0)
 
-    con=cfg.connect_myquotesd()
+    con=cfg.connect_mystocksd()
     cur = con.cursor()
     cfg.carga_ia(cur, "where priority[1]=6")
 
     cfg.carga_bolsas(cur)
     cur.close()
-    cfg.disconnect_myquotesd(con)
+    cfg.disconnect_mystocksd(con)
 
     w=WorkerSGWarrants(cfg)
     w.start()

@@ -413,18 +413,32 @@ CREATE SEQUENCE dividendosestimaciones_seq
 ALTER TABLE public.dividendosestimaciones_seq OWNER TO postgres;
 
 --
--- Name: dividendospagos; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: dps; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
-CREATE TABLE dividendospagos (
-    id_dividendospagos integer NOT NULL,
-    code text NOT NULL,
+CREATE TABLE dps (
+    id_dps integer NOT NULL,
     fecha date,
-    bruto numeric(18,6)
+    bruto numeric(18,6),
+    id bigint
 );
 
 
-ALTER TABLE public.dividendospagos OWNER TO postgres;
+ALTER TABLE public.dps OWNER TO postgres;
+
+--
+-- Name: TABLE dps; Type: COMMENT; Schema: public; Owner: postgres
+--
+
+COMMENT ON TABLE dps IS 'Dividends per share paid';
+
+
+--
+-- Name: COLUMN dps.id; Type: COMMENT; Schema: public; Owner: postgres
+--
+
+COMMENT ON COLUMN dps.id IS 'id of investment';
+
 
 --
 -- Name: dividendospagos_id_dividendospagos_seq; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -444,25 +458,54 @@ ALTER TABLE public.dividendospagos_id_dividendospagos_seq OWNER TO postgres;
 -- Name: dividendospagos_id_dividendospagos_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
-ALTER SEQUENCE dividendospagos_id_dividendospagos_seq OWNED BY dividendospagos.id_dividendospagos;
+ALTER SEQUENCE dividendospagos_id_dividendospagos_seq OWNED BY dps.id_dps;
 
 
 --
--- Name: estimaciones; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: estimations_dps; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
-CREATE TABLE estimaciones (
+CREATE TABLE estimations_dps (
     year integer NOT NULL,
-    dpa numeric(18,6) NOT NULL,
-    fechaestimacion date,
-    fuente text,
+    estimation numeric(18,6) NOT NULL,
+    date_estimation date,
+    source text,
     manual boolean,
-    id integer NOT NULL,
-    bpa numeric(18,6)
+    id integer NOT NULL
 );
 
 
-ALTER TABLE public.estimaciones OWNER TO postgres;
+ALTER TABLE public.estimations_dps OWNER TO postgres;
+
+--
+-- Name: TABLE estimations_dps; Type: COMMENT; Schema: public; Owner: postgres
+--
+
+COMMENT ON TABLE estimations_dps IS 'Dividends per share';
+
+
+--
+-- Name: estimations_eps; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE estimations_eps (
+    year integer NOT NULL,
+    estimation numeric(18,6) NOT NULL,
+    date_estimation date,
+    source text,
+    manual boolean,
+    id integer NOT NULL
+);
+
+
+ALTER TABLE public.estimations_eps OWNER TO postgres;
+
+--
+-- Name: TABLE estimations_eps; Type: COMMENT; Schema: public; Owner: postgres
+--
+
+COMMENT ON TABLE estimations_eps IS 'Earnings per share';
+
 
 --
 -- Name: globals; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -497,7 +540,7 @@ CREATE TABLE investments (
     pci character(1) DEFAULT 'c'::bpchar NOT NULL,
     apalancado integer DEFAULT 0 NOT NULL,
     id_bolsas integer NOT NULL,
-    yahoo text,
+    ticker text,
     priority integer[],
     priorityhistorical integer[],
     comentario text,
@@ -675,10 +718,10 @@ COMMENT ON TABLE status IS 'Tabla que contiene el estado de myquotesd, se borra 
 
 
 --
--- Name: id_dividendospagos; Type: DEFAULT; Schema: public; Owner: postgres
+-- Name: id_dps; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY dividendospagos ALTER COLUMN id_dividendospagos SET DEFAULT nextval('dividendospagos_id_dividendospagos_seq'::regclass);
+ALTER TABLE ONLY dps ALTER COLUMN id_dps SET DEFAULT nextval('dividendospagos_id_dividendospagos_seq'::regclass);
 
 
 --
@@ -693,8 +736,16 @@ ALTER TABLE ONLY bolsas
 -- Name: dividendosestimaciones_pk; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
-ALTER TABLE ONLY estimaciones
+ALTER TABLE ONLY estimations_dps
     ADD CONSTRAINT dividendosestimaciones_pk PRIMARY KEY (year, id);
+
+
+--
+-- Name: estimacion_eps_pk; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY estimations_eps
+    ADD CONSTRAINT estimacion_eps_pk PRIMARY KEY (year, id);
 
 
 --
@@ -733,7 +784,14 @@ ALTER TABLE ONLY quotes
 -- Name: dividendosestimaciones_id; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
 --
 
-CREATE INDEX dividendosestimaciones_id ON estimaciones USING btree (id);
+CREATE INDEX dividendosestimaciones_id ON estimations_dps USING btree (id);
+
+
+--
+-- Name: estimaciones_eps; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX estimaciones_eps ON estimations_eps USING btree (id);
 
 
 --

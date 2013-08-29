@@ -45,7 +45,7 @@ class frmAccess(QDialog, Ui_frmAccess):
                 self.cfg.config.set_value("frmAccessMS", "user" ,  self.txtUser.text())
                 self.cfg.config.set_value("frmAccessMS", "server", self.txtServer.text())      
                 self.cfg.config.save()    
-                self.cfg.conms=self.cfg.connect_myquotes()      
+                self.cfg.conms=self.cfg.connect_mystocks()      
             elif self.app==2:
                 self.cfg.config.set_value("frmAccess", "db", self.txtDB.text() )
                 self.cfg.config.set_value("frmAccess", "port",  self.txtPort.text())

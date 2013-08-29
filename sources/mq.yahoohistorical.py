@@ -65,10 +65,10 @@ if __name__ == '__main__':
             log("STARTING", "","Debugging")
             cfg.debug=True
 
-    cfg.connect_myquotesd(sys.argv[1])
+    cfg.connect_mystocksd(sys.argv[1])
     cfg.actualizar_memoria()
 
     w=WorkerYahooHistorical(cfg)
     w.start()
 
-    cfg.disconnect_myquotesd()
+    cfg.disconnect_mystocksd()

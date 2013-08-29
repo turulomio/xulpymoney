@@ -1,8 +1,8 @@
 #!/usr/bin/python3
 import sys
-sys.path.append("/usr/lib/myquotes")
+sys.path.append("/usr/lib/mystocks")
 #from config import *
-from libmyquotes import *
+from libmystocks import *
 from yahoo import *
 import math
 class WorkerYahooInactive(WorkerYahoo):
@@ -17,7 +17,7 @@ class WorkerYahooInactive(WorkerYahoo):
     def start(self):
         print (self.name)
         while (True):
-            con=self.cfg.connect_myquotesd()
+            con=self.cfg.connect_mystocksd()
             cur = con.cursor()     
             self.ids=self.filtrar_ids_inactivos_no_actualizados(cur,  1, 7,  False)      
             print (self.ids)
@@ -32,7 +32,7 @@ class WorkerYahooInactive(WorkerYahoo):
             p.save(cur,self.name)
             con.commit()
             cur.close()                
-            self.cfg.disconnect_myquotesd(con)
+            self.cfg.disconnect_mystocksd(con)
             time.sleep(60*60*24)
 
 
@@ -43,13 +43,13 @@ if __name__ == '__main__':
             log("STARTING", "","Debugging")
             cfg.debug=True
 
-    con=cfg.connect_myquotesd()
+    con=cfg.connect_mystocksd()
     cur = con.cursor()
     cfg.actualizar_memoria(cur)
 #    cfg.carga_ia(cur, "where priority[1]=1")
 #    print(cfg.activas())
     cur.close()
-    cfg.disconnect_myquotesd(con)
+    cfg.disconnect_mystocksd(con)
 
     w=WorkerYahooInactive(cfg)
     w.start()

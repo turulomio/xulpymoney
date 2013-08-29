@@ -1,6 +1,6 @@
 # -*- coding: UTF-8  -*-
 import gettext,  multiprocessing
-from libmyquotes import *
+from libmystocks import *
 
 
 class DeutscheBoerse(Source):
