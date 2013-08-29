@@ -3099,6 +3099,9 @@ class DPS:
         self.date=None#pk
         self.gross=None#bruto
         
+    def __repr__(self):
+        return "DPS. Id: {0}. Gross: {1}".format(self.id, self.gross)
+        
     def init__create(self, date, gross, id=None):
         self.date=date
         self.gross=gross
@@ -3107,7 +3110,7 @@ class DPS:
 
     def init__from_db_row(self,  row):
         """Saca el registro  o uno en blanco si no lo encuentra, que fueron pasados como parámetro"""
-        return self.init__create(row['date'], row['gross'], row['id'])
+        return self.init__create(row['date'], row['gross'], row['id_dps'])
 
                         
             
