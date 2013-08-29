@@ -289,8 +289,8 @@ class frmAnalisis(QDialog, Ui_frmAnalisis):
     def on_actionDPSDelete_activated(self):
         if self.selDPS!=None:
             self.selDPS.borrar()
-            self.investment.dps.arr.remove(self.selDPS)
             self.cfg.conms.commit()
+            self.investment.dps.arr.remove(self.selDPS)
             self.investment.dps.load_myqtablewidget(self.tblDPSPaid, "frmAnalisis")
         
     @pyqtSignature("")
@@ -544,6 +544,8 @@ class frmAnalisis(QDialog, Ui_frmAnalisis):
                     self.selDPS=self.investment.dps.arr[i.row()]
         except:
             self.selDPS=None
+        print (self.selDPS)
+        
             
     def on_tblDPSPaid_customContextMenuRequested(self,  pos):
         if self.selDPS==None:
