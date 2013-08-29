@@ -8,6 +8,7 @@ from Ui_frmAnalisis import *
 from frmQuotesIBM import *
 from frmSplit import *
 from frmEstimationsAdd import *
+from frmDPSAdd import *
 from canvaschart import *
 from matplotlib.backends.backend_qt4agg import NavigationToolbar2QTAgg as NavigationToolbar
 
@@ -28,9 +29,8 @@ class frmAnalisis(QDialog, Ui_frmAnalisis):
         self.inversion=inversion#Used to generate puntos de venta, punto de compra....
         self.setSelIntraday=None
         
-#        self.investment.estimations_dps=SetEstimationsDPS(self.cfg, self.investment)
+        self.selDPS=None
         self.selEstimationDPS=None
-#        self.estimations_eps=SetEstimationsEPS(self.cfg, self.investment)
         self.selEstimationEPS=None
         
         self.selDate=None #Fecha seleccionado en datos historicos
@@ -141,9 +141,11 @@ class frmAnalisis(QDialog, Ui_frmAnalisis):
         if self.investment.id!=None:
             self.investment.result.get_basic_ohcls()
             self.investment.estimations_eps.load_from_db()#No cargada por defecto en investment
+            self.investment.dps.load_from_db()
 
-            self.investment.estimations_dps.load_myqtablewidget(self.tblDividendosEstimaciones)   
-            self.investment.estimations_eps.load_myqtablewidget(self.tblEPS)            
+            self.investment.estimations_dps.load_myqtablewidget(self.tblDividendosEstimaciones, "frmAnalisis")   
+            self.investment.estimations_eps.load_myqtablewidget(self.tblEPS, "frmAnalisis")            
+            self.investment.dps.load_myqtablewidget(self.tblDPSPaid, "frmAnalisis")            
         inicio=datetime.datetime.now()
         self.__load_information()
         if len(self.investment.result.ohclDaily.arr)!=0:
@@ -284,18 +286,32 @@ class frmAnalisis(QDialog, Ui_frmAnalisis):
 
 
     @pyqtSignature("")
+    def on_actionDPSDelete_activated(self):
+        if self.selDPS!=None:
+            self.selDPS.borrar()
+            self.investment.dps.arr.remove(self.selDPS)
+            self.cfg.conms.commit()
+            self.investment.dps.load_myqtablewidget(self.tblDPSPaid, "frmAnalisis")
+        
+    @pyqtSignature("")
+    def on_actionDPSNew_activated(self):
+        d=frmDPSAdd(self.cfg, self.investment)
+        d.exec_()
+        self.investment.dps.load_myqtablewidget(self.tblDPSPaid, "frmAnalisis")
+
+    @pyqtSignature("")
     def on_actionEstimationDPSDelete_activated(self):
         if self.selEstimationDPS!=None:
             self.selEstimationDPS.borrar()
             self.investment.estimations_dps.arr.remove(self.selEstimationDPS)
             self.cfg.conms.commit()
-            self.investment.estimations_dps.load_myqtablewidget(self.tblDividendosEstimaciones)
+            self.investment.estimations_dps.load_myqtablewidget(self.tblDividendosEstimaciones, "frmAnalisis")
         
     @pyqtSignature("")
     def on_actionEstimationDPSNew_activated(self):
         d=frmEstimationsAdd(self.cfg, self.investment, "dps")
         d.exec_()
-        self.investment.estimations_dps.load_myqtablewidget(self.tblDividendosEstimaciones)
+        self.investment.estimations_dps.load_myqtablewidget(self.tblDividendosEstimaciones, "frmAnalisis")
 
     @pyqtSignature("")
     def on_actionEstimationEPSDelete_activated(self):
@@ -303,13 +319,13 @@ class frmAnalisis(QDialog, Ui_frmAnalisis):
             self.selEstimationEPS.borrar()
             self.investment.estimations_eps.arr.remove(self.selEstimationEPS)
             self.cfg.conms.commit()
-            self.investment.estimations_eps.load_myqtablewidget(self.tblEPS)
+            self.investment.estimations_eps.load_myqtablewidget(self.tblEPS, "frmAnalisis")
         
     @pyqtSignature("")
     def on_actionEstimationEPSNew_activated(self):
         d=frmEstimationsAdd(self.cfg, self.investment, "eps")
         d.exec_()
-        self.investment.estimations_eps.load_myqtablewidget(self.tblEPS)
+        self.investment.estimations_eps.load_myqtablewidget(self.tblEPS, "frmAnalisis")
 
     @pyqtSignature("")
     def on_actionPurgeDay_activated(self):
@@ -520,3 +536,21 @@ class frmAnalisis(QDialog, Ui_frmAnalisis):
         menu.addAction(self.actionEstimationEPSNew)
         menu.addAction(self.actionEstimationEPSDelete)    
         menu.exec_(self.tblEPS.mapToGlobal(pos))
+            
+    def on_tblDPSPaid_itemSelectionChanged(self):
+        try:
+            for i in self.tblDPSPaid.selectedItems():#itera por cada item no row.        
+                if i.column()==0:
+                    self.selDPS=self.investment.dps.arr[i.row()]
+        except:
+            self.selDPS=None
+            
+    def on_tblDPSPaid_customContextMenuRequested(self,  pos):
+        if self.selDPS==None:
+            self.actionDPSDelete.setEnabled(False)
+        else:
+            self.actionDPSDelete.setEnabled(True)
+        menu=QMenu()
+        menu.addAction(self.actionDPSNew)
+        menu.addAction(self.actionDPSDelete)    
+        menu.exec_(self.tblDPSPaid.mapToGlobal(pos))

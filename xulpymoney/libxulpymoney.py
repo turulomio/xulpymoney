@@ -615,7 +615,7 @@ class SetEstimationsDPS:
         self.cfg=cfg   
         self.investment=investment
     
-    def EstimacionNula(self, year):
+    def estimacionNula(self, year):
         return EstimationDPS(self.cfg).init__create(self, year, datetime.date.today(), "None Estimation", None, None)
     
     def load_from_db(self):
@@ -632,7 +632,7 @@ class SetEstimationsDPS:
         for e in self.arr:
             if e.year==year:
                 return e
-        return self.EstimacionNula(year)
+        return self.estimacionNula(year)
             
     def currentYear(self):
         return self.find(datetime.date.today().year)
@@ -644,10 +644,14 @@ class SetEstimationsDPS:
                 ultima=v.date_estimation
         return (datetime.date.today()-ultima).days
         
+    def sort(self):
+        self.arr=sorted(self.arr, key=lambda c: c.year,  reverse=False)         
         
-    def load_myqtablewidget(self, table):
+    def load_myqtablewidget(self, table, section):
+        self.sort()
         table.clearContents()
         table.setRowCount(len(self.arr))
+        table.settings(section,  self.cfg)
         for i, e in enumerate(self.arr):
             table.setItem(i, 0, qcenter(str(e.year)))
             table.setItem(i, 1, self.investment.currency.qtablewidgetitem(e.estimation, 6))       
@@ -664,7 +668,7 @@ class SetEstimationsEPS:
         self.cfg=cfg   
         self.investment=investment
     
-    def EstimacionNula(self, year):
+    def estimacionNula(self, year):
         return EstimationEPS(self.cfg).init__create(self, year, datetime.date.today(), "None Estimation", None, None)
     
     def load_from_db(self):
@@ -681,7 +685,7 @@ class SetEstimationsEPS:
         for e in self.arr:
             if e.year==year:
                 return e
-        return self.EstimacionNula(year)
+        return self.estimacionNula(year)
             
     def currentYear(self):
         return self.find(datetime.date.today().year)
@@ -694,9 +698,14 @@ class SetEstimationsEPS:
         return (datetime.date.today()-ultima).days
         
         
-    def load_myqtablewidget(self, table):
+    def sort(self):
+        self.arr=sorted(self.arr, key=lambda c: c.year,  reverse=False)         
+        
+    def load_myqtablewidget(self, table, section):
+        self.sort()
         table.clearContents()
         table.setRowCount(len(self.arr))
+        table.settings(section,  self.cfg)
         for i, e in enumerate(self.arr):
             table.setItem(i, 0, qcenter(str(e.year)))
             table.setItem(i, 1, self.investment.currency.qtablewidgetitem(e.estimation, 6))       
@@ -3042,7 +3051,44 @@ class Money:
 
 
 class SetDPS:
-    pass
+    def __init__(self, cfg,  investment):
+        self.arr=[]
+        self.cfg=cfg   
+        self.investment=investment
+    
+    
+    def load_from_db(self):
+        del self.arr
+        self.arr=[]
+        cur=self.cfg.conms.cursor()
+        cur.execute( "select * from dps where id=%s order by date", (self.investment.id, ))
+        for row in cur:
+            self.arr.append(DPS(self.cfg, self.investment).init__from_db_row(row))
+        cur.close()            
+        
+    def find(self, id):
+        """Como puede no haber todos los años se usa find que devuelve una estimacion nula sino existe"""
+        for e in self.arr:
+            if e.id==id:
+                return e
+        return None
+            
+        
+    def sort(self):
+        self.arr=sorted(self.arr, key=lambda c: c.date,  reverse=False)         
+        
+    def load_myqtablewidget(self, table, section):
+        table.setColumnCount(2)
+        table.setHorizontalHeaderItem(0, QTableWidgetItem(QApplication.translate(section, "Date", None, QApplication.UnicodeUTF8)))
+        table.setHorizontalHeaderItem(1, QTableWidgetItem(QApplication.translate(section, "Gross", None, QApplication.UnicodeUTF8)))
+        table.settings(section,  self.cfg)
+        self.sort()
+        table.clearContents()
+        table.setRowCount(len(self.arr))
+        for i, e in enumerate(self.arr):
+            table.setItem(i, 0, qcenter(str(e.date)))
+            table.setItem(i, 1, self.investment.currency.qtablewidgetitem(e.gross, 6))       
+        table.setCurrentCell(len(self.arr)-1, 0)
 
 class DPS:
     """Dividendo por acci´on pagados. Se usa para pintar gr´aficos sin dividendos"""
@@ -3051,14 +3097,34 @@ class DPS:
         self.investment=investment
         self.id=None#id_dps
         self.date=None#pk
-        self.bruto=None
+        self.gross=None#bruto
         
-    def init__create(self, date, bruto, id=None):
+    def init__create(self, date, gross, id=None):
         self.date=date
-        self.bruto=bruto
+        self.gross=gross
         self.id=id
         return self
 
+    def init__from_db_row(self,  row):
+        """Saca el registro  o uno en blanco si no lo encuentra, que fueron pasados como parámetro"""
+        return self.init__create(row['date'], row['gross'], row['id'])
+
+                        
+            
+    def borrar(self):
+        cur=self.cfg.conms.cursor()
+        cur.execute("delete from dps where id_dps=%s", (self.id,))
+        cur.close()
+            
+    def save(self):
+        """Función que comprueba si existe el registro para insertar o modificarlo según proceda"""
+        curms=self.cfg.conms.cursor()
+        if self.id==None:
+            curms.execute("insert into dps(date, gross,id) values (%s,%s,%s) returning id_dps", (self.date, self.gross, self.investment.id))
+            self.id=curms.fetchone()[0]
+        else:         
+            curms.execute("update dps set date=%s, gross=%s, id=%s where id_dps=%s", (self.date,  self.gross, self.investment.id, self.id))
+        curms.close()
 class EstimationEPS:
     """Beneficio por acci´on. Earnings per share Beneficio por acci´on. Para los calculos usaremos
     esto, aunque sean estimaciones."""
@@ -3944,6 +4010,7 @@ class Investment:
         self.result=None#Variable en la que se almacena QuotesResult
         self.estimations_dps=SetEstimationsDPS(self.cfg, self)#Es un diccionario que guarda objetos estimaciones con clave el año
         self.estimations_eps=SetEstimationsEPS(self.cfg, self)
+        self.dps=SetDPS(self.cfg, self)
 
     def __repr__(self):
         return "{0} ({1}) de la {2}".format(self.name , self.id, self.bolsa.name)
