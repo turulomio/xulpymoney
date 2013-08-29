@@ -413,13 +413,27 @@ CREATE SEQUENCE dividendosestimaciones_seq
 ALTER TABLE public.dividendosestimaciones_seq OWNER TO postgres;
 
 --
+-- Name: dps_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE dps_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.dps_seq OWNER TO postgres;
+
+--
 -- Name: dps; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
 CREATE TABLE dps (
-    id_dps integer NOT NULL,
-    fecha date,
-    bruto numeric(18,6),
+    id_dps integer DEFAULT nextval('dps_seq'::regclass) NOT NULL,
+    date date,
+    gross numeric(18,6),
     id bigint
 );
 
@@ -431,6 +445,13 @@ ALTER TABLE public.dps OWNER TO postgres;
 --
 
 COMMENT ON TABLE dps IS 'Dividends per share paid';
+
+
+--
+-- Name: COLUMN dps.gross; Type: COMMENT; Schema: public; Owner: postgres
+--
+
+COMMENT ON COLUMN dps.gross IS 'Bruto';
 
 
 --
@@ -718,13 +739,6 @@ COMMENT ON TABLE status IS 'Tabla que contiene el estado de myquotesd, se borra 
 
 
 --
--- Name: id_dps; Type: DEFAULT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY dps ALTER COLUMN id_dps SET DEFAULT nextval('dividendospagos_id_dividendospagos_seq'::regclass);
-
-
---
 -- Name: bolsas_pk; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -738,6 +752,14 @@ ALTER TABLE ONLY bolsas
 
 ALTER TABLE ONLY estimations_dps
     ADD CONSTRAINT dividendosestimaciones_pk PRIMARY KEY (year, id);
+
+
+--
+-- Name: dps_pk; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY dps
+    ADD CONSTRAINT dps_pk PRIMARY KEY (id_dps);
 
 
 --
