@@ -12,7 +12,6 @@ XULPYMONEY
 20120806 En operinversion opercuenta poner el número de acciones y precio de compra en comeentario bonito
 20130103 Cuando se genera un dividendo acciones y se mete comisión se cuenta en Ingresos quizás porque es neto
 20110526 Crear la funcionalidad de divisas importantes
-20130829 Poner frmAbout myquotes en tab de xulpymoney
 20130829 Cuando quotes está vacio y se inserta xulpymoney inversion peta por None en quote
 
 MYSTOCKS
