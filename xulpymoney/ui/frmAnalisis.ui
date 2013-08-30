@@ -1221,7 +1221,7 @@ correspondiente en la tabla</string>
          <item>
           <widget class="QTabWidget" name="tabEstimaciones">
            <property name="currentIndex">
-            <number>1</number>
+            <number>2</number>
            </property>
            <widget class="QWidget" name="tab_2">
             <attribute name="icon">
@@ -1342,7 +1342,7 @@ correspondiente en la tabla</string>
                </column>
                <column>
                 <property name="text">
-                 <string>%</string>
+                 <string>PER</string>
                 </property>
                </column>
                <column>

@@ -5,7 +5,7 @@ from frmAnalisis import *
 from libxulpymoney import *
 from frmQuotesIBM import *
 from wdgMergeCodes import *
-from frmEstimationEPSIBM import *
+from frmEstimationsAdd import *
 
 class wdgInversionesMS(QWidget, Ui_wdgInversionesMS):
     def __init__(self, cfg,  sql,  parent=None):
@@ -25,16 +25,13 @@ class wdgInversionesMS(QWidget, Ui_wdgInversionesMS):
         self.build_array(sql)
         self.build_table()
         self.selectedRows=0
-#        self.selInvestment.id=""
     
     def build_array(self, sql):
         inicio=datetime.datetime.now()
         self.sql=sql
         self.investments=[]
-        con=self.cfg.connect_mystocks()
-        cur = con.cursor()
+        cur = self.cfg.conms.cursor()
         cur.execute(sql)
-        cur2=con.cursor()
         self.lblFound.setText(self.tr("Encontrados {0} registros".format(cur.rowcount)))
         #mete a datos        
         if cur.rowcount>0:
@@ -54,10 +51,7 @@ class wdgInversionesMS(QWidget, Ui_wdgInversionesMS):
             inv.result.basic.load_from_db()
             inv.estimations_dps.load_from_db()
             self.investments.append(inv)
-#            print ("wdgInversionesMS",  inv.agrupations.dic_arr)
         cur.close()     
-        cur2.close()
-        self.cfg.disconnect_mystocks(con)   
         if len(self.investments)!=0:      
             diff=datetime.datetime.now()-inicio
             print("wdgInversiones > build_array: {0} ({1} cada uno)".format(str(diff), diff/len(self.investments)))
@@ -65,14 +59,9 @@ class wdgInversionesMS(QWidget, Ui_wdgInversionesMS):
 
     def build_table(self):
         self.tblInversiones.setRowCount(len(self.investments))
-        #mete a datos
-        i=0
-#        gris = QtGui.QBrush(QtGui.QColor(160, 160, 160))
-#        gris.setStyle(QtCore.Qt.NoBrush)
-                    
         tachado = QtGui.QFont()
         tachado.setStrikeOut(True)        #Fuente tachada
-        for inv in self.investments:
+        for i,  inv in enumerate(self.investments):
             self.tblInversiones.setItem(i, 0, QTableWidgetItem((str(inv.id))))
             self.tblInversiones.setItem(i, 1, QTableWidgetItem(str(inv.name).upper()))
             self.tblInversiones.item(i, 1).setIcon(inv.bolsa.country.qicon())
@@ -82,18 +71,18 @@ class wdgInversionesMS(QWidget, Ui_wdgInversionesMS):
             self.tblInversiones.setItem(i, 5, qtpc(inv.result.basic.tpc_diario()))
             self.tblInversiones.setItem(i, 6, qtpc(inv.result.basic.tpc_anual()))
             
+            
             if inv.estimations_dps.currentYear()==None:
                 self.tblInversiones.setItem(i, 7, qtpc(None))
                 self.tblInversiones.item(i, 7).setBackgroundColor( QColor(255, 182, 182))          
             else:
-                self.tblInversiones.setItem(i, 7, qtpc(inv.estimations_dps.currentYear().tpc_dpa()))  
+                self.tblInversiones.setItem(i, 7, qtpc(inv.estimations_dps.currentYear().percentage()))  
                 
             if inv.active==True:#Active
-#                for j in range(8):
                 self.tblInversiones.item(i, 4).setIcon(QIcon(":/xulpymoney/transfer.png"))
             if inv.obsolete==True:#Obsolete
                 self.tblInversiones.item(i, 1).setFont(tachado)
-            i=i+1        
+   
         self.tblInversiones.clearSelection()    
         self.tblInversiones.setFocus()
         
@@ -194,7 +183,7 @@ class wdgInversionesMS(QWidget, Ui_wdgInversionesMS):
         
     @QtCore.pyqtSlot() 
     def on_actionOrdenarDividendo_activated(self):
-        self.investments=sorted(self.investments, key=lambda inv: inv.estimations_dps.currentYear().tpc_dpa(),  reverse=True) 
+        self.investments=sorted(self.investments, key=lambda inv: inv.estimations_dps.currentYear().percentage(),  reverse=True) 
         self.build_table()        
         
     def on_txt_returnPressed(self):
@@ -221,7 +210,7 @@ class wdgInversionesMS(QWidget, Ui_wdgInversionesMS):
         menu.addAction(self.actionInversionBorrar)
         menu.addSeparator()
         menu.addAction(self.actionQuoteNew)
-        menu.addAction(self.actionEstimationEPSNueva)
+        menu.addAction(self.actionEstimationDPSNew)
         menu.addSeparator()
         menu.addAction(self.actionMergeCodes)
         menu.addAction(self.actionFavoritos)
@@ -256,7 +245,7 @@ class wdgInversionesMS(QWidget, Ui_wdgInversionesMS):
             self.actionInversionEstudio.setEnabled(True)
             self.actionIbex35.setEnabled(True)
             self.actionQuoteNew.setEnabled(True)
-            self.actionEstimationEPSNueva.setEnabled(True)
+            self.actionEstimationDPSNew.setEnabled(True)
         else:
             self.actionMergeCodes.setEnabled(False)
             self.actionInversionModificar.setEnabled(False)
@@ -265,7 +254,7 @@ class wdgInversionesMS(QWidget, Ui_wdgInversionesMS):
             self.actionInversionEstudio.setEnabled(False)
             self.actionIbex35.setEnabled(False)
             self.actionQuoteNew.setEnabled(False)
-            self.actionEstimationEPSNueva.setEnabled(False)
+            self.actionEstimationDPSNew.setEnabled(False)
         
         if self.selectedRows==2:
             self.actionMergeCodes.setEnabled(True)
@@ -329,8 +318,8 @@ class wdgInversionesMS(QWidget, Ui_wdgInversionesMS):
         self.build_table()  
 
     @pyqtSignature("")
-    def on_actionEstimationEPSNueva_activated(self):
-        d=frmEstimationEPSIBM(self.cfg, self.selInvestment)
+    def on_actionEstimationDPSNew_activated(self):
+        d=frmEstimationsAdd(self.cfg, self.selInvestment)
         d.exec_()
         if d.result()==QDialog.Accepted:
             self.build_array(self.sql)
