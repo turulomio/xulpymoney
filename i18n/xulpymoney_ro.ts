@@ -3731,11 +3731,6 @@ seleccionados por el usuario</source>
         <source>Para llegar al punto de inversión seleccionado, el indice debe variar un {0}</source>
         <translation type="unfinished"></translation>
     </message>
-    <message encoding="UTF-8">
-        <location filename="ui/wdgIndexRange.py" line="115"/>
-        <source>············································································································</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <location filename="ui/Ui_wdgIndexRange.py" line="193"/>
         <source>4000</source>
