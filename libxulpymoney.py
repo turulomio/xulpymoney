@@ -233,9 +233,9 @@ class SetInversiones:
         cur.close()
         return True
         
-    def sort_by_tpc_dpa(self):
+    def sort_by_percentage(self):
         try:
-            self.arr=sorted(self.arr, key=lambda inv: inv.investment.estimations_dps.currentYear().tpc_dpa(),  reverse=True) 
+            self.arr=sorted(self.arr, key=lambda inv: inv.investment.estimations_dps.currentYear().percentage(),  reverse=True) 
         except:
             print ("No se ha podido ordenar por haber estimaciones de dividendo nulas")
         
@@ -325,7 +325,7 @@ class SetInvestmentsModes:
         return lista
         
         
-class SetBolsas:
+class SetStockExchanges:
     def __init__(self, cfg):
         self.dic_arr={}
         self.cfg=cfg     
@@ -334,7 +334,7 @@ class SetBolsas:
         curms=self.cfg.conms.cursor()
         curms.execute("Select * from bolsas")
         for row in curms:
-            self.dic_arr[str(row['id_bolsas'])]=Bolsa(self.cfg).init__db_row(row, self.cfg.countries.find(row['country']))
+            self.dic_arr[str(row['id_bolsas'])]=StockExchange(self.cfg).init__db_row(row, self.cfg.countries.find(row['country']))
         curms.close()
             
     def load_qcombobox(self, combo):
@@ -616,7 +616,7 @@ class SetEstimationsDPS:
         self.investment=investment
     
     def estimacionNula(self, year):
-        return EstimationDPS(self.cfg).init__create(self, year, datetime.date.today(), "None Estimation", None, None)
+        return EstimationDPS(self.cfg).init__create(self.investment, year, datetime.date.today(), "None Estimation", None, None)
     
     def load_from_db(self):
         del self.arr
@@ -638,30 +638,29 @@ class SetEstimationsDPS:
         return self.find(datetime.date.today().year)
 
     def dias_sin_actualizar(self):
-        ultima=datetime.date(1990, 1, 1)
-        for k, v in self.dic_arr.items():
-            if v.date_estimation>ultima:
-                ultima=v.date_estimation
+        self.sort()
+        ultima=self.arr[len(self.arr)-1].date_estimation
         return (datetime.date.today()-ultima).days
         
     def sort(self):
         self.arr=sorted(self.arr, key=lambda c: c.year,  reverse=False)         
         
-    def load_myqtablewidget(self, table, section):
+    def load_myqtablewidget(self, table):
+        """settings, must be thrown before, not in each reload"""
         self.sort()
         table.clearContents()
         table.setRowCount(len(self.arr))
-        table.settings(section,  self.cfg)
         for i, e in enumerate(self.arr):
             table.setItem(i, 0, qcenter(str(e.year)))
             table.setItem(i, 1, self.investment.currency.qtablewidgetitem(e.estimation, 6))       
-            try:
-                tpc=e.estimation*100/self.investment.result.basic.last.quote
-                table.setItem(i, 2, qtpc(round(tpc, 2)))    
-            except:      
-                table.setItem(i, 2, qtpc(None))    
+            table.setItem(i, 2, qtpc(e.percentage()))
+            table.setItem(i, 3, qdate(e.date_estimation))
+            table.setItem(i, 4, qleft(e.source))
+            table.setItem(i, 5, qbool(e.manual))
+
         table.setCurrentCell(len(self.arr)-1, 0)
         table.setFocus()
+
 class SetEstimationsEPS:
     def __init__(self, cfg,  investment):
         self.arr=[]
@@ -669,7 +668,7 @@ class SetEstimationsEPS:
         self.investment=investment
     
     def estimacionNula(self, year):
-        return EstimationEPS(self.cfg).init__create(self, year, datetime.date.today(), "None Estimation", None, None)
+        return EstimationEPS(self.cfg).init__create(self.investment, year, datetime.date.today(), "None Estimation", None, None)
     
     def load_from_db(self):
         del self.arr
@@ -701,19 +700,17 @@ class SetEstimationsEPS:
     def sort(self):
         self.arr=sorted(self.arr, key=lambda c: c.year,  reverse=False)         
         
-    def load_myqtablewidget(self, table, section):
+    def load_myqtablewidget(self, table):
         self.sort()
         table.clearContents()
         table.setRowCount(len(self.arr))
-        table.settings(section,  self.cfg)
         for i, e in enumerate(self.arr):
             table.setItem(i, 0, qcenter(str(e.year)))
             table.setItem(i, 1, self.investment.currency.qtablewidgetitem(e.estimation, 6))       
-            try:
-                tpc=e.estimation*100/self.investment.result.basic.last.quote
-                table.setItem(i, 2, qtpc(round(tpc, 2)))    
-            except:      
-                table.setItem(i, 2, qtpc(None))    
+            table.setItem(i, 2, qright(e.PER(Quote(self.cfg).init__from_query(self.investment, day_end_from_date(datetime.date(e.year, 12, 31), self.investment.bolsa.zone))), 2))
+            table.setItem(i, 3, qdate(e.date_estimation))
+            table.setItem(i, 4, QTableWidgetItem(e.source))
+            table.setItem(i, 5, qbool(e.manual)) 
         table.setCurrentCell(len(self.arr)-1, 0)
         table.setFocus()
 
@@ -2873,7 +2870,7 @@ class SetPrioritiesHistorical:
             self.arr.append(self.cfg.prioritieshistorical.find(cmb.itemData(i)))
         return self
 
-class Bolsa:
+class StockExchange:
     def __init__(self, cfg):
         self.cfg=cfg
         self.id=None
@@ -3077,11 +3074,10 @@ class SetDPS:
     def sort(self):
         self.arr=sorted(self.arr, key=lambda c: c.date,  reverse=False)         
         
-    def load_myqtablewidget(self, table, section):
+    def load_myqtablewidget(self, table):
         table.setColumnCount(2)
-        table.setHorizontalHeaderItem(0, QTableWidgetItem(QApplication.translate(section, "Date", None, QApplication.UnicodeUTF8)))
-        table.setHorizontalHeaderItem(1, QTableWidgetItem(QApplication.translate(section, "Gross", None, QApplication.UnicodeUTF8)))
-        table.settings(section,  self.cfg)
+        table.setHorizontalHeaderItem(0, QTableWidgetItem(QApplication.translate("Core", "Date", None, QApplication.UnicodeUTF8)))
+        table.setHorizontalHeaderItem(1, QTableWidgetItem(QApplication.translate("Core", "Gross", None, QApplication.UnicodeUTF8)))
         self.sort()
         table.clearContents()
         table.setRowCount(len(self.arr))
@@ -3181,9 +3177,12 @@ class EstimationEPS:
         curms.close()
         
         
-    def PER(self):
+    def PER(self, last_year_quote_of_estimation):
         """Price to Earnings Ratio"""
-        return self.investment.result.basic.last.quote/self.estimation
+        try:
+            return last_year_quote_of_estimation.quote/self.estimation
+        except:
+            return None
 
 class EstimationDPS:
     """Dividendos por acchi´on"""
@@ -3195,6 +3194,9 @@ class EstimationDPS:
         self.source=None
         self.estimation=None
         self.manual=None
+        
+    def __repr__(self):
+        return "EstimationDPS: Investment {0}. Year {1}. Estimation {2}".format(self.investment.id, self.year, self.estimation)
         
     def init__create(self, investment, year, date_estimation, source, manual, estimation):
         self.investment=investment
@@ -3235,13 +3237,14 @@ class EstimationDPS:
             curms.execute("update estimations_dps set estimation=%s, date_estimation=%s, source=%s, manual=%s where id=%s and year=%s", (self.estimation, self.date_estimation, self.source, self.manual, self.investment.id, self.year))
         curms.close()
         
-    def tpc_dpa(self):
+    def percentage(self):
         """Hay que tener presente que endlastyear (Objeto Quote) es el endlastyear del año actual
         Necesita tener cargado en id el endlastyear """
-        if self.investment.result.basic.endlastyear.quote==0 or self.investment.result.basic.endlastyear.quote==None:
-            return 0
-        else:
+        try:
             return self.estimation/self.investment.result.basic.endlastyear.quote*100
+        except:
+            return None
+
         
 class SourceNew:
     """Clase nueva para todas las sources
@@ -5053,7 +5056,7 @@ class ConfigMyStock:
         
         self.conms=None#Conexión a mystocks
         self.countries=SetCountries(self)
-        self.bolsas=SetBolsas(self)
+        self.bolsas=SetStockExchanges(self)
         self.currencies=SetCurrencies(self)
         self.types=SetTypes(self)
         self.agrupations=SetAgrupations(self)
@@ -5476,6 +5479,10 @@ def status_update(cur, source,  process, status=None,  statuschange=None,  inter
     cur.execute(sql)
 
 
+def qdate(date):
+    """Return a QTableWidgetItem with the date"""
+    return qcenter(str(date))
+
 
 def qdatetime(dt, zone,  pixmap=True):
     """dt es un datetime con timezone
@@ -5626,9 +5633,14 @@ def qbool(bool):
     a.setTextAlignment(Qt.AlignVCenter|Qt.AlignCenter)
     return a
 
-def qcenter(string):
+def qcenter(string, digits=None):
     a=QTableWidgetItem(str(string))
     a.setTextAlignment(Qt.AlignVCenter|Qt.AlignCenter)
+    return a
+    
+def qleft(string):
+    a=QTableWidgetItem(str(string))
+    a.setTextAlignment(Qt.AlignVCenter|Qt.AlignLeft)
     return a
 
 def qmessagebox_developing():
@@ -5637,7 +5649,10 @@ def qmessagebox_developing():
     m.setText(QApplication.translate("Core", "This option is being developed"))
     m.exec_()    
     
-def qright(string):
+def qright(string, digits=None):
+    """When digits, limits the number to """
+    if string!=None and digits!=None:
+        string=round(string, digits)
     a=QTableWidgetItem(str(string))
     a.setTextAlignment(Qt.AlignVCenter|Qt.AlignRight)
     return a

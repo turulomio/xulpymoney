@@ -276,16 +276,16 @@ sistema.</string>
     <string>Nueva cotización</string>
    </property>
   </action>
-  <action name="actionDividendoEstimacionNueva">
+  <action name="actionEstimationDPSNew">
    <property name="icon">
-    <iconset>
-     <normaloff>:/images/item_add.png</normaloff>:/images/item_add.png</iconset>
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/add.png</normaloff>:/xulpymoney/add.png</iconset>
    </property>
    <property name="text">
-    <string>Nueva estimación de dividendo</string>
+    <string>New DPS estimation</string>
    </property>
    <property name="toolTip">
-    <string>Nueva estimación de dividendo</string>
+    <string>New Dividend per share estimation</string>
    </property>
   </action>
   <action name="actionPurge">

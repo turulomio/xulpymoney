@@ -495,6 +495,8 @@ class canvasChartHistorical(canvasChart):
 
     def draw_selling_point(self):
         """Draws an horizontal line with the selling point price"""
+        if self.inversion==None:
+            return
         if self.inversion.venta!=0 and len(self.data)>0:
             dates=[]
             quotes=[]
@@ -508,7 +510,9 @@ class canvasChartHistorical(canvasChart):
         
     def draw_average_purchase_price(self):
         """Draws an horizontal line with the average purchase price"""
-        if self.inversion!=None and len(self.data)>0:
+        if self.inversion==None:
+            return
+        if  len(self.data)>0:
             dates=[]
             quotes=[]
             dates.append(self.data[0].datetime().date()-datetime.timedelta(days=1))
