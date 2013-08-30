@@ -19,7 +19,6 @@ MYSTOCKS
 ========
 20120217 En busquedas cuando se haga es:search, buscará en bolsa española
 20130822 Progress bar en status bar, al cargar frmAnalisis
-20130822 Hacer dividendos pagados para grafico quitando dividendos
 
 XULPYMONEY_INIT
 ===============

@@ -342,8 +342,19 @@ class canvasChartHistorical(canvasChart):
         elif self.num>=len(arr):
             QApplication.beep()
             self.num=len(arr)
-
-        return arr[len(arr)-self.num:len(arr)]
+        if self.sd==False:##Sin descontar dividendos, es decir sumando dividendos desde principio
+            return arr[len(arr)-self.num:len(arr)]
+        else:
+            result=[]
+            for a in arr[len(arr)-self.num:len(arr)]:
+                o=a.clone()
+                sum=self.investment.dps.sum(o.datetime().date())
+                o.close=o.close+sum
+                o.high=o.high+sum
+                o.low=o.low+sum
+                o.open=o.open+sum
+                result.append(o)
+            return result
 
     def mydraw(self):
         """Punto de entrada de inicio, cambio de rueda, """
@@ -562,8 +573,9 @@ class canvasChartHistorical(canvasChart):
         menu.addMenu(indicadores)            
         menu.exec_(self.mapToGlobal(pos)) 
 
-    def load_data(self, investment,   inversion=None):
+    def load_data(self, investment,   inversion=None, SD=False):
         """Debe tener cargado los ohcl, no el all"""
         self.investment=investment
         self.inversion=inversion
+        self.sd=SD#Sin descontar dividendos, es decir sumar´a los dividendos a las quotes.
         self.mydraw()

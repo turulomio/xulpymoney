@@ -66,6 +66,11 @@ class frmAnalisis(QDialog, Ui_frmAnalisis):
         self.layHistorical.addWidget(self.canvasHistorical)
         self.layHistorical.addWidget(self.ntbHistorical)
         
+        self.canvasHistoricalSD=canvasChartHistorical( self.cfg, self)
+        self.ntbHistoricalSD=NavigationToolbar(self.canvasHistoricalSD, self)
+        self.layHistoricalSD.addWidget(self.canvasHistoricalSD)
+        self.layHistoricalSD.addWidget(self.ntbHistoricalSD)
+        
         self.cfg.bolsas.load_qcombobox(self.cmbBolsa)
         self.cfg.investmentsmodes.load_qcombobox(self.cmbPCI)
         self.cfg.currencies.load_qcombobox(self.cmbCurrency)
@@ -206,11 +211,14 @@ class frmAnalisis(QDialog, Ui_frmAnalisis):
     def load_graphics(self):
         t2 = threading.Thread(target=self.canvasHistorical.load_data,  args=(self.investment, self.inversion))
         t2.start()
+        t3 = threading.Thread(target=self.canvasHistoricalSD.load_data,  args=(self.investment, self.inversion, True))
+        t3.start()
         self.investment.result.intradia.load_from_db(self.calendar.selectedDate().toPyDate(), self.investment)
         if len(self.investment.result.intradia.arr)==0:
             self.tblIntradia.setRowCount(0)
             self.canvasIntraday.ax.clear()
             t2.join()
+            t3.join()
             return
         else:
             self.tblIntradia.setRowCount(len(self.investment.result.intradia.arr))
@@ -247,6 +255,7 @@ class frmAnalisis(QDialog, Ui_frmAnalisis):
 
         t1.join()        
         t2.join()  
+        t3.join()
         self.tblIntradia.setFocus()
         self.tblIntradia.setCurrentCell(len(self.investment.result.intradia.arr)-1, 0)
         self.tblIntradia.clearSelection()

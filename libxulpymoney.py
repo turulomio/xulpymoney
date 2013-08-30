@@ -3085,6 +3085,19 @@ class SetDPS:
             table.setItem(i, 0, qcenter(str(e.date)))
             table.setItem(i, 1, self.investment.currency.qtablewidgetitem(e.gross, 6))       
         table.setCurrentCell(len(self.arr)-1, 0)
+        
+    def sum(self, date):
+        """Devuelve la suma de los dividendos desde hoy hasta la fecha.
+        Se deben restar a la cotizaci´on  del dia date, para tener la cotizaci´on sin descontar dividendos"""
+        self.sort()
+        sum=0
+        for dps in reversed(self.arr):
+            if dps.date>=date:
+                sum=sum+dps.gross
+            else:
+                break
+        return sum
+        
 
 class DPS:
     """Dividendo por acci´on pagados. Se usa para pintar gr´aficos sin dividendos"""
@@ -3124,6 +3137,10 @@ class DPS:
         else:         
             curms.execute("update dps set date=%s, gross=%s, id=%s where id_dps=%s", (self.date,  self.gross, self.investment.id, self.id))
         curms.close()
+        
+
+        
+        
 class EstimationEPS:
     """Beneficio por acci´on. Earnings per share Beneficio por acci´on. Para los calculos usaremos
     esto, aunque sean estimaciones."""
@@ -4556,6 +4573,15 @@ class OHCLDaily:
     def print_time(self):
         return "{0}".format(self.date)
         
+    def clone(self):
+        o=OHCLDaily(self.cfg)
+        o.investment=self.investment
+        o.date=self.date
+        o.open=self.open
+        o.close=self.close
+        o.high=self.high
+        o.low=self.low
+        return o
         
         
 class OHCLMonthly:
@@ -4580,7 +4606,17 @@ class OHCLMonthly:
     def print_time(self):
         return "{0}-{1}".format(int(self.year), int(self.month))
         
-        
+                
+    def clone(self):
+        o=OHCLMonthly(self.cfg)
+        o.investment=self.investment
+        o.year=self.year
+        o.month=self.month
+        o.open=self.open
+        o.close=self.close
+        o.high=self.high
+        o.low=self.low
+        return o
     def datetime(self):
         """Devuelve un datetime usado para dibujar en gráficos, pongo el día 28 para no calcular el último"""
         return day_end_from_date(datetime.date(self.year, self.month, 28), self.investment.bolsa.zone)
@@ -4605,7 +4641,18 @@ class OHCLWeekly:
         self.high=row['high']
         self.low=row['low']
         return self
-                
+                        
+    def clone(self):
+        o=OHCLWeekly(self.cfg)
+        o.investment=self.investment
+        o.year=self.year
+        o.week=self.week
+        o.open=self.open
+        o.close=self.close
+        o.high=self.high
+        o.low=self.low
+        return o
+        
     def datetime(self):
         """Devuelve un datetime usado para dibujar en gráficos, con el último día de la semana"""
         d = datetime.date(self.year,1,1)
@@ -4635,7 +4682,16 @@ class OHCLYearly:
         self.high=row['high']
         self.low=row['low']
         return self
-                
+                        
+    def clone(self):
+        o=OHCLDaily(self.cfg)
+        o.investment=self.investment
+        o.year=self.year
+        o.open=self.open
+        o.close=self.close
+        o.high=self.high
+        o.low=self.low
+        return o
     def datetime(self):
         """Devuelve un datetime usado para dibujar en gráficos"""
         return day_end_from_date(datetime.date(self.year, 12, 31), self.investment.bolsa.zone)
