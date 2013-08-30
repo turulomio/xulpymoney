@@ -97,7 +97,7 @@ class wdgIndexRange(QWidget, Ui_wdgIndexRange):
         w.exec_()
         
     def on_cmdIRInsertar_pressed(self):
-        w=frmQuotesIBM(self.cfg, self.cfg.data.indicereferencia,  self)
+        w=frmQuotesIBM(self.cfg, self.cfg.data.indicereferencia, None,  self)
         w.exec_() 
         self.cfg.data.indicereferencia.result.basic.load_from_db()
         self.load_data()
@@ -112,7 +112,7 @@ class wdgIndexRange(QWidget, Ui_wdgIndexRange):
         elif column==2:
             inversiones=self.table.item(row, column).text().split(", ")
             m=QMessageBox()
-            points=self.trUtf8("············································································································")
+            points="············································································································"
             message=points+"\n"
             inversiones.sort()
             for i in inversiones:
