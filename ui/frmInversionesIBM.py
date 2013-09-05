@@ -84,7 +84,7 @@ class frmInversionesIBM(QDialog, Ui_frmInversionesIBM):
         
         ##Mete indice referencia.
         if self.type==1:
-            w=frmQuotesIBM(self.cfg, self.cfg.data.indicereferencia,  self)
+            w=frmQuotesIBM(self.cfg, self.cfg.data.indicereferencia, None, self)
             #Quita un minuto para que enganche con operación
             menosminuto=dat-datetime.timedelta(minutes=1)
             w.txtTime.setTime(QTime(menosminuto.hour, menosminuto.minute))
