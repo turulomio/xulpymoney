@@ -1246,7 +1246,7 @@ correspondiente en la tabla</string>
          <item>
           <widget class="QTabWidget" name="tabEstimaciones">
            <property name="currentIndex">
-            <number>2</number>
+            <number>0</number>
            </property>
            <widget class="QWidget" name="tab_2">
             <attribute name="icon">
@@ -1516,6 +1516,18 @@ correspondiente en la tabla</string>
    </property>
    <property name="toolTip">
     <string>Remove DPS</string>
+   </property>
+  </action>
+  <action name="actionDividendXuNew">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/coins.png</normaloff>:/xulpymoney/coins.png</iconset>
+   </property>
+   <property name="text">
+    <string>Xulpymoney Dividend</string>
+   </property>
+   <property name="toolTip">
+    <string>Xulpymoney Dividend from Investment Dividend</string>
    </property>
   </action>
  </widget>

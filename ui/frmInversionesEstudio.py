@@ -317,7 +317,7 @@ class frmInversionesEstudio(QDialog, Ui_frmInversionesEstudio):
         
         
     def on_tblDividendos_customContextMenuRequested(self,  pos):
-        if self.inversion.qmessagebox_inactive() or self.inversion.cuenta.qmessagebox_inactive()or self.inversion.cuenta.eb.qmessagebox_inactive():
+        if self.inversion.qmessagebox_inactive() or self.inversion.cuenta.qmessagebox_inactive() or self.inversion.cuenta.eb.qmessagebox_inactive():
             return
         
         if self.selDividendo==None:
@@ -336,7 +336,7 @@ class frmInversionesEstudio(QDialog, Ui_frmInversionesEstudio):
     def on_tblDividendos_itemSelectionChanged(self):
         try:
             for i in self.tblDividendos.selectedItems():#itera por cada item no rowse.
-                self.selDividendo=self.dividendos[i.row()]
+                self.selDividendo=self.dividendos.arr[i.row()]
         except:
             self.selDividendo=None
         print ("Dividendo seleccionado: " +  str(self.selDividendo))        

@@ -5,6 +5,7 @@ from myqtablewidget import *
 from libxulpymoney import *
 from frmSelector import *
 from Ui_frmAnalisis import *
+from frmDividendosIBM import *
 from frmQuotesIBM import *
 from frmSplit import *
 from frmEstimationsAdd import *
@@ -295,6 +296,16 @@ class frmAnalisis(QDialog, Ui_frmAnalisis):
                 current=self.investment.result.ohclYearly.arr[i].datetime()
                 self.tblMensuales.setItem(current.year-minyear, 13, qtpc(tpc)) 
 
+    @QtCore.pyqtSlot() 
+    def on_actionDividendXuNew_activated(self):
+        w=frmDividendosIBM(self.cfg, self.inversion,  None)
+        w.cal.setSelectedDate(self.selDPS.date)
+        gross=self.selDPS.gross*self.inversion.acciones(self.selDPS.date)
+        w.txtBruto.setText(gross)
+        w.txtDPA.setText(self.selDPS.gross)
+        w.txtRetencion.setText(gross*self.cfg.taxcapitalappreciation)
+        w.cmb.setCurrentIndex(w.cmb.findData(39))
+        w.exec_()
 
     @pyqtSignature("")
     def on_actionDPSDelete_activated(self):
@@ -549,6 +560,7 @@ class frmAnalisis(QDialog, Ui_frmAnalisis):
         menu.exec_(self.tblEPS.mapToGlobal(pos))
             
     def on_tblDPSPaid_itemSelectionChanged(self):
+        self.selDPS=None
         try:
             for i in self.tblDPSPaid.selectedItems():#itera por cada item no row.        
                 if i.column()==0:
@@ -561,9 +573,15 @@ class frmAnalisis(QDialog, Ui_frmAnalisis):
     def on_tblDPSPaid_customContextMenuRequested(self,  pos):
         if self.selDPS==None:
             self.actionDPSDelete.setEnabled(False)
+            self.actionDividendXuNew.setEnabled(False)
         else:
             self.actionDPSDelete.setEnabled(True)
+            self.actionDividendXuNew.setEnabled(True)
+            
         menu=QMenu()
         menu.addAction(self.actionDPSNew)
         menu.addAction(self.actionDPSDelete)    
+        if self.inversion!=None:
+            menu.addSeparator()
+            menu.addAction(self.actionDividendXuNew)
         menu.exec_(self.tblDPSPaid.mapToGlobal(pos))
