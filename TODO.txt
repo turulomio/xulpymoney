@@ -13,6 +13,7 @@ XULPYMONEY
 20130103 Cuando se genera un dividendo acciones y se mete comisión se cuenta en Ingresos quizás porque es neto
 20110526 Crear la funcionalidad de divisas importantes
 20130829 Cuando quotes está vacio y se inserta xulpymoney inversion peta por None en quote
+20131002 No permitir txt vacio en frmQuotesIBM
 
 MYSTOCKS
 ========
