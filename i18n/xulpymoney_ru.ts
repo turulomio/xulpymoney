@@ -925,7 +925,7 @@ correspondiente en la tabla</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmAnalisis.py" line="407"/>
+        <location filename="ui/frmAnalisis.py" line="406"/>
         <source>{0} quotes have been purged from {1}</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1411,11 +1411,6 @@ correspondiente en la tabla</source>
     <message encoding="UTF-8">
         <location filename="ui/frmDividendosIBM.py" line="65"/>
         <source>{0} % de retención</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/frmDividendosIBM.py" line="69"/>
-        <source>Error calculando</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
