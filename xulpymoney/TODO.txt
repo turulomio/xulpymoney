@@ -15,6 +15,7 @@ XULPYMONEY
 20130829 Cuando quotes está vacio y se inserta xulpymoney inversion peta por None en quote
 20130829 Al añadir inversión peta por estimaciones al insertar 
 20131002 No permitir txt vacio en frmQuotesIBM
+20131002 No pone el saldo en pago cupon corrido en opercuenta
 
 MYSTOCKS
 ========
