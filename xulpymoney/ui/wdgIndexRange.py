@@ -93,7 +93,7 @@ class wdgIndexRange(QWidget, Ui_wdgIndexRange):
         self.load_data()
 
     def on_cmdIRAnalisis_pressed(self):
-        w=frmAnalisis(self.cfg, self.cfg.data.indicereferencia, self)
+        w=frmAnalisis(self.cfg, self.cfg.data.indicereferencia, None,  self)
         w.exec_()
         
     def on_cmdIRInsertar_pressed(self):

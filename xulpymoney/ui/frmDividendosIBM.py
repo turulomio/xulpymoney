@@ -52,7 +52,7 @@ class frmDividendosIBM(QDialog, Ui_frmDividendosIBM):
                 self.txtComision.setEnabled(False)
                 self.txtRetencion.setText(0)
                 self.txtDPA.setText(0)
-                self.txtComision.Decimal(0)
+                self.txtComision.setText(0)
                 self.neto=self.txtBruto.decimal()-self.txtComision.decimal()
                 self.tpc=0
             else:
