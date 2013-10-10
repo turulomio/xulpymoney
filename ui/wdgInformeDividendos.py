@@ -24,7 +24,7 @@ class wdgInformeDividendos(QWidget, Ui_wdgInformeDividendos):
 
     @QtCore.pyqtSlot()  
     def on_actionModificarDPA_activated(self):
-        d=frmEstimationsAdd(self.cfg, self.selInversion.investment)
+        d=frmEstimationsAdd(self.cfg, self.selInversion.investment, "dps")
         d.exec_()
         self.on_chkInactivas_stateChanged(self.chkInactivas.checkState())
         self.tblInversiones.clearSelection()
