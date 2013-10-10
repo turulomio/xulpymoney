@@ -638,10 +638,14 @@ class SetEstimationsDPS:
         return self.find(datetime.date.today().year)
 
     def dias_sin_actualizar(self):
+        """Si no hay datos devuelve 1000"""
         self.sort()
-        ultima=self.arr[len(self.arr)-1].date_estimation
-        return (datetime.date.today()-ultima).days
-        
+        try:
+            ultima=self.arr[len(self.arr)-1].date_estimation
+            return (datetime.date.today()-ultima).days
+        except:
+            return 1000
+
     def sort(self):
         self.arr=sorted(self.arr, key=lambda c: c.year,  reverse=False)         
         
@@ -2124,7 +2128,10 @@ class Inversion:
                 - La estimacion de dividendos mq"""
         if year==None:
             year=datetime.date.today().year
-        return self.acciones()*self.investment.estimations_dps.find(year).estimation
+        try:
+            return self.acciones()*self.investment.estimations_dps.find(year).estimation
+        except:
+            return 0
         
         
     def diferencia_saldo_diario(self):
