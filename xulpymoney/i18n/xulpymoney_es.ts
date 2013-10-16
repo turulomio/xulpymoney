@@ -4151,7 +4151,7 @@ S&#xc3;&#xb3;lo se contabilizar&#xc3;&#xa1; cuando se vendan las acciones</sourc
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgInformeHistorico.py" line="148"/>
+        <location filename="ui/wdgInformeHistorico.py" line="147"/>
         <source>Saldo a {0}, {1}</source>
         <translation type="unfinished"></translation>
     </message>
