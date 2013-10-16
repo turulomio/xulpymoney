@@ -1,6 +1,5 @@
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
-#from apoyo import *
 from libxulpymoney import *
 from Ui_wdgInformeHistorico import *
 
@@ -113,8 +112,8 @@ class wdgInformeHistorico(QWidget, Ui_wdgInformeHistorico):
         if sumcomisioncustodia==None:
             sumcomisioncustodia=0
             
-        saldototal=Patrimonio(self.cfg).saldo_total(self.cfg.data.inversiones_active ,  datetime.date.today());
-        saldototalinicio=Patrimonio(self.cfg).saldo_total( self.cfg.data.inversiones_active, inicio)
+        saldototal=Patrimonio(self.cfg).saldo_total(self.cfg.data.inversiones_all() ,  datetime.date.today());
+        saldototalinicio=Patrimonio(self.cfg).saldo_total( self.cfg.data.inversiones_all(), inicio)
         if self.totalBruto>0:
             impxplus=-self.totalBruto*self.cfg.taxcapitalappreciation
         else:            
