@@ -893,9 +893,9 @@ class SetInversionOperacion:
         tabla.setHorizontalHeaderItem(4, QTableWidgetItem(QApplication.translate(section, "Importe", None, QApplication.UnicodeUTF8)))
         tabla.setHorizontalHeaderItem(5, QTableWidgetItem(QApplication.translate(section, "Comisión", None, QApplication.UnicodeUTF8)))
         tabla.setHorizontalHeaderItem(6, QTableWidgetItem(QApplication.translate(section, "Impuestos", None, QApplication.UnicodeUTF8)))
-        #DATA
-        tabla.settings(section,  self.cfg)        
+        #DATA 
         tabla.clearContents()
+        tabla.settings(section,  self.cfg)       
         tabla.setRowCount(len(self.arr))
         for rownumber, a in enumerate(self.arr):
             tabla.setItem(rownumber, 0, qdatetime(a.datetime, a.inversion.investment.bolsa.zone))

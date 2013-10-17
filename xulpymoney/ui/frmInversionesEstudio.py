@@ -27,7 +27,7 @@ class frmInversionesEstudio(QDialog, Ui_frmInversionesEstudio):
         self.dividendos=SetDividends(self.cfg,self.inversion)
         
         self.ise.setupUi(self.cfg)
-        self.tblInversionHistorica.settings("frmInversionesEstudio",  self.cfg)
+#        self.tblInversionHistorica.settings("frmInversionesEstudio",  self.cfg)
         self.tblDividendos.settings("frmInversionesEstudio",  self.cfg)
         self.cmdInversion.setEnabled(False)                                                                                                                                                                                            
         self.connect(self.ise.cmd,SIGNAL('released()'),  self.on_cmdISE_released)         
