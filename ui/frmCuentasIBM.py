@@ -49,7 +49,7 @@ class frmCuentasIBM(QDialog, Ui_frmCuentasIBM):
             self.chkActiva.setEnabled(False)
             self.cmdDatos.setText(self.trUtf8("Insertar nueva cuenta bancaria"))
         else:               
-            self.tab.setCurrentIndex(1)
+            self.tab.setCurrentIndex(0)
             self.lblTitulo.setText(self.selCuenta.name)
             self.txtCuenta.setText(self.selCuenta.name)
             self.txtNumero.setText(str(self.selCuenta.numero))            
