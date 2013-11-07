@@ -34,7 +34,7 @@ class wdgIndexRange(QWidget, Ui_wdgIndexRange):
         arr=[]
 
         for i in self.cfg.data.inversiones_active.arr:
-            if i.investment.tpc!=0:
+            if i.investment.tpc!=0 and i.investment.type.id not in (7, 9):
                 for o in i.op_actual.arr:
                     arr.append((o.referenciaindice.quote, o))
 
