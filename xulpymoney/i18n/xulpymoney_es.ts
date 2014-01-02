@@ -3924,7 +3924,7 @@ seleccionados por el usuario</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="ui/wdgInformeDividendos.py" line="68"/>
+        <location filename="ui/wdgInformeDividendos.py" line="64"/>
         <source>Si mantuviera la inversión un año obtendría {0}</source>
         <translation type="unfinished"></translation>
     </message>

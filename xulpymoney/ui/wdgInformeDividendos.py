@@ -17,10 +17,6 @@ class wdgInformeDividendos(QWidget, Ui_wdgInformeDividendos):
         self.tblInversiones.settings("wdgInformeDividendos",  self.cfg)
         
         self.on_chkInactivas_stateChanged(Qt.Unchecked)
-        
-        
-            
-
 
     @QtCore.pyqtSlot()  
     def on_actionModificarDPA_activated(self):
@@ -72,16 +68,18 @@ class wdgInformeDividendos(QWidget, Ui_wdgInformeDividendos):
     def on_actionInversionEstudio_activated(self):
         w=frmInversionesEstudio(self.cfg, self.selInversion, self)
         w.exec_()
-        
+        self.on_chkInactivas_stateChanged(self.chkInactivas.checkState())
+
             
     @QtCore.pyqtSlot() 
     def on_actionMyStocks_activated(self):
         w=frmAnalisis(self.cfg, self.selInversion.investment, self.selInversion, self)
-        w.load_data_from_db()
         w.exec_()
+        self.on_chkInactivas_stateChanged(self.chkInactivas.checkState())
+
                     
     def on_cmd_pressed(self):
-            self.on_chkInactivas_stateChanged(self.chkInactivas.checkState())
+        self.on_chkInactivas_stateChanged(self.chkInactivas.checkState())
 
     def on_tblInversiones_customContextMenuRequested(self,  pos):        
         menu=QMenu()
