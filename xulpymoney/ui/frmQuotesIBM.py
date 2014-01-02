@@ -49,6 +49,12 @@ class frmQuotesIBM(QDialog, Ui_frmQuotesIBM):
         
     @pyqtSignature("")
     def on_buttonbox_accepted(self):
+        if self.txtQuote.decimal()==None:
+            m=QMessageBox()
+            m.setIcon(QMessageBox.Information)
+            m.setText(self.trUtf8("Datos incorrectos. Vuelva a introducirlos"))
+            m.exec_()    
+            return
         if self.type=="insert":        
             try:
                 fecha=self.calendar.selectedDate().toPyDate()

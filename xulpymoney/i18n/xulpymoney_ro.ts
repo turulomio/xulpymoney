@@ -2683,7 +2683,7 @@ seleccionados por el usuario</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmQuotesIBM.py" line="59"/>
+        <location filename="ui/frmQuotesIBM.py" line="65"/>
         <source>Datos incorrectos. Vuelva a introducirlos</source>
         <translation type="unfinished"></translation>
     </message>
