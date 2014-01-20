@@ -3338,52 +3338,52 @@ seleccionados por el usuario</source>
         <translation>TOTAL</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgConceptos.py" line="128"/>
+        <location filename="ui/Ui_wdgConceptos.py" line="135"/>
         <source>Form</source>
         <translation>Form</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgConceptos.py" line="151"/>
+        <location filename="ui/Ui_wdgConceptos.py" line="158"/>
         <source>Nueva Cuenta</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgConceptos.py" line="153"/>
+        <location filename="ui/Ui_wdgConceptos.py" line="160"/>
         <source>Estudio de la Cuenta</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgConceptos.py" line="129"/>
+        <location filename="ui/Ui_wdgConceptos.py" line="136"/>
         <source>Concepts report</source>
         <translation>Informe de conceptos</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgConceptos.py" line="142"/>
+        <location filename="ui/Ui_wdgConceptos.py" line="149"/>
         <source>Concept</source>
         <translation>Concepto</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgConceptos.py" line="144"/>
+        <location filename="ui/Ui_wdgConceptos.py" line="151"/>
         <source>Monthly expenses</source>
         <translation>Gastos mensuales</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgConceptos.py" line="146"/>
+        <location filename="ui/Ui_wdgConceptos.py" line="153"/>
         <source>% Montly expenses</source>
         <translation>% de gastos mensuales</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgConceptos.py" line="148"/>
+        <location filename="ui/Ui_wdgConceptos.py" line="155"/>
         <source>Monthly average</source>
         <translation>Media mensual</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgConceptos.py" line="139"/>
+        <location filename="ui/Ui_wdgConceptos.py" line="146"/>
         <source>Expenses</source>
         <translation>Gastos</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgConceptos.py" line="149"/>
+        <location filename="ui/Ui_wdgConceptos.py" line="156"/>
         <source>Income</source>
         <translation>Ingresos</translation>
     </message>
