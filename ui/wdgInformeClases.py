@@ -70,6 +70,8 @@ class wdgInformeClases(QWidget, Ui_wdgInformeClases):
         self.layApalancado.addWidget(self.canvasApalancado)    
         self.canvasCountry=canvasPie(self)
         self.layCountry.addWidget(self.canvasCountry)      
+        self.canvasProduct=canvasPie(self)
+        self.layProduct.addWidget(self.canvasProduct)      
         
         self.cuentas=Patrimonio(self.cfg).saldo_todas_cuentas(self.hoy)
                
@@ -78,6 +80,7 @@ class wdgInformeClases(QWidget, Ui_wdgInformeClases):
         self.scriptTipos()
         self.scriptApalancado()
         self.scriptCountry()
+        self.scriptProduct()
         self.tab.setCurrentIndex(2)
         
 
@@ -171,3 +174,25 @@ class wdgInformeClases(QWidget, Ui_wdgInformeClases):
                 data.append(total)
                 explode.append(0)
         self.canvasCountry.mydraw(data, labels,  explode)  
+
+    def scriptProduct(self):
+        labels=[]
+        data=[]
+        explode=[]
+        #Saca investments active
+        s=set([])
+        for i in self.cfg.data.inversiones_active.arr:
+            s.add(i.investment)
+        
+        arr=list(s)
+        arr=sorted(arr, key=lambda inv: inv.name,  reverse=True) 
+   
+        for i in arr:
+            labels.append(i.name)
+            data.append(self.cfg.data.inversiones_active.saldo_misma_investment(i))
+            explode.append(0)
+        labels.append(self.trUtf8("Accounts"))
+        data.append(self.cuentas)
+        explode.append(0.15)            
+        
+        self.canvasProduct.mydraw(data, labels,  explode)  

@@ -266,25 +266,19 @@ class frmCuentasIBM(QDialog, Ui_frmCuentasIBM):
         self.connect(w, SIGNAL("OperTarjetaIBMed"), self.load_tabOperTarjetas)
         w.lblTitulo.setText(self.tr("Tarjeta {0}".format((self.selTarjeta.name))))
         w.exec_()
-            
+
     @QtCore.pyqtSlot() 
     def on_actionOperTarjetaBorrar_activated(self):
-        con=self.cfg.connect_xulpymoney()
-        cur = con.cursor()              
         for o in self.setSelOperTarjetas:
-            o.borrar (cur)
+            o.borrar()
             self.selTarjeta.op_diferido.remove(o)
-        con.commit()      
-        
+        self.cfg.con.commit()
         self.load_tabOperTarjetas()
-        cur.close()     
-        self.cfg.disconnect_xulpymoney(con)              
-        
 
     def on_tblOperaciones_customContextMenuRequested(self,  pos):      
         if self.selCuenta.qmessagebox_inactive() or self.selCuenta.eb.qmessagebox_inactive():
             return
-            
+
         if self.selOperCuenta==None:
             self.actionMovimientoBorrar.setEnabled(False)
             self.actionMovimientoModificar.setEnabled(False)   
@@ -300,11 +294,7 @@ class frmCuentasIBM(QDialog, Ui_frmCuentasIBM):
         menu.addAction(self.actionMovimientoNuevo)
         menu.addAction(self.actionMovimientoModificar)
         menu.addAction(self.actionMovimientoBorrar)
-        
-        
         menu.exec_(self.tblOperaciones.mapToGlobal(pos))
-
-
 
     def on_tblOperaciones_itemSelectionChanged(self):
         try:

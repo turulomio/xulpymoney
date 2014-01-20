@@ -120,7 +120,16 @@ class SetInversiones:
         print ("No se ha encontrado la inversión {0} en SetInversiones.inversion".format(id))
         return None
         
-                        
+    
+    def saldo_misma_investment(self, investment):
+        """Devuelve el saldo de todas las inversiones que tienen el mismo investment.bolsa
+        investment es un objeto Investment"""
+        resultado=Decimal(0)
+        for i in self.arr:
+            if i.investment==investment:
+                resultado=resultado+i.saldo()
+        return resultado
+    
     def union(self, list2):
         """Devuelve un SetEntidadesBancarias con la union del set1 y del set2"""
         resultado=SetInversiones(self.cfg, self.cuentas, self.investments, self.indicereferencia)
