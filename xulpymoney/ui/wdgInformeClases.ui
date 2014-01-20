@@ -42,7 +42,7 @@
      <item>
       <widget class="QTabWidget" name="tab">
        <property name="currentIndex">
-        <number>4</number>
+        <number>5</number>
        </property>
        <widget class="QWidget" name="tabTPCVariable">
         <attribute name="title">
@@ -113,6 +113,16 @@
         <layout class="QHBoxLayout" name="horizontalLayout_6">
          <item>
           <layout class="QHBoxLayout" name="layCountry"/>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QWidget" name="tab_4">
+        <attribute name="title">
+         <string>Según producto de inversión</string>
+        </attribute>
+        <layout class="QHBoxLayout" name="horizontalLayout_7">
+         <item>
+          <layout class="QHBoxLayout" name="layProduct"/>
          </item>
         </layout>
        </widget>
