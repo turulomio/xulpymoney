@@ -3,6 +3,7 @@
 --
 
 SET statement_timeout = 0;
+SET lock_timeout = 0;
 SET client_encoding = 'UTF8';
 SET standard_conforming_strings = on;
 SET check_function_bodies = false;
@@ -208,7 +209,7 @@ CREATE TABLE cuentas (
     cuenta text,
     id_entidadesbancarias integer,
     cu_activa boolean,
-    numerocuenta character varying(20),
+    numerocuenta character varying(24),
     currency text DEFAULT 'EUR'::text NOT NULL
 );
 
