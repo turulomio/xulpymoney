@@ -3,6 +3,7 @@
 --
 
 SET statement_timeout = 0;
+SET lock_timeout = 0;
 SET client_encoding = 'UTF8';
 SET standard_conforming_strings = on;
 SET check_function_bodies = false;
@@ -627,7 +628,15 @@ ALTER TABLE public.quotes OWNER TO postgres;
 --
 
 CREATE VIEW tmpohlcdaily AS
-    SELECT quotes.id, (quotes.datetime)::date AS date, max(quotes.quote) AS high, min(quotes.quote) AS low, min(quotes.datetime) AS first, max(quotes.datetime) AS last FROM quotes GROUP BY quotes.id, (quotes.datetime)::date ORDER BY (quotes.datetime)::date DESC;
+ SELECT quotes.id,
+    (quotes.datetime)::date AS date,
+    max(quotes.quote) AS high,
+    min(quotes.quote) AS low,
+    min(quotes.datetime) AS first,
+    max(quotes.datetime) AS last
+   FROM quotes
+  GROUP BY quotes.id, (quotes.datetime)::date
+  ORDER BY (quotes.datetime)::date DESC;
 
 
 ALTER TABLE public.tmpohlcdaily OWNER TO postgres;
@@ -637,7 +646,15 @@ ALTER TABLE public.tmpohlcdaily OWNER TO postgres;
 --
 
 CREATE VIEW ohlcdaily AS
-    SELECT tmpohlcdaily.id, tmpohlcdaily.date, (SELECT quote.quote FROM quote(tmpohlcdaily.id, tmpohlcdaily.first) quote(id, datetime, quote)) AS first, tmpohlcdaily.low, tmpohlcdaily.high, (SELECT quote.quote FROM quote(tmpohlcdaily.id, tmpohlcdaily.last) quote(id, datetime, quote)) AS last FROM tmpohlcdaily;
+ SELECT tmpohlcdaily.id,
+    tmpohlcdaily.date,
+    ( SELECT quote.quote
+           FROM quote(tmpohlcdaily.id, tmpohlcdaily.first) quote(id, datetime, quote)) AS first,
+    tmpohlcdaily.low,
+    tmpohlcdaily.high,
+    ( SELECT quote.quote
+           FROM quote(tmpohlcdaily.id, tmpohlcdaily.last) quote(id, datetime, quote)) AS last
+   FROM tmpohlcdaily;
 
 
 ALTER TABLE public.ohlcdaily OWNER TO postgres;
@@ -647,7 +664,15 @@ ALTER TABLE public.ohlcdaily OWNER TO postgres;
 --
 
 CREATE VIEW tmpohlcmonthly AS
-    SELECT quotes.id, date_part('year'::text, quotes.datetime) AS year, date_part('month'::text, quotes.datetime) AS month, max(quotes.quote) AS high, min(quotes.quote) AS low, min(quotes.datetime) AS first, max(quotes.datetime) AS last FROM quotes GROUP BY quotes.id, date_part('year'::text, quotes.datetime), date_part('month'::text, quotes.datetime);
+ SELECT quotes.id,
+    date_part('year'::text, quotes.datetime) AS year,
+    date_part('month'::text, quotes.datetime) AS month,
+    max(quotes.quote) AS high,
+    min(quotes.quote) AS low,
+    min(quotes.datetime) AS first,
+    max(quotes.datetime) AS last
+   FROM quotes
+  GROUP BY quotes.id, date_part('year'::text, quotes.datetime), date_part('month'::text, quotes.datetime);
 
 
 ALTER TABLE public.tmpohlcmonthly OWNER TO postgres;
@@ -657,7 +682,16 @@ ALTER TABLE public.tmpohlcmonthly OWNER TO postgres;
 --
 
 CREATE VIEW ohlcmonthly AS
-    SELECT tmpohlcmonthly.id, tmpohlcmonthly.year, tmpohlcmonthly.month, (SELECT quote.quote FROM quote(tmpohlcmonthly.id, tmpohlcmonthly.first) quote(id, datetime, quote)) AS first, tmpohlcmonthly.low, tmpohlcmonthly.high, (SELECT quote.quote FROM quote(tmpohlcmonthly.id, tmpohlcmonthly.last) quote(id, datetime, quote)) AS last FROM tmpohlcmonthly;
+ SELECT tmpohlcmonthly.id,
+    tmpohlcmonthly.year,
+    tmpohlcmonthly.month,
+    ( SELECT quote.quote
+           FROM quote(tmpohlcmonthly.id, tmpohlcmonthly.first) quote(id, datetime, quote)) AS first,
+    tmpohlcmonthly.low,
+    tmpohlcmonthly.high,
+    ( SELECT quote.quote
+           FROM quote(tmpohlcmonthly.id, tmpohlcmonthly.last) quote(id, datetime, quote)) AS last
+   FROM tmpohlcmonthly;
 
 
 ALTER TABLE public.ohlcmonthly OWNER TO postgres;
@@ -667,7 +701,15 @@ ALTER TABLE public.ohlcmonthly OWNER TO postgres;
 --
 
 CREATE VIEW tmpohlcweekly AS
-    SELECT quotes.id, date_part('year'::text, quotes.datetime) AS year, date_part('week'::text, quotes.datetime) AS week, max(quotes.quote) AS high, min(quotes.quote) AS low, min(quotes.datetime) AS first, max(quotes.datetime) AS last FROM quotes GROUP BY quotes.id, date_part('year'::text, quotes.datetime), date_part('week'::text, quotes.datetime);
+ SELECT quotes.id,
+    date_part('year'::text, quotes.datetime) AS year,
+    date_part('week'::text, quotes.datetime) AS week,
+    max(quotes.quote) AS high,
+    min(quotes.quote) AS low,
+    min(quotes.datetime) AS first,
+    max(quotes.datetime) AS last
+   FROM quotes
+  GROUP BY quotes.id, date_part('year'::text, quotes.datetime), date_part('week'::text, quotes.datetime);
 
 
 ALTER TABLE public.tmpohlcweekly OWNER TO postgres;
@@ -677,7 +719,16 @@ ALTER TABLE public.tmpohlcweekly OWNER TO postgres;
 --
 
 CREATE VIEW ohlcweekly AS
-    SELECT tmpohlcweekly.id, tmpohlcweekly.year, tmpohlcweekly.week, (SELECT quote.quote FROM quote(tmpohlcweekly.id, tmpohlcweekly.first) quote(id, datetime, quote)) AS first, tmpohlcweekly.low, tmpohlcweekly.high, (SELECT quote.quote FROM quote(tmpohlcweekly.id, tmpohlcweekly.last) quote(id, datetime, quote)) AS last FROM tmpohlcweekly;
+ SELECT tmpohlcweekly.id,
+    tmpohlcweekly.year,
+    tmpohlcweekly.week,
+    ( SELECT quote.quote
+           FROM quote(tmpohlcweekly.id, tmpohlcweekly.first) quote(id, datetime, quote)) AS first,
+    tmpohlcweekly.low,
+    tmpohlcweekly.high,
+    ( SELECT quote.quote
+           FROM quote(tmpohlcweekly.id, tmpohlcweekly.last) quote(id, datetime, quote)) AS last
+   FROM tmpohlcweekly;
 
 
 ALTER TABLE public.ohlcweekly OWNER TO postgres;
@@ -687,7 +738,14 @@ ALTER TABLE public.ohlcweekly OWNER TO postgres;
 --
 
 CREATE VIEW tmpohlcyearly AS
-    SELECT quotes.id, date_part('year'::text, quotes.datetime) AS year, max(quotes.quote) AS high, min(quotes.quote) AS low, min(quotes.datetime) AS first, max(quotes.datetime) AS last FROM quotes GROUP BY quotes.id, date_part('year'::text, quotes.datetime);
+ SELECT quotes.id,
+    date_part('year'::text, quotes.datetime) AS year,
+    max(quotes.quote) AS high,
+    min(quotes.quote) AS low,
+    min(quotes.datetime) AS first,
+    max(quotes.datetime) AS last
+   FROM quotes
+  GROUP BY quotes.id, date_part('year'::text, quotes.datetime);
 
 
 ALTER TABLE public.tmpohlcyearly OWNER TO postgres;
@@ -697,7 +755,15 @@ ALTER TABLE public.tmpohlcyearly OWNER TO postgres;
 --
 
 CREATE VIEW ohlcyearly AS
-    SELECT tmpohlcyearly.id, tmpohlcyearly.year, (SELECT quote.quote FROM quote(tmpohlcyearly.id, tmpohlcyearly.first) quote(id, datetime, quote)) AS first, tmpohlcyearly.low, tmpohlcyearly.high, (SELECT quote.quote FROM quote(tmpohlcyearly.id, tmpohlcyearly.last) quote(id, datetime, quote)) AS last FROM tmpohlcyearly;
+ SELECT tmpohlcyearly.id,
+    tmpohlcyearly.year,
+    ( SELECT quote.quote
+           FROM quote(tmpohlcyearly.id, tmpohlcyearly.first) quote(id, datetime, quote)) AS first,
+    tmpohlcyearly.low,
+    tmpohlcyearly.high,
+    ( SELECT quote.quote
+           FROM quote(tmpohlcyearly.id, tmpohlcyearly.last) quote(id, datetime, quote)) AS last
+   FROM tmpohlcyearly;
 
 
 ALTER TABLE public.ohlcyearly OWNER TO postgres;
