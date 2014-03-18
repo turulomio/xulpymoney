@@ -242,6 +242,9 @@ class wdgInversiones(QWidget, Ui_wdgInversiones):
         if column==8:#TPC venta
             m=QMessageBox()
             m.setIcon(QMessageBox.Information)
-            m.setText(self.trUtf8("Selling price: {0}".format(self.selInversion.investment.currency.string(self.selInversion.venta)))+"\n"+self.trUtf8("Gain obtained: {0}").format(self.selInversion.investment.currency.string(self.selInversion.acciones()*(self.selInversion.venta-self.selInversion.op_actual.valor_medio_compra()))))
+            if self.selInversion.venta==0 or self.selInversion.venta==None:
+                m.setText(self.trUtf8("There's not selling prince."))
+            else:
+                m.setText(self.trUtf8("Selling price: {0}".format(self.selInversion.investment.currency.string(self.selInversion.venta)))+"\n"+self.trUtf8("Gain obtained: {0}").format(self.selInversion.investment.currency.string(self.selInversion.acciones()*(self.selInversion.venta-self.selInversion.op_actual.valor_medio_compra())))) 
             m.exec_()           
             return     
