@@ -218,7 +218,7 @@ class wdgInversiones(QWidget, Ui_wdgInversiones):
         menu.addSeparator()
         menu.addAction(self.actionActiva)
         menu.addSeparator()        
-        ordenar=QMenu("Ordenar por")
+        ordenar=QMenu(self.trUtf8("Order by"))
         ordenar.addAction(self.actionOrdenarName)
         ordenar.addAction(self.actionOrdenarHora)
         ordenar.addAction(self.actionOrdenarTPCDiario)
