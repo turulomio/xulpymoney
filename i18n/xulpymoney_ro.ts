@@ -4244,7 +4244,7 @@ S&#xc3;&#xb3;lo se contabilizar&#xc3;&#xa1; cuando se vendan las acciones</sourc
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgInversiones.py" line="69"/>
+        <location filename="ui/wdgInversiones.py" line="70"/>
         <source>No hay patrimonio invertido</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4289,22 +4289,22 @@ S&#xc3;&#xb3;lo se contabilizar&#xc3;&#xa1; cuando se vendan las acciones</sourc
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgInversiones.py" line="234"/>
+        <location filename="ui/wdgInversiones.py" line="239"/>
         <source>Shares number: {0}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgInversiones.py" line="234"/>
+        <location filename="ui/wdgInversiones.py" line="239"/>
         <source>Purchase price average: {0}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgInversiones.py" line="240"/>
+        <location filename="ui/wdgInversiones.py" line="248"/>
         <source>Selling price: {0}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgInversiones.py" line="240"/>
+        <location filename="ui/wdgInversiones.py" line="248"/>
         <source>Gain obtained: {0}</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4316,6 +4316,11 @@ S&#xc3;&#xb3;lo se contabilizar&#xc3;&#xa1; cuando se vendan las acciones</sourc
     <message>
         <location filename="ui/Ui_wdgInversiones.py" line="177"/>
         <source>A&#xc3;&#xb1;adir cotizaci&#xc3;&#xb3;n a MyStocks</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/wdgInversiones.py" line="246"/>
+        <source>There&apos;s not selling prince.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
