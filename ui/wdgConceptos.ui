@@ -85,8 +85,11 @@
      </item>
      <item>
       <widget class="QTabWidget" name="tabWidget">
+       <property name="contextMenuPolicy">
+        <enum>Qt::CustomContextMenu</enum>
+       </property>
        <property name="currentIndex">
-        <number>0</number>
+        <number>1</number>
        </property>
        <widget class="QWidget" name="tab">
         <attribute name="title">
@@ -119,11 +122,6 @@
            <column>
             <property name="text">
              <string>Concept</string>
-            </property>
-           </column>
-           <column>
-            <property name="text">
-             <string/>
             </property>
            </column>
            <column>
@@ -180,11 +178,6 @@
            </column>
            <column>
             <property name="text">
-             <string/>
-            </property>
-           </column>
-           <column>
-            <property name="text">
              <string>Monthly expenses</string>
             </property>
            </column>
@@ -207,28 +200,16 @@
     </layout>
    </item>
   </layout>
-  <action name="actionCuentaNueva">
+  <action name="actionHistoricalReport">
    <property name="icon">
-    <iconset>
-     <normaloff>:/xulpmoney/star.png</normaloff>:/xulpmoney/star.png</iconset>
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/history.png</normaloff>:/xulpymoney/history.png</iconset>
    </property>
    <property name="text">
-    <string>Nueva Cuenta</string>
+    <string>Historical report</string>
    </property>
    <property name="toolTip">
-    <string>Nueva Cuenta</string>
-   </property>
-  </action>
-  <action name="actionCuentaEstudio">
-   <property name="icon">
-    <iconset>
-     <normaloff>:/xulpmoney/document-edit.png</normaloff>:/xulpmoney/document-edit.png</iconset>
-   </property>
-   <property name="text">
-    <string>Estudio de la Cuenta</string>
-   </property>
-   <property name="toolTip">
-    <string>Estudio de la Cuenta</string>
+    <string>Historical report</string>
    </property>
   </action>
  </widget>

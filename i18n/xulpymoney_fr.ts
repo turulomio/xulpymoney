@@ -1011,6 +1011,96 @@ correspondiente en la tabla</source>
     </message>
 </context>
 <context>
+    <name>frmConceptsHistorical</name>
+    <message>
+        <location filename="ui/Ui_frmConceptsHistorical.py" line="86"/>
+        <source>Historical concepts report</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_frmConceptsHistorical.py" line="87"/>
+        <source>Concepts report</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_frmConceptsHistorical.py" line="88"/>
+        <source>Estos datos se han calculado con la &#xc3;&#xba;ltima cotizaci&#xc3;&#xb3;n
+del mes anterior y la &#xc3;&#xba;ltima cotizaci&#xc3;&#xb3;n del mes 
+correspondiente en la tabla</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_frmConceptsHistorical.py" line="92"/>
+        <source>A&#xc3;&#xb1;o</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_frmConceptsHistorical.py" line="94"/>
+        <source>Enero</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_frmConceptsHistorical.py" line="96"/>
+        <source>Febrero</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_frmConceptsHistorical.py" line="98"/>
+        <source>Marzo</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_frmConceptsHistorical.py" line="100"/>
+        <source>Abril</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_frmConceptsHistorical.py" line="102"/>
+        <source>Mayo</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_frmConceptsHistorical.py" line="104"/>
+        <source>Junio</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_frmConceptsHistorical.py" line="106"/>
+        <source>Julio</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_frmConceptsHistorical.py" line="108"/>
+        <source>Agosto</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_frmConceptsHistorical.py" line="110"/>
+        <source>Septiembre</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_frmConceptsHistorical.py" line="112"/>
+        <source>Octubre</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_frmConceptsHistorical.py" line="114"/>
+        <source>Noviembre</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_frmConceptsHistorical.py" line="116"/>
+        <source>Diciembre</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_frmConceptsHistorical.py" line="118"/>
+        <source>Total</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>frmCuentasIBM</name>
     <message>
         <location filename="ui/Ui_frmCuentasIBM.py" line="393"/>
@@ -3333,58 +3423,53 @@ seleccionados por el usuario</source>
 <context>
     <name>wdgConceptos</name>
     <message>
-        <location filename="ui/wdgConceptos.py" line="64"/>
+        <location filename="ui/wdgConceptos.py" line="68"/>
         <source>TOTAL</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgConceptos.py" line="135"/>
+        <location filename="ui/Ui_wdgConceptos.py" line="127"/>
         <source>Form</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgConceptos.py" line="158"/>
-        <source>Nueva Cuenta</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_wdgConceptos.py" line="160"/>
-        <source>Estudio de la Cuenta</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_wdgConceptos.py" line="136"/>
+        <location filename="ui/Ui_wdgConceptos.py" line="128"/>
         <source>Concepts report</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgConceptos.py" line="149"/>
+        <location filename="ui/Ui_wdgConceptos.py" line="141"/>
         <source>Concept</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgConceptos.py" line="151"/>
+        <location filename="ui/Ui_wdgConceptos.py" line="143"/>
         <source>Monthly expenses</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgConceptos.py" line="153"/>
+        <location filename="ui/Ui_wdgConceptos.py" line="145"/>
         <source>% Montly expenses</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgConceptos.py" line="155"/>
+        <location filename="ui/Ui_wdgConceptos.py" line="147"/>
         <source>Monthly average</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgConceptos.py" line="146"/>
+        <location filename="ui/Ui_wdgConceptos.py" line="138"/>
         <source>Expenses</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgConceptos.py" line="156"/>
+        <location filename="ui/Ui_wdgConceptos.py" line="148"/>
         <source>Income</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_wdgConceptos.py" line="150"/>
+        <source>Historical report</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -4321,6 +4406,11 @@ S&#xc3;&#xb3;lo se contabilizar&#xc3;&#xa1; cuando se vendan las acciones</sourc
     <message>
         <location filename="ui/wdgInversiones.py" line="246"/>
         <source>There&apos;s not selling prince.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/wdgInversiones.py" line="221"/>
+        <source>Order by</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

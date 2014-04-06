@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>frmConceptsHistorical</class>
+ <widget class="QDialog" name="frmConceptsHistorical">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1280</width>
+    <height>612</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Historical concepts report</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="../images/xulpymoney.qrc">
+    <normaloff>:/xulpymoney/history.png</normaloff>:/xulpymoney/history.png</iconset>
+  </property>
+  <layout class="QHBoxLayout" name="horizontalLayout">
+   <item>
+    <layout class="QVBoxLayout" name="verticalLayout">
+     <item>
+      <widget class="QLabel" name="lbl">
+       <property name="font">
+        <font>
+         <pointsize>14</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>Concepts report</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="myQTableWidget" name="table">
+       <property name="toolTip">
+        <string>Estos datos se han calculado con la última cotización
+del mes anterior y la última cotización del mes 
+correspondiente en la tabla</string>
+       </property>
+       <attribute name="verticalHeaderVisible">
+        <bool>false</bool>
+       </attribute>
+       <column>
+        <property name="text">
+         <string>Año</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>Enero</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>Febrero</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>Marzo</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>Abril</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>Mayo</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>Junio</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>Julio</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>Agosto</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>Septiembre</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>Octubre</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>Noviembre</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>Diciembre</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>Total</string>
+        </property>
+       </column>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>myQTableWidget</class>
+   <extends>QTableWidget</extends>
+   <header location="global">myqtablewidget</header>
+  </customwidget>
+ </customwidgets>
+ <resources>
+  <include location="../images/xulpymoney.qrc"/>
+ </resources>
+ <connections/>
+</ui>
