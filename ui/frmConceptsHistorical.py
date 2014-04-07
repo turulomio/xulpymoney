@@ -10,7 +10,7 @@ class frmConceptsHistorical(QDialog, Ui_frmConceptsHistorical):
         self.cfg=cfg
         self.concepto=concepto
 
-        self.table.settings("wdgConceptsHistorical",  self.cfg)
+        self.table.settings(None,  self.cfg)
         self.lblSubtitle.setText(self.concepto.name)
         self.reload()
 

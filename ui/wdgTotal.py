@@ -94,7 +94,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
             self.tab.setEnabled(False)
             return
         
-        self.table.settings("wdgTotal",  self.cfg)
+        self.table.settings(None,  self.cfg)
         
         ran=datetime.date.today().year-fechainicio.year+1
         for i in range(ran):
