@@ -25,6 +25,8 @@ class wdgConceptos(QWidget, Ui_wdgConceptos):
         
         self.on_wdgYM_changed()
         
+        self.tab.setCurrentIndex(0)
+        
     def load_gastos(self,  year,  month):
         
         (self.expenseslist, totalexpenses,  totalaverageexpenses)=self.expenses.percentage_monthly(year, month)

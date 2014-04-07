@@ -10,9 +10,6 @@
     <height>439</height>
    </rect>
   </property>
-  <property name="windowTitle">
-   <string>Form</string>
-  </property>
   <layout class="QHBoxLayout" name="horizontalLayout_2">
    <item>
     <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -26,7 +23,7 @@
         </font>
        </property>
        <property name="text">
-        <string>Informe Total</string>
+        <string>Total report</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
@@ -39,8 +36,12 @@
         <number>0</number>
        </property>
        <widget class="QWidget" name="tabDatos">
+        <attribute name="icon">
+         <iconset resource="../images/xulpymoney.qrc">
+          <normaloff>:/xulpymoney/coins.png</normaloff>:/xulpymoney/coins.png</iconset>
+        </attribute>
         <attribute name="title">
-         <string>Datos</string>
+         <string>Data</string>
         </attribute>
         <layout class="QHBoxLayout" name="horizontalLayout_3">
          <item>
@@ -61,31 +62,7 @@
               </spacer>
              </item>
              <item>
-              <widget class="QLabel" name="label">
-               <property name="text">
-                <string>Selecciona un año</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QComboBox" name="cmbYears"/>
-             </item>
-             <item>
-              <widget class="QToolButton" name="cmd">
-               <property name="text">
-                <string/>
-               </property>
-               <property name="icon">
-                <iconset resource="../images/xulpymoney.qrc">
-                 <normaloff>:/xulpymoney/document-preview-archive.png</normaloff>:/xulpymoney/document-preview-archive.png</iconset>
-               </property>
-               <property name="iconSize">
-                <size>
-                 <width>24</width>
-                 <height>24</height>
-                </size>
-               </property>
-              </widget>
+              <widget class="wdgYear" name="wyData" native="true"/>
              </item>
              <item>
               <spacer name="horizontalSpacer_2">
@@ -101,6 +78,19 @@
               </spacer>
              </item>
             </layout>
+           </item>
+           <item>
+            <widget class="QLabel" name="lblPreviousYear">
+             <property name="font">
+              <font>
+               <weight>75</weight>
+               <bold>true</bold>
+              </font>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
            </item>
            <item>
             <widget class="myQTableWidget" name="table">
@@ -121,7 +111,7 @@
              </property>
              <row>
               <property name="text">
-               <string>Ingresos</string>
+               <string>Incomes</string>
               </property>
              </row>
              <row>
@@ -136,12 +126,12 @@
              </row>
              <row>
               <property name="text">
-               <string>Gastos</string>
+               <string>Expenses</string>
               </property>
              </row>
              <row>
               <property name="text">
-               <string>I+C+D-G</string>
+               <string>I+C+D-E</string>
               </property>
              </row>
              <row>
@@ -151,12 +141,12 @@
              </row>
              <row>
               <property name="text">
-               <string>Cuentas</string>
+               <string>Accounts</string>
               </property>
              </row>
              <row>
               <property name="text">
-               <string>Inversiones</string>
+               <string>Investments</string>
               </property>
              </row>
              <row>
@@ -181,7 +171,7 @@
              </row>
              <column>
               <property name="text">
-               <string>Enero</string>
+               <string>January</string>
               </property>
              </column>
              <column>
@@ -191,27 +181,27 @@
              </column>
              <column>
               <property name="text">
-               <string>Marzo</string>
+               <string>March</string>
               </property>
              </column>
              <column>
               <property name="text">
-               <string>Abril</string>
+               <string>April</string>
               </property>
              </column>
              <column>
               <property name="text">
-               <string>Mayo</string>
+               <string>May</string>
               </property>
              </column>
              <column>
               <property name="text">
-               <string>Junio</string>
+               <string>June</string>
               </property>
              </column>
              <column>
               <property name="text">
-               <string>Julio</string>
+               <string>July</string>
               </property>
              </column>
              <column>
@@ -231,12 +221,12 @@
              </column>
              <column>
               <property name="text">
-               <string>Noviembre</string>
+               <string>November</string>
               </property>
              </column>
              <column>
               <property name="text">
-               <string>Diciembre</string>
+               <string>December</string>
               </property>
              </column>
              <column>
@@ -251,8 +241,12 @@
         </layout>
        </widget>
        <widget class="QWidget" name="tabGraphic">
+        <attribute name="icon">
+         <iconset resource="../images/xulpymoney.qrc">
+          <normaloff>:/xulpymoney/pie.png</normaloff>:/xulpymoney/pie.png</iconset>
+        </attribute>
         <attribute name="title">
-         <string>Gráfico</string>
+         <string>Chart</string>
         </attribute>
         <layout class="QVBoxLayout" name="verticalLayout_4">
          <item>
@@ -273,31 +267,7 @@
               </spacer>
              </item>
              <item>
-              <widget class="QLabel" name="label_2">
-               <property name="text">
-                <string>Selecciona un año</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QComboBox" name="cmbYearsG"/>
-             </item>
-             <item>
-              <widget class="QToolButton" name="cmdG">
-               <property name="text">
-                <string/>
-               </property>
-               <property name="icon">
-                <iconset resource="../images/xulpymoney.qrc">
-                 <normaloff>:/xulpymoney/document-preview-archive.png</normaloff>:/xulpymoney/document-preview-archive.png</iconset>
-               </property>
-               <property name="iconSize">
-                <size>
-                 <width>24</width>
-                 <height>24</height>
-                </size>
-               </property>
-              </widget>
+              <widget class="wdgYear" name="wyChart" native="true"/>
              </item>
              <item>
               <spacer name="horizontalSpacer_3">
@@ -329,6 +299,12 @@
    <class>myQTableWidget</class>
    <extends>QTableWidget</extends>
    <header location="global">myqtablewidget</header>
+  </customwidget>
+  <customwidget>
+   <class>wdgYear</class>
+   <extends>QWidget</extends>
+   <header location="global">wdgYear</header>
+   <container>1</container>
   </customwidget>
  </customwidgets>
  <resources>

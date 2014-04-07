@@ -89,7 +89,7 @@
         <enum>Qt::CustomContextMenu</enum>
        </property>
        <property name="currentIndex">
-        <number>0</number>
+        <number>1</number>
        </property>
        <property name="tabsClosable">
         <bool>true</bool>
@@ -160,7 +160,7 @@
             <enum>Qt::CustomContextMenu</enum>
            </property>
            <property name="editTriggers">
-            <set>QAbstractItemView::AnyKeyPressed|QAbstractItemView::DoubleClicked</set>
+            <set>QAbstractItemView::NoEditTriggers</set>
            </property>
            <property name="alternatingRowColors">
             <bool>true</bool>

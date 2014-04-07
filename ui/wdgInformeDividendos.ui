@@ -16,9 +16,6 @@
     <verstretch>0</verstretch>
    </sizepolicy>
   </property>
-  <property name="windowTitle">
-   <string>Form</string>
-  </property>
   <layout class="QHBoxLayout" name="horizontalLayout_2">
    <item>
     <layout class="QVBoxLayout" name="verticalLayout">
@@ -86,7 +83,7 @@
      <item>
       <widget class="QCheckBox" name="chkInactivas">
        <property name="text">
-        <string>Mostrar inversiones inactivas</string>
+        <string>Show inactive investments</string>
        </property>
       </widget>
      </item>
@@ -115,12 +112,12 @@
        </attribute>
        <column>
         <property name="text">
-         <string>Inversión</string>
+         <string>Investment</string>
         </property>
        </column>
        <column>
         <property name="text">
-         <string>Banco</string>
+         <string>Bank</string>
         </property>
        </column>
        <column>
@@ -135,12 +132,12 @@
        </column>
        <column>
         <property name="text">
-         <string>Acciones</string>
+         <string>Shares</string>
         </property>
        </column>
        <column>
         <property name="text">
-         <string>Estimado</string>
+         <string>Estimated</string>
         </property>
        </column>
        <column>
@@ -158,9 +155,6 @@
          <weight>75</weight>
          <bold>true</bold>
         </font>
-       </property>
-       <property name="text">
-        <string>TextLabel</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
