@@ -6741,14 +6741,14 @@ INSERT INTO investments VALUES ('BANCO POPULAR', 'ES0113790531', 'EUR', 1, '|IBE
 INSERT INTO investments VALUES ('IBERCAJA CASH 3', 'ES0147035036', 'EUR', 2, '|BMF|0084|', false, 76515, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, NULL, '{2}', NULL, 'ES0147035036||es||False', false, false, true);
 INSERT INTO investments VALUES ('LYXOR ETF LEVDAX | DAX 30, INDEX', '', 'EUR', 4, '', true, -16, '', '', '', '', 100, 'c', 2, 5, 'LVD.PA', '{1}', '{3}', '', false, false, false);
 INSERT INTO investments VALUES ('GAS NATURAL', 'ES0116870314', 'EUR', 1, '|IBEX|MERCADOCONTINUO|', true, 79046, '', '', '', '', 100, 'c', 0, 1, 'GAS.MC', '{1}', '{3}', 'MC#ES0116870314||es||False', false, false, true);
-INSERT INTO investments VALUES ('Gesconsult Corto plazo FI', 'ES0138922036', 'EUR', 2, '', false, -21, '', '', '', '', 0, 'c', 0, 1, '', '{}', '{}', '', false, true, false);
-INSERT INTO investments VALUES ('Bono Telefónica 4.18 20221129', 'ES0278430998', 'EUR', 9, '', false, -22, '', '', '', '', 100, 'c', 0, 1, '', '{}', '{}', '', false, true, false);
 INSERT INTO investments VALUES ('BANKINTER DINERO 2', 'ES0114801030', 'EUR', 2, '|f_es_0055|f_es_BMF|', false, 76851, '', '', '', '', 0, 'c', 0, 1, 'None', '{2}', NULL, 'ES0114801030||es||False', false, false, true);
 INSERT INTO investments VALUES ('BANKINTER DINERO 3', 'ES0115155030', 'EUR', 2, '|f_es_0055|f_es_BMF|', false, 77199, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, NULL, '{2}', NULL, 'ES0115155030||es||False', false, false, true);
 INSERT INTO investments VALUES ('RENTA 4 EUROCASH', 'ES0173319031', 'EUR', 2, '|f_es_0043|f_es_BMF|', false, 81421, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, NULL, '{2}', NULL, 'ES0173319031||es||False', false, false, true);
-INSERT INTO investments VALUES ('ORANGE', 'FR0000133308', 'EUR', 1, '|CAC|EURONEXT|EUROSTOXX|', true, 76996, '', '', '', '', 100, 'c', 0, 3, 'FTE.PA', '{1}', '{3}', 'EURONEXT#FR0000133308||fr||False', false, false, true);
+INSERT INTO investments VALUES ('ORANGE', 'FR0000133308', 'EUR', 1, '|CAC|EURONEXT|EUROSTOXX|', true, 76996, '', '', '', '', 100, 'c', 0, 3, 'ORA.PA', '{1}', '{3}', 'EURONEXT#FR0000133308||fr||False', false, false, true);
 INSERT INTO investments VALUES ('MERRIL LINCH JAPAN OPORTUNITIES FUND', '', 'EUR', 2, '', false, 75042, '', '', '', '', 100, 'c', 0, 1, 'None', NULL, NULL, 'MERRIL LINCH JAPAN OPORTUNITIES FUND||None||False', false, false, true);
 INSERT INTO investments VALUES ('RENTA 4 MONETARIO', 'ES0128520006', 'EUR', 2, '|f_es_0043|f_es_BMF|', false, 74788, '', '', '', '', 0, 'c', 0, 1, 'None', '{2}', NULL, 'ES0128520006||es||True', false, false, true);
+INSERT INTO investments VALUES ('Gesconsult Corto plazo FI', 'ES0138922036', 'EUR', 2, '', false, -21, '', '', '', '', 0, 'c', 0, 1, '', '{}', '{}', '', false, true, false);
+INSERT INTO investments VALUES ('Bono Telefónica 4.18 20221129', 'ES0278430998', 'EUR', 9, '', false, -22, '', '', '', '', 100, 'c', 0, 1, '', '{}', '{}', '', false, true, false);
 INSERT INTO investments VALUES ('BONO ESTADO ESPAÑOL 4,90  30072040', 'ES00000120N0', 'EUR', 7, '', false, -23, '', '', '', '', 20, 'c', 0, 1, '', '{}', '{}', '', false, false, false);
 INSERT INTO investments VALUES ('db x-trackers DAX UCITS ETF', 'LU0274211480', 'EUR', 4, '|MERCADOCONTINUO|', true, 78524, '', '', '', '', 100, 'c', 0, 1, 'DXDAX.MC', '{1}', '{3}', 'MC#LU0274211480||es||False', false, true, true);
 INSERT INTO investments VALUES ('Bono CaixaBank 4.00 20220209', 'ES0240609000', 'EUR', 9, '', false, -24, '', '', '', '', 80, 'c', 0, 1, '', '{}', '{}', '', false, false, false);

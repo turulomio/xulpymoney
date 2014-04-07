@@ -21,7 +21,7 @@
    <item>
     <layout class="QVBoxLayout" name="verticalLayout">
      <item>
-      <widget class="QLabel" name="lbl">
+      <widget class="QLabel" name="lblTitle">
        <property name="font">
         <font>
          <pointsize>14</pointsize>
@@ -38,12 +38,27 @@
       </widget>
      </item>
      <item>
-      <widget class="myQTableWidget" name="table">
-       <property name="toolTip">
-        <string>Estos datos se han calculado con la última cotización
-del mes anterior y la última cotización del mes 
-correspondiente en la tabla</string>
+      <widget class="QLabel" name="lblSubtitle">
+       <property name="font">
+        <font>
+         <pointsize>12</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
        </property>
+       <property name="styleSheet">
+        <string notr="true">color: rgb(0, 192, 0);</string>
+       </property>
+       <property name="text">
+        <string>Concepto</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="myQTableWidget" name="table">
        <attribute name="verticalHeaderVisible">
         <bool>false</bool>
        </attribute>
