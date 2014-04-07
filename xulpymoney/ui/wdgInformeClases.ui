@@ -16,9 +16,6 @@
     <verstretch>0</verstretch>
    </sizepolicy>
   </property>
-  <property name="windowTitle">
-   <string>Form</string>
-  </property>
   <layout class="QHBoxLayout" name="horizontalLayout_5">
    <item>
     <layout class="QVBoxLayout" name="verticalLayout">
@@ -32,7 +29,7 @@
         </font>
        </property>
        <property name="text">
-        <string>Informe de las inversiones</string>
+        <string>Investments report</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>

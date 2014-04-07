@@ -82,6 +82,8 @@ SOURCES         = xulpymoney.py \
                   ui/Ui_wdgChart.py \
                   ui/wdgLog.py \
                   ui/Ui_wdgLog.py \
+                  ui/wdgYear.py \
+                  ui/Ui_wdgYear.py \
                   ui/wdgYearMonth.py \
                   ui/Ui_wdgYearMonth.py \
                   mystocksd.py
@@ -116,6 +118,7 @@ FORMS           = ui/frmAbout.ui \
                   ui/frmTransferencia.ui \
                   ui/frmTraspasoValores.ui \
                   ui/wdgYearMonth.ui \
+                  ui/wdgYear.ui \
                   ui/wdgTotal.ui \
                   ui/frmAnalisis.ui \
                   ui/frmQuotesIBM.ui \

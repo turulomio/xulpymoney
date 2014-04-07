@@ -16,9 +16,6 @@
     <verstretch>0</verstretch>
    </sizepolicy>
   </property>
-  <property name="windowTitle">
-   <string>Form</string>
-  </property>
   <layout class="QHBoxLayout" name="horizontalLayout_6">
    <item>
     <layout class="QVBoxLayout" name="verticalLayout">
@@ -55,26 +52,7 @@
         </spacer>
        </item>
        <item>
-        <layout class="QHBoxLayout" name="horizontalLayout">
-         <item>
-          <widget class="QLabel" name="label">
-           <property name="text">
-            <string>Select a year</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QComboBox" name="cmbYears"/>
-         </item>
-         <item>
-          <widget class="QToolButton" name="cmd">
-           <property name="icon">
-            <iconset resource="../images/xulpymoney.qrc">
-             <normaloff>:/xulpymoney/search.png</normaloff>:/xulpymoney/search.png</iconset>
-           </property>
-          </widget>
-         </item>
-        </layout>
+        <widget class="wdgYear" name="wy" native="true"/>
        </item>
        <item>
         <spacer name="horizontalSpacer">
@@ -94,7 +72,7 @@
      <item>
       <widget class="QTabWidget" name="tab">
        <property name="currentIndex">
-        <number>2</number>
+        <number>3</number>
        </property>
        <widget class="QWidget" name="tab_3">
         <attribute name="icon">
@@ -102,7 +80,7 @@
           <normaloff>:/xulpymoney/history.png</normaloff>:/xulpymoney/history.png</iconset>
         </attribute>
         <attribute name="title">
-         <string>Estudio histórico</string>
+         <string>Historical report</string>
         </attribute>
         <layout class="QVBoxLayout" name="verticalLayout_3">
          <item>
@@ -230,7 +208,7 @@ font: 75 12pt &quot;Sans Serif&quot;;</string>
            </row>
            <row>
             <property name="text">
-             <string>Saldo Actual</string>
+             <string>Current balance</string>
             </property>
            </row>
            <column>
@@ -253,7 +231,7 @@ font: 75 12pt &quot;Sans Serif&quot;;</string>
           <normaloff>:/xulpymoney/history2.png</normaloff>:/xulpymoney/history2.png</iconset>
         </attribute>
         <attribute name="title">
-         <string>Inversiones</string>
+         <string>Investments</string>
         </attribute>
         <layout class="QHBoxLayout" name="horizontalLayout_3">
          <item>
@@ -278,32 +256,32 @@ font: 75 12pt &quot;Sans Serif&quot;;</string>
            </attribute>
            <column>
             <property name="text">
-             <string>Fecha</string>
+             <string>Date</string>
             </property>
            </column>
            <column>
             <property name="text">
-             <string>Años</string>
+             <string>Years</string>
             </property>
            </column>
            <column>
             <property name="text">
-             <string>Inversión</string>
+             <string>Investment</string>
             </property>
            </column>
            <column>
             <property name="text">
-             <string>Tipo de operación</string>
+             <string>Operation type</string>
             </property>
            </column>
            <column>
             <property name="text">
-             <string>Saldo inicial</string>
+             <string>Initial balance</string>
             </property>
            </column>
            <column>
             <property name="text">
-             <string>Saldo final</string>
+             <string>Final balance</string>
             </property>
            </column>
            <column>
@@ -318,7 +296,7 @@ font: 75 12pt &quot;Sans Serif&quot;;</string>
            </column>
            <column>
             <property name="text">
-             <string>Impuestos</string>
+             <string>Taxes</string>
             </property>
            </column>
            <column>
@@ -379,7 +357,7 @@ font: 75 12pt &quot;Sans Serif&quot;;</string>
            </column>
            <column>
             <property name="text">
-             <string>Concepto</string>
+             <string>Concept</string>
             </property>
            </column>
            <column>
@@ -448,27 +426,27 @@ Sólo se contabilizará cuando se vendan las acciones</string>
              </attribute>
              <column>
               <property name="text">
-               <string>Día</string>
+               <string>Date</string>
               </property>
              </column>
              <column>
               <property name="text">
-               <string>Inversión</string>
+               <string>Investment</string>
               </property>
              </column>
              <column>
               <property name="text">
-               <string>Tipo Operación</string>
+               <string>Operation type</string>
               </property>
              </column>
              <column>
               <property name="text">
-               <string>Acciones</string>
+               <string>Shares</string>
               </property>
              </column>
              <column>
               <property name="text">
-               <string>Saldo</string>
+               <string>Balance</string>
               </property>
              </column>
             </widget>
@@ -488,6 +466,12 @@ Sólo se contabilizará cuando se vendan las acciones</string>
    <class>myQTableWidget</class>
    <extends>QTableWidget</extends>
    <header location="global">myqtablewidget</header>
+  </customwidget>
+  <customwidget>
+   <class>wdgYear</class>
+   <extends>QWidget</extends>
+   <header location="global">wdgYear</header>
+   <container>1</container>
   </customwidget>
  </customwidgets>
  <resources>

@@ -96,12 +96,12 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         
         self.table.settings(None,  self.cfg)
         
-        ran=datetime.date.today().year-fechainicio.year+1
-        for i in range(ran):
-            self.cmbYears.addItem(str(fechainicio.year+i))
-            self.cmbYearsG.addItem(str(fechainicio.year+i))
-        self.cmbYears.setCurrentIndex(datetime.date.today().year-fechainicio.year)
-        self.cmbYearsG.setCurrentIndex(datetime.date.today().year-fechainicio.year)
+        self.wyData.initiate(fechainicio.year, datetime.date.today().year, datetime.date.today().year)
+        QObject.connect(self.wyData, SIGNAL("changed"), self.on_wyData_changed)
+        self.wyChart.initiate(fechainicio.year, datetime.date.today().year, datetime.date.today().year)
+        self.wyChart.label.setText(self.trUtf8("Data from selected year"))
+        QObject.connect(self.wyChart, SIGNAL("changed"), self.on_wyChart_changed)
+
 
         self.canvas=canvasTotal(self.cfg,  self)
         self.ntb = NavigationToolbar(self.canvas, self)
@@ -114,24 +114,24 @@ class wdgTotal(QWidget, Ui_wdgTotal):
     def load_data(self, cur, curms):        
         self.table.clearContents()
         inicio=datetime.datetime.now()     
-        cmbanos=int(self.cmbYears.currentText())
+#        cmbanos=int(self.cmbYears.currentText())
         sumgastos=0
         sumdividendos=0
         sumingresos=0        
         sumconsolidado=0
         (sumdiferencia, sumsaldoaccionescostecero)=(0, 0)
         
-        totallastmonth=Patrimonio(self.cfg).saldo_total(self.cfg.data.inversiones_all(),  datetime.date(cmbanos-1, 12, 31))#Mes de 12 31 año anteriro
-        self.label.setText("Saldo a {0}-12-31: {1}.    Selecciona una año:".format(cmbanos, self.cfg.localcurrency.string(totallastmonth)))
+        totallastmonth=Patrimonio(self.cfg).saldo_total(self.cfg.data.inversiones_all(),  datetime.date(self.wyData.year-1, 12, 31))#Mes de 12 31 año anteriro
+        self.lblPreviousYear.setText(self.trUtf8("Balance at {0}-12-31: {1}".format(self.wyData.year-1, self.cfg.localcurrency.string(totallastmonth))))
         inicioano=totallastmonth
 
         for i in range(12): 
-            gastos=Patrimonio(self.cfg).saldo_por_tipo_operacion( cmbanos,i+1,1)#La facturación de tarjeta dentro esta por el union
-            dividendos=Inversion(self.cfg).dividendos_neto(  cmbanos, i+1)
-            ingresos=Patrimonio(self.cfg).saldo_por_tipo_operacion(  cmbanos,i+1,2)-dividendos #Se quitan los dividendos que luego se suman
+            gastos=Patrimonio(self.cfg).saldo_por_tipo_operacion( self.wyData.year,i+1,1)#La facturación de tarjeta dentro esta por el union
+            dividendos=Inversion(self.cfg).dividendos_neto(  self.wyData.year, i+1)
+            ingresos=Patrimonio(self.cfg).saldo_por_tipo_operacion(  self.wyData.year,i+1,2)-dividendos #Se quitan los dividendos que luego se suman
             
-#            consolidado=InversionOperacionHistorica(self.cfg).consolidado_total_mensual(cur, cmbanos,i+1)
-            consolidado=Patrimonio(self.cfg).consolidado_neto(self.cfg.data.inversiones_all(), cmbanos, i+1)
+#            consolidado=InversionOperacionHistorica(self.cfg).consolidado_total_mensual(cur, self.wyData.year,i+1)
+            consolidado=Patrimonio(self.cfg).consolidado_neto(self.cfg.data.inversiones_all(), self.wyData.year, i+1)
             gi=ingresos+dividendos+consolidado+gastos
             self.sumpopup[i]=consolidado+dividendos
             
@@ -141,14 +141,14 @@ class wdgTotal(QWidget, Ui_wdgTotal):
             sumconsolidado=sumconsolidado+consolidado
             sumgi=sumgastos+sumdividendos+sumingresos+sumconsolidado
 
-            if  datetime.date.today()<datetime.date(cmbanos, i+1, 1):
+            if  datetime.date.today()<datetime.date(self.wyData.year, i+1, 1):
                 cuentas=0
                 inversiones=0
                 total=0
                 diferencia=0
                 tpc=0
             else:
-                fecha=datetime.date (cmbanos, i+1, calendar.monthrange(cmbanos, i+1)[1])#Último día de mes.
+                fecha=datetime.date (self.wyData.year, i+1, calendar.monthrange(self.wyData.year, i+1)[1])#Último día de mes.
                 cuentas=Patrimonio(self.cfg).saldo_todas_cuentas( fecha)
                 inversiones=Patrimonio(self.cfg).saldo_todas_inversiones(self.cfg.data.inversiones_all(),  fecha)
                 total=cuentas+inversiones
@@ -193,7 +193,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         data=[]#date,valor
         zero=[]#date, valor zero
 
-        years=datetime.date.today().year-int(self.cmbYearsG.currentText())
+        years=datetime.date.today().year-self.wyChart.year
         months=datetime.date.today().month+1
         self.progress.reset()
         self.progress.setMinimum(0)
@@ -201,7 +201,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         self.progress.setValue(1)     
         self.progress.forceShow()
         self.progress.setValue(0)        
-        for year in range(int(self.cmbYearsG.currentText()), datetime.date.today().year+1):
+        for year in range(self.wyChart.year, datetime.date.today().year+1):
             for month in range(1, 14):
                 if self.progress.wasCanceled():
                     break;
@@ -220,7 +220,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         self.canvas.mydraw(self.cfg, data, zero)
         print ("wdgTotal > load_graphic: {0}".format(datetime.datetime.now()-inicio))
 
-    def on_cmd_pressed(self):
+    def on_wyData_changed(self):
         con=self.cfg.connect_xulpymoney()
         cur = con.cursor()        
         mq=self.cfg.connect_mystocks()
@@ -231,7 +231,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         curms.close()
         self.cfg.disconnect_mystocks(mq)        
         
-    def on_cmdG_pressed(self):
+    def on_wyChart_changed(self):
         con=self.cfg.connect_xulpymoney()
         cur = con.cursor()        
         mq=self.cfg.connect_mystocks()
@@ -245,9 +245,9 @@ class wdgTotal(QWidget, Ui_wdgTotal):
 
     def on_tab_currentChanged(self, index):
         if index==0:#datos
-            self.on_cmd_pressed()
+            self.on_wyData_changed()
         elif index==1: #grafico
-            self.on_cmdG_pressed()
+            self.on_wyChart_changed()
             
         
     def on_table_cellDoubleClicked(self, row, column):

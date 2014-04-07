@@ -10,9 +10,6 @@
     <height>516</height>
    </rect>
   </property>
-  <property name="windowTitle">
-   <string>Form</string>
-  </property>
   <layout class="QHBoxLayout" name="horizontalLayout_2">
    <item>
     <layout class="QVBoxLayout" name="verticalLayout">
@@ -89,7 +86,7 @@
        </column>
        <column>
         <property name="text">
-         <string>Inversión</string>
+         <string>Investment</string>
         </property>
        </column>
        <column>
@@ -99,7 +96,7 @@
        </column>
        <column>
         <property name="text">
-         <string>Última actualización</string>
+         <string>Last update</string>
         </property>
        </column>
        <column>
@@ -127,7 +124,7 @@
      <item>
       <widget class="QLabel" name="lblFound">
        <property name="text">
-        <string>Registros encontrados</string>
+        <string>Registers found</string>
        </property>
       </widget>
      </item>

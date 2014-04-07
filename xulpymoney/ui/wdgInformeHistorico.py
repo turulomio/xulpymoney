@@ -8,10 +8,10 @@ class wdgInformeHistorico(QWidget, Ui_wdgInformeHistorico):
         QWidget.__init__(self, parent)
         self.setupUi(self)
         self.cfg=cfg
-        self.tblEstudio.settings("wdgInformeHistorico",  self.cfg)
-        self.tblDividendos.settings("wdgInformeHistorico",  self.cfg)
+        self.tblEstudio.settings(None,  self.cfg)
+        self.tblDividendos.settings(None,  self.cfg)
         self.tblInversiones.settings("wdgInformeHistorico",  self.cfg)
-        self.tblAdded.settings("wdgInformeHistorico",  self.cfg)
+        self.tblAdded.settings(None,  self.cfg)
         
         
         self.cfg.data.load_inactives()
@@ -22,12 +22,11 @@ class wdgInformeHistorico(QWidget, Ui_wdgInformeHistorico):
                 
         anoinicio=Patrimonio(self.cfg).primera_fecha_con_datos_usuario().year       
 
-        ran=datetime.date.today().year-anoinicio+1
-        for i in range(ran):
-            self.cmbYears.addItem(str(anoinicio+i))
-        self.cmbYears.setCurrentIndex(datetime.date.today().year-anoinicio)
+#        ran=datetime.date.today().year-anoinicio+1
+        
+        self.wy.initiate(anoinicio, datetime.date.today().year, datetime.date.today().year)
+        QObject.connect(self.wy, SIGNAL("changed"), self.on_wy_changed)
 
-        self.ano=int(self.cmbYears.currentText())
         self.load()   
         self.tab.setCurrentIndex(0)
 
@@ -44,7 +43,7 @@ class wdgInformeHistorico(QWidget, Ui_wdgInformeHistorico):
         operaciones=[]
         for i in self.cfg.data.inversiones_all().arr:
             for o in i.op.arr:
-                if o.tipooperacion.id==6 and o.datetime.year==int(self.cmbYears.currentText()):
+                if o.tipooperacion.id==6 and o.datetime.year==self.wy.year:
                     operaciones.append(o)    
         operaciones=sorted(operaciones, key=lambda o: o.datetime,  reverse=False)                         
                     
@@ -72,7 +71,7 @@ class wdgInformeHistorico(QWidget, Ui_wdgInformeHistorico):
         self.totalDividendosNetos=0
         self.totalDividendosBrutos=0
         self.totalDividendosRetenciones=0
-        sql="select * from dividendos where date_part('year',fecha)="+str(self.ano) + " order by fecha"
+        sql="select * from dividendos where date_part('year',fecha)="+str(self.wy.year) + " order by fecha"
         cur.execute(sql); 
         dividendos=[]
         for row in  cur:
@@ -97,7 +96,7 @@ class wdgInformeHistorico(QWidget, Ui_wdgInformeHistorico):
         operaciones=SetInversionOperacionHistorica(self.cfg)
         for i in self.cfg.data.inversiones_all().arr:
             for o in i.op_historica.arr:
-                if o.fecha_venta.year==int(self.cmbYears.currentText()) and o.tipooperacion.id in (5, 8):#Venta y traspaso fondos inversion
+                if o.fecha_venta.year==self.wy.year and o.tipooperacion.id in (5, 8):#Venta y traspaso fondos inversion
                     operaciones.arr.append(o)
         operaciones.arr=sorted(operaciones.arr, key=lambda o: o.fecha_venta,  reverse=False)      
         (self.totalBruto, self.totalComisiones, self.totalImpuestos, self.totalNeto)=operaciones.load_myqtablewidget(self.tblInversiones, "wdgInformeHistorico")
@@ -105,9 +104,9 @@ class wdgInformeHistorico(QWidget, Ui_wdgInformeHistorico):
 
 
     def load_rendimientos(self):
-        inicio=datetime.date(self.ano-1, 12, 31)
+        inicio=datetime.date(self.wy.year-1, 12, 31)
         cur=self.cfg.con.cursor()
-        cur.execute("select sum(importe) as suma from opercuentas where id_conceptos=59 and date_part('year',fecha)="+str(self.ano))
+        cur.execute("select sum(importe) as suma from opercuentas where id_conceptos=59 and date_part('year',fecha)="+str(self.wy.year))
         sumcomisioncustodia=cur.fetchone()[0]        
         if sumcomisioncustodia==None:
             sumcomisioncustodia=0
@@ -195,9 +194,6 @@ class wdgInformeHistorico(QWidget, Ui_wdgInformeHistorico):
         cur.close()
 
 
-    def on_cmd_pressed(self):          
+    def on_wy_changed(self):          
         self.load() 
 
-    @QtCore.pyqtSlot(str) 
-    def on_cmbYears_currentIndexChanged(self, text):
-        self.ano=int(text)

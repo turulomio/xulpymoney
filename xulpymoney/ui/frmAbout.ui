@@ -140,7 +140,7 @@ p, li { white-space: pre-wrap; }
        </widget>
        <widget class="QWidget" name="tab_2">
         <attribute name="title">
-         <string>MyQuotes</string>
+         <string>MyStocks</string>
         </attribute>
         <layout class="QHBoxLayout" name="horizontalLayout_2">
          <item>
@@ -266,7 +266,7 @@ p, li { white-space: pre-wrap; }
        </widget>
        <widget class="QWidget" name="tabLicense">
         <attribute name="title">
-         <string>Licencia</string>
+         <string>License</string>
         </attribute>
         <layout class="QVBoxLayout">
          <item>
