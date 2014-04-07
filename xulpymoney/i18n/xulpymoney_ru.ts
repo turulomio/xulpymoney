@@ -3353,77 +3353,77 @@ seleccionados por el usuario</source>
 <context>
     <name>wdgConceptsHistorical</name>
     <message>
-        <location filename="ui/Ui_wdgConceptsHistorical.py" line="77"/>
+        <location filename="ui/Ui_wdgConceptsHistorical.py" line="79"/>
         <source>Historical concepts report</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgConceptsHistorical.py" line="83"/>
+        <location filename="ui/Ui_wdgConceptsHistorical.py" line="85"/>
         <source>Febrero</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgConceptsHistorical.py" line="95"/>
+        <location filename="ui/Ui_wdgConceptsHistorical.py" line="97"/>
         <source>Agosto</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgConceptsHistorical.py" line="97"/>
+        <location filename="ui/Ui_wdgConceptsHistorical.py" line="99"/>
         <source>Septiembre</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgConceptsHistorical.py" line="99"/>
+        <location filename="ui/Ui_wdgConceptsHistorical.py" line="101"/>
         <source>Octubre</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgConceptsHistorical.py" line="105"/>
+        <location filename="ui/Ui_wdgConceptsHistorical.py" line="107"/>
         <source>Total</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgConceptsHistorical.py" line="79"/>
+        <location filename="ui/Ui_wdgConceptsHistorical.py" line="81"/>
         <source>Year</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgConceptsHistorical.py" line="81"/>
+        <location filename="ui/Ui_wdgConceptsHistorical.py" line="83"/>
         <source>January</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgConceptsHistorical.py" line="85"/>
+        <location filename="ui/Ui_wdgConceptsHistorical.py" line="87"/>
         <source>March</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgConceptsHistorical.py" line="87"/>
+        <location filename="ui/Ui_wdgConceptsHistorical.py" line="89"/>
         <source>April</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgConceptsHistorical.py" line="89"/>
+        <location filename="ui/Ui_wdgConceptsHistorical.py" line="91"/>
         <source>May</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgConceptsHistorical.py" line="91"/>
+        <location filename="ui/Ui_wdgConceptsHistorical.py" line="93"/>
         <source>June</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgConceptsHistorical.py" line="93"/>
+        <location filename="ui/Ui_wdgConceptsHistorical.py" line="95"/>
         <source>July</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgConceptsHistorical.py" line="101"/>
+        <location filename="ui/Ui_wdgConceptsHistorical.py" line="103"/>
         <source>November</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgConceptsHistorical.py" line="103"/>
+        <location filename="ui/Ui_wdgConceptsHistorical.py" line="105"/>
         <source>December</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3967,112 +3967,112 @@ seleccionados por el usuario</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgInformeHistorico.py" line="244"/>
+        <location filename="ui/Ui_wdgInformeHistorico.py" line="243"/>
         <source>Plusval&#xc3;&#xad;as brutas de inversiones</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgInformeHistorico.py" line="246"/>
+        <location filename="ui/Ui_wdgInformeHistorico.py" line="245"/>
         <source>Comisiones en operaciones de inversi&#xc3;&#xb3;n</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgInformeHistorico.py" line="248"/>
+        <location filename="ui/Ui_wdgInformeHistorico.py" line="247"/>
         <source>Impuestos en operaciones de inversi&#xc3;&#xb3;n</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgInformeHistorico.py" line="250"/>
+        <location filename="ui/Ui_wdgInformeHistorico.py" line="249"/>
         <source>Plusval&#xc3;&#xad;as netas de inversiones</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgInformeHistorico.py" line="252"/>
+        <location filename="ui/Ui_wdgInformeHistorico.py" line="251"/>
         <source>Dividendos brutos</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgInformeHistorico.py" line="254"/>
+        <location filename="ui/Ui_wdgInformeHistorico.py" line="253"/>
         <source>Retenciones de dividendos</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgInformeHistorico.py" line="256"/>
+        <location filename="ui/Ui_wdgInformeHistorico.py" line="255"/>
         <source>Dividendos netos</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgInformeHistorico.py" line="258"/>
+        <location filename="ui/Ui_wdgInformeHistorico.py" line="257"/>
         <source>Comisiones de custodia</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgInformeHistorico.py" line="260"/>
+        <location filename="ui/Ui_wdgInformeHistorico.py" line="259"/>
         <source>Pago IRPF</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgInformeHistorico.py" line="262"/>
+        <location filename="ui/Ui_wdgInformeHistorico.py" line="261"/>
         <source>Beneficio sin pagar impuestos</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgInformeHistorico.py" line="264"/>
+        <location filename="ui/Ui_wdgInformeHistorico.py" line="263"/>
         <source>Beneficio despu&#xc3;&#xa9;s de pagar impuestos</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgInformeHistorico.py" line="268"/>
+        <location filename="ui/Ui_wdgInformeHistorico.py" line="267"/>
         <source>&#xe2;&#x82;&#xac;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgInformeHistorico.py" line="270"/>
+        <location filename="ui/Ui_wdgInformeHistorico.py" line="269"/>
         <source>% TAE</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgInformeHistorico.py" line="285"/>
+        <location filename="ui/Ui_wdgInformeHistorico.py" line="284"/>
         <source>Consolidado bruto</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgInformeHistorico.py" line="287"/>
+        <location filename="ui/Ui_wdgInformeHistorico.py" line="286"/>
         <source>Comisiones</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgInformeHistorico.py" line="291"/>
+        <location filename="ui/Ui_wdgInformeHistorico.py" line="290"/>
         <source>Consolidado neto</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgInformeHistorico.py" line="293"/>
+        <location filename="ui/Ui_wdgInformeHistorico.py" line="292"/>
         <source>% TAE neto</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgInformeHistorico.py" line="295"/>
+        <location filename="ui/Ui_wdgInformeHistorico.py" line="294"/>
         <source>% Total neto</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgInformeHistorico.py" line="308"/>
+        <location filename="ui/Ui_wdgInformeHistorico.py" line="306"/>
         <source>Dividendos</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgInformeHistorico.py" line="307"/>
+        <location filename="ui/Ui_wdgInformeHistorico.py" line="305"/>
         <source>Neto antes de impuestos</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgInformeHistorico.py" line="324"/>
+        <location filename="ui/Ui_wdgInformeHistorico.py" line="322"/>
         <source>A&#xc3;&#xb1;adidos de acciones</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgInformeHistorico.py" line="309"/>
+        <location filename="ui/Ui_wdgInformeHistorico.py" line="307"/>
         <source>En este listado se muestran los a&#xc3;&#xb1;adidos de acciones a coste cero que se han producido en el a&#xc3;&#xb1;o
 
 Es  un listado informativo y no ser&#xc3;&#xa1;n contabilizadas en los informes ya que se producir&#xc3;&#xad;a una doble contabilidad
@@ -4086,72 +4086,72 @@ S&#xc3;&#xb3;lo se contabilizar&#xc3;&#xa1; cuando se vendan las acciones</sourc
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgInformeHistorico.py" line="315"/>
+        <location filename="ui/Ui_wdgInformeHistorico.py" line="313"/>
         <source>Date</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgInformeHistorico.py" line="317"/>
+        <location filename="ui/Ui_wdgInformeHistorico.py" line="315"/>
         <source>Investment</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgInformeHistorico.py" line="305"/>
+        <location filename="ui/Ui_wdgInformeHistorico.py" line="303"/>
         <source>Account</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgInformeHistorico.py" line="271"/>
+        <location filename="ui/Ui_wdgInformeHistorico.py" line="270"/>
         <source>Historical report</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgInformeHistorico.py" line="296"/>
+        <location filename="ui/Ui_wdgInformeHistorico.py" line="295"/>
         <source>Investments</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgInformeHistorico.py" line="266"/>
+        <location filename="ui/Ui_wdgInformeHistorico.py" line="265"/>
         <source>Current balance</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgInformeHistorico.py" line="275"/>
+        <location filename="ui/Ui_wdgInformeHistorico.py" line="274"/>
         <source>Years</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgInformeHistorico.py" line="319"/>
+        <location filename="ui/Ui_wdgInformeHistorico.py" line="317"/>
         <source>Operation type</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgInformeHistorico.py" line="281"/>
+        <location filename="ui/Ui_wdgInformeHistorico.py" line="280"/>
         <source>Initial balance</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgInformeHistorico.py" line="283"/>
+        <location filename="ui/Ui_wdgInformeHistorico.py" line="282"/>
         <source>Final balance</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgInformeHistorico.py" line="289"/>
+        <location filename="ui/Ui_wdgInformeHistorico.py" line="288"/>
         <source>Taxes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgInformeHistorico.py" line="301"/>
+        <location filename="ui/Ui_wdgInformeHistorico.py" line="299"/>
         <source>Concept</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgInformeHistorico.py" line="321"/>
+        <location filename="ui/Ui_wdgInformeHistorico.py" line="319"/>
         <source>Shares</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgInformeHistorico.py" line="323"/>
+        <location filename="ui/Ui_wdgInformeHistorico.py" line="321"/>
         <source>Balance</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4754,23 +4754,38 @@ sistema.</source>
 <context>
     <name>wdgYear</name>
     <message>
-        <location filename="ui/wdgYear.ui" line="19"/>
+        <location filename="ui/wdgYear.ui" line="36"/>
         <source>Select a year</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgYear.ui" line="26"/>
+        <location filename="ui/wdgYear.ui" line="29"/>
         <source>&lt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgYear.ui" line="36"/>
+        <location filename="ui/wdgYear.ui" line="46"/>
         <source>&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgYear.ui" line="50"/>
+        <location filename="ui/wdgYear.ui" line="63"/>
         <source>Current Year</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/wdgYear.ui" line="26"/>
+        <source>Previous year</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/wdgYear.ui" line="43"/>
+        <source>Next year</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/wdgYear.ui" line="60"/>
+        <source>Current year</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -4782,78 +4797,98 @@ sistema.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgYearMonth.ui" line="26"/>
+        <location filename="ui/wdgYearMonth.ui" line="29"/>
         <source>&lt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgYearMonth.ui" line="34"/>
+        <location filename="ui/wdgYearMonth.ui" line="40"/>
         <source>January</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgYearMonth.ui" line="39"/>
+        <location filename="ui/wdgYearMonth.ui" line="45"/>
         <source>February</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgYearMonth.ui" line="44"/>
+        <location filename="ui/wdgYearMonth.ui" line="50"/>
         <source>March</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgYearMonth.ui" line="49"/>
+        <location filename="ui/wdgYearMonth.ui" line="55"/>
         <source>April</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgYearMonth.ui" line="54"/>
+        <location filename="ui/wdgYearMonth.ui" line="60"/>
         <source>May</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgYearMonth.ui" line="59"/>
+        <location filename="ui/wdgYearMonth.ui" line="65"/>
         <source>June</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgYearMonth.ui" line="64"/>
+        <location filename="ui/wdgYearMonth.ui" line="70"/>
         <source>July</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgYearMonth.ui" line="69"/>
+        <location filename="ui/wdgYearMonth.ui" line="75"/>
         <source>August</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgYearMonth.ui" line="74"/>
+        <location filename="ui/wdgYearMonth.ui" line="80"/>
         <source>September</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgYearMonth.ui" line="79"/>
+        <location filename="ui/wdgYearMonth.ui" line="85"/>
         <source>October</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgYearMonth.ui" line="84"/>
+        <location filename="ui/wdgYearMonth.ui" line="90"/>
         <source>November</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgYearMonth.ui" line="89"/>
+        <location filename="ui/wdgYearMonth.ui" line="95"/>
         <source>December</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgYearMonth.ui" line="100"/>
+        <location filename="ui/wdgYearMonth.ui" line="113"/>
         <source>&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgYearMonth.ui" line="114"/>
+        <location filename="ui/wdgYearMonth.ui" line="130"/>
         <source>Current month</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/wdgYearMonth.ui" line="26"/>
+        <source>Previous month</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/wdgYearMonth.ui" line="36"/>
+        <source>Select a month</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/wdgYearMonth.ui" line="103"/>
+        <source>Select a year</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/wdgYearMonth.ui" line="110"/>
+        <source>Next month</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -123,9 +123,6 @@ font: 75 12pt &quot;Sans Serif&quot;;</string>
            <property name="selectionBehavior">
             <enum>QAbstractItemView::SelectRows</enum>
            </property>
-           <property name="sortingEnabled">
-            <bool>true</bool>
-           </property>
            <row>
             <property name="text">
              <string>Plusvalías brutas de inversiones</string>
@@ -343,9 +340,6 @@ font: 75 12pt &quot;Sans Serif&quot;;</string>
            </property>
            <property name="selectionBehavior">
             <enum>QAbstractItemView::SelectRows</enum>
-           </property>
-           <property name="sortingEnabled">
-            <bool>true</bool>
            </property>
            <attribute name="verticalHeaderVisible">
             <bool>false</bool>
