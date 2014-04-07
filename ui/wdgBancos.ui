@@ -2,6 +2,18 @@
 <ui version="4.0">
  <class>wdgBancos</class>
  <widget class="QWidget" name="wdgBancos">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>556</width>
+    <height>503</height>
+   </rect>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="../images/xulpymoney.qrc">
+    <normaloff>:/xulpymoney/bank.png</normaloff>:/xulpymoney/bank.png</iconset>
+  </property>
   <layout class="QHBoxLayout" name="horizontalLayout_5">
    <item>
     <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -15,7 +27,7 @@
         </font>
        </property>
        <property name="text">
-        <string>Listado de entidades bancarias</string>
+        <string>Banks list</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
@@ -42,7 +54,7 @@
          <item>
           <widget class="QCheckBox" name="chkInactivas">
            <property name="text">
-            <string>Mostrar las entidades bancarias inactivas</string>
+            <string>Show inactive banks</string>
            </property>
           </widget>
          </item>
@@ -65,17 +77,17 @@
            </attribute>
            <column>
             <property name="text">
-             <string>Entidad bancaria</string>
+             <string>Banks</string>
             </property>
            </column>
            <column>
             <property name="text">
-             <string>Activa</string>
+             <string>Active</string>
             </property>
            </column>
            <column>
             <property name="text">
-             <string>Saldo</string>
+             <string>Balance</string>
             </property>
            </column>
           </widget>
@@ -102,7 +114,7 @@
        <item>
         <widget class="QGroupBox" name="groupBox_2">
          <property name="title">
-          <string>Cuentas</string>
+          <string>Accounts</string>
          </property>
          <layout class="QHBoxLayout" name="horizontalLayout_2">
           <item>
@@ -121,17 +133,17 @@
             </attribute>
             <column>
              <property name="text">
-              <string>Cuenta</string>
+              <string>Account</string>
              </property>
             </column>
             <column>
              <property name="text">
-              <string>Activa</string>
+              <string>Active</string>
              </property>
             </column>
             <column>
              <property name="text">
-              <string>Saldo</string>
+              <string>Balance</string>
              </property>
             </column>
            </widget>
@@ -142,7 +154,7 @@
        <item>
         <widget class="QGroupBox" name="groupBox">
          <property name="title">
-          <string>Inversiones</string>
+          <string>Investments</string>
          </property>
          <layout class="QHBoxLayout" name="horizontalLayout">
           <item>
@@ -161,17 +173,17 @@
             </attribute>
             <column>
              <property name="text">
-              <string>Inversión</string>
+              <string>Investment</string>
              </property>
             </column>
             <column>
              <property name="text">
-              <string>Activa</string>
+              <string>Active</string>
              </property>
             </column>
             <column>
              <property name="text">
-              <string>Saldo</string>
+              <string>Balance</string>
              </property>
             </column>
            </widget>

@@ -175,7 +175,7 @@
      <normaloff>:/xulpymoney/report.png</normaloff>:/xulpymoney/report.png</iconset>
    </property>
    <property name="text">
-    <string>&amp;Rangos de un índice</string>
+    <string>Index range</string>
    </property>
    <property name="toolTip">
     <string>Rangos de un índice</string>
@@ -232,7 +232,7 @@
      <normaloff>:/xulpymoney/report2.png</normaloff>:/xulpymoney/report2.png</iconset>
    </property>
    <property name="text">
-    <string>Informe &amp;Total</string>
+    <string>Total report</string>
    </property>
    <property name="toolTip">
     <string>Informe total</string>
@@ -244,7 +244,7 @@
      <normaloff>:/xulpymoney/history2.png</normaloff>:/xulpymoney/history2.png</iconset>
    </property>
    <property name="text">
-    <string>Informe Histórico</string>
+    <string>Historical report</string>
    </property>
   </action>
   <action name="actionCuentas">
@@ -277,7 +277,7 @@
      <normaloff>:/xulpymoney/pie.png</normaloff>:/xulpymoney/pie.png</iconset>
    </property>
    <property name="text">
-    <string>Informe de tipos de inversión</string>
+    <string>Investment types report</string>
    </property>
   </action>
   <action name="actionTransferencia">
