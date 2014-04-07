@@ -290,6 +290,51 @@ CREATE TABLE opercuentas (
 
 ALTER TABLE public.opercuentas OWNER TO postgres;
 
+--
+-- Name: opertarjetas; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE opertarjetas (
+    id_opertarjetas integer DEFAULT nextval(('"seq_opertarjetas"'::text)::regclass) NOT NULL,
+    fecha date,
+    id_conceptos integer NOT NULL,
+    id_tiposoperaciones integer NOT NULL,
+    importe numeric(100,2) NOT NULL,
+    comentario text,
+    id_tarjetas integer NOT NULL,
+    pagado boolean NOT NULL,
+    fechapago date,
+    id_opercuentas bigint
+);
+
+
+ALTER TABLE public.opertarjetas OWNER TO postgres;
+
+--
+-- Name: opercuentastarjetas; Type: VIEW; Schema: public; Owner: postgres
+--
+
+CREATE VIEW opercuentastarjetas AS
+         SELECT opercuentas.fecha,
+            opercuentas.id_conceptos,
+            opercuentas.importe
+           FROM opercuentas
+UNION
+         SELECT opertarjetas.fecha,
+            opertarjetas.id_conceptos,
+            opertarjetas.importe
+           FROM opertarjetas;
+
+
+ALTER TABLE public.opercuentastarjetas OWNER TO postgres;
+
+--
+-- Name: VIEW opercuentastarjetas; Type: COMMENT; Schema: public; Owner: postgres
+--
+
+COMMENT ON VIEW opercuentastarjetas IS 'Used to get concepts stadistics';
+
+
 SET default_with_oids = false;
 
 --
@@ -327,28 +372,6 @@ COMMENT ON COLUMN operinversiones.hora IS 'Es UTC time';
 
 COMMENT ON COLUMN operinversiones.divisa IS 'Campo que calcula el cociente entre la divisa de la divisa de la cuenta bancaria asociada entre la divisa de la inversión es decir EUR/USD. Si eur es la cuenta bancariaa y usd la divisa de la inversión';
 
-
-SET default_with_oids = true;
-
---
--- Name: opertarjetas; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
---
-
-CREATE TABLE opertarjetas (
-    id_opertarjetas integer DEFAULT nextval(('"seq_opertarjetas"'::text)::regclass) NOT NULL,
-    fecha date,
-    id_conceptos integer NOT NULL,
-    id_tiposoperaciones integer NOT NULL,
-    importe numeric(100,2) NOT NULL,
-    comentario text,
-    id_tarjetas integer NOT NULL,
-    pagado boolean NOT NULL,
-    fechapago date,
-    id_opercuentas bigint
-);
-
-
-ALTER TABLE public.opertarjetas OWNER TO postgres;
 
 --
 -- Name: seq_conceptos; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -489,6 +512,8 @@ CREATE SEQUENCE seq_tarjetas
 
 
 ALTER TABLE public.seq_tarjetas OWNER TO postgres;
+
+SET default_with_oids = true;
 
 --
 -- Name: tarjetas; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
