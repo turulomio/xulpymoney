@@ -16,8 +16,9 @@
     <verstretch>0</verstretch>
    </sizepolicy>
   </property>
-  <property name="windowTitle">
-   <string>Form</string>
+  <property name="windowIcon">
+   <iconset resource="../images/xulpymoney.qrc">
+    <normaloff>:/xulpymoney/history.png</normaloff>:/xulpymoney/history.png</iconset>
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout_2">
    <item>
@@ -52,17 +53,17 @@
        </attribute>
        <column>
         <property name="text">
-         <string>Año</string>
+         <string>Year</string>
         </property>
        </column>
        <column>
         <property name="text">
-         <string>Saldo inicial</string>
+         <string>Initial balance</string>
         </property>
        </column>
        <column>
         <property name="text">
-         <string>Saldo final</string>
+         <string>Final balance</string>
         </property>
        </column>
        <column>
@@ -72,7 +73,7 @@
        </column>
        <column>
         <property name="text">
-         <string>Ingresos</string>
+         <string>Incomes</string>
         </property>
        </column>
        <column>
@@ -87,7 +88,7 @@
        </column>
        <column>
         <property name="text">
-         <string>Gastos</string>
+         <string>Expenses</string>
         </property>
        </column>
        <column>

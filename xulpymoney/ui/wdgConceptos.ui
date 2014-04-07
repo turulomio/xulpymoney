@@ -10,8 +10,9 @@
     <height>525</height>
    </rect>
   </property>
-  <property name="windowTitle">
-   <string>Form</string>
+  <property name="windowIcon">
+   <iconset resource="../images/xulpymoney.qrc">
+    <normaloff>:/xulpymoney/books.png</normaloff>:/xulpymoney/books.png</iconset>
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout_4">
    <item>

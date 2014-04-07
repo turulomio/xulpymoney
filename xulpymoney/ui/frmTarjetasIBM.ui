@@ -10,15 +10,15 @@
     <x>0</x>
     <y>0</y>
     <width>426</width>
-    <height>170</height>
+    <height>197</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Nueva tarjeta</string>
+   <string>New credit card</string>
   </property>
   <property name="windowIcon">
-   <iconset>
-    <normaloff>:/xulpmoney/document-edit.png</normaloff>:/xulpmoney/document-edit.png</iconset>
+   <iconset resource="../images/xulpymoney.qrc">
+    <normaloff>:/xulpymoney/visa2.png</normaloff>:/xulpymoney/visa2.png</iconset>
   </property>
   <property name="modal">
    <bool>true</bool>
@@ -48,7 +48,7 @@
        <item>
         <widget class="QLabel" name="label_5">
          <property name="text">
-          <string>Nombre de la tarjeta</string>
+          <string>Credit card name</string>
          </property>
         </widget>
        </item>
@@ -101,7 +101,7 @@
        <item>
         <widget class="QLabel" name="label_4">
          <property name="text">
-          <string>Número de tarjeta</string>
+          <string>Credit card number</string>
          </property>
         </widget>
        </item>
@@ -120,7 +120,11 @@
      <item>
       <widget class="QPushButton" name="cmd">
        <property name="text">
-        <string>Guardar</string>
+        <string>Save</string>
+       </property>
+       <property name="icon">
+        <iconset resource="../images/xulpymoney.qrc">
+         <normaloff>:/xulpymoney/save.png</normaloff>:/xulpymoney/save.png</iconset>
        </property>
       </widget>
      </item>

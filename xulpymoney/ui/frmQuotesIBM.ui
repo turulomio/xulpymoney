@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>407</width>
-    <height>321</height>
+    <width>420</width>
+    <height>386</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -83,7 +83,7 @@
            <item>
             <widget class="QLabel" name="label_2">
              <property name="text">
-              <string>Introduce la hora</string>
+              <string>Insert an hour</string>
              </property>
             </widget>
            </item>

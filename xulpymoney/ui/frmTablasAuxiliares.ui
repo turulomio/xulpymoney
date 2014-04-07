@@ -11,7 +11,11 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Xulpymoney &gt; Tablas auxiliares</string>
+   <string>Xulpymoney &gt; Auxiliar tables</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="../images/xulpymoney.qrc">
+    <normaloff>:/xulpymoney/configure.png</normaloff>:/xulpymoney/configure.png</iconset>
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout">
    <item>
@@ -26,7 +30,7 @@
         </font>
        </property>
        <property name="text">
-        <string>Tablas Auxiliares</string>
+        <string>Auxiliar tables</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
@@ -40,7 +44,7 @@
        </property>
        <widget class="QWidget" name="tabConceptos">
         <attribute name="title">
-         <string>Conceptos de gastos e ingresos</string>
+         <string>Xulpymoney concepts</string>
         </attribute>
         <layout class="QHBoxLayout" name="horizontalLayout_2">
          <item>
@@ -56,12 +60,12 @@
            </attribute>
            <column>
             <property name="text">
-             <string>Conceptos</string>
+             <string>Concepts</string>
             </property>
            </column>
            <column>
             <property name="text">
-             <string>Tipo de operación</string>
+             <string>Operation type</string>
             </property>
            </column>
           </widget>

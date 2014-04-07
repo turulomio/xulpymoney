@@ -78,8 +78,6 @@ SOURCES         = xulpymoney.py \
                   ui/Ui_wdgInversionesMS.py \
                   ui/wdgMergeCodes.py \
                   ui/Ui_wdgMergeCodes.py \
-                  ui/wdgChart.py \
-                  ui/Ui_wdgChart.py \
                   ui/wdgLog.py \
                   ui/Ui_wdgLog.py \
                   ui/wdgYear.py \
@@ -126,7 +124,6 @@ FORMS           = ui/frmAbout.ui \
                   ui/frmSelector.ui \
                   ui/wdgInversionesMS.ui \
                   ui/wdgMergeCodes.ui \
-                  ui/wdgChart.ui \
                   ui/wdgLog.ui
 
 TRANSLATIONS    = i18n/xulpymoney_es.ts \

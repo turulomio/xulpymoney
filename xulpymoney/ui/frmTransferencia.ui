@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>499</width>
-    <height>324</height>
+    <width>605</width>
+    <height>392</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -51,7 +51,7 @@
        <item>
         <widget class="QLabel" name="label">
          <property name="text">
-          <string>Selecciona la fecha de la transferencia</string>
+          <string>Select date</string>
          </property>
         </widget>
        </item>

@@ -10,8 +10,9 @@
     <height>352</height>
    </rect>
   </property>
-  <property name="windowTitle">
-   <string>Dialog</string>
+  <property name="windowIcon">
+   <iconset resource="../images/xulpymoney.qrc">
+    <normaloff>:/xulpymoney/books.png</normaloff>:/xulpymoney/books.png</iconset>
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout_2">
    <item>
@@ -27,7 +28,7 @@
         <string notr="true">color: rgb(0, 192, 0);</string>
        </property>
        <property name="text">
-        <string>Inversión</string>
+        <string>Investment</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
@@ -63,7 +64,7 @@
          </column>
          <column>
           <property name="text">
-           <string>Elementos seleccionados</string>
+           <string>Selected elements</string>
           </property>
          </column>
         </widget>
@@ -124,7 +125,7 @@
          </column>
          <column>
           <property name="text">
-           <string>Elementos</string>
+           <string>Elements</string>
           </property>
          </column>
         </widget>
@@ -134,7 +135,7 @@
      <item>
       <widget class="QPushButton" name="cmd">
        <property name="text">
-        <string>Aceptar la selección</string>
+        <string>Accept selection</string>
        </property>
       </widget>
      </item>
@@ -142,6 +143,8 @@
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="../images/xulpymoney.qrc"/>
+ </resources>
  <connections/>
 </ui>

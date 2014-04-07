@@ -14,7 +14,7 @@
    <string>Split / Contrasplit relation</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="../../../xulpymoney/images/xulpymoney.qrc">
+   <iconset resource="../images/xulpymoney.qrc">
     <normaloff>:/xulpymoney/study.png</normaloff>:/xulpymoney/study.png</iconset>
   </property>
   <property name="sizeGripEnabled">
@@ -154,7 +154,7 @@
   <tabstop>txtFinal</tabstop>
  </tabstops>
  <resources>
-  <include location="../../../xulpymoney/images/xulpymoney.qrc"/>
+  <include location="../images/xulpymoney.qrc"/>
  </resources>
  <connections/>
 </ui>
