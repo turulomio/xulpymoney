@@ -16,6 +16,7 @@ XULPYMONEY
 20130829 Al añadir inversión peta por estimaciones al insertar 
 20131002 No pone el saldo en pago cupon corrido en opercuenta
 20131106 En frmTotal los nuevos dividendos, pagos de bonos, aparecen en ingresos y en dividendos. Repasar
+20140407 Si se mete otra estimación de dividendo la graba, en vez de sustituirla
 
 
 MYSTOCKS
