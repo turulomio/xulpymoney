@@ -2,7 +2,7 @@ from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 from libxulpymoney import *
 from Ui_wdgConceptos import *
-from frmConceptsHistorical import *
+from wdgConceptsHistorical import *
 
 class wdgConceptos(QWidget, Ui_wdgConceptos):
     def __init__(self, cfg,  parent=None):
@@ -115,8 +115,24 @@ class wdgConceptos(QWidget, Ui_wdgConceptos):
         menu.addAction(self.actionHistoricalReport)   
         menu.exec_(self.tblIncomes.mapToGlobal(pos))
         
+    
+    def on_tab_tabCloseRequested(self, index):
+        """Only removes dinamic tabs"""
+        if index in (0, 1):
+            m=QMessageBox()
+            m.setIcon(QMessageBox.Information)
+            m.setText(self.trUtf8("You can't close this tab"))
+            m.exec_()  
+        else:
+            self.tab.removeTab(index)
         
     @pyqtSignature("")
     def on_actionHistoricalReport_activated(self):
-        d=frmConceptsHistorical(self.cfg, self.selected[0], self)
-        d.exec_()
+        newtab = QWidget()
+        horizontalLayout = QHBoxLayout(newtab)
+        concepto=self.selected[0]
+        wch = wdgConceptsHistorical(self.cfg, concepto, newtab)
+        horizontalLayout.addWidget(wch)
+        self.tab.addTab(newtab, concepto.name)
+        self.tab.setCurrentWidget(newtab)
+
