@@ -84,14 +84,17 @@
       </layout>
      </item>
      <item>
-      <widget class="QTabWidget" name="tabWidget">
+      <widget class="QTabWidget" name="tab">
        <property name="contextMenuPolicy">
         <enum>Qt::CustomContextMenu</enum>
        </property>
        <property name="currentIndex">
         <number>0</number>
        </property>
-       <widget class="QWidget" name="tab">
+       <property name="tabsClosable">
+        <bool>true</bool>
+       </property>
+       <widget class="QWidget" name="tabExpenses">
         <attribute name="title">
          <string>Expenses</string>
         </attribute>
@@ -146,9 +149,9 @@
          </item>
         </layout>
        </widget>
-       <widget class="QWidget" name="tab_2">
+       <widget class="QWidget" name="tabIncomes">
         <attribute name="title">
-         <string>Income</string>
+         <string>Incomes</string>
         </attribute>
         <layout class="QHBoxLayout" name="horizontalLayout_2">
          <item>

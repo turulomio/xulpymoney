@@ -22,8 +22,8 @@ SOURCES         = xulpymoney.py \
                   ui/Ui_wdgBancos.py \
                   ui/wdgConceptos.py \
                   ui/Ui_wdgConceptos.py \
-                  ui/frmConceptsHistorical.py \
-                  ui/Ui_frmConceptsHistorical.py \
+                  ui/wdgConceptsHistorical.py \
+                  ui/Ui_wdgConceptsHistorical.py \
                   ui/wdgCuentas.py \
                   ui/Ui_wdgCuentas.py \
                   ui/frmCuentasIBM.py \
@@ -100,7 +100,7 @@ FORMS           = ui/frmAbout.ui \
                   ui/wdgBancos.ui \
                   ui/wdgCuentas.ui \
                   ui/wdgConceptos.ui \
-                  ui/frmConceptsHistorical.ui \
+                  ui/wdgConceptsHistorical.ui \
                   ui/frmCuentasIBM.ui \
                   ui/wdgDesReinversion.ui \
                   ui/wdgInformeClases.ui \

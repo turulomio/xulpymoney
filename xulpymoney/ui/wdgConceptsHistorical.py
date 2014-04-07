@@ -1,17 +1,16 @@
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 from libxulpymoney import *
-from Ui_frmConceptsHistorical import *
+from Ui_wdgConceptsHistorical import *
 
-class frmConceptsHistorical(QDialog, Ui_frmConceptsHistorical):
+class wdgConceptsHistorical(QWidget, Ui_wdgConceptsHistorical):
     def __init__(self, cfg, concepto,  parent=None):
-        QDialog.__init__(self, parent)
+        QWidget.__init__(self, parent)
         self.setupUi(self)
         self.cfg=cfg
         self.concepto=concepto
 
         self.table.settings(None,  self.cfg)
-        self.lblSubtitle.setText(self.concepto.name)
         self.reload()
 
     def reload(self):

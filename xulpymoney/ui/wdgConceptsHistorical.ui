@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>frmConceptsHistorical</class>
- <widget class="QDialog" name="frmConceptsHistorical">
+ <class>wdgConceptsHistorical</class>
+ <widget class="QDialog" name="wdgConceptsHistorical">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -21,55 +21,18 @@
    <item>
     <layout class="QVBoxLayout" name="verticalLayout">
      <item>
-      <widget class="QLabel" name="lblTitle">
-       <property name="font">
-        <font>
-         <pointsize>14</pointsize>
-         <weight>75</weight>
-         <bold>true</bold>
-        </font>
-       </property>
-       <property name="text">
-        <string>Concepts report</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignCenter</set>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLabel" name="lblSubtitle">
-       <property name="font">
-        <font>
-         <pointsize>12</pointsize>
-         <weight>75</weight>
-         <bold>true</bold>
-        </font>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">color: rgb(0, 192, 0);</string>
-       </property>
-       <property name="text">
-        <string>Concepto</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignCenter</set>
-       </property>
-      </widget>
-     </item>
-     <item>
       <widget class="myQTableWidget" name="table">
        <attribute name="verticalHeaderVisible">
         <bool>false</bool>
        </attribute>
        <column>
         <property name="text">
-         <string>Año</string>
+         <string>Year</string>
         </property>
        </column>
        <column>
         <property name="text">
-         <string>Enero</string>
+         <string>January</string>
         </property>
        </column>
        <column>
@@ -79,27 +42,27 @@
        </column>
        <column>
         <property name="text">
-         <string>Marzo</string>
+         <string>March</string>
         </property>
        </column>
        <column>
         <property name="text">
-         <string>Abril</string>
+         <string>April</string>
         </property>
        </column>
        <column>
         <property name="text">
-         <string>Mayo</string>
+         <string>May</string>
         </property>
        </column>
        <column>
         <property name="text">
-         <string>Junio</string>
+         <string>June</string>
         </property>
        </column>
        <column>
         <property name="text">
-         <string>Julio</string>
+         <string>July</string>
         </property>
        </column>
        <column>
@@ -119,12 +82,12 @@
        </column>
        <column>
         <property name="text">
-         <string>Noviembre</string>
+         <string>November</string>
         </property>
        </column>
        <column>
         <property name="text">
-         <string>Diciembre</string>
+         <string>December</string>
         </property>
        </column>
        <column>

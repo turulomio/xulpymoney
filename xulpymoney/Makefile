@@ -22,7 +22,7 @@ compile:
 	pyuic4 ui/frmTablasAuxiliares.ui > ui/Ui_frmTablasAuxiliares.py
 	pyuic4 ui/wdgBancos.ui > ui/Ui_wdgBancos.py
 	pyuic4 ui/wdgConceptos.ui > ui/Ui_wdgConceptos.py
-	pyuic4 ui/frmConceptsHistorical.ui > ui/Ui_frmConceptsHistorical.py
+	pyuic4 ui/wdgConceptsHistorical.ui > ui/Ui_wdgConceptsHistorical.py
 	pyuic4 ui/wdgCuentas.ui > ui/Ui_wdgCuentas.py
 	pyuic4 ui/wdgDesReinversion.ui > ui/Ui_wdgDesReinversion.py
 	pyuic4 ui/frmCuentasIBM.ui > ui/Ui_frmCuentasIBM.py
