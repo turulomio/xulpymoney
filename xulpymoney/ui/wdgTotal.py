@@ -233,6 +233,8 @@ class wdgTotal(QWidget, Ui_wdgTotal):
             
         
     def on_table_cellDoubleClicked(self, row, column):
+
+            
         month=column+1
         if row==0 and column<12:
             id_tiposoperaciones=2
@@ -255,7 +257,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
             horizontalLayout = QHBoxLayout(newtab)
             table = myQTableWidget(newtab)
             set=SetCuentasOperaciones(self.cfg)
-            set.load_from_db("select fecha, id_conceptos, id_tiposoperaciones, importe, comentario, id_cuentas from opercuentas where id_tiposoperaciones={0} and date_part('year',fecha)={1} and date_part('month',fecha)={2} union all select fecha, id_conceptos, id_tiposoperaciones, importe, comentario, id_cuentas from opertarjetas,tarjetas where opertarjetas.id_tarjetas=tarjetas.id_tarjetas and id_tiposoperaciones={0} and date_part('year',fecha)={1} and date_part('month',fecha)={2}".format (id_tiposoperaciones, self.wyData.year, month)      )
+            set.load_from_db_with_creditcard("select fecha, id_conceptos, id_tiposoperaciones, importe, comentario, id_cuentas , -1 as id_tarjetas from opercuentas where id_tiposoperaciones={0} and date_part('year',fecha)={1} and date_part('month',fecha)={2} union all select fecha, id_conceptos, id_tiposoperaciones, importe, comentario, id_cuentas ,tarjetas.id_tarjetas as id_tarjetas from opertarjetas,tarjetas where opertarjetas.id_tarjetas=tarjetas.id_tarjetas and id_tiposoperaciones={0} and date_part('year',fecha)={1} and date_part('month',fecha)={2}".format (id_tiposoperaciones, self.wyData.year, month)      )
             set.sort()
             set.myqtablewidget(table, None, True)
             horizontalLayout.addWidget(table)

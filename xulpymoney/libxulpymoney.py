@@ -547,7 +547,20 @@ class SetCuentasOperaciones:
             co=CuentaOperacion(self.cfg).init__create(row['fecha'], self.cfg.conceptos.find(row['id_conceptos']), self.cfg.tiposoperaciones.find(row['id_tiposoperaciones']), row['importe'], row['comentario'],  self.cfg.data.cuentas_all().find(row['id_cuentas']))
             self.arr.append(co)
         cur.close()
-        
+    
+    def load_from_db_with_creditcard(self, sql):
+        """Usado en unionall opercuentas y opertarjetas y se crea un campo id_tarjetas con el id de la tarjeta y -1 sino tiene es decir opercuentas"""
+        cur=self.cfg.con.cursor()
+        cur.execute(sql)#"Select * from opercuentas"
+        for row in cur:        
+            if row['id_tarjetas']==-1:
+                comentario=row['comentario']
+            else:
+                comentario=QApplication.translate("Core","Paid with {0}. {1}".format(self.cfg.data.tarjetas_all().find(row['id_tarjetas']).name, row['comentario'] ), None, QApplication.UnicodeUTF8)
+            
+            co=CuentaOperacion(self.cfg).init__create(row['fecha'], self.cfg.conceptos.find(row['id_conceptos']), self.cfg.tiposoperaciones.find(row['id_tiposoperaciones']), row['importe'], comentario,  self.cfg.data.cuentas_all().find(row['id_cuentas']))
+            self.arr.append(co)
+        cur.close()
     def sort(self):       
         self.arr=sorted(self.arr, key=lambda e: e.fecha,  reverse=False) 
         
@@ -1669,19 +1682,14 @@ class CuentaOperacion:
 class DBData:
     def __init__(self, cfg):
         self.cfg=cfg
-        
         self.loaded_inactive=False
-                
         self.tupdatedata=TUpdateData(self.cfg)
         
     def __del__(self):
         if self.tupdatedata.isAlive():
             self.tupdatedata.join()
             print ("TUpdateData closed")
-        
-        
-        
-        
+
     def load_actives(self):
         inicio=datetime.datetime.now()
         self.indicereferencia=Investment(self.cfg).init__db(self.cfg.config.get_value("settings", "indicereferencia" ))
@@ -1690,6 +1698,8 @@ class DBData:
         self.ebs_active.load_from_db("select * from entidadesbancarias where eb_activa=true")
         self.cuentas_active=SetCuentas(self.cfg, self.ebs_active)
         self.cuentas_active.load_from_db("select * from cuentas where cu_activa=true")
+        self.tarjetas_active=SetTarjetas(self.cfg, self.cfg.data.cuentas_active)
+        self.tarjetas_active.load_from_db("select * from tarjetas where tj_activa=true")
         self.investments_active=SetInvestments(self.cfg)
         self.investments_active.load_from_inversiones_query("select distinct(mystocksid) from inversiones where in_activa=true")
         self.inversiones_active=SetInversiones(self.cfg, self.cuentas_active, self.investments_active, self.indicereferencia)
@@ -1707,6 +1717,9 @@ class DBData:
             
             self.cuentas_inactive=SetCuentas(self.cfg, self.ebs_all())
             self.cuentas_inactive.load_from_db("select * from cuentas where cu_activa=false")
+            
+            self.tarjetas_inactive=SetTarjetas(self.cfg, self.cuentas_all())
+            self.tarjetas_inactive.load_from_db("select * from tarjetas where tj_activa=false")
             
             self.investments_inactive=SetInvestments(self.cfg)
             self.investments_inactive.load_from_inversiones_query("select distinct(mystocksid) from inversiones where in_activa=false")
@@ -1734,6 +1747,8 @@ class DBData:
         return self.ebs_active.union(self.ebs_inactive)
     def cuentas_all(self):
         return self.cuentas_active.union(self.cuentas_inactive)
+    def tarjetas_all(self):
+        return self.tarjetas_active.union(self.tarjetas_inactive,  self.cuentas_all())
     def inversiones_all(self):
         return self.inversiones_active.union(self.inversiones_inactive)
     def investments_all(self):
@@ -2546,7 +2561,7 @@ class Patrimonio:
 class SetTarjetas:
     def __init__(self, cfg, cuentas):
         self.arr=[]
-        self.dic_arr={} ##Prueba de duplicación
+#        self.dic_arr={} ##Prueba de duplicación
         self.cfg=cfg   
         self.cuentas=cuentas
 
@@ -2557,27 +2572,36 @@ class SetTarjetas:
             t=Tarjeta(self.cfg).init__db_row(row, self.cuentas.find(row['id_cuentas']))
             if t.pagodiferido==True:
                 t.get_opertarjetas_diferidas_pendientes()
-            self.dic_arr[str(t.id)]=t
+#            self.dic_arr[str(t.id)]=t
             self.arr.append(t)
         cur.close()
             
-
+    def clone_of_account(self, cuenta):
+        """Devuelve un SetTarjetas con las tarjetas de una determinada cuenta"""
+        s=SetTarjetas(self.cfg, self.cuentas)
+        for t in self.arr:
+            if t.cuenta==cuenta:
+                s.arr.append(t)
+        return s
 
     def find(self, id):
-        return self.dic_arr[str(id)]
+        for t in self.arr:
+            if t.id==id:
+                return t
+#        return self.dic_arr[str(id)]
         
-    def tarjetas(self, id=None):
-        if id==None:
-            return dic2list(self.dic_tarjetas)
-        else:
-            return self.dic_tarjetas[str(id)]
-                        
-    def tarjetas_activas(self, activa=True):
-        resultado=[]
-        for i in self.tarjetas():
-            if i.activa==activa:
-                resultado.append(i)
-        return resultado
+#    def tarjetas(self, id=None):
+#        if id==None:
+#            return dic2list(self.dic_tarjetas)
+#        else:
+#            return self.dic_tarjetas[str(id)]
+#                        
+#    def tarjetas_activas(self, activa=True):
+#        resultado=[]
+#        for i in self.tarjetas():
+#            if i.activa==activa:
+#                resultado.append(i)
+#        return resultado
                     
     def union(self,  list2, cuentasunion):
         """Devuelve un SetEntidadesBancarias con la union del set1 y del set2"""
