@@ -104,7 +104,7 @@ class wdgDesReinversion(QWidget, Ui_wdgDesReinversion):
 
 
         (operinversionesactual, operinversioneshistoricas)=operaciones.calcular_new()
-        operaciones.load_myqtablewidget(self.tblOperaciones, "wdgDesReinversion")
-        self.inversion.op_actual.load_myqtablewidget(self.tblInversionesActualAntes, "wdgDesReinversion")
-        operinversionesactual.load_myqtablewidget(self.tblInversionesActualDespues, "wdgDesReinversion")
-        operinversioneshistoricas.load_myqtablewidget(self.tblInversionesHistoricas, "wdgDesReinversion")
+        operaciones.myqtablewidget(self.tblOperaciones, "wdgDesReinversion")
+        self.inversion.op_actual.myqtablewidget(self.tblInversionesActualAntes, "wdgDesReinversion")
+        operinversionesactual.myqtablewidget(self.tblInversionesActualDespues, "wdgDesReinversion")
+        operinversioneshistoricas.myqtablewidget(self.tblInversionesHistoricas, "wdgDesReinversion")

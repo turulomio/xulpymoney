@@ -24,7 +24,8 @@ class frmInversionesEstudio(QDialog, Ui_frmInversionesEstudio):
         
         #arrays asociados a tablas
         self.op=[]#Necesario porque puede acortarse el original
-        self.dividendos=SetDividends(self.cfg,self.inversion)
+        self.dividendos=SetDividends(self.cfg)
+        self.cfg.data.load_inactives()
         
         self.ise.setupUi(self.cfg)
 #        self.tblInversionHistorica.settings("frmInversionesEstudio",  self.cfg)
@@ -62,12 +63,12 @@ class frmInversionesEstudio(QDialog, Ui_frmInversionesEstudio):
                 self.cmbCuenta.setEnabled(False)
             
             self.inversion.op_actual.get_valor_indicereferencia(self.cfg.data.indicereferencia)
-            self.inversion.op_actual.load_myqtablewidget(self.tblInversionActual,  "frmInversionesEstudio")
-            self.inversion.op_historica.load_myqtablewidget(self.tblInversionHistorica,  "frmInversionesEstudio"  )
+            self.inversion.op_actual.myqtablewidget(self.tblInversionActual,  "frmInversionesEstudio")
+            self.inversion.op_historica.myqtablewidget(self.tblInversionHistorica,  "frmInversionesEstudio"  )
    
 
     def load_tabDividendos(self):        
-        (sumneto, sumbruto, sumretencion, sumcomision)=self.dividendos.load_myqtablewidget(self.tblDividendos, "frmInversionesEstudio")
+        (sumneto, sumbruto, sumretencion, sumcomision)=self.dividendos.myqtablewidget(self.tblDividendos, "frmInversionesEstudio")
         if self.chkDividendosHistoricos.checkState()==Qt.Unchecked:
             if len(self.dividendos.arr)>0:
                 importeinvertido=self.inversion.invertido()
@@ -102,15 +103,15 @@ class frmInversionesEstudio(QDialog, Ui_frmInversionesEstudio):
         else:
             self.op=self.inversion.op
         self.selMovimiento=None
-        self.op.load_myqtablewidget(self.tblOperaciones, "frmInversionesEstudio")
+        self.op.myqtablewidget(self.tblOperaciones, "frmInversionesEstudio")
             
         
     def update_tables(self):             
         #Actualiza el indice de referencia porque ha cambiado
         self.inversion.op_actual.get_valor_indicereferencia(self.cfg.data.indicereferencia)
         self.on_chkOperaciones_stateChanged(self.chkOperaciones.checkState())
-        self.inversion.op_actual.load_myqtablewidget(self.tblInversionActual,  "frmInversionesEstudio")
-        self.inversion.op_historica.load_myqtablewidget(self.tblInversionHistorica,  "frmInversionesEstudio"  )
+        self.inversion.op_actual.myqtablewidget(self.tblInversionActual,  "frmInversionesEstudio")
+        self.inversion.op_historica.myqtablewidget(self.tblInversionHistorica,  "frmInversionesEstudio"  )
         self.load_tabDividendos()
     
 
