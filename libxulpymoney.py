@@ -548,6 +548,9 @@ class SetCuentasOperaciones:
             self.arr.append(co)
         cur.close()
         
+    def sort(self):       
+        self.arr=sorted(self.arr, key=lambda e: e.fecha,  reverse=False) 
+        
     def myqtablewidget(self, tabla, section, show_account=False):
         """Section es donde guardar en el config file, coincide con el nombre del formulario en el que está la tabla
         show_account muestra la cuenta cuando las opercuentas son de diversos cuentas (Estudios totales)"""
@@ -1556,13 +1559,13 @@ class Concepto:
 
     def media_mensual(self):
         cur=self.cfg.con.cursor()
-        cur.execute("select fecha from opercuentas where id_conceptos=%s union select fecha from opertarjetas where id_conceptos=%s order by fecha limit 1", (self.id, self.id))
+        cur.execute("select fecha from opercuentas where id_conceptos=%s union all select fecha from opertarjetas where id_conceptos=%s order by fecha limit 1", (self.id, self.id))
         res=cur.fetchone()
         if res==None:
             primerafecha=datetime.date.today()-datetime.timedelta(days=1)
         else:
             primerafecha=res['fecha']
-        cur.execute("select sum(importe) as suma from opercuentas where id_conceptos=%s union select sum(importe) as suma from opertarjetas where id_conceptos=%s", (self.id, self.id))
+        cur.execute("select sum(importe) as suma from opercuentas where id_conceptos=%s union all select sum(importe) as suma from opertarjetas where id_conceptos=%s", (self.id, self.id))
         suma=Decimal(0)
         for i in cur:
             if i['suma']==None:
@@ -1574,7 +1577,7 @@ class Concepto:
     def mensual(self,   year,  month):  
         """Saca el gasto mensual de este concepto"""
         cur=self.cfg.con.cursor()
-        cur.execute("select sum(importe) as suma from opercuentas where id_conceptos=%s and date_part('month',fecha)=%s and date_part('year', fecha)=%s union select sum(importe) as suma from opertarjetas where id_conceptos=%s  and date_part('month',fecha)=%s and date_part('year', fecha)=%s", (self.id,  month, year,  self.id,  month, year  ))
+        cur.execute("select sum(importe) as suma from opercuentas where id_conceptos=%s and date_part('month',fecha)=%s and date_part('year', fecha)=%s union all select sum(importe) as suma from opertarjetas where id_conceptos=%s  and date_part('month',fecha)=%s and date_part('year', fecha)=%s", (self.id,  month, year,  self.id,  month, year  ))
         suma=0
         for i in cur:
             if i['suma']==None:
@@ -2440,7 +2443,7 @@ class Patrimonio:
     def primera_fecha_con_datos_usuario(self):        
         """Devuelve la fecha actual si no hay datos. Base de datos vacía"""
         cur=self.cfg.con.cursor()
-        sql='select fecha from opercuentas UNION select datetime::date from operinversiones UNION select fecha from opertarjetas order by fecha limit 1;'
+        sql='select fecha from opercuentas UNION all select datetime::date from operinversiones UNION all select fecha from opertarjetas order by fecha limit 1;'
         cur.execute(sql)
         if cur.rowcount==0:
             return datetime.date.today()
@@ -2494,7 +2497,7 @@ class Patrimonio:
     def saldo_anual_por_tipo_operacion(self,  ano,  id_tiposoperaciones):   
         """Opercuentas y opertarjetas"""
         cur=self.cfg.con.cursor()
-        sql="select sum(Importe) as importe from opercuentas where id_tiposoperaciones="+str(id_tiposoperaciones)+" and date_part('year',fecha) = "+str(ano)  + " union select sum(Importe) as importe from opertarjetas where id_tiposoperaciones="+str(id_tiposoperaciones)+" and date_part('year',fecha) = "+str(ano)
+        sql="select sum(Importe) as importe from opercuentas where id_tiposoperaciones="+str(id_tiposoperaciones)+" and date_part('year',fecha) = "+str(ano)  + " union all select sum(Importe) as importe from opertarjetas where id_tiposoperaciones="+str(id_tiposoperaciones)+" and date_part('year',fecha) = "+str(ano)
         cur.execute(sql)        
         resultado=0
         for i in cur:
@@ -2507,7 +2510,7 @@ class Patrimonio:
     def saldo_por_tipo_operacion(self,  ano,  mes,  id_tiposoperaciones):   
         """Opercuentas y opertarjetas"""
         cur=self.cfg.con.cursor()
-        sql="select sum(Importe) as importe from opercuentas where id_tiposoperaciones="+str(id_tiposoperaciones)+" and date_part('year',fecha) = "+str(ano)+" and date_part('month',fecha)= " + str(mes) + " union select sum(Importe) as importe from opertarjetas where id_tiposoperaciones="+str(id_tiposoperaciones)+" and date_part('year',fecha) = "+str(ano)+" and date_part('month',fecha)= " + str(mes)
+        sql="select sum(Importe) as importe from opercuentas where id_tiposoperaciones="+str(id_tiposoperaciones)+" and date_part('year',fecha) = "+str(ano)+" and date_part('month',fecha)= " + str(mes) + " union all select sum(Importe) as importe from opertarjetas where id_tiposoperaciones="+str(id_tiposoperaciones)+" and date_part('year',fecha) = "+str(ano)+" and date_part('month',fecha)= " + str(mes)
         cur.execute(sql)        
         
         resultado=0
@@ -4597,7 +4600,7 @@ class Quote:
       Si no devuelve tres Quotes devuelve None y deberaá calcularse de otra forma"""
         curms=self.cfg.conms.cursor()
         endlastyear=dt(datetime.date(datetime.date.today().year -1, 12, 31), datetime.time(23, 59, 59), self.cfg.localzone)
-        curms.execute("select * from quote (%s, now()) union select * from penultimate(%s) union select * from quote(%s,%s) order by datetime", (investment.id, investment.id, investment.id,  endlastyear))
+        curms.execute("select * from quote (%s, now()) union all select * from penultimate(%s) union all select * from quote(%s,%s) order by datetime", (investment.id, investment.id, investment.id,  endlastyear))
         if curms.rowcount!=3:
             curms.close()
             return None
