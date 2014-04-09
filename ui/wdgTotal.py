@@ -91,6 +91,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         fechainicio=Patrimonio(self.cfg).primera_fecha_con_datos_usuario()         
 
         self.cfg.data.load_inactives()
+        
         if fechainicio==None: #Base de datos vacía
             self.tab.setEnabled(False)
             return
@@ -233,10 +234,8 @@ class wdgTotal(QWidget, Ui_wdgTotal):
             
         
     def on_table_cellDoubleClicked(self, row, column):
-
-            
         month=column+1
-        if row==0 and column<12:
+        if row==0 and column<12:#ingresos
             id_tiposoperaciones=2
             newtab = QWidget()
             horizontalLayout = QHBoxLayout(newtab)
@@ -249,9 +248,20 @@ class wdgTotal(QWidget, Ui_wdgTotal):
             self.tab.addTab(newtab, self.trUtf8("Incomes of {0} of {1}".format(self.table.horizontalHeaderItem(column).text(), self.wyData.year)))
             self.tab.setCurrentWidget(newtab)
 
+        if row==2 and column<12:#dividendos
+            newtab = QWidget()
+            horizontalLayout = QHBoxLayout(newtab)
+            table = myQTableWidget(newtab)
+            set=SetDividends(self.cfg)
+            set.load_from_db("select * from dividendos where id_conceptos not in (63) and date_part('year',fecha)={0} and date_part('month',fecha)={1}".format (self.wyData.year, month))
+            set.sort()
+            set.myqtablewidget(table, None, True)
+            horizontalLayout.addWidget(table)
+            self.tab.addTab(newtab, self.trUtf8("Dividends of {0} of {1}".format(self.table.horizontalHeaderItem(column).text(), self.wyData.year)))
+            self.tab.setCurrentWidget(newtab)
 
             
-        if row==3 and column<12:
+        if row==3 and column<12:#gastos
             id_tiposoperaciones=1
             newtab = QWidget()
             horizontalLayout = QHBoxLayout(newtab)
@@ -264,7 +274,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
             self.tab.addTab(newtab, self.trUtf8("Expenses of {0} of {1}".format(self.table.horizontalHeaderItem(column).text(), self.wyData.year)))
             self.tab.setCurrentWidget(newtab)
         
-        if row==4:
+        if row==4 and column<12:
             m=QMessageBox()
             message=self.trUtf8("La suma de consolidado y dividendos  de este mes es {0}. En el año su valor asciende a {1}".format(self.cfg.localcurrency.string(self.sumpopup[column]), self.cfg.localcurrency.string(self.sumpopup[12])))
 

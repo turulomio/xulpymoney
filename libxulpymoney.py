@@ -626,8 +626,7 @@ class SetCurrencies:
 
 class SetDividends:
     """Class that  groups dividends from a Xulpymoney Investment"""
-    def __init__(self, cfg,  inversion):
-        self.inversion=inversion
+    def __init__(self, cfg):
         self.cfg=cfg
         self.arr=[]
         
@@ -637,21 +636,29 @@ class SetDividends:
         cur=self.cfg.con.cursor()
         cur.execute( sql)#"select * from dividendos where id_inversiones=%s order by fecha", (self.inversion.id, )
         for row in cur:
-            oc=CuentaOperacion(self.cfg).init__db_query(row['id_opercuentas'], self.inversion.cuenta)
-            self.arr.append(Dividendo(self.cfg).init__db_row(row, self.inversion, oc, self.cfg.conceptos.find(row['id_conceptos']) ))
+            inversion=self.cfg.data.inversiones_all().find(row['id_inversiones'])
+            oc=CuentaOperacion(self.cfg).init__db_query(row['id_opercuentas'], inversion.cuenta)
+            self.arr.append(Dividendo(self.cfg).init__db_row(row, inversion, oc, self.cfg.conceptos.find(row['id_conceptos']) ))
         cur.close()      
         
-    def load_myqtablewidget(self, table, section):
+    def sort(self):       
+        self.arr=sorted(self.arr, key=lambda e: e.fecha,  reverse=False) 
+        
+    def myqtablewidget(self, table, section, show_investment=False):
         """Section es donde guardar en el config file, coincide con el nombre del formulario en el que está la table
         Devuelve sumatorios"""
-        table.setColumnCount(7)
+        diff=0
+        if show_investment==True:
+            diff=1
+        table.setColumnCount(7+diff)
         table.setHorizontalHeaderItem(0, QTableWidgetItem(QApplication.translate("Core", "Date", None, QApplication.UnicodeUTF8)))
-        table.setHorizontalHeaderItem(1, QTableWidgetItem(QApplication.translate("Core", "Concept", None, QApplication.UnicodeUTF8)))
-        table.setHorizontalHeaderItem(2, QTableWidgetItem(QApplication.translate("Core", "Bruto", None, QApplication.UnicodeUTF8)))
-        table.setHorizontalHeaderItem(3, QTableWidgetItem(QApplication.translate("Core", "Retenci´on", None, QApplication.UnicodeUTF8)))
-        table.setHorizontalHeaderItem(4, QTableWidgetItem(QApplication.translate("Core", "Comission", None, QApplication.UnicodeUTF8)))
-        table.setHorizontalHeaderItem(5, QTableWidgetItem(QApplication.translate("Core", "Neto", None, QApplication.UnicodeUTF8)))
-        table.setHorizontalHeaderItem(6, QTableWidgetItem(QApplication.translate("Core", "DPA", None, QApplication.UnicodeUTF8)))
+        table.setHorizontalHeaderItem(diff, QTableWidgetItem(QApplication.translate("Core", "Investment", None, QApplication.UnicodeUTF8)))
+        table.setHorizontalHeaderItem(diff+1, QTableWidgetItem(QApplication.translate("Core", "Concept", None, QApplication.UnicodeUTF8)))
+        table.setHorizontalHeaderItem(diff+2, QTableWidgetItem(QApplication.translate("Core", "Bruto", None, QApplication.UnicodeUTF8)))
+        table.setHorizontalHeaderItem(diff+3, QTableWidgetItem(QApplication.translate("Core", "Retenci´on", None, QApplication.UnicodeUTF8)))
+        table.setHorizontalHeaderItem(diff+4, QTableWidgetItem(QApplication.translate("Core", "Comission", None, QApplication.UnicodeUTF8)))
+        table.setHorizontalHeaderItem(diff+5, QTableWidgetItem(QApplication.translate("Core", "Neto", None, QApplication.UnicodeUTF8)))
+        table.setHorizontalHeaderItem(diff+6, QTableWidgetItem(QApplication.translate("Core", "DPA", None, QApplication.UnicodeUTF8)))
         #DATA
         table.settings(section,  self.cfg)        
         table.clearContents()
@@ -668,17 +675,19 @@ class SetDividends:
             sumretencion=sumretencion+d.retencion
             sumcomision=sumcomision+d.comision
             table.setItem(i, 0, QTableWidgetItem(str(d.fecha)))
-            table.setItem(i, 1, QTableWidgetItem(str(d.opercuenta.concepto.name)))
-            table.setItem(i, 2, self.inversion.investment.currency.qtablewidgetitem(d.bruto))
-            table.setItem(i, 3, self.inversion.investment.currency.qtablewidgetitem(d.retencion))
-            table.setItem(i, 4, self.inversion.investment.currency.qtablewidgetitem(d.comision))
-            table.setItem(i, 5, self.inversion.investment.currency.qtablewidgetitem(d.neto))
-            table.setItem(i, 6, self.inversion.investment.currency.qtablewidgetitem(d.dpa))
-        table.setItem(len(self.arr), 1, QTableWidgetItem("TOTAL"))
-        table.setItem(len(self.arr), 2, self.inversion.investment.currency.qtablewidgetitem(sumbruto))
-        table.setItem(len(self.arr), 3, self.inversion.investment.currency.qtablewidgetitem(sumretencion))
-        table.setItem(len(self.arr), 4, self.inversion.investment.currency.qtablewidgetitem(sumcomision))
-        table.setItem(len(self.arr), 5, self.inversion.investment.currency.qtablewidgetitem(sumneto))
+            if show_investment==True:
+                table.setItem(i, diff, qleft(d.inversion.name))
+            table.setItem(i, diff+1, QTableWidgetItem(str(d.opercuenta.concepto.name)))
+            table.setItem(i, diff+2, self.cfg.localcurrency.qtablewidgetitem(d.bruto))
+            table.setItem(i, diff+3, self.cfg.localcurrency.qtablewidgetitem(d.retencion))
+            table.setItem(i, diff+4, self.cfg.localcurrency.qtablewidgetitem(d.comision))
+            table.setItem(i, diff+5, self.cfg.localcurrency.qtablewidgetitem(d.neto))
+            table.setItem(i, diff+6, self.cfg.localcurrency.qtablewidgetitem(d.dpa))
+        table.setItem(len(self.arr), diff+1, QTableWidgetItem("TOTAL"))
+        table.setItem(len(self.arr), diff+2, self.cfg.localcurrency.qtablewidgetitem(sumbruto))
+        table.setItem(len(self.arr), diff+3, self.cfg.localcurrency.qtablewidgetitem(sumretencion))
+        table.setItem(len(self.arr), diff+4, self.cfg.localcurrency.qtablewidgetitem(sumcomision))
+        table.setItem(len(self.arr), diff+5, self.cfg.localcurrency.qtablewidgetitem(sumneto))
         return (sumneto, sumbruto, sumretencion, sumcomision)
         
 
@@ -722,7 +731,7 @@ class SetEstimationsDPS:
     def sort(self):
         self.arr=sorted(self.arr, key=lambda c: c.year,  reverse=False)         
         
-    def load_myqtablewidget(self, table):
+    def myqtablewidget(self, table):
         """settings, must be thrown before, not in each reload"""
         self.sort()
         table.clearContents()
@@ -777,7 +786,7 @@ class SetEstimationsEPS:
     def sort(self):
         self.arr=sorted(self.arr, key=lambda c: c.year,  reverse=False)         
         
-    def load_myqtablewidget(self, table):
+    def myqtablewidget(self, table):
         self.sort()
         table.clearContents()
         table.setRowCount(len(self.arr))
@@ -956,7 +965,7 @@ class SetInversionOperacion:
             resultado.arr.append(io.clone())
         return resultado
         
-    def load_myqtablewidget(self, tabla, section):
+    def myqtablewidget(self, tabla, section):
         """Section es donde guardar en el config file, coincide con el nombre del formulario en el que está la tabla"""
         tabla.setColumnCount(7)
         tabla.setHorizontalHeaderItem(0, QTableWidgetItem(QApplication.translate(section, "Fecha", None, QApplication.UnicodeUTF8)))
@@ -1023,7 +1032,7 @@ class SetInversionOperacionActual:
             resultado=resultado+o.invertido()
         return resultado
         
-    def load_myqtablewidget(self,  tabla,  section ):
+    def myqtablewidget(self,  tabla,  section ):
         """Función que rellena una tabla pasada como parámetro con datos procedentes de un array de objetos
         InversionOperacionActual y dos valores de mystocks para rellenar los tpc correspodientes
         
@@ -1262,7 +1271,7 @@ class SetInversionOperacionHistorica:
                     if o.fecha_venta.year==year and o.fecha_venta.month==month:
                         resultado=resultado+o.consolidado_neto_antes_impuestos()
         return resultado
-    def load_myqtablewidget(self, tabla, section):
+    def myqtablewidget(self, tabla, section):
         """Rellena datos de un array de objetos de InversionOperacionHistorica, devuelve totales ver código"""
         tabla.setColumnCount(13)
         tabla.setHorizontalHeaderItem(0, QTableWidgetItem(QApplication.translate(section, "Fecha", None, QApplication.UnicodeUTF8)))
@@ -3161,7 +3170,7 @@ class SetDPS:
     def sort(self):
         self.arr=sorted(self.arr, key=lambda c: c.date,  reverse=False)         
         
-    def load_myqtablewidget(self, table):
+    def myqtablewidget(self, table):
         table.setColumnCount(2)
         table.setHorizontalHeaderItem(0, QTableWidgetItem(QApplication.translate("Core", "Date", None, QApplication.UnicodeUTF8)))
         table.setHorizontalHeaderItem(1, QTableWidgetItem(QApplication.translate("Core", "Gross", None, QApplication.UnicodeUTF8)))
