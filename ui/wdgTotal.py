@@ -24,12 +24,14 @@ class canvasTotal(FigureCanvas):
         self.labels=[]
         self.plot_main=None
         self.plot_zero=None
+        self.plotted=False#Shown if the graphics has been plotted anytime.
         
     
     def price(self, x): 
         return self.cfg.localcurrency.string(x)
         
     def mydraw(self, cfg, data, zero):
+        self.plotted=True
         self.ax.clear()
 
         (dates, total)=zip(*data)
@@ -78,7 +80,6 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         QWidget.__init__(self, parent)
         self.setupUi(self)
         self.cfg=cfg
-#        self.pathGraphTotal=os.environ['HOME']+"/.xulpymoney/graphTotal.png"
         self.progress = QProgressDialog(self.tr("Rellenando los datos del informe"), self.tr("Cancelar"), 0,0)
         self.progress.setModal(True)
         self.progress.setWindowTitle(self.trUtf8("Calculando datos..."))
@@ -108,13 +109,14 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         
         self.tabGraphTotal.addWidget(self.canvas)
         self.tabGraphTotal.addWidget(self.ntb)
-        self.on_tab_currentChanged(0)
+        
+        self.tab.setCurrentIndex(0)
+        self.load_data()
 
         
-    def load_data(self, cur, curms):        
+    def load_data(self):        
         self.table.clearContents()
         inicio=datetime.datetime.now()     
-#        cmbanos=int(self.cmbYears.currentText())
         sumgastos=0
         sumdividendos=0
         sumingresos=0        
@@ -188,7 +190,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         print ("wdgTotal > load_data: {0}".format(final-inicio))
 
 
-    def load_graphic(self, cur, curms):          
+    def load_graphic(self):          
         inicio=datetime.datetime.now()  
         data=[]#date,valor
         zero=[]#date, valor zero
@@ -221,39 +223,60 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         print ("wdgTotal > load_graphic: {0}".format(datetime.datetime.now()-inicio))
 
     def on_wyData_changed(self):
-        con=self.cfg.connect_xulpymoney()
-        cur = con.cursor()        
-        mq=self.cfg.connect_mystocks()
-        curms=mq.cursor()        
-        self.load_data(cur, curms) 
-        cur.close()     
-        self.cfg.disconnect_xulpymoney(con)       
-        curms.close()
-        self.cfg.disconnect_mystocks(mq)        
+        self.load_data()    
         
     def on_wyChart_changed(self):
-        con=self.cfg.connect_xulpymoney()
-        cur = con.cursor()        
-        mq=self.cfg.connect_mystocks()
-        curms=mq.cursor()        
-        self.load_graphic(cur, curms)
-        cur.close()     
-        self.cfg.disconnect_xulpymoney(con)       
-        curms.close()
-        self.cfg.disconnect_mystocks(mq)        
+        self.load_graphic()      
         
 
     def on_tab_currentChanged(self, index):
-        if index==0:#datos
-            self.on_wyData_changed()
-        elif index==1: #grafico
+        if  index==1 and self.canvas.plotted==False: #If has not been plotted, plots it.
             self.on_wyChart_changed()
             
         
     def on_table_cellDoubleClicked(self, row, column):
-        if row in (1, 2):
+        month=column+1
+        if row==0 and column<12:
+            id_tiposoperaciones=2
+            newtab = QWidget()
+            horizontalLayout = QHBoxLayout(newtab)
+            table = myQTableWidget(newtab)
+            set=SetCuentasOperaciones(self.cfg)
+            set.load_from_db("select fecha, id_conceptos, id_tiposoperaciones, importe, comentario, id_cuentas from opercuentas where id_tiposoperaciones={0} and date_part('year',fecha)={1} and date_part('month',fecha)={2} and id_conceptos not in ({3}) union select fecha, id_conceptos, id_tiposoperaciones, importe, comentario, id_cuentas from opertarjetas,tarjetas where opertarjetas.id_tarjetas=tarjetas.id_tarjetas and id_tiposoperaciones={0} and date_part('year',fecha)={1} and date_part('month',fecha)={2}".format (id_tiposoperaciones, self.wyData.year, month, list2string(self.cfg.conceptos.considered_dividends_in_totals())))
+            set.myqtablewidget(table, None, True)
+            horizontalLayout.addWidget(table)
+            self.tab.addTab(newtab, self.trUtf8("Incomes of {0} of {1}".format(self.table.horizontalHeaderItem(column).text(), self.wyData.year)))
+            self.tab.setCurrentWidget(newtab)
+
+
+            
+        if row==3 and column<12:
+            id_tiposoperaciones=1
+            newtab = QWidget()
+            horizontalLayout = QHBoxLayout(newtab)
+            table = myQTableWidget(newtab)
+            set=SetCuentasOperaciones(self.cfg)
+            set.load_from_db("select fecha, id_conceptos, id_tiposoperaciones, importe, comentario, id_cuentas from opercuentas where id_tiposoperaciones={0} and date_part('year',fecha)={1} and date_part('month',fecha)={2} union select fecha, id_conceptos, id_tiposoperaciones, importe, comentario, id_cuentas from opertarjetas,tarjetas where opertarjetas.id_tarjetas=tarjetas.id_tarjetas and id_tiposoperaciones={0} and date_part('year',fecha)={1} and date_part('month',fecha)={2}".format (id_tiposoperaciones, self.wyData.year, month)      )
+            set.myqtablewidget(table, None, True)
+            horizontalLayout.addWidget(table)
+            self.tab.addTab(newtab, self.trUtf8("Expenses of {0} of {1}".format(self.table.horizontalHeaderItem(column).text(), self.wyData.year)))
+            self.tab.setCurrentWidget(newtab)
+        
+        if row==4:
             m=QMessageBox()
             message=self.trUtf8("La suma de consolidado y dividendos  de este mes es {0}. En el año su valor asciende a {1}".format(self.cfg.localcurrency.string(self.sumpopup[column]), self.cfg.localcurrency.string(self.sumpopup[12])))
 
             m.setText(message)
-            m.exec_()             
+            m.exec_()    
+    
+    def on_tab_tabCloseRequested(self, index):
+        """Only removes dinamic tabs"""
+        if index in (0, 1):
+            m=QMessageBox()
+            m.setIcon(QMessageBox.Information)
+            m.setText(self.trUtf8("You can't close this tab"))
+            m.exec_()  
+        else:
+            self.tab.setCurrentIndex(0)
+            self.tab.removeTab(index)
+        

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>566</width>
-    <height>439</height>
+    <width>975</width>
+    <height>607</height>
    </rect>
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout_2">
@@ -34,6 +34,9 @@
       <widget class="QTabWidget" name="tab">
        <property name="currentIndex">
         <number>0</number>
+       </property>
+       <property name="tabsClosable">
+        <bool>true</bool>
        </property>
        <widget class="QWidget" name="tabDatos">
         <attribute name="icon">

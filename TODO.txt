@@ -17,7 +17,6 @@ XULPYMONEY
 20131002 No pone el saldo en pago cupon corrido en opercuenta
 20131106 En frmTotal los nuevos dividendos, pagos de bonos, aparecen en ingresos y en dividendos. Repasar
 20140407 Si se mete otra estimación de dividendo la graba, en vez de sustituirla
-20140508 Los pagos de cupon corrido, los mete como ingreso!!!!
 
 MYSTOCKS
 ========

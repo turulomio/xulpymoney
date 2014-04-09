@@ -391,6 +391,10 @@ class SetConceptos:
             combo.addItem("{0} -- {1}".format(  c.name,  c.tipooperacion.name),  c.id )
         if select!=None:
             combo.setCurrentIndex(combo.findData(select.id))
+            
+    def considered_dividends_in_totals(self):
+        """El 63 es pago de cupon corrido y no es considerado dividendo  a efectos de totales, sino gasto."""
+        return[39, 50, 62, 65, 66]
 
     def find(self, id):
         return self.dic_arr[str(id)]
@@ -525,6 +529,56 @@ class SetCuentas:
         resultado=SetCuentas(self.cfg, self.ebs)
         resultado.arr=self.arr+list2.arr
         return resultado
+
+class SetCuentasOperaciones:
+    """Clase es un array ordenado de objetos newInversionOperacion"""
+    def __init__(self, cfg):
+        self.cfg=cfg
+        self.arr=[]
+        
+    def append(self, objeto):
+        self.arr.append(objeto)
+
+        
+    def load_from_db(self, sql):
+        cur=self.cfg.con.cursor()
+        cur.execute(sql)#"Select * from opercuentas"
+        for row in cur:        
+            co=CuentaOperacion(self.cfg).init__create(row['fecha'], self.cfg.conceptos.find(row['id_conceptos']), self.cfg.tiposoperaciones.find(row['id_tiposoperaciones']), row['importe'], row['comentario'],  self.cfg.data.cuentas_all().find(row['id_cuentas']))
+            self.arr.append(co)
+        cur.close()
+        
+    def myqtablewidget(self, tabla, section, show_account=False):
+        """Section es donde guardar en el config file, coincide con el nombre del formulario en el que está la tabla
+        show_account muestra la cuenta cuando las opercuentas son de diversos cuentas (Estudios totales)"""
+        ##HEADERS
+        diff=0
+        if show_account==True:
+            tabla.setColumnCount(6)
+            diff=1
+        else:
+            tabla.setColumnCount(5)
+        tabla.setHorizontalHeaderItem(0, QTableWidgetItem(QApplication.translate(section, "Date", None, QApplication.UnicodeUTF8)))
+        if show_account==True:
+            tabla.setHorizontalHeaderItem(diff, QTableWidgetItem(QApplication.translate(section, "Account", None, QApplication.UnicodeUTF8)))
+        tabla.setHorizontalHeaderItem(1+diff, QTableWidgetItem(QApplication.translate(section, "Concept", None, QApplication.UnicodeUTF8)))
+        tabla.setHorizontalHeaderItem(2+diff,  QTableWidgetItem(QApplication.translate(section, "Amount", None, QApplication.UnicodeUTF8)))
+        tabla.setHorizontalHeaderItem(3+diff, QTableWidgetItem(QApplication.translate(section, "Balance", None, QApplication.UnicodeUTF8)))
+        tabla.setHorizontalHeaderItem(4+diff, QTableWidgetItem(QApplication.translate(section, "Comment", None, QApplication.UnicodeUTF8)))
+        ##DATA 
+        tabla.clearContents()
+        tabla.settings(section,  self.cfg)       
+        tabla.setRowCount(len(self.arr))
+        balance=0
+        for rownumber, a in enumerate(self.arr):
+            balance=balance+a.importe
+            tabla.setItem(rownumber, 0, qdate(a.fecha))
+            if show_account==True:
+                tabla.setItem(rownumber, diff, QTableWidgetItem(a.cuenta.name))
+            tabla.setItem(rownumber, 1+diff, qleft(a.concepto.name))
+            tabla.setItem(rownumber, 2+diff, self.cfg.localcurrency.qtablewidgetitem(a.importe))
+            tabla.setItem(rownumber, 3+diff, self.cfg.localcurrency.qtablewidgetitem(balance))
+            tabla.setItem(rownumber, 4+diff, qleft(a.comentario))
 
 class SetCurrencies:
     def __init__(self, cfg):
@@ -2114,11 +2168,6 @@ class Inversion:
 #            print (self.op_actual.print_list())
 #            print (self.op_actual_new.print_list())
         
-        
-        
-        
-        
-        
         cur.close()
         
 
@@ -2146,13 +2195,14 @@ class Inversion:
             return None
             
     def dividendos_neto(self, ano,  mes=None):
-        """Dividendo cobrado en un año y mes pasado como parámetro, independientemente de si la inversión esta activa o no"""
+        """Dividendo cobrado en un año y mes pasado como parámetro, independientemente de si la inversión esta activa o no.
+        El 63 es un gasto aunque tambi´en este registrado en dividendos."""
         cur=self.cfg.con.cursor()
         if mes==None:#Calcula en el año
-            cur.execute("select sum(neto) as neto from dividendos where date_part('year',fecha) = "+str(ano))
+            cur.execute("select sum(neto) as neto from dividendos where id_conceptos not in (63) and date_part('year',fecha) = "+str(ano))
             resultado=cur.fetchone()[0]
         else:
-            cur.execute("select sum(neto) as neto from dividendos where date_part('year',fecha) = "+str(ano)+" and date_part('month',fecha)= " + str(mes))
+            cur.execute("select sum(neto) as neto from dividendos where id_conceptos not in (63) and date_part('year',fecha) = "+str(ano)+" and date_part('month',fecha)= " + str(mes))
             resultado=cur.fetchone()[0]   
         if resultado==None:
             resultado=0
@@ -2163,10 +2213,10 @@ class Inversion:
         
         cur=self.cfg.con.cursor()
         if mes==None:#Calcula en el año
-            cur.execute("select sum(bruto) as bruto from dividendos where date_part('year',fecha) = "+str(ano))
+            cur.execute("select sum(bruto) as bruto from dividendos where id_conceptos not in (63) and  date_part('year',fecha) = "+str(ano))
             resultado=cur.fetchone()[0]
         else:
-            cur.execute("select sum(bruto) as bruto from dividendos where date_part('year',fecha) = "+str(ano)+" and date_part('month',fecha)= " + str(mes))
+            cur.execute("select sum(bruto) as bruto from dividendos where id_conceptos not in (63) and  date_part('year',fecha) = "+str(ano)+" and date_part('month',fecha)= " + str(mes))
             resultado=cur.fetchone()[0]   
         if resultado==None:
             resultado=0
