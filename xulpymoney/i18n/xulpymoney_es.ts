@@ -160,7 +160,7 @@
     <message>
         <location filename="libxulpymoney.py" line="5081"/>
         <source>ETFs</source>
-        <translation type="unfinished">ETFs</translation>
+        <translation>ETFs</translation>
     </message>
     <message>
         <location filename="libxulpymoney.py" line="5082"/>
@@ -330,7 +330,7 @@
     <message>
         <location filename="libxulpymoney.py" line="655"/>
         <source>Investment</source>
-        <translation type="unfinished">Inversión</translation>
+        <translation>Inversión</translation>
     </message>
 </context>
 <context>
@@ -1436,7 +1436,7 @@ correspondiente en la tabla</source>
     <message>
         <location filename="ui/frmDividendosIBM.py" line="94"/>
         <source>Retention, earnings por share and commission must be greater than zero</source>
-        <translation type="unfinished"></translation>
+        <translation>La retención, el dividendo por acción y la comisión deben ser positivos</translation>
     </message>
     <message encoding="UTF-8">
         <location filename="ui/frmDividendosIBM.py" line="110"/>
@@ -1643,17 +1643,17 @@ correspondiente en la tabla</source>
     <message>
         <location filename="ui/frmInit.py" line="88"/>
         <source>Bonds. Running coupon payment</source>
-        <translation type="unfinished"></translation>
+        <translation>Deuda. Pago de cupón corrido</translation>
     </message>
     <message>
         <location filename="ui/frmInit.py" line="89"/>
         <source>Bonds. Running coupon collection</source>
-        <translation type="unfinished"></translation>
+        <translation>Deuda. Cobro de cupón corrido</translation>
     </message>
     <message>
         <location filename="ui/frmInit.py" line="90"/>
         <source>Bonds. Coupon collection</source>
-        <translation type="unfinished"></translation>
+        <translation>Deuda. Cobro de cupón</translation>
     </message>
     <message>
         <location filename="ui/frmInit.py" line="81"/>
@@ -4753,22 +4753,22 @@ sistema.</source>
     <message>
         <location filename="ui/wdgTotal.py" line="248"/>
         <source>Incomes of {0} of {1}</source>
-        <translation type="unfinished"></translation>
+        <translation>Ingresos de {0} de {1}</translation>
     </message>
     <message>
         <location filename="ui/wdgTotal.py" line="289"/>
         <source>You can&apos;t close this tab</source>
-        <translation type="unfinished">No puedes cerrar esta pestaña</translation>
+        <translation>No puedes cerrar esta pestaña</translation>
     </message>
     <message>
         <location filename="ui/wdgTotal.py" line="274"/>
         <source>Expenses of {0} of {1}</source>
-        <translation type="unfinished"></translation>
+        <translation>Gastos de {0} de {1}</translation>
     </message>
     <message>
         <location filename="ui/wdgTotal.py" line="260"/>
         <source>Dividends of {0} of {1}</source>
-        <translation type="unfinished"></translation>
+        <translation>Dividendos de {0} de {1}</translation>
     </message>
 </context>
 <context>
@@ -4796,17 +4796,17 @@ sistema.</source>
     <message>
         <location filename="ui/wdgYear.ui" line="26"/>
         <source>Previous year</source>
-        <translation type="unfinished"></translation>
+        <translation>Año anterior</translation>
     </message>
     <message>
         <location filename="ui/wdgYear.ui" line="43"/>
         <source>Next year</source>
-        <translation type="unfinished"></translation>
+        <translation>Siguiente año</translation>
     </message>
     <message>
         <location filename="ui/wdgYear.ui" line="60"/>
         <source>Current year</source>
-        <translation type="unfinished"></translation>
+        <translation>Año actual</translation>
     </message>
 </context>
 <context>
@@ -4894,22 +4894,22 @@ sistema.</source>
     <message>
         <location filename="ui/wdgYearMonth.ui" line="26"/>
         <source>Previous month</source>
-        <translation type="unfinished"></translation>
+        <translation>Mes anterior</translation>
     </message>
     <message>
         <location filename="ui/wdgYearMonth.ui" line="36"/>
         <source>Select a month</source>
-        <translation type="unfinished"></translation>
+        <translation>Selecciona un mes</translation>
     </message>
     <message>
         <location filename="ui/wdgYearMonth.ui" line="103"/>
         <source>Select a year</source>
-        <translation type="unfinished">Selecciona un año</translation>
+        <translation>Selecciona un año</translation>
     </message>
     <message>
         <location filename="ui/wdgYearMonth.ui" line="110"/>
         <source>Next month</source>
-        <translation type="unfinished"></translation>
+        <translation>Siguiente mes</translation>
     </message>
 </context>
 </TS>
