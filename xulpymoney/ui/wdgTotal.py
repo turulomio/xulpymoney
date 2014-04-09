@@ -131,8 +131,6 @@ class wdgTotal(QWidget, Ui_wdgTotal):
             gastos=Patrimonio(self.cfg).saldo_por_tipo_operacion( self.wyData.year,i+1,1)#La facturación de tarjeta dentro esta por el union
             dividendos=Inversion(self.cfg).dividendos_neto(  self.wyData.year, i+1)
             ingresos=Patrimonio(self.cfg).saldo_por_tipo_operacion(  self.wyData.year,i+1,2)-dividendos #Se quitan los dividendos que luego se suman
-            
-#            consolidado=InversionOperacionHistorica(self.cfg).consolidado_total_mensual(cur, self.wyData.year,i+1)
             consolidado=Patrimonio(self.cfg).consolidado_neto(self.cfg.data.inversiones_all(), self.wyData.year, i+1)
             gi=ingresos+dividendos+consolidado+gastos
             self.sumpopup[i]=consolidado+dividendos
@@ -242,7 +240,8 @@ class wdgTotal(QWidget, Ui_wdgTotal):
             horizontalLayout = QHBoxLayout(newtab)
             table = myQTableWidget(newtab)
             set=SetCuentasOperaciones(self.cfg)
-            set.load_from_db("select fecha, id_conceptos, id_tiposoperaciones, importe, comentario, id_cuentas from opercuentas where id_tiposoperaciones={0} and date_part('year',fecha)={1} and date_part('month',fecha)={2} and id_conceptos not in ({3}) union select fecha, id_conceptos, id_tiposoperaciones, importe, comentario, id_cuentas from opertarjetas,tarjetas where opertarjetas.id_tarjetas=tarjetas.id_tarjetas and id_tiposoperaciones={0} and date_part('year',fecha)={1} and date_part('month',fecha)={2}".format (id_tiposoperaciones, self.wyData.year, month, list2string(self.cfg.conceptos.considered_dividends_in_totals())))
+            set.load_from_db("select fecha, id_conceptos, id_tiposoperaciones, importe, comentario, id_cuentas from opercuentas where id_tiposoperaciones={0} and date_part('year',fecha)={1} and date_part('month',fecha)={2} and id_conceptos not in ({3}) union all select fecha, id_conceptos, id_tiposoperaciones, importe, comentario, id_cuentas from opertarjetas,tarjetas where opertarjetas.id_tarjetas=tarjetas.id_tarjetas and id_tiposoperaciones={0} and date_part('year',fecha)={1} and date_part('month',fecha)={2}".format (id_tiposoperaciones, self.wyData.year, month, list2string(self.cfg.conceptos.considered_dividends_in_totals())))
+            set.sort()
             set.myqtablewidget(table, None, True)
             horizontalLayout.addWidget(table)
             self.tab.addTab(newtab, self.trUtf8("Incomes of {0} of {1}".format(self.table.horizontalHeaderItem(column).text(), self.wyData.year)))
@@ -256,7 +255,8 @@ class wdgTotal(QWidget, Ui_wdgTotal):
             horizontalLayout = QHBoxLayout(newtab)
             table = myQTableWidget(newtab)
             set=SetCuentasOperaciones(self.cfg)
-            set.load_from_db("select fecha, id_conceptos, id_tiposoperaciones, importe, comentario, id_cuentas from opercuentas where id_tiposoperaciones={0} and date_part('year',fecha)={1} and date_part('month',fecha)={2} union select fecha, id_conceptos, id_tiposoperaciones, importe, comentario, id_cuentas from opertarjetas,tarjetas where opertarjetas.id_tarjetas=tarjetas.id_tarjetas and id_tiposoperaciones={0} and date_part('year',fecha)={1} and date_part('month',fecha)={2}".format (id_tiposoperaciones, self.wyData.year, month)      )
+            set.load_from_db("select fecha, id_conceptos, id_tiposoperaciones, importe, comentario, id_cuentas from opercuentas where id_tiposoperaciones={0} and date_part('year',fecha)={1} and date_part('month',fecha)={2} union all select fecha, id_conceptos, id_tiposoperaciones, importe, comentario, id_cuentas from opertarjetas,tarjetas where opertarjetas.id_tarjetas=tarjetas.id_tarjetas and id_tiposoperaciones={0} and date_part('year',fecha)={1} and date_part('month',fecha)={2}".format (id_tiposoperaciones, self.wyData.year, month)      )
+            set.sort()
             set.myqtablewidget(table, None, True)
             horizontalLayout.addWidget(table)
             self.tab.addTab(newtab, self.trUtf8("Expenses of {0} of {1}".format(self.table.horizontalHeaderItem(column).text(), self.wyData.year)))
