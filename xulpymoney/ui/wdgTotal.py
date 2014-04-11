@@ -248,6 +248,22 @@ class wdgTotal(QWidget, Ui_wdgTotal):
             self.tab.addTab(newtab, self.trUtf8("Incomes of {0} of {1}".format(self.table.horizontalHeaderItem(column).text(), self.wyData.year)))
             self.tab.setCurrentWidget(newtab)
 
+        if row==1 and column<12:#dividendos
+            newtab = QWidget()
+            horizontalLayout = QHBoxLayout(newtab)
+            table = myQTableWidget(newtab)
+            set=SetInversionOperacionHistorica(self.cfg)
+            for i in self.cfg.data.inversiones_all().arr:
+                for o in i.op_historica.arr:
+                    if o.fecha_venta.year==self.wyData.year and o.fecha_venta.month==month and o.tipooperacion.id in (5, 8):#Venta y traspaso fondos inversion
+                        set.arr.append(o)
+            set.sort()
+            set.myqtablewidget(table, None)
+            horizontalLayout.addWidget(table)
+            self.tab.addTab(newtab, self.trUtf8("Investment selling operations of {0} of {1}".format(self.table.horizontalHeaderItem(column).text(), self.wyData.year)))
+            self.tab.setCurrentWidget(newtab)
+            
+
         if row==2 and column<12:#dividendos
             newtab = QWidget()
             horizontalLayout = QHBoxLayout(newtab)
@@ -258,8 +274,8 @@ class wdgTotal(QWidget, Ui_wdgTotal):
             set.myqtablewidget(table, None, True)
             horizontalLayout.addWidget(table)
             self.tab.addTab(newtab, self.trUtf8("Dividends of {0} of {1}".format(self.table.horizontalHeaderItem(column).text(), self.wyData.year)))
-            self.tab.setCurrentWidget(newtab)
-
+            self.tab.setCurrentWidget(newtab)            
+            
             
         if row==3 and column<12:#gastos
             id_tiposoperaciones=1
