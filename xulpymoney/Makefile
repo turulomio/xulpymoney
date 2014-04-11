@@ -47,6 +47,7 @@ compile:
 	pyuic4 ui/frmSelector.ui > ui/Ui_frmSelector.py
 	pyuic4 ui/frmEstimationsAdd.ui > ui/Ui_frmEstimationsAdd.py
 	pyuic4 ui/wdgInversionesMS.ui > ui/Ui_wdgInversionesMS.py
+	pyuic4 ui/wdgInvestmentsOperations.ui > ui/Ui_wdgInvestmentsOperations.py
 	pyuic4 ui/wdgLog.ui > ui/Ui_wdgLog.py
 	pyuic4 ui/wdgMergeCodes.ui > ui/Ui_wdgMergeCodes.py
 	pyuic4 ui/wdgYearMonth.ui > ui/Ui_wdgYearMonth.py

@@ -86,7 +86,10 @@
      <string>Investments</string>
     </property>
     <addaction name="actionInversiones"/>
+    <addaction name="separator"/>
     <addaction name="actionInformeClases"/>
+    <addaction name="separator"/>
+    <addaction name="actionInvestmentsOperations"/>
    </widget>
    <widget class="QMenu" name="menuXulpymoney">
     <property name="title">
@@ -341,6 +344,18 @@
    </property>
    <property name="shortcut">
     <string>F1</string>
+   </property>
+  </action>
+  <action name="actionInvestmentsOperations">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/books.png</normaloff>:/xulpymoney/books.png</iconset>
+   </property>
+   <property name="text">
+    <string>Investment operations list</string>
+   </property>
+   <property name="toolTip">
+    <string>Investment operations list</string>
    </property>
   </action>
  </widget>

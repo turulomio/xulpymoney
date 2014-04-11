@@ -15,6 +15,7 @@ from wdgConceptos import *
 from wdgBancos import *
 from wdgIndexRange import *
 from wdgInversiones import *
+from wdgInvestmentsOperations import *
 from frmTablasAuxiliares import *
 from frmTransferencia import *
 from frmSettings import *
@@ -157,6 +158,13 @@ class frmMain(QMainWindow, Ui_frmMain):
         self.w.close()
         self.w=wdgInversiones(self.cfg)
                
+        self.layout.addWidget(self.w)
+        self.w.show()
+        
+    @QtCore.pyqtSlot()  
+    def on_actionInvestmentsOperations_activated(self):
+        self.w.close()
+        self.w=wdgInvestmentsOperations(self.cfg)
         self.layout.addWidget(self.w)
         self.w.show()
 
