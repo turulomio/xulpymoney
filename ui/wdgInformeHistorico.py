@@ -67,30 +67,9 @@ class wdgInformeHistorico(QWidget, Ui_wdgInformeHistorico):
         self.tblAdded.setItem(len(operaciones), 4, self.cfg.localcurrency.qtablewidgetitem(sumsaldo))
    
     def load_dividendos(self):
-        cur=self.cfg.con.cursor()
-        self.totalDividendosNetos=0
-        self.totalDividendosBrutos=0
-        self.totalDividendosRetenciones=0
-        sql="select * from dividendos where date_part('year',fecha)="+str(self.wy.year) + " order by fecha"
-        cur.execute(sql); 
-        dividendos=[]
-        for row in  cur:
-            dividendos.append(Dividendo(self.cfg).init__db_row(row, self.cfg.data.inversiones_all().find(row['id_inversiones']), None,  self.cfg.conceptos.find(row['id_conceptos'])))#Creación incompleta por no ser necesario con None
-        self.tblDividendos.clearContents()
-        self.tblDividendos.setRowCount(len(dividendos)+1)
-        for i, d in enumerate(dividendos):
-            self.totalDividendosNetos=self.totalDividendosNetos+d.neto_antes_impuestos()
-            self.totalDividendosBrutos=self.totalDividendosBrutos+d.bruto
-            self.totalDividendosRetenciones=self.totalDividendosRetenciones+d.retencion
-            self.tblDividendos.setItem(i, 0,QTableWidgetItem(str(d.fecha)))
-            self.tblDividendos.setItem(i, 1,QTableWidgetItem(d.concepto.name))
-            self.tblDividendos.setItem(i, 2,QTableWidgetItem(d.inversion.name))
-            self.tblDividendos.setItem(i, 3,QTableWidgetItem(d.inversion.cuenta.name))
-            self.tblDividendos.setItem(i, 4,self.cfg.localcurrency.qtablewidgetitem(d.neto_antes_impuestos()))
-        self.tblDividendos.setItem(len(dividendos), 3,QTableWidgetItem(("TOTAL")))
-        self.tblDividendos.setItem(len(dividendos), 4,self.cfg.localcurrency.qtablewidgetitem(self.totalDividendosNetos))
-        self.tblDividendos.setCurrentCell(len(dividendos), 4)
-        cur.close()
+        set=SetDividends(self.cfg)
+        set.load_from_db("select * from dividendos where id_conceptos not in (63) and date_part('year',fecha)={0} order by fecha".format(self.wy.year))
+        (self.totalDividendosNetos, self.totalDividendosBrutos, self.totalDividendosRetenciones, sumcomision)=set.myqtablewidget(self.tblDividendos, None, True)
 
     def load_historicas(self):
         operaciones=SetInversionOperacionHistorica(self.cfg)
@@ -98,7 +77,7 @@ class wdgInformeHistorico(QWidget, Ui_wdgInformeHistorico):
             for o in i.op_historica.arr:
                 if o.fecha_venta.year==self.wy.year and o.tipooperacion.id in (5, 8):#Venta y traspaso fondos inversion
                     operaciones.arr.append(o)
-        operaciones.arr=sorted(operaciones.arr, key=lambda o: o.fecha_venta,  reverse=False)      
+        operaciones.sort()
         (self.totalBruto, self.totalComisiones, self.totalImpuestos, self.totalNeto)=operaciones.myqtablewidget(self.tblInversiones, "wdgInformeHistorico")
 
 
