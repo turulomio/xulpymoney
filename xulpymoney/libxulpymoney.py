@@ -2245,7 +2245,7 @@ class Inversion:
             
     def dividendos_neto(self, ano,  mes=None):
         """Dividendo cobrado en un año y mes pasado como parámetro, independientemente de si la inversión esta activa o no.
-        El 63 es un gasto aunque tambi´en este registrado en dividendos."""
+        El 63 es un gasto aunque también este registrado en dividendos."""
         cur=self.cfg.con.cursor()
         if mes==None:#Calcula en el año
             cur.execute("select sum(neto) as neto from dividendos where id_conceptos not in (63) and date_part('year',fecha) = "+str(ano))
@@ -3206,7 +3206,7 @@ class SetDPS:
         
     def sum(self, date):
         """Devuelve la suma de los dividendos desde hoy hasta la fecha.
-        Se deben restar a la cotizaci´on  del dia date, para tener la cotizaci´on sin descontar dividendos"""
+        Se deben restar a la cotización  del dia date, para tener la cotización sin descontar dividendos"""
         self.sort()
         sum=0
         for dps in reversed(self.arr):
@@ -3218,7 +3218,7 @@ class SetDPS:
         
 
 class DPS:
-    """Dividendo por acci´on pagados. Se usa para pintar gr´aficos sin dividendos"""
+    """Dividendo por acción pagados. Se usa para pintar gráficos sin dividendos"""
     def __init__(self, cfg,  investment):
         self.cfg=cfg
         self.investment=investment
@@ -3260,7 +3260,7 @@ class DPS:
         
         
 class EstimationEPS:
-    """Beneficio por acci´on. Earnings per share Beneficio por acci´on. Para los calculos usaremos
+    """Beneficio por acción. Earnings per share Beneficio por acción. Para los calculos usaremos
     esto, aunque sean estimaciones."""
 
     def __init__(self, cfg):
@@ -3320,7 +3320,7 @@ class EstimationEPS:
             return None
 
 class EstimationDPS:
-    """Dividendos por acchi´on"""
+    """Dividendos por acción"""
     def __init__(self, cfg):
         self.cfg=cfg
         self.investment=None#pk
@@ -3366,8 +3366,7 @@ class EstimationDPS:
         curms.execute("select count(*) from estimations_dps where id=%s and year=%s", (self.investment.id, self.year))
         if curms.fetchone()[0]==0:
             curms.execute("insert into estimations_dps(id, year, estimation, date_estimation, source, manual) values (%s,%s,%s,%s,%s,%s)", (self.investment.id, self.year, self.estimation, self.date_estimation, self.source, self.manual))
-
-            print (curms.mogrify("insert into estimations_dps (id, year, estimation, date_estimation, source, manual) values (%s,%s,%s,%s,%s,%s)", (self.investment.id, self.year, self.estimation, self.date_estimation, self.source, self.manual)))
+#            print (curms.mogrify("insert into estimations_dps (id, year, estimation, date_estimation, source, manual) values (%s,%s,%s,%s,%s,%s)", (self.investment.id, self.year, self.estimation, self.date_estimation, self.source, self.manual)))
         elif self.estimation!=None:            
             curms.execute("update estimations_dps set estimation=%s, date_estimation=%s, source=%s, manual=%s where id=%s and year=%s", (self.estimation, self.date_estimation, self.source, self.manual, self.investment.id, self.year))
         curms.close()
@@ -4344,7 +4343,7 @@ class SetQuotesAll:
                 intradayarr.append(Quote(self.cfg).init__db_row(row, self.investment))
             else:
                 intradayarr.append(Quote(self.cfg).init__db_row(row, self.investment))
-        #No entraba si hay dos d´ias en el primer d´ia
+        #No entraba si hay dos días en el primer día
         if len(intradayarr)!=0:
             self.arr.append(SetQuotesIntraday(self.cfg).init__create(self.investment, dt_end.date(), intradayarr))
             
@@ -5018,7 +5017,7 @@ class Split:
             d.save()
         
     def type(self):
-        """Funci´on que devuelve si es un Split o contrasplit"""
+        """Función que devuelve si es un Split o contrasplit"""
         if self.initial>self.final:
             return "Contrasplit"
         else:
@@ -5128,7 +5127,7 @@ class SetTypes:
 
 class ConfigFile:
     """Clase que maneja todo lo necesario para un configparser.ConfigParser
-    En la aplicaci´on hay dos config y config_ui"""
+    En la aplicación hay dos config y config_ui"""
     def __init__(self, file, defaults):
         self.file=file
         self.config=configparser.ConfigParser()

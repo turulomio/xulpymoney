@@ -29,8 +29,8 @@ class frmEstimationsAdd(QDialog, Ui_frmEstimationsAdd):
         d.save()
         self.cfg.conms.commit()      
         if self.type=="dps":
-            self.investment.estimations_dps.arr.append(d)
+            self.investment.estimations_dps.load_from_db()
         else:
-            self.investment.estimations_eps.arr.append(d)
+            self.investment.estimations_eps.load_from_db()
             
         self.accept()

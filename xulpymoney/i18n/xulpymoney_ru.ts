@@ -103,57 +103,57 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5100"/>
+        <location filename="libxulpymoney.py" line="5099"/>
         <source>Acciones</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5101"/>
+        <location filename="libxulpymoney.py" line="5100"/>
         <source>Fondos de inversi&#xc3;&#xb3;n</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5102"/>
+        <location filename="libxulpymoney.py" line="5101"/>
         <source>&#xc3;&#xad;ndices</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5103"/>
+        <location filename="libxulpymoney.py" line="5102"/>
         <source>ETFs</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5104"/>
+        <location filename="libxulpymoney.py" line="5103"/>
         <source>Warrants</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5105"/>
+        <location filename="libxulpymoney.py" line="5104"/>
         <source>Divisas</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5106"/>
+        <location filename="libxulpymoney.py" line="5105"/>
         <source>Deuda P&#xc3;&#xba;blica</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5107"/>
+        <location filename="libxulpymoney.py" line="5106"/>
         <source>Planes de pensiones</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5108"/>
+        <location filename="libxulpymoney.py" line="5107"/>
         <source>Deuda Privada</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5109"/>
+        <location filename="libxulpymoney.py" line="5108"/>
         <source>Dep&#xc3;&#xb3;sitos</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5110"/>
+        <location filename="libxulpymoney.py" line="5109"/>
         <source>Cuentas bancarias</source>
         <translation type="unfinished"></translation>
     </message>
@@ -183,12 +183,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5510"/>
+        <location filename="libxulpymoney.py" line="5509"/>
         <source>Sourceforge version detected: %s</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5512"/>
+        <location filename="libxulpymoney.py" line="5511"/>
         <source>Error buscando la versi&#xc3;&#xb3;n actual de Sourceforge</source>
         <translation type="unfinished"></translation>
     </message>
@@ -228,12 +228,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5823"/>
+        <location filename="libxulpymoney.py" line="5822"/>
         <source>This option is being developed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4370"/>
+        <location filename="libxulpymoney.py" line="4369"/>
         <source>Purging innecesary data</source>
         <translation type="unfinished"></translation>
     </message>
@@ -243,7 +243,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4372"/>
+        <location filename="libxulpymoney.py" line="4371"/>
         <source>Purging quotes</source>
         <translation type="unfinished"></translation>
     </message>
@@ -283,17 +283,17 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5314"/>
+        <location filename="libxulpymoney.py" line="5313"/>
         <source>Error conecting to MyStocksd, waiting 10 seconds</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5327"/>
+        <location filename="libxulpymoney.py" line="5326"/>
         <source>Error conecting to MyStocks</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5391"/>
+        <location filename="libxulpymoney.py" line="5390"/>
         <source>Error conecting to Xulpymoney</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4595,11 +4595,6 @@ sistema.</source>
 <context>
     <name>wdgInvestmentsOperations</name>
     <message>
-        <location filename="ui/wdgInvestmentsOperations.ui" line="26"/>
-        <source>Investments operations list</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="ui/wdgInvestmentsOperations.ui" line="36"/>
         <source>List options</source>
         <translation type="unfinished"></translation>
@@ -4627,6 +4622,11 @@ sistema.</source>
     <message>
         <location filename="ui/wdgInvestmentsOperations.ui" line="154"/>
         <source>Show account</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/wdgInvestmentsOperations.ui" line="26"/>
+        <source>Investment operations list</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

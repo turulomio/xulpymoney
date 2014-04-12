@@ -251,7 +251,7 @@ class canvasChart(FigureCanvas):
         self.connect(self,SIGNAL('customContextMenuRequested(QPoint)'), self.on_customContextMenuRequested)
 
     def showLegend(self):
-        """Alterna mostrando y desmostrando legend, empieza con s´i"""
+        """Alterna mostrando y desmostrando legend, empieza con sí"""
         self.makeLegend()
                 
         if self.ax.legend_==None:
@@ -323,7 +323,7 @@ class canvasChartHistorical(canvasChart):
         canvasChart.__init__(self, parent)
         self.num=60#Numero de items a mostrar
         self.setupUi()
-        self.data=None#Array de Datos to show, variar´a seg´un ohclDaily, Monthly,, no se usa en Intradia, sale todo
+        self.data=None#Array de Datos to show, variará según ohclDaily, Monthly,, no se usa en Intradia, sale todo
         self.plot_average=None
         self.plot_selling=None
         self.settings("canvasHistorical")
@@ -515,7 +515,7 @@ class canvasChartHistorical(canvasChart):
             dates.append(datetime.date.today()+datetime.timedelta(days=1))
             quotes.append(self.inversion.venta)
             quotes.append(self.inversion.venta)
-            self.plot_selling, =self.ax.plot_date(dates, quotes, 'r--', color="darkblue",  tz=pytz.timezone(self.cfg.localzone.name)) #fijarse en selling, podr´ia ser sin ella selling[0]
+            self.plot_selling, =self.ax.plot_date(dates, quotes, 'r--', color="darkblue",  tz=pytz.timezone(self.cfg.localzone.name)) #fijarse en selling, podría ser sin ella selling[0]
 
         
         
@@ -577,5 +577,5 @@ class canvasChartHistorical(canvasChart):
         """Debe tener cargado los ohcl, no el all"""
         self.investment=investment
         self.inversion=inversion
-        self.sd=SD#Sin descontar dividendos, es decir sumar´a los dividendos a las quotes.
+        self.sd=SD#Sin descontar dividendos, es decir sumará los dividendos a las quotes.
         self.mydraw()

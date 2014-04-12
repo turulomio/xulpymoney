@@ -59,7 +59,7 @@ class frmInversionesEstudio(QDialog, Ui_frmInversionesEstudio):
             self.on_chkOperaciones_stateChanged(self.chkOperaciones.checkState())
             self.on_chkDividendosHistoricos_stateChanged(self.chkDividendosHistoricos.checkState())
             
-            if len(self.op.arr)!=0 or len(self.dividendos.arr)!=0:#CmbCuenta est´a desabilitado si hay dividendos o operinversiones
+            if len(self.op.arr)!=0 or len(self.dividendos.arr)!=0:#CmbCuenta está desabilitado si hay dividendos o operinversiones
                 self.cmbCuenta.setEnabled(False)
             
             self.inversion.op_actual.get_valor_indicereferencia(self.cfg.data.indicereferencia)
