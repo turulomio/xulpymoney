@@ -27,7 +27,7 @@ class wdgMergeCodes(QWidget, Ui_wdgMergeCodes):
         #Carga tabla origen
         con=self.cfg.connect_mystocks()
         cur = con.cursor()
-        cur.execute("select * from investments where id=%s", (self.iddestino, ))
+        cur.execute("select * from products where id=%s", (self.iddestino, ))
         d=cur.fetchone()
         icon=QtGui.QIcon()
         icon.addPixmap(qpixmap_pais(self.cfg.bolsas[str(d['id_bolsas'])].country), QtGui.QIcon.Normal, QtGui.QIcon.Off)    
@@ -44,7 +44,7 @@ class wdgMergeCodes(QWidget, Ui_wdgMergeCodes):
 
 
 ##################
-        cur.execute("select * from investments  where id=%s;", (self.idorigen, ))
+        cur.execute("select * from products  where id=%s;", (self.idorigen, ))
         o=cur.fetchone()
         icon=QtGui.QIcon()
         icon.addPixmap(qpixmap_pais(self.cfg.bolsas[str(o['id_bolsas'])].country), QtGui.QIcon.Normal, QtGui.QIcon.Off)    

@@ -50,14 +50,14 @@ class frmMain(QMainWindow, Ui_frmMain):
         self.cfg.actualizar_memoria() ##CARGA TODOS LOS DATOS Y LOS VINCULA       
         
         
-        print ("Protecting investments needed in xulpymoney")
+        print ("Protecting products needed in xulpymoney")
         cur=self.cfg.con.cursor()
         cur.execute("select distinct(mystocksid) from inversiones;")
         ids2protect=[]
         for row in cur:
             ids2protect.append(row[0])
         if len(ids2protect)>0:
-            Investment(self.cfg).changeDeletable(  ids2protect,  False)
+            Product(self.cfg).changeDeletable(  ids2protect,  False)
         self.cfg.conms.commit()
         
         
@@ -162,9 +162,9 @@ class frmMain(QMainWindow, Ui_frmMain):
         self.w.show()
         
     @QtCore.pyqtSlot()  
-    def on_actionInvestmentsOperations_activated(self):
+    def on_actionProductsOperations_activated(self):
         self.w.close()
-        self.w=wdgInvestmentsOperations(self.cfg)
+        self.w=wdgProductsOperations(self.cfg)
         self.layout.addWidget(self.w)
         self.w.show()
 

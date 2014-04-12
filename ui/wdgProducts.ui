@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>wdgInversionesMS</class>
- <widget class="QWidget" name="wdgInversionesMS">
+ <class>wdgProducts</class>
+ <widget class="QWidget" name="wdgProducts">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -23,7 +23,7 @@
         </font>
        </property>
        <property name="text">
-        <string>Investments list</string>
+        <string>Products list</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
@@ -48,7 +48,7 @@
        <item>
         <widget class="QLabel" name="label">
          <property name="text">
-          <string>Búsqueda por código, ISIN o nombre de la inversión</string>
+          <string>Búsqueda por código, ISIN o nombre del producto</string>
          </property>
         </widget>
        </item>
@@ -101,7 +101,7 @@
        </column>
        <column>
         <property name="text">
-         <string>Cotización</string>
+         <string>Price</string>
         </property>
        </column>
        <column>
@@ -131,13 +131,16 @@
     </layout>
    </item>
   </layout>
-  <action name="actionInversionEstudio">
+  <action name="actionProductReport">
    <property name="icon">
     <iconset resource="../images/xulpymoney.qrc">
      <normaloff>:/xulpymoney/history.png</normaloff>:/xulpymoney/history.png</iconset>
    </property>
    <property name="text">
-    <string>Estudio de la Inversión</string>
+    <string>Product report</string>
+   </property>
+   <property name="toolTip">
+    <string>Product report</string>
    </property>
   </action>
   <action name="actionOrdenarTPCDiario">
@@ -194,50 +197,34 @@
     <string>Ibex 35</string>
    </property>
   </action>
-  <action name="actionInversionNueva">
+  <action name="actionProductNew">
    <property name="icon">
     <iconset resource="../images/xulpymoney.qrc">
      <normaloff>:/xulpymoney/add.png</normaloff>:/xulpymoney/add.png</iconset>
    </property>
    <property name="text">
-    <string>Nueva Inversión manual</string>
-   </property>
-   <property name="toolTip">
-    <string>El sistema crea las inversiones automáticamente
-según los Sources seleccionados en /etc/myquotes/config.py.
-Si quiere introducir una inversión manualmente y meter los
-datos manualmente, seleccione esta opción.</string>
+    <string>New product</string>
    </property>
   </action>
-  <action name="actionInversionModificar">
+  <action name="actionProductEdit">
    <property name="icon">
     <iconset resource="../images/xulpymoney.qrc">
      <normaloff>:/xulpymoney/document-edit.png</normaloff>:/xulpymoney/document-edit.png</iconset>
    </property>
    <property name="text">
-    <string>Editar Inversión manual</string>
-   </property>
-   <property name="toolTip">
-    <string>El sistema crea las inversiones automáticamente
-según los Sources seleccionados en /etc/myquotes/config.py.
-Si quiere modificar una inversión insertada manualmente,
-seleccione esta opción.</string>
+    <string>Edit product</string>
    </property>
   </action>
-  <action name="actionInversionBorrar">
+  <action name="actionProductDelete">
    <property name="icon">
     <iconset resource="../images/xulpymoney.qrc">
      <normaloff>:/xulpymoney/list-remove.png</normaloff>:/xulpymoney/list-remove.png</iconset>
    </property>
    <property name="text">
-    <string>Borrar Inversión</string>
+    <string>Delete product</string>
    </property>
    <property name="toolTip">
-    <string>Si esta inversión es automática se borrará pero el sistema 
-volvera a generarla.
-
-Si esta inversión es manual se borrará y desaparecerá del
-sistema.</string>
+    <string>Delete product</string>
    </property>
   </action>
   <action name="actionFavoritos">

@@ -218,11 +218,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="2298"/>
-        <source>The associated investment is not active. You must activate it first</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="libxulpymoney.py" line="2401"/>
         <source>The associated credit card is not active. You must activate it first</source>
         <translation type="unfinished"></translation>
@@ -245,26 +240,6 @@
     <message>
         <location filename="libxulpymoney.py" line="4371"/>
         <source>Purging quotes</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/frmMainMS.py" line="279"/>
-        <source>Purging innecesary data from all investments</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/frmMainMS.py" line="281"/>
-        <source>Purging quotes from all investments</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="libxulpymoney.py" line="80"/>
-        <source>Loading investments...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="libxulpymoney.py" line="275"/>
-        <source>Loading MyStocks investments...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -305,11 +280,6 @@
     <message>
         <location filename="libxulpymoney.py" line="3198"/>
         <source>Gross</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="libxulpymoney.py" line="1299"/>
-        <source>Investment</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -440,6 +410,36 @@
     <message>
         <location filename="libxulpymoney.py" line="979"/>
         <source>Account</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="libxulpymoney.py" line="80"/>
+        <source>Loading products...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="libxulpymoney.py" line="275"/>
+        <source>Loading MyStocks products...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="libxulpymoney.py" line="1299"/>
+        <source>Product</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="libxulpymoney.py" line="2298"/>
+        <source>The associated product is not active. You must activate it first</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/frmMainMS.py" line="279"/>
+        <source>Purging innecesary data from all products</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/frmMainMS.py" line="281"/>
+        <source>Purging quotes from all products</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1711,16 +1711,6 @@ correspondiente en la tabla</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmInit.py" line="79"/>
-        <source>Purchase investment product</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/frmInit.py" line="80"/>
-        <source>Investment product sales</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="ui/frmInit.py" line="82"/>
         <source>Dividends</source>
         <translation type="unfinished"></translation>
@@ -1768,6 +1758,16 @@ correspondiente en la tabla</source>
     <message>
         <location filename="ui/frmInit.py" line="81"/>
         <source>Bank commissions</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/frmInit.py" line="79"/>
+        <source>Purchase product product</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/frmInit.py" line="80"/>
+        <source>Product product sales</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2555,7 +2555,7 @@ seleccionados por el usuario</source>
     </message>
     <message>
         <location filename="ui/frmMainMS.py" line="307"/>
-        <source>{0} quotes have been purged from {1} investments</source>
+        <source>{0} quotes have been purged from {1} products</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -4274,57 +4274,57 @@ S&#xc3;&#xb3;lo se contabilizar&#xc3;&#xa1; cuando se vendan las acciones</sourc
 <context>
     <name>wdgInversiones</name>
     <message>
-        <location filename="ui/Ui_wdgInversiones.py" line="155"/>
+        <location filename="ui/Ui_wdgInversiones.py" line="153"/>
         <source>Saldo</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgInversiones.py" line="157"/>
+        <location filename="ui/Ui_wdgInversiones.py" line="155"/>
         <source>Pendiente</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgInversiones.py" line="168"/>
+        <location filename="ui/Ui_wdgInversiones.py" line="166"/>
         <source>%</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgInversiones.py" line="166"/>
+        <location filename="ui/Ui_wdgInversiones.py" line="164"/>
         <source>% Venta</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgInversiones.py" line="162"/>
+        <location filename="ui/Ui_wdgInversiones.py" line="160"/>
         <source>Nueva Inversion</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgInversiones.py" line="163"/>
+        <location filename="ui/Ui_wdgInversiones.py" line="161"/>
         <source>Estudio de la Inversi&#xc3;&#xb3;n</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgInversiones.py" line="164"/>
+        <location filename="ui/Ui_wdgInversiones.py" line="162"/>
         <source>% Diario</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgInversiones.py" line="169"/>
+        <location filename="ui/Ui_wdgInversiones.py" line="167"/>
         <source>Nombre</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgInversiones.py" line="170"/>
+        <location filename="ui/Ui_wdgInversiones.py" line="168"/>
         <source>Hora</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgInversiones.py" line="177"/>
+        <location filename="ui/Ui_wdgInversiones.py" line="175"/>
         <source>Borrar inversi&#xc3;&#xb3;n</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgInversiones.py" line="178"/>
+        <location filename="ui/Ui_wdgInversiones.py" line="176"/>
         <source>Borrar la inversi&#xc3;&#xb3;n seleccionada</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4349,42 +4349,42 @@ S&#xc3;&#xb3;lo se contabilizar&#xc3;&#xa1; cuando se vendan las acciones</sourc
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgInversiones.py" line="142"/>
+        <location filename="ui/Ui_wdgInversiones.py" line="140"/>
         <source>Investments list</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgInversiones.py" line="143"/>
+        <location filename="ui/Ui_wdgInversiones.py" line="141"/>
         <source>Show inactive investments</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgInversiones.py" line="145"/>
+        <location filename="ui/Ui_wdgInversiones.py" line="143"/>
         <source>Investment</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgInversiones.py" line="147"/>
+        <location filename="ui/Ui_wdgInversiones.py" line="145"/>
         <source>Last datetime</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgInversiones.py" line="149"/>
+        <location filename="ui/Ui_wdgInversiones.py" line="147"/>
         <source>Last value</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgInversiones.py" line="151"/>
+        <location filename="ui/Ui_wdgInversiones.py" line="149"/>
         <source>Daily difference</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgInversiones.py" line="153"/>
+        <location filename="ui/Ui_wdgInversiones.py" line="151"/>
         <source>% Intraday</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgInversiones.py" line="172"/>
+        <location filename="ui/Ui_wdgInversiones.py" line="170"/>
         <source>Is it active?</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4409,16 +4409,6 @@ S&#xc3;&#xb3;lo se contabilizar&#xc3;&#xa1; cuando se vendan las acciones</sourc
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgInversiones.py" line="174"/>
-        <source>Estudio MyStocks</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_wdgInversiones.py" line="176"/>
-        <source>A&#xc3;&#xb1;adir cotizaci&#xc3;&#xb3;n a MyStocks</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="ui/wdgInversiones.py" line="246"/>
         <source>There&apos;s not selling prince.</source>
         <translation type="unfinished"></translation>
@@ -4428,167 +4418,14 @@ S&#xc3;&#xb3;lo se contabilizar&#xc3;&#xa1; cuando se vendan las acciones</sourc
         <source>Order by</source>
         <translation type="unfinished"></translation>
     </message>
-</context>
-<context>
-    <name>wdgInversionesMS</name>
-    <message encoding="UTF-8">
-        <location filename="ui/wdgInversionesMS.ui" line="51"/>
-        <source>Búsqueda por código, ISIN o nombre de la inversión</source>
+    <message>
+        <location filename="ui/Ui_wdgInversiones.py" line="172"/>
+        <source>Product report</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgInversionesMS.ui" line="84"/>
-        <source>Code</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/wdgInversionesMS.ui" line="94"/>
-        <source>ISIN</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message encoding="UTF-8">
-        <location filename="ui/wdgInversionesMS.ui" line="104"/>
-        <source>Cotización</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/wdgInversionesMS.ui" line="149"/>
-        <source>% Diario</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message encoding="UTF-8">
-        <location filename="ui/wdgInversionesMS.ui" line="114"/>
-        <source>% Inicio año</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/wdgInversionesMS.ui" line="119"/>
-        <source>% Dividendo</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message encoding="UTF-8">
-        <location filename="ui/wdgInversionesMS.ui" line="140"/>
-        <source>Estudio de la Inversión</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/wdgInversionesMS.ui" line="158"/>
-        <source>% Anual</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/wdgInversionesMS.ui" line="167"/>
-        <source>Nombre</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/wdgInversionesMS.ui" line="176"/>
-        <source>Dividendo</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/wdgInversionesMS.ui" line="185"/>
-        <source>Hora</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/wdgInversionesMS.ui" line="194"/>
-        <source>Ibex 35</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message encoding="UTF-8">
-        <location filename="ui/wdgInversionesMS.ui" line="203"/>
-        <source>Nueva Inversión manual</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message encoding="UTF-8">
-        <location filename="ui/wdgInversionesMS.ui" line="206"/>
-        <source>El sistema crea las inversiones automáticamente
-según los Sources seleccionados en /etc/myquotes/config.py.
-Si quiere introducir una inversión manualmente y meter los
-datos manualmente, seleccione esta opción.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message encoding="UTF-8">
-        <location filename="ui/wdgInversionesMS.ui" line="218"/>
-        <source>Editar Inversión manual</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message encoding="UTF-8">
-        <location filename="ui/wdgInversionesMS.ui" line="221"/>
-        <source>El sistema crea las inversiones automáticamente
-según los Sources seleccionados en /etc/myquotes/config.py.
-Si quiere modificar una inversión insertada manualmente,
-seleccione esta opción.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message encoding="UTF-8">
-        <location filename="ui/wdgInversionesMS.ui" line="233"/>
-        <source>Borrar Inversión</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message encoding="UTF-8">
-        <location filename="ui/wdgInversionesMS.ui" line="236"/>
-        <source>Si esta inversión es automática se borrará pero el sistema 
-volvera a generarla.
-
-Si esta inversión es manual se borrará y desaparecerá del
-sistema.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message encoding="UTF-8">
-        <location filename="ui/wdgInversionesMS.ui" line="252"/>
-        <source>Añadir a favoritos</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message encoding="UTF-8">
-        <location filename="ui/wdgInversionesMS.ui" line="261"/>
-        <source>Combina códigos seleccionados</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message encoding="UTF-8">
-        <location filename="ui/wdgInversionesMS.ui" line="273"/>
-        <source>Nueva cotización</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/wdgInversionesMS.ui" line="26"/>
-        <source>Investments list</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/wdgInversionesMS.ui" line="294"/>
-        <source>Purge investment</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/wdgInversionesMS.ui" line="297"/>
-        <source>Deletes quotes innecesary. Leaves open, high, low and close quotes.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/wdgInversionesMS.ui" line="282"/>
-        <source>New DPS estimation</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/wdgInversionesMS.ui" line="285"/>
-        <source>New Dividend per share estimation</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/wdgInversionesMS.ui" line="89"/>
-        <source>Investment</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/wdgInversionesMS.ui" line="99"/>
-        <source>Last update</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/wdgInversionesMS.ui" line="127"/>
-        <source>Registers found</source>
+        <location filename="ui/Ui_wdgInversiones.py" line="174"/>
+        <source>Add product price</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -4743,6 +4580,144 @@ sistema.</source>
     <message>
         <location filename="ui/wdgMergeCodes.ui" line="115"/>
         <source>Merge data</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>wdgProducts</name>
+    <message>
+        <location filename="ui/wdgProducts.ui" line="26"/>
+        <source>Products list</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message encoding="UTF-8">
+        <location filename="ui/wdgProducts.ui" line="51"/>
+        <source>Búsqueda por código, ISIN o nombre del producto</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/wdgProducts.ui" line="84"/>
+        <source>Code</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/wdgProducts.ui" line="89"/>
+        <source>Investment</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/wdgProducts.ui" line="94"/>
+        <source>ISIN</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/wdgProducts.ui" line="99"/>
+        <source>Last update</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/wdgProducts.ui" line="152"/>
+        <source>% Diario</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message encoding="UTF-8">
+        <location filename="ui/wdgProducts.ui" line="114"/>
+        <source>% Inicio año</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/wdgProducts.ui" line="119"/>
+        <source>% Dividendo</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/wdgProducts.ui" line="127"/>
+        <source>Registers found</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/wdgProducts.ui" line="161"/>
+        <source>% Anual</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/wdgProducts.ui" line="170"/>
+        <source>Nombre</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/wdgProducts.ui" line="179"/>
+        <source>Dividendo</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/wdgProducts.ui" line="188"/>
+        <source>Hora</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/wdgProducts.ui" line="197"/>
+        <source>Ibex 35</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message encoding="UTF-8">
+        <location filename="ui/wdgProducts.ui" line="239"/>
+        <source>Añadir a favoritos</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message encoding="UTF-8">
+        <location filename="ui/wdgProducts.ui" line="248"/>
+        <source>Combina códigos seleccionados</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message encoding="UTF-8">
+        <location filename="ui/wdgProducts.ui" line="260"/>
+        <source>Nueva cotización</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/wdgProducts.ui" line="269"/>
+        <source>New DPS estimation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/wdgProducts.ui" line="272"/>
+        <source>New Dividend per share estimation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/wdgProducts.ui" line="281"/>
+        <source>Purge investment</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/wdgProducts.ui" line="284"/>
+        <source>Deletes quotes innecesary. Leaves open, high, low and close quotes.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/wdgProducts.ui" line="104"/>
+        <source>Price</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/wdgProducts.ui" line="143"/>
+        <source>Product report</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/wdgProducts.ui" line="206"/>
+        <source>New product</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/wdgProducts.ui" line="215"/>
+        <source>Edit product</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/wdgProducts.ui" line="227"/>
+        <source>Delete product</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -4925,7 +4900,7 @@ sistema.</source>
     </message>
     <message>
         <location filename="ui/wdgTotal.py" line="263"/>
-        <source>Investment selling operations of {0} of {1}</source>
+        <source>Product selling operations of {0} of {1}</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

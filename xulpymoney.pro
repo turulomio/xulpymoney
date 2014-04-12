@@ -74,8 +74,8 @@ SOURCES         = xulpymoney.py \
                   ui/Ui_frmSelector.py \
                   ui/frmEstimationsAdd.py \
                   ui/Ui_frmEstimationsAdd.py \
-                  ui/wdgInversionesMS.py \
-                  ui/Ui_wdgInversionesMS.py \
+                  ui/wdgProducts.py \
+                  ui/Ui_wdgProducts.py \
                   ui/wdgInvestmentsOperations.py \
                   ui/Ui_wdgInvestmentsOperations.py \
                   ui/wdgMergeCodes.py \
@@ -124,7 +124,7 @@ FORMS           = ui/frmAbout.ui \
                   ui/frmQuotesIBM.ui \
                   ui/frmMain2.ui \
                   ui/frmSelector.ui \
-                  ui/wdgInversionesMS.ui \
+                  ui/wdgProducts.ui \
                   ui/wdgInvestmentsOperations.ui \
                   ui/wdgMergeCodes.ui \
                   ui/wdgLog.ui

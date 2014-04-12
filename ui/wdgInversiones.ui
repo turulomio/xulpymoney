@@ -211,28 +211,28 @@
     <string>Is it active?</string>
    </property>
   </action>
-  <action name="actionMystocks">
+  <action name="actionProduct">
    <property name="icon">
     <iconset resource="../images/xulpymoney.qrc">
      <normaloff>:/xulpymoney/kmplot.jpg</normaloff>:/xulpymoney/kmplot.jpg</iconset>
    </property>
    <property name="text">
-    <string>Estudio MyStocks</string>
+    <string>Product report</string>
    </property>
    <property name="toolTip">
-    <string>Estudio MyStocks</string>
+    <string>Product report</string>
    </property>
   </action>
-  <action name="actionMystocksManual">
+  <action name="actionProductPrice">
    <property name="icon">
     <iconset resource="../images/xulpymoney.qrc">
-     <normaloff>:/xulpymoney/books.png</normaloff>:/xulpymoney/books.png</iconset>
+     <normaloff>:/xulpymoney/add.png</normaloff>:/xulpymoney/add.png</iconset>
    </property>
    <property name="text">
-    <string>Añadir cotización a MyStocks</string>
+    <string>Add product price</string>
    </property>
    <property name="toolTip">
-    <string>Añadir cotización a MyStocks</string>
+    <string>Add product price</string>
    </property>
   </action>
   <action name="actionInversionBorrar">

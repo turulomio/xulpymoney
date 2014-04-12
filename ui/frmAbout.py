@@ -34,31 +34,31 @@ class frmAbout(QDialog, Ui_frmAbout):
         def pais(cur, columna, bolsa):
             """Si pais es Null es para todos"""
             total=0
-            cur.execute("select count(*) from investments where type=1 and id_bolsas=%s", (bolsa.id,))
+            cur.execute("select count(*) from products where type=1 and id_bolsas=%s", (bolsa.id,))
             tmp=cur.fetchone()[0]
             total=total+tmp
             self.tblStatistics.setItem(0, columna , qcenter(tmp))
-            cur.execute("select count(*) from investments where type=2 and id_bolsas=%s", (bolsa.id,))
+            cur.execute("select count(*) from products where type=2 and id_bolsas=%s", (bolsa.id,))
             tmp=cur.fetchone()[0]
             total=total+tmp
             self.tblStatistics.setItem(1, columna , qcenter(tmp))
-            cur.execute("select count(*) from investments where type=3 and id_bolsas=%s", (bolsa.id,))
+            cur.execute("select count(*) from products where type=3 and id_bolsas=%s", (bolsa.id,))
             tmp=cur.fetchone()[0]
             total=total+tmp
             self.tblStatistics.setItem(2, columna , qcenter(tmp))
-            cur.execute("select count(*) from investments where type=4 and id_bolsas=%s", (bolsa.id,))
+            cur.execute("select count(*) from products where type=4 and id_bolsas=%s", (bolsa.id,))
             tmp=cur.fetchone()[0]
             total=total+tmp
             self.tblStatistics.setItem(3, columna , qcenter(tmp))
-            cur.execute("select count(*) from investments where type=5 and id_bolsas=%s", (bolsa.id,))
+            cur.execute("select count(*) from products where type=5 and id_bolsas=%s", (bolsa.id,))
             tmp=cur.fetchone()[0]
             total=total+tmp
             self.tblStatistics.setItem(4, columna , qcenter(tmp))
-            cur.execute("select count(*) from investments where type=7 and id_bolsas=%s", (bolsa.id,))
+            cur.execute("select count(*) from products where type=7 and id_bolsas=%s", (bolsa.id,))
             tmp=cur.fetchone()[0]
             total=total+tmp
             self.tblStatistics.setItem(5, columna , qcenter(tmp))
-            cur.execute("select count(*) from investments where type=9 and id_bolsas=%s", (bolsa.id,))
+            cur.execute("select count(*) from products where type=9 and id_bolsas=%s", (bolsa.id,))
             tmp=cur.fetchone()[0]
             total=total+tmp
             self.tblStatistics.setItem(6, columna , qcenter(tmp))
@@ -70,31 +70,31 @@ class frmAbout(QDialog, Ui_frmAbout):
         def todos(cur):
             """Si pais es Null es para todos"""
             total=0
-            cur.execute("select count(*) from investments where type=1 ")
+            cur.execute("select count(*) from products where type=1 ")
             tmp=cur.fetchone()[0]
             total=total+tmp
             self.tblStatistics.setItem(0, 0 , qcenter(tmp))
-            cur.execute("select count(*) from investments where type=2 ")
+            cur.execute("select count(*) from products where type=2 ")
             tmp=cur.fetchone()[0]
             total=total+tmp
             self.tblStatistics.setItem(1, 0 , qcenter(tmp))
-            cur.execute("select count(*) from investments where type=3 ")
+            cur.execute("select count(*) from products where type=3 ")
             tmp=cur.fetchone()[0]
             total=total+tmp
             self.tblStatistics.setItem(2, 0 , qcenter(tmp))
-            cur.execute("select count(*) from investments where type=4 ")
+            cur.execute("select count(*) from products where type=4 ")
             tmp=cur.fetchone()[0]
             total=total+tmp
             self.tblStatistics.setItem(3, 0 , qcenter(tmp))
-            cur.execute("select count(*) from investments where type=5 ")
+            cur.execute("select count(*) from products where type=5 ")
             tmp=cur.fetchone()[0]
             total=total+tmp
             self.tblStatistics.setItem(4, 0 , qcenter(tmp))
-            cur.execute("select count(*) from investments where type=7 ")
+            cur.execute("select count(*) from products where type=7 ")
             tmp=cur.fetchone()[0]
             total=total+tmp
             self.tblStatistics.setItem(5, 0 , qcenter(tmp))
-            cur.execute("select count(*) from investments where type=9 ")
+            cur.execute("select count(*) from products where type=9 ")
             tmp=cur.fetchone()[0]
             total=total+tmp
             self.tblStatistics.setItem(6, 0 , qcenter(tmp))

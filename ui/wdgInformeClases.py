@@ -91,7 +91,7 @@ class wdgInformeClases(QWidget, Ui_wdgInformeClases):
         for r in range(0, 11):
             total=0
             for i in self.cfg.data.inversiones_active.arr:
-                if math.ceil(i.investment.tpc/10.0)==r:
+                if math.ceil(i.product.tpc/10.0)==r:
                     total=total+i.saldo()
             if r==0:
                 total=total+self.cuentas
@@ -111,7 +111,7 @@ class wdgInformeClases(QWidget, Ui_wdgInformeClases):
         for m in self.cfg.investmentsmodes.list():
             total=0
             for i in self.cfg.data.inversiones_active.arr:
-                if i.investment.mode==m:
+                if i.product.mode==m:
                     total=total+i.saldo()
             labels.append(m.name)
             if m.id=='c':
@@ -130,7 +130,7 @@ class wdgInformeClases(QWidget, Ui_wdgInformeClases):
 #            id_type=int(id_type)
             total=0
             for i in self.cfg.data.inversiones_active.arr:
-                if i.investment.type==t:
+                if i.product.type==t:
                     total=total+i.saldo()
             if t.id==11:#Cuentas
                 total=total+self.cuentas
@@ -149,7 +149,7 @@ class wdgInformeClases(QWidget, Ui_wdgInformeClases):
         for a in self.cfg.apalancamientos.list():
             total=0
             for i in self.cfg.data.inversiones_active.arr:
-                if i.investment.apalancado==a:
+                if i.product.apalancado==a:
                     total=total+i.saldo()
             if a.id==0:#Cuentas
                 total=total+self.cuentas
@@ -167,7 +167,7 @@ class wdgInformeClases(QWidget, Ui_wdgInformeClases):
         for c in self.cfg.countries.list():
             total=0
             for i in self.cfg.data.inversiones_active.arr:
-                if i.investment.bolsa.country==c:
+                if i.product.bolsa.country==c:
                     total=total+i.saldo()
             if total>0:
                 labels.append(c.name)
@@ -179,10 +179,10 @@ class wdgInformeClases(QWidget, Ui_wdgInformeClases):
         labels=[]
         data=[]
         explode=[]
-        #Saca investments active
+        #Saca products active
         s=set([])
         for i in self.cfg.data.inversiones_active.arr:
-            s.add(i.investment)
+            s.add(i.product)
         
         arr=list(s)
         arr=sorted(arr, key=lambda inv: inv.name,  reverse=True) 

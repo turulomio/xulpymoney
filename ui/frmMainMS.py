@@ -4,7 +4,7 @@ from PyQt4.QtGui import *
 from Ui_frmMainMS import *
 from frmAbout import *
 from frmAccess import *
-from wdgInversionesMS import *
+from wdgProducts import *
 from wdgLog import *
  
 
@@ -23,7 +23,7 @@ class frmMainMS(QMainWindow, Ui_frmMainMS):#
         self.setupUi(self)
         self.showMaximized()
         self.setWindowTitle(self.trUtf8("MyStocks 2010-{0} ©".format(version[:4])))
-        self.sqlvacio="select * from investments where id=-999999"
+        self.sqlvacio="select * from products where id=-999999"
         
         self.cfg=ConfigMyStock()
         
@@ -51,7 +51,7 @@ class frmMainMS(QMainWindow, Ui_frmMainMS):#
 #            m.setText(QApplication.translate("mystocks","La base de datos se acaba de iniciar.\n\nSe necesitan al menos 24 horas de funcionamiento del demonio mystocksd para que esta aplicación tenga todos los datos disponibles."))
 #            m.exec_()       
         
-        self.w=wdgInversionesMS(self.cfg,  self.sqlvacio)
+        self.w=wdgProducts(self.cfg,  self.sqlvacio)
 
         self.layout.addWidget(self.w)
         self.w.show()
@@ -69,14 +69,14 @@ class frmMainMS(QMainWindow, Ui_frmMainMS):#
     @QtCore.pyqtSlot()  
     def on_actionCAC40_activated(self):
         self.w.close()
-        self.w=wdgInversionesMS(self.cfg,  "select * from investments where agrupations like '%|CAC|%' order by name,id")
+        self.w=wdgProducts(self.cfg,  "select * from products where agrupations like '%|CAC|%' order by name,id")
 
         self.layout.addWidget(self.w)
         self.w.show()                
     @QtCore.pyqtSlot()  
     def on_actionActive_activated(self):
         self.w.close()
-        self.w=wdgInversionesMS(self.cfg,  "select * from investments where active=true order by name")
+        self.w=wdgProducts(self.cfg,  "select * from products where active=true order by name")
 
         self.layout.addWidget(self.w)
         self.w.show()
@@ -89,14 +89,14 @@ class frmMainMS(QMainWindow, Ui_frmMainMS):#
     @QtCore.pyqtSlot()  
     def on_actionDivisas_activated(self):
         self.w.close()
-        self.w=wdgInversionesMS(self.cfg,  "select * from investments where type=6 order by name,id")
+        self.w=wdgProducts(self.cfg,  "select * from products where type=6 order by name,id")
 
         self.layout.addWidget(self.w)
         self.w.show()
     @QtCore.pyqtSlot()  
     def on_actionDividendos_activated(self):
         self.w.close()
-        self.w=wdgInversionesMS(self.cfg,  "select * from investments where id in (select distinct(quotes.id) from quotes, estimaciones where quotes.id=estimaciones.id and year=2012  and dpa > 0 );")
+        self.w=wdgProducts(self.cfg,  "select * from products where id in (select distinct(quotes.id) from quotes, estimaciones where quotes.id=estimaciones.id and year=2012  and dpa > 0 );")
 
         self.layout.addWidget(self.w)
         self.w.on_actionOrdenarDividendo_activated()
@@ -140,7 +140,7 @@ class frmMainMS(QMainWindow, Ui_frmMainMS):#
     @QtCore.pyqtSlot()  
     def on_actionNasdaq100_activated(self):
         self.w.close()
-        self.w=wdgInversionesMS(self.cfg,  "select * from investments where agrupations like '%|NASDAQ100|%' order by name,id")
+        self.w=wdgProducts(self.cfg,  "select * from products where agrupations like '%|NASDAQ100|%' order by name,id")
 
         self.layout.addWidget(self.w)
         self.w.show()
@@ -150,14 +150,14 @@ class frmMainMS(QMainWindow, Ui_frmMainMS):#
         self.w.close()
         cur=self.cfg.conms.cursor()
         #ßaca los isin duplicados buscando distintct isin, bolsa con mas de dos registros
-        cur.execute("select isin, id_bolsas, count(*) as num from investments  where isin!='' group by isin, id_bolsas having count(*)>1 order by num desc;")
+        cur.execute("select isin, id_bolsas, count(*) as num from products  where isin!='' group by isin, id_bolsas having count(*)>1 order by num desc;")
         isins=set([])
         for row in cur:
             isins.add(row['isin'] )
         if len(isins)>0:
-            self.w=wdgInversionesMS(self.cfg,  "select * from investments where isin in ("+list2string(list(isins))+") order by isin, id_bolsas")
+            self.w=wdgProducts(self.cfg,  "select * from products where isin in ("+list2string(list(isins))+") order by isin, id_bolsas")
         else:
-            self.w=wdgInversionesMS(self.cfg, self.sqlvacio)
+            self.w=wdgProducts(self.cfg, self.sqlvacio)
 
         self.layout.addWidget(self.w)
         self.w.show()
@@ -165,7 +165,7 @@ class frmMainMS(QMainWindow, Ui_frmMainMS):#
     @QtCore.pyqtSlot()  
     def on_actionMC_activated(self):
         self.w.close()
-        self.w=wdgInversionesMS(self.cfg, "select * from investments where agrupations like '%|MERCADOCONTINUO|%' order by name,id")
+        self.w=wdgProducts(self.cfg, "select * from products where agrupations like '%|MERCADOCONTINUO|%' order by name,id")
 
         self.layout.addWidget(self.w)
         self.w.show()
@@ -174,7 +174,7 @@ class frmMainMS(QMainWindow, Ui_frmMainMS):#
     @QtCore.pyqtSlot()  
     def on_actionETF_activated(self):
         self.w.close()
-        self.w=wdgInversionesMS(self.cfg,  "select * from investments where type=4 order by name, id")
+        self.w=wdgProducts(self.cfg,  "select * from products where type=4 order by name, id")
 
         self.layout.addWidget(self.w)
         self.w.show()
@@ -182,7 +182,7 @@ class frmMainMS(QMainWindow, Ui_frmMainMS):#
     @QtCore.pyqtSlot()  
     def on_actionEurostoxx50_activated(self):
         self.w.close()
-        self.w=wdgInversionesMS(self.cfg,  "select * from investments where agrupations like '%|EUROSTOXX|%' order by name,id")
+        self.w=wdgProducts(self.cfg,  "select * from products where agrupations like '%|EUROSTOXX|%' order by name,id")
 
         self.layout.addWidget(self.w)
         self.w.show()
@@ -190,7 +190,7 @@ class frmMainMS(QMainWindow, Ui_frmMainMS):#
 
     @QtCore.pyqtSlot()  
     def on_actionFavoritos_activated(self):
-        favoritos=self.cfg.config.get_list("wdgInversionesMS",  "favoritos")
+        favoritos=self.cfg.config.get_list("wdgProducts",  "favoritos")
         if len(favoritos)==0:
             m=QMessageBox()
             m.setIcon(QMessageBox.Information)
@@ -198,7 +198,7 @@ class frmMainMS(QMainWindow, Ui_frmMainMS):#
             m.exec_()     
             return
         self.w.close()
-        self.w=wdgInversionesMS(self.cfg,  "select * from investments where id in ("+str(favoritos)[1:-1]+") order by name, id")
+        self.w=wdgProducts(self.cfg,  "select * from products where id in ("+str(favoritos)[1:-1]+") order by name, id")
 
         self.layout.addWidget(self.w)
         self.w.show()
@@ -208,14 +208,14 @@ class frmMainMS(QMainWindow, Ui_frmMainMS):#
     @QtCore.pyqtSlot()  
     def on_actionAcciones_activated(self):
         self.w.close()
-        self.w=wdgInversionesMS(self.cfg,  "select * from investments where type=1 order by name, id")
+        self.w=wdgProducts(self.cfg,  "select * from products where type=1 order by name, id")
 
         self.layout.addWidget(self.w)
         self.w.show()          
     @QtCore.pyqtSlot()  
     def on_actionWarrants_activated(self):
         self.w.close()
-        self.w=wdgInversionesMS(self.cfg,  "select * from investments where type=5 order by name, id")
+        self.w=wdgProducts(self.cfg,  "select * from products where type=5 order by name, id")
 
         self.layout.addWidget(self.w)
         self.w.show()          
@@ -223,28 +223,28 @@ class frmMainMS(QMainWindow, Ui_frmMainMS):#
     @QtCore.pyqtSlot()  
     def on_actionWarrantsCall_activated(self):
         self.w.close()
-        self.w=wdgInversionesMS(self.cfg,  "select * from investments where type=5 and pci='c' order by name, id")
+        self.w=wdgProducts(self.cfg,  "select * from products where type=5 and pci='c' order by name, id")
 
         self.layout.addWidget(self.w)
         self.w.show()              
     @QtCore.pyqtSlot()  
     def on_actionWarrantsPut_activated(self):
         self.w.close()
-        self.w=wdgInversionesMS(self.cfg,  "select * from investments where type=5 and pci='p' order by name, id")
+        self.w=wdgProducts(self.cfg,  "select * from products where type=5 and pci='p' order by name, id")
 
         self.layout.addWidget(self.w)
         self.w.show()              
     @QtCore.pyqtSlot()  
     def on_actionWarrantsInline_activated(self):
         self.w.close()
-        self.w=wdgInversionesMS(self.cfg,  "select * from investments where type=5 and pci='i' order by name, id")
+        self.w=wdgProducts(self.cfg,  "select * from products where type=5 and pci='i' order by name, id")
 
         self.layout.addWidget(self.w)
         self.w.show()      
     @QtCore.pyqtSlot()  
     def on_actionFondos_activated(self):
         self.w.close()
-        self.w=wdgInversionesMS(self.cfg,  "select * from investments where type=2 order by name, id")
+        self.w=wdgProducts(self.cfg,  "select * from products where type=2 order by name, id")
 
         self.layout.addWidget(self.w)
         self.w.show()                        
@@ -252,7 +252,7 @@ class frmMainMS(QMainWindow, Ui_frmMainMS):#
     @QtCore.pyqtSlot()  
     def on_actionDeudaPublica_activated(self):
         self.w.close()
-        self.w=wdgInversionesMS(self.cfg,  "select * from investments where type=7 order by name, id")
+        self.w=wdgProducts(self.cfg,  "select * from products where type=7 order by name, id")
 
         self.layout.addWidget(self.w)
         self.w.show()                        
@@ -260,7 +260,7 @@ class frmMainMS(QMainWindow, Ui_frmMainMS):#
     @QtCore.pyqtSlot()  
     def on_actionDeudaPrivada_activated(self):
         self.w.close()
-        self.w=wdgInversionesMS(self.cfg,  "select * from investments where type=9 order by name, id")
+        self.w=wdgProducts(self.cfg,  "select * from products where type=9 order by name, id")
 
         self.layout.addWidget(self.w)
         self.w.show()
@@ -268,21 +268,21 @@ class frmMainMS(QMainWindow, Ui_frmMainMS):#
     @QtCore.pyqtSlot()  
     def on_actionPurgeAll_activated(self):
         """Purga todas las quotes de todas inversión. """
-        investments=[]
+        products=[]
         curms=self.cfg.conms.cursor()
-        curms.execute("select * from investments where id in ( select distinct( id) from quotes) order by name;")
+        curms.execute("select * from products where id in ( select distinct( id) from quotes) order by name;")
         for row in curms:
-            investments.append(Investment(self.cfg).init__db_row(row))
+            products.append(Product(self.cfg).init__db_row(row))
         curms.close()
                
         
-        pd= QProgressDialog(QApplication.translate("Core","Purging innecesary data from all investments"), QApplication.translate("Core","Cancel"), 0,len(investments))
+        pd= QProgressDialog(QApplication.translate("Core","Purging innecesary data from all products"), QApplication.translate("Core","Cancel"), 0,len(products))
         pd.setModal(True)
-        pd.setWindowTitle(QApplication.translate("Core","Purging quotes from all investments"))
+        pd.setWindowTitle(QApplication.translate("Core","Purging quotes from all products"))
         pd.setMinimumDuration(0)          
         counter=0      
         
-        for i, inv in enumerate(investments):
+        for i, inv in enumerate(products):
             pd.setValue(i)
             pd.setLabelText(QApplication.translate("Core","Purging quotes from {0}.\nTotal purged in global process: {1}".format(inv.name,  counter)))
             pd.update()
@@ -304,13 +304,13 @@ class frmMainMS(QMainWindow, Ui_frmMainMS):#
         
         m=QMessageBox()
         m.setIcon(QMessageBox.Information)
-        m.setText(self.trUtf8("{0} quotes have been purged from {1} investments".format(counter, len(investments))))
+        m.setText(self.trUtf8("{0} quotes have been purged from {1} products".format(counter, len(products))))
         m.exec_()    
         
     @QtCore.pyqtSlot()  
     def on_actionRentaFija_activated(self):
         self.w.close()
-        self.w=wdgInversionesMS(self.cfg,  "select * from investments where type in (7,9) order by name, id")
+        self.w=wdgProducts(self.cfg,  "select * from products where type in (7,9) order by name, id")
 
         self.layout.addWidget(self.w)
         self.w.show()
@@ -320,7 +320,7 @@ class frmMainMS(QMainWindow, Ui_frmMainMS):#
     @QtCore.pyqtSlot()  
     def on_actionIbex35_activated(self):
         self.w.close()
-        self.w=wdgInversionesMS(self.cfg,  "select  * from investments where agrupations like '%|IBEX|%' order by name,id")
+        self.w=wdgProducts(self.cfg,  "select  * from products where agrupations like '%|IBEX|%' order by name,id")
 
         self.layout.addWidget(self.w)
         self.w.show()
@@ -328,7 +328,7 @@ class frmMainMS(QMainWindow, Ui_frmMainMS):#
     @QtCore.pyqtSlot()  
     def on_actionIndexes_activated(self):
         self.w.close()
-        self.w=wdgInversionesMS(self.cfg,  "select  * from investments where type=3 order by id_bolsas,name")
+        self.w=wdgProducts(self.cfg,  "select  * from products where type=3 order by id_bolsas,name")
 
         self.layout.addWidget(self.w)
         self.w.show()        
@@ -336,7 +336,7 @@ class frmMainMS(QMainWindow, Ui_frmMainMS):#
     @QtCore.pyqtSlot()  
     def on_actionSP500_activated(self):
         self.w.close()
-        self.w=wdgInversionesMS(self.cfg,  "select * from investments where agrupations like '%|SP500|%' order by name,id")
+        self.w=wdgProducts(self.cfg,  "select * from products where agrupations like '%|SP500|%' order by name,id")
 
         self.layout.addWidget(self.w)
         self.w.show()
@@ -344,7 +344,7 @@ class frmMainMS(QMainWindow, Ui_frmMainMS):#
     @QtCore.pyqtSlot()  
     def on_actionInversionesDesaparecidas_activated(self):
         self.w.close()
-        self.w=wdgInversionesMS(self.cfg,  "select * from investments where obsolete=true order by name,id")
+        self.w=wdgProducts(self.cfg,  "select * from products where obsolete=true order by name,id")
 
         self.layout.addWidget(self.w)
         self.w.show()
@@ -352,7 +352,7 @@ class frmMainMS(QMainWindow, Ui_frmMainMS):#
     @QtCore.pyqtSlot()  
     def on_actionInversionesSinActualizar_activated(self):
         self.w.close()
-        self.w=wdgInversionesMS(self.cfg,  "select * from investments where id in( select id  from quotes group by id having last(datetime::date)<now()::date-60)")
+        self.w=wdgProducts(self.cfg,  "select * from products where id in( select id  from quotes group by id having last(datetime::date)<now()::date-60)")
 
         self.layout.addWidget(self.w)
         self.w.show()       
@@ -360,7 +360,7 @@ class frmMainMS(QMainWindow, Ui_frmMainMS):#
     @QtCore.pyqtSlot()  
     def on_actionInversionesSinActualizarHistoricos_activated(self):
         self.w.close()
-        self.w=wdgInversionesMS(self.cfg, "select * from investments where id in (select id from quotes  group by id having date_part('microsecond',last(datetime))=4 and last(datetime)<now()-interval '60 days' );")
+        self.w=wdgProducts(self.cfg, "select * from products where id in (select id from quotes  group by id having date_part('microsecond',last(datetime))=4 and last(datetime)<now()-interval '60 days' );")
 
         self.layout.addWidget(self.w)
         self.w.show()            
@@ -368,7 +368,7 @@ class frmMainMS(QMainWindow, Ui_frmMainMS):#
     @QtCore.pyqtSlot()  
     def on_actionInversionesManual_activated(self):
         self.w.close()
-        self.w=wdgInversionesMS(self.cfg,  "select * from investments where id<0 order by name, id ")
+        self.w=wdgProducts(self.cfg,  "select * from products where id<0 order by name, id ")
 
         self.layout.addWidget(self.w)
         self.w.show()
@@ -376,7 +376,7 @@ class frmMainMS(QMainWindow, Ui_frmMainMS):#
     @QtCore.pyqtSlot()  
     def on_actionInversionesSinISIN_activated(self):
         self.w.close()
-        self.w=wdgInversionesMS(self.cfg,  "select * from investments  where isin is null or isin ='' order by name,id")
+        self.w=wdgProducts(self.cfg,  "select * from products  where isin is null or isin ='' order by name,id")
 
         self.layout.addWidget(self.w)
         self.w.show()
@@ -385,7 +385,7 @@ class frmMainMS(QMainWindow, Ui_frmMainMS):#
     @QtCore.pyqtSlot()  
     def on_actionInversionesSinNombre_activated(self):
         self.w.close()
-        self.w=wdgInversionesMS(self.cfg,  "select * from investments  where name is null or name='' order by name,id")
+        self.w=wdgProducts(self.cfg,  "select * from products  where name is null or name='' order by name,id")
 
         self.layout.addWidget(self.w)
         self.w.show()
@@ -401,7 +401,7 @@ class frmMainMS(QMainWindow, Ui_frmMainMS):#
     @QtCore.pyqtSlot()  
     def on_actionXetra_activated(self):
         self.w.close()
-        self.w=wdgInversionesMS(self.cfg,  "select * from investments where agrupations like '%|DAX|%' order by name,id")
+        self.w=wdgProducts(self.cfg,  "select * from products where agrupations like '%|DAX|%' order by name,id")
 
         self.layout.addWidget(self.w)
         self.w.show()
