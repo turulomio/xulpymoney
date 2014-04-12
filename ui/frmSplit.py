@@ -42,9 +42,9 @@ class frmSplit(QDialog, Ui_frmSplit):
         
     @pyqtSignature("")
     def on_buttonbox_accepted(self):
-        self.accept()#No har´ia falta pero para recordar que hay buttonbox
+        self.accept()#No haría falta pero para recordar que hay buttonbox
     @pyqtSignature("")
     def on_buttonbox_rejected(self):
         del self.split
-        self.reject()#No har´ia falta pero para recordar que hay buttonbox
+        self.reject()#No haría falta pero para recordar que hay buttonbox
     

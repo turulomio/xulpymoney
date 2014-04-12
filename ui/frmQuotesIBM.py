@@ -86,4 +86,4 @@ class frmQuotesIBM(QDialog, Ui_frmQuotesIBM):
 
     @pyqtSignature("")
     def on_buttonbox_rejected(self):
-        self.reject()#No har´ia falta pero para recordar que hay buttonbox
+        self.reject()#No haría falta pero para recordar que hay buttonbox

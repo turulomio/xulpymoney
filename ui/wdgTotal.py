@@ -57,7 +57,7 @@ class canvasTotal(FigureCanvas):
         self.draw()
         
     def showLegend(self):
-        """Alterna mostrando y desmostrando legend, empieza con s´i"""
+        """Alterna mostrando y desmostrando legend, empieza con sí"""
         self.makeLegend()
                 
         if self.ax.legend_==None:

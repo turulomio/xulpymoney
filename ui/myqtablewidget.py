@@ -35,7 +35,7 @@ class myQTableWidget(QTableWidget):
             self.mytimer.start(5000) 
         
     def checksettings(self):
-        ##Si est´a vacio columnswidth_in_config lo carga y guarda en settings
+        ##Si está vacio columnswidth_in_config lo carga y guarda en settings
         if len(self.columnswidth_in_config)==0:#si no hay settings primera vez
             print ("a")
             self.save_columns()
