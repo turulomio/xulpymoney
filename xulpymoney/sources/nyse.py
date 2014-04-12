@@ -31,7 +31,7 @@ class NYSE(Source):
         q3 = multiprocessing.Process(target=self.update_statics, args=())
         q3.start()    
         yesterday=str(datetime.date.today()-datetime.timedelta(days=7))
-        sql="select quotes.code from investments, quotes where quotes.code=investments.code and quotes.code like 'NYSE#%' and quotes.date='"+yesterday+"' and last<>'close' order by quotes.code;"
+        sql="select quotes.code from products, quotes where quotes.code=products.code and quotes.code like 'NYSE#%' and quotes.date='"+yesterday+"' and last<>'close' order by quotes.code;"
         con=self.cfg.connect_mystocksd()
         cur=con.cursor()
         cur.execute(sql)

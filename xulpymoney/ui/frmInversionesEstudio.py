@@ -52,7 +52,7 @@ class frmInversionesEstudio(QDialog, Ui_frmInversionesEstudio):
             self.lblTitulo.setText((self.inversion.name))
             self.txtInversion.setText((self.inversion.name))
             self.txtVenta.setText(str((self.inversion.venta)))
-            self.ise.setSelected(self.inversion.investment)
+            self.ise.setSelected(self.inversion.product)
             self.cmdPuntoVenta.setEnabled(True)
             self.cmbCuenta.setCurrentIndex(self.cmbCuenta.findData(self.inversion.cuenta.id))
             self.selMovimiento=None
@@ -79,10 +79,10 @@ class frmInversionesEstudio(QDialog, Ui_frmInversionesEstudio):
                 dtpc=0
                 dtae=0
             
-            estimacion=self.inversion.investment.estimations_dps.currentYear()
+            estimacion=self.inversion.product.estimations_dps.currentYear()
             if estimacion.estimation!=None:
                 acciones=self.inversion.acciones()
-                tpccalculado=100*estimacion.estimation/self.inversion.investment.result.basic.last.quote
+                tpccalculado=100*estimacion.estimation/self.inversion.product.result.basic.last.quote
                 self.lblDivAnualEstimado.setText(("El dividendo anual estimado, según el valor actual de la acción es del {0} % ({1}€ por acción)".format(str(round(tpccalculado, 2)),  str(estimacion.estimation))))
                 self.lblDivFechaRevision.setText(('Fecha de la última revisión del dividendo: '+ str(estimacion.date_estimation)))
                 self.lblDivSaldoEstimado.setText(("Saldo estimado: {0}€ ({1}€ después de impuestos)".format( str(round(acciones*estimacion.estimation, 2)),  str(round(acciones*estimacion.estimation*(1-self.cfg.dividendwithholding))), 2)))
@@ -235,7 +235,7 @@ class frmInversionesEstudio(QDialog, Ui_frmInversionesEstudio):
         
         if self.cfg.data.investments_active.find(mystocksid)==None:
             print ("Cargando otro mqinversiones")
-            inv=Investment(self.cfg).init__db(mystocksid)
+            inv=Product(self.cfg).init__db(mystocksid)
             inv.estimations_dps.load_from_db()
             inv.result.basic.load_from_db()
             self.cfg.data.investments_active.arr.append(inv)
@@ -255,7 +255,7 @@ class frmInversionesEstudio(QDialog, Ui_frmInversionesEstudio):
         elif self.tipo==2:
             self.inversion.name=inversion
             self.inversion.venta=venta
-            self.inversion.investment=self.cfg.data.investments_active.find(mystocksid)
+            self.inversion.product=self.cfg.data.investments_active.find(mystocksid)
             self.inversion.save()##El id y el id_cuentas no se pueden modificar
             self.cfg.con.commit()
             self.cmdInversion.setEnabled(False)

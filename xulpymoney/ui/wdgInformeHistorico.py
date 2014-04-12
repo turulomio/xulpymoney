@@ -51,13 +51,13 @@ class wdgInformeHistorico(QWidget, Ui_wdgInformeHistorico):
         sumsaldo=0        
         curms=self.cfg.conms.cursor()
         for i,  o in enumerate(operaciones):
-            valor=Quote(self.cfg).init__from_query(o.inversion.investment, o.datetime).quote
+            valor=Quote(self.cfg).init__from_query(o.inversion.product, o.datetime).quote
             if valor==None:
-                print("wdgInformeHistorico > load_added: {0} en {1} da nulo".format(o.inversion.investment.id, o.datetime))
+                print("wdgInformeHistorico > load_added: {0} en {1} da nulo".format(o.inversion.product.id, o.datetime))
                 valor=0
             saldo=valor*o.acciones
             sumsaldo=sumsaldo+saldo
-            self.tblAdded.setItem(i, 0, qdatetime(o.datetime,  o.inversion.investment.bolsa.zone))
+            self.tblAdded.setItem(i, 0, qdatetime(o.datetime,  o.inversion.product.bolsa.zone))
             self.tblAdded.setItem(i, 1, QTableWidgetItem(o.inversion.name))
             self.tblAdded.setItem(i, 2, QTableWidgetItem(self.cfg.tiposoperaciones.find(6).name))
             self.tblAdded.setItem(i, 3, qright(str(o.acciones)))

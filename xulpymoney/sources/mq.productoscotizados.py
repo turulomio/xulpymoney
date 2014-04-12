@@ -37,7 +37,7 @@ class WorkerProductosCotizados(Source):
         """Función que saca el id y los compara con los filtrados, es decir con los activos¡"""
         resultado=[]
         for d in set.arr:
-            if d.investment in self.ids:
+            if d.product in self.ids:
                 resultado.append(d)
         set.arr=resultado
         
@@ -68,10 +68,10 @@ class WorkerProductosCotizados(Source):
         for i in range(1, len(bloques)):
             quote=Quote()
             productid=int(bloques[i].split(b'">')[0])
-            quote.investment=self.productid2investment(productid)
+            quote.product=self.productid2investment(productid)
             quote.quote=float(comaporpunto(bloques[i].split(b'type="Bid" manageColor="true">')[1].split(b"</")[0]))
             quote.datetime=datetime.datetime.now(pytz.timezone('Europe/Madrid'))
-            if quote.investment!=None:
+            if quote.product!=None:
                 set.append(quote)
         return (set,  error)
 

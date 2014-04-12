@@ -34,9 +34,9 @@ class investmentSelector(QWidget):
         d.exec_()
         self.setSelected(d.selected)
             
-    def setSelected(self, investment):
-        """Recibe un objeto Investment. No se usará posteriormente, por lo que puede no estar completo con get_basic.:."""
-        self.selected=investment
+    def setSelected(self, product):
+        """Recibe un objeto Product. No se usará posteriormente, por lo que puede no estar completo con get_basic.:."""
+        self.selected=product
         if self.selected==None:
             self.txt.setText(self.trUtf8("No seleccionado"))
         else:
@@ -116,12 +116,12 @@ class investmentDialog(QDialog):
 
         self.inversiones=[]
         cur = self.cfg.conms.cursor()
-        cur.execute("select * from investments where id::text like '%"+(self.txt.text().upper())+"%' or upper(name) like '%"+(self.txt.text().upper())+"%' or upper(isin) like '%"+(self.txt.text().upper())+"%' or upper(comentario) like '%"+(self.txt.text().upper())+"%' order by name")
+        cur.execute("select * from products where id::text like '%"+(self.txt.text().upper())+"%' or upper(name) like '%"+(self.txt.text().upper())+"%' or upper(isin) like '%"+(self.txt.text().upper())+"%' or upper(comentario) like '%"+(self.txt.text().upper())+"%' order by name")
         self.lblFound.setText(self.tr("Encontrados {0} registros".format(cur.rowcount)))
                 
         self.tblInversiones.setRowCount(cur.rowcount)
         for i in cur:
-            inv=Investment(self.cfg)
+            inv=Product(self.cfg)
             inv.init__db_row(i)
             self.inversiones.append(inv)
             self.tblInversiones.setItem(cur.rownumber-1, 0, QTableWidgetItem(inv.name.upper()))

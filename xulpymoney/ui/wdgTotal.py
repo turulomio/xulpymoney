@@ -260,7 +260,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
             set.sort()
             set.myqtablewidget(table, None)
             horizontalLayout.addWidget(table)
-            self.tab.addTab(newtab, self.trUtf8("Investment selling operations of {0} of {1}".format(self.table.horizontalHeaderItem(column).text(), self.wyData.year)))
+            self.tab.addTab(newtab, self.trUtf8("Product selling operations of {0} of {1}".format(self.table.horizontalHeaderItem(column).text(), self.wyData.year)))
             self.tab.setCurrentWidget(newtab)
             
 

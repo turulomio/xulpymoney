@@ -29,7 +29,7 @@ class MercadoContinuo(Source):
         q3.start()    
         
         yesterday=str(datetime.date.today()-datetime.timedelta(days=7))
-        sql="select isin from investments, quotes where quotes.code=investments.code and quotes.code like 'MC#%' and isin like 'ES%' and quotes.date='"+yesterday+"' and last<>'close' order by isin;"
+        sql="select isin from products, quotes where quotes.code=products.code and quotes.code like 'MC#%' and isin like 'ES%' and quotes.date='"+yesterday+"' and last<>'close' order by isin;"
 
         q4 = multiprocessing.Process(target=self.update_step_historicals_by_isin, args=(sql,))
         q4.start()

@@ -1,22 +1,22 @@
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
-from Ui_wdgInversionesMS import *
+from Ui_wdgProducts import *
 from frmAnalisis import *
 from libxulpymoney import *
 from frmQuotesIBM import *
 from wdgMergeCodes import *
 from frmEstimationsAdd import *
 
-class wdgInversionesMS(QWidget, Ui_wdgInversionesMS):
+class wdgProducts(QWidget, Ui_wdgProducts):
     def __init__(self, cfg,  sql,  parent=None):
         QWidget.__init__(self, parent)
         self.setupUi(self)
         self.cfg=cfg
-        self.investments=[]#Es una lista de investments
-        self.selInvestment=None##Objeto de inversion seleccionado
+        self.products=[]#Es una lista de products
+        self.selProduct=None##Objeto de inversion seleccionado
         self.tblInversiones.setColumnHidden(0, True)
-        self.tblInversiones.settings("wdgInversionesMS",  self.cfg)    
-        self.setFavoritos=set(self.cfg.config.get_list( "wdgInversionesMS", "favoritos"))
+        self.tblInversiones.settings("wdgProducts",  self.cfg)    
+        self.setFavoritos=set(self.cfg.config.get_list( "wdgProducts", "favoritos"))
         self.progress = QProgressDialog(self.tr("Recibiendo datos solicitados"), self.tr("Cancelar"), 0,0)
         self.progress.setModal(True)
         self.progress.setWindowTitle(self.trUtf8("Recibiendo datos..."))
@@ -29,7 +29,7 @@ class wdgInversionesMS(QWidget, Ui_wdgInversionesMS):
     def build_array(self, sql):
         inicio=datetime.datetime.now()
         self.sql=sql
-        self.investments=[]
+        self.products=[]
         cur = self.cfg.conms.cursor()
         cur.execute(sql)
         self.lblFound.setText(self.tr("Encontrados {0} registros".format(cur.rowcount)))
@@ -46,22 +46,22 @@ class wdgInversionesMS(QWidget, Ui_wdgInversionesMS):
             else:
                 self.progress.setValue(self.progress.value()+1)       
                 
-            inv=Investment(self.cfg)
+            inv=Product(self.cfg)
             inv.init__db_row(i)
             inv.result.basic.load_from_db()
             inv.estimations_dps.load_from_db()
-            self.investments.append(inv)
+            self.products.append(inv)
         cur.close()     
-        if len(self.investments)!=0:      
+        if len(self.products)!=0:      
             diff=datetime.datetime.now()-inicio
-            print("wdgInversiones > build_array: {0} ({1} cada uno)".format(str(diff), diff/len(self.investments)))
+            print("wdgInversiones > build_array: {0} ({1} cada uno)".format(str(diff), diff/len(self.products)))
         
 
     def build_table(self):
-        self.tblInversiones.setRowCount(len(self.investments))
+        self.tblInversiones.setRowCount(len(self.products))
         tachado = QtGui.QFont()
         tachado.setStrikeOut(True)        #Fuente tachada
-        for i,  inv in enumerate(self.investments):
+        for i,  inv in enumerate(self.products):
             self.tblInversiones.setItem(i, 0, QTableWidgetItem((str(inv.id))))
             self.tblInversiones.setItem(i, 1, QTableWidgetItem(str(inv.name).upper()))
             self.tblInversiones.item(i, 1).setIcon(inv.bolsa.country.qicon())
@@ -90,24 +90,24 @@ class wdgInversionesMS(QWidget, Ui_wdgInversionesMS):
     def on_actionFavoritos_activated(self):
         def wdgInversiones_esta_mostrando_favoritos(favoritos):
             """Función que comprueba el sql para ver si está mostrando wdgInversiones a Favoritos"""
-            if self.sql=="select * from investments where id in ("+str(favoritos)[1:-1]+") order by name, id":
+            if self.sql=="select * from products where id in ("+str(favoritos)[1:-1]+") order by name, id":
                 return True
             return False
             
-        favoritos=self.cfg.config.get_list("wdgInversionesMS",  "favoritos")
-        if str(self.selInvestment.id) in favoritos:
+        favoritos=self.cfg.config.get_list("wdgProducts",  "favoritos")
+        if str(self.selProduct.id) in favoritos:
             if wdgInversiones_esta_mostrando_favoritos(favoritos)==True:
-                favoritos.remove(str(self.selInvestment.id))
+                favoritos.remove(str(self.selProduct.id))
                 if len(favoritos)==0:
-                    self.sql="select * from investments where id=-999999999"
+                    self.sql="select * from products where id=-999999999"
                 else:
-                    self.sql="select * from investments where id in ("+str(favoritos)[1:-1]+") order by name, id"
+                    self.sql="select * from products where id in ("+str(favoritos)[1:-1]+") order by name, id"
                 self.build_array(self.sql)
                 self.build_table()
         else:
-            favoritos.append(self.selInvestment.id)
+            favoritos.append(self.selProduct.id)
         print ("Favoritos", favoritos)
-        self.cfg.config.set_list("wdgInversionesMS",  "favoritos",  favoritos)
+        self.cfg.config.set_list("wdgProducts",  "favoritos",  favoritos)
         self.cfg.config.save()
         self.setFavoritos=set(favoritos)
 
@@ -115,25 +115,25 @@ class wdgInversionesMS(QWidget, Ui_wdgInversionesMS):
 
     @QtCore.pyqtSlot()  
     def on_actionIbex35_activated(self):
-        self.build_array("select * from investments where agrupations like '%|IBEX35|%' and code not in ('EURONEXT#LU0323134006', 'EURONEXT#ES0113790531', 'EURONEXT#ES0113900J37', 'EURONEXT#ES0182870214') order by name,code")
-        self.investments=sorted(self.investments, key=lambda row: row[2],  reverse=False) 
+        self.build_array("select * from products where agrupations like '%|IBEX35|%' and code not in ('EURONEXT#LU0323134006', 'EURONEXT#ES0113790531', 'EURONEXT#ES0113900J37', 'EURONEXT#ES0182870214') order by name,code")
+        self.products=sorted(self.products, key=lambda row: row[2],  reverse=False) 
         self.build_table()       
 
     @QtCore.pyqtSlot() 
-    def on_actionInversionBorrar_activated(self):
-        if self.selInvestment.deletable==False:
+    def on_actionProductDelete_activated(self):
+        if self.selProduct.deletable==False:
             m=QMessageBox()
             m.setText(QApplication.translate("mystocks","Esta inversión no puede borrarse porque está marcada como NO BORRABLE"))
             m.exec_()    
             return
 
-        respuesta = QMessageBox.warning(self, self.tr("MyStocks"), self.trUtf8("Se borrarán los datos de la inversión seleccionada ({0}). Tenga en cuenta que si es el tipo de actualización es manual, no recuperará los datos. ¿Quiere continuar?".format(self.selInvestment.id)), QMessageBox.Ok | QMessageBox.Cancel)
+        respuesta = QMessageBox.warning(self, self.tr("MyStocks"), self.trUtf8("Se borrarán los datos de la inversión seleccionada ({0}). Tenga en cuenta que si es el tipo de actualización es manual, no recuperará los datos. ¿Quiere continuar?".format(self.selProduct.id)), QMessageBox.Ok | QMessageBox.Cancel)
         if respuesta==QMessageBox.Ok:
             con=self.cfg.connect_mystocks()
             cur = con.cursor()
-            cur.execute("delete from investments where id=%s", (self.selInvestment.id, ))
-            cur.execute("delete from quotes where id=%s", (self.selInvestment.id, ))
-            cur.execute("delete from estimaciones where id=%s", (self.selInvestment.id, ))
+            cur.execute("delete from products where id=%s", (self.selProduct.id, ))
+            cur.execute("delete from quotes where id=%s", (self.selProduct.id, ))
+            cur.execute("delete from estimaciones where id=%s", (self.selProduct.id, ))
             con.commit()
             cur.close()     
             self.cfg.disconnect_mystocks(con)    
@@ -142,20 +142,20 @@ class wdgInversionesMS(QWidget, Ui_wdgInversionesMS):
             
             
     @QtCore.pyqtSlot() 
-    def on_actionInversionModificar_activated(self):
-        self.on_actionInversionEstudio_activated()
+    def on_actionProductEdit_activated(self):
+        self.on_actionProductReport_activated()
 
 
     @QtCore.pyqtSlot() 
-    def on_actionInversionNueva_activated(self):
+    def on_actionProductNew_activated(self):
         w=frmAnalisis(self.cfg, None, self)
         w.exec_()        
         self.build_array(self.sql)
         self.build_table()
-        
     @QtCore.pyqtSlot() 
-    def on_actionInversionEstudio_activated(self):
-        w=frmAnalisis(self.cfg, self.selInvestment, None,  self)
+    def on_actionProductReport_activated(self):
+
+        w=frmAnalisis(self.cfg, self.selProduct, None,  self)
         w.exec_()        
         self.build_array(self.sql)
         self.build_table()
@@ -163,27 +163,27 @@ class wdgInversionesMS(QWidget, Ui_wdgInversionesMS):
         
     @QtCore.pyqtSlot() 
     def on_actionOrdenarTPCDiario_activated(self):
-        self.investments=sorted(self.investments, key=lambda inv: inv.result.basic.tpc_diario(),  reverse=True) 
+        self.products=sorted(self.products, key=lambda inv: inv.result.basic.tpc_diario(),  reverse=True) 
         self.build_table()        
         
     @QtCore.pyqtSlot() 
     def on_actionOrdenarTPCAnual_activated(self):
-        self.investments=sorted(self.investments, key=lambda inv: inv.result.basic.tpc_anual(),  reverse=True) 
+        self.products=sorted(self.products, key=lambda inv: inv.result.basic.tpc_anual(),  reverse=True) 
         self.build_table()    
         
     @QtCore.pyqtSlot() 
     def on_actionOrdenarHora_activated(self):
-        self.investments=sorted(self.investments, key=lambda inv: inv.result.basic.last.datetime,  reverse=False) 
+        self.products=sorted(self.products, key=lambda inv: inv.result.basic.last.datetime,  reverse=False) 
         self.build_table()        
         
     @QtCore.pyqtSlot() 
     def on_actionOrdenarName_activated(self):
-        self.investments=sorted(self.investments, key=lambda inv: inv.name,  reverse=False) 
+        self.products=sorted(self.products, key=lambda inv: inv.name,  reverse=False) 
         self.build_table()        
         
     @QtCore.pyqtSlot() 
     def on_actionOrdenarDividendo_activated(self):
-        self.investments=sorted(self.investments, key=lambda inv: inv.estimations_dps.currentYear().percentage(),  reverse=True) 
+        self.products=sorted(self.products, key=lambda inv: inv.estimations_dps.currentYear().percentage(),  reverse=True) 
         self.build_table()        
         
     def on_txt_returnPressed(self):
@@ -196,8 +196,8 @@ class wdgInversionesMS(QWidget, Ui_wdgInversionesMS):
             m.exec_()  
             return
             
-        self.build_array("select * from investments where id::text like '%"+(self.txt.text().upper())+"%' or upper(name) like '%"+(self.txt.text().upper())+"%' or upper(isin) like '%"+(self.txt.text().upper())+"%' or upper(comentario) like '%"+(self.txt.text().upper())+"%' ")
-        self.investments=sorted(self.investments, key=lambda inv: inv.name,  reverse=False) 
+        self.build_array("select * from products where id::text like '%"+(self.txt.text().upper())+"%' or upper(name) like '%"+(self.txt.text().upper())+"%' or upper(isin) like '%"+(self.txt.text().upper())+"%' or upper(comentario) like '%"+(self.txt.text().upper())+"%' ")
+        self.products=sorted(self.products, key=lambda inv: inv.name,  reverse=False) 
         self.build_table()          
 
 
@@ -205,26 +205,26 @@ class wdgInversionesMS(QWidget, Ui_wdgInversionesMS):
 
         menu=QMenu()
         ordenar=QMenu(self.tr("Ordenar por"))
-        menu.addAction(self.actionInversionNueva)
-        menu.addAction(self.actionInversionModificar)
-        menu.addAction(self.actionInversionBorrar)
+        menu.addAction(self.actionProductNew)
+        menu.addAction(self.actionProductEdit)
+        menu.addAction(self.actionProductDelete)
         menu.addSeparator()
         menu.addAction(self.actionQuoteNew)
         menu.addAction(self.actionEstimationDPSNew)
         menu.addSeparator()
         menu.addAction(self.actionMergeCodes)
         menu.addAction(self.actionFavoritos)
-        if self.selInvestment!=None:
-            if self.selInvestment.id in self.setFavoritos:
+        if self.selProduct!=None:
+            if self.selProduct.id in self.setFavoritos:
                 self.actionFavoritos.setText("Quitar de favoritos")
             else:
                 self.actionFavoritos.setText(self.trUtf8("Añadir a favoritos"))
         menu.addSeparator()
-        menu.addAction(self.actionInversionEstudio)
+        menu.addAction(self.actionProductReport)
         menu.addAction(self.actionPurge)
         
-        if self.selInvestment!=None:
-            if self.selInvestment.id=='^IBEX':
+        if self.selProduct!=None:
+            if self.selProduct.id=='^IBEX':
                 menu.addSeparator()
                 menu.addAction(self.actionIbex35)
         menu.addSeparator()
@@ -239,19 +239,19 @@ class wdgInversionesMS(QWidget, Ui_wdgInversionesMS):
         
         if self.selectedRows==1:
             self.actionMergeCodes.setEnabled(False)
-            self.actionInversionModificar.setEnabled(True)
-            self.actionInversionBorrar.setEnabled(True)
+            self.actionProductEdit.setEnabled(True)
+            self.actionProductDelete.setEnabled(True)
             self.actionFavoritos.setEnabled(True)
-            self.actionInversionEstudio.setEnabled(True)
+            self.actionProductReport.setEnabled(True)
             self.actionIbex35.setEnabled(True)
             self.actionQuoteNew.setEnabled(True)
             self.actionEstimationDPSNew.setEnabled(True)
         else:
             self.actionMergeCodes.setEnabled(False)
-            self.actionInversionModificar.setEnabled(False)
-            self.actionInversionBorrar.setEnabled(False)
+            self.actionProductEdit.setEnabled(False)
+            self.actionProductDelete.setEnabled(False)
             self.actionFavoritos.setEnabled(False)
-            self.actionInversionEstudio.setEnabled(False)
+            self.actionProductReport.setEnabled(False)
             self.actionIbex35.setEnabled(False)
             self.actionQuoteNew.setEnabled(False)
             self.actionEstimationDPSNew.setEnabled(False)
@@ -293,18 +293,18 @@ class wdgInversionesMS(QWidget, Ui_wdgInversionesMS):
         
         if self.selectedRows==1:
             for i in self.tblInversiones.selectedItems():#itera por cada item no row.
-                self.selInvestment=self.investments[i.row()]
+                self.selProduct=self.products[i.row()]
 
     @pyqtSignature("")
     def on_actionPurge_activated(self):
         all=SetQuotesAll(self.cfg)
-        all.load_from_db(self.selInvestment)
+        all.load_from_db(self.selProduct)
         numpurged=all.purge(progress=True)
         if numpurged!=None:#Canceled
             self.cfg.conms.commit()
             m=QMessageBox()
             m.setIcon(QMessageBox.Information)
-            m.setText(self.trUtf8("{0} quotes have been purged from {1}".format(numpurged, self.selInvestment.name)))
+            m.setText(self.trUtf8("{0} quotes have been purged from {1}".format(numpurged, self.selProduct.name)))
             m.exec_()    
         else:
             self.cfg.conms.rollback()
@@ -312,14 +312,14 @@ class wdgInversionesMS(QWidget, Ui_wdgInversionesMS):
 
     @pyqtSignature("")
     def on_actionQuoteNew_activated(self):
-        w=frmQuotesIBM(self.cfg,  self.selInvestment)
+        w=frmQuotesIBM(self.cfg,  self.selProduct)
         w.exec_()               
         self.build_array(self.sql)
         self.build_table()  
 
     @pyqtSignature("")
     def on_actionEstimationDPSNew_activated(self):
-        d=frmEstimationsAdd(self.cfg, self.selInvestment)
+        d=frmEstimationsAdd(self.cfg, self.selProduct)
         d.exec_()
         if d.result()==QDialog.Accepted:
             self.build_array(self.sql)

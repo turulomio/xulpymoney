@@ -32,11 +32,11 @@ class WorkerYahoo(Source):
             time.sleep(60)
 
     
-    def ids2yahoo(self, investments):
-        if investments==None:
+    def ids2yahoo(self, products):
+        if products==None:
             print ("ids2yahoo > Tenemos un yahoo None")
         yahoos=[]
-        for inv in investments:
+        for inv in products:
             yahoos.append(inv.yahoo)
         return yahoos
             

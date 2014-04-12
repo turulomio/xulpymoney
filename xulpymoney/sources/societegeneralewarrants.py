@@ -23,7 +23,7 @@ class SocieteGeneraleWarrants(Source):
         q1.start()
         q2 = multiprocessing.Process(target=self.update_quotes, name="Prueba", args=())
         q2.start()    
-        q3 = multiprocessing.Process(target=self.update_step_statics, args=("select code from investments where name is null and code like 'SGW#%'",))
+        q3 = multiprocessing.Process(target=self.update_step_statics, args=("select code from products where name is null and code like 'SGW#%'",))
         q3.start()          
 
     
@@ -31,7 +31,7 @@ class SocieteGeneraleWarrants(Source):
         resultado=[]
         con=self.cfg.connect_mystocksd()
         cur=con.cursor()
-        cur.execute("select code from investments where dividend is null and code like 'SGW#%'")
+        cur.execute("select code from products where dividend is null and code like 'SGW#%'")
         if cur.rowcount!=0:
             for row in cur:
                 d={"code":row['code'], "dividend": 0}
@@ -218,5 +218,5 @@ class SocieteGeneraleWarrants(Source):
                 log(self.name,"ARR_STATIC",  gettext.gettext("Error en el parseo de %(code)" %{ "code":code}))
                 break
 #        print resultado
-#        Investment(self.cfg).update_static( resultado,  "S_SOCIETEGENERALEWARRANTS_STATIC")
+#        Product(self.cfg).update_static( resultado,  "S_SOCIETEGENERALEWARRANTS_STATIC")
         return resultado

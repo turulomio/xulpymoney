@@ -31,7 +31,7 @@ class WorkerIndices(Source):
     def parse_resultado(self, set):
         """Función que saca el id y los compara con los filtrados, es decir con los activos¡"""
         for q in set.arr:
-            if q.investment not in self.ids:
+            if q.product not in self.ids:
 #                set.append({'id': d['id'], 'datetime': d['datetime'], 'quote': d['quote'] })
                 set.arr.remove(q)
         
@@ -56,8 +56,8 @@ class WorkerIndices(Source):
         for i in range(1, len(bloque)):
             try:
                 quote=Quote()
-                quote.investment=self.pagename2investment(bloque[i].split(b'title="')[1].split(b'" >')[0])
-                if quote.investment==None:
+                quote.product=self.pagename2investment(bloque[i].split(b'title="')[1].split(b'" >')[0])
+                if quote.product==None:
                     continue
                 lineas=bloque[i].split(b'</td>')
                 quote.quote=float(comaporpunto(lineas[1].split(b">")[1].replace(b".", b"")))

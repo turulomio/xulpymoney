@@ -29,7 +29,7 @@ class Carmignac(Source):
         resultado=[]
         con=self.cfg.connect_mystocksd()
         cur=con.cursor()
-        cur.execute("select code from investments where dividend<>0 and agrupations like '%|CARMIGNAC|%'")
+        cur.execute("select code from products where dividend<>0 and agrupations like '%|CARMIGNAC|%'")
         if cur.rowcount!=0:
             for row in cur:
                 d={"code":row['code'], "dividend": 0}

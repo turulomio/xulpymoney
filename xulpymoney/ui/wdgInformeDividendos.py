@@ -20,7 +20,7 @@ class wdgInformeDividendos(QWidget, Ui_wdgInformeDividendos):
 
     @QtCore.pyqtSlot()  
     def on_actionModificarDPA_activated(self):
-        d=frmEstimationsAdd(self.cfg, self.selInversion.investment, "dps")
+        d=frmEstimationsAdd(self.cfg, self.selInversion.product, "dps")
         d.exec_()
         self.on_chkInactivas_stateChanged(self.chkInactivas.checkState())
         self.tblInversiones.clearSelection()
@@ -40,26 +40,26 @@ class wdgInformeDividendos(QWidget, Ui_wdgInformeDividendos):
         self.tblInversiones.setRowCount(len(self.inversiones.arr));
         sumdiv=Decimal(0)
         for i, inv in enumerate(self.inversiones.arr):
-            if inv.investment.estimations_dps.find(datetime.date.today().year)==None:
+            if inv.product.estimations_dps.find(datetime.date.today().year)==None:
                 dpa=0
                 tpc=0
                 divestimado=0
             else:
-                dpa=inv.investment.estimations_dps.currentYear().estimation
-                tpc=inv.investment.estimations_dps.currentYear().percentage()
+                dpa=inv.product.estimations_dps.currentYear().estimation
+                tpc=inv.product.estimations_dps.currentYear().percentage()
                 divestimado=inv.dividendo_bruto_estimado()
             
             self.tblInversiones.setItem(i, 0,QTableWidgetItem(inv.name))
             self.tblInversiones.setItem(i, 1, QTableWidgetItem(inv.cuenta.eb.name))
-            self.tblInversiones.setItem(i, 2, inv.investment.currency.qtablewidgetitem(inv.investment.result.basic.last.quote))
-            self.tblInversiones.setItem(i, 3, inv.investment.currency.qtablewidgetitem(dpa))    
+            self.tblInversiones.setItem(i, 2, inv.product.currency.qtablewidgetitem(inv.product.result.basic.last.quote))
+            self.tblInversiones.setItem(i, 3, inv.product.currency.qtablewidgetitem(dpa))    
             self.tblInversiones.setItem(i, 4, qright(str(inv.acciones())))
             sumdiv=sumdiv+divestimado
-            self.tblInversiones.setItem(i, 5, inv.investment.currency.qtablewidgetitem(divestimado))
+            self.tblInversiones.setItem(i, 5, inv.product.currency.qtablewidgetitem(divestimado))
             self.tblInversiones.setItem(i, 6, qtpc(tpc))
                 
             #Colorea si está desactualizado
-            if inv.investment.estimations_dps.dias_sin_actualizar()>self.spin.value():
+            if inv.product.estimations_dps.dias_sin_actualizar()>self.spin.value():
                 self.tblInversiones.item(i, 3).setBackgroundColor(QColor(255, 146, 148))
         self.lblTotal.setText(self.trUtf8("Si mantuviera la inversión un año obtendría {0}".format( self.cfg.localcurrency.string(sumdiv)) ))
             
@@ -73,7 +73,7 @@ class wdgInformeDividendos(QWidget, Ui_wdgInformeDividendos):
             
     @QtCore.pyqtSlot() 
     def on_actionMyStocks_activated(self):
-        w=frmAnalisis(self.cfg, self.selInversion.investment, self.selInversion, self)
+        w=frmAnalisis(self.cfg, self.selInversion.product, self.selInversion, self)
         w.exec_()
         self.on_chkInactivas_stateChanged(self.chkInactivas.checkState())
 

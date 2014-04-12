@@ -17,7 +17,7 @@ class frmDividendosIBM(QDialog, Ui_frmDividendosIBM):
         self.neto=0
         self.tpc=0
         if dividendo==None:#insertar
-            if self.inversion.investment.type.id in (7, 9):#Bonds
+            if self.inversion.product.type.id in (7, 9):#Bonds
                 self.cfg.conceptos.load_bonds_qcombobox(self.cmb)
             else:
                 self.cfg.conceptos.load_dividend_qcombobox(self.cmb)
@@ -25,7 +25,7 @@ class frmDividendosIBM(QDialog, Ui_frmDividendosIBM):
             self.dividendo.inversion=inversion
             self.cmd.setText(self.trUtf8("Insertar nuevo dividendo"))
         else:#modificar 
-            if self.inversion.investment.type.id in (7, 9):#Bonds
+            if self.inversion.product.type.id in (7, 9):#Bonds
                 self.cfg.conceptos.load_bonds_qcombobox(self.cmb, self.dividendo.concepto) 
             else:
                 self.cfg.conceptos.load_dividend_qcombobox(self.cmb, self.dividendo.concepto) 

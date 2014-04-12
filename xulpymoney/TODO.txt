@@ -14,6 +14,8 @@ XULPYMONEY
 20130829 Cuando quotes está vacio y se inserta xulpymoney inversion peta por None en quote
 20130829 Al añadir inversión peta por estimaciones al insertar 
 20131002 No pone el saldo en pago cupon corrido en opercuenta
+20140412 Refactorizar Inversion por Investment
+20140412 Refactorizar MyStocks por Products
 
 MYSTOCKS
 ========

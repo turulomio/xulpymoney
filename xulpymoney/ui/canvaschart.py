@@ -41,7 +41,7 @@ class canvasChart(FigureCanvas):
         self.plot_sma50=None
  
     def price(self, x): 
-        return self.investment.currency.string(x)
+        return self.product.currency.string(x)
 
     def settings(self, section):		
         self.section=section
@@ -271,10 +271,10 @@ class canvasChartIntraday(canvasChart):
         self.setupUi()
         self.settings("canvasIntraday")
 
-    def load_data_intraday(self, investment):
+    def load_data_intraday(self, product):
         """Needs basic e Intraday"""
-        self.investment=investment
-        self.draw_lines_from_quotes(self.investment.result.intradia.arr)
+        self.product=product
+        self.draw_lines_from_quotes(self.product.result.intradia.arr)
     
     def on_actionLinesIntraday_activated(self):
         self.cfg.config_ui.set_value(self.section, "type",   ChartType.lines)
@@ -348,7 +348,7 @@ class canvasChartHistorical(canvasChart):
             result=[]
             for a in arr[len(arr)-self.num:len(arr)]:
                 o=a.clone()
-                sum=self.investment.dps.sum(o.datetime().date())
+                sum=self.product.dps.sum(o.datetime().date())
                 o.close=o.close+sum
                 o.high=o.high+sum
                 o.low=o.low+sum
@@ -443,7 +443,7 @@ class canvasChartHistorical(canvasChart):
     def on_actionOHCL1d_activated(self):
         self.cfg.config_ui.set_value(self.section, "type", ChartType.ohcl)
         self.cfg.config_ui.set_value(self.section, "interval",   "1")
-        self.data=self.setData(self.investment.result.ohclDaily.arr)
+        self.data=self.setData(self.product.result.ohclDaily.arr)
         self.ohcl(self.data, datetime.timedelta(days=1))     
         self.draw_selling_point()
         self.draw_average_purchase_price()
@@ -453,7 +453,7 @@ class canvasChartHistorical(canvasChart):
     def on_actionLines1d_activated(self):
         self.cfg.config_ui.set_value(self.section, "type",   ChartType.lines)
         self.cfg.config_ui.set_value(self.section, "interval",   "1")
-        self.data=self.setData(self.investment.result.ohclDaily.arr)
+        self.data=self.setData(self.product.result.ohclDaily.arr)
         self.draw_lines_from_ohcl(self.data)     
         self.draw_selling_point()
         self.draw_average_purchase_price()
@@ -463,7 +463,7 @@ class canvasChartHistorical(canvasChart):
     def on_actionCandles1d_activated(self):
         self.cfg.config_ui.set_value(self.section, "type",   ChartType.candles)
         self.cfg.config_ui.set_value(self.section, "interval",   "1")
-        self.data=self.setData(self.investment.result.ohclDaily.arr)
+        self.data=self.setData(self.product.result.ohclDaily.arr)
         self.candles(datetime.timedelta(days=1))
         if len(self.data)<1000:
             self.ax.xaxis.set_minor_locator(DayLocator())
@@ -478,7 +478,7 @@ class canvasChartHistorical(canvasChart):
     def on_actionOHCL7d_activated(self):
         self.cfg.config_ui.set_value(self.section, "type", ChartType.ohcl)
         self.cfg.config_ui.set_value(self.section, "interval",   "7")
-        self.data=self.setData(self.investment.result.ohclWeekly.arr)
+        self.data=self.setData(self.product.result.ohclWeekly.arr)
         self.ohcl(self.data, datetime.timedelta(days=7))     
         self.draw_selling_point()
         self.draw_average_purchase_price()
@@ -488,7 +488,7 @@ class canvasChartHistorical(canvasChart):
     def on_actionOHCL30d_activated(self):
         self.cfg.config_ui.set_value(self.section, "type", ChartType.ohcl)
         self.cfg.config_ui.set_value(self.section, "interval",   "30")
-        self.data=self.setData(self.investment.result.ohclMonthly.arr)
+        self.data=self.setData(self.product.result.ohclMonthly.arr)
         self.ohcl(self.data, datetime.timedelta(days=30))     
         self.draw_selling_point()
         self.draw_average_purchase_price()
@@ -498,7 +498,7 @@ class canvasChartHistorical(canvasChart):
     def on_actionOHCL365d_activated(self):
         self.cfg.config_ui.set_value(self.section, "type", ChartType.ohcl)
         self.cfg.config_ui.set_value(self.section, "interval",   "365")
-        self.data=self.setData(self.investment.result.ohclYearly.arr)
+        self.data=self.setData(self.product.result.ohclYearly.arr)
         self.ohcl(self.data, datetime.timedelta(days=365))     
         self.draw_selling_point()
         self.draw_average_purchase_price()
@@ -573,9 +573,9 @@ class canvasChartHistorical(canvasChart):
         menu.addMenu(indicadores)            
         menu.exec_(self.mapToGlobal(pos)) 
 
-    def load_data(self, investment,   inversion=None, SD=False):
+    def load_data(self, product,   inversion=None, SD=False):
         """Debe tener cargado los ohcl, no el all"""
-        self.investment=investment
+        self.product=product
         self.inversion=inversion
         self.sd=SD#Sin descontar dividendos, es decir sumará los dividendos a las quotes.
         self.mydraw()

@@ -26,7 +26,7 @@ class wdgDesReinversion(QWidget, Ui_wdgDesReinversion):
  
         self.operinversiones=self.inversion.op.clone()#No hacer clone_from_datetime porque falla por haber borrado un actual por venta de saldo operación
 
-        self.txtValorAccion.setText(str(self.inversion.investment.result.basic.last.quote))
+        self.txtValorAccion.setText(str(self.inversion.product.result.basic.last.quote))
         self.tabResultados.setCurrentIndex(1)
         self.on_radDes_clicked()
 
@@ -37,7 +37,7 @@ class wdgDesReinversion(QWidget, Ui_wdgDesReinversion):
        
         if self.radDes.isChecked():#DESINVERSION
             (operinversionesactual, operinversioneshistoricas)=self.operinversiones.calcular()
-            q=Quote(self.cfg).init__create(self.inversion.investment, datetime.datetime.now(pytz.timezone(self.cfg.localzone.name)), self.txtValorAccion.decimal())
+            q=Quote(self.cfg).init__create(self.inversion.product, datetime.datetime.now(pytz.timezone(self.cfg.localzone.name)), self.txtValorAccion.decimal())
             for rec in operinversionesactual.arr:
                 pendiente=rec.pendiente(q)
                 if perdida+pendiente==0:
