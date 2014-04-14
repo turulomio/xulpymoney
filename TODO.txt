@@ -16,6 +16,7 @@ XULPYMONEY
 20131002 No pone el saldo en pago cupon corrido en opercuenta
 20140412 Refactorizar Inversion por Investment
 20140412 Refactorizar MyStocks por Products
+20140414 Ordenar en wdgClasesInversiones por orden de tpc
 
 MYSTOCKS
 ========
