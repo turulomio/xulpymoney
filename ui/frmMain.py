@@ -162,9 +162,9 @@ class frmMain(QMainWindow, Ui_frmMain):
         self.w.show()
         
     @QtCore.pyqtSlot()  
-    def on_actionProductsOperations_activated(self):
+    def on_actionInvestmentsOperations_activated(self):
         self.w.close()
-        self.w=wdgProductsOperations(self.cfg)
+        self.w=wdgInvestmentsOperations(self.cfg)
         self.layout.addWidget(self.w)
         self.w.show()
 

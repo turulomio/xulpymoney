@@ -39,8 +39,7 @@ class wdgInvestmentsOperations(QWidget, Ui_wdgInvestmentsOperations):
         
     def on_wym_changed(self):
         self.load()    
-        
-        
+
     def on_table_itemSelectionChanged(self):
         self.selProductOperation=None
         for i in self.table.selectedItems():#itera por cada item no row.
@@ -53,32 +52,41 @@ class wdgInvestmentsOperations(QWidget, Ui_wdgInvestmentsOperations):
         self.load()
         
     @QtCore.pyqtSlot() 
-    def on_actionShowProduct_activated(self):
+    def on_actionShowInvestment_activated(self):
         w=frmInversionesEstudio(self.cfg, self.selProductOperation.inversion, self)
         w.exec_()
         self.load()
-        
+                
+    @QtCore.pyqtSlot() 
+    def on_actionShowProduct_activated(self):
+        w=frmAnalisis(self.cfg, self.selProductOperation.inversion.product, self.selProductOperation.inversion, self)
+        w.exec_()
+        self.load()
         
     def on_table_customContextMenuRequested(self,  pos):
         if self.selProductOperation==None:
             self.actionShowAccount.setEnabled(False)
+            self.actionShowInvestment.setEnabled(False)
+            self.actionShowInvestmentOperation.setEnabled(False)
             self.actionShowProduct.setEnabled(False)
-            self.actionShowProductOperation.setEnabled(False)
         else:
             self.actionShowAccount.setEnabled(True)
+            self.actionShowInvestment.setEnabled(True)
+            self.actionShowInvestmentOperation.setEnabled(True)
             self.actionShowProduct.setEnabled(True)
-            self.actionShowProductOperation.setEnabled(True)
 
         menu=QMenu()
         menu.addAction(self.actionShowAccount)   
         menu.addSeparator()   
-        menu.addAction(self.actionShowProduct)   
+        menu.addAction(self.actionShowInvestment)   
         menu.addSeparator()   
-        menu.addAction(self.actionShowProductOperation)            
+        menu.addAction(self.actionShowInvestmentOperation)      
+        menu.addSeparator()   
+        menu.addAction(self.actionShowProduct)            
         menu.exec_(self.table.mapToGlobal(pos))
         
     @QtCore.pyqtSlot() 
-    def on_actionShowProductOperation_activated(self):
+    def on_actionShowInvestmentOperation_activated(self):
         w=frmInversionesIBM(self.cfg, self.selProductOperation.inversion, self.selProductOperation, self)
         w.exec_()
         self.load()
