@@ -154,6 +154,18 @@
     <string>Show account</string>
    </property>
   </action>
+  <action name="actionShowProduct">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/kmplot.jpg</normaloff>:/xulpymoney/kmplot.jpg</iconset>
+   </property>
+   <property name="text">
+    <string>Show product</string>
+   </property>
+   <property name="toolTip">
+    <string>Show product</string>
+   </property>
+  </action>
  </widget>
  <customwidgets>
   <customwidget>

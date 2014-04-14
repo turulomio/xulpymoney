@@ -972,7 +972,7 @@ class SetInversionOperacion:
         homogeneous=self.isHomogeneous()
         if homogeneous==False:
             diff=2
-        tabla.setColumnCount(7+diff)
+        tabla.setColumnCount(8+diff)
         tabla.setHorizontalHeaderItem(0, QTableWidgetItem(QApplication.translate("Core", "Date", None, QApplication.UnicodeUTF8)))
         if homogeneous==False:
             tabla.setHorizontalHeaderItem(diff-1, QTableWidgetItem(QApplication.translate("Core", "Product", None, QApplication.UnicodeUTF8)))
@@ -983,6 +983,7 @@ class SetInversionOperacion:
         tabla.setHorizontalHeaderItem(diff+4, QTableWidgetItem(QApplication.translate("Core", "Importe", None, QApplication.UnicodeUTF8)))
         tabla.setHorizontalHeaderItem(diff+5, QTableWidgetItem(QApplication.translate("Core", "Comission", None, QApplication.UnicodeUTF8)))
         tabla.setHorizontalHeaderItem(diff+6, QTableWidgetItem(QApplication.translate("Core", "Taxes", None, QApplication.UnicodeUTF8)))
+        tabla.setHorizontalHeaderItem(diff+7, QTableWidgetItem(QApplication.translate("Core", "Total", None, QApplication.UnicodeUTF8)))
         #DATA 
         tabla.clearContents()
         tabla.settings(section,  self.cfg)       
@@ -993,11 +994,15 @@ class SetInversionOperacion:
                 tabla.setItem(rownumber, diff-1, qleft(a.inversion.name))
                 tabla.setItem(rownumber, diff, qleft(a.inversion.cuenta.name))
             tabla.setItem(rownumber, diff+1, QTableWidgetItem(a.tipooperacion.name))
-            tabla.setItem(rownumber, diff+2, qright(str(a.acciones)))
-            tabla.setItem(rownumber, diff+3, a.inversion.product.currency.qtablewidgetitem(a.valor_accion))
-            tabla.setItem(rownumber, diff+4, a.inversion.product.currency.qtablewidgetitem(a.importe))
-            tabla.setItem(rownumber, diff+5, a.inversion.product.currency.qtablewidgetitem(a.comision))
-            tabla.setItem(rownumber, diff+6, a.inversion.product.currency.qtablewidgetitem(a.impuestos))
+            tabla.setItem(rownumber, diff+2, qright(a.acciones))
+            tabla.setItem(rownumber, diff+3, self.cfg.localcurrency.qtablewidgetitem(a.valor_accion))
+            tabla.setItem(rownumber, diff+4, self.cfg.localcurrency.qtablewidgetitem(a.importe))
+            tabla.setItem(rownumber, diff+5, self.cfg.localcurrency.qtablewidgetitem(a.comision))
+            tabla.setItem(rownumber, diff+6, self.cfg.localcurrency.qtablewidgetitem(a.impuestos))
+            if a.acciones>=0:
+                tabla.setItem(rownumber, diff+7, self.cfg.localcurrency.qtablewidgetitem(a.importe+a.comision+a.impuestos))
+            else:
+                tabla.setItem(rownumber, diff+7, self.cfg.localcurrency.qtablewidgetitem(a.importe-a.comision-a.impuestos))
 
     def isHomogeneous(self):
         """Devuelve true si todas las inversiones son de la misma inversion"""
@@ -1346,12 +1351,12 @@ class SetInversionOperacionHistorica:
             tabla.setItem(rownumber, 2,QTableWidgetItem(a.inversion.name))
             tabla.setItem(rownumber, 3,QTableWidgetItem(a.tipooperacion.name))
             tabla.setItem(rownumber, 4,qright(a.acciones))
-            tabla.setItem(rownumber, 5,a.inversion.product.currency.qtablewidgetitem(saldoinicio))
-            tabla.setItem(rownumber, 6,a.inversion.product.currency.qtablewidgetitem(saldofinal))
-            tabla.setItem(rownumber, 7,a.inversion.product.currency.qtablewidgetitem(bruto))
-            tabla.setItem(rownumber, 8,a.inversion.product.currency.qtablewidgetitem(a.comision))
-            tabla.setItem(rownumber, 9,a.inversion.product.currency.qtablewidgetitem(a.impuestos))
-            tabla.setItem(rownumber, 10,a.inversion.product.currency.qtablewidgetitem(neto))
+            tabla.setItem(rownumber, 5,self.cfg.localcurrency.qtablewidgetitem(saldoinicio))
+            tabla.setItem(rownumber, 6,self.cfg.localcurrency.qtablewidgetitem(saldofinal))
+            tabla.setItem(rownumber, 7,self.cfg.localcurrency.qtablewidgetitem(bruto))
+            tabla.setItem(rownumber, 8,self.cfg.localcurrency.qtablewidgetitem(a.comision))
+            tabla.setItem(rownumber, 9,self.cfg.localcurrency.qtablewidgetitem(a.impuestos))
+            tabla.setItem(rownumber, 10,self.cfg.localcurrency.qtablewidgetitem(neto))
             tabla.setItem(rownumber, 11,qtpc(a.tpc_tae_neto()))
             tabla.setItem(rownumber, 12,qtpc(a.tpc_total_neto()))
             rownumber=rownumber+1
@@ -5828,6 +5833,13 @@ def qright(string, digits=None):
         string=round(string, digits)
     a=QTableWidgetItem(str(string))
     a.setTextAlignment(Qt.AlignVCenter|Qt.AlignRight)
+    try:#If is a number corized it
+        if string==None:
+            a.setTextColor(QColor(0, 0, 255))
+        elif string<0:
+            a.setTextColor(QColor(255, 0, 0))
+    except:
+        pass
     return a
 
 

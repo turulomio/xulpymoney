@@ -42,7 +42,6 @@ class wdgInversiones(QWidget, Ui_wdgInversiones):
                 sumdiario=sumdiario+diario
             except:
                 pass
-            print (inv)
             self.tblInversiones.setItem(i, 3, inv.product.currency.qtablewidgetitem(diario))
             self.tblInversiones.setItem(i, 4, qtpc(inv.product.result.basic.tpc_diario()))
             self.tblInversiones.setItem(i, 5, inv.product.currency.qtablewidgetitem(inv.saldo()))
