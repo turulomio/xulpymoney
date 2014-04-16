@@ -21,91 +21,142 @@
    <item>
     <layout class="QVBoxLayout" name="verticalLayout">
      <item>
-      <widget class="myQTableWidget" name="table">
-       <property name="editTriggers">
-        <set>QAbstractItemView::NoEditTriggers</set>
+      <widget class="QTabWidget" name="tab">
+       <property name="currentIndex">
+        <number>0</number>
        </property>
-       <property name="selectionMode">
-        <enum>QAbstractItemView::SingleSelection</enum>
+       <property name="tabsClosable">
+        <bool>true</bool>
        </property>
-       <attribute name="verticalHeaderVisible">
-        <bool>false</bool>
-       </attribute>
-       <column>
-        <property name="text">
-         <string>Year</string>
-        </property>
-       </column>
-       <column>
-        <property name="text">
-         <string>January</string>
-        </property>
-       </column>
-       <column>
-        <property name="text">
-         <string>Febrero</string>
-        </property>
-       </column>
-       <column>
-        <property name="text">
-         <string>March</string>
-        </property>
-       </column>
-       <column>
-        <property name="text">
-         <string>April</string>
-        </property>
-       </column>
-       <column>
-        <property name="text">
-         <string>May</string>
-        </property>
-       </column>
-       <column>
-        <property name="text">
-         <string>June</string>
-        </property>
-       </column>
-       <column>
-        <property name="text">
-         <string>July</string>
-        </property>
-       </column>
-       <column>
-        <property name="text">
-         <string>Agosto</string>
-        </property>
-       </column>
-       <column>
-        <property name="text">
-         <string>Septiembre</string>
-        </property>
-       </column>
-       <column>
-        <property name="text">
-         <string>Octubre</string>
-        </property>
-       </column>
-       <column>
-        <property name="text">
-         <string>November</string>
-        </property>
-       </column>
-       <column>
-        <property name="text">
-         <string>December</string>
-        </property>
-       </column>
-       <column>
-        <property name="text">
-         <string>Total</string>
-        </property>
-       </column>
+       <widget class="QWidget" name="widget">
+        <attribute name="icon">
+         <iconset resource="../images/xulpymoney.qrc">
+          <normaloff>:/xulpymoney/hucha.png</normaloff>:/xulpymoney/hucha.png</iconset>
+        </attribute>
+        <attribute name="title">
+         <string>Historical report</string>
+        </attribute>
+        <layout class="QHBoxLayout" name="horizontalLayout_2">
+         <item>
+          <widget class="myQTableWidget" name="table">
+           <property name="contextMenuPolicy">
+            <enum>Qt::CustomContextMenu</enum>
+           </property>
+           <property name="editTriggers">
+            <set>QAbstractItemView::NoEditTriggers</set>
+           </property>
+           <property name="alternatingRowColors">
+            <bool>true</bool>
+           </property>
+           <property name="selectionMode">
+            <enum>QAbstractItemView::SingleSelection</enum>
+           </property>
+           <attribute name="verticalHeaderVisible">
+            <bool>false</bool>
+           </attribute>
+           <column>
+            <property name="text">
+             <string>Year</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>January</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>Febrero</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>March</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>April</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>May</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>June</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>July</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>Agosto</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>Septiembre</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>Octubre</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>November</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>December</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>Total</string>
+            </property>
+           </column>
+          </widget>
+         </item>
+        </layout>
+       </widget>
       </widget>
      </item>
     </layout>
    </item>
   </layout>
+  <action name="actionShowMonth">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/search.png</normaloff>:/xulpymoney/search.png</iconset>
+   </property>
+   <property name="text">
+    <string>Show month operations</string>
+   </property>
+   <property name="toolTip">
+    <string>Show month operations</string>
+   </property>
+  </action>
+  <action name="actionShowYear">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/document-preview-archive.png</normaloff>:/xulpymoney/document-preview-archive.png</iconset>
+   </property>
+   <property name="text">
+    <string>Show year operations</string>
+   </property>
+   <property name="toolTip">
+    <string>Show year operations</string>
+   </property>
+  </action>
  </widget>
  <customwidgets>
   <customwidget>
