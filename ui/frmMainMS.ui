@@ -46,7 +46,7 @@
      <x>0</x>
      <y>0</y>
      <width>1180</width>
-     <height>20</height>
+     <height>25</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuAyuda">
@@ -62,7 +62,7 @@
    </widget>
    <widget class="QMenu" name="menuIndices">
     <property name="title">
-     <string>Indices</string>
+     <string>Indexes</string>
     </property>
     <addaction name="actionCAC40"/>
     <addaction name="actionEurostoxx50"/>
@@ -76,7 +76,7 @@
    </widget>
    <widget class="QMenu" name="menuFondos">
     <property name="title">
-     <string>Fondos</string>
+     <string>Funds</string>
     </property>
     <addaction name="actionFondos"/>
    </widget>
@@ -98,13 +98,13 @@
    </widget>
    <widget class="QMenu" name="menu_Divisas">
     <property name="title">
-     <string>&amp;Divisas</string>
+     <string>Currencies</string>
     </property>
     <addaction name="actionDivisas"/>
    </widget>
    <widget class="QMenu" name="menuMyQuotes">
     <property name="title">
-     <string>Ayuda</string>
+     <string>Help</string>
     </property>
     <addaction name="actionAcercaDe"/>
     <addaction name="separator"/>
@@ -120,13 +120,13 @@
    </widget>
    <widget class="QMenu" name="menuAcciones">
     <property name="title">
-     <string>Acciones</string>
+     <string>Shares</string>
     </property>
     <addaction name="actionAcciones"/>
    </widget>
    <widget class="QMenu" name="menuTodas">
     <property name="title">
-     <string>Todas</string>
+     <string>All</string>
     </property>
     <addaction name="actionActive"/>
     <addaction name="separator"/>
@@ -189,7 +189,7 @@
      <normaloff>:/xulpymoney/exit.png</normaloff>:/xulpymoney/exit.png</iconset>
    </property>
    <property name="text">
-    <string>S&amp;alir</string>
+    <string>Exit</string>
    </property>
   </action>
   <action name="actionAcercaDe">
@@ -198,7 +198,7 @@
      <normaloff>:/xulpymoney/kmplot.jpg</normaloff>:/xulpymoney/kmplot.jpg</iconset>
    </property>
    <property name="text">
-    <string>&amp;Acerca de</string>
+    <string>About</string>
    </property>
   </action>
   <action name="actionInversionesSinISIN">
@@ -207,7 +207,7 @@
      <normaloff>:/images/configure.png</normaloff>:/images/configure.png</iconset>
    </property>
    <property name="text">
-    <string>Inversiones sin ISIN</string>
+    <string>Products without ISIN</string>
    </property>
    <property name="toolTip">
     <string>Inversiones sin ISIN</string>
@@ -219,7 +219,7 @@
      <normaloff>:/xulpymoney/kmplot.jpg</normaloff>:/xulpymoney/kmplot.jpg</iconset>
    </property>
    <property name="text">
-    <string>Todos los índices</string>
+    <string>All Indexes</string>
    </property>
   </action>
   <action name="actionFondos">
@@ -228,7 +228,7 @@
      <normaloff>:/images/document-preview.png</normaloff>:/images/document-preview.png</iconset>
    </property>
    <property name="text">
-    <string>Todos los fondos</string>
+    <string>All funds</string>
    </property>
   </action>
   <action name="actionETF">
@@ -237,7 +237,7 @@
      <normaloff>:/images/kmplot.jpg</normaloff>:/images/kmplot.jpg</iconset>
    </property>
    <property name="text">
-    <string>Todos los ETF</string>
+    <string>All ETF</string>
    </property>
   </action>
   <action name="actionIbex35">
@@ -309,7 +309,7 @@
      <normaloff>:/images/configure.png</normaloff>:/images/configure.png</iconset>
    </property>
    <property name="text">
-    <string>Inversiones sin nombre</string>
+    <string>Products without name</string>
    </property>
    <property name="toolTip">
     <string>Inversiones sin nombre</string>
@@ -321,7 +321,7 @@
      <normaloff>:/images/configure.png</normaloff>:/images/configure.png</iconset>
    </property>
    <property name="text">
-    <string>Inversiones sin actualizar</string>
+    <string>Products not updated</string>
    </property>
    <property name="toolTip">
     <string>Inversiones sin actualizar</string>
@@ -333,7 +333,7 @@
      <normaloff>:/images/configure.png</normaloff>:/images/configure.png</iconset>
    </property>
    <property name="text">
-    <string>Inversiones desaparecidas</string>
+    <string>Obsolete products</string>
    </property>
    <property name="toolTip">
     <string>Inversiones desaparecidas</string>
@@ -369,7 +369,7 @@
      <normaloff>:/xulpymoney/keko.png</normaloff>:/xulpymoney/keko.png</iconset>
    </property>
    <property name="text">
-    <string>Inversiones de edición manual</string>
+    <string>Manual update products</string>
    </property>
    <property name="toolTip">
     <string>Inversiones de edición manual</string>
@@ -381,7 +381,7 @@
      <normaloff>:/xulpymoney/Money.png</normaloff>:/xulpymoney/Money.png</iconset>
    </property>
    <property name="text">
-    <string>Todas las divisas</string>
+    <string>All currencies</string>
    </property>
    <property name="toolTip">
     <string>Todas las divisas</string>
@@ -393,7 +393,7 @@
      <normaloff>:/xulpymoney/star.png</normaloff>:/xulpymoney/star.png</iconset>
    </property>
    <property name="text">
-    <string>Mostrar favoritos</string>
+    <string>Show favorites</string>
    </property>
    <property name="toolTip">
     <string>Muestra los productos favoritos
@@ -418,7 +418,7 @@ seleccionados por el usuario</string>
      <normaloff>:/xulpymoney/star.png</normaloff>:/xulpymoney/star.png</iconset>
    </property>
    <property name="text">
-    <string>Todas las activas</string>
+    <string>Active products</string>
    </property>
    <property name="toolTip">
     <string>Todas las activas</string>
@@ -430,7 +430,7 @@ seleccionados por el usuario</string>
      <normaloff>:/images/dinero.png</normaloff>:/images/dinero.png</iconset>
    </property>
    <property name="text">
-    <string>Mayores dividendos</string>
+    <string>Biggest dividends</string>
    </property>
    <property name="toolTip">
     <string>Mayores dividendos</string>
@@ -442,7 +442,7 @@ seleccionados por el usuario</string>
      <normaloff>:/xulpymoney/coins.png</normaloff>:/xulpymoney/coins.png</iconset>
    </property>
    <property name="text">
-    <string>Todos los Warrants Call</string>
+    <string>All call warrants</string>
    </property>
   </action>
   <action name="actionWarrantsPut">
@@ -451,7 +451,7 @@ seleccionados por el usuario</string>
      <normaloff>:/xulpymoney/coins.png</normaloff>:/xulpymoney/coins.png</iconset>
    </property>
    <property name="text">
-    <string>Todos los Warrants Put</string>
+    <string>All put warrants</string>
    </property>
   </action>
   <action name="actionWarrantsInline">
@@ -460,7 +460,7 @@ seleccionados por el usuario</string>
      <normaloff>:/xulpymoney/coins.png</normaloff>:/xulpymoney/coins.png</iconset>
    </property>
    <property name="text">
-    <string>Todos los Warrants Inline</string>
+    <string>All inline warrants</string>
    </property>
   </action>
   <action name="actionRentaFija">
@@ -481,7 +481,7 @@ seleccionados por el usuario</string>
      <normaloff>:/xulpymoney/kmplot.jpg</normaloff>:/xulpymoney/kmplot.jpg</iconset>
    </property>
    <property name="text">
-    <string>Todas las acciones</string>
+    <string>All shares</string>
    </property>
    <property name="toolTip">
     <string>Todas las acciones</string>
@@ -517,7 +517,7 @@ seleccionados por el usuario</string>
      <normaloff>:/xulpymoney/coins.png</normaloff>:/xulpymoney/coins.png</iconset>
    </property>
    <property name="text">
-    <string>Todos los Warrants</string>
+    <string>All warrants</string>
    </property>
    <property name="toolTip">
     <string>Todos los Warrants</string>

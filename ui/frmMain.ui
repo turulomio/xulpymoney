@@ -69,6 +69,7 @@
     </property>
     <addaction name="actionConceptos"/>
     <addaction name="actionInformeDividendos"/>
+    <addaction name="actionEstudioTAE"/>
     <addaction name="actionIndexRange"/>
     <addaction name="actionInformeHistorico"/>
     <addaction name="actionInformeTotal"/>
@@ -214,7 +215,7 @@
      <normaloff>:/xulpymoney/dinero.png</normaloff>:/xulpymoney/dinero.png</iconset>
    </property>
    <property name="text">
-    <string>Estudio de dividendos</string>
+    <string>Dividends report</string>
    </property>
   </action>
   <action name="actionEstudioTAE">
@@ -223,10 +224,10 @@
      <normaloff>:/xulpymoney/statistics.png</normaloff>:/xulpymoney/statistics.png</iconset>
    </property>
    <property name="text">
-    <string>Estudio TAE del patrimonio</string>
+    <string>Heritage report</string>
    </property>
    <property name="toolTip">
-    <string>Estudio TAE del patrimonio</string>
+    <string>Heritage report</string>
    </property>
   </action>
   <action name="actionInformeTotal">
@@ -289,7 +290,7 @@
      <normaloff>:/xulpymoney/transfer.png</normaloff>:/xulpymoney/transfer.png</iconset>
    </property>
    <property name="text">
-    <string>Transferencia</string>
+    <string>Transfer</string>
    </property>
    <property name="toolTip">
     <string>Transferencia</string>

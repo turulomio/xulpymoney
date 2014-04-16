@@ -14,11 +14,11 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Nuevo movimiento de la inversión seleccionada</string>
+   <string>New investment operation</string>
   </property>
   <property name="windowIcon">
-   <iconset>
-    <normaloff>:/xulpmoney/document-edit.png</normaloff>:/xulpmoney/document-edit.png</iconset>
+   <iconset resource="../images/xulpymoney.qrc">
+    <normaloff>:/xulpymoney/document-edit.png</normaloff>:/xulpymoney/document-edit.png</iconset>
   </property>
   <property name="modal">
    <bool>true</bool>
@@ -38,9 +38,6 @@
        <property name="styleSheet">
         <string notr="true">color: rgb(0, 128, 0);</string>
        </property>
-       <property name="text">
-        <string>TextLabel</string>
-       </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
        </property>
@@ -51,7 +48,7 @@
        <item>
         <widget class="QLabel" name="label">
          <property name="text">
-          <string>Selecciona la fecha del movimiento</string>
+          <string>Operation date</string>
          </property>
         </widget>
        </item>
@@ -72,7 +69,7 @@
        <item>
         <widget class="QLabel" name="label_8">
          <property name="text">
-          <string>Hora de la operación</string>
+          <string>Operation hour</string>
          </property>
         </widget>
        </item>
@@ -89,7 +86,7 @@
        <item>
         <widget class="QLabel" name="label_2">
          <property name="text">
-          <string>Selecciona un tipo de operación</string>
+          <string>Operation type</string>
          </property>
         </widget>
        </item>
@@ -103,7 +100,7 @@
        <item>
         <widget class="QLabel" name="label_5">
          <property name="text">
-          <string>Introduce el número de acciones</string>
+          <string>Number of shares</string>
          </property>
         </widget>
        </item>
@@ -127,7 +124,7 @@
        <item>
         <widget class="QLabel" name="label_6">
          <property name="text">
-          <string>Introduce el valor de la acción</string>
+          <string>Price</string>
          </property>
         </widget>
        </item>
@@ -151,7 +148,7 @@
        <item>
         <widget class="QLabel" name="label_7">
          <property name="text">
-          <string>Introduce los impuestos</string>
+          <string>Taxes</string>
          </property>
         </widget>
        </item>
@@ -175,7 +172,7 @@
        <item>
         <widget class="QLabel" name="label_4">
          <property name="text">
-          <string>Introduce la comisión bancaria</string>
+          <string>Comission</string>
          </property>
         </widget>
        </item>
@@ -199,7 +196,7 @@
        <item>
         <widget class="QLabel" name="label_3">
          <property name="text">
-          <string>Importe de la operación bruto</string>
+          <string>Gross amount</string>
          </property>
         </widget>
        </item>
@@ -226,7 +223,7 @@
        <item>
         <widget class="QLabel" name="label_9">
          <property name="text">
-          <string>Importe de la operación neto</string>
+          <string>Net amount</string>
          </property>
         </widget>
        </item>
@@ -251,7 +248,11 @@
      <item>
       <widget class="QPushButton" name="cmd">
        <property name="text">
-        <string>Guardar</string>
+        <string>Save</string>
+       </property>
+       <property name="icon">
+        <iconset resource="../images/xulpymoney.qrc">
+         <normaloff>:/xulpymoney/save.png</normaloff>:/xulpymoney/save.png</iconset>
        </property>
       </widget>
      </item>
