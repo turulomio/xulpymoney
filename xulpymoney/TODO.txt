@@ -17,6 +17,7 @@ XULPYMONEY
 20140412 Refactorizar Inversion por Investment
 20140412 Refactorizar MyStocks por Products
 20140414 Ordenar en wdgClasesInversiones por orden de tpc
+20140416 Translate all forms
 
 MYSTOCKS
 ========

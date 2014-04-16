@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>480</width>
-    <height>261</height>
+    <width>597</width>
+    <height>307</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -93,7 +93,7 @@
        <item row="2" column="0">
         <widget class="QLabel" name="lblServer">
          <property name="text">
-          <string>Servidor</string>
+          <string>Server</string>
          </property>
         </widget>
        </item>
@@ -113,7 +113,7 @@
        <item row="3" column="0">
         <widget class="QLabel" name="lblPort">
          <property name="text">
-          <string>Puerto</string>
+          <string>Port</string>
          </property>
         </widget>
        </item>
@@ -127,7 +127,7 @@
        <item row="4" column="0">
         <widget class="QLabel" name="lblUser">
          <property name="text">
-          <string>Usuario</string>
+          <string>User</string>
          </property>
         </widget>
        </item>
@@ -141,7 +141,7 @@
        <item row="5" column="0">
         <widget class="QLabel" name="lblPass">
          <property name="text">
-          <string>Contraseña</string>
+          <string>Password</string>
          </property>
         </widget>
        </item>
@@ -171,7 +171,7 @@
        <item row="6" column="1">
         <widget class="QLineEdit" name="txtMyStocks">
          <property name="text">
-          <string>pruebams</string>
+          <string>mystocks</string>
          </property>
         </widget>
        </item>
@@ -185,7 +185,7 @@
        <item row="7" column="1">
         <widget class="QLineEdit" name="txtXulpymoney">
          <property name="text">
-          <string>pruebaxulpymoney</string>
+          <string>xulpymoney</string>
          </property>
         </widget>
        </item>

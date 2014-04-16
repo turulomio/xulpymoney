@@ -14,7 +14,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Estudio de la inversión seleccionada</string>
+   <string>Investment report</string>
   </property>
   <property name="windowIcon">
    <iconset resource="../images/xulpymoney.qrc">
@@ -38,9 +38,6 @@
        <property name="styleSheet">
         <string notr="true">color: rgb(0, 128, 0);</string>
        </property>
-       <property name="text">
-        <string>TextLabel</string>
-       </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
        </property>
@@ -56,7 +53,7 @@
        </property>
        <widget class="QWidget" name="tab_12">
         <attribute name="title">
-         <string>Datos de la inversión</string>
+         <string>Investment data</string>
         </attribute>
         <layout class="QHBoxLayout" name="horizontalLayout_16">
          <item>
@@ -66,7 +63,7 @@
              <item>
               <widget class="QLabel" name="label">
                <property name="text">
-                <string>Selecciona la cuenta asociada</string>
+                <string>Associated account</string>
                </property>
               </widget>
              </item>
@@ -84,7 +81,7 @@
              <item>
               <widget class="QLabel" name="label_2">
                <property name="text">
-                <string>Nombre de la inversión</string>
+                <string>Investment name</string>
                </property>
               </widget>
              </item>
@@ -97,7 +94,7 @@
                 </sizepolicy>
                </property>
                <property name="text">
-                <string>Nueva inversión</string>
+                <string>New investment</string>
                </property>
                <property name="alignment">
                 <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -111,7 +108,7 @@
              <item>
               <widget class="QLabel" name="label_4">
                <property name="text">
-                <string>Valor de venta</string>
+                <string>Selling price</string>
                </property>
               </widget>
              </item>
@@ -164,7 +161,7 @@
               <bool>false</bool>
              </property>
              <property name="text">
-              <string>Modificar la inversión seleccionada</string>
+              <string>Update investment</string>
              </property>
             </widget>
            </item>
@@ -174,7 +171,7 @@
        </widget>
        <widget class="QWidget" name="tabInversionActual">
         <attribute name="title">
-         <string>Inversión actual</string>
+         <string>Current status</string>
         </attribute>
         <layout class="QHBoxLayout" name="horizontalLayout">
          <item>
@@ -204,7 +201,7 @@
        </widget>
        <widget class="QWidget" name="tabOperacionesHistoricas">
         <attribute name="title">
-         <string>Operaciones</string>
+         <string>Operations</string>
         </attribute>
         <layout class="QHBoxLayout" name="horizontalLayout_9">
          <item>
@@ -212,7 +209,7 @@
            <item>
             <widget class="QCheckBox" name="chkOperaciones">
              <property name="text">
-              <string>Muestra todas las operaciones registradas</string>
+              <string>Show all operations</string>
              </property>
             </widget>
            </item>
@@ -233,46 +230,6 @@
              <attribute name="verticalHeaderVisible">
               <bool>false</bool>
              </attribute>
-             <column>
-              <property name="text">
-               <string>Id</string>
-              </property>
-             </column>
-             <column>
-              <property name="text">
-               <string>Día</string>
-              </property>
-             </column>
-             <column>
-              <property name="text">
-               <string>Tipo de operación</string>
-              </property>
-             </column>
-             <column>
-              <property name="text">
-               <string>Acciones</string>
-              </property>
-             </column>
-             <column>
-              <property name="text">
-               <string>Valor</string>
-              </property>
-             </column>
-             <column>
-              <property name="text">
-               <string>Saldo</string>
-              </property>
-             </column>
-             <column>
-              <property name="text">
-               <string>Comisión</string>
-              </property>
-             </column>
-             <column>
-              <property name="text">
-               <string>Impuestos</string>
-              </property>
-             </column>
             </widget>
            </item>
           </layout>
@@ -281,7 +238,7 @@
        </widget>
        <widget class="QWidget" name="tab_2">
         <attribute name="title">
-         <string>Operaciones Históricas</string>
+         <string>Historical operations</string>
         </attribute>
         <layout class="QHBoxLayout" name="horizontalLayout_4">
          <item>
@@ -301,73 +258,13 @@
            <attribute name="verticalHeaderVisible">
             <bool>false</bool>
            </attribute>
-           <column>
-            <property name="text">
-             <string>Fecha</string>
-            </property>
-           </column>
-           <column>
-            <property name="text">
-             <string>Años</string>
-            </property>
-           </column>
-           <column>
-            <property name="text">
-             <string>Inversión</string>
-            </property>
-           </column>
-           <column>
-            <property name="text">
-             <string>Tipo de operación</string>
-            </property>
-           </column>
-           <column>
-            <property name="text">
-             <string>Saldo inicial</string>
-            </property>
-           </column>
-           <column>
-            <property name="text">
-             <string>Saldo final</string>
-            </property>
-           </column>
-           <column>
-            <property name="text">
-             <string>Consolidado bruto</string>
-            </property>
-           </column>
-           <column>
-            <property name="text">
-             <string>Comisiones</string>
-            </property>
-           </column>
-           <column>
-            <property name="text">
-             <string>Impuestos</string>
-            </property>
-           </column>
-           <column>
-            <property name="text">
-             <string>Consolidado neto</string>
-            </property>
-           </column>
-           <column>
-            <property name="text">
-             <string>% TAE neto</string>
-            </property>
-           </column>
-           <column>
-            <property name="text">
-             <string>% Total neto</string>
-            </property>
-           </column>
           </widget>
          </item>
         </layout>
        </widget>
        <widget class="QWidget" name="tabDividendos">
         <attribute name="title">
-         <string>Dividendos</string>
+         <string>Dividends</string>
         </attribute>
         <layout class="QHBoxLayout" name="horizontalLayout_7">
          <item>
@@ -375,7 +272,7 @@
            <item>
             <widget class="QCheckBox" name="chkDividendosHistoricos">
              <property name="text">
-              <string>Mostrar todos los dividendos históricos de esta inversión</string>
+              <string>Show historical dividends</string>
              </property>
             </widget>
            </item>
@@ -403,7 +300,7 @@
              <item>
               <widget class="QGroupBox" name="grpDividendosEstimacion">
                <property name="title">
-                <string>Estimación</string>
+                <string>Estimation</string>
                </property>
                <layout class="QHBoxLayout" name="horizontalLayout_11">
                 <item>
@@ -452,7 +349,7 @@
                   <item>
                    <widget class="QLabel" name="lblDivTAE">
                     <property name="text">
-                     <string>% TAE</string>
+                     <string>% APR</string>
                     </property>
                    </widget>
                   </item>

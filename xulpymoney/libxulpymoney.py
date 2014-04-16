@@ -5103,7 +5103,7 @@ class SetTypes:
     def load_all(self):
         self.dic_arr["1"]=Type().init__create(1,QApplication.translate("Core","Acciones"))
         self.dic_arr["2"]=Type().init__create(2,QApplication.translate("Core","Fondos de inversión"))
-        self.dic_arr["3"]=Type().init__create(3,QApplication.translate("Core","índices"))
+        self.dic_arr["3"]=Type().init__create(3,QApplication.translate("Core","Índices"))
         self.dic_arr["4"]=Type().init__create(4,QApplication.translate("Core","ETFs"))
         self.dic_arr["5"]=Type().init__create(5,QApplication.translate("Core","Warrants"))
         self.dic_arr["6"]=Type().init__create(6,QApplication.translate("Core","Divisas"))
