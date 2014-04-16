@@ -135,6 +135,6 @@ class wdgConceptos(QWidget, Ui_wdgConceptos):
         concepto=self.selected[0]
         wch = wdgConceptsHistorical(self.cfg, concepto, newtab)
         horizontalLayout.addWidget(wch)
-        self.tab.addTab(newtab, concepto.name)
+        self.tab.addTab(newtab, "{0}".format(concepto.name))
         self.tab.setCurrentWidget(newtab)
 

@@ -3473,79 +3473,109 @@ seleccionados por el usuario</source>
 <context>
     <name>wdgConceptsHistorical</name>
     <message>
-        <location filename="ui/Ui_wdgConceptsHistorical.py" line="79"/>
+        <location filename="ui/Ui_wdgConceptsHistorical.py" line="103"/>
         <source>Historical concepts report</source>
         <translation>Informe histórico de conceptos</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgConceptsHistorical.py" line="85"/>
+        <location filename="ui/Ui_wdgConceptsHistorical.py" line="109"/>
         <source>Febrero</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgConceptsHistorical.py" line="97"/>
+        <location filename="ui/Ui_wdgConceptsHistorical.py" line="121"/>
         <source>Agosto</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgConceptsHistorical.py" line="99"/>
+        <location filename="ui/Ui_wdgConceptsHistorical.py" line="123"/>
         <source>Septiembre</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgConceptsHistorical.py" line="101"/>
+        <location filename="ui/Ui_wdgConceptsHistorical.py" line="125"/>
         <source>Octubre</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgConceptsHistorical.py" line="107"/>
+        <location filename="ui/Ui_wdgConceptsHistorical.py" line="131"/>
         <source>Total</source>
         <translation>Total</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgConceptsHistorical.py" line="81"/>
+        <location filename="ui/Ui_wdgConceptsHistorical.py" line="105"/>
         <source>Year</source>
         <translation>Año</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgConceptsHistorical.py" line="83"/>
+        <location filename="ui/Ui_wdgConceptsHistorical.py" line="107"/>
         <source>January</source>
         <translation>Enero</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgConceptsHistorical.py" line="87"/>
+        <location filename="ui/Ui_wdgConceptsHistorical.py" line="111"/>
         <source>March</source>
         <translation>Marzo</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgConceptsHistorical.py" line="89"/>
+        <location filename="ui/Ui_wdgConceptsHistorical.py" line="113"/>
         <source>April</source>
         <translation>Abril</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgConceptsHistorical.py" line="91"/>
+        <location filename="ui/Ui_wdgConceptsHistorical.py" line="115"/>
         <source>May</source>
         <translation>Mayo</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgConceptsHistorical.py" line="93"/>
+        <location filename="ui/Ui_wdgConceptsHistorical.py" line="117"/>
         <source>June</source>
         <translation>Junio</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgConceptsHistorical.py" line="95"/>
+        <location filename="ui/Ui_wdgConceptsHistorical.py" line="119"/>
         <source>July</source>
         <translation>Julio</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgConceptsHistorical.py" line="103"/>
+        <location filename="ui/Ui_wdgConceptsHistorical.py" line="127"/>
         <source>November</source>
         <translation>Noviembre</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgConceptsHistorical.py" line="105"/>
+        <location filename="ui/Ui_wdgConceptsHistorical.py" line="129"/>
         <source>December</source>
         <translation>Diciembre</translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_wdgConceptsHistorical.py" line="132"/>
+        <source>Historical report</source>
+        <translation type="unfinished">Informe histórico</translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_wdgConceptsHistorical.py" line="134"/>
+        <source>Show month operations</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_wdgConceptsHistorical.py" line="136"/>
+        <source>Show year operations</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/wdgConceptsHistorical.py" line="55"/>
+        <source>Report of {0} of {1}</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/wdgConceptsHistorical.py" line="69"/>
+        <source>Report of {0}</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/wdgConceptsHistorical.py" line="103"/>
+        <source>You can&apos;t close this tab</source>
+        <translation type="unfinished">No puedes cerrar esta pestaña</translation>
     </message>
 </context>
 <context>
