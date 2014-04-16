@@ -104,7 +104,7 @@
               <set>QAbstractItemView::NoEditTriggers</set>
              </property>
              <property name="selectionMode">
-              <enum>QAbstractItemView::NoSelection</enum>
+              <enum>QAbstractItemView::SingleSelection</enum>
              </property>
              <property name="selectionBehavior">
               <enum>QAbstractItemView::SelectItems</enum>
@@ -296,6 +296,59 @@
     </layout>
    </item>
   </layout>
+  <action name="actionShowIncomes">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/bundle.png</normaloff>:/xulpymoney/bundle.png</iconset>
+   </property>
+   <property name="text">
+    <string>Show income operations</string>
+   </property>
+   <property name="toolTip">
+    <string>Show income operations</string>
+   </property>
+  </action>
+  <action name="actionShowExpenses">
+   <property name="text">
+    <string>Show expense operations</string>
+   </property>
+  </action>
+  <action name="actionShowDividends">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/coins.png</normaloff>:/xulpymoney/coins.png</iconset>
+   </property>
+   <property name="text">
+    <string>Show dividends</string>
+   </property>
+   <property name="toolTip">
+    <string>Show dividends</string>
+   </property>
+  </action>
+  <action name="actionShowSellingOperations">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/dinero.png</normaloff>:/xulpymoney/dinero.png</iconset>
+   </property>
+   <property name="text">
+    <string>Show selling operations</string>
+   </property>
+   <property name="toolTip">
+    <string>Show selling operations</string>
+   </property>
+  </action>
+  <action name="actionSellingOperationsPlusDividends">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/history2.png</normaloff>:/xulpymoney/history2.png</iconset>
+   </property>
+   <property name="text">
+    <string>Selling operations + Dividends report</string>
+   </property>
+   <property name="toolTip">
+    <string>Selling operations + Dividends report</string>
+   </property>
+  </action>
  </widget>
  <customwidgets>
   <customwidget>

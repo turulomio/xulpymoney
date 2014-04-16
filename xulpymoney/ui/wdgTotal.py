@@ -85,6 +85,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         self.progress.setWindowTitle(self.trUtf8("Calculando datos..."))
         self.progress.setMinimumDuration(0)        
         self.sumpopup=[]
+        self.month=None#Used for popup
         for i in range(0, 13):
             self.sumpopup.append(0)
 
@@ -233,69 +234,73 @@ class wdgTotal(QWidget, Ui_wdgTotal):
             self.on_wyChart_changed()
             
         
-    def on_table_cellDoubleClicked(self, row, column):
-        month=column+1
-        if row==0 and column<12:#ingresos
-            id_tiposoperaciones=2
-            newtab = QWidget()
-            horizontalLayout = QHBoxLayout(newtab)
-            table = myQTableWidget(newtab)
-            set=SetCuentasOperaciones(self.cfg)
-            set.load_from_db("select fecha, id_conceptos, id_tiposoperaciones, importe, comentario, id_cuentas from opercuentas where id_tiposoperaciones={0} and date_part('year',fecha)={1} and date_part('month',fecha)={2} and id_conceptos not in ({3}) union all select fecha, id_conceptos, id_tiposoperaciones, importe, comentario, id_cuentas from opertarjetas,tarjetas where opertarjetas.id_tarjetas=tarjetas.id_tarjetas and id_tiposoperaciones={0} and date_part('year',fecha)={1} and date_part('month',fecha)={2}".format (id_tiposoperaciones, self.wyData.year, month, list2string(self.cfg.conceptos.considered_dividends_in_totals())))
-            set.sort()
-            set.myqtablewidget(table, None, True)
-            horizontalLayout.addWidget(table)
-            self.tab.addTab(newtab, self.trUtf8("Incomes of {0} of {1}".format(self.table.horizontalHeaderItem(column).text(), self.wyData.year)))
-            self.tab.setCurrentWidget(newtab)
+    @QtCore.pyqtSlot() 
+    def on_actionShowIncomes_activated(self):
+        id_tiposoperaciones=2
+        newtab = QWidget()
+        horizontalLayout = QHBoxLayout(newtab)
+        table = myQTableWidget(newtab)
+        set=SetCuentasOperaciones(self.cfg)
+        set.load_from_db("select fecha, id_conceptos, id_tiposoperaciones, importe, comentario, id_cuentas from opercuentas where id_tiposoperaciones={0} and date_part('year',fecha)={1} and date_part('month',fecha)={2} and id_conceptos not in ({3}) union all select fecha, id_conceptos, id_tiposoperaciones, importe, comentario, id_cuentas from opertarjetas,tarjetas where opertarjetas.id_tarjetas=tarjetas.id_tarjetas and id_tiposoperaciones={0} and date_part('year',fecha)={1} and date_part('month',fecha)={2}".format (id_tiposoperaciones, self.wyData.year, self.month, list2string(self.cfg.conceptos.considered_dividends_in_totals())))
+        set.sort()
+        set.myqtablewidget(table, None, True)
+        horizontalLayout.addWidget(table)
+        self.tab.addTab(newtab, self.trUtf8("Incomes of {0} of {1}".format(self.table.horizontalHeaderItem(self.month-1).text(), self.wyData.year)))
+        self.tab.setCurrentWidget(newtab)
 
-        if row==1 and column<12:#dividendos
-            newtab = QWidget()
-            horizontalLayout = QHBoxLayout(newtab)
-            table = myQTableWidget(newtab)
-            set=SetInversionOperacionHistorica(self.cfg)
-            for i in self.cfg.data.inversiones_all().arr:
-                for o in i.op_historica.arr:
-                    if o.fecha_venta.year==self.wyData.year and o.fecha_venta.month==month and o.tipooperacion.id in (5, 8):#Venta y traspaso fondos inversion
-                        set.arr.append(o)
-            set.sort()
-            set.myqtablewidget(table, None)
-            horizontalLayout.addWidget(table)
-            self.tab.addTab(newtab, self.trUtf8("Product selling operations of {0} of {1}".format(self.table.horizontalHeaderItem(column).text(), self.wyData.year)))
-            self.tab.setCurrentWidget(newtab)
+    @QtCore.pyqtSlot() 
+    def on_actionShowSellingOperations_activated(self):
+        newtab = QWidget()
+        horizontalLayout = QHBoxLayout(newtab)
+        table = myQTableWidget(newtab)
+        set=SetInversionOperacionHistorica(self.cfg)
+        for i in self.cfg.data.inversiones_all().arr:
+            for o in i.op_historica.arr:
+                if o.fecha_venta.year==self.wyData.year and o.fecha_venta.month==self.month and o.tipooperacion.id in (5, 8):#Venta y traspaso fondos inversion
+                    set.arr.append(o)
+        set.sort()
+        set.myqtablewidget(table, None)
+        horizontalLayout.addWidget(table)
+        self.tab.addTab(newtab, self.trUtf8("Product selling operations of {0} of {1}".format(self.table.horizontalHeaderItem(self.month-1).text(), self.wyData.year)))
+        self.tab.setCurrentWidget(newtab)
             
 
-        if row==2 and column<12:#dividendos
-            newtab = QWidget()
-            horizontalLayout = QHBoxLayout(newtab)
-            table = myQTableWidget(newtab)
-            set=SetDividends(self.cfg)
-            set.load_from_db("select * from dividendos where id_conceptos not in (63) and date_part('year',fecha)={0} and date_part('month',fecha)={1}".format (self.wyData.year, month))
-            set.sort()
-            set.myqtablewidget(table, None, True)
-            horizontalLayout.addWidget(table)
-            self.tab.addTab(newtab, self.trUtf8("Dividends of {0} of {1}".format(self.table.horizontalHeaderItem(column).text(), self.wyData.year)))
-            self.tab.setCurrentWidget(newtab)            
+    @QtCore.pyqtSlot() 
+    def on_actionShowDividends_activated(self):
+        newtab = QWidget()
+        horizontalLayout = QHBoxLayout(newtab)
+        table = myQTableWidget(newtab)
+        set=SetDividends(self.cfg)
+        set.load_from_db("select * from dividendos where id_conceptos not in (63) and date_part('year',fecha)={0} and date_part('month',fecha)={1}".format (self.wyData.year, self.month))
+        set.sort()
+        set.myqtablewidget(table, None, True)
+        horizontalLayout.addWidget(table)
+        self.tab.addTab(newtab, self.trUtf8("Dividends of {0} of {1}".format(self.table.horizontalHeaderItem(self.month-1).text(), self.wyData.year)))
+        self.tab.setCurrentWidget(newtab)            
             
-            
-        if row==3 and column<12:#gastos
-            id_tiposoperaciones=1
-            newtab = QWidget()
-            horizontalLayout = QHBoxLayout(newtab)
-            table = myQTableWidget(newtab)
-            set=SetCuentasOperaciones(self.cfg)
-            set.load_from_db_with_creditcard("select fecha, id_conceptos, id_tiposoperaciones, importe, comentario, id_cuentas , -1 as id_tarjetas from opercuentas where id_tiposoperaciones={0} and date_part('year',fecha)={1} and date_part('month',fecha)={2} union all select fecha, id_conceptos, id_tiposoperaciones, importe, comentario, id_cuentas ,tarjetas.id_tarjetas as id_tarjetas from opertarjetas,tarjetas where opertarjetas.id_tarjetas=tarjetas.id_tarjetas and id_tiposoperaciones={0} and date_part('year',fecha)={1} and date_part('month',fecha)={2}".format (id_tiposoperaciones, self.wyData.year, month)      )
-            set.sort()
-            set.myqtablewidget(table, None, True)
-            horizontalLayout.addWidget(table)
-            self.tab.addTab(newtab, self.trUtf8("Expenses of {0} of {1}".format(self.table.horizontalHeaderItem(column).text(), self.wyData.year)))
-            self.tab.setCurrentWidget(newtab)
+       
+    @QtCore.pyqtSlot() 
+    def on_actionShowExpenses_activated(self):     
+        id_tiposoperaciones=1
+        newtab = QWidget()
+        horizontalLayout = QHBoxLayout(newtab)
+        table = myQTableWidget(newtab)
+        set=SetCuentasOperaciones(self.cfg)
+        set.load_from_db_with_creditcard("select fecha, id_conceptos, id_tiposoperaciones, importe, comentario, id_cuentas , -1 as id_tarjetas from opercuentas where id_tiposoperaciones={0} and date_part('year',fecha)={1} and date_part('month',fecha)={2} union all select fecha, id_conceptos, id_tiposoperaciones, importe, comentario, id_cuentas ,tarjetas.id_tarjetas as id_tarjetas from opertarjetas,tarjetas where opertarjetas.id_tarjetas=tarjetas.id_tarjetas and id_tiposoperaciones={0} and date_part('year',fecha)={1} and date_part('month',fecha)={2}".format (id_tiposoperaciones, self.wyData.year, self.month)      )
+        set.sort()
+        set.myqtablewidget(table, None, True)
+        horizontalLayout.addWidget(table)
+        self.tab.addTab(newtab, self.trUtf8("Expenses of {0} of {1}".format(self.table.horizontalHeaderItem(self.month-1).text(), self.wyData.year)))
+        self.tab.setCurrentWidget(newtab)
         
-        if row==4 and column<12:
-            m=QMessageBox()
-            message=self.trUtf8("La suma de consolidado y dividendos  de este mes es {0}. En el año su valor asciende a {1}".format(self.cfg.localcurrency.string(self.sumpopup[column]), self.cfg.localcurrency.string(self.sumpopup[12])))
+    
+    @QtCore.pyqtSlot() 
+    def on_actionSellingOperationsPlusDividends_activated(self):
+        m=QMessageBox()
+        message=self.trUtf8("La suma de consolidado y dividendos  de este mes es {0}. En el año su valor asciende a {1}".format(self.cfg.localcurrency.string(self.sumpopup[self.month-1]), self.cfg.localcurrency.string(self.sumpopup[12])))
 
-            m.setText(message)
-            m.exec_()    
+        m.setText(message)
+        m.exec_()    
     
     def on_tab_tabCloseRequested(self, index):
         """Only removes dinamic tabs"""
@@ -307,4 +312,34 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         else:
             self.tab.setCurrentIndex(0)
             self.tab.removeTab(index)
-        
+            
+    def on_table_customContextMenuRequested(self,  pos):
+        if self.month==None:
+            self.actionShowIncomes.setEnabled(False)
+            self.actionShowExpenses.setEnabled(False)
+            self.actionShowSellingOperations.setEnabled(False)
+            self.actionShowDividends.setEnabled(False)
+            self.actionSellingOperationsPlusDividends.setEnabled(False)
+        else:
+            self.actionShowIncomes.setEnabled(True)
+            self.actionShowExpenses.setEnabled(True)
+            self.actionShowSellingOperations.setEnabled(True)
+            self.actionShowDividends.setEnabled(True)
+            self.actionSellingOperationsPlusDividends.setEnabled(True)
+
+        menu=QMenu()
+        menu.addAction(self.actionShowIncomes)
+        menu.addAction(self.actionShowSellingOperations)
+        menu.addAction(self.actionShowDividends)
+        menu.addAction(self.actionShowExpenses)
+        menu.addSeparator()
+        menu.addAction(self.actionSellingOperationsPlusDividends)      
+        menu.exec_(self.table.mapToGlobal(pos))
+
+    def on_table_itemSelectionChanged(self):
+        self.month=None
+        for i in self.table.selectedItems():#itera por cada item no row.
+            self.month=i.column()+1
+        if self.month>12:
+            self.month=None
+        print ("Selected month: {0}.".format(self.month))
