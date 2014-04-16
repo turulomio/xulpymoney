@@ -72,10 +72,11 @@ class wdgConceptsHistorical(QWidget, Ui_wdgConceptsHistorical):
     def on_table_customContextMenuRequested(self,  pos):
         self.actionShowYear.setEnabled(False)
         self.actionShowMonth.setEnabled(False)
-        if self.month==0:
-            self.actionShowYear.setEnabled(True)
-        elif self.month>0:
-            self.actionShowMonth.setEnabled(True)
+        if self.month!=None:
+            if self.month==0:
+                self.actionShowYear.setEnabled(True)
+            elif self.month>0:
+                self.actionShowMonth.setEnabled(True)
 
         menu=QMenu()
         menu.addAction(self.actionShowYear)
