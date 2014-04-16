@@ -405,17 +405,17 @@
                   </column>
                   <column>
                    <property name="text">
-                    <string>Pago diferido</string>
+                    <string>Delayed payment</string>
                    </property>
                   </column>
                   <column>
                    <property name="text">
-                    <string>Saldo máximo</string>
+                    <string>Maximum balance</string>
                    </property>
                   </column>
                   <column>
                    <property name="text">
-                    <string>Saldo</string>
+                    <string>Balance</string>
                    </property>
                   </column>
                  </widget>
@@ -433,17 +433,17 @@
                 <bool>false</bool>
                </property>
                <property name="currentIndex">
-                <number>0</number>
+                <number>1</number>
                </property>
                <widget class="QWidget" name="tab_2">
                 <attribute name="title">
-                 <string>Operaciones diferidas de la tarjeta seleccionada</string>
+                 <string>Selected Credit Card delayed operations</string>
                 </attribute>
                 <layout class="QHBoxLayout" name="horizontalLayout_6">
                  <item>
                   <widget class="QGroupBox" name="grpOperTarjetas">
                    <property name="title">
-                    <string>Operaciones diferidas de la tarjeta seleccionada</string>
+                    <string>Selected Credit Card delayed operations</string>
                    </property>
                    <property name="checkable">
                     <bool>false</bool>
@@ -481,7 +481,7 @@
                       </column>
                       <column>
                        <property name="text">
-                        <string>Importe</string>
+                        <string>Amount</string>
                        </property>
                       </column>
                       <column>
@@ -497,7 +497,7 @@
                  <item>
                   <widget class="QGroupBox" name="grpPago">
                    <property name="title">
-                    <string>Pago diferido de operaciones seleccionadas</string>
+                    <string>Selected operations delayed payment</string>
                    </property>
                    <layout class="QHBoxLayout" name="horizontalLayout_11">
                     <item>
@@ -524,7 +524,7 @@
                         <item>
                          <widget class="QLabel" name="label_5">
                           <property name="text">
-                           <string>Selecciona la fecha de pago</string>
+                           <string>Payment date</string>
                           </property>
                          </widget>
                         </item>
@@ -543,7 +543,7 @@
                       <item>
                        <widget class="QPushButton" name="cmdPago">
                         <property name="text">
-                         <string>Pagar</string>
+                         <string>Pay</string>
                         </property>
                        </widget>
                       </item>
@@ -556,7 +556,7 @@
                </widget>
                <widget class="QWidget" name="tab_3">
                 <attribute name="title">
-                 <string>Histórico de pagos diferidos de la tarjeta seleccionada</string>
+                 <string>Deferred payments for the selected card report</string>
                 </attribute>
                 <layout class="QHBoxLayout" name="horizontalLayout_14">
                  <item>
@@ -566,7 +566,7 @@
                      <item>
                       <widget class="QLabel" name="label_6">
                        <property name="text">
-                        <string>Selecciona un pago</string>
+                        <string>Select a payment</string>
                        </property>
                       </widget>
                      </item>
@@ -589,14 +589,14 @@
                      <item>
                       <widget class="QLabel" name="label_7">
                        <property name="text">
-                        <string>Para devolver el pago</string>
+                        <string>Pay back</string>
                        </property>
                       </widget>
                      </item>
                      <item>
                       <widget class="QPushButton" name="cmdDevolverPago">
                        <property name="text">
-                        <string>Devolver el pago</string>
+                        <string>Pay back</string>
                        </property>
                        <property name="icon">
                         <iconset>
@@ -627,27 +627,27 @@
                      </column>
                      <column>
                       <property name="text">
-                       <string>Fecha</string>
+                       <string>Date</string>
                       </property>
                      </column>
                      <column>
                       <property name="text">
-                       <string>Concepto</string>
+                       <string>Concept</string>
                       </property>
                      </column>
                      <column>
                       <property name="text">
-                       <string>Importe</string>
+                       <string>Amount</string>
                       </property>
                      </column>
                      <column>
                       <property name="text">
-                       <string>Saldo</string>
+                       <string>Balance</string>
                       </property>
                      </column>
                      <column>
                       <property name="text">
-                       <string>Comentario</string>
+                       <string>Comment</string>
                       </property>
                      </column>
                     </widget>
