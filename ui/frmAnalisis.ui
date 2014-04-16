@@ -9,12 +9,12 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>803</width>
+    <width>1045</width>
     <height>768</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MyQuotes - Análisis de inversión</string>
+   <string>MyStocks - Product report</string>
   </property>
   <property name="windowIcon">
    <iconset>
@@ -39,7 +39,7 @@
           <string notr="true">color: rgb(0, 192, 0);</string>
          </property>
          <property name="text">
-          <string>Inversión</string>
+          <string>Product</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignCenter</set>
@@ -57,7 +57,7 @@
         <enum>QTabWidget::West</enum>
        </property>
        <property name="currentIndex">
-        <number>1</number>
+        <number>0</number>
        </property>
        <widget class="QWidget" name="tabInformacion">
         <attribute name="title">
@@ -69,7 +69,7 @@
            <item>
             <widget class="QGroupBox" name="groupBox_7">
              <property name="title">
-              <string>Información</string>
+              <string>Information</string>
              </property>
              <layout class="QHBoxLayout" name="horizontalLayout_26">
               <item>
@@ -79,7 +79,7 @@
                   <item>
                    <widget class="QLabel" name="label">
                     <property name="text">
-                     <string>Nombre de la inversión</string>
+                     <string>Product name</string>
                     </property>
                    </widget>
                   </item>
@@ -109,7 +109,7 @@
                   <item>
                    <widget class="QLabel" name="label_10">
                     <property name="text">
-                     <string>Código ISIN</string>
+                     <string>ISIN code</string>
                     </property>
                    </widget>
                   </item>
@@ -139,7 +139,7 @@
                   <item>
                    <widget class="QLabel" name="label_9">
                     <property name="text">
-                     <string>Divisa</string>
+                     <string>Currency</string>
                     </property>
                    </widget>
                   </item>
@@ -153,7 +153,7 @@
                   <item>
                    <widget class="QLabel" name="label_12">
                     <property name="text">
-                     <string>Tipo de inversión</string>
+                     <string>Product type</string>
                     </property>
                    </widget>
                   </item>
@@ -167,7 +167,7 @@
                   <item>
                    <widget class="QLabel" name="label_16">
                     <property name="text">
-                     <string>Bolsa a la que pertenece</string>
+                     <string>Stock exchange</string>
                     </property>
                    </widget>
                   </item>
@@ -181,7 +181,7 @@
                   <item>
                    <widget class="QLabel" name="label_13">
                     <property name="text">
-                     <string>Agrupaciones a las que pertenece</string>
+                     <string>Agrupations</string>
                     </property>
                    </widget>
                   </item>
@@ -203,7 +203,7 @@
                   <item>
                    <widget class="QCheckBox" name="chkActive">
                     <property name="text">
-                     <string>Activación de actualización automática</string>
+                     <string>Enabling auto update</string>
                     </property>
                    </widget>
                   </item>
@@ -214,7 +214,7 @@
                   <item>
                    <widget class="QLabel" name="label_3">
                     <property name="text">
-                     <string>Página web</string>
+                     <string>Web page</string>
                     </property>
                    </widget>
                   </item>
@@ -244,7 +244,7 @@
                   <item>
                    <widget class="QLabel" name="label_4">
                     <property name="text">
-                     <string>Dirección postal</string>
+                     <string>Address</string>
                     </property>
                    </widget>
                   </item>
@@ -274,7 +274,7 @@
                   <item>
                    <widget class="QLabel" name="lblMail">
                     <property name="text">
-                     <string>Correo electrónico</string>
+                     <string>Email</string>
                     </property>
                    </widget>
                   </item>
@@ -304,7 +304,7 @@
                   <item>
                    <widget class="QLabel" name="label_14">
                     <property name="text">
-                     <string>Tanto por ciento variable</string>
+                     <string>Variable percentage</string>
                     </property>
                    </widget>
                   </item>
@@ -351,7 +351,7 @@
                   <item>
                    <widget class="QLabel" name="label_5">
                     <property name="text">
-                     <string>Teléfono</string>
+                     <string>Telephone</string>
                     </property>
                    </widget>
                   </item>
@@ -381,7 +381,7 @@
                   <item>
                    <widget class="QLabel" name="label_15">
                     <property name="text">
-                     <string>Apalancado</string>
+                     <string>Leveraged</string>
                     </property>
                    </widget>
                   </item>
@@ -395,7 +395,7 @@
                   <item>
                    <widget class="QLabel" name="label_8">
                     <property name="text">
-                     <string>Código Yahoo</string>
+                     <string>Ticket</string>
                     </property>
                    </widget>
                   </item>
@@ -425,7 +425,7 @@
                   <item>
                    <widget class="QLabel" name="label_17">
                     <property name="text">
-                     <string>Prioridad diaria</string>
+                     <string>Daily priority</string>
                     </property>
                    </widget>
                   </item>
@@ -447,7 +447,7 @@
                   <item>
                    <widget class="QLabel" name="label_19">
                     <property name="text">
-                     <string>Prioridad histórica</string>
+                     <string>Historical priority</string>
                     </property>
                    </widget>
                   </item>
@@ -469,7 +469,7 @@
                   <item>
                    <widget class="QLabel" name="label_21">
                     <property name="text">
-                     <string>Comentario</string>
+                     <string>Comment</string>
                     </property>
                    </widget>
                   </item>
@@ -499,7 +499,7 @@
                   <item>
                    <widget class="QCheckBox" name="chkObsolete">
                     <property name="text">
-                     <string>Inversión obsoleta</string>
+                     <string>Obsolete product</string>
                     </property>
                    </widget>
                   </item>
@@ -537,11 +537,11 @@
          <item>
           <widget class="QTabWidget" name="tabGraphics">
            <property name="currentIndex">
-            <number>1</number>
+            <number>2</number>
            </property>
            <widget class="QWidget" name="tabGraphicsIntraday">
             <attribute name="title">
-             <string>Intradía</string>
+             <string>Daily</string>
             </attribute>
             <layout class="QHBoxLayout" name="horizontalLayout">
              <item>
@@ -674,7 +674,7 @@
            </widget>
            <widget class="QWidget" name="tabGraphicsHistorical">
             <attribute name="title">
-             <string>Históricos</string>
+             <string>Historical</string>
             </attribute>
             <layout class="QHBoxLayout" name="horizontalLayout_35">
              <item>
@@ -699,7 +699,7 @@
            </widget>
            <widget class="QWidget" name="tab_4">
             <attribute name="title">
-             <string>Históricos sin descontar dividendos</string>
+             <string>Undiscounted historical dividends</string>
             </attribute>
             <layout class="QHBoxLayout" name="horizontalLayout_41">
              <item>
@@ -711,7 +711,7 @@
                 </sizepolicy>
                </property>
                <property name="title">
-                <string>Gráfico de cotizaciones históricas sin descontar dividendos</string>
+                <string>Graph of historical quotes undiscounted dividends</string>
                </property>
                <layout class="QVBoxLayout" name="verticalLayout_14">
                 <item>
@@ -728,11 +728,11 @@
        </widget>
        <widget class="QWidget" name="tabQuotes">
         <attribute name="title">
-         <string>Cotizaciones históricas</string>
+         <string>Historical prices</string>
         </attribute>
-        <layout class="QHBoxLayout" name="horizontalLayout_5">
+        <layout class="QHBoxLayout" name="horizontalLayout_37">
          <item>
-          <layout class="QVBoxLayout" name="verticalLayout_4">
+          <layout class="QVBoxLayout" name="verticalLayout_7">
            <item>
             <widget class="QGroupBox" name="grpHistoricos">
              <property name="title">
@@ -743,7 +743,7 @@
                <widget class="myQTableWidget" name="tblTPC">
                 <row>
                  <property name="text">
-                  <string>Última cotización</string>
+                  <string>Last price</string>
                  </property>
                 </row>
                 <row>
@@ -753,22 +753,22 @@
                 </row>
                 <row>
                  <property name="text">
-                  <string>Variación en un día</string>
+                  <string>Daily variation</string>
                  </property>
                 </row>
                 <row>
                  <property name="text">
-                  <string>Variación en esta semana</string>
+                  <string>Weekly variation</string>
                  </property>
                 </row>
                 <row>
                  <property name="text">
-                  <string>Variación en este mes</string>
+                  <string>Monthly variation</string>
                  </property>
                 </row>
                 <row>
                  <property name="text">
-                  <string>Variación en este año</string>
+                  <string>Annual variation</string>
                  </property>
                 </row>
                 <row>
@@ -778,27 +778,27 @@
                 </row>
                 <row>
                  <property name="text">
-                  <string>Variación últimos 7 días</string>
+                  <string>Last 7 days variation</string>
                  </property>
                 </row>
                 <row>
                  <property name="text">
-                  <string>Variación últimos 30 días</string>
+                  <string>Last 30 days variation</string>
                  </property>
                 </row>
                 <row>
                  <property name="text">
-                  <string>Variación últimos 12 meses</string>
+                  <string>Last 12 months variation</string>
                  </property>
                 </row>
                 <column>
                  <property name="text">
-                  <string>Fecha de cálculo</string>
+                  <string>Date</string>
                  </property>
                 </column>
                 <column>
                  <property name="text">
-                  <string>Valor</string>
+                  <string>Price</string>
                  </property>
                 </column>
                 <column>
@@ -808,7 +808,7 @@
                 </column>
                 <column>
                  <property name="text">
-                  <string>% TAE</string>
+                  <string>% APR</string>
                  </property>
                 </column>
                 <item row="0" column="0">
@@ -884,24 +884,24 @@
             </layout>
            </item>
            <item>
-            <widget class="QTabWidget" name="tabHistorical">
-             <property name="currentIndex">
-              <number>4</number>
+            <widget class="QGroupBox" name="groupBox_9">
+             <property name="title">
+              <string>Product prices</string>
              </property>
-             <property name="elideMode">
-              <enum>Qt::ElideMiddle</enum>
-             </property>
-             <widget class="QWidget" name="tab_5">
-              <attribute name="title">
-               <string>Diarias</string>
-              </attribute>
-              <layout class="QHBoxLayout" name="horizontalLayout_3">
-               <item>
-                <widget class="QGroupBox" name="groupBox">
-                 <property name="title">
-                  <string>Cotizaciones de la inversión</string>
-                 </property>
-                 <layout class="QVBoxLayout" name="verticalLayout_9">
+             <layout class="QHBoxLayout" name="horizontalLayout_5">
+              <item>
+               <widget class="QTabWidget" name="tabHistorical">
+                <property name="currentIndex">
+                 <number>4</number>
+                </property>
+                <property name="elideMode">
+                 <enum>Qt::ElideMiddle</enum>
+                </property>
+                <widget class="QWidget" name="tab_5">
+                 <attribute name="title">
+                  <string>Daily prices</string>
+                 </attribute>
+                 <layout class="QHBoxLayout" name="horizontalLayout_3">
                   <item>
                    <widget class="myQTableWidget" name="tblDaily">
                     <property name="contextMenuPolicy">
@@ -950,20 +950,11 @@
                   </item>
                  </layout>
                 </widget>
-               </item>
-              </layout>
-             </widget>
-             <widget class="QWidget" name="tab_14">
-              <attribute name="title">
-               <string>Semanales</string>
-              </attribute>
-              <layout class="QHBoxLayout" name="horizontalLayout_37">
-               <item>
-                <widget class="QGroupBox" name="groupBox_6">
-                 <property name="title">
-                  <string>Cotizaciones de la inversión</string>
-                 </property>
-                 <layout class="QVBoxLayout" name="verticalLayout_13">
+                <widget class="QWidget" name="tab_14">
+                 <attribute name="title">
+                  <string>Weekly prices</string>
+                 </attribute>
+                 <layout class="QVBoxLayout" name="verticalLayout_4">
                   <item>
                    <widget class="myQTableWidget" name="tblWeekly">
                     <property name="contextMenuPolicy">
@@ -1012,20 +1003,11 @@
                   </item>
                  </layout>
                 </widget>
-               </item>
-              </layout>
-             </widget>
-             <widget class="QWidget" name="tab_3">
-              <attribute name="title">
-               <string>Mensuales</string>
-              </attribute>
-              <layout class="QHBoxLayout" name="horizontalLayout_2">
-               <item>
-                <widget class="QGroupBox" name="groupBox_4">
-                 <property name="title">
-                  <string>Cotizaciones de la inversión</string>
-                 </property>
-                 <layout class="QVBoxLayout" name="verticalLayout_11">
+                <widget class="QWidget" name="tab_3">
+                 <attribute name="title">
+                  <string>Monthly prices</string>
+                 </attribute>
+                 <layout class="QHBoxLayout" name="horizontalLayout_2">
                   <item>
                    <widget class="myQTableWidget" name="tblMonthly">
                     <property name="contextMenuPolicy">
@@ -1074,20 +1056,11 @@
                   </item>
                  </layout>
                 </widget>
-               </item>
-              </layout>
-             </widget>
-             <widget class="QWidget" name="tab_13">
-              <attribute name="title">
-               <string>Anuales</string>
-              </attribute>
-              <layout class="QHBoxLayout" name="horizontalLayout_4">
-               <item>
-                <widget class="QGroupBox" name="groupBox_5">
-                 <property name="title">
-                  <string>Cotizaciones de la inversión</string>
-                 </property>
-                 <layout class="QVBoxLayout" name="verticalLayout_12">
+                <widget class="QWidget" name="tab_13">
+                 <attribute name="title">
+                  <string>Annual prices</string>
+                 </attribute>
+                 <layout class="QHBoxLayout" name="horizontalLayout_4">
                   <item>
                    <widget class="myQTableWidget" name="tblYearly">
                     <property name="contextMenuPolicy">
@@ -1136,102 +1109,102 @@
                   </item>
                  </layout>
                 </widget>
-               </item>
-              </layout>
-             </widget>
-             <widget class="QWidget" name="tab_6">
-              <attribute name="icon">
-               <iconset resource="../images/xulpymoney.qrc">
-                <normaloff>:/xulpymoney/tools-wizard.png</normaloff>:/xulpymoney/tools-wizard.png</iconset>
-              </attribute>
-              <attribute name="title">
-               <string>Rendimientos mensuales</string>
-              </attribute>
-              <layout class="QHBoxLayout" name="horizontalLayout_9">
-               <item>
-                <widget class="myQTableWidget" name="tblMensuales">
-                 <property name="toolTip">
-                  <string>Estos datos se han calculado con la última cotización
+                <widget class="QWidget" name="tab_6">
+                 <attribute name="icon">
+                  <iconset resource="../images/xulpymoney.qrc">
+                   <normaloff>:/xulpymoney/tools-wizard.png</normaloff>:/xulpymoney/tools-wizard.png</iconset>
+                 </attribute>
+                 <attribute name="title">
+                  <string>Monthly returns</string>
+                 </attribute>
+                 <layout class="QHBoxLayout" name="horizontalLayout_9">
+                  <item>
+                   <widget class="myQTableWidget" name="tblMensuales">
+                    <property name="toolTip">
+                     <string>Estos datos se han calculado con la última cotización
 del mes anterior y la última cotización del mes 
 correspondiente en la tabla</string>
-                 </property>
-                 <attribute name="verticalHeaderVisible">
-                  <bool>false</bool>
-                 </attribute>
-                 <column>
-                  <property name="text">
-                   <string>Año</string>
-                  </property>
-                 </column>
-                 <column>
-                  <property name="text">
-                   <string>Enero</string>
-                  </property>
-                 </column>
-                 <column>
-                  <property name="text">
-                   <string>Febrero</string>
-                  </property>
-                 </column>
-                 <column>
-                  <property name="text">
-                   <string>Marzo</string>
-                  </property>
-                 </column>
-                 <column>
-                  <property name="text">
-                   <string>Abril</string>
-                  </property>
-                 </column>
-                 <column>
-                  <property name="text">
-                   <string>Mayo</string>
-                  </property>
-                 </column>
-                 <column>
-                  <property name="text">
-                   <string>Junio</string>
-                  </property>
-                 </column>
-                 <column>
-                  <property name="text">
-                   <string>Julio</string>
-                  </property>
-                 </column>
-                 <column>
-                  <property name="text">
-                   <string>Agosto</string>
-                  </property>
-                 </column>
-                 <column>
-                  <property name="text">
-                   <string>Septiembre</string>
-                  </property>
-                 </column>
-                 <column>
-                  <property name="text">
-                   <string>Octubre</string>
-                  </property>
-                 </column>
-                 <column>
-                  <property name="text">
-                   <string>Noviembre</string>
-                  </property>
-                 </column>
-                 <column>
-                  <property name="text">
-                   <string>Diciembre</string>
-                  </property>
-                 </column>
-                 <column>
-                  <property name="text">
-                   <string>Total</string>
-                  </property>
-                 </column>
+                    </property>
+                    <attribute name="verticalHeaderVisible">
+                     <bool>false</bool>
+                    </attribute>
+                    <column>
+                     <property name="text">
+                      <string>Año</string>
+                     </property>
+                    </column>
+                    <column>
+                     <property name="text">
+                      <string>Enero</string>
+                     </property>
+                    </column>
+                    <column>
+                     <property name="text">
+                      <string>Febrero</string>
+                     </property>
+                    </column>
+                    <column>
+                     <property name="text">
+                      <string>Marzo</string>
+                     </property>
+                    </column>
+                    <column>
+                     <property name="text">
+                      <string>Abril</string>
+                     </property>
+                    </column>
+                    <column>
+                     <property name="text">
+                      <string>Mayo</string>
+                     </property>
+                    </column>
+                    <column>
+                     <property name="text">
+                      <string>Junio</string>
+                     </property>
+                    </column>
+                    <column>
+                     <property name="text">
+                      <string>Julio</string>
+                     </property>
+                    </column>
+                    <column>
+                     <property name="text">
+                      <string>Agosto</string>
+                     </property>
+                    </column>
+                    <column>
+                     <property name="text">
+                      <string>Septiembre</string>
+                     </property>
+                    </column>
+                    <column>
+                     <property name="text">
+                      <string>Octubre</string>
+                     </property>
+                    </column>
+                    <column>
+                     <property name="text">
+                      <string>Noviembre</string>
+                     </property>
+                    </column>
+                    <column>
+                     <property name="text">
+                      <string>Diciembre</string>
+                     </property>
+                    </column>
+                    <column>
+                     <property name="text">
+                      <string>Total</string>
+                     </property>
+                    </column>
+                   </widget>
+                  </item>
+                 </layout>
                 </widget>
-               </item>
-              </layout>
-             </widget>
+               </widget>
+              </item>
+             </layout>
             </widget>
            </item>
           </layout>

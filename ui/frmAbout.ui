@@ -104,7 +104,7 @@
      <item>
       <widget class="QTabWidget" name="tab">
        <property name="currentIndex">
-        <number>2</number>
+        <number>1</number>
        </property>
        <widget class="QWidget" name="tabGLParchis">
         <attribute name="title">
@@ -147,27 +147,27 @@ p, li { white-space: pre-wrap; }
           <widget class="myQTableWidget" name="tblStatistics">
            <row>
             <property name="text">
-             <string>Número de Acciones</string>
+             <string>Shares products number</string>
             </property>
            </row>
            <row>
             <property name="text">
-             <string>Número de Fondos</string>
+             <string>Funds number</string>
             </property>
            </row>
            <row>
             <property name="text">
-             <string>Número de Índices</string>
+             <string>Indexes number</string>
             </property>
            </row>
            <row>
             <property name="text">
-             <string>Número de ETFs</string>
+             <string>ETF  number</string>
             </property>
            </row>
            <row>
             <property name="text">
-             <string>Número de Warrants</string>
+             <string>Warrants number</string>
             </property>
            </row>
            <row>
@@ -192,7 +192,7 @@ p, li { white-space: pre-wrap; }
            </row>
            <column>
             <property name="text">
-             <string>Todos</string>
+             <string>Total</string>
             </property>
            </column>
            <column>
