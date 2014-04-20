@@ -1,5 +1,5 @@
 from libxulpymoney import *
-import   math
+import math
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 from Ui_wdgInformeClases import *
@@ -29,7 +29,7 @@ class canvasPie(FigureCanvas):
         self.fracs=fracs
         self.explode=explode
         self.labels=labels
-        (self.patches, self.texts, self.autotexts)=self.ax.pie(fracs, explode=explode, labels=labels, labeldistance=100, pctdistance=1.1, autopct='%1.1f%%',  shadow=True)
+        (self.patches, self.texts, self.autotexts)=self.ax.pie(self.fracs, explode=explode, labels=labels, labeldistance=100, pctdistance=1.1, autopct='%1.1f%%',  shadow=True)
         
         for i in range(len(self.labels)):
             self.labels[i]=self.labels[i]+". {0} € ({1})".format(round(self.fracs[i], 2),self.autotexts[i].get_text())
@@ -185,7 +185,7 @@ class wdgInformeClases(QWidget, Ui_wdgInformeClases):
             s.add(i.product)
         
         arr=list(s)
-        arr=sorted(arr, key=lambda inv: inv.name,  reverse=True) 
+        arr=sorted(arr, key=lambda inv: self.cfg.data.inversiones_active.saldo_misma_investment(inv),  reverse=True) 
    
         for i in arr:
             labels.append(i.name)
