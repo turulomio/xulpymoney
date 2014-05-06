@@ -28,7 +28,7 @@ class frmAnalisis(QDialog, Ui_frmAnalisis):
         self.cfg=cfg
         self.product=product
         self.inversion=inversion#Used to generate puntos de venta, punto de compra....
-        self.setSelIntraday=None
+        self.setSelIntraday=set([])
         
         self.selDPS=None
         self.selEstimationDPS=None
