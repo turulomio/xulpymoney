@@ -1646,6 +1646,9 @@ class CuentaOperacion:
         self.comentario=None
         self.cuenta=None
         
+    def __repr__(self):
+        return "CuentaOperacion {0}. Fecha: {1}. Importe:{2}. Concepto:{3}".format(self.id, self.fecha, self.importe, self.concepto)
+        
     def init__create(self, fecha, concepto, tipooperacion, importe,  comentario, cuenta, id=None):
         self.id=id
         self.fecha=fecha
@@ -1701,7 +1704,7 @@ class CuentaOperacion:
         63 y 65,66 renta fija cuponcorrido"""
         if self.concepto==None:
             return False
-        if self.concepto.id in (7, 29, 35, 39, 40, 50,  62, 63, 65):#div, factur tarj:
+        if self.concepto.id in (29, 35, 39, 40, 50,  62, 63, 65):#div, factur tarj:
             return False
         return True
         
