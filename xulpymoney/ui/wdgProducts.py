@@ -14,8 +14,8 @@ class wdgProducts(QWidget, Ui_wdgProducts):
         self.cfg=cfg
         self.products=[]#Es una lista de products
         self.selProduct=None##Objeto de inversion seleccionado
-        self.tblInversiones.setColumnHidden(0, True)
         self.tblInversiones.settings("wdgProducts",  self.cfg)    
+        self.cfg.bolsas.load_qcombobox(self.cmbStockExchange)
         self.setFavoritos=set(self.cfg.config.get_list( "wdgProducts", "favoritos"))
         self.progress = QProgressDialog(self.tr("Recibiendo datos solicitados"), self.tr("Cancelar"), 0,0)
         self.progress.setModal(True)
@@ -32,7 +32,7 @@ class wdgProducts(QWidget, Ui_wdgProducts):
         self.products=[]
         cur = self.cfg.conms.cursor()
         cur.execute(sql)
-        self.lblFound.setText(self.tr("Encontrados {0} registros".format(cur.rowcount)))
+        self.lblFound.setText(self.tr("Found {0} records".format(cur.rowcount)))
         #mete a datos        
         if cur.rowcount>0:
             self.progress.reset()
@@ -54,7 +54,7 @@ class wdgProducts(QWidget, Ui_wdgProducts):
         cur.close()     
         if len(self.products)!=0:      
             diff=datetime.datetime.now()-inicio
-            print("wdgInversiones > build_array: {0} ({1} cada uno)".format(str(diff), diff/len(self.products)))
+            print("wdgProducts > build_array: {0} ({1} cada uno)".format(str(diff), diff/len(self.products)))
         
 
     def build_table(self):
@@ -127,7 +127,7 @@ class wdgProducts(QWidget, Ui_wdgProducts):
             m.exec_()    
             return
 
-        respuesta = QMessageBox.warning(self, self.tr("MyStocks"), self.trUtf8("Se borrarán los datos de la inversión seleccionada ({0}). Tenga en cuenta que si es el tipo de actualización es manual, no recuperará los datos. ¿Quiere continuar?".format(self.selProduct.id)), QMessageBox.Ok | QMessageBox.Cancel)
+        respuesta = QMessageBox.warning(self, self.tr("MyStocks"), self.trUtf8("Deleting data from selected product ({0}). If you use manual update mode, data won't be recovered. Do you want to continue?".format(self.selProduct.id)), QMessageBox.Ok | QMessageBox.Cancel)
         if respuesta==QMessageBox.Ok:
             con=self.cfg.connect_mystocks()
             cur = con.cursor()
@@ -196,7 +196,13 @@ class wdgProducts(QWidget, Ui_wdgProducts):
             m.exec_()  
             return
             
-        self.build_array("select * from products where id::text like '%"+(self.txt.text().upper())+"%' or upper(name) like '%"+(self.txt.text().upper())+"%' or upper(isin) like '%"+(self.txt.text().upper())+"%' or upper(comentario) like '%"+(self.txt.text().upper())+"%' ")
+        #Stock exchange Filter
+        stockexchangefilter=""
+        if self.chkStockExchange.checkState()==Qt.Checked:
+            bolsa=self.cfg.bolsas.find(self.cmbStockExchange.itemData(self.cmbStockExchange.currentIndex()))            
+            stockexchangefilter=" and id_bolsas={0} ".format(bolsa.id)
+
+        self.build_array("select * from products where (id::text like '%"+(self.txt.text().upper())+"%' or upper(name) like '%"+(self.txt.text().upper())+"%' or upper(isin) like '%"+(self.txt.text().upper())+"%' or upper(comentario) like '%"+(self.txt.text().upper())+"%') "+ stockexchangefilter)
         self.products=sorted(self.products, key=lambda inv: inv.name,  reverse=False) 
         self.build_table()          
 

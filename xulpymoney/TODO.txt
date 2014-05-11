@@ -15,12 +15,10 @@ XULPYMONEY
 20130829 Al añadir inversión peta por estimaciones al insertar 
 20131002 No pone el saldo en pago cupon corrido en opercuenta
 20140412 Refactorizar Inversion por Investment
-20140412 Refactorizar MyStocks por Products
 20140416 Translate all forms
 
 MYSTOCKS
 ========
-20120217 En busquedas cuando se haga es:search, buscará en bolsa española
 20130822 Progress bar en status bar, al cargar frmAnalisis
 
 XULPYMONEY_INIT

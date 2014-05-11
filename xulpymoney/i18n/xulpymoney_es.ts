@@ -4571,134 +4571,149 @@ S&#xc3;&#xb3;lo se contabilizar&#xc3;&#xa1; cuando se vendan las acciones</sourc
         <translation>Listado de productos</translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="ui/wdgProducts.ui" line="51"/>
+        <location filename="ui/wdgProducts.ui" line="54"/>
         <source>Búsqueda por código, ISIN o nombre del producto</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgProducts.ui" line="84"/>
+        <location filename="ui/wdgProducts.ui" line="141"/>
         <source>Code</source>
         <translation>Código</translation>
     </message>
     <message>
-        <location filename="ui/wdgProducts.ui" line="89"/>
-        <source>Investment</source>
-        <translation>Inversión</translation>
-    </message>
-    <message>
-        <location filename="ui/wdgProducts.ui" line="94"/>
+        <location filename="ui/wdgProducts.ui" line="151"/>
         <source>ISIN</source>
         <translation>ISIN</translation>
     </message>
     <message>
-        <location filename="ui/wdgProducts.ui" line="99"/>
+        <location filename="ui/wdgProducts.ui" line="156"/>
         <source>Last update</source>
         <translation>Última actualización</translation>
     </message>
     <message>
-        <location filename="ui/wdgProducts.ui" line="152"/>
+        <location filename="ui/wdgProducts.ui" line="209"/>
         <source>% Diario</source>
         <translation type="unfinished"></translation>
     </message>
-    <message encoding="UTF-8">
-        <location filename="ui/wdgProducts.ui" line="114"/>
-        <source>% Inicio año</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
-        <location filename="ui/wdgProducts.ui" line="119"/>
-        <source>% Dividendo</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/wdgProducts.ui" line="127"/>
+        <location filename="ui/wdgProducts.ui" line="184"/>
         <source>Registers found</source>
         <translation>Registros encontrados</translation>
     </message>
     <message>
-        <location filename="ui/wdgProducts.ui" line="161"/>
+        <location filename="ui/wdgProducts.ui" line="218"/>
         <source>% Anual</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgProducts.ui" line="170"/>
+        <location filename="ui/wdgProducts.ui" line="227"/>
         <source>Nombre</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgProducts.ui" line="179"/>
+        <location filename="ui/wdgProducts.ui" line="236"/>
         <source>Dividendo</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgProducts.ui" line="188"/>
+        <location filename="ui/wdgProducts.ui" line="245"/>
         <source>Hora</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgProducts.ui" line="197"/>
+        <location filename="ui/wdgProducts.ui" line="254"/>
         <source>Ibex 35</source>
         <translation>Ibex 35</translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="ui/wdgProducts.ui" line="239"/>
+        <location filename="ui/wdgProducts.ui" line="296"/>
         <source>Añadir a favoritos</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="ui/wdgProducts.ui" line="248"/>
+        <location filename="ui/wdgProducts.ui" line="305"/>
         <source>Combina códigos seleccionados</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="ui/wdgProducts.ui" line="260"/>
+        <location filename="ui/wdgProducts.ui" line="317"/>
         <source>Nueva cotización</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgProducts.ui" line="269"/>
+        <location filename="ui/wdgProducts.ui" line="326"/>
         <source>New DPS estimation</source>
         <translation>Nueva estimación de dividendo por acción</translation>
     </message>
     <message>
-        <location filename="ui/wdgProducts.ui" line="272"/>
+        <location filename="ui/wdgProducts.ui" line="329"/>
         <source>New Dividend per share estimation</source>
         <translation>Nueva estimación de dividendo por acción</translation>
     </message>
     <message>
-        <location filename="ui/wdgProducts.ui" line="281"/>
+        <location filename="ui/wdgProducts.ui" line="338"/>
         <source>Purge investment</source>
         <translation>Purgar inversión</translation>
     </message>
     <message>
-        <location filename="ui/wdgProducts.ui" line="284"/>
+        <location filename="ui/wdgProducts.ui" line="341"/>
         <source>Deletes quotes innecesary. Leaves open, high, low and close quotes.</source>
         <translation>Borra cotizaciones innecesarias. Deja cotización de apertura, más alta, más baja y de cierre.</translation>
     </message>
     <message>
-        <location filename="ui/wdgProducts.ui" line="104"/>
+        <location filename="ui/wdgProducts.ui" line="161"/>
         <source>Price</source>
         <translation>Precio</translation>
     </message>
     <message>
-        <location filename="ui/wdgProducts.ui" line="143"/>
+        <location filename="ui/wdgProducts.ui" line="200"/>
         <source>Product report</source>
         <translation>Informe de producto</translation>
     </message>
     <message>
-        <location filename="ui/wdgProducts.ui" line="206"/>
+        <location filename="ui/wdgProducts.ui" line="263"/>
         <source>New product</source>
         <translation>Nuevo producto</translation>
     </message>
     <message>
-        <location filename="ui/wdgProducts.ui" line="215"/>
+        <location filename="ui/wdgProducts.ui" line="272"/>
         <source>Edit product</source>
         <translation>Modificar el producto</translation>
     </message>
     <message>
-        <location filename="ui/wdgProducts.ui" line="227"/>
+        <location filename="ui/wdgProducts.ui" line="284"/>
         <source>Delete product</source>
         <translation>Borrar el producto</translation>
+    </message>
+    <message>
+        <location filename="ui/wdgProducts.ui" line="42"/>
+        <source>Select your search</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/wdgProducts.ui" line="91"/>
+        <source>Filter by stock exchange</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/wdgProducts.ui" line="146"/>
+        <source>Product</source>
+        <translation type="unfinished">Producto</translation>
+    </message>
+    <message>
+        <location filename="ui/wdgProducts.ui" line="166"/>
+        <source>% Daily</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/wdgProducts.ui" line="171"/>
+        <source>% Year to date</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/wdgProducts.ui" line="176"/>
+        <source>% Dividend</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
