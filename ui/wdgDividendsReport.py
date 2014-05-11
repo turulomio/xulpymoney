@@ -2,19 +2,19 @@ from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 import datetime
 from libxulpymoney import *
-from Ui_wdgInformeDividendos import *
+from Ui_wdgDividendsReport import *
 from frmInversionesEstudio import *
 from frmAnalisis import *
 from frmEstimationsAdd import *
 
-class wdgInformeDividendos(QWidget, Ui_wdgInformeDividendos):
+class wdgDividendsReport(QWidget, Ui_wdgDividendsReport):
     def __init__(self, cfg,  parent=None):
         QWidget.__init__(self, parent)
         self.setupUi(self)
         self.cfg=cfg
         self.inversiones=[]
 
-        self.tblInversiones.settings("wdgInformeDividendos",  self.cfg)
+        self.tblInversiones.settings("wdgDividendsReport",  self.cfg)
         
         self.on_chkInactivas_stateChanged(Qt.Unchecked)
 
@@ -47,7 +47,7 @@ class wdgInformeDividendos(QWidget, Ui_wdgInformeDividendos):
             else:
                 dpa=inv.product.estimations_dps.currentYear().estimation
                 tpc=inv.product.estimations_dps.currentYear().percentage()
-                divestimado=inv.dividendo_bruto_estimado()
+                divestimado=inv.dividend_bruto_estimado()
             
             self.tblInversiones.setItem(i, 0,QTableWidgetItem(inv.name))
             self.tblInversiones.setItem(i, 1, QTableWidgetItem(inv.cuenta.eb.name))

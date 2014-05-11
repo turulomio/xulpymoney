@@ -241,7 +241,7 @@ class SetInversiones:
         try:
             self.arr=sorted(self.arr, key=lambda inv: inv.product.estimations_dps.currentYear().percentage(),  reverse=True) 
         except:
-            print ("No se ha podido ordenar por haber estimaciones de dividendo nulas")
+            print ("No se ha podido ordenar por haber estimaciones de dividend nulas")
         
         
 class SetProducts:
@@ -372,7 +372,7 @@ class SetConceptos:
         cur.close()
             
     def load_opercuentas_qcombobox(self, combo):
-        """Carga conceptos operaciones 1,2,3, menos dividendos y renta fija, no pueden ser editados, luego no se necesitan"""
+        """Carga conceptos operaciones 1,2,3, menos dividends y renta fija, no pueden ser editados, luego no se necesitan"""
         for c in self.list():
             if c.tipooperacion.id in (1, 2, 3):
                 if c.id not in (39, 50, 62, 63, 65, 66):
@@ -394,7 +394,7 @@ class SetConceptos:
             combo.setCurrentIndex(combo.findData(select.id))
             
     def considered_dividends_in_totals(self):
-        """El 63 es pago de cupon corrido y no es considerado dividendo  a efectos de totales, sino gasto."""
+        """El 63 es pago de cupon corrido y no es considerado dividend  a efectos de totales, sino gasto."""
         return[39, 50, 62, 65, 66]
 
     def find(self, id):
@@ -635,11 +635,11 @@ class SetDividends:
         del self.arr
         self.arr=[]
         cur=self.cfg.con.cursor()
-        cur.execute( sql)#"select * from dividendos where id_inversiones=%s order by fecha", (self.inversion.id, )
+        cur.execute( sql)#"select * from dividends where id_inversiones=%s order by fecha", (self.inversion.id, )
         for row in cur:
             inversion=self.cfg.data.inversiones_all().find(row['id_inversiones'])
             oc=CuentaOperacion(self.cfg).init__db_query(row['id_opercuentas'], inversion.cuenta)
-            self.arr.append(Dividendo(self.cfg).init__db_row(row, inversion, oc, self.cfg.conceptos.find(row['id_conceptos']) ))
+            self.arr.append(Dividend(self.cfg).init__db_row(row, inversion, oc, self.cfg.conceptos.find(row['id_conceptos']) ))
         cur.close()      
         
     def sort(self):       
@@ -1683,7 +1683,7 @@ class CuentaOperacion:
     def comentariobonito(self):
         """Función que genera un comentario parseado según el tipo de operación o concepto"""
         if self.concepto.id in (62, 39, 50, 63, 65) and len(self.comentario.split("|"))==4:#"{0}|{1}|{2}|{3}".format(self.inversion.name, self.bruto, self.retencion, self.comision)
-            return QApplication.translate("Core","Dividendo de {0[0]}. Bruto: {0[1]} {1}. Retención: {0[2]} {1}. Comisión: {0[3]} {1}".format(self.comentario.split("|"), self.cuenta.currency.symbol))
+            return QApplication.translate("Core","Dividend de {0[0]}. Bruto: {0[1]} {1}. Retención: {0[2]} {1}. Comisión: {0[3]} {1}".format(self.comentario.split("|"), self.cuenta.currency.symbol))
         elif self.concepto.id in (29, 35, 38) and len(self.comentario.split("|"))==4:#{0}|{1}|{2}|{3}".format(row['inversion'], importe, comision, impuestos)
             return QApplication.translate("Core","Operación de {0[0]}. Importe: {0[1]} {1}. Comisión: {0[2]} {1}. Impuestos: {0[3]} {1}".format(self.comentario.split("|"), self.cuenta.currency.symbol))        
         elif self.concepto.id==40 and len(self.comentario.split("|"))==2:#"{0}|{1}".format(self.selTarjeta.name, len(self.setSelOperTarjetas))
@@ -1697,10 +1697,10 @@ class CuentaOperacion:
         """opercuenta es un diccionario con el contenido de una opercuetna
         7 facturación de tarjeta
         29 y 35 compraventa productos de inversión
-        39 dividendos
+        39 dividends
         40 facturación de tarjeta
         50 prima de asistencia
-        62 Vemta derechos de dividendos
+        62 Vemta derechos de dividends
         63 y 65,66 renta fija cuponcorrido"""
         if self.concepto==None:
             return False
@@ -1794,7 +1794,7 @@ class DBData:
         return self.investments_active.union(self.investments_inactive)
 
         
-class Dividendo:
+class Dividend:
     def __init__(self, cfg):
         self.cfg=cfg
         self.id=None
@@ -1809,7 +1809,7 @@ class Dividendo:
         self.concepto=None#Puedeser 39 o 62 para derechos venta
 
     def __repr__(self):
-        return ("Instancia de Dividendo: {0} ({1})".format( self.neto, self.id))
+        return ("Instancia de Dividend: {0} ({1})".format( self.neto, self.id))
         
     def init__create(self,  inversion,  bruto,  retencion, neto,  dpa,  fecha,  comision,  concepto, opercuenta=None,  id=None):
         """Opercuenta puede no aparecer porque se asigna al hacer un save que es cuando se crea. Si id=None,opercuenta debe ser None"""
@@ -1826,16 +1826,16 @@ class Dividendo:
         return self
         
     def init__db_row(self, row, inversion,  opercuenta,  concepto):
-        return self.init__create(inversion,  row['bruto'],  row['retencion'], row['neto'],  row['valorxaccion'],  row['fecha'],   row['comision'],  concepto, opercuenta, row['id_dividendos'])
+        return self.init__create(inversion,  row['bruto'],  row['retencion'], row['neto'],  row['valorxaccion'],  row['fecha'],   row['comision'],  concepto, opercuenta, row['id_dividends'])
         
     def borrar(self):
-        """Borra un dividendo, para ello borra el registro de la tabla dividendos 
+        """Borra un dividend, para ello borra el registro de la tabla dividends 
             y el asociado en la tabla opercuentas
             
             También actualiza el saldo de la cuenta."""
         cur=self.cfg.con.cursor()
         self.opercuenta.borrar()
-        cur.execute("delete from dividendos where id_dividendos=%s", (self.id, ))
+        cur.execute("delete from dividends where id_dividends=%s", (self.id, ))
         self.inversion.cuenta.saldo_from_db()
         cur.close()
         
@@ -1843,10 +1843,10 @@ class Dividendo:
         return self.bruto-self.comision
     
     def save(self):
-        """Insertar un dividendo y una opercuenta vinculada a la tabla dividendos en el campo id_opercuentas
+        """Insertar un dividend y una opercuenta vinculada a la tabla dividends en el campo id_opercuentas
         Cuando se inserta el campo comentario de opercuenta tiene la forma (nombreinversion|bruto\retencion|comision)
         
-        En caso de que sea actualizar un dividendo hay que actualizar los datos de opercuenta y se graba desde aquí. No desde el objeto opercuenta
+        En caso de que sea actualizar un dividend hay que actualizar los datos de opercuenta y se graba desde aquí. No desde el objeto opercuenta
         
         Actualiza la cuenta 
         """
@@ -1856,8 +1856,8 @@ class Dividendo:
             oc=CuentaOperacion(self.cfg).init__create( self.fecha,self.concepto, self.concepto.tipooperacion, self.neto, comentario, self.inversion.cuenta)
             oc.save()
             self.opercuenta=oc
-            #Añade el dividendo
-            sql="insert into dividendos (fecha, valorxaccion, bruto, retencion, neto, id_inversiones,id_opercuentas, comision, id_conceptos) values ('"+str(self.fecha)+"', "+str(self.dpa)+", "+str(self.bruto)+", "+str(self.retencion)+", "+str(self.neto)+", "+str(self.inversion.id)+", "+str(self.opercuenta.id)+", "+str(self.comision)+", "+str(self.concepto.id)+")"
+            #Añade el dividend
+            sql="insert into dividends (fecha, valorxaccion, bruto, retencion, neto, id_inversiones,id_opercuentas, comision, id_conceptos) values ('"+str(self.fecha)+"', "+str(self.dpa)+", "+str(self.bruto)+", "+str(self.retencion)+", "+str(self.neto)+", "+str(self.inversion.id)+", "+str(self.opercuenta.id)+", "+str(self.comision)+", "+str(self.concepto.id)+")"
             cur.execute(sql)
         else:
             self.opercuenta.fecha=self.fecha
@@ -1866,7 +1866,7 @@ class Dividendo:
             self.opercuenta.concepto=self.concepto
             self.opercuenta.tipooperacion=self.concepto.tipooperacion
             self.opercuenta.save()
-            cur.execute("update dividendos set fecha=%s, valorxaccion=%s, bruto=%s, retencion=%s, neto=%s, id_inversiones=%s, id_opercuentas=%s, comision=%s, id_conceptos=%s where id_dividendos=%s", (self.fecha, self.dpa, self.bruto, self.retencion, self.neto, self.inversion.id, self.opercuenta.id, self.comision, self.concepto.id, self.id))
+            cur.execute("update dividends set fecha=%s, valorxaccion=%s, bruto=%s, retencion=%s, neto=%s, id_inversiones=%s, id_opercuentas=%s, comision=%s, id_conceptos=%s where id_dividends=%s", (self.fecha, self.dpa, self.bruto, self.retencion, self.neto, self.inversion.id, self.opercuenta.id, self.comision, self.concepto.id, self.id))
         self.inversion.cuenta.saldo_from_db()
         cur.close()
 
@@ -2229,12 +2229,12 @@ class Inversion:
         
 
     
-    def dividendo_bruto_estimado(self, year=None):
+    def dividend_bruto_estimado(self, year=None):
         """
             Si el year es None es el año actual
-            Calcula el dividendo estimado de la inversion se ha tenido que cargar:
+            Calcula el dividend estimado de la inversion se ha tenido que cargar:
                 - El inversiones mq
-                - La estimacion de dividendos mq"""
+                - La estimacion de dividends mq"""
         if year==None:
             year=datetime.date.today().year
         try:
@@ -2251,29 +2251,29 @@ class Inversion:
         except:
             return None
             
-    def dividendos_neto(self, ano,  mes=None):
-        """Dividendo cobrado en un año y mes pasado como parámetro, independientemente de si la inversión esta activa o no.
-        El 63 es un gasto aunque también este registrado en dividendos."""
+    def dividends_neto(self, ano,  mes=None):
+        """Dividend cobrado en un año y mes pasado como parámetro, independientemente de si la inversión esta activa o no.
+        El 63 es un gasto aunque también este registrado en dividends."""
         cur=self.cfg.con.cursor()
         if mes==None:#Calcula en el año
-            cur.execute("select sum(neto) as neto from dividendos where id_conceptos not in (63) and date_part('year',fecha) = "+str(ano))
+            cur.execute("select sum(neto) as neto from dividends where id_conceptos not in (63) and date_part('year',fecha) = "+str(ano))
             resultado=cur.fetchone()[0]
         else:
-            cur.execute("select sum(neto) as neto from dividendos where id_conceptos not in (63) and date_part('year',fecha) = "+str(ano)+" and date_part('month',fecha)= " + str(mes))
+            cur.execute("select sum(neto) as neto from dividends where id_conceptos not in (63) and date_part('year',fecha) = "+str(ano)+" and date_part('month',fecha)= " + str(mes))
             resultado=cur.fetchone()[0]   
         if resultado==None:
             resultado=0
         cur.close()
         return resultado;                   
-    def dividendos_bruto(self,  ano,  mes=None):
-        """Dividendo cobrado en un año y mes pasado como parámetro, independientemente de si la inversión esta activa o no"""
+    def dividends_bruto(self,  ano,  mes=None):
+        """Dividend cobrado en un año y mes pasado como parámetro, independientemente de si la inversión esta activa o no"""
         
         cur=self.cfg.con.cursor()
         if mes==None:#Calcula en el año
-            cur.execute("select sum(bruto) as bruto from dividendos where id_conceptos not in (63) and  date_part('year',fecha) = "+str(ano))
+            cur.execute("select sum(bruto) as bruto from dividends where id_conceptos not in (63) and  date_part('year',fecha) = "+str(ano))
             resultado=cur.fetchone()[0]
         else:
-            cur.execute("select sum(bruto) as bruto from dividendos where id_conceptos not in (63) and  date_part('year',fecha) = "+str(ano)+" and date_part('month',fecha)= " + str(mes))
+            cur.execute("select sum(bruto) as bruto from dividends where id_conceptos not in (63) and  date_part('year',fecha) = "+str(ano)+" and date_part('month',fecha)= " + str(mes))
             resultado=cur.fetchone()[0]   
         if resultado==None:
             resultado=0
@@ -3213,8 +3213,8 @@ class SetDPS:
         table.setCurrentCell(len(self.arr)-1, 0)
         
     def sum(self, date):
-        """Devuelve la suma de los dividendos desde hoy hasta la fecha.
-        Se deben restar a la cotización  del dia date, para tener la cotización sin descontar dividendos"""
+        """Devuelve la suma de los dividends desde hoy hasta la fecha.
+        Se deben restar a la cotización  del dia date, para tener la cotización sin descontar dividends"""
         self.sort()
         sum=0
         for dps in reversed(self.arr):
@@ -3226,7 +3226,7 @@ class SetDPS:
         
 
 class DPS:
-    """Dividendo por acción pagados. Se usa para pintar gráficos sin dividendos"""
+    """Dividend por acción pagados. Se usa para pintar gráficos sin dividends"""
     def __init__(self, cfg,  product):
         self.cfg=cfg
         self.product=product
@@ -3328,7 +3328,7 @@ class EstimationEPS:
             return None
 
 class EstimationDPS:
-    """Dividendos por acción"""
+    """Dividends por acción"""
     def __init__(self, cfg):
         self.cfg=cfg
         self.product=None#pk
@@ -5018,7 +5018,7 @@ class Split:
             oi.valor_accion=self.convertPrices(oi.valor_accion)
             oi.save()
         
-    def updateDividendos(self, arr):
+    def updateDividends(self, arr):
         """Transforms de dpa of an array of dividends"""
         for d in arr:
             d.estimation=self.convertDPA(d.estimation)

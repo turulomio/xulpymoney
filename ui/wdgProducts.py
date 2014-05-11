@@ -182,7 +182,7 @@ class wdgProducts(QWidget, Ui_wdgProducts):
         self.build_table()        
         
     @QtCore.pyqtSlot() 
-    def on_actionOrdenarDividendo_activated(self):
+    def on_actionOrdenarDividend_activated(self):
         self.products=sorted(self.products, key=lambda inv: inv.estimations_dps.currentYear().percentage(),  reverse=True) 
         self.build_table()        
         
@@ -239,7 +239,7 @@ class wdgProducts(QWidget, Ui_wdgProducts):
         ordenar.addAction(self.actionOrdenarHora)
         ordenar.addAction(self.actionOrdenarTPCDiario)
         ordenar.addAction(self.actionOrdenarTPCAnual)
-        ordenar.addAction(self.actionOrdenarDividendo)
+        ordenar.addAction(self.actionOrdenarDividend)
         
         #Enabled disabled  
         

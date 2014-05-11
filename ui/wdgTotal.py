@@ -120,7 +120,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         self.table.clearContents()
         inicio=datetime.datetime.now()     
         sumgastos=0
-        sumdividendos=0
+        sumdividends=0
         sumingresos=0        
         sumconsolidado=0
         (sumdiferencia, sumsaldoaccionescostecero)=(0, 0)
@@ -131,17 +131,17 @@ class wdgTotal(QWidget, Ui_wdgTotal):
 
         for i in range(12): 
             gastos=Patrimonio(self.cfg).saldo_por_tipo_operacion( self.wyData.year,i+1,1)#La facturación de tarjeta dentro esta por el union
-            dividendos=Inversion(self.cfg).dividendos_neto(  self.wyData.year, i+1)
-            ingresos=Patrimonio(self.cfg).saldo_por_tipo_operacion(  self.wyData.year,i+1,2)-dividendos #Se quitan los dividendos que luego se suman
+            dividends=Inversion(self.cfg).dividends_neto(  self.wyData.year, i+1)
+            ingresos=Patrimonio(self.cfg).saldo_por_tipo_operacion(  self.wyData.year,i+1,2)-dividends #Se quitan los dividends que luego se suman
             consolidado=Patrimonio(self.cfg).consolidado_neto(self.cfg.data.inversiones_all(), self.wyData.year, i+1)
-            gi=ingresos+dividendos+consolidado+gastos
-            self.sumpopup[i]=consolidado+dividendos
+            gi=ingresos+dividends+consolidado+gastos
+            self.sumpopup[i]=consolidado+dividends
             
             sumgastos=sumgastos+gastos
-            sumdividendos=sumdividendos+dividendos
+            sumdividends=sumdividends+dividends
             sumingresos=sumingresos+ingresos
             sumconsolidado=sumconsolidado+consolidado
-            sumgi=sumgastos+sumdividendos+sumingresos+sumconsolidado
+            sumgi=sumgastos+sumdividends+sumingresos+sumconsolidado
 
             if  datetime.date.today()<datetime.date(self.wyData.year, i+1, 1):
                 cuentas=0
@@ -164,7 +164,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
             
             self.table.setItem(0, i, self.cfg.localcurrency.qtablewidgetitem(ingresos))
             self.table.setItem(1, i, self.cfg.localcurrency.qtablewidgetitem(consolidado))
-            self.table.setItem(2, i, self.cfg.localcurrency.qtablewidgetitem(dividendos))
+            self.table.setItem(2, i, self.cfg.localcurrency.qtablewidgetitem(dividends))
             self.table.setItem(3, i, self.cfg.localcurrency.qtablewidgetitem(gastos))
             self.table.setItem(4, i, self.cfg.localcurrency.qtablewidgetitem(gi))
             self.table.setItem(6, i, self.cfg.localcurrency.qtablewidgetitem(cuentas))
@@ -174,10 +174,10 @@ class wdgTotal(QWidget, Ui_wdgTotal):
             self.table.setItem(11, i, qtpc(tpc))
         self.table.setItem(0, 12, self.cfg.localcurrency.qtablewidgetitem(sumingresos))
         self.table.setItem(1, 12, self.cfg.localcurrency.qtablewidgetitem(sumconsolidado))
-        self.table.setItem(2, 12, self.cfg.localcurrency.qtablewidgetitem(sumdividendos))
+        self.table.setItem(2, 12, self.cfg.localcurrency.qtablewidgetitem(sumdividends))
         self.table.setItem(3, 12, self.cfg.localcurrency.qtablewidgetitem(sumgastos))
         self.table.setItem(4, 12, self.cfg.localcurrency.qtablewidgetitem(sumgi))      
-        self.sumpopup[12]=sumconsolidado+sumdividendos
+        self.sumpopup[12]=sumconsolidado+sumdividends
         self.table.setItem(9, 12, self.cfg.localcurrency.qtablewidgetitem(sumdiferencia))    
         if inicioano==0:
             self.table.setItem(11, 12, qtpc(None))     
@@ -271,7 +271,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         horizontalLayout = QHBoxLayout(newtab)
         table = myQTableWidget(newtab)
         set=SetDividends(self.cfg)
-        set.load_from_db("select * from dividendos where id_conceptos not in (63) and date_part('year',fecha)={0} and date_part('month',fecha)={1}".format (self.wyData.year, self.month))
+        set.load_from_db("select * from dividends where id_conceptos not in (63) and date_part('year',fecha)={0} and date_part('month',fecha)={1}".format (self.wyData.year, self.month))
         set.sort()
         set.myqtablewidget(table, None, True)
         horizontalLayout.addWidget(table)
@@ -297,7 +297,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
     @QtCore.pyqtSlot() 
     def on_actionSellingOperationsPlusDividends_activated(self):
         m=QMessageBox()
-        message=self.trUtf8("La suma de consolidado y dividendos  de este mes es {0}. En el año su valor asciende a {1}".format(self.cfg.localcurrency.string(self.sumpopup[self.month-1]), self.cfg.localcurrency.string(self.sumpopup[12])))
+        message=self.trUtf8("La suma de consolidado y dividends  de este mes es {0}. En el año su valor asciende a {1}".format(self.cfg.localcurrency.string(self.sumpopup[self.month-1]), self.cfg.localcurrency.string(self.sumpopup[12])))
 
         m.setText(message)
         m.exec_()    

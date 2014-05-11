@@ -342,7 +342,7 @@ class canvasChartHistorical(canvasChart):
         elif self.num>=len(arr):
             QApplication.beep()
             self.num=len(arr)
-        if self.sd==False:##Sin descontar dividendos, es decir sumando dividendos desde principio
+        if self.sd==False:##Sin descontar dividends, es decir sumando dividends desde principio
             return arr[len(arr)-self.num:len(arr)]
         else:
             result=[]
@@ -577,5 +577,5 @@ class canvasChartHistorical(canvasChart):
         """Debe tener cargado los ohcl, no el all"""
         self.product=product
         self.inversion=inversion
-        self.sd=SD#Sin descontar dividendos, es decir sumará los dividendos a las quotes.
+        self.sd=SD#Sin descontar dividends, es decir sumará los dividends a las quotes.
         self.mydraw()

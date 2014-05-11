@@ -94,12 +94,12 @@ class frmMainMS(QMainWindow, Ui_frmMainMS):#
         self.layout.addWidget(self.w)
         self.w.show()
     @QtCore.pyqtSlot()  
-    def on_actionDividendos_activated(self):
+    def on_actionDividends_activated(self):
         self.w.close()
         self.w=wdgProducts(self.cfg,  "select * from products where id in (select distinct(quotes.id) from quotes, estimaciones where quotes.id=estimaciones.id and year=2012  and dpa > 0 );")
 
         self.layout.addWidget(self.w)
-        self.w.on_actionOrdenarDividendo_activated()
+        self.w.on_actionOrdenarDividend_activated()
         self.w.show()
 
     @QtCore.pyqtSlot()  

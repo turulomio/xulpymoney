@@ -6,7 +6,7 @@ from frmAbout import *
 from libxulpymoney import *
 from frmAccess import *
 from wdgTotal import *
-from wdgInformeDividendos import *
+from wdgDividendsReport import *
 from wdgInformeClases import *
 from wdgInformeHistorico import *
 from wdgAPR import *
@@ -102,9 +102,9 @@ class frmMain(QMainWindow, Ui_frmMain):
         
         
     @QtCore.pyqtSlot()  
-    def on_actionInformeDividendos_activated(self):
+    def on_actionInformeDividends_activated(self):
         self.w.close()
-        self.w=wdgInformeDividendos(self.cfg)
+        self.w=wdgDividendsReport(self.cfg)
                 
         self.layout.addWidget(self.w)
         self.w.show()

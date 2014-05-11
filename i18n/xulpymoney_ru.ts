@@ -1417,125 +1417,125 @@ correspondiente en la tabla</source>
     </message>
 </context>
 <context>
-    <name>frmDividendosIBM</name>
+    <name>frmDividendsAdd</name>
     <message>
-        <location filename="ui/Ui_frmDividendosIBM.py" line="187"/>
-        <source>Dividendos</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_frmDividendosIBM.py" line="189"/>
-        <source>Introduce el importe bruto</source>
+        <location filename="ui/Ui_frmDividendsAdd.py" line="189"/>
+        <source>Dividends</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmDividendosIBM.py" line="199"/>
-        <source>0</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_frmDividendosIBM.py" line="190"/>
-        <source>Introduce el importe de la retenci&#xc3;&#xb3;n</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_frmDividendosIBM.py" line="192"/>
-        <source>Introduce el dividendo por acci&#xc3;&#xb3;n</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_frmDividendosIBM.py" line="194"/>
-        <source>Introduce la comisi&#xc3;&#xb3;n bancaria</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_frmDividendosIBM.py" line="196"/>
-        <source>El importe neto a cobrar</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_frmDividendosIBM.py" line="200"/>
-        <source>Tiene una retenci&#xc3;&#xb3;n del 0%</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_frmDividendosIBM.py" line="201"/>
-        <source>Nuevo movimiento</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_frmDividendosIBM.py" line="202"/>
-        <source>Borrar el movimiento</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_frmDividendosIBM.py" line="203"/>
-        <source>Nueva Tarjeta</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_frmDividendosIBM.py" line="204"/>
-        <source>Borrar Tarjeta</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_frmDividendosIBM.py" line="205"/>
-        <source>Nueva Operaci&#xc3;&#xb3;n de Tarjeta</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_frmDividendosIBM.py" line="206"/>
-        <source>Borrar Operaci&#xc3;&#xb3;n de Tarjeta</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/frmDividendosIBM.py" line="26"/>
-        <source>Insertar nuevo dividendo</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/frmDividendosIBM.py" line="38"/>
-        <source>Modificar dividendo</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message encoding="UTF-8">
-        <location filename="ui/frmDividendosIBM.py" line="65"/>
-        <source>{0} % de retención</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message encoding="UTF-8">
-        <location filename="ui/frmDividendosIBM.py" line="110"/>
-        <source>Error al introducir los datos. Compruébelos</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_frmDividendosIBM.py" line="188"/>
+        <location filename="ui/Ui_frmDividendsAdd.py" line="190"/>
         <source>New dividend</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmDividendosIBM.py" line="198"/>
-        <source>Select dividend type</source>
+        <location filename="ui/Ui_frmDividendsAdd.py" line="191"/>
+        <source>Gross amount</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message encoding="UTF-8">
+        <location filename="ui/Ui_frmDividendsAdd.py" line="192"/>
+        <source>Introduce el importe de la retención</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmDividendosIBM.py" line="81"/>
+        <location filename="ui/Ui_frmDividendsAdd.py" line="201"/>
+        <source>0</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_frmDividendsAdd.py" line="194"/>
+        <source>Dividend per share</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_frmDividendsAdd.py" line="196"/>
+        <source>Comission</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_frmDividendsAdd.py" line="198"/>
+        <source>Net amount</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_frmDividendsAdd.py" line="200"/>
+        <source>Select dividend type</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message encoding="UTF-8">
+        <location filename="ui/Ui_frmDividendsAdd.py" line="202"/>
+        <source>Tiene una retención del 0%</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_frmDividendsAdd.py" line="203"/>
+        <source>Nuevo movimiento</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_frmDividendsAdd.py" line="204"/>
+        <source>Borrar el movimiento</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_frmDividendsAdd.py" line="205"/>
+        <source>Nueva Tarjeta</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_frmDividendsAdd.py" line="206"/>
+        <source>Borrar Tarjeta</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message encoding="UTF-8">
+        <location filename="ui/Ui_frmDividendsAdd.py" line="207"/>
+        <source>Nueva Operación de Tarjeta</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message encoding="UTF-8">
+        <location filename="ui/Ui_frmDividendsAdd.py" line="208"/>
+        <source>Borrar Operación de Tarjeta</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/frmDividendsAdd.py" line="26"/>
+        <source>Insertar nuevo dividend</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/frmDividendsAdd.py" line="38"/>
+        <source>Modificar dividend</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message encoding="UTF-8">
+        <location filename="ui/frmDividendsAdd.py" line="65"/>
+        <source>{0} % de retención</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/frmDividendsAdd.py" line="69"/>
+        <source>Error calculando</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/frmDividendsAdd.py" line="81"/>
         <source>Un gasto no puede tener un importe positivo</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmDividendosIBM.py" line="88"/>
+        <location filename="ui/frmDividendsAdd.py" line="88"/>
         <source>Un ingreso no puede tener un importe negativo</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmDividendosIBM.py" line="94"/>
+        <location filename="ui/frmDividendsAdd.py" line="94"/>
         <source>Retention, earnings por share and commission must be greater than zero</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <location filename="ui/frmDividendosIBM.py" line="69"/>
-        <source>Error calculando</source>
+    <message encoding="UTF-8">
+        <location filename="ui/frmDividendsAdd.py" line="110"/>
+        <source>Error al introducir los datos. Compruébelos</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1799,16 +1799,6 @@ correspondiente en la tabla</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmInversionesEstudio.py" line="310"/>
-        <source>A&#xc3;&#xb1;adir nuevo dividendo</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_frmInversionesEstudio.py" line="312"/>
-        <source>Borrar dividendo</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="ui/Ui_frmInversionesEstudio.py" line="314"/>
         <source>Modificar movimiento</source>
         <translation type="unfinished"></translation>
@@ -1826,11 +1816,6 @@ correspondiente en la tabla</source>
     <message>
         <location filename="ui/Ui_frmInversionesEstudio.py" line="319"/>
         <source>C&#xc3;&#xa1;lculo de punto de venta</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_frmInversionesEstudio.py" line="321"/>
-        <source>Modificar dividendo</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1946,6 +1931,21 @@ correspondiente en la tabla</source>
     <message>
         <location filename="ui/Ui_frmInversionesEstudio.py" line="304"/>
         <source>% APR</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_frmInversionesEstudio.py" line="310"/>
+        <source>Add new dividend</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_frmInversionesEstudio.py" line="312"/>
+        <source>Delete dividend</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_frmInversionesEstudio.py" line="321"/>
+        <source>Edit dividend</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3820,6 +3820,84 @@ seleccionados por el usuario</source>
     </message>
 </context>
 <context>
+    <name>wdgDividendsReport</name>
+    <message>
+        <location filename="ui/Ui_wdgDividendsReport.py" line="127"/>
+        <source>Dividends Report</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_wdgDividendsReport.py" line="128"/>
+        <source>Los dividendos por acci&#xc3;&#xb3;n (DPA) que aparecer&#xc3;&#xa1;n marcados de rojo cuando est&#xc3;&#xa9;n desactualizados m&#xc3;&#xa1;s de</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_wdgDividendsReport.py" line="129"/>
+        <source> days</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_wdgDividendsReport.py" line="130"/>
+        <source>Show inactive investments</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_wdgDividendsReport.py" line="133"/>
+        <source>Investment</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_wdgDividendsReport.py" line="135"/>
+        <source>Bank</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_wdgDividendsReport.py" line="137"/>
+        <source>Price</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_wdgDividendsReport.py" line="139"/>
+        <source>DPS</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_wdgDividendsReport.py" line="141"/>
+        <source>Shares</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_wdgDividendsReport.py" line="143"/>
+        <source>Estimated</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_wdgDividendsReport.py" line="145"/>
+        <source>% annual dividend</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_wdgDividendsReport.py" line="146"/>
+        <source>Modificar Dividendo por Acci&#xc3;&#xb3;n</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_wdgDividendsReport.py" line="148"/>
+        <source>Estudio de la inversi&#xc3;&#xb3;n</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_wdgDividendsReport.py" line="150"/>
+        <source>Informe de MyStocks</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message encoding="UTF-8">
+        <location filename="ui/wdgDividendsReport.py" line="64"/>
+        <source>Si mantuviera la inversión un año obtendría {0}</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>wdgIndexRange</name>
     <message>
         <location filename="ui/Ui_wdgIndexRange.py" line="187"/>
@@ -3968,84 +4046,6 @@ seleccionados por el usuario</source>
     <message>
         <location filename="ui/Ui_wdgInformeClases.py" line="116"/>
         <source>Investments report</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>wdgInformeDividendos</name>
-    <message>
-        <location filename="ui/Ui_wdgInformeDividendos.py" line="127"/>
-        <source>Estudio de dividendos</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_wdgInformeDividendos.py" line="128"/>
-        <source>Los dividendos por acci&#xc3;&#xb3;n (DPA) que aparecer&#xc3;&#xa1;n marcados de rojo cuando est&#xc3;&#xa9;n desactualizados m&#xc3;&#xa1;s de</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_wdgInformeDividendos.py" line="129"/>
-        <source> d&#xc3;&#xad;as</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_wdgInformeDividendos.py" line="137"/>
-        <source>Valor acci&#xc3;&#xb3;n</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_wdgInformeDividendos.py" line="139"/>
-        <source>DPA</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_wdgInformeDividendos.py" line="145"/>
-        <source>% Dividendo anual</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_wdgInformeDividendos.py" line="146"/>
-        <source>Modificar Dividendo por Acci&#xc3;&#xb3;n</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_wdgInformeDividendos.py" line="148"/>
-        <source>Estudio de la inversi&#xc3;&#xb3;n</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_wdgInformeDividendos.py" line="150"/>
-        <source>Informe de MyStocks</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message encoding="UTF-8">
-        <location filename="ui/wdgInformeDividendos.py" line="64"/>
-        <source>Si mantuviera la inversión un año obtendría {0}</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_wdgInformeDividendos.py" line="130"/>
-        <source>Show inactive investments</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_wdgInformeDividendos.py" line="133"/>
-        <source>Investment</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_wdgInformeDividendos.py" line="135"/>
-        <source>Bank</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_wdgInformeDividendos.py" line="141"/>
-        <source>Shares</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_wdgInformeDividendos.py" line="143"/>
-        <source>Estimated</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -4778,11 +4778,6 @@ S&#xc3;&#xb3;lo se contabilizar&#xc3;&#xa1; cuando se vendan las acciones</sourc
         <source>Calculando datos...</source>
         <translation type="unfinished"></translation>
     </message>
-    <message encoding="UTF-8">
-        <location filename="ui/wdgTotal.py" line="300"/>
-        <source>La suma de consolidado y dividendos  de este mes es {0}. En el año su valor asciende a {1}</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <location filename="ui/Ui_wdgTotal.py" line="181"/>
         <source>Total report</source>
@@ -4921,6 +4916,11 @@ S&#xc3;&#xb3;lo se contabilizar&#xc3;&#xa1; cuando se vendan las acciones</sourc
     <message>
         <location filename="ui/Ui_wdgTotal.py" line="239"/>
         <source>Selling operations + Dividends report</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message encoding="UTF-8">
+        <location filename="ui/wdgTotal.py" line="300"/>
+        <source>La suma de consolidado y dividends  de este mes es {0}. En el año su valor asciende a {1}</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

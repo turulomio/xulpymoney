@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>wdgInformeDividendos</class>
- <widget class="QWidget" name="wdgInformeDividendos">
+ <class>wdgDividendsReport</class>
+ <widget class="QWidget" name="wdgDividendsReport">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -29,7 +29,7 @@
         </font>
        </property>
        <property name="text">
-        <string>Estudio de dividendos</string>
+        <string>Dividends Report</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
@@ -54,7 +54,7 @@
           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
          </property>
          <property name="suffix">
-          <string> días</string>
+          <string> days</string>
          </property>
          <property name="minimum">
           <number>1</number>
@@ -122,12 +122,12 @@
        </column>
        <column>
         <property name="text">
-         <string>Valor acción</string>
+         <string>Price</string>
         </property>
        </column>
        <column>
         <property name="text">
-         <string>DPA</string>
+         <string>DPS</string>
         </property>
        </column>
        <column>
@@ -142,7 +142,7 @@
        </column>
        <column>
         <property name="text">
-         <string>% Dividendo anual</string>
+         <string>% annual dividend</string>
         </property>
        </column>
       </widget>
