@@ -1754,11 +1754,6 @@ correspondiente en la tabla</source>
 <context>
     <name>frmInversionesEstudio</name>
     <message>
-        <location filename="ui/frmInversionesEstudio.py" line="41"/>
-        <source>Nueva inversi&#xc3;&#xb3;n</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="ui/Ui_frmInversionesEstudio.py" line="290"/>
         <source>0</source>
         <translation type="unfinished"></translation>
@@ -1829,17 +1824,12 @@ correspondiente en la tabla</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="ui/frmInversionesEstudio.py" line="40"/>
-        <source>Añadir una nueva inversión</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message encoding="UTF-8">
-        <location filename="ui/frmInversionesEstudio.py" line="144"/>
+        <location filename="ui/frmInversionesEstudio.py" line="143"/>
         <source>Simulación de Desinversión / Reinversión</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmInversionesEstudio.py" line="183"/>
+        <location filename="ui/frmInversionesEstudio.py" line="182"/>
         <source>No se ha podiddo deshacer el traspaso de valores</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1851,11 +1841,6 @@ correspondiente en la tabla</source>
     <message>
         <location filename="ui/Ui_frmInversionesEstudio.py" line="327"/>
         <source>make Split / Contrasplit</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message encoding="UTF-8">
-        <location filename="ui/frmInversionesEstudio.py" line="227"/>
-        <source>Debe seleccionar una inversión de MyStocks para continuar</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1946,6 +1931,21 @@ correspondiente en la tabla</source>
     <message>
         <location filename="ui/Ui_frmInversionesEstudio.py" line="321"/>
         <source>Edit dividend</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/frmInversionesEstudio.py" line="39"/>
+        <source>Add a new investment</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/frmInversionesEstudio.py" line="226"/>
+        <source>You must select a MyStocks product to continue.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/frmInversionesEstudio.py" line="316"/>
+        <source>Selected: {0}</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
