@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>frmDividendosIBM</class>
- <widget class="QDialog" name="frmDividendosIBM">
+ <class>frmDividendsAdd</class>
+ <widget class="QDialog" name="frmDividendsAdd">
   <property name="windowModality">
    <enum>Qt::WindowModal</enum>
   </property>
@@ -14,11 +14,11 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Dividendos</string>
+   <string>Dividends</string>
   </property>
   <property name="windowIcon">
-   <iconset>
-    <normaloff>:/xulpmoney/document-edit.png</normaloff>:/xulpmoney/document-edit.png</iconset>
+   <iconset resource="../images/xulpymoney.qrc">
+    <normaloff>:/xulpymoney/Money.png</normaloff>:/xulpymoney/Money.png</iconset>
   </property>
   <property name="modal">
    <bool>true</bool>
@@ -94,7 +94,7 @@
        <item row="1" column="0">
         <widget class="QLabel" name="lblLiquido_3">
          <property name="text">
-          <string>Introduce el importe bruto</string>
+          <string>Gross amount</string>
          </property>
         </widget>
        </item>
@@ -124,7 +124,7 @@
        <item row="3" column="0">
         <widget class="QLabel" name="lblLiquido_5">
          <property name="text">
-          <string>Introduce el dividendo por acción</string>
+          <string>Dividend per share</string>
          </property>
         </widget>
        </item>
@@ -147,7 +147,7 @@
        <item row="4" column="0">
         <widget class="QLabel" name="lblLiquido">
          <property name="text">
-          <string>Introduce la comisión bancaria</string>
+          <string>Comission</string>
          </property>
         </widget>
        </item>
@@ -170,7 +170,7 @@
        <item row="5" column="0">
         <widget class="QLabel" name="lblLiquido_7">
          <property name="text">
-          <string>El importe neto a cobrar</string>
+          <string>Net amount</string>
          </property>
         </widget>
        </item>

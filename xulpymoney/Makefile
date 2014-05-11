@@ -28,11 +28,11 @@ compile:
 	pyuic4 ui/frmCuentasIBM.ui > ui/Ui_frmCuentasIBM.py &
 	pyuic4 ui/wdgInformeClases.ui > ui/Ui_wdgInformeClases.py &
 	pyuic4 ui/wdgInformeHistorico.ui > ui/Ui_wdgInformeHistorico.py &
-	pyuic4 ui/wdgInformeDividendos.ui > ui/Ui_wdgInformeDividendos.py &
+	pyuic4 ui/wdgDividendsReport.ui > ui/Ui_wdgDividendsReport.py &
 	pyuic4 ui/wdgAPR.ui > ui/Ui_wdgAPR.py &
 	pyuic4 ui/wdgIndexRange.ui > ui/Ui_wdgIndexRange.py &
 	pyuic4 ui/wdgInversiones.ui > ui/Ui_wdgInversiones.py &
-	pyuic4 ui/frmDividendosIBM.ui > ui/Ui_frmDividendosIBM.py &
+	pyuic4 ui/frmDividendsAdd.ui > ui/Ui_frmDividendsAdd.py &
 	pyuic4 ui/frmInversionesEstudio.ui > ui/Ui_frmInversionesEstudio.py &
 	pyuic4 ui/frmInversionesIBM.ui > ui/Ui_frmInversionesIBM.py &
 	pyuic4 ui/frmPuntoVenta.ui > ui/Ui_frmPuntoVenta.py &

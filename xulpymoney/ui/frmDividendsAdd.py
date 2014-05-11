@@ -1,41 +1,41 @@
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 from libxulpymoney import *
-from Ui_frmDividendosIBM import *
+from Ui_frmDividendsAdd import *
 
-class frmDividendosIBM(QDialog, Ui_frmDividendosIBM):
-    def __init__(self, cfg, inversion, dividendo=None,  parent=None):
+class frmDividendsAdd(QDialog, Ui_frmDividendsAdd):
+    def __init__(self, cfg, inversion, dividend=None,  parent=None):
         """
-        Si dividendo es None se insertar
-        Si dividendo es un objeto se modifica"""
+        Si dividend es None se insertar
+        Si dividend es un objeto se modifica"""
         QWidget.__init__(self, parent)
         self.setupUi(self)
         self.cfg=cfg
-        self.dividendo=dividendo
+        self.dividend=dividend
         self.inversion=inversion
         
         self.neto=0
         self.tpc=0
-        if dividendo==None:#insertar
+        if dividend==None:#insertar
             if self.inversion.product.type.id in (7, 9):#Bonds
                 self.cfg.conceptos.load_bonds_qcombobox(self.cmb)
             else:
                 self.cfg.conceptos.load_dividend_qcombobox(self.cmb)
-            self.dividendo=Dividendo(self.cfg)
-            self.dividendo.inversion=inversion
-            self.cmd.setText(self.trUtf8("Insertar nuevo dividendo"))
+            self.dividend=Dividend(self.cfg)
+            self.dividend.inversion=inversion
+            self.cmd.setText(self.trUtf8("Insertar nuevo dividend"))
         else:#modificar 
             if self.inversion.product.type.id in (7, 9):#Bonds
-                self.cfg.conceptos.load_bonds_qcombobox(self.cmb, self.dividendo.concepto) 
+                self.cfg.conceptos.load_bonds_qcombobox(self.cmb, self.dividend.concepto) 
             else:
-                self.cfg.conceptos.load_dividend_qcombobox(self.cmb, self.dividendo.concepto) 
-            self.cal.setSelectedDate(self.dividendo.fecha)
-            self.txtBruto.setText(str(self.dividendo.bruto))
-            self.txtNeto.setText(str(self.dividendo.neto))
-            self.txtRetencion.setText(str(self.dividendo.retencion))
-            self.txtComision.setText(str(self.dividendo.comision))
-            self.txtDPA.setText(str(self.dividendo.dpa))
-            self.cmd.setText(self.trUtf8("Modificar dividendo"))
+                self.cfg.conceptos.load_dividend_qcombobox(self.cmb, self.dividend.concepto) 
+            self.cal.setSelectedDate(self.dividend.fecha)
+            self.txtBruto.setText(str(self.dividend.bruto))
+            self.txtNeto.setText(str(self.dividend.neto))
+            self.txtRetencion.setText(str(self.dividend.retencion))
+            self.txtComision.setText(str(self.dividend.comision))
+            self.txtDPA.setText(str(self.dividend.dpa))
+            self.cmd.setText(self.trUtf8("Modificar dividend"))
  
     def on_txtBruto_textChanged(self):
         self.calcular()
@@ -97,13 +97,13 @@ class frmDividendosIBM(QDialog, Ui_frmDividendosIBM):
         
         
         try:
-            self.dividendo.concepto=concepto
-            self.dividendo.bruto=self.txtBruto.decimal()
-            self.dividendo.retencion=self.txtRetencion.decimal()
-            self.dividendo.neto=self.neto
-            self.dividendo.dpa=self.txtDPA.decimal()
-            self.dividendo.fecha=self.cal.selectedDate().toPyDate()
-            self.dividendo.comision=self.txtComision.decimal()
+            self.dividend.concepto=concepto
+            self.dividend.bruto=self.txtBruto.decimal()
+            self.dividend.retencion=self.txtRetencion.decimal()
+            self.dividend.neto=self.neto
+            self.dividend.dpa=self.txtDPA.decimal()
+            self.dividend.fecha=self.cal.selectedDate().toPyDate()
+            self.dividend.comision=self.txtComision.decimal()
         except:            
             m=QMessageBox()
             m.setIcon(QMessageBox.Information)
@@ -112,6 +112,6 @@ class frmDividendosIBM(QDialog, Ui_frmDividendosIBM):
             return
 
         
-        self.dividendo.save()
+        self.dividend.save()
         self.cfg.con.commit()
         self.done(0)

@@ -17,7 +17,6 @@ SOURCES         = xulpymoney.py \
                   ui/Ui_frmTablasAuxiliares.py \
                   ui/frmTarjetasIBM.py \
                   ui/Ui_frmTarjetasIBM.py \
-                  ui/wdgInformeDividendos.py \
                   ui/wdgBancos.py \
                   ui/Ui_wdgBancos.py \
                   ui/wdgConceptos.py \
@@ -30,9 +29,10 @@ SOURCES         = xulpymoney.py \
                   ui/Ui_frmCuentasIBM.py \
                   ui/wdgDesReinversion.py \
                   ui/Ui_wdgDesReinversion.py \
-                  ui/frmDividendosIBM.py \
-                  ui/Ui_frmDividendosIBM.py \
-                  ui/Ui_wdgInformeDividendos.py \
+                  ui/frmDividendsAdd.py \
+                  ui/Ui_frmDividendsAdd.py \
+                  ui/wdgDividendsReport.py \
+                  ui/Ui_wdgDividendsReport.py \
                   ui/wdgInformeClases.py \
                   ui/Ui_wdgInformeClases.py \
                   ui/wdgInformeHistorico.py \
@@ -90,7 +90,7 @@ SOURCES         = xulpymoney.py \
 
 FORMS           = ui/frmAbout.ui \
                   ui/frmAccess.ui \
-                  ui/frmDividendosIBM.ui \
+                  ui/frmDividendsAdd.ui \
                   ui/frmDPSAdd.ui \
                   ui/frmInit.ui \
                   ui/frmHelp.ui \
@@ -106,7 +106,7 @@ FORMS           = ui/frmAbout.ui \
                   ui/frmCuentasIBM.ui \
                   ui/wdgDesReinversion.ui \
                   ui/wdgInformeClases.ui \
-                  ui/wdgInformeDividendos.ui \
+                  ui/wdgDividendsReport.ui \
                   ui/wdgInformeHistorico.ui \
                   ui/wdgAPR.ui \
                   ui/wdgIndexRange.ui \
