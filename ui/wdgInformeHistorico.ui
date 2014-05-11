@@ -72,7 +72,7 @@
      <item>
       <widget class="QTabWidget" name="tab">
        <property name="currentIndex">
-        <number>3</number>
+        <number>2</number>
        </property>
        <widget class="QWidget" name="tab_3">
         <attribute name="icon">
@@ -325,7 +325,7 @@ font: 75 12pt &quot;Sans Serif&quot;;</string>
         </attribute>
         <layout class="QHBoxLayout" name="horizontalLayout_2">
          <item>
-          <widget class="myQTableWidget" name="tblDividendos">
+          <widget class="myQTableWidget" name="tblDividends">
            <property name="contextMenuPolicy">
             <enum>Qt::CustomContextMenu</enum>
            </property>
