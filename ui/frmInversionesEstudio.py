@@ -28,7 +28,6 @@ class frmInversionesEstudio(QDialog, Ui_frmInversionesEstudio):
         self.cfg.data.load_inactives()
         
         self.ise.setupUi(self.cfg)
-#        self.tblInversionHistorica.settings("frmInversionesEstudio",  self.cfg)
         self.tblDividends.settings("frmInversionesEstudio",  self.cfg)
         self.cmdInversion.setEnabled(False)                                                                                                                                                                                            
         self.connect(self.ise.cmd,SIGNAL('released()'),  self.on_cmdISE_released)         
@@ -37,8 +36,8 @@ class frmInversionesEstudio(QDialog, Ui_frmInversionesEstudio):
         
         if inversion==None:
             self.tipo=1
-            self.cmdInversion.setText(self.trUtf8("Añadir una nueva inversión"))
-            self.lblTitulo.setText(self.trUtf8("Nueva inversión"))
+            self.cmdInversion.setText(self.trUtf8("Add a new investment"))
+            self.lblTitulo.setText(self.trUtf8("New investment"))
             self.inversion=None
             self.tab.setCurrentIndex(0)
             self.tabDividends.setEnabled(False)
@@ -224,7 +223,7 @@ class frmInversionesEstudio(QDialog, Ui_frmInversionesEstudio):
         if self.ise.selected==None:
             m=QMessageBox()
             m.setIcon(QMessageBox.Information)
-            m.setText(self.trUtf8("Debe seleccionar una inversión de MyStocks para continuar"))
+            m.setText(self.trUtf8("You must select a MyStocks product to continue."))
             m.exec_()     
             return
         inversion=self.txtInversion.text()
@@ -314,7 +313,7 @@ class frmInversionesEstudio(QDialog, Ui_frmInversionesEstudio):
                 self.selMovimiento=self.op.arr[i.row()]
         except:
             self.selMovimiento=None
-        print ("Seleccionado: " +  str(self.selMovimiento))
+        print (self.trUtf8("Selected: {0}".format(str(self.selMovimiento))))
         
         
     def on_tblDividends_customContextMenuRequested(self,  pos):
@@ -340,5 +339,5 @@ class frmInversionesEstudio(QDialog, Ui_frmInversionesEstudio):
                 self.selDividend=self.dividends.arr[i.row()]
         except:
             self.selDividend=None
-        print ("Dividend seleccionado: " +  str(self.selDividend))        
+        print ("Dividend selected: " +  str(self.selDividend))        
 
