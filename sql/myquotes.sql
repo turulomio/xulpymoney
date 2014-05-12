@@ -543,59 +543,6 @@ CREATE TABLE globals (
 ALTER TABLE public.globals OWNER TO postgres;
 
 --
--- Name: investments; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
---
-
-CREATE TABLE investments (
-    name text,
-    isin text,
-    currency text,
-    type integer,
-    agrupations text,
-    active boolean DEFAULT false,
-    id integer DEFAULT nextval(('"investments_seq"'::text)::regclass) NOT NULL,
-    web text,
-    address text,
-    phone text,
-    mail text,
-    tpc integer DEFAULT 100 NOT NULL,
-    pci character(1) DEFAULT 'c'::bpchar NOT NULL,
-    apalancado integer DEFAULT 0 NOT NULL,
-    id_bolsas integer NOT NULL,
-    ticker text,
-    priority integer[],
-    priorityhistorical integer[],
-    comentario text,
-    obsolete boolean DEFAULT false NOT NULL,
-    deletable boolean DEFAULT true NOT NULL,
-    system boolean DEFAULT true NOT NULL
-);
-
-
-ALTER TABLE public.investments OWNER TO postgres;
-
---
--- Name: COLUMN investments.obsolete; Type: COMMENT; Schema: public; Owner: postgres
---
-
-COMMENT ON COLUMN investments.obsolete IS 'Comprueba si esta obsoleta la inversión';
-
-
---
--- Name: COLUMN investments.deletable; Type: COMMENT; Schema: public; Owner: postgres
---
-
-COMMENT ON COLUMN investments.deletable IS 'Si es true se puede borrar (por defecto)';
-
-
---
--- Name: COLUMN investments.system; Type: COMMENT; Schema: public; Owner: postgres
---
-
-COMMENT ON COLUMN investments.system IS 'Comprueba si es una inversión gestionada por el sistema o si la ha creado el usuario';
-
-
---
 -- Name: investments_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -769,6 +716,59 @@ CREATE VIEW ohlcyearly AS
 ALTER TABLE public.ohlcyearly OWNER TO postgres;
 
 --
+-- Name: products; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE products (
+    name text,
+    isin text,
+    currency text,
+    type integer,
+    agrupations text,
+    active boolean DEFAULT false,
+    id integer DEFAULT nextval(('"investments_seq"'::text)::regclass) NOT NULL,
+    web text,
+    address text,
+    phone text,
+    mail text,
+    tpc integer DEFAULT 100 NOT NULL,
+    pci character(1) DEFAULT 'c'::bpchar NOT NULL,
+    apalancado integer DEFAULT 0 NOT NULL,
+    id_bolsas integer NOT NULL,
+    ticker text,
+    priority integer[],
+    priorityhistorical integer[],
+    comentario text,
+    obsolete boolean DEFAULT false NOT NULL,
+    deletable boolean DEFAULT true NOT NULL,
+    system boolean DEFAULT true NOT NULL
+);
+
+
+ALTER TABLE public.products OWNER TO postgres;
+
+--
+-- Name: COLUMN products.obsolete; Type: COMMENT; Schema: public; Owner: postgres
+--
+
+COMMENT ON COLUMN products.obsolete IS 'Comprueba si esta obsoleta la inversión';
+
+
+--
+-- Name: COLUMN products.deletable; Type: COMMENT; Schema: public; Owner: postgres
+--
+
+COMMENT ON COLUMN products.deletable IS 'Si es true se puede borrar (por defecto)';
+
+
+--
+-- Name: COLUMN products.system; Type: COMMENT; Schema: public; Owner: postgres
+--
+
+COMMENT ON COLUMN products.system IS 'Comprueba si es una inversión gestionada por el sistema o si la ha creado el usuario';
+
+
+--
 -- Name: quotes_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -813,14 +813,6 @@ ALTER TABLE ONLY bolsas
 
 
 --
--- Name: dividendosestimaciones_pk; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
---
-
-ALTER TABLE ONLY estimations_dps
-    ADD CONSTRAINT dividendosestimaciones_pk PRIMARY KEY (year, id);
-
-
---
 -- Name: dps_pk; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -837,10 +829,18 @@ ALTER TABLE ONLY estimations_eps
 
 
 --
+-- Name: estimations_dps_pk; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY estimations_dps
+    ADD CONSTRAINT estimations_dps_pk PRIMARY KEY (year, id);
+
+
+--
 -- Name: investments_pk; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
-ALTER TABLE ONLY investments
+ALTER TABLE ONLY products
     ADD CONSTRAINT investments_pk PRIMARY KEY (id);
 
 
@@ -886,7 +886,7 @@ CREATE INDEX estimaciones_eps ON estimations_eps USING btree (id);
 -- Name: investments_id; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
 --
 
-CREATE INDEX investments_id ON investments USING btree (id);
+CREATE INDEX investments_id ON products USING btree (id);
 
 
 --

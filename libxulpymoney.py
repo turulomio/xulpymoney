@@ -1643,7 +1643,7 @@ class CuentaOperacion:
         self.concepto=None
         self.tipooperacion=None
         self.importe=None
-        self.comentario=None
+        self.comentario=None #Documented in comentariobonito
         self.cuenta=None
         
     def __repr__(self):
@@ -1663,14 +1663,14 @@ class CuentaOperacion:
         return self.init__create(row['fecha'],  concepto,  tipooperacion,  row['importe'],  row['comentario'],  cuenta,  row['id_opercuentas'])
 
 
-    def init__db_query(self, id_opercuentas,  cuenta):
+    def init__db_query(self, id_opercuentas):
         """Creates a CuentaOperacion querying database for an id_opercuentas"""
         resultado=None
         cur=self.cfg.con.cursor()
         cur.execute("select * from opercuentas where id_opercuentas=%s", (id_opercuentas, ))
         for row in cur:
             concepto=self.cfg.conceptos.find(row['id_conceptos'])
-            resultado=self.init__db_row(row, concepto, concepto.tipooperacion, cuenta)
+            resultado=self.init__db_row(row, concepto, concepto.tipooperacion, self.cfg.data.cuentas_all().find(row['id_cuentas']))
         cur.close()
         return resultado
 
@@ -1681,16 +1681,33 @@ class CuentaOperacion:
         cur.close()
         
     def comentariobonito(self):
-        """Función que genera un comentario parseado según el tipo de operación o concepto"""
+        """Función que genera un comentario parseado según el tipo de operación o concepto
+        
+        Transferencias 4 origen :
+            El comentario en transferencias: other_account|other_operaccount|comission_operaccount|commision
+                - other_account: id_accounts of the other account
+                - other_operaccount: id_opercuentas in order to remove them.
+                - comission_operaccount: comission. Si es 0 es que no hay comision porque tambi´en es 0
+        Transferencias 5 destino:
+            El comentario en transferencias destino no tiene comission: other_account|other_operaccount
+                - other_account: id_accounts of the other account
+                - other_operaccount: id_opercuentas in order to remove them.     
+        """
         if self.concepto.id in (62, 39, 50, 63, 65) and len(self.comentario.split("|"))==4:#"{0}|{1}|{2}|{3}".format(self.inversion.name, self.bruto, self.retencion, self.comision)
             return QApplication.translate("Core","Dividend de {0[0]}. Bruto: {0[1]} {1}. Retención: {0[2]} {1}. Comisión: {0[3]} {1}".format(self.comentario.split("|"), self.cuenta.currency.symbol))
-        elif self.concepto.id in (29, 35, 38) and len(self.comentario.split("|"))==4:#{0}|{1}|{2}|{3}".format(row['inversion'], importe, comision, impuestos)
+        elif self.concepto.id in (29, 35) and len(self.comentario.split("|"))==4:#{0}|{1}|{2}|{3}".format(row['inversion'], importe, comision, impuestos)
             return QApplication.translate("Core","Operación de {0[0]}. Importe: {0[1]} {1}. Comisión: {0[2]} {1}. Impuestos: {0[3]} {1}".format(self.comentario.split("|"), self.cuenta.currency.symbol))        
         elif self.concepto.id==40 and len(self.comentario.split("|"))==2:#"{0}|{1}".format(self.selTarjeta.name, len(self.setSelOperTarjetas))
             return QApplication.translate("Core","Tarjeta: {0[0]}. Se han ejecutado {0[1]} pagos con tarjeta".format(self.comentario.split("|")))        
-        else:
-            return self.comentario
+        elif self.concepto.id==4 and len(self.comentario.split("|"))==3:#Transfer from origin
+            return QApplication.translate("Core", "Transfer to {0}".format(self.cfg.data.cuentas_all().find(int(self.comentario.split("|")[0])).name))
+        elif self.concepto.id==5 and len(self.comentario.split("|"))==2:#Transfer received in destiny
+            return QApplication.translate("Core", "Transfer received from {0}".format(self.cfg.data.cuentas_all().find(int(self.comentario.split("|")[0])).name))
+        elif self.concepto.id==38 and self.comentario=="Transfer":#Comision bancaria por transferencia
+            return QApplication.translate("Core", "Due to account transfer")
 
+        else:
+            return self.comentario 
         
         
     def es_editable(self):
@@ -1706,6 +1723,13 @@ class CuentaOperacion:
             return False
         if self.concepto.id in (29, 35, 39, 40, 50,  62, 63, 65):#div, factur tarj:
             return False
+        if self.concepto.id == 38 and self.comentario=="Transfer":#Comision bancaria por transferencia
+            return False
+        if self.concepto.id==4 and len(self.comentario.split("|"))==3:#Transferencia origen
+            return False
+        if self.concepto.id==5 and len(self.comentario.split("|"))==2:#Transferencia destino
+            return False
+        
         return True
         
     def save(self):
@@ -2113,14 +2137,32 @@ class Cuenta:
         if self.es_borrable(cur)==True:
             cur.execute("delete from cuentas where id_cuentas=%s", (self.id, ))
 
-    def transferencia(self, fecha,  cuentaorigen,  cuentadestino, importe, comision ):
-        """Cuenta origen y cuenta destino son objetos cuenta"""
-        cur=self.cfg.con.cursor()
-        sql="select transferencia('"+str(fecha)+"', "+ str(cuentaorigen.id) +', ' + str(cuentadestino.id)+', '+str(importe) +', '+str(comision)+');'
-        cur.execute(sql)
-        cuentaorigen.saldo_from_db()
-        cuentadestino.saldo_from_db()
-        cur.close()
+#    def transferencia(self, fecha,  cuentaorigen,  cuentadestino, importe, comision ):
+#        """Cuenta origen y cuenta destino son objetos cuenta"""
+#        cur=self.cfg.con.cursor()
+#        sql="select transferencia('"+str(fecha)+"', "+ str(cuentaorigen.id) +', ' + str(cuentadestino.id)+', '+str(importe) +', '+str(comision)+');'
+#        cur.execute(sql)
+#        cuentaorigen.saldo_from_db()
+#        cuentadestino.saldo_from_db()
+#        cur.close()
+        
+    def transferencia(self, fecha, cuentaorigen, cuentadestino, importe, comision):
+        """Si el oc_comision_id es 0 es que no hay comision porque tambi´en es 0"""
+        #Ojo los comentarios est´an dependientes.
+        if comision>0:
+            oc_comision=CuentaOperacion(self.cfg).init__create(fecha, self.cfg.conceptos.find(38), self.cfg.tiposoperaciones.find(1), -comision, "Transfer", cuentaorigen )
+            oc_comision.save()
+            oc_comision_id=oc_comision.id
+        else:
+            oc_comision_id=0
+        oc_origen=CuentaOperacion(self.cfg).init__create(fecha, self.cfg.conceptos.find(4), self.cfg.tiposoperaciones.find(3), -importe, "", cuentaorigen )
+        oc_origen.save()
+        commentdestino="{0}|{1}".format(cuentaorigen.id, oc_origen.id)
+        oc_destino=CuentaOperacion(self.cfg).init__create(fecha, self.cfg.conceptos.find(5), self.cfg.tiposoperaciones.find(3), importe, commentdestino, cuentadestino )
+        oc_destino.save()
+        oc_origen.comentario="{0}|{1}|{2}".format(cuentadestino.id, oc_destino.id, oc_comision_id)
+        oc_origen.save()
+    
     def qmessagebox_inactive(self):
         if self.activa==False:
             m=QMessageBox()
