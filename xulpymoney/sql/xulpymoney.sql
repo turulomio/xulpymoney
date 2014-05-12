@@ -159,27 +159,6 @@ $$;
 
 ALTER FUNCTION public.inversion_saldo_segun_tpcvariable() OWNER TO postgres;
 
---
--- Name: transferencia(date, integer, integer, numeric, numeric); Type: FUNCTION; Schema: public; Owner: postgres
---
-
-CREATE FUNCTION transferencia(p_fecha date, p_cuentaorigen integer, p_cuentadestino integer, p_importe numeric, p_comision numeric) RETURNS void
-    LANGUAGE plpgsql
-    AS $$DECLARE
-    nombrecuentaorigen text;
-    nombrecuentadestino text;
-BEGIN
-    SELECT cuenta INTO nombrecuentaorigen FROM cuentas WHERE id_cuentas=p_cuentaorigen;
-    SELECT cuenta INTO nombrecuentadestino FROM cuentas WHERE id_cuentas=p_cuentadestino;
-
-    INSERT INTO opercuentas (fecha, id_conceptos, id_tiposoperaciones, importe, comentario, id_cuentas) VALUES (p_fecha, 4, 3, -p_importe-p_comision, 'A ' || nombrecuentadestino || ' (Comisión '|| p_comision ||' €)', p_cuentaorigen); 
-    INSERT INTO opercuentas (fecha, id_conceptos, id_tiposoperaciones, importe, comentario, id_cuentas) VALUES (p_fecha, 5, 3, p_importe, 'De ' || nombrecuentaorigen, p_cuentadestino);    
-END;
-$$;
-
-
-ALTER FUNCTION public.transferencia(p_fecha date, p_cuentaorigen integer, p_cuentadestino integer, p_importe numeric, p_comision numeric) OWNER TO postgres;
-
 SET default_tablespace = '';
 
 SET default_with_oids = false;
@@ -219,11 +198,11 @@ ALTER TABLE public.cuentas OWNER TO postgres;
 SET default_with_oids = false;
 
 --
--- Name: dividendos; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: dividends; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
-CREATE TABLE dividendos (
-    id_dividendos integer DEFAULT nextval(('"seq_dividendos"'::text)::regclass) NOT NULL,
+CREATE TABLE dividends (
+    id_dividends integer DEFAULT nextval(('"seq_dividendos"'::text)::regclass) NOT NULL,
     id_inversiones integer NOT NULL,
     bruto numeric(100,2) NOT NULL,
     retencion numeric(100,2) NOT NULL,
@@ -236,7 +215,7 @@ CREATE TABLE dividendos (
 );
 
 
-ALTER TABLE public.dividendos OWNER TO postgres;
+ALTER TABLE public.dividends OWNER TO postgres;
 
 SET default_with_oids = true;
 
@@ -564,8 +543,8 @@ ALTER TABLE ONLY conceptos
 -- Name: dividendos_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
-ALTER TABLE ONLY dividendos
-    ADD CONSTRAINT dividendos_pkey PRIMARY KEY (id_dividendos);
+ALTER TABLE ONLY dividends
+    ADD CONSTRAINT dividendos_pkey PRIMARY KEY (id_dividends);
 
 
 --
@@ -626,7 +605,7 @@ CREATE INDEX "cuentas-id_cuentas-index" ON cuentas USING btree (id_cuentas);
 -- Name: dividendos-id_inversiones-index; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
 --
 
-CREATE INDEX "dividendos-id_inversiones-index" ON dividendos USING btree (id_inversiones);
+CREATE INDEX "dividendos-id_inversiones-index" ON dividends USING btree (id_inversiones);
 
 
 --

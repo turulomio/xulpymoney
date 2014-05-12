@@ -767,6 +767,18 @@
     <string>Modificar Operación de Tarjeta</string>
    </property>
   </action>
+  <action name="actionTransferDelete">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/list-remove.png</normaloff>:/xulpymoney/list-remove.png</iconset>
+   </property>
+   <property name="text">
+    <string>Delete transfer</string>
+   </property>
+   <property name="toolTip">
+    <string>Delete transfer</string>
+   </property>
+  </action>
  </widget>
  <customwidgets>
   <customwidget>

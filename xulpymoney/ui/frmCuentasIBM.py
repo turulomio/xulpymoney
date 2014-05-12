@@ -16,7 +16,7 @@ class frmCuentasIBM(QDialog, Ui_frmCuentasIBM):
         self.cmdDatos.setEnabled(False)     
         
         self.cfg=cfg
-        self.loadedinactive=False
+        self.cfg.data.load_inactives()
                 
         self.selOperCuenta=None #Registro de oper cuentas
         self.selTarjeta=None#Registro de Tarjeta seleccionada
@@ -220,6 +220,37 @@ class frmCuentasIBM(QDialog, Ui_frmCuentasIBM):
         self.tblOperaciones.clearSelection()
         self.selOperCuenta=None
 
+
+
+    @QtCore.pyqtSlot() 
+    def on_actionTransferDelete_activated(self):
+        
+        oc_other=CuentaOperacion(self.cfg).init__db_query(int(self.selOperCuenta.comentario.split("|")[1]))
+        
+        if self.selOperCuenta.concepto.id==4:#Tranfer origin
+            account_origin=self.selCuenta
+            account_destiny=self.cfg.data.cuentas_all().find(int(self.selOperCuenta.comentario.split("|")[0]))
+            oc_comision_id=int(self.selOperCuenta.comentario.split("|")[2])
+    
+        if self.selOperCuenta.concepto.id==5:#Tranfer destiny
+            account_origin=self.cfg.data.cuentas_all().find(int(self.selOperCuenta.comentario.split("|")[0]))
+            account_destiny=self.selCuenta
+            oc_comision_id=int(oc_other.comentario.split("|")[2])
+            
+        message=self.trUtf8("Do you really want to delete transfer from {0} to {1}, with amount {2} and it's commision?".format(account_origin.name, account_destiny.name, self.selOperCuenta.importe))
+        reply = QMessageBox.question(self, 'Message', message, QMessageBox.Yes, QMessageBox.No)
+            
+        if reply == QMessageBox.Yes:
+            if oc_comision_id!=0:
+                oc_comision=CuentaOperacion(self.cfg).init__db_query(oc_comision_id)
+                oc_comision.borrar()
+            self.selOperCuenta.borrar()
+            oc_other.borrar()
+            self.cfg.con.commit()
+            self.on_wdgYM_changed()
+            self.tblOperaciones.clearSelection()
+            self.selOperCuenta=None
+        
     @QtCore.pyqtSlot() 
     def on_actionMovimientoModificar_activated(self):
         w=frmOperCuentas(self.cfg, self.cfg.data.cuentas_active,  self.selCuenta, self.selOperCuenta, None)
@@ -277,18 +308,27 @@ class frmCuentasIBM(QDialog, Ui_frmCuentasIBM):
         if self.selOperCuenta==None:
             self.actionMovimientoBorrar.setEnabled(False)
             self.actionMovimientoModificar.setEnabled(False)   
+            self.actionTransferDelete.setEnabled(False)
         else:
             if self.selOperCuenta.es_editable()==False:
                 self.actionMovimientoBorrar.setEnabled(False)
                 self.actionMovimientoModificar.setEnabled(False)   
-            else:
+                #Una transferencia bien formada no es editable solo con transfer delete.
+                if (self.selOperCuenta.concepto.id==4 and len(self.selOperCuenta.comentario.split("|"))==3) or (self.selOperCuenta.concepto.id==5 and len(self.selOperCuenta.comentario.split("|"))==2):#Tranfer origin or Tranfer destine
+                    self.actionTransferDelete.setEnabled(True)
+                else:
+                    self.actionTransferDelete.setEnabled(False)
+            else: #es editable
                 self.actionMovimientoBorrar.setEnabled(True)    
-                self.actionMovimientoModificar.setEnabled(True)        
+                self.actionMovimientoModificar.setEnabled(True)      
+                self.actionTransferDelete.setEnabled(False)  
             
         menu=QMenu()
         menu.addAction(self.actionMovimientoNuevo)
         menu.addAction(self.actionMovimientoModificar)
         menu.addAction(self.actionMovimientoBorrar)
+        menu.addSeparator()
+        menu.addAction(self.actionTransferDelete)
         menu.exec_(self.tblOperaciones.mapToGlobal(pos))
 
     def on_tblOperaciones_itemSelectionChanged(self):
