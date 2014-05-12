@@ -24,18 +24,20 @@ class canvasTotal(FigureCanvas):
         self.labels=[]
         self.plot_main=None
         self.plot_zero=None
+        self.plot_bonds=None
         self.plotted=False#Shown if the graphics has been plotted anytime.
         
     
     def price(self, x): 
         return self.cfg.localcurrency.string(x)
         
-    def mydraw(self, cfg, data, zero):
+    def mydraw(self, cfg, data, zero,  bonds):
         self.plotted=True
         self.ax.clear()
 
         (dates, total)=zip(*data)
         (datesz, zero)=zip(*zero)
+        (datesb, bonds)=zip(*bonds)
         if len(dates)<36:
             self.ax.xaxis.set_minor_locator(MonthLocator())
             self.ax.xaxis.set_major_locator(MonthLocator())
@@ -53,6 +55,7 @@ class canvasTotal(FigureCanvas):
         self.fig.autofmt_xdate()
         self.plot_main, =self.ax.plot_date(dates, total, '-')
         self.plot_zero, =self.ax.plot_date(datesz, zero, '-')
+        self.plot_bonds, =self.ax.plot_date(datesb, bonds, '-')
         self.showLegend()
         self.draw()
         
@@ -74,6 +77,7 @@ class canvasTotal(FigureCanvas):
         if len(self.labels)==0:
             self.labels.append((self.plot_main, self.trUtf8("Total assets")))
             self.labels.append((self.plot_zero,self.trUtf8("Zero risk assets")))
+            self.labels.append((self.plot_bonds,self.trUtf8("Bond assets")))
 
 class wdgTotal(QWidget, Ui_wdgTotal):
     def __init__(self, cfg,  parent=None):
@@ -194,6 +198,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         inicio=datetime.datetime.now()  
         data=[]#date,valor
         zero=[]#date, valor zero
+        bonds=[]
 
         years=datetime.date.today().year-self.wyChart.year
         months=datetime.date.today().month+1
@@ -219,7 +224,8 @@ class wdgTotal(QWidget, Ui_wdgTotal):
                     break
                 data.append( (date,Patrimonio(self.cfg).saldo_total(self.cfg.data.inversiones_all(), date)) )
                 zero.append( (date,Patrimonio(self.cfg).patrimonio_riesgo_cero(self.cfg.data.inversiones_all(), date) ))
-        self.canvas.mydraw(self.cfg, data, zero)
+                bonds.append( (date,Patrimonio(self.cfg).saldo_todas_inversiones_bonds(date) ))
+        self.canvas.mydraw(self.cfg, data, zero,  bonds)
         print ("wdgTotal > load_graphic: {0}".format(datetime.datetime.now()-inicio))
 
     def on_wyData_changed(self):
