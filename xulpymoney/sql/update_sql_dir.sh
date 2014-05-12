@@ -6,10 +6,10 @@ MSDATABASE=${4:-mystocks}
 XULPYMONEYDATABASE=${5:-xulpymoney}
 
 echo "Debe ejecutarse desde el directorio sql"
-pg_dump -s -U $MYUSER -h $MYHOST -p $MYPORT $MSDATABASE > myquotes.sql
-pg_dump -a -U $MYUSER -h $MYHOST -p $MYPORT $MSDATABASE -t products --insert > myquotes.data
-pg_dump -a -U $MYUSER -h $MYHOST -p $MYPORT $MSDATABASE -t bolsas --insert >> myquotes.data
-echo "update products set deletable=true;" >> myquotes.data
+pg_dump -s -U $MYUSER -h $MYHOST -p $MYPORT $MSDATABASE > mystocks.sql
+pg_dump -a -U $MYUSER -h $MYHOST -p $MYPORT $MSDATABASE -t products --insert > mystocks.data
+pg_dump -a -U $MYUSER -h $MYHOST -p $MYPORT $MSDATABASE -t bolsas --insert >> mystocks.data
+echo "update products set deletable=true;" >> mystocks.data
 
 pg_dump -s -U $MYUSER -h $MYHOST -p $MYPORT $XULPYMONEYDATABASE > xulpymoney.sql
 
