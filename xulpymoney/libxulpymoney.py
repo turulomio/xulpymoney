@@ -2533,16 +2533,30 @@ class Patrimonio:
         Fecha None calcula  el saldo actual
         """
         resultado=0
-        inicio=datetime.datetime.now()
+#        inicio=datetime.datetime.now()
         for inv in setinversiones.arr:
             if inv.product.tpc==0:        
                 if fecha==None:
                     resultado=resultado+inv.saldo()
                 else:
                     resultado=resultado+inv.saldo( fecha)
-        print ("core > Total > saldo_todas_inversiones_riego_cero: {0}".format(datetime.datetime.now()-inicio))
+#        print ("core > Total > saldo_todas_inversiones_riego_cero: {0}".format(datetime.datetime.now()-inicio))
         return resultado
 
+    def saldo_todas_inversiones_bonds(self, fecha):        
+        """Versión que se calcula en cliente muy optimizada
+        Fecha None calcula  el saldo actual
+        """
+        resultado=0
+#        inicio=datetime.datetime.now()
+        for inv in self.cfg.data.inversiones_all().arr:
+            if inv.product.type.id in (7, 9):#public and private bonds        
+                if fecha==None:
+                    resultado=resultado+inv.saldo()
+                else:
+                    resultado=resultado+inv.saldo( fecha)
+#        print ("core > Patrimonio > saldo_todas_inversiones_bonds: {0}".format(datetime.datetime.now()-inicio))
+        return resultado
 
     def patrimonio_riesgo_cero(self, setinversiones, fecha):
         """CAlcula el patrimonio de riego cero"""
