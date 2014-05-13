@@ -28,7 +28,7 @@ class WorkerYahooHistorical(Source):
             sys.stdout.write("\b"*1000+stri)
             sys.stdout.flush()
             self.cfg.conms.commit()  
-            time.sleep(10)#time step
+            time.sleep(0)#time step
         print("")
         
     def execute(self,  product, inicio, fin):
