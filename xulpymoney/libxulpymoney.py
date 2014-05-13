@@ -457,20 +457,20 @@ class SetCountries:
         self.cfg=cfg   
         
     def load_all(self):
-        self.dic_arr['es']=Country().init__create("es",QApplication.translate("Core","España"))
-        self.dic_arr['be']=Country().init__create("be",QApplication.translate("Core","Bélgica"))
+        self.dic_arr['es']=Country().init__create("es",QApplication.translate("Core","Spain"))
+        self.dic_arr['be']=Country().init__create("be",QApplication.translate("Core","Belgium"))
         self.dic_arr['cn']=Country().init__create("cn",QApplication.translate("Core","China"))
-        self.dic_arr['de']=Country().init__create("de",QApplication.translate("Core","Alemania"))
-        self.dic_arr['en']=Country().init__create("en",QApplication.translate("Core","Reino Unido"))
-        self.dic_arr['eu']=Country().init__create("eu",QApplication.translate("Core","Europa"))
-        self.dic_arr['fi']=Country().init__create("fi",QApplication.translate("Core","Finlandia"))
-        self.dic_arr['fr']=Country().init__create("fr",QApplication.translate("Core","Francia"))
-        self.dic_arr['ie']=Country().init__create("ie",QApplication.translate("Core","Irlanda"))
-        self.dic_arr['it']=Country().init__create("it",QApplication.translate("Core","Italia"))
-        self.dic_arr['jp']=Country().init__create("jp",QApplication.translate("Core","Japón"))
-        self.dic_arr['nl']=Country().init__create("nl",QApplication.translate("Core","Países Bajos"))
+        self.dic_arr['de']=Country().init__create("de",QApplication.translate("Core","Germany"))
+        self.dic_arr['en']=Country().init__create("en",QApplication.translate("Core","United Kingdom"))
+        self.dic_arr['eu']=Country().init__create("eu",QApplication.translate("Core","Europe"))
+        self.dic_arr['fi']=Country().init__create("fi",QApplication.translate("Core","Finland"))
+        self.dic_arr['fr']=Country().init__create("fr",QApplication.translate("Core","France"))
+        self.dic_arr['ie']=Country().init__create("ie",QApplication.translate("Core","Ireland"))
+        self.dic_arr['it']=Country().init__create("it",QApplication.translate("Core","Italy"))
+        self.dic_arr['jp']=Country().init__create("jp",QApplication.translate("Core","Japan"))
+        self.dic_arr['nl']=Country().init__create("nl",QApplication.translate("Core","Netherlands"))
         self.dic_arr['pt']=Country().init__create("pt",QApplication.translate("Core","Portugal"))
-        self.dic_arr['us']=Country().init__create("us",QApplication.translate("Core","Estados Unidos"))
+        self.dic_arr['us']=Country().init__create("us",QApplication.translate("Core","United States of America"))
                 
 
     def list(self):
@@ -603,12 +603,12 @@ class SetCurrencies:
         self.cfg=cfg   
     
     def load_all(self):
-        self.dic_arr["CNY"]=Currency().init__create(QApplication.translate("Core","Yoanes chino"), "¥", 'CNY')
+        self.dic_arr["CNY"]=Currency().init__create(QApplication.translate("Core","Chinese Yoan"), "¥", 'CNY')
         self.dic_arr['EUR']=Currency().init__create(QApplication.translate("Core","Euro"), "€", "EUR")
-        self.dic_arr['GBP']=Currency().init__create(QApplication.translate("Core","Libra esterlina"),"£", 'GBP')
-        self.dic_arr['JPY']=Currency().init__create(QApplication.translate("Core","Yen Japonés"), '¥', "JPY")
-        self.dic_arr['USD']=Currency().init__create(QApplication.translate("Core","Dólar americano"), '$', 'USD')
-        self.dic_arr['u']=Currency().init__create(QApplication.translate("Core","Unidades"), 'u', 'u')
+        self.dic_arr['GBP']=Currency().init__create(QApplication.translate("Core","Pound"),"£", 'GBP')
+        self.dic_arr['JPY']=Currency().init__create(QApplication.translate("Core","Japones Yen"), '¥', "JPY")
+        self.dic_arr['USD']=Currency().init__create(QApplication.translate("Core","American Dolar"), '$', 'USD')
+        self.dic_arr['u']=Currency().init__create(QApplication.translate("Core","Units"), 'u', 'u')
 
     def list(self):
         """Devuelve una lista ordenada por id"""
@@ -2901,11 +2901,11 @@ class SetApalancamientos:
                 
         
     def load_all(self):
-        self.dic_arr["0"]=Apalancamiento(self.cfg).init__create(0 ,QApplication.translate("Core","No apalancado"))
-        self.dic_arr["1"]=Apalancamiento(self.cfg).init__create( 1,QApplication.translate("Core","Apalancamiento variable (Warrants)"))
-        self.dic_arr["2"]=Apalancamiento(self.cfg).init__create( 2,QApplication.translate("Core","Apalancamiento x2"))
-        self.dic_arr["3"]=Apalancamiento(self.cfg).init__create( 3,QApplication.translate("Core","Apalancamiento x3"))
-        self.dic_arr["4"]=Apalancamiento(self.cfg).init__create( 4,QApplication.translate("Core","Apalancamiento x4"))
+        self.dic_arr["0"]=Apalancamiento(self.cfg).init__create(0 ,QApplication.translate("Core","Not leveraged"))
+        self.dic_arr["1"]=Apalancamiento(self.cfg).init__create( 1,QApplication.translate("Core","Variable leverage (Warrants)"))
+        self.dic_arr["2"]=Apalancamiento(self.cfg).init__create( 2,QApplication.translate("Core","Leverage x2"))
+        self.dic_arr["3"]=Apalancamiento(self.cfg).init__create( 3,QApplication.translate("Core","Leverage x3"))
+        self.dic_arr["4"]=Apalancamiento(self.cfg).init__create( 4,QApplication.translate("Core","Leverage x4"))
                
 
     def load_qcombobox(self, combo):

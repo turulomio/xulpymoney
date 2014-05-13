@@ -102,7 +102,7 @@ class frmMain(QMainWindow, Ui_frmMain):
         
         
     @QtCore.pyqtSlot()  
-    def on_actionInformeDividends_activated(self):
+    def on_actionDividendsReport_activated(self):
         self.w.close()
         self.w=wdgDividendsReport(self.cfg)
                 

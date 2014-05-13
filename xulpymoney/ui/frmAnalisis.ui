@@ -57,7 +57,7 @@
         <enum>QTabWidget::West</enum>
        </property>
        <property name="currentIndex">
-        <number>0</number>
+        <number>2</number>
        </property>
        <widget class="QWidget" name="tabInformacion">
         <attribute name="title">
@@ -892,7 +892,7 @@
               <item>
                <widget class="QTabWidget" name="tabHistorical">
                 <property name="currentIndex">
-                 <number>4</number>
+                 <number>0</number>
                 </property>
                 <property name="elideMode">
                  <enum>Qt::ElideMiddle</enum>
@@ -918,32 +918,32 @@
                     </attribute>
                     <column>
                      <property name="text">
-                      <string>Fecha</string>
+                      <string>Date</string>
                      </property>
                     </column>
                     <column>
                      <property name="text">
-                      <string>Valor</string>
+                      <string>Price</string>
                      </property>
                     </column>
                     <column>
                      <property name="text">
-                      <string>Apertura</string>
+                      <string>Open</string>
                      </property>
                     </column>
                     <column>
                      <property name="text">
-                      <string>Más alto</string>
+                      <string>Higher</string>
                      </property>
                     </column>
                     <column>
                      <property name="text">
-                      <string>Más bajo</string>
+                      <string>Lower</string>
                      </property>
                     </column>
                     <column>
                      <property name="text">
-                      <string>Día y hora visualización</string>
+                      <string>Agrupation Start</string>
                      </property>
                     </column>
                    </widget>
@@ -971,32 +971,32 @@
                     </attribute>
                     <column>
                      <property name="text">
-                      <string>Fecha</string>
+                      <string>Date</string>
                      </property>
                     </column>
                     <column>
                      <property name="text">
-                      <string>Valor</string>
+                      <string>Price</string>
                      </property>
                     </column>
                     <column>
                      <property name="text">
-                      <string>Apertura</string>
+                      <string>Open</string>
                      </property>
                     </column>
                     <column>
                      <property name="text">
-                      <string>Más alto</string>
+                      <string>Higher</string>
                      </property>
                     </column>
                     <column>
                      <property name="text">
-                      <string>Más bajo</string>
+                      <string>Lower</string>
                      </property>
                     </column>
                     <column>
                      <property name="text">
-                      <string>Día y hora visualización</string>
+                      <string>Agrupation start</string>
                      </property>
                     </column>
                    </widget>
@@ -1024,32 +1024,32 @@
                     </attribute>
                     <column>
                      <property name="text">
-                      <string>Fecha</string>
+                      <string>Date</string>
                      </property>
                     </column>
                     <column>
                      <property name="text">
-                      <string>Valor</string>
+                      <string>Price</string>
                      </property>
                     </column>
                     <column>
                      <property name="text">
-                      <string>Apertura</string>
+                      <string>Start</string>
                      </property>
                     </column>
                     <column>
                      <property name="text">
-                      <string>Más alto</string>
+                      <string>Higher</string>
                      </property>
                     </column>
                     <column>
                      <property name="text">
-                      <string>Más bajo</string>
+                      <string>Lower</string>
                      </property>
                     </column>
                     <column>
                      <property name="text">
-                      <string>Día y hora visualización</string>
+                      <string>Agrupation start</string>
                      </property>
                     </column>
                    </widget>
@@ -1077,32 +1077,32 @@
                     </attribute>
                     <column>
                      <property name="text">
-                      <string>Fecha</string>
+                      <string>Date</string>
                      </property>
                     </column>
                     <column>
                      <property name="text">
-                      <string>Valor</string>
+                      <string>Price</string>
                      </property>
                     </column>
                     <column>
                      <property name="text">
-                      <string>Apertura</string>
+                      <string>Open</string>
                      </property>
                     </column>
                     <column>
                      <property name="text">
-                      <string>Más alto</string>
+                      <string>Higher</string>
                      </property>
                     </column>
                     <column>
                      <property name="text">
-                      <string>Más bajo</string>
+                      <string>Lower</string>
                      </property>
                     </column>
                     <column>
                      <property name="text">
-                      <string>Día y hora visualización</string>
+                      <string>Agrupation start</string>
                      </property>
                     </column>
                    </widget>
@@ -1130,67 +1130,67 @@ correspondiente en la tabla</string>
                     </attribute>
                     <column>
                      <property name="text">
-                      <string>Año</string>
+                      <string>Year</string>
                      </property>
                     </column>
                     <column>
                      <property name="text">
-                      <string>Enero</string>
+                      <string>January</string>
                      </property>
                     </column>
                     <column>
                      <property name="text">
-                      <string>Febrero</string>
+                      <string>February</string>
                      </property>
                     </column>
                     <column>
                      <property name="text">
-                      <string>Marzo</string>
+                      <string>March</string>
                      </property>
                     </column>
                     <column>
                      <property name="text">
-                      <string>Abril</string>
+                      <string>April</string>
                      </property>
                     </column>
                     <column>
                      <property name="text">
-                      <string>Mayo</string>
+                      <string>May</string>
                      </property>
                     </column>
                     <column>
                      <property name="text">
-                      <string>Junio</string>
+                      <string>June</string>
                      </property>
                     </column>
                     <column>
                      <property name="text">
-                      <string>Julio</string>
+                      <string>July</string>
                      </property>
                     </column>
                     <column>
                      <property name="text">
-                      <string>Agosto</string>
+                      <string>August</string>
                      </property>
                     </column>
                     <column>
                      <property name="text">
-                      <string>Septiembre</string>
+                      <string>September</string>
                      </property>
                     </column>
                     <column>
                      <property name="text">
-                      <string>Octubre</string>
+                      <string>October</string>
                      </property>
                     </column>
                     <column>
                      <property name="text">
-                      <string>Noviembre</string>
+                      <string>November</string>
                      </property>
                     </column>
                     <column>
                      <property name="text">
-                      <string>Diciembre</string>
+                      <string>December</string>
                      </property>
                     </column>
                     <column>
@@ -1219,7 +1219,7 @@ correspondiente en la tabla</string>
          <item>
           <widget class="QTabWidget" name="tabEstimaciones">
            <property name="currentIndex">
-            <number>0</number>
+            <number>1</number>
            </property>
            <widget class="QWidget" name="tab_2">
             <attribute name="icon">
@@ -1258,7 +1258,7 @@ correspondiente en la tabla</string>
             </attribute>
             <layout class="QHBoxLayout" name="horizontalLayout_13">
              <item>
-              <widget class="myQTableWidget" name="tblDividendosEstimaciones">
+              <widget class="myQTableWidget" name="tblDividendsEstimations">
                <property name="contextMenuPolicy">
                 <enum>Qt::CustomContextMenu</enum>
                </property>

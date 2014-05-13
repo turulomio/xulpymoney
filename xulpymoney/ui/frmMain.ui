@@ -68,7 +68,7 @@
      <string>Reports</string>
     </property>
     <addaction name="actionConceptos"/>
-    <addaction name="actionInformeDividendos"/>
+    <addaction name="actionDividendsReport"/>
     <addaction name="actionEstudioTAE"/>
     <addaction name="actionIndexRange"/>
     <addaction name="actionInformeHistorico"/>
@@ -209,7 +209,7 @@
     <string>Auxiliar tables</string>
    </property>
   </action>
-  <action name="actionInformeDividendos">
+  <action name="actionDividendsReport">
    <property name="icon">
     <iconset resource="../images/xulpymoney.qrc">
      <normaloff>:/xulpymoney/dinero.png</normaloff>:/xulpymoney/dinero.png</iconset>
