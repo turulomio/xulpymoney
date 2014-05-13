@@ -638,7 +638,7 @@ class SetDividends:
         cur.execute( sql)#"select * from dividends where id_inversiones=%s order by fecha", (self.inversion.id, )
         for row in cur:
             inversion=self.cfg.data.inversiones_all().find(row['id_inversiones'])
-            oc=CuentaOperacion(self.cfg).init__db_query(row['id_opercuentas'], inversion.cuenta)
+            oc=CuentaOperacion(self.cfg).init__db_query(row['id_opercuentas'])
             self.arr.append(Dividend(self.cfg).init__db_row(row, inversion, oc, self.cfg.conceptos.find(row['id_conceptos']) ))
         cur.close()      
         

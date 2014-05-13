@@ -3438,26 +3438,6 @@ seleccionados por el usuario</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgConceptsHistorical.py" line="109"/>
-        <source>Febrero</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_wdgConceptsHistorical.py" line="121"/>
-        <source>Agosto</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_wdgConceptsHistorical.py" line="123"/>
-        <source>Septiembre</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_wdgConceptsHistorical.py" line="125"/>
-        <source>Octubre</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="ui/Ui_wdgConceptsHistorical.py" line="131"/>
         <source>Total</source>
         <translation type="unfinished"></translation>
@@ -3535,6 +3515,26 @@ seleccionados por el usuario</source>
     <message>
         <location filename="ui/wdgConceptsHistorical.py" line="103"/>
         <source>You can&apos;t close this tab</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_wdgConceptsHistorical.py" line="109"/>
+        <source>February</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_wdgConceptsHistorical.py" line="121"/>
+        <source>August</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_wdgConceptsHistorical.py" line="123"/>
+        <source>September</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_wdgConceptsHistorical.py" line="125"/>
+        <source>October</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
