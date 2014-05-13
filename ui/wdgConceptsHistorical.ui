@@ -66,7 +66,7 @@
            </column>
            <column>
             <property name="text">
-             <string>Febrero</string>
+             <string>February</string>
             </property>
            </column>
            <column>
@@ -96,17 +96,17 @@
            </column>
            <column>
             <property name="text">
-             <string>Agosto</string>
+             <string>August</string>
             </property>
            </column>
            <column>
             <property name="text">
-             <string>Septiembre</string>
+             <string>September</string>
             </property>
            </column>
            <column>
             <property name="text">
-             <string>Octubre</string>
+             <string>October</string>
             </property>
            </column>
            <column>
