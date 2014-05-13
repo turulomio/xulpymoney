@@ -46,7 +46,7 @@ class frmAnalisis(QDialog, Ui_frmAnalisis):
         self.tblYearly.settings("frmAnalisis",  self.cfg)    
         self.tblIntradia.settings("frmAnalisis",  self.cfg)    
         self.tblMensuales.settings("frmAnalisis",  self.cfg)    
-        self.tblDividendsEstimaciones.settings("frmAnalisis",  self.cfg)    
+        self.tblDividendsEstimations.settings("frmAnalisis",  self.cfg)    
         self.tblDPSPaid.settings("frmAnalisis", self.cfg)
         self.tblEPS.settings("frmAnalisis", self.cfg)
                 
@@ -151,7 +151,7 @@ class frmAnalisis(QDialog, Ui_frmAnalisis):
             self.product.estimations_eps.load_from_db()#No cargada por defecto en product
             self.product.dps.load_from_db()
 
-            self.product.estimations_dps.myqtablewidget(self.tblDividendsEstimaciones)   
+            self.product.estimations_dps.myqtablewidget(self.tblDividendsEstimations)   
             self.product.estimations_eps.myqtablewidget(self.tblEPS)            
             self.product.dps.myqtablewidget(self.tblDPSPaid)            
         inicio=datetime.datetime.now()
@@ -173,17 +173,17 @@ class frmAnalisis(QDialog, Ui_frmAnalisis):
 #        ###
 #        cur=self.cfg.conms.cursor()
 #        cur.execute("select year,dpa from estimaciones where id=%s order by year", (self.product.id, ) )
-#        self.tblDividendsEstimaciones.setRowCount(cur.rowcount)
+#        self.tblDividendsEstimations.setRowCount(cur.rowcount)
 #        for reg in cur:
-#            self.tblDividendsEstimaciones.setItem(cur.rownumber-1, 0, qcenter(str(reg['year'])))
-#            self.tblDividendsEstimaciones.setItem(cur.rownumber-1, 1, self.product.currency.qtablewidgetitem(reg['estimation'], 6))       
+#            self.tblDividendsEstimations.setItem(cur.rownumber-1, 0, qcenter(str(reg['year'])))
+#            self.tblDividendsEstimations.setItem(cur.rownumber-1, 1, self.product.currency.qtablewidgetitem(reg['estimation'], 6))       
 #            try:
 #                tpc=reg['estimation']*100/self.product.result.basic.last.quote
-#                self.tblDividendsEstimaciones.setItem(cur.rownumber-1, 2, qtpc(round(tpc, 2)))    
+#                self.tblDividendsEstimations.setItem(cur.rownumber-1, 2, qtpc(round(tpc, 2)))    
 #            except:      
-#                self.tblDividendsEstimaciones.setItem(cur.rownumber-1, 2, qtpc(None))    
-#        self.tblDividendsEstimaciones.setCurrentCell(cur.rowcount-1, 0)
-#        self.tblDividendsEstimaciones.setFocus()
+#                self.tblDividendsEstimations.setItem(cur.rownumber-1, 2, qtpc(None))    
+#        self.tblDividendsEstimations.setCurrentCell(cur.rowcount-1, 0)
+#        self.tblDividendsEstimations.setFocus()
 #        cur.close()
 
 
@@ -327,13 +327,13 @@ class frmAnalisis(QDialog, Ui_frmAnalisis):
             self.selEstimationDPS.borrar()
             self.product.estimations_dps.arr.remove(self.selEstimationDPS)
             self.cfg.conms.commit()
-            self.product.estimations_dps.myqtablewidget(self.tblDividendsEstimaciones)
+            self.product.estimations_dps.myqtablewidget(self.tblDividendsEstimations)
         
     @pyqtSignature("")
     def on_actionEstimationDPSNew_activated(self):
         d=frmEstimationsAdd(self.cfg, self.product, "dps")
         d.exec_()
-        self.product.estimations_dps.myqtablewidget(self.tblDividendsEstimaciones)
+        self.product.estimations_dps.myqtablewidget(self.tblDividendsEstimations)
 
     @pyqtSignature("")
     def on_actionEstimationEPSDelete_activated(self):
@@ -522,15 +522,15 @@ class frmAnalisis(QDialog, Ui_frmAnalisis):
             self.setSelIntraday=set([])
             
             
-    def on_tblDividendsEstimaciones_itemSelectionChanged(self):
+    def on_tblDividendsEstimations_itemSelectionChanged(self):
         try:
-            for i in self.tblDividendsEstimaciones.selectedItems():#itera por cada item no row.        
+            for i in self.tblDividendsEstimations.selectedItems():#itera por cada item no row.        
                 if i.column()==0:
                     self.selEstimationDPS=self.product.estimations_dps.arr[i.row()]
         except:
             self.selEstimationDPS=None
             
-    def on_tblDividendsEstimaciones_customContextMenuRequested(self,  pos):
+    def on_tblDividendsEstimations_customContextMenuRequested(self,  pos):
         if self.selEstimationDPS==None:
             self.actionEstimationDPSDelete.setEnabled(False)
         else:
@@ -538,7 +538,7 @@ class frmAnalisis(QDialog, Ui_frmAnalisis):
         menu=QMenu()
         menu.addAction(self.actionEstimationDPSNew)
         menu.addAction(self.actionEstimationDPSDelete)    
-        menu.exec_(self.tblDividendsEstimaciones.mapToGlobal(pos))
+        menu.exec_(self.tblDividendsEstimations.mapToGlobal(pos))
             
             
     def on_tblEPS_itemSelectionChanged(self):
