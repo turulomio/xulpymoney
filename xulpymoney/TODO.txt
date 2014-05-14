@@ -3,7 +3,6 @@ CORE
 
 XULPYMONEY
 ==========
-20120523 Hacer una clases de inversiones no con actual sino con invertido.
 20120706 cuenta operacion heredada de inversion deberia crearse como con dividendos una opercuenta antes
 20120802 Hacer un formulario de inicio que genere el settings en home y pregunte idioma y lo cambie
 20120806 En operinversion opercuenta poner el número de acciones y precio de compra en comeentario bonito
