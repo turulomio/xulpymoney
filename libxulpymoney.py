@@ -124,6 +124,15 @@ class SetInversiones:
             if i.product==product:
                 resultado=resultado+i.saldo()
         return resultado
+        
+    def invertido_misma_investment(self, product):
+        """Devuelve el saldo de todas las inversiones que tienen el mismo product.bolsa
+        product es un objeto Product"""
+        resultado=Decimal(0)
+        for i in self.arr:
+            if i.product==product:
+                resultado=resultado+i.invertido()
+        return resultado
     
     def union(self, list2):
         """Devuelve un SetEntidadesBancarias con la union del set1 y del set2"""
@@ -1069,16 +1078,16 @@ class SetInversionOperacionActual:
         last es el último quote de la inversión"""
         #UI
         tabla.setColumnCount(10)
-        tabla.setHorizontalHeaderItem(0, QTableWidgetItem(QApplication.translate("Core", "Día", None, QApplication.UnicodeUTF8)))
-        tabla.setHorizontalHeaderItem(1, QTableWidgetItem(QApplication.translate("Core", "Acciones", None, QApplication.UnicodeUTF8)))
-        tabla.setHorizontalHeaderItem(2, QTableWidgetItem(QApplication.translate("Core", "Valor compra", None, QApplication.UnicodeUTF8)))
-        tabla.setHorizontalHeaderItem(3, QTableWidgetItem(QApplication.translate("Core", "Invertido", None, QApplication.UnicodeUTF8)))
-        tabla.setHorizontalHeaderItem(4, QTableWidgetItem(QApplication.translate("Core", "Saldo actual", None, QApplication.UnicodeUTF8)))
-        tabla.setHorizontalHeaderItem(5, QTableWidgetItem(QApplication.translate("Core", "Pendiente", None, QApplication.UnicodeUTF8)))
-        tabla.setHorizontalHeaderItem(6, QTableWidgetItem(QApplication.translate("Core", "% anual", None, QApplication.UnicodeUTF8)))
-        tabla.setHorizontalHeaderItem(7, QTableWidgetItem(QApplication.translate("Core", "% TAE", None, QApplication.UnicodeUTF8)))
+        tabla.setHorizontalHeaderItem(0, QTableWidgetItem(QApplication.translate("Core", "Date", None, QApplication.UnicodeUTF8)))
+        tabla.setHorizontalHeaderItem(1, QTableWidgetItem(QApplication.translate("Core", "Shares", None, QApplication.UnicodeUTF8)))
+        tabla.setHorizontalHeaderItem(2, QTableWidgetItem(QApplication.translate("Core", "Price", None, QApplication.UnicodeUTF8)))
+        tabla.setHorizontalHeaderItem(3, QTableWidgetItem(QApplication.translate("Core", "Invested", None, QApplication.UnicodeUTF8)))
+        tabla.setHorizontalHeaderItem(4, QTableWidgetItem(QApplication.translate("Core", "Current balance", None, QApplication.UnicodeUTF8)))
+        tabla.setHorizontalHeaderItem(5, QTableWidgetItem(QApplication.translate("Core", "Pending", None, QApplication.UnicodeUTF8)))
+        tabla.setHorizontalHeaderItem(6, QTableWidgetItem(QApplication.translate("Core", "% annual", None, QApplication.UnicodeUTF8)))
+        tabla.setHorizontalHeaderItem(7, QTableWidgetItem(QApplication.translate("Core", "% APR", None, QApplication.UnicodeUTF8)))
         tabla.setHorizontalHeaderItem(8, QTableWidgetItem(QApplication.translate("Core", "% Total", None, QApplication.UnicodeUTF8)))
-        tabla.setHorizontalHeaderItem(9, QTableWidgetItem(QApplication.translate("Core", "Índice de referencia", None, QApplication.UnicodeUTF8)))
+        tabla.setHorizontalHeaderItem(9, QTableWidgetItem(QApplication.translate("Core", "Benchmark", None, QApplication.UnicodeUTF8)))
         #DATA
         tabla.settings(section,  self.cfg)
         if len(self.arr)==0:
@@ -3480,20 +3489,7 @@ class Source:
     Luego crear las funciones virtuales.
     """
     def __init__(self,  cfg):
-#        self.time_after_quotes=None#60#60
-#        self.time_after_statics=None#86400 #60*60*24
-#        self.time_after_historicals=None#86400 #60*60*24
-#        self.time_after_dividends=None#86400 #60*60*24
-#        self.time_step_quote=None#0
-#        self.time_step_static=None#300#5*60
-#        self.time_step_historical=None#300#30*60
-#        self.time_step_dividend=None#600
-#        self.time_before_statics=None#60
-#        self.time_before_quotes=None#0
-#        self.time_before_historicals=None#0
-#        self.time_before_dividends=None#0
-#        self.utctime_start=None#datetime.time de inicio de downloads
-#        self.utctime_stop=None#datetime.time de final de downloads
+
         self.cfg=cfg
         self.debug=False#Si fuera true en vez de insertar  hace un listado#       
         self.internetquerys=0#Número de consultas a Internet
@@ -5160,17 +5156,17 @@ class SetTypes:
         
             
     def load_all(self):
-        self.dic_arr["1"]=Type().init__create(1,QApplication.translate("Core","Acciones"))
-        self.dic_arr["2"]=Type().init__create(2,QApplication.translate("Core","Fondos de inversión"))
-        self.dic_arr["3"]=Type().init__create(3,QApplication.translate("Core","Índices"))
-        self.dic_arr["4"]=Type().init__create(4,QApplication.translate("Core","ETFs"))
+        self.dic_arr["1"]=Type().init__create(1,QApplication.translate("Core","Shares"))
+        self.dic_arr["2"]=Type().init__create(2,QApplication.translate("Core","Funds"))
+        self.dic_arr["3"]=Type().init__create(3,QApplication.translate("Core","Indexes"))
+        self.dic_arr["4"]=Type().init__create(4,QApplication.translate("Core","ETF"))
         self.dic_arr["5"]=Type().init__create(5,QApplication.translate("Core","Warrants"))
-        self.dic_arr["6"]=Type().init__create(6,QApplication.translate("Core","Divisas"))
-        self.dic_arr["7"]=Type().init__create(7,QApplication.translate("Core","Deuda Pública"))
+        self.dic_arr["6"]=Type().init__create(6,QApplication.translate("Core","Currencies"))
+        self.dic_arr["7"]=Type().init__create(7,QApplication.translate("Core","Public Bond"))
         self.dic_arr["8"]=Type().init__create(8,QApplication.translate("Core","Planes de pensiones"))
-        self.dic_arr["9"]=Type().init__create(9,QApplication.translate("Core","Deuda Privada"))
+        self.dic_arr["9"]=Type().init__create(9,QApplication.translate("Core","Private Bond"))
         self.dic_arr["10"]=Type().init__create(10,QApplication.translate("Core","Depósitos"))
-        self.dic_arr["11"]=Type().init__create(11,QApplication.translate("Core","Cuentas bancarias"))
+        self.dic_arr["11"]=Type().init__create(11,QApplication.translate("Core","Accounts"))
 
     def load_qcombobox(self, combo):
         """Carga entidades bancarias en combo"""

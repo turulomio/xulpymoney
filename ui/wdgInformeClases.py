@@ -50,6 +50,18 @@ class canvasPie(FigureCanvas):
 
     def mouseReleaseEvent(self,  event):
         self.showLegend(not self.showlegend)
+        
+    def clearContents(self):
+        self.fig.clf()
+        del self.fracs
+        del self.explode
+        del self.labels
+        del self.patches
+        del self.texts
+        del self.autotexts
+        del self.ax
+        self.ax = self.fig.add_subplot(111)
+        
 
 
 class wdgInformeClases(QWidget, Ui_wdgInformeClases):
@@ -74,17 +86,24 @@ class wdgInformeClases(QWidget, Ui_wdgInformeClases):
         self.layProduct.addWidget(self.canvasProduct)      
         
         self.cuentas=Patrimonio(self.cfg).saldo_todas_cuentas(self.hoy)
+        self.tab.setCurrentIndex(2)
+        self.update()
                
+    def update(self):
+        """Update calcs and charts"""
         self.scriptTPC()
         self.scriptPCI()
         self.scriptTipos()
         self.scriptApalancado()
         self.scriptCountry()
         self.scriptProduct()
-        self.tab.setCurrentIndex(2)
         
+    def on_radCurrent_toggled(self, checked):
+        self.update()
+            
 
     def scriptTPC(self):
+        self.canvasTPC.clearContents()
         labels=[]
         data=[]
         explode=[]
@@ -92,7 +111,10 @@ class wdgInformeClases(QWidget, Ui_wdgInformeClases):
             total=0
             for i in self.cfg.data.inversiones_active.arr:
                 if math.ceil(i.product.tpc/10.0)==r:
-                    total=total+i.saldo()
+                    if self.radCurrent.isChecked():
+                        total=total+i.saldo()
+                    else:
+                        total=total+i.invertido()
             if r==0:
                 total=total+self.cuentas
             if total>0:
@@ -104,6 +126,7 @@ class wdgInformeClases(QWidget, Ui_wdgInformeClases):
 
 
     def scriptPCI(self):
+        self.canvasPCI.clearContents()
         labels=[]
         data=[]
         explode=[]
@@ -112,7 +135,10 @@ class wdgInformeClases(QWidget, Ui_wdgInformeClases):
             total=0
             for i in self.cfg.data.inversiones_active.arr:
                 if i.product.mode==m:
-                    total=total+i.saldo()
+                    if self.radCurrent.isChecked():
+                        total=total+i.saldo()
+                    else:
+                        total=total+i.invertido()
             labels.append(m.name)
             if m.id=='c':
                 data.append(total+self.cuentas)
@@ -123,6 +149,7 @@ class wdgInformeClases(QWidget, Ui_wdgInformeClases):
 
         
     def scriptTipos(self):
+        self.canvasTipo.clearContents()
         labels=[]
         data=[]
         explode=[]
@@ -131,7 +158,10 @@ class wdgInformeClases(QWidget, Ui_wdgInformeClases):
             total=0
             for i in self.cfg.data.inversiones_active.arr:
                 if i.product.type==t:
-                    total=total+i.saldo()
+                    if self.radCurrent.isChecked():
+                        total=total+i.saldo()
+                    else:
+                        total=total+i.invertido()
             if t.id==11:#Cuentas
                 total=total+self.cuentas
             if total>0:
@@ -142,6 +172,7 @@ class wdgInformeClases(QWidget, Ui_wdgInformeClases):
 
         
     def scriptApalancado(self):
+        self.canvasApalancado.clearContents()
         labels=[]
         data=[]
         explode=[]
@@ -150,7 +181,10 @@ class wdgInformeClases(QWidget, Ui_wdgInformeClases):
             total=0
             for i in self.cfg.data.inversiones_active.arr:
                 if i.product.apalancado==a:
-                    total=total+i.saldo()
+                    if self.radCurrent.isChecked():
+                        total=total+i.saldo()
+                    else:
+                        total=total+i.invertido()
             if a.id==0:#Cuentas
                 total=total+self.cuentas
             if total>0:
@@ -160,6 +194,7 @@ class wdgInformeClases(QWidget, Ui_wdgInformeClases):
         self.canvasApalancado.mydraw(data, labels,  explode)  
         
     def scriptCountry(self):
+        self.canvasCountry.clearContents()
         labels=[]
         data=[]
         explode=[]
@@ -168,7 +203,10 @@ class wdgInformeClases(QWidget, Ui_wdgInformeClases):
             total=0
             for i in self.cfg.data.inversiones_active.arr:
                 if i.product.bolsa.country==c:
-                    total=total+i.saldo()
+                    if self.radCurrent.isChecked():
+                        total=total+i.saldo()
+                    else:
+                        total=total+i.invertido()
             if total>0:
                 labels.append(c.name)
                 data.append(total)
@@ -176,6 +214,7 @@ class wdgInformeClases(QWidget, Ui_wdgInformeClases):
         self.canvasCountry.mydraw(data, labels,  explode)  
 
     def scriptProduct(self):
+        self.canvasProduct.clearContents()
         labels=[]
         data=[]
         explode=[]
@@ -185,11 +224,17 @@ class wdgInformeClases(QWidget, Ui_wdgInformeClases):
             s.add(i.product)
         
         arr=list(s)
-        arr=sorted(arr, key=lambda inv: self.cfg.data.inversiones_active.saldo_misma_investment(inv),  reverse=True) 
+        if self.radCurrent.isChecked():
+            arr=sorted(arr, key=lambda inv: self.cfg.data.inversiones_active.saldo_misma_investment(inv),  reverse=True) 
+        else:
+            arr=sorted(arr, key=lambda inv: self.cfg.data.inversiones_active.invertido_misma_investment(inv),  reverse=True) 
    
         for i in arr:
             labels.append(i.name)
-            data.append(self.cfg.data.inversiones_active.saldo_misma_investment(i))
+            if self.radCurrent.isChecked():
+                data.append(self.cfg.data.inversiones_active.saldo_misma_investment(i))
+            else:
+                data.append(self.cfg.data.inversiones_active.invertido_misma_investment(i))
             explode.append(0)
         labels.append(self.trUtf8("Accounts"))
         data.append(self.cuentas)
