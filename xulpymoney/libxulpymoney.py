@@ -1432,6 +1432,12 @@ class InversionOperacionHistorica:
         self.valor_accion_venta=valor_accion_venta
         return self
         
+    def less_than_a_year(self):
+        """Returns True, when datetime of the operation is <= a year"""
+        if self.fecha_venta-self.fecha_inicio<=datetime.timedelta(days=365):
+            return True
+        return False
+        
     def consolidado_bruto(self):
         """Solo acciones"""
         if self.tipooperacion.id in (9, 10):

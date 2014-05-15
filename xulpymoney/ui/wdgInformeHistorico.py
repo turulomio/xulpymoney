@@ -27,6 +27,12 @@ class wdgInformeHistorico(QWidget, Ui_wdgInformeHistorico):
         self.wy.initiate(anoinicio, datetime.date.today().year, datetime.date.today().year)
         QObject.connect(self.wy, SIGNAL("changed"), self.on_wy_changed)
 
+        if str2bool(self.mem.config.get_value("settings", "gainsyear"))==True:
+            self.tab.removeTab(1)
+        else:
+            self.tab.removeTab(2)
+            self.tab.removeTab(2)
+
         self.load()   
         self.tab.setCurrentIndex(0)
 
@@ -34,7 +40,11 @@ class wdgInformeHistorico(QWidget, Ui_wdgInformeHistorico):
     def load(self):
         inicio=datetime.datetime.now()
         self.load_dividends()
-        self.load_historicas()
+        if str2bool(self.mem.config.get_value("settings", "gainsyear"))==True:
+            self.load_less()
+            self.load_more()
+        else:
+            self.load_historicas()
         self.load_added()
         self.load_rendimientos()
         print("wdgInformeHistorico > load: {0}".format(datetime.datetime.now()-inicio))
@@ -78,7 +88,23 @@ class wdgInformeHistorico(QWidget, Ui_wdgInformeHistorico):
                 if o.fecha_venta.year==self.wy.year and o.tipooperacion.id in (5, 8):#Venta y traspaso fondos inversion
                     operaciones.arr.append(o)
         operaciones.sort()
-        (self.totalBruto, self.totalComisiones, self.totalImpuestos, self.totalNeto)=operaciones.myqtablewidget(self.tblInversiones, "wdgInformeHistorico")
+        (self.totalBruto, self.totalComisiones, self.totalImpuestos, self.totalNeto)=operaciones.myqtablewidget(self.tblInversiones, None)
+    def load_less(self):
+        operaciones=SetInversionOperacionHistorica(self.mem)
+        for i in self.mem.data.inversiones_all().arr:
+            for o in i.op_historica.arr:
+                if o.fecha_venta.year==self.wy.year and o.tipooperacion.id in (5, 8) and o.less_than_a_year()==True:#Venta y traspaso fondos inversion
+                    operaciones.arr.append(o)
+        operaciones.sort()
+        (self.totalBruto, self.totalComisiones, self.totalImpuestos, self.totalNeto)=operaciones.myqtablewidget(self.tblLess, None)
+    def load_more(self):
+        operaciones=SetInversionOperacionHistorica(self.mem)
+        for i in self.mem.data.inversiones_all().arr:
+            for o in i.op_historica.arr:
+                if o.fecha_venta.year==self.wy.year and o.tipooperacion.id in (5, 8) and o.less_than_a_year()==False:#Venta y traspaso fondos inversion
+                    operaciones.arr.append(o)
+        operaciones.sort()
+        (self.totalBruto, self.totalComisiones, self.totalImpuestos, self.totalNeto)=operaciones.myqtablewidget(self.tblMore, None)
 
 
 

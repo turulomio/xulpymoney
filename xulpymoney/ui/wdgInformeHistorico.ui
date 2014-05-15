@@ -29,7 +29,7 @@
         </font>
        </property>
        <property name="text">
-        <string>Estudio de inversiones histórico</string>
+        <string>Historical investment report</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
@@ -71,6 +71,9 @@
      </item>
      <item>
       <widget class="QTabWidget" name="tab">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
        <property name="currentIndex">
         <number>2</number>
        </property>
@@ -228,11 +231,200 @@ font: 75 12pt &quot;Sans Serif&quot;;</string>
           <normaloff>:/xulpymoney/history2.png</normaloff>:/xulpymoney/history2.png</iconset>
         </attribute>
         <attribute name="title">
-         <string>Investments</string>
+         <string>Selling operations</string>
         </attribute>
         <layout class="QHBoxLayout" name="horizontalLayout_3">
          <item>
           <widget class="myQTableWidget" name="tblInversiones">
+           <property name="contextMenuPolicy">
+            <enum>Qt::CustomContextMenu</enum>
+           </property>
+           <property name="editTriggers">
+            <set>QAbstractItemView::NoEditTriggers</set>
+           </property>
+           <property name="alternatingRowColors">
+            <bool>true</bool>
+           </property>
+           <property name="selectionMode">
+            <enum>QAbstractItemView::SingleSelection</enum>
+           </property>
+           <property name="selectionBehavior">
+            <enum>QAbstractItemView::SelectRows</enum>
+           </property>
+           <attribute name="verticalHeaderVisible">
+            <bool>false</bool>
+           </attribute>
+           <column>
+            <property name="text">
+             <string>Date</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>Years</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>Investment</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>Operation type</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>Initial balance</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>Final balance</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>Consolidado bruto</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>Comisiones</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>Taxes</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>Consolidado neto</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>% TAE neto</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>% Total neto</string>
+            </property>
+           </column>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QWidget" name="tab_7">
+        <attribute name="icon">
+         <iconset resource="../images/xulpymoney.qrc">
+          <normaloff>:/xulpymoney/history2.png</normaloff>:/xulpymoney/history2.png</iconset>
+        </attribute>
+        <attribute name="title">
+         <string>Selling operations &lt;= year</string>
+        </attribute>
+        <layout class="QHBoxLayout" name="horizontalLayout">
+         <item>
+          <widget class="myQTableWidget" name="tblLess">
+           <property name="enabled">
+            <bool>true</bool>
+           </property>
+           <property name="contextMenuPolicy">
+            <enum>Qt::CustomContextMenu</enum>
+           </property>
+           <property name="editTriggers">
+            <set>QAbstractItemView::NoEditTriggers</set>
+           </property>
+           <property name="alternatingRowColors">
+            <bool>true</bool>
+           </property>
+           <property name="selectionMode">
+            <enum>QAbstractItemView::SingleSelection</enum>
+           </property>
+           <property name="selectionBehavior">
+            <enum>QAbstractItemView::SelectRows</enum>
+           </property>
+           <attribute name="verticalHeaderVisible">
+            <bool>false</bool>
+           </attribute>
+           <column>
+            <property name="text">
+             <string>Date</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>Years</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>Investment</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>Operation type</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>Initial balance</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>Final balance</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>Consolidado bruto</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>Comisiones</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>Taxes</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>Consolidado neto</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>% TAE neto</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>% Total neto</string>
+            </property>
+           </column>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QWidget" name="tab_6">
+        <attribute name="icon">
+         <iconset resource="../images/xulpymoney.qrc">
+          <normaloff>:/xulpymoney/history2.png</normaloff>:/xulpymoney/history2.png</iconset>
+        </attribute>
+        <attribute name="title">
+         <string>Selling operations &gt; year</string>
+        </attribute>
+        <layout class="QHBoxLayout" name="horizontalLayout_7">
+         <item>
+          <widget class="myQTableWidget" name="tblMore">
            <property name="contextMenuPolicy">
             <enum>Qt::CustomContextMenu</enum>
            </property>
@@ -321,7 +513,7 @@ font: 75 12pt &quot;Sans Serif&quot;;</string>
           <normaloff>:/xulpymoney/coins.png</normaloff>:/xulpymoney/coins.png</iconset>
         </attribute>
         <attribute name="title">
-         <string>Dividendos</string>
+         <string>Dividends</string>
         </attribute>
         <layout class="QHBoxLayout" name="horizontalLayout_2">
          <item>

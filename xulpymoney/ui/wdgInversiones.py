@@ -229,8 +229,6 @@ class wdgInversiones(QWidget, Ui_wdgInversiones):
         ordenar.addAction(self.actionOrdenarTPC)
         ordenar.addAction(self.actionOrdenarTPCVenta)
         menu.addMenu(ordenar)        
-        menu.addSeparator()
-        menu.addAction(self.actionMark)
         menu.exec_(self.tblInversiones.mapToGlobal(pos))
 
     def on_tblInversiones_itemSelectionChanged(self):
