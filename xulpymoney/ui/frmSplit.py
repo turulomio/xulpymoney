@@ -5,7 +5,7 @@ from libxulpymoney import *
 from Ui_frmSplit import *
 
 class frmSplit(QDialog, Ui_frmSplit):
-    def __init__(self, cfg,  parent = None, name = None, modal = False):
+    def __init__(self, mem,  parent = None, name = None, modal = False):
         """
         Constructor
         
@@ -13,13 +13,13 @@ class frmSplit(QDialog, Ui_frmSplit):
         @param name The name of this dialog. (QString)
         @param modal Flag indicating a modal dialog. (boolean)
         """
-        self.cfg=cfg
+        self.mem=mem
         QDialog.__init__(self, parent)
         if name:
             self.setObjectName(name)
         self.setModal(True)
         self.setupUi(self)
-        self.split=Split(self.cfg, self.txtInitial.decimal(), self.txtFinal.decimal())
+        self.split=Split(self.mem, self.txtInitial.decimal(), self.txtFinal.decimal())
         self.generateExample()
         
         

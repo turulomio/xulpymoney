@@ -2,9 +2,9 @@ from libmystocks import *
 import math
 class WorkerYahoo(Source):
     """Clase que recorre las inversiones activas y calcula según este la prioridad de la previsión"""
-    def __init__(self, cfg):
-        Source.__init__(self, cfg)
-        self.cfg=cfg
+    def __init__(self, mem):
+        Source.__init__(self, mem)
+        self.mem=mem
         self.id_source=1
         self.ids=[]
         self.name="YAHOO"
@@ -12,7 +12,7 @@ class WorkerYahoo(Source):
     def start(self):
         print (self.name)
         while (True):
-            con=self.cfg.connect_mystocksd()
+            con=self.mem.connect_mystocksd()
             cur = con.cursor()     
             self.ids=self.filtrar_horario_bolsa(self.find_ids())
             (p,e)=(SetQuotes(),[])
@@ -25,10 +25,10 @@ class WorkerYahoo(Source):
             self.parse_errors(cur,  e)
             p.save(cur,"YAHOO")
 
-#            Quote(self.cfg).insert(cur, p, self.name)
+#            Quote(self.mem).insert(cur, p, self.name)
             con.commit()
             cur.close()                
-            self.cfg.disconnect_mystocksd(con)
+            self.mem.disconnect_mystocksd(con)
             time.sleep(60)
 
     

@@ -7,11 +7,11 @@ version="20140411"
 
 class CuentaOperacionHeredadaInversion:
     """Clase parar trabajar con las opercuentas generadas automaticamente por los movimientos de las inversiones"""
-    def __init__(self, cfg):
-        self.cfg=cfg    
+    def __init__(self, mem):
+        self.mem=mem    
 
     def insertar(self,  fecha, id_conceptos, id_tiposoperaciones, importe, comentario,id_cuentas,id_operinversiones,id_inversiones):
-        cur=self.cfg.con.cursor()
+        cur=self.mem.con.cursor()
         sql="insert into tmpinversionesheredada (fecha, id_conceptos, id_tiposoperaciones, importe, comentario,id_cuentas, id_operinversiones,id_inversiones) values ('"+str(fecha)+"', "+str(id_conceptos)+", "+str(id_tiposoperaciones)+", "+str(importe)+", '"+str(comentario)+"' ,"+str(id_cuentas)+", "+str(id_operinversiones)+", "+str(id_inversiones)+")"
         cur.execute(sql);
         cur.close()
@@ -40,14 +40,14 @@ class CuentaOperacionHeredadaInversion:
 #row['inversion']+". "+str('Importe')+": " + str(importe)+". "+str('Comisión')+": " + str(comision)+ ". "+str('Impuestos')+": " + str(impuestos)            
 #row['inversion']+". "+str('Importe')+": " + str(importe)+". "+str('Comisión')+": " + str(comision)+ ". "+str('Impuestos')+": " + str(impuestos), 
             #Se pone un registro de compra de acciones que resta el saldo de la opercuenta
-            CuentaOperacionHeredadaInversion(self.cfg).insertar(fecha, 29, 4, -importe-comision, comentario,id_cuentas,id_operinversiones,id_inversiones);
+            CuentaOperacionHeredadaInversion(self.mem).insertar(fecha, 29, 4, -importe-comision, comentario,id_cuentas,id_operinversiones,id_inversiones);
         elif row['id_tiposoperaciones']==5:#// Venta Acciones
             #//Se pone un registro de compra de acciones que resta el saldo de la opercuenta
-            CuentaOperacionHeredadaInversion(self.cfg).insertar(fecha, 35, 5, importe-comision-impuestos,comentario,id_cuentas,id_operinversiones,id_inversiones);
+            CuentaOperacionHeredadaInversion(self.mem).insertar(fecha, 35, 5, importe-comision-impuestos,comentario,id_cuentas,id_operinversiones,id_inversiones);
         elif row['id_tiposoperaciones']==6:# // Añadido de Acciones
             #//Si hubiera comisión se añade la comisión.
             if(comision!=0):
-                CuentaOperacionHeredadaInversion(self.cfg).insertar(fecha, 38, 1, -comision-impuestos, comentario,  id_cuentas,id_operinversiones,id_inversiones);
+                CuentaOperacionHeredadaInversion(self.mem).insertar(fecha, 38, 1, -comision-impuestos, comentario,  id_cuentas,id_operinversiones,id_inversiones);
 
 
     def actualizar_una_inversion(self,cur, cur2, id_inversiones):
@@ -59,20 +59,20 @@ class CuentaOperacionHeredadaInversion:
         sql="SELECT * from operinversiones where id_inversiones="+str(id_inversiones)
         cur.execute(sql);
         for row in cur:
-            CuentaOperacionHeredadaInversion(self.cfg).actualizar_una_operacion(cur2, row['id_operinversiones']);
+            CuentaOperacionHeredadaInversion(self.mem).actualizar_una_operacion(cur2, row['id_operinversiones']);
 
 
       
 class SetInversiones:
-    def __init__(self, cfg, cuentas, products, indicereferencia):
+    def __init__(self, mem, cuentas, products, benchmark):
         self.arr=[]
-        self.cfg=cfg
+        self.mem=mem
         self.cuentas=cuentas
         self.products=products
-        self.indicereferencia=indicereferencia  ##Objeto product
+        self.benchmark=benchmark  ##Objeto product
             
     def load_from_db(self, sql,  progress=False):
-        cur=self.cfg.con.cursor()
+        cur=self.mem.con.cursor()
         cur.execute(sql)#"Select * from inversiones"
         if progress==True:
             pd= QProgressDialog(QApplication.translate("Core","Loading {0} products from database".format(cur.rowcount)),None, 0,cur.rowcount)
@@ -84,9 +84,9 @@ class SetInversiones:
                 pd.setValue(cur.rownumber)
                 pd.update()
                 QApplication.processEvents()
-            inv=Inversion(self.cfg).init__db_row(row,  self.cuentas.find(row['id_cuentas']), self.products.find(row['mystocksid']))
+            inv=Inversion(self.mem).init__db_row(row,  self.cuentas.find(row['id_cuentas']), self.products.find(row['mystocksid']))
             inv.get_operinversiones()
-            inv.op_actual.get_valor_indicereferencia(self.indicereferencia)
+            inv.op_actual.get_valor_benchmark(self.benchmark)
             self.arr.append(inv)
 #            stri="{0}: {1}/{2}          ".format(function_name(self), cur.rownumber, cur.rowcount)
 #            sys.stdout.write("\b"*1000+stri)
@@ -136,7 +136,7 @@ class SetInversiones:
     
     def union(self, list2):
         """Devuelve un SetEntidadesBancarias con la union del set1 y del set2"""
-        resultado=SetInversiones(self.cfg, self.cuentas, self.products, self.indicereferencia)
+        resultado=SetInversiones(self.mem, self.cuentas, self.products, self.benchmark)
         resultado.arr=self.arr+list2.arr
         return resultado
 
@@ -196,27 +196,27 @@ class SetInversiones:
         #Comprueba que el subyacente de origen y destino sea el mismo
         if origen.product!=destino.product:
             return False
-        now=self.cfg.localzone.now()
+        now=self.mem.localzone.now()
 
         if comision!=0:
-            op_cuenta=CuentaOperacion(self.cfg).init__create(now.date(), self.cfg.conceptos.find(38), self.cfg.tiposoperaciones.find(1), -comision, "Traspaso de valores", origen.cuenta)
+            op_cuenta=CuentaOperacion(self.mem).init__create(now.date(), self.mem.conceptos.find(38), self.mem.tiposoperaciones.find(1), -comision, "Traspaso de valores", origen.cuenta)
             op_cuenta.save()       
             origen.cuenta.saldo_from_db()        
             comentario="{0}|{1}".format(destino.id, op_cuenta.id)
         else:
             comentario="{0}|{1}".format(destino.id, "None")
         
-        op_origen=InversionOperacion(self.cfg).init__create( self.cfg.tiposoperaciones.find(9), now, origen,  -numacciones, 0,0, comision, 0, comentario)
+        op_origen=InversionOperacion(self.mem).init__create( self.mem.tiposoperaciones.find(9), now, origen,  -numacciones, 0,0, comision, 0, comentario)
         op_origen.save( False)      
 
         #NO ES OPTIMO YA QUE POR CADA SAVE SE CALCULA TODO
         comentario="{0}".format(op_origen.id)
         for o in origen.op_actual.arr:
-            op_destino=InversionOperacion(self.cfg).init__create( self.cfg.tiposoperaciones.find(10), now, destino,  o.acciones, o.importe, o.impuestos, o.comision, o.valor_accion, comentario)
+            op_destino=InversionOperacion(self.mem).init__create( self.mem.tiposoperaciones.find(10), now, destino,  o.acciones, o.importe, o.impuestos, o.comision, o.valor_accion, comentario)
             op_destino.save( False)
             
         #Vuelvo a introducir el comentario de la opercuenta
-        self.cfg.con.commit()
+        self.mem.con.commit()
         (origen.op_actual,  origen.op_historica)=origen.op.calcular()   
         (destino.op_actual,  destino.op_historica)=destino.op.calcular()   
         return True
@@ -231,7 +231,7 @@ class SetInversiones:
         (id_inversiondestino, id_opercuentacomision)=operinversionorigen.comentario.split("|")
         origen=operinversionorigen.inversion
         destino=self.find(int(id_inversiondestino))
-        cur=self.cfg.con.cursor()
+        cur=self.mem.con.cursor()
 #        print (cur.mogrify("delete from operinversiones where id_tiposoperaciones=10 and id_inversiones=%s and comentario=%s", (id_inversiondestino, str(operinversionorigen.id))))
 
         cur.execute("delete from operinversiones where id_tiposoperaciones=10 and id_inversiones=%s and comentario=%s", (destino.id, str(operinversionorigen.id)))
@@ -240,7 +240,7 @@ class SetInversiones:
             cur.execute("delete from opercuentas where id_opercuentas=%s", (int(id_opercuentacomision), ))
             origen.cuenta.saldo_from_db()
             
-        self.cfg.con.commit()
+        self.mem.con.commit()
         origen.get_operinversiones()
         destino.get_operinversiones()
         cur.close()
@@ -254,12 +254,12 @@ class SetInversiones:
         
         
 class SetProducts:
-    def __init__(self, cfg):
+    def __init__(self, mem):
         self.arr=[]
-        self.cfg=cfg
+        self.mem=mem
     def load_from_inversiones_query(self, sql):
         """sql es una query sobre la tabla inversiones"""
-        cur=self.cfg.con.cursor()
+        cur=self.mem.con.cursor()
         cur.execute(sql)#"Select distinct(mystocksid) from inversiones"
         ##Conviert cur a lista separada comas
         lista=""
@@ -276,7 +276,7 @@ class SetProducts:
         """sql es una query sobre la tabla inversiones
         Carga estimations_dbs, y basic
         """
-        curms=self.cfg.conms.cursor()
+        curms=self.mem.conms.cursor()
         curms.execute(sql)#"select * from products where id in ("+lista+")" 
         if progress==True:
             pd= QProgressDialog(QApplication.translate("Core","Loading {0} MyStocks products from database".format(curms.rowcount)),None, 0,curms.rowcount)
@@ -289,7 +289,7 @@ class SetProducts:
                 pd.update()
                 QApplication.processEvents()
                 
-            inv=Product(self.cfg).init__db_row(rowms)
+            inv=Product(self.mem).init__db_row(rowms)
             inv.estimations_dps.load_from_db()
             inv.result.basic.load_from_db()
             self.arr.append(inv)
@@ -308,20 +308,27 @@ class SetProducts:
                 
     def union(self, list2):
         """Devuelve un SetEntidadesBancarias con la union del set1 y del set2"""
-        resultado=SetProducts(self.cfg)
+        resultado=SetProducts(self.mem)
         resultado.arr=self.arr+list2.arr
         return resultado
 
+    def qcombobox(self, combo, selected=None):
+        """Show products in a combo with a flag and the code as data
+        Selected is a product id."""
+        for p in self.arr:
+            combo.addItem(p.name, p.id)
+        if selected!=None:
+                combo.setCurrentIndex(combo.findData(selected))
 class SetProductsModes:
     """Agrupa los mode"""
-    def __init__(self, cfg):
+    def __init__(self, mem):
         self.dic_arr={}
-        self.cfg=cfg     
+        self.mem=mem     
     
     def load_all(self):
-        self.dic_arr['p']=ProductMode(self.cfg).init__create("p",QApplication.translate("Core","Put"))
-        self.dic_arr['c']=ProductMode(self.cfg).init__create("c",QApplication.translate("Core","Call"))
-        self.dic_arr['i']=ProductMode(self.cfg).init__create("i",QApplication.translate("Core","Inline"))
+        self.dic_arr['p']=ProductMode(self.mem).init__create("p",QApplication.translate("Core","Put"))
+        self.dic_arr['c']=ProductMode(self.mem).init__create("c",QApplication.translate("Core","Call"))
+        self.dic_arr['i']=ProductMode(self.mem).init__create("i",QApplication.translate("Core","Inline"))
         
     def load_qcombobox(self, combo):
         """Carga conceptos operaciones 1,2,3"""
@@ -339,15 +346,15 @@ class SetProductsModes:
         
         
 class SetStockExchanges:
-    def __init__(self, cfg):
+    def __init__(self, mem):
         self.dic_arr={}
-        self.cfg=cfg     
+        self.mem=mem     
     
     def load_all_from_db(self):
-        curms=self.cfg.conms.cursor()
+        curms=self.mem.conms.cursor()
         curms.execute("Select * from bolsas")
         for row in curms:
-            self.dic_arr[str(row['id_bolsas'])]=StockExchange(self.cfg).init__db_row(row, self.cfg.countries.find(row['country']))
+            self.dic_arr[str(row['id_bolsas'])]=StockExchange(self.mem).init__db_row(row, self.mem.countries.find(row['country']))
         curms.close()
             
     def load_qcombobox(self, combo):
@@ -363,21 +370,21 @@ class SetStockExchanges:
         
         
 class SetConceptos:      
-    def __init__(self, cfg):
+    def __init__(self, mem):
         self.dic_arr={}
-        self.cfg=cfg 
-#        self.cfg.tiposoperaciones=tiposoperaciones
+        self.mem=mem 
+#        self.mem.tiposoperaciones=tiposoperaciones
         
 #    def strct2ct(self, strct):
 #        """Returns Concepto y TipoOperacion of parameter string"""
 #        (id_conceptos, id_tiposoperaciones)=strct.split(";")
-#        return (self.cfg.conceptos.find(id_conceptos), self.cfg.tiposoperaciones.find(id_tiposoperaciones))
+#        return (self.mem.conceptos.find(id_conceptos), self.mem.tiposoperaciones.find(id_tiposoperaciones))
                  
     def load_from_db(self):
-        cur=self.cfg.con.cursor()
+        cur=self.mem.con.cursor()
         cur.execute("Select * from conceptos")
         for row in cur:
-            self.dic_arr[str(row['id_conceptos'])]=Concepto(self.cfg).init__db_row(row, self.cfg.tiposoperaciones.find(row['id_tiposoperaciones']))
+            self.dic_arr[str(row['id_conceptos'])]=Concepto(self.mem).init__db_row(row, self.mem.tiposoperaciones.find(row['id_tiposoperaciones']))
         cur.close()
             
     def load_opercuentas_qcombobox(self, combo):
@@ -416,7 +423,7 @@ class SetConceptos:
         return lista
 
     def clone_x_tipooperacion(self, id_tiposoperaciones):
-        resultado=SetConceptos(self.cfg)
+        resultado=SetConceptos(self.mem)
         for k, v in self.dic_arr.items():
             if v.tipooperacion.id==id_tiposoperaciones:
                 resultado.dic_arr[k]=v
@@ -461,9 +468,9 @@ class SetConceptos:
 
 
 class SetCountries:
-    def __init__(self, cfg):
+    def __init__(self, mem):
         self.dic_arr={}
-        self.cfg=cfg   
+        self.mem=mem   
         
     def load_all(self):
         self.dic_arr['es']=Country().init__create("es",QApplication.translate("Core","Spain"))
@@ -500,17 +507,17 @@ class SetCountries:
         if country!=None:
                 combo.setCurrentIndex(combo.findData(country.id))
 class SetCuentas:     
-    def __init__(self, cfg,  setebs):
+    def __init__(self, mem,  setebs):
         self.arr=[]
-        self.cfg=cfg   
+        self.mem=mem   
         self.ebs=setebs
 
     def load_from_db(self, sql):
-        cur=self.cfg.con.cursor()
-        cur2=self.cfg.con.cursor()
+        cur=self.mem.con.cursor()
+        cur2=self.mem.con.cursor()
         cur.execute(sql)#"Select * from cuentas"
         for row in cur:
-            c=Cuenta(self.cfg).init__db_row(row, self.ebs.find(row['id_entidadesbancarias']))
+            c=Cuenta(self.mem).init__db_row(row, self.ebs.find(row['id_entidadesbancarias']))
             c.saldo_from_db()
             self.arr.append(c)
         cur.close()
@@ -536,14 +543,14 @@ class SetCuentas:
             
     def union(self,  list2):
         """Devuelve un SetEntidadesBancarias con la union del set1 y del set2"""
-        resultado=SetCuentas(self.cfg, self.ebs)
+        resultado=SetCuentas(self.mem, self.ebs)
         resultado.arr=self.arr+list2.arr
         return resultado
 
 class SetCuentasOperaciones:
     """Clase es un array ordenado de objetos newInversionOperacion"""
-    def __init__(self, cfg):
-        self.cfg=cfg
+    def __init__(self, mem):
+        self.mem=mem
         self.arr=[]
         
     def append(self, objeto):
@@ -551,24 +558,24 @@ class SetCuentasOperaciones:
 
         
     def load_from_db(self, sql):
-        cur=self.cfg.con.cursor()
+        cur=self.mem.con.cursor()
         cur.execute(sql)#"Select * from opercuentas"
         for row in cur:        
-            co=CuentaOperacion(self.cfg).init__create(row['fecha'], self.cfg.conceptos.find(row['id_conceptos']), self.cfg.tiposoperaciones.find(row['id_tiposoperaciones']), row['importe'], row['comentario'],  self.cfg.data.cuentas_all().find(row['id_cuentas']))
+            co=CuentaOperacion(self.mem).init__create(row['fecha'], self.mem.conceptos.find(row['id_conceptos']), self.mem.tiposoperaciones.find(row['id_tiposoperaciones']), row['importe'], row['comentario'],  self.mem.data.cuentas_all().find(row['id_cuentas']))
             self.arr.append(co)
         cur.close()
     
     def load_from_db_with_creditcard(self, sql):
         """Usado en unionall opercuentas y opertarjetas y se crea un campo id_tarjetas con el id de la tarjeta y -1 sino tiene es decir opercuentas"""
-        cur=self.cfg.con.cursor()
+        cur=self.mem.con.cursor()
         cur.execute(sql)#"Select * from opercuentas"
         for row in cur:        
             if row['id_tarjetas']==-1:
                 comentario=row['comentario']
             else:
-                comentario=QApplication.translate("Core","Paid with {0}. {1}".format(self.cfg.data.tarjetas_all().find(row['id_tarjetas']).name, row['comentario'] ), None, QApplication.UnicodeUTF8)
+                comentario=QApplication.translate("Core","Paid with {0}. {1}".format(self.mem.data.tarjetas_all().find(row['id_tarjetas']).name, row['comentario'] ), None, QApplication.UnicodeUTF8)
             
-            co=CuentaOperacion(self.cfg).init__create(row['fecha'], self.cfg.conceptos.find(row['id_conceptos']), self.cfg.tiposoperaciones.find(row['id_tiposoperaciones']), row['importe'], comentario,  self.cfg.data.cuentas_all().find(row['id_cuentas']))
+            co=CuentaOperacion(self.mem).init__create(row['fecha'], self.mem.conceptos.find(row['id_conceptos']), self.mem.tiposoperaciones.find(row['id_tiposoperaciones']), row['importe'], comentario,  self.mem.data.cuentas_all().find(row['id_cuentas']))
             self.arr.append(co)
         cur.close()
     def sort(self):       
@@ -593,7 +600,7 @@ class SetCuentasOperaciones:
         tabla.setHorizontalHeaderItem(4+diff, QTableWidgetItem(QApplication.translate(section, "Comment", None, QApplication.UnicodeUTF8)))
         ##DATA 
         tabla.clearContents()
-        tabla.settings(section,  self.cfg)       
+        tabla.settings(section,  self.mem)       
         tabla.setRowCount(len(self.arr))
         balance=0
         for rownumber, a in enumerate(self.arr):
@@ -602,14 +609,14 @@ class SetCuentasOperaciones:
             if show_account==True:
                 tabla.setItem(rownumber, diff, QTableWidgetItem(a.cuenta.name))
             tabla.setItem(rownumber, 1+diff, qleft(a.concepto.name))
-            tabla.setItem(rownumber, 2+diff, self.cfg.localcurrency.qtablewidgetitem(a.importe))
-            tabla.setItem(rownumber, 3+diff, self.cfg.localcurrency.qtablewidgetitem(balance))
+            tabla.setItem(rownumber, 2+diff, self.mem.localcurrency.qtablewidgetitem(a.importe))
+            tabla.setItem(rownumber, 3+diff, self.mem.localcurrency.qtablewidgetitem(balance))
             tabla.setItem(rownumber, 4+diff, qleft(a.comentario))
 
 class SetCurrencies:
-    def __init__(self, cfg):
+    def __init__(self, mem):
         self.dic_arr={}
-        self.cfg=cfg   
+        self.mem=mem   
     
     def load_all(self):
         self.dic_arr["CNY"]=Currency().init__create(QApplication.translate("Core","Chinese Yoan"), "¥", 'CNY')
@@ -632,23 +639,24 @@ class SetCurrencies:
         """Función que carga en un combo pasado como parámetro las currencies"""
         for c in self.list():
             combo.addItem("{0} - {1} ({2})".format(c.id, c.name, c.symbol), c.id)
-        #NO SE PUEDE PONER C COMO VARIANT YA QUE LUEGO EL FIND NO ENCUENTRA EL OBJETO.
+        if selectedcurrency!=None:
+                combo.setCurrentIndex(combo.findData(selectedcurrency.id))
 
 class SetDividends:
     """Class that  groups dividends from a Xulpymoney Product"""
-    def __init__(self, cfg):
-        self.cfg=cfg
+    def __init__(self, mem):
+        self.mem=mem
         self.arr=[]
         
     def load_from_db(self, sql):    
         del self.arr
         self.arr=[]
-        cur=self.cfg.con.cursor()
+        cur=self.mem.con.cursor()
         cur.execute( sql)#"select * from dividends where id_inversiones=%s order by fecha", (self.inversion.id, )
         for row in cur:
-            inversion=self.cfg.data.inversiones_all().find(row['id_inversiones'])
-            oc=CuentaOperacion(self.cfg).init__db_query(row['id_opercuentas'])
-            self.arr.append(Dividend(self.cfg).init__db_row(row, inversion, oc, self.cfg.conceptos.find(row['id_conceptos']) ))
+            inversion=self.mem.data.inversiones_all().find(row['id_inversiones'])
+            oc=CuentaOperacion(self.mem).init__db_query(row['id_opercuentas'])
+            self.arr.append(Dividend(self.mem).init__db_row(row, inversion, oc, self.mem.conceptos.find(row['id_conceptos']) ))
         cur.close()      
         
     def sort(self):       
@@ -670,7 +678,7 @@ class SetDividends:
         table.setHorizontalHeaderItem(diff+5, QTableWidgetItem(QApplication.translate("Core", "Net", None, QApplication.UnicodeUTF8)))
         table.setHorizontalHeaderItem(diff+6, QTableWidgetItem(QApplication.translate("Core", "DPS", None, QApplication.UnicodeUTF8)))
         #DATA
-        table.settings(section,  self.cfg)        
+        table.settings(section,  self.mem)        
         table.clearContents()
 
 
@@ -688,35 +696,35 @@ class SetDividends:
             if show_investment==True:
                 table.setItem(i, diff, qleft(d.inversion.name))
             table.setItem(i, diff+1, QTableWidgetItem(str(d.opercuenta.concepto.name)))
-            table.setItem(i, diff+2, self.cfg.localcurrency.qtablewidgetitem(d.bruto))
-            table.setItem(i, diff+3, self.cfg.localcurrency.qtablewidgetitem(d.retencion))
-            table.setItem(i, diff+4, self.cfg.localcurrency.qtablewidgetitem(d.comision))
-            table.setItem(i, diff+5, self.cfg.localcurrency.qtablewidgetitem(d.neto))
-            table.setItem(i, diff+6, self.cfg.localcurrency.qtablewidgetitem(d.dpa))
+            table.setItem(i, diff+2, self.mem.localcurrency.qtablewidgetitem(d.bruto))
+            table.setItem(i, diff+3, self.mem.localcurrency.qtablewidgetitem(d.retencion))
+            table.setItem(i, diff+4, self.mem.localcurrency.qtablewidgetitem(d.comision))
+            table.setItem(i, diff+5, self.mem.localcurrency.qtablewidgetitem(d.neto))
+            table.setItem(i, diff+6, self.mem.localcurrency.qtablewidgetitem(d.dpa))
         table.setItem(len(self.arr), diff+1, QTableWidgetItem("TOTAL"))
-        table.setItem(len(self.arr), diff+2, self.cfg.localcurrency.qtablewidgetitem(sumbruto))
-        table.setItem(len(self.arr), diff+3, self.cfg.localcurrency.qtablewidgetitem(sumretencion))
-        table.setItem(len(self.arr), diff+4, self.cfg.localcurrency.qtablewidgetitem(sumcomision))
-        table.setItem(len(self.arr), diff+5, self.cfg.localcurrency.qtablewidgetitem(sumneto))
+        table.setItem(len(self.arr), diff+2, self.mem.localcurrency.qtablewidgetitem(sumbruto))
+        table.setItem(len(self.arr), diff+3, self.mem.localcurrency.qtablewidgetitem(sumretencion))
+        table.setItem(len(self.arr), diff+4, self.mem.localcurrency.qtablewidgetitem(sumcomision))
+        table.setItem(len(self.arr), diff+5, self.mem.localcurrency.qtablewidgetitem(sumneto))
         return (sumneto, sumbruto, sumretencion, sumcomision)
         
 
 class SetEstimationsDPS:
-    def __init__(self, cfg,  product):
+    def __init__(self, mem,  product):
         self.arr=[]
-        self.cfg=cfg   
+        self.mem=mem   
         self.product=product
     
     def estimacionNula(self, year):
-        return EstimationDPS(self.cfg).init__create(self.product, year, datetime.date.today(), "None Estimation", None, None)
+        return EstimationDPS(self.mem).init__create(self.product, year, datetime.date.today(), "None Estimation", None, None)
     
     def load_from_db(self):
         del self.arr
         self.arr=[]
-        cur=self.cfg.conms.cursor()
+        cur=self.mem.conms.cursor()
         cur.execute( "select * from estimations_dps where id=%s order by year", (self.product.id, ))
         for row in cur:
-            self.arr.append(EstimationDPS(self.cfg).init__from_db(self.product, row['year']))
+            self.arr.append(EstimationDPS(self.mem).init__from_db(self.product, row['year']))
         cur.close()            
         
     def find(self, year):
@@ -758,21 +766,21 @@ class SetEstimationsDPS:
         table.setFocus()
 
 class SetEstimationsEPS:
-    def __init__(self, cfg,  product):
+    def __init__(self, mem,  product):
         self.arr=[]
-        self.cfg=cfg   
+        self.mem=mem   
         self.product=product
     
     def estimacionNula(self, year):
-        return EstimationEPS(self.cfg).init__create(self.product, year, datetime.date.today(), "None Estimation", None, None)
+        return EstimationEPS(self.mem).init__create(self.product, year, datetime.date.today(), "None Estimation", None, None)
     
     def load_from_db(self):
         del self.arr
         self.arr=[]
-        cur=self.cfg.conms.cursor()
+        cur=self.mem.conms.cursor()
         cur.execute( "select * from estimations_eps where id=%s order by year", (self.product.id, ))
         for row in cur:
-            self.arr.append(EstimationEPS(self.cfg).init__from_db(self.product, row['year']))
+            self.arr.append(EstimationEPS(self.mem).init__from_db(self.product, row['year']))
         cur.close()            
         
     def find(self, year):
@@ -803,7 +811,7 @@ class SetEstimationsEPS:
         for i, e in enumerate(self.arr):
             table.setItem(i, 0, qcenter(str(e.year)))
             table.setItem(i, 1, self.product.currency.qtablewidgetitem(e.estimation, 6))       
-            table.setItem(i, 2, qright(e.PER(Quote(self.cfg).init__from_query(self.product, day_end_from_date(datetime.date(e.year, 12, 31), self.product.bolsa.zone))), 2))
+            table.setItem(i, 2, qright(e.PER(Quote(self.mem).init__from_query(self.product, day_end_from_date(datetime.date(e.year, 12, 31), self.product.bolsa.zone))), 2))
             table.setItem(i, 3, qdate(e.date_estimation))
             table.setItem(i, 4, QTableWidgetItem(e.source))
             table.setItem(i, 5, qbool(e.manual)) 
@@ -812,14 +820,14 @@ class SetEstimationsEPS:
 
         
 class SetEntidadesBancarias:     
-    def __init__(self, cfg):
+    def __init__(self, mem):
         self.arr=[]
-        self.cfg=cfg   
+        self.mem=mem   
     def load_from_db(self, sql):
-        cur=self.cfg.con.cursor()
+        cur=self.mem.con.cursor()
         cur.execute(sql)#"select * from entidadesbancarias"
         for row in cur:
-            self.arr.append(EntidadBancaria(self.cfg).init__db_row(row))
+            self.arr.append(EntidadBancaria(self.mem).init__db_row(row))
         cur.close()            
         
     def find(self, id):
@@ -838,14 +846,14 @@ class SetEntidadesBancarias:
         
     def union(self,  list2):
         """Devuelve un SetEntidadesBancarias con la union del set1 y del set2"""
-        resultado=SetEntidadesBancarias(self.cfg)
+        resultado=SetEntidadesBancarias(self.mem)
         resultado.arr=self.arr+list2.arr
         return resultado
 
 class SetInversionOperacion:       
     """Clase es un array ordenado de objetos newInversionOperacion"""
-    def __init__(self, cfg):
-        self.cfg=cfg
+    def __init__(self, mem):
+        self.mem=mem
         self.arr=[]
         
     def append(self, objeto):
@@ -853,7 +861,7 @@ class SetInversionOperacion:
         
     def clone_from_datetime(self, dt):
         """Función que devuelve otro SetInversionOperacion con las oper que tienen datetime mayor o igual a la pasada como parametro."""
-        resultado=SetInversionOperacion(self.cfg)
+        resultado=SetInversionOperacion(self.mem)
         if dt==None:
             return self.clone()
         for a in self.arr:
@@ -863,12 +871,12 @@ class SetInversionOperacion:
         
     def calcular_new(self):
         """Realiza los cálculos y devuelve dos arrays"""
-        sioh=SetInversionOperacionHistorica(self.cfg)
-        sioa=SetInversionOperacionActual(self.cfg)       
+        sioh=SetInversionOperacionHistorica(self.mem)
+        sioa=SetInversionOperacionActual(self.mem)       
         for o in self.arr:      
 #            print ("Despues ",  sioa.acciones(), o)              
             if o.acciones>=0:#Compra
-                sioa.arr.append(InversionOperacionActual(self.cfg).init__create(o, o.tipooperacion, o.datetime, o.inversion, o.acciones, o.importe, o.impuestos, o.comision, o.valor_accion,  o.id))
+                sioa.arr.append(InversionOperacionActual(self.mem).init__create(o, o.tipooperacion, o.datetime, o.inversion, o.acciones, o.importe, o.impuestos, o.comision, o.valor_accion,  o.id))
             else:#Venta
                 if abs(o.acciones)>sioa.acciones():
                     print (o.acciones, sioa.acciones(),  o)
@@ -911,7 +919,7 @@ class SetInversionOperacion:
 
             
         ##########################################
-        operinversioneshistorica=SetInversionOperacionHistorica(self.cfg)
+        operinversioneshistorica=SetInversionOperacionHistorica(self.mem)
         #Crea un array copia de self.arr, porque eran vinculos 
         arr=[]
         for a in self.arr:   
@@ -940,12 +948,12 @@ class SetInversionOperacion:
                 dif=p.acciones+n.acciones
                 (impuestos, comisiones)=comisiones_impuestos(dif, p, n)
                 if dif==0: #Si es 0 se inserta el historico que coincide con la venta y se borra el registro negativ
-                    operinversioneshistorica.append(InversionOperacionHistorica(self.cfg).init__create(n, n.inversion, p.datetime.date(), -n.acciones*n.valor_accion,n.tipooperacion, n.acciones, comisiones, impuestos, n.datetime.date(), p.valor_accion, n.valor_accion))
+                    operinversioneshistorica.append(InversionOperacionHistorica(self.mem).init__create(n, n.inversion, p.datetime.date(), -n.acciones*n.valor_accion,n.tipooperacion, n.acciones, comisiones, impuestos, n.datetime.date(), p.valor_accion, n.valor_accion))
                     arr.remove(n)
                     arr.remove(p)
                     break
                 elif dif<0:#   //Si es <0 es decir hay más acciones negativas que positivas. Se debe introducir en el historico la tmpoperinversion y borrarlo y volver a recorrer el bucle. Restando a n.acciones las acciones ya apuntadas en el historico
-                    operinversioneshistorica.append(InversionOperacionHistorica(self.cfg).init__create(p, p.inversion, p.datetime.date(), p.acciones*n.valor_accion,n.tipooperacion, -p.acciones, comisiones, impuestos, n.datetime.date(), p.valor_accion, n.valor_accion))
+                    operinversioneshistorica.append(InversionOperacionHistorica(self.mem).init__create(p, p.inversion, p.datetime.date(), p.acciones*n.valor_accion,n.tipooperacion, -p.acciones, comisiones, impuestos, n.datetime.date(), p.valor_accion, n.valor_accion))
                     arr.remove(p)
                     n.acciones=n.acciones+p.acciones#ya que n.acciones es negativo
 
@@ -955,22 +963,22 @@ class SetInversionOperacion:
                     de positivos en operinversionesactual y se inserta uno con los datos positivos menos lo 
                     quitado por el registro negativo. Y se sale del bucle. 
                     //Aqui no se inserta la comision porque solo cuando se acaba las acciones positivos   """
-                    operinversioneshistorica.append(InversionOperacionHistorica(self.cfg).init__create(p, n.inversion, p.datetime.date(), -n.acciones*n.valor_accion,n.tipooperacion, n.acciones, comisiones, impuestos, n.datetime.date(), p.valor_accion, n.valor_accion))
+                    operinversioneshistorica.append(InversionOperacionHistorica(self.mem).init__create(p, n.inversion, p.datetime.date(), -n.acciones*n.valor_accion,n.tipooperacion, n.acciones, comisiones, impuestos, n.datetime.date(), p.valor_accion, n.valor_accion))
                     arr.remove(p)
                     arr.remove(n)
-                    arr.append(InversionOperacion(self.cfg).init__create( p.tipooperacion, p.datetime, p.inversion,  p.acciones-(-n.acciones), (p.acciones-(-n.acciones))*n.valor_accion,  0, 0, p.valor_accion, "",  p.id))
+                    arr.append(InversionOperacion(self.mem).init__create( p.tipooperacion, p.datetime, p.inversion,  p.acciones-(-n.acciones), (p.acciones-(-n.acciones))*n.valor_accion,  0, 0, p.valor_accion, "",  p.id))
                     arr=sorted(arr, key=lambda a:a.id)              
                     break;
         #Crea array operinversionesactual, ya que arr es operinversiones
-        operinversionesactual=SetInversionOperacionActual(self.cfg)
+        operinversionesactual=SetInversionOperacionActual(self.mem)
         for a in arr:
-            operinversionesactual.append(InversionOperacionActual(self.cfg).init__create(a.id, a.tipooperacion, a.datetime, a.inversion,  a.acciones, a.importe,  a.impuestos, a.comision, a.valor_accion))
+            operinversionesactual.append(InversionOperacionActual(self.mem).init__create(a.id, a.tipooperacion, a.datetime, a.inversion,  a.acciones, a.importe,  a.impuestos, a.comision, a.valor_accion))
         return (operinversionesactual, operinversioneshistorica)
             
     def clone(self):
         """Funcion que devuelve un SetInversionOperacion, con todas sus InversionOperacion clonadas. Se usa para
         hacer estimaciones"""
-        resultado=SetInversionOperacion(self.cfg)
+        resultado=SetInversionOperacion(self.mem)
         for io in self.arr:
             resultado.arr.append(io.clone())
         return resultado
@@ -995,7 +1003,7 @@ class SetInversionOperacion:
         tabla.setHorizontalHeaderItem(diff+7, QTableWidgetItem(QApplication.translate("Core", "Total", None, QApplication.UnicodeUTF8)))
         #DATA 
         tabla.clearContents()
-        tabla.settings(section,  self.cfg)       
+        tabla.settings(section,  self.mem)       
         tabla.setRowCount(len(self.arr))
         for rownumber, a in enumerate(self.arr):
             tabla.setItem(rownumber, 0, qdatetime(a.datetime, a.inversion.product.bolsa.zone))
@@ -1004,14 +1012,14 @@ class SetInversionOperacion:
                 tabla.setItem(rownumber, diff, qleft(a.inversion.cuenta.name))
             tabla.setItem(rownumber, diff+1, QTableWidgetItem(a.tipooperacion.name))
             tabla.setItem(rownumber, diff+2, qright(a.acciones))
-            tabla.setItem(rownumber, diff+3, self.cfg.localcurrency.qtablewidgetitem(a.valor_accion))
-            tabla.setItem(rownumber, diff+4, self.cfg.localcurrency.qtablewidgetitem(a.importe))
-            tabla.setItem(rownumber, diff+5, self.cfg.localcurrency.qtablewidgetitem(a.comision))
-            tabla.setItem(rownumber, diff+6, self.cfg.localcurrency.qtablewidgetitem(a.impuestos))
+            tabla.setItem(rownumber, diff+3, self.mem.localcurrency.qtablewidgetitem(a.valor_accion))
+            tabla.setItem(rownumber, diff+4, self.mem.localcurrency.qtablewidgetitem(a.importe))
+            tabla.setItem(rownumber, diff+5, self.mem.localcurrency.qtablewidgetitem(a.comision))
+            tabla.setItem(rownumber, diff+6, self.mem.localcurrency.qtablewidgetitem(a.impuestos))
             if a.acciones>=0:
-                tabla.setItem(rownumber, diff+7, self.cfg.localcurrency.qtablewidgetitem(a.importe+a.comision+a.impuestos))
+                tabla.setItem(rownumber, diff+7, self.mem.localcurrency.qtablewidgetitem(a.importe+a.comision+a.impuestos))
             else:
-                tabla.setItem(rownumber, diff+7, self.cfg.localcurrency.qtablewidgetitem(a.importe-a.comision-a.impuestos))
+                tabla.setItem(rownumber, diff+7, self.mem.localcurrency.qtablewidgetitem(a.importe-a.comision-a.impuestos))
 
     def isHomogeneous(self):
         """Devuelve true si todas las inversiones son de la misma inversion"""
@@ -1026,8 +1034,8 @@ class SetInversionOperacion:
 
 class SetInversionOperacionActual:    
     """Clase es un array ordenado de objetos newInversionOperacion"""
-    def __init__(self, cfg):
-        self.cfg=cfg
+    def __init__(self, mem):
+        self.mem=mem
         self.arr=[]
     def append(self, objeto):
         self.arr.append(objeto)
@@ -1066,6 +1074,12 @@ class SetInversionOperacionActual:
             resultado=resultado+o.invertido()
         return resultado
         
+    def less_than_a_year(self):
+        for o in self.arr:
+            if o.less_than_a_year()==True:
+                return True
+        return False
+        
     def myqtablewidget(self,  tabla,  section ):
         """Función que rellena una tabla pasada como parámetro con datos procedentes de un array de objetos
         InversionOperacionActual y dos valores de mystocks para rellenar los tpc correspodientes
@@ -1089,7 +1103,7 @@ class SetInversionOperacionActual:
         tabla.setHorizontalHeaderItem(8, QTableWidgetItem(QApplication.translate("Core", "% Total", None, QApplication.UnicodeUTF8)))
         tabla.setHorizontalHeaderItem(9, QTableWidgetItem(QApplication.translate("Core", "Benchmark", None, QApplication.UnicodeUTF8)))
         #DATA
-        tabla.settings(section,  self.cfg)
+        tabla.settings(section,  self.mem)
         if len(self.arr)==0:
             tabla.setRowCount(0)
             return
@@ -1173,8 +1187,8 @@ class SetInversionOperacionActual:
             return None
         return sumpendiente*100/suminvertido
     
-    def get_valor_indicereferencia(self, indice):
-        curms=self.cfg.conms.cursor()
+    def get_valor_benchmark(self, indice):
+        curms=self.mem.conms.cursor()
         for o in self.arr:
             o.get_referencia_indice(indice)
         curms.close()
@@ -1214,21 +1228,21 @@ class SetInversionOperacionActual:
                 if ioa.acciones-accionesventa>Decimal('0'):#>0Se vende todo y se crea un ioa de resto, y se historiza lo restado
                     comisiones=comisiones+io.comision+ioa.comision
                     impuestos=impuestos+io.impuestos+ioa.impuestos
-                    sioh.arr.append(InversionOperacionHistorica(self.cfg).init__create(ioa, io.inversion, ioa.datetime.date(), -accionesventa*io.valor_accion, io.tipooperacion, -accionesventa, comisiones, impuestos, io.datetime.date(), ioa.valor_accion, io.valor_accion))
-                    self.arr.insert(0, InversionOperacionActual(self.cfg).init__create(ioa, ioa.tipooperacion, ioa.datetime, ioa.inversion,  ioa.acciones-abs(accionesventa), (ioa.acciones-abs(accionesventa))*ioa.valor_accion,  0, 0, ioa.valor_accion, ioa.id))
+                    sioh.arr.append(InversionOperacionHistorica(self.mem).init__create(ioa, io.inversion, ioa.datetime.date(), -accionesventa*io.valor_accion, io.tipooperacion, -accionesventa, comisiones, impuestos, io.datetime.date(), ioa.valor_accion, io.valor_accion))
+                    self.arr.insert(0, InversionOperacionActual(self.mem).init__create(ioa, ioa.tipooperacion, ioa.datetime, ioa.inversion,  ioa.acciones-abs(accionesventa), (ioa.acciones-abs(accionesventa))*ioa.valor_accion,  0, 0, ioa.valor_accion, ioa.id))
                     self.arr.remove(ioa)
                     accionesventa=Decimal('0')#Sale bucle
                     break
                 elif ioa.acciones-accionesventa<Decimal('0'):#<0 Se historiza todo y se restan acciones venta
                     comisiones=comisiones+ioa.comision
                     impuestos=impuestos+ioa.impuestos
-                    sioh.arr.append(InversionOperacionHistorica(self.cfg).init__create(ioa, io.inversion, ioa.datetime.date(), -ioa.acciones*io.valor_accion, io.tipooperacion, -ioa.acciones, Decimal('0'), Decimal('0'), io.datetime.date(), ioa.valor_accion, io.valor_accion))
+                    sioh.arr.append(InversionOperacionHistorica(self.mem).init__create(ioa, io.inversion, ioa.datetime.date(), -ioa.acciones*io.valor_accion, io.tipooperacion, -ioa.acciones, Decimal('0'), Decimal('0'), io.datetime.date(), ioa.valor_accion, io.valor_accion))
                     accionesventa=accionesventa-ioa.acciones                    
                     self.arr.remove(ioa)
                 elif ioa.acciones-accionesventa==Decimal('0'):#Se historiza todo y se restan acciones venta y se sale
                     comisiones=comisiones+io.comision+ioa.comision
                     impuestos=impuestos+io.impuestos+ioa.impuestos
-                    sioh.arr.append(InversionOperacionHistorica(self.cfg).init__create(ioa, io.inversion, ioa.datetime.date(), ioa.acciones*io.valor_accion, io.tipooperacion, -ioa.acciones, comisiones, impuestos, io.datetime.date(), ioa.valor_accion, io.valor_accion))
+                    sioh.arr.append(InversionOperacionHistorica(self.mem).init__create(ioa, io.inversion, ioa.datetime.date(), ioa.acciones*io.valor_accion, io.tipooperacion, -ioa.acciones, comisiones, impuestos, io.datetime.date(), ioa.valor_accion, io.valor_accion))
                     self.arr.remove(ioa)                    
                     accionesventa=Decimal('0')#Sale bucle                    
                     break
@@ -1249,8 +1263,8 @@ class SetInversionOperacionActual:
  
 class SetInversionOperacionHistorica:       
     """Clase es un array ordenado de objetos newInversionOperacion"""
-    def __init__(self, cfg):
-        self.cfg=cfg
+    def __init__(self, mem):
+        self.mem=mem
         self.arr=[]
     def append(self, objeto):
         self.arr.append(objeto)
@@ -1322,7 +1336,7 @@ class SetInversionOperacionHistorica:
         tabla.setHorizontalHeaderItem(11, QTableWidgetItem(QApplication.translate("Core", "% Net APR", None, QApplication.UnicodeUTF8)))
         tabla.setHorizontalHeaderItem(12, QTableWidgetItem(QApplication.translate("Core", "% Net Total", None, QApplication.UnicodeUTF8)))
         #DATA
-        tabla.settings(section,  self.cfg)        
+        tabla.settings(section,  self.mem)        
         
         
         (sumbruto, sumneto)=(0, 0);
@@ -1360,12 +1374,12 @@ class SetInversionOperacionHistorica:
             tabla.setItem(rownumber, 2,QTableWidgetItem(a.inversion.name))
             tabla.setItem(rownumber, 3,QTableWidgetItem(a.tipooperacion.name))
             tabla.setItem(rownumber, 4,qright(a.acciones))
-            tabla.setItem(rownumber, 5,self.cfg.localcurrency.qtablewidgetitem(saldoinicio))
-            tabla.setItem(rownumber, 6,self.cfg.localcurrency.qtablewidgetitem(saldofinal))
-            tabla.setItem(rownumber, 7,self.cfg.localcurrency.qtablewidgetitem(bruto))
-            tabla.setItem(rownumber, 8,self.cfg.localcurrency.qtablewidgetitem(a.comision))
-            tabla.setItem(rownumber, 9,self.cfg.localcurrency.qtablewidgetitem(a.impuestos))
-            tabla.setItem(rownumber, 10,self.cfg.localcurrency.qtablewidgetitem(neto))
+            tabla.setItem(rownumber, 5,self.mem.localcurrency.qtablewidgetitem(saldoinicio))
+            tabla.setItem(rownumber, 6,self.mem.localcurrency.qtablewidgetitem(saldofinal))
+            tabla.setItem(rownumber, 7,self.mem.localcurrency.qtablewidgetitem(bruto))
+            tabla.setItem(rownumber, 8,self.mem.localcurrency.qtablewidgetitem(a.comision))
+            tabla.setItem(rownumber, 9,self.mem.localcurrency.qtablewidgetitem(a.impuestos))
+            tabla.setItem(rownumber, 10,self.mem.localcurrency.qtablewidgetitem(neto))
             tabla.setItem(rownumber, 11,qtpc(a.tpc_tae_neto()))
             tabla.setItem(rownumber, 12,qtpc(a.tpc_total_neto()))
             rownumber=rownumber+1
@@ -1387,8 +1401,8 @@ class SetInversionOperacionHistorica:
         self.arr=sorted(self.arr, key=lambda o: o.fecha_venta,  reverse=False)      
         
 class InversionOperacionHistorica:
-    def __init__(self, cfg):
-        self.cfg=cfg 
+    def __init__(self, mem):
+        self.mem=mem 
         self.id=None
         self.operinversion=None
         self.inversion=None
@@ -1473,8 +1487,8 @@ class InversionOperacionHistorica:
         
                 
 class InversionOperacionActual:
-    def __init__(self, cfg):
-        self.cfg=cfg 
+    def __init__(self, mem):
+        self.mem=mem 
         self.id=None
         self.operinversion=None
         self.tipooperacion=None
@@ -1520,9 +1534,9 @@ class InversionOperacionActual:
     def get_referencia_indice(self, indice):
         """Función que devuelve un Quote con la referencia del indice.
         Si no existe devuelve un Quote con quote 0"""
-        quote=Quote(self.cfg).init__from_query( indice, self.datetime)
+        quote=Quote(self.mem).init__from_query( indice, self.datetime)
         if quote==None:
-            self.referenciaindice= Quote(self.cfg).init__create(indice, self.datetime, 0)
+            self.referenciaindice= Quote(self.mem).init__create(indice, self.datetime, 0)
         else:
             self.referenciaindice=quote
         return self.referenciaindice
@@ -1537,6 +1551,12 @@ class InversionOperacionActual:
         """Función que calcula el saldo actual de la operinversion actual
                 - lastquote: objeto Quote"""
         return self.acciones*lastquote.quote
+        
+    def less_than_a_year(self):
+        """Returns True, when datetime of the operation is <= a year"""
+        if datetime.date.today()-self.datetime.date()<=datetime.timedelta(days=365):
+            return True
+        return False
         
     def pendiente(self, lastquote,  invertido=None):
         """Función que calcula el saldo  pendiente de la operacion de inversion actual
@@ -1566,8 +1586,8 @@ class InversionOperacionActual:
         return Decimal(365*self.tpc_total(last)/dias)
         
 class Concepto:
-    def __init__(self, cfg):
-        self.cfg=cfg
+    def __init__(self, mem):
+        self.mem=mem
         self.id=None
         self.name=None
         self.tipooperacion=None
@@ -1616,7 +1636,7 @@ class Concepto:
         return True
 
     def media_mensual(self):
-        cur=self.cfg.con.cursor()
+        cur=self.mem.con.cursor()
         cur.execute("select fecha from opercuentas where id_conceptos=%s union all select fecha from opertarjetas where id_conceptos=%s order by fecha limit 1", (self.id, self.id))
         res=cur.fetchone()
         if res==None:
@@ -1634,7 +1654,7 @@ class Concepto:
         
     def mensual(self,   year,  month):  
         """Saca el gasto mensual de este concepto"""
-        cur=self.cfg.con.cursor()
+        cur=self.mem.con.cursor()
         cur.execute("select sum(importe) as suma from opercuentas where id_conceptos=%s and date_part('month',fecha)=%s and date_part('year', fecha)=%s union all select sum(importe) as suma from opertarjetas where id_conceptos=%s  and date_part('month',fecha)=%s and date_part('year', fecha)=%s", (self.id,  month, year,  self.id,  month, year  ))
         suma=0
         for i in cur:
@@ -1645,8 +1665,8 @@ class Concepto:
         return suma
 
 class CuentaOperacion:
-    def __init__(self, cfg):
-        self.cfg=cfg
+    def __init__(self, mem):
+        self.mem=mem
         self.id=None
         self.fecha=None
         self.concepto=None
@@ -1675,16 +1695,16 @@ class CuentaOperacion:
     def init__db_query(self, id_opercuentas):
         """Creates a CuentaOperacion querying database for an id_opercuentas"""
         resultado=None
-        cur=self.cfg.con.cursor()
+        cur=self.mem.con.cursor()
         cur.execute("select * from opercuentas where id_opercuentas=%s", (id_opercuentas, ))
         for row in cur:
-            concepto=self.cfg.conceptos.find(row['id_conceptos'])
-            resultado=self.init__db_row(row, concepto, concepto.tipooperacion, self.cfg.data.cuentas_all().find(row['id_cuentas']))
+            concepto=self.mem.conceptos.find(row['id_conceptos'])
+            resultado=self.init__db_row(row, concepto, concepto.tipooperacion, self.mem.data.cuentas_all().find(row['id_cuentas']))
         cur.close()
         return resultado
 
     def borrar(self):
-        cur=self.cfg.con.cursor()
+        cur=self.mem.con.cursor()
         cur.execute("delete from opercuentas where id_opercuentas=%s", (self.id, ))
         self.cuenta.saldo_from_db()
         cur.close()
@@ -1709,9 +1729,9 @@ class CuentaOperacion:
         elif self.concepto.id==40 and len(self.comentario.split("|"))==2:#"{0}|{1}".format(self.selTarjeta.name, len(self.setSelOperTarjetas))
             return QApplication.translate("Core","Tarjeta: {0[0]}. Se han ejecutado {0[1]} pagos con tarjeta".format(self.comentario.split("|")))        
         elif self.concepto.id==4 and len(self.comentario.split("|"))==3:#Transfer from origin
-            return QApplication.translate("Core", "Transfer to {0}".format(self.cfg.data.cuentas_all().find(int(self.comentario.split("|")[0])).name))
+            return QApplication.translate("Core", "Transfer to {0}".format(self.mem.data.cuentas_all().find(int(self.comentario.split("|")[0])).name))
         elif self.concepto.id==5 and len(self.comentario.split("|"))==2:#Transfer received in destiny
-            return QApplication.translate("Core", "Transfer received from {0}".format(self.cfg.data.cuentas_all().find(int(self.comentario.split("|")[0])).name))
+            return QApplication.translate("Core", "Transfer received from {0}".format(self.mem.data.cuentas_all().find(int(self.comentario.split("|")[0])).name))
         elif self.concepto.id==38 and self.comentario=="Transfer":#Comision bancaria por transferencia
             return QApplication.translate("Core", "Due to account transfer")
 
@@ -1742,7 +1762,7 @@ class CuentaOperacion:
         return True
         
     def save(self):
-        cur=self.cfg.con.cursor()
+        cur=self.mem.con.cursor()
         if self.id==None:
             cur.execute("insert into opercuentas (fecha, id_conceptos, id_tiposoperaciones, importe, comentario, id_cuentas) values ( %s,%s,%s,%s,%s,%s) returning id_opercuentas",(self.fecha, self.concepto.id, self.tipooperacion.id, self.importe, self.comentario, self.cuenta.id))
             self.id=cur.fetchone()[0]
@@ -1752,10 +1772,10 @@ class CuentaOperacion:
         self.cuenta.saldo_from_db()
         
 class DBData:
-    def __init__(self, cfg):
-        self.cfg=cfg
+    def __init__(self, mem):
+        self.mem=mem
         self.loaded_inactive=False
-        self.tupdatedata=TUpdateData(self.cfg)
+        self.tupdatedata=TUpdateData(self.mem)
         
     def __del__(self):
         if self.tupdatedata.isAlive():
@@ -1764,17 +1784,17 @@ class DBData:
 
     def load_actives(self):
         inicio=datetime.datetime.now()
-        self.indicereferencia=Product(self.cfg).init__db(self.cfg.config.get_value("settings", "indicereferencia" ))
-        self.indicereferencia.result.basic.load_from_db()
-        self.ebs_active=SetEntidadesBancarias(self.cfg)
+        self.benchmark=Product(self.mem).init__db(self.mem.config.get_value("settings", "benchmark" ))
+        self.benchmark.result.basic.load_from_db()
+        self.ebs_active=SetEntidadesBancarias(self.mem)
         self.ebs_active.load_from_db("select * from entidadesbancarias where eb_activa=true")
-        self.cuentas_active=SetCuentas(self.cfg, self.ebs_active)
+        self.cuentas_active=SetCuentas(self.mem, self.ebs_active)
         self.cuentas_active.load_from_db("select * from cuentas where cu_activa=true")
-        self.tarjetas_active=SetTarjetas(self.cfg, self.cfg.data.cuentas_active)
+        self.tarjetas_active=SetTarjetas(self.mem, self.mem.data.cuentas_active)
         self.tarjetas_active.load_from_db("select * from tarjetas where tj_activa=true")
-        self.investments_active=SetProducts(self.cfg)
+        self.investments_active=SetProducts(self.mem)
         self.investments_active.load_from_inversiones_query("select distinct(mystocksid) from inversiones where in_activa=true")
-        self.inversiones_active=SetInversiones(self.cfg, self.cuentas_active, self.investments_active, self.indicereferencia)
+        self.inversiones_active=SetInversiones(self.mem, self.cuentas_active, self.investments_active, self.benchmark)
         self.inversiones_active.load_from_db("select * from inversiones where in_activa=true", True)
         if not self.tupdatedata.isAlive():#Necesary because, can be thrown from actionUpdateMemory
             self.tupdatedata.start()        
@@ -1784,19 +1804,19 @@ class DBData:
         def load():
             inicio=datetime.datetime.now()
             
-            self.ebs_inactive=SetEntidadesBancarias(self.cfg)
+            self.ebs_inactive=SetEntidadesBancarias(self.mem)
             self.ebs_inactive.load_from_db("select * from entidadesbancarias where eb_activa=false")
             
-            self.cuentas_inactive=SetCuentas(self.cfg, self.ebs_all())
+            self.cuentas_inactive=SetCuentas(self.mem, self.ebs_all())
             self.cuentas_inactive.load_from_db("select * from cuentas where cu_activa=false")
             
-            self.tarjetas_inactive=SetTarjetas(self.cfg, self.cuentas_all())
+            self.tarjetas_inactive=SetTarjetas(self.mem, self.cuentas_all())
             self.tarjetas_inactive.load_from_db("select * from tarjetas where tj_activa=false")
             
-            self.investments_inactive=SetProducts(self.cfg)
+            self.investments_inactive=SetProducts(self.mem)
             self.investments_inactive.load_from_inversiones_query("select distinct(mystocksid) from inversiones where in_activa=false")
 
-            self.inversiones_inactive=SetInversiones(self.cfg, self.cuentas_all(), self.investments_all(), self.indicereferencia)
+            self.inversiones_inactive=SetInversiones(self.mem, self.cuentas_all(), self.investments_all(), self.benchmark)
             self.inversiones_inactive.load_from_db("select * from inversiones where in_activa=false",  True)
             
             print("\n","Cargando inactives",  datetime.datetime.now()-inicio)
@@ -1828,8 +1848,8 @@ class DBData:
 
         
 class Dividend:
-    def __init__(self, cfg):
-        self.cfg=cfg
+    def __init__(self, mem):
+        self.mem=mem
         self.id=None
         self.inversion=None
         self.bruto=None
@@ -1866,7 +1886,7 @@ class Dividend:
             y el asociado en la tabla opercuentas
             
             También actualiza el saldo de la cuenta."""
-        cur=self.cfg.con.cursor()
+        cur=self.mem.con.cursor()
         self.opercuenta.borrar()
         cur.execute("delete from dividends where id_dividends=%s", (self.id, ))
         self.inversion.cuenta.saldo_from_db()
@@ -1883,10 +1903,10 @@ class Dividend:
         
         Actualiza la cuenta 
         """
-        cur=self.cfg.con.cursor()
+        cur=self.mem.con.cursor()
         comentario="{0}|{1}|{2}|{3}".format(self.inversion.name, self.bruto, self.retencion, self.comision)
         if self.id==None:#Insertar
-            oc=CuentaOperacion(self.cfg).init__create( self.fecha,self.concepto, self.concepto.tipooperacion, self.neto, comentario, self.inversion.cuenta)
+            oc=CuentaOperacion(self.mem).init__create( self.fecha,self.concepto, self.concepto.tipooperacion, self.neto, comentario, self.inversion.cuenta)
             oc.save()
             self.opercuenta=oc
             #Añade el dividend
@@ -1904,8 +1924,8 @@ class Dividend:
         cur.close()
 
 class InversionOperacion:
-    def __init__(self, cfg):
-        self.cfg=cfg
+    def __init__(self, mem):
+        self.mem=mem
         self.id=None
         self.tipooperacion=None
         self.inversion=None
@@ -1949,7 +1969,7 @@ class InversionOperacion:
     
     def clone(self):
         """Crea una inversion operacion desde otra inversionoepracion. NO es un enlace es un objeto clone"""
-        resultado=InversionOperacion(self.cfg)
+        resultado=InversionOperacion(self.mem)
         resultado.init__create(self.tipooperacion, self.datetime, self.inversion, self.acciones, self.importe, self.impuestos, self.comision, self.valor_accion, self.comentario, self.id)
         return resultado
                 
@@ -1961,8 +1981,8 @@ class InversionOperacion:
             return self.comentario
 
     def save(self, recalculate=True):
-        cur=self.cfg.con.cursor()
-        cur2=self.cfg.con.cursor()
+        cur=self.mem.con.cursor()
+        cur2=self.mem.con.cursor()
         if self.id==None:#insertar
             cur.execute("insert into operinversiones(datetime, id_tiposoperaciones,  importe, acciones,  impuestos,  comision,  valor_accion, comentario, id_inversiones) values (%s, %s, %s, %s, %s, %s, %s, %s,%s) returning id_operinversiones", (self.datetime, self.tipooperacion.id, self.importe, self.acciones, self.impuestos, self.comision, self.valor_accion, self.comentario, self.inversion.id))
             self.id=cur.fetchone()[0]
@@ -1971,19 +1991,19 @@ class InversionOperacion:
             cur.execute("update operinversiones set datetime=%s, id_tiposoperaciones=%s, importe=%s, acciones=%s, impuestos=%s, comision=%s, valor_accion=%s, comentario=%s, id_inversiones=%s where id_operinversiones=%s", (self.datetime, self.tipooperacion.id, self.importe, self.acciones, self.impuestos, self.comision, self.valor_accion, self.comentario, self.inversion.id, self.id))
         if recalculate==True:
             (self.inversion.op_actual,  self.inversion.op_historica)=self.inversion.op.calcular()   
-            CuentaOperacionHeredadaInversion(self.cfg).actualizar_una_inversion(cur, cur2,  self.inversion.id)  
+            CuentaOperacionHeredadaInversion(self.mem).actualizar_una_inversion(cur, cur2,  self.inversion.id)  
             self.inversion.cuenta.saldo_from_db()
-        self.cfg.con.commit()
+        self.mem.con.commit()
         cur.close()
         cur2.close()
         
     def borrar(self):
-        cur=self.cfg.con.cursor()
-        cur2=self.cfg.con.cursor()
+        cur=self.mem.con.cursor()
+        cur2=self.mem.con.cursor()
         cur.execute("delete from operinversiones where id_operinversiones=%s",(self.id, ))
         self.inversion.op.arr.remove(self)
         (self.inversion.op_actual,  self.inversion.op_historica)=self.inversion.op.calcular()
-        CuentaOperacionHeredadaInversion(self.cfg).actualizar_una_inversion(cur, cur2,  self.inversion.id)#Es una inversion ya que la id_operinversion ya no existe. Se ha borrado
+        CuentaOperacionHeredadaInversion(self.mem).actualizar_una_inversion(cur, cur2,  self.inversion.id)#Es una inversion ya que la id_operinversion ya no existe. Se ha borrado
         self.inversion.cuenta.saldo_from_db()
         cur.close()
         cur2.close()
@@ -1996,9 +2016,9 @@ class InversionOperacion:
    
 class EntidadBancaria:
     """Clase que encapsula todas las funciones que se pueden realizar con una Entidad bancaria o banco"""
-    def __init__(self, cfg):
+    def __init__(self, mem):
         """Constructor que inicializa los atributos a None"""
-        self.cfg=cfg
+        self.mem=mem
         self.id=None
         self.name=None
         self.activa=None
@@ -2030,7 +2050,7 @@ class EntidadBancaria:
         return False
     def save(self):
         """Función que inserta si self.id es nulo y actualiza si no es nulo"""
-        cur=self.cfg.con.cursor()
+        cur=self.mem.con.cursor()
         if self.id==None:
             cur.execute("insert into entidadesbancarias (entidadbancaria, eb_activa) values (%s,%s) returning id_entidadesbancarias", (self.name, self.activa))
             self.id=cur.fetchone()[0]
@@ -2066,8 +2086,8 @@ class EntidadBancaria:
             cur.execute("delete from entidadesbancarias where id_entidadesbancarias=%s", (self.id, ))  
             
 class Cuenta:
-    def __init__(self, cfg):
-        self.cfg=cfg
+    def __init__(self, mem):
+        self.mem=mem
         self.id=None
         self.name=None
         self.eb=None
@@ -2086,7 +2106,7 @@ class Cuenta:
         self.eb=eb
         self.activa=row['cu_activa']
         self.numero=row['numerocuenta']
-        self.currency=self.cfg.currencies.find(row['currency'])
+        self.currency=self.mem.currencies.find(row['currency'])
         return self
     
     def saldo_from_db(self,fecha=None):
@@ -2098,7 +2118,7 @@ class Cuenta:
         Devuelve:
             - Decimal saldo Valor del saldo
         """
-        cur=self.cfg.con.cursor()
+        cur=self.mem.con.cursor()
         if fecha==None:
             fecha=datetime.date.today()
         cur.execute('select sum(importe)  from opercuentas where id_cuentas='+ str(self.id) +" and fecha<='"+str(fecha)+"';") 
@@ -2121,7 +2141,7 @@ class Cuenta:
         return self
         
     def save(self):
-        cur=self.cfg.con.cursor()
+        cur=self.mem.con.cursor()
         if self.id==None:
             cur.execute("insert into cuentas (id_entidadesbancarias, cuenta, numerocuenta, cu_activa,currency) values (%s,%s,%s,%s,%s) returning id_cuentas", (self.eb.id, self.name, self.numero, self.activa, self.currency.id))
             self.id=cur.fetchone()[0]
@@ -2148,7 +2168,7 @@ class Cuenta:
 
 #    def transferencia(self, fecha,  cuentaorigen,  cuentadestino, importe, comision ):
 #        """Cuenta origen y cuenta destino son objetos cuenta"""
-#        cur=self.cfg.con.cursor()
+#        cur=self.mem.con.cursor()
 #        sql="select transferencia('"+str(fecha)+"', "+ str(cuentaorigen.id) +', ' + str(cuentadestino.id)+', '+str(importe) +', '+str(comision)+');'
 #        cur.execute(sql)
 #        cuentaorigen.saldo_from_db()
@@ -2159,15 +2179,15 @@ class Cuenta:
         """Si el oc_comision_id es 0 es que no hay comision porque tambi´en es 0"""
         #Ojo los comentarios est´an dependientes.
         if comision>0:
-            oc_comision=CuentaOperacion(self.cfg).init__create(fecha, self.cfg.conceptos.find(38), self.cfg.tiposoperaciones.find(1), -comision, "Transfer", cuentaorigen )
+            oc_comision=CuentaOperacion(self.mem).init__create(fecha, self.mem.conceptos.find(38), self.mem.tiposoperaciones.find(1), -comision, "Transfer", cuentaorigen )
             oc_comision.save()
             oc_comision_id=oc_comision.id
         else:
             oc_comision_id=0
-        oc_origen=CuentaOperacion(self.cfg).init__create(fecha, self.cfg.conceptos.find(4), self.cfg.tiposoperaciones.find(3), -importe, "", cuentaorigen )
+        oc_origen=CuentaOperacion(self.mem).init__create(fecha, self.mem.conceptos.find(4), self.mem.tiposoperaciones.find(3), -importe, "", cuentaorigen )
         oc_origen.save()
         commentdestino="{0}|{1}".format(cuentaorigen.id, oc_origen.id)
-        oc_destino=CuentaOperacion(self.cfg).init__create(fecha, self.cfg.conceptos.find(5), self.cfg.tiposoperaciones.find(3), importe, commentdestino, cuentadestino )
+        oc_destino=CuentaOperacion(self.mem).init__create(fecha, self.mem.conceptos.find(5), self.mem.tiposoperaciones.find(3), importe, commentdestino, cuentadestino )
         oc_destino.save()
         oc_origen.comentario="{0}|{1}|{2}".format(cuentadestino.id, oc_destino.id, oc_comision_id)
         oc_origen.save()
@@ -2190,9 +2210,9 @@ class Inversion:
         - create. Solo contenedor hasta realizar un save y guardar en id, el id apropiado. mientras id=None
         
     """
-    def __init__(self, cfg):
+    def __init__(self, mem):
         """Constructor que inicializa los atributos a None"""
-        self.cfg=cfg
+        self.mem=mem
         self.id=None
         self.name=None
         self.venta=None
@@ -2216,7 +2236,7 @@ class Inversion:
     
     def save(self):
         """Inserta o actualiza la inversión dependiendo de si id=None o no"""
-        cur=self.cfg.con.cursor()
+        cur=self.mem.con.cursor()
         if self.id==None:
             cur.execute("insert into inversiones (inversion, venta, id_cuentas, in_activa, mystocksid) values (%s, %s,%s,%s,%s) returning id_inversiones", (self.name, self.venta, self.cuenta.id, self.activa, self.product.id))    
             self.id=cur.fetchone()[0]
@@ -2252,11 +2272,11 @@ class Inversion:
         
     def get_operinversiones(self):
         """Funci`on que carga un array con objetos inversion operacion y con ellos calcula el set de actual e historicas"""
-        cur=self.cfg.con.cursor()
-        self.op=SetInversionOperacion(self.cfg)
+        cur=self.mem.con.cursor()
+        self.op=SetInversionOperacion(self.mem)
         cur.execute("SELECT * from operinversiones where id_inversiones=%s order by datetime", (self.id, ))
         for row in cur:
-            self.op.append(InversionOperacion(self.cfg).init__db_row(row, self, self.cfg.tiposoperaciones.find(row['id_tiposoperaciones'])))
+            self.op.append(InversionOperacion(self.mem).init__db_row(row, self, self.mem.tiposoperaciones.find(row['id_tiposoperaciones'])))
 #        print ("\n")
 #        print ("acciones antes",  self.acciones(datetime.datetime(2011, 9, 22)),  self.acciones(datetime.datetime(2011, 9, 24)))
 #        inicio=datetime.datetime.now()
@@ -2305,7 +2325,7 @@ class Inversion:
     def dividends_neto(self, ano,  mes=None):
         """Dividend cobrado en un año y mes pasado como parámetro, independientemente de si la inversión esta activa o no.
         El 63 es un gasto aunque también este registrado en dividends."""
-        cur=self.cfg.con.cursor()
+        cur=self.mem.con.cursor()
         if mes==None:#Calcula en el año
             cur.execute("select sum(neto) as neto from dividends where id_conceptos not in (63) and date_part('year',fecha) = "+str(ano))
             resultado=cur.fetchone()[0]
@@ -2319,7 +2339,7 @@ class Inversion:
     def dividends_bruto(self,  ano,  mes=None):
         """Dividend cobrado en un año y mes pasado como parámetro, independientemente de si la inversión esta activa o no"""
         
-        cur=self.cfg.con.cursor()
+        cur=self.mem.con.cursor()
         if mes==None:#Calcula en el año
             cur.execute("select sum(bruto) as bruto from dividends where id_conceptos not in (63) and  date_part('year',fecha) = "+str(ano))
             resultado=cur.fetchone()[0]
@@ -2335,9 +2355,9 @@ class Inversion:
     def acciones(self, fecha=None):
         """Función que saca el número de acciones de las self.op_actual"""
         if fecha==None:
-            dat=self.cfg.localzone.now()
+            dat=self.mem.localzone.now()
         else:
-            dat=day_end_from_date(fecha, self.cfg.localzone)
+            dat=day_end_from_date(fecha, self.mem.localzone)
         resultado=Decimal('0')
 
         for o in self.op.arr:
@@ -2368,7 +2388,7 @@ class Inversion:
             acciones=self.acciones(fecha)
             if acciones==0:
                 return Decimal('0')
-            quote=Quote(self.cfg).init__from_query(self.product, day_end_from_date(fecha, self.cfg.localzone))
+            quote=Quote(self.mem).init__from_query(self.product, day_end_from_date(fecha, self.mem.localzone))
             if quote.datetime==None:
                 print ("Inversion saldo: {0} ({1}) en {2} no tiene valor".format(self.name, self.product.id, fecha))
                 return Decimal('0')
@@ -2401,8 +2421,8 @@ class Inversion:
 
 
 class Tarjeta:    
-    def __init__(self, cfg):
-        self.cfg=cfg
+    def __init__(self, mem):
+        self.mem=mem
         self.id=None
         self.name=None
         self.cuenta=None
@@ -2433,7 +2453,7 @@ class Tarjeta:
         """
             Devuelve False si no ha podido borrarse por haber dependientes.
         """
-        cur=self.cfg.con.cursor()
+        cur=self.mem.con.cursor()
         cur.execute("select count(*) from opertarjetas where id_tarjetas=%s", (self.id, ))
         if cur.fetchone()['count']>0: # tiene dependientes
             cur.close()
@@ -2446,11 +2466,11 @@ class Tarjeta:
         
     def get_opertarjetas_diferidas_pendientes(self):
         """Funci`on que carga un array con objetos inversion operacion y con ellos calcula el set de actual e historicas"""
-        cur=self.cfg.con.cursor()
+        cur=self.mem.con.cursor()
         self.op_diferido=[]
         cur.execute("SELECT * from opertarjetas where id_tarjetas=%s and pagado=false", (self.id, ))
         for row in cur:
-            self.op_diferido.append(TarjetaOperacion(self.cfg).init__db_row(row, self.cfg.conceptos.find(row['id_conceptos']), self.cfg.tiposoperaciones.find(row['id_tiposoperaciones']), self))
+            self.op_diferido.append(TarjetaOperacion(self.mem).init__db_row(row, self.mem.conceptos.find(row['id_conceptos']), self.mem.tiposoperaciones.find(row['id_tiposoperaciones']), self))
         cur.close()
         
     def qmessagebox_inactive(self):
@@ -2463,7 +2483,7 @@ class Tarjeta:
         return False
         
     def save(self):
-        cur=self.cfg.con.cursor()
+        cur=self.mem.con.cursor()
         if self.id==None:
             cur.execute("insert into tarjetas (tarjeta,id_cuentas,pagodiferido,saldomaximo,tj_activa,numero) values (%s, %s, %s,%s,%s,%s) returning id_tarjetas", (self.name, self.cuenta.id,  self.pagodiferido ,  self.saldomaximo, self.activa, self.numero))
             self.id=cur.fetchone()[0]
@@ -2480,9 +2500,9 @@ class Tarjeta:
         return resultado
 
 class TarjetaOperacion:
-    def __init__(self, cfg):
+    def __init__(self, mem):
         """Tarjeta es un objeto TarjetaOperacion. pagado, fechapago y opercuenta solo se rellena cuando se paga"""
-        self.cfg=cfg
+        self.mem=mem
         self.id=None
         self.fecha=None
         self.concepto=None
@@ -2512,13 +2532,13 @@ class TarjetaOperacion:
         return self.init__create(row['fecha'],  concepto, tipooperacion, row['importe'], row['comentario'], tarjeta, row['pagado'], row['fechapago'], opercuenta, row['id_opertarjetas'])
         
     def borrar(self):
-        cur=self.cfg.con.cursor()
+        cur=self.mem.con.cursor()
         sql="delete from opertarjetas where id_opertarjetas="+ str(self.id)
         cur.execute(sql)
         cur.close()
         
     def save(self):
-        cur=self.cfg.con.cursor()
+        cur=self.mem.con.cursor()
         if self.id==None:#insertar
             sql="insert into opertarjetas (fecha, id_conceptos, id_tiposoperaciones, importe, comentario, id_tarjetas, pagado) values ('" + str(self.fecha) + "'," + str(self.concepto.id)+","+ str(self.tipooperacion.id) +","+str(self.importe)+", '"+self.comentario+"', "+str(self.tarjeta.id)+", "+str(self.pagado)+") returning id_opertarjetas"
             cur.execute(sql);
@@ -2542,12 +2562,12 @@ class TipoOperacion:
 
 
 class Patrimonio:
-    def __init__(self, cfg):
-        self.cfg=cfg        
+    def __init__(self, mem):
+        self.mem=mem        
     
     def primera_fecha_con_datos_usuario(self):        
         """Devuelve la fecha actual si no hay datos. Base de datos vacía"""
-        cur=self.cfg.con.cursor()
+        cur=self.mem.con.cursor()
         sql='select fecha from opercuentas UNION all select datetime::date from operinversiones UNION all select fecha from opertarjetas order by fecha limit 1;'
         cur.execute(sql)
         if cur.rowcount==0:
@@ -2558,7 +2578,7 @@ class Patrimonio:
 
     def saldo_todas_cuentas(self,  fecha=None):
         """Si cur es none y fecha calcula el saldo actual."""
-        cur=self.cfg.con.cursor()
+        cur=self.mem.con.cursor()
         resultado=0
         sql="select cuentas_saldo('"+str(fecha)+"') as saldo;";
         cur.execute(sql)
@@ -2600,7 +2620,7 @@ class Patrimonio:
         """
         resultado=0
 #        inicio=datetime.datetime.now()
-        for inv in self.cfg.data.inversiones_all().arr:
+        for inv in self.mem.data.inversiones_all().arr:
             if inv.product.type.id in (7, 9):#public and private bonds        
                 if fecha==None:
                     resultado=resultado+inv.saldo()
@@ -2615,7 +2635,7 @@ class Patrimonio:
 
     def saldo_anual_por_tipo_operacion(self,  ano,  id_tiposoperaciones):   
         """Opercuentas y opertarjetas"""
-        cur=self.cfg.con.cursor()
+        cur=self.mem.con.cursor()
         sql="select sum(Importe) as importe from opercuentas where id_tiposoperaciones="+str(id_tiposoperaciones)+" and date_part('year',fecha) = "+str(ano)  + " union all select sum(Importe) as importe from opertarjetas where id_tiposoperaciones="+str(id_tiposoperaciones)+" and date_part('year',fecha) = "+str(ano)
         cur.execute(sql)        
         resultado=0
@@ -2628,7 +2648,7 @@ class Patrimonio:
 
     def saldo_por_tipo_operacion(self,  ano,  mes,  id_tiposoperaciones):   
         """Opercuentas y opertarjetas"""
-        cur=self.cfg.con.cursor()
+        cur=self.mem.con.cursor()
         sql="select sum(Importe) as importe from opercuentas where id_tiposoperaciones="+str(id_tiposoperaciones)+" and date_part('year',fecha) = "+str(ano)+" and date_part('month',fecha)= " + str(mes) + " union all select sum(Importe) as importe from opertarjetas where id_tiposoperaciones="+str(id_tiposoperaciones)+" and date_part('year',fecha) = "+str(ano)+" and date_part('month',fecha)= " + str(mes)
         cur.execute(sql)        
         
@@ -2663,17 +2683,17 @@ class Patrimonio:
 
 
 class SetTarjetas:
-    def __init__(self, cfg, cuentas):
+    def __init__(self, mem, cuentas):
         self.arr=[]
 #        self.dic_arr={} ##Prueba de duplicación
-        self.cfg=cfg   
+        self.mem=mem   
         self.cuentas=cuentas
 
     def load_from_db(self, sql):
-        cur=self.cfg.con.cursor()
+        cur=self.mem.con.cursor()
         cur.execute(sql)#"Select * from tarjetas")
         for row in cur:
-            t=Tarjeta(self.cfg).init__db_row(row, self.cuentas.find(row['id_cuentas']))
+            t=Tarjeta(self.mem).init__db_row(row, self.cuentas.find(row['id_cuentas']))
             if t.pagodiferido==True:
                 t.get_opertarjetas_diferidas_pendientes()
 #            self.dic_arr[str(t.id)]=t
@@ -2682,7 +2702,7 @@ class SetTarjetas:
             
     def clone_of_account(self, cuenta):
         """Devuelve un SetTarjetas con las tarjetas de una determinada cuenta"""
-        s=SetTarjetas(self.cfg, self.cuentas)
+        s=SetTarjetas(self.mem, self.cuentas)
         for t in self.arr:
             if t.cuenta==cuenta:
                 s.arr.append(t)
@@ -2709,15 +2729,15 @@ class SetTarjetas:
                     
     def union(self,  list2, cuentasunion):
         """Devuelve un SetEntidadesBancarias con la union del set1 y del set2"""
-        resultado=SetTarjetas(self.cfg, cuentasunion)
+        resultado=SetTarjetas(self.mem, cuentasunion)
         resultado.arr=self.arr+list2.arr
         return resultado
         
         
 class SetTiposOperaciones:      
-    def __init__(self, cfg):
+    def __init__(self, mem):
         self.dic_arr={}
-        self.cfg=cfg     
+        self.mem=mem     
         
     def load(self):
         self.dic_arr['1']=TipoOperacion().init__create( "Gasto", 1)
@@ -2748,7 +2768,7 @@ class SetTiposOperaciones:
         
     def clone_only_operinversiones(self):
         """Devuelve los tipos de operación específicos de operinversiones. en un arr de la forma"""
-        resultado=SetTiposOperaciones(self.cfg)
+        resultado=SetTiposOperaciones(self.mem)
         for key,  t in self.dic_arr.items():
             if key in ('4', '5', '6', '8'):
                 resultado.dic_arr[str(key)]=t
@@ -2789,36 +2809,36 @@ def decimal_check(dec):
 #    return resultado
 
 class SetAgrupations:
-    """Se usa para meter en cfg las agrupaciones, pero también para crear agrupaciones en las inversiones"""
-    def __init__(self, cfg):
-        """Usa la variable cfg.Agrupations"""
-        self.cfg=cfg
+    """Se usa para meter en mem las agrupaciones, pero también para crear agrupaciones en las inversiones"""
+    def __init__(self, mem):
+        """Usa la variable mem.Agrupations"""
+        self.mem=mem
         self.dic_arr={}
         
         
     def load_all(self):
-        self.dic_arr["ERROR"]=Agrupation(self.cfg).init__create( "ERROR","Agrupación errónea", self.cfg.types.find(3), self.cfg.bolsas.find(1) )
-        self.dic_arr["IBEX"]=Agrupation(self.cfg).init__create( "IBEX","Ibex 35", self.cfg.types.find(3), self.cfg.bolsas.find(1) )
-        self.dic_arr["MERCADOCONTINUO" ]=Agrupation(self.cfg).init__create( "MERCADOCONTINUO","Mercado continuo español", self.cfg.types.find(3), self.cfg.bolsas.find(1) )
-        self.dic_arr[ "CAC"]=Agrupation(self.cfg).init__create("CAC",  "CAC 40 de París", self.cfg.types.find(3),self.cfg.bolsas.find(3) )
-        self.dic_arr["EUROSTOXX"]=Agrupation(self.cfg).init__create( "EUROSTOXX","Eurostoxx 50", self.cfg.types.find(3),self.cfg.bolsas.find(10)  )
-        self.dic_arr["DAX"]=Agrupation(self.cfg).init__create( "DAX","DAX", self.cfg.types.find(3), self.cfg.bolsas.find(5)  )
-        self.dic_arr["SP500"]=Agrupation(self.cfg).init__create("SP500",  "Standard & Poors 500", self.cfg.types.find(3), self.cfg.bolsas.find(2)  )
-        self.dic_arr["NASDAQ100"]=Agrupation(self.cfg).init__create( "NASDAQ100","Nasdaq 100", self.cfg.types.find(3), self.cfg.bolsas.find(2)  )
-        self.dic_arr["EURONEXT"]=Agrupation(self.cfg).init__create( "EURONEXT",  "EURONEXT", self.cfg.types.find(3), self.cfg.bolsas.find(10)  )
-        self.dic_arr["DEUTSCHEBOERSE"]=Agrupation(self.cfg).init__create( "DEUTSCHEBOERSE",  "DEUTSCHEBOERSE", self.cfg.types.find(3), self.cfg.bolsas.find(5)  )
+        self.dic_arr["ERROR"]=Agrupation(self.mem).init__create( "ERROR","Agrupación errónea", self.mem.types.find(3), self.mem.bolsas.find(1) )
+        self.dic_arr["IBEX"]=Agrupation(self.mem).init__create( "IBEX","Ibex 35", self.mem.types.find(3), self.mem.bolsas.find(1) )
+        self.dic_arr["MERCADOCONTINUO" ]=Agrupation(self.mem).init__create( "MERCADOCONTINUO","Mercado continuo español", self.mem.types.find(3), self.mem.bolsas.find(1) )
+        self.dic_arr[ "CAC"]=Agrupation(self.mem).init__create("CAC",  "CAC 40 de París", self.mem.types.find(3),self.mem.bolsas.find(3) )
+        self.dic_arr["EUROSTOXX"]=Agrupation(self.mem).init__create( "EUROSTOXX","Eurostoxx 50", self.mem.types.find(3),self.mem.bolsas.find(10)  )
+        self.dic_arr["DAX"]=Agrupation(self.mem).init__create( "DAX","DAX", self.mem.types.find(3), self.mem.bolsas.find(5)  )
+        self.dic_arr["SP500"]=Agrupation(self.mem).init__create("SP500",  "Standard & Poors 500", self.mem.types.find(3), self.mem.bolsas.find(2)  )
+        self.dic_arr["NASDAQ100"]=Agrupation(self.mem).init__create( "NASDAQ100","Nasdaq 100", self.mem.types.find(3), self.mem.bolsas.find(2)  )
+        self.dic_arr["EURONEXT"]=Agrupation(self.mem).init__create( "EURONEXT",  "EURONEXT", self.mem.types.find(3), self.mem.bolsas.find(10)  )
+        self.dic_arr["DEUTSCHEBOERSE"]=Agrupation(self.mem).init__create( "DEUTSCHEBOERSE",  "DEUTSCHEBOERSE", self.mem.types.find(3), self.mem.bolsas.find(5)  )
 
 
-        self.dic_arr["e_fr_LYXOR"]=Agrupation(self.cfg).init__create( "e_fr_LYXOR","LYXOR", self.cfg.types.find(4),self.cfg.bolsas.find(3)  )
-        self.dic_arr["e_de_DBXTRACKERS"]=Agrupation(self.cfg).init__create( "e_de_DBXTRACKERS","Deutsche Bank X-Trackers", self.cfg.types.find(4),self.cfg.bolsas.find(5)  )
+        self.dic_arr["e_fr_LYXOR"]=Agrupation(self.mem).init__create( "e_fr_LYXOR","LYXOR", self.mem.types.find(4),self.mem.bolsas.find(3)  )
+        self.dic_arr["e_de_DBXTRACKERS"]=Agrupation(self.mem).init__create( "e_de_DBXTRACKERS","Deutsche Bank X-Trackers", self.mem.types.find(4),self.mem.bolsas.find(5)  )
         
-        self.dic_arr["f_es_0014"]=Agrupation(self.cfg).init__create("f_es_0014",  "Gestora BBVA", self.cfg.types.find(2), self.cfg.bolsas.find(1) )
-        self.dic_arr["f_es_0043"]=Agrupation(self.cfg).init__create( "f_es_0043","Gestora Renta 4", self.cfg.types.find(2), self.cfg.bolsas.find(1))
-        self.dic_arr["f_es_0055"]=Agrupation(self.cfg).init__create("f_es_0055","Gestora Bankinter", self.cfg.types.find(2),self.cfg.bolsas.find(1) )
-        self.dic_arr["f_es_BMF"]=Agrupation(self.cfg).init__create( "f_es_BMF","Fondos de la bolsa de Madrid", self.cfg.types.find(2), self.cfg.bolsas.find(1) )
+        self.dic_arr["f_es_0014"]=Agrupation(self.mem).init__create("f_es_0014",  "Gestora BBVA", self.mem.types.find(2), self.mem.bolsas.find(1) )
+        self.dic_arr["f_es_0043"]=Agrupation(self.mem).init__create( "f_es_0043","Gestora Renta 4", self.mem.types.find(2), self.mem.bolsas.find(1))
+        self.dic_arr["f_es_0055"]=Agrupation(self.mem).init__create("f_es_0055","Gestora Bankinter", self.mem.types.find(2),self.mem.bolsas.find(1) )
+        self.dic_arr["f_es_BMF"]=Agrupation(self.mem).init__create( "f_es_BMF","Fondos de la bolsa de Madrid", self.mem.types.find(2), self.mem.bolsas.find(1) )
 
-        self.dic_arr["w_fr_SG"]=Agrupation(self.cfg).init__create( "w_fr_SG","Warrants Societe Generale", self.cfg.types.find(5),self.cfg.bolsas.find(3) )
-        self.dic_arr["w_es_BNP"]=Agrupation(self.cfg).init__create("w_es_BNP","Warrants BNP Paribas", self.cfg.types.find(5),self.cfg.bolsas.find(1))
+        self.dic_arr["w_fr_SG"]=Agrupation(self.mem).init__create( "w_fr_SG","Warrants Societe Generale", self.mem.types.find(5),self.mem.bolsas.find(3) )
+        self.dic_arr["w_es_BNP"]=Agrupation(self.mem).init__create("w_es_BNP","Warrants BNP Paribas", self.mem.types.find(5),self.mem.bolsas.find(1))
 
     def find(self, id):
         try:
@@ -2839,14 +2859,14 @@ class SetAgrupations:
         return resultado
     
     def clone(self):
-        resultado=SetAgrupations(self.cfg)
+        resultado=SetAgrupations(self.mem)
         for k, a in self.dic_arr.items():
             resultado.dic_arr[k]=a
         return resultado
     
     def clone_by_type(self,  type):
         """Muestra las agrupaciónes de un tipo pasado como parámetro. El parámetro type es un objeto Type"""
-        resultado=SetAgrupations(self.cfg)
+        resultado=SetAgrupations(self.mem)
         for k, a in self.dic_arr.items():
             if a.type==type:
                 resultado.dic_arr[k]=a
@@ -2855,30 +2875,30 @@ class SetAgrupations:
         
     def clone_etfs(self):
         """Función que filtra el diccionario a según el país y el fondo """
-        return self.clone_by_type(self.cfg.types.find(4))
+        return self.clone_by_type(self.mem.types.find(4))
         
-#        return {k:v for k,v in self.cfg.Agrupations.items() if k[0]=='e' and  k[2]==country[0] and k[3]==country[1]}
+#        return {k:v for k,v in self.mem.Agrupations.items() if k[0]=='e' and  k[2]==country[0] and k[3]==country[1]}
     def clone_warrants(self):
         """Función que filtra el diccionario a según el país y el fondo """
-        return self.clone_by_type(self.cfg.types.find(5))
+        return self.clone_by_type(self.mem.types.find(5))
         
     def clone_fondos(self):
         """Función que filtra el diccionario a según el país y el fondo """
-        return self.clone_by_type(self.cfg.types.find(2))
+        return self.clone_by_type(self.mem.types.find(2))
         
     def clone_acciones(self):
         """Función que filtra el diccionario a según el país y el fondo """
-        return self.clone_by_type(self.cfg.types.find(3))
+        return self.clone_by_type(self.mem.types.find(3))
         
         
     def clone_from_dbstring(self, dbstr):
         """Convierte la cadena de la base datos en un array de objetos agrupation"""
-        resultado=SetAgrupations(self.cfg)
+        resultado=SetAgrupations(self.mem)
         if dbstr==None or dbstr=="":
             pass
         else:
             for item in dbstr[1:-1].split("|"):
-                resultado.dic_arr[item]=self.cfg.agrupations.find(item)
+                resultado.dic_arr[item]=self.mem.agrupations.find(item)
         return resultado
         
     def load_qcombobox(self, combo):
@@ -2897,24 +2917,24 @@ class SetAgrupations:
         
     def clone_from_combo(self, cmb):
         """Función que convierte un combo de agrupations a un array de agrupations"""
-        resultado=SetAgrupations(self.cfg)
+        resultado=SetAgrupations(self.mem)
         for i in range (cmb.count()):
-            resultado.dic_arr[str(cmb.itemData(i))]=self.cfg.agrupations.find(cmb.itemData(i))
+            resultado.dic_arr[str(cmb.itemData(i))]=self.mem.agrupations.find(cmb.itemData(i))
         return resultado
 
 class SetApalancamientos:
-    def __init__(self, cfg):
-        """Usa la variable cfg.Agrupations"""
-        self.cfg=cfg
+    def __init__(self, mem):
+        """Usa la variable mem.Agrupations"""
+        self.mem=mem
         self.dic_arr={}
                 
         
     def load_all(self):
-        self.dic_arr["0"]=Apalancamiento(self.cfg).init__create(0 ,QApplication.translate("Core","Not leveraged"))
-        self.dic_arr["1"]=Apalancamiento(self.cfg).init__create( 1,QApplication.translate("Core","Variable leverage (Warrants)"))
-        self.dic_arr["2"]=Apalancamiento(self.cfg).init__create( 2,QApplication.translate("Core","Leverage x2"))
-        self.dic_arr["3"]=Apalancamiento(self.cfg).init__create( 3,QApplication.translate("Core","Leverage x3"))
-        self.dic_arr["4"]=Apalancamiento(self.cfg).init__create( 4,QApplication.translate("Core","Leverage x4"))
+        self.dic_arr["0"]=Apalancamiento(self.mem).init__create(0 ,QApplication.translate("Core","Not leveraged"))
+        self.dic_arr["1"]=Apalancamiento(self.mem).init__create( 1,QApplication.translate("Core","Variable leverage (Warrants)"))
+        self.dic_arr["2"]=Apalancamiento(self.mem).init__create( 2,QApplication.translate("Core","Leverage x2"))
+        self.dic_arr["3"]=Apalancamiento(self.mem).init__create( 3,QApplication.translate("Core","Leverage x3"))
+        self.dic_arr["4"]=Apalancamiento(self.mem).init__create( 4,QApplication.translate("Core","Leverage x4"))
                
 
     def load_qcombobox(self, combo):
@@ -2932,9 +2952,9 @@ class SetApalancamientos:
         return self.dic_arr[str(id)]
 
 class SetPriorities:
-    def __init__(self, cfg):
-        """Usa la variable cfg.Agrupations. Debe ser una lista no un diccionario porque importa el orden"""
-        self.cfg=cfg
+    def __init__(self, mem):
+        """Usa la variable mem.Agrupations. Debe ser una lista no un diccionario porque importa el orden"""
+        self.mem=mem
         self.arr=[]
                 
     def load_all(self):
@@ -2959,17 +2979,17 @@ class SetPriorities:
         
     def init__create_from_db(self, arr):
         """Convierte el array de enteros de la base datos en un array de objetos priority"""
-        resultado=SetPriorities(self.cfg)
+        resultado=SetPriorities(self.mem)
         if arr==None or len(arr)==0:
             resultado.arr=[]
         else:
             for a in arr:
-                resultado.arr.append(self.cfg.priorities.find(a))
+                resultado.arr.append(self.mem.priorities.find(a))
         return resultado
         
     def clone(self):
         """Devuelve los tipos de operación específicos de operinversiones. en un arr de la forma"""
-        resultado=SetPriorities(self.cfg)
+        resultado=SetPriorities(self.mem)
         for a in self.arr:
             resultado.arr.append(a)
         return resultado
@@ -2995,13 +3015,13 @@ class SetPriorities:
     def init__create_from_combo(self, cmb):
         """Función que convierte un combo de agrupations a un array de agrupations"""
         for i in range (cmb.count()):
-            self.arr.append(self.cfg.priorities.find(cmb.itemData(i)))
+            self.arr.append(self.mem.priorities.find(cmb.itemData(i)))
         return self
                 
 class SetPrioritiesHistorical:
-    def __init__(self, cfg):
-        """Usa la variable cfg.Agrupations"""
-        self.cfg=cfg
+    def __init__(self, mem):
+        """Usa la variable mem.Agrupations"""
+        self.mem=mem
         self.arr=[]
         
             
@@ -3017,7 +3037,7 @@ class SetPrioritiesHistorical:
                     
     def clone(self):
         """Devuelve los tipos de operación específicos de operinversiones. en un arr de la forma"""
-        resultado=SetPrioritiesHistorical(self.cfg)
+        resultado=SetPrioritiesHistorical(self.mem)
         for a in self.arr:
             resultado.arr.append(a)
         return resultado
@@ -3031,12 +3051,12 @@ class SetPrioritiesHistorical:
             
     def init__create_from_db(self, arr):
         """Convierte el array de enteros de la base datos en un array de objetos priority"""
-        resultado=SetPrioritiesHistorical(self.cfg)
+        resultado=SetPrioritiesHistorical(self.mem)
         if arr==None or len(arr)==0:
             resultado.arr=[]
         else:
             for a in arr:
-                resultado.arr.append(self.cfg.prioritieshistorical.find(a))
+                resultado.arr.append(self.mem.prioritieshistorical.find(a))
         return resultado
 
     def array_of_id(self):
@@ -3058,12 +3078,12 @@ class SetPrioritiesHistorical:
     def init__create_from_combo(self, cmb):
         """Función que convierte un combo de agrupations a un array de agrupations"""
         for i in range (cmb.count()):
-            self.arr.append(self.cfg.prioritieshistorical.find(cmb.itemData(i)))
+            self.arr.append(self.mem.prioritieshistorical.find(cmb.itemData(i)))
         return self
 
 class StockExchange:
-    def __init__(self, cfg):
-        self.cfg=cfg
+    def __init__(self, mem):
+        self.mem=mem
         self.id=None
         self.name=None
         self.country=None
@@ -3080,7 +3100,7 @@ class StockExchange:
         self.country=country
         self.starts=row['starts']
         self.closes=row['closes']
-        self.zone=self.cfg.zones.find(row['zone'])#Intente hacer objeto pero era absurdo.
+        self.zone=self.mem.zones.find(row['zone'])#Intente hacer objeto pero era absurdo.
         return self
 
 class Color:
@@ -3185,8 +3205,8 @@ class Currency:
         return a
 
 class ProductMode:
-    def __init__(self, cfg):
-        self.cfg=cfg
+    def __init__(self, mem):
+        self.mem=mem
         self.id=None
         self.name=None
         
@@ -3239,19 +3259,19 @@ class Money:
 
 
 class SetDPS:
-    def __init__(self, cfg,  product):
+    def __init__(self, mem,  product):
         self.arr=[]
-        self.cfg=cfg   
+        self.mem=mem   
         self.product=product
     
     
     def load_from_db(self):
         del self.arr
         self.arr=[]
-        cur=self.cfg.conms.cursor()
+        cur=self.mem.conms.cursor()
         cur.execute( "select * from dps where id=%s order by date", (self.product.id, ))
         for row in cur:
-            self.arr.append(DPS(self.cfg, self.product).init__from_db_row(row))
+            self.arr.append(DPS(self.mem, self.product).init__from_db_row(row))
         cur.close()            
         
     def find(self, id):
@@ -3292,8 +3312,8 @@ class SetDPS:
 
 class DPS:
     """Dividend por acción pagados. Se usa para pintar gráficos sin dividends"""
-    def __init__(self, cfg,  product):
-        self.cfg=cfg
+    def __init__(self, mem,  product):
+        self.mem=mem
         self.product=product
         self.id=None#id_dps
         self.date=None#pk
@@ -3315,13 +3335,13 @@ class DPS:
                         
             
     def borrar(self):
-        cur=self.cfg.conms.cursor()
+        cur=self.mem.conms.cursor()
         cur.execute("delete from dps where id_dps=%s", (self.id,))
         cur.close()
             
     def save(self):
         """Función que comprueba si existe el registro para insertar o modificarlo según proceda"""
-        curms=self.cfg.conms.cursor()
+        curms=self.mem.conms.cursor()
         if self.id==None:
             curms.execute("insert into dps(date, gross,id) values (%s,%s,%s) returning id_dps", (self.date, self.gross, self.product.id))
             self.id=curms.fetchone()[0]
@@ -3336,8 +3356,8 @@ class EstimationEPS:
     """Beneficio por acción. Earnings per share Beneficio por acción. Para los calculos usaremos
     esto, aunque sean estimaciones."""
 
-    def __init__(self, cfg):
-        self.cfg=cfg
+    def __init__(self, mem):
+        self.mem=mem
         self.product=None#pk
         self.year=None#pk
         self.date_estimation=None
@@ -3356,7 +3376,7 @@ class EstimationEPS:
 
     def init__from_db(self, product,  currentyear):
         """Saca el registro  o uno en blanco si no lo encuentra, que fueron pasados como parámetro"""
-        cur=self.cfg.conms.cursor()
+        cur=self.mem.conms.cursor()
         cur.execute("select estimation, date_estimation ,source,manual from estimations_eps where id=%s and year=%s", (product.id, currentyear))
         if cur.rowcount==1:
             row=cur.fetchone()
@@ -3368,13 +3388,13 @@ class EstimationEPS:
             
             
     def borrar(self):
-        cur=self.cfg.conms.cursor()
+        cur=self.mem.conms.cursor()
         cur.execute("delete from estimations_eps where id=%s and year=%s", (self.product.id, self.year))
         cur.close()
             
     def save(self):
         """Función que comprueba si existe el registro para insertar o modificarlo según proceda"""
-        curms=self.cfg.conms.cursor()
+        curms=self.mem.conms.cursor()
         curms.execute("select count(*) from estimations_eps where id=%s and year=%s", (self.product.id, self.year))
         if curms.fetchone()[0]==0:
             curms.execute("insert into estimations_eps(id, year, estimation, date_estimation, source, manual) values (%s,%s,%s,%s,%s,%s)", (self.product.id, self.year, self.estimation, self.date_estimation, self.source, self.manual))
@@ -3394,8 +3414,8 @@ class EstimationEPS:
 
 class EstimationDPS:
     """Dividends por acción"""
-    def __init__(self, cfg):
-        self.cfg=cfg
+    def __init__(self, mem):
+        self.mem=mem
         self.product=None#pk
         self.year=None#pk
         self.date_estimation=None
@@ -3417,7 +3437,7 @@ class EstimationDPS:
 
     def init__from_db(self, product,  currentyear):
         """Saca el registro  o uno en blanco si no lo encuentra, que fueron pasados como parámetro"""
-        cur=self.cfg.conms.cursor()
+        cur=self.mem.conms.cursor()
         cur.execute("select estimation, date_estimation ,source,manual from estimations_dps where id=%s and year=%s", (product.id, currentyear))
         if cur.rowcount==1:
             row=cur.fetchone()
@@ -3429,13 +3449,13 @@ class EstimationDPS:
             
             
     def borrar(self):
-        cur=self.cfg.conms.cursor()
+        cur=self.mem.conms.cursor()
         cur.execute("delete from estimations_dps where id=%s and year=%s", (self.product.id, self.year))
         cur.close()
             
     def save(self):
         """Función que comprueba si existe el registro para insertar o modificarlo según proceda"""
-        curms=self.cfg.conms.cursor()
+        curms=self.mem.conms.cursor()
         curms.execute("select count(*) from estimations_dps where id=%s and year=%s", (self.product.id, self.year))
         if curms.fetchone()[0]==0:
             curms.execute("insert into estimations_dps(id, year, estimation, date_estimation, source, manual) values (%s,%s,%s,%s,%s,%s)", (self.product.id, self.year, self.estimation, self.date_estimation, self.source, self.manual))
@@ -3457,7 +3477,7 @@ class SourceNew:
     """Clase nueva para todas las sources
     Debera:
     - Cargar al incio un sql con las products del source"""
-    def __init__(self, cfg, sql):
+    def __init__(self, mem, sql):
         self.products=[]
         self.load_investments(sql)
     def load_investments(self,  sql):
@@ -3469,17 +3489,17 @@ class SourceNew:
         - Filtro por horarios, aunque busque tarde debe meter la hora bien con .0001234, debe permitir primero"""
         
 class SourceIntraday(SourceNew):
-    def __init__(self, cfg, sql):
-        SourceNew.__init__(self, cfg, sql)
+    def __init__(self, mem, sql):
+        SourceNew.__init__(self, mem, sql)
         
         
 class SourceDailyUnique(SourceNew):
-    def __init__(self, cfg, sql):
-        SourceNew.__init__(self, cfg, sql)
+    def __init__(self, mem, sql):
+        SourceNew.__init__(self, mem, sql)
     
 class SourceDailyGroup(SourceNew):
-    def __init__(self, cfg, sql):
-        SourceNew.__init__(self, cfg, sql)
+    def __init__(self, mem, sql):
+        SourceNew.__init__(self, mem, sql)
 
     
     
@@ -3488,9 +3508,9 @@ class Source:
     Al crear uno nuevo se debe crear un start, que  no es heredada ni virtual en la que se cojan los distintos updates con process
     Luego crear las funciones virtuales.
     """
-    def __init__(self,  cfg):
+    def __init__(self,  mem):
 
-        self.cfg=cfg
+        self.mem=mem
         self.debug=False#Si fuera true en vez de insertar  hace un listado#       
         self.internetquerys=0#Número de consultas a Internet
         self.downloadalways=False#Booleano que a true permite download los fines de semana
@@ -3506,7 +3526,7 @@ class Source:
             if e==None:
                 er=er+1
             else:
-                self.cfg.activas[str(e)].priority_change(cur)
+                self.mem.activas[str(e)].priority_change(cur)
         if er>0:
             print ("{0} errores no se han podido parsear".format(er))
             
@@ -3535,15 +3555,15 @@ class Source:
         
     def filtrar_ids_primerregistro_ge_iniciodb(self,  ids):
         """Filtra aquellos ids cuyo primer registro es mayor que el inicio de la base de datos. Es decir que no se han buscado historicos"""
-        con=self.cfg.connect_mystocksd()
+        con=self.mem.connect_mystocksd()
         cur = con.cursor()     
         resultado=[]
         for id in ids:
-            cur.execute(" select id, count(*) from quotes where id in (select id from products where active=false and priority[1]=1) group by id;=%s and datetime::date<%s", (id, self.cfg.dbinitdate))
+            cur.execute(" select id, count(*) from quotes where id in (select id from products where active=false and priority[1]=1) group by id;=%s and datetime::date<%s", (id, self.mem.dbinitdate))
             if cur.fetchone()[0]==0:
                 resultado.append(id)
         cur.close()                
-        self.cfg.disconnect_mystocksd(con)
+        self.mem.disconnect_mystocksd(con)
         return resultado
                 
     def filtrar_ids_inactivos_no_actualizados(self, cur,  idpriority, dias,  priorityhistorical=False):
@@ -3556,14 +3576,14 @@ class Source:
         else:
             cur.execute("select * from products where (select count(*) from quotes where id=products.id and datetime>now()::date-%s)=0 and active=false and priorityhistorical[1]=%s;", (dias,  idpriority))   
         for row in cur:
-            resultado.append(Product(self.cfg).init__db_row(self.cfg, row))
+            resultado.append(Product(self.mem).init__db_row(self.mem, row))
         return resultado
         
     def find_ids(self):
         """Devuelve un array con los objetos de Product que cumplen"""
         print ("find_ids es obsoleto hacer con query")
         self.ids=[]
-        for inv in self.cfg.activas():
+        for inv in self.mem.activas():
             if inv.active==True: #Debe ser activa
                 if len(inv.priority.arr)>0:
                     if inv.priority.arr[0].id==self.id_source: #Seleccion generica
@@ -3579,7 +3599,7 @@ class Source:
     def find_ids_historical(self):
         """Función que busca todos los ids de las inversiones con priorityhistorical=id_source y que estén activas"""
         self.ids=[]
-        for inv in self.cfg.activas():
+        for inv in self.mem.activas():
             if inv.active==True: #Debe ser activa
                 if len(inv.priorityhistorical.arr)>0:
                     if inv.priorityhistorical.arr[0].id==self.id_source: #Seleccion generica
@@ -3598,8 +3618,8 @@ class Source:
         
         
     def isin2id(self, isin,  id_bolsas):
-        for i in self.cfg.activas:
-            if isin==self.cfg.activas[i].isin and id_bolsas==self.cfg.activas[i].id_bolsas:
+        for i in self.mem.activas:
+            if isin==self.mem.activas[i].isin and id_bolsas==self.mem.activas[i].id_bolsas:
                 return int(i)
         return None
         
@@ -3621,31 +3641,31 @@ class Source:
 #                status_update(cur, self.name, "Update quotes", status='Downloading error',  statuschange=datetime.datetime.now())
 #                con.commit()
 #                cur.close()
-#                self.cfg.disconnect_mystocksd(con)    
+#                self.mem.disconnect_mystocksd(con)    
 #                time.sleep(60)
                 return None
         else:
             return None
-#        con=self.cfg.connect_mystocksd()
+#        con=self.mem.connect_mystocksd()
 #        cur=con.cursor()
 #        self.internetquerys=self.internetquerys+1
 #        status_update(cur, self.name, "Update quotes", internets=self.internetquerys)
 #        con.commit()
 #        cur.close()
-#        self.cfg.disconnect_mystocksd(con)    
+#        self.mem.disconnect_mystocksd(con)    
         return web
 
     def update_step_quotes(self, sql):
         """Hace un bucle con los distintos codes del sql."""
-        con=self.cfg.connect_mystocksd()
+        con=self.mem.connect_mystocksd()
         cur=con.cursor()
         status_insert(cur, self.name, "Update stepcode quotes")
         con.commit()
         cur.close()
-        cfg.disconnect_mystocksd(con)   
+        mem.disconnect_mystocksd(con)   
         while True:
             time.sleep(self.time_before_quotes)
-            con=self.cfg.connect_mystocksd()
+            con=self.mem.connect_mystocksd()
             cur=con.cursor()
             cur2=con.cursor()
             status_update(cur, self.name, "Update step quotes", status='Working',  statuschange=datetime.datetime.now())
@@ -3657,7 +3677,7 @@ class Source:
                         print (i)
     #                log("S_SOCIETEGENERALEWARRANTS_STATICS", QApplication.translate("Core",("%d de %d" %(cur.rownumber, cur.rowcount)))
                 else:
-                    Quote(self.cfg).insert_cdtv(self.arr_quote(row['code']), self.name)
+                    Quote(self.mem).insert_cdtv(self.arr_quote(row['code']), self.name)
                 status_update(cur2, self.name, "Update step quotes", status='Waiting step',  statuschange=datetime.datetime.now())
                 con.commit()
                 time.sleep(self.time_step_static)
@@ -3666,81 +3686,81 @@ class Source:
             con.commit()
             cur.close()
             cur2.close()
-            cfg.disconnect_mystocksd(con)    
+            mem.disconnect_mystocksd(con)    
             time.sleep( self.time_after_statics)
         
 #        
 #    def update_quotes(self):
-#        con=self.cfg.connect_mystocksd()
+#        con=self.mem.connect_mystocksd()
 #        cur=con.cursor()
 #        status_insert(cur, self.name, "Update quotes")
 #        status_update(cur, self.name, "Update quotes", status='Waiting before',  statuschange=datetime.datetime.now())
 #        con.commit()
 #        cur.close()
-#        self.cfg.disconnect_mystocksd(con)   
+#        self.mem.disconnect_mystocksd(con)   
 #        time.sleep(self.time_before_quotes)      
 #        while True:      
-#            con=self.cfg.connect_mystocksd()
+#            con=self.mem.connect_mystocksd()
 #            cur=con.cursor()
 #            status_update(cur, self.name, "Update quotes", status='Working',  statuschange=datetime.datetime.now())
 #            con.commit()
 #            cur.close()
-#            self.cfg.disconnect_mystocksd(con)    
+#            self.mem.disconnect_mystocksd(con)    
 #            if self.debug==True:
 #                for i in self.arr_quotes():
 #                    print (i)
 #            else:
-#                Quote(self.cfg).insert_cdtv(self.arr_quotes(), self.name)
-#            con=self.cfg.connect_mystocksd()
+#                Quote(self.mem).insert_cdtv(self.arr_quotes(), self.name)
+#            con=self.mem.connect_mystocksd()
 #            cur=con.cursor()
 #            status_update(cur, self.name, "Update quotes", status='Waiting after',  statuschange=datetime.datetime.now())
 #            con.commit()
 #            cur.close()
-#            self.cfg.disconnect_mystocksd(con)               
+#            self.mem.disconnect_mystocksd(con)               
 #            time.sleep(self.time_after_quotes)
 
 
 #    def update_statics(self):
-#        con=self.cfg.connect_mystocksd()
+#        con=self.mem.connect_mystocksd()
 #        cur=con.cursor()
 #        status_insert(cur, self.name, "Update statics")
 #        status_update(cur, self.name, "Update statics", status='Waiting before',  statuschange=datetime.datetime.now())
 #        con.commit()
 #        cur.close()
-#        self.cfg.disconnect_mystocksd(con)   
+#        self.mem.disconnect_mystocksd(con)   
 #        time.sleep(self.time_before_statics)
 #        while True:            
-#            con=self.cfg.connect_mystocksd()
+#            con=self.mem.connect_mystocksd()
 #            cur=con.cursor()
 #            status_update(cur, self.name, "Update statics", status='Working',  statuschange=datetime.datetime.now())
 #            con.commit()
 #            cur.close()
-#            self.cfg.disconnect_mystocksd(con)    
+#            self.mem.disconnect_mystocksd(con)    
 #            if self.debug==True:
 #                for i in self.arr_statics():
 #                    print (i)
 #            else:
-#                Product(self.cfg).update_static(self.arr_statics(), self.name)
-#            con=self.cfg.connect_mystocksd()
+#                Product(self.mem).update_static(self.arr_statics(), self.name)
+#            con=self.mem.connect_mystocksd()
 #            cur=con.cursor()
 #            status_update(cur, self.name, "Update statics", status='Waiting after',  statuschange=datetime.datetime.now())
 #            con.commit()
 #            cur.close()
-#            self.cfg.disconnect_mystocksd(con)                     
+#            self.mem.disconnect_mystocksd(con)                     
 #            time.sleep(self.time_after_statics)
             
 #    def update_step_statics(self, sql):
 #        """Hace un bucle con los distintos codes del sql."""
-#        con=self.cfg.connect_mystocksd()
+#        con=self.mem.connect_mystocksd()
 #        cur=con.cursor()
 #        status_insert(cur, self.name, "Update step statics")
 #        status_update(cur, self.name, "Update step statics", status='Waiting before',  statuschange=datetime.datetime.now())
 #        con.commit()
 #        cur.close()
-#        self.cfg.disconnect_mystocksd(con)    
+#        self.mem.disconnect_mystocksd(con)    
 #        time.sleep(self.time_before_statics)
 #        while True:
-#            con=self.cfg.connect_mystocksd()
+#            con=self.mem.connect_mystocksd()
 #            cur=con.cursor()
 #            cur2=con.cursor()
 #            status_update(cur, self.name, "Update statics", status='Working',  statuschange=datetime.datetime.now())
@@ -3752,7 +3772,7 @@ class Source:
 #                        print (i)
 #    #                log("S_SOCIETEGENERALEWARRANTS_STATICS", QApplication.translate("Core",("%d de %d" %(cur.rownumber, cur.rowcount)))
 #                else:
-#                    Product(self.cfg).update_static(self.arr_static(row['code']), self.name)
+#                    Product(self.mem).update_static(self.arr_static(row['code']), self.name)
 #
 #                status_update(cur2, self.name, "Update step statics", status='Waiting step',  statuschange=datetime.datetime.now())    
 #                con.commit()
@@ -3762,18 +3782,18 @@ class Source:
 #            con.commit()
 #            cur.close()
 #            cur2.close()
-#            self.cfg.disconnect_mystocksd(con)    
+#            self.mem.disconnect_mystocksd(con)    
 #            time.sleep( self.time_after_statics)
 #            
 #    def update_stepcode_statics(self, listcode):
 #        """Hace un bucle con los distintos codes del listcode."""        
-##        con=self.cfg.connect_mystocksd()
+##        con=self.mem.connect_mystocksd()
 ##        cur=con.cursor()
 ##        status_insert(cur, self.name, "Update stepcode statics")
 ##        status_update(cur, self.name, "Update stepcode statics", status='Waiting before',  statuschange=datetime.datetime.now())
 ##        con.commit()
 ##        cur.close()
-##        self.cfg.disconnect_mystocksd(con)   
+##        self.mem.disconnect_mystocksd(con)   
 #        time.sleep(self.time_before_statics)
 #        while True:
 #            for code in listcode:
@@ -3781,26 +3801,26 @@ class Source:
 #                    for i in self.arr_static(code):
 #                        print (i)
 #                else:
-#                    Product(self.cfg).update_static(self.arr_static(code), self.name)
+#                    Product(self.mem).update_static(self.arr_static(code), self.name)
 #                time.sleep(self.time_step_static)
 #            time.sleep( self.time_after_statics)
 #
 #    def update_step_historicals(self, listcodes):
-#        con=self.cfg.connect_mystocksd()
+#        con=self.mem.connect_mystocksd()
 #        cur=con.cursor()
 #        status_insert(cur, self.name, "Update step historicals")
 #        status_update(cur, self.name, "Update step historicals", status='Waiting before',  statuschange=datetime.datetime.now())
 #        con.commit()
 #        cur.close()
-#        self.cfg.disconnect_mystocksd(con)   
+#        self.mem.disconnect_mystocksd(con)   
 #        time.sleep(self.time_before_historicals)
 #        while True:
-#            con=self.cfg.connect_mystocksd()
+#            con=self.mem.connect_mystocksd()
 #            cur=con.cursor()
 #            status_update(cur, self.name, "Update step historicals", status='Working',  statuschange=datetime.datetime.now())
 #            con.commit()
 #            cur.close()
-#            self.cfg.disconnect_mystocksd(con)                
+#            self.mem.disconnect_mystocksd(con)                
 #            for code in listcodes:
 ##                print code,  listcodes
 #                if self.debug==True:
@@ -3808,35 +3828,35 @@ class Source:
 #                        print (i)
 #                else:                
 ##                    print "Ha llegado"
-#                    Quote(self.cfg).insert_cdtohclv(self.arr_historical(code, ''),  self.name)
-#                con=self.cfg.connect_mystocksd()
+#                    Quote(self.mem).insert_cdtohclv(self.arr_historical(code, ''),  self.name)
+#                con=self.mem.connect_mystocksd()
 #                cur=con.cursor()
 #                status_update(cur, self.name, "Update step historicals", status='Waiting step',  statuschange=datetime.datetime.now())
 #                con.commit()
 #                cur.close()
-#                self.cfg.disconnect_mystocksd(con)       
+#                self.mem.disconnect_mystocksd(con)       
 #                time.sleep(self.time_step_historical)
 #
-#            con=self.cfg.connect_mystocksd()
+#            con=self.mem.connect_mystocksd()
 #            cur=con.cursor()
 #            status_update(cur, self.name, "Update step historicals", status='Waiting after',  statuschange=datetime.datetime.now())
 #            con.commit()
 #            cur.close()
-#            self.cfg.disconnect_mystocksd(con)                       
+#            self.mem.disconnect_mystocksd(con)                       
 #            time.sleep(self.time_after_historicals)
 #
 #    def update_step_historicals_by_isin(self, sql):
 #        """Sql debe devolver isin solamente"""
-#        con=self.cfg.connect_mystocksd()
+#        con=self.mem.connect_mystocksd()
 #        cur=con.cursor()
 #        status_insert(cur, self.name, "Update step historicals by isin")
 #        status_update(cur, self.name, "Update step historicals by isin", status='Waiting before',  statuschange=datetime.datetime.now())
 #        con.commit()
 #        cur.close()
-#        self.cfg.disconnect_mystocksd(con)   
+#        self.mem.disconnect_mystocksd(con)   
 #        time.sleep(self.time_before_historicals)
 #        while True:
-#            con=self.cfg.connect_mystocksd()
+#            con=self.mem.connect_mystocksd()
 #            cur=con.cursor()
 #            status_update(cur, self.name, "Update step historicals", status='Working',  statuschange=datetime.datetime.now())
 #            con.commit()            
@@ -3845,7 +3865,7 @@ class Source:
 #            for i in cur:
 #                lista.append(i['isin'])
 #            cur.close()
-#            self.cfg.disconnect_mystocksd(con)         
+#            self.mem.disconnect_mystocksd(con)         
 #            
 #            for isin in lista:
 #                yahoocode=self.isin2yahoocode(isin)
@@ -3858,61 +3878,61 @@ class Source:
 #                            print (i)
 #                    else:                
 #    #                    print "Ha llegado"
-#                        Quote(self.cfg).insert_cdtohclv(self.arr_historical(yahoocode, isin),  self.name)                
-#                    con=self.cfg.connect_mystocksd()
+#                        Quote(self.mem).insert_cdtohclv(self.arr_historical(yahoocode, isin),  self.name)                
+#                    con=self.mem.connect_mystocksd()
 #                    cur=con.cursor()
 #                    status_update(cur, self.name, "Update step historicals", status='Waiting step',  statuschange=datetime.datetime.now())
 #                    con.commit()
 #                    cur.close()
-#                    self.cfg.disconnect_mystocksd(con)       
+#                    self.mem.disconnect_mystocksd(con)       
 #                    time.sleep(self.time_step_historical)
 #
-#            con=self.cfg.connect_mystocksd()
+#            con=self.mem.connect_mystocksd()
 #            cur=con.cursor()
 #            status_update(cur, self.name, "Update step historicals", status='Waiting after',  statuschange=datetime.datetime.now())
 #            con.commit()
 #            cur.close()
-#            self.cfg.disconnect_mystocksd(con)                          
+#            self.mem.disconnect_mystocksd(con)                          
 #            time.sleep(self.time_after_historicals)
 
 #    def update_step_dividends(self, sql):
-##        con=self.cfg.connect_mystocksd()
+##        con=self.mem.connect_mystocksd()
 ##        cur=con.cursor()
 ##        status_insert(cur, self.name, "Update step dividends")
 ##        con.commit()
 ##        cur.close()
-##        self.cfg.disconnect_mystocksd(con)   
+##        self.mem.disconnect_mystocksd(con)   
 #        return
 #        
 #    def update_dividends(self):   
-#        con=self.cfg.connect_mystocksd()
+#        con=self.mem.connect_mystocksd()
 #        cur=con.cursor()
 #        status_insert(cur, self.name, "Update dividends")
 #        status_update(cur, self.name, "Update dividends", status='Waiting before',  statuschange=datetime.datetime.now())
 #        con.commit()
 #        cur.close()
-#        self.cfg.disconnect_mystocksd(con)    
+#        self.mem.disconnect_mystocksd(con)    
 #        time.sleep(self.time_before_dividends)        
 #        while True:                   
-#            con=self.cfg.connect_mystocksd()
+#            con=self.mem.connect_mystocksd()
 #            cur=con.cursor()
 #            status_update(cur, self.name, "Update dividends", status='Working',  statuschange=datetime.datetime.now())
 #            con.commit()
 #            cur.close()
-#            self.cfg.disconnect_mystocksd(con)                     
-#            Product(self.cfg).update_dividends( self.arr_dividends(),  self.name)
-#            con=self.cfg.connect_mystocksd()
+#            self.mem.disconnect_mystocksd(con)                     
+#            Product(self.mem).update_dividends( self.arr_dividends(),  self.name)
+#            con=self.mem.connect_mystocksd()
 #            cur=con.cursor()
 #            status_update(cur, self.name, "Update dividends", status='Waiting after',  statuschange=datetime.datetime.now())
 #            con.commit()
 #            cur.close()
-#            self.cfg.disconnect_mystocksd(con)                     
+#            self.mem.disconnect_mystocksd(con)                     
 #            time.sleep(self.time_after_dividends)
 #           
 #           
 
     def filtrar_horario_bolsa(self, products):
-        if (datetime.datetime.now()-self.cfg.inittime).total_seconds()<120:#120: # Si acaba de arrancar
+        if (datetime.datetime.now()-self.mem.inittime).total_seconds()<120:#120: # Si acaba de arrancar
             return products
             
         if datetime.datetime.now().weekday()>=5:         
@@ -3921,8 +3941,8 @@ class Source:
         resultado=[]
         margen=datetime.timedelta(hours=1 )
         for inv in products:
-#            inv=self.cfg.activas(i)
-#            bolsa=self.cfg.bolsas[str(self.cfg.activas[str(i)].id_bolsas)]
+#            inv=self.mem.activas(i)
+#            bolsa=self.mem.bolsas[str(self.mem.activas[str(i)].id_bolsas)]
             now=datetime.datetime.now(pytz.timezone(inv.bolsa.zone))
             starts=now.replace(hour=inv.bolsa.starts.hour, minute=inv.bolsa.starts.minute, second=inv.bolsa.starts.second)
             stops=now.replace(hour=inv.bolsa.ends.hour, minute=inv.bolsa.ends.minute)+margen
@@ -3938,15 +3958,15 @@ class Source:
         """agrbase es la agrupación base que se importa desde statics, por ejemplo EURONEXT o BMF"""
         agr=[]
         agr=agr+agrbase
-        if isin in self.cfg.cac40:
+        if isin in self.mem.cac40:
             agr.append('CAC40')            
-        if isin in self.cfg.eurostoxx:
+        if isin in self.mem.eurostoxx:
             agr.append('EUROSTOXX')
-        if isin in self.cfg.ibex:
+        if isin in self.mem.ibex:
             agr.append('IBEX35')
-        if isin in self.cfg.nyse:
+        if isin in self.mem.nyse:
             agr.append('NYSE')
-        if isin in self.cfg.dax:
+        if isin in self.mem.dax:
             agr.append('DAX')
             
         if len(agr)==0:
@@ -4089,8 +4109,8 @@ class Source:
 #    def yahoo_historical(self, code,  dbcode=''):
 #        """If othercode se pone como code othercode, util cuando se busca por code de yahoo pero en la base de datos en deutchbore#de00000000"""
 #        def fecha_ultimo_registro(code):
-#            cfg=ConfigMyStock()
-#            con=cfg.connect_mystocksd()
+#            mem=MemMyStock()
+#            con=mem.connect_mystocksd()
 #            cur = con.cursor()     
 #            resultado=None
 #            cur.execute("select max(date) as fecha from quotes where code=%s and last='close'", (code, ))
@@ -4098,7 +4118,7 @@ class Source:
 #                resultado=i['fecha']
 #            con.commit()    
 #            cur.close()                
-#            self.cfg.disconnect_mystocksd(con)
+#            self.mem.disconnect_mystocksd(con)
 #            if resultado==None:
 #                resultado=datetime.date(config.fillfromyear, 1, 1)
 #            return resultado    
@@ -4182,8 +4202,8 @@ class Source:
 #        return (resultado,  error)
 
 class Product:
-    def __init__(self, cfg):
-        self.cfg=cfg
+    def __init__(self, mem):
+        self.mem=mem
         self.name=None
         self.isin=None
         self.currency=None #Apunta a un objeto currency
@@ -4208,9 +4228,9 @@ class Product:
         self.system=None
         
         self.result=None#Variable en la que se almacena QuotesResult
-        self.estimations_dps=SetEstimationsDPS(self.cfg, self)#Es un diccionario que guarda objetos estimaciones con clave el año
-        self.estimations_eps=SetEstimationsEPS(self.cfg, self)
-        self.dps=SetDPS(self.cfg, self)
+        self.estimations_dps=SetEstimationsDPS(self.mem, self)#Es un diccionario que guarda objetos estimaciones con clave el año
+        self.estimations_eps=SetEstimationsEPS(self.mem, self)
+        self.dps=SetDPS(self.mem, self)
 
     def __repr__(self):
         return "{0} ({1}) de la {2}".format(self.name , self.id, self.bolsa.name)
@@ -4219,9 +4239,9 @@ class Product:
         """row es una fila de un pgcursro de investmentes"""
         self.name=row['name']
         self.isin=row['isin']
-        self.currency=self.cfg.currencies.find(row['currency'])
-        self.type=self.cfg.types.find(row['type'])
-        self.agrupations=self.cfg.agrupations.clone_from_dbstring(row['agrupations'])
+        self.currency=self.mem.currencies.find(row['currency'])
+        self.type=self.mem.types.find(row['type'])
+        self.agrupations=self.mem.agrupations.clone_from_dbstring(row['agrupations'])
         self.active=row['active']
         self.id=row['id']
         self.web=row['web']
@@ -4229,18 +4249,18 @@ class Product:
         self.phone=row['phone']
         self.mail=row['mail']
         self.tpc=row['tpc']
-        self.mode=self.cfg.investmentsmodes.find(row['pci'])
-        self.apalancado=self.cfg.apalancamientos.find(row['apalancado'])
-        self.bolsa=self.cfg.bolsas.find(row['id_bolsas'])
+        self.mode=self.mem.investmentsmodes.find(row['pci'])
+        self.apalancado=self.mem.apalancamientos.find(row['apalancado'])
+        self.bolsa=self.mem.bolsas.find(row['id_bolsas'])
         self.ticker=row['ticker']
-        self.priority=SetPriorities(self.cfg).init__create_from_db(row['priority'])
-        self.priorityhistorical=SetPrioritiesHistorical(self.cfg).init__create_from_db(row['priorityhistorical'])
+        self.priority=SetPriorities(self.mem).init__create_from_db(row['priority'])
+        self.priorityhistorical=SetPrioritiesHistorical(self.mem).init__create_from_db(row['priorityhistorical'])
         self.comentario=row['comentario']
         self.obsolete=row['obsolete']
         self.deletable=row['deletable']
         self.system=row['system']
         
-        self.result=QuotesResult(self.cfg,self)
+        self.result=QuotesResult(self.mem,self)
         return self
         
                 
@@ -4269,12 +4289,12 @@ class Product:
         self.deletable=deletable
         self.system=system
         
-        self.result=QuotesResult(self.cfg,self)
+        self.result=QuotesResult(self.mem,self)
         return self        
 
     def init__db(self, id):
         """Se pasa id porque se debe usar cuando todavía no se ha generado."""
-        curms=self.cfg.conms.cursor()
+        curms=self.mem.conms.cursor()
         curms.execute("select * from products where id=%s", (id, ))
         row=curms.fetchone()
         curms.close()
@@ -4282,15 +4302,15 @@ class Product:
         
 #    def load_estimacion(self, year=None):
 #        """Si year es none carga todas las estimaciones de la inversionmq"""
-#        curms=self.cfg.conms.cursor()
+#        curms=self.mem.conms.cursor()
 #        if year==None:
 #            year=datetime.date.today().year
 #        curms.execute("select * from estimaciones where year=%s and id=%s", (year, self.id))
 #        if curms.rowcount==0:        
-#            e=EstimationEPS(self.cfg).init__create(self, year, datetime.date.today(),  "Vacio por código", False, 0)
-##            e=EstimationEPS(self.cfg).init__create(year, 0, datetime.date(2012, 7, 3), "Vacio por código", False, 0, self)
+#            e=EstimationEPS(self.mem).init__create(self, year, datetime.date.today(),  "Vacio por código", False, 0)
+##            e=EstimationEPS(self.mem).init__create(year, 0, datetime.date(2012, 7, 3), "Vacio por código", False, 0, self)
 #        else:
-#            e=EstimationEPS(self.cfg). init__from_db( product,  currentyear):
+#            e=EstimationEPS(self.mem). init__from_db( product,  currentyear):
 #        self.estimations_dps[str(e.year)]=e
 #        curms.close()
         
@@ -4298,7 +4318,7 @@ class Product:
         """Esta función inserta una inversión manual"""
         """Los arrays deberan pasarse como parametros ARRAY[1,2,,3,] o None"""
         
-        cur=self.cfg.conms.cursor()
+        cur=self.mem.conms.cursor()
         if self.id==None:
             cur.execute(" select min(id)-1 from products;")
             id=cur.fetchone()[0]
@@ -4310,7 +4330,7 @@ class Product:
     
     def changeDeletable(self, ids,  deletable):
         """Modifica a deletable"""
-        curms=self.cfg.conms.cursor()
+        curms=self.mem.conms.cursor()
         sql="update products set deletable={0} where id in ({1})".format( deletable,  str(ids)[1:-1])
         curms.execute(sql)
         curms.close()
@@ -4330,9 +4350,9 @@ class Product:
         cur.execute("update products set priorityhistorical=%s", (str(self.priorityhistorical)))
 
     def fecha_ultima_actualizacion_historica(self):
-        year=int(self.cfg.config.get_value("settings_mystocks", "fillfromyear"))
+        year=int(self.mem.config.get_value("settings_mystocks", "fillfromyear"))
         resultado=datetime.date(year, 1, 1)
-        cur=self.cfg.conms.cursor()
+        cur=self.mem.conms.cursor()
         cur.execute("select max(datetime)::date as date from quotes where date_part('microsecond',datetime)=4 and id=%s order by date", (self.id, ))
         if cur.rowcount==1:
             dat=cur.fetchone()[0]
@@ -4345,8 +4365,8 @@ class Product:
         
 class SetQuotes:
     """Clase que agrupa quotes un una lista arr. Util para operar con ellas como por ejemplo insertar"""
-    def __init__(self, cfg):
-        self.cfg=cfg
+    def __init__(self, mem):
+        self.mem=mem
         self.arr=[]
     
     def save(self,  source):
@@ -4378,15 +4398,15 @@ class SetQuotes:
                 
 class SetQuotesAll:
     """Class that groups all quotes of the database. It's an array of SetQuotesIntraday"""
-    def __init__(self, cfg):
-        self.cfg=cfg
+    def __init__(self, mem):
+        self.mem=mem
         self.product=None
                 
     def load_from_db(self,  product):
         """Función que mete en setquotesintradia ordenado de objetos Quote, no es el ultimo día es un día"""
         self.arr=[]
         self.product=product
-        curms=self.cfg.conms.cursor()
+        curms=self.mem.conms.cursor()
         curms.execute("select * from quotes where id=%s order by datetime", (self.product.id,  ))
         
         intradayarr=[]
@@ -4395,17 +4415,17 @@ class SetQuotesAll:
             if dt_end==None:#Loads the first datetime
                 dt_end=day_end(row['datetime'], self.product.bolsa.zone)
             if row['datetime']>dt_end:#Cambio de SetQuotesIntraday
-                self.arr.append(SetQuotesIntraday(self.cfg).init__create(self.product, dt_end.date(), intradayarr))
+                self.arr.append(SetQuotesIntraday(self.mem).init__create(self.product, dt_end.date(), intradayarr))
                 dt_end=day_end(row['datetime'], self.product.bolsa.zone)
                 #crea otro intradayarr
                 del intradayarr
                 intradayarr=[]
-                intradayarr.append(Quote(self.cfg).init__db_row(row, self.product))
+                intradayarr.append(Quote(self.mem).init__db_row(row, self.product))
             else:
-                intradayarr.append(Quote(self.cfg).init__db_row(row, self.product))
+                intradayarr.append(Quote(self.mem).init__db_row(row, self.product))
         #No entraba si hay dos días en el primer día
         if len(intradayarr)!=0:
-            self.arr.append(SetQuotesIntraday(self.cfg).init__create(self.product, dt_end.date(), intradayarr))
+            self.arr.append(SetQuotesIntraday(self.mem).init__create(self.product, dt_end.date(), intradayarr))
             
 #        print ("SetQuotesIntraday created: {0}".format(len(self.arr)))
         curms.close()
@@ -4456,7 +4476,7 @@ class SetQuotesAll:
 #        else:
 #            curms.execute("select * from quotes where id=%s and datetime>%s order by datetime;", (self.product.id, self.all[len(self.all)-1].datetime))
 #        for row in curms:
-#            self.all.arr.append(Quote(self.cfg).init__db_row(row,  self.product))
+#            self.all.arr.append(Quote(self.mem).init__db_row(row,  self.product))
 #        print ("Descarga de {0} datos: {1}".format(curms.rowcount,   datetime.datetime.now()-inicio))
 #        self.get_basic_in_all()
         
@@ -4476,8 +4496,8 @@ class SetQuotesAll:
         
 class SetQuotesBasic:
     """Clase que agrupa quotes basic, last penultimate, lastyear """
-    def __init__(self, cfg, product):
-        self.cfg=cfg
+    def __init__(self, mem, product):
+        self.mem=mem
         self.endlastyear=None
         self.last=None
         self.penultimate=None
@@ -4492,19 +4512,19 @@ class SetQuotesBasic:
     
     def load_from_db(self):
         """Función que calcula last, penultimate y lastdate """
-        triplete=Quote(self.cfg).init__from_query_triplete(self.product)
+        triplete=Quote(self.mem).init__from_query_triplete(self.product)
         if triplete!=None:
             self.endlastyear=triplete[0]
             self.penultimate=triplete[1]
             self.last=triplete[2]
 #            print ("Por triplete {0}".format(str(datetime.datetime.now()-inicio)))
         else:
-            self.last=Quote(self.cfg).init__from_query(self.product,  self.cfg.localzone.now())
+            self.last=Quote(self.mem).init__from_query(self.product,  self.mem.localzone.now())
             if self.last.datetime!=None: #Solo si hay last puede haber penultimate
-                self.penultimate=Quote(self.cfg).init__from_query_penultima(self.product, dt_changes_tz(self.last.datetime, self.cfg.localzone).date())
+                self.penultimate=Quote(self.mem).init__from_query_penultima(self.product, dt_changes_tz(self.last.datetime, self.mem.localzone).date())
             else:
-                self.penultimate=Quote(self.cfg).init__create(self.product, None, None)
-            self.endlastyear=Quote(self.cfg).init__from_query(self.product,  datetime.datetime(datetime.date.today().year-1, 12, 31, 23, 59, 59, tzinfo=pytz.timezone('UTC')))
+                self.penultimate=Quote(self.mem).init__create(self.product, None, None)
+            self.endlastyear=Quote(self.mem).init__from_query(self.product,  datetime.datetime(datetime.date.today().year-1, 12, 31, 23, 59, 59, tzinfo=pytz.timezone('UTC')))
 
 
 
@@ -4525,8 +4545,8 @@ class SetQuotesBasic:
      
 class SetQuotesIntraday:
     """Clase que agrupa quotes un una lista arr de una misma inversión y de un mismo día. """
-    def __init__(self, cfg):
-        self.cfg=cfg
+    def __init__(self, mem):
+        self.mem=mem
         self.arr=[]
         self.product=None
         self.date=None
@@ -4536,12 +4556,12 @@ class SetQuotesIntraday:
         self.arr=[]
         self.product=product
         self.date=date
-        curms=self.cfg.conms.cursor()
+        curms=self.mem.conms.cursor()
         iniciodia=day_start_from_date(date, self.product.bolsa.zone)
         siguientedia=iniciodia+datetime.timedelta(days=1)
         curms.execute("select * from quotes where id=%s and datetime>=%s and datetime<%s order by datetime", (self.product.id,  iniciodia, siguientedia))
         for row in curms:
-            self.arr.append(Quote(self.cfg).init__db_row(row,  self.product))
+            self.arr.append(Quote(self.mem).init__db_row(row,  self.product))
         curms.close()
         
     def init__create(self, product, date, arrquotes):
@@ -4567,7 +4587,7 @@ class SetQuotesIntraday:
         """Devuelve el quote cuyo quote es mayor"""
         if len(self.arr)==0:
             return None
-        high=Quote(self.cfg).init__create(self.product, day_start_from_date(self.date, self.product.bolsa.zone), Decimal('0'))
+        high=Quote(self.mem).init__create(self.product, day_start_from_date(self.date, self.product.bolsa.zone), Decimal('0'))
         for q in self.arr:
             if q.quote>high.quote:
                 high=q
@@ -4577,7 +4597,7 @@ class SetQuotesIntraday:
         """Devuelve el quote cuyo quote es menor"""
         if len(self.arr)==0:
             return None
-        low=Quote(self.cfg).init__create(self.product, day_start_from_date(self.date, self.product.bolsa.zone), Decimal('1000000'))
+        low=Quote(self.mem).init__create(self.product, day_start_from_date(self.date, self.product.bolsa.zone), Decimal('1000000'))
         for q in self.arr:
             if q.quote<low.quote:
                 low=q
@@ -4630,8 +4650,8 @@ class SetQuotesIntraday:
         
 class Quote:
     """"Un quote no puede estar duplicado en un datetime solo puede haber uno"""
-    def __init__(self, cfg):
-        self.cfg=cfg
+    def __init__(self, mem):
+        self.mem=mem
         self.product=None
         self.quote=None
         self.datetime=None
@@ -4660,7 +4680,7 @@ class Quote:
         No hace commit a la conexión
         Devuelve un número 1 si insert 2, update, 0  exisitia
         """
-        curms=self.cfg.conms.cursor()
+        curms=self.mem.conms.cursor()
         exists=self.exists(curms)
         if exists[0]==False:
             curms.execute('insert into quotes (id, datetime, quote) values (%s,%s,%s)', ( self.product.id, self.datetime, self.quote))
@@ -4676,7 +4696,7 @@ class Quote:
                 return 3
                 
     def delete(self):
-        curms=self.cfg.conms.cursor()
+        curms=self.mem.conms.cursor()
         curms.execute("delete from quotes where id=%s and datetime=%s", (self.product.id, self.datetime))
         curms.close()
 
@@ -4692,7 +4712,7 @@ class Quote:
         
     def init__from_query(self, product, dt): 
         """Función que busca el quote de un id y datetime con timezone"""
-        curms=self.cfg.conms.cursor()
+        curms=self.mem.conms.cursor()
         sql="select * from quote(%s, '%s'::timestamptz)" %(product.id,  dt)
         curms.execute(sql)
         row=curms.fetchone()
@@ -4700,7 +4720,7 @@ class Quote:
         return self.init__db_row(row, dt)
                 
     def init__from_query_penultima(self,product,  lastdate=None):
-        curms=self.cfg.conms.cursor()
+        curms=self.mem.conms.cursor()
         if lastdate==None:
             curms.execute("select * from penultimate(%s)", (product.id, ))
         else:
@@ -4712,8 +4732,8 @@ class Quote:
         """Función que busca el last, penultimate y endlastyear de golpe
        Devuelve un array de Quote en el que arr[0] es endlastyear, [1] es penultimate y [2] es last
       Si no devuelve tres Quotes devuelve None y deberaá calcularse de otra forma"""
-        curms=self.cfg.conms.cursor()
-        endlastyear=dt(datetime.date(datetime.date.today().year -1, 12, 31), datetime.time(23, 59, 59), self.cfg.localzone)
+        curms=self.mem.conms.cursor()
+        endlastyear=dt(datetime.date(datetime.date.today().year -1, 12, 31), datetime.time(23, 59, 59), self.mem.localzone)
         curms.execute("select * from quote (%s, now()) union all select * from penultimate(%s) union all select * from quote(%s,%s) order by datetime", (product.id, product.id, product.id,  endlastyear))
         if curms.rowcount!=3:
             curms.close()
@@ -4723,13 +4743,13 @@ class Quote:
             if row['datetime']==None: #Pierde el orden y no se sabe cual es cual
                 curms.close()
                 return None
-            resultado.append(Quote(self.cfg).init__db_row(row, product))
+            resultado.append(Quote(self.mem).init__db_row(row, product))
         curms.close()
         return resultado
 
 class OHCLDaily:
-    def __init__(self, cfg):
-        self.cfg=cfg
+    def __init__(self, mem):
+        self.mem=mem
         self.product=None
         self.date=None
         self.open=None
@@ -4751,7 +4771,7 @@ class OHCLDaily:
         return "{0}".format(self.date)
         
     def clone(self):
-        o=OHCLDaily(self.cfg)
+        o=OHCLDaily(self.mem)
         o.product=self.product
         o.date=self.date
         o.open=self.open
@@ -4762,8 +4782,8 @@ class OHCLDaily:
         
         
 class OHCLMonthly:
-    def __init__(self, cfg):
-        self.cfg=cfg
+    def __init__(self, mem):
+        self.mem=mem
         self.product=None
         self.year=None
         self.month=None
@@ -4785,7 +4805,7 @@ class OHCLMonthly:
         
                 
     def clone(self):
-        o=OHCLMonthly(self.cfg)
+        o=OHCLMonthly(self.mem)
         o.product=self.product
         o.year=self.year
         o.month=self.month
@@ -4799,8 +4819,8 @@ class OHCLMonthly:
         return day_end_from_date(datetime.date(self.year, self.month, 28), self.product.bolsa.zone)
                 
 class OHCLWeekly:
-    def __init__(self, cfg):
-        self.cfg=cfg
+    def __init__(self, mem):
+        self.mem=mem
         self.product=None
         self.year=None
         self.week=None
@@ -4820,7 +4840,7 @@ class OHCLWeekly:
         return self
                         
     def clone(self):
-        o=OHCLWeekly(self.cfg)
+        o=OHCLWeekly(self.mem)
         o.product=self.product
         o.year=self.year
         o.week=self.week
@@ -4842,8 +4862,8 @@ class OHCLWeekly:
     def print_time(self):
         return "{0}-{1}".format(self.year, self.week)
 class OHCLYearly:
-    def __init__(self, cfg):
-        self.cfg=cfg
+    def __init__(self, mem):
+        self.mem=mem
         self.product=None
         self.year=None
         self.open=None
@@ -4861,7 +4881,7 @@ class OHCLYearly:
         return self
                         
     def clone(self):
-        o=OHCLDaily(self.cfg)
+        o=OHCLDaily(self.mem)
         o.product=self.product
         o.year=self.year
         o.open=self.open
@@ -4875,53 +4895,53 @@ class OHCLYearly:
     def print_time(self):
         return "{0}".format(int(self.year))
 class SetOHCLWeekly:
-    def __init__(self, cfg, product):
-        self.cfg=cfg
+    def __init__(self, mem, product):
+        self.mem=mem
         self.product=product
         self.arr=[]
     def load_from_db(self, sql):
         """El sql debe estar ordenado por fecha"""
         del self.arr
         self.arr=[]
-        cur=self.cfg.conms.cursor()
+        cur=self.mem.conms.cursor()
         cur.execute(sql)#select * from ohclyearly where id=79329 order by year
         for row in cur:
-            self.arr.append(OHCLWeekly(self.cfg).init__from_dbrow(row, self.product))
+            self.arr.append(OHCLWeekly(self.mem).init__from_dbrow(row, self.product))
         cur.close()  
         
 class SetOHCLYearly:
-    def __init__(self, cfg, product):
-        self.cfg=cfg
+    def __init__(self, mem, product):
+        self.mem=mem
         self.product=product
         self.arr=[]
     def load_from_db(self, sql):
         """El sql debe estar ordenado por fecha"""
         del self.arr
         self.arr=[]
-        cur=self.cfg.conms.cursor()
+        cur=self.mem.conms.cursor()
         cur.execute(sql)#select * from ohclyearly where id=79329 order by year
         for row in cur:
-            self.arr.append(OHCLYearly(self.cfg).init__from_dbrow(row, self.product))
+            self.arr.append(OHCLYearly(self.mem).init__from_dbrow(row, self.product))
         cur.close()
         
 class SetOHCLMonthly:
-    def __init__(self, cfg, product):
-        self.cfg=cfg
+    def __init__(self, mem, product):
+        self.mem=mem
         self.product=product
         self.arr=[]
     def load_from_db(self, sql):
         """El sql debe estar ordenado por year, month"""
         del self.arr
         self.arr=[]
-        cur=self.cfg.conms.cursor()
+        cur=self.mem.conms.cursor()
         cur.execute(sql)#select * from ohclyearly where id=79329 order by year,mont
         for row in cur:
-            self.arr.append(OHCLMonthly(self.cfg).init__from_dbrow(row, self.product))
+            self.arr.append(OHCLMonthly(self.mem).init__from_dbrow(row, self.product))
         cur.close()
 
 class SetOHCLDaily:
-    def __init__(self, cfg, product):
-        self.cfg=cfg
+    def __init__(self, mem, product):
+        self.mem=mem
         self.product=product
         self.arr=[]
         
@@ -4931,10 +4951,10 @@ class SetOHCLDaily:
         
         del self.arr
         self.arr=[]
-        cur=self.cfg.conms.cursor()
+        cur=self.mem.conms.cursor()
         cur.execute(sql)#select * from ohclyearly where id=79329 order by date
         for row in cur:
-            self.arr.append(OHCLDaily(self.cfg).init__from_dbrow(row, self.product))
+            self.arr.append(OHCLDaily(self.mem).init__from_dbrow(row, self.product))
         cur.close()
 #                
 #    def __find_ohclDiary_since_date(self, date):
@@ -4959,16 +4979,16 @@ class SetOHCLDaily:
         penultimate=None
         endlastyear=None
         if len(self.arr)==0:
-            return SetQuotesBasic(self.cfg, self.product).init__create(None, None,  None)
+            return SetQuotesBasic(self.mem, self.product).init__create(None, None,  None)
         ohcl=self.arr[len(self.arr)-1]#last
-        last=Quote(self.cfg).init__create(self.product, dt(ohcl.date, self.product.bolsa.closes,  self.product.bolsa.zone), ohcl.close)
+        last=Quote(self.mem).init__create(self.product, dt(ohcl.date, self.product.bolsa.closes,  self.product.bolsa.zone), ohcl.close)
         ohcl=self.find(ohcl.date-datetime.timedelta(days=1))#penultimate
         if ohcl!=None:
-            penultimate=Quote(self.cfg).init__create(self.product, dt(ohcl.date, self.product.bolsa.closes,  self.product.bolsa.zone), ohcl.close)
+            penultimate=Quote(self.mem).init__create(self.product, dt(ohcl.date, self.product.bolsa.closes,  self.product.bolsa.zone), ohcl.close)
         ohcl=self.find(datetime.date(datetime.date.today().year-1, 12, 31))#endlastyear
         if ohcl!=None:
-            endlastyear=Quote(self.cfg).init__create(self.product, dt(ohcl.date, self.product.bolsa.closes,  self.product.bolsa.zone), ohcl.close)        
-        return SetQuotesBasic(self.cfg, self.product).init__create(last, penultimate, endlastyear)
+            endlastyear=Quote(self.mem).init__create(self.product, dt(ohcl.date, self.product.bolsa.closes,  self.product.bolsa.zone), ohcl.close)        
+        return SetQuotesBasic(self.mem, self.product).init__create(last, penultimate, endlastyear)
         
 class OHCL:
     def __init__(self, product, datetime, open, close, high, low ):
@@ -4986,17 +5006,17 @@ class OHCL:
         
 class QuotesResult:
     """Función que consigue resultados de mystocks de un id pasado en el constructor"""
-    def __init__(self,cfg,  product):
-        self.cfg=cfg
+    def __init__(self,mem,  product):
+        self.mem=mem
         self.product=product
         
-        self.intradia=SetQuotesIntraday(self.cfg)
-        self.all=SetQuotesAll(self.cfg)
-        self.basic=SetQuotesBasic(self.cfg, self.product)
-        self.ohclDaily=SetOHCLDaily(self.cfg, self.product)
-        self.ohclMonthly=SetOHCLMonthly(self.cfg, self.product)
-        self.ohclYearly=SetOHCLYearly(self.cfg, self.product)
-        self.ohclWeekly=SetOHCLWeekly(self.cfg, self.product)
+        self.intradia=SetQuotesIntraday(self.mem)
+        self.all=SetQuotesAll(self.mem)
+        self.basic=SetQuotesBasic(self.mem, self.product)
+        self.ohclDaily=SetOHCLDaily(self.mem, self.product)
+        self.ohclMonthly=SetOHCLMonthly(self.mem, self.product)
+        self.ohclYearly=SetOHCLYearly(self.mem, self.product)
+        self.ohclWeekly=SetOHCLWeekly(self.mem, self.product)
         
     def get_basic_ohcls(self):
         """Tambien sirve para recargar"""
@@ -5010,7 +5030,7 @@ class QuotesResult:
 
 
 class Apalancamiento:
-    def __init__(self, cfg):
+    def __init__(self, mem):
         self.id=None
         self.name=None
     def init__create(self, id, name):
@@ -5040,8 +5060,8 @@ class PriorityHistorical:
         
 class Split:
     """Class to make calculations with splits or contrasplits"""
-    def __init__(self, cfg, sharesinitial,  sharesfinal):
-        self.cfg=cfg
+    def __init__(self, mem, sharesinitial,  sharesfinal):
+        self.mem=mem
         self.initial=sharesinitial
         self.final=sharesfinal
     
@@ -5086,9 +5106,9 @@ class Split:
         
 class TUpdateData(threading.Thread):
     """Hilo que actualiza las products, solo el getBasic, cualquier cambio no de last, deberá ser desarrollado por código"""
-    def __init__(self, cfg):
+    def __init__(self, mem):
         threading.Thread.__init__(self)
-        self.cfg=cfg
+        self.mem=mem
         
     def run(self):
         print ("TUpdateData started")
@@ -5096,23 +5116,23 @@ class TUpdateData(threading.Thread):
             inicio=datetime.datetime.now()
             
             ##Selecting products to update
-            if self.cfg.data.loaded_inactive==False:
-                products=self.cfg.data.investments_active
+            if self.mem.data.loaded_inactive==False:
+                products=self.mem.data.investments_active
             else:
-                products=self.cfg.data.investments_all()
+                products=self.mem.data.investments_all()
                 
-            self.cfg.data.indicereferencia.result.basic.load_from_db()
+            self.mem.data.benchmark.result.basic.load_from_db()
             
             ##Update loop
             for inv in products.arr:
-                if self.cfg.closing==True:
+                if self.mem.closing==True:
                     return
                 inv.result.basic.load_from_db()
             print("TUpdateData loop took", datetime.datetime.now()-inicio)
             
             ##Wait loop
             for i in range(60):
-                if self.cfg.closing==True:
+                if self.mem.closing==True:
                     return
                 time.sleep(1)
             
@@ -5134,8 +5154,8 @@ class Type:
 class Agrupation:
     """Una inversión pertenece a una lista de agrupaciones ibex, indices europeos
     fondo europeo, fondo barclays. Hat tantas agrupaciones como clasificaciones . grupos en kaddressbook similar"""
-    def __init__(self,  cfg):
-        self.cfg=cfg
+    def __init__(self,  mem):
+        self.mem=mem
         self.id=None
         self.name=None
         self.type=None
@@ -5150,8 +5170,8 @@ class Agrupation:
         return self
         
 class SetTypes:
-    def __init__(self, cfg):
-        self.cfg=cfg
+    def __init__(self, mem):
+        self.mem=mem
         self.dic_arr={}
         
             
@@ -5262,7 +5282,7 @@ class ConfigFile:
         except:
             return self.set_default_value(section, name)
             
-class ConfigMyStock:
+class MemMyStock:
     def __init__(self):
         self.password=""
         self.password2=""
@@ -5313,12 +5333,14 @@ class ConfigMyStock:
         d['settings#taxcapitalappreciation']='0.21'
         d['settings#localcurrency']='EUR'
         d['settings#localzone']='Europe/Madrid'
-        d['settings#indicereferencia']='79329'
+        d['settings#benchmark']='79329'
+        d['settings#gainsyear']='True'
         d['wdgProducts#favoritos']=""
         d['settings_mystocks#fillfromyear']='2005'
         d['wdgIndexRange#spin']='2'
         d['wdgIndexRange#txtInvertir']='4000'
         d['wdgIndexRange#txtMinimo']='1000'
+
         return d
             
             
@@ -5343,7 +5365,7 @@ class ConfigMyStock:
                 
     def actualizar_memoria(self):
         ###Esto debe ejecutarse una vez establecida la conexión
-        print ("Cargando ConfigMyStock")
+        print ("Cargando MemMyStock")
         self.countries.load_all()
         self.currencies.load_all()
         self.investmentsmodes.load_all()
@@ -5396,7 +5418,7 @@ class ConfigMyStock:
 #        where="where priority=5"""
 #        cur.execute("select * from products {0}".format(where))
 #        for row in cur:
-#            self.dic_activas[str(row['id'])]=Product(self.cfg).init__db_row(self, row)
+#            self.dic_activas[str(row['id'])]=Product(self.mem).init__db_row(self, row)
 #            
 #
 #    def activas(self, id=None):
@@ -5407,9 +5429,9 @@ class ConfigMyStock:
 #                        
 
             
-class ConfigXulpymoney(ConfigMyStock):
+class MemXulpymoney(MemMyStock):
     def __init__(self):
-        ConfigMyStock.__init__(self)
+        MemMyStock.__init__(self)
         self.con=None#Conexión a xulpymoney
         self.data=DBData(self)
         self.closing=False#Used to close threads
@@ -5428,7 +5450,7 @@ class ConfigXulpymoney(ConfigMyStock):
         """Solo se cargan datos  de mystocks y operinversiones en las activas
         Pero se general el InversionMQ de las inactivas
         Se vinculan todas"""
-        super(ConfigXulpymoney, self).actualizar_memoria()
+        super(MemXulpymoney, self).actualizar_memoria()
         inicio=datetime.datetime.now()
         print ("Loading static data")
         self.tiposoperaciones=SetTiposOperaciones(self)
@@ -5505,58 +5527,58 @@ class Country:
             return QPixmap(":/xulpymoney/star.gif")
             
 class Global:
-    def __init__(self, cfg):
-        self.cfg=cfg
+    def __init__(self, mem):
+        self.mem=mem
     def get_database_version(self):
-        cur=self.cfg.conms.cursor()
+        cur=self.mem.conms.cursor()
         cur.execute("select value from globals where id_globals=1;")
         resultado=cur.fetchone()['value']
         cur.close()
         return resultado
 
     def get_database_init_date(self):
-        cur=self.cfg.conms.cursor()
+        cur=self.mem.conms.cursor()
         cur.execute("select value from globals where id_globals=5;")
         resultado=cur.fetchone()['value']
         cur.close()
         return resultado
 
     def get_session_counter(self):
-        cur=self.cfg.conms.cursor()
+        cur=self.mem.conms.cursor()
         cur.execute("select value from globals where id_globals=3;")
         resultado=cur.fetchone()['value']
         cur.close()
         return resultado
 
     def get_system_counter(self):
-        cur=self.cfg.conms.cursor()
+        cur=self.mem.conms.cursor()
         cur.execute("select value from globals where id_globals=2;")
         resultado=cur.fetchone()['value']
         cur.close()
         return resultado
 
     def set_database_init_date(self, valor):
-        cur=self.cfg.conms.cursor()
+        cur=self.mem.conms.cursor()
         cur.execute("update globals set value=%s where id_globals=5;", (valor, ))
         cur.close()
 
     def set_database_version(self, valor):
-        cur=self.cfg.conms.cursor()
+        cur=self.mem.conms.cursor()
         cur.execute("update globals set value=%s where id_globals=1;", (valor, ))
         cur.close()
 
     def set_session_counter(self, valor):
-        cur=self.cfg.conms.cursor()
+        cur=self.mem.conms.cursor()
         cur.execute("update globals set value=%s where id_globals=3;", (valor, ))
         cur.close()
 
     def set_system_counter(self, valor):
-        cur=self.cfg.conms.cursor()
+        cur=self.mem.conms.cursor()
         cur.execute("update globals set value=%s where id_globals=2;", (valor, ))
         cur.close()
     
     def set_sourceforge_version(self):
-        cur=self.cfg.conms.cursor()
+        cur=self.mem.conms.cursor()
         try:
             serverversion=""
             comand='http://mystocks.svn.sourceforge.net/viewvc/mystocks/libxulpymoney.py'
@@ -5571,7 +5593,7 @@ class Global:
             log("VERSION-SOURCEFORGE", "", QApplication.translate("Core","Error buscando la versión actual de Sourceforge"))                    
         cur.close()
     def get_sourceforge_version(self):
-        cur=self.cfg.conms.cursor()
+        cur=self.mem.conms.cursor()
         cur.execute("select value from globals where id_globals=4;")
         resultado=cur.fetchone()['value']
         cur.close()
@@ -5579,8 +5601,8 @@ class Global:
 
 
 class Zone:
-    def __init__(self, cfg):
-        self.cfg=cfg
+    def __init__(self, mem):
+        self.mem=mem
         self.id=None
         self.name=None
         self.country=None
@@ -5598,20 +5620,20 @@ class Zone:
         return datetime.datetime.now(pytz.timezone(self.name))
         
 class SetZones:
-    def __init__(self, cfg):
-        self.cfg=cfg
+    def __init__(self, mem):
+        self.mem=mem
         self.dic_arr={}
         
     def load_all(self):
-        self.dic_arr["Europe/Madrid"]=Zone(self.cfg).init__create(1,'Europe/Madrid', self.cfg.countries.find("es"))#ALGUN DIA HABRá QUE CAMBIAR LAS ZONES POR ID_ZONESº
-        self.dic_arr["Europe/Lisbon"]=Zone(self.cfg).init__create(2,'Europe/Lisbon', self.cfg.countries.find("pt"))
-        self.dic_arr["Europe/Rome"]=Zone(self.cfg).init__create(3,'Europe/Rome', self.cfg.countries.find("it"))
-        self.dic_arr["Europe/London"]=Zone(self.cfg).init__create(4,'Europe/London', self.cfg.countries.find("en"))
-        self.dic_arr['Asia/Tokyo']=Zone(self.cfg).init__create(5,'Asia/Tokyo', self.cfg.countries.find("jp"))
-        self.dic_arr["Europe/Berlin"]=Zone(self.cfg).init__create(6,'Europe/Berlin', self.cfg.countries.find("de"))
-        self.dic_arr["America/New_York"]=Zone(self.cfg).init__create(7,'America/New_York', self.cfg.countries.find("us"))
-        self.dic_arr["Europe/Paris"]=Zone(self.cfg).init__create(8,'Europe/Paris', self.cfg.countries.find("fr"))
-        self.dic_arr["Asia/Hong_Kong"]=Zone(self.cfg).init__create(9,'Asia/Hong_Kong', self.cfg.countries.find("cn"))
+        self.dic_arr["Europe/Madrid"]=Zone(self.mem).init__create(1,'Europe/Madrid', self.mem.countries.find("es"))#ALGUN DIA HABRá QUE CAMBIAR LAS ZONES POR ID_ZONESº
+        self.dic_arr["Europe/Lisbon"]=Zone(self.mem).init__create(2,'Europe/Lisbon', self.mem.countries.find("pt"))
+        self.dic_arr["Europe/Rome"]=Zone(self.mem).init__create(3,'Europe/Rome', self.mem.countries.find("it"))
+        self.dic_arr["Europe/London"]=Zone(self.mem).init__create(4,'Europe/London', self.mem.countries.find("en"))
+        self.dic_arr['Asia/Tokyo']=Zone(self.mem).init__create(5,'Asia/Tokyo', self.mem.countries.find("jp"))
+        self.dic_arr["Europe/Berlin"]=Zone(self.mem).init__create(6,'Europe/Berlin', self.mem.countries.find("de"))
+        self.dic_arr["America/New_York"]=Zone(self.mem).init__create(7,'America/New_York', self.mem.countries.find("us"))
+        self.dic_arr["Europe/Paris"]=Zone(self.mem).init__create(8,'Europe/Paris', self.mem.countries.find("fr"))
+        self.dic_arr["Asia/Hong_Kong"]=Zone(self.mem).init__create(9,'Asia/Hong_Kong', self.mem.countries.find("cn"))
 
     def load_qcombobox(self, combo, zone=None):
         """Carga entidades bancarias en combo"""

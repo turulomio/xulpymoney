@@ -6,7 +6,7 @@ from frmOperCuentas import *
 from frmTarjetasIBM import *
 
 class frmCuentasIBM(QDialog, Ui_frmCuentasIBM):
-    def __init__(self, cfg, cuenta,  parent=None):
+    def __init__(self, mem, cuenta,  parent=None):
         """
             selIdCuenta=None Inserción de cuentas
             selIdCuenta=X. Modificación de cuentas cuando click en cmd y resto de trabajos"""
@@ -15,8 +15,8 @@ class frmCuentasIBM(QDialog, Ui_frmCuentasIBM):
         self.showMaximized()
         self.cmdDatos.setEnabled(False)     
         
-        self.cfg=cfg
-        self.cfg.data.load_inactives()
+        self.mem=mem
+        self.mem.data.load_inactives()
                 
         self.selOperCuenta=None #Registro de oper cuentas
         self.selTarjeta=None#Registro de Tarjeta seleccionada
@@ -30,15 +30,15 @@ class frmCuentasIBM(QDialog, Ui_frmCuentasIBM):
         
         self.saldoiniciomensual=0#Almacena el inicio según on_cmdMovimientos_released
           
-        self.tblOperaciones.settings("frmCuentasIBM",  self.cfg)
-        self.tblTarjetas.settings("frmCuentasIBM",  self.cfg)
-        self.tblOperTarjetas.settings("frmCuentasIBM",  self.cfg)
-        self.tblOpertarjetasHistoricas.settings("frmCuentasIBM",  self.cfg)
+        self.tblOperaciones.settings("frmCuentasIBM",  self.mem)
+        self.tblTarjetas.settings("frmCuentasIBM",  self.mem)
+        self.tblOperTarjetas.settings("frmCuentasIBM",  self.mem)
+        self.tblOpertarjetasHistoricas.settings("frmCuentasIBM",  self.mem)
     
         self.calPago.setDate(QDate.currentDate())
         
-        self.cfg.currencies.load_qcombobox(self.cmbCurrency)
-        self.cfg.data.ebs_active.load_qcombobox(self.cmbEB)
+        self.mem.currencies.load_qcombobox(self.cmbCurrency)
+        self.mem.data.ebs_active.load_qcombobox(self.cmbEB)
                     
         if self.selCuenta==None:
             self.lblTitulo.setText(self.trUtf8("Datos de la nueva cuenta bancaria"))
@@ -60,7 +60,7 @@ class frmCuentasIBM(QDialog, Ui_frmCuentasIBM):
             self.chkActiva.setChecked(b2c(self.selCuenta.activa))
             self.cmdDatos.setText(self.trUtf8("Modificar los datos de la cuenta bancaria"))
 
-            anoinicio=Patrimonio(self.cfg).primera_fecha_con_datos_usuario().year       
+            anoinicio=Patrimonio(self.mem).primera_fecha_con_datos_usuario().year       
             self.wdgYM.initiate(anoinicio,  datetime.date.today().year, datetime.date.today().year, datetime.date.today().month)
             QObject.connect(self.wdgYM, SIGNAL("changed"), self.on_wdgYM_changed)
 
@@ -77,7 +77,7 @@ class frmCuentasIBM(QDialog, Ui_frmCuentasIBM):
 #    def load_inactive_data_from_db(self):
 #        if self.loadedinactive==False:
 #            inicio=datetime.datetime.now()        
-#            self.cfg.data.load_inactives()
+#            self.mem.data.load_inactives()
 #            print("\n","Cargando data en wdgInversiones",  datetime.datetime.now()-inicio)
 #            self.loadedinactive=True
 #            
@@ -109,13 +109,13 @@ class frmCuentasIBM(QDialog, Ui_frmCuentasIBM):
 
     @QtCore.pyqtSlot() 
     def on_actionTarjetaNueva_activated(self):
-        w=frmTarjetasIBM(self.cfg,  self.selCuenta,  None, self)
+        w=frmTarjetasIBM(self.mem,  self.selCuenta,  None, self)
         w.exec_()
         self.on_chkTarjetas_stateChanged(Qt.Unchecked)
         
     @QtCore.pyqtSlot() 
     def on_actionTarjetaModificar_activated(self):
-        w=frmTarjetasIBM(self.cfg, self.selCuenta,  self.selTarjeta, self)
+        w=frmTarjetasIBM(self.mem, self.selCuenta,  self.selTarjeta, self)
         w.exec_()
         self.tblTarjetas.clearSelection()
         self.on_chkTarjetas_stateChanged(self.chkTarjetas.checkState())
@@ -127,14 +127,14 @@ class frmCuentasIBM(QDialog, Ui_frmCuentasIBM):
             
         if self.actionTarjetaActivar.isChecked():#Ha pasado de inactiva a activa
             self.selTarjeta.activa=True
-            self.cfg.data.tarjetas_inactive.arr.remove(self.selTarjeta)
-            self.cfg.data.tarjetas_active.arr.append(self.selTarjeta)
+            self.mem.data.tarjetas_inactive.arr.remove(self.selTarjeta)
+            self.mem.data.tarjetas_active.arr.append(self.selTarjeta)
         else:
             self.selTarjeta.activa=False
-            self.cfg.data.tarjetas_inactive.arr.append(self.selTarjeta)
-            self.cfg.data.tarjetas_active.arr.remove(self.selTarjeta)
+            self.mem.data.tarjetas_inactive.arr.append(self.selTarjeta)
+            self.mem.data.tarjetas_active.arr.remove(self.selTarjeta)
         self.selTarjeta.save()
-        self.cfg.con.commit()
+        self.mem.con.commit()
         
         self.on_chkTarjetas_stateChanged(self.chkTarjetas.checkState())
                 
@@ -145,17 +145,17 @@ class frmCuentasIBM(QDialog, Ui_frmCuentasIBM):
             m.setIcon(QMessageBox.Information)
             m.setText(self.trUtf8("No se ha borrado la tarjeta por tener registros dependientes"))
             m.exec_()                 
-        self.cfg.con.commit()
-        self.cfg.data.tarjetas_active.arr.remove(self.selTarjeta)
+        self.mem.con.commit()
+        self.mem.data.tarjetas_active.arr.remove(self.selTarjeta)
         self.tblTarjetas.clearSelection()
         self.on_chkTarjetas_stateChanged(self.chkTarjetas.checkState())
 
     def on_chkTarjetas_stateChanged(self, state):        
         if state==Qt.Unchecked:
-            self.tarjetas=self.cfg.data.tarjetas_active.clone_of_account(self.selCuenta)
+            self.tarjetas=self.mem.data.tarjetas_active.clone_of_account(self.selCuenta)
         else:
-            self.cfg.data.load_inactives()
-            self.tarjetas=self.cfg.data.tarjetas_inactive.clone_of_account(self.selCuenta)
+            self.mem.data.load_inactives()
+            self.tarjetas=self.mem.data.tarjetas_inactive.clone_of_account(self.selCuenta)
         self.load_tabTarjetas() 
         self.selTarjeta=None
         self.tblTarjetas.clearSelection()
@@ -168,18 +168,18 @@ class frmCuentasIBM(QDialog, Ui_frmCuentasIBM):
         currency=self.cmbCurrency.itemData(self.cmbCurrency.currentIndex())
 
         if self.selCuenta==None:
-            cu=Cuenta(self.cfg).init__create(cuenta, self.cfg.data.ebs_active.find(id_entidadesbancarias), cu_activa, numerocuenta, self.cfg.currencies.find(currency))
+            cu=Cuenta(self.mem).init__create(cuenta, self.mem.data.ebs_active.find(id_entidadesbancarias), cu_activa, numerocuenta, self.mem.currencies.find(currency))
             cu.save()
-            self.cfg.data.cuentas_active.arr.append(cu)
+            self.mem.data.cuentas_active.arr.append(cu)
         else:
-            self.selCuenta.eb=self.cfg.data.ebs_active.find(id_entidadesbancarias)
+            self.selCuenta.eb=self.mem.data.ebs_active.find(id_entidadesbancarias)
             self.selCuenta.name=cuenta
             self.selCuenta.numero=numerocuenta
             self.selCuenta.activa=cu_activa
-            self.selCuenta.currency=self.cfg.currencies.find(currency)
+            self.selCuenta.currency=self.mem.currencies.find(currency)
             self.selCuenta.save()
             self.lblTitulo.setText(self.selCuenta.name)
-        self.cfg.con.commit()
+        self.mem.con.commit()
         
         if self.selCuenta==None:
             self.done(0)
@@ -187,14 +187,14 @@ class frmCuentasIBM(QDialog, Ui_frmCuentasIBM):
 
     @pyqtSlot()
     def on_wdgYM_changed(self):
-        cur = self.cfg.con.cursor()      
+        cur = self.mem.con.cursor()      
         self.opercuentas=[]
         self.saldoiniciomensual=self.selCuenta.saldo_from_db( str(datetime.date(self.wdgYM.year, self.wdgYM.month, 1)-datetime.timedelta(days=1)))         
         if self.saldoiniciomensual==None:
             self.saldoiniciomensual=0
         cur.execute("select * from opercuentas where id_cuentas="+str(self.selCuenta.id)+" and date_part('year',fecha)="+str(self.wdgYM.year)+" and date_part('month',fecha)="+str(self.wdgYM.month)+" order by fecha, id_opercuentas")
         for o in cur:
-            self.opercuentas.append(CuentaOperacion(self.cfg).init__db_row(o, self.cfg.conceptos.find(o['id_conceptos']), self.cfg.tiposoperaciones.find(o['id_tiposoperaciones']), self.selCuenta))
+            self.opercuentas.append(CuentaOperacion(self.mem).init__db_row(o, self.mem.conceptos.find(o['id_conceptos']), self.mem.tiposoperaciones.find(o['id_tiposoperaciones']), self.selCuenta))
         cur.close()     
         self.load_tblOperaciones()  
             
@@ -213,7 +213,7 @@ class frmCuentasIBM(QDialog, Ui_frmCuentasIBM):
 
     @QtCore.pyqtSlot() 
     def on_actionMovimientoNuevo_activated(self):
-        w=frmOperCuentas(self.cfg, self.cfg.data.cuentas_active,  self.selCuenta, None, None)
+        w=frmOperCuentas(self.mem, self.mem.data.cuentas_active,  self.selCuenta, None, None)
         self.connect(w, SIGNAL("OperCuentaIBMed"), self.on_wdgYM_changed)
         w.exec_()
         self.load_tblOperaciones()
@@ -225,15 +225,15 @@ class frmCuentasIBM(QDialog, Ui_frmCuentasIBM):
     @QtCore.pyqtSlot() 
     def on_actionTransferDelete_activated(self):
         
-        oc_other=CuentaOperacion(self.cfg).init__db_query(int(self.selOperCuenta.comentario.split("|")[1]))
+        oc_other=CuentaOperacion(self.mem).init__db_query(int(self.selOperCuenta.comentario.split("|")[1]))
         
         if self.selOperCuenta.concepto.id==4:#Tranfer origin
             account_origin=self.selCuenta
-            account_destiny=self.cfg.data.cuentas_all().find(int(self.selOperCuenta.comentario.split("|")[0]))
+            account_destiny=self.mem.data.cuentas_all().find(int(self.selOperCuenta.comentario.split("|")[0]))
             oc_comision_id=int(self.selOperCuenta.comentario.split("|")[2])
     
         if self.selOperCuenta.concepto.id==5:#Tranfer destiny
-            account_origin=self.cfg.data.cuentas_all().find(int(self.selOperCuenta.comentario.split("|")[0]))
+            account_origin=self.mem.data.cuentas_all().find(int(self.selOperCuenta.comentario.split("|")[0]))
             account_destiny=self.selCuenta
             oc_comision_id=int(oc_other.comentario.split("|")[2])
             
@@ -242,18 +242,18 @@ class frmCuentasIBM(QDialog, Ui_frmCuentasIBM):
             
         if reply == QMessageBox.Yes:
             if oc_comision_id!=0:
-                oc_comision=CuentaOperacion(self.cfg).init__db_query(oc_comision_id)
+                oc_comision=CuentaOperacion(self.mem).init__db_query(oc_comision_id)
                 oc_comision.borrar()
             self.selOperCuenta.borrar()
             oc_other.borrar()
-            self.cfg.con.commit()
+            self.mem.con.commit()
             self.on_wdgYM_changed()
             self.tblOperaciones.clearSelection()
             self.selOperCuenta=None
         
     @QtCore.pyqtSlot() 
     def on_actionMovimientoModificar_activated(self):
-        w=frmOperCuentas(self.cfg, self.cfg.data.cuentas_active,  self.selCuenta, self.selOperCuenta, None)
+        w=frmOperCuentas(self.mem, self.mem.data.cuentas_active,  self.selCuenta, self.selOperCuenta, None)
         self.connect(w, SIGNAL("OperCuentaIBMed"), self.on_wdgYM_changed)#Actualiza movimientos como si cmd
         w.exec_()
         self.load_tblOperaciones()
@@ -263,7 +263,7 @@ class frmCuentasIBM(QDialog, Ui_frmCuentasIBM):
     @QtCore.pyqtSlot() 
     def on_actionMovimientoBorrar_activated(self):
         self.selOperCuenta.borrar() 
-        self.cfg.con.commit()  
+        self.mem.con.commit()  
         self.opercuentas.remove(self.selOperCuenta)         
         self.load_tblOperaciones()
         self.tblOperaciones.clearSelection()
@@ -272,13 +272,13 @@ class frmCuentasIBM(QDialog, Ui_frmCuentasIBM):
     @QtCore.pyqtSlot() 
     def on_actionOperTarjetaNueva_activated(self):
         if self.selTarjeta.pagodiferido==False:
-            w=frmOperCuentas(self.cfg, self.cfg.data.cuentas_active, self.selCuenta, None)
+            w=frmOperCuentas(self.mem, self.mem.data.cuentas_active, self.selCuenta, None)
             self.connect(w, SIGNAL("OperCuentaIBMed"), self.on_wdgYM_changed)
             w.lblTitulo.setText(((self.selTarjeta.name)))
             w.txtComentario.setText(self.tr("Tarjeta {0}. ".format((self.selTarjeta.name))))
             w.exec_()
         else:            
-            w=frmOperCuentas(self.cfg, self.cfg.data.cuentas_active,  self.selCuenta, None, self.selTarjeta)
+            w=frmOperCuentas(self.mem, self.mem.data.cuentas_active,  self.selCuenta, None, self.selTarjeta)
             self.connect(w, SIGNAL("OperTarjetaIBMed"), self.load_tabOperTarjetas)
             w.lblTitulo.setText(self.tr("Tarjeta {0}".format((self.selTarjeta.name))))
             w.exec_()
@@ -288,7 +288,7 @@ class frmCuentasIBM(QDialog, Ui_frmCuentasIBM):
         #Como es unico
         for s in self.setSelOperTarjetas:
             selOperTarjeta=s
-        w=frmOperCuentas(self.cfg, self.cfg.data.cuentas_active,  self.selCuenta, None, self.selTarjeta, selOperTarjeta)
+        w=frmOperCuentas(self.mem, self.mem.data.cuentas_active,  self.selCuenta, None, self.selTarjeta, selOperTarjeta)
         self.connect(w, SIGNAL("OperTarjetaIBMed"), self.load_tabOperTarjetas)
         w.lblTitulo.setText(self.tr("Tarjeta {0}".format((self.selTarjeta.name))))
         w.exec_()
@@ -298,7 +298,7 @@ class frmCuentasIBM(QDialog, Ui_frmCuentasIBM):
         for o in self.setSelOperTarjetas:
             o.borrar()
             self.selTarjeta.op_diferido.remove(o)
-        self.cfg.con.commit()
+        self.mem.con.commit()
         self.load_tabOperTarjetas()
 
     def on_tblOperaciones_customContextMenuRequested(self,  pos):      
@@ -425,12 +425,12 @@ class frmCuentasIBM(QDialog, Ui_frmCuentasIBM):
         #Calcula el saldo
         for o in self.setSelOperTarjetas:
             self.totalOperTarjetas=self.totalOperTarjetas+Decimal(o.importe)
-        self.lblPago.setText(self.cfg.localcurrency.string(self.totalOperTarjetas, 2))
+        self.lblPago.setText(self.mem.localcurrency.string(self.totalOperTarjetas, 2))
  
     def on_cmdPago_released(self):
         comentario="{0}|{1}".format(self.selTarjeta.name, len(self.setSelOperTarjetas))
         fechapago=self.calPago.date().toPyDate()
-        c=CuentaOperacion(self.cfg).init__create(fechapago, self.cfg.conceptos.find(40), self.cfg.tiposoperaciones.find(7), self.totalOperTarjetas, comentario, self.selCuenta)
+        c=CuentaOperacion(self.mem).init__create(fechapago, self.mem.conceptos.find(40), self.mem.tiposoperaciones.find(7), self.totalOperTarjetas, comentario, self.selCuenta)
         c.save()
         
         #Modifica el registro y lo pone como pagado y la fecha de pago y añade la opercuenta
@@ -440,7 +440,7 @@ class frmCuentasIBM(QDialog, Ui_frmCuentasIBM):
             o.opercuenta=c
             o.save()
             self.selTarjeta.op_diferido.remove(o)
-        self.cfg.con.commit()
+        self.mem.con.commit()
         self.load_tabOperTarjetas()         
         self.on_wdgYM_changed()  
 
@@ -448,10 +448,10 @@ class frmCuentasIBM(QDialog, Ui_frmCuentasIBM):
     def on_cmdDevolverPago_released(self):
         print ("solo uno")
         id_opercuentas=self.cmbFechasPago.itemData(int(self.cmbFechasPago.currentIndex()))
-        cur = self.cfg.con.cursor()      
+        cur = self.mem.con.cursor()      
         cur.execute("delete from opercuentas where id_opercuentas=%s", (id_opercuentas, ))#No merece crear objeto
         cur.execute("update opertarjetas set fechapago=null, pagado=false, id_opercuentas=null where id_opercuentas=%s", (id_opercuentas, ) )
-        self.cfg.con.commit()
+        self.mem.con.commit()
         self.selTarjeta.get_opertarjetas_diferidas_pendientes()
         self.on_cmdMovimientos_released()
         self.load_tabOperTarjetas()
@@ -462,7 +462,7 @@ class frmCuentasIBM(QDialog, Ui_frmCuentasIBM):
     def on_cmbFechasPago_currentIndexChanged(self, index):
         id_opercuentas=self.cmbFechasPago.itemData(int(self.cmbFechasPago.currentIndex()))
         print (id_opercuentas)            
-        con=self.cfg.connect_xulpymoney()
+        con=self.mem.connect_xulpymoney()
         cur = con.cursor()      
         cur.execute("select id_opertarjetas,fecha,conceptos.concepto,importe,comentario from opertarjetas,conceptos where opertarjetas.id_conceptos=conceptos.id_conceptos and id_opercuentas=%s;", (id_opercuentas, ))
         self.tblOpertarjetasHistoricas.clearContents()
@@ -477,24 +477,24 @@ class frmCuentasIBM(QDialog, Ui_frmCuentasIBM):
             self.tblOpertarjetasHistoricas.setItem(cur.rownumber-1, 4, self.selCuenta.currency.qtablewidgetitem(saldo))
             self.tblOpertarjetasHistoricas.setItem(cur.rownumber-1, 5, QTableWidgetItem((rec['comentario'])))
         cur.close()     
-        self.cfg.disconnect_xulpymoney(con)      
+        self.mem.disconnect_xulpymoney(con)      
 
     def on_tabOpertarjetasDiferidas_currentChanged(self, index): 
         if  index==1: #PAGOS
             #Carga combo
             self.cmbFechasPago.clear()
-            con=self.cfg.connect_xulpymoney()
+            con=self.mem.connect_xulpymoney()
             cur = con.cursor()       
             cur2=con.cursor()
             cur.execute("select distinct(fechapago), id_opercuentas from opertarjetas where id_tarjetas=%s and fechapago is not null  order by fechapago;", (self.selTarjeta.id, ))
             for row in cur:  
                 cur2.execute("select importe from opercuentas where id_opercuentas=%s", (row['id_opercuentas'], ))
                 importe=cur2.fetchone()["importe"]
-                self.cmbFechasPago.addItem(self.tr("Pago efectuado el {0} de {1}".format(row['fechapago'],  self.cfg.localcurrency.string(-importe))),row['id_opercuentas'])
+                self.cmbFechasPago.addItem(self.tr("Pago efectuado el {0} de {1}".format(row['fechapago'],  self.mem.localcurrency.string(-importe))),row['id_opercuentas'])
             self.cmbFechasPago.setCurrentIndex(cur.rowcount-1)
             cur.close()     
             cur2.close()
-            self.cfg.disconnect_xulpymoney(con)      
+            self.mem.disconnect_xulpymoney(con)      
             
 
     def on_txtCuenta_textChanged(self):

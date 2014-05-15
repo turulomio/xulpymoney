@@ -7,13 +7,13 @@ from libxulpymoney import *
 
 class WorkerYahooHistorical(Source):
     """Clase que recorre las inversiones activas y busca la última  que tiene el microsecond 4. Busca en internet los historicals a partir de esa fecha"""
-    def __init__(self, cfg):
-        Source.__init__(self, cfg)
-        self.cfg=cfg
+    def __init__(self, mem):
+        Source.__init__(self, mem)
+        self.mem=mem
         self.id_source=3
         self.ids=[]
         self.name="YAHOOHISTORICAL"
-        self.products=SetProducts(self.cfg)
+        self.products=SetProducts(self.mem)
         self.products.load_from_db("select * from products where active=true and priorityhistorical[1]=3")
         
     def start(self):
@@ -27,14 +27,14 @@ class WorkerYahooHistorical(Source):
             stri="{0}: {1}/{2} {3}. Inserted: {4}. Modified:{5}          ".format(function_name(self), i+1, len(self.products.arr), inv, ins, m) 
             sys.stdout.write("\b"*1000+stri)
             sys.stdout.flush()
-            self.cfg.conms.commit()  
+            self.mem.conms.commit()  
             time.sleep(0)#time step
         print("")
         
     def execute(self,  product, inicio, fin):
         """inico y fin son dos dates entre los que conseguir los datos."""
         url='http://ichart.finance.yahoo.com/table.csv?s='+product.ticker+'&a='+str(inicio.month-1)+'&b='+str(inicio.day)+'&c='+str(inicio.year)+'&d='+str(fin.month-1)+'&e='+str(fin.day)+'&f='+str(fin.year)+'&g=d&ignore=.csv'
-        (set, error)=(SetQuotes(self.cfg), [])
+        (set, error)=(SetQuotes(self.mem), [])
         web=self.download(url, 'YAHOO_HISTORICAL')
         if web==None:
             return (set, error)
@@ -52,23 +52,23 @@ class WorkerYahooHistorical(Source):
             datetimehigh=(datestart+(dateends-datestart)*2/3)
             datetimelast=dateends+datetime.timedelta(microseconds=4)
 
-            set.append(Quote(self.cfg).init__create(product,datetimelast, float(datos[4])))#closes
-            set.append(Quote(self.cfg).init__create(product,datetimelow, float(datos[3])))#low
-            set.append(Quote(self.cfg).init__create(product,datetimehigh, float(datos[2])))#high
-            set.append(Quote(self.cfg).init__create(product, datetimefirst, float(datos[1])))#open
+            set.append(Quote(self.mem).init__create(product,datetimelast, float(datos[4])))#closes
+            set.append(Quote(self.mem).init__create(product,datetimelow, float(datos[3])))#low
+            set.append(Quote(self.mem).init__create(product,datetimehigh, float(datos[2])))#high
+            set.append(Quote(self.mem).init__create(product, datetimefirst, float(datos[1])))#open
         return (set,  error)
 
 if __name__ == '__main__':
-    cfg=ConfigMyStock()
+    mem=MemMyStock()
     if len(sys.argv)>2:
         if sys.argv[2]=="debug":
             log("STARTING", "","Debugging")
-            cfg.debug=True
+            mem.debug=True
 
-    cfg.connect_mystocksd(sys.argv[1])
-    cfg.actualizar_memoria()
+    mem.connect_mystocksd(sys.argv[1])
+    mem.actualizar_memoria()
 
-    w=WorkerYahooHistorical(cfg)
+    w=WorkerYahooHistorical(mem)
     w.start()
 
-    cfg.disconnect_mystocksd()
+    mem.disconnect_mystocksd()

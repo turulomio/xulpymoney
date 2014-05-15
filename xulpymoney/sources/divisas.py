@@ -3,8 +3,8 @@ import gettext,  multiprocessing
 from libmystocks import *
 
 class Divisas(Source):
-    def __init__(self,  cfg):
-        Source.__init__(self, cfg)
+    def __init__(self,  mem):
+        Source.__init__(self, mem)
         self.time_before_quotes=0
         self.time_after_quotes=300
         self.time_before_statics=15#0
@@ -26,7 +26,7 @@ class Divisas(Source):
     def arr_quotes(self):    
         resultado=[]
         error=0
-        ##self.add_internetquery_into_sqlite(self.cfg.consqlite)
+        ##self.add_internetquery_into_sqlite(self.mem.consqlite)
         web=self.download('http://www.fxstreet.es/cotizaciones/divisas-mundiales/', 'ARR_QUOTES')
         if web==None:
             return []                
@@ -56,7 +56,7 @@ class Divisas(Source):
     def arr_statics(self): 
         resultado=[]
         error=0
-        ##self.add_internetquery_into_sqlite(self.cfg.consqlite)
+        ##self.add_internetquery_into_sqlite(self.mem.consqlite)
         web=self.download('http://www.fxstreet.es/cotizaciones/divisas-mundiales/', 'ARR_STATICS', False)
         if web==None:
             return []                 

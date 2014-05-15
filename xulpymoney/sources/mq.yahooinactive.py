@@ -7,9 +7,9 @@ from yahoo import *
 import math
 class WorkerYahooInactive(WorkerYahoo):
     """Clase que recorre las inversiones activas y calcula según este la prioridad de la previsión"""
-    def __init__(self, cfg):
-        Source.__init__(self, cfg)
-        self.cfg=cfg
+    def __init__(self, mem):
+        Source.__init__(self, mem)
+        self.mem=mem
         self.id_source=1
         self.ids=[]
         self.name="YAHOOINACTIVE"
@@ -17,7 +17,7 @@ class WorkerYahooInactive(WorkerYahoo):
     def start(self):
         print (self.name)
         while (True):
-            con=self.cfg.connect_mystocksd()
+            con=self.mem.connect_mystocksd()
             cur = con.cursor()     
             self.ids=self.filtrar_ids_inactivos_no_actualizados(cur,  1, 7,  False)      
             print (self.ids)
@@ -28,29 +28,29 @@ class WorkerYahooInactive(WorkerYahoo):
                 e=e+errors
                 time.sleep(3)
 #            self.parse_errors(cur,  e)
-#            Quotes(self.cfg).insert(cur, p, self.name)
+#            Quotes(self.mem).insert(cur, p, self.name)
             p.save(cur,self.name)
             con.commit()
             cur.close()                
-            self.cfg.disconnect_mystocksd(con)
+            self.mem.disconnect_mystocksd(con)
             time.sleep(60*60*24)
 
 
 if __name__ == '__main__':
-    cfg=ConfigMQ()
+    mem=ConfigMQ()
     if len(sys.argv)>1:
         if sys.argv[1]=="debug":
             log("STARTING", "","Debugging")
-            cfg.debug=True
+            mem.debug=True
 
-    con=cfg.connect_mystocksd()
+    con=mem.connect_mystocksd()
     cur = con.cursor()
-    cfg.actualizar_memoria(cur)
-#    cfg.carga_ia(cur, "where priority[1]=1")
-#    print(cfg.activas())
+    mem.actualizar_memoria(cur)
+#    mem.carga_ia(cur, "where priority[1]=1")
+#    print(mem.activas())
     cur.close()
-    cfg.disconnect_mystocksd(con)
+    mem.disconnect_mystocksd(con)
 
-    w=WorkerYahooInactive(cfg)
+    w=WorkerYahooInactive(mem)
     w.start()
 

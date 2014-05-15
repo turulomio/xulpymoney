@@ -4,21 +4,21 @@ from Ui_frmQuotesIBM import *
 from libxulpymoney import *
 
 class frmQuotesIBM(QDialog, Ui_frmQuotesIBM):
-    def __init__(self, cfg, product,  quote=None,   parent = None, name = None, modal = False):
+    def __init__(self, mem, product,  quote=None,   parent = None, name = None, modal = False):
         # tipo 1 - Insertar quote=None
         # tipo2 - Modificar quote!=None
         QDialog.__init__(self,  parent)
         self.setupUi(self)   
         self.product=product
-        self.cfg=cfg
+        self.mem=mem
         self.lblInversion.setText("{0} ({1})".format(self.product.name,  self.product.id))
         
         if quote==None:
             self.type="insert"
             self.quote=None
-            t=self.cfg.localzone.now()
+            t=self.mem.localzone.now()
             self.txtTime.setTime(QTime(t.hour, t.minute))
-            self.cfg.zones.load_qcombobox(self.cmbZone, self.cfg.localzone)
+            self.mem.zones.load_qcombobox(self.cmbZone, self.mem.localzone)
             if self.product.type.id in (2, 8):
                 self.chkNone.setCheckState(Qt.Checked)         
         else:
@@ -26,7 +26,7 @@ class frmQuotesIBM(QDialog, Ui_frmQuotesIBM):
             self.quote=quote
             self.calendar.setSelectedDate(self.quote.datetime.date())
             self.txtTime.setTime(QTime(self.quote.datetime.hour, self.quote.datetime.minute))
-            self.cfg.zones.load_qcombobox(self.cmbZone, quote.product.bolsa.zone)
+            self.mem.zones.load_qcombobox(self.cmbZone, quote.product.bolsa.zone)
             if self.quote.datetime.microsecond!=5:
                 self.chkCanBePurged.setCheckState(Qt.Unchecked)
             self.calendar.setEnabled(False)
@@ -58,7 +58,7 @@ class frmQuotesIBM(QDialog, Ui_frmQuotesIBM):
         if self.type=="insert":        
             try:
                 fecha=self.calendar.selectedDate().toPyDate()
-                zone=self.cfg.zones.find(self.cmbZone.currentText())
+                zone=self.mem.zones.find(self.cmbZone.currentText())
             except:
                 m=QMessageBox()
                 m.setIcon(QMessageBox.Information)
@@ -75,12 +75,12 @@ class frmQuotesIBM(QDialog, Ui_frmQuotesIBM):
             if self.chkCanBePurged.checkState()==Qt.Unchecked:#No puede ser purgado
                 da=da.replace(microsecond=5)
 
-            self.quote=Quote(self.cfg).init__create(self.product, da, self.txtQuote.decimal())
+            self.quote=Quote(self.mem).init__create(self.product, da, self.txtQuote.decimal())
             self.quote.save()
         else:#update
             self.quote.quote=self.txtQuote.decimal()
             self.quote.save()
-        self.cfg.conms.commit()
+        self.mem.conms.commit()
         
         self.accept()
 

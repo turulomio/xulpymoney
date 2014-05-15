@@ -73,8 +73,8 @@ class wdgPie(QWidget):
     def __init__(self, parent):
         QWidget.__init__(self,parent)
 
-    def set_data(self, cfg,  data, headers , colors,  name=""):
-        self.cfg=cfg
+    def set_data(self, mem,  data, headers , colors,  name=""):
+        self.mem=mem
         self.data=data
         self.headers=headers
         self.colors=colors
@@ -104,14 +104,14 @@ class wdgPie(QWidget):
         for i in range(len(self.data)):
             self.table.setItem(i, 0, QTableWidgetItem(self.data[i][0]))
             self.table.setItem(i, 1, QTableWidgetItem(self.data[i][1]))
-            self.table.setItem(i, 2, self.cfg.currencies.find('EUR').qtablewidgetitem(self.data[i][2]))            
+            self.table.setItem(i, 2, self.mem.currencies.find('EUR').qtablewidgetitem(self.data[i][2]))            
             self.table.setItem(i, 3, qtpc(self.data[i][2]*100/total))        
             self.table.item(i, 1).setBackgroundColor(self.colors[i])           
         self.horizontalLayout.addWidget(self.table)
         self.verticalLayout.addLayout(self.horizontalLayout)
         self.verticalLayout_3.addLayout(self.verticalLayout)
 
-        self.table.settings(name+"wdgPie_table",  self.cfg)
+        self.table.settings(name+"wdgPie_table",  self.mem)
         QtCore.QMetaObject.connectSlotsByName(self)
 
     def save_plot(self):

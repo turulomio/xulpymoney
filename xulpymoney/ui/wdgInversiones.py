@@ -7,11 +7,11 @@ from frmQuotesIBM import *
 from frmAnalisis import *
 
 class wdgInversiones(QWidget, Ui_wdgInversiones):
-    def __init__(self, cfg,  parent=None):
+    def __init__(self, mem,  parent=None):
         QWidget.__init__(self, parent)
         self.setupUi(self)
-        self.cfg=cfg
-        self.inversiones=[]
+        self.mem=mem
+        self.inversiones=None
         self.selInversion=None##Apunta a un objeto inversión
         self.loadedinactive=False
 
@@ -19,12 +19,12 @@ class wdgInversiones(QWidget, Ui_wdgInversiones):
         self.progress.setModal(True)
         self.progress.setWindowTitle(self.trUtf8("Recibiendo datos..."))
         self.progress.setMinimumDuration(0)                 
-        self.tblInversiones.settings("wdgInversiones",  self.cfg)
+        self.tblInversiones.settings("wdgInversiones",  self.mem)
         self.on_chkInactivas_stateChanged(self.chkInactivas.checkState())#Carga la tabla
                 
     def tblInversiones_load(self):
         """Función que carga la tabla de inversiones con el orden que tenga el arr serl.inversiones"""
-        self.tblInversiones.setRowCount(len(self.inversiones))
+        self.tblInversiones.setRowCount(len(self.inversiones.arr))
         self.tblInversiones.clearContents()
         sumpendiente=0
         sumdiario=0
@@ -32,8 +32,12 @@ class wdgInversiones(QWidget, Ui_wdgInversiones):
         i=0
         sumpositivos=0
         sumnegativos=0
-        for inv in self.inversiones:
+        gainsyear=str2bool(self.mem.config.get_value("settings", "gainsyear"))
+        for inv in self.inversiones.arr:            
             self.tblInversiones.setItem(i, 0, QTableWidgetItem("{0} ({1})".format(inv.name, inv.cuenta.name)))
+            if gainsyear==True and inv.op_actual.less_than_a_year()==True:
+                self.tblInversiones.item(i, 0).setIcon(QIcon(":/xulpymoney/new.png"))
+            
             self.tblInversiones.setItem(i, 1, qdatetime(inv.product.result.basic.last.datetime, inv.product.bolsa.zone))
             self.tblInversiones.setItem(i, 2, inv.product.currency.qtablewidgetitem(inv.product.result.basic.last.quote,  6))#Se debería recibir el parametro currency
             
@@ -64,15 +68,15 @@ class wdgInversiones(QWidget, Ui_wdgInversiones):
                     self.tblInversiones.item(i, 8).setBackgroundColor(QColor(148, 255, 148))
             i=i+1
         if suminvertido!=0:
-            self.lblTotal.setText("Patrimonio invertido: %s. Pendiente: %s - %s = %s (%s patrimonio). Dif. Diaria: %s" % (self.cfg.localcurrency.string(suminvertido), self.cfg.localcurrency.string(sumpositivos),  self.cfg.localcurrency.string(-sumnegativos),  self.cfg.localcurrency.string(sumpendiente), tpc(100*sumpendiente/suminvertido) , self.cfg.localcurrency.string( sumdiario)))
+            self.lblTotal.setText("Patrimonio invertido: %s. Pendiente: %s - %s = %s (%s patrimonio). Dif. Diaria: %s" % (self.mem.localcurrency.string(suminvertido), self.mem.localcurrency.string(sumpositivos),  self.mem.localcurrency.string(-sumnegativos),  self.mem.localcurrency.string(sumpendiente), tpc(100*sumpendiente/suminvertido) , self.mem.localcurrency.string( sumdiario)))
         else:
             self.lblTotal.setText(self.trUtf8("No hay patrimonio invertido"))
             
     def tblInversiones_load_inactivas(self):
         """Función que carga la tabla de inversiones con el orden que tenga el arr serl.inversiones"""
-        self.tblInversiones.setRowCount(len(self.inversiones))
+        self.tblInversiones.setRowCount(len(self.inversiones.arr))
         self.tblInversiones.clearContents()
-        for i, inv in enumerate(self.inversiones):
+        for i, inv in enumerate(self.inversiones.arr):
             self.tblInversiones.setItem(i, 0, QTableWidgetItem("{0} ({1})".format(inv.name, inv.cuenta.name)))
             self.tblInversiones.setItem(i, 5, inv.product.currency.qtablewidgetitem(inv.saldo()))
 
@@ -81,71 +85,72 @@ class wdgInversiones(QWidget, Ui_wdgInversiones):
         if self.selInversion.cuenta.eb.qmessagebox_inactive()  or self.selInversion.cuenta.qmessagebox_inactive():
             return  
         
-        self.cfg.data.load_inactives()
+        self.mem.data.load_inactives()
         if self.actionActiva.isChecked()==True:
             self.selInversion.activa=True
         else:
             self.selInversion.activa=False
         self.selInversion.save()
-        self.cfg.con.commit()     
+        self.mem.con.commit()     
         #Recoloca en los SetInversiones
         if self.selInversion.activa==True:#Está todavía en inactivas
-            self.cfg.data.inversiones_active.arr.append(self.selInversion)
-            if self.cfg.data.inversiones_inactive!=None:#Puede que no se haya cargado
-                self.cfg.data.inversiones_inactive.arr.remove(self.selInversion)
+            self.mem.data.inversiones_active.arr.append(self.selInversion)
+            if self.mem.data.inversiones_inactive!=None:#Puede que no se haya cargado
+                self.mem.data.inversiones_inactive.arr.remove(self.selInversion)
         else:#Está todavía en activas
-            self.cfg.data.inversiones_active.arr.remove(self.selInversion)
-            if self.cfg.data.inversiones_inactive!=None:#Puede que no se haya cargado
-                self.cfg.data.inversiones_inactive.arr.append(self.selInversion)
+            self.mem.data.inversiones_active.arr.remove(self.selInversion)
+            if self.mem.data.inversiones_inactive!=None:#Puede que no se haya cargado
+                self.mem.data.inversiones_inactive.arr.append(self.selInversion)
         self.on_chkInactivas_stateChanged(self.chkInactivas.checkState())#Carga la tabla
 
             
     @QtCore.pyqtSlot() 
     def on_actionInversionBorrar_activated(self):
-        cur = self.cfg.con.cursor()
+        cur = self.mem.con.cursor()
         self.selInversion.borrar(cur)
-        self.cfg.con.commit()
-        self.cfg.data.inversiones_active.arr.remove(self.selInversion)
-        self.inversiones.remove(self.selInversion)
+        self.mem.con.commit()
+        self.mem.data.inversiones_active.arr.remove(self.selInversion)
+        self.inversiones.arr.remove(self.selInversion)
         cur.close()
         self.on_chkInactivas_stateChanged(self.chkInactivas.checkState())#Carga la tabla
 
           
     @QtCore.pyqtSlot() 
     def on_actionInversionNueva_activated(self):
-        w=frmInversionesEstudio(self.cfg,   None, self)
+        w=frmInversionesEstudio(self.mem,   None, self)
         w.exec_()
         self.on_chkInactivas_stateChanged(self.chkInactivas.checkState())#Carga la tabla
         
     @QtCore.pyqtSlot() 
     def on_actionInversionEstudio_activated(self):
-        w=frmInversionesEstudio(self.cfg, self.selInversion, self)
+        w=frmInversionesEstudio(self.mem, self.selInversion, self)
         w.exec_()
         self.on_chkInactivas_stateChanged(self.chkInactivas.checkState())#Carga la tabla
-            
+
+                
     @QtCore.pyqtSlot() 
     def on_actionProduct_activated(self):
-        w=frmAnalisis(self.cfg, self.selInversion.product, self.selInversion, self)
+        w=frmAnalisis(self.mem, self.selInversion.product, self.selInversion, self)
         w.exec_()
         self.on_chkInactivas_stateChanged(self.chkInactivas.checkState())#Carga la tabla
             
             
     @QtCore.pyqtSlot() 
     def on_actionProductPrice_activated(self):
-        w=frmQuotesIBM(self.cfg, self.selInversion.product,None,  self)
+        w=frmQuotesIBM(self.mem, self.selInversion.product,None,  self)
         w.exec_()
         self.selInversion.product.result.basic.load_from_db()
         self.on_chkInactivas_stateChanged(self.chkInactivas.checkState())#Carga la tabla
 
     @QtCore.pyqtSlot() 
     def on_actionOrdenarTPCDiario_activated(self):
-        self.inversiones=sorted(self.inversiones, key=lambda inv: inv.product.result.basic.tpc_diario(),  reverse=True) 
+        self.inversiones.arr=sorted(self.inversiones.arr, key=lambda inv: inv.product.result.basic.tpc_diario(),  reverse=True) 
         self.tblInversiones_reload_after_order()
         
     @QtCore.pyqtSlot() 
     def on_actionOrdenarTPCVenta_activated(self):
         try:
-            self.inversiones=sorted(self.inversiones, key=lambda inv: ( inv.tpc_venta(), -inv.tpc_invertido()),  reverse=False) #Ordenado por dos criterios
+            self.inversiones.arr=sorted(self.inversiones.arr, key=lambda inv: ( inv.tpc_venta(), -inv.tpc_invertido()),  reverse=False) #Ordenado por dos criterios
             self.tblInversiones_reload_after_order()
         except:
             print(function_name(self),"Error ordering")
@@ -153,17 +158,17 @@ class wdgInversiones(QWidget, Ui_wdgInversiones):
         
     @QtCore.pyqtSlot() 
     def on_actionOrdenarTPC_activated(self):
-        self.inversiones=sorted(self.inversiones, key=lambda inv: inv.tpc_invertido(),  reverse=True) 
+        self.inversiones.arr=sorted(self.inversiones.arr, key=lambda inv: inv.tpc_invertido(),  reverse=True) 
         self.tblInversiones_reload_after_order()
         
     @QtCore.pyqtSlot() 
     def on_actionOrdenarHora_activated(self):
-        self.inversiones=sorted(self.inversiones, key=lambda inv: inv.product.result.basic.last.datetime,  reverse=False) 
+        self.inversiones.arr=sorted(self.inversiones.arr, key=lambda inv: inv.product.result.basic.last.datetime,  reverse=False) 
         self.tblInversiones_reload_after_order()
         
     @QtCore.pyqtSlot() 
     def on_actionOrdenarName_activated(self):
-        self.inversiones=sorted(self.inversiones, key=lambda inv: inv.name,  reverse=False) 
+        self.inversiones.arr=sorted(self.inversiones.arr, key=lambda inv: inv.name,  reverse=False) 
         self.tblInversiones_reload_after_order()
         
     def tblInversiones_reload_after_order(self):
@@ -176,12 +181,12 @@ class wdgInversiones(QWidget, Ui_wdgInversiones):
         
     def on_chkInactivas_stateChanged(self, state):
         if state==Qt.Unchecked:
-            self.inversiones=self.cfg.data.inversiones_active.arr
+            self.inversiones=self.mem.data.inversiones_active
             self.on_actionOrdenarTPCVenta_activated()
             self.tblInversiones_load()
         else:
-            self.cfg.data.load_inactives()
-            self.inversiones=self.cfg.data.inversiones_inactive.arr
+            self.mem.data.load_inactives()
+            self.inversiones=self.mem.data.inversiones_inactive
             self.on_actionOrdenarName_activated()
             self.tblInversiones_load_inactivas()
         self.tblInversiones.clearSelection()
@@ -224,12 +229,14 @@ class wdgInversiones(QWidget, Ui_wdgInversiones):
         ordenar.addAction(self.actionOrdenarTPC)
         ordenar.addAction(self.actionOrdenarTPCVenta)
         menu.addMenu(ordenar)        
+        menu.addSeparator()
+        menu.addAction(self.actionMark)
         menu.exec_(self.tblInversiones.mapToGlobal(pos))
 
     def on_tblInversiones_itemSelectionChanged(self):
         self.selInversion=None
         for i in self.tblInversiones.selectedItems():#itera por cada item no row.
-            self.selInversion=self.inversiones[i.row()]
+            self.selInversion=self.inversiones.arr[i.row()]
         
     def on_tblInversiones_cellDoubleClicked(self, row, column):
         if column==7:#TPC inversion

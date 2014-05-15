@@ -1,9 +1,9 @@
 from libmystocks import *
 class WorkerBolsaMadridFondos(Source):
     """Clase que recorre las inversiones activas y calcula según este la prioridad de la previsión"""
-    def __init__(self, cfg):
-        Source.__init__(self, cfg)
-        self.cfg=cfg
+    def __init__(self, mem):
+        Source.__init__(self, mem)
+        self.mem=mem
         self.id_source=2
         self.ids=[]
         self.name="BMF"
@@ -11,16 +11,16 @@ class WorkerBolsaMadridFondos(Source):
     def start(self):
         print (self.name)
         while (True):
-            con=self.cfg.connect_mystocksd()
+            con=self.mem.connect_mystocksd()
             cur = con.cursor()     
             self.ids=self.filtrar_ids_bmf()
             (resultado, errors)=self.execute()
             parsed=self.parse_resultado(resultado)
             print (parsed)
-            Quote(self.cfg).insert(cur, parsed, self.name)
+            Quote(self.mem).insert(cur, parsed, self.name)
             con.commit()
             cur.close()                
-            self.cfg.disconnect_mystocksd(con)
+            self.mem.disconnect_mystocksd(con)
             time.sleep(60*60*24)
 
     def parse_resultado(self, resultado):
@@ -36,11 +36,11 @@ class WorkerBolsaMadridFondos(Source):
     def filtrar_ids_bmf(self):
         """Función qu filtra aquellos que su prioridad es 0 y que están active"""
         resultado=[]
-        for i in self.cfg.activas:
-            if self.cfg.activas[i].priority!=None:
-                if len(self.cfg.activas[i].priority)>=1:
-                    if self.cfg.activas[i].priority[0]==2 and self.cfg.activas[i].active==True:
-                        resultado.append(self.cfg.activas[i].id)
+        for i in self.mem.activas:
+            if self.mem.activas[i].priority!=None:
+                if len(self.mem.activas[i].priority)>=1:
+                    if self.mem.activas[i].priority[0]==2 and self.mem.activas[i].active==True:
+                        resultado.append(self.mem.activas[i].id)
         return resultado
     
     def ids2yahoo(self, ids):
@@ -48,7 +48,7 @@ class WorkerBolsaMadridFondos(Source):
             print ("ids2yahoo > Tenemos un yahoo NOne")
         yahoos=[]
         for id in ids:
-            yahoos.append(self.cfg.activas[str(id)].yahoo)
+            yahoos.append(self.mem.activas[str(id)].yahoo)
         return yahoos
     
     def execute(self):    
@@ -70,9 +70,9 @@ class WorkerBolsaMadridFondos(Source):
                         line=web.readline()
                         dat=b2s(line.split(b"<TD align=center>")[1].split(b"</TD>")[0]).split("/")
                         date=datetime.date(int(dat[2]), int(dat[1]), int(dat[0]))
-#                        dt=changetz(dt, self.cfg.bolsas['1'].zone, 'UTC')
+#                        dt=changetz(dt, self.mem.bolsas['1'].zone, 'UTC')
 
-                        bolsa=self.cfg.bolsas[str(1)]
+                        bolsa=self.mem.bolsas[str(1)]
                         ends=bolsa.ends.replace(microsecond=4)
                         datetim=dt(date,ends,"Europe/Madrid")+datetime.timedelta(minutes=10)
                         d['datetime']=datetim

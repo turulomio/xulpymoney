@@ -5,13 +5,13 @@ from libxulpymoney import *
 from decimal import Decimal
 
 class frmPuntoVenta(QDialog, Ui_frmPuntoVenta):
-    def __init__(self, cfg, setinversiones,  inversion ,   parent=None):
+    def __init__(self, mem, setinversiones,  inversion ,   parent=None):
         QWidget.__init__(self, parent)
         self.setupUi(self)
         self.showMaximized()
-        self.cfg=cfg
+        self.mem=mem
         self.inversion=inversion
-        self.cfg.data.inversiones_active=setinversiones
+        self.mem.data.inversiones_active=setinversiones
         self.ponderan_all_inversiones=[]
         
         if self.inversion.id==None:
@@ -30,8 +30,8 @@ class frmPuntoVenta(QDialog, Ui_frmPuntoVenta):
         self.puntoventa=Decimal(0)#Guarda el resultado de los cálculos
         self.operinversiones=list(self.inversion.op_actual.arr)            #0-fecha, 1-banco, 2-acciones, 3-valor-compra, 4-invertido, 5 pendiente, 6-tipooper
 
-        self.table.settings("frmPuntoVenta",  self.cfg)
-        self.tableSP.settings("frmPuntoVenta",  self.cfg)
+        self.table.settings("frmPuntoVenta",  self.mem)
+        self.tableSP.settings("frmPuntoVenta",  self.mem)
         self.on_radTPC_toggled(True)
         
     def __calcular(self):
@@ -75,7 +75,7 @@ class frmPuntoVenta(QDialog, Ui_frmPuntoVenta):
                     self.puntoventa=0
                     self.cmd.setEnabled(False)
 
-        (sumacciones, suminvertido, sumpendiente)=load_table(self.tableSP, Quote(self.cfg).init__create(self.inversion.product, self.cfg.localzone.now(), self.puntoventa))                    
+        (sumacciones, suminvertido, sumpendiente)=load_table(self.tableSP, Quote(self.mem).init__create(self.inversion.product, self.mem.localzone.now(), self.puntoventa))                    
         
         if self.chkPonderanAll.checkState()==Qt.Checked:
             self.cmd.setText("Grabar el punto de venta a todas las inversiones de {0} € para ganar {1}".format(self.puntoventa, self.inversion.product.currency.string(sumpendiente)))
@@ -86,7 +86,7 @@ class frmPuntoVenta(QDialog, Ui_frmPuntoVenta):
         """Recibe un sql y calcula las operinversiones, pueden ser de diferentes inversiones"""
         arr=[]
         self.ponderan_all_inversiones=[]
-        for  inv in self.cfg.data.inversiones_active.arr:
+        for  inv in self.mem.data.inversiones_active.arr:
             if inv.product.id==self.inversion.product.id:
                 self.ponderan_all_inversiones.append(inv)
                 for op in inv.op_actual.arr:
@@ -118,5 +118,5 @@ class frmPuntoVenta(QDialog, Ui_frmPuntoVenta):
             for inv in self.ponderan_all_inversiones:
                 inv.venta=self.puntoventa
                 inv.save()
-            self.cfg.con.commit()
+            self.mem.con.commit()
         self.done(0)

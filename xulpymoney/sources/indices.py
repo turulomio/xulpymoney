@@ -4,9 +4,9 @@ from decimal import Decimal
 from libmystocks import *
 
 class WorkerIndices(Source):
-    def __init__(self,  cfg):
-        Source.__init__(self, cfg)
-        self.cfg=cfg
+    def __init__(self,  mem):
+        Source.__init__(self, mem)
+        self.mem=mem
         self.id_source=4
         self.ids=[]
         self.name="INDICES"
@@ -14,17 +14,17 @@ class WorkerIndices(Source):
     def start(self):
         print (self.name)
         while (True):
-            con=self.cfg.connect_mystocksd()
+            con=self.mem.connect_mystocksd()
             cur = con.cursor()
             self.ids=self.filtrar_horario_bolsa(self.find_ids())
             (set, errors)=self.execute()
             self.parse_resultado(set)
 #            self.parse_errors(cur,  e)
             set.save(cur,self.name)
-#            Quote(self.cfg).insert(cur, set, self.name)
+#            Quote(self.mem).insert(cur, set, self.name)
             con.commit()
             cur.close()
-            self.cfg.disconnect_mystocksd(con)
+            self.mem.disconnect_mystocksd(con)
             time.sleep(60)
 
 
@@ -40,7 +40,7 @@ class WorkerIndices(Source):
 
     def pagename2investment(self, name):
         if name==b'IBEX 35':
-            return self.cfg.activas(79329)
+            return self.mem.activas(79329)
         else:
             return None
     

@@ -45,18 +45,18 @@ class canvasChart(FigureCanvas):
 
     def settings(self, section):		
         self.section=section
-        self.actionSMA50.setChecked(str2bool(self.cfg.config_ui.get_value(section, "sma50" )))
-        self.actionSMA200.setChecked(str2bool(self.cfg.config_ui.get_value(section, "sma200" )))           
+        self.actionSMA50.setChecked(str2bool(self.mem.config_ui.get_value(section, "sma50" )))
+        self.actionSMA200.setChecked(str2bool(self.mem.config_ui.get_value(section, "sma200" )))           
 
     @pyqtSignature("")
     def on_actionSMA50_activated(self):
-        self.cfg.config_ui.set_value(self.section, "sma50",   self.actionSMA50.isChecked())
-        self.cfg.config_ui.save()
+        self.mem.config_ui.set_value(self.section, "sma50",   self.actionSMA50.isChecked())
+        self.mem.config_ui.save()
         
     @pyqtSignature("")
     def on_actionSMA200_activated(self):
-        self.cfg.config_ui.set_value(self.section, "sma200",   self.actionSMA200.isChecked())
-        self.cfg.config_ui.save()
+        self.mem.config_ui.set_value(self.section, "sma200",   self.actionSMA200.isChecked())
+        self.mem.config_ui.save()
 
     def draw_sma50(self,  datime, quotes):
         #Calculamos según
@@ -95,8 +95,8 @@ class canvasChart(FigureCanvas):
             return
         interval=(last-first).days
         if interval==0:
-            self.ax.xaxis.set_major_locator(HourLocator(interval=1 , tz=pytz.timezone(self.cfg.localzone.name)))
-            self.ax.xaxis.set_minor_locator(HourLocator(interval=1 , tz=pytz.timezone(self.cfg.localzone.name)))
+            self.ax.xaxis.set_major_locator(HourLocator(interval=1 , tz=pytz.timezone(self.mem.localzone.name)))
+            self.ax.xaxis.set_minor_locator(HourLocator(interval=1 , tz=pytz.timezone(self.mem.localzone.name)))
             self.ax.xaxis.set_major_formatter(DateFormatter('%H:%M'))    
             self.ax.fmt_xdata=DateFormatter('%H:%M')        
         elif interval<365:
@@ -137,7 +137,7 @@ class canvasChart(FigureCanvas):
             quotes.append(q.quote)
 
         self.get_locators(datetimes[0],  datetimes[len(datetimes)-1], len(datetimes))
-        self.ax.plot_date(datetimes, quotes, '-',  tz=pytz.timezone(self.cfg.localzone.name))
+        self.ax.plot_date(datetimes, quotes, '-',  tz=pytz.timezone(self.mem.localzone.name))
         
         self.draw_sma50(datetimes, quotes)
         self.draw_sma200(datetimes, quotes)
@@ -265,8 +265,8 @@ class canvasChart(FigureCanvas):
         self.showLegend()
 
 class canvasChartIntraday(canvasChart):
-    def __init__(self, cfg,  parent):
-        self.cfg=cfg
+    def __init__(self, mem,  parent):
+        self.mem=mem
         canvasChart.__init__(self, parent)
         self.setupUi()
         self.settings("canvasIntraday")
@@ -277,7 +277,7 @@ class canvasChartIntraday(canvasChart):
         self.draw_lines_from_quotes(self.product.result.intradia.arr)
     
     def on_actionLinesIntraday_activated(self):
-        self.cfg.config_ui.set_value(self.section, "type",   ChartType.lines)
+        self.mem.config_ui.set_value(self.section, "type",   ChartType.lines)
         (dates, quotes)=zip(*self.data)
         self.draw_lines_from_quotes(dates, quotes)
 
@@ -318,8 +318,8 @@ class canvasChartIntraday(canvasChart):
         
         
 class canvasChartHistorical(canvasChart):
-    def __init__(self, cfg,   parent):
-        self.cfg=cfg
+    def __init__(self, mem,   parent):
+        self.mem=mem
         canvasChart.__init__(self, parent)
         self.num=60#Numero de items a mostrar
         self.setupUi()
@@ -358,8 +358,8 @@ class canvasChartHistorical(canvasChart):
 
     def mydraw(self):
         """Punto de entrada de inicio, cambio de rueda, """
-        type=int(self.cfg.config_ui.get_value(self.section, "type"))
-        interval=int(self.cfg.config_ui.get_value(self.section, "interval"))
+        type=int(self.mem.config_ui.get_value(self.section, "type"))
+        interval=int(self.mem.config_ui.get_value(self.section, "interval"))
         if type==ChartType.lines:
             if interval==1:
                 self.on_actionLines1d_activated()
@@ -441,8 +441,8 @@ class canvasChartHistorical(canvasChart):
         
     @pyqtSignature("")
     def on_actionOHCL1d_activated(self):
-        self.cfg.config_ui.set_value(self.section, "type", ChartType.ohcl)
-        self.cfg.config_ui.set_value(self.section, "interval",   "1")
+        self.mem.config_ui.set_value(self.section, "type", ChartType.ohcl)
+        self.mem.config_ui.set_value(self.section, "interval",   "1")
         self.data=self.setData(self.product.result.ohclDaily.arr)
         self.ohcl(self.data, datetime.timedelta(days=1))     
         self.draw_selling_point()
@@ -451,8 +451,8 @@ class canvasChartHistorical(canvasChart):
 
     @pyqtSignature("")
     def on_actionLines1d_activated(self):
-        self.cfg.config_ui.set_value(self.section, "type",   ChartType.lines)
-        self.cfg.config_ui.set_value(self.section, "interval",   "1")
+        self.mem.config_ui.set_value(self.section, "type",   ChartType.lines)
+        self.mem.config_ui.set_value(self.section, "interval",   "1")
         self.data=self.setData(self.product.result.ohclDaily.arr)
         self.draw_lines_from_ohcl(self.data)     
         self.draw_selling_point()
@@ -461,8 +461,8 @@ class canvasChartHistorical(canvasChart):
 
     @pyqtSignature("")
     def on_actionCandles1d_activated(self):
-        self.cfg.config_ui.set_value(self.section, "type",   ChartType.candles)
-        self.cfg.config_ui.set_value(self.section, "interval",   "1")
+        self.mem.config_ui.set_value(self.section, "type",   ChartType.candles)
+        self.mem.config_ui.set_value(self.section, "interval",   "1")
         self.data=self.setData(self.product.result.ohclDaily.arr)
         self.candles(datetime.timedelta(days=1))
         if len(self.data)<1000:
@@ -476,8 +476,8 @@ class canvasChartHistorical(canvasChart):
 
     @pyqtSignature("")
     def on_actionOHCL7d_activated(self):
-        self.cfg.config_ui.set_value(self.section, "type", ChartType.ohcl)
-        self.cfg.config_ui.set_value(self.section, "interval",   "7")
+        self.mem.config_ui.set_value(self.section, "type", ChartType.ohcl)
+        self.mem.config_ui.set_value(self.section, "interval",   "7")
         self.data=self.setData(self.product.result.ohclWeekly.arr)
         self.ohcl(self.data, datetime.timedelta(days=7))     
         self.draw_selling_point()
@@ -486,8 +486,8 @@ class canvasChartHistorical(canvasChart):
 
     @pyqtSignature("")
     def on_actionOHCL30d_activated(self):
-        self.cfg.config_ui.set_value(self.section, "type", ChartType.ohcl)
-        self.cfg.config_ui.set_value(self.section, "interval",   "30")
+        self.mem.config_ui.set_value(self.section, "type", ChartType.ohcl)
+        self.mem.config_ui.set_value(self.section, "interval",   "30")
         self.data=self.setData(self.product.result.ohclMonthly.arr)
         self.ohcl(self.data, datetime.timedelta(days=30))     
         self.draw_selling_point()
@@ -496,8 +496,8 @@ class canvasChartHistorical(canvasChart):
 
     @pyqtSignature("")
     def on_actionOHCL365d_activated(self):
-        self.cfg.config_ui.set_value(self.section, "type", ChartType.ohcl)
-        self.cfg.config_ui.set_value(self.section, "interval",   "365")
+        self.mem.config_ui.set_value(self.section, "type", ChartType.ohcl)
+        self.mem.config_ui.set_value(self.section, "interval",   "365")
         self.data=self.setData(self.product.result.ohclYearly.arr)
         self.ohcl(self.data, datetime.timedelta(days=365))     
         self.draw_selling_point()
@@ -515,7 +515,7 @@ class canvasChartHistorical(canvasChart):
             dates.append(datetime.date.today()+datetime.timedelta(days=1))
             quotes.append(self.inversion.venta)
             quotes.append(self.inversion.venta)
-            self.plot_selling, =self.ax.plot_date(dates, quotes, 'r--', color="darkblue",  tz=pytz.timezone(self.cfg.localzone.name)) #fijarse en selling, podría ser sin ella selling[0]
+            self.plot_selling, =self.ax.plot_date(dates, quotes, 'r--', color="darkblue",  tz=pytz.timezone(self.mem.localzone.name)) #fijarse en selling, podría ser sin ella selling[0]
 
         
         
@@ -531,7 +531,7 @@ class canvasChartHistorical(canvasChart):
             average=self.inversion.op_actual.valor_medio_compra()
             quotes.append(average)
             quotes.append(average)
-            self.plot_average, =self.ax.plot_date(dates, quotes, 'r--', color="orange",  tz=pytz.timezone(self.cfg.localzone.name))
+            self.plot_average, =self.ax.plot_date(dates, quotes, 'r--', color="orange",  tz=pytz.timezone(self.mem.localzone.name))
 
 
     def on_customContextMenuRequested(self, pos):

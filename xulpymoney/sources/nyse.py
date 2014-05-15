@@ -4,8 +4,8 @@ from libmystocks import *
 
 
 class NYSE(Source):
-    def __init__(self,  cfg):
-        Source.__init__(self, cfg)
+    def __init__(self,  mem):
+        Source.__init__(self, mem)
         self.time_before_dividends=180
         self.time_after_dividends=86400
         self.time_before_quotes=0
@@ -32,14 +32,14 @@ class NYSE(Source):
         q3.start()    
         yesterday=str(datetime.date.today()-datetime.timedelta(days=7))
         sql="select quotes.code from products, quotes where quotes.code=products.code and quotes.code like 'NYSE#%' and quotes.date='"+yesterday+"' and last<>'close' order by quotes.code;"
-        con=self.cfg.connect_mystocksd()
+        con=self.mem.connect_mystocksd()
         cur=con.cursor()
         cur.execute(sql)
         codes=[]
         for i in cur:
             codes.append(i['code'][5:])
         cur.close()
-        self.cfg.disconnect_mystocksd(con)        
+        self.mem.disconnect_mystocksd(con)        
 
         q4 = multiprocessing.Process(target=self.update_step_historicals, args=(codes,))
         q4.start()
@@ -54,7 +54,7 @@ class NYSE(Source):
         errores=0
         resultado=[]
         quotes=[]
-        for code  in self.cfg.nyse:
+        for code  in self.mem.nyse:
             if count >90:
 #                print code
                 parsed=self.yahoo_quotes(quotes,  "NYSE#")

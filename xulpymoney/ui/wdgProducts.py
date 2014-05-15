@@ -8,15 +8,15 @@ from wdgMergeCodes import *
 from frmEstimationsAdd import *
 
 class wdgProducts(QWidget, Ui_wdgProducts):
-    def __init__(self, cfg,  sql,  parent=None):
+    def __init__(self, mem,  sql,  parent=None):
         QWidget.__init__(self, parent)
         self.setupUi(self)
-        self.cfg=cfg
+        self.mem=mem
         self.products=[]#Es una lista de products
         self.selProduct=None##Objeto de inversion seleccionado
-        self.tblInversiones.settings("wdgProducts",  self.cfg)    
-        self.cfg.bolsas.load_qcombobox(self.cmbStockExchange)
-        self.setFavoritos=set(self.cfg.config.get_list( "wdgProducts", "favoritos"))
+        self.tblInversiones.settings("wdgProducts",  self.mem)    
+        self.mem.bolsas.load_qcombobox(self.cmbStockExchange)
+        self.setFavoritos=set(self.mem.config.get_list( "wdgProducts", "favoritos"))
         self.progress = QProgressDialog(self.tr("Recibiendo datos solicitados"), self.tr("Cancelar"), 0,0)
         self.progress.setModal(True)
         self.progress.setWindowTitle(self.trUtf8("Recibiendo datos..."))
@@ -30,7 +30,7 @@ class wdgProducts(QWidget, Ui_wdgProducts):
         inicio=datetime.datetime.now()
         self.sql=sql
         self.products=[]
-        cur = self.cfg.conms.cursor()
+        cur = self.mem.conms.cursor()
         cur.execute(sql)
         self.lblFound.setText(self.tr("Found {0} records".format(cur.rowcount)))
         #mete a datos        
@@ -46,7 +46,7 @@ class wdgProducts(QWidget, Ui_wdgProducts):
             else:
                 self.progress.setValue(self.progress.value()+1)       
                 
-            inv=Product(self.cfg)
+            inv=Product(self.mem)
             inv.init__db_row(i)
             inv.result.basic.load_from_db()
             inv.estimations_dps.load_from_db()
@@ -66,7 +66,7 @@ class wdgProducts(QWidget, Ui_wdgProducts):
             self.tblInversiones.setItem(i, 1, QTableWidgetItem(str(inv.name).upper()))
             self.tblInversiones.item(i, 1).setIcon(inv.bolsa.country.qicon())
             self.tblInversiones.setItem(i, 2, QTableWidgetItem(inv.isin))
-            self.tblInversiones.setItem(i, 3, qdatetime(inv.result.basic.last.datetime, inv.bolsa.zone))#, self.cfg.localzone.name)))
+            self.tblInversiones.setItem(i, 3, qdatetime(inv.result.basic.last.datetime, inv.bolsa.zone))#, self.mem.localzone.name)))
             self.tblInversiones.setItem(i, 4, inv.currency.qtablewidgetitem(inv.result.basic.last.quote, 6 ))
             self.tblInversiones.setItem(i, 5, qtpc(inv.result.basic.tpc_diario()))
             self.tblInversiones.setItem(i, 6, qtpc(inv.result.basic.tpc_anual()))
@@ -94,7 +94,7 @@ class wdgProducts(QWidget, Ui_wdgProducts):
                 return True
             return False
             
-        favoritos=self.cfg.config.get_list("wdgProducts",  "favoritos")
+        favoritos=self.mem.config.get_list("wdgProducts",  "favoritos")
         if str(self.selProduct.id) in favoritos:
             if wdgInversiones_esta_mostrando_favoritos(favoritos)==True:
                 favoritos.remove(str(self.selProduct.id))
@@ -107,8 +107,8 @@ class wdgProducts(QWidget, Ui_wdgProducts):
         else:
             favoritos.append(self.selProduct.id)
         print ("Favoritos", favoritos)
-        self.cfg.config.set_list("wdgProducts",  "favoritos",  favoritos)
-        self.cfg.config.save()
+        self.mem.config.set_list("wdgProducts",  "favoritos",  favoritos)
+        self.mem.config.save()
         self.setFavoritos=set(favoritos)
 
 
@@ -129,14 +129,14 @@ class wdgProducts(QWidget, Ui_wdgProducts):
 
         respuesta = QMessageBox.warning(self, self.tr("MyStocks"), self.trUtf8("Deleting data from selected product ({0}). If you use manual update mode, data won't be recovered. Do you want to continue?".format(self.selProduct.id)), QMessageBox.Ok | QMessageBox.Cancel)
         if respuesta==QMessageBox.Ok:
-            con=self.cfg.connect_mystocks()
+            con=self.mem.connect_mystocks()
             cur = con.cursor()
             cur.execute("delete from products where id=%s", (self.selProduct.id, ))
             cur.execute("delete from quotes where id=%s", (self.selProduct.id, ))
             cur.execute("delete from estimaciones where id=%s", (self.selProduct.id, ))
             con.commit()
             cur.close()     
-            self.cfg.disconnect_mystocks(con)    
+            self.mem.disconnect_mystocks(con)    
             self.build_array(self.sql)
             self.build_table()  
             
@@ -148,14 +148,14 @@ class wdgProducts(QWidget, Ui_wdgProducts):
 
     @QtCore.pyqtSlot() 
     def on_actionProductNew_activated(self):
-        w=frmAnalisis(self.cfg, None, self)
+        w=frmAnalisis(self.mem, None, self)
         w.exec_()        
         self.build_array(self.sql)
         self.build_table()
     @QtCore.pyqtSlot() 
     def on_actionProductReport_activated(self):
 
-        w=frmAnalisis(self.cfg, self.selProduct, None,  self)
+        w=frmAnalisis(self.mem, self.selProduct, None,  self)
         w.exec_()        
         self.build_array(self.sql)
         self.build_table()
@@ -199,7 +199,7 @@ class wdgProducts(QWidget, Ui_wdgProducts):
         #Stock exchange Filter
         stockexchangefilter=""
         if self.chkStockExchange.checkState()==Qt.Checked:
-            bolsa=self.cfg.bolsas.find(self.cmbStockExchange.itemData(self.cmbStockExchange.currentIndex()))            
+            bolsa=self.mem.bolsas.find(self.cmbStockExchange.itemData(self.cmbStockExchange.currentIndex()))            
             stockexchangefilter=" and id_bolsas={0} ".format(bolsa.id)
 
         self.build_array("select * from products where (id::text like '%"+(self.txt.text().upper())+"%' or upper(name) like '%"+(self.txt.text().upper())+"%' or upper(isin) like '%"+(self.txt.text().upper())+"%' or upper(comentario) like '%"+(self.txt.text().upper())+"%') "+ stockexchangefilter)
@@ -282,7 +282,7 @@ class wdgProducts(QWidget, Ui_wdgProducts):
         d=QDialog(self)        
         d.setFixedSize(800, 210)
         d.setWindowTitle(self.trUtf8("Combinando códigos"))
-        w=wdgMergeCodes(self.cfg, codeorigen, codedestino)
+        w=wdgMergeCodes(self.mem, codeorigen, codedestino)
         lay = QVBoxLayout(d)
         lay.addWidget(w)
         d.exec_()
@@ -303,29 +303,29 @@ class wdgProducts(QWidget, Ui_wdgProducts):
 
     @pyqtSignature("")
     def on_actionPurge_activated(self):
-        all=SetQuotesAll(self.cfg)
+        all=SetQuotesAll(self.mem)
         all.load_from_db(self.selProduct)
         numpurged=all.purge(progress=True)
         if numpurged!=None:#Canceled
-            self.cfg.conms.commit()
+            self.mem.conms.commit()
             m=QMessageBox()
             m.setIcon(QMessageBox.Information)
             m.setText(self.trUtf8("{0} quotes have been purged from {1}".format(numpurged, self.selProduct.name)))
             m.exec_()    
         else:
-            self.cfg.conms.rollback()
+            self.mem.conms.rollback()
         
 
     @pyqtSignature("")
     def on_actionQuoteNew_activated(self):
-        w=frmQuotesIBM(self.cfg,  self.selProduct)
+        w=frmQuotesIBM(self.mem,  self.selProduct)
         w.exec_()               
         self.build_array(self.sql)
         self.build_table()  
 
     @pyqtSignature("")
     def on_actionEstimationDPSNew_activated(self):
-        d=frmEstimationsAdd(self.cfg, self.selProduct)
+        d=frmEstimationsAdd(self.mem, self.selProduct)
         d.exec_()
         if d.result()==QDialog.Accepted:
             self.build_array(self.sql)

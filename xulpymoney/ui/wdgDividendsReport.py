@@ -8,29 +8,29 @@ from frmAnalisis import *
 from frmEstimationsAdd import *
 
 class wdgDividendsReport(QWidget, Ui_wdgDividendsReport):
-    def __init__(self, cfg,  parent=None):
+    def __init__(self, mem,  parent=None):
         QWidget.__init__(self, parent)
         self.setupUi(self)
-        self.cfg=cfg
+        self.mem=mem
         self.inversiones=[]
 
-        self.tblInversiones.settings("wdgDividendsReport",  self.cfg)
+        self.tblInversiones.settings("wdgDividendsReport",  self.mem)
         
         self.on_chkInactivas_stateChanged(Qt.Unchecked)
 
     @QtCore.pyqtSlot()  
     def on_actionModificarDPA_activated(self):
-        d=frmEstimationsAdd(self.cfg, self.selInversion.product, "dps")
+        d=frmEstimationsAdd(self.mem, self.selInversion.product, "dps")
         d.exec_()
         self.on_chkInactivas_stateChanged(self.chkInactivas.checkState())
         self.tblInversiones.clearSelection()
 
     def on_chkInactivas_stateChanged(self,  state):               
         if state==Qt.Checked:
-            self.cfg.data.load_inactives()
-            self.inversiones=self.cfg.data.inversiones_inactive
+            self.mem.data.load_inactives()
+            self.inversiones=self.mem.data.inversiones_inactive
         else:
-            self.inversiones=self.cfg.data.inversiones_active
+            self.inversiones=self.mem.data.inversiones_active
         self.load_inversiones()
         
     def load_inversiones(self):    
@@ -61,19 +61,19 @@ class wdgDividendsReport(QWidget, Ui_wdgDividendsReport):
             #Colorea si está desactualizado
             if inv.product.estimations_dps.dias_sin_actualizar()>self.spin.value():
                 self.tblInversiones.item(i, 3).setBackgroundColor(QColor(255, 146, 148))
-        self.lblTotal.setText(self.trUtf8("Si mantuviera la inversión un año obtendría {0}".format( self.cfg.localcurrency.string(sumdiv)) ))
+        self.lblTotal.setText(self.trUtf8("Si mantuviera la inversión un año obtendría {0}".format( self.mem.localcurrency.string(sumdiv)) ))
             
         
     @QtCore.pyqtSlot() 
     def on_actionInversionEstudio_activated(self):
-        w=frmInversionesEstudio(self.cfg, self.selInversion, self)
+        w=frmInversionesEstudio(self.mem, self.selInversion, self)
         w.exec_()
         self.on_chkInactivas_stateChanged(self.chkInactivas.checkState())
 
             
     @QtCore.pyqtSlot() 
     def on_actionMyStocks_activated(self):
-        w=frmAnalisis(self.cfg, self.selInversion.product, self.selInversion, self)
+        w=frmAnalisis(self.mem, self.selInversion.product, self.selInversion, self)
         w.exec_()
         self.on_chkInactivas_stateChanged(self.chkInactivas.checkState())
 

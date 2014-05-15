@@ -4,13 +4,13 @@ from libxulpymoney import *
 from Ui_frmDividendsAdd import *
 
 class frmDividendsAdd(QDialog, Ui_frmDividendsAdd):
-    def __init__(self, cfg, inversion, dividend=None,  parent=None):
+    def __init__(self, mem, inversion, dividend=None,  parent=None):
         """
         Si dividend es None se insertar
         Si dividend es un objeto se modifica"""
         QWidget.__init__(self, parent)
         self.setupUi(self)
-        self.cfg=cfg
+        self.mem=mem
         self.dividend=dividend
         self.inversion=inversion
         
@@ -18,17 +18,17 @@ class frmDividendsAdd(QDialog, Ui_frmDividendsAdd):
         self.tpc=0
         if dividend==None:#insertar
             if self.inversion.product.type.id in (7, 9):#Bonds
-                self.cfg.conceptos.load_bonds_qcombobox(self.cmb)
+                self.mem.conceptos.load_bonds_qcombobox(self.cmb)
             else:
-                self.cfg.conceptos.load_dividend_qcombobox(self.cmb)
-            self.dividend=Dividend(self.cfg)
+                self.mem.conceptos.load_dividend_qcombobox(self.cmb)
+            self.dividend=Dividend(self.mem)
             self.dividend.inversion=inversion
             self.cmd.setText(self.trUtf8("Insertar nuevo dividend"))
         else:#modificar 
             if self.inversion.product.type.id in (7, 9):#Bonds
-                self.cfg.conceptos.load_bonds_qcombobox(self.cmb, self.dividend.concepto) 
+                self.mem.conceptos.load_bonds_qcombobox(self.cmb, self.dividend.concepto) 
             else:
-                self.cfg.conceptos.load_dividend_qcombobox(self.cmb, self.dividend.concepto) 
+                self.mem.conceptos.load_dividend_qcombobox(self.cmb, self.dividend.concepto) 
             self.cal.setSelectedDate(self.dividend.fecha)
             self.txtBruto.setText(str(self.dividend.bruto))
             self.txtNeto.setText(str(self.dividend.neto))
@@ -72,7 +72,7 @@ class frmDividendsAdd(QDialog, Ui_frmDividendsAdd):
 
 
     def on_cmd_pressed(self):
-        concepto=self.cfg.conceptos.find(self.cmb.itemData(self.cmb.currentIndex()))
+        concepto=self.mem.conceptos.find(self.cmb.itemData(self.cmb.currentIndex()))
         tipooperacion=concepto.tipooperacion
                         
         if tipooperacion.id==1 and (self.txtBruto.decimal()>Decimal('0') or self.txtNeto.decimal()>Decimal('0')):
@@ -113,5 +113,5 @@ class frmDividendsAdd(QDialog, Ui_frmDividendsAdd):
 
         
         self.dividend.save()
-        self.cfg.con.commit()
+        self.mem.con.commit()
         self.done(0)

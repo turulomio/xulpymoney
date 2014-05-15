@@ -4,8 +4,8 @@ from libmystocks import *
 
 
 class MercadoContinuo(Source):
-    def __init__(self,  cfg):
-        Source.__init__(self, cfg)
+    def __init__(self,  mem):
+        Source.__init__(self, mem)
         self.time_before_dividends=180
         self.time_after_dividends=86400
         self.time_before_quotes=0

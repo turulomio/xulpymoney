@@ -14,7 +14,7 @@ from canvaschart import *
 from matplotlib.backends.backend_qt4agg import NavigationToolbar2QTAgg as NavigationToolbar
 
 class frmAnalisis(QDialog, Ui_frmAnalisis):
-    def __init__(self, cfg,  product, inversion=None, parent = None, name = None, modal = False):
+    def __init__(self, mem,  product, inversion=None, parent = None, name = None, modal = False):
         """
             product=None #insertar
             product es un objeto newInversioQ#modificar
@@ -25,7 +25,7 @@ class frmAnalisis(QDialog, Ui_frmAnalisis):
         self.setupUi(self)
         self.showMaximized()        
 
-        self.cfg=cfg
+        self.mem=mem
         self.product=product
         self.inversion=inversion#Used to generate puntos de venta, punto de compra....
         self.setSelIntraday=set([])
@@ -40,43 +40,43 @@ class frmAnalisis(QDialog, Ui_frmAnalisis):
         self.tabGraphics.setCurrentIndex(1)
         self.tabHistorical.setCurrentIndex(4)
         
-        self.tblTPC.settings("frmAnalisis",  self.cfg)    
-        self.tblDaily.settings("frmAnalisis",  self.cfg)    
-        self.tblMonthly.settings("frmAnalisis",  self.cfg)    
-        self.tblYearly.settings("frmAnalisis",  self.cfg)    
-        self.tblIntradia.settings("frmAnalisis",  self.cfg)    
-        self.tblMensuales.settings("frmAnalisis",  self.cfg)    
-        self.tblDividendsEstimations.settings("frmAnalisis",  self.cfg)    
-        self.tblDPSPaid.settings("frmAnalisis", self.cfg)
-        self.tblEPS.settings("frmAnalisis", self.cfg)
+        self.tblTPC.settings("frmAnalisis",  self.mem)    
+        self.tblDaily.settings("frmAnalisis",  self.mem)    
+        self.tblMonthly.settings("frmAnalisis",  self.mem)    
+        self.tblYearly.settings("frmAnalisis",  self.mem)    
+        self.tblIntradia.settings("frmAnalisis",  self.mem)    
+        self.tblMensuales.settings("frmAnalisis",  self.mem)    
+        self.tblDividendsEstimations.settings("frmAnalisis",  self.mem)    
+        self.tblDPSPaid.settings("frmAnalisis", self.mem)
+        self.tblEPS.settings("frmAnalisis", self.mem)
                 
         if self.product==None:
-            self.product=Product(self.cfg)
+            self.product=Product(self.mem)
             self.tab.setTabEnabled(1, False)
             self.tab.setTabEnabled(2, False)
             self.tab.setTabEnabled(3, False)
             self.cmdSave.setText(self.trUtf8("Añadir nueva inversión"))
 
-        self.canvasIntraday=canvasChartIntraday( self.cfg, self)
+        self.canvasIntraday=canvasChartIntraday( self.mem, self)
         self.ntbIntraday = NavigationToolbar(self.canvasIntraday, self)
         self.layIntraday.addWidget(self.canvasIntraday)
         self.layIntraday.addWidget(self.ntbIntraday)
         
-        self.canvasHistorical=canvasChartHistorical( self.cfg, self)
+        self.canvasHistorical=canvasChartHistorical( self.mem, self)
         self.ntbHistorical=NavigationToolbar(self.canvasHistorical, self)
         self.layHistorical.addWidget(self.canvasHistorical)
         self.layHistorical.addWidget(self.ntbHistorical)
         
-        self.canvasHistoricalSD=canvasChartHistorical( self.cfg, self)
+        self.canvasHistoricalSD=canvasChartHistorical( self.mem, self)
         self.ntbHistoricalSD=NavigationToolbar(self.canvasHistoricalSD, self)
         self.layHistoricalSD.addWidget(self.canvasHistoricalSD)
         self.layHistoricalSD.addWidget(self.ntbHistoricalSD)
         
-        self.cfg.bolsas.load_qcombobox(self.cmbBolsa)
-        self.cfg.investmentsmodes.load_qcombobox(self.cmbPCI)
-        self.cfg.currencies.load_qcombobox(self.cmbCurrency)
-        self.cfg.apalancamientos.load_qcombobox(self.cmbApalancado)
-        self.cfg.types.load_qcombobox(self.cmbTipo)
+        self.mem.bolsas.load_qcombobox(self.cmbBolsa)
+        self.mem.investmentsmodes.load_qcombobox(self.cmbPCI)
+        self.mem.currencies.load_qcombobox(self.cmbCurrency)
+        self.mem.apalancamientos.load_qcombobox(self.cmbApalancado)
+        self.mem.types.load_qcombobox(self.cmbTipo)
 
         self.update_due_to_quotes_change()    
         
@@ -84,12 +84,12 @@ class frmAnalisis(QDialog, Ui_frmAnalisis):
         def row_tblTPV(quote,  row):
             if quote==None:
                 return
-            self.tblTPC.setItem(row, 0, qdatetime(quote.datetime, self.cfg.localzone))
+            self.tblTPC.setItem(row, 0, qdatetime(quote.datetime, self.mem.localzone))
             self.tblTPC.setItem(row, 1, self.product.currency.qtablewidgetitem(quote.quote, 6))
 
             try:
                 tpc=(self.product.result.basic.last.quote-quote.quote)*100/quote.quote
-                days=(datetime.datetime.now(pytz.timezone(self.cfg.localzone.name))-quote.datetime).days+1
+                days=(datetime.datetime.now(pytz.timezone(self.mem.localzone.name))-quote.datetime).days+1
                 self.tblTPC.setItem(row, 2, qtpc(round(tpc, 2)))    
                 self.tblTPC.setItem(row, 3,  qtpc(round(tpc*365/days, 2)))
             except:
@@ -124,14 +124,14 @@ class frmAnalisis(QDialog, Ui_frmAnalisis):
         self.cmbApalancado.setCurrentIndex(self.cmbApalancado.findData(self.product.apalancado.id))
         
         if len(self.product.result.ohclDaily.arr)!=0:
-            now=self.cfg.localzone.now()
+            now=self.mem.localzone.now()
             penultimate=self.product.result.basic.penultimate
-            iniciosemana=Quote(self.cfg).init__from_query(self.product,  day_end(now-datetime.timedelta(days=datetime.date.today().weekday()+1), self.product.bolsa.zone))
-            iniciomes=Quote(self.cfg).init__from_query(self.product, dt(datetime.date(now.year, now.month, 1), datetime.time(0, 0), self.product.bolsa.zone))
-            inicioano=Quote(self.cfg).init__from_query(self.product, dt(datetime.date(now.year, 1, 1), datetime.time(0, 0), self.product.bolsa.zone))             
-            docemeses=Quote(self.cfg).init__from_query(self.product, day_end(now-datetime.timedelta(days=365), self.product.bolsa.zone))          
-            unmes=Quote(self.cfg).init__from_query(self.product, day_end(now-datetime.timedelta(days=30), self.product.bolsa.zone))          
-            unasemana=Quote(self.cfg).init__from_query(self.product, day_end(now-datetime.timedelta(days=7), self.product.bolsa.zone))             
+            iniciosemana=Quote(self.mem).init__from_query(self.product,  day_end(now-datetime.timedelta(days=datetime.date.today().weekday()+1), self.product.bolsa.zone))
+            iniciomes=Quote(self.mem).init__from_query(self.product, dt(datetime.date(now.year, now.month, 1), datetime.time(0, 0), self.product.bolsa.zone))
+            inicioano=Quote(self.mem).init__from_query(self.product, dt(datetime.date(now.year, 1, 1), datetime.time(0, 0), self.product.bolsa.zone))             
+            docemeses=Quote(self.mem).init__from_query(self.product, day_end(now-datetime.timedelta(days=365), self.product.bolsa.zone))          
+            unmes=Quote(self.mem).init__from_query(self.product, day_end(now-datetime.timedelta(days=30), self.product.bolsa.zone))          
+            unasemana=Quote(self.mem).init__from_query(self.product, day_end(now-datetime.timedelta(days=7), self.product.bolsa.zone))             
                 
             self.tblTPC.setItem(0, 0, qdatetime(self.product.result.basic.last.datetime, self.product.bolsa.zone))   
             self.tblTPC.setItem(0, 1, self.product.currency.qtablewidgetitem(self.product.result.basic.last.quote,  6))
@@ -171,7 +171,7 @@ class frmAnalisis(QDialog, Ui_frmAnalisis):
 #    def load_dividends(self):
 #        
 #        ###
-#        cur=self.cfg.conms.cursor()
+#        cur=self.mem.conms.cursor()
 #        cur.execute("select year,dpa from estimaciones where id=%s order by year", (self.product.id, ) )
 #        self.tblDividendsEstimations.setRowCount(cur.rowcount)
 #        for reg in cur:
@@ -298,12 +298,12 @@ class frmAnalisis(QDialog, Ui_frmAnalisis):
 
     @QtCore.pyqtSlot() 
     def on_actionDividendXuNew_activated(self):
-        w=frmDividendsAdd(self.cfg, self.inversion,  None)
+        w=frmDividendsAdd(self.mem, self.inversion,  None)
         w.cal.setSelectedDate(self.selDPS.date)
         gross=self.selDPS.gross*self.inversion.acciones(self.selDPS.date)
         w.txtBruto.setText(gross)
         w.txtDPA.setText(self.selDPS.gross)
-        w.txtRetencion.setText(gross*self.cfg.taxcapitalappreciation)
+        w.txtRetencion.setText(gross*self.mem.taxcapitalappreciation)
         w.cmb.setCurrentIndex(w.cmb.findData(39))
         w.exec_()
 
@@ -311,13 +311,13 @@ class frmAnalisis(QDialog, Ui_frmAnalisis):
     def on_actionDPSDelete_activated(self):
         if self.selDPS!=None:
             self.selDPS.borrar()
-            self.cfg.conms.commit()
+            self.mem.conms.commit()
             self.product.dps.arr.remove(self.selDPS)
             self.product.dps.myqtablewidget(self.tblDPSPaid)
         
     @pyqtSignature("")
     def on_actionDPSNew_activated(self):
-        d=frmDPSAdd(self.cfg, self.product)
+        d=frmDPSAdd(self.mem, self.product)
         d.exec_()
         self.product.dps.myqtablewidget(self.tblDPSPaid)
 
@@ -326,12 +326,12 @@ class frmAnalisis(QDialog, Ui_frmAnalisis):
         if self.selEstimationDPS!=None:
             self.selEstimationDPS.borrar()
             self.product.estimations_dps.arr.remove(self.selEstimationDPS)
-            self.cfg.conms.commit()
+            self.mem.conms.commit()
             self.product.estimations_dps.myqtablewidget(self.tblDividendsEstimations)
         
     @pyqtSignature("")
     def on_actionEstimationDPSNew_activated(self):
-        d=frmEstimationsAdd(self.cfg, self.product, "dps")
+        d=frmEstimationsAdd(self.mem, self.product, "dps")
         d.exec_()
         self.product.estimations_dps.myqtablewidget(self.tblDividendsEstimations)
 
@@ -340,25 +340,25 @@ class frmAnalisis(QDialog, Ui_frmAnalisis):
         if self.selEstimationEPS!=None:
             self.selEstimationEPS.borrar()
             self.product.estimations_eps.arr.remove(self.selEstimationEPS)
-            self.cfg.conms.commit()
+            self.mem.conms.commit()
             self.product.estimations_eps.myqtablewidget(self.tblEPS)
         
     @pyqtSignature("")
     def on_actionEstimationEPSNew_activated(self):
-        d=frmEstimationsAdd(self.cfg, self.product, "eps")
+        d=frmEstimationsAdd(self.mem, self.product, "eps")
         d.exec_()
         self.product.estimations_eps.myqtablewidget(self.tblEPS)
 
     @pyqtSignature("")
     def on_actionPurgeDay_activated(self):
         self.product.result.intradia.purge()
-        self.cfg.conms.commit()
+        self.mem.conms.commit()
         self.load_graphics()#OHLC ya estaba cargado, no varía por lo que no uso update_due_to_quotes_change
         
     @pyqtSignature("")
     def on_actionQuoteEdit_activated(self):
         for quote in self.setSelIntraday:##Only is one, but i don't know how to refer to quote
-            w=frmQuotesIBM(self.cfg,  self.product, quote)
+            w=frmQuotesIBM(self.mem,  self.product, quote)
             w.exec_()   
             if w.result()==QDialog.Accepted:
                 self.update_due_to_quotes_change()
@@ -366,7 +366,7 @@ class frmAnalisis(QDialog, Ui_frmAnalisis):
         
     @pyqtSignature("")
     def on_actionQuoteNew_activated(self):
-        w=frmQuotesIBM(self.cfg,  self.product)
+        w=frmQuotesIBM(self.mem,  self.product)
         w.exec_()   
         if w.result()==QDialog.Accepted:
             self.update_due_to_quotes_change()
@@ -376,7 +376,7 @@ class frmAnalisis(QDialog, Ui_frmAnalisis):
         for q in self.setSelIntraday:
             q.delete()
             self.product.result.intradia.arr.remove(q)
-        self.cfg.conms.commit()
+        self.mem.conms.commit()
         self.update_due_to_quotes_change()
 
 
@@ -385,35 +385,35 @@ class frmAnalisis(QDialog, Ui_frmAnalisis):
         self.load_graphics()
 
     def on_cmdSplit_pressed(self):
-        w=frmSplit(self.cfg)
+        w=frmSplit(self.mem)
         w.exec_()   
         if w.result()==QDialog.Accepted:
-            all=SetQuotesAll(self.cfg)
+            all=SetQuotesAll(self.mem)
             all.load_from_db(self.product)
             for setquoteintraday in all.arr:
                 w.split.updateQuotes(setquoteintraday.arr)         
-            self.cfg.conms.commit()
+            self.mem.conms.commit()
             self.update_due_to_quotes_change()
         
     def on_cmdPurge_pressed(self):
-        all=SetQuotesAll(self.cfg)
+        all=SetQuotesAll(self.mem)
         all.load_from_db(self.product)
         numpurged=all.purge(progress=True)
         if numpurged!=None:#Canceled
-            self.cfg.conms.commit()
+            self.mem.conms.commit()
             m=QMessageBox()
             m.setIcon(QMessageBox.Information)
             m.setText(self.trUtf8("{0} quotes have been purged from {1}".format(numpurged, self.product.name)))
             m.exec_()    
         else:
-            self.cfg.conms.rollback()
+            self.mem.conms.rollback()
         
     def on_cmdSave_pressed(self):
         self.product.name=self.txtName.text()
         self.product.isin=self.txtISIN.text()
-        self.product.currency=self.cfg.currencies.find(self.cmbCurrency.itemData(self.cmbCurrency.currentIndex()))
-        self.product.type=self.cfg.types.find(self.cmbTipo.itemData(self.cmbTipo.currentIndex()))
-        self.product.agrupations=SetAgrupations(self.cfg).clone_from_combo(self.cmbAgrupations)
+        self.product.currency=self.mem.currencies.find(self.cmbCurrency.itemData(self.cmbCurrency.currentIndex()))
+        self.product.type=self.mem.types.find(self.cmbTipo.itemData(self.cmbTipo.currentIndex()))
+        self.product.agrupations=SetAgrupations(self.mem).clone_from_combo(self.cmbAgrupations)
         self.product.active=c2b(self.chkActive.checkState())
         self.product.obsolete=c2b(self.chkObsolete.checkState())
         self.product.web=self.txtWeb.text()
@@ -421,13 +421,13 @@ class frmAnalisis(QDialog, Ui_frmAnalisis):
         self.product.phone=self.txtPhone.text()
         self.product.mail=self.txtMail.text()
         self.product.tpc=int(self.txtTPC.text())
-        self.product.mode=self.cfg.investmentsmodes.find(self.cmbPCI.itemData(self.cmbPCI.currentIndex()))
-        self.product.apalancado=self.cfg.apalancamientos.find(self.cmbApalancado.itemData(self.cmbApalancado.currentIndex()))
-        self.product.bolsa=self.cfg.bolsas.find(self.cmbBolsa.itemData(self.cmbBolsa.currentIndex()))
+        self.product.mode=self.mem.investmentsmodes.find(self.cmbPCI.itemData(self.cmbPCI.currentIndex()))
+        self.product.apalancado=self.mem.apalancamientos.find(self.cmbApalancado.itemData(self.cmbApalancado.currentIndex()))
+        self.product.bolsa=self.mem.bolsas.find(self.cmbBolsa.itemData(self.cmbBolsa.currentIndex()))
         self.product.ticker=self.txtYahoo.text()
         self.product.system=False
-        self.product.priority=SetPriorities(self.cfg).init__create_from_combo(self.cmbPriority)
-        self.product.priorityhistorical=SetPrioritiesHistorical(self.cfg).init__create_from_combo(self.cmbPriorityHistorical)
+        self.product.priority=SetPriorities(self.mem).init__create_from_combo(self.cmbPriority)
+        self.product.priorityhistorical=SetPrioritiesHistorical(self.mem).init__create_from_combo(self.cmbPriorityHistorical)
         self.product.comentario=self.txtComentario.text()
         
         insertarquote=False#se hace antes porque id despues de save ya tiene valor
@@ -435,10 +435,10 @@ class frmAnalisis(QDialog, Ui_frmAnalisis):
             insertarquote=True
             
         self.product.save()
-        self.cfg.conms.commit()  
+        self.mem.conms.commit()  
         
         if insertarquote==True:
-            w=frmQuotesIBM(self.cfg,  self.product)
+            w=frmQuotesIBM(self.mem,  self.product)
             w.exec_()    
             self.done(0)
     
@@ -446,31 +446,31 @@ class frmAnalisis(QDialog, Ui_frmAnalisis):
     def on_cmdAgrupations_released(self):
         ##Se debe clonar, porque selector borra
         if self.cmbTipo.itemData(self.cmbTipo.currentIndex())==2:#Fondos de inversión
-            agr=self.cfg.agrupations.clone_fondos()
+            agr=self.mem.agrupations.clone_fondos()
         elif self.cmbTipo.itemData(self.cmbTipo.currentIndex())==1:#Acciones
-            agr=self.cfg.agrupations.clone_acciones()
+            agr=self.mem.agrupations.clone_acciones()
         elif self.cmbTipo.itemData(self.cmbTipo.currentIndex())==4:#ETFs
-            agr=self.cfg.agrupations.clone_etfs()
+            agr=self.mem.agrupations.clone_etfs()
         elif self.cmbTipo.itemData(self.cmbTipo.currentIndex())==5:#ETFs
-            agr=self.cfg.agrupations.clone_warrants()
+            agr=self.mem.agrupations.clone_warrants()
         else:
-            agr=self.cfg.agrupations.clone()
+            agr=self.mem.agrupations.clone()
         if self.product.agrupations==None:
-            selected=SetAgrupations(self.cfg)#Vacio
+            selected=SetAgrupations(self.mem)#Vacio
         else:
             selected=self.product.agrupations
-        f=frmSelector(self.cfg, agr, selected)
+        f=frmSelector(self.mem, agr, selected)
         f.lbl.setText("Selector de Agrupaciones")
         f.exec_()
         f.selected.load_qcombobox(self.cmbAgrupations)
 
     def on_cmdPriority_released(self):
         if self.product.id==None:#Insertar nueva inversión
-            selected=SetPriorities(self.cfg)#Esta vacio
+            selected=SetPriorities(self.mem)#Esta vacio
         else:
             selected=self.product.priority
         
-        f=frmSelector(self.cfg, self.cfg.priorities.clone(), selected)
+        f=frmSelector(self.mem, self.mem.priorities.clone(), selected)
         f.lbl.setText("Selector de prioridades")
         f.exec_()
         self.cmbPriority.clear()
@@ -479,11 +479,11 @@ class frmAnalisis(QDialog, Ui_frmAnalisis):
 
     def on_cmdPriorityHistorical_released(self):
         if self.product.id==None:#Insertar nueva inversión
-            selected=SetPrioritiesHistorical(self.cfg)#“acio
+            selected=SetPrioritiesHistorical(self.mem)#“acio
         else:
             selected=self.product.priorityhistorical
         
-        f=frmSelector(self.cfg, self.cfg.prioritieshistorical.clone(),  selected) 
+        f=frmSelector(self.mem, self.mem.prioritieshistorical.clone(),  selected) 
         f.lbl.setText("Selector de prioridades de datos históricos")
         f.exec_()
         self.cmbPriorityHistorical.clear()

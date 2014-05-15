@@ -4,8 +4,8 @@ from libmystocks import *
 
 
 class DeutscheBoerse(Source):
-    def __init__(self,  cfg):
-        Source.__init__(self, cfg)
+    def __init__(self,  mem):
+        Source.__init__(self, mem)
         self.time_before_dividends=180
         self.time_after_dividends=86400
         self.time_before_quotes=0
@@ -43,7 +43,7 @@ class DeutscheBoerse(Source):
     def arr_quotes(self):    
         resultado=[]
         error=0
-        ##self.add_internetquery_into_sqlite(self.cfg.consqlite)
+        ##self.add_internetquery_into_sqlite(self.mem.consqlite)
         web=self.download('http://deutsche-boerse.com/bf4dbag/EN/export/export.aspx?module=IndexConstituents&isin=DE0007203325&title=Constituent+Equities&perpage=1000', 'ARR_QUOTES')
         if web==None:
             return []                
@@ -76,7 +76,7 @@ class DeutscheBoerse(Source):
     def arr_statics(self): 
         resultado=[]
         error=0
-        ##self.add_internetquery_into_sqlite(self.cfg.consqlite)
+        ##self.add_internetquery_into_sqlite(self.mem.consqlite)
         web=self.download('http://deutsche-boerse.com/bf4dbag/EN/export/export.aspx?module=IndexConstituents&isin=DE0007203325&title=Constituent+Equities&perpage=1000', 'ARR_STATICS', False)
         if web==None:
             return []                 

@@ -5,12 +5,12 @@ from frmTransferencia import *
 from frmCuentasIBM import *
 
 class wdgCuentas(QWidget, Ui_wdgCuentas):
-    def __init__(self, cfg,  parent=None):
+    def __init__(self, mem,  parent=None):
         QWidget.__init__(self, parent)
         self.setupUi(self)
-        self.cfg=cfg
-        self.tblCuentas.settings("wdgCuentas",  self.cfg)
-        self.cuentas=self.cfg.data.cuentas_active.arr
+        self.mem=mem
+        self.tblCuentas.settings("wdgCuentas",  self.mem)
+        self.cuentas=self.mem.data.cuentas_active.arr
         self.selCuenta=None
         self.load_table()
         self.loadedinactive=False
@@ -26,19 +26,19 @@ class wdgCuentas(QWidget, Ui_wdgCuentas):
             self.tblCuentas.setItem(i, 2, QTableWidgetItem((c.numero)))
             self.tblCuentas.setItem(i, 3, c.currency.qtablewidgetitem(c.saldo))
             sumsaldos=sumsaldos+c.saldo  
-        self.lblTotal.setText(("Saldo en las cuentas: %s" % (self.cfg.localcurrency.string(sumsaldos))))
+        self.lblTotal.setText(("Saldo en las cuentas: %s" % (self.mem.localcurrency.string(sumsaldos))))
         self.tblCuentas.clearSelection()
         
     @QtCore.pyqtSlot() 
     def on_actionCuentaEstudio_activated(self):
-        w=frmCuentasIBM(self.cfg,   self.selCuenta, self)
+        w=frmCuentasIBM(self.mem,   self.selCuenta, self)
         w.exec_()
         self.on_chkInactivas_stateChanged(self.chkInactivas.checkState())
         self.load_table()
         
     @QtCore.pyqtSlot() 
     def on_actionCuentaNueva_activated(self):
-        w=frmCuentasIBM(self.cfg, None)
+        w=frmCuentasIBM(self.mem, None)
         w.exec_()
         self.on_chkInactivas_stateChanged(self.chkInactivas.checkState())
         self.load_table()
@@ -47,7 +47,7 @@ class wdgCuentas(QWidget, Ui_wdgCuentas):
     def on_actionCuentaBorrar_activated(self):
         if self.selCuenta.eb.qmessagebox_inactive() or self.selCuenta.qmessagebox_inactive():
             return
-        cur = self.cfg.con.cursor()
+        cur = self.mem.con.cursor()
         if self.selCuenta.es_borrable(cur)==False:
             m=QMessageBox()
             m.setIcon(QMessageBox.Information)
@@ -55,8 +55,8 @@ class wdgCuentas(QWidget, Ui_wdgCuentas):
             m.exec_()
         else:
             self.selCuenta.borrar(cur)
-            self.cfg.con.commit()
-            self.cfg.data.cuentas_active.arr.remove(self.selCuenta)
+            self.mem.con.commit()
+            self.mem.data.cuentas_active.arr.remove(self.selCuenta)
             self.cuentas.remove(self.selCuenta)
         cur.close()
         self.on_chkInactivas_stateChanged(self.chkInactivas.checkState())
@@ -64,10 +64,10 @@ class wdgCuentas(QWidget, Ui_wdgCuentas):
         
     def on_chkInactivas_stateChanged(self, state):
         if state==Qt.Unchecked:
-            self.cuentas=self.cfg.data.cuentas_active.arr
+            self.cuentas=self.mem.data.cuentas_active.arr
         else:
-            self.cfg.data.load_inactives()
-            self.cuentas=self.cfg.data.cuentas_inactive.arr
+            self.mem.data.load_inactives()
+            self.cuentas=self.mem.data.cuentas_inactive.arr
         self.load_table()
         
 
@@ -103,22 +103,22 @@ class wdgCuentas(QWidget, Ui_wdgCuentas):
         if self.selCuenta.eb.qmessagebox_inactive()==True:
             return
         
-        self.cfg.data.load_inactives()#Debe tenerlas para borrarla luego
+        self.mem.data.load_inactives()#Debe tenerlas para borrarla luego
         self.selCuenta.activa=self.chkInactivas.isChecked()
         self.selCuenta.save()
-        self.cfg.con.commit()     
+        self.mem.con.commit()     
         #Recoloca en los Setcuentas
         if self.selCuenta.activa==True:#Está todavía en inactivas
-            self.cfg.data.cuentas_active.arr.append(self.selCuenta)
-            self.cfg.data.cuentas_inactive.arr.remove(self.selCuenta)
+            self.mem.data.cuentas_active.arr.append(self.selCuenta)
+            self.mem.data.cuentas_inactive.arr.remove(self.selCuenta)
         else:#Está todavía en activas
-            self.cfg.data.cuentas_active.arr.remove(self.selCuenta)
-            self.cfg.data.cuentas_inactive.arr.append(self.selCuenta)    
+            self.mem.data.cuentas_active.arr.remove(self.selCuenta)
+            self.mem.data.cuentas_inactive.arr.append(self.selCuenta)    
         self.load_table()
 
     @QtCore.pyqtSlot()  
     def on_actionTransferencia_activated(self):
-        w=frmTransferencia(self.cfg, self.selCuenta)
+        w=frmTransferencia(self.mem, self.selCuenta)
         w.exec_()
         self.load_table()
 
