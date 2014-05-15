@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>930</width>
-    <height>542</height>
+    <width>790</width>
+    <height>620</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -26,7 +26,7 @@
   <property name="modal">
    <bool>true</bool>
   </property>
-  <layout class="QHBoxLayout" name="horizontalLayout_4">
+  <layout class="QHBoxLayout" name="horizontalLayout_7">
    <item>
     <layout class="QVBoxLayout" name="verticalLayout_3">
      <item>
@@ -114,9 +114,9 @@
         <item>
          <layout class="QHBoxLayout" name="horizontalLayout">
           <item>
-           <widget class="QRadioButton" name="radGanancia">
+           <widget class="QRadioButton" name="radGain">
             <property name="text">
-             <string>Selecciona una ganancia</string>
+             <string>Slect a gain</string>
             </property>
            </widget>
           </item>
@@ -127,6 +127,30 @@
             </property>
             <property name="text">
              <string>1000</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_4">
+          <item>
+           <widget class="QRadioButton" name="radPrice">
+            <property name="text">
+             <string>Select a price</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="myQLineEdit" name="txtPrice">
+            <property name="toolTip">
+             <string>Introduce la ganancia</string>
+            </property>
+            <property name="text">
+             <string>10</string>
             </property>
             <property name="alignment">
              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -166,11 +190,11 @@
       </widget>
      </item>
      <item>
-      <widget class="QTabWidget" name="tabWidget">
+      <widget class="QTabWidget" name="tab">
        <property name="currentIndex">
         <number>0</number>
        </property>
-       <widget class="QWidget" name="tab">
+       <widget class="QWidget" name="tab_current">
         <attribute name="title">
          <string>Current state</string>
         </attribute>
@@ -182,32 +206,32 @@
            </attribute>
            <column>
             <property name="text">
-             <string>Día</string>
+             <string>Date</string>
             </property>
            </column>
            <column>
             <property name="text">
-             <string>Inversión (Entidad Bancaria)</string>
+             <string>Investment (Bank)</string>
             </property>
            </column>
            <column>
             <property name="text">
-             <string>Tipo Operación</string>
+             <string>Operation type</string>
             </property>
            </column>
            <column>
             <property name="text">
-             <string>Acciones</string>
+             <string>Shares</string>
             </property>
            </column>
            <column>
             <property name="text">
-             <string>Valor compra</string>
+             <string>Bought price</string>
             </property>
            </column>
            <column>
             <property name="text">
-             <string>Invertido</string>
+             <string>Invested</string>
             </property>
            </column>
            <column>
@@ -300,7 +324,7 @@
   <connection>
    <sender>txtGanancia</sender>
    <signal>textEdited(QString)</signal>
-   <receiver>radGanancia</receiver>
+   <receiver>radGain</receiver>
    <slot>toggle()</slot>
    <hints>
     <hint type="sourcelabel">
