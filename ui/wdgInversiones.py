@@ -34,10 +34,7 @@ class wdgInversiones(QWidget, Ui_wdgInversiones):
         sumnegativos=0
         gainsyear=str2bool(self.mem.config.get_value("settings", "gainsyear"))
         for inv in self.inversiones.arr:            
-            self.tblInversiones.setItem(i, 0, QTableWidgetItem("{0} ({1})".format(inv.name, inv.cuenta.name)))
-            if gainsyear==True and inv.op_actual.less_than_a_year()==True:
-                self.tblInversiones.item(i, 0).setIcon(QIcon(":/xulpymoney/new.png"))
-            
+            self.tblInversiones.setItem(i, 0, QTableWidgetItem("{0} ({1})".format(inv.name, inv.cuenta.name)))            
             self.tblInversiones.setItem(i, 1, qdatetime(inv.product.result.basic.last.datetime, inv.product.bolsa.zone))
             self.tblInversiones.setItem(i, 2, inv.product.currency.qtablewidgetitem(inv.product.result.basic.last.quote,  6))#Se debería recibir el parametro currency
             
@@ -61,6 +58,8 @@ class wdgInversiones(QWidget, Ui_wdgInversiones):
             self.tblInversiones.setItem(i, 7, qtpc(tpc_invertido))
             tpc_venta=inv.tpc_venta()
             self.tblInversiones.setItem(i, 8, qtpc(tpc_venta))
+            if gainsyear==True and inv.op_actual.less_than_a_year()==True:
+                self.tblInversiones.item(i, 8).setIcon(QIcon(":/xulpymoney/new.png"))
             if tpc_invertido!=None and tpc_venta!=None:
                 if tpc_invertido<=-50:   
                     self.tblInversiones.item(i, 7).setBackgroundColor(QColor(255, 148, 148))
@@ -241,14 +240,7 @@ class wdgInversiones(QWidget, Ui_wdgInversiones):
             m=QMessageBox()
             m.setIcon(QMessageBox.Information)
             m.setText(self.trUtf8("Shares number: {0}".format(self.selInversion.acciones()))+"\n"+self.trUtf8("Purchase price average: {0}".format(self.selInversion.product.currency.string(self.selInversion.op_actual.valor_medio_compra()))))
-            m.exec_()           
-            return
+            m.exec_()     
         if column==8:#TPC venta
-            m=QMessageBox()
-            m.setIcon(QMessageBox.Information)
-            if self.selInversion.venta==0 or self.selInversion.venta==None:
-                m.setText(self.trUtf8("There's not selling prince."))
-            else:
-                m.setText(self.trUtf8("Selling price: {0}".format(self.selInversion.product.currency.string(self.selInversion.venta)))+"\n"+self.trUtf8("Gain obtained: {0}").format(self.selInversion.product.currency.string(self.selInversion.acciones()*(self.selInversion.venta-self.selInversion.op_actual.valor_medio_compra())))) 
-            m.exec_()           
-            return     
+            f=frmPuntoVenta(self.mem, self.selInversion)
+            f.exec_()

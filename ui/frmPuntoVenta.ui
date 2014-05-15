@@ -147,6 +147,13 @@
         <item>
          <layout class="QVBoxLayout" name="verticalLayout_2">
           <item>
+           <widget class="QCheckBox" name="chkGainsTime">
+            <property name="text">
+             <string>Remove operations less than a year</string>
+            </property>
+           </widget>
+          </item>
+          <item>
            <widget class="QCheckBox" name="chkPonderanAll">
             <property name="text">
              <string>¿Ponderan las acciones de todas inversiones del mismo activo?</string>

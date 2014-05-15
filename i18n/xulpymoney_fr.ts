@@ -2595,143 +2595,148 @@ seleccionados por el usuario</source>
 <context>
     <name>frmPuntoVenta</name>
     <message>
-        <location filename="ui/Ui_frmPuntoVenta.py" line="158"/>
+        <location filename="ui/Ui_frmPuntoVenta.py" line="161"/>
         <source>Xulpymoney &gt; Inversiones &gt; Punto de venta</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmPuntoVenta.py" line="159"/>
+        <location filename="ui/Ui_frmPuntoVenta.py" line="162"/>
         <source>C&#xc3;&#xa1;lculo del punto de venta</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmPuntoVenta.py" line="161"/>
+        <location filename="ui/Ui_frmPuntoVenta.py" line="164"/>
         <source>Selecciona un porcentaje de ganancia de lo invertido</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmPuntoVenta.py" line="162"/>
+        <location filename="ui/Ui_frmPuntoVenta.py" line="165"/>
         <source>2.5 %</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmPuntoVenta.py" line="163"/>
+        <location filename="ui/Ui_frmPuntoVenta.py" line="166"/>
         <source>5 %</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmPuntoVenta.py" line="164"/>
+        <location filename="ui/Ui_frmPuntoVenta.py" line="167"/>
         <source>7.5 %</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmPuntoVenta.py" line="165"/>
+        <location filename="ui/Ui_frmPuntoVenta.py" line="168"/>
         <source>10 %</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmPuntoVenta.py" line="166"/>
+        <location filename="ui/Ui_frmPuntoVenta.py" line="169"/>
         <source>15 %</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmPuntoVenta.py" line="167"/>
+        <location filename="ui/Ui_frmPuntoVenta.py" line="170"/>
         <source>20 %</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmPuntoVenta.py" line="168"/>
+        <location filename="ui/Ui_frmPuntoVenta.py" line="171"/>
         <source>25 %</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmPuntoVenta.py" line="169"/>
+        <location filename="ui/Ui_frmPuntoVenta.py" line="172"/>
         <source>Selecciona una ganancia</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmPuntoVenta.py" line="170"/>
+        <location filename="ui/Ui_frmPuntoVenta.py" line="173"/>
         <source>Introduce la ganancia</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmPuntoVenta.py" line="171"/>
+        <location filename="ui/Ui_frmPuntoVenta.py" line="174"/>
         <source>1000</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmPuntoVenta.py" line="173"/>
+        <location filename="ui/Ui_frmPuntoVenta.py" line="176"/>
         <source>&#xc2;&#xbf;Ponderan las acciones de todas inversiones del mismo activo?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmPuntoVenta.py" line="190"/>
+        <location filename="ui/Ui_frmPuntoVenta.py" line="193"/>
         <source>D&#xc3;&#xad;a</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmPuntoVenta.py" line="192"/>
+        <location filename="ui/Ui_frmPuntoVenta.py" line="195"/>
         <source>Inversi&#xc3;&#xb3;n (Entidad Bancaria)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmPuntoVenta.py" line="194"/>
+        <location filename="ui/Ui_frmPuntoVenta.py" line="197"/>
         <source>Tipo Operaci&#xc3;&#xb3;n</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmPuntoVenta.py" line="196"/>
+        <location filename="ui/Ui_frmPuntoVenta.py" line="199"/>
         <source>Acciones</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmPuntoVenta.py" line="198"/>
+        <location filename="ui/Ui_frmPuntoVenta.py" line="201"/>
         <source>Valor compra</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmPuntoVenta.py" line="200"/>
+        <location filename="ui/Ui_frmPuntoVenta.py" line="203"/>
         <source>Invertido</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmPuntoVenta.py" line="202"/>
+        <location filename="ui/Ui_frmPuntoVenta.py" line="205"/>
         <source>Pendiente</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmPuntoVenta.py" line="204"/>
+        <location filename="ui/Ui_frmPuntoVenta.py" line="208"/>
         <source>Asignar el punto de venta de 0 &#xe2;&#x82;&#xac;</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="ui/frmPuntoVenta.py" line="26"/>
+        <location filename="ui/frmPuntoVenta.py" line="24"/>
         <source>Actualmente no hay acciones disponibles en esta Inversión</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmPuntoVenta.py" line="160"/>
+        <location filename="ui/Ui_frmPuntoVenta.py" line="163"/>
         <source>Selecciona la ganancia</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmPuntoVenta.py" line="172"/>
+        <location filename="ui/Ui_frmPuntoVenta.py" line="175"/>
         <source>Opciones de c&#xc3;&#xa1;lculo del punto de venta</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="ui/frmPuntoVenta.py" line="20"/>
+        <location filename="ui/frmPuntoVenta.py" line="18"/>
         <source>No se puede asignar el punto de venta a una inversión no guardada</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmPuntoVenta.py" line="188"/>
+        <location filename="ui/Ui_frmPuntoVenta.py" line="191"/>
         <source>Current state</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmPuntoVenta.py" line="203"/>
+        <location filename="ui/Ui_frmPuntoVenta.py" line="206"/>
         <source>Selling point state</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_frmPuntoVenta.py" line="207"/>
+        <source>Remove operations less than a year</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -4329,7 +4334,7 @@ S&#xc3;&#xb3;lo se contabilizar&#xc3;&#xa1; cuando se vendan las acciones</sourc
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgInversiones.py" line="73"/>
+        <location filename="ui/wdgInversiones.py" line="72"/>
         <source>No hay patrimonio invertido</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4374,32 +4379,17 @@ S&#xc3;&#xb3;lo se contabilizar&#xc3;&#xa1; cuando se vendan las acciones</sourc
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgInversiones.py" line="243"/>
+        <location filename="ui/wdgInversiones.py" line="242"/>
         <source>Shares number: {0}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgInversiones.py" line="243"/>
+        <location filename="ui/wdgInversiones.py" line="242"/>
         <source>Purchase price average: {0}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgInversiones.py" line="252"/>
-        <source>Selling price: {0}</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/wdgInversiones.py" line="252"/>
-        <source>Gain obtained: {0}</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/wdgInversiones.py" line="250"/>
-        <source>There&apos;s not selling prince.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/wdgInversiones.py" line="225"/>
+        <location filename="ui/wdgInversiones.py" line="224"/>
         <source>Order by</source>
         <translation type="unfinished"></translation>
     </message>

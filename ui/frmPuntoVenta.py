@@ -5,14 +5,12 @@ from libxulpymoney import *
 from decimal import Decimal
 
 class frmPuntoVenta(QDialog, Ui_frmPuntoVenta):
-    def __init__(self, mem, setinversiones,  inversion ,   parent=None):
+    def __init__(self, mem,  inversion ,   parent=None):
         QWidget.__init__(self, parent)
         self.setupUi(self)
         self.showMaximized()
         self.mem=mem
         self.inversion=inversion
-        self.mem.data.inversiones_active=setinversiones
-        self.ponderan_all_inversiones=[]
         
         if self.inversion.id==None:
             m=QMessageBox()
@@ -28,17 +26,41 @@ class frmPuntoVenta(QDialog, Ui_frmPuntoVenta):
             return
         
         self.puntoventa=Decimal(0)#Guarda el resultado de los cálculos
-        self.operinversiones=list(self.inversion.op_actual.arr)            #0-fecha, 1-banco, 2-acciones, 3-valor-compra, 4-invertido, 5 pendiente, 6-tipooper
+        self.operinversiones=[]            #0-fecha, 1-banco, 2-acciones, 3-valor-compra, 4-invertido, 5 pendiente, 6-tipooper
 
-        self.table.settings("frmPuntoVenta",  self.mem)
-        self.tableSP.settings("frmPuntoVenta",  self.mem)
-        self.on_radTPC_toggled(True)
+
+        if str2bool(self.mem.config.get_value("settings", "gainsyear"))==True:
+            self.chkGainsTime.setCheckState(Qt.Checked)
+
+
+        self.table.settings(None,  self.mem)
+        self.tableSP.settings(None,  self.mem)
+#        self.on_radTPC_toggled(True)
         
-    def __calcular(self):
+    def __calcular(self):    
+        def load_array():
+            tmp=[]
+            if self.chkPonderanAll.checkState()==Qt.Checked:#Ponderan misma inversion
+                for  inv in self.mem.data.inversiones_active.arr:
+                    if inv.product.id==self.inversion.product.id:
+                        for op in inv.op_actual.arr:
+                            tmp.append(op)                
+            else:# No ponderan misma inversion
+                tmp=list(self.inversion.op_actual.arr) 
+                
+            #Quita operaciones menos de un año si ha lugar
+            if self.chkGainsTime.checkState()==Qt.Checked:
+                for o in tmp:
+                    if o.less_than_a_year()==False:
+                        self.operinversiones.append(o)
+            else:
+                self.operinversiones=tmp
+                
         def load_table(table, current_value):
             sumacciones=Decimal(0)
             suminvertido=Decimal(0)
             sumpendiente=Decimal(0)
+            table.clearContents()
             table.setRowCount(len(self.operinversiones)+1)
             for i, rec in enumerate(self.operinversiones):
                 sumacciones=sumacciones+rec.acciones
@@ -58,7 +80,10 @@ class frmPuntoVenta(QDialog, Ui_frmPuntoVenta):
             table.setItem(len(self.operinversiones), 5, self.inversion.product.currency.qtablewidgetitem(suminvertido))
             table.setItem(len(self.operinversiones), 6, self.inversion.product.currency.qtablewidgetitem(sumpendiente))
             return (sumacciones, suminvertido, sumpendiente)
-            
+        ###########################
+        del self.operinversiones
+        self.operinversiones=[]
+        load_array()
         (sumacciones, suminvertido, sumpendiente)=load_table(self.table, self.inversion.product.result.basic.last)
         
         if sumacciones==0:
@@ -80,18 +105,9 @@ class frmPuntoVenta(QDialog, Ui_frmPuntoVenta):
         if self.chkPonderanAll.checkState()==Qt.Checked:
             self.cmd.setText("Grabar el punto de venta a todas las inversiones de {0} € para ganar {1}".format(self.puntoventa, self.inversion.product.currency.string(sumpendiente)))
         else:
-            self.cmd.setText("Asignar el punto de venta de {0} € para ganar {1} €".format(self.puntoventa, self.inversion.product.currency.string(sumpendiente)))
+            self.cmd.setText("Asignar el punto de venta de {0} acciones a {1} € para ganar {2} €".format(sumacciones, self.puntoventa, self.inversion.product.currency.string(sumpendiente)))
         
-    def load_operinversionesactualmismoactivo(self):
-        """Recibe un sql y calcula las operinversiones, pueden ser de diferentes inversiones"""
-        arr=[]
-        self.ponderan_all_inversiones=[]
-        for  inv in self.mem.data.inversiones_active.arr:
-            if inv.product.id==self.inversion.product.id:
-                self.ponderan_all_inversiones.append(inv)
-                for op in inv.op_actual.arr:
-                    arr.append(op)
-        return arr
+
 
     def on_radTPC_toggled(self, toggle):
         self.cmbTPC.setEnabled(toggle)
@@ -105,17 +121,23 @@ class frmPuntoVenta(QDialog, Ui_frmPuntoVenta):
         self.__calcular()
         
     def on_chkPonderanAll_stateChanged(self, state):
-        if state==Qt.Checked:
-            self.operinversiones=self.load_operinversionesactualmismoactivo()
-        else:
-            self.operinversiones=list(self.inversion.op_actual.arr) 
         self.__calcular()
+        
+    def on_chkGainsTime_stateChanged(self, state):
+        self.__calcular()
+        
+
 
                 
     @QtCore.pyqtSlot() 
     def on_cmd_released(self):
         if self.chkPonderanAll.checkState()==Qt.Checked:
-            for inv in self.ponderan_all_inversiones:
+            invs=set()#Solo un save por inversion
+            for o in self.operinversiones:
+                if o.inversion not in invs:
+                    invs.add(o.inversion)
+            
+            for inv in list(invs):
                 inv.venta=self.puntoventa
                 inv.save()
             self.mem.con.commit()
