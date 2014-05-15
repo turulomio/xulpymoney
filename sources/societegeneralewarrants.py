@@ -4,8 +4,8 @@ from libmystocks import *
 
     
 class SocieteGeneraleWarrants(Source):
-    def __init__(self,  cfg):
-        Source.__init__(self, cfg)
+    def __init__(self,  mem):
+        Source.__init__(self, mem)
         self.time_before_dividends=180
         self.time_after_dividends=86400
         self.time_before_quotes=0
@@ -29,7 +29,7 @@ class SocieteGeneraleWarrants(Source):
     
     def arr_dividends(self):
         resultado=[]
-        con=self.cfg.connect_mystocksd()
+        con=self.mem.connect_mystocksd()
         cur=con.cursor()
         cur.execute("select code from products where dividend is null and code like 'SGW#%'")
         if cur.rowcount!=0:
@@ -37,7 +37,7 @@ class SocieteGeneraleWarrants(Source):
                 d={"code":row['code'], "dividend": 0}
                 resultado.append(d)
         cur.close()
-        self.cfg.disconnect_mystocksd(con)            
+        self.mem.disconnect_mystocksd(con)            
         return resultado
         
     
@@ -218,5 +218,5 @@ class SocieteGeneraleWarrants(Source):
                 log(self.name,"ARR_STATIC",  gettext.gettext("Error en el parseo de %(code)" %{ "code":code}))
                 break
 #        print resultado
-#        Product(self.cfg).update_static( resultado,  "S_SOCIETEGENERALEWARRANTS_STATIC")
+#        Product(self.mem).update_static( resultado,  "S_SOCIETEGENERALEWARRANTS_STATIC")
         return resultado

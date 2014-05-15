@@ -5,21 +5,21 @@ from Ui_wdgConceptos import *
 from wdgConceptsHistorical import *
 
 class wdgConceptos(QWidget, Ui_wdgConceptos):
-    def __init__(self, cfg,  parent=None):
+    def __init__(self, mem,  parent=None):
         QWidget.__init__(self, parent)
         self.setupUi(self)
-        self.cfg=cfg
+        self.mem=mem
         self.selected=None
         
-        self.expenses=self.cfg.conceptos.clone_x_tipooperacion(1)
+        self.expenses=self.mem.conceptos.clone_x_tipooperacion(1)
         self.expenseslist=None
-        self.incomes=self.cfg.conceptos.clone_x_tipooperacion(2)
+        self.incomes=self.mem.conceptos.clone_x_tipooperacion(2)
         self.incomeslist=None
 
-        self.tblExpenses.settings(None,  self.cfg)
-        self.tblIncomes.settings(None,  self.cfg)
+        self.tblExpenses.settings(None,  self.mem)
+        self.tblIncomes.settings(None,  self.mem)
         
-        anoinicio=Patrimonio(self.cfg).primera_fecha_con_datos_usuario().year       
+        anoinicio=Patrimonio(self.mem).primera_fecha_con_datos_usuario().year       
         self.wdgYM.initiate(anoinicio,  datetime.date.today().year, datetime.date.today().year, datetime.date.today().month)
         QObject.connect(self.wdgYM, SIGNAL("changed"), self.on_wdgYM_changed)
         
@@ -35,9 +35,9 @@ class wdgConceptos(QWidget, Ui_wdgConceptos):
         
         for i, a in enumerate(self.expenseslist):
             self.tblExpenses.setItem(i, 0, QTableWidgetItem(a[0].name))
-            self.tblExpenses.setItem(i, 1, self.cfg.localcurrency.qtablewidgetitem(a[1]))
+            self.tblExpenses.setItem(i, 1, self.mem.localcurrency.qtablewidgetitem(a[1]))
             self.tblExpenses.setItem(i, 2, qtpc(a[2]))
-            self.tblExpenses.setItem(i, 3, self.cfg.localcurrency.qtablewidgetitem(a[3]))
+            self.tblExpenses.setItem(i, 3, self.mem.localcurrency.qtablewidgetitem(a[3]))
             
             if a[1]!=0:
                 if a[1]>a[3]:
@@ -46,9 +46,9 @@ class wdgConceptos(QWidget, Ui_wdgConceptos):
                     self.tblExpenses.item(i, 1).setBackgroundColor( QColor(255, 182, 182))      
                 
         self.tblExpenses.setItem(len(self.expenseslist), 0, QTableWidgetItem(self.tr('TOTAL')))
-        self.tblExpenses.setItem(len(self.expenseslist), 1, self.cfg.localcurrency.qtablewidgetitem(totalexpenses))    
+        self.tblExpenses.setItem(len(self.expenseslist), 1, self.mem.localcurrency.qtablewidgetitem(totalexpenses))    
         self.tblExpenses.setItem(len(self.expenseslist), 2, qtpc(100))    
-        self.tblExpenses.setItem(len(self.expenseslist), 3, self.cfg.localcurrency.qtablewidgetitem(totalaverageexpenses))       
+        self.tblExpenses.setItem(len(self.expenseslist), 3, self.mem.localcurrency.qtablewidgetitem(totalaverageexpenses))       
 
     def load_ingresos(self,  year,  month):
         (self.incomeslist, totalincomes,  totalaverageincomes)=self.incomes.percentage_monthly(year, month)
@@ -57,9 +57,9 @@ class wdgConceptos(QWidget, Ui_wdgConceptos):
         
         for i, a in enumerate(self.incomeslist):
             self.tblIncomes.setItem(i, 0, QTableWidgetItem(a[0].name))
-            self.tblIncomes.setItem(i, 1, self.cfg.localcurrency.qtablewidgetitem(a[1]))
+            self.tblIncomes.setItem(i, 1, self.mem.localcurrency.qtablewidgetitem(a[1]))
             self.tblIncomes.setItem(i, 2, qtpc(a[2]))
-            self.tblIncomes.setItem(i, 3, self.cfg.localcurrency.qtablewidgetitem(a[3]))
+            self.tblIncomes.setItem(i, 3, self.mem.localcurrency.qtablewidgetitem(a[3]))
             
             if a[1]!=0:
                 if a[1]>a[3]:
@@ -68,9 +68,9 @@ class wdgConceptos(QWidget, Ui_wdgConceptos):
                     self.tblIncomes.item(i, 1).setBackgroundColor( QColor(255, 182, 182))      
                 
         self.tblIncomes.setItem(len(self.incomeslist), 0, QTableWidgetItem(self.tr('TOTAL')))
-        self.tblIncomes.setItem(len(self.incomeslist), 1, self.cfg.localcurrency.qtablewidgetitem(totalincomes))    
+        self.tblIncomes.setItem(len(self.incomeslist), 1, self.mem.localcurrency.qtablewidgetitem(totalincomes))    
         self.tblIncomes.setItem(len(self.incomeslist), 2, qtpc(100))    
-        self.tblIncomes.setItem(len(self.incomeslist), 3, self.cfg.localcurrency.qtablewidgetitem(totalaverageincomes))         
+        self.tblIncomes.setItem(len(self.incomeslist), 3, self.mem.localcurrency.qtablewidgetitem(totalaverageincomes))         
 
     @QtCore.pyqtSlot() 
     def on_wdgYM_changed(self):
@@ -133,7 +133,7 @@ class wdgConceptos(QWidget, Ui_wdgConceptos):
         newtab = QWidget()
         horizontalLayout = QHBoxLayout(newtab)
         concepto=self.selected[0]
-        wch = wdgConceptsHistorical(self.cfg, concepto, newtab)
+        wch = wdgConceptsHistorical(self.mem, concepto, newtab)
         horizontalLayout.addWidget(wch)
         self.tab.addTab(newtab, "{0}".format(concepto.name))
         self.tab.setCurrentWidget(newtab)

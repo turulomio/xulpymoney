@@ -6,10 +6,10 @@ from frmInversionesEstudio import *
 from Ui_wdgBancos import *
 
 class wdgBancos(QWidget, Ui_wdgBancos):
-    def __init__(self, cfg,  parent=None):
+    def __init__(self, mem,  parent=None):
         QWidget.__init__(self, parent)
         self.setupUi(self)
-        self.cfg=cfg
+        self.mem=mem
         self.selEB=None#id_ebs
         self.selCuenta=None #id_cuentas
         self.selInversion=None #Registro
@@ -20,9 +20,9 @@ class wdgBancos(QWidget, Ui_wdgBancos):
         self.inversiones=None
         self.cuentas=None
 
-        self.tblEB.settings("wdgBancos",  self.cfg)
-        self.tblCuentas.settings("wdgBancos",  self.cfg)
-        self.tblInversiones.settings("wdgBancos",  self.cfg)
+        self.tblEB.settings("wdgBancos",  self.mem)
+        self.tblCuentas.settings("wdgBancos",  self.mem)
+        self.tblInversiones.settings("wdgBancos",  self.mem)
         
         self.on_chkInactivas_stateChanged(Qt.Unchecked)#Carga eb
 
@@ -34,11 +34,11 @@ class wdgBancos(QWidget, Ui_wdgBancos):
         for i,  e in enumerate(self.ebs):
             self.tblEB.setItem(i, 0, QTableWidgetItem(e.name))
             self.tblEB.setItem(i, 1, qbool(e.activa))
-            saldo=e.saldo(self.cfg.data.cuentas_active, self.cfg.data.inversiones_active)
-            self.tblEB.setItem(i, 2, self.cfg.localcurrency.qtablewidgetitem(saldo))
+            saldo=e.saldo(self.mem.data.cuentas_active, self.mem.data.inversiones_active)
+            self.tblEB.setItem(i, 2, self.mem.localcurrency.qtablewidgetitem(saldo))
             sumsaldos=sumsaldos+saldo     
         self.tblEB.setItem(len(self.ebs), 0, QTableWidgetItem(self.tr('TOTAL')))
-        self.tblEB.setItem(len(self.ebs), 2, self.cfg.localcurrency.qtablewidgetitem(sumsaldos))        
+        self.tblEB.setItem(len(self.ebs), 2, self.mem.localcurrency.qtablewidgetitem(sumsaldos))        
         
     def load_cuentas(self):
         self.tblCuentas.clearContents()
@@ -47,10 +47,10 @@ class wdgBancos(QWidget, Ui_wdgBancos):
         for i,  c in enumerate(self.cuentas):
             self.tblCuentas.setItem(i, 0, QTableWidgetItem(c.name))
             self.tblCuentas.setItem(i, 1, qbool(c.activa))
-            self.tblCuentas.setItem(i, 2, self.cfg.localcurrency.qtablewidgetitem(c.saldo))
+            self.tblCuentas.setItem(i, 2, self.mem.localcurrency.qtablewidgetitem(c.saldo))
             sumsaldos=sumsaldos+c.saldo
         self.tblCuentas.setItem(len(self.cuentas), 0, QTableWidgetItem(self.tr('TOTAL')))
-        self.tblCuentas.setItem(len(self.cuentas), 2, self.cfg.localcurrency.qtablewidgetitem(sumsaldos))                
+        self.tblCuentas.setItem(len(self.cuentas), 2, self.mem.localcurrency.qtablewidgetitem(sumsaldos))                
         
                 
     def load_inversiones(self):
@@ -61,18 +61,18 @@ class wdgBancos(QWidget, Ui_wdgBancos):
             self.tblInversiones.setItem(i, 0, QTableWidgetItem(inv.name))
             self.tblInversiones.setItem(i, 1, qbool(inv.activa))
             saldo=inv.saldo()
-            self.tblInversiones.setItem(i, 2, self.cfg.localcurrency.qtablewidgetitem(saldo))
+            self.tblInversiones.setItem(i, 2, self.mem.localcurrency.qtablewidgetitem(saldo))
             sumsaldos=sumsaldos+saldo
         self.tblInversiones.setItem(len(self.inversiones), 0, QTableWidgetItem(self.tr('TOTAL')))
-        self.tblInversiones.setItem(len(self.inversiones), 2, self.cfg.localcurrency.qtablewidgetitem(sumsaldos))                
+        self.tblInversiones.setItem(len(self.inversiones), 2, self.mem.localcurrency.qtablewidgetitem(sumsaldos))                
         
         
     def on_chkInactivas_stateChanged(self, state):
         if state==Qt.Unchecked:
-            self.ebs=self.cfg.data.ebs_active.arr
+            self.ebs=self.mem.data.ebs_active.arr
         else:
-            self.cfg.data.load_inactives()
-            self.ebs=self.cfg.data.ebs_inactive.arr
+            self.mem.data.load_inactives()
+            self.ebs=self.mem.data.ebs_inactive.arr
         self.load_eb()
         self.tblEB.clearSelection()   
         self.tblCuentas.setRowCount(0)
@@ -102,12 +102,12 @@ class wdgBancos(QWidget, Ui_wdgBancos):
         if self.chkInactivas.checkState()==Qt.Unchecked:
             activas=True
             
-        for i in self.cfg.data.inversiones_active.arr:
+        for i in self.mem.data.inversiones_active.arr:
             if i.activa==activas and i.cuenta.eb.id==self.selEB.id:
                 self.inversiones.append(i)
         self.inversiones=sorted(self.inversiones, key=lambda inve: inve.name,  reverse=False) 
         
-        for v in self.cfg.data.cuentas_active.arr:
+        for v in self.mem.data.cuentas_active.arr:
             if v.activa==activas and v.eb.id==self.selEB.id:
                 self.cuentas.append(v)
         self.cuentas=sorted(self.cuentas, key=lambda c: c.name,  reverse=False) 
@@ -140,13 +140,13 @@ class wdgBancos(QWidget, Ui_wdgBancos):
         
     @QtCore.pyqtSlot() 
     def on_actionCuentaEstudio_activated(self):
-        w=frmCuentasIBM(self.cfg, self.selCuenta)
+        w=frmCuentasIBM(self.mem, self.selCuenta)
         w.exec_()        
         self.load_cuentas()
 
     @QtCore.pyqtSlot() 
     def on_actionInversionEstudio_activated(self):
-        w=frmInversionesEstudio(self.cfg,   self.selInversion)
+        w=frmInversionesEstudio(self.mem,   self.selInversion)
         w.exec_()
         self.load_inversiones()
 
@@ -186,32 +186,32 @@ class wdgBancos(QWidget, Ui_wdgBancos):
         
     @QtCore.pyqtSlot()  
     def on_actionBancoBorrar_activated(self):
-        if self.selEB.es_borrable(self.cfg.dic_cuentas)==False:
+        if self.selEB.es_borrable(self.mem.dic_cuentas)==False:
             m=QMessageBox()
             m.setIcon(QMessageBox.Information)
             m.setText(self.trUtf8("Este banco tiene cuentas dependientes y no puede ser borrado"))
             m.exec_()
         else:
-            con=self.cfg.connect_xulpymoney()
+            con=self.mem.connect_xulpymoney()
             cur = con.cursor()
-            self.selEB.borrar(cur, self.cfg.dic_cuentas)
+            self.selEB.borrar(cur, self.mem.dic_cuentas)
             #Se borra de la lista de wdgBancos ebs y del diccionario raiz 
             self.ebs.remove(self.selEB)
-            del self.cfg.dic_ebs[str(self.selEB.id)]
+            del self.mem.dic_ebs[str(self.selEB.id)]
             con.commit()  
             cur.close()     
-            self.cfg.disconnect_xulpymoney(con)    
+            self.mem.disconnect_xulpymoney(con)    
             self.load_eb()    
         
     @QtCore.pyqtSlot()  
     def on_actionBancoNuevo_activated(self):
         tipo=QInputDialog().getText(self,  "Xulpymoney > Bancos > Nuevo ",  "Introduce un nuevo banco")
         if tipo[1]==True:
-            eb=EntidadBancaria(self.cfg).init__create(tipo[0])
+            eb=EntidadBancaria(self.mem).init__create(tipo[0])
             eb.save()
-            self.cfg.con.commit()  
-            self.cfg.data.ebs_active.arr.append(eb)
-            self.cfg.data.ebs_active.sort()
+            self.mem.con.commit()  
+            self.mem.data.ebs_active.arr.append(eb)
+            self.mem.data.ebs_active.sort()
             
             self.load_eb()
 
@@ -222,8 +222,8 @@ class wdgBancos(QWidget, Ui_wdgBancos):
         if tipo[1]==True:
             self.selEB.name=tipo[0]
             self.selEB.save()
-            self.cfg.con.commit()
-            self.cfg.data.ebs_active.sort()
+            self.mem.con.commit()
+            self.mem.data.ebs_active.sort()
             
             self.load_eb()   
         
@@ -231,14 +231,14 @@ class wdgBancos(QWidget, Ui_wdgBancos):
     def on_actionActiva_activated(self):
         self.selEB.activa=self.actionActiva.isChecked()
         self.selEB.save()
-        self.cfg.con.commit()   
+        self.mem.con.commit()   
         
         #Recoloca en los SetInversiones
         if self.selEB.activa==True:#Está todavía en inactivas
-            self.cfg.data.ebs_active.arr.append(self.selEB)
-            self.cfg.data.ebs_inactive.arr.remove(self.selEB)
+            self.mem.data.ebs_active.arr.append(self.selEB)
+            self.mem.data.ebs_inactive.arr.remove(self.selEB)
         else:#Está todavía en activas
-            self.cfg.data.ebs_active.arr.remove(self.selEB)
-            self.cfg.data.ebs_inactive.arr.append(self.selEB)
+            self.mem.data.ebs_active.arr.remove(self.selEB)
+            self.mem.data.ebs_inactive.arr.append(self.selEB)
         
         self.load_eb()

@@ -5,7 +5,7 @@ from Ui_frmOperCuentas import *
 from libxulpymoney import *
 
 class frmOperCuentas(QDialog, Ui_frmOperCuentas):
-    def __init__(self, cfg, cuentas, cuenta, opercuenta=None, tarjeta=None ,  opertarjeta=None ,  parent=None):
+    def __init__(self, mem, cuentas, cuenta, opercuenta=None, tarjeta=None ,  opertarjeta=None ,  parent=None):
         """TIPOS DE ENTRADAS:        
          1   selCuenta=x: Inserción de Opercuentas y edición de cuentas
          2   selCuenta=x, selMovimiento=x Modificación de opercuentas
@@ -13,16 +13,16 @@ class frmOperCuentas(QDialog, Ui_frmOperCuentas):
          4   selCuenta=x, selMovimiento=x , tarjeta=x, opertarjeta Modificación de opertarjetas"""
         QWidget.__init__(self, parent)
         self.setupUi(self)
-        self.cfg=cfg
+        self.mem=mem
         
         self.cuenta=cuenta
         self.opercuenta=opercuenta
         self.tarjeta=tarjeta
         self.opertarjeta=opertarjeta
-        self.cfg.data.cuentas_active=cuentas
+        self.mem.data.cuentas_active=cuentas
 
-        self.cfg.conceptos.load_opercuentas_qcombobox(self.cmbConceptos)
-        self.cfg.data.cuentas_active.load_qcombobox(self.cmbCuentas)
+        self.mem.conceptos.load_opercuentas_qcombobox(self.cmbConceptos)
+        self.mem.data.cuentas_active.load_qcombobox(self.cmbCuentas)
 
         if opertarjeta!=None:
             self.setWindowTitle(self.trUtf8("Modificación de una operación de tarjeta"))
@@ -57,7 +57,7 @@ class frmOperCuentas(QDialog, Ui_frmOperCuentas):
         
     def on_cmd_released(self):
         fecha=self.calendar.selectedDate().toPyDate()
-        concepto=self.cfg.conceptos.find(self.cmbConceptos.itemData(self.cmbConceptos.currentIndex()))
+        concepto=self.mem.conceptos.find(self.cmbConceptos.itemData(self.cmbConceptos.currentIndex()))
         importe=self.txtImporte.decimal()
         comentario=self.txtComentario.text()
         id_cuentas=self.cmbCuentas.itemData(self.cmbCuentas.currentIndex()) #Sólo se usará en 1 y 2.
@@ -77,16 +77,16 @@ class frmOperCuentas(QDialog, Ui_frmOperCuentas):
             return
                     
         if self.tipo==1:
-            self.opercuenta=CuentaOperacion(self.cfg)
+            self.opercuenta=CuentaOperacion(self.mem)
             self.opercuenta.cuenta=self.cuenta
             self.opercuenta.fecha=fecha
             self.opercuenta.concepto=concepto
             self.opercuenta.tipooperacion=concepto.tipooperacion
             self.opercuenta.importe=importe
             self.opercuenta.comentario=comentario
-            self.opercuenta.cuenta=self.cfg.data.cuentas_active.find(id_cuentas)#Se puede cambiar
+            self.opercuenta.cuenta=self.mem.data.cuentas_active.find(id_cuentas)#Se puede cambiar
             self.opercuenta.save()
-            self.cfg.con.commit()        #Se debe hacer el commit antes para que al actualizar con el signal salga todos los datos
+            self.mem.con.commit()        #Se debe hacer el commit antes para que al actualizar con el signal salga todos los datos
             self.emit(SIGNAL("OperCuentaIBMed"), ())
         elif self.tipo==2:            
             self.opercuenta.fecha=fecha
@@ -94,15 +94,15 @@ class frmOperCuentas(QDialog, Ui_frmOperCuentas):
             self.opercuenta.tipooperacion=concepto.tipooperacion
             self.opercuenta.importe=importe
             self.opercuenta.comentario=comentario
-            self.opercuenta.cuenta=self.cfg.data.cuentas_active.find(id_cuentas)#Se puede cambiar
+            self.opercuenta.cuenta=self.mem.data.cuentas_active.find(id_cuentas)#Se puede cambiar
             self.opercuenta.save()
-            self.cfg.con.commit()        #Se debe hacer el commit antes para que al actualizar con el signal salga todos los datos
+            self.mem.con.commit()        #Se debe hacer el commit antes para que al actualizar con el signal salga todos los datos
             self.emit(SIGNAL("OperCuentaIBMed"), ())
             self.done(0)
         elif self.tipo==3:
-            self.opertarjeta=TarjetaOperacion(self.cfg).init__create(fecha, concepto, concepto.tipooperacion, importe, comentario, self.tarjeta, False, None, None )
+            self.opertarjeta=TarjetaOperacion(self.mem).init__create(fecha, concepto, concepto.tipooperacion, importe, comentario, self.tarjeta, False, None, None )
             self.opertarjeta.save()
-            self.cfg.con.commit()        
+            self.mem.con.commit()        
             self.tarjeta.op_diferido.append(self.opertarjeta)
             self.emit(SIGNAL("OperTarjetaIBMed"), (True))
         elif self.tipo==4:            
@@ -112,7 +112,7 @@ class frmOperCuentas(QDialog, Ui_frmOperCuentas):
             self.opertarjeta.importe=importe
             self.opertarjeta.comentario=comentario
             self.opertarjeta.save()
-            self.cfg.con.commit()        #Se debe hacer el commit antes para que al actualizar con el signal salga todos los datos
+            self.mem.con.commit()        #Se debe hacer el commit antes para que al actualizar con el signal salga todos los datos
             self.emit(SIGNAL("OperTarjetaIBMed"), ())
             self.done(0)            
         self.cuenta.saldo_from_db()

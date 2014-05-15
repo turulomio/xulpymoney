@@ -4,7 +4,7 @@ from libxulpymoney import *
 from Ui_frmTablasAuxiliares import *
 
 class frmTablasAuxiliares(QDialog, Ui_frmTablasAuxiliares):
-    def __init__(self, cfg,  parent = None, name = None, modal = False):
+    def __init__(self, mem,  parent = None, name = None, modal = False):
         """
         Constructor
         
@@ -17,13 +17,13 @@ class frmTablasAuxiliares(QDialog, Ui_frmTablasAuxiliares):
             self.setObjectName(name)
         self.setModal(True)
         self.setupUi(self)
-        self.cfg=cfg
+        self.mem=mem
 
-        self.tblConceptos.settings("frmTablasAuxiliares",  self.cfg)
+        self.tblConceptos.settings("frmTablasAuxiliares",  self.mem)
         
         self.conceptos=[]
         self.selConcepto=None
-        for c in self.cfg.conceptos.list():
+        for c in self.mem.conceptos.list():
             if c.editable==True:
                 self.conceptos.append(c)
  
@@ -32,10 +32,10 @@ class frmTablasAuxiliares(QDialog, Ui_frmTablasAuxiliares):
 #    @QtCore.pyqtSlot()  
 #    def on_actionConceptosBorrar_activated(self):
 #        id_conceptos= int(self.tblConceptos.item(self.tblConceptos.currentRow(), 0).text())
-#        con=self.cfg.connect_xulpymoney()
+#        con=self.mem.connect_xulpymoney()
 #        cur =con.cursor()
 #        
-#        if Concepto(self.cfg).tiene_registros_dependientes(cur, id_conceptos)==False:
+#        if Concepto(self.mem).tiene_registros_dependientes(cur, id_conceptos)==False:
 #            cur.execute("delete from conceptos where id_conceptos=%s", (id_conceptos, ))
 #            con.commit()
 #        else:
@@ -44,19 +44,19 @@ class frmTablasAuxiliares(QDialog, Ui_frmTablasAuxiliares):
 #            m.setText(self.trUtf8("Este conceptos tiene opercuentas y opertarjetas dependientes y no puede ser borrado"))
 #            m.exec_()
 #        cur.close()     
-#        self.cfg.disconnect_xulpymoney(con)
+#        self.mem.disconnect_xulpymoney(con)
 #        self.tblConceptos_reload()
 #
     @QtCore.pyqtSlot()  
     def on_actionConceptosNuevo_activated(self):
         print ("Hay que hacer dialogo para concepto y tipo de operacion")
 #        concepto=QInputDialog().getText(self,  "gnuOptics > Tablas auxiliares > Nuevo concepto",  "Introduce un nuevo concepto")
-#        con=self.cfg.connect_xulpymoney()
+#        con=self.mem.connect_xulpymoney()
 #        cur = con.cursor()
 #        cur.execute("insert into conceptos(concepto,) values (%s);", (concepto[0], ))
 #        con.commit()
 #        cur.close()     
-#        self.cfg.disconnect_xulpymoney(con)
+#        self.mem.disconnect_xulpymoney(con)
 #        self.tblConceptos_reload()
 #        return
 
@@ -65,7 +65,7 @@ class frmTablasAuxiliares(QDialog, Ui_frmTablasAuxiliares):
     def on_actionConceptosModificar_activated(self):
         print ("Hay que hacer dialogo para concepto y tipo de operacion")
 #        id_conceptos= int(self.tblConceptos.item(self.tblConceptos.currentRow(), 0).text())
-#        con=self.cfg.connect_xulpymoney()
+#        con=self.mem.connect_xulpymoney()
 #        cur = con.cursor()        )
 #
 #        cur.execute("select * from conceptos where id_conceptos=%s", (id_conceptos, ))
@@ -78,7 +78,7 @@ class frmTablasAuxiliares(QDialog, Ui_frmTablasAuxiliares):
 #        cur.execute("update conceptos set concepto=%s where id_conceptos=%s", ((concepto[0]),  id_conceptos ))
 #        con.commit()
 #        cur.close()     
-#        self.cfg.disconnect_xulpymoney(con)
+#        self.mem.disconnect_xulpymoney(con)
 #        self.tblConceptos_reload()
         
     def on_tblConceptos_customContextMenuRequested(self,  pos):

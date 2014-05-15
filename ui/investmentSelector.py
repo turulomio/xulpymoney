@@ -9,8 +9,8 @@ class investmentSelector(QWidget):
         QWidget.__init__(self, parent)
         self.selected=None
     
-    def setupUi(self, cfg):
-        self.cfg=cfg
+    def setupUi(self, mem):
+        self.mem=mem
         self.horizontalLayout_2 = QHBoxLayout(self)
         self.horizontalLayout = QHBoxLayout()
         self.label = QLabel(self)
@@ -30,7 +30,7 @@ class investmentSelector(QWidget):
         self.connect(self.cmd,SIGNAL('released()'),  self.on_cmd_released)
 
     def on_cmd_released(self):
-        d=investmentDialog(self, self.cfg)
+        d=investmentDialog(self, self.mem)
         d.exec_()
         self.setSelected(d.selected)
             
@@ -44,9 +44,9 @@ class investmentSelector(QWidget):
         
 
 class investmentDialog(QDialog):
-    def __init__(self, parent, cfg):
+    def __init__(self, parent, mem):
         QDialog.__init__(self, parent)
-        self.cfg=cfg
+        self.mem=mem
         self.inversiones=[]
         self.selected=None
         self.resize(1024, 500)
@@ -80,7 +80,7 @@ class investmentDialog(QDialog):
         self.tblInversiones.setAlternatingRowColors(True)
         self.tblInversiones.setColumnCount(4)
         self.tblInversiones.setRowCount(0)
-        self.tblInversiones.settings("investmentSelector",  self.cfg)    
+        self.tblInversiones.settings("investmentSelector",  self.mem)    
         self.tblInversiones.setHorizontalHeaderItem(0, QTableWidgetItem(self.trUtf8("Inversión")))
         self.tblInversiones.setHorizontalHeaderItem(1, QTableWidgetItem(self.trUtf8("Id")))
         self.tblInversiones.setHorizontalHeaderItem(2, QTableWidgetItem(self.trUtf8("ISIN")))
@@ -115,13 +115,13 @@ class investmentDialog(QDialog):
             return
 
         self.inversiones=[]
-        cur = self.cfg.conms.cursor()
+        cur = self.mem.conms.cursor()
         cur.execute("select * from products where id::text like '%"+(self.txt.text().upper())+"%' or upper(name) like '%"+(self.txt.text().upper())+"%' or upper(isin) like '%"+(self.txt.text().upper())+"%' or upper(comentario) like '%"+(self.txt.text().upper())+"%' order by name")
         self.lblFound.setText(self.tr("Encontrados {0} registros".format(cur.rowcount)))
                 
         self.tblInversiones.setRowCount(cur.rowcount)
         for i in cur:
-            inv=Product(self.cfg)
+            inv=Product(self.mem)
             inv.init__db_row(i)
             self.inversiones.append(inv)
             self.tblInversiones.setItem(cur.rownumber-1, 0, QTableWidgetItem(inv.name.upper()))

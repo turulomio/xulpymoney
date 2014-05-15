@@ -5,10 +5,10 @@ from libxulpymoney import *
 from decimal import *
 
 class wdgDesReinversion(QWidget, Ui_wdgDesReinversion):
-    def __init__(self, cfg, inversion,  parent=None):
+    def __init__(self, mem, inversion,  parent=None):
         QWidget.__init__(self, parent)
         self.setupUi(self)
-        self.cfg=cfg
+        self.mem=mem
         self.inversion=inversion
                 
         if len(self.inversion.op_actual.arr)==0:
@@ -18,10 +18,10 @@ class wdgDesReinversion(QWidget, Ui_wdgDesReinversion):
             m.exec_()     
             return
 #        
-#        self.tblInversionesActualDespues.settings("wdgDesReinversion",  self.cfg)
-#        self.tblInversionesActualAntes.settings("wdgDesReinversion",  self.cfg)
-#        self.tblOperaciones.settings("wdgDesReinversion",  self.cfg)        
-#        self.tblInversionesHistoricas.settings("wdgDesReinversion",  self.cfg)         
+#        self.tblInversionesActualDespues.settings("wdgDesReinversion",  self.mem)
+#        self.tblInversionesActualAntes.settings("wdgDesReinversion",  self.mem)
+#        self.tblOperaciones.settings("wdgDesReinversion",  self.mem)        
+#        self.tblInversionesHistoricas.settings("wdgDesReinversion",  self.mem)         
         
  
         self.operinversiones=self.inversion.op.clone()#No hacer clone_from_datetime porque falla por haber borrado un actual por venta de saldo operación
@@ -37,7 +37,7 @@ class wdgDesReinversion(QWidget, Ui_wdgDesReinversion):
        
         if self.radDes.isChecked():#DESINVERSION
             (operinversionesactual, operinversioneshistoricas)=self.operinversiones.calcular()
-            q=Quote(self.cfg).init__create(self.inversion.product, datetime.datetime.now(pytz.timezone(self.cfg.localzone.name)), self.txtValorAccion.decimal())
+            q=Quote(self.mem).init__create(self.inversion.product, datetime.datetime.now(pytz.timezone(self.mem.localzone.name)), self.txtValorAccion.decimal())
             for rec in operinversionesactual.arr:
                 pendiente=rec.pendiente(q)
                 if perdida+pendiente==0:
@@ -93,13 +93,13 @@ class wdgDesReinversion(QWidget, Ui_wdgDesReinversion):
 
         #Creamos un nuevo operinversiones 
         operaciones=self.operinversiones.clone()
-        d=InversionOperacion(self.cfg)
+        d=InversionOperacion(self.mem)
         id_operinversiones=self.operinversiones.arr[len(self.operinversiones.arr)-1].id+1 ##Para simular un id_operinversiones real, le asignamos uno
         if self.radDes.isChecked():#DESINVERSION
-            d.init__create(self.cfg.tiposoperaciones.find(5), datetime.datetime.now(pytz.timezone(self.cfg.localzone.name)), self.inversion, -acciones, importe, impuestos, comision, valor_accion, "", id_operinversiones)
+            d.init__create(self.mem.tiposoperaciones.find(5), datetime.datetime.now(pytz.timezone(self.mem.localzone.name)), self.inversion, -acciones, importe, impuestos, comision, valor_accion, "", id_operinversiones)
         else:#REINVERSION
-            d.init__create(self.cfg.tiposoperaciones.find(4), datetime.datetime.now(pytz.timezone(self.cfg.localzone.name)), self.inversion, acciones, importe, impuestos, comision, valor_accion, "",  id_operinversiones)
-            d.init__create(self.cfg.tiposoperaciones.find(4), datetime.datetime.now(pytz.timezone(self.cfg.localzone.name)), self.inversion, acciones, importe, impuestos, comision, valor_accion, "",  id_operinversiones)
+            d.init__create(self.mem.tiposoperaciones.find(4), datetime.datetime.now(pytz.timezone(self.mem.localzone.name)), self.inversion, acciones, importe, impuestos, comision, valor_accion, "",  id_operinversiones)
+            d.init__create(self.mem.tiposoperaciones.find(4), datetime.datetime.now(pytz.timezone(self.mem.localzone.name)), self.inversion, acciones, importe, impuestos, comision, valor_accion, "",  id_operinversiones)
         operaciones.arr.append(d)
 
 

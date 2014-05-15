@@ -2,8 +2,8 @@ import gettext
 from libmystocks import *
 
 class WorkerBonoAleman(Source):
-    def __init__(self,  cfg):
-        Source.__init__(self, cfg)
+    def __init__(self,  mem):
+        Source.__init__(self, mem)
         self.name="BONOALEMAN"
         self.id_source=4
         
@@ -11,13 +11,13 @@ class WorkerBonoAleman(Source):
         print (self.name)
         while (True):
             (parsed, errors)=self.execute()
-            con=self.cfg.connect_mystocksd()
+            con=self.mem.connect_mystocksd()
             cur = con.cursor()
             self.parse_errors(cur,  errors)
-            Quote(self.cfg).insert(cur, parsed, self.name)
+            Quote(self.mem).insert(cur, parsed, self.name)
             con.commit()
             cur.close()                
-            self.cfg.disconnect_mystocksd(con)
+            self.mem.disconnect_mystocksd(con)
             time.sleep(60)
 
 
@@ -37,17 +37,17 @@ class WorkerBonoAleman(Source):
             #DIF ALEMAN
             a= {'id':74801, 'datetime': dat,'quote': None }
             a['quote']=float(comaporpunto(page.split(b'n a 10 a')[1].split(b"%")[0][5:]))
-            if self.cfg.activas['74801'].active==True:
+            if self.mem.activas['74801'].active==True:
                 resultado.append(a)
             #DIF ESPAÑOL
             e= {'id':  74803, 'datetime': dat,'quote': None }
             e['quote']=float(comaporpunto(page.split(b'ol a 10 a')[1].split(b"%")[0][5:]))
-            if self.cfg.activas['74803'].active==True:
+            if self.mem.activas['74803'].active==True:
                 resultado.append(e)
 
             #BUND_DIFERENCIALESPAÑOL
             d= {'id': 74804, 'datetime': dat,'quote': (e['quote']-a['quote'])*100 }
-            if self.cfg.activas['74804'].active==True:
+            if self.mem.activas['74804'].active==True:
                 resultado.append(d)
         except:
             log(self.name,"ARR_QUOTES", gettext.gettext("Error parseando"))

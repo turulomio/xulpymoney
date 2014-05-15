@@ -20,45 +20,45 @@ except:
 
 
 if __name__ == '__main__':
-    cfg=ConfigMyStock()
+    mem=MemMyStock()
     if len(sys.argv)>1:
         if sys.argv[1]=="debug":
             log("STARTING", "Debugging")
-            cfg.debug=True
+            mem.debug=True
 
 
-    con=cfg.connect_mystocksd()
+    con=mem.connect_mystocksd()
     cur = con.cursor()   
     cur2 = con.cursor()   
 
     con.commit()
-    if Global(self.cfg).get_database_init_date(cur)=='2000-01-01':
-        Global(self.cfg).set_database_init_date(cur, str(datetime.date.today()))  
+    if Global(self.mem).get_database_init_date(cur)=='2000-01-01':
+        Global(self.mem).set_database_init_date(cur, str(datetime.date.today()))  
         con.commit()
-    cfg.actualizar_memoria(cur)
-    cfg.dbinitdate=Global(self.cfg).get_database_init_date(cur)
-    cfg.carga_ia(cur)
+    mem.actualizar_memoria(cur)
+    mem.dbinitdate=Global(self.mem).get_database_init_date(cur)
+    mem.carga_ia(cur)
     cur.close()                
     cur2.close()                
-    cfg.disconnect_mystocksd(con)
+    mem.disconnect_mystocksd(con)
     
-    wy=WorkerYahoo(cfg)
+    wy=WorkerYahoo(mem)
     p1 = multiprocessing.Process(target=wy.start, args=())
     p1.start()
     
-#    wbmf=WorkerBolsaMadridFondos(cfg)
+#    wbmf=WorkerBolsaMadridFondos(mem)
 #    p2 = multiprocessing.Process(target=wbmf.start, args=())
 #    p2.start()
 #
-#    wyi=WorkerYahooInactive(cfg)
+#    wyi=WorkerYahooInactive(mem)
 #    p1in = multiprocessing.Process(target=wyi.start, args=())
 #    p1in.start()
 
-#    wba=WorkerBonoAleman(cfg)
+#    wba=WorkerBonoAleman(mem)
 #    p3 = multiprocessing.Process(target=wba.start, args=())
 #    p3.start()
 
-    wib=WorkerIndices(cfg)
+    wib=WorkerIndices(mem)
     p4 = multiprocessing.Process(target=wib.start, args=())
     p4.start()
 

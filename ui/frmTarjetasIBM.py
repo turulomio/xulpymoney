@@ -4,7 +4,7 @@ from Ui_frmTarjetasIBM import *
 from libxulpymoney import *
 
 class frmTarjetasIBM(QDialog, Ui_frmTarjetasIBM):
-    def __init__(self, cfg,  cuenta,  tarjeta,  parent=None):
+    def __init__(self, mem,  cuenta,  tarjeta,  parent=None):
         """
             Cuenta es registro
             Si tarjeta=None # Insertar
@@ -12,14 +12,14 @@ class frmTarjetasIBM(QDialog, Ui_frmTarjetasIBM):
         """
         QWidget.__init__(self, parent)
         self.setupUi(self)
-        self.cfg=cfg
+        self.mem=mem
         self.cuenta=cuenta
         
             
 
         if tarjeta==None:
             self.tipo=1#Insertar
-            self.tarjeta=Tarjeta(self.cfg)
+            self.tarjeta=Tarjeta(self.mem)
             self.lblTitulo.setText(self.tr("Nueva tarjeta de {0}".format(self.cuenta.name)))
         else:
             self.tipo=2#Modificar
@@ -38,10 +38,10 @@ class frmTarjetasIBM(QDialog, Ui_frmTarjetasIBM):
         self.tarjeta.numero=self.txtNumero.text()
         self.tarjeta.activa=True
         self.tarjeta.save()
-        self.cfg.con.commit()        
+        self.mem.con.commit()        
         
         if self.tipo==1:#insertar
-            self.cfg.data.tarjetas_active.arr.append(self.tarjeta)
+            self.mem.data.tarjetas_active.arr.append(self.tarjeta)
         
         self.done(0)
     

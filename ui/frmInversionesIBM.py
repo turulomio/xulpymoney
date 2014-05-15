@@ -5,20 +5,20 @@ from frmAnalisis import *
 from Ui_frmInversionesIBM import *
 
 class frmInversionesIBM(QDialog, Ui_frmInversionesIBM):
-    def __init__(self, cfg, inversion, operinversion,   parent=None):
+    def __init__(self, mem, inversion, operinversion,   parent=None):
         QWidget.__init__(self, parent)
         self.setupUi(self)
-        self.cfg=cfg
+        self.mem=mem
         self.inversion=inversion
         self.operinversion=operinversion
   
-        self.cfg.tiposoperaciones.load_qcombobox(self.cmbTiposOperaciones)
-        self.cfg.zones.load_qcombobox(self.cmbTZ, self.cfg.localzone)
+        self.mem.tiposoperaciones.load_qcombobox(self.cmbTiposOperaciones)
+        self.mem.zones.load_qcombobox(self.cmbTZ, self.mem.localzone)
 
         
         if self.operinversion==None:#nuevo movimiento
             self.type=1
-            self.operinversion=InversionOperacion(self.cfg)
+            self.operinversion=InversionOperacion(self.mem)
             self.operinversion.inversion=self.inversion
             self.lblTitulo.setText(self.trUtf8("Nuevo movimiento de {0}".format(self.inversion.name)))
             t=datetime.datetime.now()
@@ -27,7 +27,7 @@ class frmInversionesIBM(QDialog, Ui_frmInversionesIBM):
             self.type=2
             self.lblTitulo.setText(self.trUtf8("Edición del movimiento seleccionado de {0}".format(self.inversion.name)))
             self.cmbTiposOperaciones.setCurrentIndex(self.cmbTiposOperaciones.findData(self.operinversion.tipooperacion.id))
-            dt=dt_changes_tz(self.operinversion.datetime, self.cfg.localzone)
+            dt=dt_changes_tz(self.operinversion.datetime, self.mem.localzone)
             self.calendar.setSelectedDate(dt.date())
             self.timeedit.setTime(dt.time())
             self.txtImporte.setText(str(self.operinversion.importe))
@@ -35,19 +35,19 @@ class frmInversionesIBM(QDialog, Ui_frmInversionesIBM):
             self.txtComision.setText(str(self.operinversion.comision))
             self.txtValorAccion.setText(str(self.operinversion.valor_accion))
             self.txtAcciones.setText(str(self.operinversion.acciones))
-            self.cmbTZ.setCurrentIndex(self.cmbTZ.findText(self.cfg.localzone.name))
+            self.cmbTZ.setCurrentIndex(self.cmbTZ.findText(self.mem.localzone.name))
 
     def on_cmd_released(self):
         fecha=self.calendar.selectedDate().toPyDate()
         hora=self.timeedit.time().toPyTime()
         
         id_tiposoperaciones=int(self.cmbTiposOperaciones.itemData(self.cmbTiposOperaciones.currentIndex()))
-        self.operinversion.tipooperacion=self.cfg.tiposoperaciones.find(id_tiposoperaciones)
+        self.operinversion.tipooperacion=self.mem.tiposoperaciones.find(id_tiposoperaciones)
         self.operinversion.impuestos=Decimal(self.txtImpuestos.text())
         self.operinversion.comision=Decimal(self.txtComision.text())
         self.operinversion.valor_accion=Decimal(self.txtValorAccion.text())
         self.operinversion.acciones=Decimal(self.txtAcciones.text())
-        zone=self.cfg.zones.find(self.cmbTZ.currentText())
+        zone=self.mem.zones.find(self.cmbTZ.currentText())
         if id_tiposoperaciones==5: #Venta
             self.operinversion.importe=Decimal(self.txtImporteBruto.text())
             if self.operinversion.acciones>Decimal('0'):
@@ -80,11 +80,11 @@ class frmInversionesIBM(QDialog, Ui_frmInversionesIBM):
         self.operinversion.datetime=dat
         
         self.operinversion.save()    
-        self.cfg.con.commit()#Guarda todos los cambios en bd.
+        self.mem.con.commit()#Guarda todos los cambios en bd.
         
         ##Mete indice referencia.
         if self.type==1:
-            w=frmQuotesIBM(self.cfg, self.cfg.data.indicereferencia, None, self)
+            w=frmQuotesIBM(self.mem, self.mem.data.benchmark, None, self)
             #Quita un minuto para que enganche con operación
             menosminuto=dat-datetime.timedelta(minutes=1)
             w.txtTime.setTime(QTime(menosminuto.hour, menosminuto.minute))
@@ -92,7 +92,7 @@ class frmInversionesIBM(QDialog, Ui_frmInversionesIBM):
             w.chkCanBePurged.setCheckState(Qt.Unchecked)
             w.txtQuote.setFocus()
             w.exec_() 
-            self.cfg.data.indicereferencia.result.basic.load_from_db()        
+            self.mem.data.benchmark.result.basic.load_from_db()        
         
         self.done(0)
 

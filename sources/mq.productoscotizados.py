@@ -7,9 +7,9 @@ from config import *
 
 class WorkerProductosCotizados(Source):
     """Clase que recorre las inversiones activas y calcula según este la prioridad de la previsión"""
-    def __init__(self, cfg):
-        Source.__init__(self, cfg)
-        self.cfg=cfg
+    def __init__(self, mem):
+        Source.__init__(self, mem)
+        self.mem=mem
         self.id_source=5
         self.ids=[]
         self.name="PRODUCTOSCOTIZADOS"
@@ -17,20 +17,20 @@ class WorkerProductosCotizados(Source):
     def start(self):
         print (self.name)
         while (True):
-            con=self.cfg.connect_mystocksd()
+            con=self.mem.connect_mystocksd()
             cur = con.cursor()     
             self.ids=self.find_ids()
             self.ids=self.filtrar_horario_bolsa(self.ids)
 
             (set, e)=self.execute()
             self.parse_resultado(set)
-            if self.cfg.debug==True:
+            if self.mem.debug==True:
                 self.print_parsed(p)
             else:
                 set.save(cur, self.name)
             con.commit()
             cur.close()
-            self.cfg.disconnect_mystocksd(con)
+            self.mem.disconnect_mystocksd(con)
             time.sleep(120)
 
     def parse_resultado(self, set):
@@ -44,17 +44,17 @@ class WorkerProductosCotizados(Source):
     def productid2investment(self, productid):
         """Product id debe ser un entero"""
         if productid==8050:#u0024
-            return self.cfg.activas( 74742)
+            return self.mem.activas( 74742)
         elif productid==6425:#u0017
-            return self.cfg.activas(  81678)
+            return self.mem.activas(  81678)
         elif productid==6426:#u0018
-            return self.cfg.activas(  74741)
+            return self.mem.activas(  74741)
         elif productid==7876:#u0021
-            return self.cfg.activas( 74745)
+            return self.mem.activas( 74745)
         elif productid==8049:#u0023
-            return self.cfg.activas( 81677)
+            return self.mem.activas( 81677)
         elif productid==6424:#u0016
-            return self.cfg.activas( 81679)
+            return self.mem.activas( 81679)
         return None
 
     def execute(self):
@@ -77,18 +77,18 @@ class WorkerProductosCotizados(Source):
 
 
 if __name__ == '__main__':
-    cfg=ConfigMQ()
+    mem=ConfigMQ()
     if len(sys.argv)>1:
         if sys.argv[1]=="debug":
             log("STARTING", "","Debugging")
-            cfg.debug=True
+            mem.debug=True
 
-    con=cfg.connect_mystocksd()
+    con=mem.connect_mystocksd()
     cur = con.cursor()
-    cfg.actualizar_memoria(cur)
-    cfg.carga_ia(cur, "where priority[1]=5")
+    mem.actualizar_memoria(cur)
+    mem.carga_ia(cur, "where priority[1]=5")
     cur.close()
-    cfg.disconnect_mystocksd(con)
+    mem.disconnect_mystocksd(con)
 
-    w=WorkerProductosCotizados(cfg)
+    w=WorkerProductosCotizados(mem)
     w.start()

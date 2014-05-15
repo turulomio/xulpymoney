@@ -15,11 +15,11 @@ class myQTableWidget(QTableWidget):
     def __del__(self):
         self.mytimer.stop()
         
-    def settings(self, section,  cfg):		
+    def settings(self, section,  mem):		
         """Esta funcion debe ejecutarse despues de haber creado las columnas
         If section=NOne and file=None, se usa resizemode por defecto
         """
-        self.cfg=cfg
+        self.mem=mem
         self.section=section
         if self.mytimer.isActive():
             self.mytimer.stop()
@@ -28,7 +28,7 @@ class myQTableWidget(QTableWidget):
         if section==None:
             self.horizontalHeader().setResizeMode(QHeaderView.ResizeToContents)
         else:
-            self.columnswidth_in_config=self.cfg.config_ui.get_list( self.section,   self.objectName()+"_columns_width")
+            self.columnswidth_in_config=self.mem.config_ui.get_list( self.section,   self.objectName()+"_columns_width")
             if len(self.columnswidth_in_config)==self.columnCount():
                 for i in range(self.columnCount()):
                     self.setColumnWidth(i, int(self.columnswidth_in_config[i]))
@@ -60,7 +60,7 @@ class myQTableWidget(QTableWidget):
         for i in range(self.columnCount()):#Genera array
             self.columnswidth_in_config.append(str(self.columnWidth(i)))
         if len(self.columnswidth_in_config)>0:#No grabe si no hay columnas
-            self.cfg.config_ui.set_list(self.section, self.objectName()+"_columns_width", self.columnswidth_in_config)
-            self.cfg.config_ui.save()
+            self.mem.config_ui.set_list(self.section, self.objectName()+"_columns_width", self.columnswidth_in_config)
+            self.mem.config_ui.save()
             print (self.section, self.objectName(), "columns width saved")
 

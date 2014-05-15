@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>433</width>
-    <height>482</height>
+    <width>513</width>
+    <height>319</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -50,105 +50,13 @@
       </widget>
      </item>
      <item>
-      <widget class="QGroupBox" name="groupBox">
-       <property name="title">
-        <string>MyStocks access settings</string>
-       </property>
-       <layout class="QVBoxLayout" name="verticalLayout_3">
-        <item>
-         <layout class="QHBoxLayout" name="horizontalLayout_7">
-          <item>
-           <layout class="QVBoxLayout" name="verticalLayout">
-            <item>
-             <widget class="QLabel" name="lblServer">
-              <property name="text">
-               <string>Server</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLabel" name="lblPort">
-              <property name="text">
-               <string>Port</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLabel" name="lblDatabase">
-              <property name="text">
-               <string>Database</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLabel" name="lblUser">
-              <property name="text">
-               <string>User</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLabel" name="lblPass">
-              <property name="text">
-               <string>Password</string>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </item>
-          <item>
-           <layout class="QVBoxLayout" name="verticalLayout_2">
-            <item>
-             <widget class="QLineEdit" name="txtServer">
-              <property name="inputMethodHints">
-               <set>Qt::ImhNone</set>
-              </property>
-              <property name="text">
-               <string>127.0.0.1</string>
-              </property>
-              <property name="echoMode">
-               <enum>QLineEdit::Normal</enum>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLineEdit" name="txtPort">
-              <property name="text">
-               <string>5432</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLineEdit" name="txtDB"/>
-            </item>
-            <item>
-             <widget class="QLineEdit" name="txtUser"/>
-            </item>
-            <item>
-             <widget class="QLineEdit" name="txtPass">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="inputMethodHints">
-               <set>Qt::ImhHiddenText|Qt::ImhNoAutoUppercase|Qt::ImhNoPredictiveText</set>
-              </property>
-              <property name="echoMode">
-               <enum>QLineEdit::Password</enum>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </item>
-         </layout>
-        </item>
-       </layout>
-      </widget>
-     </item>
-     <item>
       <widget class="QGroupBox" name="groupBox_2">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
        <property name="title">
         <string>User settings</string>
        </property>
@@ -160,12 +68,12 @@
             <item>
              <widget class="QLabel" name="label">
               <property name="text">
-               <string>Divisa preferente del usuario</string>
+               <string>Main currency</string>
               </property>
              </widget>
             </item>
             <item>
-             <widget class="QComboBox" name="comboBox"/>
+             <widget class="QComboBox" name="cmbCurrencies"/>
             </item>
            </layout>
           </item>
@@ -174,12 +82,12 @@
             <item>
              <widget class="QLabel" name="label_2">
               <property name="text">
-               <string>Zona horaria del usuario</string>
+               <string>User datetime zone</string>
               </property>
              </widget>
             </item>
             <item>
-             <widget class="QComboBox" name="comboBox_2"/>
+             <widget class="QComboBox" name="cmbZones"/>
             </item>
            </layout>
           </item>
@@ -188,12 +96,12 @@
             <item>
              <widget class="QLabel" name="label_3">
               <property name="text">
-               <string>Índice de referencia</string>
+               <string>Benchmark</string>
               </property>
              </widget>
             </item>
             <item>
-             <widget class="QComboBox" name="comboBox_3"/>
+             <widget class="QComboBox" name="cmbIndex"/>
             </item>
            </layout>
           </item>
@@ -210,7 +118,7 @@
              </widget>
             </item>
             <item>
-             <widget class="QDoubleSpinBox" name="spin">
+             <widget class="QDoubleSpinBox" name="spnDividendPercentage">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                 <horstretch>0</horstretch>
@@ -230,13 +138,13 @@
                <string> %</string>
               </property>
               <property name="decimals">
-               <number>1</number>
+               <number>2</number>
               </property>
               <property name="singleStep">
                <double>0.100000000000000</double>
               </property>
               <property name="value">
-               <double>2.000000000000000</double>
+               <double>21.000000000000000</double>
               </property>
              </widget>
             </item>
@@ -255,7 +163,7 @@
              </widget>
             </item>
             <item>
-             <widget class="QDoubleSpinBox" name="spin_2">
+             <widget class="QDoubleSpinBox" name="spnGainsPercentaje">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                 <horstretch>0</horstretch>
@@ -275,17 +183,24 @@
                <string> %</string>
               </property>
               <property name="decimals">
-               <number>1</number>
+               <number>2</number>
               </property>
               <property name="singleStep">
                <double>0.100000000000000</double>
               </property>
               <property name="value">
-               <double>2.000000000000000</double>
+               <double>21.000000000000000</double>
               </property>
              </widget>
             </item>
            </layout>
+          </item>
+          <item>
+           <widget class="QCheckBox" name="chkGainsYear">
+            <property name="text">
+             <string>Capital gains over a year have a different tax</string>
+            </property>
+           </widget>
           </item>
          </layout>
         </item>
@@ -293,7 +208,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QDialogButtonBox" name="buttonBox">
+      <widget class="QDialogButtonBox" name="buttonbox">
        <property name="standardButtons">
         <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
        </property>

@@ -7,9 +7,9 @@ from config import *
 
 class WorkerSGWarrants(Source):
     """Clase que recorre las inversiones activas y calcula según este la prioridad de la previsión"""
-    def __init__(self, cfg):
-        Source.__init__(self, cfg)
-        self.cfg=cfg
+    def __init__(self, mem):
+        Source.__init__(self, mem)
+        self.mem=mem
         self.id_source=6
         self.ids=[]
         self.name="SGWARRANTS"
@@ -17,7 +17,7 @@ class WorkerSGWarrants(Source):
     def start(self):
         print (self.name)
         while (True):
-            con=self.cfg.connect_mystocksd()
+            con=self.mem.connect_mystocksd()
             cur = con.cursor()     
             self.ids=self.find_ids()
 
@@ -25,13 +25,13 @@ class WorkerSGWarrants(Source):
 
             (p, e)=self.execute()
             p=self.parse_resultado(p)
-            if self.cfg.debug==True:
+            if self.mem.debug==True:
                 self.print_parsed(p)
             else:
-                Quotes(self.cfg).insert(cur, p, self.name)
+                Quotes(self.mem).insert(cur, p, self.name)
             con.commit()
             cur.close()
-            self.cfg.disconnect_mystocksd(con)
+            self.mem.disconnect_mystocksd(con)
             time.sleep(120)
 
     def parse_resultado(self, resultado):
@@ -77,11 +77,11 @@ class WorkerSGWarrants(Source):
 
 
 if __name__ == '__main__':
-    cfg=ConfigMQ()
+    mem=ConfigMQ()
     if len(sys.argv)>1:
         if "debug" in sys.argv:
             log("STARTING", "","Debugging")
-            cfg.debug=True
+            mem.debug=True
             
         if "temp.xls" in sys.argv:
             log ("File detected")
@@ -89,13 +89,13 @@ if __name__ == '__main__':
             log ("File must be temp.xls")
             sys.exit(0)
 
-    con=cfg.connect_mystocksd()
+    con=mem.connect_mystocksd()
     cur = con.cursor()
-    cfg.carga_ia(cur, "where priority[1]=6")
+    mem.carga_ia(cur, "where priority[1]=6")
 
-    cfg.carga_bolsas(cur)
+    mem.carga_bolsas(cur)
     cur.close()
-    cfg.disconnect_mystocksd(con)
+    mem.disconnect_mystocksd(con)
 
-    w=WorkerSGWarrants(cfg)
+    w=WorkerSGWarrants(mem)
     w.start()

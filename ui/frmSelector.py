@@ -4,12 +4,12 @@ from Ui_frmSelector import *
 from libxulpymoney import *
 
 class frmSelector(QDialog, Ui_frmSelector):
-    def __init__(self, cfg, set,  selectedset, name = None, modal = False  ):
+    def __init__(self, mem, set,  selectedset, name = None, modal = False  ):
         """Lista es un objeto tipo set cuyos objetos agrupados tienen id y name
         Selected es otro objeto set"""
         QDialog.__init__(self)
         self.setupUi(self)   
-        self.cfg=cfg
+        self.mem=mem
         self.selected=selectedset
         self.set=set
         

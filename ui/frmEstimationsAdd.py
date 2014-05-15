@@ -5,11 +5,11 @@ from PyQt4.QtGui import *
 from Ui_frmEstimationsAdd import *
 
 class frmEstimationsAdd(QDialog, Ui_frmEstimationsAdd):
-    def __init__(self, cfg,  product,  type, parent=None):
+    def __init__(self, mem,  product,  type, parent=None):
         """type="dps or "eps" """
         QDialog.__init__(self, parent)
         self.setupUi(self)
-        self.cfg=cfg
+        self.mem=mem
         self.type=type
         self.product=product
         self.lbl.setText(self.product.name)
@@ -18,16 +18,16 @@ class frmEstimationsAdd(QDialog, Ui_frmEstimationsAdd):
 
     def on_cmd_released(self):
         if self.type=="dps":
-            d=EstimationDPS(self.cfg).init__from_db(self.product, int(self.txtYear.text()) )##Lo carga si existe de la base de datos
+            d=EstimationDPS(self.mem).init__from_db(self.product, int(self.txtYear.text()) )##Lo carga si existe de la base de datos
         else:
-            d=EstimationEPS(self.cfg).init__from_db(self.product, int(self.txtYear.text()) )##Lo carga si existe de la base de datos
+            d=EstimationEPS(self.mem).init__from_db(self.product, int(self.txtYear.text()) )##Lo carga si existe de la base de datos
 
         d.estimation=self.txtDPA.decimal()
         d.manual=True
         d.source="Internet"
         d.date_estimation=datetime.date.today()
         d.save()
-        self.cfg.conms.commit()      
+        self.mem.conms.commit()      
         if self.type=="dps":
             self.product.estimations_dps.load_from_db()
         else:

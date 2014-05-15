@@ -4,7 +4,7 @@ from libxulpymoney import *
 from Ui_frmAbout import *
 
 class frmAbout(QDialog, Ui_frmAbout):
-    def __init__(self, cfg,  parent = None, name = None, modal = False):
+    def __init__(self, mem,  parent = None, name = None, modal = False):
         """
         Constructor
         
@@ -12,14 +12,14 @@ class frmAbout(QDialog, Ui_frmAbout):
         @param name The name of this dialog. (QString)
         @param modal Flag indicating a modal dialog. (boolean)
         """
-        self.cfg=cfg
+        self.mem=mem
         QDialog.__init__(self, parent)
         if name:
             self.setObjectName(name)
         self.setModal(True)
         self.setupUi(self)
         
-        self.tblStatistics.settings("frmAbout", self.cfg)
+        self.tblStatistics.settings("frmAbout", self.mem)
         self.load_tblStatistics() 
         self.connect(self.cmd, SIGNAL("clicked()"), self.on_cmd_clicked)
     
@@ -102,19 +102,19 @@ class frmAbout(QDialog, Ui_frmAbout):
             self.tblStatistics.setItem(8, 0 , qcenter(total))
 
     
-        cur = self.cfg.conms.cursor()
+        cur = self.mem.conms.cursor()
         todos(cur)
-        pais(cur, 1, self.cfg.bolsas.find(1))
-        pais(cur, 2, self.cfg.bolsas.find(2))
-        pais(cur, 3, self.cfg.bolsas.find(3))
-        pais(cur, 4, self.cfg.bolsas.find(4))
-        pais(cur, 5, self.cfg.bolsas.find(5))
-        pais(cur, 6,self.cfg.bolsas.find(6))
-        pais(cur, 7, self.cfg.bolsas.find(7))
-        pais(cur, 8, self.cfg.bolsas.find(8))
-        pais(cur, 9, self.cfg.bolsas.find(9))
-        pais(cur, 10, self.cfg.bolsas.find(10))
-        pais(cur, 11, self.cfg.bolsas.find(11))
-        pais(cur, 12, self.cfg.bolsas.find(12))
-        pais(cur, 13, self.cfg.bolsas.find(13))
+        pais(cur, 1, self.mem.bolsas.find(1))
+        pais(cur, 2, self.mem.bolsas.find(2))
+        pais(cur, 3, self.mem.bolsas.find(3))
+        pais(cur, 4, self.mem.bolsas.find(4))
+        pais(cur, 5, self.mem.bolsas.find(5))
+        pais(cur, 6,self.mem.bolsas.find(6))
+        pais(cur, 7, self.mem.bolsas.find(7))
+        pais(cur, 8, self.mem.bolsas.find(8))
+        pais(cur, 9, self.mem.bolsas.find(9))
+        pais(cur, 10, self.mem.bolsas.find(10))
+        pais(cur, 11, self.mem.bolsas.find(11))
+        pais(cur, 12, self.mem.bolsas.find(12))
+        pais(cur, 13, self.mem.bolsas.find(13))
         cur.close()

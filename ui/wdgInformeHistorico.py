@@ -4,23 +4,23 @@ from libxulpymoney import *
 from Ui_wdgInformeHistorico import *
 
 class wdgInformeHistorico(QWidget, Ui_wdgInformeHistorico):
-    def __init__(self, cfg,  parent=None):
+    def __init__(self, mem,  parent=None):
         QWidget.__init__(self, parent)
         self.setupUi(self)
-        self.cfg=cfg
-        self.tblEstudio.settings(None,  self.cfg)
-        self.tblDividends.settings(None,  self.cfg)
-        self.tblInversiones.settings("wdgInformeHistorico",  self.cfg)
-        self.tblAdded.settings(None,  self.cfg)
+        self.mem=mem
+        self.tblEstudio.settings(None,  self.mem)
+        self.tblDividends.settings(None,  self.mem)
+        self.tblInversiones.settings("wdgInformeHistorico",  self.mem)
+        self.tblAdded.settings(None,  self.mem)
         
         
-        self.cfg.data.load_inactives()
+        self.mem.data.load_inactives()
         
         self.totalDividendsNetos=0
         self.totalDividendsBrutos=0
         self.totalDividendsRetenciones=0
                 
-        anoinicio=Patrimonio(self.cfg).primera_fecha_con_datos_usuario().year       
+        anoinicio=Patrimonio(self.mem).primera_fecha_con_datos_usuario().year       
 
 #        ran=datetime.date.today().year-anoinicio+1
         
@@ -41,7 +41,7 @@ class wdgInformeHistorico(QWidget, Ui_wdgInformeHistorico):
         
     def load_added(self):
         operaciones=[]
-        for i in self.cfg.data.inversiones_all().arr:
+        for i in self.mem.data.inversiones_all().arr:
             for o in i.op.arr:
                 if o.tipooperacion.id==6 and o.datetime.year==self.wy.year:
                     operaciones.append(o)    
@@ -49,9 +49,9 @@ class wdgInformeHistorico(QWidget, Ui_wdgInformeHistorico):
                     
         self.tblAdded.setRowCount(len(operaciones)+1)
         sumsaldo=0        
-        curms=self.cfg.conms.cursor()
+        curms=self.mem.conms.cursor()
         for i,  o in enumerate(operaciones):
-            valor=Quote(self.cfg).init__from_query(o.inversion.product, o.datetime).quote
+            valor=Quote(self.mem).init__from_query(o.inversion.product, o.datetime).quote
             if valor==None:
                 print("wdgInformeHistorico > load_added: {0} en {1} da nulo".format(o.inversion.product.id, o.datetime))
                 valor=0
@@ -59,21 +59,21 @@ class wdgInformeHistorico(QWidget, Ui_wdgInformeHistorico):
             sumsaldo=sumsaldo+saldo
             self.tblAdded.setItem(i, 0, qdatetime(o.datetime,  o.inversion.product.bolsa.zone))
             self.tblAdded.setItem(i, 1, QTableWidgetItem(o.inversion.name))
-            self.tblAdded.setItem(i, 2, QTableWidgetItem(self.cfg.tiposoperaciones.find(6).name))
+            self.tblAdded.setItem(i, 2, QTableWidgetItem(self.mem.tiposoperaciones.find(6).name))
             self.tblAdded.setItem(i, 3, qright(str(o.acciones)))
-            self.tblAdded.setItem(i, 4, self.cfg.localcurrency.qtablewidgetitem(saldo))
+            self.tblAdded.setItem(i, 4, self.mem.localcurrency.qtablewidgetitem(saldo))
         curms.close()
         self.tblAdded.setItem(len(operaciones), 3, QTableWidgetItem(("TOTAL")))
-        self.tblAdded.setItem(len(operaciones), 4, self.cfg.localcurrency.qtablewidgetitem(sumsaldo))
+        self.tblAdded.setItem(len(operaciones), 4, self.mem.localcurrency.qtablewidgetitem(sumsaldo))
    
     def load_dividends(self):
-        set=SetDividends(self.cfg)
+        set=SetDividends(self.mem)
         set.load_from_db("select * from dividends where id_conceptos not in (63) and date_part('year',fecha)={0} order by fecha".format(self.wy.year))
         (self.totalDividendsNetos, self.totalDividendsBrutos, self.totalDividendsRetenciones, sumcomision)=set.myqtablewidget(self.tblDividends, None, True)
 
     def load_historicas(self):
-        operaciones=SetInversionOperacionHistorica(self.cfg)
-        for i in self.cfg.data.inversiones_all().arr:
+        operaciones=SetInversionOperacionHistorica(self.mem)
+        for i in self.mem.data.inversiones_all().arr:
             for o in i.op_historica.arr:
                 if o.fecha_venta.year==self.wy.year and o.tipooperacion.id in (5, 8):#Venta y traspaso fondos inversion
                     operaciones.arr.append(o)
@@ -84,16 +84,16 @@ class wdgInformeHistorico(QWidget, Ui_wdgInformeHistorico):
 
     def load_rendimientos(self):
         inicio=datetime.date(self.wy.year-1, 12, 31)
-        cur=self.cfg.con.cursor()
+        cur=self.mem.con.cursor()
         cur.execute("select sum(importe) as suma from opercuentas where id_conceptos=59 and date_part('year',fecha)="+str(self.wy.year))
         sumcomisioncustodia=cur.fetchone()[0]        
         if sumcomisioncustodia==None:
             sumcomisioncustodia=0
             
-        saldototal=Patrimonio(self.cfg).saldo_total(self.cfg.data.inversiones_all() ,  datetime.date.today());
-        saldototalinicio=Patrimonio(self.cfg).saldo_total( self.cfg.data.inversiones_all(), inicio)
+        saldototal=Patrimonio(self.mem).saldo_total(self.mem.data.inversiones_all() ,  datetime.date.today());
+        saldototalinicio=Patrimonio(self.mem).saldo_total( self.mem.data.inversiones_all(), inicio)
         if self.totalBruto>0:
-            impxplus=-self.totalBruto*self.cfg.taxcapitalappreciation
+            impxplus=-self.totalBruto*self.mem.taxcapitalappreciation
         else:            
             impxplus=0
         
@@ -122,49 +122,49 @@ class wdgInformeHistorico(QWidget, Ui_wdgInformeHistorico):
             tpcretenciondividends=self.totalDividendsRetenciones*100/saldototalinicio
 
         self.tblEstudio.horizontalHeaderItem(1).setText(("% TAE desde "+str(inicio)))
-        self.lblSaldo.setText(self.tr("Saldo a {0}, {1}".format(str(inicio), self.cfg.localcurrency.string(saldototalinicio))))
+        self.lblSaldo.setText(self.tr("Saldo a {0}, {1}".format(str(inicio), self.mem.localcurrency.string(saldototalinicio))))
 
-        self.tblEstudio.setItem(0, 0,self.cfg.localcurrency.qtablewidgetitem(self.totalBruto))       
+        self.tblEstudio.setItem(0, 0,self.mem.localcurrency.qtablewidgetitem(self.totalBruto))       
         self.tblEstudio.setItem(0, 1,qtpc(tpcplus))            
 
-        self.tblEstudio.setItem(1, 0,self.cfg.localcurrency.qtablewidgetitem(self.totalComisiones))       
+        self.tblEstudio.setItem(1, 0,self.mem.localcurrency.qtablewidgetitem(self.totalComisiones))       
         self.tblEstudio.setItem(1, 1,qtpc(tpcsumcomision))     
 
-        self.tblEstudio.setItem(2, 0,self.cfg.localcurrency.qtablewidgetitem(self.totalImpuestos))       
+        self.tblEstudio.setItem(2, 0,self.mem.localcurrency.qtablewidgetitem(self.totalImpuestos))       
         self.tblEstudio.setItem(2, 1,qtpc(tpcsumimpuestos))    
         
-        self.tblEstudio.setItem(3, 0,self.cfg.localcurrency.qtablewidgetitem(self.totalNeto))    #Lo que sale en total y patrimonio   
+        self.tblEstudio.setItem(3, 0,self.mem.localcurrency.qtablewidgetitem(self.totalNeto))    #Lo que sale en total y patrimonio   
         self.tblEstudio.setItem(3, 1,qtpc(tpcneto))      
 
-        self.tblEstudio.setItem(5, 0,self.cfg.localcurrency.qtablewidgetitem(self.totalDividendsBrutos))       
+        self.tblEstudio.setItem(5, 0,self.mem.localcurrency.qtablewidgetitem(self.totalDividendsBrutos))       
         self.tblEstudio.setItem(5, 1,qtpc(tpcdividendsbrutos))     
         
-        self.tblEstudio.setItem(6, 0,self.cfg.localcurrency.qtablewidgetitem(self.totalDividendsRetenciones))       
+        self.tblEstudio.setItem(6, 0,self.mem.localcurrency.qtablewidgetitem(self.totalDividendsRetenciones))       
         self.tblEstudio.setItem(6, 1,qtpc(tpcretenciondividends))            
 
-        self.tblEstudio.setItem(7, 0,self.cfg.localcurrency.qtablewidgetitem(self.totalDividendsNetos))       
+        self.tblEstudio.setItem(7, 0,self.mem.localcurrency.qtablewidgetitem(self.totalDividendsNetos))       
         self.tblEstudio.setItem(7, 1,qtpc(tpcdividendsnetos))                
         
-        self.tblEstudio.setItem(9, 0,self.cfg.localcurrency.qtablewidgetitem(sumcomisioncustodia))       
+        self.tblEstudio.setItem(9, 0,self.mem.localcurrency.qtablewidgetitem(sumcomisioncustodia))       
         self.tblEstudio.setItem(9, 1,qtpc(tpcsumcustodia))      
 
-        self.tblEstudio.setItem(11, 0,self.cfg.localcurrency.qtablewidgetitem(impxplus))     
+        self.tblEstudio.setItem(11, 0,self.mem.localcurrency.qtablewidgetitem(impxplus))     
         self.tblEstudio.setItem(11, 1, qtpc(tpcimpxplus))
 
 
-        self.tblEstudio.setItem(13, 0,self.cfg.localcurrency.qtablewidgetitem(beneficiosin))       
+        self.tblEstudio.setItem(13, 0,self.mem.localcurrency.qtablewidgetitem(beneficiosin))       
         try:
             self.tblEstudio.setItem(13, 1,qtpc((beneficiosin)*100/saldototalinicio))            
         except:
             self.tblEstudio.setItem(13, 1,qtpc(None))     
 
-        self.tblEstudio.setItem(14, 0,self.cfg.localcurrency.qtablewidgetitem(beneficiopag))       
+        self.tblEstudio.setItem(14, 0,self.mem.localcurrency.qtablewidgetitem(beneficiopag))       
         try:
             self.tblEstudio.setItem(14, 1,qtpc((beneficiopag)*100/saldototalinicio))            
         except:
             self.tblEstudio.setItem(14,  1,qtpc(None))     
 
-        self.tblEstudio.setItem(16, 0,self.cfg.localcurrency.qtablewidgetitem(saldototal))       
+        self.tblEstudio.setItem(16, 0,self.mem.localcurrency.qtablewidgetitem(saldototal))       
         try:
             self.tblEstudio.setItem(16, 1,qtpc((saldototal-saldototalinicio)*100/saldototalinicio))            
         except:

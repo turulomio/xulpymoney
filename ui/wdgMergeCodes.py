@@ -5,16 +5,16 @@ from Ui_wdgMergeCodes import *
 from libxulpymoney import *
 
 class wdgMergeCodes(QWidget, Ui_wdgMergeCodes):
-    def __init__(self, cfg,  idorigen, iddestino, parent = None, name = None, modal = False):
+    def __init__(self, mem,  idorigen, iddestino, parent = None, name = None, modal = False):
         QWidget.__init__(self,  parent)
-        self.cfg=cfg
+        self.mem=mem
         self.idorigen=idorigen
         self.iddestino=iddestino
         if name:
             self.setObjectName(name)
         self.setupUi(self)
 
-        self.table.settings("wdgMergeCodes",  self.cfg)    
+        self.table.settings("wdgMergeCodes",  self.mem)    
         self.reload()
         
     def on_cmdInterchange_released(self):
@@ -25,12 +25,12 @@ class wdgMergeCodes(QWidget, Ui_wdgMergeCodes):
     
     def reload(self):
         #Carga tabla origen
-        con=self.cfg.connect_mystocks()
+        con=self.mem.connect_mystocks()
         cur = con.cursor()
         cur.execute("select * from products where id=%s", (self.iddestino, ))
         d=cur.fetchone()
         icon=QtGui.QIcon()
-        icon.addPixmap(qpixmap_pais(self.cfg.bolsas[str(d['id_bolsas'])].country), QtGui.QIcon.Normal, QtGui.QIcon.Off)    
+        icon.addPixmap(qpixmap_pais(self.mem.bolsas[str(d['id_bolsas'])].country), QtGui.QIcon.Normal, QtGui.QIcon.Off)    
         self.table.setItem(0, 0, qcenter(str(self.iddestino)))
         self.table.item(0, 0).setIcon(icon)
         self.table.setItem(0, 1, QTableWidgetItem(d['name']))
@@ -47,7 +47,7 @@ class wdgMergeCodes(QWidget, Ui_wdgMergeCodes):
         cur.execute("select * from products  where id=%s;", (self.idorigen, ))
         o=cur.fetchone()
         icon=QtGui.QIcon()
-        icon.addPixmap(qpixmap_pais(self.cfg.bolsas[str(o['id_bolsas'])].country), QtGui.QIcon.Normal, QtGui.QIcon.Off)    
+        icon.addPixmap(qpixmap_pais(self.mem.bolsas[str(o['id_bolsas'])].country), QtGui.QIcon.Normal, QtGui.QIcon.Off)    
         self.table.setItem(1, 0, qcenter(str(self.idorigen)))
         self.table.item(1, 0).setIcon(icon)
         self.table.setItem(1, 1, QTableWidgetItem(o['name']))
@@ -58,7 +58,7 @@ class wdgMergeCodes(QWidget, Ui_wdgMergeCodes):
         cur.execute("select count(*) from estimaciones where id=%s", (self.idorigen, ))
         self.table.setItem(1, 5, QTableWidgetItem(str(cur.fetchone()[0])))
         cur.close()     
-        self.cfg.disconnect_mystocksd(con)         
+        self.mem.disconnect_mystocksd(con)         
         
         if o['deletable']==False:
             m=QMessageBox()
@@ -72,10 +72,10 @@ class wdgMergeCodes(QWidget, Ui_wdgMergeCodes):
         
   
     def on_cmd_released(self):
-        con=self.cfg.connect_mystocks()
+        con=self.mem.connect_mystocks()
         cur = con.cursor()
         cur.execute("select merge_codes(%s,%s)",(self.iddestino, self.idorigen ))
         con.commit()
         cur.close()     
-        self.cfg.disconnect_mystocksd(con)         
+        self.mem.disconnect_mystocksd(con)         
         self.cmd.setEnabled(False)

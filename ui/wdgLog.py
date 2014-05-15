@@ -6,12 +6,12 @@ from libxulpymoney import *
 import os
 
 class wdgLog(QWidget, Ui_wdgLog):
-    def __init__(self, cfg,    parent=None):
+    def __init__(self, mem,    parent=None):
         QWidget.__init__(self, parent)
         self.setupUi(self)
-        self.cfg=cfg
+        self.mem=mem
         self.filtro=''
-        self.table.settings("wdgLog",  self.cfg)    
+        self.table.settings("wdgLog",  self.mem)    
         self.timerStatus = QTimer()
         self.timerLog = QTimer()
         QObject.connect(self.timerStatus, SIGNAL("timeout()"), self.updateStatus)    
@@ -32,7 +32,7 @@ class wdgLog(QWidget, Ui_wdgLog):
     def updateStatus(self ):		
         self.table.clearContents()
         now=datetime.datetime.now()
-        con=self.cfg.connect_mystocks()
+        con=self.mem.connect_mystocks()
         cur = con.cursor()
         cur.execute("select * from status order by source, process;")
         self.table.setRowCount(cur.rowcount+1)
@@ -60,7 +60,7 @@ class wdgLog(QWidget, Ui_wdgLog):
         self.table.setItem(cur.rownumber, 0, qcenter("TOTAL"))
         self.table.setItem(cur.rownumber, 4, qright(str(numinternet)))
         cur.close()     
-        self.cfg.disconnect_mystocksd(con)         
+        self.mem.disconnect_mystocksd(con)         
         self.lblLastUpdateStatus.setText(self.trUtf8("Última actualización: {0}".format(str(now)[:-7])))
         
     def on_cmd_pressed(self):

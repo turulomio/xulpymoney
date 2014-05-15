@@ -3,8 +3,8 @@ import gettext,  multiprocessing
 from libmystocks import *
 
 class Carmignac(Source):
-    def __init__(self,  cfg):
-        Source.__init__(self, cfg)
+    def __init__(self,  mem):
+        Source.__init__(self, mem)
         self.time_before_dividends=180
         self.time_after_dividends=86400
         self.time_before_quotes=0
@@ -27,7 +27,7 @@ class Carmignac(Source):
         
     def arr_dividends(self):
         resultado=[]
-        con=self.cfg.connect_mystocksd()
+        con=self.mem.connect_mystocksd()
         cur=con.cursor()
         cur.execute("select code from products where dividend<>0 and agrupations like '%|CARMIGNAC|%'")
         if cur.rowcount!=0:
@@ -35,7 +35,7 @@ class Carmignac(Source):
                 d={"code":row['code'], "dividend": 0}
                 resultado.append(d)
         cur.close()
-        self.cfg.disconnect_mystocksd(con)            
+        self.mem.disconnect_mystocksd(con)            
         return resultado
     
     def arr_quotes(self):  

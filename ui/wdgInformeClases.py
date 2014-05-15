@@ -10,7 +10,7 @@ from matplotlib.figure import Figure
 class canvasPie(FigureCanvas):
     def __init__(self, parent=None):
         """
-        cfg. Fichero configuración
+        mem. Fichero configuración
         fracs. Datos a dibujar
         explode. Valor para esplotar datos"""
         self.fig = Figure()
@@ -65,10 +65,10 @@ class canvasPie(FigureCanvas):
 
 
 class wdgInformeClases(QWidget, Ui_wdgInformeClases):
-    def __init__(self, cfg,  parent=None):
+    def __init__(self, mem,  parent=None):
         QWidget.__init__(self, parent)
         self.setupUi(self)
-        self.cfg=cfg
+        self.mem=mem
         self.saldos={}#Variable que cachea todos los saldos
         self.hoy=datetime.date.today()
 
@@ -85,7 +85,7 @@ class wdgInformeClases(QWidget, Ui_wdgInformeClases):
         self.canvasProduct=canvasPie(self)
         self.layProduct.addWidget(self.canvasProduct)      
         
-        self.cuentas=Patrimonio(self.cfg).saldo_todas_cuentas(self.hoy)
+        self.cuentas=Patrimonio(self.mem).saldo_todas_cuentas(self.hoy)
         self.tab.setCurrentIndex(2)
         self.update()
                
@@ -109,7 +109,7 @@ class wdgInformeClases(QWidget, Ui_wdgInformeClases):
         explode=[]
         for r in range(0, 11):
             total=0
-            for i in self.cfg.data.inversiones_active.arr:
+            for i in self.mem.data.inversiones_active.arr:
                 if math.ceil(i.product.tpc/10.0)==r:
                     if self.radCurrent.isChecked():
                         total=total+i.saldo()
@@ -131,9 +131,9 @@ class wdgInformeClases(QWidget, Ui_wdgInformeClases):
         data=[]
         explode=[]
 
-        for m in self.cfg.investmentsmodes.list():
+        for m in self.mem.investmentsmodes.list():
             total=0
-            for i in self.cfg.data.inversiones_active.arr:
+            for i in self.mem.data.inversiones_active.arr:
                 if i.product.mode==m:
                     if self.radCurrent.isChecked():
                         total=total+i.saldo()
@@ -153,10 +153,10 @@ class wdgInformeClases(QWidget, Ui_wdgInformeClases):
         labels=[]
         data=[]
         explode=[]
-        for t in self.cfg.types.list():
+        for t in self.mem.types.list():
 #            id_type=int(id_type)
             total=0
-            for i in self.cfg.data.inversiones_active.arr:
+            for i in self.mem.data.inversiones_active.arr:
                 if i.product.type==t:
                     if self.radCurrent.isChecked():
                         total=total+i.saldo()
@@ -177,9 +177,9 @@ class wdgInformeClases(QWidget, Ui_wdgInformeClases):
         data=[]
         explode=[]
                 
-        for a in self.cfg.apalancamientos.list():
+        for a in self.mem.apalancamientos.list():
             total=0
-            for i in self.cfg.data.inversiones_active.arr:
+            for i in self.mem.data.inversiones_active.arr:
                 if i.product.apalancado==a:
                     if self.radCurrent.isChecked():
                         total=total+i.saldo()
@@ -199,9 +199,9 @@ class wdgInformeClases(QWidget, Ui_wdgInformeClases):
         data=[]
         explode=[]
                 
-        for c in self.cfg.countries.list():
+        for c in self.mem.countries.list():
             total=0
-            for i in self.cfg.data.inversiones_active.arr:
+            for i in self.mem.data.inversiones_active.arr:
                 if i.product.bolsa.country==c:
                     if self.radCurrent.isChecked():
                         total=total+i.saldo()
@@ -220,21 +220,21 @@ class wdgInformeClases(QWidget, Ui_wdgInformeClases):
         explode=[]
         #Saca products active
         s=set([])
-        for i in self.cfg.data.inversiones_active.arr:
+        for i in self.mem.data.inversiones_active.arr:
             s.add(i.product)
         
         arr=list(s)
         if self.radCurrent.isChecked():
-            arr=sorted(arr, key=lambda inv: self.cfg.data.inversiones_active.saldo_misma_investment(inv),  reverse=True) 
+            arr=sorted(arr, key=lambda inv: self.mem.data.inversiones_active.saldo_misma_investment(inv),  reverse=True) 
         else:
-            arr=sorted(arr, key=lambda inv: self.cfg.data.inversiones_active.invertido_misma_investment(inv),  reverse=True) 
+            arr=sorted(arr, key=lambda inv: self.mem.data.inversiones_active.invertido_misma_investment(inv),  reverse=True) 
    
         for i in arr:
             labels.append(i.name)
             if self.radCurrent.isChecked():
-                data.append(self.cfg.data.inversiones_active.saldo_misma_investment(i))
+                data.append(self.mem.data.inversiones_active.saldo_misma_investment(i))
             else:
-                data.append(self.cfg.data.inversiones_active.invertido_misma_investment(i))
+                data.append(self.mem.data.inversiones_active.invertido_misma_investment(i))
             explode.append(0)
         labels.append(self.trUtf8("Accounts"))
         data.append(self.cuentas)
