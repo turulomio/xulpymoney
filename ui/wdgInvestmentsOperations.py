@@ -16,23 +16,36 @@ class wdgInvestmentsOperations(QWidget, Ui_wdgInvestmentsOperations):
         self.mem.data.load_inactives()
         self.wym.initiate(fechainicio.year, datetime.date.today().year, datetime.date.today().year,  datetime.date.today().month)
         QObject.connect(self.wym, SIGNAL("changed"), self.on_wym_changed)
-        self.set=SetInversionOperacion(self.mem)
+        self.setOperations=SetInversionOperacion(self.mem)
+        self.setCurrent=SetInversionOperacionActual(self.mem)
         self.selProductOperation=None
+        self.tblCurrent.settings("wdgInvestmentsOperations",  self.mem)
         self.load()
+        self.load_current()
         
     def load(self):
-        del self.set.arr
-        self.set.arr=[]
+        del self.setOperations.arr
+        self.setOperations.arr=[]
         cur=self.mem.con.cursor()
         if self.radYear.isChecked()==True:
             cur.execute("select * from operinversiones where date_part('year',datetime)=%s order by datetime",(self.wym.year, ) )
         else:
             cur.execute("select * from operinversiones where date_part('year',datetime)=%s and date_part('month',datetime)=%s order by datetime",(self.wym.year, self.wym.month) )
         for row in cur:
-            self.set.append(InversionOperacion(self.mem).init__db_row(row, self.mem.data.inversiones_all().find(row['id_inversiones']), self.mem.tiposoperaciones.find(row['id_tiposoperaciones'])))
+            self.setOperations.append(InversionOperacion(self.mem).init__db_row(row, self.mem.data.inversiones_all().find(row['id_inversiones']), self.mem.tiposoperaciones.find(row['id_tiposoperaciones'])))
         cur.close()
         
-        self.set.myqtablewidget(self.table, None)
+        self.setOperations.myqtablewidget(self.table, None)
+        
+    def load_current(self):
+        for inv in self.mem.data.inversiones_active.arr:
+            for o in inv.op_actual.arr:
+                self.setCurrent.append(o)
+        self.setCurrent.sort()
+        self.setCurrent.myqtablewidget(self.tblCurrent, None)
+
+        
+        
         
     def on_radYear_toggled(self, toggle):
         self.load()
@@ -43,7 +56,7 @@ class wdgInvestmentsOperations(QWidget, Ui_wdgInvestmentsOperations):
     def on_table_itemSelectionChanged(self):
         self.selProductOperation=None
         for i in self.table.selectedItems():#itera por cada item no row.
-            self.selProductOperation=self.set.arr[i.row()]
+            self.selProductOperation=self.setOperations.arr[i.row()]
     
     @QtCore.pyqtSlot() 
     def on_actionShowAccount_activated(self):

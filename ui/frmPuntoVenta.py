@@ -35,6 +35,7 @@ class frmPuntoVenta(QDialog, Ui_frmPuntoVenta):
 
         self.table.settings(None,  self.mem)
         self.tableSP.settings(None,  self.mem)
+        self.__calcular()
 #        self.on_radTPC_toggled(True)
         
     def __calcular(self):    
@@ -76,7 +77,8 @@ class frmPuntoVenta(QDialog, Ui_frmPuntoVenta):
                 table.setItem(i, 6, self.inversion.product.currency.qtablewidgetitem(pendiente))
             table.setItem(len(self.operinversiones), 1, qright("Total"))        
             table.setItem(len(self.operinversiones), 3, qright(str(sumacciones)))
-            table.setItem(len(self.operinversiones), 4, self.inversion.product.currency.qtablewidgetitem(suminvertido/sumacciones))
+            if sumacciones!=0:
+                table.setItem(len(self.operinversiones), 4, self.inversion.product.currency.qtablewidgetitem(suminvertido/sumacciones))
             table.setItem(len(self.operinversiones), 5, self.inversion.product.currency.qtablewidgetitem(suminvertido))
             table.setItem(len(self.operinversiones), 6, self.inversion.product.currency.qtablewidgetitem(sumpendiente))
             return (sumacciones, suminvertido, sumpendiente)
@@ -92,7 +94,9 @@ class frmPuntoVenta(QDialog, Ui_frmPuntoVenta):
             if self.radTPC.isChecked()==True:
                 tpc=Decimal(self.cmbTPC.currentText().replace(" %", ""))
                 self.puntoventa=round(suminvertido*(1+tpc/100)/sumacciones, 2)
-            else:
+            elif self.radPrice.isChecked()==True:
+                self.puntoventa=Decimal(self.txtPrice.text())
+            elif self.radGain.isChecked()==True:
                 if self.txtGanancia.isValid():#Si hay un numero bien
                     self.puntoventa=round((self.txtGanancia.decimal()+suminvertido)/sumacciones, 2)
                     self.cmd.setEnabled(True)
@@ -100,6 +104,8 @@ class frmPuntoVenta(QDialog, Ui_frmPuntoVenta):
                     self.puntoventa=0
                     self.cmd.setEnabled(False)
 
+        self.tab.setTabText(1, self.trUtf8("Selling point: {0}".format(self.mem.localcurrency.string(self.puntoventa))) )
+        self.tab.setTabText(0, self.trUtf8("Current state: {0}".format(self.mem.localcurrency.string(self.inversion.product.result.basic.last.quote))) )
         (sumacciones, suminvertido, sumpendiente)=load_table(self.tableSP, Quote(self.mem).init__create(self.inversion.product, self.mem.localzone.now(), self.puntoventa))                    
         
         if self.chkPonderanAll.checkState()==Qt.Checked:
@@ -113,11 +119,20 @@ class frmPuntoVenta(QDialog, Ui_frmPuntoVenta):
         self.cmbTPC.setEnabled(toggle)
         self.__calcular()
         
+    def on_radPrice_clicked(self):
+        self.__calcular()
+        
+    def on_radGain_clicked(self):
+        self.__calcular()
+        
     @QtCore.pyqtSlot(str) 
     def on_cmbTPC_currentIndexChanged(self, cur):
         self.__calcular()
         
     def on_txtGanancia_textChanged(self):
+        self.__calcular()
+        
+    def on_txtPrice_textChanged(self):
         self.__calcular()
         
     def on_chkPonderanAll_stateChanged(self, state):
@@ -136,7 +151,7 @@ class frmPuntoVenta(QDialog, Ui_frmPuntoVenta):
             for o in self.operinversiones:
                 if o.inversion not in invs:
                     invs.add(o.inversion)
-            
+            print (list(invs))
             for inv in list(invs):
                 inv.venta=self.puntoventa
                 inv.save()
