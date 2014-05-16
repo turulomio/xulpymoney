@@ -95,7 +95,12 @@ class frmPuntoVenta(QDialog, Ui_frmPuntoVenta):
                 tpc=Decimal(self.cmbTPC.currentText().replace(" %", ""))
                 self.puntoventa=round(suminvertido*(1+tpc/100)/sumacciones, 2)
             elif self.radPrice.isChecked()==True:
-                self.puntoventa=Decimal(self.txtPrice.text())
+                if self.txtPrice.isValid():#Si hay un numero bien
+                    self.puntoventa=Decimal(self.txtPrice.text())
+                    self.cmd.setEnabled(True)
+                else:
+                    self.puntoventa=0
+                    self.cmd.setEnabled(False)
             elif self.radGain.isChecked()==True:
                 if self.txtGanancia.isValid():#Si hay un numero bien
                     self.puntoventa=round((self.txtGanancia.decimal()+suminvertido)/sumacciones, 2)
@@ -112,11 +117,8 @@ class frmPuntoVenta(QDialog, Ui_frmPuntoVenta):
             self.cmd.setText("Grabar el punto de venta a todas las inversiones de {0} € para ganar {1}".format(self.puntoventa, self.inversion.product.currency.string(sumpendiente)))
         else:
             self.cmd.setText("Asignar el punto de venta de {0} acciones a {1} € para ganar {2} €".format(sumacciones, self.puntoventa, self.inversion.product.currency.string(sumpendiente)))
-        
 
-
-    def on_radTPC_toggled(self, toggle):
-        self.cmbTPC.setEnabled(toggle)
+    def on_radTPC_clicked(self):
         self.__calcular()
         
     def on_radPrice_clicked(self):
