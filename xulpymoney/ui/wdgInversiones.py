@@ -243,4 +243,8 @@ class wdgInversiones(QWidget, Ui_wdgInversiones):
             m.exec_()     
         if column==8:#TPC venta
             f=frmPuntoVenta(self.mem, self.selInversion)
+            f.txtPrice.setText(self.selInversion.venta)
             f.exec_()
+            self.selInversion.venta=f.txtPrice.decimal()
+            self.selInversion.save()
+            self.mem.con.commit()

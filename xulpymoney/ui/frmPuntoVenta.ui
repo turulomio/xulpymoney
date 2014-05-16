@@ -328,12 +328,44 @@
    <slot>toggle()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>231</x>
-     <y>98</y>
+     <x>361</x>
+     <y>133</y>
     </hint>
     <hint type="destinationlabel">
-     <x>63</x>
-     <y>103</y>
+     <x>76</x>
+     <y>130</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>txtPrice</sender>
+   <signal>textEdited(QString)</signal>
+   <receiver>radPrice</receiver>
+   <slot>toggle()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>398</x>
+     <y>156</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>86</x>
+     <y>155</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>cmbTPC</sender>
+   <signal>currentIndexChanged(QString)</signal>
+   <receiver>radTPC</receiver>
+   <slot>toggle()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>465</x>
+     <y>86</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>241</x>
+     <y>86</y>
     </hint>
    </hints>
   </connection>

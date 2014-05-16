@@ -2595,107 +2595,107 @@ seleccionados por el usuario</source>
 <context>
     <name>frmPuntoVenta</name>
     <message>
-        <location filename="ui/Ui_frmPuntoVenta.py" line="171"/>
+        <location filename="ui/Ui_frmPuntoVenta.py" line="173"/>
         <source>Xulpymoney &gt; Inversiones &gt; Punto de venta</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmPuntoVenta.py" line="172"/>
+        <location filename="ui/Ui_frmPuntoVenta.py" line="174"/>
         <source>C&#xc3;&#xa1;lculo del punto de venta</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmPuntoVenta.py" line="174"/>
+        <location filename="ui/Ui_frmPuntoVenta.py" line="176"/>
         <source>Selecciona un porcentaje de ganancia de lo invertido</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmPuntoVenta.py" line="175"/>
+        <location filename="ui/Ui_frmPuntoVenta.py" line="177"/>
         <source>2.5 %</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmPuntoVenta.py" line="176"/>
+        <location filename="ui/Ui_frmPuntoVenta.py" line="178"/>
         <source>5 %</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmPuntoVenta.py" line="177"/>
+        <location filename="ui/Ui_frmPuntoVenta.py" line="179"/>
         <source>7.5 %</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmPuntoVenta.py" line="178"/>
+        <location filename="ui/Ui_frmPuntoVenta.py" line="180"/>
         <source>10 %</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmPuntoVenta.py" line="179"/>
+        <location filename="ui/Ui_frmPuntoVenta.py" line="181"/>
         <source>15 %</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmPuntoVenta.py" line="180"/>
+        <location filename="ui/Ui_frmPuntoVenta.py" line="182"/>
         <source>20 %</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmPuntoVenta.py" line="181"/>
+        <location filename="ui/Ui_frmPuntoVenta.py" line="183"/>
         <source>25 %</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmPuntoVenta.py" line="186"/>
+        <location filename="ui/Ui_frmPuntoVenta.py" line="188"/>
         <source>Introduce la ganancia</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmPuntoVenta.py" line="184"/>
+        <location filename="ui/Ui_frmPuntoVenta.py" line="186"/>
         <source>1000</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmPuntoVenta.py" line="190"/>
+        <location filename="ui/Ui_frmPuntoVenta.py" line="192"/>
         <source>&#xc2;&#xbf;Ponderan las acciones de todas inversiones del mismo activo?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmPuntoVenta.py" line="207"/>
+        <location filename="ui/Ui_frmPuntoVenta.py" line="209"/>
         <source>D&#xc3;&#xad;a</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmPuntoVenta.py" line="209"/>
+        <location filename="ui/Ui_frmPuntoVenta.py" line="211"/>
         <source>Inversi&#xc3;&#xb3;n (Entidad Bancaria)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmPuntoVenta.py" line="211"/>
+        <location filename="ui/Ui_frmPuntoVenta.py" line="213"/>
         <source>Tipo Operaci&#xc3;&#xb3;n</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmPuntoVenta.py" line="213"/>
+        <location filename="ui/Ui_frmPuntoVenta.py" line="215"/>
         <source>Acciones</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmPuntoVenta.py" line="215"/>
+        <location filename="ui/Ui_frmPuntoVenta.py" line="217"/>
         <source>Valor compra</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmPuntoVenta.py" line="217"/>
+        <location filename="ui/Ui_frmPuntoVenta.py" line="219"/>
         <source>Invertido</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmPuntoVenta.py" line="219"/>
+        <location filename="ui/Ui_frmPuntoVenta.py" line="221"/>
         <source>Pendiente</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmPuntoVenta.py" line="221"/>
+        <location filename="ui/Ui_frmPuntoVenta.py" line="223"/>
         <source>Asignar el punto de venta de 0 &#xe2;&#x82;&#xac;</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2705,12 +2705,12 @@ seleccionados por el usuario</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmPuntoVenta.py" line="173"/>
+        <location filename="ui/Ui_frmPuntoVenta.py" line="175"/>
         <source>Selecciona la ganancia</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmPuntoVenta.py" line="188"/>
+        <location filename="ui/Ui_frmPuntoVenta.py" line="190"/>
         <source>Opciones de c&#xc3;&#xa1;lculo del punto de venta</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2720,72 +2720,72 @@ seleccionados por el usuario</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmPuntoVenta.py" line="205"/>
+        <location filename="ui/Ui_frmPuntoVenta.py" line="207"/>
         <source>Current state</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmPuntoVenta.py" line="220"/>
+        <location filename="ui/Ui_frmPuntoVenta.py" line="222"/>
         <source>Selling point state</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmPuntoVenta.py" line="189"/>
+        <location filename="ui/Ui_frmPuntoVenta.py" line="191"/>
         <source>Remove operations less than a year</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmPuntoVenta.py" line="107"/>
+        <location filename="ui/frmPuntoVenta.py" line="112"/>
         <source>Selling point: {0}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmPuntoVenta.py" line="108"/>
+        <location filename="ui/frmPuntoVenta.py" line="113"/>
         <source>Current state: {0}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmPuntoVenta.py" line="182"/>
+        <location filename="ui/Ui_frmPuntoVenta.py" line="184"/>
         <source>Slect a gain</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmPuntoVenta.py" line="185"/>
+        <location filename="ui/Ui_frmPuntoVenta.py" line="187"/>
         <source>Select a price</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmPuntoVenta.py" line="192"/>
+        <location filename="ui/Ui_frmPuntoVenta.py" line="194"/>
         <source>Date</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmPuntoVenta.py" line="194"/>
+        <location filename="ui/Ui_frmPuntoVenta.py" line="196"/>
         <source>Investment (Bank)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmPuntoVenta.py" line="196"/>
+        <location filename="ui/Ui_frmPuntoVenta.py" line="198"/>
         <source>Operation type</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmPuntoVenta.py" line="198"/>
+        <location filename="ui/Ui_frmPuntoVenta.py" line="200"/>
         <source>Shares</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmPuntoVenta.py" line="200"/>
+        <location filename="ui/Ui_frmPuntoVenta.py" line="202"/>
         <source>Bought price</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmPuntoVenta.py" line="202"/>
+        <location filename="ui/Ui_frmPuntoVenta.py" line="204"/>
         <source>Invested</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmPuntoVenta.py" line="187"/>
+        <location filename="ui/Ui_frmPuntoVenta.py" line="189"/>
         <source>10</source>
         <translation type="unfinished"></translation>
     </message>
