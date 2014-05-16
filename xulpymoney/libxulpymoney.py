@@ -1005,8 +1005,11 @@ class SetInversionOperacion:
         tabla.clearContents()
         tabla.settings(section,  self.mem)       
         tabla.setRowCount(len(self.arr))
+        gainsyear=str2bool(self.mem.config.get_value("settings", "gainsyear"))
         for rownumber, a in enumerate(self.arr):
             tabla.setItem(rownumber, 0, qdatetime(a.datetime, a.inversion.product.bolsa.zone))
+            if gainsyear==True and a.less_than_a_year()==True:
+                tabla.item(rownumber, 0).setIcon(QIcon(":/xulpymoney/new.png"))
             if homogeneous==False:
                 tabla.setItem(rownumber, diff-1, qleft(a.inversion.name))
                 tabla.setItem(rownumber, diff, qleft(a.inversion.cuenta.name))
@@ -1134,6 +1137,7 @@ class SetInversionOperacionActual:
         tabla.clearContents()
         tabla.setRowCount(len(self.arr)+1)
         rownumber=0
+        gainsyear=str2bool(self.mem.config.get_value("settings", "gainsyear"))
         for rownumber, a in enumerate(self.arr):
             sumacciones=Decimal(sumacciones)+Decimal(str(a.acciones))
             saldo=a.saldo(inversion.product.result.basic.last)
@@ -1146,6 +1150,8 @@ class SetInversionOperacionActual:
             sum_accionesXvalor=sum_accionesXvalor+a.acciones*a.valor_accion
     
             tabla.setItem(rownumber, 0, qdatetime(a.datetime, inversion.product.bolsa.zone))
+            if gainsyear==True and a.less_than_a_year()==True:
+                tabla.item(rownumber, 0).setIcon(QIcon(":/xulpymoney/new.png"))
             if homogeneous==False:
                 tabla.setItem(rownumber, diff-1, qleft(a.inversion.name))
                 tabla.setItem(rownumber, diff, qleft(a.inversion.cuenta.name))
@@ -2006,6 +2012,11 @@ class InversionOperacion:
         else:
             return self.comentario
 
+    def less_than_a_year(self):
+        if datetime.date.today()-self.datetime.date()<=datetime.timedelta(days=365):
+                return True
+        return False
+        
     def save(self, recalculate=True):
         cur=self.mem.con.cursor()
         cur2=self.mem.con.cursor()
