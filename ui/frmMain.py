@@ -23,13 +23,13 @@ from frmHelp import *
 
 class frmMain(QMainWindow, Ui_frmMain):
     """Clase principal del programa"""
-    def __init__(self, parent = 0,  flags = False):
+    def __init__(self, mem, parent = 0,  flags = False):
         QMainWindow.__init__(self, None)
         self.setupUi(self)
         self.showMaximized()
         self.setWindowTitle(self.trUtf8("Xulpymoney 2010-{0} ©".format(version[:4])))
         
-        self.mem=MemXulpymoney()
+        self.mem=mem
         
         self.w=QWidget()       
         
@@ -178,6 +178,7 @@ class frmMain(QMainWindow, Ui_frmMain):
     def on_actionSettings_activated(self):
         w=frmSettings(self.mem)
         w.exec_()
+        self.retranslateUi(self)
 
     @QtCore.pyqtSlot()  
     def on_actionTransferencia_activated(self):

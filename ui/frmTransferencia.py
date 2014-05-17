@@ -13,8 +13,8 @@ class frmTransferencia(QDialog, Ui_frmTransferencia):
         self.origen=origen
         self.destino=destino
         
-        self.mem.data.cuentas_active.load_qcombobox(self.cmbOrigen,  origen)
-        self.mem.data.cuentas_active.load_qcombobox(self.cmbDestino,  destino)
+        self.mem.data.cuentas_active.qcombobox(self.cmbOrigen,  origen)
+        self.mem.data.cuentas_active.qcombobox(self.cmbDestino,  destino)
 
 
     def on_cmd_pressed(self):

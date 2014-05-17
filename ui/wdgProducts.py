@@ -15,7 +15,7 @@ class wdgProducts(QWidget, Ui_wdgProducts):
         self.products=[]#Es una lista de products
         self.selProduct=None##Objeto de inversion seleccionado
         self.tblInversiones.settings("wdgProducts",  self.mem)    
-        self.mem.bolsas.load_qcombobox(self.cmbStockExchange)
+        self.mem.bolsas.qcombobox(self.cmbStockExchange)
         self.setFavoritos=set(self.mem.config.get_list( "wdgProducts", "favoritos"))
         self.progress = QProgressDialog(self.tr("Recibiendo datos solicitados"), self.tr("Cancelar"), 0,0)
         self.progress.setModal(True)

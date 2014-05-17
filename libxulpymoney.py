@@ -308,7 +308,7 @@ class SetProductsModes:
         self.dic_arr['c']=ProductMode(self.mem).init__create("c",QApplication.translate("Core","Call"))
         self.dic_arr['i']=ProductMode(self.mem).init__create("i",QApplication.translate("Core","Inline"))
         
-    def load_qcombobox(self, combo):
+    def qcombobox(self, combo):
         """Carga conceptos operaciones 1,2,3"""
         for c in self.list():
             combo.addItem(c.name, c.id)
@@ -335,7 +335,7 @@ class SetStockExchanges:
             self.dic_arr[str(row['id_bolsas'])]=StockExchange(self.mem).init__db_row(row, self.mem.countries.find(row['country']))
         curms.close()
             
-    def load_qcombobox(self, combo):
+    def qcombobox(self, combo):
         for c in self.list():
             combo.addItem(c.country.qicon(), c.name, c.id)
             
@@ -465,6 +465,8 @@ class SetCountries:
         self.dic_arr['nl']=Country().init__create("nl",QApplication.translate("Core","Netherlands"))
         self.dic_arr['pt']=Country().init__create("pt",QApplication.translate("Core","Portugal"))
         self.dic_arr['us']=Country().init__create("us",QApplication.translate("Core","United States of America"))
+        self.dic_arr['ro']=Country().init__create("ro",QApplication.translate("Core","Romanian"))
+        self.dic_arr['ru']=Country().init__create("ru",QApplication.translate("Core","Rusia"))
                 
 
     def list(self):
@@ -475,7 +477,7 @@ class SetCountries:
         
     def find(self, id):
         return self.dic_arr[str(id)]
-    def load_qcombobox(self, combo,  country=None):
+    def qcombobox(self, combo,  country=None):
         """Función que carga en un combo pasado como parámetro y con un SetCuentas pasado como parametro
         Se ordena por nombre y se se pasa el tercer parametro que es un objeto Cuenta lo selecciona""" 
         self.sort()
@@ -501,7 +503,7 @@ class SetCuentas:
         cur.close()
         cur2.close()
                                
-    def load_qcombobox(self, combo,  cuenta=None):
+    def qcombobox(self, combo,  cuenta=None):
         """Función que carga en un combo pasado como parámetro y con un SetCuentas pasado como parametro
         Se ordena por nombre y se se pasa el tercer parametro que es un objeto Cuenta lo selecciona""" 
         self.sort()
@@ -613,7 +615,7 @@ class SetCurrencies:
     def find(self, id):
         return self.dic_arr[str(id)]
 
-    def load_qcombobox(self, combo, selectedcurrency=None):
+    def qcombobox(self, combo, selectedcurrency=None):
         """Función que carga en un combo pasado como parámetro las currencies"""
         for c in self.list():
             combo.addItem("{0} - {1} ({2})".format(c.id, c.name, c.symbol), c.id)
@@ -813,7 +815,7 @@ class SetEntidadesBancarias:
             if a.id==id:
                 return a
                    
-    def load_qcombobox(self, combo):
+    def qcombobox(self, combo):
         """Carga entidades bancarias en combo. Es un SetEntidadesBancarias"""
         self.sort()
         for e in self.arr:
@@ -2778,7 +2780,7 @@ class SetTiposOperaciones:
         
 
 
-    def load_qcombobox(self, combo):
+    def qcombobox(self, combo):
         for t in self.clone_only_operinversiones().list():
             combo.addItem(t.name,  t.id)
 
@@ -2926,7 +2928,7 @@ class SetAgrupations:
                 resultado.dic_arr[item]=self.mem.agrupations.find(item)
         return resultado
         
-    def load_qcombobox(self, combo):
+    def qcombobox(self, combo):
         combo.clear()
         for a in self.list():
             combo.addItem(a.name, a.id)
@@ -2962,7 +2964,7 @@ class SetApalancamientos:
         self.dic_arr["4"]=Apalancamiento(self.mem).init__create( 4,QApplication.translate("Core","Leverage x4"))
                
 
-    def load_qcombobox(self, combo):
+    def qcombobox(self, combo):
         """Carga entidades bancarias en combo"""
         for a in self.list():
             combo.addItem(a.name, a.id)      
@@ -2991,7 +2993,7 @@ class SetPriorities:
         self.arr.append(Priority().init__create(5,"Productos cotizados bonus. 20 pc."))
         self.arr.append(Priority().init__create(6,"Societe Generale Warrants. Todos pc."))
 
-    def load_qcombobox(self, combo):
+    def qcombobox(self, combo):
         combo.clear()
         for a in self.arr:
             combo.addItem(a.name, a.id)
@@ -3055,7 +3057,7 @@ class SetPrioritiesHistorical:
         
         
 
-    def load_qcombobox(self, combo):
+    def qcombobox(self, combo):
         combo.clear()
         for a in self.arr:
             combo.addItem(a.name, a.id)
@@ -4964,6 +4966,41 @@ class SetOHCLMonthly:
             self.arr.append(OHCLMonthly(self.mem).init__from_dbrow(row, self.product))
         cur.close()
 
+class SetLanguages:
+    def __init__(self, mem):
+        self.mem=mem
+        self.arr=[]
+        self.load_all()
+    def find(self, id):
+        for a in self.arr:
+            if a.id==id:
+                return a
+    
+    def load_all(self):
+        self.arr.append(Language(self.mem, "en","English" ))
+        self.arr.append(Language(self.mem, "es","Español" ))
+        self.arr.append(Language(self.mem, "fr","Français" ))
+        self.arr.append(Language(self.mem, "ro","Rom\xe2n" ))
+        self.arr.append(Language(self.mem, "ru",'\u0420\u0443\u0441\u0441\u043a\u0438\u0439' ))
+
+                
+    def sort(self):
+        self.arr=sorted(self.arr, key=lambda c: c.name,  reverse=False)      
+        
+    def qcombobox(self, combo, selected=None):
+        """Selected is the id"""
+
+        self.sort()
+        for l in self.arr:
+            combo.addItem(self.mem.countries.find(l.id).qicon(), l.name, l.id)
+        if selected!=None:
+                combo.setCurrentIndex(combo.findData(selected))
+
+    def cambiar(self, id):  
+        """language es un string"""
+        self.mem.qtranslator.load("/usr/lib/xulpymoney/xulpymoney_" + id + ".qm")
+        qApp.installTranslator(self.mem.qtranslator);
+        
 class SetOHCLDaily:
     def __init__(self, mem, product):
         self.mem=mem
@@ -5213,7 +5250,7 @@ class SetTypes:
         self.dic_arr["10"]=Type().init__create(10,QApplication.translate("Core","Depósitos"))
         self.dic_arr["11"]=Type().init__create(11,QApplication.translate("Core","Accounts"))
 
-    def load_qcombobox(self, combo):
+    def qcombobox(self, combo):
         """Carga entidades bancarias en combo"""
         for a in self.list():
             combo.addItem(a.name, a.id)        
@@ -5307,6 +5344,12 @@ class ConfigFile:
         except:
             return self.set_default_value(section, name)
             
+class Language:
+    def __init__(self, mem, id, name):
+        self.id=id
+        self.name=name
+    
+            
 class Mantenimiento:
     """Funciones de mantenimiento y ayuda a la programaci´on y depuraci´on"""
     def __init__(self, mem):
@@ -5334,6 +5377,8 @@ class MemMyStock:
         self.nyse=set([])
         
         self.debug=False
+        
+        self.qtranslator=None#Residir´a el qtranslator
 
         self.config=ConfigFile(os.environ['HOME']+ "/.xulpymoney/xulpymoney.cfg", self.default_values())
         self.config_ui=ConfigFile(os.environ['HOME']+ "/.xulpymoney/xulpymoney_ui.cfg", self.default_ui_values())
@@ -5346,6 +5391,7 @@ class MemMyStock:
         
         self.conms=None#Conexión a mystocks
         self.countries=SetCountries(self)
+        self.languages=SetLanguages(self)
         self.bolsas=SetStockExchanges(self)
         self.currencies=SetCurrencies(self)
         self.types=SetTypes(self)
@@ -5372,6 +5418,7 @@ class MemMyStock:
         d['settings#localzone']='Europe/Madrid'
         d['settings#benchmark']='79329'
         d['settings#gainsyear']='True'
+        d['settings#language']='en'
         d['wdgProducts#favoritos']=""
         d['settings_mystocks#fillfromyear']='2005'
         d['wdgIndexRange#spin']='2'
@@ -5397,7 +5444,8 @@ class MemMyStock:
         if self.conms:#Cierre por reject en frmAccess
             self.disconnect_mystocks(self.conms)
     
-    
+    def setQTranslator(self, qtranslator):
+        self.qtranslator=qtranslator
 
                 
     def actualizar_memoria(self):
@@ -5560,6 +5608,10 @@ class Country:
             return QPixmap(":/countries/portugal.gif")
         elif self.id=="us":
             return QPixmap(":/countries/usa.gif")
+        elif self.id=="ro":
+            return QPixmap(":/countries/rumania.png")
+        elif self.id=="ru":
+            return QPixmap(":/countries/rusia.png")
         else:
             return QPixmap(":/xulpymoney/star.gif")
             
@@ -5672,7 +5724,7 @@ class SetZones:
         self.dic_arr["Europe/Paris"]=Zone(self.mem).init__create(8,'Europe/Paris', self.mem.countries.find("fr"))
         self.dic_arr["Asia/Hong_Kong"]=Zone(self.mem).init__create(9,'Asia/Hong_Kong', self.mem.countries.find("cn"))
 
-    def load_qcombobox(self, combo, zone=None):
+    def qcombobox(self, combo, zone=None):
         """Carga entidades bancarias en combo"""
         for a in self.list():
             combo.addItem(a.country.qicon(), a.name, a.name)

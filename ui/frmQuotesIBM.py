@@ -18,7 +18,7 @@ class frmQuotesIBM(QDialog, Ui_frmQuotesIBM):
             self.quote=None
             t=self.mem.localzone.now()
             self.txtTime.setTime(QTime(t.hour, t.minute))
-            self.mem.zones.load_qcombobox(self.cmbZone, self.mem.localzone)
+            self.mem.zones.qcombobox(self.cmbZone, self.mem.localzone)
             if self.product.type.id in (2, 8):
                 self.chkNone.setCheckState(Qt.Checked)         
         else:
@@ -26,7 +26,7 @@ class frmQuotesIBM(QDialog, Ui_frmQuotesIBM):
             self.quote=quote
             self.calendar.setSelectedDate(self.quote.datetime.date())
             self.txtTime.setTime(QTime(self.quote.datetime.hour, self.quote.datetime.minute))
-            self.mem.zones.load_qcombobox(self.cmbZone, quote.product.bolsa.zone)
+            self.mem.zones.qcombobox(self.cmbZone, quote.product.bolsa.zone)
             if self.quote.datetime.microsecond!=5:
                 self.chkCanBePurged.setCheckState(Qt.Unchecked)
             self.calendar.setEnabled(False)
