@@ -1735,9 +1735,9 @@ class CuentaOperacion:
                 - other_operaccount: id_opercuentas in order to remove them.     
         """
         if self.concepto.id in (62, 39, 50, 63, 65) and len(self.comentario.split("|"))==4:#"{0}|{1}|{2}|{3}".format(self.inversion.name, self.bruto, self.retencion, self.comision)
-            return QApplication.translate("Core","Dividend de {0[0]}. Bruto: {0[1]} {1}. Retención: {0[2]} {1}. Comisión: {0[3]} {1}".format(self.comentario.split("|"), self.cuenta.currency.symbol))
-        elif self.concepto.id in (29, 35) and len(self.comentario.split("|"))==4:#{0}|{1}|{2}|{3}".format(row['inversion'], importe, comision, impuestos)
-            return QApplication.translate("Core","Operación de {0[0]}. Importe: {0[1]} {1}. Comisión: {0[2]} {1}. Impuestos: {0[3]} {1}".format(self.comentario.split("|"), self.cuenta.currency.symbol))        
+            return QApplication.translate("Core","{0[0]}. Gross: {0[1]} {1}. Witholding tax: {0[2]} {1}. Comission: {0[3]} {1}".format(self.comentario.split("|"), self.cuenta.currency.symbol))
+        elif self.concepto.id in (29, 35) and len(self.comentario.split("|"))==5:#{0}|{1}|{2}|{3}".format(row['inversion'], importe, comision, impuestos)
+            return QApplication.translate("Core","{0[1]}: {0[0]} shares. Amount: {0[2]} {1}. Comission: {0[3]} {1}. Taxes: {0[4]} {1}".format(self.comentario.split("|"), self.cuenta.currency.symbol))        
         elif self.concepto.id==40 and len(self.comentario.split("|"))==2:#"{0}|{1}".format(self.selTarjeta.name, len(self.setSelOperTarjetas))
             return QApplication.translate("Core","Tarjeta: {0[0]}. Se han ejecutado {0[1]} pagos con tarjeta".format(self.comentario.split("|")))        
         elif self.concepto.id==4 and len(self.comentario.split("|"))==3:#Transfer from origin
@@ -1983,7 +1983,7 @@ class InversionOperacion:
         """Esta función actualiza la tabla opercuentasdeoperinversiones que es una tabla donde 
         se almacenan las opercuentas automaticas por las operaciones con inversiones. Es una tabla 
         que se puede actualizar en cualquier momento con esta función"""
-        self.comentario="{0}|{1}|{2}|{3}".format(self.inversion.name, self.importe, self.comision, self.impuestos)
+        self.comentario="{0}|{1}|{2}|{3}|{4}".format(self.acciones, self.inversion.name, self.importe, self.comision, self.impuestos)
         #/Borra de la tabla opercuentasdeoperinversiones los de la operinversi´on pasada como par´ametro
         cur=self.mem.con.cursor()
         cur.execute("delete from opercuentasdeoperinversiones where id_operinversiones=%s",(self.id, )) 

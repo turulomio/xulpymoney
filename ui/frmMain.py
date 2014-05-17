@@ -60,6 +60,8 @@ class frmMain(QMainWindow, Ui_frmMain):
             Product(self.mem).changeDeletable(  ids2protect,  False)
         self.mem.conms.commit()
         
+        
+        #Mantenimiento(self.mem).regenera_todas_opercuentasdeoperinversiones()
 
         
     @QtCore.pyqtSlot()  
