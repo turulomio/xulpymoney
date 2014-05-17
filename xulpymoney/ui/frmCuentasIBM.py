@@ -209,7 +209,7 @@ class frmCuentasIBM(QDialog, Ui_frmCuentasIBM):
             self.tblOperaciones.setItem(i+1, 1, QTableWidgetItem(o.concepto.name))
             self.tblOperaciones.setItem(i+1, 2, self.selCuenta.currency.qtablewidgetitem(o.importe))
             self.tblOperaciones.setItem(i+1, 3, self.selCuenta.currency.qtablewidgetitem(saldoinicio))
-            self.tblOperaciones.setItem(i+1, 4, QTableWidgetItem(o.comentariobonito()))        
+            self.tblOperaciones.setItem(i+1, 4, QTableWidgetItem(o.comment()))        
 
     @QtCore.pyqtSlot() 
     def on_actionMovimientoNuevo_activated(self):

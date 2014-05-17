@@ -1,7 +1,0 @@
-20130103 Cuando se genera un dividendo acciones y se mete comisión se cuenta en Ingresos quizás porque es neto
-20110526 Crear la funcionalidad de divisas importantes
-20130829 Cuando quotes está vacio y se inserta xulpymoney inversion peta por None en quote
-20130829 Al añadir inversión peta por estimaciones al insertar 
-20140412 Refactorizar Inversion por Investment
-20130813 En frmInit poner también actualizar ddatos, para investments, incluso dividendos y bolsas para futuras versiones
-

@@ -15,7 +15,7 @@ class CuentaOperacionDeInversionOperacion:
         self.concepto=None
         self.tipooperacion=None
         self.importe=None
-        self.comentario=None #Documented in comentariobonito
+        self.comentario=None #Documented in comment
         self.cuenta=None
         self.operinversion=None
         self.inversion=None
@@ -1684,7 +1684,7 @@ class CuentaOperacion:
         self.concepto=None
         self.tipooperacion=None
         self.importe=None
-        self.comentario=None #Documented in comentariobonito
+        self.comentario=None #Documented in comment
         self.cuenta=None
         
     def __repr__(self):
@@ -1721,7 +1721,7 @@ class CuentaOperacion:
         self.cuenta.saldo_from_db()
         cur.close()
         
-    def comentariobonito(self):
+    def comment(self):
         """Función que genera un comentario parseado según el tipo de operación o concepto
         
         Transferencias 4 origen :
@@ -1733,20 +1733,26 @@ class CuentaOperacion:
             El comentario en transferencias destino no tiene comission: other_account|other_operaccount
                 - other_account: id_accounts of the other account
                 - other_operaccount: id_opercuentas in order to remove them.     
+                
+        Comision de Transferencias
+            - Transfer
+            - Amount
+            - Origin account
         """
-        if self.concepto.id in (62, 39, 50, 63, 65) and len(self.comentario.split("|"))==4:#"{0}|{1}|{2}|{3}".format(self.inversion.name, self.bruto, self.retencion, self.comision)
-            return QApplication.translate("Core","{0[0]}. Gross: {0[1]} {1}. Witholding tax: {0[2]} {1}. Comission: {0[3]} {1}".format(self.comentario.split("|"), self.cuenta.currency.symbol))
-        elif self.concepto.id in (29, 35) and len(self.comentario.split("|"))==5:#{0}|{1}|{2}|{3}".format(row['inversion'], importe, comision, impuestos)
-            return QApplication.translate("Core","{0[1]}: {0[0]} shares. Amount: {0[2]} {1}. Comission: {0[3]} {1}. Taxes: {0[4]} {1}".format(self.comentario.split("|"), self.cuenta.currency.symbol))        
-        elif self.concepto.id==40 and len(self.comentario.split("|"))==2:#"{0}|{1}".format(self.selTarjeta.name, len(self.setSelOperTarjetas))
-            return QApplication.translate("Core","Tarjeta: {0[0]}. Se han ejecutado {0[1]} pagos con tarjeta".format(self.comentario.split("|")))        
-        elif self.concepto.id==4 and len(self.comentario.split("|"))==3:#Transfer from origin
-            return QApplication.translate("Core", "Transfer to {0}".format(self.mem.data.cuentas_all().find(int(self.comentario.split("|")[0])).name))
-        elif self.concepto.id==5 and len(self.comentario.split("|"))==2:#Transfer received in destiny
-            return QApplication.translate("Core", "Transfer received from {0}".format(self.mem.data.cuentas_all().find(int(self.comentario.split("|")[0])).name))
-        elif self.concepto.id==38 and self.comentario=="Transfer":#Comision bancaria por transferencia
-            return QApplication.translate("Core", "Due to account transfer")
-
+        c=self.comentario.split("|")
+        if self.concepto.id in (62, 39, 50, 63, 65) and len(c)==4:#"{0}|{1}|{2}|{3}".format(self.inversion.name, self.bruto, self.retencion, self.comision)
+            return QApplication.translate("Core","{0[0]}. Gross: {0[1]} {1}. Witholding tax: {0[2]} {1}. Comission: {0[3]} {1}".format(c, self.cuenta.currency.symbol))
+        elif self.concepto.id in (29, 35) and len(c)==5:#{0}|{1}|{2}|{3}".format(row['inversion'], importe, comision, impuestos)
+            return QApplication.translate("Core","{0[1]}: {0[0]} shares. Amount: {0[2]} {1}. Comission: {0[3]} {1}. Taxes: {0[4]} {1}".format(c, self.cuenta.currency.symbol))        
+        elif self.concepto.id==40 and len(c)==2:#"{0}|{1}".format(self.selTarjeta.name, len(self.setSelOperTarjetas))
+            return QApplication.translate("Core","Tarjeta: {0[0]}. Se han ejecutado {0[1]} pagos con tarjeta".format(c))        
+        elif self.concepto.id==4 and len(c)==3:#Transfer from origin
+            return QApplication.translate("Core", "Transfer to {0}".format(self.mem.data.cuentas_all().find(int(c[0])).name))
+        elif self.concepto.id==5 and len(c)==2:#Transfer received in destiny
+            return QApplication.translate("Core", "Transfer received from {0}".format(self.mem.data.cuentas_all().find(int(c[0])).name))
+        elif self.concepto.id==38 and c[0]=="Transfer":#Comision bancaria por transferencia
+            print (c[2])
+            return QApplication.translate("Core", "Due to account transfer of {0} from {1}".format(self.mem.localcurrency.string(float(c[1])), self.mem.data.cuentas_all().find(int(c[2])).name))
         else:
             return self.comentario 
         
@@ -1764,11 +1770,12 @@ class CuentaOperacion:
             return False
         if self.concepto.id in (29, 35, 39, 40, 50,  62, 63, 65):#div, factur tarj:
             return False
-        if self.concepto.id == 38 and self.comentario=="Transfer":#Comision bancaria por transferencia
+        c=self.comentario.split("|")
+        if self.concepto.id == 38 and c[0]=="Transfer" and len(c)==3:#Comision bancaria por transferencia
             return False
-        if self.concepto.id==4 and len(self.comentario.split("|"))==3:#Transferencia origen
+        if self.concepto.id==4 and len(c)==3:#Transferencia origen
             return False
-        if self.concepto.id==5 and len(self.comentario.split("|"))==2:#Transferencia destino
+        if self.concepto.id==5 and len(c)==2:#Transferencia destino
             return False
         
         return True
@@ -2008,7 +2015,7 @@ class InversionOperacion:
         resultado.init__create(self.tipooperacion, self.datetime, self.inversion, self.acciones, self.importe, self.impuestos, self.comision, self.valor_accion, self.comentario, self.id)
         return resultado
                 
-    def comentariobonito(self):
+    def comment(self):
         """Función que genera un comentario parseado según el tipo de operación o concepto"""
         if self.tipooperacion.id==9:#"Traspaso de valores. Origen"#"{0}|{1}|{2}|{3}".format(self.inversion.name, self.bruto, self.retencion, self.comision)
             return QApplication.translate("Core","Traspaso de valores realizado a {0}".format(self.comentario.split("|"), self.cuenta.currency.symbol))
@@ -2215,9 +2222,10 @@ class Cuenta:
         """Si el oc_comision_id es 0 es que no hay comision porque tambi´en es 0"""
         #Ojo los comentarios est´an dependientes.
         if comision>0:
-            oc_comision=CuentaOperacion(self.mem).init__create(fecha, self.mem.conceptos.find(38), self.mem.tiposoperaciones.find(1), -comision, "Transfer", cuentaorigen )
-            oc_comision.save()
-            oc_comision_id=oc_comision.id
+            commentcomission="Transfer|{0}|{1}".format(importe, cuentaorigen.id)
+            oc_comision=CuentaOperacion(self.mem).init__create(fecha, self.mem.conceptos.find(38), self.mem.tiposoperaciones.find(1), -comision, commentcomission, cuentaorigen )
+            oc_comision.save()          
+            oc_comision_id=oc_comision.id  
         else:
             oc_comision_id=0
         oc_origen=CuentaOperacion(self.mem).init__create(fecha, self.mem.conceptos.find(4), self.mem.tiposoperaciones.find(3), -importe, "", cuentaorigen )
@@ -2227,7 +2235,6 @@ class Cuenta:
         oc_destino.save()
         oc_origen.comentario="{0}|{1}|{2}".format(cuentadestino.id, oc_destino.id, oc_comision_id)
         oc_origen.save()
-    
     def qmessagebox_inactive(self):
         if self.activa==False:
             m=QMessageBox()
