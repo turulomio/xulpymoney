@@ -32,7 +32,7 @@ class frmInversionesEstudio(QDialog, Ui_frmInversionesEstudio):
         self.cmdInversion.setEnabled(False)                                                                                                                                                                                            
         self.connect(self.ise.cmd,SIGNAL('released()'),  self.on_cmdISE_released)         
         
-        self.mem.data.cuentas_active.load_qcombobox(self.cmbCuenta)
+        self.mem.data.cuentas_active.qcombobox(self.cmbCuenta)
         
         if inversion==None:
             self.tipo=1

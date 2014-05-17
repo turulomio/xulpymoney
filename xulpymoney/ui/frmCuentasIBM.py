@@ -37,8 +37,8 @@ class frmCuentasIBM(QDialog, Ui_frmCuentasIBM):
     
         self.calPago.setDate(QDate.currentDate())
         
-        self.mem.currencies.load_qcombobox(self.cmbCurrency)
-        self.mem.data.ebs_active.load_qcombobox(self.cmbEB)
+        self.mem.currencies.qcombobox(self.cmbCurrency)
+        self.mem.data.ebs_active.qcombobox(self.cmbEB)
                     
         if self.selCuenta==None:
             self.lblTitulo.setText(self.trUtf8("Datos de la nueva cuenta bancaria"))

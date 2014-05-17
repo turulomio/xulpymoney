@@ -72,11 +72,11 @@ class frmAnalisis(QDialog, Ui_frmAnalisis):
         self.layHistoricalSD.addWidget(self.canvasHistoricalSD)
         self.layHistoricalSD.addWidget(self.ntbHistoricalSD)
         
-        self.mem.bolsas.load_qcombobox(self.cmbBolsa)
-        self.mem.investmentsmodes.load_qcombobox(self.cmbPCI)
-        self.mem.currencies.load_qcombobox(self.cmbCurrency)
-        self.mem.apalancamientos.load_qcombobox(self.cmbApalancado)
-        self.mem.types.load_qcombobox(self.cmbTipo)
+        self.mem.bolsas.qcombobox(self.cmbBolsa)
+        self.mem.investmentsmodes.qcombobox(self.cmbPCI)
+        self.mem.currencies.qcombobox(self.cmbCurrency)
+        self.mem.apalancamientos.qcombobox(self.cmbApalancado)
+        self.mem.types.qcombobox(self.cmbTipo)
 
         self.update_due_to_quotes_change()    
         
@@ -97,9 +97,9 @@ class frmAnalisis(QDialog, Ui_frmAnalisis):
                 self.tblTPC.setItem(row, 3,  qtpc(None))     
                 
                 
-        self.product.agrupations.load_qcombobox(self.cmbAgrupations)
-        self.product.priority.load_qcombobox(self.cmbPriority)
-        self.product.priorityhistorical.load_qcombobox(self.cmbPriorityHistorical)
+        self.product.agrupations.qcombobox(self.cmbAgrupations)
+        self.product.priority.qcombobox(self.cmbPriority)
+        self.product.priorityhistorical.qcombobox(self.cmbPriorityHistorical)
 
         self.lblInversion.setText(("%s ( %s )" %(self.product.name, self.product.id)))
         self.txtTPC.setText(str(self.product.tpc))
@@ -462,7 +462,7 @@ class frmAnalisis(QDialog, Ui_frmAnalisis):
         f=frmSelector(self.mem, agr, selected)
         f.lbl.setText("Selector de Agrupaciones")
         f.exec_()
-        f.selected.load_qcombobox(self.cmbAgrupations)
+        f.selected.qcombobox(self.cmbAgrupations)
 
     def on_cmdPriority_released(self):
         if self.product.id==None:#Insertar nueva inversión

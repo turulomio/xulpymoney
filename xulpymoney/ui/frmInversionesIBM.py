@@ -12,8 +12,8 @@ class frmInversionesIBM(QDialog, Ui_frmInversionesIBM):
         self.inversion=inversion
         self.operinversion=operinversion
   
-        self.mem.tiposoperaciones.load_qcombobox(self.cmbTiposOperaciones)
-        self.mem.zones.load_qcombobox(self.cmbTZ, self.mem.localzone)
+        self.mem.tiposoperaciones.qcombobox(self.cmbTiposOperaciones)
+        self.mem.zones.qcombobox(self.cmbTZ, self.mem.localzone)
 
         
         if self.operinversion==None:#nuevo movimiento
