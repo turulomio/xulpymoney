@@ -11,6 +11,7 @@ class frmAccess(QDialog, Ui_frmAccess):
         self.setModal(True)
         self.setupUi(self)
         self.app=app
+        
         if self.app==1:
             icon = QtGui.QIcon()
             pix=QtGui.QPixmap(":xulpymoney/kmplot.jpg")
@@ -34,7 +35,14 @@ class frmAccess(QDialog, Ui_frmAccess):
             self.txtUser.setText(self.mem.config.get_value("frmAccess", "user" ))
             self.txtServer.setText(self.mem.config.get_value("frmAccess", "server" ))
 
+        self.mem.languages.qcombobox(self.cmbLanguages,self.mem.config.get_value("settings", "language"))
 
+
+    @pyqtSlot(str)      
+    def on_cmbLanguages_currentIndexChanged(self, stri):
+        print (self.cmbLanguages.itemData(self.cmbLanguages.currentIndex()))
+        self.mem.languages.cambiar(self.cmbLanguages.itemData(self.cmbLanguages.currentIndex()))
+        self.retranslateUi(self)
 
     def make_connection(self):
         """Función que realiza la conexión devolviendo true o false con el éxito"""

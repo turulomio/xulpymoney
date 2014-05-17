@@ -68,7 +68,7 @@
           <string/>
          </property>
          <property name="pixmap">
-          <pixmap resource="../images/xulpymoney.qrc">:/xulpymoney/keko.png</pixmap>
+          <pixmap resource="../images/xulpymoney.qrc">:/xulpymoney/keki.png</pixmap>
          </property>
          <property name="scaledContents">
           <bool>true</bool>
@@ -180,31 +180,13 @@
         </widget>
        </item>
        <item row="0" column="1">
-        <widget class="QComboBox" name="cmbLanguage">
+        <widget class="QComboBox" name="cmbLanguages">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
          </property>
-         <item>
-          <property name="text">
-           <string>Spanish</string>
-          </property>
-          <property name="icon">
-           <iconset resource="../images/xulpymoney.qrc">
-            <normaloff>:/countries/spain.gif</normaloff>:/countries/spain.gif</iconset>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>English</string>
-          </property>
-          <property name="icon">
-           <iconset resource="../images/xulpymoney.qrc">
-            <normaloff>:/countries/uk.gif</normaloff>:/countries/uk.gif</iconset>
-          </property>
-         </item>
         </widget>
        </item>
        <item row="1" column="1">
@@ -248,7 +230,7 @@
  </widget>
  <tabstops>
   <tabstop>cmdYN</tabstop>
-  <tabstop>cmbLanguage</tabstop>
+  <tabstop>cmbLanguages</tabstop>
   <tabstop>txtServer</tabstop>
   <tabstop>txtPort</tabstop>
   <tabstop>txtDB</tabstop>
@@ -256,9 +238,6 @@
   <tabstop>txtPass</tabstop>
  </tabstops>
  <resources>
-  <include location="../images/xulpymoney.qrc"/>
-  <include location="../images/xulpymoney.qrc"/>
-  <include location="../images/xulpymoney.qrc"/>
   <include location="../images/xulpymoney.qrc"/>
  </resources>
  <connections/>

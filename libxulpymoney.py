@@ -4970,7 +4970,7 @@ class SetLanguages:
     def __init__(self, mem):
         self.mem=mem
         self.arr=[]
-        self.load_all()
+        
     def find(self, id):
         for a in self.arr:
             if a.id==id:
@@ -5390,8 +5390,14 @@ class MemMyStock:
         self.dic_activas={}#Diccionario cuyo indice es el id de la inversión id['1'] corresponde a la IvestmenActive(1) #se usa en mystocksd
         
         self.conms=None#Conexión a mystocks
+        
+        #Needed for translations and are data
         self.countries=SetCountries(self)
+        self.countries.load_all()
         self.languages=SetLanguages(self)
+        self.languages.load_all()
+        
+        
         self.bolsas=SetStockExchanges(self)
         self.currencies=SetCurrencies(self)
         self.types=SetTypes(self)
@@ -5451,7 +5457,6 @@ class MemMyStock:
     def actualizar_memoria(self):
         ###Esto debe ejecutarse una vez establecida la conexión
         print ("Cargando MemMyStock")
-        self.countries.load_all()
         self.currencies.load_all()
         self.investmentsmodes.load_all()
         self.zones.load_all()
