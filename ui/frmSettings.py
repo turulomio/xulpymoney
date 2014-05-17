@@ -30,7 +30,6 @@ class frmSettings(QDialog, Ui_frmSettings):
 
     @pyqtSlot(str)      
     def on_cmbLanguages_currentIndexChanged(self, stri):
-        print (self.cmbLanguages.itemData(self.cmbLanguages.currentIndex()))
         self.mem.languages.cambiar(self.cmbLanguages.itemData(self.cmbLanguages.currentIndex()))
         self.retranslateUi(self)
 
@@ -47,7 +46,6 @@ class frmSettings(QDialog, Ui_frmSettings):
         
         self.mem.languages.cambiar(self.cmbLanguages.itemData(self.cmbLanguages.currentIndex()))       
         self.retranslateUi(self)
-
         
         self.accept()    
         
