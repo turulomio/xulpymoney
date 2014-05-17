@@ -33,12 +33,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5680"/>
+        <location filename="libxulpymoney.py" line="5685"/>
         <source>Sourceforge version detected: %s</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5682"/>
+        <location filename="libxulpymoney.py" line="5687"/>
         <source>Error buscando la versi&#xc3;&#xb3;n actual de Sourceforge</source>
         <translation type="unfinished"></translation>
     </message>
@@ -73,7 +73,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5993"/>
+        <location filename="libxulpymoney.py" line="5998"/>
         <source>This option is being developed</source>
         <translation type="unfinished"></translation>
     </message>
@@ -108,17 +108,17 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5480"/>
+        <location filename="libxulpymoney.py" line="5485"/>
         <source>Error conecting to MyStocksd, waiting 10 seconds</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5493"/>
+        <location filename="libxulpymoney.py" line="5498"/>
         <source>Error conecting to MyStocks</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5557"/>
+        <location filename="libxulpymoney.py" line="5562"/>
         <source>Error conecting to Xulpymoney</source>
         <translation type="unfinished"></translation>
     </message>
@@ -560,63 +560,53 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>frmAccess</name>
     <message>
-        <location filename="ui/Ui_frmAccess.py" line="157"/>
+        <location filename="ui/Ui_frmAccess.py" line="151"/>
         <source>127.0.0.1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmAccess.py" line="159"/>
+        <location filename="ui/Ui_frmAccess.py" line="153"/>
         <source>5432</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmAccess.py" line="20"/>
+        <location filename="ui/frmAccess.py" line="21"/>
         <source>MyStocks - Acceso</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmAccess.py" line="31"/>
+        <location filename="ui/frmAccess.py" line="32"/>
         <source>Xulpymoney - Acceso</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmAccess.py" line="163"/>
+        <location filename="ui/Ui_frmAccess.py" line="157"/>
         <source>Language</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmAccess.py" line="165"/>
-        <source>English</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_frmAccess.py" line="156"/>
+        <location filename="ui/Ui_frmAccess.py" line="150"/>
         <source>Server</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmAccess.py" line="158"/>
+        <location filename="ui/Ui_frmAccess.py" line="152"/>
         <source>Port</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmAccess.py" line="160"/>
+        <location filename="ui/Ui_frmAccess.py" line="154"/>
         <source>Database</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmAccess.py" line="161"/>
+        <location filename="ui/Ui_frmAccess.py" line="155"/>
         <source>User</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmAccess.py" line="162"/>
+        <location filename="ui/Ui_frmAccess.py" line="156"/>
         <source>Password</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_frmAccess.py" line="164"/>
-        <source>Spanish</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

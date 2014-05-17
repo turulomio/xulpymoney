@@ -1,9 +1,3 @@
-CORE
-====
-
-XULPYMONEY
-==========
-20120802 Hacer un formulario de inicio que genere el settings en home y pregunte idioma y lo cambie
 20120806 En operinversion opercuenta poner el número de acciones y precio de compra en comeentario bonito
 20130103 Cuando se genera un dividendo acciones y se mete comisión se cuenta en Ingresos quizás porque es neto
 20110526 Crear la funcionalidad de divisas importantes
@@ -11,12 +5,5 @@ XULPYMONEY
 20130829 Al añadir inversión peta por estimaciones al insertar 
 20131002 No pone el saldo en pago cupon corrido en opercuenta
 20140412 Refactorizar Inversion por Investment
-20140416 Translate all forms
-
-MYSTOCKS
-========
-
-XULPYMONEY_INIT
-===============
 20130813 En frmInit poner también actualizar ddatos, para investments, incluso dividendos y bolsas para futuras versiones
 
