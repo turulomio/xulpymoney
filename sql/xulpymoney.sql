@@ -250,8 +250,6 @@ CREATE TABLE inversiones (
 
 ALTER TABLE public.inversiones OWNER TO postgres;
 
-SET default_with_oids = true;
-
 --
 -- Name: opercuentas; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
@@ -268,6 +266,21 @@ CREATE TABLE opercuentas (
 
 
 ALTER TABLE public.opercuentas OWNER TO postgres;
+
+--
+-- Name: opercuentasdeoperinversiones; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE opercuentasdeoperinversiones (
+    id_operinversiones integer NOT NULL,
+    id_inversiones integer NOT NULL
+)
+INHERITS (opercuentas);
+
+
+ALTER TABLE public.opercuentasdeoperinversiones OWNER TO postgres;
+
+SET default_with_oids = true;
 
 --
 -- Name: opertarjetas; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -512,23 +525,10 @@ CREATE TABLE tarjetas (
 ALTER TABLE public.tarjetas OWNER TO postgres;
 
 --
--- Name: tmpinversionesheredada; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
---
-
-CREATE TABLE tmpinversionesheredada (
-    id_operinversiones integer NOT NULL,
-    id_inversiones integer NOT NULL
-)
-INHERITS (opercuentas);
-
-
-ALTER TABLE public.tmpinversionesheredada OWNER TO postgres;
-
---
 -- Name: id_opercuentas; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY tmpinversionesheredada ALTER COLUMN id_opercuentas SET DEFAULT nextval(('"seq_opercuentas"'::text)::regclass);
+ALTER TABLE ONLY opercuentasdeoperinversiones ALTER COLUMN id_opercuentas SET DEFAULT nextval(('"seq_opercuentas"'::text)::regclass);
 
 
 --
@@ -675,7 +675,7 @@ CREATE INDEX "opertarjetas-id_tarjetas-index" ON opertarjetas USING btree (id_ta
 -- Name: tmpinversionesheredada-id_cuentas-index; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
 --
 
-CREATE INDEX "tmpinversionesheredada-id_cuentas-index" ON tmpinversionesheredada USING btree (id_cuentas);
+CREATE INDEX "tmpinversionesheredada-id_cuentas-index" ON opercuentasdeoperinversiones USING btree (id_cuentas);
 
 
 --
