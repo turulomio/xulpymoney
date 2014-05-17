@@ -60,6 +60,7 @@ class frmMain(QMainWindow, Ui_frmMain):
             Product(self.mem).changeDeletable(  ids2protect,  False)
         self.mem.conms.commit()
         
+
         
     @QtCore.pyqtSlot()  
     def on_actionSalir_activated(self):
