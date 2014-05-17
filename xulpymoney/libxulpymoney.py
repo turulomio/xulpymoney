@@ -1999,38 +1999,6 @@ class InversionOperacion:
             if(self.comision!=0):
                 c=CuentaOperacionDeInversionOperacion(self.mem).init__create(self.datetime.date(), self.mem.conceptos.find(38), self.mem.tiposoperaciones.find(1), -self.comision-self.impuestos, self.comentario, self.inversion.cuenta, self,self.inversion)
                 c.save()
-#
-#    def actualizar_cuentaoperacion_asociada(self):
-#        """Esta función actualiza la tabla opercuentasdeoperinversiones que es una tabla temporal donde 
-#        se almacenan las opercuentas automaticas por las operaciones con inversiones. Es una tabla 
-#        que se puede actualizar en cualquier momento con esta función"""
-#
-##    //Borra la tabla opercuentasdeoperinversiones
-#        sqldel="delete from opercuentasdeoperinversiones where id_operinversiones="+str(id_operinversiones)
-#        cur.execute(sqldel);
-#        cur.execute('select datetime, inversiones.id_cuentas as id_cuentas, inversion, importe, inversiones.id_inversiones as id_inversiones, comision, impuestos, id_tiposoperaciones from operinversiones,inversiones where inversiones.id_inversiones=operinversiones.id_inversiones and id_operinversiones='+str(id_operinversiones))
-#        row=cur.fetchone()
-#        fecha=row['datetime'].date();
-#        importe=row['importe'];
-#        id_inversiones=row['id_inversiones'];
-#        id_cuentas=row['id_cuentas']
-#        comision=row['comision'];
-#        impuestos=row['impuestos'];
-#        comentario="{0}|{1}|{2}|{3}".format(row['inversion'], importe, comision, impuestos)
-#      
-#        if row['id_tiposoperaciones']==4:#Compra Acciones
-##row['inversion']+'. '+str('Importe')+': ' + str(importe)+". "+str('Comisión')+": " + str(comision)+ ". "+str('Impuestos')+": " + str(impuestos)
-##row['inversion']+". "+str('Importe')+": " + str(importe)+". "+str('Comisión')+": " + str(comision)+ ". "+str('Impuestos')+": " + str(impuestos)            
-##row['inversion']+". "+str('Importe')+": " + str(importe)+". "+str('Comisión')+": " + str(comision)+ ". "+str('Impuestos')+": " + str(impuestos), 
-#            #Se pone un registro de compra de acciones que resta el saldo de la opercuenta
-#            CuentaOperacionDeInversionOperacion(self.mem).insertar(fecha, 29, 4, -importe-comision, comentario,id_cuentas,id_operinversiones,id_inversiones);
-#        elif row['id_tiposoperaciones']==5:#// Venta Acciones
-#            #//Se pone un registro de compra de acciones que resta el saldo de la opercuenta
-#            CuentaOperacionDeInversionOperacion(self.mem).insertar(fecha, 35, 5, importe-comision-impuestos,comentario,id_cuentas,id_operinversiones,id_inversiones);
-#        elif row['id_tiposoperaciones']==6:# // Añadido de Acciones
-#            #//Si hubiera comisión se añade la comisión.
-#            if(comision!=0):
-#                CuentaOperacionDeInversionOperacion(self.mem).insertar(fecha, 38, 1, -comision-impuestos, comentario,  id_cuentas,id_operinversiones,id_inversiones);
     
     def clone(self):
         """Crea una inversion operacion desde otra inversionoepracion. NO es un enlace es un objeto clone"""
@@ -2052,7 +2020,6 @@ class InversionOperacion:
         
     def save(self, recalculate=True):
         cur=self.mem.con.cursor()
-        cur2=self.mem.con.cursor()
         if self.id==None:#insertar
             cur.execute("insert into operinversiones(datetime, id_tiposoperaciones,  importe, acciones,  impuestos,  comision,  valor_accion, comentario, id_inversiones) values (%s, %s, %s, %s, %s, %s, %s, %s,%s) returning id_operinversiones", (self.datetime, self.tipooperacion.id, self.importe, self.acciones, self.impuestos, self.comision, self.valor_accion, self.comentario, self.inversion.id))
             self.id=cur.fetchone()[0]
@@ -2061,22 +2028,19 @@ class InversionOperacion:
             cur.execute("update operinversiones set datetime=%s, id_tiposoperaciones=%s, importe=%s, acciones=%s, impuestos=%s, comision=%s, valor_accion=%s, comentario=%s, id_inversiones=%s where id_operinversiones=%s", (self.datetime, self.tipooperacion.id, self.importe, self.acciones, self.impuestos, self.comision, self.valor_accion, self.comentario, self.inversion.id, self.id))
         if recalculate==True:
             (self.inversion.op_actual,  self.inversion.op_historica)=self.inversion.op.calcular()   
-            CuentaOperacionDeInversionOperacion(self.mem).actualizar_una_inversion(cur, cur2,  self.inversion.id)  
+            self.actualizar_cuentaoperacion_asociada()
             self.inversion.cuenta.saldo_from_db()
         self.mem.con.commit()
         cur.close()
-        cur2.close()
         
-    def borrar(self):
+    def borrar(self):        
         cur=self.mem.con.cursor()
-        cur2=self.mem.con.cursor()
         cur.execute("delete from operinversiones where id_operinversiones=%s",(self.id, ))
         self.inversion.op.arr.remove(self)
         (self.inversion.op_actual,  self.inversion.op_historica)=self.inversion.op.calcular()
-        CuentaOperacionDeInversionOperacion(self.mem).actualizar_una_inversion(cur, cur2,  self.inversion.id)#Es una inversion ya que la id_operinversion ya no existe. Se ha borrado
         self.inversion.cuenta.saldo_from_db()
+        self.inversion.actualizar_cuentasoperaciones_asociadas()#Regenera toda la inversi´on.
         cur.close()
-        cur2.close()
         
     def tpc_anual(self,  last,  endlastyear):
         return

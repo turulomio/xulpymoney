@@ -33,52 +33,52 @@
         <translation>Euro</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5244"/>
+        <location filename="libxulpymoney.py" line="5208"/>
         <source>Warrants</source>
         <translation>Warrants</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5247"/>
+        <location filename="libxulpymoney.py" line="5211"/>
         <source>Planes de pensiones</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5249"/>
+        <location filename="libxulpymoney.py" line="5213"/>
         <source>Dep&#xc3;&#xb3;sitos</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5652"/>
+        <location filename="libxulpymoney.py" line="5628"/>
         <source>Sourceforge version detected: %s</source>
         <translation>Versión de Sourceforge detectada: %s</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5654"/>
+        <location filename="libxulpymoney.py" line="5630"/>
         <source>Error buscando la versi&#xc3;&#xb3;n actual de Sourceforge</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="2117"/>
+        <location filename="libxulpymoney.py" line="2081"/>
         <source>The associated bank is not active. You must activate it first</source>
         <translation>El banco asociado está inactivo. Debes activarlo primero</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="2269"/>
+        <location filename="libxulpymoney.py" line="2233"/>
         <source>The associated account is not active. You must activate it first</source>
         <translation>La cuenta asociada está inactiva. Debes activarla primero</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="2541"/>
+        <location filename="libxulpymoney.py" line="2505"/>
         <source>The associated credit card is not active. You must activate it first</source>
         <translation>La tarjeta de crédito está inactiva. Debes activarla primero</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5965"/>
+        <location filename="libxulpymoney.py" line="5941"/>
         <source>This option is being developed</source>
         <translation>Esta opción está en desarrollo</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4510"/>
+        <location filename="libxulpymoney.py" line="4474"/>
         <source>Purging innecesary data</source>
         <translation>Eliminando datos innecesarios</translation>
     </message>
@@ -88,12 +88,12 @@
         <translation>Cancelar</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4512"/>
+        <location filename="libxulpymoney.py" line="4476"/>
         <source>Purging quotes</source>
         <translation>Eliminando cotizaciones</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="3351"/>
+        <location filename="libxulpymoney.py" line="3315"/>
         <source>Date</source>
         <translation>Fecha</translation>
     </message>
@@ -108,17 +108,17 @@
         <translation>Comisión</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5456"/>
+        <location filename="libxulpymoney.py" line="5432"/>
         <source>Error conecting to MyStocksd, waiting 10 seconds</source>
         <translation>Error al conectar to MyStocksd, esperando 10 segundos</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5469"/>
+        <location filename="libxulpymoney.py" line="5445"/>
         <source>Error conecting to MyStocks</source>
         <translation>Error al conectar a MyStocks</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5533"/>
+        <location filename="libxulpymoney.py" line="5509"/>
         <source>Error conecting to Xulpymoney</source>
         <translation>Error al conectar a Xulpymoney</translation>
     </message>
@@ -128,7 +128,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="3352"/>
+        <location filename="libxulpymoney.py" line="3316"/>
         <source>Gross</source>
         <translation>Bruto</translation>
     </message>
@@ -153,7 +153,7 @@
         <translation>Tipo de operación</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5240"/>
+        <location filename="libxulpymoney.py" line="5204"/>
         <source>Shares</source>
         <translation>Acciones</translation>
     </message>
@@ -238,7 +238,7 @@
         <translation>Producto</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="2438"/>
+        <location filename="libxulpymoney.py" line="2402"/>
         <source>The associated product is not active. You must activate it first</source>
         <translation>El producto asociado no está activo. Debes activarlo primero</translation>
     </message>
@@ -348,27 +348,27 @@
         <translation>Unidades</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="2994"/>
+        <location filename="libxulpymoney.py" line="2958"/>
         <source>Not leveraged</source>
         <translation>No apalancado</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="2995"/>
+        <location filename="libxulpymoney.py" line="2959"/>
         <source>Variable leverage (Warrants)</source>
         <translation>Apalancamiento variable (Warrants)</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="2996"/>
+        <location filename="libxulpymoney.py" line="2960"/>
         <source>Leverage x2</source>
         <translation>Apalancamiento x2</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="2997"/>
+        <location filename="libxulpymoney.py" line="2961"/>
         <source>Leverage x3</source>
         <translation>Apalancamiento x3</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="2998"/>
+        <location filename="libxulpymoney.py" line="2962"/>
         <source>Leverage x4</source>
         <translation>Apalancamiento x4</translation>
     </message>
@@ -408,37 +408,37 @@
         <translation>Índice de referencia</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5241"/>
+        <location filename="libxulpymoney.py" line="5205"/>
         <source>Funds</source>
         <translation>Fondos de inversión</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5242"/>
+        <location filename="libxulpymoney.py" line="5206"/>
         <source>Indexes</source>
         <translation>Índices</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5243"/>
+        <location filename="libxulpymoney.py" line="5207"/>
         <source>ETF</source>
         <translation>ETF</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5245"/>
+        <location filename="libxulpymoney.py" line="5209"/>
         <source>Currencies</source>
         <translation>Divisas</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5246"/>
+        <location filename="libxulpymoney.py" line="5210"/>
         <source>Public Bond</source>
         <translation>Renta fija pública</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5248"/>
+        <location filename="libxulpymoney.py" line="5212"/>
         <source>Private Bond</source>
         <translation>Renta fija privada</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5250"/>
+        <location filename="libxulpymoney.py" line="5214"/>
         <source>Accounts</source>
         <translation>Cuentas</translation>
     </message>
