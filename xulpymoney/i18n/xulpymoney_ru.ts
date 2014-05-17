@@ -255,7 +255,7 @@
     <message>
         <location filename="libxulpymoney.py" line="983"/>
         <source>Total</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">общий</translation>
     </message>
     <message>
         <location filename="libxulpymoney.py" line="1748"/>
@@ -476,12 +476,12 @@
     <message>
         <location filename="ui/Ui_frmAbout.py" line="342"/>
         <source>S&amp;alir</source>
-        <translation type="unfinished"></translation>
+        <translation>В&amp;ыход</translation>
     </message>
     <message>
         <location filename="ui/Ui_frmAbout.py" line="321"/>
         <source>Xulpymoney</source>
-        <translation type="unfinished"></translation>
+        <translation>Xulpymoney</translation>
     </message>
     <message>
         <location filename="ui/Ui_frmAbout.py" line="302"/>
@@ -509,7 +509,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="ui/Ui_frmAbout.py" line="339"/>
         <source>Total</source>
-        <translation type="unfinished"></translation>
+        <translation>общий</translation>
     </message>
     <message>
         <location filename="ui/Ui_frmAbout.py" line="333"/>
@@ -524,7 +524,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="ui/Ui_frmAbout.py" line="340"/>
         <source>MyStocks</source>
-        <translation type="unfinished"></translation>
+        <translation>MyStocks</translation>
     </message>
     <message>
         <location filename="ui/Ui_frmAbout.py" line="341"/>
@@ -587,22 +587,23 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="ui/Ui_frmAccess.py" line="150"/>
         <source>Server</source>
-        <translation type="unfinished"></translation>
+        <translation>сервер</translation>
     </message>
     <message>
         <location filename="ui/Ui_frmAccess.py" line="152"/>
         <source>Port</source>
-        <translation type="unfinished"></translation>
+        <translation>
+Пуэрто-</translation>
     </message>
     <message>
         <location filename="ui/Ui_frmAccess.py" line="154"/>
         <source>Database</source>
-        <translation type="unfinished"></translation>
+        <translation>база данных</translation>
     </message>
     <message>
         <location filename="ui/Ui_frmAccess.py" line="155"/>
         <source>User</source>
-        <translation type="unfinished"></translation>
+        <translation>пользователь</translation>
     </message>
     <message>
         <location filename="ui/Ui_frmAccess.py" line="156"/>
@@ -677,7 +678,7 @@ correspondiente en la tabla</source>
     <message>
         <location filename="ui/Ui_frmAnalisis.py" line="938"/>
         <source>Total</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">общий</translation>
     </message>
     <message>
         <location filename="ui/Ui_frmAnalisis.py" line="962"/>
@@ -1743,17 +1744,18 @@ correspondiente en la tabla</source>
     <message>
         <location filename="ui/Ui_frmInit.py" line="148"/>
         <source>Server</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">сервер</translation>
     </message>
     <message>
         <location filename="ui/Ui_frmInit.py" line="150"/>
         <source>Port</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">
+Пуэрто-</translation>
     </message>
     <message>
         <location filename="ui/Ui_frmInit.py" line="152"/>
         <source>User</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">пользователь</translation>
     </message>
     <message>
         <location filename="ui/Ui_frmInit.py" line="154"/>
@@ -2087,7 +2089,7 @@ correspondiente en la tabla</source>
     <message>
         <location filename="ui/Ui_frmMain.py" line="211"/>
         <source>Xulpymoney</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Xulpymoney</translation>
     </message>
     <message>
         <location filename="ui/Ui_frmMain.py" line="215"/>
@@ -2235,7 +2237,7 @@ correspondiente en la tabla</source>
     <message>
         <location filename="ui/Ui_frmMainMS.py" line="291"/>
         <source>MyStocks</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">MyStocks</translation>
     </message>
     <message>
         <location filename="ui/Ui_frmMainMS.py" line="294"/>
@@ -3465,7 +3467,7 @@ seleccionados por el usuario</source>
     <message>
         <location filename="ui/Ui_wdgConceptsHistorical.py" line="131"/>
         <source>Total</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">общий</translation>
     </message>
     <message>
         <location filename="ui/Ui_wdgConceptsHistorical.py" line="105"/>
@@ -4796,7 +4798,7 @@ S&#xc3;&#xb3;lo se contabilizar&#xc3;&#xa1; cuando se vendan las acciones</sourc
     <message>
         <location filename="ui/Ui_wdgTotal.py" line="228"/>
         <source>Total</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">общий</translation>
     </message>
     <message>
         <location filename="ui/Ui_wdgTotal.py" line="200"/>

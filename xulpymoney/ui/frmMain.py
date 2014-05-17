@@ -178,7 +178,7 @@ class frmMain(QMainWindow, Ui_frmMain):
         
     @QtCore.pyqtSlot()  
     def on_actionSettings_activated(self):
-        w=frmSettings(self.mem)
+        w=frmSettings(self.mem, self)
         w.exec_()
         self.retranslateUi(self)
 
