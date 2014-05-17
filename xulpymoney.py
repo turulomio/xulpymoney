@@ -17,17 +17,8 @@ QTextCodec.setCodecForTr(QTextCodec.codecForName("UTF-8"))
 
 mem=MemXulpymoney()
 mem.setQTranslator(QTranslator(app))
-#
-#locale = QLocale()
-#a = locale.system().name()
-#if len(a)!=2:
-#    a = a[:-len(a) + 2]
-a=mem.config.get_value("settings", "language")
-mem.qtranslator.load("/usr/lib/xulpymoney/xulpymoney_" + a + ".qm")
+mem.qtranslator.load("/usr/lib/xulpymoney/xulpymoney_{0}.qm".format(mem.config.get_value("settings", "language")))
 app.installTranslator(mem.qtranslator)
-
-#s = QApplication.translate("Core",  "Local language detected: {0}".format(a))
-#print (s)
 
 frmMain = frmMain(mem)
 frmMain.show()

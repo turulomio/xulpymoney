@@ -18,27 +18,27 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5245"/>
+        <location filename="libxulpymoney.py" line="5252"/>
         <source>Warrants</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5248"/>
+        <location filename="libxulpymoney.py" line="5255"/>
         <source>Planes de pensiones</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5250"/>
+        <location filename="libxulpymoney.py" line="5257"/>
         <source>Dep&#xc3;&#xb3;sitos</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5685"/>
+        <location filename="libxulpymoney.py" line="5692"/>
         <source>Sourceforge version detected: %s</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5687"/>
+        <location filename="libxulpymoney.py" line="5694"/>
         <source>Error buscando la versi&#xc3;&#xb3;n actual de Sourceforge</source>
         <translation type="unfinished"></translation>
     </message>
@@ -58,27 +58,27 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="2083"/>
+        <location filename="libxulpymoney.py" line="2090"/>
         <source>The associated bank is not active. You must activate it first</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="2235"/>
+        <location filename="libxulpymoney.py" line="2242"/>
         <source>The associated account is not active. You must activate it first</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="2507"/>
+        <location filename="libxulpymoney.py" line="2514"/>
         <source>The associated credit card is not active. You must activate it first</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5998"/>
+        <location filename="libxulpymoney.py" line="6005"/>
         <source>This option is being developed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4476"/>
+        <location filename="libxulpymoney.py" line="4483"/>
         <source>Purging innecesary data</source>
         <translation type="unfinished"></translation>
     </message>
@@ -88,12 +88,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4478"/>
+        <location filename="libxulpymoney.py" line="4485"/>
         <source>Purging quotes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="3317"/>
+        <location filename="libxulpymoney.py" line="3324"/>
         <source>Date</source>
         <translation type="unfinished"></translation>
     </message>
@@ -108,17 +108,17 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5485"/>
+        <location filename="libxulpymoney.py" line="5492"/>
         <source>Error conecting to MyStocksd, waiting 10 seconds</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5498"/>
+        <location filename="libxulpymoney.py" line="5505"/>
         <source>Error conecting to MyStocks</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5562"/>
+        <location filename="libxulpymoney.py" line="5569"/>
         <source>Error conecting to Xulpymoney</source>
         <translation type="unfinished"></translation>
     </message>
@@ -128,7 +128,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="3318"/>
+        <location filename="libxulpymoney.py" line="3325"/>
         <source>Gross</source>
         <translation type="unfinished"></translation>
     </message>
@@ -153,7 +153,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5241"/>
+        <location filename="libxulpymoney.py" line="5248"/>
         <source>Shares</source>
         <translation type="unfinished"></translation>
     </message>
@@ -238,7 +238,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="2404"/>
+        <location filename="libxulpymoney.py" line="2411"/>
         <source>The associated product is not active. You must activate it first</source>
         <translation type="unfinished"></translation>
     </message>
@@ -256,11 +256,6 @@
         <location filename="libxulpymoney.py" line="983"/>
         <source>Total</source>
         <translation type="unfinished">общий</translation>
-    </message>
-    <message>
-        <location filename="libxulpymoney.py" line="1748"/>
-        <source>Due to account transfer</source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="libxulpymoney.py" line="454"/>
@@ -348,27 +343,27 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="2960"/>
+        <location filename="libxulpymoney.py" line="2967"/>
         <source>Not leveraged</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="2961"/>
+        <location filename="libxulpymoney.py" line="2968"/>
         <source>Variable leverage (Warrants)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="2962"/>
+        <location filename="libxulpymoney.py" line="2969"/>
         <source>Leverage x2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="2963"/>
+        <location filename="libxulpymoney.py" line="2970"/>
         <source>Leverage x3</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="2964"/>
+        <location filename="libxulpymoney.py" line="2971"/>
         <source>Leverage x4</source>
         <translation type="unfinished"></translation>
     </message>
@@ -408,37 +403,37 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5242"/>
+        <location filename="libxulpymoney.py" line="5249"/>
         <source>Funds</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5243"/>
+        <location filename="libxulpymoney.py" line="5250"/>
         <source>Indexes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5244"/>
+        <location filename="libxulpymoney.py" line="5251"/>
         <source>ETF</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5246"/>
+        <location filename="libxulpymoney.py" line="5253"/>
         <source>Currencies</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5247"/>
+        <location filename="libxulpymoney.py" line="5254"/>
         <source>Public Bond</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5249"/>
+        <location filename="libxulpymoney.py" line="5256"/>
         <source>Private Bond</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5251"/>
+        <location filename="libxulpymoney.py" line="5258"/>
         <source>Accounts</source>
         <translation type="unfinished">счета</translation>
     </message>
