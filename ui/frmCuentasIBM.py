@@ -90,7 +90,7 @@ class frmCuentasIBM(QDialog, Ui_frmCuentasIBM):
             self.tblOperTarjetas.setItem(i, 1, QTableWidgetItem((o.concepto.name)))
             self.tblOperTarjetas.setItem(i, 2, self.selCuenta.currency.qtablewidgetitem(o.importe))
             self.tblOperTarjetas.setItem(i, 3, QTableWidgetItem(o.comentario))
-         #actualiza saldo en tblTarjetas   
+         #actualiza balance en tblTarjetas   
         self.tblTarjetas.setItem(self.tblTarjetas.currentRow(), 5, self.selCuenta.currency.qtablewidgetitem(self.selTarjeta.saldo_pendiente()))
         self.tblOperTarjetas.clearSelection()
         self.setSelOperTarjetas=set([])
@@ -200,7 +200,7 @@ class frmCuentasIBM(QDialog, Ui_frmCuentasIBM):
             
     def load_tblOperaciones(self):
         self.tblOperaciones.setRowCount(len(self.opercuentas)+1)        
-        self.tblOperaciones.setItem(0, 1, QTableWidgetItem(("Saldo al iniciar el mes")))
+        self.tblOperaciones.setItem(0, 1, QTableWidgetItem(("balance al iniciar el mes")))
         self.tblOperaciones.setItem(0, 3, self.selCuenta.currency.qtablewidgetitem(self.saldoiniciomensual))
         saldoinicio=self.saldoiniciomensual
         for i, o in enumerate(self.opercuentas):
@@ -422,7 +422,7 @@ class frmCuentasIBM(QDialog, Ui_frmCuentasIBM):
         else:
             self.grpPago.setEnabled(False)
         
-        #Calcula el saldo
+        #Calcula el balance
         for o in self.setSelOperTarjetas:
             self.totalOperTarjetas=self.totalOperTarjetas+Decimal(o.importe)
         self.lblPago.setText(self.mem.localcurrency.string(self.totalOperTarjetas, 2))
@@ -467,14 +467,14 @@ class frmCuentasIBM(QDialog, Ui_frmCuentasIBM):
         cur.execute("select id_opertarjetas,fecha,conceptos.concepto,importe,comentario from opertarjetas,conceptos where opertarjetas.id_conceptos=conceptos.id_conceptos and id_opercuentas=%s;", (id_opercuentas, ))
         self.tblOpertarjetasHistoricas.clearContents()
         self.tblOpertarjetasHistoricas.setRowCount(cur.rowcount);       
-        saldo=0
+        balance=0
         for rec in cur:
-            saldo=saldo+rec['importe']
+            balance=balance+rec['importe']
             self.tblOpertarjetasHistoricas.setItem(cur.rownumber-1, 0, QTableWidgetItem(str(rec['id_opertarjetas'])))
             self.tblOpertarjetasHistoricas.setItem(cur.rownumber-1, 1, QTableWidgetItem(str(rec['fecha'])))
             self.tblOpertarjetasHistoricas.setItem(cur.rownumber-1, 2, QTableWidgetItem((rec['concepto'])))
             self.tblOpertarjetasHistoricas.setItem(cur.rownumber-1, 3, self.selCuenta.currency.qtablewidgetitem(rec['importe']))
-            self.tblOpertarjetasHistoricas.setItem(cur.rownumber-1, 4, self.selCuenta.currency.qtablewidgetitem(saldo))
+            self.tblOpertarjetasHistoricas.setItem(cur.rownumber-1, 4, self.selCuenta.currency.qtablewidgetitem(balance))
             self.tblOpertarjetasHistoricas.setItem(cur.rownumber-1, 5, QTableWidgetItem((rec['comentario'])))
         cur.close()     
         self.mem.disconnect_xulpymoney(con)      

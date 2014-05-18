@@ -85,7 +85,16 @@ class SetInversiones:
         for row in cur:
             lista=lista+ str(row['mystocksid']) + ", "
         lista=lista[:-2]
-            
+    
+    def average_age(self):
+        """Average age of the investments in this set in days"""
+        #Extracts all currentinvestmentoperations
+        set=SetInversionOperacionActual(self.mem)
+        for inv in self.arr:
+            for o in inv.op_actual.arr:
+                set.arr.append(o)
+        return round(set.average_age(), 2)
+        
     def find(self, id):
         for i in self.arr:
             if i.id==id:
@@ -95,16 +104,16 @@ class SetInversiones:
         
     
     def saldo_misma_investment(self, product):
-        """Devuelve el saldo de todas las inversiones que tienen el mismo product.bolsa
+        """Devuelve el balance de todas las inversiones que tienen el mismo product.bolsa
         product es un objeto Product"""
         resultado=Decimal(0)
         for i in self.arr:
             if i.product==product:
-                resultado=resultado+i.saldo()
+                resultado=resultado+i.balance()
         return resultado
         
     def invertido_misma_investment(self, product):
-        """Devuelve el saldo de todas las inversiones que tienen el mismo product.bolsa
+        """Devuelve el balance de todas las inversiones que tienen el mismo product.bolsa
         product es un objeto Product"""
         resultado=Decimal(0)
         for i in self.arr:
@@ -159,12 +168,12 @@ class SetInversiones:
         
         En origen:
             - Debe comprobar que origen y destino es el mismo
-            - Se añade una operinversion con traspaso de valores origen que tendrá un saldo de acciones negativo
+            - Se añade una operinversion con traspaso de valores origen que tendrá un balance de acciones negativo
             - Se añadirá un comentario con id_inversiondestino
             
         En destino:
             - Se añaden tantas operaciones como operinversionesactual con misma fecha 
-            - Tendrán saldo positivo y el tipo operacion es traspaso de valores. destino 
+            - Tendrán balance positivo y el tipo operacion es traspaso de valores. destino 
             - Se añadirá un comentario con id_operinversion origen
             
         Devuelve False si ha habido algún problema
@@ -1037,7 +1046,19 @@ class SetInversionOperacionActual:
         except:
             inversion="Desconocido"
         return ("SetIOA Inv: {0}. N.Registros: {1}. N.Acciones: {2}. Invertido: {3}. Valor medio:{4}".format(inversion,  len(self.arr), self.acciones(),  self.invertido(),  self.valor_medio_compra()))
-        
+                        
+    def average_age(self):
+        """Average age of the current investment operations in days"""
+        (sumbalance, sumbalanceage)=(Decimal(0), Decimal(0))
+        for o in self.arr:
+            balance=o.balance(o.inversion.product.result.basic.last)
+            sumbalance=sumbalance+balance
+            sumbalanceage=sumbalanceage+balance*o.age()
+        if sumbalance!=0:
+            return round(sumbalanceage/sumbalance, 2)
+        else:
+            return None
+            
     def datetime_primera_operacion(self):
         if len(self.arr)==0:
             return None
@@ -1120,11 +1141,11 @@ class SetInversionOperacionActual:
         gainsyear=str2bool(self.mem.config.get_value("settings", "gainsyear"))
         for rownumber, a in enumerate(self.arr):
             sumacciones=Decimal(sumacciones)+Decimal(str(a.acciones))
-            saldo=a.saldo(inversion.product.result.basic.last)
+            balance=a.balance(inversion.product.result.basic.last)
             pendiente=a.pendiente(inversion.product.result.basic.last)
             invertido=a.invertido()
     
-            sumsaldo=sumsaldo+saldo
+            sumsaldo=sumsaldo+balance
             sumpendiente=sumpendiente+pendiente
             suminvertido=suminvertido+invertido
             sum_accionesXvalor=sum_accionesXvalor+a.acciones*a.valor_accion
@@ -1138,7 +1159,7 @@ class SetInversionOperacionActual:
             tabla.setItem(rownumber, diff+1, qright("{0:.6f}".format(a.acciones)))
             tabla.setItem(rownumber, diff+2, inversion.product.currency.qtablewidgetitem(a.valor_accion, 6))
             tabla.setItem(rownumber, diff+3, inversion.product.currency.qtablewidgetitem(invertido))
-            tabla.setItem(rownumber, diff+4, inversion.product.currency.qtablewidgetitem(saldo))
+            tabla.setItem(rownumber, diff+4, inversion.product.currency.qtablewidgetitem(balance))
             tabla.setItem(rownumber, diff+5, inversion.product.currency.qtablewidgetitem(pendiente))
             tabla.setItem(rownumber, diff+6, qtpc(a.tpc_anual(inversion.product.result.basic.last.quote, inversion.product.result.basic.endlastyear.quote)))
             tabla.setItem(rownumber, diff+7, qtpc(a.tpc_tae(inversion.product.result.basic.last.quote)))
@@ -1543,6 +1564,10 @@ class InversionOperacionActual:
         self.valor_accion=row['valor_accion']
         return self
                 
+    def age(self):
+        """Average age of the current investment operations in days"""
+        return (datetime.date.today()-self.datetime.date()).days
+                
     def get_referencia_indice(self, indice):
         """Función que devuelve un Quote con la referencia del indice.
         Si no existe devuelve un Quote con quote 0"""
@@ -1559,8 +1584,8 @@ class InversionOperacionActual:
         """
         return self.acciones*self.valor_accion
         
-    def saldo(self,  lastquote):
-        """Función que calcula el saldo actual de la operinversion actual
+    def balance(self,  lastquote):
+        """Función que calcula el balance actual de la operinversion actual
                 - lastquote: objeto Quote"""
         return self.acciones*lastquote.quote
         
@@ -1571,13 +1596,13 @@ class InversionOperacionActual:
         return False
         
     def pendiente(self, lastquote,  invertido=None):
-        """Función que calcula el saldo  pendiente de la operacion de inversion actual
+        """Función que calcula el balance  pendiente de la operacion de inversion actual
                 Necesita haber cargado mq getbasic y operinversionesactual
                 lasquote es un objeto Quote
                 """
         if invertido==None:
             invertido=self.invertido()
-        return self.saldo(lastquote)-invertido
+        return self.balance(lastquote)-invertido
         
     def tpc_anual(self,  last,  endlastyear):
         if self.datetime.year==datetime.date.today().year:
@@ -1624,7 +1649,7 @@ class Concepto:
         """El parámetro tipooperacion es un objeto tipooperacion, si no se tuviera en tiempo de creación se asigna None"""
         return self.init__create(row['concepto'], tipooperacion, row['editable'], row['id_conceptos'])
 #            
-#    def saldo(self, cur, year,  month):
+#    def balance(self, cur, year,  month):
 #        sql="select sum(importe) as importe from opercuentastarjetas where id_conceptos="+str(self.id)+" and date_part('year',fecha)='"+str(year)+"' and date_part('month',fecha)='"+str(month)+"'"
 #        saldoopercuentastarjetas=con.Execute(sql).GetRowAssoc(0)["importe"]
 #        if saldoopercuentastarjetas==None:
@@ -1904,7 +1929,7 @@ class Dividend:
         """Borra un dividend, para ello borra el registro de la tabla dividends 
             y el asociado en la tabla opercuentas
             
-            También actualiza el saldo de la cuenta."""
+            También actualiza el balance de la cuenta."""
         cur=self.mem.con.cursor()
         self.opercuenta.borrar()
         cur.execute("delete from dividends where id_dividends=%s", (self.id, ))
@@ -1996,11 +2021,11 @@ class InversionOperacion:
         cur.execute("delete from opercuentasdeoperinversiones where id_operinversiones=%s",(self.id, )) 
         cur.close()
         if self.tipooperacion.id==4:#Compra Acciones
-            #Se pone un registro de compra de acciones que resta el saldo de la opercuenta
+            #Se pone un registro de compra de acciones que resta el balance de la opercuenta
             c=CuentaOperacionDeInversionOperacion(self.mem).init__create(self.datetime.date(), self.mem.conceptos.find(29), self.tipooperacion, -self.importe-self.comision, self.comentario, self.inversion.cuenta, self,self.inversion)
             c.save()
         elif self.tipooperacion.id==5:#// Venta Acciones
-            #//Se pone un registro de compra de acciones que resta el saldo de la opercuenta
+            #//Se pone un registro de compra de acciones que resta el balance de la opercuenta
             c=CuentaOperacionDeInversionOperacion(self.mem).init__create(self.datetime.date(), self.mem.conceptos.find(35), self.tipooperacion, self.importe-self.comision-self.impuestos, self.comentario, self.inversion.cuenta, self,self.inversion)
             c.save()
         elif self.tipooperacion.id==6:
@@ -2101,22 +2126,22 @@ class EntidadBancaria:
             cur.execute("update entidadesbancarias set entidadbancaria=%s, eb_activa=%s where id_entidadesbancarias=%s", (self.name, self.activa, self.id))
         cur.close()
         
-    def saldo(self, setcuentas,  setinversiones):
+    def balance(self, setcuentas,  setinversiones):
         resultado=0
-        #Recorre saldo cuentas
+        #Recorre balance cuentas
         for v in setcuentas.arr:
             if v.eb.id==self.id:
-                resultado=resultado+v.saldo
+                resultado=resultado+v.balance
         
-        #Recorre saldo inversiones
+        #Recorre balance inversiones
         for i in setinversiones.arr:
             if i.cuenta.eb.id==self.id:
-                resultado=resultado+i.saldo()
+                resultado=resultado+i.balance()
         return resultado
         
     def es_borrable(self, dic_cuentas):
         """Función que devuelve un booleano si una cuenta es borrable, es decir, que no tenga registros dependientes."""
-        #Recorre saldo cuentas
+        #Recorre balance cuentas
         for k, v in dic_cuentas.items():
             if v.eb.id==self.id:
                 return False
@@ -2138,7 +2163,7 @@ class Cuenta:
         self.numero=None
         self.currency=None
         self.eb=None #Enlace a objeto
-        self.saldo=0#Se calcula al crear el objeto y cuando haya opercuentas se calcula dinamicamente
+        self.balance=0#Se calcula al crear el objeto y cuando haya opercuentas se calcula dinamicamente
 
     def __repr__(self):
         return ("Instancia de Cuenta: {0} ({1})".format( self.name, self.id))
@@ -2153,26 +2178,26 @@ class Cuenta:
         return self
     
     def saldo_from_db(self,fecha=None):
-        """Función que calcula el saldo de una cuenta
-        Solo asigna saldo al atributo saldo si la fecha es actual, es decir la actual
+        """Función que calcula el balance de una cuenta
+        Solo asigna balance al atributo balance si la fecha es actual, es decir la actual
         Parámetros:
             - pg_cursor cur Cursor de base de datos
-            - datetime.date fecha Fecha en la que calcular el saldo
+            - datetime.date fecha Fecha en la que calcular el balance
         Devuelve:
-            - Decimal saldo Valor del saldo
+            - Decimal balance Valor del balance
         """
         cur=self.mem.con.cursor()
         if fecha==None:
             fecha=datetime.date.today()
         cur.execute('select sum(importe)  from opercuentas where id_cuentas='+ str(self.id) +" and fecha<='"+str(fecha)+"';") 
-        saldo=cur.fetchone()[0]
-        if saldo==None:
+        balance=cur.fetchone()[0]
+        if balance==None:
             cur.close()
             return 0        
         if fecha==datetime.date.today():
-            self.saldo=saldo
+            self.balance=balance
         cur.close()
-        return saldo
+        return balance
             
     def init__create(self, name,  eb, activa, numero, currency, id=None):
         self.id=id
@@ -2349,7 +2374,7 @@ class Inversion:
         
         
     def diferencia_saldo_diario(self):
-        """Función que calcula la diferencia de saldo entre last y penultimate
+        """Función que calcula la diferencia de balance entre last y penultimate
         Necesita haber cargado mq getbasic y operinversionesactual"""
         try:
             return self.acciones()*(self.product.result.basic.last.quote-self.product.result.basic.penultimate.quote)
@@ -2400,9 +2425,9 @@ class Inversion:
         return resultado
         
     def pendiente(self):
-        """Función que calcula el saldo  pendiente de la inversión
+        """Función que calcula el balance  pendiente de la inversión
                 Necesita haber cargado mq getbasic y operinversionesactual"""
-        return self.saldo()-self.invertido()
+        return self.balance()-self.invertido()
         
     def qmessagebox_inactive(self):
         if self.activa==False:
@@ -2412,8 +2437,8 @@ class Inversion:
             m.exec_()    
             return True
         return False
-    def saldo(self, fecha=None):
-        """Función que calcula el saldo de la inversión
+    def balance(self, fecha=None):
+        """Función que calcula el balance de la inversión
             Si el curms es None se calcula el actual 
                 Necesita haber cargado mq getbasic y operinversionesactual"""     
         if fecha==None:
@@ -2424,12 +2449,12 @@ class Inversion:
                 return Decimal('0')
             quote=Quote(self.mem).init__from_query(self.product, day_end_from_date(fecha, self.mem.localzone))
             if quote.datetime==None:
-                print ("Inversion saldo: {0} ({1}) en {2} no tiene valor".format(self.name, self.product.id, fecha))
+                print ("Inversion balance: {0} ({1}) en {2} no tiene valor".format(self.name, self.product.id, fecha))
                 return Decimal('0')
             return acciones*quote.quote
         
     def invertido(self):       
-        """Función que calcula el saldo invertido partiendo de las acciones y el precio de compra
+        """Función que calcula el balance invertido partiendo de las acciones y el precio de compra
         Necesita haber cargado mq getbasic y operinversionesactual"""
         resultado=Decimal('0')
         for o in self.op_actual.arr:
@@ -2437,12 +2462,12 @@ class Inversion:
         return resultado
                 
     def tpc_invertido(self):       
-        """Función que calcula el tpc invertido partiendo de las saldo actual y el invertido
+        """Función que calcula el tpc invertido partiendo de las balance actual y el invertido
         Necesita haber cargado mq getbasic y operinversionesactual"""
         invertido=self.invertido()
         if invertido==0:
             return 0
-        return (self.saldo()-invertido)*100/invertido
+        return (self.balance()-invertido)*100/invertido
     def tpc_venta(self):       
         """Función que calcula el tpc venta partiendo de las el last y el valor_venta
         Necesita haber cargado mq getbasic y operinversionesactual"""
@@ -2527,7 +2552,7 @@ class Tarjeta:
         cur.close()
         
     def saldo_pendiente(self):
-        """Es el saldo solo de operaciones difreidas sin pagar"""
+        """Es el balance solo de operaciones difreidas sin pagar"""
         resultado=0
         for o in self.op_diferido:
             resultado=resultado+ o.importe
@@ -2611,10 +2636,10 @@ class Patrimonio:
         return resultado
 
     def saldo_todas_cuentas(self,  fecha=None):
-        """Si cur es none y fecha calcula el saldo actual."""
+        """Si cur es none y fecha calcula el balance actual."""
         cur=self.mem.con.cursor()
         resultado=0
-        sql="select cuentas_saldo('"+str(fecha)+"') as saldo;";
+        sql="select cuentas_saldo('"+str(fecha)+"') as balance;";
         cur.execute(sql)
         resultado=cur.fetchone()[0] 
         cur.close()
@@ -2630,36 +2655,36 @@ class Patrimonio:
         """Versión que se calcula en cliente muy optimizada"""
         resultado=0
         for i in setinversiones.arr:
-            resultado=resultado+i.saldo(fecha)                 
+            resultado=resultado+i.balance(fecha)                 
         return resultado
         
     def saldo_todas_inversiones_riesgo_cero(self, setinversiones, fecha=None):
         """Versión que se calcula en cliente muy optimizada
-        Fecha None calcula  el saldo actual
+        Fecha None calcula  el balance actual
         """
         resultado=0
 #        inicio=datetime.datetime.now()
         for inv in setinversiones.arr:
             if inv.product.tpc==0:        
                 if fecha==None:
-                    resultado=resultado+inv.saldo()
+                    resultado=resultado+inv.balance()
                 else:
-                    resultado=resultado+inv.saldo( fecha)
+                    resultado=resultado+inv.balance( fecha)
 #        print ("core > Total > saldo_todas_inversiones_riego_cero: {0}".format(datetime.datetime.now()-inicio))
         return resultado
 
     def saldo_todas_inversiones_bonds(self, fecha):        
         """Versión que se calcula en cliente muy optimizada
-        Fecha None calcula  el saldo actual
+        Fecha None calcula  el balance actual
         """
         resultado=0
 #        inicio=datetime.datetime.now()
         for inv in self.mem.data.inversiones_all().arr:
             if inv.product.type.id in (7, 9):#public and private bonds        
                 if fecha==None:
-                    resultado=resultado+inv.saldo()
+                    resultado=resultado+inv.balance()
                 else:
-                    resultado=resultado+inv.saldo( fecha)
+                    resultado=resultado+inv.balance( fecha)
 #        print ("core > Patrimonio > saldo_todas_inversiones_bonds: {0}".format(datetime.datetime.now()-inicio))
         return resultado
 

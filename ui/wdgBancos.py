@@ -34,9 +34,9 @@ class wdgBancos(QWidget, Ui_wdgBancos):
         for i,  e in enumerate(self.ebs):
             self.tblEB.setItem(i, 0, QTableWidgetItem(e.name))
             self.tblEB.setItem(i, 1, qbool(e.activa))
-            saldo=e.saldo(self.mem.data.cuentas_active, self.mem.data.inversiones_active)
-            self.tblEB.setItem(i, 2, self.mem.localcurrency.qtablewidgetitem(saldo))
-            sumsaldos=sumsaldos+saldo     
+            balance=e.balance(self.mem.data.cuentas_active, self.mem.data.inversiones_active)
+            self.tblEB.setItem(i, 2, self.mem.localcurrency.qtablewidgetitem(balance))
+            sumsaldos=sumsaldos+balance     
         self.tblEB.setItem(len(self.ebs), 0, QTableWidgetItem(self.tr('TOTAL')))
         self.tblEB.setItem(len(self.ebs), 2, self.mem.localcurrency.qtablewidgetitem(sumsaldos))        
         
@@ -47,8 +47,8 @@ class wdgBancos(QWidget, Ui_wdgBancos):
         for i,  c in enumerate(self.cuentas):
             self.tblCuentas.setItem(i, 0, QTableWidgetItem(c.name))
             self.tblCuentas.setItem(i, 1, qbool(c.activa))
-            self.tblCuentas.setItem(i, 2, self.mem.localcurrency.qtablewidgetitem(c.saldo))
-            sumsaldos=sumsaldos+c.saldo
+            self.tblCuentas.setItem(i, 2, self.mem.localcurrency.qtablewidgetitem(c.balance))
+            sumsaldos=sumsaldos+c.balance
         self.tblCuentas.setItem(len(self.cuentas), 0, QTableWidgetItem(self.tr('TOTAL')))
         self.tblCuentas.setItem(len(self.cuentas), 2, self.mem.localcurrency.qtablewidgetitem(sumsaldos))                
         
@@ -60,9 +60,9 @@ class wdgBancos(QWidget, Ui_wdgBancos):
         for i, inv in enumerate(self.inversiones):
             self.tblInversiones.setItem(i, 0, QTableWidgetItem(inv.name))
             self.tblInversiones.setItem(i, 1, qbool(inv.activa))
-            saldo=inv.saldo()
-            self.tblInversiones.setItem(i, 2, self.mem.localcurrency.qtablewidgetitem(saldo))
-            sumsaldos=sumsaldos+saldo
+            balance=inv.balance()
+            self.tblInversiones.setItem(i, 2, self.mem.localcurrency.qtablewidgetitem(balance))
+            sumsaldos=sumsaldos+balance
         self.tblInversiones.setItem(len(self.inversiones), 0, QTableWidgetItem(self.tr('TOTAL')))
         self.tblInversiones.setItem(len(self.inversiones), 2, self.mem.localcurrency.qtablewidgetitem(sumsaldos))                
         

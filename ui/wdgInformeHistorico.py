@@ -65,13 +65,13 @@ class wdgInformeHistorico(QWidget, Ui_wdgInformeHistorico):
             if valor==None:
                 print("wdgInformeHistorico > load_added: {0} en {1} da nulo".format(o.inversion.product.id, o.datetime))
                 valor=0
-            saldo=valor*o.acciones
-            sumsaldo=sumsaldo+saldo
+            balance=valor*o.acciones
+            sumsaldo=sumsaldo+balance
             self.tblAdded.setItem(i, 0, qdatetime(o.datetime,  o.inversion.product.bolsa.zone))
             self.tblAdded.setItem(i, 1, QTableWidgetItem(o.inversion.name))
             self.tblAdded.setItem(i, 2, QTableWidgetItem(self.mem.tiposoperaciones.find(6).name))
             self.tblAdded.setItem(i, 3, qright(str(o.acciones)))
-            self.tblAdded.setItem(i, 4, self.mem.localcurrency.qtablewidgetitem(saldo))
+            self.tblAdded.setItem(i, 4, self.mem.localcurrency.qtablewidgetitem(balance))
         curms.close()
         self.tblAdded.setItem(len(operaciones), 3, QTableWidgetItem(("TOTAL")))
         self.tblAdded.setItem(len(operaciones), 4, self.mem.localcurrency.qtablewidgetitem(sumsaldo))
@@ -148,7 +148,7 @@ class wdgInformeHistorico(QWidget, Ui_wdgInformeHistorico):
             tpcretenciondividends=self.totalDividendsRetenciones*100/saldototalinicio
 
         self.tblEstudio.horizontalHeaderItem(1).setText(("% TAE desde "+str(inicio)))
-        self.lblSaldo.setText(self.tr("Saldo a {0}, {1}".format(str(inicio), self.mem.localcurrency.string(saldototalinicio))))
+        self.lblSaldo.setText(self.tr("balance a {0}, {1}".format(str(inicio), self.mem.localcurrency.string(saldototalinicio))))
 
         self.tblEstudio.setItem(0, 0,self.mem.localcurrency.qtablewidgetitem(self.totalBruto))       
         self.tblEstudio.setItem(0, 1,qtpc(tpcplus))            
