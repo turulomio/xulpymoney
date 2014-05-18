@@ -26,7 +26,7 @@ class wdgCuentas(QWidget, Ui_wdgCuentas):
             self.tblCuentas.setItem(i, 2, QTableWidgetItem((c.numero)))
             self.tblCuentas.setItem(i, 3, c.currency.qtablewidgetitem(c.balance))
             sumsaldos=sumsaldos+c.balance  
-        self.lblTotal.setText(("balance en las cuentas: %s" % (self.mem.localcurrency.string(sumsaldos))))
+        self.lblTotal.setText(self.tr("Accounts balance: {0}".format(self.mem.localcurrency.string(sumsaldos))))
         self.tblCuentas.clearSelection()
         
     @QtCore.pyqtSlot() 
@@ -51,7 +51,7 @@ class wdgCuentas(QWidget, Ui_wdgCuentas):
         if self.selCuenta.es_borrable(cur)==False:
             m=QMessageBox()
             m.setIcon(QMessageBox.Information)
-            m.setText(self.trUtf8("Esta cuenta tiene inversiones, tarjetas o movimientos dependientes y no puede ser borrada"))
+            m.setText(self.trUtf8("This account has associated investments, credit cards or operations. It can't be deleted"))
             m.exec_()
         else:
             self.selCuenta.borrar(cur)

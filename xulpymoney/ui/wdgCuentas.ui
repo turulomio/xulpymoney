@@ -10,9 +10,6 @@
     <height>318</height>
    </rect>
   </property>
-  <property name="windowTitle">
-   <string>Form</string>
-  </property>
   <layout class="QVBoxLayout" name="verticalLayout_3">
    <item>
     <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -28,7 +25,7 @@
           </font>
          </property>
          <property name="text">
-          <string>Listado de cuentas bancarias</string>
+          <string>Account list</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignCenter</set>
@@ -38,7 +35,7 @@
        <item>
         <widget class="QCheckBox" name="chkInactivas">
          <property name="text">
-          <string>Mostrar cuentas inactivas</string>
+          <string>Show inactive accounts</string>
          </property>
         </widget>
        </item>
@@ -67,22 +64,22 @@
          </attribute>
          <column>
           <property name="text">
-           <string>Cuenta</string>
+           <string>Account</string>
           </property>
          </column>
          <column>
           <property name="text">
-           <string>Entidad bancaria</string>
+           <string>Bank</string>
           </property>
          </column>
          <column>
           <property name="text">
-           <string>Número de cuenta</string>
+           <string>Account number</string>
           </property>
          </column>
          <column>
           <property name="text">
-           <string>Saldo</string>
+           <string>Balance</string>
           </property>
          </column>
         </widget>
@@ -118,10 +115,10 @@
      <normaloff>:/xulpymoney/add.png</normaloff>:/xulpymoney/add.png</iconset>
    </property>
    <property name="text">
-    <string>Nueva Cuenta</string>
+    <string>New account</string>
    </property>
    <property name="toolTip">
-    <string>Nueva Cuenta</string>
+    <string>New account</string>
    </property>
   </action>
   <action name="actionCuentaEstudio">
@@ -130,10 +127,10 @@
      <normaloff>:/xulpymoney/report2.png</normaloff>:/xulpymoney/report2.png</iconset>
    </property>
    <property name="text">
-    <string>Estudio de la Cuenta</string>
+    <string>Account report</string>
    </property>
    <property name="toolTip">
-    <string>Estudio de la Cuenta</string>
+    <string>Account report</string>
    </property>
   </action>
   <action name="actionCuentaBorrar">
@@ -142,10 +139,10 @@
      <normaloff>:/xulpymoney/list-remove.png</normaloff>:/xulpymoney/list-remove.png</iconset>
    </property>
    <property name="text">
-    <string>Borrar cuenta bancaria</string>
+    <string>Delete account</string>
    </property>
    <property name="toolTip">
-    <string>Borrar cuenta bancaria</string>
+    <string>Delete account</string>
    </property>
   </action>
   <action name="actionActiva">
@@ -153,10 +150,10 @@
     <bool>true</bool>
    </property>
    <property name="text">
-    <string>¿Está activa?</string>
+    <string>Is it active?</string>
    </property>
    <property name="toolTip">
-    <string>¿Está activa?</string>
+    <string>Is it active?</string>
    </property>
   </action>
   <action name="actionTransferencia">
@@ -165,10 +162,10 @@
      <normaloff>:/xulpymoney/transfer.png</normaloff>:/xulpymoney/transfer.png</iconset>
    </property>
    <property name="text">
-    <string>Transferencia</string>
+    <string>Transfer between accounts</string>
    </property>
    <property name="toolTip">
-    <string>Transferencia</string>
+    <string>Transfer between accounts</string>
    </property>
   </action>
  </widget>
