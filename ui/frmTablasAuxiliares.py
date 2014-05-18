@@ -24,11 +24,16 @@ class frmTablasAuxiliares(QDialog, Ui_frmTablasAuxiliares):
         self.mem.tiposoperaciones.qcombobox_basic(self.cmbOperationType)
         self.selConcepto=None
         self.conceptos=[]
+        self.regenerate_list()
+        self.tblConceptos_reload()
+    
+    def regenerate_list(self):
+        del self.conceptos
+        self.conceptos=[]
         for c in self.mem.conceptos.list():
             if c.editable==True:
                 self.conceptos.append(c)
  
-        self.tblConceptos_reload()
         
 
     @QtCore.pyqtSlot()  
@@ -45,7 +50,8 @@ class frmTablasAuxiliares(QDialog, Ui_frmTablasAuxiliares):
         borrado=self.selConcepto.borrar()
         if borrado:
             self.mem.con.commit()
-            self.conceptos.remove(self.selConcepto)
+            self.mem.conceptos.remove(self.selConcepto)
+            self.regenerate_list()
             self.tblConceptos.clearSelection()
             self.selConcepto=None
             self.grpConcept.setEnabled(False)
@@ -62,8 +68,9 @@ class frmTablasAuxiliares(QDialog, Ui_frmTablasAuxiliares):
         self.selConcepto.save()
         self.mem.con.commit()
         if isnew:
-            self.conceptos.append(self.selConcepto)
+            self.mem.conceptos.append(self.selConcepto)
             self.cmbOperationType.setEnabled(False)
+        self.regenerate_list()
         self.tblConceptos_reload()
         
 
