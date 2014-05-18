@@ -13,4 +13,4 @@ echo "update products set deletable=true;" >> mystocks.data
 
 pg_dump -s -U $MYUSER -h $MYHOST -p $MYPORT $XULPYMONEYDATABASE > xulpymoney.sql
 
-
+echo "ALTER SEQUENCE seq_conceptos START WITH 100 RESTART;" >> xulpymoney.sql

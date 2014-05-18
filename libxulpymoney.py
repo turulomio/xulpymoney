@@ -363,12 +363,6 @@ class SetConceptos:
     def __init__(self, mem):
         self.dic_arr={}
         self.mem=mem 
-#        self.mem.tiposoperaciones=tiposoperaciones
-        
-#    def strct2ct(self, strct):
-#        """Returns Concepto y TipoOperacion of parameter string"""
-#        (id_conceptos, id_tiposoperaciones)=strct.split(";")
-#        return (self.mem.conceptos.find(id_conceptos), self.mem.tiposoperaciones.find(id_tiposoperaciones))
                  
     def load_from_db(self):
         cur=self.mem.con.cursor()
@@ -376,7 +370,7 @@ class SetConceptos:
         for row in cur:
             self.dic_arr[str(row['id_conceptos'])]=Concepto(self.mem).init__db_row(row, self.mem.tiposoperaciones.find(row['id_tiposoperaciones']))
         cur.close()
-            
+                        
     def load_opercuentas_qcombobox(self, combo):
         """Carga conceptos operaciones 1,2,3, menos dividends y renta fija, no pueden ser editados, luego no se necesitan"""
         for c in self.list():
@@ -1666,21 +1660,34 @@ class Concepto:
 #            saldoopercuentastarjetas=0
 #        return saldoopercuentastarjetas
         
-    def save(self,  cur):
+    def save(self):
+        cur=self.mem.con.cursor()
         if self.id==None:
-            con.Execute("insert into conceptos (concepto, id_tiposoperaciones, editable) values (%s, %s, %s)", (self.name, self.tipooperacion.id, self.editable))
+            cur.execute("insert into conceptos (concepto, id_tiposoperaciones, editable) values (%s, %s, %s) returning id_conceptos", (self.name, self.tipooperacion.id, self.editable))
+            self.id=cur.fetchone()[0]
         else:
-            con.Execute("update conceptos set concepto=%s, id_tiposoperaciones=%s, editable=%s where id_conceptos=%s", (self.name, self.tipooperacion.id, self.editable, self.id))
+            cur.execute("update conceptos set concepto=%s, id_tiposoperaciones=%s, editable=%s where id_conceptos=%s", (self.name, self.tipooperacion.id, self.editable, self.id))
+        cur.close()
                             
-    def es_borrable(self, cur):
+    def es_borrable(self):
         """Función que devuelve un booleano si una cuenta es borrable, es decir, que no tenga registros dependientes."""
+        cur=self.mem.con.cursor()
         cur.execute("select count(*) from opercuentas where id_conceptos=%s", (self.id, ))
-        if cur.fetchone()[0]!=0:
-            return False
+        opercuentas=cur.fetchone()[0]
         cur.execute("select count(*) from opertarjetas where id_conceptos=%s", (self.id, ))
-        if cur.fetchone()[0]!=0:
+        opertarjetas=cur.fetchone()[0]
+        cur.close()
+        if opercuentas+opertarjetas!=0:
             return False
         return True
+        
+    def borrar(self):
+        if self.es_borrable():
+            cur=self.mem.con.cursor()        
+            cur.execute("delete from conceptos where id_conceptos=%s", (self.id, ))
+            cur.close()
+            return True
+        return False
 
     def media_mensual(self):
         cur=self.mem.con.cursor()
@@ -2244,15 +2251,6 @@ class Cuenta:
         if self.es_borrable(cur)==True:
             cur.execute("delete from cuentas where id_cuentas=%s", (self.id, ))
 
-#    def transferencia(self, fecha,  cuentaorigen,  cuentadestino, importe, comision ):
-#        """Cuenta origen y cuenta destino son objetos cuenta"""
-#        cur=self.mem.con.cursor()
-#        sql="select transferencia('"+str(fecha)+"', "+ str(cuentaorigen.id) +', ' + str(cuentadestino.id)+', '+str(importe) +', '+str(comision)+');'
-#        cur.execute(sql)
-#        cuentaorigen.saldo_from_db()
-#        cuentadestino.saldo_from_db()
-#        cur.close()
-        
     def transferencia(self, fecha, cuentaorigen, cuentadestino, importe, comision):
         """Si el oc_comision_id es 0 es que no hay comision porque tambi´en es 0"""
         #Ojo los comentarios est´an dependientes.
@@ -2270,6 +2268,7 @@ class Cuenta:
         oc_destino.save()
         oc_origen.comentario="{0}|{1}|{2}".format(cuentadestino.id, oc_destino.id, oc_comision_id)
         oc_origen.save()
+
     def qmessagebox_inactive(self):
         if self.activa==False:
             m=QMessageBox()
@@ -2828,6 +2827,14 @@ class SetTiposOperaciones:
     def qcombobox(self, combo):
         for t in self.clone_only_operinversiones().list():
             combo.addItem(t.name,  t.id)
+    def qcombobox_basic(self, combo, selected=None):
+        """Selected is a Operation Type id"""
+        combo.clear()
+        combo.addItem(self.dic_arr['1'].name,  self.dic_arr['1'].id)
+        combo.addItem(self.dic_arr['2'].name,  self.dic_arr['2'].id)
+        if selected!=None:
+            combo.setCurrentIndex(combo.findData(selected.id))
+        
 
     def find(self, id):
         return self.dic_arr[str(id)]
