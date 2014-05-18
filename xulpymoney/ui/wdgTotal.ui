@@ -119,12 +119,12 @@
              </row>
              <row>
               <property name="text">
-               <string>Consolidado</string>
+               <string>Consolidated</string>
               </property>
              </row>
              <row>
               <property name="text">
-               <string>Dividendos</string>
+               <string>Dividends</string>
               </property>
              </row>
              <row>
@@ -159,7 +159,7 @@
              </row>
              <row>
               <property name="text">
-               <string>Diferencia mensual</string>
+               <string>Monthly difference</string>
               </property>
              </row>
              <row>
@@ -169,7 +169,7 @@
              </row>
              <row>
               <property name="text">
-               <string>% Variación principio año</string>
+               <string>% Year to date</string>
               </property>
              </row>
              <column>
@@ -179,7 +179,7 @@
              </column>
              <column>
               <property name="text">
-               <string>Febrero</string>
+               <string>February</string>
               </property>
              </column>
              <column>
@@ -209,17 +209,17 @@
              </column>
              <column>
               <property name="text">
-               <string>Agosto</string>
+               <string>August</string>
               </property>
              </column>
              <column>
               <property name="text">
-               <string>Septiembre</string>
+               <string>September</string>
               </property>
              </column>
              <column>
               <property name="text">
-               <string>Octubre</string>
+               <string>October</string>
               </property>
              </column>
              <column>

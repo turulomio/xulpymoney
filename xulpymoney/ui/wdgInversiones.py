@@ -15,9 +15,9 @@ class wdgInversiones(QWidget, Ui_wdgInversiones):
         self.selInversion=None##Apunta a un objeto inversión
         self.loadedinactive=False
 
-        self.progress = QProgressDialog(self.tr("Recibiendo datos solicitados"), self.tr("Cancelar"), 0,0)
+        self.progress = QProgressDialog(self.tr("Receiving requested data"), self.tr("Cancel"), 0,0)
         self.progress.setModal(True)
-        self.progress.setWindowTitle(self.trUtf8("Recibiendo datos..."))
+        self.progress.setWindowTitle(self.trUtf8("Receiving data..."))
         self.progress.setMinimumDuration(0)                 
         self.tblInversiones.settings("wdgInversiones",  self.mem)
         self.on_chkInactivas_stateChanged(self.chkInactivas.checkState())#Carga la tabla
