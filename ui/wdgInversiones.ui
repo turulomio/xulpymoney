@@ -86,12 +86,12 @@
          </column>
          <column>
           <property name="text">
-           <string>Saldo</string>
+           <string>Balance</string>
           </property>
          </column>
          <column>
           <property name="text">
-           <string>Pendiente</string>
+           <string>Pending</string>
           </property>
          </column>
          <column>
@@ -101,7 +101,7 @@
          </column>
          <column>
           <property name="text">
-           <string>% Venta</string>
+           <string>% Selling point</string>
           </property>
          </column>
         </widget>
@@ -137,7 +137,10 @@
      <normaloff>:/xulpymoney/add.png</normaloff>:/xulpymoney/add.png</iconset>
    </property>
    <property name="text">
-    <string>Nueva Inversion</string>
+    <string>New investment</string>
+   </property>
+   <property name="toolTip">
+    <string>New investment</string>
    </property>
   </action>
   <action name="actionInversionEstudio">
@@ -146,7 +149,10 @@
      <normaloff>:/xulpymoney/report2.png</normaloff>:/xulpymoney/report2.png</iconset>
    </property>
    <property name="text">
-    <string>Estudio de la Inversión</string>
+    <string>Investment report</string>
+   </property>
+   <property name="toolTip">
+    <string>Investment report</string>
    </property>
   </action>
   <action name="actionOrdenarTPCDiario">
@@ -155,7 +161,10 @@
      <normaloff>:/xulpmoney/document-preview.png</normaloff>:/xulpmoney/document-preview.png</iconset>
    </property>
    <property name="text">
-    <string>% Diario</string>
+    <string>% Daily</string>
+   </property>
+   <property name="toolTip">
+    <string>% Daily</string>
    </property>
   </action>
   <action name="actionOrdenarTPCVenta">
@@ -164,10 +173,10 @@
      <normaloff>:/xulpmoney/document-preview.png</normaloff>:/xulpmoney/document-preview.png</iconset>
    </property>
    <property name="text">
-    <string>% Venta</string>
+    <string>% Selling point</string>
    </property>
    <property name="toolTip">
-    <string>% Venta</string>
+    <string>% Selling point</string>
    </property>
   </action>
   <action name="actionOrdenarTPC">
@@ -188,7 +197,10 @@
      <normaloff>:/xulpmoney/document-preview.png</normaloff>:/xulpmoney/document-preview.png</iconset>
    </property>
    <property name="text">
-    <string>Nombre</string>
+    <string>Name</string>
+   </property>
+   <property name="toolTip">
+    <string>Name</string>
    </property>
   </action>
   <action name="actionOrdenarHora">
@@ -197,7 +209,10 @@
      <normaloff>:/xulpmoney/document-preview.png</normaloff>:/xulpmoney/document-preview.png</iconset>
    </property>
    <property name="text">
-    <string>Hora</string>
+    <string>Time</string>
+   </property>
+   <property name="toolTip">
+    <string>Time</string>
    </property>
   </action>
   <action name="actionActiva">
@@ -241,10 +256,10 @@
      <normaloff>:/xulpymoney/list-remove.png</normaloff>:/xulpymoney/list-remove.png</iconset>
    </property>
    <property name="text">
-    <string>Borrar inversión</string>
+    <string>Delete investment</string>
    </property>
    <property name="toolTip">
-    <string>Borrar la inversión seleccionada</string>
+    <string>Delete investment</string>
    </property>
   </action>
  </widget>
