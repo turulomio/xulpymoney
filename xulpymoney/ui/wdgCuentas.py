@@ -24,9 +24,9 @@ class wdgCuentas(QWidget, Ui_wdgCuentas):
             self.tblCuentas.setItem(i, 0, QTableWidgetItem((c.name)))
             self.tblCuentas.setItem(i, 1, QTableWidgetItem((c.eb.name)))
             self.tblCuentas.setItem(i, 2, QTableWidgetItem((c.numero)))
-            self.tblCuentas.setItem(i, 3, c.currency.qtablewidgetitem(c.saldo))
-            sumsaldos=sumsaldos+c.saldo  
-        self.lblTotal.setText(("Saldo en las cuentas: %s" % (self.mem.localcurrency.string(sumsaldos))))
+            self.tblCuentas.setItem(i, 3, c.currency.qtablewidgetitem(c.balance))
+            sumsaldos=sumsaldos+c.balance  
+        self.lblTotal.setText(("balance en las cuentas: %s" % (self.mem.localcurrency.string(sumsaldos))))
         self.tblCuentas.clearSelection()
         
     @QtCore.pyqtSlot() 

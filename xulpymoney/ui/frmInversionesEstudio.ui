@@ -49,7 +49,7 @@
         <bool>true</bool>
        </property>
        <property name="currentIndex">
-        <number>2</number>
+        <number>1</number>
        </property>
        <widget class="QWidget" name="tab_12">
         <attribute name="title">
@@ -193,6 +193,20 @@
              <attribute name="verticalHeaderVisible">
               <bool>false</bool>
              </attribute>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="lblAge">
+             <property name="font">
+              <font>
+               <pointsize>8</pointsize>
+               <weight>75</weight>
+               <bold>true</bold>
+              </font>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
             </widget>
            </item>
           </layout>

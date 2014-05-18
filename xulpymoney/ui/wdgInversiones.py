@@ -45,7 +45,7 @@ class wdgInversiones(QWidget, Ui_wdgInversiones):
                 pass
             self.tblInversiones.setItem(i, 3, inv.product.currency.qtablewidgetitem(diario))
             self.tblInversiones.setItem(i, 4, qtpc(inv.product.result.basic.tpc_diario()))
-            self.tblInversiones.setItem(i, 5, inv.product.currency.qtablewidgetitem(inv.saldo()))
+            self.tblInversiones.setItem(i, 5, inv.product.currency.qtablewidgetitem(inv.balance()))
             suminvertido=suminvertido+inv.invertido()
             pendiente=inv.pendiente()
             if pendiente>0:
@@ -67,9 +67,9 @@ class wdgInversiones(QWidget, Ui_wdgInversiones):
                     self.tblInversiones.item(i, 8).setBackgroundColor(QColor(148, 255, 148))
             i=i+1
         if suminvertido!=0:
-            self.lblTotal.setText("Patrimonio invertido: %s. Pendiente: %s - %s = %s (%s patrimonio). Dif. Diaria: %s" % (self.mem.localcurrency.string(suminvertido), self.mem.localcurrency.string(sumpositivos),  self.mem.localcurrency.string(-sumnegativos),  self.mem.localcurrency.string(sumpendiente), tpc(100*sumpendiente/suminvertido) , self.mem.localcurrency.string( sumdiario)))
+            self.lblTotal.setText(self.trUtf8("Invested assets: {0}. Pending: {1} - {2} = {3} ({4} assets)\nDaily Diff: {5}. Assets average age: {6} days".format(self.mem.localcurrency.string(suminvertido), self.mem.localcurrency.string(sumpositivos),  self.mem.localcurrency.string(-sumnegativos),  self.mem.localcurrency.string(sumpendiente), tpc(100*sumpendiente/suminvertido) , self.mem.localcurrency.string( sumdiario), self.inversiones.average_age())))
         else:
-            self.lblTotal.setText(self.trUtf8("No hay patrimonio invertido"))
+            self.lblTotal.setText(self.trUtf8("There aren't invested assets"))
             
     def tblInversiones_load_inactivas(self):
         """Función que carga la tabla de inversiones con el orden que tenga el arr serl.inversiones"""
@@ -77,7 +77,7 @@ class wdgInversiones(QWidget, Ui_wdgInversiones):
         self.tblInversiones.clearContents()
         for i, inv in enumerate(self.inversiones.arr):
             self.tblInversiones.setItem(i, 0, QTableWidgetItem("{0} ({1})".format(inv.name, inv.cuenta.name)))
-            self.tblInversiones.setItem(i, 5, inv.product.currency.qtablewidgetitem(inv.saldo()))
+            self.tblInversiones.setItem(i, 5, inv.product.currency.qtablewidgetitem(inv.balance()))
 
     @QtCore.pyqtSlot() 
     def on_actionActiva_activated(self):

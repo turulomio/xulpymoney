@@ -55,16 +55,9 @@ class frmInversionesEstudio(QDialog, Ui_frmInversionesEstudio):
             self.cmdPuntoVenta.setEnabled(True)
             self.cmbCuenta.setCurrentIndex(self.cmbCuenta.findData(self.inversion.cuenta.id))
             self.selMovimiento=None
-            self.on_chkOperaciones_stateChanged(self.chkOperaciones.checkState())
-            self.on_chkHistoricalDividends_stateChanged(self.chkHistoricalDividends.checkState())
-            
+            self.update_tables()      
             if len(self.op.arr)!=0 or len(self.dividends.arr)!=0:#CmbCuenta está desabilitado si hay dividends o operinversiones
-                self.cmbCuenta.setEnabled(False)
-            
-            self.inversion.op_actual.get_valor_benchmark(self.mem.data.benchmark)
-            self.inversion.op_actual.myqtablewidget(self.tblInversionActual,  "frmInversionesEstudio")
-            self.inversion.op_historica.myqtablewidget(self.tblInversionHistorica,  "frmInversionesEstudio"  )
-   
+                self.cmbCuenta.setEnabled(False)  
 
     def load_tabDividends(self):        
         (sumneto, sumbruto, sumretencion, sumcomision)=self.dividends.myqtablewidget(self.tblDividends, "frmInversionesEstudio")
@@ -84,7 +77,7 @@ class frmInversionesEstudio(QDialog, Ui_frmInversionesEstudio):
                 tpccalculado=100*estimacion.estimation/self.inversion.product.result.basic.last.quote
                 self.lblDivAnualEstimado.setText(("El dividend anual estimado, según el valor actual de la acción es del {0} % ({1}€ por acción)".format(str(round(tpccalculado, 2)),  str(estimacion.estimation))))
                 self.lblDivFechaRevision.setText(('Fecha de la última revisión del dividend: '+ str(estimacion.date_estimation)))
-                self.lblDivSaldoEstimado.setText(("Saldo estimado: {0}€ ({1}€ después de impuestos)".format( str(round(acciones*estimacion.estimation, 2)),  str(round(acciones*estimacion.estimation*(1-self.mem.dividendwithholding))), 2)))
+                self.lblDivSaldoEstimado.setText(("balance estimado: {0}€ ({1}€ después de impuestos)".format( str(round(acciones*estimacion.estimation, 2)),  str(round(acciones*estimacion.estimation*(1-self.mem.dividendwithholding))), 2)))
             self.lblDivTPC.setText(("% de lo invertido: "+tpc(dtpc)))
             self.lblDivTAE.setText(("% TAE de lo invertido: "+tpc(dtae)))        
             self.grpDividendsEstimation.show()
@@ -110,8 +103,9 @@ class frmInversionesEstudio(QDialog, Ui_frmInversionesEstudio):
         self.inversion.op_actual.get_valor_benchmark(self.mem.data.benchmark)
         self.on_chkOperaciones_stateChanged(self.chkOperaciones.checkState())
         self.inversion.op_actual.myqtablewidget(self.tblInversionActual,  "frmInversionesEstudio")
+        self.lblAge.setText(self.trUtf8("Current operations average age: {0} days".format(self.inversion.op_actual.average_age())))
         self.inversion.op_historica.myqtablewidget(self.tblInversionHistorica,  "frmInversionesEstudio"  )
-        self.load_tabDividends()
+        self.on_chkHistoricalDividends_stateChanged(self.chkHistoricalDividends.checkState())
     
 
     @QtCore.pyqtSlot() 

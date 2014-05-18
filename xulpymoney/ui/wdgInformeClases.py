@@ -69,7 +69,7 @@ class wdgInformeClases(QWidget, Ui_wdgInformeClases):
         QWidget.__init__(self, parent)
         self.setupUi(self)
         self.mem=mem
-        self.saldos={}#Variable que cachea todos los saldos
+        self.balances={}#Variable que cachea todos los balances
         self.hoy=datetime.date.today()
 
         self.canvasTPC=canvasPie(self)
@@ -112,7 +112,7 @@ class wdgInformeClases(QWidget, Ui_wdgInformeClases):
             for i in self.mem.data.inversiones_active.arr:
                 if math.ceil(i.product.tpc/10.0)==r:
                     if self.radCurrent.isChecked():
-                        total=total+i.saldo()
+                        total=total+i.balance()
                     else:
                         total=total+i.invertido()
             if r==0:
@@ -136,7 +136,7 @@ class wdgInformeClases(QWidget, Ui_wdgInformeClases):
             for i in self.mem.data.inversiones_active.arr:
                 if i.product.mode==m:
                     if self.radCurrent.isChecked():
-                        total=total+i.saldo()
+                        total=total+i.balance()
                     else:
                         total=total+i.invertido()
             labels.append(m.name)
@@ -159,7 +159,7 @@ class wdgInformeClases(QWidget, Ui_wdgInformeClases):
             for i in self.mem.data.inversiones_active.arr:
                 if i.product.type==t:
                     if self.radCurrent.isChecked():
-                        total=total+i.saldo()
+                        total=total+i.balance()
                     else:
                         total=total+i.invertido()
             if t.id==11:#Cuentas
@@ -182,7 +182,7 @@ class wdgInformeClases(QWidget, Ui_wdgInformeClases):
             for i in self.mem.data.inversiones_active.arr:
                 if i.product.apalancado==a:
                     if self.radCurrent.isChecked():
-                        total=total+i.saldo()
+                        total=total+i.balance()
                     else:
                         total=total+i.invertido()
             if a.id==0:#Cuentas
@@ -204,7 +204,7 @@ class wdgInformeClases(QWidget, Ui_wdgInformeClases):
             for i in self.mem.data.inversiones_active.arr:
                 if i.product.bolsa.country==c:
                     if self.radCurrent.isChecked():
-                        total=total+i.saldo()
+                        total=total+i.balance()
                     else:
                         total=total+i.invertido()
             if total>0:
