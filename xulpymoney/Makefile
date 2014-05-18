@@ -77,7 +77,7 @@ install:
 	install -m 755 -o root sources/mq.*.py $(PREFIXBIN)/
 	install -m 755 -o root mystocks.py $(PREFIXBIN)/mystocks
 	install -m 755 -o root mystocks.initd $(PREFIXINITD)/mystocks
-	install -m 644 -o root GPL-3.txt CHANGELOG-* AUTHORS-* RELEASES-* xulpymoney-*.odt $(PREFIXSHARE)
+	install -m 644 -o root GPL-3.txt CHANGELOG.txt AUTHORS.txt RELEASES.txt xulpymoney-*.odt $(PREFIXSHARE)
 	install -m 644 -o root sql/*.data sql/*.sql $(PREFIXSHARE)/sql
 	install -m 644 -o root images/kmplot.jpg $(PREFIXPIXMAPS)/mystocks.jpg
 	install -m 644 -o root scripts/*.py $(PREFIXSHARE)/scripts

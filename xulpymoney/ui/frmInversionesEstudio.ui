@@ -276,7 +276,7 @@
          </item>
         </layout>
        </widget>
-       <widget class="QWidget" name="tabDividendos">
+       <widget class="QWidget" name="tabDividends">
         <attribute name="title">
          <string>Dividends</string>
         </attribute>

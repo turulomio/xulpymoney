@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>376</width>
-    <height>168</height>
+    <width>634</width>
+    <height>177</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -52,6 +52,12 @@
        </item>
        <item>
         <widget class="QLineEdit" name="txtYear">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
          <property name="alignment">
           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
          </property>
@@ -62,7 +68,7 @@
      <item>
       <layout class="QHBoxLayout" name="horizontalLayout_2">
        <item>
-        <widget class="QLabel" name="label_2">
+        <widget class="QLabel" name="lblEstimation">
          <property name="text">
           <string>Add a estimation</string>
          </property>
@@ -70,6 +76,12 @@
        </item>
        <item>
         <widget class="myQLineEdit" name="txtDPA">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
          <property name="text">
           <string>0</string>
          </property>

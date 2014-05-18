@@ -34,7 +34,7 @@ class frmInversionesEstudio(QDialog, Ui_frmInversionesEstudio):
         
         self.mem.data.cuentas_active.qcombobox(self.cmbCuenta)
         
-        if inversion==None:
+        if self.inversion==None:
             self.tipo=1
             self.cmdInversion.setText(self.trUtf8("Add a new investment"))
             self.lblTitulo.setText(self.trUtf8("New investment"))
@@ -105,7 +105,8 @@ class frmInversionesEstudio(QDialog, Ui_frmInversionesEstudio):
         self.inversion.op_actual.myqtablewidget(self.tblInversionActual,  "frmInversionesEstudio")
         self.lblAge.setText(self.trUtf8("Current operations average age: {0} days".format(self.inversion.op_actual.average_age())))
         self.inversion.op_historica.myqtablewidget(self.tblInversionHistorica,  "frmInversionesEstudio"  )
-        self.on_chkHistoricalDividends_stateChanged(self.chkHistoricalDividends.checkState())
+        if self.inversion!=None:#We are adding a new investment
+            self.on_chkHistoricalDividends_stateChanged(self.chkHistoricalDividends.checkState())
     
 
     @QtCore.pyqtSlot() 
@@ -142,6 +143,18 @@ class frmInversionesEstudio(QDialog, Ui_frmInversionesEstudio):
         
     @QtCore.pyqtSlot() 
     def on_actionMovimientoNuevo_activated(self):
+        if self.inversion.product.result.basic.last.quote==None:
+            m=QMessageBox()
+            m.setIcon(QMessageBox.Information)
+            m.setText(self.trUtf8("Before adding a operation, you must add the current price of the product."))
+            m.exec_()    
+            w=frmQuotesIBM(self.mem,  self.inversion.product)
+            w.exec_()   
+            if w.result()==QDialog.Accepted:
+                self.inversion.product.result.basic.load_from_db()
+            else:
+                return
+            
         w=frmInversionesIBM(self.mem, self.inversion, None, self)
         w.exec_()
         self.update_tables()    

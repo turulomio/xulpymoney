@@ -9,7 +9,7 @@ from wdgLog import *
  
 
 class frmMainMS(QMainWindow, Ui_frmMainMS):#    
-    def __init__(self, parent = 0,  flags = False):
+    def __init__(self, mem,  parent = 0,  flags = False):
         """
         Constructor
         
@@ -19,13 +19,13 @@ class frmMainMS(QMainWindow, Ui_frmMainMS):#
         """
 
             
-        QMainWindow.__init__(self, None)
+        QMainWindow.__init__(self,  None)
         self.setupUi(self)
         self.showMaximized()
         self.setWindowTitle(self.trUtf8("MyStocks 2010-{0} ©".format(version[:4])))
         self.sqlvacio="select * from products where id=-999999"
         
-        self.mem=MemMyStock()
+        self.mem=mem
         
         self.w=QWidget()       
         self.w.setAttribute(Qt.WA_DeleteOnClose) 
@@ -41,16 +41,7 @@ class frmMainMS(QMainWindow, Ui_frmMainMS):#
         self.w.close()
 
         self.mem.actualizar_memoria()
-        
-#        if Global(self.mem).get_sourceforge_version()>version:
-#            m=QMessageBox()
-#            m.setText(QApplication.translate("mystocks","Hay una nueva versión publicada en http://mystocks.sourceforge.net"))
-#            m.exec_()        
-#        if Global(self.mem).get_database_init_date()==str(datetime.date.today()):
-#            m=QMessageBox()
-#            m.setText(QApplication.translate("mystocks","La base de datos se acaba de iniciar.\n\nSe necesitan al menos 24 horas de funcionamiento del demonio mystocksd para que esta aplicación tenga todos los datos disponibles."))
-#            m.exec_()       
-        
+               
         self.w=wdgProducts(self.mem,  self.sqlvacio)
 
         self.layout.addWidget(self.w)

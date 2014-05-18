@@ -227,7 +227,7 @@
     <string>Nombre</string>
    </property>
   </action>
-  <action name="actionOrdenarDividendo">
+  <action name="actionOrdenarDividend">
    <property name="icon">
     <iconset>
      <normaloff>:/images/document-preview.png</normaloff>:/images/document-preview.png</iconset>

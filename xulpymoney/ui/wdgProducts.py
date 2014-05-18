@@ -252,6 +252,7 @@ class wdgProducts(QWidget, Ui_wdgProducts):
             self.actionIbex35.setEnabled(True)
             self.actionQuoteNew.setEnabled(True)
             self.actionEstimationDPSNew.setEnabled(True)
+            self.actionPurge.setEnabled(True)
         else:
             self.actionMergeCodes.setEnabled(False)
             self.actionProductEdit.setEnabled(False)
@@ -261,6 +262,7 @@ class wdgProducts(QWidget, Ui_wdgProducts):
             self.actionIbex35.setEnabled(False)
             self.actionQuoteNew.setEnabled(False)
             self.actionEstimationDPSNew.setEnabled(False)
+            self.actionPurge.setEnabled(False)
         
         if self.selectedRows==2:
             self.actionMergeCodes.setEnabled(True)

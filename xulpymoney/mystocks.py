@@ -18,20 +18,12 @@ except:
 app = QApplication(sys.argv)
 QTextCodec.setCodecForTr(QTextCodec.codecForName("UTF-8"));
 
-translator = QTranslator(app)
-locale=QLocale()
-a=locale.system().name()
-if len(a)!=2:
-    a=a[:-len(a)+2]
+mem=MemMyStock()
+mem.setQTranslator(QTranslator(app))
+mem.qtranslator.load("/usr/lib/xulpymoney/xulpymoney_{0}.qm".format(mem.config.get_value("settings", "language")))
+app.installTranslator(mem.qtranslator)
 
-translator.load("/usr/lib/xulpymoney/xulpymoney_" + a + ".qm")
-app.installTranslator(translator);
-
-tmp=QApplication.translate("xulpymoney", "Lenguage local detectado: {0}".format(a))
-print ((tmp))
-
-
-frmMain = frmMainMS() 
+frmMain = frmMainMS(mem) 
 frmMain.show()
 
 sys.exit(app.exec_())

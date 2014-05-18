@@ -15,6 +15,14 @@ class frmEstimationsAdd(QDialog, Ui_frmEstimationsAdd):
         self.lbl.setText(self.product.name)
         self.txtYear.setText(str(datetime.date.today().year))
         self.txtDPA.selectAll()
+        if self.type=="dps":
+            self.setWindowTitle(self.tr("New dividend per share estimation"))
+            self.lblEstimation.setText(self.tr("Add a dividend per share estimation"))
+            self.cmd.setText(self.tr("Save a dividend per share estimation"))
+        else:
+            self.setWindowTitle(self.tr("New earnings per share estimation"))
+            self.lblEstimation.setText(self.tr("Add a earning per share estimation"))
+            self.cmd.setText(self.tr("Save a earning per share estimation"))
 
     def on_cmd_released(self):
         if self.type=="dps":
