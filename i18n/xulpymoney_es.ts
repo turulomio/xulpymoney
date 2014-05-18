@@ -3568,68 +3568,68 @@ seleccionados por el usuario</source>
     <name>wdgCuentas</name>
     <message>
         <location filename="ui/Ui_wdgCuentas.py" line="110"/>
-        <source>Form</source>
-        <translation>Form</translation>
+        <source>Account list</source>
+        <translation>Listado de cuentas bancarias</translation>
     </message>
     <message>
         <location filename="ui/Ui_wdgCuentas.py" line="111"/>
-        <source>Listado de cuentas bancarias</source>
-        <translation type="unfinished"></translation>
+        <source>Show inactive accounts</source>
+        <translation>Mostrar cuentas inactivas</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgCuentas.py" line="112"/>
-        <source>Mostrar cuentas inactivas</source>
-        <translation type="unfinished"></translation>
+        <location filename="ui/Ui_wdgCuentas.py" line="114"/>
+        <source>Account</source>
+        <translation>Cuenta</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgCuentas.py" line="115"/>
-        <source>Cuenta</source>
-        <translation type="unfinished"></translation>
+        <location filename="ui/Ui_wdgCuentas.py" line="116"/>
+        <source>Bank</source>
+        <translation>Banco</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgCuentas.py" line="117"/>
-        <source>Entidad bancaria</source>
-        <translation type="unfinished"></translation>
+        <location filename="ui/Ui_wdgCuentas.py" line="118"/>
+        <source>Account number</source>
+        <translation>Número de cuenta</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgCuentas.py" line="119"/>
-        <source>NÃºmero de cuenta</source>
-        <translation type="unfinished"></translation>
+        <location filename="ui/Ui_wdgCuentas.py" line="120"/>
+        <source>Balance</source>
+        <translation>Saldo</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgCuentas.py" line="121"/>
-        <source>Saldo</source>
-        <translation type="unfinished"></translation>
+        <location filename="ui/Ui_wdgCuentas.py" line="122"/>
+        <source>New account</source>
+        <translation>Nueva cuenta</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgCuentas.py" line="123"/>
-        <source>Nueva Cuenta</source>
-        <translation type="unfinished"></translation>
+        <location filename="ui/Ui_wdgCuentas.py" line="124"/>
+        <source>Account report</source>
+        <translation>Informe de la cuenta</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgCuentas.py" line="125"/>
-        <source>Estudio de la Cuenta</source>
-        <translation type="unfinished"></translation>
+        <location filename="ui/Ui_wdgCuentas.py" line="126"/>
+        <source>Delete account</source>
+        <translation>Borrar cuenta</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgCuentas.py" line="127"/>
-        <source>Borrar cuenta bancaria</source>
-        <translation type="unfinished"></translation>
+        <location filename="ui/Ui_wdgCuentas.py" line="128"/>
+        <source>Is it active?</source>
+        <translation>¿Está activa?</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgCuentas.py" line="129"/>
-        <source>Â¿EstÃ¡ activa?</source>
-        <translation type="unfinished"></translation>
+        <location filename="ui/Ui_wdgCuentas.py" line="130"/>
+        <source>Transfer between accounts</source>
+        <translation>Transferencia entre cuentas</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgCuentas.py" line="131"/>
-        <source>Transferencia</source>
-        <translation type="unfinished"></translation>
+        <location filename="ui/wdgCuentas.py" line="29"/>
+        <source>Accounts balance: {0}</source>
+        <translation>Saldo de las cuentas: {0}</translation>
     </message>
     <message>
         <location filename="ui/wdgCuentas.py" line="54"/>
-        <source>Esta cuenta tiene inversiones, tarjetas o movimientos dependientes y no puede ser borrada</source>
-        <translation type="unfinished"></translation>
+        <source>This account has associated investments, credit cards or operations. It can&apos;t be deleted</source>
+        <translation>Esta cuenta tiene inversiones, tarjetas de crédito u operaciones asociadas. No puede ser borrada</translation>
     </message>
 </context>
 <context>
