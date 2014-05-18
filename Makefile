@@ -65,7 +65,6 @@ install:
 	install -o root -d $(PREFIXPIXMAPS)
 	install -o root -d $(PREFIXAPPLICATIONS)
 
-
 	install -m 755 -o root xulpymoney.py $(PREFIXBIN)/xulpymoney
 	install -m 755 -o root xulpymoney_init.py $(PREFIXBIN)/xulpymoney_init
 	install -m 644 -o root ui/*.py libxulpymoney.py images/*.py  $(PREFIXLIB)
@@ -77,14 +76,12 @@ install:
 	install -m 755 -o root sources/mq.*.py $(PREFIXBIN)/
 	install -m 755 -o root mystocks.py $(PREFIXBIN)/mystocks
 	install -m 755 -o root mystocks.initd $(PREFIXINITD)/mystocks
-	install -m 644 -o root GPL-3.txt CHANGELOG.txt AUTHORS.txt RELEASES.txt xulpymoney-*.odt $(PREFIXSHARE)
+	install -m 644 -o root GPL-3.txt CHANGELOG.txt AUTHORS.txt RELEASES.txt xulpymoney.odt $(PREFIXSHARE)
 	install -m 644 -o root sql/*.data sql/*.sql $(PREFIXSHARE)/sql
 	install -m 644 -o root images/kmplot.jpg $(PREFIXPIXMAPS)/mystocks.jpg
 	install -m 644 -o root scripts/*.py $(PREFIXSHARE)/scripts
 	install -m 644 -o root sources/*.py $(PREFIXLIB)
 	install -m 644 -o root mystocks.desktop $(PREFIXAPPLICATIONS)
-
-
 
 uninstall:
 	rm $(PREFIXBIN)/mystocks
