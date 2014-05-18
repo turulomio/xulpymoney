@@ -4601,11 +4601,12 @@ class SetQuotesBasic:
 
 
     def tpc_diario(self):
-        if self.penultimate.quote==None or self.penultimate.quote==0 or self.last.quote==None:
+        if self.penultimate==None or self.last==None:
             return None
-        else:
-            return round((self.last.quote-self.penultimate.quote)*100/self.penultimate.quote, 2)
-        
+        if self.penultimate.quote==0 or self.penultimate.quote==None or self.last.quote==None:
+            return None
+        return round((self.last.quote-self.penultimate.quote)*100/self.penultimate.quote, 2)
+    
             
     def tpc_anual(self):
         if self.endlastyear.quote==None or self.endlastyear.quote==0 or self.last.quote==None:
