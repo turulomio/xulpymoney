@@ -93,7 +93,10 @@ class SetInversiones:
         for inv in self.arr:
             for o in inv.op_actual.arr:
                 set.arr.append(o)
-        return round(set.average_age(), 2)
+        average=set.average_age()
+        if average==None:
+            return None
+        return round(average, 2)
         
     def find(self, id):
         for i in self.arr:
@@ -1587,6 +1590,8 @@ class InversionOperacionActual:
     def balance(self,  lastquote):
         """Función que calcula el balance actual de la operinversion actual
                 - lastquote: objeto Quote"""
+        if self.acciones==0 or lastquote.quote==None:#Empty xulpy
+            return 0
         return self.acciones*lastquote.quote
         
     def less_than_a_year(self):
@@ -1605,6 +1610,8 @@ class InversionOperacionActual:
         return self.balance(lastquote)-invertido
         
     def tpc_anual(self,  last,  endlastyear):
+        if last==None:#initiating xulpymoney
+            return 0
         if self.datetime.year==datetime.date.today().year:
             endlastyear=self.valor_accion                
         if endlastyear==0:
@@ -1612,6 +1619,9 @@ class InversionOperacionActual:
         return 100*(last-endlastyear)/endlastyear
     
     def tpc_total(self,  last):
+
+        if last==None:#initiating xulpymoney
+            return 0        
         if self.valor_accion==0:
             return 0
         return 100*(last-self.valor_accion)/self.valor_accion
@@ -2441,10 +2451,13 @@ class Inversion:
         """Función que calcula el balance de la inversión
             Si el curms es None se calcula el actual 
                 Necesita haber cargado mq getbasic y operinversionesactual"""     
+        acciones=self.acciones(fecha)
+        if acciones==0 or self.product.result.basic.last.quote==None:#Empty xulpy
+            return 0
+                
         if fecha==None:
-            return self.acciones()*self.product.result.basic.last.quote
+            return acciones*self.product.result.basic.last.quote
         else:
-            acciones=self.acciones(fecha)
             if acciones==0:
                 return Decimal('0')
             quote=Quote(self.mem).init__from_query(self.product, day_end_from_date(fecha, self.mem.localzone))

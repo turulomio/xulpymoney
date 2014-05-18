@@ -154,16 +154,16 @@ class frmAnalisis(QDialog, Ui_frmAnalisis):
             self.product.estimations_dps.myqtablewidget(self.tblDividendsEstimations)   
             self.product.estimations_eps.myqtablewidget(self.tblEPS)            
             self.product.dps.myqtablewidget(self.tblDPSPaid)            
-        inicio=datetime.datetime.now()
-        self.__load_information()
-        if len(self.product.result.ohclDaily.arr)!=0:
-            print ("Datos informacion cargados:",  datetime.datetime.now()-inicio)
-            self.load_graphics()
-            print ("Datos gráficos cargados:",  datetime.datetime.now()-inicio)
-            self.load_historicas()
-            print ("Datos historicos cargados:",  datetime.datetime.now()-inicio)
-            self.load_mensuales()
-            print ("Datos mensuales cargados:",  datetime.datetime.now()-inicio)
+            inicio=datetime.datetime.now()
+            self.__load_information()
+            if len(self.product.result.ohclDaily.arr)!=0:
+                print ("Datos informacion cargados:",  datetime.datetime.now()-inicio)
+                self.load_graphics()
+                print ("Datos gráficos cargados:",  datetime.datetime.now()-inicio)
+                self.load_historicas()
+                print ("Datos historicos cargados:",  datetime.datetime.now()-inicio)
+                self.load_mensuales()
+                print ("Datos mensuales cargados:",  datetime.datetime.now()-inicio)
 
 
 #        
@@ -438,10 +438,19 @@ class frmAnalisis(QDialog, Ui_frmAnalisis):
         self.mem.conms.commit()  
         
         if insertarquote==True:
+
+            m=QMessageBox()
+            m.setIcon(QMessageBox.Information)
+            m.setText(self.tr("You have to add a quote and a dividend per share estimation to the new product"))
+            m.exec_()                
             w=frmQuotesIBM(self.mem,  self.product)
-            w.exec_()    
-            self.done(0)
+            while w.result()!=QDialog.Accepted:
+                w.exec_()    
     
+            d=frmEstimationsAdd(self.mem, self.product, "dps")
+            while d.result()!=QDialog.Accepted:
+                d.exec_()   
+            self.done(0)
 
     def on_cmdAgrupations_released(self):
         ##Se debe clonar, porque selector borra

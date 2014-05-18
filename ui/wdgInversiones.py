@@ -109,7 +109,7 @@ class wdgInversiones(QWidget, Ui_wdgInversiones):
         self.selInversion.borrar(cur)
         self.mem.con.commit()
         self.mem.data.inversiones_active.arr.remove(self.selInversion)
-        self.inversiones.arr.remove(self.selInversion)
+#        self.inversiones.arr.remove(self.selInversion) #Apunta a ella
         cur.close()
         self.on_chkInactivas_stateChanged(self.chkInactivas.checkState())#Carga la tabla
 
@@ -197,10 +197,12 @@ class wdgInversiones(QWidget, Ui_wdgInversiones):
             self.actionInversionBorrar.setEnabled(False)
             self.actionActiva.setEnabled(False)
             self.actionProduct.setEnabled(False)
+            self.actionProductPrice.setEnabled(False)
         else:
             self.actionInversionEstudio.setEnabled(True)
             self.actionActiva.setEnabled(True)       
             self.actionProduct.setEnabled(True)
+            self.actionProductPrice.setEnabled(True)
             if self.selInversion.es_borrable()==True:
                 self.actionInversionBorrar.setEnabled(True)
             else:
