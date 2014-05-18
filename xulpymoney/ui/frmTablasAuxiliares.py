@@ -19,89 +19,80 @@ class frmTablasAuxiliares(QDialog, Ui_frmTablasAuxiliares):
         self.setupUi(self)
         self.mem=mem
 
-        self.tblConceptos.settings("frmTablasAuxiliares",  self.mem)
+        self.tblConceptos.settings(None,  self.mem)
         
-        self.conceptos=[]
+        self.mem.tiposoperaciones.qcombobox_basic(self.cmbOperationType)
         self.selConcepto=None
+        self.conceptos=[]
         for c in self.mem.conceptos.list():
             if c.editable==True:
                 self.conceptos.append(c)
  
         self.tblConceptos_reload()
         
-#    @QtCore.pyqtSlot()  
-#    def on_actionConceptosBorrar_activated(self):
-#        id_conceptos= int(self.tblConceptos.item(self.tblConceptos.currentRow(), 0).text())
-#        con=self.mem.connect_xulpymoney()
-#        cur =con.cursor()
-#        
-#        if Concepto(self.mem).tiene_registros_dependientes(cur, id_conceptos)==False:
-#            cur.execute("delete from conceptos where id_conceptos=%s", (id_conceptos, ))
-#            con.commit()
-#        else:
-#            m=QMessageBox()
-#            m.setIcon(QMessageBox.Information)
-#            m.setText(self.trUtf8("Este conceptos tiene opercuentas y opertarjetas dependientes y no puede ser borrado"))
-#            m.exec_()
-#        cur.close()     
-#        self.mem.disconnect_xulpymoney(con)
-#        self.tblConceptos_reload()
-#
-    @QtCore.pyqtSlot()  
-    def on_actionConceptosNuevo_activated(self):
-        print ("Hay que hacer dialogo para concepto y tipo de operacion")
-#        concepto=QInputDialog().getText(self,  "gnuOptics > Tablas auxiliares > Nuevo concepto",  "Introduce un nuevo concepto")
-#        con=self.mem.connect_xulpymoney()
-#        cur = con.cursor()
-#        cur.execute("insert into conceptos(concepto,) values (%s);", (concepto[0], ))
-#        con.commit()
-#        cur.close()     
-#        self.mem.disconnect_xulpymoney(con)
-#        self.tblConceptos_reload()
-#        return
-
 
     @QtCore.pyqtSlot()  
-    def on_actionConceptosModificar_activated(self):
-        print ("Hay que hacer dialogo para concepto y tipo de operacion")
-#        id_conceptos= int(self.tblConceptos.item(self.tblConceptos.currentRow(), 0).text())
-#        con=self.mem.connect_xulpymoney()
-#        cur = con.cursor()        )
-#
-#        cur.execute("select * from conceptos where id_conceptos=%s", (id_conceptos, ))
-#        reg= cur.fetchone()
-#        cur.close()               
-#        
-#        concepto=QInputDialog().getText(self,  "Xulpymoney > Tablas auxiliares > Modificar concepto",  "Modifica el concepto", QLineEdit.Normal,   (reg['concepto']))        
-#        
-#        cur = con.cursor()
-#        cur.execute("update conceptos set concepto=%s where id_conceptos=%s", ((concepto[0]),  id_conceptos ))
-#        con.commit()
-#        cur.close()     
-#        self.mem.disconnect_xulpymoney(con)
-#        self.tblConceptos_reload()
+    def on_actionConceptAdd_activated(self):
+        self.tblConceptos.clearSelection()
+        self.grpConcept.setEnabled(True)
+        self.cmbOperationType.setEnabled(True)
+        self.selConcepto=Concepto(self.mem).init__create(self.tr("Add a concept"), self.mem.tiposoperaciones.find(1), True)
+        self.txtConcept.setText(self.selConcepto.name)
+        self.cmbOperationType.setCurrentIndex(0)
+
+    @QtCore.pyqtSlot()  
+    def on_actionConceptDelete_activated(self):
+        borrado=self.selConcepto.borrar()
+        if borrado:
+            self.mem.con.commit()
+            self.conceptos.remove(self.selConcepto)
+            self.tblConceptos.clearSelection()
+            self.selConcepto=None
+            self.grpConcept.setEnabled(False)
+            self.tblConceptos_reload()
+            
         
+    def on_cmdSaveConcept_released(self):
+        isnew=False
+        if self.selConcepto.id==None:
+            isnew=True
+        self.selConcepto.name=self.txtConcept.text()
+        self.selConcepto.tipooperacion=self.mem.tiposoperaciones.find(self.cmbOperationType.itemData(self.cmbOperationType.currentIndex()))
+        self.selConcepto.editable=True
+        self.selConcepto.save()
+        self.mem.con.commit()
+        if isnew:
+            self.conceptos.append(self.selConcepto)
+            self.cmbOperationType.setEnabled(False)
+        self.tblConceptos_reload()
+        
+
+       
     def on_tblConceptos_customContextMenuRequested(self,  pos):
         if self.selConcepto==None:
-            self.actionConceptosBorrar.setEnabled(False)
-            self.actionConceptosModificar.setEnabled(False)
+            self.actionConceptDelete.setEnabled(False)
         else:
-            self.actionConceptosBorrar.setEnabled(True)
-            self.actionConceptosModificar.setEnabled(True)
+            self.actionConceptDelete.setEnabled(True)
         
         menu=QMenu()
-        menu.addAction(self.actionConceptosNuevo)
-        menu.addAction(self.actionConceptosModificar)
-        menu.addAction(self.actionConceptosBorrar)
+        menu.addAction(self.actionConceptAdd)
+        menu.addAction(self.actionConceptDelete)
         menu.exec_(self.tblConceptos.mapToGlobal(pos))
 
     def on_tblConceptos_itemSelectionChanged(self):
         try:
             for i in self.tblConceptos.selectedItems():#itera por cada item no row.
-                self.selConcepto=self.op[i.row()]
+                self.selConcepto=self.conceptos[i.row()]
         except:
             self.selConcepto=None
-        print ("Seleccionado: " +  str(self.selConcepto))
+        if self.selConcepto==None:      
+            self.grpConcept.setEnabled(False)
+        else:
+            self.grpConcept.setEnabled(True)
+            self.cmbOperationType.setEnabled(False)
+            self.txtConcept.setText(self.selConcepto.name)
+            self.cmbOperationType.setCurrentIndex(self.cmbOperationType.findData(self.selConcepto.tipooperacion.id))
+        
         
     def tblConceptos_reload(self):
         self.tblConceptos.setRowCount(len(self.conceptos));

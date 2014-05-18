@@ -692,3 +692,4 @@ GRANT ALL ON SCHEMA public TO PUBLIC;
 -- PostgreSQL database dump complete
 --
 
+ALTER SEQUENCE seq_conceptos RESTART WITH 100;

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>597</width>
-    <height>307</height>
+    <width>601</width>
+    <height>323</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -23,7 +23,7 @@
    <iconset resource="../images/xulpymoney.qrc">
     <normaloff>:/xulpymoney/configure.png</normaloff>:/xulpymoney/configure.png</iconset>
   </property>
-  <layout class="QHBoxLayout" name="horizontalLayout_2">
+  <layout class="QHBoxLayout" name="horizontalLayout">
    <item>
     <layout class="QVBoxLayout" name="verticalLayout">
      <item>
@@ -36,7 +36,7 @@
        </property>
        <property name="text">
         <string>Pressing OK, you will create needed database to run Xulpymoney.
- They'll be created in the language selected</string>
+They'll be created in the language selected</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
@@ -45,9 +45,6 @@
      </item>
      <item>
       <layout class="QFormLayout" name="formLayout">
-       <property name="fieldGrowthPolicy">
-        <enum>QFormLayout::ExpandingFieldsGrow</enum>
-       </property>
        <item row="0" column="0">
         <widget class="QLabel" name="label">
          <property name="text">
@@ -58,7 +55,7 @@
        <item row="0" column="1">
         <widget class="QComboBox" name="cmbLanguage">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
@@ -83,22 +80,21 @@
          </item>
         </widget>
        </item>
-       <item row="1" column="1">
-        <widget class="Line" name="line">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="0">
+       <item row="1" column="0">
         <widget class="QLabel" name="lblServer">
          <property name="text">
           <string>Server</string>
          </property>
         </widget>
        </item>
-       <item row="2" column="1">
+       <item row="1" column="1">
         <widget class="QLineEdit" name="txtServer">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
          <property name="inputMethodHints">
           <set>Qt::ImhNone</set>
          </property>
@@ -110,45 +106,71 @@
          </property>
         </widget>
        </item>
-       <item row="3" column="0">
+       <item row="2" column="0">
         <widget class="QLabel" name="lblPort">
          <property name="text">
           <string>Port</string>
          </property>
         </widget>
        </item>
-       <item row="3" column="1">
+       <item row="2" column="1">
         <widget class="QLineEdit" name="txtPort">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
          <property name="text">
           <string>5432</string>
          </property>
         </widget>
        </item>
-       <item row="4" column="0">
+       <item row="3" column="0">
         <widget class="QLabel" name="lblUser">
          <property name="text">
           <string>User</string>
          </property>
         </widget>
        </item>
-       <item row="4" column="1">
-        <widget class="QLineEdit" name="txtUser">
-         <property name="text">
-          <string>postgres</string>
-         </property>
-        </widget>
-       </item>
-       <item row="5" column="0">
+       <item row="4" column="0">
         <widget class="QLabel" name="lblPass">
          <property name="text">
           <string>Password</string>
          </property>
         </widget>
        </item>
-       <item row="5" column="1">
+       <item row="5" column="0">
+        <widget class="QLabel" name="label_2">
+         <property name="text">
+          <string>MyStocks Database</string>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="0">
+        <widget class="QLabel" name="label_3">
+         <property name="text">
+          <string>Xulpymoney Database</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="1">
+        <widget class="QLineEdit" name="txtUser">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="text">
+          <string>postgres</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="1">
         <widget class="QLineEdit" name="txtPass">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
@@ -161,29 +183,27 @@
          </property>
         </widget>
        </item>
-       <item row="6" column="0">
-        <widget class="QLabel" name="label_2">
-         <property name="text">
-          <string>MyStocks Database</string>
-         </property>
-        </widget>
-       </item>
-       <item row="6" column="1">
+       <item row="5" column="1">
         <widget class="QLineEdit" name="txtMyStocks">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
          <property name="text">
           <string>mystocks</string>
          </property>
         </widget>
        </item>
-       <item row="7" column="0">
-        <widget class="QLabel" name="label_3">
-         <property name="text">
-          <string>Xulpymoney Database</string>
-         </property>
-        </widget>
-       </item>
-       <item row="7" column="1">
+       <item row="6" column="1">
         <widget class="QLineEdit" name="txtXulpymoney">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
          <property name="text">
           <string>xulpymoney</string>
          </property>
@@ -208,6 +228,13 @@
       </widget>
      </item>
     </layout>
+   </item>
+   <item>
+    <widget class="Line" name="line">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
    </item>
   </layout>
  </widget>

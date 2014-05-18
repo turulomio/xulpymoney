@@ -12,7 +12,7 @@ class frmInit(QDialog, Ui_frmInit):
     
     @pyqtSignature("")
     def on_cmdYN_accepted(self):
-        respuesta = QMessageBox.warning(self, self.windowTitle(), self.trUtf8("Do you want to create Xulpymoney needed databases in {0}?".format(self.cmbLanguage.currentText())), QMessageBox.Ok | QMessageBox.Cancel)
+        respuesta = QMessageBox.warning(self, self.windowTitle(), self.trUtf8("Do you want to create needed Xulpymoney databases in {0}?".format(self.cmbLanguage.currentText())), QMessageBox.Ok | QMessageBox.Cancel)
         if respuesta==QMessageBox.Ok:             
             if self.create_db(self.txtMyStocks.text())==False or self.create_db(self.txtXulpymoney.text())==False or self.create_mystocks()==False or self.create_xulpymoney()==False:
                 m=QMessageBox()
@@ -88,6 +88,10 @@ class frmInit(QDialog, Ui_frmInit):
         cur.execute("insert into conceptos values(63,'{0}',1,false)".format(self.trUtf8("Bonds. Running coupon payment")))
         cur.execute("insert into conceptos values(65,'{0}',2,false)".format(self.trUtf8("Bonds. Running coupon collection")))
         cur.execute("insert into conceptos values(66,'{0}',2,false)".format(self.trUtf8("Bonds. Coupon collection")))
+        cur.execute("insert into conceptos values(2,'{0}',2,true)".format(self.trUtf8("Paysheet")))
+        cur.execute("insert into conceptos values(3,'{0}',1,true)".format(self.trUtf8("Supermarket")))
+        cur.execute("insert into conceptos values(6,'{0}',1,true)".format(self.trUtf8("Restaurant")))
+        cur.execute("insert into conceptos values(7,'{0}',1,true)".format(self.trUtf8("Gas")))
         con.commit()
         cur.close()
         con.close()
