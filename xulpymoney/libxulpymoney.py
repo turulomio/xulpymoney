@@ -364,6 +364,9 @@ class SetConceptos:
         self.dic_arr={}
         self.mem=mem 
                  
+    def append(self, concepto):
+        self.dic_arr[str(concepto.id)]=concepto
+        
     def load_from_db(self):
         cur=self.mem.con.cursor()
         cur.execute("Select * from conceptos")
@@ -449,6 +452,11 @@ class SetConceptos:
         arr=sorted(arr, key=lambda o:o[0].name)
         return (arr, totalexpenses,  totalmedia_mensual)
             
+    def remove(self, concepto):
+        #However, this mutates the existing dictionary so the contents of the dictionary changes for anybody else who has a reference to the same instance. To return a new dictionary, make a copy of the dictionary:
+        new = dict(self.dic_arr)
+        del new[str(concepto.id)]
+        self.dic_arr=new
 
 
 class SetCountries:
