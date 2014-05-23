@@ -64,6 +64,7 @@ install:
 	install -o root -d $(PREFIXSHARE)/scripts
 	install -o root -d $(PREFIXPIXMAPS)
 	install -o root -d $(PREFIXAPPLICATIONS)
+	install -o root -d $(PREFIXINITD)
 
 	install -m 755 -o root xulpymoney.py $(PREFIXBIN)/xulpymoney
 	install -m 755 -o root xulpymoney_init.py $(PREFIXBIN)/xulpymoney_init
