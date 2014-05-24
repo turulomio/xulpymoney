@@ -1148,77 +1148,77 @@ correspondiente en la tabla</source>
 <context>
     <name>frmCuentasIBM</name>
     <message>
-        <location filename="ui/Ui_frmCuentasIBM.py" line="396"/>
+        <location filename="ui/Ui_frmCuentasIBM.py" line="403"/>
         <source>Estudio de la Cuenta seleccionada</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmCuentasIBM.py" line="397"/>
+        <location filename="ui/Ui_frmCuentasIBM.py" line="404"/>
         <source>TextLabel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmCuentasIBM.py" line="441"/>
+        <location filename="ui/Ui_frmCuentasIBM.py" line="448"/>
         <source>XXXX &#xe2;&#x82;&#xac;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmCuentasIBM.py" line="443"/>
+        <location filename="ui/Ui_frmCuentasIBM.py" line="450"/>
         <source>yyyy/MM/dd</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmCuentasIBM.py" line="450"/>
+        <location filename="ui/Ui_frmCuentasIBM.py" line="457"/>
         <source>Id</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmCuentasIBM.py" line="463"/>
+        <location filename="ui/Ui_frmCuentasIBM.py" line="470"/>
         <source>Nuevo movimiento</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmCuentasIBM.py" line="464"/>
+        <location filename="ui/Ui_frmCuentasIBM.py" line="471"/>
         <source>Borrar el movimiento</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmCuentasIBM.py" line="465"/>
+        <location filename="ui/Ui_frmCuentasIBM.py" line="472"/>
         <source>Nueva Tarjeta</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmCuentasIBM.py" line="466"/>
+        <location filename="ui/Ui_frmCuentasIBM.py" line="473"/>
         <source>Borrar Tarjeta</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmCuentasIBM.py" line="467"/>
+        <location filename="ui/Ui_frmCuentasIBM.py" line="474"/>
         <source>Nueva Operaci&#xc3;&#xb3;n de Tarjeta</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmCuentasIBM.py" line="468"/>
+        <location filename="ui/Ui_frmCuentasIBM.py" line="475"/>
         <source>Borrar Operaci&#xc3;&#xb3;n de Tarjeta</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmCuentasIBM.py" line="470"/>
+        <location filename="ui/Ui_frmCuentasIBM.py" line="477"/>
         <source>Modificar Tarjeta</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmCuentasIBM.py" line="472"/>
+        <location filename="ui/Ui_frmCuentasIBM.py" line="479"/>
         <source>Modificar movimiento</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmCuentasIBM.py" line="473"/>
+        <location filename="ui/Ui_frmCuentasIBM.py" line="480"/>
         <source>Modificar Movimiento</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmCuentasIBM.py" line="475"/>
+        <location filename="ui/Ui_frmCuentasIBM.py" line="482"/>
         <source>Modificar Operaci&#xc3;&#xb3;n de Tarjeta</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1258,152 +1258,152 @@ correspondiente en la tabla</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmCuentasIBM.py" line="471"/>
+        <location filename="ui/Ui_frmCuentasIBM.py" line="478"/>
         <source>Is active?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmCuentasIBM.py" line="398"/>
+        <location filename="ui/Ui_frmCuentasIBM.py" line="405"/>
         <source>Account data</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmCuentasIBM.py" line="405"/>
+        <location filename="ui/Ui_frmCuentasIBM.py" line="412"/>
         <source>Account movements</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmCuentasIBM.py" line="462"/>
+        <location filename="ui/Ui_frmCuentasIBM.py" line="469"/>
         <source>Associated credit cards</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmCuentasIBM.py" line="417"/>
+        <location filename="ui/Ui_frmCuentasIBM.py" line="424"/>
         <source>Credit card list</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmCuentasIBM.py" line="418"/>
+        <location filename="ui/Ui_frmCuentasIBM.py" line="425"/>
         <source>Show inactive credit cards</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmCuentasIBM.py" line="420"/>
+        <location filename="ui/Ui_frmCuentasIBM.py" line="427"/>
         <source>Credit card</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmCuentasIBM.py" line="422"/>
+        <location filename="ui/Ui_frmCuentasIBM.py" line="429"/>
         <source>Number</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmCuentasIBM.py" line="424"/>
+        <location filename="ui/Ui_frmCuentasIBM.py" line="431"/>
         <source>Active</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmCuentasIBM.py" line="452"/>
+        <location filename="ui/Ui_frmCuentasIBM.py" line="459"/>
         <source>Date</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmCuentasIBM.py" line="454"/>
+        <location filename="ui/Ui_frmCuentasIBM.py" line="461"/>
         <source>Concept</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmCuentasIBM.py" line="460"/>
+        <location filename="ui/Ui_frmCuentasIBM.py" line="467"/>
         <source>Comment</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmCuentasIBM.py" line="416"/>
+        <location filename="ui/Ui_frmCuentasIBM.py" line="423"/>
         <source>Account</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmCuentasIBM.py" line="399"/>
+        <location filename="ui/Ui_frmCuentasIBM.py" line="406"/>
         <source>Select the bank it belongs to</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmCuentasIBM.py" line="400"/>
+        <location filename="ui/Ui_frmCuentasIBM.py" line="407"/>
         <source>Account name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmCuentasIBM.py" line="401"/>
+        <location filename="ui/Ui_frmCuentasIBM.py" line="408"/>
         <source>Account currency</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmCuentasIBM.py" line="402"/>
+        <location filename="ui/Ui_frmCuentasIBM.py" line="409"/>
         <source>Account number</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmCuentasIBM.py" line="404"/>
+        <location filename="ui/Ui_frmCuentasIBM.py" line="411"/>
         <source>Update</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmCuentasIBM.py" line="456"/>
+        <location filename="ui/Ui_frmCuentasIBM.py" line="463"/>
         <source>Amount</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmCuentasIBM.py" line="458"/>
+        <location filename="ui/Ui_frmCuentasIBM.py" line="465"/>
         <source>Balance</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmCuentasIBM.py" line="426"/>
+        <location filename="ui/Ui_frmCuentasIBM.py" line="433"/>
         <source>Delayed payment</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmCuentasIBM.py" line="428"/>
+        <location filename="ui/Ui_frmCuentasIBM.py" line="435"/>
         <source>Maximum balance</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmCuentasIBM.py" line="445"/>
+        <location filename="ui/Ui_frmCuentasIBM.py" line="452"/>
         <source>Selected Credit Card delayed operations</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmCuentasIBM.py" line="440"/>
+        <location filename="ui/Ui_frmCuentasIBM.py" line="447"/>
         <source>Selected operations delayed payment</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmCuentasIBM.py" line="442"/>
+        <location filename="ui/Ui_frmCuentasIBM.py" line="449"/>
         <source>Payment date</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmCuentasIBM.py" line="444"/>
+        <location filename="ui/Ui_frmCuentasIBM.py" line="451"/>
         <source>Pay</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmCuentasIBM.py" line="461"/>
+        <location filename="ui/Ui_frmCuentasIBM.py" line="468"/>
         <source>Deferred payments for the selected card report</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmCuentasIBM.py" line="446"/>
+        <location filename="ui/Ui_frmCuentasIBM.py" line="453"/>
         <source>Select a payment</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmCuentasIBM.py" line="448"/>
+        <location filename="ui/Ui_frmCuentasIBM.py" line="455"/>
         <source>Pay back</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmCuentasIBM.py" line="477"/>
+        <location filename="ui/Ui_frmCuentasIBM.py" line="484"/>
         <source>Delete transfer</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2630,16 +2630,6 @@ seleccionados por el usuario</source>
 <context>
     <name>frmPuntoVenta</name>
     <message>
-        <location filename="ui/Ui_frmPuntoVenta.py" line="173"/>
-        <source>Xulpymoney &gt; Inversiones &gt; Punto de venta</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_frmPuntoVenta.py" line="174"/>
-        <source>C&#xc3;&#xa1;lculo del punto de venta</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="ui/Ui_frmPuntoVenta.py" line="176"/>
         <source>Selecciona un porcentaje de ganancia de lo invertido</source>
         <translation type="unfinished"></translation>
@@ -2739,16 +2729,6 @@ seleccionados por el usuario</source>
         <source>Actualmente no hay acciones disponibles en esta Inversión</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <location filename="ui/Ui_frmPuntoVenta.py" line="175"/>
-        <source>Selecciona la ganancia</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_frmPuntoVenta.py" line="190"/>
-        <source>Opciones de c&#xc3;&#xa1;lculo del punto de venta</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message encoding="UTF-8">
         <location filename="ui/frmPuntoVenta.py" line="18"/>
         <source>No se puede asignar el punto de venta a una inversión no guardada</source>
@@ -2777,11 +2757,6 @@ seleccionados por el usuario</source>
     <message>
         <location filename="ui/frmPuntoVenta.py" line="113"/>
         <source>Current state: {0}</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_frmPuntoVenta.py" line="184"/>
-        <source>Slect a gain</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2822,6 +2797,26 @@ seleccionados por el usuario</source>
     <message>
         <location filename="ui/Ui_frmPuntoVenta.py" line="189"/>
         <source>10</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_frmPuntoVenta.py" line="174"/>
+        <source>Selling point calculation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_frmPuntoVenta.py" line="175"/>
+        <source>Select your gain</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_frmPuntoVenta.py" line="184"/>
+        <source>Select a gain</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_frmPuntoVenta.py" line="190"/>
+        <source>Selling point calculation options</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3680,192 +3675,92 @@ seleccionados por el usuario</source>
     <name>wdgDesReinversion</name>
     <message>
         <location filename="ui/Ui_wdgDesReinversion.py" line="307"/>
-        <source>TextLabel</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_wdgDesReinversion.py" line="308"/>
         <source>Simular una reinversi&#xc3;&#xb3;n</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgDesReinversion.py" line="309"/>
+        <location filename="ui/Ui_wdgDesReinversion.py" line="308"/>
         <source>Simular una desinversi&#xc3;&#xb3;n</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/Ui_wdgDesReinversion.py" line="310"/>
-        <source>Datos de la operaci&#xc3;&#xb3;n</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_wdgDesReinversion.py" line="311"/>
         <source>1000</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgDesReinversion.py" line="312"/>
+        <location filename="ui/Ui_wdgDesReinversion.py" line="311"/>
         <source>0</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/Ui_wdgDesReinversion.py" line="313"/>
-        <source>Comisi&#xc3;&#xb3;n bancaria</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_wdgDesReinversion.py" line="314"/>
         <source>10</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/Ui_wdgDesReinversion.py" line="315"/>
-        <source>N&#xc3;&#xba;mero de acciones</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_wdgDesReinversion.py" line="316"/>
         <source>Cantidad exacta</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgDesReinversion.py" line="317"/>
+        <location filename="ui/Ui_wdgDesReinversion.py" line="316"/>
         <source>Realizar simulaci&#xc3;&#xb3;n</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgDesReinversion.py" line="377"/>
-        <source>Despu&#xc3;&#xa9;s</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_wdgDesReinversion.py" line="334"/>
-        <source>Operaciones de inversi&#xc3;&#xb3;n</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_wdgDesReinversion.py" line="319"/>
+        <location filename="ui/Ui_wdgDesReinversion.py" line="318"/>
         <source>Id</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgDesReinversion.py" line="379"/>
+        <location filename="ui/Ui_wdgDesReinversion.py" line="378"/>
         <source>D&#xc3;&#xad;a</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgDesReinversion.py" line="361"/>
-        <source>Tipo de operaci&#xc3;&#xb3;n</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_wdgDesReinversion.py" line="381"/>
+        <location filename="ui/Ui_wdgDesReinversion.py" line="380"/>
         <source>Acciones</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgDesReinversion.py" line="327"/>
-        <source>Valor</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_wdgDesReinversion.py" line="385"/>
+        <location filename="ui/Ui_wdgDesReinversion.py" line="384"/>
         <source>Saldo</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgDesReinversion.py" line="331"/>
-        <source>Comisi&#xc3;&#xb3;n</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_wdgDesReinversion.py" line="371"/>
-        <source>Impuestos</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_wdgDesReinversion.py" line="396"/>
+        <location filename="ui/Ui_wdgDesReinversion.py" line="395"/>
         <source>Situaci&#xc3;&#xb3;n de la inversi&#xc3;&#xb3;n</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgDesReinversion.py" line="383"/>
+        <location filename="ui/Ui_wdgDesReinversion.py" line="382"/>
         <source>Valor de compra</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgDesReinversion.py" line="387"/>
+        <location filename="ui/Ui_wdgDesReinversion.py" line="386"/>
         <source>Pendiente</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgDesReinversion.py" line="389"/>
+        <location filename="ui/Ui_wdgDesReinversion.py" line="388"/>
         <source>% A&#xc3;&#xb1;o</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgDesReinversion.py" line="391"/>
+        <location filename="ui/Ui_wdgDesReinversion.py" line="390"/>
         <source>% APR</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgDesReinversion.py" line="393"/>
+        <location filename="ui/Ui_wdgDesReinversion.py" line="392"/>
         <source>% Total</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgDesReinversion.py" line="395"/>
+        <location filename="ui/Ui_wdgDesReinversion.py" line="394"/>
         <source>Referencia Indice</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_wdgDesReinversion.py" line="376"/>
-        <source>Operaciones hist&#xc3;&#xb3;ricas</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_wdgDesReinversion.py" line="355"/>
-        <source>Fecha</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_wdgDesReinversion.py" line="357"/>
-        <source>A&#xc3;&#xb1;os</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_wdgDesReinversion.py" line="359"/>
-        <source>Inversi&#xc3;&#xb3;n</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_wdgDesReinversion.py" line="363"/>
-        <source>Saldo inicial</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_wdgDesReinversion.py" line="365"/>
-        <source>Saldo final</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_wdgDesReinversion.py" line="367"/>
-        <source>Consolidado bruto</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_wdgDesReinversion.py" line="369"/>
-        <source>Comisiones</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_wdgDesReinversion.py" line="373"/>
-        <source>Consolidado neto</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_wdgDesReinversion.py" line="397"/>
-        <source>Antes</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
@@ -3906,6 +3801,131 @@ seleccionados por el usuario</source>
     <message encoding="UTF-8">
         <location filename="ui/wdgDesReinversion.py" line="85"/>
         <source>El valor de la acción no puede ser 0</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_wdgDesReinversion.py" line="309"/>
+        <source>Operation data</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_wdgDesReinversion.py" line="312"/>
+        <source>Bank comission</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_wdgDesReinversion.py" line="314"/>
+        <source>Shares number</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_wdgDesReinversion.py" line="376"/>
+        <source>After</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_wdgDesReinversion.py" line="333"/>
+        <source>Investment operations</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_wdgDesReinversion.py" line="354"/>
+        <source>Date</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_wdgDesReinversion.py" line="360"/>
+        <source>Operation type</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_wdgDesReinversion.py" line="337"/>
+        <source>Shares</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_wdgDesReinversion.py" line="339"/>
+        <source>Price</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_wdgDesReinversion.py" line="341"/>
+        <source>Balance</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_wdgDesReinversion.py" line="330"/>
+        <source>Comission</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_wdgDesReinversion.py" line="370"/>
+        <source>Taxes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_wdgDesReinversion.py" line="352"/>
+        <source>Investment current state</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_wdgDesReinversion.py" line="343"/>
+        <source>Pending</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_wdgDesReinversion.py" line="345"/>
+        <source>% Annual</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_wdgDesReinversion.py" line="351"/>
+        <source>Benchmark</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_wdgDesReinversion.py" line="375"/>
+        <source>Historical operations</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_wdgDesReinversion.py" line="356"/>
+        <source>Years</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_wdgDesReinversion.py" line="358"/>
+        <source>Investment</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_wdgDesReinversion.py" line="362"/>
+        <source>Initial balance</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_wdgDesReinversion.py" line="364"/>
+        <source>Final balance</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_wdgDesReinversion.py" line="366"/>
+        <source>Gross</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_wdgDesReinversion.py" line="368"/>
+        <source>Comissions</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_wdgDesReinversion.py" line="372"/>
+        <source>Net</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_wdgDesReinversion.py" line="396"/>
+        <source>Before</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -4830,7 +4850,7 @@ Daily Diff: {5}. Assets average age: {6}</source>
 <context>
     <name>wdgTotal</name>
     <message>
-        <location filename="ui/Ui_wdgTotal.py" line="228"/>
+        <location filename="ui/Ui_wdgTotal.py" line="229"/>
         <source>Total</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4850,17 +4870,17 @@ Daily Diff: {5}. Assets average age: {6}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgTotal.py" line="181"/>
+        <location filename="ui/Ui_wdgTotal.py" line="182"/>
         <source>Total report</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgTotal.py" line="229"/>
+        <location filename="ui/Ui_wdgTotal.py" line="230"/>
         <source>Data</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgTotal.py" line="230"/>
+        <location filename="ui/Ui_wdgTotal.py" line="231"/>
         <source>Chart</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4875,67 +4895,67 @@ Daily Diff: {5}. Assets average age: {6}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgTotal.py" line="184"/>
+        <location filename="ui/Ui_wdgTotal.py" line="185"/>
         <source>Incomes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgTotal.py" line="190"/>
+        <location filename="ui/Ui_wdgTotal.py" line="191"/>
         <source>Expenses</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgTotal.py" line="192"/>
+        <location filename="ui/Ui_wdgTotal.py" line="193"/>
         <source>I+C+D-E</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgTotal.py" line="194"/>
+        <location filename="ui/Ui_wdgTotal.py" line="195"/>
         <source>Accounts</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgTotal.py" line="196"/>
+        <location filename="ui/Ui_wdgTotal.py" line="197"/>
         <source>Investments</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgTotal.py" line="204"/>
+        <location filename="ui/Ui_wdgTotal.py" line="205"/>
         <source>January</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgTotal.py" line="208"/>
+        <location filename="ui/Ui_wdgTotal.py" line="209"/>
         <source>March</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgTotal.py" line="210"/>
+        <location filename="ui/Ui_wdgTotal.py" line="211"/>
         <source>April</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgTotal.py" line="212"/>
+        <location filename="ui/Ui_wdgTotal.py" line="213"/>
         <source>May</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgTotal.py" line="214"/>
+        <location filename="ui/Ui_wdgTotal.py" line="215"/>
         <source>June</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgTotal.py" line="216"/>
+        <location filename="ui/Ui_wdgTotal.py" line="217"/>
         <source>July</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgTotal.py" line="224"/>
+        <location filename="ui/Ui_wdgTotal.py" line="225"/>
         <source>November</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgTotal.py" line="226"/>
+        <location filename="ui/Ui_wdgTotal.py" line="227"/>
         <source>December</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4965,27 +4985,27 @@ Daily Diff: {5}. Assets average age: {6}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgTotal.py" line="232"/>
+        <location filename="ui/Ui_wdgTotal.py" line="233"/>
         <source>Show income operations</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgTotal.py" line="233"/>
+        <location filename="ui/Ui_wdgTotal.py" line="234"/>
         <source>Show expense operations</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgTotal.py" line="235"/>
+        <location filename="ui/Ui_wdgTotal.py" line="236"/>
         <source>Show dividends</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgTotal.py" line="237"/>
+        <location filename="ui/Ui_wdgTotal.py" line="238"/>
         <source>Show selling operations</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgTotal.py" line="239"/>
+        <location filename="ui/Ui_wdgTotal.py" line="240"/>
         <source>Selling operations + Dividends report</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4995,42 +5015,42 @@ Daily Diff: {5}. Assets average age: {6}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgTotal.py" line="186"/>
+        <location filename="ui/Ui_wdgTotal.py" line="187"/>
         <source>Consolidated</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgTotal.py" line="188"/>
+        <location filename="ui/Ui_wdgTotal.py" line="189"/>
         <source>Dividends</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgTotal.py" line="200"/>
+        <location filename="ui/Ui_wdgTotal.py" line="201"/>
         <source>Monthly difference</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgTotal.py" line="202"/>
+        <location filename="ui/Ui_wdgTotal.py" line="203"/>
         <source>% Year to date</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgTotal.py" line="206"/>
+        <location filename="ui/Ui_wdgTotal.py" line="207"/>
         <source>February</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgTotal.py" line="218"/>
+        <location filename="ui/Ui_wdgTotal.py" line="219"/>
         <source>August</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgTotal.py" line="220"/>
+        <location filename="ui/Ui_wdgTotal.py" line="221"/>
         <source>September</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgTotal.py" line="222"/>
+        <location filename="ui/Ui_wdgTotal.py" line="223"/>
         <source>October</source>
         <translation type="unfinished"></translation>
     </message>

@@ -433,7 +433,7 @@
                 <bool>false</bool>
                </property>
                <property name="currentIndex">
-                <number>1</number>
+                <number>0</number>
                </property>
                <widget class="QWidget" name="tab_2">
                 <attribute name="title">
@@ -495,62 +495,92 @@
                   </widget>
                  </item>
                  <item>
-                  <widget class="QGroupBox" name="grpPago">
-                   <property name="title">
-                    <string>Selected operations delayed payment</string>
-                   </property>
-                   <layout class="QHBoxLayout" name="horizontalLayout_11">
-                    <item>
-                     <layout class="QVBoxLayout" name="verticalLayout_8">
+                  <layout class="QVBoxLayout" name="verticalLayout_10">
+                   <item>
+                    <spacer name="verticalSpacer">
+                     <property name="orientation">
+                      <enum>Qt::Vertical</enum>
+                     </property>
+                     <property name="sizeHint" stdset="0">
+                      <size>
+                       <width>20</width>
+                       <height>40</height>
+                      </size>
+                     </property>
+                    </spacer>
+                   </item>
+                   <item>
+                    <widget class="QGroupBox" name="grpPago">
+                     <property name="title">
+                      <string>Selected operations delayed payment</string>
+                     </property>
+                     <layout class="QHBoxLayout" name="horizontalLayout_11">
                       <item>
-                       <widget class="QLabel" name="lblPago">
-                        <property name="font">
-                         <font>
-                          <pointsize>12</pointsize>
-                          <weight>75</weight>
-                          <bold>true</bold>
-                         </font>
-                        </property>
-                        <property name="text">
-                         <string>XXXX €</string>
-                        </property>
-                        <property name="alignment">
-                         <set>Qt::AlignCenter</set>
-                        </property>
-                       </widget>
-                      </item>
-                      <item>
-                       <layout class="QHBoxLayout" name="horizontalLayout_10">
+                       <layout class="QVBoxLayout" name="verticalLayout_8">
                         <item>
-                         <widget class="QLabel" name="label_5">
+                         <widget class="QLabel" name="lblPago">
+                          <property name="font">
+                           <font>
+                            <pointsize>12</pointsize>
+                            <weight>75</weight>
+                            <bold>true</bold>
+                           </font>
+                          </property>
                           <property name="text">
-                           <string>Payment date</string>
+                           <string>XXXX €</string>
+                          </property>
+                          <property name="alignment">
+                           <set>Qt::AlignCenter</set>
                           </property>
                          </widget>
                         </item>
                         <item>
-                         <widget class="QDateEdit" name="calPago">
-                          <property name="displayFormat">
-                           <string>yyyy/MM/dd</string>
-                          </property>
-                          <property name="calendarPopup">
-                           <bool>true</bool>
+                         <layout class="QHBoxLayout" name="horizontalLayout_10">
+                          <item>
+                           <widget class="QLabel" name="label_5">
+                            <property name="text">
+                             <string>Payment date</string>
+                            </property>
+                           </widget>
+                          </item>
+                          <item>
+                           <widget class="QDateEdit" name="calPago">
+                            <property name="displayFormat">
+                             <string>yyyy/MM/dd</string>
+                            </property>
+                            <property name="calendarPopup">
+                             <bool>true</bool>
+                            </property>
+                           </widget>
+                          </item>
+                         </layout>
+                        </item>
+                        <item>
+                         <widget class="QPushButton" name="cmdPago">
+                          <property name="text">
+                           <string>Pay</string>
                           </property>
                          </widget>
                         </item>
                        </layout>
                       </item>
-                      <item>
-                       <widget class="QPushButton" name="cmdPago">
-                        <property name="text">
-                         <string>Pay</string>
-                        </property>
-                       </widget>
-                      </item>
                      </layout>
-                    </item>
-                   </layout>
-                  </widget>
+                    </widget>
+                   </item>
+                   <item>
+                    <spacer name="verticalSpacer_2">
+                     <property name="orientation">
+                      <enum>Qt::Vertical</enum>
+                     </property>
+                     <property name="sizeHint" stdset="0">
+                      <size>
+                       <width>20</width>
+                       <height>40</height>
+                      </size>
+                     </property>
+                    </spacer>
+                   </item>
+                  </layout>
                  </item>
                 </layout>
                </widget>
