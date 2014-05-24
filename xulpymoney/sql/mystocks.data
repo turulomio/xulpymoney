@@ -6620,7 +6620,6 @@ INSERT INTO products VALUES ('Call IBEX 35 inLine | 9500 € | 17/06/11 | I0022'
 INSERT INTO products VALUES ('Call IBEX 35 inLine | 7000 € | 14/12/11 | I0044', 'FR0011117621', 'EUR', 5, '|SGW|', false, 78875, NULL, NULL, NULL, NULL, 100, 'i', 0, 3, NULL, NULL, NULL, 'SGW#I0044||fr||False', false, true, true);
 INSERT INTO products VALUES ('Call IBEX 35 inLine | 6500 € | 14/12/11 | I0043', 'FR0011117605', 'EUR', 5, '|SGW|', false, 78876, NULL, NULL, NULL, NULL, 100, 'i', 0, 3, NULL, NULL, NULL, 'SGW#I0043||fr||False', false, true, true);
 INSERT INTO products VALUES ('Roy Philips Electr', '', 'EUR', 1, '', false, 75446, '', '', '', '', 100, 'c', 0, 12, 'None', NULL, NULL, 'PHIA.AS||nl||False', false, true, true);
-INSERT INTO products VALUES ('ARCELORMITTAL', 'LU0323134006', 'EUR', 1, '|CAC|EURONEXT|EUROSTOXX|', true, 78915, '', '', '', '', 100, 'c', 0, 12, 'None', '{1}', '{3}', 'EURONEXT#LU0323134006||nl||False', false, true, true);
 INSERT INTO products VALUES ('ASML HOLDING', 'NL0006034001', 'EUR', 1, '|EURONEXT|EUROSTOXX|', true, 74785, '', '', '', '', 100, 'c', 0, 12, 'ASML.AS', NULL, '{3}', 'EURONEXT#NL0006034001||nl||False', false, true, true);
 INSERT INTO products VALUES ('GDF SUEZ', 'FR0010208488', 'EUR', 1, '|CAC|EURONEXT|EUROSTOXX|', true, 79663, '', '', '', '', 100, 'c', 0, 3, 'GSZ.PA', '{1}', '{3}', 'EURONEXT#FR0010208488||fr||False', false, true, true);
 INSERT INTO products VALUES ('ESSILOR INTERNATIONAL', 'FR0000121667', 'EUR', 1, '|CAC|EURONEXT|EUROSTOXX|', true, 79699, '', '', '', '', 100, 'c', 0, 3, 'EI.PA', '{1}', '{3}', 'EURONEXT#FR0000121667||fr||False', false, true, true);
@@ -6628,6 +6627,7 @@ INSERT INTO products VALUES ('AXA', 'FR0000120628', 'EUR', 1, '|CAC|EURONEXT|EUR
 INSERT INTO products VALUES ('Obrascon Huarte Laín (OHL) S.A.', 'ES0142090317', 'EUR', 1, '|IBEX|MERCADOCONTINUO|', true, 79299, '', '', '', '', 100, 'c', 0, 1, 'OHL.MC', '{1}', '{3}', 'MC#ES0142090317||es||False', false, true, true);
 INSERT INTO products VALUES ('SACYR VALLEHERMOSO', 'ES0182870214', 'EUR', 1, '|IBEX|MERCADOCONTINUO|', true, 81534, '', '', '', '', 100, 'c', 0, 1, 'SYV.MC', '{1}', '{3}', 'MC#ES0182870214||es||False', false, true, true);
 INSERT INTO products VALUES ('DEPOSITO IBERCAJA', NULL, 'EUR', 2, NULL, false, -5, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, NULL, NULL, NULL, 'DEPOSITO IBERCAJA||es||True', false, false, false);
+INSERT INTO products VALUES ('ARCELORMITTAL', 'LU0323134006', 'EUR', 1, '|CAC|EURONEXT|EUROSTOXX|', false, 78915, '', '', '', '', 100, 'c', 0, 12, '', '{1}', '{3}', 'EURONEXT#LU0323134006||nl||False', false, true, true);
 INSERT INTO products VALUES ('ARCELORMITTAL', 'LU0323134006', 'EUR', 1, '|IBEX|MERCADOCONTINUO|', true, 81101, '', '', '', '', 100, 'c', 0, 1, 'MTS.MC', '{1}', '{3}', 'MC#LU0323134006||es||False', false, true, true);
 INSERT INTO products VALUES ('ENDESA S.A.', 'ES0130670112', 'EUR', 1, '|IBEX|MERCADOCONTINUO|', true, 78880, '', '', '', '', 100, 'c', 0, 1, 'ELE.MC', '{1}', '{3}', 'MC#ES0130670112||es||False', false, true, true);
 INSERT INTO products VALUES ('IAG', 'ES0177542018', 'EUR', 1, '|IBEX|MERCADOCONTINUO|', true, 81346, '', '', '', '', 100, 'c', 0, 1, 'IAG.MC', '{1}', '{3}', 'MC#ES0177542018||es||False', false, true, true);
@@ -6650,7 +6650,6 @@ INSERT INTO products VALUES ('BSN INVERSIONES', NULL, 'EUR', 2, NULL, false, 750
 INSERT INTO products VALUES ('ALDIDE S.A.', '', 'EUR', 1, '', false, -1, '', '', '', '', 100, 'c', 0, 1, 'None', NULL, NULL, 'ALDIDE||es||True', true, false, false);
 INSERT INTO products VALUES ('GAMESA', 'ES0143416115', 'EUR', 1, '|IBEX|MERCADOCONTINUO|', true, 79037, '', '', '', '', 100, 'c', 0, 1, 'GAM.MC', '{1}', '{3}', 'MC#ES0143416115||es||False', false, false, true);
 INSERT INTO products VALUES ('Altran technologies', '', 'EUR', 1, '', false, 74892, '', '', '', '', 100, 'c', 0, 5, 'None', NULL, NULL, 'ATC.DE||None||False', true, false, true);
-INSERT INTO products VALUES ('WARRANTS CALL SG IBEX 7000 20151218', '', 'EUR', 5, '', false, -12, '', '', '', '', 100, 'c', 1, 1, '', NULL, NULL, '', false, false, false);
 INSERT INTO products VALUES ('ACCIONA', 'ES0125220311', 'EUR', 1, '|IBEX|MERCADOCONTINUO|', true, 78281, '', '', '', '', 100, 'c', 0, 1, 'ANA.MC', '{1}', '{3}', 'MC#ES0125220311||es||False', false, false, true);
 INSERT INTO products VALUES ('Depósito Estructurado Bankinter', '', 'EUR', 10, '', false, -9, '', '', '', '', 100, 'i', 0, 1, '', NULL, NULL, '', false, false, false);
 INSERT INTO products VALUES ('Telecomm Italia', 'IT0003497168', 'EUR', 1, '', false, 75067, '', '', '', '', 100, 'c', 0, 6, 'None', NULL, NULL, 'IT0003497168||None||False', false, false, true);
@@ -6663,10 +6662,11 @@ INSERT INTO products VALUES ('TURBO Put IBEX 35 | 11000 € | 16/09/11 | 54982',
 INSERT INTO products VALUES ('FERROVIAL', 'ES0118900010', 'EUR', 1, '|IBEX|MERCADOCONTINUO|', true, 78908, '', '', '', '', 100, 'c', 0, 1, 'FER.MC', '{1}', '{3}', 'MC#ES0118900010||es||False', false, false, true);
 INSERT INTO products VALUES ('Carmignac Patrimoine (A)', 'FR0010135103', 'EUR', 2, '|CARMIGNAC|', false, 81458, NULL, NULL, NULL, NULL, 100, 'c', 0, 3, NULL, NULL, NULL, 'FR0010135103||fr||False', false, false, true);
 INSERT INTO products VALUES ('MEDIASET', 'ES0152503035', 'EUR', 1, '|IBEX|MERCADOCONTINUO|', true, 79223, '', '', '', '', 100, 'c', 0, 1, 'TL5.MC', '{1}', '{3}', 'MC#ES0152503035||es||True', false, false, true);
+INSERT INTO products VALUES ('WARRANTS CALL SG IBEX 7000 20151218', '', 'EUR', 5, '', false, -12, '', '', '', '', 100, 'c', 1, 1, '', '{}', '{}', '', true, false, false);
 INSERT INTO products VALUES ('DERECHOS IBERDROLA', '', 'EUR', 1, '', false, -8, '', '', '', '', 100, 'c', 0, 1, 'None', NULL, NULL, 'DERECHOS IBERDROLA||None||False', false, false, false);
-INSERT INTO products VALUES ('WARRANT BONUS CAP BANCO SANTANDER 3.8 20121221', 'NL0009802594', 'EUR', 5, '|w_es_BNP|', true, 81678, '', '', '', '', 100, 'i', 0, 1, '', '{5}', NULL, 'U0017', false, false, false);
+INSERT INTO products VALUES ('WARRANT BONUS CAP BANCO SANTANDER 3.8 20121221', 'NL0009802594', 'EUR', 5, '|w_es_BNP|', false, 81678, '', '', '', '', 100, 'i', 0, 1, '', '{5}', '{}', 'U0017', true, false, false);
+INSERT INTO products VALUES ('WARRANT BONUS CAP BBVA 7.1 20121221', 'NL0009802586', 'EUR', 5, '|w_es_BNP|', false, 81679, '', '', '', '', 100, 'i', 1, 1, '', '{5}', '{}', '', true, false, false);
 INSERT INTO products VALUES ('Autostrada', 'IT0000084027', 'EUR', 1, '', false, 74893, '', '', '', '', 100, 'c', 0, 6, 'AT.MI', '{1}', '{3}', 'AT.MI||None||False', false, false, true);
-INSERT INTO products VALUES ('WARRANT BONUS CAP BBVA 7.1 20121221', 'NL0009802586', 'EUR', 5, '|w_es_BNP|', true, 81679, '', '', '', '', 100, 'i', 1, 1, '', '{5}', NULL, '', false, false, false);
 INSERT INTO products VALUES ('GRIFOLS', 'ES0171996012', 'EUR', 1, '|IBEX|MERCADOCONTINUO|', true, 79142, '', '', '', '', 100, 'c', 0, 1, 'GRF.MC', '{1}', '{3}', 'MC#ES0171996012||es||False', false, false, true);
 INSERT INTO products VALUES ('INDRA A', 'ES0118594417', 'EUR', 1, '|IBEX|MERCADOCONTINUO|', true, 79197, '', '', '', '', 100, 'c', 0, 1, 'IDR.MC', '{1}', '{3}', 'MC#ES0118594417||es||False', false, false, true);
 INSERT INTO products VALUES ('Put IBEX 35 | 5000 € | 19/12/14 | B7872', 'FR0011065754', 'EUR', 5, '|SGW|', false, 75392, NULL, NULL, NULL, NULL, 100, 'c', 0, 3, NULL, NULL, NULL, 'SGW#B7872||fr||False', false, false, true);
@@ -6727,7 +6727,6 @@ INSERT INTO products VALUES ('Call IBEX 35 | 11000 € | 19/12/14 | B7869 ', '',
 INSERT INTO products VALUES ('IBERCAJA AHORRO DINAMICO', 'ES0184002030', 'EUR', 2, '|BMF|0084|', false, 80752, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, NULL, '{2}', NULL, 'ES0184002030||es||False', false, false, true);
 INSERT INTO products VALUES ('TURBO Call IBEX 35 | 9000 € | 16/09/11 | 54973', 'FR0011057504', 'EUR', 5, '|SGW|', false, 75538, NULL, NULL, NULL, NULL, 100, 'c', 0, 3, NULL, NULL, NULL, 'SGW#54973||fr||False', false, false, true);
 INSERT INTO products VALUES ('IBERDROLA', 'ES0144580Y14', 'EUR', 1, '|EUROSTOXX|IBEX|MERCADOCONTINUO|', true, 81347, '', '', '', '', 100, 'c', 0, 1, 'IBE.MC', '{1}', '{3}', 'MC#ES0144580Y14||es||True', false, false, true);
-INSERT INTO products VALUES ('WARRANTS CALL SG IBEX 8000 20151218', '', 'EUR', 5, '', false, -13, '', '', '', '', 100, 'c', 1, 1, '', NULL, NULL, '', false, false, false);
 INSERT INTO products VALUES ('Lyxor ETF EURO STOXX 50 Daily Leverage', 'FR0010468983', 'EUR', 4, '|e_fr_LYXOR|', true, 81394, '', '', '', '', 100, 'c', 2, 3, 'LVE.PA', '{1}', '{3}', 'LVE.PA||fr||False', false, false, true);
 INSERT INTO products VALUES ('BANESTO BOLSA INTERNACIONAL', 'ES0138917036', 'EUR', 2, '|BMF|0012|', false, 76962, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, NULL, '{2}', NULL, 'ES0138917036||es||False', false, false, true);
 INSERT INTO products VALUES ('FONCAIXA R.F.PRIVADA CORTO PLAZO', 'ES0137896033', 'EUR', 2, '|BMF|0015|', false, 79743, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, NULL, '{2}', NULL, 'ES0137896033||es||False', false, false, true);
@@ -6737,19 +6736,21 @@ INSERT INTO products VALUES ('Bolsas y mercados españoles', 'ES0115056139', 'EU
 INSERT INTO products VALUES ('Banco Santander', 'ES0113900J37', 'EUR', 1, '|EUROSTOXX|IBEX|MERCADOCONTINUO|', true, 81105, '', '', '', '', 100, 'c', 0, 1, 'SAN.MC', '{1}', '{3}', 'MC#ES0113900J37||es||False', false, false, true);
 INSERT INTO products VALUES ('DB X-TRACKERS FTSE 100 ETF | FTSE 100, INDEX', 'LU0292097234', 'EUR', 4, '|e_de_DBXTRACKERS|', true, -15, 'http://www.etf.db.com/', '', '', '', 100, 'c', 0, 5, 'DBXX.DE', '{1}', '{3}', '', false, false, false);
 INSERT INTO products VALUES ('ACC.IBEX ETF', 'ES0105336038', 'EUR', 4, '|MERCADOCONTINUO|', true, 81440, '', '', '', '', 100, 'c', 0, 1, 'BBVAI.MC', '{1}', NULL, 'MC#ES0105336038||es||False', false, false, true);
+INSERT INTO products VALUES ('WARRANTS CALL SG IBEX 8000 20151218', '', 'EUR', 5, '', false, -13, '', '', '', '', 100, 'c', 1, 1, '', '{}', '{}', '', true, false, false);
 INSERT INTO products VALUES ('BANCO POPULAR', 'ES0113790531', 'EUR', 1, '|IBEX|MERCADOCONTINUO|', true, 81103, '', '', '', '', 100, 'c', 0, 1, 'POP.MC', '{1}', '{3}', 'MC#ES0113790531||es||False', false, false, true);
 INSERT INTO products VALUES ('IBERCAJA CASH 3', 'ES0147035036', 'EUR', 2, '|BMF|0084|', false, 76515, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, NULL, '{2}', NULL, 'ES0147035036||es||False', false, false, true);
 INSERT INTO products VALUES ('LYXOR ETF LEVDAX | DAX 30, INDEX', '', 'EUR', 4, '', true, -16, '', '', '', '', 100, 'c', 2, 5, 'LVD.PA', '{1}', '{3}', '', false, false, false);
 INSERT INTO products VALUES ('GAS NATURAL', 'ES0116870314', 'EUR', 1, '|IBEX|MERCADOCONTINUO|', true, 79046, '', '', '', '', 100, 'c', 0, 1, 'GAS.MC', '{1}', '{3}', 'MC#ES0116870314||es||False', false, false, true);
+INSERT INTO products VALUES ('Gesconsult Corto plazo FI', 'ES0138922036', 'EUR', 2, '', false, -21, '', '', '', '', 0, 'c', 0, 1, '', '{}', '{}', '', false, true, false);
+INSERT INTO products VALUES ('Bono Telefónica 4.18 20221129', 'ES0278430998', 'EUR', 9, '', false, -22, '', '', '', '', 100, 'c', 0, 1, '', '{}', '{}', '', false, true, false);
 INSERT INTO products VALUES ('BANKINTER DINERO 2', 'ES0114801030', 'EUR', 2, '|f_es_0055|f_es_BMF|', false, 76851, '', '', '', '', 0, 'c', 0, 1, 'None', '{2}', NULL, 'ES0114801030||es||False', false, false, true);
 INSERT INTO products VALUES ('BANKINTER DINERO 3', 'ES0115155030', 'EUR', 2, '|f_es_0055|f_es_BMF|', false, 77199, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, NULL, '{2}', NULL, 'ES0115155030||es||False', false, false, true);
 INSERT INTO products VALUES ('RENTA 4 EUROCASH', 'ES0173319031', 'EUR', 2, '|f_es_0043|f_es_BMF|', false, 81421, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, NULL, '{2}', NULL, 'ES0173319031||es||False', false, false, true);
 INSERT INTO products VALUES ('ORANGE', 'FR0000133308', 'EUR', 1, '|CAC|EURONEXT|EUROSTOXX|', true, 76996, '', '', '', '', 100, 'c', 0, 3, 'ORA.PA', '{1}', '{3}', 'EURONEXT#FR0000133308||fr||False', false, false, true);
 INSERT INTO products VALUES ('MERRIL LINCH JAPAN OPORTUNITIES FUND', '', 'EUR', 2, '', false, 75042, '', '', '', '', 100, 'c', 0, 1, 'None', NULL, NULL, 'MERRIL LINCH JAPAN OPORTUNITIES FUND||None||False', false, false, true);
 INSERT INTO products VALUES ('RENTA 4 MONETARIO', 'ES0128520006', 'EUR', 2, '|f_es_0043|f_es_BMF|', false, 74788, '', '', '', '', 0, 'c', 0, 1, 'None', '{2}', NULL, 'ES0128520006||es||True', false, false, true);
-INSERT INTO products VALUES ('Gesconsult Corto plazo FI', 'ES0138922036', 'EUR', 2, '', false, -21, '', '', '', '', 0, 'c', 0, 1, '', '{}', '{}', '', false, true, false);
-INSERT INTO products VALUES ('Bono Telefónica 4.18 20221129', 'ES0278430998', 'EUR', 9, '', false, -22, '', '', '', '', 100, 'c', 0, 1, '', '{}', '{}', '', false, true, false);
 INSERT INTO products VALUES ('BONO ESTADO ESPAÑOL 4,90  30072040', 'ES00000120N0', 'EUR', 7, '', false, -23, '', '', '', '', 20, 'c', 0, 1, '', '{}', '{}', '', false, false, false);
+INSERT INTO products VALUES ('LYXOR UCITS IBEX3', 'FR0010251744', 'EUR', 4, '', true, -26, '', '', '', '', 100, 'c', 0, 1, 'LYXIB.MC', '{1}', '{3}', '', false, true, false);
 INSERT INTO products VALUES ('db x-trackers DAX UCITS ETF', 'LU0274211480', 'EUR', 4, '|MERCADOCONTINUO|', true, 78524, '', '', '', '', 100, 'c', 0, 1, 'DXDAX.MC', '{1}', '{3}', 'MC#LU0274211480||es||False', false, true, true);
 INSERT INTO products VALUES ('Bono CaixaBank 4.00 20220209', 'ES0240609000', 'EUR', 9, '', false, -24, '', '', '', '', 80, 'c', 0, 1, '', '{}', '{}', '', false, false, false);
 INSERT INTO products VALUES ('BONO ESTADO ESPAÑOL 5,15  31102044', 'ES00000124H4', 'EUR', 7, '', false, -25, '', '', '', '', 20, 'c', 0, 1, '', '{}', '{}', '', false, false, false);
@@ -6797,4 +6798,6 @@ INSERT INTO bolsas VALUES (3, 'fr', '09:00:00', 'Bolsa de París', '17:38:00', '
 -- PostgreSQL database dump complete
 --
 
-update products set deletable=true;
+UPDATE products SET deletable=true;
+DELETE FROM products WHERE id<=0;
+UPDATE products SET active=true WHERE priorityhistorical[1]=3;
