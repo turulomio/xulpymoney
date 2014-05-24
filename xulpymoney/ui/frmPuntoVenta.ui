@@ -14,7 +14,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Xulpymoney &gt; Inversiones &gt; Punto de venta</string>
+   <string>Selling point calculation</string>
   </property>
   <property name="windowIcon">
    <iconset resource="../images/xulpymoney.qrc">
@@ -42,7 +42,7 @@
         <string notr="true">color: rgb(0, 128, 0);</string>
        </property>
        <property name="text">
-        <string>Cálculo del punto de venta</string>
+        <string>Selling point calculation</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
@@ -52,7 +52,7 @@
      <item>
       <widget class="QGroupBox" name="groupBox">
        <property name="title">
-        <string>Selecciona la ganancia</string>
+        <string>Select your gain</string>
        </property>
        <layout class="QVBoxLayout" name="verticalLayout">
         <item>
@@ -116,7 +116,7 @@
           <item>
            <widget class="QRadioButton" name="radGain">
             <property name="text">
-             <string>Slect a gain</string>
+             <string>Select a gain</string>
             </property>
            </widget>
           </item>
@@ -165,7 +165,7 @@
      <item>
       <widget class="QGroupBox" name="groupBox_2">
        <property name="title">
-        <string>Opciones de cálculo del punto de venta</string>
+        <string>Selling point calculation options</string>
        </property>
        <layout class="QHBoxLayout" name="horizontalLayout_3">
         <item>
