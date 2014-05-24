@@ -5988,6 +5988,12 @@ def day_end_from_date(date, zone):
     
 def day_start_from_date(date, zone):
     return dt(date, datetime.time(0, 0, 0), zone)
+    
+def days_to_year_month(days):
+    years=days//365
+    months=(days-years*365)//30
+    rest=int(days -years*365 -months*30)
+    return QApplication.translate("Core", "{0} years, {1} months and {2} days".format(years, months, rest))
 
 def dic2list(dic):
     """Función que convierte un diccionario pasado como parametro a una lista de objetos"""

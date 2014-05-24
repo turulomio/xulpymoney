@@ -67,7 +67,7 @@ class wdgInversiones(QWidget, Ui_wdgInversiones):
                     self.tblInversiones.item(i, 8).setBackgroundColor(QColor(148, 255, 148))
             i=i+1
         if suminvertido!=0:
-            self.lblTotal.setText(self.trUtf8("Invested assets: {0}. Pending: {1} - {2} = {3} ({4} assets)\nDaily Diff: {5}. Assets average age: {6} days".format(self.mem.localcurrency.string(suminvertido), self.mem.localcurrency.string(sumpositivos),  self.mem.localcurrency.string(-sumnegativos),  self.mem.localcurrency.string(sumpendiente), tpc(100*sumpendiente/suminvertido) , self.mem.localcurrency.string( sumdiario), self.inversiones.average_age())))
+            self.lblTotal.setText(self.trUtf8("Invested assets: {0}. Pending: {1} - {2} = {3} ({4} assets)\nDaily Diff: {5}. Assets average age: {6}".format(self.mem.localcurrency.string(suminvertido), self.mem.localcurrency.string(sumpositivos),  self.mem.localcurrency.string(-sumnegativos),  self.mem.localcurrency.string(sumpendiente), tpc(100*sumpendiente/suminvertido) , self.mem.localcurrency.string( sumdiario), days_to_year_month(self.inversiones.average_age()))))
         else:
             self.lblTotal.setText(self.trUtf8("There aren't invested assets"))
             

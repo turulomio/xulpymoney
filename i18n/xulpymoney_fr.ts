@@ -73,7 +73,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="6059"/>
+        <location filename="libxulpymoney.py" line="6065"/>
         <source>This option is being developed</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1994,13 +1994,13 @@ They&apos;ll be created in the language selected</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmInversionesEstudio.py" line="106"/>
-        <source>Current operations average age: {0} days</source>
+        <location filename="ui/frmInversionesEstudio.py" line="149"/>
+        <source>Before adding a operation, you must add the current price of the product.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmInversionesEstudio.py" line="149"/>
-        <source>Before adding a operation, you must add the current price of the product.</source>
+        <location filename="ui/frmInversionesEstudio.py" line="106"/>
+        <source>Current operations average age: {0}</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -4439,12 +4439,6 @@ S&#xc3;&#xb3;lo se contabilizar&#xc3;&#xa1; cuando se vendan las acciones</sourc
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgInversiones.py" line="70"/>
-        <source>Invested assets: {0}. Pending: {1} - {2} = {3} ({4} assets)
-Daily Diff: {5}. Assets average age: {6} days</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="ui/Ui_wdgInversiones.py" line="153"/>
         <source>Balance</source>
         <translation type="unfinished"></translation>
@@ -4502,6 +4496,12 @@ Daily Diff: {5}. Assets average age: {6} days</source>
     <message>
         <location filename="ui/wdgInversiones.py" line="20"/>
         <source>Receiving data...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/wdgInversiones.py" line="70"/>
+        <source>Invested assets: {0}. Pending: {1} - {2} = {3} ({4} assets)
+Daily Diff: {5}. Assets average age: {6}</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
