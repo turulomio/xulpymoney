@@ -2,11 +2,14 @@ from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 import psycopg2,  psycopg2.extras
 from Ui_frmInit import *
+from source_yahoohistorical import WorkerYahooHistorical
+from libxulpymoney import *
 
 class frmInit(QDialog, Ui_frmInit):
     def __init__(self, parent = None, name = None, modal = False):
         QDialog.__init__(self,  parent)
         self.setupUi(self)
+        self.mem=MemMyStock()
 
 
     
@@ -16,15 +19,25 @@ class frmInit(QDialog, Ui_frmInit):
         if respuesta==QMessageBox.Ok:             
             if self.create_db(self.txtMyStocks.text())==False or self.create_db(self.txtXulpymoney.text())==False or self.create_mystocks()==False or self.create_xulpymoney()==False:
                 m=QMessageBox()
-                m.setText(self.trUtf8("Error creating databases"))
+                m.setText(self.trUtf8("Error creating databases. Maybe they already exists"))
                 m.exec_()        
                 self.reject()
                 return
 
+            m=QMessageBox()
+            m.setText(self.trUtf8("Database created. Xulpymoney is going to insert quotes from yahoo. This is a long process, please wait."))
+            m.exec_()         
+            
+            #Insert quotes of yahoo
+            strtemplate1="dbname='%s' port='%s' user='%s' host='%s' password='%s'" % (self.txtMyStocks.text(), self.txtPort.text(), self.txtUser.text(),  self.txtServer.text(), self.txtPass.text())
+            self.mem.conms=psycopg2.extras.DictConnection(strtemplate1)
+            self.mem.actualizar_memoria()            
+            w=WorkerYahooHistorical(self.mem)
+            w.start()           
             
             m=QMessageBox()
-            m.setText(self.trUtf8("Database created, please login in MyStocks or Xulpymoney"))
-            m.exec_()                    
+            m.setText(self.trUtf8("Process finished. Now you can use MyStocks and Xulpymoney"))
+            m.exec_()         
             self.accept()
 
 

@@ -74,7 +74,7 @@ install:
 	install -m 644 -o root images/dinero.png $(PREFIXPIXMAPS)/xulpymoney.png
 
 	install -m 755 -o root mystocksd.py $(PREFIXBIN)/mystocksd
-	install -m 755 -o root sources/mq.*.py $(PREFIXBIN)/
+	install -m 755 -o root sources/source_*.py $(PREFIXBIN)/
 	install -m 755 -o root mystocks.py $(PREFIXBIN)/mystocks
 	install -m 755 -o root mystocks.initd $(PREFIXINITD)/mystocks
 	install -m 644 -o root GPL-3.txt CHANGELOG.txt AUTHORS.txt RELEASES.txt xulpymoney.odt $(PREFIXSHARE)
@@ -87,7 +87,7 @@ install:
 uninstall:
 	rm $(PREFIXBIN)/mystocks
 	rm $(PREFIXBIN)/mystocksd
-	rm $(PREFIXBIN)/mq.*.py
+	rm $(PREFIXBIN)/source_*.py
 	rm $(PREFIXBIN)/xulpymoney
 	rm $(PREFIXBIN)/xulpymoney_init
 	rm -Rf $(PREFIXLIB)

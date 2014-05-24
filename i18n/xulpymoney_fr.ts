@@ -1635,97 +1635,87 @@ correspondiente en la tabla</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmInit.py" line="19"/>
-        <source>Error creating databases</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/frmInit.py" line="26"/>
-        <source>Database created, please login in MyStocks or Xulpymoney</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/frmInit.py" line="74"/>
+        <location filename="ui/frmInit.py" line="87"/>
         <source>Personal Management</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmInit.py" line="75"/>
+        <location filename="ui/frmInit.py" line="88"/>
         <source>Cash</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmInit.py" line="76"/>
+        <location filename="ui/frmInit.py" line="89"/>
         <source>Initiating bank account</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmInit.py" line="77"/>
+        <location filename="ui/frmInit.py" line="90"/>
         <source>Transfer. Origin</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmInit.py" line="78"/>
+        <location filename="ui/frmInit.py" line="91"/>
         <source>Transfer. Destination</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmInit.py" line="82"/>
+        <location filename="ui/frmInit.py" line="95"/>
         <source>Dividends</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmInit.py" line="83"/>
+        <location filename="ui/frmInit.py" line="96"/>
         <source>Credit card billing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmInit.py" line="84"/>
+        <location filename="ui/frmInit.py" line="97"/>
         <source>Added shares</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmInit.py" line="85"/>
+        <location filename="ui/frmInit.py" line="98"/>
         <source>Attendance bonus</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmInit.py" line="86"/>
+        <location filename="ui/frmInit.py" line="99"/>
         <source>Custody commission</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmInit.py" line="87"/>
+        <location filename="ui/frmInit.py" line="100"/>
         <source>Dividends. Sale of rights</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmInit.py" line="88"/>
+        <location filename="ui/frmInit.py" line="101"/>
         <source>Bonds. Running coupon payment</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmInit.py" line="89"/>
+        <location filename="ui/frmInit.py" line="102"/>
         <source>Bonds. Running coupon collection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmInit.py" line="90"/>
+        <location filename="ui/frmInit.py" line="103"/>
         <source>Bonds. Coupon collection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmInit.py" line="81"/>
+        <location filename="ui/frmInit.py" line="94"/>
         <source>Bank commissions</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmInit.py" line="79"/>
+        <location filename="ui/frmInit.py" line="92"/>
         <source>Purchase product product</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmInit.py" line="80"/>
+        <location filename="ui/frmInit.py" line="93"/>
         <source>Product product sales</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1766,28 +1756,43 @@ They&apos;ll be created in the language selected</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmInit.py" line="15"/>
+        <location filename="ui/frmInit.py" line="18"/>
         <source>Do you want to create needed Xulpymoney databases in {0}?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmInit.py" line="91"/>
+        <location filename="ui/frmInit.py" line="104"/>
         <source>Paysheet</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmInit.py" line="92"/>
+        <location filename="ui/frmInit.py" line="105"/>
         <source>Supermarket</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmInit.py" line="93"/>
+        <location filename="ui/frmInit.py" line="106"/>
         <source>Restaurant</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmInit.py" line="94"/>
+        <location filename="ui/frmInit.py" line="107"/>
         <source>Gas</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/frmInit.py" line="22"/>
+        <source>Error creating databases. Maybe they already exists</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/frmInit.py" line="28"/>
+        <source>Database created. Xulpymoney is going to insert quotes from yahoo. This is a long process, please wait.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/frmInit.py" line="39"/>
+        <source>Process finished. Now you can use MyStocks and Xulpymoney</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
