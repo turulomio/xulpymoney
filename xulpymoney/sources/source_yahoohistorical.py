@@ -15,9 +15,10 @@ class WorkerYahooHistorical(Source):
         self.name="YAHOOHISTORICAL"
         self.products=SetProducts(self.mem)
         self.products.load_from_db("select * from products where active=true and priorityhistorical[1]=3")
-        self.pd= QProgressDialog(QApplication.translate("Core","Inserting initial quotes from Yahoo"), QApplication.translate("Core","Cancel"), 0,len(self.products.arr))
-        self.pd.setModal(True)
-        self.pd.setMinimumDuration(0)          
+        if __name__!='__main__':
+            self.pd= QProgressDialog(QApplication.translate("Core","Inserting initial quotes from Yahoo"), QApplication.translate("Core","Cancel"), 0,len(self.products.arr))
+            self.pd.setModal(True)
+            self.pd.setMinimumDuration(0)          
 
     def start(self, sleep=0):
         for i,  inv in enumerate(self.products.arr):
@@ -37,15 +38,15 @@ class WorkerYahooHistorical(Source):
             (set, errors)=self.execute(inv, inv.fecha_ultima_actualizacion_historica()+datetime.timedelta(days=1), datetime.date.today())
             (ins, b, m)=set.save(self.name)
             
-            stri="{0}: {1}/{2} {3}. Inserted: {4}. Modified:{5}          ".format(function_name(self), i+1, len(self.products.arr), inv, ins, m) 
+            stri="{0}: {1}/{2} {3}. Inserted: {4}. Modified:{5}             ".format(function_name(self), i+1, len(self.products.arr), inv, ins, m) 
             if __name__ == '__main__':
                 sys.stdout.write("\b"*1000+stri)
                 sys.stdout.flush()
-                print("")
             else:
                 self.pd.setLabelText(stri)
             self.mem.conms.commit()  
             time.sleep(sleep)#time step
+        print("")
         
     def execute(self,  product, inicio, fin):
         """inico y fin son dos dates entre los que conseguir los datos."""
