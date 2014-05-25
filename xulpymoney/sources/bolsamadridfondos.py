@@ -70,9 +70,9 @@ class WorkerBolsaMadridFondos(Source):
                         line=web.readline()
                         dat=b2s(line.split(b"<TD align=center>")[1].split(b"</TD>")[0]).split("/")
                         date=datetime.date(int(dat[2]), int(dat[1]), int(dat[0]))
-#                        dt=changetz(dt, self.mem.bolsas['1'].zone, 'UTC')
+#                        dt=changetz(dt, self.mem.stockexchanges['1'].zone, 'UTC')
 
-                        bolsa=self.mem.bolsas[str(1)]
+                        bolsa=self.mem.stockexchanges[str(1)]
                         ends=bolsa.ends.replace(microsecond=4)
                         datetim=dt(date,ends,"Europe/Madrid")+datetime.timedelta(minutes=10)
                         d['datetime']=datetim

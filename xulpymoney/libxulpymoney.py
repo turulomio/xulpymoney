@@ -6,7 +6,7 @@ from decimal import *
 
 version="20140517"
 
-class CuentaOperacionDeInversionOperacion:
+class AccountOperationOfInvestmentOperation:
     """Clase parar trabajar con las opercuentas generadas automaticamente por los movimientos de las inversiones"""
     def __init__(self, mem):
         self.mem=mem    
@@ -41,7 +41,7 @@ class CuentaOperacionDeInversionOperacion:
         cur.close()
         self.cuenta.saldo_from_db()
 
-class SetInversiones:
+class SetInvestments:
     def __init__(self, mem, cuentas, products, benchmark):
         self.arr=[]
         self.mem=mem
@@ -62,7 +62,7 @@ class SetInversiones:
                 pd.setValue(cur.rownumber)
                 pd.update()
                 QApplication.processEvents()
-            inv=Inversion(self.mem).init__db_row(row,  self.cuentas.find(row['id_cuentas']), self.products.find(row['mystocksid']))
+            inv=Investment(self.mem).init__db_row(row,  self.cuentas.find(row['id_cuentas']), self.products.find(row['mystocksid']))
             inv.get_operinversiones()
             inv.op_actual.get_valor_benchmark(self.benchmark)
             self.arr.append(inv)
@@ -89,7 +89,7 @@ class SetInversiones:
     def average_age(self):
         """Average age of the investments in this set in days"""
         #Extracts all currentinvestmentoperations
-        set=SetInversionOperacionActual(self.mem)
+        set=SetInvestmentOperationsCurrent(self.mem)
         for inv in self.arr:
             for o in inv.op_actual.arr:
                 set.arr.append(o)
@@ -102,7 +102,7 @@ class SetInversiones:
         for i in self.arr:
             if i.id==id:
                 return i
-        print ("No se ha encontrado la inversión {0} en SetInversiones.inversion".format(id))
+        print ("No se ha encontrado la inversión {0} en SetInvestments.inversion".format(id))
         return None
         
     
@@ -125,8 +125,8 @@ class SetInversiones:
         return resultado
     
     def union(self, list2):
-        """Devuelve un SetEntidadesBancarias con la union del set1 y del set2"""
-        resultado=SetInversiones(self.mem, self.cuentas, self.products, self.benchmark)
+        """Devuelve un SetBanks con la union del set1 y del set2"""
+        resultado=SetInvestments(self.mem, self.cuentas, self.products, self.benchmark)
         resultado.arr=self.arr+list2.arr
         return resultado
 
@@ -189,20 +189,20 @@ class SetInversiones:
         now=self.mem.localzone.now()
 
         if comision!=0:
-            op_cuenta=CuentaOperacion(self.mem).init__create(now.date(), self.mem.conceptos.find(38), self.mem.tiposoperaciones.find(1), -comision, "Traspaso de valores", origen.cuenta)
+            op_cuenta=AccountOperation(self.mem).init__create(now.date(), self.mem.conceptos.find(38), self.mem.tiposoperaciones.find(1), -comision, "Traspaso de valores", origen.cuenta)
             op_cuenta.save()       
             origen.cuenta.saldo_from_db()        
             comentario="{0}|{1}".format(destino.id, op_cuenta.id)
         else:
             comentario="{0}|{1}".format(destino.id, "None")
         
-        op_origen=InversionOperacion(self.mem).init__create( self.mem.tiposoperaciones.find(9), now, origen,  -numacciones, 0,0, comision, 0, comentario)
+        op_origen=InvestmentOperation(self.mem).init__create( self.mem.tiposoperaciones.find(9), now, origen,  -numacciones, 0,0, comision, 0, comentario)
         op_origen.save( False)      
 
         #NO ES OPTIMO YA QUE POR CADA SAVE SE CALCULA TODO
         comentario="{0}".format(op_origen.id)
         for o in origen.op_actual.arr:
-            op_destino=InversionOperacion(self.mem).init__create( self.mem.tiposoperaciones.find(10), now, destino,  o.acciones, o.importe, o.impuestos, o.comision, o.valor_accion, comentario)
+            op_destino=InvestmentOperation(self.mem).init__create( self.mem.tiposoperaciones.find(10), now, destino,  o.acciones, o.importe, o.impuestos, o.comision, o.valor_accion, comentario)
             op_destino.save( False)
             
         #Vuelvo a introducir el comentario de la opercuenta
@@ -297,7 +297,7 @@ class SetProducts:
         return None
                 
     def union(self, list2):
-        """Devuelve un SetEntidadesBancarias con la union del set1 y del set2"""
+        """Devuelve un SetBanks con la union del set1 y del set2"""
         resultado=SetProducts(self.mem)
         resultado.arr=self.arr+list2.arr
         return resultado
@@ -359,7 +359,7 @@ class SetStockExchanges:
 
         
         
-class SetConceptos:      
+class SetConcepts:      
     def __init__(self, mem):
         self.dic_arr={}
         self.mem=mem 
@@ -371,7 +371,7 @@ class SetConceptos:
         cur=self.mem.con.cursor()
         cur.execute("Select * from conceptos")
         for row in cur:
-            self.dic_arr[str(row['id_conceptos'])]=Concepto(self.mem).init__db_row(row, self.mem.tiposoperaciones.find(row['id_tiposoperaciones']))
+            self.dic_arr[str(row['id_conceptos'])]=Concept(self.mem).init__db_row(row, self.mem.tiposoperaciones.find(row['id_tiposoperaciones']))
         cur.close()
                         
     def load_opercuentas_qcombobox(self, combo):
@@ -382,7 +382,7 @@ class SetConceptos:
                     combo.addItem("{0} -- {1}".format(  c.name,  c.tipooperacion.name),  c.id  )
 
     def load_dividend_qcombobox(self, combo,  select=None):
-        """Select es un class Concepto"""
+        """Select es un class Concept"""
         for n in (39, 50,  62):
             c=self.find(n)
             combo.addItem("{0} -- {1}".format(  c.name,  c.tipooperacion.name),  c.id   )
@@ -410,7 +410,7 @@ class SetConceptos:
         return lista
 
     def clone_x_tipooperacion(self, id_tiposoperaciones):
-        resultado=SetConceptos(self.mem)
+        resultado=SetConcepts(self.mem)
         for k, v in self.dic_arr.items():
             if v.tipooperacion.id==id_tiposoperaciones:
                 resultado.dic_arr[k]=v
@@ -419,7 +419,7 @@ class SetConceptos:
         
     def percentage_monthly(self, year, month):
         """ Generates an arr with:
-        1) Concepto:
+        1) Concept:
         2) Monthly expense
         3) Percentage expenses of all conceptos this month
         4) Monthly average from first operation
@@ -492,15 +492,15 @@ class SetCountries:
     def find(self, id):
         return self.dic_arr[str(id)]
     def qcombobox(self, combo,  country=None):
-        """Función que carga en un combo pasado como parámetro y con un SetCuentas pasado como parametro
-        Se ordena por nombre y se se pasa el tercer parametro que es un objeto Cuenta lo selecciona""" 
+        """Función que carga en un combo pasado como parámetro y con un SetAccounts pasado como parametro
+        Se ordena por nombre y se se pasa el tercer parametro que es un objeto Account lo selecciona""" 
         self.sort()
         for cu in self.list():
             self.addItem(cu.qicon(), cu.name, cu.id)
 
         if country!=None:
                 combo.setCurrentIndex(combo.findData(country.id))
-class SetCuentas:     
+class SetAccounts:     
     def __init__(self, mem,  setebs):
         self.arr=[]
         self.mem=mem   
@@ -511,15 +511,15 @@ class SetCuentas:
         cur2=self.mem.con.cursor()
         cur.execute(sql)#"Select * from cuentas"
         for row in cur:
-            c=Cuenta(self.mem).init__db_row(row, self.ebs.find(row['id_entidadesbancarias']))
+            c=Account(self.mem).init__db_row(row, self.ebs.find(row['id_entidadesbancarias']))
             c.saldo_from_db()
             self.arr.append(c)
         cur.close()
         cur2.close()
                                
     def qcombobox(self, combo,  cuenta=None):
-        """Función que carga en un combo pasado como parámetro y con un SetCuentas pasado como parametro
-        Se ordena por nombre y se se pasa el tercer parametro que es un objeto Cuenta lo selecciona""" 
+        """Función que carga en un combo pasado como parámetro y con un SetAccounts pasado como parametro
+        Se ordena por nombre y se se pasa el tercer parametro que es un objeto Account lo selecciona""" 
         self.sort()
         for cu in self.arr:
             combo.addItem(cu.name, cu.id)
@@ -536,13 +536,13 @@ class SetCuentas:
     
             
     def union(self,  list2):
-        """Devuelve un SetEntidadesBancarias con la union del set1 y del set2"""
-        resultado=SetCuentas(self.mem, self.ebs)
+        """Devuelve un SetBanks con la union del set1 y del set2"""
+        resultado=SetAccounts(self.mem, self.ebs)
         resultado.arr=self.arr+list2.arr
         return resultado
 
-class SetCuentasOperaciones:
-    """Clase es un array ordenado de objetos newInversionOperacion"""
+class SetAccountOperations:
+    """Clase es un array ordenado de objetos newInvestmentOperation"""
     def __init__(self, mem):
         self.mem=mem
         self.arr=[]
@@ -555,7 +555,7 @@ class SetCuentasOperaciones:
         cur=self.mem.con.cursor()
         cur.execute(sql)#"Select * from opercuentas"
         for row in cur:        
-            co=CuentaOperacion(self.mem).init__create(row['fecha'], self.mem.conceptos.find(row['id_conceptos']), self.mem.tiposoperaciones.find(row['id_tiposoperaciones']), row['importe'], row['comentario'],  self.mem.data.cuentas_all().find(row['id_cuentas']))
+            co=AccountOperation(self.mem).init__create(row['fecha'], self.mem.conceptos.find(row['id_conceptos']), self.mem.tiposoperaciones.find(row['id_tiposoperaciones']), row['importe'], row['comentario'],  self.mem.data.cuentas_all().find(row['id_cuentas']))
             self.arr.append(co)
         cur.close()
     
@@ -569,7 +569,7 @@ class SetCuentasOperaciones:
             else:
                 comentario=QApplication.translate("Core","Paid with {0}. {1}".format(self.mem.data.tarjetas_all().find(row['id_tarjetas']).name, row['comentario'] ), None, QApplication.UnicodeUTF8)
             
-            co=CuentaOperacion(self.mem).init__create(row['fecha'], self.mem.conceptos.find(row['id_conceptos']), self.mem.tiposoperaciones.find(row['id_tiposoperaciones']), row['importe'], comentario,  self.mem.data.cuentas_all().find(row['id_cuentas']))
+            co=AccountOperation(self.mem).init__create(row['fecha'], self.mem.conceptos.find(row['id_conceptos']), self.mem.tiposoperaciones.find(row['id_tiposoperaciones']), row['importe'], comentario,  self.mem.data.cuentas_all().find(row['id_cuentas']))
             self.arr.append(co)
         cur.close()
     def sort(self):       
@@ -649,7 +649,7 @@ class SetDividends:
         cur.execute( sql)#"select * from dividends where id_inversiones=%s order by fecha", (self.inversion.id, )
         for row in cur:
             inversion=self.mem.data.inversiones_all().find(row['id_inversiones'])
-            oc=CuentaOperacion(self.mem).init__db_query(row['id_opercuentas'])
+            oc=AccountOperation(self.mem).init__db_query(row['id_opercuentas'])
             self.arr.append(Dividend(self.mem).init__db_row(row, inversion, oc, self.mem.conceptos.find(row['id_conceptos']) ))
         cur.close()      
         
@@ -805,7 +805,7 @@ class SetEstimationsEPS:
         for i, e in enumerate(self.arr):
             table.setItem(i, 0, qcenter(str(e.year)))
             table.setItem(i, 1, self.product.currency.qtablewidgetitem(e.estimation, 6))       
-            table.setItem(i, 2, qright(e.PER(Quote(self.mem).init__from_query(self.product, day_end_from_date(datetime.date(e.year, 12, 31), self.product.bolsa.zone))), 2))
+            table.setItem(i, 2, qright(e.PER(Quote(self.mem).init__from_query(self.product, day_end_from_date(datetime.date(e.year, 12, 31), self.product.stockexchange.zone))), 2))
             table.setItem(i, 3, qdate(e.date_estimation))
             table.setItem(i, 4, QTableWidgetItem(e.source))
             table.setItem(i, 5, qbool(e.manual)) 
@@ -813,7 +813,7 @@ class SetEstimationsEPS:
         table.setFocus()
 
         
-class SetEntidadesBancarias:     
+class SetBanks:     
     def __init__(self, mem):
         self.arr=[]
         self.mem=mem   
@@ -821,7 +821,7 @@ class SetEntidadesBancarias:
         cur=self.mem.con.cursor()
         cur.execute(sql)#"select * from entidadesbancarias"
         for row in cur:
-            self.arr.append(EntidadBancaria(self.mem).init__db_row(row))
+            self.arr.append(Bank(self.mem).init__db_row(row))
         cur.close()            
         
     def find(self, id):
@@ -830,7 +830,7 @@ class SetEntidadesBancarias:
                 return a
                    
     def qcombobox(self, combo):
-        """Carga entidades bancarias en combo. Es un SetEntidadesBancarias"""
+        """Carga entidades bancarias en combo. Es un SetBanks"""
         self.sort()
         for e in self.arr:
             combo.addItem(e.name, e.id)   
@@ -839,13 +839,13 @@ class SetEntidadesBancarias:
         self.arr=sorted(self.arr, key=lambda e: e.name,  reverse=False) 
         
     def union(self,  list2):
-        """Devuelve un SetEntidadesBancarias con la union del set1 y del set2"""
-        resultado=SetEntidadesBancarias(self.mem)
+        """Devuelve un SetBanks con la union del set1 y del set2"""
+        resultado=SetBanks(self.mem)
         resultado.arr=self.arr+list2.arr
         return resultado
 
-class SetInversionOperacion:       
-    """Clase es un array ordenado de objetos newInversionOperacion"""
+class SetInvestmentOperations:       
+    """Clase es un array ordenado de objetos newInvestmentOperation"""
     def __init__(self, mem):
         self.mem=mem
         self.arr=[]
@@ -854,8 +854,8 @@ class SetInversionOperacion:
         self.arr.append(objeto)
         
     def clone_from_datetime(self, dt):
-        """Función que devuelve otro SetInversionOperacion con las oper que tienen datetime mayor o igual a la pasada como parametro."""
-        resultado=SetInversionOperacion(self.mem)
+        """Función que devuelve otro SetInvestmentOperations con las oper que tienen datetime mayor o igual a la pasada como parametro."""
+        resultado=SetInvestmentOperations(self.mem)
         if dt==None:
             return self.clone()
         for a in self.arr:
@@ -865,12 +865,12 @@ class SetInversionOperacion:
         
     def calcular_new(self):
         """Realiza los cálculos y devuelve dos arrays"""
-        sioh=SetInversionOperacionHistorica(self.mem)
-        sioa=SetInversionOperacionActual(self.mem)       
+        sioh=SetInvestmentOperationsHistorical(self.mem)
+        sioa=SetInvestmentOperationsCurrent(self.mem)       
         for o in self.arr:      
 #            print ("Despues ",  sioa.acciones(), o)              
             if o.acciones>=0:#Compra
-                sioa.arr.append(InversionOperacionActual(self.mem).init__create(o, o.tipooperacion, o.datetime, o.inversion, o.acciones, o.importe, o.impuestos, o.comision, o.valor_accion,  o.id))
+                sioa.arr.append(InvestmentOperationCurrent(self.mem).init__create(o, o.tipooperacion, o.datetime, o.inversion, o.acciones, o.importe, o.impuestos, o.comision, o.valor_accion,  o.id))
             else:#Venta
                 if abs(o.acciones)>sioa.acciones():
                     print (o.acciones, sioa.acciones(),  o)
@@ -913,7 +913,7 @@ class SetInversionOperacion:
 
             
         ##########################################
-        operinversioneshistorica=SetInversionOperacionHistorica(self.mem)
+        operinversioneshistorica=SetInvestmentOperationsHistorical(self.mem)
         #Crea un array copia de self.arr, porque eran vinculos 
         arr=[]
         for a in self.arr:   
@@ -942,12 +942,12 @@ class SetInversionOperacion:
                 dif=p.acciones+n.acciones
                 (impuestos, comisiones)=comisiones_impuestos(dif, p, n)
                 if dif==0: #Si es 0 se inserta el historico que coincide con la venta y se borra el registro negativ
-                    operinversioneshistorica.append(InversionOperacionHistorica(self.mem).init__create(n, n.inversion, p.datetime.date(), -n.acciones*n.valor_accion,n.tipooperacion, n.acciones, comisiones, impuestos, n.datetime.date(), p.valor_accion, n.valor_accion))
+                    operinversioneshistorica.append(InvestmentOperationHistorical(self.mem).init__create(n, n.inversion, p.datetime.date(), -n.acciones*n.valor_accion,n.tipooperacion, n.acciones, comisiones, impuestos, n.datetime.date(), p.valor_accion, n.valor_accion))
                     arr.remove(n)
                     arr.remove(p)
                     break
                 elif dif<0:#   //Si es <0 es decir hay más acciones negativas que positivas. Se debe introducir en el historico la tmpoperinversion y borrarlo y volver a recorrer el bucle. Restando a n.acciones las acciones ya apuntadas en el historico
-                    operinversioneshistorica.append(InversionOperacionHistorica(self.mem).init__create(p, p.inversion, p.datetime.date(), p.acciones*n.valor_accion,n.tipooperacion, -p.acciones, comisiones, impuestos, n.datetime.date(), p.valor_accion, n.valor_accion))
+                    operinversioneshistorica.append(InvestmentOperationHistorical(self.mem).init__create(p, p.inversion, p.datetime.date(), p.acciones*n.valor_accion,n.tipooperacion, -p.acciones, comisiones, impuestos, n.datetime.date(), p.valor_accion, n.valor_accion))
                     arr.remove(p)
                     n.acciones=n.acciones+p.acciones#ya que n.acciones es negativo
 
@@ -957,22 +957,22 @@ class SetInversionOperacion:
                     de positivos en operinversionesactual y se inserta uno con los datos positivos menos lo 
                     quitado por el registro negativo. Y se sale del bucle. 
                     //Aqui no se inserta la comision porque solo cuando se acaba las acciones positivos   """
-                    operinversioneshistorica.append(InversionOperacionHistorica(self.mem).init__create(p, n.inversion, p.datetime.date(), -n.acciones*n.valor_accion,n.tipooperacion, n.acciones, comisiones, impuestos, n.datetime.date(), p.valor_accion, n.valor_accion))
+                    operinversioneshistorica.append(InvestmentOperationHistorical(self.mem).init__create(p, n.inversion, p.datetime.date(), -n.acciones*n.valor_accion,n.tipooperacion, n.acciones, comisiones, impuestos, n.datetime.date(), p.valor_accion, n.valor_accion))
                     arr.remove(p)
                     arr.remove(n)
-                    arr.append(InversionOperacion(self.mem).init__create( p.tipooperacion, p.datetime, p.inversion,  p.acciones-(-n.acciones), (p.acciones-(-n.acciones))*n.valor_accion,  0, 0, p.valor_accion, "",  p.id))
+                    arr.append(InvestmentOperation(self.mem).init__create( p.tipooperacion, p.datetime, p.inversion,  p.acciones-(-n.acciones), (p.acciones-(-n.acciones))*n.valor_accion,  0, 0, p.valor_accion, "",  p.id))
                     arr=sorted(arr, key=lambda a:a.id)              
                     break;
         #Crea array operinversionesactual, ya que arr es operinversiones
-        operinversionesactual=SetInversionOperacionActual(self.mem)
+        operinversionesactual=SetInvestmentOperationsCurrent(self.mem)
         for a in arr:
-            operinversionesactual.append(InversionOperacionActual(self.mem).init__create(a.id, a.tipooperacion, a.datetime, a.inversion,  a.acciones, a.importe,  a.impuestos, a.comision, a.valor_accion))
+            operinversionesactual.append(InvestmentOperationCurrent(self.mem).init__create(a.id, a.tipooperacion, a.datetime, a.inversion,  a.acciones, a.importe,  a.impuestos, a.comision, a.valor_accion))
         return (operinversionesactual, operinversioneshistorica)
             
     def clone(self):
-        """Funcion que devuelve un SetInversionOperacion, con todas sus InversionOperacion clonadas. Se usa para
+        """Funcion que devuelve un SetInvestmentOperations, con todas sus InvestmentOperation clonadas. Se usa para
         hacer estimaciones"""
-        resultado=SetInversionOperacion(self.mem)
+        resultado=SetInvestmentOperations(self.mem)
         for io in self.arr:
             resultado.arr.append(io.clone())
         return resultado
@@ -1001,7 +1001,7 @@ class SetInversionOperacion:
         tabla.setRowCount(len(self.arr))
         gainsyear=str2bool(self.mem.config.get_value("settings", "gainsyear"))
         for rownumber, a in enumerate(self.arr):
-            tabla.setItem(rownumber, 0, qdatetime(a.datetime, a.inversion.product.bolsa.zone))
+            tabla.setItem(rownumber, 0, qdatetime(a.datetime, a.inversion.product.stockexchange.zone))
             if gainsyear==True and a.less_than_a_year()==True:
                 tabla.item(rownumber, 0).setIcon(QIcon(":/xulpymoney/new.png"))
             if homogeneous==False:
@@ -1029,8 +1029,8 @@ class SetInversionOperacion:
         return True
 
 
-class SetInversionOperacionActual:    
-    """Clase es un array ordenado de objetos newInversionOperacion"""
+class SetInvestmentOperationsCurrent:    
+    """Clase es un array ordenado de objetos newInvestmentOperation"""
     def __init__(self, mem):
         self.mem=mem
         self.arr=[]
@@ -1101,7 +1101,7 @@ class SetInversionOperacionActual:
         
     def myqtablewidget(self,  tabla,  section ):
         """Función que rellena una tabla pasada como parámetro con datos procedentes de un array de objetos
-        InversionOperacionActual y dos valores de mystocks para rellenar los tpc correspodientes
+        InvestmentOperationCurrent y dos valores de mystocks para rellenar los tpc correspodientes
         
         Se dibujan las columnas pero las propiedad alternate color... deben ser en designer
         
@@ -1155,7 +1155,7 @@ class SetInversionOperacionActual:
             suminvertido=suminvertido+invertido
             sum_accionesXvalor=sum_accionesXvalor+a.acciones*a.valor_accion
     
-            tabla.setItem(rownumber, 0, qdatetime(a.datetime, inversion.product.bolsa.zone))
+            tabla.setItem(rownumber, 0, qdatetime(a.datetime, inversion.product.stockexchange.zone))
             if gainsyear==True and a.less_than_a_year()==True:
                 tabla.item(rownumber, 0).setIcon(QIcon(":/xulpymoney/new.png"))
             if homogeneous==False:
@@ -1203,7 +1203,7 @@ class SetInversionOperacionActual:
             return None
         return axtae/sumacciones
             
-        dias=(datetime.date.today()-self.datetime.date()).days +1 #Cuenta el primer día
+        dias=(datetime.date.today()-self.datetime.date()).days +1 #Account el primer día
         if dias==0:
             dias=1
         return Decimal(365*self.tpc_total(last)/dias)
@@ -1238,7 +1238,7 @@ class SetInversionOperacionActual:
  
     def historizar(self, io,  sioh):
         """
-        io es una Inversionoperacion de venta
+        io es una Investmentoperacion de venta
         1 Pasa al set de inversion operacion historica tantas inversionoperacionesactual como acciones tenga
        la inversion operacion de venta
       2 Si no ha sido un número exacto y se ha partido la ioactual, añade la difrencia al setIOA y lo quitado a SIOH
@@ -1260,21 +1260,21 @@ class SetInversionOperacionActual:
                 if ioa.acciones-accionesventa>Decimal('0'):#>0Se vende todo y se crea un ioa de resto, y se historiza lo restado
                     comisiones=comisiones+io.comision+ioa.comision
                     impuestos=impuestos+io.impuestos+ioa.impuestos
-                    sioh.arr.append(InversionOperacionHistorica(self.mem).init__create(ioa, io.inversion, ioa.datetime.date(), -accionesventa*io.valor_accion, io.tipooperacion, -accionesventa, comisiones, impuestos, io.datetime.date(), ioa.valor_accion, io.valor_accion))
-                    self.arr.insert(0, InversionOperacionActual(self.mem).init__create(ioa, ioa.tipooperacion, ioa.datetime, ioa.inversion,  ioa.acciones-abs(accionesventa), (ioa.acciones-abs(accionesventa))*ioa.valor_accion,  0, 0, ioa.valor_accion, ioa.id))
+                    sioh.arr.append(InvestmentOperationHistorical(self.mem).init__create(ioa, io.inversion, ioa.datetime.date(), -accionesventa*io.valor_accion, io.tipooperacion, -accionesventa, comisiones, impuestos, io.datetime.date(), ioa.valor_accion, io.valor_accion))
+                    self.arr.insert(0, InvestmentOperationCurrent(self.mem).init__create(ioa, ioa.tipooperacion, ioa.datetime, ioa.inversion,  ioa.acciones-abs(accionesventa), (ioa.acciones-abs(accionesventa))*ioa.valor_accion,  0, 0, ioa.valor_accion, ioa.id))
                     self.arr.remove(ioa)
                     accionesventa=Decimal('0')#Sale bucle
                     break
                 elif ioa.acciones-accionesventa<Decimal('0'):#<0 Se historiza todo y se restan acciones venta
                     comisiones=comisiones+ioa.comision
                     impuestos=impuestos+ioa.impuestos
-                    sioh.arr.append(InversionOperacionHistorica(self.mem).init__create(ioa, io.inversion, ioa.datetime.date(), -ioa.acciones*io.valor_accion, io.tipooperacion, -ioa.acciones, Decimal('0'), Decimal('0'), io.datetime.date(), ioa.valor_accion, io.valor_accion))
+                    sioh.arr.append(InvestmentOperationHistorical(self.mem).init__create(ioa, io.inversion, ioa.datetime.date(), -ioa.acciones*io.valor_accion, io.tipooperacion, -ioa.acciones, Decimal('0'), Decimal('0'), io.datetime.date(), ioa.valor_accion, io.valor_accion))
                     accionesventa=accionesventa-ioa.acciones                    
                     self.arr.remove(ioa)
                 elif ioa.acciones-accionesventa==Decimal('0'):#Se historiza todo y se restan acciones venta y se sale
                     comisiones=comisiones+io.comision+ioa.comision
                     impuestos=impuestos+io.impuestos+ioa.impuestos
-                    sioh.arr.append(InversionOperacionHistorica(self.mem).init__create(ioa, io.inversion, ioa.datetime.date(), ioa.acciones*io.valor_accion, io.tipooperacion, -ioa.acciones, comisiones, impuestos, io.datetime.date(), ioa.valor_accion, io.valor_accion))
+                    sioh.arr.append(InvestmentOperationHistorical(self.mem).init__create(ioa, io.inversion, ioa.datetime.date(), ioa.acciones*io.valor_accion, io.tipooperacion, -ioa.acciones, comisiones, impuestos, io.datetime.date(), ioa.valor_accion, io.valor_accion))
                     self.arr.remove(ioa)                    
                     accionesventa=Decimal('0')#Sale bucle                    
                     break
@@ -1293,8 +1293,8 @@ class SetInversionOperacionActual:
         """Ordena por datetime"""
         self.arr=sorted(self.arr, key=lambda o:o.datetime)
  
-class SetInversionOperacionHistorica:       
-    """Clase es un array ordenado de objetos newInversionOperacion"""
+class SetInvestmentOperationsHistorical:       
+    """Clase es un array ordenado de objetos newInvestmentOperation"""
     def __init__(self, mem):
         self.mem=mem
         self.arr=[]
@@ -1352,7 +1352,7 @@ class SetInversionOperacionHistorica:
                         resultado=resultado+o.consolidado_neto_antes_impuestos()
         return resultado
     def myqtablewidget(self, tabla, section):
-        """Rellena datos de un array de objetos de InversionOperacionHistorica, devuelve totales ver código"""
+        """Rellena datos de un array de objetos de InvestmentOperationHistorical, devuelve totales ver código"""
         tabla.setColumnCount(13)
         tabla.setHorizontalHeaderItem(0, QTableWidgetItem(QApplication.translate("Core", "Date", None, QApplication.UnicodeUTF8)))
         tabla.setHorizontalHeaderItem(1, QTableWidgetItem(QApplication.translate("Core", "Years", None, QApplication.UnicodeUTF8)))
@@ -1432,7 +1432,7 @@ class SetInversionOperacionHistorica:
         """Sort by selling date"""
         self.arr=sorted(self.arr, key=lambda o: o.fecha_venta,  reverse=False)      
         
-class InversionOperacionHistorica:
+class InvestmentOperationHistorical:
     def __init__(self, mem):
         self.mem=mem 
         self.id=None
@@ -1518,13 +1518,13 @@ class InversionOperacionHistorica:
         return 0 #Debería ponerse con valor el día de agregación
         
     def tpc_tae_neto(self):
-        dias=(self.fecha_venta-self.fecha_inicio).days +1 #Cuenta el primer día
+        dias=(self.fecha_venta-self.fecha_inicio).days +1 #Account el primer día
         if dias==0:
             dias=1
         return Decimal(365*self.tpc_total_neto()/dias)
         
                 
-class InversionOperacionActual:
+class InvestmentOperationCurrent:
     def __init__(self, mem):
         self.mem=mem 
         self.id=None
@@ -1543,7 +1543,7 @@ class InversionOperacionActual:
         return ("IOA {0}. {1} {2}. Acciones: {3}. Valor:{4}".format(self.inversion.name,  self.datetime, self.tipooperacion.name,  self.acciones,  self.valor_accion))
         
     def init__create(self, operinversion, tipooperacion, datetime, inversion, acciones, importe, impuestos, comision, valor_accion, id=None):
-        """Inversion es un objeto Inversion"""
+        """Investment es un objeto Investment"""
         self.id=id
         self.operinversion=operinversion
         self.tipooperacion=tipooperacion
@@ -1629,12 +1629,12 @@ class InversionOperacionActual:
         return 100*(last-self.valor_accion)/self.valor_accion
         
     def tpc_tae(self, last):
-        dias=(datetime.date.today()-self.datetime.date()).days +1 #Cuenta el primer día
+        dias=(datetime.date.today()-self.datetime.date()).days +1 #Account el primer día
         if dias==0:
             dias=1
         return Decimal(365*self.tpc_total(last)/dias)
         
-class Concepto:
+class Concept:
     def __init__(self, mem):
         self.mem=mem
         self.id=None
@@ -1643,7 +1643,7 @@ class Concepto:
         self.editable=None
 
     def __repr__(self):
-        return ("Instancia de Concepto: {0} -- {1} ({2})".format( self.name, self.tipooperacion.name,  self.id))
+        return ("Instancia de Concept: {0} -- {1} ({2})".format( self.name, self.tipooperacion.name,  self.id))
 
 #    def strct(self):
 #        """Junta en una string el concepto y el tipo separado por coma"""
@@ -1726,7 +1726,7 @@ class Concepto:
         cur.close()
         return suma
 
-class CuentaOperacion:
+class AccountOperation:
     def __init__(self, mem):
         self.mem=mem
         self.id=None
@@ -1738,7 +1738,7 @@ class CuentaOperacion:
         self.cuenta=None
         
     def __repr__(self):
-        return "CuentaOperacion {0}. Fecha: {1}. Importe:{2}. Concepto:{3}".format(self.id, self.fecha, self.importe, self.concepto)
+        return "AccountOperation {0}. Fecha: {1}. Importe:{2}. Concept:{3}".format(self.id, self.fecha, self.importe, self.concepto)
         
     def init__create(self, fecha, concepto, tipooperacion, importe,  comentario, cuenta, id=None):
         self.id=id
@@ -1755,7 +1755,7 @@ class CuentaOperacion:
 
 
     def init__db_query(self, id_opercuentas):
-        """Creates a CuentaOperacion querying database for an id_opercuentas"""
+        """Creates a AccountOperation querying database for an id_opercuentas"""
         resultado=None
         cur=self.mem.con.cursor()
         cur.execute("select * from opercuentas where id_opercuentas=%s", (id_opercuentas, ))
@@ -1794,8 +1794,8 @@ class CuentaOperacion:
             return QApplication.translate("Core","{0[0]}. Gross: {0[1]} {1}. Witholding tax: {0[2]} {1}. Comission: {0[3]} {1}".format(c, self.cuenta.currency.symbol))
         elif self.concepto.id in (29, 35) and len(c)==5:#{0}|{1}|{2}|{3}".format(row['inversion'], importe, comision, impuestos)
             return QApplication.translate("Core","{0[1]}: {0[0]} shares. Amount: {0[2]} {1}. Comission: {0[3]} {1}. Taxes: {0[4]} {1}".format(c, self.cuenta.currency.symbol))        
-        elif self.concepto.id==40 and len(c)==2:#"{0}|{1}".format(self.selTarjeta.name, len(self.setSelOperTarjetas))
-            return QApplication.translate("Core","Tarjeta: {0[0]}. Se han ejecutado {0[1]} pagos con tarjeta".format(c))        
+        elif self.concepto.id==40 and len(c)==2:#"{0}|{1}".format(self.selCreditCard.name, len(self.setSelOperCreditCards))
+            return QApplication.translate("Core","CreditCard: {0[0]}. Se han ejecutado {0[1]} pagos con tarjeta".format(c))        
         elif self.concepto.id==4 and len(c)==3:#Transfer from origin
             return QApplication.translate("Core", "Transfer to {0}".format(self.mem.data.cuentas_all().find(int(c[0])).name))
         elif self.concepto.id==5 and len(c)==2:#Transfer received in destiny
@@ -1855,15 +1855,15 @@ class DBData:
         inicio=datetime.datetime.now()
         self.benchmark=Product(self.mem).init__db(self.mem.config.get_value("settings", "benchmark" ))
         self.benchmark.result.basic.load_from_db()
-        self.ebs_active=SetEntidadesBancarias(self.mem)
+        self.ebs_active=SetBanks(self.mem)
         self.ebs_active.load_from_db("select * from entidadesbancarias where eb_activa=true")
-        self.cuentas_active=SetCuentas(self.mem, self.ebs_active)
+        self.cuentas_active=SetAccounts(self.mem, self.ebs_active)
         self.cuentas_active.load_from_db("select * from cuentas where cu_activa=true")
-        self.tarjetas_active=SetTarjetas(self.mem, self.mem.data.cuentas_active)
+        self.tarjetas_active=SetCreditCards(self.mem, self.mem.data.cuentas_active)
         self.tarjetas_active.load_from_db("select * from tarjetas where tj_activa=true")
         self.investments_active=SetProducts(self.mem)
         self.investments_active.load_from_inversiones_query("select distinct(mystocksid) from inversiones where in_activa=true")
-        self.inversiones_active=SetInversiones(self.mem, self.cuentas_active, self.investments_active, self.benchmark)
+        self.inversiones_active=SetInvestments(self.mem, self.cuentas_active, self.investments_active, self.benchmark)
         self.inversiones_active.load_from_db("select * from inversiones where in_activa=true", True)
         if not self.tupdatedata.isAlive():#Necesary because, can be thrown from actionUpdateMemory
             self.tupdatedata.start()        
@@ -1873,19 +1873,19 @@ class DBData:
         def load():
             inicio=datetime.datetime.now()
             
-            self.ebs_inactive=SetEntidadesBancarias(self.mem)
+            self.ebs_inactive=SetBanks(self.mem)
             self.ebs_inactive.load_from_db("select * from entidadesbancarias where eb_activa=false")
             
-            self.cuentas_inactive=SetCuentas(self.mem, self.ebs_all())
+            self.cuentas_inactive=SetAccounts(self.mem, self.ebs_all())
             self.cuentas_inactive.load_from_db("select * from cuentas where cu_activa=false")
             
-            self.tarjetas_inactive=SetTarjetas(self.mem, self.cuentas_all())
+            self.tarjetas_inactive=SetCreditCards(self.mem, self.cuentas_all())
             self.tarjetas_inactive.load_from_db("select * from tarjetas where tj_activa=false")
             
             self.investments_inactive=SetProducts(self.mem)
             self.investments_inactive.load_from_inversiones_query("select distinct(mystocksid) from inversiones where in_activa=false")
 
-            self.inversiones_inactive=SetInversiones(self.mem, self.cuentas_all(), self.investments_all(), self.benchmark)
+            self.inversiones_inactive=SetInvestments(self.mem, self.cuentas_all(), self.investments_all(), self.benchmark)
             self.inversiones_inactive.load_from_db("select * from inversiones where in_activa=false",  True)
             
             print("\n","Cargando inactives",  datetime.datetime.now()-inicio)
@@ -1975,7 +1975,7 @@ class Dividend:
         cur=self.mem.con.cursor()
         comentario="{0}|{1}|{2}|{3}".format(self.inversion.name, self.bruto, self.retencion, self.comision)
         if self.id==None:#Insertar
-            oc=CuentaOperacion(self.mem).init__create( self.fecha,self.concepto, self.concepto.tipooperacion, self.neto, comentario, self.inversion.cuenta)
+            oc=AccountOperation(self.mem).init__create( self.fecha,self.concepto, self.concepto.tipooperacion, self.neto, comentario, self.inversion.cuenta)
             oc.save()
             self.opercuenta=oc
             #Añade el dividend
@@ -1992,7 +1992,7 @@ class Dividend:
         self.inversion.cuenta.saldo_from_db()
         cur.close()
 
-class InversionOperacion:
+class InvestmentOperation:
     def __init__(self, mem):
         self.mem=mem
         self.id=None
@@ -2047,21 +2047,21 @@ class InversionOperacion:
         cur.close()
         if self.tipooperacion.id==4:#Compra Acciones
             #Se pone un registro de compra de acciones que resta el balance de la opercuenta
-            c=CuentaOperacionDeInversionOperacion(self.mem).init__create(self.datetime.date(), self.mem.conceptos.find(29), self.tipooperacion, -self.importe-self.comision, self.comentario, self.inversion.cuenta, self,self.inversion)
+            c=AccountOperationOfInvestmentOperation(self.mem).init__create(self.datetime.date(), self.mem.conceptos.find(29), self.tipooperacion, -self.importe-self.comision, self.comentario, self.inversion.cuenta, self,self.inversion)
             c.save()
         elif self.tipooperacion.id==5:#// Venta Acciones
             #//Se pone un registro de compra de acciones que resta el balance de la opercuenta
-            c=CuentaOperacionDeInversionOperacion(self.mem).init__create(self.datetime.date(), self.mem.conceptos.find(35), self.tipooperacion, self.importe-self.comision-self.impuestos, self.comentario, self.inversion.cuenta, self,self.inversion)
+            c=AccountOperationOfInvestmentOperation(self.mem).init__create(self.datetime.date(), self.mem.conceptos.find(35), self.tipooperacion, self.importe-self.comision-self.impuestos, self.comentario, self.inversion.cuenta, self,self.inversion)
             c.save()
         elif self.tipooperacion.id==6:
             #//Si hubiera comisión se añade la comisión.
             if(self.comision!=0):
-                c=CuentaOperacionDeInversionOperacion(self.mem).init__create(self.datetime.date(), self.mem.conceptos.find(38), self.mem.tiposoperaciones.find(1), -self.comision-self.impuestos, self.comentario, self.inversion.cuenta, self,self.inversion)
+                c=AccountOperationOfInvestmentOperation(self.mem).init__create(self.datetime.date(), self.mem.conceptos.find(38), self.mem.tiposoperaciones.find(1), -self.comision-self.impuestos, self.comentario, self.inversion.cuenta, self,self.inversion)
                 c.save()
     
     def clone(self):
         """Crea una inversion operacion desde otra inversionoepracion. NO es un enlace es un objeto clone"""
-        resultado=InversionOperacion(self.mem)
+        resultado=InvestmentOperation(self.mem)
         resultado.init__create(self.tipooperacion, self.datetime, self.inversion, self.acciones, self.importe, self.impuestos, self.comision, self.valor_accion, self.comentario, self.id)
         return resultado
                 
@@ -2107,7 +2107,7 @@ class InversionOperacion:
     def tpc_total(self,  last):
         return
    
-class EntidadBancaria:
+class Bank:
     """Clase que encapsula todas las funciones que se pueden realizar con una Entidad bancaria o banco"""
     def __init__(self, mem):
         """Constructor que inicializa los atributos a None"""
@@ -2123,7 +2123,7 @@ class EntidadBancaria:
         return self
         
     def __repr__(self):
-        return ("Instancia de EntidadBancaria: {0} ({1})".format( self.name, self.id))
+        return ("Instancia de Bank: {0} ({1})".format( self.name, self.id))
 
     
 
@@ -2178,7 +2178,7 @@ class EntidadBancaria:
         if self.es_borrable(dic_cuentas)==True:
             cur.execute("delete from entidadesbancarias where id_entidadesbancarias=%s", (self.id, ))  
             
-class Cuenta:
+class Account:
     def __init__(self, mem):
         self.mem=mem
         self.id=None
@@ -2191,7 +2191,7 @@ class Cuenta:
         self.balance=0#Se calcula al crear el objeto y cuando haya opercuentas se calcula dinamicamente
 
     def __repr__(self):
-        return ("Instancia de Cuenta: {0} ({1})".format( self.name, self.id))
+        return ("Instancia de Account: {0} ({1})".format( self.name, self.id))
         
     def init__db_row(self, row, eb):
         self.id=row['id_cuentas']
@@ -2264,15 +2264,15 @@ class Cuenta:
         #Ojo los comentarios est´an dependientes.
         if comision>0:
             commentcomission="Transfer|{0}|{1}".format(importe, cuentaorigen.id)
-            oc_comision=CuentaOperacion(self.mem).init__create(fecha, self.mem.conceptos.find(38), self.mem.tiposoperaciones.find(1), -comision, commentcomission, cuentaorigen )
+            oc_comision=AccountOperation(self.mem).init__create(fecha, self.mem.conceptos.find(38), self.mem.tiposoperaciones.find(1), -comision, commentcomission, cuentaorigen )
             oc_comision.save()          
             oc_comision_id=oc_comision.id  
         else:
             oc_comision_id=0
-        oc_origen=CuentaOperacion(self.mem).init__create(fecha, self.mem.conceptos.find(4), self.mem.tiposoperaciones.find(3), -importe, "", cuentaorigen )
+        oc_origen=AccountOperation(self.mem).init__create(fecha, self.mem.conceptos.find(4), self.mem.tiposoperaciones.find(3), -importe, "", cuentaorigen )
         oc_origen.save()
         commentdestino="{0}|{1}".format(cuentaorigen.id, oc_origen.id)
-        oc_destino=CuentaOperacion(self.mem).init__create(fecha, self.mem.conceptos.find(5), self.mem.tiposoperaciones.find(3), importe, commentdestino, cuentadestino )
+        oc_destino=AccountOperation(self.mem).init__create(fecha, self.mem.conceptos.find(5), self.mem.tiposoperaciones.find(3), importe, commentdestino, cuentadestino )
         oc_destino.save()
         oc_origen.comentario="{0}|{1}|{2}".format(cuentadestino.id, oc_destino.id, oc_comision_id)
         oc_origen.save()
@@ -2286,7 +2286,7 @@ class Cuenta:
             return True
         return False
             
-class Inversion:
+class Investment:
     """Clase que encapsula todas las funciones que se pueden realizar con una Inversión
     
     Las entradas al objeto pueden ser por:
@@ -2302,10 +2302,10 @@ class Inversion:
         self.name=None
         self.venta=None
 #        self.id_cuentas=None
-        self.product=None#Puntero a objeto MQInversion
-        self.cuenta=None#Vincula a un objeto  Cuenta
+        self.product=None#Puntero a objeto MQInvestment
+        self.cuenta=None#Vincula a un objeto  Account
         self.activa=None
-        self.op=None#Es un objeto SetInversionOperacion
+        self.op=None#Es un objeto SetInvestmentOperations
         self.op_actual=None#Es un objeto Setoperinversionesactual
         self.op_historica=None#setoperinversioneshistorica
         
@@ -2330,7 +2330,7 @@ class Inversion:
         cur.close()
 
     def __repr__(self):
-        return ("Instancia de Inversion: {0} ({1})".format( self.name, self.id))
+        return ("Instancia de Investment: {0} ({1})".format( self.name, self.id))
         
     def init__db_row(self, row, cuenta, mqinvestment):
         self.id=row['id_inversiones']
@@ -2367,10 +2367,10 @@ class Inversion:
     def get_operinversiones(self):
         """Funci`on que carga un array con objetos inversion operacion y con ellos calcula el set de actual e historicas"""
         cur=self.mem.con.cursor()
-        self.op=SetInversionOperacion(self.mem)
+        self.op=SetInvestmentOperations(self.mem)
         cur.execute("SELECT * from operinversiones where id_inversiones=%s order by datetime", (self.id, ))
         for row in cur:
-            self.op.append(InversionOperacion(self.mem).init__db_row(row, self, self.mem.tiposoperaciones.find(row['id_tiposoperaciones'])))
+            self.op.append(InvestmentOperation(self.mem).init__db_row(row, self, self.mem.tiposoperaciones.find(row['id_tiposoperaciones'])))
         (self.op_actual,  self.op_historica)=self.op.calcular_new()
         cur.close()
         
@@ -2469,7 +2469,7 @@ class Inversion:
                 return Decimal('0')
             quote=Quote(self.mem).init__from_query(self.product, day_end_from_date(fecha, self.mem.localzone))
             if quote.datetime==None:
-                print ("Inversion balance: {0} ({1}) en {2} no tiene valor".format(self.name, self.product.id, fecha))
+                print ("Investment balance: {0} ({1}) en {2} no tiene valor".format(self.name, self.product.id, fecha))
                 return Decimal('0')
             return acciones*quote.quote
         
@@ -2499,7 +2499,7 @@ class Inversion:
 
 
 
-class Tarjeta:    
+class CreditCard:    
     def __init__(self, mem):
         self.mem=mem
         self.id=None
@@ -2510,7 +2510,7 @@ class Tarjeta:
         self.activa=None
         self.numero=None
         
-        self.op_diferido=[]#array que almacena objetos Tarjeta operacion que son en diferido
+        self.op_diferido=[]#array que almacena objetos CreditCard operacion que son en diferido
         
     def init__create(self, name, cuenta, pagodiferido, saldomaximo, activa, numero, id=None):
         """El parámetro cuenta es un objeto cuenta, si no se tuviera en tiempo de creación se asigna None"""
@@ -2549,7 +2549,7 @@ class Tarjeta:
         self.op_diferido=[]
         cur.execute("SELECT * from opertarjetas where id_tarjetas=%s and pagado=false", (self.id, ))
         for row in cur:
-            self.op_diferido.append(TarjetaOperacion(self.mem).init__db_row(row, self.mem.conceptos.find(row['id_conceptos']), self.mem.tiposoperaciones.find(row['id_tiposoperaciones']), self))
+            self.op_diferido.append(CreditCardOperation(self.mem).init__db_row(row, self.mem.conceptos.find(row['id_conceptos']), self.mem.tiposoperaciones.find(row['id_tiposoperaciones']), self))
         cur.close()
         
     def qmessagebox_inactive(self):
@@ -2578,9 +2578,9 @@ class Tarjeta:
             resultado=resultado+ o.importe
         return resultado
 
-class TarjetaOperacion:
+class CreditCardOperation:
     def __init__(self, mem):
-        """Tarjeta es un objeto TarjetaOperacion. pagado, fechapago y opercuenta solo se rellena cuando se paga"""
+        """CreditCard es un objeto CreditCardOperation. pagado, fechapago y opercuenta solo se rellena cuando se paga"""
         self.mem=mem
         self.id=None
         self.fecha=None
@@ -2629,7 +2629,7 @@ class TarjetaOperacion:
                 cur.execute("update opertarjetas set fecha=%s, id_conceptos=%s, id_tiposoperaciones=%s, importe=%s, comentario=%s, id_tarjetas=%s, pagado=%s, fechapago=%s, id_opercuentas=%s where id_opertarjetas=%s", (self.fecha, self.concepto.id, self.tipooperacion.id,  self.importe,  self.comentario, self.tarjeta.id, self.pagado, self.fechapago, self.opercuenta.id, self.id))
         cur.close()
         
-class TipoOperacion:
+class OperationType:
     def __init__(self):
         self.id=None
         self.name=None
@@ -2640,7 +2640,7 @@ class TipoOperacion:
         return self
 
 
-class Patrimonio:
+class Assets:
     def __init__(self, mem):
         self.mem=mem        
     
@@ -2705,7 +2705,7 @@ class Patrimonio:
                     resultado=resultado+inv.balance()
                 else:
                     resultado=resultado+inv.balance( fecha)
-#        print ("core > Patrimonio > saldo_todas_inversiones_bonds: {0}".format(datetime.datetime.now()-inicio))
+#        print ("core > Assets > saldo_todas_inversiones_bonds: {0}".format(datetime.datetime.now()-inicio))
         return resultado
 
     def patrimonio_riesgo_cero(self, setinversiones, fecha):
@@ -2761,7 +2761,7 @@ class Patrimonio:
         return resultado        
 
 
-class SetTarjetas:
+class SetCreditCards:
     def __init__(self, mem, cuentas):
         self.arr=[]
 #        self.dic_arr={} ##Prueba de duplicación
@@ -2772,7 +2772,7 @@ class SetTarjetas:
         cur=self.mem.con.cursor()
         cur.execute(sql)#"Select * from tarjetas")
         for row in cur:
-            t=Tarjeta(self.mem).init__db_row(row, self.cuentas.find(row['id_cuentas']))
+            t=CreditCard(self.mem).init__db_row(row, self.cuentas.find(row['id_cuentas']))
             if t.pagodiferido==True:
                 t.get_opertarjetas_diferidas_pendientes()
 #            self.dic_arr[str(t.id)]=t
@@ -2780,8 +2780,8 @@ class SetTarjetas:
         cur.close()
             
     def clone_of_account(self, cuenta):
-        """Devuelve un SetTarjetas con las tarjetas de una determinada cuenta"""
-        s=SetTarjetas(self.mem, self.cuentas)
+        """Devuelve un SetCreditCards con las tarjetas de una determinada cuenta"""
+        s=SetCreditCards(self.mem, self.cuentas)
         for t in self.arr:
             if t.cuenta==cuenta:
                 s.arr.append(t)
@@ -2807,28 +2807,28 @@ class SetTarjetas:
 #        return resultado
                     
     def union(self,  list2, cuentasunion):
-        """Devuelve un SetEntidadesBancarias con la union del set1 y del set2"""
-        resultado=SetTarjetas(self.mem, cuentasunion)
+        """Devuelve un SetBanks con la union del set1 y del set2"""
+        resultado=SetCreditCards(self.mem, cuentasunion)
         resultado.arr=self.arr+list2.arr
         return resultado
         
         
-class SetTiposOperaciones:      
+class SetOperationTypes:      
     def __init__(self, mem):
         self.dic_arr={}
         self.mem=mem     
         
     def load(self):
-        self.dic_arr['1']=TipoOperacion().init__create( "Gasto", 1)
-        self.dic_arr['2']=TipoOperacion().init__create( "Ingreso", 2)
-        self.dic_arr['3']=TipoOperacion().init__create( "Trasferencia", 3)
-        self.dic_arr['4']=TipoOperacion().init__create( "Compra de acciones", 4)
-        self.dic_arr['5']=TipoOperacion().init__create( "Venta de acciones", 5)
-        self.dic_arr['6']=TipoOperacion().init__create( "Añadido de acciones", 6)
-        self.dic_arr['7']=TipoOperacion().init__create( "Facturacion Tarjeta", 7)
-        self.dic_arr['8']=TipoOperacion().init__create( "Traspaso fondo inversión", 8) #Se contabilizan como ganancia
-        self.dic_arr['9']=TipoOperacion().init__create( "Traspaso de valores. Origen", 9) #No se contabiliza
-        self.dic_arr['10']=TipoOperacion().init__create( "Traspaso de valores. Destino", 10) #No se contabiliza     
+        self.dic_arr['1']=OperationType().init__create( "Gasto", 1)
+        self.dic_arr['2']=OperationType().init__create( "Ingreso", 2)
+        self.dic_arr['3']=OperationType().init__create( "Trasferencia", 3)
+        self.dic_arr['4']=OperationType().init__create( "Compra de acciones", 4)
+        self.dic_arr['5']=OperationType().init__create( "Venta de acciones", 5)
+        self.dic_arr['6']=OperationType().init__create( "Añadido de acciones", 6)
+        self.dic_arr['7']=OperationType().init__create( "Facturacion CreditCard", 7)
+        self.dic_arr['8']=OperationType().init__create( "Traspaso fondo inversión", 8) #Se contabilizan como ganancia
+        self.dic_arr['9']=OperationType().init__create( "Traspaso de valores. Origen", 9) #No se contabiliza
+        self.dic_arr['10']=OperationType().init__create( "Traspaso de valores. Destino", 10) #No se contabiliza     
         
 
 
@@ -2855,7 +2855,7 @@ class SetTiposOperaciones:
         
     def clone_only_operinversiones(self):
         """Devuelve los tipos de operación específicos de operinversiones. en un arr de la forma"""
-        resultado=SetTiposOperaciones(self.mem)
+        resultado=SetOperationTypes(self.mem)
         for key,  t in self.dic_arr.items():
             if key in ('4', '5', '6', '8'):
                 resultado.dic_arr[str(key)]=t
@@ -2904,28 +2904,28 @@ class SetAgrupations:
         
         
     def load_all(self):
-        self.dic_arr["ERROR"]=Agrupation(self.mem).init__create( "ERROR","Agrupación errónea", self.mem.types.find(3), self.mem.bolsas.find(1) )
-        self.dic_arr["IBEX"]=Agrupation(self.mem).init__create( "IBEX","Ibex 35", self.mem.types.find(3), self.mem.bolsas.find(1) )
-        self.dic_arr["MERCADOCONTINUO" ]=Agrupation(self.mem).init__create( "MERCADOCONTINUO","Mercado continuo español", self.mem.types.find(3), self.mem.bolsas.find(1) )
-        self.dic_arr[ "CAC"]=Agrupation(self.mem).init__create("CAC",  "CAC 40 de París", self.mem.types.find(3),self.mem.bolsas.find(3) )
-        self.dic_arr["EUROSTOXX"]=Agrupation(self.mem).init__create( "EUROSTOXX","Eurostoxx 50", self.mem.types.find(3),self.mem.bolsas.find(10)  )
-        self.dic_arr["DAX"]=Agrupation(self.mem).init__create( "DAX","DAX", self.mem.types.find(3), self.mem.bolsas.find(5)  )
-        self.dic_arr["SP500"]=Agrupation(self.mem).init__create("SP500",  "Standard & Poors 500", self.mem.types.find(3), self.mem.bolsas.find(2)  )
-        self.dic_arr["NASDAQ100"]=Agrupation(self.mem).init__create( "NASDAQ100","Nasdaq 100", self.mem.types.find(3), self.mem.bolsas.find(2)  )
-        self.dic_arr["EURONEXT"]=Agrupation(self.mem).init__create( "EURONEXT",  "EURONEXT", self.mem.types.find(3), self.mem.bolsas.find(10)  )
-        self.dic_arr["DEUTSCHEBOERSE"]=Agrupation(self.mem).init__create( "DEUTSCHEBOERSE",  "DEUTSCHEBOERSE", self.mem.types.find(3), self.mem.bolsas.find(5)  )
+        self.dic_arr["ERROR"]=Agrupation(self.mem).init__create( "ERROR","Agrupación errónea", self.mem.types.find(3), self.mem.stockexchanges.find(1) )
+        self.dic_arr["IBEX"]=Agrupation(self.mem).init__create( "IBEX","Ibex 35", self.mem.types.find(3), self.mem.stockexchanges.find(1) )
+        self.dic_arr["MERCADOCONTINUO" ]=Agrupation(self.mem).init__create( "MERCADOCONTINUO","Mercado continuo español", self.mem.types.find(3), self.mem.stockexchanges.find(1) )
+        self.dic_arr[ "CAC"]=Agrupation(self.mem).init__create("CAC",  "CAC 40 de París", self.mem.types.find(3),self.mem.stockexchanges.find(3) )
+        self.dic_arr["EUROSTOXX"]=Agrupation(self.mem).init__create( "EUROSTOXX","Eurostoxx 50", self.mem.types.find(3),self.mem.stockexchanges.find(10)  )
+        self.dic_arr["DAX"]=Agrupation(self.mem).init__create( "DAX","DAX", self.mem.types.find(3), self.mem.stockexchanges.find(5)  )
+        self.dic_arr["SP500"]=Agrupation(self.mem).init__create("SP500",  "Standard & Poors 500", self.mem.types.find(3), self.mem.stockexchanges.find(2)  )
+        self.dic_arr["NASDAQ100"]=Agrupation(self.mem).init__create( "NASDAQ100","Nasdaq 100", self.mem.types.find(3), self.mem.stockexchanges.find(2)  )
+        self.dic_arr["EURONEXT"]=Agrupation(self.mem).init__create( "EURONEXT",  "EURONEXT", self.mem.types.find(3), self.mem.stockexchanges.find(10)  )
+        self.dic_arr["DEUTSCHEBOERSE"]=Agrupation(self.mem).init__create( "DEUTSCHEBOERSE",  "DEUTSCHEBOERSE", self.mem.types.find(3), self.mem.stockexchanges.find(5)  )
 
 
-        self.dic_arr["e_fr_LYXOR"]=Agrupation(self.mem).init__create( "e_fr_LYXOR","LYXOR", self.mem.types.find(4),self.mem.bolsas.find(3)  )
-        self.dic_arr["e_de_DBXTRACKERS"]=Agrupation(self.mem).init__create( "e_de_DBXTRACKERS","Deutsche Bank X-Trackers", self.mem.types.find(4),self.mem.bolsas.find(5)  )
+        self.dic_arr["e_fr_LYXOR"]=Agrupation(self.mem).init__create( "e_fr_LYXOR","LYXOR", self.mem.types.find(4),self.mem.stockexchanges.find(3)  )
+        self.dic_arr["e_de_DBXTRACKERS"]=Agrupation(self.mem).init__create( "e_de_DBXTRACKERS","Deutsche Bank X-Trackers", self.mem.types.find(4),self.mem.stockexchanges.find(5)  )
         
-        self.dic_arr["f_es_0014"]=Agrupation(self.mem).init__create("f_es_0014",  "Gestora BBVA", self.mem.types.find(2), self.mem.bolsas.find(1) )
-        self.dic_arr["f_es_0043"]=Agrupation(self.mem).init__create( "f_es_0043","Gestora Renta 4", self.mem.types.find(2), self.mem.bolsas.find(1))
-        self.dic_arr["f_es_0055"]=Agrupation(self.mem).init__create("f_es_0055","Gestora Bankinter", self.mem.types.find(2),self.mem.bolsas.find(1) )
-        self.dic_arr["f_es_BMF"]=Agrupation(self.mem).init__create( "f_es_BMF","Fondos de la bolsa de Madrid", self.mem.types.find(2), self.mem.bolsas.find(1) )
+        self.dic_arr["f_es_0014"]=Agrupation(self.mem).init__create("f_es_0014",  "Gestora BBVA", self.mem.types.find(2), self.mem.stockexchanges.find(1) )
+        self.dic_arr["f_es_0043"]=Agrupation(self.mem).init__create( "f_es_0043","Gestora Renta 4", self.mem.types.find(2), self.mem.stockexchanges.find(1))
+        self.dic_arr["f_es_0055"]=Agrupation(self.mem).init__create("f_es_0055","Gestora Bankinter", self.mem.types.find(2),self.mem.stockexchanges.find(1) )
+        self.dic_arr["f_es_BMF"]=Agrupation(self.mem).init__create( "f_es_BMF","Fondos de la bolsa de Madrid", self.mem.types.find(2), self.mem.stockexchanges.find(1) )
 
-        self.dic_arr["w_fr_SG"]=Agrupation(self.mem).init__create( "w_fr_SG","Warrants Societe Generale", self.mem.types.find(5),self.mem.bolsas.find(3) )
-        self.dic_arr["w_es_BNP"]=Agrupation(self.mem).init__create("w_es_BNP","Warrants BNP Paribas", self.mem.types.find(5),self.mem.bolsas.find(1))
+        self.dic_arr["w_fr_SG"]=Agrupation(self.mem).init__create( "w_fr_SG","Warrants Societe Generale", self.mem.types.find(5),self.mem.stockexchanges.find(3) )
+        self.dic_arr["w_es_BNP"]=Agrupation(self.mem).init__create("w_es_BNP","Warrants BNP Paribas", self.mem.types.find(5),self.mem.stockexchanges.find(1))
 
     def find(self, id):
         try:
@@ -3009,7 +3009,7 @@ class SetAgrupations:
             resultado.dic_arr[str(cmb.itemData(i))]=self.mem.agrupations.find(cmb.itemData(i))
         return resultado
 
-class SetApalancamientos:
+class SetLeverages:
     def __init__(self, mem):
         """Usa la variable mem.Agrupations"""
         self.mem=mem
@@ -3704,9 +3704,9 @@ class Source:
 #        return ids
         
         
-    def isin2id(self, isin,  id_bolsas):
+    def isin2id(self, isin,  id_stockexchanges):
         for i in self.mem.activas:
-            if isin==self.mem.activas[i].isin and id_bolsas==self.mem.activas[i].id_bolsas:
+            if isin==self.mem.activas[i].isin and id_stockexchanges==self.mem.activas[i].id_stockexchanges:
                 return int(i)
         return None
         
@@ -4029,10 +4029,10 @@ class Source:
         margen=datetime.timedelta(hours=1 )
         for inv in products:
 #            inv=self.mem.activas(i)
-#            bolsa=self.mem.bolsas[str(self.mem.activas[str(i)].id_bolsas)]
-            now=datetime.datetime.now(pytz.timezone(inv.bolsa.zone))
-            starts=now.replace(hour=inv.bolsa.starts.hour, minute=inv.bolsa.starts.minute, second=inv.bolsa.starts.second)
-            stops=now.replace(hour=inv.bolsa.ends.hour, minute=inv.bolsa.ends.minute)+margen
+#            bolsa=self.mem.stockexchanges[str(self.mem.activas[str(i)].id_stockexchanges)]
+            now=datetime.datetime.now(pytz.timezone(inv.stockexchange.zone))
+            starts=now.replace(hour=inv.stockexchange.starts.hour, minute=inv.stockexchange.starts.minute, second=inv.stockexchange.starts.second)
+            stops=now.replace(hour=inv.stockexchange.ends.hour, minute=inv.stockexchange.ends.minute)+margen
 #            print (starts, now, stops)
             if starts<now and stops>now:
                 print ("metido")
@@ -4305,7 +4305,7 @@ class Product:
         self.tpc=None
         self.mode=None#Anterior mode investmentmode
         self.apalancado=None
-        self.bolsa=None
+        self.stockexchange=None
         self.ticker=None
         self.priority=None
         self.priorityhistorical=None
@@ -4315,12 +4315,12 @@ class Product:
         self.system=None
         
         self.result=None#Variable en la que se almacena QuotesResult
-        self.estimations_dps=SetEstimationsDPS(self.mem, self)#Es un diccionario que guarda objetos estimaciones con clave el año
+        self.estimations_dps=SetEstimationsDPS(self.mem, self)#Es un diccionario que guarda objetos estimations_dps con clave el año
         self.estimations_eps=SetEstimationsEPS(self.mem, self)
         self.dps=SetDPS(self.mem, self)
 
     def __repr__(self):
-        return "{0} ({1}) de la {2}".format(self.name , self.id, self.bolsa.name)
+        return "{0} ({1}) de la {2}".format(self.name , self.id, self.stockexchange.name)
                 
     def init__db_row(self, row):
         """row es una fila de un pgcursro de investmentes"""
@@ -4338,7 +4338,7 @@ class Product:
         self.tpc=row['tpc']
         self.mode=self.mem.investmentsmodes.find(row['pci'])
         self.apalancado=self.mem.apalancamientos.find(row['apalancado'])
-        self.bolsa=self.mem.bolsas.find(row['id_bolsas'])
+        self.stockexchange=self.mem.stockexchanges.find(row['id_bolsas'])
         self.ticker=row['ticker']
         self.priority=SetPriorities(self.mem).init__create_from_db(row['priority'])
         self.priorityhistorical=SetPrioritiesHistorical(self.mem).init__create_from_db(row['priorityhistorical'])
@@ -4367,7 +4367,7 @@ class Product:
         self.tpc=tpc
         self.mode=mode
         self.apalancado=apalancado        
-        self.bolsa=id_bolsas
+        self.stockexchange=id_stockexchanges
         self.ticker=ticker
         self.priority=priority
         self.priorityhistorical=priorityhistorical
@@ -4388,11 +4388,11 @@ class Product:
         return self.init__db_row(row)
         
 #    def load_estimacion(self, year=None):
-#        """Si year es none carga todas las estimaciones de la inversionmq"""
+#        """Si year es none carga todas las estimations_dps de la inversionmq"""
 #        curms=self.mem.conms.cursor()
 #        if year==None:
 #            year=datetime.date.today().year
-#        curms.execute("select * from estimaciones where year=%s and id=%s", (year, self.id))
+#        curms.execute("select * from estimations_dps where year=%s and id=%s", (year, self.id))
 #        if curms.rowcount==0:        
 #            e=EstimationEPS(self.mem).init__create(self, year, datetime.date.today(),  "Vacio por código", False, 0)
 ##            e=EstimationEPS(self.mem).init__create(year, 0, datetime.date(2012, 7, 3), "Vacio por código", False, 0, self)
@@ -4409,10 +4409,10 @@ class Product:
         if self.id==None:
             cur.execute(" select min(id)-1 from products;")
             id=cur.fetchone()[0]
-            cur.execute("insert into products (id, name,  isin,  currency,  type,  agrupations,  active,  web, address,  phone, mail, tpc, pci,  apalancado, id_bolsas, ticker, priority, priorityhistorical , comentario,  obsolete, system) values (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",  (id, self.name,  self.isin,  self.currency.id,  self.type.id,  self.agrupations.dbstring(),  self.active,  self.web, self.address,  self.phone, self.mail, self.tpc, self.mode.id,  self.apalancado.id, self.bolsa.id, self.ticker, self.priority.array_of_id(), self.priorityhistorical.array_of_id() , self.comentario, self.obsolete, False))
+            cur.execute("insert into products (id, name,  isin,  currency,  type,  agrupations,  active,  web, address,  phone, mail, tpc, pci,  apalancado, id_bolsas, ticker, priority, priorityhistorical , comentario,  obsolete, system) values (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",  (id, self.name,  self.isin,  self.currency.id,  self.type.id,  self.agrupations.dbstring(),  self.active,  self.web, self.address,  self.phone, self.mail, self.tpc, self.mode.id,  self.apalancado.id, self.stockexchange.id, self.ticker, self.priority.array_of_id(), self.priorityhistorical.array_of_id() , self.comentario, self.obsolete, False))
             self.id=id
         else:
-            cur.execute("update products set name=%s, isin=%s,currency=%s,type=%s, agrupations=%s, active=%s, web=%s, address=%s, phone=%s, mail=%s, tpc=%s, pci=%s, apalancado=%s, id_bolsas=%s, ticker=%s, priority=%s, priorityhistorical=%s, comentario=%s, obsolete=%s where id=%s", ( self.name,  self.isin,  self.currency.id,  self.type.id,  self.agrupations.dbstring(),  self.active,  self.web, self.address,  self.phone, self.mail, self.tpc, self.mode.id,  self.apalancado.id, self.bolsa.id, self.ticker, self.priority.array_of_id(), self.priorityhistorical.array_of_id() , self.comentario, self.obsolete,  self.id))
+            cur.execute("update products set name=%s, isin=%s,currency=%s,type=%s, agrupations=%s, active=%s, web=%s, address=%s, phone=%s, mail=%s, tpc=%s, pci=%s, apalancado=%s, id_bolsas=%s, ticker=%s, priority=%s, priorityhistorical=%s, comentario=%s, obsolete=%s where id=%s", ( self.name,  self.isin,  self.currency.id,  self.type.id,  self.agrupations.dbstring(),  self.active,  self.web, self.address,  self.phone, self.mail, self.tpc, self.mode.id,  self.apalancado.id, self.stockexchange.id, self.ticker, self.priority.array_of_id(), self.priorityhistorical.array_of_id() , self.comentario, self.obsolete,  self.id))
         cur.close()
     
     def changeDeletable(self, ids,  deletable):
@@ -4500,10 +4500,10 @@ class SetQuotesAll:
         dt_end=None
         for row in curms:
             if dt_end==None:#Loads the first datetime
-                dt_end=day_end(row['datetime'], self.product.bolsa.zone)
+                dt_end=day_end(row['datetime'], self.product.stockexchange.zone)
             if row['datetime']>dt_end:#Cambio de SetQuotesIntraday
                 self.arr.append(SetQuotesIntraday(self.mem).init__create(self.product, dt_end.date(), intradayarr))
-                dt_end=day_end(row['datetime'], self.product.bolsa.zone)
+                dt_end=day_end(row['datetime'], self.product.stockexchange.zone)
                 #crea otro intradayarr
                 del intradayarr
                 intradayarr=[]
@@ -4575,9 +4575,9 @@ class SetQuotesAll:
 #            return
 #        self.last=self.all.arr[len(self.all.arr)-1]
 #        #penultimate es el ultimo del penultimo dia localizado
-#        dtpenultimate=day_end(self.last.datetime-datetime.timedelta(days=1), self.product.bolsa.zone)
+#        dtpenultimate=day_end(self.last.datetime-datetime.timedelta(days=1), self.product.stockexchange.zone)
 #        self.penultimate=self.find_quote_in_all(dtpenultimate)
-#        dtendlastyear=dt(datetime.date(self.last.datetime.year-1, 12, 31),  datetime.time(23, 59, 59), self.product.bolsa.zone)
+#        dtendlastyear=dt(datetime.date(self.last.datetime.year-1, 12, 31),  datetime.time(23, 59, 59), self.product.stockexchange.zone)
 #        self.endlastyear=self.find_quote_in_all(dtendlastyear)
 
         
@@ -4645,7 +4645,7 @@ class SetQuotesIntraday:
         self.product=product
         self.date=date
         curms=self.mem.conms.cursor()
-        iniciodia=day_start_from_date(date, self.product.bolsa.zone)
+        iniciodia=day_start_from_date(date, self.product.stockexchange.zone)
         siguientedia=iniciodia+datetime.timedelta(days=1)
         curms.execute("select * from quotes where id=%s and datetime>=%s and datetime<%s order by datetime", (self.product.id,  iniciodia, siguientedia))
         for row in curms:
@@ -4675,7 +4675,7 @@ class SetQuotesIntraday:
         """Devuelve el quote cuyo quote es mayor"""
         if len(self.arr)==0:
             return None
-        high=Quote(self.mem).init__create(self.product, day_start_from_date(self.date, self.product.bolsa.zone), Decimal('0'))
+        high=Quote(self.mem).init__create(self.product, day_start_from_date(self.date, self.product.stockexchange.zone), Decimal('0'))
         for q in self.arr:
             if q.quote>high.quote:
                 high=q
@@ -4685,7 +4685,7 @@ class SetQuotesIntraday:
         """Devuelve el quote cuyo quote es menor"""
         if len(self.arr)==0:
             return None
-        low=Quote(self.mem).init__create(self.product, day_start_from_date(self.date, self.product.bolsa.zone), Decimal('1000000'))
+        low=Quote(self.mem).init__create(self.product, day_start_from_date(self.date, self.product.stockexchange.zone), Decimal('1000000'))
         for q in self.arr:
             if q.quote<low.quote:
                 low=q
@@ -4854,7 +4854,7 @@ class OHCLDaily:
         return self
     def datetime(self):
         """Devuelve un datetime usado para dibujar en gráficos"""
-        return day_end_from_date(self.date, self.product.bolsa.zone)
+        return day_end_from_date(self.date, self.product.stockexchange.zone)
     def print_time(self):
         return "{0}".format(self.date)
         
@@ -4904,7 +4904,7 @@ class OHCLMonthly:
         return o
     def datetime(self):
         """Devuelve un datetime usado para dibujar en gráficos, pongo el día 28 para no calcular el último"""
-        return day_end_from_date(datetime.date(self.year, self.month, 28), self.product.bolsa.zone)
+        return day_end_from_date(datetime.date(self.year, self.month, 28), self.product.stockexchange.zone)
                 
 class OHCLWeekly:
     def __init__(self, mem):
@@ -4945,7 +4945,7 @@ class OHCLWeekly:
         dlt = datetime.timedelta(days = (self.week-1)*7)
 #        return d + dlt,  d + dlt + timedelta(days=6) ## first day, end day
         lastday= d + dlt + datetime.timedelta(days=6)
-        return day_end_from_date(lastday, self.product.bolsa.zone)
+        return day_end_from_date(lastday, self.product.stockexchange.zone)
         
     def print_time(self):
         return "{0}-{1}".format(self.year, self.week)
@@ -4979,7 +4979,7 @@ class OHCLYearly:
         return o
     def datetime(self):
         """Devuelve un datetime usado para dibujar en gráficos"""
-        return day_end_from_date(datetime.date(self.year, 12, 31), self.product.bolsa.zone)
+        return day_end_from_date(datetime.date(self.year, 12, 31), self.product.stockexchange.zone)
     def print_time(self):
         return "{0}".format(int(self.year))
 class SetOHCLWeekly:
@@ -5104,13 +5104,13 @@ class SetOHCLDaily:
         if len(self.arr)==0:
             return SetQuotesBasic(self.mem, self.product).init__create(None, None,  None)
         ohcl=self.arr[len(self.arr)-1]#last
-        last=Quote(self.mem).init__create(self.product, dt(ohcl.date, self.product.bolsa.closes,  self.product.bolsa.zone), ohcl.close)
+        last=Quote(self.mem).init__create(self.product, dt(ohcl.date, self.product.stockexchange.closes,  self.product.stockexchange.zone), ohcl.close)
         ohcl=self.find(ohcl.date-datetime.timedelta(days=1))#penultimate
         if ohcl!=None:
-            penultimate=Quote(self.mem).init__create(self.product, dt(ohcl.date, self.product.bolsa.closes,  self.product.bolsa.zone), ohcl.close)
+            penultimate=Quote(self.mem).init__create(self.product, dt(ohcl.date, self.product.stockexchange.closes,  self.product.stockexchange.zone), ohcl.close)
         ohcl=self.find(datetime.date(datetime.date.today().year-1, 12, 31))#endlastyear
         if ohcl!=None:
-            endlastyear=Quote(self.mem).init__create(self.product, dt(ohcl.date, self.product.bolsa.closes,  self.product.bolsa.zone), ohcl.close)        
+            endlastyear=Quote(self.mem).init__create(self.product, dt(ohcl.date, self.product.stockexchange.closes,  self.product.stockexchange.zone), ohcl.close)        
         return SetQuotesBasic(self.mem, self.product).init__create(last, penultimate, endlastyear)
         
 class OHCL:
@@ -5206,8 +5206,8 @@ class Split:
             q.save()
         
         
-    def updateOperInversiones(self, arr):
-        """Transforms de number of shares and its price of the array of InversionOperacion"""
+    def updateOperInvestments(self, arr):
+        """Transforms de number of shares and its price of the array of InvestmentOperation"""
         for oi in arr:
             oi.acciones=self.convertShares(oi.acciones)
             oi.valor_accion=self.convertPrices(oi.valor_accion)
@@ -5282,14 +5282,14 @@ class Agrupation:
         self.id=None
         self.name=None
         self.type=None
-        self.bolsa=None
+        self.stockexchange=None
 
         
     def init__create(self, id,  name, type, bolsa):
         self.id=id
         self.name=name
         self.type=type
-        self.bolsa=bolsa
+        self.stockexchange=bolsa
         return self
         
 class SetTypes:
@@ -5411,7 +5411,7 @@ class Language:
         self.name=name
     
             
-class Mantenimiento:
+class Maintenance:
     """Funciones de mantenimiento y ayuda a la programaci´on y depuraci´on"""
     def __init__(self, mem):
         self.mem=mem
@@ -5459,11 +5459,11 @@ class MemMyStock:
         self.languages.load_all()
         
         
-        self.bolsas=SetStockExchanges(self)
+        self.stockexchanges=SetStockExchanges(self)
         self.currencies=SetCurrencies(self)
         self.types=SetTypes(self)
         self.agrupations=SetAgrupations(self)
-        self.apalancamientos=SetApalancamientos(self)
+        self.apalancamientos=SetLeverages(self)
         self.priorities=SetPriorities(self)
         self.prioritieshistorical=SetPrioritiesHistorical(self)
         self.zones=SetZones(self)
@@ -5529,7 +5529,7 @@ class MemMyStock:
         self.priorities.load_all()
         self.prioritieshistorical.load_all()
         self.types.load_all()
-        self.bolsas.load_all_from_db()
+        self.stockexchanges.load_all_from_db()
         self.agrupations.load_all()
         self.apalancamientos.load_all()
 
@@ -5599,14 +5599,14 @@ class MemXulpymoney(MemMyStock):
 
     def actualizar_memoria(self):
         """Solo se cargan datos  de mystocks y operinversiones en las activas
-        Pero se general el InversionMQ de las inactivas
+        Pero se general el InvestmentMQ de las inactivas
         Se vinculan todas"""
         super(MemXulpymoney, self).actualizar_memoria()
         inicio=datetime.datetime.now()
         print ("Loading static data")
-        self.tiposoperaciones=SetTiposOperaciones(self)
+        self.tiposoperaciones=SetOperationTypes(self)
         self.tiposoperaciones.load()
-        self.conceptos=SetConceptos(self)
+        self.conceptos=SetConcepts(self)
         self.conceptos.load_from_db()
         self.localcurrency=self.currencies.find(self.config.get_value("settings", "localcurrency")) #Currency definido en config
         self.data.load_actives()

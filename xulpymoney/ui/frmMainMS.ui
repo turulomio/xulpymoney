@@ -53,8 +53,8 @@
     <property name="title">
      <string>MyStocks</string>
     </property>
-    <addaction name="actionImportar"/>
-    <addaction name="actionExportar"/>
+    <addaction name="actionImport"/>
+    <addaction name="actionExport"/>
     <addaction name="separator"/>
     <addaction name="actionPurgeAll"/>
     <addaction name="separator"/>
@@ -78,7 +78,7 @@
     <property name="title">
      <string>Funds</string>
     </property>
-    <addaction name="actionFondos"/>
+    <addaction name="actionFunds"/>
    </widget>
    <widget class="QMenu" name="menuETFs">
     <property name="title">
@@ -100,29 +100,29 @@
     <property name="title">
      <string>Currencies</string>
     </property>
-    <addaction name="actionDivisas"/>
+    <addaction name="actionCurrencies"/>
    </widget>
    <widget class="QMenu" name="menuMyQuotes">
     <property name="title">
      <string>Help</string>
     </property>
-    <addaction name="actionAcercaDe"/>
+    <addaction name="actionAbout"/>
     <addaction name="separator"/>
    </widget>
    <widget class="QMenu" name="menuRenta_Fija">
     <property name="title">
      <string>Renta Fija</string>
     </property>
-    <addaction name="actionDeudaPublica"/>
-    <addaction name="actionDeudaPrivada"/>
+    <addaction name="actionBondsPublic"/>
+    <addaction name="actionBondsPrivate"/>
     <addaction name="separator"/>
-    <addaction name="actionRentaFija"/>
+    <addaction name="actionBonds"/>
    </widget>
    <widget class="QMenu" name="menuAcciones">
     <property name="title">
      <string>Shares</string>
     </property>
-    <addaction name="actionAcciones"/>
+    <addaction name="actionShares"/>
    </widget>
    <widget class="QMenu" name="menuTodas">
     <property name="title">
@@ -130,17 +130,17 @@
     </property>
     <addaction name="actionActive"/>
     <addaction name="separator"/>
-    <addaction name="actionDividendos"/>
+    <addaction name="actionDividends"/>
     <addaction name="separator"/>
-    <addaction name="actionInversionesManual"/>
-    <addaction name="actionInversionesDesaparecidas"/>
-    <addaction name="actionInversionesSinActualizarHistoricos"/>
+    <addaction name="actionInvestmentsManual"/>
+    <addaction name="actionInvestmentsDesaparecidas"/>
+    <addaction name="actionInvestmentsSinActualizarHistoricos"/>
     <addaction name="separator"/>
     <addaction name="actionISINDuplicado"/>
     <addaction name="separator"/>
-    <addaction name="actionInversionesSinISIN"/>
-    <addaction name="actionInversionesSinNombre"/>
-    <addaction name="actionInversionesSinActualizar"/>
+    <addaction name="actionInvestmentsSinISIN"/>
+    <addaction name="actionInvestmentsSinNombre"/>
+    <addaction name="actionInvestmentsSinActualizar"/>
    </widget>
    <addaction name="menuAyuda"/>
    <addaction name="menuIndices"/>
@@ -176,9 +176,9 @@
    <addaction name="separator"/>
    <addaction name="actionIndexes"/>
    <addaction name="separator"/>
-   <addaction name="actionFavoritos"/>
+   <addaction name="actionFavorites"/>
    <addaction name="separator"/>
-   <addaction name="actionInversionesManual"/>
+   <addaction name="actionInvestmentsManual"/>
    <addaction name="separator"/>
    <addaction name="actionSalir"/>
   </widget>
@@ -192,7 +192,7 @@
     <string>Exit</string>
    </property>
   </action>
-  <action name="actionAcercaDe">
+  <action name="actionAbout">
    <property name="icon">
     <iconset resource="../images/xulpymoney.qrc">
      <normaloff>:/xulpymoney/kmplot.jpg</normaloff>:/xulpymoney/kmplot.jpg</iconset>
@@ -201,7 +201,7 @@
     <string>About</string>
    </property>
   </action>
-  <action name="actionInversionesSinISIN">
+  <action name="actionInvestmentsSinISIN">
    <property name="icon">
     <iconset>
      <normaloff>:/images/configure.png</normaloff>:/images/configure.png</iconset>
@@ -222,7 +222,7 @@
     <string>All Indexes</string>
    </property>
   </action>
-  <action name="actionFondos">
+  <action name="actionFunds">
    <property name="icon">
     <iconset>
      <normaloff>:/images/document-preview.png</normaloff>:/images/document-preview.png</iconset>
@@ -303,7 +303,7 @@
     <string>Xetra</string>
    </property>
   </action>
-  <action name="actionInversionesSinNombre">
+  <action name="actionInvestmentsSinNombre">
    <property name="icon">
     <iconset>
      <normaloff>:/images/configure.png</normaloff>:/images/configure.png</iconset>
@@ -315,7 +315,7 @@
     <string>Inversiones sin nombre</string>
    </property>
   </action>
-  <action name="actionInversionesSinActualizar">
+  <action name="actionInvestmentsSinActualizar">
    <property name="icon">
     <iconset>
      <normaloff>:/images/configure.png</normaloff>:/images/configure.png</iconset>
@@ -327,7 +327,7 @@
     <string>Inversiones sin actualizar</string>
    </property>
   </action>
-  <action name="actionInversionesDesaparecidas">
+  <action name="actionInvestmentsDesaparecidas">
    <property name="icon">
     <iconset>
      <normaloff>:/images/configure.png</normaloff>:/images/configure.png</iconset>
@@ -339,7 +339,7 @@
     <string>Inversiones desaparecidas</string>
    </property>
   </action>
-  <action name="actionExportar">
+  <action name="actionExport">
    <property name="icon">
     <iconset>
      <normaloff>:/images/configure.png</normaloff>:/images/configure.png</iconset>
@@ -351,7 +351,7 @@
     <string>Exportar tabla quotes</string>
    </property>
   </action>
-  <action name="actionImportar">
+  <action name="actionImport">
    <property name="icon">
     <iconset>
      <normaloff>:/images/configure.png</normaloff>:/images/configure.png</iconset>
@@ -363,7 +363,7 @@
     <string>Importar tabla quotes</string>
    </property>
   </action>
-  <action name="actionInversionesManual">
+  <action name="actionInvestmentsManual">
    <property name="icon">
     <iconset resource="../images/xulpymoney.qrc">
      <normaloff>:/xulpymoney/keko.png</normaloff>:/xulpymoney/keko.png</iconset>
@@ -375,7 +375,7 @@
     <string>Inversiones de edición manual</string>
    </property>
   </action>
-  <action name="actionDivisas">
+  <action name="actionCurrencies">
    <property name="icon">
     <iconset resource="../images/xulpymoney.qrc">
      <normaloff>:/xulpymoney/Money.png</normaloff>:/xulpymoney/Money.png</iconset>
@@ -387,7 +387,7 @@
     <string>Todas las divisas</string>
    </property>
   </action>
-  <action name="actionFavoritos">
+  <action name="actionFavorites">
    <property name="icon">
     <iconset resource="../images/xulpymoney.qrc">
      <normaloff>:/xulpymoney/star.png</normaloff>:/xulpymoney/star.png</iconset>
@@ -400,7 +400,7 @@
 seleccionados por el usuario</string>
    </property>
   </action>
-  <action name="actionInversionesSinActualizarHistoricos">
+  <action name="actionInvestmentsSinActualizarHistoricos">
    <property name="icon">
     <iconset>
      <normaloff>:/images/history.png</normaloff>:/images/history.png</iconset>
@@ -424,7 +424,7 @@ seleccionados por el usuario</string>
     <string>Todas las activas</string>
    </property>
   </action>
-  <action name="actionDividendos">
+  <action name="actionDividends">
    <property name="icon">
     <iconset>
      <normaloff>:/images/dinero.png</normaloff>:/images/dinero.png</iconset>
@@ -463,7 +463,7 @@ seleccionados por el usuario</string>
     <string>All inline warrants</string>
    </property>
   </action>
-  <action name="actionRentaFija">
+  <action name="actionBonds">
    <property name="icon">
     <iconset resource="../images/xulpymoney.qrc">
      <normaloff>:/xulpymoney/history2.png</normaloff>:/xulpymoney/history2.png</iconset>
@@ -475,7 +475,7 @@ seleccionados por el usuario</string>
     <string>Toda la Renta Fija</string>
    </property>
   </action>
-  <action name="actionAcciones">
+  <action name="actionShares">
    <property name="icon">
     <iconset resource="../images/xulpymoney.qrc">
      <normaloff>:/xulpymoney/kmplot.jpg</normaloff>:/xulpymoney/kmplot.jpg</iconset>
@@ -487,7 +487,7 @@ seleccionados por el usuario</string>
     <string>Todas las acciones</string>
    </property>
   </action>
-  <action name="actionDeudaPublica">
+  <action name="actionBondsPublic">
    <property name="icon">
     <iconset resource="../images/xulpymoney.qrc">
      <normaloff>:/xulpymoney/history2.png</normaloff>:/xulpymoney/history2.png</iconset>
@@ -499,7 +499,7 @@ seleccionados por el usuario</string>
     <string>Toda la deuda pública</string>
    </property>
   </action>
-  <action name="actionDeudaPrivada">
+  <action name="actionBondsPrivate">
    <property name="icon">
     <iconset resource="../images/xulpymoney.qrc">
      <normaloff>:/xulpymoney/history2.png</normaloff>:/xulpymoney/history2.png</iconset>

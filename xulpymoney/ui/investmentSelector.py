@@ -75,23 +75,23 @@ class investmentDialog(QDialog):
         self.cmd.setIcon(icon)
         self.horizontalLayout.addWidget(self.cmd)
         self.verticalLayout.addLayout(self.horizontalLayout)
-        self.tblInversiones = myQTableWidget(self)
-        self.tblInversiones.setContextMenuPolicy(Qt.CustomContextMenu)
-        self.tblInversiones.setAlternatingRowColors(True)
-        self.tblInversiones.setColumnCount(4)
-        self.tblInversiones.setRowCount(0)
-        self.tblInversiones.settings("investmentSelector",  self.mem)    
-        self.tblInversiones.setHorizontalHeaderItem(0, QTableWidgetItem(self.trUtf8("Inversión")))
-        self.tblInversiones.setHorizontalHeaderItem(1, QTableWidgetItem(self.trUtf8("Id")))
-        self.tblInversiones.setHorizontalHeaderItem(2, QTableWidgetItem(self.trUtf8("ISIN")))
-        self.tblInversiones.setHorizontalHeaderItem(3, QTableWidgetItem(self.trUtf8("Ticker")))
-        self.tblInversiones.horizontalHeader().setStretchLastSection(False)
-        self.tblInversiones.setEditTriggers(QAbstractItemView.NoEditTriggers)
-        self.tblInversiones.setSelectionBehavior(QAbstractItemView.SelectRows)
-        self.tblInversiones.setSelectionMode(QAbstractItemView.SingleSelection)
+        self.tblInvestments = myQTableWidget(self)
+        self.tblInvestments.setContextMenuPolicy(Qt.CustomContextMenu)
+        self.tblInvestments.setAlternatingRowColors(True)
+        self.tblInvestments.setColumnCount(4)
+        self.tblInvestments.setRowCount(0)
+        self.tblInvestments.settings("investmentSelector",  self.mem)    
+        self.tblInvestments.setHorizontalHeaderItem(0, QTableWidgetItem(self.trUtf8("Inversión")))
+        self.tblInvestments.setHorizontalHeaderItem(1, QTableWidgetItem(self.trUtf8("Id")))
+        self.tblInvestments.setHorizontalHeaderItem(2, QTableWidgetItem(self.trUtf8("ISIN")))
+        self.tblInvestments.setHorizontalHeaderItem(3, QTableWidgetItem(self.trUtf8("Ticker")))
+        self.tblInvestments.horizontalHeader().setStretchLastSection(False)
+        self.tblInvestments.setEditTriggers(QAbstractItemView.NoEditTriggers)
+        self.tblInvestments.setSelectionBehavior(QAbstractItemView.SelectRows)
+        self.tblInvestments.setSelectionMode(QAbstractItemView.SingleSelection)
 
-        self.tblInversiones.verticalHeader().setVisible(False)
-        self.verticalLayout.addWidget(self.tblInversiones)
+        self.tblInvestments.verticalHeader().setVisible(False)
+        self.verticalLayout.addWidget(self.tblInvestments)
         self.lblFound = QLabel(self)
         self.verticalLayout.addWidget(self.lblFound)
         self.horizontalLayout_2.addLayout(self.verticalLayout)
@@ -101,10 +101,10 @@ class investmentDialog(QDialog):
         self.lblFound.setText(self.trUtf8("Registros encontrados"))
 
         self.setTabOrder(self.txt, self.cmd)
-        self.setTabOrder(self.cmd, self.tblInversiones)                                                                                                                                                                                                                                        
+        self.setTabOrder(self.cmd, self.tblInvestments)                                                                                                                                                                                                                                        
         self.connect(self.cmd,SIGNAL('released()'),  self.on_cmd_released)                                                                                                                                                                                              
-        self.connect(self.tblInversiones,SIGNAL('itemSelectionChanged()'),  self.on_tblInversiones_itemSelectionChanged)                                                                                                             
-        self.connect(self.tblInversiones,SIGNAL('cellDoubleClicked(int,int)'),  self.on_tblInversiones_cellDoubleClicked)
+        self.connect(self.tblInvestments,SIGNAL('itemSelectionChanged()'),  self.on_tblInvestments_itemSelectionChanged)                                                                                                             
+        self.connect(self.tblInvestments,SIGNAL('cellDoubleClicked(int,int)'),  self.on_tblInvestments_cellDoubleClicked)
 
 
     def on_cmd_released(self):
@@ -119,24 +119,24 @@ class investmentDialog(QDialog):
         cur.execute("select * from products where id::text like '%"+(self.txt.text().upper())+"%' or upper(name) like '%"+(self.txt.text().upper())+"%' or upper(isin) like '%"+(self.txt.text().upper())+"%' or upper(comentario) like '%"+(self.txt.text().upper())+"%' order by name")
         self.lblFound.setText(self.tr("Encontrados {0} registros".format(cur.rowcount)))
                 
-        self.tblInversiones.setRowCount(cur.rowcount)
+        self.tblInvestments.setRowCount(cur.rowcount)
         for i in cur:
             inv=Product(self.mem)
             inv.init__db_row(i)
             self.inversiones.append(inv)
-            self.tblInversiones.setItem(cur.rownumber-1, 0, QTableWidgetItem(inv.name.upper()))
-            self.tblInversiones.setItem(cur.rownumber-1, 1, QTableWidgetItem(str(inv.id)))
-            self.tblInversiones.item(cur.rownumber-1, 0).setIcon(inv.bolsa.country.qicon())
-            self.tblInversiones.setItem(cur.rownumber-1, 2, QTableWidgetItem(inv.isin))
-            self.tblInversiones.setItem(cur.rownumber-1, 3, QTableWidgetItem(inv.ticker))
+            self.tblInvestments.setItem(cur.rownumber-1, 0, QTableWidgetItem(inv.name.upper()))
+            self.tblInvestments.setItem(cur.rownumber-1, 1, QTableWidgetItem(str(inv.id)))
+            self.tblInvestments.item(cur.rownumber-1, 0).setIcon(inv.stockexchange.country.qicon())
+            self.tblInvestments.setItem(cur.rownumber-1, 2, QTableWidgetItem(inv.isin))
+            self.tblInvestments.setItem(cur.rownumber-1, 3, QTableWidgetItem(inv.ticker))
         cur.close()     
         
-    def on_tblInversiones_cellDoubleClicked(self, row, column):
+    def on_tblInvestments_cellDoubleClicked(self, row, column):
         self.done(0)
     
-    def on_tblInversiones_itemSelectionChanged(self):
+    def on_tblInvestments_itemSelectionChanged(self):
         try:
-            for i in self.tblInversiones.selectedItems():
+            for i in self.tblInvestments.selectedItems():
                 if i.column()==0:
                     self.selected=self.inversiones[i.row()]
             print (self.selected)

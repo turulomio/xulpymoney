@@ -52,7 +52,7 @@ class frmMainMS(QMainWindow, Ui_frmMainMS):#
         self.mem.disconnect_mystocks(self.mem.conms)
         
     @pyqtSignature("")
-    def on_actionAcercaDe_activated(self):
+    def on_actionAbout_activated(self):
         fr=frmAbout(self.mem, self)
         fr.open()
 
@@ -71,14 +71,9 @@ class frmMainMS(QMainWindow, Ui_frmMainMS):#
 
         self.layout.addWidget(self.w)
         self.w.show()
-            
-    @QtCore.pyqtSlot()  
-    def on_actionCambioNombre_activated(self):
-        w=frmCambioNombre(self.mem)
-        w.exec_() 
     
     @QtCore.pyqtSlot()  
-    def on_actionDivisas_activated(self):
+    def on_actionCurrencies_activated(self):
         self.w.close()
         self.w=wdgProducts(self.mem,  "select * from products where type=6 order by name,id")
 
@@ -86,22 +81,24 @@ class frmMainMS(QMainWindow, Ui_frmMainMS):#
         self.w.show()
     @QtCore.pyqtSlot()  
     def on_actionDividends_activated(self):
+        """Shows products with current year estimations_dps and with quotes in current year"""
         self.w.close()
-        self.w=wdgProducts(self.mem,  "select * from products where id in (select distinct(quotes.id) from quotes, estimaciones where quotes.id=estimaciones.id and year=2012  and dpa > 0 );")
-
+        self.w=wdgProducts(self.mem, "select * from products where id in (select id from estimations_dps where year=date_part('year',now()) and estimation is not null) and id in (select distinct(id) from quotes where date_part('year', datetime)=date_part('year',now()));")
+#        self.w=wdgProducts(self.mem,  "select * from products where id in (select distinct(quotes.id) from quotes, estimations_dps where quotes.id=estimations_dps.id and year={0}  and estimation is not null );".format(datetime.date.today().year))
+        
         self.layout.addWidget(self.w)
-        self.w.on_actionOrdenarDividend_activated()
+        self.w.on_actionSortDividend_activated()
         self.w.show()
 
     @QtCore.pyqtSlot()  
-    def on_actionExportar_activated(self):
+    def on_actionExport_activated(self):
         os.popen("pg_dump -U postgres -t quotes mystocks | sed -e 's:quotes:export:' | gzip > "+os.environ['HOME']+"/.mystocks/dump-%s.txt.gz" % str(datetime.date.today()))
         m=QMessageBox()
         m.setText(QApplication.translate("Core","Se ha exportado con éxito la tabla quotes"))
         m.exec_()      
 
     @QtCore.pyqtSlot()  
-    def on_actionImportar_activated(self):
+    def on_actionImport_activated(self):
         filename=(QFileDialog.getOpenFileName(self, self.tr("Selecciona el fichero a importar"), os.environ['HOME']+ "/.mystocks/", "Gzipped text (*.txt.gz)"))
         inicio=datetime.datetime.now()
         con=self.mem.connect_mystocks()
@@ -180,7 +177,7 @@ class frmMainMS(QMainWindow, Ui_frmMainMS):#
         
 
     @QtCore.pyqtSlot()  
-    def on_actionFavoritos_activated(self):
+    def on_actionFavorites_activated(self):
         favoritos=self.mem.config.get_list("wdgProducts",  "favoritos")
         if len(favoritos)==0:
             m=QMessageBox()
@@ -197,7 +194,7 @@ class frmMainMS(QMainWindow, Ui_frmMainMS):#
                         
 
     @QtCore.pyqtSlot()  
-    def on_actionAcciones_activated(self):
+    def on_actionShares_activated(self):
         self.w.close()
         self.w=wdgProducts(self.mem,  "select * from products where type=1 order by name, id")
 
@@ -233,7 +230,7 @@ class frmMainMS(QMainWindow, Ui_frmMainMS):#
         self.layout.addWidget(self.w)
         self.w.show()      
     @QtCore.pyqtSlot()  
-    def on_actionFondos_activated(self):
+    def on_actionFunds_activated(self):
         self.w.close()
         self.w=wdgProducts(self.mem,  "select * from products where type=2 order by name, id")
 
@@ -241,7 +238,7 @@ class frmMainMS(QMainWindow, Ui_frmMainMS):#
         self.w.show()                        
 
     @QtCore.pyqtSlot()  
-    def on_actionDeudaPublica_activated(self):
+    def on_actionBondsPublic_activated(self):
         self.w.close()
         self.w=wdgProducts(self.mem,  "select * from products where type=7 order by name, id")
 
@@ -249,7 +246,7 @@ class frmMainMS(QMainWindow, Ui_frmMainMS):#
         self.w.show()                        
 
     @QtCore.pyqtSlot()  
-    def on_actionDeudaPrivada_activated(self):
+    def on_actionBondsPrivate_activated(self):
         self.w.close()
         self.w=wdgProducts(self.mem,  "select * from products where type=9 order by name, id")
 
@@ -299,7 +296,7 @@ class frmMainMS(QMainWindow, Ui_frmMainMS):#
         m.exec_()    
         
     @QtCore.pyqtSlot()  
-    def on_actionRentaFija_activated(self):
+    def on_actionBonds_activated(self):
         self.w.close()
         self.w=wdgProducts(self.mem,  "select * from products where type in (7,9) order by name, id")
 
@@ -333,7 +330,7 @@ class frmMainMS(QMainWindow, Ui_frmMainMS):#
         self.w.show()
     
     @QtCore.pyqtSlot()  
-    def on_actionInversionesDesaparecidas_activated(self):
+    def on_actionInvestmentsDesaparecidas_activated(self):
         self.w.close()
         self.w=wdgProducts(self.mem,  "select * from products where obsolete=true order by name,id")
 
@@ -341,7 +338,7 @@ class frmMainMS(QMainWindow, Ui_frmMainMS):#
         self.w.show()
                 
     @QtCore.pyqtSlot()  
-    def on_actionInversionesSinActualizar_activated(self):
+    def on_actionInvestmentsSinActualizar_activated(self):
         self.w.close()
         self.w=wdgProducts(self.mem,  "select * from products where id in( select id  from quotes group by id having last(datetime::date)<now()::date-60)")
 
@@ -349,7 +346,7 @@ class frmMainMS(QMainWindow, Ui_frmMainMS):#
         self.w.show()       
     
     @QtCore.pyqtSlot()  
-    def on_actionInversionesSinActualizarHistoricos_activated(self):
+    def on_actionInvestmentsSinActualizarHistoricos_activated(self):
         self.w.close()
         self.w=wdgProducts(self.mem, "select * from products where id in (select id from quotes  group by id having date_part('microsecond',last(datetime))=4 and last(datetime)<now()-interval '60 days' );")
 
@@ -357,7 +354,7 @@ class frmMainMS(QMainWindow, Ui_frmMainMS):#
         self.w.show()            
         
     @QtCore.pyqtSlot()  
-    def on_actionInversionesManual_activated(self):
+    def on_actionInvestmentsManual_activated(self):
         self.w.close()
         self.w=wdgProducts(self.mem,  "select * from products where id<0 order by name, id ")
 
@@ -365,7 +362,7 @@ class frmMainMS(QMainWindow, Ui_frmMainMS):#
         self.w.show()
         
     @QtCore.pyqtSlot()  
-    def on_actionInversionesSinISIN_activated(self):
+    def on_actionInvestmentsSinISIN_activated(self):
         self.w.close()
         self.w=wdgProducts(self.mem,  "select * from products  where isin is null or isin ='' order by name,id")
 
@@ -374,7 +371,7 @@ class frmMainMS(QMainWindow, Ui_frmMainMS):#
 
 
     @QtCore.pyqtSlot()  
-    def on_actionInversionesSinNombre_activated(self):
+    def on_actionInvestmentsSinNombre_activated(self):
         self.w.close()
         self.w=wdgProducts(self.mem,  "select * from products  where name is null or name='' order by name,id")
 
@@ -384,7 +381,7 @@ class frmMainMS(QMainWindow, Ui_frmMainMS):#
         
     @QtCore.pyqtSlot()  
     def on_actionTablasAuxiliares_activated(self):
-        w=frmTablasAuxiliares(self.mem)
+        w=frmAuxiliarTables(self.mem)
         w.tblTipos_reload()
         w.exec_()
 

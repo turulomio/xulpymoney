@@ -11,7 +11,7 @@ class frmQuotesIBM(QDialog, Ui_frmQuotesIBM):
         self.setupUi(self)   
         self.product=product
         self.mem=mem
-        self.lblInversion.setText("{0} ({1})".format(self.product.name,  self.product.id))
+        self.lblInvestment.setText("{0} ({1})".format(self.product.name,  self.product.id))
         
         if quote==None:
             self.type="insert"
@@ -26,7 +26,7 @@ class frmQuotesIBM(QDialog, Ui_frmQuotesIBM):
             self.quote=quote
             self.calendar.setSelectedDate(self.quote.datetime.date())
             self.txtTime.setTime(QTime(self.quote.datetime.hour, self.quote.datetime.minute))
-            self.mem.zones.qcombobox(self.cmbZone, quote.product.bolsa.zone)
+            self.mem.zones.qcombobox(self.cmbZone, quote.product.stockexchange.zone)
             if self.quote.datetime.microsecond!=5:
                 self.chkCanBePurged.setCheckState(Qt.Unchecked)
             self.calendar.setEnabled(False)
@@ -38,7 +38,7 @@ class frmQuotesIBM(QDialog, Ui_frmQuotesIBM):
 
     def on_chkNone_stateChanged(self, state):
         if state==Qt.Checked:          
-            self.txtTime.setTime(self.product.bolsa.closes)
+            self.txtTime.setTime(self.product.stockexchange.closes)
             self.txtTime.setEnabled(False)
         else:
             t=datetime.datetime.now()
@@ -67,7 +67,7 @@ class frmQuotesIBM(QDialog, Ui_frmQuotesIBM):
                 return
             
             if self.chkNone.checkState()==Qt.Checked:
-                da=dt(fecha, self.product.bolsa.closes, self.product.bolsa.zone)
+                da=dt(fecha, self.product.stockexchange.closes, self.product.stockexchange.zone)
             else:
                 time=self.txtTime.time().toPyTime()
                 da=dt(fecha, time, zone)

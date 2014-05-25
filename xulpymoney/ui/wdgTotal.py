@@ -93,7 +93,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         for i in range(0, 13):
             self.sumpopup.append(0)
 
-        fechainicio=Patrimonio(self.mem).primera_fecha_con_datos_usuario()         
+        fechainicio=Assets(self.mem).primera_fecha_con_datos_usuario()         
 
         self.mem.data.load_inactives()
         
@@ -129,15 +129,15 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         sumconsolidado=0
         (sumdiferencia, sumsaldoaccionescostecero)=(0, 0)
         
-        totallastmonth=Patrimonio(self.mem).saldo_total(self.mem.data.inversiones_all(),  datetime.date(self.wyData.year-1, 12, 31))#Mes de 12 31 año anteriro
+        totallastmonth=Assets(self.mem).saldo_total(self.mem.data.inversiones_all(),  datetime.date(self.wyData.year-1, 12, 31))#Mes de 12 31 año anteriro
         self.lblPreviousYear.setText(self.trUtf8("Balance at {0}-12-31: {1}".format(self.wyData.year-1, self.mem.localcurrency.string(totallastmonth))))
         inicioano=totallastmonth
 
         for i in range(12): 
-            gastos=Patrimonio(self.mem).saldo_por_tipo_operacion( self.wyData.year,i+1,1)#La facturación de tarjeta dentro esta por el union
-            dividends=Inversion(self.mem).dividends_neto(  self.wyData.year, i+1)
-            ingresos=Patrimonio(self.mem).saldo_por_tipo_operacion(  self.wyData.year,i+1,2)-dividends #Se quitan los dividends que luego se suman
-            consolidado=Patrimonio(self.mem).consolidado_neto(self.mem.data.inversiones_all(), self.wyData.year, i+1)
+            gastos=Assets(self.mem).saldo_por_tipo_operacion( self.wyData.year,i+1,1)#La facturación de tarjeta dentro esta por el union
+            dividends=Investment(self.mem).dividends_neto(  self.wyData.year, i+1)
+            ingresos=Assets(self.mem).saldo_por_tipo_operacion(  self.wyData.year,i+1,2)-dividends #Se quitan los dividends que luego se suman
+            consolidado=Assets(self.mem).consolidado_neto(self.mem.data.inversiones_all(), self.wyData.year, i+1)
             gi=ingresos+dividends+consolidado+gastos
             self.sumpopup[i]=consolidado+dividends
             
@@ -155,8 +155,8 @@ class wdgTotal(QWidget, Ui_wdgTotal):
                 tpc=0
             else:
                 fecha=datetime.date (self.wyData.year, i+1, calendar.monthrange(self.wyData.year, i+1)[1])#Último día de mes.
-                cuentas=Patrimonio(self.mem).saldo_todas_cuentas( fecha)
-                inversiones=Patrimonio(self.mem).saldo_todas_inversiones(self.mem.data.inversiones_all(),  fecha)
+                cuentas=Assets(self.mem).saldo_todas_cuentas( fecha)
+                inversiones=Assets(self.mem).saldo_todas_inversiones(self.mem.data.inversiones_all(),  fecha)
                 total=cuentas+inversiones
                 diferencia=total-totallastmonth
                 sumdiferencia=sumdiferencia+diferencia
@@ -222,9 +222,9 @@ class wdgTotal(QWidget, Ui_wdgTotal):
                     date=datetime.date.today()
                 if date.month>datetime.date.today().month and date.year>=datetime.date.today().year:
                     break
-                data.append( (date,Patrimonio(self.mem).saldo_total(self.mem.data.inversiones_all(), date)) )
-                zero.append( (date,Patrimonio(self.mem).patrimonio_riesgo_cero(self.mem.data.inversiones_all(), date) ))
-                bonds.append( (date,Patrimonio(self.mem).saldo_todas_inversiones_bonds(date) ))
+                data.append( (date,Assets(self.mem).saldo_total(self.mem.data.inversiones_all(), date)) )
+                zero.append( (date,Assets(self.mem).patrimonio_riesgo_cero(self.mem.data.inversiones_all(), date) ))
+                bonds.append( (date,Assets(self.mem).saldo_todas_inversiones_bonds(date) ))
         self.canvas.mydraw(self.mem, data, zero,  bonds)
         print ("wdgTotal > load_graphic: {0}".format(datetime.datetime.now()-inicio))
 
@@ -246,7 +246,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         newtab = QWidget()
         horizontalLayout = QHBoxLayout(newtab)
         table = myQTableWidget(newtab)
-        set=SetCuentasOperaciones(self.mem)
+        set=SetAccountOperations(self.mem)
         set.load_from_db("select fecha, id_conceptos, id_tiposoperaciones, importe, comentario, id_cuentas from opercuentas where id_tiposoperaciones={0} and date_part('year',fecha)={1} and date_part('month',fecha)={2} and id_conceptos not in ({3}) union all select fecha, id_conceptos, id_tiposoperaciones, importe, comentario, id_cuentas from opertarjetas,tarjetas where opertarjetas.id_tarjetas=tarjetas.id_tarjetas and id_tiposoperaciones={0} and date_part('year',fecha)={1} and date_part('month',fecha)={2}".format (id_tiposoperaciones, self.wyData.year, self.month, list2string(self.mem.conceptos.considered_dividends_in_totals())))
         set.sort()
         set.myqtablewidget(table, None, True)
@@ -259,7 +259,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         newtab = QWidget()
         horizontalLayout = QHBoxLayout(newtab)
         table = myQTableWidget(newtab)
-        set=SetInversionOperacionHistorica(self.mem)
+        set=SetInvestmentOperationsHistorical(self.mem)
         for i in self.mem.data.inversiones_all().arr:
             for o in i.op_historica.arr:
                 if o.fecha_venta.year==self.wyData.year and o.fecha_venta.month==self.month and o.tipooperacion.id in (5, 8):#Venta y traspaso fondos inversion
@@ -291,7 +291,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         newtab = QWidget()
         horizontalLayout = QHBoxLayout(newtab)
         table = myQTableWidget(newtab)
-        set=SetCuentasOperaciones(self.mem)
+        set=SetAccountOperations(self.mem)
         set.load_from_db_with_creditcard("select fecha, id_conceptos, id_tiposoperaciones, importe, comentario, id_cuentas , -1 as id_tarjetas from opercuentas where id_tiposoperaciones={0} and date_part('year',fecha)={1} and date_part('month',fecha)={2} union all select fecha, id_conceptos, id_tiposoperaciones, importe, comentario, id_cuentas ,tarjetas.id_tarjetas as id_tarjetas from opertarjetas,tarjetas where opertarjetas.id_tarjetas=tarjetas.id_tarjetas and id_tiposoperaciones={0} and date_part('year',fecha)={1} and date_part('month',fecha)={2}".format (id_tiposoperaciones, self.wyData.year, self.month)      )
         set.sort()
         set.myqtablewidget(table, None, True)

@@ -2,7 +2,7 @@ from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 from Ui_wdgIndexRange import *
 from libxulpymoney import *
-from frmAnalisis import *
+from frmProductReport import *
 
 class wdgIndexRange(QWidget, Ui_wdgIndexRange):
     def __init__(self,mem, parent=None):
@@ -44,7 +44,7 @@ class wdgIndexRange(QWidget, Ui_wdgIndexRange):
             return
                 
         maximo= int(max(arr)[0]*(1+ Decimal(self.spin.value()/200.0)))
-        riesgocero=Patrimonio(self.mem).patrimonio_riesgo_cero(self.mem.data.inversiones_active, datetime.date.today())
+        riesgocero=Assets(self.mem).patrimonio_riesgo_cero(self.mem.data.inversiones_active, datetime.date.today())
         pasos=int(riesgocero/Decimal(self.txtInvertir.text()))
         last=maximo
         rangos=0
@@ -93,7 +93,7 @@ class wdgIndexRange(QWidget, Ui_wdgIndexRange):
         self.load_data()
 
     def on_cmdIRAnalisis_pressed(self):
-        w=frmAnalisis(self.mem, self.mem.data.benchmark, None,  self)
+        w=frmProductReport(self.mem, self.mem.data.benchmark, None,  self)
         w.exec_()
         
     def on_cmdIRInsertar_pressed(self):

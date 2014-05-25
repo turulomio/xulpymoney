@@ -4,7 +4,7 @@ from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 #import PyQt4.Qwt5 as Qwt
 from myqtablewidget import *
-from Ui_wdgInformeClases import *
+from Ui_wdgInvestmentClasses import *
 #import matplotlib
 #from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg as FigureCanvas
 #from matplotlib.backends.backend_qt4agg import NavigationToolbar2QTAgg as NavigationToolbar

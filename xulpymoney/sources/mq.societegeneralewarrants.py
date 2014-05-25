@@ -93,7 +93,7 @@ if __name__ == '__main__':
     cur = con.cursor()
     mem.carga_ia(cur, "where priority[1]=6")
 
-    mem.carga_bolsas(cur)
+    mem.carga_stockexchanges(cur)
     cur.close()
     mem.disconnect_mystocksd(con)
 
