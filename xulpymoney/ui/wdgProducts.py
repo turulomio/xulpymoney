@@ -302,7 +302,7 @@ class wdgProducts(QWidget, Ui_wdgProducts):
             for i in self.tblInvestments.selectedItems():#itera por cada item no row.
                 self.selProduct=self.products[i.row()]
 
-    @pyqtSignature("")
+    @QtCore.pyqtSlot()  
     def on_actionPurge_activated(self):
         all=SetQuotesAll(self.mem)
         all.load_from_db(self.selProduct)
@@ -317,16 +317,16 @@ class wdgProducts(QWidget, Ui_wdgProducts):
             self.mem.conms.rollback()
         
 
-    @pyqtSignature("")
+    @QtCore.pyqtSlot()  
     def on_actionQuoteNew_activated(self):
         w=frmQuotesIBM(self.mem,  self.selProduct)
         w.exec_()               
         self.build_array(self.sql)
         self.build_table()  
 
-    @pyqtSignature("")
+    @QtCore.pyqtSlot()  
     def on_actionEstimationDPSNew_activated(self):
-        d=frmEstimationsAdd(self.mem, self.selProduct)
+        d=frmEstimationsAdd(self.mem, self.selProduct, "dps")
         d.exec_()
         if d.result()==QDialog.Accepted:
             self.build_array(self.sql)
