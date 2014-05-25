@@ -3942,52 +3942,52 @@ correspondiente en la tabla</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgDividendsReport.py" line="133"/>
+        <location filename="ui/Ui_wdgDividendsReport.py" line="132"/>
         <source>Investment</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgDividendsReport.py" line="135"/>
+        <location filename="ui/Ui_wdgDividendsReport.py" line="134"/>
         <source>Bank</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgDividendsReport.py" line="137"/>
+        <location filename="ui/Ui_wdgDividendsReport.py" line="136"/>
         <source>Price</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgDividendsReport.py" line="139"/>
+        <location filename="ui/Ui_wdgDividendsReport.py" line="138"/>
         <source>DPS</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgDividendsReport.py" line="141"/>
+        <location filename="ui/Ui_wdgDividendsReport.py" line="140"/>
         <source>Shares</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgDividendsReport.py" line="143"/>
+        <location filename="ui/Ui_wdgDividendsReport.py" line="142"/>
         <source>Estimated</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgDividendsReport.py" line="145"/>
+        <location filename="ui/Ui_wdgDividendsReport.py" line="144"/>
         <source>% annual dividend</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgDividendsReport.py" line="146"/>
+        <location filename="ui/Ui_wdgDividendsReport.py" line="145"/>
         <source>Modificar Dividendo por Acci&#xc3;&#xb3;n</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgDividendsReport.py" line="148"/>
+        <location filename="ui/Ui_wdgDividendsReport.py" line="147"/>
         <source>Estudio de la inversi&#xc3;&#xb3;n</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgDividendsReport.py" line="150"/>
+        <location filename="ui/Ui_wdgDividendsReport.py" line="149"/>
         <source>Informe de MyStocks</source>
         <translation type="unfinished"></translation>
     </message>
