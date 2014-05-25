@@ -18,30 +18,30 @@ compile:
 	pyuic4 ui/frmInit.ui > ui/Ui_frmInit.py &
 	pyuic4 ui/frmMain.ui > ui/Ui_frmMain.py &
 	pyuic4 ui/frmSplit.ui > ui/Ui_frmSplit.py &
-	pyuic4 ui/frmOperCuentas.ui > ui/Ui_frmOperCuentas.py &
-	pyuic4 ui/frmTablasAuxiliares.ui > ui/Ui_frmTablasAuxiliares.py &
-	pyuic4 ui/wdgBancos.ui > ui/Ui_wdgBancos.py &
-	pyuic4 ui/wdgConceptos.ui > ui/Ui_wdgConceptos.py &
+	pyuic4 ui/frmAccountOperationsAdd.ui > ui/Ui_frmAccountOperationsAdd.py &
+	pyuic4 ui/frmAuxiliarTables.ui > ui/Ui_frmAuxiliarTables.py &
+	pyuic4 ui/wdgBanks.ui > ui/Ui_wdgBanks.py &
+	pyuic4 ui/wdgConcepts.ui > ui/Ui_wdgConcepts.py &
 	pyuic4 ui/wdgConceptsHistorical.ui > ui/Ui_wdgConceptsHistorical.py &
-	pyuic4 ui/wdgCuentas.ui > ui/Ui_wdgCuentas.py &
-	pyuic4 ui/wdgDesReinversion.ui > ui/Ui_wdgDesReinversion.py &
-	pyuic4 ui/frmCuentasIBM.ui > ui/Ui_frmCuentasIBM.py &
-	pyuic4 ui/wdgInformeClases.ui > ui/Ui_wdgInformeClases.py &
-	pyuic4 ui/wdgInformeHistorico.ui > ui/Ui_wdgInformeHistorico.py &
+	pyuic4 ui/wdgAccounts.ui > ui/Ui_wdgAccounts.py &
+	pyuic4 ui/wdgDisReinvest.ui > ui/Ui_wdgDisReinvest.py &
+	pyuic4 ui/frmAccountsReport.ui > ui/Ui_frmAccountsReport.py &
+	pyuic4 ui/wdgInvestmentClasses.ui > ui/Ui_wdgInvestmentClasses.py &
+	pyuic4 ui/wdgJointReport.ui > ui/Ui_wdgJointReport.py &
 	pyuic4 ui/wdgDividendsReport.ui > ui/Ui_wdgDividendsReport.py &
 	pyuic4 ui/wdgAPR.ui > ui/Ui_wdgAPR.py &
 	pyuic4 ui/wdgIndexRange.ui > ui/Ui_wdgIndexRange.py &
-	pyuic4 ui/wdgInversiones.ui > ui/Ui_wdgInversiones.py &
+	pyuic4 ui/wdgInvestments.ui > ui/Ui_wdgInvestments.py &
 	pyuic4 ui/frmDividendsAdd.ui > ui/Ui_frmDividendsAdd.py &
-	pyuic4 ui/frmInversionesEstudio.ui > ui/Ui_frmInversionesEstudio.py &
-	pyuic4 ui/frmInversionesIBM.ui > ui/Ui_frmInversionesIBM.py &
-	pyuic4 ui/frmPuntoVenta.ui > ui/Ui_frmPuntoVenta.py &
+	pyuic4 ui/frmInvestmentReport.ui > ui/Ui_frmInvestmentReport.py &
+	pyuic4 ui/frmInvestmentOperationsAdd.ui > ui/Ui_frmInvestmentOperationsAdd.py &
+	pyuic4 ui/frmSellingPoint.ui > ui/Ui_frmSellingPoint.py &
 	pyuic4 ui/frmSettings.ui > ui/Ui_frmSettings.py &
-	pyuic4 ui/frmTarjetasIBM.ui > ui/Ui_frmTarjetasIBM.py &
-	pyuic4 ui/frmTransferencia.ui > ui/Ui_frmTransferencia.py &
-	pyuic4 ui/frmTraspasoValores.ui > ui/Ui_frmTraspasoValores.py &
+	pyuic4 ui/frmCreditCardsAdd.ui > ui/Ui_frmCreditCardsAdd.py &
+	pyuic4 ui/frmTransfer.ui > ui/Ui_frmTransfer.py &
+	pyuic4 ui/frmSharesTransfer.ui > ui/Ui_frmSharesTransfer.py &
 	pyuic4 ui/wdgTotal.ui > ui/Ui_wdgTotal.py &
-	pyuic4 ui/frmAnalisis.ui > ui/Ui_frmAnalisis.py 
+	pyuic4 ui/frmProductReport.ui > ui/Ui_frmProductReport.py 
 	pyuic4 ui/frmQuotesIBM.ui > ui/Ui_frmQuotesIBM.py
 	pyuic4 ui/frmMainMS.ui > ui/Ui_frmMainMS.py
 	pyuic4 ui/frmSelector.ui > ui/Ui_frmSelector.py

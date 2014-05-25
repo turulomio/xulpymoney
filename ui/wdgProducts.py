@@ -1,7 +1,7 @@
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 from Ui_wdgProducts import *
-from frmAnalisis import *
+from frmProductReport import *
 from libxulpymoney import *
 from frmQuotesIBM import *
 from wdgMergeCodes import *
@@ -14,8 +14,8 @@ class wdgProducts(QWidget, Ui_wdgProducts):
         self.mem=mem
         self.products=[]#Es una lista de products
         self.selProduct=None##Objeto de inversion seleccionado
-        self.tblInversiones.settings("wdgProducts",  self.mem)    
-        self.mem.bolsas.qcombobox(self.cmbStockExchange)
+        self.tblInvestments.settings("wdgProducts",  self.mem)    
+        self.mem.stockexchanges.qcombobox(self.cmbStockExchange)
         self.setFavoritos=set(self.mem.config.get_list( "wdgProducts", "favoritos"))
         self.progress = QProgressDialog(self.tr("Recibiendo datos solicitados"), self.tr("Cancelar"), 0,0)
         self.progress.setModal(True)
@@ -58,45 +58,45 @@ class wdgProducts(QWidget, Ui_wdgProducts):
         
 
     def build_table(self):
-        self.tblInversiones.setRowCount(len(self.products))
+        self.tblInvestments.setRowCount(len(self.products))
         tachado = QtGui.QFont()
         tachado.setStrikeOut(True)        #Fuente tachada
         for i,  inv in enumerate(self.products):
-            self.tblInversiones.setItem(i, 0, QTableWidgetItem((str(inv.id))))
-            self.tblInversiones.setItem(i, 1, QTableWidgetItem(str(inv.name).upper()))
-            self.tblInversiones.item(i, 1).setIcon(inv.bolsa.country.qicon())
-            self.tblInversiones.setItem(i, 2, QTableWidgetItem(inv.isin))
-            self.tblInversiones.setItem(i, 3, qdatetime(inv.result.basic.last.datetime, inv.bolsa.zone))#, self.mem.localzone.name)))
-            self.tblInversiones.setItem(i, 4, inv.currency.qtablewidgetitem(inv.result.basic.last.quote, 6 ))
-            self.tblInversiones.setItem(i, 5, qtpc(inv.result.basic.tpc_diario()))
-            self.tblInversiones.setItem(i, 6, qtpc(inv.result.basic.tpc_anual()))
+            self.tblInvestments.setItem(i, 0, QTableWidgetItem((str(inv.id))))
+            self.tblInvestments.setItem(i, 1, QTableWidgetItem(str(inv.name).upper()))
+            self.tblInvestments.item(i, 1).setIcon(inv.stockexchange.country.qicon())
+            self.tblInvestments.setItem(i, 2, QTableWidgetItem(inv.isin))
+            self.tblInvestments.setItem(i, 3, qdatetime(inv.result.basic.last.datetime, inv.stockexchange.zone))#, self.mem.localzone.name)))
+            self.tblInvestments.setItem(i, 4, inv.currency.qtablewidgetitem(inv.result.basic.last.quote, 6 ))
+            self.tblInvestments.setItem(i, 5, qtpc(inv.result.basic.tpc_diario()))
+            self.tblInvestments.setItem(i, 6, qtpc(inv.result.basic.tpc_anual()))
             
             
             if inv.estimations_dps.currentYear()==None:
-                self.tblInversiones.setItem(i, 7, qtpc(None))
-                self.tblInversiones.item(i, 7).setBackgroundColor( QColor(255, 182, 182))          
+                self.tblInvestments.setItem(i, 7, qtpc(None))
+                self.tblInvestments.item(i, 7).setBackgroundColor( QColor(255, 182, 182))          
             else:
-                self.tblInversiones.setItem(i, 7, qtpc(inv.estimations_dps.currentYear().percentage()))  
+                self.tblInvestments.setItem(i, 7, qtpc(inv.estimations_dps.currentYear().percentage()))  
                 
             if inv.active==True:#Active
-                self.tblInversiones.item(i, 4).setIcon(QIcon(":/xulpymoney/transfer.png"))
+                self.tblInvestments.item(i, 4).setIcon(QIcon(":/xulpymoney/transfer.png"))
             if inv.obsolete==True:#Obsolete
-                self.tblInversiones.item(i, 1).setFont(tachado)
+                self.tblInvestments.item(i, 1).setFont(tachado)
    
-        self.tblInversiones.clearSelection()    
-        self.tblInversiones.setFocus()
+        self.tblInvestments.clearSelection()    
+        self.tblInvestments.setFocus()
         
     @QtCore.pyqtSlot()  
-    def on_actionFavoritos_activated(self):
-        def wdgInversiones_esta_mostrando_favoritos(favoritos):
-            """Función que comprueba el sql para ver si está mostrando wdgInversiones a Favoritos"""
+    def on_actionFavorites_activated(self):
+        def wdgInvestments_esta_mostrando_favoritos(favoritos):
+            """Función que comprueba el sql para ver si está mostrando wdgInvestments a Favoritos"""
             if self.sql=="select * from products where id in ("+str(favoritos)[1:-1]+") order by name, id":
                 return True
             return False
             
         favoritos=self.mem.config.get_list("wdgProducts",  "favoritos")
         if str(self.selProduct.id) in favoritos:
-            if wdgInversiones_esta_mostrando_favoritos(favoritos)==True:
+            if wdgInvestments_esta_mostrando_favoritos(favoritos)==True:
                 favoritos.remove(str(self.selProduct.id))
                 if len(favoritos)==0:
                     self.sql="select * from products where id=-999999999"
@@ -133,7 +133,7 @@ class wdgProducts(QWidget, Ui_wdgProducts):
             cur = con.cursor()
             cur.execute("delete from products where id=%s", (self.selProduct.id, ))
             cur.execute("delete from quotes where id=%s", (self.selProduct.id, ))
-            cur.execute("delete from estimaciones where id=%s", (self.selProduct.id, ))
+            cur.execute("delete from estimations_dps where id=%s", (self.selProduct.id, ))
             con.commit()
             cur.close()     
             self.mem.disconnect_mystocks(con)    
@@ -148,41 +148,41 @@ class wdgProducts(QWidget, Ui_wdgProducts):
 
     @QtCore.pyqtSlot() 
     def on_actionProductNew_activated(self):
-        w=frmAnalisis(self.mem, None, self)
+        w=frmProductReport(self.mem, None, self)
         w.exec_()        
         self.build_array(self.sql)
         self.build_table()
     @QtCore.pyqtSlot() 
     def on_actionProductReport_activated(self):
 
-        w=frmAnalisis(self.mem, self.selProduct, None,  self)
+        w=frmProductReport(self.mem, self.selProduct, None,  self)
         w.exec_()        
         self.build_array(self.sql)
         self.build_table()
 #        w.mytimer.stop()
         
     @QtCore.pyqtSlot() 
-    def on_actionOrdenarTPCDiario_activated(self):
+    def on_actionSortTPCDiario_activated(self):
         self.products=sorted(self.products, key=lambda inv: inv.result.basic.tpc_diario(),  reverse=True) 
         self.build_table()        
         
     @QtCore.pyqtSlot() 
-    def on_actionOrdenarTPCAnual_activated(self):
+    def on_actionSortTPCAnual_activated(self):
         self.products=sorted(self.products, key=lambda inv: inv.result.basic.tpc_anual(),  reverse=True) 
         self.build_table()    
         
     @QtCore.pyqtSlot() 
-    def on_actionOrdenarHora_activated(self):
+    def on_actionSortHour_activated(self):
         self.products=sorted(self.products, key=lambda inv: inv.result.basic.last.datetime,  reverse=False) 
         self.build_table()        
         
     @QtCore.pyqtSlot() 
-    def on_actionOrdenarName_activated(self):
+    def on_actionSortName_activated(self):
         self.products=sorted(self.products, key=lambda inv: inv.name,  reverse=False) 
         self.build_table()        
         
     @QtCore.pyqtSlot() 
-    def on_actionOrdenarDividend_activated(self):
+    def on_actionSortDividend_activated(self):
         self.products=sorted(self.products, key=lambda inv: inv.estimations_dps.currentYear().percentage(),  reverse=True) 
         self.build_table()        
         
@@ -199,7 +199,7 @@ class wdgProducts(QWidget, Ui_wdgProducts):
         #Stock exchange Filter
         stockexchangefilter=""
         if self.chkStockExchange.checkState()==Qt.Checked:
-            bolsa=self.mem.bolsas.find(self.cmbStockExchange.itemData(self.cmbStockExchange.currentIndex()))            
+            bolsa=self.mem.stockexchanges.find(self.cmbStockExchange.itemData(self.cmbStockExchange.currentIndex()))            
             stockexchangefilter=" and id_bolsas={0} ".format(bolsa.id)
 
         self.build_array("select * from products where (id::text like '%"+(self.txt.text().upper())+"%' or upper(name) like '%"+(self.txt.text().upper())+"%' or upper(isin) like '%"+(self.txt.text().upper())+"%' or upper(comentario) like '%"+(self.txt.text().upper())+"%') "+ stockexchangefilter)
@@ -207,10 +207,10 @@ class wdgProducts(QWidget, Ui_wdgProducts):
         self.build_table()          
 
 
-    def on_tblInversiones_customContextMenuRequested(self,  pos):
+    def on_tblInvestments_customContextMenuRequested(self,  pos):
 
         menu=QMenu()
-        ordenar=QMenu(self.tr("Ordenar por"))
+        ordenar=QMenu(self.tr("Sort por"))
         menu.addAction(self.actionProductNew)
         menu.addAction(self.actionProductEdit)
         menu.addAction(self.actionProductDelete)
@@ -219,12 +219,12 @@ class wdgProducts(QWidget, Ui_wdgProducts):
         menu.addAction(self.actionEstimationDPSNew)
         menu.addSeparator()
         menu.addAction(self.actionMergeCodes)
-        menu.addAction(self.actionFavoritos)
+        menu.addAction(self.actionFavorites)
         if self.selProduct!=None:
             if self.selProduct.id in self.setFavoritos:
-                self.actionFavoritos.setText("Quitar de favoritos")
+                self.actionFavorites.setText("Quitar de favoritos")
             else:
-                self.actionFavoritos.setText(self.trUtf8("Añadir a favoritos"))
+                self.actionFavorites.setText(self.trUtf8("Añadir a favoritos"))
         menu.addSeparator()
         menu.addAction(self.actionProductReport)
         menu.addAction(self.actionPurge)
@@ -235,11 +235,11 @@ class wdgProducts(QWidget, Ui_wdgProducts):
                 menu.addAction(self.actionIbex35)
         menu.addSeparator()
         menu.addMenu(ordenar)
-        ordenar.addAction(self.actionOrdenarName)
-        ordenar.addAction(self.actionOrdenarHora)
-        ordenar.addAction(self.actionOrdenarTPCDiario)
-        ordenar.addAction(self.actionOrdenarTPCAnual)
-        ordenar.addAction(self.actionOrdenarDividend)
+        ordenar.addAction(self.actionSortName)
+        ordenar.addAction(self.actionSortHour)
+        ordenar.addAction(self.actionSortTPCDiario)
+        ordenar.addAction(self.actionSortTPCAnual)
+        ordenar.addAction(self.actionSortDividend)
         
         #Enabled disabled  
         
@@ -247,7 +247,7 @@ class wdgProducts(QWidget, Ui_wdgProducts):
             self.actionMergeCodes.setEnabled(False)
             self.actionProductEdit.setEnabled(True)
             self.actionProductDelete.setEnabled(True)
-            self.actionFavoritos.setEnabled(True)
+            self.actionFavorites.setEnabled(True)
             self.actionProductReport.setEnabled(True)
             self.actionIbex35.setEnabled(True)
             self.actionQuoteNew.setEnabled(True)
@@ -257,7 +257,7 @@ class wdgProducts(QWidget, Ui_wdgProducts):
             self.actionMergeCodes.setEnabled(False)
             self.actionProductEdit.setEnabled(False)
             self.actionProductDelete.setEnabled(False)
-            self.actionFavoritos.setEnabled(False)
+            self.actionFavorites.setEnabled(False)
             self.actionProductReport.setEnabled(False)
             self.actionIbex35.setEnabled(False)
             self.actionQuoteNew.setEnabled(False)
@@ -267,24 +267,23 @@ class wdgProducts(QWidget, Ui_wdgProducts):
         if self.selectedRows==2:
             self.actionMergeCodes.setEnabled(True)
             
-        menu.exec_(self.tblInversiones.mapToGlobal(pos))
+        menu.exec_(self.tblInvestments.mapToGlobal(pos))
 
     @QtCore.pyqtSlot() 
     def on_actionMergeCodes_activated(self):
         #Saca codeorigen y codedestino        
-        setrows=set([])
-        for i in self.tblInversiones.selectedItems():
-            setrows.add((self.tblInversiones.item(i.row(), 0).text()))
-        setrows=list(setrows)
-        codeorigen=setrows[0]
-        codedestino=setrows[1]
+        selected=[]
+        for i in self.tblInvestments.selectedItems():
+            if i.column()==0:
+                selected.append(self.products[i.row()])
+        print (selected)
         
 
         #Llama a form
         d=QDialog(self)        
         d.setFixedSize(800, 210)
         d.setWindowTitle(self.trUtf8("Combinando códigos"))
-        w=wdgMergeCodes(self.mem, codeorigen, codedestino)
+        w=wdgMergeCodes(self.mem, selected[0], selected[1])
         lay = QVBoxLayout(d)
         lay.addWidget(w)
         d.exec_()
@@ -292,15 +291,15 @@ class wdgProducts(QWidget, Ui_wdgProducts):
         self.build_table()
 
     
-    def on_tblInversiones_itemSelectionChanged(self):
+    def on_tblInvestments_itemSelectionChanged(self):
         #Saca número de filas seleccionadas
         setrows=set([])
-        for i in self.tblInversiones.selectedItems():
+        for i in self.tblInvestments.selectedItems():
             setrows.add( i.row())
         self.selectedRows=len(setrows)
         
         if self.selectedRows==1:
-            for i in self.tblInversiones.selectedItems():#itera por cada item no row.
+            for i in self.tblInvestments.selectedItems():#itera por cada item no row.
                 self.selProduct=self.products[i.row()]
 
     @pyqtSignature("")

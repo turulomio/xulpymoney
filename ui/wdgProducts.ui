@@ -117,7 +117,7 @@
       </widget>
      </item>
      <item>
-      <widget class="myQTableWidget" name="tblInversiones">
+      <widget class="myQTableWidget" name="tblInvestments">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
          <horstretch>0</horstretch>
@@ -129,6 +129,9 @@
        </property>
        <property name="alternatingRowColors">
         <bool>true</bool>
+       </property>
+       <property name="selectionBehavior">
+        <enum>QAbstractItemView::SelectRows</enum>
        </property>
        <attribute name="horizontalHeaderStretchLastSection">
         <bool>false</bool>
@@ -200,7 +203,7 @@
     <string>Product report</string>
    </property>
   </action>
-  <action name="actionOrdenarTPCDiario">
+  <action name="actionSortTPCDiario">
    <property name="icon">
     <iconset>
      <normaloff>:/images/document-preview.png</normaloff>:/images/document-preview.png</iconset>
@@ -209,7 +212,7 @@
     <string>% Diario</string>
    </property>
   </action>
-  <action name="actionOrdenarTPCAnual">
+  <action name="actionSortTPCAnual">
    <property name="icon">
     <iconset>
      <normaloff>:/images/document-preview.png</normaloff>:/images/document-preview.png</iconset>
@@ -218,7 +221,7 @@
     <string>% Anual</string>
    </property>
   </action>
-  <action name="actionOrdenarName">
+  <action name="actionSortName">
    <property name="icon">
     <iconset>
      <normaloff>:/images/document-preview.png</normaloff>:/images/document-preview.png</iconset>
@@ -227,7 +230,7 @@
     <string>Nombre</string>
    </property>
   </action>
-  <action name="actionOrdenarDividend">
+  <action name="actionSortDividend">
    <property name="icon">
     <iconset>
      <normaloff>:/images/document-preview.png</normaloff>:/images/document-preview.png</iconset>
@@ -236,7 +239,7 @@
     <string>Dividendo</string>
    </property>
   </action>
-  <action name="actionOrdenarHora">
+  <action name="actionSortHour">
    <property name="icon">
     <iconset>
      <normaloff>:/images/document-preview.png</normaloff>:/images/document-preview.png</iconset>
@@ -284,7 +287,7 @@
     <string>Delete product</string>
    </property>
   </action>
-  <action name="actionFavoritos">
+  <action name="actionFavorites">
    <property name="icon">
     <iconset resource="../images/xulpymoney.qrc">
      <normaloff>:/xulpymoney/star.png</normaloff>:/xulpymoney/star.png</iconset>
@@ -351,7 +354,7 @@
  </customwidgets>
  <tabstops>
   <tabstop>txt</tabstop>
-  <tabstop>tblInversiones</tabstop>
+  <tabstop>tblInvestments</tabstop>
  </tabstops>
  <resources>
   <include location="../images/xulpymoney.qrc"/>

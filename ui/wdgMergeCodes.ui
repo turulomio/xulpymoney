@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>860</width>
-    <height>175</height>
+    <width>866</width>
+    <height>181</height>
    </rect>
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout_2">
@@ -23,7 +23,7 @@
         </font>
        </property>
        <property name="text">
-        <string>Combinación de inversiones</string>
+        <string>Merge investments</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
@@ -42,12 +42,12 @@
          </property>
          <row>
           <property name="text">
-           <string>Recibe datos</string>
+           <string>Merge data</string>
           </property>
          </row>
          <row>
           <property name="text">
-           <string>Se elimina</string>
+           <string>Delete data</string>
           </property>
          </row>
          <column>

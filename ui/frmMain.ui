@@ -53,7 +53,7 @@
     <property name="title">
      <string>Help</string>
     </property>
-    <addaction name="actionAcercaDe"/>
+    <addaction name="actionAbout"/>
     <addaction name="separator"/>
     <addaction name="actionHelp"/>
    </widget>
@@ -61,34 +61,34 @@
     <property name="title">
      <string>Banks</string>
     </property>
-    <addaction name="actionBancos"/>
+    <addaction name="actionBanks"/>
    </widget>
    <widget class="QMenu" name="menuInformes">
     <property name="title">
      <string>Reports</string>
     </property>
-    <addaction name="actionConceptos"/>
+    <addaction name="actionConcepts"/>
     <addaction name="actionDividendsReport"/>
-    <addaction name="actionEstudioTAE"/>
+    <addaction name="actionReportAPR"/>
     <addaction name="actionIndexRange"/>
-    <addaction name="actionInformeHistorico"/>
-    <addaction name="actionInformeTotal"/>
+    <addaction name="actionJointReport"/>
+    <addaction name="actionTotalReport"/>
    </widget>
    <widget class="QMenu" name="menuCuentas">
     <property name="title">
      <string>Accounts</string>
     </property>
-    <addaction name="actionCuentas"/>
+    <addaction name="actionAccounts"/>
     <addaction name="separator"/>
-    <addaction name="actionTransferencia"/>
+    <addaction name="actionTransfer"/>
    </widget>
    <widget class="QMenu" name="menuInversiones">
     <property name="title">
      <string>Investments</string>
     </property>
-    <addaction name="actionInversiones"/>
+    <addaction name="actionInvestments"/>
     <addaction name="separator"/>
-    <addaction name="actionInformeClases"/>
+    <addaction name="actionInvestmentsClasses"/>
     <addaction name="separator"/>
     <addaction name="actionInvestmentsOperations"/>
    </widget>
@@ -96,13 +96,13 @@
     <property name="title">
      <string>Xulpymoney</string>
     </property>
-    <addaction name="actionMemoria"/>
+    <addaction name="actionMemory"/>
     <addaction name="separator"/>
-    <addaction name="actionTablasAuxiliares"/>
+    <addaction name="actionAuxiliarTables"/>
     <addaction name="separator"/>
     <addaction name="actionSettings"/>
     <addaction name="separator"/>
-    <addaction name="actionSalir"/>
+    <addaction name="actionExit"/>
    </widget>
    <addaction name="menuXulpymoney"/>
    <addaction name="menuBancos"/>
@@ -130,20 +130,20 @@
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
-   <addaction name="actionBancos"/>
-   <addaction name="actionCuentas"/>
-   <addaction name="actionInversiones"/>
+   <addaction name="actionBanks"/>
+   <addaction name="actionAccounts"/>
+   <addaction name="actionInvestments"/>
    <addaction name="separator"/>
    <addaction name="actionIndexRange"/>
-   <addaction name="actionConceptos"/>
-   <addaction name="actionInformeHistorico"/>
-   <addaction name="actionEstudioTAE"/>
-   <addaction name="actionInformeTotal"/>
+   <addaction name="actionConcepts"/>
+   <addaction name="actionJointReport"/>
+   <addaction name="actionReportAPR"/>
+   <addaction name="actionTotalReport"/>
    <addaction name="separator"/>
-   <addaction name="actionSalir"/>
+   <addaction name="actionExit"/>
   </widget>
   <widget class="QStatusBar" name="status"/>
-  <action name="actionSalir">
+  <action name="actionExit">
    <property name="icon">
     <iconset resource="../images/xulpymoney.qrc">
      <normaloff>:/xulpymoney/exit.png</normaloff>:/xulpymoney/exit.png</iconset>
@@ -158,7 +158,7 @@
     <string>Esc</string>
    </property>
   </action>
-  <action name="actionAcercaDe">
+  <action name="actionAbout">
    <property name="icon">
     <iconset resource="../images/xulpymoney.qrc">
      <normaloff>:/xulpymoney/coins.png</normaloff>:/xulpymoney/coins.png</iconset>
@@ -185,7 +185,7 @@
     <string>Rangos de un índice</string>
    </property>
   </action>
-  <action name="actionInversiones">
+  <action name="actionInvestments">
    <property name="icon">
     <iconset resource="../images/xulpymoney.qrc">
      <normaloff>:/xulpymoney/bundle.png</normaloff>:/xulpymoney/bundle.png</iconset>
@@ -197,7 +197,7 @@
     <string>Investments</string>
    </property>
   </action>
-  <action name="actionTablasAuxiliares">
+  <action name="actionAuxiliarTables">
    <property name="icon">
     <iconset resource="../images/xulpymoney.qrc">
      <normaloff>:/xulpymoney/table.png</normaloff>:/xulpymoney/table.png</iconset>
@@ -218,7 +218,7 @@
     <string>Dividends report</string>
    </property>
   </action>
-  <action name="actionEstudioTAE">
+  <action name="actionReportAPR">
    <property name="icon">
     <iconset resource="../images/xulpymoney.qrc">
      <normaloff>:/xulpymoney/statistics.png</normaloff>:/xulpymoney/statistics.png</iconset>
@@ -230,7 +230,7 @@
     <string>Heritage report</string>
    </property>
   </action>
-  <action name="actionInformeTotal">
+  <action name="actionTotalReport">
    <property name="icon">
     <iconset resource="../images/xulpymoney.qrc">
      <normaloff>:/xulpymoney/report2.png</normaloff>:/xulpymoney/report2.png</iconset>
@@ -242,16 +242,19 @@
     <string>Informe total</string>
    </property>
   </action>
-  <action name="actionInformeHistorico">
+  <action name="actionJointReport">
    <property name="icon">
     <iconset resource="../images/xulpymoney.qrc">
      <normaloff>:/xulpymoney/history2.png</normaloff>:/xulpymoney/history2.png</iconset>
    </property>
    <property name="text">
-    <string>Historical report</string>
+    <string>Joint report</string>
+   </property>
+   <property name="toolTip">
+    <string>Joint report</string>
    </property>
   </action>
-  <action name="actionCuentas">
+  <action name="actionAccounts">
    <property name="icon">
     <iconset resource="../images/xulpymoney.qrc">
      <normaloff>:/xulpymoney/coins.png</normaloff>:/xulpymoney/coins.png</iconset>
@@ -263,7 +266,7 @@
     <string>Accounts</string>
    </property>
   </action>
-  <action name="actionBancos">
+  <action name="actionBanks">
    <property name="icon">
     <iconset resource="../images/xulpymoney.qrc">
      <normaloff>:/xulpymoney/bank.png</normaloff>:/xulpymoney/bank.png</iconset>
@@ -275,7 +278,7 @@
     <string>Banks</string>
    </property>
   </action>
-  <action name="actionInformeClases">
+  <action name="actionInvestmentsClasses">
    <property name="icon">
     <iconset resource="../images/xulpymoney.qrc">
      <normaloff>:/xulpymoney/pie.png</normaloff>:/xulpymoney/pie.png</iconset>
@@ -284,7 +287,7 @@
     <string>Investment types report</string>
    </property>
   </action>
-  <action name="actionTransferencia">
+  <action name="actionTransfer">
    <property name="icon">
     <iconset resource="../images/xulpymoney.qrc">
      <normaloff>:/xulpymoney/transfer.png</normaloff>:/xulpymoney/transfer.png</iconset>
@@ -293,10 +296,10 @@
     <string>Transfer</string>
    </property>
    <property name="toolTip">
-    <string>Transferencia</string>
+    <string>Transfer</string>
    </property>
   </action>
-  <action name="actionConceptos">
+  <action name="actionConcepts">
    <property name="icon">
     <iconset resource="../images/xulpymoney.qrc">
      <normaloff>:/xulpymoney/hucha.png</normaloff>:/xulpymoney/hucha.png</iconset>
@@ -308,7 +311,7 @@
     <string>Concepts</string>
    </property>
   </action>
-  <action name="actionMemoria">
+  <action name="actionMemory">
    <property name="icon">
     <iconset resource="../images/xulpymoney.qrc">
      <normaloff>:/xulpymoney/transfer.png</normaloff>:/xulpymoney/transfer.png</iconset>

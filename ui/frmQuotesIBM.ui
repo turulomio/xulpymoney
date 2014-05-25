@@ -17,7 +17,7 @@
    <item>
     <layout class="QVBoxLayout" name="verticalLayout_2">
      <item>
-      <widget class="QLabel" name="lblInversion">
+      <widget class="QLabel" name="lblInvestment">
        <property name="font">
         <font>
          <pointsize>12</pointsize>

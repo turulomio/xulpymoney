@@ -9,52 +9,52 @@ SOURCES         = xulpymoney.py \
                   ui/Ui_frmInit.py \
                   ui/frmHelp.py \
                   ui/Ui_frmHelp.py \
-                  ui/frmOperCuentas.py \
-                  ui/Ui_frmOperCuentas.py \
+                  ui/frmAccountOperationsAdd.py \
+                  ui/Ui_frmAccountOperationsAdd.py \
                   ui/frmMain.py \
                   ui/Ui_frmMain.py \
-                  ui/frmTablasAuxiliares.py \
-                  ui/Ui_frmTablasAuxiliares.py \
-                  ui/frmTarjetasIBM.py \
-                  ui/Ui_frmTarjetasIBM.py \
-                  ui/wdgBancos.py \
-                  ui/Ui_wdgBancos.py \
-                  ui/wdgConceptos.py \
-                  ui/Ui_wdgConceptos.py \
+                  ui/frmAuxiliarTables.py \
+                  ui/Ui_frmAuxiliarTables.py \
+                  ui/frmCreditCardsAdd.py \
+                  ui/Ui_frmCreditCardsAdd.py \
+                  ui/wdgBanks.py \
+                  ui/Ui_wdgBanks.py \
+                  ui/wdgConcepts.py \
+                  ui/Ui_wdgConcepts.py \
                   ui/wdgConceptsHistorical.py \
                   ui/Ui_wdgConceptsHistorical.py \
-                  ui/wdgCuentas.py \
-                  ui/Ui_wdgCuentas.py \
-                  ui/frmCuentasIBM.py \
-                  ui/Ui_frmCuentasIBM.py \
-                  ui/wdgDesReinversion.py \
-                  ui/Ui_wdgDesReinversion.py \
+                  ui/wdgAccounts.py \
+                  ui/Ui_wdgAccounts.py \
+                  ui/frmAccountsReport.py \
+                  ui/Ui_frmAccountsReport.py \
+                  ui/wdgDisReinvest.py \
+                  ui/Ui_wdgDisReinvest.py \
                   ui/frmDividendsAdd.py \
                   ui/Ui_frmDividendsAdd.py \
                   ui/wdgDividendsReport.py \
                   ui/Ui_wdgDividendsReport.py \
-                  ui/wdgInformeClases.py \
-                  ui/Ui_wdgInformeClases.py \
-                  ui/wdgInformeHistorico.py \
-                  ui/Ui_wdgInformeHistorico.py \
+                  ui/wdgInvestmentClasses.py \
+                  ui/Ui_wdgInvestmentClasses.py \
+                  ui/wdgJointReport.py \
+                  ui/Ui_wdgJointReport.py \
                   ui/wdgAPR.py \
                   ui/Ui_wdgAPR.py \
                   ui/wdgIndexRange.py \
                   ui/Ui_wdgIndexRange.py \
-                  ui/wdgInversiones.py \
-                  ui/Ui_wdgInversiones.py \
-                  ui/frmInversionesEstudio.py \
-                  ui/Ui_frmInversionesEstudio.py \
-                  ui/frmInversionesIBM.py \
-                  ui/Ui_frmInversionesIBM.py \
+                  ui/wdgInvestments.py \
+                  ui/Ui_wdgInvestments.py \
+                  ui/frmInvestmentReport.py \
+                  ui/Ui_frmInvestmentReport.py \
+                  ui/frmInvestmentOperationsAdd.py \
+                  ui/Ui_frmInvestmentOperationsAdd.py \
                   ui/frmSplit.py \
                   ui/Ui_frmSplit.py \
-                  ui/frmTransferencia.py \
-                  ui/Ui_frmTransferencia.py \
-                  ui/frmTraspasoValores.py \
-                  ui/Ui_frmTraspasoValores.py \
-                  ui/Ui_frmPuntoVenta.py \
-                  ui/frmPuntoVenta.py \
+                  ui/frmTransfer.py \
+                  ui/Ui_frmTransfer.py \
+                  ui/frmSharesTransfer.py \
+                  ui/Ui_frmSharesTransfer.py \
+                  ui/Ui_frmSellingPoint.py \
+                  ui/frmSellingPoint.py \
                   ui/Ui_frmSettings.py \
                   ui/frmSettings.py \
                   ui/wdgTotal.py \
@@ -64,8 +64,8 @@ SOURCES         = xulpymoney.py \
                   ui/wdgpie.py \
                   ui/myqtablewidget.py \
                   libxulpymoney.py \
-                  ui/frmAnalisis.py \
-                  ui/Ui_frmAnalisis.py \
+                  ui/frmProductReport.py \
+                  ui/Ui_frmProductReport.py \
                   ui/frmMainMS.py \
                   ui/Ui_frmMainMS.py \
                   ui/frmQuotesIBM.py \
@@ -95,34 +95,34 @@ FORMS           = ui/frmAbout.ui \
                   ui/frmInit.ui \
                   ui/frmHelp.ui \
                   ui/frmMain.ui \
-                  ui/frmOperCuentas.ui \
+                  ui/frmAccountOperationsAdd.ui \
                   ui/frmSplit.ui \
-                  ui/frmTablasAuxiliares.ui \
-                  ui/frmTarjetasIBM.ui \
-                  ui/wdgBancos.ui \
-                  ui/wdgCuentas.ui \
-                  ui/wdgConceptos.ui \
+                  ui/frmAuxiliarTables.ui \
+                  ui/frmCreditCardsAdd.ui \
+                  ui/wdgBanks.ui \
+                  ui/wdgAccounts.ui \
+                  ui/wdgConcepts.ui \
                   ui/wdgConceptsHistorical.ui \
-                  ui/frmCuentasIBM.ui \
-                  ui/wdgDesReinversion.ui \
-                  ui/wdgInformeClases.ui \
+                  ui/frmAccountsReport.ui \
+                  ui/wdgDisReinvest.ui \
+                  ui/wdgInvestmentClasses.ui \
                   ui/wdgDividendsReport.ui \
-                  ui/wdgInformeHistorico.ui \
+                  ui/wdgJointReport.ui \
                   ui/wdgAPR.ui \
                   ui/wdgIndexRange.ui \
-                  ui/wdgInversiones.ui \
-                  ui/frmInversionesIBM.ui \
-                  ui/frmInversionesEstudio.ui \
-                  ui/frmPuntoVenta.ui \
+                  ui/wdgInvestments.ui \
+                  ui/frmInvestmentOperationsAdd.ui \
+                  ui/frmInvestmentReport.ui \
+                  ui/frmSellingPoint.ui \
                   ui/frmSettings.ui \
-                  ui/frmTransferencia.ui \
-                  ui/frmTraspasoValores.ui \
+                  ui/frmTransfer.ui \
+                  ui/frmSharesTransfer.ui \
                   ui/wdgYearMonth.ui \
                   ui/wdgYear.ui \
                   ui/wdgTotal.ui \
-                  ui/frmAnalisis.ui \
+                  ui/frmProductReport.ui \
                   ui/frmQuotesIBM.ui \
-                  ui/frmMain2.ui \
+                  ui/frmMainMS.ui \
                   ui/frmSelector.ui \
                   ui/wdgProducts.ui \
                   ui/wdgInvestmentsOperations.ui \

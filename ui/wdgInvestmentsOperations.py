@@ -2,22 +2,22 @@ from libxulpymoney import *
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 from Ui_wdgInvestmentsOperations import *
-from frmInversionesEstudio import *
-from frmInversionesIBM import *
-from frmCuentasIBM import *
+from frmInvestmentReport import *
+from frmInvestmentOperationsAdd import *
+from frmAccountsReport import *
 
 class wdgInvestmentsOperations(QWidget, Ui_wdgInvestmentsOperations):
     def __init__(self, mem,  parent=None):
         QWidget.__init__(self, parent)
         self.setupUi(self)
         self.mem=mem
-        fechainicio=Patrimonio(self.mem).primera_fecha_con_datos_usuario()         
+        fechainicio=Assets(self.mem).primera_fecha_con_datos_usuario()         
 
         self.mem.data.load_inactives()
         self.wym.initiate(fechainicio.year, datetime.date.today().year, datetime.date.today().year,  datetime.date.today().month)
         QObject.connect(self.wym, SIGNAL("changed"), self.on_wym_changed)
-        self.setOperations=SetInversionOperacion(self.mem)
-        self.setCurrent=SetInversionOperacionActual(self.mem)
+        self.setOperations=SetInvestmentOperations(self.mem)
+        self.setCurrent=SetInvestmentOperationsCurrent(self.mem)
         self.selProductOperation=None
         self.tblCurrent.settings("wdgInvestmentsOperations",  self.mem)
         self.load()
@@ -32,7 +32,7 @@ class wdgInvestmentsOperations(QWidget, Ui_wdgInvestmentsOperations):
         else:
             cur.execute("select * from operinversiones where date_part('year',datetime)=%s and date_part('month',datetime)=%s order by datetime",(self.wym.year, self.wym.month) )
         for row in cur:
-            self.setOperations.append(InversionOperacion(self.mem).init__db_row(row, self.mem.data.inversiones_all().find(row['id_inversiones']), self.mem.tiposoperaciones.find(row['id_tiposoperaciones'])))
+            self.setOperations.append(InvestmentOperation(self.mem).init__db_row(row, self.mem.data.inversiones_all().find(row['id_inversiones']), self.mem.tiposoperaciones.find(row['id_tiposoperaciones'])))
         cur.close()
         
         self.setOperations.myqtablewidget(self.table, None)
@@ -60,19 +60,19 @@ class wdgInvestmentsOperations(QWidget, Ui_wdgInvestmentsOperations):
     
     @QtCore.pyqtSlot() 
     def on_actionShowAccount_activated(self):
-        w=frmCuentasIBM(self.mem,   self.selProductOperation.inversion.cuenta, self)
+        w=frmAccountsReport(self.mem,   self.selProductOperation.inversion.cuenta, self)
         w.exec_()
         self.load()
         
     @QtCore.pyqtSlot() 
     def on_actionShowInvestment_activated(self):
-        w=frmInversionesEstudio(self.mem, self.selProductOperation.inversion, self)
+        w=frmInvestmentReport(self.mem, self.selProductOperation.inversion, self)
         w.exec_()
         self.load()
                 
     @QtCore.pyqtSlot() 
     def on_actionShowProduct_activated(self):
-        w=frmAnalisis(self.mem, self.selProductOperation.inversion.product, self.selProductOperation.inversion, self)
+        w=frmProductReport(self.mem, self.selProductOperation.inversion.product, self.selProductOperation.inversion, self)
         w.exec_()
         self.load()
         
@@ -100,7 +100,7 @@ class wdgInvestmentsOperations(QWidget, Ui_wdgInvestmentsOperations):
         
     @QtCore.pyqtSlot() 
     def on_actionShowInvestmentOperation_activated(self):
-        w=frmInversionesIBM(self.mem, self.selProductOperation.inversion, self.selProductOperation, self)
+        w=frmInvestmentOperationsAdd(self.mem, self.selProductOperation.inversion, self.selProductOperation, self)
         w.exec_()
         self.load()
         

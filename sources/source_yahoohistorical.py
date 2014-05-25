@@ -62,8 +62,8 @@ class WorkerYahooHistorical(Source):
             fecha=datos[0].split("-")
             date=datetime.date(int(fecha[0]), int(fecha[1]),  int(fecha[2]))
             
-            datestart=dt(date,product.bolsa.starts,product.bolsa.zone)
-            dateends=dt(date,product.bolsa.closes,product.bolsa.zone)
+            datestart=dt(date,product.stockexchange.starts,product.stockexchange.zone)
+            dateends=dt(date,product.stockexchange.closes,product.stockexchange.zone)
             datetimefirst=datestart-datetime.timedelta(seconds=1)
             datetimelow=(datestart+(dateends-datestart)*1/3)
             datetimehigh=(datestart+(dateends-datestart)*2/3)
