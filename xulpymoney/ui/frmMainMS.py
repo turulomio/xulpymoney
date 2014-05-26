@@ -29,7 +29,7 @@ class frmMainMS(QMainWindow, Ui_frmMainMS):#
         
         self.w=QWidget()       
         self.w.setAttribute(Qt.WA_DeleteOnClose) 
-        access=frmAccess(self.mem, 1)
+        access=frmAccess(self.mem, 1, self)
         access.exec_()
                 
         if access.result()==QDialog.Rejected:

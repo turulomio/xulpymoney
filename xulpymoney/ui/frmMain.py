@@ -33,13 +33,13 @@ class frmMain(QMainWindow, Ui_frmMain):
         
         self.w=QWidget()       
         
-        access2=frmAccess(self.mem, 1)        
+        access2=frmAccess(self.mem, 1, self)
         access2.exec_()
         if access2.result()==QDialog.Rejected:
             self.on_actionExit_activated()
             sys.exit(1)
 
-        access=frmAccess(self.mem, 2)        
+        access=frmAccess(self.mem, 2, self)
         access.exec_()
         
         if access.result()==QDialog.Rejected:

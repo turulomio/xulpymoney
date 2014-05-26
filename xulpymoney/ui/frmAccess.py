@@ -9,6 +9,7 @@ class frmAccess(QDialog, Ui_frmAccess):
         self.setModal(True)
         self.setupUi(self)
         self.app=app
+        self.parent=parent
         self.mem.languages.qcombobox(self.cmbLanguages,self.mem.config.get_value("settings", "language"))
         
         if self.app==1:
@@ -36,6 +37,7 @@ class frmAccess(QDialog, Ui_frmAccess):
     def on_cmbLanguages_currentIndexChanged(self, stri):
         self.mem.languages.cambiar(self.cmbLanguages.itemData(self.cmbLanguages.currentIndex()))
         self.retranslateUi(self)
+        self.retranslateUi(self.parent)
 
     def make_connection(self):
         """Función que realiza la conexión devolviendo true o false con el éxito"""
@@ -44,16 +46,16 @@ class frmAccess(QDialog, Ui_frmAccess):
                 self.mem.config.set_value("frmAccessMS", "db", self.txtDB.text() )
                 self.mem.config.set_value("frmAccessMS", "port",  self.txtPort.text())
                 self.mem.config.set_value("frmAccessMS", "user" ,  self.txtUser.text())
-                self.mem.config.set_value("frmAccessMS", "server", self.txtServer.text())      
-                self.mem.config.save()    
+                self.mem.config.set_value("frmAccessMS", "server", self.txtServer.text())        
                 self.mem.conms=self.mem.connect_mystocks()      
             elif self.app==2:
                 self.mem.config.set_value("frmAccess", "db", self.txtDB.text() )
                 self.mem.config.set_value("frmAccess", "port",  self.txtPort.text())
                 self.mem.config.set_value("frmAccess", "user" ,  self.txtUser.text())
                 self.mem.config.set_value("frmAccess", "server", self.txtServer.text())     
-                self.mem.config.save()    
-                self.mem.con=self.mem.connect_xulpymoney()   
+                self.mem.con=self.mem.connect_xulpymoney()           
+            self.mem.config.set_value("settings", "language", self.cmbLanguages.itemData(self.cmbLanguages.currentIndex()))
+            self.mem.config.save()                
             return True
         except:
             return False
