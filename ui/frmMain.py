@@ -36,14 +36,14 @@ class frmMain(QMainWindow, Ui_frmMain):
         access2=frmAccess(self.mem, 1)        
         access2.exec_()
         if access2.result()==QDialog.Rejected:
-            self.on_actionSalir_activated()
+            self.on_actionExit_activated()
             sys.exit(1)
 
         access=frmAccess(self.mem, 2)        
         access.exec_()
         
         if access.result()==QDialog.Rejected:
-            self.on_actionSalir_activated()
+            self.on_actionExit_activated()
             sys.exit(1)
 
         
@@ -189,4 +189,4 @@ class frmMain(QMainWindow, Ui_frmMain):
         self.on_actionAccounts_activated()
 
 #    def closeEvent(self,  event):
-#        self.on_actionSalir_activated()
+#        self.on_actionExit_activated()
