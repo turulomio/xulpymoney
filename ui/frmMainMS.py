@@ -30,26 +30,27 @@ class frmMainMS(QMainWindow, Ui_frmMainMS):#
         self.w=QWidget()       
         self.w.setAttribute(Qt.WA_DeleteOnClose) 
         access=frmAccess(self.mem, 1)
-        access.setWindowTitle(self.trUtf8("MyStocks - Acceso"))
         access.exec_()
                 
         if access.result()==QDialog.Rejected:
-            self.close()
+            self.on_actionExit_activated()
             sys.exit(1)
-            return
             
         self.w.close()
 
         self.mem.actualizar_memoria()
-               
+
         self.w=wdgProducts(self.mem,  self.sqlvacio)
 
         self.layout.addWidget(self.w)
         self.w.show()
+                
+    @QtCore.pyqtSlot()  
+    def on_actionExit_activated(self):
+        self.mem.__del__()
+        print ("App correctly closed")
+        self.close()
         
-    def __del__(self):
-        print ("Saliendo de la aplicación")
-        self.mem.disconnect_mystocks(self.mem.conms)
         
     @pyqtSignature("")
     def on_actionAbout_activated(self):

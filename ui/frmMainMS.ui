@@ -46,7 +46,7 @@
      <x>0</x>
      <y>0</y>
      <width>1180</width>
-     <height>25</height>
+     <height>20</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuAyuda">
@@ -58,7 +58,7 @@
     <addaction name="separator"/>
     <addaction name="actionPurgeAll"/>
     <addaction name="separator"/>
-    <addaction name="actionSalir"/>
+    <addaction name="actionExit"/>
    </widget>
    <widget class="QMenu" name="menuIndices">
     <property name="title">
@@ -180,10 +180,10 @@
    <addaction name="separator"/>
    <addaction name="actionInvestmentsManual"/>
    <addaction name="separator"/>
-   <addaction name="actionSalir"/>
+   <addaction name="actionExit"/>
   </widget>
   <widget class="QStatusBar" name="status"/>
-  <action name="actionSalir">
+  <action name="actionExit">
    <property name="icon">
     <iconset resource="../images/xulpymoney.qrc">
      <normaloff>:/xulpymoney/exit.png</normaloff>:/xulpymoney/exit.png</iconset>
@@ -551,22 +551,5 @@ seleccionados por el usuario</string>
  <resources>
   <include location="../images/xulpymoney.qrc"/>
  </resources>
- <connections>
-  <connection>
-   <sender>actionSalir</sender>
-   <signal>activated()</signal>
-   <receiver>frmMainMS</receiver>
-   <slot>close()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>-1</x>
-     <y>-1</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>589</x>
-     <y>280</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+ <connections/>
 </ui>

@@ -6,19 +6,17 @@ class frmAccess(QDialog, Ui_frmAccess):
     def __init__(self, mem, app, parent = None, name = None, modal = False):
         QDialog.__init__(self,  parent)
         self.mem=mem
-        if name:
-            self.setObjectName(name)
         self.setModal(True)
         self.setupUi(self)
         self.app=app
+        self.mem.languages.qcombobox(self.cmbLanguages,self.mem.config.get_value("settings", "language"))
         
         if self.app==1:
             icon = QtGui.QIcon()
             pix=QtGui.QPixmap(":xulpymoney/kmplot.jpg")
             icon.addPixmap(pix, QtGui.QIcon.Normal, QtGui.QIcon.Off)
-            self.setWindowIcon(icon)        
-            self.lbl.setPixmap(pix)
-            self.setWindowTitle(self.trUtf8("MyStocks - Acceso"))
+            self.setWindowIcon(icon)     
+            self.setWindowTitle(self.trUtf8("MyStocks - Access"))
             self.txtDB.setText(self.mem.config.get_value("frmAccessMS", "db" ))
             self.txtPort.setText(self.mem.config.get_value("frmAccessMS", "port" ))
             self.txtUser.setText(self.mem.config.get_value("frmAccessMS", "user" ))
@@ -28,19 +26,14 @@ class frmAccess(QDialog, Ui_frmAccess):
             pix=QtGui.QPixmap(":xulpymoney/coins.png")
             icon.addPixmap(pix, QtGui.QIcon.Normal, QtGui.QIcon.Off)
             self.setWindowIcon(icon)        
-            self.lbl.setPixmap(pix)
-            self.setWindowTitle(self.trUtf8("Xulpymoney - Acceso"))
+            self.setWindowTitle(self.trUtf8("Xulpymoney - Access"))
             self.txtDB.setText(self.mem.config.get_value("frmAccess", "db" ))
             self.txtPort.setText(self.mem.config.get_value("frmAccess", "port" ))
             self.txtUser.setText(self.mem.config.get_value("frmAccess", "user" ))
             self.txtServer.setText(self.mem.config.get_value("frmAccess", "server" ))
 
-        self.mem.languages.qcombobox(self.cmbLanguages,self.mem.config.get_value("settings", "language"))
-
-
     @pyqtSlot(str)      
     def on_cmbLanguages_currentIndexChanged(self, stri):
-        print (self.cmbLanguages.itemData(self.cmbLanguages.currentIndex()))
         self.mem.languages.cambiar(self.cmbLanguages.itemData(self.cmbLanguages.currentIndex()))
         self.retranslateUi(self)
 
