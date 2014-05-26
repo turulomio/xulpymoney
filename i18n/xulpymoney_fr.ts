@@ -83,7 +83,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmMainMS.py" line="268"/>
+        <location filename="ui/frmMainMS.py" line="269"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
@@ -123,7 +123,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmMainMS.py" line="98"/>
+        <location filename="ui/frmMainMS.py" line="99"/>
         <source>Se ha exportado con &#xc3;&#xa9;xito la tabla quotes</source>
         <translation type="unfinished"></translation>
     </message>
@@ -243,12 +243,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmMainMS.py" line="268"/>
+        <location filename="ui/frmMainMS.py" line="269"/>
         <source>Purging innecesary data from all products</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmMainMS.py" line="270"/>
+        <location filename="ui/frmMainMS.py" line="271"/>
         <source>Purging quotes from all products</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1862,12 +1862,12 @@ They&apos;ll be created in the language selected</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmMainMS.py" line="103"/>
+        <location filename="ui/frmMainMS.py" line="104"/>
         <source>Selecciona el fichero a importar</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="ui/frmMainMS.py" line="186"/>
+        <location filename="ui/frmMainMS.py" line="187"/>
         <source>No se ha seleccionado ningún favorito</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2028,7 +2028,7 @@ seleccionados por el usuario</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmMainMS.py" line="296"/>
+        <location filename="ui/frmMainMS.py" line="297"/>
         <source>{0} quotes have been purged from {1} products</source>
         <translation type="unfinished"></translation>
     </message>

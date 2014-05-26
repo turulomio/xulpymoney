@@ -83,7 +83,7 @@
         <translation>Eliminando datos innecesarios</translation>
     </message>
     <message>
-        <location filename="ui/frmMainMS.py" line="268"/>
+        <location filename="ui/frmMainMS.py" line="269"/>
         <source>Cancel</source>
         <translation>Cancelar</translation>
     </message>
@@ -123,7 +123,7 @@
         <translation>Error al conectar a Xulpymoney</translation>
     </message>
     <message>
-        <location filename="ui/frmMainMS.py" line="98"/>
+        <location filename="ui/frmMainMS.py" line="99"/>
         <source>Se ha exportado con &#xc3;&#xa9;xito la tabla quotes</source>
         <translation></translation>
     </message>
@@ -243,12 +243,12 @@
         <translation>El producto asociado no está activo. Debes activarlo primero</translation>
     </message>
     <message>
-        <location filename="ui/frmMainMS.py" line="268"/>
+        <location filename="ui/frmMainMS.py" line="269"/>
         <source>Purging innecesary data from all products</source>
         <translation>Purgando datos innecesarios de todos los productos</translation>
     </message>
     <message>
-        <location filename="ui/frmMainMS.py" line="270"/>
+        <location filename="ui/frmMainMS.py" line="271"/>
         <source>Purging quotes from all products</source>
         <translation>Purgando valores de todos los productos</translation>
     </message>
@@ -1863,12 +1863,12 @@ Serán creadas en el idioma seleccionado</translation>
         <translation>MyStocks 2010-{0} ©</translation>
     </message>
     <message>
-        <location filename="ui/frmMainMS.py" line="103"/>
+        <location filename="ui/frmMainMS.py" line="104"/>
         <source>Selecciona el fichero a importar</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="ui/frmMainMS.py" line="186"/>
+        <location filename="ui/frmMainMS.py" line="187"/>
         <source>No se ha seleccionado ningún favorito</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2029,7 +2029,7 @@ seleccionados por el usuario</source>
         <translation>Purgar todas las inversiones</translation>
     </message>
     <message>
-        <location filename="ui/frmMainMS.py" line="296"/>
+        <location filename="ui/frmMainMS.py" line="297"/>
         <source>{0} quotes have been purged from {1} products</source>
         <translation>{0} cotizaciones han sido eliminadas de {1} productos</translation>
     </message>

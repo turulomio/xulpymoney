@@ -31,6 +31,7 @@ class frmMainMS(QMainWindow, Ui_frmMainMS):#
         self.w.setAttribute(Qt.WA_DeleteOnClose) 
         access=frmAccess(self.mem, 1, self)
         access.exec_()
+        self.retranslateUi(self)
                 
         if access.result()==QDialog.Rejected:
             self.on_actionExit_activated()
