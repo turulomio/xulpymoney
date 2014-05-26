@@ -4639,27 +4639,12 @@ S&#xc3;&#xb3;lo se contabilizar&#xc3;&#xa1; cuando se vendan las acciones</sourc
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgMergeCodes.ui" line="70"/>
-        <source>Agrupations</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message encoding="UTF-8">
-        <location filename="ui/wdgMergeCodes.ui" line="75"/>
-        <source>Nº Quotes</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message encoding="UTF-8">
-        <location filename="ui/wdgMergeCodes.ui" line="80"/>
-        <source>Nº Est. Div.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/wdgMergeCodes.ui" line="102"/>
+        <location filename="ui/wdgMergeCodes.ui" line="97"/>
         <source>...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgMergeCodes.ui" line="115"/>
+        <location filename="ui/wdgMergeCodes.ui" line="110"/>
         <source>Merge data</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4671,6 +4656,16 @@ S&#xc3;&#xb3;lo se contabilizar&#xc3;&#xa1; cuando se vendan las acciones</sourc
     <message>
         <location filename="ui/wdgMergeCodes.ui" line="50"/>
         <source>Delete data</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/wdgMergeCodes.ui" line="70"/>
+        <source>Quotes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/wdgMergeCodes.ui" line="75"/>
+        <source>DPS</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

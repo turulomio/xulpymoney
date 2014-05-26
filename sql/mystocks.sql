@@ -169,24 +169,6 @@ $_$;
 ALTER FUNCTION public.last_agg(anyelement, anyelement) OWNER TO postgres;
 
 --
--- Name: merge_codes(integer, integer); Type: FUNCTION; Schema: public; Owner: postgres
---
-
-CREATE FUNCTION merge_codes(main integer, secondary integer) RETURNS integer
-    LANGUAGE plpythonu
-    AS $$  
-  u=plpy.execute("update quotes set id="+str(main) +" where id="+str(secondary))
-  ud=plpy.execute("update dividendosestimaciones set id="+str(main) +" where id="+str(secondary))
-  dq=plpy.execute("delete from quotes where id="+str(secondary))
-  di=plpy.execute("delete from investments where id="+str(secondary))
-  dd=plpy.execute("delete from dividendosestimaciones where id="+str(secondary))
-  plpy.info("Se han movido %(u)d registros a %(m)s  y borrado %(dq)d de quotes y %(di)d de investments y %(dd)d de dividendosestimaciones" % {"u": u.nrows(), "m": main, "dq": dq.nrows(), "di":di.nrows(),"dd":dd.nrows()} )
-$$;
-
-
-ALTER FUNCTION public.merge_codes(main integer, secondary integer) OWNER TO postgres;
-
---
 -- Name: multiout_simple_setof(integer); Type: FUNCTION; Schema: public; Owner: postgres
 --
 
