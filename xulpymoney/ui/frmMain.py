@@ -35,12 +35,14 @@ class frmMain(QMainWindow, Ui_frmMain):
         
         access2=frmAccess(self.mem, 1, self)
         access2.exec_()
+        self.retranslateUi(self)
         if access2.result()==QDialog.Rejected:
             self.on_actionExit_activated()
             sys.exit(1)
 
         access=frmAccess(self.mem, 2, self)
         access.exec_()
+        self.retranslateUi(self)
         
         if access.result()==QDialog.Rejected:
             self.on_actionExit_activated()

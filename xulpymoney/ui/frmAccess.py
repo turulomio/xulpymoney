@@ -37,7 +37,6 @@ class frmAccess(QDialog, Ui_frmAccess):
     def on_cmbLanguages_currentIndexChanged(self, stri):
         self.mem.languages.cambiar(self.cmbLanguages.itemData(self.cmbLanguages.currentIndex()))
         self.retranslateUi(self)
-        self.retranslateUi(self.parent)
 
     def make_connection(self):
         """Función que realiza la conexión devolviendo true o false con el éxito"""
