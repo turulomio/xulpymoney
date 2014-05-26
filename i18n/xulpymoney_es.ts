@@ -48,12 +48,12 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5746"/>
+        <location filename="libxulpymoney.py" line="5747"/>
         <source>Sourceforge version detected: %s</source>
         <translation>Versión de Sourceforge detectada: %s</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5748"/>
+        <location filename="libxulpymoney.py" line="5749"/>
         <source>Error buscando la versi&#xc3;&#xb3;n actual de Sourceforge</source>
         <translation></translation>
     </message>
@@ -73,7 +73,7 @@
         <translation>La tarjeta de crédito está inactiva. Debes activarla primero</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="6065"/>
+        <location filename="libxulpymoney.py" line="6066"/>
         <source>This option is being developed</source>
         <translation>Esta opción está en desarrollo</translation>
     </message>
@@ -108,17 +108,17 @@
         <translation>Comisión</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5546"/>
+        <location filename="libxulpymoney.py" line="5547"/>
         <source>Error conecting to MyStocksd, waiting 10 seconds</source>
         <translation>Error al conectar to MyStocksd, esperando 10 segundos</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5559"/>
+        <location filename="libxulpymoney.py" line="5560"/>
         <source>Error conecting to MyStocks</source>
         <translation>Error al conectar a MyStocks</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5623"/>
+        <location filename="libxulpymoney.py" line="5624"/>
         <source>Error conecting to Xulpymoney</source>
         <translation>Error al conectar a Xulpymoney</translation>
     </message>

@@ -3598,7 +3598,7 @@ class Source:
     def __init__(self,  mem):
 
         self.mem=mem
-        self.debug=False#Si fuera true en vez de insertar  hace un listado#       
+        self.debugmode=False#Si fuera true en vez de insertar  hace un listado#       
         self.internetquerys=0#Número de consultas a Internet
         self.downloadalways=False#Booleano que a true permite download los fines de semana
 #        self.downloadrange=(datetime.time(0, 0), datetime.time(23, 59)) #Estas horas deben estar en utc
@@ -3759,7 +3759,7 @@ class Source:
             con.commit()
             cur.execute(sql)
             for row in cur:
-                if self.debug==True:
+                if self.debugmode==True:
                     for i in self.arr_quote(row['code']):
                         print (i)
     #                log("S_SOCIETEGENERALEWARRANTS_STATICS", QApplication.translate("Core",("%d de %d" %(cur.rownumber, cur.rowcount)))
@@ -3793,7 +3793,7 @@ class Source:
 #            con.commit()
 #            cur.close()
 #            self.mem.disconnect_mystocksd(con)    
-#            if self.debug==True:
+#            if self.debugmode==True:
 #                for i in self.arr_quotes():
 #                    print (i)
 #            else:
@@ -3823,7 +3823,7 @@ class Source:
 #            con.commit()
 #            cur.close()
 #            self.mem.disconnect_mystocksd(con)    
-#            if self.debug==True:
+#            if self.debugmode==True:
 #                for i in self.arr_statics():
 #                    print (i)
 #            else:
@@ -3854,7 +3854,7 @@ class Source:
 #            con.commit()
 #            cur.execute(sql)
 #            for row in cur:
-#                if self.debug==True:
+#                if self.debugmode==True:
 #                    for i in self.arr_static(row['code']):
 #                        print (i)
 #    #                log("S_SOCIETEGENERALEWARRANTS_STATICS", QApplication.translate("Core",("%d de %d" %(cur.rownumber, cur.rowcount)))
@@ -3884,7 +3884,7 @@ class Source:
 #        time.sleep(self.time_before_statics)
 #        while True:
 #            for code in listcode:
-#                if self.debug==True:
+#                if self.debugmode==True:
 #                    for i in self.arr_static(code):
 #                        print (i)
 #                else:
@@ -3910,7 +3910,7 @@ class Source:
 #            self.mem.disconnect_mystocksd(con)                
 #            for code in listcodes:
 ##                print code,  listcodes
-#                if self.debug==True:
+#                if self.debugmode==True:
 #                    for i in self.arr_historical(code):
 #                        print (i)
 #                else:                
@@ -3960,7 +3960,7 @@ class Source:
 #                    time.sleep(self.time_step_historical)
 #                else:
 #    #                print code,  listcodes
-#                    if self.debug==True:
+#                    if self.debugmode==True:
 #                        for i in self.arr_historical(yahoocode):
 #                            print (i)
 #                    else:                
@@ -5437,7 +5437,8 @@ class MemMyStock:
         self.ibex=set([])
         self.nyse=set([])
         
-        self.debug=False
+        self.debugmode=False # from argv
+        self.adminmode=False # from argv
         
         self.qtranslator=None#Residir´a el qtranslator
 
