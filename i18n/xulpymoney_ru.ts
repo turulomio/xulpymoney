@@ -555,27 +555,17 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>frmAccess</name>
     <message>
-        <location filename="ui/Ui_frmAccess.py" line="151"/>
-        <source>127.0.0.1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_frmAccess.py" line="153"/>
-        <source>5432</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="ui/Ui_frmAccess.py" line="157"/>
         <source>Language</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmAccess.py" line="150"/>
+        <location filename="ui/Ui_frmAccess.py" line="152"/>
         <source>Server</source>
         <translation>сервер</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmAccess.py" line="152"/>
+        <location filename="ui/Ui_frmAccess.py" line="153"/>
         <source>Port</source>
         <translation>
 Пуэрто-</translation>
@@ -596,12 +586,12 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmAccess.py" line="19"/>
+        <location filename="ui/frmAccess.py" line="20"/>
         <source>MyStocks - Access</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmAccess.py" line="29"/>
+        <location filename="ui/frmAccess.py" line="30"/>
         <source>Xulpymoney - Access</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1886,7 +1876,7 @@ They&apos;ll be created in the language selected</source>
     <message>
         <location filename="ui/Ui_frmMainMS.py" line="290"/>
         <source>MyStocks</source>
-        <translation type="unfinished">MyStocks</translation>
+        <translation>MyStocks</translation>
     </message>
     <message>
         <location filename="ui/Ui_frmMainMS.py" line="293"/>
@@ -2077,7 +2067,7 @@ seleccionados por el usuario</source>
     <message>
         <location filename="ui/Ui_frmMainMS.py" line="301"/>
         <source>Exit</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Выход</translation>
     </message>
     <message>
         <location filename="ui/Ui_frmMainMS.py" line="302"/>

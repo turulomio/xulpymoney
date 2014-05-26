@@ -555,27 +555,17 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>frmAccess</name>
     <message>
-        <location filename="ui/Ui_frmAccess.py" line="151"/>
-        <source>127.0.0.1</source>
-        <translation>127.0.0.1</translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_frmAccess.py" line="153"/>
-        <source>5432</source>
-        <translation>5432</translation>
-    </message>
-    <message>
         <location filename="ui/Ui_frmAccess.py" line="157"/>
         <source>Language</source>
         <translation>Idioma</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmAccess.py" line="150"/>
+        <location filename="ui/Ui_frmAccess.py" line="152"/>
         <source>Server</source>
         <translation>Servidor</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmAccess.py" line="152"/>
+        <location filename="ui/Ui_frmAccess.py" line="153"/>
         <source>Port</source>
         <translation>Puerto</translation>
     </message>
@@ -595,12 +585,12 @@ p, li { white-space: pre-wrap; }
         <translation>Contraseña</translation>
     </message>
     <message>
-        <location filename="ui/frmAccess.py" line="19"/>
+        <location filename="ui/frmAccess.py" line="20"/>
         <source>MyStocks - Access</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmAccess.py" line="29"/>
+        <location filename="ui/frmAccess.py" line="30"/>
         <source>Xulpymoney - Access</source>
         <translation type="unfinished"></translation>
     </message>
