@@ -5400,9 +5400,11 @@ class ConfigFile:
         try:
             resultado=self.config.get(section,  name)
             if resultado==None:
+                print ("Resultado None: {0} {1} get and set default value".format(section, name))
                 return self.set_default_value(section, name)
             return resultado
         except:
+            print ("Except: {0} {1} get and set default value".format(section, name))
             return self.set_default_value(section, name)
             
 class Language:
