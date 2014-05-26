@@ -39,14 +39,14 @@
        <item>
         <widget class="QRadioButton" name="radRe">
          <property name="text">
-          <string>Simular una reinversión</string>
+          <string>Reinvest simulation</string>
          </property>
         </widget>
        </item>
        <item>
         <widget class="QRadioButton" name="radDes">
          <property name="text">
-          <string>Simular una desinversión</string>
+          <string>Disinvest simulation</string>
          </property>
          <property name="checked">
           <bool>true</bool>
@@ -171,7 +171,7 @@
             <item>
              <widget class="QLabel" name="label_2">
               <property name="text">
-               <string>Cantidad exacta</string>
+               <string>Amount</string>
               </property>
              </widget>
             </item>
@@ -204,7 +204,7 @@
      <item>
       <widget class="QPushButton" name="cmd">
        <property name="text">
-        <string>Realizar simulación</string>
+        <string>Make simulation</string>
        </property>
       </widget>
      </item>
@@ -224,7 +224,7 @@
          <item>
           <widget class="QTabWidget" name="tabResultados_2">
            <property name="currentIndex">
-            <number>0</number>
+            <number>2</number>
            </property>
            <widget class="QWidget" name="tab_9">
             <attribute name="title">
@@ -454,7 +454,7 @@
            </property>
            <widget class="QWidget" name="tab_4">
             <attribute name="title">
-             <string>Situación de la inversión</string>
+             <string>Investment situation</string>
             </attribute>
             <layout class="QHBoxLayout" name="horizontalLayout_13">
              <item>
@@ -473,32 +473,32 @@
                </attribute>
                <column>
                 <property name="text">
-                 <string>Día</string>
+                 <string>Date</string>
                 </property>
                </column>
                <column>
                 <property name="text">
-                 <string>Acciones</string>
+                 <string>Shares</string>
                 </property>
                </column>
                <column>
                 <property name="text">
-                 <string>Valor de compra</string>
+                 <string>Price</string>
                 </property>
                </column>
                <column>
                 <property name="text">
-                 <string>Saldo</string>
+                 <string>Balance</string>
                 </property>
                </column>
                <column>
                 <property name="text">
-                 <string>Pendiente</string>
+                 <string>Pending</string>
                 </property>
                </column>
                <column>
                 <property name="text">
-                 <string>% Año</string>
+                 <string>% Year to Date</string>
                 </property>
                </column>
                <column>
@@ -513,7 +513,7 @@
                </column>
                <column>
                 <property name="text">
-                 <string>Referencia Indice</string>
+                 <string>Benchmark</string>
                 </property>
                </column>
               </widget>

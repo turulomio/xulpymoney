@@ -39,7 +39,7 @@
           <string notr="true">color: rgb(0, 192, 0);</string>
          </property>
          <property name="text">
-          <string>Product</string>
+          <string/>
          </property>
          <property name="alignment">
           <set>Qt::AlignCenter</set>
@@ -57,7 +57,7 @@
         <enum>QTabWidget::West</enum>
        </property>
        <property name="currentIndex">
-        <number>2</number>
+        <number>3</number>
        </property>
        <widget class="QWidget" name="tabInformacion">
         <attribute name="title">
@@ -1219,7 +1219,7 @@ correspondiente en la tabla</string>
          <item>
           <widget class="QTabWidget" name="tabEstimaciones">
            <property name="currentIndex">
-            <number>1</number>
+            <number>0</number>
            </property>
            <widget class="QWidget" name="tab_2">
             <attribute name="icon">
@@ -1273,12 +1273,12 @@ correspondiente en la tabla</string>
                </attribute>
                <column>
                 <property name="text">
-                 <string>Año</string>
+                 <string>Year</string>
                 </property>
                </column>
                <column>
                 <property name="text">
-                 <string>Valor</string>
+                 <string>Price</string>
                 </property>
                </column>
                <column>
@@ -1288,12 +1288,12 @@ correspondiente en la tabla</string>
                </column>
                <column>
                 <property name="text">
-                 <string>Fecha anotación</string>
+                 <string>Annotation date</string>
                 </property>
                </column>
                <column>
                 <property name="text">
-                 <string>Fuente</string>
+                 <string>Source</string>
                 </property>
                </column>
                <column>
@@ -1330,12 +1330,12 @@ correspondiente en la tabla</string>
                </attribute>
                <column>
                 <property name="text">
-                 <string>Año</string>
+                 <string>Year</string>
                 </property>
                </column>
                <column>
                 <property name="text">
-                 <string>Valor</string>
+                 <string>Price</string>
                 </property>
                </column>
                <column>
@@ -1345,12 +1345,12 @@ correspondiente en la tabla</string>
                </column>
                <column>
                 <property name="text">
-                 <string>Fecha anotación</string>
+                 <string>Annotation date</string>
                 </property>
                </column>
                <column>
                 <property name="text">
-                 <string>Fuente</string>
+                 <string>Source</string>
                 </property>
                </column>
                <column>

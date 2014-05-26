@@ -672,16 +672,6 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>frmAccountsReport</name>
     <message>
-        <location filename="ui/Ui_frmAccountsReport.py" line="403"/>
-        <source>Estudio de la Cuenta seleccionada</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_frmAccountsReport.py" line="404"/>
-        <source>TextLabel</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="ui/Ui_frmAccountsReport.py" line="423"/>
         <source>Account</source>
         <translation type="unfinished"></translation>
@@ -934,6 +924,11 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="ui/frmAccountsReport.py" line="493"/>
         <source>Pago efectuado el {0} de {1}</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_frmAccountsReport.py" line="404"/>
+        <source>Account report</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

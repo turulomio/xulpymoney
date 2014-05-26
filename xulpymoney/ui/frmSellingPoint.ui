@@ -192,7 +192,7 @@
      <item>
       <widget class="QTabWidget" name="tab">
        <property name="currentIndex">
-        <number>0</number>
+        <number>1</number>
        </property>
        <widget class="QWidget" name="tab_current">
         <attribute name="title">
@@ -255,37 +255,37 @@
            </attribute>
            <column>
             <property name="text">
-             <string>Día</string>
+             <string>Date</string>
             </property>
            </column>
            <column>
             <property name="text">
-             <string>Inversión (Entidad Bancaria)</string>
+             <string>Investment (Bank)</string>
             </property>
            </column>
            <column>
             <property name="text">
-             <string>Tipo Operación</string>
+             <string>Operation type</string>
             </property>
            </column>
            <column>
             <property name="text">
-             <string>Acciones</string>
+             <string>Shares</string>
             </property>
            </column>
            <column>
             <property name="text">
-             <string>Valor compra</string>
+             <string>Price</string>
             </property>
            </column>
            <column>
             <property name="text">
-             <string>Invertido</string>
+             <string>Invested</string>
             </property>
            </column>
            <column>
             <property name="text">
-             <string>Pendiente</string>
+             <string>Pending</string>
             </property>
            </column>
           </widget>
