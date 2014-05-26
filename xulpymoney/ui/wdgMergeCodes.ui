@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>866</width>
+    <width>1034</width>
     <height>181</height>
    </rect>
   </property>
@@ -67,17 +67,12 @@
          </column>
          <column>
           <property name="text">
-           <string>Agrupations</string>
+           <string>Quotes</string>
           </property>
          </column>
          <column>
           <property name="text">
-           <string>Nº Quotes</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>Nº Est. Div.</string>
+           <string>DPS</string>
           </property>
          </column>
          <item row="1" column="0">
@@ -102,8 +97,8 @@
           <string>...</string>
          </property>
          <property name="icon">
-          <iconset>
-           <normaloff>:/images/tools-wizard.png</normaloff>:/images/tools-wizard.png</iconset>
+          <iconset resource="../images/xulpymoney.qrc">
+           <normaloff>:/xulpymoney/transfer.png</normaloff>:/xulpymoney/transfer.png</iconset>
          </property>
         </widget>
        </item>
