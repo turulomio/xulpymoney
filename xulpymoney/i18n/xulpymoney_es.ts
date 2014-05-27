@@ -2158,14 +2158,9 @@ seleccionados por el usuario</source>
 <context>
     <name>frmProductReport</name>
     <message>
-        <location filename="ui/Ui_frmProductReport.py" line="785"/>
+        <location filename="ui/Ui_frmProductReport.py" line="786"/>
         <source>MyStocks - Product report</source>
         <translation>MyStocks - Informe de producto</translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_frmProductReport.py" line="786"/>
-        <source>Product</source>
-        <translation>Producto</translation>
     </message>
     <message>
         <location filename="ui/Ui_frmProductReport.py" line="809"/>
@@ -2393,7 +2388,7 @@ seleccionados por el usuario</source>
         <translation>Fecha</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmProductReport.py" line="898"/>
+        <location filename="ui/Ui_frmProductReport.py" line="958"/>
         <source>Price</source>
         <translation>Valor</translation>
     </message>
@@ -2490,7 +2485,7 @@ correspondiente en la tabla</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmProductReport.py" line="912"/>
+        <location filename="ui/Ui_frmProductReport.py" line="956"/>
         <source>Year</source>
         <translation>Año</translation>
     </message>
@@ -2575,29 +2570,9 @@ correspondiente en la tabla</source>
         <translation>Estimaciones de dividendos por acción</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmProductReport.py" line="956"/>
-        <source>AÃ±o</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_frmProductReport.py" line="958"/>
-        <source>Valor</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_frmProductReport.py" line="962"/>
-        <source>Fecha anotaciÃ³n</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_frmProductReport.py" line="964"/>
-        <source>Fuente</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="ui/Ui_frmProductReport.py" line="966"/>
         <source>Manual</source>
-        <translation type="unfinished"></translation>
+        <translation>Manual</translation>
     </message>
     <message>
         <location filename="ui/Ui_frmProductReport.py" line="967"/>
@@ -2693,6 +2668,16 @@ correspondiente en la tabla</source>
         <location filename="ui/frmProductReport.py" line="444"/>
         <source>You have to add a quote and a dividend per share estimation to the new product</source>
         <translation>Tienes que añadir un valor y una estimación del dividendo por acción al nuevo producto</translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_frmProductReport.py" line="962"/>
+        <source>Annotation date</source>
+        <translation>Fecha de anotación</translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_frmProductReport.py" line="964"/>
+        <source>Source</source>
+        <translation>Fuente</translation>
     </message>
 </context>
 <context>
@@ -2879,22 +2864,22 @@ correspondiente en la tabla</source>
         <translation>Estado actual</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmSellingPoint.py" line="194"/>
+        <location filename="ui/Ui_frmSellingPoint.py" line="209"/>
         <source>Date</source>
         <translation>Fecha</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmSellingPoint.py" line="196"/>
+        <location filename="ui/Ui_frmSellingPoint.py" line="211"/>
         <source>Investment (Bank)</source>
         <translation>Inversión (Banco)</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmSellingPoint.py" line="198"/>
+        <location filename="ui/Ui_frmSellingPoint.py" line="213"/>
         <source>Operation type</source>
         <translation>Tipo de operación</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmSellingPoint.py" line="200"/>
+        <location filename="ui/Ui_frmSellingPoint.py" line="215"/>
         <source>Shares</source>
         <translation>Acciones</translation>
     </message>
@@ -2904,12 +2889,12 @@ correspondiente en la tabla</source>
         <translation>Precio de compra</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmSellingPoint.py" line="204"/>
+        <location filename="ui/Ui_frmSellingPoint.py" line="219"/>
         <source>Invested</source>
         <translation>Invertido</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmSellingPoint.py" line="221"/>
+        <location filename="ui/Ui_frmSellingPoint.py" line="206"/>
         <source>Pendiente</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2917,36 +2902,6 @@ correspondiente en la tabla</source>
         <location filename="ui/Ui_frmSellingPoint.py" line="222"/>
         <source>Selling point state</source>
         <translation>Punto de venta</translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_frmSellingPoint.py" line="209"/>
-        <source>DÃ­a</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_frmSellingPoint.py" line="211"/>
-        <source>InversiÃ³n (Entidad Bancaria)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_frmSellingPoint.py" line="213"/>
-        <source>Tipo OperaciÃ³n</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_frmSellingPoint.py" line="215"/>
-        <source>Acciones</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_frmSellingPoint.py" line="217"/>
-        <source>Valor compra</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_frmSellingPoint.py" line="219"/>
-        <source>Invertido</source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/Ui_frmSellingPoint.py" line="223"/>
@@ -2972,6 +2927,16 @@ correspondiente en la tabla</source>
         <location filename="ui/frmSellingPoint.py" line="113"/>
         <source>Current state: {0}</source>
         <translation>Estado actual: {0}</translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_frmSellingPoint.py" line="217"/>
+        <source>Price</source>
+        <translation>Valor</translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_frmSellingPoint.py" line="221"/>
+        <source>Pending</source>
+        <translation>Pendiente</translation>
     </message>
 </context>
 <context>
@@ -3646,16 +3611,6 @@ correspondiente en la tabla</source>
 <context>
     <name>wdgDisReinvest</name>
     <message>
-        <location filename="ui/Ui_wdgDisReinvest.py" line="307"/>
-        <source>Simular una reinversiÃ³n</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_wdgDisReinvest.py" line="308"/>
-        <source>Simular una desinversiÃ³n</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="ui/Ui_wdgDisReinvest.py" line="309"/>
         <source>Operation data</source>
         <translation>Datos de la operación</translation>
@@ -3686,16 +3641,6 @@ correspondiente en la tabla</source>
         <translation>Número de acciones</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgDisReinvest.py" line="315"/>
-        <source>Cantidad exacta</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_wdgDisReinvest.py" line="316"/>
-        <source>Realizar simulaciÃ³n</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="ui/Ui_wdgDisReinvest.py" line="376"/>
         <source>After</source>
         <translation>Después</translation>
@@ -3711,7 +3656,7 @@ correspondiente en la tabla</source>
         <translation>Id</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgDisReinvest.py" line="354"/>
+        <location filename="ui/Ui_wdgDisReinvest.py" line="378"/>
         <source>Date</source>
         <translation>Fecha</translation>
     </message>
@@ -3721,17 +3666,17 @@ correspondiente en la tabla</source>
         <translation>Tipo de operación</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgDisReinvest.py" line="337"/>
+        <location filename="ui/Ui_wdgDisReinvest.py" line="380"/>
         <source>Shares</source>
         <translation>Acciones</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgDisReinvest.py" line="339"/>
+        <location filename="ui/Ui_wdgDisReinvest.py" line="382"/>
         <source>Price</source>
         <translation>Valor</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgDisReinvest.py" line="341"/>
+        <location filename="ui/Ui_wdgDisReinvest.py" line="384"/>
         <source>Balance</source>
         <translation>Saldo</translation>
     </message>
@@ -3751,7 +3696,7 @@ correspondiente en la tabla</source>
         <translation>Estado actual de la inversión</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgDisReinvest.py" line="343"/>
+        <location filename="ui/Ui_wdgDisReinvest.py" line="386"/>
         <source>Pending</source>
         <translation>Pendiente</translation>
     </message>
@@ -3771,7 +3716,7 @@ correspondiente en la tabla</source>
         <translation>% Total</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgDisReinvest.py" line="351"/>
+        <location filename="ui/Ui_wdgDisReinvest.py" line="394"/>
         <source>Benchmark</source>
         <translation>Índice de referencia</translation>
     </message>
@@ -3821,43 +3766,8 @@ correspondiente en la tabla</source>
         <translation>Antes</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgDisReinvest.py" line="395"/>
-        <source>SituaciÃ³n de la inversiÃ³n</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_wdgDisReinvest.py" line="378"/>
-        <source>DÃ­a</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_wdgDisReinvest.py" line="380"/>
-        <source>Acciones</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_wdgDisReinvest.py" line="382"/>
+        <location filename="ui/wdgDisReinvest.py" line="70"/>
         <source>Valor de compra</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_wdgDisReinvest.py" line="384"/>
-        <source>Saldo</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_wdgDisReinvest.py" line="386"/>
-        <source>Pendiente</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_wdgDisReinvest.py" line="388"/>
-        <source>% AÃ±o</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_wdgDisReinvest.py" line="394"/>
-        <source>Referencia Indice</source>
         <translation type="unfinished"></translation>
     </message>
     <message utf8="true">
@@ -3899,6 +3809,36 @@ correspondiente en la tabla</source>
         <location filename="ui/wdgDisReinvest.py" line="85"/>
         <source>El valor de la acción no puede ser 0</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_wdgDisReinvest.py" line="307"/>
+        <source>Reinvest simulation</source>
+        <translation>Simulación de reinversión</translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_wdgDisReinvest.py" line="308"/>
+        <source>Disinvest simulation</source>
+        <translation>Simulación de desinversión</translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_wdgDisReinvest.py" line="315"/>
+        <source>Amount</source>
+        <translation>Importe</translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_wdgDisReinvest.py" line="316"/>
+        <source>Make simulation</source>
+        <translation>Realizar simulación</translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_wdgDisReinvest.py" line="395"/>
+        <source>Investment situation</source>
+        <translation>Situación de la inversión</translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_wdgDisReinvest.py" line="388"/>
+        <source>% Year to Date</source>
+        <translation>% año actual</translation>
     </message>
 </context>
 <context>
@@ -3982,34 +3922,9 @@ correspondiente en la tabla</source>
 <context>
     <name>wdgIndexRange</name>
     <message>
-        <location filename="ui/Ui_wdgIndexRange.py" line="187"/>
-        <source>Inversiones por rango de un Ã­ndice</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_wdgIndexRange.py" line="188"/>
-        <source>Datos del estudio</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_wdgIndexRange.py" line="189"/>
-        <source>Selecciona % entre rangos</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="ui/Ui_wdgIndexRange.py" line="190"/>
         <source> %</source>
         <translation> %</translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_wdgIndexRange.py" line="191"/>
-        <source>Dinero a invertir</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_wdgIndexRange.py" line="193"/>
-        <source>Limite inferior del Ã­ndice</source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/Ui_wdgIndexRange.py" line="194"/>
@@ -4086,6 +4001,31 @@ correspondiente en la tabla</source>
         <location filename="ui/Ui_wdgIndexRange.py" line="201"/>
         <source>Investments</source>
         <translation>Inversiones</translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_wdgIndexRange.py" line="187"/>
+        <source>Investments by index range</source>
+        <translation>Inversiones por rango de índice</translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_wdgIndexRange.py" line="188"/>
+        <source>Report data</source>
+        <translation>Datos del informe</translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_wdgIndexRange.py" line="189"/>
+        <source>Percentage between ranges</source>
+        <translation>Tanto por ciento entre rangos</translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_wdgIndexRange.py" line="191"/>
+        <source>Money to invest</source>
+        <translation>Dinero a invertir</translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_wdgIndexRange.py" line="193"/>
+        <source>Index lowest limit</source>
+        <translation>Límite más bajo del índice</translation>
     </message>
 </context>
 <context>
