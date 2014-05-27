@@ -27,7 +27,7 @@ class wdgIndexRange(QWidget, Ui_wdgIndexRange):
             for i in arr:
                 if i[0]>=min and i[0]<max:
                     o=i[1]
-                    resultado=resultado+ self.trUtf8("{0} {1}: {2} {3} ( {4} acciones a {5} {6} )\n".format(str(o.datetime)[:19], o.inversion.name, o.importe, o.inversion.product.currency.symbol, int (o.acciones),  o.valor_accion,  o.inversion.product.currency.symbol))
+                    resultado=resultado+ self.trUtf8("{0} {1} ({2}): {3} shares of {4} = {5}\n".format(str(o.datetime)[:16], o.inversion.name, o.inversion.cuenta.name, round(o.acciones, 0),  o.inversion.product.currency.string(o.valor_accion), o.inversion.product.currency.string(o.importe)))
             return resultado[:-1]
         inicio=datetime.datetime.now()
 
@@ -108,15 +108,4 @@ class wdgIndexRange(QWidget, Ui_wdgIndexRange):
             m=QMessageBox()
             m.setIcon(QMessageBox.Information)
             m.setText(self.trUtf8("Para llegar al punto de inversión seleccionado, el indice debe variar un {0}".format(tpc((puntoinversion-self.mem.data.benchmark.result.basic.last.quote)*100/self.mem.data.benchmark.result.basic.last.quote))))
-            m.exec_()           
-        elif column==2:
-            inversiones=self.table.item(row, column).text().split(", ")
-            m=QMessageBox()
-            points="············································································································"
-            message=points+"\n"
-            inversiones.sort()
-            for i in inversiones:
-                message=message + i + "\n"
-            message=message+ points
-            m.setText(message)
-            m.exec_()             
+            m.exec_()
