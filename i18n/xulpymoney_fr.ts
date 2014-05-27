@@ -3964,12 +3964,6 @@ correspondiente en la tabla</source>
         <source>Borrar factura</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <location filename="ui/wdgIndexRange.py" line="30"/>
-        <source>{0} {1}: {2} {3} ( {4} acciones a {5} {6} )
-</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message encoding="UTF-8">
         <location filename="ui/wdgIndexRange.py" line="110"/>
         <source>Para llegar al punto de inversión seleccionado, el indice debe variar un {0}</source>
@@ -4023,6 +4017,12 @@ correspondiente en la tabla</source>
     <message>
         <location filename="ui/Ui_wdgIndexRange.py" line="193"/>
         <source>Index lowest limit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/wdgIndexRange.py" line="30"/>
+        <source>{0} {1} ({2}): {3} shares of {4} = {5}
+</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -4459,11 +4459,6 @@ Daily Diff: {5}. Assets average age: {6}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgJointReport.py" line="454"/>
-        <source>A&#xc3;&#xb1;adidos de acciones</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="ui/Ui_wdgJointReport.py" line="439"/>
         <source>En este listado se muestran los a&#xc3;&#xb1;adidos de acciones a coste cero que se han producido en el a&#xc3;&#xb1;o
 
@@ -4485,6 +4480,11 @@ S&#xc3;&#xb3;lo se contabilizar&#xc3;&#xa1; cuando se vendan las acciones</sourc
     <message>
         <location filename="ui/wdgJointReport.py" line="151"/>
         <source>balance a {0}, {1}</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_wdgJointReport.py" line="454"/>
+        <source>Shares addition</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
