@@ -1059,10 +1059,10 @@ class SetInvestmentOperationsCurrent:
             balance=o.balance(o.inversion.product.result.basic.last)
             sumbalance=sumbalance+balance
             sumbalanceage=sumbalanceage+balance*o.age()
-        if sumbalance!=0:
+        if sumbalance!=Decimal(0):
             return round(sumbalanceage/sumbalance, 2)
         else:
-            return None
+            return 0
             
     def datetime_primera_operacion(self):
         if len(self.arr)==0:

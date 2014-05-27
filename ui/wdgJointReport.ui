@@ -75,7 +75,7 @@
         <bool>true</bool>
        </property>
        <property name="currentIndex">
-        <number>2</number>
+        <number>5</number>
        </property>
        <widget class="QWidget" name="tab_3">
         <attribute name="icon">
@@ -571,7 +571,7 @@ font: 75 12pt &quot;Sans Serif&quot;;</string>
           <normaloff>:/xulpymoney/add.png</normaloff>:/xulpymoney/add.png</iconset>
         </attribute>
         <attribute name="title">
-         <string>Añadidos de acciones</string>
+         <string>Shares addition</string>
         </attribute>
         <layout class="QHBoxLayout" name="horizontalLayout_4">
          <item>
