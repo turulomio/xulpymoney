@@ -9,18 +9,17 @@ class wdgAccounts(QWidget, Ui_wdgAccounts):
         QWidget.__init__(self, parent)
         self.setupUi(self)
         self.mem=mem
-        self.tblAccounts.settings("wdgAccounts",  self.mem)
-        self.cuentas=self.mem.data.cuentas_active.arr
+        self.tblAccounts.settings(None,  self.mem)
+        self.cuentas=self.mem.data.cuentas_active
         self.selAccount=None
         self.load_table()
-        self.loadedinactive=False
-        
 
     def load_table(self):
         """Función que carga la tabla de cuentas"""
-        self.tblAccounts.setRowCount(len(self.cuentas));
+        self.cuentas.sort()
+        self.tblAccounts.setRowCount(len(self.cuentas.arr));
         sumsaldos=0
-        for i, c in enumerate(self.cuentas):
+        for i, c in enumerate(self.cuentas.arr):
             self.tblAccounts.setItem(i, 0, QTableWidgetItem((c.name)))
             self.tblAccounts.setItem(i, 1, QTableWidgetItem((c.eb.name)))
             self.tblAccounts.setItem(i, 2, QTableWidgetItem((c.numero)))
@@ -57,17 +56,17 @@ class wdgAccounts(QWidget, Ui_wdgAccounts):
             self.selAccount.borrar(cur)
             self.mem.con.commit()
             self.mem.data.cuentas_active.arr.remove(self.selAccount)
-            self.cuentas.remove(self.selAccount)
+            self.cuentas.arr.remove(self.selAccount)
         cur.close()
         self.on_chkInactivas_stateChanged(self.chkInactivas.checkState())
         self.load_table()
         
     def on_chkInactivas_stateChanged(self, state):
         if state==Qt.Unchecked:
-            self.cuentas=self.mem.data.cuentas_active.arr
+            self.cuentas=self.mem.data.cuentas_active
         else:
             self.mem.data.load_inactives()
-            self.cuentas=self.mem.data.cuentas_inactive.arr
+            self.cuentas=self.mem.data.cuentas_inactive
         self.load_table()
         
 
@@ -83,8 +82,6 @@ class wdgAccounts(QWidget, Ui_wdgAccounts):
             self.actionActive.setEnabled(True)
             self.actionAccountReport.setEnabled(True)
             self.actionActive.setChecked(self.selAccount.activa)
-        
-        
         
         menu=QMenu()
         menu.addAction(self.actionAccountAdd)
@@ -126,6 +123,6 @@ class wdgAccounts(QWidget, Ui_wdgAccounts):
         self.selAccount=None
         for i in self.tblAccounts.selectedItems():#itera por cada item no row.
             if i.column()==0:
-                self.selAccount=self.cuentas[i.row()]
+                self.selAccount=self.cuentas.arr[i.row()]
                 break
         print (self.selAccount)
