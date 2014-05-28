@@ -25,8 +25,8 @@ class frmAccountOperationsAdd(QDialog, Ui_frmAccountOperationsAdd):
         self.mem.data.cuentas_active.qcombobox(self.cmbAccounts)
 
         if opertarjeta!=None:
-            self.setWindowTitle(self.trUtf8("Modificación de una operación de tarjeta"))
-            self.lblTitulo.setText(self.trUtf8("Modificación de un operación de tarjeta"))
+            self.setWindowTitle(self.trUtf8("Credit card operation update"))
+            self.lblTitulo.setText(self.trUtf8("Credit card operation update"))
             self.cmbAccounts.hide()
             self.tipo=4            
             self.calendar.setSelectedDate(self.opertarjeta.fecha)
@@ -35,14 +35,14 @@ class frmAccountOperationsAdd(QDialog, Ui_frmAccountOperationsAdd):
             self.txtImporte.setText(str(self.opertarjeta.importe))
             self.txtComentario.setText(self.opertarjeta.comentario)
         elif tarjeta!=None:
-            self.setWindowTitle(self.trUtf8("Nueva operación de tarjeta"))
-            self.lblTitulo.setText(self.trUtf8("Nueva operación de tarjeta"))
+            self.setWindowTitle(self.trUtf8("New credit card operation"))
+            self.lblTitulo.setText(self.trUtf8("New credit card operation"))
             self.cmbAccounts.hide()
             self.tipo=3
         elif self.opercuenta!=None:
             self.tipo=2
-            self.setWindowTitle(self.trUtf8("Modificación de un movimiento de cuenta"))
-            self.lblTitulo.setText(self.trUtf8("Modificación de un movimiento de cuenta"))
+            self.setWindowTitle(self.trUtf8("Account operation update"))
+            self.lblTitulo.setText(self.trUtf8("Account operation update"))
             self.calendar.setSelectedDate(self.opercuenta.fecha)
             self.cmbConcepts.setCurrentIndex(self.cmbConcepts.findData(self.opercuenta.concepto.id))
             self.cmbAccounts.setCurrentIndex(self.cmbAccounts.findData(self.opercuenta.cuenta.id))
@@ -50,8 +50,8 @@ class frmAccountOperationsAdd(QDialog, Ui_frmAccountOperationsAdd):
             self.txtComentario.setText((self.opercuenta.comentario))    
         else:
             self.tipo=1
-            self.setWindowTitle(self.trUtf8("Nuevo movimiento de cuenta"))
-            self.lblTitulo.setText(self.trUtf8("Nuevo movimiento de cuenta"))
+            self.setWindowTitle(self.trUtf8("New account operation"))
+            self.lblTitulo.setText(self.trUtf8("New account operation"))
             self.cmbAccounts.setCurrentIndex(self.cmbAccounts.findData(self.cuenta.id))
 
         
@@ -65,14 +65,14 @@ class frmAccountOperationsAdd(QDialog, Ui_frmAccountOperationsAdd):
         if concepto.tipooperacion.id==1 and importe>0:
             m=QMessageBox()
             m.setIcon(QMessageBox.Information)
-            m.setText(self.trUtf8("Un gasto no puede tener un importe positivo"))
+            m.setText(self.trUtf8("Expenses can not have a positive amount"))
             m.exec_()    
             return
             
         if concepto.tipooperacion.id==2 and importe<0:
             m=QMessageBox()
             m.setIcon(QMessageBox.Information)
-            m.setText(self.trUtf8("Un ingreso no puede tener un importe negativo"))
+            m.setText(self.trUtf8("Incomes can not have a negative amount"))
             m.exec_()
             return
                     

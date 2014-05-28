@@ -49,7 +49,7 @@
      <item>
       <widget class="QTabWidget" name="tab">
        <property name="currentIndex">
-        <number>1</number>
+        <number>0</number>
        </property>
        <widget class="QWidget" name="tabMovimientos">
         <attribute name="icon">
@@ -705,7 +705,10 @@
      <normaloff>:/xulpymoney/add.png</normaloff>:/xulpymoney/add.png</iconset>
    </property>
    <property name="text">
-    <string>Nuevo movimiento</string>
+    <string>New operation</string>
+   </property>
+   <property name="toolTip">
+    <string>New operation</string>
    </property>
   </action>
   <action name="actionOperationDelete">
@@ -714,7 +717,10 @@
      <normaloff>:/xulpymoney/list-remove.png</normaloff>:/xulpymoney/list-remove.png</iconset>
    </property>
    <property name="text">
-    <string>Borrar el movimiento</string>
+    <string>Delete operation</string>
+   </property>
+   <property name="toolTip">
+    <string>Delete operation</string>
    </property>
   </action>
   <action name="actionTarjetaNueva">
@@ -723,7 +729,7 @@
      <normaloff>:/xulpymoney/add.png</normaloff>:/xulpymoney/add.png</iconset>
    </property>
    <property name="text">
-    <string>Nueva Tarjeta</string>
+    <string>New credit card</string>
    </property>
   </action>
   <action name="actionTarjetaBorrar">
@@ -732,7 +738,10 @@
      <normaloff>:/xulpymoney/list-remove.png</normaloff>:/xulpymoney/list-remove.png</iconset>
    </property>
    <property name="text">
-    <string>Borrar Tarjeta</string>
+    <string>Delete credit card</string>
+   </property>
+   <property name="toolTip">
+    <string>Delete credit card</string>
    </property>
   </action>
   <action name="actionOperTarjetaNueva">
@@ -741,7 +750,10 @@
      <normaloff>:/xulpymoney/add.png</normaloff>:/xulpymoney/add.png</iconset>
    </property>
    <property name="text">
-    <string>Nueva Operación de Tarjeta</string>
+    <string>New credit card operation</string>
+   </property>
+   <property name="toolTip">
+    <string>New credit card operation</string>
    </property>
   </action>
   <action name="actionOperTarjetaBorrar">
@@ -750,7 +762,10 @@
      <normaloff>:/xulpymoney/list-remove.png</normaloff>:/xulpymoney/list-remove.png</iconset>
    </property>
    <property name="text">
-    <string>Borrar Operación de Tarjeta</string>
+    <string>Delete credit card operation</string>
+   </property>
+   <property name="toolTip">
+    <string>Delete credit card operation</string>
    </property>
   </action>
   <action name="actionTarjetaModificar">
@@ -759,10 +774,10 @@
      <normaloff>:/xulpymoney/editar.png</normaloff>:/xulpymoney/editar.png</iconset>
    </property>
    <property name="text">
-    <string>Modificar Tarjeta</string>
+    <string>Update credit card</string>
    </property>
    <property name="toolTip">
-    <string>Modificar Tarjeta</string>
+    <string>Update credit card</string>
    </property>
   </action>
   <action name="actionTarjetaActivar">
@@ -779,10 +794,10 @@
      <normaloff>:/xulpymoney/editar.png</normaloff>:/xulpymoney/editar.png</iconset>
    </property>
    <property name="text">
-    <string>Modificar movimiento</string>
+    <string>Update operation</string>
    </property>
    <property name="toolTip">
-    <string>Modificar Movimiento</string>
+    <string>Update operation</string>
    </property>
   </action>
   <action name="actionOperTarjetaModificar">
@@ -791,10 +806,10 @@
      <normaloff>:/xulpymoney/editar.png</normaloff>:/xulpymoney/editar.png</iconset>
    </property>
    <property name="text">
-    <string>Modificar Operación de Tarjeta</string>
+    <string>Update credit card operation</string>
    </property>
    <property name="toolTip">
-    <string>Modificar Operación de Tarjeta</string>
+    <string>Update credit card operation</string>
    </property>
   </action>
   <action name="actionTransferDelete">

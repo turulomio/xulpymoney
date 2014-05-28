@@ -632,39 +632,29 @@ p, li { white-space: pre-wrap; }
         <source>Save</source>
         <translation type="unfinished"></translation>
     </message>
-    <message encoding="UTF-8">
-        <location filename="ui/frmAccountOperationsAdd.py" line="27"/>
-        <source>Modificación de una operación de tarjeta</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message encoding="UTF-8">
+    <message>
         <location filename="ui/frmAccountOperationsAdd.py" line="28"/>
-        <source>Modificación de un operación de tarjeta</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message encoding="UTF-8">
-        <location filename="ui/frmAccountOperationsAdd.py" line="38"/>
-        <source>Nueva operación de tarjeta</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message encoding="UTF-8">
-        <location filename="ui/frmAccountOperationsAdd.py" line="44"/>
-        <source>Modificación de un movimiento de cuenta</source>
+        <source>Credit card operation update</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmAccountOperationsAdd.py" line="53"/>
-        <source>Nuevo movimiento de cuenta</source>
+        <location filename="ui/frmAccountOperationsAdd.py" line="38"/>
+        <source>New credit card operation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/frmAccountOperationsAdd.py" line="44"/>
+        <source>Account operation update</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/frmAccountOperationsAdd.py" line="67"/>
-        <source>Un gasto no puede tener un importe positivo</source>
+        <source>Expenses can not have a positive amount</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/frmAccountOperationsAdd.py" line="74"/>
-        <source>Un ingreso no puede tener un importe negativo</source>
+        <source>Incomes can not have a negative amount</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -701,7 +691,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmAccountsReport.py" line="478"/>
+        <location filename="ui/Ui_frmAccountsReport.py" line="483"/>
         <source>Is active?</source>
         <translation type="unfinished"></translation>
     </message>
@@ -831,57 +821,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmAccountsReport.py" line="470"/>
-        <source>Nuevo movimiento</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_frmAccountsReport.py" line="471"/>
-        <source>Borrar el movimiento</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_frmAccountsReport.py" line="472"/>
-        <source>Nueva Tarjeta</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_frmAccountsReport.py" line="473"/>
-        <source>Borrar Tarjeta</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_frmAccountsReport.py" line="474"/>
-        <source>Nueva Operaci&#xc3;&#xb3;n de Tarjeta</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_frmAccountsReport.py" line="475"/>
-        <source>Borrar Operaci&#xc3;&#xb3;n de Tarjeta</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_frmAccountsReport.py" line="477"/>
-        <source>Modificar Tarjeta</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_frmAccountsReport.py" line="479"/>
-        <source>Modificar movimiento</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_frmAccountsReport.py" line="480"/>
-        <source>Modificar Movimiento</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_frmAccountsReport.py" line="482"/>
-        <source>Modificar Operaci&#xc3;&#xb3;n de Tarjeta</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_frmAccountsReport.py" line="484"/>
+        <location filename="ui/Ui_frmAccountsReport.py" line="489"/>
         <source>Delete transfer</source>
         <translation type="unfinished"></translation>
     </message>
@@ -928,6 +868,51 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="ui/Ui_frmAccountsReport.py" line="404"/>
         <source>Account report</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_frmAccountsReport.py" line="471"/>
+        <source>New operation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_frmAccountsReport.py" line="473"/>
+        <source>Delete operation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_frmAccountsReport.py" line="474"/>
+        <source>New credit card</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_frmAccountsReport.py" line="476"/>
+        <source>Delete credit card</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_frmAccountsReport.py" line="478"/>
+        <source>New credit card operation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_frmAccountsReport.py" line="480"/>
+        <source>Delete credit card operation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_frmAccountsReport.py" line="482"/>
+        <source>Update credit card</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_frmAccountsReport.py" line="485"/>
+        <source>Update operation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_frmAccountsReport.py" line="487"/>
+        <source>Update credit card operation</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3292,12 +3277,12 @@ correspondiente en la tabla</source>
 <context>
     <name>wdgAccounts</name>
     <message>
-        <location filename="ui/Ui_wdgAccounts.py" line="110"/>
+        <location filename="ui/Ui_wdgAccounts.py" line="111"/>
         <source>Account list</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgAccounts.py" line="111"/>
+        <location filename="ui/Ui_wdgAccounts.py" line="112"/>
         <source>Show inactive accounts</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3347,12 +3332,12 @@ correspondiente en la tabla</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgAccounts.py" line="29"/>
+        <location filename="ui/wdgAccounts.py" line="28"/>
         <source>Accounts balance: {0}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgAccounts.py" line="54"/>
+        <location filename="ui/wdgAccounts.py" line="53"/>
         <source>This account has associated investments, credit cards or operations. It can&apos;t be deleted</source>
         <translation type="unfinished"></translation>
     </message>
