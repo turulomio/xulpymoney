@@ -58,9 +58,12 @@ class wdgProducts(QWidget, Ui_wdgProducts):
         
 
     def build_table(self):
+        inicio=datetime.datetime.now()
+        self.tblInvestments.clearContents()
         self.tblInvestments.setRowCount(len(self.products))
         tachado = QtGui.QFont()
         tachado.setStrikeOut(True)        #Fuente tachada
+        transfer=QIcon(":/xulpymoney/transfer.png")
         for i,  inv in enumerate(self.products):
             self.tblInvestments.setItem(i, 0, QTableWidgetItem((str(inv.id))))
             self.tblInvestments.setItem(i, 1, QTableWidgetItem(str(inv.name).upper()))
@@ -71,7 +74,6 @@ class wdgProducts(QWidget, Ui_wdgProducts):
             self.tblInvestments.setItem(i, 5, qtpc(inv.result.basic.tpc_diario()))
             self.tblInvestments.setItem(i, 6, qtpc(inv.result.basic.tpc_anual()))
             
-            
             if inv.estimations_dps.currentYear()==None:
                 self.tblInvestments.setItem(i, 7, qtpc(None))
                 self.tblInvestments.item(i, 7).setBackgroundColor( QColor(255, 182, 182))          
@@ -79,12 +81,15 @@ class wdgProducts(QWidget, Ui_wdgProducts):
                 self.tblInvestments.setItem(i, 7, qtpc(inv.estimations_dps.currentYear().percentage()))  
                 
             if inv.active==True:#Active
-                self.tblInvestments.item(i, 4).setIcon(QIcon(":/xulpymoney/transfer.png"))
+                self.tblInvestments.item(i, 4).setIcon(transfer)
             if inv.obsolete==True:#Obsolete
                 self.tblInvestments.item(i, 1).setFont(tachado)
    
         self.tblInvestments.clearSelection()    
         self.tblInvestments.setFocus()
+        if len(self.products)!=0:      
+            diff=datetime.datetime.now()-inicio
+            print("wdgProducts > build_table: {0} ({1} cada uno)".format(str(diff), diff/len(self.products)))
         
     @QtCore.pyqtSlot()  
     def on_actionFavorites_activated(self):
@@ -143,8 +148,10 @@ class wdgProducts(QWidget, Ui_wdgProducts):
             
     @QtCore.pyqtSlot() 
     def on_actionProductEdit_activated(self):
-        self.on_actionProductReport_activated()
-
+        w=frmProductReport(self.mem, self.selProduct, None,  self)
+        w.exec_()        
+        self.build_array(self.sql)
+        self.build_table()
 
     @QtCore.pyqtSlot() 
     def on_actionProductNew_activated(self):
@@ -152,14 +159,13 @@ class wdgProducts(QWidget, Ui_wdgProducts):
         w.exec_()        
         self.build_array(self.sql)
         self.build_table()
+
     @QtCore.pyqtSlot() 
     def on_actionProductReport_activated(self):
-
         w=frmProductReport(self.mem, self.selProduct, None,  self)
         w.exec_()        
         self.build_array(self.sql)
         self.build_table()
-#        w.mytimer.stop()
         
     @QtCore.pyqtSlot() 
     def on_actionSortTPCDiario_activated(self):
