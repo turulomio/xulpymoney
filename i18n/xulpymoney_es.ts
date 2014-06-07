@@ -33,27 +33,27 @@
         <translation>Euro</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5306"/>
+        <location filename="libxulpymoney.py" line="5307"/>
         <source>Warrants</source>
         <translation>Warrants</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5309"/>
+        <location filename="libxulpymoney.py" line="5310"/>
         <source>Planes de pensiones</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5311"/>
+        <location filename="libxulpymoney.py" line="5312"/>
         <source>Dep&#xc3;&#xb3;sitos</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5749"/>
+        <location filename="libxulpymoney.py" line="5765"/>
         <source>Sourceforge version detected: %s</source>
         <translation>Versión de Sourceforge detectada: %s</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5751"/>
+        <location filename="libxulpymoney.py" line="5767"/>
         <source>Error buscando la versi&#xc3;&#xb3;n actual de Sourceforge</source>
         <translation></translation>
     </message>
@@ -73,7 +73,7 @@
         <translation>La tarjeta de crédito está inactiva. Debes activarla primero</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="6068"/>
+        <location filename="libxulpymoney.py" line="6084"/>
         <source>This option is being developed</source>
         <translation>Esta opción está en desarrollo</translation>
     </message>
@@ -108,17 +108,17 @@
         <translation>Comisión</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5549"/>
+        <location filename="libxulpymoney.py" line="5565"/>
         <source>Error conecting to MyStocksd, waiting 10 seconds</source>
         <translation>Error al conectar to MyStocksd, esperando 10 segundos</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5562"/>
+        <location filename="libxulpymoney.py" line="5578"/>
         <source>Error conecting to MyStocks</source>
         <translation>Error al conectar a MyStocks</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5626"/>
+        <location filename="libxulpymoney.py" line="5642"/>
         <source>Error conecting to Xulpymoney</source>
         <translation>Error al conectar a Xulpymoney</translation>
     </message>
@@ -153,7 +153,7 @@
         <translation>Tipo de operación</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5302"/>
+        <location filename="libxulpymoney.py" line="5303"/>
         <source>Shares</source>
         <translation>Acciones</translation>
     </message>
@@ -403,37 +403,37 @@
         <translation>Índice de referencia</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5303"/>
+        <location filename="libxulpymoney.py" line="5304"/>
         <source>Funds</source>
         <translation>Fondos de inversión</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5304"/>
+        <location filename="libxulpymoney.py" line="5305"/>
         <source>Indexes</source>
         <translation>Índices</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5305"/>
+        <location filename="libxulpymoney.py" line="5306"/>
         <source>ETF</source>
         <translation>ETF</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5307"/>
+        <location filename="libxulpymoney.py" line="5308"/>
         <source>Currencies</source>
         <translation>Divisas</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5308"/>
+        <location filename="libxulpymoney.py" line="5309"/>
         <source>Public Bond</source>
         <translation>Renta fija pública</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5310"/>
+        <location filename="libxulpymoney.py" line="5311"/>
         <source>Private Bond</source>
         <translation>Renta fija privada</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5312"/>
+        <location filename="libxulpymoney.py" line="5313"/>
         <source>Accounts</source>
         <translation>Cuentas</translation>
     </message>
@@ -2649,7 +2649,7 @@ correspondiente en la tabla</source>
         <translation>{0} cotizaciones han sido purgadas de {1}</translation>
     </message>
     <message>
-        <location filename="ui/frmProductReport.py" line="444"/>
+        <location filename="ui/frmProductReport.py" line="447"/>
         <source>You have to add a quote and a dividend per share estimation to the new product</source>
         <translation>Tienes que añadir un valor y una estimación del dividendo por acción al nuevo producto</translation>
     </message>

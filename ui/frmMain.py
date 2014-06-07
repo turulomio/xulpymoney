@@ -62,8 +62,14 @@ class frmMain(QMainWindow, Ui_frmMain):
             Product(self.mem).changeDeletable(  ids2protect,  False)
         self.mem.conms.commit()
         
-        
-        #Maintenance(self.mem).regenera_todas_opercuentasdeoperinversiones()
+#        self.mem.data.load_inactives()
+#        print ("==========================================")
+#        Maintenance(self.mem).show_investments_status(datetime.date(2007, 2, 28))
+#        print ("==========================================")
+#        Maintenance(self.mem).show_investments_status(datetime.date(2007, 3, 30))
+#        print ("==========================================")
+#        Maintenance(self.mem).show_investments_status(datetime.date(2007, 4, 30))
+#        print ("==========================================")
 
         
     @QtCore.pyqtSlot()  

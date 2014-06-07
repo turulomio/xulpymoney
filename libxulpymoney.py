@@ -4816,6 +4816,7 @@ class Quote:
         row=curms.fetchone()
         curms.close()
         return self.init__db_row(row, None)        
+        
     def init__from_query_triplete(self, product): 
         """Función que busca el last, penultimate y endlastyear de golpe
        Devuelve un array de Quote en el que arr[0] es endlastyear, [1] es penultimate y [2] es last
@@ -5424,6 +5425,21 @@ class Maintenance:
             print (inv)
             inv.actualizar_cuentasoperaciones_asociadas()
         self.mem.con.commit()        
+        
+        
+    def show_investments_status(self, date):
+        """Shows investments status in a date"""
+        datet=dt(date, datetime.time(22, 00), self.mem.localzone)
+        sumbalance=0
+        print ("{0:<40s} {1:>15s} {2:>15s} {3:>15s}".format("Investments at {0}".format(date), "Shares", "Price", "Balance"))
+        for inv in self.mem.data.inversiones_all().arr:
+            balance=inv.balance(date)
+            sumbalance=sumbalance+balance
+            acciones=inv.acciones(date)
+            price=Quote(self.mem).init__from_query(inv.product, datet)
+            if acciones!=0:
+                print ("{0:<40s} {1:>15f} {2:>15s} {3:>15s}".format(inv.name, acciones, self.mem.localcurrency.string(price.quote),  self.mem.localcurrency.string(balance)))
+        print ("{0:>40s} {1:>15s} {2:>15s} {3:>15s}".format("Total balance at {0}".format(date), "","", self.mem.localcurrency.string(sumbalance)))
 
 class MemMyStock:
     def __init__(self):
