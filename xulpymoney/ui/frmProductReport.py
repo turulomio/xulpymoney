@@ -423,7 +423,7 @@ class frmProductReport(QDialog, Ui_frmProductReport):
         self.product.tpc=int(self.txtTPC.text())
         self.product.mode=self.mem.investmentsmodes.find(self.cmbPCI.itemData(self.cmbPCI.currentIndex()))
         self.product.apalancado=self.mem.apalancamientos.find(self.cmbApalancado.itemData(self.cmbApalancado.currentIndex()))
-        self.product.bolsa=self.mem.stockexchanges.find(self.cmbBolsa.itemData(self.cmbBolsa.currentIndex()))
+        self.product.stockexchange=self.mem.stockexchanges.find(self.cmbBolsa.itemData(self.cmbBolsa.currentIndex()))
         self.product.ticker=self.txtYahoo.text()
         self.product.system=False
         self.product.priority=SetPriorities(self.mem).init__create_from_combo(self.cmbPriority)
