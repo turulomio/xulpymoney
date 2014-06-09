@@ -154,7 +154,6 @@ class wdgInvestmentClasses(QWidget, Ui_wdgInvestmentClasses):
         data=[]
         explode=[]
         for t in self.mem.types.list():
-#            id_type=int(id_type)
             total=0
             for i in self.mem.data.inversiones_active.arr:
                 if i.product.type==t:
@@ -167,7 +166,10 @@ class wdgInvestmentClasses(QWidget, Ui_wdgInvestmentClasses):
             if total>0:
                 labels.append(t.name)
                 data.append(total)
-                explode.append(0)
+                if t.id==11:#Accounts
+                    explode.append(0.15)        
+                else:
+                    explode.append(0)
         self.canvasTipo.mydraw(data, labels,  explode)  
 
         

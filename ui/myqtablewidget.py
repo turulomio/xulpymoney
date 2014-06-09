@@ -27,6 +27,8 @@ class myQTableWidget(QTableWidget):
             
         if section==None:
             self.horizontalHeader().setResizeMode(QHeaderView.ResizeToContents)
+            self.verticalHeader().setResizeMode(QHeaderView.ResizeToContents)
+            self.mytimer.stop()
         else:
             self.columnswidth_in_config=self.mem.config_ui.get_list( self.section,   self.objectName()+"_columns_width")
             if len(self.columnswidth_in_config)==self.columnCount():
@@ -36,6 +38,7 @@ class myQTableWidget(QTableWidget):
         
     def checksettings(self):
         ##Si está vacio columnswidth_in_config lo carga y guarda en settings
+        
         if len(self.columnswidth_in_config)==0:#si no hay settings primera vez
             print ("a")
             self.save_columns()
