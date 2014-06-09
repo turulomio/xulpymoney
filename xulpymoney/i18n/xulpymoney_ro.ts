@@ -2648,7 +2648,7 @@ correspondiente en la tabla</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmProductReport.py" line="447"/>
+        <location filename="ui/frmProductReport.py" line="444"/>
         <source>You have to add a quote and a dividend per share estimation to the new product</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4064,7 +4064,7 @@ correspondiente en la tabla</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgInvestmentClasses.py" line="239"/>
+        <location filename="ui/wdgInvestmentClasses.py" line="241"/>
         <source>Accounts</source>
         <translation type="unfinished"></translation>
     </message>

@@ -104,7 +104,7 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
         self.on_chkOperaciones_stateChanged(self.chkOperaciones.checkState())
         self.inversion.op_actual.myqtablewidget(self.tblInvestmentCurrent,  "frmInvestmentReport")
         self.lblAge.setText(self.trUtf8("Current operations average age: {0}".format(days_to_year_month(self.inversion.op_actual.average_age()))))
-        self.inversion.op_historica.myqtablewidget(self.tblInvestmentHistorica,  "frmInvestmentReport"  )
+        self.inversion.op_historica.myqtablewidget(self.tblInvestmentHistorical,  "frmInvestmentReport"  )
         if self.inversion!=None:#We are adding a new investment
             self.on_chkHistoricalDividends_stateChanged(self.chkHistoricalDividends.checkState())
     
