@@ -450,7 +450,7 @@
                    </property>
                    <layout class="QVBoxLayout" name="verticalLayout_7">
                     <item>
-                     <widget class="myQTableWidget" name="tblOperCreditCards">
+                     <widget class="myQTableWidget" name="tblCreditCardOpers">
                       <property name="contextMenuPolicy">
                        <enum>Qt::CustomContextMenu</enum>
                       </property>
@@ -723,7 +723,7 @@
     <string>Delete operation</string>
    </property>
   </action>
-  <action name="actionTarjetaNueva">
+  <action name="actionCreditCardAdd">
    <property name="icon">
     <iconset resource="../images/xulpymoney.qrc">
      <normaloff>:/xulpymoney/add.png</normaloff>:/xulpymoney/add.png</iconset>
@@ -732,7 +732,7 @@
     <string>New credit card</string>
    </property>
   </action>
-  <action name="actionTarjetaBorrar">
+  <action name="actionCreditCardDelete">
    <property name="icon">
     <iconset resource="../images/xulpymoney.qrc">
      <normaloff>:/xulpymoney/list-remove.png</normaloff>:/xulpymoney/list-remove.png</iconset>
@@ -744,7 +744,7 @@
     <string>Delete credit card</string>
    </property>
   </action>
-  <action name="actionOperTarjetaNueva">
+  <action name="actionCreditCardOperAdd">
    <property name="icon">
     <iconset resource="../images/xulpymoney.qrc">
      <normaloff>:/xulpymoney/add.png</normaloff>:/xulpymoney/add.png</iconset>
@@ -756,7 +756,7 @@
     <string>New credit card operation</string>
    </property>
   </action>
-  <action name="actionOperTarjetaBorrar">
+  <action name="actionCreditCardOperDelete">
    <property name="icon">
     <iconset resource="../images/xulpymoney.qrc">
      <normaloff>:/xulpymoney/list-remove.png</normaloff>:/xulpymoney/list-remove.png</iconset>
@@ -768,7 +768,7 @@
     <string>Delete credit card operation</string>
    </property>
   </action>
-  <action name="actionTarjetaModificar">
+  <action name="actionCreditCardEdit">
    <property name="icon">
     <iconset resource="../images/xulpymoney.qrc">
      <normaloff>:/xulpymoney/editar.png</normaloff>:/xulpymoney/editar.png</iconset>
@@ -780,7 +780,7 @@
     <string>Update credit card</string>
    </property>
   </action>
-  <action name="actionTarjetaActivar">
+  <action name="actionCreditCardActivate">
    <property name="checkable">
     <bool>true</bool>
    </property>
@@ -800,7 +800,7 @@
     <string>Update operation</string>
    </property>
   </action>
-  <action name="actionOperTarjetaModificar">
+  <action name="actionCreditCardOperEdit">
    <property name="icon">
     <iconset resource="../images/xulpymoney.qrc">
      <normaloff>:/xulpymoney/editar.png</normaloff>:/xulpymoney/editar.png</iconset>
