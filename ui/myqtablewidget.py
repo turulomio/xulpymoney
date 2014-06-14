@@ -27,9 +27,10 @@ class myQTableWidget(QTableWidget):
             
         if section==None:
             self.horizontalHeader().setResizeMode(QHeaderView.ResizeToContents)
-            self.verticalHeader().setResizeMode(QHeaderView.ResizeToContents)
+            self.resizeColumnsToContents()
             self.mytimer.stop()
         else:
+            self.horizontalHeader().setResizeMode(QHeaderView.Interactive)
             self.columnswidth_in_config=self.mem.config_ui.get_list( self.section,   self.objectName()+"_columns_width")
             if len(self.columnswidth_in_config)==self.columnCount():
                 for i in range(self.columnCount()):
@@ -38,7 +39,6 @@ class myQTableWidget(QTableWidget):
         
     def checksettings(self):
         ##Si está vacio columnswidth_in_config lo carga y guarda en settings
-        
         if len(self.columnswidth_in_config)==0:#si no hay settings primera vez
             print ("a")
             self.save_columns()
@@ -66,4 +66,10 @@ class myQTableWidget(QTableWidget):
             self.mem.config_ui.set_list(self.section, self.objectName()+"_columns_width", self.columnswidth_in_config)
             self.mem.config_ui.save()
             print (self.section, self.objectName(), "columns width saved")
+            
+            
+    def verticalScrollbarAction(self,  action):
+        self.resizeColumnsToContents()
+        
+        
 

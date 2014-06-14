@@ -4233,17 +4233,17 @@ Daily Diff: {5}. Assets average age: {6}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgInvestmentsOperations.ui" line="171"/>
+        <location filename="ui/wdgInvestmentsOperations.ui" line="177"/>
         <source>Show investment</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgInvestmentsOperations.ui" line="183"/>
+        <location filename="ui/wdgInvestmentsOperations.ui" line="189"/>
         <source>Show investment operation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgInvestmentsOperations.ui" line="195"/>
+        <location filename="ui/wdgInvestmentsOperations.ui" line="201"/>
         <source>Show account</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4253,7 +4253,7 @@ Daily Diff: {5}. Assets average age: {6}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgInvestmentsOperations.ui" line="207"/>
+        <location filename="ui/wdgInvestmentsOperations.ui" line="213"/>
         <source>Show product</source>
         <translation type="unfinished"></translation>
     </message>

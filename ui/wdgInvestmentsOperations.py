@@ -18,8 +18,11 @@ class wdgInvestmentsOperations(QWidget, Ui_wdgInvestmentsOperations):
         QObject.connect(self.wym, SIGNAL("changed"), self.on_wym_changed)
         self.setOperations=SetInvestmentOperations(self.mem)
         self.setCurrent=SetInvestmentOperationsCurrent(self.mem)
-        self.selProductOperation=None
+        self.selOperation=None#For table
+        self.selCurrentOperation=None#For tblCurrent
+        self.table.settings(None,  self.mem)
         self.tblCurrent.settings("wdgInvestmentsOperations",  self.mem)
+        self.tab.setCurrentIndex(0)
         self.load()
         self.load_current()
         
@@ -54,30 +57,57 @@ class wdgInvestmentsOperations(QWidget, Ui_wdgInvestmentsOperations):
         self.load()    
 
     def on_table_itemSelectionChanged(self):
-        self.selProductOperation=None
+        self.selOperation=None
         for i in self.table.selectedItems():#itera por cada item no row.
-            self.selProductOperation=self.setOperations.arr[i.row()]
+            self.selOperation=self.setOperations.arr[i.row()]
+            
+    def on_tblCurrent_itemSelectionChanged(self):
+        self.selCurrentOperation=None
+        for i in self.tblCurrent.selectedItems():#itera por cada item no row.
+            self.selCurrentOperation=self.setCurrent.arr[i.row()]
     
     @QtCore.pyqtSlot() 
     def on_actionShowAccount_activated(self):
-        w=frmAccountsReport(self.mem,   self.selProductOperation.inversion.cuenta, self)
+        if self.tab.currentIndex()==0:#Operation list
+            cuenta=self.selOperation.inversion.cuenta
+        else:#Current operation list
+            cuenta=self.selCurrentOperation.inversion.cuenta
+        w=frmAccountsReport(self.mem, cuenta, self)
         w.exec_()
         self.load()
         
     @QtCore.pyqtSlot() 
     def on_actionShowInvestment_activated(self):
-        w=frmInvestmentReport(self.mem, self.selProductOperation.inversion, self)
+        if self.tab.currentIndex()==0:#Operation list
+            investment=self.selOperation.inversion
+        else:#Current operation list
+            investment=self.selCurrentOperation.inversion
+        w=frmInvestmentReport(self.mem, investment, self)
         w.exec_()
         self.load()
                 
     @QtCore.pyqtSlot() 
     def on_actionShowProduct_activated(self):
-        w=frmProductReport(self.mem, self.selProductOperation.inversion.product, self.selProductOperation.inversion, self)
+        if self.tab.currentIndex()==0:#Operation list
+            investment=self.selOperation.inversion
+        else:#Current operation list
+            investment=self.selCurrentOperation.inversion
+        w=frmProductReport(self.mem, investment.product, investment, self)
         w.exec_()
         self.load()
-        
+
+    @QtCore.pyqtSlot() 
+    def on_actionShowInvestmentOperation_activated(self):
+        if self.tab.currentIndex()==0:#Operation list
+            operation=self.selOperation
+        else:#Current operation list
+            operation=self.selCurrentOperation
+        w=frmInvestmentOperationsAdd(self.mem, operation.inversion, operation, self)
+        w.exec_()
+        self.load()
+
     def on_table_customContextMenuRequested(self,  pos):
-        if self.selProductOperation==None:
+        if self.selOperation==None:
             self.actionShowAccount.setEnabled(False)
             self.actionShowInvestment.setEnabled(False)
             self.actionShowInvestmentOperation.setEnabled(False)
@@ -94,13 +124,30 @@ class wdgInvestmentsOperations(QWidget, Ui_wdgInvestmentsOperations):
         menu.addAction(self.actionShowInvestment)   
         menu.addSeparator()   
         menu.addAction(self.actionShowInvestmentOperation)      
-        menu.addSeparator()   
-        menu.addAction(self.actionShowProduct)            
+        menu.addSeparator()
+        menu.addAction(self.actionShowProduct)
         menu.exec_(self.table.mapToGlobal(pos))
+                
+    def on_tblCurrent_customContextMenuRequested(self,  pos):
+        if self.selCurrentOperation==None:
+            self.actionShowAccount.setEnabled(False)
+            self.actionShowInvestment.setEnabled(False)
+            self.actionShowInvestmentOperation.setEnabled(False)
+            self.actionShowProduct.setEnabled(False)
+        else:
+            self.actionShowAccount.setEnabled(True)
+            self.actionShowInvestment.setEnabled(True)
+            self.actionShowInvestmentOperation.setEnabled(True)
+            self.actionShowProduct.setEnabled(True)
+
+        menu=QMenu()
+        menu.addAction(self.actionShowAccount)   
+        menu.addSeparator()   
+        menu.addAction(self.actionShowInvestment)   
+        menu.addSeparator()   
+        menu.addAction(self.actionShowInvestmentOperation)      
+        menu.addSeparator()
+        menu.addAction(self.actionShowProduct)
+        menu.exec_(self.tblCurrent.mapToGlobal(pos))
         
-    @QtCore.pyqtSlot() 
-    def on_actionShowInvestmentOperation_activated(self):
-        w=frmInvestmentOperationsAdd(self.mem, self.selProductOperation.inversion, self.selProductOperation, self)
-        w.exec_()
-        self.load()
         
