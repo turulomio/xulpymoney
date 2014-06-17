@@ -46,7 +46,7 @@
      <x>0</x>
      <y>0</y>
      <width>1180</width>
-     <height>20</height>
+     <height>25</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuAyuda">
@@ -67,6 +67,7 @@
     <addaction name="actionCAC40"/>
     <addaction name="actionEurostoxx50"/>
     <addaction name="actionIbex35"/>
+    <addaction name="actionLATIBEX"/>
     <addaction name="actionMC"/>
     <addaction name="actionNasdaq100"/>
     <addaction name="actionSP500"/>
@@ -545,6 +546,18 @@ seleccionados por el usuario</string>
    </property>
    <property name="toolTip">
     <string>Purge all investments</string>
+   </property>
+  </action>
+  <action name="actionLATIBEX">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/countries/spain.gif</normaloff>:/countries/spain.gif</iconset>
+   </property>
+   <property name="text">
+    <string>LATIBEX</string>
+   </property>
+   <property name="toolTip">
+    <string>LATIBEX</string>
    </property>
   </action>
  </widget>
