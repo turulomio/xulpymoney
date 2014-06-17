@@ -2914,6 +2914,7 @@ class SetAgrupations:
         self.dic_arr["NASDAQ100"]=Agrupation(self.mem).init__create( "NASDAQ100","Nasdaq 100", self.mem.types.find(3), self.mem.stockexchanges.find(2)  )
         self.dic_arr["EURONEXT"]=Agrupation(self.mem).init__create( "EURONEXT",  "EURONEXT", self.mem.types.find(3), self.mem.stockexchanges.find(10)  )
         self.dic_arr["DEUTSCHEBOERSE"]=Agrupation(self.mem).init__create( "DEUTSCHEBOERSE",  "DEUTSCHEBOERSE", self.mem.types.find(3), self.mem.stockexchanges.find(5)  )
+        self.dic_arr["LATIBEX"]=Agrupation(self.mem).init__create( "LATIBEX",  "LATIBEX", self.mem.types.find(3), self.mem.stockexchanges.find(1)  )
 
 
         self.dic_arr["e_fr_LYXOR"]=Agrupation(self.mem).init__create( "e_fr_LYXOR","LYXOR", self.mem.types.find(4),self.mem.stockexchanges.find(3)  )

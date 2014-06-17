@@ -311,7 +311,13 @@ class frmMainMS(QMainWindow, Ui_frmMainMS):#
     def on_actionIbex35_activated(self):
         self.w.close()
         self.w=wdgProducts(self.mem,  "select  * from products where agrupations like '%|IBEX|%' order by name,id")
+        self.layout.addWidget(self.w)
+        self.w.show()        
 
+    @QtCore.pyqtSlot()  
+    def on_actionLATIBEX_activated(self):
+        self.w.close()
+        self.w=wdgProducts(self.mem,  "select  * from products where agrupations like '%|LATIBEX|%' order by name,id")
         self.layout.addWidget(self.w)
         self.w.show()
         
@@ -319,7 +325,6 @@ class frmMainMS(QMainWindow, Ui_frmMainMS):#
     def on_actionIndexes_activated(self):
         self.w.close()
         self.w=wdgProducts(self.mem,  "select  * from products where type=3 order by id_bolsas,name")
-
         self.layout.addWidget(self.w)
         self.w.show()        
                 
