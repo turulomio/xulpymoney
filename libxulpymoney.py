@@ -3556,7 +3556,7 @@ class EstimationDPS:
         """Hay que tener presente que endlastyear (Objeto Quote) es el endlastyear del año actual
         Necesita tener cargado en id el endlastyear """
         try:
-            return self.estimation/self.product.result.basic.endlastyear.quote*100
+            return self.estimation*100/self.product.result.basic.last.quote
         except:
             return None
 
