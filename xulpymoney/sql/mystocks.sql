@@ -45,7 +45,7 @@ CREATE TYPE quote AS (
 );
 
 
-ALTER TYPE public.quote OWNER TO postgres;
+ALTER TYPE quote OWNER TO postgres;
 
 --
 -- Name: quote_type; Type: TYPE; Schema: public; Owner: postgres
@@ -60,7 +60,7 @@ CREATE TYPE quote_type AS (
 );
 
 
-ALTER TYPE public.quote_type OWNER TO postgres;
+ALTER TYPE quote_type OWNER TO postgres;
 
 --
 -- Name: quotehistoric_type; Type: TYPE; Schema: public; Owner: postgres
@@ -77,7 +77,7 @@ CREATE TYPE quotehistoric_type AS (
 );
 
 
-ALTER TYPE public.quotehistoric_type OWNER TO postgres;
+ALTER TYPE quotehistoric_type OWNER TO postgres;
 
 --
 -- Name: first_agg(anyelement, anyelement); Type: FUNCTION; Schema: public; Owner: postgres
@@ -372,7 +372,7 @@ CREATE TABLE bolsas (
 );
 
 
-ALTER TABLE public.bolsas OWNER TO postgres;
+ALTER TABLE bolsas OWNER TO postgres;
 
 --
 -- Name: COLUMN bolsas.starts; Type: COMMENT; Schema: public; Owner: postgres
@@ -393,7 +393,7 @@ CREATE SEQUENCE dividendosestimaciones_seq
     CACHE 1;
 
 
-ALTER TABLE public.dividendosestimaciones_seq OWNER TO postgres;
+ALTER TABLE dividendosestimaciones_seq OWNER TO postgres;
 
 --
 -- Name: dps_seq; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -407,7 +407,7 @@ CREATE SEQUENCE dps_seq
     CACHE 1;
 
 
-ALTER TABLE public.dps_seq OWNER TO postgres;
+ALTER TABLE dps_seq OWNER TO postgres;
 
 --
 -- Name: dps; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -421,7 +421,7 @@ CREATE TABLE dps (
 );
 
 
-ALTER TABLE public.dps OWNER TO postgres;
+ALTER TABLE dps OWNER TO postgres;
 
 --
 -- Name: TABLE dps; Type: COMMENT; Schema: public; Owner: postgres
@@ -456,7 +456,7 @@ CREATE SEQUENCE dividendospagos_id_dividendospagos_seq
     CACHE 1;
 
 
-ALTER TABLE public.dividendospagos_id_dividendospagos_seq OWNER TO postgres;
+ALTER TABLE dividendospagos_id_dividendospagos_seq OWNER TO postgres;
 
 --
 -- Name: dividendospagos_id_dividendospagos_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
@@ -479,7 +479,7 @@ CREATE TABLE estimations_dps (
 );
 
 
-ALTER TABLE public.estimations_dps OWNER TO postgres;
+ALTER TABLE estimations_dps OWNER TO postgres;
 
 --
 -- Name: TABLE estimations_dps; Type: COMMENT; Schema: public; Owner: postgres
@@ -502,7 +502,7 @@ CREATE TABLE estimations_eps (
 );
 
 
-ALTER TABLE public.estimations_eps OWNER TO postgres;
+ALTER TABLE estimations_eps OWNER TO postgres;
 
 --
 -- Name: TABLE estimations_eps; Type: COMMENT; Schema: public; Owner: postgres
@@ -522,7 +522,7 @@ CREATE TABLE globals (
 );
 
 
-ALTER TABLE public.globals OWNER TO postgres;
+ALTER TABLE globals OWNER TO postgres;
 
 --
 -- Name: investments_seq; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -536,7 +536,7 @@ CREATE SEQUENCE investments_seq
     CACHE 1;
 
 
-ALTER TABLE public.investments_seq OWNER TO postgres;
+ALTER TABLE investments_seq OWNER TO postgres;
 
 --
 -- Name: quotes; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -550,7 +550,7 @@ CREATE TABLE quotes (
 );
 
 
-ALTER TABLE public.quotes OWNER TO postgres;
+ALTER TABLE quotes OWNER TO postgres;
 
 --
 -- Name: tmpohlcdaily; Type: VIEW; Schema: public; Owner: postgres
@@ -568,7 +568,7 @@ CREATE VIEW tmpohlcdaily AS
   ORDER BY (quotes.datetime)::date DESC;
 
 
-ALTER TABLE public.tmpohlcdaily OWNER TO postgres;
+ALTER TABLE tmpohlcdaily OWNER TO postgres;
 
 --
 -- Name: ohlcdaily; Type: VIEW; Schema: public; Owner: postgres
@@ -586,7 +586,7 @@ CREATE VIEW ohlcdaily AS
    FROM tmpohlcdaily;
 
 
-ALTER TABLE public.ohlcdaily OWNER TO postgres;
+ALTER TABLE ohlcdaily OWNER TO postgres;
 
 --
 -- Name: tmpohlcmonthly; Type: VIEW; Schema: public; Owner: postgres
@@ -604,7 +604,7 @@ CREATE VIEW tmpohlcmonthly AS
   GROUP BY quotes.id, date_part('year'::text, quotes.datetime), date_part('month'::text, quotes.datetime);
 
 
-ALTER TABLE public.tmpohlcmonthly OWNER TO postgres;
+ALTER TABLE tmpohlcmonthly OWNER TO postgres;
 
 --
 -- Name: ohlcmonthly; Type: VIEW; Schema: public; Owner: postgres
@@ -623,7 +623,7 @@ CREATE VIEW ohlcmonthly AS
    FROM tmpohlcmonthly;
 
 
-ALTER TABLE public.ohlcmonthly OWNER TO postgres;
+ALTER TABLE ohlcmonthly OWNER TO postgres;
 
 --
 -- Name: tmpohlcweekly; Type: VIEW; Schema: public; Owner: postgres
@@ -641,7 +641,7 @@ CREATE VIEW tmpohlcweekly AS
   GROUP BY quotes.id, date_part('year'::text, quotes.datetime), date_part('week'::text, quotes.datetime);
 
 
-ALTER TABLE public.tmpohlcweekly OWNER TO postgres;
+ALTER TABLE tmpohlcweekly OWNER TO postgres;
 
 --
 -- Name: ohlcweekly; Type: VIEW; Schema: public; Owner: postgres
@@ -660,7 +660,7 @@ CREATE VIEW ohlcweekly AS
    FROM tmpohlcweekly;
 
 
-ALTER TABLE public.ohlcweekly OWNER TO postgres;
+ALTER TABLE ohlcweekly OWNER TO postgres;
 
 --
 -- Name: tmpohlcyearly; Type: VIEW; Schema: public; Owner: postgres
@@ -677,7 +677,7 @@ CREATE VIEW tmpohlcyearly AS
   GROUP BY quotes.id, date_part('year'::text, quotes.datetime);
 
 
-ALTER TABLE public.tmpohlcyearly OWNER TO postgres;
+ALTER TABLE tmpohlcyearly OWNER TO postgres;
 
 --
 -- Name: ohlcyearly; Type: VIEW; Schema: public; Owner: postgres
@@ -695,7 +695,7 @@ CREATE VIEW ohlcyearly AS
    FROM tmpohlcyearly;
 
 
-ALTER TABLE public.ohlcyearly OWNER TO postgres;
+ALTER TABLE ohlcyearly OWNER TO postgres;
 
 --
 -- Name: products; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -727,7 +727,7 @@ CREATE TABLE products (
 );
 
 
-ALTER TABLE public.products OWNER TO postgres;
+ALTER TABLE products OWNER TO postgres;
 
 --
 -- Name: COLUMN products.obsolete; Type: COMMENT; Schema: public; Owner: postgres
@@ -762,7 +762,7 @@ CREATE SEQUENCE quotes_seq
     CACHE 1;
 
 
-ALTER TABLE public.quotes_seq OWNER TO postgres;
+ALTER TABLE quotes_seq OWNER TO postgres;
 
 --
 -- Name: status; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -777,7 +777,7 @@ CREATE TABLE status (
 );
 
 
-ALTER TABLE public.status OWNER TO postgres;
+ALTER TABLE status OWNER TO postgres;
 
 --
 -- Name: TABLE status; Type: COMMENT; Schema: public; Owner: postgres
