@@ -44,7 +44,7 @@ CREATE TYPE dblink_pkey_results AS (
 );
 
 
-ALTER TYPE public.dblink_pkey_results OWNER TO postgres;
+ALTER TYPE dblink_pkey_results OWNER TO postgres;
 
 --
 -- Name: quote_type; Type: TYPE; Schema: public; Owner: postgres
@@ -59,7 +59,7 @@ CREATE TYPE quote_type AS (
 );
 
 
-ALTER TYPE public.quote_type OWNER TO postgres;
+ALTER TYPE quote_type OWNER TO postgres;
 
 --
 -- Name: cuenta_saldo(integer, date); Type: FUNCTION; Schema: public; Owner: postgres
@@ -175,7 +175,7 @@ CREATE TABLE conceptos (
 );
 
 
-ALTER TABLE public.conceptos OWNER TO postgres;
+ALTER TABLE conceptos OWNER TO postgres;
 
 SET default_with_oids = true;
 
@@ -193,7 +193,7 @@ CREATE TABLE cuentas (
 );
 
 
-ALTER TABLE public.cuentas OWNER TO postgres;
+ALTER TABLE cuentas OWNER TO postgres;
 
 SET default_with_oids = false;
 
@@ -215,7 +215,7 @@ CREATE TABLE dividends (
 );
 
 
-ALTER TABLE public.dividends OWNER TO postgres;
+ALTER TABLE dividends OWNER TO postgres;
 
 SET default_with_oids = true;
 
@@ -230,7 +230,7 @@ CREATE TABLE entidadesbancarias (
 );
 
 
-ALTER TABLE public.entidadesbancarias OWNER TO postgres;
+ALTER TABLE entidadesbancarias OWNER TO postgres;
 
 SET default_with_oids = false;
 
@@ -248,7 +248,7 @@ CREATE TABLE inversiones (
 );
 
 
-ALTER TABLE public.inversiones OWNER TO postgres;
+ALTER TABLE inversiones OWNER TO postgres;
 
 --
 -- Name: opercuentas; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -265,7 +265,7 @@ CREATE TABLE opercuentas (
 );
 
 
-ALTER TABLE public.opercuentas OWNER TO postgres;
+ALTER TABLE opercuentas OWNER TO postgres;
 
 --
 -- Name: opercuentasdeoperinversiones; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -278,7 +278,7 @@ CREATE TABLE opercuentasdeoperinversiones (
 INHERITS (opercuentas);
 
 
-ALTER TABLE public.opercuentasdeoperinversiones OWNER TO postgres;
+ALTER TABLE opercuentasdeoperinversiones OWNER TO postgres;
 
 SET default_with_oids = true;
 
@@ -300,25 +300,25 @@ CREATE TABLE opertarjetas (
 );
 
 
-ALTER TABLE public.opertarjetas OWNER TO postgres;
+ALTER TABLE opertarjetas OWNER TO postgres;
 
 --
 -- Name: opercuentastarjetas; Type: VIEW; Schema: public; Owner: postgres
 --
 
 CREATE VIEW opercuentastarjetas AS
-         SELECT opercuentas.fecha,
-            opercuentas.id_conceptos,
-            opercuentas.importe
-           FROM opercuentas
+ SELECT opercuentas.fecha,
+    opercuentas.id_conceptos,
+    opercuentas.importe
+   FROM opercuentas
 UNION
-         SELECT opertarjetas.fecha,
-            opertarjetas.id_conceptos,
-            opertarjetas.importe
-           FROM opertarjetas;
+ SELECT opertarjetas.fecha,
+    opertarjetas.id_conceptos,
+    opertarjetas.importe
+   FROM opertarjetas;
 
 
-ALTER TABLE public.opercuentastarjetas OWNER TO postgres;
+ALTER TABLE opercuentastarjetas OWNER TO postgres;
 
 --
 -- Name: VIEW opercuentastarjetas; Type: COMMENT; Schema: public; Owner: postgres
@@ -342,21 +342,13 @@ CREATE TABLE operinversiones (
     impuestos numeric(100,2),
     comision numeric(100,2),
     valor_accion numeric(100,6),
-    hora time without time zone DEFAULT '00:00:00'::time without time zone NOT NULL,
     divisa numeric(10,6) DEFAULT NULL::numeric,
     datetime timestamp with time zone,
     comentario text
 );
 
 
-ALTER TABLE public.operinversiones OWNER TO postgres;
-
---
--- Name: COLUMN operinversiones.hora; Type: COMMENT; Schema: public; Owner: postgres
---
-
-COMMENT ON COLUMN operinversiones.hora IS 'Es UTC time';
-
+ALTER TABLE operinversiones OWNER TO postgres;
 
 --
 -- Name: COLUMN operinversiones.divisa; Type: COMMENT; Schema: public; Owner: postgres
@@ -377,7 +369,7 @@ CREATE SEQUENCE seq_conceptos
     CACHE 1;
 
 
-ALTER TABLE public.seq_conceptos OWNER TO postgres;
+ALTER TABLE seq_conceptos OWNER TO postgres;
 
 --
 -- Name: seq_cuentas; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -391,7 +383,7 @@ CREATE SEQUENCE seq_cuentas
     CACHE 1;
 
 
-ALTER TABLE public.seq_cuentas OWNER TO postgres;
+ALTER TABLE seq_cuentas OWNER TO postgres;
 
 --
 -- Name: seq_dividendos; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -405,7 +397,7 @@ CREATE SEQUENCE seq_dividendos
     CACHE 1;
 
 
-ALTER TABLE public.seq_dividendos OWNER TO postgres;
+ALTER TABLE seq_dividendos OWNER TO postgres;
 
 --
 -- Name: seq_entidadesbancarias; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -419,7 +411,7 @@ CREATE SEQUENCE seq_entidadesbancarias
     CACHE 1;
 
 
-ALTER TABLE public.seq_entidadesbancarias OWNER TO postgres;
+ALTER TABLE seq_entidadesbancarias OWNER TO postgres;
 
 --
 -- Name: seq_inversiones; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -433,7 +425,7 @@ CREATE SEQUENCE seq_inversiones
     CACHE 1;
 
 
-ALTER TABLE public.seq_inversiones OWNER TO postgres;
+ALTER TABLE seq_inversiones OWNER TO postgres;
 
 --
 -- Name: seq_opercuentas; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -447,7 +439,7 @@ CREATE SEQUENCE seq_opercuentas
     CACHE 1;
 
 
-ALTER TABLE public.seq_opercuentas OWNER TO postgres;
+ALTER TABLE seq_opercuentas OWNER TO postgres;
 
 --
 -- Name: seq_operinversiones; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -461,7 +453,7 @@ CREATE SEQUENCE seq_operinversiones
     CACHE 1;
 
 
-ALTER TABLE public.seq_operinversiones OWNER TO postgres;
+ALTER TABLE seq_operinversiones OWNER TO postgres;
 
 --
 -- Name: seq_operinversioneshistoricas; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -475,7 +467,7 @@ CREATE SEQUENCE seq_operinversioneshistoricas
     CACHE 1;
 
 
-ALTER TABLE public.seq_operinversioneshistoricas OWNER TO postgres;
+ALTER TABLE seq_operinversioneshistoricas OWNER TO postgres;
 
 --
 -- Name: seq_opertarjetas; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -489,7 +481,7 @@ CREATE SEQUENCE seq_opertarjetas
     CACHE 1;
 
 
-ALTER TABLE public.seq_opertarjetas OWNER TO postgres;
+ALTER TABLE seq_opertarjetas OWNER TO postgres;
 
 --
 -- Name: seq_tarjetas; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -503,7 +495,7 @@ CREATE SEQUENCE seq_tarjetas
     CACHE 1;
 
 
-ALTER TABLE public.seq_tarjetas OWNER TO postgres;
+ALTER TABLE seq_tarjetas OWNER TO postgres;
 
 SET default_with_oids = true;
 
@@ -522,7 +514,7 @@ CREATE TABLE tarjetas (
 );
 
 
-ALTER TABLE public.tarjetas OWNER TO postgres;
+ALTER TABLE tarjetas OWNER TO postgres;
 
 --
 -- Name: id_opercuentas; Type: DEFAULT; Schema: public; Owner: postgres
