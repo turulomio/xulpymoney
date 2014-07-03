@@ -1133,7 +1133,7 @@ class SetInvestmentOperationsCurrent:
         if len(self.arr)==0:
             tabla.setRowCount(0)
             return
-        inversion=self.arr[0].inversion
+#        inversion=self.arr[0].inversion
 #        numdigitos=inversion.product.result.decimalesSignificativos()
         sumacciones=Decimal('0')
         sum_accionesXvalor=Decimal('0')
@@ -1146,8 +1146,8 @@ class SetInvestmentOperationsCurrent:
         gainsyear=str2bool(self.mem.config.get_value("settings", "gainsyear"))
         for rownumber, a in enumerate(self.arr):
             sumacciones=Decimal(sumacciones)+Decimal(str(a.acciones))
-            balance=a.balance(inversion.product.result.basic.last)
-            pendiente=a.pendiente(inversion.product.result.basic.last)
+            balance=a.balance(a.inversion.product.result.basic.last)
+            pendiente=a.pendiente(a.inversion.product.result.basic.last)
             invertido=a.invertido()
     
             sumsaldo=sumsaldo+balance
@@ -1155,35 +1155,35 @@ class SetInvestmentOperationsCurrent:
             suminvertido=suminvertido+invertido
             sum_accionesXvalor=sum_accionesXvalor+a.acciones*a.valor_accion
     
-            tabla.setItem(rownumber, 0, qdatetime(a.datetime, inversion.product.stockexchange.zone))
+            tabla.setItem(rownumber, 0, qdatetime(a.datetime, self.mem.localzone))
             if gainsyear==True and a.less_than_a_year()==True:
                 tabla.item(rownumber, 0).setIcon(QIcon(":/xulpymoney/new.png"))
             if homogeneous==False:
                 tabla.setItem(rownumber, diff-1, qleft(a.inversion.name))
                 tabla.setItem(rownumber, diff, qleft(a.inversion.cuenta.name))
             tabla.setItem(rownumber, diff+1, qright("{0:.6f}".format(a.acciones)))
-            tabla.setItem(rownumber, diff+2, inversion.product.currency.qtablewidgetitem(a.valor_accion, 6))
-            tabla.setItem(rownumber, diff+3, inversion.product.currency.qtablewidgetitem(invertido))
-            tabla.setItem(rownumber, diff+4, inversion.product.currency.qtablewidgetitem(balance))
-            tabla.setItem(rownumber, diff+5, inversion.product.currency.qtablewidgetitem(pendiente))
-            tabla.setItem(rownumber, diff+6, qtpc(a.tpc_anual(inversion.product.result.basic.last.quote, inversion.product.result.basic.endlastyear.quote)))
-            tabla.setItem(rownumber, diff+7, qtpc(a.tpc_tae(inversion.product.result.basic.last.quote)))
-            tabla.setItem(rownumber, diff+8, qtpc(a.tpc_total(inversion.product.result.basic.last.quote)))
+            tabla.setItem(rownumber, diff+2, a.inversion.product.currency.qtablewidgetitem(a.valor_accion, 6))
+            tabla.setItem(rownumber, diff+3, a.inversion.product.currency.qtablewidgetitem(invertido))
+            tabla.setItem(rownumber, diff+4, a.inversion.product.currency.qtablewidgetitem(balance))
+            tabla.setItem(rownumber, diff+5, a.inversion.product.currency.qtablewidgetitem(pendiente))
+            tabla.setItem(rownumber, diff+6, qtpc(a.tpc_anual(a.inversion.product.result.basic.last.quote, a.inversion.product.result.basic.endlastyear.quote)))
+            tabla.setItem(rownumber, diff+7, qtpc(a.tpc_tae(a.inversion.product.result.basic.last.quote)))
+            tabla.setItem(rownumber, diff+8, qtpc(a.tpc_total(a.inversion.product.result.basic.last.quote)))
             if a.referenciaindice==None:
-                tabla.setItem(rownumber, diff+9, inversion.product.currency.qtablewidgetitem(None))
+                tabla.setItem(rownumber, diff+9, a.inversion.product.currency.qtablewidgetitem(None))
             else:
-                tabla.setItem(rownumber, diff+9, inversion.product.currency.qtablewidgetitem(a.referenciaindice.quote))
+                tabla.setItem(rownumber, diff+9, a.inversion.product.currency.qtablewidgetitem(a.referenciaindice.quote))
             rownumber=rownumber+1
         tabla.setItem(rownumber, diff+0, QTableWidgetItem(("TOTAL")))
         tabla.setItem(rownumber, diff+1, qright(str(sumacciones)))
         if sumacciones==0:
-            tabla.setItem(rownumber, diff+2, inversion.product.currency.qtablewidgetitem(0))
+            tabla.setItem(rownumber, diff+2, a.inversion.product.currency.qtablewidgetitem(0))
         else:
-            tabla.setItem(rownumber, diff+2, inversion.product.currency.qtablewidgetitem(sum_accionesXvalor/sumacciones, 6))
-        tabla.setItem(rownumber, diff+3, inversion.product.currency.qtablewidgetitem(suminvertido))
-        tabla.setItem(rownumber, diff+4, inversion.product.currency.qtablewidgetitem(sumsaldo))
-        tabla.setItem(rownumber, diff+5, inversion.product.currency.qtablewidgetitem(sumpendiente))
-        tabla.setItem(rownumber, diff+7, qtpc(self.tpc_tae(inversion.product.result.basic.last.quote)))
+            tabla.setItem(rownumber, diff+2, a.inversion.product.currency.qtablewidgetitem(sum_accionesXvalor/sumacciones, 6))
+        tabla.setItem(rownumber, diff+3, a.inversion.product.currency.qtablewidgetitem(suminvertido))
+        tabla.setItem(rownumber, diff+4, a.inversion.product.currency.qtablewidgetitem(sumsaldo))
+        tabla.setItem(rownumber, diff+5, a.inversion.product.currency.qtablewidgetitem(sumpendiente))
+        tabla.setItem(rownumber, diff+7, qtpc(self.tpc_tae(a.inversion.product.result.basic.last.quote)))
         tabla.setItem(rownumber, diff+8, qtpc(self.tpc_total(sumpendiente, suminvertido)))
             
 
