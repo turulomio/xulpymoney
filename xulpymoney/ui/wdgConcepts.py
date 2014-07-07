@@ -19,7 +19,7 @@ class wdgConcepts(QWidget, Ui_wdgConcepts):
         self.tblExpenses.settings(None,  self.mem)
         self.tblIncomes.settings(None,  self.mem)
         
-        anoinicio=Assets(self.mem).primera_fecha_con_datos_usuario().year       
+        anoinicio=Assets(self.mem).primera_datetime_con_datos_usuario().year       
         self.wdgYM.initiate(anoinicio,  datetime.date.today().year, datetime.date.today().year, datetime.date.today().month)
         QObject.connect(self.wdgYM, SIGNAL("changed"), self.on_wdgYM_changed)
         

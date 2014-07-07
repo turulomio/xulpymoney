@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>605</width>
-    <height>392</height>
+    <width>612</width>
+    <height>246</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -51,17 +51,20 @@
        <item>
         <widget class="QLabel" name="label">
          <property name="text">
-          <string>Select date</string>
+          <string>Select a datetime</string>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QCalendarWidget" name="calendar">
-         <property name="firstDayOfWeek">
-          <enum>Qt::Monday</enum>
+        <widget class="QDateTimeEdit" name="dtedit">
+         <property name="currentSection">
+          <enum>QDateTimeEdit::HourSection</enum>
          </property>
-         <property name="verticalHeaderFormat">
-          <enum>QCalendarWidget::NoVerticalHeader</enum>
+         <property name="displayFormat">
+          <string>yyyy/MM/dd HH:mm</string>
+         </property>
+         <property name="calendarPopup">
+          <bool>true</bool>
          </property>
         </widget>
        </item>

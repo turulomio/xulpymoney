@@ -20,7 +20,7 @@ class wdgJointReport(QWidget, Ui_wdgJointReport):
         self.totalDividendsBrutos=0
         self.totalDividendsRetenciones=0
                 
-        anoinicio=Assets(self.mem).primera_fecha_con_datos_usuario().year       
+        anoinicio=Assets(self.mem).primera_datetime_con_datos_usuario().year       
 
 #        ran=datetime.date.today().year-anoinicio+1
         
@@ -111,7 +111,7 @@ class wdgJointReport(QWidget, Ui_wdgJointReport):
     def load_rendimientos(self):
         inicio=datetime.date(self.wy.year-1, 12, 31)
         cur=self.mem.con.cursor()
-        cur.execute("select sum(importe) as suma from opercuentas where id_conceptos=59 and date_part('year',fecha)="+str(self.wy.year))
+        cur.execute("select sum(importe) as suma from opercuentas where id_conceptos=59 and date_part('year',datetime)="+str(self.wy.year))
         sumcomisioncustodia=cur.fetchone()[0]        
         if sumcomisioncustodia==None:
             sumcomisioncustodia=0

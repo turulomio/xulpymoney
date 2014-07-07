@@ -599,13 +599,8 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>frmAccountOperationsAdd</name>
     <message>
-        <location filename="ui/Ui_frmAccountOperationsAdd.py" line="118"/>
+        <location filename="ui/Ui_frmAccountOperationsAdd.py" line="117"/>
         <source>New account operation</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_frmAccountOperationsAdd.py" line="119"/>
-        <source>Operation date</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -644,18 +639,28 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmAccountOperationsAdd.py" line="44"/>
+        <location filename="ui/frmAccountOperationsAdd.py" line="45"/>
         <source>Account operation update</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmAccountOperationsAdd.py" line="67"/>
+        <location filename="ui/frmAccountOperationsAdd.py" line="70"/>
         <source>Expenses can not have a positive amount</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmAccountOperationsAdd.py" line="74"/>
+        <location filename="ui/frmAccountOperationsAdd.py" line="77"/>
         <source>Incomes can not have a negative amount</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_frmAccountOperationsAdd.py" line="118"/>
+        <source>Operation datetime</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_frmAccountOperationsAdd.py" line="119"/>
+        <source>yyyy/MM/dd HH:mm</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3077,58 +3082,63 @@ correspondiente en la tabla</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmTransfer.py" line="127"/>
+        <location filename="ui/Ui_frmTransfer.py" line="128"/>
         <source>Transfer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmTransfer.py" line="118"/>
-        <source>Select date</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_frmTransfer.py" line="119"/>
+        <location filename="ui/Ui_frmTransfer.py" line="120"/>
         <source>Selecciona la cuenta origen</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmTransfer.py" line="120"/>
+        <location filename="ui/Ui_frmTransfer.py" line="121"/>
         <source>Selecciona la cuenta destino</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmTransfer.py" line="121"/>
+        <location filename="ui/Ui_frmTransfer.py" line="122"/>
         <source>Amount</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmTransfer.py" line="122"/>
+        <location filename="ui/Ui_frmTransfer.py" line="123"/>
         <source>El importe debe ser positivo</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmTransfer.py" line="126"/>
+        <location filename="ui/Ui_frmTransfer.py" line="127"/>
         <source>0</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmTransfer.py" line="124"/>
+        <location filename="ui/Ui_frmTransfer.py" line="125"/>
         <source>Comission</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmTransfer.py" line="125"/>
+        <location filename="ui/Ui_frmTransfer.py" line="126"/>
         <source>La comisi&#xc3;&#xb3;n debe ser positiva</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmTransfer.py" line="30"/>
+        <location filename="ui/frmTransfer.py" line="33"/>
         <source>Se ha producido un error al introducir los datos</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmTransfer.py" line="36"/>
+        <location filename="ui/frmTransfer.py" line="39"/>
         <source>La cuenta origen y destino no puede ser la misma</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_frmTransfer.py" line="119"/>
+        <source>yyyy/MM/dd HH:mm</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_frmTransfer.py" line="118"/>
+        <source>Select a datetime</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3563,17 +3573,17 @@ correspondiente en la tabla</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgConceptsHistorical.py" line="55"/>
+        <location filename="ui/wdgConceptsHistorical.py" line="66"/>
         <source>Report of {0} of {1}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgConceptsHistorical.py" line="69"/>
+        <location filename="ui/wdgConceptsHistorical.py" line="80"/>
         <source>Report of {0}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgConceptsHistorical.py" line="103"/>
+        <location filename="ui/wdgConceptsHistorical.py" line="114"/>
         <source>You can&apos;t close this tab</source>
         <translation type="unfinished"></translation>
     </message>

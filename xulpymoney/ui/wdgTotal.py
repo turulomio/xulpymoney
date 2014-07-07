@@ -93,7 +93,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         for i in range(0, 13):
             self.sumpopup.append(0)
 
-        fechainicio=Assets(self.mem).primera_fecha_con_datos_usuario()         
+        fechainicio=Assets(self.mem).primera_datetime_con_datos_usuario()         
 
         self.mem.data.load_inactives()
         
@@ -247,7 +247,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         horizontalLayout = QHBoxLayout(newtab)
         table = myQTableWidget(newtab)
         set=SetAccountOperations(self.mem)
-        set.load_from_db("select fecha, id_conceptos, id_tiposoperaciones, importe, comentario, id_cuentas from opercuentas where id_tiposoperaciones={0} and date_part('year',fecha)={1} and date_part('month',fecha)={2} and id_conceptos not in ({3}) union all select fecha, id_conceptos, id_tiposoperaciones, importe, comentario, id_cuentas from opertarjetas,tarjetas where opertarjetas.id_tarjetas=tarjetas.id_tarjetas and id_tiposoperaciones={0} and date_part('year',fecha)={1} and date_part('month',fecha)={2}".format (id_tiposoperaciones, self.wyData.year, self.month, list2string(self.mem.conceptos.considered_dividends_in_totals())))
+        set.load_from_db("select datetime, id_conceptos, id_tiposoperaciones, importe, comentario, id_cuentas from opercuentas where id_tiposoperaciones={0} and date_part('year',datetime)={1} and date_part('month',datetime)={2} and id_conceptos not in ({3}) union all select datetime, id_conceptos, id_tiposoperaciones, importe, comentario, id_cuentas from opertarjetas,tarjetas where opertarjetas.id_tarjetas=tarjetas.id_tarjetas and id_tiposoperaciones={0} and date_part('year',datetime)={1} and date_part('month',datetime)={2}".format (id_tiposoperaciones, self.wyData.year, self.month, list2string(self.mem.conceptos.considered_dividends_in_totals())))
         set.sort()
         set.myqtablewidget(table, None, True)
         horizontalLayout.addWidget(table)
@@ -292,7 +292,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         horizontalLayout = QHBoxLayout(newtab)
         table = myQTableWidget(newtab)
         set=SetAccountOperations(self.mem)
-        set.load_from_db_with_creditcard("select fecha, id_conceptos, id_tiposoperaciones, importe, comentario, id_cuentas , -1 as id_tarjetas from opercuentas where id_tiposoperaciones={0} and date_part('year',fecha)={1} and date_part('month',fecha)={2} union all select fecha, id_conceptos, id_tiposoperaciones, importe, comentario, id_cuentas ,tarjetas.id_tarjetas as id_tarjetas from opertarjetas,tarjetas where opertarjetas.id_tarjetas=tarjetas.id_tarjetas and id_tiposoperaciones={0} and date_part('year',fecha)={1} and date_part('month',fecha)={2}".format (id_tiposoperaciones, self.wyData.year, self.month)      )
+        set.load_from_db_with_creditcard("select datetime, id_conceptos, id_tiposoperaciones, importe, comentario, id_cuentas , -1 as id_tarjetas from opercuentas where id_tiposoperaciones={0} and date_part('year',datetime)={1} and date_part('month',datetime)={2} union all select datetime, id_conceptos, id_tiposoperaciones, importe, comentario, id_cuentas ,tarjetas.id_tarjetas as id_tarjetas from opertarjetas,tarjetas where opertarjetas.id_tarjetas=tarjetas.id_tarjetas and id_tiposoperaciones={0} and date_part('year',datetime)={1} and date_part('month',datetime)={2}".format (id_tiposoperaciones, self.wyData.year, self.month)      )
         set.sort()
         set.myqtablewidget(table, None, True)
         horizontalLayout.addWidget(table)
