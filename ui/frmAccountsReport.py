@@ -60,7 +60,7 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
             self.chkActiva.setChecked(b2c(self.selAccount.activa))
             self.cmdDatos.setText(self.trUtf8("Modificar los datos de la cuenta bancaria"))
 
-            anoinicio=Assets(self.mem).primera_fecha_con_datos_usuario().year       
+            anoinicio=Assets(self.mem).primera_datetime_con_datos_usuario().year       
             self.wdgYM.initiate(anoinicio,  datetime.date.today().year, datetime.date.today().year, datetime.date.today().month)
             QObject.connect(self.wdgYM, SIGNAL("changed"), self.on_wdgYM_changed)
 
@@ -83,10 +83,10 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
 #            
 #        print (self.trUtf8("Ya se habían cargado las inactivas"))
     def load_tabOperCreditCards(self):     
-        self.selCreditCard.op_diferido=sorted(self.selCreditCard.op_diferido, key=lambda o:o.fecha)
+        self.selCreditCard.op_diferido=sorted(self.selCreditCard.op_diferido, key=lambda o:o.datetime)
         self.tblCreditCardOpers.setRowCount(len(self.selCreditCard.op_diferido));        
         for i,  o in enumerate(self.selCreditCard.op_diferido):
-            self.tblCreditCardOpers.setItem(i, 0, QTableWidgetItem(str(o.fecha)))
+            self.tblCreditCardOpers.setItem(i, 0, qdatetime(o.datetime, self.mem.localzone))
             self.tblCreditCardOpers.setItem(i, 1, QTableWidgetItem((o.concepto.name)))
             self.tblCreditCardOpers.setItem(i, 2, self.selAccount.currency.qtablewidgetitem(o.importe))
             self.tblCreditCardOpers.setItem(i, 3, QTableWidgetItem(o.comentario))
@@ -192,7 +192,7 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
         self.saldoiniciomensual=self.selAccount.saldo_from_db( str(datetime.date(self.wdgYM.year, self.wdgYM.month, 1)-datetime.timedelta(days=1)))         
         if self.saldoiniciomensual==None:
             self.saldoiniciomensual=0
-        cur.execute("select * from opercuentas where id_cuentas="+str(self.selAccount.id)+" and date_part('year',fecha)="+str(self.wdgYM.year)+" and date_part('month',fecha)="+str(self.wdgYM.month)+" order by fecha, id_opercuentas")
+        cur.execute("select * from opercuentas where id_cuentas="+str(self.selAccount.id)+" and date_part('year',datetime)="+str(self.wdgYM.year)+" and date_part('month',datetime)="+str(self.wdgYM.month)+" order by datetime, id_opercuentas")
         for o in cur:
             self.opercuentas.append(AccountOperation(self.mem).init__db_row(o, self.mem.conceptos.find(o['id_conceptos']), self.mem.tiposoperaciones.find(o['id_tiposoperaciones']), self.selAccount))
         cur.close()     
@@ -200,12 +200,12 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
             
     def load_tblOperaciones(self):
         self.tblOperaciones.setRowCount(len(self.opercuentas)+1)        
-        self.tblOperaciones.setItem(0, 1, QTableWidgetItem(("balance al iniciar el mes")))
+        self.tblOperaciones.setItem(0, 1, QTableWidgetItem(("Starting month balance")))
         self.tblOperaciones.setItem(0, 3, self.selAccount.currency.qtablewidgetitem(self.saldoiniciomensual))
         saldoinicio=self.saldoiniciomensual
         for i, o in enumerate(self.opercuentas):
             saldoinicio=saldoinicio+o.importe
-            self.tblOperaciones.setItem(i+1, 0, QTableWidgetItem(str(o.fecha)))
+            self.tblOperaciones.setItem(i+1, 0, qdatetime(o.datetime, self.mem.localzone))
             self.tblOperaciones.setItem(i+1, 1, QTableWidgetItem(o.concepto.name))
             self.tblOperaciones.setItem(i+1, 2, self.selAccount.currency.qtablewidgetitem(o.importe))
             self.tblOperaciones.setItem(i+1, 3, self.selAccount.currency.qtablewidgetitem(saldoinicio))
@@ -433,7 +433,7 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
         c=AccountOperation(self.mem).init__create(fechapago, self.mem.conceptos.find(40), self.mem.tiposoperaciones.find(7), self.totalOperCreditCards, comentario, self.selAccount)
         c.save()
         
-        #Modifica el registro y lo pone como pagado y la fecha de pago y añade la opercuenta
+        #Modifica el registro y lo pone como pagado y la datetime de pago y añade la opercuenta
         for o in self.setSelOperCreditCards:
             o.fechapago=fechapago
             o.pagado=True
@@ -447,7 +447,7 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
     
     def on_cmdDevolverPago_released(self):
         print ("solo uno")
-        id_opercuentas=self.cmbFechasPago.itemData(int(self.cmbFechasPago.currentIndex()))
+        id_opercuentas=self.cmbdatetimesPago.itemData(int(self.cmbdatetimesPago.currentIndex()))
         cur = self.mem.con.cursor()      
         cur.execute("delete from opercuentas where id_opercuentas=%s", (id_opercuentas, ))#No merece crear objeto
         cur.execute("update opertarjetas set fechapago=null, pagado=false, id_opercuentas=null where id_opercuentas=%s", (id_opercuentas, ) )
@@ -459,19 +459,19 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
         self.tabOpertarjetasDiferidas.setCurrentIndex(0)     
         
     @QtCore.pyqtSlot(int) 
-    def on_cmbFechasPago_currentIndexChanged(self, index):
-        id_opercuentas=self.cmbFechasPago.itemData(int(self.cmbFechasPago.currentIndex()))
+    def on_cmbdatetimesPago_currentIndexChanged(self, index):
+        id_opercuentas=self.cmbdatetimesPago.itemData(int(self.cmbdatetimesPago.currentIndex()))
         print (id_opercuentas)            
         con=self.mem.connect_xulpymoney()
         cur = con.cursor()      
-        cur.execute("select id_opertarjetas,fecha,conceptos.concepto,importe,comentario from opertarjetas,conceptos where opertarjetas.id_conceptos=conceptos.id_conceptos and id_opercuentas=%s;", (id_opercuentas, ))
+        cur.execute("select id_opertarjetas,datetime,conceptos.concepto,importe,comentario from opertarjetas,conceptos where opertarjetas.id_conceptos=conceptos.id_conceptos and id_opercuentas=%s;", (id_opercuentas, ))
         self.tblOpertarjetasHistoricas.clearContents()
         self.tblOpertarjetasHistoricas.setRowCount(cur.rowcount);       
         balance=0
         for rec in cur:
             balance=balance+rec['importe']
             self.tblOpertarjetasHistoricas.setItem(cur.rownumber-1, 0, QTableWidgetItem(str(rec['id_opertarjetas'])))
-            self.tblOpertarjetasHistoricas.setItem(cur.rownumber-1, 1, QTableWidgetItem(str(rec['fecha'])))
+            self.tblOpertarjetasHistoricas.setItem(cur.rownumber-1, 1, QTableWidgetItem(str(rec['datetime'])))
             self.tblOpertarjetasHistoricas.setItem(cur.rownumber-1, 2, QTableWidgetItem((rec['concepto'])))
             self.tblOpertarjetasHistoricas.setItem(cur.rownumber-1, 3, self.selAccount.currency.qtablewidgetitem(rec['importe']))
             self.tblOpertarjetasHistoricas.setItem(cur.rownumber-1, 4, self.selAccount.currency.qtablewidgetitem(balance))
@@ -482,7 +482,7 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
     def on_tabOpertarjetasDiferidas_currentChanged(self, index): 
         if  index==1: #PAGOS
             #Carga combo
-            self.cmbFechasPago.clear()
+            self.cmbdatetimesPago.clear()
             con=self.mem.connect_xulpymoney()
             cur = con.cursor()       
             cur2=con.cursor()
@@ -490,8 +490,8 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
             for row in cur:  
                 cur2.execute("select importe from opercuentas where id_opercuentas=%s", (row['id_opercuentas'], ))
                 importe=cur2.fetchone()["importe"]
-                self.cmbFechasPago.addItem(self.tr("Pago efectuado el {0} de {1}".format(row['fechapago'],  self.mem.localcurrency.string(-importe))),row['id_opercuentas'])
-            self.cmbFechasPago.setCurrentIndex(cur.rowcount-1)
+                self.cmbdatetimesPago.addItem(self.tr("Pago efectuado el {0} de {1}".format(row['fechapago'],  self.mem.localcurrency.string(-importe))),row['id_opercuentas'])
+            self.cmbdatetimesPago.setCurrentIndex(cur.rowcount-1)
             cur.close()     
             cur2.close()
             self.mem.disconnect_xulpymoney(con)      

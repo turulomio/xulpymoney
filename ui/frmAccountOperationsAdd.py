@@ -29,7 +29,7 @@ class frmAccountOperationsAdd(QDialog, Ui_frmAccountOperationsAdd):
             self.lblTitulo.setText(self.trUtf8("Credit card operation update"))
             self.cmbAccounts.hide()
             self.tipo=4            
-            self.calendar.setSelectedDate(self.opertarjeta.fecha)
+            self.dtedit.setDateTime(self.opertarjeta.datetime)
             self.cmbConcepts.setCurrentIndex(self.cmbConcepts.findData(self.opertarjeta.concepto.id))
             self.cmbAccounts.setCurrentIndex(self.cmbAccounts.findData(self.opertarjeta.tarjeta.cuenta.id))
             self.txtImporte.setText(str(self.opertarjeta.importe))
@@ -37,13 +37,15 @@ class frmAccountOperationsAdd(QDialog, Ui_frmAccountOperationsAdd):
         elif tarjeta!=None:
             self.setWindowTitle(self.trUtf8("New credit card operation"))
             self.lblTitulo.setText(self.trUtf8("New credit card operation"))
+            self.dtedit.setDateTime(self.mem.localzone.now())
             self.cmbAccounts.hide()
             self.tipo=3
         elif self.opercuenta!=None:
             self.tipo=2
             self.setWindowTitle(self.trUtf8("Account operation update"))
             self.lblTitulo.setText(self.trUtf8("Account operation update"))
-            self.calendar.setSelectedDate(self.opercuenta.fecha)
+#            self.calendar.setSelectedDate(self.opercuenta.fecha)
+            self.dtedit.setDateTime(self.opercuenta.datetime)
             self.cmbConcepts.setCurrentIndex(self.cmbConcepts.findData(self.opercuenta.concepto.id))
             self.cmbAccounts.setCurrentIndex(self.cmbAccounts.findData(self.opercuenta.cuenta.id))
             self.txtImporte.setText(str(self.opercuenta.importe))
@@ -52,11 +54,12 @@ class frmAccountOperationsAdd(QDialog, Ui_frmAccountOperationsAdd):
             self.tipo=1
             self.setWindowTitle(self.trUtf8("New account operation"))
             self.lblTitulo.setText(self.trUtf8("New account operation"))
+            self.dtedit.setDateTime(self.mem.localzone.now())
             self.cmbAccounts.setCurrentIndex(self.cmbAccounts.findData(self.cuenta.id))
 
         
     def on_cmd_released(self):
-        fecha=self.calendar.selectedDate().toPyDate()
+        dat=dt(self.dtedit.date().toPyDate(), self.dtedit.time().toPyTime(), self.mem.localzone)#self.calendar.selectedDate().toPyDate
         concepto=self.mem.conceptos.find(self.cmbConcepts.itemData(self.cmbConcepts.currentIndex()))
         importe=self.txtImporte.decimal()
         comentario=self.txtComentario.text()
@@ -79,7 +82,7 @@ class frmAccountOperationsAdd(QDialog, Ui_frmAccountOperationsAdd):
         if self.tipo==1:
             self.opercuenta=AccountOperation(self.mem)
             self.opercuenta.cuenta=self.cuenta
-            self.opercuenta.fecha=fecha
+            self.opercuenta.datetime=dat
             self.opercuenta.concepto=concepto
             self.opercuenta.tipooperacion=concepto.tipooperacion
             self.opercuenta.importe=importe
@@ -89,7 +92,7 @@ class frmAccountOperationsAdd(QDialog, Ui_frmAccountOperationsAdd):
             self.mem.con.commit()        #Se debe hacer el commit antes para que al actualizar con el signal salga todos los datos
             self.emit(SIGNAL("OperAccountIBMed"), ())
         elif self.tipo==2:            
-            self.opercuenta.fecha=fecha
+            self.opercuenta.datetime=dat
             self.opercuenta.concepto=concepto
             self.opercuenta.tipooperacion=concepto.tipooperacion
             self.opercuenta.importe=importe
@@ -100,13 +103,13 @@ class frmAccountOperationsAdd(QDialog, Ui_frmAccountOperationsAdd):
             self.emit(SIGNAL("OperAccountIBMed"), ())
             self.done(0)
         elif self.tipo==3:
-            self.opertarjeta=CreditCardOperation(self.mem).init__create(fecha, concepto, concepto.tipooperacion, importe, comentario, self.tarjeta, False, None, None )
+            self.opertarjeta=CreditCardOperation(self.mem).init__create(dat, concepto, concepto.tipooperacion, importe, comentario, self.tarjeta, False, None, None )
             self.opertarjeta.save()
             self.mem.con.commit()        
             self.tarjeta.op_diferido.append(self.opertarjeta)
             self.emit(SIGNAL("OperCreditCardIBMed"), (True))
         elif self.tipo==4:            
-            self.opertarjeta.fecha=fecha
+            self.opertarjeta.datetime=dat
             self.opertarjeta.concepto=concepto
             self.opertarjeta.tipooperacion=concepto.tipooperacion
             self.opertarjeta.importe=importe

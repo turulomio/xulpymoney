@@ -11,7 +11,7 @@ class AccountOperationOfInvestmentOperation:
     def __init__(self, mem):
         self.mem=mem    
         self.id=None #Coincide con id_opercuentas de la tabla opercuentas.
-        self.fecha=None
+        self.datetime=None
         self.concepto=None
         self.tipooperacion=None
         self.importe=None
@@ -20,8 +20,8 @@ class AccountOperationOfInvestmentOperation:
         self.operinversion=None
         self.inversion=None
         
-    def init__create(self, fecha,  concepto, tipooperacion, importe, comentario, cuenta, operinversion, inversion, id=None):
-        self.fecha=fecha
+    def init__create(self, datetime,  concepto, tipooperacion, importe, comentario, cuenta, operinversion, inversion, id=None):
+        self.datetime=datetime
         self.concepto=concepto
         self.tipooperacion=tipooperacion
         self.importe=importe
@@ -34,10 +34,10 @@ class AccountOperationOfInvestmentOperation:
     def save(self):
         cur=self.mem.con.cursor()
         if self.id==None:
-            cur.execute("insert into opercuentasdeoperinversiones (fecha, id_conceptos, id_tiposoperaciones, importe, comentario,id_cuentas, id_operinversiones,id_inversiones) values ( %s,%s,%s,%s,%s,%s,%s,%s) returning id_opercuentas", (self.fecha, self.concepto.id, self.tipooperacion.id, self.importe, self.comentario, self.cuenta.id, self.operinversion.id, self.inversion.id))
+            cur.execute("insert into opercuentasdeoperinversiones (datetime, id_conceptos, id_tiposoperaciones, importe, comentario,id_cuentas, id_operinversiones,id_inversiones) values ( %s,%s,%s,%s,%s,%s,%s,%s) returning id_opercuentas", (self.datetime, self.concepto.id, self.tipooperacion.id, self.importe, self.comentario, self.cuenta.id, self.operinversion.id, self.inversion.id))
             self.id=cur.fetchone()[0]
         else:
-            cur.execute("UPDATE FALTA  set fecha=%s, id_conceptos=%s, id_tiposoperaciones=%s, importe=%s, comentario=%s, id_cuentas=%s where id_opercuentas=%s", (self.fecha, self.concepto.id, self.tipooperacion.id,  self.importe,  self.comentario,  self.cuenta.id,  self.id))
+            cur.execute("UPDATE FALTA  set datetime=%s, id_conceptos=%s, id_tiposoperaciones=%s, importe=%s, comentario=%s, id_cuentas=%s where id_opercuentas=%s", (self.datetime, self.concepto.id, self.tipooperacion.id,  self.importe,  self.comentario,  self.cuenta.id,  self.id))
         cur.close()
         self.cuenta.saldo_from_db()
 
@@ -175,7 +175,7 @@ class SetInvestments:
             - Se añadirá un comentario con id_inversiondestino
             
         En destino:
-            - Se añaden tantas operaciones como operinversionesactual con misma fecha 
+            - Se añaden tantas operaciones como operinversionesactual con misma datetime 
             - Tendrán balance positivo y el tipo operacion es traspaso de valores. destino 
             - Se añadirá un comentario con id_operinversion origen
             
@@ -555,7 +555,7 @@ class SetAccountOperations:
         cur=self.mem.con.cursor()
         cur.execute(sql)#"Select * from opercuentas"
         for row in cur:        
-            co=AccountOperation(self.mem).init__create(row['fecha'], self.mem.conceptos.find(row['id_conceptos']), self.mem.tiposoperaciones.find(row['id_tiposoperaciones']), row['importe'], row['comentario'],  self.mem.data.cuentas_all().find(row['id_cuentas']))
+            co=AccountOperation(self.mem).init__create(row['datetime'], self.mem.conceptos.find(row['id_conceptos']), self.mem.tiposoperaciones.find(row['id_tiposoperaciones']), row['importe'], row['comentario'],  self.mem.data.cuentas_all().find(row['id_cuentas']))
             self.arr.append(co)
         cur.close()
     
@@ -569,11 +569,11 @@ class SetAccountOperations:
             else:
                 comentario=QApplication.translate("Core","Paid with {0}. {1}".format(self.mem.data.tarjetas_all().find(row['id_tarjetas']).name, row['comentario'] ), None, QApplication.UnicodeUTF8)
             
-            co=AccountOperation(self.mem).init__create(row['fecha'], self.mem.conceptos.find(row['id_conceptos']), self.mem.tiposoperaciones.find(row['id_tiposoperaciones']), row['importe'], comentario,  self.mem.data.cuentas_all().find(row['id_cuentas']))
+            co=AccountOperation(self.mem).init__create(row['datetime'], self.mem.conceptos.find(row['id_conceptos']), self.mem.tiposoperaciones.find(row['id_tiposoperaciones']), row['importe'], comentario,  self.mem.data.cuentas_all().find(row['id_cuentas']))
             self.arr.append(co)
         cur.close()
     def sort(self):       
-        self.arr=sorted(self.arr, key=lambda e: e.fecha,  reverse=False) 
+        self.arr=sorted(self.arr, key=lambda e: e.datetime,  reverse=False) 
         
     def myqtablewidget(self, tabla, section, show_account=False):
         """Section es donde guardar en el config file, coincide con el nombre del formulario en el que está la tabla
@@ -599,7 +599,7 @@ class SetAccountOperations:
         balance=0
         for rownumber, a in enumerate(self.arr):
             balance=balance+a.importe
-            tabla.setItem(rownumber, 0, qdate(a.fecha))
+            tabla.setItem(rownumber, 0, qdatetime(a.datetime, self.mem.localzone))
             if show_account==True:
                 tabla.setItem(rownumber, diff, QTableWidgetItem(a.cuenta.name))
             tabla.setItem(rownumber, 1+diff, qleft(a.concepto.name))
@@ -1662,7 +1662,7 @@ class Concept:
         return self.init__create(row['concepto'], tipooperacion, row['editable'], row['id_conceptos'])
 #            
 #    def balance(self, cur, year,  month):
-#        sql="select sum(importe) as importe from opercuentastarjetas where id_conceptos="+str(self.id)+" and date_part('year',fecha)='"+str(year)+"' and date_part('month',fecha)='"+str(month)+"'"
+#        sql="select sum(importe) as importe from opercuentastarjetas where id_conceptos="+str(self.id)+" and date_part('year',datetime)='"+str(year)+"' and date_part('month',datetime)='"+str(month)+"'"
 #        saldoopercuentastarjetas=con.Execute(sql).GetRowAssoc(0)["importe"]
 #        if saldoopercuentastarjetas==None:
 #            saldoopercuentastarjetas=0
@@ -1699,12 +1699,12 @@ class Concept:
 
     def media_mensual(self):
         cur=self.mem.con.cursor()
-        cur.execute("select fecha from opercuentas where id_conceptos=%s union all select fecha from opertarjetas where id_conceptos=%s order by fecha limit 1", (self.id, self.id))
+        cur.execute("select datetime from opercuentas where id_conceptos=%s union all select datetime from opertarjetas where id_conceptos=%s order by datetime limit 1", (self.id, self.id))
         res=cur.fetchone()
         if res==None:
             primerafecha=datetime.date.today()-datetime.timedelta(days=1)
         else:
-            primerafecha=res['fecha']
+            primerafecha=res['datetime'].date()
         cur.execute("select sum(importe) as suma from opercuentas where id_conceptos=%s union all select sum(importe) as suma from opertarjetas where id_conceptos=%s", (self.id, self.id))
         suma=Decimal(0)
         for i in cur:
@@ -1717,7 +1717,7 @@ class Concept:
     def mensual(self,   year,  month):  
         """Saca el gasto mensual de este concepto"""
         cur=self.mem.con.cursor()
-        cur.execute("select sum(importe) as suma from opercuentas where id_conceptos=%s and date_part('month',fecha)=%s and date_part('year', fecha)=%s union all select sum(importe) as suma from opertarjetas where id_conceptos=%s  and date_part('month',fecha)=%s and date_part('year', fecha)=%s", (self.id,  month, year,  self.id,  month, year  ))
+        cur.execute("select sum(importe) as suma from opercuentas where id_conceptos=%s and date_part('month',datetime)=%s and date_part('year', datetime)=%s union all select sum(importe) as suma from opertarjetas where id_conceptos=%s  and date_part('month',datetime)=%s and date_part('year', datetime)=%s", (self.id,  month, year,  self.id,  month, year  ))
         suma=0
         for i in cur:
             if i['suma']==None:
@@ -1730,7 +1730,7 @@ class AccountOperation:
     def __init__(self, mem):
         self.mem=mem
         self.id=None
-        self.fecha=None
+        self.datetime=None
         self.concepto=None
         self.tipooperacion=None
         self.importe=None
@@ -1738,11 +1738,11 @@ class AccountOperation:
         self.cuenta=None
         
     def __repr__(self):
-        return "AccountOperation {0}. Fecha: {1}. Importe:{2}. Concept:{3}".format(self.id, self.fecha, self.importe, self.concepto)
+        return "AccountOperation {0}. datetime: {1}. Importe:{2}. Concept:{3}".format(self.id, self.datetime, self.importe, self.concepto)
         
-    def init__create(self, fecha, concepto, tipooperacion, importe,  comentario, cuenta, id=None):
+    def init__create(self, dt, concepto, tipooperacion, importe,  comentario, cuenta, id=None):
         self.id=id
-        self.fecha=fecha
+        self.datetime=dt
         self.concepto=concepto
         self.tipooperacion=tipooperacion
         self.importe=importe
@@ -1751,7 +1751,7 @@ class AccountOperation:
         return self
         
     def init__db_row(self, row, concepto,  tipooperacion, cuenta):
-        return self.init__create(row['fecha'],  concepto,  tipooperacion,  row['importe'],  row['comentario'],  cuenta,  row['id_opercuentas'])
+        return self.init__create(row['datetime'],  concepto,  tipooperacion,  row['importe'],  row['comentario'],  cuenta,  row['id_opercuentas'])
 
 
     def init__db_query(self, id_opercuentas):
@@ -1833,10 +1833,10 @@ class AccountOperation:
     def save(self):
         cur=self.mem.con.cursor()
         if self.id==None:
-            cur.execute("insert into opercuentas (fecha, id_conceptos, id_tiposoperaciones, importe, comentario, id_cuentas) values ( %s,%s,%s,%s,%s,%s) returning id_opercuentas",(self.fecha, self.concepto.id, self.tipooperacion.id, self.importe, self.comentario, self.cuenta.id))
+            cur.execute("insert into opercuentas (datetime, id_conceptos, id_tiposoperaciones, importe, comentario, id_cuentas) values ( %s,%s,%s,%s,%s,%s) returning id_opercuentas",(self.datetime, self.concepto.id, self.tipooperacion.id, self.importe, self.comentario, self.cuenta.id))
             self.id=cur.fetchone()[0]
         else:
-            cur.execute("update opercuentas set fecha=%s, id_conceptos=%s, id_tiposoperaciones=%s, importe=%s, comentario=%s, id_cuentas=%s where id_opercuentas=%s", (self.fecha, self.concepto.id, self.tipooperacion.id,  self.importe,  self.comentario,  self.cuenta.id,  self.id))
+            cur.execute("update opercuentas set datetime=%s, id_conceptos=%s, id_tiposoperaciones=%s, importe=%s, comentario=%s, id_cuentas=%s where id_opercuentas=%s", (self.datetime, self.concepto.id, self.tipooperacion.id,  self.importe,  self.comentario,  self.cuenta.id,  self.id))
         cur.close()
         self.cuenta.saldo_from_db()
         
@@ -1975,7 +1975,7 @@ class Dividend:
         cur=self.mem.con.cursor()
         comentario="{0}|{1}|{2}|{3}".format(self.inversion.name, self.bruto, self.retencion, self.comision)
         if self.id==None:#Insertar
-            oc=AccountOperation(self.mem).init__create( self.fecha,self.concepto, self.concepto.tipooperacion, self.neto, comentario, self.inversion.cuenta)
+            oc=AccountOperation(self.mem).init__create( self.datetime,self.concepto, self.concepto.tipooperacion, self.neto, comentario, self.inversion.cuenta)
             oc.save()
             self.opercuenta=oc
             #Añade el dividend
@@ -2214,7 +2214,7 @@ class Account:
         cur=self.mem.con.cursor()
         if fecha==None:
             fecha=datetime.date.today()
-        cur.execute('select sum(importe)  from opercuentas where id_cuentas='+ str(self.id) +" and fecha<='"+str(fecha)+"';") 
+        cur.execute('select sum(importe) from opercuentas where id_cuentas='+ str(self.id) +" and datetime::date<='"+str(fecha)+"';") 
         balance=cur.fetchone()[0]
         if balance==None:
             cur.close()
@@ -2259,20 +2259,20 @@ class Account:
         if self.es_borrable(cur)==True:
             cur.execute("delete from cuentas where id_cuentas=%s", (self.id, ))
 
-    def transferencia(self, fecha, cuentaorigen, cuentadestino, importe, comision):
+    def transferencia(self, datetime, cuentaorigen, cuentadestino, importe, comision):
         """Si el oc_comision_id es 0 es que no hay comision porque tambi´en es 0"""
         #Ojo los comentarios est´an dependientes.
         if comision>0:
             commentcomission="Transfer|{0}|{1}".format(importe, cuentaorigen.id)
-            oc_comision=AccountOperation(self.mem).init__create(fecha, self.mem.conceptos.find(38), self.mem.tiposoperaciones.find(1), -comision, commentcomission, cuentaorigen )
+            oc_comision=AccountOperation(self.mem).init__create(datetime, self.mem.conceptos.find(38), self.mem.tiposoperaciones.find(1), -comision, commentcomission, cuentaorigen )
             oc_comision.save()          
             oc_comision_id=oc_comision.id  
         else:
             oc_comision_id=0
-        oc_origen=AccountOperation(self.mem).init__create(fecha, self.mem.conceptos.find(4), self.mem.tiposoperaciones.find(3), -importe, "", cuentaorigen )
+        oc_origen=AccountOperation(self.mem).init__create(datetime, self.mem.conceptos.find(4), self.mem.tiposoperaciones.find(3), -importe, "", cuentaorigen )
         oc_origen.save()
         commentdestino="{0}|{1}".format(cuentaorigen.id, oc_origen.id)
-        oc_destino=AccountOperation(self.mem).init__create(fecha, self.mem.conceptos.find(5), self.mem.tiposoperaciones.find(3), importe, commentdestino, cuentadestino )
+        oc_destino=AccountOperation(self.mem).init__create(datetime, self.mem.conceptos.find(5), self.mem.tiposoperaciones.find(3), importe, commentdestino, cuentadestino )
         oc_destino.save()
         oc_origen.comentario="{0}|{1}|{2}".format(cuentadestino.id, oc_destino.id, oc_comision_id)
         oc_origen.save()
@@ -2583,7 +2583,7 @@ class CreditCardOperation:
         """CreditCard es un objeto CreditCardOperation. pagado, fechapago y opercuenta solo se rellena cuando se paga"""
         self.mem=mem
         self.id=None
-        self.fecha=None
+        self.datetime=None
         self.concepto=None
         self.tipooperacion=None
         self.importe=None
@@ -2593,10 +2593,10 @@ class CreditCardOperation:
         self.fechapago=None
         self.opercuenta=None
         
-    def init__create(self, fecha,  concepto, tipooperacion, importe, comentario, tarjeta, pagado=None, fechapago=None, opercuenta=None, id_opertarjetas=None):
+    def init__create(self, dt,  concepto, tipooperacion, importe, comentario, tarjeta, pagado=None, fechapago=None, opercuenta=None, id_opertarjetas=None):
         """pagado, fechapago y opercuenta solo se rellena cuando se paga"""
         self.id=id_opertarjetas
-        self.fecha=fecha
+        self.datetime=dt
         self.concepto=concepto
         self.tipooperacion=tipooperacion
         self.importe=importe
@@ -2608,7 +2608,7 @@ class CreditCardOperation:
         return self
         
     def init__db_row(self, row, concepto, tipooperacion, tarjeta, opercuenta=None):
-        return self.init__create(row['fecha'],  concepto, tipooperacion, row['importe'], row['comentario'], tarjeta, row['pagado'], row['fechapago'], opercuenta, row['id_opertarjetas'])
+        return self.init__create(row['datetime'],  concepto, tipooperacion, row['importe'], row['comentario'], tarjeta, row['pagado'], row['fechapago'], opercuenta, row['id_opertarjetas'])
         
     def borrar(self):
         cur=self.mem.con.cursor()
@@ -2619,14 +2619,14 @@ class CreditCardOperation:
     def save(self):
         cur=self.mem.con.cursor()
         if self.id==None:#insertar
-            sql="insert into opertarjetas (fecha, id_conceptos, id_tiposoperaciones, importe, comentario, id_tarjetas, pagado) values ('" + str(self.fecha) + "'," + str(self.concepto.id)+","+ str(self.tipooperacion.id) +","+str(self.importe)+", '"+self.comentario+"', "+str(self.tarjeta.id)+", "+str(self.pagado)+") returning id_opertarjetas"
+            sql="insert into opertarjetas (datetime, id_conceptos, id_tiposoperaciones, importe, comentario, id_tarjetas, pagado) values ('" + str(self.datetime) + "'," + str(self.concepto.id)+","+ str(self.tipooperacion.id) +","+str(self.importe)+", '"+self.comentario+"', "+str(self.tarjeta.id)+", "+str(self.pagado)+") returning id_opertarjetas"
             cur.execute(sql);
             self.id=cur.fetchone()[0]
         else:
             if self.tarjeta.pagodiferido==True and self.pagado==False:#No hay opercuenta porque es en diferido y no se ha pagado
-                cur.execute("update opertarjetas set fecha=%s, id_conceptos=%s, id_tiposoperaciones=%s, importe=%s, comentario=%s, id_tarjetas=%s, pagado=%s, fechapago=%s, id_opercuentas=%s where id_opertarjetas=%s", (self.fecha, self.concepto.id, self.tipooperacion.id,  self.importe,  self.comentario, self.tarjeta.id, self.pagado, self.fechapago, None, self.id))
+                cur.execute("update opertarjetas set datetime=%s, id_conceptos=%s, id_tiposoperaciones=%s, importe=%s, comentario=%s, id_tarjetas=%s, pagado=%s, fechapago=%s, id_opercuentas=%s where id_opertarjetas=%s", (self.datetime, self.concepto.id, self.tipooperacion.id,  self.importe,  self.comentario, self.tarjeta.id, self.pagado, self.fechapago, None, self.id))
             else:
-                cur.execute("update opertarjetas set fecha=%s, id_conceptos=%s, id_tiposoperaciones=%s, importe=%s, comentario=%s, id_tarjetas=%s, pagado=%s, fechapago=%s, id_opercuentas=%s where id_opertarjetas=%s", (self.fecha, self.concepto.id, self.tipooperacion.id,  self.importe,  self.comentario, self.tarjeta.id, self.pagado, self.fechapago, self.opercuenta.id, self.id))
+                cur.execute("update opertarjetas set datetime=%s, id_conceptos=%s, id_tiposoperaciones=%s, importe=%s, comentario=%s, id_tarjetas=%s, pagado=%s, fechapago=%s, id_opercuentas=%s where id_opertarjetas=%s", (self.datetime, self.concepto.id, self.tipooperacion.id,  self.importe,  self.comentario, self.tarjeta.id, self.pagado, self.fechapago, self.opercuenta.id, self.id))
         cur.close()
         
 class OperationType:
@@ -2644,31 +2644,31 @@ class Assets:
     def __init__(self, mem):
         self.mem=mem        
     
-    def primera_fecha_con_datos_usuario(self):        
-        """Devuelve la fecha actual si no hay datos. Base de datos vacía"""
+    def primera_datetime_con_datos_usuario(self):        
+        """Devuelve la datetime actual si no hay datos. Base de datos vacía"""
         cur=self.mem.con.cursor()
-        sql='select fecha from opercuentas UNION all select datetime::date from operinversiones UNION all select fecha from opertarjetas order by fecha limit 1;'
+        sql='select datetime from opercuentas UNION all select datetime from operinversiones UNION all select datetime from opertarjetas order by datetime limit 1;'
         cur.execute(sql)
         if cur.rowcount==0:
-            return datetime.date.today()
+            return datetime.datetime.now()
         resultado=cur.fetchone()[0]
         cur.close()
         return resultado
 
-    def saldo_todas_cuentas(self,  fecha=None):
-        """Si cur es none y fecha calcula el balance actual."""
+    def saldo_todas_cuentas(self,  datetime=None):
+        """Si cur es none y datetime calcula el balance actual."""
         cur=self.mem.con.cursor()
         resultado=0
-        sql="select cuentas_saldo('"+str(fecha)+"') as balance;";
+        sql="select cuentas_saldo('"+str(datetime)+"') as balance;";
         cur.execute(sql)
         resultado=cur.fetchone()[0] 
         cur.close()
         return resultado;
 
         
-    def saldo_total(self, setinversiones,  fecha):
+    def saldo_total(self, setinversiones,  datetime):
         """Versión que se calcula en cliente muy optimizada"""
-        return self.saldo_todas_cuentas(fecha)+self.saldo_todas_inversiones(setinversiones, fecha)
+        return self.saldo_todas_cuentas(datetime)+self.saldo_todas_inversiones(setinversiones, datetime)
 
         
     def saldo_todas_inversiones(self, setinversiones,   fecha):
@@ -2715,7 +2715,7 @@ class Assets:
     def saldo_anual_por_tipo_operacion(self,  ano,  id_tiposoperaciones):   
         """Opercuentas y opertarjetas"""
         cur=self.mem.con.cursor()
-        sql="select sum(Importe) as importe from opercuentas where id_tiposoperaciones="+str(id_tiposoperaciones)+" and date_part('year',fecha) = "+str(ano)  + " union all select sum(Importe) as importe from opertarjetas where id_tiposoperaciones="+str(id_tiposoperaciones)+" and date_part('year',fecha) = "+str(ano)
+        sql="select sum(Importe) as importe from opercuentas where id_tiposoperaciones="+str(id_tiposoperaciones)+" and date_part('year',datetime) = "+str(ano)  + " union all select sum(Importe) as importe from opertarjetas where id_tiposoperaciones="+str(id_tiposoperaciones)+" and date_part('year',datetime) = "+str(ano)
         cur.execute(sql)        
         resultado=0
         for i in cur:
@@ -2728,7 +2728,7 @@ class Assets:
     def saldo_por_tipo_operacion(self,  ano,  mes,  id_tiposoperaciones):   
         """Opercuentas y opertarjetas"""
         cur=self.mem.con.cursor()
-        sql="select sum(Importe) as importe from opercuentas where id_tiposoperaciones="+str(id_tiposoperaciones)+" and date_part('year',fecha) = "+str(ano)+" and date_part('month',fecha)= " + str(mes) + " union all select sum(Importe) as importe from opertarjetas where id_tiposoperaciones="+str(id_tiposoperaciones)+" and date_part('year',fecha) = "+str(ano)+" and date_part('month',fecha)= " + str(mes)
+        sql="select sum(Importe) as importe from opercuentas where id_tiposoperaciones="+str(id_tiposoperaciones)+" and date_part('year',datetime) = "+str(ano)+" and date_part('month',datetime)= " + str(mes) + " union all select sum(Importe) as importe from opertarjetas where id_tiposoperaciones="+str(id_tiposoperaciones)+" and date_part('year',datetime) = "+str(ano)+" and date_part('month',datetime)= " + str(mes)
         cur.execute(sql)        
         
         resultado=0
@@ -5927,10 +5927,10 @@ def qdatetime(dt, zone,  pixmap=True):
         dt=dt_changes_tz(dt,  zone)#sE CONVIERTE A LOCAL DE dt_changes_tz 2012-07-11 08:52:31.311368-04:00 2012-07-11 14:52:31.311368+02:00
         if dt.microsecond==4 :
             resultado=str(dt.date())
-        elif dt.second>0:
-            resultado=str(dt.date())+" "+str(dt.hour).zfill(2)+":"+str(dt.minute).zfill(2)+":"+str(dt.second).zfill(2)
         else:
-            resultado=str(dt.date())+" "+str(dt.hour).zfill(2)+":"+str(dt.minute).zfill(2)   
+            resultado=str(dt.date())+" "+str(dt.hour).zfill(2)+":"+str(dt.minute).zfill(2)+":"+str(dt.second).zfill(2)
+#        else:
+#            resultado=str(dt.date())+" "+str(dt.hour).zfill(2)+":"+str(dt.minute).zfill(2)   
     a=QTableWidgetItem(resultado)
     if dt==None:
         a.setTextColor(QColor(0, 0, 255))

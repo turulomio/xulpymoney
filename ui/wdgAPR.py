@@ -24,7 +24,7 @@ class wdgAPR(QWidget, Ui_wdgAPR):
 #        cur = con.cursor()
 #        mq=self.mem.connect_mystocks()
 #        curms=mq.cursor()                
-        anoinicio=Assets(self.mem).primera_fecha_con_datos_usuario().year       
+        anoinicio=Assets(self.mem).primera_datetime_con_datos_usuario().year       
         anofinal=datetime.date.today().year+1        
         
         self.progress.reset()

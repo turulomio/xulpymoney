@@ -19,7 +19,18 @@ class wdgConceptsHistorical(QWidget, Ui_wdgConceptsHistorical):
 
     def reload(self):
         cur=self.mem.con.cursor()
-        sql="select date_part('year',fecha) as year,  date_part('month',fecha) as month, sum(importe) as suma from opercuentastarjetas where id_conceptos={0} group by date_part('year',fecha), date_part('month',fecha) order by 1,2 ;".format(self.concepto.id)
+        #Junta opercuentas y opertarjetas y sobre esa subquery uni hace un group by
+        sql="""
+        select date_part('year',datetime) as year,  date_part('month',datetime) as month, sum(importe) as suma 
+        from ( 
+                    SELECT opercuentas.datetime, opercuentas.id_conceptos,  opercuentas.importe  FROM opercuentas where id_conceptos={0} 
+                        UNION ALL 
+                    SELECT opertarjetas.datetime, opertarjetas.id_conceptos, opertarjetas.importe FROM opertarjetas where id_conceptos={0}
+                ) as uni 
+        group by date_part('year',datetime), date_part('month',datetime) order by 1,2 ;
+        """.format(self.concepto.id)
+        
+#        sql="select date_part('year',datetime) as year,  date_part('month',datetime) as month, sum(importe) as suma from opercuentastarjetas where id_conceptos={0} group by date_part('year',datetime), date_part('month',datetime) order by 1,2 ;".format(self.concepto.id)
         cur.execute(sql)
         if cur.rowcount!=0:
             arr=cur.fetchall()            
@@ -48,7 +59,7 @@ class wdgConceptsHistorical(QWidget, Ui_wdgConceptsHistorical):
         horizontalLayout = QHBoxLayout(newtab)
         table = myQTableWidget(newtab)
         set=SetAccountOperations(self.mem)
-        set.load_from_db_with_creditcard("select fecha, id_conceptos, id_tiposoperaciones, importe, comentario, id_cuentas , -1 as id_tarjetas from opercuentas where id_conceptos={0} and date_part('year',fecha)={1} and date_part('month',fecha)={2} union all select fecha, id_conceptos, id_tiposoperaciones, importe, comentario, id_cuentas ,tarjetas.id_tarjetas as id_tarjetas from opertarjetas,tarjetas where opertarjetas.id_tarjetas=tarjetas.id_tarjetas and id_conceptos={0} and date_part('year',fecha)={1} and date_part('month',fecha)={2}".format (self.concepto.id, self.year, self.month))
+        set.load_from_db_with_creditcard("select datetime, id_conceptos, id_tiposoperaciones, importe, comentario, id_cuentas , -1 as id_tarjetas from opercuentas where id_conceptos={0} and date_part('year',datetime)={1} and date_part('month',datetime)={2} union all select datetime, id_conceptos, id_tiposoperaciones, importe, comentario, id_cuentas ,tarjetas.id_tarjetas as id_tarjetas from opertarjetas,tarjetas where opertarjetas.id_tarjetas=tarjetas.id_tarjetas and id_conceptos={0} and date_part('year',datetime)={1} and date_part('month',datetime)={2}".format (self.concepto.id, self.year, self.month))
         set.sort()
         set.myqtablewidget(table, None, True)
         horizontalLayout.addWidget(table)
@@ -62,7 +73,7 @@ class wdgConceptsHistorical(QWidget, Ui_wdgConceptsHistorical):
         horizontalLayout = QHBoxLayout(newtab)
         table = myQTableWidget(newtab)
         set=SetAccountOperations(self.mem)
-        set.load_from_db_with_creditcard("select fecha, id_conceptos, id_tiposoperaciones, importe, comentario, id_cuentas , -1 as id_tarjetas from opercuentas where id_conceptos={0} and date_part('year',fecha)={1} union all select fecha, id_conceptos, id_tiposoperaciones, importe, comentario, id_cuentas ,tarjetas.id_tarjetas as id_tarjetas from opertarjetas,tarjetas where opertarjetas.id_tarjetas=tarjetas.id_tarjetas and id_conceptos={0} and date_part('year',fecha)={1}".format (self.concepto.id, self.year))
+        set.load_from_db_with_creditcard("select datetime, id_conceptos, id_tiposoperaciones, importe, comentario, id_cuentas , -1 as id_tarjetas from opercuentas where id_conceptos={0} and date_part('year',datetime)={1} union all select datetime, id_conceptos, id_tiposoperaciones, importe, comentario, id_cuentas ,tarjetas.id_tarjetas as id_tarjetas from opertarjetas,tarjetas where opertarjetas.id_tarjetas=tarjetas.id_tarjetas and id_conceptos={0} and date_part('year',datetime)={1}".format (self.concepto.id, self.year))
         set.sort()
         set.myqtablewidget(table, None, True)
         horizontalLayout.addWidget(table)
