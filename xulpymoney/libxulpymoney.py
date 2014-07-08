@@ -297,9 +297,14 @@ class SetProducts:
         return None
                 
     def union(self, list2):
-        """Devuelve un SetBanks con la union del set1 y del set2"""
+        """Devuelve un Set con la union del set1 y del set2"""
         resultado=SetProducts(self.mem)
-        resultado.arr=self.arr+list2.arr
+        for p in self.arr:
+            resultado.arr.append(p)
+        for p in list2.arr:
+            if resultado.find(p.id)==None:
+                resultado.arr.append(p)
+#        resultado.arr=self.arr+list2.arr
         return resultado
 
     def qcombobox(self, combo, selected=None):
