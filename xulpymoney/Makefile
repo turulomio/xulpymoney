@@ -21,6 +21,7 @@ compile:
 	pyuic4 ui/frmAccountOperationsAdd.ui > ui/Ui_frmAccountOperationsAdd.py &
 	pyuic4 ui/frmAuxiliarTables.ui > ui/Ui_frmAuxiliarTables.py &
 	pyuic4 ui/wdgBanks.ui > ui/Ui_wdgBanks.py &
+	pyuic4 ui/wdgCalculator.ui > ui/Ui_wdgCalculator.py &
 	pyuic4 ui/wdgConcepts.ui > ui/Ui_wdgConcepts.py &
 	pyuic4 ui/wdgConceptsHistorical.ui > ui/Ui_wdgConceptsHistorical.py &
 	pyuic4 ui/wdgAccounts.ui > ui/Ui_wdgAccounts.py &
@@ -41,9 +42,9 @@ compile:
 	pyuic4 ui/frmTransfer.ui > ui/Ui_frmTransfer.py &
 	pyuic4 ui/frmSharesTransfer.ui > ui/Ui_frmSharesTransfer.py &
 	pyuic4 ui/wdgTotal.ui > ui/Ui_wdgTotal.py &
-	pyuic4 ui/frmProductReport.ui > ui/Ui_frmProductReport.py 
-	pyuic4 ui/frmQuotesIBM.ui > ui/Ui_frmQuotesIBM.py
-	pyuic4 ui/frmMainMS.ui > ui/Ui_frmMainMS.py
+	pyuic4 ui/frmProductReport.ui > ui/Ui_frmProductReport.py &
+	pyuic4 ui/frmQuotesIBM.ui > ui/Ui_frmQuotesIBM.py &
+	pyuic4 ui/frmMainMS.ui > ui/Ui_frmMainMS.py &
 	pyuic4 ui/frmSelector.ui > ui/Ui_frmSelector.py
 	pyuic4 ui/frmEstimationsAdd.ui > ui/Ui_frmEstimationsAdd.py
 	pyuic4 ui/wdgProducts.ui > ui/Ui_wdgProducts.py

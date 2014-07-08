@@ -1,5 +1,6 @@
 <RCC>
   <qresource prefix="/xulpymoney">
+    <file>kcalc.png</file>
     <file>search.png</file>
     <file>add.png</file>
     <file>bank.png</file>

@@ -19,6 +19,8 @@ SOURCES         = xulpymoney.py \
                   ui/Ui_frmCreditCardsAdd.py \
                   ui/wdgBanks.py \
                   ui/Ui_wdgBanks.py \
+                  ui/wdgCalculator.py \
+                  ui/Ui_wdgCalculator.py \
                   ui/wdgConcepts.py \
                   ui/Ui_wdgConcepts.py \
                   ui/wdgConceptsHistorical.py \
@@ -100,6 +102,7 @@ FORMS           = ui/frmAbout.ui \
                   ui/frmAuxiliarTables.ui \
                   ui/frmCreditCardsAdd.ui \
                   ui/wdgBanks.ui \
+                  ui/wdgCalculator.ui \
                   ui/wdgAccounts.ui \
                   ui/wdgConcepts.ui \
                   ui/wdgConceptsHistorical.ui \

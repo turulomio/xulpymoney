@@ -91,6 +91,8 @@
     <addaction name="actionInvestmentsClasses"/>
     <addaction name="separator"/>
     <addaction name="actionInvestmentsOperations"/>
+    <addaction name="separator"/>
+    <addaction name="actionCalculator"/>
    </widget>
    <widget class="QMenu" name="menuXulpymoney">
     <property name="title">
@@ -360,6 +362,18 @@
    </property>
    <property name="toolTip">
     <string>Investment operations list</string>
+   </property>
+  </action>
+  <action name="actionCalculator">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/kcalc.png</normaloff>:/xulpymoney/kcalc.png</iconset>
+   </property>
+   <property name="text">
+    <string>Investment calculator</string>
+   </property>
+   <property name="toolTip">
+    <string>Investment calculator</string>
    </property>
   </action>
  </widget>

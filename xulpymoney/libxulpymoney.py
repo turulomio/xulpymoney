@@ -305,10 +305,13 @@ class SetProducts:
     def qcombobox(self, combo, selected=None):
         """Show products in a combo with a flag and the code as data
         Selected is a product id."""
+        self.sort_by_name()
         for p in self.arr:
             combo.addItem(p.name, p.id)
         if selected!=None:
                 combo.setCurrentIndex(combo.findData(selected))
+    def sort_by_name(self):
+        self.arr=sorted(self.arr, key=lambda c: c.name,  reverse=False)      
 class SetProductsModes:
     """Agrupa los mode"""
     def __init__(self, mem):
@@ -3018,11 +3021,11 @@ class SetLeverages:
                 
         
     def load_all(self):
-        self.dic_arr["0"]=Apalancamiento(self.mem).init__create(0 ,QApplication.translate("Core","Not leveraged"))
-        self.dic_arr["1"]=Apalancamiento(self.mem).init__create( 1,QApplication.translate("Core","Variable leverage (Warrants)"))
-        self.dic_arr["2"]=Apalancamiento(self.mem).init__create( 2,QApplication.translate("Core","Leverage x2"))
-        self.dic_arr["3"]=Apalancamiento(self.mem).init__create( 3,QApplication.translate("Core","Leverage x3"))
-        self.dic_arr["4"]=Apalancamiento(self.mem).init__create( 4,QApplication.translate("Core","Leverage x4"))
+        self.dic_arr["0"]=Apalancamiento(self.mem).init__create(0 ,QApplication.translate("Core","Not leveraged"), 1)
+        self.dic_arr["1"]=Apalancamiento(self.mem).init__create( 1,QApplication.translate("Core","Variable leverage (Warrants)"), 10)
+        self.dic_arr["2"]=Apalancamiento(self.mem).init__create( 2,QApplication.translate("Core","Leverage x2"), 2)
+        self.dic_arr["3"]=Apalancamiento(self.mem).init__create( 3,QApplication.translate("Core","Leverage x3"), 3)
+        self.dic_arr["4"]=Apalancamiento(self.mem).init__create( 4,QApplication.translate("Core","Leverage x4"), 4)
                
 
     def qcombobox(self, combo):
@@ -5158,9 +5161,11 @@ class Apalancamiento:
     def __init__(self, mem):
         self.id=None
         self.name=None
-    def init__create(self, id, name):
+        self.multiplier=None#Valor por el que multiplicar
+    def init__create(self, id, name, multiplier):
         self.id=id
         self.name=name
+        self.multiplier=multiplier
         return self
         
 class Priority:
