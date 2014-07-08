@@ -11,8 +11,9 @@ from wdgInvestmentClasses import *
 from wdgJointReport import *
 from wdgAPR import *
 from wdgAccounts import *
-from wdgConcepts import *
 from wdgBanks import *
+from wdgConcepts import *
+from wdgCalculator import *
 from wdgIndexRange import *
 from wdgInvestments import *
 from wdgInvestmentsOperations import *
@@ -91,6 +92,15 @@ class frmMain(QMainWindow, Ui_frmMain):
         self.layout.addWidget(self.w)
         self.w.show()
         
+    @QtCore.pyqtSlot()  
+    def on_actionCalculator_activated(self):
+        d=QDialog(self)        
+        d.setFixedSize(670, 670)
+        d.setWindowTitle(self.trUtf8("Investment calculator"))
+        w=wdgCalculator(self.mem)
+        lay = QVBoxLayout(d)
+        lay.addWidget(w)
+        d.exec_()
     @QtCore.pyqtSlot()  
     def on_actionConcepts_activated(self):
         self.w.close()

@@ -17,6 +17,14 @@ class myQLineEdit(QLineEdit):
             return True
         except:
             return False
+            
+    def setBackgroundRed(self, red):
+        if red==True:
+            css = """QLineEdit { background-color: rgb(255, 182, 182); }"""
+        else:
+            css=""
+        self.setStyleSheet(css)
+            
         
     @pyqtSignature("")
     def on_textChanged(self, text):
@@ -25,10 +33,9 @@ class myQLineEdit(QLineEdit):
         text=text.replace("e", "0")#Avoids scientific numbers
         self.setText(text)
         if self.isValid():        
-            css=""
+            self.setBackgroundRed(False)
         else:
-            css = """QLineEdit { background-color: rgb(255, 182, 182); }"""
-        self.setStyleSheet(css)
+            self.setBackgroundRed(True)
         self.setCursorPosition(pos)
 
     def decimal(self):

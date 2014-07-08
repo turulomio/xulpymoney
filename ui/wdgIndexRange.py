@@ -3,6 +3,36 @@ from PyQt4.QtGui import *
 from Ui_wdgIndexRange import *
 from libxulpymoney import *
 from frmProductReport import *
+from wdgCalculator import *
+
+class Range:
+    def __init__(self, product,  bottom , top):
+        """Calcula los rangos"""
+        self.product=product
+        self.bottom=bottom
+        self.top=top
+        self.middle=Decimal((self.bottom+self.top)/2)
+        self.current=product.result.basic.last.quote
+        
+    def currentPriceBottomVariation(self):
+        """Calcs variation percentage from current price to bottom price"""
+        return  (self.bottom-self.current)*100/self.current
+    def currentPriceTopVariation(self):
+        return  (self.top-self.current)*100/self.current
+    def currentPriceMiddleVariation(self):
+        return  (self.middle-self.current)*100/self.current
+        
+    def textBottom(self):
+        """Used to action text"""
+        return ("Bottom: {0}. Variation: {1}".format(self.product.currency.string(self.bottom), tpc(self.currentPriceBottomVariation())))
+
+    def textMiddle(self):
+        """Used to action text"""
+        return ("Middle: {0}. Variation: {1}".format(self.product.currency.string(self.middle), tpc(self.currentPriceMiddleVariation())))
+
+    def textTop(self):
+        """Used to action text"""
+        return ("Top: {0}. Variation: {1}".format(self.product.currency.string(self.top), tpc(self.currentPriceTopVariation())))
 
 class wdgIndexRange(QWidget, Ui_wdgIndexRange):
     def __init__(self,mem, parent=None):
@@ -18,6 +48,8 @@ class wdgIndexRange(QWidget, Ui_wdgIndexRange):
         self.txtMinimo.setText(self.mem.config.get_value("wdgIndexRange", "txtMinimo"))
         
         self.load_data()
+        
+        self.selRange=None#Range()#Bottom,middle,top
                     
 
         
@@ -58,17 +90,16 @@ class wdgIndexRange(QWidget, Ui_wdgIndexRange):
             formax=last
 
             self.table.setItem(rangos-1, 0,qcenter(str(int(formin))+"-"+str(int(formax))))
-            self.table.setItem(rangos-1, 1,qcenter(str(int((formax+formin)/2))))            
-            self.table.setItem(rangos-1, 2,QTableWidgetItem((inversiones(arr, formin, formax))))
+            self.table.setItem(rangos-1, 1,QTableWidgetItem((inversiones(arr, formin, formax))))
             if self.mem.data.benchmark.result.basic.last.quote>formin and self.mem.data.benchmark.result.basic.last.quote<formax:
                 self.table.item(rangos-1, 0).setBackgroundColor(QColor(255, 148, 148))
                 rangoindexactual=rangos-1
             last=formin
             
         for i in range(rangos-rangoindexactual):
-            if (self.table.item(rangoindexactual+i, 2).text())=="" and pasos>0:
-                self.table.item(rangoindexactual+i, 2).setBackgroundColor(QColor(148, 255, 148))
-                indexcover=int(self.table.item(rangoindexactual+i, 1).text())
+            if (self.table.item(rangoindexactual+i, 1).text())=="" and pasos>0:
+                self.table.item(rangoindexactual+i, 1).setBackgroundColor(QColor(148, 255, 148))
+#                indexcover=int(self.table.item(rangoindexactual+i, 1).text())
                 pasos=pasos-1
                 
         #Variación del índice hoy
@@ -101,11 +132,56 @@ class wdgIndexRange(QWidget, Ui_wdgIndexRange):
         w.exec_() 
         self.mem.data.benchmark.result.basic.load_from_db()
         self.load_data()
+
+    def on_table_customContextMenuRequested(self,  pos):
+        if self.range!=None:
+            self.actionBottom.setText(self.range.textBottom())
+            self.actionTop.setText(self.range.textTop())
+            self.actionMiddle.setText(self.range.textMiddle())
+            menu=QMenu()
+            menu.addAction(self.actionTop)
+            menu.addAction(self.actionMiddle)   
+            menu.addAction(self.actionBottom)
+            menu.exec_(self.table.mapToGlobal(pos))
+
+    def on_table_itemSelectionChanged(self):
+        try:
+            for i in self.table.selectedItems():#itera por cada item no row.
+                if i.column()==0:
+                    self.range=Range(self.mem.data.benchmark, int(i.text().split("-")[0]), int(i.text().split("-")[1]))
+        except:
+            self.range=None
+
+    @QtCore.pyqtSlot() 
+    def on_actionBottom_activated(self):        
+        d=QDialog(self)        
+        d.setFixedSize(670, 670)
+        d.setWindowTitle(self.trUtf8("Investment calculator"))
+        w=wdgCalculator(self.mem)
+        w.init__percentagevariation_amount(self.range.currentPriceBottomVariation(), self.txtInvertir.decimal())
+        lay = QVBoxLayout(d)
+        lay.addWidget(w)
+        d.exec_()
+
+    @QtCore.pyqtSlot() 
+    def on_actionTop_activated(self):        
+        d=QDialog(self)        
+        d.setFixedSize(670, 670)
+        d.setWindowTitle(self.trUtf8("Investment calculator"))
+        w=wdgCalculator(self.mem)
+        w.init__percentagevariation_amount(self.range.currentPriceTopVariation(), self.txtInvertir.decimal())
+        lay = QVBoxLayout(d)
+        lay.addWidget(w)
+        d.exec_()
+
+    @QtCore.pyqtSlot() 
+    def on_actionMiddle_activated(self):        
+        d=QDialog(self)        
+        d.setFixedSize(670, 670)
+        d.setWindowTitle(self.trUtf8("Investment calculator"))
+        w=wdgCalculator(self.mem)
+        w.init__percentagevariation_amount(self.range.currentPriceMiddleVariation(), self.txtInvertir.decimal())
+        lay = QVBoxLayout(d)
+        lay.addWidget(w)
+        d.exec_()
         
-    def on_table_cellDoubleClicked(self, row, column):
-        if column==1:
-            puntoinversion=Decimal(self.table.item(row, column).text())
-            m=QMessageBox()
-            m.setIcon(QMessageBox.Information)
-            m.setText(self.trUtf8("Para llegar al punto de inversión seleccionado, el indice debe variar un {0}".format(tpc((puntoinversion-self.mem.data.benchmark.result.basic.last.quote)*100/self.mem.data.benchmark.result.basic.last.quote))))
-            m.exec_()

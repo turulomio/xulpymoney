@@ -217,11 +217,6 @@
        </column>
        <column>
         <property name="text">
-         <string>Investment point</string>
-        </property>
-       </column>
-       <column>
-        <property name="text">
          <string>Investments</string>
         </property>
        </column>
@@ -279,31 +274,19 @@
     </layout>
    </item>
   </layout>
-  <action name="actionFacturaClienteGenerico">
-   <property name="icon">
-    <iconset>
-     <normaloff>:/gnuoptics/factura.png</normaloff>:/gnuoptics/factura.png</iconset>
-   </property>
+  <action name="actionTop">
    <property name="text">
-    <string>Factura a cliente genérico</string>
+    <string>Top</string>
    </property>
   </action>
-  <action name="actionFacturaModificar">
-   <property name="icon">
-    <iconset>
-     <normaloff>:/gnuoptics/document-edit.png</normaloff>:/gnuoptics/document-edit.png</iconset>
-   </property>
+  <action name="actionMiddle">
    <property name="text">
-    <string>Modificar factura</string>
+    <string>Middle</string>
    </property>
   </action>
-  <action name="actionFacturaBorrar">
-   <property name="icon">
-    <iconset>
-     <normaloff>:/gnuoptics/list-remove.png</normaloff>:/gnuoptics/list-remove.png</iconset>
-   </property>
+  <action name="actionBottom">
    <property name="text">
-    <string>Borrar factura</string>
+    <string>Bottom</string>
    </property>
   </action>
  </widget>
