@@ -101,7 +101,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
             self.tab.setEnabled(False)
             return
         
-        self.table.settings(None,  self.mem)
+        self.table.settings("wdgTotal",  self.mem)
         
         self.wyData.initiate(fechainicio.year, datetime.date.today().year, datetime.date.today().year)
         QObject.connect(self.wyData, SIGNAL("changed"), self.on_wyData_changed)

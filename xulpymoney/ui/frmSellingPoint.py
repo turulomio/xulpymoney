@@ -33,8 +33,8 @@ class frmSellingPoint(QDialog, Ui_frmSellingPoint):
             self.chkGainsTime.setCheckState(Qt.Checked)
 
 
-        self.table.settings(None,  self.mem)
-        self.tableSP.settings(None,  self.mem)
+        self.table.settings("frmSellingPoint",  self.mem)
+        self.tableSP.settings("frmSellingPoint",  self.mem)
         self.__calcular()
 #        self.on_radTPC_toggled(True)
         

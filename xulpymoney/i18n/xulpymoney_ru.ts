@@ -4563,7 +4563,7 @@ S&#xc3;&#xb3;lo se contabilizar&#xc3;&#xa1; cuando se vendan las acciones</sourc
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgJointReport.py" line="151"/>
+        <location filename="ui/wdgJointReport.py" line="153"/>
         <source>balance a {0}, {1}</source>
         <translation type="unfinished"></translation>
     </message>
