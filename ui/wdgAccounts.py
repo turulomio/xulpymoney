@@ -9,7 +9,7 @@ class wdgAccounts(QWidget, Ui_wdgAccounts):
         QWidget.__init__(self, parent)
         self.setupUi(self)
         self.mem=mem
-        self.tblAccounts.settings(None,  self.mem)
+        self.tblAccounts.settings("wdgAccounts",  self.mem)
         self.cuentas=self.mem.data.cuentas_active
         self.selAccount=None
         self.load_table()

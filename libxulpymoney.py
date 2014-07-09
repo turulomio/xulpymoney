@@ -5353,7 +5353,7 @@ class ConfigFile:
         """Devuelve el default value, y lo establece"""
         try:
             if name.find("columns_width")!=-1:
-                print ("Reseting",  section,  name)
+                print ("ConfigFile. Setting []. Reseting",  section,  name)
                 return []
             resultado=self.defaults["{0}#{1}".format(section,name)]
             print ("Using default value",  section,  name,  resultado)

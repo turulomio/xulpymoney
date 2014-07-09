@@ -8,10 +8,12 @@ class wdgJointReport(QWidget, Ui_wdgJointReport):
         QWidget.__init__(self, parent)
         self.setupUi(self)
         self.mem=mem
-        self.tblEstudio.settings(None,  self.mem)
-        self.tblDividends.settings(None,  self.mem)
+        self.tblEstudio.settings("wdgJointReport",  self.mem)
+        self.tblDividends.settings("wdgJointReport",  self.mem)
         self.tblInvestments.settings("wdgJointReport",  self.mem)
-        self.tblAdded.settings(None,  self.mem)
+        self.tblLess.settings("wdgJointReport",  self.mem)
+        self.tblMore.settings("wdgJointReport",  self.mem)
+        self.tblAdded.settings("wdgJointReport",  self.mem)
         
         
         self.mem.data.load_inactives()
