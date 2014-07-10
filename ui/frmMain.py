@@ -100,7 +100,7 @@ class frmMain(QMainWindow, Ui_frmMain):
         w=wdgCalculator(self.mem)
         lay = QVBoxLayout(d)
         lay.addWidget(w)
-        d.exec_()
+        d.show()
     @QtCore.pyqtSlot()  
     def on_actionConcepts_activated(self):
         self.w.close()
