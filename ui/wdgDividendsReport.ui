@@ -39,9 +39,22 @@
      <item>
       <layout class="QHBoxLayout" name="horizontalLayout">
        <item>
+        <spacer name="horizontalSpacer">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
         <widget class="QLabel" name="label">
          <property name="text">
-          <string>Los dividendos por acción (DPA) que aparecerán marcados de rojo cuando estén desactualizados más de</string>
+          <string>Dividends per share are red colorized when they are outdated more than</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignCenter</set>
@@ -77,6 +90,19 @@
            <normaloff>:/xulpymoney/tools-wizard.png</normaloff>:/xulpymoney/tools-wizard.png</iconset>
          </property>
         </widget>
+       </item>
+       <item>
+        <spacer name="horizontalSpacer_2">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
        </item>
       </layout>
      </item>
@@ -148,7 +174,7 @@
       <widget class="QLabel" name="lblTotal">
        <property name="font">
         <font>
-         <pointsize>10</pointsize>
+         <pointsize>8</pointsize>
          <weight>75</weight>
          <bold>true</bold>
         </font>
@@ -167,7 +193,10 @@
      <normaloff>:/xulpymoney/coins.png</normaloff>:/xulpymoney/coins.png</iconset>
    </property>
    <property name="text">
-    <string>Modificar Dividendo por Acción</string>
+    <string>Update dividend per share</string>
+   </property>
+   <property name="toolTip">
+    <string>Update dividend per share</string>
    </property>
   </action>
   <action name="actionInversionEstudio">
@@ -176,10 +205,10 @@
      <normaloff>:/xulpymoney/report2.png</normaloff>:/xulpymoney/report2.png</iconset>
    </property>
    <property name="text">
-    <string>Estudio de la inversión</string>
+    <string>Investment report</string>
    </property>
    <property name="toolTip">
-    <string>Estudio de la inversión</string>
+    <string>Investment report</string>
    </property>
   </action>
   <action name="actionMyStocks">
@@ -188,10 +217,10 @@
      <normaloff>:/xulpymoney/kmplot.jpg</normaloff>:/xulpymoney/kmplot.jpg</iconset>
    </property>
    <property name="text">
-    <string>Informe de MyStocks</string>
+    <string>Product report</string>
    </property>
    <property name="toolTip">
-    <string>Informe de MyStocks</string>
+    <string>Product report</string>
    </property>
   </action>
  </widget>

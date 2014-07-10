@@ -233,9 +233,6 @@
            <bold>true</bold>
           </font>
          </property>
-         <property name="text">
-          <string>Total rangos %s cubierto hasta %s</string>
-         </property>
          <property name="alignment">
           <set>Qt::AlignCenter</set>
          </property>
@@ -244,7 +241,7 @@
        <item>
         <widget class="QToolButton" name="cmdIRAnalisis">
          <property name="toolTip">
-          <string>Ver análisis del índice de referencia</string>
+          <string>Show benchmark report</string>
          </property>
          <property name="text">
           <string>...</string>
@@ -258,7 +255,7 @@
        <item>
         <widget class="QToolButton" name="cmdIRInsertar">
          <property name="toolTip">
-          <string>Añadir cotización al índice de referencia</string>
+          <string>Add a price to the benchmark</string>
          </property>
          <property name="text">
           <string>...</string>

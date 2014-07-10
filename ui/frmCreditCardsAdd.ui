@@ -69,7 +69,7 @@
        <item>
         <widget class="QCheckBox" name="chkPagoDiferido">
          <property name="text">
-          <string>¿Es de pago diferido?</string>
+          <string>Has it delayed payment?</string>
          </property>
         </widget>
        </item>
@@ -80,7 +80,7 @@
        <item>
         <widget class="QLabel" name="label_7">
          <property name="text">
-          <string>Saldo máximo </string>
+          <string>Maximum balance</string>
          </property>
         </widget>
        </item>
