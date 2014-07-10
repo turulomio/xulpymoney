@@ -33,12 +33,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5780"/>
+        <location filename="libxulpymoney.py" line="5781"/>
         <source>Sourceforge version detected: %s</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5782"/>
+        <location filename="libxulpymoney.py" line="5783"/>
         <source>Error buscando la versi&#xc3;&#xb3;n actual de Sourceforge</source>
         <translation type="unfinished"></translation>
     </message>
@@ -73,7 +73,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="6099"/>
+        <location filename="libxulpymoney.py" line="6100"/>
         <source>This option is being developed</source>
         <translation type="unfinished"></translation>
     </message>
@@ -108,17 +108,17 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5580"/>
+        <location filename="libxulpymoney.py" line="5581"/>
         <source>Error conecting to MyStocksd, waiting 10 seconds</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5593"/>
+        <location filename="libxulpymoney.py" line="5594"/>
         <source>Error conecting to MyStocks</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5657"/>
+        <location filename="libxulpymoney.py" line="5658"/>
         <source>Error conecting to Xulpymoney</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3533,7 +3533,7 @@ correspondiente en la tabla</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgCalculator.py" line="24"/>
+        <location filename="ui/wdgCalculator.py" line="27"/>
         <source>Current price ({0})</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4088,7 +4088,7 @@ correspondiente en la tabla</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgIndexRange.py" line="62"/>
+        <location filename="ui/wdgIndexRange.py" line="63"/>
         <source>{0} {1} ({2}): {3} shares of {4} = {5}
 </source>
         <translation type="unfinished"></translation>
@@ -4109,8 +4109,23 @@ correspondiente en la tabla</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgIndexRange.py" line="181"/>
+        <location filename="ui/wdgIndexRange.py" line="182"/>
         <source>Investment calculator</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/wdgIndexRange.py" line="110"/>
+        <source>Current benchmark price at {} is {}.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/wdgIndexRange.py" line="110"/>
+        <source>Last daily variation: {}.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/wdgIndexRange.py" line="110"/>
+        <source>Green colorized ranges of {} benchmark are covered by zero risk and bonds balance ({}).</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

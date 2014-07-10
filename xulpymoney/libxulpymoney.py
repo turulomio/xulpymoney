@@ -5525,7 +5525,8 @@ class MemMyStock:
         d['wdgIndexRange#spin']='2'
         d['wdgIndexRange#txtInvertir']='4000'
         d['wdgIndexRange#txtMinimo']='1000'
-
+        d['frmCalculator#Invested']='10000'
+        d['frmCalculator#Product']='0'
         return d
             
             
