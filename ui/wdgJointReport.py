@@ -81,7 +81,7 @@ class wdgJointReport(QWidget, Ui_wdgJointReport):
     def load_dividends(self):
         set=SetDividends(self.mem)
         set.load_from_db("select * from dividends where id_conceptos not in (63) and date_part('year',fecha)={0} order by fecha".format(self.wy.year))
-        (self.totalDividendsNetos, self.totalDividendsBrutos, self.totalDividendsRetenciones, sumcomision)=set.myqtablewidget(self.tblDividends, None, True)
+        (self.totalDividendsNetos, self.totalDividendsBrutos, self.totalDividendsRetenciones, sumcomision)=set.myqtablewidget(self.tblDividends, "wdgJointReport", True)
 
     def load_historicas(self):
         operaciones=SetInvestmentOperationsHistorical(self.mem)
@@ -90,7 +90,7 @@ class wdgJointReport(QWidget, Ui_wdgJointReport):
                 if o.fecha_venta.year==self.wy.year and o.tipooperacion.id in (5, 8):#Venta y traspaso fondos inversion
                     operaciones.arr.append(o)
         operaciones.sort()
-        (self.totalBruto, self.totalComisiones, self.totalImpuestos, self.totalNeto)=operaciones.myqtablewidget(self.tblInvestments, None)
+        (self.totalBruto, self.totalComisiones, self.totalImpuestos, self.totalNeto)=operaciones.myqtablewidget(self.tblInvestments, "wdgJointReport")
     def load_less(self):
         operaciones=SetInvestmentOperationsHistorical(self.mem)
         for i in self.mem.data.inversiones_all().arr:
@@ -98,7 +98,7 @@ class wdgJointReport(QWidget, Ui_wdgJointReport):
                 if o.fecha_venta.year==self.wy.year and o.tipooperacion.id in (5, 8) and o.less_than_a_year()==True:#Venta y traspaso fondos inversion
                     operaciones.arr.append(o)
         operaciones.sort()
-        (self.totalBruto, self.totalComisiones, self.totalImpuestos, self.totalNeto)=operaciones.myqtablewidget(self.tblLess, None)
+        (self.totalBruto, self.totalComisiones, self.totalImpuestos, self.totalNeto)=operaciones.myqtablewidget(self.tblLess, "wdgJointReport")
     def load_more(self):
         operaciones=SetInvestmentOperationsHistorical(self.mem)
         for i in self.mem.data.inversiones_all().arr:
@@ -106,7 +106,7 @@ class wdgJointReport(QWidget, Ui_wdgJointReport):
                 if o.fecha_venta.year==self.wy.year and o.tipooperacion.id in (5, 8) and o.less_than_a_year()==False:#Venta y traspaso fondos inversion
                     operaciones.arr.append(o)
         operaciones.sort()
-        (self.totalBruto, self.totalComisiones, self.totalImpuestos, self.totalNeto)=operaciones.myqtablewidget(self.tblMore, None)
+        (self.totalBruto, self.totalComisiones, self.totalImpuestos, self.totalNeto)=operaciones.myqtablewidget(self.tblMore, "wdgJointReport")
 
 
 

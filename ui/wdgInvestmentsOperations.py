@@ -38,14 +38,14 @@ class wdgInvestmentsOperations(QWidget, Ui_wdgInvestmentsOperations):
             self.setOperations.append(InvestmentOperation(self.mem).init__db_row(row, self.mem.data.inversiones_all().find(row['id_inversiones']), self.mem.tiposoperaciones.find(row['id_tiposoperaciones'])))
         cur.close()
         
-        self.setOperations.myqtablewidget(self.table, None)
+        self.setOperations.myqtablewidget(self.table, "wdgInvestmentsOperations")
         
     def load_current(self):
         for inv in self.mem.data.inversiones_active.arr:
             for o in inv.op_actual.arr:
                 self.setCurrent.append(o)
         self.setCurrent.sort()
-        self.setCurrent.myqtablewidget(self.tblCurrent, None)
+        self.setCurrent.myqtablewidget(self.tblCurrent, "wdgInvestmentsOperations")
 
         
         

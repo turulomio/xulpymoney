@@ -447,7 +447,7 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
     
     def on_cmdDevolverPago_released(self):
         print ("solo uno")
-        id_opercuentas=self.cmbdatetimesPago.itemData(int(self.cmbdatetimesPago.currentIndex()))
+        id_opercuentas=self.cmbFechasPago.itemData(int(self.cmbFechasPago.currentIndex()))
         cur = self.mem.con.cursor()      
         cur.execute("delete from opercuentas where id_opercuentas=%s", (id_opercuentas, ))#No merece crear objeto
         cur.execute("update opertarjetas set fechapago=null, pagado=false, id_opercuentas=null where id_opercuentas=%s", (id_opercuentas, ) )
@@ -459,8 +459,8 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
         self.tabOpertarjetasDiferidas.setCurrentIndex(0)     
         
     @QtCore.pyqtSlot(int) 
-    def on_cmbdatetimesPago_currentIndexChanged(self, index):
-        id_opercuentas=self.cmbdatetimesPago.itemData(int(self.cmbdatetimesPago.currentIndex()))
+    def on_cmbFechasPago_currentIndexChanged(self, index):
+        id_opercuentas=self.cmbFechasPago.itemData(int(self.cmbFechasPago.currentIndex()))
         print (id_opercuentas)            
         con=self.mem.connect_xulpymoney()
         cur = con.cursor()      
@@ -482,7 +482,7 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
     def on_tabOpertarjetasDiferidas_currentChanged(self, index): 
         if  index==1: #PAGOS
             #Carga combo
-            self.cmbdatetimesPago.clear()
+            self.cmbFechasPago.clear()
             con=self.mem.connect_xulpymoney()
             cur = con.cursor()       
             cur2=con.cursor()
@@ -490,8 +490,8 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
             for row in cur:  
                 cur2.execute("select importe from opercuentas where id_opercuentas=%s", (row['id_opercuentas'], ))
                 importe=cur2.fetchone()["importe"]
-                self.cmbdatetimesPago.addItem(self.tr("Pago efectuado el {0} de {1}".format(row['fechapago'],  self.mem.localcurrency.string(-importe))),row['id_opercuentas'])
-            self.cmbdatetimesPago.setCurrentIndex(cur.rowcount-1)
+                self.cmbFechasPago.addItem(self.tr("Pago efectuado el {0} de {1}".format(row['fechapago'],  self.mem.localcurrency.string(-importe))),row['id_opercuentas'])
+            self.cmbFechasPago.setCurrentIndex(cur.rowcount-1)
             cur.close()     
             cur2.close()
             self.mem.disconnect_xulpymoney(con)      
