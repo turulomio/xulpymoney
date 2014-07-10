@@ -67,7 +67,7 @@ class wdgInvestments(QWidget, Ui_wdgInvestments):
                     self.tblInvestments.item(i, 8).setBackgroundColor(QColor(148, 255, 148))
             i=i+1
         if suminvertido!=0:
-            self.lblTotal.setText(self.trUtf8("Invested assets: {0}. Pending: {1} - {2} = {3} ({4} assets)\nDaily Diff: {5}. Assets average age: {6}".format(self.mem.localcurrency.string(suminvertido), self.mem.localcurrency.string(sumpositivos),  self.mem.localcurrency.string(-sumnegativos),  self.mem.localcurrency.string(sumpendiente), tpc(100*sumpendiente/suminvertido) , self.mem.localcurrency.string( sumdiario), days_to_year_month(self.inversiones.average_age()))))
+            self.lblTotal.setText(self.trUtf8("Invested assets: {0}. Pending: {1} - {2} = {3} ({4} assets)\nDaily Diff: {5}. Assets average age: {6}").format(self.mem.localcurrency.string(suminvertido), self.mem.localcurrency.string(sumpositivos),  self.mem.localcurrency.string(-sumnegativos),  self.mem.localcurrency.string(sumpendiente), tpc(100*sumpendiente/suminvertido) , self.mem.localcurrency.string( sumdiario), days_to_year_month(self.inversiones.average_age())))
         else:
             self.lblTotal.setText(self.trUtf8("There aren't invested assets"))
             
@@ -241,7 +241,7 @@ class wdgInvestments(QWidget, Ui_wdgInvestments):
         if column==7:#TPC inversion
             m=QMessageBox()
             m.setIcon(QMessageBox.Information)
-            m.setText(self.trUtf8("Shares number: {0}".format(self.selInvestment.acciones()))+"\n"+self.trUtf8("Purchase price average: {0}".format(self.selInvestment.product.currency.string(self.selInvestment.op_actual.valor_medio_compra()))))
+            m.setText(self.trUtf8("Shares number: {0}").format(self.selInvestment.acciones())+"\n"+self.trUtf8("Purchase price average: {0}").format(self.selInvestment.product.currency.string(self.selInvestment.op_actual.valor_medio_compra())))
             m.exec_()     
         if column==8:#TPC venta
             f=frmSellingPoint(self.mem, self.selInvestment)
