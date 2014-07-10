@@ -41,13 +41,13 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
         self.mem.data.ebs_active.qcombobox(self.cmbEB)
                     
         if self.selAccount==None:
-            self.lblTitulo.setText(self.trUtf8("Datos de la nueva cuenta bancaria"))
+            self.lblTitulo.setText(self.trUtf8("New account data"))
             self.tab.setCurrentIndex(0)
             self.tab.setTabEnabled(1, False)
             self.tab.setTabEnabled(2, False)
             self.chkActiva.setChecked(Qt.Checked)
             self.chkActiva.setEnabled(False)
-            self.cmdDatos.setText(self.trUtf8("Insertar nueva cuenta bancaria"))
+            self.cmdDatos.setText(self.trUtf8("Add a new account"))
         else:               
             self.tab.setCurrentIndex(0)
             self.lblTitulo.setText(self.selAccount.name)
@@ -58,30 +58,16 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
             self.cmbCurrency.setCurrentIndex(self.cmbCurrency.findData(self.selAccount.currency.id))
             self.cmbCurrency.setEnabled(False)
             self.chkActiva.setChecked(b2c(self.selAccount.activa))
-            self.cmdDatos.setText(self.trUtf8("Modificar los datos de la cuenta bancaria"))
+            self.cmdDatos.setText(self.trUtf8("Update account data"))
 
             anoinicio=Assets(self.mem).primera_datetime_con_datos_usuario().year       
             self.wdgYM.initiate(anoinicio,  datetime.date.today().year, datetime.date.today().year, datetime.date.today().month)
             QObject.connect(self.wdgYM, SIGNAL("changed"), self.on_wdgYM_changed)
 
-#            self.load_data_from_db()
-
             self.on_wdgYM_changed()
             self.on_chkCreditCards_stateChanged(self.chkCreditCards.checkState())        
             
-#        
-#    def load_data_from_db(self):
-#        inicio=datetime.datetime.now()
-#        print("\n","Cargando data en wdgInvestments",  datetime.datetime.now()-inicio)
-#            
-#    def load_inactive_data_from_db(self):
-#        if self.loadedinactive==False:
-#            inicio=datetime.datetime.now()        
-#            self.mem.data.load_inactives()
-#            print("\n","Cargando data en wdgInvestments",  datetime.datetime.now()-inicio)
-#            self.loadedinactive=True
-#            
-#        print (self.trUtf8("Ya se habían cargado las inactivas"))
+
     def load_tabOperCreditCards(self):     
         self.selCreditCard.op_diferido=sorted(self.selCreditCard.op_diferido, key=lambda o:o.datetime)
         self.tblCreditCardOpers.setRowCount(len(self.selCreditCard.op_diferido));        
@@ -143,7 +129,7 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
         if self.selCreditCard.borrar()==False:
             m=QMessageBox()
             m.setIcon(QMessageBox.Information)
-            m.setText(self.trUtf8("No se ha borrado la tarjeta por tener registros dependientes"))
+            m.setText(self.trUtf8("I can't delete the credit card, because it has dependent registers"))
             m.exec_()                 
         self.mem.con.commit()
         self.mem.data.tarjetas_active.arr.remove(self.selCreditCard)
@@ -200,7 +186,7 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
             
     def load_tblOperaciones(self):
         self.tblOperaciones.setRowCount(len(self.opercuentas)+1)        
-        self.tblOperaciones.setItem(0, 1, QTableWidgetItem(("Starting month balance")))
+        self.tblOperaciones.setItem(0, 1, QTableWidgetItem(self.tr("Starting month balance")))
         self.tblOperaciones.setItem(0, 3, self.selAccount.currency.qtablewidgetitem(self.saldoiniciomensual))
         saldoinicio=self.saldoiniciomensual
         for i, o in enumerate(self.opercuentas):
@@ -237,7 +223,7 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
             account_destiny=self.selAccount
             oc_comision_id=int(oc_other.comentario.split("|")[2])
             
-        message=self.trUtf8("Do you really want to delete transfer from {0} to {1}, with amount {2} and it's commision?".format(account_origin.name, account_destiny.name, self.selOperAccount.importe))
+        message=self.trUtf8("Do you really want to delete transfer from {0} to {1}, with amount {2} and it's commision?").format(account_origin.name, account_destiny.name, self.selOperAccount.importe)
         reply = QMessageBox.question(self, 'Message', message, QMessageBox.Yes, QMessageBox.No)
             
         if reply == QMessageBox.Yes:
@@ -274,13 +260,13 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
         if self.selCreditCard.pagodiferido==False:
             w=frmAccountOperationsAdd(self.mem, self.mem.data.cuentas_active, self.selAccount, None)
             self.connect(w, SIGNAL("OperAccountIBMed"), self.on_wdgYM_changed)
-            w.lblTitulo.setText(((self.selCreditCard.name)))
-            w.txtComentario.setText(self.tr("CreditCard {0}. ".format((self.selCreditCard.name))))
+            w.lblTitulo.setText(self.selCreditCard.name)
+            w.txtComentario.setText(self.tr("CreditCard {0}. ").format(self.selCreditCard.name))
             w.exec_()
         else:            
             w=frmAccountOperationsAdd(self.mem, self.mem.data.cuentas_active,  self.selAccount, None, self.selCreditCard)
             self.connect(w, SIGNAL("OperCreditCardIBMed"), self.load_tabOperCreditCards)
-            w.lblTitulo.setText(self.tr("CreditCard {0}".format((self.selCreditCard.name))))
+            w.lblTitulo.setText(self.tr("CreditCard {0}").format(self.selCreditCard.name))
             w.exec_()
             
     @QtCore.pyqtSlot() 
@@ -290,7 +276,7 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
             selOperCreditCard=s
         w=frmAccountOperationsAdd(self.mem, self.mem.data.cuentas_active,  self.selAccount, None, self.selCreditCard, selOperCreditCard)
         self.connect(w, SIGNAL("OperCreditCardIBMed"), self.load_tabOperCreditCards)
-        w.lblTitulo.setText(self.tr("CreditCard {0}".format((self.selCreditCard.name))))
+        w.lblTitulo.setText(self.tr("CreditCard {0}").format(self.selCreditCard.name))
         w.exec_()
 
     @QtCore.pyqtSlot() 
@@ -446,7 +432,6 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
 
     
     def on_cmdDevolverPago_released(self):
-        print ("solo uno")
         id_opercuentas=self.cmbFechasPago.itemData(int(self.cmbFechasPago.currentIndex()))
         cur = self.mem.con.cursor()      
         cur.execute("delete from opercuentas where id_opercuentas=%s", (id_opercuentas, ))#No merece crear objeto
@@ -490,7 +475,7 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
             for row in cur:  
                 cur2.execute("select importe from opercuentas where id_opercuentas=%s", (row['id_opercuentas'], ))
                 importe=cur2.fetchone()["importe"]
-                self.cmbFechasPago.addItem(self.tr("Pago efectuado el {0} de {1}".format(row['fechapago'],  self.mem.localcurrency.string(-importe))),row['id_opercuentas'])
+                self.cmbFechasPago.addItem(self.tr("{0} was made a paid of {1}").format(row['fechapago'],  self.mem.localcurrency.string(-importe)),row['id_opercuentas'])
             self.cmbFechasPago.setCurrentIndex(cur.rowcount-1)
             cur.close()     
             cur2.close()

@@ -20,11 +20,11 @@ class frmCreditCardsAdd(QDialog, Ui_frmCreditCardsAdd):
         if tarjeta==None:
             self.tipo=1#Insertar
             self.tarjeta=CreditCard(self.mem)
-            self.lblTitulo.setText(self.tr("Nueva tarjeta de {0}".format(self.cuenta.name)))
+            self.lblTitulo.setText(self.tr("New credit card of {0}").format(self.cuenta.name))
         else:
             self.tipo=2#Modificar
             self.tarjeta=tarjeta
-            self.lblTitulo.setText(self.tr("Modificando la tarjeta {0}".format(self.tarjeta.name)))
+            self.lblTitulo.setText(self.tr("Updating {} credit card").format(self.tarjeta.name))
             self.txtCreditCard.setText(self.tarjeta.name)
             self.chkPagoDiferido.setChecked(b2c(self.tarjeta.activa))
             self.txtSaldoMaximo.setText(str(self.tarjeta.saldomaximo))

@@ -832,43 +832,18 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmAccountsReport.py" line="44"/>
-        <source>Datos de la nueva cuenta bancaria</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/frmAccountsReport.py" line="50"/>
-        <source>Insertar nueva cuenta bancaria</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/frmAccountsReport.py" line="61"/>
-        <source>Modificar los datos de la cuenta bancaria</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/frmAccountsReport.py" line="146"/>
-        <source>No se ha borrado la tarjeta por tener registros dependientes</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/frmAccountsReport.py" line="240"/>
+        <location filename="ui/frmAccountsReport.py" line="226"/>
         <source>Do you really want to delete transfer from {0} to {1}, with amount {2} and it&apos;s commision?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmAccountsReport.py" line="278"/>
+        <location filename="ui/frmAccountsReport.py" line="264"/>
         <source>CreditCard {0}. </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmAccountsReport.py" line="293"/>
+        <location filename="ui/frmAccountsReport.py" line="279"/>
         <source>CreditCard {0}</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/frmAccountsReport.py" line="493"/>
-        <source>Pago efectuado el {0} de {1}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -921,6 +896,36 @@ p, li { white-space: pre-wrap; }
         <source>Update credit card operation</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location filename="ui/frmAccountsReport.py" line="44"/>
+        <source>New account data</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/frmAccountsReport.py" line="50"/>
+        <source>Add a new account</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/frmAccountsReport.py" line="61"/>
+        <source>Update account data</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/frmAccountsReport.py" line="132"/>
+        <source>I can&apos;t delete the credit card, because it has dependent registers</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/frmAccountsReport.py" line="189"/>
+        <source>Starting month balance</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/frmAccountsReport.py" line="478"/>
+        <source>{0} was made a paid of {1}</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>frmAuxiliarTables</name>
@@ -960,17 +965,12 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmAuxiliarTables.py" line="158"/>
-        <source>A&#xc3;&#xb1;adir concepto</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="ui/Ui_frmAuxiliarTables.py" line="160"/>
         <source>Delete concept</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmAuxiliarTables.py" line="44"/>
+        <location filename="ui/Ui_frmAuxiliarTables.py" line="158"/>
         <source>Add a concept</source>
         <translation type="unfinished"></translation>
     </message>
@@ -988,16 +988,6 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmCreditCardsAdd.py" line="111"/>
-        <source>&#xc2;&#xbf;Es de pago diferido?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_frmCreditCardsAdd.py" line="112"/>
-        <source>Saldo m&#xc3;&#xa1;ximo </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="ui/Ui_frmCreditCardsAdd.py" line="113"/>
         <source>Credit card number</source>
         <translation type="unfinished"></translation>
@@ -1008,13 +998,23 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="ui/Ui_frmCreditCardsAdd.py" line="111"/>
+        <source>Has it delayed payment?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_frmCreditCardsAdd.py" line="112"/>
+        <source>Maximum balance</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="ui/frmCreditCardsAdd.py" line="23"/>
-        <source>Nueva tarjeta de {0}</source>
+        <source>New credit card of {0}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/frmCreditCardsAdd.py" line="27"/>
-        <source>Modificando la tarjeta {0}</source>
+        <source>Updating {} credit card</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3937,78 +3937,78 @@ correspondiente en la tabla</source>
 <context>
     <name>wdgDividendsReport</name>
     <message>
-        <location filename="ui/Ui_wdgDividendsReport.py" line="127"/>
+        <location filename="ui/Ui_wdgDividendsReport.py" line="131"/>
         <source>Dividends Report</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgDividendsReport.py" line="128"/>
-        <source>Los dividendos por acci&#xc3;&#xb3;n (DPA) que aparecer&#xc3;&#xa1;n marcados de rojo cuando est&#xc3;&#xa9;n desactualizados m&#xc3;&#xa1;s de</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_wdgDividendsReport.py" line="129"/>
+        <location filename="ui/Ui_wdgDividendsReport.py" line="133"/>
         <source> days</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgDividendsReport.py" line="130"/>
+        <location filename="ui/Ui_wdgDividendsReport.py" line="134"/>
         <source>Show inactive investments</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgDividendsReport.py" line="132"/>
+        <location filename="ui/Ui_wdgDividendsReport.py" line="136"/>
         <source>Investment</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgDividendsReport.py" line="134"/>
+        <location filename="ui/Ui_wdgDividendsReport.py" line="138"/>
         <source>Bank</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgDividendsReport.py" line="136"/>
+        <location filename="ui/Ui_wdgDividendsReport.py" line="140"/>
         <source>Price</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgDividendsReport.py" line="138"/>
+        <location filename="ui/Ui_wdgDividendsReport.py" line="142"/>
         <source>DPS</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgDividendsReport.py" line="140"/>
+        <location filename="ui/Ui_wdgDividendsReport.py" line="144"/>
         <source>Shares</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgDividendsReport.py" line="142"/>
+        <location filename="ui/Ui_wdgDividendsReport.py" line="146"/>
         <source>Estimated</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgDividendsReport.py" line="144"/>
+        <location filename="ui/Ui_wdgDividendsReport.py" line="148"/>
         <source>% annual dividend</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgDividendsReport.py" line="145"/>
-        <source>Modificar Dividendo por Acci&#xc3;&#xb3;n</source>
+        <location filename="ui/Ui_wdgDividendsReport.py" line="132"/>
+        <source>Dividends per share are red colorized when they are outdated more than</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgDividendsReport.py" line="147"/>
-        <source>Estudio de la inversi&#xc3;&#xb3;n</source>
+        <location filename="ui/Ui_wdgDividendsReport.py" line="150"/>
+        <source>Update dividend per share</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgDividendsReport.py" line="149"/>
-        <source>Informe de MyStocks</source>
+        <location filename="ui/Ui_wdgDividendsReport.py" line="152"/>
+        <source>Investment report</source>
         <translation type="unfinished"></translation>
     </message>
-    <message encoding="UTF-8">
+    <message>
+        <location filename="ui/Ui_wdgDividendsReport.py" line="154"/>
+        <source>Product report</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="ui/wdgDividendsReport.py" line="64"/>
-        <source>Si mantuviera la inversión un año obtendría {0}</source>
+        <source>If I keep this investment during a year, I&apos;ll get {0}</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -4025,23 +4025,8 @@ correspondiente en la tabla</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgIndexRange.py" line="189"/>
-        <source>Total rangos %s cubierto hasta %s</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_wdgIndexRange.py" line="190"/>
-        <source>Ver an&#xc3;&#xa1;lisis del &#xc3;&#xad;ndice de referencia</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_wdgIndexRange.py" line="193"/>
-        <source>...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="ui/Ui_wdgIndexRange.py" line="192"/>
-        <source>A&#xc3;&#xb1;adir cotizaci&#xc3;&#xb3;n al &#xc3;&#xad;ndice de referencia</source>
+        <source>...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4096,17 +4081,17 @@ correspondiente en la tabla</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgIndexRange.py" line="194"/>
+        <location filename="ui/Ui_wdgIndexRange.py" line="193"/>
         <source>Top</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgIndexRange.py" line="195"/>
+        <location filename="ui/Ui_wdgIndexRange.py" line="194"/>
         <source>Middle</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgIndexRange.py" line="196"/>
+        <location filename="ui/Ui_wdgIndexRange.py" line="195"/>
         <source>Bottom</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4128,6 +4113,16 @@ correspondiente en la tabla</source>
     <message>
         <location filename="ui/wdgIndexRange.py" line="110"/>
         <source>Green colorized ranges of {} benchmark are covered by zero risk and bonds balance ({}).</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_wdgIndexRange.py" line="189"/>
+        <source>Show benchmark report</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_wdgIndexRange.py" line="191"/>
+        <source>Add a price to the benchmark</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

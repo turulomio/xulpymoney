@@ -179,10 +179,10 @@
      <normaloff>:/xulpymoney/add.png</normaloff>:/xulpymoney/add.png</iconset>
    </property>
    <property name="text">
-    <string>Añadir concepto</string>
+    <string>Add a concept</string>
    </property>
    <property name="toolTip">
-    <string>Añadir concepto</string>
+    <string>Add a concept</string>
    </property>
   </action>
   <action name="actionConceptDelete">
