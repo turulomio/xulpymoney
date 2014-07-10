@@ -17,8 +17,10 @@ class Range:
     def currentPriceBottomVariation(self):
         """Calcs variation percentage from current price to bottom price"""
         return  (self.bottom-self.current)*100/self.current
+        
     def currentPriceTopVariation(self):
         return  (self.top-self.current)*100/self.current
+    
     def currentPriceMiddleVariation(self):
         return  (self.middle-self.current)*100/self.current
         
@@ -39,8 +41,9 @@ class wdgIndexRange(QWidget, Ui_wdgIndexRange):
         QWidget.__init__(self, parent)
         self.setupUi(self)
         self.mem=mem
+        self.mem.data.load_inactives()
         
-        self.quote_lastindex=None
+        self.benchmark=self.mem.data.benchmark
         self.table.settings("wdgIndexRange",  self.mem)
         
         self.spin.setValue(float(self.mem.config.get_value("wdgIndexRange", "spin")))
@@ -49,10 +52,8 @@ class wdgIndexRange(QWidget, Ui_wdgIndexRange):
         
         self.load_data()
         
-        self.selRange=None#Range()#Bottom,middle,top
-                    
+        self.selRange=None#Range() in right click
 
-        
     def load_data(self):
         def inversiones(arr,min,max):
             resultado=""
@@ -61,54 +62,54 @@ class wdgIndexRange(QWidget, Ui_wdgIndexRange):
                     o=i[1]
                     resultado=resultado+ self.trUtf8("{0} {1} ({2}): {3} shares of {4} = {5}\n".format(str(o.datetime)[:16], o.inversion.name, o.inversion.cuenta.name, round(o.acciones, 0),  o.inversion.product.currency.string(o.valor_accion), o.inversion.product.currency.string(o.importe)))
             return resultado[:-1]
+        ######################################################
+        
         inicio=datetime.datetime.now()
 
+        #Makes and array arr with investment current operations and sorts it
         arr=[]
-
         for i in self.mem.data.inversiones_active.arr:
             if i.product.tpc!=0 and i.product.type.id not in (7, 9):
                 for o in i.op_actual.arr:
                     arr.append((o.referenciaindice.quote, o))
-
         arr=sorted(arr, key=lambda row: row[1].datetime,  reverse=False) 
-        
         if len (arr)==0: #Peta en base de datos vacía
             return
-                
-        maximo= int(max(arr)[0]*(1+ Decimal(self.spin.value()/200.0)))
-        riesgocero=Assets(self.mem).patrimonio_riesgo_cero(self.mem.data.inversiones_active, datetime.date.today())
-        pasos=int(riesgocero/Decimal(self.txtInvertir.text()))
-        last=maximo
-        rangos=0
+                    
+        #Makes and array with top of the range
+        ranges=[]
+        maximo= int(max(arr)[0]*(1+ Decimal(self.spin.value()/200.0))) ##Gets maximus benchmark
+        minimo=int(self.txtMinimo.text())
+        PuntRange=maximo
+        while PuntRange>minimo:
+            ranges.append(PuntRange)
+            PuntRange=int(PuntRange*(1-(self.spin.value()/100)))
+    
+        #Calculate zero risk assests and range number covered
+        zeroriskplusbonds=Assets(self.mem).patrimonio_riesgo_cero(self.mem.data.inversiones_active, datetime.date.today()) +Assets(self.mem).saldo_todas_inversiones_bonds(datetime.date.today())
+        rangescovered=int(zeroriskplusbonds/self.txtInvertir.decimal())##zero risk assests
+        
+        #Iterates all ranges and prints table
         self.table.clearContents()
-        rangoindexactual=0
-        indexcover=0
-        while last>int(self.txtMinimo.text()):
-            rangos=rangos+1
-            self.table.setRowCount(rangos)
-            formin=last*(1.0-(self.spin.value()/100))
-            formax=last
+        self.table.setRowCount(len(ranges))
+        colorized=0
+        benchmarkrange=0#Int will point to the range of the benchmark
+        for i, r in enumerate(ranges):
+            top=r
+            bottom=int(r*(1-(self.spin.value()/100)))
+            self.table.setItem(i, 0,qcenter("{}-{}".format(bottom, top)))
+            self.table.setItem(i, 1,QTableWidgetItem(inversiones(arr, bottom, top)))
+            if self.benchmark.result.basic.last.quote>=bottom and self.benchmark.result.basic.last.quote<top: ##Colorize current price
+                self.table.item(i, 0).setBackgroundColor(QColor(255, 160, 160))
+                benchmarkrange=r
+            if self.benchmark.result.basic.last.quote<benchmarkrange and colorized<=rangescovered:
+                self.table.item(i, 1).setBackgroundColor(QColor(160, 255, 160))
+                colorized=colorized+1
 
-            self.table.setItem(rangos-1, 0,qcenter(str(int(formin))+"-"+str(int(formax))))
-            self.table.setItem(rangos-1, 1,QTableWidgetItem((inversiones(arr, formin, formax))))
-            if self.mem.data.benchmark.result.basic.last.quote>formin and self.mem.data.benchmark.result.basic.last.quote<formax:
-                self.table.item(rangos-1, 0).setBackgroundColor(QColor(255, 148, 148))
-                rangoindexactual=rangos-1
-            last=formin
-            
-        for i in range(rangos-rangoindexactual):
-            if (self.table.item(rangoindexactual+i, 1).text())=="" and pasos>0:
-                self.table.item(rangoindexactual+i, 1).setBackgroundColor(QColor(148, 255, 148))
-#                indexcover=int(self.table.item(rangoindexactual+i, 1).text())
-                pasos=pasos-1
-                
-        #Variación del índice hoy
-        if self.mem.data.benchmark.result.basic.penultimate.quote==0 or self.mem.data.benchmark.result.basic.penultimate.quote==None:
-            variacion=0
-        else:
-            variacion=(self.mem.data.benchmark.result.basic.last.quote-self.mem.data.benchmark.result.basic.penultimate.quote)*100/self.mem.data.benchmark.result.basic.penultimate.quote
-        self.lblTotal.setText(("Tengo cubierto hasta el %d del índice de referencia (%s). Su valor a %s es %d (%.2f %%)" %( indexcover, self.mem.data.benchmark.name, self.mem.data.benchmark.result.basic.last.datetime,   int(self.mem.data.benchmark.result.basic.last.quote),  variacion)))
-
+        #Prints label
+        self.lblTotal.setText(self.tr("Green colorized ranges of {} benchmark are covered by zero risk and bonds balance ({}).").format(self.benchmark.name, self.mem.localcurrency.string(zeroriskplusbonds)) + "\n" +
+                                      self.tr("Current benchmark price at {} is {}.").format( str(self.benchmark.result.basic.last.datetime)[:16],  self.benchmark.currency.string(self.benchmark.result.basic.last.quote)) + "\n"+
+                                      self.tr("Last daily variation: {}.").format(tpc(self.benchmark.result.basic.tpc_diario())))
         print ("wdgIndexRange > load_data: {0}".format(datetime.datetime.now()-inicio))
 
     def on_cmd_pressed(self):
@@ -124,13 +125,13 @@ class wdgIndexRange(QWidget, Ui_wdgIndexRange):
         self.load_data()
 
     def on_cmdIRAnalisis_pressed(self):
-        w=frmProductReport(self.mem, self.mem.data.benchmark, None,  self)
+        w=frmProductReport(self.mem, self.benchmark, None,  self)
         w.exec_()
         
     def on_cmdIRInsertar_pressed(self):
-        w=frmQuotesIBM(self.mem, self.mem.data.benchmark, None,  self)
+        w=frmQuotesIBM(self.mem, self.benchmark, None,  self)
         w.exec_() 
-        self.mem.data.benchmark.result.basic.load_from_db()
+        self.benchmark.result.basic.load_from_db()
         self.load_data()
 
     def on_table_customContextMenuRequested(self,  pos):
@@ -148,7 +149,7 @@ class wdgIndexRange(QWidget, Ui_wdgIndexRange):
         try:
             for i in self.table.selectedItems():#itera por cada item no row.
                 if i.column()==0:
-                    self.range=Range(self.mem.data.benchmark, int(i.text().split("-")[0]), int(i.text().split("-")[1]))
+                    self.range=Range(self.benchmark, int(i.text().split("-")[0]), int(i.text().split("-")[1]))
         except:
             self.range=None
 
