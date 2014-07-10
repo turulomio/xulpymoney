@@ -14,7 +14,6 @@ class wdgCalculator(QWidget, Ui_wdgCalculator):
         self.mem.data.investments_all().qcombobox(self.cmbProducts)
         
         
-        
     def init__percentagevariation_amount(self, percentagevariation, amount):
         self.spnProductPriceVariation.setValue(percentagevariation)
         self.txtAmount.setText(amount)
@@ -22,6 +21,7 @@ class wdgCalculator(QWidget, Ui_wdgCalculator):
     @pyqtSlot(int)  
     def on_cmbProducts_currentIndexChanged(self, index):
         self.product=self.mem.data.investments_all().find(self.cmbProducts.itemData(index))
+        self.lblProductPrice.setText(self.tr("Current price ({0})").format(str(self.product.result.basic.last.datetime)[:16]))
         self.txtLeveraged.setText(self.product.apalancado.multiplier)
         self.txtProductPrice.setText(self.product.result.basic.last.quote)
         self.txtFinalPrice.setText(self.txtProductPrice.decimal()*Decimal(1+Decimal(self.spnProductPriceVariation.value())*self.txtLeveraged.decimal()/100))

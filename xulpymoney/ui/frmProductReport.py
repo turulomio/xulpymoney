@@ -166,27 +166,6 @@ class frmProductReport(QDialog, Ui_frmProductReport):
                 print ("Datos mensuales cargados:",  datetime.datetime.now()-inicio)
 
 
-#        
-#        
-#    def load_dividends(self):
-#        
-#        ###
-#        cur=self.mem.conms.cursor()
-#        cur.execute("select year,dpa from estimations_dps where id=%s order by year", (self.product.id, ) )
-#        self.tblDividendsEstimations.setRowCount(cur.rowcount)
-#        for reg in cur:
-#            self.tblDividendsEstimations.setItem(cur.rownumber-1, 0, qcenter(str(reg['year'])))
-#            self.tblDividendsEstimations.setItem(cur.rownumber-1, 1, self.product.currency.qtablewidgetitem(reg['estimation'], 6))       
-#            try:
-#                tpc=reg['estimation']*100/self.product.result.basic.last.quote
-#                self.tblDividendsEstimations.setItem(cur.rownumber-1, 2, qtpc(round(tpc, 2)))    
-#            except:      
-#                self.tblDividendsEstimations.setItem(cur.rownumber-1, 2, qtpc(None))    
-#        self.tblDividendsEstimations.setCurrentCell(cur.rowcount-1, 0)
-#        self.tblDividendsEstimations.setFocus()
-#        cur.close()
-
-
 
 
     def load_historicas(self): 
