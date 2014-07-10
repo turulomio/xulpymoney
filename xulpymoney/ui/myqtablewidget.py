@@ -7,7 +7,7 @@ class myQTableWidget(QTableWidget):
         QTableWidget.__init__(self, parent)
         self.mytimer = QTimer()
         self.section=None
-        self.columnswidth_in_config=[]     #Es un array de strings no de int
+        self.array=[]     #Es un array de strings no de int, con los datos para config
         self.verticalHeader().setResizeMode(QHeaderView.ResizeToContents)
         QObject.connect(self.mytimer, SIGNAL("timeout()"), self.checksettings)      
  
@@ -19,63 +19,59 @@ class myQTableWidget(QTableWidget):
         """Esta funcion debe ejecutarse despues de haber creado las columnas
         If section=NOne and file=None, se usa resizemode por defecto
         """
+        self.section=section        
         self.mem=mem
-        self.section=section
-        if self.mytimer.isActive():
+        if self.mytimer.isActive():#Can't be call settings by error in automatic common qtablewidgets
             self.mytimer.stop()
-        print ("settings", section, self.objectName())
-#            
-#        if section==None:
-#            self.horizontalHeader().setResizeMode(QHeaderView.ResizeToContents)
-#            self.resizeColumnsToContents()
-#            self.mytimer.stop()
-#        else:
+        
         self.horizontalHeader().setResizeMode(QHeaderView.Interactive)
-        self.columnswidth_in_config=self.mem.config_ui.get_list( self.section,   self.objectName()+"_columns_width")
+        self.array=self.mem.config_ui.get_list( self.section,   self.objectName()+"_columns_width")
         
         #Checks if config has same columns as qtable and resizes the table
-        if len(self.columnswidth_in_config)==self.columnCount():
-            for i in range(self.columnCount()):
-                self.setColumnWidth(i, int(self.columnswidth_in_config[i]))
+        if len(self.array)==self.columnCount():
+            self.array2columns()
+        else:#Se coloca en array
+            self.columns2array()
         self.mytimer.start(5000) 
         
     def checksettings(self):
-        ##Si está vacio columnswidth_in_config lo carga y guarda en settings
+        ##Si está vacio array lo carga y guarda en settings
         if self.section==None:# No graba
-            return
-            
-        if len(self.columnswidth_in_config)==0:#si no hay settings primera vez
-            print (self.section, self.objectName(), "myQTableWidget. No columns in config. Saving table width")            
-            self.save_columns()
-            return 
-            
-        if len(self.columnswidth_in_config)!=self.columnCount():
-            print (self.section, self.objectName(), "myQTableWidget. Diferent config columns and table columns. Saving table columns")
-            self.save_columns()
             return
             
         ##Comprueba que no se hayan movido las columnas y si se han movido lo guarda
         for i in range(self.columnCount()):
-            if self.columnWidth(i)!=int(self.columnswidth_in_config[i]):
-                print (self.section, self.objectName(), "myQTableWidget. Saving moved columns")
+            if self.columnWidth(i)!=int(self.array[i]):
                 self.save_columns()
                 break
 
+    def columns2array(self):
+        """Adds in array real columns with in table"""
+        del self.array
+        self.array=[]
+        for i in range(self.columnCount()):#Genera array
+            self.array.append(str(self.columnWidth(i)))
+            
+    def array2columns(self):
+        """Gives columns array size"""
+        for i in range(self.columnCount()):
+            self.setColumnWidth(i, int(self.array[i]))        
+
 
     def save_columns(self):
-        del self.columnswidth_in_config
-        self.columnswidth_in_config=[]
-        for i in range(self.columnCount()):#Genera array
-            self.columnswidth_in_config.append(str(self.columnWidth(i)))
-        self.mem.config_ui.set_list(self.section, self.objectName()+"_columns_width", self.columnswidth_in_config)
+        """Saves column status to array and to config"""
+        self.columns2array()
+        self.mem.config_ui.set_list(self.section, self.objectName()+"_columns_width", self.array)
         self.mem.config_ui.save()
+        print ("- Saved {0} columns size in {1} to {2}".format(self.objectName(), self.section, self.array))
             
             
     def verticalScrollbarAction(self,  action):
+        """Resizes columns if column width is less than table hint"""
         for i in range(self.columnCount()):
             if self.sizeHintForColumn(i)>self.columnWidth(i):
                 self.setColumnWidth(i, self.sizeHintForColumn(i))
-#        self.resizeColumnsToContents()
         
     def mouseDoubleClickEvent(self, event):
+        """Resizes to minimum contents"""
         self.resizeColumnsToContents()

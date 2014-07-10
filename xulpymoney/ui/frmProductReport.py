@@ -151,9 +151,9 @@ class frmProductReport(QDialog, Ui_frmProductReport):
             self.product.estimations_eps.load_from_db()#No cargada por defecto en product
             self.product.dps.load_from_db()
 
-            self.product.estimations_dps.myqtablewidget(self.tblDividendsEstimations)   
-            self.product.estimations_eps.myqtablewidget(self.tblEPS)            
-            self.product.dps.myqtablewidget(self.tblDPSPaid)            
+            self.product.estimations_dps.myqtablewidget(self.tblDividendsEstimations, "frmProductReport")   
+            self.product.estimations_eps.myqtablewidget(self.tblEPS, "frmProductReport")            
+            self.product.dps.myqtablewidget(self.tblDPSPaid, "frmProductReport")            
             inicio=datetime.datetime.now()
             self.__load_information()
             if len(self.product.result.ohclDaily.arr)!=0:
@@ -313,13 +313,13 @@ class frmProductReport(QDialog, Ui_frmProductReport):
             self.selDPS.borrar()
             self.mem.conms.commit()
             self.product.dps.arr.remove(self.selDPS)
-            self.product.dps.myqtablewidget(self.tblDPSPaid)
+            self.product.dps.myqtablewidget(self.tblDPSPaid,  "frmProductReport")
         
     @pyqtSignature("")
     def on_actionDPSNew_activated(self):
         d=frmDPSAdd(self.mem, self.product)
         d.exec_()
-        self.product.dps.myqtablewidget(self.tblDPSPaid)
+        self.product.dps.myqtablewidget(self.tblDPSPaid, "frmProductReport")
 
     @pyqtSignature("")
     def on_actionEstimationDPSDelete_activated(self):
@@ -327,13 +327,13 @@ class frmProductReport(QDialog, Ui_frmProductReport):
             self.selEstimationDPS.borrar()
             self.product.estimations_dps.arr.remove(self.selEstimationDPS)
             self.mem.conms.commit()
-            self.product.estimations_dps.myqtablewidget(self.tblDividendsEstimations)
+            self.product.estimations_dps.myqtablewidget(self.tblDividendsEstimations, "frmProductReport")
         
     @pyqtSignature("")
     def on_actionEstimationDPSNew_activated(self):
         d=frmEstimationsAdd(self.mem, self.product, "dps")
         d.exec_()
-        self.product.estimations_dps.myqtablewidget(self.tblDividendsEstimations)
+        self.product.estimations_dps.myqtablewidget(self.tblDividendsEstimations, "frmProductReport")
 
     @pyqtSignature("")
     def on_actionEstimationEPSDelete_activated(self):
@@ -341,13 +341,13 @@ class frmProductReport(QDialog, Ui_frmProductReport):
             self.selEstimationEPS.borrar()
             self.product.estimations_eps.arr.remove(self.selEstimationEPS)
             self.mem.conms.commit()
-            self.product.estimations_eps.myqtablewidget(self.tblEPS)
+            self.product.estimations_eps.myqtablewidget(self.tblEPS, "frmProductReport")
         
     @pyqtSignature("")
     def on_actionEstimationEPSNew_activated(self):
         d=frmEstimationsAdd(self.mem, self.product, "eps")
         d.exec_()
-        self.product.estimations_eps.myqtablewidget(self.tblEPS)
+        self.product.estimations_eps.myqtablewidget(self.tblEPS,  "frmProductReport")
 
     @pyqtSignature("")
     def on_actionPurgeDay_activated(self):

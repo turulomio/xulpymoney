@@ -751,9 +751,10 @@ class SetEstimationsDPS:
     def sort(self):
         self.arr=sorted(self.arr, key=lambda c: c.year,  reverse=False)         
         
-    def myqtablewidget(self, table):
+    def myqtablewidget(self, table, section):
         """settings, must be thrown before, not in each reload"""
         self.sort()
+        table.settings(section,  self.mem)        
         table.clearContents()
         table.setRowCount(len(self.arr))
         for i, e in enumerate(self.arr):
@@ -806,8 +807,9 @@ class SetEstimationsEPS:
     def sort(self):
         self.arr=sorted(self.arr, key=lambda c: c.year,  reverse=False)         
         
-    def myqtablewidget(self, table):
+    def myqtablewidget(self, table, section):
         self.sort()
+        table.settings(section,  self.mem)        
         table.clearContents()
         table.setRowCount(len(self.arr))
         for i, e in enumerate(self.arr):
@@ -1983,7 +1985,7 @@ class Dividend:
         cur=self.mem.con.cursor()
         comentario="{0}|{1}|{2}|{3}".format(self.inversion.name, self.bruto, self.retencion, self.comision)
         if self.id==None:#Insertar
-            oc=AccountOperation(self.mem).init__create( self.datetime,self.concepto, self.concepto.tipooperacion, self.neto, comentario, self.inversion.cuenta)
+            oc=AccountOperation(self.mem).init__create( self.fecha,self.concepto, self.concepto.tipooperacion, self.neto, comentario, self.inversion.cuenta)
             oc.save()
             self.opercuenta=oc
             #Añade el dividend
@@ -3381,11 +3383,12 @@ class SetDPS:
     def sort(self):
         self.arr=sorted(self.arr, key=lambda c: c.date,  reverse=False)         
         
-    def myqtablewidget(self, table):
+    def myqtablewidget(self, table, section):
         table.setColumnCount(2)
         table.setHorizontalHeaderItem(0, QTableWidgetItem(QApplication.translate("Core", "Date", None, QApplication.UnicodeUTF8)))
         table.setHorizontalHeaderItem(1, QTableWidgetItem(QApplication.translate("Core", "Gross", None, QApplication.UnicodeUTF8)))
         self.sort()
+        table.settings(section,  self.mem)        
         table.clearContents()
         table.setRowCount(len(self.arr))
         for i, e in enumerate(self.arr):
@@ -5353,7 +5356,7 @@ class ConfigFile:
         """Devuelve el default value, y lo establece"""
         try:
             if name.find("columns_width")!=-1:
-                print ("ConfigFile. Setting []. Reseting",  section,  name)
+#                print ("ConfigFile. Setting []. Reseting",  section,  name)
                 return []
             resultado=self.defaults["{0}#{1}".format(section,name)]
             print ("Using default value",  section,  name,  resultado)
@@ -5402,6 +5405,7 @@ class ConfigFile:
         for item in list:
             cadena=cadena+str(item)+'|'
         self.config.set(section,  name,  cadena[:-1])
+#        print ("set list",  section ,  name,  cadena)
             
     def set_value(self, section, name, value):
         if self.config.has_section(section)==False:
