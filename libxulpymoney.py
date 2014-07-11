@@ -269,9 +269,9 @@ class SetProducts:
         curms=self.mem.con.cursor()
         curms.execute(sql)#"select * from products where id in ("+lista+")" 
         if progress==True:
-            pd= QProgressDialog(QApplication.translate("Core","Loading {0} MyStocks products from database".format(curms.rowcount)),None, 0,curms.rowcount)
+            pd= QProgressDialog(QApplication.translate("Core","Loading {0} products from database".format(curms.rowcount)),None, 0,curms.rowcount)
             pd.setModal(True)
-            pd.setWindowTitle(QApplication.translate("Core","Loading MyStocks products..."))
+            pd.setWindowTitle(QApplication.translate("Core","Loading products..."))
             pd.forceShow()
         for rowms in curms:
             if progress==True:
@@ -284,11 +284,7 @@ class SetProducts:
             inv.result.basic.load_from_db()
             self.arr.append(inv)
         curms.close()
-#            stri="{0}: {1}/{2}          ".format(function_name(self), curms.rownumber, curms.rowcount)
-#            sys.stdout.write("\b"*1000+stri)
-#            sys.stdout.flush()
-#        print("")
-                           
+
     def find(self, id):
         """Devuelve el objeto product con id pasado como parámetro y None si no lo encuentra"""
         for a in self.arr:

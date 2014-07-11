@@ -205,6 +205,8 @@
     <addaction name="separator"/>
     <addaction name="actionFavorites"/>
     <addaction name="actionSearch"/>
+    <addaction name="separator"/>
+    <addaction name="actionPriceUpdates"/>
    </widget>
    <addaction name="menuXulpymoney"/>
    <addaction name="menuBancos"/>
@@ -849,6 +851,21 @@ seleccionados por el usuario</string>
    </property>
    <property name="text">
     <string>All funds</string>
+   </property>
+  </action>
+  <action name="actionPriceUpdates">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/transfer.png</normaloff>:/xulpymoney/transfer.png</iconset>
+   </property>
+   <property name="text">
+    <string>Price updates</string>
+   </property>
+   <property name="toolTip">
+    <string>Price updates</string>
+   </property>
+   <property name="shortcut">
+    <string>F5</string>
    </property>
   </action>
  </widget>
