@@ -46,7 +46,7 @@
      <x>0</x>
      <y>0</y>
      <width>1186</width>
-     <height>20</height>
+     <height>25</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuAyuda">
@@ -207,6 +207,7 @@
     <addaction name="actionSearch"/>
     <addaction name="separator"/>
     <addaction name="actionPriceUpdates"/>
+    <addaction name="actionReloadPrices"/>
    </widget>
    <addaction name="menuXulpymoney"/>
    <addaction name="menuBancos"/>
@@ -863,6 +864,21 @@ seleccionados por el usuario</string>
    </property>
    <property name="toolTip">
     <string>Price updates</string>
+   </property>
+   <property name="shortcut">
+    <string>F8</string>
+   </property>
+  </action>
+  <action name="actionReloadPrices">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/new.png</normaloff>:/xulpymoney/new.png</iconset>
+   </property>
+   <property name="text">
+    <string>Reload current prices</string>
+   </property>
+   <property name="toolTip">
+    <string>Reload current prices</string>
    </property>
    <property name="shortcut">
     <string>F5</string>
