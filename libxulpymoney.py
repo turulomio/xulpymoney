@@ -1850,12 +1850,12 @@ class DBData:
     def __init__(self, mem):
         self.mem=mem
         self.loaded_inactive=False
-        self.tupdatedata=TUpdateData(self.mem)
+#        self.tupdatedata=TUpdateData(self.mem)
         
-    def __del__(self):
-        if self.tupdatedata.isAlive():
-            self.tupdatedata.join()
-            print ("TUpdateData closed")
+#    def __del__(self):
+#        if self.tupdatedata.isAlive():
+#            self.tupdatedata.join()
+#            print ("TUpdateData closed")
 
     def load_actives(self):
         inicio=datetime.datetime.now()
@@ -1871,8 +1871,8 @@ class DBData:
         self.investments_active.load_from_inversiones_query("select distinct(mystocksid) from inversiones where in_activa=true")
         self.inversiones_active=SetInvestments(self.mem, self.cuentas_active, self.investments_active, self.benchmark)
         self.inversiones_active.load_from_db("select * from inversiones where in_activa=true", True)
-        if not self.tupdatedata.isAlive():#Necesary because, can be thrown from actionUpdateMemory
-            self.tupdatedata.start()        
+#        if not self.tupdatedata.isAlive():#Necesary because, can be thrown from actionUpdateMemory
+#            self.tupdatedata.start()        
         print("Cargando actives",  datetime.datetime.now()-inicio)
         
     def load_inactives(self, force=False):

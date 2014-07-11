@@ -66,15 +66,6 @@ class frmMain(QMainWindow, Ui_frmMain):
             Product(self.mem).changeDeletable(  ids2protect,  False)
         self.mem.con.commit()
         
-#        self.mem.data.load_inactives()
-#        print ("==========================================")
-#        Maintenance(self.mem).show_investments_status(datetime.date(2007, 2, 28))
-#        print ("==========================================")
-#        Maintenance(self.mem).show_investments_status(datetime.date(2007, 3, 30))
-#        print ("==========================================")
-#        Maintenance(self.mem).show_investments_status(datetime.date(2007, 4, 30))
-#        print ("==========================================")
-
         
     @QtCore.pyqtSlot()  
     def on_actionExit_activated(self):
@@ -156,6 +147,25 @@ class frmMain(QMainWindow, Ui_frmMain):
                 
         self.layout.addWidget(self.w)
         self.w.show()
+
+    @QtCore.pyqtSlot()  
+    def on_actionReloadPrices_activated(self):
+        ##Selecting products to update
+        if self.mem.data.loaded_inactive==False:
+            products=self.mem.data.investments_active
+        else:
+            products=self.mem.data.investments_all()
+        
+        pd= QProgressDialog(self.tr("Reloading {0} product prices from database").format(len(products.arr)),None, 0,len(products.arr))
+        pd.setModal(True)
+        pd.setWindowTitle(self.tr("Reloading prices..."))
+        pd.forceShow()
+        for i, p in enumerate(products.arr):
+            pd.setValue(i)
+            pd.update()
+            QApplication.processEvents()
+            p.result.basic.load_from_db()
+        self.mem.data.benchmark.result.basic.load_from_db()
 
     @QtCore.pyqtSlot()  
     def on_actionReportAPR_activated(self):
