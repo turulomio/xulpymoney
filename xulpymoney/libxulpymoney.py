@@ -5634,9 +5634,9 @@ class MemXulpymoney(MemMyStock):
         self.data=DBData(self)
         self.closing=False#Used to close threads
         
-    def __del__(self):
-        self.closing=True
-        self.data.__del__()
+#    def __del__(self):
+#        self.closing=True
+#        self.data.__del__()
         
 #        if self.con:#Cierre por reject en frmAccess
 #            self.disconnect_xulpymoney(self.con)
