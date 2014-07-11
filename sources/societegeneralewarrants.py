@@ -29,7 +29,7 @@ class SocieteGeneraleWarrants(Source):
     
     def arr_dividends(self):
         resultado=[]
-        con=self.mem.connect_mystocksd()
+        con=self.mem.connect_xulpymoneyd()
         cur=con.cursor()
         cur.execute("select code from products where dividend is null and code like 'SGW#%'")
         if cur.rowcount!=0:
@@ -37,7 +37,7 @@ class SocieteGeneraleWarrants(Source):
                 d={"code":row['code'], "dividend": 0}
                 resultado.append(d)
         cur.close()
-        self.mem.disconnect_mystocksd(con)            
+        self.mem.disconnect_xulpymoneyd(con)            
         return resultado
         
     

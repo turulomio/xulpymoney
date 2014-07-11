@@ -103,7 +103,7 @@ class frmMainMS(QMainWindow, Ui_frmMainMS):#
     def on_actionImport_activated(self):
         filename=(QFileDialog.getOpenFileName(self, self.tr("Selecciona el fichero a importar"), os.environ['HOME']+ "/.mystocks/", "Gzipped text (*.txt.gz)"))
         inicio=datetime.datetime.now()
-        con=self.mem.connect_mystocks()
+        con=self.mem.connect_xulpymoney()
         cur = con.cursor()
         print ("Importando la tabla export")
         os.popen("zcat " + filename  + " | psql -U postgres mystocks")
@@ -118,7 +118,7 @@ class frmMainMS(QMainWindow, Ui_frmMainMS):#
         cur.execute("DROP INDEX index_export_unik2;")
         con.commit()
         cur.close()
-        self.mem.disconnect_mystocksd(con)      
+        self.mem.disconnect_xulpymoneyd(con)      
         fin=datetime.datetime.now()
         
         m=QMessageBox()
@@ -138,7 +138,7 @@ class frmMainMS(QMainWindow, Ui_frmMainMS):#
     @QtCore.pyqtSlot()  
     def on_actionISINDuplicado_activated(self):
         self.w.close()
-        cur=self.mem.conms.cursor()
+        cur=self.mem.con.cursor()
         #ßaca los isin duplicados buscando distintct isin, bolsa con mas de dos registros
         cur.execute("select isin, id_bolsas, count(*) as num from products  where isin!='' group by isin, id_bolsas having count(*)>1 order by num desc;")
         isins=set([])
@@ -259,7 +259,7 @@ class frmMainMS(QMainWindow, Ui_frmMainMS):#
     def on_actionPurgeAll_activated(self):
         """Purga todas las quotes de todas inversión. """
         products=[]
-        curms=self.mem.conms.cursor()
+        curms=self.mem.con.cursor()
         curms.execute("select * from products where id in ( select distinct( id) from quotes) order by name;")
         for row in curms:
             products.append(Product(self.mem).init__db_row(row))
@@ -278,7 +278,7 @@ class frmMainMS(QMainWindow, Ui_frmMainMS):#
             pd.update()
             QApplication.processEvents()
             if pd.wasCanceled():
-                self.mem.conms.rollback()
+                self.mem.con.rollback()
                 return
             pd.update()
             QApplication.processEvents()
@@ -286,11 +286,11 @@ class frmMainMS(QMainWindow, Ui_frmMainMS):#
             inv.result.all.load_from_db(inv)
             invcounter=inv.result.all.purge(progress=True)
             if invcounter==None:#Pulsado cancelar
-                self.mem.conms.rollback()
+                self.mem.con.rollback()
                 break
             else:
                 counter=counter+invcounter
-                self.mem.conms.commit()
+                self.mem.con.commit()
         
         m=QMessageBox()
         m.setIcon(QMessageBox.Information)

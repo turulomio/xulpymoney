@@ -61,7 +61,7 @@ class wdgJointReport(QWidget, Ui_wdgJointReport):
                     
         self.tblAdded.setRowCount(len(operaciones)+1)
         sumsaldo=0        
-        curms=self.mem.conms.cursor()
+        curms=self.mem.con.cursor()
         for i,  o in enumerate(operaciones):
             valor=Quote(self.mem).init__from_query(o.inversion.product, o.datetime).quote
             if valor==None:

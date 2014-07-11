@@ -27,7 +27,7 @@ class WorkerYahooHistorical(Source):
                 self.pd.update()
                 QApplication.processEvents()
                 if self.pd.wasCanceled():
-                    self.mem.conms.rollback()
+                    self.mem.con.rollback()
                     return
                 self.pd.update()
                 QApplication.processEvents()
@@ -44,7 +44,7 @@ class WorkerYahooHistorical(Source):
                 sys.stdout.flush()
             else:
                 self.pd.setLabelText(stri)
-            self.mem.conms.commit()  
+            self.mem.con.commit()  
             time.sleep(sleep)#time step
         print("")
         
@@ -82,10 +82,10 @@ if __name__ == '__main__':
             log("STARTING", "","Debugging")
             mem.debug=True
 
-    mem.connect_mystocksd(sys.argv[1])
+    mem.connect_xulpymoneyd(sys.argv[1])
     mem.actualizar_memoria()
 
     w=WorkerYahooHistorical(mem)
     w.start()
 
-    mem.disconnect_mystocksd()
+    mem.disconnect_xulpymoneyd()

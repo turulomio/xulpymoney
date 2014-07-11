@@ -22,7 +22,7 @@ class wdgAPR(QWidget, Ui_wdgAPR):
         inicio=datetime.datetime.now()
 #        con=self.mem.connect_xulpymoney()
 #        cur = con.cursor()
-#        mq=self.mem.connect_mystocks()
+#        mq=self.mem.connect_xulpymoney()
 #        curms=mq.cursor()                
         anoinicio=Assets(self.mem).primera_datetime_con_datos_usuario().year       
         anofinal=datetime.date.today().year+1        
@@ -75,7 +75,7 @@ class wdgAPR(QWidget, Ui_wdgAPR):
 #        cur.close()     
 #        self.mem.disconnect_xulpymoney(con)     
 #        curms.close()
-#        self.mem.disconnect_mystocks(mq)     
+#        self.mem.disconnect_xulpymoney(mq)     
         self.table.setItem(anofinal-anoinicio, 0, qcenter((self.tr("TOTAL"))))
         self.table.setItem(anofinal-anoinicio, 4, self.mem.localcurrency.qtablewidgetitem(sumingresos))
         self.table.setItem(anofinal-anoinicio, 5, self.mem.localcurrency.qtablewidgetitem(sumconsolidado))

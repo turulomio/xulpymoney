@@ -23,7 +23,7 @@ class wdgMergeCodes(QWidget, Ui_wdgMergeCodes):
     
     def reload(self):
         #Carga tabla origen
-        cur = self.mem.conms.cursor()
+        cur = self.mem.con.cursor()
         self.table.setItem(0, 0, qcenter(str(self.destino.id)))
         self.table.item(0, 0).setIcon(self.destino.stockexchange.country.qicon())
         self.table.setItem(0, 1, QTableWidgetItem(self.destino.name))
@@ -56,7 +56,7 @@ class wdgMergeCodes(QWidget, Ui_wdgMergeCodes):
         
   
     def on_cmd_released(self):
-        cur=self.mem.conms.cursor()
+        cur=self.mem.con.cursor()
         cur.execute("update quotes set id=%s  where id=%s", (self.destino.id, self.origen.id))
         cur.execute("update dps set id=%s where id=%s", (self.destino.id, self.origen.id))
         cur.execute("delete from quotes where id=%s", (self.origen.id, ))
@@ -64,7 +64,7 @@ class wdgMergeCodes(QWidget, Ui_wdgMergeCodes):
         cur.execute("delete from estimations_dps where id=%s", (self.origen.id, ))
         cur.execute("delete from estimations_eps where id=%s", (self.origen.id, ))
         cur.execute("delete from dps where id=%s", (self.origen.id, ))
-        self.mem.conms.commit()
+        self.mem.con.commit()
         cur.close()   
         m=QMessageBox()
         m.setIcon(QMessageBox.Information)

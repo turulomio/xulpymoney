@@ -115,7 +115,7 @@ class investmentDialog(QDialog):
             return
 
         self.inversiones=[]
-        cur = self.mem.conms.cursor()
+        cur = self.mem.con.cursor()
         cur.execute("select * from products where id::text like '%"+(self.txt.text().upper())+"%' or upper(name) like '%"+(self.txt.text().upper())+"%' or upper(isin) like '%"+(self.txt.text().upper())+"%' or upper(comentario) like '%"+(self.txt.text().upper())+"%' order by name")
         self.lblFound.setText(self.tr("Encontrados {0} registros".format(cur.rowcount)))
                 

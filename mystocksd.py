@@ -27,7 +27,7 @@ if __name__ == '__main__':
             mem.debug=True
 
 
-    con=mem.connect_mystocksd()
+    con=mem.connect_xulpymoneyd()
     cur = con.cursor()   
     cur2 = con.cursor()   
 
@@ -40,7 +40,7 @@ if __name__ == '__main__':
     mem.carga_ia(cur)
     cur.close()                
     cur2.close()                
-    mem.disconnect_mystocksd(con)
+    mem.disconnect_xulpymoneyd(con)
     
     wy=WorkerYahoo(mem)
     p1 = multiprocessing.Process(target=wy.start, args=())

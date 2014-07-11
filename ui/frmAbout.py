@@ -102,7 +102,7 @@ class frmAbout(QDialog, Ui_frmAbout):
             self.tblStatistics.setItem(8, 0 , qcenter(total))
 
     
-        cur = self.mem.conms.cursor()
+        cur = self.mem.con.cursor()
         todos(cur)
         pais(cur, 1, self.mem.stockexchanges.find(1))
         pais(cur, 2, self.mem.stockexchanges.find(2))

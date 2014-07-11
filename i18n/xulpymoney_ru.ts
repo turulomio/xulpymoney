@@ -113,11 +113,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5594"/>
-        <source>Error conecting to MyStocks</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="libxulpymoney.py" line="5658"/>
         <source>Error conecting to Xulpymoney</source>
         <translation type="unfinished"></translation>

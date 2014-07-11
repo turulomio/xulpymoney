@@ -30,7 +30,7 @@ class frmInit(QDialog, Ui_frmInit):
             
             #Insert quotes of yahoo
             strtemplate1="dbname='%s' port='%s' user='%s' host='%s' password='%s'" % (self.txtMyStocks.text(), self.txtPort.text(), self.txtUser.text(),  self.txtServer.text(), self.txtPass.text())
-            self.mem.conms=psycopg2.extras.DictConnection(strtemplate1)
+            self.mem.con=psycopg2.extras.DictConnection(strtemplate1)
             self.mem.actualizar_memoria()            
             w=WorkerYahooHistorical(self.mem)
             w.start()           
