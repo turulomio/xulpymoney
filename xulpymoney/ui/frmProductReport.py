@@ -290,7 +290,7 @@ class frmProductReport(QDialog, Ui_frmProductReport):
     def on_actionDPSDelete_activated(self):
         if self.selDPS!=None:
             self.selDPS.borrar()
-            self.mem.conms.commit()
+            self.mem.con.commit()
             self.product.dps.arr.remove(self.selDPS)
             self.product.dps.myqtablewidget(self.tblDPSPaid,  "frmProductReport")
         
@@ -305,7 +305,7 @@ class frmProductReport(QDialog, Ui_frmProductReport):
         if self.selEstimationDPS!=None:
             self.selEstimationDPS.borrar()
             self.product.estimations_dps.arr.remove(self.selEstimationDPS)
-            self.mem.conms.commit()
+            self.mem.con.commit()
             self.product.estimations_dps.myqtablewidget(self.tblDividendsEstimations, "frmProductReport")
         
     @pyqtSignature("")
@@ -319,7 +319,7 @@ class frmProductReport(QDialog, Ui_frmProductReport):
         if self.selEstimationEPS!=None:
             self.selEstimationEPS.borrar()
             self.product.estimations_eps.arr.remove(self.selEstimationEPS)
-            self.mem.conms.commit()
+            self.mem.con.commit()
             self.product.estimations_eps.myqtablewidget(self.tblEPS, "frmProductReport")
         
     @pyqtSignature("")
@@ -331,7 +331,7 @@ class frmProductReport(QDialog, Ui_frmProductReport):
     @pyqtSignature("")
     def on_actionPurgeDay_activated(self):
         self.product.result.intradia.purge()
-        self.mem.conms.commit()
+        self.mem.con.commit()
         self.load_graphics()#OHLC ya estaba cargado, no varía por lo que no uso update_due_to_quotes_change
         
     @pyqtSignature("")
@@ -355,7 +355,7 @@ class frmProductReport(QDialog, Ui_frmProductReport):
         for q in self.setSelIntraday:
             q.delete()
             self.product.result.intradia.arr.remove(q)
-        self.mem.conms.commit()
+        self.mem.con.commit()
         self.update_due_to_quotes_change()
 
 
@@ -371,7 +371,7 @@ class frmProductReport(QDialog, Ui_frmProductReport):
             all.load_from_db(self.product)
             for setquoteintraday in all.arr:
                 w.split.updateQuotes(setquoteintraday.arr)         
-            self.mem.conms.commit()
+            self.mem.con.commit()
             self.update_due_to_quotes_change()
         
     def on_cmdPurge_pressed(self):
@@ -379,13 +379,13 @@ class frmProductReport(QDialog, Ui_frmProductReport):
         all.load_from_db(self.product)
         numpurged=all.purge(progress=True)
         if numpurged!=None:#Canceled
-            self.mem.conms.commit()
+            self.mem.con.commit()
             m=QMessageBox()
             m.setIcon(QMessageBox.Information)
             m.setText(self.trUtf8("{0} quotes have been purged from {1}".format(numpurged, self.product.name)))
             m.exec_()    
         else:
-            self.mem.conms.rollback()
+            self.mem.con.rollback()
         
     def on_cmdSave_pressed(self):
         self.product.name=self.txtName.text()
@@ -414,7 +414,7 @@ class frmProductReport(QDialog, Ui_frmProductReport):
             insertarquote=True
             
         self.product.save()
-        self.mem.conms.commit()  
+        self.mem.con.commit()  
         
         if insertarquote==True:
 

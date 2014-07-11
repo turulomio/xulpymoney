@@ -32,7 +32,7 @@ class wdgLog(QWidget, Ui_wdgLog):
     def updateStatus(self ):		
         self.table.clearContents()
         now=datetime.datetime.now()
-        con=self.mem.connect_mystocks()
+        con=self.mem.connect_xulpymoney()
         cur = con.cursor()
         cur.execute("select * from status order by source, process;")
         self.table.setRowCount(cur.rowcount+1)
@@ -60,7 +60,7 @@ class wdgLog(QWidget, Ui_wdgLog):
         self.table.setItem(cur.rownumber, 0, qcenter("TOTAL"))
         self.table.setItem(cur.rownumber, 4, qright(str(numinternet)))
         cur.close()     
-        self.mem.disconnect_mystocksd(con)         
+        self.mem.disconnect_xulpymoneyd(con)         
         self.lblLastUpdateStatus.setText(self.trUtf8("Última actualización: {0}".format(str(now)[:-7])))
         
     def on_cmd_pressed(self):

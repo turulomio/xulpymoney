@@ -16,6 +16,6 @@ class frmDPSAdd(QDialog, Ui_frmDPSAdd):
     def on_cmd_released(self):
         self.dps=DPS(self.mem, self.product).init__create(self.calendar.selectedDate().toPyDate(), self.txtGross.decimal())
         self.dps.save()
-        self.mem.conms.commit()      
+        self.mem.con.commit()      
         self.product.dps.arr.append(self.dps)
         self.accept()

@@ -11,13 +11,13 @@ class WorkerBonoAleman(Source):
         print (self.name)
         while (True):
             (parsed, errors)=self.execute()
-            con=self.mem.connect_mystocksd()
+            con=self.mem.connect_xulpymoneyd()
             cur = con.cursor()
             self.parse_errors(cur,  errors)
             Quote(self.mem).insert(cur, parsed, self.name)
             con.commit()
             cur.close()                
-            self.mem.disconnect_mystocksd(con)
+            self.mem.disconnect_xulpymoneyd(con)
             time.sleep(60)
 
 

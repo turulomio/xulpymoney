@@ -14,7 +14,7 @@ class WorkerIndices(Source):
     def start(self):
         print (self.name)
         while (True):
-            con=self.mem.connect_mystocksd()
+            con=self.mem.connect_xulpymoneyd()
             cur = con.cursor()
             self.ids=self.filtrar_horario_bolsa(self.find_ids())
             (set, errors)=self.execute()
@@ -24,7 +24,7 @@ class WorkerIndices(Source):
 #            Quote(self.mem).insert(cur, set, self.name)
             con.commit()
             cur.close()
-            self.mem.disconnect_mystocksd(con)
+            self.mem.disconnect_xulpymoneyd(con)
             time.sleep(60)
 
 

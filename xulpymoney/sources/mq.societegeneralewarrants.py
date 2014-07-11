@@ -17,7 +17,7 @@ class WorkerSGWarrants(Source):
     def start(self):
         print (self.name)
         while (True):
-            con=self.mem.connect_mystocksd()
+            con=self.mem.connect_xulpymoneyd()
             cur = con.cursor()     
             self.ids=self.find_ids()
 
@@ -31,7 +31,7 @@ class WorkerSGWarrants(Source):
                 Quotes(self.mem).insert(cur, p, self.name)
             con.commit()
             cur.close()
-            self.mem.disconnect_mystocksd(con)
+            self.mem.disconnect_xulpymoneyd(con)
             time.sleep(120)
 
     def parse_resultado(self, resultado):
@@ -89,13 +89,13 @@ if __name__ == '__main__':
             log ("File must be temp.xls")
             sys.exit(0)
 
-    con=mem.connect_mystocksd()
+    con=mem.connect_xulpymoneyd()
     cur = con.cursor()
     mem.carga_ia(cur, "where priority[1]=6")
 
     mem.carga_stockexchanges(cur)
     cur.close()
-    mem.disconnect_mystocksd(con)
+    mem.disconnect_xulpymoneyd(con)
 
     w=WorkerSGWarrants(mem)
     w.start()

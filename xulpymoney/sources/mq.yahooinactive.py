@@ -17,7 +17,7 @@ class WorkerYahooInactive(WorkerYahoo):
     def start(self):
         print (self.name)
         while (True):
-            con=self.mem.connect_mystocksd()
+            con=self.mem.connect_xulpymoneyd()
             cur = con.cursor()     
             self.ids=self.filtrar_ids_inactivos_no_actualizados(cur,  1, 7,  False)      
             print (self.ids)
@@ -32,7 +32,7 @@ class WorkerYahooInactive(WorkerYahoo):
             p.save(cur,self.name)
             con.commit()
             cur.close()                
-            self.mem.disconnect_mystocksd(con)
+            self.mem.disconnect_xulpymoneyd(con)
             time.sleep(60*60*24)
 
 
@@ -43,13 +43,13 @@ if __name__ == '__main__':
             log("STARTING", "","Debugging")
             mem.debug=True
 
-    con=mem.connect_mystocksd()
+    con=mem.connect_xulpymoneyd()
     cur = con.cursor()
     mem.actualizar_memoria(cur)
 #    mem.carga_ia(cur, "where priority[1]=1")
 #    print(mem.activas())
     cur.close()
-    mem.disconnect_mystocksd(con)
+    mem.disconnect_xulpymoneyd(con)
 
     w=WorkerYahooInactive(mem)
     w.start()

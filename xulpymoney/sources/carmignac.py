@@ -27,7 +27,7 @@ class Carmignac(Source):
         
     def arr_dividends(self):
         resultado=[]
-        con=self.mem.connect_mystocksd()
+        con=self.mem.connect_xulpymoneyd()
         cur=con.cursor()
         cur.execute("select code from products where dividend<>0 and agrupations like '%|CARMIGNAC|%'")
         if cur.rowcount!=0:
@@ -35,7 +35,7 @@ class Carmignac(Source):
                 d={"code":row['code'], "dividend": 0}
                 resultado.append(d)
         cur.close()
-        self.mem.disconnect_mystocksd(con)            
+        self.mem.disconnect_xulpymoneyd(con)            
         return resultado
     
     def arr_quotes(self):  

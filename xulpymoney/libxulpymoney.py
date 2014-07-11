@@ -266,7 +266,7 @@ class SetProducts:
         """sql es una query sobre la tabla inversiones
         Carga estimations_dbs, y basic
         """
-        curms=self.mem.conms.cursor()
+        curms=self.mem.con.cursor()
         curms.execute(sql)#"select * from products where id in ("+lista+")" 
         if progress==True:
             pd= QProgressDialog(QApplication.translate("Core","Loading {0} MyStocks products from database".format(curms.rowcount)),None, 0,curms.rowcount)
@@ -349,7 +349,7 @@ class SetStockExchanges:
         self.mem=mem     
     
     def load_all_from_db(self):
-        curms=self.mem.conms.cursor()
+        curms=self.mem.con.cursor()
         curms.execute("Select * from bolsas")
         for row in curms:
             self.dic_arr[str(row['id_bolsas'])]=StockExchange(self.mem).init__db_row(row, self.mem.countries.find(row['country']))
@@ -723,7 +723,7 @@ class SetEstimationsDPS:
     def load_from_db(self):
         del self.arr
         self.arr=[]
-        cur=self.mem.conms.cursor()
+        cur=self.mem.con.cursor()
         cur.execute( "select * from estimations_dps where id=%s order by year", (self.product.id, ))
         for row in cur:
             self.arr.append(EstimationDPS(self.mem).init__from_db(self.product, row['year']))
@@ -780,7 +780,7 @@ class SetEstimationsEPS:
     def load_from_db(self):
         del self.arr
         self.arr=[]
-        cur=self.mem.conms.cursor()
+        cur=self.mem.con.cursor()
         cur.execute( "select * from estimations_eps where id=%s order by year", (self.product.id, ))
         for row in cur:
             self.arr.append(EstimationEPS(self.mem).init__from_db(self.product, row['year']))
@@ -1230,7 +1230,7 @@ class SetInvestmentOperationsCurrent:
         return sumpendiente*100/suminvertido
     
     def get_valor_benchmark(self, indice):
-        curms=self.mem.conms.cursor()
+        curms=self.mem.con.cursor()
         for o in self.arr:
             o.get_referencia_indice(indice)
         curms.close()
@@ -3366,7 +3366,7 @@ class SetDPS:
     def load_from_db(self):
         del self.arr
         self.arr=[]
-        cur=self.mem.conms.cursor()
+        cur=self.mem.con.cursor()
         cur.execute( "select * from dps where id=%s order by date", (self.product.id, ))
         for row in cur:
             self.arr.append(DPS(self.mem, self.product).init__from_db_row(row))
@@ -3434,13 +3434,13 @@ class DPS:
                         
             
     def borrar(self):
-        cur=self.mem.conms.cursor()
+        cur=self.mem.con.cursor()
         cur.execute("delete from dps where id_dps=%s", (self.id,))
         cur.close()
             
     def save(self):
         """Función que comprueba si existe el registro para insertar o modificarlo según proceda"""
-        curms=self.mem.conms.cursor()
+        curms=self.mem.con.cursor()
         if self.id==None:
             curms.execute("insert into dps(date, gross,id) values (%s,%s,%s) returning id_dps", (self.date, self.gross, self.product.id))
             self.id=curms.fetchone()[0]
@@ -3475,7 +3475,7 @@ class EstimationEPS:
 
     def init__from_db(self, product,  currentyear):
         """Saca el registro  o uno en blanco si no lo encuentra, que fueron pasados como parámetro"""
-        cur=self.mem.conms.cursor()
+        cur=self.mem.con.cursor()
         cur.execute("select estimation, date_estimation ,source,manual from estimations_eps where id=%s and year=%s", (product.id, currentyear))
         if cur.rowcount==1:
             row=cur.fetchone()
@@ -3487,13 +3487,13 @@ class EstimationEPS:
             
             
     def borrar(self):
-        cur=self.mem.conms.cursor()
+        cur=self.mem.con.cursor()
         cur.execute("delete from estimations_eps where id=%s and year=%s", (self.product.id, self.year))
         cur.close()
             
     def save(self):
         """Función que comprueba si existe el registro para insertar o modificarlo según proceda"""
-        curms=self.mem.conms.cursor()
+        curms=self.mem.con.cursor()
         curms.execute("select count(*) from estimations_eps where id=%s and year=%s", (self.product.id, self.year))
         if curms.fetchone()[0]==0:
             curms.execute("insert into estimations_eps(id, year, estimation, date_estimation, source, manual) values (%s,%s,%s,%s,%s,%s)", (self.product.id, self.year, self.estimation, self.date_estimation, self.source, self.manual))
@@ -3536,7 +3536,7 @@ class EstimationDPS:
 
     def init__from_db(self, product,  currentyear):
         """Saca el registro  o uno en blanco si no lo encuentra, que fueron pasados como parámetro"""
-        cur=self.mem.conms.cursor()
+        cur=self.mem.con.cursor()
         cur.execute("select estimation, date_estimation ,source,manual from estimations_dps where id=%s and year=%s", (product.id, currentyear))
         if cur.rowcount==1:
             row=cur.fetchone()
@@ -3548,13 +3548,13 @@ class EstimationDPS:
             
             
     def borrar(self):
-        cur=self.mem.conms.cursor()
+        cur=self.mem.con.cursor()
         cur.execute("delete from estimations_dps where id=%s and year=%s", (self.product.id, self.year))
         cur.close()
             
     def save(self):
         """Función que comprueba si existe el registro para insertar o modificarlo según proceda"""
-        curms=self.mem.conms.cursor()
+        curms=self.mem.con.cursor()
         curms.execute("select count(*) from estimations_dps where id=%s and year=%s", (self.product.id, self.year))
         if curms.fetchone()[0]==0:
             curms.execute("insert into estimations_dps(id, year, estimation, date_estimation, source, manual) values (%s,%s,%s,%s,%s,%s)", (self.product.id, self.year, self.estimation, self.date_estimation, self.source, self.manual))
@@ -3654,7 +3654,7 @@ class Source:
         
     def filtrar_ids_primerregistro_ge_iniciodb(self,  ids):
         """Filtra aquellos ids cuyo primer registro es mayor que el inicio de la base de datos. Es decir que no se han buscado historicos"""
-        con=self.mem.connect_mystocksd()
+        con=self.mem.connect_xulpymoneyd()
         cur = con.cursor()     
         resultado=[]
         for id in ids:
@@ -3662,7 +3662,7 @@ class Source:
             if cur.fetchone()[0]==0:
                 resultado.append(id)
         cur.close()                
-        self.mem.disconnect_mystocksd(con)
+        self.mem.disconnect_xulpymoneyd(con)
         return resultado
                 
     def filtrar_ids_inactivos_no_actualizados(self, cur,  idpriority, dias,  priorityhistorical=False):
@@ -3740,31 +3740,31 @@ class Source:
 #                status_update(cur, self.name, "Update quotes", status='Downloading error',  statuschange=datetime.datetime.now())
 #                con.commit()
 #                cur.close()
-#                self.mem.disconnect_mystocksd(con)    
+#                self.mem.disconnect_xulpymoneyd(con)    
 #                time.sleep(60)
                 return None
         else:
             return None
-#        con=self.mem.connect_mystocksd()
+#        con=self.mem.connect_xulpymoneyd()
 #        cur=con.cursor()
 #        self.internetquerys=self.internetquerys+1
 #        status_update(cur, self.name, "Update quotes", internets=self.internetquerys)
 #        con.commit()
 #        cur.close()
-#        self.mem.disconnect_mystocksd(con)    
+#        self.mem.disconnect_xulpymoneyd(con)    
         return web
 
     def update_step_quotes(self, sql):
         """Hace un bucle con los distintos codes del sql."""
-        con=self.mem.connect_mystocksd()
+        con=self.mem.connect_xulpymoneyd()
         cur=con.cursor()
         status_insert(cur, self.name, "Update stepcode quotes")
         con.commit()
         cur.close()
-        mem.disconnect_mystocksd(con)   
+        mem.disconnect_xulpymoneyd(con)   
         while True:
             time.sleep(self.time_before_quotes)
-            con=self.mem.connect_mystocksd()
+            con=self.mem.connect_xulpymoneyd()
             cur=con.cursor()
             cur2=con.cursor()
             status_update(cur, self.name, "Update step quotes", status='Working',  statuschange=datetime.datetime.now())
@@ -3785,81 +3785,81 @@ class Source:
             con.commit()
             cur.close()
             cur2.close()
-            mem.disconnect_mystocksd(con)    
+            mem.disconnect_xulpymoneyd(con)    
             time.sleep( self.time_after_statics)
         
 #        
 #    def update_quotes(self):
-#        con=self.mem.connect_mystocksd()
+#        con=self.mem.connect_xulpymoneyd()
 #        cur=con.cursor()
 #        status_insert(cur, self.name, "Update quotes")
 #        status_update(cur, self.name, "Update quotes", status='Waiting before',  statuschange=datetime.datetime.now())
 #        con.commit()
 #        cur.close()
-#        self.mem.disconnect_mystocksd(con)   
+#        self.mem.disconnect_xulpymoneyd(con)   
 #        time.sleep(self.time_before_quotes)      
 #        while True:      
-#            con=self.mem.connect_mystocksd()
+#            con=self.mem.connect_xulpymoneyd()
 #            cur=con.cursor()
 #            status_update(cur, self.name, "Update quotes", status='Working',  statuschange=datetime.datetime.now())
 #            con.commit()
 #            cur.close()
-#            self.mem.disconnect_mystocksd(con)    
+#            self.mem.disconnect_xulpymoneyd(con)    
 #            if self.debugmode==True:
 #                for i in self.arr_quotes():
 #                    print (i)
 #            else:
 #                Quote(self.mem).insert_cdtv(self.arr_quotes(), self.name)
-#            con=self.mem.connect_mystocksd()
+#            con=self.mem.connect_xulpymoneyd()
 #            cur=con.cursor()
 #            status_update(cur, self.name, "Update quotes", status='Waiting after',  statuschange=datetime.datetime.now())
 #            con.commit()
 #            cur.close()
-#            self.mem.disconnect_mystocksd(con)               
+#            self.mem.disconnect_xulpymoneyd(con)               
 #            time.sleep(self.time_after_quotes)
 
 
 #    def update_statics(self):
-#        con=self.mem.connect_mystocksd()
+#        con=self.mem.connect_xulpymoneyd()
 #        cur=con.cursor()
 #        status_insert(cur, self.name, "Update statics")
 #        status_update(cur, self.name, "Update statics", status='Waiting before',  statuschange=datetime.datetime.now())
 #        con.commit()
 #        cur.close()
-#        self.mem.disconnect_mystocksd(con)   
+#        self.mem.disconnect_xulpymoneyd(con)   
 #        time.sleep(self.time_before_statics)
 #        while True:            
-#            con=self.mem.connect_mystocksd()
+#            con=self.mem.connect_xulpymoneyd()
 #            cur=con.cursor()
 #            status_update(cur, self.name, "Update statics", status='Working',  statuschange=datetime.datetime.now())
 #            con.commit()
 #            cur.close()
-#            self.mem.disconnect_mystocksd(con)    
+#            self.mem.disconnect_xulpymoneyd(con)    
 #            if self.debugmode==True:
 #                for i in self.arr_statics():
 #                    print (i)
 #            else:
 #                Product(self.mem).update_static(self.arr_statics(), self.name)
-#            con=self.mem.connect_mystocksd()
+#            con=self.mem.connect_xulpymoneyd()
 #            cur=con.cursor()
 #            status_update(cur, self.name, "Update statics", status='Waiting after',  statuschange=datetime.datetime.now())
 #            con.commit()
 #            cur.close()
-#            self.mem.disconnect_mystocksd(con)                     
+#            self.mem.disconnect_xulpymoneyd(con)                     
 #            time.sleep(self.time_after_statics)
             
 #    def update_step_statics(self, sql):
 #        """Hace un bucle con los distintos codes del sql."""
-#        con=self.mem.connect_mystocksd()
+#        con=self.mem.connect_xulpymoneyd()
 #        cur=con.cursor()
 #        status_insert(cur, self.name, "Update step statics")
 #        status_update(cur, self.name, "Update step statics", status='Waiting before',  statuschange=datetime.datetime.now())
 #        con.commit()
 #        cur.close()
-#        self.mem.disconnect_mystocksd(con)    
+#        self.mem.disconnect_xulpymoneyd(con)    
 #        time.sleep(self.time_before_statics)
 #        while True:
-#            con=self.mem.connect_mystocksd()
+#            con=self.mem.connect_xulpymoneyd()
 #            cur=con.cursor()
 #            cur2=con.cursor()
 #            status_update(cur, self.name, "Update statics", status='Working',  statuschange=datetime.datetime.now())
@@ -3881,18 +3881,18 @@ class Source:
 #            con.commit()
 #            cur.close()
 #            cur2.close()
-#            self.mem.disconnect_mystocksd(con)    
+#            self.mem.disconnect_xulpymoneyd(con)    
 #            time.sleep( self.time_after_statics)
 #            
 #    def update_stepcode_statics(self, listcode):
 #        """Hace un bucle con los distintos codes del listcode."""        
-##        con=self.mem.connect_mystocksd()
+##        con=self.mem.connect_xulpymoneyd()
 ##        cur=con.cursor()
 ##        status_insert(cur, self.name, "Update stepcode statics")
 ##        status_update(cur, self.name, "Update stepcode statics", status='Waiting before',  statuschange=datetime.datetime.now())
 ##        con.commit()
 ##        cur.close()
-##        self.mem.disconnect_mystocksd(con)   
+##        self.mem.disconnect_xulpymoneyd(con)   
 #        time.sleep(self.time_before_statics)
 #        while True:
 #            for code in listcode:
@@ -3905,21 +3905,21 @@ class Source:
 #            time.sleep( self.time_after_statics)
 #
 #    def update_step_historicals(self, listcodes):
-#        con=self.mem.connect_mystocksd()
+#        con=self.mem.connect_xulpymoneyd()
 #        cur=con.cursor()
 #        status_insert(cur, self.name, "Update step historicals")
 #        status_update(cur, self.name, "Update step historicals", status='Waiting before',  statuschange=datetime.datetime.now())
 #        con.commit()
 #        cur.close()
-#        self.mem.disconnect_mystocksd(con)   
+#        self.mem.disconnect_xulpymoneyd(con)   
 #        time.sleep(self.time_before_historicals)
 #        while True:
-#            con=self.mem.connect_mystocksd()
+#            con=self.mem.connect_xulpymoneyd()
 #            cur=con.cursor()
 #            status_update(cur, self.name, "Update step historicals", status='Working',  statuschange=datetime.datetime.now())
 #            con.commit()
 #            cur.close()
-#            self.mem.disconnect_mystocksd(con)                
+#            self.mem.disconnect_xulpymoneyd(con)                
 #            for code in listcodes:
 ##                print code,  listcodes
 #                if self.debugmode==True:
@@ -3928,34 +3928,34 @@ class Source:
 #                else:                
 ##                    print "Ha llegado"
 #                    Quote(self.mem).insert_cdtohclv(self.arr_historical(code, ''),  self.name)
-#                con=self.mem.connect_mystocksd()
+#                con=self.mem.connect_xulpymoneyd()
 #                cur=con.cursor()
 #                status_update(cur, self.name, "Update step historicals", status='Waiting step',  statuschange=datetime.datetime.now())
 #                con.commit()
 #                cur.close()
-#                self.mem.disconnect_mystocksd(con)       
+#                self.mem.disconnect_xulpymoneyd(con)       
 #                time.sleep(self.time_step_historical)
 #
-#            con=self.mem.connect_mystocksd()
+#            con=self.mem.connect_xulpymoneyd()
 #            cur=con.cursor()
 #            status_update(cur, self.name, "Update step historicals", status='Waiting after',  statuschange=datetime.datetime.now())
 #            con.commit()
 #            cur.close()
-#            self.mem.disconnect_mystocksd(con)                       
+#            self.mem.disconnect_xulpymoneyd(con)                       
 #            time.sleep(self.time_after_historicals)
 #
 #    def update_step_historicals_by_isin(self, sql):
 #        """Sql debe devolver isin solamente"""
-#        con=self.mem.connect_mystocksd()
+#        con=self.mem.connect_xulpymoneyd()
 #        cur=con.cursor()
 #        status_insert(cur, self.name, "Update step historicals by isin")
 #        status_update(cur, self.name, "Update step historicals by isin", status='Waiting before',  statuschange=datetime.datetime.now())
 #        con.commit()
 #        cur.close()
-#        self.mem.disconnect_mystocksd(con)   
+#        self.mem.disconnect_xulpymoneyd(con)   
 #        time.sleep(self.time_before_historicals)
 #        while True:
-#            con=self.mem.connect_mystocksd()
+#            con=self.mem.connect_xulpymoneyd()
 #            cur=con.cursor()
 #            status_update(cur, self.name, "Update step historicals", status='Working',  statuschange=datetime.datetime.now())
 #            con.commit()            
@@ -3964,7 +3964,7 @@ class Source:
 #            for i in cur:
 #                lista.append(i['isin'])
 #            cur.close()
-#            self.mem.disconnect_mystocksd(con)         
+#            self.mem.disconnect_xulpymoneyd(con)         
 #            
 #            for isin in lista:
 #                yahoocode=self.isin2yahoocode(isin)
@@ -3978,54 +3978,54 @@ class Source:
 #                    else:                
 #    #                    print "Ha llegado"
 #                        Quote(self.mem).insert_cdtohclv(self.arr_historical(yahoocode, isin),  self.name)                
-#                    con=self.mem.connect_mystocksd()
+#                    con=self.mem.connect_xulpymoneyd()
 #                    cur=con.cursor()
 #                    status_update(cur, self.name, "Update step historicals", status='Waiting step',  statuschange=datetime.datetime.now())
 #                    con.commit()
 #                    cur.close()
-#                    self.mem.disconnect_mystocksd(con)       
+#                    self.mem.disconnect_xulpymoneyd(con)       
 #                    time.sleep(self.time_step_historical)
 #
-#            con=self.mem.connect_mystocksd()
+#            con=self.mem.connect_xulpymoneyd()
 #            cur=con.cursor()
 #            status_update(cur, self.name, "Update step historicals", status='Waiting after',  statuschange=datetime.datetime.now())
 #            con.commit()
 #            cur.close()
-#            self.mem.disconnect_mystocksd(con)                          
+#            self.mem.disconnect_xulpymoneyd(con)                          
 #            time.sleep(self.time_after_historicals)
 
 #    def update_step_dividends(self, sql):
-##        con=self.mem.connect_mystocksd()
+##        con=self.mem.connect_xulpymoneyd()
 ##        cur=con.cursor()
 ##        status_insert(cur, self.name, "Update step dividends")
 ##        con.commit()
 ##        cur.close()
-##        self.mem.disconnect_mystocksd(con)   
+##        self.mem.disconnect_xulpymoneyd(con)   
 #        return
 #        
 #    def update_dividends(self):   
-#        con=self.mem.connect_mystocksd()
+#        con=self.mem.connect_xulpymoneyd()
 #        cur=con.cursor()
 #        status_insert(cur, self.name, "Update dividends")
 #        status_update(cur, self.name, "Update dividends", status='Waiting before',  statuschange=datetime.datetime.now())
 #        con.commit()
 #        cur.close()
-#        self.mem.disconnect_mystocksd(con)    
+#        self.mem.disconnect_xulpymoneyd(con)    
 #        time.sleep(self.time_before_dividends)        
 #        while True:                   
-#            con=self.mem.connect_mystocksd()
+#            con=self.mem.connect_xulpymoneyd()
 #            cur=con.cursor()
 #            status_update(cur, self.name, "Update dividends", status='Working',  statuschange=datetime.datetime.now())
 #            con.commit()
 #            cur.close()
-#            self.mem.disconnect_mystocksd(con)                     
+#            self.mem.disconnect_xulpymoneyd(con)                     
 #            Product(self.mem).update_dividends( self.arr_dividends(),  self.name)
-#            con=self.mem.connect_mystocksd()
+#            con=self.mem.connect_xulpymoneyd()
 #            cur=con.cursor()
 #            status_update(cur, self.name, "Update dividends", status='Waiting after',  statuschange=datetime.datetime.now())
 #            con.commit()
 #            cur.close()
-#            self.mem.disconnect_mystocksd(con)                     
+#            self.mem.disconnect_xulpymoneyd(con)                     
 #            time.sleep(self.time_after_dividends)
 #           
 #           
@@ -4209,7 +4209,7 @@ class Source:
 #        """If othercode se pone como code othercode, util cuando se busca por code de yahoo pero en la base de datos en deutchbore#de00000000"""
 #        def fecha_ultimo_registro(code):
 #            mem=MemMyStock()
-#            con=mem.connect_mystocksd()
+#            con=mem.connect_xulpymoneyd()
 #            cur = con.cursor()     
 #            resultado=None
 #            cur.execute("select max(date) as fecha from quotes where code=%s and last='close'", (code, ))
@@ -4217,7 +4217,7 @@ class Source:
 #                resultado=i['fecha']
 #            con.commit()    
 #            cur.close()                
-#            self.mem.disconnect_mystocksd(con)
+#            self.mem.disconnect_xulpymoneyd(con)
 #            if resultado==None:
 #                resultado=datetime.date(config.fillfromyear, 1, 1)
 #            return resultado    
@@ -4393,7 +4393,7 @@ class Product:
 
     def init__db(self, id):
         """Se pasa id porque se debe usar cuando todavía no se ha generado."""
-        curms=self.mem.conms.cursor()
+        curms=self.mem.con.cursor()
         curms.execute("select * from products where id=%s", (id, ))
         row=curms.fetchone()
         curms.close()
@@ -4401,7 +4401,7 @@ class Product:
         
 #    def load_estimacion(self, year=None):
 #        """Si year es none carga todas las estimations_dps de la inversionmq"""
-#        curms=self.mem.conms.cursor()
+#        curms=self.mem.con.cursor()
 #        if year==None:
 #            year=datetime.date.today().year
 #        curms.execute("select * from estimations_dps where year=%s and id=%s", (year, self.id))
@@ -4417,7 +4417,7 @@ class Product:
         """Esta función inserta una inversión manual"""
         """Los arrays deberan pasarse como parametros ARRAY[1,2,,3,] o None"""
         
-        cur=self.mem.conms.cursor()
+        cur=self.mem.con.cursor()
         if self.id==None:
             cur.execute(" select min(id)-1 from products;")
             id=cur.fetchone()[0]
@@ -4429,7 +4429,7 @@ class Product:
     
     def changeDeletable(self, ids,  deletable):
         """Modifica a deletable"""
-        curms=self.mem.conms.cursor()
+        curms=self.mem.con.cursor()
         sql="update products set deletable={0} where id in ({1})".format( deletable,  str(ids)[1:-1])
         curms.execute(sql)
         curms.close()
@@ -4451,7 +4451,7 @@ class Product:
     def fecha_ultima_actualizacion_historica(self):
         year=int(self.mem.config.get_value("settings_mystocks", "fillfromyear"))
         resultado=datetime.date(year, 1, 1)
-        cur=self.mem.conms.cursor()
+        cur=self.mem.con.cursor()
         cur.execute("select max(datetime)::date as date from quotes where date_part('microsecond',datetime)=4 and id=%s order by date", (self.id, ))
         if cur.rowcount==1:
             dat=cur.fetchone()[0]
@@ -4505,7 +4505,7 @@ class SetQuotesAll:
         """Función que mete en setquotesintradia ordenado de objetos Quote, no es el ultimo día es un día"""
         self.arr=[]
         self.product=product
-        curms=self.mem.conms.cursor()
+        curms=self.mem.con.cursor()
         curms.execute("select * from quotes where id=%s order by datetime", (self.product.id,  ))
         
         intradayarr=[]
@@ -4656,7 +4656,7 @@ class SetQuotesIntraday:
         self.arr=[]
         self.product=product
         self.date=date
-        curms=self.mem.conms.cursor()
+        curms=self.mem.con.cursor()
         iniciodia=day_start_from_date(date, self.product.stockexchange.zone)
         siguientedia=iniciodia+datetime.timedelta(days=1)
         curms.execute("select * from quotes where id=%s and datetime>=%s and datetime<%s order by datetime", (self.product.id,  iniciodia, siguientedia))
@@ -4780,7 +4780,7 @@ class Quote:
         No hace commit a la conexión
         Devuelve un número 1 si insert 2, update, 0  exisitia
         """
-        curms=self.mem.conms.cursor()
+        curms=self.mem.con.cursor()
         exists=self.exists(curms)
         if exists[0]==False:
             curms.execute('insert into quotes (id, datetime, quote) values (%s,%s,%s)', ( self.product.id, self.datetime, self.quote))
@@ -4796,7 +4796,7 @@ class Quote:
                 return 3
                 
     def delete(self):
-        curms=self.mem.conms.cursor()
+        curms=self.mem.con.cursor()
         curms.execute("delete from quotes where id=%s and datetime=%s", (self.product.id, self.datetime))
         curms.close()
 
@@ -4812,7 +4812,7 @@ class Quote:
         
     def init__from_query(self, product, dt): 
         """Función que busca el quote de un id y datetime con timezone"""
-        curms=self.mem.conms.cursor()
+        curms=self.mem.con.cursor()
         sql="select * from quote(%s, '%s'::timestamptz)" %(product.id,  dt)
         curms.execute(sql)
         row=curms.fetchone()
@@ -4820,7 +4820,7 @@ class Quote:
         return self.init__db_row(row, dt)
                 
     def init__from_query_penultima(self,product,  lastdate=None):
-        curms=self.mem.conms.cursor()
+        curms=self.mem.con.cursor()
         if lastdate==None:
             curms.execute("select * from penultimate(%s)", (product.id, ))
         else:
@@ -4833,7 +4833,7 @@ class Quote:
         """Función que busca el last, penultimate y endlastyear de golpe
        Devuelve un array de Quote en el que arr[0] es endlastyear, [1] es penultimate y [2] es last
       Si no devuelve tres Quotes devuelve None y deberaá calcularse de otra forma"""
-        curms=self.mem.conms.cursor()
+        curms=self.mem.con.cursor()
         endlastyear=dt(datetime.date(datetime.date.today().year -1, 12, 31), datetime.time(23, 59, 59), self.mem.localzone)
         curms.execute("select * from quote (%s, now()) union all select * from penultimate(%s) union all select * from quote(%s,%s) order by datetime", (product.id, product.id, product.id,  endlastyear))
         if curms.rowcount!=3:
@@ -5004,7 +5004,7 @@ class SetOHCLWeekly:
         """El sql debe estar ordenado por fecha"""
         del self.arr
         self.arr=[]
-        cur=self.mem.conms.cursor()
+        cur=self.mem.con.cursor()
         cur.execute(sql)#select * from ohclyearly where id=79329 order by year
         for row in cur:
             self.arr.append(OHCLWeekly(self.mem).init__from_dbrow(row, self.product))
@@ -5019,7 +5019,7 @@ class SetOHCLYearly:
         """El sql debe estar ordenado por fecha"""
         del self.arr
         self.arr=[]
-        cur=self.mem.conms.cursor()
+        cur=self.mem.con.cursor()
         cur.execute(sql)#select * from ohclyearly where id=79329 order by year
         for row in cur:
             self.arr.append(OHCLYearly(self.mem).init__from_dbrow(row, self.product))
@@ -5034,7 +5034,7 @@ class SetOHCLMonthly:
         """El sql debe estar ordenado por year, month"""
         del self.arr
         self.arr=[]
-        cur=self.mem.conms.cursor()
+        cur=self.mem.con.cursor()
         cur.execute(sql)#select * from ohclyearly where id=79329 order by year,mont
         for row in cur:
             self.arr.append(OHCLMonthly(self.mem).init__from_dbrow(row, self.product))
@@ -5087,7 +5087,7 @@ class SetOHCLDaily:
         
         del self.arr
         self.arr=[]
-        cur=self.mem.conms.cursor()
+        cur=self.mem.con.cursor()
         cur.execute(sql)#select * from ohclyearly where id=79329 order by date
         for row in cur:
             self.arr.append(OHCLDaily(self.mem).init__from_dbrow(row, self.product))
@@ -5484,7 +5484,7 @@ class MemMyStock:
         
         self.dic_activas={}#Diccionario cuyo indice es el id de la inversión id['1'] corresponde a la IvestmenActive(1) #se usa en mystocksd
         
-        self.conms=None#Conexión a mystocks
+        self.con=None#Conexión a mystocks
         
         #Needed for translations and are data
         self.countries=SetCountries(self)
@@ -5543,8 +5543,8 @@ class MemMyStock:
         
 
     def __del__(self):
-        if self.conms:#Cierre por reject en frmAccess
-            self.disconnect_mystocks(self.conms)
+        if self.con:#Cierre por reject en frmAccess
+            self.disconnect_xulpymoney(self.con)
     
     def setQTranslator(self, qtranslator):
         self.qtranslator=qtranslator
@@ -5570,34 +5570,34 @@ class MemMyStock:
 
 
 
-    def connect_mystocksd(self, pw):        
-        """usa también la variables self.conms"""              
+    def connect_xulpymoneyd(self, pw):        
+        """usa también la variables self.con"""              
         strmq="dbname='%s' port='%s' user='%s' host='%s' password='%s'" % (self.config.get_value("frmAccessMS", "db"),  self.config.get_value("frmAccessMS", "port"), self.config.get_value("frmAccessMS", "user"), self.config.get_value("frmAccessMS", "server"),  pw)
         while True:
             try:
-                self.conms=psycopg2.extras.DictConnection(strmq)
-                return self.conms
+                self.con=psycopg2.extras.DictConnection(strmq)
+                return self.con
             except psycopg2.Error:
                 print (QApplication.translate("Core","Error conecting to MyStocksd, waiting 10 seconds"))
                 time.sleep(10)
 
-    def disconnect_mystocksd(self):
-        self.conms.close()
-
-    def connect_mystocks(self):             
-        strmq="dbname='%s' port='%s' user='%s' host='%s' password='%s'" % (self.config.get_value("frmAccessMS", "db"),  self.config.get_value("frmAccessMS", "port"), self.config.get_value("frmAccessMS", "user"), self.config.get_value("frmAccessMS", "server"),  self.password)
-        try:
-            mq=psycopg2.extras.DictConnection(strmq)
-            return mq
-        except psycopg2.Error:
-            m=QMessageBox()
-            m.setText(QApplication.translate("Core","Error conecting to MyStocks"))
-            m.setIcon(QMessageBox.Information)
-            m.exec_()
-            sys.exit()
-
-    def disconnect_mystocks(self,  mq):
-        mq.close()
+    def disconnect_xulpymoneyd(self):
+        self.con.close()
+#
+#    def connect_xulpymoney(self):             
+#        strmq="dbname='%s' port='%s' user='%s' host='%s' password='%s'" % (self.config.get_value("frmAccessMS", "db"),  self.config.get_value("frmAccessMS", "port"), self.config.get_value("frmAccessMS", "user"), self.config.get_value("frmAccessMS", "server"),  self.password)
+#        try:
+#            mq=psycopg2.extras.DictConnection(strmq)
+#            return mq
+#        except psycopg2.Error:
+#            m=QMessageBox()
+#            m.setText(QApplication.translate("Core","Error conecting to MyStocks"))
+#            m.setIcon(QMessageBox.Information)
+#            m.exec_()
+#            sys.exit()
+#
+#    def disconnect_xulpymoney(self,  mq):
+#        mq.close()
     
 #    def carga_ia(self, cur,  where=""):
 #        """La variable where sera del tipo:
@@ -5618,7 +5618,7 @@ class MemMyStock:
 class MemXulpymoney(MemMyStock):
     def __init__(self):
         MemMyStock.__init__(self)
-        self.con=None#Conexión a xulpymoney
+#        self.con=None#Conexión a xulpymoney
         self.data=DBData(self)
         self.closing=False#Used to close threads
         
@@ -5626,10 +5626,10 @@ class MemXulpymoney(MemMyStock):
         self.closing=True
         self.data.__del__()
         
-        if self.conms:#Cierre por reject en frmAccess
-            self.disconnect_mystocks(self.conms)
-        if self.con:
-            self.disconnect_xulpymoney(self.con)
+#        if self.con:#Cierre por reject en frmAccess
+#            self.disconnect_xulpymoney(self.con)
+#        if self.con:
+#            self.disconnect_xulpymoney(self.con)
         
 
     def actualizar_memoria(self):
@@ -5720,55 +5720,55 @@ class Global:
     def __init__(self, mem):
         self.mem=mem
     def get_database_version(self):
-        cur=self.mem.conms.cursor()
+        cur=self.mem.con.cursor()
         cur.execute("select value from globals where id_globals=1;")
         resultado=cur.fetchone()['value']
         cur.close()
         return resultado
 
     def get_database_init_date(self):
-        cur=self.mem.conms.cursor()
+        cur=self.mem.con.cursor()
         cur.execute("select value from globals where id_globals=5;")
         resultado=cur.fetchone()['value']
         cur.close()
         return resultado
 
     def get_session_counter(self):
-        cur=self.mem.conms.cursor()
+        cur=self.mem.con.cursor()
         cur.execute("select value from globals where id_globals=3;")
         resultado=cur.fetchone()['value']
         cur.close()
         return resultado
 
     def get_system_counter(self):
-        cur=self.mem.conms.cursor()
+        cur=self.mem.con.cursor()
         cur.execute("select value from globals where id_globals=2;")
         resultado=cur.fetchone()['value']
         cur.close()
         return resultado
 
     def set_database_init_date(self, valor):
-        cur=self.mem.conms.cursor()
+        cur=self.mem.con.cursor()
         cur.execute("update globals set value=%s where id_globals=5;", (valor, ))
         cur.close()
 
     def set_database_version(self, valor):
-        cur=self.mem.conms.cursor()
+        cur=self.mem.con.cursor()
         cur.execute("update globals set value=%s where id_globals=1;", (valor, ))
         cur.close()
 
     def set_session_counter(self, valor):
-        cur=self.mem.conms.cursor()
+        cur=self.mem.con.cursor()
         cur.execute("update globals set value=%s where id_globals=3;", (valor, ))
         cur.close()
 
     def set_system_counter(self, valor):
-        cur=self.mem.conms.cursor()
+        cur=self.mem.con.cursor()
         cur.execute("update globals set value=%s where id_globals=2;", (valor, ))
         cur.close()
     
     def set_sourceforge_version(self):
-        cur=self.mem.conms.cursor()
+        cur=self.mem.con.cursor()
         try:
             serverversion=""
             comand='http://mystocks.svn.sourceforge.net/viewvc/mystocks/libxulpymoney.py'
@@ -5783,7 +5783,7 @@ class Global:
             log("VERSION-SOURCEFORGE", "", QApplication.translate("Core","Error buscando la versión actual de Sourceforge"))                    
         cur.close()
     def get_sourceforge_version(self):
-        cur=self.mem.conms.cursor()
+        cur=self.mem.con.cursor()
         cur.execute("select value from globals where id_globals=4;")
         resultado=cur.fetchone()['value']
         cur.close()

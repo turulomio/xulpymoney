@@ -34,12 +34,12 @@ class frmMain(QMainWindow, Ui_frmMain):
         
         self.w=QWidget()       
         
-        access2=frmAccess(self.mem, 1, self)
-        access2.exec_()
-        self.retranslateUi(self)
-        if access2.result()==QDialog.Rejected:
-            self.on_actionExit_activated()
-            sys.exit(1)
+#        access2=frmAccess(self.mem, 1, self)
+#        access2.exec_()
+#        self.retranslateUi(self)
+#        if access2.result()==QDialog.Rejected:
+#            self.on_actionExit_activated()
+#            sys.exit(1)
 
         access=frmAccess(self.mem, 2, self)
         access.exec_()
@@ -61,7 +61,7 @@ class frmMain(QMainWindow, Ui_frmMain):
             ids2protect.append(row[0])
         if len(ids2protect)>0:
             Product(self.mem).changeDeletable(  ids2protect,  False)
-        self.mem.conms.commit()
+        self.mem.con.commit()
         
 #        self.mem.data.load_inactives()
 #        print ("==========================================")

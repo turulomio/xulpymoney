@@ -46,7 +46,7 @@ class frmAccess(QDialog, Ui_frmAccess):
                 self.mem.config.set_value("frmAccessMS", "port",  self.txtPort.text())
                 self.mem.config.set_value("frmAccessMS", "user" ,  self.txtUser.text())
                 self.mem.config.set_value("frmAccessMS", "server", self.txtServer.text())        
-                self.mem.conms=self.mem.connect_mystocks()      
+                self.mem.con=self.mem.connect_xulpymoney()      
             elif self.app==2:
                 self.mem.config.set_value("frmAccess", "db", self.txtDB.text() )
                 self.mem.config.set_value("frmAccess", "port",  self.txtPort.text())

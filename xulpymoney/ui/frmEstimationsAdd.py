@@ -35,7 +35,7 @@ class frmEstimationsAdd(QDialog, Ui_frmEstimationsAdd):
         d.source="Internet"
         d.date_estimation=datetime.date.today()
         d.save()
-        self.mem.conms.commit()      
+        self.mem.con.commit()      
         if self.type=="dps":
             self.product.estimations_dps.load_from_db()
         else:

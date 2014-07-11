@@ -80,7 +80,7 @@ class frmQuotesIBM(QDialog, Ui_frmQuotesIBM):
         else:#update
             self.quote.quote=self.txtQuote.decimal()
             self.quote.save()
-        self.mem.conms.commit()
+        self.mem.con.commit()
         
         self.accept()
 

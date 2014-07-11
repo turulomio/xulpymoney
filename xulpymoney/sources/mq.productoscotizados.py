@@ -17,7 +17,7 @@ class WorkerProductosCotizados(Source):
     def start(self):
         print (self.name)
         while (True):
-            con=self.mem.connect_mystocksd()
+            con=self.mem.connect_xulpymoneyd()
             cur = con.cursor()     
             self.ids=self.find_ids()
             self.ids=self.filtrar_horario_bolsa(self.ids)
@@ -30,7 +30,7 @@ class WorkerProductosCotizados(Source):
                 set.save(cur, self.name)
             con.commit()
             cur.close()
-            self.mem.disconnect_mystocksd(con)
+            self.mem.disconnect_xulpymoneyd(con)
             time.sleep(120)
 
     def parse_resultado(self, set):
@@ -83,12 +83,12 @@ if __name__ == '__main__':
             log("STARTING", "","Debugging")
             mem.debug=True
 
-    con=mem.connect_mystocksd()
+    con=mem.connect_xulpymoneyd()
     cur = con.cursor()
     mem.actualizar_memoria(cur)
     mem.carga_ia(cur, "where priority[1]=5")
     cur.close()
-    mem.disconnect_mystocksd(con)
+    mem.disconnect_xulpymoneyd(con)
 
     w=WorkerProductosCotizados(mem)
     w.start()

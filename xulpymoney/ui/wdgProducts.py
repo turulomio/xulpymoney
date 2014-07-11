@@ -30,7 +30,7 @@ class wdgProducts(QWidget, Ui_wdgProducts):
         inicio=datetime.datetime.now()
         self.sql=sql
         self.products=[]
-        cur = self.mem.conms.cursor()
+        cur = self.mem.con.cursor()
         cur.execute(sql)
         self.lblFound.setText(self.tr("Found {0} records".format(cur.rowcount)))
         #mete a datos        
@@ -134,14 +134,14 @@ class wdgProducts(QWidget, Ui_wdgProducts):
 
         respuesta = QMessageBox.warning(self, self.tr("MyStocks"), self.trUtf8("Deleting data from selected product ({0}). If you use manual update mode, data won't be recovered. Do you want to continue?".format(self.selProduct.id)), QMessageBox.Ok | QMessageBox.Cancel)
         if respuesta==QMessageBox.Ok:
-            con=self.mem.connect_mystocks()
+            con=self.mem.connect_xulpymoney()
             cur = con.cursor()
             cur.execute("delete from products where id=%s", (self.selProduct.id, ))
             cur.execute("delete from quotes where id=%s", (self.selProduct.id, ))
             cur.execute("delete from estimations_dps where id=%s", (self.selProduct.id, ))
             con.commit()
             cur.close()     
-            self.mem.disconnect_mystocks(con)    
+            self.mem.disconnect_xulpymoney(con)    
             self.build_array(self.sql)
             self.build_table()  
             
@@ -314,13 +314,13 @@ class wdgProducts(QWidget, Ui_wdgProducts):
         all.load_from_db(self.selProduct)
         numpurged=all.purge(progress=True)
         if numpurged!=None:#Canceled
-            self.mem.conms.commit()
+            self.mem.con.commit()
             m=QMessageBox()
             m.setIcon(QMessageBox.Information)
             m.setText(self.trUtf8("{0} quotes have been purged from {1}".format(numpurged, self.selProduct.name)))
             m.exec_()    
         else:
-            self.mem.conms.rollback()
+            self.mem.con.rollback()
         
 
     @QtCore.pyqtSlot()  

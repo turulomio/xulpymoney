@@ -11,7 +11,7 @@ class WorkerBolsaMadridFondos(Source):
     def start(self):
         print (self.name)
         while (True):
-            con=self.mem.connect_mystocksd()
+            con=self.mem.connect_xulpymoneyd()
             cur = con.cursor()     
             self.ids=self.filtrar_ids_bmf()
             (resultado, errors)=self.execute()
@@ -20,7 +20,7 @@ class WorkerBolsaMadridFondos(Source):
             Quote(self.mem).insert(cur, parsed, self.name)
             con.commit()
             cur.close()                
-            self.mem.disconnect_mystocksd(con)
+            self.mem.disconnect_xulpymoneyd(con)
             time.sleep(60*60*24)
 
     def parse_resultado(self, resultado):

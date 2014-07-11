@@ -32,14 +32,14 @@ class NYSE(Source):
         q3.start()    
         yesterday=str(datetime.date.today()-datetime.timedelta(days=7))
         sql="select quotes.code from products, quotes where quotes.code=products.code and quotes.code like 'NYSE#%' and quotes.date='"+yesterday+"' and last<>'close' order by quotes.code;"
-        con=self.mem.connect_mystocksd()
+        con=self.mem.connect_xulpymoneyd()
         cur=con.cursor()
         cur.execute(sql)
         codes=[]
         for i in cur:
             codes.append(i['code'][5:])
         cur.close()
-        self.mem.disconnect_mystocksd(con)        
+        self.mem.disconnect_xulpymoneyd(con)        
 
         q4 = multiprocessing.Process(target=self.update_step_historicals, args=(codes,))
         q4.start()
