@@ -44,7 +44,6 @@ compile:
 	pyuic4 ui/wdgTotal.ui > ui/Ui_wdgTotal.py &
 	pyuic4 ui/frmProductReport.ui > ui/Ui_frmProductReport.py &
 	pyuic4 ui/frmQuotesIBM.ui > ui/Ui_frmQuotesIBM.py &
-	pyuic4 ui/frmMainMS.ui > ui/Ui_frmMainMS.py &
 	pyuic4 ui/frmSelector.ui > ui/Ui_frmSelector.py
 	pyuic4 ui/frmEstimationsAdd.ui > ui/Ui_frmEstimationsAdd.py
 	pyuic4 ui/wdgProducts.ui > ui/Ui_wdgProducts.py
@@ -76,17 +75,14 @@ install:
 
 	install -m 755 -o root mystocksd.py $(PREFIXBIN)/mystocksd
 	install -m 755 -o root sources/source_*.py $(PREFIXBIN)/
-	install -m 755 -o root mystocks.py $(PREFIXBIN)/mystocks
 	install -m 755 -o root mystocks.initd $(PREFIXINITD)/mystocks
 	install -m 644 -o root GPL-3.txt CHANGELOG.txt AUTHORS.txt RELEASES.txt xulpymoney.odt $(PREFIXSHARE)
-	install -m 644 -o root sql/*.data sql/*.sql $(PREFIXSHARE)/sql
+	install -m 644 -o root sql/xulpymoney.sql $(PREFIXSHARE)/sql
 	install -m 644 -o root images/kmplot.jpg $(PREFIXPIXMAPS)/mystocks.jpg
 	install -m 644 -o root scripts/*.py $(PREFIXSHARE)/scripts
 	install -m 644 -o root sources/*.py $(PREFIXLIB)
-	install -m 644 -o root mystocks.desktop $(PREFIXAPPLICATIONS)
 
 uninstall:
-	rm $(PREFIXBIN)/mystocks
 	rm $(PREFIXBIN)/mystocksd
 	rm $(PREFIXBIN)/source_*.py
 	rm $(PREFIXBIN)/xulpymoney
@@ -94,7 +90,5 @@ uninstall:
 	rm -Rf $(PREFIXLIB)
 	rm -Rf $(PREFIXSHARE)
 	rm -fr $(PREFIXPIXMAPS)/xulpymoney.png
-	rm -fr $(PREFIXPIXMAPS)/mystocks.jpg
 	rm -fr $(PREFIXAPPLICATIONS)/xulpymoney.desktop
-	rm -fr $(PREFIXAPPLICATIONS)/mystocks.desktop
 

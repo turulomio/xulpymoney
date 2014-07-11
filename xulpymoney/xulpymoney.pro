@@ -68,8 +68,6 @@ SOURCES         = xulpymoney.py \
                   libxulpymoney.py \
                   ui/frmProductReport.py \
                   ui/Ui_frmProductReport.py \
-                  ui/frmMainMS.py \
-                  ui/Ui_frmMainMS.py \
                   ui/frmQuotesIBM.py \
                   ui/Ui_frmQuotesIBM.py
                   ui/frmSelector.py \
@@ -125,7 +123,6 @@ FORMS           = ui/frmAbout.ui \
                   ui/wdgTotal.ui \
                   ui/frmProductReport.ui \
                   ui/frmQuotesIBM.ui \
-                  ui/frmMainMS.ui \
                   ui/frmSelector.ui \
                   ui/wdgProducts.ui \
                   ui/wdgInvestmentsOperations.ui \

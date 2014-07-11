@@ -5568,6 +5568,22 @@ class MemMyStock:
         self.agrupations.load_all()
         self.apalancamientos.load_all()
 
+        
+    def connect_xulpymoney(self):        
+        strcon="dbname='%s' port='%s' user='%s' host='%s' password='%s'" % (self.config.get_value("frmAccess", "db"),  self.config.get_value("frmAccess", "port"), self.config.get_value("frmAccess", "user"), self.config.get_value("frmAccess", "server"),  self.password)
+        try:
+            con=psycopg2.extras.DictConnection(strcon)
+        except psycopg2.Error:
+            m=QMessageBox()
+            m.setText(QApplication.translate("Core","Error conecting to Xulpymoney"))
+            m.setIcon(QMessageBox.Information)
+            m.exec_()        
+            sys.exit()
+        return con
+        
+    def disconnect_xulpymoney(self, con):
+        con.close()
+ 
 
 
     def connect_xulpymoneyd(self, pw):        
@@ -5648,22 +5664,6 @@ class MemXulpymoney(MemMyStock):
         print(datetime.datetime.now()-inicio)
         
 
-        
-    def connect_xulpymoney(self):        
-        strcon="dbname='%s' port='%s' user='%s' host='%s' password='%s'" % (self.config.get_value("frmAccess", "db"),  self.config.get_value("frmAccess", "port"), self.config.get_value("frmAccess", "user"), self.config.get_value("frmAccess", "server"),  self.password)
-        try:
-            con=psycopg2.extras.DictConnection(strcon)
-        except psycopg2.Error:
-            m=QMessageBox()
-            m.setText(QApplication.translate("Core","Error conecting to Xulpymoney"))
-            m.setIcon(QMessageBox.Information)
-            m.exec_()        
-            sys.exit()
-        return con
-        
-    def disconnect_xulpymoney(self, con):
-        con.close()
- 
 
 class Country:
     def __init__(self):
