@@ -16,12 +16,13 @@ class WorkerYahooHistorical(Source):
         self.products=SetProducts(self.mem)
         self.products.load_from_db("select * from products where active=true and priorityhistorical[1]=3", True)
         if __name__!='__main__':
-            self.pd= QProgressDialog(QApplication.translate("Core","Updating prices of {} investments. Inserted: {}. Modified {}").format(len(self.products.arr), 0, 0), QApplication.translate("Core","Cancel"), 0,len(self.products.arr))
+            self.pd= QProgressDialog(QApplication.translate("Core","Inserting {} prices of {} investments").format(0, len(self.products.arr)), QApplication.translate("Core","Cancel"), 0,len(self.products.arr))
             self.pd.setModal(True)
             self.pd.setMinimumDuration(0)          
             self.pd.setWindowTitle(QApplication.translate("Core","Updating product prices..."))
 
     def start(self, sleep=0):
+        sumins=0
         for i,  inv in enumerate(self.products.arr):
             if __name__!='__main__':
                 self.pd.setValue(i)
@@ -38,12 +39,13 @@ class WorkerYahooHistorical(Source):
                 continue
             (set, errors)=self.execute(inv, inv.fecha_ultima_actualizacion_historica()+datetime.timedelta(days=1), datetime.date.today())
             (ins, b, m)=set.save(self.name)
+            sumins=sumins+ins
             if __name__ == '__main__':
                 stri="{0}: {1}/{2} {3}. Inserted: {4}. Modified:{5}             ".format(function_name(self), i+1, len(self.products.arr), inv, ins, m) 
                 sys.stdout.write("\b"*1000+stri)
                 sys.stdout.flush()
             else:
-                stri=QApplication.translate("Core","Updating prices of {} investments. Inserted: {}. Modified {}").format(len(self.products.arr), ins, m)
+                stri=QApplication.translate("Core","Inserting {} prices of {} investments").format(sumins, len(self.products.arr))
                 self.pd.setLabelText(stri)
             self.mem.con.commit()  
             time.sleep(sleep)#time step
