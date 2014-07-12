@@ -576,3 +576,4 @@ class frmMain(QMainWindow, Ui_frmMain):
     def on_actionPriceUpdates_activated(self):  
         w=WorkerYahooHistorical(self.mem)
         w.start()           
+        self.on_actionReloadPrices_activated()
