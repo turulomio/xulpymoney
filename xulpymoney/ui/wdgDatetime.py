@@ -65,7 +65,12 @@ class wdgDatetime(QWidget, Ui_wdgDatetime):
             dt=dt.replace(microsecond=0)
         self.teMicroseconds.setValue(dt.microsecond)
         
-        self.cmbZone.setCurrentIndex(self.cmbZone.findData(self.zone.name))
+        self.setZone(self.zone)
+        
+    def setZone(self, zone):
+        """Zone es object"""
+        self.cmbZone.setCurrentIndex(self.cmbZone.findData(zone.name))
+        
         
     def datetime(self):
         #qt only miliseconds

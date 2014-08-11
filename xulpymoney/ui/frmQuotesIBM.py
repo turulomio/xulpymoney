@@ -17,37 +17,37 @@ class frmQuotesIBM(QDialog, Ui_frmQuotesIBM):
         if quote==None:
             self.type="insert"
             self.quote=None
-            self.wdgDT.show_microseconds(False)
+#            self.wdgDT.show_microseconds(False)
             self.wdgDT.set(self.mem)
-            t=self.mem.localzone.now()
-            self.txtTime.setTime(QTime(t.hour, t.minute))
-            self.mem.zones.qcombobox(self.cmbZone, self.mem.localzone)
             if self.product.type.id in (2, 8):
                 self.chkNone.setCheckState(Qt.Checked)         
         else:
             self.type="update"
             self.quote=quote
-            self.calendar.setSelectedDate(self.quote.datetime.date())
-            self.txtTime.setTime(QTime(self.quote.datetime.hour, self.quote.datetime.minute))
-            self.mem.zones.qcombobox(self.cmbZone, quote.product.stockexchange.zone)
+#            self.wdgDT.show_microseconds(True)
+            self.wdgDT.set(self.mem, quote.datetime, self.mem.localzone)
             if self.quote.datetime.microsecond!=5:
                 self.chkCanBePurged.setCheckState(Qt.Unchecked)
-            self.calendar.setEnabled(False)
-            self.txtTime.setEnabled(False)
+            self.wdgDT.setEnabled(False)
             self.chkNone.setEnabled(False)
-            self.cmbZone.setEnabled(False)
         
    
 
     def on_chkNone_stateChanged(self, state):
-        if state==Qt.Checked:          
-            self.txtTime.setTime(self.product.stockexchange.closes)
-            self.txtTime.setEnabled(False)
+        if state==Qt.Checked:      
+            self.wdgDT.teTime.setTime(self.product.stockexchange.closes)
+            self.wdgDT.setZone(self.product.stockexchange.zone)
+            self.wdgDT.teTime.setEnabled(False)
+            self.wdgDT.cmbZone.setEnabled(False)
+            self.wdgDT.cmdNow.setEnabled(False)
+            self.wdgDT.teMicroseconds.setEnabled(False)
+            self.wdgDT.teMicroseconds.setValue(0)
         else:
-            t=datetime.datetime.now()
-            self.txtTime.setTime(QTime(t.hour, t.minute))
-            self.txtTime.setEnabled(True)
-            
+            self.wdgDT.set(self.mem)
+            self.wdgDT.teTime.setEnabled(True)
+            self.wdgDT.cmbZone.setEnabled(True)
+            self.wdgDT.cmdNow.setEnabled(True)
+            self.wdgDT.teMicroseconds.setEnabled(True)
 
         
     @pyqtSignature("")
@@ -59,26 +59,26 @@ class frmQuotesIBM(QDialog, Ui_frmQuotesIBM):
             m.exec_()    
             return
         if self.type=="insert":        
-            try:
-                fecha=self.calendar.selectedDate().toPyDate()
-                zone=self.mem.zones.find(self.cmbZone.currentText())
-            except:
-                m=QMessageBox()
-                m.setIcon(QMessageBox.Information)
-                m.setText(self.trUtf8("Datos incorrectos. Vuelva a introducirlos"))
-                m.exec_()    
-                return
-            
-            if self.chkNone.checkState()==Qt.Checked:
-                da=dt(fecha, self.product.stockexchange.closes, self.product.stockexchange.zone)
-            else:
-                time=self.txtTime.time().toPyTime()
-                da=dt(fecha, time, zone)
+#            try:
+#                fecha=self.calendar.selectedDate().toPyDate()
+#                zone=self.mem.zones.find(self.cmbZone.currentText())
+#            except:
+#                m=QMessageBox()
+#                m.setIcon(QMessageBox.Information)
+#                m.setText(self.trUtf8("Datos incorrectos. Vuelva a introducirlos"))
+#                m.exec_()    
+#                return
+#            
+#            if self.chkNone.checkState()==Qt.Checked:
+#                da=dt(fecha, self.product.stockexchange.closes, self.product.stockexchange.zone)
+#            else:
+#                time=self.txtTime.time().toPyTime()
+#                da=dt(fecha, time, zone)
                 
             if self.chkCanBePurged.checkState()==Qt.Unchecked:#No puede ser purgado
-                da=da.replace(microsecond=5)
+                self.wdgDT.teMicroseconds.setValue(5)
 
-            self.quote=Quote(self.mem).init__create(self.product, da, self.txtQuote.decimal())
+            self.quote=Quote(self.mem).init__create(self.product, self.wdgDT.datetime(), self.txtQuote.decimal())
             self.quote.save()
         else:#update
             self.quote.quote=self.txtQuote.decimal()
