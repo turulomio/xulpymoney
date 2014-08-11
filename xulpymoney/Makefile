@@ -44,8 +44,9 @@ compile:
 	pyuic4 ui/wdgTotal.ui > ui/Ui_wdgTotal.py &
 	pyuic4 ui/frmProductReport.ui > ui/Ui_frmProductReport.py &
 	pyuic4 ui/frmQuotesIBM.ui > ui/Ui_frmQuotesIBM.py &
-	pyuic4 ui/frmSelector.ui > ui/Ui_frmSelector.py
+	pyuic4 ui/frmSelector.ui > ui/Ui_frmSelector.py &
 	pyuic4 ui/frmEstimationsAdd.ui > ui/Ui_frmEstimationsAdd.py
+	pyuic4 ui/wdgDatetime.ui > ui/Ui_wdgDatetime.py
 	pyuic4 ui/wdgProducts.ui > ui/Ui_wdgProducts.py
 	pyuic4 ui/wdgInvestmentsOperations.ui > ui/Ui_wdgInvestmentsOperations.py
 	pyuic4 ui/wdgLog.ui > ui/Ui_wdgLog.py
@@ -91,4 +92,3 @@ uninstall:
 	rm -Rf $(PREFIXSHARE)
 	rm -fr $(PREFIXPIXMAPS)/xulpymoney.png
 	rm -fr $(PREFIXAPPLICATIONS)/xulpymoney.desktop
-

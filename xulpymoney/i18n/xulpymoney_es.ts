@@ -2709,39 +2709,39 @@ correspondiente en la tabla</source>
 <context>
     <name>frmQuotesIBM</name>
     <message>
-        <location filename="ui/Ui_frmQuotesIBM.py" line="118"/>
-        <source>A&#xc3;&#xb1;ade una cotizaci&#xc3;&#xb3;n manualmente</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_frmQuotesIBM.py" line="120"/>
+        <location filename="ui/Ui_frmQuotesIBM.py" line="126"/>
         <source>Cotizaci&#xc3;&#xb3;n de cierre</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmQuotesIBM.py" line="121"/>
+        <location filename="ui/Ui_frmQuotesIBM.py" line="127"/>
         <source>Introduce la cotizaci&#xc3;&#xb3;n</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmQuotesIBM.py" line="122"/>
+        <location filename="ui/Ui_frmQuotesIBM.py" line="128"/>
         <source>Introduce la zona horaria</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmQuotesIBM.py" line="65"/>
+        <location filename="ui/frmQuotesIBM.py" line="68"/>
         <source>Datos incorrectos. Vuelva a introducirlos</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmQuotesIBM.py" line="123"/>
+        <location filename="ui/Ui_frmQuotesIBM.py" line="129"/>
         <source>Can be purged?</source>
         <translation>¿Puede ser eliminada?</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmQuotesIBM.py" line="119"/>
+        <location filename="ui/Ui_frmQuotesIBM.py" line="125"/>
         <source>Insert an hour</source>
         <translation>Introduce una hora</translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_frmQuotesIBM.py" line="124"/>
+        <source>Add a product price manually</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -3725,6 +3725,54 @@ correspondiente en la tabla</source>
         <location filename="ui/Ui_wdgConceptsHistorical.py" line="125"/>
         <source>October</source>
         <translation>Octubre</translation>
+    </message>
+</context>
+<context encoding="UTF-8">
+    <name>wdgDatetime</name>
+    <message>
+        <location filename="ui/wdgDatetime.ui" line="19"/>
+        <source>Select a datetime</source>
+        <translation type="unfinished">Selecciona fecha y hora</translation>
+    </message>
+    <message>
+        <location filename="ui/wdgDatetime.ui" line="26"/>
+        <source>Select a date</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/wdgDatetime.ui" line="29"/>
+        <source>yyyy/MM/dd</source>
+        <translation type="unfinished">yyyy/MM/dd</translation>
+    </message>
+    <message>
+        <location filename="ui/wdgDatetime.ui" line="39"/>
+        <source>Select a time</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/wdgDatetime.ui" line="42"/>
+        <source>HH:mm:ss</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/wdgDatetime.ui" line="49"/>
+        <source>Select microseconds</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message encoding="UTF-8">
+        <location filename="ui/wdgDatetime.ui" line="55"/>
+        <source> μs</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/wdgDatetime.ui" line="75"/>
+        <source>Set current time</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/wdgDatetime.ui" line="78"/>
+        <source>Now</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
