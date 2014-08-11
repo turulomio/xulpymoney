@@ -13,41 +13,32 @@ class frmInvestmentOperationsAdd(QDialog, Ui_frmInvestmentOperationsAdd):
         self.operinversion=operinversion
   
         self.mem.tiposoperaciones.qcombobox(self.cmbTiposOperaciones)
-        self.mem.zones.qcombobox(self.cmbTZ, self.mem.localzone)
-
+        self.wdgDT.show_microseconds(False)
         
         if self.operinversion==None:#nuevo movimiento
             self.type=1
             self.operinversion=InvestmentOperation(self.mem)
             self.operinversion.inversion=self.inversion
             self.lblTitulo.setText(self.trUtf8("Nuevo movimiento de {0}".format(self.inversion.name)))
-            t=datetime.datetime.now()
-            self.timeedit.setTime(QTime(t.hour, t.minute))
+            self.wdgDT.set(self.mem)
         else:#editar movimiento
             self.type=2
             self.lblTitulo.setText(self.trUtf8("Edición del movimiento seleccionado de {0}".format(self.inversion.name)))
             self.cmbTiposOperaciones.setCurrentIndex(self.cmbTiposOperaciones.findData(self.operinversion.tipooperacion.id))
-            dt=dt_changes_tz(self.operinversion.datetime, self.mem.localzone)
-            self.calendar.setSelectedDate(dt.date())
-            self.timeedit.setTime(dt.time())
+            self.wdgDT.set(self.mem, self.operinversion.datetime, self.mem.localzone)
             self.txtImporte.setText(str(self.operinversion.importe))
             self.txtImpuestos.setText(str(self.operinversion.impuestos))
             self.txtComision.setText(str(self.operinversion.comision))
             self.txtValorAccion.setText(str(self.operinversion.valor_accion))
             self.txtAcciones.setText(str(self.operinversion.acciones))
-            self.cmbTZ.setCurrentIndex(self.cmbTZ.findText(self.mem.localzone.name))
 
-    def on_cmd_released(self):
-        fecha=self.calendar.selectedDate().toPyDate()
-        hora=self.timeedit.time().toPyTime()
-        
+    def on_cmd_released(self):        
         id_tiposoperaciones=int(self.cmbTiposOperaciones.itemData(self.cmbTiposOperaciones.currentIndex()))
         self.operinversion.tipooperacion=self.mem.tiposoperaciones.find(id_tiposoperaciones)
         self.operinversion.impuestos=Decimal(self.txtImpuestos.text())
         self.operinversion.comision=Decimal(self.txtComision.text())
         self.operinversion.valor_accion=Decimal(self.txtValorAccion.text())
         self.operinversion.acciones=Decimal(self.txtAcciones.text())
-        zone=self.mem.zones.find(self.cmbTZ.currentText())
         if id_tiposoperaciones==5: #Venta
             self.operinversion.importe=Decimal(self.txtImporteBruto.text())
             if self.operinversion.acciones>Decimal('0'):
@@ -75,10 +66,8 @@ class frmInvestmentOperationsAdd(QDialog, Ui_frmInvestmentOperationsAdd):
             m.setText(self.trUtf8("El valor de la acción, los impuestos y la comisión deben ser positivos"))
             m.exec_()    
             return
-
-        dat=dt(fecha,  hora, zone ) 
-        self.operinversion.datetime=dat
-        
+            
+        self.operinversion.datetime=self.wdgDT.datetime()
         self.operinversion.save()    
         self.mem.con.commit()#Guarda todos los cambios en bd.
         
@@ -86,9 +75,7 @@ class frmInvestmentOperationsAdd(QDialog, Ui_frmInvestmentOperationsAdd):
         if self.type==1:
             w=frmQuotesIBM(self.mem, self.mem.data.benchmark, None, self)
             #Quita un minuto para que enganche con operación
-            menosminuto=dat-datetime.timedelta(minutes=1)
-            w.txtTime.setTime(QTime(menosminuto.hour, menosminuto.minute))
-            w.calendar.setSelectedDate(self.calendar.selectedDate())
+            w.wdgDT.set(self.mem, self.wdgDT.datetime()-datetime.timedelta(seconds=1), self.mem.localzone)
             w.chkCanBePurged.setCheckState(Qt.Unchecked)
             w.txtQuote.setFocus()
             w.exec_() 

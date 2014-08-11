@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>578</width>
-    <height>524</height>
+    <width>599</width>
+    <height>458</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -44,40 +44,9 @@
       </widget>
      </item>
      <item>
-      <layout class="QHBoxLayout" name="horizontalLayout_2">
-       <item>
-        <widget class="QLabel" name="label">
-         <property name="text">
-          <string>Operation date</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QCalendarWidget" name="calendar">
-         <property name="firstDayOfWeek">
-          <enum>Qt::Monday</enum>
-         </property>
-         <property name="verticalHeaderFormat">
-          <enum>QCalendarWidget::NoVerticalHeader</enum>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </item>
-     <item>
       <layout class="QHBoxLayout" name="horizontalLayout_8">
        <item>
-        <widget class="QLabel" name="label_8">
-         <property name="text">
-          <string>Operation hour</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QTimeEdit" name="timeedit"/>
-       </item>
-       <item>
-        <widget class="QComboBox" name="cmbTZ"/>
+        <widget class="wdgDatetime" name="wdgDT" native="true"/>
        </item>
       </layout>
      </item>
@@ -265,6 +234,12 @@
    <class>myQLineEdit</class>
    <extends>QLineEdit</extends>
    <header location="global">myqlineedit</header>
+  </customwidget>
+  <customwidget>
+   <class>wdgDatetime</class>
+   <extends>QWidget</extends>
+   <header location="global">wdgDatetime</header>
+   <container>1</container>
   </customwidget>
  </customwidgets>
  <resources>

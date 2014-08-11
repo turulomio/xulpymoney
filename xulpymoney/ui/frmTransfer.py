@@ -15,14 +15,12 @@ class frmTransfer(QDialog, Ui_frmTransfer):
         
         self.mem.data.cuentas_active.qcombobox(self.cmbOrigen,  origen)
         self.mem.data.cuentas_active.qcombobox(self.cmbDestino,  destino)
-
-        self.dtedit.setDateTime(self.mem.localzone.now())
-#        self.dtedit.setTime(self.mem.localzone.now().time())
+        self.wdgDT.show_microseconds(False)
+        self.wdgDT.set(self.mem)
 
 
     def on_cmd_pressed(self):
         try:
-            datetime=dt(self.dtedit.date().toPyDate(), self.dtedit.time().toPyTime(), self.mem.localzone)#self.calendar.selectedDate().toPyDate
             id_origen=int(self.cmbOrigen.itemData(self.cmbOrigen.currentIndex()))
             id_destino=int(self.cmbDestino.itemData(self.cmbDestino.currentIndex()))
             importe=abs(self.txtImporte.decimal())
@@ -40,7 +38,7 @@ class frmTransfer(QDialog, Ui_frmTransfer):
             m.exec_()             
             return 
             
-        Account(self.mem).transferencia(datetime,  self.mem.data.cuentas_active.find(id_origen), self.mem.data.cuentas_active.find(id_destino),  importe,  comision)
+        Account(self.mem).transferencia(self.wdgDT.datetime(),  self.mem.data.cuentas_active.find(id_origen), self.mem.data.cuentas_active.find(id_destino),  importe,  comision)
         self.mem.con.commit()##Para commit la transferencia   
         
         self.done(0)

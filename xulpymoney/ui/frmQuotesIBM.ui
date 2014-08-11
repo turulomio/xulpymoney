@@ -36,7 +36,11 @@
       </widget>
      </item>
      <item>
-      <widget class="wdgDatetime" name="wdgDT" native="true"/>
+      <widget class="wdgDatetime" name="wdgDT" native="true">
+       <property name="focusPolicy">
+        <enum>Qt::TabFocus</enum>
+       </property>
+      </widget>
      </item>
      <item>
       <widget class="QCheckBox" name="chkNone">
@@ -128,7 +132,10 @@
  </customwidgets>
  <tabstops>
   <tabstop>txtQuote</tabstop>
+  <tabstop>buttonbox</tabstop>
   <tabstop>chkNone</tabstop>
+  <tabstop>chkCanBePurged</tabstop>
+  <tabstop>wdgDT</tabstop>
  </tabstops>
  <resources>
   <include location="../images/xulpymoney.qrc"/>
