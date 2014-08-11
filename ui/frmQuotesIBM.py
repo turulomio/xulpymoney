@@ -2,6 +2,7 @@ from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 from Ui_frmQuotesIBM import *
 from libxulpymoney import *
+from wdgDatetime import *
 
 class frmQuotesIBM(QDialog, Ui_frmQuotesIBM):
     def __init__(self, mem, product,  quote=None,   parent = None, name = None, modal = False):
@@ -16,6 +17,8 @@ class frmQuotesIBM(QDialog, Ui_frmQuotesIBM):
         if quote==None:
             self.type="insert"
             self.quote=None
+            self.wdgDT.show_microseconds(False)
+            self.wdgDT.set(self.mem)
             t=self.mem.localzone.now()
             self.txtTime.setTime(QTime(t.hour, t.minute))
             self.mem.zones.qcombobox(self.cmbZone, self.mem.localzone)
