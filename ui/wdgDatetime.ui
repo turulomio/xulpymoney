@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>588</width>
+    <width>698</width>
     <height>38</height>
    </rect>
   </property>
@@ -25,6 +25,15 @@
        <property name="toolTip">
         <string>Select a date</string>
        </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+       <property name="keyboardTracking">
+        <bool>false</bool>
+       </property>
+       <property name="currentSection">
+        <enum>QDateTimeEdit::YearSection</enum>
+       </property>
        <property name="displayFormat">
         <string>yyyy/MM/dd</string>
        </property>
@@ -37,6 +46,9 @@
       <widget class="QTimeEdit" name="teTime">
        <property name="toolTip">
         <string>Select a time</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
        </property>
        <property name="displayFormat">
         <string>HH:mm:ss</string>
@@ -55,7 +67,7 @@
         <string> μs</string>
        </property>
        <property name="maximum">
-        <number>1000000</number>
+        <number>999999</number>
        </property>
       </widget>
      </item>

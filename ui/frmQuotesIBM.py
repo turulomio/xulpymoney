@@ -17,14 +17,12 @@ class frmQuotesIBM(QDialog, Ui_frmQuotesIBM):
         if quote==None:
             self.type="insert"
             self.quote=None
-#            self.wdgDT.show_microseconds(False)
             self.wdgDT.set(self.mem)
             if self.product.type.id in (2, 8):
                 self.chkNone.setCheckState(Qt.Checked)         
         else:
             self.type="update"
             self.quote=quote
-#            self.wdgDT.show_microseconds(True)
             self.wdgDT.set(self.mem, quote.datetime, self.mem.localzone)
             if self.quote.datetime.microsecond!=5:
                 self.chkCanBePurged.setCheckState(Qt.Unchecked)

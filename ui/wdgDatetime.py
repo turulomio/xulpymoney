@@ -28,6 +28,8 @@ class wdgDatetime(QWidget, Ui_wdgDatetime):
             self.teMicroseconds.hide()
     
     def show_seconds(self, show):
+        """Hides seconds when show is True. The datetime funtion the hour with zero seconds.
+        show_seconds(False) doestn't implies show_microseconds(False). You must added manually."""
         self.showSeconds=show
         if show==True:
             self.teTime.setDisplayFormat("HH:mm:ss")
@@ -35,6 +37,7 @@ class wdgDatetime(QWidget, Ui_wdgDatetime):
             self.teTime.setDisplayFormat("HH:mm")
         
     def show_timezone(self, show):
+        """Hiding this all zones will have localzone defined in self.mem.localzone"""
         self.showZone=show
         if show==True:
             self.cmbZone.show()
@@ -46,13 +49,16 @@ class wdgDatetime(QWidget, Ui_wdgDatetime):
         
                
     def set(self,  mem, dt=None,  zone=None):
-        """CAn be called several times"""
+        """Can be called several times"""
         self.mem=mem
         if dt==None or zone==None:
             self.on_cmdNow_released()
             return
             
-        self.zone=zone
+        if self.showZone==False:
+            self.zone=self.mem.localzone
+        else:
+            self.zone=zone
         self.mem.zones.qcombobox(self.cmbZone, self.zone)        
         
         self.teDate.setDate(dt.date())
@@ -78,21 +84,26 @@ class wdgDatetime(QWidget, Ui_wdgDatetime):
         time=time.replace(microsecond=self.teMicroseconds.value())
         return dt(self.teDate.date().toPyDate(), time , self.zone)
 
-    def on_teDate_dateChanged(self, date):
-        print(self.datetime())
-        
-    def on_teTime_timeChanged(self, date):
-        print(self.datetime())
-        
-    @pyqtSlot(int)   
-    def on_teMicroseconds_valueChanged(self, date):
-        print(self.datetime())
+#    def on_teDate_dateChanged(self, date):
+#        print(self.datetime())
+#        
+#    def on_teTime_timeChanged(self, date):
+#        print(self.datetime())
+#        
+#    @pyqtSlot(int)   
+#    def on_teMicroseconds_valueChanged(self, date):
+#        print(self.datetime())
         
     @pyqtSlot(str)      
     def on_cmbZone_currentIndexChanged(self, stri):
         self.zone=self.mem.zones.find(self.cmbZone.itemData(self.cmbZone.currentIndex()))
-        print(self.datetime())
+#        print(self.datetime())
         
         
+    def mouseDoubleClickEvent(self, event):
+        m=QMessageBox()
+        m.setIcon(QMessageBox.Information)
+        m.setText(self.tr("Selected datetime:\n{0}").format(self.datetime()))
+        m.exec_()    
         
 

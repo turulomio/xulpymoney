@@ -588,47 +588,47 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>frmAccountOperationsAdd</name>
     <message>
-        <location filename="ui/Ui_frmAccountOperationsAdd.py" line="117"/>
+        <location filename="ui/Ui_frmAccountOperationsAdd.py" line="110"/>
         <source>New account operation</source>
         <translation>Nueva operación de cuenta</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmAccountOperationsAdd.py" line="120"/>
+        <location filename="ui/Ui_frmAccountOperationsAdd.py" line="111"/>
         <source>Select an account</source>
         <translation>Selecciona una cuenta</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmAccountOperationsAdd.py" line="121"/>
+        <location filename="ui/Ui_frmAccountOperationsAdd.py" line="112"/>
         <source>Select a concept</source>
         <translation>Selecciona un concepto</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmAccountOperationsAdd.py" line="122"/>
+        <location filename="ui/Ui_frmAccountOperationsAdd.py" line="113"/>
         <source>Add an amount</source>
         <translation>Añade el importe</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmAccountOperationsAdd.py" line="123"/>
+        <location filename="ui/Ui_frmAccountOperationsAdd.py" line="114"/>
         <source>Add a comment</source>
         <translation>Introduzca un comentario</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmAccountOperationsAdd.py" line="124"/>
+        <location filename="ui/Ui_frmAccountOperationsAdd.py" line="115"/>
         <source>Save</source>
         <translation>Grabar</translation>
     </message>
     <message>
-        <location filename="ui/frmAccountOperationsAdd.py" line="28"/>
+        <location filename="ui/frmAccountOperationsAdd.py" line="29"/>
         <source>Credit card operation update</source>
         <translation>Actualizar la operación de tarjeta de crédito</translation>
     </message>
     <message>
-        <location filename="ui/frmAccountOperationsAdd.py" line="38"/>
+        <location filename="ui/frmAccountOperationsAdd.py" line="39"/>
         <source>New credit card operation</source>
         <translation>Nueva operación de tarjeta de crédito</translation>
     </message>
     <message>
-        <location filename="ui/frmAccountOperationsAdd.py" line="45"/>
+        <location filename="ui/frmAccountOperationsAdd.py" line="46"/>
         <source>Account operation update</source>
         <translation>Actualizar la operación de cuenta</translation>
     </message>
@@ -641,16 +641,6 @@ p, li { white-space: pre-wrap; }
         <location filename="ui/frmAccountOperationsAdd.py" line="77"/>
         <source>Incomes can not have a negative amount</source>
         <translation>Los ingresos no pueden ser una cantidad negativa</translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_frmAccountOperationsAdd.py" line="118"/>
-        <source>Operation datetime</source>
-        <translation>Fecha y hora de la operación</translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_frmAccountOperationsAdd.py" line="119"/>
-        <source>yyyy/MM/dd HH:mm</source>
-        <translation>yyyy/MM/dd HH:mm</translation>
     </message>
 </context>
 <context>
@@ -1419,87 +1409,77 @@ Serán creadas en el idioma seleccionado</translation>
 <context>
     <name>frmInvestmentOperationsAdd</name>
     <message>
-        <location filename="ui/Ui_frmInvestmentOperationsAdd.py" line="179"/>
+        <location filename="ui/Ui_frmInvestmentOperationsAdd.py" line="162"/>
         <source>New investment operation</source>
         <translation>Nueva operación de inversión</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmInvestmentOperationsAdd.py" line="180"/>
-        <source>Operation date</source>
-        <translation>Día de la operación</translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_frmInvestmentOperationsAdd.py" line="181"/>
-        <source>Operation hour</source>
-        <translation>Hora de la operación</translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_frmInvestmentOperationsAdd.py" line="182"/>
+        <location filename="ui/Ui_frmInvestmentOperationsAdd.py" line="163"/>
         <source>Operation type</source>
         <translation>Tipo de operación</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmInvestmentOperationsAdd.py" line="183"/>
+        <location filename="ui/Ui_frmInvestmentOperationsAdd.py" line="164"/>
         <source>Number of shares</source>
         <translation>Número de acciones</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmInvestmentOperationsAdd.py" line="194"/>
+        <location filename="ui/Ui_frmInvestmentOperationsAdd.py" line="175"/>
         <source>0</source>
         <translation>0</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmInvestmentOperationsAdd.py" line="185"/>
+        <location filename="ui/Ui_frmInvestmentOperationsAdd.py" line="166"/>
         <source>Price</source>
         <translation>Valor</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmInvestmentOperationsAdd.py" line="187"/>
+        <location filename="ui/Ui_frmInvestmentOperationsAdd.py" line="168"/>
         <source>Taxes</source>
         <translation>Impuestos</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmInvestmentOperationsAdd.py" line="189"/>
+        <location filename="ui/Ui_frmInvestmentOperationsAdd.py" line="170"/>
         <source>Comission</source>
         <translation>Comisión</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmInvestmentOperationsAdd.py" line="191"/>
+        <location filename="ui/Ui_frmInvestmentOperationsAdd.py" line="172"/>
         <source>Gross amount</source>
         <translation>Cantidad bruta</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmInvestmentOperationsAdd.py" line="193"/>
+        <location filename="ui/Ui_frmInvestmentOperationsAdd.py" line="174"/>
         <source>Net amount</source>
         <translation>Cantidad neta</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmInvestmentOperationsAdd.py" line="195"/>
+        <location filename="ui/Ui_frmInvestmentOperationsAdd.py" line="176"/>
         <source>Save</source>
         <translation>Grabar</translation>
     </message>
     <message>
-        <location filename="ui/frmInvestmentOperationsAdd.py" line="23"/>
+        <location filename="ui/frmInvestmentOperationsAdd.py" line="22"/>
         <source>Nuevo movimiento de {0}</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="ui/frmInvestmentOperationsAdd.py" line="28"/>
+        <location filename="ui/frmInvestmentOperationsAdd.py" line="26"/>
         <source>Edición del movimiento seleccionado de {0}</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="ui/frmInvestmentOperationsAdd.py" line="56"/>
+        <location filename="ui/frmInvestmentOperationsAdd.py" line="47"/>
         <source>El número de acciones en una venta debe ser negativo</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="ui/frmInvestmentOperationsAdd.py" line="64"/>
+        <location filename="ui/frmInvestmentOperationsAdd.py" line="55"/>
         <source>El número de acciones en una compra debe ser positivo</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="ui/frmInvestmentOperationsAdd.py" line="75"/>
+        <location filename="ui/frmInvestmentOperationsAdd.py" line="66"/>
         <source>El valor de la acción, los impuestos y la comisión deben ser positivos</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2709,27 +2689,27 @@ correspondiente en la tabla</source>
 <context>
     <name>frmQuotesIBM</name>
     <message>
-        <location filename="ui/Ui_frmQuotesIBM.py" line="84"/>
+        <location filename="ui/Ui_frmQuotesIBM.py" line="88"/>
         <source>Cotizaci&#xc3;&#xb3;n de cierre</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmQuotesIBM.py" line="85"/>
+        <location filename="ui/Ui_frmQuotesIBM.py" line="89"/>
         <source>Introduce la cotizaci&#xc3;&#xb3;n</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmQuotesIBM.py" line="58"/>
+        <location filename="ui/frmQuotesIBM.py" line="56"/>
         <source>Datos incorrectos. Vuelva a introducirlos</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmQuotesIBM.py" line="86"/>
+        <location filename="ui/Ui_frmQuotesIBM.py" line="90"/>
         <source>Can be purged?</source>
         <translation>¿Puede ser eliminada?</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmQuotesIBM.py" line="83"/>
+        <location filename="ui/Ui_frmQuotesIBM.py" line="87"/>
         <source>Add a product price manually</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3098,69 +3078,59 @@ correspondiente en la tabla</source>
 <context>
     <name>frmTransfer</name>
     <message>
-        <location filename="ui/Ui_frmTransfer.py" line="116"/>
+        <location filename="ui/Ui_frmTransfer.py" line="111"/>
         <source>Account transfer</source>
         <translation>Transferencia entre cuentas</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmTransfer.py" line="128"/>
+        <location filename="ui/Ui_frmTransfer.py" line="121"/>
         <source>Transfer</source>
         <translation>Transferencia</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmTransfer.py" line="120"/>
+        <location filename="ui/Ui_frmTransfer.py" line="113"/>
         <source>Selecciona la cuenta origen</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmTransfer.py" line="121"/>
+        <location filename="ui/Ui_frmTransfer.py" line="114"/>
         <source>Selecciona la cuenta destino</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmTransfer.py" line="122"/>
+        <location filename="ui/Ui_frmTransfer.py" line="115"/>
         <source>Amount</source>
         <translation>Importe</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmTransfer.py" line="123"/>
+        <location filename="ui/Ui_frmTransfer.py" line="116"/>
         <source>El importe debe ser positivo</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmTransfer.py" line="127"/>
+        <location filename="ui/Ui_frmTransfer.py" line="120"/>
         <source>0</source>
         <translation>0</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmTransfer.py" line="125"/>
+        <location filename="ui/Ui_frmTransfer.py" line="118"/>
         <source>Comission</source>
         <translation>Comisión</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmTransfer.py" line="126"/>
+        <location filename="ui/Ui_frmTransfer.py" line="119"/>
         <source>La comisi&#xc3;&#xb3;n debe ser positiva</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmTransfer.py" line="33"/>
+        <location filename="ui/frmTransfer.py" line="31"/>
         <source>Se ha producido un error al introducir los datos</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmTransfer.py" line="39"/>
+        <location filename="ui/frmTransfer.py" line="37"/>
         <source>La cuenta origen y destino no puede ser la misma</source>
         <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_frmTransfer.py" line="119"/>
-        <source>yyyy/MM/dd HH:mm</source>
-        <translation>yyyy/MM/dd HH:mm</translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_frmTransfer.py" line="118"/>
-        <source>Select a datetime</source>
-        <translation>Selecciona fecha y hora</translation>
     </message>
 </context>
 <context encoding="UTF-8">
@@ -3730,37 +3700,37 @@ correspondiente en la tabla</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgDatetime.ui" line="29"/>
+        <location filename="ui/wdgDatetime.ui" line="38"/>
         <source>yyyy/MM/dd</source>
         <translation type="unfinished">yyyy/MM/dd</translation>
     </message>
     <message>
-        <location filename="ui/wdgDatetime.ui" line="39"/>
+        <location filename="ui/wdgDatetime.ui" line="48"/>
         <source>Select a time</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgDatetime.ui" line="42"/>
+        <location filename="ui/wdgDatetime.ui" line="54"/>
         <source>HH:mm:ss</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgDatetime.ui" line="49"/>
+        <location filename="ui/wdgDatetime.ui" line="61"/>
         <source>Select microseconds</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="ui/wdgDatetime.ui" line="55"/>
+        <location filename="ui/wdgDatetime.ui" line="67"/>
         <source> μs</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgDatetime.ui" line="75"/>
+        <location filename="ui/wdgDatetime.ui" line="87"/>
         <source>Set current time</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgDatetime.ui" line="78"/>
+        <location filename="ui/wdgDatetime.ui" line="90"/>
         <source>Now</source>
         <translation type="unfinished"></translation>
     </message>
