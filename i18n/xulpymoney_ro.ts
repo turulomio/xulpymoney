@@ -1199,47 +1199,47 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>frmInit</name>
     <message>
-        <location filename="ui/Ui_frmInit.py" line="166"/>
+        <location filename="ui/Ui_frmInit.py" line="168"/>
         <source>Initializating Xulpymoney databases</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmInit.py" line="169"/>
+        <location filename="ui/Ui_frmInit.py" line="170"/>
         <source>Language</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmInit.py" line="170"/>
+        <location filename="ui/Ui_frmInit.py" line="171"/>
         <source>Espa&#xc3;&#xb1;ol</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmInit.py" line="171"/>
+        <location filename="ui/Ui_frmInit.py" line="172"/>
         <source>English</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmInit.py" line="173"/>
+        <location filename="ui/Ui_frmInit.py" line="174"/>
         <source>127.0.0.1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmInit.py" line="175"/>
+        <location filename="ui/Ui_frmInit.py" line="176"/>
         <source>5432</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmInit.py" line="180"/>
+        <location filename="ui/Ui_frmInit.py" line="181"/>
         <source>postgres</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmInit.py" line="178"/>
+        <location filename="ui/Ui_frmInit.py" line="179"/>
         <source>MyStocks Database</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmInit.py" line="179"/>
+        <location filename="ui/Ui_frmInit.py" line="180"/>
         <source>Xulpymoney Database</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1319,49 +1319,33 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmInit.py" line="92"/>
-        <source>Purchase product product</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/frmInit.py" line="93"/>
-        <source>Product product sales</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_frmInit.py" line="172"/>
+        <location filename="ui/Ui_frmInit.py" line="173"/>
         <source>Server</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmInit.py" line="174"/>
+        <location filename="ui/Ui_frmInit.py" line="175"/>
         <source>Port</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmInit.py" line="176"/>
+        <location filename="ui/Ui_frmInit.py" line="177"/>
         <source>User</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmInit.py" line="177"/>
+        <location filename="ui/Ui_frmInit.py" line="178"/>
         <source>Password</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmInit.py" line="181"/>
+        <location filename="ui/Ui_frmInit.py" line="182"/>
         <source>mystocks</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmInit.py" line="182"/>
+        <location filename="ui/Ui_frmInit.py" line="183"/>
         <source>xulpymoney</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_frmInit.py" line="167"/>
-        <source>Pressing OK, you will create needed database to run Xulpymoney.
-They&apos;ll be created in the language selected</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1402,6 +1386,21 @@ They&apos;ll be created in the language selected</source>
     <message>
         <location filename="ui/frmInit.py" line="39"/>
         <source>Process finished. Now you can use MyStocks and Xulpymoney</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_frmInit.py" line="169"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Pressing OK, you will create needed database to run Xulpymoney. They&apos;ll be created in the language selected&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/frmInit.py" line="92"/>
+        <source>Purchase investment product</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/frmInit.py" line="93"/>
+        <source>Sale investment product</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1566,16 +1565,6 @@ They&apos;ll be created in the language selected</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmInvestmentReport.py" line="306"/>
-        <source>Fecha revision</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_frmInvestmentReport.py" line="308"/>
-        <source>Dividendos consolidados</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="ui/Ui_frmInvestmentReport.py" line="310"/>
         <source>% APR</source>
         <translation type="unfinished"></translation>
@@ -1615,19 +1604,9 @@ They&apos;ll be created in the language selected</source>
         <source>Current operations average age: {0}</source>
         <translation type="unfinished"></translation>
     </message>
-    <message encoding="UTF-8">
-        <location filename="ui/frmInvestmentReport.py" line="138"/>
-        <source>Simulación de Desinversión / Reinversión</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <location filename="ui/frmInvestmentReport.py" line="149"/>
         <source>Before adding a operation, you must add the current price of the product.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/frmInvestmentReport.py" line="189"/>
-        <source>No se ha podiddo deshacer el traspaso de valores</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1643,11 +1622,6 @@ They&apos;ll be created in the language selected</source>
     <message>
         <location filename="ui/Ui_frmInvestmentReport.py" line="307"/>
         <source>Estimated balance</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_frmInvestmentReport.py" line="309"/>
-        <source>% invested</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1683,6 +1657,56 @@ They&apos;ll be created in the language selected</source>
     <message>
         <location filename="ui/Ui_frmInvestmentReport.py" line="331"/>
         <source>Transfer shares to another bank</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_frmInvestmentReport.py" line="306"/>
+        <source>Review date</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_frmInvestmentReport.py" line="308"/>
+        <source>Collected dividends</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_frmInvestmentReport.py" line="309"/>
+        <source>% Invested</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/frmInvestmentReport.py" line="78"/>
+        <source>Estimation review date: {0}</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/frmInvestmentReport.py" line="80"/>
+        <source>Estimated balance: {0} ({1} after taxes)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/frmInvestmentReport.py" line="81"/>
+        <source>% Invested: {0}</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/frmInvestmentReport.py" line="189"/>
+        <source>Shares transfer couldn&apos;t be done.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/frmInvestmentReport.py" line="79"/>
+        <source>Estimated annual dividend is {0} ({1} per share)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/frmInvestmentReport.py" line="82"/>
+        <source>% APR from invested: {0}</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/frmInvestmentReport.py" line="138"/>
+        <source>Divest / Reinvest simulation</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

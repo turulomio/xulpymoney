@@ -36,8 +36,8 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
         
         if self.inversion==None:
             self.tipo=1
-            self.cmdInvestment.setText(self.trUtf8("Add a new investment"))
-            self.lblTitulo.setText(self.trUtf8("New investment"))
+            self.cmdInvestment.setText(self.tr("Add a new investment"))
+            self.lblTitulo.setText(self.tr("New investment"))
             self.inversion=None
             self.tab.setCurrentIndex(0)
             self.tabDividends.setEnabled(False)
@@ -75,11 +75,11 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
             if estimacion.estimation!=None:
                 acciones=self.inversion.acciones()
                 tpccalculado=100*estimacion.estimation/self.inversion.product.result.basic.last.quote
-                self.lblDivAnualEstimado.setText(("El dividend anual estimado, según el valor actual de la acción es del {0} % ({1}€ por acción)".format(str(round(tpccalculado, 2)),  str(estimacion.estimation))))
-                self.lblDivFechaRevision.setText(('Fecha de la última revisión del dividend: '+ str(estimacion.date_estimation)))
-                self.lblDivSaldoEstimado.setText(("balance estimado: {0}€ ({1}€ después de impuestos)".format( str(round(acciones*estimacion.estimation, 2)),  str(round(acciones*estimacion.estimation*(1-self.mem.dividendwithholding))), 2)))
-            self.lblDivTPC.setText(("% de lo invertido: "+tpc(dtpc)))
-            self.lblDivTAE.setText(("% TAE de lo invertido: "+tpc(dtae)))        
+                self.lblDivFechaRevision.setText(self.tr('Estimation review date: {0}').format(estimacion.date_estimation))
+                self.lblDivAnualEstimado.setText(self.tr("Estimated annual dividend is {0} ({1} per share)").format(tpc(tpccalculado),  self.inversion.product.currency.string(estimacion.estimation)))
+                self.lblDivSaldoEstimado.setText(self.tr("Estimated balance: {0} ({1} after taxes)").format( self.inversion.product.currency.string(acciones*estimacion.estimation),  self.inversion.product.currency.string(acciones*estimacion.estimation*(1-self.mem.dividendwithholding))))
+            self.lblDivTPC.setText(self.tr("% Invested: {0}").format(tpc(dtpc)))
+            self.lblDivTAE.setText(self.tr("% APR from invested: {0}").format(tpc(dtae)))
             self.grpDividendsEstimation.show()
             self.grpDividendsEfectivos.show()
         else:
@@ -103,7 +103,7 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
         self.inversion.op_actual.get_valor_benchmark(self.mem.data.benchmark)
         self.on_chkOperaciones_stateChanged(self.chkOperaciones.checkState())
         self.inversion.op_actual.myqtablewidget(self.tblInvestmentCurrent,  "frmInvestmentReport")
-        self.lblAge.setText(self.trUtf8("Current operations average age: {0}".format(days_to_year_month(self.inversion.op_actual.average_age()))))
+        self.lblAge.setText(self.tr("Current operations average age: {0}".format(days_to_year_month(self.inversion.op_actual.average_age()))))
         self.inversion.op_historica.myqtablewidget(self.tblInvestmentHistorical,  "frmInvestmentReport"  )
         if self.inversion!=None:#We are adding a new investment
             self.on_chkHistoricalDividends_stateChanged(self.chkHistoricalDividends.checkState())
@@ -135,7 +135,7 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
         #Llama a form
         d=QDialog(self)       
         d.showMaximized() 
-        d.setWindowTitle(self.trUtf8("Simulación de Desinversión / Reinversión"))
+        d.setWindowTitle(self.tr("Divest / Reinvest simulation"))
         w=wdgDisReinvest(self.mem, self.inversion)
         lay = QVBoxLayout(d)
         lay.addWidget(w)
@@ -146,7 +146,7 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
         if self.inversion.product.result.basic.last.quote==None:
             m=QMessageBox()
             m.setIcon(QMessageBox.Information)
-            m.setText(self.trUtf8("Before adding a operation, you must add the current price of the product."))
+            m.setText(self.tr("Before adding a operation, you must add the current price of the product."))
             m.exec_()    
             w=frmQuotesIBM(self.mem,  self.inversion.product)
             w.exec_()   
@@ -186,7 +186,7 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
         if self.mem.data.inversiones_active.traspaso_valores_deshacer(self.selMovimiento)==False:
             m=QMessageBox()
             m.setIcon(QMessageBox.Information)
-            m.setText(self.trUtf8("No se ha podiddo deshacer el traspaso de valores"))
+            m.setText(self.tr("Shares transfer couldn't be done."))
             m.exec_()          
             return
         self.update_tables()       
@@ -231,7 +231,7 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
         if self.ise.selected==None:
             m=QMessageBox()
             m.setIcon(QMessageBox.Information)
-            m.setText(self.trUtf8("You must select a MyStocks product to continue."))
+            m.setText(self.tr("You must select a MyStocks product to continue."))
             m.exec_()     
             return
         inversion=self.txtInvestment.text()
@@ -321,7 +321,7 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
                 self.selMovimiento=self.op.arr[i.row()]
         except:
             self.selMovimiento=None
-        print (self.trUtf8("Selected: {0}".format(str(self.selMovimiento))))
+        print (self.tr("Selected: {0}".format(str(self.selMovimiento))))
         
         
     def on_tblDividends_customContextMenuRequested(self,  pos):
