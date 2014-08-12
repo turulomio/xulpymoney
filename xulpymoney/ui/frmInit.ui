@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>601</width>
-    <height>323</height>
+    <width>270</width>
+    <height>288</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -35,11 +35,16 @@
         </font>
        </property>
        <property name="text">
-        <string>Pressing OK, you will create needed database to run Xulpymoney.
-They'll be created in the language selected</string>
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Pressing OK, you will create needed database to run Xulpymoney. They'll be created in the language selected&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="scaledContents">
+        <bool>false</bool>
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
+       </property>
+       <property name="wordWrap">
+        <bool>true</bool>
        </property>
       </widget>
      </item>

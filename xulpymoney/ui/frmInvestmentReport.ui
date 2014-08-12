@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>878</width>
-    <height>394</height>
+    <width>573</width>
+    <height>414</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -49,7 +49,7 @@
         <bool>true</bool>
        </property>
        <property name="currentIndex">
-        <number>3</number>
+        <number>4</number>
        </property>
        <widget class="QWidget" name="tab_12">
         <attribute name="title">
@@ -310,7 +310,7 @@
             </widget>
            </item>
            <item>
-            <layout class="QVBoxLayout" name="verticalLayout_4">
+            <layout class="QHBoxLayout" name="horizontalLayout_6">
              <item>
               <widget class="QGroupBox" name="grpDividendsEstimation">
                <property name="title">
@@ -329,7 +329,7 @@
                   <item>
                    <widget class="QLabel" name="lblDivFechaRevision">
                     <property name="text">
-                     <string>Fecha revision</string>
+                     <string>Review date</string>
                     </property>
                    </widget>
                   </item>
@@ -348,7 +348,7 @@
              <item>
               <widget class="QGroupBox" name="grpDividendsEfectivos">
                <property name="title">
-                <string>Dividendos consolidados</string>
+                <string>Collected dividends</string>
                </property>
                <layout class="QHBoxLayout" name="horizontalLayout_13">
                 <item>
@@ -356,7 +356,7 @@
                   <item>
                    <widget class="QLabel" name="lblDivTPC">
                     <property name="text">
-                     <string>% invested</string>
+                     <string>% Invested</string>
                     </property>
                    </widget>
                   </item>
