@@ -55,7 +55,7 @@ class frmProductReport(QDialog, Ui_frmProductReport):
             self.tab.setTabEnabled(1, False)
             self.tab.setTabEnabled(2, False)
             self.tab.setTabEnabled(3, False)
-            self.cmdSave.setText(self.trUtf8("Añadir nueva inversión"))
+            self.cmdSave.setText(self.tr("Add a new product"))
 
         self.canvasIntraday=canvasChartIntraday( self.mem, self)
         self.ntbIntraday = NavigationToolbar(self.canvasIntraday, self)
@@ -101,7 +101,7 @@ class frmProductReport(QDialog, Ui_frmProductReport):
         self.product.priority.qcombobox(self.cmbPriority)
         self.product.priorityhistorical.qcombobox(self.cmbPriorityHistorical)
 
-        self.lblInvestment.setText(("%s ( %s )" %(self.product.name, self.product.id)))
+        self.lblInvestment.setText("{} ( {} )".format(self.product.name, self.product.id))
         self.txtTPC.setText(str(self.product.tpc))
         self.txtName.setText((self.product.name))
         self.txtISIN.setText((self.product.isin))
@@ -203,11 +203,9 @@ class frmProductReport(QDialog, Ui_frmProductReport):
         else:
             self.tblIntradia.setRowCount(len(self.product.result.intradia.arr))
             self.canvasIntraday.show()
-            ma=max(self.product.result.intradia.arr,key=lambda q: q.quote) #devuelve objeto
-            mi=min(self.product.result.intradia.arr,key=lambda q: q.quote)
-
+            QuoteDayBefore=self.product.result.ohclDaily.find(self.calendar.selectedDate().toPyDate()-datetime.timedelta(days=1))#day before as selected
     
-            #Construlle tabla
+            #Construye tabla
             for i , q in enumerate(self.product.result.intradia.arr):
                 if q.datetime.microsecond==5:
                     self.tblIntradia.setItem(i, 0, qcenter(str(q.datetime)[11:-13]))
@@ -218,17 +216,16 @@ class frmProductReport(QDialog, Ui_frmProductReport):
                 else:
                     self.tblIntradia.setItem(i, 0, qcenter(str(q.datetime)[11:-6]))
                 self.tblIntradia.setItem(i, 1, self.product.currency.qtablewidgetitem(q.quote,6))       
-                try:
-                    tpc=(q.quote-self.product.result.basic.penultimate.quote)*100/q.quote
-                    self.tblIntradia.setItem(i, 2, qtpc(round(tpc, 2)))    
-                except:       
+                if QuoteDayBefore!=None:
+                    tpcq=(q.quote-QuoteDayBefore.close)*100/QuoteDayBefore.close
+                    self.tblIntradia.setItem(i, 2, qtpc(tpcq))    
+                else:
                     self.tblIntradia.setItem(i, 2, qtpc(None))    
-                if q==ma:
+                if q==self.product.result.intradia.high():
                     self.tblIntradia.item(i, 1).setBackgroundColor(QColor(148, 255, 148))
-                elif q==mi:
+                elif q==self.product.result.intradia.low():
                     self.tblIntradia.item(i, 1).setBackgroundColor( QColor(255, 148, 148))  
-      
-                    
+                self.lblIntradayVariance.setText(self.tr("Daily maximum variance: {} ({})").format(self.product.currency.string(self.product.result.intradia.variance()), tpc(self.product.result.intradia.variance_percentage())))
         
         t1 = threading.Thread(target=self.canvasIntraday.load_data_intraday,   args=(self.product, ))
         t1.start()
@@ -448,7 +445,7 @@ class frmProductReport(QDialog, Ui_frmProductReport):
         else:
             selected=self.product.agrupations
         f=frmSelector(self.mem, agr, selected)
-        f.lbl.setText("Selector de Agrupaciones")
+        f.lbl.setText(self.tr("Agrupation selection"))
         f.exec_()
         f.selected.qcombobox(self.cmbAgrupations)
 
@@ -459,7 +456,7 @@ class frmProductReport(QDialog, Ui_frmProductReport):
             selected=self.product.priority
         
         f=frmSelector(self.mem, self.mem.priorities.clone(), selected)
-        f.lbl.setText("Selector de prioridades")
+        f.lbl.setText(self.tr("Priority selection"))
         f.exec_()
         self.cmbPriority.clear()
         for item in f.selected.arr:
@@ -472,7 +469,7 @@ class frmProductReport(QDialog, Ui_frmProductReport):
             selected=self.product.priorityhistorical
         
         f=frmSelector(self.mem, self.mem.prioritieshistorical.clone(),  selected) 
-        f.lbl.setText("Selector de prioridades de datos históricos")
+        f.lbl.setText(self.tr("Historical data priority selection"))
         f.exec_()
         self.cmbPriorityHistorical.clear()
         for item in f.selected.arr:

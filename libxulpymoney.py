@@ -4683,7 +4683,7 @@ class SetQuotesIntraday:
         """Devuelve el quote cuyo quote es mayor"""
         if len(self.arr)==0:
             return None
-        high=Quote(self.mem).init__create(self.product, day_start_from_date(self.date, self.product.stockexchange.zone), Decimal('0'))
+        high=self.arr[0]
         for q in self.arr:
             if q.quote>high.quote:
                 high=q
@@ -4693,7 +4693,7 @@ class SetQuotesIntraday:
         """Devuelve el quote cuyo quote es menor"""
         if len(self.arr)==0:
             return None
-        low=Quote(self.mem).init__create(self.product, day_start_from_date(self.date, self.product.stockexchange.zone), Decimal('1000000'))
+        low=self.arr[0]
         for q in self.arr:
             if q.quote<low.quote:
                 low=q
@@ -4706,11 +4706,6 @@ class SetQuotesIntraday:
         print (function_name(self), "Quote not found")
         return None
 
-            
-            
-            
-            
-        
     def purge(self):
         """Función que purga una inversión en un día dado, dejando ohlc y microsecond=5, que son los no borrables.
         Devuelve el número que se han quitado
@@ -4743,6 +4738,17 @@ class SetQuotesIntraday:
             c.delete()
             c.datetime=c.datetime.replace(microsecond=4)
             c.save()
+            
+    def variance(self):
+        """Gives difference between highest and lowest prices"""
+        return self.high().quote - self.low().quote
+        
+    def variance_percentage(self):
+        """Gives variance percentage, using the lowest quote to calculate it to see daily volatility only. It's always a positive number"""
+        h=self.high().quote
+        l=self.low().quote
+        return Decimal(100*(h-l)/l)
+        
         
 class Quote:
     """"Un quote no puede estar duplicado en un datetime solo puede haber uno"""
@@ -6115,8 +6121,8 @@ def qright(string, digits=None):
 
 
 
-def qtpc(n):
-    text= (tpc(n))
+def qtpc(n, rnd=2):
+    text= tpc(n, rnd)
     a=QTableWidgetItem(text)
     a.setTextAlignment(Qt.AlignVCenter|Qt.AlignRight)
     if n==None:
@@ -6131,10 +6137,10 @@ def strnames(filter):
         s=s+i+"+"
     return s[:-1]
 
-def tpc(n):
+def tpc(n, rnd=2):
     if n==None:
         return "None %"
-    return str(round(n, 2))+ " %"
+    return str(round(n, rnd))+ " %"
 
         
 def web2utf8(cadena):
