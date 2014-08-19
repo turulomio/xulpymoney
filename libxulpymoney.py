@@ -565,7 +565,7 @@ class SetAccounts(SetCommons):
         for row in cur:
             c=Account(self.mem).init__db_row(row, self.ebs.find(row['id_entidadesbancarias']))
             c.saldo_from_db()
-            self.arr.append(c)
+            self.append(c)
         cur.close()
 #                               
 #    def qcombobox(self, combo,  cuenta=None):

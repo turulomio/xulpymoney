@@ -156,7 +156,7 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
         if self.selAccount==None:
             cu=Account(self.mem).init__create(cuenta, self.mem.data.ebs_active.find(id_entidadesbancarias), cu_activa, numerocuenta, self.mem.currencies.find(currency))
             cu.save()
-            self.mem.data.cuentas_active.arr.append(cu)
+            self.mem.data.cuentas_active.append(cu)
         else:
             self.selAccount.eb=self.mem.data.ebs_active.find(id_entidadesbancarias)
             self.selAccount.name=cuenta
