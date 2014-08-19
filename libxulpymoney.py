@@ -461,24 +461,22 @@ class SetStockExchanges:
         
 
 
-class SetConcepts:      
+class SetConcepts(SetCommons):
     def __init__(self, mem):
-        self.dic_arr={}
+        SetCommons.__init__(self)
         self.mem=mem 
                  
-    def append(self, concepto):
-        self.dic_arr[str(concepto.id)]=concepto
         
     def load_from_db(self):
         cur=self.mem.con.cursor()
         cur.execute("Select * from conceptos")
         for row in cur:
-            self.dic_arr[str(row['id_conceptos'])]=Concept(self.mem).init__db_row(row, self.mem.tiposoperaciones.find(row['id_tiposoperaciones']))
+            self.append(Concept(self.mem).init__db_row(row, self.mem.tiposoperaciones.find(row['id_tiposoperaciones'])))
         cur.close()
                         
     def load_opercuentas_qcombobox(self, combo):
         """Carga conceptos operaciones 1,2,3, menos dividends y renta fija, no pueden ser editados, luego no se necesitan"""
-        for c in self.list():
+        for c in self.arr:
             if c.tipooperacion.id in (1, 2, 3):
                 if c.id not in (39, 50, 62, 63, 65, 66):
                     combo.addItem("{0} -- {1}".format(  c.name,  c.tipooperacion.name),  c.id  )
@@ -503,20 +501,12 @@ class SetConcepts:
         """El 63 es pago de cupon corrido y no es considerado dividend  a efectos de totales, sino gasto."""
         return[39, 50, 62, 65, 66]
 
-    def find(self, id):
-        return self.dic_arr[str(id)]
-        
-    def list(self):
-        """Lista ordenada por nombre"""
-        lista=dic2list(self.dic_arr)
-        lista=sorted(lista, key=lambda c: c.name  ,  reverse=False)    
-        return lista
 
     def clone_x_tipooperacion(self, id_tiposoperaciones):
         resultado=SetConcepts(self.mem)
-        for k, v in self.dic_arr.items():
-            if v.tipooperacion.id==id_tiposoperaciones:
-                resultado.dic_arr[k]=v
+        for c in self.arr:
+            if c.tipooperacion.id==id_tiposoperaciones:
+                resultado.append(c)
         return resultado
         
         
@@ -536,7 +526,7 @@ class SetConcepts:
         arr=[]
         totalexpenses=Decimal(0)
         totalmedia_mensual=Decimal(0)
-        for k, v in self.dic_arr.items():
+        for v in self.arr:
             thismonth=v.mensual(year, month)
             if thismonth==Decimal(0):
                 continue
@@ -555,11 +545,11 @@ class SetConcepts:
         arr=sorted(arr, key=lambda o:o[0].name)
         return (arr, totalexpenses,  totalmedia_mensual)
             
-    def remove(self, concepto):
-        #However, this mutates the existing dictionary so the contents of the dictionary changes for anybody else who has a reference to the same instance. To return a new dictionary, make a copy of the dictionary:
-        new = dict(self.dic_arr)
-        del new[str(concepto.id)]
-        self.dic_arr=new
+#    def remove(self, concepto):
+#        #However, this mutates the existing dictionary so the contents of the dictionary changes for anybody else who has a reference to the same instance. To return a new dictionary, make a copy of the dictionary:
+#        new = dict(self.dic_arr)
+#        del new[str(concepto.id)]
+#        self.dic_arr=new
 
 
 class SetCountries:

@@ -30,7 +30,7 @@ class frmAuxiliarTables(QDialog, Ui_frmAuxiliarTables):
     def regenerate_list(self):
         del self.conceptos
         self.conceptos=[]
-        for c in self.mem.conceptos.list():
+        for c in self.mem.conceptos.arr:
             if c.editable==True:
                 self.conceptos.append(c)
  
