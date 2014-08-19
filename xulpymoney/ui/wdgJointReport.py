@@ -53,7 +53,7 @@ class wdgJointReport(QWidget, Ui_wdgJointReport):
         
     def load_added(self):
         operaciones=[]
-        for i in self.mem.data.inversiones_all().arr:
+        for i in self.mem.data.investments_all().arr:
             for o in i.op.arr:
                 if o.tipooperacion.id==6 and o.datetime.year==self.wy.year:
                     operaciones.append(o)    
@@ -85,7 +85,7 @@ class wdgJointReport(QWidget, Ui_wdgJointReport):
 
     def load_historicas(self):
         operaciones=SetInvestmentOperationsHistorical(self.mem)
-        for i in self.mem.data.inversiones_all().arr:
+        for i in self.mem.data.investments_all().arr:
             for o in i.op_historica.arr:
                 if o.fecha_venta.year==self.wy.year and o.tipooperacion.id in (5, 8):#Venta y traspaso fondos inversion
                     operaciones.arr.append(o)
@@ -93,7 +93,7 @@ class wdgJointReport(QWidget, Ui_wdgJointReport):
         (self.totalBruto, self.totalComisiones, self.totalImpuestos, self.totalNeto)=operaciones.myqtablewidget(self.tblInvestments, "wdgJointReport")
     def load_less(self):
         operaciones=SetInvestmentOperationsHistorical(self.mem)
-        for i in self.mem.data.inversiones_all().arr:
+        for i in self.mem.data.investments_all().arr:
             for o in i.op_historica.arr:
                 if o.fecha_venta.year==self.wy.year and o.tipooperacion.id in (5, 8) and o.less_than_a_year()==True:#Venta y traspaso fondos inversion
                     operaciones.arr.append(o)
@@ -101,7 +101,7 @@ class wdgJointReport(QWidget, Ui_wdgJointReport):
         (self.totalBruto, self.totalComisiones, self.totalImpuestos, self.totalNeto)=operaciones.myqtablewidget(self.tblLess, "wdgJointReport")
     def load_more(self):
         operaciones=SetInvestmentOperationsHistorical(self.mem)
-        for i in self.mem.data.inversiones_all().arr:
+        for i in self.mem.data.investments_all().arr:
             for o in i.op_historica.arr:
                 if o.fecha_venta.year==self.wy.year and o.tipooperacion.id in (5, 8) and o.less_than_a_year()==False:#Venta y traspaso fondos inversion
                     operaciones.arr.append(o)
@@ -118,8 +118,8 @@ class wdgJointReport(QWidget, Ui_wdgJointReport):
         if sumcomisioncustodia==None:
             sumcomisioncustodia=0
             
-        saldototal=Assets(self.mem).saldo_total(self.mem.data.inversiones_all() ,  datetime.date.today());
-        saldototalinicio=Assets(self.mem).saldo_total( self.mem.data.inversiones_all(), inicio)
+        saldototal=Assets(self.mem).saldo_total(self.mem.data.investments_all() ,  datetime.date.today());
+        saldototalinicio=Assets(self.mem).saldo_total( self.mem.data.investments_all(), inicio)
         if self.totalBruto>0:
             impxplus=-self.totalBruto*self.mem.taxcapitalappreciation
         else:            

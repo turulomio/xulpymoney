@@ -47,7 +47,7 @@ class wdgAccounts(QWidget, Ui_wdgAccounts):
         if self.selAccount.eb.qmessagebox_inactive() or self.selAccount.qmessagebox_inactive():
             return
         cur = self.mem.con.cursor()
-        if self.selAccount.es_borrable(cur)==False:
+        if self.selAccount.es_borrable()==False:
             m=QMessageBox()
             m.setIcon(QMessageBox.Information)
             m.setText(self.trUtf8("This account has associated investments, credit cards or operations. It can't be deleted"))

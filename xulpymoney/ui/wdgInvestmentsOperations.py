@@ -35,13 +35,13 @@ class wdgInvestmentsOperations(QWidget, Ui_wdgInvestmentsOperations):
         else:
             cur.execute("select * from operinversiones where date_part('year',datetime)=%s and date_part('month',datetime)=%s order by datetime",(self.wym.year, self.wym.month) )
         for row in cur:
-            self.setOperations.append(InvestmentOperation(self.mem).init__db_row(row, self.mem.data.inversiones_all().find(row['id_inversiones']), self.mem.tiposoperaciones.find(row['id_tiposoperaciones'])))
+            self.setOperations.append(InvestmentOperation(self.mem).init__db_row(row, self.mem.data.investments_all().find(row['id_inversiones']), self.mem.tiposoperaciones.find(row['id_tiposoperaciones'])))
         cur.close()
         
         self.setOperations.myqtablewidget(self.table, "wdgInvestmentsOperations")
         
     def load_current(self):
-        for inv in self.mem.data.inversiones_active.arr:
+        for inv in self.mem.data.investments_active.arr:
             for o in inv.op_actual.arr:
                 self.setCurrent.append(o)
         self.setCurrent.sort()

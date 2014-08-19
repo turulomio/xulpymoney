@@ -109,7 +109,7 @@ class wdgInvestmentClasses(QWidget, Ui_wdgInvestmentClasses):
         explode=[]
         for r in range(0, 11):
             total=0
-            for i in self.mem.data.inversiones_active.arr:
+            for i in self.mem.data.investments_active.arr:
                 if math.ceil(i.product.tpc/10.0)==r:
                     if self.radCurrent.isChecked():
                         total=total+i.balance()
@@ -133,7 +133,7 @@ class wdgInvestmentClasses(QWidget, Ui_wdgInvestmentClasses):
 
         for m in self.mem.investmentsmodes.list():
             total=0
-            for i in self.mem.data.inversiones_active.arr:
+            for i in self.mem.data.investments_active.arr:
                 if i.product.mode==m:
                     if self.radCurrent.isChecked():
                         total=total+i.balance()
@@ -155,7 +155,7 @@ class wdgInvestmentClasses(QWidget, Ui_wdgInvestmentClasses):
         explode=[]
         for t in self.mem.types.list():
             total=0
-            for i in self.mem.data.inversiones_active.arr:
+            for i in self.mem.data.investments_active.arr:
                 if i.product.type==t:
                     if self.radCurrent.isChecked():
                         total=total+i.balance()
@@ -181,7 +181,7 @@ class wdgInvestmentClasses(QWidget, Ui_wdgInvestmentClasses):
                 
         for a in self.mem.apalancamientos.list():
             total=0
-            for i in self.mem.data.inversiones_active.arr:
+            for i in self.mem.data.investments_active.arr:
                 if i.product.apalancado==a:
                     if self.radCurrent.isChecked():
                         total=total+i.balance()
@@ -203,7 +203,7 @@ class wdgInvestmentClasses(QWidget, Ui_wdgInvestmentClasses):
                 
         for c in self.mem.countries.list():
             total=0
-            for i in self.mem.data.inversiones_active.arr:
+            for i in self.mem.data.investments_active.arr:
                 if i.product.stockexchange.country==c:
                     if self.radCurrent.isChecked():
                         total=total+i.balance()
@@ -222,21 +222,21 @@ class wdgInvestmentClasses(QWidget, Ui_wdgInvestmentClasses):
         explode=[]
         #Saca products active
         s=set([])
-        for i in self.mem.data.inversiones_active.arr:
+        for i in self.mem.data.investments_active.arr:
             s.add(i.product)
         
         arr=list(s)
         if self.radCurrent.isChecked():
-            arr=sorted(arr, key=lambda inv: self.mem.data.inversiones_active.saldo_misma_investment(inv),  reverse=True) 
+            arr=sorted(arr, key=lambda inv: self.mem.data.investments_active.saldo_misma_investment(inv),  reverse=True) 
         else:
-            arr=sorted(arr, key=lambda inv: self.mem.data.inversiones_active.invertido_misma_investment(inv),  reverse=True) 
+            arr=sorted(arr, key=lambda inv: self.mem.data.investments_active.invertido_misma_investment(inv),  reverse=True) 
    
         for i in arr:
             labels.append(i.name)
             if self.radCurrent.isChecked():
-                data.append(self.mem.data.inversiones_active.saldo_misma_investment(i))
+                data.append(self.mem.data.investments_active.saldo_misma_investment(i))
             else:
-                data.append(self.mem.data.inversiones_active.invertido_misma_investment(i))
+                data.append(self.mem.data.investments_active.invertido_misma_investment(i))
             explode.append(0)
         labels.append(self.trUtf8("Accounts"))
         data.append(self.cuentas)

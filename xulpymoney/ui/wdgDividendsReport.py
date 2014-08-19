@@ -28,9 +28,9 @@ class wdgDividendsReport(QWidget, Ui_wdgDividendsReport):
     def on_chkInactivas_stateChanged(self,  state):               
         if state==Qt.Checked:
             self.mem.data.load_inactives()
-            self.inversiones=self.mem.data.inversiones_inactive
+            self.inversiones=self.mem.data.investments_inactive
         else:
-            self.inversiones=self.mem.data.inversiones_active
+            self.inversiones=self.mem.data.investments_active
         self.load_inversiones()
         
     def load_inversiones(self):    

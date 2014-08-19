@@ -68,7 +68,7 @@ class wdgIndexRange(QWidget, Ui_wdgIndexRange):
 
         #Makes and array arr with investment current operations and sorts it
         arr=[]
-        for i in self.mem.data.inversiones_active.arr:
+        for i in self.mem.data.investments_active.arr:
             if i.product.tpc!=0 and i.product.type.id not in (7, 9):
                 for o in i.op_actual.arr:
                     arr.append((o.referenciaindice.quote, o))
@@ -86,7 +86,7 @@ class wdgIndexRange(QWidget, Ui_wdgIndexRange):
             PuntRange=int(PuntRange*(1-(self.spin.value()/100)))
     
         #Calculate zero risk assests and range number covered
-        zeroriskplusbonds=Assets(self.mem).patrimonio_riesgo_cero(self.mem.data.inversiones_active, datetime.date.today()) +Assets(self.mem).saldo_todas_inversiones_bonds(datetime.date.today())
+        zeroriskplusbonds=Assets(self.mem).patrimonio_riesgo_cero(self.mem.data.investments_active, datetime.date.today()) +Assets(self.mem).saldo_todas_inversiones_bonds(datetime.date.today())
         rangescovered=int(zeroriskplusbonds/self.txtInvertir.decimal())##zero risk assests
         
         #Iterates all ranges and prints table

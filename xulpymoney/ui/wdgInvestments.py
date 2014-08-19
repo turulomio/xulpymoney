@@ -93,13 +93,13 @@ class wdgInvestments(QWidget, Ui_wdgInvestments):
         self.mem.con.commit()     
         #Recoloca en los SetInvestments
         if self.selInvestment.activa==True:#Está todavía en inactivas
-            self.mem.data.inversiones_active.arr.append(self.selInvestment)
-            if self.mem.data.inversiones_inactive!=None:#Puede que no se haya cargado
-                self.mem.data.inversiones_inactive.arr.remove(self.selInvestment)
+            self.mem.data.investments_active.arr.append(self.selInvestment)
+            if self.mem.data.investments_inactive!=None:#Puede que no se haya cargado
+                self.mem.data.investments_inactive.arr.remove(self.selInvestment)
         else:#Está todavía en activas
-            self.mem.data.inversiones_active.arr.remove(self.selInvestment)
-            if self.mem.data.inversiones_inactive!=None:#Puede que no se haya cargado
-                self.mem.data.inversiones_inactive.arr.append(self.selInvestment)
+            self.mem.data.investments_active.arr.remove(self.selInvestment)
+            if self.mem.data.investments_inactive!=None:#Puede que no se haya cargado
+                self.mem.data.investments_inactive.arr.append(self.selInvestment)
         self.on_chkInactivas_stateChanged(self.chkInactivas.checkState())#Carga la tabla
 
             
@@ -108,7 +108,7 @@ class wdgInvestments(QWidget, Ui_wdgInvestments):
         cur = self.mem.con.cursor()
         self.selInvestment.borrar(cur)
         self.mem.con.commit()
-        self.mem.data.inversiones_active.arr.remove(self.selInvestment)
+        self.mem.data.investments_active.arr.remove(self.selInvestment)
 #        self.inversiones.arr.remove(self.selInvestment) #Apunta a ella
         cur.close()
         self.on_chkInactivas_stateChanged(self.chkInactivas.checkState())#Carga la tabla
@@ -180,12 +180,12 @@ class wdgInvestments(QWidget, Ui_wdgInvestments):
         
     def on_chkInactivas_stateChanged(self, state):
         if state==Qt.Unchecked:
-            self.inversiones=self.mem.data.inversiones_active
+            self.inversiones=self.mem.data.investments_active
             self.on_actionSortTPCVenta_activated()
             self.tblInvestments_load()
         else:
             self.mem.data.load_inactives()
-            self.inversiones=self.mem.data.inversiones_inactive
+            self.inversiones=self.mem.data.investments_inactive
             self.on_actionSortName_activated()
             self.tblInvestments_load_inactivas()
         self.tblInvestments.clearSelection()
