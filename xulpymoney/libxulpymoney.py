@@ -362,7 +362,55 @@ class SetStockExchanges:
         return dic2list(self.dic_arr)
 
         
+
+
+class SetCommons:
+    """Base clase to create Sets, it needs id and name attributes, as index. It has a list arr and a dics dic_arr to access objects of the set"""
+    def __init__(self):
+        self.dic_arr={}
+        self.arr=[]
+        self.id=None
+        self.name=None
+        self.selected=None#Used to select a item in the set. Usefull in tables. Its a item
+    
+    def append(self,  obj):
+        self.dic_arr[str(obj.id)]=obj
+        self.arr.append(obj)
         
+    def remove(self, obj):
+        del self.dic_arr[str(obj.id)]
+        self.arr.remove(obj)
+        
+    def length(self):
+        return len(self.arr)
+        
+    def find(self, id):
+        try:
+            return self.dic_arr[str(id)]    
+        except:
+            return None
+                
+    def sort_by_id(self):
+        """Orders the Set using self.arr"""
+        self.arr=sorted(self.arr, key=lambda c: c.id,  reverse=False)     
+        return self.arr
+        
+    def sort_by_name(self):
+        """Orders the Set using self.arr"""
+        self.arr=sorted(self.arr, key=lambda c: c.name,  reverse=False)     
+        return self.arr
+
+    def qcombobox(self, combo,  selected=None):
+        """Load set items in a comobo using id and name
+        Selected is and object
+        It sorts by name the arr""" 
+        self.sort_by_name()
+        for a in self.arr:
+            combo.addItem(a.name, a.id)
+
+        if selected!=None:
+                combo.setCurrentIndex(combo.findData(selected.id))
+
 class SetConcepts:      
     def __init__(self, mem):
         self.dic_arr={}
@@ -504,39 +552,38 @@ class SetCountries:
 
         if country!=None:
                 combo.setCurrentIndex(combo.findData(country.id))
-class SetAccounts:     
+
+class SetAccounts(SetCommons):   
     def __init__(self, mem,  setebs):
-        self.arr=[]
+        SetCommons.__init__(self)
         self.mem=mem   
         self.ebs=setebs
 
     def load_from_db(self, sql):
         cur=self.mem.con.cursor()
-        cur2=self.mem.con.cursor()
         cur.execute(sql)#"Select * from cuentas"
         for row in cur:
             c=Account(self.mem).init__db_row(row, self.ebs.find(row['id_entidadesbancarias']))
             c.saldo_from_db()
             self.arr.append(c)
         cur.close()
-        cur2.close()
-                               
-    def qcombobox(self, combo,  cuenta=None):
-        """Función que carga en un combo pasado como parámetro y con un SetAccounts pasado como parametro
-        Se ordena por nombre y se se pasa el tercer parametro que es un objeto Account lo selecciona""" 
-        self.sort()
-        for cu in self.arr:
-            combo.addItem(cu.name, cu.id)
-        if cuenta!=None:
-                combo.setCurrentIndex(combo.findData(cuenta.id))
+#                               
+#    def qcombobox(self, combo,  cuenta=None):
+#        """Función que carga en un combo pasado como parámetro y con un SetAccounts pasado como parametro
+#        Se ordena por nombre y se se pasa el tercer parametro que es un objeto Account lo selecciona""" 
+#        self.sort()
+#        for cu in self.arr:
+#            combo.addItem(cu.name, cu.id)
+#        if cuenta!=None:
+#                combo.setCurrentIndex(combo.findData(cuenta.id))
         
-    def find(self, id):
-        for a in self.arr:
-            if a.id==id:
-                return a
-                
-    def sort(self):
-        self.arr=sorted(self.arr, key=lambda c: c.name,  reverse=False)         
+#    def find(self, id):
+#        for a in self.arr:
+#            if a.id==id:
+#                return a
+#                
+#    def sort(self):
+#        self.arr=sorted(self.arr, key=lambda c: c.name,  reverse=False)         
     
             
     def union(self,  list2):
