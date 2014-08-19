@@ -201,7 +201,7 @@ class wdgInvestmentClasses(QWidget, Ui_wdgInvestmentClasses):
         data=[]
         explode=[]
                 
-        for c in self.mem.countries.list():
+        for c in self.mem.countries.arr:
             total=0
             for i in self.mem.data.investments_active.arr:
                 if i.product.stockexchange.country==c:
