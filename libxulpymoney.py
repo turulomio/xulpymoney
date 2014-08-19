@@ -62,17 +62,28 @@ class SetCommons:
     def length(self):
         return len(self.arr)
         
-    def find_by_dict(self, id):
+    def find(self, id,  log=False):
         """Finds by id"""
         try:
             return self.dic_arr[str(id)]    
         except:
-            print ("SetCommons ({}) fails finding {}".format(self.__class__.__name__, id))
+            if log:
+                print ("SetCommons ({}) fails finding {}".format(self.__class__.__name__, id))
 #            print ("Find_by_arr {}".format(self.find_by_arr(id)))
             return None
             
-    def find(self, id,  log=False):
-        """log permite localizar errores en find. Ojo hay veces que hay find fallidos buscados como en UNION"""
+    def find_by_arr(self, id,  log=False):
+        """log permite localizar errores en find. Ojo hay veces que hay find fallidos buscados como en UNION
+                inicio=datetime.datetime.now()
+        self.mem.data.products_all().find(80230)
+        print (datetime.datetime.now()-inicio)
+        self.mem.agrupations.find_by_arr(80230)
+        print (datetime.datetime.now()-inicio)
+        Always fister find_by_dict
+        0:00:00.000473
+        0:00:00.000530
+
+        """
         for a in self.arr:
             if a.id==id:
                 return a
