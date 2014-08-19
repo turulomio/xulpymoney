@@ -38,7 +38,7 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
         self.calPago.setDate(QDate.currentDate())
         
         self.mem.currencies.qcombobox(self.cmbCurrency)
-        self.mem.data.ebs_active.qcombobox(self.cmbEB)
+        self.mem.data.banks_active.qcombobox(self.cmbEB)
                     
         if self.selAccount==None:
             self.lblTitulo.setText(self.trUtf8("New account data"))
@@ -154,11 +154,11 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
         currency=self.cmbCurrency.itemData(self.cmbCurrency.currentIndex())
 
         if self.selAccount==None:
-            cu=Account(self.mem).init__create(cuenta, self.mem.data.ebs_active.find(id_entidadesbancarias), cu_activa, numerocuenta, self.mem.currencies.find(currency))
+            cu=Account(self.mem).init__create(cuenta, self.mem.data.banks_active.find(id_entidadesbancarias), cu_activa, numerocuenta, self.mem.currencies.find(currency))
             cu.save()
-            self.mem.data.cuentas_active.append(cu) #Always to active
+            self.mem.data.accounts_active.append(cu) #Always to active
         else:
-            self.selAccount.eb=self.mem.data.ebs_active.find(id_entidadesbancarias)
+            self.selAccount.eb=self.mem.data.banks_active.find(id_entidadesbancarias)
             self.selAccount.name=cuenta
             self.selAccount.numero=numerocuenta
             self.selAccount.activa=cu_activa
@@ -199,7 +199,7 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
 
     @QtCore.pyqtSlot() 
     def on_actionOperationAdd_activated(self):
-        w=frmAccountOperationsAdd(self.mem, self.mem.data.cuentas_active,  self.selAccount, None, None)
+        w=frmAccountOperationsAdd(self.mem, self.mem.data.accounts_active,  self.selAccount, None, None)
         self.connect(w, SIGNAL("OperAccountIBMed"), self.on_wdgYM_changed)
         w.exec_()
         self.load_tblOperaciones()
@@ -215,11 +215,11 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
         
         if self.selOperAccount.concepto.id==4:#Tranfer origin
             account_origin=self.selAccount
-            account_destiny=self.mem.data.cuentas_all().find(int(self.selOperAccount.comentario.split("|")[0]))
+            account_destiny=self.mem.data.accounts_all().find(int(self.selOperAccount.comentario.split("|")[0]))
             oc_comision_id=int(self.selOperAccount.comentario.split("|")[2])
     
         if self.selOperAccount.concepto.id==5:#Tranfer destiny
-            account_origin=self.mem.data.cuentas_all().find(int(self.selOperAccount.comentario.split("|")[0]))
+            account_origin=self.mem.data.accounts_all().find(int(self.selOperAccount.comentario.split("|")[0]))
             account_destiny=self.selAccount
             oc_comision_id=int(oc_other.comentario.split("|")[2])
             
@@ -239,7 +239,7 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
         
     @QtCore.pyqtSlot() 
     def on_actionOperationEdit_activated(self):
-        w=frmAccountOperationsAdd(self.mem, self.mem.data.cuentas_active,  self.selAccount, self.selOperAccount, None)
+        w=frmAccountOperationsAdd(self.mem, self.mem.data.accounts_active,  self.selAccount, self.selOperAccount, None)
         self.connect(w, SIGNAL("OperAccountIBMed"), self.on_wdgYM_changed)#Actualiza movimientos como si cmd
         w.exec_()
         self.load_tblOperaciones()
@@ -258,13 +258,13 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
     @QtCore.pyqtSlot() 
     def on_actionCreditCardOperAdd_activated(self):
         if self.selCreditCard.pagodiferido==False:
-            w=frmAccountOperationsAdd(self.mem, self.mem.data.cuentas_active, self.selAccount, None)
+            w=frmAccountOperationsAdd(self.mem, self.mem.data.accounts_active, self.selAccount, None)
             self.connect(w, SIGNAL("OperAccountIBMed"), self.on_wdgYM_changed)
             w.lblTitulo.setText(self.selCreditCard.name)
             w.txtComentario.setText(self.tr("CreditCard {0}. ").format(self.selCreditCard.name))
             w.exec_()
         else:            
-            w=frmAccountOperationsAdd(self.mem, self.mem.data.cuentas_active,  self.selAccount, None, self.selCreditCard)
+            w=frmAccountOperationsAdd(self.mem, self.mem.data.accounts_active,  self.selAccount, None, self.selCreditCard)
             self.connect(w, SIGNAL("OperCreditCardIBMed"), self.load_tabOperCreditCards)
             w.lblTitulo.setText(self.tr("CreditCard {0}").format(self.selCreditCard.name))
             w.exec_()
@@ -274,7 +274,7 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
         #Como es unico
         for s in self.setSelOperCreditCards:
             selOperCreditCard=s
-        w=frmAccountOperationsAdd(self.mem, self.mem.data.cuentas_active,  self.selAccount, None, self.selCreditCard, selOperCreditCard)
+        w=frmAccountOperationsAdd(self.mem, self.mem.data.accounts_active,  self.selAccount, None, self.selCreditCard, selOperCreditCard)
         self.connect(w, SIGNAL("OperCreditCardIBMed"), self.load_tabOperCreditCards)
         w.lblTitulo.setText(self.tr("CreditCard {0}").format(self.selCreditCard.name))
         w.exec_()

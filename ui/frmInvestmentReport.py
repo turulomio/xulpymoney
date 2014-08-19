@@ -32,7 +32,7 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
         self.cmdInvestment.setEnabled(False)                                                                                                                                                                                            
         self.connect(self.ise.cmd,SIGNAL('released()'),  self.on_cmdISE_released)         
         
-        self.mem.data.cuentas_active.qcombobox(self.cmbAccount)
+        self.mem.data.accounts_active.qcombobox(self.cmbAccount)
         
         if self.inversion==None:
             self.tipo=1
@@ -240,17 +240,17 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
         mystocksid=int(self.ise.selected.id)
         
         
-        if self.mem.data.investments_active.find(mystocksid)==None:
+        if self.mem.data.products_active.find(mystocksid)==None:
             print ("Cargando otro mqinversiones")
             inv=Product(self.mem).init__db(mystocksid)
             inv.estimations_dps.load_from_db()
             inv.result.basic.load_from_db()
-            self.mem.data.investments_active.arr.append(inv)
+            self.mem.data.products_active.arr.append(inv)
             
         
 
         if self.tipo==1:        #insertar
-            i=Investment(self.mem).create(inversion,   venta,  self.mem.data.cuentas_active.find(id_cuentas),  self.mem.data.investments_active.find(mystocksid))      
+            i=Investment(self.mem).create(inversion,   venta,  self.mem.data.accounts_active.find(id_cuentas),  self.mem.data.products_active.find(mystocksid))      
             i.save()
             self.mem.con.commit()
             ##Se añade a mem y vincula. No carga datos porque mystocksid debe existir            
@@ -262,7 +262,7 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
         elif self.tipo==2:
             self.inversion.name=inversion
             self.inversion.venta=venta
-            self.inversion.product=self.mem.data.investments_active.find(mystocksid)
+            self.inversion.product=self.mem.data.products_active.find(mystocksid)
             self.inversion.save()##El id y el id_cuentas no se pueden modificar
             self.mem.con.commit()
             self.cmdInvestment.setEnabled(False)

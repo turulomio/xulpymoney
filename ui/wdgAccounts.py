@@ -10,7 +10,7 @@ class wdgAccounts(QWidget, Ui_wdgAccounts):
         self.setupUi(self)
         self.mem=mem
         self.tblAccounts.settings("wdgAccounts",  self.mem)
-        self.cuentas=self.mem.data.cuentas_active
+        self.cuentas=self.mem.data.accounts_active
         self.selAccount=None
         self.load_table()
 
@@ -56,17 +56,17 @@ class wdgAccounts(QWidget, Ui_wdgAccounts):
             self.selAccount.borrar(cur)
             self.mem.con.commit()
             #Only can't be deleted an active account, so I remove from active set
-            self.mem.data.cuentas_active.remove(self.selAccount)
+            self.mem.data.accounts_active.remove(self.selAccount)
         cur.close()
         self.on_chkInactivas_stateChanged(self.chkInactivas.checkState())
         self.load_table()
         
     def on_chkInactivas_stateChanged(self, state):
         if state==Qt.Unchecked:
-            self.cuentas=self.mem.data.cuentas_active
+            self.cuentas=self.mem.data.accounts_active
         else:
             self.mem.data.load_inactives()
-            self.cuentas=self.mem.data.cuentas_inactive
+            self.cuentas=self.mem.data.accounts_inactive
         self.load_table()
         
 
@@ -106,11 +106,11 @@ class wdgAccounts(QWidget, Ui_wdgAccounts):
         self.mem.con.commit()     
         #Recoloca en los Setcuentas
         if self.selAccount.activa==True:#Está todavía en inactivas
-            self.mem.data.cuentas_active.arr.append(self.selAccount)
-            self.mem.data.cuentas_inactive.arr.remove(self.selAccount)
+            self.mem.data.accounts_active.arr.append(self.selAccount)
+            self.mem.data.accounts_inactive.arr.remove(self.selAccount)
         else:#Está todavía en activas
-            self.mem.data.cuentas_active.arr.remove(self.selAccount)
-            self.mem.data.cuentas_inactive.arr.append(self.selAccount)    
+            self.mem.data.accounts_active.arr.remove(self.selAccount)
+            self.mem.data.accounts_inactive.arr.append(self.selAccount)    
         self.load_table()
 
     @QtCore.pyqtSlot()  

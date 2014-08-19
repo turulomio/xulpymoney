@@ -152,9 +152,9 @@ class frmMain(QMainWindow, Ui_frmMain):
     def on_actionReloadPrices_activated(self):
         ##Selecting products to update
         if self.mem.data.loaded_inactive==False:
-            products=self.mem.data.investments_active
+            products=self.mem.data.products_active
         else:
-            products=self.mem.data.investments_all()
+            products=self.mem.data.products_all()
         
         pd= QProgressDialog(self.tr("Reloading {0} product prices from database").format(len(products.arr)),None, 0,len(products.arr))
         pd.setModal(True)

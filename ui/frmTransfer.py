@@ -13,8 +13,8 @@ class frmTransfer(QDialog, Ui_frmTransfer):
         self.origen=origen
         self.destino=destino
         
-        self.mem.data.cuentas_active.qcombobox(self.cmbOrigen,  origen)
-        self.mem.data.cuentas_active.qcombobox(self.cmbDestino,  destino)
+        self.mem.data.accounts_active.qcombobox(self.cmbOrigen,  origen)
+        self.mem.data.accounts_active.qcombobox(self.cmbDestino,  destino)
         self.wdgDT.show_microseconds(False)
         self.wdgDT.set(self.mem)
 
@@ -38,7 +38,7 @@ class frmTransfer(QDialog, Ui_frmTransfer):
             m.exec_()             
             return 
             
-        Account(self.mem).transferencia(self.wdgDT.datetime(),  self.mem.data.cuentas_active.find(id_origen), self.mem.data.cuentas_active.find(id_destino),  importe,  comision)
+        Account(self.mem).transferencia(self.wdgDT.datetime(),  self.mem.data.accounts_active.find(id_origen), self.mem.data.accounts_active.find(id_destino),  importe,  comision)
         self.mem.con.commit()##Para commit la transferencia   
         
         self.done(0)
