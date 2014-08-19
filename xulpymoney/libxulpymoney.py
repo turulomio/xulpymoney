@@ -667,31 +667,31 @@ class SetAccountOperations:
             tabla.setItem(rownumber, 3+diff, self.mem.localcurrency.qtablewidgetitem(balance))
             tabla.setItem(rownumber, 4+diff, qleft(a.comentario))
 
-class SetCurrencies:
+class SetCurrencies(SetCommons):
     def __init__(self, mem):
-        self.dic_arr={}
+        SetCommons.__init__(self)
         self.mem=mem   
     
     def load_all(self):
-        self.dic_arr["CNY"]=Currency().init__create(QApplication.translate("Core","Chinese Yoan"), "¥", 'CNY')
-        self.dic_arr['EUR']=Currency().init__create(QApplication.translate("Core","Euro"), "€", "EUR")
-        self.dic_arr['GBP']=Currency().init__create(QApplication.translate("Core","Pound"),"£", 'GBP')
-        self.dic_arr['JPY']=Currency().init__create(QApplication.translate("Core","Japones Yen"), '¥', "JPY")
-        self.dic_arr['USD']=Currency().init__create(QApplication.translate("Core","American Dolar"), '$', 'USD')
-        self.dic_arr['u']=Currency().init__create(QApplication.translate("Core","Units"), 'u', 'u')
+        self.append(Currency().init__create(QApplication.translate("Core","Chinese Yoan"), "¥", 'CNY'))
+        self.append(Currency().init__create(QApplication.translate("Core","Euro"), "€", "EUR"))
+        self.append(Currency().init__create(QApplication.translate("Core","Pound"),"£", 'GBP'))
+        self.append(Currency().init__create(QApplication.translate("Core","Japones Yen"), '¥', "JPY"))
+        self.append(Currency().init__create(QApplication.translate("Core","American Dolar"), '$', 'USD'))
+        self.append(Currency().init__create(QApplication.translate("Core","Units"), 'u', 'u'))
 
-    def list(self):
-        """Devuelve una lista ordenada por id"""
-        currencies=dic2list(self.dic_arr)
-        currencies=sorted(currencies, key=lambda c: c.id,  reverse=False)         
-        return currencies
+#    def list(self):
+#        """Devuelve una lista ordenada por id"""
+#        currencies=dic2list(self.dic_arr)
+#        currencies=sorted(currencies, key=lambda c: c.id,  reverse=False)         
+#        return currencies
 
-    def find(self, id):
-        return self.dic_arr[str(id)]
+#    def find(self, id):
+#        return self.dic_arr[str(id)]
 
     def qcombobox(self, combo, selectedcurrency=None):
         """Función que carga en un combo pasado como parámetro las currencies"""
-        for c in self.list():
+        for c in self.arr:
             combo.addItem("{0} - {1} ({2})".format(c.id, c.name, c.symbol), c.id)
         if selectedcurrency!=None:
                 combo.setCurrentIndex(combo.findData(selectedcurrency.id))
