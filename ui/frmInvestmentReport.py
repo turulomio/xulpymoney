@@ -183,7 +183,7 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
 
     @QtCore.pyqtSlot() 
     def on_actionSharesTransferUndo_activated(self):
-        if self.mem.data.inversiones_active.traspaso_valores_deshacer(self.selMovimiento)==False:
+        if self.mem.data.investments_active.traspaso_valores_deshacer(self.selMovimiento)==False:
             m=QMessageBox()
             m.setIcon(QMessageBox.Information)
             m.setText(self.tr("Shares transfer couldn't be done."))
@@ -257,7 +257,7 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
             #Lo añade con las operaciones vacias pero calculadas.
             i.op=SetInvestmentOperations(self.mem)
             (i.op_actual, i.op_historica)=i.op.calcular()
-            self.mem.data.inversiones_active.arr.append(i)
+            self.mem.data.investments_active.arr.append(i)
             self.done(0)
         elif self.tipo==2:
             self.inversion.name=inversion

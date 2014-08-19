@@ -52,23 +52,33 @@ class SetCommons:
         self.selected=None#Used to select a item in the set. Usefull in tables. Its a item
     
     def append(self,  obj):
-        self.dic_arr[str(obj.id)]=obj
         self.arr.append(obj)
+        self.dic_arr[str(obj.id)]=obj
         
     def remove(self, obj):
-        del self.dic_arr[str(obj.id)]
         self.arr.remove(obj)
+        del self.dic_arr[str(obj.id)]
         
     def length(self):
         return len(self.arr)
         
-    def find(self, id):
+    def find_by_dict(self, id):
         """Finds by id"""
         try:
             return self.dic_arr[str(id)]    
         except:
             print ("SetCommons ({}) fails finding {}".format(self.__class__.__name__, id))
+#            print ("Find_by_arr {}".format(self.find_by_arr(id)))
             return None
+            
+    def find(self, id,  log=False):
+        """log permite localizar errores en find. Ojo hay veces que hay find fallidos buscados como en UNION"""
+        for a in self.arr:
+            if a.id==id:
+                return a
+        if log:
+            print ("SetCommons ({}) fails finding {}".format(self.__class__.__name__, id))
+        return None
                 
     def sort_by_id(self):
         """Orders the Set using self.arr"""
@@ -94,8 +104,10 @@ class SetCommons:
                 
     def clean(self):
         """Deletes all items"""
-        for a in self.arr:
-            self.remove(a)
+        self.arr=[]
+        self.dic_arr={}
+#        for a in self.arr:
+#            self.remove(a)
                 
     def clone(self,  *initparams):
         """Returns other Set object, with items referenced, ojo con las formas de las instancias
@@ -112,7 +124,7 @@ class SetCommons:
         for p in self.arr:
             resultado.append(p)
         for p in set.arr:
-            if resultado.find(p.id)==None:
+            if resultado.find(p.id, False)==None:
                 resultado.append(p)
         return resultado
 
@@ -704,7 +716,7 @@ class SetDividends:
         cur=self.mem.con.cursor()
         cur.execute( sql)#"select * from dividends where id_inversiones=%s order by fecha", (self.inversion.id, )
         for row in cur:
-            inversion=self.mem.data.inversiones_all().find(row['id_inversiones'])
+            inversion=self.mem.data.investments_all().find(row['id_inversiones'])
             oc=AccountOperation(self.mem).init__db_query(row['id_opercuentas'])
             self.arr.append(Dividend(self.mem).init__db_row(row, inversion, oc, self.mem.conceptos.find(row['id_conceptos']) ))
         cur.close()      
@@ -874,8 +886,8 @@ class SetEstimationsEPS:
 class SetBanks(SetCommons):
     def __init__(self, mem):
         SetCommons.__init__(self)
-#        self.arr=[]
         self.mem=mem   
+
     def load_from_db(self, sql):
         cur=self.mem.con.cursor()
         cur.execute(sql)#"select * from entidadesbancarias"
@@ -883,25 +895,6 @@ class SetBanks(SetCommons):
             self.append(Bank(self.mem).init__db_row(row))
         cur.close()            
         
-#    def find(self, id):
-#        for a in self.arr:
-#            if a.id==id:
-#                return a
-                   
-#    def qcombobox(self, combo):
-#        """Carga entidades bancarias en combo. Es un SetBanks"""
-#        self.sort()
-#        for e in self.arr:
-#            combo.addItem(e.name, e.id)   
-#            
-#    def sort(self):       
-#        self.arr=sorted(self.arr, key=lambda e: e.name,  reverse=False) 
-        
-#    def union(self,  list2):
-#        """Devuelve un SetBanks con la union del set1 y del set2"""
-#        resultado=SetBanks(self.mem)
-#        resultado.arr=self.arr+list2.arr
-#        return resultado
 
 class SetInvestmentOperations:       
     """Clase es un array ordenado de objetos newInvestmentOperation"""
@@ -1921,8 +1914,8 @@ class DBData:
         self.tarjetas_active.load_from_db("select * from tarjetas where tj_activa=true")
         self.products_active=SetProducts(self.mem)
         self.products_active.load_from_inversiones_query("select distinct(mystocksid) from inversiones where in_activa=true")
-        self.inversiones_active=SetInvestments(self.mem, self.accounts_active, self.products_active, self.benchmark)
-        self.inversiones_active.load_from_db("select * from inversiones where in_activa=true", True)
+        self.investments_active=SetInvestments(self.mem, self.accounts_active, self.products_active, self.benchmark)
+        self.investments_active.load_from_db("select * from inversiones where in_activa=true", True)
 #        if not self.tupdatedata.isAlive():#Necesary because, can be thrown from actionUpdateMemory
 #            self.tupdatedata.start()        
         print("Cargando actives",  datetime.datetime.now()-inicio)
@@ -1933,18 +1926,18 @@ class DBData:
             
             self.banks_inactive=SetBanks(self.mem)
             self.banks_inactive.load_from_db("select * from entidadesbancarias where eb_activa=false")
-            
+
             self.accounts_inactive=SetAccounts(self.mem, self.banks_all())
             self.accounts_inactive.load_from_db("select * from cuentas where cu_activa=false")
-            
+        
             self.tarjetas_inactive=SetCreditCards(self.mem, self.accounts_all())
             self.tarjetas_inactive.load_from_db("select * from tarjetas where tj_activa=false")
             
             self.products_inactive=SetProducts(self.mem)
             self.products_inactive.load_from_inversiones_query("select distinct(mystocksid) from inversiones where in_activa=false")
 
-            self.inversiones_inactive=SetInvestments(self.mem, self.accounts_all(), self.products_all(), self.benchmark)
-            self.inversiones_inactive.load_from_db("select * from inversiones where in_activa=false",  True)
+            self.investments_inactive=SetInvestments(self.mem, self.accounts_all(), self.products_all(), self.benchmark)
+            self.investments_inactive.load_from_db("select * from inversiones where in_activa=false",  True)
             
             print("\n","Cargando inactives",  datetime.datetime.now()-inicio)
             self.loaded_inactive=True
@@ -1964,12 +1957,16 @@ class DBData:
         
     def banks_all(self):
         return self.banks_active.union(self.banks_inactive, self.mem)
+        
     def accounts_all(self):
         return self.accounts_active.union(self.accounts_inactive, self.mem, self.banks_all())
+        
     def tarjetas_all(self):
         return self.tarjetas_active.union(self.tarjetas_inactive, self.mem,  self.accounts_all())
-    def inversiones_all(self):
-        return self.inversiones_active.union(self.inversiones_inactive, self.mem, self.accounts_all(), self.products_all(), self.benchmark)
+        
+    def investments_all(self):
+        return self.investments_active.union(self.investments_inactive, self.mem, self.accounts_all(), self.products_all(), self.benchmark)
+        
     def products_all(self):
         return self.products_active.union(self.products_inactive, self.mem)
     
@@ -1977,33 +1974,30 @@ class DBData:
     def banks_set(self, active):
         """Function to point to list if is active or not"""
         if active==True:
-            return self.accounts_active
+            return self.banks_active
         else:
             self.load_inactives()
-            return self.accounts_inactive    
+            return self.banks_inactive    
             
     def accounts_set(self, active):
         """Function to point to list if is active or not"""
         if active==True:
             return self.accounts_active
         else:
-            self.load_inactives()
             return self.accounts_inactive    
     
     def investments_set(self, active):
         """Function to point to list if is active or not"""
         if active==True:
-            return self.inversiones_active
+            return self.investments_active
         else:
-            self.load_inactives()
-            return self.inversiones_inactive
+            return self.investments_inactive
             
     def products_set(self, active):
         """Function to point to list if is active or not"""
         if active==True:
             return self.products_active
         else:
-            self.load_inactives()
             return self.products_inactive            
             
     def creditcards_set(self, active):
@@ -2011,7 +2005,6 @@ class DBData:
         if active==True:
             return self.tarjetas_active
         else:
-            self.load_inactives()
             return self.tarjetas_inactive
 
         
@@ -2263,20 +2256,19 @@ class Bank:
                 resultado=resultado+i.balance()
         return resultado
         
-    def es_borrable(self, dic_cuentas):
+    def es_borrable(self):
         """Función que devuelve un booleano si una cuenta es borrable, es decir, que no tenga registros dependientes."""
         #Recorre balance cuentas
-        for k, v in dic_cuentas.items():
-            if v.eb.id==self.id:
-                return False
+        for c  in self.mem.data.accounts_all().arr:
+            if c.eb.id==self.id:
+                if c.es_borrable()==self.id:
+                    return False
         return True
         
-    def borrar(self,dic_cuentas):
-        """Función que borra una vez comprobado que es variable
-        dic_cuentas es el diccionario de todas las cuentas de la applicación"""
+    def borrar(self):
+        """Función que borra. You must use es_borrable before"""
         cur=self.mem.con.cursor()
-        if self.es_borrable(dic_cuentas)==True:
-            cur.execute("delete from entidadesbancarias where id_entidadesbancarias=%s", (self.id, ))  
+        cur.execute("delete from entidadesbancarias where id_entidadesbancarias=%s", (self.id, ))  
         cur.close()
             
 class Account:
@@ -2343,21 +2335,26 @@ class Account:
             cur.execute("update cuentas set cuenta=%s, id_entidadesbancarias=%s, numerocuenta=%s, cu_activa=%s, currency=%s where id_cuentas=%s", (self.name, self.eb.id, self.numero, self.activa, self.currency.id, self.id))
         cur.close()
 
-    def es_borrable(self, cur):
+    def es_borrable(self):
         """Función que devuelve un booleano si una cuenta es borrable, es decir, que no tenga registros dependientes."""
+        cur=self.mem.con.cursor()
         cur.execute("select count(*) from tarjetas where id_cuentas=%s", (self.id, ))
         if cur.fetchone()[0]!=0:
+            cur.close()
             return False
         cur.execute("select count(*) from inversiones where id_cuentas=%s", (self.id, ))
         if cur.fetchone()[0]!=0:
+            cur.close()
             return False
         cur.execute("select count(*) from opercuentas where id_cuentas=%s", (self.id, ))
         if cur.fetchone()[0]!=0:
+            cur.close()
             return False
+        cur.close()
         return True
         
     def borrar(self, cur):
-        if self.es_borrable(cur)==True:
+        if self.es_borrable()==True:
             cur.execute("delete from cuentas where id_cuentas=%s", (self.id, ))
 
     def transferencia(self, datetime, cuentaorigen, cuentadestino, importe, comision):
@@ -2800,7 +2797,7 @@ class Assets:
         """
         resultado=0
 #        inicio=datetime.datetime.now()
-        for inv in self.mem.data.inversiones_all().arr:
+        for inv in self.mem.data.investments_all().arr:
             if inv.product.type.id in (7, 9):#public and private bonds        
                 if fecha==None:
                     resultado=resultado+inv.balance()
@@ -3007,8 +3004,8 @@ class SetAgrupations(SetCommons):
     def find(self, id):
         r=super(SetAgrupations, self).find(id)
         if r==None:
-            print ("Error finding Agrupation {}".format(id))
-            return self.find("ERROR")
+#            print ("Error finding Agrupation {}".format(id))
+            return self.dic_arr["ERROR"]
         else:
             return r
         
@@ -5511,7 +5508,7 @@ class Maintenance:
         
     def regenera_todas_opercuentasdeoperinversiones(self):
         self.mem.data.load_inactives()
-        for inv in self.mem.data.inversiones_all().arr:
+        for inv in self.mem.data.investments_all().arr:
             print (inv)
             inv.actualizar_cuentasoperaciones_asociadas()
         self.mem.con.commit()        
@@ -5522,7 +5519,7 @@ class Maintenance:
         datet=dt(date, datetime.time(22, 00), self.mem.localzone)
         sumbalance=0
         print ("{0:<40s} {1:>15s} {2:>15s} {3:>15s}".format("Investments at {0}".format(date), "Shares", "Price", "Balance"))
-        for inv in self.mem.data.inversiones_all().arr:
+        for inv in self.mem.data.investments_all().arr:
             balance=inv.balance(date)
             sumbalance=sumbalance+balance
             acciones=inv.acciones(date)

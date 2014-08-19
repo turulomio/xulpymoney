@@ -129,7 +129,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         sumconsolidado=0
         (sumdiferencia, sumsaldoaccionescostecero)=(0, 0)
         
-        totallastmonth=Assets(self.mem).saldo_total(self.mem.data.inversiones_all(),  datetime.date(self.wyData.year-1, 12, 31))#Mes de 12 31 año anteriro
+        totallastmonth=Assets(self.mem).saldo_total(self.mem.data.investments_all(),  datetime.date(self.wyData.year-1, 12, 31))#Mes de 12 31 año anteriro
         self.lblPreviousYear.setText(self.trUtf8("Balance at {0}-12-31: {1}".format(self.wyData.year-1, self.mem.localcurrency.string(totallastmonth))))
         inicioano=totallastmonth
 
@@ -137,7 +137,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
             gastos=Assets(self.mem).saldo_por_tipo_operacion( self.wyData.year,i+1,1)#La facturación de tarjeta dentro esta por el union
             dividends=Investment(self.mem).dividends_neto(  self.wyData.year, i+1)
             ingresos=Assets(self.mem).saldo_por_tipo_operacion(  self.wyData.year,i+1,2)-dividends #Se quitan los dividends que luego se suman
-            consolidado=Assets(self.mem).consolidado_neto(self.mem.data.inversiones_all(), self.wyData.year, i+1)
+            consolidado=Assets(self.mem).consolidado_neto(self.mem.data.investments_all(), self.wyData.year, i+1)
             gi=ingresos+dividends+consolidado+gastos
             self.sumpopup[i]=consolidado+dividends
             
@@ -156,7 +156,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
             else:
                 fecha=datetime.date (self.wyData.year, i+1, calendar.monthrange(self.wyData.year, i+1)[1])#Último día de mes.
                 cuentas=Assets(self.mem).saldo_todas_cuentas( fecha)
-                inversiones=Assets(self.mem).saldo_todas_inversiones(self.mem.data.inversiones_all(),  fecha)
+                inversiones=Assets(self.mem).saldo_todas_inversiones(self.mem.data.investments_all(),  fecha)
                 total=cuentas+inversiones
                 diferencia=total-totallastmonth
                 sumdiferencia=sumdiferencia+diferencia
@@ -222,8 +222,8 @@ class wdgTotal(QWidget, Ui_wdgTotal):
                     date=datetime.date.today()
                 if date.month>datetime.date.today().month and date.year>=datetime.date.today().year:
                     break
-                data.append( (date,Assets(self.mem).saldo_total(self.mem.data.inversiones_all(), date)) )
-                zero.append( (date,Assets(self.mem).patrimonio_riesgo_cero(self.mem.data.inversiones_all(), date) ))
+                data.append( (date,Assets(self.mem).saldo_total(self.mem.data.investments_all(), date)) )
+                zero.append( (date,Assets(self.mem).patrimonio_riesgo_cero(self.mem.data.investments_all(), date) ))
                 bonds.append( (date,Assets(self.mem).saldo_todas_inversiones_bonds(date) ))
         self.canvas.mydraw(self.mem, data, zero,  bonds)
         print ("wdgTotal > load_graphic: {0}".format(datetime.datetime.now()-inicio))
@@ -260,7 +260,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         horizontalLayout = QHBoxLayout(newtab)
         table = myQTableWidget(newtab)
         set=SetInvestmentOperationsHistorical(self.mem)
-        for i in self.mem.data.inversiones_all().arr:
+        for i in self.mem.data.investments_all().arr:
             for o in i.op_historica.arr:
                 if o.fecha_venta.year==self.wyData.year and o.fecha_venta.month==self.month and o.tipooperacion.id in (5, 8):#Venta y traspaso fondos inversion
                     set.arr.append(o)

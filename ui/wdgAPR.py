@@ -45,11 +45,11 @@ class wdgAPR(QWidget, Ui_wdgAPR):
             else:
                 self.progress.setValue(self.progress.value()+1)                     
             si=lastsaldo
-            sf=Assets(self.mem).saldo_total(self.mem.data.inversiones_all(),  datetime.date(i, 12, 31))
+            sf=Assets(self.mem).saldo_total(self.mem.data.investments_all(),  datetime.date(i, 12, 31))
             gastos=Assets(self.mem).saldo_anual_por_tipo_operacion( i,1)#+Assets(self.mem).saldo_anual_por_tipo_operacion (cur,i, 7)#Gastos + Facturación de tarjeta
             dividends=Investment(self.mem).dividends_bruto( i)
             ingresos=Assets(self.mem).saldo_anual_por_tipo_operacion(  i,2)-dividends #Se quitan los dividends que luego se suman
-            consolidado=Assets(self.mem).consolidado_neto(self.mem.data.inversiones_all(),  i)
+            consolidado=Assets(self.mem).consolidado_neto(self.mem.data.investments_all(),  i)
 
             gi=ingresos+dividends+consolidado+gastos     
             self.table.setItem(i-anoinicio, 0, qcenter(str(i)))
