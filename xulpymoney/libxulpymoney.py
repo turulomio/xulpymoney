@@ -385,6 +385,7 @@ class SetCommons:
         return len(self.arr)
         
     def find(self, id):
+        """Finds by id"""
         try:
             return self.dic_arr[str(id)]    
         except:
@@ -410,6 +411,25 @@ class SetCommons:
 
         if selected!=None:
                 combo.setCurrentIndex(combo.findData(selected.id))
+                
+    def clone(self,  *initparams):
+        """Returns other Set object, with items referenced, ojo con las formas de las instancias
+        initparams son los parametros de iniciaci´on de la clase"""
+        result=self.__class__(*initparams)#Para que coja la clase del objeto que lo invoca
+        for a in self.arr:
+            result.append(a)
+        return result
+        
+    def union(self,  set,  *initparams):
+        """Returns a new set, with the union comparing id
+        initparams son los parametros de iniciaci´on de la clse"""        
+        resultado=self.__class__(*initparams)#Para que coja la clase del objeto que lo invoca
+        for p in self.arr:
+            resultado.append(p)
+        for p in set.arr:
+            if resultado.find(p.id)==None:
+                resultado.append(p)
+        return resultado
 
 class SetConcepts:      
     def __init__(self, mem):
@@ -440,6 +460,7 @@ class SetConcepts:
             combo.addItem("{0} -- {1}".format(  c.name,  c.tipooperacion.name),  c.id   )
         if select!=None:
             combo.setCurrentIndex(combo.findData(select.id))
+
     def load_bonds_qcombobox(self, combo,  select=None):
         """Carga conceptos operaciones 1,2,3"""
         for n in (50, 63, 65, 66):
@@ -447,7 +468,7 @@ class SetConcepts:
             combo.addItem("{0} -- {1}".format(  c.name,  c.tipooperacion.name),  c.id )
         if select!=None:
             combo.setCurrentIndex(combo.findData(select.id))
-            
+
     def considered_dividends_in_totals(self):
         """El 63 es pago de cupon corrido y no es considerado dividend  a efectos de totales, sino gasto."""
         return[39, 50, 62, 65, 66]
@@ -586,11 +607,11 @@ class SetAccounts(SetCommons):
 #        self.arr=sorted(self.arr, key=lambda c: c.name,  reverse=False)         
     
             
-    def union(self,  list2):
-        """Devuelve un SetBanks con la union del set1 y del set2"""
-        resultado=SetAccounts(self.mem, self.ebs)
-        resultado.arr=self.arr+list2.arr
-        return resultado
+#    def union(self,  list2):
+#        """Devuelve un SetBanks con la union del set1 y del set2"""
+#        resultado=SetAccounts(self.mem, self.ebs)
+#        resultado.arr=self.arr+list2.arr
+#        return resultado
 
 class SetAccountOperations:
     """Clase es un array ordenado de objetos newInvestmentOperation"""
@@ -1854,7 +1875,6 @@ class AccountOperation:
         elif self.concepto.id==5 and len(c)==2:#Transfer received in destiny
             return QApplication.translate("Core", "Transfer received from {0}".format(self.mem.data.cuentas_all().find(int(c[0])).name))
         elif self.concepto.id==38 and c[0]=="Transfer":#Comision bancaria por transferencia
-            print (c[2])
             return QApplication.translate("Core", "Due to account transfer of {0} from {1}".format(self.mem.localcurrency.string(float(c[1])), self.mem.data.cuentas_all().find(int(c[2])).name))
         else:
             return self.comentario 
@@ -1960,7 +1980,7 @@ class DBData:
     def ebs_all(self):
         return self.ebs_active.union(self.ebs_inactive)
     def cuentas_all(self):
-        return self.cuentas_active.union(self.cuentas_inactive)
+        return self.cuentas_active.union(self.cuentas_inactive, self.mem, self.ebs_all())
     def tarjetas_all(self):
         return self.tarjetas_active.union(self.tarjetas_inactive,  self.cuentas_all())
     def inversiones_all(self):

@@ -55,8 +55,8 @@ class wdgAccounts(QWidget, Ui_wdgAccounts):
         else:
             self.selAccount.borrar(cur)
             self.mem.con.commit()
+            #Only can't be deleted an active account, so I remove from active set
             self.mem.data.cuentas_active.remove(self.selAccount)
-            self.cuentas.remove(self.selAccount)
         cur.close()
         self.on_chkInactivas_stateChanged(self.chkInactivas.checkState())
         self.load_table()
