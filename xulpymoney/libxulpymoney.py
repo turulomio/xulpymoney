@@ -552,42 +552,33 @@ class SetConcepts(SetCommons):
 #        self.dic_arr=new
 
 
-class SetCountries:
+class SetCountries(SetCommons):
     def __init__(self, mem):
-        self.dic_arr={}
+        SetCommons.__init__(self)
         self.mem=mem   
         
     def load_all(self):
-        self.dic_arr['es']=Country().init__create("es",QApplication.translate("Core","Spain"))
-        self.dic_arr['be']=Country().init__create("be",QApplication.translate("Core","Belgium"))
-        self.dic_arr['cn']=Country().init__create("cn",QApplication.translate("Core","China"))
-        self.dic_arr['de']=Country().init__create("de",QApplication.translate("Core","Germany"))
-        self.dic_arr['en']=Country().init__create("en",QApplication.translate("Core","United Kingdom"))
-        self.dic_arr['eu']=Country().init__create("eu",QApplication.translate("Core","Europe"))
-        self.dic_arr['fi']=Country().init__create("fi",QApplication.translate("Core","Finland"))
-        self.dic_arr['fr']=Country().init__create("fr",QApplication.translate("Core","France"))
-        self.dic_arr['ie']=Country().init__create("ie",QApplication.translate("Core","Ireland"))
-        self.dic_arr['it']=Country().init__create("it",QApplication.translate("Core","Italy"))
-        self.dic_arr['jp']=Country().init__create("jp",QApplication.translate("Core","Japan"))
-        self.dic_arr['nl']=Country().init__create("nl",QApplication.translate("Core","Netherlands"))
-        self.dic_arr['pt']=Country().init__create("pt",QApplication.translate("Core","Portugal"))
-        self.dic_arr['us']=Country().init__create("us",QApplication.translate("Core","United States of America"))
-        self.dic_arr['ro']=Country().init__create("ro",QApplication.translate("Core","Romanian"))
-        self.dic_arr['ru']=Country().init__create("ru",QApplication.translate("Core","Rusia"))
-                
+        self.append(Country().init__create("es",QApplication.translate("Core","Spain")))
+        self.append(Country().init__create("be",QApplication.translate("Core","Belgium")))
+        self.append(Country().init__create("cn",QApplication.translate("Core","China")))
+        self.append(Country().init__create("de",QApplication.translate("Core","Germany")))
+        self.append(Country().init__create("en",QApplication.translate("Core","United Kingdom")))
+        self.append(Country().init__create("eu",QApplication.translate("Core","Europe")))
+        self.append(Country().init__create("fi",QApplication.translate("Core","Finland")))
+        self.append(Country().init__create("fr",QApplication.translate("Core","France")))
+        self.append(Country().init__create("ie",QApplication.translate("Core","Ireland")))
+        self.append(Country().init__create("it",QApplication.translate("Core","Italy")))
+        self.append(Country().init__create("jp",QApplication.translate("Core","Japan")))
+        self.append(Country().init__create("nl",QApplication.translate("Core","Netherlands")))
+        self.append(Country().init__create("pt",QApplication.translate("Core","Portugal")))
+        self.append(Country().init__create("us",QApplication.translate("Core","United States of America")))
+        self.append(Country().init__create("ro",QApplication.translate("Core","Romanian")))
+        self.append(Country().init__create("ru",QApplication.translate("Core","Rusia")))
+        self.sort_by_name()
 
-    def list(self):
-        """Devuelve una lista ordenada por name"""
-        currencies=dic2list(self.dic_arr)
-        currencies=sorted(currencies, key=lambda c: c.name,  reverse=False)         
-        return currencies
-        
-    def find(self, id):
-        return self.dic_arr[str(id)]
     def qcombobox(self, combo,  country=None):
         """Función que carga en un combo pasado como parámetro y con un SetAccounts pasado como parametro
         Se ordena por nombre y se se pasa el tercer parametro que es un objeto Account lo selecciona""" 
-        self.sort()
         for cu in self.list():
             self.addItem(cu.qicon(), cu.name, cu.id)
 
