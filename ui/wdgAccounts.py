@@ -16,8 +16,8 @@ class wdgAccounts(QWidget, Ui_wdgAccounts):
 
     def load_table(self):
         """Función que carga la tabla de cuentas"""
-        self.cuentas.sort()
-        self.tblAccounts.setRowCount(len(self.cuentas.arr));
+        self.cuentas.sort_by_name()
+        self.tblAccounts.setRowCount(self.cuentas.length());
         sumsaldos=0
         for i, c in enumerate(self.cuentas.arr):
             self.tblAccounts.setItem(i, 0, QTableWidgetItem((c.name)))
@@ -56,7 +56,7 @@ class wdgAccounts(QWidget, Ui_wdgAccounts):
             self.selAccount.borrar(cur)
             self.mem.con.commit()
             self.mem.data.cuentas_active.arr.remove(self.selAccount)
-            self.cuentas.arr.remove(self.selAccount)
+            self.cuentas.remove(self.selAccount)
         cur.close()
         self.on_chkInactivas_stateChanged(self.chkInactivas.checkState())
         self.load_table()
