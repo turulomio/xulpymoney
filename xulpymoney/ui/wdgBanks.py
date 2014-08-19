@@ -16,6 +16,8 @@ class wdgBanks(QWidget, Ui_wdgBanks):
         self.investments=SetInvestments(self.mem, self.mem.data.accounts_all(), self.mem.data.products_all(), self.mem.data.benchmark) #Set
         self.accounts=SetAccounts(self.mem, self.mem.data.banks_all())#Set
 
+
+        
         self.tblEB.settings("wdgBanks",  self.mem)
         self.tblAccounts.settings("wdgBanks",  self.mem)
         self.tblInvestments.settings("wdgBanks",  self.mem)
