@@ -406,6 +406,7 @@ class SetCommons:
         Selected is and object
         It sorts by name the arr""" 
         self.sort_by_name()
+        combo.clear()
         for a in self.arr:
             combo.addItem(a.name, a.id)
 
@@ -588,30 +589,7 @@ class SetAccounts(SetCommons):
             c.saldo_from_db()
             self.append(c)
         cur.close()
-#                               
-#    def qcombobox(self, combo,  cuenta=None):
-#        """Función que carga en un combo pasado como parámetro y con un SetAccounts pasado como parametro
-#        Se ordena por nombre y se se pasa el tercer parametro que es un objeto Account lo selecciona""" 
-#        self.sort()
-#        for cu in self.arr:
-#            combo.addItem(cu.name, cu.id)
-#        if cuenta!=None:
-#                combo.setCurrentIndex(combo.findData(cuenta.id))
-        
-#    def find(self, id):
-#        for a in self.arr:
-#            if a.id==id:
-#                return a
-#                
-#    def sort(self):
-#        self.arr=sorted(self.arr, key=lambda c: c.name,  reverse=False)         
-    
-            
-#    def union(self,  list2):
-#        """Devuelve un SetBanks con la union del set1 y del set2"""
-#        resultado=SetAccounts(self.mem, self.ebs)
-#        resultado.arr=self.arr+list2.arr
-#        return resultado
+
 
 class SetAccountOperations:
     """Clase es un array ordenado de objetos newInvestmentOperation"""
@@ -2968,69 +2946,64 @@ def decimal_check(dec):
 ##        print ("significativos",  self.last.quote,  self.penultimate.quote,  self.endlastyear.quote,  resultado)
 #    return resultado
 
-class SetAgrupations:
+class SetAgrupations(SetCommons):
     """Se usa para meter en mem las agrupaciones, pero también para crear agrupaciones en las inversiones"""
     def __init__(self, mem):
         """Usa la variable mem.Agrupations"""
+        SetCommons.__init__(self)
         self.mem=mem
-        self.dic_arr={}
         
         
     def load_all(self):
-        self.dic_arr["ERROR"]=Agrupation(self.mem).init__create( "ERROR","Agrupación errónea", self.mem.types.find(3), self.mem.stockexchanges.find(1) )
-        self.dic_arr["IBEX"]=Agrupation(self.mem).init__create( "IBEX","Ibex 35", self.mem.types.find(3), self.mem.stockexchanges.find(1) )
-        self.dic_arr["MERCADOCONTINUO" ]=Agrupation(self.mem).init__create( "MERCADOCONTINUO","Mercado continuo español", self.mem.types.find(3), self.mem.stockexchanges.find(1) )
-        self.dic_arr[ "CAC"]=Agrupation(self.mem).init__create("CAC",  "CAC 40 de París", self.mem.types.find(3),self.mem.stockexchanges.find(3) )
-        self.dic_arr["EUROSTOXX"]=Agrupation(self.mem).init__create( "EUROSTOXX","Eurostoxx 50", self.mem.types.find(3),self.mem.stockexchanges.find(10)  )
-        self.dic_arr["DAX"]=Agrupation(self.mem).init__create( "DAX","DAX", self.mem.types.find(3), self.mem.stockexchanges.find(5)  )
-        self.dic_arr["SP500"]=Agrupation(self.mem).init__create("SP500",  "Standard & Poors 500", self.mem.types.find(3), self.mem.stockexchanges.find(2)  )
-        self.dic_arr["NASDAQ100"]=Agrupation(self.mem).init__create( "NASDAQ100","Nasdaq 100", self.mem.types.find(3), self.mem.stockexchanges.find(2)  )
-        self.dic_arr["EURONEXT"]=Agrupation(self.mem).init__create( "EURONEXT",  "EURONEXT", self.mem.types.find(3), self.mem.stockexchanges.find(10)  )
-        self.dic_arr["DEUTSCHEBOERSE"]=Agrupation(self.mem).init__create( "DEUTSCHEBOERSE",  "DEUTSCHEBOERSE", self.mem.types.find(3), self.mem.stockexchanges.find(5)  )
-        self.dic_arr["LATIBEX"]=Agrupation(self.mem).init__create( "LATIBEX",  "LATIBEX", self.mem.types.find(3), self.mem.stockexchanges.find(1)  )
+        self.append(Agrupation(self.mem).init__create( "ERROR","Agrupación errónea", self.mem.types.find(3), self.mem.stockexchanges.find(1) ))
+        self.append(Agrupation(self.mem).init__create( "IBEX","Ibex 35", self.mem.types.find(3), self.mem.stockexchanges.find(1) ))
+        self.append(Agrupation(self.mem).init__create( "MERCADOCONTINUO","Mercado continuo español", self.mem.types.find(3), self.mem.stockexchanges.find(1) ))
+        self.append(Agrupation(self.mem).init__create("CAC",  "CAC 40 de París", self.mem.types.find(3),self.mem.stockexchanges.find(3) ))
+        self.append(Agrupation(self.mem).init__create( "EUROSTOXX","Eurostoxx 50", self.mem.types.find(3),self.mem.stockexchanges.find(10)  ))
+        self.append(Agrupation(self.mem).init__create( "DAX","DAX", self.mem.types.find(3), self.mem.stockexchanges.find(5)  ))
+        self.append(Agrupation(self.mem).init__create("SP500",  "Standard & Poors 500", self.mem.types.find(3), self.mem.stockexchanges.find(2)  ))
+        self.append(Agrupation(self.mem).init__create( "NASDAQ100","Nasdaq 100", self.mem.types.find(3), self.mem.stockexchanges.find(2)  ))
+        self.append(Agrupation(self.mem).init__create( "EURONEXT",  "EURONEXT", self.mem.types.find(3), self.mem.stockexchanges.find(10)  ))
+        self.append(Agrupation(self.mem).init__create( "DEUTSCHEBOERSE",  "DEUTSCHEBOERSE", self.mem.types.find(3), self.mem.stockexchanges.find(5)  ))
+        self.append(Agrupation(self.mem).init__create( "LATIBEX",  "LATIBEX", self.mem.types.find(3), self.mem.stockexchanges.find(1)  ))
 
 
-        self.dic_arr["e_fr_LYXOR"]=Agrupation(self.mem).init__create( "e_fr_LYXOR","LYXOR", self.mem.types.find(4),self.mem.stockexchanges.find(3)  )
-        self.dic_arr["e_de_DBXTRACKERS"]=Agrupation(self.mem).init__create( "e_de_DBXTRACKERS","Deutsche Bank X-Trackers", self.mem.types.find(4),self.mem.stockexchanges.find(5)  )
+        self.append(Agrupation(self.mem).init__create( "e_fr_LYXOR","LYXOR", self.mem.types.find(4),self.mem.stockexchanges.find(3)  ))
+        self.append(Agrupation(self.mem).init__create( "e_de_DBXTRACKERS","Deutsche Bank X-Trackers", self.mem.types.find(4),self.mem.stockexchanges.find(5)  ))
         
-        self.dic_arr["f_es_0014"]=Agrupation(self.mem).init__create("f_es_0014",  "Gestora BBVA", self.mem.types.find(2), self.mem.stockexchanges.find(1) )
-        self.dic_arr["f_es_0043"]=Agrupation(self.mem).init__create( "f_es_0043","Gestora Renta 4", self.mem.types.find(2), self.mem.stockexchanges.find(1))
-        self.dic_arr["f_es_0055"]=Agrupation(self.mem).init__create("f_es_0055","Gestora Bankinter", self.mem.types.find(2),self.mem.stockexchanges.find(1) )
-        self.dic_arr["f_es_BMF"]=Agrupation(self.mem).init__create( "f_es_BMF","Fondos de la bolsa de Madrid", self.mem.types.find(2), self.mem.stockexchanges.find(1) )
+        self.append(Agrupation(self.mem).init__create("f_es_0014",  "Gestora BBVA", self.mem.types.find(2), self.mem.stockexchanges.find(1) ))
+        self.append(Agrupation(self.mem).init__create( "f_es_0043","Gestora Renta 4", self.mem.types.find(2), self.mem.stockexchanges.find(1)))
+        self.append(Agrupation(self.mem).init__create("f_es_0055","Gestora Bankinter", self.mem.types.find(2),self.mem.stockexchanges.find(1) ))
+        self.append(Agrupation(self.mem).init__create( "f_es_BMF","Fondos de la bolsa de Madrid", self.mem.types.find(2), self.mem.stockexchanges.find(1) ))
 
-        self.dic_arr["w_fr_SG"]=Agrupation(self.mem).init__create( "w_fr_SG","Warrants Societe Generale", self.mem.types.find(5),self.mem.stockexchanges.find(3) )
-        self.dic_arr["w_es_BNP"]=Agrupation(self.mem).init__create("w_es_BNP","Warrants BNP Paribas", self.mem.types.find(5),self.mem.stockexchanges.find(1))
+        self.append(Agrupation(self.mem).init__create( "w_fr_SG","Warrants Societe Generale", self.mem.types.find(5),self.mem.stockexchanges.find(3) ))
+        self.append(Agrupation(self.mem).init__create("w_es_BNP","Warrants BNP Paribas", self.mem.types.find(5),self.mem.stockexchanges.find(1)))
 
-    def find(self, id):
-        try:
-            return self.dic_arr[str(id)]        
-        except:
-            return self.dic_arr["ERROR"]
                 
-    def list_sortby_id(self):
-        """Devuelve una lista ordenada por id """
-        resultado=dic2list(self.dic_arr)
-        resultado=sorted(resultado, key=lambda c: c.id,  reverse=False)     
-        return resultado
-        
-    def list(self):
-        """Devuelve una lista ordenada por name"""
-        resultado=dic2list(self.dic_arr)
-        resultado=sorted(resultado, key=lambda c: c.name,  reverse=False)     
-        return resultado
-    
-    def clone(self):
-        resultado=SetAgrupations(self.mem)
-        for k, a in self.dic_arr.items():
-            resultado.dic_arr[k]=a
-        return resultado
+#    def list_sortby_id(self):
+#        """Devuelve una lista ordenada por id """
+#        resultado=dic2list(self.dic_arr)
+#        resultado=sorted(resultado, key=lambda c: c.id,  reverse=False)     
+#        return resultado
+#        
+#    def list(self):
+#        """Devuelve una lista ordenada por name"""
+#        resultado=dic2list(self.dic_arr)
+#        resultado=sorted(resultado, key=lambda c: c.name,  reverse=False)     
+#        return resultado
+#    
+#    def clone(self):
+#        resultado=SetAgrupations(self.mem)
+#        for k, a in self.dic_arr.items():
+#            resultado.dic_arr[k]=a
+#        return resultado
     
     def clone_by_type(self,  type):
         """Muestra las agrupaciónes de un tipo pasado como parámetro. El parámetro type es un objeto Type"""
         resultado=SetAgrupations(self.mem)
-        for k, a in self.dic_arr.items():
+        for a in self.arr:
             if a.type==type:
-                resultado.dic_arr[k]=a
+                resultado.append(a)
         return resultado
 
         
@@ -3059,17 +3032,17 @@ class SetAgrupations:
             pass
         else:
             for item in dbstr[1:-1].split("|"):
-                resultado.dic_arr[item]=self.mem.agrupations.find(item)
+                resultado.append(self.mem.agrupations.find(item))
         return resultado
-        
-    def qcombobox(self, combo):
-        combo.clear()
-        for a in self.list():
-            combo.addItem(a.name, a.id)
+#        
+#    def qcombobox(self, combo):
+#        combo.clear()
+#        for a in self.list():
+#            combo.addItem(a.name, a.id)
             
     def dbstring(self):
         resultado="|"
-        for a in self.list():
+        for a in self.arr:
             resultado=resultado+a.id+"|"
         if resultado=="|":
             return ""
@@ -3080,7 +3053,7 @@ class SetAgrupations:
         """Función que convierte un combo de agrupations a un array de agrupations"""
         resultado=SetAgrupations(self.mem)
         for i in range (cmb.count()):
-            resultado.dic_arr[str(cmb.itemData(i))]=self.mem.agrupations.find(cmb.itemData(i))
+            resultado.append(self.mem.agrupations.find(cmb.itemData(i)))
         return resultado
 
 class SetLeverages:

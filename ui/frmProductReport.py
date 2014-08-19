@@ -96,7 +96,7 @@ class frmProductReport(QDialog, Ui_frmProductReport):
                 self.tblTPC.setItem(row, 2, qtpc(None))    
                 self.tblTPC.setItem(row, 3,  qtpc(None))     
                 
-                
+        print (self.product.agrupations.arr)
         self.product.agrupations.qcombobox(self.cmbAgrupations)
         self.product.priority.qcombobox(self.cmbPriority)
         self.product.priorityhistorical.qcombobox(self.cmbPriorityHistorical)
@@ -439,7 +439,7 @@ class frmProductReport(QDialog, Ui_frmProductReport):
         elif self.cmbTipo.itemData(self.cmbTipo.currentIndex())==5:#ETFs
             agr=self.mem.agrupations.clone_warrants()
         else:
-            agr=self.mem.agrupations.clone()
+            agr=self.mem.agrupations.clone(self.mem)
         if self.product.agrupations==None:
             selected=SetAgrupations(self.mem)#Vacio
         else:
