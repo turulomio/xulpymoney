@@ -31,7 +31,7 @@ class wdgBanks(QWidget, Ui_wdgBanks):
         sumsaldos=Decimal(0)
         for i,  e in enumerate(self.banks.arr):
             self.tblEB.setItem(i, 0, QTableWidgetItem(e.name))
-            self.tblEB.setItem(i, 1, qbool(e.activa))
+            self.tblEB.setCellWidget(i, 1, wdgBool(e.activa))
             balanc=e.balance(self.mem.data.accounts_active, self.mem.data.investments_active)
             self.tblEB.setItem(i, 2, self.mem.localcurrency.qtablewidgetitem(balanc))
             sumsaldos=sumsaldos+balanc    
@@ -44,7 +44,7 @@ class wdgBanks(QWidget, Ui_wdgBanks):
         sumsaldos=0
         for i,  c in enumerate(self.accounts.arr):
             self.tblAccounts.setItem(i, 0, QTableWidgetItem(c.name))
-            self.tblAccounts.setItem(i, 1, qbool(c.activa))
+            self.tblAccounts.setCellWidget(i, 1, wdgBool(c.activa))
             self.tblAccounts.setItem(i, 2, self.mem.localcurrency.qtablewidgetitem(c.balance))
             sumsaldos=sumsaldos+c.balance
         self.tblAccounts.setItem(self.accounts.length(), 0, QTableWidgetItem(self.tr('TOTAL')))
@@ -57,7 +57,7 @@ class wdgBanks(QWidget, Ui_wdgBanks):
         sumsaldos=0
         for i, inv in enumerate(self.investments.arr):
             self.tblInvestments.setItem(i, 0, QTableWidgetItem(inv.name))
-            self.tblInvestments.setItem(i, 1, qbool(inv.activa))
+            self.tblInvestments.setCellWidget(i, 1, wdgBool(inv.activa))
             balanc=inv.balance()
             self.tblInvestments.setItem(i, 2, self.mem.localcurrency.qtablewidgetitem(balanc))
             sumsaldos=sumsaldos+balanc

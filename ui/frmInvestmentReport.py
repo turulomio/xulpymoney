@@ -62,7 +62,7 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
     def load_tabDividends(self):        
         (sumneto, sumbruto, sumretencion, sumcomision)=self.dividends.myqtablewidget(self.tblDividends, "frmInvestmentReport")
         if self.chkHistoricalDividends.checkState()==Qt.Unchecked:
-            if len(self.dividends.arr)>0:
+            if len(self.dividends.arr)>0 and len(self.inversion.op_actual.arr)>0:
                 importeinvertido=self.inversion.invertido()
                 dias=(datetime.date.today()-self.inversion.op_actual.datetime_primera_operacion().date()).days+1
                 dtpc=100*sumbruto/importeinvertido
