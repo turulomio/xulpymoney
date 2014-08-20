@@ -3788,37 +3788,37 @@ correspondiente en la tabla</source>
 <context encoding="UTF-8">
     <name>wdgDatetime</name>
     <message>
-        <location filename="ui/wdgDatetime.ui" line="34"/>
+        <location filename="ui/wdgDatetime.ui" line="17"/>
         <source>Select a datetime</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgDatetime.ui" line="126"/>
+        <location filename="ui/wdgDatetime.ui" line="52"/>
         <source>Select a time</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgDatetime.ui" line="132"/>
+        <location filename="ui/wdgDatetime.ui" line="58"/>
         <source>HH:mm:ss</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgDatetime.ui" line="139"/>
+        <location filename="ui/wdgDatetime.ui" line="65"/>
         <source>Select microseconds</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="ui/wdgDatetime.ui" line="145"/>
+        <location filename="ui/wdgDatetime.ui" line="71"/>
         <source> μs</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgDatetime.ui" line="59"/>
+        <location filename="ui/wdgDatetime.ui" line="93"/>
         <source>Set current time</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgDatetime.ui" line="62"/>
+        <location filename="ui/wdgDatetime.ui" line="96"/>
         <source>Now</source>
         <translation type="unfinished"></translation>
     </message>
