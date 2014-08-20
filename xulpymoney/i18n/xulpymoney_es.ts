@@ -38,12 +38,12 @@
         <translation>Warrants</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5873"/>
+        <location filename="libxulpymoney.py" line="5834"/>
         <source>Sourceforge version detected: %s</source>
         <translation>Versión de Sourceforge detectada: %s</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5875"/>
+        <location filename="libxulpymoney.py" line="5836"/>
         <source>Error buscando la versi&#xc3;&#xb3;n actual de Sourceforge</source>
         <translation></translation>
     </message>
@@ -63,7 +63,7 @@
         <translation>La tarjeta de crédito está inactiva. Debes activarla primero</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="6224"/>
+        <location filename="libxulpymoney.py" line="6185"/>
         <source>This option is being developed</source>
         <translation>Esta opción está en desarrollo</translation>
     </message>
@@ -433,12 +433,12 @@
         <translation>Cargando inversiones...</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="6185"/>
+        <location filename="libxulpymoney.py" line="6146"/>
         <source>True</source>
         <translation>Verdadero</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="6188"/>
+        <location filename="libxulpymoney.py" line="6149"/>
         <source>False</source>
         <translation>Falso</translation>
     </message>
@@ -3788,47 +3788,37 @@ correspondiente en la tabla</source>
 <context encoding="UTF-8">
     <name>wdgDatetime</name>
     <message>
-        <location filename="ui/wdgDatetime.ui" line="19"/>
+        <location filename="ui/wdgDatetime.ui" line="34"/>
         <source>Select a datetime</source>
         <translation>Selecciona fecha y hora</translation>
     </message>
     <message>
-        <location filename="ui/wdgDatetime.ui" line="26"/>
-        <source>Select a date</source>
-        <translation>Selecciona una fecha</translation>
-    </message>
-    <message>
-        <location filename="ui/wdgDatetime.ui" line="38"/>
-        <source>yyyy/MM/dd</source>
-        <translation>yyyy/MM/dd</translation>
-    </message>
-    <message>
-        <location filename="ui/wdgDatetime.ui" line="48"/>
+        <location filename="ui/wdgDatetime.ui" line="126"/>
         <source>Select a time</source>
         <translation>Selecciona una hora</translation>
     </message>
     <message>
-        <location filename="ui/wdgDatetime.ui" line="54"/>
+        <location filename="ui/wdgDatetime.ui" line="132"/>
         <source>HH:mm:ss</source>
         <translation>HH:mm:ss</translation>
     </message>
     <message>
-        <location filename="ui/wdgDatetime.ui" line="61"/>
+        <location filename="ui/wdgDatetime.ui" line="139"/>
         <source>Select microseconds</source>
         <translation>Selecciona los microsegundos</translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="ui/wdgDatetime.ui" line="67"/>
+        <location filename="ui/wdgDatetime.ui" line="145"/>
         <source> μs</source>
         <translation> μs</translation>
     </message>
     <message>
-        <location filename="ui/wdgDatetime.ui" line="87"/>
+        <location filename="ui/wdgDatetime.ui" line="59"/>
         <source>Set current time</source>
         <translation>Poner la hora actual</translation>
     </message>
     <message>
-        <location filename="ui/wdgDatetime.ui" line="90"/>
+        <location filename="ui/wdgDatetime.ui" line="62"/>
         <source>Now</source>
         <translation>Ahora</translation>
     </message>

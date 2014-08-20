@@ -18,7 +18,7 @@ class wdgDatetime(QWidget, Ui_wdgDatetime):
         self.showSeconds=True
         self.showZone=True
         self.zone=None#Set in set()
-        self.teDate.calendarWidget().setFirstDayOfWeek(Qt.Monday)
+#        self.teDate.calendarWidget().setFirstDayOfWeek(Qt.Monday)
         
     def show_microseconds(self, show):
         self.showMicroseconds=show
@@ -61,7 +61,7 @@ class wdgDatetime(QWidget, Ui_wdgDatetime):
             self.zone=zone
         self.mem.zones.qcombobox(self.cmbZone, self.zone)        
         
-        self.teDate.setDate(dt.date())
+        self.teDate.setSelectedDate(dt.date())
         
         if self.showSeconds==False:
             dt=dt.replace(second=0)
@@ -82,7 +82,7 @@ class wdgDatetime(QWidget, Ui_wdgDatetime):
         #qt only miliseconds
         time=self.teTime.time().toPyTime()
         time=time.replace(microsecond=self.teMicroseconds.value())
-        return dt(self.teDate.date().toPyDate(), time , self.zone)
+        return dt(self.teDate.selectedDate().toPyDate(), time , self.zone)
 
 #    def on_teDate_dateChanged(self, date):
 #        print(self.datetime())
