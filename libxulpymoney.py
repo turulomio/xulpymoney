@@ -111,7 +111,7 @@ class SetCommons:
             combo.addItem(a.name, a.id)
 
         if selected!=None:
-                combo.setCurrentIndex(combo.findData(selected.id))
+            combo.setCurrentIndex(combo.findData(selected.id))
                 
     def clean(self):
         """Deletes all items"""

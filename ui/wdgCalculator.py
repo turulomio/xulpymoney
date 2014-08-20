@@ -10,8 +10,8 @@ class wdgCalculator(QWidget, Ui_wdgCalculator):
         self.setupUi(self)
         self.mem=mem
         self.mem.data.load_inactives()
-        self.product=None
-        self.mem.data.products_all().qcombobox(self.cmbProducts, self.mem.config.get_value("wdgCalculator", "Product"))
+        self.product=self.mem.data.products_all().find(self.mem.config.get_value("wdgCalculator", "Product"))
+        self.mem.data.products_all().qcombobox(self.cmbProducts, self.product)
         self.txtAmount.setText(self.mem.config.get_value("wdgCalculator", "Invested"))
    
     def init__percentagevariation_amount(self, percentagevariation, amount):
