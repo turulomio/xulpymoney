@@ -91,12 +91,12 @@ class SetCommons:
             print ("SetCommons ({}) fails finding {}".format(self.__class__.__name__, id))
         return None
                 
-    def sort_by_id(self):
+    def order_by_id(self):
         """Orders the Set using self.arr"""
         self.arr=sorted(self.arr, key=lambda c: c.id,  reverse=False)     
         return self.arr
         
-    def sort_by_name(self):
+    def order_by_name(self):
         """Orders the Set using self.arr"""
         self.arr=sorted(self.arr, key=lambda c: c.name,  reverse=False)     
         return self.arr
@@ -105,7 +105,7 @@ class SetCommons:
         """Load set items in a comobo using id and name
         Selected is and object
         It sorts by name the arr""" 
-        self.sort_by_name()
+        self.order_by_name()
         combo.clear()
         for a in self.arr:
             combo.addItem(a.name, a.id)
@@ -313,7 +313,7 @@ class SetInvestments(SetCommons):
         cur.close()
         return True
         
-    def sort_by_percentage(self):
+    def order_by_percentage(self):
         try:
             self.arr=sorted(self.arr, key=lambda inv: inv.product.estimations_dps.currentYear().percentage(),  reverse=True) 
         except:
@@ -323,7 +323,6 @@ class SetInvestments(SetCommons):
 class SetProducts(SetCommons):
     def __init__(self, mem):
         SetCommons.__init__(self)
-#        self.arr=[]
         self.mem=mem
     def load_from_inversiones_query(self, sql):
         """sql es una query sobre la tabla inversiones"""
@@ -363,6 +362,14 @@ class SetProducts(SetCommons):
             self.append(inv)
         curms.close()
 
+    def subset_with_same_type(self, type):
+        """Returns a SetProduct with all products with the type passed as parameter.
+        Type is an object"""
+        result=SetProducts(self.mem)
+        for a in self.arr:
+            if a.type.id==type.id:
+                result.append(a)
+        return result
 
 class SetProductsModes:
     """Agrupa los mode"""
@@ -523,7 +530,7 @@ class SetCountries(SetCommons):
         self.append(Country().init__create("us",QApplication.translate("Core","United States of America")))
         self.append(Country().init__create("ro",QApplication.translate("Core","Romanian")))
         self.append(Country().init__create("ru",QApplication.translate("Core","Rusia")))
-        self.sort_by_name()
+        self.order_by_name()
 
     def qcombobox(self, combo,  country=None):
         """Función que carga en un combo pasado como parámetro y con un SetAccounts pasado como parametro
@@ -5175,31 +5182,21 @@ class SetOHCLMonthly:
             self.arr.append(OHCLMonthly(self.mem).init__from_dbrow(row, self.product))
         cur.close()
 
-class SetLanguages:
+class SetLanguages(SetCommons):
     def __init__(self, mem):
+        SetCommons.__init__(self)
         self.mem=mem
-        self.arr=[]
         
-    def find(self, id):
-        for a in self.arr:
-            if a.id==id:
-                return a
-    
     def load_all(self):
-        self.arr.append(Language(self.mem, "en","English" ))
-        self.arr.append(Language(self.mem, "es","Español" ))
-        self.arr.append(Language(self.mem, "fr","Français" ))
-        self.arr.append(Language(self.mem, "ro","Rom\xe2n" ))
-        self.arr.append(Language(self.mem, "ru",'\u0420\u0443\u0441\u0441\u043a\u0438\u0439' ))
+        self.append(Language(self.mem, "en","English" ))
+        self.append(Language(self.mem, "es","Español" ))
+        self.append(Language(self.mem, "fr","Français" ))
+        self.append(Language(self.mem, "ro","Rom\xe2n" ))
+        self.append(Language(self.mem, "ru",'\u0420\u0443\u0441\u0441\u043a\u0438\u0439' ))
 
-                
-    def sort(self):
-        self.arr=sorted(self.arr, key=lambda c: c.name,  reverse=False)      
-        
     def qcombobox(self, combo, selected=None):
         """Selected is the id"""
-
-        self.sort()
+        self.order_by_name()
         for l in self.arr:
             combo.addItem(self.mem.countries.find(l.id).qicon(), l.name, l.id)
         if selected!=None:
@@ -5227,14 +5224,7 @@ class SetOHCLDaily:
         for row in cur:
             self.arr.append(OHCLDaily(self.mem).init__from_dbrow(row, self.product))
         cur.close()
-#                
-#    def __find_ohclDiary_since_date(self, date):
-#        resultado=[]
-#        date=datetime.datetime(date.year, date.month, date.day)
-#        for d in self.ohclDaily:
-#            if d[0]>=date:
-#                resultado.append(d)
-#        return resultado
+
         
     def find(self, date):
         """Fucnción que busca un ohcldaily con fecha igual o menor de la pasada como parametro"""
@@ -5442,38 +5432,25 @@ class Agrupation:
         self.stockexchange=bolsa
         return self
         
-class SetTypes:
+class SetTypes(SetCommons):
     def __init__(self, mem):
+        SetCommons.__init__(self)
         self.mem=mem
-        self.dic_arr={}
         
             
     def load_all(self):
-        self.dic_arr["1"]=Type().init__create(1,QApplication.translate("Core","Shares"))
-        self.dic_arr["2"]=Type().init__create(2,QApplication.translate("Core","Funds"))
-        self.dic_arr["3"]=Type().init__create(3,QApplication.translate("Core","Indexes"))
-        self.dic_arr["4"]=Type().init__create(4,QApplication.translate("Core","ETF"))
-        self.dic_arr["5"]=Type().init__create(5,QApplication.translate("Core","Warrants"))
-        self.dic_arr["6"]=Type().init__create(6,QApplication.translate("Core","Currencies"))
-        self.dic_arr["7"]=Type().init__create(7,QApplication.translate("Core","Public Bond"))
-        self.dic_arr["8"]=Type().init__create(8,QApplication.translate("Core","Planes de pensiones"))
-        self.dic_arr["9"]=Type().init__create(9,QApplication.translate("Core","Private Bond"))
-        self.dic_arr["10"]=Type().init__create(10,QApplication.translate("Core","Depósitos"))
-        self.dic_arr["11"]=Type().init__create(11,QApplication.translate("Core","Accounts"))
+        self.append(Type().init__create(1,QApplication.translate("Core","Shares")))
+        self.append(Type().init__create(2,QApplication.translate("Core","Funds")))
+        self.append(Type().init__create(3,QApplication.translate("Core","Indexes")))
+        self.append(Type().init__create(4,QApplication.translate("Core","ETF")))
+        self.append(Type().init__create(5,QApplication.translate("Core","Warrants")))
+        self.append(Type().init__create(6,QApplication.translate("Core","Currencies")))
+        self.append(Type().init__create(7,QApplication.translate("Core","Public Bond")))
+        self.append(Type().init__create(8,QApplication.translate("Core","Pension plans")))
+        self.append(Type().init__create(9,QApplication.translate("Core","Private Bond")))
+        self.append(Type().init__create(10,QApplication.translate("Core","Deposit")))
+        self.append(Type().init__create(11,QApplication.translate("Core","Accounts")))
 
-    def qcombobox(self, combo):
-        """Carga entidades bancarias en combo"""
-        for a in self.list():
-            combo.addItem(a.name, a.id)        
-            
-    def list(self):
-        resultado=dic2list(self.dic_arr)
-        resultado=sorted(resultado, key=lambda c: c.name  ,  reverse=False)    
-        return resultado
-
-    def find(self, id):
-        return self.dic_arr[str(id)]        
-        
     def products(self):
         return {k:v for k,v in self.dic_arr.items() if k in ("1", "2", "4", "5", "7","8")}
 

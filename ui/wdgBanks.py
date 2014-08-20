@@ -95,12 +95,12 @@ class wdgBanks(QWidget, Ui_wdgBanks):
         for i in self.mem.data.investments_all().arr:
             if i.cuenta.eb.id==self.banks.selected.id:
                 self.investments.append(i)
-        self.investments.sort_by_name()
+        self.investments.order_by_name()
         
         for v in self.mem.data.accounts_all().arr:
             if v.eb.id==self.banks.selected.id:
                 self.accounts.append(v)
-        self.accounts.sort_by_name()
+        self.accounts.order_by_name()
         
         self.load_cuentas()
         self.load_inversiones()
@@ -194,7 +194,7 @@ class wdgBanks(QWidget, Ui_wdgBanks):
             eb.save()
             self.mem.con.commit()  
             self.mem.data.banks_active.append(eb)
-            self.mem.data.banks_active.sort_by_name()
+            self.mem.data.banks_active.order_by_name()
             self.load_eb()
 
 
@@ -205,7 +205,7 @@ class wdgBanks(QWidget, Ui_wdgBanks):
             self.banks.selected.name=tipo[0]
             self.banks.selected.save()
             self.mem.con.commit()
-            self.mem.data.banks_active.sort_by_name()
+            self.mem.data.banks_active.order_by_name()
             self.load_eb()   
         
     @QtCore.pyqtSlot() 
