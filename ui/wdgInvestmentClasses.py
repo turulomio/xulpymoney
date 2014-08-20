@@ -179,7 +179,7 @@ class wdgInvestmentClasses(QWidget, Ui_wdgInvestmentClasses):
         data=[]
         explode=[]
                 
-        for a in self.mem.apalancamientos.list():
+        for a in self.mem.leverages.arr:
             total=0
             for i in self.mem.data.investments_active.arr:
                 if i.product.apalancado==a:

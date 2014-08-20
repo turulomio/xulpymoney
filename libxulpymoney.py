@@ -2961,34 +2961,19 @@ class SetAgrupations(SetCommons):
             resultado.append(self.mem.agrupations.find(cmb.itemData(i)))
         return resultado
 
-class SetLeverages:
+class SetLeverages(SetCommons):
     def __init__(self, mem):
         """Usa la variable mem.Agrupations"""
+        SetCommons.__init__(self)
         self.mem=mem
-        self.dic_arr={}
-                
-        
-    def load_all(self):
-        self.dic_arr["0"]=Apalancamiento(self.mem).init__create(0 ,QApplication.translate("Core","Not leveraged"), 1)
-        self.dic_arr["1"]=Apalancamiento(self.mem).init__create( 1,QApplication.translate("Core","Variable leverage (Warrants)"), 10)
-        self.dic_arr["2"]=Apalancamiento(self.mem).init__create( 2,QApplication.translate("Core","Leverage x2"), 2)
-        self.dic_arr["3"]=Apalancamiento(self.mem).init__create( 3,QApplication.translate("Core","Leverage x3"), 3)
-        self.dic_arr["4"]=Apalancamiento(self.mem).init__create( 4,QApplication.translate("Core","Leverage x4"), 4)
-               
 
-    def qcombobox(self, combo):
-        """Carga entidades bancarias en combo"""
-        for a in self.list():
-            combo.addItem(a.name, a.id)      
-        
-    def list(self):
-        """Devuelve una lista ordenada por nombre """
-        arr=dic2list(self.dic_arr)
-        arr=sorted(arr, key=lambda a: a.name,  reverse=False)         
-        return arr
-        
-    def find(self, id):
-        return self.dic_arr[str(id)]
+    def load_all(self):
+        self.append(Leverage(self.mem).init__create(0 ,QApplication.translate("Core","Not leveraged"), 1))
+        self.append(Leverage(self.mem).init__create( 1,QApplication.translate("Core","Variable leverage (Warrants)"), 10))
+        self.append(Leverage(self.mem).init__create( 2,QApplication.translate("Core","Leverage x2"), 2))
+        self.append(Leverage(self.mem).init__create( 3,QApplication.translate("Core","Leverage x3"), 3))
+        self.append(Leverage(self.mem).init__create( 4,QApplication.translate("Core","Leverage x4"), 4))
+
 
 class SetPriorities:
     def __init__(self, mem):
@@ -4484,7 +4469,7 @@ class Product:
         self.mail=row['mail']
         self.tpc=row['tpc']
         self.mode=self.mem.investmentsmodes.find(row['pci'])
-        self.apalancado=self.mem.apalancamientos.find(row['apalancado'])
+        self.apalancado=self.mem.leverages.find(row['apalancado'])
         self.stockexchange=self.mem.stockexchanges.find(row['id_bolsas'])
         self.ticker=row['ticker']
         self.priority=SetPriorities(self.mem).init__create_from_db(row['priority'])
@@ -5290,7 +5275,7 @@ class QuotesResult:
         print ("Datos db cargados:",  datetime.datetime.now()-inicio)
 
 
-class Apalancamiento:
+class Leverage:
     def __init__(self, mem):
         self.id=None
         self.name=None
@@ -5609,7 +5594,7 @@ class MemMyStock:
         self.currencies=SetCurrencies(self)
         self.types=SetTypes(self)
         self.agrupations=SetAgrupations(self)
-        self.apalancamientos=SetLeverages(self)
+        self.leverages=SetLeverages(self)
         self.priorities=SetPriorities(self)
         self.prioritieshistorical=SetPrioritiesHistorical(self)
         self.zones=SetZones(self)
@@ -5678,7 +5663,7 @@ class MemMyStock:
         self.types.load_all()
         self.stockexchanges.load_all_from_db()
         self.agrupations.load_all()
-        self.apalancamientos.load_all()
+        self.leverages.load_all()
 
         
     def connect_xulpymoney(self):        

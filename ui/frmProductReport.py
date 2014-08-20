@@ -75,7 +75,7 @@ class frmProductReport(QDialog, Ui_frmProductReport):
         self.mem.stockexchanges.qcombobox(self.cmbBolsa)
         self.mem.investmentsmodes.qcombobox(self.cmbPCI)
         self.mem.currencies.qcombobox(self.cmbCurrency)
-        self.mem.apalancamientos.qcombobox(self.cmbApalancado)
+        self.mem.leverages.qcombobox(self.cmbApalancado)
         self.mem.types.qcombobox(self.cmbTipo)
 
         self.update_due_to_quotes_change()    
@@ -398,7 +398,7 @@ class frmProductReport(QDialog, Ui_frmProductReport):
         self.product.mail=self.txtMail.text()
         self.product.tpc=int(self.txtTPC.text())
         self.product.mode=self.mem.investmentsmodes.find(self.cmbPCI.itemData(self.cmbPCI.currentIndex()))
-        self.product.apalancado=self.mem.apalancamientos.find(self.cmbApalancado.itemData(self.cmbApalancado.currentIndex()))
+        self.product.apalancado=self.mem.leverages.find(self.cmbApalancado.itemData(self.cmbApalancado.currentIndex()))
         self.product.stockexchange=self.mem.stockexchanges.find(self.cmbBolsa.itemData(self.cmbBolsa.currentIndex()))
         self.product.ticker=self.txtYahoo.text()
         self.product.system=False
