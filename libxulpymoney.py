@@ -2811,28 +2811,23 @@ class SetCreditCards(SetCommons):
 
        
         
-class SetOperationTypes:      
+class SetOperationTypes(SetCommons):
     def __init__(self, mem):
-        self.dic_arr={}
+        SetCommons.__init__(self)
         self.mem=mem     
         
     def load(self):
-        self.dic_arr['1']=OperationType().init__create( "Gasto", 1)
-        self.dic_arr['2']=OperationType().init__create( "Ingreso", 2)
-        self.dic_arr['3']=OperationType().init__create( "Trasferencia", 3)
-        self.dic_arr['4']=OperationType().init__create( "Compra de acciones", 4)
-        self.dic_arr['5']=OperationType().init__create( "Venta de acciones", 5)
-        self.dic_arr['6']=OperationType().init__create( "Añadido de acciones", 6)
-        self.dic_arr['7']=OperationType().init__create( "Facturacion CreditCard", 7)
-        self.dic_arr['8']=OperationType().init__create( "Traspaso fondo inversión", 8) #Se contabilizan como ganancia
-        self.dic_arr['9']=OperationType().init__create( "Traspaso de valores. Origen", 9) #No se contabiliza
-        self.dic_arr['10']=OperationType().init__create( "Traspaso de valores. Destino", 10) #No se contabiliza     
-        
+        self.append(OperationType().init__create( QApplication.translate("Core","Expense"), 1))
+        self.append(OperationType().init__create( QApplication.translate("Core","Income"), 2))
+        self.append(OperationType().init__create( QApplication.translate("Core","Transfer"), 3))
+        self.append(OperationType().init__create( QApplication.translate("Core","Purchase of shares"), 4))
+        self.append(OperationType().init__create( QApplication.translate("Core","Sale of shares"), 5))
+        self.append(OperationType().init__create( QApplication.translate("Core","Added of shares"), 6))
+        self.append(OperationType().init__create( QApplication.translate("Core","Credit card billing"), 7))
+        self.append(OperationType().init__create( QApplication.translate("Core","Transfer of funds"), 8)) #Se contabilizan como ganancia
+        self.append(OperationType().init__create( QApplication.translate("Core","Transfer of shares. Origin"), 9)) #No se contabiliza
+        self.append(OperationType().init__create( QApplication.translate("Core","Transfer of shares. Destiny"), 10)) #No se contabiliza     
 
-
-    def qcombobox(self, combo):
-        for t in self.clone_only_operinversiones().list():
-            combo.addItem(t.name,  t.id)
     def qcombobox_basic(self, combo, selected=None):
         """Selected is a Operation Type id"""
         combo.clear()
@@ -2841,15 +2836,6 @@ class SetOperationTypes:
         if selected!=None:
             combo.setCurrentIndex(combo.findData(selected.id))
         
-
-    def find(self, id):
-        return self.dic_arr[str(id)]
-        
-    def list(self):
-        """Lista ordenada por nombre"""
-        lista=dic2list(self.dic_arr)
-        lista=sorted(lista, key=lambda t:t.name, reverse=False)
-        return lista
         
     def clone_only_operinversiones(self):
         """Devuelve los tipos de operación específicos de operinversiones. en un arr de la forma"""
@@ -5696,53 +5682,14 @@ class MemMyStock:
 
     def disconnect_xulpymoneyd(self):
         self.con.close()
-#
-#    def connect_xulpymoney(self):             
-#        strmq="dbname='%s' port='%s' user='%s' host='%s' password='%s'" % (self.config.get_value("frmAccessMS", "db"),  self.config.get_value("frmAccessMS", "port"), self.config.get_value("frmAccessMS", "user"), self.config.get_value("frmAccessMS", "server"),  self.password)
-#        try:
-#            mq=psycopg2.extras.DictConnection(strmq)
-#            return mq
-#        except psycopg2.Error:
-#            m=QMessageBox()
-#            m.setText(QApplication.translate("Core","Error conecting to MyStocks"))
-#            m.setIcon(QMessageBox.Information)
-#            m.exec_()
-#            sys.exit()
-#
-#    def disconnect_xulpymoney(self,  mq):
-#        mq.close()
-    
-#    def carga_ia(self, cur,  where=""):
-#        """La variable where sera del tipo:
-#        where="where priority=5"""
-#        cur.execute("select * from products {0}".format(where))
-#        for row in cur:
-#            self.dic_activas[str(row['id'])]=Product(self.mem).init__db_row(self, row)
-#            
-#
-#    def activas(self, id=None):
-#        if id==None:
-#            return dic2list(self.dic_activas)
-#        else:
-#            return self.dic_activas[str(id)]
-#                        
 
             
 class MemXulpymoney(MemMyStock):
     def __init__(self):
         MemMyStock.__init__(self)
-#        self.con=None#Conexión a xulpymoney
         self.data=DBData(self)
         self.closing=False#Used to close threads
         
-#    def __del__(self):
-#        self.closing=True
-#        self.data.__del__()
-        
-#        if self.con:#Cierre por reject en frmAccess
-#            self.disconnect_xulpymoney(self.con)
-#        if self.con:
-#            self.disconnect_xulpymoney(self.con)
         
 
     def actualizar_memoria(self):
@@ -6238,10 +6185,6 @@ def qright(string, digits=None):
     except:
         pass
     return a
-
-
-
-
 
 def qtpc(n, rnd=2):
     text= tpc(n, rnd)

@@ -153,7 +153,7 @@ class wdgInvestmentClasses(QWidget, Ui_wdgInvestmentClasses):
         labels=[]
         data=[]
         explode=[]
-        for t in self.mem.types.list():
+        for t in self.mem.types.arr:
             total=0
             for i in self.mem.data.investments_active.arr:
                 if i.product.type==t:
