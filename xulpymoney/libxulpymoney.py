@@ -2961,31 +2961,20 @@ class SetLeverages(SetCommons):
         self.append(Leverage(self.mem).init__create( 4,QApplication.translate("Core","Leverage x4"), 4))
 
 
-class SetPriorities:
+class SetPriorities(SetCommons):
     def __init__(self, mem):
+        SetCommons.__init__(self)
         """Usa la variable mem.Agrupations. Debe ser una lista no un diccionario porque importa el orden"""
         self.mem=mem
-        self.arr=[]
                 
     def load_all(self):
-        self.arr.append(Priority().init__create(1,"Yahoo Financials. 200 pc."))
-        self.arr.append(Priority().init__create(2,"Fondos de la bolsa de Madrid. Todos pc."))
-        self.arr.append(Priority().init__create(3,"Borrar"))#SANTGES ERA 3, para que no se repitan
-        self.arr.append(Priority().init__create(7,"Bond alemán desde http://jcbcarc.dyndns.org. 3 pc."))#SANTGES ERA 3, para que no se repitan
-        self.arr.append(Priority().init__create(4,"Infobolsa. índices internacionales. 20 pc."))
-        self.arr.append(Priority().init__create(5,"Productos cotizados bonus. 20 pc."))
-        self.arr.append(Priority().init__create(6,"Societe Generale Warrants. Todos pc."))
-
-    def qcombobox(self, combo):
-        combo.clear()
-        for a in self.arr:
-            combo.addItem(a.name, a.id)
-            
-    def find(self, id):
-        for a in self.arr:
-            if a.id==id:
-                return a
-        return None
+        self.append(Priority().init__create(1,"Yahoo Financials. 200 pc."))
+        self.append(Priority().init__create(2,"Fondos de la bolsa de Madrid. Todos pc."))
+        self.append(Priority().init__create(3,"Borrar"))#SANTGES ERA 3, para que no se repitan
+        self.append(Priority().init__create(7,"Bond alemán desde http://jcbcarc.dyndns.org. 3 pc."))#SANTGES ERA 3, para que no se repitan
+        self.append(Priority().init__create(4,"Infobolsa. índices internacionales. 20 pc."))
+        self.append(Priority().init__create(5,"Productos cotizados bonus. 20 pc."))
+        self.append(Priority().init__create(6,"Societe Generale Warrants. Todos pc."))
         
     def init__create_from_db(self, arr):
         """Convierte el array de enteros de la base datos en un array de objetos priority"""
@@ -2996,14 +2985,6 @@ class SetPriorities:
             for a in arr:
                 resultado.arr.append(self.mem.priorities.find(a))
         return resultado
-        
-    def clone(self):
-        """Devuelve los tipos de operación específicos de operinversiones. en un arr de la forma"""
-        resultado=SetPriorities(self.mem)
-        for a in self.arr:
-            resultado.arr.append(a)
-        return resultado
-
 
     def array_of_id(self):
         """Used to psycopg.execute automatical pare"""
@@ -3016,39 +2997,17 @@ class SetPriorities:
     def init__create_from_combo(self, cmb):
         """Función que convierte un combo de agrupations a un array de agrupations"""
         for i in range (cmb.count()):
-            self.arr.append(self.mem.priorities.find(cmb.itemData(i)))
+            self.append(self.mem.priorities.find(cmb.itemData(i)))
         return self
                 
-class SetPrioritiesHistorical:
+class SetPrioritiesHistorical(SetCommons):
     def __init__(self, mem):
         """Usa la variable mem.Agrupations"""
+        SetCommons.__init__(self)
         self.mem=mem
-        self.arr=[]
-        
-            
+
     def load_all(self):
-        self.arr.append(PriorityHistorical().init__create(3,"Individual. Yahoo historicals"))
-        
-        
-
-    def qcombobox(self, combo):
-        combo.clear()
-        for a in self.arr:
-            combo.addItem(a.name, a.id)
-                    
-    def clone(self):
-        """Devuelve los tipos de operación específicos de operinversiones. en un arr de la forma"""
-        resultado=SetPrioritiesHistorical(self.mem)
-        for a in self.arr:
-            resultado.arr.append(a)
-        return resultado
-
-        
-    def find(self, id):
-        for a in self.arr:
-            if a.id==id:
-                return a
-        return None
+        self.append(PriorityHistorical().init__create(3,"Individual. Yahoo historicals"))
             
     def init__create_from_db(self, arr):
         """Convierte el array de enteros de la base datos en un array de objetos priority"""
@@ -3070,7 +3029,7 @@ class SetPrioritiesHistorical:
     def init__create_from_combo(self, cmb):
         """Función que convierte un combo de agrupations a un array de agrupations"""
         for i in range (cmb.count()):
-            self.arr.append(self.mem.prioritieshistorical.find(cmb.itemData(i)))
+            self.append(self.mem.prioritieshistorical.find(cmb.itemData(i)))
         return self
 
 class StockExchange:

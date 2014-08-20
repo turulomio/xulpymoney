@@ -455,7 +455,7 @@ class frmProductReport(QDialog, Ui_frmProductReport):
         else:
             selected=self.product.priority
         
-        f=frmSelector(self.mem, self.mem.priorities.clone(), selected)
+        f=frmSelector(self.mem, self.mem.priorities.clone(self.mem), selected)
         f.lbl.setText(self.tr("Priority selection"))
         f.exec_()
         self.cmbPriority.clear()
@@ -468,7 +468,7 @@ class frmProductReport(QDialog, Ui_frmProductReport):
         else:
             selected=self.product.priorityhistorical
         
-        f=frmSelector(self.mem, self.mem.prioritieshistorical.clone(),  selected) 
+        f=frmSelector(self.mem, self.mem.prioritieshistorical.clone(self.mem),  selected) 
         f.lbl.setText(self.tr("Historical data priority selection"))
         f.exec_()
         self.cmbPriorityHistorical.clear()
