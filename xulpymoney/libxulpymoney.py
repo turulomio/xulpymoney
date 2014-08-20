@@ -174,13 +174,7 @@ class SetInvestments(SetCommons):
             resultado.add(inv.product.id)
         return list(resultado)
             
-            
-#                
-#        ##Conviert cur a lista separada comas
-#        lista=""
-#        for row in cur:
-#            lista=lista+ str(row['mystocksid']) + ", "
-#        lista=lista[:-2]
+
     
     def average_age(self):
         """Average age of the investments in this set in days"""
@@ -193,15 +187,7 @@ class SetInvestments(SetCommons):
         if average==None:
             return None
         return round(average, 2)
-        
-#    def find(self, id):
-#        for i in self.arr:
-#            if i.id==id:
-#                return i
-#        print ("No se ha encontrado la inversión {0} en SetInvestments.inversion".format(id))
-#        return None
-        
-    
+            
     def saldo_misma_investment(self, product):
         """Devuelve el balance de todas las inversiones que tienen el mismo product.bolsa
         product es un objeto Product"""
@@ -219,12 +205,7 @@ class SetInvestments(SetCommons):
             if i.product==product:
                 resultado=resultado+i.invertido()
         return resultado
-    
-#    def union(self, list2):
-#        """Devuelve un SetBanks con la union del set1 y del set2"""
-#        resultado=SetInvestments(self.mem, self.cuentas, self.products, self.benchmark)
-#        resultado.arr=self.arr+list2.arr
-#        return resultado
+
 
 
     def qcombobox_same_investmentmq(self, combo,  investmentmq):
@@ -382,34 +363,7 @@ class SetProducts(SetCommons):
             self.append(inv)
         curms.close()
 
-#    def find(self, id):
-#        """Devuelve el objeto product con id pasado como parámetro y None si no lo encuentra"""
-#        for a in self.arr:
-#            if a.id==id:
-#                return a
-#        return None
-                
-#    def union(self, list2):
-#        """Devuelve un Set con la union del set1 y del set2"""
-#        resultado=SetProducts(self.mem)
-#        for p in self.arr:
-#            resultado.arr.append(p)
-#        for p in list2.arr:
-#            if resultado.find(p.id)==None:
-#                resultado.arr.append(p)
-##        resultado.arr=self.arr+list2.arr
-#        return resultado
 
-#    def qcombobox(self, combo, selected=None):
-#        """Show products in a combo with a flag and the code as data
-#        Selected is a product id."""
-#        self.sort_by_name()
-#        for p in self.arr:
-#            combo.addItem(p.name, p.id)
-#        if selected!=None:
-#                combo.setCurrentIndex(combo.findData(selected))
-#    def sort_by_name(self):
-#        self.arr=sorted(self.arr, key=lambda c: c.name,  reverse=False)      
 class SetProductsModes:
     """Agrupa los mode"""
     def __init__(self, mem):
@@ -544,12 +498,7 @@ class SetConcepts(SetCommons):
         
         arr=sorted(arr, key=lambda o:o[0].name)
         return (arr, totalexpenses,  totalmedia_mensual)
-            
-#    def remove(self, concepto):
-#        #However, this mutates the existing dictionary so the contents of the dictionary changes for anybody else who has a reference to the same instance. To return a new dictionary, make a copy of the dictionary:
-#        new = dict(self.dic_arr)
-#        del new[str(concepto.id)]
-#        self.dic_arr=new
+
 
 
 class SetCountries(SetCommons):
@@ -680,14 +629,6 @@ class SetCurrencies(SetCommons):
         self.append(Currency().init__create(QApplication.translate("Core","American Dolar"), '$', 'USD'))
         self.append(Currency().init__create(QApplication.translate("Core","Units"), 'u', 'u'))
 
-#    def list(self):
-#        """Devuelve una lista ordenada por id"""
-#        currencies=dic2list(self.dic_arr)
-#        currencies=sorted(currencies, key=lambda c: c.id,  reverse=False)         
-#        return currencies
-
-#    def find(self, id):
-#        return self.dic_arr[str(id)]
 
     def qcombobox(self, combo, selectedcurrency=None):
         """Función que carga en un combo pasado como parámetro las currencies"""
@@ -1689,10 +1630,6 @@ class Concept:
     def __repr__(self):
         return ("Instancia de Concept: {0} -- {1} ({2})".format( self.name, self.tipooperacion.name,  self.id))
 
-#    def strct(self):
-#        """Junta en una string el concepto y el tipo separado por coma"""
-#        return "{0};{1}".format(self.id, self.tipooperacion.id)
-        
 
     def init__create(self, name, tipooperacion, editable,  id=None):
         self.id=id
@@ -1704,13 +1641,7 @@ class Concept:
     def init__db_row(self, row, tipooperacion):
         """El parámetro tipooperacion es un objeto tipooperacion, si no se tuviera en tiempo de creación se asigna None"""
         return self.init__create(row['concepto'], tipooperacion, row['editable'], row['id_conceptos'])
-#            
-#    def balance(self, cur, year,  month):
-#        sql="select sum(importe) as importe from opercuentastarjetas where id_conceptos="+str(self.id)+" and date_part('year',datetime)='"+str(year)+"' and date_part('month',datetime)='"+str(month)+"'"
-#        saldoopercuentastarjetas=con.Execute(sql).GetRowAssoc(0)["importe"]
-#        if saldoopercuentastarjetas==None:
-#            saldoopercuentastarjetas=0
-#        return saldoopercuentastarjetas
+
         
     def save(self):
         cur=self.mem.con.cursor()
@@ -1887,12 +1818,7 @@ class DBData:
     def __init__(self, mem):
         self.mem=mem
         self.loaded_inactive=False
-#        self.tupdatedata=TUpdateData(self.mem)
-        
-#    def __del__(self):
-#        if self.tupdatedata.isAlive():
-#            self.tupdatedata.join()
-#            print ("TUpdateData closed")
+
 
     def load_actives(self):
         inicio=datetime.datetime.now()
@@ -2854,8 +2780,6 @@ class Assets:
 class SetCreditCards(SetCommons):
     def __init__(self, mem, cuentas):
         SetCommons.__init__(self)
-#        self.arr=[]
-#        self.dic_arr={} ##Prueba de duplicación
         self.mem=mem   
         self.cuentas=cuentas
 
@@ -2878,31 +2802,7 @@ class SetCreditCards(SetCommons):
                 s.arr.append(t)
         return s
 
-#    def find(self, id):
-#        for t in self.arr:
-#            if t.id==id:
-#                return t
-#        return self.dic_arr[str(id)]
-        
-#    def tarjetas(self, id=None):
-#        if id==None:
-#            return dic2list(self.dic_tarjetas)
-#        else:
-#            return self.dic_tarjetas[str(id)]
-#                        
-#    def tarjetas_activas(self, activa=True):
-#        resultado=[]
-#        for i in self.tarjetas():
-#            if i.activa==activa:
-#                resultado.append(i)
-#        return resultado
-                    
-#    def union(self,  list2, cuentasunion):
-#        """Devuelve un SetBanks con la union del set1 y del set2"""
-#        resultado=SetCreditCards(self.mem, cuentasunion)
-#        resultado.arr=self.arr+list2.arr
-#        return resultado
-        
+       
         
 class SetOperationTypes:      
     def __init__(self, mem):
@@ -2962,29 +2862,6 @@ def decimal_check(dec):
     print ("Decimal check", dec, dec.__class__,  dec.__repr__(),  "prec:",  getcontext().prec)
     
 
-    
-#def decimalesSignificativos(arraynum):
-#    """ESta función busca en quotes_basic para calcular los bits significativos de los quotes, para poder mostrarlos mejor"""
-#    return 6
-#    
-#    ##DEBE CAMBIARSE A ARRAY DE NUMEROS
-#    resultado=2
-#    if self.last==None or self.penultimate==None or self.endlastyear==None:
-##            print ("mal",  resultado)
-#        return resultado
-#    
-#    for num in [self.last.quote, self.penultimate.quote, self.endlastyear.quote]:
-#        decimales=str(num).split(".")
-#        if len(decimales)==2:
-#            cadena=decimales[1]
-#            while len(cadena)>=2:
-#                if cadena[len(cadena)-1]=="0":
-#                    cadena=cadena[:-1]
-#                else:
-#                    resultado=len(cadena)
-#                    break
-##        print ("significativos",  self.last.quote,  self.penultimate.quote,  self.endlastyear.quote,  resultado)
-#    return resultado
 
 class SetAgrupations(SetCommons):
     """Se usa para meter en mem las agrupaciones, pero también para crear agrupaciones en las inversiones"""
@@ -3156,16 +3033,7 @@ class SetPriorities:
         for p in self.arr:
             resultado.append(p.id)
         return resultado
-            
 
-#    def dbstring(self):
-#        if len(self.arr)==0:
-#            return "NULL"
-#        else:
-#            resultado=[]
-#            for a in self.arr:
-#                resultado.append(a.id)
-#            return "ARRAY"+str(resultado)
         
     def init__create_from_combo(self, cmb):
         """Función que convierte un combo de agrupations a un array de agrupations"""
@@ -3220,16 +3088,7 @@ class SetPrioritiesHistorical:
         for p in self.arr:
             resultado.append(p.id)
         return resultado
-        
-#    def dbstring(self):
-#        if len(self.arr)==0:
-#            return "NULL"
-#        else:
-#            resultado=[]
-#            for a in self.arr:
-#                resultado.append(a.id)
-#            return "ARRAY"+str(resultado)
-        
+
     def init__create_from_combo(self, cmb):
         """Función que convierte un combo de agrupations a un array de agrupations"""
         for i in range (cmb.count()):
@@ -3317,11 +3176,6 @@ class Color:
         return self.codes["red"]+text+self.codes["reset"]
     def darkred(self, text):
         return self.codes["darkred"]+text+self.codes["reset"]
-
-
-#
-#def softwareversion():
-#    return "20110409"
 
 class Currency:
     """Clase que almacena el concepto divisa"""
@@ -3689,26 +3543,7 @@ class Source:
         
     def arr_quote(self, code):
         return []
-#        
-#    def arr_quotes(self):
-#        return []
-#        
-#    def arr_historical(self, code,  isin=''):
-#        """isin se usa cuando se ha obtenido el code por isin2yahoocode para poner el nombre en code con yahoo_historical"""
-#        return []
-#        
-#    def arr_static(self, code):
-#        return []
-#        
-#    def arr_statics(self):
-#        return []
-#        
-#    def arr_dividends(self):
-#        return []
-#        
-#    def arr_dividend(self, code):
-#        return []
-        
+
     def filtrar_ids_primerregistro_ge_iniciodb(self,  ids):
         """Filtra aquellos ids cuyo primer registro es mayor que el inicio de la base de datos. Es decir que no se han buscado historicos"""
         con=self.mem.connect_xulpymoneyd()
@@ -3767,11 +3602,6 @@ class Source:
                                 self.ids.append(inv)
         return self.ids
 
-#        
-#    def filtrar_ids(self, ids):
-#        ids=self.filtrar_horario_bolsa(ids)
-#        return ids
-        
         
     def isin2id(self, isin,  id_stockexchanges):
         for i in self.mem.activas:
@@ -3992,7 +3822,248 @@ class Source:
 #                cur.close()
 #                self.mem.disconnect_xulpymoneyd(con)       
 #                time.sleep(self.time_step_historical)
+#    
+#        
+#    def update_quotes(self):
+#        con=self.mem.connect_xulpymoneyd()
+#        cur=con.cursor()
+#        status_insert(cur, self.name, "Update quotes")
+#        status_update(cur, self.name, "Update quotes", status='Waiting before',  statuschange=datetime.datetime.now())
+#        con.commit()
+#        cur.close()
+#        self.mem.disconnect_xulpymoneyd(con)   
+#        time.sleep(self.time_before_quotes)      
+#        while True:      
+#            con=self.mem.connect_xulpymoneyd()
+#            cur=con.cursor()
+#            status_update(cur, self.name, "Update quotes", status='Working',  statuschange=datetime.datetime.now())
+#            con.commit()
+#            cur.close()
+#            self.mem.disconnect_xulpymoneyd(con)    
+#            if self.debugmode==True:
+#                for i in self.arr_quotes():
+#                    print (i)
+#            else:
+#                Quote(self.mem).insert_cdtv(self.arr_quotes(), self.name)
+#            con=self.mem.connect_xulpymoneyd()
+#            cur=con.cursor()
+#            status_update(cur, self.name, "Update quotes", status='Waiting after',  statuschange=datetime.datetime.now())
+#            con.commit()
+#            cur.close()
+#            self.mem.disconnect_xulpymoneyd(con)               
+#            time.sleep(self.time_after_quotes)
+
+
+#    def update_statics(self):
+#        con=self.mem.connect_xulpymoneyd()
+#        cur=con.cursor()
+#        status_insert(cur, self.name, "Update statics")
+#        status_update(cur, self.name, "Update statics", status='Waiting before',  statuschange=datetime.datetime.now())
+#        con.commit()
+#        cur.close()
+#        self.mem.disconnect_xulpymoneyd(con)   
+#        time.sleep(self.time_before_statics)
+#        while True:            
+#            con=self.mem.connect_xulpymoneyd()
+#            cur=con.cursor()
+#            status_update(cur, self.name, "Update statics", status='Working',  statuschange=datetime.datetime.now())
+#            con.commit()
+#            cur.close()
+#            self.mem.disconnect_xulpymoneyd(con)    
+#            if self.debugmode==True:
+#                for i in self.arr_statics():
+#                    print (i)
+#            else:
+#                Product(self.mem).update_static(self.arr_statics(), self.name)
+#            con=self.mem.connect_xulpymoneyd()
+#            cur=con.cursor()
+#            status_update(cur, self.name, "Update statics", status='Waiting after',  statuschange=datetime.datetime.now())
+#            con.commit()
+#            cur.close()
+#            self.mem.disconnect_xulpymoneyd(con)                     
+#            time.sleep(self.time_after_statics)
+            
+#    def update_step_statics(self, sql):
+#        """Hace un bucle con los distintos codes del sql."""
+#        con=self.mem.connect_xulpymoneyd()
+#        cur=con.cursor()
+#        status_insert(cur, self.name, "Update step statics")
+#        status_update(cur, self.name, "Update step statics", status='Waiting before',  statuschange=datetime.datetime.now())
+#        con.commit()
+#        cur.close()
+#        self.mem.disconnect_xulpymoneyd(con)    
+#        time.sleep(self.time_before_statics)
+#        while True:
+#            con=self.mem.connect_xulpymoneyd()
+#            cur=con.cursor()
+#            cur2=con.cursor()
+#            status_update(cur, self.name, "Update statics", status='Working',  statuschange=datetime.datetime.now())
+#            con.commit()
+#            cur.execute(sql)
+#            for row in cur:
+#                if self.debugmode==True:
+#                    for i in self.arr_static(row['code']):
+#                        print (i)
+#    #                log("S_SOCIETEGENERALEWARRANTS_STATICS", QApplication.translate("Core",("%d de %d" %(cur.rownumber, cur.rowcount)))
+#                else:
+#                    Product(self.mem).update_static(self.arr_static(row['code']), self.name)
 #
+#                status_update(cur2, self.name, "Update step statics", status='Waiting step',  statuschange=datetime.datetime.now())    
+#                con.commit()
+#                time.sleep(self.time_step_static)
+#
+#            status_update(cur2, self.name, "Update step statics", status='Waiting after',  statuschange=datetime.datetime.now())                    
+#            con.commit()
+#            cur.close()
+#            cur2.close()
+#            self.mem.disconnect_xulpymoneyd(con)    
+#            time.sleep( self.time_after_statics)
+#            
+#    def update_stepcode_statics(self, listcode):
+#        """Hace un bucle con los distintos codes del listcode."""        
+##        con=self.mem.connect_xulpymoneyd()
+##        cur=con.cursor()
+##        status_insert(cur, self.name, "Update stepcode statics")
+##        status_update(cur, self.name, "Update stepcode statics", status='Waiting before',  statuschange=datetime.datetime.now())
+##        con.commit()
+##        cur.close()
+##        self.mem.disconnect_xulpymoneyd(con)   
+#        time.sleep(self.time_before_statics)
+#        while True:
+#            for code in listcode:
+#                if self.debugmode==True:
+#                    for i in self.arr_static(code):
+#                        print (i)
+#                else:
+#                    Product(self.mem).update_static(self.arr_static(code), self.name)
+#                time.sleep(self.time_step_static)
+#            time.sleep( self.time_after_statics)
+#
+#    def update_step_historicals(self, listcodes):
+#        con=self.mem.connect_xulpymoneyd()
+#        cur=con.cursor()
+#        status_insert(cur, self.name, "Update step historicals")
+#        status_update(cur, self.name, "Update step historicals", status='Waiting before',  statuschange=datetime.datetime.now())
+#        con.commit()
+#        cur.close()
+#        self.mem.disconnect_xulpymoneyd(con)   
+#        time.sleep(self.time_before_historicals)
+#        while True:
+#            con=self.mem.connect_xulpymoneyd()
+#            cur=con.cursor()
+#            status_update(cur, self.name, "Update step historicals", status='Working',  statuschange=datetime.datetime.now())
+#            con.commit()
+#            cur.close()
+#            self.mem.disconnect_xulpymoneyd(con)                
+#            for code in listcodes:
+##                print code,  listcodes
+#                if self.debugmode==True:
+#                    for i in self.arr_historical(code):
+#                        print (i)
+#                else:                
+##                    print "Ha llegado"
+#                    Quote(self.mem).insert_cdtohclv(self.arr_historical(code, ''),  self.name)
+#                con=self.mem.connect_xulpymoneyd()
+#                cur=con.cursor()
+#                status_update(cur, self.name, "Update step historicals", status='Waiting step',  statuschange=datetime.datetime.now())
+#                con.commit()
+#                cur.close()
+#                self.mem.disconnect_xulpymoneyd(con)       
+#                time.sleep(self.time_step_historical)
+#
+#            con=self.mem.connect_xulpymoneyd()
+#            cur=con.cursor()
+#            status_update(cur, self.name, "Update step historicals", status='Waiting after',  statuschange=datetime.datetime.now())
+#            con.commit()
+#            cur.close()
+#            self.mem.disconnect_xulpymoneyd(con)                       
+#            time.sleep(self.time_after_historicals)
+#
+#    def update_step_historicals_by_isin(self, sql):
+#        """Sql debe devolver isin solamente"""
+#        con=self.mem.connect_xulpymoneyd()
+#        cur=con.cursor()
+#        status_insert(cur, self.name, "Update step historicals by isin")
+#        status_update(cur, self.name, "Update step historicals by isin", status='Waiting before',  statuschange=datetime.datetime.now())
+#        con.commit()
+#        cur.close()
+#        self.mem.disconnect_xulpymoneyd(con)   
+#        time.sleep(self.time_before_historicals)
+#        while True:
+#            con=self.mem.connect_xulpymoneyd()
+#            cur=con.cursor()
+#            status_update(cur, self.name, "Update step historicals", status='Working',  statuschange=datetime.datetime.now())
+#            con.commit()            
+#            cur.execute(sql)            
+#            lista=[]
+#            for i in cur:
+#                lista.append(i['isin'])
+#            cur.close()
+#            self.mem.disconnect_xulpymoneyd(con)         
+#            
+#            for isin in lista:
+#                yahoocode=self.isin2yahoocode(isin)
+#                if yahoocode==None:
+#                    time.sleep(self.time_step_historical)
+#                else:
+#    #                print code,  listcodes
+#                    if self.debugmode==True:
+#                        for i in self.arr_historical(yahoocode):
+#                            print (i)
+#                    else:                
+#    #                    print "Ha llegado"
+#                        Quote(self.mem).insert_cdtohclv(self.arr_historical(yahoocode, isin),  self.name)                
+#                    con=self.mem.connect_xulpymoneyd()
+#                    cur=con.cursor()
+#                    status_update(cur, self.name, "Update step historicals", status='Waiting step',  statuschange=datetime.datetime.now())
+#                    con.commit()
+#                    cur.close()
+#                    self.mem.disconnect_xulpymoneyd(con)       
+#                    time.sleep(self.time_step_historical)
+#
+#            con=self.mem.connect_xulpymoneyd()
+#            cur=con.cursor()
+#            status_update(cur, self.name, "Update step historicals", status='Waiting after',  statuschange=datetime.datetime.now())
+#            con.commit()
+#            cur.close()
+#            self.mem.disconnect_xulpymoneyd(con)                          
+#            time.sleep(self.time_after_historicals)
+
+#    def update_step_dividends(self, sql):
+##        con=self.mem.connect_xulpymoneyd()
+##        cur=con.cursor()
+##        status_insert(cur, self.name, "Update step dividends")
+##        con.commit()
+##        cur.close()
+##        self.mem.disconnect_xulpymoneyd(con)   
+#        return
+#        
+#    def update_dividends(self):   
+#        con=self.mem.connect_xulpymoneyd()
+#        cur=con.cursor()
+#        status_insert(cur, self.name, "Update dividends")
+#        status_update(cur, self.name, "Update dividends", status='Waiting before',  statuschange=datetime.datetime.now())
+#        con.commit()
+#        cur.close()
+#        self.mem.disconnect_xulpymoneyd(con)    
+#        time.sleep(self.time_before_dividends)        
+#        while True:                   
+#            con=self.mem.connect_xulpymoneyd()
+#            cur=con.cursor()
+#            status_update(cur, self.name, "Update dividends", status='Working',  statuschange=datetime.datetime.now())
+#            con.commit()
+#            cur.close()
+#            self.mem.disconnect_xulpymoneyd(con)                     
+#            Product(self.mem).update_dividends( self.arr_dividends(),  self.name)
+#            con=self.mem.connect_xulpymoneyd()
+#            cur=con.cursor()
+#            status_update(cur, self.name, "Update dividends", status='Waiting after',  statuschange=datetime.datetime.now())
+#            con.commit()
+#            cur.close()
+#            self.mem.disconnect_xulpymoneyd(con)                     
+#            time.sleep(self.time_after_dividends)
+#           
+#           
 #            con=self.mem.connect_xulpymoneyd()
 #            cur=con.cursor()
 #            status_update(cur, self.name, "Update step historicals", status='Waiting after',  statuschange=datetime.datetime.now())
@@ -6144,9 +6215,36 @@ def cur2dictdict(cur, indexcolumn):
 
 
 def qbool(bool):
-    a=QTableWidgetItem(str(bool))
+    """Prints bool and check. Is read only and enabled"""
+    a=QTableWidgetItem()
+    a.setFlags( Qt.ItemIsSelectable |  Qt.ItemIsEnabled )#Set no editable
+    if bool:
+        a.setCheckState(Qt.Checked);
+        a.setText(QApplication.translate("Core","True"))
+    else:
+        a.setCheckState(Qt.Unchecked);
+        a.setText(QApplication.translate("Core","False"))
     a.setTextAlignment(Qt.AlignVCenter|Qt.AlignCenter)
     return a
+    
+def wdgBool(bool):
+    """Center checkbox
+    Yo must use with table.setCellWidget(0,0,wdgBool)
+    Is disabled to be readonly"""
+    pWidget = QWidget()
+    pCheckBox = QCheckBox();
+    if bool:
+        pCheckBox.setCheckState(Qt.Checked);
+    else:
+        pCheckBox.setCheckState(Qt.Unchecked);
+    pLayout = QHBoxLayout(pWidget);
+    pLayout.addWidget(pCheckBox);
+    pLayout.setAlignment(Qt.AlignCenter);
+    pLayout.setContentsMargins(0,0,0,0);
+    pWidget.setLayout(pLayout);
+    pCheckBox.setEnabled(False)
+    return pWidget
+    
 
 def qcenter(string, digits=None):
     a=QTableWidgetItem(str(string))
