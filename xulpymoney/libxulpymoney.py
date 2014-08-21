@@ -371,31 +371,16 @@ class SetProducts(SetCommons):
                 result.append(a)
         return result
 
-class SetProductsModes:
+class SetProductsModes(SetCommons):
     """Agrupa los mode"""
     def __init__(self, mem):
-        self.dic_arr={}
+        SetCommons.__init__(self)
         self.mem=mem     
     
     def load_all(self):
         self.dic_arr['p']=ProductMode(self.mem).init__create("p",QApplication.translate("Core","Put"))
         self.dic_arr['c']=ProductMode(self.mem).init__create("c",QApplication.translate("Core","Call"))
-        self.dic_arr['i']=ProductMode(self.mem).init__create("i",QApplication.translate("Core","Inline"))
-        
-    def qcombobox(self, combo):
-        """Carga conceptos operaciones 1,2,3"""
-        for c in self.list():
-            combo.addItem(c.name, c.id)
-
-    def find(self, id):
-        return self.dic_arr[str(id)]
-        
-    def list(self):
-        """Lista ordenada por nombre"""
-        lista=dic2list(self.dic_arr)
-        lista=sorted(lista, key=lambda c: c.name  ,  reverse=False)    
-        return lista
-        
+        self.dic_arr['i']=ProductMode(self.mem).init__create("i",QApplication.translate("Core","Inline"))        
         
 class SetStockExchanges:
     def __init__(self, mem):
