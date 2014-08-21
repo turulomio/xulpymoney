@@ -61,7 +61,6 @@ SOURCES         = xulpymoney.py \
                   ui/frmSettings.py \
                   ui/wdgTotal.py \
                   ui/Ui_wdgTotal.py \
-                  mystocks.py \
                   ui/investmentSelector.py \
                   ui/wdgpie.py \
                   ui/myqtablewidget.py \
