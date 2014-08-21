@@ -87,6 +87,7 @@ SOURCES         = xulpymoney.py \
                   ui/Ui_wdgDatetime.py \
                   ui/wdgYearMonth.py \
                   ui/Ui_wdgYearMonth.py \
+                  canvaschart.py \
                   mystocksd.py
 
 FORMS           = ui/frmAbout.ui \

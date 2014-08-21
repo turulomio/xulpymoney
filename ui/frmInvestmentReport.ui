@@ -322,7 +322,7 @@
                   <item>
                    <widget class="QLabel" name="lblDivAnualEstimado">
                     <property name="text">
-                     <string>DAE</string>
+                     <string>APR</string>
                     </property>
                    </widget>
                   </item>
