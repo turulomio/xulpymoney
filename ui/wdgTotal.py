@@ -5,7 +5,7 @@ from libxulpymoney import *
 from matplotlib.finance import *
 
 from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg
-from matplotlib.backends.backend_qt4agg import NavigationToolbar2QTAgg as NavigationToolbar
+from matplotlib.backends.backend_qt4agg import NavigationToolbar2QTAgg 
 
 from matplotlib.dates import *
 from Ui_wdgTotal import *
