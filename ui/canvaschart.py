@@ -3,7 +3,7 @@ from PyQt4.QtGui import *
 from libxulpymoney import *
 from matplotlib.finance import *
 from decimal import Decimal
-from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg as FigureCanvas
+from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg
 from matplotlib.dates import *
 from matplotlib.pyplot import *
 # Matplotlib Figure object
@@ -14,11 +14,11 @@ class ChartType:
     ohcl=1
     candles=2
 
-class canvasChart(FigureCanvas):
+class canvasChart(FigureCanvasQTAgg):
     """
         RECIBE DATOS DE LA FORMA DATETIME,VALUE
     
-    Class to represent the FigureCanvas widget
+    Class to represent the FigureCanvasQTAgg widget
     type 0:lineas
             since: datetime desde el que mostrar datos
             period: forma en que se muestran 0:5 minutos, 1: 15 minutos, 2:1 hora,3:diario,4:semanal,5 mensual
@@ -29,11 +29,11 @@ class canvasChart(FigureCanvas):
     def __init__(self, parent):
         # setup Matplotlib Figure and Axis
         self.fig = Figure()
-        FigureCanvas.__init__(self, self.fig)
+        FigureCanvasQTAgg.__init__(self, self.fig)
         # we define the widget as expandable
-        FigureCanvas.setSizePolicy(self,QSizePolicy.Expanding, QSizePolicy.Expanding)
+        FigureCanvasQTAgg.setSizePolicy(self,QSizePolicy.Expanding, QSizePolicy.Expanding)
         # notify the system of updated policy
-        FigureCanvas.updateGeometry(self)        
+        FigureCanvasQTAgg.updateGeometry(self)        
         
         self.ax = self.fig.add_subplot(111)
         
@@ -189,59 +189,59 @@ class canvasChart(FigureCanvas):
         self.actionSMA200=QAction(self)
         self.actionSMA200.setText(self.trUtf8("Media móvil simple 200"))
         self.actionSMA200.setCheckable(True)
-        self.actionSMA200.setObjectName(self.trUtf8("actionSMA200"))
+        self.actionSMA200.setObjectName("actionSMA200")
         
         self.actionLines5m=QAction(self)
-        self.actionLines5m.setText(self.trUtf8("5 minutos"))
-        self.actionLines5m.setObjectName(self.trUtf8("actionLines5m"))
+        self.actionLines5m.setText(self.trUtf8("5 minutes"))
+        self.actionLines5m.setObjectName("actionLines5m")
         self.actionLines5m.setEnabled(False)
         self.actionLines10m=QAction(self)
-        self.actionLines10m.setText(self.trUtf8("10 minutos"))
-        self.actionLines10m.setObjectName(self.trUtf8("actionLines10m"))
+        self.actionLines10m.setText(self.trUtf8("10 minutes"))
+        self.actionLines10m.setObjectName("actionLines10m")
         self.actionLines10m.setEnabled(False)
         self.actionLines30m=QAction(self)
-        self.actionLines30m.setText(self.trUtf8("30 minutos"))
-        self.actionLines30m.setObjectName(self.trUtf8("actionLines30m"))
+        self.actionLines30m.setText(self.trUtf8("30 minutes"))
+        self.actionLines30m.setObjectName("actionLines30m")
         self.actionLines30m.setEnabled(False)
         self.actionLines60m=QAction(self)
-        self.actionLines60m.setText(self.trUtf8("1 hora"))
-        self.actionLines60m.setObjectName(self.trUtf8("actionLines60m"))
+        self.actionLines60m.setText(self.trUtf8("1 hour"))
+        self.actionLines60m.setObjectName("actionLines60m")
         self.actionLines60m.setEnabled(False)
         
         
         self.actionOHCL5m=QAction(self)
-        self.actionOHCL5m.setText(self.trUtf8("5 minutos"))
-        self.actionOHCL5m.setObjectName(self.trUtf8("actionOHCL5m"))
+        self.actionOHCL5m.setText(self.trUtf8("5 minutes"))
+        self.actionOHCL5m.setObjectName("actionOHCL5m")
         self.actionOHCL5m.setEnabled(False)
         self.actionOHCL10m=QAction(self)
-        self.actionOHCL10m.setText(self.trUtf8("10 minutos"))
+        self.actionOHCL10m.setText(self.trUtf8("10 minutes"))
         self.actionOHCL10m.setEnabled(False)
-        self.actionOHCL10m.setObjectName(self.trUtf8("actionOHCL10m"))
+        self.actionOHCL10m.setObjectName("actionOHCL10m")
         self.actionOHCL30m=QAction(self)
-        self.actionOHCL30m.setText(self.trUtf8("30 minutos"))
+        self.actionOHCL30m.setText(self.trUtf8("30 minutes"))
         self.actionOHCL30m.setEnabled(False)
-        self.actionOHCL30m.setObjectName(self.trUtf8("actionOHCL30m"))
+        self.actionOHCL30m.setObjectName("actionOHCL30m")
         self.actionOHCL60m=QAction(self)
-        self.actionOHCL60m.setText(self.trUtf8("1 hora"))
+        self.actionOHCL60m.setText(self.trUtf8("1 hour"))
         self.actionOHCL60m.setEnabled(False)
-        self.actionOHCL60m.setObjectName(self.trUtf8("actionOHCL60m"))
+        self.actionOHCL60m.setObjectName("actionOHCL60m")
         
         self.actionCandles5m=QAction(self)
-        self.actionCandles5m.setText(self.trUtf8("5 minutos"))
+        self.actionCandles5m.setText(self.trUtf8("5 minutes"))
         self.actionCandles5m.setEnabled(False)
-        self.actionCandles5m.setObjectName(self.trUtf8("actionCandles5m"))
+        self.actionCandles5m.setObjectName("actionCandles5m")
         self.actionCandles10m=QAction(self)
-        self.actionCandles10m.setText(self.trUtf8("10 minutos"))
+        self.actionCandles10m.setText(self.tr("10 minutes"))
         self.actionCandles10m.setEnabled(False)
-        self.actionCandles10m.setObjectName(self.trUtf8("actionCandles10m"))
+        self.actionCandles10m.setObjectName("actionCandles10m")
         self.actionCandles30m=QAction(self)
-        self.actionCandles30m.setText(self.trUtf8("30 minutos"))
+        self.actionCandles30m.setText(self.trUtf8("30 minutes"))
         self.actionCandles30m.setEnabled(False)
-        self.actionCandles30m.setObjectName(self.trUtf8("actionCandles30m"))
+        self.actionCandles30m.setObjectName("actionCandles30m")
         self.actionCandles60m=QAction(self)
-        self.actionCandles60m.setText(self.trUtf8("1 hora"))
+        self.actionCandles60m.setText(self.trUtf8("1 hour"))
         self.actionCandles60m.setEnabled(False)
-        self.actionCandles60m.setObjectName(self.trUtf8("actionCandles60m"))
+        self.actionCandles60m.setObjectName("actionCandles60m")
         
         self.labels=[]#Array de tuplas (plot,label)
 
@@ -330,10 +330,10 @@ class canvasChartHistorical(canvasChart):
     
     def makeLegend(self):
         if len(self.labels)==0:
-            self.labels.append((self.plot_sma200,"SMA200"))
-            self.labels.append((self.plot_sma50,"SMA50"))      
-            self.labels.append((self.plot_selling, self.trUtf8("Selling price")))
-            self.labels.append((self.plot_average, self.trUtf8("Average purchase price")))
+            self.labels.append(self.plot_sma200,"SMA200")
+            self.labels.append(self.plot_sma50,"SMA50")
+            self.labels.append(self.plot_selling, self.trUtf8("Selling price"))
+            self.labels.append(self.plot_average, self.trUtf8("Average purchase price"))
             
     def setData(self, arr):
         if self.num<60:
@@ -383,50 +383,50 @@ class canvasChartHistorical(canvasChart):
         self.actionLinesIntraday.setObjectName(self.trUtf8("actionLinesIntraday"))
         
         self.actionLines1d=QAction(self)
-        self.actionLines1d.setText(self.trUtf8("1 dia"))
-        self.actionLines1d.setObjectName(self.trUtf8("actionLines1d"))
+        self.actionLines1d.setText(self.trUtf8("1 day"))
+        self.actionLines1d.setObjectName("actionLines1d")
         self.actionLines7d=QAction(self)
-        self.actionLines7d.setText(self.trUtf8("1 semana"))
-        self.actionLines7d.setObjectName(self.trUtf8("actionLines7d"))
+        self.actionLines7d.setText(self.trUtf8("1 week"))
+        self.actionLines7d.setObjectName("actionLines7d")
         self.actionLines7d.setEnabled(False)
         self.actionLines30d=QAction(self)
-        self.actionLines30d.setText(self.trUtf8("1 mes"))
-        self.actionLines30d.setObjectName(self.trUtf8("actionLines30d"))
+        self.actionLines30d.setText(self.trUtf8("1 month"))
+        self.actionLines30d.setObjectName("actionLines30d")
         self.actionLines30d.setEnabled(False)
         self.actionLines365d=QAction(self)
-        self.actionLines365d.setText(self.trUtf8("1 año"))
-        self.actionLines365d.setObjectName(self.trUtf8("actionLines365d"))        
+        self.actionLines365d.setText(self.trUtf8("1 year"))
+        self.actionLines365d.setObjectName("actionLines365d")
         self.actionLines365d.setEnabled(False)
         
         self.actionOHCL1d=QAction(self)
-        self.actionOHCL1d.setText(self.trUtf8("1 dia"))
-        self.actionOHCL1d.setObjectName(self.trUtf8("actionOHCL1d"))
+        self.actionOHCL1d.setText(self.trUtf8("1 day"))
+        self.actionOHCL1d.setObjectName("actionOHCL1d")
         self.actionOHCL7d=QAction(self)
-        self.actionOHCL7d.setText(self.trUtf8("1 semana"))
-        self.actionOHCL7d.setObjectName(self.trUtf8("actionOHCL7d"))
+        self.actionOHCL7d.setText(self.trUtf8("1 week"))
+        self.actionOHCL7d.setObjectName("actionOHCL7d")
         self.actionOHCL30d=QAction(self)
-        self.actionOHCL30d.setText(self.trUtf8("1 mes"))
-        self.actionOHCL30d.setObjectName(self.trUtf8("actionOHCL30d"))
+        self.actionOHCL30d.setText(self.trUtf8("1 month"))
+        self.actionOHCL30d.setObjectName("actionOHCL30d")
         self.actionOHCL365d=QAction(self)
-        self.actionOHCL365d.setText(self.trUtf8("1 año"))
-        self.actionOHCL365d.setObjectName(self.trUtf8("actionOHCL365d"))
+        self.actionOHCL365d.setText(self.trUtf8("1 year"))
+        self.actionOHCL365d.setObjectName("actionOHCL365d")
         
         self.actionCandles1d=QAction(self)
-        self.actionCandles1d.setText(self.trUtf8("1 dia"))
+        self.actionCandles1d.setText(self.trUtf8("1 day"))
         self.actionCandles1d.setEnabled(False)
-        self.actionCandles1d.setObjectName(self.trUtf8("actionCandles1d"))
+        self.actionCandles1d.setObjectName("actionCandles1d")
         self.actionCandles7d=QAction(self)
-        self.actionCandles7d.setText(self.trUtf8("1 semana"))
+        self.actionCandles7d.setText(self.trUtf8("1 week"))
         self.actionCandles7d.setEnabled(False)
-        self.actionCandles7d.setObjectName(self.trUtf8("actionCandles7d"))
+        self.actionCandles7d.setObjectName("actionCandles7d")
         self.actionCandles30d=QAction(self)
-        self.actionCandles30d.setText(self.trUtf8("1 mes"))
+        self.actionCandles30d.setText(self.trUtf8("1 month"))
         self.actionCandles30d.setEnabled(False)
-        self.actionCandles30d.setObjectName(self.trUtf8("actionCandles30d"))
+        self.actionCandles30d.setObjectName("actionCandles30d")
         self.actionCandles365d=QAction(self)
-        self.actionCandles365d.setText(self.trUtf8("1 año"))
+        self.actionCandles365d.setText(self.trUtf8("1 year"))
         self.actionCandles365d.setEnabled(False)
-        self.actionCandles365d.setObjectName(self.trUtf8("actionCandles365d"))
+        self.actionCandles365d.setObjectName("actionCandles365d")
         
         self.common_actions()
         self.fig.canvas.mpl_connect('scroll_event', self.on_wheelEvent)

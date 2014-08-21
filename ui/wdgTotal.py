@@ -4,7 +4,7 @@ from libxulpymoney import *
 from libxulpymoney import *
 from matplotlib.finance import *
 
-from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg as FigureCanvas
+from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg
 from matplotlib.backends.backend_qt4agg import NavigationToolbar2QTAgg as NavigationToolbar
 
 from matplotlib.dates import *
@@ -13,13 +13,13 @@ import calendar,  datetime
 
 # Matplotlib Figure object
 from matplotlib.figure import Figure
-class canvasTotal(FigureCanvas):
+class canvasTotal(FigureCanvasQTAgg):
     def __init__(self, mem, parent):
         self.mem=mem
         self.fig = Figure()
-        FigureCanvas.__init__(self, self.fig)
-        FigureCanvas.setSizePolicy(self,QSizePolicy.Expanding, QSizePolicy.Expanding)
-        FigureCanvas.updateGeometry(self)
+        FigureCanvasQTAgg.__init__(self, self.fig)
+        FigureCanvasQTAgg.setSizePolicy(self,QSizePolicy.Expanding, QSizePolicy.Expanding)
+        FigureCanvasQTAgg.updateGeometry(self)
         self.ax = self.fig.add_subplot(111)
         self.labels=[]
         self.plot_main=None
@@ -111,7 +111,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
 
 
         self.canvas=canvasTotal(self.mem,  self)
-        self.ntb = NavigationToolbar(self.canvas, self)
+        self.ntb = NavigationToolbar2QTAgg(self.canvas, self)
         
         self.tabGraphTotal.addWidget(self.canvas)
         self.tabGraphTotal.addWidget(self.ntb)

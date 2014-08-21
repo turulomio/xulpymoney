@@ -5,18 +5,18 @@ from PyQt4.QtGui import *
 from Ui_wdgInvestmentClasses import *
 from libxulpymoney import *
 
-from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg as FigureCanvas
+from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg
 from matplotlib.figure import Figure
-class canvasPie(FigureCanvas):
+class canvasPie(FigureCanvasQTAgg):
     def __init__(self, parent=None):
         """
         mem. Fichero configuración
         fracs. Datos a dibujar
         explode. Valor para esplotar datos"""
         self.fig = Figure()
-        FigureCanvas.__init__(self, self.fig)        
-        FigureCanvas.setSizePolicy(self,QSizePolicy.Expanding, QSizePolicy.Expanding)
-        FigureCanvas.updateGeometry(self)
+        FigureCanvasQTAgg.__init__(self, self.fig)        
+        FigureCanvasQTAgg.setSizePolicy(self,QSizePolicy.Expanding, QSizePolicy.Expanding)
+        FigureCanvasQTAgg.updateGeometry(self)
         self.data=None
         self.fracs=None
         self.explode=None
