@@ -19,51 +19,51 @@ class frmInvestmentOperationsAdd(QDialog, Ui_frmInvestmentOperationsAdd):
             self.type=1
             self.operinversion=InvestmentOperation(self.mem)
             self.operinversion.inversion=self.inversion
-            self.lblTitulo.setText(self.trUtf8("Nuevo movimiento de {0}".format(self.inversion.name)))
+            self.lblTitulo.setText(self.tr("New operation of {}").format(self.inversion.name))
             self.wdgDT.set(self.mem)
         else:#editar movimiento
             self.type=2
-            self.lblTitulo.setText(self.trUtf8("Edición del movimiento seleccionado de {0}".format(self.inversion.name)))
+            self.lblTitulo.setText(self.tr("{} operation edition").format(self.inversion.name))
             self.cmbTiposOperaciones.setCurrentIndex(self.cmbTiposOperaciones.findData(self.operinversion.tipooperacion.id))
             self.wdgDT.set(self.mem, self.operinversion.datetime, self.mem.localzone)
-            self.txtImporte.setText(str(self.operinversion.importe))
-            self.txtImpuestos.setText(str(self.operinversion.impuestos))
-            self.txtComision.setText(str(self.operinversion.comision))
-            self.txtValorAccion.setText(str(self.operinversion.valor_accion))
-            self.txtAcciones.setText(str(self.operinversion.acciones))
+            self.txtImporte.setText(self.operinversion.importe)
+            self.txtImpuestos.setText(self.operinversion.impuestos)
+            self.txtComision.setText(self.operinversion.comision)
+            self.txtValorAccion.setText(self.operinversion.valor_accion)
+            self.txtAcciones.setText(self.operinversion.acciones)
 
     def on_cmd_released(self):        
         id_tiposoperaciones=int(self.cmbTiposOperaciones.itemData(self.cmbTiposOperaciones.currentIndex()))
         self.operinversion.tipooperacion=self.mem.tiposoperaciones.find(id_tiposoperaciones)
-        self.operinversion.impuestos=Decimal(self.txtImpuestos.text())
-        self.operinversion.comision=Decimal(self.txtComision.text())
-        self.operinversion.valor_accion=Decimal(self.txtValorAccion.text())
-        self.operinversion.acciones=Decimal(self.txtAcciones.text())
+        self.operinversion.impuestos=self.txtImpuestos.decimal()
+        self.operinversion.comision=self.txtComision.decimal()
+        self.operinversion.valor_accion=self.txtValorAccion.decimal()
+        self.operinversion.acciones=self.txtAcciones.decimal()
         if id_tiposoperaciones==5: #Venta
-            self.operinversion.importe=Decimal(self.txtImporteBruto.text())
+            self.operinversion.importe=self.txtImporteBruto.decimal()
             if self.operinversion.acciones>Decimal('0'):
                 m=QMessageBox()
                 m.setIcon(QMessageBox.Information)
-                m.setText(self.trUtf8("El número de acciones en una venta debe ser negativo"))
+                m.setText(self.tr("Sale Shares number must be negative"))
                 m.exec_()    
                 return        
         elif id_tiposoperaciones==4: #Compra
-            self.operinversion.importe=Decimal(self.txtImporte.text())
+            self.operinversion.importe=self.txtImporte.decimal()
             if self.operinversion.acciones<0: 
                 m=QMessageBox()
                 m.setIcon(QMessageBox.Information)
-                m.setText(self.trUtf8("El número de acciones en una compra debe ser positivo"))
+                m.setText(self.tr("Purchase shares number must be positive"))
                 m.exec_()    
                 return
         elif id_tiposoperaciones==6: #Añadido    
-            self.operinversion.importe=Decimal(self.txtImporte.text())            
+            self.operinversion.importe=self.txtImporte.decimal()
         elif id_tiposoperaciones==8: #Traspaso fondos
             self.operinversion.importe=self.txtImporte.decimal()
         
         if self.operinversion.impuestos<Decimal('0') or  self.operinversion.comision<Decimal('0') or self.operinversion.valor_accion<Decimal('0'):            
             m=QMessageBox()
             m.setIcon(QMessageBox.Information)
-            m.setText(self.trUtf8("El valor de la acción, los impuestos y la comisión deben ser positivos"))
+            m.setText(self.tr("Share price, taxes and comission must be positive amounts"))
             m.exec_()    
             return
             
@@ -79,15 +79,13 @@ class frmInvestmentOperationsAdd(QDialog, Ui_frmInvestmentOperationsAdd):
             w.chkCanBePurged.setCheckState(Qt.Unchecked)
             w.txtQuote.setFocus()
             w.exec_() 
-            self.mem.data.benchmark.result.basic.load_from_db()        
-        
+            self.mem.data.benchmark.result.basic.load_from_db()                
         self.done(0)
-
 
     def on_cmbTiposOperaciones_currentIndexChanged(self, index):
         id_tiposoperaciones=int(self.cmbTiposOperaciones.itemData(self.cmbTiposOperaciones.currentIndex()))
         if id_tiposoperaciones==6:#Añadido acciones
-            self.txtValorAccion.setText("0")
+            self.txtValorAccion.setText(0)
             self.txtValorAccion.setEnabled(False)
         else:
             self.txtValorAccion.setEnabled(True)
@@ -98,17 +96,17 @@ class frmInvestmentOperationsAdd(QDialog, Ui_frmInvestmentOperationsAdd):
         id_tiposoperaciones=int(self.cmbTiposOperaciones.itemData(self.cmbTiposOperaciones.currentIndex()))
         try:
             if id_tiposoperaciones==4:#Compra
-                importe=abs(round(Decimal(self.txtAcciones.text())*Decimal(self.txtValorAccion.text()), 2))
-                self.txtImporte.setText(str(importe))
-                self.txtImporteBruto.setText(str(importe+Decimal(self.txtComision.text())+Decimal(self.txtImpuestos.text())))
+                importe=abs(round(self.txtAcciones.decimal()*self.txtValorAccion.decimal(), 2))
+                self.txtImporte.setText(importe)
+                self.txtImporteBruto.setText(importe+self.txtComision.decimal()+self.txtImpuestos.decimal())
             if id_tiposoperaciones==5:#Venta
-                importe=abs(round(Decimal(self.txtAcciones.text())*Decimal(self.txtValorAccion.text()), 2))
-                self.txtImporte.setText(str(importe-Decimal(self.txtComision.text())-Decimal(self.txtImpuestos.text())))
-                self.txtImporteBruto.setText(str(importe))
+                importe=abs(round(self.txtAcciones.decimal()*self.txtValorAccion.decimal()), 2)
+                self.txtImporte.setText(importe-self.txtComision.decimal()-self.txtImpuestos.decimal())
+                self.txtImporteBruto.setText(importe)
             if id_tiposoperaciones==8:#Traspaso
-                importe=abs(round(Decimal(self.txtAcciones.text())*Decimal(self.txtValorAccion.text()), 2))
-                self.txtImporte.setText(str(importe))
-                self.txtImporteBruto.setText(str(importe+Decimal(self.txtComision.text())+Decimal(self.txtImpuestos.text())))
+                importe=abs(round(self.txtAcciones.decimal()*self.txtValorAccion.decimal(), 2))
+                self.txtImporte.setText(importe)
+                self.txtImporteBruto.setText(importe+self.txtComision.decimal()+self.txtImpuestos.decimal())
         except:
             pass
         

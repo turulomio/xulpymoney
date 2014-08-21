@@ -1094,123 +1094,88 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>frmDividendsAdd</name>
     <message>
-        <location filename="ui/Ui_frmDividendsAdd.py" line="189"/>
+        <location filename="ui/Ui_frmDividendsAdd.py" line="166"/>
         <source>Dividends</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmDividendsAdd.py" line="190"/>
+        <location filename="ui/Ui_frmDividendsAdd.py" line="167"/>
         <source>New dividend</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmDividendsAdd.py" line="191"/>
+        <location filename="ui/Ui_frmDividendsAdd.py" line="168"/>
         <source>Gross amount</source>
         <translation type="unfinished"></translation>
     </message>
-    <message encoding="UTF-8">
-        <location filename="ui/Ui_frmDividendsAdd.py" line="192"/>
-        <source>Introduce el importe de la retención</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
-        <location filename="ui/Ui_frmDividendsAdd.py" line="201"/>
+        <location filename="ui/Ui_frmDividendsAdd.py" line="178"/>
         <source>0</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmDividendsAdd.py" line="194"/>
+        <location filename="ui/Ui_frmDividendsAdd.py" line="171"/>
         <source>Dividend per share</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmDividendsAdd.py" line="196"/>
+        <location filename="ui/Ui_frmDividendsAdd.py" line="173"/>
         <source>Comission</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmDividendsAdd.py" line="198"/>
+        <location filename="ui/Ui_frmDividendsAdd.py" line="175"/>
         <source>Net amount</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmDividendsAdd.py" line="200"/>
+        <location filename="ui/Ui_frmDividendsAdd.py" line="177"/>
         <source>Select dividend type</source>
         <translation type="unfinished"></translation>
     </message>
-    <message encoding="UTF-8">
-        <location filename="ui/Ui_frmDividendsAdd.py" line="202"/>
-        <source>Tiene una retención del 0%</source>
+    <message>
+        <location filename="ui/frmDividendsAdd.py" line="96"/>
+        <source>Retention, earnings por share and commission must be greater than zero</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmDividendsAdd.py" line="203"/>
-        <source>Nuevo movimiento</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_frmDividendsAdd.py" line="204"/>
-        <source>Borrar el movimiento</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_frmDividendsAdd.py" line="205"/>
-        <source>Nueva Tarjeta</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_frmDividendsAdd.py" line="206"/>
-        <source>Borrar Tarjeta</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message encoding="UTF-8">
-        <location filename="ui/Ui_frmDividendsAdd.py" line="207"/>
-        <source>Nueva Operación de Tarjeta</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message encoding="UTF-8">
-        <location filename="ui/Ui_frmDividendsAdd.py" line="208"/>
-        <source>Borrar Operación de Tarjeta</source>
+        <location filename="ui/Ui_frmDividendsAdd.py" line="169"/>
+        <source>Withholding tax amount</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/frmDividendsAdd.py" line="26"/>
-        <source>Insertar nuevo dividend</source>
+        <source>Add new dividend</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/frmDividendsAdd.py" line="38"/>
-        <source>Modificar dividend</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message encoding="UTF-8">
-        <location filename="ui/frmDividendsAdd.py" line="65"/>
-        <source>{0} % de retención</source>
+        <source>Edit dividend</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmDividendsAdd.py" line="69"/>
-        <source>Error calculando</source>
+        <location filename="ui/frmDividendsAdd.py" line="67"/>
+        <source>Withhonding tax retention percentage: {}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmDividendsAdd.py" line="81"/>
-        <source>Un gasto no puede tener un importe positivo</source>
+        <location filename="ui/frmDividendsAdd.py" line="71"/>
+        <source>Calculation error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmDividendsAdd.py" line="88"/>
-        <source>Un ingreso no puede tener un importe negativo</source>
+        <location filename="ui/frmDividendsAdd.py" line="83"/>
+        <source>Expenses can&apos;t have a positive amount</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmDividendsAdd.py" line="94"/>
-        <source>Retention, earnings por share and commission must be greater than zero</source>
+        <location filename="ui/frmDividendsAdd.py" line="90"/>
+        <source>Incomes can&apos;t have a negative amount</source>
         <translation type="unfinished"></translation>
     </message>
-    <message encoding="UTF-8">
-        <location filename="ui/frmDividendsAdd.py" line="110"/>
-        <source>Error al introducir los datos. Compruébelos</source>
+    <message>
+        <location filename="ui/frmDividendsAdd.py" line="112"/>
+        <source>Data error. Please check them.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1530,27 +1495,27 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="ui/frmInvestmentOperationsAdd.py" line="22"/>
-        <source>Nuevo movimiento de {0}</source>
+        <source>New operation of {}</source>
         <translation type="unfinished"></translation>
     </message>
-    <message encoding="UTF-8">
+    <message>
         <location filename="ui/frmInvestmentOperationsAdd.py" line="26"/>
-        <source>Edición del movimiento seleccionado de {0}</source>
+        <source>{} operation edition</source>
         <translation type="unfinished"></translation>
     </message>
-    <message encoding="UTF-8">
+    <message>
         <location filename="ui/frmInvestmentOperationsAdd.py" line="47"/>
-        <source>El número de acciones en una venta debe ser negativo</source>
+        <source>Sale Shares number must be negative</source>
         <translation type="unfinished"></translation>
     </message>
-    <message encoding="UTF-8">
+    <message>
         <location filename="ui/frmInvestmentOperationsAdd.py" line="55"/>
-        <source>El número de acciones en una compra debe ser positivo</source>
+        <source>Purchase shares number must be positive</source>
         <translation type="unfinished"></translation>
     </message>
-    <message encoding="UTF-8">
+    <message>
         <location filename="ui/frmInvestmentOperationsAdd.py" line="66"/>
-        <source>El valor de la acción, los impuestos y la comisión deben ser positivos</source>
+        <source>Share price, taxes and comission must be positive amounts</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1629,11 +1594,6 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="ui/Ui_frmInvestmentReport.py" line="304"/>
         <source>Estimation</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_frmInvestmentReport.py" line="305"/>
-        <source>DAE</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1779,6 +1739,11 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="ui/frmInvestmentReport.py" line="138"/>
         <source>Divest / Reinvest simulation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_frmInvestmentReport.py" line="305"/>
+        <source>APR</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

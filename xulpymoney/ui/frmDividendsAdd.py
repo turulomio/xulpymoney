@@ -23,24 +23,26 @@ class frmDividendsAdd(QDialog, Ui_frmDividendsAdd):
                 self.mem.conceptos.load_dividend_qcombobox(self.cmb)
             self.dividend=Dividend(self.mem)
             self.dividend.inversion=inversion
-            self.cmd.setText(self.trUtf8("Insertar nuevo dividend"))
+            self.cmd.setText(self.tr("Add new dividend"))
         else:#modificar 
             if self.inversion.product.type.id in (7, 9):#Bonds
                 self.mem.conceptos.load_bonds_qcombobox(self.cmb, self.dividend.concepto) 
             else:
                 self.mem.conceptos.load_dividend_qcombobox(self.cmb, self.dividend.concepto) 
             self.cal.setSelectedDate(self.dividend.fecha)
-            self.txtBruto.setText(str(self.dividend.bruto))
-            self.txtNeto.setText(str(self.dividend.neto))
-            self.txtRetencion.setText(str(self.dividend.retencion))
-            self.txtComision.setText(str(self.dividend.comision))
-            self.txtDPA.setText(str(self.dividend.dpa))
-            self.cmd.setText(self.trUtf8("Modificar dividend"))
+            self.txtBruto.setText(self.dividend.bruto)
+            self.txtNeto.setText(self.dividend.neto)
+            self.txtRetencion.setText(self.dividend.retencion)
+            self.txtComision.setText(self.dividend.comision)
+            self.txtDPA.setText(self.dividend.dpa)
+            self.cmd.setText(self.tr("Edit dividend"))
  
     def on_txtBruto_textChanged(self):
         self.calcular()
+        
     def on_txtRetencion_textChanged(self):
         self.calcular()
+        
     def on_txtComision_textChanged(self):
         self.calcular()
         
@@ -61,12 +63,12 @@ class frmDividendsAdd(QDialog, Ui_frmDividendsAdd):
                 self.txtComision.setEnabled(True)
                 self.neto=self.txtBruto.decimal()-self.txtRetencion.decimal()-self.txtComision.decimal()
                 self.tpc=100*self.txtRetencion.decimal()/self.txtBruto.decimal()
-            self.txtNeto.setText(str(self.neto))
-            self.lblTPC.setText(self.trUtf8("{0} % de retención".format(round(self.tpc, 2))))
+            self.txtNeto.setText(self.neto)
+            self.lblTPC.setText(self.tr("Withhonding tax retention percentage: {}".format(tpc(self.tpc))))
             self.cmd.setEnabled(True)
         except:
-            self.txtNeto.setText(self.trUtf8("Error calculando"))
-            self.lblTPC.setText(self.trUtf8("Error calculando"))
+            self.txtNeto.setText(self.tr("Calculation error"))
+            self.lblTPC.setText(self.tr("Calculation error"))
             self.cmd.setEnabled(False)
  
 
@@ -78,20 +80,20 @@ class frmDividendsAdd(QDialog, Ui_frmDividendsAdd):
         if tipooperacion.id==1 and (self.txtBruto.decimal()>Decimal('0') or self.txtNeto.decimal()>Decimal('0')):
             m=QMessageBox()
             m.setIcon(QMessageBox.Information)
-            m.setText(self.trUtf8("Un gasto no puede tener un importe positivo"))
+            m.setText(self.tr("Expenses can't have a positive amount"))
             m.exec_()    
             return
             
         if tipooperacion.id==2 and (self.txtBruto.decimal()<Decimal('0') or self.txtNeto.decimal()<Decimal('0')):
             m=QMessageBox()
             m.setIcon(QMessageBox.Information)
-            m.setText(self.trUtf8("Un ingreso no puede tener un importe negativo"))
+            m.setText(self.tr("Incomes can't have a negative amount"))
             m.exec_()
             return
         if self.txtRetencion.decimal()<Decimal('0') or self.txtDPA.decimal()<Decimal('0') or self.txtComision.decimal()<Decimal('0'):
             m=QMessageBox()
             m.setIcon(QMessageBox.Information)
-            m.setText(self.trUtf8("Retention, earnings por share and commission must be greater than zero"))
+            m.setText(self.tr("Retention, earnings por share and commission must be greater than zero"))
             m.exec_()    
             return
         
@@ -107,7 +109,7 @@ class frmDividendsAdd(QDialog, Ui_frmDividendsAdd):
         except:            
             m=QMessageBox()
             m.setIcon(QMessageBox.Information)
-            m.setText(self.trUtf8("Error al introducir los datos. Compruébelos"))
+            m.setText(self.tr("Data error. Please check them."))
             m.exec_()    
             return
 

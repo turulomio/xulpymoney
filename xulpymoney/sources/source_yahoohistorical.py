@@ -45,7 +45,7 @@ class WorkerYahooHistorical(Source):
                 sys.stdout.write("\b"*1000+stri)
                 sys.stdout.flush()
             else:
-                stri=QApplication.translate("Core","Inserting {} prices of {} investments").format(sumins, len(self.products.arr))
+                stri=QApplication.translate("Core","Inserting {} prices of {} products").format(sumins, len(self.products.arr))
                 self.pd.setLabelText(stri)
             self.mem.con.commit()  
             time.sleep(sleep)#time step
