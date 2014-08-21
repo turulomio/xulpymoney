@@ -382,30 +382,17 @@ class SetProductsModes(SetCommons):
         self.dic_arr['c']=ProductMode(self.mem).init__create("c",QApplication.translate("Core","Call"))
         self.dic_arr['i']=ProductMode(self.mem).init__create("i",QApplication.translate("Core","Inline"))        
         
-class SetStockExchanges:
+class SetStockExchanges(SetCommons):
     def __init__(self, mem):
-        self.dic_arr={}
+        SetCommons.__init__(self)
         self.mem=mem     
     
     def load_all_from_db(self):
         curms=self.mem.con.cursor()
         curms.execute("Select * from bolsas")
         for row in curms:
-            self.dic_arr[str(row['id_bolsas'])]=StockExchange(self.mem).init__db_row(row, self.mem.countries.find(row['country']))
+            self.append(StockExchange(self.mem).init__db_row(row, self.mem.countries.find(row['country'])))
         curms.close()
-            
-    def qcombobox(self, combo):
-        for c in self.list():
-            combo.addItem(c.country.qicon(), c.name, c.id)
-            
-    def find(self, id):
-        return self.dic_arr[str(id)]
-        
-    def list(self):
-        return dic2list(self.dic_arr)
-
-        
-
 
 class SetConcepts(SetCommons):
     def __init__(self, mem):
@@ -419,6 +406,7 @@ class SetConcepts(SetCommons):
         for row in cur:
             self.append(Concept(self.mem).init__db_row(row, self.mem.tiposoperaciones.find(row['id_tiposoperaciones'])))
         cur.close()
+        self.order_by_name()
                         
     def load_opercuentas_qcombobox(self, combo):
         """Carga conceptos operaciones 1,2,3, menos dividends y renta fija, no pueden ser editados, luego no se necesitan"""
@@ -520,7 +508,7 @@ class SetCountries(SetCommons):
     def qcombobox(self, combo,  country=None):
         """Función que carga en un combo pasado como parámetro y con un SetAccounts pasado como parametro
         Se ordena por nombre y se se pasa el tercer parametro que es un objeto Account lo selecciona""" 
-        for cu in self.list():
+        for cu in self.arr:
             self.addItem(cu.qicon(), cu.name, cu.id)
 
         if country!=None:
@@ -5076,69 +5064,72 @@ class Zone:
     def now(self):
         return datetime.datetime.now(pytz.timezone(self.name))
         
-class SetZones:
+class SetZones(SetCommons):
     def __init__(self, mem):
+        SetCommons.__init__(self)
         self.mem=mem
-        self.dic_arr={}
         
     def load_all(self):
-        self.dic_arr["Europe/Madrid"]=Zone(self.mem).init__create(1,'Europe/Madrid', self.mem.countries.find("es"))#ALGUN DIA HABRá QUE CAMBIAR LAS ZONES POR ID_ZONESº
-        self.dic_arr["Europe/Lisbon"]=Zone(self.mem).init__create(2,'Europe/Lisbon', self.mem.countries.find("pt"))
-        self.dic_arr["Europe/Rome"]=Zone(self.mem).init__create(3,'Europe/Rome', self.mem.countries.find("it"))
-        self.dic_arr["Europe/London"]=Zone(self.mem).init__create(4,'Europe/London', self.mem.countries.find("en"))
-        self.dic_arr['Asia/Tokyo']=Zone(self.mem).init__create(5,'Asia/Tokyo', self.mem.countries.find("jp"))
-        self.dic_arr["Europe/Berlin"]=Zone(self.mem).init__create(6,'Europe/Berlin', self.mem.countries.find("de"))
-        self.dic_arr["America/New_York"]=Zone(self.mem).init__create(7,'America/New_York', self.mem.countries.find("us"))
-        self.dic_arr["Europe/Paris"]=Zone(self.mem).init__create(8,'Europe/Paris', self.mem.countries.find("fr"))
-        self.dic_arr["Asia/Hong_Kong"]=Zone(self.mem).init__create(9,'Asia/Hong_Kong', self.mem.countries.find("cn"))
+        self.append(Zone(self.mem).init__create(1,'Europe/Madrid', self.mem.countries.find("es")))#ALGUN DIA HABRá QUE CAMBIAR LAS ZONES POR ID_ZONESº
+        self.append(Zone(self.mem).init__create(2,'Europe/Lisbon', self.mem.countries.find("pt")))
+        self.append(Zone(self.mem).init__create(3,'Europe/Rome', self.mem.countries.find("it")))
+        self.append(Zone(self.mem).init__create(4,'Europe/London', self.mem.countries.find("en")))
+        self.append(Zone(self.mem).init__create(5,'Asia/Tokyo', self.mem.countries.find("jp")))
+        self.append(Zone(self.mem).init__create(6,'Europe/Berlin', self.mem.countries.find("de")))
+        self.append(Zone(self.mem).init__create(7,'America/New_York', self.mem.countries.find("us")))
+        self.append(Zone(self.mem).init__create(8,'Europe/Paris', self.mem.countries.find("fr")))
+        self.append(Zone(self.mem).init__create(9,'Asia/Hong_Kong', self.mem.countries.find("cn")))
 
     def qcombobox(self, combo, zone=None):
         """Carga entidades bancarias en combo"""
-        for a in self.list():
+        for a in self.arr:
             combo.addItem(a.country.qicon(), a.name, a.name)
 
         if zone!=None:
             combo.setCurrentIndex(combo.findText(zone.name))
-        
-    def find(self, id):
-        return self.dic_arr[str(id)]        
-        
-    def list(self):
-        """Devuelve una lista ordenada por nombre """
-        arr=dic2list(self.dic_arr)
-        arr=sorted(arr, key=lambda a: a.name,  reverse=False)         
-        return arr        
-        
+
+            
+    def find(self, name,  log=False):
+        """self.find() search by id (number).
+        This function replaces  it and searches by name (Europe/Madrid)"""
+        for a in self.arr:
+            if a.name==name:
+                return a
+        if log:
+            print ("SetCommons ({}) fails finding {}".format(self.__class__.__name__, id))
+        return None
+
+## FUNCTIONS #############################################
 
 def arr_split(arr, wanted_parts=1):
     length = len(arr)
     return [ arr[i*length // wanted_parts: (i+1)*length // wanted_parts] 
              for i in range(wanted_parts) ]
 
-def arr2stralmohadilla(arr):
-    resultado=""
-    for a in arr:
-        resultado=resultado + str(a) + "#"
-    return resultado[:-1]
-        
-def stralmohadilla2arr(string, type="s"):
-    """SE utiliza para matplotlib dsde consola"""
-    arr=string.split("#")
-    resultado=[]
-    for a in arr:
-            if type=="s":
-                    resultado.append(a.decode('UTF-8'))
-            elif type=="f":
-                    resultado.append(float(a))
-#                       return numpy.array(resultado)
-            elif type=="t":
-                    dat=a.split(":")
-                    resultado.append(datetime.time(int(dat[0]),int(dat[1])))
-            elif type=="dt":
-                    resultado.append(datetime.datetime.strptime(a, "%Y/%m/%d %H:%M"))
-            elif type=="d":
-                    resultado.append(datetime.datetime.strptime(a, "%Y-%m-%d").toordinal())
-    return resultado
+#def arr2stralmohadilla(arr):
+#    resultado=""
+#    for a in arr:
+#        resultado=resultado + str(a) + "#"
+#    return resultado[:-1]
+#        
+#def stralmohadilla2arr(string, type="s"):
+#    """SE utiliza para matplotlib dsde consola"""
+#    arr=string.split("#")
+#    resultado=[]
+#    for a in arr:
+#            if type=="s":
+#                    resultado.append(a.decode('UTF-8'))
+#            elif type=="f":
+#                    resultado.append(float(a))
+##                       return numpy.array(resultado)
+#            elif type=="t":
+#                    dat=a.split(":")
+#                    resultado.append(datetime.time(int(dat[0]),int(dat[1])))
+#            elif type=="dt":
+#                    resultado.append(datetime.datetime.strptime(a, "%Y/%m/%d %H:%M"))
+#            elif type=="d":
+#                    resultado.append(datetime.datetime.strptime(a, "%Y-%m-%d").toordinal())
+#    return resultado
 
 def ampm_to_24(hora, pmam):
     #    Conversión de AM/PM a 24 horas
@@ -5169,10 +5160,7 @@ def dt_changes_tz(dt,  tztarjet):
 
 
 def status_insert(cur,  source,  process):
-#    try:
         cur.execute('insert into status (source, process) values (%s,%s);', (source,  process))
-#    except:
-#        print("Posible llave duplicada")
 
 def status_update(cur, source,  process, status=None,  statuschange=None,  internets=None ):
     updates=''
@@ -5247,9 +5235,11 @@ def log(tipo, funcion,  mensaje):
 
 
 def b2s(b, code='UTF-8'):
+    """Bytes 2 string"""
     return b.decode(code)
     
 def s2b(s, code='UTF8'):
+    """String 2 bytes"""
     if s==None:
         return "".encode(code)
     else:
@@ -5265,16 +5255,16 @@ def c2b(state):
 
 
 def b2c(booleano):
-    """QCheckstate to python bool"""
+    """Bool to QCheckstate"""
     if booleano==True:
         return Qt.Checked
     else:
         return Qt.Unchecked     
+        
 def comaporpunto(cadena):
     cadena=cadena.replace(b'.',b'')#Quita puntos
     cadena=cadena.replace(b',',b'.')#Cambia coma por punto
     return cadena
-
 
 
 def day_end(dattime, zone):
@@ -5295,28 +5285,29 @@ def days_to_year_month(days):
     years=days//365
     months=(days-years*365)//30
     rest=int(days -years*365 -months*30)
-    return QApplication.translate("Core", "{0} years, {1} months and {2} days".format(years, months, rest))
+    return QApplication.translate("Core", "{0} years, {1} months and {2} days").format(years, months, rest)
 
-def dic2list(dic):
-    """Función que convierte un diccionario pasado como parametro a una lista de objetos"""
-    resultado=[]
-    for k,  v in dic.items():
-        resultado.append(v)
-    return resultado
+#def dic2list(dic):
+#    """Función que convierte un diccionario pasado como parametro a una lista de objetos"""
+#    resultado=[]
+#    for k,  v in dic.items():
+#        resultado.append(v)
+#    return resultado
 
 def dt(date, hour, zone):
-    """Función que devuleve un datetime con zone info"""    
+    """Función que devuleve un datetime con zone info.
+    Zone is an object."""
     z=pytz.timezone(zone.name)
     a=datetime.datetime(date.year,  date.month,  date.day,  hour.hour,  hour.minute,  hour.second, hour.microsecond)
     a=z.localize(a)
     return a
 
-        
-def s2pd(s):
-    """python string isodate 2 python datetime.date"""
-    a=str(s).split(" ")[0]#por si viene un 2222-22-22 12:12
-    a=str(s).split("-")
-    return datetime.date(int(a[0]), int(a[1]),  int(a[2]))
+#        
+#def s2pd(s):
+#    """python string isodate 2 python datetime.date"""
+#    a=str(s).split(" ")[0]#por si viene un 2222-22-22 12:12
+#    a=str(s).split("-")
+#    return datetime.date(int(a[0]), int(a[1]),  int(a[2]))
     
 def str2bool(s):
     """Converts strings True or False to boolean"""
@@ -5325,25 +5316,25 @@ def str2bool(s):
     return False
     
 
-def cur2dict(cur):
-    """Función que convierte un cursor a una lista de diccionarioº"""
-    resultado=[]
-    for row in cur:
-            d={}
-            for key,col in enumerate(cur.description):
-                    d[col[0]]=row[col[0]]
-            resultado.append(d)
-    return resultado
-
-def cur2dictdict(cur, indexcolumn):
-    """Función que convierte un cursor a un diccionario de diccionarioº"""
-    resultado={}
-    for row in cur:
-        d={}
-        for key,col in enumerate(cur.description):
-                d[col[0]]=row[col[0]]
-        resultado[str(row[indexcolumn])]=d
-    return resultado
+#def cur2dict(cur):
+#    """Función que convierte un cursor a una lista de diccionarioº"""
+#    resultado=[]
+#    for row in cur:
+#            d={}
+#            for key,col in enumerate(cur.description):
+#                    d[col[0]]=row[col[0]]
+#            resultado.append(d)
+#    return resultado
+#
+#def cur2dictdict(cur, indexcolumn):
+#    """Función que convierte un cursor a un diccionario de diccionarioº"""
+#    resultado={}
+#    for row in cur:
+#        d={}
+#        for key,col in enumerate(cur.description):
+#                d[col[0]]=row[col[0]]
+#        resultado[str(row[indexcolumn])]=d
+#    return resultado
 
 
 def qbool(bool):
