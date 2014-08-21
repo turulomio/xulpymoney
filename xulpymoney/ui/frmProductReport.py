@@ -58,17 +58,17 @@ class frmProductReport(QDialog, Ui_frmProductReport):
             self.cmdSave.setText(self.tr("Add a new product"))
 
         self.canvasIntraday=canvasChartIntraday( self.mem, self)
-        self.ntbIntraday = NavigationToolbar(self.canvasIntraday, self)
+        self.ntbIntraday = NavigationToolbar2QTAgg(self.canvasIntraday, self)
         self.layIntraday.addWidget(self.canvasIntraday)
         self.layIntraday.addWidget(self.ntbIntraday)
         
         self.canvasHistorical=canvasChartHistorical( self.mem, self)
-        self.ntbHistorical=NavigationToolbar(self.canvasHistorical, self)
+        self.ntbHistorical=NavigationToolbar2QTAgg(self.canvasHistorical, self)
         self.layHistorical.addWidget(self.canvasHistorical)
         self.layHistorical.addWidget(self.ntbHistorical)
         
         self.canvasHistoricalSD=canvasChartHistorical( self.mem, self)
-        self.ntbHistoricalSD=NavigationToolbar(self.canvasHistoricalSD, self)
+        self.ntbHistoricalSD=NavigationToolbar2QTAgg(self.canvasHistoricalSD, self)
         self.layHistoricalSD.addWidget(self.canvasHistoricalSD)
         self.layHistoricalSD.addWidget(self.ntbHistoricalSD)
         

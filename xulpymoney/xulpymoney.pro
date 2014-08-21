@@ -1,22 +1,74 @@
-SOURCES         = xulpymoney.py \
+SOURCES         = \
+                  libxulpymoney.py \
+                  mystocksd.py \ 
+                  sources/bolsamadridfondos.py \
+                  sources/bonoaleman.py \
+                  sources/carmignac.py \
+                  sources/conjuntos.py \
+                  sources/deutscheboerse.py \
+                  sources/divisas.py \
+                  sources/euronext.py \
+                  sources/indices.py \
+                  sources/mercadocontinuo.py \
+                  sources/mq.productoscotizados.py \
+                  sources/mq.societegeneralewarrants.py \
+                  sources/mq.yahooinactive.py \
+                  sources/nyse.py \
+                  sources/societegeneralewarrants.py \
+                  sources/source_yahoohistorical.py \
+                  sources/yahoo.py \
+                  ui/canvaschart.py \
                   ui/frmAbout.py \
                   ui/Ui_frmAbout.py \
                   ui/frmAccess.py \
                   ui/Ui_frmAccess.py \
-                  ui/frmDPSAdd.py \
-                  ui/Ui_frmDPSAdd.py \
-                  ui/frmInit.py \
-                  ui/Ui_frmInit.py \
-                  ui/frmHelp.py \
-                  ui/Ui_frmHelp.py \
                   ui/frmAccountOperationsAdd.py \
                   ui/Ui_frmAccountOperationsAdd.py \
-                  ui/frmMain.py \
-                  ui/Ui_frmMain.py \
+                  ui/frmAccountsReport.py \
+                  ui/Ui_frmAccountsReport.py \
                   ui/frmAuxiliarTables.py \
                   ui/Ui_frmAuxiliarTables.py \
                   ui/frmCreditCardsAdd.py \
                   ui/Ui_frmCreditCardsAdd.py \
+                  ui/frmDPSAdd.py \
+                  ui/Ui_frmDPSAdd.py \
+                  ui/frmDividendsAdd.py \
+                  ui/Ui_frmDividendsAdd.py \
+                  ui/frmEstimationsAdd.py \
+                  ui/Ui_frmEstimationsAdd.py \
+                  ui/frmHelp.py \
+                  ui/Ui_frmHelp.py \
+                  ui/frmInit.py \
+                  ui/Ui_frmInit.py \
+                  ui/frmInvestmentOperationsAdd.py \
+                  ui/Ui_frmInvestmentOperationsAdd.py \
+                  ui/frmInvestmentReport.py \
+                  ui/Ui_frmInvestmentReport.py \
+                  ui/frmMain.py \
+                  ui/Ui_frmMain.py \
+                  ui/frmProductReport.py \
+                  ui/Ui_frmProductReport.py \
+                  ui/frmQuotesIBM.py \
+                  ui/Ui_frmQuotesIBM.py
+                  ui/frmSelector.py \
+                  ui/Ui_frmSelector.py \
+                  ui/frmSellingPoint.py \
+                  ui/Ui_frmSellingPoint.py \
+                  ui/frmSettings.py \
+                  ui/Ui_frmSettings.py \
+                  ui/frmSharesTransfer.py \
+                  ui/Ui_frmSharesTransfer.py \
+                  ui/frmSplit.py \
+                  ui/Ui_frmSplit.py \
+                  ui/frmTransfer.py \
+                  ui/Ui_frmTransfer.py \
+                  ui/investmentSelector.py \
+                  ui/myqlineedit.py \
+                  ui/myqtablewidget.py \
+                  ui/wdgAPR.py \
+                  ui/Ui_wdgAPR.py \
+                  ui/wdgAccounts.py \
+                  ui/Ui_wdgAccounts.py \
                   ui/wdgBanks.py \
                   ui/Ui_wdgBanks.py \
                   ui/wdgCalculator.py \
@@ -25,117 +77,86 @@ SOURCES         = xulpymoney.py \
                   ui/Ui_wdgConcepts.py \
                   ui/wdgConceptsHistorical.py \
                   ui/Ui_wdgConceptsHistorical.py \
-                  ui/wdgAccounts.py \
-                  ui/Ui_wdgAccounts.py \
-                  ui/frmAccountsReport.py \
-                  ui/Ui_frmAccountsReport.py \
-                  ui/wdgDisReinvest.py \
-                  ui/Ui_wdgDisReinvest.py \
-                  ui/frmDividendsAdd.py \
-                  ui/Ui_frmDividendsAdd.py \
-                  ui/wdgDividendsReport.py \
-                  ui/Ui_wdgDividendsReport.py \
-                  ui/wdgInvestmentClasses.py \
-                  ui/Ui_wdgInvestmentClasses.py \
-                  ui/wdgJointReport.py \
-                  ui/Ui_wdgJointReport.py \
-                  ui/wdgAPR.py \
-                  ui/Ui_wdgAPR.py \
-                  ui/wdgIndexRange.py \
-                  ui/Ui_wdgIndexRange.py \
-                  ui/wdgInvestments.py \
-                  ui/Ui_wdgInvestments.py \
-                  ui/frmInvestmentReport.py \
-                  ui/Ui_frmInvestmentReport.py \
-                  ui/frmInvestmentOperationsAdd.py \
-                  ui/Ui_frmInvestmentOperationsAdd.py \
-                  ui/frmSplit.py \
-                  ui/Ui_frmSplit.py \
-                  ui/frmTransfer.py \
-                  ui/Ui_frmTransfer.py \
-                  ui/frmSharesTransfer.py \
-                  ui/Ui_frmSharesTransfer.py \
-                  ui/Ui_frmSellingPoint.py \
-                  ui/frmSellingPoint.py \
-                  ui/Ui_frmSettings.py \
-                  ui/frmSettings.py \
-                  ui/wdgTotal.py \
-                  ui/Ui_wdgTotal.py \
-                  ui/investmentSelector.py \
-                  ui/wdgpie.py \
-                  ui/myqtablewidget.py \
-                  libxulpymoney.py \
-                  ui/frmProductReport.py \
-                  ui/Ui_frmProductReport.py \
-                  ui/frmQuotesIBM.py \
-                  ui/Ui_frmQuotesIBM.py
-                  ui/frmSelector.py \
-                  ui/Ui_frmSelector.py \
-                  ui/frmEstimationsAdd.py \
-                  ui/Ui_frmEstimationsAdd.py \
-                  ui/wdgProducts.py \
-                  ui/Ui_wdgProducts.py \
-                  ui/wdgInvestmentsOperations.py \
-                  ui/Ui_wdgInvestmentsOperations.py \
-                  ui/wdgMergeCodes.py \
-                  ui/Ui_wdgMergeCodes.py \
-                  ui/wdgLog.py \
-                  ui/Ui_wdgLog.py \
-                  ui/wdgYear.py \
-                  ui/Ui_wdgYear.py \
                   ui/wdgDatetime.py \
                   ui/Ui_wdgDatetime.py \
+                  ui/wdgDisReinvest.py \
+                  ui/Ui_wdgDisReinvest.py \
+                  ui/wdgDividendsReport.py \
+                  ui/Ui_wdgDividendsReport.py \
+                  ui/wdgIndexRange.py \
+                  ui/Ui_wdgIndexRange.py \
+                  ui/wdgInvestmentClasses.py \
+                  ui/Ui_wdgInvestmentClasses.py \
+                  ui/wdgInvestments.py \
+                  ui/Ui_wdgInvestments.py \
+                  ui/wdgInvestmentsOperations.py \
+                  ui/Ui_wdgInvestmentsOperations.py \
+                  ui/wdgJointReport.py \
+                  ui/Ui_wdgJointReport.py \
+                  ui/wdgLog.py \
+                  ui/Ui_wdgLog.py \
+                  ui/wdgMergeCodes.py \
+                  ui/Ui_wdgMergeCodes.py \
+                  ui/wdgProducts.py \
+                  ui/Ui_wdgProducts.py \
+                  ui/wdgTotal.py \
+                  ui/Ui_wdgTotal.py \
+                  ui/wdgYear.py \
+                  ui/Ui_wdgYear.py \
                   ui/wdgYearMonth.py \
                   ui/Ui_wdgYearMonth.py \
-                  canvaschart.py \
-                  mystocksd.py
+                  ui/wdgpie.py \
+                  xulpymoney.py \
+                  xulpymoney_init.py \
 
-FORMS           = ui/frmAbout.ui \
+FORMS           = \
+                  ui/frmAbout.ui \
                   ui/frmAccess.ui \
-                  ui/frmDividendsAdd.ui \
-                  ui/frmDPSAdd.ui \
-                  ui/frmInit.ui \
-                  ui/frmHelp.ui \
-                  ui/frmMain.ui \
                   ui/frmAccountOperationsAdd.ui \
-                  ui/frmSplit.ui \
+                  ui/frmAccountsReport.ui \
                   ui/frmAuxiliarTables.ui \
                   ui/frmCreditCardsAdd.ui \
-                  ui/wdgBanks.ui \
-                  ui/wdgCalculator.ui \
-                  ui/wdgAccounts.ui \
-                  ui/wdgConcepts.ui \
-                  ui/wdgConceptsHistorical.ui \
-                  ui/frmAccountsReport.ui \
-                  ui/wdgDisReinvest.ui \
-                  ui/wdgInvestmentClasses.ui \
-                  ui/wdgDividendsReport.ui \
-                  ui/wdgJointReport.ui \
-                  ui/wdgAPR.ui \
-                  ui/wdgIndexRange.ui \
-                  ui/wdgInvestments.ui \
+                  ui/frmDPSAdd.ui \
+                  ui/frmDividendsAdd.ui \
+                  ui/frmEstimationsAdd.ui \
+                  ui/frmHelp.ui \
+                  ui/frmInit.ui \
                   ui/frmInvestmentOperationsAdd.ui \
                   ui/frmInvestmentReport.ui \
-                  ui/frmSellingPoint.ui \
-                  ui/frmSettings.ui \
-                  ui/frmTransfer.ui \
-                  ui/frmSharesTransfer.ui \
-                  ui/wdgDatetime.ui \
-                  ui/wdgYearMonth.ui \
-                  ui/wdgYear.ui \
-                  ui/wdgTotal.ui \
+                  ui/frmMain.ui \
                   ui/frmProductReport.ui \
                   ui/frmQuotesIBM.ui \
                   ui/frmSelector.ui \
-                  ui/wdgProducts.ui \
+                  ui/frmSellingPoint.ui \
+                  ui/frmSettings.ui \
+                  ui/frmSharesTransfer.ui \
+                  ui/frmSplit.ui \
+                  ui/frmTransfer.ui \
+                  ui/wdgAPR.ui \
+                  ui/wdgAccounts.ui \
+                  ui/wdgBanks.ui \
+                  ui/wdgCalculator.ui \
+                  ui/wdgConcepts.ui \
+                  ui/wdgConceptsHistorical.ui \
+                  ui/wdgDatetime.ui \
+                  ui/wdgDisReinvest.ui \
+                  ui/wdgDividendsReport.ui \
+                  ui/wdgIndexRange.ui \
+                  ui/wdgInvestmentClasses.ui \
+                  ui/wdgInvestments.ui \
                   ui/wdgInvestmentsOperations.ui \
+                  ui/wdgJointReport.ui \
+                  ui/wdgLog.ui \
                   ui/wdgMergeCodes.ui \
-                  ui/wdgLog.ui
+                  ui/wdgProducts.ui \
+                  ui/wdgTotal.ui \
+                  ui/wdgYear.ui \
+                  ui/wdgYearMonth.ui \
 
 TRANSLATIONS    = i18n/xulpymoney_es.ts \
                   i18n/xulpymoney_fr.ts \
                   i18n/xulpymoney_ru.ts \
-                  i18n/xulpymoney_ro.ts
+                  i18n/xulpymoney_ro.ts \
 
-CODECFORTR = UTF-8
-CODECFORSRC = UTF-8
+#CODECFORTR = UTF-8
+#CODECFORSRC = UTF-8

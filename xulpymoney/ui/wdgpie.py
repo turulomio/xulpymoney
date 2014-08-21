@@ -5,56 +5,6 @@ from PyQt4.QtGui import *
 #import PyQt4.Qwt5 as Qwt
 from myqtablewidget import *
 from Ui_wdgInvestmentClasses import *
-#import matplotlib
-#from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg as FigureCanvas
-#from matplotlib.backends.backend_qt4agg import NavigationToolbar2QTAgg as NavigationToolbar
-#from matplotlib.figure import Figure
-
-##
-##class PieMarker(Qwt.QwtPlotMarker):
-##    def __init__(self, data, colors,  *args):
-##        Qwt.QwtPlotMarker.__init__(self, *args)
-##        self.setRenderHint(Qwt.QwtPlotItem.RenderAntialiased, True)
-##        self.data=data
-##        self.colors=colors
-##
-##    def rtti(self):
-##        return Qwt.QwtPlotItem.Rtti_PlotUserItem
-##
-##    def draw(self, painter, xMap, yMap, rect):
-##        margin = 15
-##        pieRect = QRect()
-##        pieRect.setX(rect.x() + margin)
-##        pieRect.setY(rect.y() + margin)
-##        pieRect.setHeight(yMap.transform(70.0))
-###	pieRect.setHeight(pieRect.height())
-##        pieRect.setWidth(pieRect.height())
-##        suma=0
-##        for reg in self.data:
-##            suma=suma+reg[2]
-##        sumangle=0
-##        for i in range(len(self.data)):
-##            angle= self.data[i][2]*5760/suma #Resolucion=16*360
-##            painter.save()
-##            painter.setBrush(QBrush(self.colors[i], Qt.SolidPattern))
-##            painter.drawPie(pieRect, sumangle, angle)
-##            painter.restore()
-##            sumangle=sumangle+angle
-##
-##class Pie(Qwt.QwtPlot):
-##    def __init__(self, data, colors,  *args):
-##        Qwt.QwtPlot.__init__(self, *args)
-##        self.setAutoReplot(True)
-##        self.setCanvasBackground(Qt.white)
-##        self.enableAxis(Qwt.QwtPlot.xBottom,  False)
-##        self.enableAxis(Qwt.QwtPlot.yLeft,  False)
-##        self.plotLayout().setAlignCanvasToScales(True)
-##        pie = PieMarker(data, colors)
-##        pie.attach(self)
-##
-##        legend = Qwt.QwtLegend()
-##        legend.setItemMode(Qwt.QwtLegend.CheckableItem)
-##        self.insertLegend(legend, Qwt.QwtPlot.BottomLegend)
     
 class wdgPie(QWidget):    
     """Data recibe los datos
@@ -167,7 +117,7 @@ class wdgPie(QWidget):
         #
         self.dpi = 100
         self.fig = Figure((5.0, 4.0), dpi=self.dpi)
-        self.canvas = FigureCanvas(self.fig)
+        self.canvas = FigureCanvasQTAgg(self.fig)
         self.canvas.setParent(self.main_frame)
         
         # Since we have only one plot, we can use add_axes 
@@ -183,7 +133,7 @@ class wdgPie(QWidget):
         
         # Create the navigation toolbar, tied to the canvas
         #
-        self.mpl_toolbar = NavigationToolbar(self.canvas, self.main_frame)
+        self.mpl_toolbar = NavigationToolbar2QTAgg(self.canvas, self.main_frame)
         
         # Other GUI controls
         # 
