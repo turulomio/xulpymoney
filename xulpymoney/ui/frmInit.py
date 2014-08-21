@@ -9,7 +9,7 @@ class frmInit(QDialog, Ui_frmInit):
     def __init__(self, parent = None, name = None, modal = False):
         QDialog.__init__(self,  parent)
         self.setupUi(self)
-        self.mem=MemMyStock()
+        self.mem=MemProducts()
 
 
     

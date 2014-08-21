@@ -79,7 +79,7 @@ class WorkerYahooHistorical(Source):
         return (set,  error)
 
 if __name__ == '__main__':
-    mem=MemMyStock()
+    mem=MemProducts()
     if len(sys.argv)>2:
         if sys.argv[2]=="debug":
             log("STARTING", "","Debugging")

@@ -20,7 +20,7 @@ except:
 
 
 if __name__ == '__main__':
-    mem=MemMyStock()
+    mem=MemProducts()
     if len(sys.argv)>1:
         if sys.argv[1]=="debug":
             log("STARTING", "Debugging")
