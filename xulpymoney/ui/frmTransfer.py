@@ -28,13 +28,13 @@ class frmTransfer(QDialog, Ui_frmTransfer):
         except:
             m=QMessageBox()
             m.setIcon(QMessageBox.Information)
-            m.setText(self.trUtf8("Se ha producido un error al introducir los datos"))
+            m.setText(self.tr("Error adding data"))
             m.exec_()             
             return            
         if id_origen==id_destino:
             m=QMessageBox()
             m.setIcon(QMessageBox.Information)
-            m.setText(self.trUtf8("La cuenta origen y destino no puede ser la misma"))
+            m.setText(self.tr("Origin and destiny accounts can't be the same"))
             m.exec_()             
             return 
             

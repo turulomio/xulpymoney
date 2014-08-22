@@ -3890,36 +3890,6 @@ class SetQuotesAll:
             if sqi.date<datetime.date.today()-datetime.timedelta(days=30):
                 counter=counter+sqi.purge()
         return counter
-
-#        
-#    def get_all_obsolet_incremental(self, curms):
-#        """Función que devuelve un array ordenado de objetos Quote
-#        actualiza o carga todo según haya registros
-#        Actualiza get_basic_in_all
-#        """
-#        inicio=datetime.datetime.now()
-#        if len(self.all.arr)==0:
-#            curms.execute("select * from quotes where id=%s order by datetime;", (self.product.id, ))
-#        else:
-#            curms.execute("select * from quotes where id=%s and datetime>%s order by datetime;", (self.product.id, self.all[len(self.all)-1].datetime))
-#        for row in curms:
-#            self.all.arr.append(Quote(self.mem).init__db_row(row,  self.product))
-#        print ("Descarga de {0} datos: {1}".format(curms.rowcount,   datetime.datetime.now()-inicio))
-#        self.get_basic_in_all()
-        
-            
-#    def get_basic_OBSOLET(self):
-#        """Función que calcula last, penultimate y lastdate """
-#        if len(self.all.arr)==0:
-#            print ("No hay quotes para la inversión",  self.product)
-#            return
-#        self.last=self.all.arr[len(self.all.arr)-1]
-#        #penultimate es el ultimo del penultimo dia localizado
-#        dtpenultimate=day_end(self.last.datetime-datetime.timedelta(days=1), self.product.stockexchange.zone)
-#        self.penultimate=self.find_quote_in_all(dtpenultimate)
-#        dtendlastyear=dt(datetime.date(self.last.datetime.year-1, 12, 31),  datetime.time(23, 59, 59), self.product.stockexchange.zone)
-#        self.endlastyear=self.find_quote_in_all(dtendlastyear)
-
         
 class SetQuotesBasic:
     """Clase que agrupa quotes basic, last penultimate, lastyear """
@@ -3953,24 +3923,19 @@ class SetQuotesBasic:
                 self.penultimate=Quote(self.mem).init__create(self.product, None, None)
             self.endlastyear=Quote(self.mem).init__from_query(self.product,  datetime.datetime(datetime.date.today().year-1, 12, 31, 23, 59, 59, tzinfo=pytz.timezone('UTC')))
 
-
-
     def tpc_diario(self):
         if self.penultimate==None or self.last==None:
             return None
         if self.penultimate.quote==0 or self.penultimate.quote==None or self.last.quote==None:
             return None
         return round((self.last.quote-self.penultimate.quote)*100/self.penultimate.quote, 2)
-    
-            
+
     def tpc_anual(self):
         if self.endlastyear.quote==None or self.endlastyear.quote==0 or self.last.quote==None:
             return None
         else:
             return round((self.last.quote-self.endlastyear.quote)*100/self.endlastyear.quote, 2)       
 
-
-     
 class SetQuotesIntraday:
     """Clase que agrupa quotes un una lista arr de una misma inversión y de un mismo día. """
     def __init__(self, mem):

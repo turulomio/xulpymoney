@@ -189,7 +189,7 @@
             <item>
              <widget class="QLabel" name="label_5">
               <property name="text">
-               <string>Retención por dividendo</string>
+               <string>Dividend withholding percentage</string>
               </property>
               <property name="alignment">
                <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -234,7 +234,7 @@
             <item>
              <widget class="QLabel" name="label_6">
               <property name="text">
-               <string>Impuesto por plusvalías</string>
+               <string>Tax gain percentage</string>
               </property>
               <property name="alignment">
                <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>

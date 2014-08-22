@@ -6,12 +6,12 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>667</width>
+    <width>559</width>
     <height>167</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Traspaso de valores</string>
+   <string>Shares transfer</string>
   </property>
   <property name="windowIcon">
    <iconset resource="../images/xulpymoney.qrc">
@@ -46,19 +46,26 @@
         <enum>QFormLayout::ExpandingFieldsGrow</enum>
        </property>
        <item row="0" column="1">
-        <widget class="QComboBox" name="combo"/>
+        <widget class="QComboBox" name="combo">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+        </widget>
        </item>
        <item row="0" column="0">
         <widget class="QLabel" name="lblCombo">
          <property name="text">
-          <string>Selecciona el destino del traspaso de valores</string>
+          <string>Select the destiny for the shares</string>
          </property>
         </widget>
        </item>
        <item row="1" column="0">
         <widget class="QLabel" name="lblNumero">
          <property name="text">
-          <string>Selecciona el número de acciones</string>
+          <string>Number of shares</string>
          </property>
         </widget>
        </item>
@@ -75,7 +82,7 @@
        <item row="2" column="0">
         <widget class="QLabel" name="lblComisionLabel">
          <property name="text">
-          <string>Introduce la comisión del traspaso de valores</string>
+          <string>Shares transfer comission</string>
          </property>
         </widget>
        </item>

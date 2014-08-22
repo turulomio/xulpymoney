@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS><TS version="2.0" language="es_ES" sourcelanguage="en">
+<!DOCTYPE TS>
+<TS version="2.0" language="es_ES" sourcelanguage="en">
 <context>
     <name>Core</name>
     <message>
@@ -33,13 +34,13 @@
         <translation>Euro</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4642"/>
+        <location filename="libxulpymoney.py" line="4607"/>
         <source>Warrants</source>
         <translation>Warrants</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5046"/>
-        <source>Error buscando la versi&#xc3;&#xb3;n actual de Sourceforge</source>
+        <location filename="libxulpymoney.py" line="5011"/>
+        <source>Error buscando la versiÃ³n actual de Sourceforge</source>
         <translation></translation>
     </message>
     <message>
@@ -58,7 +59,7 @@
         <translation>La tarjeta de crédito está inactiva. Debes activarla primero</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5409"/>
+        <location filename="libxulpymoney.py" line="5374"/>
         <source>This option is being developed</source>
         <translation>Esta opción está en desarrollo</translation>
     </message>
@@ -93,12 +94,12 @@
         <translation>Comisión</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4898"/>
+        <location filename="libxulpymoney.py" line="4863"/>
         <source>Error conecting to MyStocksd, waiting 10 seconds</source>
         <translation>Error al conectar to MyStocksd, esperando 10 segundos</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4879"/>
+        <location filename="libxulpymoney.py" line="4844"/>
         <source>Error conecting to Xulpymoney</source>
         <translation>Error al conectar a Xulpymoney</translation>
     </message>
@@ -128,11 +129,11 @@
         <translation>Tipo de operación</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4638"/>
+        <location filename="libxulpymoney.py" line="4603"/>
         <source>Shares</source>
         <translation>Acciones</translation>
     </message>
-    <message encoding="UTF-8">
+    <message utf8="true">
         <location filename="libxulpymoney.py" line="960"/>
         <source>Valor acción</source>
         <translation></translation>
@@ -348,37 +349,37 @@
         <translation>Índice de referencia</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4639"/>
+        <location filename="libxulpymoney.py" line="4604"/>
         <source>Funds</source>
         <translation>Fondos de inversión</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4640"/>
+        <location filename="libxulpymoney.py" line="4605"/>
         <source>Indexes</source>
         <translation>Índices</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4641"/>
+        <location filename="libxulpymoney.py" line="4606"/>
         <source>ETF</source>
         <translation>ETF</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4643"/>
+        <location filename="libxulpymoney.py" line="4608"/>
         <source>Currencies</source>
         <translation>Divisas</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4644"/>
+        <location filename="libxulpymoney.py" line="4609"/>
         <source>Public Bond</source>
         <translation>Renta fija pública</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4646"/>
+        <location filename="libxulpymoney.py" line="4611"/>
         <source>Private Bond</source>
         <translation>Renta fija privada</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4648"/>
+        <location filename="libxulpymoney.py" line="4613"/>
         <source>Accounts</source>
         <translation>Cuentas</translation>
     </message>
@@ -423,22 +424,22 @@
         <translation>Cargando inversiones...</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5370"/>
+        <location filename="libxulpymoney.py" line="5335"/>
         <source>True</source>
         <translation>Verdadero</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5373"/>
+        <location filename="libxulpymoney.py" line="5338"/>
         <source>False</source>
         <translation>Falso</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4645"/>
+        <location filename="libxulpymoney.py" line="4610"/>
         <source>Pension plans</source>
         <translation>Planes de pensiones</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4647"/>
+        <location filename="libxulpymoney.py" line="4612"/>
         <source>Deposit</source>
         <translation>Depósitos</translation>
     </message>
@@ -508,37 +509,37 @@
         <translation>Añadiendo {} cotizaciones de {} productos</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5301"/>
+        <location filename="libxulpymoney.py" line="5266"/>
         <source>year</source>
         <translation>año</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5303"/>
+        <location filename="libxulpymoney.py" line="5268"/>
         <source>years</source>
         <translation>años</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5305"/>
+        <location filename="libxulpymoney.py" line="5270"/>
         <source>month</source>
         <translation>mes</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5307"/>
+        <location filename="libxulpymoney.py" line="5272"/>
         <source>months</source>
         <translation>meses</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5309"/>
+        <location filename="libxulpymoney.py" line="5274"/>
         <source>day</source>
         <translation>día</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5311"/>
+        <location filename="libxulpymoney.py" line="5276"/>
         <source>days</source>
         <translation>días</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5312"/>
+        <location filename="libxulpymoney.py" line="5277"/>
         <source>{} {}, {} {} and {} {}</source>
         <translation>{} {}, {} {} y {} {}</translation>
     </message>
@@ -593,7 +594,7 @@
         <translation>Purgadas {0} cotizaciones de {1}</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5044"/>
+        <location filename="libxulpymoney.py" line="5009"/>
         <source>Sourceforge version detected: {}</source>
         <translation>Versión de Sourceforge detectada: {}</translation>
     </message>
@@ -760,21 +761,21 @@ Purgadas en total en el proceso global: {1}</translation>
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;La p&#xc3;&#xa1;gina del proyecto se encuentra en &lt;a href=&quot;http://glparchis.sourceforge.net&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;http://xulpymoney.sourceforge.net&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;La pÃ¡gina del proyecto se encuentra en &lt;a href=&quot;http://glparchis.sourceforge.net&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;http://xulpymoney.sourceforge.net&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; text-decoration: underline; color:#0057ae;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Este programa ha sido desarrollado por Mariano Mu&#xc3;&#xb1;oz.&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Este programa ha sido desarrollado por Mariano MuÃ±oz.&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Ha sido traducido por:&lt;/p&gt;
-&lt;ul style=&quot;margin-top: 0px; margin-bottom: 0px; margin-left: 0px; margin-right: 0px; -qt-list-indent: 1;&quot;&gt;&lt;li style=&quot; margin-top:12px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Mariano Mu&#xc3;&#xb1;oz&lt;/li&gt;&lt;/ul&gt;
+&lt;ul style=&quot;margin-top: 0px; margin-bottom: 0px; margin-left: 0px; margin-right: 0px; -qt-list-indent: 1;&quot;&gt;&lt;li style=&quot; margin-top:12px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Mariano MuÃ±oz&lt;/li&gt;&lt;/ul&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;a los siguientes idiomas&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:1; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;ul style=&quot;margin-top: 0px; margin-bottom: 0px; margin-left: 0px; margin-right: 0px; -qt-list-indent: 1;&quot;&gt;&lt;li style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Espa&#xc3;&#xb1;ol&lt;/li&gt;
+&lt;ul style=&quot;margin-top: 0px; margin-bottom: 0px; margin-left: 0px; margin-right: 0px; -qt-list-indent: 1;&quot;&gt;&lt;li style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;EspaÃ±ol&lt;/li&gt;
 &lt;li style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;English&lt;/li&gt;&lt;/ul&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; text-decoration: underline; color:#0057ae;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Los avatares han sido extra&#xc3;&#xad;dos de la p&#xc3;&#xa1;gina &lt;a href=&quot;http://www.nobleavatar.com/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;http://www.nobleavatar.com/&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Los avatares han sido extraÃ­dos de la pÃ¡gina &lt;a href=&quot;http://www.nobleavatar.com/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;http://www.nobleavatar.com/&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation></translation>
     </message>
     <message>
@@ -784,12 +785,12 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="ui/Ui_frmAbout.py" line="333"/>
-        <source>N&#xc3;&#xba;mero de Deuda p&#xc3;&#xba;blica</source>
+        <source>NÃºmero de Deuda pÃºblica</source>
         <translation></translation>
     </message>
     <message>
         <location filename="ui/Ui_frmAbout.py" line="335"/>
-        <source>N&#xc3;&#xba;mero de Deuda privada</source>
+        <source>NÃºmero de Deuda privada</source>
         <translation></translation>
     </message>
     <message>
@@ -1053,7 +1054,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="ui/Ui_frmAccountsReport.py" line="448"/>
-        <source>XXXX &#xe2;&#x82;&#xac;</source>
+        <source>XXXX â¬</source>
         <translation>XXXX €</translation>
     </message>
     <message>
@@ -1524,7 +1525,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="ui/Ui_frmInit.py" line="171"/>
-        <source>Espa&#xc3;&#xb1;ol</source>
+        <source>EspaÃ±ol</source>
         <translation>EspaÃ±ol</translation>
     </message>
     <message>
@@ -2056,7 +2057,7 @@ p, li { white-space: pre-wrap; }
         <source>F1</source>
         <translation>F1</translation>
     </message>
-    <message encoding="UTF-8">
+    <message utf8="true">
         <location filename="ui/frmMain.py" line="33"/>
         <source>Xulpymoney 2010-{0} ©</source>
         <translation>Xulpymoney 2010-{0} ©</translation>
@@ -3017,8 +3018,8 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="ui/frmSelector.py" line="32"/>
-        <source>Se han pasado datos seleccionados no reconocidos({0}), vuelva a seleccionarlos</source>
-        <translation type="unfinished"></translation>
+        <source>This dialog got unknown selected data ({0}), select it again</source>
+        <translation>Este diálogo tiene datos seleccionados desconocidos ({0}), selecciónalo otra vez</translation>
     </message>
 </context>
 <context>
@@ -3158,7 +3159,7 @@ p, li { white-space: pre-wrap; }
         <source>Include shares of the same product from different investments</source>
         <translation>Incluir acciones del mismo producto pero de diferentes inversiones</translation>
     </message>
-    <message encoding="UTF-8">
+    <message utf8="true">
         <location filename="ui/Ui_frmSellingPoint.py" line="232"/>
         <source>Set the selling point to 0 €</source>
         <translation>Establecer el punto de venta a 0 €</translation>
@@ -3187,19 +3188,9 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>frmSettings</name>
     <message>
-        <location filename="ui/Ui_frmSettings.py" line="183"/>
-        <source>Retenci&#xc3;&#xb3;n por dividendo</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="ui/Ui_frmSettings.py" line="186"/>
         <source> %</source>
         <translation> %</translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_frmSettings.py" line="185"/>
-        <source>Impuesto por plusval&#xc3;&#xad;as</source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/Ui_frmSettings.py" line="177"/>
@@ -3236,54 +3227,65 @@ p, li { white-space: pre-wrap; }
         <source>Select a language</source>
         <translation>Elige un idioma</translation>
     </message>
+    <message>
+        <location filename="ui/Ui_frmSettings.py" line="183"/>
+        <source>Dividend withholding percentage</source>
+        <translation>Porcentaje de retención de dividendo</translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_frmSettings.py" line="185"/>
+        <source>Tax gain percentage</source>
+        <translation>Porcentaje de impuestos sobre plusvalías</translation>
+    </message>
 </context>
 <context>
     <name>frmSharesTransfer</name>
     <message>
-        <location filename="ui/Ui_frmSharesTransfer.py" line="83"/>
-        <source>Traspaso de valores</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_frmSharesTransfer.py" line="84"/>
-        <source>Selecciona el destino del traspaso de valores</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_frmSharesTransfer.py" line="85"/>
-        <source>Selecciona el n&#xc3;&#xba;mero de acciones</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_frmSharesTransfer.py" line="86"/>
-        <source>Introduce la comisi&#xc3;&#xb3;n del traspaso de valores</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_frmSharesTransfer.py" line="87"/>
+        <location filename="ui/Ui_frmSharesTransfer.py" line="92"/>
         <source>0</source>
         <translation>0</translation>
     </message>
     <message>
+        <location filename="ui/Ui_frmSharesTransfer.py" line="88"/>
+        <source>Shares transfer</source>
+        <translation>Transferencia de acciones</translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_frmSharesTransfer.py" line="89"/>
+        <source>Select the destiny for the shares</source>
+        <translation>Selecciona un destino para las acciones</translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_frmSharesTransfer.py" line="90"/>
+        <source>Number of shares</source>
+        <translation>Número de acciones</translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_frmSharesTransfer.py" line="91"/>
+        <source>Shares transfer comission</source>
+        <translation>Comisión de transferencia de acciones</translation>
+    </message>
+    <message>
         <location filename="ui/frmSharesTransfer.py" line="12"/>
-        <source>Traspaso de valores desde
+        <source>Shares transfer from
 {0}</source>
-        <translation type="unfinished"></translation>
+        <translation>Tranferencia de acciones desde
+{0}</translation>
     </message>
     <message>
         <location filename="ui/frmSharesTransfer.py" line="22"/>
-        <source>El origen  y el destino del traspaso de valores no puede ser el mismo</source>
-        <translation type="unfinished"></translation>
+        <source>Origin and destiny transfer can&apos;t be the same</source>
+        <translation>El origen y destino de la transferencia no puede ser el mismo</translation>
     </message>
-    <message encoding="UTF-8">
+    <message>
         <location filename="ui/frmSharesTransfer.py" line="29"/>
-        <source>La comisión debe ser un número positivo</source>
-        <translation type="unfinished"></translation>
+        <source>Comission must be a positive amount</source>
+        <translation>La comisión debe ser un importe positivo</translation>
     </message>
     <message>
         <location filename="ui/frmSharesTransfer.py" line="36"/>
-        <source>No se ha podido hacer el traspaso de valores</source>
-        <translation type="unfinished"></translation>
+        <source>The shares transfer couldn&apos;t be done</source>
+        <translation>La transferencia de acciones no se ha podido hacer</translation>
     </message>
 </context>
 <context>
@@ -3318,7 +3320,7 @@ p, li { white-space: pre-wrap; }
         <source>Split / Contrasplit relation</source>
         <translation>Relación de Split / Contrasplit</translation>
     </message>
-    <message encoding="UTF-8">
+    <message utf8="true">
         <location filename="ui/frmSplit.py" line="30"/>
         <source>If you have 1000 shares of 10 € of price, you will have {0:.6f} shares of {1:.6f} € of price after the {2}</source>
         <translation>Si tienes 1000 acciones a 10 €, tendrás {0:.6f} acciones a {1:.6f} € después del {2}</translation>
@@ -3337,24 +3339,9 @@ p, li { white-space: pre-wrap; }
         <translation>Transferencia</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmTransfer.py" line="113"/>
-        <source>Selecciona la cuenta origen</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_frmTransfer.py" line="114"/>
-        <source>Selecciona la cuenta destino</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="ui/Ui_frmTransfer.py" line="115"/>
         <source>Amount</source>
         <translation>Importe</translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_frmTransfer.py" line="116"/>
-        <source>El importe debe ser positivo</source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/Ui_frmTransfer.py" line="120"/>
@@ -3367,28 +3354,33 @@ p, li { white-space: pre-wrap; }
         <translation>Comisión</translation>
     </message>
     <message>
+        <location filename="ui/Ui_frmTransfer.py" line="113"/>
+        <source>Select origin account</source>
+        <translation>Selecciona la cuenta origen</translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_frmTransfer.py" line="114"/>
+        <source>Select destiny account</source>
+        <translation>Selecciona la cuenta destino</translation>
+    </message>
+    <message>
         <location filename="ui/Ui_frmTransfer.py" line="119"/>
-        <source>La comisi&#xc3;&#xb3;n debe ser positiva</source>
-        <translation type="unfinished"></translation>
+        <source>Amount must be positive</source>
+        <translation>El importe debe ser positivo</translation>
     </message>
     <message>
         <location filename="ui/frmTransfer.py" line="31"/>
-        <source>Se ha producido un error al introducir los datos</source>
-        <translation type="unfinished"></translation>
+        <source>Error adding data</source>
+        <translation>Error añadiendo datos</translation>
     </message>
     <message>
         <location filename="ui/frmTransfer.py" line="37"/>
-        <source>La cuenta origen y destino no puede ser la misma</source>
-        <translation type="unfinished"></translation>
+        <source>Origin and destiny accounts can&apos;t be the same</source>
+        <translation>Las cuentas origen y destino no pueden ser la misma</translation>
     </message>
 </context>
-<context encoding="UTF-8">
+<context>
     <name>investmentDialog</name>
-    <message encoding="UTF-8">
-        <location filename="ui/investmentSelector.py" line="84"/>
-        <source>Inversión</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <location filename="ui/investmentSelector.py" line="85"/>
         <source>Id</source>
@@ -3404,61 +3396,58 @@ p, li { white-space: pre-wrap; }
         <source>Ticker</source>
         <translation>Ticker</translation>
     </message>
-    <message encoding="UTF-8">
+    <message>
+        <location filename="ui/investmentSelector.py" line="84"/>
+        <source>Product</source>
+        <translation>Producto</translation>
+    </message>
+    <message>
         <location filename="ui/investmentSelector.py" line="98"/>
-        <source>Selecciona una inversión</source>
-        <translation type="unfinished"></translation>
+        <source>Select a product</source>
+        <translation>Selecciona un producto</translation>
     </message>
     <message>
         <location filename="ui/investmentSelector.py" line="99"/>
-        <source>Listado de inversiones</source>
-        <translation type="unfinished"></translation>
+        <source>Product list</source>
+        <translation>Lista de productos</translation>
     </message>
-    <message encoding="UTF-8">
+    <message>
         <location filename="ui/investmentSelector.py" line="100"/>
-        <source>Búsqueda por código, ISIN o nombre de la inversión</source>
-        <translation type="unfinished"></translation>
+        <source>Search by code, ISIN or product name</source>
+        <translation>Búsqueda por código, ISIN o nombre de producto</translation>
     </message>
     <message>
         <location filename="ui/investmentSelector.py" line="101"/>
-        <source>Registros encontrados</source>
-        <translation type="unfinished"></translation>
+        <source>Found registers</source>
+        <translation>Registros encontrados</translation>
     </message>
-    <message encoding="UTF-8">
+    <message>
         <location filename="ui/investmentSelector.py" line="113"/>
-        <source>Búsqueda demasiado extensa. Necesita más de 3 caracteres</source>
-        <translation type="unfinished"></translation>
+        <source>Search too wide. You need more than 3 characters</source>
+        <translation>Búsqueda demasiado extensa. Necesita más de 3 caracteres</translation>
     </message>
     <message>
         <location filename="ui/investmentSelector.py" line="120"/>
-        <source>Encontrados {0} registros</source>
-        <translation type="unfinished"></translation>
+        <source>Found {0} registers</source>
+        <translation>Encontrados {0} registros</translation>
     </message>
 </context>
 <context>
     <name>investmentSelector</name>
-    <message encoding="UTF-8">
+    <message>
         <location filename="ui/investmentSelector.py" line="17"/>
-        <source>Selecciona una inversión de MyStocks</source>
-        <translation type="unfinished"></translation>
+        <source>Select a product</source>
+        <translation>Selecciona un producto</translation>
     </message>
-    <message encoding="UTF-8">
+    <message>
         <location filename="ui/investmentSelector.py" line="22"/>
-        <source>Pulsa en el botón de búsqueda</source>
-        <translation type="unfinished"></translation>
+        <source>Press the search button</source>
+        <translation>Pulsa el botón de búsqueda</translation>
     </message>
     <message>
         <location filename="ui/investmentSelector.py" line="41"/>
-        <source>No seleccionado</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>mystocks</name>
-    <message>
-        <location filename="ui/wdgProducts.py" line="131"/>
-        <source>Esta inversi&#xc3;&#xb3;n no puede borrarse porque est&#xc3;&#xa1; marcada como NO BORRABLE</source>
-        <translation type="unfinished"></translation>
+        <source>Not selected</source>
+        <translation>No seleccionado</translation>
     </message>
 </context>
 <context>
@@ -3650,11 +3639,6 @@ p, li { white-space: pre-wrap; }
         <translation>Inversión</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgBanks.py" line="184"/>
-        <source>&#xc2;&#xbf;Est&#xc3;&#xa1; activo?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="ui/Ui_wdgBanks.py" line="174"/>
         <source>Investment report</source>
         <translation>Informe de la inversión</translation>
@@ -3703,6 +3687,11 @@ p, li { white-space: pre-wrap; }
         <location filename="ui/wdgBanks.py" line="203"/>
         <source>Edit selected bank</source>
         <translation>Editar el banco seleccionado</translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_wdgBanks.py" line="184"/>
+        <source>Is it active?</source>
+        <translation>¿Está activa?</translation>
     </message>
 </context>
 <context>
@@ -3954,7 +3943,7 @@ p, li { white-space: pre-wrap; }
         <translation>No puedes cerrar esta pestaña</translation>
     </message>
 </context>
-<context encoding="UTF-8">
+<context>
     <name>wdgDatetime</name>
     <message>
         <location filename="ui/Ui_wdgDatetime.py" line="80"/>
@@ -3976,7 +3965,7 @@ p, li { white-space: pre-wrap; }
         <source>Select microseconds</source>
         <translation>Selecciona los microsegundos</translation>
     </message>
-    <message encoding="UTF-8">
+    <message utf8="true">
         <location filename="ui/Ui_wdgDatetime.py" line="84"/>
         <source> μs</source>
         <translation> μs</translation>
@@ -4186,50 +4175,50 @@ p, li { white-space: pre-wrap; }
         <source>% Year to Date</source>
         <translation>% año actual</translation>
     </message>
-    <message encoding="UTF-8">
+    <message>
         <location filename="ui/wdgDisReinvest.py" line="17"/>
-        <source>Actualmente no hay acciones disponibles en esta Inversión</source>
-        <translation type="unfinished"></translation>
+        <source>There aren&apos;t shares for this investment</source>
+        <translation>No hay acciones para esta inversión</translation>
     </message>
-    <message encoding="UTF-8">
+    <message>
         <location filename="ui/wdgDisReinvest.py" line="62"/>
-        <source>Estudio de desinversión de {0}</source>
-        <translation type="unfinished"></translation>
+        <source>Divest report of {0}</source>
+        <translation>Informe de desinversión de {0}</translation>
     </message>
-    <message encoding="UTF-8">
+    <message>
         <location filename="ui/wdgDisReinvest.py" line="63"/>
-        <source>Pérdida aproximada a asumir en la desinversión</source>
-        <translation type="unfinished"></translation>
+        <source>Divest loss to asume</source>
+        <translation>Pérdida de desinversión a asumir</translation>
     </message>
     <message>
         <location filename="ui/wdgDisReinvest.py" line="64"/>
-        <source>Valor de venta</source>
-        <translation type="unfinished"></translation>
+        <source>Selling price</source>
+        <translation>Punto de venta</translation>
     </message>
-    <message encoding="UTF-8">
+    <message>
         <location filename="ui/wdgDisReinvest.py" line="68"/>
-        <source>Estudio de reinversión de {0}</source>
-        <translation type="unfinished"></translation>
+        <source>Reinvest report of {0}</source>
+        <translation>Informe de reinversión de {0}</translation>
     </message>
     <message>
         <location filename="ui/wdgDisReinvest.py" line="69"/>
-        <source>Importe a reinvertir</source>
-        <translation type="unfinished"></translation>
+        <source>Amount to reinvest</source>
+        <translation>Cantidad a reinvertir</translation>
     </message>
     <message>
         <location filename="ui/wdgDisReinvest.py" line="70"/>
-        <source>Valor de compra</source>
-        <translation type="unfinished"></translation>
+        <source>Purchase price</source>
+        <translation>Precio de compra</translation>
     </message>
-    <message encoding="UTF-8">
+    <message>
         <location filename="ui/wdgDisReinvest.py" line="76"/>
-        <source>El valor de la simulación debe ser positivo</source>
-        <translation type="unfinished"></translation>
+        <source>Simulation value must be positive</source>
+        <translation>El valor de la simulación debe ser positivo</translation>
     </message>
-    <message encoding="UTF-8">
+    <message>
         <location filename="ui/wdgDisReinvest.py" line="85"/>
-        <source>El valor de la acción no puede ser 0</source>
-        <translation type="unfinished"></translation>
+        <source>Share price can&apos;t be 0</source>
+        <translation>El precio de la acción no puede ser 0</translation>
     </message>
 </context>
 <context>
@@ -4694,74 +4683,9 @@ Diferencia diaria: {5}. Edad media del patrimonio: {6}</translation>
         <translation>Informe histórico</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgJointReport.py" line="325"/>
-        <source>Plusval&#xc3;&#xad;as brutas de inversiones</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_wdgJointReport.py" line="327"/>
-        <source>Comisiones en operaciones de inversi&#xc3;&#xb3;n</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_wdgJointReport.py" line="329"/>
-        <source>Impuestos en operaciones de inversi&#xc3;&#xb3;n</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_wdgJointReport.py" line="331"/>
-        <source>Plusval&#xc3;&#xad;as netas de inversiones</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_wdgJointReport.py" line="333"/>
-        <source>Dividendos brutos</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_wdgJointReport.py" line="335"/>
-        <source>Retenciones de dividendos</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_wdgJointReport.py" line="337"/>
-        <source>Dividendos netos</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_wdgJointReport.py" line="339"/>
-        <source>Comisiones de custodia</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_wdgJointReport.py" line="341"/>
-        <source>Pago IRPF</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_wdgJointReport.py" line="343"/>
-        <source>Beneficio sin pagar impuestos</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_wdgJointReport.py" line="345"/>
-        <source>Beneficio despu&#xc3;&#xa9;s de pagar impuestos</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="ui/Ui_wdgJointReport.py" line="347"/>
         <source>Current balance</source>
         <translation>Saldo actual</translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_wdgJointReport.py" line="349"/>
-        <source>&#xe2;&#x82;&#xac;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_wdgJointReport.py" line="351"/>
-        <source>% TAE</source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/Ui_wdgJointReport.py" line="377"/>
@@ -4799,34 +4723,9 @@ Diferencia diaria: {5}. Edad media del patrimonio: {6}</translation>
         <translation>Saldo final</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgJointReport.py" line="416"/>
-        <source>Consolidado bruto</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_wdgJointReport.py" line="418"/>
-        <source>Comisiones</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="ui/Ui_wdgJointReport.py" line="420"/>
         <source>Taxes</source>
         <translation>Impuestos</translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_wdgJointReport.py" line="422"/>
-        <source>Consolidado neto</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_wdgJointReport.py" line="424"/>
-        <source>% TAE neto</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_wdgJointReport.py" line="426"/>
-        <source>% Total neto</source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/Ui_wdgJointReport.py" line="402"/>
@@ -4854,17 +4753,12 @@ Diferencia diaria: {5}. Edad media del patrimonio: {6}</translation>
         <translation>Cuenta</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgJointReport.py" line="437"/>
-        <source>Neto antes de impuestos</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="ui/Ui_wdgJointReport.py" line="439"/>
-        <source>En este listado se muestran los a&#xc3;&#xb1;adidos de acciones a coste cero que se han producido en el a&#xc3;&#xb1;o
+        <source>En este listado se muestran los aÃ±adidos de acciones a coste cero que se han producido en el aÃ±o
 
-Es  un listado informativo y no ser&#xc3;&#xa1;n contabilizadas en los informes ya que se producir&#xc3;&#xad;a una doble contabilidad
+Es  un listado informativo y no serÃ¡n contabilizadas en los informes ya que se producirÃ­a una doble contabilidad
 
-S&#xc3;&#xb3;lo se contabilizar&#xc3;&#xa1; cuando se vendan las acciones</source>
+SÃ³lo se contabilizarÃ¡ cuando se vendan las acciones</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4886,6 +4780,96 @@ S&#xc3;&#xb3;lo se contabilizar&#xc3;&#xa1; cuando se vendan las acciones</sourc
         <location filename="ui/wdgJointReport.py" line="153"/>
         <source>balance a {0}, {1}</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_wdgJointReport.py" line="416"/>
+        <source>Gross gains</source>
+        <translation>Ganancias brutas</translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_wdgJointReport.py" line="327"/>
+        <source>Investment operation comissions</source>
+        <translation>Comisiones de las operaciones de inversión</translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_wdgJointReport.py" line="329"/>
+        <source>Investment operation taxes</source>
+        <translation>Impuestos de las operaciones de inversión</translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_wdgJointReport.py" line="331"/>
+        <source>Investment net gains</source>
+        <translation>Ganancias netas de la inversión</translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_wdgJointReport.py" line="333"/>
+        <source>Gross dividends</source>
+        <translation>Dividendos brutos</translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_wdgJointReport.py" line="335"/>
+        <source>Dividend withholdings</source>
+        <translation>Retención de dividendos</translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_wdgJointReport.py" line="337"/>
+        <source>Net dividends</source>
+        <translation>Dividendos netos</translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_wdgJointReport.py" line="339"/>
+        <source>Custody fees</source>
+        <translation>Comisiones de custodia</translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_wdgJointReport.py" line="341"/>
+        <source>Taxes payment</source>
+        <translation>Pago de impuestos</translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_wdgJointReport.py" line="343"/>
+        <source>Gains without paying taxes</source>
+        <translation>Ganancias sin pagar impuestos</translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_wdgJointReport.py" line="345"/>
+        <source>Gains after paying taxes</source>
+        <translation>Ganancias después de pagar impuestos</translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_wdgJointReport.py" line="349"/>
+        <source>Amount</source>
+        <translation>Importe</translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_wdgJointReport.py" line="351"/>
+        <source>% APR</source>
+        <translation>% TAE</translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_wdgJointReport.py" line="418"/>
+        <source>Comissions</source>
+        <translation>Comisiones</translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_wdgJointReport.py" line="422"/>
+        <source>Net gains</source>
+        <translation>Ganancias netas</translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_wdgJointReport.py" line="424"/>
+        <source>% Net APR</source>
+        <translation>% TAE Neto</translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_wdgJointReport.py" line="426"/>
+        <source>% Net Total</source>
+        <translation>% Total neto</translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_wdgJointReport.py" line="437"/>
+        <source>Net before taxes</source>
+        <translation>Neto antes de impuestos</translation>
     </message>
 </context>
 <context>
@@ -4920,12 +4904,12 @@ S&#xc3;&#xb3;lo se contabilizar&#xc3;&#xa1; cuando se vendan las acciones</sourc
         <source>Estado</source>
         <translation type="unfinished"></translation>
     </message>
-    <message encoding="UTF-8">
+    <message utf8="true">
         <location filename="ui/Ui_wdgLog.py" line="130"/>
         <source>Último cambio estado</source>
         <translation type="unfinished"></translation>
     </message>
-    <message encoding="UTF-8">
+    <message utf8="true">
         <location filename="ui/Ui_wdgLog.py" line="132"/>
         <source>Número consultas internet</source>
         <translation type="unfinished"></translation>
@@ -4950,7 +4934,7 @@ S&#xc3;&#xb3;lo se contabilizar&#xc3;&#xa1; cuando se vendan las acciones</sourc
         <source>{0} registros encontrados</source>
         <translation type="unfinished"></translation>
     </message>
-    <message encoding="UTF-8">
+    <message utf8="true">
         <location filename="ui/wdgLog.py" line="65"/>
         <source>Última actualización: {0}</source>
         <translation type="unfinished"></translation>
@@ -5003,7 +4987,7 @@ S&#xc3;&#xb3;lo se contabilizar&#xc3;&#xa1; cuando se vendan las acciones</sourc
         <source>DPS</source>
         <translation>DPA</translation>
     </message>
-    <message encoding="UTF-8">
+    <message utf8="true">
         <location filename="ui/wdgMergeCodes.py" line="50"/>
         <source>No se ha puede realizar esta combinación, ya que la inversión a borrar esta marcada como NO BORRABLE</source>
         <translation type="unfinished"></translation>
@@ -5020,11 +5004,6 @@ S&#xc3;&#xb3;lo se contabilizar&#xc3;&#xa1; cuando se vendan las acciones</sourc
         <location filename="ui/Ui_wdgProducts.py" line="205"/>
         <source>Products list</source>
         <translation>Listado de productos</translation>
-    </message>
-    <message encoding="UTF-8">
-        <location filename="ui/Ui_wdgProducts.py" line="207"/>
-        <source>Búsqueda por código, ISIN o nombre del producto</source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/Ui_wdgProducts.py" line="210"/>
@@ -5076,17 +5055,17 @@ S&#xc3;&#xb3;lo se contabilizar&#xc3;&#xa1; cuando se vendan las acciones</sourc
         <source>Ibex 35</source>
         <translation>Ibex 35</translation>
     </message>
-    <message encoding="UTF-8">
+    <message utf8="true">
         <location filename="ui/Ui_wdgProducts.py" line="239"/>
         <source>Añadir a favoritos</source>
         <translation type="unfinished"></translation>
     </message>
-    <message encoding="UTF-8">
+    <message utf8="true">
         <location filename="ui/Ui_wdgProducts.py" line="240"/>
         <source>Combina códigos seleccionados</source>
         <translation type="unfinished"></translation>
     </message>
-    <message encoding="UTF-8">
+    <message utf8="true">
         <location filename="ui/Ui_wdgProducts.py" line="242"/>
         <source>Nueva cotización</source>
         <translation type="unfinished"></translation>
@@ -5167,54 +5146,74 @@ S&#xc3;&#xb3;lo se contabilizar&#xc3;&#xa1; cuando se vendan las acciones</sourc
         <translation>% Dividendo</translation>
     </message>
     <message>
-        <location filename="ui/wdgProducts.py" line="20"/>
-        <source>Recibiendo datos solicitados</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/wdgProducts.py" line="20"/>
-        <source>Cancelar</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/wdgProducts.py" line="22"/>
-        <source>Recibiendo datos...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="ui/wdgProducts.py" line="35"/>
         <source>Found {0} records</source>
         <translation>Encontrados {0} registros</translation>
     </message>
     <message>
         <location filename="ui/wdgProducts.py" line="135"/>
-        <source>MyStocks</source>
-        <translation>MyStocks</translation>
-    </message>
-    <message>
-        <location filename="ui/wdgProducts.py" line="135"/>
         <source>Deleting data from selected product ({0}). If you use manual update mode, data won&apos;t be recovered. Do you want to continue?</source>
         <translation>Borrando datos del producto seleccionado ({0}). Si el producto usaba actualizaciones manuales, los datos no serán recuperados. ¿Quieres continuar?</translation>
-    </message>
-    <message encoding="UTF-8">
-        <location filename="ui/wdgProducts.py" line="201"/>
-        <source>Búsqueda demasiado extensa. Necesita más de 3 caracteres</source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/wdgProducts.py" line="220"/>
         <source>Sort por</source>
         <translation type="unfinished"></translation>
     </message>
-    <message encoding="UTF-8">
-        <location filename="ui/wdgProducts.py" line="292"/>
-        <source>Combinando códigos</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <location filename="ui/wdgProducts.py" line="321"/>
         <source>{0} quotes have been purged from {1}</source>
         <translation>{0} cotizaciones han sido purgadas de {1}</translation>
+    </message>
+    <message>
+        <location filename="ui/wdgProducts.py" line="131"/>
+        <source>This product can&apos;t be removed, because is marked as not romavable</source>
+        <translation>Este producto no puede ser eliminado, porque está marcado como no borrable</translation>
+    </message>
+    <message>
+        <location filename="ui/wdgProducts.py" line="135"/>
+        <source>Xulpymoney</source>
+        <translation>Xulpymoney</translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_wdgProducts.py" line="207"/>
+        <source>Search by code, ISIN o product name</source>
+        <translation>Búsqueda por código, ISIN o nombre de producto</translation>
+    </message>
+    <message>
+        <location filename="ui/wdgProducts.py" line="20"/>
+        <source>Receiving data</source>
+        <translation>Recibiendo datos</translation>
+    </message>
+    <message>
+        <location filename="ui/wdgProducts.py" line="20"/>
+        <source>Cancel</source>
+        <translation>Cancelar</translation>
+    </message>
+    <message>
+        <location filename="ui/wdgProducts.py" line="22"/>
+        <source>Receiving data...</source>
+        <translation>Recibiendo datos...</translation>
+    </message>
+    <message>
+        <location filename="ui/wdgProducts.py" line="201"/>
+        <source>Search too wide. You need more than 3 characters</source>
+        <translation>Búsqueda demasiado extensa. Necesita más de 3 caracteres</translation>
+    </message>
+    <message>
+        <location filename="ui/wdgProducts.py" line="232"/>
+        <source>Remove from favorites</source>
+        <translation>Borrar de favoritos</translation>
+    </message>
+    <message>
+        <location filename="ui/wdgProducts.py" line="234"/>
+        <source>Add to favorites</source>
+        <translation>Añadir a favoritos</translation>
+    </message>
+    <message>
+        <location filename="ui/wdgProducts.py" line="292"/>
+        <source>Merging codes</source>
+        <translation>Juntando códigos</translation>
     </message>
 </context>
 <context>
@@ -5414,7 +5413,7 @@ S&#xc3;&#xb3;lo se contabilizar&#xc3;&#xa1; cuando se vendan las acciones</sourc
         <source>Expenses of {0} of {1}</source>
         <translation>Gastos de {0} de {1}</translation>
     </message>
-    <message encoding="UTF-8">
+    <message utf8="true">
         <location filename="ui/wdgTotal.py" line="306"/>
         <source>La suma de consolidado y dividends  de este mes es {0}. En el año su valor asciende a {1}</source>
         <translation type="unfinished"></translation>

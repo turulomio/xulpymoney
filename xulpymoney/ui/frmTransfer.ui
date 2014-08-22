@@ -58,7 +58,7 @@
        <item>
         <widget class="QLabel" name="label_2">
          <property name="text">
-          <string>Selecciona la cuenta origen</string>
+          <string>Select origin account</string>
          </property>
         </widget>
        </item>
@@ -72,7 +72,7 @@
        <item>
         <widget class="QLabel" name="label_5">
          <property name="text">
-          <string>Selecciona la cuenta destino</string>
+          <string>Select destiny account</string>
          </property>
         </widget>
        </item>
@@ -99,7 +99,7 @@
           </sizepolicy>
          </property>
          <property name="toolTip">
-          <string>El importe debe ser positivo</string>
+          <string>Amount must be positive</string>
          </property>
          <property name="text">
           <string>0</string>
@@ -126,7 +126,7 @@
           </sizepolicy>
          </property>
          <property name="toolTip">
-          <string>La comisión debe ser positiva</string>
+          <string>Amount must be positive</string>
          </property>
          <property name="text">
           <string>0</string>
