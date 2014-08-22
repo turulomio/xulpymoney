@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>549</width>
-    <height>607</height>
+    <width>1078</width>
+    <height>851</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -96,9 +96,17 @@
       </layout>
      </item>
      <item>
-      <widget class="QTextBrowser" name="browser">
-       <property name="openExternalLinks">
-        <bool>true</bool>
+      <widget class="QWebView" name="webView">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="url">
+        <url>
+         <string>http://sourceforge.net/p/xulpymoney/wiki/Home/</string>
+        </url>
        </property>
       </widget>
      </item>
@@ -106,6 +114,13 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>QWebView</class>
+   <extends>QWidget</extends>
+   <header>QtWebKit/QWebView</header>
+  </customwidget>
+ </customwidgets>
  <resources>
   <include location="../images/xulpymoney.qrc"/>
   <include location="../images/xulpymoney.qrc"/>

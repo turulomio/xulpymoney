@@ -1464,53 +1464,18 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>frmHelp</name>
     <message>
-        <location filename="ui/Ui_frmHelp.py" line="73"/>
+        <location filename="ui/Ui_frmHelp.py" line="78"/>
         <source>Xulpymoney help</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmHelp.py" line="74"/>
+        <location filename="ui/Ui_frmHelp.py" line="79"/>
         <source>Xulpymoney Help</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmHelp.py" line="10"/>
-        <source>&lt;h1&gt;User manual&lt;/h1&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/frmHelp.py" line="10"/>
-        <source>&lt;h2&gt;Xulpymoney&lt;/h2&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/frmHelp.py" line="10"/>
-        <source>&lt;h2&gt;User interface&lt;/h2&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/frmHelp.py" line="10"/>
-        <source>Xulpymoney uses a lot of tables, so they have an improved user interface.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/frmHelp.py" line="10"/>
-        <source>If you move the mouse wheel, the table resizes column to allow view all fields.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/frmHelp.py" line="10"/>
-        <source>If you double click in a table, the table is resized to minimum column size.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/frmHelp.py" line="10"/>
-        <source>&lt;h2&gt;MyStocks&lt;/h2&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/frmHelp.py" line="10"/>
-        <source>Products are permanent, so they can&apos;t be deleted.</source>
+        <location filename="ui/frmHelp.ui" line="108"/>
+        <source>http://sourceforge.net/p/xulpymoney/wiki/Home/</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
