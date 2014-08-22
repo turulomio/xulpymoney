@@ -14,7 +14,7 @@ class wdgDisReinvest(QWidget, Ui_wdgDisReinvest):
         if len(self.inversion.op_actual.arr)==0:
             m=QMessageBox()
             m.setIcon(QMessageBox.Information)
-            m.setText(self.trUtf8("Actualmente no hay acciones disponibles en esta Inversión"))
+            m.setText(self.tr("There aren't shares for this investment"))
             m.exec_()     
             return
 #        
@@ -59,21 +59,21 @@ class wdgDisReinvest(QWidget, Ui_wdgDisReinvest):
             
     @QtCore.pyqtSlot() 
     def on_radDes_clicked(self):
-        self.lblTitulo.setText(self.trUtf8("Estudio de desinversión de {0}".format(self.inversion.name)))
-        self.lblSimulacion.setText(self.trUtf8("Pérdida aproximada a asumir en la desinversión"))
-        self.lblValor.setText(self.trUtf8("Valor de venta"))
+        self.lblTitulo.setText(self.tr("Divest report of {0}").format(self.inversion.name))
+        self.lblSimulacion.setText(self.tr("Divest loss to asume"))
+        self.lblValor.setText(self.tr("Selling price"))
         
     @QtCore.pyqtSlot() 
     def on_radRe_clicked(self):
-        self.lblTitulo.setText(self.trUtf8("Estudio de reinversión de {0}".format(self.inversion.name)))
-        self.lblSimulacion.setText(self.trUtf8("Importe a reinvertir"))
-        self.lblValor.setText(self.trUtf8("Valor de compra"))
+        self.lblTitulo.setText(self.tr("Reinvest report of {0}").format(self.inversion.name))
+        self.lblSimulacion.setText(self.tr("Amount to reinvest"))
+        self.lblValor.setText(self.tr("Purchase price"))
    
     def on_cmd_released(self):
         if self.txtSimulacion.decimal()<=Decimal('0'):
             m=QMessageBox()
             m.setIcon(QMessageBox.Information)
-            m.setText(self.trUtf8("El valor de la simulación debe ser positivo"))
+            m.setText(self.tr("Simulation value must be positive"))
             m.exec_()    
             return
         valor_accion=self.txtValorAccion.decimal()
@@ -82,7 +82,7 @@ class wdgDisReinvest(QWidget, Ui_wdgDisReinvest):
         if valor_accion==0:
             m=QMessageBox()
             m.setIcon(QMessageBox.Information)
-            m.setText(self.trUtf8("El valor de la acción no puede ser 0"))
+            m.setText(self.tr("Share price can't be 0"))
             m.exec_()    
             return
         acciones=self.acciones()

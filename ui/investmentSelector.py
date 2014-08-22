@@ -14,12 +14,12 @@ class investmentSelector(QWidget):
         self.horizontalLayout_2 = QHBoxLayout(self)
         self.horizontalLayout = QHBoxLayout()
         self.label = QLabel(self)
-        self.label.setText(self.trUtf8("Selecciona una inversión de MyStocks"))
+        self.label.setText(self.tr("Select a product"))
         self.horizontalLayout.addWidget(self.label)                                                                                                                                 
         self.txt = QLineEdit(self)                                                                                                                                       
         self.txt.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)                                                                             
         self.txt.setReadOnly(True)      
-        self.txt.setToolTip(self.trUtf8("Pulsa en el botón de búsqueda"))                                                                                                                                                           
+        self.txt.setToolTip(self.tr("Press the search button"))                                                                                                                                                           
         self.horizontalLayout.addWidget(self.txt)                                                                                                                                 
         self.cmd= QToolButton(self)               
         icon = QIcon()
@@ -38,7 +38,7 @@ class investmentSelector(QWidget):
         """Recibe un objeto Product. No se usará posteriormente, por lo que puede no estar completo con get_basic.:."""
         self.selected=product
         if self.selected==None:
-            self.txt.setText(self.trUtf8("No seleccionado"))
+            self.txt.setText(self.tr("Not selected"))
         else:
             self.txt.setText("{0} ({1})".format(self.selected.name, self.selected.id))
         
@@ -81,10 +81,10 @@ class investmentDialog(QDialog):
         self.tblInvestments.setColumnCount(4)
         self.tblInvestments.setRowCount(0)
         self.tblInvestments.settings("investmentSelector",  self.mem)    
-        self.tblInvestments.setHorizontalHeaderItem(0, QTableWidgetItem(self.trUtf8("Inversión")))
-        self.tblInvestments.setHorizontalHeaderItem(1, QTableWidgetItem(self.trUtf8("Id")))
-        self.tblInvestments.setHorizontalHeaderItem(2, QTableWidgetItem(self.trUtf8("ISIN")))
-        self.tblInvestments.setHorizontalHeaderItem(3, QTableWidgetItem(self.trUtf8("Ticker")))
+        self.tblInvestments.setHorizontalHeaderItem(0, QTableWidgetItem(self.tr("Product")))
+        self.tblInvestments.setHorizontalHeaderItem(1, QTableWidgetItem(self.tr("Id")))
+        self.tblInvestments.setHorizontalHeaderItem(2, QTableWidgetItem(self.tr("ISIN")))
+        self.tblInvestments.setHorizontalHeaderItem(3, QTableWidgetItem(self.tr("Ticker")))
         self.tblInvestments.horizontalHeader().setStretchLastSection(False)
         self.tblInvestments.setEditTriggers(QAbstractItemView.NoEditTriggers)
         self.tblInvestments.setSelectionBehavior(QAbstractItemView.SelectRows)
@@ -95,10 +95,10 @@ class investmentDialog(QDialog):
         self.lblFound = QLabel(self)
         self.verticalLayout.addWidget(self.lblFound)
         self.horizontalLayout_2.addLayout(self.verticalLayout)
-        self.setWindowTitle(self.trUtf8("Selecciona una inversión"))
-        self.lbl.setText(self.trUtf8("Listado de inversiones"))
-        self.label.setText(self.trUtf8("Búsqueda por código, ISIN o nombre de la inversión"))
-        self.lblFound.setText(self.trUtf8("Registros encontrados"))
+        self.setWindowTitle(self.tr("Select a product"))
+        self.lbl.setText(self.tr("Product list"))
+        self.label.setText(self.tr("Search by code, ISIN or product name"))
+        self.lblFound.setText(self.tr("Found registers"))
 
         self.setTabOrder(self.txt, self.cmd)
         self.setTabOrder(self.cmd, self.tblInvestments)                                                                                                                                                                                                                                        
@@ -110,14 +110,14 @@ class investmentDialog(QDialog):
     def on_cmd_released(self):
         if len(self.txt.text().upper())<=3:            
             m=QMessageBox()
-            m.setText(self.trUtf8("Búsqueda demasiado extensa. Necesita más de 3 caracteres"))
+            m.setText(self.tr("Search too wide. You need more than 3 characters"))
             m.exec_()  
             return
 
         self.inversiones=[]
         cur = self.mem.con.cursor()
         cur.execute("select * from products where id::text like '%"+(self.txt.text().upper())+"%' or upper(name) like '%"+(self.txt.text().upper())+"%' or upper(isin) like '%"+(self.txt.text().upper())+"%' or upper(comentario) like '%"+(self.txt.text().upper())+"%' order by name")
-        self.lblFound.setText(self.tr("Encontrados {0} registros".format(cur.rowcount)))
+        self.lblFound.setText(self.tr("Found {0} registers").format(cur.rowcount))
                 
         self.tblInvestments.setRowCount(cur.rowcount)
         for i in cur:

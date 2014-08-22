@@ -29,7 +29,7 @@ class frmSelector(QDialog, Ui_frmSelector):
                 self.tblSelected.setItem(i, 1, QTableWidgetItem(l.name))
             except:
                 m=QMessageBox()
-                m.setText(self.trUtf8("Se han pasado datos seleccionados no reconocidos({0}), vuelva a seleccionarlos".format(str(self.selected))))
+                m.setText(self.tr("This dialog got unknown selected data ({0}), select it again").format(str(self.selected)))
                 m.exec_()        
                 self.selected=[]
                 self.load_tbl()

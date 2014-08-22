@@ -17,9 +17,9 @@ class wdgProducts(QWidget, Ui_wdgProducts):
         self.tblInvestments.settings("wdgProducts",  self.mem)    
         self.mem.stockexchanges.qcombobox(self.cmbStockExchange)
         self.setFavoritos=set(self.mem.config.get_list( "wdgProducts", "favoritos"))
-        self.progress = QProgressDialog(self.tr("Recibiendo datos solicitados"), self.tr("Cancelar"), 0,0)
+        self.progress = QProgressDialog(self.tr("Receiving data"), self.tr("Cancel"), 0,0)
         self.progress.setModal(True)
-        self.progress.setWindowTitle(self.trUtf8("Recibiendo datos..."))
+        self.progress.setWindowTitle(self.tr("Receiving data..."))
         self.progress.setMinimumDuration(0)                
 
         self.build_array(sql)
@@ -128,11 +128,11 @@ class wdgProducts(QWidget, Ui_wdgProducts):
     def on_actionProductDelete_activated(self):
         if self.selProduct.deletable==False:
             m=QMessageBox()
-            m.setText(QApplication.translate("mystocks","Esta inversión no puede borrarse porque está marcada como NO BORRABLE"))
+            m.setText(self.tr("This product can't be removed, because is marked as not romavable"))
             m.exec_()    
             return
 
-        respuesta = QMessageBox.warning(self, self.tr("MyStocks"), self.trUtf8("Deleting data from selected product ({0}). If you use manual update mode, data won't be recovered. Do you want to continue?".format(self.selProduct.id)), QMessageBox.Ok | QMessageBox.Cancel)
+        respuesta = QMessageBox.warning(self, self.tr("Xulpymoney"), self.tr("Deleting data from selected product ({0}). If you use manual update mode, data won't be recovered. Do you want to continue?".format(self.selProduct.id)), QMessageBox.Ok | QMessageBox.Cancel)
         if respuesta==QMessageBox.Ok:
             con=self.mem.connect_xulpymoney()
             cur = con.cursor()
@@ -198,7 +198,7 @@ class wdgProducts(QWidget, Ui_wdgProducts):
     def on_cmd_pressed(self):
         if len(self.txt.text().upper())<=3:            
             m=QMessageBox()
-            m.setText(self.trUtf8("Búsqueda demasiado extensa. Necesita más de 3 caracteres"))
+            m.setText(self.tr("Search too wide. You need more than 3 characters"))
             m.exec_()  
             return
             
@@ -228,9 +228,9 @@ class wdgProducts(QWidget, Ui_wdgProducts):
         menu.addAction(self.actionFavorites)
         if self.selProduct!=None:
             if self.selProduct.id in self.setFavoritos:
-                self.actionFavorites.setText("Quitar de favoritos")
+                self.actionFavorites.setText(self.tr("Remove from favorites"))
             else:
-                self.actionFavorites.setText(self.trUtf8("Añadir a favoritos"))
+                self.actionFavorites.setText(self.tr("Add to favorites"))
         menu.addSeparator()
         menu.addAction(self.actionProductReport)
         menu.addAction(self.actionPurge)
@@ -288,7 +288,7 @@ class wdgProducts(QWidget, Ui_wdgProducts):
         #Llama a form
         d=QDialog(self)        
         d.setFixedSize(800, 210)
-        d.setWindowTitle(self.trUtf8("Combinando códigos"))
+        d.setWindowTitle(self.tr("Merging codes"))
         w=wdgMergeCodes(self.mem, selected[0], selected[1])
         lay = QVBoxLayout(d)
         lay.addWidget(w)
@@ -317,7 +317,7 @@ class wdgProducts(QWidget, Ui_wdgProducts):
             self.mem.con.commit()
             m=QMessageBox()
             m.setIcon(QMessageBox.Information)
-            m.setText(self.trUtf8("{0} quotes have been purged from {1}".format(numpurged, self.selProduct.name)))
+            m.setText(self.tr("{0} quotes have been purged from {1}".format(numpurged, self.selProduct.name)))
             m.exec_()    
         else:
             self.mem.con.rollback()

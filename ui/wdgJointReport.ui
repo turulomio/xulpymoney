@@ -128,42 +128,22 @@ font: 75 12pt &quot;Sans Serif&quot;;</string>
            </property>
            <row>
             <property name="text">
-             <string>Plusvalías brutas de inversiones</string>
+             <string>Gross gains</string>
             </property>
            </row>
            <row>
             <property name="text">
-             <string>Comisiones en operaciones de inversión</string>
+             <string>Investment operation comissions</string>
             </property>
            </row>
            <row>
             <property name="text">
-             <string>Impuestos en operaciones de inversión</string>
+             <string>Investment operation taxes</string>
             </property>
            </row>
            <row>
             <property name="text">
-             <string>Plusvalías netas de inversiones</string>
-            </property>
-           </row>
-           <row>
-            <property name="text">
-             <string/>
-            </property>
-           </row>
-           <row>
-            <property name="text">
-             <string>Dividendos brutos</string>
-            </property>
-           </row>
-           <row>
-            <property name="text">
-             <string>Retenciones de dividendos</string>
-            </property>
-           </row>
-           <row>
-            <property name="text">
-             <string>Dividendos netos</string>
+             <string>Investment net gains</string>
             </property>
            </row>
            <row>
@@ -173,7 +153,17 @@ font: 75 12pt &quot;Sans Serif&quot;;</string>
            </row>
            <row>
             <property name="text">
-             <string>Comisiones de custodia</string>
+             <string>Gross dividends</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>Dividend withholdings</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>Net dividends</string>
             </property>
            </row>
            <row>
@@ -183,7 +173,7 @@ font: 75 12pt &quot;Sans Serif&quot;;</string>
            </row>
            <row>
             <property name="text">
-             <string>Pago IRPF</string>
+             <string>Custody fees</string>
             </property>
            </row>
            <row>
@@ -193,12 +183,22 @@ font: 75 12pt &quot;Sans Serif&quot;;</string>
            </row>
            <row>
             <property name="text">
-             <string>Beneficio sin pagar impuestos</string>
+             <string>Taxes payment</string>
             </property>
            </row>
            <row>
             <property name="text">
-             <string>Beneficio después de pagar impuestos</string>
+             <string/>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>Gains without paying taxes</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>Gains after paying taxes</string>
             </property>
            </row>
            <row>
@@ -213,12 +213,12 @@ font: 75 12pt &quot;Sans Serif&quot;;</string>
            </row>
            <column>
             <property name="text">
-             <string>€</string>
+             <string>Amount</string>
             </property>
            </column>
            <column>
             <property name="text">
-             <string>% TAE</string>
+             <string>% APR</string>
             </property>
            </column>
           </widget>
@@ -286,12 +286,12 @@ font: 75 12pt &quot;Sans Serif&quot;;</string>
            </column>
            <column>
             <property name="text">
-             <string>Consolidado bruto</string>
+             <string>Gross gains</string>
             </property>
            </column>
            <column>
             <property name="text">
-             <string>Comisiones</string>
+             <string>Comissions</string>
             </property>
            </column>
            <column>
@@ -301,17 +301,17 @@ font: 75 12pt &quot;Sans Serif&quot;;</string>
            </column>
            <column>
             <property name="text">
-             <string>Consolidado neto</string>
+             <string>Net gains</string>
             </property>
            </column>
            <column>
             <property name="text">
-             <string>% TAE neto</string>
+             <string>% Net APR</string>
             </property>
            </column>
            <column>
             <property name="text">
-             <string>% Total neto</string>
+             <string>% Net Total</string>
             </property>
            </column>
           </widget>
@@ -382,12 +382,12 @@ font: 75 12pt &quot;Sans Serif&quot;;</string>
            </column>
            <column>
             <property name="text">
-             <string>Consolidado bruto</string>
+             <string>Gross gains</string>
             </property>
            </column>
            <column>
             <property name="text">
-             <string>Comisiones</string>
+             <string>Comissions</string>
             </property>
            </column>
            <column>
@@ -397,17 +397,17 @@ font: 75 12pt &quot;Sans Serif&quot;;</string>
            </column>
            <column>
             <property name="text">
-             <string>Consolidado neto</string>
+             <string>Net gains</string>
             </property>
            </column>
            <column>
             <property name="text">
-             <string>% TAE neto</string>
+             <string>% Net APR</string>
             </property>
            </column>
            <column>
             <property name="text">
-             <string>% Total neto</string>
+             <string>% Net Total</string>
             </property>
            </column>
           </widget>
@@ -475,12 +475,12 @@ font: 75 12pt &quot;Sans Serif&quot;;</string>
            </column>
            <column>
             <property name="text">
-             <string>Consolidado bruto</string>
+             <string>Gross gains</string>
             </property>
            </column>
            <column>
             <property name="text">
-             <string>Comisiones</string>
+             <string>Comissions</string>
             </property>
            </column>
            <column>
@@ -490,17 +490,17 @@ font: 75 12pt &quot;Sans Serif&quot;;</string>
            </column>
            <column>
             <property name="text">
-             <string>Consolidado neto</string>
+             <string>Net gains</string>
             </property>
            </column>
            <column>
             <property name="text">
-             <string>% TAE neto</string>
+             <string>% Net APR</string>
             </property>
            </column>
            <column>
             <property name="text">
-             <string>% Total neto</string>
+             <string>% Net Total</string>
             </property>
            </column>
           </widget>
@@ -558,7 +558,7 @@ font: 75 12pt &quot;Sans Serif&quot;;</string>
            </column>
            <column>
             <property name="text">
-             <string>Neto antes de impuestos</string>
+             <string>Net before taxes</string>
             </property>
            </column>
           </widget>
