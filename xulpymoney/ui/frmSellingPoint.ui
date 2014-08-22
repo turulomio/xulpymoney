@@ -60,7 +60,7 @@
           <item>
            <widget class="QRadioButton" name="radTPC">
             <property name="text">
-             <string>Selecciona un porcentaje de ganancia de lo invertido</string>
+             <string>Select a gain percentage</string>
             </property>
             <property name="checked">
              <bool>true</bool>
@@ -116,14 +116,20 @@
           <item>
            <widget class="QRadioButton" name="radGain">
             <property name="text">
-             <string>Select a gain</string>
+             <string>Select a gain amount</string>
             </property>
            </widget>
           </item>
           <item>
            <widget class="myQLineEdit" name="txtGanancia">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
             <property name="toolTip">
-             <string>Introduce la ganancia</string>
+             <string>Select a gain amount</string>
             </property>
             <property name="text">
              <string>1000</string>
@@ -146,8 +152,11 @@
           </item>
           <item>
            <widget class="myQLineEdit" name="txtPrice">
-            <property name="toolTip">
-             <string>Introduce la ganancia</string>
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
             </property>
             <property name="text">
              <string>10</string>
@@ -180,7 +189,7 @@
           <item>
            <widget class="QCheckBox" name="chkPonderanAll">
             <property name="text">
-             <string>¿Ponderan las acciones de todas inversiones del mismo activo?</string>
+             <string>Include shares of the same product from different investments</string>
             </property>
            </widget>
           </item>
@@ -192,7 +201,7 @@
      <item>
       <widget class="QTabWidget" name="tab">
        <property name="currentIndex">
-        <number>1</number>
+        <number>0</number>
        </property>
        <widget class="QWidget" name="tab_current">
         <attribute name="title">
@@ -236,7 +245,7 @@
            </column>
            <column>
             <property name="text">
-             <string>Pendiente</string>
+             <string>Pending</string>
             </property>
            </column>
           </widget>
@@ -297,7 +306,7 @@
      <item>
       <widget class="QPushButton" name="cmd">
        <property name="text">
-        <string>Asignar el punto de venta de 0 €</string>
+        <string>Set the selling point to 0 €</string>
        </property>
       </widget>
      </item>
