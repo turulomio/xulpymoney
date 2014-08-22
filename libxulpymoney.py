@@ -152,7 +152,7 @@ class SetInvestments(SetCommons):
         cur=self.mem.con.cursor()
         cur.execute(sql)#"Select * from inversiones"
         if progress==True:
-            pd= QProgressDialog(QApplication.translate("Core","Loading {0} investments from database".format(cur.rowcount)),None, 0,cur.rowcount)
+            pd= QProgressDialog(QApplication.translate("Core","Loading {0} investments from database").format(cur.rowcount),None, 0,cur.rowcount)
             pd.setModal(True)
             pd.setWindowTitle(QApplication.translate("Core","Loading investments..."))
             pd.forceShow()
@@ -346,7 +346,7 @@ class SetProducts(SetCommons):
         curms=self.mem.con.cursor()
         curms.execute(sql)#"select * from products where id in ("+lista+")" 
         if progress==True:
-            pd= QProgressDialog(QApplication.translate("Core","Loading {0} products from database".format(curms.rowcount)),None, 0,curms.rowcount)
+            pd= QProgressDialog(QApplication.translate("Core","Loading {0} products from database").format(curms.rowcount),None, 0,curms.rowcount)
             pd.setModal(True)
             pd.setWindowTitle(QApplication.translate("Core","Loading products..."))
             pd.forceShow()
@@ -5284,8 +5284,20 @@ def day_start_from_date(date, zone):
 def days_to_year_month(days):
     years=days//365
     months=(days-years*365)//30
-    rest=int(days -years*365 -months*30)
-    return QApplication.translate("Core", "{0} years, {1} months and {2} days").format(years, months, rest)
+    days=int(days -years*365 -months*30)
+    if years==1:
+        stryears=QApplication.translate("Core", "year")
+    else:
+        stryears=QApplication.translate("Core", "years")
+    if months==1:
+        strmonths=QApplication.translate("Core", "month")
+    else:
+        strmonths=QApplication.translate("Core", "months")
+    if days==1:
+        strdays=QApplication.translate("Core", "day")
+    else:
+        strdays=QApplication.translate("Core", "days")
+    return QApplication.translate("Core", "{} {}, {} {} and {} {}").format(years, stryears,  months,  strmonths, days,  strdays)
 
 #def dic2list(dic):
 #    """Función que convierte un diccionario pasado como parametro a una lista de objetos"""

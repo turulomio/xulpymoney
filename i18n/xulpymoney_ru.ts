@@ -63,7 +63,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5397"/>
+        <location filename="libxulpymoney.py" line="5409"/>
         <source>This option is being developed</source>
         <translation type="unfinished"></translation>
     </message>
@@ -428,12 +428,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5358"/>
+        <location filename="libxulpymoney.py" line="5370"/>
         <source>True</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5361"/>
+        <location filename="libxulpymoney.py" line="5373"/>
         <source>False</source>
         <translation type="unfinished"></translation>
     </message>
@@ -498,11 +498,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5300"/>
-        <source>{0} years, {1} months and {2} days</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="sources/source_yahoohistorical.py" line="19"/>
         <source>Inserting {} prices of {} investments</source>
         <translation type="unfinished"></translation>
@@ -515,6 +510,51 @@
     <message>
         <location filename="sources/source_yahoohistorical.py" line="48"/>
         <source>Inserting {} prices of {} products</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="libxulpymoney.py" line="5301"/>
+        <source>year</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="libxulpymoney.py" line="5303"/>
+        <source>years</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="libxulpymoney.py" line="5305"/>
+        <source>month</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="libxulpymoney.py" line="5307"/>
+        <source>months</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="libxulpymoney.py" line="5309"/>
+        <source>day</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="libxulpymoney.py" line="5311"/>
+        <source>days</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="libxulpymoney.py" line="5312"/>
+        <source>{} {}, {} {} and {} {}</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="libxulpymoney.py" line="155"/>
+        <source>Loading {0} investments from database</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="libxulpymoney.py" line="351"/>
+        <source>Loading {0} products from database</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
