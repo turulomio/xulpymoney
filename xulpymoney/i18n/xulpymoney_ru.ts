@@ -23,11 +23,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5044"/>
-        <source>Sourceforge version detected: %s</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="libxulpymoney.py" line="5046"/>
         <source>Error buscando la versi&#xc3;&#xb3;n actual de Sourceforge</source>
         <translation type="unfinished"></translation>
@@ -555,6 +550,57 @@
     <message>
         <location filename="libxulpymoney.py" line="351"/>
         <source>Loading {0} products from database</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="libxulpymoney.py" line="561"/>
+        <source>Paid with {0}. {1}</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="libxulpymoney.py" line="1751"/>
+        <source>{0[0]}. Gross: {0[1]} {1}. Witholding tax: {0[2]} {1}. Comission: {0[3]} {1}</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="libxulpymoney.py" line="1753"/>
+        <source>{0[1]}: {0[0]} shares. Amount: {0[2]} {1}. Comission: {0[3]} {1}. Taxes: {0[4]} {1}</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="libxulpymoney.py" line="1755"/>
+        <source>CreditCard: {0[0]}. Se han ejecutado {0[1]} pagos con tarjeta</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="libxulpymoney.py" line="1757"/>
+        <source>Transfer to {0}</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="libxulpymoney.py" line="1759"/>
+        <source>Transfer received from {0}</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="libxulpymoney.py" line="1761"/>
+        <source>Due to account transfer of {0} from {1}</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="libxulpymoney.py" line="3888"/>
+        <source>Purged {0} quotes from {1}</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="libxulpymoney.py" line="5044"/>
+        <source>Sourceforge version detected: {}</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/frmMain.py" line="405"/>
+        <source>Purging quotes from {0}.
+Total purged in global process: {1}</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -5535,6 +5581,14 @@ S&#xc3;&#xb3;lo se contabilizar&#xc3;&#xa1; cuando se vendan las acciones</sourc
     <message>
         <location filename="ui/wdgYearMonth.py" line="61"/>
         <source>I can&apos;t show the previous month</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>xulpymoney.py</name>
+    <message>
+        <location filename="xulpymoney_init.py" line="23"/>
+        <source>Lenguage local detectado: {0}</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

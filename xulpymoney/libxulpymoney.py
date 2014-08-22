@@ -556,7 +556,7 @@ class SetAccountOperations:
             if row['id_tarjetas']==-1:
                 comentario=row['comentario']
             else:
-                comentario=QApplication.translate("Core","Paid with {0}. {1}".format(self.mem.data.tarjetas_all().find(row['id_tarjetas']).name, row['comentario'] ), None, QApplication.UnicodeUTF8)
+                comentario=QApplication.translate("Core","Paid with {0}. {1}").format(self.mem.data.tarjetas_all().find(row['id_tarjetas']).name, row['comentario'] )
             
             co=AccountOperation(self.mem).init__create(row['datetime'], self.mem.conceptos.find(row['id_conceptos']), self.mem.tiposoperaciones.find(row['id_tiposoperaciones']), row['importe'], comentario,  self.mem.data.accounts_all().find(row['id_cuentas']))
             self.arr.append(co)
@@ -1746,17 +1746,17 @@ class AccountOperation:
         """
         c=self.comentario.split("|")
         if self.concepto.id in (62, 39, 50, 63, 65) and len(c)==4:#"{0}|{1}|{2}|{3}".format(self.inversion.name, self.bruto, self.retencion, self.comision)
-            return QApplication.translate("Core","{0[0]}. Gross: {0[1]} {1}. Witholding tax: {0[2]} {1}. Comission: {0[3]} {1}".format(c, self.cuenta.currency.symbol))
+            return QApplication.translate("Core","{0[0]}. Gross: {0[1]} {1}. Witholding tax: {0[2]} {1}. Comission: {0[3]} {1}").format(c, self.cuenta.currency.symbol)
         elif self.concepto.id in (29, 35) and len(c)==5:#{0}|{1}|{2}|{3}".format(row['inversion'], importe, comision, impuestos)
-            return QApplication.translate("Core","{0[1]}: {0[0]} shares. Amount: {0[2]} {1}. Comission: {0[3]} {1}. Taxes: {0[4]} {1}".format(c, self.cuenta.currency.symbol))        
+            return QApplication.translate("Core","{0[1]}: {0[0]} shares. Amount: {0[2]} {1}. Comission: {0[3]} {1}. Taxes: {0[4]} {1}").format(c, self.cuenta.currency.symbol)
         elif self.concepto.id==40 and len(c)==2:#"{0}|{1}".format(self.selCreditCard.name, len(self.setSelOperCreditCards))
-            return QApplication.translate("Core","CreditCard: {0[0]}. Se han ejecutado {0[1]} pagos con tarjeta".format(c))        
+            return QApplication.translate("Core","CreditCard: {0[0]}. Se han ejecutado {0[1]} pagos con tarjeta").format(c)
         elif self.concepto.id==4 and len(c)==3:#Transfer from origin
-            return QApplication.translate("Core", "Transfer to {0}".format(self.mem.data.accounts_all().find(int(c[0])).name))
+            return QApplication.translate("Core", "Transfer to {0}").format(self.mem.data.accounts_all().find(int(c[0])).name)
         elif self.concepto.id==5 and len(c)==2:#Transfer received in destiny
-            return QApplication.translate("Core", "Transfer received from {0}".format(self.mem.data.accounts_all().find(int(c[0])).name))
+            return QApplication.translate("Core", "Transfer received from {0}").format(self.mem.data.accounts_all().find(int(c[0])).name)
         elif self.concepto.id==38 and c[0]=="Transfer":#Comision bancaria por transferencia
-            return QApplication.translate("Core", "Due to account transfer of {0} from {1}".format(self.mem.localcurrency.string(float(c[1])), self.mem.data.accounts_all().find(int(c[2])).name))
+            return QApplication.translate("Core", "Due to account transfer of {0} from {1}").format(self.mem.localcurrency.string(float(c[1])), self.mem.data.accounts_all().find(int(c[2])).name)
         else:
             return self.comentario 
         
@@ -3881,7 +3881,7 @@ class SetQuotesAll:
         for i, sqi in enumerate(self.arr):
             if progress==True:
                 pd.setValue(i)
-                pd.setLabelText(QApplication.translate("Core","Purged {0} quotes from {1}".format(counter, self.product.name)))
+                pd.setLabelText(QApplication.translate("Core","Purged {0} quotes from {1}").format(counter, self.product.name))
                 pd.update()
                 QApplication.processEvents()
                 if pd.wasCanceled():
@@ -5033,7 +5033,7 @@ class Global:
                     if len(line.decode().split('"')[1])==8:
                         serverversion=line.decode().split('"')[1]        
                         cur.execute("update globals set value=%s where id_globals=4;", (serverversion, ))
-                        log("VERSION-SOURCEFORGE", "", QApplication.translate("Core","Sourceforge version detected: %s") % serverversion)
+                        log("VERSION-SOURCEFORGE", "", QApplication.translate("Core","Sourceforge version detected: {}").format(serverversion))
         except:
             log("VERSION-SOURCEFORGE", "", QApplication.translate("Core","Error buscando la versión actual de Sourceforge"))                    
         cur.close()
