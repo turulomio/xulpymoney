@@ -53,29 +53,12 @@ class frmQuotesIBM(QDialog, Ui_frmQuotesIBM):
         if self.txtQuote.decimal()==None:
             m=QMessageBox()
             m.setIcon(QMessageBox.Information)
-            m.setText(self.trUtf8("Datos incorrectos. Vuelva a introducirlos"))
+            m.setText(self.tr("Incorrect data. Try again."))
             m.exec_()    
             return
-        if self.type=="insert":        
-#            try:
-#                fecha=self.calendar.selectedDate().toPyDate()
-#                zone=self.mem.zones.find(self.cmbZone.currentText())
-#            except:
-#                m=QMessageBox()
-#                m.setIcon(QMessageBox.Information)
-#                m.setText(self.trUtf8("Datos incorrectos. Vuelva a introducirlos"))
-#                m.exec_()    
-#                return
-#            
-#            if self.chkNone.checkState()==Qt.Checked:
-#                da=dt(fecha, self.product.stockexchange.closes, self.product.stockexchange.zone)
-#            else:
-#                time=self.txtTime.time().toPyTime()
-#                da=dt(fecha, time, zone)
-                
+        if self.type=="insert":                        
             if self.chkCanBePurged.checkState()==Qt.Unchecked:#No puede ser purgado
                 self.wdgDT.teMicroseconds.setValue(5)
-
             self.quote=Quote(self.mem).init__create(self.product, self.wdgDT.datetime(), self.txtQuote.decimal())
             self.quote.save()
         else:#update

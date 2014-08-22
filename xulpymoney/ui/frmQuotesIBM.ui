@@ -45,7 +45,7 @@
      <item>
       <widget class="QCheckBox" name="chkNone">
        <property name="text">
-        <string>Cotización de cierre</string>
+        <string>Add a close session price</string>
        </property>
       </widget>
      </item>
@@ -54,7 +54,7 @@
        <item>
         <widget class="QLabel" name="label">
          <property name="text">
-          <string>Introduce la cotización</string>
+          <string>Add a price</string>
          </property>
         </widget>
        </item>

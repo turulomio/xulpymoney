@@ -2838,21 +2838,6 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>frmQuotesIBM</name>
     <message>
-        <location filename="ui/Ui_frmQuotesIBM.py" line="88"/>
-        <source>Cotizaci&#xc3;&#xb3;n de cierre</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_frmQuotesIBM.py" line="89"/>
-        <source>Introduce la cotizaci&#xc3;&#xb3;n</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/frmQuotesIBM.py" line="56"/>
-        <source>Datos incorrectos. Vuelva a introducirlos</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="ui/Ui_frmQuotesIBM.py" line="90"/>
         <source>Can be purged?</source>
         <translation type="unfinished"></translation>
@@ -2860,6 +2845,21 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="ui/Ui_frmQuotesIBM.py" line="87"/>
         <source>Add a product price manually</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_frmQuotesIBM.py" line="88"/>
+        <source>Add a close session price</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_frmQuotesIBM.py" line="89"/>
+        <source>Add a price</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/frmQuotesIBM.py" line="56"/>
+        <source>Incorrect data. Try again.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
