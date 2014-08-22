@@ -402,7 +402,7 @@ class frmMain(QMainWindow, Ui_frmMain):
         
         for i, inv in enumerate(products):
             pd.setValue(i)
-            pd.setLabelText(QApplication.translate("Core","Purging quotes from {0}.\nTotal purged in global process: {1}".format(inv.name,  counter)))
+            pd.setLabelText(QApplication.translate("Core","Purging quotes from {0}.\nTotal purged in global process: {1}").format(inv.name,  counter))
             pd.update()
             QApplication.processEvents()
             if pd.wasCanceled():
