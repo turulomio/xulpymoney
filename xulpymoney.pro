@@ -1,6 +1,6 @@
 SOURCES         = \
                   libxulpymoney.py \
-                  mystocksd.py \ 
+                  mystocksd.py \
                   sources/bolsamadridfondos.py \
                   sources/bonoaleman.py \
                   sources/carmignac.py \
@@ -49,7 +49,7 @@ SOURCES         = \
                   ui/frmProductReport.py \
                   ui/Ui_frmProductReport.py \
                   ui/frmQuotesIBM.py \
-                  ui/Ui_frmQuotesIBM.py
+                  ui/Ui_frmQuotesIBM.py \
                   ui/frmSelector.py \
                   ui/Ui_frmSelector.py \
                   ui/frmSellingPoint.py \
@@ -107,7 +107,7 @@ SOURCES         = \
                   ui/Ui_wdgYearMonth.py \
                   ui/wdgpie.py \
                   xulpymoney.py \
-                  xulpymoney_init.py \
+                  xulpymoney_init.py
 
 FORMS           = \
                   ui/frmAbout.ui \
@@ -151,12 +151,12 @@ FORMS           = \
                   ui/wdgProducts.ui \
                   ui/wdgTotal.ui \
                   ui/wdgYear.ui \
-                  ui/wdgYearMonth.ui \
+                  ui/wdgYearMonth.ui
 
 TRANSLATIONS    = i18n/xulpymoney_es.ts \
                   i18n/xulpymoney_fr.ts \
                   i18n/xulpymoney_ru.ts \
-                  i18n/xulpymoney_ro.ts \
+                  i18n/xulpymoney_ro.ts
 
 #CODECFORTR = UTF-8
 #CODECFORSRC = UTF-8

@@ -15,13 +15,13 @@ class frmSellingPoint(QDialog, Ui_frmSellingPoint):
         if self.inversion.id==None:
             m=QMessageBox()
             m.setIcon(QMessageBox.Information)
-            m.setText(self.trUtf8("No se puede asignar el punto de venta a una inversión no guardada"))
+            m.setText(self.tr("You can't set a selling price to a unsaved investment"))
             m.exec_()     
             return
         if len(self.inversion.op_actual.arr)==0:
             m=QMessageBox()
             m.setIcon(QMessageBox.Information)
-            m.setText(self.trUtf8("Actualmente no hay acciones disponibles en esta Inversión"))
+            m.setText(self.trUtf8("You don't have shares to sale in this investment"))
             m.exec_()     
             return
         
@@ -109,14 +109,14 @@ class frmSellingPoint(QDialog, Ui_frmSellingPoint):
                     self.puntoventa=0
                     self.cmd.setEnabled(False)
 
-        self.tab.setTabText(1, self.trUtf8("Selling point: {0}".format(self.mem.localcurrency.string(self.puntoventa))) )
-        self.tab.setTabText(0, self.trUtf8("Current state: {0}".format(self.mem.localcurrency.string(self.inversion.product.result.basic.last.quote))) )
+        self.tab.setTabText(1, self.trUtf8("Selling point: {0}".format(self.inversion.product.currency.string(self.puntoventa))) )
+        self.tab.setTabText(0, self.trUtf8("Current state: {0}".format(self.inversion.product.currency.string(self.inversion.product.result.basic.last.quote))) )
         (sumacciones, suminvertido, sumpendiente)=load_table(self.tableSP, Quote(self.mem).init__create(self.inversion.product, self.mem.localzone.now(), self.puntoventa))                    
         
         if self.chkPonderanAll.checkState()==Qt.Checked:
-            self.cmd.setText("Grabar el punto de venta a todas las inversiones de {0} € para ganar {1}".format(self.puntoventa, self.inversion.product.currency.string(sumpendiente)))
+            self.cmd.setText("Set selling price to all inverstments  of {0} to gain {1}").format(self.inversion.product.currency.string(self.puntoventa), self.inversion.product.currency.string(sumpendiente))
         else:
-            self.cmd.setText("Asignar el punto de venta de {0} acciones a {1} € para ganar {2} €".format(sumacciones, self.puntoventa, self.inversion.product.currency.string(sumpendiente)))
+            self.cmd.setText("Set {0} shares selling price to {1} to gain {2}").format(sumacciones, self.inversion.product.currency.string(self.puntoventa), self.inversion.product.currency.string(sumpendiente))
 
     def on_radTPC_clicked(self):
         self.__calcular()
