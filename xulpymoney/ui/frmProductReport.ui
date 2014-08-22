@@ -57,7 +57,7 @@
         <enum>QTabWidget::West</enum>
        </property>
        <property name="currentIndex">
-        <number>1</number>
+        <number>3</number>
        </property>
        <widget class="QWidget" name="tabInformacion">
         <attribute name="title">
@@ -1128,9 +1128,7 @@
                   <item>
                    <widget class="myQTableWidget" name="tblMensuales">
                     <property name="toolTip">
-                     <string>Estos datos se han calculado con la última cotización
-del mes anterior y la última cotización del mes 
-correspondiente en la tabla</string>
+                     <string>Table has been calculted with the last price of the previous month and the last price of the corresponding month</string>
                     </property>
                     <attribute name="verticalHeaderVisible">
                      <bool>false</bool>
@@ -1226,7 +1224,7 @@ correspondiente en la tabla</string>
          <item>
           <widget class="QTabWidget" name="tabEstimaciones">
            <property name="currentIndex">
-            <number>0</number>
+            <number>2</number>
            </property>
            <widget class="QWidget" name="tab_2">
             <attribute name="icon">

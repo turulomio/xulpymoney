@@ -11,7 +11,7 @@ from frmSplit import *
 from frmEstimationsAdd import *
 from frmDPSAdd import *
 from canvaschart import *
-from matplotlib.backends.backend_qt4agg import NavigationToolbar2QTAgg as NavigationToolbar
+from matplotlib.backends.backend_qt4agg import NavigationToolbar2QTAgg 
 
 class frmProductReport(QDialog, Ui_frmProductReport):
     def __init__(self, mem,  product, inversion=None, parent = None, name = None, modal = False):
@@ -246,7 +246,7 @@ class frmProductReport(QDialog, Ui_frmProductReport):
         
         #Rellena titulos
         for i in range(rowcount):
-            self.tblMensuales.setItem(i, 0, QTableWidgetItem(self.trUtf8("Año "+ str(int(minyear+i)))))
+            self.tblMensuales.setItem(i, 0, QTableWidgetItem(self.tr("Year {}").format(int(minyear+i))))
         
         #Rellena meses
         for i in range(len(self.product.result.ohclMonthly.arr)):
