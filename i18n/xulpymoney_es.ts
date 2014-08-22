@@ -569,11 +569,6 @@
         <translation>{0[1]}: {0[0]} acciones. Importe: {0[2]} {1}. Comisión: {0[3]} {1}. Impuestos: {0[4]} {1}</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="1755"/>
-        <source>CreditCard: {0[0]}. Se han ejecutado {0[1]} pagos con tarjeta</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="libxulpymoney.py" line="1757"/>
         <source>Transfer to {0}</source>
         <translation>Transferencia a {0}</translation>
@@ -604,6 +599,16 @@
 Total purged in global process: {1}</source>
         <translation>Purgando cotizaciones de {0}.
 Purgadas en total en el proceso global: {1}</translation>
+    </message>
+    <message>
+        <location filename="libxulpymoney.py" line="1755"/>
+        <source>CreditCard: {0[0]}. Made {0[1]} payments</source>
+        <translation>Tarjeta de crédito: {0[0]}. Hechos {0[1]} pagos</translation>
+    </message>
+    <message>
+        <location filename="xulpymoney_init.py" line="23"/>
+        <source>Local language detected:{0}</source>
+        <translation>Lenguaje local detectado: {0}</translation>
     </message>
 </context>
 <context>
@@ -3453,31 +3458,6 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>wdgAPR</name>
     <message>
-        <location filename="ui/Ui_wdgAPR.py" line="85"/>
-        <source>Informe de patrimonio - Estudio TAE</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_wdgAPR.py" line="93"/>
-        <source>Diferencia Saldo</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_wdgAPR.py" line="97"/>
-        <source>Consolidado</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_wdgAPR.py" line="103"/>
-        <source>I+C+D-G</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_wdgAPR.py" line="105"/>
-        <source>% TAE</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="ui/Ui_wdgAPR.py" line="87"/>
         <source>Year</source>
         <translation>Año</translation>
@@ -3508,24 +3488,49 @@ p, li { white-space: pre-wrap; }
         <translation>Dividendos</translation>
     </message>
     <message>
-        <location filename="ui/wdgAPR.py" line="11"/>
-        <source>Rellenando los datos del informe</source>
-        <translation type="unfinished"></translation>
+        <location filename="ui/wdgAPR.py" line="71"/>
+        <source>TOTAL</source>
+        <translation>TOTAL</translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_wdgAPR.py" line="85"/>
+        <source>APR and total assests report</source>
+        <translation>Informe de patrimonio total y TAE</translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_wdgAPR.py" line="93"/>
+        <source>Difference</source>
+        <translation>Diferencia</translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_wdgAPR.py" line="97"/>
+        <source>Gains</source>
+        <translation>Ganancias</translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_wdgAPR.py" line="103"/>
+        <source>I+G+D-E</source>
+        <translation>I+C+D-G</translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_wdgAPR.py" line="105"/>
+        <source>% APR</source>
+        <translation>% TAE</translation>
     </message>
     <message>
         <location filename="ui/wdgAPR.py" line="11"/>
-        <source>Cancelar</source>
-        <translation type="unfinished"></translation>
+        <source>Filling data of the report</source>
+        <translation>Rellenando datos del informe</translation>
+    </message>
+    <message>
+        <location filename="ui/wdgAPR.py" line="11"/>
+        <source>Cancel</source>
+        <translation>Cancelar</translation>
     </message>
     <message>
         <location filename="ui/wdgAPR.py" line="13"/>
-        <source>Calculando datos...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/wdgAPR.py" line="79"/>
-        <source>TOTAL</source>
-        <translation>TOTAL</translation>
+        <source>Calculating data...</source>
+        <translation>Calculando datos...</translation>
     </message>
 </context>
 <context>
@@ -4777,11 +4782,6 @@ SÃ³lo se contabilizarÃ¡ cuando se vendan las acciones</source>
         <translation>Añadido de acciones</translation>
     </message>
     <message>
-        <location filename="ui/wdgJointReport.py" line="153"/>
-        <source>balance a {0}, {1}</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="ui/Ui_wdgJointReport.py" line="416"/>
         <source>Gross gains</source>
         <translation>Ganancias brutas</translation>
@@ -4870,6 +4870,16 @@ SÃ³lo se contabilizarÃ¡ cuando se vendan las acciones</source>
         <location filename="ui/Ui_wdgJointReport.py" line="437"/>
         <source>Net before taxes</source>
         <translation>Neto antes de impuestos</translation>
+    </message>
+    <message>
+        <location filename="ui/wdgJointReport.py" line="152"/>
+        <source>% APR from {}</source>
+        <translation>% TAE desde {}</translation>
+    </message>
+    <message>
+        <location filename="ui/wdgJointReport.py" line="153"/>
+        <source>Balance at {0}, {1}</source>
+        <translation>Saldo a {0}, {1}</translation>
     </message>
 </context>
 <context>
@@ -4987,15 +4997,15 @@ SÃ³lo se contabilizarÃ¡ cuando se vendan las acciones</source>
         <source>DPS</source>
         <translation>DPA</translation>
     </message>
-    <message utf8="true">
-        <location filename="ui/wdgMergeCodes.py" line="50"/>
-        <source>No se ha puede realizar esta combinación, ya que la inversión a borrar esta marcada como NO BORRABLE</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <location filename="ui/wdgMergeCodes.py" line="71"/>
         <source>You have to update Xulpymoney if the deleted product is used in Xulpymoney</source>
         <translation>Tienes que actualizar Xulpymoney si el producto borrado está siendo usado en Xulpymoney</translation>
+    </message>
+    <message>
+        <location filename="ui/wdgMergeCodes.py" line="50"/>
+        <source>I couldn&apos;t do the merge, because product is marked as not removable</source>
+        <translation>No pude hacer la unión, porque el producto está marcado como no borrable</translation>
     </message>
 </context>
 <context>
@@ -5021,72 +5031,32 @@ SÃ³lo se contabilizarÃ¡ cuando se vendan las acciones</source>
         <translation>Última actualización</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgProducts.py" line="228"/>
-        <source>% Diario</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="ui/Ui_wdgProducts.py" line="225"/>
         <source>Registers found</source>
         <translation>Registros encontrados</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgProducts.py" line="229"/>
-        <source>% Anual</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_wdgProducts.py" line="230"/>
-        <source>Nombre</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_wdgProducts.py" line="231"/>
-        <source>Dividendo</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_wdgProducts.py" line="232"/>
-        <source>Hora</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_wdgProducts.py" line="233"/>
+        <location filename="ui/Ui_wdgProducts.py" line="238"/>
         <source>Ibex 35</source>
         <translation>Ibex 35</translation>
     </message>
-    <message utf8="true">
-        <location filename="ui/Ui_wdgProducts.py" line="239"/>
-        <source>Añadir a favoritos</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message utf8="true">
-        <location filename="ui/Ui_wdgProducts.py" line="240"/>
-        <source>Combina códigos seleccionados</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message utf8="true">
-        <location filename="ui/Ui_wdgProducts.py" line="242"/>
-        <source>Nueva cotización</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
-        <location filename="ui/Ui_wdgProducts.py" line="243"/>
+        <location filename="ui/Ui_wdgProducts.py" line="249"/>
         <source>New DPS estimation</source>
         <translation>Nueva estimación de dividendo por acción</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgProducts.py" line="244"/>
+        <location filename="ui/Ui_wdgProducts.py" line="250"/>
         <source>New Dividend per share estimation</source>
         <translation>Nueva estimación de dividendo por acción</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgProducts.py" line="245"/>
+        <location filename="ui/Ui_wdgProducts.py" line="251"/>
         <source>Purge investment</source>
         <translation>Purgar inversión</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgProducts.py" line="246"/>
+        <location filename="ui/Ui_wdgProducts.py" line="252"/>
         <source>Deletes quotes innecesary. Leaves open, high, low and close quotes.</source>
         <translation>Borra cotizaciones innecesarias. Deja cotización de apertura, más alta, más baja y de cierre.</translation>
     </message>
@@ -5101,17 +5071,17 @@ SÃ³lo se contabilizarÃ¡ cuando se vendan las acciones</source>
         <translation>Informe de producto</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgProducts.py" line="234"/>
+        <location filename="ui/Ui_wdgProducts.py" line="239"/>
         <source>New product</source>
         <translation>Nuevo producto</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgProducts.py" line="235"/>
+        <location filename="ui/Ui_wdgProducts.py" line="240"/>
         <source>Edit product</source>
         <translation>Modificar el producto</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgProducts.py" line="237"/>
+        <location filename="ui/Ui_wdgProducts.py" line="242"/>
         <source>Delete product</source>
         <translation>Borrar el producto</translation>
     </message>
@@ -5131,7 +5101,7 @@ SÃ³lo se contabilizarÃ¡ cuando se vendan las acciones</source>
         <translation>Producto</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgProducts.py" line="220"/>
+        <location filename="ui/Ui_wdgProducts.py" line="229"/>
         <source>% Daily</source>
         <translation>% Diario</translation>
     </message>
@@ -5154,11 +5124,6 @@ SÃ³lo se contabilizarÃ¡ cuando se vendan las acciones</source>
         <location filename="ui/wdgProducts.py" line="135"/>
         <source>Deleting data from selected product ({0}). If you use manual update mode, data won&apos;t be recovered. Do you want to continue?</source>
         <translation>Borrando datos del producto seleccionado ({0}). Si el producto usaba actualizaciones manuales, los datos no serán recuperados. ¿Quieres continuar?</translation>
-    </message>
-    <message>
-        <location filename="ui/wdgProducts.py" line="220"/>
-        <source>Sort por</source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/wdgProducts.py" line="321"/>
@@ -5206,7 +5171,7 @@ SÃ³lo se contabilizarÃ¡ cuando se vendan las acciones</source>
         <translation>Borrar de favoritos</translation>
     </message>
     <message>
-        <location filename="ui/wdgProducts.py" line="234"/>
+        <location filename="ui/Ui_wdgProducts.py" line="244"/>
         <source>Add to favorites</source>
         <translation>Añadir a favoritos</translation>
     </message>
@@ -5214,6 +5179,41 @@ SÃ³lo se contabilizarÃ¡ cuando se vendan las acciones</source>
         <location filename="ui/wdgProducts.py" line="292"/>
         <source>Merging codes</source>
         <translation>Juntando códigos</translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_wdgProducts.py" line="231"/>
+        <source>% Annual</source>
+        <translation>% Anual</translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_wdgProducts.py" line="233"/>
+        <source>Name</source>
+        <translation>Nombre</translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_wdgProducts.py" line="235"/>
+        <source>Dividend</source>
+        <translation>Dividendo</translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_wdgProducts.py" line="237"/>
+        <source>Hour</source>
+        <translation>Hora</translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_wdgProducts.py" line="246"/>
+        <source>Merge selected codes</source>
+        <translation>Unir los códigos seleccionados</translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_wdgProducts.py" line="248"/>
+        <source>New price</source>
+        <translation>Nueva cotización</translation>
+    </message>
+    <message>
+        <location filename="ui/wdgProducts.py" line="220"/>
+        <source>Order by</source>
+        <translation>Ordenado por</translation>
     </message>
 </context>
 <context>
@@ -5247,11 +5247,6 @@ SÃ³lo se contabilizarÃ¡ cuando se vendan las acciones</source>
         <location filename="ui/Ui_wdgTotal.py" line="191"/>
         <source>Expenses</source>
         <translation>Gastos</translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_wdgTotal.py" line="193"/>
-        <source>I+C+D-E</source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/Ui_wdgTotal.py" line="195"/>
@@ -5329,11 +5324,6 @@ SÃ³lo se contabilizarÃ¡ cuando se vendan las acciones</source>
         <translation>Informe de operaciones de venta más dividendos</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgTotal.py" line="187"/>
-        <source>Consolidated</source>
-        <translation>Consolidado</translation>
-    </message>
-    <message>
         <location filename="ui/Ui_wdgTotal.py" line="189"/>
         <source>Dividends</source>
         <translation>Dividendos</translation>
@@ -5369,21 +5359,6 @@ SÃ³lo se contabilizarÃ¡ cuando se vendan las acciones</source>
         <translation>Octubre</translation>
     </message>
     <message>
-        <location filename="ui/wdgTotal.py" line="87"/>
-        <source>Rellenando los datos del informe</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/wdgTotal.py" line="87"/>
-        <source>Cancelar</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/wdgTotal.py" line="89"/>
-        <source>Calculando datos...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="ui/wdgTotal.py" line="109"/>
         <source>Data from selected year</source>
         <translation>Datos del año seleccionado</translation>
@@ -5413,15 +5388,40 @@ SÃ³lo se contabilizarÃ¡ cuando se vendan las acciones</source>
         <source>Expenses of {0} of {1}</source>
         <translation>Gastos de {0} de {1}</translation>
     </message>
-    <message utf8="true">
-        <location filename="ui/wdgTotal.py" line="306"/>
-        <source>La suma de consolidado y dividends  de este mes es {0}. En el año su valor asciende a {1}</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <location filename="ui/wdgTotal.py" line="316"/>
         <source>You can&apos;t close this tab</source>
         <translation>No puedes cerrar esta pestaña</translation>
+    </message>
+    <message>
+        <location filename="ui/wdgTotal.py" line="87"/>
+        <source>Filling report data</source>
+        <translation>Rellenando datos del informe</translation>
+    </message>
+    <message>
+        <location filename="ui/wdgTotal.py" line="87"/>
+        <source>Cancel</source>
+        <translation>Cancelar</translation>
+    </message>
+    <message>
+        <location filename="ui/wdgTotal.py" line="89"/>
+        <source>Calculating data...</source>
+        <translation>Calculando datos...</translation>
+    </message>
+    <message>
+        <location filename="ui/wdgTotal.py" line="306"/>
+        <source>Gains and dividends sum from this month is {0}. In this year it&apos;s value rises to {1}</source>
+        <translation>La suma de las ganancias y los dividendos de este mes es {0}. En este año su valor asciende a {1}</translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_wdgTotal.py" line="187"/>
+        <source>Gains</source>
+        <translation>Ganancias</translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_wdgTotal.py" line="193"/>
+        <source>I+G+D-E</source>
+        <translation>I+C+D-G</translation>
     </message>
 </context>
 <context>
@@ -5583,14 +5583,6 @@ SÃ³lo se contabilizarÃ¡ cuando se vendan las acciones</source>
         <location filename="ui/wdgYearMonth.py" line="61"/>
         <source>I can&apos;t show the previous month</source>
         <translation>No puedo mostrar el mes anterior</translation>
-    </message>
-</context>
-<context>
-    <name>xulpymoney.py</name>
-    <message>
-        <location filename="xulpymoney_init.py" line="23"/>
-        <source>Lenguage local detectado: {0}</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

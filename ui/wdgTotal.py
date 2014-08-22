@@ -75,18 +75,18 @@ class canvasTotal(FigureCanvasQTAgg):
     
     def makeLegend(self):
         if len(self.labels)==0:
-            self.labels.append((self.plot_main, self.trUtf8("Total assets")))
-            self.labels.append((self.plot_zero,self.trUtf8("Zero risk assets")))
-            self.labels.append((self.plot_bonds,self.trUtf8("Bond assets")))
+            self.labels.append((self.plot_main, self.tr("Total assets")))
+            self.labels.append((self.plot_zero,self.tr("Zero risk assets")))
+            self.labels.append((self.plot_bonds,self.tr("Bond assets")))
 
 class wdgTotal(QWidget, Ui_wdgTotal):
     def __init__(self, mem,  parent=None):
         QWidget.__init__(self, parent)
         self.setupUi(self)
         self.mem=mem
-        self.progress = QProgressDialog(self.tr("Rellenando los datos del informe"), self.tr("Cancelar"), 0,0)
+        self.progress = QProgressDialog(self.tr("Filling report data"), self.tr("Cancel"), 0,0)
         self.progress.setModal(True)
-        self.progress.setWindowTitle(self.trUtf8("Calculando datos..."))
+        self.progress.setWindowTitle(self.tr("Calculating data..."))
         self.progress.setMinimumDuration(0)        
         self.sumpopup=[]
         self.month=None#Used for popup
@@ -106,7 +106,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         self.wyData.initiate(fechainicio.year, datetime.date.today().year, datetime.date.today().year)
         QObject.connect(self.wyData, SIGNAL("changed"), self.on_wyData_changed)
         self.wyChart.initiate(fechainicio.year, datetime.date.today().year, datetime.date.today().year)
-        self.wyChart.label.setText(self.trUtf8("Data from selected year"))
+        self.wyChart.label.setText(self.tr("Data from selected year"))
         QObject.connect(self.wyChart, SIGNAL("changed"), self.on_wyChart_changed)
 
 
@@ -127,10 +127,10 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         sumdividends=0
         sumingresos=0        
         sumconsolidado=0
-        (sumdiferencia, sumsaldoaccionescostecero)=(0, 0)
+        sumdiferencia=0
         
         totallastmonth=Assets(self.mem).saldo_total(self.mem.data.investments_all(),  datetime.date(self.wyData.year-1, 12, 31))#Mes de 12 31 año anteriro
-        self.lblPreviousYear.setText(self.trUtf8("Balance at {0}-12-31: {1}".format(self.wyData.year-1, self.mem.localcurrency.string(totallastmonth))))
+        self.lblPreviousYear.setText(self.tr("Balance at {0}-12-31: {1}".format(self.wyData.year-1, self.mem.localcurrency.string(totallastmonth))))
         inicioano=totallastmonth
 
         for i in range(12): 
@@ -251,7 +251,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         set.sort()
         set.myqtablewidget(table, "wdgTotal", True)
         horizontalLayout.addWidget(table)
-        self.tab.addTab(newtab, self.trUtf8("Incomes of {0} of {1}".format(self.table.horizontalHeaderItem(self.month-1).text(), self.wyData.year)))
+        self.tab.addTab(newtab, self.tr("Incomes of {0} of {1}").format(self.table.horizontalHeaderItem(self.month-1).text(), self.wyData.year))
         self.tab.setCurrentWidget(newtab)
 
     @QtCore.pyqtSlot() 
@@ -267,7 +267,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         set.sort()
         set.myqtablewidget(table, "wdgTotal")
         horizontalLayout.addWidget(table)
-        self.tab.addTab(newtab, self.trUtf8("Product selling operations of {0} of {1}".format(self.table.horizontalHeaderItem(self.month-1).text(), self.wyData.year)))
+        self.tab.addTab(newtab, self.tr("Product selling operations of {0} of {1}").format(self.table.horizontalHeaderItem(self.month-1).text(), self.wyData.year))
         self.tab.setCurrentWidget(newtab)
             
 
@@ -281,7 +281,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         set.sort()
         set.myqtablewidget(table, "wdgTotal", True)
         horizontalLayout.addWidget(table)
-        self.tab.addTab(newtab, self.trUtf8("Dividends of {0} of {1}".format(self.table.horizontalHeaderItem(self.month-1).text(), self.wyData.year)))
+        self.tab.addTab(newtab, self.tr("Dividends of {0} of {1}").format(self.table.horizontalHeaderItem(self.month-1).text(), self.wyData.year))
         self.tab.setCurrentWidget(newtab)            
             
        
@@ -296,14 +296,14 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         set.sort()
         set.myqtablewidget(table, "wdgTotal", True)
         horizontalLayout.addWidget(table)
-        self.tab.addTab(newtab, self.trUtf8("Expenses of {0} of {1}".format(self.table.horizontalHeaderItem(self.month-1).text(), self.wyData.year)))
+        self.tab.addTab(newtab, self.tr("Expenses of {0} of {1}").format(self.table.horizontalHeaderItem(self.month-1).text(), self.wyData.year))
         self.tab.setCurrentWidget(newtab)
         
     
     @QtCore.pyqtSlot() 
     def on_actionSellingOperationsPlusDividends_activated(self):
         m=QMessageBox()
-        message=self.trUtf8("La suma de consolidado y dividends  de este mes es {0}. En el año su valor asciende a {1}".format(self.mem.localcurrency.string(self.sumpopup[self.month-1]), self.mem.localcurrency.string(self.sumpopup[12])))
+        message=self.tr("Gains and dividends sum from this month is {0}. In this year it's value rises to {1}").format(self.mem.localcurrency.string(self.sumpopup[self.month-1]), self.mem.localcurrency.string(self.sumpopup[12]))
 
         m.setText(message)
         m.exec_()    
@@ -313,7 +313,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         if index in (0, 1):
             m=QMessageBox()
             m.setIcon(QMessageBox.Information)
-            m.setText(self.trUtf8("You can't close this tab"))
+            m.setText(self.tr("You can't close this tab"))
             m.exec_()  
         else:
             self.tab.setCurrentIndex(0)

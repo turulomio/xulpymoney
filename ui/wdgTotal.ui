@@ -120,7 +120,7 @@
              </row>
              <row>
               <property name="text">
-               <string>Consolidated</string>
+               <string>Gains</string>
               </property>
              </row>
              <row>
@@ -135,7 +135,7 @@
              </row>
              <row>
               <property name="text">
-               <string>I+C+D-E</string>
+               <string>I+G+D-E</string>
               </property>
              </row>
              <row>

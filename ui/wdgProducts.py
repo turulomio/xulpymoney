@@ -216,7 +216,7 @@ class wdgProducts(QWidget, Ui_wdgProducts):
     def on_tblInvestments_customContextMenuRequested(self,  pos):
 
         menu=QMenu()
-        ordenar=QMenu(self.tr("Sort por"))
+        ordenar=QMenu(self.tr("Order by"))
         menu.addAction(self.actionProductNew)
         menu.addAction(self.actionProductEdit)
         menu.addAction(self.actionProductDelete)

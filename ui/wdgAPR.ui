@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>559</width>
-    <height>388</height>
+    <width>834</width>
+    <height>447</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -33,7 +33,7 @@
         </font>
        </property>
        <property name="text">
-        <string>Informe de patrimonio - Estudio TAE</string>
+        <string>APR and total assests report</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
@@ -68,7 +68,7 @@
        </column>
        <column>
         <property name="text">
-         <string>Diferencia Saldo</string>
+         <string>Difference</string>
         </property>
        </column>
        <column>
@@ -78,7 +78,7 @@
        </column>
        <column>
         <property name="text">
-         <string>Consolidado</string>
+         <string>Gains</string>
         </property>
        </column>
        <column>
@@ -93,12 +93,12 @@
        </column>
        <column>
         <property name="text">
-         <string>I+C+D-G</string>
+         <string>I+G+D-E</string>
         </property>
        </column>
        <column>
         <property name="text">
-         <string>% TAE</string>
+         <string>% APR</string>
         </property>
        </column>
       </widget>

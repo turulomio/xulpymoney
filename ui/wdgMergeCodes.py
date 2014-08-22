@@ -47,7 +47,7 @@ class wdgMergeCodes(QWidget, Ui_wdgMergeCodes):
         if self.origen.deletable==False:
             m=QMessageBox()
             m.setIcon(QMessageBox.Information)
-            m.setText(self.trUtf8("No se ha puede realizar esta combinación, ya que la inversión a borrar esta marcada como NO BORRABLE"))
+            m.setText(self.tr("I couldn't do the merge, because product is marked as not removable"))
             m.exec_()     
             self.cmd.setEnabled(False)
         else:
@@ -68,6 +68,6 @@ class wdgMergeCodes(QWidget, Ui_wdgMergeCodes):
         cur.close()   
         m=QMessageBox()
         m.setIcon(QMessageBox.Information)
-        m.setText(self.trUtf8("You have to update Xulpymoney if the deleted product is used in Xulpymoney"))
+        m.setText(self.tr("You have to update Xulpymoney if the deleted product is used in Xulpymoney"))
         m.exec_()    
         self.cmd.setEnabled(False)
