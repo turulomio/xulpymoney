@@ -8,9 +8,9 @@ class wdgAPR(QWidget, Ui_wdgAPR):
         QWidget.__init__(self, parent)
         self.setupUi(self)
         self.mem=mem
-        self.progress = QProgressDialog(self.tr("Rellenando los datos del informe"), self.tr("Cancelar"), 0,0)
+        self.progress = QProgressDialog(self.tr("Filling data of the report"), self.tr("Cancel"), 0,0)
         self.progress.setModal(True)
-        self.progress.setWindowTitle(self.trUtf8("Calculando datos..."))
+        self.progress.setWindowTitle(self.tr("Calculating data..."))
         self.progress.setMinimumDuration(0)        
         self.table.settings("wdgAPR",  self.mem)
         
@@ -19,11 +19,7 @@ class wdgAPR(QWidget, Ui_wdgAPR):
 
 
     def load_data(self):        
-        inicio=datetime.datetime.now()
-#        con=self.mem.connect_xulpymoney()
-#        cur = con.cursor()
-#        mq=self.mem.connect_xulpymoney()
-#        curms=mq.cursor()                
+        inicio=datetime.datetime.now()       
         anoinicio=Assets(self.mem).primera_datetime_con_datos_usuario().year       
         anofinal=datetime.date.today().year+1        
         
@@ -38,7 +34,7 @@ class wdgAPR(QWidget, Ui_wdgAPR):
         sumconsolidado=0
         sumgastos=0
         sumingresos=0
-        (sumicdg, sumsaldoaccionescostecero)=(0, 0)
+        sumicdg=0
         for i in range(anoinicio, anofinal):
             if self.progress.wasCanceled():
                 break;
@@ -72,10 +68,6 @@ class wdgAPR(QWidget, Ui_wdgAPR):
                 tae=(sf -si)*100/si
             self.table.setItem(i-anoinicio, 9, qtpc(tae))
             lastsaldo=sf
-#        cur.close()     
-#        self.mem.disconnect_xulpymoney(con)     
-#        curms.close()
-#        self.mem.disconnect_xulpymoney(mq)     
         self.table.setItem(anofinal-anoinicio, 0, qcenter((self.tr("TOTAL"))))
         self.table.setItem(anofinal-anoinicio, 4, self.mem.localcurrency.qtablewidgetitem(sumingresos))
         self.table.setItem(anofinal-anoinicio, 5, self.mem.localcurrency.qtablewidgetitem(sumconsolidado))

@@ -1750,7 +1750,7 @@ class AccountOperation:
         elif self.concepto.id in (29, 35) and len(c)==5:#{0}|{1}|{2}|{3}".format(row['inversion'], importe, comision, impuestos)
             return QApplication.translate("Core","{0[1]}: {0[0]} shares. Amount: {0[2]} {1}. Comission: {0[3]} {1}. Taxes: {0[4]} {1}").format(c, self.cuenta.currency.symbol)
         elif self.concepto.id==40 and len(c)==2:#"{0}|{1}".format(self.selCreditCard.name, len(self.setSelOperCreditCards))
-            return QApplication.translate("Core","CreditCard: {0[0]}. Se han ejecutado {0[1]} pagos con tarjeta").format(c)
+            return QApplication.translate("Core","CreditCard: {0[0]}. Made {0[1]} payments").format(c)
         elif self.concepto.id==4 and len(c)==3:#Transfer from origin
             return QApplication.translate("Core", "Transfer to {0}").format(self.mem.data.accounts_all().find(int(c[0])).name)
         elif self.concepto.id==5 and len(c)==2:#Transfer received in destiny

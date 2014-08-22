@@ -149,8 +149,8 @@ class wdgJointReport(QWidget, Ui_wdgJointReport):
             tpcsumimpuestos=self.totalImpuestos*100/saldototalinicio
             tpcretenciondividends=self.totalDividendsRetenciones*100/saldototalinicio
 
-        self.tblEstudio.horizontalHeaderItem(1).setText(("% TAE desde "+str(inicio)))
-        self.lblSaldo.setText(self.tr("balance a {0}, {1}".format(str(inicio), self.mem.localcurrency.string(saldototalinicio))))
+        self.tblEstudio.horizontalHeaderItem(1).setText(self.tr("% APR from {}").format(inicio))
+        self.lblSaldo.setText(self.tr("Balance at {0}, {1}".format(str(inicio), self.mem.localcurrency.string(saldototalinicio))))
 
         self.tblEstudio.setItem(0, 0,self.mem.localcurrency.qtablewidgetitem(self.totalBruto))       
         self.tblEstudio.setItem(0, 1,qtpc(tpcplus))            
