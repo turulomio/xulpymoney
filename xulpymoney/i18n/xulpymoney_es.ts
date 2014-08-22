@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="es_ES" sourcelanguage="en">
+<!DOCTYPE TS><TS version="2.0" language="es_ES" sourcelanguage="en">
 <context>
     <name>Core</name>
     <message>
@@ -40,7 +39,7 @@
     </message>
     <message>
         <location filename="libxulpymoney.py" line="5011"/>
-        <source>Error buscando la versiÃ³n actual de Sourceforge</source>
+        <source>Error buscando la versi&#xc3;&#xb3;n actual de Sourceforge</source>
         <translation></translation>
     </message>
     <message>
@@ -133,7 +132,7 @@
         <source>Shares</source>
         <translation>Acciones</translation>
     </message>
-    <message utf8="true">
+    <message encoding="UTF-8">
         <location filename="libxulpymoney.py" line="960"/>
         <source>Valor acción</source>
         <translation></translation>
@@ -766,21 +765,21 @@ Purgadas en total en el proceso global: {1}</translation>
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;La pÃ¡gina del proyecto se encuentra en &lt;a href=&quot;http://glparchis.sourceforge.net&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;http://xulpymoney.sourceforge.net&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;La p&#xc3;&#xa1;gina del proyecto se encuentra en &lt;a href=&quot;http://glparchis.sourceforge.net&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;http://xulpymoney.sourceforge.net&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; text-decoration: underline; color:#0057ae;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Este programa ha sido desarrollado por Mariano MuÃ±oz.&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Este programa ha sido desarrollado por Mariano Mu&#xc3;&#xb1;oz.&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Ha sido traducido por:&lt;/p&gt;
-&lt;ul style=&quot;margin-top: 0px; margin-bottom: 0px; margin-left: 0px; margin-right: 0px; -qt-list-indent: 1;&quot;&gt;&lt;li style=&quot; margin-top:12px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Mariano MuÃ±oz&lt;/li&gt;&lt;/ul&gt;
+&lt;ul style=&quot;margin-top: 0px; margin-bottom: 0px; margin-left: 0px; margin-right: 0px; -qt-list-indent: 1;&quot;&gt;&lt;li style=&quot; margin-top:12px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Mariano Mu&#xc3;&#xb1;oz&lt;/li&gt;&lt;/ul&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;a los siguientes idiomas&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:1; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;ul style=&quot;margin-top: 0px; margin-bottom: 0px; margin-left: 0px; margin-right: 0px; -qt-list-indent: 1;&quot;&gt;&lt;li style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;EspaÃ±ol&lt;/li&gt;
+&lt;ul style=&quot;margin-top: 0px; margin-bottom: 0px; margin-left: 0px; margin-right: 0px; -qt-list-indent: 1;&quot;&gt;&lt;li style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Espa&#xc3;&#xb1;ol&lt;/li&gt;
 &lt;li style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;English&lt;/li&gt;&lt;/ul&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; text-decoration: underline; color:#0057ae;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Los avatares han sido extraÃ­dos de la pÃ¡gina &lt;a href=&quot;http://www.nobleavatar.com/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;http://www.nobleavatar.com/&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Los avatares han sido extra&#xc3;&#xad;dos de la p&#xc3;&#xa1;gina &lt;a href=&quot;http://www.nobleavatar.com/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;http://www.nobleavatar.com/&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation></translation>
     </message>
     <message>
@@ -790,12 +789,12 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="ui/Ui_frmAbout.py" line="333"/>
-        <source>NÃºmero de Deuda pÃºblica</source>
+        <source>N&#xc3;&#xba;mero de Deuda p&#xc3;&#xba;blica</source>
         <translation></translation>
     </message>
     <message>
         <location filename="ui/Ui_frmAbout.py" line="335"/>
-        <source>NÃºmero de Deuda privada</source>
+        <source>N&#xc3;&#xba;mero de Deuda privada</source>
         <translation></translation>
     </message>
     <message>
@@ -1059,7 +1058,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="ui/Ui_frmAccountsReport.py" line="448"/>
-        <source>XXXX â¬</source>
+        <source>XXXX &#xe2;&#x82;&#xac;</source>
         <translation>XXXX €</translation>
     </message>
     <message>
@@ -1466,53 +1465,18 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>frmHelp</name>
     <message>
-        <location filename="ui/Ui_frmHelp.py" line="73"/>
+        <location filename="ui/Ui_frmHelp.py" line="78"/>
         <source>Xulpymoney help</source>
         <translation>Ayuda de Xulpymoney</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmHelp.py" line="74"/>
+        <location filename="ui/Ui_frmHelp.py" line="79"/>
         <source>Xulpymoney Help</source>
         <translation>Ayuda de Xulpymoney</translation>
     </message>
     <message>
-        <location filename="ui/frmHelp.py" line="10"/>
-        <source>&lt;h1&gt;User manual&lt;/h1&gt;</source>
-        <translation>&lt;h1&gt;Manual de usuario&lt;/h1&gt;</translation>
-    </message>
-    <message>
-        <location filename="ui/frmHelp.py" line="10"/>
-        <source>&lt;h2&gt;Xulpymoney&lt;/h2&gt;</source>
-        <translation>&lt;h2&gt;Xulpymoney&lt;/h2&gt;</translation>
-    </message>
-    <message>
-        <location filename="ui/frmHelp.py" line="10"/>
-        <source>&lt;h2&gt;User interface&lt;/h2&gt;</source>
-        <translation>&lt;h2&gt;Interfaz de usuario&lt;/h2&gt;</translation>
-    </message>
-    <message>
-        <location filename="ui/frmHelp.py" line="10"/>
-        <source>Xulpymoney uses a lot of tables, so they have an improved user interface.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/frmHelp.py" line="10"/>
-        <source>If you move the mouse wheel, the table resizes column to allow view all fields.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/frmHelp.py" line="10"/>
-        <source>If you double click in a table, the table is resized to minimum column size.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/frmHelp.py" line="10"/>
-        <source>&lt;h2&gt;MyStocks&lt;/h2&gt;</source>
-        <translation>&lt;h2&gt;MyStocks&lt;/h2&gt;</translation>
-    </message>
-    <message>
-        <location filename="ui/frmHelp.py" line="10"/>
-        <source>Products are permanent, so they can&apos;t be deleted.</source>
+        <location filename="ui/frmHelp.ui" line="108"/>
+        <source>http://sourceforge.net/p/xulpymoney/wiki/Home/</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1530,7 +1494,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="ui/Ui_frmInit.py" line="171"/>
-        <source>EspaÃ±ol</source>
+        <source>Espa&#xc3;&#xb1;ol</source>
         <translation>EspaÃ±ol</translation>
     </message>
     <message>
@@ -2062,7 +2026,7 @@ p, li { white-space: pre-wrap; }
         <source>F1</source>
         <translation>F1</translation>
     </message>
-    <message utf8="true">
+    <message encoding="UTF-8">
         <location filename="ui/frmMain.py" line="33"/>
         <source>Xulpymoney 2010-{0} ©</source>
         <translation>Xulpymoney 2010-{0} ©</translation>
@@ -3164,7 +3128,7 @@ p, li { white-space: pre-wrap; }
         <source>Include shares of the same product from different investments</source>
         <translation>Incluir acciones del mismo producto pero de diferentes inversiones</translation>
     </message>
-    <message utf8="true">
+    <message encoding="UTF-8">
         <location filename="ui/Ui_frmSellingPoint.py" line="232"/>
         <source>Set the selling point to 0 €</source>
         <translation>Establecer el punto de venta a 0 €</translation>
@@ -3325,7 +3289,7 @@ p, li { white-space: pre-wrap; }
         <source>Split / Contrasplit relation</source>
         <translation>Relación de Split / Contrasplit</translation>
     </message>
-    <message utf8="true">
+    <message encoding="UTF-8">
         <location filename="ui/frmSplit.py" line="30"/>
         <source>If you have 1000 shares of 10 € of price, you will have {0:.6f} shares of {1:.6f} € of price after the {2}</source>
         <translation>Si tienes 1000 acciones a 10 €, tendrás {0:.6f} acciones a {1:.6f} € después del {2}</translation>
@@ -3948,7 +3912,7 @@ p, li { white-space: pre-wrap; }
         <translation>No puedes cerrar esta pestaña</translation>
     </message>
 </context>
-<context>
+<context encoding="UTF-8">
     <name>wdgDatetime</name>
     <message>
         <location filename="ui/Ui_wdgDatetime.py" line="80"/>
@@ -3970,7 +3934,7 @@ p, li { white-space: pre-wrap; }
         <source>Select microseconds</source>
         <translation>Selecciona los microsegundos</translation>
     </message>
-    <message utf8="true">
+    <message encoding="UTF-8">
         <location filename="ui/Ui_wdgDatetime.py" line="84"/>
         <source> μs</source>
         <translation> μs</translation>
@@ -4759,11 +4723,11 @@ Diferencia diaria: {5}. Edad media del patrimonio: {6}</translation>
     </message>
     <message>
         <location filename="ui/Ui_wdgJointReport.py" line="439"/>
-        <source>En este listado se muestran los aÃ±adidos de acciones a coste cero que se han producido en el aÃ±o
+        <source>En este listado se muestran los a&#xc3;&#xb1;adidos de acciones a coste cero que se han producido en el a&#xc3;&#xb1;o
 
-Es  un listado informativo y no serÃ¡n contabilizadas en los informes ya que se producirÃ­a una doble contabilidad
+Es  un listado informativo y no ser&#xc3;&#xa1;n contabilizadas en los informes ya que se producir&#xc3;&#xad;a una doble contabilidad
 
-SÃ³lo se contabilizarÃ¡ cuando se vendan las acciones</source>
+S&#xc3;&#xb3;lo se contabilizar&#xc3;&#xa1; cuando se vendan las acciones</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4914,12 +4878,12 @@ SÃ³lo se contabilizarÃ¡ cuando se vendan las acciones</source>
         <source>Estado</source>
         <translation type="unfinished"></translation>
     </message>
-    <message utf8="true">
+    <message encoding="UTF-8">
         <location filename="ui/Ui_wdgLog.py" line="130"/>
         <source>Último cambio estado</source>
         <translation type="unfinished"></translation>
     </message>
-    <message utf8="true">
+    <message encoding="UTF-8">
         <location filename="ui/Ui_wdgLog.py" line="132"/>
         <source>Número consultas internet</source>
         <translation type="unfinished"></translation>
@@ -4944,7 +4908,7 @@ SÃ³lo se contabilizarÃ¡ cuando se vendan las acciones</source>
         <source>{0} registros encontrados</source>
         <translation type="unfinished"></translation>
     </message>
-    <message utf8="true">
+    <message encoding="UTF-8">
         <location filename="ui/wdgLog.py" line="65"/>
         <source>Última actualización: {0}</source>
         <translation type="unfinished"></translation>
