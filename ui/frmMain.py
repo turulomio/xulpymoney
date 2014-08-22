@@ -256,40 +256,6 @@ class frmMain(QMainWindow, Ui_frmMain):
         self.w.on_actionSortDividend_activated()
         self.w.show()
 
-    @QtCore.pyqtSlot()  
-    def on_actionExport_activated(self):
-        os.popen("pg_dump -U postgres -t quotes mystocks | sed -e 's:quotes:export:' | gzip > "+os.environ['HOME']+"/.mystocks/dump-%s.txt.gz" % str(datetime.date.today()))
-        m=QMessageBox()
-        m.setText(QApplication.translate("Core","Se ha exportado con éxito la tabla quotes"))
-        m.exec_()      
-
-    @QtCore.pyqtSlot()  
-    def on_actionImport_activated(self):
-        filename=(QFileDialog.getOpenFileName(self, self.tr("Selecciona el fichero a importar"), os.environ['HOME']+ "/.mystocks/", "Gzipped text (*.txt.gz)"))
-        inicio=datetime.datetime.now()
-        con=self.mem.connect_xulpymoney()
-        cur = con.cursor()
-        print ("Importando la tabla export")
-        os.popen("zcat " + filename  + " | psql -U postgres mystocks")
-        cur.execute("insert into quotes(select * from export where code||date::text in (select code||date::text from export except select code||date::text from quotes));") #solo los que faltan no los modificados que sería select * en los dos lados
-        con.commit()
-        estado=cur.statusmessage
-        print ("Borrando la tabla export y sus índices")
-        cur.execute("drop table export;")
-        con.commit()        
-        cur.execute("DROP INDEX index_export_unik;")
-        con.commit()
-        cur.execute("DROP INDEX index_export_unik2;")
-        con.commit()
-        cur.close()
-        self.mem.disconnect_xulpymoneyd(con)      
-        fin=datetime.datetime.now()
-        
-        m=QMessageBox()
-        m.setText("Ha tardado %s y ha salido con mensaje de estado %s" % (str(fin-inicio),  estado))
-        m.exec_()            
-
-
         
     @QtCore.pyqtSlot()  
     def on_actionNasdaq100_activated(self):
@@ -348,7 +314,7 @@ class frmMain(QMainWindow, Ui_frmMain):
         if len(favoritos)==0:
             m=QMessageBox()
             m.setIcon(QMessageBox.Information)
-            m.setText(self.trUtf8("No se ha seleccionado ningún favorito"))
+            m.setText(self.tr("There aren't favorite products"))
             m.exec_()     
             return
         self.w.close()

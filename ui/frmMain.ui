@@ -129,8 +129,6 @@
      <property name="title">
       <string>Maintenance</string>
      </property>
-     <addaction name="actionExport"/>
-     <addaction name="actionImport"/>
      <addaction name="separator"/>
      <addaction name="actionPurgeAll"/>
     </widget>
@@ -292,7 +290,7 @@
     <string>Index range</string>
    </property>
    <property name="toolTip">
-    <string>Rangos de un índice</string>
+    <string>Index range</string>
    </property>
   </action>
   <action name="actionInvestments">
@@ -349,7 +347,7 @@
     <string>Total report</string>
    </property>
    <property name="toolTip">
-    <string>Informe total</string>
+    <string>Total report</string>
    </property>
   </action>
   <action name="actionJointReport">
@@ -577,7 +575,7 @@
     <string>Products without name</string>
    </property>
    <property name="toolTip">
-    <string>Inversiones sin nombre</string>
+    <string>Products without name</string>
    </property>
   </action>
   <action name="actionInvestmentsSinActualizar">
@@ -589,7 +587,7 @@
     <string>Products not updated</string>
    </property>
    <property name="toolTip">
-    <string>Inversiones sin actualizar</string>
+    <string>Products not updated</string>
    </property>
   </action>
   <action name="actionInvestmentsDesaparecidas">
@@ -601,31 +599,7 @@
     <string>Obsolete products</string>
    </property>
    <property name="toolTip">
-    <string>Inversiones desaparecidas</string>
-   </property>
-  </action>
-  <action name="actionExport">
-   <property name="icon">
-    <iconset>
-     <normaloff>:/images/configure.png</normaloff>:/images/configure.png</iconset>
-   </property>
-   <property name="text">
-    <string>Exportar tabla quotes</string>
-   </property>
-   <property name="toolTip">
-    <string>Exportar tabla quotes</string>
-   </property>
-  </action>
-  <action name="actionImport">
-   <property name="icon">
-    <iconset>
-     <normaloff>:/images/configure.png</normaloff>:/images/configure.png</iconset>
-   </property>
-   <property name="text">
-    <string>Importar tabla quotes</string>
-   </property>
-   <property name="toolTip">
-    <string>Importar tabla quotes</string>
+    <string>Obsolete products</string>
    </property>
   </action>
   <action name="actionInvestmentsManual">
@@ -637,7 +611,7 @@
     <string>Manual update products</string>
    </property>
    <property name="toolTip">
-    <string>Inversiones de edición manual</string>
+    <string>Manual update products</string>
    </property>
   </action>
   <action name="actionCurrenciesAll">
@@ -649,7 +623,7 @@
     <string>All currencies</string>
    </property>
    <property name="toolTip">
-    <string>Todas las divisas</string>
+    <string>All currencies</string>
    </property>
   </action>
   <action name="actionFavorites">
@@ -661,8 +635,7 @@
     <string>Show favorites</string>
    </property>
    <property name="toolTip">
-    <string>Muestra los productos favoritos
-seleccionados por el usuario</string>
+    <string>Show favorites</string>
    </property>
   </action>
   <action name="actionInvestmentsSinActualizarHistoricos">
@@ -671,10 +644,10 @@ seleccionados por el usuario</string>
      <normaloff>:/images/history.png</normaloff>:/images/history.png</iconset>
    </property>
    <property name="text">
-    <string>Inversiones sin actualizar históricos</string>
+    <string>Historical not updated products</string>
    </property>
    <property name="toolTip">
-    <string>Inversiones sin actualizar históricos</string>
+    <string>Historical not updated products</string>
    </property>
   </action>
   <action name="actionActive">
@@ -686,7 +659,7 @@ seleccionados por el usuario</string>
     <string>Active products</string>
    </property>
    <property name="toolTip">
-    <string>Todas las activas</string>
+    <string>Active products</string>
    </property>
   </action>
   <action name="actionDividends">
@@ -698,7 +671,7 @@ seleccionados por el usuario</string>
     <string>Biggest dividends</string>
    </property>
    <property name="toolTip">
-    <string>Mayores dividendos</string>
+    <string>Biggest dividends</string>
    </property>
   </action>
   <action name="actionWarrantsCall">
@@ -734,10 +707,10 @@ seleccionados por el usuario</string>
      <normaloff>:/xulpymoney/history2.png</normaloff>:/xulpymoney/history2.png</iconset>
    </property>
    <property name="text">
-    <string>Toda la Renta Fija</string>
+    <string>All bonds</string>
    </property>
    <property name="toolTip">
-    <string>Toda la Renta Fija</string>
+    <string>All bonds</string>
    </property>
   </action>
   <action name="actionSharesAll">
@@ -749,7 +722,7 @@ seleccionados por el usuario</string>
     <string>All shares</string>
    </property>
    <property name="toolTip">
-    <string>Todas las acciones</string>
+    <string>All shares</string>
    </property>
   </action>
   <action name="actionBondsPublic">
@@ -758,10 +731,10 @@ seleccionados por el usuario</string>
      <normaloff>:/xulpymoney/history2.png</normaloff>:/xulpymoney/history2.png</iconset>
    </property>
    <property name="text">
-    <string>Toda la deuda pública</string>
+    <string>All public bonds</string>
    </property>
    <property name="toolTip">
-    <string>Toda la deuda pública</string>
+    <string>All public bonds</string>
    </property>
   </action>
   <action name="actionBondsPrivate">
@@ -770,10 +743,10 @@ seleccionados por el usuario</string>
      <normaloff>:/xulpymoney/history2.png</normaloff>:/xulpymoney/history2.png</iconset>
    </property>
    <property name="text">
-    <string>Toda la deuda privada</string>
+    <string>All private bonds</string>
    </property>
    <property name="toolTip">
-    <string>Toda la deuda privada</string>
+    <string>All private bonds</string>
    </property>
   </action>
   <action name="actionWarrantsAll">
@@ -785,7 +758,7 @@ seleccionados por el usuario</string>
     <string>All warrants</string>
    </property>
    <property name="toolTip">
-    <string>Todos los Warrants</string>
+    <string>All warrants</string>
    </property>
   </action>
   <action name="actionISINDuplicado">
@@ -794,10 +767,10 @@ seleccionados por el usuario</string>
      <normaloff>:/xulpymoney/document-preview-archive.png</normaloff>:/xulpymoney/document-preview-archive.png</iconset>
    </property>
    <property name="text">
-    <string>Inversiones con ISIN duplicado</string>
+    <string>Duplicated ISIN products</string>
    </property>
    <property name="toolTip">
-    <string>Inversiones con ISIN duplicado</string>
+    <string>Duplicated ISIN products</string>
    </property>
   </action>
   <action name="actionPurgeAll">
@@ -833,7 +806,7 @@ seleccionados por el usuario</string>
     <string>Products without ISIN</string>
    </property>
    <property name="toolTip">
-    <string>Inversiones sin ISIN</string>
+    <string>Products without ISIN</string>
    </property>
   </action>
   <action name="actionETFAll">
