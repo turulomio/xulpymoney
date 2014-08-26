@@ -100,7 +100,7 @@ class frmInvestmentOperationsAdd(QDialog, Ui_frmInvestmentOperationsAdd):
                 self.txtImporte.setText(importe)
                 self.txtImporteBruto.setText(importe+self.txtComision.decimal()+self.txtImpuestos.decimal())
             if id_tiposoperaciones==5:#Venta
-                importe=abs(round(self.txtAcciones.decimal()*self.txtValorAccion.decimal()), 2)
+                importe=abs(round(self.txtAcciones.decimal()*self.txtValorAccion.decimal(), 2))
                 self.txtImporte.setText(importe-self.txtComision.decimal()-self.txtImpuestos.decimal())
                 self.txtImporteBruto.setText(importe)
             if id_tiposoperaciones==8:#Traspaso
