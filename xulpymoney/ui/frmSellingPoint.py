@@ -21,7 +21,7 @@ class frmSellingPoint(QDialog, Ui_frmSellingPoint):
         if len(self.inversion.op_actual.arr)==0:
             m=QMessageBox()
             m.setIcon(QMessageBox.Information)
-            m.setText(self.trUtf8("You don't have shares to sale in this investment"))
+            m.setText(self.tr("You don't have shares to sale in this investment"))
             m.exec_()     
             return
         
@@ -36,7 +36,6 @@ class frmSellingPoint(QDialog, Ui_frmSellingPoint):
         self.table.settings("frmSellingPoint",  self.mem)
         self.tableSP.settings("frmSellingPoint",  self.mem)
         self.__calcular()
-#        self.on_radTPC_toggled(True)
         
     def __calcular(self):    
         def load_array():
@@ -109,14 +108,14 @@ class frmSellingPoint(QDialog, Ui_frmSellingPoint):
                     self.puntoventa=0
                     self.cmd.setEnabled(False)
 
-        self.tab.setTabText(1, self.trUtf8("Selling point: {0}".format(self.inversion.product.currency.string(self.puntoventa))) )
-        self.tab.setTabText(0, self.trUtf8("Current state: {0}".format(self.inversion.product.currency.string(self.inversion.product.result.basic.last.quote))) )
+        self.tab.setTabText(1, self.tr("Selling point: {0}".format(self.inversion.product.currency.string(self.puntoventa))) )
+        self.tab.setTabText(0, self.tr("Current state: {0}".format(self.inversion.product.currency.string(self.inversion.product.result.basic.last.quote))) )
         (sumacciones, suminvertido, sumpendiente)=load_table(self.tableSP, Quote(self.mem).init__create(self.inversion.product, self.mem.localzone.now(), self.puntoventa))                    
         
         if self.chkPonderanAll.checkState()==Qt.Checked:
-            self.cmd.setText("Set selling price to all inverstments  of {0} to gain {1}").format(self.inversion.product.currency.string(self.puntoventa), self.inversion.product.currency.string(sumpendiente))
+            self.cmd.setText(self.tr("Set selling price to all inverstments  of {0} to gain {1}").format(self.inversion.product.currency.string(self.puntoventa), self.inversion.product.currency.string(sumpendiente)))
         else:
-            self.cmd.setText("Set {0} shares selling price to {1} to gain {2}").format(sumacciones, self.inversion.product.currency.string(self.puntoventa), self.inversion.product.currency.string(sumpendiente))
+            self.cmd.setText(self.tr("Set {0} shares selling price to {1} to gain {2}").format(sumacciones, self.inversion.product.currency.string(self.puntoventa), self.inversion.product.currency.string(sumpendiente)))
 
     def on_radTPC_clicked(self):
         self.__calcular()
@@ -142,10 +141,7 @@ class frmSellingPoint(QDialog, Ui_frmSellingPoint):
         
     def on_chkGainsTime_stateChanged(self, state):
         self.__calcular()
-        
 
-
-                
     @QtCore.pyqtSlot() 
     def on_cmd_released(self):
         if self.chkPonderanAll.checkState()==Qt.Checked:

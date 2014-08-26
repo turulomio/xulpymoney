@@ -3152,6 +3152,16 @@ p, li { white-space: pre-wrap; }
         <source>Current state: {0}</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location filename="ui/frmSellingPoint.py" line="117"/>
+        <source>Set selling price to all inverstments  of {0} to gain {1}</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/frmSellingPoint.py" line="119"/>
+        <source>Set {0} shares selling price to {1} to gain {2}</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>frmSettings</name>
