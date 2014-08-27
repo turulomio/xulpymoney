@@ -236,17 +236,13 @@ class wdgInvestments(QWidget, Ui_wdgInvestments):
         self.selInvestment=None
         for i in self.tblInvestments.selectedItems():#itera por cada item no row.
             self.selInvestment=self.inversiones.arr[i.row()]
-        
+
+    @QtCore.pyqtSlot(int, int) 
     def on_tblInvestments_cellDoubleClicked(self, row, column):
-        if column==7:#TPC inversion
+        if column==8:#TPC Venta
             m=QMessageBox()
             m.setIcon(QMessageBox.Information)
-            m.setText(self.trUtf8("Shares number: {0}").format(self.selInvestment.acciones())+"\n"+self.trUtf8("Purchase price average: {0}").format(self.selInvestment.product.currency.string(self.selInvestment.op_actual.valor_medio_compra())))
+            m.setText(self.trUtf8("Shares number: {0}").format(self.selInvestment.acciones())+"\n"+self.trUtf8("Purchase price average: {0}").format(self.selInvestment.product.currency.string(self.selInvestment.op_actual.valor_medio_compra()))+"\n"+self.tr("Selling point: {}").format(self.selInvestment.product.currency.string(self.selInvestment.venta)))
             m.exec_()     
-        if column==8:#TPC venta
-            f=frmSellingPoint(self.mem, self.selInvestment)
-            f.txtPrice.setText(self.selInvestment.venta)
-            f.exec_()
-            self.selInvestment.venta=f.txtPrice.decimal()
-            self.selInvestment.save()
-            self.mem.con.commit()
+        else:
+            myQTableWidget.on_cellDoubleClicked(self.tblInvestments, row, column)
