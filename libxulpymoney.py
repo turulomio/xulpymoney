@@ -2818,7 +2818,6 @@ class SetOperationTypes(SetCommons):
                 resultado.dic_arr[str(key)]=t
         return resultado
 
-
 def mylog(text):
     f=open("/tmp/xulpymoney.log","a")
     f.write(str(datetime.datetime.now()) + "|" + text + "\n")
@@ -2839,7 +2838,6 @@ class SetAgrupations(SetCommons):
     def find(self, id):
         r=super(SetAgrupations, self).find(id)
         if r==None:
-#            print ("Error finding Agrupation {}".format(id))
             return self.dic_arr["ERROR"]
         else:
             return r
@@ -2856,7 +2854,6 @@ class SetAgrupations(SetCommons):
         self.append(Agrupation(self.mem).init__create( "EURONEXT",  "EURONEXT", self.mem.types.find(3), self.mem.stockexchanges.find(10)  ))
         self.append(Agrupation(self.mem).init__create( "DEUTSCHEBOERSE",  "DEUTSCHEBOERSE", self.mem.types.find(3), self.mem.stockexchanges.find(5)  ))
         self.append(Agrupation(self.mem).init__create( "LATIBEX",  "LATIBEX", self.mem.types.find(3), self.mem.stockexchanges.find(1)  ))
-
 
         self.append(Agrupation(self.mem).init__create( "e_fr_LYXOR","LYXOR", self.mem.types.find(4),self.mem.stockexchanges.find(3)  ))
         self.append(Agrupation(self.mem).init__create( "e_de_DBXTRACKERS","Deutsche Bank X-Trackers", self.mem.types.find(4),self.mem.stockexchanges.find(5)  ))

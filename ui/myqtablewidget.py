@@ -10,6 +10,7 @@ class myQTableWidget(QTableWidget):
         self.array=[]     #Es un array de strings no de int, con los datos para config
         self.verticalHeader().setResizeMode(QHeaderView.ResizeToContents)
         QObject.connect(self.mytimer, SIGNAL("timeout()"), self.checksettings)      
+#        QObject.connect(self, SIGNAL("cellDoubleClicked(int,int)"), self.on_cellDoubleClicked)      
  
         
     def __del__(self):
@@ -72,6 +73,7 @@ class myQTableWidget(QTableWidget):
             if self.sizeHintForColumn(i)>self.columnWidth(i):
                 self.setColumnWidth(i, self.sizeHintForColumn(i))
         
-    def mouseDoubleClickEvent(self, event):
+    def on_cellDoubleClicked(self, row,  column):
         """Resizes to minimum contents"""
         self.resizeColumnsToContents()
+#        self.cellDoubleClicked.emit(row, column)
