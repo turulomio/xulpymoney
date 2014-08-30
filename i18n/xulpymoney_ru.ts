@@ -4583,17 +4583,17 @@ Daily Diff: {5}. Assets average age: {6}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgInvestments.py" line="246"/>
+        <location filename="ui/wdgInvestments.py" line="245"/>
         <source>Shares number: {0}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgInvestments.py" line="246"/>
+        <location filename="ui/wdgInvestments.py" line="245"/>
         <source>Purchase price average: {0}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgInvestments.py" line="246"/>
+        <location filename="ui/wdgInvestments.py" line="245"/>
         <source>Selling point: {}</source>
         <translation type="unfinished"></translation>
     </message>

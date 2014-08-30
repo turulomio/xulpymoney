@@ -4586,17 +4586,17 @@ Diferencia diaria: {5}. Edad media del patrimonio: {6}</translation>
         <translation>Ordenado por</translation>
     </message>
     <message>
-        <location filename="ui/wdgInvestments.py" line="246"/>
+        <location filename="ui/wdgInvestments.py" line="245"/>
         <source>Shares number: {0}</source>
         <translation>Número de acciones: {0}</translation>
     </message>
     <message>
-        <location filename="ui/wdgInvestments.py" line="246"/>
+        <location filename="ui/wdgInvestments.py" line="245"/>
         <source>Purchase price average: {0}</source>
         <translation>Precio medio de compra: {0}</translation>
     </message>
     <message>
-        <location filename="ui/wdgInvestments.py" line="246"/>
+        <location filename="ui/wdgInvestments.py" line="245"/>
         <source>Selling point: {}</source>
         <translation type="unfinished"></translation>
     </message>
