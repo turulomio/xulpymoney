@@ -47,7 +47,7 @@ class investmentDialog(QDialog):
     def __init__(self, parent, mem):
         QDialog.__init__(self, parent)
         self.mem=mem
-        self.inversiones=[]
+        self.products=[]
         self.selected=None
         self.resize(1024, 500)
         self.horizontalLayout_2 = QHBoxLayout(self)
@@ -114,7 +114,7 @@ class investmentDialog(QDialog):
             m.exec_()  
             return
 
-        self.inversiones=[]
+        self.products=[]
         cur = self.mem.con.cursor()
         cur.execute("select * from products where id::text like '%"+(self.txt.text().upper())+"%' or upper(name) like '%"+(self.txt.text().upper())+"%' or upper(isin) like '%"+(self.txt.text().upper())+"%' or upper(comentario) like '%"+(self.txt.text().upper())+"%' order by name")
         self.lblFound.setText(self.tr("Found {0} registers").format(cur.rowcount))
@@ -123,7 +123,7 @@ class investmentDialog(QDialog):
         for i in cur:
             inv=Product(self.mem)
             inv.init__db_row(i)
-            self.inversiones.append(inv)
+            self.products.append(inv)
             self.tblInvestments.setItem(cur.rownumber-1, 0, QTableWidgetItem(inv.name.upper()))
             self.tblInvestments.setItem(cur.rownumber-1, 1, QTableWidgetItem(str(inv.id)))
             self.tblInvestments.item(cur.rownumber-1, 0).setIcon(inv.stockexchange.country.qicon())
@@ -138,7 +138,7 @@ class investmentDialog(QDialog):
         try:
             for i in self.tblInvestments.selectedItems():
                 if i.column()==0:
-                    self.selected=self.inversiones[i.row()]
+                    self.selected=self.products[i.row()]
             print (self.selected)
         except:
             self.selected=None

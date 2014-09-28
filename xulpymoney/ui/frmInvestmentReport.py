@@ -245,7 +245,7 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
             inv=Product(self.mem).init__db(mystocksid)
             inv.estimations_dps.load_from_db()
             inv.result.basic.load_from_db()
-            self.mem.data.products_active.arr.append(inv)
+            self.mem.data.products_active.append(inv)
             
         
 

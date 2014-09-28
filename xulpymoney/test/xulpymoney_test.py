@@ -3,6 +3,7 @@ sys.path.append("/usr/lib/xulpymoney")
 from libxulpymoney import *
 from frmMain import *
 from frmInit import *
+from investmentSelector import *
 
 class TestXulpymoneyData(unittest.TestCase):
     def setUp(self):
@@ -10,7 +11,7 @@ class TestXulpymoneyData(unittest.TestCase):
         self.mem=mem
         self.frmMain=frmMain 
         
-    def test_bank_add(self):
+    def test_data_minimal(self):
         #Banks IBM        
         self.frmMain.on_actionBanks_activated()
         self.frmMain.w.bank_add("Banco Santander malo")#It will be bank 4
@@ -53,6 +54,19 @@ class TestXulpymoneyData(unittest.TestCase):
         w.on_cmdDatos_released()#it will be account 5
         self.frmMain.w.on_chkInactivas_stateChanged(self.frmMain.w.chkInactivas.checkState())
         self.frmMain.w.load_table()
+        
+        #Investments IBM
+        self.frmMain.on_actionInvestments_activated()
+        ##Add
+        w=frmInvestmentReport(self.mem, None)
+        w.cmbAccount.setCurrentIndex(w.cmbAccount.findData(6))
+        w.txtInvestment.setText("Telefónica")
+        d=investmentDialog(None, self.mem)
+        d.txt.setText("78241")
+        d.on_cmd_released()
+        d.tblInvestments.setCurrentCell(0, 0)
+        w.ise.setSelected(d.selected)
+        w.on_cmdInvestment_pressed()
         
         
         
