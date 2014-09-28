@@ -17,3 +17,5 @@ echo "DELETE FROM products WHERE id<=0;" >> xulpymoney.sql
 echo "UPDATE products SET active=true WHERE priorityhistorical[1]=3;" >> xulpymoney.sql
 echo "ALTER SEQUENCE seq_conceptos START WITH 100 RESTART;" >> xulpymoney.sql
 echo "ALTER SEQUENCE seq_entidadesbancarias START WITH 4 RESTART;" >> xulpymoney.sql
+echo "ALTER SEQUENCE seq_cuentas START WITH 5 RESTART;" >> xulpymoney.sql
+

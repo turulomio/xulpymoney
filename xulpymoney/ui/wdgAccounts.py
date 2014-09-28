@@ -12,6 +12,7 @@ class wdgAccounts(QWidget, Ui_wdgAccounts):
         self.tblAccounts.settings("wdgAccounts",  self.mem)
         self.cuentas=self.mem.data.accounts_active
         self.selAccount=None
+        self.child=None#Used to access childs in automate unittests
         self.load_table()
 
     def load_table(self):
@@ -30,15 +31,15 @@ class wdgAccounts(QWidget, Ui_wdgAccounts):
         
     @QtCore.pyqtSlot() 
     def on_actionAccountReport_activated(self):
-        w=frmAccountsReport(self.mem,   self.selAccount, self)
-        w.exec_()
+        self.child=self.child=frmAccountsReport(self.mem,   self.selAccount, self)
+        self.child.exec_()
         self.on_chkInactivas_stateChanged(self.chkInactivas.checkState())
         self.load_table()
         
     @QtCore.pyqtSlot() 
     def on_actionAccountAdd_activated(self):
-        w=frmAccountsReport(self.mem, None)
-        w.exec_()
+        self.child=frmAccountsReport(self.mem, None)
+        self.child.exec_()
         self.on_chkInactivas_stateChanged(self.chkInactivas.checkState())
         self.load_table()
       
@@ -115,8 +116,8 @@ class wdgAccounts(QWidget, Ui_wdgAccounts):
 
     @QtCore.pyqtSlot()  
     def on_actionTransfer_activated(self):
-        w=frmTransfer(self.mem, self.selAccount)
-        w.exec_()
+        self.child=frmTransfer(self.mem, self.selAccount)
+        self.child.exec_()
         self.load_table()
 
     def on_tblAccounts_itemSelectionChanged(self):
