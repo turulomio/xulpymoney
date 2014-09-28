@@ -190,23 +190,31 @@ class wdgBanks(QWidget, Ui_wdgBanks):
     def on_actionBankAdd_activated(self):
         tipo=QInputDialog().getText(self,  "Xulpymoney",  self.tr("Add a new bank"))
         if tipo[1]==True:
-            eb=Bank(self.mem).init__create(tipo[0])
-            eb.save()
-            self.mem.con.commit()  
-            self.mem.data.banks_active.append(eb)
-            self.mem.data.banks_active.order_by_name()
-            self.load_eb()
+            self.bank_add(tipo[0])
+            
+    def bank_add(self, bank):
+        """Permits unit tests if separated"""
+        eb=Bank(self.mem).init__create(bank)
+        eb.save()
+        self.mem.con.commit()  
+        self.mem.data.banks_active.append(eb)
+        self.mem.data.banks_active.order_by_name()
+        self.load_eb()
 
 
     @QtCore.pyqtSlot()  
     def on_actionBankEdit_activated(self):
         tipo=QInputDialog().getText(self,  "Xulpymoney", self.tr("Edit selected bank") , QLineEdit.Normal,   (self.banks.selected.name))       
         if tipo[1]==True:
-            self.banks.selected.name=tipo[0]
-            self.banks.selected.save()
-            self.mem.con.commit()
-            self.mem.data.banks_active.order_by_name()
-            self.load_eb()   
+            self.bank_edit(tipo[0])
+            
+    def bank_edit(self, bank):
+        """Permits unit tests if separated"""
+        self.banks.selected.name=bank
+        self.banks.selected.save()
+        self.mem.con.commit()
+        self.mem.data.banks_active.order_by_name()
+        self.load_eb()   
         
     @QtCore.pyqtSlot() 
     def on_actionActive_activated(self):
