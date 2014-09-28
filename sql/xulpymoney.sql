@@ -2783,6 +2783,7 @@ INSERT INTO products VALUES ('Bono Alemán a 10 años', '', 'u', 7, '', true, 74
 INSERT INTO products VALUES ('Bono Banco Popular 8.00 20210729', 'ES0213790019', 'EUR', 9, '', false, -19, '', '', '', '', 80, 'c', 0, 1, '', NULL, NULL, 'A3043056', false, false, false);
 INSERT INTO products VALUES ('Bono CaixaBank 4.00 20220209', 'ES0240609000', 'EUR', 9, '', false, -24, '', '', '', '', 80, 'c', 0, 1, '', '{}', '{}', '', false, false, false);
 INSERT INTO products VALUES ('Bono Español a 10 años', '', 'u', 7, '', true, 74803, '', '', '', '', 100, 'c', 0, 1, 'None', '{3}', NULL, 'BUND_ESPAÑOL||es||False', false, true, true);
+INSERT INTO products VALUES ('BONO ESTADO ESPAÑOL 4,00  31102064', 'ES00000126D8', 'EUR', 7, NULL, true, -31, NULL, NULL, NULL, NULL, 20, 'c', 0, 1, NULL, NULL, NULL, NULL, false, true, true);
 INSERT INTO products VALUES ('Bono Estado Español 4,20  31012030', 'ES0000012932', 'EUR', 7, '', false, 81680, '', '', '', '', 20, 'c', 0, 1, 'None', NULL, NULL, '', false, false, true);
 INSERT INTO products VALUES ('Bono Estado Español 4,70  30072041', 'ES00000121S7', 'EUR', 7, '', false, -20, '', '', '', '', 20, 'c', 0, 1, '', NULL, NULL, '', false, false, false);
 INSERT INTO products VALUES ('BONO ESTADO ESPAÑOL 4,90  30072040', 'ES00000120N0', 'EUR', 7, '', false, -23, '', '', '', '', 20, 'c', 0, 1, '', '{}', '{}', '', false, false, false);
@@ -3155,6 +3156,7 @@ INSERT INTO products VALUES ('Call IBEX 35 | 10750 € | 20/04/12 | C2133', 'FR0
 INSERT INTO products VALUES ('Call IBEX 35 | 10750 € | 20/05/11 | B4726', 'FR0010984443', 'EUR', 5, '|SGW|', false, 75100, NULL, NULL, NULL, NULL, 100, 'c', 0, 3, NULL, NULL, NULL, 'SGW#B4726||fr||False', false, true, true);
 INSERT INTO products VALUES ('Call IBEX 35 | 10750 € | 21/10/11 | B7209', 'FR0011039593', 'EUR', 5, '|SGW|', false, 77393, NULL, NULL, NULL, NULL, 100, 'c', 0, 3, NULL, NULL, NULL, 'SGW#B7209||fr||False', false, true, true);
 INSERT INTO products VALUES ('Call IBEX 35 | 11000 € | 15/06/12 | B9963', 'FR0011091529', 'EUR', 5, '|SGW|', false, 77989, NULL, NULL, NULL, NULL, 100, 'c', 0, 3, NULL, NULL, NULL, 'SGW#B9963||fr||False', false, true, true);
+INSERT INTO products VALUES ('Call IBEX 35 | 11000 € | 15/12/17 | E1292', 'DE000SGM1G35', 'EUR', 5, NULL, false, 81681, '', '', '', '', 100, 'c', 1, 3, 'None', '{}', '{}', '', false, true, true);
 INSERT INTO products VALUES ('Call IBEX 35 | 11000 € | 16/03/12 | B7611', 'FR0011058478', 'EUR', 5, '|SGW|', false, 75477, NULL, NULL, NULL, NULL, 100, 'c', 0, 3, NULL, NULL, NULL, 'SGW#B7611||fr||False', false, true, true);
 INSERT INTO products VALUES ('Call IBEX 35 | 11000 € | 16/09/11 | B4742', 'FR0010984609', 'EUR', 5, '|SGW|', false, 75246, NULL, NULL, NULL, NULL, 100, 'c', 0, 3, NULL, NULL, NULL, 'SGW#B4742||fr||False', false, true, true);
 INSERT INTO products VALUES ('Call IBEX 35 | 11000 € | 16/12/11 | B5143', 'FR0011002773', 'EUR', 5, '|SGW|', false, 75142, NULL, NULL, NULL, NULL, 100, 'c', 0, 3, NULL, NULL, NULL, 'SGW#B5143||fr||False', false, true, true);
@@ -5856,7 +5858,7 @@ INSERT INTO products VALUES ('LYXNDX1ETF', 'FR0007063177', 'EUR', 4, NULL, false
 INSERT INTO products VALUES ('LYXOR ETF DAILY SHORTDAX X2 | DAX 30, INDEX', NULL, 'EUR', 4, '|e_fr_LYXOR|', true, -17, NULL, '', '', '', 100, 'p', 2, 3, 'DSD.PA', '{1}', '{3}', NULL, false, false, false);
 INSERT INTO products VALUES ('Lyxor ETF EURO STOXX 50 Daily Leverage', 'FR0010468983', 'EUR', 4, '|e_fr_LYXOR|', true, 81394, '', '', '', '', 100, 'c', 2, 3, 'LVE.PA', '{1}', '{3}', 'LVE.PA||fr||False', false, false, true);
 INSERT INTO products VALUES ('LYXOR ETF LEVDAX | DAX 30, INDEX', NULL, 'EUR', 4, NULL, true, -16, '', '', '', '', 100, 'c', 2, 5, 'LVD.PA', '{1}', '{3}', NULL, false, false, false);
-INSERT INTO products VALUES ('LYXOR IBEX DOBLE APALANCADO', 'FR0011042753', 'EUR', 4, NULL, true, 79228, '', '', '', '', 100, 'c', 2, 1, 'IBEXA.MC', '{1}', '{3}', 'MC#FR0011042753||es||False', false, false, true);
+INSERT INTO products VALUES ('LYXOR IBEX DOBLE APALANCADO', 'FR0011042753', 'EUR', 4, '|e_fr_LYXOR|', true, 79228, '', '', '', '', 100, 'c', 2, 1, 'IBEXA.MC', '{1}', '{3}', 'MC#FR0011042753||es||False', false, false, true);
 INSERT INTO products VALUES ('LYXOR IBEX ETF', 'FR0010251744', 'EUR', 4, '|e_fr_LYXOR|', true, 81357, '', '', '', '', 100, 'c', 0, 1, 'LYXIB.MC', '{1}', '{3}', 'MC#FR0010251744||es||False', false, false, true);
 INSERT INTO products VALUES ('LYXOR XBEAR ES50', 'FR0010424143', 'EUR', 4, '|e_fr_LYXOR|', true, 81092, '', '', '', '', 100, 'p', 2, 3, 'BXX.PA', '{1}', '{3}', 'BXX.PA||fr||False', false, false, true);
 INSERT INTO products VALUES ('Macerich Co.', NULL, 'USD', 1, NULL, false, 76282, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, NULL, 'NYSE#MAC||us||False', false, true, true);
@@ -6933,7 +6935,7 @@ INSERT INTO products VALUES ('RENTA 4 GLOBAL', 'ES0173392038', 'EUR', 2, '|f_es_
 INSERT INTO products VALUES ('RENTA 4 JAPON', 'ES0173356033', 'EUR', 2, '|f_es_0043|f_es_BMF|', false, 81434, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, NULL, '{2}', NULL, 'ES0173356033||es||False', false, true, true);
 INSERT INTO products VALUES ('RENTA 4 LATINOAMERICA', 'ES0173320039', 'EUR', 2, '|f_es_0043|f_es_BMF|', false, 81435, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, NULL, '{2}', NULL, 'ES0173320039||es||False', false, true, true);
 INSERT INTO products VALUES ('RENTA 4 MONETARIO', 'ES0128520006', 'EUR', 2, '|f_es_0043|f_es_BMF|', false, 74788, '', '', '', '', 0, 'c', 0, 1, 'None', '{2}', NULL, 'ES0128520006||es||True', false, false, true);
-INSERT INTO products VALUES ('RENTA 4 OBLIGACIONES CONVERTIBLES 2011', '', 'EUR', 9, '', false, 75138, '', '', '', '', 80, 'c', 0, 1, 'None', NULL, NULL, 'RENTA 4 OBLIGACIONES CONVERTIBLES 2011||es||True', false, false, true);
+INSERT INTO products VALUES ('RENTA 4 OBLIGACIONES CONVERTIBLES 2011', '', 'EUR', 9, '', false, 75138, '', '', '', '', 80, 'c', 0, 1, 'None', '{}', '{}', 'RENTA 4 OBLIGACIONES CONVERTIBLES 2011||es||True', true, false, true);
 INSERT INTO products VALUES ('RENTA 4 PEGASUS', 'ES0173321003', 'EUR', 2, '|f_es_0043|f_es_BMF|', true, 81436, '', '', '', '', 100, 'c', 0, 1, 'None', '{2}', NULL, 'ES0173321003||es||False', false, false, true);
 INSERT INTO products VALUES ('RENTA 4 PREMIER', NULL, 'EUR', 2, NULL, false, 75147, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, NULL, NULL, NULL, 'RENTA 4 PREMIER||es||True', false, false, true);
 INSERT INTO products VALUES ('RENTA 4 TECNOLOGIA', 'ES0173364037', 'EUR', 2, '|f_es_0043|f_es_BMF|', false, 81437, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, NULL, '{2}', NULL, 'ES0173364037||es||False', false, true, true);
@@ -8242,3 +8244,4 @@ UPDATE products SET deletable=true;
 DELETE FROM products WHERE id<=0;
 UPDATE products SET active=true WHERE priorityhistorical[1]=3;
 ALTER SEQUENCE seq_conceptos START WITH 100 RESTART;
+ALTER SEQUENCE seq_entidadesbancarias START WITH 4 RESTART;

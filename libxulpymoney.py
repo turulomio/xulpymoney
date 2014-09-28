@@ -51,6 +51,14 @@ class SetCommons:
         self.name=None
         self.selected=None#Used to select a item in the set. Usefull in tables. Its a item
     
+    def arr_position(self, id):
+        """Returns arr position of the id, useful to select items with unittests"""
+        for i, a in enumerate(self.arr):
+            if a.id==id:
+                return i
+        return None
+            
+
     def append(self,  obj):
         self.arr.append(obj)
         self.dic_arr[str(obj.id)]=obj
