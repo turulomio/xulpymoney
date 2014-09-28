@@ -3553,12 +3553,12 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgAccounts.py" line="28"/>
+        <location filename="ui/wdgAccounts.py" line="29"/>
         <source>Accounts balance: {0}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgAccounts.py" line="53"/>
+        <location filename="ui/wdgAccounts.py" line="54"/>
         <source>This account has associated investments, credit cards or operations. It can&apos;t be deleted</source>
         <translation type="unfinished"></translation>
     </message>

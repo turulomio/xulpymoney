@@ -3555,12 +3555,12 @@ p, li { white-space: pre-wrap; }
         <translation>Transferencia entre cuentas</translation>
     </message>
     <message>
-        <location filename="ui/wdgAccounts.py" line="28"/>
+        <location filename="ui/wdgAccounts.py" line="29"/>
         <source>Accounts balance: {0}</source>
         <translation>Saldo de cuentas: {0}</translation>
     </message>
     <message>
-        <location filename="ui/wdgAccounts.py" line="53"/>
+        <location filename="ui/wdgAccounts.py" line="54"/>
         <source>This account has associated investments, credit cards or operations. It can&apos;t be deleted</source>
         <translation>Esta cuenta tiene inversiones asociadas, tarjetas de cródito o movimientos. No puede ser borrada</translation>
     </message>

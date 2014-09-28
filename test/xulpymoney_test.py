@@ -20,8 +20,41 @@ class TestXulpymoneyData(unittest.TestCase):
         self.assertEqual(self.frmMain.w.banks.length(), 2)       
         self.frmMain.w.on_actionBankDelete_activated()
         self.assertEqual(self.frmMain.w.banks.length(), 1)        
-        self.frmMain.w.bank_add("Banco de Santander")
-        self.assertEqual(self.frmMain.w.banks.length(), 2)       
+        self.frmMain.w.bank_add("Banco de Santander")#it will be bank5
+        self.assertEqual(self.frmMain.w.banks.length(), 2)
+        
+        #Accounts IBM
+        self.frmMain.on_actionAccounts_activated()
+        ##Add
+        w=frmAccountsReport(self.mem, None)
+        w.cmbEB.setCurrentIndex(w.cmbEB.findData(5))
+        w.txtAccount.setText("Cuenta Corriente Santander malo")
+        w.cmbCurrency.setCurrentIndex(w.cmbCurrency.findData("EUR"))
+        w.txtNumero.setText("01234567890123456789")
+        w.on_cmdDatos_released()#it will be account 5
+        self.frmMain.w.on_chkInactivas_stateChanged(self.frmMain.w.chkInactivas.checkState())
+        self.frmMain.w.load_table()
+        ##Edit
+        self.frmMain.w.tblAccounts.setCurrentCell(self.frmMain.w.cuentas.arr_position(5), 0)
+        w=frmAccountsReport(self.mem, self.frmMain.w.selAccount)
+        w.txtAccount.setText("Cuenta Corriente Santander")
+        w.on_cmdDatos_released()
+        self.frmMain.w.on_chkInactivas_stateChanged(self.frmMain.w.chkInactivas.checkState())
+        self.frmMain.w.load_table()
+        ##Delete
+        self.frmMain.w.tblAccounts.setCurrentCell(self.frmMain.w.cuentas.arr_position(5), 0)
+        self.frmMain.w.on_actionAccountDelete_activated()
+        ##Add other
+        w=frmAccountsReport(self.mem, None)
+        w.cmbEB.setCurrentIndex(w.cmbEB.findData(5))
+        w.txtAccount.setText("Cuenta Corriente Santander")
+        w.cmbCurrency.setCurrentIndex(w.cmbCurrency.findData("EUR"))
+        w.txtNumero.setText("01234567890123456790")
+        w.on_cmdDatos_released()#it will be account 5
+        self.frmMain.w.on_chkInactivas_stateChanged(self.frmMain.w.chkInactivas.checkState())
+        self.frmMain.w.load_table()
+        
+        
         
 
 class TestXulpymoneyControlData(unittest.TestCase):
