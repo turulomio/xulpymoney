@@ -4773,10 +4773,10 @@ class MemProducts:
         d['frmAccess#port']='5432'
         d['frmAccess#user']= 'postgres'
         d['frmAccess#server']='127.0.0.1'
-        d['frmAccessMS#db'] = 'mystocks'
-        d['frmAccessMS#port']='5432'
-        d['frmAccessMS#user']= 'postgres'
-        d['frmAccessMS#server']='127.0.0.1'
+#        d['frmAccessMS#db'] = 'mystocks'
+#        d['frmAccessMS#port']='5432'
+#        d['frmAccessMS#user']= 'postgres'
+#        d['frmAccessMS#server']='127.0.0.1'
         d['settings#dividendwithholding']='0.21'
         d['settings#taxcapitalappreciation']='0.21'
         d['settings#localcurrency']='EUR'
@@ -4850,19 +4850,19 @@ class MemProducts:
  
 
 
-    def connect_xulpymoneyd(self, pw):        
-        """usa también la variables self.con"""              
-        strmq="dbname='%s' port='%s' user='%s' host='%s' password='%s'" % (self.config.get_value("frmAccessMS", "db"),  self.config.get_value("frmAccessMS", "port"), self.config.get_value("frmAccessMS", "user"), self.config.get_value("frmAccessMS", "server"),  pw)
-        while True:
-            try:
-                self.con=psycopg2.extras.DictConnection(strmq)
-                return self.con
-            except psycopg2.Error:
-                print (QApplication.translate("Core","Error conecting to MyStocksd, waiting 10 seconds"))
-                time.sleep(10)
-
-    def disconnect_xulpymoneyd(self):
-        self.con.close()
+#    def connect_xulpymoneyd(self, pw):        
+#        """usa también la variables self.con"""              
+#        strmq="dbname='%s' port='%s' user='%s' host='%s' password='%s'" % (self.config.get_value("frmAccessMS", "db"),  self.config.get_value("frmAccessMS", "port"), self.config.get_value("frmAccessMS", "user"), self.config.get_value("frmAccessMS", "server"),  pw)
+#        while True:
+#            try:
+#                self.con=psycopg2.extras.DictConnection(strmq)
+#                return self.con
+#            except psycopg2.Error:
+#                print (QApplication.translate("Core","Error conecting to MyStocksd, waiting 10 seconds"))
+#                time.sleep(10)
+#
+#    def disconnect_xulpymoneyd(self):
+#        self.con.close()
 
             
 class MemXulpymoney(MemProducts):

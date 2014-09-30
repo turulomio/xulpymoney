@@ -39,7 +39,7 @@ class frmMain(QMainWindow, Ui_frmMain):
         
     def init__continue(self):
         """Used to add frmAccess automatic access"""
-        self.access=frmAccess(self.mem, 2, self)
+        self.access=frmAccess(self.mem,  self)
         self.access.exec_()
         self.retranslateUi(self)
         
