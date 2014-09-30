@@ -49,7 +49,7 @@
         <bool>true</bool>
        </property>
        <property name="currentIndex">
-        <number>4</number>
+        <number>0</number>
        </property>
        <widget class="QWidget" name="tab_12">
         <attribute name="title">
@@ -144,7 +144,7 @@
            <item>
             <layout class="QHBoxLayout" name="horizontalLayout_8">
              <item>
-              <widget class="investmentSelector" name="ise" native="true">
+              <widget class="wdgInvestmentSelector" name="ise" native="true">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
                  <horstretch>0</horstretch>
@@ -523,9 +523,9 @@
    <header location="global">myqtablewidget</header>
   </customwidget>
   <customwidget>
-   <class>investmentSelector</class>
+   <class>wdgInvestmentSelector</class>
    <extends>QWidget</extends>
-   <header location="global">investmentSelector</header>
+   <header location="global">wdgInvestmentSelector</header>
    <container>1</container>
   </customwidget>
   <customwidget>
