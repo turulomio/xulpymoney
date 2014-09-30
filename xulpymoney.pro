@@ -62,7 +62,7 @@ SOURCES         = \
                   ui/Ui_frmSplit.py \
                   ui/frmTransfer.py \
                   ui/Ui_frmTransfer.py \
-                  ui/investmentSelector.py \
+                  ui/wdgInvestmentSelector.py \
                   ui/myqlineedit.py \
                   ui/myqtablewidget.py \
                   ui/wdgAPR.py \

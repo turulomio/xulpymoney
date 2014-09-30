@@ -1985,6 +1985,59 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
+    <name>frmInvestmentSelector</name>
+    <message>
+        <location filename="ui/wdgInvestmentSelector.py" line="84"/>
+        <source>Product</source>
+        <translation type="unfinished">Producto</translation>
+    </message>
+    <message>
+        <location filename="ui/wdgInvestmentSelector.py" line="85"/>
+        <source>Id</source>
+        <translation type="unfinished">Id</translation>
+    </message>
+    <message>
+        <location filename="ui/wdgInvestmentSelector.py" line="86"/>
+        <source>ISIN</source>
+        <translation type="unfinished">ISIN</translation>
+    </message>
+    <message>
+        <location filename="ui/wdgInvestmentSelector.py" line="87"/>
+        <source>Ticker</source>
+        <translation type="unfinished">Ticker</translation>
+    </message>
+    <message>
+        <location filename="ui/wdgInvestmentSelector.py" line="98"/>
+        <source>Select a product</source>
+        <translation type="unfinished">Selecciona un producto</translation>
+    </message>
+    <message>
+        <location filename="ui/wdgInvestmentSelector.py" line="99"/>
+        <source>Product list</source>
+        <translation type="unfinished">Lista de productos</translation>
+    </message>
+    <message>
+        <location filename="ui/wdgInvestmentSelector.py" line="100"/>
+        <source>Search by code, ISIN or product name</source>
+        <translation type="unfinished">Búsqueda por código, ISIN o nombre de producto</translation>
+    </message>
+    <message>
+        <location filename="ui/wdgInvestmentSelector.py" line="101"/>
+        <source>Found registers</source>
+        <translation type="unfinished">Registros encontrados</translation>
+    </message>
+    <message>
+        <location filename="ui/wdgInvestmentSelector.py" line="113"/>
+        <source>Search too wide. You need more than 3 characters</source>
+        <translation type="unfinished">Búsqueda demasiado extensa. Necesita más de 3 caracteres</translation>
+    </message>
+    <message>
+        <location filename="ui/wdgInvestmentSelector.py" line="120"/>
+        <source>Found {0} registers</source>
+        <translation type="unfinished">Encontrados {0} registros</translation>
+    </message>
+</context>
+<context>
     <name>frmMain</name>
     <message>
         <location filename="ui/Ui_frmMain.py" line="432"/>
@@ -3349,77 +3402,6 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>investmentDialog</name>
-    <message>
-        <location filename="ui/investmentSelector.py" line="85"/>
-        <source>Id</source>
-        <translation>Id</translation>
-    </message>
-    <message>
-        <location filename="ui/investmentSelector.py" line="86"/>
-        <source>ISIN</source>
-        <translation>ISIN</translation>
-    </message>
-    <message>
-        <location filename="ui/investmentSelector.py" line="87"/>
-        <source>Ticker</source>
-        <translation>Ticker</translation>
-    </message>
-    <message>
-        <location filename="ui/investmentSelector.py" line="84"/>
-        <source>Product</source>
-        <translation>Producto</translation>
-    </message>
-    <message>
-        <location filename="ui/investmentSelector.py" line="98"/>
-        <source>Select a product</source>
-        <translation>Selecciona un producto</translation>
-    </message>
-    <message>
-        <location filename="ui/investmentSelector.py" line="99"/>
-        <source>Product list</source>
-        <translation>Lista de productos</translation>
-    </message>
-    <message>
-        <location filename="ui/investmentSelector.py" line="100"/>
-        <source>Search by code, ISIN or product name</source>
-        <translation>Búsqueda por código, ISIN o nombre de producto</translation>
-    </message>
-    <message>
-        <location filename="ui/investmentSelector.py" line="101"/>
-        <source>Found registers</source>
-        <translation>Registros encontrados</translation>
-    </message>
-    <message>
-        <location filename="ui/investmentSelector.py" line="113"/>
-        <source>Search too wide. You need more than 3 characters</source>
-        <translation>Búsqueda demasiado extensa. Necesita más de 3 caracteres</translation>
-    </message>
-    <message>
-        <location filename="ui/investmentSelector.py" line="120"/>
-        <source>Found {0} registers</source>
-        <translation>Encontrados {0} registros</translation>
-    </message>
-</context>
-<context>
-    <name>investmentSelector</name>
-    <message>
-        <location filename="ui/investmentSelector.py" line="17"/>
-        <source>Select a product</source>
-        <translation>Selecciona un producto</translation>
-    </message>
-    <message>
-        <location filename="ui/investmentSelector.py" line="22"/>
-        <source>Press the search button</source>
-        <translation>Pulsa el botón de búsqueda</translation>
-    </message>
-    <message>
-        <location filename="ui/investmentSelector.py" line="41"/>
-        <source>Not selected</source>
-        <translation>No seleccionado</translation>
-    </message>
-</context>
-<context>
     <name>wdgAPR</name>
     <message>
         <location filename="ui/Ui_wdgAPR.py" line="87"/>
@@ -4439,6 +4421,24 @@ p, li { white-space: pre-wrap; }
         <location filename="ui/wdgInvestmentClasses.py" line="241"/>
         <source>Accounts</source>
         <translation>Cuentas</translation>
+    </message>
+</context>
+<context>
+    <name>wdgInvestmentSelector</name>
+    <message>
+        <location filename="ui/wdgInvestmentSelector.py" line="17"/>
+        <source>Select a product</source>
+        <translation type="unfinished">Selecciona un producto</translation>
+    </message>
+    <message>
+        <location filename="ui/wdgInvestmentSelector.py" line="22"/>
+        <source>Press the search button</source>
+        <translation type="unfinished">Pulsa el botón de búsqueda</translation>
+    </message>
+    <message>
+        <location filename="ui/wdgInvestmentSelector.py" line="41"/>
+        <source>Not selected</source>
+        <translation type="unfinished">No seleccionado</translation>
     </message>
 </context>
 <context>
