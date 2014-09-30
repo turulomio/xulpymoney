@@ -144,7 +144,7 @@
            <item>
             <layout class="QHBoxLayout" name="horizontalLayout_8">
              <item>
-              <widget class="wdgInvestmentSelector" name="ise" native="true">
+              <widget class="wdgProductSelector" name="ise" native="true">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
                  <horstretch>0</horstretch>
@@ -523,9 +523,9 @@
    <header location="global">myqtablewidget</header>
   </customwidget>
   <customwidget>
-   <class>wdgInvestmentSelector</class>
+   <class>wdgProductSelector</class>
    <extends>QWidget</extends>
-   <header location="global">wdgInvestmentSelector</header>
+   <header location="global">wdgProductSelector</header>
    <container>1</container>
   </customwidget>
   <customwidget>
