@@ -105,13 +105,10 @@ class wdgConcepts(QWidget, Ui_wdgConcepts):
             if i.column()==0:
                 self.selected=self.incomeslist[i.row()]
 
-        
         if self.selected!=None:
             self.actionHistoricalReport.setEnabled(True)
         else:
             self.actionHistoricalReport.setEnabled(False)
-        
-        
         
         menu=QMenu()
         menu.addAction(self.actionHistoricalReport)   

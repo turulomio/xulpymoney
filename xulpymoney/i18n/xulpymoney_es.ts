@@ -3193,14 +3193,14 @@ p, li { white-space: pre-wrap; }
         <translation>Estado actual: {0}</translation>
     </message>
     <message>
-        <location filename="ui/frmSellingPoint.py" line="116"/>
-        <source>Set selling price to all inverstments  of {0} to gain {1}</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="ui/frmSellingPoint.py" line="118"/>
         <source>Set {0} shares selling price to {1} to gain {2}</source>
-        <translation type="unfinished"></translation>
+        <translation>Establece el precio de venta de {0} acciones a {1} para ganar {2}</translation>
+    </message>
+    <message>
+        <location filename="ui/frmSellingPoint.py" line="116"/>
+        <source>Set selling price to all investments  of {0} to gain {1}</source>
+        <translation>Establece el precio de venta para todas las inversiones a {0} para ganar {1}</translation>
     </message>
 </context>
 <context>
@@ -3777,7 +3777,7 @@ p, li { white-space: pre-wrap; }
         <translation>TOTAL</translation>
     </message>
     <message>
-        <location filename="ui/wdgConcepts.py" line="126"/>
+        <location filename="ui/wdgConcepts.py" line="123"/>
         <source>You can&apos;t close this tab</source>
         <translation>No puedes cerrar esta pestaña</translation>
     </message>
@@ -3875,17 +3875,17 @@ p, li { white-space: pre-wrap; }
         <translation>Octubre</translation>
     </message>
     <message>
-        <location filename="ui/wdgConceptsHistorical.py" line="66"/>
+        <location filename="ui/wdgConceptsHistorical.py" line="70"/>
         <source>Report of {0} of {1}</source>
         <translation>Informe de {0} de {1}</translation>
     </message>
     <message>
-        <location filename="ui/wdgConceptsHistorical.py" line="80"/>
+        <location filename="ui/wdgConceptsHistorical.py" line="84"/>
         <source>Report of {0}</source>
         <translation>Informe de {0}</translation>
     </message>
     <message>
-        <location filename="ui/wdgConceptsHistorical.py" line="114"/>
+        <location filename="ui/wdgConceptsHistorical.py" line="119"/>
         <source>You can&apos;t close this tab</source>
         <translation>No puedes cerrar esta pestaña</translation>
     </message>
@@ -4566,7 +4566,7 @@ Diferencia diaria: {5}. Edad media del patrimonio: {6}</translation>
     <message>
         <location filename="ui/wdgInvestments.py" line="245"/>
         <source>Selling point: {}</source>
-        <translation type="unfinished"></translation>
+        <translation>Punto de venta: {}</translation>
     </message>
 </context>
 <context>
@@ -4960,17 +4960,17 @@ SÃ³lo se contabilizarÃ¡ cuando se vendan las acciones</source>
     <message>
         <location filename="ui/wdgProductSelector.py" line="17"/>
         <source>Select a product</source>
-        <translation type="unfinished">Selecciona un producto</translation>
+        <translation>Selecciona un producto</translation>
     </message>
     <message>
         <location filename="ui/wdgProductSelector.py" line="22"/>
         <source>Press the search button</source>
-        <translation type="unfinished">Pulsa el botón de búsqueda</translation>
+        <translation>Pulsa el botón de búsqueda</translation>
     </message>
     <message>
         <location filename="ui/wdgProductSelector.py" line="41"/>
         <source>Not selected</source>
-        <translation type="unfinished">No seleccionado</translation>
+        <translation>No seleccionado</translation>
     </message>
 </context>
 <context>
