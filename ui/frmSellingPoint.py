@@ -113,7 +113,7 @@ class frmSellingPoint(QDialog, Ui_frmSellingPoint):
         (sumacciones, suminvertido, sumpendiente)=load_table(self.tableSP, Quote(self.mem).init__create(self.inversion.product, self.mem.localzone.now(), self.puntoventa))                    
         
         if self.chkPonderanAll.checkState()==Qt.Checked:
-            self.cmd.setText(self.tr("Set selling price to all inverstments  of {0} to gain {1}").format(self.inversion.product.currency.string(self.puntoventa), self.inversion.product.currency.string(sumpendiente)))
+            self.cmd.setText(self.tr("Set selling price to all investments  of {0} to gain {1}").format(self.inversion.product.currency.string(self.puntoventa), self.inversion.product.currency.string(sumpendiente)))
         else:
             self.cmd.setText(self.tr("Set {0} shares selling price to {1} to gain {2}").format(sumacciones, self.inversion.product.currency.string(self.puntoventa), self.inversion.product.currency.string(sumpendiente)))
 

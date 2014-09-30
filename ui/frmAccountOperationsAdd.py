@@ -59,11 +59,17 @@ class frmAccountOperationsAdd(QDialog, Ui_frmAccountOperationsAdd):
 
         
     def on_cmd_released(self):
-#        dat=dt(self.dtedit.date().toPyDate(), self.dtedit.time().toPyTime(), self.mem.localzone)#self.calendar.selectedDate().toPyDate
         concepto=self.mem.conceptos.find(self.cmbConcepts.itemData(self.cmbConcepts.currentIndex()))
         importe=self.txtImporte.decimal()
         comentario=self.txtComentario.text()
         id_cuentas=self.cmbAccounts.itemData(self.cmbAccounts.currentIndex()) #Sólo se usará en 1 y 2.
+        
+        if not importe:
+            m=QMessageBox()
+            m.setIcon(QMessageBox.Information)
+            m.setText(self.trUtf8("You must set the operation amount"))
+            m.exec_()    
+            return        
         
         if concepto.tipooperacion.id==1 and importe>0:
             m=QMessageBox()
@@ -91,6 +97,7 @@ class frmAccountOperationsAdd(QDialog, Ui_frmAccountOperationsAdd):
             self.opercuenta.save()
             self.mem.con.commit()        #Se debe hacer el commit antes para que al actualizar con el signal salga todos los datos
             self.emit(SIGNAL("OperAccountIBMed"), ())
+            self.wdgDT.set(self.mem, self.wdgDT.datetime()+datetime.timedelta(minutes=1), self.wdgDT.zone)
         elif self.tipo==2:            
             self.opercuenta.datetime=self.wdgDT.datetime()
             self.opercuenta.concepto=concepto
@@ -108,6 +115,7 @@ class frmAccountOperationsAdd(QDialog, Ui_frmAccountOperationsAdd):
             self.mem.con.commit()        
             self.tarjeta.op_diferido.append(self.opertarjeta)
             self.emit(SIGNAL("OperCreditCardIBMed"), (True))
+            self.wdgDT.set(self.mem, self.wdgDT.datetime()+datetime.timedelta(minutes=1), self.wdgDT.zone)
         elif self.tipo==4:            
             self.opertarjeta.datetime=self.wdgDT.datetime()
             self.opertarjeta.concepto=concepto
