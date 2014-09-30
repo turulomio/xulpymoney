@@ -3191,13 +3191,13 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmSellingPoint.py" line="116"/>
-        <source>Set selling price to all inverstments  of {0} to gain {1}</source>
+        <location filename="ui/frmSellingPoint.py" line="118"/>
+        <source>Set {0} shares selling price to {1} to gain {2}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmSellingPoint.py" line="118"/>
-        <source>Set {0} shares selling price to {1} to gain {2}</source>
+        <location filename="ui/frmSellingPoint.py" line="116"/>
+        <source>Set selling price to all investments  of {0} to gain {1}</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3774,7 +3774,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgConcepts.py" line="126"/>
+        <location filename="ui/wdgConcepts.py" line="123"/>
         <source>You can&apos;t close this tab</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3872,17 +3872,17 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgConceptsHistorical.py" line="66"/>
+        <location filename="ui/wdgConceptsHistorical.py" line="70"/>
         <source>Report of {0} of {1}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgConceptsHistorical.py" line="80"/>
+        <location filename="ui/wdgConceptsHistorical.py" line="84"/>
         <source>Report of {0}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgConceptsHistorical.py" line="114"/>
+        <location filename="ui/wdgConceptsHistorical.py" line="119"/>
         <source>You can&apos;t close this tab</source>
         <translation type="unfinished"></translation>
     </message>

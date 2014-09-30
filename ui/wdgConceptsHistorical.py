@@ -39,18 +39,22 @@ class wdgConceptsHistorical(QWidget, Ui_wdgConceptsHistorical):
         #Coloca filas y años
         self.firstyear=int(arr[0][0])
         rows=int(datetime.date.today().year-self.firstyear+1)
-        self.table.setRowCount(rows)
-        sum=[]#suma en array suma, en el que el año first es 0...
+        self.table.setRowCount(rows+1)
+        suma=[]#sumaa en array suma, en el que el año first es 0...
         for i in range(rows):
-            sum.append(0)#Inicializa a 0 los sumadores
+            suma.append(0)#Inicializa a 0 los sumadores
             self.table.setItem(i, 0, QTableWidgetItem("{0}".format(self.firstyear+i)))
         #Coloca en tabla 
         for a in arr:
             self.table.setItem(a[0]-self.firstyear, a[1],self.mem.localcurrency.qtablewidgetitem(a[2])  )
-            sum[int(a[0])-self.firstyear]=sum[int(a[0])-self.firstyear]+a[2]
-        #Coloca en tabla los sumatorios
-        for i,  s in enumerate(sum):
+            suma[int(a[0])-self.firstyear]=suma[int(a[0])-self.firstyear]+a[2]
+        #Coloca en tabla los sumaatorios
+        for i,  s in enumerate(suma):
             self.table.setItem(i, 13,self.mem.localcurrency.qtablewidgetitem(s) )
+        
+        #Add years total
+        self.table.setItem(rows, 0, qcenter(self.tr("Total")))
+        self.table.setItem(rows, 13, self.mem.localcurrency.qtablewidgetitem(sum(suma)))
 
     
     @QtCore.pyqtSlot() 
@@ -84,7 +88,7 @@ class wdgConceptsHistorical(QWidget, Ui_wdgConceptsHistorical):
         self.actionShowYear.setEnabled(False)
         self.actionShowMonth.setEnabled(False)
         if self.month!=None:
-            if self.month==0:
+            if self.month==0 and self.year<=datetime.date.today().year:#Avoid total:
                 self.actionShowYear.setEnabled(True)
             elif self.month>0:
                 self.actionShowMonth.setEnabled(True)
@@ -103,6 +107,7 @@ class wdgConceptsHistorical(QWidget, Ui_wdgConceptsHistorical):
                 self.month=0
             else:
                 self.month=i.column()
+                
             self.year=self.firstyear+i.row()
         print ("Selected year: {0}. Selected month: {1}.".format(self.year, self.month))
 
