@@ -93,11 +93,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4868"/>
-        <source>Error conecting to MyStocksd, waiting 10 seconds</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="libxulpymoney.py" line="4849"/>
         <source>Error conecting to Xulpymoney</source>
         <translation type="unfinished"></translation>
@@ -866,12 +861,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmAccess.py" line="20"/>
-        <source>MyStocks - Access</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/frmAccess.py" line="30"/>
+        <location filename="ui/frmAccess.py" line="18"/>
         <source>Xulpymoney - Access</source>
         <translation type="unfinished"></translation>
     </message>

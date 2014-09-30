@@ -93,11 +93,6 @@
         <translation>Comisión</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4868"/>
-        <source>Error conecting to MyStocksd, waiting 10 seconds</source>
-        <translation>Error al conectar to MyStocksd, esperando 10 segundos</translation>
-    </message>
-    <message>
         <location filename="libxulpymoney.py" line="4849"/>
         <source>Error conecting to Xulpymoney</source>
         <translation>Error al conectar a Xulpymoney</translation>
@@ -866,12 +861,7 @@ p, li { white-space: pre-wrap; }
         <translation>Contraseña</translation>
     </message>
     <message>
-        <location filename="ui/frmAccess.py" line="20"/>
-        <source>MyStocks - Access</source>
-        <translation>MyStocks - Acceso</translation>
-    </message>
-    <message>
-        <location filename="ui/frmAccess.py" line="30"/>
+        <location filename="ui/frmAccess.py" line="18"/>
         <source>Xulpymoney - Access</source>
         <translation>Xulpymoney - Acceso</translation>
     </message>
@@ -2915,7 +2905,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="ui/wdgProductSelector.py" line="86"/>
         <source>ISIN</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">ISIN</translation>
     </message>
     <message>
         <location filename="ui/wdgProductSelector.py" line="87"/>
