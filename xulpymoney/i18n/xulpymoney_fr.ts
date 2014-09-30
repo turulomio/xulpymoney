@@ -913,13 +913,18 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmAccountOperationsAdd.py" line="70"/>
+        <location filename="ui/frmAccountOperationsAdd.py" line="76"/>
         <source>Expenses can not have a positive amount</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmAccountOperationsAdd.py" line="77"/>
+        <location filename="ui/frmAccountOperationsAdd.py" line="83"/>
         <source>Incomes can not have a negative amount</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/frmAccountOperationsAdd.py" line="69"/>
+        <source>You must set the operation amount</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
