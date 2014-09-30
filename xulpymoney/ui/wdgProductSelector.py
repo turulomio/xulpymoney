@@ -2,7 +2,7 @@ from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 from myqtablewidget import *
 
-class wdgInvestmentSelector(QWidget):
+class wdgProductSelector(QWidget):
     """Para usarlo promocionar un qwidget en designer y darle los comportamientos de tamaña que neceseite
     incluso añadirlo a un layout."""
     def __init__(self, parent):
@@ -30,7 +30,7 @@ class wdgInvestmentSelector(QWidget):
         self.connect(self.cmd,SIGNAL('released()'),  self.on_cmd_released)
 
     def on_cmd_released(self):
-        d=frmInvestmentSelector(self, self.mem)
+        d=frmProductSelector(self, self.mem)
         d.exec_()
         self.setSelected(d.selected)
             
@@ -43,7 +43,7 @@ class wdgInvestmentSelector(QWidget):
             self.txt.setText("{0} ({1})".format(self.selected.name, self.selected.id))
         
 
-class frmInvestmentSelector(QDialog):
+class frmProductSelector(QDialog):
     def __init__(self, parent, mem):
         QDialog.__init__(self, parent)
         self.mem=mem
@@ -63,7 +63,7 @@ class frmInvestmentSelector(QDialog):
         self.horizontalLayout = QHBoxLayout()
         spacerItem = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
         self.horizontalLayout.addItem(spacerItem)
-        self.widget = wdgInvestmentSelector(self)
+        self.widget = wdgProductSelector(self)
         self.horizontalLayout.addWidget(self.widget)
         self.label = QLabel(self)
         self.horizontalLayout.addWidget(self.label)
@@ -80,7 +80,7 @@ class frmInvestmentSelector(QDialog):
         self.tblInvestments.setAlternatingRowColors(True)
         self.tblInvestments.setColumnCount(4)
         self.tblInvestments.setRowCount(0)
-        self.tblInvestments.settings("wdgInvestmentSelector",  self.mem)    
+        self.tblInvestments.settings("wdgProductSelector",  self.mem)    
         self.tblInvestments.setHorizontalHeaderItem(0, QTableWidgetItem(self.tr("Product")))
         self.tblInvestments.setHorizontalHeaderItem(1, QTableWidgetItem(self.tr("Id")))
         self.tblInvestments.setHorizontalHeaderItem(2, QTableWidgetItem(self.tr("ISIN")))

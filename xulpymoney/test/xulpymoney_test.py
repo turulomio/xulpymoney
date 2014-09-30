@@ -3,7 +3,7 @@ sys.path.append("/usr/lib/xulpymoney")
 from libxulpymoney import *
 from frmMain import *
 from frmInit import *
-from wdgInvestmentSelector import *
+from wdgProductSelector import *
 
 class TestXulpymoneyData(unittest.TestCase):
     def setUp(self):
@@ -61,7 +61,7 @@ class TestXulpymoneyData(unittest.TestCase):
         w=frmInvestmentReport(self.mem, None)
         w.cmbAccount.setCurrentIndex(w.cmbAccount.findData(6))
         w.txtInvestment.setText("Telefónica")
-        d=frmInvestmentSelector(None, self.mem)
+        d=frmProductSelector(None, self.mem)
         d.txt.setText("78241")
         d.on_cmd_released()
         d.tblInvestments.setCurrentCell(0, 0)
