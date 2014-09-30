@@ -386,9 +386,9 @@ class SetProductsModes(SetCommons):
         self.mem=mem     
     
     def load_all(self):
-        self.dic_arr['p']=ProductMode(self.mem).init__create("p",QApplication.translate("Core","Put"))
-        self.dic_arr['c']=ProductMode(self.mem).init__create("c",QApplication.translate("Core","Call"))
-        self.dic_arr['i']=ProductMode(self.mem).init__create("i",QApplication.translate("Core","Inline"))        
+        self.append(ProductMode(self.mem).init__create("p",QApplication.translate("Core","Put")))
+        self.append(ProductMode(self.mem).init__create("c",QApplication.translate("Core","Call")))
+        self.append(ProductMode(self.mem).init__create("i",QApplication.translate("Core","Inline")))
         
 class SetStockExchanges(SetCommons):
     def __init__(self, mem):
