@@ -107,15 +107,16 @@ class wdgInvestmentsOperations(QWidget, Ui_wdgInvestmentsOperations):
         self.load()
 
     def on_table_customContextMenuRequested(self,  pos):
-        if self.selOperation==None:
-            self.actionShowAccount.setEnabled(False)
-            self.actionShowInvestment.setEnabled(False)
-            self.actionShowInvestmentOperation.setEnabled(False)
-            self.actionShowProduct.setEnabled(False)
-        else:
-            self.actionShowAccount.setEnabled(True)
-            self.actionShowInvestment.setEnabled(True)
-            self.actionShowInvestmentOperation.setEnabled(True)
+        self.actionShowAccount.setEnabled(False)
+        self.actionShowInvestment.setEnabled(False)
+        self.actionShowInvestmentOperation.setEnabled(False)
+        self.actionShowProduct.setEnabled(False)
+        if self.selOperation!=None:
+            if self.selOperation.inversion.cuenta.activa==True:#only enabled if it's active
+                self.actionShowAccount.setEnabled(True)
+            if self.selOperation.inversion.activa==True:
+                self.actionShowInvestment.setEnabled(True)
+                self.actionShowInvestmentOperation.setEnabled(True)
             self.actionShowProduct.setEnabled(True)
 
         menu=QMenu()
