@@ -15,7 +15,7 @@ class frmInit(QDialog, Ui_frmInit):
     
     @pyqtSignature("")
     def on_cmdYN_accepted(self):
-        respuesta = QMessageBox.warning(self, self.windowTitle(), self.tr("Do you want to create needed Xulpymoney databases in {0}?".format(self.cmbLanguage.currentText())), QMessageBox.Ok | QMessageBox.Cancel)
+        respuesta = QMessageBox.warning(self, self.windowTitle(), self.trUtf8("Do you want to create needed Xulpymoney databases in {0}?".format(self.cmbLanguage.currentText())), QMessageBox.Ok | QMessageBox.Cancel)
         if respuesta==QMessageBox.Ok:             
             if self.create_db(self.txtXulpymoney.text())==False  or self.create_xulpymoney()==False:
                 m=QMessageBox()
@@ -29,14 +29,15 @@ class frmInit(QDialog, Ui_frmInit):
             m.exec_()         
             
             #Insert quotes of yahoo
-            strtemplate1="dbname='%s' port='%s' user='%s' host='%s' password='%s'" % (self.txtMyStocks.text(), self.txtPort.text(), self.txtUser.text(),  self.txtServer.text(), self.txtPass.text())
+            strtemplate1="dbname='%s' port='%s' user='%s' host='%s' password='%s'" % (self.txtXulpymoney.text(), self.txtPort.text(), self.txtUser.text(),  self.txtServer.text(), self.txtPass.text())
             self.mem.con=psycopg2.extras.DictConnection(strtemplate1)
+            self.mem.con.set_isolation_level(0)
             self.mem.actualizar_memoria()            
             w=WorkerYahooHistorical(self.mem)
             w.start()           
             
             m=QMessageBox()
-            m.setText(self.tr("Process finished. Now you can use MyStocks and Xulpymoney"))
+            m.setText(self.tr("Process finished. Now you can use Xulpymoney"))
             m.exec_()         
             self.accept()
 
@@ -86,10 +87,6 @@ class frmInit(QDialog, Ui_frmInit):
         cur.close()
         con.close()
 
-#    @pyqtSignature("")
-#    def create_mystocks(self):
-#        self.load_script(self.txtMyStocks.text(), "/usr/share/xulpymoney/sql/mystocks.sql")
-#        self.load_script(self.txtMyStocks.text(), "/usr/share/xulpymoney/sql/mystocks.data")
         
     @pyqtSignature("")
     def create_xulpymoney(self):
