@@ -1518,77 +1518,77 @@ p, li { white-space: pre-wrap; }
         <translation>Base de datos Xulpymoney</translation>
     </message>
     <message>
-        <location filename="ui/frmInit.py" line="103"/>
+        <location filename="ui/frmInit.py" line="100"/>
         <source>Personal Management</source>
         <translation>Gestión personal</translation>
     </message>
     <message>
-        <location filename="ui/frmInit.py" line="104"/>
+        <location filename="ui/frmInit.py" line="101"/>
         <source>Cash</source>
         <translation>Efectivo</translation>
     </message>
     <message>
-        <location filename="ui/frmInit.py" line="105"/>
+        <location filename="ui/frmInit.py" line="102"/>
         <source>Initiating bank account</source>
         <translation>Iniciando cuenta bancaria</translation>
     </message>
     <message>
-        <location filename="ui/frmInit.py" line="106"/>
+        <location filename="ui/frmInit.py" line="103"/>
         <source>Transfer. Origin</source>
         <translation>Transferencia. Origen</translation>
     </message>
     <message>
-        <location filename="ui/frmInit.py" line="107"/>
+        <location filename="ui/frmInit.py" line="104"/>
         <source>Transfer. Destination</source>
         <translation>Transferencia. Destino</translation>
     </message>
     <message>
-        <location filename="ui/frmInit.py" line="111"/>
+        <location filename="ui/frmInit.py" line="108"/>
         <source>Dividends</source>
         <translation>Dividendos</translation>
     </message>
     <message>
-        <location filename="ui/frmInit.py" line="112"/>
+        <location filename="ui/frmInit.py" line="109"/>
         <source>Credit card billing</source>
         <translation>Facturación de tarjeta de crédito</translation>
     </message>
     <message>
-        <location filename="ui/frmInit.py" line="113"/>
+        <location filename="ui/frmInit.py" line="110"/>
         <source>Added shares</source>
         <translation>Añadido de acciones</translation>
     </message>
     <message>
-        <location filename="ui/frmInit.py" line="114"/>
+        <location filename="ui/frmInit.py" line="111"/>
         <source>Attendance bonus</source>
         <translation>Prima de asistencia</translation>
     </message>
     <message>
-        <location filename="ui/frmInit.py" line="115"/>
+        <location filename="ui/frmInit.py" line="112"/>
         <source>Custody commission</source>
         <translation>Comisión de custodia</translation>
     </message>
     <message>
-        <location filename="ui/frmInit.py" line="116"/>
+        <location filename="ui/frmInit.py" line="113"/>
         <source>Dividends. Sale of rights</source>
         <translation>Dividendos. Venta de derechos</translation>
     </message>
     <message>
-        <location filename="ui/frmInit.py" line="117"/>
+        <location filename="ui/frmInit.py" line="114"/>
         <source>Bonds. Running coupon payment</source>
         <translation>Deuda. Pago de cupón corrido</translation>
     </message>
     <message>
-        <location filename="ui/frmInit.py" line="118"/>
+        <location filename="ui/frmInit.py" line="115"/>
         <source>Bonds. Running coupon collection</source>
         <translation>Deuda. Cobro de cupón corrido</translation>
     </message>
     <message>
-        <location filename="ui/frmInit.py" line="119"/>
+        <location filename="ui/frmInit.py" line="116"/>
         <source>Bonds. Coupon collection</source>
         <translation>Deuda. Cobro de cupón</translation>
     </message>
     <message>
-        <location filename="ui/frmInit.py" line="110"/>
+        <location filename="ui/frmInit.py" line="107"/>
         <source>Bank commissions</source>
         <translation>Comisiones bancarias</translation>
     </message>
@@ -1623,22 +1623,22 @@ p, li { white-space: pre-wrap; }
         <translation>¿Quieres crear las bases de datos  de Xulpymoney en {0}?</translation>
     </message>
     <message>
-        <location filename="ui/frmInit.py" line="120"/>
+        <location filename="ui/frmInit.py" line="117"/>
         <source>Paysheet</source>
         <translation>Nómina</translation>
     </message>
     <message>
-        <location filename="ui/frmInit.py" line="121"/>
+        <location filename="ui/frmInit.py" line="118"/>
         <source>Supermarket</source>
         <translation>Supermercado</translation>
     </message>
     <message>
-        <location filename="ui/frmInit.py" line="122"/>
+        <location filename="ui/frmInit.py" line="119"/>
         <source>Restaurant</source>
         <translation>Restaurante</translation>
     </message>
     <message>
-        <location filename="ui/frmInit.py" line="123"/>
+        <location filename="ui/frmInit.py" line="120"/>
         <source>Gas</source>
         <translation>Gasolina</translation>
     </message>
@@ -1648,22 +1648,17 @@ p, li { white-space: pre-wrap; }
         <translation>Bases de datos creadas. Xulpymoney va a insertar precios de acciones desde Yahoo. Es un proceso largo, por favor espere.</translation>
     </message>
     <message>
-        <location filename="ui/frmInit.py" line="39"/>
-        <source>Process finished. Now you can use MyStocks and Xulpymoney</source>
-        <translation>Proceso finalizado. Ya puede usar MyStocks y Xulpymoney</translation>
-    </message>
-    <message>
         <location filename="ui/Ui_frmInit.py" line="159"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Pressing OK, you will create needed database to run Xulpymoney. They&apos;ll be created in the language selected&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Pulsando OK, se creará la base de datos necesaria para ejecutar Xulpymoney. Serán creadas en el lenguage seleccionado&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="ui/frmInit.py" line="108"/>
+        <location filename="ui/frmInit.py" line="105"/>
         <source>Purchase investment product</source>
         <translation>Compra de producto de inversión</translation>
     </message>
     <message>
-        <location filename="ui/frmInit.py" line="109"/>
+        <location filename="ui/frmInit.py" line="106"/>
         <source>Sale investment product</source>
         <translation>Venta de producto de inversión</translation>
     </message>
@@ -1671,6 +1666,11 @@ p, li { white-space: pre-wrap; }
         <location filename="ui/frmInit.py" line="22"/>
         <source>Error creating database. Maybe it already exist</source>
         <translation>Error al crear la base de datos. Puede que ya exista</translation>
+    </message>
+    <message>
+        <location filename="ui/frmInit.py" line="40"/>
+        <source>Process finished. Now you can use Xulpymoney</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
