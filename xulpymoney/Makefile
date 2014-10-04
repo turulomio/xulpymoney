@@ -49,7 +49,6 @@ compile:
 	pyuic4 ui/wdgDatetime.ui > ui/Ui_wdgDatetime.py
 	pyuic4 ui/wdgProducts.ui > ui/Ui_wdgProducts.py
 	pyuic4 ui/wdgInvestmentsOperations.ui > ui/Ui_wdgInvestmentsOperations.py
-	pyuic4 ui/wdgLog.ui > ui/Ui_wdgLog.py
 	pyuic4 ui/wdgMergeCodes.ui > ui/Ui_wdgMergeCodes.py
 	pyuic4 ui/wdgYearMonth.ui > ui/Ui_wdgYearMonth.py
 	pyuic4 ui/wdgYear.ui > ui/Ui_wdgYear.py

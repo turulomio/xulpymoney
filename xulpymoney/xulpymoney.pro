@@ -93,8 +93,6 @@ SOURCES         = \
                   ui/Ui_wdgInvestmentsOperations.py \
                   ui/wdgJointReport.py \
                   ui/Ui_wdgJointReport.py \
-                  ui/wdgLog.py \
-                  ui/Ui_wdgLog.py \
                   ui/wdgMergeCodes.py \
                   ui/Ui_wdgMergeCodes.py \
                   ui/wdgProducts.py \
@@ -146,7 +144,6 @@ FORMS           = \
                   ui/wdgInvestments.ui \
                   ui/wdgInvestmentsOperations.ui \
                   ui/wdgJointReport.ui \
-                  ui/wdgLog.ui \
                   ui/wdgMergeCodes.ui \
                   ui/wdgProducts.ui \
                   ui/wdgTotal.ui \
