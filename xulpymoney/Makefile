@@ -1,12 +1,10 @@
 DESTDIR ?= /
 
-PREFIXETC=$(DESTDIR)/etc/xulpymoney
 PREFIXBIN=$(DESTDIR)/usr/bin
 PREFIXLIB=$(DESTDIR)/usr/lib/xulpymoney
 PREFIXSHARE=$(DESTDIR)/usr/share/xulpymoney
 PREFIXPIXMAPS=$(DESTDIR)/usr/share/pixmaps
 PREFIXAPPLICATIONS=$(DESTDIR)/usr/share/applications
-PREFIXINITD=$(DESTDIR)/etc/init.d
 
 all: compile install
 compile:
@@ -56,37 +54,29 @@ compile:
 	lrelease xulpymoney.pro
 
 install:
-	install -o root -d $(PREFIXETC)
 	install -o root -d $(PREFIXBIN)
 	install -o root -d $(PREFIXLIB)
 	install -o root -d $(PREFIXSHARE)
 	install -o root -d $(PREFIXSHARE)/sql
-	install -o root -d $(PREFIXSHARE)/scripts
 	install -o root -d $(PREFIXPIXMAPS)
 	install -o root -d $(PREFIXAPPLICATIONS)
-	install -o root -d $(PREFIXINITD)
 
 	install -m 755 -o root xulpymoney.py $(PREFIXBIN)/xulpymoney
 	install -m 755 -o root xulpymoney_init.py $(PREFIXBIN)/xulpymoney_init
 	install -m 644 -o root ui/*.py libxulpymoney.py images/*.py  $(PREFIXLIB)
 	install -m 644 -o root i18n/*.qm $(PREFIXLIB)
+	install -m 644 -o root sources/*.py $(PREFIXLIB)
+
+
 	install -m 644 -o root xulpymoney.desktop $(PREFIXAPPLICATIONS)
 	install -m 644 -o root images/dinero.png $(PREFIXPIXMAPS)/xulpymoney.png
 
-	install -m 755 -o root mystocksd.py $(PREFIXBIN)/mystocksd
-	install -m 755 -o root sources/source_*.py $(PREFIXBIN)/
-	install -m 755 -o root mystocks.initd $(PREFIXINITD)/mystocks
-	install -m 644 -o root GPL-3.txt CHANGELOG.txt AUTHORS.txt RELEASES.txt xulpymoney.odt $(PREFIXSHARE)
+	install -m 644 -o root GPL-3.txt CHANGELOG.txt AUTHORS.txt RELEASES.txt $(PREFIXSHARE)
 	install -m 644 -o root sql/xulpymoney.sql $(PREFIXSHARE)/sql
 	install -m 644 -o root images/kmplot.jpg $(PREFIXPIXMAPS)/mystocks.jpg
-	install -m 644 -o root scripts/*.py $(PREFIXSHARE)/scripts
-	install -m 644 -o root sources/*.py $(PREFIXLIB)
 
 uninstall:
-	rm $(PREFIXBIN)/mystocksd
-	rm $(PREFIXBIN)/source_*.py
 	rm $(PREFIXBIN)/xulpymoney
-	rm $(PREFIXBIN)/xulpymoney_init
 	rm -Rf $(PREFIXLIB)
 	rm -Rf $(PREFIXSHARE)
 	rm -fr $(PREFIXPIXMAPS)/xulpymoney.png

@@ -1,6 +1,5 @@
 SOURCES         = \
                   libxulpymoney.py \
-                  mystocksd.py \
                   sources/bolsamadridfondos.py \
                   sources/bonoaleman.py \
                   sources/carmignac.py \
