@@ -33,7 +33,7 @@ class frmAccess(QDialog, Ui_frmAccess):
             self.mem.config.set_value("frmAccess", "port",  self.txtPort.text())
             self.mem.config.set_value("frmAccess", "user" ,  self.txtUser.text())
             self.mem.config.set_value("frmAccess", "server", self.txtServer.text())     
-            self.mem.con=self.mem.connect_xulpymoney()           
+            self.mem.con=self.mem.connect_from_config()           
             self.mem.config.set_value("settings", "language", self.cmbLanguages.itemData(self.cmbLanguages.currentIndex()))
             self.mem.config.save()                
             return True

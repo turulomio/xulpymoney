@@ -22,7 +22,7 @@ from frmTransfer import *
 from frmSettings import *
 from frmHelp import *
 from wdgProducts import *
-from source_yahoohistorical import WorkerYahooHistorical
+from libsources import WorkerYahooHistorical
 
 class frmMain(QMainWindow, Ui_frmMain):
     """Clase principal del programa"""
@@ -562,6 +562,5 @@ class frmMain(QMainWindow, Ui_frmMain):
 
     @QtCore.pyqtSlot()  
     def on_actionPriceUpdates_activated(self):  
-        w=WorkerYahooHistorical(self.mem)
-        w.start()           
+        WorkerYahooHistorical(self.mem, 2)
         self.on_actionReloadPrices_activated()

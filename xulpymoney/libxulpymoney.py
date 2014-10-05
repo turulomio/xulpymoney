@@ -1,6 +1,6 @@
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
-import datetime,  time,  pytz,   psycopg2,  psycopg2.extras,  sys,  codecs,  urllib.request,    os,  configparser,  inspect,  threading
+import datetime,  time,  pytz,   psycopg2,  psycopg2.extras,  sys,  codecs,  urllib.request,    os,  configparser,  inspect,  threading, argparse, getpass
 
 from decimal import *
 
@@ -333,6 +333,21 @@ class SetProducts(SetCommons):
     def __init__(self, mem):
         SetCommons.__init__(self)
         self.mem=mem
+        
+
+    def find_by_ticker(self, ticker):
+        for p in self.arr:
+            if p.ticker==ticker:
+                return p
+        return None        
+        
+
+    def find_by_isin(self, isin):
+        for p in self.arr:
+            if p.isin==isin:
+                return p
+        return None                
+        
     def load_from_inversiones_query(self, sql):
         """sql es una query sobre la tabla inversiones"""
         cur=self.mem.con.cursor()
@@ -397,11 +412,11 @@ class SetStockExchanges(SetCommons):
         self.mem=mem     
     
     def load_all_from_db(self):
-        curms=self.mem.con.cursor()
-        curms.execute("Select * from bolsas")
-        for row in curms:
+        cur=self.mem.con.cursor()
+        cur.execute("Select * from bolsas")
+        for row in cur:
             self.append(StockExchange(self.mem).init__db_row(row, self.mem.countries.find(row['country'])))
-        curms.close()
+        cur.close()
 
 class SetConcepts(SetCommons):
     def __init__(self, mem):
@@ -1194,10 +1209,10 @@ class SetInvestmentOperationsCurrent:
         return sumpendiente*100/suminvertido
     
     def get_valor_benchmark(self, indice):
-        curms=self.mem.con.cursor()
+        cur=self.mem.con.cursor()
         for o in self.arr:
             o.get_referencia_indice(indice)
-        curms.close()
+        cur.close()
     
     def valor_medio_compra(self):
         """Devuelve el valor medio de compra de todas las operaciones de inversión actual"""
@@ -2459,7 +2474,7 @@ class Investment:
         return False
     def balance(self, fecha=None):
         """Función que calcula el balance de la inversión
-            Si el curms es None se calcula el actual 
+            Si el cur es None se calcula el actual 
                 Necesita haber cargado mq getbasic y operinversionesactual"""     
         acciones=self.acciones(fecha)
         if acciones==0 or self.product.result.basic.last.quote==None:#Empty xulpy
@@ -3396,239 +3411,6 @@ class EstimationDPS:
         except:
             return None
 
-        
-class SourceNew:
-    """Clase nueva para todas las sources
-    Debera:
-    - Cargar al incio un sql con las products del source"""
-    def __init__(self, mem, sql):
-        self.products=[]
-        self.load_investments(sql)
-    def load_investments(self,  sql):
-        return
-        
-    def investments_to_search(self):
-        """Función que devuelve un array con las products a buscar después de hacer filtros
-        Estos filtros son:
-        - Filtro por horarios, aunque busque tarde debe meter la hora bien con .0001234, debe permitir primero"""
-        
-class SourceIntraday(SourceNew):
-    def __init__(self, mem, sql):
-        SourceNew.__init__(self, mem, sql)
-        
-        
-class SourceDailyUnique(SourceNew):
-    def __init__(self, mem, sql):
-        SourceNew.__init__(self, mem, sql)
-    
-class SourceDailyGroup(SourceNew):
-    def __init__(self, mem, sql):
-        SourceNew.__init__(self, mem, sql)
-
-    
-    
-class Source:
-    """Solo se debe cambiar la función arr_*, independiente de si se usa static o statics
-    Al crear uno nuevo se debe crear un start, que  no es heredada ni virtual en la que se cojan los distintos updates con process
-    Luego crear las funciones virtuales.
-    """
-    def __init__(self,  mem):
-
-        self.mem=mem
-        self.debugmode=False#Si fuera true en vez de insertar  hace un listado#       
-        self.internetquerys=0#Número de consultas a Internet
-        self.downloadalways=False#Booleano que a true permite download los fines de semana
-#        self.downloadrange=(datetime.time(0, 0), datetime.time(23, 59)) #Estas horas deben estar en utc
-        
-    def print_parsed(self,  parsed):
-        for p in parsed:
-            print ("{0:>6} {2} {1:>10} ".format(p['id'], p['quote'], p['datetime']))
-        
-    def parse_errors(self, cur, errors):
-        er=0
-        for e in errors:
-            if e==None:
-                er=er+1
-            else:
-                self.mem.activas[str(e)].priority_change(cur)
-        if er>0:
-            print ("{0} errores no se han podido parsear".format(er))
-            
-        
-    def arr_quote(self, code):
-        return []
-
-    def filtrar_ids_primerregistro_ge_iniciodb(self,  ids):
-        """Filtra aquellos ids cuyo primer registro es mayor que el inicio de la base de datos. Es decir que no se han buscado historicos"""
-        con=self.mem.connect_xulpymoneyd()
-        cur = con.cursor()     
-        resultado=[]
-        for id in ids:
-            cur.execute(" select id, count(*) from quotes where id in (select id from products where active=false and priority[1]=1) group by id;=%s and datetime::date<%s", (id, self.mem.dbinitdate))
-            if cur.fetchone()[0]==0:
-                resultado.append(id)
-        cur.close()                
-        self.mem.disconnect_xulpymoneyd(con)
-        return resultado
-                
-    def filtrar_ids_inactivos_no_actualizados(self, cur,  idpriority, dias,  priorityhistorical=False):
-        """Filtra aquellos ids consultando a la base dpe datos, que tengan activa un id_prioridad
-        o un id_prioridadhistorical si priorityhistorical=True y que no hayan sido actualizados desde now()-dias
-        y que esten inactivo"""
-        resultado=[]
-        if priorityhistorical==False:
-            cur.execute("select * from products where (select count(*) from quotes where id=products.id and datetime>now()::date-%s)=0 and active=false and priority[1]=%s;", (dias,  idpriority))   
-        else:
-            cur.execute("select * from products where (select count(*) from quotes where id=products.id and datetime>now()::date-%s)=0 and active=false and priorityhistorical[1]=%s;", (dias,  idpriority))   
-        for row in cur:
-            resultado.append(Product(self.mem).init__db_row(self.mem, row))
-        return resultado
-        
-    def find_ids(self):
-        """Devuelve un array con los objetos de Product que cumplen"""
-        print ("find_ids es obsoleto hacer con query")
-        self.ids=[]
-        for inv in self.mem.activas():
-            if inv.active==True: #Debe ser activa
-                if len(inv.priority.arr)>0:
-                    if inv.priority.arr[0].id==self.id_source: #Seleccion generica
-                        #particularidades
-                        if self.id_source==1 : #Caso de yahoo
-                            if inv.ticker!=None or inv.ticker!='':#Comprueba que tiene ticker
-                                self.ids.append(inv)
-                        else:
-                                self.ids.append(inv)
-#        print (len(self.ids))
-        return self.ids        
-        
-    def find_ids_historical(self):
-        """Función que busca todos los ids de las inversiones con priorityhistorical=id_source y que estén activas"""
-        self.ids=[]
-        for inv in self.mem.activas():
-            if inv.active==True: #Debe ser activa
-                if len(inv.priorityhistorical.arr)>0:
-                    if inv.priorityhistorical.arr[0].id==self.id_source: #Seleccion generica
-                        #particularidades
-                        if  self.id_source==3: #Caso de yahoo
-                            if inv.ticker!=None or inv.ticker!='':#Comprueba que tiene yahoo
-                                self.ids.append(inv)
-                        else:
-                                self.ids.append(inv)
-        return self.ids
-
-        
-    def isin2id(self, isin,  id_stockexchanges):
-        for i in self.mem.activas:
-            if isin==self.mem.activas[i].isin and id_stockexchanges==self.mem.activas[i].id_stockexchanges:
-                return int(i)
-        return None
-        
-
-    def download(self, url,  function,  controltime=True):
-        """Función que devuelve la salida del comando urllib, normalmente es el parametro web o None si ha salido mal la descarga
-        """
-        download=True
-        message=""
-        
-        if message!="" and download==True:
-            log(self.name, "DOWNLOAD",  message)
-        
-        if download==True:     
-            try:                 
-                web=urllib.request.urlopen(url)
-            except:            
-                return None
-        else:
-            return None
-        return web
-
-    def update_step_quotes(self, sql):
-        """Hace un bucle con los distintos codes del sql."""
-        con=self.mem.connect_xulpymoneyd()
-        cur=con.cursor()
-        status_insert(cur, self.name, "Update stepcode quotes")
-        con.commit()
-        cur.close()
-        mem.disconnect_xulpymoneyd(con)   
-        while True:
-            time.sleep(self.time_before_quotes)
-            con=self.mem.connect_xulpymoneyd()
-            cur=con.cursor()
-            cur2=con.cursor()
-            status_update(cur, self.name, "Update step quotes", status='Working',  statuschange=datetime.datetime.now())
-            con.commit()
-            cur.execute(sql)
-            for row in cur:
-                if self.debugmode==True:
-                    for i in self.arr_quote(row['code']):
-                        print (i)
-    #                log("S_SOCIETEGENERALEWARRANTS_STATICS", QApplication.translate("Core",("%d de %d" %(cur.rownumber, cur.rowcount)))
-                else:
-                    Quote(self.mem).insert_cdtv(self.arr_quote(row['code']), self.name)
-                status_update(cur2, self.name, "Update step quotes", status='Waiting step',  statuschange=datetime.datetime.now())
-                con.commit()
-                time.sleep(self.time_step_static)
-            
-            status_update(cur2, self.name, "Update step quotes", status='Waiting after',  statuschange=datetime.datetime.now())
-            con.commit()
-            cur.close()
-            cur2.close()
-            mem.disconnect_xulpymoneyd(con)    
-            time.sleep( self.time_after_statics)
-        
-
-    def filtrar_horario_bolsa(self, products):
-        if (datetime.datetime.now()-self.mem.inittime).total_seconds()<120:#120: # Si acaba de arrancar
-            return products
-            
-        if datetime.datetime.now().weekday()>=5:         
-            return []
-#        now=datetime.time(datetime.datetime.utcnow().hour, datetime.datetime.utcnow().minute) 
-        resultado=[]
-        margen=datetime.timedelta(hours=1 )
-        for inv in products:
-#            inv=self.mem.activas(i)
-#            bolsa=self.mem.stockexchanges[str(self.mem.activas[str(i)].id_stockexchanges)]
-            now=datetime.datetime.now(pytz.timezone(inv.stockexchange.zone))
-            starts=now.replace(hour=inv.stockexchange.starts.hour, minute=inv.stockexchange.starts.minute, second=inv.stockexchange.starts.second)
-            stops=now.replace(hour=inv.stockexchange.ends.hour, minute=inv.stockexchange.ends.minute)+margen
-#            print (starts, now, stops)
-            if starts<now and stops>now:
-                print ("metido")
-                resultado.append(inv)
-        return resultado
-                
-
-
-    def agrupations(self, isin, agrbase=[]):
-        """agrbase es la agrupación base que se importa desde statics, por ejemplo EURONEXT o BMF"""
-        agr=[]
-        agr=agr+agrbase
-        if isin in self.mem.cac40:
-            agr.append('CAC40')            
-        if isin in self.mem.eurostoxx:
-            agr.append('EUROSTOXX')
-        if isin in self.mem.ibex:
-            agr.append('IBEX35')
-        if isin in self.mem.nyse:
-            agr.append('NYSE')
-        if isin in self.mem.dax:
-            agr.append('DAX')
-            
-        if len(agr)==0:
-            return '||'
-        else:
-            agr.sort()
-            resultado='|'
-            for i in agr:
-                resultado=resultado + i + '|'
-            return resultado
-        
-    def ticker2investment(self, ticker, products):
-        for inv in products:
-            if inv.ticker==ticker:
-                return inv
-        return None
 
 
 class Product:
@@ -3811,38 +3593,7 @@ class Product:
         self.id=newid
         return self
 
-        
-class SetQuotes:
-    """Clase que agrupa quotes un una lista arr. Util para operar con ellas como por ejemplo insertar"""
-    def __init__(self, mem):
-        self.mem=mem
-        self.arr=[]
-    
-    def save(self,  source):
-        """Recibe con code,  date,  time, value, zone
-            Para poner el dato en close, el valor de time debe ser None
-            Devuelve una tripleta (insertado,buscados,modificados)
-        """
-        (insertados, buscados, modificados)=(0, 0, 0)
-        if len(self.arr)==0:
-            return  (insertados, buscados, modificados)
-            
-            
-        for p in self.arr:
-            ibm=p.save()
-            if ibm==0:
-                buscados=buscados+1
-            elif ibm==1:
-                insertados=insertados+1
-            elif ibm==2:
-                modificados=modificados+1
 
-        if insertados>0 or modificados>0:
-             return (insertados, buscados, modificados)
-#            log("QUOTES" , source,  QApplication.translate("Core","Se han buscado %(b)d, modificado %(m)d e insertado %(i)d registros de %(c)s") %{"b":buscados, "m": modificados,   "i":insertados,  "c":source})
-        
-    def append(self, quote):
-        self.arr.append(quote)
                 
                 
 class SetQuotesAll:
@@ -4112,7 +3863,7 @@ class Quote:
                 curms.execute("update quotes set quote=%swhere id=%s and datetime=%s", (self.quote, self.product.id, self.datetime))
                 curms.close()
                 return 2
-            else:
+            else: #ignored
                 curms.close()
                 return 3
                 
@@ -4785,16 +4536,29 @@ class MemProducts:
         self.zones=SetZones(self)
         self.investmentsmodes=SetProductsModes(self)
         
+    def init__script(self, title):
+        """Script arguments and autoconnect in mem.con, actualizar_memoria"""
+        parser=argparse.ArgumentParser(title)
+        parser.add_argument('-U', '--user', help='Postgresql user', default='postgres')
+        parser.add_argument('-p', '--port', help='Postgresql server port', default=5432)
+        parser.add_argument('-H', '--host', help='Postgresql server address', default='127.0.0.1')
+        parser.add_argument('-d', '--db', help='Postgresql database', default='xulpymoney')
+        args=parser.parse_args()
+        password=getpass.getpass()
+        
+        (self.con, err)=self.connect(args.db, args.port, args.user, args.host, password)
+        if self.con==None:
+            print (err)
+            sys.exit(255)        
+        
+        self.actualizar_memoria()
+        
     def default_values(self):
         d={}
         d['frmAccess#db'] = 'xulpymoney'
         d['frmAccess#port']='5432'
         d['frmAccess#user']= 'postgres'
         d['frmAccess#server']='127.0.0.1'
-#        d['frmAccessMS#db'] = 'mystocks'
-#        d['frmAccessMS#port']='5432'
-#        d['frmAccessMS#user']= 'postgres'
-#        d['frmAccessMS#server']='127.0.0.1'
         d['settings#dividendwithholding']='0.21'
         d['settings#taxcapitalappreciation']='0.21'
         d['settings#localcurrency']='EUR'
@@ -4826,7 +4590,7 @@ class MemProducts:
 
     def __del__(self):
         if self.con:#Cierre por reject en frmAccess
-            self.disconnect_xulpymoney(self.con)
+            self.disconnect(self.con)
     
     def setQTranslator(self, qtranslator):
         self.qtranslator=qtranslator
@@ -4849,21 +4613,27 @@ class MemProducts:
         self.stockexchanges.load_all_from_db()
         self.agrupations.load_all()
         self.leverages.load_all()
-
         
-    def connect_xulpymoney(self):        
-        strcon="dbname='%s' port='%s' user='%s' host='%s' password='%s'" % (self.config.get_value("frmAccess", "db"),  self.config.get_value("frmAccess", "port"), self.config.get_value("frmAccess", "user"), self.config.get_value("frmAccess", "server"),  self.password)
+    def connect(self,  db,  port, user, host, pasw):        
+        strcon="dbname='{}' port='{}' user='{}' host='{}' password='{}'".format(db, port, user, host, pasw)
         try:
             con=psycopg2.extras.DictConnection(strcon)
         except psycopg2.Error:
+            return (None, QApplication.translate("Core","Error conecting to Xulpymoney"))
+        return (con, QApplication.translate("Core", "Connection done"))
+    
+        
+    def connect_from_config(self):        
+        (con, log)=self.connect(self.config.get_value("frmAccess", "db"),  self.config.get_value("frmAccess", "port"), self.config.get_value("frmAccess", "user"), self.config.get_value("frmAccess", "server"),  self.password)
+        if con==None:
             m=QMessageBox()
-            m.setText(QApplication.translate("Core","Error conecting to Xulpymoney"))
+            m.setText(log)
             m.setIcon(QMessageBox.Information)
             m.exec_()        
             sys.exit()
         return con
         
-    def disconnect_xulpymoney(self, con):
+    def disconnect(self, con):
         con.close()
  
             
@@ -5437,11 +5207,6 @@ def qtpc(n, rnd=2):
         a.setTextColor(QColor(255, 0, 0))
     return a
       
-def strnames(filter):
-    s=""
-    for i in filter:
-        s=s+i+"+"
-    return s[:-1]
 
 def tpc(n, rnd=2):
     if n==None:

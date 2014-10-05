@@ -63,7 +63,7 @@ install:
 
 	install -m 755 -o root xulpymoney.py $(PREFIXBIN)/xulpymoney
 	install -m 755 -o root xulpymoney_init.py $(PREFIXBIN)/xulpymoney_init
-	install -m 644 -o root ui/*.py libxulpymoney.py images/*.py  $(PREFIXLIB)
+	install -m 644 -o root ui/*.py libxulpymoney.py libsources.py images/*.py  $(PREFIXLIB)
 	install -m 644 -o root i18n/*.qm $(PREFIXLIB)
 	install -m 644 -o root sources/*.py $(PREFIXLIB)
 

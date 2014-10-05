@@ -1,4 +1,5 @@
 SOURCES         = \
+                  libsources.py \
                   libxulpymoney.py \
                   sources/bolsamadridfondos.py \
                   sources/bonoaleman.py \

@@ -22,6 +22,7 @@ cp      Makefile \
         xulpymoney.desktop \
         xulpymoney.pro \
         libxulpymoney.py \
+        libsources.py \
         $DIR
 
 cp      i18n/*.ts \
