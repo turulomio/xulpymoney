@@ -134,14 +134,14 @@ class wdgProducts(QWidget, Ui_wdgProducts):
 
         respuesta = QMessageBox.warning(self, self.tr("Xulpymoney"), self.tr("Deleting data from selected product ({0}). If you use manual update mode, data won't be recovered. Do you want to continue?".format(self.selProduct.id)), QMessageBox.Ok | QMessageBox.Cancel)
         if respuesta==QMessageBox.Ok:
-            con=self.mem.connect_xulpymoney()
+            con=self.mem.connect_from_config()
             cur = con.cursor()
             cur.execute("delete from products where id=%s", (self.selProduct.id, ))
             cur.execute("delete from quotes where id=%s", (self.selProduct.id, ))
             cur.execute("delete from estimations_dps where id=%s", (self.selProduct.id, ))
             con.commit()
             cur.close()     
-            self.mem.disconnect_xulpymoney(con)    
+            self.mem.disconnect(con)    
             self.build_array(self.sql)
             self.build_table()  
             

@@ -447,7 +447,7 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
     def on_cmbFechasPago_currentIndexChanged(self, index):
         id_opercuentas=self.cmbFechasPago.itemData(int(self.cmbFechasPago.currentIndex()))
         print (id_opercuentas)            
-        con=self.mem.connect_xulpymoney()
+        con=self.mem.connect_from_config()
         cur = con.cursor()      
         cur.execute("select id_opertarjetas,datetime,conceptos.concepto,importe,comentario from opertarjetas,conceptos where opertarjetas.id_conceptos=conceptos.id_conceptos and id_opercuentas=%s;", (id_opercuentas, ))
         self.tblOpertarjetasHistoricas.clearContents()
@@ -462,13 +462,13 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
             self.tblOpertarjetasHistoricas.setItem(cur.rownumber-1, 4, self.selAccount.currency.qtablewidgetitem(balance))
             self.tblOpertarjetasHistoricas.setItem(cur.rownumber-1, 5, QTableWidgetItem((rec['comentario'])))
         cur.close()     
-        self.mem.disconnect_xulpymoney(con)      
+        self.mem.disconnect(con)      
 
     def on_tabOpertarjetasDiferidas_currentChanged(self, index): 
         if  index==1: #PAGOS
             #Carga combo
             self.cmbFechasPago.clear()
-            con=self.mem.connect_xulpymoney()
+            con=self.mem.connect_from_config()
             cur = con.cursor()       
             cur2=con.cursor()
             cur.execute("select distinct(fechapago), id_opercuentas from opertarjetas where id_tarjetas=%s and fechapago is not null  order by fechapago;", (self.selCreditCard.id, ))
@@ -479,7 +479,7 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
             self.cmbFechasPago.setCurrentIndex(cur.rowcount-1)
             cur.close()     
             cur2.close()
-            self.mem.disconnect_xulpymoney(con)      
+            self.mem.disconnect(con)      
             
 
     def on_txtAccount_textChanged(self):
