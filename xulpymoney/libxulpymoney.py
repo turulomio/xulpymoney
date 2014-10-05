@@ -336,15 +336,23 @@ class SetProducts(SetCommons):
         
 
     def find_by_ticker(self, ticker):
+        if ticker==None:
+            return None
         for p in self.arr:
-            if p.ticker==ticker:
+            if p.ticker==None:
+                continue
+            if p.ticker.upper()==ticker.upper():
                 return p
         return None        
         
 
     def find_by_isin(self, isin):
+        if isin==None:
+            return None
         for p in self.arr:
-            if p.isin==isin:
+            if p.isin==None:
+                continue
+            if p.isin.upper()==isin.upper():
                 return p
         return None                
         
@@ -5055,10 +5063,7 @@ def b2c(booleano):
     else:
         return Qt.Unchecked     
         
-def comaporpunto(cadena):
-    cadena=cadena.replace(b'.',b'')#Quita puntos
-    cadena=cadena.replace(b',',b'.')#Cambia coma por punto
-    return cadena
+
 
 
 def day_end(dattime, zone):

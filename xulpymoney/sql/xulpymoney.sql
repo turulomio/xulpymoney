@@ -4234,7 +4234,7 @@ INSERT INTO products VALUES ('EUROMEDIS GROUPE', 'FR0000075343', 'EUR', 1, '|EUR
 INSERT INTO products VALUES ('euromicron AG', 'DE0005660005', 'EUR', 1, '|DEUTSCHEBOERSE|', false, 77194, NULL, NULL, NULL, NULL, 100, 'c', 0, 5, NULL, NULL, NULL, 'DEUTSCHEBOERSE#DE0005660005||de||False', false, true, true);
 INSERT INTO products VALUES ('euromicron AG', 'DE000A1K0300', 'EUR', 1, '|DEUTSCHEBOERSE|', false, 81169, NULL, NULL, NULL, NULL, 100, 'c', 0, 5, NULL, NULL, NULL, 'DEUTSCHEBOERSE#DE000A1K0300||de||False', false, true, true);
 INSERT INTO products VALUES ('EURONAV', 'BE0003816338', 'EUR', 1, '|EURONEXT|', false, 80435, NULL, NULL, NULL, NULL, 100, 'c', 0, 11, NULL, NULL, NULL, 'EURONEXT#BE0003816338||be||False', false, true, true);
-INSERT INTO products VALUES ('EUROPAC', 'ES0168561019', 'EUR', 1, '|MERCADOCONTINUO|', false, 78867, '', '', '', '', 100, 'c', 0, 1, 'None', NULL, NULL, 'MC#ES0168561019||es||False', false, true, true);
+INSERT INTO products VALUES ('EUROPAC', 'ES0168561019', 'EUR', 1, '|MERCADOCONTINUO|', true, 78867, '', '', '', '', 100, 'c', 0, 1, 'PAC.MC', '{1}', '{3}', 'MC#ES0168561019||es||False', false, true, true);
 INSERT INTO products VALUES ('EUROPACORP', 'FR0010490920', 'EUR', 1, '|EURONEXT|', false, 75235, NULL, NULL, NULL, NULL, 100, 'c', 0, 3, NULL, NULL, NULL, 'EURONEXT#FR0010490920||fr||False', false, true, true);
 INSERT INTO products VALUES ('EUROPA INNOVACION', 'ES0114921036', 'EUR', 2, '|BMF|0015|', false, 75612, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, NULL, '{2}', NULL, 'ES0114921036||es||False', false, true, true);
 INSERT INTO products VALUES ('EUROPA REESTRUCTURACION', 'ES0182643009', 'EUR', 2, '|BMF|0015|', false, 77059, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, NULL, '{2}', NULL, 'ES0182643009||es||False', false, true, true);
@@ -6655,7 +6655,7 @@ INSERT INTO products VALUES ('Primus Telecommunications Group Inc.', NULL, 'USD'
 INSERT INTO products VALUES ('Princess Private Equity Holding Limited', 'DE000A0LBRM2', 'EUR', 1, '|DEUTSCHEBOERSE|', false, 80684, NULL, NULL, NULL, NULL, 100, 'c', 0, 5, NULL, NULL, NULL, 'DEUTSCHEBOERSE#DE000A0LBRM2||de||False', false, true, true);
 INSERT INTO products VALUES ('Principal Financial Group Inc.', NULL, 'USD', 1, NULL, false, 78677, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, NULL, 'NYSE#PFG||us||False', false, true, true);
 INSERT INTO products VALUES ('PRISA CONV.B', 'ES0171743042', 'EUR', 1, '|MERCADOCONTINUO|', false, 79355, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, NULL, NULL, NULL, 'MC#ES0171743042||es||False', false, true, true);
-INSERT INTO products VALUES ('PRISA', 'ES0171743117', 'EUR', 1, '|MERCADOCONTINUO|', false, 75588, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, NULL, NULL, NULL, 'MC#ES0171743117||es||False', false, true, true);
+INSERT INTO products VALUES ('PRISA', 'ES0171743117', 'EUR', 1, '|MERCADOCONTINUO|', true, 75588, '', '', '', '', 100, 'c', 0, 1, 'PRS.MC', '{1}', '{3}', 'MC#ES0171743117||es||False', false, true, true);
 INSERT INTO products VALUES ('PRISMAFLEX INTL', 'FR0004044600', 'EUR', 1, '|EURONEXT|', false, 76785, NULL, NULL, NULL, NULL, 100, 'c', 0, 3, NULL, NULL, NULL, 'EURONEXT#FR0004044600||fr||False', false, true, true);
 INSERT INTO products VALUES ('PRISMAFONDO', 'ES0117011033', 'EUR', 2, '|BMF|0061|', false, 79799, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, NULL, '{2}', NULL, 'ES0117011033||es||False', false, true, true);
 INSERT INTO products VALUES ('PRIVADO LIQUIDEZ DINAMICA', 'ES0170893038', 'EUR', 2, '|BMF|0198|', false, 81405, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, NULL, '{2}', NULL, 'ES0170893038||es||False', false, true, true);
@@ -6962,7 +6962,7 @@ INSERT INTO products VALUES ('Rex American Resources Corp.', NULL, 'USD', 1, NUL
 INSERT INTO products VALUES ('REXEL', 'FR0010451203', 'EUR', 1, '|EURONEXT|', false, 77149, NULL, NULL, NULL, NULL, 100, 'c', 0, 3, NULL, NULL, NULL, 'EURONEXT#FR0010451203||fr||False', false, true, true);
 INSERT INTO products VALUES ('REXEL NV', 'FR0010978809', 'EUR', 1, '|EURONEXT|', false, 77188, NULL, NULL, NULL, NULL, 100, 'c', 0, 3, NULL, NULL, NULL, 'EURONEXT#FR0010978809||fr||False', false, true, true);
 INSERT INTO products VALUES ('REXEL NV', 'FR0011170026', 'EUR', 1, '|EURONEXT|', false, 77151, NULL, NULL, NULL, NULL, 100, 'c', 0, 3, NULL, NULL, NULL, 'EURONEXT#FR0011170026||fr||False', false, true, true);
-INSERT INTO products VALUES ('REYAL URBIS', 'ES0122761010', 'EUR', 1, '|MERCADOCONTINUO|', false, 81532, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, NULL, NULL, NULL, 'MC#ES0122761010||es||False', false, true, true);
+INSERT INTO products VALUES ('REYAL URBIS', 'ES0122761010', 'EUR', 1, '|MERCADOCONTINUO|', true, 81532, '', '', '', '', 100, 'c', 0, 1, 'REY.MC', '{1}', '{3}', 'MC#ES0122761010||es||False', false, true, true);
 INSERT INTO products VALUES ('Reynolds American Inc.', NULL, 'USD', 1, NULL, false, 78587, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, NULL, 'NYSE#RAI||us||False', false, true, true);
 INSERT INTO products VALUES ('RFMI MULTIGESTION FI', 'ES0122762000', 'EUR', 2, '|BMF|0185|', false, 81456, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, NULL, '{2}', NULL, 'ES0122762000||es||False', false, true, true);
 INSERT INTO products VALUES ('Rheinmetall AG', 'DE0007030009', 'EUR', 1, '|DEUTSCHEBOERSE|', false, 80761, NULL, NULL, NULL, NULL, 100, 'c', 0, 5, NULL, NULL, NULL, 'DEUTSCHEBOERSE#DE0007030009||de||False', false, true, true);
@@ -7019,7 +7019,7 @@ INSERT INTO products VALUES ('ROTO SMEETS', 'NL0009169515', 'EUR', 1, '|EURONEXT
 INSERT INTO products VALUES ('ROUGIER S.A.', 'FR0000037640', 'EUR', 1, '|EURONEXT|', false, 78483, NULL, NULL, NULL, NULL, 100, 'c', 0, 3, NULL, NULL, NULL, 'EURONEXT#FR0000037640||fr||False', false, true, true);
 INSERT INTO products VALUES ('ROULARTA', 'BE0003741551', 'EUR', 1, '|EURONEXT|', false, 78486, NULL, NULL, NULL, NULL, 100, 'c', 0, 11, NULL, NULL, NULL, 'EURONEXT#BE0003741551||be||False', false, true, true);
 INSERT INTO products VALUES ('ROULARTA STRIP', 'BE0005546172', 'EUR', 1, '|EURONEXT|', false, 76602, NULL, NULL, NULL, NULL, 100, 'c', 0, 11, NULL, NULL, NULL, 'EURONEXT#BE0005546172||be||False', false, true, true);
-INSERT INTO products VALUES ('ROVI', 'ES0157261019', 'EUR', 1, '|MERCADOCONTINUO|', false, 81533, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, NULL, NULL, NULL, 'MC#ES0157261019||es||False', false, true, true);
+INSERT INTO products VALUES ('ROVI', 'ES0157261019', 'EUR', 1, '|MERCADOCONTINUO|', true, 81533, '', '', '', '', 100, 'c', 0, 1, 'ROVI.MC', '{1}', '{3}', 'MC#ES0157261019||es||False', false, true, true);
 INSERT INTO products VALUES ('Rowan Cos. Inc.', NULL, 'USD', 1, NULL, false, 76428, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, NULL, 'NYSE#RDC||us||False', false, true, true);
 INSERT INTO products VALUES ('Royal Bank of Canada', NULL, 'USD', 1, NULL, false, 77534, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, NULL, 'NYSE#RY||us||False', false, true, true);
 INSERT INTO products VALUES ('Royal Bank of Scotland Group PLC', NULL, 'USD', 1, NULL, false, 77063, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, NULL, 'NYSE#RBS||us||False', false, true, true);
@@ -8209,7 +8209,7 @@ INSERT INTO products VALUES ('YPF S.A.', NULL, 'USD', 1, NULL, false, 75369, NUL
 INSERT INTO products VALUES ('Yum! Brands Inc.', NULL, 'USD', 1, NULL, false, 74922, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, NULL, 'NYSE#YUM||us||False', false, true, true);
 INSERT INTO products VALUES ('Zale Corp.', NULL, 'USD', 1, NULL, false, 81638, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, NULL, 'NYSE#ZLC||us||False', false, true, true);
 INSERT INTO products VALUES ('Zapf Creation AG', 'DE0007806002', 'EUR', 1, '|DEUTSCHEBOERSE|', false, 75102, NULL, NULL, NULL, NULL, 100, 'c', 0, 5, NULL, NULL, NULL, 'DEUTSCHEBOERSE#DE0007806002||de||False', false, true, true);
-INSERT INTO products VALUES ('ZARDOYA OTIS', 'ES0184933812', 'EUR', 1, '|MERCADOCONTINUO|', true, 79418, '', '', '', '', 100, 'c', 0, 1, 'zot.mc', '{1}', '{3}', 'MC#ES0184933812||es||False', false, true, true);
+INSERT INTO products VALUES ('ZARDOYA OTIS', 'ES0184933812', 'EUR', 1, '|MERCADOCONTINUO|', true, 79418, '', '', '', '', 100, 'c', 0, 1, 'ZOT.MC', '{1}', '{3}', 'MC#ES0184933812||es||False', false, true, true);
 INSERT INTO products VALUES ('ZCI LIMITED', 'BMG9887P1068', 'EUR', 1, '|EURONEXT|', false, 81674, NULL, NULL, NULL, NULL, 100, 'c', 0, 3, NULL, NULL, NULL, 'EURONEXT#BMG9887P1068||fr||False', false, true, true);
 INSERT INTO products VALUES ('ZELTIA', 'ES0184940817', 'EUR', 1, '|MERCADOCONTINUO|', false, 79425, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, NULL, NULL, NULL, 'MC#ES0184940817||es||False', false, true, true);
 INSERT INTO products VALUES ('ZENITEL', 'BE0003806230', 'EUR', 1, '|EURONEXT|', false, 75863, NULL, NULL, NULL, NULL, 100, 'c', 0, 11, NULL, NULL, NULL, 'EURONEXT#BE0003806230||be||False', false, true, true);
