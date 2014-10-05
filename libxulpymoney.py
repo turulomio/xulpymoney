@@ -4,7 +4,8 @@ import datetime,  time,  pytz,   psycopg2,  psycopg2.extras,  sys,  codecs,  url
 
 from decimal import *
 
-version="20140517"
+version="0.1"
+version_date=datetime.date(2014,10,5)
 
 class AccountOperationOfInvestmentOperation:
     """Clase parar trabajar con las opercuentas generadas automaticamente por los movimientos de las inversiones"""
@@ -1022,7 +1023,7 @@ class SetInvestmentOperationsCurrent:
         try:
             inversion=self.arr[0].inversion.id
         except:
-            inversion="Desconocido"
+            inversion= "Desconocido"
         return ("SetIOA Inv: {0}. N.Registros: {1}. N.Acciones: {2}. Invertido: {3}. Valor medio:{4}".format(inversion,  len(self.arr), self.acciones(),  self.invertido(),  self.valor_medio_compra()))
                         
     def average_age(self):
@@ -4943,7 +4944,7 @@ class MemProducts:
     def set_sourceforge_version(self):
         cur=self.con.cursor()
         try:
-            serverversion=""
+            serverversion= ""
             comand='http://mystocks.svn.sourceforge.net/viewvc/mystocks/libxulpymoney.py'
             web=urllib.request.urlopen(comand)
             for line in web:

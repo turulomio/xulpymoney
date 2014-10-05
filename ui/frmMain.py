@@ -33,6 +33,7 @@ class frmMain(QMainWindow, Ui_frmMain):
         
         self.mem=mem
         self.sqlvacio="select * from products where id=-999999"
+        self.setWindowTitle(self.trUtf8("Xulpymoney 2010-{0} ©").format(version_date.year))
         
         self.w=QWidget()       
         
@@ -57,7 +58,7 @@ class frmMain(QMainWindow, Ui_frmMain):
             if input[1]==True:
                 res=self.mem.check_admin_mode(input[0])
                 if res==None:
-                    self.setWindowTitle(self.trUtf8("Xulpymoney 2010-{0} © (Admin mode)").format(version[:4]))
+                    self.setWindowTitle(self.trUtf8("Xulpymoney 2010-{0} © (Admin mode)").format(version_date.year))
                     self.setWindowIcon(self.mem.qicon_admin())
                     self.update()
                     self.mem.set_admin_mode(input[0])
@@ -67,14 +68,13 @@ class frmMain(QMainWindow, Ui_frmMain):
                     self.on_actionExit_activated()
                     sys.exit(2)
                 elif res==True:
-                    self.setWindowTitle(self.trUtf8("Xulpymoney 2010-{0} © (Admin mode)").format(version[:4]))
+                    self.setWindowTitle(self.trUtf8("Xulpymoney 2010-{0} © (Admin mode)").format(version_date.year))
                     self.setWindowIcon(self.mem.qicon_admin())
                     self.update()
                     m.setText(self.trUtf8("You are logged as an administrator"))
                     m.exec_()   
                 elif res==False:
                     self.adminmode=False        
-                    self.setWindowTitle(self.trUtf8("Xulpymoney 2010-{0} ©").format(version[:4]))
                     m.setText(self.trUtf8("Bad 'Admin mode' password. You are logged as a normal user"))
                     m.exec_()   
         
