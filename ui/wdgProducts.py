@@ -235,14 +235,16 @@ class wdgProducts(QWidget, Ui_wdgProducts):
         menu.addAction(self.actionProductReport)
         menu.addAction(self.actionPurge)
         
-        if self.mem.adminmode and self.selProduct.id<0:
-            menu.addSeparator()
-            menu.addAction(self.actionConvertProductToSystem)
-        if self.mem.adminmode and self.selProduct.id>=0:
-            menu.addSeparator()
-            menu.addAction(self.actionConvertProductToUser)
         
         if self.selProduct!=None:
+            if self.mem.adminmode and self.selProduct.id<0:
+                menu.addSeparator()
+                menu.addAction(self.actionConvertProductToSystem)
+                
+            if self.mem.adminmode and self.selProduct.id>=0:
+                menu.addSeparator()
+                menu.addAction(self.actionConvertProductToUser)
+                
             if self.selProduct.id=='^IBEX':
                 menu.addSeparator()
                 menu.addAction(self.actionIbex35)
