@@ -235,6 +235,13 @@ class wdgProducts(QWidget, Ui_wdgProducts):
         menu.addAction(self.actionProductReport)
         menu.addAction(self.actionPurge)
         
+        if self.mem.adminmode and self.selProduct.id<0:
+            menu.addSeparator()
+            menu.addAction(self.actionConvertProductToSystem)
+        if self.mem.adminmode and self.selProduct.id>=0:
+            menu.addSeparator()
+            menu.addAction(self.actionConvertProductToUser)
+        
         if self.selProduct!=None:
             if self.selProduct.id=='^IBEX':
                 menu.addSeparator()
@@ -259,6 +266,7 @@ class wdgProducts(QWidget, Ui_wdgProducts):
             self.actionQuoteNew.setEnabled(True)
             self.actionEstimationDPSNew.setEnabled(True)
             self.actionPurge.setEnabled(True)
+            self.actionConvertProductToSystem.setEnabled(True)
         else:
             self.actionMergeCodes.setEnabled(False)
             self.actionProductEdit.setEnabled(False)
@@ -269,12 +277,28 @@ class wdgProducts(QWidget, Ui_wdgProducts):
             self.actionQuoteNew.setEnabled(False)
             self.actionEstimationDPSNew.setEnabled(False)
             self.actionPurge.setEnabled(False)
+            self.actionConvertProductToSystem.setEnabled(False)
         
         if self.selectedRows==2:
             self.actionMergeCodes.setEnabled(True)
             
         menu.exec_(self.tblInvestments.mapToGlobal(pos))
 
+    @QtCore.pyqtSlot() 
+    def on_actionConvertProductToSystem_activated(self):
+        self.selProduct.convert_to_system_product()
+        self.mem.con.commit()
+        self.mem.data.reload()
+        self.build_table()
+        
+    @QtCore.pyqtSlot() 
+    def on_actionConvertProductToUser_activated(self):
+        self.selProduct.convert_to_user_product()
+        self.mem.con.commit()
+        self.mem.data.reload()
+        self.build_table()
+        
+        
     @QtCore.pyqtSlot() 
     def on_actionMergeCodes_activated(self):
         #Saca codeorigen y codedestino        

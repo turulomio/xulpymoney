@@ -1822,8 +1822,6 @@ class DBData:
         self.products_active.load_from_inversiones_query("select distinct(mystocksid) from inversiones where in_activa=true")
         self.investments_active=SetInvestments(self.mem, self.accounts_active, self.products_active, self.benchmark)
         self.investments_active.load_from_db("select * from inversiones where in_activa=true", True)
-#        if not self.tupdatedata.isAlive():#Necesary because, can be thrown from actionUpdateMemory
-#            self.tupdatedata.start()        
         print("Cargando actives",  datetime.datetime.now()-inicio)
         
     def load_inactives(self, force=False):
@@ -1859,7 +1857,7 @@ class DBData:
         
     def reload(self):
         self.load_actives()
-        self.load_inactives()
+        self.load_inactives(True)
         
     def banks_all(self):
         return self.banks_active.union(self.banks_inactive, self.mem)
@@ -3731,20 +3729,6 @@ class Product:
         curms.close()
         return self.init__db_row(row)
         
-#    def load_estimacion(self, year=None):
-#        """Si year es none carga todas las estimations_dps de la inversionmq"""
-#        curms=self.mem.con.cursor()
-#        if year==None:
-#            year=datetime.date.today().year
-#        curms.execute("select * from estimations_dps where year=%s and id=%s", (year, self.id))
-#        if curms.rowcount==0:        
-#            e=EstimationEPS(self.ultado.append(self.mem.agrupations.find(item))
-#mem).init__create(self, year, datetime.date.today(),  "Vacio por código", False, 0)
-##            e=EstimationEPS(self.mem).init__create(year, 0, datetime.date(2012, 7, 3), "Vacio por código", False, 0, self)
-#        else:
-#            e=EstimationEPS(self.mem). init__from_db( product,  currentyear):
-#        self.estimations_dps[str(e.year)]=e
-#        curms.close()
         
     def save(self):
         """Esta función inserta una inversión manual"""
@@ -3793,6 +3777,38 @@ class Product:
         cur.close()
         return resultado
 
+    def convert_to_system_product(self):
+        """It converts a product id<0 in a product >0"""
+        cur=self.mem.con.cursor()
+        cur.execute("select max(id)+1 from products;")#last id>0
+        newid=cur.fetchone()[0]
+
+        cur.execute("update inversiones set mystocksid=%s where mystocksid=%s",(newid,self.id))
+        cur.execute("update quotes set id=%s where id=%s",(newid,self.id))
+        cur.execute("update products set id=%s where id=%s",(newid,self.id))
+        cur.execute("update dps set id=%s where id=%s",(newid,self.id))        
+        cur.execute("update estimations_dps set id=%s where id=%s",(newid,self.id))        
+        cur.execute("update estimations_eps set id=%s where id=%s",(newid,self.id))        
+        cur.close()
+        self.id=newid
+        return self
+
+        
+    def convert_to_user_product(self):
+        """It converts a product id>0 in a product <0"""
+        cur=self.mem.con.cursor()
+        cur.execute("select min(id)-1 from products;")#last id>0
+        newid=cur.fetchone()[0]
+
+        cur.execute("update inversiones set mystocksid=%s where mystocksid=%s",(newid,self.id))
+        cur.execute("update quotes set id=%s where id=%s",(newid,self.id))
+        cur.execute("update products set id=%s where id=%s",(newid,self.id))
+        cur.execute("update dps set id=%s where id=%s",(newid,self.id))        
+        cur.execute("update estimations_dps set id=%s where id=%s",(newid,self.id))        
+        cur.execute("update estimations_eps set id=%s where id=%s",(newid,self.id))        
+        cur.close()
+        self.id=newid
+        return self
 
         
 class SetQuotes:
@@ -4735,7 +4751,7 @@ class MemProducts:
     def __init__(self):
         self.password=""
         
-        self.debugmode=False # from argv
+#        self.debugmode=False # from argv
         self.adminmode=False # from argv
         
         self.qtranslator=None#Residir´a el qtranslator
@@ -4746,9 +4762,10 @@ class MemProducts:
         self.inittime=datetime.datetime.now()#Tiempo arranca el config
         self.dbinitdate=None#Fecha de inicio bd.
         
-        self.dic_activas={}#Diccionario cuyo indice es el id de la inversión id['1'] corresponde a la IvestmenActive(1) #se usa en mystocksd
+#        self.dic_activas={}#Diccionario cuyo indice es el id de la inversión id['1'] corresponde a la IvestmenActive(1) #se usa en mystocksd
         
         self.con=None#Conexión a mystocks
+        
         
         #Needed for translations and are data
         self.countries=SetCountries(self)
@@ -4848,6 +4865,102 @@ class MemProducts:
     def disconnect_xulpymoney(self, con):
         con.close()
  
+            
+            
+    def set_admin_mode(self, pasw):
+        cur=self.con.cursor()
+        cur.execute("update globals set value=md5(%s) where id_globals=6;", (pasw, ))
+        cur.close()
+        
+    def check_admin_mode(self, pasw):
+        """Returns: 
+                - None: No admin password yet
+                - True: parameter pasw is ok
+                - False: parameter pasw is wrong"""
+        cur=self.con.cursor()
+        cur.execute("select value from globals where id_globals=6")
+        val=cur.fetchone()[0]
+        if val==None or val=="":
+            resultado=None
+        else:
+            cur.execute("select value=md5(%s) from globals where id_globals=6;", (pasw, ))
+            resultado=cur.fetchone()[0]
+        cur.close()
+        print (resultado,  "check_admin_mode")
+        return resultado
+        
+        
+        
+        
+    def get_database_version(self):
+        cur=self.con.cursor()
+        cur.execute("select value from globals where id_globals=1;")
+        resultado=cur.fetchone()['value']
+        cur.close()
+        return resultado
+
+    def get_database_init_date(self):
+        cur=self.con.cursor()
+        cur.execute("select value from globals where id_globals=5;")
+        resultado=cur.fetchone()['value']
+        cur.close()
+        return resultado
+
+    def get_session_counter(self):
+        cur=self.con.cursor()
+        cur.execute("select value from globals where id_globals=3;")
+        resultado=cur.fetchone()['value']
+        cur.close()
+        return resultado
+
+    def get_system_counter(self):
+        cur=self.con.cursor()
+        cur.execute("select value from globals where id_globals=2;")
+        resultado=cur.fetchone()['value']
+        cur.close()
+        return resultado
+
+    def set_database_init_date(self, valor):
+        cur=self.con.cursor()
+        cur.execute("update globals set value=%s where id_globals=5;", (valor, ))
+        cur.close()
+
+    def set_database_version(self, valor):
+        cur=self.con.cursor()
+        cur.execute("update globals set value=%s where id_globals=1;", (valor, ))
+        cur.close()
+
+    def set_session_counter(self, valor):
+        cur=self.con.cursor()
+        cur.execute("update globals set value=%s where id_globals=3;", (valor, ))
+        cur.close()
+
+    def set_system_counter(self, valor):
+        cur=self.con.cursor()
+        cur.execute("update globals set value=%s where id_globals=2;", (valor, ))
+        cur.close()
+    
+    def set_sourceforge_version(self):
+        cur=self.con.cursor()
+        try:
+            serverversion=""
+            comand='http://mystocks.svn.sourceforge.net/viewvc/mystocks/libxulpymoney.py'
+            web=urllib.request.urlopen(comand)
+            for line in web:
+                if line.decode().find('return "20')!=-1:
+                    if len(line.decode().split('"')[1])==8:
+                        serverversion=line.decode().split('"')[1]        
+                        cur.execute("update globals set value=%s where id_globals=4;", (serverversion, ))
+                        log("VERSION-SOURCEFORGE", "", QApplication.translate("Core","Sourceforge version detected: {}").format(serverversion))
+        except:
+            log("VERSION-SOURCEFORGE", "", QApplication.translate("Core","Error buscando la versión actual de Sourceforge"))                    
+        cur.close()
+    def get_sourceforge_version(self):
+        cur=self.con.cursor()
+        cur.execute("select value from globals where id_globals=4;")
+        resultado=cur.fetchone()['value']
+        cur.close()
+        return resultado
 
 
 #    def connect_xulpymoneyd(self, pw):        
@@ -4888,6 +5001,10 @@ class MemXulpymoney(MemProducts):
         self.data.load_actives()
         print(datetime.datetime.now()-inicio)
         
+    def qicon_admin(self):
+        icon = QIcon()
+        icon.addPixmap(QPixmap(":/xulpymoney/admin.png"), QIcon.Normal, QIcon.Off)
+        return icon
 
 
 class Country:
@@ -4941,79 +5058,6 @@ class Country:
         else:
             return QPixmap(":/xulpymoney/star.gif")
             
-class Global:
-    def __init__(self, mem):
-        self.mem=mem
-    def get_database_version(self):
-        cur=self.mem.con.cursor()
-        cur.execute("select value from globals where id_globals=1;")
-        resultado=cur.fetchone()['value']
-        cur.close()
-        return resultado
-
-    def get_database_init_date(self):
-        cur=self.mem.con.cursor()
-        cur.execute("select value from globals where id_globals=5;")
-        resultado=cur.fetchone()['value']
-        cur.close()
-        return resultado
-
-    def get_session_counter(self):
-        cur=self.mem.con.cursor()
-        cur.execute("select value from globals where id_globals=3;")
-        resultado=cur.fetchone()['value']
-        cur.close()
-        return resultado
-
-    def get_system_counter(self):
-        cur=self.mem.con.cursor()
-        cur.execute("select value from globals where id_globals=2;")
-        resultado=cur.fetchone()['value']
-        cur.close()
-        return resultado
-
-    def set_database_init_date(self, valor):
-        cur=self.mem.con.cursor()
-        cur.execute("update globals set value=%s where id_globals=5;", (valor, ))
-        cur.close()
-
-    def set_database_version(self, valor):
-        cur=self.mem.con.cursor()
-        cur.execute("update globals set value=%s where id_globals=1;", (valor, ))
-        cur.close()
-
-    def set_session_counter(self, valor):
-        cur=self.mem.con.cursor()
-        cur.execute("update globals set value=%s where id_globals=3;", (valor, ))
-        cur.close()
-
-    def set_system_counter(self, valor):
-        cur=self.mem.con.cursor()
-        cur.execute("update globals set value=%s where id_globals=2;", (valor, ))
-        cur.close()
-    
-    def set_sourceforge_version(self):
-        cur=self.mem.con.cursor()
-        try:
-            serverversion=""
-            comand='http://mystocks.svn.sourceforge.net/viewvc/mystocks/libxulpymoney.py'
-            web=urllib.request.urlopen(comand)
-            for line in web:
-                if line.decode().find('return "20')!=-1:
-                    if len(line.decode().split('"')[1])==8:
-                        serverversion=line.decode().split('"')[1]        
-                        cur.execute("update globals set value=%s where id_globals=4;", (serverversion, ))
-                        log("VERSION-SOURCEFORGE", "", QApplication.translate("Core","Sourceforge version detected: {}").format(serverversion))
-        except:
-            log("VERSION-SOURCEFORGE", "", QApplication.translate("Core","Error buscando la versión actual de Sourceforge"))                    
-        cur.close()
-    def get_sourceforge_version(self):
-        cur=self.mem.con.cursor()
-        cur.execute("select value from globals where id_globals=4;")
-        resultado=cur.fetchone()['value']
-        cur.close()
-        return resultado
-
 
 class Zone:
     def __init__(self, mem):

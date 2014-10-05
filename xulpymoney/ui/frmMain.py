@@ -30,7 +30,6 @@ class frmMain(QMainWindow, Ui_frmMain):
         QMainWindow.__init__(self, None)
         self.setupUi(self)
         self.showMaximized()
-        self.setWindowTitle(self.trUtf8("Xulpymoney 2010-{0} ©".format(version[:4])))
         
         self.mem=mem
         self.sqlvacio="select * from products where id=-999999"
@@ -50,6 +49,34 @@ class frmMain(QMainWindow, Ui_frmMain):
         
         self.mem.actualizar_memoria() ##CARGA TODOS LOS DATOS Y LOS VINCULA       
         
+        ##Admin mode
+        if self.mem.adminmode:
+            m=QMessageBox()
+            m.setIcon(QMessageBox.Information)
+            input=QInputDialog.getText(self,  "Xulpymoney",  self.tr("Please introduce Admin Mode password"), QLineEdit.Password)
+            if input[1]==True:
+                res=self.mem.check_admin_mode(input[0])
+                if res==None:
+                    self.setWindowTitle(self.trUtf8("Xulpymoney 2010-{0} © (Admin mode)").format(version[:4]))
+                    self.setWindowIcon(self.mem.qicon_admin())
+                    self.update()
+                    self.mem.set_admin_mode(input[0])
+                    self.mem.con.commit()
+                    m.setText(self.trUtf8("You have set the admin mode password. Please login again"))
+                    m.exec_()
+                    self.on_actionExit_activated()
+                    sys.exit(2)
+                elif res==True:
+                    self.setWindowTitle(self.trUtf8("Xulpymoney 2010-{0} © (Admin mode)").format(version[:4]))
+                    self.setWindowIcon(self.mem.qicon_admin())
+                    self.update()
+                    m.setText(self.trUtf8("You are logged as an administrator"))
+                    m.exec_()   
+                elif res==False:
+                    self.adminmode=False        
+                    self.setWindowTitle(self.trUtf8("Xulpymoney 2010-{0} ©").format(version[:4]))
+                    m.setText(self.trUtf8("Bad 'Admin mode' password. You are logged as a normal user"))
+                    m.exec_()   
         
         print ("Protecting products needed in xulpymoney")
         cur=self.mem.con.cursor()
