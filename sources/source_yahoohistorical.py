@@ -7,6 +7,6 @@ from libsources import *
 mem=MemProducts()
 mem.init__script('Yahoo Historical Updater')
 
-w=WorkerYahooHistorical(mem)
+w=WorkerYahooHistorical(mem, 1)
 
 mem.disconnect(mem.con)
