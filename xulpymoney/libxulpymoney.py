@@ -3834,7 +3834,8 @@ class Quote:
 
         
     def init__create(self,  product,  datetime,  quote):
-        """Función que crea un Quote nuevo, con la finalidad de insertarlo"""
+        """Función que crea un Quote nuevo, con la finalidad de insertarlo
+        quote must be a Decimal object."""
         self.product=product
         self.datetime=datetime
         self.quote=quote
@@ -3846,6 +3847,14 @@ class Quote:
         if curms.rowcount==0: #No Existe el registro
             return (False,  None)
         return (True,  curms.fetchone()['quote'])
+        
+    def can_be_saved(self):
+        """Returns a boolean True if can be saved"""
+        r=True
+        if self.quote==Decimal(0):
+            r=False
+        return r
+        
         
     def save(self):
         """Función que graba el quotes si coincide todo lo ignora. Si no coincide lo inserta o actualiza.
@@ -3859,7 +3868,7 @@ class Quote:
             curms.close()
             return 1
         else:
-            if exists[1]!=self.quote:
+            if exists[1]!=Decimal(self.quote):
                 curms.execute("update quotes set quote=%swhere id=%s and datetime=%s", (self.quote, self.product.id, self.datetime))
                 curms.close()
                 return 2
