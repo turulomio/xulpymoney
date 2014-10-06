@@ -84,19 +84,26 @@ class Source(QObject):
             self.log("Error loading {}".format(url))
             return None
         return web        
+
     def comaporpunto(self, cadena):
         cadena=cadena.replace('.','')#Quita puntos
         cadena=cadena.replace(',','.')#Cambia coma por punto
         return cadena        
+
+    def run(self):
+        """Function to override, when launching the worker"""
+        pass
         
 class SourceParsePage(Source):
     def __init__(self, mem, sql ):
         Source.__init__(self, mem)
 
         self.url="urlempty"
+        self.sql=sql
         
+    def run(self):
         self.products=SetProducts(self.mem)
-        self.products.load_from_db(sql)        
+        self.products.load_from_db(self.sql)        
         
         QObject.connect(self, SIGNAL("load_page()"), self.on_load_page)   
         self.emit(SIGNAL("load_page()"))
@@ -132,21 +139,25 @@ class SourceIterateProducts(Source):
         Source.__init__(self, mem)
         self.sleep=sleep#wait between products
         self.type=type#0 silent, 1 console, 2 qtgui
+        self.sql=sql
         QObject.connect(self, SIGNAL("execute_product(int)"), self.on_execute_product)       
+
+        
+    def run(self):
         self.products=SetProducts(self.mem)
-        self.products.load_from_db(sql)
+        self.products.load_from_db(self.sql)
  
         if type==2:
             self.pd= QProgressDialog(QApplication.translate("Core","Inserting {} prices of {} investments").format(0, self.products.length()), QApplication.translate("Core","Cancel"), 0,len(self.products.arr))
             self.pd.setModal(True)
             self.pd.setMinimumDuration(0)          
             self.pd.setWindowTitle(QApplication.translate("Core","Updating product prices..."))
-
         self.products_iterate()
         
         self.quotes_save()
         
         self.errors_show()
+        
         
 
     def on_execute_product(self, id_product):

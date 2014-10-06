@@ -43,9 +43,11 @@ compile:
 	pyuic4 ui/frmProductReport.ui > ui/Ui_frmProductReport.py &
 	pyuic4 ui/frmQuotesIBM.ui > ui/Ui_frmQuotesIBM.py &
 	pyuic4 ui/frmSelector.ui > ui/Ui_frmSelector.py &
-	pyuic4 ui/frmEstimationsAdd.ui > ui/Ui_frmEstimationsAdd.py
+	pyuic4 ui/frmEstimationsAdd.ui > ui/Ui_frmEstimationsAdd.py &
 	pyuic4 ui/wdgDatetime.ui > ui/Ui_wdgDatetime.py
 	pyuic4 ui/wdgProducts.ui > ui/Ui_wdgProducts.py
+	pyuic4 ui/wdgQuotesUpdate.ui > ui/Ui_wdgQuotesUpdate.py
+	pyuic4 ui/wdgSource.ui > ui/Ui_wdgSource.py
 	pyuic4 ui/wdgInvestmentsOperations.ui > ui/Ui_wdgInvestmentsOperations.py
 	pyuic4 ui/wdgMergeCodes.ui > ui/Ui_wdgMergeCodes.py
 	pyuic4 ui/wdgYearMonth.ui > ui/Ui_wdgYearMonth.py

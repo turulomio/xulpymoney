@@ -97,6 +97,10 @@ SOURCES         = \
                   ui/Ui_wdgMergeCodes.py \
                   ui/wdgProducts.py \
                   ui/Ui_wdgProducts.py \
+                  ui/wdgQuotesUpdate.py \
+                  ui/Ui_wdgQuotesUpdate.py \
+                  ui/wdgSource.py \
+                  ui/Ui_wdgSource.py \
                   ui/wdgTotal.py \
                   ui/Ui_wdgTotal.py \
                   ui/wdgYear.py \
@@ -146,6 +150,7 @@ FORMS           = \
                   ui/wdgJointReport.ui \
                   ui/wdgMergeCodes.ui \
                   ui/wdgProducts.ui \
+                  ui/wdgSource.ui \
                   ui/wdgTotal.ui \
                   ui/wdgYear.ui \
                   ui/wdgYearMonth.ui

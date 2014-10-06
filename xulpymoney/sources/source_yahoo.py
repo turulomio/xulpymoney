@@ -14,5 +14,6 @@ print ("Products",  num)
 step=150
 for i in range (0, int(num/step)+1):
     w=WorkerYahoo(mem, "select * from products where active=true and priority[1]=1 order by ticker limit {} offset {};".format(step, step*i))
-
+    w.run()
+cur.close()
 mem.disconnect(mem.con)
