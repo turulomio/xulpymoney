@@ -8,10 +8,8 @@ class SetQuotes:
         self.arr=[]
     
     def print(self):
-        s=""
         for q in self.arr:
-            s=s+" * {}\n".format(q)
-        return  s
+            print(" * {}".format(q))
     
     def save(self):
         """Recibe con code,  date,  time, value, zone
@@ -31,9 +29,15 @@ class SetQuotes:
                     insertados.append(q)
                 elif ibm==2:
                     modificados.append(q)
-
+#        print (insertados.length(), ignored.length(), modificados.length())
         return (insertados, ignored, modificados)
              
+             
+    def addTo(self, settoadd):
+        """Añade los quotes en array a un nuevo set paasado por parametro"""
+        for q in self.arr:
+            settoadd.append(q)
+
     def append(self, quote):
         self.arr.append(quote)        
         
@@ -44,6 +48,19 @@ class SetQuotes:
         del self.arr
         self.arr=[]
         
+    def myqtablewidget(self, tabla, section):
+        tabla.setColumnCount(3)
+        tabla.setHorizontalHeaderItem(0, QTableWidgetItem(QApplication.translate(section, "Date and time", None, QApplication.UnicodeUTF8)))
+        tabla.setHorizontalHeaderItem(1, QTableWidgetItem(QApplication.translate(section, "Product", None, QApplication.UnicodeUTF8)))
+        tabla.setHorizontalHeaderItem(2, QTableWidgetItem(QApplication.translate(section, "Price", None, QApplication.UnicodeUTF8)))        
+        tabla.clearContents()
+        tabla.settings(section,  self.mem)       
+        tabla.setRowCount(len(self.arr))
+        for rownumber, a in enumerate(self.arr):
+            tabla.setItem(rownumber, 0, qdatetime(a.datetime, self.mem.localzone))
+            tabla.setItem(rownumber, 1, qleft(a.product.name))
+            tabla.setItem(rownumber, 2, a.product.currency.qtablewidgetitem(a.quote))
+
 class Source(QObject):
     """Clase nueva para todas las sources
     Debera:
@@ -57,21 +74,44 @@ class Source(QObject):
         self.quotes=SetQuotes(self.mem)#Quotes without valida
         self.errors=[]#Array the strings
         
+        self.ignored=SetQuotes(self.mem)
+        self.modified=SetQuotes(self.mem)
+        self.inserted=SetQuotes(self.mem)
+        
     def log(self, error):
         self.errors.append("{} {}".format(datetime.datetime.now(), error))
 
+            
 
+
+    def myqtablewidget_errors(self, tabla, section):
+        tabla.setColumnCount(2)
+        tabla.setHorizontalHeaderItem(0, QTableWidgetItem(QApplication.translate(section, "Date and time", None, QApplication.UnicodeUTF8)))
+        tabla.setHorizontalHeaderItem(1, QTableWidgetItem(QApplication.translate(section, "Log", None, QApplication.UnicodeUTF8)))
+        tabla.clearContents()
+        tabla.settings(section,  self.mem)       
+        tabla.setRowCount(len(self.errors))
+        for rownumber, line in enumerate(self.errors):
+            a=line.split(" ")
+            strdate="{} {}".format(a[0], a[1])
+            tabla.setItem(rownumber, 0, qleft(strdate))
+            tabla.setItem(rownumber, 1, qleft(line[len(strdate)+1:]))
+            
     def quotes_save(self):
         """Saves all quotes after product iteration. If I want to do something different. I must override this function"""
-        (inserted, ignored, modified)=self.quotes.save()
-        self.mem.con.commit()
-        print("{} finished. {} inserted, {} ignored and {} modified. Total quotes {}".format(self.__class__.__name__, inserted.length(), ignored.length(), modified.length(), self.quotes.length()))
-        print("Inserted:\n",  inserted.print())
+        
+        (self.inserted, self.ignored, self.modified)=self.quotes.save()
+        
+        #El commit se hace dentro porque hay veces hay muchas
+#        inserted.addTo(self.inserted)
+#        ignored.addTo(self.ignored)
+#        modified.addTo(self.modified)
+        print("{} finished. {} inserted, {} ignored and {} modified. Total quotes {}".format(self.__class__.__name__, self.inserted.length(), self.ignored.length(), self.modified.length(), self.quotes.length()))
             
     def errors_show(self):
         """Shwo errors aappended with log"""
         if len(self.errors)>0:
-            print ("Errors in {}:".format(self.__class__.__name__))
+            print ("{} Errors in {}:".format(len(self.errors), self.__class__.__name__))
             for e in self.errors:
                 print ("  + {}".format(e))
         
@@ -90,9 +130,9 @@ class Source(QObject):
         cadena=cadena.replace(',','.')#Cambia coma por punto
         return cadena        
 
-    def run(self):
-        """Function to override, when launching the worker"""
-        pass
+#    def run(self):
+#        """Function to override, when launching the worker"""
+#        pass
         
 class SourceParsePage(Source):
     def __init__(self, mem, sql ):
@@ -103,7 +143,8 @@ class SourceParsePage(Source):
         
     def run(self):
         self.products=SetProducts(self.mem)
-        self.products.load_from_db(self.sql)        
+        self.products.load_from_db(self.sql)       
+        print (self.products.length())
         
         QObject.connect(self, SIGNAL("load_page()"), self.on_load_page)   
         self.emit(SIGNAL("load_page()"))
@@ -114,6 +155,9 @@ class SourceParsePage(Source):
         self.quotes_save()
         
         self.errors_show()
+        self.inserted.print()
+        
+        self.emit(SIGNAL("run_finished()"))
         
 
     def on_load_page(self):
@@ -158,6 +202,10 @@ class SourceIterateProducts(Source):
         
         self.errors_show()
         
+        self.emit(SIGNAL("run_finished()"))
+        print("finished")
+        
+        
         
 
     def on_execute_product(self, id_product):
@@ -188,7 +236,7 @@ class SourceIterateProducts(Source):
         print("")
 
 
-class WorkerMercadoContinuo(Source):
+class WorkerMercadoContinuo(SourceParsePage):
     def __init__(self,  mem):
         SourceParsePage.__init__(self, mem, "select * from products where agrupations ilike '%MERCADOCONTINUO%';")   
         
@@ -199,7 +247,7 @@ class WorkerMercadoContinuo(Source):
         
     def on_parse_page(self):
         while True:
-            try:
+#            try:
                 line=b2s(self.web.readline())[:-1]
                 if line.find('<td class="ticker">')!=-1: #Empieza bloque
                     ticker=b2s(self.web.readline())[:-1].strip()+".MC"
@@ -224,8 +272,8 @@ class WorkerMercadoContinuo(Source):
                         self.log("El ticker {} no ha sido encontrado".format(ticker))
                 if line.find('</html')!=-1:
                     break
-            except:
-                self.log("El ticker {} no ha sido formateado correctamente".format(ticker))
+#            except:
+#                self.log("El ticker {} no ha sido formateado correctamente".format(ticker))
 
 class WorkerYahoo(SourceParsePage):
     """Clase que recorre las inversiones activas y calcula según este la prioridad de la previsión"""
@@ -314,3 +362,5 @@ class WorkerYahooHistorical(SourceIterateProducts):
             self.quotes.append(Quote(self.mem).init__create(product,datetimelow, Decimal(datos[3])))#low
             self.quotes.append(Quote(self.mem).init__create(product,datetimehigh, Decimal(datos[2])))#high
             self.quotes.append(Quote(self.mem).init__create(product, datetimefirst, Decimal(datos[1])))#open
+
+        self.mem.con.commit()      #To avoid big amounts at the end      

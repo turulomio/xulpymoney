@@ -3,6 +3,7 @@ sys.path.append("/usr/lib/xulpymoney")
 from libxulpymoney import *
 from frmMain import *
 from frmInit import *
+from libsources import *
 from wdgProductSelector import *
 
 class TestXulpymoneyData(unittest.TestCase):
@@ -113,7 +114,7 @@ if __name__ == '__main__':
         mem.actualizar_memoria()       
         
         #Launch tests
-        unittest.main()
+        unittest.main(argv=[sys.argv[0]])
     else:
         print("No pude crear db")
 

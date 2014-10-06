@@ -55,14 +55,14 @@
                <x>0</x>
                <y>0</y>
                <width>342</width>
-               <height>344</height>
+               <height>359</height>
               </rect>
              </property>
              <layout class="QVBoxLayout" name="verticalLayout_7">
               <item>
-               <layout class="QVBoxLayout" name="layIntraday">
+               <layout class="QGridLayout" name="layIntraday" rowstretch="0">
                 <property name="sizeConstraint">
-                 <enum>QLayout::SetDefaultConstraint</enum>
+                 <enum>QLayout::SetMinimumSize</enum>
                 </property>
                </layout>
               </item>
@@ -73,7 +73,11 @@
           <item>
            <widget class="QPushButton" name="cmdIntraday">
             <property name="text">
-             <string>PushButton</string>
+             <string>Update all intraday sources</string>
+            </property>
+            <property name="icon">
+             <iconset resource="../../../xulpymoney/images/xulpymoney.qrc">
+              <normaloff>:/xulpymoney/transfer.png</normaloff>:/xulpymoney/transfer.png</iconset>
             </property>
            </widget>
           </item>
@@ -100,7 +104,7 @@
                <x>0</x>
                <y>0</y>
                <width>342</width>
-               <height>344</height>
+               <height>359</height>
               </rect>
              </property>
              <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -114,7 +118,11 @@
           <item>
            <widget class="QPushButton" name="cmdDaily">
             <property name="text">
-             <string>PushButton</string>
+             <string>Update all daily sources</string>
+            </property>
+            <property name="icon">
+             <iconset resource="../../../xulpymoney/images/xulpymoney.qrc">
+              <normaloff>:/xulpymoney/transfer.png</normaloff>:/xulpymoney/transfer.png</iconset>
             </property>
            </widget>
           </item>
@@ -127,6 +135,8 @@
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="../../../xulpymoney/images/xulpymoney.qrc"/>
+ </resources>
  <connections/>
 </ui>
