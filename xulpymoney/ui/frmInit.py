@@ -2,7 +2,7 @@ from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 import psycopg2,  psycopg2.extras
 from Ui_frmInit import *
-from source_yahoohistorical import WorkerYahooHistorical
+from libsources import *
 from libxulpymoney import *
 
 class frmInit(QDialog, Ui_frmInit):

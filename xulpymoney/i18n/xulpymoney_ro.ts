@@ -488,17 +488,17 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libsources.py" line="152"/>
+        <location filename="libsources.py" line="195"/>
         <source>Inserting {} prices of {} investments</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libsources.py" line="155"/>
+        <location filename="libsources.py" line="198"/>
         <source>Updating product prices...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libsources.py" line="181"/>
+        <location filename="libsources.py" line="228"/>
         <source>Inserting {} prices of {} products</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5150,66 +5150,111 @@ S&#xc3;&#xb3;lo se contabilizar&#xc3;&#xa1; cuando se vendan las acciones</sourc
 <context>
     <name>wdgQuotesUpdate</name>
     <message>
-        <location filename="ui/Ui_wdgQuotesUpdate.py" line="97"/>
+        <location filename="ui/Ui_wdgQuotesUpdate.py" line="101"/>
         <source>Form</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgQuotesUpdate.py" line="98"/>
+        <location filename="ui/Ui_wdgQuotesUpdate.py" line="102"/>
         <source>Auxiliar tables</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgQuotesUpdate.py" line="99"/>
+        <location filename="ui/Ui_wdgQuotesUpdate.py" line="103"/>
         <source>Intraday sources</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgQuotesUpdate.py" line="102"/>
-        <source>PushButton</source>
+        <location filename="ui/Ui_wdgQuotesUpdate.py" line="105"/>
+        <source>Daily sources</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgQuotesUpdate.py" line="101"/>
-        <source>Daily sources</source>
+        <location filename="ui/Ui_wdgQuotesUpdate.py" line="104"/>
+        <source>Update all intraday sources</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_wdgQuotesUpdate.py" line="106"/>
+        <source>Update all daily sources</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>wdgSource</name>
     <message>
-        <location filename="ui/Ui_wdgSource.py" line="80"/>
+        <location filename="ui/Ui_wdgSource.py" line="90"/>
         <source>Form</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgSource.py" line="81"/>
+        <location filename="ui/Ui_wdgSource.py" line="91"/>
         <source>Source</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgSource.py" line="82"/>
+        <location filename="ui/Ui_wdgSource.py" line="92"/>
         <source>Quotes result</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgSource.py" line="83"/>
+        <location filename="ui/Ui_wdgSource.py" line="93"/>
         <source>Inserted</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgSource.py" line="84"/>
+        <location filename="ui/Ui_wdgSource.py" line="94"/>
         <source>Ignored</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgSource.py" line="85"/>
+        <location filename="ui/Ui_wdgSource.py" line="95"/>
         <source>Edited</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgSource.py" line="86"/>
+        <location filename="ui/Ui_wdgSource.py" line="96"/>
         <source>Errors</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/wdgSource.py" line="56"/>
+        <source>{} Inserted</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/wdgSource.py" line="57"/>
+        <source>{} Edited</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/wdgSource.py" line="58"/>
+        <source>{} Ignored</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/wdgSource.py" line="59"/>
+        <source>{} errors</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/wdgSource.py" line="68"/>
+        <source>Inserted quotes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/wdgSource.py" line="78"/>
+        <source>Edited quotes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/wdgSource.py" line="88"/>
+        <source>Ignored quotes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/wdgSource.py" line="98"/>
+        <source>Error procesing the source</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

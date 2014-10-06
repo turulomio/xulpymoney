@@ -488,17 +488,17 @@
         <translation>Transferencia de acciones. Destino</translation>
     </message>
     <message>
-        <location filename="libsources.py" line="152"/>
+        <location filename="libsources.py" line="195"/>
         <source>Inserting {} prices of {} investments</source>
         <translation>Añadiendo {} cotizaciones de {} inversiones</translation>
     </message>
     <message>
-        <location filename="libsources.py" line="155"/>
+        <location filename="libsources.py" line="198"/>
         <source>Updating product prices...</source>
         <translation>Actualizando precios de productos...</translation>
     </message>
     <message>
-        <location filename="libsources.py" line="181"/>
+        <location filename="libsources.py" line="228"/>
         <source>Inserting {} prices of {} products</source>
         <translation>Añadiendo {} cotizaciones de {} productos</translation>
     </message>
@@ -1675,7 +1675,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="ui/frmInit.py" line="40"/>
         <source>Process finished. Now you can use Xulpymoney</source>
-        <translation>Proceso terminado. Ya puedes usar Xulpymoney</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2379,27 +2379,27 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="ui/frmMain.py" line="57"/>
         <source>Please introduce Admin Mode password</source>
-        <translation>Por favor introduzca la contraseña del Modo Administrador</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
         <location filename="ui/frmMain.py" line="71"/>
         <source>Xulpymoney 2010-{0} © (Admin mode)</source>
-        <translation>Xulpymoney 2010-{0} © (Modo Administrador)</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/frmMain.py" line="66"/>
         <source>You have set the admin mode password. Please login again</source>
-        <translation>Acaba de introducir la contraseña del Modo Administrador. Por favor vuelva a entrar</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/frmMain.py" line="74"/>
         <source>You are logged as an administrator</source>
-        <translation>Se ha identificado como Administrador</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/frmMain.py" line="78"/>
         <source>Bad &apos;Admin mode&apos; password. You are logged as a normal user</source>
-        <translation>Contraseña del &apos;Modo Administrador&apos; errónea. Se ha identificado como un usuario normal</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -5144,77 +5144,122 @@ S&#xc3;&#xb3;lo se contabilizar&#xc3;&#xa1; cuando se vendan las acciones</sourc
     <message>
         <location filename="ui/Ui_wdgProducts.py" line="262"/>
         <source>Convert product to system product</source>
-        <translation>Convierte el producto en un producto del sistema</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/Ui_wdgProducts.py" line="264"/>
         <source>Convert product to user product</source>
-        <translation>Convierte el producto en un producto de usuario</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>wdgQuotesUpdate</name>
     <message>
-        <location filename="ui/Ui_wdgQuotesUpdate.py" line="97"/>
+        <location filename="ui/Ui_wdgQuotesUpdate.py" line="101"/>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Form</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgQuotesUpdate.py" line="98"/>
+        <location filename="ui/Ui_wdgQuotesUpdate.py" line="102"/>
         <source>Auxiliar tables</source>
         <translation type="unfinished">Tablas auxiliares</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgQuotesUpdate.py" line="99"/>
+        <location filename="ui/Ui_wdgQuotesUpdate.py" line="103"/>
         <source>Intraday sources</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgQuotesUpdate.py" line="102"/>
-        <source>PushButton</source>
+        <location filename="ui/Ui_wdgQuotesUpdate.py" line="105"/>
+        <source>Daily sources</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgQuotesUpdate.py" line="101"/>
-        <source>Daily sources</source>
+        <location filename="ui/Ui_wdgQuotesUpdate.py" line="104"/>
+        <source>Update all intraday sources</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_wdgQuotesUpdate.py" line="106"/>
+        <source>Update all daily sources</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>wdgSource</name>
     <message>
-        <location filename="ui/Ui_wdgSource.py" line="80"/>
+        <location filename="ui/Ui_wdgSource.py" line="90"/>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Form</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgSource.py" line="81"/>
+        <location filename="ui/Ui_wdgSource.py" line="91"/>
         <source>Source</source>
         <translation type="unfinished">Fuente</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgSource.py" line="82"/>
+        <location filename="ui/Ui_wdgSource.py" line="92"/>
         <source>Quotes result</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgSource.py" line="83"/>
+        <location filename="ui/Ui_wdgSource.py" line="93"/>
         <source>Inserted</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgSource.py" line="84"/>
+        <location filename="ui/Ui_wdgSource.py" line="94"/>
         <source>Ignored</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgSource.py" line="85"/>
+        <location filename="ui/Ui_wdgSource.py" line="95"/>
         <source>Edited</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgSource.py" line="86"/>
+        <location filename="ui/Ui_wdgSource.py" line="96"/>
         <source>Errors</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/wdgSource.py" line="56"/>
+        <source>{} Inserted</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/wdgSource.py" line="57"/>
+        <source>{} Edited</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/wdgSource.py" line="58"/>
+        <source>{} Ignored</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/wdgSource.py" line="59"/>
+        <source>{} errors</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/wdgSource.py" line="68"/>
+        <source>Inserted quotes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/wdgSource.py" line="78"/>
+        <source>Edited quotes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/wdgSource.py" line="88"/>
+        <source>Ignored quotes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/wdgSource.py" line="98"/>
+        <source>Error procesing the source</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
