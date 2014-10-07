@@ -8,7 +8,7 @@ PREFIXAPPLICATIONS=$(DESTDIR)/usr/share/applications
 
 all: compile install
 compile:
-	pyrcc4 -py3 images/xulpymoney.qrc > images/xulpymoney_rc.py 
+	pyrcc4 -py3 images/xulpymoney.qrc > images/xulpymoney_rc.py  &
 	pyuic4 ui/frmAbout.ui > ui/Ui_frmAbout.py &
 	pyuic4 ui/frmAccess.ui > ui/Ui_frmAccess.py &
 	pyuic4 ui/frmDPSAdd.ui > ui/Ui_frmDPSAdd.py &
@@ -44,14 +44,15 @@ compile:
 	pyuic4 ui/frmQuotesIBM.ui > ui/Ui_frmQuotesIBM.py &
 	pyuic4 ui/frmSelector.ui > ui/Ui_frmSelector.py &
 	pyuic4 ui/frmEstimationsAdd.ui > ui/Ui_frmEstimationsAdd.py &
-	pyuic4 ui/wdgDatetime.ui > ui/Ui_wdgDatetime.py
-	pyuic4 ui/wdgProducts.ui > ui/Ui_wdgProducts.py
-	pyuic4 ui/wdgQuotesUpdate.ui > ui/Ui_wdgQuotesUpdate.py
-	pyuic4 ui/wdgSource.ui > ui/Ui_wdgSource.py
-	pyuic4 ui/wdgInvestmentsOperations.ui > ui/Ui_wdgInvestmentsOperations.py
-	pyuic4 ui/wdgMergeCodes.ui > ui/Ui_wdgMergeCodes.py
-	pyuic4 ui/wdgYearMonth.ui > ui/Ui_wdgYearMonth.py
-	pyuic4 ui/wdgYear.ui > ui/Ui_wdgYear.py
+	pyuic4 ui/wdgDatetime.ui > ui/Ui_wdgDatetime.py &
+	pyuic4 ui/wdgProducts.ui > ui/Ui_wdgProducts.py &
+	pyuic4 ui/wdgQuotesUpdate.ui > ui/Ui_wdgQuotesUpdate.py &
+	pyuic4 ui/wdgSource.ui > ui/Ui_wdgSource.py &
+	pyuic4 ui/wdgInvestmentsOperations.ui > ui/Ui_wdgInvestmentsOperations.py &
+	pyuic4 ui/wdgMergeCodes.ui > ui/Ui_wdgMergeCodes.py &
+	pyuic4 ui/wdgYearMonth.ui > ui/Ui_wdgYearMonth.py &
+	pyuic4 ui/wdgYear.ui > ui/Ui_wdgYear.py &
+	wait
 	pylupdate4 -noobsolete -verbose  xulpymoney.pro
 	lrelease xulpymoney.pro
 

@@ -29,7 +29,6 @@ class SetQuotes:
                     insertados.append(q)
                 elif ibm==2:
                     modificados.append(q)
-#        print (insertados.length(), ignored.length(), modificados.length())
         return (insertados, ignored, modificados)
              
              
@@ -103,9 +102,6 @@ class Source(QObject):
         (self.inserted, self.ignored, self.modified)=self.quotes.save()
         
         #El commit se hace dentro porque hay veces hay muchas
-#        inserted.addTo(self.inserted)
-#        ignored.addTo(self.ignored)
-#        modified.addTo(self.modified)
         print("{} finished. {} inserted, {} ignored and {} modified. Total quotes {}".format(self.__class__.__name__, self.inserted.length(), self.ignored.length(), self.modified.length(), self.quotes.length()))
             
     def errors_show(self):
@@ -153,6 +149,7 @@ class SourceParsePage(Source):
         self.emit(SIGNAL("parse_page()")) 
  
         self.quotes_save()
+        self.mem.con.commit()
         
         self.errors_show()
         self.inserted.print()
@@ -232,6 +229,7 @@ class SourceIterateProducts(Source):
                 sys.stdout.write("\b"*1000+stri)
                 sys.stdout.flush()
             self.emit(SIGNAL("execute_product(int)"), product.id)
+            self.mem.con.commit()
             time.sleep(self.sleep)#time step
         print("")
 
@@ -363,4 +361,3 @@ class WorkerYahooHistorical(SourceIterateProducts):
             self.quotes.append(Quote(self.mem).init__create(product,datetimehigh, Decimal(datos[2])))#high
             self.quotes.append(Quote(self.mem).init__create(product, datetimefirst, Decimal(datos[1])))#open
 
-        self.mem.con.commit()      #To avoid big amounts at the end      
