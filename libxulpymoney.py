@@ -3856,8 +3856,9 @@ class Quote:
             return (False,  None)
         return (True,  curms.fetchone()['quote'])
         
+        
     def can_be_saved(self):
-        """Returns a boolean True if can be saved"""
+        """Returns a boolean True if can be saved, debe usurse en los autokkmaticos. Puede haber algun manual que quiera ser 0"""
         r=True
         if self.quote==Decimal(0):
             r=False
@@ -3867,21 +3868,21 @@ class Quote:
     def save(self):
         """Función que graba el quotes si coincide todo lo ignora. Si no coincide lo inserta o actualiza.
         No hace commit a la conexión
-        Devuelve un número 1 si insert 2, update, 0  exisitia
+        Devuelve un número 1 si insert, 2 update, 3 ya  exisitia
         """
-        curms=self.mem.con.cursor()
-        exists=self.exists(curms)
+        cur=self.mem.con.cursor()
+        exists=self.exists(cur)
         if exists[0]==False:
-            curms.execute('insert into quotes (id, datetime, quote) values (%s,%s,%s)', ( self.product.id, self.datetime, self.quote))
-            curms.close()
+            cur.execute('insert into quotes (id, datetime, quote) values (%s,%s,%s)', ( self.product.id, self.datetime, self.quote))
+            cur.close()
             return 1
         else:
-            if exists[1]!=Decimal(self.quote):
-                curms.execute("update quotes set quote=%swhere id=%s and datetime=%s", (self.quote, self.product.id, self.datetime))
-                curms.close()
+            if exists[1]!=self.quote:
+                cur.execute("update quotes set quote=%swhere id=%s and datetime=%s", (self.quote, self.product.id, self.datetime))
+                cur.close()
                 return 2
             else: #ignored
-                curms.close()
+                cur.close()
                 return 3
                 
     def delete(self):

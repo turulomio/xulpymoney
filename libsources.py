@@ -18,18 +18,23 @@ class SetQuotes:
         """
         insertados=SetQuotes(self.mem)
         ignored=SetQuotes(self.mem)
-        modificados=SetQuotes(self.mem)         
+        modificados=SetQuotes(self.mem)    
+        malos=SetQuotes(self.mem)
             
         for q in self.arr:
-            if q.can_be_saved():
+            if q.can_be_saved():#Debe hacerse en automaticos
                 ibm=q.save()
-                if ibm==0:
-                    ignored.append(q)
-                elif ibm==1:
+                if ibm==1:
                     insertados.append(q)
                 elif ibm==2:
                     modificados.append(q)
-        return (insertados, ignored, modificados)
+                elif ibm==3:
+                    ignored.append(q)
+            else:
+                malos.append(q)
+                
+        print ("{} SetMyquotes.save".format(len(self.arr)), insertados.length(), ignored.length(), modificados.length(), malos.length())
+        return (insertados, ignored, modificados, malos)
              
              
     def addTo(self, settoadd):
@@ -58,6 +63,7 @@ class SetQuotes:
         for rownumber, a in enumerate(self.arr):
             tabla.setItem(rownumber, 0, qdatetime(a.datetime, self.mem.localzone))
             tabla.setItem(rownumber, 1, qleft(a.product.name))
+            tabla.item(rownumber, 1).setIcon(a.product.stockexchange.country.qicon())
             tabla.setItem(rownumber, 2, a.product.currency.qtablewidgetitem(a.quote))
 
 class Source(QObject):
@@ -76,6 +82,8 @@ class Source(QObject):
         self.ignored=SetQuotes(self.mem)
         self.modified=SetQuotes(self.mem)
         self.inserted=SetQuotes(self.mem)
+        self.bad=SetQuotes(self.mem)
+        self.finished=False
         
     def log(self, error):
         self.errors.append("{} {}".format(datetime.datetime.now(), error))
@@ -99,10 +107,9 @@ class Source(QObject):
     def quotes_save(self):
         """Saves all quotes after product iteration. If I want to do something different. I must override this function"""
         
-        (self.inserted, self.ignored, self.modified)=self.quotes.save()
-        
+        (self.inserted, self.ignored, self.modified, self.bad)=self.quotes.save()
         #El commit se hace dentro porque hay veces hay muchas
-        print("{} finished. {} inserted, {} ignored and {} modified. Total quotes {}".format(self.__class__.__name__, self.inserted.length(), self.ignored.length(), self.modified.length(), self.quotes.length()))
+        print("{} finished. {} inserted, {} ignored, {} modified and {} bad. Total quotes {}".format(self.__class__.__name__, self.inserted.length(), self.ignored.length(), self.modified.length(), self.bad.length(), self.quotes.length()))
             
     def errors_show(self):
         """Shwo errors aappended with log"""
@@ -151,10 +158,12 @@ class SourceParsePage(Source):
         self.quotes_save()
         self.mem.con.commit()
         
-        self.errors_show()
-        self.inserted.print()
+        #self.errors_show()
+        #self.inserted.print()
         
+        self.finished=True
         self.emit(SIGNAL("run_finished()"))
+        
         
 
     def on_load_page(self):
@@ -197,10 +206,10 @@ class SourceIterateProducts(Source):
         
         self.quotes_save()
         
-        self.errors_show()
+#        self.errors_show()
         
+        self.finished=True
         self.emit(SIGNAL("run_finished()"))
-        print("finished")
         
         
         
@@ -238,6 +247,7 @@ class WorkerMercadoContinuo(SourceParsePage):
     def __init__(self,  mem):
         SourceParsePage.__init__(self, mem, "select * from products where agrupations ilike '%MERCADOCONTINUO%';")   
         
+        
     def on_load_page(self):
         "Overrides SourceParsePage"
         self.url='http://www.infobolsa.es/mercado-nacional/mercado-continuo'
@@ -265,7 +275,9 @@ class WorkerMercadoContinuo(SourceParsePage):
                     product=self.products.find_by_ticker(ticker)
                     if product:
                         datime=dt(date,time,product.stockexchange.zone)
-                        self.quotes.append(Quote(self.mem).init__create(product, datime, quote))#closes
+                        quote=Quote(self.mem).init__create(product, datime, quote)
+#                        print(quote)
+                        self.quotes.append(quote)#closes
                     else:
                         self.log("El ticker {} no ha sido encontrado".format(ticker))
                 if line.find('</html')!=-1:
