@@ -49,22 +49,21 @@
             <property name="widgetResizable">
              <bool>true</bool>
             </property>
+            <property name="alignment">
+             <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+            </property>
             <widget class="QWidget" name="scrollAreaWidgetContents">
              <property name="geometry">
               <rect>
                <x>0</x>
                <y>0</y>
                <width>342</width>
-               <height>359</height>
+               <height>344</height>
               </rect>
              </property>
              <layout class="QVBoxLayout" name="verticalLayout_7">
               <item>
-               <layout class="QGridLayout" name="layIntraday" rowstretch="0">
-                <property name="sizeConstraint">
-                 <enum>QLayout::SetMinimumSize</enum>
-                </property>
-               </layout>
+               <layout class="QGridLayout" name="layIntraday"/>
               </item>
              </layout>
             </widget>
@@ -76,7 +75,7 @@
              <string>Update all intraday sources</string>
             </property>
             <property name="icon">
-             <iconset resource="../../../xulpymoney/images/xulpymoney.qrc">
+             <iconset resource="../images/xulpymoney.qrc">
               <normaloff>:/xulpymoney/transfer.png</normaloff>:/xulpymoney/transfer.png</iconset>
             </property>
            </widget>
@@ -98,13 +97,16 @@
             <property name="widgetResizable">
              <bool>true</bool>
             </property>
+            <property name="alignment">
+             <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+            </property>
             <widget class="QWidget" name="scrollAreaWidgetContents_2">
              <property name="geometry">
               <rect>
                <x>0</x>
                <y>0</y>
                <width>342</width>
-               <height>359</height>
+               <height>344</height>
               </rect>
              </property>
              <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -121,7 +123,7 @@
              <string>Update all daily sources</string>
             </property>
             <property name="icon">
-             <iconset resource="../../../xulpymoney/images/xulpymoney.qrc">
+             <iconset resource="../images/xulpymoney.qrc">
               <normaloff>:/xulpymoney/transfer.png</normaloff>:/xulpymoney/transfer.png</iconset>
             </property>
            </widget>
@@ -136,7 +138,7 @@
   </layout>
  </widget>
  <resources>
-  <include location="../../../xulpymoney/images/xulpymoney.qrc"/>
+  <include location="../images/xulpymoney.qrc"/>
  </resources>
  <connections/>
 </ui>
