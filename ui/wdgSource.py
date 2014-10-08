@@ -9,29 +9,7 @@ class Sources:
     WorkerYahooHistorical=2
     WorkerMercadoContinuo=3
 
-#class TWorker(QThread):
-#    """Hilo que actualiza las products, solo el getBasic, cualquier cambio no de last, deberá ser desarrollado por código"""
-#    def __init__(self, mem, sources):
-#        QThread.__init__(self)
-#        self.mem=mem                
-#        if sources==Sources.WorkerYahoo:
-#            cur=mem.con.cursor()
-#            cur.execute("select count(*) from products where active=true and priority[1]=1")
-#            num=cur.fetchone()[0]
-#            step=150
-#            for i in range (0, int(num/step)+1):
-#                self.worker=WorkerYahoo(mem, "select * from products where active=true and priority[1]=1 order by ticker limit {} offset {};".format(step, step*i))
-#            cur.close()           
-#        elif sources==Sources.WorkerYahooHistorical:
-#            self.worker=WorkerYahooHistorical(mem, 1)
-#        elif sources==Sources.WorkerMercadoContinuo:                
-#            self.worker=WorkerMercadoContinuo(mem)
-#            
-#    def run(self):
-#        print ("TWorker started")
-#        self.worker.run()
-#        
-            
+
 class wdgSource(QWidget, Ui_wdgSource):
     def __init__(self, mem, sources,  parent = None, name = None):
         QWidget.__init__(self,  parent)
@@ -82,15 +60,6 @@ class wdgSource(QWidget, Ui_wdgSource):
         self.cmdEdited.setEnabled(True)
         self.cmdErrors.setEnabled(True)
         self.cmdBad.setEnabled(True)        
-
-#        
-#    def agrupation_isfinished(self):
-#        """Returns a boolean if all workers in agrupation are finished"""
-#        for worker in self.agrupation:
-#            if worker.finished==False:
-#                return False
-#        return True
-
 
     def on_cmdInserted_released(self):
         d=QDialog(self)        
