@@ -27,7 +27,15 @@ class wdgQuotesUpdate(QWidget, Ui_wdgQuotesUpdate):
         
         
     def on_cmdDaily_released(self):
-        if self.wyahoohistorical.isEnabled():
+        if self.wyahoohistorical.cmdRun.isEnabled():
             self.wyahoohistorical.on_cmdRun_released()
             
         self.cmdDaily.setEnabled(False)
+        
+    def on_cmdAll_released(self):
+        if self.cmdDaily.isEnabled():
+            self.on_cmdDaily_released()
+        if self.cmdIntraday.isEnabled():
+            self.on_cmdIntraday_released()
+        self.cmdAll.setEnabled(False)
+            
