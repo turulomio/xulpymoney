@@ -172,22 +172,7 @@ class frmMain(QMainWindow, Ui_frmMain):
 
     @QtCore.pyqtSlot()  
     def on_actionReloadPrices_activated(self):
-        ##Selecting products to update
-        if self.mem.data.loaded_inactive==False:
-            products=self.mem.data.products_active
-        else:
-            products=self.mem.data.products_all()
-        
-        pd= QProgressDialog(self.tr("Reloading {0} product prices from database").format(len(products.arr)),None, 0,len(products.arr))
-        pd.setModal(True)
-        pd.setWindowTitle(self.tr("Reloading prices..."))
-        pd.forceShow()
-        for i, p in enumerate(products.arr):
-            pd.setValue(i)
-            pd.update()
-            QApplication.processEvents()
-            p.result.basic.load_from_db()
-        self.mem.data.benchmark.result.basic.load_from_db()
+        self.mem.data.reload_prices()
 
     @QtCore.pyqtSlot()  
     def on_actionReportAPR_activated(self):
@@ -563,6 +548,5 @@ class frmMain(QMainWindow, Ui_frmMain):
     @QtCore.pyqtSlot()  
     def on_actionPriceUpdates_activated(self):  
         self.w.close()
-        self.w=wdgQuotesUpdate(self.mem)
+        self.w=wdgQuotesUpdate(self.mem, self)
         self.layout.addWidget(self.w)
-        self.on_actionReloadPrices_activated()

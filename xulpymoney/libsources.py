@@ -1,5 +1,6 @@
 from libxulpymoney import *
 from urllib import *
+from selenium import webdriver
         
 class SetQuotes:
     """Clase que agrupa quotes un una lista arr. Util para operar con ellas como por ejemplo insertar"""
@@ -84,9 +85,15 @@ class Source(QObject):
         self.inserted=SetQuotes(self.mem)
         self.bad=SetQuotes(self.mem)
         self.finished=False
+        self.step=0#step of the source run. maximal is in steps()
+        self.stopping=False
         
     def log(self, error):
         self.errors.append("{} {}".format(datetime.datetime.now(), error))
+        
+    def next_step(self):
+        self.step=self.step+1
+        self.emit(SIGNAL("step_finished"))  
 
             
 
@@ -132,10 +139,11 @@ class Source(QObject):
         cadena=cadena.replace('.','')#Quita puntos
         cadena=cadena.replace(',','.')#Cambia coma por punto
         return cadena        
+        
+    def steps(self):
+        """Define  the number of steps of the source run"""
+        pass
 
-#    def run(self):
-#        """Function to override, when launching the worker"""
-#        pass
         
 class SourceParsePage(Source):
     def __init__(self, mem, sql ):
@@ -146,28 +154,31 @@ class SourceParsePage(Source):
         
     def run(self):
         self.products=SetProducts(self.mem)
-        self.products.load_from_db(self.sql)       
-        print (self.products.length())
+        self.products.load_from_db(self.sql)     
+        self.next_step()
         
-        QObject.connect(self, SIGNAL("load_page()"), self.on_load_page)   
-        self.emit(SIGNAL("load_page()"))
+        QObject.connect(self, SIGNAL("load_page"), self.on_load_page)   
+        self.emit(SIGNAL("load_page"))
+        self.next_step()
         
-        QObject.connect(self, SIGNAL("parse_page()"), self.on_parse_page)      
-        self.emit(SIGNAL("parse_page()")) 
+        QObject.connect(self, SIGNAL("parse_page"), self.on_parse_page)      
+        self.emit(SIGNAL("parse_page")) 
+        self.next_step()
  
         self.quotes_save()
         self.mem.con.commit()
-        
-        #self.errors_show()
-        #self.inserted.print()
+        self.next_step()
         
         self.finished=True
-        self.emit(SIGNAL("run_finished()"))
+        self.emit(SIGNAL("run_finished"))
+        self.next_step()
         
         
+    def steps(self):
+        """Define  the number of steps of the source run"""
+        return 5
 
     def on_load_page(self):
-#        print(self.url)
         self.web=self.load_page(self.url)
         if self.web==None:
             return
@@ -188,28 +199,27 @@ class SourceIterateProducts(Source):
     def __init__(self, mem, sql, type=2, sleep=0):
         Source.__init__(self, mem)
         self.sleep=sleep#wait between products
-        self.type=type#0 silent, 1 console, 2 qtgui
+        self.type=type#0 silent in xulpymoney, 1 console
         self.sql=sql
         QObject.connect(self, SIGNAL("execute_product(int)"), self.on_execute_product)       
 
+        
+    def steps(self):
+        """Define  the number of steps of the source run"""
+        return self.products.length()+1
         
     def run(self):
         self.products=SetProducts(self.mem)
         self.products.load_from_db(self.sql)
  
-        if type==2:
-            self.pd= QProgressDialog(QApplication.translate("Core","Inserting {} prices of {} investments").format(0, self.products.length()), QApplication.translate("Core","Cancel"), 0,len(self.products.arr))
-            self.pd.setModal(True)
-            self.pd.setMinimumDuration(0)          
-            self.pd.setWindowTitle(QApplication.translate("Core","Updating product prices..."))
+
         self.products_iterate()
         
         self.quotes_save()
         
-#        self.errors_show()
-        
         self.finished=True
-        self.emit(SIGNAL("run_finished()"))
+        self.emit(SIGNAL("run_finished"))
+        self.next_step()
         
         
         
@@ -220,25 +230,18 @@ class SourceIterateProducts(Source):
 
     def products_iterate(self):
         """Makes iteration. When its cancelled clears self.quotes.arr"""
-        for i,  product in enumerate(self.products.arr):
-            if self.type==2:
-                self.pd.setValue(i)
-                self.pd.update()
-                QApplication.processEvents()
-                if self.pd.wasCanceled():
-                    self.quotes.clear()
-                    break
-                self.pd.update()
-                QApplication.processEvents()
-                self.pd.update()       
-                stri=QApplication.translate("Core","Inserting {} prices of {} products").format(self.quotes.length(),self.products.length())
-                self.pd.setLabelText(stri)           
-            elif self.type==1:
+        for i,  product in enumerate(self.products.arr): 
+            if self.type==1:
                 stri="{0}: {1}/{2} {3}. Appended: {4}            ".format(self.__class__.__name__, i+1, self.products.length(), product, self.quotes.length()) 
                 sys.stdout.write("\b"*1000+stri)
                 sys.stdout.flush()
+            if self.stopping==True:
+                print ("Stopping")
+                self.quotes.clear()
+                break
             self.emit(SIGNAL("execute_product(int)"), product.id)
             self.mem.con.commit()
+            self.next_step()
             time.sleep(self.sleep)#time step
         print("")
 
@@ -284,6 +287,57 @@ class WorkerMercadoContinuo(SourceParsePage):
                     break
 #            except:
 #                self.log("El ticker {} no ha sido formateado correctamente".format(ticker))
+
+class WorkerSGWarrants(SourceParsePage):
+    """Clase que recorre las inversiones activas y calcula según este la prioridad de la previsión"""
+    def __init__(self, mem):
+        SourceParsePage.__init__(self, mem, 'select * from products where type=5;')
+        
+        
+    def on_load_page(self):
+        """Overrided this function because web needs to create a session"""
+        #driver = webdriver.HtmlUnitDriver()
+        profile = webdriver.FirefoxProfile()
+        profile.native_events_enabled = True
+        driver = webdriver.Firefox(profile)
+#        driver = webdriver.Remote(desired_capabilities=webdriver.DesiredCapabilities.HTMLUNIT)
+        driver.get('https://es.warrants.com')
+        print (driver.title)
+        form=driver.find_element_by_id('id3e9b')
+        form.click()
+        print(driver.get_page_source())
+        driver.quit()
+        sys.exit()
+
+    def on_parse_page(self):
+        "Overrides SourceParsePage"
+        for i in self.web.readlines():
+            try:
+                i=b2s(i)
+                datos=i[:-2].split(",")#Se quita dos creo que por caracter final linea windeos.
+                product=self.products.find_by_ticker(datos[0][1:-1])
+
+                if product==None:
+                    self.log("{} Not found".format(datos[0][1:-1] ))
+                    continue                
+                
+                quote=Decimal(datos[1])
+                d=int(datos[2][1:-1].split("/")[1])
+                M=int(datos[2][1:-1].split("/")[0])
+                Y=int(datos[2][1:-1].split("/")[2])
+                H=int(datos[3][1:-1].split(":")[0])
+                m=int(datos[3][1:-1].split(":")[1][:-2])
+                pm=datos[3][1:-1].split(":")[1][2:]
+                
+                #Conversion
+                H=ampm_to_24(H, pm)
+                dat=datetime.date(Y, M, d)
+                tim=datetime.time(H, m)
+                bolsa=self.mem.stockexchanges.find(2)#'US/Eastern'
+                self.quotes.append(Quote(self.mem).init__create(product,dt(dat,tim,bolsa.zone), quote))
+            except:#
+                self.log("Error parsing: {}".format(i[:-1]))
+                continue
 
 class WorkerYahoo(SourceParsePage):
     """Clase que recorre las inversiones activas y calcula según este la prioridad de la previsión"""
@@ -331,7 +385,7 @@ class WorkerYahoo(SourceParsePage):
                 self.quotes.append(Quote(self.mem).init__create(product,dt(dat,tim,bolsa.zone), quote))
             except:#
                 self.log("Error parsing: {}".format(i[:-1]))
-                continue
+                continue                
 
 class WorkerYahooHistorical(SourceIterateProducts):
     """Clase que recorre las inversiones activas y busca la última  que tiene el microsecond 4. Busca en internet los historicals a partir de esa fecha"""
