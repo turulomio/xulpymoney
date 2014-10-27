@@ -1879,9 +1879,31 @@ class DBData:
         else:#No están cargadas
             load()
         
-    def reload(self):
+    def reload(self, force=True):
+
+        
+        
         self.load_actives()
-        self.load_inactives(True)
+        self.load_inactives(force)
+        
+        
+    def reload_prices(self):
+        ##Selecting products to update
+        if self.loaded_inactive==False:
+            products=self.products_active
+        else:
+            products=self.products_all()
+        
+        pd= QProgressDialog(QApplication.translate("Core","Reloading {0} product prices from database").format(len(products.arr)),None, 0,products.length())
+        pd.setModal(True)
+        pd.setWindowTitle(QApplication.translate("Core","Reloading prices..."))
+        pd.forceShow()
+        for i, p in enumerate(products.arr):
+            pd.setValue(i)
+            pd.update()
+            QApplication.processEvents()
+            p.result.basic.load_from_db()
+        self.mem.data.benchmark.result.basic.load_from_db()        
         
     def banks_all(self):
         return self.banks_active.union(self.banks_inactive, self.mem)

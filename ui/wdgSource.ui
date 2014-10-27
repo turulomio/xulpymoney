@@ -70,7 +70,7 @@
           <item>
            <widget class="QProgressBar" name="progress">
             <property name="value">
-             <number>24</number>
+             <number>0</number>
             </property>
            </widget>
           </item>
@@ -111,6 +111,14 @@ background-color: rgb(255, 192, 192);</string>
             <property name="icon">
              <iconset resource="../images/xulpymoney.qrc">
               <normaloff>:/xulpymoney/transfer.png</normaloff>:/xulpymoney/transfer.png</iconset>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QToolButton" name="cmdCancel">
+            <property name="icon">
+             <iconset resource="../images/xulpymoney.qrc">
+              <normaloff>:/xulpymoney/button_cancel.png</normaloff>:/xulpymoney/button_cancel.png</iconset>
             </property>
            </widget>
           </item>

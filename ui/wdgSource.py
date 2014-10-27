@@ -11,13 +11,16 @@ class Sources:
 
 
 class wdgSource(QWidget, Ui_wdgSource):
-    def __init__(self, mem, sources,  parent = None, name = None):
+    def __init__(self, mem, class_sources,  parent = None, name = None):
         QWidget.__init__(self,  parent)
         self.setupUi(self)
         self.mem=mem
+        self.parent=parent
         self.agrupation=[]#used to iterate workers 
         self.totals=Source(self.mem)# Used to show totals of agrupation
-        if sources==Sources.WorkerYahoo:
+        self.steps=None#Define the steps of the self.progress bar
+        self.class_sources=class_sources
+        if self.class_sources==Sources.WorkerYahoo:
             cur=mem.con.cursor()
             cur.execute("select count(*) from products where active=true and priority[1]=1")
             num=cur.fetchone()[0]
@@ -26,29 +29,60 @@ class wdgSource(QWidget, Ui_wdgSource):
                 self.worker=WorkerYahoo(mem, "select * from products where active=true and priority[1]=1 order by ticker limit {} offset {};".format(step, step*i))
                 self.agrupation.append(self.worker)
             cur.close()           
-        elif sources==Sources.WorkerYahooHistorical:
+        elif self.class_sources==Sources.WorkerYahooHistorical:
             self.worker=WorkerYahooHistorical(mem, 0)
             self.agrupation.append(self.worker)
-        elif sources==Sources.WorkerMercadoContinuo:                
+        elif self.class_sources==Sources.WorkerMercadoContinuo:                
             self.worker=WorkerMercadoContinuo(mem)
             self.agrupation.append(self.worker)
+        self.currentWorker=self.agrupation[0]# Current worker working
+
+        #Make connections
+        for worker in self.agrupation:
+            QObject.connect(worker, SIGNAL("step_finished"), self.progress_step)   
+        
 
         self.lbl.setText(self.worker.__class__.__name__)
+                
         
-        
+    def progress_step(self,  last=False):
+        """Define max steps y value. 
+        If last=True puts the value to the max"""
+        if self.class_sources==Sources.WorkerYahoo:
+            self.progress.setMaximum(len(self.agrupation)*self.agrupation[0].steps())
+        elif self.class_sources==Sources.WorkerYahooHistorical:
+            self.progress.setMaximum(self.agrupation[0].steps())
+        elif self.class_sources==Sources.WorkerMercadoContinuo:      
+            self.progress.setMaximum(self.agrupation[0].steps())
+            
+        if last==True:
+            self.progress.setValue(self.progress.maximum())
+        else:
+            self.progress.setValue(self.progress.value()+1)
+#        QCoreApplication.processEvents() 
+#        self.update()
+#        QCoreApplication.processEvents() 
+        self.parent.parent.update()
+        QCoreApplication.processEvents() 
 
     def on_cmdRun_released(self):
+        """Without multiprocess due to needs one independent connection per thread"""
+        self.cmdRun.setEnabled(False)     
         for worker in self.agrupation:
-            QTimer.singleShot(200, worker, SLOT(worker.run()))
+            self.currentWorker=worker
+            worker.run()
             worker.inserted.addTo(self.totals.inserted)
             worker.modified.addTo(self.totals.modified)
             worker.ignored.addTo(self.totals.ignored)
             worker.bad.addTo(self.totals.bad)
             worker.quotes.addTo(self.totals.quotes)
             self.totals.errors=worker.errors+self.totals.errors
-            QCoreApplication.sendPostedEvents();   
+            QCoreApplication.processEvents()
+            self.update()
+            if worker.stopping==True:
+                self.progress_step(True)
+                break
         
-        self.cmdRun.setEnabled(False)     
         self.grp.setTitle(self.tr("{} quotes got from the source").format(self.totals.quotes.length()))
         self.cmdInserted.setText(self.tr("{} Inserted").format(self.totals.inserted.length()))
         self.cmdEdited.setText(self.tr("{} Edited").format(self.totals.modified.length()))
@@ -59,7 +93,13 @@ class wdgSource(QWidget, Ui_wdgSource):
         self.cmdIgnored.setEnabled(True)
         self.cmdEdited.setEnabled(True)
         self.cmdErrors.setEnabled(True)
-        self.cmdBad.setEnabled(True)        
+        self.cmdBad.setEnabled(True)       
+        self.cmdCancel.setEnabled(False)
+        
+    def on_cmdCancel_released(self):
+        self.cmdCancel.setEnabled(False)
+        self.currentWorker.stopping=True
+        self.currentWorker=None# Current worker working
 
     def on_cmdInserted_released(self):
         d=QDialog(self)        
