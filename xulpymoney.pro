@@ -1,15 +1,6 @@
 SOURCES         = \
                   libsources.py \
                   libxulpymoney.py \
-                  sources/bolsamadridfondos.py \
-                  sources/bonoaleman.py \
-                  sources/carmignac.py \
-                  sources/deutscheboerse.py \
-                  sources/divisas.py \
-                  sources/euronext.py \
-                  sources/indices.py \
-                  sources/mq.productoscotizados.py \
-                  sources/nyse.py \
                   sources/source_mercadocontinuo.py \
                   sources/source_sg_warrants.py \
                   sources/source_yahoohistorical.py \
