@@ -206,16 +206,19 @@ class SourceIterateProducts(Source):
         
     def steps(self):
         """Define  the number of steps of the source run"""
-        return self.products.length()+1
+        return self.products.length()+3
         
     def run(self):
         self.products=SetProducts(self.mem)
         self.products.load_from_db(self.sql)
+        self.next_step()
  
 
         self.products_iterate()
         
         self.quotes_save()
+        self.mem.con.commit()
+        self.next_step()
         
         self.finished=True
         self.emit(SIGNAL("run_finished"))
@@ -240,7 +243,6 @@ class SourceIterateProducts(Source):
                 self.quotes.clear()
                 break
             self.emit(SIGNAL("execute_product(int)"), product.id)
-            self.mem.con.commit()
             self.next_step()
             time.sleep(self.sleep)#time step
         print("")
