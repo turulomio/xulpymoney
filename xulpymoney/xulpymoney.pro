@@ -4,12 +4,10 @@ SOURCES         = \
                   sources/bolsamadridfondos.py \
                   sources/bonoaleman.py \
                   sources/carmignac.py \
-                  sources/conjuntos.py \
                   sources/deutscheboerse.py \
                   sources/divisas.py \
                   sources/euronext.py \
                   sources/indices.py \
-                  sources/mercadocontinuo.py \
                   sources/mq.productoscotizados.py \
                   sources/mq.societegeneralewarrants.py \
                   sources/mq.yahooinactive.py \
