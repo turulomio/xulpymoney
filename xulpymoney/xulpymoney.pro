@@ -9,12 +9,11 @@ SOURCES         = \
                   sources/euronext.py \
                   sources/indices.py \
                   sources/mq.productoscotizados.py \
-                  sources/mq.societegeneralewarrants.py \
-                  sources/mq.yahooinactive.py \
                   sources/nyse.py \
-                  sources/societegeneralewarrants.py \
+                  sources/source_mercadocontinuo.py \
+                  sources/source_sg_warrants.py \
                   sources/source_yahoohistorical.py \
-                  sources/yahoo.py \
+                  sources/source_yahoo.py \
                   ui/canvaschart.py \
                   ui/frmAbout.py \
                   ui/Ui_frmAbout.py \
