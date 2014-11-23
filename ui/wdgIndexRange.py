@@ -76,9 +76,12 @@ class wdgIndexRange(QWidget, Ui_wdgIndexRange):
         if len (arr)==0: #Peta en base de datos vacía
             return
                     
-        #Makes and array with top of the range
+        #Makes and array from benchmark maximum + 4% to minimum
         ranges=[]
-        maximo= int(max(arr)[0]*(1+ Decimal(self.spin.value()/200.0))) ##Gets maximus benchmark
+        cur=self.mem.con.cursor()
+        cur.execute("select max(quote) from quotes where id=%s;", (self.benchmark.id, ))
+        maximo= int( cur.fetchone()[0]*Decimal(1.04))
+        cur.close()
         minimo=int(self.txtMinimo.text())
         PuntRange=maximo
         while PuntRange>minimo:
