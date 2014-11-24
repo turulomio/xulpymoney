@@ -73,9 +73,7 @@ class wdgIndexRange(QWidget, Ui_wdgIndexRange):
                 for o in i.op_actual.arr:
                     arr.append((o.referenciaindice.quote, o))
         arr=sorted(arr, key=lambda row: row[1].datetime,  reverse=False) 
-        if len (arr)==0: #Peta en base de datos vacía
-            return
-                    
+
         #Makes and array from benchmark maximum + 4% to minimum
         ranges=[]
         cur=self.mem.con.cursor()
@@ -165,7 +163,10 @@ class wdgIndexRange(QWidget, Ui_wdgIndexRange):
         w.init__percentagevariation_amount(self.range.currentPriceBottomVariation(), self.txtInvertir.decimal())
         lay = QVBoxLayout(d)
         lay.addWidget(w)
-        d.show()
+        if w.hasProducts==True:
+            d.show()
+        else:
+            d.close()
 
     @QtCore.pyqtSlot() 
     def on_actionTop_activated(self):        
@@ -176,7 +177,10 @@ class wdgIndexRange(QWidget, Ui_wdgIndexRange):
         w.init__percentagevariation_amount(self.range.currentPriceTopVariation(), self.txtInvertir.decimal())
         lay = QVBoxLayout(d)
         lay.addWidget(w)
-        d.show()
+        if w.hasProducts==True:
+            d.show()
+        else:
+            d.close()
 
     @QtCore.pyqtSlot() 
     def on_actionMiddle_activated(self):        
@@ -187,5 +191,8 @@ class wdgIndexRange(QWidget, Ui_wdgIndexRange):
         w.init__percentagevariation_amount(self.range.currentPriceMiddleVariation(), self.txtInvertir.decimal())
         lay = QVBoxLayout(d)
         lay.addWidget(w)
-        d.show()
+        if w.hasProducts==True:
+            d.show()
+        else:
+            d.close()
         
