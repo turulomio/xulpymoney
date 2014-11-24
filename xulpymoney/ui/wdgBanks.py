@@ -22,10 +22,11 @@ class wdgBanks(QWidget, Ui_wdgBanks):
         self.tblAccounts.settings("wdgBanks",  self.mem)
         self.tblInvestments.settings("wdgBanks",  self.mem)
         
-        self.on_chkActives_stateChanged(Qt.Unchecked)#Carga eb
+        self.on_chkActives_stateChanged(Qt.Checked)#Carga eb
 
         
     def load_eb(self):
+        self.banks.order_by_name()
         self.tblEB.clearContents()
         self.tblEB.setRowCount(self.banks.length()+1)
         sumsaldos=Decimal(0)
@@ -39,6 +40,7 @@ class wdgBanks(QWidget, Ui_wdgBanks):
         self.tblEB.setItem(self.banks.length(), 2, self.mem.localcurrency.qtablewidgetitem(sumsaldos))        
         
     def load_cuentas(self):
+        self.accounts.order_by_name()
         self.tblAccounts.clearContents()
         self.tblAccounts.setRowCount(self.accounts.length()+1);
         sumsaldos=0
@@ -52,6 +54,7 @@ class wdgBanks(QWidget, Ui_wdgBanks):
         
                 
     def load_inversiones(self):
+        self.investments.order_by_name()
         self.tblInvestments.clearContents()
         self.tblInvestments.setRowCount(self.investments.length()+1);
         sumsaldos=0
@@ -66,7 +69,10 @@ class wdgBanks(QWidget, Ui_wdgBanks):
         
         
     def on_chkActives_stateChanged(self, state):
-        self.banks=self.mem.data.banks_set(self.chkActives.isChecked())
+        if self.chkActives.isChecked():
+            self.banks=self.mem.data.banks_set(self.chkActives.isChecked())
+        else:
+            self.banks=self.mem.data.banks_all()
         self.load_eb()
         self.tblEB.clearSelection()   
         self.tblAccounts.setRowCount(0)
@@ -94,13 +100,13 @@ class wdgBanks(QWidget, Ui_wdgBanks):
                    
         for i in self.mem.data.investments_all().arr:
             if i.cuenta.eb.id==self.banks.selected.id:
-                self.investments.append(i)
-        self.investments.order_by_name()
+                if (self.chkActives.isChecked() and i.activa==True) or (self.chkActives.isChecked()==False):
+                    self.investments.append(i)
         
         for v in self.mem.data.accounts_all().arr:
             if v.eb.id==self.banks.selected.id:
-                self.accounts.append(v)
-        self.accounts.order_by_name()
+                if (self.chkActives.isChecked() and v.activa==True) or (self.chkActives.isChecked()==False):
+                    self.accounts.append(v)
         
         self.load_cuentas()
         self.load_inversiones()
@@ -198,7 +204,6 @@ class wdgBanks(QWidget, Ui_wdgBanks):
         eb.save()
         self.mem.con.commit()  
         self.mem.data.banks_active.append(eb)
-        self.mem.data.banks_active.order_by_name()
         self.load_eb()
 
 
@@ -213,7 +218,6 @@ class wdgBanks(QWidget, Ui_wdgBanks):
         self.banks.selected.name=bank
         self.banks.selected.save()
         self.mem.con.commit()
-        self.mem.data.banks_active.order_by_name()
         self.load_eb()   
         
     @QtCore.pyqtSlot() 

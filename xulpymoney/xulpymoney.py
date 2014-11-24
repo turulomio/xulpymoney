@@ -19,8 +19,6 @@ mem=MemXulpymoney()
 
 if "admin" in sys.argv:
     mem.adminmode=True
-#if "debug" in sys.argv:
-#    mem.debugmode=True
 
 mem.setQTranslator(QTranslator(app))
 mem.qtranslator.load("/usr/lib/xulpymoney/xulpymoney_{0}.qm".format(mem.config.get_value("settings", "language")))
