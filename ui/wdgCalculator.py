@@ -10,13 +10,22 @@ class wdgCalculator(QWidget, Ui_wdgCalculator):
         self.setupUi(self)
         self.mem=mem
         self.mem.data.load_inactives()
+        self.hasProducts=True#Permits to show/hide the widget from external dialog
+        if self.mem.data.products_all().length()==0:
+            m=QMessageBox()
+            m.setIcon(QMessageBox.Information)
+            m.setText(self.tr("You need to create at least one investment"))
+            m.exec_()
+            self.hasProducts=False        
+            return
         self.product=self.mem.data.products_all().find(self.mem.config.get_value("wdgCalculator", "Product"))
         self.mem.data.products_all().qcombobox(self.cmbProducts, self.product)
         self.txtAmount.setText(self.mem.config.get_value("wdgCalculator", "Invested"))
-   
+
     def init__percentagevariation_amount(self, percentagevariation, amount):
-        self.spnProductPriceVariation.setValue(percentagevariation)
-        self.txtAmount.setText(amount)
+        if self.hasProducts==True:
+            self.spnProductPriceVariation.setValue(percentagevariation)
+            self.txtAmount.setText(amount)
 
     @pyqtSlot(int)  
     def on_cmbProducts_currentIndexChanged(self, index):
