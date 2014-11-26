@@ -4190,72 +4190,72 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>wdgDividendsReport</name>
     <message>
-        <location filename="ui/wdgDividendsReport.ui" line="32"/>
+        <location filename="ui/Ui_wdgDividendsReport.py" line="131"/>
         <source>Dividends Report</source>
         <translation>Informe de dividendos</translation>
     </message>
     <message>
-        <location filename="ui/wdgDividendsReport.ui" line="70"/>
+        <location filename="ui/Ui_wdgDividendsReport.py" line="133"/>
         <source> days</source>
         <translation> días</translation>
     </message>
     <message>
-        <location filename="ui/wdgDividendsReport.ui" line="112"/>
+        <location filename="ui/Ui_wdgDividendsReport.py" line="134"/>
         <source>Show inactive investments</source>
         <translation>Mostrar inversiones inactivas</translation>
     </message>
     <message>
-        <location filename="ui/wdgDividendsReport.ui" line="138"/>
+        <location filename="ui/Ui_wdgDividendsReport.py" line="136"/>
         <source>Investment</source>
         <translation>Inversión</translation>
     </message>
     <message>
-        <location filename="ui/wdgDividendsReport.ui" line="143"/>
+        <location filename="ui/Ui_wdgDividendsReport.py" line="138"/>
         <source>Bank</source>
         <translation>Banco</translation>
     </message>
     <message>
-        <location filename="ui/wdgDividendsReport.ui" line="148"/>
+        <location filename="ui/Ui_wdgDividendsReport.py" line="140"/>
         <source>Price</source>
         <translation>Precio</translation>
     </message>
     <message>
-        <location filename="ui/wdgDividendsReport.ui" line="153"/>
+        <location filename="ui/Ui_wdgDividendsReport.py" line="142"/>
         <source>DPS</source>
         <translation>DPA</translation>
     </message>
     <message>
-        <location filename="ui/wdgDividendsReport.ui" line="158"/>
+        <location filename="ui/Ui_wdgDividendsReport.py" line="144"/>
         <source>Shares</source>
         <translation>Acciones</translation>
     </message>
     <message>
-        <location filename="ui/wdgDividendsReport.ui" line="163"/>
+        <location filename="ui/Ui_wdgDividendsReport.py" line="146"/>
         <source>Estimated</source>
         <translation>Estimado</translation>
     </message>
     <message>
-        <location filename="ui/wdgDividendsReport.ui" line="168"/>
+        <location filename="ui/Ui_wdgDividendsReport.py" line="148"/>
         <source>% annual dividend</source>
         <translation>% dividendo anual</translation>
     </message>
     <message>
-        <location filename="ui/wdgDividendsReport.ui" line="57"/>
+        <location filename="ui/Ui_wdgDividendsReport.py" line="132"/>
         <source>Dividends per share are red colorized when they are outdated more than</source>
         <translation>Los dividendos por acción están marcados en rojo cuando están desactualizados más de</translation>
     </message>
     <message>
-        <location filename="ui/wdgDividendsReport.ui" line="199"/>
+        <location filename="ui/Ui_wdgDividendsReport.py" line="150"/>
         <source>Update dividend per share</source>
         <translation>Actualizar dividendo por acción</translation>
     </message>
     <message>
-        <location filename="ui/wdgDividendsReport.ui" line="211"/>
+        <location filename="ui/Ui_wdgDividendsReport.py" line="152"/>
         <source>Investment report</source>
         <translation>Informe de la inversión</translation>
     </message>
     <message>
-        <location filename="ui/wdgDividendsReport.ui" line="223"/>
+        <location filename="ui/Ui_wdgDividendsReport.py" line="154"/>
         <source>Product report</source>
         <translation>Informe de producto</translation>
     </message>
