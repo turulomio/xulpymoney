@@ -2089,16 +2089,16 @@ class InvestmentOperation:
         cur.close()
         if self.tipooperacion.id==4:#Compra Acciones
             #Se pone un registro de compra de acciones que resta el balance de la opercuenta
-            c=AccountOperationOfInvestmentOperation(self.mem).init__create(self.datetime.date(), self.mem.conceptos.find(29), self.tipooperacion, -self.importe-self.comision, self.comentario, self.inversion.cuenta, self,self.inversion)
+            c=AccountOperationOfInvestmentOperation(self.mem).init__create(self.datetime, self.mem.conceptos.find(29), self.tipooperacion, -self.importe-self.comision, self.comentario, self.inversion.cuenta, self,self.inversion)
             c.save()
         elif self.tipooperacion.id==5:#// Venta Acciones
             #//Se pone un registro de compra de acciones que resta el balance de la opercuenta
-            c=AccountOperationOfInvestmentOperation(self.mem).init__create(self.datetime.date(), self.mem.conceptos.find(35), self.tipooperacion, self.importe-self.comision-self.impuestos, self.comentario, self.inversion.cuenta, self,self.inversion)
+            c=AccountOperationOfInvestmentOperation(self.mem).init__create(self.datetime, self.mem.conceptos.find(35), self.tipooperacion, self.importe-self.comision-self.impuestos, self.comentario, self.inversion.cuenta, self,self.inversion)
             c.save()
         elif self.tipooperacion.id==6:
             #//Si hubiera comisión se añade la comisión.
             if(self.comision!=0):
-                c=AccountOperationOfInvestmentOperation(self.mem).init__create(self.datetime.date(), self.mem.conceptos.find(38), self.mem.tiposoperaciones.find(1), -self.comision-self.impuestos, self.comentario, self.inversion.cuenta, self,self.inversion)
+                c=AccountOperationOfInvestmentOperation(self.mem).init__create(self.datetime, self.mem.conceptos.find(38), self.mem.tiposoperaciones.find(1), -self.comision-self.impuestos, self.comentario, self.inversion.cuenta, self,self.inversion)
                 c.save()
     
     def clone(self):
