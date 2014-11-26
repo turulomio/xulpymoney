@@ -4556,7 +4556,8 @@ class MemProducts:
         
 #        self.dic_activas={}#Diccionario cuyo indice es el id de la inversión id['1'] corresponde a la IvestmenActive(1) #se usa en mystocksd
         
-        self.con=None#Conexión a mystocks
+        self.con=None#Conexión
+        self.strcon=None#Conection string. Used in connect_auto
         
         
         #Needed for translations and are data
@@ -4654,10 +4655,16 @@ class MemProducts:
         self.agrupations.load_all()
         self.leverages.load_all()
         
+    def connect_auto(self):
+        """Used in code to connect using last self.strcon"""
+        self.con=psycopg2.extras.DictConnection(self.strcon)
+        print (datetime.datetime.now(),"Connect")
+        
+        
     def connect(self,  db,  port, user, host, pasw):        
-        strcon="dbname='{}' port='{}' user='{}' host='{}' password='{}'".format(db, port, user, host, pasw)
+        self.strcon="dbname='{}' port='{}' user='{}' host='{}' password='{}'".format(db, port, user, host, pasw)
         try:
-            con=psycopg2.extras.DictConnection(strcon)
+            con=psycopg2.extras.DictConnection(self.strcon)
         except psycopg2.Error:
             return (None, QApplication.translate("Core","Error conecting to Xulpymoney"))
         return (con, QApplication.translate("Core", "Connection done"))
@@ -4675,6 +4682,11 @@ class MemProducts:
         
     def disconnect(self, con):
         con.close()
+        
+    def disconnect_auto(self):
+        """Disconnect in code"""
+        self.con.close()
+        print (datetime.datetime.now(),"Disconnect")
  
             
             
