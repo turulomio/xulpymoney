@@ -9,10 +9,8 @@ class myQTableWidget(QTableWidget):
         self.section=None
         self.array=[]     #Es un array de strings no de int, con los datos para config
         self.verticalHeader().setResizeMode(QHeaderView.ResizeToContents)
-        QObject.connect(self.mytimer, SIGNAL("timeout()"), self.checksettings)      
-#        QObject.connect(self, SIGNAL("cellDoubleClicked(int,int)"), self.on_cellDoubleClicked)      
- 
-        
+        QObject.connect(self.mytimer, SIGNAL("timeout()"), self.checksettings)        
+
     def __del__(self):
         self.mytimer.stop()
         
@@ -58,22 +56,21 @@ class myQTableWidget(QTableWidget):
         for i in range(self.columnCount()):
             self.setColumnWidth(i, int(self.array[i]))        
 
-
     def save_columns(self):
         """Saves column status to array and to config"""
         self.columns2array()
         self.mem.config_ui.set_list(self.section, self.objectName()+"_columns_width", self.array)
         self.mem.config_ui.save()
         print ("- Saved {0} columns size in {1} to {2}".format(self.objectName(), self.section, self.array))
-            
-            
+
     def verticalScrollbarAction(self,  action):
         """Resizes columns if column width is less than table hint"""
         for i in range(self.columnCount()):
             if self.sizeHintForColumn(i)>self.columnWidth(i):
                 self.setColumnWidth(i, self.sizeHintForColumn(i))
-        
+        self.resizeRowsToContents()
+
     def on_cellDoubleClicked(self, row,  column):
         """Resizes to minimum contents"""
         self.resizeColumnsToContents()
-#        self.cellDoubleClicked.emit(row, column)
+        self.resizeRowsToContents()
