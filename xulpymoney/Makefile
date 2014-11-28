@@ -30,6 +30,7 @@ compile:
 	pyuic4 ui/wdgDividendsReport.ui > ui/Ui_wdgDividendsReport.py &
 	pyuic4 ui/wdgAPR.ui > ui/Ui_wdgAPR.py &
 	pyuic4 ui/wdgIndexRange.ui > ui/Ui_wdgIndexRange.py &
+	pyuic4 ui/wdgIndexRangeSimulator.ui > ui/Ui_wdgIndexRangeSimulator.py &
 	pyuic4 ui/wdgInvestments.ui > ui/Ui_wdgInvestments.py &
 	pyuic4 ui/frmDividendsAdd.ui > ui/Ui_frmDividendsAdd.py &
 	pyuic4 ui/frmInvestmentReport.ui > ui/Ui_frmInvestmentReport.py &

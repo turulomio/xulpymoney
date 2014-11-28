@@ -73,6 +73,8 @@ SOURCES         = \
                   ui/Ui_wdgDividendsReport.py \
                   ui/wdgIndexRange.py \
                   ui/Ui_wdgIndexRange.py \
+                  ui/wdgIndexRangeSimulator.py \
+                  ui/Ui_wdgIndexRangeSimulator.py \
                   ui/wdgInvestmentClasses.py \
                   ui/Ui_wdgInvestmentClasses.py \
                   ui/wdgInvestments.py \
@@ -132,6 +134,7 @@ FORMS           = \
                   ui/wdgDisReinvest.ui \
                   ui/wdgDividendsReport.ui \
                   ui/wdgIndexRange.ui \
+                  ui/wdgIndexRangeSimulator.ui \
                   ui/wdgInvestmentClasses.ui \
                   ui/wdgInvestments.ui \
                   ui/wdgInvestmentsOperations.ui \

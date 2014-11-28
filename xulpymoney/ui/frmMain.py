@@ -15,6 +15,7 @@ from wdgBanks import *
 from wdgConcepts import *
 from wdgCalculator import *
 from wdgIndexRange import *
+from wdgIndexRangeSimulator import *
 from wdgInvestments import *
 from wdgInvestmentsOperations import *
 from frmAuxiliarTables import *
@@ -194,6 +195,13 @@ class frmMain(QMainWindow, Ui_frmMain):
     def on_actionIndexRange_activated(self):
         self.w.close()
         self.w=wdgIndexRange(self.mem)
+                
+        self.layout.addWidget(self.w)
+        self.w.show()
+    @QtCore.pyqtSlot()  
+    def on_actionIndexRangeSimulator_activated(self):
+        self.w.close()
+        self.w=wdgIndexRangeSimulator(self.mem)
                 
         self.layout.addWidget(self.w)
         self.w.show()
