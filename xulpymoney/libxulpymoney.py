@@ -31,6 +31,8 @@ class AccountOperationOfInvestmentOperation:
         self.operinversion=operinversion
         self.inversion=inversion
         return self
+        
+
 
     def save(self):
         cur=self.mem.con.cursor()
@@ -1014,6 +1016,13 @@ class SetInvestmentOperations:
                 tabla.setItem(rownumber, diff+7, self.mem.localcurrency.qtablewidgetitem(a.importe+a.comision+a.impuestos))
             else:
                 tabla.setItem(rownumber, diff+7, self.mem.localcurrency.qtablewidgetitem(a.importe-a.comision-a.impuestos))
+
+    def find(self,  investmentoperation_id):
+        """Returns an investmenoperation with the id equals to the parameter"""
+        for o in self.arr:
+            if o.id==investmentoperation_id:
+                return o
+        return None
 
     def isHomogeneous(self):
         """Devuelve true si todas las inversiones son de la misma inversion"""
@@ -2077,6 +2086,18 @@ class InvestmentOperation:
         self.valor_accion=valor_accion
         self.comentario=comentario
         return self
+        
+    def init__from_accountoperation(self, accountoperation):
+        """AccountOperation is a object, and must have id_conceptos share of sale or purchase"""
+        cur=self.mem.con.cursor()
+        cur.execute("select id_inversiones,id_operinversiones from opercuentasdeoperinversiones where id_opercuentas=%s", (accountoperation.id, ))
+        if cur.rowcount==0:
+            cur.close()
+            return None
+        row=cur.fetchone()
+        cur.close()
+        investment=self.mem.data.investments_all().find(row['id_inversiones'])
+        return investment.op.find(row['id_operinversiones'])
 
     def actualizar_cuentaoperacion_asociada(self):
         """Esta función actualiza la tabla opercuentasdeoperinversiones que es una tabla donde 

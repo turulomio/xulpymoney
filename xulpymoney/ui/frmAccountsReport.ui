@@ -824,6 +824,30 @@
     <string>Delete transfer</string>
    </property>
   </action>
+  <action name="actionInvestmentOperationEdit">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/document-edit.png</normaloff>:/xulpymoney/document-edit.png</iconset>
+   </property>
+   <property name="text">
+    <string>Edit associated investment operation</string>
+   </property>
+   <property name="toolTip">
+    <string>Edit associated investment operation</string>
+   </property>
+  </action>
+  <action name="actionInvestmentOperationDelete">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/list-remove.png</normaloff>:/xulpymoney/list-remove.png</iconset>
+   </property>
+   <property name="text">
+    <string>Delete associated investment operation</string>
+   </property>
+   <property name="toolTip">
+    <string>Delete associated investment operation</string>
+   </property>
+  </action>
  </widget>
  <customwidgets>
   <customwidget>
