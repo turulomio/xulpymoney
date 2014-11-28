@@ -71,6 +71,7 @@
     <addaction name="actionDividendsReport"/>
     <addaction name="actionReportAPR"/>
     <addaction name="actionIndexRange"/>
+    <addaction name="actionIndexRangeSimulator"/>
     <addaction name="actionJointReport"/>
     <addaction name="actionTotalReport"/>
    </widget>
@@ -239,6 +240,7 @@
    <addaction name="actionInvestments"/>
    <addaction name="separator"/>
    <addaction name="actionIndexRange"/>
+   <addaction name="actionIndexRangeSimulator"/>
    <addaction name="actionConcepts"/>
    <addaction name="actionJointReport"/>
    <addaction name="actionReportAPR"/>
@@ -855,6 +857,18 @@
    </property>
    <property name="shortcut">
     <string>F5</string>
+   </property>
+  </action>
+  <action name="actionIndexRangeSimulator">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/keka.png</normaloff>:/xulpymoney/keka.png</iconset>
+   </property>
+   <property name="text">
+    <string>Index Range Simulator</string>
+   </property>
+   <property name="toolTip">
+    <string>Index Range Simulator</string>
    </property>
   </action>
  </widget>
