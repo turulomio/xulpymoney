@@ -133,20 +133,16 @@ class wdgInvestmentsOperations(QWidget, Ui_wdgInvestmentsOperations):
         if self.selCurrentOperation==None:
             self.actionShowAccount.setEnabled(False)
             self.actionShowInvestment.setEnabled(False)
-            self.actionShowInvestmentOperation.setEnabled(False)
             self.actionShowProduct.setEnabled(False)
         else:
             self.actionShowAccount.setEnabled(True)
             self.actionShowInvestment.setEnabled(True)
-            self.actionShowInvestmentOperation.setEnabled(True)
             self.actionShowProduct.setEnabled(True)
 
         menu=QMenu()
         menu.addAction(self.actionShowAccount)   
         menu.addSeparator()   
         menu.addAction(self.actionShowInvestment)   
-        menu.addSeparator()   
-        menu.addAction(self.actionShowInvestmentOperation)      
         menu.addSeparator()
         menu.addAction(self.actionShowProduct)
         menu.exec_(self.tblCurrent.mapToGlobal(pos))
