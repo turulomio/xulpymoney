@@ -4,6 +4,7 @@ from libxulpymoney import *
 from Ui_frmAccountsReport import *
 from frmAccountOperationsAdd import *
 from frmCreditCardsAdd import *
+from frmInvestmentOperationsAdd import *
 
 class frmAccountsReport(QDialog, Ui_frmAccountsReport):
     def __init__(self, mem, cuenta,  parent=None):
@@ -287,6 +288,25 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
         self.mem.con.commit()
         self.load_tabOperCreditCards()
 
+    @QtCore.pyqtSlot() 
+    def on_actionInvestmentOperationDelete_activated(self):
+        investmentoperation=InvestmentOperation(self.mem).init__from_accountoperation(self.selOperAccount)
+        investmentoperation.borrar()
+        self.mem.con.commit()     
+        self.on_wdgYM_changed()
+        self.tblOperaciones.clearSelection()
+        self.selOperAccount=None
+
+
+    @QtCore.pyqtSlot() 
+    def on_actionInvestmentOperationEdit_activated(self):
+        investmentoperation=InvestmentOperation(self.mem).init__from_accountoperation(self.selOperAccount)
+        w=frmInvestmentOperationsAdd(self.mem, investmentoperation.inversion, investmentoperation, self)
+        w.exec_()
+        self.on_wdgYM_changed()
+        self.tblOperaciones.clearSelection()
+        self.selOperAccount=None
+
     def on_tblOperaciones_customContextMenuRequested(self,  pos):      
         if self.selAccount.qmessagebox_inactive() or self.selAccount.eb.qmessagebox_inactive():
             return
@@ -315,6 +335,11 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
         menu.addAction(self.actionOperationDelete)
         menu.addSeparator()
         menu.addAction(self.actionTransferDelete)
+        if self.selOperAccount!=None:
+            if self.selOperAccount.concepto.id in [29, 35]:#Shares sale or purchase, allow edit or delete investment operation
+                menu.addSeparator()
+                menu.addAction(self.actionInvestmentOperationEdit)
+                menu.addAction(self.actionInvestmentOperationDelete)
         menu.exec_(self.tblOperaciones.mapToGlobal(pos))
 
     def on_tblOperaciones_itemSelectionChanged(self):
