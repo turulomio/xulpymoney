@@ -30,7 +30,6 @@ compile:
 	pyuic4 ui/wdgDividendsReport.ui > ui/Ui_wdgDividendsReport.py &
 	pyuic4 ui/wdgAPR.ui > ui/Ui_wdgAPR.py &
 	pyuic4 ui/wdgIndexRange.ui > ui/Ui_wdgIndexRange.py &
-	pyuic4 ui/wdgIndexRangeSimulator.ui > ui/Ui_wdgIndexRangeSimulator.py &
 	pyuic4 ui/wdgInvestments.ui > ui/Ui_wdgInvestments.py &
 	pyuic4 ui/frmDividendsAdd.ui > ui/Ui_frmDividendsAdd.py &
 	pyuic4 ui/frmInvestmentReport.ui > ui/Ui_frmInvestmentReport.py &
@@ -67,6 +66,7 @@ install:
 
 	install -m 755 -o root xulpymoney.py $(PREFIXBIN)/xulpymoney
 	install -m 755 -o root xulpymoney_init.py $(PREFIXBIN)/xulpymoney_init
+	install -m 755 -o root xulpymoney_simulation_indexrange.py $(PREFIXBIN)/xulpymoney_simulation_indexrange
 	install -m 644 -o root ui/*.py libxulpymoney.py libsources.py images/*.py  $(PREFIXLIB)
 	install -m 644 -o root i18n/*.qm $(PREFIXLIB)
 	install -m 644 -o root sources/*.py $(PREFIXLIB)
@@ -81,6 +81,8 @@ install:
 
 uninstall:
 	rm $(PREFIXBIN)/xulpymoney
+	rm $(PREFIXBIN)/xulpymoney_init
+	rm $(PREFIXBIN)/xulpymoney_simulation_indexrange
 	rm -Rf $(PREFIXLIB)
 	rm -Rf $(PREFIXSHARE)
 	rm -fr $(PREFIXPIXMAPS)/xulpymoney.png
