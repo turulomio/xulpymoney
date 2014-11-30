@@ -33,6 +33,37 @@ class MemSimulation(MemXulpymoney):
             cont.close()
             return False
         return True        
+        
+        
+    def investment_create(self, range):
+        frmMain.on_actionInvestments_activated()
+        ##Add
+        w=frmInvestmentReport(mem, None)
+        w.cmbAccount.setCurrentIndex(w.cmbAccount.findData(5))
+        w.txtInvestment.setText("Simulated Investment {}".format(int(range)))
+        d=frmProductSelector(None, mem)
+        d.txt.setText("79329")
+        d.on_cmd_released()
+        d.tblInvestments.setCurrentCell(0, 0)
+        w.ise.setSelected(d.selected)
+        w.on_cmdInvestment_pressed()
+#        frmMain.w.on_chkInactivas_stateChanged(frmMain.w.chkInactivas.checkState())#Carga la tabla        
+
+
+    def investment_find_by_name(self, name):
+        for i in mem.data.investments_all().arr:
+            if i.name==name:
+                return i
+        return None
+        
+    def range_change(self, new):
+        if new<current_range*1.02 or new>current_range*0.98:
+           return False
+        return True
+        
+    def range_already_invested(self, range):
+        pass
+        
 
 init=datetime.datetime.now()
 if __name__ == '__main__':
@@ -70,11 +101,13 @@ if __name__ == '__main__':
     
     #Load quotes from real database
     print (mem.data.benchmark.id)
+    quotes=[]
     cur=mem.con_real.cursor()
     cur.execute("select * from quotes where id=79329")
     for row in cur:
         quote=Quote(mem).init__db_row(row, mem.data.benchmark)
         quote.save()
+        quotes.append(quote)
     cur.close()
     mem.con.commit()
 
@@ -92,26 +125,23 @@ if __name__ == '__main__':
     w.on_cmdDatos_released()#it will be account 5
     frmMain.w.on_chkInactivas_stateChanged(frmMain.w.chkInactivas.checkState())
     frmMain.w.load_table()
-    
-    # Create investments
-    frmMain.on_actionInvestments_activated()
-    ##Add
-    for i in range(1, 21):
-        w=frmInvestmentReport(mem, None)
-        w.cmbAccount.setCurrentIndex(w.cmbAccount.findData(5))
-        w.txtInvestment.setText("Simulated Investment {}".format(i))
-        d=frmProductSelector(None, mem)
-        d.txt.setText("79329")
-        d.on_cmd_released()
-        d.tblInvestments.setCurrentCell(0, 0)
-        w.ise.setSelected(d.selected)
-        w.on_cmdInvestment_pressed()
-    frmMain.w.on_chkInactivas_stateChanged(frmMain.w.chkInactivas.checkState())#Carga la tabla
-#        frmMain.w.tblInvestments.setCurrentCell(0, 0)
-#        frmMain.w.on_actionActive_activated()
 
+    current_range=0
+    current_time=None
+    mem.investment_create(current_range)
+    #iterate quotes
+    for quote in quotes:
+        
+        #Hay venta
+        
+        #Hay cambio de rango
+        if mem.range_change(quote.quote):
+            #Se ha invertido en rango
+            if mem.range_already_invested(current_range):
+                pass
         
     
+        #Hay reinversion
     print ("Simulation duration: {}".format(datetime.datetime.now()-init))
     
     

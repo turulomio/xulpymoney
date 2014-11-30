@@ -3502,57 +3502,57 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>wdgAccounts</name>
     <message>
-        <location filename="ui/Ui_wdgAccounts.py" line="111"/>
+        <location filename="ui/wdgAccounts.ui" line="28"/>
         <source>Account list</source>
         <translation>Listado de cuentas bancarias</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgAccounts.py" line="112"/>
+        <location filename="ui/wdgAccounts.ui" line="38"/>
         <source>Show inactive accounts</source>
         <translation>Mostrar cuentas inactivas</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgAccounts.py" line="114"/>
+        <location filename="ui/wdgAccounts.ui" line="67"/>
         <source>Account</source>
         <translation>Cuenta</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgAccounts.py" line="116"/>
+        <location filename="ui/wdgAccounts.ui" line="72"/>
         <source>Bank</source>
         <translation>Banco</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgAccounts.py" line="118"/>
+        <location filename="ui/wdgAccounts.ui" line="77"/>
         <source>Account number</source>
         <translation>Número de cuenta</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgAccounts.py" line="120"/>
+        <location filename="ui/wdgAccounts.ui" line="82"/>
         <source>Balance</source>
         <translation>Saldo</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgAccounts.py" line="122"/>
+        <location filename="ui/wdgAccounts.ui" line="121"/>
         <source>New account</source>
         <translation>Nueva cuenta</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgAccounts.py" line="124"/>
+        <location filename="ui/wdgAccounts.ui" line="133"/>
         <source>Account report</source>
         <translation>Informe de la cuenta</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgAccounts.py" line="126"/>
+        <location filename="ui/wdgAccounts.ui" line="145"/>
         <source>Delete account</source>
         <translation>Borrar cuenta</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgAccounts.py" line="128"/>
+        <location filename="ui/wdgAccounts.ui" line="156"/>
         <source>Is it active?</source>
         <translation>¿Está activa?</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgAccounts.py" line="130"/>
+        <location filename="ui/wdgAccounts.ui" line="168"/>
         <source>Transfer between accounts</source>
         <translation>Transferencia entre cuentas</translation>
     </message>
