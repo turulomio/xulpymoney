@@ -200,31 +200,30 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         zero=[]#date, valor zero
         bonds=[]
 
-        years=datetime.date.today().year-self.wyChart.year
-        months=datetime.date.today().month+1
+        maximum=13*(datetime.date.today().year-self.wyChart.year)+datetime.date.today().month
         self.progress.reset()
-        self.progress.setMinimum(0)
-        self.progress.setMaximum(12*years+months+years+1)
-        self.progress.setValue(1)     
+        self.progress.setMinimum(1)
+        self.progress.setMaximum(maximum)
         self.progress.forceShow()
-        self.progress.setValue(0)        
+        self.progress.setValue(0)       
         for year in range(self.wyChart.year, datetime.date.today().year+1):
-            for month in range(1, 14):
-                if self.progress.wasCanceled():
-                    break;
-                else:
-                    self.progress.setValue(self.progress.value()+1)          
+            for month in range(1, 14):#12 primeros de mes y el 31 de diciembre
+                self.progress.setValue(self.progress.value()+1)
                 if month==13:
                     date=datetime.date(year, 12, 31)
                 else:
-                    date=datetime.date(year, month, 1)-datetime.timedelta(days=1)
+                    date=datetime.date(year, month, 1)
+                    
                 if date.month==datetime.date.today().month and date.year==datetime.date.today().year:
                     date=datetime.date.today()
-                if date.month>datetime.date.today().month and date.year>=datetime.date.today().year:
+                elif self.progress.wasCanceled() or (date>datetime.date.today()):
+                    self.progress.hide()
                     break
-                data.append( (date,Assets(self.mem).saldo_total(self.mem.data.investments_all(), date)) )
-                zero.append( (date,Assets(self.mem).patrimonio_riesgo_cero(self.mem.data.investments_all(), date) ))
-                bonds.append( (date,Assets(self.mem).saldo_todas_inversiones_bonds(date) ))
+                
+
+                data.append((date,Assets(self.mem).saldo_total(self.mem.data.investments_all(), date)))
+                zero.append((date,Assets(self.mem).patrimonio_riesgo_cero(self.mem.data.investments_all(), date)))
+                bonds.append((date,Assets(self.mem).saldo_todas_inversiones_bonds(date)))
         self.canvas.mydraw(self.mem, data, zero,  bonds)
         print ("wdgTotal > load_graphic: {0}".format(datetime.datetime.now()-inicio))
 
