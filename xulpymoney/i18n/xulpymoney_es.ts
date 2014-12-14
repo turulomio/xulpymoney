@@ -38,7 +38,7 @@
         <translation>Warrants</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4807"/>
+        <location filename="libxulpymoney.py" line="4809"/>
         <source>Error buscando la versi&#xc3;&#xb3;n actual de Sourceforge</source>
         <translation></translation>
     </message>
@@ -58,7 +58,7 @@
         <translation>La tarjeta de crédito está inactiva. Debes activarla primero</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5263"/>
+        <location filename="libxulpymoney.py" line="5250"/>
         <source>This option is being developed</source>
         <translation>Esta opción está en desarrollo</translation>
     </message>
@@ -93,7 +93,7 @@
         <translation>Comisión</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4696"/>
+        <location filename="libxulpymoney.py" line="4698"/>
         <source>Error conecting to Xulpymoney</source>
         <translation>Error al conectar a Xulpymoney</translation>
     </message>
@@ -418,12 +418,12 @@
         <translation>Cargando inversiones...</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5224"/>
+        <location filename="libxulpymoney.py" line="5211"/>
         <source>True</source>
         <translation>Verdadero</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5227"/>
+        <location filename="libxulpymoney.py" line="5214"/>
         <source>False</source>
         <translation>Falso</translation>
     </message>
@@ -488,37 +488,37 @@
         <translation>Transferencia de acciones. Destino</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5155"/>
+        <location filename="libxulpymoney.py" line="5142"/>
         <source>year</source>
         <translation>año</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5157"/>
+        <location filename="libxulpymoney.py" line="5144"/>
         <source>years</source>
         <translation>años</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5159"/>
+        <location filename="libxulpymoney.py" line="5146"/>
         <source>month</source>
         <translation>mes</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5161"/>
+        <location filename="libxulpymoney.py" line="5148"/>
         <source>months</source>
         <translation>meses</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5163"/>
+        <location filename="libxulpymoney.py" line="5150"/>
         <source>day</source>
         <translation>día</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5165"/>
+        <location filename="libxulpymoney.py" line="5152"/>
         <source>days</source>
         <translation>días</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5166"/>
+        <location filename="libxulpymoney.py" line="5153"/>
         <source>{} {}, {} {} and {} {}</source>
         <translation>{} {}, {} {} y {} {}</translation>
     </message>
@@ -568,7 +568,7 @@
         <translation>Purgadas {0} cotizaciones de {1}</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4805"/>
+        <location filename="libxulpymoney.py" line="4807"/>
         <source>Sourceforge version detected: {}</source>
         <translation>Versión de Sourceforge detectada: {}</translation>
     </message>
@@ -590,7 +590,7 @@ Purgadas en total en el proceso global: {1}</translation>
         <translation>Lenguaje local detectado: {0}</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4697"/>
+        <location filename="libxulpymoney.py" line="4699"/>
         <source>Connection done</source>
         <translation>Conexión realizada</translation>
     </message>
@@ -1215,7 +1215,7 @@ p, li { white-space: pre-wrap; }
         <translation>Tablas auxiliares</translation>
     </message>
     <message>
-        <location filename="ui/frmAuxiliarTables.ui" line="47"/>
+        <location filename="ui/Ui_frmAuxiliarTables.py" line="156"/>
         <source>Xulpymoney concepts</source>
         <translation>Conceptos de Xulpymoney</translation>
     </message>
@@ -1230,22 +1230,22 @@ p, li { white-space: pre-wrap; }
         <translation>Concepto</translation>
     </message>
     <message>
-        <location filename="ui/frmAuxiliarTables.ui" line="162"/>
+        <location filename="ui/Ui_frmAuxiliarTables.py" line="155"/>
         <source>Operation type</source>
         <translation>Tipo de operación</translation>
     </message>
     <message>
-        <location filename="ui/frmAuxiliarTables.ui" line="157"/>
+        <location filename="ui/Ui_frmAuxiliarTables.py" line="153"/>
         <source>Concepts</source>
         <translation>Conceptos</translation>
     </message>
     <message>
-        <location filename="ui/frmAuxiliarTables.ui" line="197"/>
+        <location filename="ui/Ui_frmAuxiliarTables.py" line="160"/>
         <source>Delete concept</source>
         <translation>Borrar un concepto</translation>
     </message>
     <message>
-        <location filename="ui/frmAuxiliarTables.py" line="44"/>
+        <location filename="ui/Ui_frmAuxiliarTables.py" line="158"/>
         <source>Add a concept</source>
         <translation>Añadir un concepto</translation>
     </message>
@@ -1488,42 +1488,42 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>frmInit</name>
     <message>
-        <location filename="ui/Ui_frmInit.py" line="158"/>
+        <location filename="ui/frmInit.ui" line="20"/>
         <source>Initializating Xulpymoney databases</source>
         <translation>Inicializando las bases de datos de Xulpymoney</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmInit.py" line="160"/>
+        <location filename="ui/frmInit.ui" line="59"/>
         <source>Language</source>
         <translation>Idioma</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmInit.py" line="161"/>
+        <location filename="ui/frmInit.ui" line="73"/>
         <source>Espa&#xc3;&#xb1;ol</source>
         <translation>EspaÃ±ol</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmInit.py" line="162"/>
+        <location filename="ui/frmInit.ui" line="82"/>
         <source>English</source>
         <translation>English</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmInit.py" line="164"/>
+        <location filename="ui/frmInit.ui" line="110"/>
         <source>127.0.0.1</source>
         <translation>127.0.0.1</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmInit.py" line="166"/>
+        <location filename="ui/frmInit.ui" line="133"/>
         <source>5432</source>
         <translation>5432</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmInit.py" line="168"/>
+        <location filename="ui/frmInit.ui" line="153"/>
         <source>postgres</source>
         <translation>postgres</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmInit.py" line="170"/>
+        <location filename="ui/frmInit.ui" line="183"/>
         <source>Xulpymoney Database</source>
         <translation>Base de datos Xulpymoney</translation>
     </message>
@@ -1603,27 +1603,27 @@ p, li { white-space: pre-wrap; }
         <translation>Comisiones bancarias</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmInit.py" line="163"/>
+        <location filename="ui/frmInit.ui" line="94"/>
         <source>Server</source>
         <translation>Servidor</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmInit.py" line="165"/>
+        <location filename="ui/frmInit.ui" line="120"/>
         <source>Port</source>
         <translation>Puerto</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmInit.py" line="167"/>
+        <location filename="ui/frmInit.ui" line="140"/>
         <source>User</source>
         <translation>Usuario</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmInit.py" line="169"/>
+        <location filename="ui/frmInit.ui" line="160"/>
         <source>Password</source>
         <translation>Contraseña</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmInit.py" line="171"/>
+        <location filename="ui/frmInit.ui" line="196"/>
         <source>xulpymoney</source>
         <translation>xulpymoney</translation>
     </message>
@@ -1658,7 +1658,7 @@ p, li { white-space: pre-wrap; }
         <translation>Bases de datos creadas. Xulpymoney va a insertar precios de acciones desde Yahoo. Es un proceso largo, por favor espere.</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmInit.py" line="159"/>
+        <location filename="ui/frmInit.ui" line="38"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Pressing OK, you will create needed database to run Xulpymoney. They&apos;ll be created in the language selected&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Pulsando OK, se creará la base de datos necesaria para ejecutar Xulpymoney. Serán creadas en el lenguage seleccionado&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
@@ -3230,7 +3230,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>frmSettings</name>
     <message>
-        <location filename="ui/frmSettings.ui" line="262"/>
+        <location filename="ui/frmSettings.ui" line="314"/>
         <source> %</source>
         <translation> %</translation>
     </message>
@@ -3278,6 +3278,11 @@ p, li { white-space: pre-wrap; }
         <location filename="ui/frmSettings.ui" line="237"/>
         <source>Tax gain percentage</source>
         <translation>Porcentaje de impuestos sobre plusvalías</translation>
+    </message>
+    <message>
+        <location filename="ui/frmSettings.ui" line="289"/>
+        <source>Tax gain percentage below a year</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -3502,57 +3507,57 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>wdgAccounts</name>
     <message>
-        <location filename="ui/wdgAccounts.ui" line="28"/>
+        <location filename="ui/Ui_wdgAccounts.py" line="111"/>
         <source>Account list</source>
         <translation>Listado de cuentas bancarias</translation>
     </message>
     <message>
-        <location filename="ui/wdgAccounts.ui" line="38"/>
+        <location filename="ui/Ui_wdgAccounts.py" line="112"/>
         <source>Show inactive accounts</source>
         <translation>Mostrar cuentas inactivas</translation>
     </message>
     <message>
-        <location filename="ui/wdgAccounts.ui" line="67"/>
+        <location filename="ui/Ui_wdgAccounts.py" line="114"/>
         <source>Account</source>
         <translation>Cuenta</translation>
     </message>
     <message>
-        <location filename="ui/wdgAccounts.ui" line="72"/>
+        <location filename="ui/Ui_wdgAccounts.py" line="116"/>
         <source>Bank</source>
         <translation>Banco</translation>
     </message>
     <message>
-        <location filename="ui/wdgAccounts.ui" line="77"/>
+        <location filename="ui/Ui_wdgAccounts.py" line="118"/>
         <source>Account number</source>
         <translation>Número de cuenta</translation>
     </message>
     <message>
-        <location filename="ui/wdgAccounts.ui" line="82"/>
+        <location filename="ui/Ui_wdgAccounts.py" line="120"/>
         <source>Balance</source>
         <translation>Saldo</translation>
     </message>
     <message>
-        <location filename="ui/wdgAccounts.ui" line="121"/>
+        <location filename="ui/Ui_wdgAccounts.py" line="122"/>
         <source>New account</source>
         <translation>Nueva cuenta</translation>
     </message>
     <message>
-        <location filename="ui/wdgAccounts.ui" line="133"/>
+        <location filename="ui/Ui_wdgAccounts.py" line="124"/>
         <source>Account report</source>
         <translation>Informe de la cuenta</translation>
     </message>
     <message>
-        <location filename="ui/wdgAccounts.ui" line="145"/>
+        <location filename="ui/Ui_wdgAccounts.py" line="126"/>
         <source>Delete account</source>
         <translation>Borrar cuenta</translation>
     </message>
     <message>
-        <location filename="ui/wdgAccounts.ui" line="156"/>
+        <location filename="ui/Ui_wdgAccounts.py" line="128"/>
         <source>Is it active?</source>
         <translation>¿Está activa?</translation>
     </message>
     <message>
-        <location filename="ui/wdgAccounts.ui" line="168"/>
+        <location filename="ui/Ui_wdgAccounts.py" line="130"/>
         <source>Transfer between accounts</source>
         <translation>Transferencia entre cuentas</translation>
     </message>
@@ -3668,82 +3673,82 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>wdgCalculator</name>
     <message>
-        <location filename="ui/wdgCalculator.ui" line="26"/>
+        <location filename="ui/Ui_wdgCalculator.py" line="164"/>
         <source>Investment calculator</source>
         <translation>Calculadora de inversiones</translation>
     </message>
     <message>
-        <location filename="ui/wdgCalculator.ui" line="85"/>
+        <location filename="ui/Ui_wdgCalculator.py" line="165"/>
         <source>Product selection</source>
         <translation>Selección de producto</translation>
     </message>
     <message>
-        <location filename="ui/wdgCalculator.ui" line="96"/>
+        <location filename="ui/Ui_wdgCalculator.py" line="166"/>
         <source>Select a product</source>
         <translation>Selecciona un producto</translation>
     </message>
     <message>
-        <location filename="ui/wdgCalculator.ui" line="113"/>
+        <location filename="ui/Ui_wdgCalculator.py" line="167"/>
         <source>Current price</source>
         <translation>Precio actual</translation>
     </message>
     <message>
-        <location filename="ui/wdgCalculator.ui" line="130"/>
+        <location filename="ui/Ui_wdgCalculator.py" line="168"/>
         <source>Variation from current price</source>
         <translation>Variación del precio actual</translation>
     </message>
     <message>
-        <location filename="ui/wdgCalculator.ui" line="146"/>
+        <location filename="ui/Ui_wdgCalculator.py" line="169"/>
         <source> %</source>
         <translation> %</translation>
     </message>
     <message>
-        <location filename="ui/wdgCalculator.ui" line="156"/>
+        <location filename="ui/Ui_wdgCalculator.py" line="170"/>
         <source>Final price</source>
         <translation>Precio final</translation>
     </message>
     <message>
-        <location filename="ui/wdgCalculator.ui" line="195"/>
+        <location filename="ui/Ui_wdgCalculator.py" line="173"/>
         <source>Shares calc</source>
         <translation>Cálculo de acciones</translation>
     </message>
     <message>
-        <location filename="ui/wdgCalculator.ui" line="206"/>
+        <location filename="ui/Ui_wdgCalculator.py" line="174"/>
         <source>Amount to invest</source>
         <translation>Cantidad a invertir</translation>
     </message>
     <message>
-        <location filename="ui/wdgCalculator.ui" line="220"/>
+        <location filename="ui/Ui_wdgCalculator.py" line="175"/>
         <source>Shares</source>
         <translation>Acciones</translation>
     </message>
     <message>
-        <location filename="ui/wdgCalculator.ui" line="242"/>
+        <location filename="ui/Ui_wdgCalculator.py" line="176"/>
         <source>Calc estimations</source>
         <translation>Estimaciones de cálculo</translation>
     </message>
     <message>
-        <location filename="ui/wdgCalculator.ui" line="269"/>
+        <location filename="ui/Ui_wdgCalculator.py" line="180"/>
         <source>Price</source>
         <translation>Precio</translation>
     </message>
     <message>
-        <location filename="ui/wdgCalculator.ui" line="274"/>
+        <location filename="ui/Ui_wdgCalculator.py" line="182"/>
         <source>Gains</source>
         <translation>Ganancias</translation>
     </message>
     <message>
-        <location filename="ui/wdgCalculator.ui" line="264"/>
+        <location filename="ui/Ui_wdgCalculator.py" line="178"/>
         <source>% Gains</source>
         <translation>% Ganancias</translation>
     </message>
     <message>
-        <location filename="ui/wdgCalculator.ui" line="170"/>
+        <location filename="ui/Ui_wdgCalculator.py" line="171"/>
         <source>Leveraged product</source>
         <translation>Producto apalancado</translation>
     </message>
     <message>
-        <location filename="ui/wdgCalculator.ui" line="180"/>
+        <location filename="ui/Ui_wdgCalculator.py" line="172"/>
         <source>1</source>
         <translation>1</translation>
     </message>
@@ -3761,42 +3766,42 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>wdgConcepts</name>
     <message>
-        <location filename="ui/wdgConcepts.ui" line="47"/>
+        <location filename="ui/Ui_wdgConcepts.py" line="133"/>
         <source>Concepts report</source>
         <translation>Informe de conceptos</translation>
     </message>
     <message>
-        <location filename="ui/wdgConcepts.ui" line="100"/>
+        <location filename="ui/Ui_wdgConcepts.py" line="143"/>
         <source>Expenses</source>
         <translation>Gastos</translation>
     </message>
     <message>
-        <location filename="ui/wdgConcepts.ui" line="186"/>
+        <location filename="ui/Ui_wdgConcepts.py" line="146"/>
         <source>Concept</source>
         <translation>Concepto</translation>
     </message>
     <message>
-        <location filename="ui/wdgConcepts.ui" line="191"/>
+        <location filename="ui/Ui_wdgConcepts.py" line="148"/>
         <source>Monthly expenses</source>
         <translation>Gastos mensuales</translation>
     </message>
     <message>
-        <location filename="ui/wdgConcepts.ui" line="196"/>
+        <location filename="ui/Ui_wdgConcepts.py" line="150"/>
         <source>% Montly expenses</source>
         <translation>% de gastos mensuales</translation>
     </message>
     <message>
-        <location filename="ui/wdgConcepts.ui" line="201"/>
+        <location filename="ui/Ui_wdgConcepts.py" line="152"/>
         <source>Monthly average</source>
         <translation>Media mensual</translation>
     </message>
     <message>
-        <location filename="ui/wdgConcepts.ui" line="155"/>
+        <location filename="ui/Ui_wdgConcepts.py" line="153"/>
         <source>Incomes</source>
         <translation>Ingresos</translation>
     </message>
     <message>
-        <location filename="ui/wdgConcepts.ui" line="222"/>
+        <location filename="ui/Ui_wdgConcepts.py" line="155"/>
         <source>Historical report</source>
         <translation>Informe histórico</translation>
     </message>
@@ -3814,92 +3819,92 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>wdgConceptsHistorical</name>
     <message>
-        <location filename="ui/wdgConceptsHistorical.ui" line="14"/>
+        <location filename="ui/Ui_wdgConceptsHistorical.py" line="103"/>
         <source>Historical concepts report</source>
         <translation>Informe histórico de conceptos</translation>
     </message>
     <message>
-        <location filename="ui/wdgConceptsHistorical.py" line="56"/>
+        <location filename="ui/Ui_wdgConceptsHistorical.py" line="131"/>
         <source>Total</source>
         <translation>Total</translation>
     </message>
     <message>
-        <location filename="ui/wdgConceptsHistorical.ui" line="59"/>
+        <location filename="ui/Ui_wdgConceptsHistorical.py" line="105"/>
         <source>Year</source>
         <translation>Año</translation>
     </message>
     <message>
-        <location filename="ui/wdgConceptsHistorical.ui" line="64"/>
+        <location filename="ui/Ui_wdgConceptsHistorical.py" line="107"/>
         <source>January</source>
         <translation>Enero</translation>
     </message>
     <message>
-        <location filename="ui/wdgConceptsHistorical.ui" line="74"/>
+        <location filename="ui/Ui_wdgConceptsHistorical.py" line="111"/>
         <source>March</source>
         <translation>Marzo</translation>
     </message>
     <message>
-        <location filename="ui/wdgConceptsHistorical.ui" line="79"/>
+        <location filename="ui/Ui_wdgConceptsHistorical.py" line="113"/>
         <source>April</source>
         <translation>Abril</translation>
     </message>
     <message>
-        <location filename="ui/wdgConceptsHistorical.ui" line="84"/>
+        <location filename="ui/Ui_wdgConceptsHistorical.py" line="115"/>
         <source>May</source>
         <translation>Mayo</translation>
     </message>
     <message>
-        <location filename="ui/wdgConceptsHistorical.ui" line="89"/>
+        <location filename="ui/Ui_wdgConceptsHistorical.py" line="117"/>
         <source>June</source>
         <translation>Junio</translation>
     </message>
     <message>
-        <location filename="ui/wdgConceptsHistorical.ui" line="94"/>
+        <location filename="ui/Ui_wdgConceptsHistorical.py" line="119"/>
         <source>July</source>
         <translation>Julio</translation>
     </message>
     <message>
-        <location filename="ui/wdgConceptsHistorical.ui" line="114"/>
+        <location filename="ui/Ui_wdgConceptsHistorical.py" line="127"/>
         <source>November</source>
         <translation>Noviembre</translation>
     </message>
     <message>
-        <location filename="ui/wdgConceptsHistorical.ui" line="119"/>
+        <location filename="ui/Ui_wdgConceptsHistorical.py" line="129"/>
         <source>December</source>
         <translation>Diciembre</translation>
     </message>
     <message>
-        <location filename="ui/wdgConceptsHistorical.ui" line="37"/>
+        <location filename="ui/Ui_wdgConceptsHistorical.py" line="132"/>
         <source>Historical report</source>
         <translation>Informe histórico</translation>
     </message>
     <message>
-        <location filename="ui/wdgConceptsHistorical.ui" line="145"/>
+        <location filename="ui/Ui_wdgConceptsHistorical.py" line="134"/>
         <source>Show month operations</source>
         <translation>Mostrar operaciones del mes</translation>
     </message>
     <message>
-        <location filename="ui/wdgConceptsHistorical.ui" line="157"/>
+        <location filename="ui/Ui_wdgConceptsHistorical.py" line="136"/>
         <source>Show year operations</source>
         <translation>Mostrar operaciones del año</translation>
     </message>
     <message>
-        <location filename="ui/wdgConceptsHistorical.ui" line="69"/>
+        <location filename="ui/Ui_wdgConceptsHistorical.py" line="109"/>
         <source>February</source>
         <translation>Febrero</translation>
     </message>
     <message>
-        <location filename="ui/wdgConceptsHistorical.ui" line="99"/>
+        <location filename="ui/Ui_wdgConceptsHistorical.py" line="121"/>
         <source>August</source>
         <translation>Agosto</translation>
     </message>
     <message>
-        <location filename="ui/wdgConceptsHistorical.ui" line="104"/>
+        <location filename="ui/Ui_wdgConceptsHistorical.py" line="123"/>
         <source>September</source>
         <translation>Septiembre</translation>
     </message>
     <message>
-        <location filename="ui/wdgConceptsHistorical.ui" line="109"/>
+        <location filename="ui/Ui_wdgConceptsHistorical.py" line="125"/>
         <source>October</source>
         <translation>Octubre</translation>
     </message>
@@ -4393,52 +4398,52 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>wdgInvestmentClasses</name>
     <message>
-        <location filename="ui/wdgInvestmentClasses.ui" line="32"/>
+        <location filename="ui/Ui_wdgInvestmentClasses.py" line="131"/>
         <source>Investments report</source>
         <translation>Informe de inversiones</translation>
     </message>
     <message>
-        <location filename="ui/wdgInvestmentClasses.ui" line="42"/>
+        <location filename="ui/Ui_wdgInvestmentClasses.py" line="132"/>
         <source>Calculated charts with</source>
         <translation>Gráficos calculados con</translation>
     </message>
     <message>
-        <location filename="ui/wdgInvestmentClasses.ui" line="50"/>
+        <location filename="ui/Ui_wdgInvestmentClasses.py" line="133"/>
         <source>Current value</source>
         <translation>Valor actual</translation>
     </message>
     <message>
-        <location filename="ui/wdgInvestmentClasses.ui" line="60"/>
+        <location filename="ui/Ui_wdgInvestmentClasses.py" line="134"/>
         <source>Invested balance</source>
         <translation>Saldo invertido</translation>
     </message>
     <message>
-        <location filename="ui/wdgInvestmentClasses.ui" line="76"/>
+        <location filename="ui/Ui_wdgInvestmentClasses.py" line="135"/>
         <source>By variable percentaje</source>
         <translation>Según el porcentaje variable</translation>
     </message>
     <message>
-        <location filename="ui/wdgInvestmentClasses.ui" line="86"/>
+        <location filename="ui/Ui_wdgInvestmentClasses.py" line="136"/>
         <source>By Put / Call / Inline</source>
         <translation>Según Put / Call / Inline</translation>
     </message>
     <message>
-        <location filename="ui/wdgInvestmentClasses.ui" line="107"/>
+        <location filename="ui/Ui_wdgInvestmentClasses.py" line="137"/>
         <source>By investment class</source>
         <translation>Según clase de inversión</translation>
     </message>
     <message>
-        <location filename="ui/wdgInvestmentClasses.ui" line="128"/>
+        <location filename="ui/Ui_wdgInvestmentClasses.py" line="138"/>
         <source>By leverage</source>
         <translation>Según apalancamiento</translation>
     </message>
     <message>
-        <location filename="ui/wdgInvestmentClasses.ui" line="138"/>
+        <location filename="ui/Ui_wdgInvestmentClasses.py" line="139"/>
         <source>By country</source>
         <translation>Según país</translation>
     </message>
     <message>
-        <location filename="ui/wdgInvestmentClasses.ui" line="148"/>
+        <location filename="ui/Ui_wdgInvestmentClasses.py" line="140"/>
         <source>By investment product</source>
         <translation>Según producto de inversión</translation>
     </message>
@@ -4848,12 +4853,12 @@ S&#xc3;&#xb3;lo se contabilizar&#xc3;&#xa1; cuando se vendan las acciones</sourc
         <translation>Neto antes de impuestos</translation>
     </message>
     <message>
-        <location filename="ui/wdgJointReport.py" line="152"/>
+        <location filename="ui/wdgJointReport.py" line="252"/>
         <source>% APR from {}</source>
         <translation>% TAE desde {}</translation>
     </message>
     <message>
-        <location filename="ui/wdgJointReport.py" line="153"/>
+        <location filename="ui/wdgJointReport.py" line="253"/>
         <source>Balance at {0}, {1}</source>
         <translation>Saldo a {0}, {1}</translation>
     </message>

@@ -28,6 +28,7 @@ class frmSettings(QDialog, Ui_frmSettings):
         self.indexes.qcombobox(self.cmbIndex, self.mem.data.benchmark)
         self.spnDividendPercentage.setValue(float(self.mem.config.get_value("settings", "dividendwithholding"))*100)
         self.spnGainsPercentaje.setValue(float(self.mem.config.get_value("settings", "taxcapitalappreciation"))*100)
+        self.spnGainsPercentajeBelow.setValue(float(self.mem.config.get_value("settings", "taxcapitalappreciationbelow"))*100)
         self.chkGainsYear.setChecked(b2c(str2bool(self.mem.config.get_value("settings", "gainsyear"))))
 
     @pyqtSlot(str)      
@@ -43,6 +44,7 @@ class frmSettings(QDialog, Ui_frmSettings):
         self.mem.config.set_value("settings", "benchmark", self.cmbIndex.itemData(self.cmbIndex.currentIndex()))
         self.mem.config.set_value("settings", "dividendwithholding", self.spnDividendPercentage.value()/100)
         self.mem.config.set_value("settings", "taxcapitalappreciation", self.spnGainsPercentaje.value()/100)
+        self.mem.config.set_value("settings", "taxcapitalappreciationbelow", self.spnGainsPercentajeBelow.value()/100)
         self.mem.config.set_value("settings", "gainsyear", str(c2b(self.chkGainsYear.checkState())))
         self.mem.config.save()
         
