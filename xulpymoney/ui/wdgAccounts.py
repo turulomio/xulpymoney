@@ -82,7 +82,7 @@ class wdgAccounts(QWidget, Ui_wdgAccounts):
             self.actionAccountReport.setEnabled(True)
             self.actionActive.setEnabled(True)
             self.actionAccountReport.setEnabled(True)
-            self.actionActive.setChecked(self.selAccount.activa)
+            self.actionActive.setChecked(self.selAccount.active)
         
         menu=QMenu()
         menu.addAction(self.actionAccountAdd)
@@ -102,11 +102,11 @@ class wdgAccounts(QWidget, Ui_wdgAccounts):
             return
         
         self.mem.data.load_inactives()#Debe tenerlas para borrarla luego
-        self.selAccount.activa=self.chkInactivas.isChecked()
+        self.selAccount.active=self.chkInactivas.isChecked()
         self.selAccount.save()
         self.mem.con.commit()     
         #Recoloca en los Setcuentas
-        if self.selAccount.activa==True:#Está todavía en inactivas
+        if self.selAccount.active==True:#Está todavía en inactivas
             self.mem.data.accounts_active.arr.append(self.selAccount)
             self.mem.data.accounts_inactive.arr.remove(self.selAccount)
         else:#Está todavía en activas

@@ -86,13 +86,13 @@ class wdgInvestments(QWidget, Ui_wdgInvestments):
         
         self.mem.data.load_inactives()
         if self.actionActive.isChecked()==True:
-            self.selInvestment.activa=True
+            self.selInvestment.active=True
         else:
-            self.selInvestment.activa=False
+            self.selInvestment.active=False
         self.selInvestment.save()
         self.mem.con.commit()     
         #Recoloca en los SetInvestments
-        if self.selInvestment.activa==True:#Está todavía en inactivas
+        if self.selInvestment.active==True:#Está todavía en inactivas
             self.mem.data.investments_active.arr.append(self.selInvestment)
             if self.mem.data.investments_inactive!=None:#Puede que no se haya cargado
                 self.mem.data.investments_inactive.arr.remove(self.selInvestment)
@@ -207,7 +207,7 @@ class wdgInvestments(QWidget, Ui_wdgInvestments):
                 self.actionInvestmentDelete.setEnabled(True)
             else:
                 self.actionInvestmentDelete.setEnabled(False)
-            if self.selInvestment.activa==True:
+            if self.selInvestment.active==True:
                 self.actionActive.setChecked(True)
             else:
                 self.actionActive.setChecked(False)

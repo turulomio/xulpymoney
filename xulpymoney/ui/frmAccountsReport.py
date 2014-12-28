@@ -58,7 +58,7 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
             self.cmbEB.setEnabled(False)    
             self.cmbCurrency.setCurrentIndex(self.cmbCurrency.findData(self.selAccount.currency.id))
             self.cmbCurrency.setEnabled(False)
-            self.chkActiva.setChecked(b2c(self.selAccount.activa))
+            self.chkActiva.setChecked(b2c(self.selAccount.active))
             self.cmdDatos.setText(self.trUtf8("Update account data"))
 
             anoinicio=Assets(self.mem).primera_datetime_con_datos_usuario().year       
@@ -88,7 +88,7 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
         for i, t in enumerate(self.tarjetas.arr):
             self.tblCreditCards.setItem(i, 0, QTableWidgetItem(t.name))
             self.tblCreditCards.setItem(i, 1, QTableWidgetItem(str(t.numero)))
-            self.tblCreditCards.setItem(i, 2, qbool(t.activa))
+            self.tblCreditCards.setItem(i, 2, qbool(t.active))
             self.tblCreditCards.setItem(i, 3, qbool(t.pagodiferido))
             self.tblCreditCards.setItem(i, 4, self.selAccount.currency.qtablewidgetitem(t.saldomaximo, ))
             self.tblCreditCards.setItem(i, 5, self.selAccount.currency.qtablewidgetitem(t.saldo_pendiente()))
@@ -113,11 +113,11 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
             return
             
         if self.actionCreditCardActivate.isChecked():#Ha pasado de inactiva a activa
-            self.selCreditCard.activa=True
+            self.selCreditCard.active=True
             self.mem.data.tarjetas_inactive.arr.remove(self.selCreditCard)
             self.mem.data.tarjetas_active.arr.append(self.selCreditCard)
         else:
-            self.selCreditCard.activa=False
+            self.selCreditCard.active=False
             self.mem.data.tarjetas_inactive.arr.append(self.selCreditCard)
             self.mem.data.tarjetas_active.arr.remove(self.selCreditCard)
         self.selCreditCard.save()
@@ -151,18 +151,18 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
         id_entidadesbancarias=int(self.cmbEB.itemData(self.cmbEB.currentIndex()))
         cuenta=self.txtAccount.text()
         numerocuenta=self.txtNumero.text()
-        cu_activa=c2b(self.chkActiva.checkState())
+        active=c2b(self.chkActiva.checkState())
         currency=self.cmbCurrency.itemData(self.cmbCurrency.currentIndex())
 
         if self.selAccount==None:
-            cu=Account(self.mem).init__create(cuenta, self.mem.data.banks_active.find(id_entidadesbancarias), cu_activa, numerocuenta, self.mem.currencies.find(currency))
+            cu=Account(self.mem).init__create(cuenta, self.mem.data.banks_active.find(id_entidadesbancarias), active, numerocuenta, self.mem.currencies.find(currency))
             cu.save()
             self.mem.data.accounts_active.append(cu) #Always to active
         else:
             self.selAccount.eb=self.mem.data.banks_active.find(id_entidadesbancarias)
             self.selAccount.name=cuenta
             self.selAccount.numero=numerocuenta
-            self.selAccount.activa=cu_activa
+            self.selAccount.active=active
             self.selAccount.currency=self.mem.currencies.find(currency)
             self.selAccount.save()
             self.lblTitulo.setText(self.selAccount.name)
@@ -371,7 +371,7 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
             self.actionCreditCardDelete.setEnabled(True)
             self.actionCreditCardEdit.setEnabled(True)
             self.actionCreditCardActivate.setEnabled(True)
-            if self.selCreditCard.activa==True:
+            if self.selCreditCard.active==True:
                 self.actionCreditCardActivate.setChecked(True)
             else:
                 self.actionCreditCardActivate.setChecked(False)

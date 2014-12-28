@@ -515,7 +515,7 @@ CREATE TABLE cuentas (
     id_cuentas integer DEFAULT nextval(('"seq_cuentas"'::text)::regclass) NOT NULL,
     cuenta text,
     id_entidadesbancarias integer,
-    cu_activa boolean,
+    active boolean,
     numerocuenta character varying(24),
     currency text DEFAULT 'EUR'::text NOT NULL
 );
@@ -638,7 +638,7 @@ SET default_with_oids = true;
 CREATE TABLE entidadesbancarias (
     id_entidadesbancarias integer DEFAULT nextval(('"seq_entidadesbancarias"'::text)::regclass) NOT NULL,
     entidadbancaria text NOT NULL,
-    eb_activa boolean NOT NULL
+    active boolean NOT NULL
 );
 
 
@@ -712,7 +712,7 @@ ALTER TABLE globals OWNER TO postgres;
 CREATE TABLE inversiones (
     id_inversiones integer DEFAULT nextval(('"seq_inversiones"'::text)::regclass) NOT NULL,
     inversion text NOT NULL,
-    in_activa boolean DEFAULT true NOT NULL,
+    active boolean DEFAULT true NOT NULL,
     id_cuentas integer NOT NULL,
     venta numeric(100,6) DEFAULT 0 NOT NULL,
     mystocksid integer
@@ -1211,7 +1211,7 @@ CREATE TABLE tarjetas (
     id_cuentas integer,
     pagodiferido boolean,
     saldomaximo numeric(100,2),
-    tj_activa boolean,
+    active boolean,
     numero text
 );
 
@@ -8240,7 +8240,7 @@ INSERT INTO bolsas VALUES (6, 'it', '07:00:00', 'Bolsa de Milán', '17:38:00', '
 INSERT INTO bolsas VALUES (7, 'jp', '09:00:00', 'Bolsa de Tokio', '20:00:00', 'Asia/Tokyo');
 INSERT INTO bolsas VALUES (8, 'cn', '00:00:00', 'Bolsa de Hong Kong', '20:00:00', 'Asia/Hong_Kong');
 INSERT INTO bolsas VALUES (9, 'pt', '07:00:00', 'Bolsa de Lisboa', '17:38:00', 'Europe/Lisbon');
-INSERT INTO globals VALUES (1, 'Version', '201412280840');
+INSERT INTO globals VALUES (1, 'Version', '201412280940');
 INSERT INTO globals VALUES (6, 'Admin mode', '2ed65fbc0b68fdd5e4b06abd7675c2c8');
 UPDATE products SET deletable=true;
 DELETE FROM products WHERE id<=0;
