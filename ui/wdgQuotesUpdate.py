@@ -27,8 +27,6 @@ class wdgQuotesUpdate(QWidget, Ui_wdgQuotesUpdate):
         self.layDaily.addWidget(self.wyahoohistorical)
         
     def on_cmdIntraday_released(self):
-#        self.cmdIntraday.setEnabled(False)
-        
         if self.wyahoo.cmdRun.isEnabled():
             self.wyahoo.on_cmdRun_released()
         if self.wmc.cmdRun.isEnabled():
@@ -38,19 +36,13 @@ class wdgQuotesUpdate(QWidget, Ui_wdgQuotesUpdate):
         
         
     def on_cmdDaily_released(self):
-#        self.cmdDaily.setEnabled(False)
-        
         if self.wyahoohistorical.cmdRun.isEnabled():
             self.wyahoohistorical.on_cmdRun_released()
             
         self.mem.data.reload_prices()
             
         
-    def on_cmdAll_released(self):
-#        self.cmdIntraday.setEnabled(False)
-#        self.cmdDaily.setEnabled(False)
-#        self.cmdAll.setEnabled(False)
-        
+    def on_cmdAll_released(self):        
         if self.wyahoo.cmdRun.isEnabled():
             self.wyahoo.on_cmdRun_released()
         if self.wmc.cmdRun.isEnabled():
@@ -71,10 +63,12 @@ class wdgQuotesUpdate(QWidget, Ui_wdgQuotesUpdate):
             self.cmdDaily.setEnabled(False)
         if self.cmdDaily.isEnabled()==False and self.cmdIntraday.isEnabled()==False:
             self.cmdAll.setEnabled(False)
+        QCoreApplication.processEvents()
         
     def after_source_stop(self):
         self.sources_active=self.sources_active-1
         if self.sources_active==0:
             self.mem.frmMain.actionsEnabled(True)
+        QCoreApplication.processEvents()            
             
             
