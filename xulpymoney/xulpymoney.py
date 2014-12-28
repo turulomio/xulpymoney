@@ -24,8 +24,8 @@ mem.setQTranslator(QTranslator(app))
 mem.qtranslator.load("/usr/lib/xulpymoney/xulpymoney_{0}.qm".format(mem.config.get_value("settings", "language")))
 app.installTranslator(mem.qtranslator)
 
-frmMain = frmMain(mem)
-frmMain.init__continue()
-frmMain.show()
+mem.frmMain = frmMain(mem)
+mem.frmMain.init__continue()
+mem.frmMain.show()
 
 sys.exit(app.exec_())
