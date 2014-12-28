@@ -59,15 +59,13 @@ class wdgSource(QWidget, Ui_wdgSource):
             self.progress.setValue(self.progress.maximum())
         else:
             self.progress.setValue(self.progress.value()+1)
-#        QCoreApplication.processEvents() 
-#        self.update()
-#        QCoreApplication.processEvents() 
         self.parent.parent.update()
         QCoreApplication.processEvents() 
 
     def on_cmdRun_released(self):
         """Without multiprocess due to needs one independent connection per thread"""
         self.cmdRun.setEnabled(False)     
+        self.emit(SIGNAL("started")) 
         for worker in self.agrupation:
             self.currentWorker=worker
             worker.run()
@@ -95,6 +93,7 @@ class wdgSource(QWidget, Ui_wdgSource):
         self.cmdErrors.setEnabled(True)
         self.cmdBad.setEnabled(True)       
         self.cmdCancel.setEnabled(False)
+        self.emit(SIGNAL("finished")) 
         
     def on_cmdCancel_released(self):
         self.cmdCancel.setEnabled(False)
@@ -150,4 +149,3 @@ class wdgSource(QWidget, Ui_wdgSource):
         lay = QVBoxLayout(d)
         lay.addWidget(t)
         d.show()
-

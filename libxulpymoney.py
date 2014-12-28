@@ -4803,6 +4803,7 @@ class MemXulpymoney(MemProducts):
     def __init__(self):
         MemProducts.__init__(self)
         self.data=DBData(self)
+        self.frmMain=None #Pointer to mainwidget
         self.closing=False#Used to close threads
         
         

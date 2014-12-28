@@ -38,6 +38,10 @@ class frmMain(QMainWindow, Ui_frmMain):
         
         self.w=QWidget()       
         
+    def actionsEnabled(self, bool):
+        self.menuBar.setEnabled(bool)
+        self.toolBar.setEnabled(bool)
+        
     def init__continue(self):
         """Used to add frmAccess automatic access"""
         self.access=frmAccess(self.mem,  self)
