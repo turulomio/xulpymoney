@@ -26,7 +26,7 @@ class frmCreditCardsAdd(QDialog, Ui_frmCreditCardsAdd):
             self.tarjeta=tarjeta
             self.lblTitulo.setText(self.tr("Updating {} credit card").format(self.tarjeta.name))
             self.txtCreditCard.setText(self.tarjeta.name)
-            self.chkPagoDiferido.setChecked(b2c(self.tarjeta.activa))
+            self.chkPagoDiferido.setChecked(b2c(self.tarjeta.active))
             self.txtSaldoMaximo.setText(str(self.tarjeta.saldomaximo))
             self.txtNumero.setText(self.tarjeta.numero)
             
@@ -36,7 +36,7 @@ class frmCreditCardsAdd(QDialog, Ui_frmCreditCardsAdd):
         self.tarjeta.pagodiferido=c2b(self.chkPagoDiferido.checkState())
         self.tarjeta.saldomaximo=self.txtSaldoMaximo.decimal()
         self.tarjeta.numero=self.txtNumero.text()
-        self.tarjeta.activa=True
+        self.tarjeta.active=True
         self.tarjeta.save()
         self.mem.con.commit()        
         

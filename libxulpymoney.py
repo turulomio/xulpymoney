@@ -224,7 +224,7 @@ class SetInvestments(SetCommons):
         arr=[]
         for i in self.arr:
             print (i.product, investmentmq)
-            if i.activa==True and i.product==investmentmq:
+            if i.active==True and i.product==investmentmq:
                 arr.append(("{0} - {1}".format(i.cuenta.eb.name, i.name), i.id))
                         
         arr=sorted(arr, key=lambda a: a[0]  ,  reverse=False)  
@@ -239,10 +239,10 @@ class SetInvestments(SetCommons):
         arr=[]
         for i in self.arr:
             if activas==True:
-                if i.activa==False:
+                if i.active==False:
                     continue
             elif activas==False:
-                if i.activa==True:
+                if i.active==True:
                     continue
             if tipo==0:
                 arr.append((i.name, i.id))            
@@ -1846,15 +1846,15 @@ class DBData:
         self.benchmark=Product(self.mem).init__db(self.mem.config.get_value("settings", "benchmark" ))
         self.benchmark.result.basic.load_from_db()
         self.banks_active=SetBanks(self.mem)
-        self.banks_active.load_from_db("select * from entidadesbancarias where eb_activa=true")
+        self.banks_active.load_from_db("select * from entidadesbancarias where active=true")
         self.accounts_active=SetAccounts(self.mem, self.banks_active)
-        self.accounts_active.load_from_db("select * from cuentas where cu_activa=true")
+        self.accounts_active.load_from_db("select * from cuentas where active=true")
         self.tarjetas_active=SetCreditCards(self.mem, self.mem.data.accounts_active)
-        self.tarjetas_active.load_from_db("select * from tarjetas where tj_activa=true")
+        self.tarjetas_active.load_from_db("select * from tarjetas where active=true")
         self.products_active=SetProducts(self.mem)
-        self.products_active.load_from_inversiones_query("select distinct(mystocksid) from inversiones where in_activa=true")
+        self.products_active.load_from_inversiones_query("select distinct(mystocksid) from inversiones where active=true")
         self.investments_active=SetInvestments(self.mem, self.accounts_active, self.products_active, self.benchmark)
-        self.investments_active.load_from_db("select * from inversiones where in_activa=true", True)
+        self.investments_active.load_from_db("select * from inversiones where active=true", True)
         print("Cargando actives",  datetime.datetime.now()-inicio)
         
     def load_inactives(self, force=False):
@@ -1862,19 +1862,19 @@ class DBData:
             inicio=datetime.datetime.now()
             
             self.banks_inactive=SetBanks(self.mem)
-            self.banks_inactive.load_from_db("select * from entidadesbancarias where eb_activa=false")
+            self.banks_inactive.load_from_db("select * from entidadesbancarias where active=false")
 
             self.accounts_inactive=SetAccounts(self.mem, self.banks_all())
-            self.accounts_inactive.load_from_db("select * from cuentas where cu_activa=false")
+            self.accounts_inactive.load_from_db("select * from cuentas where active=false")
         
             self.tarjetas_inactive=SetCreditCards(self.mem, self.accounts_all())
-            self.tarjetas_inactive.load_from_db("select * from tarjetas where tj_activa=false")
+            self.tarjetas_inactive.load_from_db("select * from tarjetas where active=false")
             
             self.products_inactive=SetProducts(self.mem)
-            self.products_inactive.load_from_inversiones_query("select distinct(mystocksid) from inversiones where in_activa=false")
+            self.products_inactive.load_from_inversiones_query("select distinct(mystocksid) from inversiones where active=false")
 
             self.investments_inactive=SetInvestments(self.mem, self.accounts_all(), self.products_all(), self.benchmark)
-            self.investments_inactive.load_from_db("select * from inversiones where in_activa=false",  True)
+            self.investments_inactive.load_from_db("select * from inversiones where active=false",  True)
             
             print("\n","Cargando inactives",  datetime.datetime.now()-inicio)
             self.loaded_inactive=True
@@ -2177,11 +2177,11 @@ class Bank:
         self.mem=mem
         self.id=None
         self.name=None
-        self.activa=None
+        self.active=None
         
     def init__create(self, name,  activa=True, id=None):
         self.id=id
-        self.activa=activa
+        self.active=activa
         self.name=name
         return self
         
@@ -2193,11 +2193,11 @@ class Bank:
     def init__db_row(self, row):
         self.id=row['id_entidadesbancarias']
         self.name=row['entidadbancaria']
-        self.activa=row['eb_activa']
+        self.active=row['active']
         return self
         
     def qmessagebox_inactive(self):
-        if self.activa==False:
+        if self.active==False:
             m=QMessageBox()
             m.setIcon(QMessageBox.Information)
             m.setText(QApplication.translate("Core", "The associated bank is not active. You must activate it first"))
@@ -2208,10 +2208,10 @@ class Bank:
         """Función que inserta si self.id es nulo y actualiza si no es nulo"""
         cur=self.mem.con.cursor()
         if self.id==None:
-            cur.execute("insert into entidadesbancarias (entidadbancaria, eb_activa) values (%s,%s) returning id_entidadesbancarias", (self.name, self.activa))
+            cur.execute("insert into entidadesbancarias (entidadbancaria, active) values (%s,%s) returning id_entidadesbancarias", (self.name, self.active))
             self.id=cur.fetchone()[0]
         else:
-            cur.execute("update entidadesbancarias set entidadbancaria=%s, eb_activa=%s where id_entidadesbancarias=%s", (self.name, self.activa, self.id))
+            cur.execute("update entidadesbancarias set entidadbancaria=%s, active=%s where id_entidadesbancarias=%s", (self.name, self.active, self.id))
         cur.close()
         
     def balance(self, setcuentas,  setinversiones):
@@ -2248,7 +2248,7 @@ class Account:
         self.id=None
         self.name=None
         self.eb=None
-        self.activa=None
+        self.active=None
         self.numero=None
         self.currency=None
         self.eb=None #Enlace a objeto
@@ -2261,7 +2261,7 @@ class Account:
         self.id=row['id_cuentas']
         self.name=row['cuenta']
         self.eb=eb
-        self.activa=row['cu_activa']
+        self.active=row['active']
         self.numero=row['numerocuenta']
         self.currency=self.mem.currencies.find(row['currency'])
         return self
@@ -2292,7 +2292,7 @@ class Account:
         self.id=id
         self.name=name
         self.eb=eb
-        self.activa=activa
+        self.active=activa
         self.numero=numero
         self.currency=currency
         return self
@@ -2300,10 +2300,10 @@ class Account:
     def save(self):
         cur=self.mem.con.cursor()
         if self.id==None:
-            cur.execute("insert into cuentas (id_entidadesbancarias, cuenta, numerocuenta, cu_activa,currency) values (%s,%s,%s,%s,%s) returning id_cuentas", (self.eb.id, self.name, self.numero, self.activa, self.currency.id))
+            cur.execute("insert into cuentas (id_entidadesbancarias, cuenta, numerocuenta, active,currency) values (%s,%s,%s,%s,%s) returning id_cuentas", (self.eb.id, self.name, self.numero, self.active, self.currency.id))
             self.id=cur.fetchone()[0]
         else:
-            cur.execute("update cuentas set cuenta=%s, id_entidadesbancarias=%s, numerocuenta=%s, cu_activa=%s, currency=%s where id_cuentas=%s", (self.name, self.eb.id, self.numero, self.activa, self.currency.id, self.id))
+            cur.execute("update cuentas set cuenta=%s, id_entidadesbancarias=%s, numerocuenta=%s, active=%s, currency=%s where id_cuentas=%s", (self.name, self.eb.id, self.numero, self.active, self.currency.id, self.id))
         cur.close()
 
     def es_borrable(self):
@@ -2347,7 +2347,7 @@ class Account:
         oc_origen.save()
 
     def qmessagebox_inactive(self):
-        if self.activa==False:
+        if self.active==False:
             m=QMessageBox()
             m.setIcon(QMessageBox.Information)
             m.setText(QApplication.translate("Core", "The associated account is not active. You must activate it first"))
@@ -2373,7 +2373,7 @@ class Investment:
 #        self.id_cuentas=None
         self.product=None#Puntero a objeto MQInvestment
         self.cuenta=None#Vincula a un objeto  Account
-        self.activa=None
+        self.active=None
         self.op=None#Es un objeto SetInvestmentOperations
         self.op_actual=None#Es un objeto Setoperinversionesactual
         self.op_historica=None#setoperinversioneshistorica
@@ -2384,7 +2384,7 @@ class Investment:
         self.venta=venta
         self.cuenta=cuenta
         self.product=inversionmq
-        self.activa=True
+        self.active=True
         return self
     
     
@@ -2392,10 +2392,10 @@ class Investment:
         """Inserta o actualiza la inversión dependiendo de si id=None o no"""
         cur=self.mem.con.cursor()
         if self.id==None:
-            cur.execute("insert into inversiones (inversion, venta, id_cuentas, in_activa, mystocksid) values (%s, %s,%s,%s,%s) returning id_inversiones", (self.name, self.venta, self.cuenta.id, self.activa, self.product.id))    
+            cur.execute("insert into inversiones (inversion, venta, id_cuentas, active, mystocksid) values (%s, %s,%s,%s,%s) returning id_inversiones", (self.name, self.venta, self.cuenta.id, self.active, self.product.id))    
             self.id=cur.fetchone()[0]
         else:
-            cur.execute("update inversiones set inversion=%s, venta=%s, id_cuentas=%s, in_activa=%s, mystocksid=%s where id_inversiones=%s", (self.name, self.venta, self.cuenta.id, self.activa, self.product.id, self.id))
+            cur.execute("update inversiones set inversion=%s, venta=%s, id_cuentas=%s, active=%s, mystocksid=%s where id_inversiones=%s", (self.name, self.venta, self.cuenta.id, self.active, self.product.id, self.id))
         cur.close()
 
     def __repr__(self):
@@ -2407,7 +2407,7 @@ class Investment:
         self.venta=row['venta']
         self.cuenta=cuenta
         self.product=mqinvestment
-        self.activa=row['in_activa']
+        self.active=row['active']
         return self
 
 
@@ -2516,7 +2516,7 @@ class Investment:
         return self.balance()-self.invertido()
         
     def qmessagebox_inactive(self):
-        if self.activa==False:
+        if self.active==False:
             m=QMessageBox()
             m.setIcon(QMessageBox.Information)
             m.setText(QApplication.translate("Core", "The associated product is not active. You must activate it first"))
@@ -2576,7 +2576,7 @@ class CreditCard:
         self.cuenta=None
         self.pagodiferido=None
         self.saldomaximo=None
-        self.activa=None
+        self.active=None
         self.numero=None
         
         self.op_diferido=[]#array que almacena objetos CreditCard operacion que son en diferido
@@ -2588,13 +2588,13 @@ class CreditCard:
         self.cuenta=cuenta
         self.pagodiferido=pagodiferido
         self.saldomaximo=saldomaximo
-        self.activa=activa
+        self.active=activa
         self.numero=numero
         return self
         
     def init__db_row(self, row, cuenta):
         """El parámetro cuenta es un objeto cuenta, si no se tuviera en tiempo de creación se asigna None"""
-        self.init__create(row['tarjeta'], cuenta, row['pagodiferido'], row['saldomaximo'], row['tj_activa'], row['numero'], row['id_tarjetas'])
+        self.init__create(row['tarjeta'], cuenta, row['pagodiferido'], row['saldomaximo'], row['active'], row['numero'], row['id_tarjetas'])
         return self
                     
     def borrar(self):
@@ -2622,7 +2622,7 @@ class CreditCard:
         cur.close()
         
     def qmessagebox_inactive(self):
-        if self.activa==False:
+        if self.active==False:
             m=QMessageBox()
             m.setIcon(QMessageBox.Information)
             m.setText(QApplication.translate("Core", "The associated credit card is not active. You must activate it first"))
@@ -2633,10 +2633,10 @@ class CreditCard:
     def save(self):
         cur=self.mem.con.cursor()
         if self.id==None:
-            cur.execute("insert into tarjetas (tarjeta,id_cuentas,pagodiferido,saldomaximo,tj_activa,numero) values (%s, %s, %s,%s,%s,%s) returning id_tarjetas", (self.name, self.cuenta.id,  self.pagodiferido ,  self.saldomaximo, self.activa, self.numero))
+            cur.execute("insert into tarjetas (tarjeta,id_cuentas,pagodiferido,saldomaximo,active,numero) values (%s, %s, %s,%s,%s,%s) returning id_tarjetas", (self.name, self.cuenta.id,  self.pagodiferido ,  self.saldomaximo, self.active, self.numero))
             self.id=cur.fetchone()[0]
         else:
-            cur.execute("update tarjetas set tarjeta=%s, id_cuentas=%s, pagodiferido=%s, saldomaximo=%s, tj_activa=%s, numero=%s where id_tarjetas=%s", (self.name, self.cuenta.id,  self.pagodiferido ,  self.saldomaximo, self.activa, self.numero, self.id))
+            cur.execute("update tarjetas set tarjeta=%s, id_cuentas=%s, pagodiferido=%s, saldomaximo=%s, active=%s, numero=%s where id_tarjetas=%s", (self.name, self.cuenta.id,  self.pagodiferido ,  self.saldomaximo, self.active, self.numero, self.id))
 
         cur.close()
         

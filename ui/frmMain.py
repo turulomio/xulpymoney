@@ -48,12 +48,13 @@ class frmMain(QMainWindow, Ui_frmMain):
             self.on_actionExit_activated()
             sys.exit(1)
 
+        ##Update database
+        libdbupdates.Update(self.mem)
+        
         
         self.mem.actualizar_memoria() ##CARGA TODOS LOS DATOS Y LOS VINCULA       
         
         
-        ##Update database
-        libdbupdates.Update(self.mem)
         
         ##Admin mode
         if self.mem.adminmode:

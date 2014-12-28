@@ -23,7 +23,18 @@ class Update:
             p.isin="LU0252634307"
             p.save()
             self.set_database_version(201412280840)
+        if self.dbversion<201412280940:
+            cur=self.mem.con.cursor()
+            cur.execute("alter table inversiones rename in_activa to active;")
+            cur.execute("alter table cuentas rename cu_activa to active;")
+            cur.execute("alter table tarjetas rename tj_activa to active;")
+            cur.execute("alter table entidadesbancarias rename eb_activa to active;")
+            cur.close()
+            self.mem.con.commit()
+            self.set_database_version(201412280940)
+             
             
+
         print ("**** Database already updated")
    
     def get_database_version(self):
