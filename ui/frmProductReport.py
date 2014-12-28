@@ -385,6 +385,12 @@ class frmProductReport(QDialog, Ui_frmProductReport):
             self.mem.con.rollback()
         
     def on_cmdSave_pressed(self):
+        if self.product.id>0:
+            m=QMessageBox()
+            m.setText("Only developers can change system products. You can create a new personal product or fill a ticket in the sourceforge page. It will be updated soon")
+            m.setIcon(QMessageBox.Information)
+            m.exec_()        
+            return
         self.product.name=self.txtName.text()
         self.product.isin=self.txtISIN.text()
         self.product.currency=self.mem.currencies.find(self.cmbCurrency.itemData(self.cmbCurrency.currentIndex()))

@@ -97,7 +97,7 @@ class frmProductSelector(QDialog):
         self.horizontalLayout_2.addLayout(self.verticalLayout)
         self.setWindowTitle(self.tr("Select a product"))
         self.lbl.setText(self.tr("Product list"))
-        self.label.setText(self.tr("Search by code, ISIN or product name"))
+        self.label.setText(self.tr("Search by code, ISIN, ticker or product name"))
         self.lblFound.setText(self.tr("Found registers"))
 
         self.setTabOrder(self.txt, self.cmd)
@@ -116,7 +116,12 @@ class frmProductSelector(QDialog):
 
         self.products=[]
         cur = self.mem.con.cursor()
-        cur.execute("select * from products where id::text like '%"+(self.txt.text().upper())+"%' or upper(name) like '%"+(self.txt.text().upper())+"%' or upper(isin) like '%"+(self.txt.text().upper())+"%' or upper(comentario) like '%"+(self.txt.text().upper())+"%' order by name")
+        cur.execute("select * from products where id::text like '%"+(self.txt.text().upper())+
+                    "%' or upper(name) like '%"+(self.txt.text().upper())+
+                    "%' or upper(isin) like '%"+(self.txt.text().upper())+
+                    "%' or upper(ticker) like '%"+(self.txt.text().upper())+
+                    "%' or upper(comentario) like '%"+(self.txt.text().upper())+
+                    "%' order by name")
         self.lblFound.setText(self.tr("Found {0} registers").format(cur.rowcount))
                 
         self.tblInvestments.setRowCount(cur.rowcount)

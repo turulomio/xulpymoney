@@ -51,7 +51,7 @@
               <item>
                <widget class="QLabel" name="label">
                 <property name="text">
-                 <string>Search by code, ISIN o product name</string>
+                 <string>Search by code, ISIN, ticker or product name</string>
                 </property>
                </widget>
               </item>
