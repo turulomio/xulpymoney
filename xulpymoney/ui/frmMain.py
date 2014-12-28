@@ -3,6 +3,7 @@ from PyQt4.QtGui import *
 import sys
 from Ui_frmMain import *
 from frmAbout import *
+import libdbupdates
 from libxulpymoney import *
 from frmAccess import *
 from wdgTotal import *
@@ -49,6 +50,10 @@ class frmMain(QMainWindow, Ui_frmMain):
 
         
         self.mem.actualizar_memoria() ##CARGA TODOS LOS DATOS Y LOS VINCULA       
+        
+        
+        ##Update database
+        libdbupdates.Update(self.mem)
         
         ##Admin mode
         if self.mem.adminmode:

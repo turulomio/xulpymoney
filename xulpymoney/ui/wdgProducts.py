@@ -208,7 +208,12 @@ class wdgProducts(QWidget, Ui_wdgProducts):
             bolsa=self.mem.stockexchanges.find(self.cmbStockExchange.itemData(self.cmbStockExchange.currentIndex()))            
             stockexchangefilter=" and id_bolsas={0} ".format(bolsa.id)
 
-        self.build_array("select * from products where (id::text like '%"+(self.txt.text().upper())+"%' or upper(name) like '%"+(self.txt.text().upper())+"%' or upper(isin) like '%"+(self.txt.text().upper())+"%' or upper(comentario) like '%"+(self.txt.text().upper())+"%') "+ stockexchangefilter)
+        self.build_array("select * from products where (id::text like '%"+(self.txt.text().upper())+
+                "%' or upper(name) like '%"+(self.txt.text().upper())+
+                "%' or upper(isin) like '%"+(self.txt.text().upper())+
+                "%' or upper(ticker) like '%"+(self.txt.text().upper())+
+                "%' or upper(comentario) like '%"+(self.txt.text().upper())+
+                "%') "+ stockexchangefilter)
         self.products=sorted(self.products, key=lambda inv: inv.name,  reverse=False) 
         self.build_table()          
 

@@ -1,4 +1,5 @@
 SOURCES         = \
+                  libdbupdates.py \
                   libsources.py \
                   libxulpymoney.py \
                   sources/source_mercadocontinuo.py \

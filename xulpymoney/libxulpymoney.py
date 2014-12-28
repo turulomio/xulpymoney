@@ -4736,14 +4736,7 @@ class MemProducts:
         return resultado
         
         
-        
-        
-    def get_database_version(self):
-        cur=self.con.cursor()
-        cur.execute("select value from globals where id_globals=1;")
-        resultado=cur.fetchone()['value']
-        cur.close()
-        return resultado
+
 
     def get_database_init_date(self):
         cur=self.con.cursor()
@@ -4771,10 +4764,7 @@ class MemProducts:
         cur.execute("update globals set value=%s where id_globals=5;", (valor, ))
         cur.close()
 
-    def set_database_version(self, valor):
-        cur=self.con.cursor()
-        cur.execute("update globals set value=%s where id_globals=1;", (valor, ))
-        cur.close()
+
 
     def set_session_counter(self, valor):
         cur=self.con.cursor()

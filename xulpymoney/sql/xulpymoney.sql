@@ -3156,7 +3156,7 @@ INSERT INTO products VALUES ('Call IBEX 35 | 10750 € | 20/04/12 | C2133', 'FR0
 INSERT INTO products VALUES ('Call IBEX 35 | 10750 € | 20/05/11 | B4726', 'FR0010984443', 'EUR', 5, '|SGW|', false, 75100, NULL, NULL, NULL, NULL, 100, 'c', 0, 3, NULL, NULL, NULL, 'SGW#B4726||fr||False', false, true, true);
 INSERT INTO products VALUES ('Call IBEX 35 | 10750 € | 21/10/11 | B7209', 'FR0011039593', 'EUR', 5, '|SGW|', false, 77393, NULL, NULL, NULL, NULL, 100, 'c', 0, 3, NULL, NULL, NULL, 'SGW#B7209||fr||False', false, true, true);
 INSERT INTO products VALUES ('Call IBEX 35 | 11000 € | 15/06/12 | B9963', 'FR0011091529', 'EUR', 5, '|SGW|', false, 77989, NULL, NULL, NULL, NULL, 100, 'c', 0, 3, NULL, NULL, NULL, 'SGW#B9963||fr||False', false, true, true);
-INSERT INTO products VALUES ('Call IBEX 35 | 11000 € | 15/12/17 | E1292', 'DE000SGM1G35', 'EUR', 5, NULL, false, 81681, '', '', '', '', 100, 'c', 1, 3, 'None', '{}', '{}', '', false, true, true);
+INSERT INTO products VALUES ('Call IBEX 35 | 11000 € | 15/12/17 | E1292', 'DE000SGM1G35', 'EUR', 5, NULL, false, 81681, '', '', '', '', 100, 'c', 1, 3, 'None', '{}', '{}', '', false, false, true);
 INSERT INTO products VALUES ('Call IBEX 35 | 11000 € | 16/03/12 | B7611', 'FR0011058478', 'EUR', 5, '|SGW|', false, 75477, NULL, NULL, NULL, NULL, 100, 'c', 0, 3, NULL, NULL, NULL, 'SGW#B7611||fr||False', false, true, true);
 INSERT INTO products VALUES ('Call IBEX 35 | 11000 € | 16/09/11 | B4742', 'FR0010984609', 'EUR', 5, '|SGW|', false, 75246, NULL, NULL, NULL, NULL, 100, 'c', 0, 3, NULL, NULL, NULL, 'SGW#B4742||fr||False', false, true, true);
 INSERT INTO products VALUES ('Call IBEX 35 | 11000 € | 16/12/11 | B5143', 'FR0011002773', 'EUR', 5, '|SGW|', false, 75142, NULL, NULL, NULL, NULL, 100, 'c', 0, 3, NULL, NULL, NULL, 'SGW#B5143||fr||False', false, true, true);
@@ -5857,7 +5857,7 @@ INSERT INTO products VALUES ('LYXIBEXINVER', 'FR0010762492', 'EUR', 4, NULL, fal
 INSERT INTO products VALUES ('LYXNDX1ETF', 'FR0007063177', 'EUR', 4, NULL, false, 79232, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, NULL, NULL, NULL, 'MC#FR0007063177||es||False', false, true, true);
 INSERT INTO products VALUES ('LYXOR ETF DAILY SHORTDAX X2 | DAX 30, INDEX', NULL, 'EUR', 4, '|e_fr_LYXOR|', true, 81692, NULL, '', '', '', 100, 'p', 2, 3, 'DSD.PA', '{1}', '{3}', NULL, false, false, false);
 INSERT INTO products VALUES ('Lyxor ETF EURO STOXX 50 Daily Leverage', 'FR0010468983', 'EUR', 4, '|e_fr_LYXOR|', true, 81394, '', '', '', '', 100, 'c', 2, 3, 'LVE.PA', '{1}', '{3}', 'LVE.PA||fr||False', false, false, true);
-INSERT INTO products VALUES ('LYXOR ETF LEVDAX | DAX 30, INDEX', NULL, 'EUR', 4, NULL, true, 81693, '', '', '', '', 100, 'c', 2, 5, 'LVD.PA', '{1}', '{3}', NULL, false, false, false);
+INSERT INTO products VALUES ('LYXOR ETF LEVDAX | DAX 30, INDEX', 'LU0252634307', 'EUR', 4, '', true, 81693, '', '', '', '', 100, 'c', 2, 3, 'LVD.PA', '{1}', '{3}', '', false, false, false);
 INSERT INTO products VALUES ('LYXOR IBEX DOBLE APALANCADO', 'FR0011042753', 'EUR', 4, '|e_fr_LYXOR|', true, 79228, '', '', '', '', 100, 'c', 2, 1, 'IBEXA.MC', '{1}', '{3}', 'MC#FR0011042753||es||False', false, false, true);
 INSERT INTO products VALUES ('LYXOR IBEX ETF', 'FR0010251744', 'EUR', 4, '|e_fr_LYXOR|', true, 81357, '', '', '', '', 100, 'c', 0, 1, 'LYXIB.MC', '{1}', '{3}', 'MC#FR0010251744||es||False', false, false, true);
 INSERT INTO products VALUES ('LYXOR XBEAR ES50', 'FR0010424143', 'EUR', 4, '|e_fr_LYXOR|', true, 81092, '', '', '', '', 100, 'p', 2, 3, 'BXX.PA', '{1}', '{3}', 'BXX.PA||fr||False', false, false, true);
@@ -8240,10 +8240,12 @@ INSERT INTO bolsas VALUES (6, 'it', '07:00:00', 'Bolsa de Milán', '17:38:00', '
 INSERT INTO bolsas VALUES (7, 'jp', '09:00:00', 'Bolsa de Tokio', '20:00:00', 'Asia/Tokyo');
 INSERT INTO bolsas VALUES (8, 'cn', '00:00:00', 'Bolsa de Hong Kong', '20:00:00', 'Asia/Hong_Kong');
 INSERT INTO bolsas VALUES (9, 'pt', '07:00:00', 'Bolsa de Lisboa', '17:38:00', 'Europe/Lisbon');
+INSERT INTO globals VALUES (1, 'Version', '201412280840');
+INSERT INTO globals VALUES (6, 'Admin mode', '2ed65fbc0b68fdd5e4b06abd7675c2c8');
 UPDATE products SET deletable=true;
 DELETE FROM products WHERE id<=0;
 UPDATE products SET active=true WHERE priorityhistorical[1]=3;
 ALTER SEQUENCE seq_conceptos START WITH 100 RESTART;
 ALTER SEQUENCE seq_entidadesbancarias START WITH 4 RESTART;
 ALTER SEQUENCE seq_cuentas START WITH 5 RESTART;
-INSERT INTO globals (id_globals, global, value) values (6, 'Admin mode password', NULL);
+UPDATE globals set value=NULL where id_globals=6;
