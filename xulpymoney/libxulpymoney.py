@@ -1,6 +1,6 @@
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
-import datetime,  time,  pytz,   psycopg2,  psycopg2.extras,  sys,  codecs,  urllib.request,    os,  configparser,  inspect,  threading, argparse, getpass
+import datetime,  time,  pytz,   psycopg2,  psycopg2.extras,  sys,  codecs,  os,  configparser,  inspect,  threading, argparse, getpass
 
 from decimal import *
 
@@ -3487,8 +3487,8 @@ class Product:
         self.priorityhistorical=None
         self.comentario=None
         self.obsolete=None
-        self.deletable=None
-        self.system=None
+#        self.deletable=None
+#        self.system=None
         
         self.result=None#Variable en la que se almacena QuotesResult
         self.estimations_dps=SetEstimationsDPS(self.mem, self)#Es un diccionario que guarda objetos estimations_dps con clave el año
@@ -3520,14 +3520,14 @@ class Product:
         self.priorityhistorical=SetPrioritiesHistorical(self.mem).init__create_from_db(row['priorityhistorical'])
         self.comentario=row['comentario']
         self.obsolete=row['obsolete']
-        self.deletable=row['deletable']
-        self.system=row['system']
+#        self.deletable=row['deletable']
+#        self.system=row['system']
         
         self.result=QuotesResult(self.mem,self)
         return self
         
                 
-    def init__create(self, name,  isin, currency, type, agrupations, active, web, address, phone, mail, tpc, mode, apalancado, bolsa, ticker, priority, priorityhistorical, comentario, obsolete, deletable, system, id=None):
+    def init__create(self, name,  isin, currency, type, agrupations, active, web, address, phone, mail, tpc, mode, apalancado, bolsa, ticker, priority, priorityhistorical, comentario, obsolete, id=None):
         """agrupations es un setagrupation, priority un SetPriorities y priorityhistorical un SetPrioritieshistorical"""
         self.name=name
         self.isin=isin
@@ -3549,8 +3549,8 @@ class Product:
         self.priorityhistorical=priorityhistorical
         self.comentario=comentario
         self.obsolete=obsolete
-        self.deletable=deletable
-        self.system=system
+#        self.deletable=deletable
+#        self.system=system
         
         self.result=QuotesResult(self.mem,self)
         return self        
@@ -3572,18 +3572,38 @@ class Product:
         if self.id==None:
             cur.execute(" select min(id)-1 from products;")
             id=cur.fetchone()[0]
-            cur.execute("insert into products (id, name,  isin,  currency,  type,  agrupations,  active,  web, address,  phone, mail, tpc, pci,  apalancado, id_bolsas, ticker, priority, priorityhistorical , comentario,  obsolete, system) values (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",  (id, self.name,  self.isin,  self.currency.id,  self.type.id,  self.agrupations.dbstring(),  self.active,  self.web, self.address,  self.phone, self.mail, self.tpc, self.mode.id,  self.apalancado.id, self.stockexchange.id, self.ticker, self.priority.array_of_id(), self.priorityhistorical.array_of_id() , self.comentario, self.obsolete, False))
+            cur.execute("insert into products (id, name,  isin,  currency,  type,  agrupations,  active,  web, address,  phone, mail, tpc, pci,  apalancado, id_bolsas, ticker, priority, priorityhistorical , comentario,  obsolete) values (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",  (id, self.name,  self.isin,  self.currency.id,  self.type.id,  self.agrupations.dbstring(),  self.active,  self.web, self.address,  self.phone, self.mail, self.tpc, self.mode.id,  self.apalancado.id, self.stockexchange.id, self.ticker, self.priority.array_of_id(), self.priorityhistorical.array_of_id() , self.comentario, self.obsolete))
             self.id=id
         else:
             cur.execute("update products set name=%s, isin=%s,currency=%s,type=%s, agrupations=%s, active=%s, web=%s, address=%s, phone=%s, mail=%s, tpc=%s, pci=%s, apalancado=%s, id_bolsas=%s, ticker=%s, priority=%s, priorityhistorical=%s, comentario=%s, obsolete=%s where id=%s", ( self.name,  self.isin,  self.currency.id,  self.type.id,  self.agrupations.dbstring(),  self.active,  self.web, self.address,  self.phone, self.mail, self.tpc, self.mode.id,  self.apalancado.id, self.stockexchange.id, self.ticker, self.priority.array_of_id(), self.priorityhistorical.array_of_id() , self.comentario, self.obsolete,  self.id))
         cur.close()
     
-    def changeDeletable(self, ids,  deletable):
-        """Modifica a deletable"""
-        curms=self.mem.con.cursor()
-        sql="update products set deletable={0} where id in ({1})".format( deletable,  str(ids)[1:-1])
-        curms.execute(sql)
-        curms.close()
+#    def changeDeletable(self, ids,  deletable):
+#        """Modifica a deletable"""
+#        curms=self.mem.con.cursor()
+#        sql="update products set deletable={0} where id in ({1})".format( deletable,  str(ids)[1:-1])
+#        curms.execute(sql)
+#        curms.close()
+        
+        
+        
+    def is_deletable(self):
+        #Search in all investments
+        for i in self.mem.data.investments_all().arr:
+            if i.product.id==self.id:
+                return False
+        
+        #Search in benckmark
+        if self.mem.data.benchmark.id==self.id:
+            return False
+        
+        return True       
+
+    def is_system(self):
+        """Returns if the product is a system product or a user product"""
+        if self.id>=0:
+            return True
+        return False
         
     def priority_change(self, cur):
         """Cambia la primera prioridad y la pone en último lugar, necesita un commit()"""
@@ -4738,65 +4758,65 @@ class MemProducts:
         
 
 
-    def get_database_init_date(self):
-        cur=self.con.cursor()
-        cur.execute("select value from globals where id_globals=5;")
-        resultado=cur.fetchone()['value']
-        cur.close()
-        return resultado
+#    def get_database_init_date(self):
+#        cur=self.con.cursor()
+#        cur.execute("select value from globals where id_globals=5;")
+#        resultado=cur.fetchone()['value']
+#        cur.close()
+#        return resultado
+#
+#    def get_session_counter(self):
+#        cur=self.con.cursor()
+#        cur.execute("select value from globals where id_globals=3;")
+#        resultado=cur.fetchone()['value']
+#        cur.close()
+#        return resultado
+#
+#    def get_system_counter(self):
+#        cur=self.con.cursor()
+#        cur.execute("select value from globals where id_globals=2;")
+#        resultado=cur.fetchone()['value']
+#        cur.close()
+#        return resultado
+#
+#    def set_database_init_date(self, valor):
+#        cur=self.con.cursor()
+#        cur.execute("update globals set value=%s where id_globals=5;", (valor, ))
+#        cur.close()
 
-    def get_session_counter(self):
-        cur=self.con.cursor()
-        cur.execute("select value from globals where id_globals=3;")
-        resultado=cur.fetchone()['value']
-        cur.close()
-        return resultado
 
-    def get_system_counter(self):
-        cur=self.con.cursor()
-        cur.execute("select value from globals where id_globals=2;")
-        resultado=cur.fetchone()['value']
-        cur.close()
-        return resultado
-
-    def set_database_init_date(self, valor):
-        cur=self.con.cursor()
-        cur.execute("update globals set value=%s where id_globals=5;", (valor, ))
-        cur.close()
-
-
-
-    def set_session_counter(self, valor):
-        cur=self.con.cursor()
-        cur.execute("update globals set value=%s where id_globals=3;", (valor, ))
-        cur.close()
-
-    def set_system_counter(self, valor):
-        cur=self.con.cursor()
-        cur.execute("update globals set value=%s where id_globals=2;", (valor, ))
-        cur.close()
-    
-    def set_sourceforge_version(self):
-        cur=self.con.cursor()
-        try:
-            serverversion= ""
-            comand='http://mystocks.svn.sourceforge.net/viewvc/mystocks/libxulpymoney.py'
-            web=urllib.request.urlopen(comand)
-            for line in web:
-                if line.decode().find('return "20')!=-1:
-                    if len(line.decode().split('"')[1])==8:
-                        serverversion=line.decode().split('"')[1]        
-                        cur.execute("update globals set value=%s where id_globals=4;", (serverversion, ))
-                        log("VERSION-SOURCEFORGE", "", QApplication.translate("Core","Sourceforge version detected: {}").format(serverversion))
-        except:
-            log("VERSION-SOURCEFORGE", "", QApplication.translate("Core","Error buscando la versión actual de Sourceforge"))                    
-        cur.close()
-    def get_sourceforge_version(self):
-        cur=self.con.cursor()
-        cur.execute("select value from globals where id_globals=4;")
-        resultado=cur.fetchone()['value']
-        cur.close()
-        return resultado
+#
+#    def set_session_counter(self, valor):
+#        cur=self.con.cursor()
+#        cur.execute("update globals set value=%s where id_globals=3;", (valor, ))
+#        cur.close()
+#
+#    def set_system_counter(self, valor):
+#        cur=self.con.cursor()
+#        cur.execute("update globals set value=%s where id_globals=2;", (valor, ))
+#        cur.close()
+#    
+#    def set_sourceforge_version(self):
+#        cur=self.con.cursor()
+#        try:
+#            serverversion= ""
+#            comand='http://mystocks.svn.sourceforge.net/viewvc/mystocks/libxulpymoney.py'
+#            web=urllib.request.urlopen(comand)
+#            for line in web:
+#                if line.decode().find('return "20')!=-1:
+#                    if len(line.decode().split('"')[1])==8:
+#                        serverversion=line.decode().split('"')[1]        
+#                        cur.execute("update globals set value=%s where id_globals=4;", (serverversion, ))
+#                        log("VERSION-SOURCEFORGE", "", QApplication.translate("Core","Sourceforge version detected: {}").format(serverversion))
+#        except:
+#            log("VERSION-SOURCEFORGE", "", QApplication.translate("Core","Error buscando la versión actual de Sourceforge"))                    
+#        cur.close()
+#    def get_sourceforge_version(self):
+#        cur=self.con.cursor()
+#        cur.execute("select value from globals where id_globals=4;")
+#        resultado=cur.fetchone()['value']
+#        cur.close()
+#        return resultado
 
         
 class MemXulpymoney(MemProducts):

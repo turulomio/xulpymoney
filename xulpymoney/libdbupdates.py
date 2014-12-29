@@ -9,7 +9,9 @@ class Update:
         1702                None
     
     El sistema update sql ya tiene globals y  mete la versi´on de la base de datos del desarrollador, no obstante,
-    El desarrollador deber´a meter por c´odigo todos los cambios, ha ser preferible usando objetos.
+    El desarrollador deber´a meter por c´odigo todos los cambios, ha ser preferible usando objetos.7
+    
+    AFTER EXECUTING I MUST RUN SQL UPDATE SCRIPT TO UPDATE FUTURE INSTALLATIONS
     """
     def __init__(self, mem):
         self.mem=mem
@@ -32,6 +34,14 @@ class Update:
             cur.close()
             self.mem.con.commit()
             self.set_database_version(201412280940)
+        if self.dbversion<201412290741:
+            cur=self.mem.con.cursor()
+            cur.execute("alter table products drop column system;")
+            cur.execute("alter table products drop column deletable;")
+            cur.close()
+            self.mem.con.commit()
+            self.set_database_version(201412290741)
+            
              
             
 

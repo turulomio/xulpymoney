@@ -126,11 +126,18 @@ class wdgProducts(QWidget, Ui_wdgProducts):
 
     @QtCore.pyqtSlot() 
     def on_actionProductDelete_activated(self):
-        if self.selProduct.deletable==False:
+        if self.selProduct.is_deletable()==False:
             m=QMessageBox()
             m.setText(self.tr("This product can't be removed, because is marked as not romavable"))
             m.exec_()    
             return
+            
+        if self.selProduct.is_system()==True:
+            m=QMessageBox()
+            m.setText(self.tr("This product can't be removed, because is a system product"))
+            m.exec_()    
+            return
+            
 
         respuesta = QMessageBox.warning(self, self.tr("Xulpymoney"), self.tr("Deleting data from selected product ({0}). If you use manual update mode, data won't be recovered. Do you want to continue?".format(self.selProduct.id)), QMessageBox.Ok | QMessageBox.Cancel)
         if respuesta==QMessageBox.Ok:

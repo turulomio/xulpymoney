@@ -33,14 +33,9 @@
         <translation>Euro</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4440"/>
+        <location filename="libxulpymoney.py" line="4460"/>
         <source>Warrants</source>
         <translation>Warrants</translation>
-    </message>
-    <message>
-        <location filename="libxulpymoney.py" line="4799"/>
-        <source>Error buscando la versi&#xc3;&#xb3;n actual de Sourceforge</source>
-        <translation></translation>
     </message>
     <message>
         <location filename="libxulpymoney.py" line="2205"/>
@@ -58,22 +53,22 @@
         <translation>La tarjeta de crédito está inactiva. Debes activarla primero</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5241"/>
+        <location filename="libxulpymoney.py" line="5260"/>
         <source>This option is being developed</source>
         <translation>Esta opción está en desarrollo</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="3703"/>
+        <location filename="libxulpymoney.py" line="3723"/>
         <source>Purging innecesary data</source>
         <translation>Eliminando datos innecesarios</translation>
     </message>
     <message>
-        <location filename="ui/frmMain.py" line="419"/>
+        <location filename="ui/frmMain.py" line="410"/>
         <source>Cancel</source>
         <translation>Cancelar</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="3705"/>
+        <location filename="libxulpymoney.py" line="3725"/>
         <source>Purging quotes</source>
         <translation>Eliminando cotizaciones</translation>
     </message>
@@ -93,7 +88,7 @@
         <translation>Comisión</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4698"/>
+        <location filename="libxulpymoney.py" line="4718"/>
         <source>Error conecting to Xulpymoney</source>
         <translation>Error al conectar a Xulpymoney</translation>
     </message>
@@ -123,7 +118,7 @@
         <translation>Tipo de operación</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4436"/>
+        <location filename="libxulpymoney.py" line="4456"/>
         <source>Shares</source>
         <translation>Acciones</translation>
     </message>
@@ -333,37 +328,37 @@
         <translation>Índice de referencia</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4437"/>
+        <location filename="libxulpymoney.py" line="4457"/>
         <source>Funds</source>
         <translation>Fondos de inversión</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4438"/>
+        <location filename="libxulpymoney.py" line="4458"/>
         <source>Indexes</source>
         <translation>Índices</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4439"/>
+        <location filename="libxulpymoney.py" line="4459"/>
         <source>ETF</source>
         <translation>ETF</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4441"/>
+        <location filename="libxulpymoney.py" line="4461"/>
         <source>Currencies</source>
         <translation>Divisas</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4442"/>
+        <location filename="libxulpymoney.py" line="4462"/>
         <source>Public Bond</source>
         <translation>Renta fija pública</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4444"/>
+        <location filename="libxulpymoney.py" line="4464"/>
         <source>Private Bond</source>
         <translation>Renta fija privada</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4446"/>
+        <location filename="libxulpymoney.py" line="4466"/>
         <source>Accounts</source>
         <translation>Cuentas</translation>
     </message>
@@ -408,22 +403,22 @@
         <translation>Cargando inversiones...</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5202"/>
+        <location filename="libxulpymoney.py" line="5221"/>
         <source>True</source>
         <translation>Verdadero</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5205"/>
+        <location filename="libxulpymoney.py" line="5224"/>
         <source>False</source>
         <translation>Falso</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4443"/>
+        <location filename="libxulpymoney.py" line="4463"/>
         <source>Pension plans</source>
         <translation>Planes de pensiones</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4445"/>
+        <location filename="libxulpymoney.py" line="4465"/>
         <source>Deposit</source>
         <translation>Depósitos</translation>
     </message>
@@ -478,37 +473,37 @@
         <translation>Transferencia de acciones. Destino</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5133"/>
+        <location filename="libxulpymoney.py" line="5152"/>
         <source>year</source>
         <translation>año</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5135"/>
+        <location filename="libxulpymoney.py" line="5154"/>
         <source>years</source>
         <translation>años</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5137"/>
+        <location filename="libxulpymoney.py" line="5156"/>
         <source>month</source>
         <translation>mes</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5139"/>
+        <location filename="libxulpymoney.py" line="5158"/>
         <source>months</source>
         <translation>meses</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5141"/>
+        <location filename="libxulpymoney.py" line="5160"/>
         <source>day</source>
         <translation>día</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5143"/>
+        <location filename="libxulpymoney.py" line="5162"/>
         <source>days</source>
         <translation>días</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5144"/>
+        <location filename="libxulpymoney.py" line="5163"/>
         <source>{} {}, {} {} and {} {}</source>
         <translation>{} {}, {} {} y {} {}</translation>
     </message>
@@ -553,14 +548,9 @@
         <translation>Debida a transferencia entre cuentas de {0} a {1}</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="3711"/>
+        <location filename="libxulpymoney.py" line="3731"/>
         <source>Purged {0} quotes from {1}</source>
         <translation>Purgadas {0} cotizaciones de {1}</translation>
-    </message>
-    <message>
-        <location filename="libxulpymoney.py" line="4797"/>
-        <source>Sourceforge version detected: {}</source>
-        <translation>Versión de Sourceforge detectada: {}</translation>
     </message>
     <message>
         <location filename="libxulpymoney.py" line="1796"/>
@@ -573,7 +563,7 @@
         <translation>Lenguaje local detectado: {0}</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4699"/>
+        <location filename="libxulpymoney.py" line="4719"/>
         <source>Connection done</source>
         <translation>Conexión realizada</translation>
     </message>
@@ -588,17 +578,17 @@
         <translation>Recargando precios...</translation>
     </message>
     <message>
-        <location filename="ui/frmMain.py" line="419"/>
+        <location filename="ui/frmMain.py" line="410"/>
         <source>Purging innecesary data from all products</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmMain.py" line="421"/>
+        <location filename="ui/frmMain.py" line="412"/>
         <source>Purging quotes from all products</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmMain.py" line="427"/>
+        <location filename="ui/frmMain.py" line="418"/>
         <source>Purging quotes from {0}.
 Total purged in global process: {1}</source>
         <translation type="unfinished"></translation>
@@ -1204,47 +1194,47 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>frmAuxiliarTables</name>
     <message>
-        <location filename="ui/frmAuxiliarTables.ui" line="14"/>
+        <location filename="ui/Ui_frmAuxiliarTables.py" line="147"/>
         <source>Xulpymoney &gt; Auxiliar tables</source>
         <translation>Xulpymoney &gt; Tablas auxiliares</translation>
     </message>
     <message>
-        <location filename="ui/frmAuxiliarTables.ui" line="33"/>
+        <location filename="ui/Ui_frmAuxiliarTables.py" line="148"/>
         <source>Auxiliar tables</source>
         <translation>Tablas auxiliares</translation>
     </message>
     <message>
-        <location filename="ui/frmAuxiliarTables.ui" line="47"/>
+        <location filename="ui/Ui_frmAuxiliarTables.py" line="156"/>
         <source>Xulpymoney concepts</source>
         <translation>Conceptos de Xulpymoney</translation>
     </message>
     <message>
-        <location filename="ui/frmAuxiliarTables.ui" line="64"/>
+        <location filename="ui/Ui_frmAuxiliarTables.py" line="149"/>
         <source>Edit concepts</source>
         <translation>Editar conceptos</translation>
     </message>
     <message>
-        <location filename="ui/frmAuxiliarTables.ui" line="80"/>
+        <location filename="ui/Ui_frmAuxiliarTables.py" line="150"/>
         <source>Concept</source>
         <translation>Concepto</translation>
     </message>
     <message>
-        <location filename="ui/frmAuxiliarTables.ui" line="162"/>
+        <location filename="ui/Ui_frmAuxiliarTables.py" line="155"/>
         <source>Operation type</source>
         <translation>Tipo de operación</translation>
     </message>
     <message>
-        <location filename="ui/frmAuxiliarTables.ui" line="157"/>
+        <location filename="ui/Ui_frmAuxiliarTables.py" line="153"/>
         <source>Concepts</source>
         <translation>Conceptos</translation>
     </message>
     <message>
-        <location filename="ui/frmAuxiliarTables.ui" line="197"/>
+        <location filename="ui/Ui_frmAuxiliarTables.py" line="160"/>
         <source>Delete concept</source>
         <translation>Borrar un concepto</translation>
     </message>
     <message>
-        <location filename="ui/frmAuxiliarTables.py" line="44"/>
+        <location filename="ui/Ui_frmAuxiliarTables.py" line="158"/>
         <source>Add a concept</source>
         <translation>Añadir un concepto</translation>
     </message>
@@ -1295,22 +1285,22 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>frmDPSAdd</name>
     <message>
-        <location filename="ui/Ui_frmDPSAdd.py" line="76"/>
+        <location filename="ui/frmDPSAdd.py" line="14"/>
         <source>New DPS</source>
         <translation>Nuevo Dividendo por acción</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmDPSAdd.py" line="77"/>
+        <location filename="ui/frmDPSAdd.ui" line="56"/>
         <source>DPS gross</source>
         <translation>Bruto del dividendo</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmDPSAdd.py" line="78"/>
+        <location filename="ui/frmDPSAdd.ui" line="63"/>
         <source>0</source>
         <translation>0</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmDPSAdd.py" line="79"/>
+        <location filename="ui/frmDPSAdd.ui" line="75"/>
         <source>Save DPS</source>
         <translation>Guardar dividendo por acción</translation>
     </message>
@@ -1991,367 +1981,367 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>frmMain</name>
     <message>
-        <location filename="ui/Ui_frmMain.py" line="432"/>
+        <location filename="ui/frmMain.ui" line="99"/>
         <source>Xulpymoney</source>
         <translation>Xulpymoney</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain.py" line="443"/>
+        <location filename="ui/frmMain.ui" line="220"/>
         <source>toolBar</source>
         <translation>toolBar</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain.py" line="446"/>
+        <location filename="ui/frmMain.ui" line="266"/>
         <source>Esc</source>
         <translation>Esc</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain.py" line="449"/>
+        <location filename="ui/frmMain.ui" line="281"/>
         <source>F10</source>
         <translation>F10</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain.py" line="477"/>
+        <location filename="ui/frmMain.ui" line="455"/>
         <source>Help</source>
         <translation>Ayuda</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain.py" line="478"/>
+        <location filename="ui/frmMain.ui" line="458"/>
         <source>F1</source>
         <translation>F1</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain.py" line="466"/>
+        <location filename="ui/frmMain.ui" line="386"/>
         <source>Banks</source>
         <translation>Bancos</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain.py" line="436"/>
+        <location filename="ui/frmMain.ui" line="137"/>
         <source>Reports</source>
         <translation>Informes</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain.py" line="464"/>
+        <location filename="ui/frmMain.ui" line="374"/>
         <source>Accounts</source>
         <translation>Cuentas</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain.py" line="453"/>
+        <location filename="ui/frmMain.ui" line="305"/>
         <source>Investments</source>
         <translation>Inversiones</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain.py" line="444"/>
+        <location filename="ui/frmMain.ui" line="260"/>
         <source>E&amp;xit</source>
         <translation>S&amp;alir</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain.py" line="445"/>
+        <location filename="ui/frmMain.ui" line="263"/>
         <source>Exit</source>
         <translation>Salir</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain.py" line="447"/>
+        <location filename="ui/frmMain.ui" line="275"/>
         <source>&amp;About</source>
         <translation>A&amp;cerca de</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain.py" line="448"/>
+        <location filename="ui/frmMain.ui" line="278"/>
         <source>About</source>
         <translation>Acerca de</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain.py" line="455"/>
+        <location filename="ui/frmMain.ui" line="317"/>
         <source>Auxiliar tables</source>
         <translation>Tablas auxiliares</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain.py" line="471"/>
+        <location filename="ui/frmMain.ui" line="419"/>
         <source>Concepts</source>
         <translation>Conceptos</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain.py" line="473"/>
+        <location filename="ui/frmMain.ui" line="431"/>
         <source>Update memory</source>
         <translation>Actualizar memoria</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain.py" line="475"/>
+        <location filename="ui/frmMain.ui" line="443"/>
         <source>Settings</source>
         <translation>Configuración</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain.py" line="451"/>
+        <location filename="ui/frmMain.ui" line="293"/>
         <source>Index range</source>
         <translation>Rango de índices</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain.py" line="460"/>
+        <location filename="ui/frmMain.ui" line="350"/>
         <source>Total report</source>
         <translation>Informe total</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain.py" line="467"/>
+        <location filename="ui/frmMain.ui" line="395"/>
         <source>Investment types report</source>
         <translation>Informe de tipos de inversión</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain.py" line="480"/>
+        <location filename="ui/frmMain.ui" line="470"/>
         <source>Investment operations list</source>
         <translation>Lista de operaciones de inversión</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain.py" line="456"/>
+        <location filename="ui/frmMain.ui" line="326"/>
         <source>Dividends report</source>
         <translation>Informe de dividendos</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain.py" line="458"/>
+        <location filename="ui/frmMain.ui" line="338"/>
         <source>Heritage report</source>
         <translation>Informe de patrimonio</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain.py" line="469"/>
+        <location filename="ui/frmMain.ui" line="407"/>
         <source>Transfer</source>
         <translation>Transferencia</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain.py" line="462"/>
+        <location filename="ui/frmMain.ui" line="362"/>
         <source>Joint report</source>
         <translation>Informe de conjunto</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain.py" line="482"/>
+        <location filename="ui/frmMain.py" line="116"/>
         <source>Investment calculator</source>
         <translation>Calculadora de inversiones</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain.py" line="433"/>
+        <location filename="ui/frmMain.ui" line="111"/>
         <source>Products</source>
         <translation>Productos</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain.py" line="434"/>
+        <location filename="ui/frmMain.ui" line="115"/>
         <source>Indexes</source>
         <translation>Índices</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain.py" line="435"/>
+        <location filename="ui/frmMain.ui" line="130"/>
         <source>Maintenance</source>
         <translation>Mantenimiento</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain.py" line="437"/>
+        <location filename="ui/frmMain.ui" line="152"/>
         <source>Shares</source>
         <translation>Acciones</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain.py" line="438"/>
+        <location filename="ui/frmMain.ui" line="158"/>
         <source>Currencies</source>
         <translation>Divisas</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain.py" line="439"/>
+        <location filename="ui/frmMain.ui" line="164"/>
         <source>Warrants</source>
         <translation>Warrants</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain.py" line="440"/>
+        <location filename="ui/frmMain.ui" line="174"/>
         <source>Bonds</source>
         <translation>Renta fija</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain.py" line="441"/>
+        <location filename="ui/frmMain.ui" line="182"/>
         <source>Funds</source>
         <translation>Fondos de inversión</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain.py" line="442"/>
+        <location filename="ui/frmMain.ui" line="188"/>
         <source>ETF</source>
         <translation>ETF</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain.py" line="483"/>
+        <location filename="ui/frmMain.ui" line="491"/>
         <source>Search</source>
         <translation>Búsqueda</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain.py" line="484"/>
+        <location filename="ui/frmMain.ui" line="494"/>
         <source>F2</source>
         <translation>F2</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain.py" line="485"/>
+        <location filename="ui/frmMain.ui" line="503"/>
         <source>All Indexes</source>
         <translation>Todos los índices</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain.py" line="486"/>
+        <location filename="ui/frmMain.ui" line="512"/>
         <source>Ibex 35</source>
         <translation>Ibex 35</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain.py" line="487"/>
+        <location filename="ui/frmMain.ui" line="521"/>
         <source>Eurostoxx 50</source>
         <translation>Eurostoxx 50</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain.py" line="488"/>
+        <location filename="ui/frmMain.ui" line="530"/>
         <source>S&amp;&amp;P 500</source>
         <translation>S&amp;&amp;P 500</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain.py" line="489"/>
+        <location filename="ui/frmMain.ui" line="539"/>
         <source>CAC 40</source>
         <translation>CAC 40</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain.py" line="490"/>
+        <location filename="ui/frmMain.ui" line="548"/>
         <source>Nasdaq 100</source>
         <translation>Nasdaq 100</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain.py" line="491"/>
+        <location filename="ui/frmMain.ui" line="557"/>
         <source>Mercado Continuo</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain.py" line="492"/>
+        <location filename="ui/frmMain.ui" line="566"/>
         <source>Xetra</source>
         <translation>Xetra</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain.py" line="494"/>
+        <location filename="ui/frmMain.ui" line="578"/>
         <source>Products without name</source>
         <translation>Productos sin nombre</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain.py" line="496"/>
+        <location filename="ui/frmMain.ui" line="590"/>
         <source>Products not updated</source>
         <translation>Productos no actualizados</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain.py" line="498"/>
+        <location filename="ui/frmMain.ui" line="602"/>
         <source>Obsolete products</source>
         <translation>Productos obsoletos</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain.py" line="500"/>
+        <location filename="ui/frmMain.ui" line="614"/>
         <source>Manual update products</source>
         <translation>Productos de edición manual</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain.py" line="502"/>
+        <location filename="ui/frmMain.ui" line="626"/>
         <source>All currencies</source>
         <translation>Todas las divisas</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain.py" line="504"/>
+        <location filename="ui/frmMain.ui" line="638"/>
         <source>Show favorites</source>
         <translation>Mostrar favoritos</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain.py" line="508"/>
+        <location filename="ui/frmMain.ui" line="662"/>
         <source>Active products</source>
         <translation>Productos activos</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain.py" line="510"/>
+        <location filename="ui/frmMain.ui" line="674"/>
         <source>Biggest dividends</source>
         <translation>Mayores dividendos</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain.py" line="511"/>
+        <location filename="ui/frmMain.ui" line="683"/>
         <source>All call warrants</source>
         <translation>Todos los warrants call</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain.py" line="512"/>
+        <location filename="ui/frmMain.ui" line="692"/>
         <source>All put warrants</source>
         <translation>Todos los warrants put</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain.py" line="513"/>
+        <location filename="ui/frmMain.ui" line="701"/>
         <source>All inline warrants</source>
         <translation>Todos los warrants inline</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain.py" line="517"/>
+        <location filename="ui/frmMain.ui" line="725"/>
         <source>All shares</source>
         <translation>Todas las acciones</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain.py" line="523"/>
+        <location filename="ui/frmMain.ui" line="761"/>
         <source>All warrants</source>
         <translation>Todos los warrants</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain.py" line="527"/>
+        <location filename="ui/frmMain.ui" line="785"/>
         <source>Purge all investments</source>
         <translation>Purgar todas las inversiones</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain.py" line="529"/>
+        <location filename="ui/frmMain.ui" line="797"/>
         <source>LATIBEX</source>
         <translation>LATIBEX</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain.py" line="531"/>
+        <location filename="ui/frmMain.ui" line="809"/>
         <source>Products without ISIN</source>
         <translation>Productos sin ISIN</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain.py" line="532"/>
+        <location filename="ui/frmMain.ui" line="818"/>
         <source>All ETF</source>
         <translation>Todos los ETF</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain.py" line="533"/>
+        <location filename="ui/frmMain.ui" line="827"/>
         <source>All funds</source>
         <translation>Todos los fondos</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain.py" line="535"/>
+        <location filename="ui/frmMain.ui" line="839"/>
         <source>Price updates</source>
         <translation>Actualizaciones de precios</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain.py" line="539"/>
+        <location filename="ui/frmMain.ui" line="857"/>
         <source>F5</source>
         <translation>F5</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain.py" line="536"/>
+        <location filename="ui/frmMain.ui" line="842"/>
         <source>F8</source>
         <translation>F8</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain.py" line="538"/>
+        <location filename="ui/frmMain.ui" line="854"/>
         <source>Reload current prices</source>
         <translation>Recargar precios actuales</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain.py" line="506"/>
+        <location filename="ui/frmMain.ui" line="650"/>
         <source>Historical not updated products</source>
         <translation>Products no actualizados históricamente</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain.py" line="515"/>
+        <location filename="ui/frmMain.ui" line="713"/>
         <source>All bonds</source>
         <translation>Toda la renta fija</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain.py" line="519"/>
+        <location filename="ui/frmMain.ui" line="737"/>
         <source>All public bonds</source>
         <translation>Toda la renta fija pública</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain.py" line="521"/>
+        <location filename="ui/frmMain.ui" line="749"/>
         <source>All private bonds</source>
         <translation>Toda la renta fija privada</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain.py" line="525"/>
+        <location filename="ui/frmMain.ui" line="773"/>
         <source>Duplicated ISIN products</source>
         <translation>Productos con ISIN duplicado</translation>
     </message>
@@ -2386,12 +2376,12 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmMain.py" line="339"/>
+        <location filename="ui/frmMain.py" line="330"/>
         <source>There aren&apos;t favorite products</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmMain.py" line="447"/>
+        <location filename="ui/frmMain.py" line="438"/>
         <source>{0} quotes have been purged from {1} products</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2809,7 +2799,7 @@ p, li { white-space: pre-wrap; }
         <translation>{0} cotizaciones han sido purgadas de {1}</translation>
     </message>
     <message>
-        <location filename="ui/frmProductReport.py" line="426"/>
+        <location filename="ui/frmProductReport.py" line="425"/>
         <source>You have to add a quote and a dividend per share estimation to the new product</source>
         <translation>Tienes que añadir un valor y una estimación del dividendo por acción al nuevo producto</translation>
     </message>
@@ -2829,17 +2819,17 @@ p, li { white-space: pre-wrap; }
         <translation>Añadir un nuevo producto</translation>
     </message>
     <message>
-        <location filename="ui/frmProductReport.py" line="454"/>
+        <location filename="ui/frmProductReport.py" line="453"/>
         <source>Agrupation selection</source>
         <translation>Selección de agrupaciones</translation>
     </message>
     <message>
-        <location filename="ui/frmProductReport.py" line="465"/>
+        <location filename="ui/frmProductReport.py" line="464"/>
         <source>Priority selection</source>
         <translation>Selección de prioridades</translation>
     </message>
     <message>
-        <location filename="ui/frmProductReport.py" line="478"/>
+        <location filename="ui/frmProductReport.py" line="477"/>
         <source>Historical data priority selection</source>
         <translation>Selección de prioridades de datos históricos</translation>
     </message>
@@ -3506,57 +3496,57 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>wdgAccounts</name>
     <message>
-        <location filename="ui/wdgAccounts.ui" line="28"/>
+        <location filename="ui/Ui_wdgAccounts.py" line="111"/>
         <source>Account list</source>
         <translation>Listado de cuentas bancarias</translation>
     </message>
     <message>
-        <location filename="ui/wdgAccounts.ui" line="38"/>
+        <location filename="ui/Ui_wdgAccounts.py" line="112"/>
         <source>Show inactive accounts</source>
         <translation>Mostrar cuentas inactivas</translation>
     </message>
     <message>
-        <location filename="ui/wdgAccounts.ui" line="67"/>
+        <location filename="ui/Ui_wdgAccounts.py" line="114"/>
         <source>Account</source>
         <translation>Cuenta</translation>
     </message>
     <message>
-        <location filename="ui/wdgAccounts.ui" line="72"/>
+        <location filename="ui/Ui_wdgAccounts.py" line="116"/>
         <source>Bank</source>
         <translation>Banco</translation>
     </message>
     <message>
-        <location filename="ui/wdgAccounts.ui" line="77"/>
+        <location filename="ui/Ui_wdgAccounts.py" line="118"/>
         <source>Account number</source>
         <translation>Número de cuenta</translation>
     </message>
     <message>
-        <location filename="ui/wdgAccounts.ui" line="82"/>
+        <location filename="ui/Ui_wdgAccounts.py" line="120"/>
         <source>Balance</source>
         <translation>Saldo</translation>
     </message>
     <message>
-        <location filename="ui/wdgAccounts.ui" line="121"/>
+        <location filename="ui/Ui_wdgAccounts.py" line="122"/>
         <source>New account</source>
         <translation>Nueva cuenta</translation>
     </message>
     <message>
-        <location filename="ui/wdgAccounts.ui" line="133"/>
+        <location filename="ui/Ui_wdgAccounts.py" line="124"/>
         <source>Account report</source>
         <translation>Informe de la cuenta</translation>
     </message>
     <message>
-        <location filename="ui/wdgAccounts.ui" line="145"/>
+        <location filename="ui/Ui_wdgAccounts.py" line="126"/>
         <source>Delete account</source>
         <translation>Borrar cuenta</translation>
     </message>
     <message>
-        <location filename="ui/wdgAccounts.ui" line="156"/>
+        <location filename="ui/Ui_wdgAccounts.py" line="128"/>
         <source>Is it active?</source>
         <translation>¿Está activa?</translation>
     </message>
     <message>
-        <location filename="ui/wdgAccounts.ui" line="168"/>
+        <location filename="ui/Ui_wdgAccounts.py" line="130"/>
         <source>Transfer between accounts</source>
         <translation>Transferencia entre cuentas</translation>
     </message>
@@ -4204,72 +4194,72 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>wdgDividendsReport</name>
     <message>
-        <location filename="ui/wdgDividendsReport.ui" line="32"/>
+        <location filename="ui/Ui_wdgDividendsReport.py" line="131"/>
         <source>Dividends Report</source>
         <translation>Informe de dividendos</translation>
     </message>
     <message>
-        <location filename="ui/wdgDividendsReport.ui" line="70"/>
+        <location filename="ui/Ui_wdgDividendsReport.py" line="133"/>
         <source> days</source>
         <translation> días</translation>
     </message>
     <message>
-        <location filename="ui/wdgDividendsReport.ui" line="112"/>
+        <location filename="ui/Ui_wdgDividendsReport.py" line="134"/>
         <source>Show inactive investments</source>
         <translation>Mostrar inversiones inactivas</translation>
     </message>
     <message>
-        <location filename="ui/wdgDividendsReport.ui" line="138"/>
+        <location filename="ui/Ui_wdgDividendsReport.py" line="136"/>
         <source>Investment</source>
         <translation>Inversión</translation>
     </message>
     <message>
-        <location filename="ui/wdgDividendsReport.ui" line="143"/>
+        <location filename="ui/Ui_wdgDividendsReport.py" line="138"/>
         <source>Bank</source>
         <translation>Banco</translation>
     </message>
     <message>
-        <location filename="ui/wdgDividendsReport.ui" line="148"/>
+        <location filename="ui/Ui_wdgDividendsReport.py" line="140"/>
         <source>Price</source>
         <translation>Precio</translation>
     </message>
     <message>
-        <location filename="ui/wdgDividendsReport.ui" line="153"/>
+        <location filename="ui/Ui_wdgDividendsReport.py" line="142"/>
         <source>DPS</source>
         <translation>DPA</translation>
     </message>
     <message>
-        <location filename="ui/wdgDividendsReport.ui" line="158"/>
+        <location filename="ui/Ui_wdgDividendsReport.py" line="144"/>
         <source>Shares</source>
         <translation>Acciones</translation>
     </message>
     <message>
-        <location filename="ui/wdgDividendsReport.ui" line="163"/>
+        <location filename="ui/Ui_wdgDividendsReport.py" line="146"/>
         <source>Estimated</source>
         <translation>Estimado</translation>
     </message>
     <message>
-        <location filename="ui/wdgDividendsReport.ui" line="168"/>
+        <location filename="ui/Ui_wdgDividendsReport.py" line="148"/>
         <source>% annual dividend</source>
         <translation>% dividendo anual</translation>
     </message>
     <message>
-        <location filename="ui/wdgDividendsReport.ui" line="57"/>
+        <location filename="ui/Ui_wdgDividendsReport.py" line="132"/>
         <source>Dividends per share are red colorized when they are outdated more than</source>
         <translation>Los dividendos por acción están marcados en rojo cuando están desactualizados más de</translation>
     </message>
     <message>
-        <location filename="ui/wdgDividendsReport.ui" line="199"/>
+        <location filename="ui/Ui_wdgDividendsReport.py" line="150"/>
         <source>Update dividend per share</source>
         <translation>Actualizar dividendo por acción</translation>
     </message>
     <message>
-        <location filename="ui/wdgDividendsReport.ui" line="211"/>
+        <location filename="ui/Ui_wdgDividendsReport.py" line="152"/>
         <source>Investment report</source>
         <translation>Informe de la inversión</translation>
     </message>
     <message>
-        <location filename="ui/wdgDividendsReport.ui" line="223"/>
+        <location filename="ui/Ui_wdgDividendsReport.py" line="154"/>
         <source>Product report</source>
         <translation>Informe de producto</translation>
     </message>
@@ -4910,12 +4900,12 @@ S&#xc3;&#xb3;lo se contabilizar&#xc3;&#xa1; cuando se vendan las acciones</sourc
         <translation>DPA</translation>
     </message>
     <message>
-        <location filename="ui/wdgMergeCodes.py" line="71"/>
+        <location filename="ui/wdgMergeCodes.py" line="72"/>
         <source>You have to update Xulpymoney if the deleted product is used in Xulpymoney</source>
         <translation>Tienes que actualizar Xulpymoney si el producto borrado está siendo usado en Xulpymoney</translation>
     </message>
     <message>
-        <location filename="ui/wdgMergeCodes.py" line="50"/>
+        <location filename="ui/wdgMergeCodes.py" line="51"/>
         <source>I couldn&apos;t do the merge, because product is marked as not removable</source>
         <translation>No pude hacer la unión, porque el producto está marcado como no borrable</translation>
     </message>
@@ -5051,12 +5041,12 @@ S&#xc3;&#xb3;lo se contabilizar&#xc3;&#xa1; cuando se vendan las acciones</sourc
         <translation>Encontrados {0} registros</translation>
     </message>
     <message>
-        <location filename="ui/wdgProducts.py" line="135"/>
+        <location filename="ui/wdgProducts.py" line="142"/>
         <source>Deleting data from selected product ({0}). If you use manual update mode, data won&apos;t be recovered. Do you want to continue?</source>
         <translation>Borrando datos del producto seleccionado ({0}). Si el producto usaba actualizaciones manuales, los datos no serán recuperados. ¿Quieres continuar?</translation>
     </message>
     <message>
-        <location filename="ui/wdgProducts.py" line="352"/>
+        <location filename="ui/wdgProducts.py" line="359"/>
         <source>{0} quotes have been purged from {1}</source>
         <translation>{0} cotizaciones han sido purgadas de {1}</translation>
     </message>
@@ -5066,7 +5056,7 @@ S&#xc3;&#xb3;lo se contabilizar&#xc3;&#xa1; cuando se vendan las acciones</sourc
         <translation>Este producto no puede ser eliminado, porque está marcado como no borrable</translation>
     </message>
     <message>
-        <location filename="ui/wdgProducts.py" line="135"/>
+        <location filename="ui/wdgProducts.py" line="142"/>
         <source>Xulpymoney</source>
         <translation>Xulpymoney</translation>
     </message>
@@ -5086,22 +5076,22 @@ S&#xc3;&#xb3;lo se contabilizar&#xc3;&#xa1; cuando se vendan las acciones</sourc
         <translation>Recibiendo datos...</translation>
     </message>
     <message>
-        <location filename="ui/wdgProducts.py" line="201"/>
+        <location filename="ui/wdgProducts.py" line="208"/>
         <source>Search too wide. You need more than 3 characters</source>
         <translation>Búsqueda demasiado extensa. Necesita más de 3 caracteres</translation>
     </message>
     <message>
-        <location filename="ui/wdgProducts.py" line="237"/>
+        <location filename="ui/wdgProducts.py" line="244"/>
         <source>Remove from favorites</source>
         <translation>Borrar de favoritos</translation>
     </message>
     <message>
-        <location filename="ui/wdgProducts.py" line="239"/>
+        <location filename="ui/wdgProducts.py" line="246"/>
         <source>Add to favorites</source>
         <translation>Añadir a favoritos</translation>
     </message>
     <message>
-        <location filename="ui/wdgProducts.py" line="323"/>
+        <location filename="ui/wdgProducts.py" line="330"/>
         <source>Merging codes</source>
         <translation>Juntando códigos</translation>
     </message>
@@ -5136,7 +5126,7 @@ S&#xc3;&#xb3;lo se contabilizar&#xc3;&#xa1; cuando se vendan las acciones</sourc
         <translation>Nueva cotización</translation>
     </message>
     <message>
-        <location filename="ui/wdgProducts.py" line="225"/>
+        <location filename="ui/wdgProducts.py" line="232"/>
         <source>Order by</source>
         <translation>Ordenado por</translation>
     </message>
@@ -5153,6 +5143,11 @@ S&#xc3;&#xb3;lo se contabilizar&#xc3;&#xa1; cuando se vendan las acciones</sourc
     <message>
         <location filename="ui/wdgProducts.ui" line="54"/>
         <source>Search by code, ISIN, ticker or product name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/wdgProducts.py" line="137"/>
+        <source>This product can&apos;t be removed, because is a system product</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
