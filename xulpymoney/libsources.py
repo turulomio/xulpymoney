@@ -389,10 +389,11 @@ class WorkerYahoo(SourceParsePage):
                 self.log("Error parsing: {}".format(i[:-1]))
                 continue                
 
+
 class WorkerYahooHistorical(SourceIterateProducts):
     """Clase que recorre las inversiones activas y busca la última  que tiene el microsecond 4. Busca en internet los historicals a partir de esa fecha"""
-    def __init__(self, mem, type, sleep=0):
-        SourceIterateProducts.__init__(self, mem,"select * from products where active=true and priorityhistorical[1]=3", type, sleep)
+    def __init__(self, mem, type, sql="select * from products where active=true and priorityhistorical[1]=3",  sleep=0):
+        SourceIterateProducts.__init__(self, mem,sql, type, sleep)
         #SourceIterateProducts.__init__(self, mem,"select * from products where id in (79329,81105)", type, sleep)      
         
     def on_execute_product(self,  id_product):

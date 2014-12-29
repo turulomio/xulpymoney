@@ -3558,67 +3558,67 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>wdgBanks</name>
     <message>
-        <location filename="ui/Ui_wdgBanks.py" line="166"/>
+        <location filename="ui/wdgBanks.ui" line="30"/>
         <source>Banks list</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgBanks.py" line="170"/>
+        <location filename="ui/wdgBanks.ui" line="102"/>
         <source>Banks</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgBanks.py" line="186"/>
+        <location filename="ui/wdgBanks.ui" line="206"/>
         <source>Active</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgBanks.py" line="188"/>
+        <location filename="ui/wdgBanks.ui" line="211"/>
         <source>Balance</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgBanks.py" line="175"/>
+        <location filename="ui/wdgBanks.ui" line="142"/>
         <source>Accounts</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgBanks.py" line="177"/>
+        <location filename="ui/wdgBanks.ui" line="161"/>
         <source>Account</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgBanks.py" line="182"/>
+        <location filename="ui/wdgBanks.ui" line="182"/>
         <source>Investments</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgBanks.py" line="184"/>
+        <location filename="ui/wdgBanks.ui" line="201"/>
         <source>Investment</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgBanks.py" line="190"/>
+        <location filename="ui/wdgBanks.ui" line="233"/>
         <source>Investment report</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgBanks.py" line="192"/>
+        <location filename="ui/wdgBanks.ui" line="245"/>
         <source>Account report</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgBanks.py" line="194"/>
+        <location filename="ui/wdgBanks.ui" line="257"/>
         <source>New bank</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgBanks.py" line="196"/>
+        <location filename="ui/wdgBanks.ui" line="269"/>
         <source>Delete bank</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgBanks.py" line="198"/>
+        <location filename="ui/wdgBanks.ui" line="281"/>
         <source>Edit bank</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3643,12 +3643,12 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgBanks.py" line="200"/>
+        <location filename="ui/wdgBanks.ui" line="292"/>
         <source>Is it active?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgBanks.py" line="167"/>
+        <location filename="ui/wdgBanks.ui" line="63"/>
         <source>Show only active entities</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3749,42 +3749,42 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>wdgConcepts</name>
     <message>
-        <location filename="ui/Ui_wdgConcepts.py" line="133"/>
+        <location filename="ui/wdgConcepts.ui" line="47"/>
         <source>Concepts report</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgConcepts.py" line="143"/>
+        <location filename="ui/wdgConcepts.ui" line="100"/>
         <source>Expenses</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgConcepts.py" line="146"/>
+        <location filename="ui/wdgConcepts.ui" line="186"/>
         <source>Concept</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgConcepts.py" line="148"/>
+        <location filename="ui/wdgConcepts.ui" line="191"/>
         <source>Monthly expenses</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgConcepts.py" line="150"/>
+        <location filename="ui/wdgConcepts.ui" line="196"/>
         <source>% Montly expenses</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgConcepts.py" line="152"/>
+        <location filename="ui/wdgConcepts.ui" line="201"/>
         <source>Monthly average</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgConcepts.py" line="153"/>
+        <location filename="ui/wdgConcepts.ui" line="155"/>
         <source>Incomes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgConcepts.py" line="155"/>
+        <location filename="ui/wdgConcepts.ui" line="222"/>
         <source>Historical report</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4356,22 +4356,22 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgIndexRange.py" line="112"/>
+        <location filename="ui/wdgIndexRange.py" line="114"/>
         <source>Green colorized ranges of {} benchmark are covered by zero risk and bonds balance ({}).</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgIndexRange.py" line="112"/>
+        <location filename="ui/wdgIndexRange.py" line="114"/>
         <source>Current benchmark price at {} is {}.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgIndexRange.py" line="112"/>
+        <location filename="ui/wdgIndexRange.py" line="114"/>
         <source>Last daily variation: {}.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgIndexRange.py" line="190"/>
+        <location filename="ui/wdgIndexRange.py" line="192"/>
         <source>Investment calculator</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4379,52 +4379,52 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>wdgInvestmentClasses</name>
     <message>
-        <location filename="ui/wdgInvestmentClasses.ui" line="32"/>
+        <location filename="ui/Ui_wdgInvestmentClasses.py" line="131"/>
         <source>Investments report</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgInvestmentClasses.ui" line="42"/>
+        <location filename="ui/Ui_wdgInvestmentClasses.py" line="132"/>
         <source>Calculated charts with</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgInvestmentClasses.ui" line="50"/>
+        <location filename="ui/Ui_wdgInvestmentClasses.py" line="133"/>
         <source>Current value</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgInvestmentClasses.ui" line="60"/>
+        <location filename="ui/Ui_wdgInvestmentClasses.py" line="134"/>
         <source>Invested balance</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgInvestmentClasses.ui" line="76"/>
+        <location filename="ui/Ui_wdgInvestmentClasses.py" line="135"/>
         <source>By variable percentaje</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgInvestmentClasses.ui" line="86"/>
+        <location filename="ui/Ui_wdgInvestmentClasses.py" line="136"/>
         <source>By Put / Call / Inline</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgInvestmentClasses.ui" line="107"/>
+        <location filename="ui/Ui_wdgInvestmentClasses.py" line="137"/>
         <source>By investment class</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgInvestmentClasses.ui" line="128"/>
+        <location filename="ui/Ui_wdgInvestmentClasses.py" line="138"/>
         <source>By leverage</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgInvestmentClasses.ui" line="138"/>
+        <location filename="ui/Ui_wdgInvestmentClasses.py" line="139"/>
         <source>By country</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgInvestmentClasses.ui" line="148"/>
+        <location filename="ui/Ui_wdgInvestmentClasses.py" line="140"/>
         <source>By investment product</source>
         <translation type="unfinished"></translation>
     </message>

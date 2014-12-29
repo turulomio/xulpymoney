@@ -69,6 +69,11 @@ class TestXulpymoneyData(unittest.TestCase):
         w.ise.setSelected(d.selected)
         w.on_cmdInvestment_pressed()
         
+        #Load benchmark qquotes
+        w=WorkerYahooHistorical(mem, 1,  "select * from products where id="+str(self.mem.config.get_value("settings", "benchmark" )))
+        w.run()
+        
+        
         
         
 

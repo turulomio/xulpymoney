@@ -63,28 +63,30 @@ class wdgIndexRange(QWidget, Ui_wdgIndexRange):
                     resultado=resultado+ self.trUtf8("{0} {1} ({2}): {3} shares of {4} = {5}\n".format(str(o.datetime)[:16], o.inversion.name, o.inversion.cuenta.name, round(o.acciones, 0),  o.inversion.product.currency.string(o.valor_accion), o.inversion.product.currency.string(o.importe)))
             return resultado[:-1]
         ######################################################
-        
         inicio=datetime.datetime.now()
 
         #Makes and array arr with investment current operations and sorts it
         arr=[]
+        maxoper=0
         for i in self.mem.data.investments_active.arr:
             if i.product.tpc!=0 and i.product.type.id not in (7, 9):
                 for o in i.op_actual.arr:
+                    if maxoper<o.referenciaindice.quote:
+                        maxoper=o.referenciaindice.quote
                     arr.append((o.referenciaindice.quote, o))
         arr=sorted(arr, key=lambda row: row[1].datetime,  reverse=False) 
-
-        #Makes and array from benchmark maximum + 4% to minimum
-        ranges=[]
-        cur=self.mem.con.cursor()
-        cur.execute("select max(quote) from quotes where id=%s;", (self.benchmark.id, ))
-        maximo= int( cur.fetchone()[0]*Decimal(1.04))
-        cur.close()
+        
+        #Makes and array from  minimum to benchmark maximum + 2% to minimum
+        ranges=[]       
+        if maxoper==0:##NO hay operinvestments
+            maximo=self.benchmark.result.basic.last.quote*(1+2*Decimal(self.spin.value()/100))
+        else:
+            maximo=maxoper*(1+2*Decimal(self.spin.value()/100))##1.04 en caso de 2
         minimo=int(self.txtMinimo.text())
-        PuntRange=maximo
-        while PuntRange>minimo:
-            ranges.append(PuntRange)
-            PuntRange=int(PuntRange*(1-(self.spin.value()/100)))
+        PuntRange=minimo
+        while PuntRange<maximo:
+            ranges.insert(0, PuntRange)
+            PuntRange=int(PuntRange*(1+(self.spin.value()/100)))
     
         #Calculate zero risk assests and range number covered
         zeroriskplusbonds=Assets(self.mem).patrimonio_riesgo_cero(self.mem.data.investments_active, datetime.date.today()) +Assets(self.mem).saldo_todas_inversiones_bonds(datetime.date.today())
@@ -94,18 +96,18 @@ class wdgIndexRange(QWidget, Ui_wdgIndexRange):
         self.table.clearContents()
         self.table.setRowCount(len(ranges))
         colorized=0
-        benchmarkrange=0#Int will point to the range of the benchmark
-        for i, r in enumerate(ranges):
-            top=r
-            bottom=int(r*(1-(self.spin.value()/100)))
+        print (self.benchmark.result.basic.last.quote,  self.mem.data.benchmark.result.basic.last.quote, 2)
+        for i, r in enumerate(ranges):###De mayor a menor
+            top=int(r*(1+(self.spin.value()/100)))
+            bottom=r
             self.table.setItem(i, 0,qcenter("{}-{}".format(bottom, top)))
             self.table.setItem(i, 1,QTableWidgetItem(inversiones(arr, bottom, top)))
-            if self.benchmark.result.basic.last.quote>=bottom and self.benchmark.result.basic.last.quote<top: ##Colorize current price
-                self.table.item(i, 0).setBackgroundColor(QColor(255, 160, 160))
-                benchmarkrange=r
-            if self.benchmark.result.basic.last.quote<benchmarkrange and colorized<=rangescovered:
-                self.table.item(i, 1).setBackgroundColor(QColor(160, 255, 160))
-                colorized=colorized+1
+            if bottom<self.benchmark.result.basic.last.quote:
+                if self.benchmark.result.basic.last.quote<=top: ##Colorize current price
+                    self.table.item(i, 0).setBackgroundColor(QColor(255, 160, 160))
+                if colorized<=rangescovered:
+                    self.table.item(i, 1).setBackgroundColor(QColor(160, 255, 160))
+                    colorized=colorized+1
 
         #Prints label
         self.lblTotal.setText(self.tr("Green colorized ranges of {} benchmark are covered by zero risk and bonds balance ({}).").format(self.benchmark.name, self.mem.localcurrency.string(zeroriskplusbonds)) + "\n" +
