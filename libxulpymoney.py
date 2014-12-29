@@ -543,7 +543,15 @@ class SetCountries(SetCommons):
         """Función que carga en un combo pasado como parámetro y con un SetAccounts pasado como parametro
         Se ordena por nombre y se se pasa el tercer parametro que es un objeto Account lo selecciona""" 
         for cu in self.arr:
-            self.addItem(cu.qicon(), cu.name, cu.id)
+            combo.addItem(cu.qicon(), cu.name, cu.id)
+
+        if country!=None:
+                combo.setCurrentIndex(combo.findData(country.id))
+
+    def qcombobox_translation(self, combo,  country=None):
+        """Función que carga en un combo pasado como parámetro con los pa´ises que tienen traducci´on""" 
+        for cu in [self.find("es"),self.find("fr"),self.find("ro"),self.find("ru"),self.find("en") ]:
+            combo.addItem(cu.qicon(), cu.name, cu.id)
 
         if country!=None:
                 combo.setCurrentIndex(combo.findData(country.id))

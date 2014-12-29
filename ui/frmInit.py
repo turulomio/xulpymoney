@@ -4,19 +4,37 @@ import psycopg2,  psycopg2.extras
 from Ui_frmInit import *
 from libsources import *
 from libxulpymoney import *
+from wdgSource import *
 
 class frmInit(QDialog, Ui_frmInit):
     def __init__(self, parent = None, name = None, modal = False):
         QDialog.__init__(self,  parent)
         self.setupUi(self)
         self.mem=MemProducts()
+        
+        locale=QLocale()
+        a=locale.system().name()
+        if len(a)!=2:
+            a=a[:-len(a)+2]
+            
+        self.mem.countries.qcombobox_translation(self.cmbLanguage, self.mem.countries.find(a))
+        self.wyahoohistorical=wdgSource(self.mem, Sources.WorkerYahooHistorical, self) 
+        self.laySource.addWidget(self.wyahoohistorical)
+        self.wyahoohistorical.setEnabled(False)
+        self.wyahoohistorical.setWidgetToUpdate(self)
 
 
     
     @pyqtSignature("")
-    def on_cmdYN_accepted(self):
+    def on_cmdCreate_released(self):
         respuesta = QMessageBox.warning(self, self.windowTitle(), self.trUtf8("Do you want to create needed Xulpymoney databases in {0}?".format(self.cmbLanguage.currentText())), QMessageBox.Ok | QMessageBox.Cancel)
         if respuesta==QMessageBox.Ok:             
+            self.cmbLanguage.setEnabled(False)
+            self.txtPass.setEnabled(False)
+            self.txtPort.setEnabled(False)
+            self.txtServer.setEnabled(False)
+            self.txtUser.setEnabled(False)
+            self.txtXulpymoney.setEnabled(False)
             if self.create_db(self.txtXulpymoney.text())==False  or self.create_xulpymoney()==False:
                 m=QMessageBox()
                 m.setText(self.tr("Error creating database. Maybe it already exist"))
@@ -24,23 +42,32 @@ class frmInit(QDialog, Ui_frmInit):
                 self.reject()
                 return
 
-            m=QMessageBox()
-            m.setText(self.tr("Database created. Xulpymoney is going to insert quotes from yahoo. This is a long process, please wait."))
-            m.exec_()         
-            
-            #Insert quotes of yahoo
-            strtemplate1="dbname='%s' port='%s' user='%s' host='%s' password='%s'" % (self.txtXulpymoney.text(), self.txtPort.text(), self.txtUser.text(),  self.txtServer.text(), self.txtPass.text())
-            self.mem.con=psycopg2.extras.DictConnection(strtemplate1)
-            self.mem.con.set_isolation_level(0)
-            self.mem.actualizar_memoria()            
-            w=WorkerYahooHistorical(self.mem)
-            w.start()           
-            
-            m=QMessageBox()
-            m.setText(self.tr("Process finished. Now you can use Xulpymoney"))
-            m.exec_()         
-            self.accept()
 
+            respuesta2 = QMessageBox.warning(self, self.windowTitle(), self.trUtf8("Database created. Xulpymoney needs to insert quotes from yahoo. This is a long process. Do you want to insert them now?"), QMessageBox.Ok | QMessageBox.Cancel)
+            if respuesta2==QMessageBox.Ok:             
+                #Insert quotes of yahoo
+                strtemplate1="dbname='%s' port='%s' user='%s' host='%s' password='%s'" % (self.txtXulpymoney.text(), self.txtPort.text(), self.txtUser.text(),  self.txtServer.text(), self.txtPass.text())
+                self.mem.con=psycopg2.extras.DictConnection(strtemplate1)
+                self.mem.con.set_isolation_level(0)
+                self.mem.actualizar_memoria()     
+                self.cmdCreate.setEnabled(False)
+                self.wyahoohistorical.setEnabled(True)
+                self.wyahoohistorical.on_cmdRun_released()
+#                
+#                m=QMessageBox()
+#                m.setText(self.tr("Process finished. Now you can use Xulpymoney"))
+#                m.exec_()         
+        else:
+            self.cmbLanguage.setEnabled(True)
+            self.txtPass.setEnabled(True)
+            self.txtPort.setEnabled(True)
+            self.txtServer.setEnabled(True)
+            self.txtUser.setEnabled(True)
+            self.txtXulpymoney.setEnabled(True)
+            
+
+    def on_cmdExit_released(self):
+        self.close()
 
 
     @pyqtSignature("")
@@ -54,6 +81,7 @@ class frmInit(QDialog, Ui_frmInit):
             cur.close()
             cont.close()
         except:
+            print ("Error in create_db()")
             cur.close()
             cont.close()
             return False
@@ -69,6 +97,7 @@ class frmInit(QDialog, Ui_frmInit):
             cur.close()
             cont.close()
         except:
+            print ("Error in drop_db()")
             cur.close()
             cont.close()
             return False
@@ -123,4 +152,5 @@ class frmInit(QDialog, Ui_frmInit):
             con.close()
             return True
         except:
+            print ("Error in create_xulpymoney()")
             return False
