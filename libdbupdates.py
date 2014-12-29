@@ -41,6 +41,12 @@ class Update:
             cur.close()
             self.mem.con.commit()
             self.set_database_version(201412290741)
+        if self.dbversion<201412290753:
+            cur=self.mem.con.cursor()
+            cur.execute("alter table inversiones rename mystocksid to products_id;")
+            cur.close()
+            self.mem.con.commit()
+            self.set_database_version(201412290753)
             
              
             

@@ -715,7 +715,7 @@ CREATE TABLE inversiones (
     active boolean DEFAULT true NOT NULL,
     id_cuentas integer NOT NULL,
     venta numeric(100,6) DEFAULT 0 NOT NULL,
-    mystocksid integer
+    products_id integer
 );
 
 
@@ -8224,7 +8224,7 @@ INSERT INTO bolsas VALUES (6, 'it', '07:00:00', 'Bolsa de Milán', '17:38:00', '
 INSERT INTO bolsas VALUES (7, 'jp', '09:00:00', 'Bolsa de Tokio', '20:00:00', 'Asia/Tokyo');
 INSERT INTO bolsas VALUES (8, 'cn', '00:00:00', 'Bolsa de Hong Kong', '20:00:00', 'Asia/Hong_Kong');
 INSERT INTO bolsas VALUES (9, 'pt', '07:00:00', 'Bolsa de Lisboa', '17:38:00', 'Europe/Lisbon');
-INSERT INTO globals VALUES (1, 'Version', '201412290741');
+INSERT INTO globals VALUES (1, 'Version', '201412290753');
 INSERT INTO globals VALUES (6, 'Admin mode', '2ed65fbc0b68fdd5e4b06abd7675c2c8');
 UPDATE products SET deletable=true;
 DELETE FROM products WHERE id<=0;

@@ -237,12 +237,12 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
         inversion=self.txtInvestment.text()
         venta=self.txtVenta.decimal()
         id_cuentas=int(self.cmbAccount.itemData(self.cmbAccount.currentIndex()))
-        mystocksid=int(self.ise.selected.id)
+        products_id=int(self.ise.selected.id)
         
         
-        if self.mem.data.products_active.find(mystocksid)==None:
+        if self.mem.data.products_active.find(products_id)==None:
             print ("Cargando otro mqinversiones")
-            inv=Product(self.mem).init__db(mystocksid)
+            inv=Product(self.mem).init__db(products_id)
             inv.estimations_dps.load_from_db()
             inv.result.basic.load_from_db()
             self.mem.data.products_active.append(inv)
@@ -250,10 +250,10 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
         
 
         if self.tipo==1:        #insertar
-            i=Investment(self.mem).create(inversion,   venta,  self.mem.data.accounts_active.find(id_cuentas),  self.mem.data.products_active.find(mystocksid))      
+            i=Investment(self.mem).create(inversion,   venta,  self.mem.data.accounts_active.find(id_cuentas),  self.mem.data.products_active.find(products_id))      
             i.save()
             self.mem.con.commit()
-            ##Se añade a mem y vincula. No carga datos porque mystocksid debe existir            
+            ##Se añade a mem y vincula. No carga datos porque products_id debe existir            
             #Lo añade con las operaciones vacias pero calculadas.
             i.op=SetInvestmentOperations(self.mem)
             (i.op_actual, i.op_historica)=i.op.calcular()
@@ -262,7 +262,7 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
         elif self.tipo==2:
             self.inversion.name=inversion
             self.inversion.venta=venta
-            self.inversion.product=self.mem.data.products_active.find(mystocksid)
+            self.inversion.product=self.mem.data.products_active.find(products_id)
             self.inversion.save()##El id y el id_cuentas no se pueden modificar
             self.mem.con.commit()
             self.cmdInvestment.setEnabled(False)

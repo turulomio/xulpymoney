@@ -1286,22 +1286,22 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>frmDPSAdd</name>
     <message>
-        <location filename="ui/frmDPSAdd.py" line="14"/>
+        <location filename="ui/Ui_frmDPSAdd.py" line="76"/>
         <source>New DPS</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmDPSAdd.ui" line="56"/>
+        <location filename="ui/Ui_frmDPSAdd.py" line="77"/>
         <source>DPS gross</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmDPSAdd.ui" line="63"/>
+        <location filename="ui/Ui_frmDPSAdd.py" line="78"/>
         <source>0</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmDPSAdd.ui" line="75"/>
+        <location filename="ui/Ui_frmDPSAdd.py" line="79"/>
         <source>Save DPS</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3809,92 +3809,92 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>wdgConceptsHistorical</name>
     <message>
-        <location filename="ui/wdgConceptsHistorical.ui" line="14"/>
+        <location filename="ui/Ui_wdgConceptsHistorical.py" line="103"/>
         <source>Historical concepts report</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgConceptsHistorical.py" line="56"/>
+        <location filename="ui/Ui_wdgConceptsHistorical.py" line="131"/>
         <source>Total</source>
         <translation type="unfinished">общий</translation>
     </message>
     <message>
-        <location filename="ui/wdgConceptsHistorical.ui" line="59"/>
+        <location filename="ui/Ui_wdgConceptsHistorical.py" line="105"/>
         <source>Year</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgConceptsHistorical.ui" line="64"/>
+        <location filename="ui/Ui_wdgConceptsHistorical.py" line="107"/>
         <source>January</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgConceptsHistorical.ui" line="74"/>
+        <location filename="ui/Ui_wdgConceptsHistorical.py" line="111"/>
         <source>March</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgConceptsHistorical.ui" line="79"/>
+        <location filename="ui/Ui_wdgConceptsHistorical.py" line="113"/>
         <source>April</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgConceptsHistorical.ui" line="84"/>
+        <location filename="ui/Ui_wdgConceptsHistorical.py" line="115"/>
         <source>May</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgConceptsHistorical.ui" line="89"/>
+        <location filename="ui/Ui_wdgConceptsHistorical.py" line="117"/>
         <source>June</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgConceptsHistorical.ui" line="94"/>
+        <location filename="ui/Ui_wdgConceptsHistorical.py" line="119"/>
         <source>July</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgConceptsHistorical.ui" line="114"/>
+        <location filename="ui/Ui_wdgConceptsHistorical.py" line="127"/>
         <source>November</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgConceptsHistorical.ui" line="119"/>
+        <location filename="ui/Ui_wdgConceptsHistorical.py" line="129"/>
         <source>December</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgConceptsHistorical.ui" line="37"/>
+        <location filename="ui/Ui_wdgConceptsHistorical.py" line="132"/>
         <source>Historical report</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgConceptsHistorical.ui" line="145"/>
+        <location filename="ui/Ui_wdgConceptsHistorical.py" line="134"/>
         <source>Show month operations</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgConceptsHistorical.ui" line="157"/>
+        <location filename="ui/Ui_wdgConceptsHistorical.py" line="136"/>
         <source>Show year operations</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgConceptsHistorical.ui" line="69"/>
+        <location filename="ui/Ui_wdgConceptsHistorical.py" line="109"/>
         <source>February</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgConceptsHistorical.ui" line="99"/>
+        <location filename="ui/Ui_wdgConceptsHistorical.py" line="121"/>
         <source>August</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgConceptsHistorical.ui" line="104"/>
+        <location filename="ui/Ui_wdgConceptsHistorical.py" line="123"/>
         <source>September</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgConceptsHistorical.ui" line="109"/>
+        <location filename="ui/Ui_wdgConceptsHistorical.py" line="125"/>
         <source>October</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4194,72 +4194,72 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>wdgDividendsReport</name>
     <message>
-        <location filename="ui/Ui_wdgDividendsReport.py" line="131"/>
+        <location filename="ui/wdgDividendsReport.ui" line="32"/>
         <source>Dividends Report</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgDividendsReport.py" line="133"/>
+        <location filename="ui/wdgDividendsReport.ui" line="70"/>
         <source> days</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgDividendsReport.py" line="134"/>
+        <location filename="ui/wdgDividendsReport.ui" line="112"/>
         <source>Show inactive investments</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgDividendsReport.py" line="136"/>
+        <location filename="ui/wdgDividendsReport.ui" line="138"/>
         <source>Investment</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgDividendsReport.py" line="138"/>
+        <location filename="ui/wdgDividendsReport.ui" line="143"/>
         <source>Bank</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgDividendsReport.py" line="140"/>
+        <location filename="ui/wdgDividendsReport.ui" line="148"/>
         <source>Price</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgDividendsReport.py" line="142"/>
+        <location filename="ui/wdgDividendsReport.ui" line="153"/>
         <source>DPS</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgDividendsReport.py" line="144"/>
+        <location filename="ui/wdgDividendsReport.ui" line="158"/>
         <source>Shares</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgDividendsReport.py" line="146"/>
+        <location filename="ui/wdgDividendsReport.ui" line="163"/>
         <source>Estimated</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgDividendsReport.py" line="148"/>
+        <location filename="ui/wdgDividendsReport.ui" line="168"/>
         <source>% annual dividend</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgDividendsReport.py" line="132"/>
+        <location filename="ui/wdgDividendsReport.ui" line="57"/>
         <source>Dividends per share are red colorized when they are outdated more than</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgDividendsReport.py" line="150"/>
+        <location filename="ui/wdgDividendsReport.ui" line="199"/>
         <source>Update dividend per share</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgDividendsReport.py" line="152"/>
+        <location filename="ui/wdgDividendsReport.ui" line="211"/>
         <source>Investment report</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgDividendsReport.py" line="154"/>
+        <location filename="ui/wdgDividendsReport.ui" line="223"/>
         <source>Product report</source>
         <translation type="unfinished"></translation>
     </message>
