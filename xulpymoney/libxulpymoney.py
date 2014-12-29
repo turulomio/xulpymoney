@@ -172,14 +172,14 @@ class SetInvestments(SetCommons):
                 pd.setValue(cur.rownumber)
                 pd.update()
                 QApplication.processEvents()
-            inv=Investment(self.mem).init__db_row(row,  self.cuentas.find(row['id_cuentas']), self.products.find(row['mystocksid']))
+            inv=Investment(self.mem).init__db_row(row,  self.cuentas.find(row['id_cuentas']), self.products.find(row['products_id']))
             inv.get_operinversiones()
             inv.op_actual.get_valor_benchmark(self.benchmark)
             self.append(inv)
         cur.close()  
         
-    def list_distinct_mystocksid(self):
-        """Función que devuelve una lista con los distintos mystocksid """
+    def list_distinct_products_id(self):
+        """Función que devuelve una lista con los distintos products_id """
         resultado=set([])
         for inv in self.arr:
             resultado.add(inv.product.id)
@@ -361,11 +361,11 @@ class SetProducts(SetCommons):
     def load_from_inversiones_query(self, sql):
         """sql es una query sobre la tabla inversiones"""
         cur=self.mem.con.cursor()
-        cur.execute(sql)#"Select distinct(mystocksid) from inversiones"
+        cur.execute(sql)#"Select distinct(products_id) from inversiones"
         ##Conviert cur a lista separada comas
         lista=""
         for row in cur:
-            lista=lista+ str(row['mystocksid']) + ", "
+            lista=lista+ str(row['products_id']) + ", "
         lista=lista[:-2]
         cur.close()
         
@@ -1852,7 +1852,7 @@ class DBData:
         self.tarjetas_active=SetCreditCards(self.mem, self.mem.data.accounts_active)
         self.tarjetas_active.load_from_db("select * from tarjetas where active=true")
         self.products_active=SetProducts(self.mem)
-        self.products_active.load_from_inversiones_query("select distinct(mystocksid) from inversiones where active=true")
+        self.products_active.load_from_inversiones_query("select distinct(products_id) from inversiones where active=true")
         self.investments_active=SetInvestments(self.mem, self.accounts_active, self.products_active, self.benchmark)
         self.investments_active.load_from_db("select * from inversiones where active=true", True)
         print("Cargando actives",  datetime.datetime.now()-inicio)
@@ -1871,7 +1871,7 @@ class DBData:
             self.tarjetas_inactive.load_from_db("select * from tarjetas where active=false")
             
             self.products_inactive=SetProducts(self.mem)
-            self.products_inactive.load_from_inversiones_query("select distinct(mystocksid) from inversiones where active=false")
+            self.products_inactive.load_from_inversiones_query("select distinct(products_id) from inversiones where active=false")
 
             self.investments_inactive=SetInvestments(self.mem, self.accounts_all(), self.products_all(), self.benchmark)
             self.investments_inactive.load_from_db("select * from inversiones where active=false",  True)
@@ -2392,10 +2392,10 @@ class Investment:
         """Inserta o actualiza la inversión dependiendo de si id=None o no"""
         cur=self.mem.con.cursor()
         if self.id==None:
-            cur.execute("insert into inversiones (inversion, venta, id_cuentas, active, mystocksid) values (%s, %s,%s,%s,%s) returning id_inversiones", (self.name, self.venta, self.cuenta.id, self.active, self.product.id))    
+            cur.execute("insert into inversiones (inversion, venta, id_cuentas, active, products_id) values (%s, %s,%s,%s,%s) returning id_inversiones", (self.name, self.venta, self.cuenta.id, self.active, self.product.id))    
             self.id=cur.fetchone()[0]
         else:
-            cur.execute("update inversiones set inversion=%s, venta=%s, id_cuentas=%s, active=%s, mystocksid=%s where id_inversiones=%s", (self.name, self.venta, self.cuenta.id, self.active, self.product.id, self.id))
+            cur.execute("update inversiones set inversion=%s, venta=%s, id_cuentas=%s, active=%s, products_id=%s where id_inversiones=%s", (self.name, self.venta, self.cuenta.id, self.active, self.product.id, self.id))
         cur.close()
 
     def __repr__(self):
@@ -3637,7 +3637,7 @@ class Product:
         cur.execute("select max(id)+1 from products;")#last id>0
         newid=cur.fetchone()[0]
 
-        cur.execute("update inversiones set mystocksid=%s where mystocksid=%s",(newid,self.id))
+        cur.execute("update inversiones set products_id=%s where products_id=%s",(newid,self.id))
         cur.execute("update quotes set id=%s where id=%s",(newid,self.id))
         cur.execute("update products set id=%s where id=%s",(newid,self.id))
         cur.execute("update dps set id=%s where id=%s",(newid,self.id))        
@@ -3654,7 +3654,7 @@ class Product:
         cur.execute("select min(id)-1 from products;")#last id>0
         newid=cur.fetchone()[0]
 
-        cur.execute("update inversiones set mystocksid=%s where mystocksid=%s",(newid,self.id))
+        cur.execute("update inversiones set products_id=%s where products_id=%s",(newid,self.id))
         cur.execute("update quotes set id=%s where id=%s",(newid,self.id))
         cur.execute("update products set id=%s where id=%s",(newid,self.id))
         cur.execute("update dps set id=%s where id=%s",(newid,self.id))        
