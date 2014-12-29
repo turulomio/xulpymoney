@@ -9,7 +9,7 @@ class frmAccess(QDialog, Ui_frmAccess):
         self.setModal(True)
         self.setupUi(self)
         self.parent=parent
-        self.mem.languages.qcombobox(self.cmbLanguages,self.mem.config.get_value("settings", "language"))
+        self.mem.languages.qcombobox(self.cmbLanguages,self.mem.languages.find(self.mem.config.get_value("settings", "language")))
 
         icon = QtGui.QIcon()
         pix=QtGui.QPixmap(":xulpymoney/coins.png")
