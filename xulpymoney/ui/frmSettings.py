@@ -20,7 +20,7 @@ class frmSettings(QDialog, Ui_frmSettings):
         self.mem=mem
         self.mem.data.load_inactives()
         self.mem.currencies.qcombobox(self.cmbCurrencies,self.mem.currencies.find(self.mem.config.get_value("settings", "localcurrency")))
-        self.mem.languages.qcombobox(self.cmbLanguages,self.mem.config.get_value("settings", "language"))
+        self.mem.languages.qcombobox(self.cmbLanguages,self.mem.languages.find(self.mem.config.get_value("settings", "language")))
         self.mem.zones.qcombobox(self.cmbZones, self.mem.zones.find(self.mem.config.get_value("settings", "localzone")))
         self.indexes=SetProducts(self.mem)
         self.indexes.load_from_db("select * from products where type=3 order by name")

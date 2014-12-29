@@ -4219,7 +4219,7 @@ class SetLanguages(SetCommons):
         for l in self.arr:
             combo.addItem(self.mem.countries.find(l.id).qicon(), l.name, l.id)
         if selected!=None:
-                combo.setCurrentIndex(combo.findData(selected))
+                combo.setCurrentIndex(combo.findData(selected.id))
 
     def cambiar(self, id):  
         """language es un string"""

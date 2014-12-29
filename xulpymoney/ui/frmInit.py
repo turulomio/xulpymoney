@@ -17,7 +17,8 @@ class frmInit(QDialog, Ui_frmInit):
         if len(a)!=2:
             a=a[:-len(a)+2]
             
-        self.mem.countries.qcombobox_translation(self.cmbLanguage, self.mem.countries.find(a))
+        print (a)
+        self.mem.languages.qcombobox(self.cmbLanguage, self.mem.languages.find(a))
         self.wyahoohistorical=wdgSource(self.mem, Sources.WorkerYahooHistorical, self) 
         self.laySource.addWidget(self.wyahoohistorical)
         self.wyahoohistorical.setEnabled(False)
