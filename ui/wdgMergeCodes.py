@@ -11,6 +11,7 @@ class wdgMergeCodes(QWidget, Ui_wdgMergeCodes):
         self.origen=origen
         self.destino=destino
         self.setupUi(self)
+        self.mem.data.load_inactives()
 
         self.table.settings("wdgMergeCodes",  self.mem)    
         self.reload()
@@ -44,7 +45,7 @@ class wdgMergeCodes(QWidget, Ui_wdgMergeCodes):
         self.table.setItem(1, 4, QTableWidgetItem(str(cur.fetchone()[0])))
         cur.close()         
         
-        if self.origen.deletable==False:
+        if self.origen.is_deletable()==False:
             m=QMessageBox()
             m.setIcon(QMessageBox.Information)
             m.setText(self.tr("I couldn't do the merge, because product is marked as not removable"))

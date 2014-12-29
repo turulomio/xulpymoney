@@ -87,16 +87,7 @@ class frmMain(QMainWindow, Ui_frmMain):
                     self.adminmode=False        
                     m.setText(self.trUtf8("Bad 'Admin mode' password. You are logged as a normal user"))
                     m.exec_()   
-        
-        print ("Protecting products needed in xulpymoney")
-        cur=self.mem.con.cursor()
-        cur.execute("select distinct(mystocksid) from inversiones;")
-        ids2protect=[]
-        for row in cur:
-            ids2protect.append(row[0])
-        if len(ids2protect)>0:
-            Product(self.mem).changeDeletable(  ids2protect,  False)
-        self.mem.con.commit()
+
         
         
     @QtCore.pyqtSlot()  
