@@ -8226,7 +8226,6 @@ INSERT INTO bolsas VALUES (8, 'cn', '00:00:00', 'Bolsa de Hong Kong', '20:00:00'
 INSERT INTO bolsas VALUES (9, 'pt', '07:00:00', 'Bolsa de Lisboa', '17:38:00', 'Europe/Lisbon');
 INSERT INTO globals VALUES (1, 'Version', '201412290753');
 INSERT INTO globals VALUES (6, 'Admin mode', '2ed65fbc0b68fdd5e4b06abd7675c2c8');
-UPDATE products SET deletable=true;
 DELETE FROM products WHERE id<=0;
 UPDATE products SET active=true WHERE priorityhistorical[1]=3;
 ALTER SEQUENCE seq_conceptos START WITH 100 RESTART;

@@ -15,7 +15,6 @@ rm xulpymoney.bolsas
 pg_dump -a -U $MYUSER -h $MYHOST -p $MYPORT $DATABASE -t globals --insert > xulpymoney.globals
 cat xulpymoney.globals| grep -i 'INSERT INTO' | sort >> xulpymoney.sql
 rm xulpymoney.globals
-echo "UPDATE products SET deletable=true;" >> xulpymoney.sql
 echo "DELETE FROM products WHERE id<=0;" >> xulpymoney.sql
 echo "UPDATE products SET active=true WHERE priorityhistorical[1]=3;" >> xulpymoney.sql
 echo "ALTER SEQUENCE seq_conceptos START WITH 100 RESTART;" >> xulpymoney.sql

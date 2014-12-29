@@ -20,6 +20,7 @@ class wdgSource(QWidget, Ui_wdgSource):
         self.totals=Source(self.mem)# Used to show totals of agrupation
         self.steps=None#Define the steps of the self.progress bar
         self.class_sources=class_sources
+        self.widgettoupdate=self.parent.parent
         if self.class_sources==Sources.WorkerYahoo:
             cur=mem.con.cursor()
             cur.execute("select count(*) from products where active=true and priority[1]=1")
@@ -44,6 +45,10 @@ class wdgSource(QWidget, Ui_wdgSource):
 
         self.lbl.setText(self.worker.__class__.__name__)
                 
+                
+    def setWidgetToUpdate(self, widget):
+        """Used to update when runing, by default is parent parent"""
+        self.widgettoupdate=widget
         
     def progress_step(self,  last=False):
         """Define max steps y value. 
@@ -59,7 +64,7 @@ class wdgSource(QWidget, Ui_wdgSource):
             self.progress.setValue(self.progress.maximum())
         else:
             self.progress.setValue(self.progress.value()+1)
-        self.parent.parent.update()
+        self.widgettoupdate.update()
         QCoreApplication.processEvents() 
 
     def on_cmdRun_released(self):
