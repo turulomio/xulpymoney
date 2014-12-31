@@ -72,7 +72,7 @@ class frmInvestmentOperationsAdd(QDialog, Ui_frmInvestmentOperationsAdd):
         self.mem.con.commit()#Guarda todos los cambios en bd.
         
         ##Mete indice referencia.
-        if self.type==1:
+        if self.type==1  and id_tiposoperaciones==4:#Añadir y compra
             w=frmQuotesIBM(self.mem, self.mem.data.benchmark, None, self)
             #Quita un minuto para que enganche con operación
             w.wdgDT.set(self.mem, self.wdgDT.datetime()-datetime.timedelta(seconds=1), self.mem.localzone)
