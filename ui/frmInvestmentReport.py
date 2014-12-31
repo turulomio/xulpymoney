@@ -167,20 +167,17 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
 
     @QtCore.pyqtSlot() 
     def on_actionSplit_activated(self):
-        w=frmSplit(self.mem)
+        w=frmSplit(self.mem, self.inversion.product)
         w.exec_()   
         if w.result()==QDialog.Accepted:
-            w.split.updateOperInvestments(self.inversion.op.arr)         
-            w.split.updateDividends(self.dividends)         
-            self.mem.con.commit()
             self.update_tables()
         
     @QtCore.pyqtSlot() 
     def on_actionSharesTransfer_activated(self):
         w=frmSharesTransfer(self.mem, self.inversion, self)
         w.exec_()
-        self.update_tables()                               
-
+        self.update_tables()                 
+        
     @QtCore.pyqtSlot() 
     def on_actionSharesTransferUndo_activated(self):
         if self.mem.data.investments_active.traspaso_valores_deshacer(self.selMovimiento)==False:

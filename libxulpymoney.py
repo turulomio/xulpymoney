@@ -3684,6 +3684,13 @@ class SetQuotesAll:
     def __init__(self, mem):
         self.mem=mem
         self.product=None
+        
+    def first_quote(self):
+        """Returns the first quote order by time"""
+        if len(self.arr)!=0:
+            return self.arr[0].open()
+        return None
+        
                 
     def load_from_db(self,  product):
         """Función que mete en setquotesintradia ordenado de objetos Quote, no es el ultimo día es un día"""
