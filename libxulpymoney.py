@@ -724,8 +724,12 @@ class SetDividends:
         table.setItem(len(self.arr), diff+4, self.mem.localcurrency.qtablewidgetitem(sumcomision))
         table.setItem(len(self.arr), diff+5, self.mem.localcurrency.qtablewidgetitem(sumneto))
         return (sumneto, sumbruto, sumretencion, sumcomision)
-        
-
+            
+    def clean(self):
+        """Deletes all items"""
+        del self.arr 
+        self.arr=[]
+    
 class SetEstimationsDPS:
     def __init__(self, mem,  product):
         self.arr=[]
@@ -1078,7 +1082,7 @@ class SetInvestmentOperationsCurrent:
         else:
             return 0
             
-    def datetime_primera_operacion(self):
+    def datetime_first_operation(self):
         if len(self.arr)==0:
             return None
         return self.arr[0].datetime
