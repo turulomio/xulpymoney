@@ -29,7 +29,10 @@ class frmSettings(QDialog, Ui_frmSettings):
         self.spnDividendPercentage.setValue(float(self.mem.config.get_value("settings", "dividendwithholding"))*100)
         self.spnGainsPercentaje.setValue(float(self.mem.config.get_value("settings", "taxcapitalappreciation"))*100)
         self.spnGainsPercentajeBelow.setValue(float(self.mem.config.get_value("settings", "taxcapitalappreciationbelow"))*100)
-        self.chkGainsYear.setChecked(b2c(str2bool(self.mem.config.get_value("settings", "gainsyear"))))
+        gainsyear=str2bool(self.mem.config.get_value("settings", "gainsyear"))
+        self.chkGainsYear.setChecked(b2c(gainsyear))
+        if gainsyear==False:
+            self.spnGainsPercentajeBelow.setEnabled(False)
 
     @pyqtSlot(str)      
     def on_cmbLanguages_currentIndexChanged(self, stri):
@@ -53,6 +56,8 @@ class frmSettings(QDialog, Ui_frmSettings):
         
         self.accept()    
         
+    def on_chkGainsYear_stateChanged(self, state):
+        self.spnGainsPercentajeBelow.setEnabled(c2b(state))
         
     @pyqtSignature("")
     def on_buttonbox_rejected(self):

@@ -4189,72 +4189,72 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>wdgDividendsReport</name>
     <message>
-        <location filename="ui/wdgDividendsReport.ui" line="32"/>
+        <location filename="ui/Ui_wdgDividendsReport.py" line="131"/>
         <source>Dividends Report</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgDividendsReport.ui" line="70"/>
+        <location filename="ui/Ui_wdgDividendsReport.py" line="133"/>
         <source> days</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgDividendsReport.ui" line="112"/>
+        <location filename="ui/Ui_wdgDividendsReport.py" line="134"/>
         <source>Show inactive investments</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgDividendsReport.ui" line="138"/>
+        <location filename="ui/Ui_wdgDividendsReport.py" line="136"/>
         <source>Investment</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgDividendsReport.ui" line="143"/>
+        <location filename="ui/Ui_wdgDividendsReport.py" line="138"/>
         <source>Bank</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgDividendsReport.ui" line="148"/>
+        <location filename="ui/Ui_wdgDividendsReport.py" line="140"/>
         <source>Price</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgDividendsReport.ui" line="153"/>
+        <location filename="ui/Ui_wdgDividendsReport.py" line="142"/>
         <source>DPS</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgDividendsReport.ui" line="158"/>
+        <location filename="ui/Ui_wdgDividendsReport.py" line="144"/>
         <source>Shares</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgDividendsReport.ui" line="163"/>
+        <location filename="ui/Ui_wdgDividendsReport.py" line="146"/>
         <source>Estimated</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgDividendsReport.ui" line="168"/>
+        <location filename="ui/Ui_wdgDividendsReport.py" line="148"/>
         <source>% annual dividend</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgDividendsReport.ui" line="57"/>
+        <location filename="ui/Ui_wdgDividendsReport.py" line="132"/>
         <source>Dividends per share are red colorized when they are outdated more than</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgDividendsReport.ui" line="199"/>
+        <location filename="ui/Ui_wdgDividendsReport.py" line="150"/>
         <source>Update dividend per share</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgDividendsReport.ui" line="211"/>
+        <location filename="ui/Ui_wdgDividendsReport.py" line="152"/>
         <source>Investment report</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgDividendsReport.ui" line="223"/>
+        <location filename="ui/Ui_wdgDividendsReport.py" line="154"/>
         <source>Product report</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4267,87 +4267,87 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>wdgIndexRange</name>
     <message>
-        <location filename="ui/wdgIndexRange.ui" line="79"/>
+        <location filename="ui/Ui_wdgIndexRange.py" line="179"/>
         <source> %</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgIndexRange.ui" line="157"/>
+        <location filename="ui/Ui_wdgIndexRange.py" line="183"/>
         <source>1000</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgIndexRange.ui" line="261"/>
+        <location filename="ui/Ui_wdgIndexRange.py" line="192"/>
         <source>...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgIndexRange.ui" line="121"/>
+        <location filename="ui/Ui_wdgIndexRange.py" line="181"/>
         <source>4000</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgIndexRange.ui" line="179"/>
+        <location filename="ui/Ui_wdgIndexRange.py" line="184"/>
         <source>Update ranges</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgIndexRange.ui" line="215"/>
+        <location filename="ui/Ui_wdgIndexRange.py" line="186"/>
         <source>Range</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgIndexRange.ui" line="220"/>
+        <location filename="ui/Ui_wdgIndexRange.py" line="188"/>
         <source>Investments</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgIndexRange.ui" line="32"/>
+        <location filename="ui/Ui_wdgIndexRange.py" line="176"/>
         <source>Investments by index range</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgIndexRange.ui" line="42"/>
+        <location filename="ui/Ui_wdgIndexRange.py" line="177"/>
         <source>Report data</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgIndexRange.ui" line="54"/>
+        <location filename="ui/Ui_wdgIndexRange.py" line="178"/>
         <source>Percentage between ranges</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgIndexRange.ui" line="99"/>
+        <location filename="ui/Ui_wdgIndexRange.py" line="180"/>
         <source>Money to invest</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgIndexRange.ui" line="135"/>
+        <location filename="ui/Ui_wdgIndexRange.py" line="182"/>
         <source>Index lowest limit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgIndexRange.ui" line="276"/>
+        <location filename="ui/Ui_wdgIndexRange.py" line="193"/>
         <source>Top</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgIndexRange.ui" line="281"/>
+        <location filename="ui/Ui_wdgIndexRange.py" line="194"/>
         <source>Middle</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgIndexRange.ui" line="286"/>
+        <location filename="ui/Ui_wdgIndexRange.py" line="195"/>
         <source>Bottom</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgIndexRange.ui" line="244"/>
+        <location filename="ui/Ui_wdgIndexRange.py" line="189"/>
         <source>Show benchmark report</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgIndexRange.ui" line="258"/>
+        <location filename="ui/Ui_wdgIndexRange.py" line="191"/>
         <source>Add a price to the benchmark</source>
         <translation type="unfinished"></translation>
     </message>
