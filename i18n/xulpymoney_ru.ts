@@ -3193,22 +3193,22 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmSellingPoint.py" line="111"/>
+        <location filename="ui/frmSellingPoint.py" line="113"/>
         <source>Selling point: {0}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmSellingPoint.py" line="112"/>
+        <location filename="ui/frmSellingPoint.py" line="114"/>
         <source>Current state: {0}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmSellingPoint.py" line="118"/>
+        <location filename="ui/frmSellingPoint.py" line="120"/>
         <source>Set {0} shares selling price to {1} to gain {2}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmSellingPoint.py" line="116"/>
+        <location filename="ui/frmSellingPoint.py" line="118"/>
         <source>Set selling price to all investments  of {0} to gain {1}</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4267,87 +4267,87 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>wdgIndexRange</name>
     <message>
-        <location filename="ui/Ui_wdgIndexRange.py" line="179"/>
+        <location filename="ui/wdgIndexRange.ui" line="79"/>
         <source> %</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgIndexRange.py" line="183"/>
+        <location filename="ui/wdgIndexRange.ui" line="157"/>
         <source>1000</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgIndexRange.py" line="192"/>
+        <location filename="ui/wdgIndexRange.ui" line="261"/>
         <source>...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgIndexRange.py" line="181"/>
+        <location filename="ui/wdgIndexRange.ui" line="121"/>
         <source>4000</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgIndexRange.py" line="184"/>
+        <location filename="ui/wdgIndexRange.ui" line="179"/>
         <source>Update ranges</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgIndexRange.py" line="186"/>
+        <location filename="ui/wdgIndexRange.ui" line="215"/>
         <source>Range</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgIndexRange.py" line="188"/>
+        <location filename="ui/wdgIndexRange.ui" line="220"/>
         <source>Investments</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgIndexRange.py" line="176"/>
+        <location filename="ui/wdgIndexRange.ui" line="32"/>
         <source>Investments by index range</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgIndexRange.py" line="177"/>
+        <location filename="ui/wdgIndexRange.ui" line="42"/>
         <source>Report data</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgIndexRange.py" line="178"/>
+        <location filename="ui/wdgIndexRange.ui" line="54"/>
         <source>Percentage between ranges</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgIndexRange.py" line="180"/>
+        <location filename="ui/wdgIndexRange.ui" line="99"/>
         <source>Money to invest</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgIndexRange.py" line="182"/>
+        <location filename="ui/wdgIndexRange.ui" line="135"/>
         <source>Index lowest limit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgIndexRange.py" line="193"/>
+        <location filename="ui/wdgIndexRange.ui" line="276"/>
         <source>Top</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgIndexRange.py" line="194"/>
+        <location filename="ui/wdgIndexRange.ui" line="281"/>
         <source>Middle</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgIndexRange.py" line="195"/>
+        <location filename="ui/wdgIndexRange.ui" line="286"/>
         <source>Bottom</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgIndexRange.py" line="189"/>
+        <location filename="ui/wdgIndexRange.ui" line="244"/>
         <source>Show benchmark report</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgIndexRange.py" line="191"/>
+        <location filename="ui/wdgIndexRange.ui" line="258"/>
         <source>Add a price to the benchmark</source>
         <translation type="unfinished"></translation>
     </message>

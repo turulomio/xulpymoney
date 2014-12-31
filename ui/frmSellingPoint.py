@@ -31,6 +31,8 @@ class frmSellingPoint(QDialog, Ui_frmSellingPoint):
 
         if str2bool(self.mem.config.get_value("settings", "gainsyear"))==True:
             self.chkGainsTime.setCheckState(Qt.Checked)
+        else:
+            self.chkGainsTime.setEnabled(False)
 
 
         self.table.settings("frmSellingPoint",  self.mem)

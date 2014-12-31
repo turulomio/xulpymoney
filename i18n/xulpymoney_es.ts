@@ -3191,22 +3191,22 @@ p, li { white-space: pre-wrap; }
         <translation>No tiene acciones para vender en esta inversión</translation>
     </message>
     <message>
-        <location filename="ui/frmSellingPoint.py" line="111"/>
+        <location filename="ui/frmSellingPoint.py" line="113"/>
         <source>Selling point: {0}</source>
         <translation>Punto de venta: {0}</translation>
     </message>
     <message>
-        <location filename="ui/frmSellingPoint.py" line="112"/>
+        <location filename="ui/frmSellingPoint.py" line="114"/>
         <source>Current state: {0}</source>
         <translation>Estado actual: {0}</translation>
     </message>
     <message>
-        <location filename="ui/frmSellingPoint.py" line="118"/>
+        <location filename="ui/frmSellingPoint.py" line="120"/>
         <source>Set {0} shares selling price to {1} to gain {2}</source>
         <translation>Establece el precio de venta de {0} acciones a {1} para ganar {2}</translation>
     </message>
     <message>
-        <location filename="ui/frmSellingPoint.py" line="116"/>
+        <location filename="ui/frmSellingPoint.py" line="118"/>
         <source>Set selling price to all investments  of {0} to gain {1}</source>
         <translation>Establece el precio de venta para todas las inversiones a {0} para ganar {1}</translation>
     </message>
@@ -4267,87 +4267,87 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>wdgIndexRange</name>
     <message>
-        <location filename="ui/Ui_wdgIndexRange.py" line="179"/>
+        <location filename="ui/wdgIndexRange.ui" line="79"/>
         <source> %</source>
         <translation> %</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgIndexRange.py" line="183"/>
+        <location filename="ui/wdgIndexRange.ui" line="157"/>
         <source>1000</source>
         <translation>1000</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgIndexRange.py" line="192"/>
+        <location filename="ui/wdgIndexRange.ui" line="261"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgIndexRange.py" line="181"/>
+        <location filename="ui/wdgIndexRange.ui" line="121"/>
         <source>4000</source>
         <translation>4000</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgIndexRange.py" line="184"/>
+        <location filename="ui/wdgIndexRange.ui" line="179"/>
         <source>Update ranges</source>
         <translation>Actualizar los rangos</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgIndexRange.py" line="186"/>
+        <location filename="ui/wdgIndexRange.ui" line="215"/>
         <source>Range</source>
         <translation>Rango</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgIndexRange.py" line="188"/>
+        <location filename="ui/wdgIndexRange.ui" line="220"/>
         <source>Investments</source>
         <translation>Inversiones</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgIndexRange.py" line="176"/>
+        <location filename="ui/wdgIndexRange.ui" line="32"/>
         <source>Investments by index range</source>
         <translation>Inversiones por rango de índice</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgIndexRange.py" line="177"/>
+        <location filename="ui/wdgIndexRange.ui" line="42"/>
         <source>Report data</source>
         <translation>Datos del informe</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgIndexRange.py" line="178"/>
+        <location filename="ui/wdgIndexRange.ui" line="54"/>
         <source>Percentage between ranges</source>
         <translation>Tanto por ciento entre rangos</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgIndexRange.py" line="180"/>
+        <location filename="ui/wdgIndexRange.ui" line="99"/>
         <source>Money to invest</source>
         <translation>Dinero a invertir</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgIndexRange.py" line="182"/>
+        <location filename="ui/wdgIndexRange.ui" line="135"/>
         <source>Index lowest limit</source>
         <translation>Límite más bajo del índice</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgIndexRange.py" line="193"/>
+        <location filename="ui/wdgIndexRange.ui" line="276"/>
         <source>Top</source>
         <translation>Parte alta</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgIndexRange.py" line="194"/>
+        <location filename="ui/wdgIndexRange.ui" line="281"/>
         <source>Middle</source>
         <translation>Medio</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgIndexRange.py" line="195"/>
+        <location filename="ui/wdgIndexRange.ui" line="286"/>
         <source>Bottom</source>
         <translation>Parte baja</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgIndexRange.py" line="189"/>
+        <location filename="ui/wdgIndexRange.ui" line="244"/>
         <source>Show benchmark report</source>
         <translation>Mostrar el informe del índice de referencia</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgIndexRange.py" line="191"/>
+        <location filename="ui/wdgIndexRange.ui" line="258"/>
         <source>Add a price to the benchmark</source>
         <translation>Añadir una cotización del índice de referencia</translation>
     </message>
