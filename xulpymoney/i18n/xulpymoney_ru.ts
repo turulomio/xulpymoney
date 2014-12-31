@@ -18,7 +18,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4472"/>
+        <location filename="libxulpymoney.py" line="4479"/>
         <source>Warrants</source>
         <translation type="unfinished"></translation>
     </message>
@@ -53,12 +53,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5272"/>
+        <location filename="libxulpymoney.py" line="5279"/>
         <source>This option is being developed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="3735"/>
+        <location filename="libxulpymoney.py" line="3742"/>
         <source>Purging innecesary data</source>
         <translation type="unfinished"></translation>
     </message>
@@ -68,7 +68,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="3737"/>
+        <location filename="libxulpymoney.py" line="3744"/>
         <source>Purging quotes</source>
         <translation type="unfinished"></translation>
     </message>
@@ -88,7 +88,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4730"/>
+        <location filename="libxulpymoney.py" line="4737"/>
         <source>Error conecting to Xulpymoney</source>
         <translation type="unfinished"></translation>
     </message>
@@ -118,7 +118,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4468"/>
+        <location filename="libxulpymoney.py" line="4475"/>
         <source>Shares</source>
         <translation type="unfinished"></translation>
     </message>
@@ -328,37 +328,37 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4469"/>
+        <location filename="libxulpymoney.py" line="4476"/>
         <source>Funds</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4470"/>
+        <location filename="libxulpymoney.py" line="4477"/>
         <source>Indexes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4471"/>
+        <location filename="libxulpymoney.py" line="4478"/>
         <source>ETF</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4473"/>
+        <location filename="libxulpymoney.py" line="4480"/>
         <source>Currencies</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4474"/>
+        <location filename="libxulpymoney.py" line="4481"/>
         <source>Public Bond</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4476"/>
+        <location filename="libxulpymoney.py" line="4483"/>
         <source>Private Bond</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4478"/>
+        <location filename="libxulpymoney.py" line="4485"/>
         <source>Accounts</source>
         <translation type="unfinished">счета</translation>
     </message>
@@ -403,22 +403,22 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5233"/>
+        <location filename="libxulpymoney.py" line="5240"/>
         <source>True</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5236"/>
+        <location filename="libxulpymoney.py" line="5243"/>
         <source>False</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4475"/>
+        <location filename="libxulpymoney.py" line="4482"/>
         <source>Pension plans</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4477"/>
+        <location filename="libxulpymoney.py" line="4484"/>
         <source>Deposit</source>
         <translation type="unfinished"></translation>
     </message>
@@ -473,37 +473,37 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5164"/>
+        <location filename="libxulpymoney.py" line="5171"/>
         <source>year</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5166"/>
+        <location filename="libxulpymoney.py" line="5173"/>
         <source>years</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5168"/>
+        <location filename="libxulpymoney.py" line="5175"/>
         <source>month</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5170"/>
+        <location filename="libxulpymoney.py" line="5177"/>
         <source>months</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5172"/>
+        <location filename="libxulpymoney.py" line="5179"/>
         <source>day</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5174"/>
+        <location filename="libxulpymoney.py" line="5181"/>
         <source>days</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5175"/>
+        <location filename="libxulpymoney.py" line="5182"/>
         <source>{} {}, {} {} and {} {}</source>
         <translation type="unfinished"></translation>
     </message>
@@ -548,7 +548,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="3743"/>
+        <location filename="libxulpymoney.py" line="3750"/>
         <source>Purged {0} quotes from {1}</source>
         <translation type="unfinished"></translation>
     </message>
@@ -563,7 +563,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4731"/>
+        <location filename="libxulpymoney.py" line="4738"/>
         <source>Connection done</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1870,12 +1870,12 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmInvestmentReport.py" line="235"/>
+        <location filename="ui/frmInvestmentReport.py" line="232"/>
         <source>You must select a MyStocks product to continue.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmInvestmentReport.py" line="325"/>
+        <location filename="ui/frmInvestmentReport.py" line="322"/>
         <source>Selected: {0}</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1950,7 +1950,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmInvestmentReport.py" line="189"/>
+        <location filename="ui/frmInvestmentReport.py" line="186"/>
         <source>Shares transfer couldn&apos;t be done.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2791,12 +2791,12 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmProductReport.py" line="382"/>
+        <location filename="ui/frmProductReport.py" line="377"/>
         <source>{0} quotes have been purged from {1}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmProductReport.py" line="425"/>
+        <location filename="ui/frmProductReport.py" line="420"/>
         <source>You have to add a quote and a dividend per share estimation to the new product</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2816,17 +2816,17 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmProductReport.py" line="453"/>
+        <location filename="ui/frmProductReport.py" line="448"/>
         <source>Agrupation selection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmProductReport.py" line="464"/>
+        <location filename="ui/frmProductReport.py" line="459"/>
         <source>Priority selection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmProductReport.py" line="477"/>
+        <location filename="ui/frmProductReport.py" line="472"/>
         <source>Historical data priority selection</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3323,38 +3323,53 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>frmSplit</name>
     <message>
-        <location filename="ui/Ui_frmSplit.py" line="109"/>
+        <location filename="ui/Ui_frmSplit.py" line="145"/>
         <source>Split / Contrasplit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmSplit.py" line="110"/>
+        <location filename="ui/Ui_frmSplit.py" line="147"/>
         <source>Current Shares</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmSplit.py" line="111"/>
+        <location filename="ui/Ui_frmSplit.py" line="148"/>
         <source>1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmSplit.py" line="112"/>
+        <location filename="ui/Ui_frmSplit.py" line="149"/>
         <source>Final Shares</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmSplit.py" line="113"/>
+        <location filename="ui/Ui_frmSplit.py" line="150"/>
         <source>10</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmSplit.py" line="108"/>
+        <location filename="ui/Ui_frmSplit.py" line="144"/>
         <source>Split / Contrasplit relation</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="ui/frmSplit.py" line="30"/>
+        <location filename="ui/frmSplit.py" line="42"/>
         <source>If you have 1000 shares of 10 € of price, you will have {0:.6f} shares of {1:.6f} € of price after the {2}</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/frmSplit.py" line="30"/>
+        <source>Select the day and time of start</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/frmSplit.py" line="31"/>
+        <source>Select the day and time of end</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_frmSplit.py" line="146"/>
+        <source>Shares relation</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

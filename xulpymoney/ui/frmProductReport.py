@@ -361,14 +361,9 @@ class frmProductReport(QDialog, Ui_frmProductReport):
         self.load_graphics()
 
     def on_cmdSplit_pressed(self):
-        w=frmSplit(self.mem)
+        w=frmSplit(self.mem, self.product)
         w.exec_()   
         if w.result()==QDialog.Accepted:
-            all=SetQuotesAll(self.mem)
-            all.load_from_db(self.product)
-            for setquoteintraday in all.arr:
-                w.split.updateQuotes(setquoteintraday.arr)         
-            self.mem.con.commit()
             self.update_due_to_quotes_change()
         
     def on_cmdPurge_pressed(self):
