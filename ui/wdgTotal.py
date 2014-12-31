@@ -217,13 +217,14 @@ class wdgTotal(QWidget, Ui_wdgTotal):
                 if date.month==datetime.date.today().month and date.year==datetime.date.today().year:
                     date=datetime.date.today()
                 elif self.progress.wasCanceled() or (date>datetime.date.today()):
-                    self.progress.hide()
                     break
                 
 
                 data.append((date,Assets(self.mem).saldo_total(self.mem.data.investments_all(), date)))
                 zero.append((date,Assets(self.mem).patrimonio_riesgo_cero(self.mem.data.investments_all(), date)))
                 bonds.append((date,Assets(self.mem).saldo_todas_inversiones_bonds(date)))
+
+        self.progress.setValue(maximum)                
         self.canvas.mydraw(self.mem, data, zero,  bonds)
         print ("wdgTotal > load_graphic: {0}".format(datetime.datetime.now()-inicio))
 
