@@ -148,6 +148,7 @@ class frmProductReport(QDialog, Ui_frmProductReport):
     def update_due_to_quotes_change(self):
         if self.product.id!=None:
             self.product.result.get_basic_ohcls()
+            self.product.estimations_dps.load_from_db()#No cargada por defecto en product
             self.product.estimations_eps.load_from_db()#No cargada por defecto en product
             self.product.dps.load_from_db()
 

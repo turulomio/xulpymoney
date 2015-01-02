@@ -72,6 +72,7 @@ class wdgDatetime(QWidget, Ui_wdgDatetime):
         self.teMicroseconds.setValue(dt.microsecond)
         
         self.setZone(self.zone)
+        self.emit(SIGNAL("changed"))
         
     def setZone(self, zone):
         """Zone es object"""
@@ -84,20 +85,20 @@ class wdgDatetime(QWidget, Ui_wdgDatetime):
         time=time.replace(microsecond=self.teMicroseconds.value())
         return dt(self.teDate.selectedDate().toPyDate(), time , self.zone)
 
-#    def on_teDate_dateChanged(self, date):
-#        print(self.datetime())
-#        
-#    def on_teTime_timeChanged(self, date):
-#        print(self.datetime())
-#        
-#    @pyqtSlot(int)   
-#    def on_teMicroseconds_valueChanged(self, date):
-#        print(self.datetime())
+    def on_teDate_selectionChanged(self):
+        self.emit(SIGNAL("changed"))
+        
+    def on_teTime_timeChanged(self, time):
+        self.emit(SIGNAL("changed"))
+        
+    @pyqtSlot(int)   
+    def on_teMicroseconds_valueChanged(self):
+        self.emit(SIGNAL("changed"))
         
     @pyqtSlot(str)      
     def on_cmbZone_currentIndexChanged(self, stri):
         self.zone=self.mem.zones.find(self.cmbZone.itemData(self.cmbZone.currentIndex()))
-#        print(self.datetime())
+        self.emit(SIGNAL("changed"))
         
         
     def mouseDoubleClickEvent(self, event):

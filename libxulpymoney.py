@@ -673,6 +673,7 @@ class SetDividends:
         for row in cur:
             inversion=self.mem.data.investments_all().find(row['id_inversiones'])
             oc=AccountOperation(self.mem).init__db_query(row['id_opercuentas'])
+            print(oc)
             self.arr.append(Dividend(self.mem).init__db_row(row, inversion, oc, self.mem.conceptos.find(row['id_conceptos']) ))
         cur.close()      
         
@@ -2152,7 +2153,7 @@ class InvestmentOperation:
                 return True
         return False
         
-    def save(self, recalculate=True):
+    def save(self, recalculate=True,  autocommit=True):
         cur=self.mem.con.cursor()
         if self.id==None:#insertar
             cur.execute("insert into operinversiones(datetime, id_tiposoperaciones,  importe, acciones,  impuestos,  comision,  valor_accion, comentario, id_inversiones) values (%s, %s, %s, %s, %s, %s, %s, %s,%s) returning id_operinversiones", (self.datetime, self.tipooperacion.id, self.importe, self.acciones, self.impuestos, self.comision, self.valor_accion, self.comentario, self.inversion.id))
@@ -2164,7 +2165,8 @@ class InvestmentOperation:
             (self.inversion.op_actual,  self.inversion.op_historica)=self.inversion.op.calcular()   
             self.actualizar_cuentaoperacion_asociada()
             self.inversion.cuenta.saldo_from_db()
-        self.mem.con.commit()
+        if autocommit==True:
+            self.mem.con.commit()
         cur.close()
         
     def borrar(self):        
@@ -4352,42 +4354,81 @@ class PriorityHistorical:
         
         
 class Split:
-    """Class to make calculations with splits or contrasplits"""
-    def __init__(self, mem, sharesinitial,  sharesfinal):
+    """Class to make calculations with splits or contrasplits, between two datetimes"""
+    def __init__(self, mem, product, sharesinitial,  sharesfinal,  dtinitial, dtfinal):
         self.mem=mem
         self.initial=sharesinitial
         self.final=sharesfinal
-    
+        self.dtinitial=dtinitial
+        self.dtfinal=dtfinal
+        self.product=product
+
     def convertShares(self, actions):
         """Function to calculate new shares just pass the number you need to convert"""
         return actions*self.final/self.initial
         
     def convertPrices(self, price):
         return price*self.initial/self.final
-        
-    def convertDPA(self, dpa):
-        """Converts the dividend por share"""
-        return self.convertPrices(dpa)
     
-    def updateQuotes(self, arr):
+    def updateQuotes(self):
         """Transforms de price of the quotes of the array"""
-        for q in arr:
-            q.quote=self.convertPrices(q.quote)
-            q.save()
+        self.quotes=SetQuotesAll(self.mem)
+        self.quotes.load_from_db(self.product)
+        for setquoteintraday in self.quotes.arr:
+            for q in setquoteintraday.arr:
+                if self.dtinitial<=q.datetime and self.dtfinal>=q.datetime:
+                    q.quote=self.convertPrices(q.quote)
+                    q.save()
+                    
+    def updateDPS(self):
+        set=SetDPS(self.mem, self.product)
+        set.load_from_db()
+        for d in set.arr:
+            if self.dtinitial.date()<=d.date and self.dtfinal.date()>=d.date:
+                d.gross=self.convertPrices(d.gross)
+                d.save()
+        
+    def updateEPS(self):
+        pass
+        
+    def updateEstimationsDPS(self):
+        set=SetEstimationsDPS(self.mem, self.product)
+        set.load_from_db()
+        for d in set.arr:
+            if self.dtinitial.year<=d.year and self.dtfinal.year>=d.year:
+                d.estimation=self.convertPrices(d.estimation)
+                d.save()
+        
+    def updateEstimationsEPS(self):
+        set=SetEstimationsEPS(self.mem, self.product)
+        set.load_from_db()
+        for d in set.arr:
+            if self.dtinitial.year<=d.year and self.dtfinal.year>=d.year:
+                d.estimation=self.convertPrices(d.estimation)
+                d.save()
         
         
-    def updateOperInvestments(self, arr):
+    def updateOperInvestments(self):
         """Transforms de number of shares and its price of the array of InvestmentOperation"""
-        for oi in arr:
-            oi.acciones=self.convertShares(oi.acciones)
-            oi.valor_accion=self.convertPrices(oi.valor_accion)
-            oi.save()
+        for inv in self.mem.data.investments_all().arr:
+            if inv.product.id==self.product.id:
+                for oi in inv.op.arr:
+                    if self.dtinitial<=oi.datetime and self.dtfinal>=oi.datetime:
+                        oi.acciones=self.convertShares(oi.acciones)
+                        oi.valor_accion=self.convertPrices(oi.valor_accion)
+                        oi.save(autocommit=False)
+
         
-    def updateDividends(self, arr):
+    def updateDividends(self):
         """Transforms de dpa of an array of dividends"""
-        for d in arr:
-            d.estimation=self.convertDPA(d.estimation)
-            d.save()
+        for inv in self.mem.data.investments_all().arr:
+            if inv.product.id==self.product.id:
+                dividends=SetDividends(self.mem)
+                dividends.load_from_db("select * from dividends where id_inversiones={0} order by fecha".format(inv.id ))  
+                for d in dividends.arr:
+                    if self.dtinitial.date()<=d.fecha and self.dtfinal.date()>=d.fecha:
+                        d.dpa=self.convertPrices(d.dpa)
+                    d.save()
         
     def type(self):
         """Función que devuelve si es un Split o contrasplit"""
@@ -4395,7 +4436,17 @@ class Split:
             return "Contrasplit"
         else:
             return "Split"
-        
+            
+    def makeSplit(self):
+        """All calculates to make the split"""        
+        self.updateDPS()
+#        self.updateEPS() #NOT YET
+        self.updateEstimationsDPS()
+        self.updateEstimationsEPS()
+        self.updateOperInvestments()
+        self.updateDividends()
+        self.updateQuotes()
+        self.mem.con.commit()
         
 class TUpdateData(threading.Thread):
     """Hilo que actualiza las products, solo el getBasic, cualquier cambio no de last, deberá ser desarrollado por código"""
