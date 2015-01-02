@@ -31,20 +31,28 @@ class frmSplit(QDialog, Ui_frmSplit):
         self.wdgDtEnd.grp.setTitle(self.tr("Select the day and time of end"))
         self.wdgDtStart.set(self.mem, self.all.first_quote().datetime, self.mem.localzone)
         self.wdgDtEnd.set(self.mem, datetime.datetime.now(), self.mem.localzone)
-        self.split=Split(self.mem, self.txtInitial.decimal(), self.txtFinal.decimal())
+        QObject.connect(self.wdgDtStart, SIGNAL("changed"), self.on_wdgDtStart_changed)   
+        QObject.connect(self.wdgDtEnd, SIGNAL("changed"), self.on_wdgDtEnd_changed)   
+        self.split=None
         self.generateExample()
         
         
     def generateExample(self):
+        print("New split")
         try:
-            self.split.initial=self.txtInitial.decimal()
-            self.split.final=self.txtFinal.decimal()
+            self.split=Split(self.mem, self.product, self.txtInitial.decimal(), self.txtFinal.decimal(), self.wdgDtStart.datetime(), self.wdgDtEnd.datetime())
             self.lblExample.setText(self.trUtf8("If you have 1000 shares of 10 € of price, you will have {0:.6f} shares of {1:.6f} € of price after the {2}".format(self.split.convertShares(1000),self.split.convertPrices(10),  self.split.type())))
             self.buttonbox.button(QDialogButtonBox.Ok).setEnabled(True)
         except:
             self.lblExample.setText("")
             self.buttonbox.button(QDialogButtonBox.Ok).setEnabled(False)
         
+
+    def on_wdgDtEnd_changed(self):
+        self.generateExample()
+        
+    def on_wdgDtStart_changed(self):
+        self.generateExample()
 
     def on_txtInitial_textChanged(self):
         self.generateExample()
@@ -54,20 +62,7 @@ class frmSplit(QDialog, Ui_frmSplit):
         
     @pyqtSignature("")
     def on_buttonbox_accepted(self):
-        for setquoteintraday in self.all.arr:
-            self.split.updateQuotes(setquoteintraday.arr)         
-        #HERE ADD MORE DPS, :...
-        #Falta dpa de investments_all
-        #Corregis dpa de product, estimations
-        #dps, estimations
-        #OJO SON INVERSIONES NO PRODUCTS
-        for inv in self.mem.data.investments_all().arr:
-            if inv.product.id==self.product.id:
-                self.split.updateOperInvestments(inv.op.arr)         
-                dividends=SetDividends(self.mem)
-                dividends.load_from_db("select * from dividends where id_inversiones={0} order by fecha".format(inv.id ))  
-                self.split.updateDividends(self.dividends)         #Deber´ia ser el dpa de dividendos de investment
-        #self.mem.con.commit()        
+        self.split.makeSplit()
         self.accept()#No haría falta pero para recordar que hay buttonbox
         
     @pyqtSignature("")
