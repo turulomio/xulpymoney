@@ -187,7 +187,7 @@
     </layout>
    </item>
   </layout>
-  <action name="actionModificarDPA">
+  <action name="actionEstimationDPSEdit">
    <property name="icon">
     <iconset resource="../images/xulpymoney.qrc">
      <normaloff>:/xulpymoney/coins.png</normaloff>:/xulpymoney/coins.png</iconset>
@@ -199,7 +199,7 @@
     <string>Update dividend per share</string>
    </property>
   </action>
-  <action name="actionInversionEstudio">
+  <action name="actionInvestmentReport">
    <property name="icon">
     <iconset resource="../images/xulpymoney.qrc">
      <normaloff>:/xulpymoney/report2.png</normaloff>:/xulpymoney/report2.png</iconset>
@@ -211,7 +211,7 @@
     <string>Investment report</string>
    </property>
   </action>
-  <action name="actionMyStocks">
+  <action name="actionProductReport">
    <property name="icon">
     <iconset resource="../images/xulpymoney.qrc">
      <normaloff>:/xulpymoney/kmplot.jpg</normaloff>:/xulpymoney/kmplot.jpg</iconset>

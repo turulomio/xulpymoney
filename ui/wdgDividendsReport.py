@@ -19,7 +19,7 @@ class wdgDividendsReport(QWidget, Ui_wdgDividendsReport):
         self.on_chkInactivas_stateChanged(Qt.Unchecked)
 
     @QtCore.pyqtSlot()  
-    def on_actionModificarDPA_activated(self):
+    def on_actionEstimationDPSEdit_activated(self):
         d=frmEstimationsAdd(self.mem, self.selInvestment.product, "dps")
         d.exec_()
         self.on_chkInactivas_stateChanged(self.chkInactivas.checkState())
@@ -72,7 +72,7 @@ class wdgDividendsReport(QWidget, Ui_wdgDividendsReport):
 
             
     @QtCore.pyqtSlot() 
-    def on_actionMyStocks_activated(self):
+    def on_actionProductReport_activated(self):
         w=frmProductReport(self.mem, self.selInvestment.product, self.selInvestment, self)
         w.exec_()
         self.on_chkInactivas_stateChanged(self.chkInactivas.checkState())
@@ -83,10 +83,10 @@ class wdgDividendsReport(QWidget, Ui_wdgDividendsReport):
 
     def on_tblInvestments_customContextMenuRequested(self,  pos):        
         menu=QMenu()
-        menu.addAction(self.actionModificarDPA)
+        menu.addAction(self.actionEstimationDPSEdit)
         menu.addSeparator()
         menu.addAction(self.actionInvestmentReport) 
-        menu.addAction(self.actionMyStocks)    
+        menu.addAction(self.actionProductReport)    
         menu.exec_(self.tblInvestments.mapToGlobal(pos))
 
     def on_tblInvestments_itemSelectionChanged(self):
