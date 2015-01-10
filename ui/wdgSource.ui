@@ -124,19 +124,6 @@ background-color: rgb(255, 192, 192);</string>
         <item>
          <layout class="QHBoxLayout" name="horizontalLayout">
           <item>
-           <widget class="QPushButton" name="cmdIgnored">
-            <property name="enabled">
-             <bool>false</bool>
-            </property>
-            <property name="toolTip">
-             <string>Show quotes that are already in the database</string>
-            </property>
-            <property name="text">
-             <string>Ignored</string>
-            </property>
-           </widget>
-          </item>
-          <item>
            <widget class="QPushButton" name="cmdInserted">
             <property name="enabled">
              <bool>false</bool>
@@ -159,6 +146,19 @@ background-color: rgb(255, 192, 192);</string>
             </property>
             <property name="text">
              <string>Edited</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="cmdIgnored">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="toolTip">
+             <string>Show quotes that are already in the database</string>
+            </property>
+            <property name="text">
+             <string>Ignored</string>
             </property>
            </widget>
           </item>
