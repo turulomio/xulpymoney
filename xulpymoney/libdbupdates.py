@@ -15,15 +15,17 @@ class Update:
     """
     def __init__(self, mem):
         self.mem=mem
+        
         self.dbversion=self.get_database_version()     
         if self.dbversion==None:
             self.set_database_version(200912310000)
         if self.dbversion<201001010000:
             self.set_database_version(201001010000)
         if self.dbversion<201412280840:
-            p=Product(self.mem).init__db(81693)
-            p.isin="LU0252634307"
-            p.save()
+            cur=self.mem.con.cursor()
+            cur.execute("update products set isin=%s where id=%s;", ("LU0252634307", 81693))
+            cur.close()
+            self.mem.con.commit()
             self.set_database_version(201412280840)
         if self.dbversion<201412280940:
             cur=self.mem.con.cursor()
@@ -47,7 +49,12 @@ class Update:
             cur.close()
             self.mem.con.commit()
             self.set_database_version(201412290753)
-            
+        if self.dbversion<201501102221:
+            cur=self.mem.con.cursor()
+            cur.execute("update products set type=%s, ticker=%s, obsolete=%s where id=%s;", (1, "CIN.MC", True, 75202))
+            cur.close()
+            self.mem.con.commit()
+            self.set_database_version(201501102221)
              
             
 
