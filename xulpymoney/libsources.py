@@ -290,6 +290,43 @@ class WorkerMercadoContinuo(SourceParsePage):
 #            except:
 #                self.log("El ticker {} no ha sido formateado correctamente".format(ticker))
 
+
+class WorkerMorningstar(SourceIterateProducts):
+    """Clase que recorre las inversiones activas y busca la última  que tiene el microsecond 4. Busca en internet los historicals a partir de esa fecha"""
+    def __init__(self, mem, type, sql="select * from products where id in (select distinct(id) from products, inversiones where products.id=inversiones.products_id and products.type=2 and char_length(isin)>0);",  sleep=0):
+        SourceIterateProducts.__init__(self, mem,sql, type, sleep)    
+        
+    def on_execute_product(self,  id_product):
+        """inico y fin son dos dates entre los que conseguir los datos."""
+        product=self.products.find(id_product)
+
+        #Search morningstar code
+        url='http://www.morningstar.es/es/funds/SecuritySearchResults.aspx?search='+product.isin+'&type='
+        web=self.load_page(url)
+        if web==None:
+            return
+            
+        for i in web.readlines(): 
+            i=b2s(i)
+            if i.find("searchIsin")!=-1:
+                urlmorningstar=i.split('href="')[1].split('">')[0]
+                url2='http://www.morningstar.es'+urlmorningstar        
+                web2=self.load_page(url2)
+                if web2==None:
+                    return
+                for l in web2.readlines():
+                    l=b2s(l)
+                    if l.find("Estadística Rápida")!=-1:
+                        datestr=l.split("<br />")[1].split("</span")[0]
+                        datarr=datestr.split("/")
+                        date=datetime.date(int(datarr[2]), int(datarr[1]), int(datarr[0]))
+                        dat=dt(date, product.stockexchange.closes, product.stockexchange.zone)
+                        value=Decimal(self.comaporpunto(l.split('line text">')[1].split("</td")[0].split("\xa0")[1]))
+                        self.quotes.append(Quote(self.mem).init__create(product, dat, value))
+                        return
+        self.log("Error parsing: {}".format(product.name))
+            
+
 class WorkerSGWarrants(SourceParsePage):
     """Clase que recorre las inversiones activas y calcula según este la prioridad de la previsión"""
     def __init__(self, mem):

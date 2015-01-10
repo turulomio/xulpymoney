@@ -26,6 +26,11 @@ class wdgQuotesUpdate(QWidget, Ui_wdgQuotesUpdate):
         QObject.connect(self.wyahoohistorical, SIGNAL("finished"), self.after_source_stop)   
         self.layDaily.addWidget(self.wyahoohistorical)
         
+        self.wmorning=wdgSource(self.mem, Sources.WorkerMorningstar, self)
+        QObject.connect(self.wmorning, SIGNAL("started"), self.after_source_start)   
+        QObject.connect(self.wmorning, SIGNAL("finished"), self.after_source_stop)   
+        self.layDaily.addWidget(self.wmorning)
+        
     def on_cmdIntraday_released(self):
         if self.wyahoo.cmdRun.isEnabled():
             self.wyahoo.on_cmdRun_released()
@@ -38,6 +43,8 @@ class wdgQuotesUpdate(QWidget, Ui_wdgQuotesUpdate):
     def on_cmdDaily_released(self):
         if self.wyahoohistorical.cmdRun.isEnabled():
             self.wyahoohistorical.on_cmdRun_released()
+        if self.wmorning.cmdRun.isEnabled():
+            self.wmorning.on_cmdRun_released()
             
         self.mem.data.reload_prices()
             
@@ -47,9 +54,10 @@ class wdgQuotesUpdate(QWidget, Ui_wdgQuotesUpdate):
             self.wyahoo.on_cmdRun_released()
         if self.wmc.cmdRun.isEnabled():
             self.wmc.on_cmdRun_released()
-        
         if self.wyahoohistorical.cmdRun.isEnabled():
             self.wyahoohistorical.on_cmdRun_released()
+        if self.wmorning.cmdRun.isEnabled():
+            self.wmorning.on_cmdRun_released()
             
         self.mem.data.reload_prices()
         
@@ -59,7 +67,7 @@ class wdgQuotesUpdate(QWidget, Ui_wdgQuotesUpdate):
         #Disables  button when wdgSources cmdRun are disabled
         if self.wyahoo.cmdRun.isEnabled()==False and self.wmc.cmdRun.isEnabled()==False:
             self.cmdIntraday.setEnabled(False)
-        if self.wyahoohistorical.cmdRun.isEnabled()==False:
+        if self.wyahoohistorical.cmdRun.isEnabled()==False and self.wmorning.isEnabled()==False:
             self.cmdDaily.setEnabled(False)
         if self.cmdDaily.isEnabled()==False and self.cmdIntraday.isEnabled()==False:
             self.cmdAll.setEnabled(False)

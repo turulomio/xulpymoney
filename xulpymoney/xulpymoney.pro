@@ -6,6 +6,7 @@ SOURCES         = \
                   sources/source_sg_warrants.py \
                   sources/source_yahoohistorical.py \
                   sources/source_yahoo.py \
+                  sources/source_morningstar.py \
                   ui/canvaschart.py \
                   ui/frmAbout.py \
                   ui/Ui_frmAbout.py \

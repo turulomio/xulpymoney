@@ -52,6 +52,7 @@ compile:
 	pyuic4 ui/wdgMergeCodes.ui > ui/Ui_wdgMergeCodes.py &
 	pyuic4 ui/wdgYearMonth.ui > ui/Ui_wdgYearMonth.py &
 	pyuic4 ui/wdgYear.ui > ui/Ui_wdgYear.py &
+	sleep 1
 	wait
 	pylupdate4 -noobsolete -verbose  xulpymoney.pro
 	lrelease xulpymoney.pro

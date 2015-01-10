@@ -8,6 +8,7 @@ class Sources:
     WorkerYahoo=1
     WorkerYahooHistorical=2
     WorkerMercadoContinuo=3
+    WorkerMorningstar=4
 
 
 class wdgSource(QWidget, Ui_wdgSource):
@@ -36,6 +37,9 @@ class wdgSource(QWidget, Ui_wdgSource):
         elif self.class_sources==Sources.WorkerMercadoContinuo:                
             self.worker=WorkerMercadoContinuo(mem)
             self.agrupation.append(self.worker)
+        elif self.class_sources==Sources.WorkerMorningstar:
+            self.worker=WorkerMorningstar(mem, 0)
+            self.agrupation.append(self.worker)
         self.currentWorker=self.agrupation[0]# Current worker working
 
         #Make connections
@@ -58,6 +62,8 @@ class wdgSource(QWidget, Ui_wdgSource):
         elif self.class_sources==Sources.WorkerYahooHistorical:
             self.progress.setMaximum(self.agrupation[0].steps())
         elif self.class_sources==Sources.WorkerMercadoContinuo:      
+            self.progress.setMaximum(self.agrupation[0].steps())
+        elif self.class_sources==Sources.WorkerMorningstar:
             self.progress.setMaximum(self.agrupation[0].steps())
             
         if last==True:
