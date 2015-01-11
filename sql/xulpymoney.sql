@@ -3538,7 +3538,7 @@ INSERT INTO products VALUES ('CIMPOR,SGPS', 'PTCPR0AM0003', 'EUR', 1, '|EURONEXT
 INSERT INTO products VALUES ('Cincinnati Bell Inc.', NULL, 'USD', 1, NULL, false, 79551, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, NULL, 'NYSE#CBB||us||False', false);
 INSERT INTO products VALUES ('Cinemark Holdings Inc.', NULL, 'USD', 1, NULL, false, 77655, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, NULL, 'NYSE#CNK||us||False', false);
 INSERT INTO products VALUES ('Cintas Corporation', 'US1729081059', 'USD', 1, '|NASDAQ100|', false, 75746, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, NULL, 'CTAS||us||False', false);
-INSERT INTO products VALUES ('CINTRA', NULL, 'EUR', 2, NULL, false, 75202, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, NULL, NULL, NULL, 'CIN.MC||None||False', false);
+INSERT INTO products VALUES ('CINTRA', NULL, 'EUR', 1, NULL, false, 75202, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, 'CIN.MC', NULL, NULL, 'CIN.MC||None||False', true);
 INSERT INTO products VALUES ('CISCO SYSTEM INC', 'US17275R1023', 'EUR', 1, '|EURONEXT|', false, 76742, NULL, NULL, NULL, NULL, 100, 'c', 0, 12, NULL, NULL, NULL, 'EURONEXT#US17275R1023||nl||False', false);
 INSERT INTO products VALUES ('Cisco Systems, Inc.', 'US17275R1023', 'USD', 1, '|NASDAQ100|', false, 76169, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, NULL, 'CSCO||us||False', false);
 INSERT INTO products VALUES ('CITIFONDO AGIL', 'ES0113722039', 'EUR', 2, '|BMF|0012|', false, 76424, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, NULL, '{2}', NULL, 'ES0113722039||es||False', false);
@@ -4512,7 +4512,7 @@ INSERT INTO products VALUES ('FONCAIXA PRIVADA ESTRATEGIA HEDG', 'ES0164463004',
 INSERT INTO products VALUES ('FONCAIXA PRIVADA EURO ACCIONES', 'ES0105008033', 'EUR', 2, '|BMF|0015|', false, 77528, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, NULL, '{2}', NULL, 'ES0105008033||es||False', false);
 INSERT INTO products VALUES ('FONCAIXA PRIVADA EURO DEUDA', 'ES0105003034', 'EUR', 2, '|BMF|0015|', false, 79935, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, NULL, '{2}', NULL, 'ES0105003034||es||False', false);
 INSERT INTO products VALUES ('FONCAIXA PRIVADA EURO SELECCION', 'ES0106193032', 'EUR', 2, '|BMF|0015|', false, 79946, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, NULL, '{2}', NULL, 'ES0106193032||es||False', false);
-INSERT INTO products VALUES ('FONCAIXA PRIVADA FONDO 25', '', 'EUR', 2, '|f_es_BMF|', false, 75258, '', '', '', '', 100, 'c', 0, 1, 'None', NULL, NULL, 'FONCAIXA PRIVADA FONDO 25||es||False', true);
+INSERT INTO products VALUES ('FONCAIXA PRIVADA FONDO 25', 'ES0147623039', 'EUR', 2, '|f_es_BMF|', false, 75258, '', '', '', '', 100, 'c', 0, 1, 'None', NULL, NULL, 'FONCAIXA PRIVADA FONDO 25||es||False', true);
 INSERT INTO products VALUES ('FONCAIXA PRIVADA FONDO ACT.ETICO', 'ES0138516036', 'EUR', 2, '|BMF|0015|', false, 79951, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, NULL, '{2}', NULL, 'ES0138516036||es||False', false);
 INSERT INTO products VALUES ('FONCAIXA PRIVADA FONDO', 'ES0105002036', 'EUR', 2, '|BMF|0015|', false, 79949, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, NULL, '{2}', NULL, 'ES0105002036||es||False', false);
 INSERT INTO products VALUES ('FONCAIXA PRIVADA FONT.LAR.PLAZO', 'ES0105185039', 'EUR', 2, '|BMF|0015|', false, 79952, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, NULL, '{2}', NULL, 'ES0105185039||es||False', false);
@@ -6089,7 +6089,7 @@ INSERT INTO products VALUES ('Mercury General Corp.', NULL, 'USD', 1, NULL, fals
 INSERT INTO products VALUES ('Meredith Corp.', NULL, 'USD', 1, NULL, false, 78059, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, NULL, 'NYSE#MDP||us||False', false);
 INSERT INTO products VALUES ('Meritage Homes Corp.', NULL, 'USD', 1, NULL, false, 80902, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, NULL, 'NYSE#MTH||us||False', false);
 INSERT INTO products VALUES ('Meritor Inc.', NULL, 'USD', 1, NULL, false, 76938, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, NULL, 'NYSE#MTOR||us||False', false);
-INSERT INTO products VALUES ('MERRIL LINCH JAPAN OPORTUNITIES FUND', '', 'EUR', 2, '', false, 75042, '', '', '', '', 100, 'c', 0, 1, 'None', NULL, NULL, 'MERRIL LINCH JAPAN OPORTUNITIES FUND||None||False', false);
+INSERT INTO products VALUES ('MERRIL LINCH JAPAN OPORTUNITIES FUND', 'LU0171289225', 'EUR', 2, '', false, 75042, '', '', '', '', 100, 'c', 0, 1, 'None', NULL, NULL, 'MERRIL LINCH JAPAN OPORTUNITIES FUND||None||False', false);
 INSERT INTO products VALUES ('MERSEN', 'FR0000039620', 'EUR', 1, '|EURONEXT|', false, 77639, NULL, NULL, NULL, NULL, 100, 'c', 0, 3, NULL, NULL, NULL, 'EURONEXT#FR0000039620||fr||False', false);
 INSERT INTO products VALUES ('MERSEN NV', 'FR0010978718', 'EUR', 1, '|EURONEXT|', false, 75929, NULL, NULL, NULL, NULL, 100, 'c', 0, 3, NULL, NULL, NULL, 'EURONEXT#FR0010978718||fr||False', false);
 INSERT INTO products VALUES ('METABOLIC EXPLORER', 'FR0004177046', 'EUR', 1, '|EURONEXT|', false, 76185, NULL, NULL, NULL, NULL, 100, 'c', 0, 3, NULL, NULL, NULL, 'EURONEXT#FR0004177046||fr||False', false);
@@ -8224,7 +8224,7 @@ INSERT INTO bolsas VALUES (6, 'it', '07:00:00', 'Bolsa de Milán', '17:38:00', '
 INSERT INTO bolsas VALUES (7, 'jp', '09:00:00', 'Bolsa de Tokio', '20:00:00', 'Asia/Tokyo');
 INSERT INTO bolsas VALUES (8, 'cn', '00:00:00', 'Bolsa de Hong Kong', '20:00:00', 'Asia/Hong_Kong');
 INSERT INTO bolsas VALUES (9, 'pt', '07:00:00', 'Bolsa de Lisboa', '17:38:00', 'Europe/Lisbon');
-INSERT INTO globals VALUES (1, 'Version', '201412290753');
+INSERT INTO globals VALUES (1, 'Version', '201501110635');
 INSERT INTO globals VALUES (6, 'Admin mode', '2ed65fbc0b68fdd5e4b06abd7675c2c8');
 DELETE FROM products WHERE id<=0;
 UPDATE products SET active=true WHERE priorityhistorical[1]=3;
