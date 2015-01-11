@@ -102,11 +102,11 @@ class frmProductSelector(QDialog):
 
         self.setTabOrder(self.txt, self.cmd)
         self.setTabOrder(self.cmd, self.tblInvestments)                                                                                                                                                                                                                                        
-        self.connect(self.cmd,SIGNAL('released()'),  self.on_cmd_released)                                                                                                                                                                                              
+        self.connect(self.cmd,SIGNAL('released()'),  self.on_cmd_released)                                                                                                                                                                                                         
+        self.connect(self.txt,SIGNAL('returnPressed()'),  self.on_cmd_released)                                                                                                                                                                                              
         self.connect(self.tblInvestments,SIGNAL('itemSelectionChanged()'),  self.on_tblInvestments_itemSelectionChanged)                                                                                                             
         self.connect(self.tblInvestments,SIGNAL('cellDoubleClicked(int,int)'),  self.on_tblInvestments_cellDoubleClicked)
-
-
+        
     def on_cmd_released(self):
         if len(self.txt.text().upper())<=3:            
             m=QMessageBox()
