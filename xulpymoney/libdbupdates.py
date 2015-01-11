@@ -55,6 +55,14 @@ class Update:
             cur.close()
             self.mem.con.commit()
             self.set_database_version(201501102221)
+        if self.dbversion<201501110635:
+            cur=self.mem.con.cursor()
+            cur.execute("update products set isin=%s where id=%s;", ("LU0171289225", 75042))
+            cur.execute("update products set isin=%s, obsolete=%s where id=%s;", ("ES0147623039",True,  75258))
+            cur.close()
+
+            self.mem.con.commit()
+            self.set_database_version(201501110635)
              
             
 
