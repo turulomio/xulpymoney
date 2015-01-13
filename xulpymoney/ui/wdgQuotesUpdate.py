@@ -14,15 +14,15 @@ class wdgQuotesUpdate(QWidget, Ui_wdgQuotesUpdate):
         
     def on_chkUserOnly_stateChanged(self, state):
         if state==Qt.Checked:#User only
-            self.wyahoo=wdgSource(self.mem, Sources.WorkerYahoo, self)
-            self.wmc=wdgSource(self.mem, Sources.WorkerMercadoContinuo, self)            
-            self.wyahoohistorical=wdgSource(self.mem, Sources.WorkerYahooHistorical, self)            
-            self.wmorning=wdgSource(self.mem, Sources.WorkerMorningstar, self)
-        else:
             self.wyahoo=wdgSource(self.mem, Sources.WorkerYahooUserOnly, self)
             self.wmc=wdgSource(self.mem, Sources.WorkerMercadoContinuoUserOnly, self)            
             self.wyahoohistorical=wdgSource(self.mem, Sources.WorkerYahooHistoricalUserOnly, self)            
             self.wmorning=wdgSource(self.mem, Sources.WorkerMorningstarUserOnly, self)
+        else:
+            self.wyahoo=wdgSource(self.mem, Sources.WorkerYahoo, self)
+            self.wmc=wdgSource(self.mem, Sources.WorkerMercadoContinuo, self)            
+            self.wyahoohistorical=wdgSource(self.mem, Sources.WorkerYahooHistorical, self)            
+            self.wmorning=wdgSource(self.mem, Sources.WorkerMorningstar, self)
 
         QObject.connect(self.wyahoo, SIGNAL("started"), self.after_source_start)   
         QObject.connect(self.wyahoo, SIGNAL("finished"), self.after_source_stop)   

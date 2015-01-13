@@ -3065,7 +3065,7 @@ class SetPrioritiesHistorical(SetCommons):
 
     def load_all(self):
         self.append(PriorityHistorical().init__create(3,QApplication.translate("Core","Individual. Yahoo historicals")))
-        self.append(PriorityHistorical().init__create(8,QApplication.translate("Core","Individual. Yahoo historicals")))
+        self.append(PriorityHistorical().init__create(8,QApplication.translate("Core","Individual. Morningstar funds")))
             
     def init__create_from_db(self, arr):
         """Convierte el array de enteros de la base datos en un array de objetos priority"""

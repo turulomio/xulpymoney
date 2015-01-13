@@ -12,6 +12,8 @@ class Update:
     El desarrollador deber´a meter por c´odigo todos los cambios, ha ser preferible usando objetos.7
     
     AFTER EXECUTING I MUST RUN SQL UPDATE SCRIPT TO UPDATE FUTURE INSTALLATIONS
+    
+    OJO EN LOS REEMPLAZOS MASIVOS PORQUE UN ACTIVE DE PRODUCTS LUEGO PASA A LLAMARSE AUTOUPDATE PERO DEBERA MANTENERSSE EN SU MOMENTO TEMPORAL
     """
     def __init__(self, mem):
         self.mem=mem
@@ -60,7 +62,6 @@ class Update:
             cur.execute("update products set isin=%s where id=%s;", ("LU0171289225", 75042))
             cur.execute("update products set isin=%s, obsolete=%s where id=%s;", ("ES0147623039",True,  75258))
             cur.close()
-
             self.mem.con.commit()
             self.set_database_version(201501110635)
         if self.dbversion<201501130928:
@@ -68,7 +69,13 @@ class Update:
             cur.execute("update products set priorityhistorical=%s where type=2 and char_length(isin)>0", ([8, ], ))#Todos los fondos con isin deben estar en morning star
             cur.close()
             self.mem.con.commit()
-            self.set_database_version(201501130928)            
+            self.set_database_version(201501130928)      
+        if self.dbversion<201501131001:
+            cur=self.mem.con.cursor()
+            cur.execute("update products set active=true where priorityhistorical[1]=8 and active=false;")
+            cur.close()
+            self.mem.con.commit()
+            self.set_database_version(201501131001)            
              
 
         print ("**** Database already updated")
