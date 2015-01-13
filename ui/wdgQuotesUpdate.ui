@@ -36,6 +36,19 @@
         </widget>
        </item>
        <item>
+        <widget class="QCheckBox" name="chkUserOnly">
+         <property name="toolTip">
+          <string>If it's unchecked, Xulpymoney will update all products marked as autoupdate</string>
+         </property>
+         <property name="text">
+          <string>Update only investments of the user</string>
+         </property>
+         <property name="checked">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item>
         <layout class="QHBoxLayout" name="horizontalLayout">
          <item>
           <widget class="QGroupBox" name="groupBox">
@@ -60,7 +73,7 @@
                  <x>0</x>
                  <y>0</y>
                  <width>341</width>
-                 <height>308</height>
+                 <height>301</height>
                 </rect>
                </property>
                <layout class="QVBoxLayout" name="verticalLayout_7">
@@ -108,7 +121,7 @@
                  <x>0</x>
                  <y>0</y>
                  <width>341</width>
-                 <height>308</height>
+                 <height>301</height>
                 </rect>
                </property>
                <layout class="QVBoxLayout" name="verticalLayout_3">

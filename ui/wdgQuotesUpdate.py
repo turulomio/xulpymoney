@@ -10,23 +10,32 @@ class wdgQuotesUpdate(QWidget, Ui_wdgQuotesUpdate):
         self.mem=mem
         self.parent=parent
         self.sources_active=0
+        self.on_chkUserOnly_stateChanged(self.chkUserOnly.checkState())
         
-        self.wyahoo=wdgSource(self.mem, Sources.WorkerYahoo, self)
+    def on_chkUserOnly_stateChanged(self, state):
+        if state==Qt.Checked:#User only
+            self.wyahoo=wdgSource(self.mem, Sources.WorkerYahoo, self)
+            self.wmc=wdgSource(self.mem, Sources.WorkerMercadoContinuo, self)            
+            self.wyahoohistorical=wdgSource(self.mem, Sources.WorkerYahooHistorical, self)            
+            self.wmorning=wdgSource(self.mem, Sources.WorkerMorningstar, self)
+        else:
+            self.wyahoo=wdgSource(self.mem, Sources.WorkerYahooUserOnly, self)
+            self.wmc=wdgSource(self.mem, Sources.WorkerMercadoContinuoUserOnly, self)            
+            self.wyahoohistorical=wdgSource(self.mem, Sources.WorkerYahooHistoricalUserOnly, self)            
+            self.wmorning=wdgSource(self.mem, Sources.WorkerMorningstarUserOnly, self)
+
         QObject.connect(self.wyahoo, SIGNAL("started"), self.after_source_start)   
         QObject.connect(self.wyahoo, SIGNAL("finished"), self.after_source_stop)   
-        
         self.layIntraday.addWidget(self.wyahoo, 0, 0)
-        self.wmc=wdgSource(self.mem, Sources.WorkerMercadoContinuo, self)
+        
         QObject.connect(self.wmc, SIGNAL("started"), self.after_source_start)   
         QObject.connect(self.wmc, SIGNAL("finished"), self.after_source_stop)   
         self.layIntraday.addWidget(self.wmc, 1, 0)
         
-        self.wyahoohistorical=wdgSource(self.mem, Sources.WorkerYahooHistorical, self)
         QObject.connect(self.wyahoohistorical, SIGNAL("started"), self.after_source_start)   
         QObject.connect(self.wyahoohistorical, SIGNAL("finished"), self.after_source_stop)   
         self.layDaily.addWidget(self.wyahoohistorical)
         
-        self.wmorning=wdgSource(self.mem, Sources.WorkerMorningstar, self)
         QObject.connect(self.wmorning, SIGNAL("started"), self.after_source_start)   
         QObject.connect(self.wmorning, SIGNAL("finished"), self.after_source_stop)   
         self.layDaily.addWidget(self.wmorning)
