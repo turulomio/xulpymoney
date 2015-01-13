@@ -5,9 +5,13 @@ from libsources import *
 from myqtablewidget import *
 
 class Sources:
+    WorkerYahooUserOnly=-1
     WorkerYahoo=1
+    WorkerYahooHistoricalUserOnly=-2
     WorkerYahooHistorical=2
+    WorkerMercadoContinuoUserOnly=-3
     WorkerMercadoContinuo=3
+    WorkerMorningstarUserOnly=-4
     WorkerMorningstar=4
 
 
@@ -30,15 +34,33 @@ class wdgSource(QWidget, Ui_wdgSource):
             for i in range (0, int(num/step)+1):
                 self.worker=WorkerYahoo(mem, "select * from products where active=true and priority[1]=1 order by ticker limit {} offset {};".format(step, step*i))
                 self.agrupation.append(self.worker)
+            cur.close()        
+        elif self.class_sources==Sources.WorkerYahooUserOnly:
+            cur=mem.con.cursor()
+            cur.execute("select count(*) from products where active=true and priority[1]=1 and id in (select distinct(products_id) from inversiones);")
+            num=cur.fetchone()[0]
+            step=150
+            for i in range (0, int(num/step)+1):
+                self.worker=WorkerYahoo(mem, "select * from products where active=true and priority[1]=1  and id in (select distinct(products_id) from inversiones) order by ticker limit {} offset {};".format(step, step*i))
+                self.agrupation.append(self.worker)
             cur.close()           
         elif self.class_sources==Sources.WorkerYahooHistorical:
-            self.worker=WorkerYahooHistorical(mem, 0)
+            self.worker=WorkerYahooHistorical(mem, 0, "select * from products where active=true and priorityhistorical[1]=3")
+            self.agrupation.append(self.worker)
+        elif self.class_sources==Sources.WorkerYahooHistoricalUserOnly:
+            self.worker=WorkerYahooHistorical(mem, 0, "select * from products where active=true and priorityhistorical[1]=3 and id in (select distinct(products_id) from inversiones);")
             self.agrupation.append(self.worker)
         elif self.class_sources==Sources.WorkerMercadoContinuo:                
-            self.worker=WorkerMercadoContinuo(mem)
+            self.worker=WorkerMercadoContinuo(mem, "select * from products where active=true and agrupations ilike '%MERCADOCONTINUO%';")
+            self.agrupation.append(self.worker)
+        elif self.class_sources==Sources.WorkerMercadoContinuoUserOnly:                
+            self.worker=WorkerMercadoContinuo(mem, "select * from products where active=true and agrupations ilike '%MERCADOCONTINUO%' and id in (select distinct(products_id) from inversiones);")
             self.agrupation.append(self.worker)
         elif self.class_sources==Sources.WorkerMorningstar:
-            self.worker=WorkerMorningstar(mem, 0)
+            self.worker=WorkerMorningstar(mem, 0,  "select * from products where active=true  and priorityhistorical[1]=8;")
+            self.agrupation.append(self.worker)
+        elif self.class_sources==Sources.WorkerMorningstarUserOnly:
+            self.worker=WorkerMorningstar(mem, 0,  "select * from products where active=true  and priorityhistorical[1]=8 and id in (select distinct(products_id) from inversiones);")
             self.agrupation.append(self.worker)
         self.currentWorker=self.agrupation[0]# Current worker working
 

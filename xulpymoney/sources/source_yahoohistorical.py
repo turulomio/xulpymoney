@@ -7,7 +7,7 @@ from libsources import *
 mem=MemProducts()
 mem.init__script('Yahoo Historical Updater')
 
-w=WorkerYahooHistorical(mem, 1)
+w=WorkerYahooHistorical(mem, 1, "select * from products where active=true and priorityhistorical[1]=3")
 w.run()
 
 mem.disconnect(mem.con)

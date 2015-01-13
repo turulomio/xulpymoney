@@ -249,9 +249,8 @@ class SourceIterateProducts(Source):
 
 
 class WorkerMercadoContinuo(SourceParsePage):
-    def __init__(self,  mem):
-        SourceParsePage.__init__(self, mem, "select * from products where agrupations ilike '%MERCADOCONTINUO%';")   
-        
+    def __init__(self,  mem, sql):
+        SourceParsePage.__init__(self, mem, sql)   
         
     def on_load_page(self):
         "Overrides SourceParsePage"
@@ -293,7 +292,7 @@ class WorkerMercadoContinuo(SourceParsePage):
 
 class WorkerMorningstar(SourceIterateProducts):
     """Clase que recorre las inversiones activas y busca la última  que tiene el microsecond 4. Busca en internet los historicals a partir de esa fecha"""
-    def __init__(self, mem, type, sql="select * from products where id in (select distinct(id) from products, inversiones where products.id=inversiones.products_id and products.type=2 and char_length(isin)>0);",  sleep=0):
+    def __init__(self, mem, type, sql,  sleep=0):
         SourceIterateProducts.__init__(self, mem,sql, type, sleep)    
         
     def on_execute_product(self,  id_product):
@@ -429,7 +428,7 @@ class WorkerYahoo(SourceParsePage):
 
 class WorkerYahooHistorical(SourceIterateProducts):
     """Clase que recorre las inversiones activas y busca la última  que tiene el microsecond 4. Busca en internet los historicals a partir de esa fecha"""
-    def __init__(self, mem, type, sql="select * from products where active=true and priorityhistorical[1]=3",  sleep=0):
+    def __init__(self, mem, type, sql,  sleep=0):
         SourceIterateProducts.__init__(self, mem,sql, type, sleep)
         #SourceIterateProducts.__init__(self, mem,"select * from products where id in (79329,81105)", type, sleep)      
         

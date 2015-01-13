@@ -3028,10 +3028,10 @@ class SetPriorities(SetCommons):
         self.append(Priority().init__create(1,"Yahoo Financials. 200 pc."))
         self.append(Priority().init__create(2,"Fondos de la bolsa de Madrid. Todos pc."))
         self.append(Priority().init__create(3,"Borrar"))#SANTGES ERA 3, para que no se repitan
-        self.append(Priority().init__create(7,"Bond alemán desde http://jcbcarc.dyndns.org. 3 pc."))#SANTGES ERA 3, para que no se repitan
         self.append(Priority().init__create(4,"Infobolsa. índices internacionales. 20 pc."))
         self.append(Priority().init__create(5,"Productos cotizados bonus. 20 pc."))
         self.append(Priority().init__create(6,"Societe Generale Warrants. Todos pc."))
+        self.append(Priority().init__create(7,"Bond alemán desde http://jcbcarc.dyndns.org. 3 pc."))#SANTGES ERA 3, para que no se repitan
         
     def init__create_from_db(self, arr):
         """Convierte el array de enteros de la base datos en un array de objetos priority"""
@@ -3064,7 +3064,8 @@ class SetPrioritiesHistorical(SetCommons):
         self.mem=mem
 
     def load_all(self):
-        self.append(PriorityHistorical().init__create(3,"Individual. Yahoo historicals"))
+        self.append(PriorityHistorical().init__create(3,QApplication.translate("Core","Individual. Yahoo historicals")))
+        self.append(PriorityHistorical().init__create(8,QApplication.translate("Core","Individual. Yahoo historicals")))
             
     def init__create_from_db(self, arr):
         """Convierte el array de enteros de la base datos en un array de objetos priority"""

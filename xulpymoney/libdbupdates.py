@@ -63,8 +63,13 @@ class Update:
 
             self.mem.con.commit()
             self.set_database_version(201501110635)
+        if self.dbversion<201501130928:
+            cur=self.mem.con.cursor()
+            cur.execute("update products set priorityhistorical=%s where type=2 and char_length(isin)>0", ([8, ], ))#Todos los fondos con isin deben estar en morning star
+            cur.close()
+            self.mem.con.commit()
+            self.set_database_version(201501130928)            
              
-            
 
         print ("**** Database already updated")
    
