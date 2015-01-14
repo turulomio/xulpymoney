@@ -5,13 +5,9 @@ from libsources import *
 from myqtablewidget import *
 
 class Sources:
-    WorkerYahooUserOnly=-1
     WorkerYahoo=1
-    WorkerYahooHistoricalUserOnly=-2
     WorkerYahooHistorical=2
-    WorkerMercadoContinuoUserOnly=-3
     WorkerMercadoContinuo=3
-    WorkerMorningstarUserOnly=-4
     WorkerMorningstar=4
 
 
@@ -21,54 +17,16 @@ class wdgSource(QWidget, Ui_wdgSource):
         self.setupUi(self)
         self.mem=mem
         self.parent=parent
-        self.agrupation=[]#used to iterate workers 
-        self.totals=Source(self.mem)# Used to show totals of agrupation
         self.steps=None#Define the steps of the self.progress bar
         self.class_sources=class_sources
         self.widgettoupdate=self.parent.parent
-        self.products=SetProducts(self.mem)#Total of products of an Agrupation
-        if self.class_sources==Sources.WorkerYahoo:
-            cur=mem.con.cursor()
-            cur.execute("select count(*) from products where active=true and priority[1]=1")
-            num=cur.fetchone()[0]
-            step=150
-            for i in range (0, int(num/step)+1):
-                self.worker=WorkerYahoo(mem, "select * from products where active=true and priority[1]=1 order by ticker limit {} offset {};".format(step, step*i))
-                self.agrupation.append(self.worker)
-            cur.close()        
-        elif self.class_sources==Sources.WorkerYahooUserOnly:
-            cur=mem.con.cursor()
-            cur.execute("select count(*) from products where active=true and priority[1]=1 and id in (select distinct(products_id) from inversiones);")
-            num=cur.fetchone()[0]
-            step=150
-            for i in range (0, int(num/step)+1):
-                self.worker=WorkerYahoo(mem, "select * from products where active=true and priority[1]=1  and id in (select distinct(products_id) from inversiones) order by ticker limit {} offset {};".format(step, step*i))
-                self.agrupation.append(self.worker)
-            cur.close()           
-        elif self.class_sources==Sources.WorkerYahooHistorical:
-            self.worker=WorkerYahooHistorical(mem, 0, "select * from products where active=true and priorityhistorical[1]=3")
-            self.agrupation.append(self.worker)
-        elif self.class_sources==Sources.WorkerYahooHistoricalUserOnly:
-            self.worker=WorkerYahooHistorical(mem, 0, "select * from products where active=true and priorityhistorical[1]=3 and id in (select distinct(products_id) from inversiones);")
-            self.agrupation.append(self.worker)
-        elif self.class_sources==Sources.WorkerMercadoContinuo:                
-            self.worker=WorkerMercadoContinuo(mem, "select * from products where active=true and agrupations ilike '%MERCADOCONTINUO%';")
-            self.agrupation.append(self.worker)
-        elif self.class_sources==Sources.WorkerMercadoContinuoUserOnly:                
-            self.worker=WorkerMercadoContinuo(mem, "select * from products where active=true and agrupations ilike '%MERCADOCONTINUO%' and id in (select distinct(products_id) from inversiones);")
-            self.agrupation.append(self.worker)
-        elif self.class_sources==Sources.WorkerMorningstar:
-            self.worker=WorkerMorningstar(mem, 0,  "select * from products where active=true  and priorityhistorical[1]=8;")
-            self.agrupation.append(self.worker)
-        elif self.class_sources==Sources.WorkerMorningstarUserOnly:
-            self.worker=WorkerMorningstar(mem, 0,  "select * from products where active=true  and priorityhistorical[1]=8 and id in (select distinct(products_id) from inversiones);")
-            self.agrupation.append(self.worker)
-        self.currentWorker=self.agrupation[0]# Current worker working
 
-        #Make connections
-        for worker in self.agrupation:
-            QObject.connect(worker, SIGNAL("step_finished"), self.progress_step)   
-        self.lbl.setText(self.worker.__class__.__name__)
+    def strUserOnly(self):
+        """Returns a sql string if products must be filtered by user invesments"""
+        if self.chkUserOnly.isChecked():
+            return " and id in (select distinct(products_id) from inversiones) "
+        return ""
+
 
     def setWidgetToUpdate(self, widget):
         """Used to update when runing, by default is parent parent"""
@@ -96,6 +54,38 @@ class wdgSource(QWidget, Ui_wdgSource):
     def on_cmdRun_released(self):
         """Without multiprocess due to needs one independent connection per thread"""
         self.cmdRun.setEnabled(False)     
+        self.chkUserOnly.setEnabled(False)
+        
+        #Create objects
+        self.agrupation=[]#used to iterate workers 
+        self.totals=Source(self.mem)# Used to show totals of agrupation
+        self.products=SetProducts(self.mem)#Total of products of an Agrupation
+        if self.class_sources==Sources.WorkerYahoo:
+            cur=self.mem.con.cursor()
+            cur.execute("select count(*) from products where active=true and priority[1]=1")
+            num=cur.fetchone()[0]
+            step=150
+            for i in range (0, int(num/step)+1):
+                self.worker=WorkerYahoo(self.mem, "select * from products where active=true and priority[1]=1 {} order by ticker limit {} offset {};".format(self.strUserOnly(), step, step*i))
+                self.agrupation.append(self.worker)
+            cur.close()           
+        elif self.class_sources==Sources.WorkerYahooHistorical:
+            self.worker=WorkerYahooHistorical(self.mem, 0, "select * from products where active=true and priorityhistorical[1]=3 {}".format(self.strUserOnly()))
+            self.agrupation.append(self.worker)
+        elif self.class_sources==Sources.WorkerMercadoContinuo:                
+            self.worker=WorkerMercadoContinuo(self.mem, "select * from products where active=true and agrupations ilike '%MERCADOCONTINUO%' {};".format(self.strUserOnly()))
+            self.agrupation.append(self.worker)
+        elif self.class_sources==Sources.WorkerMorningstar:
+            self.worker=WorkerMorningstar(self.mem, 0,  "select * from products where active=true  and priorityhistorical[1]=8 {}".format(self.strUserOnly()))
+            self.agrupation.append(self.worker)
+        self.currentWorker=self.agrupation[0]# Current worker working
+
+        #Make connections
+        for worker in self.agrupation:
+            QObject.connect(worker, SIGNAL("step_finished"), self.progress_step)   
+        self.lbl.setText(self.worker.__class__.__name__)
+        
+        #Starts
         self.emit(SIGNAL("started")) 
         for worker in self.agrupation:
             self.currentWorker=worker
