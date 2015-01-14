@@ -480,7 +480,7 @@ class frmMain(QMainWindow, Ui_frmMain):
     @QtCore.pyqtSlot()  
     def on_actionProductsInvestmentActive_activated(self):
         self.w.close()
-        self.w=wdgProducts(self.mem,  "select * from products where obsolete=false and id in (select products_id from inversiones where active=true) order by name")
+        self.w=wdgProducts(self.mem,  "select * from products where id in (select products_id from inversiones where active=true) order by name")
 
         self.layout.addWidget(self.w)
         self.w.show()    
@@ -488,7 +488,7 @@ class frmMain(QMainWindow, Ui_frmMain):
     @QtCore.pyqtSlot()  
     def on_actionProductsInvestmentInactive_activated(self):
         self.w.close()
-        self.w=wdgProducts(self.mem,  "select * from products where obsolete=false and id in (select products_id from inversiones where active=false) order by name")
+        self.w=wdgProducts(self.mem,  "select * from products where id in (select products_id from inversiones where active=false) order by name")
 
         self.layout.addWidget(self.w)
         self.w.show()    
@@ -504,10 +504,10 @@ class frmMain(QMainWindow, Ui_frmMain):
     def on_actionProductsAutoUpdate_activated(self):
         self.w.close()
         self.w=wdgProducts(self.mem,  """select * from products 
-                where  (agrupations like '%|MERCADOCONTINUO|%'  and char_length(ticker)>0)
+                where obsolete=false and ((agrupations like '%|MERCADOCONTINUO|%'  and char_length(ticker)>0)
                 or (8 = any(priorityhistorical) and char_length(isin)>0)
                 or (1 = any(priority) and char_length(ticker)>0)
-                or (3 = any(priorityhistorical) and char_length(ticker)>0)
+                or (3 = any(priorityhistorical) and char_length(ticker)>0))
                 order by name
                 """)
 
@@ -518,10 +518,10 @@ class frmMain(QMainWindow, Ui_frmMain):
     def on_actionProductsNotAutoUpdate_activated(self):
         self.w.close()
         self.w=wdgProducts(self.mem,  """select * from products except select * from products 
-                where  (agrupations like '%|MERCADOCONTINUO|%'  and char_length(ticker)>0)
+                where obsolete=false and ((agrupations like '%|MERCADOCONTINUO|%'  and char_length(ticker)>0)
                 or (8 = any(priorityhistorical) and char_length(isin)>0)
                 or (1 = any(priority) and char_length(ticker)>0)
-                or (3 = any(priorityhistorical) and char_length(ticker)>0)
+                or (3 = any(priorityhistorical) and char_length(ticker)>0))
                 order by name
                 """)
         self.layout.addWidget(self.w)

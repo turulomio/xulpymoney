@@ -96,6 +96,23 @@ class Update:
             cur.close()
             self.mem.con.commit()
             self.set_database_version(201501141403)    
+        if self.dbversion<201501142025:
+            cur=self.mem.con.cursor()
+            cur.execute("update products set obsolete=%s where id=%s;", (True, 75538))
+            cur.execute("update products set obsolete=%s where id=%s;", (True, 78069))
+            cur.execute("update products set obsolete=%s where id=%s;", (True, 77255))
+            cur.execute("update products set obsolete=%s where id=%s;", (True, 75392))
+            cur.execute("update products set obsolete=%s where id=%s;", (True, 75792))
+            cur.execute("update products set obsolete=%s where id=%s;", (True, 75506))
+            cur.execute("update products set obsolete=%s where id=%s;", (True, 76215))
+            cur.execute("update products set obsolete=%s where id=%s;", (True, 75205))
+            cur.execute("update products set obsolete=%s where id=%s;", (True, 75259))
+            cur.execute("update products set obsolete=%s where id=%s;", (True, 76806))
+            cur.execute("update products set obsolete=%s where id=%s;", (True, 78050))
+            cur.execute("update products set obsolete=%s where id=%s;", (True, 74966))
+            cur.close()
+            self.mem.con.commit()
+            self.set_database_version(201501142025)    
         print ("**** Database already updated")
    
     def get_database_version(self):
