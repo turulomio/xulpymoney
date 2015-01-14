@@ -32,7 +32,7 @@ class wdgProductSelector(QWidget):
     def on_cmd_released(self):
         d=frmProductSelector(self, self.mem)
         d.exec_()
-        self.setSelected(d.selected)
+        self.setSelected(d.products.selected)
             
     def setSelected(self, product):
         """Recibe un objeto Product. No se usará posteriormente, por lo que puede no estar completo con get_basic.:."""
@@ -48,7 +48,6 @@ class frmProductSelector(QDialog):
         QDialog.__init__(self, parent)
         self.mem=mem
         self.products=[]
-        self.selected=None
         self.resize(1024, 500)
         self.horizontalLayout_2 = QHBoxLayout(self)
         self.verticalLayout = QVBoxLayout()
@@ -78,14 +77,6 @@ class frmProductSelector(QDialog):
         self.tblInvestments = myQTableWidget(self)
         self.tblInvestments.setContextMenuPolicy(Qt.CustomContextMenu)
         self.tblInvestments.setAlternatingRowColors(True)
-        self.tblInvestments.setColumnCount(4)
-        self.tblInvestments.setRowCount(0)
-        self.tblInvestments.settings("wdgProductSelector",  self.mem)    
-        self.tblInvestments.setHorizontalHeaderItem(0, QTableWidgetItem(self.tr("Product")))
-        self.tblInvestments.setHorizontalHeaderItem(1, QTableWidgetItem(self.tr("Id")))
-        self.tblInvestments.setHorizontalHeaderItem(2, QTableWidgetItem(self.tr("ISIN")))
-        self.tblInvestments.setHorizontalHeaderItem(3, QTableWidgetItem(self.tr("Ticker")))
-        self.tblInvestments.horizontalHeader().setStretchLastSection(False)
         self.tblInvestments.setEditTriggers(QAbstractItemView.NoEditTriggers)
         self.tblInvestments.setSelectionBehavior(QAbstractItemView.SelectRows)
         self.tblInvestments.setSelectionMode(QAbstractItemView.SingleSelection)
@@ -114,27 +105,15 @@ class frmProductSelector(QDialog):
             m.exec_()  
             return
 
-        self.products=[]
-        cur = self.mem.con.cursor()
-        cur.execute("select * from products where id::text like '%"+(self.txt.text().upper())+
+        self.products=SetProducts(self.mem)
+        self.products.load_from_db("select * from products where id::text like '%"+(self.txt.text().upper())+
                     "%' or upper(name) like '%"+(self.txt.text().upper())+
                     "%' or upper(isin) like '%"+(self.txt.text().upper())+
                     "%' or upper(ticker) like '%"+(self.txt.text().upper())+
                     "%' or upper(comentario) like '%"+(self.txt.text().upper())+
                     "%' order by name")
-        self.lblFound.setText(self.tr("Found {0} registers").format(cur.rowcount))
-                
-        self.tblInvestments.setRowCount(cur.rowcount)
-        for i in cur:
-            inv=Product(self.mem)
-            inv.init__db_row(i)
-            self.products.append(inv)
-            self.tblInvestments.setItem(cur.rownumber-1, 0, QTableWidgetItem(inv.name.upper()))
-            self.tblInvestments.setItem(cur.rownumber-1, 1, QTableWidgetItem(str(inv.id)))
-            self.tblInvestments.item(cur.rownumber-1, 0).setIcon(inv.stockexchange.country.qicon())
-            self.tblInvestments.setItem(cur.rownumber-1, 2, QTableWidgetItem(inv.isin))
-            self.tblInvestments.setItem(cur.rownumber-1, 3, QTableWidgetItem(inv.ticker))
-        cur.close()     
+        self.lblFound.setText(self.tr("Found {0} registers").format(self.products.length()))
+        self.products.myqtablewidget(self.tblInvestments, "wdgProductSelector")  
         
     def on_tblInvestments_cellDoubleClicked(self, row, column):
         self.done(0)
@@ -143,7 +122,7 @@ class frmProductSelector(QDialog):
         try:
             for i in self.tblInvestments.selectedItems():
                 if i.column()==0:
-                    self.selected=self.products[i.row()]
-            print (self.selected)
+                    self.products.selected=self.products.arr[i.row()]
+            print (self.products.selected)
         except:
             self.selected=None

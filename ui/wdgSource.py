@@ -26,6 +26,7 @@ class wdgSource(QWidget, Ui_wdgSource):
         self.steps=None#Define the steps of the self.progress bar
         self.class_sources=class_sources
         self.widgettoupdate=self.parent.parent
+        self.products=SetProducts(self.mem)#Total of products of an Agrupation
         if self.class_sources==Sources.WorkerYahoo:
             cur=mem.con.cursor()
             cur.execute("select count(*) from products where active=true and priority[1]=1")
@@ -67,11 +68,8 @@ class wdgSource(QWidget, Ui_wdgSource):
         #Make connections
         for worker in self.agrupation:
             QObject.connect(worker, SIGNAL("step_finished"), self.progress_step)   
-        
-
         self.lbl.setText(self.worker.__class__.__name__)
-                
-                
+
     def setWidgetToUpdate(self, widget):
         """Used to update when runing, by default is parent parent"""
         self.widgettoupdate=widget
@@ -102,6 +100,7 @@ class wdgSource(QWidget, Ui_wdgSource):
         for worker in self.agrupation:
             self.currentWorker=worker
             worker.run()
+            self.products=self.products.union(worker.products, self.mem )
             worker.inserted.addTo(self.totals.inserted)
             worker.modified.addTo(self.totals.modified)
             worker.ignored.addTo(self.totals.ignored)
@@ -120,13 +119,16 @@ class wdgSource(QWidget, Ui_wdgSource):
         self.cmdIgnored.setText(self.tr("{} Ignored").format(self.totals.ignored.length()))
         self.cmdErrors.setText(self.tr("{} errors parsing the source").format(len(self.totals.errors)))
         self.cmdBad.setText(self.tr("{} bad").format(self.totals.bad.length()))
+        self.cmdSearched.setText(self.tr("{} products".format(self.products.length())))
         self.cmdInserted.setEnabled(True)
         self.cmdIgnored.setEnabled(True)
         self.cmdEdited.setEnabled(True)
         self.cmdErrors.setEnabled(True)
         self.cmdBad.setEnabled(True)       
+        self.cmdSearched.setEnabled(True)
         self.cmdCancel.setEnabled(False)
         self.emit(SIGNAL("finished")) 
+        
         
     def on_cmdCancel_released(self):
         self.cmdCancel.setEnabled(False)
@@ -179,6 +181,16 @@ class wdgSource(QWidget, Ui_wdgSource):
         d.setWindowTitle(self.trUtf8("Error procesing the source"))
         t=myQTableWidget(d)
         self.totals.bad.myqtablewidget(t, "wdgSource")
+        lay = QVBoxLayout(d)
+        lay.addWidget(t)
+        d.show()
+        
+    def on_cmdSearched_released(self):
+        d=QDialog(self)        
+        d.setFixedSize(900, 670)
+        d.setWindowTitle(self.trUtf8("Error procesing the source"))
+        t=myQTableWidget(d)
+        self.products.myqtablewidget(t, "wdgSource")
         lay = QVBoxLayout(d)
         lay.addWidget(t)
         d.show()

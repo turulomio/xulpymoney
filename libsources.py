@@ -77,9 +77,10 @@ class Source(QObject):
     def __init__(self, mem):
         QObject.__init__(self)
         self.mem=mem
+        self.products=SetProducts(self.mem)
         self.quotes=SetQuotes(self.mem)#Quotes without valida
         self.errors=[]#Array the strings
-        
+        self.finished=False#Switch to mark when the run process in finished
         self.ignored=SetQuotes(self.mem)
         self.modified=SetQuotes(self.mem)
         self.inserted=SetQuotes(self.mem)
@@ -153,7 +154,6 @@ class SourceParsePage(Source):
         self.sql=sql
         
     def run(self):
-        self.products=SetProducts(self.mem)
         self.products.load_from_db(self.sql)     
         self.next_step()
         
@@ -209,7 +209,6 @@ class SourceIterateProducts(Source):
         return self.products.length()+3
         
     def run(self):
-        self.products=SetProducts(self.mem)
         self.products.load_from_db(self.sql)
         self.next_step()
  
