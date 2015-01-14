@@ -70,7 +70,7 @@ class wdgSource(QWidget, Ui_wdgSource):
                 self.agrupation.append(self.worker)
             cur.close()           
         elif self.class_sources==Sources.WorkerYahooHistorical:
-            self.worker=WorkerYahooHistorical(self.mem, 0, "select * from products and priorityhistorical[1]=3 and obsolete=false {}".format(self.strUserOnly()))
+            self.worker=WorkerYahooHistorical(self.mem, 0, "select * from products where priorityhistorical[1]=3 and obsolete=false {}".format(self.strUserOnly()))
             self.agrupation.append(self.worker)
         elif self.class_sources==Sources.WorkerMercadoContinuo:                
             self.worker=WorkerMercadoContinuo(self.mem, "select * from products where agrupations ilike '%MERCADOCONTINUO%' and obsolete=false {};".format(self.strUserOnly()))
