@@ -1,6 +1,6 @@
 from libxulpymoney import *
 import urllib
-from selenium import webdriver
+#from selenium import webdriver
         
 class SetQuotes:
     """Clase que agrupa quotes un una lista arr. Util para operar con ellas como por ejemplo insertar"""

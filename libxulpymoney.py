@@ -3063,7 +3063,7 @@ class SetPriorities(SetCommons):
             for a in arr:
                 resultado.arr.append(self.mem.priorities.find(a))
         return resultado
-
+        
     def array_of_id(self):
         """Used to psycopg.execute automatical pare"""
         resultado=[]
@@ -3556,13 +3556,10 @@ class Product:
         self.priorityhistorical=SetPrioritiesHistorical(self.mem).init__create_from_db(row['priorityhistorical'])
         self.comentario=row['comentario']
         self.obsolete=row['obsolete']
-#        self.deletable=row['deletable']
-#        self.system=row['system']
         
         self.result=QuotesResult(self.mem,self)
         return self
-        
-                
+
     def init__create(self, name,  isin, currency, type, agrupations, active, web, address, phone, mail, tpc, mode, apalancado, bolsa, ticker, priority, priorityhistorical, comentario, obsolete, id=None):
         """agrupations es un setagrupation, priority un SetPriorities y priorityhistorical un SetPrioritieshistorical"""
         self.name=name
@@ -3585,8 +3582,6 @@ class Product:
         self.priorityhistorical=priorityhistorical
         self.comentario=comentario
         self.obsolete=obsolete
-#        self.deletable=deletable
-#        self.system=system
         
         self.result=QuotesResult(self.mem,self)
         return self        
@@ -3598,8 +3593,7 @@ class Product:
         row=curms.fetchone()
         curms.close()
         return self.init__db_row(row)
-        
-        
+
     def save(self):
         """Esta función inserta una inversión manual"""
         """Los arrays deberan pasarse como parametros ARRAY[1,2,,3,] o None"""
@@ -3614,12 +3608,18 @@ class Product:
             cur.execute("update products set name=%s, isin=%s,currency=%s,type=%s, agrupations=%s, active=%s, web=%s, address=%s, phone=%s, mail=%s, tpc=%s, pci=%s, apalancado=%s, id_bolsas=%s, ticker=%s, priority=%s, priorityhistorical=%s, comentario=%s, obsolete=%s where id=%s", ( self.name,  self.isin,  self.currency.id,  self.type.id,  self.agrupations.dbstring(),  self.active,  self.web, self.address,  self.phone, self.mail, self.tpc, self.mode.id,  self.apalancado.id, self.stockexchange.id, self.ticker, self.priority.array_of_id(), self.priorityhistorical.array_of_id() , self.comentario, self.obsolete,  self.id))
         cur.close()
     
-#    def changeDeletable(self, ids,  deletable):
-#        """Modifica a deletable"""
-#        curms=self.mem.con.cursor()
-#        sql="update products set deletable={0} where id in ({1})".format( deletable,  str(ids)[1:-1])
-#        curms.execute(sql)
-#        curms.close()
+
+    def has_autoupdate(self):
+        """Return if the product has autoupdate in some source"""
+        if self.agrupations.dbstring().find("|MERCADOCONTINUO|")!=-1:#mercado continuo
+            return True
+        elif self.prioritieshistorical.find(8)==2 and len(self.isin)>0:#Morningstar
+            return True
+        elif self.priorities.find(1)!=None and len(self.ticker)>0:#yahoo
+            return True
+        elif self.prioritieshistorical.find(3)!=None and len(self.ticker)>0:#yahoohistorical
+            return True
+        return False
         
         
         
