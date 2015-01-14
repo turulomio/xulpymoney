@@ -480,7 +480,7 @@ class frmMain(QMainWindow, Ui_frmMain):
     @QtCore.pyqtSlot()  
     def on_actionProductsInvestmentActive_activated(self):
         self.w.close()
-        self.w=wdgProducts(self.mem,  "select * from products where id in (select products_id from inversiones where active=true) order by name")
+        self.w=wdgProducts(self.mem,  "select * from products where obsolete=false and id in (select products_id from inversiones where active=true) order by name")
 
         self.layout.addWidget(self.w)
         self.w.show()    
@@ -488,7 +488,7 @@ class frmMain(QMainWindow, Ui_frmMain):
     @QtCore.pyqtSlot()  
     def on_actionProductsInvestmentInactive_activated(self):
         self.w.close()
-        self.w=wdgProducts(self.mem,  "select * from products where id in (select products_id from inversiones where active=false) order by name")
+        self.w=wdgProducts(self.mem,  "select * from products where obsolete=false and id in (select products_id from inversiones where active=false) order by name")
 
         self.layout.addWidget(self.w)
         self.w.show()    
