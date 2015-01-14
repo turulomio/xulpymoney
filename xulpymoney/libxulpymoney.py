@@ -142,7 +142,7 @@ class SetCommons:
     def union(self,  set,  *initparams):
         """Returns a new set, with the union comparing id
         initparams son los parametros de iniciaci´on de la clse"""        
-        resultado=self.__class__(*initparams)#Para que coja la clase del objeto que lo invoca
+        resultado=self.__class__(*initparams)#Para que coja la clase del objeto que lo invoca SetProduct(self.mem), luego ser´a self.mem
         for p in self.arr:
             resultado.append(p)
         for p in set.arr:
@@ -404,6 +404,27 @@ class SetProducts(SetCommons):
             if a.type.id==type.id:
                 result.append(a)
         return result
+        
+        
+    def myqtablewidget(self, table, section):
+        table.setColumnCount(4)
+        table.settings(section,  self.mem)    
+        table.setHorizontalHeaderItem(0, QTableWidgetItem(QApplication.translate("Core","Product")))
+        table.setHorizontalHeaderItem(1, QTableWidgetItem(QApplication.translate("Core","Id")))
+        table.setHorizontalHeaderItem(2, QTableWidgetItem(QApplication.translate("Core","ISIN")))
+        table.setHorizontalHeaderItem(3, QTableWidgetItem(QApplication.translate("Core","Ticker")))
+        table.horizontalHeader().setStretchLastSection(False)   
+        table.clearContents()
+        table.setRowCount(self.length())
+        for i, p in enumerate(self.arr):
+            table.setItem(i, 0, QTableWidgetItem(p.name.upper()))
+            table.setItem(i, 1, QTableWidgetItem(str(p.id)))
+            table.item(i, 0).setIcon(p.stockexchange.country.qicon())
+            table.setItem(i, 2, QTableWidgetItem(p.isin))
+            table.setItem(i, 3, QTableWidgetItem(p.ticker))         
+
+
+
 
 class SetProductsModes(SetCommons):
     """Agrupa los mode"""
