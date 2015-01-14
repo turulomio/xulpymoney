@@ -478,7 +478,22 @@ class frmMain(QMainWindow, Ui_frmMain):
         self.w.show()
     
     @QtCore.pyqtSlot()  
-    def on_actionInvestmentsDesaparecidas_activated(self):
+    def on_actionProductsInvestmentActive_activated(self):
+        self.w.close()
+        self.w=wdgProducts(self.mem,  "select * from products where id in (select products_id from inversiones where active=true) order by name")
+
+        self.layout.addWidget(self.w)
+        self.w.show()    
+        
+    @QtCore.pyqtSlot()  
+    def on_actionProductsInvestmentInactive_activated(self):
+        self.w.close()
+        self.w=wdgProducts(self.mem,  "select * from products where id in (select products_id from inversiones where active=false) order by name")
+
+        self.layout.addWidget(self.w)
+        self.w.show()    
+    @QtCore.pyqtSlot()  
+    def on_actionProductsObsolete_activated(self):
         self.w.close()
         self.w=wdgProducts(self.mem,  "select * from products where obsolete=true order by name,id")
 
@@ -486,23 +501,34 @@ class frmMain(QMainWindow, Ui_frmMain):
         self.w.show()
                 
     @QtCore.pyqtSlot()  
-    def on_actionInvestmentsSinActualizar_activated(self):
+    def on_actionProductsAutoUpdate_activated(self):
         self.w.close()
-        self.w=wdgProducts(self.mem,  "select * from products where id in( select id  from quotes group by id having last(datetime::date)<now()::date-60)")
+        self.w=wdgProducts(self.mem,  """select * from products 
+                where  (agrupations like '%|MERCADOCONTINUO|%'  and char_length(ticker)>0)
+                or (8 = any(priorityhistorical) and char_length(isin)>0)
+                or (1 = any(priority) and char_length(ticker)>0)
+                or (3 = any(priorityhistorical) and char_length(ticker)>0)
+                order by name
+                """)
 
         self.layout.addWidget(self.w)
         self.w.show()       
     
     @QtCore.pyqtSlot()  
-    def on_actionInvestmentsSinActualizarHistoricos_activated(self):
+    def on_actionProductsNotAutoUpdate_activated(self):
         self.w.close()
-        self.w=wdgProducts(self.mem, "select * from products where id in (select id from quotes  group by id having date_part('microsecond',last(datetime))=4 and last(datetime)<now()-interval '60 days' );")
-
+        self.w=wdgProducts(self.mem,  """select * from products except select * from products 
+                where  (agrupations like '%|MERCADOCONTINUO|%'  and char_length(ticker)>0)
+                or (8 = any(priorityhistorical) and char_length(isin)>0)
+                or (1 = any(priority) and char_length(ticker)>0)
+                or (3 = any(priorityhistorical) and char_length(ticker)>0)
+                order by name
+                """)
         self.layout.addWidget(self.w)
         self.w.show()            
         
     @QtCore.pyqtSlot()  
-    def on_actionInvestmentsManual_activated(self):
+    def on_actionProductsUser_activated(self):
         self.w.close()
         self.w=wdgProducts(self.mem,  "select * from products where id<0 order by name, id ")
 
@@ -510,23 +536,13 @@ class frmMain(QMainWindow, Ui_frmMain):
         self.w.show()
         
     @QtCore.pyqtSlot()  
-    def on_actionInvestmentsSinISIN_activated(self):
+    def on_actionProductsWithoutISIN_activated(self):
         self.w.close()
         self.w=wdgProducts(self.mem,  "select * from products  where isin is null or isin ='' order by name,id")
 
         self.layout.addWidget(self.w)
         self.w.show()
 
-
-    @QtCore.pyqtSlot()  
-    def on_actionInvestmentsSinNombre_activated(self):
-        self.w.close()
-        self.w=wdgProducts(self.mem,  "select * from products  where name is null or name='' order by name,id")
-
-        self.layout.addWidget(self.w)
-        self.w.show()
-
-        
     @QtCore.pyqtSlot()  
     def on_actionTablasAuxiliares_activated(self):
         w=frmAuxiliarTables(self.mem)

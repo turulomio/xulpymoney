@@ -46,7 +46,7 @@
      <x>0</x>
      <y>0</y>
      <width>1186</width>
-     <height>25</height>
+     <height>20</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuAyuda">
@@ -137,14 +137,17 @@
       <string>Reports</string>
      </property>
      <addaction name="actionDividends"/>
-     <addaction name="actionActive"/>
-     <addaction name="actionInvestmentsSinActualizarHistoricos"/>
-     <addaction name="actionInvestmentsManual"/>
-     <addaction name="actionInvestmentsSinActualizar"/>
-     <addaction name="actionInvestmentsSinNombre"/>
-     <addaction name="actionInvestmentsDesaparecidas"/>
      <addaction name="separator"/>
-     <addaction name="actionInvestmentsSinISIN"/>
+     <addaction name="actionProductsAutoUpdate"/>
+     <addaction name="actionProductsNotAutoUpdate"/>
+     <addaction name="separator"/>
+     <addaction name="actionProductsInvestmentActive"/>
+     <addaction name="actionProductsInvestmentInactive"/>
+     <addaction name="separator"/>
+     <addaction name="actionProductsUser"/>
+     <addaction name="actionProductsObsolete"/>
+     <addaction name="separator"/>
+     <addaction name="actionProductsWithoutISIN"/>
      <addaction name="actionISINDuplicado"/>
     </widget>
     <widget class="QMenu" name="menuShares">
@@ -502,6 +505,9 @@
    <property name="text">
     <string>All Indexes</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+I</string>
+   </property>
   </action>
   <action name="actionIbex35">
    <property name="icon">
@@ -566,34 +572,22 @@
     <string>Xetra</string>
    </property>
   </action>
-  <action name="actionInvestmentsSinNombre">
+  <action name="actionProductsAutoUpdate">
    <property name="icon">
-    <iconset>
-     <normaloff>:/images/configure.png</normaloff>:/images/configure.png</iconset>
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/transfer.png</normaloff>:/xulpymoney/transfer.png</iconset>
    </property>
    <property name="text">
-    <string>Products without name</string>
+    <string>Products with auto update</string>
    </property>
    <property name="toolTip">
-    <string>Products without name</string>
+    <string>Products with auto update</string>
    </property>
   </action>
-  <action name="actionInvestmentsSinActualizar">
+  <action name="actionProductsObsolete">
    <property name="icon">
-    <iconset>
-     <normaloff>:/images/configure.png</normaloff>:/images/configure.png</iconset>
-   </property>
-   <property name="text">
-    <string>Products not updated</string>
-   </property>
-   <property name="toolTip">
-    <string>Products not updated</string>
-   </property>
-  </action>
-  <action name="actionInvestmentsDesaparecidas">
-   <property name="icon">
-    <iconset>
-     <normaloff>:/images/configure.png</normaloff>:/images/configure.png</iconset>
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/checkbox0.png</normaloff>:/xulpymoney/checkbox0.png</iconset>
    </property>
    <property name="text">
     <string>Obsolete products</string>
@@ -602,16 +596,16 @@
     <string>Obsolete products</string>
    </property>
   </action>
-  <action name="actionInvestmentsManual">
+  <action name="actionProductsUser">
    <property name="icon">
     <iconset resource="../images/xulpymoney.qrc">
      <normaloff>:/xulpymoney/keko.png</normaloff>:/xulpymoney/keko.png</iconset>
    </property>
    <property name="text">
-    <string>Manual update products</string>
+    <string>User products</string>
    </property>
    <property name="toolTip">
-    <string>Manual update products</string>
+    <string>User products</string>
    </property>
   </action>
   <action name="actionCurrenciesAll">
@@ -638,28 +632,16 @@
     <string>Show favorites</string>
    </property>
   </action>
-  <action name="actionInvestmentsSinActualizarHistoricos">
-   <property name="icon">
-    <iconset>
-     <normaloff>:/images/history.png</normaloff>:/images/history.png</iconset>
-   </property>
-   <property name="text">
-    <string>Historical not updated products</string>
-   </property>
-   <property name="toolTip">
-    <string>Historical not updated products</string>
-   </property>
-  </action>
-  <action name="actionActive">
+  <action name="actionProductsNotAutoUpdate">
    <property name="icon">
     <iconset resource="../images/xulpymoney.qrc">
-     <normaloff>:/xulpymoney/star.png</normaloff>:/xulpymoney/star.png</iconset>
+     <normaloff>:/xulpymoney/editar.png</normaloff>:/xulpymoney/editar.png</iconset>
    </property>
    <property name="text">
-    <string>Active products</string>
+    <string>Products without auto update</string>
    </property>
    <property name="toolTip">
-    <string>Active products</string>
+    <string>Products without auto update</string>
    </property>
   </action>
   <action name="actionDividends">
@@ -797,10 +779,10 @@
     <string>LATIBEX</string>
    </property>
   </action>
-  <action name="actionInvestmentsSinISIN">
+  <action name="actionProductsWithoutISIN">
    <property name="icon">
-    <iconset>
-     <normaloff>:/images/configure.png</normaloff>:/images/configure.png</iconset>
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/gafas.png</normaloff>:/xulpymoney/gafas.png</iconset>
    </property>
    <property name="text">
     <string>Products without ISIN</string>
@@ -855,6 +837,30 @@
    </property>
    <property name="shortcut">
     <string>F5</string>
+   </property>
+  </action>
+  <action name="actionProductsInvestmentActive">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/books.png</normaloff>:/xulpymoney/books.png</iconset>
+   </property>
+   <property name="text">
+    <string>Products of active investment</string>
+   </property>
+   <property name="toolTip">
+    <string>Products of active investment</string>
+   </property>
+  </action>
+  <action name="actionProductsInvestmentInactive">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/books.png</normaloff>:/xulpymoney/books.png</iconset>
+   </property>
+   <property name="text">
+    <string>Products of inactive investment</string>
+   </property>
+   <property name="toolTip">
+    <string>Products of inactive investment</string>
    </property>
   </action>
  </widget>
