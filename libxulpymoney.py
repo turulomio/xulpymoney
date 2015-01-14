@@ -80,7 +80,6 @@ class SetCommons:
         except:
             if log:
                 print ("SetCommons ({}) fails finding {}".format(self.__class__.__name__, id))
-#            print ("Find_by_arr {}".format(self.find_by_arr(id)))
             return None
             
     def find_by_arr(self, id,  log=False):
@@ -99,7 +98,7 @@ class SetCommons:
             if a.id==id:
                 return a
         if log:
-            print ("SetCommons ({}) fails finding {}".format(self.__class__.__name__, id))
+            print ("SetCommons ({}) fails finding  by arr {}".format(self.__class__.__name__, id))
         return None
                 
     def order_by_id(self):
@@ -406,12 +405,16 @@ class SetProducts(SetCommons):
         
         
     def myqtablewidget(self, table, section):
-        table.setColumnCount(4)
+        tachado = QFont()
+        tachado.setStrikeOut(True)        #Fuente tachada
+        transfer=QIcon(":/xulpymoney/transfer.png")
+        table.setColumnCount(5)
         table.settings(section,  self.mem)    
         table.setHorizontalHeaderItem(0, QTableWidgetItem(QApplication.translate("Core","Product")))
         table.setHorizontalHeaderItem(1, QTableWidgetItem(QApplication.translate("Core","Id")))
         table.setHorizontalHeaderItem(2, QTableWidgetItem(QApplication.translate("Core","ISIN")))
-        table.setHorizontalHeaderItem(3, QTableWidgetItem(QApplication.translate("Core","Ticker")))
+        table.setHorizontalHeaderItem(3, QTableWidgetItem(QApplication.translate("Core","Last update")))
+        table.setHorizontalHeaderItem(4, QTableWidgetItem(QApplication.translate("Core","Value")))
         table.horizontalHeader().setStretchLastSection(False)   
         table.clearContents()
         table.setRowCount(self.length())
@@ -419,9 +422,14 @@ class SetProducts(SetCommons):
             table.setItem(i, 0, QTableWidgetItem(p.name.upper()))
             table.setItem(i, 1, QTableWidgetItem(str(p.id)))
             table.item(i, 0).setIcon(p.stockexchange.country.qicon())
-            table.setItem(i, 2, QTableWidgetItem(p.isin))
-            table.setItem(i, 3, QTableWidgetItem(p.ticker))         
+            table.setItem(i, 2, QTableWidgetItem(p.isin))   
+            table.setItem(i, 3, qdatetime(p.result.basic.last.datetime, p.stockexchange.zone))#, self.mem.localzone.name)))
+            table.setItem(i, 4, p.currency.qtablewidgetitem(p.result.basic.last.quote, 6 ))  
 
+            if p.has_autoupdate()==True:#Active
+                table.item(i, 4).setIcon(transfer)
+            if p.obsolete==True:#Obsolete
+                table.item(i, 0).setFont(tachado)
 
 
 
@@ -3040,14 +3048,13 @@ class SetLeverages(SetCommons):
 
 class SetPriorities(SetCommons):
     def __init__(self, mem):
-        SetCommons.__init__(self)
         """Usa la variable mem.Agrupations. Debe ser una lista no un diccionario porque importa el orden"""
+        SetCommons.__init__(self)
         self.mem=mem
                 
     def load_all(self):
         self.append(Priority().init__create(1,"Yahoo Financials. 200 pc."))
         self.append(Priority().init__create(2,"Fondos de la bolsa de Madrid. Todos pc."))
-        self.append(Priority().init__create(3,"Borrar"))#SANTGES ERA 3, para que no se repitan
         self.append(Priority().init__create(4,"Infobolsa. índices internacionales. 20 pc."))
         self.append(Priority().init__create(5,"Productos cotizados bonus. 20 pc."))
         self.append(Priority().init__create(6,"Societe Generale Warrants. Todos pc."))
@@ -3060,7 +3067,7 @@ class SetPriorities(SetCommons):
             resultado.arr=[]
         else:
             for a in arr:
-                resultado.arr.append(self.mem.priorities.find(a))
+                resultado.append(self.mem.priorities.find(a))
         return resultado
         
     def array_of_id(self):
@@ -3094,7 +3101,7 @@ class SetPrioritiesHistorical(SetCommons):
             resultado.arr=[]
         else:
             for a in arr:
-                resultado.arr.append(self.mem.prioritieshistorical.find(a))
+                resultado.append(self.mem.prioritieshistorical.find(a))
         return resultado
 
     def array_of_id(self):
@@ -3605,14 +3612,15 @@ class Product:
     
 
     def has_autoupdate(self):
-        """Return if the product has autoupdate in some source"""
-        if self.agrupations.dbstring().find("|MERCADOCONTINUO|")!=-1:#mercado continuo
+        """Return if the product has autoupdate in some source
+        REMEMBER TO CHANGE on_actionProductsAutoUpdate_activated en frmMain"""
+        if self.ticker!=None and self.ticker!="" and self.agrupations.dbstring().find("|MERCADOCONTINUO|")!=-1:#mercado continuo
             return True
-        elif self.priorityhistorical.find(8)==2 and len(self.isin)>0:#Morningstar
+        elif self.isin!=None and self.isin!="" and self.priorityhistorical.find(8)!=None:#Morningstar
             return True
-        elif self.priority.find(1)!=None and len(self.ticker)>0:#yahoo
+        elif self.ticker!=None and self.ticker!="" and self.priority.find(1)!=None:#yahoo
             return True
-        elif self.priorityhistorical.find(3)!=None and len(self.ticker)>0:#yahoohistorical
+        elif self.ticker!=None and self.priorityhistorical.find(3)!=None and self.ticker!="":#yahoohistorical
             return True
         return False
         
