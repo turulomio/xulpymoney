@@ -75,7 +75,13 @@ class Update:
             cur.execute("update products set active=true where priorityhistorical[1]=8 and active=false;")
             cur.close()
             self.mem.con.commit()
-            self.set_database_version(201501131001)            
+            self.set_database_version(201501131001)     
+        if self.dbversion<201501140855:
+            cur=self.mem.con.cursor()
+            cur.execute("alter table products drop column active;")
+            cur.close()
+            self.mem.con.commit()
+            self.set_database_version(201501140855)            
              
 
         print ("**** Database already updated")

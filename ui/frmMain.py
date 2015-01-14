@@ -246,7 +246,7 @@ class frmMain(QMainWindow, Ui_frmMain):
     @QtCore.pyqtSlot()  
     def on_actionActive_activated(self):
         self.w.close()
-        self.w=wdgProducts(self.mem,  "select * from products where active=true order by name")
+        self.w=wdgProducts(self.mem,  "select * from products where obsolete=false order by name")
 
         self.layout.addWidget(self.w)
         self.w.show()

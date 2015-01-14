@@ -7,7 +7,7 @@ from libsources import *
 mem=MemProducts()
 mem.init__script('Morningstar update')
 
-w=WorkerMorningstar(mem, 1, "select * from products where type=2 and char_length(isin)>0 and active=true;")
+w=WorkerMorningstar(mem, 1, "select * from products where type=2 and char_length(isin)>0")
 w.run()
 
 mem.disconnect(mem.con)

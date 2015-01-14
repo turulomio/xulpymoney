@@ -80,7 +80,7 @@ class wdgProducts(QWidget, Ui_wdgProducts):
             else:
                 self.tblInvestments.setItem(i, 7, qtpc(inv.estimations_dps.currentYear().percentage()))  
                 
-            if inv.active==True:#Active
+            if inv.has_autoupdate()==True:#Active
                 self.tblInvestments.item(i, 4).setIcon(transfer)
             if inv.obsolete==True:#Obsolete
                 self.tblInvestments.item(i, 1).setFont(tachado)

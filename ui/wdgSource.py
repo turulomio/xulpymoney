@@ -62,21 +62,21 @@ class wdgSource(QWidget, Ui_wdgSource):
         self.products=SetProducts(self.mem)#Total of products of an Agrupation
         if self.class_sources==Sources.WorkerYahoo:
             cur=self.mem.con.cursor()
-            cur.execute("select count(*) from products where active=true and priority[1]=1")
+            cur.execute("select count(*) from products where priority[1]=1")
             num=cur.fetchone()[0]
             step=150
             for i in range (0, int(num/step)+1):
-                self.worker=WorkerYahoo(self.mem, "select * from products where active=true and priority[1]=1 {} order by ticker limit {} offset {};".format(self.strUserOnly(), step, step*i))
+                self.worker=WorkerYahoo(self.mem, "select * from products where priority[1]=1 {} order by ticker limit {} offset {};".format(self.strUserOnly(), step, step*i))
                 self.agrupation.append(self.worker)
             cur.close()           
         elif self.class_sources==Sources.WorkerYahooHistorical:
-            self.worker=WorkerYahooHistorical(self.mem, 0, "select * from products where active=true and priorityhistorical[1]=3 {}".format(self.strUserOnly()))
+            self.worker=WorkerYahooHistorical(self.mem, 0, "select * from products and priorityhistorical[1]=3 {}".format(self.strUserOnly()))
             self.agrupation.append(self.worker)
         elif self.class_sources==Sources.WorkerMercadoContinuo:                
-            self.worker=WorkerMercadoContinuo(self.mem, "select * from products where active=true and agrupations ilike '%MERCADOCONTINUO%' {};".format(self.strUserOnly()))
+            self.worker=WorkerMercadoContinuo(self.mem, "select * from products where agrupations ilike '%MERCADOCONTINUO%' {};".format(self.strUserOnly()))
             self.agrupation.append(self.worker)
         elif self.class_sources==Sources.WorkerMorningstar:
-            self.worker=WorkerMorningstar(self.mem, 0,  "select * from products where active=true  and priorityhistorical[1]=8 {}".format(self.strUserOnly()))
+            self.worker=WorkerMorningstar(self.mem, 0,  "select * from products where priorityhistorical[1]=8 {}".format(self.strUserOnly()))
             self.agrupation.append(self.worker)
         self.currentWorker=self.agrupation[0]# Current worker working
 

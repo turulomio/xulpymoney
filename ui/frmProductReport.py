@@ -112,7 +112,7 @@ class frmProductReport(QDialog, Ui_frmProductReport):
         self.txtMail.setText(self.product.mail)
         self.txtPhone.setText(self.product.phone)
 
-        if self.product.active==True:
+        if self.product.has_autoupdate()==True:
             self.chkActive.setCheckState(Qt.Checked)
         if self.product.obsolete==True:
             self.chkObsolete.setCheckState(Qt.Checked)          
@@ -392,7 +392,6 @@ class frmProductReport(QDialog, Ui_frmProductReport):
         self.product.currency=self.mem.currencies.find(self.cmbCurrency.itemData(self.cmbCurrency.currentIndex()))
         self.product.type=self.mem.types.find(self.cmbTipo.itemData(self.cmbTipo.currentIndex()))
         self.product.agrupations=SetAgrupations(self.mem).clone_from_combo(self.cmbAgrupations)
-        self.product.active=c2b(self.chkActive.checkState())
         self.product.obsolete=c2b(self.chkObsolete.checkState())
         self.product.web=self.txtWeb.text()
         self.product.address=self.txtAddress.text()

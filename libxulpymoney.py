@@ -223,7 +223,6 @@ class SetInvestments(SetCommons):
         """Muestra las inversiones activas que tienen el mq pasado como parametro"""
         arr=[]
         for i in self.arr:
-            print (i.product, investmentmq)
             if i.active==True and i.product==investmentmq:
                 arr.append(("{0} - {1}".format(i.cuenta.eb.name, i.name), i.id))
                         
@@ -3508,7 +3507,6 @@ class Product:
         self.currency=None #Apunta a un objeto currency
         self.type=None
         self.agrupations=None #Es un objeto SetAgrupations
-        self.active=None
         self.id=None
         self.web=None
         self.address=None
@@ -3523,8 +3521,6 @@ class Product:
         self.priorityhistorical=None
         self.comentario=None
         self.obsolete=None
-#        self.deletable=None
-#        self.system=None
         
         self.result=None#Variable en la que se almacena QuotesResult
         self.estimations_dps=SetEstimationsDPS(self.mem, self)#Es un diccionario que guarda objetos estimations_dps con clave el año
@@ -3541,7 +3537,6 @@ class Product:
         self.currency=self.mem.currencies.find(row['currency'])
         self.type=self.mem.types.find(row['type'])
         self.agrupations=self.mem.agrupations.clone_from_dbstring(row['agrupations'])
-        self.active=row['active']
         self.id=row['id']
         self.web=row['web']
         self.address=row['address']
@@ -3602,10 +3597,10 @@ class Product:
         if self.id==None:
             cur.execute(" select min(id)-1 from products;")
             id=cur.fetchone()[0]
-            cur.execute("insert into products (id, name,  isin,  currency,  type,  agrupations,  active,  web, address,  phone, mail, tpc, pci,  apalancado, id_bolsas, ticker, priority, priorityhistorical , comentario,  obsolete) values (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",  (id, self.name,  self.isin,  self.currency.id,  self.type.id,  self.agrupations.dbstring(),  self.active,  self.web, self.address,  self.phone, self.mail, self.tpc, self.mode.id,  self.apalancado.id, self.stockexchange.id, self.ticker, self.priority.array_of_id(), self.priorityhistorical.array_of_id() , self.comentario, self.obsolete))
+            cur.execute("insert into products (id, name,  isin,  currency,  type,  agrupations,   web, address,  phone, mail, tpc, pci,  apalancado, id_bolsas, ticker, priority, priorityhistorical , comentario,  obsolete) values (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",  (id, self.name,  self.isin,  self.currency.id,  self.type.id,  self.agrupations.dbstring(), self.web, self.address,  self.phone, self.mail, self.tpc, self.mode.id,  self.apalancado.id, self.stockexchange.id, self.ticker, self.priority.array_of_id(), self.priorityhistorical.array_of_id() , self.comentario, self.obsolete))
             self.id=id
         else:
-            cur.execute("update products set name=%s, isin=%s,currency=%s,type=%s, agrupations=%s, active=%s, web=%s, address=%s, phone=%s, mail=%s, tpc=%s, pci=%s, apalancado=%s, id_bolsas=%s, ticker=%s, priority=%s, priorityhistorical=%s, comentario=%s, obsolete=%s where id=%s", ( self.name,  self.isin,  self.currency.id,  self.type.id,  self.agrupations.dbstring(),  self.active,  self.web, self.address,  self.phone, self.mail, self.tpc, self.mode.id,  self.apalancado.id, self.stockexchange.id, self.ticker, self.priority.array_of_id(), self.priorityhistorical.array_of_id() , self.comentario, self.obsolete,  self.id))
+            cur.execute("update products set name=%s, isin=%s,currency=%s,type=%s, agrupations=%s, web=%s, address=%s, phone=%s, mail=%s, tpc=%s, pci=%s, apalancado=%s, id_bolsas=%s, ticker=%s, priority=%s, priorityhistorical=%s, comentario=%s, obsolete=%s where id=%s", ( self.name,  self.isin,  self.currency.id,  self.type.id,  self.agrupations.dbstring(),  self.web, self.address,  self.phone, self.mail, self.tpc, self.mode.id,  self.apalancado.id, self.stockexchange.id, self.ticker, self.priority.array_of_id(), self.priorityhistorical.array_of_id() , self.comentario, self.obsolete,  self.id))
         cur.close()
     
 
@@ -3613,11 +3608,11 @@ class Product:
         """Return if the product has autoupdate in some source"""
         if self.agrupations.dbstring().find("|MERCADOCONTINUO|")!=-1:#mercado continuo
             return True
-        elif self.prioritieshistorical.find(8)==2 and len(self.isin)>0:#Morningstar
+        elif self.priorityhistorical.find(8)==2 and len(self.isin)>0:#Morningstar
             return True
-        elif self.priorities.find(1)!=None and len(self.ticker)>0:#yahoo
+        elif self.priority.find(1)!=None and len(self.ticker)>0:#yahoo
             return True
-        elif self.prioritieshistorical.find(3)!=None and len(self.ticker)>0:#yahoohistorical
+        elif self.priorityhistorical.find(3)!=None and len(self.ticker)>0:#yahoohistorical
             return True
         return False
         
