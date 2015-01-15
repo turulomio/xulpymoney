@@ -298,7 +298,7 @@ class frmMain(QMainWindow, Ui_frmMain):
     @QtCore.pyqtSlot()  
     def on_actionMC_activated(self):
         self.w.close()
-        self.w=wdgProducts(self.mem, "select * from products where agrupations like '%|MERCADOCONTINUO|%' order by name,id")
+        self.w=wdgProducts(self.mem, "select * from products where agrupations like '%|MERCADOCONTINUO|%' and obsolete=false  order by name,id")
 
         self.layout.addWidget(self.w)
         self.w.show()
@@ -307,7 +307,15 @@ class frmMain(QMainWindow, Ui_frmMain):
     @QtCore.pyqtSlot()  
     def on_actionETFAll_activated(self):
         self.w.close()
-        self.w=wdgProducts(self.mem,  "select * from products where type=4 order by name, id")
+        self.w=wdgProducts(self.mem,  "select * from products where type=4 and obsolete=false order by name, id")
+
+        self.layout.addWidget(self.w)
+        self.w.show()
+        
+    @QtCore.pyqtSlot()  
+    def on_actionETFObsolete_activated(self):
+        self.w.close()
+        self.w=wdgProducts(self.mem,  "select * from products where type=4 and obsolete=true order by name, id")
 
         self.layout.addWidget(self.w)
         self.w.show()
@@ -339,14 +347,31 @@ class frmMain(QMainWindow, Ui_frmMain):
     @QtCore.pyqtSlot()  
     def on_actionSharesAll_activated(self):
         self.w.close()
-        self.w=wdgProducts(self.mem,  "select * from products where type=1 order by name, id")
+        self.w=wdgProducts(self.mem,  "select * from products where type=1 and obsolete=false order by name, id")
 
         self.layout.addWidget(self.w)
-        self.w.show()          
+        self.w.show()         
+        
+    @QtCore.pyqtSlot()  
+    def on_actionSharesObsolete_activated(self):
+        self.w.close()
+        self.w=wdgProducts(self.mem,  "select * from products where type=1  and obsolete=true order by name, id")
+
+        self.layout.addWidget(self.w)
+        self.w.show()        
+        
     @QtCore.pyqtSlot()  
     def on_actionWarrantsAll_activated(self):
         self.w.close()
-        self.w=wdgProducts(self.mem,  "select * from products where type=5 order by name, id")
+        self.w=wdgProducts(self.mem,  "select * from products where type=5 and obsolete=false order by name, id")
+
+        self.layout.addWidget(self.w)
+        self.w.show()          
+        
+    @QtCore.pyqtSlot()  
+    def on_actionWarrantsObsolete_activated(self):
+        self.w.close()
+        self.w=wdgProducts(self.mem,  "select * from products where type=5 and obsolete=true order by name, id")
 
         self.layout.addWidget(self.w)
         self.w.show()          
@@ -354,28 +379,37 @@ class frmMain(QMainWindow, Ui_frmMain):
     @QtCore.pyqtSlot()  
     def on_actionWarrantsCall_activated(self):
         self.w.close()
-        self.w=wdgProducts(self.mem,  "select * from products where type=5 and pci='c' order by name, id")
+        self.w=wdgProducts(self.mem,  "select * from products where type=5 and pci='c'  and obsolete=false order by name, id")
 
         self.layout.addWidget(self.w)
         self.w.show()              
     @QtCore.pyqtSlot()  
     def on_actionWarrantsPut_activated(self):
         self.w.close()
-        self.w=wdgProducts(self.mem,  "select * from products where type=5 and pci='p' order by name, id")
+        self.w=wdgProducts(self.mem,  "select * from products where type=5 and pci='p'  and obsolete=false order by name, id")
 
         self.layout.addWidget(self.w)
         self.w.show()              
     @QtCore.pyqtSlot()  
     def on_actionWarrantsInline_activated(self):
         self.w.close()
-        self.w=wdgProducts(self.mem,  "select * from products where type=5 and pci='i' order by name, id")
+        self.w=wdgProducts(self.mem,  "select * from products where type=5 and pci='i'  and obsolete=false order by name, id")
 
         self.layout.addWidget(self.w)
         self.w.show()      
+
     @QtCore.pyqtSlot()  
     def on_actionFundsAll_activated(self):
         self.w.close()
-        self.w=wdgProducts(self.mem,  "select * from products where type=2 order by name, id")
+        self.w=wdgProducts(self.mem,  "select * from products where type=2 and obsolete=false order by name, id")
+
+        self.layout.addWidget(self.w)
+        self.w.show()        
+        
+    @QtCore.pyqtSlot()  
+    def on_actionFundsObsolete_activated(self):
+        self.w.close()
+        self.w=wdgProducts(self.mem,  "select * from products where type=2 and obsolete=true order by name, id")
 
         self.layout.addWidget(self.w)
         self.w.show()                        
@@ -383,7 +417,7 @@ class frmMain(QMainWindow, Ui_frmMain):
     @QtCore.pyqtSlot()  
     def on_actionBondsPublic_activated(self):
         self.w.close()
-        self.w=wdgProducts(self.mem,  "select * from products where type=7 order by name, id")
+        self.w=wdgProducts(self.mem,  "select * from products where type=7 and obsolete=false order by name, id")
 
         self.layout.addWidget(self.w)
         self.w.show()                        
@@ -391,7 +425,7 @@ class frmMain(QMainWindow, Ui_frmMain):
     @QtCore.pyqtSlot()  
     def on_actionBondsPrivate_activated(self):
         self.w.close()
-        self.w=wdgProducts(self.mem,  "select * from products where type=9 order by name, id")
+        self.w=wdgProducts(self.mem,  "select * from products where type=9 and obsolete=false order by name, id")
 
         self.layout.addWidget(self.w)
         self.w.show()
@@ -441,7 +475,15 @@ class frmMain(QMainWindow, Ui_frmMain):
     @QtCore.pyqtSlot()  
     def on_actionBondsAll_activated(self):
         self.w.close()
-        self.w=wdgProducts(self.mem,  "select * from products where type in (7,9) order by name, id")
+        self.w=wdgProducts(self.mem,  "select * from products where type in (7,9) and obsolete=false order by name, id")
+
+        self.layout.addWidget(self.w)
+        self.w.show()
+        
+    @QtCore.pyqtSlot()  
+    def on_actionBondsObsolete_activated(self):
+        self.w.close()
+        self.w=wdgProducts(self.mem,  "select * from products where type in (7,9) and obsolete=true order by name, id")
 
         self.layout.addWidget(self.w)
         self.w.show()
@@ -458,7 +500,7 @@ class frmMain(QMainWindow, Ui_frmMain):
     @QtCore.pyqtSlot()  
     def on_actionLATIBEX_activated(self):
         self.w.close()
-        self.w=wdgProducts(self.mem,  "select  * from products where agrupations like '%|LATIBEX|%' order by name,id")
+        self.w=wdgProducts(self.mem,  "select  * from products where agrupations like '%|LATIBEX|%' and obsolete=false order by name,id")
         self.layout.addWidget(self.w)
         self.w.show()
         
@@ -466,6 +508,13 @@ class frmMain(QMainWindow, Ui_frmMain):
     def on_actionIndexesAll_activated(self):
         self.w.close()
         self.w=wdgProducts(self.mem,  "select  * from products where type=3 order by id_bolsas,name")
+        self.layout.addWidget(self.w)
+        self.w.show()      
+        
+    @QtCore.pyqtSlot()  
+    def on_actionIndexesObsolete_activated(self):
+        self.w.close()
+        self.w=wdgProducts(self.mem,  "select  * from products where type=3 and obsolete=true order by id_bolsas,name")
         self.layout.addWidget(self.w)
         self.w.show()        
                 
