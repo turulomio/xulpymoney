@@ -118,7 +118,18 @@ class Update:
             cur.execute("update products set priority=%s where id=79329", ([1, ], ))#Todos los fondos con isin deben estar en morning star
             cur.close()
             self.mem.con.commit()
-            self.set_database_version(201501151022)                 
+            self.set_database_version(201501151022)   
+        if self.dbversion<201501151153:
+            cur=self.mem.con.cursor()
+            cur.execute("update products set pci='p' where name ilike '%put%' and type=5;")#Warrants put to put
+            cur.execute("update products set apalancado=1 where type=5;")#Leverage to variable for all warrants
+            cur.execute("update products set obsolete=true where  name like '%/11 %' and type=5;")#Old warrants to obsolete
+            cur.execute("update products set obsolete=true where  name like '%/12 %' and type=5;")#Old warrants to obsolete
+            cur.execute("update products set obsolete=true where  name like '%/13 %' and type=5;")#Old warrants to obsolete
+            cur.execute("update products set obsolete=true where  name like '%/14 %' and type=5;")#Old warrants to obsolete
+            cur.close()
+            self.mem.con.commit()
+            self.set_database_version(201501151153)                 
         print ("**** Database already updated")
    
     def get_database_version(self):

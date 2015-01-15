@@ -124,6 +124,8 @@
      <addaction name="actionXetra"/>
      <addaction name="separator"/>
      <addaction name="actionIndexesAll"/>
+     <addaction name="separator"/>
+     <addaction name="actionIndexesObsolete"/>
     </widget>
     <widget class="QMenu" name="menuMaintenance">
      <property name="title">
@@ -155,12 +157,40 @@
       <string>Shares</string>
      </property>
      <addaction name="actionSharesAll"/>
+     <addaction name="separator"/>
+     <addaction name="actionSharesObsolete"/>
     </widget>
     <widget class="QMenu" name="menuCurrencies">
      <property name="title">
       <string>Currencies</string>
      </property>
      <addaction name="actionCurrenciesAll"/>
+    </widget>
+    <widget class="QMenu" name="menuBonds">
+     <property name="title">
+      <string>Bonds</string>
+     </property>
+     <addaction name="actionBondsPrivate"/>
+     <addaction name="actionBondsPublic"/>
+     <addaction name="actionBondsAll"/>
+     <addaction name="separator"/>
+     <addaction name="actionBondsObsolete"/>
+    </widget>
+    <widget class="QMenu" name="menuFunds">
+     <property name="title">
+      <string>Funds</string>
+     </property>
+     <addaction name="actionFundsAll"/>
+     <addaction name="separator"/>
+     <addaction name="actionFundsObsolete"/>
+    </widget>
+    <widget class="QMenu" name="menuETF">
+     <property name="title">
+      <string>ETF</string>
+     </property>
+     <addaction name="actionETFAll"/>
+     <addaction name="separator"/>
+     <addaction name="actionETFObsolete"/>
     </widget>
     <widget class="QMenu" name="menuWarrants">
      <property name="title">
@@ -171,26 +201,8 @@
      <addaction name="actionWarrantsCall"/>
      <addaction name="separator"/>
      <addaction name="actionWarrantsAll"/>
-    </widget>
-    <widget class="QMenu" name="menuBonds">
-     <property name="title">
-      <string>Bonds</string>
-     </property>
-     <addaction name="actionBondsPrivate"/>
-     <addaction name="actionBondsPublic"/>
-     <addaction name="actionBondsAll"/>
-    </widget>
-    <widget class="QMenu" name="menuFunds">
-     <property name="title">
-      <string>Funds</string>
-     </property>
-     <addaction name="actionFundsAll"/>
-    </widget>
-    <widget class="QMenu" name="menuETF">
-     <property name="title">
-      <string>ETF</string>
-     </property>
-     <addaction name="actionETFAll"/>
+     <addaction name="separator"/>
+     <addaction name="actionWarrantsObsolete"/>
     </widget>
     <addaction name="menuIndexes"/>
     <addaction name="menuShares"/>
@@ -861,6 +873,78 @@
    </property>
    <property name="toolTip">
     <string>Products of inactive investment</string>
+   </property>
+  </action>
+  <action name="actionIndexesObsolete">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/checkbox0.png</normaloff>:/xulpymoney/checkbox0.png</iconset>
+   </property>
+   <property name="text">
+    <string>Obsolete Indexes</string>
+   </property>
+   <property name="toolTip">
+    <string>Obsolete Indexes</string>
+   </property>
+  </action>
+  <action name="actionSharesObsolete">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/checkbox0.png</normaloff>:/xulpymoney/checkbox0.png</iconset>
+   </property>
+   <property name="text">
+    <string>Obsolete shares</string>
+   </property>
+   <property name="toolTip">
+    <string>Obsolete shares</string>
+   </property>
+  </action>
+  <action name="actionETFObsolete">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/checkbox0.png</normaloff>:/xulpymoney/checkbox0.png</iconset>
+   </property>
+   <property name="text">
+    <string>Obsolete ETFs</string>
+   </property>
+   <property name="toolTip">
+    <string>Obsolete ETFs</string>
+   </property>
+  </action>
+  <action name="actionWarrantsObsolete">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/checkbox0.png</normaloff>:/xulpymoney/checkbox0.png</iconset>
+   </property>
+   <property name="text">
+    <string>Obsolete warrants</string>
+   </property>
+   <property name="toolTip">
+    <string>Obsolete warrants</string>
+   </property>
+  </action>
+  <action name="actionFundsObsolete">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/checkbox0.png</normaloff>:/xulpymoney/checkbox0.png</iconset>
+   </property>
+   <property name="text">
+    <string>Obsolete funds</string>
+   </property>
+   <property name="toolTip">
+    <string>Obsolete funds</string>
+   </property>
+  </action>
+  <action name="actionBondsObsolete">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/checkbox0.png</normaloff>:/xulpymoney/checkbox0.png</iconset>
+   </property>
+   <property name="text">
+    <string>Obsolete bonds</string>
+   </property>
+   <property name="toolTip">
+    <string>Obsolete bonds</string>
    </property>
   </action>
  </widget>
