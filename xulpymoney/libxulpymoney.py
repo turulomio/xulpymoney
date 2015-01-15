@@ -3055,7 +3055,6 @@ class SetPriorities(SetCommons):
     def load_all(self):
         self.append(Priority().init__create(1,"Yahoo Financials. 200 pc."))
         self.append(Priority().init__create(2,"Fondos de la bolsa de Madrid. Todos pc."))
-        self.append(Priority().init__create(4,"Infobolsa. índices internacionales. 20 pc."))
         self.append(Priority().init__create(5,"Productos cotizados bonus. 20 pc."))
         self.append(Priority().init__create(6,"Societe Generale Warrants. Todos pc."))
         self.append(Priority().init__create(7,"Bond alemán desde http://jcbcarc.dyndns.org. 3 pc."))#SANTGES ERA 3, para que no se repitan

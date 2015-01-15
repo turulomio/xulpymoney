@@ -21,10 +21,13 @@ class wdgSource(QWidget, Ui_wdgSource):
         self.class_sources=class_sources
         self.widgettoupdate=self.parent.parent
 
-    def strUserOnly(self):
+    def strUserOnly(self,  withindex=False):
         """Returns a sql string if products must be filtered by user invesments"""
         if self.chkUserOnly.isChecked():
-            return " and id in (select distinct(products_id) from inversiones) "
+            if withindex==False:
+                return " and id in (select distinct(products_id) from inversiones) "
+            else:
+                return " and (id in (select distinct(products_id) from inversiones) or id in (select distinct (id) from products where type=3))"
         return ""
 
 
@@ -62,21 +65,21 @@ class wdgSource(QWidget, Ui_wdgSource):
         self.products=SetProducts(self.mem)#Total of products of an Agrupation
         if self.class_sources==Sources.WorkerYahoo:
             cur=self.mem.con.cursor()
-            cur.execute("select count(*) from products where priority[1]=1 and obsolete=false")
+            cur.execute("select count(*) from products where priority[1]=1 and obsolete=false {}".format(self.strUserOnly(True)))
             num=cur.fetchone()[0]
             step=150
             for i in range (0, int(num/step)+1):
-                self.worker=WorkerYahoo(self.mem, "select * from products where priority[1]=1 and obsolete=false {} order by ticker limit {} offset {};".format(self.strUserOnly(), step, step*i))
+                self.worker=WorkerYahoo(self.mem, "select * from products where priority[1]=1 and obsolete=false {} order by name limit {} offset {};".format(self.strUserOnly(True), step, step*i))
                 self.agrupation.append(self.worker)
             cur.close()           
         elif self.class_sources==Sources.WorkerYahooHistorical:
-            self.worker=WorkerYahooHistorical(self.mem, 0, "select * from products where priorityhistorical[1]=3 and obsolete=false {}".format(self.strUserOnly()))
+            self.worker=WorkerYahooHistorical(self.mem, 0, "select * from products where priorityhistorical[1]=3 and obsolete=false {} order by name".format(self.strUserOnly(True)))
             self.agrupation.append(self.worker)
         elif self.class_sources==Sources.WorkerMercadoContinuo:                
-            self.worker=WorkerMercadoContinuo(self.mem, "select * from products where agrupations ilike '%MERCADOCONTINUO%' and obsolete=false {};".format(self.strUserOnly()))
+            self.worker=WorkerMercadoContinuo(self.mem, "select * from products where agrupations ilike '%MERCADOCONTINUO%' and obsolete=false {} order by name".format(self.strUserOnly()))
             self.agrupation.append(self.worker)
         elif self.class_sources==Sources.WorkerMorningstar:
-            self.worker=WorkerMorningstar(self.mem, 0,  "select * from products where priorityhistorical[1]=8 and obsolete=false {}".format(self.strUserOnly()))
+            self.worker=WorkerMorningstar(self.mem, 0,  "select * from products where priorityhistorical[1]=8 and obsolete=false {} order by name;".format(self.strUserOnly()))
             self.agrupation.append(self.worker)
         self.currentWorker=self.agrupation[0]# Current worker working
 
