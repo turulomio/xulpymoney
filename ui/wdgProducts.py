@@ -208,19 +208,11 @@ class wdgProducts(QWidget, Ui_wdgProducts):
         
     @QtCore.pyqtSlot() 
     def on_actionMergeCodes_activated(self):
-        #Saca codeorigen y codedestino        
-        selected=[]
-        for i in self.tblInvestments.selectedItems():
-            if i.column()==0:
-                selected.append(self.products[i.row()])
-        print (selected)
-        
-
-        #Llama a form
+        #Only two checked in custom contest       
         d=QDialog(self)        
         d.setFixedSize(800, 210)
         d.setWindowTitle(self.tr("Merging codes"))
-        w=wdgMergeCodes(self.mem, selected[0], selected[1])
+        w=wdgMergeCodes(self.mem, self.products.selected[0], self.products.selected[1])
         lay = QVBoxLayout(d)
         lay.addWidget(w)
         d.exec_()
