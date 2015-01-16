@@ -5102,7 +5102,7 @@ S&#xc3;&#xb3;lo se contabilizar&#xc3;&#xa1; cuando se vendan las acciones</sourc
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgProducts.py" line="249"/>
+        <location filename="ui/wdgProducts.py" line="241"/>
         <source>{0} quotes have been purged from {1}</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5132,7 +5132,7 @@ S&#xc3;&#xb3;lo se contabilizar&#xc3;&#xa1; cuando se vendan las acciones</sourc
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgProducts.py" line="223"/>
+        <location filename="ui/wdgProducts.py" line="215"/>
         <source>Merging codes</source>
         <translation type="unfinished"></translation>
     </message>

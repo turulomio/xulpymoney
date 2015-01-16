@@ -3646,6 +3646,9 @@ class Product:
         
         
     def is_deletable(self):
+        if self.is_system():
+            return False
+            
         #Search in all investments
         for i in self.mem.data.investments_all().arr:
             if i.product.id==self.id:

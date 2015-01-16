@@ -5107,7 +5107,7 @@ S&#xc3;&#xb3;lo se contabilizar&#xc3;&#xa1; cuando se vendan las acciones</sourc
         <translation>Borrando datos del producto seleccionado ({0}). Si el producto usaba actualizaciones manuales, los datos no serán recuperados. ¿Quieres continuar?</translation>
     </message>
     <message>
-        <location filename="ui/wdgProducts.py" line="249"/>
+        <location filename="ui/wdgProducts.py" line="241"/>
         <source>{0} quotes have been purged from {1}</source>
         <translation>{0} cotizaciones han sido purgadas de {1}</translation>
     </message>
@@ -5137,7 +5137,7 @@ S&#xc3;&#xb3;lo se contabilizar&#xc3;&#xa1; cuando se vendan las acciones</sourc
         <translation>Añadir a favoritos</translation>
     </message>
     <message>
-        <location filename="ui/wdgProducts.py" line="223"/>
+        <location filename="ui/wdgProducts.py" line="215"/>
         <source>Merging codes</source>
         <translation>Juntando códigos</translation>
     </message>
