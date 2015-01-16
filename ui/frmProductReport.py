@@ -56,6 +56,9 @@ class frmProductReport(QDialog, Ui_frmProductReport):
             self.tab.setTabEnabled(2, False)
             self.tab.setTabEnabled(3, False)
             self.cmdSave.setText(self.tr("Add a new product"))
+        else:
+            if self.product.id>0:
+                self.grpInformation.setEnabled(False)
 
         self.canvasIntraday=canvasChartIntraday( self.mem, self)
         self.ntbIntraday = NavigationToolbar2QTAgg(self.canvasIntraday, self)

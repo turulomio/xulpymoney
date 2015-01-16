@@ -57,7 +57,7 @@
         <enum>QTabWidget::West</enum>
        </property>
        <property name="currentIndex">
-        <number>3</number>
+        <number>0</number>
        </property>
        <widget class="QWidget" name="tabInformacion">
         <attribute name="title">
@@ -67,7 +67,7 @@
          <item>
           <layout class="QVBoxLayout" name="verticalLayout_5">
            <item>
-            <widget class="QGroupBox" name="groupBox_7">
+            <widget class="QGroupBox" name="grpInformation">
              <property name="title">
               <string>Information</string>
              </property>
