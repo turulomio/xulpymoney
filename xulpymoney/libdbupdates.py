@@ -129,7 +129,18 @@ class Update:
             cur.execute("update products set obsolete=true where  name like '%/14 %' and type=5;")#Old warrants to obsolete
             cur.close()
             self.mem.con.commit()
-            self.set_database_version(201501151153)                 
+            self.set_database_version(201501151153)   
+        if self.dbversion<201501160640:
+            cur=self.mem.con.cursor()
+            cur.execute("""insert into products (id, name,  isin,  currency,  type,  agrupations,   web, address,  phone, mail, tpc, pci,  apalancado, id_bolsas, ticker, priority, priorityhistorical , comentario,  obsolete) values 
+                (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)""",
+                (81701, 'Abengoa B',  'ES0105200002', 'EUR', 1, '|IBEX|MERCADOCONTINUO|', None, None, None, None, 100, 'c',0, 1, 'ABG-P.MC',[1, ],[3, ], None, False))
+            cur.execute("update products set agrupations=%s where id=%s", ( '|IBEX|MERCADOCONTINUO|',81111 ))
+            cur.execute("update products set agrupations=%s where id=%s", ( '|MERCADOCONTINUO|',81115 ))
+            cur.execute("update products set agrupations=%s where id=%s", ( '|MERCADOCONTINUO|',79397 ))
+            cur.close()
+            self.mem.con.commit()
+            self.set_database_version(201501160640)                 
         print ("**** Database already updated")
    
     def get_database_version(self):
