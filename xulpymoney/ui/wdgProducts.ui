@@ -280,14 +280,8 @@
    <property name="text">
     <string>New product</string>
    </property>
-  </action>
-  <action name="actionProductEdit">
-   <property name="icon">
-    <iconset resource="../images/xulpymoney.qrc">
-     <normaloff>:/xulpymoney/document-edit.png</normaloff>:/xulpymoney/document-edit.png</iconset>
-   </property>
-   <property name="text">
-    <string>Edit product</string>
+   <property name="toolTip">
+    <string>New user product</string>
    </property>
   </action>
   <action name="actionProductDelete">
@@ -299,7 +293,7 @@
     <string>Delete product</string>
    </property>
    <property name="toolTip">
-    <string>Delete product</string>
+    <string>Delete user product</string>
    </property>
   </action>
   <action name="actionFavorites">
@@ -360,30 +354,6 @@
    </property>
    <property name="toolTip">
     <string>Deletes quotes innecesary. Leaves open, high, low and close quotes.</string>
-   </property>
-  </action>
-  <action name="actionConvertProductToSystem">
-   <property name="icon">
-    <iconset resource="../images/xulpymoney.qrc">
-     <normaloff>:/xulpymoney/admin.png</normaloff>:/xulpymoney/admin.png</iconset>
-   </property>
-   <property name="text">
-    <string>Convert product to system product</string>
-   </property>
-   <property name="toolTip">
-    <string>Convert product to system product</string>
-   </property>
-  </action>
-  <action name="actionConvertProductToUser">
-   <property name="icon">
-    <iconset resource="../images/xulpymoney.qrc">
-     <normaloff>:/xulpymoney/admin.png</normaloff>:/xulpymoney/admin.png</iconset>
-   </property>
-   <property name="text">
-    <string>Convert product to user product</string>
-   </property>
-   <property name="toolTip">
-    <string>Convert product to user product</string>
    </property>
   </action>
  </widget>
