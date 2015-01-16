@@ -340,6 +340,7 @@ class frmMain(QMainWindow, Ui_frmMain):
             return
         self.w.close()
         self.w=wdgProducts(self.mem,  "select * from products where id in ("+str(favoritos)[1:-1]+") order by name, id")
+        self.w.showingfavorites=True
 
         self.layout.addWidget(self.w)
         self.w.show()

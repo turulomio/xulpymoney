@@ -375,6 +375,7 @@ class SetProducts(SetCommons):
         """sql es una query sobre la tabla inversiones
         Carga estimations_dbs, y basic
         """
+        self.clean()
         curms=self.mem.con.cursor()
         curms.execute(sql)#"select * from products where id in ("+lista+")" 
         if progress==True:
@@ -394,6 +395,11 @@ class SetProducts(SetCommons):
             self.append(inv)
         curms.close()
 
+    def order_by_datetime(self):
+        """Orders the Set using self.arr"""
+        self.arr=sorted(self.arr, key=lambda c: c.result.basic.last.datetime,  reverse=False)     
+        return self.arr
+        
     def subset_with_same_type(self, type):
         """Returns a SetProduct with all products with the type passed as parameter.
         Type is an object"""
@@ -408,24 +414,38 @@ class SetProducts(SetCommons):
         tachado = QFont()
         tachado.setStrikeOut(True)        #Fuente tachada
         transfer=QIcon(":/xulpymoney/transfer.png")
-        table.setColumnCount(5)
+        table.setColumnCount(8)
         table.settings(section,  self.mem)    
-        table.setHorizontalHeaderItem(0, QTableWidgetItem(QApplication.translate("Core","Product")))
-        table.setHorizontalHeaderItem(1, QTableWidgetItem(QApplication.translate("Core","Id")))
+        table.setHorizontalHeaderItem(0, QTableWidgetItem(QApplication.translate("Core","Id")))
+        table.setHorizontalHeaderItem(1, QTableWidgetItem(QApplication.translate("Core","Product")))
         table.setHorizontalHeaderItem(2, QTableWidgetItem(QApplication.translate("Core","ISIN")))
         table.setHorizontalHeaderItem(3, QTableWidgetItem(QApplication.translate("Core","Last update")))
-        table.setHorizontalHeaderItem(4, QTableWidgetItem(QApplication.translate("Core","Value")))
+        table.setHorizontalHeaderItem(4, QTableWidgetItem(QApplication.translate("Core","Price")))
+        table.setHorizontalHeaderItem(5, QTableWidgetItem(QApplication.translate("Core","% Daily")))
+        table.setHorizontalHeaderItem(6, QTableWidgetItem(QApplication.translate("Core","% Year to date")))
+        table.setHorizontalHeaderItem(7, QTableWidgetItem(QApplication.translate("Core","% Dividend")))
+   
+        table.clearSelection()    
+        table.setFocus()
         table.horizontalHeader().setStretchLastSection(False)   
         table.clearContents()
         table.setRowCount(self.length())
         for i, p in enumerate(self.arr):
-            table.setItem(i, 0, QTableWidgetItem(p.name.upper()))
-            table.setItem(i, 1, QTableWidgetItem(str(p.id)))
-            table.item(i, 0).setIcon(p.stockexchange.country.qicon())
+            table.setItem(i, 0, QTableWidgetItem(str(p.id)))
+            table.setItem(i, 1, QTableWidgetItem(p.name.upper()))
+            table.item(i, 1).setIcon(p.stockexchange.country.qicon())
             table.setItem(i, 2, QTableWidgetItem(p.isin))   
             table.setItem(i, 3, qdatetime(p.result.basic.last.datetime, p.stockexchange.zone))#, self.mem.localzone.name)))
             table.setItem(i, 4, p.currency.qtablewidgetitem(p.result.basic.last.quote, 6 ))  
 
+            table.setItem(i, 5, qtpc(p.result.basic.tpc_diario()))
+            table.setItem(i, 6, qtpc(p.result.basic.tpc_anual()))           
+            if p.estimations_dps.currentYear()==None:
+                table.setItem(i, 7, qtpc(None))
+                table.item(i, 7).setBackgroundColor( QColor(255, 182, 182))          
+            else:
+                table.setItem(i, 7, qtpc(p.estimations_dps.currentYear().percentage()))  
+                
             if p.has_autoupdate()==True:#Active
                 table.item(i, 4).setIcon(transfer)
             if p.obsolete==True:#Obsolete
