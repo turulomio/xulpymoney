@@ -132,15 +132,43 @@ class Update:
             self.set_database_version(201501151153)   
         if self.dbversion<201501160640:
             cur=self.mem.con.cursor()
-            cur.execute("""insert into products (id, name,  isin,  currency,  type,  agrupations,   web, address,  phone, mail, tpc, pci,  apalancado, id_bolsas, ticker, priority, priorityhistorical , comentario,  obsolete) values 
-                (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)""",
+            cur.execute("""insert into products (id, name,  isin,  currency,  type,  agrupations,   web, address,  phone, mail, tpc, pci,  apalancado, id_bolsas, ticker, priority, priorityhistorical , comentario,  obsolete) values  (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)""",
                 (81701, 'Abengoa B',  'ES0105200002', 'EUR', 1, '|IBEX|MERCADOCONTINUO|', None, None, None, None, 100, 'c',0, 1, 'ABG-P.MC',[1, ],[3, ], None, False))
             cur.execute("update products set agrupations=%s where id=%s", ( '|IBEX|MERCADOCONTINUO|',81111 ))
             cur.execute("update products set agrupations=%s where id=%s", ( '|MERCADOCONTINUO|',81115 ))
             cur.execute("update products set agrupations=%s where id=%s", ( '|MERCADOCONTINUO|',79397 ))
             cur.close()
             self.mem.con.commit()
-            self.set_database_version(201501160640)                 
+            self.set_database_version(201501160640)      
+        if self.dbversion<201501160812:
+            cur=self.mem.con.cursor()
+            cur.execute("""insert into products (id, name,  isin,  currency,  type,  agrupations,   web, address,  phone, mail, tpc, pci,  apalancado, id_bolsas, ticker, priority, priorityhistorical , comentario,  obsolete) values (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)""",
+                (81702, 'Airbus group',  'NL0000235190', 'EUR', 1, '|CAC|EUROSTOXX|', None, None, None, None, 100, 'c',0, 3, 'AIR.PA',[1, ],[3, ], None, False))
+            cur.execute("update products set agrupations=%s where id=%s", ( None,81085 ))
+            cur.execute("update products set agrupations=%s where id=%s", ( None,75143 ))
+            cur.execute("update products set agrupations=%s where id=%s", ( '|CAC|',78915 ))
+            cur.execute("update products set obsolete=%s where id=%s;", (True, 79008))
+            cur.execute("update products set ticker=%s, priority=%s, priorityhistorical=%s where id=%s;", ('MUV2.DE',[1, ],[3, ],  80407))
+            cur.execute("update products set ticker=%s, priority=%s, priorityhistorical=%s where id=%s;", ('PHIA.AS',[1, ],[3, ],  77096))
+            cur.execute("update products set ticker=%s, priority=%s, priorityhistorical=%s where id=%s;", ('SAN.PA',[1, ],[3, ],  79028))
+            cur.execute("update products set ticker=%s, priority=%s, priorityhistorical=%s where id=%s;", ('SAP.DE',[1, ],[3, ],  80867))
+            cur.execute("update products set ticker=%s, priority=%s, priorityhistorical=%s where id=%s;", ('SU.PA',[1, ],[3, ],  77242))
+            cur.execute("update products set ticker=%s, priority=%s, priorityhistorical=%s where id=%s;", ('SIE.DE',[1, ],[3, ],  80920))
+            cur.close()
+            self.mem.con.commit()
+            self.set_database_version(201501160812)     
+        if self.dbversion<201501160838:
+            cur=self.mem.con.cursor()
+            cur.execute("update products set ticker=%s, agrupations=%s, priority=%s, priorityhistorical=%s where id=%s;", ('DPW.DE','|DAX|DEUTSCHEBOERSE|EUROSTOXX|', [1, ],[3, ],  79588))
+            cur.execute("update products set agrupations=%s where id=%s", ( None,79008 ))
+            cur.close()
+            self.mem.con.commit()
+            self.set_database_version(201501160838)       
+  
+
+        """AFTER EXECUTING I MUST RUN SQL UPDATE SCRIPT TO UPDATE FUTURE INSTALLATIONS
+    
+    OJO EN LOS REEMPLAZOS MASIVOS PORQUE UN ACTIVE DE PRODUCTS LUEGO PASA A LLAMARSE AUTOUPDATE PERO DEBERA MANTENERSSE EN SU MOMENTO TEMPORAL"""  
         print ("**** Database already updated")
    
     def get_database_version(self):
