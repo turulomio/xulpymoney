@@ -52,25 +52,25 @@ class wdgProducts(QWidget, Ui_wdgProducts):
 
     @QtCore.pyqtSlot() 
     def on_actionProductDelete_activated(self):
-        if self.selProduct.is_deletable()==False:
+        if self.products.selected[0].is_deletable()==False:
             m=QMessageBox()
             m.setText(self.tr("This product can't be removed, because is marked as not romavable"))
             m.exec_()    
             return
             
-        if self.selProduct.is_system()==True:
+        if self.products.selected[0].is_system()==True:
             m=QMessageBox()
             m.setText(self.tr("This product can't be removed, because is a system product"))
             m.exec_()    
             return
             
-        respuesta = QMessageBox.warning(self, self.tr("Xulpymoney"), self.tr("Deleting data from selected product ({0}). If you use manual update mode, data won't be recovered. Do you want to continue?".format(self.selProduct.id)), QMessageBox.Ok | QMessageBox.Cancel)
+        respuesta = QMessageBox.warning(self, self.tr("Xulpymoney"), self.tr("Deleting data from selected product ({0}). If you use manual update mode, data won't be recovered. Do you want to continue?".format(self.products.selected[0].id)), QMessageBox.Ok | QMessageBox.Cancel)
         if respuesta==QMessageBox.Ok:
             con=self.mem.connect_from_config()
             cur = con.cursor()
-            cur.execute("delete from products where id=%s", (self.selProduct.id, ))
-            cur.execute("delete from quotes where id=%s", (self.selProduct.id, ))
-            cur.execute("delete from estimations_dps where id=%s", (self.selProduct.id, ))
+            cur.execute("delete from products where id=%s", (self.products.selected[0].id, ))
+            cur.execute("delete from quotes where id=%s", (self.products.selected[0].id, ))
+            cur.execute("delete from estimations_dps where id=%s", (self.products.selected[0].id, ))
             con.commit()
             cur.close()     
             self.mem.disconnect(con)    
@@ -87,7 +87,7 @@ class wdgProducts(QWidget, Ui_wdgProducts):
 
     @QtCore.pyqtSlot() 
     def on_actionProductReport_activated(self):
-        w=frmProductReport(self.mem, self.selProduct, None,  self)
+        w=frmProductReport(self.mem, self.products.selected[0], None,  self)
         w.exec_()        
         self.build_array(self.sql)
         self.products.myqtablewidget(self.tblInvestments,"wdgProducts")
@@ -239,27 +239,27 @@ class wdgProducts(QWidget, Ui_wdgProducts):
     @QtCore.pyqtSlot()  
     def on_actionPurge_activated(self):
         all=SetQuotesAll(self.mem)
-        all.load_from_db(self.selProduct)
+        all.load_from_db(self.products.selected[0])
         numpurged=all.purge(progress=True)
         if numpurged!=None:#Canceled
             self.mem.con.commit()
             m=QMessageBox()
             m.setIcon(QMessageBox.Information)
-            m.setText(self.tr("{0} quotes have been purged from {1}".format(numpurged, self.selProduct.name)))
+            m.setText(self.tr("{0} quotes have been purged from {1}".format(numpurged, self.products.selected[0].name)))
             m.exec_()    
         else:
             self.mem.con.rollback()
 
     @QtCore.pyqtSlot()  
     def on_actionQuoteNew_activated(self):
-        w=frmQuotesIBM(self.mem,  self.selProduct)
+        w=frmQuotesIBM(self.mem,  self.products.selected[0])
         w.exec_()               
         self.build_array(self.sql)
         self.products.myqtablewidget(self.tblInvestments,"wdgProducts")  
 
     @QtCore.pyqtSlot()  
     def on_actionEstimationDPSNew_activated(self):
-        d=frmEstimationsAdd(self.mem, self.selProduct, "dps")
+        d=frmEstimationsAdd(self.mem, self.products.selected[0], "dps")
         d.exec_()
         if d.result()==QDialog.Accepted:
             self.build_array(self.sql)
