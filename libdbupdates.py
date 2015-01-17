@@ -163,7 +163,13 @@ class Update:
             cur.execute("update products set agrupations=%s where id=%s", ( None,79008 ))
             cur.close()
             self.mem.con.commit()
-            self.set_database_version(201501160838)       
+            self.set_database_version(201501160838)      
+        if self.dbversion<201501170838:
+            cur=self.mem.con.cursor()
+            cur.execute("update products set obsolete=true where type=2 and id in (select id from products where type=2 except select id from products where type=2 and id in (select distinct (id) from quotes));")#Pone obsoletos fondos que no tengan cotizaciones despues de varios morningstar
+            cur.close()
+            self.mem.con.commit()
+            self.set_database_version(201501170838)       
   
 
         """AFTER EXECUTING I MUST RUN SQL UPDATE SCRIPT TO UPDATE FUTURE INSTALLATIONS

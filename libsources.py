@@ -297,11 +297,16 @@ class WorkerMorningstar(SourceIterateProducts):
     def on_execute_product(self,  id_product):
         """inico y fin son dos dates entre los que conseguir los datos."""
         product=self.products.find(id_product)
+        
+        if product.result.basic.last.datetime.date()==datetime.date.today()-datetime.timedelta(days=1):#if I already got yesterday's price return
+            self.log("I already got yesterday's price: {}".format(product.name))
+            return
 
         #Search morningstar code
         url='http://www.morningstar.es/es/funds/SecuritySearchResults.aspx?search='+product.isin+'&type='
         web=self.load_page(url)
         if web==None:
+            self.log("Error downloading page")
             return
             
         for i in web.readlines(): 
