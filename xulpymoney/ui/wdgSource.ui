@@ -33,9 +33,6 @@
     <layout class="QVBoxLayout" name="verticalLayout">
      <item>
       <widget class="QGroupBox" name="grp">
-       <property name="title">
-        <string>Quotes result</string>
-       </property>
        <layout class="QVBoxLayout" name="verticalLayout_2">
         <item>
          <layout class="QHBoxLayout" name="horizontalLayout_2">
@@ -60,7 +57,7 @@
              </size>
             </property>
             <property name="text">
-             <string>Source</string>
+             <string>Update progress</string>
             </property>
            </widget>
           </item>

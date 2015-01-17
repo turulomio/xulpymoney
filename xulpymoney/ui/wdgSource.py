@@ -20,6 +20,14 @@ class wdgSource(QWidget, Ui_wdgSource):
         self.steps=None#Define the steps of the self.progress bar
         self.class_sources=class_sources
         self.widgettoupdate=self.parent.parent
+        if self.class_sources==Sources.WorkerYahoo:
+                self.grp.setTitle(self.tr("Yahoo source"))
+        elif self.class_sources==Sources.WorkerYahooHistorical:
+                self.grp.setTitle(self.tr("Yahoo historical source"))
+        elif self.class_sources==Sources.WorkerMercadoContinuo:      
+                self.grp.setTitle(self.tr("Mercado Continuo source"))
+        elif self.class_sources==Sources.WorkerMorningstar:
+                self.grp.setTitle(self.tr("Morningstar source"))
 
     def strUserOnly(self,  withindex=False):
         """Returns a sql string if products must be filtered by user invesments"""
@@ -29,7 +37,6 @@ class wdgSource(QWidget, Ui_wdgSource):
             else:
                 return " and (id in (select distinct(products_id) from inversiones) or id in (select distinct (id) from products where type=3))"
         return ""
-
 
     def setWidgetToUpdate(self, widget):
         """Used to update when runing, by default is parent parent"""
@@ -86,7 +93,6 @@ class wdgSource(QWidget, Ui_wdgSource):
         #Make connections
         for worker in self.agrupation:
             QObject.connect(worker, SIGNAL("step_finished"), self.progress_step)   
-        self.lbl.setText(self.worker.__class__.__name__)
         
         #Starts
         self.emit(SIGNAL("started")) 
@@ -106,7 +112,6 @@ class wdgSource(QWidget, Ui_wdgSource):
                 self.progress_step(True)
                 break
         
-        self.grp.setTitle(self.tr("{} quotes got from the source").format(self.totals.quotes.length()))
         self.cmdInserted.setText(self.tr("{} Inserted").format(self.totals.inserted.length()))
         self.cmdEdited.setText(self.tr("{} Edited").format(self.totals.modified.length()))
         self.cmdIgnored.setText(self.tr("{} Ignored").format(self.totals.ignored.length()))
@@ -130,7 +135,7 @@ class wdgSource(QWidget, Ui_wdgSource):
 
     def on_cmdInserted_released(self):
         d=QDialog(self)        
-        d.setFixedSize(900, 670)
+        d.showMaximized()
         d.setWindowTitle(self.trUtf8("Inserted quotes"))
         t=myQTableWidget(d)
         self.totals.inserted.myqtablewidget(t, "wdgSource")
@@ -140,7 +145,7 @@ class wdgSource(QWidget, Ui_wdgSource):
         
     def on_cmdEdited_released(self):
         d=QDialog(self)        
-        d.setFixedSize(900, 670)
+        d.showMaximized()
         d.setWindowTitle(self.trUtf8("Edited quotes"))
         t=myQTableWidget(d)
         self.totals.modified.myqtablewidget(t, "wdgSource")
@@ -150,7 +155,7 @@ class wdgSource(QWidget, Ui_wdgSource):
         
     def on_cmdIgnored_released(self):
         d=QDialog(self)        
-        d.setFixedSize(900, 670)
+        d.showMaximized()
         d.setWindowTitle(self.trUtf8("Ignored quotes"))
         t=myQTableWidget(d)
         self.totals.ignored.myqtablewidget(t, "wdgSource")
@@ -160,7 +165,7 @@ class wdgSource(QWidget, Ui_wdgSource):
         
     def on_cmdErrors_released(self):
         d=QDialog(self)        
-        d.setFixedSize(900, 670)
+        d.showMaximized()
         d.setWindowTitle(self.trUtf8("Error procesing the source"))
         terrors=myQTableWidget(d)
         self.totals.myqtablewidget_errors(terrors, "wdgSource")
@@ -170,7 +175,7 @@ class wdgSource(QWidget, Ui_wdgSource):
 
     def on_cmdBad_released(self):
         d=QDialog(self)        
-        d.setFixedSize(900, 670)
+        d.showMaximized()
         d.setWindowTitle(self.trUtf8("Error procesing the source"))
         t=myQTableWidget(d)
         self.totals.bad.myqtablewidget(t, "wdgSource")
@@ -180,7 +185,7 @@ class wdgSource(QWidget, Ui_wdgSource):
         
     def on_cmdSearched_released(self):
         d=QDialog(self)        
-        d.setFixedSize(900, 670)
+        d.showMaximized()
         d.setWindowTitle(self.trUtf8("Error procesing the source"))
         t=myQTableWidget(d)
         self.products.myqtablewidget(t, "wdgSource")
