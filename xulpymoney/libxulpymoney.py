@@ -449,7 +449,6 @@ class SetProducts(SetCommons):
             if p.has_autoupdate()==True:#Active
                 table.item(i, 4).setIcon(transfer)
             if p.obsolete==True:#Obsolete
-                print (table.columnCount(q))
                 for c in range(table.columnCount()):
                     table.item(i, c).setFont(tachado)
 
