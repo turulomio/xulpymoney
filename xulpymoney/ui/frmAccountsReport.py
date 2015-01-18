@@ -114,12 +114,12 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
             
         if self.actionCreditCardActivate.isChecked():#Ha pasado de inactiva a activa
             self.selCreditCard.active=True
-            self.mem.data.tarjetas_inactive.arr.remove(self.selCreditCard)
-            self.mem.data.tarjetas_active.arr.append(self.selCreditCard)
+            self.mem.data.tarjetas_inactive.remove(self.selCreditCard)
+            self.mem.data.tarjetas_active.append(self.selCreditCard)
         else:
             self.selCreditCard.active=False
-            self.mem.data.tarjetas_inactive.arr.append(self.selCreditCard)
-            self.mem.data.tarjetas_active.arr.remove(self.selCreditCard)
+            self.mem.data.tarjetas_inactive.append(self.selCreditCard)
+            self.mem.data.tarjetas_active.remove(self.selCreditCard)
         self.selCreditCard.save()
         self.mem.con.commit()
         

@@ -93,13 +93,13 @@ class wdgInvestments(QWidget, Ui_wdgInvestments):
         self.mem.con.commit()     
         #Recoloca en los SetInvestments
         if self.selInvestment.active==True:#Está todavía en inactivas
-            self.mem.data.investments_active.arr.append(self.selInvestment)
+            self.mem.data.investments_active.append(self.selInvestment)
             if self.mem.data.investments_inactive!=None:#Puede que no se haya cargado
-                self.mem.data.investments_inactive.arr.remove(self.selInvestment)
+                self.mem.data.investments_inactive.remove(self.selInvestment)
         else:#Está todavía en activas
-            self.mem.data.investments_active.arr.remove(self.selInvestment)
+            self.mem.data.investments_active.remove(self.selInvestment)
             if self.mem.data.investments_inactive!=None:#Puede que no se haya cargado
-                self.mem.data.investments_inactive.arr.append(self.selInvestment)
+                self.mem.data.investments_inactive.append(self.selInvestment)
         self.on_chkInactivas_stateChanged(self.chkInactivas.checkState())#Carga la tabla
 
             
@@ -108,8 +108,7 @@ class wdgInvestments(QWidget, Ui_wdgInvestments):
         cur = self.mem.con.cursor()
         self.selInvestment.borrar(cur)
         self.mem.con.commit()
-        self.mem.data.investments_active.arr.remove(self.selInvestment)
-#        self.inversiones.arr.remove(self.selInvestment) #Apunta a ella
+        self.mem.data.investments_active.remove(self.selInvestment)
         cur.close()
         self.on_chkInactivas_stateChanged(self.chkInactivas.checkState())#Carga la tabla
 
@@ -242,7 +241,11 @@ class wdgInvestments(QWidget, Ui_wdgInvestments):
         if column==8:#TPC Venta
             m=QMessageBox()
             m.setIcon(QMessageBox.Information)
-            m.setText(self.trUtf8("Shares number: {0}").format(self.selInvestment.acciones())+"\n"+self.trUtf8("Purchase price average: {0}").format(self.selInvestment.product.currency.string(self.selInvestment.op_actual.valor_medio_compra()))+"\n"+self.tr("Selling point: {}").format(self.selInvestment.product.currency.string(self.selInvestment.venta)))
+            m.setText(self.trUtf8("Shares number: {0}").format(self.selInvestment.acciones())+"\n"+
+                    self.trUtf8("Purchase price average: {0}").format(self.selInvestment.product.currency.string(self.selInvestment.op_actual.valor_medio_compra()))+"\n"+
+                    self.tr("Selling point: {}").format(self.selInvestment.product.currency.string(self.selInvestment.venta))+"\n"+
+                    self.tr("Selling all shares you get {}").format(self.selInvestment.product.currency.string(self.selInvestment.op_actual.pendiente(Quote(self.mem).init__create(self.selInvestment.product, self.mem.localzone.now(),  self.selInvestment.venta))))
+            )
             m.exec_()     
         else:
             myQTableWidget.on_cellDoubleClicked(self.tblInvestments, row, column)

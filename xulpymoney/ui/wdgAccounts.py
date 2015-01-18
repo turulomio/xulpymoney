@@ -107,11 +107,11 @@ class wdgAccounts(QWidget, Ui_wdgAccounts):
         self.mem.con.commit()     
         #Recoloca en los Setcuentas
         if self.selAccount.active==True:#Está todavía en inactivas
-            self.mem.data.accounts_active.arr.append(self.selAccount)
-            self.mem.data.accounts_inactive.arr.remove(self.selAccount)
+            self.mem.data.accounts_active.append(self.selAccount)
+            self.mem.data.accounts_inactive.remove(self.selAccount)
         else:#Está todavía en activas
-            self.mem.data.accounts_active.arr.remove(self.selAccount)
-            self.mem.data.accounts_inactive.arr.append(self.selAccount)    
+            self.mem.data.accounts_active.remove(self.selAccount)
+            self.mem.data.accounts_inactive.append(self.selAccount)    
         self.load_table()
 
     @QtCore.pyqtSlot()  

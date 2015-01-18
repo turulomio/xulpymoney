@@ -255,7 +255,7 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
             #Lo añade con las operaciones vacias pero calculadas.
             i.op=SetInvestmentOperations(self.mem)
             (i.op_actual, i.op_historica)=i.op.calcular()
-            self.mem.data.investments_active.arr.append(i)
+            self.mem.data.investments_active.append(i)
             self.done(0)
         elif self.tipo==2:
             self.inversion.name=inversion
