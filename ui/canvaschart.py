@@ -114,7 +114,10 @@ class canvasChart(FigureCanvasQTAgg):
         
     def draw_lines_from_ohcl(self, data):
         """Aquí  data es un array de OHCL"""
-        self.ax.clear()      
+        self.clear()
+        if len(data)<2:
+            return
+#        self.ax.clear()      
         dates=[]
         quotes=[]
         for ohcl in data:
@@ -129,7 +132,9 @@ class canvasChart(FigureCanvasQTAgg):
         
     def draw_lines_from_quotes(self, data):
         """Deben estar con tz, se recibe data porque puede recortarese según zoom"""
-        self.ax.clear()
+        self.clear()
+        if len(data)<2:
+            return
         (datetimes, quotes)=([], [])
         for q in data:
             datetimes.append(q.datetime)
@@ -144,7 +149,9 @@ class canvasChart(FigureCanvasQTAgg):
 
         
     def ohcl(self, ohcldata,  interval):
-        self.ax.clear()
+        self.clear()
+        if len(ohcldata)<2:
+            return
         quotes=[]
         dates=[]
         close=[]
@@ -164,7 +171,9 @@ class canvasChart(FigureCanvasQTAgg):
     def candles(self, interval):
         """Interval 0.05 5minutos
         1 1 dia"""
-        self.ax.clear()
+        self.clear()
+        if len(self.data)<1:
+            return
 #        self.data=self.format_data(6, interval)
 
         quotes=[]
@@ -270,6 +279,11 @@ class canvasChartIntraday(canvasChart):
         self.setupUi()
         self.settings("canvasIntraday")
 
+
+    def clear(self):
+        """Clear canvas"""
+        self.ax.clear()
+
     def load_data_intraday(self, product):
         """Needs basic e Intraday"""
         self.product=product
@@ -326,6 +340,10 @@ class canvasChartHistorical(canvasChart):
         self.plot_average=None
         self.plot_selling=None
         self.settings("canvasHistorical")
+        
+    def clear(self):
+        """Clear canvas, doesn't work"""
+        self.ax.clear()
     
     def makeLegend(self):
         if len(self.labels)==0:
