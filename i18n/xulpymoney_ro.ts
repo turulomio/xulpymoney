@@ -4633,23 +4633,28 @@ Daily Diff: {5}. Assets average age: {6}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgInvestments.py" line="226"/>
+        <location filename="ui/wdgInvestments.py" line="225"/>
         <source>Order by</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgInvestments.py" line="245"/>
+        <location filename="ui/wdgInvestments.py" line="244"/>
         <source>Shares number: {0}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgInvestments.py" line="245"/>
+        <location filename="ui/wdgInvestments.py" line="244"/>
         <source>Purchase price average: {0}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgInvestments.py" line="245"/>
+        <location filename="ui/wdgInvestments.py" line="244"/>
         <source>Selling point: {}</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/wdgInvestments.py" line="244"/>
+        <source>Selling all shares you get {}</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

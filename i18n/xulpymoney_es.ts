@@ -4638,24 +4638,29 @@ Diferencia diaria: {5}. Edad media del patrimonio: {6}</translation>
         <translation>No hay activos invertidos</translation>
     </message>
     <message>
-        <location filename="ui/wdgInvestments.py" line="226"/>
+        <location filename="ui/wdgInvestments.py" line="225"/>
         <source>Order by</source>
         <translation>Ordenado por</translation>
     </message>
     <message>
-        <location filename="ui/wdgInvestments.py" line="245"/>
+        <location filename="ui/wdgInvestments.py" line="244"/>
         <source>Shares number: {0}</source>
         <translation>Número de acciones: {0}</translation>
     </message>
     <message>
-        <location filename="ui/wdgInvestments.py" line="245"/>
+        <location filename="ui/wdgInvestments.py" line="244"/>
         <source>Purchase price average: {0}</source>
         <translation>Precio medio de compra: {0}</translation>
     </message>
     <message>
-        <location filename="ui/wdgInvestments.py" line="245"/>
+        <location filename="ui/wdgInvestments.py" line="244"/>
         <source>Selling point: {}</source>
         <translation>Punto de venta: {}</translation>
+    </message>
+    <message>
+        <location filename="ui/wdgInvestments.py" line="244"/>
+        <source>Selling all shares you get {}</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
