@@ -376,16 +376,16 @@ class SetProducts(SetCommons):
         Carga estimations_dbs, y basic
         """
         self.clean()
-        curms=self.mem.con.cursor()
-        curms.execute(sql)#"select * from products where id in ("+lista+")" 
+        cur=self.mem.con.cursor()
+        cur.execute(sql)#"select * from products where id in ("+lista+")" 
         if progress==True:
-            pd= QProgressDialog(QApplication.translate("Core","Loading {0} products from database").format(curms.rowcount),None, 0,curms.rowcount)
+            pd= QProgressDialog(QApplication.translate("Core","Loading {0} products from database").format(cur.rowcount),None, 0,cur.rowcount)
             pd.setModal(True)
             pd.setWindowTitle(QApplication.translate("Core","Loading products..."))
             pd.forceShow()
-        for rowms in curms:
+        for rowms in cur:
             if progress==True:
-                pd.setValue(curms.rownumber)
+                pd.setValue(cur.rownumber)
                 pd.update()
                 QApplication.processEvents()
                 
@@ -393,7 +393,7 @@ class SetProducts(SetCommons):
             inv.estimations_dps.load_from_db()
             inv.result.basic.load_from_db()
             self.append(inv)
-        curms.close()
+        cur.close()
 
     def order_by_datetime(self):
         """Orders the Set using self.arr"""
@@ -3238,8 +3238,8 @@ class Currency:
         else:    
             return "{0} {1}".format(round(number, digits),self.symbol)
             
-    def currencies_exchange(self, curms,  quote, origen, destino):
-        cambio=Quote.valor2(curms, origen+"2"+destino, quote['fecha'],  quote['hora'])
+    def currencies_exchange(self, cur,  quote, origen, destino):
+        cambio=Quote.valor2(cur, origen+"2"+destino, quote['fecha'],  quote['hora'])
         exchange={"code":quote['code'],"quote":quote['quote']*cambio['quote'],  "date":cambio['date'], "time":cambio['time'],  "zone":cambio['zone'],  "currency":destino}
         return exchange
 
@@ -3283,8 +3283,8 @@ class Money:
         else:
             return "{0} {1}".format(round(self.number, digits),self.currency.symbol)
 
-    def currencies_exchange(self, curms,  quote, origen, destino):
-        cambio=Quote.valor2(curms, origen+"2"+destino, quote['fecha'],  quote['hora'])
+    def currencies_exchange(self, cur,  quote, origen, destino):
+        cambio=Quote.valor2(cur, origen+"2"+destino, quote['fecha'],  quote['hora'])
         exchange={"code":quote['code'],"quote":quote['quote']*cambio['quote'],  "date":cambio['date'], "time":cambio['time'],  "zone":cambio['zone'],  "currency":destino}
         return exchange
 
@@ -3393,13 +3393,13 @@ class DPS:
             
     def save(self):
         """Función que comprueba si existe el registro para insertar o modificarlo según proceda"""
-        curms=self.mem.con.cursor()
+        cur=self.mem.con.cursor()
         if self.id==None:
-            curms.execute("insert into dps(date, gross,id) values (%s,%s,%s) returning id_dps", (self.date, self.gross, self.product.id))
-            self.id=curms.fetchone()[0]
+            cur.execute("insert into dps(date, gross,id) values (%s,%s,%s) returning id_dps", (self.date, self.gross, self.product.id))
+            self.id=cur.fetchone()[0]
         else:         
-            curms.execute("update dps set date=%s, gross=%s, id=%s where id_dps=%s", (self.date,  self.gross, self.product.id, self.id))
-        curms.close()
+            cur.execute("update dps set date=%s, gross=%s, id=%s where id_dps=%s", (self.date,  self.gross, self.product.id, self.id))
+        cur.close()
         
 
         
@@ -3446,15 +3446,15 @@ class EstimationEPS:
             
     def save(self):
         """Función que comprueba si existe el registro para insertar o modificarlo según proceda"""
-        curms=self.mem.con.cursor()
-        curms.execute("select count(*) from estimations_eps where id=%s and year=%s", (self.product.id, self.year))
-        if curms.fetchone()[0]==0:
-            curms.execute("insert into estimations_eps(id, year, estimation, date_estimation, source, manual) values (%s,%s,%s,%s,%s,%s)", (self.product.id, self.year, self.estimation, self.date_estimation, self.source, self.manual))
+        cur=self.mem.con.cursor()
+        cur.execute("select count(*) from estimations_eps where id=%s and year=%s", (self.product.id, self.year))
+        if cur.fetchone()[0]==0:
+            cur.execute("insert into estimations_eps(id, year, estimation, date_estimation, source, manual) values (%s,%s,%s,%s,%s,%s)", (self.product.id, self.year, self.estimation, self.date_estimation, self.source, self.manual))
 
-            print (curms.mogrify("insert into estimations_eps (id, year, estimation, date_estimation, source, manual) values (%s,%s,%s,%s,%s,%s)", (self.product.id, self.year, self.estimation, self.date_estimation, self.source, self.manual)))
+            print (cur.mogrify("insert into estimations_eps (id, year, estimation, date_estimation, source, manual) values (%s,%s,%s,%s,%s,%s)", (self.product.id, self.year, self.estimation, self.date_estimation, self.source, self.manual)))
         elif self.estimation!=None:            
-            curms.execute("update estimations_eps set estimation=%s, date_estimation=%s, source=%s, manual=%s where id=%s and year=%s", (self.estimation, self.date_estimation, self.source, self.manual, self.product.id, self.year))
-        curms.close()
+            cur.execute("update estimations_eps set estimation=%s, date_estimation=%s, source=%s, manual=%s where id=%s and year=%s", (self.estimation, self.date_estimation, self.source, self.manual, self.product.id, self.year))
+        cur.close()
         
         
     def PER(self, last_year_quote_of_estimation):
@@ -3507,14 +3507,14 @@ class EstimationDPS:
             
     def save(self):
         """Función que comprueba si existe el registro para insertar o modificarlo según proceda"""
-        curms=self.mem.con.cursor()
-        curms.execute("select count(*) from estimations_dps where id=%s and year=%s", (self.product.id, self.year))
-        if curms.fetchone()[0]==0:
-            curms.execute("insert into estimations_dps(id, year, estimation, date_estimation, source, manual) values (%s,%s,%s,%s,%s,%s)", (self.product.id, self.year, self.estimation, self.date_estimation, self.source, self.manual))
-#            print (curms.mogrify("insert into estimations_dps (id, year, estimation, date_estimation, source, manual) values (%s,%s,%s,%s,%s,%s)", (self.product.id, self.year, self.estimation, self.date_estimation, self.source, self.manual)))
+        cur=self.mem.con.cursor()
+        cur.execute("select count(*) from estimations_dps where id=%s and year=%s", (self.product.id, self.year))
+        if cur.fetchone()[0]==0:
+            cur.execute("insert into estimations_dps(id, year, estimation, date_estimation, source, manual) values (%s,%s,%s,%s,%s,%s)", (self.product.id, self.year, self.estimation, self.date_estimation, self.source, self.manual))
+#            print (cur.mogrify("insert into estimations_dps (id, year, estimation, date_estimation, source, manual) values (%s,%s,%s,%s,%s,%s)", (self.product.id, self.year, self.estimation, self.date_estimation, self.source, self.manual)))
         elif self.estimation!=None:            
-            curms.execute("update estimations_dps set estimation=%s, date_estimation=%s, source=%s, manual=%s where id=%s and year=%s", (self.estimation, self.date_estimation, self.source, self.manual, self.product.id, self.year))
-        curms.close()
+            cur.execute("update estimations_dps set estimation=%s, date_estimation=%s, source=%s, manual=%s where id=%s and year=%s", (self.estimation, self.date_estimation, self.source, self.manual, self.product.id, self.year))
+        cur.close()
         
     def percentage(self):
         """Hay que tener presente que endlastyear (Objeto Quote) es el endlastyear del año actual
@@ -3610,10 +3610,10 @@ class Product:
 
     def init__db(self, id):
         """Se pasa id porque se debe usar cuando todavía no se ha generado."""
-        curms=self.mem.con.cursor()
-        curms.execute("select * from products where id=%s", (id, ))
-        row=curms.fetchone()
-        curms.close()
+        cur=self.mem.con.cursor()
+        cur.execute("select * from products where id=%s", (id, ))
+        row=cur.fetchone()
+        cur.close()
         return self.init__db_row(row)
 
     def save(self):
@@ -3746,12 +3746,12 @@ class SetQuotesAll:
         """Función que mete en setquotesintradia ordenado de objetos Quote, no es el ultimo día es un día"""
         self.arr=[]
         self.product=product
-        curms=self.mem.con.cursor()
-        curms.execute("select * from quotes where id=%s order by datetime", (self.product.id,  ))
+        cur=self.mem.con.cursor()
+        cur.execute("select * from quotes where id=%s order by datetime", (self.product.id,  ))
         
         intradayarr=[]
         dt_end=None
-        for row in curms:
+        for row in cur:
             if dt_end==None:#Loads the first datetime
                 dt_end=day_end(row['datetime'], self.product.stockexchange.zone)
             if row['datetime']>dt_end:#Cambio de SetQuotesIntraday
@@ -3768,7 +3768,7 @@ class SetQuotesAll:
             self.arr.append(SetQuotesIntraday(self.mem).init__create(self.product, dt_end.date(), intradayarr))
             
 #        print ("SetQuotesIntraday created: {0}".format(len(self.arr)))
-        curms.close()
+        cur.close()
 
         
     def find(self, dattime):
@@ -3862,13 +3862,13 @@ class SetQuotesIntraday:
         self.arr=[]
         self.product=product
         self.date=date
-        curms=self.mem.con.cursor()
+        cur=self.mem.con.cursor()
         iniciodia=day_start_from_date(date, self.product.stockexchange.zone)
         siguientedia=iniciodia+datetime.timedelta(days=1)
-        curms.execute("select * from quotes where id=%s and datetime>=%s and datetime<%s order by datetime", (self.product.id,  iniciodia, siguientedia))
-        for row in curms:
+        cur.execute("select * from quotes where id=%s and datetime>=%s and datetime<%s order by datetime", (self.product.id,  iniciodia, siguientedia))
+        for row in cur:
             self.arr.append(Quote(self.mem).init__db_row(row,  self.product))
-        curms.close()
+        cur.close()
         
     def init__create(self, product, date, arrquotes):
         self.product=product
@@ -3981,12 +3981,12 @@ class Quote:
         self.quote=quote
         return self
         
-    def exists(self, curms):
+    def exists(self, cur):
         """Función que comprueba si existe en la base de datos y devuelve el valor de quote en caso positivo en una dupla"""     
-        curms.execute("select quote from quotes where id=%s and  datetime=%s;", (self.product.id, self.datetime))
-        if curms.rowcount==0: #No Existe el registro
+        cur.execute("select quote from quotes where id=%s and  datetime=%s;", (self.product.id, self.datetime))
+        if cur.rowcount==0: #No Existe el registro
             return (False,  None)
-        return (True,  curms.fetchone()['quote'])
+        return (True,  cur.fetchone()['quote'])
         
         
     def can_be_saved(self):
@@ -4018,9 +4018,9 @@ class Quote:
                 return 3
                 
     def delete(self):
-        curms=self.mem.con.cursor()
-        curms.execute("delete from quotes where id=%s and datetime=%s", (self.product.id, self.datetime))
-        curms.close()
+        cur=self.mem.con.cursor()
+        cur.execute("delete from quotes where id=%s and datetime=%s", (self.product.id, self.datetime))
+        cur.close()
 
     def init__db_row(self, row, product,   datetimeasked=None):
         """si datetimeasked es none se pone la misma fecha"""
@@ -4034,40 +4034,40 @@ class Quote:
         
     def init__from_query(self, product, dt): 
         """Función que busca el quote de un id y datetime con timezone"""
-        curms=self.mem.con.cursor()
+        cur=self.mem.con.cursor()
         sql="select * from quote(%s, '%s'::timestamptz)" %(product.id,  dt)
-        curms.execute(sql)
-        row=curms.fetchone()
-        curms.close()
+        cur.execute(sql)
+        row=cur.fetchone()
+        cur.close()
         return self.init__db_row(row, dt)
                 
     def init__from_query_penultima(self,product,  lastdate=None):
-        curms=self.mem.con.cursor()
+        cur=self.mem.con.cursor()
         if lastdate==None:
-            curms.execute("select * from penultimate(%s)", (product.id, ))
+            cur.execute("select * from penultimate(%s)", (product.id, ))
         else:
-            curms.execute("select * from penultimate(%s,%s)", (product.id, lastdate ))
-        row=curms.fetchone()
-        curms.close()
+            cur.execute("select * from penultimate(%s,%s)", (product.id, lastdate ))
+        row=cur.fetchone()
+        cur.close()
         return self.init__db_row(row, None)        
         
     def init__from_query_triplete(self, product): 
         """Función que busca el last, penultimate y endlastyear de golpe
        Devuelve un array de Quote en el que arr[0] es endlastyear, [1] es penultimate y [2] es last
       Si no devuelve tres Quotes devuelve None y deberaá calcularse de otra forma"""
-        curms=self.mem.con.cursor()
+        cur=self.mem.con.cursor()
         endlastyear=dt(datetime.date(datetime.date.today().year -1, 12, 31), datetime.time(23, 59, 59), self.mem.localzone)
-        curms.execute("select * from quote (%s, now()) union all select * from penultimate(%s) union all select * from quote(%s,%s) order by datetime", (product.id, product.id, product.id,  endlastyear))
-        if curms.rowcount!=3:
-            curms.close()
+        cur.execute("select * from quote (%s, now()) union all select * from penultimate(%s) union all select * from quote(%s,%s) order by datetime", (product.id, product.id, product.id,  endlastyear))
+        if cur.rowcount!=3:
+            cur.close()
             return None
         resultado=[]
-        for row in  curms:
+        for row in  cur:
             if row['datetime']==None: #Pierde el orden y no se sabe cual es cual
-                curms.close()
+                cur.close()
                 return None
             resultado.append(Quote(self.mem).init__db_row(row, product))
-        curms.close()
+        cur.close()
         return resultado
 
 class OHCLDaily:
@@ -4102,6 +4102,12 @@ class OHCLDaily:
         o.high=self.high
         o.low=self.low
         return o
+        
+    def delete(self):
+        """Removes all quotes of the selected day"""
+        cur=self.mem.con.cursor()
+        cur.execute("delete from quotes where id=%s and datetime::date=%s", (self.product.id, self.date))
+        cur.close()
         
         
 class OHCLMonthly:
@@ -4140,6 +4146,13 @@ class OHCLMonthly:
     def datetime(self):
         """Devuelve un datetime usado para dibujar en gráficos, pongo el día 28 para no calcular el último"""
         return day_end_from_date(datetime.date(self.year, self.month, 28), self.product.stockexchange.zone)
+        
+        
+    def delete(self):
+        """Removes all quotes of the selected month and year"""
+        cur=self.mem.con.cursor()
+        cur.execute("delete from quotes where id=%s and date_part('month',datetime)=%s and date_part('year',datetime)=%s", (self.product.id, self.month, self.year))
+        cur.close()        
                 
 class OHCLWeekly:
     def __init__(self, mem):
@@ -4194,6 +4207,9 @@ class OHCLYearly:
         self.high=None
         self.low=None
         
+    def __repr__(self):
+        return ("OHCLYearly ({}) of product {}".format( self.year, self.product.id))
+        
     def init__from_dbrow(self, row, product):
         self.product=product
         self.year=int(row['year'])
@@ -4217,6 +4233,13 @@ class OHCLYearly:
         return day_end_from_date(datetime.date(self.year, 12, 31), self.product.stockexchange.zone)
     def print_time(self):
         return "{0}".format(int(self.year))
+    
+    def delete(self):
+        """Removes all quotes of the selected year"""
+        cur=self.mem.con.cursor()
+        cur.execute("delete from quotes where id=%s and date_part('year',datetime)=%s", (self.product.id, self.year))
+        cur.close()     
+        
 class SetOHCLWeekly:
     def __init__(self, mem, product):
         self.mem=mem
@@ -4237,6 +4260,7 @@ class SetOHCLYearly:
         self.mem=mem
         self.product=product
         self.arr=[]
+        self.selected=None
     def load_from_db(self, sql):
         """El sql debe estar ordenado por fecha"""
         del self.arr
@@ -4252,6 +4276,7 @@ class SetOHCLMonthly:
         self.mem=mem
         self.product=product
         self.arr=[]
+        self.selected=None
     def load_from_db(self, sql):
         """El sql debe estar ordenado por year, month"""
         del self.arr
@@ -4292,6 +4317,7 @@ class SetOHCLDaily:
         self.mem=mem
         self.product=product
         self.arr=[]
+        self.selected=None
         
            
     def load_from_db(self, sql):

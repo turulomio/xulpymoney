@@ -57,7 +57,7 @@
         <enum>QTabWidget::West</enum>
        </property>
        <property name="currentIndex">
-        <number>0</number>
+        <number>2</number>
        </property>
        <widget class="QWidget" name="tabInformacion">
         <attribute name="title">
@@ -537,7 +537,7 @@
          <item>
           <widget class="QTabWidget" name="tabGraphics">
            <property name="currentIndex">
-            <number>1</number>
+            <number>0</number>
            </property>
            <widget class="QWidget" name="tabGraphicsIntraday">
             <attribute name="title">
@@ -899,7 +899,7 @@
               <item>
                <widget class="QTabWidget" name="tabHistorical">
                 <property name="currentIndex">
-                 <number>4</number>
+                 <number>0</number>
                 </property>
                 <property name="elideMode">
                  <enum>Qt::ElideMiddle</enum>
@@ -1506,6 +1506,42 @@
    </property>
    <property name="toolTip">
     <string>Selected investment dividend</string>
+   </property>
+  </action>
+  <action name="actionQuoteDeleteDays">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/list-remove.png</normaloff>:/xulpymoney/list-remove.png</iconset>
+   </property>
+   <property name="text">
+    <string>Delete all prices from selected day</string>
+   </property>
+   <property name="toolTip">
+    <string>Delete all prices from selected day</string>
+   </property>
+  </action>
+  <action name="actionQuoteDeleteMonths">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/list-remove.png</normaloff>:/xulpymoney/list-remove.png</iconset>
+   </property>
+   <property name="text">
+    <string>Delete all prices from selected month</string>
+   </property>
+   <property name="toolTip">
+    <string>Delete all prices from selected month</string>
+   </property>
+  </action>
+  <action name="actionQuoteDeleteYears">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/list-remove.png</normaloff>:/xulpymoney/list-remove.png</iconset>
+   </property>
+   <property name="text">
+    <string>Delete all prices from selected year</string>
+   </property>
+   <property name="toolTip">
+    <string>Delete all prices from selected year</string>
    </property>
   </action>
  </widget>

@@ -44,6 +44,12 @@ class myQTableWidget(QTableWidget):
                 self.save_columns()
                 break
 
+
+    def clear(self):
+        """Clear table"""
+        self.setRowCount(0)
+        self.clearContents()
+        
     def columns2array(self):
         """Adds in array real columns with in table"""
         del self.array

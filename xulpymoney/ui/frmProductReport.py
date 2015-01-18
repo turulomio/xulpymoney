@@ -83,7 +83,7 @@ class frmProductReport(QDialog, Ui_frmProductReport):
 
         self.update_due_to_quotes_change()    
         
-    def __load_information(self):
+    def load_information(self):
         def row_tblTPV(quote,  row):
             if quote==None:
                 return
@@ -151,6 +151,10 @@ class frmProductReport(QDialog, Ui_frmProductReport):
     def update_due_to_quotes_change(self):
         if self.product.id!=None:
             self.product.result.get_basic_ohcls()
+            self.product.result.ohclDaily.selected=[]
+            self.product.result.ohclMonthly.selected=[]
+            self.product.result.ohclWeekly.selected=[]
+            self.product.result.ohclYearly.selected=[]
             self.product.estimations_dps.load_from_db()#No cargada por defecto en product
             self.product.estimations_eps.load_from_db()#No cargada por defecto en product
             self.product.dps.load_from_db()
@@ -159,15 +163,20 @@ class frmProductReport(QDialog, Ui_frmProductReport):
             self.product.estimations_eps.myqtablewidget(self.tblEPS, "frmProductReport")            
             self.product.dps.myqtablewidget(self.tblDPSPaid, "frmProductReport")            
             inicio=datetime.datetime.now()
-            self.__load_information()
-            if len(self.product.result.ohclDaily.arr)!=0:
-                print ("Datos informacion cargados:",  datetime.datetime.now()-inicio)
-                self.load_graphics()
-                print ("Datos gráficos cargados:",  datetime.datetime.now()-inicio)
-                self.load_historicas()
-                print ("Datos historicos cargados:",  datetime.datetime.now()-inicio)
-                self.load_mensuales()
-                print ("Datos mensuales cargados:",  datetime.datetime.now()-inicio)
+            self.load_information()
+#            if len(self.product.result.ohclDaily.arr)!=0:
+            print ("Datos informacion cargados:",  datetime.datetime.now()-inicio)
+            self.load_graphics()
+            print ("Datos gráficos cargados:",  datetime.datetime.now()-inicio)
+            self.load_historicas()
+            print ("Datos historicos cargados:",  datetime.datetime.now()-inicio)
+            self.load_mensuales()
+            print ("Datos mensuales cargados:",  datetime.datetime.now()-inicio)
+#            else:#If there isn't data, I must empty tables
+#                self.tblDaily.clear()
+#                self.tblMonthly.clear()
+#                self.tblYearly.clear()
+#                self.tblWeekly.clear()
 
 
 
@@ -175,6 +184,9 @@ class frmProductReport(QDialog, Ui_frmProductReport):
     def load_historicas(self): 
         def setTable(table, data):
             table.setRowCount(len(data.arr))
+            table.clearContents()
+            if len(data.arr)==0:
+                return
             for punt, d in enumerate(data.arr):
                 table.setItem(punt, 0, qcenter(d.print_time())) 
                 table.setItem(punt, 1, self.product.currency.qtablewidgetitem(d.close,6))
@@ -193,23 +205,45 @@ class frmProductReport(QDialog, Ui_frmProductReport):
         
 
     def load_graphics(self):
-        t2 = threading.Thread(target=self.canvasHistorical.load_data,  args=(self.product, self.inversion))
-        t2.start()
-        t3 = threading.Thread(target=self.canvasHistoricalSD.load_data,  args=(self.product, self.inversion, True))
-        t3.start()
         self.product.result.intradia.load_from_db(self.calendar.selectedDate().toPyDate(), self.product)
-        if len(self.product.result.intradia.arr)==0:
-            self.tblIntradia.setRowCount(0)
-            self.canvasIntraday.ax.clear()
+        
+        #Canvas Historical
+        if len(self.product.result.ohclDaily.arr)<2:#Needs 2 to show just a line
+            self.canvasHistorical.hide()
+            self.ntbHistorical.hide()
+            self.canvasHistoricalSD.hide()   
+            self.ntbHistoricalSD.hide()
+        else:
+            t2 = threading.Thread(target=self.canvasHistorical.load_data,  args=(self.product, self.inversion))
+            t2.start()
+            t3 = threading.Thread(target=self.canvasHistoricalSD.load_data,  args=(self.product, self.inversion, True))
+            t3.start()
             t2.join()
             t3.join()
-            return
+            self.canvasHistorical.show()
+            self.canvasHistoricalSD.show()
+            self.ntbHistorical.show() 
+            self.ntbHistoricalSD.show()
+            
+        #Canvas Intradia
+        if len(self.product.result.intradia.arr)<2:
+            self.canvasIntraday.hide()
+            self.ntbIntraday.hide()
+        else:
+            t1 = threading.Thread(target=self.canvasIntraday.load_data_intraday,   args=(self.product, ))
+            t1.start()
+            t1.join()     
+            self.canvasIntraday.show()
+            self.ntbIntraday.show()       
+        
+        #tblIntradia
+        if len(self.product.result.intradia.arr)==0:
+            self.tblIntradia.clear()
         else:
             self.tblIntradia.setRowCount(len(self.product.result.intradia.arr))
-            self.canvasIntraday.show()
             QuoteDayBefore=self.product.result.ohclDaily.find(self.calendar.selectedDate().toPyDate()-datetime.timedelta(days=1))#day before as selected
     
-            #Construye tabla
+            ##Construye tabla
             for i , q in enumerate(self.product.result.intradia.arr):
                 if q.datetime.microsecond==5:
                     self.tblIntradia.setItem(i, 0, qcenter(str(q.datetime)[11:-13]))
@@ -230,20 +264,16 @@ class frmProductReport(QDialog, Ui_frmProductReport):
                 elif q==self.product.result.intradia.low():
                     self.tblIntradia.item(i, 1).setBackgroundColor( QColor(255, 148, 148))  
                 self.lblIntradayVariance.setText(self.tr("Daily maximum variance: {} ({})").format(self.product.currency.string(self.product.result.intradia.variance()), tpc(self.product.result.intradia.variance_percentage())))
-        
-        t1 = threading.Thread(target=self.canvasIntraday.load_data_intraday,   args=(self.product, ))
-        t1.start()
-
-        t1.join()        
-        t2.join()  
-        t3.join()
-        self.tblIntradia.setFocus()
-        self.tblIntradia.setCurrentCell(len(self.product.result.intradia.arr)-1, 0)
-        self.tblIntradia.clearSelection()
-
-
+                
+            self.tblIntradia.setFocus()
+            self.tblIntradia.setCurrentCell(len(self.product.result.intradia.arr)-1, 0)
+            self.tblIntradia.clearSelection()
 
     def load_mensuales(self):
+        if len(self.product.result.ohclMonthly.arr)==0:
+            self.tblMensuales.clear()
+            return
+        
         minyear=self.product.result.ohclMonthly.arr[0].year
         rowcount=int(datetime.date.today().year-minyear+1)
         self.tblMensuales.setRowCount(rowcount)    
@@ -347,6 +377,7 @@ class frmProductReport(QDialog, Ui_frmProductReport):
     @pyqtSignature("")
     def on_actionQuoteNew_activated(self):
         w=frmQuotesIBM(self.mem,  self.product)
+        w.wdgDT.teDate.setSelectedDate(self.calendar.selectedDate())
         w.exec_()   
         if w.result()==QDialog.Accepted:
             self.update_due_to_quotes_change()
@@ -358,8 +389,27 @@ class frmProductReport(QDialog, Ui_frmProductReport):
             self.product.result.intradia.arr.remove(q)
         self.mem.con.commit()
         self.update_due_to_quotes_change()
-
-
+        
+    @pyqtSignature("")
+    def on_actionQuoteDeleteDays_activated(self):
+        for ohcl in self.product.result.ohclDaily.selected:
+            ohcl.delete()
+        self.mem.con.commit()
+        self.update_due_to_quotes_change()
+    
+    @pyqtSignature("")
+    def on_actionQuoteDeleteMonths_activated(self):
+        for ohcl in self.product.result.ohclMonthly.selected:
+            ohcl.delete()
+        self.mem.con.commit()
+        self.update_due_to_quotes_change()
+    
+    @pyqtSignature("")
+    def on_actionQuoteDeleteYears_activated(self):
+        for ohcl in self.product.result.ohclYearly.selected:
+            ohcl.delete()
+        self.mem.con.commit()
+        self.update_due_to_quotes_change()
 
     def on_calendar_selectionChanged(self):
         self.load_graphics()
@@ -479,7 +529,65 @@ class frmProductReport(QDialog, Ui_frmProductReport):
             self.cmbPriorityHistorical.addItem(item.name, item.id)
 
 
+    def on_tblDaily_itemSelectionChanged(self):
+        if self.product.result.ohclDaily.selected!=None:
+            del self.product.result.ohclDaily.selected
+            self.product.result.ohclDaily.selected=[]
+            
+        for i in self.tblDaily.selectedItems():#itera por cada item no row.
+            if i.column()==0:
+                self.product.result.ohclDaily.selected.append(self.product.result.ohclDaily.arr[i.row()])
+        print (self.product.result.ohclDaily.selected)
 
+    def on_tblDaily_customContextMenuRequested(self,  pos):
+        if len(self.product.result.ohclDaily.selected)>0:
+            self.actionQuoteDeleteDays.setEnabled(True)
+        else:
+            self.actionQuoteDeleteDays.setEnabled(False)
+            
+        menu=QMenu()
+        menu.addAction(self.actionQuoteDeleteDays)        
+        menu.exec_(self.tblDaily.mapToGlobal(pos))
+        
+    def on_tblMonthly_itemSelectionChanged(self):
+        if self.product.result.ohclMonthly.selected!=None:
+            del self.product.result.ohclMonthly.selected
+            self.product.result.ohclMonthly.selected=[]
+            
+        for i in self.tblMonthly.selectedItems():#itera por cada item no row.
+            if i.column()==0:
+                self.product.result.ohclMonthly.selected.append(self.product.result.ohclMonthly.arr[i.row()])
+        print (self.product.result.ohclMonthly.selected)
+
+    def on_tblMonthly_customContextMenuRequested(self,  pos):
+        if len(self.product.result.ohclMonthly.selected)>0:
+            self.actionQuoteDeleteMonths.setEnabled(True)
+        else:
+            self.actionQuoteDeleteMonths.setEnabled(False)
+            
+        menu=QMenu()
+        menu.addAction(self.actionQuoteDeleteMonths)        
+        menu.exec_(self.tblMonthly.mapToGlobal(pos))  
+        
+    def on_tblYearly_itemSelectionChanged(self):
+        if self.product.result.ohclYearly.selected!=None:
+            del self.product.result.ohclYearly.selected
+            self.product.result.ohclYearly.selected=[]
+            
+        for i in self.tblYearly.selectedItems():#itera por cada item no row.
+            if i.column()==0:
+                self.product.result.ohclYearly.selected.append(self.product.result.ohclYearly.arr[i.row()])
+        print (self.product.result.ohclYearly.selected)
+
+    def on_tblYearly_customContextMenuRequested(self,  pos):
+        if len(self.product.result.ohclYearly.selected)>0:
+            self.actionQuoteDeleteYears.setEnabled(True)
+        else:
+            self.actionQuoteDeleteYears.setEnabled(False)
+            
+        menu=QMenu()
+        menu.addAction(self.actionQuoteDeleteYears)        
+        menu.exec_(self.tblYearly.mapToGlobal(pos))
     def on_tblIntradia_customContextMenuRequested(self,  pos):
         if len (self.setSelIntraday)>0:
             self.actionQuoteDelete.setEnabled(True)
