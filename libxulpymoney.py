@@ -103,13 +103,19 @@ class SetCommons:
                 
     def order_by_id(self):
         """Orders the Set using self.arr"""
-        self.arr=sorted(self.arr, key=lambda c: c.id,  reverse=False)     
-        return self.arr
+        try:
+            self.arr=sorted(self.arr, key=lambda c: c.id,  reverse=False)     
+            return True
+        except:
+            return False
         
     def order_by_name(self):
         """Orders the Set using self.arr"""
-        self.arr=sorted(self.arr, key=lambda c: c.name,  reverse=False)     
-        return self.arr
+        try:
+            self.arr=sorted(self.arr, key=lambda c: c.name,  reverse=False)       
+            return True
+        except:
+            return False
 
     def qcombobox(self, combo,  selected=None):
         """Load set items in a comobo using id and name
@@ -397,9 +403,36 @@ class SetProducts(SetCommons):
 
     def order_by_datetime(self):
         """Orders the Set using self.arr"""
-        self.arr=sorted(self.arr, key=lambda c: c.result.basic.last.datetime,  reverse=False)     
-        return self.arr
+        try:
+            self.arr=sorted(self.arr, key=lambda c: c.result.basic.last.datetime,  reverse=False)  
+            return True
+        except:
+            return False
         
+    def order_by_dividend(self):
+        """Return a boolean if the sort can be done"""
+        try:
+            self.arr=sorted(self.arr, key=lambda p: p.estimations_dps.currentYear().percentage(),  reverse=True) 
+            return True
+        except:
+            return False
+        
+    def order_by_daily_tpc(self):
+        """Return a boolean if the sort can be done"""
+        try:
+            self.arr=sorted(self.arr, key=lambda p: p.result.basic.tpc_diario(),  reverse=True) 
+            return True
+        except:
+            return False
+                
+    def order_by_annual_tpc(self):
+        """Return a boolean if the sort can be done"""
+        try:
+            self.arr=sorted(self.arr, key=lambda p: p.result.basic.tpc_anual(),  reverse=True) 
+            return True
+        except:
+            return False
+
     def subset_with_same_type(self, type):
         """Returns a SetProduct with all products with the type passed as parameter.
         Type is an object"""
@@ -5392,6 +5425,11 @@ def qmessagebox_developing():
     m=QMessageBox()
     m.setIcon(QMessageBox.Information)
     m.setText(QApplication.translate("Core", "This option is being developed"))
+    m.exec_()    
+def qmessagebox_error_ordering():
+    m=QMessageBox()
+    m.setIcon(QMessageBox.Information)
+    m.setText(QApplication.translate("Core", "I couldn't order data due to they have null values"))
     m.exec_()    
     
 def qright(string, digits=None):
