@@ -25,6 +25,7 @@ class wdgProducts(QWidget, Ui_wdgProducts):
     def build_array(self, sql):
         self.sql=sql
         self.products.load_from_db(self.sql, True)
+        self.products.order_by_name()
         self.lblFound.setText(self.tr("Found {0} records".format(self.products.length())))
 
         
@@ -94,13 +95,17 @@ class wdgProducts(QWidget, Ui_wdgProducts):
         
     @QtCore.pyqtSlot() 
     def on_actionSortTPCDiario_activated(self):
-        self.products=sorted(self.products, key=lambda inv: inv.result.basic.tpc_diario(),  reverse=True) 
-        self.products.myqtablewidget(self.tblInvestments,"wdgProducts")        
+        if self.products.order_by_daily_tpc():
+            self.products.myqtablewidget(self.tblInvestments,"wdgProducts")        
+        else:
+            qmessagebox_error_ordering()
         
     @QtCore.pyqtSlot() 
     def on_actionSortTPCAnual_activated(self):
-        self.products=sorted(self.products, key=lambda inv: inv.result.basic.tpc_anual(),  reverse=True) 
-        self.products.myqtablewidget(self.tblInvestments,"wdgProducts")    
+        if self.products.order_by_annual_tpc():
+            self.products.myqtablewidget(self.tblInvestments,"wdgProducts")        
+        else:
+            qmessagebox_error_ordering()
         
     @QtCore.pyqtSlot() 
     def on_actionSortHour_activated(self):
@@ -114,8 +119,10 @@ class wdgProducts(QWidget, Ui_wdgProducts):
         
     @QtCore.pyqtSlot() 
     def on_actionSortDividend_activated(self):
-        self.products=sorted(self.products, key=lambda inv: inv.estimations_dps.currentYear().percentage(),  reverse=True) 
-        self.products.myqtablewidget(self.tblInvestments,"wdgProducts")        
+        if self.products.order_by_dividend():
+            self.products.myqtablewidget(self.tblInvestments,"wdgProducts")        
+        else:
+            qmessagebox_error_ordering()     
         
     def on_txt_returnPressed(self):
         self.on_cmd_pressed()
@@ -139,7 +146,6 @@ class wdgProducts(QWidget, Ui_wdgProducts):
                 "%' or upper(ticker) like '%"+(self.txt.text().upper())+
                 "%' or upper(comentario) like '%"+(self.txt.text().upper())+
                 "%') "+ stockexchangefilter)
-        self.products.order_by_name()
         self.products.myqtablewidget(self.tblInvestments,"wdgProducts")          
 
 
