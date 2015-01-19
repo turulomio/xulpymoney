@@ -142,32 +142,38 @@ class wdgInvestments(QWidget, Ui_wdgInvestments):
 
     @QtCore.pyqtSlot() 
     def on_actionSortTPCDiario_activated(self):
-        self.inversiones.arr=sorted(self.inversiones.arr, key=lambda inv: inv.product.result.basic.tpc_diario(),  reverse=True) 
-        self.tblInvestments_reload_after_order()
+        if self.inversiones.order_by_percentage_daily():
+            self.tblInvestments_reload_after_order()    
+        else:
+            qmessagebox_error_ordering()     
         
     @QtCore.pyqtSlot() 
     def on_actionSortTPCVenta_activated(self):
-        try:
-            self.inversiones.arr=sorted(self.inversiones.arr, key=lambda inv: ( inv.tpc_venta(), -inv.tpc_invertido()),  reverse=False) #Ordenado por dos criterios
-            self.tblInvestments_reload_after_order()
-        except:
-            print(function_name(self),"Error ordering")
-            pass
+        if self.inversiones.order_by_percentage_sellingpoint():
+            self.tblInvestments_reload_after_order()    
+        else:
+            qmessagebox_error_ordering()     
         
     @QtCore.pyqtSlot() 
     def on_actionSortTPC_activated(self):
-        self.inversiones.arr=sorted(self.inversiones.arr, key=lambda inv: inv.tpc_invertido(),  reverse=True) 
-        self.tblInvestments_reload_after_order()
+        if self.inversiones.order_by_percentage_invested():
+            self.tblInvestments_reload_after_order()    
+        else:
+            qmessagebox_error_ordering()     
         
     @QtCore.pyqtSlot() 
     def on_actionSortHour_activated(self):
-        self.inversiones.arr=sorted(self.inversiones.arr, key=lambda inv: inv.product.result.basic.last.datetime,  reverse=False) 
-        self.tblInvestments_reload_after_order()
+        if self.inversiones.order_by_datetime():
+            self.tblInvestments_reload_after_order()    
+        else:
+            qmessagebox_error_ordering()     
         
     @QtCore.pyqtSlot() 
     def on_actionSortName_activated(self):
-        self.inversiones.arr=sorted(self.inversiones.arr, key=lambda inv: inv.name,  reverse=False) 
-        self.tblInvestments_reload_after_order()
+        if self.inversiones.order_by_name():
+            self.tblInvestments_reload_after_order()    
+        else:
+            qmessagebox_error_ordering()     
         
     def tblInvestments_reload_after_order(self):
         if self.chkInactivas.checkState()==Qt.Unchecked:

@@ -327,12 +327,46 @@ class SetInvestments(SetCommons):
         destino.get_operinversiones()
         cur.close()
         return True
-        
-    def order_by_percentage(self):
+
+    def order_by_percentage_daily(self):
+        """Orders the Set using self.arr"""
+        try:
+            self.arr=sorted(self.arr, key=lambda inv: inv.product.result.basic.tpc_diario(),  reverse=True) 
+            return True
+        except:
+            return False
+
+    def order_by_percentage_sellingpoint(self):
+        """Orders the Set using self.arr"""
+        try:
+            self.arr=sorted(self.arr, key=lambda inv: ( inv.tpc_venta(), -inv.tpc_invertido()),  reverse=False) #Ordenado por dos criterios
+            return True
+        except:
+            return False
+            
+    def order_by_percentage_invested(self):
+        """Orders the Set using self.arr"""
+        try:
+            self.arr=sorted(self.arr, key=lambda inv: inv.tpc_invertido(),  reverse=True) 
+            return True
+        except:
+            return False
+            
+    def order_by_datetime(self):
+        """Orders the Set using self.arr"""
+        try:
+            self.arr=sorted(self.arr, key=lambda c: c.product.result.basic.last.datetime,  reverse=False)  
+            return True
+        except:
+            return False
+            
+    def order_by_dividend(self):
+        """Orders the Set using self.arr"""
         try:
             self.arr=sorted(self.arr, key=lambda inv: inv.product.estimations_dps.currentYear().percentage(),  reverse=True) 
+            return True
         except:
-            print ("No se ha podido ordenar por haber estimaciones de dividend nulas")
+            return False
         
         
 class SetProducts(SetCommons):

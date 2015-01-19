@@ -34,7 +34,8 @@ class wdgDividendsReport(QWidget, Ui_wdgDividendsReport):
         self.load_inversiones()
         
     def load_inversiones(self):    
-        self.inversiones.order_by_percentage()#Se ordena self.inversiones.arr
+        if self.inversiones.order_by_dividend()==False:
+            qmessagebox_error_ordering()     
         
         self.tblInvestments.clearContents()
         self.tblInvestments.setRowCount(len(self.inversiones.arr));
