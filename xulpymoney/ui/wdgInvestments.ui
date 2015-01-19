@@ -96,7 +96,7 @@
          </column>
          <column>
           <property name="text">
-           <string>%</string>
+           <string>% Invested</string>
           </property>
          </column>
          <column>
@@ -185,10 +185,10 @@
      <normaloff>:/xulpmoney/document-preview.png</normaloff>:/xulpmoney/document-preview.png</iconset>
    </property>
    <property name="text">
-    <string>%</string>
+    <string>% Invested</string>
    </property>
    <property name="toolTip">
-    <string>%</string>
+    <string>% Invested</string>
    </property>
   </action>
   <action name="actionSortName">
