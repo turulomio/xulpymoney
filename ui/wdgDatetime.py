@@ -18,7 +18,6 @@ class wdgDatetime(QWidget, Ui_wdgDatetime):
         self.showSeconds=True
         self.showZone=True
         self.zone=None#Set in set()
-#        self.teDate.calendarWidget().setFirstDayOfWeek(Qt.Monday)
         
     def show_microseconds(self, show):
         self.showMicroseconds=show
