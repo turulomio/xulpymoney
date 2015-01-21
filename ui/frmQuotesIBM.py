@@ -34,13 +34,11 @@ class frmQuotesIBM(QDialog, Ui_frmQuotesIBM):
 
     def on_chkNone_stateChanged(self, state):
         if state==Qt.Checked:      
-            datet=dt(datetime.date.today(), self.product.stockexchange.closes, self.product.stockexchange.zone)
-            self.wdgDT.set(self.mem, datet, self.product.stockexchange.zone)
+            self.wdgDT.set(self.mem, dt(datetime.date.today(), self.product.stockexchange.closes, self.product.stockexchange.zone), self.product.stockexchange.zone)
             self.wdgDT.teTime.setEnabled(False)
             self.wdgDT.cmbZone.setEnabled(False)
             self.wdgDT.cmdNow.setEnabled(False)
             self.wdgDT.teMicroseconds.setEnabled(False)
-#            self.wdgDT.teMicroseconds.setValue(0)
         else:
             self.wdgDT.teTime.setEnabled(True)
             self.wdgDT.cmbZone.setEnabled(True)
