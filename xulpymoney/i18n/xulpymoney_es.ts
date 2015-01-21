@@ -2605,7 +2605,7 @@ p, li { white-space: pre-wrap; }
         <translation>Gráfico con dividendos históricos no descontados</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmProductReport.py" line="951"/>
+        <location filename="ui/frmProductReport.ui" line="738"/>
         <source>Historical prices</source>
         <translation>Precios históricos</translation>
     </message>
@@ -2660,12 +2660,12 @@ p, li { white-space: pre-wrap; }
         <translation>Fecha</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmProductReport.py" line="969"/>
+        <location filename="ui/Ui_frmProductReport.py" line="911"/>
         <source>Price</source>
         <translation>Valor</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmProductReport.py" line="958"/>
+        <location filename="ui/Ui_frmProductReport.py" line="859"/>
         <source>%</source>
         <translation>%</translation>
     </message>
@@ -2740,12 +2740,12 @@ p, li { white-space: pre-wrap; }
         <translation>Precios anuales</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmProductReport.py" line="950"/>
+        <location filename="ui/frmProductReport.ui" line="1125"/>
         <source>Monthly returns</source>
         <translation>Rendimiento mensual</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmProductReport.py" line="967"/>
+        <location filename="ui/Ui_frmProductReport.py" line="923"/>
         <source>Year</source>
         <translation>Año</translation>
     </message>
@@ -2800,72 +2800,72 @@ p, li { white-space: pre-wrap; }
         <translation>Octubre</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmProductReport.py" line="945"/>
+        <location filename="ui/frmProductReport.ui" line="1193"/>
         <source>November</source>
         <translation>Noviembre</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmProductReport.py" line="947"/>
+        <location filename="ui/frmProductReport.ui" line="1198"/>
         <source>December</source>
         <translation>Diciembre</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmProductReport.py" line="949"/>
+        <location filename="ui/frmProductReport.ui" line="1203"/>
         <source>Total</source>
         <translation>Total</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmProductReport.py" line="979"/>
+        <location filename="ui/frmProductReport.ui" line="1221"/>
         <source>Other data</source>
         <translation>Otros datos</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmProductReport.py" line="952"/>
+        <location filename="ui/frmProductReport.ui" line="1235"/>
         <source>DPS Paid</source>
         <translation>Dividendos por acción pagados</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmProductReport.py" line="965"/>
+        <location filename="ui/frmProductReport.ui" line="1262"/>
         <source>DPS Estimations</source>
         <translation>Estimaciones de dividendos por acción</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmProductReport.py" line="977"/>
+        <location filename="ui/frmProductReport.ui" line="1363"/>
         <source>Manual</source>
         <translation>Manual</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmProductReport.py" line="978"/>
+        <location filename="ui/frmProductReport.ui" line="1319"/>
         <source>EPS Estimations</source>
         <translation>Estimación de beneficio por acción</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmProductReport.py" line="971"/>
+        <location filename="ui/frmProductReport.ui" line="1348"/>
         <source>PER</source>
         <translation>PER</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmProductReport.py" line="988"/>
+        <location filename="ui/frmProductReport.ui" line="1433"/>
         <source>Purge Day</source>
         <translation>Purgar el día</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmProductReport.py" line="989"/>
+        <location filename="ui/frmProductReport.ui" line="1436"/>
         <source>Purge Day from innecesary quotes. Leaves high, low, open and close quotes</source>
         <translation>Purga la inversión de cotizaciones innecesarias. Deja la cotización más alta, más baja, de apertura y de cierre</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmProductReport.py" line="991"/>
+        <location filename="ui/frmProductReport.ui" line="1448"/>
         <source>Edit Quote</source>
         <translation>Modificar cotización</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmProductReport.py" line="997"/>
+        <location filename="ui/frmProductReport.ui" line="1484"/>
         <source>New DPS</source>
         <translation>Nuevo Dividendo por acción</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmProductReport.py" line="999"/>
+        <location filename="ui/frmProductReport.ui" line="1496"/>
         <source>Remove DPS</source>
         <translation>Borrar dividendo por acción</translation>
     </message>
@@ -2880,12 +2880,12 @@ p, li { white-space: pre-wrap; }
         <translation>Tienes que añadir un valor y una estimación del dividendo por acción al nuevo producto</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmProductReport.py" line="973"/>
+        <location filename="ui/frmProductReport.ui" line="1353"/>
         <source>Annotation date</source>
         <translation>Fecha de anotación</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmProductReport.py" line="975"/>
+        <location filename="ui/frmProductReport.ui" line="1358"/>
         <source>Source</source>
         <translation>Fuente</translation>
     </message>
@@ -2940,37 +2940,37 @@ p, li { white-space: pre-wrap; }
         <translation>Gráfico de cotizaciones históricas</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmProductReport.py" line="981"/>
+        <location filename="ui/frmProductReport.ui" line="1388"/>
         <source>New price</source>
         <translation>Nueva cotización</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmProductReport.py" line="983"/>
+        <location filename="ui/frmProductReport.ui" line="1400"/>
         <source>Delete price from selected day</source>
         <translation>Borrar cotización del día seleccionado</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmProductReport.py" line="985"/>
+        <location filename="ui/frmProductReport.ui" line="1412"/>
         <source>New dividend per share estimation</source>
         <translation>Nueva estimación de dividendo por acción</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmProductReport.py" line="987"/>
+        <location filename="ui/frmProductReport.ui" line="1424"/>
         <source>Remove dividend per share estimation</source>
         <translation>Borrar estimación de dividendo por acción</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmProductReport.py" line="993"/>
+        <location filename="ui/frmProductReport.ui" line="1460"/>
         <source>New earnings per share estimation</source>
         <translation>Nueva estimación de beneficio por acción</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmProductReport.py" line="995"/>
+        <location filename="ui/frmProductReport.ui" line="1472"/>
         <source>Remove earnings per share estimation</source>
         <translation>Borrar estimación de beneficio por acción</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmProductReport.py" line="1001"/>
+        <location filename="ui/frmProductReport.ui" line="1508"/>
         <source>Selected investment dividend</source>
         <translation>Dividendo de la inversión seleccionada</translation>
     </message>
@@ -2985,17 +2985,17 @@ p, li { white-space: pre-wrap; }
         <translation>Año {}</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmProductReport.py" line="1003"/>
+        <location filename="ui/frmProductReport.ui" line="1520"/>
         <source>Delete all prices from selected day</source>
         <translation>Borrar todos los precios del día seleccionado</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmProductReport.py" line="1005"/>
+        <location filename="ui/frmProductReport.ui" line="1532"/>
         <source>Delete all prices from selected month</source>
         <translation>Borrar todos los precios del mes seleccionado</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmProductReport.py" line="1007"/>
+        <location filename="ui/frmProductReport.ui" line="1544"/>
         <source>Delete all prices from selected year</source>
         <translation>Borrar todos los precios del año seleccionado</translation>
     </message>
@@ -3056,7 +3056,7 @@ p, li { white-space: pre-wrap; }
         <translation>Añade una cotización</translation>
     </message>
     <message>
-        <location filename="ui/frmQuotesIBM.py" line="56"/>
+        <location filename="ui/frmQuotesIBM.py" line="57"/>
         <source>Incorrect data. Try again.</source>
         <translation>Datos incorrectos. Inténtelo otra vez.</translation>
     </message>
@@ -4037,7 +4037,7 @@ p, li { white-space: pre-wrap; }
         <translation>Ahora</translation>
     </message>
     <message>
-        <location filename="ui/wdgDatetime.py" line="107"/>
+        <location filename="ui/wdgDatetime.py" line="106"/>
         <source>Selected datetime:
 {0}</source>
         <translation>Fecha y hora seleccionada:

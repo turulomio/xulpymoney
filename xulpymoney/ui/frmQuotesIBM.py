@@ -17,9 +17,10 @@ class frmQuotesIBM(QDialog, Ui_frmQuotesIBM):
         if quote==None:
             self.type="insert"
             self.quote=None
-            self.wdgDT.set(self.mem)
             if self.product.type.id in (2, 8):
-                self.chkNone.setCheckState(Qt.Checked)         
+                self.chkNone.setCheckState(Qt.Checked)       
+            else:
+                self.wdgDT.set(self.mem)
         else:
             self.type="update"
             self.quote=quote
@@ -41,7 +42,6 @@ class frmQuotesIBM(QDialog, Ui_frmQuotesIBM):
             self.wdgDT.teMicroseconds.setEnabled(False)
             self.wdgDT.teMicroseconds.setValue(0)
         else:
-            self.wdgDT.set(self.mem)
             self.wdgDT.teTime.setEnabled(True)
             self.wdgDT.cmbZone.setEnabled(True)
             self.wdgDT.cmdNow.setEnabled(True)
