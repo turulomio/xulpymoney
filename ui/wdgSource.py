@@ -93,12 +93,21 @@ class wdgSource(QWidget, Ui_wdgSource):
         #Make connections
         for worker in self.agrupation:
             QObject.connect(worker, SIGNAL("step_finished"), self.progress_step)   
+            QObject.connect(worker, SIGNAL("run_finished"), self.worker_run_finished)   
         
         #Starts
         self.emit(SIGNAL("started")) 
         for worker in self.agrupation:
             self.currentWorker=worker
             worker.run()
+            
+            
+    def worker_run_finished(self):
+        for worker in self.agrupation:
+            if worker.finished==False:
+                return
+        #Si pasa es que todos han acab ado
+        for worker in self.agrupation:
             self.products=self.products.union(worker.products, self.mem )
             worker.inserted.addTo(self.totals.inserted)
             worker.modified.addTo(self.totals.modified)

@@ -1,5 +1,7 @@
 from libxulpymoney import *
 import urllib
+import time
+from PyQt4.QtWebKit import *
         
 class SetQuotes:
     """Clase que agrupa quotes un una lista arr. Util para operar con ellas como por ejemplo insertar"""
@@ -245,90 +247,108 @@ class SourceIterateProducts(Source):
             time.sleep(self.sleep)#time step
         print("")
 
+#
+#class WorkerMercadoContinuo(SourceParsePage):
+#    def __init__(self,  mem, sql):
+#        SourceParsePage.__init__(self, mem, sql)   
+#        
+#    def on_load_page(self):
+#        "Overrides SourceParsePage"
+#        self.url='http://www.infobolsa.es/mercado-nacional/mercado-continuo'
+#        SourceParsePage.on_load_page(self)
+#        
+#    def on_parse_page(self):
+#        while True:
+##            try:
+#                line=b2s(self.web.readline())[:-1]
+#                if line.find('<td class="ticker">')!=-1: #Empieza bloque
+#                    ticker=b2s(self.web.readline())[:-1].strip()+".MC"
+#                    self.web.readline()
+#                    self.web.readline()
+#                    quote=Decimal(self.comaporpunto(b2s(self.web.readline())[:-1].strip()))
+#                    for i in range(18):
+#                        self.web.readline()
+#                    hour=b2s(self.web.readline())[:-1].strip().split(":")
+#                    time=datetime.time(int(hour[0]), int(hour[1]))
+#                    self.web.readline()
+#                    self.web.readline()
+#                    self.web.readline()
+#                    date=b2s(self.web.readline())[:-1].strip().split("/")
+#                    date=datetime.date(int(date[2]), int(date[1]), int(date[0]))
+#                    #print(ticker,  quote, time,  date)
+#                    product=self.products.find_by_ticker(ticker)
+#                    if product:
+#                        datime=dt(date,time,product.stockexchange.zone)
+#                        quote=Quote(self.mem).init__create(product, datime, quote)
+##                        print(quote)
+#                        self.quotes.append(quote)#closes
+#                    else:
+#                        self.log("El ticker {} no ha sido encontrado".format(ticker))
+#                if line.find('</html')!=-1:
+#                    break
+##            except:
+##                self.log("El ticker {} no ha sido formateado correctamente".format(ticker))
+
 
 class WorkerMercadoContinuo(SourceParsePage):
     def __init__(self,  mem, sql):
         SourceParsePage.__init__(self, mem, sql)   
+        self.webView= QWebView()
+        self.webView.loadFinished.connect(self.on_load_page)
         
     def on_load_page(self):
-        "Overrides SourceParsePage"
-        self.url='http://www.infobolsa.es/mercado-nacional/mercado-continuo'
-        SourceParsePage.on_load_page(self)
-        
-    def on_parse_page(self):
-        while True:
-#            try:
-                line=b2s(self.web.readline())[:-1]
-                if line.find('<td class="ticker">')!=-1: #Empieza bloque
-                    ticker=b2s(self.web.readline())[:-1].strip()+".MC"
-                    self.web.readline()
-                    self.web.readline()
-                    quote=Decimal(self.comaporpunto(b2s(self.web.readline())[:-1].strip()))
-                    for i in range(18):
-                        self.web.readline()
-                    hour=b2s(self.web.readline())[:-1].strip().split(":")
-                    time=datetime.time(int(hour[0]), int(hour[1]))
-                    self.web.readline()
-                    self.web.readline()
-                    self.web.readline()
-                    date=b2s(self.web.readline())[:-1].strip().split("/")
-                    date=datetime.date(int(date[2]), int(date[1]), int(date[0]))
-                    #print(ticker,  quote, time,  date)
-                    product=self.products.find_by_ticker(ticker)
-                    if product:
-                        datime=dt(date,time,product.stockexchange.zone)
-                        quote=Quote(self.mem).init__create(product, datime, quote)
-#                        print(quote)
-                        self.quotes.append(quote)#closes
+        self.frame = self.webView.page().mainFrame()      
+        print (self.webView.page().bytesReceived())  
+        self.frame.evaluateJavaScript("__doPostBack('ctl00$Contenido$Todos','')")
+        if self.frame.toHtml().find("Completo")==-1:
+            self.web=self.frame.toHtml().split("\n")
+            for l in self.web:
+                if l.find("ISIN=")!=-1:
+                    isin=l.split("ISIN=")[1].split('">')[0]
+                    p=self.products.find_by_isin(isin)
+                    if p!=None:
+                        arrdate=l.split('<td align="center">')[1].split("</td>")[0].split("/")
+                        date=datetime.date(int(arrdate[2]),  int(arrdate[1]),  int(arrdate[0]))
+                        strtime=l.split('class="Ult" align="center">')[1].split("</td>")[0]
+                        if strtime=="Cierre":
+                            time=p.stockexchange.closes
+                        else:
+                            arrtime=strtime.split(":")
+                            time=datetime.time(int(arrtime[0]), int(arrtime[1]))
+                        quot=Decimal(self.comaporpunto(l.split("</a></td><td>")[1].split("</td><td ")[0]))
+    #                        print (isin,  p,  arrdate, strtime,  date, time, quot)
+                        datime=dt(date,time,p.stockexchange.zone)
+                        quote=Quote(self.mem).init__create(p, datime, quot)    
+                        self.quotes.append(quote)
+    #                        print(quote)
                     else:
-                        self.log("El ticker {} no ha sido encontrado".format(ticker))
-                if line.find('</html')!=-1:
-                    break
-#            except:
-#                self.log("El ticker {} no ha sido formateado correctamente".format(ticker))
+                        self.log("El isin {} no ha sido encontrado".format(isin))        
+                        
+            self.next_step()
+            self.quotes_save()
+            self.mem.con.commit()
+            self.next_step()
+            
+            self.finished=True
+            print ("run_finished")
+            self.emit(SIGNAL("run_finished"))
+            self.next_step()
 
 
-class WorkerMercadoContinuoBME(SourceParsePage):
-    def __init__(self,  mem, sql):
-        SourceParsePage.__init__(self, mem, sql)   
+
+    def steps(self):
+        """Define  the number of steps of the source run"""
+        return 4
+
+    def run(self):
+        self.products.load_from_db(self.sql)     
+        self.next_step()
+        self.webView.load(QUrl("http://www.bolsamadrid.es/esp/aspx/Mercados/Precios.aspx?mercado=MC"))            
+
         
-    def on_load_page(self):
-        "Overrides SourceParsePage"
-        from selenium import webdriver
-        self.url='http://www.infobolsa.es/mercado-nacional/mercado-continuo'
-        SourceParsePage.on_load_page(self)
         
     def on_parse_page(self):
-        while True:
-#            try:
-                line=b2s(self.web.readline())[:-1]
-                if line.find('<td class="ticker">')!=-1: #Empieza bloque
-                    ticker=b2s(self.web.readline())[:-1].strip()+".MC"
-                    self.web.readline()
-                    self.web.readline()
-                    quote=Decimal(self.comaporpunto(b2s(self.web.readline())[:-1].strip()))
-                    for i in range(18):
-                        self.web.readline()
-                    hour=b2s(self.web.readline())[:-1].strip().split(":")
-                    time=datetime.time(int(hour[0]), int(hour[1]))
-                    self.web.readline()
-                    self.web.readline()
-                    self.web.readline()
-                    date=b2s(self.web.readline())[:-1].strip().split("/")
-                    date=datetime.date(int(date[2]), int(date[1]), int(date[0]))
-                    #print(ticker,  quote, time,  date)
-                    product=self.products.find_by_ticker(ticker)
-                    if product:
-                        datime=dt(date,time,product.stockexchange.zone)
-                        quote=Quote(self.mem).init__create(product, datime, quote)
-#                        print(quote)
-                        self.quotes.append(quote)#closes
-                    else:
-                        self.log("El ticker {} no ha sido encontrado".format(ticker))
-                if line.find('</html')!=-1:
-                    break
-#            except:
-#                self.log("El ticker {} no ha sido formateado correctamente".format(ticker))
+        pass
 
 
 class WorkerMorningstar(SourceIterateProducts):
@@ -431,8 +451,11 @@ class WorkerYahoo(SourceParsePage):
     def sum_tickers(self):
         s=""
         for p in self.products.arr:
-            if p.ticker!=None or p.ticker!="":
-                s=s+p.ticker+"+"
+            if p.ticker==None:
+                continue
+            if p.ticker=="":
+                continue
+            s=s+p.ticker+"+"
         return s[:-1]
         
     def on_load_page(self):

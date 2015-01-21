@@ -2464,142 +2464,142 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>frmProductReport</name>
     <message>
-        <location filename="ui/frmProductReport.ui" line="64"/>
+        <location filename="ui/Ui_frmProductReport.py" line="822"/>
         <source>Investment information</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmProductReport.ui" line="72"/>
+        <location filename="ui/Ui_frmProductReport.py" line="800"/>
         <source>Information</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmProductReport.ui" line="82"/>
+        <location filename="ui/Ui_frmProductReport.py" line="801"/>
         <source>Product name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmProductReport.ui" line="112"/>
+        <location filename="ui/Ui_frmProductReport.py" line="802"/>
         <source>ISIN code</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmProductReport.ui" line="142"/>
+        <location filename="ui/Ui_frmProductReport.py" line="803"/>
         <source>Currency</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmProductReport.ui" line="156"/>
+        <location filename="ui/Ui_frmProductReport.py" line="804"/>
         <source>Product type</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmProductReport.ui" line="170"/>
+        <location filename="ui/Ui_frmProductReport.py" line="805"/>
         <source>Stock exchange</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmProductReport.ui" line="184"/>
+        <location filename="ui/Ui_frmProductReport.py" line="806"/>
         <source>Agrupations</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmProductReport.ui" line="206"/>
+        <location filename="ui/Ui_frmProductReport.py" line="807"/>
         <source>Enabling auto update</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmProductReport.ui" line="217"/>
+        <location filename="ui/Ui_frmProductReport.py" line="808"/>
         <source>Web page</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmProductReport.ui" line="247"/>
+        <location filename="ui/Ui_frmProductReport.py" line="809"/>
         <source>Address</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmProductReport.ui" line="277"/>
+        <location filename="ui/Ui_frmProductReport.py" line="810"/>
         <source>Email</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmProductReport.ui" line="307"/>
+        <location filename="ui/Ui_frmProductReport.py" line="811"/>
         <source>Variable percentage</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmProductReport.ui" line="326"/>
+        <location filename="ui/Ui_frmProductReport.py" line="812"/>
         <source>100</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmProductReport.ui" line="340"/>
+        <location filename="ui/Ui_frmProductReport.py" line="813"/>
         <source>Put / Call / Inline</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmProductReport.ui" line="354"/>
+        <location filename="ui/Ui_frmProductReport.py" line="814"/>
         <source>Telephone</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmProductReport.ui" line="384"/>
+        <location filename="ui/Ui_frmProductReport.py" line="815"/>
         <source>Leveraged</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmProductReport.ui" line="398"/>
+        <location filename="ui/Ui_frmProductReport.py" line="816"/>
         <source>Ticket</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmProductReport.ui" line="428"/>
+        <location filename="ui/Ui_frmProductReport.py" line="817"/>
         <source>Daily priority</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmProductReport.ui" line="450"/>
+        <location filename="ui/Ui_frmProductReport.py" line="818"/>
         <source>Historical priority</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmProductReport.ui" line="472"/>
+        <location filename="ui/Ui_frmProductReport.py" line="819"/>
         <source>Comment</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmProductReport.ui" line="502"/>
+        <location filename="ui/Ui_frmProductReport.py" line="820"/>
         <source>Obsolete product</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmProductReport.ui" line="511"/>
+        <location filename="ui/Ui_frmProductReport.py" line="821"/>
         <source>Update investment</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmProductReport.ui" line="534"/>
+        <location filename="ui/Ui_frmProductReport.py" line="836"/>
         <source>Charts</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmProductReport.ui" line="544"/>
+        <location filename="ui/Ui_frmProductReport.py" line="831"/>
         <source>Daily</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmProductReport.ui" line="684"/>
+        <location filename="ui/Ui_frmProductReport.py" line="833"/>
         <source>Historical</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmProductReport.ui" line="709"/>
+        <location filename="ui/Ui_frmProductReport.py" line="835"/>
         <source>Undiscounted historical dividends</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmProductReport.ui" line="721"/>
+        <location filename="ui/Ui_frmProductReport.py" line="834"/>
         <source>Graph of historical quotes undiscounted dividends</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2609,132 +2609,132 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmProductReport.ui" line="746"/>
+        <location filename="ui/Ui_frmProductReport.py" line="837"/>
         <source>Report of historic prices</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmProductReport.ui" line="753"/>
+        <location filename="ui/Ui_frmProductReport.py" line="839"/>
         <source>Last price</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmProductReport.ui" line="763"/>
+        <location filename="ui/Ui_frmProductReport.py" line="841"/>
         <source>Daily variation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmProductReport.ui" line="768"/>
+        <location filename="ui/Ui_frmProductReport.py" line="843"/>
         <source>Weekly variation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmProductReport.ui" line="773"/>
+        <location filename="ui/Ui_frmProductReport.py" line="845"/>
         <source>Monthly variation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmProductReport.ui" line="778"/>
+        <location filename="ui/Ui_frmProductReport.py" line="847"/>
         <source>Annual variation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmProductReport.ui" line="788"/>
+        <location filename="ui/Ui_frmProductReport.py" line="849"/>
         <source>Last 7 days variation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmProductReport.ui" line="793"/>
+        <location filename="ui/Ui_frmProductReport.py" line="851"/>
         <source>Last 30 days variation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmProductReport.ui" line="798"/>
+        <location filename="ui/Ui_frmProductReport.py" line="853"/>
         <source>Last 12 months variation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmProductReport.ui" line="1087"/>
+        <location filename="ui/Ui_frmProductReport.py" line="909"/>
         <source>Date</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmProductReport.ui" line="1343"/>
+        <location filename="ui/Ui_frmProductReport.py" line="911"/>
         <source>Price</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmProductReport.ui" line="1291"/>
+        <location filename="ui/Ui_frmProductReport.py" line="859"/>
         <source>%</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmProductReport.ui" line="818"/>
+        <location filename="ui/Ui_frmProductReport.py" line="861"/>
         <source>% APR</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmProductReport.ui" line="869"/>
+        <location filename="ui/Ui_frmProductReport.py" line="865"/>
         <source>Purge investment from innecesary quotes. Leaves high, low, open and close quotes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmProductReport.ui" line="872"/>
+        <location filename="ui/Ui_frmProductReport.py" line="866"/>
         <source>Purge investment</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmProductReport.ui" line="883"/>
+        <location filename="ui/Ui_frmProductReport.py" line="867"/>
         <source>Make Split / Contrasplit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmProductReport.ui" line="896"/>
+        <location filename="ui/Ui_frmProductReport.py" line="868"/>
         <source>Product prices</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmProductReport.ui" line="909"/>
+        <location filename="ui/Ui_frmProductReport.py" line="881"/>
         <source>Daily prices</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmProductReport.ui" line="1097"/>
+        <location filename="ui/Ui_frmProductReport.py" line="913"/>
         <source>Open</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmProductReport.ui" line="1102"/>
+        <location filename="ui/Ui_frmProductReport.py" line="915"/>
         <source>Higher</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmProductReport.ui" line="1107"/>
+        <location filename="ui/Ui_frmProductReport.py" line="917"/>
         <source>Lower</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmProductReport.ui" line="953"/>
+        <location filename="ui/Ui_frmProductReport.py" line="880"/>
         <source>Agrupation Start</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmProductReport.ui" line="962"/>
+        <location filename="ui/Ui_frmProductReport.py" line="894"/>
         <source>Weekly prices</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmProductReport.ui" line="1112"/>
+        <location filename="ui/Ui_frmProductReport.py" line="919"/>
         <source>Agrupation start</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmProductReport.ui" line="1015"/>
+        <location filename="ui/Ui_frmProductReport.py" line="907"/>
         <source>Monthly prices</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmProductReport.ui" line="1068"/>
+        <location filename="ui/Ui_frmProductReport.py" line="920"/>
         <source>Annual prices</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2744,57 +2744,57 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmProductReport.ui" line="1338"/>
+        <location filename="ui/Ui_frmProductReport.py" line="923"/>
         <source>Year</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmProductReport.ui" line="1143"/>
+        <location filename="ui/Ui_frmProductReport.py" line="925"/>
         <source>January</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmProductReport.ui" line="1148"/>
+        <location filename="ui/Ui_frmProductReport.py" line="927"/>
         <source>February</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmProductReport.ui" line="1153"/>
+        <location filename="ui/Ui_frmProductReport.py" line="929"/>
         <source>March</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmProductReport.ui" line="1158"/>
+        <location filename="ui/Ui_frmProductReport.py" line="931"/>
         <source>April</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmProductReport.ui" line="1163"/>
+        <location filename="ui/Ui_frmProductReport.py" line="933"/>
         <source>May</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmProductReport.ui" line="1168"/>
+        <location filename="ui/Ui_frmProductReport.py" line="935"/>
         <source>June</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmProductReport.ui" line="1173"/>
+        <location filename="ui/Ui_frmProductReport.py" line="937"/>
         <source>July</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmProductReport.ui" line="1178"/>
+        <location filename="ui/Ui_frmProductReport.py" line="939"/>
         <source>August</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmProductReport.ui" line="1183"/>
+        <location filename="ui/Ui_frmProductReport.py" line="941"/>
         <source>September</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmProductReport.ui" line="1188"/>
+        <location filename="ui/Ui_frmProductReport.py" line="943"/>
         <source>October</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2914,27 +2914,27 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmProductReport.ui" line="17"/>
+        <location filename="ui/Ui_frmProductReport.py" line="799"/>
         <source>Product report</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmProductReport.ui" line="636"/>
+        <location filename="ui/Ui_frmProductReport.py" line="825"/>
         <source>Time</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmProductReport.ui" line="646"/>
+        <location filename="ui/Ui_frmProductReport.py" line="829"/>
         <source>% Daily</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmProductReport.ui" line="670"/>
+        <location filename="ui/Ui_frmProductReport.py" line="830"/>
         <source>Daily prices graph</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmProductReport.ui" line="696"/>
+        <location filename="ui/Ui_frmProductReport.py" line="832"/>
         <source>Historical prices graph</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2974,7 +2974,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmProductReport.ui" line="1131"/>
+        <location filename="ui/Ui_frmProductReport.py" line="921"/>
         <source>Table has been calculted with the last price of the previous month and the last price of the corresponding month</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5263,107 +5263,107 @@ S&#xc3;&#xb3;lo se contabilizar&#xc3;&#xa1; cuando se vendan las acciones</sourc
 <context>
     <name>wdgSource</name>
     <message>
-        <location filename="ui/wdgSource.ui" line="162"/>
+        <location filename="ui/Ui_wdgSource.py" line="137"/>
         <source>Inserted</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgSource.ui" line="188"/>
+        <location filename="ui/Ui_wdgSource.py" line="141"/>
         <source>Ignored</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgSource.ui" line="175"/>
+        <location filename="ui/Ui_wdgSource.py" line="139"/>
         <source>Edited</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgSource.ui" line="90"/>
+        <location filename="ui/Ui_wdgSource.py" line="132"/>
         <source>Errors</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgSource.py" line="116"/>
+        <location filename="ui/wdgSource.py" line="125"/>
         <source>{} Inserted</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgSource.py" line="117"/>
+        <location filename="ui/wdgSource.py" line="126"/>
         <source>{} Edited</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgSource.py" line="118"/>
+        <location filename="ui/wdgSource.py" line="127"/>
         <source>{} Ignored</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgSource.py" line="140"/>
+        <location filename="ui/Ui_wdgSource.py" line="136"/>
         <source>Inserted quotes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgSource.py" line="150"/>
+        <location filename="ui/wdgSource.py" line="159"/>
         <source>Edited quotes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgSource.py" line="160"/>
+        <location filename="ui/wdgSource.py" line="169"/>
         <source>Ignored quotes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgSource.py" line="190"/>
+        <location filename="ui/wdgSource.py" line="199"/>
         <source>Error procesing the source</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgSource.ui" line="83"/>
+        <location filename="ui/Ui_wdgSource.py" line="131"/>
         <source>Show source parse errors</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgSource.ui" line="185"/>
+        <location filename="ui/Ui_wdgSource.py" line="140"/>
         <source>Show quotes that are already in the database</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgSource.ui" line="172"/>
+        <location filename="ui/Ui_wdgSource.py" line="138"/>
         <source>Updated quotes with the same product, date and time</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgSource.ui" line="198"/>
+        <location filename="ui/Ui_wdgSource.py" line="142"/>
         <source>Show quotes that can&apos;t be saved (price 0...)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgSource.ui" line="201"/>
+        <location filename="ui/Ui_wdgSource.py" line="143"/>
         <source>Wrong</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgSource.py" line="120"/>
+        <location filename="ui/wdgSource.py" line="129"/>
         <source>{} bad</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgSource.py" line="119"/>
+        <location filename="ui/wdgSource.py" line="128"/>
         <source>{} errors parsing the source</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgSource.ui" line="129"/>
+        <location filename="ui/Ui_wdgSource.py" line="133"/>
         <source>User only</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgSource.ui" line="149"/>
+        <location filename="ui/Ui_wdgSource.py" line="135"/>
         <source>Searched</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgSource.py" line="121"/>
+        <location filename="ui/wdgSource.py" line="130"/>
         <source>{} products</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5388,7 +5388,7 @@ S&#xc3;&#xb3;lo se contabilizar&#xc3;&#xa1; cuando se vendan las acciones</sourc
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgSource.ui" line="60"/>
+        <location filename="ui/Ui_wdgSource.py" line="130"/>
         <source>Update progress</source>
         <translation type="unfinished"></translation>
     </message>
