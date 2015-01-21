@@ -57,8 +57,8 @@ class wdgDatetime(QWidget, Ui_wdgDatetime):
         if self.showZone==False:
             self.zone=self.mem.localzone
         else:
-            self.zone=zone
-        self.mem.zones.qcombobox(self.cmbZone, self.zone)        
+            self.zone=zone  
+        self.mem.zones.qcombobox(self.cmbZone, self.zone)      
         
         self.teDate.setSelectedDate(dt.date())
         
@@ -70,13 +70,7 @@ class wdgDatetime(QWidget, Ui_wdgDatetime):
             dt=dt.replace(microsecond=0)
         self.teMicroseconds.setValue(dt.microsecond)
         
-        self.setZone(self.zone)
         self.emit(SIGNAL("changed"))
-        
-    def setZone(self, zone):
-        """Zone es object"""
-        self.cmbZone.setCurrentIndex(self.cmbZone.findData(zone.name))
-        
         
     def datetime(self):
         #qt only miliseconds
