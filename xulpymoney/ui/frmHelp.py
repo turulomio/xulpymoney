@@ -7,3 +7,4 @@ class frmHelp(QDialog, Ui_frmHelp):
         QDialog.__init__(self, parent)
         self.mem=mem
         self.setupUi(self)
+        self.showMaximized()
