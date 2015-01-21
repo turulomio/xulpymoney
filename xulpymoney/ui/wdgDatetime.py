@@ -17,7 +17,7 @@ class wdgDatetime(QWidget, Ui_wdgDatetime):
         self.showMicroseconds=True
         self.showSeconds=True
         self.showZone=True
-        self.zone=None#Set in set()
+        self.zone=None#Set in set()                                                                                                     
         
     def show_microseconds(self, show):
         self.showMicroseconds=show
@@ -70,6 +70,7 @@ class wdgDatetime(QWidget, Ui_wdgDatetime):
             dt=dt.replace(microsecond=0)
         self.teMicroseconds.setValue(dt.microsecond)
         
+        self.setToolTip(self.tr("Selected datetime:\n{0}").format(self.datetime()))
         self.emit(SIGNAL("changed"))
         
     def datetime(self):
@@ -92,12 +93,6 @@ class wdgDatetime(QWidget, Ui_wdgDatetime):
     def on_cmbZone_currentIndexChanged(self, stri):
         self.zone=self.mem.zones.find(self.cmbZone.itemData(self.cmbZone.currentIndex()))
         self.emit(SIGNAL("changed"))
-        
-        
-    def mouseDoubleClickEvent(self, event):
-        m=QMessageBox()
-        m.setIcon(QMessageBox.Information)
-        m.setText(self.tr("Selected datetime:\n{0}").format(self.datetime()))
-        m.exec_()    
+
         
 

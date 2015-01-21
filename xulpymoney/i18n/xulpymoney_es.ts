@@ -3056,7 +3056,7 @@ p, li { white-space: pre-wrap; }
         <translation>Añade una cotización</translation>
     </message>
     <message>
-        <location filename="ui/frmQuotesIBM.py" line="56"/>
+        <location filename="ui/frmQuotesIBM.py" line="54"/>
         <source>Incorrect data. Try again.</source>
         <translation>Datos incorrectos. Inténtelo otra vez.</translation>
     </message>
@@ -4037,7 +4037,7 @@ p, li { white-space: pre-wrap; }
         <translation>Ahora</translation>
     </message>
     <message>
-        <location filename="ui/wdgDatetime.py" line="100"/>
+        <location filename="ui/wdgDatetime.py" line="73"/>
         <source>Selected datetime:
 {0}</source>
         <translation>Fecha y hora seleccionada:
@@ -5609,37 +5609,37 @@ S&#xc3;&#xb3;lo se contabilizar&#xc3;&#xa1; cuando se vendan las acciones</sourc
 <context>
     <name>wdgYear</name>
     <message>
-        <location filename="ui/wdgYear.ui" line="36"/>
+        <location filename="ui/Ui_wdgYear.py" line="63"/>
         <source>Select a year</source>
         <translation>Selecciona un año</translation>
     </message>
     <message>
-        <location filename="ui/wdgYear.ui" line="29"/>
+        <location filename="ui/Ui_wdgYear.py" line="62"/>
         <source>&lt;</source>
         <translation>&lt;</translation>
     </message>
     <message>
-        <location filename="ui/wdgYear.ui" line="46"/>
+        <location filename="ui/Ui_wdgYear.py" line="65"/>
         <source>&gt;</source>
         <translation>&gt;</translation>
     </message>
     <message>
-        <location filename="ui/wdgYear.ui" line="63"/>
+        <location filename="ui/Ui_wdgYear.py" line="67"/>
         <source>Current Year</source>
         <translation>Año actual</translation>
     </message>
     <message>
-        <location filename="ui/wdgYear.ui" line="26"/>
+        <location filename="ui/Ui_wdgYear.py" line="61"/>
         <source>Previous year</source>
         <translation>Año anterior</translation>
     </message>
     <message>
-        <location filename="ui/wdgYear.ui" line="43"/>
+        <location filename="ui/Ui_wdgYear.py" line="64"/>
         <source>Next year</source>
         <translation>Siguiente año</translation>
     </message>
     <message>
-        <location filename="ui/wdgYear.ui" line="60"/>
+        <location filename="ui/Ui_wdgYear.py" line="66"/>
         <source>Current year</source>
         <translation>Año actual</translation>
     </message>
