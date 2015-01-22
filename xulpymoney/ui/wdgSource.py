@@ -83,7 +83,7 @@ class wdgSource(QWidget, Ui_wdgSource):
             self.worker=WorkerYahooHistorical(self.mem, 0, "select * from products where priorityhistorical[1]=3 and obsolete=false {} order by name".format(self.strUserOnly(True)))
             self.agrupation.append(self.worker)
         elif self.class_sources==Sources.WorkerMercadoContinuo:                
-            self.worker=WorkerMercadoContinuo(self.mem, "select * from products where 9=any(priority) obsolete=false {} order by name".format(self.strUserOnly()))
+            self.worker=WorkerMercadoContinuo(self.mem, "select * from products where 9=any(priority) and obsolete=false {} order by name".format(self.strUserOnly()))
             self.agrupation.append(self.worker)
         elif self.class_sources==Sources.WorkerMorningstar:
             self.worker=WorkerMorningstar(self.mem, 0,  "select * from products where priorityhistorical[1]=8 and obsolete=false {} order by name;".format(self.strUserOnly()))
