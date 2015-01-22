@@ -197,6 +197,12 @@ class Update:
             cur.close()
             self.mem.con.commit()
             self.set_database_version(201501220838)       
+        if self.dbversion<201501222338:
+            cur=self.mem.con.cursor()
+            cur.execute("update products set ticker=%s, priority=%s, priorityhistorical=%s where id=%s;", ('MT.AS',[1, ],[3, ],  78915))
+            cur.close()
+            self.mem.con.commit()
+            self.set_database_version(201501222338)     
   
 
         """AFTER EXECUTING I MUST RUN SQL UPDATE SCRIPT TO UPDATE FUTURE INSTALLATIONS
