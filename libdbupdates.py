@@ -169,7 +169,34 @@ class Update:
             cur.execute("update products set obsolete=true where type=2 and id in (select id from products where type=2 except select id from products where type=2 and id in (select distinct (id) from quotes));")#Pone obsoletos fondos que no tengan cotizaciones despues de varios morningstar
             cur.close()
             self.mem.con.commit()
-            self.set_database_version(201501170838)       
+            self.set_database_version(201501170838)      
+        if self.dbversion<201501220838:
+            cur=self.mem.con.cursor()
+            cur.execute("update products set priority=NULL where  2=any(priority);")#Removing priority 2
+            cur.execute("update products set priority=%s where  agrupations ilike '%%mercadocontinuo%%';", ([9, ], ))#Asign 9 to mercadocontinuo products
+            cur.execute("update products set obsolete=%s where id=%s;", (True, 78175))
+            cur.execute("update products set obsolete=%s where id=%s;", (True, 74821))
+            cur.execute("update products set obsolete=%s where id=%s;", (True, 77112))
+            cur.execute("update products set obsolete=%s where id=%s;", (True, 77343))
+            cur.execute("update products set obsolete=%s where id=%s;", (True, 78063))
+            cur.execute("update products set obsolete=%s where id=%s;", (True, 78328))
+            cur.execute("update products set obsolete=%s where id=%s;", (True, 78862))
+            cur.execute("update products set obsolete=%s where id=%s;", (True, 78869))
+            cur.execute("update products set obsolete=%s where id=%s;", (True, 79088))
+            cur.execute("update products set ticker=%s, priorityhistorical=%s where id=%s;", ('CUN.MC',[3, ],  81428))#priority ya es 9
+            cur.execute("update products set ticker=%s, priorityhistorical=%s where id=%s;", ('EGPW.MC',[3, ],  78881))#priority ya es 9
+            cur.execute("update products set ticker=%s, priorityhistorical=%s where id=%s;", ('MTF.MC',[3, ],  79221))#priority ya es 9
+            cur.execute("update products set ticker=%s, priorityhistorical=%s where id=%s;", ('PSG.MC',[3, ],  79356))#priority ya es 9
+            cur.execute("update products set ticker=%s, priorityhistorical=%s where id=%s;", ('NAT.MC',[3, ], 75607))#priority ya es 9
+            cur.execute("update products set ticker=%s, priorityhistorical=%s where id=%s;", ('PRM.MC',[3, ],75609 ))#priority ya es 9
+            cur.execute("update products set ticker=%s, priorityhistorical=%s where id=%s;", ('COL.MC',[3, ],77072))#priority ya es 9
+            cur.execute("update products set ticker=%s, priorityhistorical=%s where id=%s;", ('UBS.MC',[3, ],78252))#priority ya es 9
+            cur.execute("update products set ticker=%s, priorityhistorical=%s where id=%s;", ('CPL.MC',[3, ],78446))#priority ya es 9
+            cur.execute("update products set ticker=%s, priorityhistorical=%s where id=%s;", ('ALB.MC',[3, ],78461))#priority ya es 9
+            cur.execute("update products set ticker=%s, priorityhistorical=%s where id=%s;", ('ENC.MC',[3, ],79141))#priority ya es 9
+            cur.close()
+            self.mem.con.commit()
+            self.set_database_version(201501220838)       
   
 
         """AFTER EXECUTING I MUST RUN SQL UPDATE SCRIPT TO UPDATE FUTURE INSTALLATIONS
