@@ -70,7 +70,7 @@ class wdgDatetime(QWidget, Ui_wdgDatetime):
             dt=dt.replace(microsecond=0)
         self.teMicroseconds.setValue(dt.microsecond)
         
-        self.setToolTip(self.tr("Selected datetime:\n{0}").format(self.datetime()))
+        self.updateTooltip()
         self.emit(SIGNAL("changed"))
         
     def datetime(self):
@@ -80,19 +80,26 @@ class wdgDatetime(QWidget, Ui_wdgDatetime):
         return dt(self.teDate.selectedDate().toPyDate(), time , self.zone)
 
     def on_teDate_selectionChanged(self):
+        self.updateTooltip()
         self.emit(SIGNAL("changed"))
         
     def on_teTime_timeChanged(self, time):
+        self.updateTooltip()
         self.emit(SIGNAL("changed"))
         
     @pyqtSlot(int)   
     def on_teMicroseconds_valueChanged(self):
+        self.updateTooltip()
         self.emit(SIGNAL("changed"))
         
     @pyqtSlot(str)      
     def on_cmbZone_currentIndexChanged(self, stri):
         self.zone=self.mem.zones.find(self.cmbZone.itemData(self.cmbZone.currentIndex()))
+        self.updateTooltip()
         self.emit(SIGNAL("changed"))
+        
+    def updateTooltip(self):
+        self.setToolTip(self.tr("Selected datetime:\n{0}").format(self.datetime()))
 
         
 
