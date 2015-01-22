@@ -164,7 +164,7 @@ class canvasChart(FigureCanvasQTAgg):
         left=ohcldata[0].datetime().toordinal()-interval.days#De margen
         right=ohcldata[len(ohcldata)-1].datetime().toordinal()+interval.days
         self.ax.set_xlim(left, right)
-        plot_day_summary(self.ax, quotes,  ticksize=4)
+        plot_day_summary_oclh(self.ax, quotes,  ticksize=3)
         self.draw_sma50(dates, close)
         self.draw_sma200(dates, close)
 
@@ -264,7 +264,7 @@ class canvasChart(FigureCanvasQTAgg):
                 
         if self.ax.legend_==None:
             (plots, labels)=zip(*self.labels)
-            self.ax.legend(plots, labels, "upper left")
+            self.ax.legend( plots, labels, loc="best")
         else:
             self.ax.legend_=None
         self.draw()

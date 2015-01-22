@@ -5,7 +5,7 @@ from libxulpymoney import *
 from matplotlib.finance import *
 
 from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg
-from matplotlib.backends.backend_qt4agg import NavigationToolbar2QTAgg 
+from matplotlib.backends.backend_qt4agg import NavigationToolbar2QT 
 
 from matplotlib.dates import *
 from Ui_wdgTotal import *
@@ -65,7 +65,7 @@ class canvasTotal(FigureCanvasQTAgg):
                 
         if self.ax.legend_==None:
             (plots, labels)=zip(*self.labels)
-            self.ax.legend(plots, labels, "upper left")
+            self.ax.legend(plots, labels, loc="best")
         else:
             self.ax.legend_=None
 
@@ -111,7 +111,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
 
 
         self.canvas=canvasTotal(self.mem,  self)
-        self.ntb = NavigationToolbar2QTAgg(self.canvas, self)
+        self.ntb = NavigationToolbar2QT(self.canvas, self)
         
         self.tabGraphTotal.addWidget(self.canvas)
         self.tabGraphTotal.addWidget(self.ntb)

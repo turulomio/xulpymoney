@@ -11,7 +11,7 @@ from frmSplit import *
 from frmEstimationsAdd import *
 from frmDPSAdd import *
 from canvaschart import *
-from matplotlib.backends.backend_qt4agg import NavigationToolbar2QTAgg 
+from matplotlib.backends.backend_qt4agg import NavigationToolbar2QT 
 
 class frmProductReport(QDialog, Ui_frmProductReport):
     def __init__(self, mem,  product, inversion=None, parent = None, name = None, modal = False):
@@ -61,17 +61,17 @@ class frmProductReport(QDialog, Ui_frmProductReport):
                 self.grpInformation.setEnabled(False)
 
         self.canvasIntraday=canvasChartIntraday( self.mem, self)
-        self.ntbIntraday = NavigationToolbar2QTAgg(self.canvasIntraday, self)
+        self.ntbIntraday = NavigationToolbar2QT(self.canvasIntraday, self)
         self.layIntraday.addWidget(self.canvasIntraday)
         self.layIntraday.addWidget(self.ntbIntraday)
         
         self.canvasHistorical=canvasChartHistorical( self.mem, self)
-        self.ntbHistorical=NavigationToolbar2QTAgg(self.canvasHistorical, self)
+        self.ntbHistorical=NavigationToolbar2QT(self.canvasHistorical, self)
         self.layHistorical.addWidget(self.canvasHistorical)
         self.layHistorical.addWidget(self.ntbHistorical)
         
         self.canvasHistoricalSD=canvasChartHistorical( self.mem, self)
-        self.ntbHistoricalSD=NavigationToolbar2QTAgg(self.canvasHistoricalSD, self)
+        self.ntbHistoricalSD=NavigationToolbar2QT(self.canvasHistoricalSD, self)
         self.layHistoricalSD.addWidget(self.canvasHistoricalSD)
         self.layHistoricalSD.addWidget(self.ntbHistoricalSD)
         
@@ -99,7 +99,6 @@ class frmProductReport(QDialog, Ui_frmProductReport):
                 self.tblTPC.setItem(row, 2, qtpc(None))    
                 self.tblTPC.setItem(row, 3,  qtpc(None))     
                 
-        print (self.product.agrupations.arr)
         self.product.agrupations.qcombobox(self.cmbAgrupations)
         self.product.priority.qcombobox(self.cmbPriority)
         self.product.priorityhistorical.qcombobox(self.cmbPriorityHistorical)
@@ -164,7 +163,6 @@ class frmProductReport(QDialog, Ui_frmProductReport):
             self.product.dps.myqtablewidget(self.tblDPSPaid, "frmProductReport")            
             inicio=datetime.datetime.now()
             self.load_information()
-#            if len(self.product.result.ohclDaily.arr)!=0:
             print ("Datos informacion cargados:",  datetime.datetime.now()-inicio)
             self.load_graphics()
             print ("Datos gráficos cargados:",  datetime.datetime.now()-inicio)
@@ -172,14 +170,6 @@ class frmProductReport(QDialog, Ui_frmProductReport):
             print ("Datos historicos cargados:",  datetime.datetime.now()-inicio)
             self.load_mensuales()
             print ("Datos mensuales cargados:",  datetime.datetime.now()-inicio)
-#            else:#If there isn't data, I must empty tables
-#                self.tblDaily.clear()
-#                self.tblMonthly.clear()
-#                self.tblYearly.clear()
-#                self.tblWeekly.clear()
-
-
-
 
     def load_historicas(self): 
         def setTable(table, data):
@@ -537,7 +527,6 @@ class frmProductReport(QDialog, Ui_frmProductReport):
         for i in self.tblDaily.selectedItems():#itera por cada item no row.
             if i.column()==0:
                 self.product.result.ohclDaily.selected.append(self.product.result.ohclDaily.arr[i.row()])
-        print (self.product.result.ohclDaily.selected)
 
     def on_tblDaily_customContextMenuRequested(self,  pos):
         if len(self.product.result.ohclDaily.selected)>0:
@@ -557,7 +546,6 @@ class frmProductReport(QDialog, Ui_frmProductReport):
         for i in self.tblMonthly.selectedItems():#itera por cada item no row.
             if i.column()==0:
                 self.product.result.ohclMonthly.selected.append(self.product.result.ohclMonthly.arr[i.row()])
-        print (self.product.result.ohclMonthly.selected)
 
     def on_tblMonthly_customContextMenuRequested(self,  pos):
         if len(self.product.result.ohclMonthly.selected)>0:
@@ -577,7 +565,6 @@ class frmProductReport(QDialog, Ui_frmProductReport):
         for i in self.tblYearly.selectedItems():#itera por cada item no row.
             if i.column()==0:
                 self.product.result.ohclYearly.selected.append(self.product.result.ohclYearly.arr[i.row()])
-        print (self.product.result.ohclYearly.selected)
 
     def on_tblYearly_customContextMenuRequested(self,  pos):
         if len(self.product.result.ohclYearly.selected)>0:
@@ -663,7 +650,6 @@ class frmProductReport(QDialog, Ui_frmProductReport):
                     self.selDPS=self.product.dps.arr[i.row()]
         except:
             self.selDPS=None
-        print (self.selDPS)
         
             
     def on_tblDPSPaid_customContextMenuRequested(self,  pos):

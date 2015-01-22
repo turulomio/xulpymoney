@@ -33,7 +33,7 @@ class canvasPie(FigureCanvasQTAgg):
         
         for i in range(len(self.labels)):
             self.labels[i]=self.labels[i]+". {0} € ({1})".format(round(self.fracs[i], 2),self.autotexts[i].get_text())
-        self.fig.legend(self.patches,self.labels,"lower center")
+        self.fig.legend(self.patches,self.labels,"upper right")
         self.fig.text(0, 0, "Total: {0} €".format(round(sum(self.fracs), 2)))
 
         self.draw()
@@ -43,7 +43,7 @@ class canvasPie(FigureCanvasQTAgg):
             self.fig.legends=[]
             self.showlegend=False
         else:
-            self.fig.legend(self.patches,self.labels,"lower center")
+            self.fig.legend(self.patches,self.labels,"upper right")
             self.showlegend=True
         self.draw()      
             
