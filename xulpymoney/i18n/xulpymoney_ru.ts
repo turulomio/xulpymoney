@@ -2871,12 +2871,12 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmProductReport.py" line="431"/>
+        <location filename="ui/frmProductReport.py" line="421"/>
         <source>{0} quotes have been purged from {1}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmProductReport.py" line="473"/>
+        <location filename="ui/frmProductReport.py" line="463"/>
         <source>You have to add a quote and a dividend per share estimation to the new product</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2896,22 +2896,22 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmProductReport.py" line="501"/>
+        <location filename="ui/frmProductReport.py" line="491"/>
         <source>Agrupation selection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmProductReport.py" line="512"/>
+        <location filename="ui/frmProductReport.py" line="502"/>
         <source>Priority selection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmProductReport.py" line="525"/>
+        <location filename="ui/frmProductReport.py" line="515"/>
         <source>Historical data priority selection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmProductReport.py" line="266"/>
+        <location filename="ui/frmProductReport.py" line="256"/>
         <source>Daily maximum variance: {} ({})</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2981,7 +2981,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmProductReport.py" line="283"/>
+        <location filename="ui/frmProductReport.py" line="273"/>
         <source>Year {}</source>
         <translation type="unfinished"></translation>
     </message>

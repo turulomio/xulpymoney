@@ -133,7 +133,7 @@ class wdgPie(QWidget):
         
         # Create the navigation toolbar, tied to the canvas
         #
-        self.mpl_toolbar = NavigationToolbar2QTAgg(self.canvas, self.main_frame)
+        self.mpl_toolbar = NavigationToolbar2QT(self.canvas, self.main_frame)
         
         # Other GUI controls
         # 

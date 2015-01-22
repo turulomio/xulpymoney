@@ -2870,12 +2870,12 @@ p, li { white-space: pre-wrap; }
         <translation>Borrar dividendo por acción</translation>
     </message>
     <message>
-        <location filename="ui/frmProductReport.py" line="431"/>
+        <location filename="ui/frmProductReport.py" line="421"/>
         <source>{0} quotes have been purged from {1}</source>
         <translation>{0} cotizaciones han sido purgadas de {1}</translation>
     </message>
     <message>
-        <location filename="ui/frmProductReport.py" line="473"/>
+        <location filename="ui/frmProductReport.py" line="463"/>
         <source>You have to add a quote and a dividend per share estimation to the new product</source>
         <translation>Tienes que añadir un valor y una estimación del dividendo por acción al nuevo producto</translation>
     </message>
@@ -2895,22 +2895,22 @@ p, li { white-space: pre-wrap; }
         <translation>Añadir un nuevo producto</translation>
     </message>
     <message>
-        <location filename="ui/frmProductReport.py" line="501"/>
+        <location filename="ui/frmProductReport.py" line="491"/>
         <source>Agrupation selection</source>
         <translation>Selección de agrupaciones</translation>
     </message>
     <message>
-        <location filename="ui/frmProductReport.py" line="512"/>
+        <location filename="ui/frmProductReport.py" line="502"/>
         <source>Priority selection</source>
         <translation>Selección de prioridades</translation>
     </message>
     <message>
-        <location filename="ui/frmProductReport.py" line="525"/>
+        <location filename="ui/frmProductReport.py" line="515"/>
         <source>Historical data priority selection</source>
         <translation>Selección de prioridades de datos históricos</translation>
     </message>
     <message>
-        <location filename="ui/frmProductReport.py" line="266"/>
+        <location filename="ui/frmProductReport.py" line="256"/>
         <source>Daily maximum variance: {} ({})</source>
         <translation>Variación máxima diaria: {} ({})</translation>
     </message>
@@ -2980,7 +2980,7 @@ p, li { white-space: pre-wrap; }
         <translation>La tabla ha sido calculado con el último precio del mes anterior y el último precio del mes correspondiente</translation>
     </message>
     <message>
-        <location filename="ui/frmProductReport.py" line="283"/>
+        <location filename="ui/frmProductReport.py" line="273"/>
         <source>Year {}</source>
         <translation>Año {}</translation>
     </message>

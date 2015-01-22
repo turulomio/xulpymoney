@@ -247,48 +247,6 @@ class SourceIterateProducts(Source):
             time.sleep(self.sleep)#time step
         print("")
 
-#
-#class WorkerMercadoContinuo(SourceParsePage):
-#    def __init__(self,  mem, sql):
-#        SourceParsePage.__init__(self, mem, sql)   
-#        
-#    def on_load_page(self):
-#        "Overrides SourceParsePage"
-#        self.url='http://www.infobolsa.es/mercado-nacional/mercado-continuo'
-#        SourceParsePage.on_load_page(self)
-#        
-#    def on_parse_page(self):
-#        while True:
-##            try:
-#                line=b2s(self.web.readline())[:-1]
-#                if line.find('<td class="ticker">')!=-1: #Empieza bloque
-#                    ticker=b2s(self.web.readline())[:-1].strip()+".MC"
-#                    self.web.readline()
-#                    self.web.readline()
-#                    quote=Decimal(self.comaporpunto(b2s(self.web.readline())[:-1].strip()))
-#                    for i in range(18):
-#                        self.web.readline()
-#                    hour=b2s(self.web.readline())[:-1].strip().split(":")
-#                    time=datetime.time(int(hour[0]), int(hour[1]))
-#                    self.web.readline()
-#                    self.web.readline()
-#                    self.web.readline()
-#                    date=b2s(self.web.readline())[:-1].strip().split("/")
-#                    date=datetime.date(int(date[2]), int(date[1]), int(date[0]))
-#                    #print(ticker,  quote, time,  date)
-#                    product=self.products.find_by_ticker(ticker)
-#                    if product:
-#                        datime=dt(date,time,product.stockexchange.zone)
-#                        quote=Quote(self.mem).init__create(product, datime, quote)
-##                        print(quote)
-#                        self.quotes.append(quote)#closes
-#                    else:
-#                        self.log("El ticker {} no ha sido encontrado".format(ticker))
-#                if line.find('</html')!=-1:
-#                    break
-##            except:
-##                self.log("El ticker {} no ha sido formateado correctamente".format(ticker))
-
 
 class WorkerMercadoContinuo(SourceParsePage):
     def __init__(self,  mem, sql):
@@ -316,11 +274,9 @@ class WorkerMercadoContinuo(SourceParsePage):
                             arrtime=strtime.split(":")
                             time=datetime.time(int(arrtime[0]), int(arrtime[1]))
                         quot=Decimal(self.comaporpunto(l.split("</a></td><td>")[1].split("</td><td ")[0]))
-    #                        print (isin,  p,  arrdate, strtime,  date, time, quot)
                         datime=dt(date,time,p.stockexchange.zone)
                         quote=Quote(self.mem).init__create(p, datime, quot)    
                         self.quotes.append(quote)
-    #                        print(quote)
                     else:
                         self.log("El isin {} no ha sido encontrado".format(isin))        
                         
@@ -406,10 +362,8 @@ class WorkerSGWarrants(SourceParsePage):
         driver = webdriver.Firefox(profile)
 #        driver = webdriver.Remote(desired_capabilities=webdriver.DesiredCapabilities.HTMLUNIT)
         driver.get('https://es.warrants.com')
-        print (driver.title)
         form=driver.find_element_by_id('id3e9b')
         form.click()
-        print(driver.get_page_source())
         driver.quit()
         sys.exit()
 
