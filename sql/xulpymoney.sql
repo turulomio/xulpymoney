@@ -1870,7 +1870,7 @@ INSERT INTO products VALUES ('ARCALIA INTERES', 'ES0138913035', 'EUR', 2, '|BMF|
 INSERT INTO products VALUES ('ARCALIA SELECCION', 'ES0142343039', 'EUR', 2, '|BMF|0083|', 78661, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, NULL, NULL, '{8}', 'ES0142343039||es||False', false);
 INSERT INTO products VALUES ('ARCANO EUROPEAN INC.CL D1', 'ES0109924029', 'EUR', 2, '|f_es_BMF|', 74811, '', '', '', '', 100, 'c', 0, 1, NULL, NULL, '{8}', 'ES0109924029||None||False', true);
 INSERT INTO products VALUES ('ARCANO EUROPEAN INCOME F. FIL A1 ', 'ES0109924003', 'EUR', 2, '|f_es_BMF|', 74810, '', '', '', '', 100, 'c', 0, 1, NULL, NULL, '{8}', 'ES0109924003||None||False', true);
-INSERT INTO products VALUES ('ARCELORMITTAL', 'LU0323134006', 'EUR', 1, '|CAC|', 78915, '', '', '', '', 100, 'c', 0, 12, NULL, '{1}', '{3}', 'EURONEXT#LU0323134006||nl||False', false);
+INSERT INTO products VALUES ('ARCELORMITTAL', 'LU0323134006', 'EUR', 1, '|CAC|', 78915, '', '', '', '', 100, 'c', 0, 12, 'MT.AS', '{1}', '{3}', 'EURONEXT#LU0323134006||nl||False', false);
 INSERT INTO products VALUES ('ARCELORMITTAL', 'LU0323134006', 'EUR', 1, '|IBEX|MERCADOCONTINUO|', 81101, '', '', '', '', 100, 'c', 0, 1, 'MTS.MC', '{9}', '{3}', 'MC#LU0323134006||es||False', false);
 INSERT INTO products VALUES ('ArcelorMittal', NULL, 'USD', 1, NULL, 74767, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, NULL, 'NYSE#MT||us||False', false);
 INSERT INTO products VALUES ('Arch Chemicals Inc.', NULL, 'USD', 1, NULL, 79501, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, NULL, 'NYSE#ARJ||us||False', false);
@@ -8225,7 +8225,7 @@ INSERT INTO bolsas VALUES (6, 'it', '07:00:00', 'Bolsa de Milán', '17:38:00', '
 INSERT INTO bolsas VALUES (7, 'jp', '09:00:00', 'Bolsa de Tokio', '20:00:00', 'Asia/Tokyo');
 INSERT INTO bolsas VALUES (8, 'cn', '00:00:00', 'Bolsa de Hong Kong', '20:00:00', 'Asia/Hong_Kong');
 INSERT INTO bolsas VALUES (9, 'pt', '07:00:00', 'Bolsa de Lisboa', '17:38:00', 'Europe/Lisbon');
-INSERT INTO globals VALUES (1, 'Version', '201501220838');
+INSERT INTO globals VALUES (1, 'Version', '201501222338');
 INSERT INTO globals VALUES (6, 'Admin mode', '2ed65fbc0b68fdd5e4b06abd7675c2c8');
 DELETE FROM products WHERE id<=0;
 ALTER SEQUENCE seq_conceptos START WITH 100 RESTART;

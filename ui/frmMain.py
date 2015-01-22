@@ -552,12 +552,16 @@ class frmMain(QMainWindow, Ui_frmMain):
                 
     @QtCore.pyqtSlot()  
     def on_actionProductsAutoUpdate_activated(self):
+        """Tuve muchos problemas alf inal si isin!='' o isin<>'', no muestra los null ni los '" """
         self.w.close()
         self.w=wdgProducts(self.mem,  """select * from products 
-                where obsolete=false and ((agrupations like '%|MERCADOCONTINUO|%'  and char_length(ticker)>0)
-                or (8 = any(priorityhistorical) and char_length(isin)>0)
-                or (1 = any(priority) and char_length(ticker)>0)
-                or (3 = any(priorityhistorical) and char_length(ticker)>0))
+                where obsolete=false and 
+                (
+                    (9 = any(priority) and isin<>'')
+                    or (8 = any(priorityhistorical) and isin<>'')
+                    or (1 = any(priority) and ticker<>'')
+                    or (3 = any(priorityhistorical) and ticker<>'')
+                )
                 order by name
                 """)
 
@@ -567,11 +571,15 @@ class frmMain(QMainWindow, Ui_frmMain):
     @QtCore.pyqtSlot()  
     def on_actionProductsNotAutoUpdate_activated(self):
         self.w.close()
-        self.w=wdgProducts(self.mem,  """select * from products except select * from products 
-                where obsolete=false and ((agrupations like '%|MERCADOCONTINUO|%'  and char_length(ticker)>0)
-                or (8 = any(priorityhistorical) and char_length(isin)>0)
-                or (1 = any(priority) and char_length(ticker)>0)
-                or (3 = any(priorityhistorical) and char_length(ticker)>0))
+        self.w=wdgProducts(self.mem,  """select * from products where obsolete=false except 
+                select * from products 
+                where obsolete=false and 
+                (
+                    (9 = any(priority) and isin<>'')
+                    or (8 = any(priorityhistorical) and isin<>'')
+                    or (1 = any(priority) and ticker<>'')
+                    or (3 = any(priorityhistorical) and ticker<>'')
+                )
                 order by name
                 """)
         self.layout.addWidget(self.w)
@@ -588,7 +596,7 @@ class frmMain(QMainWindow, Ui_frmMain):
     @QtCore.pyqtSlot()  
     def on_actionProductsWithoutISIN_activated(self):
         self.w.close()
-        self.w=wdgProducts(self.mem,  "select * from products  where isin is null or isin ='' order by name,id")
+        self.w=wdgProducts(self.mem,  "select * from products  where obsolete=false and (isin is null or isin ='') order by name,id")
 
         self.layout.addWidget(self.w)
         self.w.show()

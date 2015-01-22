@@ -3701,14 +3701,20 @@ class Product:
     def has_autoupdate(self):
         """Return if the product has autoupdate in some source
         REMEMBER TO CHANGE on_actionProductsAutoUpdate_activated en frmMain"""
-        if self.ticker!=None and self.ticker!="" and self.agrupations.dbstring().find("|MERCADOCONTINUO|")!=-1:#mercado continuo
+        if self.obsolete==True:
+            return False
+        #With isin
+        if self.priority.find(9)!=None or self.priorityhistorical.find(8)!=None:
+            if self.isin==None or self.isin=="":
+                return False
             return True
-        elif self.isin!=None and self.isin!="" and self.priorityhistorical.find(8)!=None:#Morningstar
+            
+        #With ticker
+        if self.priority.find(1)!=None or self.priorityhistorical.find(3)!=None:
+            if self.ticker==None or self.ticker=="":
+                return False
             return True
-        elif self.ticker!=None and self.ticker!="" and self.priority.find(1)!=None:#yahoo
-            return True
-        elif self.ticker!=None and self.priorityhistorical.find(3)!=None and self.ticker!="":#yahoohistorical
-            return True
+            
         return False
         
         

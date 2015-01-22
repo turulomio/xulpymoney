@@ -105,9 +105,9 @@ class frmProductReport(QDialog, Ui_frmProductReport):
 
         self.lblInvestment.setText("{} ( {} )".format(self.product.name, self.product.id))
         self.txtTPC.setText(str(self.product.tpc))
-        self.txtName.setText((self.product.name))
-        self.txtISIN.setText((self.product.isin))
-        self.txtYahoo.setText(str(self.product.ticker))
+        self.txtName.setText(self.product.name)
+        self.txtISIN.setText(self.product.isin)
+        self.txtYahoo.setText(self.product.ticker)
         self.txtComentario.setText(self.product.comentario)
         self.txtAddress.setText(self.product.address)
         self.txtWeb.setText(self.product.web)
