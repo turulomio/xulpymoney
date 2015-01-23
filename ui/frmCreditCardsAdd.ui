@@ -27,7 +27,7 @@
    <item>
     <layout class="QVBoxLayout" name="verticalLayout">
      <item>
-      <widget class="QLabel" name="lblTitulo">
+      <widget class="QLabel" name="lblTitle">
        <property name="font">
         <font>
          <pointsize>14</pointsize>
@@ -53,7 +53,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QLineEdit" name="txtTarjeta">
+        <widget class="QLineEdit" name="txtCreditCard">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -67,7 +67,7 @@
      <item>
       <layout class="QHBoxLayout" name="horizontalLayout">
        <item>
-        <widget class="QCheckBox" name="chkPagoDiferido">
+        <widget class="QCheckBox" name="chkDelayed">
          <property name="text">
           <string>Has it delayed payment?</string>
          </property>
@@ -85,7 +85,7 @@
         </widget>
        </item>
        <item>
-        <widget class="myQLineEdit" name="txtSaldoMaximo">
+        <widget class="myQLineEdit" name="txtMaximum">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -106,7 +106,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QLineEdit" name="txtNumero">
+        <widget class="QLineEdit" name="txtNumber">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
            <horstretch>0</horstretch>
