@@ -14,28 +14,26 @@ class frmCreditCardsAdd(QDialog, Ui_frmCreditCardsAdd):
         self.setupUi(self)
         self.mem=mem
         self.cuenta=cuenta
-        
-            
 
         if tarjeta==None:
             self.tipo=1#Insertar
             self.tarjeta=CreditCard(self.mem)
-            self.lblTitulo.setText(self.tr("New credit card of {0}").format(self.cuenta.name))
+            self.lblTitle.setText(self.tr("New credit card of {0}").format(self.cuenta.name))
         else:
             self.tipo=2#Modificar
             self.tarjeta=tarjeta
-            self.lblTitulo.setText(self.tr("Updating {} credit card").format(self.tarjeta.name))
+            self.lblTitle.setText(self.tr("Updating {} credit card").format(self.tarjeta.name))
             self.txtCreditCard.setText(self.tarjeta.name)
-            self.chkPagoDiferido.setChecked(b2c(self.tarjeta.active))
-            self.txtSaldoMaximo.setText(str(self.tarjeta.saldomaximo))
-            self.txtNumero.setText(self.tarjeta.numero)
+            self.chkDelayed.setChecked(b2c(self.tarjeta.active))
+            self.txtMaximum.setText(str(self.tarjeta.saldomaximo))
+            self.txtNumber.setText(self.tarjeta.numero)
             
     def on_cmd_pressed(self):
         self.tarjeta.name=self.txtCreditCard.text()
         self.tarjeta.cuenta=self.cuenta
-        self.tarjeta.pagodiferido=c2b(self.chkPagoDiferido.checkState())
-        self.tarjeta.saldomaximo=self.txtSaldoMaximo.decimal()
-        self.tarjeta.numero=self.txtNumero.text()
+        self.tarjeta.pagodiferido=c2b(self.chkDelayed.checkState())
+        self.tarjeta.saldomaximo=self.txtMaximum.decimal()
+        self.tarjeta.numero=self.txtNumber.text()
         self.tarjeta.active=True
         self.tarjeta.save()
         self.mem.con.commit()        
