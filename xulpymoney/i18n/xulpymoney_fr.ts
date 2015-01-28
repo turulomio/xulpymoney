@@ -53,7 +53,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5477"/>
+        <location filename="libxulpymoney.py" line="5478"/>
         <source>This option is being developed</source>
         <translation type="unfinished"></translation>
     </message>
@@ -88,7 +88,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4935"/>
+        <location filename="libxulpymoney.py" line="4936"/>
         <source>Error conecting to Xulpymoney</source>
         <translation type="unfinished"></translation>
     </message>
@@ -413,12 +413,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5438"/>
+        <location filename="libxulpymoney.py" line="5439"/>
         <source>True</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5441"/>
+        <location filename="libxulpymoney.py" line="5442"/>
         <source>False</source>
         <translation type="unfinished"></translation>
     </message>
@@ -483,37 +483,37 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5369"/>
+        <location filename="libxulpymoney.py" line="5370"/>
         <source>year</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5371"/>
+        <location filename="libxulpymoney.py" line="5372"/>
         <source>years</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5373"/>
+        <location filename="libxulpymoney.py" line="5374"/>
         <source>month</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5375"/>
+        <location filename="libxulpymoney.py" line="5376"/>
         <source>months</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5377"/>
+        <location filename="libxulpymoney.py" line="5378"/>
         <source>day</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5379"/>
+        <location filename="libxulpymoney.py" line="5380"/>
         <source>days</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5380"/>
+        <location filename="libxulpymoney.py" line="5381"/>
         <source>{} {}, {} {} and {} {}</source>
         <translation type="unfinished"></translation>
     </message>
@@ -579,7 +579,7 @@ Total purged in global process: {1}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4936"/>
+        <location filename="libxulpymoney.py" line="4937"/>
         <source>Connection done</source>
         <translation type="unfinished"></translation>
     </message>
@@ -634,7 +634,7 @@ Total purged in global process: {1}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5482"/>
+        <location filename="libxulpymoney.py" line="5483"/>
         <source>I couldn&apos;t order data due to they have null values</source>
         <translation type="unfinished"></translation>
     </message>

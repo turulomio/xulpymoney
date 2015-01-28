@@ -8,7 +8,7 @@ mem=MemProducts()
 mem.init__script('Yahoo Intraday Updater')
 
 cur=mem.con.cursor()
-cur.execute("select count(*) from products where and priority[1]=1 and char_length(ticker)>0 and obsolete=false")
+cur.execute("select count(*) from products where priority[1]=1 and char_length(ticker)>0 and obsolete=false")
 num=cur.fetchone()[0]
 print ("Products",  num)
 step=150
