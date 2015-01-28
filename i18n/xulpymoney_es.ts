@@ -53,7 +53,7 @@
         <translation>La tarjeta de crédito está inactiva. Debes activarla primero</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5477"/>
+        <location filename="libxulpymoney.py" line="5478"/>
         <source>This option is being developed</source>
         <translation>Esta opción está en desarrollo</translation>
     </message>
@@ -88,7 +88,7 @@
         <translation>Comisión</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4935"/>
+        <location filename="libxulpymoney.py" line="4936"/>
         <source>Error conecting to Xulpymoney</source>
         <translation>Error al conectar a Xulpymoney</translation>
     </message>
@@ -413,12 +413,12 @@
         <translation>Cargando inversiones...</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5438"/>
+        <location filename="libxulpymoney.py" line="5439"/>
         <source>True</source>
         <translation>Verdadero</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5441"/>
+        <location filename="libxulpymoney.py" line="5442"/>
         <source>False</source>
         <translation>Falso</translation>
     </message>
@@ -483,37 +483,37 @@
         <translation>Transferencia de acciones. Destino</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5369"/>
+        <location filename="libxulpymoney.py" line="5370"/>
         <source>year</source>
         <translation>año</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5371"/>
+        <location filename="libxulpymoney.py" line="5372"/>
         <source>years</source>
         <translation>años</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5373"/>
+        <location filename="libxulpymoney.py" line="5374"/>
         <source>month</source>
         <translation>mes</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5375"/>
+        <location filename="libxulpymoney.py" line="5376"/>
         <source>months</source>
         <translation>meses</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5377"/>
+        <location filename="libxulpymoney.py" line="5378"/>
         <source>day</source>
         <translation>día</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5379"/>
+        <location filename="libxulpymoney.py" line="5380"/>
         <source>days</source>
         <translation>días</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5380"/>
+        <location filename="libxulpymoney.py" line="5381"/>
         <source>{} {}, {} {} and {} {}</source>
         <translation>{} {}, {} {} y {} {}</translation>
     </message>
@@ -580,7 +580,7 @@ Purgadas en total en el proceso global: {1}</translation>
         <translation>Lenguaje local detectado: {0}</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="4936"/>
+        <location filename="libxulpymoney.py" line="4937"/>
         <source>Connection done</source>
         <translation>Conexión realizada</translation>
     </message>
@@ -635,7 +635,7 @@ Purgadas en total en el proceso global: {1}</translation>
         <translation>% Dividendo</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5482"/>
+        <location filename="libxulpymoney.py" line="5483"/>
         <source>I couldn&apos;t order data due to they have null values</source>
         <translation>No pudo ordenar los datos debido a que hay valores nulos</translation>
     </message>

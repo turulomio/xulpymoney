@@ -32,12 +32,14 @@ class frmAccess(QDialog, Ui_frmAccess):
             self.mem.config.set_value("frmAccess", "db", self.txtDB.text() )
             self.mem.config.set_value("frmAccess", "port",  self.txtPort.text())
             self.mem.config.set_value("frmAccess", "user" ,  self.txtUser.text())
-            self.mem.config.set_value("frmAccess", "server", self.txtServer.text())     
-            self.mem.con=self.mem.connect_from_config()           
+            self.mem.config.set_value("frmAccess", "server", self.txtServer.text())   
             self.mem.config.set_value("settings", "language", self.cmbLanguages.itemData(self.cmbLanguages.currentIndex()))
-            self.mem.config.save()                
+            self.mem.config.save()      
+            self.mem.password=self.txtPass.text()
+            self.mem.con=self.mem.connect_from_config()                       
             return True
         except:
+            print ("Error in function make_connection",  self.mem.con)
             return False
     
     @QtCore.pyqtSlot() 

@@ -4925,7 +4925,8 @@ class MemProducts:
         self.strcon="dbname='{}' port='{}' user='{}' host='{}' password='{}'".format(db, port, user, host, pasw)
         try:
             con=psycopg2.extras.DictConnection(self.strcon)
-        except psycopg2.Error:
+        except psycopg2.Error as e:
+            print (e.pgcode, e.pgerror)
             return (None, QApplication.translate("Core","Error conecting to Xulpymoney"))
         return (con, QApplication.translate("Core", "Connection done"))
     
