@@ -972,24 +972,51 @@ class SetBanks(SetCommons):
         cur.close()            
         
 
-class SetInvestmentOperations:       
-    """Clase es un array ordenado de objetos newInvestmentOperation"""
+class SetIO:
     def __init__(self, mem):
         self.mem=mem
         self.arr=[]
+
+    def arr_from_date(self, date):
+        """Función que saca del arr las que tienen fecha mayor o igual a la pasada como parametro."""
+        resultado=[]
+        if date==None:
+            return resultado
+        for a in self.arr:
+            if a.datetime.date()>=date:
+                resultado.append(a)
+        return resultado
         
     def append(self, objeto):
         self.arr.append(objeto)
-        
+                
+    def clone(self):
+        """Returns other Set object, with items referenced, ojo con las formas de las instancias
+        initparams son los parametros de iniciaci´on de la clase"""
+        result=self.__class__(self.mem)#Para que coja la clase del objeto que lo invoca
+        for a in self.arr:
+            result.append(a.clone())
+        return result
+                
     def clone_from_datetime(self, dt):
         """Función que devuelve otro SetInvestmentOperations con las oper que tienen datetime mayor o igual a la pasada como parametro."""
-        resultado=SetInvestmentOperations(self.mem)
+        result=self.__class__(self.mem)#Para que coja la clase del objeto que lo invoca
         if dt==None:
             return self.clone()
         for a in self.arr:
             if a.datetime>=dt:
-                resultado.append(a)
-        return resultado
+                result.append(a.clone())
+        return result
+        
+    def length(self):
+        return len(self.arr)
+
+class SetInvestmentOperations(SetIO):       
+    """Clase es un array ordenado de objetos newInvestmentOperation"""
+    def __init__(self, mem):
+        SetIO.__init__(self, mem)
+        
+
         
     def calcular_new(self):
         """Realiza los cálculos y devuelve dos arrays"""
@@ -1097,13 +1124,7 @@ class SetInvestmentOperations:
             operinversionesactual.append(InvestmentOperationCurrent(self.mem).init__create(a.id, a.tipooperacion, a.datetime, a.inversion,  a.acciones, a.importe,  a.impuestos, a.comision, a.valor_accion))
         return (operinversionesactual, operinversioneshistorica)
             
-    def clone(self):
-        """Funcion que devuelve un SetInvestmentOperations, con todas sus InvestmentOperation clonadas. Se usa para
-        hacer estimaciones"""
-        resultado=SetInvestmentOperations(self.mem)
-        for io in self.arr:
-            resultado.arr.append(io.clone())
-        return resultado
+
         
     def myqtablewidget(self, tabla, section):
         """Section es donde guardar en el config file, coincide con el nombre del formulario en el que está la tabla"""
@@ -1164,22 +1185,10 @@ class SetInvestmentOperations:
         return True
 
 
-class SetInvestmentOperationsCurrent:    
+class SetInvestmentOperationsCurrent(SetIO):    
     """Clase es un array ordenado de objetos newInvestmentOperation"""
     def __init__(self, mem):
-        self.mem=mem
-        self.arr=[]
-    def append(self, objeto):
-        self.arr.append(objeto)
-    def arr_from_fecha(self, date):
-        """Función que saca del arr las que tienen fecha mayor o igual a la pasada como parametro."""
-        resultado=[]
-        if date==None:
-            return resultado
-        for a in self.arr:
-            if a.datetime.date()>=date:
-                resultado.append(a)
-        return resultado
+        SetIO.__init__(self, mem)
     def __repr__(self):
         try:
             inversion=self.arr[0].inversion.id
@@ -1428,22 +1437,11 @@ class SetInvestmentOperationsCurrent:
         """Ordena por datetime"""
         self.arr=sorted(self.arr, key=lambda o:o.datetime)
  
-class SetInvestmentOperationsHistorical:       
+class SetInvestmentOperationsHistorical(SetIO):       
     """Clase es un array ordenado de objetos newInvestmentOperation"""
     def __init__(self, mem):
-        self.mem=mem
-        self.arr=[]
-    def append(self, objeto):
-        self.arr.append(objeto)
-    def arr_from_fecha(self, date):
-        """Función que saca del arr las que tienen fecha mayor o igual a la pasada como parametro."""
-        resultado=[]
-        if date==None:
-            return resultado
-        for a in self.arr:
-            if a.datetime.date()>=date:
-                resultado.append(a)
-        return resultado
+        SetIO.__init__(self, mem)
+
         
     def consolidado_bruto(self,  year=None,  month=None):
         resultado=0
@@ -1703,6 +1701,9 @@ class InvestmentOperationCurrent:
         self.comision=row['comision']
         self.valor_accion=row['valor_accion']
         return self
+        
+    def clone(self):
+        return self.init__create(self.operinversion, self.tipooperacion, self.datetime, self.inversion, self.acciones, self.importe, self.impuestos, self.comision, self.valor_accion, self.id)
                 
     def age(self):
         """Average age of the current investment operations in days"""
@@ -1730,6 +1731,7 @@ class InvestmentOperationCurrent:
         if self.acciones==0 or lastquote.quote==None:#Empty xulpy
             return 0
         return self.acciones*lastquote.quote
+
         
     def less_than_a_year(self):
         """Returns True, when datetime of the operation is <= a year"""
@@ -4312,53 +4314,77 @@ class OHCLYearly:
         cur=self.mem.con.cursor()
         cur.execute("delete from quotes where id=%s and date_part('year',datetime)=%s", (self.product.id, self.year))
         cur.close()     
-        
-class SetOHCLWeekly:
-    def __init__(self, mem, product):
-        self.mem=mem
-        self.product=product
-        self.arr=[]
-    def load_from_db(self, sql):
-        """El sql debe estar ordenado por fecha"""
-        del self.arr
-        self.arr=[]
-        cur=self.mem.con.cursor()
-        cur.execute(sql)#select * from ohclyearly where id=79329 order by year
-        for row in cur:
-            self.arr.append(OHCLWeekly(self.mem).init__from_dbrow(row, self.product))
-        cur.close()  
-        
-class SetOHCLYearly:
+                
+class SetOHCL:
     def __init__(self, mem, product):
         self.mem=mem
         self.product=product
         self.arr=[]
         self.selected=None
+    
     def load_from_db(self, sql):
-        """El sql debe estar ordenado por fecha"""
+        """El sql debe estar ordenado por date"""
+        
         del self.arr
         self.arr=[]
         cur=self.mem.con.cursor()
-        cur.execute(sql)#select * from ohclyearly where id=79329 order by year
+        cur.execute(sql)#select * from ohclyearly where id=79329 order by date
         for row in cur:
-            self.arr.append(OHCLYearly(self.mem).init__from_dbrow(row, self.product))
+            self.append(self.itemclass(self.mem).init__from_dbrow(row, self.product))
         cur.close()
         
-class SetOHCLMonthly:
+        
+    def length(self):
+        return len (self.arr)
+
+
+    def append(self, o):
+        self.arr.append(o)
+        
+        
+class SetOHCLDaily(SetOHCL):
     def __init__(self, mem, product):
-        self.mem=mem
-        self.product=product
-        self.arr=[]
-        self.selected=None
-    def load_from_db(self, sql):
-        """El sql debe estar ordenado por year, month"""
-        del self.arr
-        self.arr=[]
-        cur=self.mem.con.cursor()
-        cur.execute(sql)#select * from ohclyearly where id=79329 order by year,mont
-        for row in cur:
-            self.arr.append(OHCLMonthly(self.mem).init__from_dbrow(row, self.product))
-        cur.close()
+        SetOHCL.__init__(self, mem, product)
+        self.itemclass=OHCLDaily
+
+    def find(self, date):
+        """Fucnción que busca un ohcldaily con fecha igual o menor de la pasada como parametro"""
+        for ohcl in reversed(self.arr):
+            if ohcl.date<=date:
+                return ohcl
+        return None
+
+    def setquotesbasic(self):
+        """Returns a SetQuotesBasic con los datos del setohcldairy"""
+        last=None
+        penultimate=None
+        endlastyear=None
+        if len(self.arr)==0:
+            return SetQuotesBasic(self.mem, self.product).init__create(None, None,  None)
+        ohcl=self.arr[len(self.arr)-1]#last
+        last=Quote(self.mem).init__create(self.product, dt(ohcl.date, self.product.stockexchange.closes,  self.product.stockexchange.zone), ohcl.close)
+        ohcl=self.find(ohcl.date-datetime.timedelta(days=1))#penultimate
+        if ohcl!=None:
+            penultimate=Quote(self.mem).init__create(self.product, dt(ohcl.date, self.product.stockexchange.closes,  self.product.stockexchange.zone), ohcl.close)
+        ohcl=self.find(datetime.date(datetime.date.today().year-1, 12, 31))#endlastyear
+        if ohcl!=None:
+            endlastyear=Quote(self.mem).init__create(self.product, dt(ohcl.date, self.product.stockexchange.closes,  self.product.stockexchange.zone), ohcl.close)        
+        return SetQuotesBasic(self.mem, self.product).init__create(last, penultimate, endlastyear)
+               
+class SetOHCLWeekly(SetOHCL):
+    def __init__(self, mem, product):
+        SetOHCL.__init__(self, mem, product)
+        self.itemclass=OHCLWeekly
+        
+class SetOHCLYearly(SetOHCL):
+    def __init__(self, mem, product):
+        SetOHCL.__init__(self, mem, product)
+        self.itemclass=OHCLYearly
+        
+class SetOHCLMonthly(SetOHCL):
+    def __init__(self, mem, product):
+        SetOHCL.__init__(self, mem, product)
+        self.itemclass=OHCLMonthly
 
 class SetLanguages(SetCommons):
     def __init__(self, mem):
@@ -4384,52 +4410,8 @@ class SetLanguages(SetCommons):
         """language es un string"""
         self.mem.qtranslator.load("/usr/lib/xulpymoney/xulpymoney_" + id + ".qm")
         qApp.installTranslator(self.mem.qtranslator);
-        
-class SetOHCLDaily:
-    def __init__(self, mem, product):
-        self.mem=mem
-        self.product=product
-        self.arr=[]
-        self.selected=None
-        
-           
-    def load_from_db(self, sql):
-        """El sql debe estar ordenado por date"""
-        
-        del self.arr
-        self.arr=[]
-        cur=self.mem.con.cursor()
-        cur.execute(sql)#select * from ohclyearly where id=79329 order by date
-        for row in cur:
-            self.arr.append(OHCLDaily(self.mem).init__from_dbrow(row, self.product))
-        cur.close()
 
-        
-    def find(self, date):
-        """Fucnción que busca un ohcldaily con fecha igual o menor de la pasada como parametro"""
-        for ohcl in reversed(self.arr):
-            if ohcl.date<=date:
-                return ohcl
-        return None
-        
-
-    def setquotesbasic(self):
-        """Returns a SetQuotesBasic con los datos del setohcldairy"""
-        last=None
-        penultimate=None
-        endlastyear=None
-        if len(self.arr)==0:
-            return SetQuotesBasic(self.mem, self.product).init__create(None, None,  None)
-        ohcl=self.arr[len(self.arr)-1]#last
-        last=Quote(self.mem).init__create(self.product, dt(ohcl.date, self.product.stockexchange.closes,  self.product.stockexchange.zone), ohcl.close)
-        ohcl=self.find(ohcl.date-datetime.timedelta(days=1))#penultimate
-        if ohcl!=None:
-            penultimate=Quote(self.mem).init__create(self.product, dt(ohcl.date, self.product.stockexchange.closes,  self.product.stockexchange.zone), ohcl.close)
-        ohcl=self.find(datetime.date(datetime.date.today().year-1, 12, 31))#endlastyear
-        if ohcl!=None:
-            endlastyear=Quote(self.mem).init__create(self.product, dt(ohcl.date, self.product.stockexchange.closes,  self.product.stockexchange.zone), ohcl.close)        
-        return SetQuotesBasic(self.mem, self.product).init__create(last, penultimate, endlastyear)
-        
+ 
 class OHCL:
     def __init__(self, product, datetime, open, close, high, low ):
         self.product=product

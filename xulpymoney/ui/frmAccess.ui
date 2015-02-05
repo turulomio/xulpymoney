@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>299</width>
-    <height>322</height>
+    <width>450</width>
+    <height>332</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -229,13 +229,13 @@
   </layout>
  </widget>
  <tabstops>
+  <tabstop>txtPass</tabstop>
   <tabstop>cmdYN</tabstop>
   <tabstop>cmbLanguages</tabstop>
   <tabstop>txtServer</tabstop>
   <tabstop>txtPort</tabstop>
   <tabstop>txtDB</tabstop>
   <tabstop>txtUser</tabstop>
-  <tabstop>txtPass</tabstop>
  </tabstops>
  <resources>
   <include location="../images/xulpymoney.qrc"/>

@@ -57,7 +57,7 @@
         <enum>QTabWidget::West</enum>
        </property>
        <property name="currentIndex">
-        <number>2</number>
+        <number>1</number>
        </property>
        <widget class="QWidget" name="tabInformacion">
         <attribute name="title">
@@ -537,7 +537,7 @@
          <item>
           <widget class="QTabWidget" name="tabGraphics">
            <property name="currentIndex">
-            <number>0</number>
+            <number>1</number>
            </property>
            <widget class="QWidget" name="tabGraphicsIntraday">
             <attribute name="title">
@@ -698,31 +698,6 @@
                <layout class="QVBoxLayout" name="verticalLayout_10">
                 <item>
                  <layout class="QVBoxLayout" name="layHistorical"/>
-                </item>
-               </layout>
-              </widget>
-             </item>
-            </layout>
-           </widget>
-           <widget class="QWidget" name="tab_4">
-            <attribute name="title">
-             <string>Undiscounted historical dividends</string>
-            </attribute>
-            <layout class="QHBoxLayout" name="horizontalLayout_41">
-             <item>
-              <widget class="QGroupBox" name="groupBox_8">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="title">
-                <string>Graph of historical quotes undiscounted dividends</string>
-               </property>
-               <layout class="QVBoxLayout" name="verticalLayout_14">
-                <item>
-                 <layout class="QVBoxLayout" name="layHistoricalSD"/>
                 </item>
                </layout>
               </widget>
