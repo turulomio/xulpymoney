@@ -69,12 +69,7 @@ class frmProductReport(QDialog, Ui_frmProductReport):
         self.ntbHistorical=NavigationToolbar2QT(self.canvasHistorical, self)
         self.layHistorical.addWidget(self.canvasHistorical)
         self.layHistorical.addWidget(self.ntbHistorical)
-        
-        self.canvasHistoricalSD=canvasChartHistorical( self.mem, self)
-        self.ntbHistoricalSD=NavigationToolbar2QT(self.canvasHistoricalSD, self)
-        self.layHistoricalSD.addWidget(self.canvasHistoricalSD)
-        self.layHistoricalSD.addWidget(self.ntbHistoricalSD)
-        
+                
         self.mem.stockexchanges.qcombobox(self.cmbBolsa)
         self.mem.investmentsmodes.qcombobox(self.cmbPCI)
         self.mem.currencies.qcombobox(self.cmbCurrency)
@@ -201,19 +196,12 @@ class frmProductReport(QDialog, Ui_frmProductReport):
         if len(self.product.result.ohclDaily.arr)<2:#Needs 2 to show just a line
             self.canvasHistorical.hide()
             self.ntbHistorical.hide()
-            self.canvasHistoricalSD.hide()   
-            self.ntbHistoricalSD.hide()
         else:
             t2 = threading.Thread(target=self.canvasHistorical.load_data,  args=(self.product, self.inversion))
             t2.start()
-            t3 = threading.Thread(target=self.canvasHistoricalSD.load_data,  args=(self.product, self.inversion, True))
-            t3.start()
             t2.join()
-            t3.join()
             self.canvasHistorical.show()
-            self.canvasHistoricalSD.show()
             self.ntbHistorical.show() 
-            self.ntbHistoricalSD.show()
             
         #Canvas Intradia
         if len(self.product.result.intradia.arr)<2:
