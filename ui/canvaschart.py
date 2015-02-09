@@ -103,7 +103,7 @@ class canvasChart(FigureCanvasQTAgg):
             self.ax.xaxis.set_minor_locator(MonthLocator())
             self.ax.xaxis.set_major_locator(YearLocator())   
             self.ax.xaxis.set_major_formatter( DateFormatter('%Y'))        
-            self.ax.fmt_xdata=DateFormatter('%Y')
+            self.ax.fmt_xdata=DateFormatter('%Y-%m-%d')
                         
         self.ax.fmt_ydata = self.price  
         self.ax.grid(True)
