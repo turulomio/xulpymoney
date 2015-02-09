@@ -187,12 +187,32 @@ p, li { white-space: pre-wrap; }
            </row>
            <row>
             <property name="text">
-             <string>Total</string>
+             <string>Obsolete products</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string/>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>Effective products</string>
             </property>
            </row>
            <column>
             <property name="text">
              <string>Total</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string/>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string/>
             </property>
            </column>
            <column>
