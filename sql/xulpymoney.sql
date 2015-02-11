@@ -1462,6 +1462,596 @@ REVOKE ALL ON SCHEMA public FROM PUBLIC;
 REVOKE ALL ON SCHEMA public FROM postgres;
 GRANT ALL ON SCHEMA public TO postgres;
 GRANT ALL ON SCHEMA public TO PUBLIC;
+GRANT USAGE ON SCHEMA public TO xulpymoney_user;
+
+
+--
+-- Name: cuenta_saldo(integer, date); Type: ACL; Schema: public; Owner: postgres
+--
+
+REVOKE ALL ON FUNCTION cuenta_saldo(p_id_cuentas integer, p_fechaparametro date) FROM PUBLIC;
+REVOKE ALL ON FUNCTION cuenta_saldo(p_id_cuentas integer, p_fechaparametro date) FROM postgres;
+GRANT ALL ON FUNCTION cuenta_saldo(p_id_cuentas integer, p_fechaparametro date) TO postgres;
+GRANT ALL ON FUNCTION cuenta_saldo(p_id_cuentas integer, p_fechaparametro date) TO PUBLIC;
+GRANT ALL ON FUNCTION cuenta_saldo(p_id_cuentas integer, p_fechaparametro date) TO xulpymoney_user;
+
+
+--
+-- Name: cuentas_saldo(date); Type: ACL; Schema: public; Owner: postgres
+--
+
+REVOKE ALL ON FUNCTION cuentas_saldo(fechaparametro date) FROM PUBLIC;
+REVOKE ALL ON FUNCTION cuentas_saldo(fechaparametro date) FROM postgres;
+GRANT ALL ON FUNCTION cuentas_saldo(fechaparametro date) TO postgres;
+GRANT ALL ON FUNCTION cuentas_saldo(fechaparametro date) TO PUBLIC;
+GRANT ALL ON FUNCTION cuentas_saldo(fechaparametro date) TO xulpymoney_user;
+
+
+--
+-- Name: first_agg(anyelement, anyelement); Type: ACL; Schema: public; Owner: postgres
+--
+
+REVOKE ALL ON FUNCTION first_agg(anyelement, anyelement) FROM PUBLIC;
+REVOKE ALL ON FUNCTION first_agg(anyelement, anyelement) FROM postgres;
+GRANT ALL ON FUNCTION first_agg(anyelement, anyelement) TO postgres;
+GRANT ALL ON FUNCTION first_agg(anyelement, anyelement) TO PUBLIC;
+GRANT ALL ON FUNCTION first_agg(anyelement, anyelement) TO xulpymoney_user;
+
+
+--
+-- Name: historic(text); Type: ACL; Schema: public; Owner: postgres
+--
+
+REVOKE ALL ON FUNCTION historic(p_code text) FROM PUBLIC;
+REVOKE ALL ON FUNCTION historic(p_code text) FROM postgres;
+GRANT ALL ON FUNCTION historic(p_code text) TO postgres;
+GRANT ALL ON FUNCTION historic(p_code text) TO PUBLIC;
+GRANT ALL ON FUNCTION historic(p_code text) TO xulpymoney_user;
+
+
+--
+-- Name: intraday(text, date); Type: ACL; Schema: public; Owner: postgres
+--
+
+REVOKE ALL ON FUNCTION intraday(p_code text, p_date date) FROM PUBLIC;
+REVOKE ALL ON FUNCTION intraday(p_code text, p_date date) FROM postgres;
+GRANT ALL ON FUNCTION intraday(p_code text, p_date date) TO postgres;
+GRANT ALL ON FUNCTION intraday(p_code text, p_date date) TO PUBLIC;
+GRANT ALL ON FUNCTION intraday(p_code text, p_date date) TO xulpymoney_user;
+
+
+--
+-- Name: inversion_acciones(integer, date); Type: ACL; Schema: public; Owner: postgres
+--
+
+REVOKE ALL ON FUNCTION inversion_acciones(p_id_inversiones integer, p_date date) FROM PUBLIC;
+REVOKE ALL ON FUNCTION inversion_acciones(p_id_inversiones integer, p_date date) FROM postgres;
+GRANT ALL ON FUNCTION inversion_acciones(p_id_inversiones integer, p_date date) TO postgres;
+GRANT ALL ON FUNCTION inversion_acciones(p_id_inversiones integer, p_date date) TO PUBLIC;
+GRANT ALL ON FUNCTION inversion_acciones(p_id_inversiones integer, p_date date) TO xulpymoney_user;
+
+
+--
+-- Name: inversion_acciones_saldo(integer, date, numeric); Type: ACL; Schema: public; Owner: postgres
+--
+
+REVOKE ALL ON FUNCTION inversion_acciones_saldo(p_id_inversiones integer, p_date date, p_quote_in_p_date numeric) FROM PUBLIC;
+REVOKE ALL ON FUNCTION inversion_acciones_saldo(p_id_inversiones integer, p_date date, p_quote_in_p_date numeric) FROM postgres;
+GRANT ALL ON FUNCTION inversion_acciones_saldo(p_id_inversiones integer, p_date date, p_quote_in_p_date numeric) TO postgres;
+GRANT ALL ON FUNCTION inversion_acciones_saldo(p_id_inversiones integer, p_date date, p_quote_in_p_date numeric) TO PUBLIC;
+GRANT ALL ON FUNCTION inversion_acciones_saldo(p_id_inversiones integer, p_date date, p_quote_in_p_date numeric) TO xulpymoney_user;
+
+
+--
+-- Name: inversion_saldo_segun_tpcvariable(); Type: ACL; Schema: public; Owner: postgres
+--
+
+REVOKE ALL ON FUNCTION inversion_saldo_segun_tpcvariable() FROM PUBLIC;
+REVOKE ALL ON FUNCTION inversion_saldo_segun_tpcvariable() FROM postgres;
+GRANT ALL ON FUNCTION inversion_saldo_segun_tpcvariable() TO postgres;
+GRANT ALL ON FUNCTION inversion_saldo_segun_tpcvariable() TO PUBLIC;
+GRANT ALL ON FUNCTION inversion_saldo_segun_tpcvariable() TO xulpymoney_user;
+
+
+--
+-- Name: inversion_type(text); Type: ACL; Schema: public; Owner: postgres
+--
+
+REVOKE ALL ON FUNCTION inversion_type(p_code text) FROM PUBLIC;
+REVOKE ALL ON FUNCTION inversion_type(p_code text) FROM postgres;
+GRANT ALL ON FUNCTION inversion_type(p_code text) TO postgres;
+GRANT ALL ON FUNCTION inversion_type(p_code text) TO PUBLIC;
+GRANT ALL ON FUNCTION inversion_type(p_code text) TO xulpymoney_user;
+
+
+--
+-- Name: last_agg(anyelement, anyelement); Type: ACL; Schema: public; Owner: postgres
+--
+
+REVOKE ALL ON FUNCTION last_agg(anyelement, anyelement) FROM PUBLIC;
+REVOKE ALL ON FUNCTION last_agg(anyelement, anyelement) FROM postgres;
+GRANT ALL ON FUNCTION last_agg(anyelement, anyelement) TO postgres;
+GRANT ALL ON FUNCTION last_agg(anyelement, anyelement) TO PUBLIC;
+GRANT ALL ON FUNCTION last_agg(anyelement, anyelement) TO xulpymoney_user;
+
+
+--
+-- Name: multiout_simple_setof(integer); Type: ACL; Schema: public; Owner: postgres
+--
+
+REVOKE ALL ON FUNCTION multiout_simple_setof(n integer, OUT integer, OUT integer) FROM PUBLIC;
+REVOKE ALL ON FUNCTION multiout_simple_setof(n integer, OUT integer, OUT integer) FROM postgres;
+GRANT ALL ON FUNCTION multiout_simple_setof(n integer, OUT integer, OUT integer) TO postgres;
+GRANT ALL ON FUNCTION multiout_simple_setof(n integer, OUT integer, OUT integer) TO PUBLIC;
+GRANT ALL ON FUNCTION multiout_simple_setof(n integer, OUT integer, OUT integer) TO xulpymoney_user;
+
+
+--
+-- Name: penultimate(integer); Type: ACL; Schema: public; Owner: postgres
+--
+
+REVOKE ALL ON FUNCTION penultimate(p_id integer) FROM PUBLIC;
+REVOKE ALL ON FUNCTION penultimate(p_id integer) FROM postgres;
+GRANT ALL ON FUNCTION penultimate(p_id integer) TO postgres;
+GRANT ALL ON FUNCTION penultimate(p_id integer) TO PUBLIC;
+GRANT ALL ON FUNCTION penultimate(p_id integer) TO xulpymoney_user;
+
+
+--
+-- Name: penultimate(integer, date); Type: ACL; Schema: public; Owner: postgres
+--
+
+REVOKE ALL ON FUNCTION penultimate(p_id integer, p_lastdate date) FROM PUBLIC;
+REVOKE ALL ON FUNCTION penultimate(p_id integer, p_lastdate date) FROM postgres;
+GRANT ALL ON FUNCTION penultimate(p_id integer, p_lastdate date) TO postgres;
+GRANT ALL ON FUNCTION penultimate(p_id integer, p_lastdate date) TO PUBLIC;
+GRANT ALL ON FUNCTION penultimate(p_id integer, p_lastdate date) TO xulpymoney_user;
+
+
+--
+-- Name: quote(integer, date); Type: ACL; Schema: public; Owner: postgres
+--
+
+REVOKE ALL ON FUNCTION quote(id integer, p_date date) FROM PUBLIC;
+REVOKE ALL ON FUNCTION quote(id integer, p_date date) FROM postgres;
+GRANT ALL ON FUNCTION quote(id integer, p_date date) TO postgres;
+GRANT ALL ON FUNCTION quote(id integer, p_date date) TO PUBLIC;
+GRANT ALL ON FUNCTION quote(id integer, p_date date) TO xulpymoney_user;
+
+
+--
+-- Name: quote(integer, timestamp with time zone); Type: ACL; Schema: public; Owner: postgres
+--
+
+REVOKE ALL ON FUNCTION quote(p_id integer, p_datetime timestamp with time zone) FROM PUBLIC;
+REVOKE ALL ON FUNCTION quote(p_id integer, p_datetime timestamp with time zone) FROM postgres;
+GRANT ALL ON FUNCTION quote(p_id integer, p_datetime timestamp with time zone) TO postgres;
+GRANT ALL ON FUNCTION quote(p_id integer, p_datetime timestamp with time zone) TO PUBLIC;
+GRANT ALL ON FUNCTION quote(p_id integer, p_datetime timestamp with time zone) TO xulpymoney_user;
+
+
+--
+-- Name: quote(integer[], timestamp with time zone); Type: ACL; Schema: public; Owner: postgres
+--
+
+REVOKE ALL ON FUNCTION quote(p_ids integer[], p_datetime timestamp with time zone) FROM PUBLIC;
+REVOKE ALL ON FUNCTION quote(p_ids integer[], p_datetime timestamp with time zone) FROM postgres;
+GRANT ALL ON FUNCTION quote(p_ids integer[], p_datetime timestamp with time zone) TO postgres;
+GRANT ALL ON FUNCTION quote(p_ids integer[], p_datetime timestamp with time zone) TO PUBLIC;
+GRANT ALL ON FUNCTION quote(p_ids integer[], p_datetime timestamp with time zone) TO xulpymoney_user;
+
+
+--
+-- Name: quote2(integer[], timestamp with time zone); Type: ACL; Schema: public; Owner: postgres
+--
+
+REVOKE ALL ON FUNCTION quote2(p_ids integer[], p_datetime timestamp with time zone) FROM PUBLIC;
+REVOKE ALL ON FUNCTION quote2(p_ids integer[], p_datetime timestamp with time zone) FROM postgres;
+GRANT ALL ON FUNCTION quote2(p_ids integer[], p_datetime timestamp with time zone) TO postgres;
+GRANT ALL ON FUNCTION quote2(p_ids integer[], p_datetime timestamp with time zone) TO PUBLIC;
+GRANT ALL ON FUNCTION quote2(p_ids integer[], p_datetime timestamp with time zone) TO xulpymoney_user;
+
+
+--
+-- Name: quote_endmonth(text); Type: ACL; Schema: public; Owner: postgres
+--
+
+REVOKE ALL ON FUNCTION quote_endmonth(p_code text) FROM PUBLIC;
+REVOKE ALL ON FUNCTION quote_endmonth(p_code text) FROM postgres;
+GRANT ALL ON FUNCTION quote_endmonth(p_code text) TO postgres;
+GRANT ALL ON FUNCTION quote_endmonth(p_code text) TO PUBLIC;
+GRANT ALL ON FUNCTION quote_endmonth(p_code text) TO xulpymoney_user;
+
+
+--
+-- Name: first(anyelement); Type: ACL; Schema: public; Owner: postgres
+--
+
+REVOKE ALL ON FUNCTION first(anyelement) FROM PUBLIC;
+REVOKE ALL ON FUNCTION first(anyelement) FROM postgres;
+GRANT ALL ON FUNCTION first(anyelement) TO postgres;
+GRANT ALL ON FUNCTION first(anyelement) TO PUBLIC;
+GRANT ALL ON FUNCTION first(anyelement) TO xulpymoney_user;
+
+
+--
+-- Name: last(anyelement); Type: ACL; Schema: public; Owner: postgres
+--
+
+REVOKE ALL ON FUNCTION last(anyelement) FROM PUBLIC;
+REVOKE ALL ON FUNCTION last(anyelement) FROM postgres;
+GRANT ALL ON FUNCTION last(anyelement) TO postgres;
+GRANT ALL ON FUNCTION last(anyelement) TO PUBLIC;
+GRANT ALL ON FUNCTION last(anyelement) TO xulpymoney_user;
+
+
+--
+-- Name: bolsas; Type: ACL; Schema: public; Owner: postgres
+--
+
+REVOKE ALL ON TABLE bolsas FROM PUBLIC;
+REVOKE ALL ON TABLE bolsas FROM postgres;
+GRANT ALL ON TABLE bolsas TO xulpymoney_user;
+
+
+--
+-- Name: conceptos; Type: ACL; Schema: public; Owner: postgres
+--
+
+REVOKE ALL ON TABLE conceptos FROM PUBLIC;
+REVOKE ALL ON TABLE conceptos FROM postgres;
+GRANT ALL ON TABLE conceptos TO xulpymoney_user;
+
+
+--
+-- Name: cuentas; Type: ACL; Schema: public; Owner: postgres
+--
+
+REVOKE ALL ON TABLE cuentas FROM PUBLIC;
+REVOKE ALL ON TABLE cuentas FROM postgres;
+GRANT ALL ON TABLE cuentas TO xulpymoney_user;
+
+
+--
+-- Name: dividendosestimaciones_seq; Type: ACL; Schema: public; Owner: postgres
+--
+
+REVOKE ALL ON SEQUENCE dividendosestimaciones_seq FROM PUBLIC;
+REVOKE ALL ON SEQUENCE dividendosestimaciones_seq FROM postgres;
+GRANT ALL ON SEQUENCE dividendosestimaciones_seq TO xulpymoney_user;
+
+
+--
+-- Name: dps_seq; Type: ACL; Schema: public; Owner: postgres
+--
+
+REVOKE ALL ON SEQUENCE dps_seq FROM PUBLIC;
+REVOKE ALL ON SEQUENCE dps_seq FROM postgres;
+GRANT ALL ON SEQUENCE dps_seq TO xulpymoney_user;
+
+
+--
+-- Name: dps; Type: ACL; Schema: public; Owner: postgres
+--
+
+REVOKE ALL ON TABLE dps FROM PUBLIC;
+REVOKE ALL ON TABLE dps FROM postgres;
+GRANT ALL ON TABLE dps TO xulpymoney_user;
+
+
+--
+-- Name: dividendospagos_id_dividendospagos_seq; Type: ACL; Schema: public; Owner: postgres
+--
+
+REVOKE ALL ON SEQUENCE dividendospagos_id_dividendospagos_seq FROM PUBLIC;
+REVOKE ALL ON SEQUENCE dividendospagos_id_dividendospagos_seq FROM postgres;
+GRANT ALL ON SEQUENCE dividendospagos_id_dividendospagos_seq TO xulpymoney_user;
+
+
+--
+-- Name: dividends; Type: ACL; Schema: public; Owner: postgres
+--
+
+REVOKE ALL ON TABLE dividends FROM PUBLIC;
+REVOKE ALL ON TABLE dividends FROM postgres;
+GRANT ALL ON TABLE dividends TO xulpymoney_user;
+
+
+--
+-- Name: entidadesbancarias; Type: ACL; Schema: public; Owner: postgres
+--
+
+REVOKE ALL ON TABLE entidadesbancarias FROM PUBLIC;
+REVOKE ALL ON TABLE entidadesbancarias FROM postgres;
+GRANT ALL ON TABLE entidadesbancarias TO xulpymoney_user;
+
+
+--
+-- Name: estimations_dps; Type: ACL; Schema: public; Owner: postgres
+--
+
+REVOKE ALL ON TABLE estimations_dps FROM PUBLIC;
+REVOKE ALL ON TABLE estimations_dps FROM postgres;
+GRANT ALL ON TABLE estimations_dps TO xulpymoney_user;
+
+
+--
+-- Name: estimations_eps; Type: ACL; Schema: public; Owner: postgres
+--
+
+REVOKE ALL ON TABLE estimations_eps FROM PUBLIC;
+REVOKE ALL ON TABLE estimations_eps FROM postgres;
+GRANT ALL ON TABLE estimations_eps TO xulpymoney_user;
+
+
+--
+-- Name: globals; Type: ACL; Schema: public; Owner: postgres
+--
+
+REVOKE ALL ON TABLE globals FROM PUBLIC;
+REVOKE ALL ON TABLE globals FROM postgres;
+GRANT ALL ON TABLE globals TO xulpymoney_user;
+
+
+--
+-- Name: inversiones; Type: ACL; Schema: public; Owner: postgres
+--
+
+REVOKE ALL ON TABLE inversiones FROM PUBLIC;
+REVOKE ALL ON TABLE inversiones FROM postgres;
+GRANT ALL ON TABLE inversiones TO xulpymoney_user;
+
+
+--
+-- Name: investments_seq; Type: ACL; Schema: public; Owner: postgres
+--
+
+REVOKE ALL ON SEQUENCE investments_seq FROM PUBLIC;
+REVOKE ALL ON SEQUENCE investments_seq FROM postgres;
+GRANT ALL ON SEQUENCE investments_seq TO xulpymoney_user;
+
+
+--
+-- Name: quotes; Type: ACL; Schema: public; Owner: postgres
+--
+
+REVOKE ALL ON TABLE quotes FROM PUBLIC;
+REVOKE ALL ON TABLE quotes FROM postgres;
+GRANT ALL ON TABLE quotes TO xulpymoney_user;
+
+
+--
+-- Name: tmpohlcdaily; Type: ACL; Schema: public; Owner: postgres
+--
+
+REVOKE ALL ON TABLE tmpohlcdaily FROM PUBLIC;
+REVOKE ALL ON TABLE tmpohlcdaily FROM postgres;
+GRANT ALL ON TABLE tmpohlcdaily TO xulpymoney_user;
+
+
+--
+-- Name: ohlcdaily; Type: ACL; Schema: public; Owner: postgres
+--
+
+REVOKE ALL ON TABLE ohlcdaily FROM PUBLIC;
+REVOKE ALL ON TABLE ohlcdaily FROM postgres;
+GRANT ALL ON TABLE ohlcdaily TO xulpymoney_user;
+
+
+--
+-- Name: tmpohlcmonthly; Type: ACL; Schema: public; Owner: postgres
+--
+
+REVOKE ALL ON TABLE tmpohlcmonthly FROM PUBLIC;
+REVOKE ALL ON TABLE tmpohlcmonthly FROM postgres;
+GRANT ALL ON TABLE tmpohlcmonthly TO xulpymoney_user;
+
+
+--
+-- Name: ohlcmonthly; Type: ACL; Schema: public; Owner: postgres
+--
+
+REVOKE ALL ON TABLE ohlcmonthly FROM PUBLIC;
+REVOKE ALL ON TABLE ohlcmonthly FROM postgres;
+GRANT ALL ON TABLE ohlcmonthly TO xulpymoney_user;
+
+
+--
+-- Name: tmpohlcweekly; Type: ACL; Schema: public; Owner: postgres
+--
+
+REVOKE ALL ON TABLE tmpohlcweekly FROM PUBLIC;
+REVOKE ALL ON TABLE tmpohlcweekly FROM postgres;
+GRANT ALL ON TABLE tmpohlcweekly TO xulpymoney_user;
+
+
+--
+-- Name: ohlcweekly; Type: ACL; Schema: public; Owner: postgres
+--
+
+REVOKE ALL ON TABLE ohlcweekly FROM PUBLIC;
+REVOKE ALL ON TABLE ohlcweekly FROM postgres;
+GRANT ALL ON TABLE ohlcweekly TO xulpymoney_user;
+
+
+--
+-- Name: tmpohlcyearly; Type: ACL; Schema: public; Owner: postgres
+--
+
+REVOKE ALL ON TABLE tmpohlcyearly FROM PUBLIC;
+REVOKE ALL ON TABLE tmpohlcyearly FROM postgres;
+GRANT ALL ON TABLE tmpohlcyearly TO xulpymoney_user;
+
+
+--
+-- Name: ohlcyearly; Type: ACL; Schema: public; Owner: postgres
+--
+
+REVOKE ALL ON TABLE ohlcyearly FROM PUBLIC;
+REVOKE ALL ON TABLE ohlcyearly FROM postgres;
+GRANT ALL ON TABLE ohlcyearly TO xulpymoney_user;
+
+
+--
+-- Name: opercuentas; Type: ACL; Schema: public; Owner: postgres
+--
+
+REVOKE ALL ON TABLE opercuentas FROM PUBLIC;
+REVOKE ALL ON TABLE opercuentas FROM postgres;
+GRANT ALL ON TABLE opercuentas TO xulpymoney_user;
+
+
+--
+-- Name: opercuentasdeoperinversiones; Type: ACL; Schema: public; Owner: postgres
+--
+
+REVOKE ALL ON TABLE opercuentasdeoperinversiones FROM PUBLIC;
+REVOKE ALL ON TABLE opercuentasdeoperinversiones FROM postgres;
+GRANT ALL ON TABLE opercuentasdeoperinversiones TO xulpymoney_user;
+
+
+--
+-- Name: operinversiones; Type: ACL; Schema: public; Owner: postgres
+--
+
+REVOKE ALL ON TABLE operinversiones FROM PUBLIC;
+REVOKE ALL ON TABLE operinversiones FROM postgres;
+GRANT ALL ON TABLE operinversiones TO xulpymoney_user;
+
+
+--
+-- Name: opertarjetas; Type: ACL; Schema: public; Owner: postgres
+--
+
+REVOKE ALL ON TABLE opertarjetas FROM PUBLIC;
+REVOKE ALL ON TABLE opertarjetas FROM postgres;
+GRANT ALL ON TABLE opertarjetas TO xulpymoney_user;
+
+
+--
+-- Name: products; Type: ACL; Schema: public; Owner: postgres
+--
+
+REVOKE ALL ON TABLE products FROM PUBLIC;
+REVOKE ALL ON TABLE products FROM postgres;
+GRANT ALL ON TABLE products TO xulpymoney_user;
+
+
+--
+-- Name: quotes_seq; Type: ACL; Schema: public; Owner: postgres
+--
+
+REVOKE ALL ON SEQUENCE quotes_seq FROM PUBLIC;
+REVOKE ALL ON SEQUENCE quotes_seq FROM postgres;
+GRANT ALL ON SEQUENCE quotes_seq TO xulpymoney_user;
+
+
+--
+-- Name: seq_conceptos; Type: ACL; Schema: public; Owner: postgres
+--
+
+REVOKE ALL ON SEQUENCE seq_conceptos FROM PUBLIC;
+REVOKE ALL ON SEQUENCE seq_conceptos FROM postgres;
+GRANT ALL ON SEQUENCE seq_conceptos TO xulpymoney_user;
+
+
+--
+-- Name: seq_cuentas; Type: ACL; Schema: public; Owner: postgres
+--
+
+REVOKE ALL ON SEQUENCE seq_cuentas FROM PUBLIC;
+REVOKE ALL ON SEQUENCE seq_cuentas FROM postgres;
+GRANT ALL ON SEQUENCE seq_cuentas TO xulpymoney_user;
+
+
+--
+-- Name: seq_dividendos; Type: ACL; Schema: public; Owner: postgres
+--
+
+REVOKE ALL ON SEQUENCE seq_dividendos FROM PUBLIC;
+REVOKE ALL ON SEQUENCE seq_dividendos FROM postgres;
+GRANT ALL ON SEQUENCE seq_dividendos TO xulpymoney_user;
+
+
+--
+-- Name: seq_entidadesbancarias; Type: ACL; Schema: public; Owner: postgres
+--
+
+REVOKE ALL ON SEQUENCE seq_entidadesbancarias FROM PUBLIC;
+REVOKE ALL ON SEQUENCE seq_entidadesbancarias FROM postgres;
+GRANT ALL ON SEQUENCE seq_entidadesbancarias TO xulpymoney_user;
+
+
+--
+-- Name: seq_inversiones; Type: ACL; Schema: public; Owner: postgres
+--
+
+REVOKE ALL ON SEQUENCE seq_inversiones FROM PUBLIC;
+REVOKE ALL ON SEQUENCE seq_inversiones FROM postgres;
+GRANT ALL ON SEQUENCE seq_inversiones TO xulpymoney_user;
+
+
+--
+-- Name: seq_opercuentas; Type: ACL; Schema: public; Owner: postgres
+--
+
+REVOKE ALL ON SEQUENCE seq_opercuentas FROM PUBLIC;
+REVOKE ALL ON SEQUENCE seq_opercuentas FROM postgres;
+GRANT ALL ON SEQUENCE seq_opercuentas TO xulpymoney_user;
+
+
+--
+-- Name: seq_operinversiones; Type: ACL; Schema: public; Owner: postgres
+--
+
+REVOKE ALL ON SEQUENCE seq_operinversiones FROM PUBLIC;
+REVOKE ALL ON SEQUENCE seq_operinversiones FROM postgres;
+GRANT ALL ON SEQUENCE seq_operinversiones TO xulpymoney_user;
+
+
+--
+-- Name: seq_operinversioneshistoricas; Type: ACL; Schema: public; Owner: postgres
+--
+
+REVOKE ALL ON SEQUENCE seq_operinversioneshistoricas FROM PUBLIC;
+REVOKE ALL ON SEQUENCE seq_operinversioneshistoricas FROM postgres;
+GRANT ALL ON SEQUENCE seq_operinversioneshistoricas TO xulpymoney_user;
+
+
+--
+-- Name: seq_opertarjetas; Type: ACL; Schema: public; Owner: postgres
+--
+
+REVOKE ALL ON SEQUENCE seq_opertarjetas FROM PUBLIC;
+REVOKE ALL ON SEQUENCE seq_opertarjetas FROM postgres;
+GRANT ALL ON SEQUENCE seq_opertarjetas TO xulpymoney_user;
+
+
+--
+-- Name: seq_tarjetas; Type: ACL; Schema: public; Owner: postgres
+--
+
+REVOKE ALL ON SEQUENCE seq_tarjetas FROM PUBLIC;
+REVOKE ALL ON SEQUENCE seq_tarjetas FROM postgres;
+GRANT ALL ON SEQUENCE seq_tarjetas TO xulpymoney_user;
+
+
+--
+-- Name: status; Type: ACL; Schema: public; Owner: postgres
+--
+
+REVOKE ALL ON TABLE status FROM PUBLIC;
+REVOKE ALL ON TABLE status FROM postgres;
+GRANT ALL ON TABLE status TO xulpymoney_user;
+
+
+--
+-- Name: tarjetas; Type: ACL; Schema: public; Owner: postgres
+--
+
+REVOKE ALL ON TABLE tarjetas FROM PUBLIC;
+REVOKE ALL ON TABLE tarjetas FROM postgres;
+GRANT ALL ON TABLE tarjetas TO xulpymoney_user;
 
 
 --
@@ -2769,7 +3359,7 @@ INSERT INTO products VALUES ('Bono Banco Popular 8.00 20210729', 'ES0213790019',
 INSERT INTO products VALUES ('Bono CaixaBank 4.00 20220209', 'ES0240609000', 'EUR', 9, '', 81689, '', '', '', '', 80, 'c', 0, 1, NULL, '{}', '{}', '', false);
 INSERT INTO products VALUES ('Bono Español a 10 años', '', 'u', 7, '', 74803, '', '', '', '', 100, 'c', 0, 1, NULL, NULL, NULL, 'BUND_ESPAÑOL||es||False', false);
 INSERT INTO products VALUES ('BONO ESTADO ESPAÑOL 4,00  31102064', 'ES00000126D8', 'EUR', 7, NULL, 81682, NULL, NULL, NULL, NULL, 20, 'c', 0, 1, NULL, NULL, NULL, NULL, false);
-INSERT INTO products VALUES ('Bono Estado Español 4,20  31012030', 'ES0000012932', 'EUR', 7, '', 81680, '', '', '', '', 20, 'c', 0, 1, NULL, NULL, NULL, '', false);
+INSERT INTO products VALUES ('Bono Estado Español 4,20  31012037', 'ES0000012932', 'EUR', 7, '', 81680, '', '', '', '', 20, 'c', 0, 1, NULL, NULL, NULL, '', false);
 INSERT INTO products VALUES ('Bono Estado Español 4,70  30072041', 'ES00000121S7', 'EUR', 7, '', 81683, '', '', '', '', 20, 'c', 0, 1, NULL, NULL, NULL, '', false);
 INSERT INTO products VALUES ('BONO ESTADO ESPAÑOL 4,90  30072040', 'ES00000120N0', 'EUR', 7, '', 81684, '', '', '', '', 20, 'c', 0, 1, NULL, '{}', '{}', '', false);
 INSERT INTO products VALUES ('BONO ESTADO ESPAÑOL 5,15  31102044', 'ES00000124H4', 'EUR', 7, '', 81685, '', '', '', '', 20, 'c', 0, 1, NULL, '{}', '{}', '', false);
@@ -5987,6 +6577,7 @@ INSERT INTO products VALUES ('Martin Marietta Materials Inc.', NULL, 'USD', 1, N
 INSERT INTO products VALUES ('MARTINSA-FAD', 'ES0161376019', 'EUR', 1, '|MERCADOCONTINUO|', 79221, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, 'MTF.MC', '{9}', '{3}', 'MC#ES0161376019||es||False', false);
 INSERT INTO products VALUES ('Marvell Technology Group, Ltd.', NULL, 'USD', 1, '|NASDAQ100|', 77496, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, NULL, 'MRVL||us||False', false);
 INSERT INTO products VALUES ('Masco Corp.', NULL, 'USD', 1, NULL, 78055, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, NULL, 'NYSE#MAS||us||False', false);
+INSERT INTO products VALUES ('Masmovil Ibercom S.A.', 'ES0184696013', 'EUR', 1, '|MERCADOCONTINUO|', 81703, 'http://www.ibercom.com', NULL, NULL, NULL, 100, 'c', 0, 1, 'MAS.MC', '{9}', '{3}', NULL, false);
 INSERT INTO products VALUES ('Massey Energy Co.', NULL, 'USD', 1, NULL, 75394, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, NULL, 'NYSE#MEE||us||False', false);
 INSERT INTO products VALUES ('MasTec Inc.', NULL, 'USD', 1, NULL, 79292, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, NULL, 'NYSE#MTZ||us||False', false);
 INSERT INTO products VALUES ('MasterCard Inc. Cl A', NULL, 'USD', 1, NULL, 78477, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, NULL, 'NYSE#MA||us||False', false);
@@ -7624,8 +8215,8 @@ INSERT INTO products VALUES ('Telecom Italia S.p.A.', NULL, 'USD', 1, NULL, 7836
 INSERT INTO products VALUES ('Telecomm Italia', 'IT0003497168', 'EUR', 1, '', 75067, '', '', '', '', 100, 'c', 0, 6, NULL, NULL, NULL, 'IT0003497168||None||False', false);
 INSERT INTO products VALUES ('Teledyne Technologies Inc.', NULL, 'USD', 1, NULL, 78963, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, NULL, 'NYSE#TDY||us||False', false);
 INSERT INTO products VALUES ('Teleflex Inc.', NULL, 'USD', 1, NULL, 76452, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, NULL, 'NYSE#TFX||us||False', false);
-INSERT INTO products VALUES ('TELEFONICA', 'ES0178430E18', 'EUR', 1, '|EUROSTOXX|IBEX|MERCADOCONTINUO|', 78241, '', '', '', '', 100, 'c', 0, 1, 'TEF.MC', '{9}', '{3}', 'MC#ES0178430E18||es||False', false);
-INSERT INTO products VALUES ('Telefonica S.A.', NULL, 'USD', 1, NULL, 75130, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, NULL, 'NYSE#TEF||us||False', false);
+INSERT INTO products VALUES ('Telefónica S.A.', 'ES0178430E18', 'EUR', 1, '|EUROSTOXX|IBEX|MERCADOCONTINUO|', 78241, '', '', '', '', 100, 'c', 0, 1, 'TEF.MC', '{9}', '{3}', 'MC#ES0178430E18||es||False', false);
+INSERT INTO products VALUES ('Telefónica S.A.', NULL, 'USD', 1, NULL, 75130, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, NULL, 'NYSE#TEF||us||False', false);
 INSERT INTO products VALUES ('Telefonos de Mexico S.A.B. de C.V.', NULL, 'USD', 1, NULL, 78460, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, NULL, 'NYSE#TMX||us||False', false);
 INSERT INTO products VALUES ('telegate AG', 'DE0005118806', 'EUR', 1, '|DEUTSCHEBOERSE|', 80989, NULL, NULL, NULL, NULL, 100, 'c', 0, 5, NULL, NULL, NULL, 'DEUTSCHEBOERSE#DE0005118806||de||False', false);
 INSERT INTO products VALUES ('TELEGRAAF MEDIA GR', 'NL0000386605', 'EUR', 1, '|EURONEXT|', 79494, NULL, NULL, NULL, NULL, 100, 'c', 0, 12, NULL, NULL, NULL, 'EURONEXT#NL0000386605||nl||False', false);
@@ -8215,7 +8806,7 @@ INSERT INTO bolsas VALUES (11, 'be', '07:00:00', 'Bolsa de Bélgica', '17:38:00'
 INSERT INTO bolsas VALUES (12, 'nl', '07:00:00', 'Bolsa de Amsterdam', '17:38:00', 'Europe/Madrid');
 INSERT INTO bolsas VALUES (13, 'ie', '07:00:00', 'Bolsa de Dublín', '17:38:00', 'Europe/Madrid');
 INSERT INTO bolsas VALUES (14, 'fi', '07:00:00', 'Bolsa de Helsinki', '17:38:00', 'Europe/Madrid');
-INSERT INTO bolsas VALUES (15, 'es', '09:00:00', 'España. No cotiza en mercados oficiales', '17:38:00', 'Europe/Madrid');
+INSERT INTO bolsas VALUES (15, 'es', '09:00:00', 'No cotiza en mercados oficiales', '17:38:00', 'Europe/Madrid');
 INSERT INTO bolsas VALUES (1, 'es', '09:00:00', 'Bolsa de Madrid', '17:38:00', 'Europe/Madrid');
 INSERT INTO bolsas VALUES (2, 'us', '09:30:00', 'Bolsa de New York', '16:38:00', 'America/New_York');
 INSERT INTO bolsas VALUES (3, 'fr', '09:00:00', 'Bolsa de París', '17:38:00', 'Europe/Paris');
@@ -8225,8 +8816,8 @@ INSERT INTO bolsas VALUES (6, 'it', '07:00:00', 'Bolsa de Milán', '17:38:00', '
 INSERT INTO bolsas VALUES (7, 'jp', '09:00:00', 'Bolsa de Tokio', '20:00:00', 'Asia/Tokyo');
 INSERT INTO bolsas VALUES (8, 'cn', '00:00:00', 'Bolsa de Hong Kong', '20:00:00', 'Asia/Hong_Kong');
 INSERT INTO bolsas VALUES (9, 'pt', '07:00:00', 'Bolsa de Lisboa', '17:38:00', 'Europe/Lisbon');
-INSERT INTO globals VALUES (1, 'Version', '201501222338');
-INSERT INTO globals VALUES (6, 'Admin mode', '2ed65fbc0b68fdd5e4b06abd7675c2c8');
+INSERT INTO globals VALUES (1, 'Version', '201502111124');
+INSERT INTO globals VALUES (6, 'Admin mode', NULL);
 DELETE FROM products WHERE id<=0;
 ALTER SEQUENCE seq_conceptos START WITH 100 RESTART;
 ALTER SEQUENCE seq_entidadesbancarias START WITH 4 RESTART;
