@@ -203,6 +203,16 @@ class Update:
             cur.close()
             self.mem.con.commit()
             self.set_database_version(201501222338)     
+        if self.dbversion<201502111124:
+            cur=self.mem.con.cursor()
+            cur.execute("update products set name=%s where id=%s;", ('Bono Estado Español 4,20  31012037', 81680))
+            cur.execute("insert into products (id, name,  isin,  currency,  type,  agrupations,   web, address,  phone, mail, tpc, pci,  apalancado, id_bolsas, ticker, priority, priorityhistorical , comentario,  obsolete) values (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
+                    (81703, 'Masmovil Ibercom S.A.', 'ES0184696013', 'EUR', 1, '|MERCADOCONTINUO|', 'http://www.ibercom.com', None, None, None, 100, 'c', 0, 1, 'MAS.MC', [9, ],[3, ], None, False ))
+            cur.execute("update products set name=%s where id=%s;", ('Telefónica S.A.', 75130))
+            cur.execute("update products set name=%s where id=%s;", ('Telefónica S.A.', 78241))
+            cur.close()
+            self.mem.con.commit()
+            self.set_database_version(201502111124)     
   
 
         """AFTER EXECUTING I MUST RUN SQL UPDATE SCRIPT TO UPDATE FUTURE INSTALLATIONS
