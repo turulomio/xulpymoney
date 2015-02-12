@@ -213,6 +213,25 @@ class Update:
             cur.close()
             self.mem.con.commit()
             self.set_database_version(201502111124)     
+        if self.dbversion<201502120609:
+            cur=self.mem.con.cursor()
+            cur.execute("insert into products (id, name,  isin,  currency,  type,  agrupations,   web, address,  phone, mail, tpc, pci,  apalancado, id_bolsas, ticker, priority, priorityhistorical , comentario,  obsolete) values (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
+                    (81704, 'AENA S.A.', 'ES0105046009 ', 'EUR', 1, '|MERCADOCONTINUO|', 'http://www.aena.es', None, None, None, 100, 'c', 0, 1, 'AENA.MC', [9, ],[3, ], None, False ))
+            cur.execute("update products set name=%s, isin=%s, ticker=%s, priority=%s, priorityhistorical=%s where id=%s;",
+                    ('3D Systems Corporation','US88554D2053','DDD',[1, ],[3, ],  78596))            
+            cur.execute("update products set isin=%s, ticker=%s, priority=%s, priorityhistorical=%s where id=%s;",
+                    ('CH0012221716','ABB',[1, ],[3, ],  78545))
+            cur.execute("update products set obsolete=%s where id=%s;", (True, 78907))
+            cur.close()
+            self.mem.con.commit()
+            self.set_database_version(201502120609)     
+        if self.dbversion<201502120631:
+            cur=self.mem.con.cursor()
+            cur.execute("update products set obsolete=%s where id=%s;", (False, 78907))
+            cur.execute("update products set obsolete=%s where id=%s;", (True, 79807))
+            cur.close()
+            self.mem.con.commit()
+            self.set_database_version(201502120631)     
   
 
         """AFTER EXECUTING I MUST RUN SQL UPDATE SCRIPT TO UPDATE FUTURE INSTALLATIONS
