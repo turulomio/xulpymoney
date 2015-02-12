@@ -2060,7 +2060,7 @@ GRANT ALL ON TABLE tarjetas TO xulpymoney_user;
 
 INSERT INTO products VALUES ('118000 AG', 'DE0006911902', 'EUR', 1, '|DEUTSCHEBOERSE|', 78360, NULL, NULL, NULL, NULL, 100, 'c', 0, 5, NULL, NULL, NULL, 'DEUTSCHEBOERSE#DE0006911902||de||False', false);
 INSERT INTO products VALUES ('30-70 EURO INVERSION', 'ES0184833038', 'EUR', 2, '|BMF|0063|', 78089, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, NULL, NULL, '{8}', 'ES0184833038||es||False', false);
-INSERT INTO products VALUES ('3D Systems Corp.', NULL, 'USD', 1, NULL, 78596, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, NULL, 'NYSE#DDD||us||False', false);
+INSERT INTO products VALUES ('3D Systems Corporation', 'US88554D2053', 'USD', 1, NULL, 78596, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, 'DDD', '{1}', '{3}', 'NYSE#DDD||us||False', false);
 INSERT INTO products VALUES ('3M Co.', 'US88579Y1010', 'USD', 1, '|SP500|', 77347, '', '', '', '', 100, 'c', 0, 2, 'MMM', '{1}', '{3}', 'NYSE#MMM||us||False', false);
 INSERT INTO products VALUES ('3U HOLDING AG', 'DE0005167902', 'EUR', 1, '|DEUTSCHEBOERSE|', 78361, NULL, NULL, NULL, NULL, 100, 'c', 0, 5, NULL, NULL, NULL, 'DEUTSCHEBOERSE#DE0005167902||de||False', false);
 INSERT INTO products VALUES ('3W POWER', 'GG00B39QCR01', 'EUR', 1, '|EURONEXT|', 78088, NULL, NULL, NULL, NULL, 100, 'c', 0, 12, NULL, NULL, NULL, 'EURONEXT#GG00B39QCR01||nl||False', false);
@@ -2068,7 +2068,7 @@ INSERT INTO products VALUES ('3W Power S.A.', 'GG00B39QCR01', 'EUR', 1, '|DEUTSC
 INSERT INTO products VALUES ('4ENERGY INV (D)', 'BE0003888089', 'EUR', 1, '|EURONEXT|', 79017, NULL, NULL, NULL, NULL, 100, 'c', 0, 11, NULL, NULL, NULL, 'EURONEXT#BE0003888089||be||False', false);
 INSERT INTO products VALUES ('4ENERGY STR (D)', 'BE0005625968', 'EUR', 1, '|EURONEXT|', 76459, NULL, NULL, NULL, NULL, 100, 'c', 0, 11, NULL, NULL, NULL, 'EURONEXT#BE0005625968||be||False', false);
 INSERT INTO products VALUES ('4SC AG', 'DE0005753818', 'EUR', 1, '|DEUTSCHEBOERSE|', 80471, NULL, NULL, NULL, NULL, 100, 'c', 0, 5, NULL, NULL, NULL, 'DEUTSCHEBOERSE#DE0005753818||de||False', false);
-INSERT INTO products VALUES ('7 Days Group Holdings Ltd.', NULL, 'USD', 1, NULL, 79807, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, NULL, 'NYSE#SVN||us||False', false);
+INSERT INTO products VALUES ('7 Days Group Holdings Ltd.', NULL, 'USD', 1, NULL, 79807, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, NULL, 'NYSE#SVN||us||False', true);
 INSERT INTO products VALUES ('99 Cents Only Stores', NULL, 'USD', 1, NULL, 79128, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, NULL, 'NYSE#NDN||us||False', false);
 INSERT INTO products VALUES ('AALBERTS INDUSTR', 'NL0000852564', 'EUR', 1, '|EURONEXT|', 77286, NULL, NULL, NULL, NULL, 100, 'c', 0, 12, NULL, NULL, NULL, 'EURONEXT#NL0000852564||nl||False', false);
 INSERT INTO products VALUES ('AAMIGOO', 'CWN001011006', 'EUR', 1, '|EURONEXT|', 79091, NULL, NULL, NULL, NULL, 100, 'c', 0, 12, NULL, NULL, NULL, 'EURONEXT#CWN001011006||nl||False', false);
@@ -2091,7 +2091,7 @@ INSERT INTO products VALUES ('ABANTE RENTA', 'ES0162947032', 'EUR', 2, '|BMF|019
 INSERT INTO products VALUES ('ABANTE SELECCION', 'ES0162946034', 'EUR', 2, '|BMF|0194|', 78184, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, NULL, NULL, '{8}', 'ES0162946034||es||False', false);
 INSERT INTO products VALUES ('ABANTE TESORERIA', 'ES0190051039', 'EUR', 2, '|BMF|0194|', 78188, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, NULL, NULL, '{8}', 'ES0190051039||es||False', false);
 INSERT INTO products VALUES ('ABANTE VALOR', 'ES0190052037', 'EUR', 2, '|BMF|0194|', 78189, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, NULL, NULL, '{8}', 'ES0190052037||es||False', false);
-INSERT INTO products VALUES ('ABB Ltd.', NULL, 'USD', 1, NULL, 78545, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, NULL, 'NYSE#ABB||us||False', false);
+INSERT INTO products VALUES ('ABB Ltd.', 'CH0012221716', 'USD', 1, NULL, 78545, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, 'ABB', '{1}', '{3}', 'NYSE#ABB||us||False', false);
 INSERT INTO products VALUES ('Abbott Laboratories', 'US0028241000', 'USD', 1, '|SP500|', 76790, '', '', '', '', 100, 'c', 0, 2, 'ABT', '{1}', '{3}', 'NYSE#ABT||us||False', false);
 INSERT INTO products VALUES ('ABC ARBITRAGE', 'FR0004040608', 'EUR', 1, '|EURONEXT|', 77334, NULL, NULL, NULL, NULL, 100, 'c', 0, 3, NULL, NULL, NULL, 'EURONEXT#FR0004040608||fr||False', false);
 INSERT INTO products VALUES ('Abengoa B', 'ES0105200002', 'EUR', 1, '|IBEX|MERCADOCONTINUO|', 81701, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, 'ABG-P.MC', '{9}', '{3}', NULL, false);
@@ -2181,6 +2181,7 @@ INSERT INTO products VALUES ('AEGON INVERSION MF', 'ES0147614038', 'EUR', 2, '|B
 INSERT INTO products VALUES ('AEGON INVERSION MV', 'ES0147616033', 'EUR', 2, '|BMF|0098|', 78317, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, NULL, NULL, '{8}', 'ES0147616033||es||False', false);
 INSERT INTO products VALUES ('Aegon', 'NL0000303709', 'EUR', 1, '', 75341, '', '', '', '', 100, 'c', 0, 12, NULL, NULL, NULL, 'AGN.AS||nl||False', false);
 INSERT INTO products VALUES ('Aegon N.V.', NULL, 'USD', 1, NULL, 77902, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, NULL, 'NYSE#AEG||us||False', false);
+INSERT INTO products VALUES ('AENA S.A.', 'ES0105046009 ', 'EUR', 1, '|MERCADOCONTINUO|', 81704, 'http://www.aena.es', NULL, NULL, NULL, 100, 'c', 0, 1, 'AENA.MC', '{9}', '{3}', NULL, false);
 INSERT INTO products VALUES ('AerCap Holdings N.V.', NULL, 'USD', 1, NULL, 75604, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, NULL, 'NYSE#AER||us||False', false);
 INSERT INTO products VALUES ('Aeroflex Holding Corp.', NULL, 'USD', 1, NULL, 80960, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, NULL, 'NYSE#ARX||us||False', false);
 INSERT INTO products VALUES ('Aeropostale Inc.', NULL, 'USD', 1, NULL, 81613, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, NULL, 'NYSE#ARO||us||False', false);
@@ -8816,7 +8817,7 @@ INSERT INTO bolsas VALUES (6, 'it', '07:00:00', 'Bolsa de Milán', '17:38:00', '
 INSERT INTO bolsas VALUES (7, 'jp', '09:00:00', 'Bolsa de Tokio', '20:00:00', 'Asia/Tokyo');
 INSERT INTO bolsas VALUES (8, 'cn', '00:00:00', 'Bolsa de Hong Kong', '20:00:00', 'Asia/Hong_Kong');
 INSERT INTO bolsas VALUES (9, 'pt', '07:00:00', 'Bolsa de Lisboa', '17:38:00', 'Europe/Lisbon');
-INSERT INTO globals VALUES (1, 'Version', '201502111124');
+INSERT INTO globals VALUES (1, 'Version', '201502120631');
 INSERT INTO globals VALUES (6, 'Admin mode', NULL);
 DELETE FROM products WHERE id<=0;
 ALTER SEQUENCE seq_conceptos START WITH 100 RESTART;
