@@ -22,7 +22,7 @@ class frmSplit(QDialog, Ui_frmSplit):
         self.setModal(True)
         self.setupUi(self)
         
-        self.all=SetQuotesAll(self.mem)
+        self.all=SetQuotesAllIntradays(self.mem)
         self.all.load_from_db(self.product)
         
         self.wdgDtStart.show_microseconds(False)

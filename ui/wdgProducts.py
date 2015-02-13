@@ -236,7 +236,7 @@ class wdgProducts(QWidget, Ui_wdgProducts):
 
     @QtCore.pyqtSlot()  
     def on_actionPurge_activated(self):
-        all=SetQuotesAll(self.mem)
+        all=SetQuotesAllIntradays(self.mem)
         all.load_from_db(self.products.selected[0])
         numpurged=all.purge(progress=True)
         if numpurged!=None:#Canceled

@@ -1,6 +1,5 @@
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
-import threading 
 from myqtablewidget import *
 from libxulpymoney import *
 from frmSelector import *
@@ -144,7 +143,7 @@ class frmProductReport(QDialog, Ui_frmProductReport):
         
     def update_due_to_quotes_change(self):
         if self.product.id!=None:
-            self.product.result.get_basic_ohcls()
+            self.product.result.get_basic_and_ohcls()
             self.product.result.ohclDaily.selected=[]
             self.product.result.ohclMonthly.selected=[]
             self.product.result.ohclWeekly.selected=[]
@@ -197,9 +196,7 @@ class frmProductReport(QDialog, Ui_frmProductReport):
             self.canvasHistorical.hide()
             self.ntbHistorical.hide()
         else:
-            t2 = threading.Thread(target=self.canvasHistorical.load_data,  args=(self.product, self.inversion))
-            t2.start()
-            t2.join()
+            self.canvasHistorical.load_data(self.product, self.inversion)
             self.canvasHistorical.show()
             self.ntbHistorical.show() 
             
@@ -208,9 +205,7 @@ class frmProductReport(QDialog, Ui_frmProductReport):
             self.canvasIntraday.hide()
             self.ntbIntraday.hide()
         else:
-            t1 = threading.Thread(target=self.canvasIntraday.load_data_intraday,   args=(self.product, ))
-            t1.start()
-            t1.join()     
+            self.canvasIntraday.load_data_intraday(self.product)
             self.canvasIntraday.show()
             self.ntbIntraday.show()       
         
@@ -399,7 +394,7 @@ class frmProductReport(QDialog, Ui_frmProductReport):
             self.update_due_to_quotes_change()
         
     def on_cmdPurge_pressed(self):
-        all=SetQuotesAll(self.mem)
+        all=SetQuotesAllIntradays(self.mem)
         all.load_from_db(self.product)
         numpurged=all.purge(progress=True)
         if numpurged!=None:#Canceled

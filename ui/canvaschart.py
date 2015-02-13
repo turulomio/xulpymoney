@@ -36,6 +36,8 @@ class canvasChart(FigureCanvasQTAgg):
         
         self.ax = self.fig.add_subplot(111)
         
+        self.setdata=None#Set to draw, must be pointed
+        
         self.plot_sma200=None
         self.plot_sma50=None
  
@@ -86,27 +88,6 @@ class canvasChart(FigureCanvasQTAgg):
             dat.append(datime[i-1])
             sma.append(sum(quotes[i-200:i])/Decimal(200))
         self.plot_sma200, =self.ax.plot_date(dat, sma, '-', color="red")    
-
-    def get_locators(self):
-        interval=(self.mem.localzone.now()-self.from_dt).days+1
-        if interval==0:
-            self.ax.xaxis.set_major_locator(HourLocator(interval=1 , tz=pytz.timezone(self.mem.localzone.name)))
-            self.ax.xaxis.set_minor_locator(HourLocator(interval=1 , tz=pytz.timezone(self.mem.localzone.name)))
-            self.ax.xaxis.set_major_formatter(DateFormatter('%H:%M'))    
-            self.ax.fmt_xdata=DateFormatter('%H:%M')        
-        elif interval<365:
-            self.ax.xaxis.set_minor_locator(MonthLocator())
-            self.ax.xaxis.set_major_locator(MonthLocator())
-            self.ax.xaxis.set_major_formatter( DateFormatter('%Y-%m-%d'))   
-            self.ax.fmt_xdata=DateFormatter('%Y-%m-%d')
-        elif interval>=365:
-            self.ax.xaxis.set_minor_locator(MonthLocator())
-            self.ax.xaxis.set_major_locator(YearLocator())   
-            self.ax.xaxis.set_major_formatter( DateFormatter('%Y'))        
-            self.ax.fmt_xdata=DateFormatter('%Y-%m-%d')
-                        
-        self.ax.fmt_ydata = self.price  
-        self.ax.grid(True)
         
     def draw_lines_from_ohcl(self):
         """self.setdata es un SetOHCLDaily"""
@@ -128,13 +109,14 @@ class canvasChart(FigureCanvasQTAgg):
         self.draw_sma200(dates, quotes)
         self.draw()
         
-    def draw_lines_from_quotes(self, data):
-        """Deben estar con tz, se recibe data porque puede recortarese según zoom"""
+    def draw_lines_from_quotes(self):
+        """Deben estar con tz, se recibe data porque puede recortarese según zoom
+        set is a SetQuotesIntraday"""
         self.clear()
-        if len(data)<2:
+        if self.setdata.length()<2:
             return
         (datetimes, quotes)=([], [])
-        for q in data:
+        for q in self.setdata.arr:
             datetimes.append(q.datetime)
             quotes.append(q.quote)
 
@@ -263,10 +245,20 @@ class canvasChartIntraday(canvasChart):
         """Clear canvas"""
         self.ax.clear()
 
+    def get_locators(self):
+        self.ax.xaxis.set_major_locator(HourLocator(interval=1 , tz=pytz.timezone(self.mem.localzone.name)))
+        self.ax.xaxis.set_minor_locator(HourLocator(interval=1 , tz=pytz.timezone(self.mem.localzone.name)))
+        self.ax.xaxis.set_major_formatter(DateFormatter('%H:%M'))    
+        self.ax.fmt_xdata=DateFormatter('%H:%M')        
+
+        self.ax.fmt_ydata = self.price  
+        self.ax.grid(True)
+
     def load_data_intraday(self, product):
         """Needs basic e Intraday"""
         self.product=product
-        self.draw_lines_from_quotes(self.product.result.intradia.arr)
+        self.setdata=self.product.result.intradia
+        self.draw_lines_from_quotes()
     
     def on_actionLinesIntraday_activated(self):
         self.mem.config_ui.set_value(self.section, "type",   ChartType.lines)
@@ -318,7 +310,7 @@ class canvasChartHistorical(canvasChart):
         self.plot_selling=None
         self.plot_purchases=None
         self.plot_sales=None
-        self.from_dt=datetime.datetime.now()-datetime.timedelta(days=365)#Show days from this date
+        self.from_dt=self.mem.localzone.now()-datetime.timedelta(days=365)#Show days from this date
         self.settings("canvasHistorical")
 
         
@@ -631,6 +623,23 @@ class canvasChartHistorical(canvasChart):
         indicadores.addAction(self.actionSMA200)
         menu.addMenu(indicadores)            
         menu.exec_(self.mapToGlobal(pos)) 
+        
+    def get_locators(self):
+        interval=(self.mem.localzone.now()-self.from_dt).days+1
+        
+        if interval<365:
+            self.ax.xaxis.set_minor_locator(MonthLocator())
+            self.ax.xaxis.set_major_locator(MonthLocator())
+            self.ax.xaxis.set_major_formatter( DateFormatter('%Y-%m-%d'))   
+            self.ax.fmt_xdata=DateFormatter('%Y-%m-%d')
+        elif interval>=365:
+            self.ax.xaxis.set_minor_locator(MonthLocator())
+            self.ax.xaxis.set_major_locator(YearLocator())   
+            self.ax.xaxis.set_major_formatter( DateFormatter('%Y'))        
+            self.ax.fmt_xdata=DateFormatter('%Y-%m-%d')
+                        
+        self.ax.fmt_ydata = self.price  
+        self.ax.grid(True)
 
     def load_data(self, product,   inversion=None, SD=False):
         """Debe tener cargado los ohcl, no el all"""
