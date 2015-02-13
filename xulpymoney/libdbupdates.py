@@ -232,6 +232,13 @@ class Update:
             cur.close()
             self.mem.con.commit()
             self.set_database_version(201502120631)     
+        if self.dbversion<201502131010:
+            cur=self.mem.con.cursor()
+            cur.execute("insert into products (id, name,  isin,  currency,  type,  agrupations,   web, address,  phone, mail, tpc, pci,  apalancado, id_bolsas, ticker, priority, priorityhistorical , comentario,  obsolete) values (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
+                    (81705, 'Logista Holdings', 'ES0105027009 ', 'EUR', 1, '|MERCADOCONTINUO|', 'http://www.logista.es', None, None, None, 100, 'c', 0, 1, 'LOG.MC', [9, ],[3, ], None, False ))
+            cur.close()
+            self.mem.con.commit()
+            self.set_database_version(201502131010)     
   
 
         """AFTER EXECUTING I MUST RUN SQL UPDATE SCRIPT TO UPDATE FUTURE INSTALLATIONS
