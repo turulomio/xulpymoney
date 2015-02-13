@@ -3801,13 +3801,77 @@ class Product:
         self.id=newid
         return self
 
+class SetQuotes:
+    """Clase que agrupa quotes un una lista arr. Util para operar con ellas como por ejemplo insertar, puede haber varios productos"""
+    def __init__(self, mem):
+        self.mem=mem
+        self.arr=[]
+    
+    def print(self):
+        for q in self.arr:
+            print(" * {}".format(q))
+    
+    def save(self):
+        """Recibe con code,  date,  time, value, zone
+            Para poner el dato en close, el valor de time debe ser None
+            Devuelve una tripleta (insertado,buscados,modificados)
+        """
+        insertados=SetQuotes(self.mem)
+        ignored=SetQuotes(self.mem)
+        modificados=SetQuotes(self.mem)    
+        malos=SetQuotes(self.mem)
+            
+        for q in self.arr:
+            if q.can_be_saved():#Debe hacerse en automaticos
+                ibm=q.save()
+                if ibm==1:
+                    insertados.append(q)
+                elif ibm==2:
+                    modificados.append(q)
+                elif ibm==3:
+                    ignored.append(q)
+            else:
+                malos.append(q)
+                
+        print ("{} SetMyquotes.save".format(len(self.arr)), insertados.length(), ignored.length(), modificados.length(), malos.length())
+        return (insertados, ignored, modificados, malos)
+             
+             
+    def addTo(self, settoadd):
+        """Añade los quotes en array a un nuevo set paasado por parametro"""
+        for q in self.arr:
+            settoadd.append(q)
 
+    def append(self, quote):
+        self.arr.append(quote)        
+        
+    def length(self):
+        return len(self.arr)
+        
+    def clear(self):
+        del self.arr
+        self.arr=[]
+        
+    def myqtablewidget(self, tabla, section):
+        tabla.setColumnCount(3)
+        tabla.setHorizontalHeaderItem(0, QTableWidgetItem(QApplication.translate(section, "Date and time", None, QApplication.UnicodeUTF8)))
+        tabla.setHorizontalHeaderItem(1, QTableWidgetItem(QApplication.translate(section, "Product", None, QApplication.UnicodeUTF8)))
+        tabla.setHorizontalHeaderItem(2, QTableWidgetItem(QApplication.translate(section, "Price", None, QApplication.UnicodeUTF8)))        
+        tabla.clearContents()
+        tabla.settings(section,  self.mem)       
+        tabla.setRowCount(len(self.arr))
+        for rownumber, a in enumerate(self.arr):
+            tabla.setItem(rownumber, 0, qdatetime(a.datetime, self.mem.localzone))
+            tabla.setItem(rownumber, 1, qleft(a.product.name))
+            tabla.item(rownumber, 1).setIcon(a.product.stockexchange.country.qicon())
+            tabla.setItem(rownumber, 2, a.product.currency.qtablewidgetitem(a.quote))
                 
                 
-class SetQuotesAll:
+class SetQuotesAllIntradays:
     """Class that groups all quotes of the database. It's an array of SetQuotesIntraday"""
     def __init__(self, mem):
         self.mem=mem
+        self.arr=[]
         self.product=None
         
     def first_quote(self):
@@ -3819,6 +3883,7 @@ class SetQuotesAll:
                 
     def load_from_db(self,  product):
         """Función que mete en setquotesintradia ordenado de objetos Quote, no es el ultimo día es un día"""
+        del self.arr
         self.arr=[]
         self.product=product
         cur=self.mem.con.cursor()
@@ -3924,16 +3989,16 @@ class SetQuotesBasic:
         else:
             return round((self.last.quote-self.endlastyear.quote)*100/self.endlastyear.quote, 2)       
 
-class SetQuotesIntraday:
+class SetQuotesIntraday(SetQuotes):
     """Clase que agrupa quotes un una lista arr de una misma inversión y de un mismo día. """
     def __init__(self, mem):
-        self.mem=mem
-        self.arr=[]
+        SetQuotes.__init__(self, mem)
         self.product=None
         self.date=None
         
     def load_from_db(self,  date, product):
         """Función que mete en setquotesintradia ordenado de objetos Quote, no es el ultimo día es un día"""
+        del self.arr
         self.arr=[]
         self.product=product
         self.date=date
@@ -3942,7 +4007,7 @@ class SetQuotesIntraday:
         siguientedia=iniciodia+datetime.timedelta(days=1)
         cur.execute("select * from quotes where id=%s and datetime>=%s and datetime<%s order by datetime", (self.product.id,  iniciodia, siguientedia))
         for row in cur:
-            self.arr.append(Quote(self.mem).init__db_row(row,  self.product))
+            self.append(Quote(self.mem).init__db_row(row,  self.product))
         cur.close()
         
     def init__create(self, product, date, arrquotes):
@@ -4433,14 +4498,14 @@ class QuotesResult:
         self.product=product
         
         self.intradia=SetQuotesIntraday(self.mem)
-        self.all=SetQuotesAll(self.mem)
+        self.all=SetQuotesAllIntradays(self.mem)
         self.basic=SetQuotesBasic(self.mem, self.product)
         self.ohclDaily=SetOHCLDaily(self.mem, self.product)
         self.ohclMonthly=SetOHCLMonthly(self.mem, self.product)
         self.ohclYearly=SetOHCLYearly(self.mem, self.product)
         self.ohclWeekly=SetOHCLWeekly(self.mem, self.product)
         
-    def get_basic_ohcls(self):
+    def get_basic_and_ohcls(self):
         """Tambien sirve para recargar"""
         inicio=datetime.datetime.now()
         self.ohclDaily.load_from_db("select * from ohlcdaily where id={0} order by date".format(self.product.id))#necesario para usar luego ohcl_otros
@@ -4501,7 +4566,7 @@ class Split:
     
     def updateQuotes(self):
         """Transforms de price of the quotes of the array"""
-        self.quotes=SetQuotesAll(self.mem)
+        self.quotes=SetQuotesAllIntradays(self.mem)
         self.quotes.load_from_db(self.product)
         for setquoteintraday in self.quotes.arr:
             for q in setquoteintraday.arr:
