@@ -989,6 +989,9 @@ class SetIO:
         
     def append(self, objeto):
         self.arr.append(objeto)
+        
+    def remove(self, objeto):
+        self.arr.remove(objeto)
                 
     def clone(self):
         """Returns other Set object, with items referenced, ojo con las formas de las instancias
@@ -1010,6 +1013,10 @@ class SetIO:
         
     def length(self):
         return len(self.arr)
+
+    def order_by_datetime(self):
+        """Ordena por datetime"""
+        self.arr=sorted(self.arr, key=lambda o:o.datetime)
 
 class SetInvestmentOperations(SetIO):       
     """Clase es un array ordenado de objetos newInvestmentOperation"""
@@ -1070,6 +1077,7 @@ class SetInvestmentOperations(SetIO):
         ##########################################
         operinversioneshistorica=SetInvestmentOperationsHistorical(self.mem)
         #Crea un array copia de self.arr, porque eran vinculos 
+        self.order_by_datetime()
         arr=[]
         for a in self.arr:   
             arr.append(a.clone())
@@ -1128,6 +1136,7 @@ class SetInvestmentOperations(SetIO):
         
     def myqtablewidget(self, tabla, section):
         """Section es donde guardar en el config file, coincide con el nombre del formulario en el que está la tabla"""
+        self.order_by_datetime()
         diff=0
         homogeneous=self.isHomogeneous()
         if homogeneous==False:
@@ -1253,6 +1262,7 @@ class SetInvestmentOperationsCurrent(SetIO):
             - tabla myQTableWidget en la que rellenar los datos
             - setoperinversion. Vincula a una inversión que  Debe tener cargado mq con get_basic y las operaciones de inversión calculadas
         last es el último quote de la inversión"""
+        self.order_by_datetime()
         #UI
         diff=0
         homogeneous=self.isHomogeneous()
@@ -1391,7 +1401,7 @@ class SetInvestmentOperationsCurrent(SetIO):
         cuando acaba la venta
         
         """
-        self.sort()
+        self.order_by_datetime()
         
         inicio=self.acciones()
         
@@ -1427,15 +1437,12 @@ class SetInvestmentOperationsCurrent(SetIO):
                 
         
     def print_list(self):
-        self.sort()
+        self.order_by_datetime()
         print ("\n Imprimiendo SIOA",  self)
         for oia in self.arr:
             print ("  - ", oia)
         
         
-    def sort(self):
-        """Ordena por datetime"""
-        self.arr=sorted(self.arr, key=lambda o:o.datetime)
  
 class SetInvestmentOperationsHistorical(SetIO):       
     """Clase es un array ordenado de objetos newInvestmentOperation"""
@@ -1486,6 +1493,7 @@ class SetInvestmentOperationsHistorical(SetIO):
         return resultado
     def myqtablewidget(self, tabla, section):
         """Rellena datos de un array de objetos de InvestmentOperationHistorical, devuelve totales ver código"""
+        self.order_by_fechaventa()
         tabla.setColumnCount(13)
         tabla.setHorizontalHeaderItem(0, QTableWidgetItem(QApplication.translate("Core", "Date", None, QApplication.UnicodeUTF8)))
         tabla.setHorizontalHeaderItem(1, QTableWidgetItem(QApplication.translate("Core", "Years", None, QApplication.UnicodeUTF8)))
@@ -1561,7 +1569,7 @@ class SetInvestmentOperationsHistorical(SetIO):
         return (sumbruto, sumcomision, sumimpuestos, sumneto)
     
 
-    def sort(self):
+    def order_by_fechaventa(self):
         """Sort by selling date"""
         self.arr=sorted(self.arr, key=lambda o: o.fecha_venta,  reverse=False)      
         
@@ -2290,7 +2298,7 @@ class InvestmentOperation:
     def borrar(self):        
         cur=self.mem.con.cursor()
         cur.execute("delete from operinversiones where id_operinversiones=%s",(self.id, ))
-        self.inversion.op.arr.remove(self)
+        self.inversion.op.remove(self)
         (self.inversion.op_actual,  self.inversion.op_historica)=self.inversion.op.calcular()
         self.inversion.cuenta.saldo_from_db()
         self.inversion.actualizar_cuentasoperaciones_asociadas()#Regenera toda la inversi´on.

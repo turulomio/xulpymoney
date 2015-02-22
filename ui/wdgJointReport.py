@@ -91,7 +91,6 @@ class wdgJointReport(QWidget, Ui_wdgJointReport):
             for o in i.op_historica.arr:
                 if o.fecha_venta.year==self.wy.year and o.tipooperacion.id in (5, 8):#Venta y traspaso fondos inversion
                     operaciones.arr.append(o)
-        operaciones.sort()
         (self.totalBruto, self.totalComisiones, self.totalImpuestos, self.totalNeto)=operaciones.myqtablewidget(self.tblInvestments, "wdgJointReport")
 
     def load_less(self):
