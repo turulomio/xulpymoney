@@ -44,7 +44,7 @@ class wdgInvestmentsOperations(QWidget, Ui_wdgInvestmentsOperations):
         for inv in self.mem.data.investments_active.arr:
             for o in inv.op_actual.arr:
                 self.setCurrent.append(o)
-        self.setCurrent.sort()
+        self.setCurrent.order_by_datetime()
         self.setCurrent.myqtablewidget(self.tblCurrent, "wdgInvestmentsOperations")
 
         
