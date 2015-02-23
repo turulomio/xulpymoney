@@ -976,6 +976,7 @@ class SetIO:
     def __init__(self, mem):
         self.mem=mem
         self.arr=[]
+        self.selected=None
 
     def arr_from_date(self, date):
         """Función que saca del arr las que tienen fecha mayor o igual a la pasada como parametro."""
@@ -991,6 +992,8 @@ class SetIO:
         self.arr.append(objeto)
         
     def remove(self, objeto):
+        """Remove from array"""
+        print("Quitado objeto")
         self.arr.remove(objeto)
                 
     def clone(self):
@@ -1023,7 +1026,31 @@ class SetInvestmentOperations(SetIO):
     def __init__(self, mem):
         SetIO.__init__(self, mem)
         
-
+        
+    def remove(self,  io):      
+        """io is an InvestmentOPeration object
+        Deletes from db and removes from array, and recalculate things"""  
+        print ("Hola")
+        cur=self.mem.con.cursor()
+        cur.execute("delete from operinversiones where id_operinversiones=%s",(io.id, ))
+        cur.close()
+        
+        print ("Hola")
+        print (id(io), self.arr,  io.__class__)
+        super(SetInvestmentOperations, self).remove(io)
+        print (id(io), self.arr,  io.__class__)
+        
+        print ("Hola")
+        (io.inversion.op_actual,  io.inversion.op_historica)=io.inversion.op.calcular_new()
+        io.inversion.cuenta.saldo_from_db()
+        io.inversion.actualizar_cuentasoperaciones_asociadas()#Regenera toda la inversi´on.
+        print ("Hola")
+#        print (self.inversion.op.arr)
+#        self.inversion.op.remove(self)
+#        print (self.inversion.op.arr)
+#        (self.inversion.op_actual,  self.inversion.op_historica)=self.inversion.op.calcular()
+#        self.inversion.cuenta.saldo_from_db()
+#        self.inversion.actualizar_cuentasoperaciones_asociadas()#Regenera toda la inversi´on.
         
     def calcular_new(self):
         """Realiza los cálculos y devuelve dos arrays"""
@@ -2198,7 +2225,7 @@ class InvestmentOperation:
         self.archivada=None
         
     def __repr__(self):
-        return ("IO {0} ({1}). {2} {3}. Acciones: {4}. Valor:{5}".format(self.inversion.name, self.inversion.id,  self.datetime, self.tipooperacion.name,  self.acciones,  self.valor_accion))
+        return ("IO {0} ({1}). {2} {3}. Acciones: {4}. Valor:{5}. IdObject: {6}".format(self.inversion.name, self.inversion.id,  self.datetime, self.tipooperacion.name,  self.acciones,  self.valor_accion, id(self)))
         
     def init__db_row(self,  row, inversion,  tipooperacion):
         self.id=row['id_operinversiones']
@@ -2227,7 +2254,8 @@ class InvestmentOperation:
         return self
         
     def init__from_accountoperation(self, accountoperation):
-        """AccountOperation is a object, and must have id_conceptos share of sale or purchase"""
+        """AccountOperation is a object, and must have id_conceptos share of sale or purchase. 
+        IO returned is an object already created in investments_all()"""
         cur=self.mem.con.cursor()
         cur.execute("select id_inversiones,id_operinversiones from opercuentasdeoperinversiones where id_opercuentas=%s", (accountoperation.id, ))
         if cur.rowcount==0:
@@ -2284,7 +2312,9 @@ class InvestmentOperation:
         if self.id==None:#insertar
             cur.execute("insert into operinversiones(datetime, id_tiposoperaciones,  importe, acciones,  impuestos,  comision,  valor_accion, comentario, id_inversiones) values (%s, %s, %s, %s, %s, %s, %s, %s,%s) returning id_operinversiones", (self.datetime, self.tipooperacion.id, self.importe, self.acciones, self.impuestos, self.comision, self.valor_accion, self.comentario, self.inversion.id))
             self.id=cur.fetchone()[0]
+            print (self.inversion.op.arr)
             self.inversion.op.append(self)
+            print (self.inversion.op.arr)
         else:
             cur.execute("update operinversiones set datetime=%s, id_tiposoperaciones=%s, importe=%s, acciones=%s, impuestos=%s, comision=%s, valor_accion=%s, comentario=%s, id_inversiones=%s where id_operinversiones=%s", (self.datetime, self.tipooperacion.id, self.importe, self.acciones, self.impuestos, self.comision, self.valor_accion, self.comentario, self.inversion.id, self.id))
         if recalculate==True:
@@ -2294,15 +2324,7 @@ class InvestmentOperation:
         if autocommit==True:
             self.mem.con.commit()
         cur.close()
-        
-    def borrar(self):        
-        cur=self.mem.con.cursor()
-        cur.execute("delete from operinversiones where id_operinversiones=%s",(self.id, ))
-        self.inversion.op.remove(self)
-        (self.inversion.op_actual,  self.inversion.op_historica)=self.inversion.op.calcular()
-        self.inversion.cuenta.saldo_from_db()
-        self.inversion.actualizar_cuentasoperaciones_asociadas()#Regenera toda la inversi´on.
-        cur.close()
+
         
     def tpc_anual(self,  last,  endlastyear):
         return

@@ -291,7 +291,7 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
     @QtCore.pyqtSlot() 
     def on_actionInvestmentOperationDelete_activated(self):
         investmentoperation=InvestmentOperation(self.mem).init__from_accountoperation(self.selOperAccount)
-        investmentoperation.borrar()
+        investmentoperation.inversion.op.remove(investmentoperation)
         self.mem.con.commit()     
         self.on_wdgYM_changed()
         self.tblOperaciones.clearSelection()

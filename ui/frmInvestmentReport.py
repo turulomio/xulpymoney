@@ -23,7 +23,7 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
         self.selDividend=None#Dividend seleccionado
         
         #arrays asociados a tablas
-        self.op=[]#Necesario porque puede acortarse el original
+        self.op=None#Sera un SetInvestmentOperations
         self.dividends=SetDividends(self.mem)
         self.mem.data.load_inactives()
         
@@ -54,7 +54,6 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
             self.ise.setSelected(self.inversion.product)
             self.cmdPuntoVenta.setEnabled(True)
             self.cmbAccount.setCurrentIndex(self.cmbAccount.findData(self.inversion.cuenta.id))
-            self.selMovimiento=None
             self.update_tables()      
             if len(self.op.arr)!=0 or len(self.dividends.arr)!=0:#CmbAccount está desabilitado si hay dividends o operinversiones
                 self.cmbAccount.setEnabled(False)  
@@ -94,7 +93,7 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
             self.op=self.inversion.op.clone_from_datetime(primera)
         else:
             self.op=self.inversion.op
-        self.selMovimiento=None
+        self.op.selected=None
         self.op.myqtablewidget(self.tblOperaciones, "frmInvestmentReport")
             
         
@@ -161,7 +160,7 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
         
     @QtCore.pyqtSlot() 
     def on_actionOperationEdit_activated(self):
-        w=frmInvestmentOperationsAdd(self.mem, self.inversion, self.selMovimiento, self)
+        w=frmInvestmentOperationsAdd(self.mem, self.inversion, self.op.selected, self)
         w.exec_()
         self.update_tables() 
 
@@ -180,7 +179,7 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
         
     @QtCore.pyqtSlot() 
     def on_actionSharesTransferUndo_activated(self):
-        if self.mem.data.investments_active.traspaso_valores_deshacer(self.selMovimiento)==False:
+        if self.mem.data.investments_active.traspaso_valores_deshacer(self.op.selected)==False:
             m=QMessageBox()
             m.setIcon(QMessageBox.Information)
             m.setText(self.tr("Shares transfer couldn't be done."))
@@ -197,7 +196,7 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
 
     @QtCore.pyqtSlot() 
     def on_actionOperationDelete_activated(self):
-        self.selMovimiento.borrar()
+        self.inversion.op.remove(self.op.selected)#debe borrarse de self.inversion.op, no de self.op, ya qque self.update_tables reescribe clone_from_datetime
         self.mem.con.commit()     
         self.update_tables()
 
@@ -268,14 +267,12 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
     def on_tblOperaciones_customContextMenuRequested(self,  pos):
         if self.inversion.qmessagebox_inactive() or self.inversion.cuenta.qmessagebox_inactive()or self.inversion.cuenta.eb.qmessagebox_inactive():
             return
-            
-            
         
-        if self.selMovimiento==None:
+        if self.op.selected==None:
             self.actionOperationDelete.setEnabled(False)
             self.actionOperationEdit.setEnabled(False)
         else:
-            if self.selMovimiento.tipooperacion.id==10:#Traspaso valores destino
+            if self.op.selected.tipooperacion.id==10:#Traspaso valores destino
                 self.actionOperationDelete.setEnabled(False)
                 self.actionOperationEdit.setEnabled(False)
             else:
@@ -289,8 +286,8 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
         menu.addAction(self.actionOperationEdit)
         menu.addAction(self.actionOperationDelete)
         
-        if self.selMovimiento!=None:
-            if self.selMovimiento.tipooperacion.id==9:#Traspaso valores origen
+        if self.op.selected!=None:
+            if self.op.selected.tipooperacion.id==9:#Traspaso valores origen
                 menu.addSeparator()
                 menu.addAction(self.actionSharesTransferUndo)
                 
@@ -316,10 +313,10 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
     def on_tblOperaciones_itemSelectionChanged(self):
         try:
             for i in self.tblOperaciones.selectedItems():#itera por cada item no row.
-                self.selMovimiento=self.op.arr[i.row()]
+                self.op.selected=self.op.arr[i.row()]
         except:
-            self.selMovimiento=None
-        print (self.tr("Selected: {0}".format(str(self.selMovimiento))))
+            self.op.selected=None
+        print (self.tr("Selected: {0}".format(str(self.op.selected))))
         
         
     def on_tblDividends_customContextMenuRequested(self,  pos):
