@@ -36,7 +36,7 @@ class wdgDisReinvest(QWidget, Ui_wdgDisReinvest):
         perdida=Decimal(self.txtSimulacion.text())       #Va disminuyendo con las distintas operaciones
        
         if self.radDes.isChecked():#DESINVERSION
-            (operinversionesactual, operinversioneshistoricas)=self.operinversiones.calcular()
+            (operinversionesactual, operinversioneshistoricas)=self.operinversiones.calcular_new()
             q=Quote(self.mem).init__create(self.inversion.product, datetime.datetime.now(pytz.timezone(self.mem.localzone.name)), self.txtValorAccion.decimal())
             for rec in operinversionesactual.arr:
                 pendiente=rec.pendiente(q)

@@ -42,7 +42,7 @@ class AccountOperationOfInvestmentOperation:
         else:
             cur.execute("UPDATE FALTA  set datetime=%s, id_conceptos=%s, id_tiposoperaciones=%s, importe=%s, comentario=%s, id_cuentas=%s where id_opercuentas=%s", (self.datetime, self.concepto.id, self.tipooperacion.id,  self.importe,  self.comentario,  self.cuenta.id,  self.id))
         cur.close()
-        self.cuenta.saldo_from_db()
+        self.cuenta.balance()
 
 
 class SetCommons:
@@ -283,7 +283,7 @@ class SetInvestments(SetCommons):
         if comision!=0:
             op_cuenta=AccountOperation(self.mem).init__create(now.date(), self.mem.conceptos.find(38), self.mem.tiposoperaciones.find(1), -comision, "Traspaso de valores", origen.cuenta)
             op_cuenta.save()       
-            origen.cuenta.saldo_from_db()        
+            origen.cuenta.balance()        
             comentario="{0}|{1}".format(destino.id, op_cuenta.id)
         else:
             comentario="{0}|{1}".format(destino.id, "None")
@@ -299,8 +299,8 @@ class SetInvestments(SetCommons):
             
         #Vuelvo a introducir el comentario de la opercuenta
         self.mem.con.commit()
-        (origen.op_actual,  origen.op_historica)=origen.op.calcular()   
-        (destino.op_actual,  destino.op_historica)=destino.op.calcular()   
+        (origen.op_actual,  origen.op_historica)=origen.op.calcular_new()   
+        (destino.op_actual,  destino.op_historica)=destino.op.calcular_new()   
         return True
         
     def traspaso_valores_deshacer(self, operinversionorigen):
@@ -320,7 +320,7 @@ class SetInvestments(SetCommons):
         cur.execute("delete from operinversiones where id_operinversiones=%s", (operinversionorigen.id, ))
         if id_opercuentacomision!="None":
             cur.execute("delete from opercuentas where id_opercuentas=%s", (int(id_opercuentacomision), ))
-            origen.cuenta.saldo_from_db()
+            origen.cuenta.balance()
             
         self.mem.con.commit()
         origen.get_operinversiones()
@@ -683,7 +683,7 @@ class SetAccounts(SetCommons):
         cur.execute(sql)#"Select * from cuentas"
         for row in cur:
             c=Account(self.mem).init__db_row(row, self.ebs.find(row['id_entidadesbancarias']))
-            c.saldo_from_db()
+            c.balance()
             self.append(c)
         cur.close()
 
@@ -993,15 +993,13 @@ class SetIO:
         
     def remove(self, objeto):
         """Remove from array"""
-        print("Quitado objeto")
         self.arr.remove(objeto)
                 
     def clone(self):
-        """Returns other Set object, with items referenced, ojo con las formas de las instancias
-        initparams son los parametros de iniciaci´on de la clase"""
-        result=self.__class__(self.mem)#Para que coja la clase del objeto que lo invoca
+        """Links all items in self. arr to a new set. Linked points the same object"""
+        result=self.__class__(self.mem)
         for a in self.arr:
-            result.append(a.clone())
+            result.append(a)
         return result
                 
     def clone_from_datetime(self, dt):
@@ -1011,7 +1009,25 @@ class SetIO:
             return self.clone()
         for a in self.arr:
             if a.datetime>=dt:
-                result.append(a.clone())
+                result.append(a)
+        return result
+                
+                
+    def copy(self):
+        """Copy all items in self. arr. Copy is generate a copy in a diferent memoriy direction"""
+        result=self.__class__(self.mem)
+        for a in self.arr:
+            result.append(a.clone())
+        return result
+                
+    def copy_from_datetime(self, dt):
+        """Función que devuelve otro SetInvestmentOperations con las oper que tienen datetime mayor o igual a la pasada como parametro."""
+        result=self.__class__(self.mem)#Para que coja la clase del objeto que lo invoca
+        if dt==None:
+            return self.copy()
+        for a in self.arr:
+            if a.datetime>=dt:
+                result.append(a.copy())
         return result
         
     def length(self):
@@ -1030,27 +1046,15 @@ class SetInvestmentOperations(SetIO):
     def remove(self,  io):      
         """io is an InvestmentOPeration object
         Deletes from db and removes from array, and recalculate things"""  
-        print ("Hola")
         cur=self.mem.con.cursor()
         cur.execute("delete from operinversiones where id_operinversiones=%s",(io.id, ))
         cur.close()
         
-        print ("Hola")
-        print (id(io), self.arr,  io.__class__)
         super(SetInvestmentOperations, self).remove(io)
-        print (id(io), self.arr,  io.__class__)
         
-        print ("Hola")
         (io.inversion.op_actual,  io.inversion.op_historica)=io.inversion.op.calcular_new()
-        io.inversion.cuenta.saldo_from_db()
+        io.inversion.cuenta.balance()
         io.inversion.actualizar_cuentasoperaciones_asociadas()#Regenera toda la inversi´on.
-        print ("Hola")
-#        print (self.inversion.op.arr)
-#        self.inversion.op.remove(self)
-#        print (self.inversion.op.arr)
-#        (self.inversion.op_actual,  self.inversion.op_historica)=self.inversion.op.calcular()
-#        self.inversion.cuenta.saldo_from_db()
-#        self.inversion.actualizar_cuentasoperaciones_asociadas()#Regenera toda la inversi´on.
         
     def calcular_new(self):
         """Realiza los cálculos y devuelve dos arrays"""
@@ -1107,7 +1111,7 @@ class SetInvestmentOperations(SetIO):
         self.order_by_datetime()
         arr=[]
         for a in self.arr:   
-            arr.append(a.clone())
+            arr.append(a.copy())
         arr=sorted(arr, key=lambda a:a.id) 
 
 
@@ -1737,7 +1741,7 @@ class InvestmentOperationCurrent:
         self.valor_accion=row['valor_accion']
         return self
         
-    def clone(self):
+    def copy(self):
         return self.init__create(self.operinversion, self.tipooperacion, self.datetime, self.inversion, self.acciones, self.importe, self.impuestos, self.comision, self.valor_accion, self.id)
                 
     def age(self):
@@ -1930,7 +1934,7 @@ class AccountOperation:
     def borrar(self):
         cur=self.mem.con.cursor()
         cur.execute("delete from opercuentas where id_opercuentas=%s", (self.id, ))
-        self.cuenta.saldo_from_db()
+        self.cuenta.balance()
         cur.close()
         
     def comment(self):
@@ -1999,7 +2003,7 @@ class AccountOperation:
         else:
             cur.execute("update opercuentas set datetime=%s, id_conceptos=%s, id_tiposoperaciones=%s, importe=%s, comentario=%s, id_cuentas=%s where id_opercuentas=%s", (self.datetime, self.concepto.id, self.tipooperacion.id,  self.importe,  self.comentario,  self.cuenta.id,  self.id))
         cur.close()
-        self.cuenta.saldo_from_db()
+        self.cuenta.balance()
         
 class DBData:
     def __init__(self, mem):
@@ -2175,7 +2179,7 @@ class Dividend:
         cur=self.mem.con.cursor()
         self.opercuenta.borrar()
         cur.execute("delete from dividends where id_dividends=%s", (self.id, ))
-        self.inversion.cuenta.saldo_from_db()
+        self.inversion.cuenta.balance()
         cur.close()
         
     def neto_antes_impuestos(self):
@@ -2206,7 +2210,7 @@ class Dividend:
             self.opercuenta.tipooperacion=self.concepto.tipooperacion
             self.opercuenta.save()
             cur.execute("update dividends set fecha=%s, valorxaccion=%s, bruto=%s, retencion=%s, neto=%s, id_inversiones=%s, id_opercuentas=%s, comision=%s, id_conceptos=%s where id_dividends=%s", (self.fecha, self.dpa, self.bruto, self.retencion, self.neto, self.inversion.id, self.opercuenta.id, self.comision, self.concepto.id, self.id))
-        self.inversion.cuenta.saldo_from_db()
+        self.inversion.cuenta.balance()
         cur.close()
 
 class InvestmentOperation:
@@ -2289,7 +2293,7 @@ class InvestmentOperation:
                 c=AccountOperationOfInvestmentOperation(self.mem).init__create(self.datetime, self.mem.conceptos.find(38), self.mem.tiposoperaciones.find(1), -self.comision-self.impuestos, self.comentario, self.inversion.cuenta, self,self.inversion)
                 c.save()
     
-    def clone(self):
+    def copy(self):
         """Crea una inversion operacion desde otra inversionoepracion. NO es un enlace es un objeto clone"""
         resultado=InvestmentOperation(self.mem)
         resultado.init__create(self.tipooperacion, self.datetime, self.inversion, self.acciones, self.importe, self.impuestos, self.comision, self.valor_accion, self.comentario, self.id)
@@ -2318,9 +2322,9 @@ class InvestmentOperation:
         else:
             cur.execute("update operinversiones set datetime=%s, id_tiposoperaciones=%s, importe=%s, acciones=%s, impuestos=%s, comision=%s, valor_accion=%s, comentario=%s, id_inversiones=%s where id_operinversiones=%s", (self.datetime, self.tipooperacion.id, self.importe, self.acciones, self.impuestos, self.comision, self.valor_accion, self.comentario, self.inversion.id, self.id))
         if recalculate==True:
-            (self.inversion.op_actual,  self.inversion.op_historica)=self.inversion.op.calcular()   
+            (self.inversion.op_actual,  self.inversion.op_historica)=self.inversion.op.calcular_new()   
             self.actualizar_cuentaoperacion_asociada()
-            self.inversion.cuenta.saldo_from_db()
+            self.inversion.cuenta.balance()
         if autocommit==True:
             self.mem.con.commit()
         cur.close()
@@ -2381,7 +2385,7 @@ class Bank:
         #Recorre balance cuentas
         for v in setcuentas.arr:
             if v.eb.id==self.id:
-                resultado=resultado+v.balance
+                resultado=resultado+v.balance()
         
         #Recorre balance inversiones
         for i in setinversiones.arr:
@@ -2414,7 +2418,6 @@ class Account:
         self.numero=None
         self.currency=None
         self.eb=None #Enlace a objeto
-        self.balance=0#Se calcula al crear el objeto y cuando haya opercuentas se calcula dinamicamente
 
     def __repr__(self):
         return ("Instancia de Account: {0} ({1})".format( self.name, self.id))
@@ -2428,7 +2431,7 @@ class Account:
         self.currency=self.mem.currencies.find(row['currency'])
         return self
     
-    def saldo_from_db(self,fecha=None):
+    def balance(self,fecha=None):
         """Función que calcula el balance de una cuenta
         Solo asigna balance al atributo balance si la fecha es actual, es decir la actual
         Parámetros:
@@ -2441,14 +2444,11 @@ class Account:
         if fecha==None:
             fecha=datetime.date.today()
         cur.execute('select sum(importe) from opercuentas where id_cuentas='+ str(self.id) +" and datetime::date<='"+str(fecha)+"';") 
-        balance=cur.fetchone()[0]
-        if balance==None:
-            cur.close()
-            return 0        
-        if fecha==datetime.date.today():
-            self.balance=balance
+        res=cur.fetchone()[0]
         cur.close()
-        return balance
+        if res==None:
+            return 0        
+        return res
             
     def init__create(self, name,  eb, activa, numero, currency, id=None):
         self.id=id

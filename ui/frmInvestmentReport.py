@@ -253,7 +253,7 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
             ##Se añade a mem y vincula. No carga datos porque products_id debe existir            
             #Lo añade con las operaciones vacias pero calculadas.
             i.op=SetInvestmentOperations(self.mem)
-            (i.op_actual, i.op_historica)=i.op.calcular()
+            (i.op_actual, i.op_historica)=i.op.calcular_new()
             self.mem.data.investments_active.append(i)
             self.done(0)
         elif self.tipo==2:
