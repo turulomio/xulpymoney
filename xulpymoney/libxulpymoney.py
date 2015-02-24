@@ -42,7 +42,6 @@ class AccountOperationOfInvestmentOperation:
         else:
             cur.execute("UPDATE FALTA  set datetime=%s, id_conceptos=%s, id_tiposoperaciones=%s, importe=%s, comentario=%s, id_cuentas=%s where id_opercuentas=%s", (self.datetime, self.concepto.id, self.tipooperacion.id,  self.importe,  self.comentario,  self.cuenta.id,  self.id))
         cur.close()
-        self.cuenta.balance()
 
 
 class SetCommons:
@@ -282,8 +281,7 @@ class SetInvestments(SetCommons):
 
         if comision!=0:
             op_cuenta=AccountOperation(self.mem).init__create(now.date(), self.mem.conceptos.find(38), self.mem.tiposoperaciones.find(1), -comision, "Traspaso de valores", origen.cuenta)
-            op_cuenta.save()       
-            origen.cuenta.balance()        
+            op_cuenta.save()           
             comentario="{0}|{1}".format(destino.id, op_cuenta.id)
         else:
             comentario="{0}|{1}".format(destino.id, "None")
@@ -299,8 +297,8 @@ class SetInvestments(SetCommons):
             
         #Vuelvo a introducir el comentario de la opercuenta
         self.mem.con.commit()
-        (origen.op_actual,  origen.op_historica)=origen.op.calcular_new()   
-        (destino.op_actual,  destino.op_historica)=destino.op.calcular_new()   
+        (origen.op_actual,  origen.op_historica)=origen.op.calcular()   
+        (destino.op_actual,  destino.op_historica)=destino.op.calcular()   
         return True
         
     def traspaso_valores_deshacer(self, operinversionorigen):
@@ -320,7 +318,6 @@ class SetInvestments(SetCommons):
         cur.execute("delete from operinversiones where id_operinversiones=%s", (operinversionorigen.id, ))
         if id_opercuentacomision!="None":
             cur.execute("delete from opercuentas where id_opercuentas=%s", (int(id_opercuentacomision), ))
-            origen.cuenta.balance()
             
         self.mem.con.commit()
         origen.get_operinversiones()
@@ -1052,11 +1049,10 @@ class SetInvestmentOperations(SetIO):
         
         super(SetInvestmentOperations, self).remove(io)
         
-        (io.inversion.op_actual,  io.inversion.op_historica)=io.inversion.op.calcular_new()
-        io.inversion.cuenta.balance()
+        (io.inversion.op_actual,  io.inversion.op_historica)=io.inversion.op.calcular()
         io.inversion.actualizar_cuentasoperaciones_asociadas()#Regenera toda la inversi´on.
         
-    def calcular_new(self):
+    def calcular(self):
         """Realiza los cálculos y devuelve dos arrays"""
         sioh=SetInvestmentOperationsHistorical(self.mem)
         sioa=SetInvestmentOperationsCurrent(self.mem)       
@@ -1071,98 +1067,98 @@ class SetInvestmentOperations(SetIO):
                     sys.exit(0)
                 sioa.historizar(o, sioh)
         return (sioa, sioh)
-        
-    def calcular(self ):
-        """Realiza los calculos y devuelve dos arrys."""
-        def comisiones_impuestos(dif, p, n):
-            """Función que calcula lo simpuestos y las comisiones según el momento de actualizar
-            en el que se encuentre"""
-            (impuestos, comisiones)=(0, 0)
-            if dif==0: #Coincide la compra con la venta 
-                impuestos=n.impuestos+p.impuestos
-                comisiones=n.comision+p.comision
-                n.impuestos=0
-                n.comision=0
-                return (impuestos, comisiones)
-            elif dif<0:
-                """La venta no se ha acabado
-                    Las comision de compra se meten, pero no las de venta"""
-                impuestos=p.impuestos
-                comisiones=p.comision
-                p.impuestos=0
-                p.comision=0#Aunque se borra pero se quita por que se ha cobrado
-                return (impuestos, comisiones)
-            elif(dif>0):
-                """La venta se ha acabado y queda un nuevo p sin impuestos ni comision
-                    Los impuestos y las comision se meten
-                """
-                impuestos=n.impuestos+p.impuestos
-                comisiones=n.comision+p.comision
-                n.impuestos=0
-                n.comision=0
-                p.impuestos=0
-                p.comision=0
-                return (impuestos, comisiones)
-
-            
-        ##########################################
-        operinversioneshistorica=SetInvestmentOperationsHistorical(self.mem)
-        #Crea un array copia de self.arr, porque eran vinculos 
-        self.order_by_datetime()
-        arr=[]
-        for a in self.arr:   
-            arr.append(a.copy())
-        arr=sorted(arr, key=lambda a:a.id) 
-
-
-        while (True):#Bucle recursivo.            
-            pos=[]
-            for p in arr:
-                if p.acciones>0:
-                    pos.append(p)
-            #Mira si hay negativos y sino sale
-            n=None
-            for neg in arr:
-                if neg.acciones<0:
-                    n=neg
-                    break
-            if n==None:
-                break
-            elif len(pos)==0:#Se qudaba pillado
-                break
-            
-            #Solo impuestos y comisiones la primera vez
-            for p in pos:
-                dif=p.acciones+n.acciones
-                (impuestos, comisiones)=comisiones_impuestos(dif, p, n)
-                if dif==0: #Si es 0 se inserta el historico que coincide con la venta y se borra el registro negativ
-                    operinversioneshistorica.append(InvestmentOperationHistorical(self.mem).init__create(n, n.inversion, p.datetime.date(), -n.acciones*n.valor_accion,n.tipooperacion, n.acciones, comisiones, impuestos, n.datetime.date(), p.valor_accion, n.valor_accion))
-                    arr.remove(n)
-                    arr.remove(p)
-                    break
-                elif dif<0:#   //Si es <0 es decir hay más acciones negativas que positivas. Se debe introducir en el historico la tmpoperinversion y borrarlo y volver a recorrer el bucle. Restando a n.acciones las acciones ya apuntadas en el historico
-                    operinversioneshistorica.append(InvestmentOperationHistorical(self.mem).init__create(p, p.inversion, p.datetime.date(), p.acciones*n.valor_accion,n.tipooperacion, -p.acciones, comisiones, impuestos, n.datetime.date(), p.valor_accion, n.valor_accion))
-                    arr.remove(p)
-                    n.acciones=n.acciones+p.acciones#ya que n.acciones es negativo
-
-                elif(dif>0):
-                    """Cuando es >0 es decir hay mas acciones positivos se añade el registro en el historico 
-                    con los datos de la operacion negativa en su totalidad. Se borra el registro de negativos y 
-                    de positivos en operinversionesactual y se inserta uno con los datos positivos menos lo 
-                    quitado por el registro negativo. Y se sale del bucle. 
-                    //Aqui no se inserta la comision porque solo cuando se acaba las acciones positivos   """
-                    operinversioneshistorica.append(InvestmentOperationHistorical(self.mem).init__create(p, n.inversion, p.datetime.date(), -n.acciones*n.valor_accion,n.tipooperacion, n.acciones, comisiones, impuestos, n.datetime.date(), p.valor_accion, n.valor_accion))
-                    arr.remove(p)
-                    arr.remove(n)
-                    arr.append(InvestmentOperation(self.mem).init__create( p.tipooperacion, p.datetime, p.inversion,  p.acciones-(-n.acciones), (p.acciones-(-n.acciones))*n.valor_accion,  0, 0, p.valor_accion, "",  p.id))
-                    arr=sorted(arr, key=lambda a:a.id)              
-                    break;
-        #Crea array operinversionesactual, ya que arr es operinversiones
-        operinversionesactual=SetInvestmentOperationsCurrent(self.mem)
-        for a in arr:
-            operinversionesactual.append(InvestmentOperationCurrent(self.mem).init__create(a.id, a.tipooperacion, a.datetime, a.inversion,  a.acciones, a.importe,  a.impuestos, a.comision, a.valor_accion))
-        return (operinversionesactual, operinversioneshistorica)
-            
+#        
+#    def calcular(self ):
+#        """Realiza los calculos y devuelve dos arrys."""
+#        def comisiones_impuestos(dif, p, n):
+#            """Función que calcula lo simpuestos y las comisiones según el momento de actualizar
+#            en el que se encuentre"""
+#            (impuestos, comisiones)=(0, 0)
+#            if dif==0: #Coincide la compra con la venta 
+#                impuestos=n.impuestos+p.impuestos
+#                comisiones=n.comision+p.comision
+#                n.impuestos=0
+#                n.comision=0
+#                return (impuestos, comisiones)
+#            elif dif<0:
+#                """La venta no se ha acabado
+#                    Las comision de compra se meten, pero no las de venta"""
+#                impuestos=p.impuestos
+#                comisiones=p.comision
+#                p.impuestos=0
+#                p.comision=0#Aunque se borra pero se quita por que se ha cobrado
+#                return (impuestos, comisiones)
+#            elif(dif>0):
+#                """La venta se ha acabado y queda un nuevo p sin impuestos ni comision
+#                    Los impuestos y las comision se meten
+#                """
+#                impuestos=n.impuestos+p.impuestos
+#                comisiones=n.comision+p.comision
+#                n.impuestos=0
+#                n.comision=0
+#                p.impuestos=0
+#                p.comision=0
+#                return (impuestos, comisiones)
+#
+#            
+#        ##########################################
+#        operinversioneshistorica=SetInvestmentOperationsHistorical(self.mem)
+#        #Crea un array copia de self.arr, porque eran vinculos 
+#        self.order_by_datetime()
+#        arr=[]
+#        for a in self.arr:   
+#            arr.append(a.copy())
+#        arr=sorted(arr, key=lambda a:a.id) 
+#
+#
+#        while (True):#Bucle recursivo.            
+#            pos=[]
+#            for p in arr:
+#                if p.acciones>0:
+#                    pos.append(p)
+#            #Mira si hay negativos y sino sale
+#            n=None
+#            for neg in arr:
+#                if neg.acciones<0:
+#                    n=neg
+#                    break
+#            if n==None:
+#                break
+#            elif len(pos)==0:#Se qudaba pillado
+#                break
+#            
+#            #Solo impuestos y comisiones la primera vez
+#            for p in pos:
+#                dif=p.acciones+n.acciones
+#                (impuestos, comisiones)=comisiones_impuestos(dif, p, n)
+#                if dif==0: #Si es 0 se inserta el historico que coincide con la venta y se borra el registro negativ
+#                    operinversioneshistorica.append(InvestmentOperationHistorical(self.mem).init__create(n, n.inversion, p.datetime.date(), -n.acciones*n.valor_accion,n.tipooperacion, n.acciones, comisiones, impuestos, n.datetime.date(), p.valor_accion, n.valor_accion))
+#                    arr.remove(n)
+#                    arr.remove(p)
+#                    break
+#                elif dif<0:#   //Si es <0 es decir hay más acciones negativas que positivas. Se debe introducir en el historico la tmpoperinversion y borrarlo y volver a recorrer el bucle. Restando a n.acciones las acciones ya apuntadas en el historico
+#                    operinversioneshistorica.append(InvestmentOperationHistorical(self.mem).init__create(p, p.inversion, p.datetime.date(), p.acciones*n.valor_accion,n.tipooperacion, -p.acciones, comisiones, impuestos, n.datetime.date(), p.valor_accion, n.valor_accion))
+#                    arr.remove(p)
+#                    n.acciones=n.acciones+p.acciones#ya que n.acciones es negativo
+#
+#                elif(dif>0):
+#                    """Cuando es >0 es decir hay mas acciones positivos se añade el registro en el historico 
+#                    con los datos de la operacion negativa en su totalidad. Se borra el registro de negativos y 
+#                    de positivos en operinversionesactual y se inserta uno con los datos positivos menos lo 
+#                    quitado por el registro negativo. Y se sale del bucle. 
+#                    //Aqui no se inserta la comision porque solo cuando se acaba las acciones positivos   """
+#                    operinversioneshistorica.append(InvestmentOperationHistorical(self.mem).init__create(p, n.inversion, p.datetime.date(), -n.acciones*n.valor_accion,n.tipooperacion, n.acciones, comisiones, impuestos, n.datetime.date(), p.valor_accion, n.valor_accion))
+#                    arr.remove(p)
+#                    arr.remove(n)
+#                    arr.append(InvestmentOperation(self.mem).init__create( p.tipooperacion, p.datetime, p.inversion,  p.acciones-(-n.acciones), (p.acciones-(-n.acciones))*n.valor_accion,  0, 0, p.valor_accion, "",  p.id))
+#                    arr=sorted(arr, key=lambda a:a.id)              
+#                    break;
+#        #Crea array operinversionesactual, ya que arr es operinversiones
+#        operinversionesactual=SetInvestmentOperationsCurrent(self.mem)
+#        for a in arr:
+#            operinversionesactual.append(InvestmentOperationCurrent(self.mem).init__create(a.id, a.tipooperacion, a.datetime, a.inversion,  a.acciones, a.importe,  a.impuestos, a.comision, a.valor_accion))
+#        return (operinversionesactual, operinversioneshistorica)
+#            
 
         
     def myqtablewidget(self, tabla, section):
@@ -1934,7 +1930,6 @@ class AccountOperation:
     def borrar(self):
         cur=self.mem.con.cursor()
         cur.execute("delete from opercuentas where id_opercuentas=%s", (self.id, ))
-        self.cuenta.balance()
         cur.close()
         
     def comment(self):
@@ -2003,7 +1998,6 @@ class AccountOperation:
         else:
             cur.execute("update opercuentas set datetime=%s, id_conceptos=%s, id_tiposoperaciones=%s, importe=%s, comentario=%s, id_cuentas=%s where id_opercuentas=%s", (self.datetime, self.concepto.id, self.tipooperacion.id,  self.importe,  self.comentario,  self.cuenta.id,  self.id))
         cur.close()
-        self.cuenta.balance()
         
 class DBData:
     def __init__(self, mem):
@@ -2179,7 +2173,6 @@ class Dividend:
         cur=self.mem.con.cursor()
         self.opercuenta.borrar()
         cur.execute("delete from dividends where id_dividends=%s", (self.id, ))
-        self.inversion.cuenta.balance()
         cur.close()
         
     def neto_antes_impuestos(self):
@@ -2210,7 +2203,6 @@ class Dividend:
             self.opercuenta.tipooperacion=self.concepto.tipooperacion
             self.opercuenta.save()
             cur.execute("update dividends set fecha=%s, valorxaccion=%s, bruto=%s, retencion=%s, neto=%s, id_inversiones=%s, id_opercuentas=%s, comision=%s, id_conceptos=%s where id_dividends=%s", (self.fecha, self.dpa, self.bruto, self.retencion, self.neto, self.inversion.id, self.opercuenta.id, self.comision, self.concepto.id, self.id))
-        self.inversion.cuenta.balance()
         cur.close()
 
 class InvestmentOperation:
@@ -2316,15 +2308,12 @@ class InvestmentOperation:
         if self.id==None:#insertar
             cur.execute("insert into operinversiones(datetime, id_tiposoperaciones,  importe, acciones,  impuestos,  comision,  valor_accion, comentario, id_inversiones) values (%s, %s, %s, %s, %s, %s, %s, %s,%s) returning id_operinversiones", (self.datetime, self.tipooperacion.id, self.importe, self.acciones, self.impuestos, self.comision, self.valor_accion, self.comentario, self.inversion.id))
             self.id=cur.fetchone()[0]
-            print (self.inversion.op.arr)
             self.inversion.op.append(self)
-            print (self.inversion.op.arr)
         else:
             cur.execute("update operinversiones set datetime=%s, id_tiposoperaciones=%s, importe=%s, acciones=%s, impuestos=%s, comision=%s, valor_accion=%s, comentario=%s, id_inversiones=%s where id_operinversiones=%s", (self.datetime, self.tipooperacion.id, self.importe, self.acciones, self.impuestos, self.comision, self.valor_accion, self.comentario, self.inversion.id, self.id))
         if recalculate==True:
-            (self.inversion.op_actual,  self.inversion.op_historica)=self.inversion.op.calcular_new()   
+            (self.inversion.op_actual,  self.inversion.op_historica)=self.inversion.op.calcular()   
             self.actualizar_cuentaoperacion_asociada()
-            self.inversion.cuenta.balance()
         if autocommit==True:
             self.mem.con.commit()
         cur.close()
@@ -2602,7 +2591,7 @@ class Investment:
         cur.execute("SELECT * from operinversiones where id_inversiones=%s order by datetime", (self.id, ))
         for row in cur:
             self.op.append(InvestmentOperation(self.mem).init__db_row(row, self, self.mem.tiposoperaciones.find(row['id_tiposoperaciones'])))
-        (self.op_actual,  self.op_historica)=self.op.calcular_new()
+        (self.op_actual,  self.op_historica)=self.op.calcular()
         cur.close()
         
 
