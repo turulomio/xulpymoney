@@ -47,8 +47,9 @@ class wdgBanks(QWidget, Ui_wdgBanks):
         for i,  c in enumerate(self.accounts.arr):
             self.tblAccounts.setItem(i, 0, QTableWidgetItem(c.name))
             self.tblAccounts.setCellWidget(i, 1, wdgBool(c.active))
-            self.tblAccounts.setItem(i, 2, self.mem.localcurrency.qtablewidgetitem(c.balance))
-            sumsaldos=sumsaldos+c.balance
+            balance=c.balance()
+            self.tblAccounts.setItem(i, 2, self.mem.localcurrency.qtablewidgetitem(balance))
+            sumsaldos=sumsaldos+balance
         self.tblAccounts.setItem(self.accounts.length(), 0, QTableWidgetItem(self.tr('TOTAL')))
         self.tblAccounts.setItem(self.accounts.length(), 2, self.mem.localcurrency.qtablewidgetitem(sumsaldos))                
         

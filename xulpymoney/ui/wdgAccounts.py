@@ -24,8 +24,9 @@ class wdgAccounts(QWidget, Ui_wdgAccounts):
             self.tblAccounts.setItem(i, 0, QTableWidgetItem((c.name)))
             self.tblAccounts.setItem(i, 1, QTableWidgetItem((c.eb.name)))
             self.tblAccounts.setItem(i, 2, QTableWidgetItem((c.numero)))
-            self.tblAccounts.setItem(i, 3, c.currency.qtablewidgetitem(c.balance))
-            sumsaldos=sumsaldos+c.balance  
+            balance=c.balance()
+            self.tblAccounts.setItem(i, 3, c.currency.qtablewidgetitem(balance))
+            sumsaldos=sumsaldos+balance  
         self.lblTotal.setText(self.tr("Accounts balance: {0}".format(self.mem.localcurrency.string(sumsaldos))))
         self.tblAccounts.clearSelection()
         

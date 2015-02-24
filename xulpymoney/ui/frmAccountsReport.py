@@ -176,7 +176,7 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
     def on_wdgYM_changed(self):
         cur = self.mem.con.cursor()      
         self.opercuentas=[]
-        self.saldoiniciomensual=self.selAccount.saldo_from_db( str(datetime.date(self.wdgYM.year, self.wdgYM.month, 1)-datetime.timedelta(days=1)))         
+        self.saldoiniciomensual=self.selAccount.balance( str(datetime.date(self.wdgYM.year, self.wdgYM.month, 1)-datetime.timedelta(days=1)))         
         if self.saldoiniciomensual==None:
             self.saldoiniciomensual=0
         cur.execute("select * from opercuentas where id_cuentas="+str(self.selAccount.id)+" and date_part('year',datetime)="+str(self.wdgYM.year)+" and date_part('month',datetime)="+str(self.wdgYM.month)+" order by datetime, id_opercuentas")
