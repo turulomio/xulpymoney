@@ -126,5 +126,4 @@ class frmAccountOperationsAdd(QDialog, Ui_frmAccountOperationsAdd):
             self.mem.con.commit()        #Se debe hacer el commit antes para que al actualizar con el signal salga todos los datos
             self.emit(SIGNAL("OperCreditCardIBMed"), ())
             self.done(0)            
-        self.cuenta.balance()
     

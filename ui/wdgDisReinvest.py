@@ -36,7 +36,7 @@ class wdgDisReinvest(QWidget, Ui_wdgDisReinvest):
         perdida=Decimal(self.txtSimulacion.text())       #Va disminuyendo con las distintas operaciones
        
         if self.radDes.isChecked():#DESINVERSION
-            (operinversionesactual, operinversioneshistoricas)=self.operinversiones.calcular_new()
+            (operinversionesactual, operinversioneshistoricas)=self.operinversiones.calcular()
             q=Quote(self.mem).init__create(self.inversion.product, datetime.datetime.now(pytz.timezone(self.mem.localzone.name)), self.txtValorAccion.decimal())
             for rec in operinversionesactual.arr:
                 pendiente=rec.pendiente(q)
@@ -89,7 +89,7 @@ class wdgDisReinvest(QWidget, Ui_wdgDisReinvest):
         importe=valor_accion*acciones
         self.txtAcciones.setText(str(acciones))
         self.txtImporte.setText(str(importe))
-        (operinversionesactualantes, operinversioneshistoricasantes)=self.operinversiones.calcular_new()
+        (operinversionesactualantes, operinversioneshistoricasantes)=self.operinversiones.calcular()
 
         #Creamos un nuevo operinversiones 
         operaciones=self.operinversiones.clone()
@@ -103,7 +103,7 @@ class wdgDisReinvest(QWidget, Ui_wdgDisReinvest):
         operaciones.arr.append(d)
 
 
-        (operinversionesactual, operinversioneshistoricas)=operaciones.calcular_new()
+        (operinversionesactual, operinversioneshistoricas)=operaciones.calcular()
         operaciones.myqtablewidget(self.tblOperaciones, "wdgDisReinvest")
         self.inversion.op_actual.myqtablewidget(self.tblInvestmentsActualAntes, "wdgDisReinvest")
         operinversionesactual.myqtablewidget(self.tblInvestmentsActualDespues, "wdgDisReinvest")
