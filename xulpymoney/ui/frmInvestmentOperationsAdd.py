@@ -57,6 +57,12 @@ class frmInvestmentOperationsAdd(QDialog, Ui_frmInvestmentOperationsAdd):
                 return
         elif id_tiposoperaciones==6: #Añadido    
             self.operinversion.importe=self.txtImporte.decimal()
+            if self.operinversion.acciones<0: 
+                m=QMessageBox()
+                m.setIcon(QMessageBox.Information)
+                m.setText(self.tr("Added shares number must be positive"))
+                m.exec_()    
+                return            
         elif id_tiposoperaciones==8: #Traspaso fondos
             self.operinversion.importe=self.txtImporte.decimal()
         
