@@ -14,19 +14,19 @@ class TestXulpymoneyData(unittest.TestCase):
         
     def test_data_minimal(self):
         #Banks IBM        
-        self.frmMain.on_actionBanks_activated()
+        self.frmMain.on_actionBanks_triggered()
         self.frmMain.w.bank_add("Banco Santander malo")#It will be bank 4
         self.frmMain.w.tblEB.setCurrentCell(self.frmMain.w.banks.arr_position(4), 0)
         self.frmMain.w.bank_edit("Banco de Santander malo")
         self.frmMain.w.tblEB.setCurrentCell(self.frmMain.w.banks.arr_position(4), 0)
         self.assertEqual(self.frmMain.w.banks.length(), 2)       
-        self.frmMain.w.on_actionBankDelete_activated()
+        self.frmMain.w.on_actionBankDelete_triggered()
         self.assertEqual(self.frmMain.w.banks.length(), 1)        
         self.frmMain.w.bank_add("Banco de Santander")#it will be bank5
         self.assertEqual(self.frmMain.w.banks.length(), 2)
         
         #Accounts IBM
-        self.frmMain.on_actionAccounts_activated()
+        self.frmMain.on_actionAccounts_triggered()
         ##Add
         w=frmAccountsReport(self.mem, None)
         w.cmbEB.setCurrentIndex(w.cmbEB.findData(5))
@@ -45,7 +45,7 @@ class TestXulpymoneyData(unittest.TestCase):
         self.frmMain.w.load_table()
         ##Delete
         self.frmMain.w.tblAccounts.setCurrentCell(self.frmMain.w.cuentas.arr_position(5), 0)
-        self.frmMain.w.on_actionAccountDelete_activated()
+        self.frmMain.w.on_actionAccountDelete_triggered()
         ##Add other
         w=frmAccountsReport(self.mem, None)
         w.cmbEB.setCurrentIndex(w.cmbEB.findData(5))
@@ -57,7 +57,7 @@ class TestXulpymoneyData(unittest.TestCase):
         self.frmMain.w.load_table()
         
         #Investments IBM
-        self.frmMain.on_actionInvestments_activated()
+        self.frmMain.on_actionInvestments_triggered()
         ##Add
         w=frmInvestmentReport(self.mem, None)
         w.cmbAccount.setCurrentIndex(w.cmbAccount.findData(6))
@@ -84,7 +84,7 @@ class TestXulpymoneyControlData(unittest.TestCase):
         self.frmMain=frmMain   
         
     def test_wdgProducts_search(self):
-        self.frmMain.on_actionSearch_activated()
+        self.frmMain.on_actionSearch_triggered()
         self.frmMain.w.txt.setText("monetario")
         self.frmMain.w.on_cmd_pressed()
         self.assertEqual(17, self.frmMain.w.tblInvestments.rowCount())        

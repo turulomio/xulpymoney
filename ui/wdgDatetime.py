@@ -1,5 +1,5 @@
-from PyQt4.QtCore import *
-from PyQt4.QtGui import *
+from PyQt5.QtCore import *
+from PyQt5.QtGui import *
 import datetime
 from Ui_wdgDatetime import *
 from libxulpymoney import *
@@ -10,6 +10,7 @@ class wdgDatetime(QWidget, Ui_wdgDatetime):
     Set if show seconds, microseconds, zone
     Use set function to set the zone
     """
+    changed=pyqtSignal()
     def __init__(self,  parent = None, name = None):
         QWidget.__init__(self,  parent)
         self.setupUi(self)
@@ -71,7 +72,7 @@ class wdgDatetime(QWidget, Ui_wdgDatetime):
         self.teMicroseconds.setValue(dt.microsecond)
         
         self.updateTooltip()
-        self.emit(SIGNAL("changed"))
+        self.changed.emit()
         
     def datetime(self):
         #qt only miliseconds
@@ -81,22 +82,22 @@ class wdgDatetime(QWidget, Ui_wdgDatetime):
 
     def on_teDate_selectionChanged(self):
         self.updateTooltip()
-        self.emit(SIGNAL("changed"))
+        self.changed.emit()
         
     def on_teTime_timeChanged(self, time):
         self.updateTooltip()
-        self.emit(SIGNAL("changed"))
+        self.changed.emit()
         
     @pyqtSlot(int)   
     def on_teMicroseconds_valueChanged(self):
         self.updateTooltip()
-        self.emit(SIGNAL("changed"))
+        self.changed.emit()
         
     @pyqtSlot(str)      
     def on_cmbZone_currentIndexChanged(self, stri):
         self.zone=self.mem.zones.find(self.cmbZone.itemData(self.cmbZone.currentIndex()))
         self.updateTooltip()
-        self.emit(SIGNAL("changed"))
+        self.changed.emit()
         
     def updateTooltip(self):
         self.setToolTip(self.tr("Selected datetime:\n{0}").format(self.datetime()))

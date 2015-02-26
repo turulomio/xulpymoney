@@ -36,7 +36,7 @@ class MemSimulation(MemXulpymoney):
         
         
     def investment_create(self, range):
-        frmMain.on_actionInvestments_activated()
+        frmMain.on_actionInvestments_triggered()
         ##Add
         w=frmInvestmentReport(mem, None)
         w.cmbAccount.setCurrentIndex(w.cmbAccount.findData(5))
@@ -112,11 +112,11 @@ if __name__ == '__main__':
     mem.con.commit()
 
     #Create bank
-    frmMain.on_actionBanks_activated()
+    frmMain.on_actionBanks_triggered()
     frmMain.w.bank_add("Simulated bank")#It will be bank 4
     
     #Create account
-    frmMain.on_actionAccounts_activated()
+    frmMain.on_actionAccounts_triggered()
     w=frmAccountsReport(mem, None)
     w.cmbEB.setCurrentIndex(w.cmbEB.findData(4))
     w.txtAccount.setText("Simulated account")

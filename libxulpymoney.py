@@ -1,5 +1,6 @@
-from PyQt4.QtCore import *
-from PyQt4.QtGui import *
+from PyQt5.QtCore import *
+from PyQt5.QtGui import *
+from PyQt5.QtWidgets import *
 import datetime,  time,  pytz,   psycopg2,  psycopg2.extras,  sys,  codecs,  os,  configparser,  inspect,  threading, argparse, getpass
 
 from decimal import *
@@ -506,7 +507,7 @@ class SetProducts(SetCommons):
             table.setItem(i, 6, qtpc(p.result.basic.tpc_anual()))           
             if p.estimations_dps.currentYear()==None:
                 table.setItem(i, 7, qtpc(None))
-                table.item(i, 7).setBackgroundColor( QColor(255, 182, 182))          
+                table.item(i, 7).setBackground( QColor(255, 182, 182))          
             else:
                 table.setItem(i, 7, qtpc(p.estimations_dps.currentYear().percentage()))  
                 
@@ -3337,10 +3338,10 @@ class Currency:
         text= (self.string(n,  digits))
         a=QTableWidgetItem(text)
         a.setTextAlignment(Qt.AlignVCenter|Qt.AlignRight)
-        if n==None:
-            a.setTextColor(QColor(0, 0, 255))
-        elif n<0:
-            a.setTextColor(QColor(255, 0, 0))
+#        if n==None:
+#            a.setTextColor(QColor(0, 0, 255))
+#        elif n<0:
+#            a.setTextColor(QColor(255, 0, 0))
         return a
 
 class ProductMode:
@@ -3721,7 +3722,7 @@ class Product:
 
     def has_autoupdate(self):
         """Return if the product has autoupdate in some source
-        REMEMBER TO CHANGE on_actionProductsAutoUpdate_activated en frmMain"""
+        REMEMBER TO CHANGE on_actionProductsAutoUpdate_triggered en frmMain"""
         if self.obsolete==True:
             return False
         #With isin
@@ -5558,10 +5559,10 @@ def qtpc(n, rnd=2):
     text= tpc(n, rnd)
     a=QTableWidgetItem(text)
     a.setTextAlignment(Qt.AlignVCenter|Qt.AlignRight)
-    if n==None:
-        a.setTextColor(QColor(0, 0, 255))
-    elif n<0:
-        a.setTextColor(QColor(255, 0, 0))
+#    if n==None:
+#        a.setTextColor(QColor(0, 0, 255))
+#    elif n<0:
+#        a.setTextColor(QColor(255, 0, 0))
     return a
       
 

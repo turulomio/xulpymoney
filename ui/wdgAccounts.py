@@ -1,5 +1,5 @@
-from PyQt4.QtCore import *
-from PyQt4.QtGui import *
+from PyQt5.QtCore import *
+from PyQt5.QtGui import *
 from Ui_wdgAccounts import *
 from frmTransfer import *
 from frmAccountsReport import *
@@ -31,28 +31,28 @@ class wdgAccounts(QWidget, Ui_wdgAccounts):
         self.tblAccounts.clearSelection()
         
     @QtCore.pyqtSlot() 
-    def on_actionAccountReport_activated(self):
+    def on_actionAccountReport_triggered(self):
         self.child=self.child=frmAccountsReport(self.mem,   self.selAccount, self)
         self.child.exec_()
         self.on_chkInactivas_stateChanged(self.chkInactivas.checkState())
         self.load_table()
         
     @QtCore.pyqtSlot() 
-    def on_actionAccountAdd_activated(self):
+    def on_actionAccountAdd_triggered(self):
         self.child=frmAccountsReport(self.mem, None)
         self.child.exec_()
         self.on_chkInactivas_stateChanged(self.chkInactivas.checkState())
         self.load_table()
       
     @QtCore.pyqtSlot() 
-    def on_actionAccountDelete_activated(self):
+    def on_actionAccountDelete_triggered(self):
         if self.selAccount.eb.qmessagebox_inactive() or self.selAccount.qmessagebox_inactive():
             return
         cur = self.mem.con.cursor()
         if self.selAccount.es_borrable()==False:
             m=QMessageBox()
             m.setIcon(QMessageBox.Information)
-            m.setText(self.trUtf8("This account has associated investments, credit cards or operations. It can't be deleted"))
+            m.setText(self.tr("This account has associated investments, credit cards or operations. It can't be deleted"))
             m.exec_()
         else:
             self.selAccount.borrar(cur)
@@ -98,7 +98,7 @@ class wdgAccounts(QWidget, Ui_wdgAccounts):
 
         
     @QtCore.pyqtSlot() 
-    def on_actionActive_activated(self):
+    def on_actionActive_triggered(self):
         if self.selAccount.eb.qmessagebox_inactive()==True:
             return
         
@@ -116,7 +116,7 @@ class wdgAccounts(QWidget, Ui_wdgAccounts):
         self.load_table()
 
     @QtCore.pyqtSlot()  
-    def on_actionTransfer_activated(self):
+    def on_actionTransfer_triggered(self):
         self.child=frmTransfer(self.mem, self.selAccount)
         self.child.exec_()
         self.load_table()

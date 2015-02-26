@@ -1,6 +1,6 @@
 from libxulpymoney import *
-from PyQt4.QtCore import *
-from PyQt4.QtGui import *
+from PyQt5.QtCore import *
+from PyQt5.QtGui import *
 from Ui_wdgInvestments import *
 from frmInvestmentReport import *
 from frmQuotesIBM import *
@@ -17,7 +17,7 @@ class wdgInvestments(QWidget, Ui_wdgInvestments):
 
         self.progress = QProgressDialog(self.tr("Receiving requested data"), self.tr("Cancel"), 0,0)
         self.progress.setModal(True)
-        self.progress.setWindowTitle(self.trUtf8("Receiving data..."))
+        self.progress.setWindowTitle(self.tr("Receiving data..."))
         self.progress.setMinimumDuration(0)                 
         self.tblInvestments.settings("wdgInvestments",  self.mem)
         self.on_chkInactivas_stateChanged(self.chkInactivas.checkState())#Carga la tabla
@@ -62,14 +62,14 @@ class wdgInvestments(QWidget, Ui_wdgInvestments):
                 self.tblInvestments.item(i, 8).setIcon(QIcon(":/xulpymoney/new.png"))
             if tpc_invertido!=None and tpc_venta!=None:
                 if tpc_invertido<=-50:   
-                    self.tblInvestments.item(i, 7).setBackgroundColor(QColor(255, 148, 148))
+                    self.tblInvestments.item(i, 7).setBackground(QColor(255, 148, 148))
                 if (tpc_venta<=5 and tpc_venta>0) or tpc_venta<0:
-                    self.tblInvestments.item(i, 8).setBackgroundColor(QColor(148, 255, 148))
+                    self.tblInvestments.item(i, 8).setBackground(QColor(148, 255, 148))
             i=i+1
         if suminvertido!=0:
-            self.lblTotal.setText(self.trUtf8("Invested assets: {0}. Pending: {1} - {2} = {3} ({4} assets)\nDaily Diff: {5}. Assets average age: {6}").format(self.mem.localcurrency.string(suminvertido), self.mem.localcurrency.string(sumpositivos),  self.mem.localcurrency.string(-sumnegativos),  self.mem.localcurrency.string(sumpendiente), tpc(100*sumpendiente/suminvertido) , self.mem.localcurrency.string( sumdiario), days_to_year_month(self.inversiones.average_age())))
+            self.lblTotal.setText(self.tr("Invested assets: {0}. Pending: {1} - {2} = {3} ({4} assets)\nDaily Diff: {5}. Assets average age: {6}").format(self.mem.localcurrency.string(suminvertido), self.mem.localcurrency.string(sumpositivos),  self.mem.localcurrency.string(-sumnegativos),  self.mem.localcurrency.string(sumpendiente), tpc(100*sumpendiente/suminvertido) , self.mem.localcurrency.string( sumdiario), days_to_year_month(self.inversiones.average_age())))
         else:
-            self.lblTotal.setText(self.trUtf8("There aren't invested assets"))
+            self.lblTotal.setText(self.tr("There aren't invested assets"))
             
     def tblInvestments_load_inactivas(self):
         """Función que carga la tabla de inversiones con el orden que tenga el arr serl.inversiones"""
@@ -80,7 +80,7 @@ class wdgInvestments(QWidget, Ui_wdgInvestments):
             self.tblInvestments.setItem(i, 5, inv.product.currency.qtablewidgetitem(inv.balance()))
 
     @QtCore.pyqtSlot() 
-    def on_actionActive_activated(self):
+    def on_actionActive_triggered(self):
         if self.selInvestment.cuenta.eb.qmessagebox_inactive()  or self.selInvestment.cuenta.qmessagebox_inactive():
             return  
         
@@ -104,7 +104,7 @@ class wdgInvestments(QWidget, Ui_wdgInvestments):
 
             
     @QtCore.pyqtSlot() 
-    def on_actionInvestmentDelete_activated(self):
+    def on_actionInvestmentDelete_triggered(self):
         cur = self.mem.con.cursor()
         self.selInvestment.borrar(cur)
         self.mem.con.commit()
@@ -114,62 +114,62 @@ class wdgInvestments(QWidget, Ui_wdgInvestments):
 
           
     @QtCore.pyqtSlot() 
-    def on_actionInvestmentAdd_activated(self):
+    def on_actionInvestmentAdd_triggered(self):
         w=frmInvestmentReport(self.mem,   None, self)
         w.exec_()
         self.on_chkInactivas_stateChanged(self.chkInactivas.checkState())#Carga la tabla
         
     @QtCore.pyqtSlot() 
-    def on_actionInvestmentReport_activated(self):
+    def on_actionInvestmentReport_triggered(self):
         w=frmInvestmentReport(self.mem, self.selInvestment, self)
         w.exec_()
         self.on_chkInactivas_stateChanged(self.chkInactivas.checkState())#Carga la tabla
 
                 
     @QtCore.pyqtSlot() 
-    def on_actionProduct_activated(self):
+    def on_actionProduct_triggered(self):
         w=frmProductReport(self.mem, self.selInvestment.product, self.selInvestment, self)
         w.exec_()
         self.on_chkInactivas_stateChanged(self.chkInactivas.checkState())#Carga la tabla
             
             
     @QtCore.pyqtSlot() 
-    def on_actionProductPrice_activated(self):
+    def on_actionProductPrice_triggered(self):
         w=frmQuotesIBM(self.mem, self.selInvestment.product,None,  self)
         w.exec_()
         self.selInvestment.product.result.basic.load_from_db()
         self.on_chkInactivas_stateChanged(self.chkInactivas.checkState())#Carga la tabla
 
     @QtCore.pyqtSlot() 
-    def on_actionSortTPCDiario_activated(self):
+    def on_actionSortTPCDiario_triggered(self):
         if self.inversiones.order_by_percentage_daily():
             self.tblInvestments_reload_after_order()    
         else:
             qmessagebox_error_ordering()     
         
     @QtCore.pyqtSlot() 
-    def on_actionSortTPCVenta_activated(self):
+    def on_actionSortTPCVenta_triggered(self):
         if self.inversiones.order_by_percentage_sellingpoint():
             self.tblInvestments_reload_after_order()    
         else:
             qmessagebox_error_ordering()     
         
     @QtCore.pyqtSlot() 
-    def on_actionSortTPC_activated(self):
+    def on_actionSortTPC_triggered(self):
         if self.inversiones.order_by_percentage_invested():
             self.tblInvestments_reload_after_order()    
         else:
             qmessagebox_error_ordering()     
         
     @QtCore.pyqtSlot() 
-    def on_actionSortHour_activated(self):
+    def on_actionSortHour_triggered(self):
         if self.inversiones.order_by_datetime():
             self.tblInvestments_reload_after_order()    
         else:
             qmessagebox_error_ordering()     
         
     @QtCore.pyqtSlot() 
-    def on_actionSortName_activated(self):
+    def on_actionSortName_triggered(self):
         if self.inversiones.order_by_name():
             self.tblInvestments_reload_after_order()    
         else:
@@ -186,12 +186,12 @@ class wdgInvestments(QWidget, Ui_wdgInvestments):
     def on_chkInactivas_stateChanged(self, state):
         if state==Qt.Unchecked:
             self.inversiones=self.mem.data.investments_active
-            self.on_actionSortTPCVenta_activated()
+            self.on_actionSortTPCVenta_triggered()
             self.tblInvestments_load()
         else:
             self.mem.data.load_inactives()
             self.inversiones=self.mem.data.investments_inactive
-            self.on_actionSortName_activated()
+            self.on_actionSortName_triggered()
             self.tblInvestments_load_inactivas()
         self.tblInvestments.clearSelection()
         self.selInvestment=None   
@@ -228,7 +228,7 @@ class wdgInvestments(QWidget, Ui_wdgInvestments):
         menu.addSeparator()
         menu.addAction(self.actionActive)
         menu.addSeparator()        
-        ordenar=QMenu(self.trUtf8("Order by"))
+        ordenar=QMenu(self.tr("Order by"))
         ordenar.addAction(self.actionSortName)
         ordenar.addAction(self.actionSortHour)
         ordenar.addAction(self.actionSortTPCDiario)
@@ -247,8 +247,8 @@ class wdgInvestments(QWidget, Ui_wdgInvestments):
         if column==8:#TPC Venta
             m=QMessageBox()
             m.setIcon(QMessageBox.Information)
-            m.setText(self.trUtf8("Shares number: {0}").format(self.selInvestment.acciones())+"\n"+
-                    self.trUtf8("Purchase price average: {0}").format(self.selInvestment.product.currency.string(self.selInvestment.op_actual.valor_medio_compra()))+"\n"+
+            m.setText(self.tr("Shares number: {0}").format(self.selInvestment.acciones())+"\n"+
+                    self.tr("Purchase price average: {0}").format(self.selInvestment.product.currency.string(self.selInvestment.op_actual.valor_medio_compra()))+"\n"+
                     self.tr("Selling point: {}").format(self.selInvestment.product.currency.string(self.selInvestment.venta))+"\n"+
                     self.tr("Selling all shares you get {}").format(self.selInvestment.product.currency.string(self.selInvestment.op_actual.pendiente(Quote(self.mem).init__create(self.selInvestment.product, self.mem.localzone.now(),  self.selInvestment.venta))))
             )

@@ -1,5 +1,5 @@
-from PyQt4.QtCore import *
-from PyQt4.QtGui import *
+from PyQt5.QtCore import *
+from PyQt5.QtGui import *
 from Ui_wdgSource import *
 from libsources import *
 from myqtablewidget import *
@@ -12,6 +12,8 @@ class Sources:
 
 
 class wdgSource(QWidget, Ui_wdgSource):
+    started=pyqtSignal()
+    finished=pyqtSignal()
     def __init__(self, mem, class_sources,  parent = None, name = None):
         QWidget.__init__(self,  parent)
         self.setupUi(self)
@@ -92,11 +94,13 @@ class wdgSource(QWidget, Ui_wdgSource):
 
         #Make connections
         for worker in self.agrupation:
-            QObject.connect(worker, SIGNAL("step_finished"), self.progress_step)   
-            QObject.connect(worker, SIGNAL("run_finished"), self.worker_run_finished)   
+            worker.step_finished.connect(self.progress_step)
+            worker.run_finished.connect(self.worker_run_finished)
+#            QObject.connect(worker, SIGNAL("step_finished"), self.progress_step)   
+#            QObject.connect(worker, SIGNAL("run_finished"), self.worker_run_finished)   
         
         #Starts
-        self.emit(SIGNAL("started")) 
+        self.started.emit()
         for worker in self.agrupation:
             self.currentWorker=worker
             worker.run()
@@ -134,7 +138,8 @@ class wdgSource(QWidget, Ui_wdgSource):
         self.cmdBad.setEnabled(True)       
         self.cmdSearched.setEnabled(True)
         self.cmdCancel.setEnabled(False)
-        self.emit(SIGNAL("finished")) 
+        self.finished.emit()
+#        self.emit(SIGNAL("finished")) 
         
         
     def on_cmdCancel_released(self):
@@ -145,7 +150,7 @@ class wdgSource(QWidget, Ui_wdgSource):
     def on_cmdInserted_released(self):
         d=QDialog(self)        
         d.showMaximized()
-        d.setWindowTitle(self.trUtf8("Inserted quotes"))
+        d.setWindowTitle(self.tr("Inserted quotes"))
         t=myQTableWidget(d)
         self.totals.inserted.myqtablewidget(t, "wdgSource")
         lay = QVBoxLayout(d)
@@ -155,7 +160,7 @@ class wdgSource(QWidget, Ui_wdgSource):
     def on_cmdEdited_released(self):
         d=QDialog(self)        
         d.showMaximized()
-        d.setWindowTitle(self.trUtf8("Edited quotes"))
+        d.setWindowTitle(self.tr("Edited quotes"))
         t=myQTableWidget(d)
         self.totals.modified.myqtablewidget(t, "wdgSource")
         lay = QVBoxLayout(d)
@@ -165,7 +170,7 @@ class wdgSource(QWidget, Ui_wdgSource):
     def on_cmdIgnored_released(self):
         d=QDialog(self)        
         d.showMaximized()
-        d.setWindowTitle(self.trUtf8("Ignored quotes"))
+        d.setWindowTitle(self.tr("Ignored quotes"))
         t=myQTableWidget(d)
         self.totals.ignored.myqtablewidget(t, "wdgSource")
         lay = QVBoxLayout(d)
@@ -175,7 +180,7 @@ class wdgSource(QWidget, Ui_wdgSource):
     def on_cmdErrors_released(self):
         d=QDialog(self)        
         d.showMaximized()
-        d.setWindowTitle(self.trUtf8("Error procesing the source"))
+        d.setWindowTitle(self.tr("Error procesing the source"))
         terrors=myQTableWidget(d)
         self.totals.myqtablewidget_errors(terrors, "wdgSource")
         lay = QVBoxLayout(d)
@@ -185,7 +190,7 @@ class wdgSource(QWidget, Ui_wdgSource):
     def on_cmdBad_released(self):
         d=QDialog(self)        
         d.showMaximized()
-        d.setWindowTitle(self.trUtf8("Error procesing the source"))
+        d.setWindowTitle(self.tr("Error procesing the source"))
         t=myQTableWidget(d)
         self.totals.bad.myqtablewidget(t, "wdgSource")
         lay = QVBoxLayout(d)
@@ -195,7 +200,7 @@ class wdgSource(QWidget, Ui_wdgSource):
     def on_cmdSearched_released(self):
         d=QDialog(self)        
         d.showMaximized()
-        d.setWindowTitle(self.trUtf8("Error procesing the source"))
+        d.setWindowTitle(self.tr("Error procesing the source"))
         t=myQTableWidget(d)
         self.products.myqtablewidget(t, "wdgSource")
         lay = QVBoxLayout(d)

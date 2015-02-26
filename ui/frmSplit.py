@@ -1,5 +1,5 @@
-from PyQt4.QtCore import *
-from PyQt4.QtGui import *
+from PyQt5.QtCore import *
+from PyQt5.QtGui import *
 from libxulpymoney import *
 
 from Ui_frmSplit import *
@@ -41,7 +41,7 @@ class frmSplit(QDialog, Ui_frmSplit):
         print("New split")
         try:
             self.split=Split(self.mem, self.product, self.txtInitial.decimal(), self.txtFinal.decimal(), self.wdgDtStart.datetime(), self.wdgDtEnd.datetime())
-            self.lblExample.setText(self.trUtf8("If you have 1000 shares of 10 € of price, you will have {0:.6f} shares of {1:.6f} € of price after the {2}".format(self.split.convertShares(1000),self.split.convertPrices(10),  self.split.type())))
+            self.lblExample.setText(self.tr("If you have 1000 shares of 10 € of price, you will have {0:.6f} shares of {1:.6f} € of price after the {2}".format(self.split.convertShares(1000),self.split.convertPrices(10),  self.split.type())))
             self.buttonbox.button(QDialogButtonBox.Ok).setEnabled(True)
         except:
             self.lblExample.setText("")
@@ -60,12 +60,12 @@ class frmSplit(QDialog, Ui_frmSplit):
     def on_txtFinal_textChanged(self):
         self.generateExample()
         
-    @pyqtSignature("")
+    @pyqtSlot()
     def on_buttonbox_accepted(self):
         self.split.makeSplit()
         self.accept()#No haría falta pero para recordar que hay buttonbox
         
-    @pyqtSignature("")
+    @pyqtSlot()
     def on_buttonbox_rejected(self):
         del self.split
         self.reject()#No haría falta pero para recordar que hay buttonbox

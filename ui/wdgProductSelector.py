@@ -1,5 +1,5 @@
-from PyQt4.QtCore import *
-from PyQt4.QtGui import *
+from PyQt5.QtCore import *
+from PyQt5.QtGui import *
 from myqtablewidget import *
 
 class wdgProductSelector(QWidget):
@@ -26,8 +26,9 @@ class wdgProductSelector(QWidget):
         icon.addPixmap(QPixmap(":/xulpymoney/document-preview-archive.png"), QIcon.Normal, QIcon.Off)
         self.cmd.setIcon(icon)                                                                                                                                   
         self.horizontalLayout.addWidget(self.cmd)                                                                                                                            
-        self.horizontalLayout_2.addLayout(self.horizontalLayout)                                                                                                                                                                                                                                                                 
-        self.connect(self.cmd,SIGNAL('released()'),  self.on_cmd_released)
+        self.horizontalLayout_2.addLayout(self.horizontalLayout)                
+        self.cmd.released.connect(self.on_cmd_released)
+#        self.connect(self.cmd,SIGNAL('released()'),  self.on_cmd_released)
 
     def on_cmd_released(self):
         d=frmProductSelector(self, self.mem)

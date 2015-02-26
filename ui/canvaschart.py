@@ -1,5 +1,5 @@
-from PyQt4.QtCore import *
-from PyQt4.QtGui import *
+from PyQt5.QtCore import *
+from PyQt5.QtGui import *
 from libxulpymoney import *
 from matplotlib.finance import *
 from decimal import Decimal
@@ -49,13 +49,13 @@ class canvasChart(FigureCanvasQTAgg):
         self.actionSMA50.setChecked(str2bool(self.mem.config_ui.get_value(section, "sma50" )))
         self.actionSMA200.setChecked(str2bool(self.mem.config_ui.get_value(section, "sma200" )))           
 
-    @pyqtSignature("")
-    def on_actionSMA50_activated(self):
+    @pyqtSlot()
+    def on_actionSMA50_triggered(self):
         self.mem.config_ui.set_value(self.section, "sma50",   self.actionSMA50.isChecked())
         self.mem.config_ui.save()
         
-    @pyqtSignature("")
-    def on_actionSMA200_activated(self):
+    @pyqtSlot()
+    def on_actionSMA200_triggered(self):
         self.mem.config_ui.set_value(self.section, "sma200",   self.actionSMA200.isChecked())
         self.mem.config_ui.save()
 
@@ -260,7 +260,7 @@ class canvasChartIntraday(canvasChart):
         self.setdata=self.product.result.intradia
         self.draw_lines_from_quotes()
     
-    def on_actionLinesIntraday_activated(self):
+    def on_actionLinesIntraday_triggered(self):
         self.mem.config_ui.set_value(self.section, "type",   ChartType.lines)
         (dates, quotes)=zip(*self.data)
         self.draw_lines_from_quotes(dates, quotes)
@@ -391,23 +391,23 @@ class canvasChartHistorical(canvasChart):
         if type==ChartType.lines:
             if interval==1:
                 self.setdata=self.product.result.ohclDaily
-                self.on_actionLines1d_activated()
+                self.on_actionLines1d_triggered()
         elif type==ChartType.ohcl:
             if interval==1:
                 self.setdata=self.product.result.ohclDaily
-                self.on_actionOHCL1d_activated()
+                self.on_actionOHCL1d_triggered()
             if interval==7:
                 self.setdata=self.product.result.ohclWeekly
-                self.on_actionOHCL7d_activated()
+                self.on_actionOHCL7d_triggered()
             if interval==30:
                 self.setdata=self.product.result.ohclMonthly
-                self.on_actionOHCL30d_activated()
+                self.on_actionOHCL30d_triggered()
             if interval==365:
                 self.setdata=self.product.result.ohclYearly
-                self.on_actionOHCL365d_activated()
+                self.on_actionOHCL365d_triggered()
         elif type==ChartType.candles:
             self.setdata=self.product.result.ohclDaily
-            self.on_actionCandles1d_activated()
+            self.on_actionCandles1d_triggered()
         self.draw()
 
 
@@ -465,7 +465,7 @@ class canvasChartHistorical(canvasChart):
         self.common_actions()
         self.fig.canvas.mpl_connect('scroll_event', self.on_wheelEvent)
         
-    @pyqtSignature("")
+    @pyqtSlot()
     def on_wheelEvent(self, event):
         now=self.mem.localzone.now()
         if event.button=='up':
@@ -477,8 +477,8 @@ class canvasChartHistorical(canvasChart):
             QApplication.beep()
         self.mydraw()
         
-    @pyqtSignature("")
-    def on_actionOHCL1d_activated(self):
+    @pyqtSlot()
+    def on_actionOHCL1d_triggered(self):
         self.mem.config_ui.set_value(self.section, "type", ChartType.ohcl)
         self.mem.config_ui.set_value(self.section, "interval",   "1")
         self.ohcl(self.setdata, datetime.timedelta(days=1))     
@@ -487,8 +487,8 @@ class canvasChartHistorical(canvasChart):
         self.draw_investment_operations()
         self.showLegend()
 
-    @pyqtSignature("")
-    def on_actionLines1d_activated(self):
+    @pyqtSlot()
+    def on_actionLines1d_triggered(self):
         self.mem.config_ui.set_value(self.section, "type",   ChartType.lines)
         self.mem.config_ui.set_value(self.section, "interval",   "1")
         self.draw_lines_from_ohcl()
@@ -497,8 +497,8 @@ class canvasChartHistorical(canvasChart):
         self.draw_investment_operations()
         self.showLegend()
 
-    @pyqtSignature("")
-    def on_actionCandles1d_activated(self):
+    @pyqtSlot()
+    def on_actionCandles1d_triggered(self):
         self.mem.config_ui.set_value(self.section, "type",   ChartType.candles)
         self.mem.config_ui.set_value(self.section, "interval",   "1")
         self.candles(datetime.timedelta(days=1))
@@ -511,8 +511,8 @@ class canvasChartHistorical(canvasChart):
             self.ax.xaxis.set_major_locator(YearLocator())
         self.ax.autoscale_view()
 
-    @pyqtSignature("")
-    def on_actionOHCL7d_activated(self):
+    @pyqtSlot()
+    def on_actionOHCL7d_triggered(self):
         self.mem.config_ui.set_value(self.section, "type", ChartType.ohcl)
         self.mem.config_ui.set_value(self.section, "interval",   "7")
         self.ohcl(self.setdata, datetime.timedelta(days=7))     
@@ -520,8 +520,8 @@ class canvasChartHistorical(canvasChart):
         self.draw_average_purchase_price()
         self.showLegend()   
 
-    @pyqtSignature("")
-    def on_actionOHCL30d_activated(self):
+    @pyqtSlot()
+    def on_actionOHCL30d_triggered(self):
         self.mem.config_ui.set_value(self.section, "type", ChartType.ohcl)
         self.mem.config_ui.set_value(self.section, "interval",   "30")
         self.ohcl(self.setdata, datetime.timedelta(days=30))     
@@ -529,8 +529,8 @@ class canvasChartHistorical(canvasChart):
         self.draw_average_purchase_price()
         self.showLegend()   
 
-    @pyqtSignature("")
-    def on_actionOHCL365d_activated(self):
+    @pyqtSlot()
+    def on_actionOHCL365d_triggered(self):
         self.mem.config_ui.set_value(self.section, "type", ChartType.ohcl)
         self.mem.config_ui.set_value(self.section, "interval",   "365")
         self.ohcl(self.setdata, datetime.timedelta(days=365))     

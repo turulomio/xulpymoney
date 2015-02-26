@@ -1,5 +1,5 @@
-from PyQt4.QtCore import *
-from PyQt4.QtGui import *
+from PyQt5.QtCore import *
+from PyQt5.QtGui import *
 import datetime
 from libxulpymoney import *
 from Ui_wdgDividendsReport import *
@@ -19,7 +19,7 @@ class wdgDividendsReport(QWidget, Ui_wdgDividendsReport):
         self.on_chkInactivas_stateChanged(Qt.Unchecked)
 
     @QtCore.pyqtSlot()  
-    def on_actionEstimationDPSEdit_activated(self):
+    def on_actionEstimationDPSEdit_triggered(self):
         d=frmEstimationsAdd(self.mem, self.selInvestment.product, "dps")
         d.exec_()
         self.on_chkInactivas_stateChanged(self.chkInactivas.checkState())
@@ -61,19 +61,19 @@ class wdgDividendsReport(QWidget, Ui_wdgDividendsReport):
                 
             #Colorea si está desactualizado
             if inv.product.estimations_dps.dias_sin_actualizar()>self.spin.value():
-                self.tblInvestments.item(i, 3).setBackgroundColor(QColor(255, 146, 148))
-        self.lblTotal.setText(self.trUtf8("If I keep this investment during a year, I'll get {0}").format( self.mem.localcurrency.string(sumdiv)))
+                self.tblInvestments.item(i, 3).setBackground(QColor(255, 146, 148))
+        self.lblTotal.setText(self.tr("If I keep this investment during a year, I'll get {0}").format( self.mem.localcurrency.string(sumdiv)))
             
         
     @QtCore.pyqtSlot() 
-    def on_actionInvestmentReport_activated(self):
+    def on_actionInvestmentReport_triggered(self):
         w=frmInvestmentReport(self.mem, self.selInvestment, self)
         w.exec_()
         self.on_chkInactivas_stateChanged(self.chkInactivas.checkState())
 
             
     @QtCore.pyqtSlot() 
-    def on_actionProductReport_activated(self):
+    def on_actionProductReport_triggered(self):
         w=frmProductReport(self.mem, self.selInvestment.product, self.selInvestment, self)
         w.exec_()
         self.on_chkInactivas_stateChanged(self.chkInactivas.checkState())

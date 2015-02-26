@@ -1,9 +1,11 @@
-from PyQt4.QtCore import *
-from PyQt4.QtGui import *
+from PyQt5.QtCore import *
+from PyQt5.QtGui import *
+from PyQt5.QtWidgets import *
 import datetime
 from Ui_wdgYearMonth import *
 
 class wdgYearMonth(QWidget, Ui_wdgYearMonth):
+    changed=pyqtSignal()
     def __init__(self,  parent = None, name = None):
         QWidget.__init__(self,  parent)
         self.setupUi(self)
@@ -32,19 +34,19 @@ class wdgYearMonth(QWidget, Ui_wdgYearMonth):
     @pyqtSlot(str)      
     def on_cmbYear_currentIndexChanged(self, text):
         self.year=int(text)
-        self.emit(SIGNAL("changed"))
+        self.changed.emit()
         
     @pyqtSlot(int)      
     def on_cmbMonth_currentIndexChanged(self, integ):
         self.month=integ+1
-        self.emit(SIGNAL("changed"))
+        self.changed.emit()
         
     def on_cmdNext_pressed(self):
         if self.month==12:
             if self.year==self.lastyear:
                 m=QMessageBox()
                 m.setIcon(QMessageBox.Information)
-                m.setText(self.trUtf8("I can't show the next month"))
+                m.setText(self.tr("I can't show the next month"))
                 m.exec_()   
                 return
             self.month=1
@@ -58,7 +60,7 @@ class wdgYearMonth(QWidget, Ui_wdgYearMonth):
             if self.firstyear==self.year:
                 m=QMessageBox()
                 m.setIcon(QMessageBox.Information)
-                m.setText(self.trUtf8("I can't show the previous month"))
+                m.setText(self.tr("I can't show the previous month"))
                 m.exec_()   
                 return
             self.month=12

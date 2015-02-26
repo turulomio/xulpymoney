@@ -1,7 +1,7 @@
 from libxulpymoney import *
 import urllib
 import time
-from PyQt4.QtWebKit import *
+from PyQt5.QtWebKitWidgets import *
 
 class Source(QObject):
     """Clase nueva para todas las sources
@@ -10,6 +10,7 @@ class Source(QObject):
     - fech_page
     - parse_page
     - check_quotes"""
+    step_finished=pyqtSignal()
     def __init__(self, mem):
         QObject.__init__(self)
         self.mem=mem
@@ -30,7 +31,7 @@ class Source(QObject):
         
     def next_step(self):
         self.step=self.step+1
-        self.emit(SIGNAL("step_finished"))  
+        self.step_finished.emit()
 
             
 
@@ -83,6 +84,9 @@ class Source(QObject):
 
         
 class SourceParsePage(Source):
+    loaded_page=pyqtSignal()
+    parse_page=pyqtSignal()
+    run_finished=pyqtSignal()
     def __init__(self, mem, sql ):
         Source.__init__(self, mem)
 
@@ -92,13 +96,16 @@ class SourceParsePage(Source):
     def run(self):
         self.products.load_from_db(self.sql)     
         self.next_step()
-        
-        QObject.connect(self, SIGNAL("load_page"), self.on_load_page)   
-        self.emit(SIGNAL("load_page"))
+        self.loaded_page.connect(self.on_load_page)
+#        QObject.connect(self, SIGNAL("load_page"), self.on_load_page)   
+        self.loaded_page.emit()
+#        self.emit(SIGNAL("load_page"))
         self.next_step()
         
-        QObject.connect(self, SIGNAL("parse_page"), self.on_parse_page)      
-        self.emit(SIGNAL("parse_page")) 
+        self.parse_page.connect(self.on_parse_page)
+        self.parse_page.emit()
+#        QObject.connect(self, SIGNAL("parse_page"), self.on_parse_page)      
+#        self.emit(SIGNAL("parse_page")) 
         self.next_step()
  
         self.quotes_save()
@@ -106,7 +113,8 @@ class SourceParsePage(Source):
         self.next_step()
         
         self.finished=True
-        self.emit(SIGNAL("run_finished"))
+        self.run_finished.emit()
+#        self.emit(SIGNAL("run_finished"))
         self.next_step()
         
         
@@ -132,12 +140,15 @@ class SourceIterateProducts(Source):
     - fech_page
     - parse_page
     - check_quotes"""
+    execute_product=pyqtSignal(int)
+    run_finished=pyqtSignal()
     def __init__(self, mem, sql, type=2, sleep=0):
         Source.__init__(self, mem)
         self.sleep=sleep#wait between products
         self.type=type#0 silent in xulpymoney, 1 console
         self.sql=sql
-        QObject.connect(self, SIGNAL("execute_product(int)"), self.on_execute_product)       
+        self.execute_product.connect(self.on_execute_product)
+#        QObject.connect(self, SIGNAL("execute_product(int)"), self.on_execute_product)       
 
         
     def steps(self):
@@ -156,7 +167,8 @@ class SourceIterateProducts(Source):
         self.next_step()
         
         self.finished=True
-        self.emit(SIGNAL("run_finished"))
+        self.run_finished.emit()
+#        self.emit(SIGNAL("run_finished"))
         self.next_step()
         
         
@@ -177,7 +189,8 @@ class SourceIterateProducts(Source):
                 print ("Stopping")
                 self.quotes.clear()
                 break
-            self.emit(SIGNAL("execute_product(int)"), product.id)
+            self.execute_product.emit(product.id)
+#            self.emit(SIGNAL("execute_product(int)"), product.id)
             self.next_step()
             time.sleep(self.sleep)#time step
         print("")
@@ -222,7 +235,8 @@ class WorkerMercadoContinuo(SourceParsePage):
             
             self.finished=True
             print ("run_finished")
-            self.emit(SIGNAL("run_finished"))
+            self.run_finished.emit()
+#            self.emit(SIGNAL("run_finished"))
             self.next_step()
 
 

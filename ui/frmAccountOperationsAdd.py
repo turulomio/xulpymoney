@@ -1,6 +1,6 @@
 
-from PyQt4.QtCore import *
-from PyQt4.QtGui import *
+from PyQt5.QtCore import *
+from PyQt5.QtGui import *
 from Ui_frmAccountOperationsAdd import *
 from libxulpymoney import *
 
@@ -26,8 +26,8 @@ class frmAccountOperationsAdd(QDialog, Ui_frmAccountOperationsAdd):
         self.wdgDT.show_microseconds(False)
 
         if opertarjeta!=None:
-            self.setWindowTitle(self.trUtf8("Credit card operation update"))
-            self.lblTitulo.setText(self.trUtf8("Credit card operation update"))
+            self.setWindowTitle(self.tr("Credit card operation update"))
+            self.lblTitulo.setText(self.tr("Credit card operation update"))
             self.cmbAccounts.hide()
             self.tipo=4            
             self.wdgDT.set(self.mem, self.opertarjeta.datetime, self.mem.localzone)
@@ -36,15 +36,15 @@ class frmAccountOperationsAdd(QDialog, Ui_frmAccountOperationsAdd):
             self.txtImporte.setText(str(self.opertarjeta.importe))
             self.txtComentario.setText(self.opertarjeta.comentario)
         elif tarjeta!=None:
-            self.setWindowTitle(self.trUtf8("New credit card operation"))
-            self.lblTitulo.setText(self.trUtf8("New credit card operation"))
+            self.setWindowTitle(self.tr("New credit card operation"))
+            self.lblTitulo.setText(self.tr("New credit card operation"))
             self.wdgDT.set(self.mem)
             self.cmbAccounts.hide()
             self.tipo=3
         elif self.opercuenta!=None:
             self.tipo=2
-            self.setWindowTitle(self.trUtf8("Account operation update"))
-            self.lblTitulo.setText(self.trUtf8("Account operation update"))
+            self.setWindowTitle(self.tr("Account operation update"))
+            self.lblTitulo.setText(self.tr("Account operation update"))
             self.wdgDT.set(self.mem, self.opercuenta.datetime, self.mem.localzone)
             self.cmbConcepts.setCurrentIndex(self.cmbConcepts.findData(self.opercuenta.concepto.id))
             self.cmbAccounts.setCurrentIndex(self.cmbAccounts.findData(self.opercuenta.cuenta.id))
@@ -52,8 +52,8 @@ class frmAccountOperationsAdd(QDialog, Ui_frmAccountOperationsAdd):
             self.txtComentario.setText((self.opercuenta.comentario))    
         else:
             self.tipo=1
-            self.setWindowTitle(self.trUtf8("New account operation"))
-            self.lblTitulo.setText(self.trUtf8("New account operation"))
+            self.setWindowTitle(self.tr("New account operation"))
+            self.lblTitulo.setText(self.tr("New account operation"))
             self.wdgDT.set(self.mem)
             self.cmbAccounts.setCurrentIndex(self.cmbAccounts.findData(self.cuenta.id))
 
@@ -67,21 +67,21 @@ class frmAccountOperationsAdd(QDialog, Ui_frmAccountOperationsAdd):
         if not importe:
             m=QMessageBox()
             m.setIcon(QMessageBox.Information)
-            m.setText(self.trUtf8("You must set the operation amount"))
+            m.setText(self.tr("You must set the operation amount"))
             m.exec_()    
             return        
         
         if concepto.tipooperacion.id==1 and importe>0:
             m=QMessageBox()
             m.setIcon(QMessageBox.Information)
-            m.setText(self.trUtf8("Expenses can not have a positive amount"))
+            m.setText(self.tr("Expenses can not have a positive amount"))
             m.exec_()    
             return
             
         if concepto.tipooperacion.id==2 and importe<0:
             m=QMessageBox()
             m.setIcon(QMessageBox.Information)
-            m.setText(self.trUtf8("Incomes can not have a negative amount"))
+            m.setText(self.tr("Incomes can not have a negative amount"))
             m.exec_()
             return
                     

@@ -1,9 +1,11 @@
-from PyQt4.QtCore import *
-from PyQt4.QtGui import *
+from PyQt5.QtCore import *
+from PyQt5.QtGui import *
+from PyQt5.QtWidgets import *
 import datetime
 from Ui_wdgYear import *
 
 class wdgYear(QWidget, Ui_wdgYear):
+    changed=pyqtSignal()
     def __init__(self,  parent = None, name = None):
         QWidget.__init__(self,  parent)
         self.setupUi(self)
@@ -30,14 +32,14 @@ class wdgYear(QWidget, Ui_wdgYear):
     @pyqtSlot(str)      
     def on_cmbYear_currentIndexChanged(self, text):
         self.year=int(text)
-        self.emit(SIGNAL("changed"))
+        self.changed.emit()
         
        
     def on_cmdNext_pressed(self):
         if self.year==self.lastyear:
             m=QMessageBox()
             m.setIcon(QMessageBox.Information)
-            m.setText(self.trUtf8("I can't show the next year"))
+            m.setText(self.tr("I can't show the next year"))
             m.exec_()   
             return
         self.year=self.year+1
@@ -47,7 +49,7 @@ class wdgYear(QWidget, Ui_wdgYear):
         if self.firstyear==self.year:
             m=QMessageBox()
             m.setIcon(QMessageBox.Information)
-            m.setText(self.trUtf8("I can't show the previous year"))
+            m.setText(self.tr("I can't show the previous year"))
             m.exec_()   
             return
         self.year=self.year-1

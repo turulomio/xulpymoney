@@ -1,5 +1,5 @@
-from PyQt4.QtCore import *
-from PyQt4.QtGui import *
+from PyQt5.QtCore import *
+from PyQt5.QtGui import *
 from libxulpymoney import *
 from Ui_wdgConceptsHistorical import *
 
@@ -58,7 +58,7 @@ class wdgConceptsHistorical(QWidget, Ui_wdgConceptsHistorical):
 
     
     @QtCore.pyqtSlot() 
-    def on_actionShowMonth_activated(self):
+    def on_actionShowMonth_triggered(self):
         newtab = QWidget()
         horizontalLayout = QHBoxLayout(newtab)
         table = myQTableWidget(newtab)
@@ -67,12 +67,12 @@ class wdgConceptsHistorical(QWidget, Ui_wdgConceptsHistorical):
         set.sort()
         set.myqtablewidget(table, "wdgConceptsHistorical", True)
         horizontalLayout.addWidget(table)
-        self.tab.addTab(newtab, self.trUtf8("Report of {0} of {1}".format(self.table.horizontalHeaderItem(self.month).text(), self.year)))
+        self.tab.addTab(newtab, self.tr("Report of {0} of {1}".format(self.table.horizontalHeaderItem(self.month).text(), self.year)))
         self.tab.setCurrentWidget(newtab)
 
     
     @QtCore.pyqtSlot() 
-    def on_actionShowYear_activated(self):
+    def on_actionShowYear_triggered(self):
         newtab = QWidget()
         horizontalLayout = QHBoxLayout(newtab)
         table = myQTableWidget(newtab)
@@ -81,7 +81,7 @@ class wdgConceptsHistorical(QWidget, Ui_wdgConceptsHistorical):
         set.sort()
         set.myqtablewidget(table, "wdgConceptsHistorical", True)
         horizontalLayout.addWidget(table)
-        self.tab.addTab(newtab, self.trUtf8("Report of {0}".format(self.year)))
+        self.tab.addTab(newtab, self.tr("Report of {0}".format(self.year)))
         self.tab.setCurrentWidget(newtab)
 
     def on_table_customContextMenuRequested(self,  pos):
@@ -116,7 +116,7 @@ class wdgConceptsHistorical(QWidget, Ui_wdgConceptsHistorical):
         if index==0:
             m=QMessageBox()
             m.setIcon(QMessageBox.Information)
-            m.setText(self.trUtf8("You can't close this tab"))
+            m.setText(self.tr("You can't close this tab"))
             m.exec_()  
         else:
             self.tab.removeTab(index)

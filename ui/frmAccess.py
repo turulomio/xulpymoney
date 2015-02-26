@@ -1,5 +1,6 @@
-from PyQt4.QtCore import *
-from PyQt4.QtGui import *
+from PyQt5.QtCore import *
+from PyQt5.QtGui import *
+from PyQt5.QtWidgets import *
 from Ui_frmAccess import *
 
 class frmAccess(QDialog, Ui_frmAccess):
@@ -15,7 +16,7 @@ class frmAccess(QDialog, Ui_frmAccess):
         pix=QtGui.QPixmap(":xulpymoney/coins.png")
         icon.addPixmap(pix, QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.setWindowIcon(icon)        
-        self.setWindowTitle(self.trUtf8("Xulpymoney - Access"))
+        self.setWindowTitle(self.tr("Xulpymoney - Access"))
         self.txtDB.setText(self.mem.config.get_value("frmAccess", "db" ))
         self.txtPort.setText(self.mem.config.get_value("frmAccess", "port" ))
         self.txtUser.setText(self.mem.config.get_value("frmAccess", "user" ))

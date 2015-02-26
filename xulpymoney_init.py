@@ -3,8 +3,8 @@ import sys,  os
 
 sys.path.append("/usr/lib/xulpymoney")
 
-from PyQt4.QtCore import *
-from PyQt4.QtGui import *
+from PyQt5.QtCore import *
+from PyQt5.QtGui import *
 from frmInit import *
 
 try:

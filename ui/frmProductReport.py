@@ -1,5 +1,5 @@
-from PyQt4.QtCore import *
-from PyQt4.QtGui import *
+from PyQt5.QtCore import *
+from PyQt5.QtGui import *
 from myqtablewidget import *
 from libxulpymoney import *
 from frmSelector import *
@@ -220,10 +220,10 @@ class frmProductReport(QDialog, Ui_frmProductReport):
             for i , q in enumerate(self.product.result.intradia.arr):
                 if q.datetime.microsecond==5:
                     self.tblIntradia.setItem(i, 0, qcenter(str(q.datetime)[11:-13]))
-                    self.tblIntradia.item(i, 0).setBackgroundColor(QColor(255, 255, 148))
+                    self.tblIntradia.item(i, 0).setBackground(QColor(255, 255, 148))
                 elif q.datetime.microsecond==4:
                     self.tblIntradia.setItem(i, 0, qcenter(str(q.datetime)[11:-13]))
-                    self.tblIntradia.item(i, 0).setBackgroundColor(QColor(148, 148, 148))
+                    self.tblIntradia.item(i, 0).setBackground(QColor(148, 148, 148))
                 else:
                     self.tblIntradia.setItem(i, 0, qcenter(str(q.datetime)[11:-6]))
                 self.tblIntradia.setItem(i, 1, self.product.currency.qtablewidgetitem(q.quote,6))       
@@ -233,9 +233,9 @@ class frmProductReport(QDialog, Ui_frmProductReport):
                 else:
                     self.tblIntradia.setItem(i, 2, qtpc(None))    
                 if q==self.product.result.intradia.high():
-                    self.tblIntradia.item(i, 1).setBackgroundColor(QColor(148, 255, 148))
+                    self.tblIntradia.item(i, 1).setBackground(QColor(148, 255, 148))
                 elif q==self.product.result.intradia.low():
-                    self.tblIntradia.item(i, 1).setBackgroundColor( QColor(255, 148, 148))  
+                    self.tblIntradia.item(i, 1).setBackground( QColor(255, 148, 148))  
                 self.lblIntradayVariance.setText(self.tr("Daily maximum variance: {} ({})").format(self.product.currency.string(self.product.result.intradia.variance()), tpc(self.product.result.intradia.variance_percentage())))
                 
             self.tblIntradia.setFocus()
@@ -280,7 +280,7 @@ class frmProductReport(QDialog, Ui_frmProductReport):
                 self.tblMensuales.setItem(current.year-minyear, 13, qtpc(tpc)) 
 
     @QtCore.pyqtSlot() 
-    def on_actionDividendXuNew_activated(self):
+    def on_actionDividendXuNew_triggered(self):
         w=frmDividendsAdd(self.mem, self.inversion,  None)
         w.cal.setSelectedDate(self.selDPS.date)
         gross=self.selDPS.gross*self.inversion.acciones(self.selDPS.date)
@@ -290,56 +290,56 @@ class frmProductReport(QDialog, Ui_frmProductReport):
         w.cmb.setCurrentIndex(w.cmb.findData(39))
         w.exec_()
 
-    @pyqtSignature("")
-    def on_actionDPSDelete_activated(self):
+    @pyqtSlot()
+    def on_actionDPSDelete_triggered(self):
         if self.selDPS!=None:
             self.selDPS.borrar()
             self.mem.con.commit()
             self.product.dps.arr.remove(self.selDPS)
             self.product.dps.myqtablewidget(self.tblDPSPaid,  "frmProductReport")
         
-    @pyqtSignature("")
-    def on_actionDPSNew_activated(self):
+    @pyqtSlot()
+    def on_actionDPSNew_triggered(self):
         d=frmDPSAdd(self.mem, self.product)
         d.exec_()
         self.product.dps.myqtablewidget(self.tblDPSPaid, "frmProductReport")
 
-    @pyqtSignature("")
-    def on_actionEstimationDPSDelete_activated(self):
+    @pyqtSlot()
+    def on_actionEstimationDPSDelete_triggered(self):
         if self.selEstimationDPS!=None:
             self.selEstimationDPS.borrar()
             self.product.estimations_dps.arr.remove(self.selEstimationDPS)
             self.mem.con.commit()
             self.product.estimations_dps.myqtablewidget(self.tblDividendsEstimations, "frmProductReport")
         
-    @pyqtSignature("")
-    def on_actionEstimationDPSNew_activated(self):
+    @pyqtSlot()
+    def on_actionEstimationDPSNew_triggered(self):
         d=frmEstimationsAdd(self.mem, self.product, "dps")
         d.exec_()
         self.product.estimations_dps.myqtablewidget(self.tblDividendsEstimations, "frmProductReport")
 
-    @pyqtSignature("")
-    def on_actionEstimationEPSDelete_activated(self):
+    @pyqtSlot()
+    def on_actionEstimationEPSDelete_triggered(self):
         if self.selEstimationEPS!=None:
             self.selEstimationEPS.borrar()
             self.product.estimations_eps.arr.remove(self.selEstimationEPS)
             self.mem.con.commit()
             self.product.estimations_eps.myqtablewidget(self.tblEPS, "frmProductReport")
         
-    @pyqtSignature("")
-    def on_actionEstimationEPSNew_activated(self):
+    @pyqtSlot()
+    def on_actionEstimationEPSNew_triggered(self):
         d=frmEstimationsAdd(self.mem, self.product, "eps")
         d.exec_()
         self.product.estimations_eps.myqtablewidget(self.tblEPS,  "frmProductReport")
 
-    @pyqtSignature("")
-    def on_actionPurgeDay_activated(self):
+    @pyqtSlot()
+    def on_actionPurgeDay_triggered(self):
         self.product.result.intradia.purge()
         self.mem.con.commit()
         self.load_graphics()#OHLC ya estaba cargado, no varía por lo que no uso update_due_to_quotes_change
         
-    @pyqtSignature("")
-    def on_actionQuoteEdit_activated(self):
+    @pyqtSlot()
+    def on_actionQuoteEdit_triggered(self):
         for quote in self.setSelIntraday:##Only is one, but i don't know how to refer to quote
             w=frmQuotesIBM(self.mem,  self.product, quote)
             w.exec_()   
@@ -347,38 +347,38 @@ class frmProductReport(QDialog, Ui_frmProductReport):
                 self.update_due_to_quotes_change()
         
         
-    @pyqtSignature("")
-    def on_actionQuoteNew_activated(self):
+    @pyqtSlot()
+    def on_actionQuoteNew_triggered(self):
         w=frmQuotesIBM(self.mem,  self.product)
         w.wdgDT.teDate.setSelectedDate(self.calendar.selectedDate())
         w.exec_()   
         if w.result()==QDialog.Accepted:
             self.update_due_to_quotes_change()
 
-    @pyqtSignature("")
-    def on_actionQuoteDelete_activated(self):
+    @pyqtSlot()
+    def on_actionQuoteDelete_triggered(self):
         for q in self.setSelIntraday:
             q.delete()
             self.product.result.intradia.arr.remove(q)
         self.mem.con.commit()
         self.update_due_to_quotes_change()
         
-    @pyqtSignature("")
-    def on_actionQuoteDeleteDays_activated(self):
+    @pyqtSlot()
+    def on_actionQuoteDeleteDays_triggered(self):
         for ohcl in self.product.result.ohclDaily.selected:
             ohcl.delete()
         self.mem.con.commit()
         self.update_due_to_quotes_change()
     
-    @pyqtSignature("")
-    def on_actionQuoteDeleteMonths_activated(self):
+    @pyqtSlot()
+    def on_actionQuoteDeleteMonths_triggered(self):
         for ohcl in self.product.result.ohclMonthly.selected:
             ohcl.delete()
         self.mem.con.commit()
         self.update_due_to_quotes_change()
     
-    @pyqtSignature("")
-    def on_actionQuoteDeleteYears_activated(self):
+    @pyqtSlot()
+    def on_actionQuoteDeleteYears_triggered(self):
         for ohcl in self.product.result.ohclYearly.selected:
             ohcl.delete()
         self.mem.con.commit()
@@ -401,7 +401,7 @@ class frmProductReport(QDialog, Ui_frmProductReport):
             self.mem.con.commit()
             m=QMessageBox()
             m.setIcon(QMessageBox.Information)
-            m.setText(self.trUtf8("{0} quotes have been purged from {1}".format(numpurged, self.product.name)))
+            m.setText(self.tr("{0} quotes have been purged from {1}".format(numpurged, self.product.name)))
             m.exec_()    
         else:
             self.mem.con.rollback()

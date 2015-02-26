@@ -1,5 +1,5 @@
-from PyQt4.QtCore import *
-from PyQt4.QtGui import *
+from PyQt5.QtCore import *
+from PyQt5.QtGui import *
 from Ui_frmQuotesIBM import *
 from libxulpymoney import *
 from wdgDatetime import *
@@ -46,7 +46,7 @@ class frmQuotesIBM(QDialog, Ui_frmQuotesIBM):
             self.wdgDT.teMicroseconds.setEnabled(True)
 
         
-    @pyqtSignature("")
+    @pyqtSlot()
     def on_buttonbox_accepted(self):
         if self.txtQuote.decimal()==None:
             m=QMessageBox()
@@ -66,6 +66,6 @@ class frmQuotesIBM(QDialog, Ui_frmQuotesIBM):
         
         self.accept()
 
-    @pyqtSignature("")
+    @pyqtSlot()
     def on_buttonbox_rejected(self):
         self.reject()#No haría falta pero para recordar que hay buttonbox
