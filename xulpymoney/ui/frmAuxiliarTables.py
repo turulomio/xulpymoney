@@ -1,5 +1,5 @@
-from PyQt4.QtCore import *
-from PyQt4.QtGui import *
+from PyQt5.QtCore import *
+from PyQt5.QtGui import *
 from libxulpymoney import *
 from Ui_frmAuxiliarTables import *
 
@@ -37,7 +37,7 @@ class frmAuxiliarTables(QDialog, Ui_frmAuxiliarTables):
         
 
     @QtCore.pyqtSlot()  
-    def on_actionConceptAdd_activated(self):
+    def on_actionConceptAdd_triggered(self):
         self.tblConcepts.clearSelection()
         self.grpConcept.setEnabled(True)
         self.cmbOperationType.setEnabled(True)
@@ -46,7 +46,7 @@ class frmAuxiliarTables(QDialog, Ui_frmAuxiliarTables):
         self.cmbOperationType.setCurrentIndex(0)
 
     @QtCore.pyqtSlot()  
-    def on_actionConceptDelete_activated(self):
+    def on_actionConceptDelete_triggered(self):
         borrado=self.selConcept.borrar()
         if borrado:
             self.mem.con.commit()

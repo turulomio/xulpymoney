@@ -1,5 +1,5 @@
-from PyQt4.QtCore import *
-from PyQt4.QtGui import *
+from PyQt5.QtCore import *
+from PyQt5.QtGui import *
 from Ui_frmInvestmentReport import *
 from frmInvestmentOperationsAdd import *
 from frmDividendsAdd import *
@@ -109,28 +109,28 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
     
 
     @QtCore.pyqtSlot() 
-    def on_actionDividendAdd_activated(self):
+    def on_actionDividendAdd_triggered(self):
         w=frmDividendsAdd(self.mem, self.inversion,  None)
         w.exec_()
         self.on_chkHistoricalDividends_stateChanged(self.chkHistoricalDividends.checkState())
 
         
     @QtCore.pyqtSlot() 
-    def on_actionDividendEdit_activated(self):
+    def on_actionDividendEdit_triggered(self):
         w=frmDividendsAdd(self.mem, self.inversion, self.selDividend)
         w.exec_()
         self.on_chkHistoricalDividends_stateChanged(self.chkHistoricalDividends.checkState())
 
         
     @QtCore.pyqtSlot() 
-    def on_actionDividendRemove_activated(self):
+    def on_actionDividendRemove_triggered(self):
         self.selDividend.borrar()
         self.mem.con.commit()
         self.on_chkHistoricalDividends_stateChanged(self.chkHistoricalDividends.checkState())
 
                 
     @QtCore.pyqtSlot() 
-    def on_actionDisReinvest_activated(self):
+    def on_actionDisReinvest_triggered(self):
         #Llama a form
         d=QDialog(self)       
         d.showMaximized() 
@@ -141,7 +141,7 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
         d.exec_()
         
     @QtCore.pyqtSlot() 
-    def on_actionOperationAdd_activated(self):
+    def on_actionOperationAdd_triggered(self):
         if self.inversion.product.result.basic.last.quote==None:
             m=QMessageBox()
             m.setIcon(QMessageBox.Information)
@@ -159,26 +159,26 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
         self.update_tables()    
         
     @QtCore.pyqtSlot() 
-    def on_actionOperationEdit_activated(self):
+    def on_actionOperationEdit_triggered(self):
         w=frmInvestmentOperationsAdd(self.mem, self.inversion, self.op.selected, self)
         w.exec_()
         self.update_tables() 
 
     @QtCore.pyqtSlot() 
-    def on_actionSplit_activated(self):
+    def on_actionSplit_triggered(self):
         w=frmSplit(self.mem, self.inversion.product)
         w.exec_()   
         if w.result()==QDialog.Accepted:
             self.update_tables()
         
     @QtCore.pyqtSlot() 
-    def on_actionSharesTransfer_activated(self):
+    def on_actionSharesTransfer_triggered(self):
         w=frmSharesTransfer(self.mem, self.inversion, self)
         w.exec_()
         self.update_tables()                 
         
     @QtCore.pyqtSlot() 
-    def on_actionSharesTransferUndo_activated(self):
+    def on_actionSharesTransferUndo_triggered(self):
         if self.mem.data.investments_active.traspaso_valores_deshacer(self.op.selected)==False:
             m=QMessageBox()
             m.setIcon(QMessageBox.Information)
@@ -195,7 +195,7 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
         self.txtVenta.setText(str(f.puntoventa))
 
     @QtCore.pyqtSlot() 
-    def on_actionOperationDelete_activated(self):
+    def on_actionOperationDelete_triggered(self):
         self.inversion.op.remove(self.op.selected)#debe borrarse de self.inversion.op, no de self.op, ya qque self.update_tables reescribe clone_from_datetime
         self.mem.con.commit()     
         self.update_tables()

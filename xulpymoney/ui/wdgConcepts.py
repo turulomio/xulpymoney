@@ -1,5 +1,5 @@
-from PyQt4.QtCore import *
-from PyQt4.QtGui import *
+from PyQt5.QtCore import *
+from PyQt5.QtGui import *
 from libxulpymoney import *
 from Ui_wdgConcepts import *
 from wdgConceptsHistorical import *
@@ -41,9 +41,9 @@ class wdgConcepts(QWidget, Ui_wdgConcepts):
             
             if a[1]!=0:
                 if a[1]>a[3]:
-                    self.tblExpenses.item(i, 1).setBackgroundColor( QColor(182, 255, 182))          
+                    self.tblExpenses.item(i, 1).setBackground( QColor(182, 255, 182))          
                 else:
-                    self.tblExpenses.item(i, 1).setBackgroundColor( QColor(255, 182, 182))      
+                    self.tblExpenses.item(i, 1).setBackground( QColor(255, 182, 182))      
                 
         self.tblExpenses.setItem(len(self.expenseslist), 0, QTableWidgetItem(self.tr('TOTAL')))
         self.tblExpenses.setItem(len(self.expenseslist), 1, self.mem.localcurrency.qtablewidgetitem(totalexpenses))    
@@ -63,9 +63,9 @@ class wdgConcepts(QWidget, Ui_wdgConcepts):
             
             if a[1]!=0:
                 if a[1]>a[3]:
-                    self.tblIncomes.item(i, 1).setBackgroundColor( QColor(182, 255, 182))          
+                    self.tblIncomes.item(i, 1).setBackground( QColor(182, 255, 182))          
                 else:
-                    self.tblIncomes.item(i, 1).setBackgroundColor( QColor(255, 182, 182))      
+                    self.tblIncomes.item(i, 1).setBackground( QColor(255, 182, 182))      
                 
         self.tblIncomes.setItem(len(self.incomeslist), 0, QTableWidgetItem(self.tr('TOTAL')))
         self.tblIncomes.setItem(len(self.incomeslist), 1, self.mem.localcurrency.qtablewidgetitem(totalincomes))    
@@ -120,13 +120,13 @@ class wdgConcepts(QWidget, Ui_wdgConcepts):
         if index in (0, 1):
             m=QMessageBox()
             m.setIcon(QMessageBox.Information)
-            m.setText(self.trUtf8("You can't close this tab"))
+            m.setText(self.tr("You can't close this tab"))
             m.exec_()  
         else:
             self.tab.removeTab(index)
         
-    @pyqtSignature("")
-    def on_actionHistoricalReport_activated(self):
+    @pyqtSlot()
+    def on_actionHistoricalReport_triggered(self):
         newtab = QWidget()
         horizontalLayout = QHBoxLayout(newtab)
         concepto=self.selected[0]

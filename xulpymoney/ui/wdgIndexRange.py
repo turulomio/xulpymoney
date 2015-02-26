@@ -1,5 +1,5 @@
-from PyQt4.QtCore import *
-from PyQt4.QtGui import *
+from PyQt5.QtCore import *
+from PyQt5.QtGui import *
 from Ui_wdgIndexRange import *
 from libxulpymoney import *
 from frmProductReport import *
@@ -60,7 +60,7 @@ class wdgIndexRange(QWidget, Ui_wdgIndexRange):
             for i in arr:
                 if i[0]>=min and i[0]<max:
                     o=i[1]
-                    resultado=resultado+ self.trUtf8("{0} {1} ({2}): {3} shares of {4} = {5}\n".format(str(o.datetime)[:16], o.inversion.name, o.inversion.cuenta.name, round(o.acciones, 0),  o.inversion.product.currency.string(o.valor_accion), o.inversion.product.currency.string(o.importe)))
+                    resultado=resultado+ self.tr("{0} {1} ({2}): {3} shares of {4} = {5}\n".format(str(o.datetime)[:16], o.inversion.name, o.inversion.cuenta.name, round(o.acciones, 0),  o.inversion.product.currency.string(o.valor_accion), o.inversion.product.currency.string(o.importe)))
             return resultado[:-1]
         ######################################################
         inicio=datetime.datetime.now()
@@ -104,9 +104,9 @@ class wdgIndexRange(QWidget, Ui_wdgIndexRange):
             self.table.setItem(i, 1,QTableWidgetItem(inversiones(arr, bottom, top)))
             if bottom<self.benchmark.result.basic.last.quote:
                 if self.benchmark.result.basic.last.quote<=top: ##Colorize current price
-                    self.table.item(i, 0).setBackgroundColor(QColor(255, 160, 160))
+                    self.table.item(i, 0).setBackground(QColor(255, 160, 160))
                 if colorized<=rangescovered:
-                    self.table.item(i, 1).setBackgroundColor(QColor(160, 255, 160))
+                    self.table.item(i, 1).setBackground(QColor(160, 255, 160))
                     colorized=colorized+1
 
         #Prints label
@@ -157,10 +157,10 @@ class wdgIndexRange(QWidget, Ui_wdgIndexRange):
             self.range=None
 
     @QtCore.pyqtSlot() 
-    def on_actionBottom_activated(self):        
+    def on_actionBottom_triggered(self):        
         d=QDialog(self)        
         d.setFixedSize(670, 670)
-        d.setWindowTitle(self.trUtf8("Investment calculator"))
+        d.setWindowTitle(self.tr("Investment calculator"))
         w=wdgCalculator(self.mem)
         w.init__percentagevariation_amount(self.range.currentPriceBottomVariation(), self.txtInvertir.decimal())
         lay = QVBoxLayout(d)
@@ -171,10 +171,10 @@ class wdgIndexRange(QWidget, Ui_wdgIndexRange):
             d.close()
 
     @QtCore.pyqtSlot() 
-    def on_actionTop_activated(self):        
+    def on_actionTop_triggered(self):        
         d=QDialog(self)
         d.setFixedSize(670, 670)
-        d.setWindowTitle(self.trUtf8("Investment calculator"))
+        d.setWindowTitle(self.tr("Investment calculator"))
         w=wdgCalculator(self.mem)
         w.init__percentagevariation_amount(self.range.currentPriceTopVariation(), self.txtInvertir.decimal())
         lay = QVBoxLayout(d)
@@ -185,10 +185,10 @@ class wdgIndexRange(QWidget, Ui_wdgIndexRange):
             d.close()
 
     @QtCore.pyqtSlot() 
-    def on_actionMiddle_activated(self):        
+    def on_actionMiddle_triggered(self):        
         d=QDialog(self)        
         d.setFixedSize(670, 670)
-        d.setWindowTitle(self.trUtf8("Investment calculator"))
+        d.setWindowTitle(self.tr("Investment calculator"))
         w=wdgCalculator(self.mem)
         w.init__percentagevariation_amount(self.range.currentPriceMiddleVariation(), self.txtInvertir.decimal())
         lay = QVBoxLayout(d)

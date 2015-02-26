@@ -1,5 +1,5 @@
-from PyQt4.QtCore import *
-from PyQt4.QtGui import *
+from PyQt5.QtCore import *
+from PyQt5.QtGui import *
 from libxulpymoney import *
 from frmAccountsReport import *
 from frmInvestmentReport import *
@@ -132,13 +132,13 @@ class wdgBanks(QWidget, Ui_wdgBanks):
         menu.exec_(self.tblEB.mapToGlobal(pos))
         
     @QtCore.pyqtSlot() 
-    def on_actionAccountReport_activated(self):
+    def on_actionAccountReport_triggered(self):
         w=frmAccountsReport(self.mem, self.accounts.selected)
         w.exec_()        
         self.load_cuentas()
 
     @QtCore.pyqtSlot() 
-    def on_actionInvestmentReport_activated(self):
+    def on_actionInvestmentReport_triggered(self):
         w=frmInvestmentReport(self.mem,   self.investments.selected)
         w.exec_()
         self.load_inversiones()
@@ -178,7 +178,7 @@ class wdgBanks(QWidget, Ui_wdgBanks):
         menu.exec_(self.tblInvestments.mapToGlobal(pos))
         
     @QtCore.pyqtSlot()  
-    def on_actionBankDelete_activated(self):
+    def on_actionBankDelete_triggered(self):
         if self.banks.selected.qmessagebox_inactive():
             return        
         if self.banks.selected.es_borrable()==False:
@@ -194,7 +194,7 @@ class wdgBanks(QWidget, Ui_wdgBanks):
             self.load_eb()    
         
     @QtCore.pyqtSlot()  
-    def on_actionBankAdd_activated(self):
+    def on_actionBankAdd_triggered(self):
         tipo=QInputDialog().getText(self,  "Xulpymoney",  self.tr("Add a new bank"))
         if tipo[1]==True:
             self.bank_add(tipo[0])
@@ -209,7 +209,7 @@ class wdgBanks(QWidget, Ui_wdgBanks):
 
 
     @QtCore.pyqtSlot()  
-    def on_actionBankEdit_activated(self):
+    def on_actionBankEdit_triggered(self):
         tipo=QInputDialog().getText(self,  "Xulpymoney", self.tr("Edit selected bank") , QLineEdit.Normal,   (self.banks.selected.name))       
         if tipo[1]==True:
             self.bank_edit(tipo[0])
@@ -222,7 +222,7 @@ class wdgBanks(QWidget, Ui_wdgBanks):
         self.load_eb()   
         
     @QtCore.pyqtSlot() 
-    def on_actionActive_activated(self):
+    def on_actionActive_triggered(self):
         self.banks.selected.active=self.actionActive.isChecked()
         self.banks.selected.save()
         self.mem.con.commit()   

@@ -1,5 +1,6 @@
-from PyQt4.QtCore import *
-from PyQt4.QtGui import *
+from PyQt5.QtCore import *
+from PyQt5.QtGui import *
+from PyQt5.QtWidgets import *
 from libxulpymoney import *
 
 class myQTableWidget(QTableWidget):
@@ -8,22 +9,23 @@ class myQTableWidget(QTableWidget):
         self.mytimer = QTimer()
         self.section=None
         self.array=[]     #Es un array de strings no de int, con los datos para config
-        self.verticalHeader().setResizeMode(QHeaderView.ResizeToContents)
-        QObject.connect(self.mytimer, SIGNAL("timeout()"), self.checksettings)        
+        self.verticalHeader().setSectionResizeMode(QHeaderView.ResizeToContents)
+        self.mytimer.timeout.connect(self.checksettings)
+#        QObject.connect(self.mytimer, SIGNAL("timeout()"), self.checksettings)        
 
     def __del__(self):
         self.mytimer.stop()
         
     def settings(self, section,  mem):		
         """Esta funcion debe ejecutarse despues de haber creado las columnas
-        If section=NOne and file=None, se usa resizemode por defecto
+        If section=NOne and file=None, se usa sectionResizeMode por defecto
         """
         self.section=section        
         self.mem=mem
         if self.mytimer.isActive():#Can't be call settings by error in automatic common qtablewidgets
             self.mytimer.stop()
         
-        self.horizontalHeader().setResizeMode(QHeaderView.Interactive)
+        self.horizontalHeader().setSectionResizeMode(QHeaderView.Interactive)
         self.array=self.mem.config_ui.get_list( self.section,   self.objectName()+"_columns_width")
         
         #Checks if config has same columns as qtable and resizes the table

@@ -1,7 +1,7 @@
 from libxulpymoney import *
 import math
-from PyQt4.QtCore import *
-from PyQt4.QtGui import *
+from PyQt5.QtCore import *
+from PyQt5.QtGui import *
 from Ui_wdgInvestmentClasses import *
 from libxulpymoney import *
 
@@ -238,7 +238,7 @@ class wdgInvestmentClasses(QWidget, Ui_wdgInvestmentClasses):
             else:
                 data.append(self.mem.data.investments_active.invertido_misma_investment(i))
             explode.append(0)
-        labels.append(self.trUtf8("Accounts"))
+        labels.append(self.tr("Accounts"))
         data.append(self.cuentas)
         explode.append(0.15)            
         

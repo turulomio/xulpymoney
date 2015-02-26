@@ -1,5 +1,6 @@
-from PyQt4.QtCore import *
-from PyQt4.QtGui import *
+from PyQt5.QtCore import *
+from PyQt5.QtGui import *
+from PyQt5.QtWidgets import *
 from decimal import Decimal
 
 class myQLineEdit(QLineEdit):
@@ -7,7 +8,8 @@ class myQLineEdit(QLineEdit):
         QWidget.__init__(self, parent)       
         self.setValidator(QDoubleValidator(self))
         self.setMaxLength(12)
-        self.connect(self,SIGNAL('textChanged(QString)'), self.on_textChanged)
+        self.textChanged.connect(self.on_textChanged)
+#        self.connect(self,SIGNAL('textChanged(QString)'), self.on_textChanged)
         
         
     def isValid(self):
@@ -26,7 +28,7 @@ class myQLineEdit(QLineEdit):
         self.setStyleSheet(css)
             
         
-    @pyqtSignature("")
+    @pyqtSlot(str) 
     def on_textChanged(self, text):
         pos=self.cursorPosition()
         text=text.replace(",", ".")

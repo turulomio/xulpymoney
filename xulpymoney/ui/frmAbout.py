@@ -1,5 +1,6 @@
-from PyQt4.QtCore import *
-from PyQt4.QtGui import *
+from PyQt5.QtCore import *
+from PyQt5.QtGui import *
+from PyQt5.QtWidgets import *
 from libxulpymoney import *
 from Ui_frmAbout import *
 
@@ -21,9 +22,9 @@ class frmAbout(QDialog, Ui_frmAbout):
         
         self.tblStatistics.settings("frmAbout", self.mem)
         self.load_tblStatistics() 
-        self.connect(self.cmd, SIGNAL("clicked()"), self.on_cmd_clicked)
+        self.cmd.clicked.connect(self.on_cmd_clicked)
     
-    @pyqtSignature("")
+    @QtCore.pyqtSlot() 
     def on_cmd_clicked(self):
         """
         Slot documentation goes here.

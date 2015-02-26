@@ -1,6 +1,6 @@
 from libxulpymoney import *
-from PyQt4.QtCore import *
-from PyQt4.QtGui import *
+from PyQt5.QtCore import *
+from PyQt5.QtGui import *
 from Ui_wdgInvestmentsOperations import *
 from frmInvestmentReport import *
 from frmInvestmentOperationsAdd import *
@@ -67,7 +67,7 @@ class wdgInvestmentsOperations(QWidget, Ui_wdgInvestmentsOperations):
             self.selCurrentOperation=self.setCurrent.arr[i.row()]
     
     @QtCore.pyqtSlot() 
-    def on_actionShowAccount_activated(self):
+    def on_actionShowAccount_triggered(self):
         if self.tab.currentIndex()==0:#Operation list
             cuenta=self.selOperation.inversion.cuenta
         else:#Current operation list
@@ -77,7 +77,7 @@ class wdgInvestmentsOperations(QWidget, Ui_wdgInvestmentsOperations):
         self.load()
         
     @QtCore.pyqtSlot() 
-    def on_actionShowInvestment_activated(self):
+    def on_actionShowInvestment_triggered(self):
         if self.tab.currentIndex()==0:#Operation list
             investment=self.selOperation.inversion
         else:#Current operation list
@@ -87,7 +87,7 @@ class wdgInvestmentsOperations(QWidget, Ui_wdgInvestmentsOperations):
         self.load()
                 
     @QtCore.pyqtSlot() 
-    def on_actionShowProduct_activated(self):
+    def on_actionShowProduct_triggered(self):
         if self.tab.currentIndex()==0:#Operation list
             investment=self.selOperation.inversion
         else:#Current operation list
@@ -97,7 +97,7 @@ class wdgInvestmentsOperations(QWidget, Ui_wdgInvestmentsOperations):
         self.load()
 
     @QtCore.pyqtSlot() 
-    def on_actionShowInvestmentOperation_activated(self):
+    def on_actionShowInvestmentOperation_triggered(self):
         if self.tab.currentIndex()==0:#Operation list
             operation=self.selOperation
         else:#Current operation list

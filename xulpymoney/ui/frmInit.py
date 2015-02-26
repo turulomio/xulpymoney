@@ -1,5 +1,5 @@
-from PyQt4.QtCore import *
-from PyQt4.QtGui import *
+from PyQt5.QtCore import *
+from PyQt5.QtGui import *
 import psycopg2,  psycopg2.extras
 from Ui_frmInit import *
 from libsources import *
@@ -26,9 +26,9 @@ class frmInit(QDialog, Ui_frmInit):
 
 
     
-    @pyqtSignature("")
+    @pyqtSlot()
     def on_cmdCreate_released(self):
-        respuesta = QMessageBox.warning(self, self.windowTitle(), self.trUtf8("Do you want to create needed Xulpymoney databases in {0}?".format(self.cmbLanguage.currentText())), QMessageBox.Ok | QMessageBox.Cancel)
+        respuesta = QMessageBox.warning(self, self.windowTitle(), self.tr("Do you want to create needed Xulpymoney databases in {0}?".format(self.cmbLanguage.currentText())), QMessageBox.Ok | QMessageBox.Cancel)
         if respuesta==QMessageBox.Ok:             
             self.cmbLanguage.setEnabled(False)
             self.txtPass.setEnabled(False)
@@ -44,7 +44,7 @@ class frmInit(QDialog, Ui_frmInit):
                 return
 
 
-            respuesta2 = QMessageBox.warning(self, self.windowTitle(), self.trUtf8("Database created. Xulpymoney needs to insert quotes from yahoo. This is a long process. Do you want to insert them now?"), QMessageBox.Ok | QMessageBox.Cancel)
+            respuesta2 = QMessageBox.warning(self, self.windowTitle(), self.tr("Database created. Xulpymoney needs to insert quotes from yahoo. This is a long process. Do you want to insert them now?"), QMessageBox.Ok | QMessageBox.Cancel)
             if respuesta2==QMessageBox.Ok:             
                 #Insert quotes of yahoo
                 strtemplate1="dbname='%s' port='%s' user='%s' host='%s' password='%s'" % (self.txtXulpymoney.text(), self.txtPort.text(), self.txtUser.text(),  self.txtServer.text(), self.txtPass.text())
@@ -71,7 +71,7 @@ class frmInit(QDialog, Ui_frmInit):
         self.close()
 
 
-    @pyqtSignature("")
+    @pyqtSlot()
     def create_db(self, database):
         strtemplate1="dbname='template1' port='%s' user='%s' host='%s' password='%s'" % (self.txtPort.text(), self.txtUser.text(),  self.txtServer.text(), self.txtPass.text())
         cont=psycopg2.extras.DictConnection(strtemplate1)
@@ -118,7 +118,7 @@ class frmInit(QDialog, Ui_frmInit):
         con.close()
 
         
-    @pyqtSignature("")
+    @pyqtSlot()
     def create_xulpymoney(self):
         try:
             self.load_script(self.txtXulpymoney.text(), "/usr/share/xulpymoney/sql/xulpymoney.sql")

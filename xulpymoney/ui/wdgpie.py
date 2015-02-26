@@ -1,8 +1,8 @@
 ## -*- coding: utf-8 -*-
 from libxulpymoney import *
-from PyQt4.QtCore import *
-from PyQt4.QtGui import *
-#import PyQt4.Qwt5 as Qwt
+from PyQt5.QtCore import *
+from PyQt5.QtGui import *
+#import PyQt5.Qwt5 as Qwt
 from myqtablewidget import *
 from Ui_wdgInvestmentClasses import *
     
@@ -56,7 +56,7 @@ class wdgPie(QWidget):
             self.table.setItem(i, 1, QTableWidgetItem(self.data[i][1]))
             self.table.setItem(i, 2, self.mem.currencies.find('EUR').qtablewidgetitem(self.data[i][2]))            
             self.table.setItem(i, 3, qtpc(self.data[i][2]*100/total))        
-            self.table.item(i, 1).setBackgroundColor(self.colors[i])           
+            self.table.item(i, 1).setBackground(self.colors[i])           
         self.horizontalLayout.addWidget(self.table)
         self.verticalLayout.addLayout(self.horizontalLayout)
         self.verticalLayout_3.addLayout(self.verticalLayout)

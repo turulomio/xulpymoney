@@ -1,5 +1,5 @@
-from PyQt4.QtCore import *
-from PyQt4.QtGui import *
+from PyQt5.QtCore import *
+from PyQt5.QtGui import *
 from libxulpymoney import *
 from Ui_frmSettings import *
 
@@ -39,7 +39,7 @@ class frmSettings(QDialog, Ui_frmSettings):
         self.mem.languages.cambiar(self.cmbLanguages.itemData(self.cmbLanguages.currentIndex()))
         self.retranslateUi(self)
 
-    @pyqtSignature("")
+    @pyqtSlot()
     def on_buttonbox_accepted(self):
         self.mem.config.set_value("settings", "localcurrency", self.cmbCurrencies.itemData(self.cmbCurrencies.currentIndex()))
         self.mem.config.set_value("settings", "language", self.cmbLanguages.itemData(self.cmbLanguages.currentIndex()))
@@ -59,7 +59,7 @@ class frmSettings(QDialog, Ui_frmSettings):
     def on_chkGainsYear_stateChanged(self, state):
         self.spnGainsPercentajeBelow.setEnabled(c2b(state))
         
-    @pyqtSignature("")
+    @pyqtSlot()
     def on_buttonbox_rejected(self):
         self.reject()
         

@@ -1,5 +1,6 @@
-from PyQt4.QtCore import *
-from PyQt4.QtGui import *
+from PyQt5.QtCore import *
+from PyQt5.QtGui import *
+from PyQt5.QtWidgets import *
 from libxulpymoney import *
 from libxulpymoney import *
 from matplotlib.finance import *
@@ -104,10 +105,10 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         self.table.settings("wdgTotal",  self.mem)
         
         self.wyData.initiate(fechainicio.year, datetime.date.today().year, datetime.date.today().year)
-        QObject.connect(self.wyData, SIGNAL("changed"), self.on_wyData_changed)
+        self.wyData.changed.connect(self.on_wyData_changed)
         self.wyChart.initiate(fechainicio.year, datetime.date.today().year, datetime.date.today().year)
         self.wyChart.label.setText(self.tr("Data from selected year"))
-        QObject.connect(self.wyChart, SIGNAL("changed"), self.on_wyChart_changed)
+        self.wyChart.changed.connect(self.on_wyChart_changed)
 
 
         self.canvas=canvasTotal(self.mem,  self)
@@ -241,7 +242,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
             
         
     @QtCore.pyqtSlot() 
-    def on_actionShowIncomes_activated(self):
+    def on_actionShowIncomes_triggered(self):
         id_tiposoperaciones=2
         newtab = QWidget()
         horizontalLayout = QHBoxLayout(newtab)
@@ -255,7 +256,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         self.tab.setCurrentWidget(newtab)
 
     @QtCore.pyqtSlot() 
-    def on_actionShowSellingOperations_activated(self):
+    def on_actionShowSellingOperations_triggered(self):
         newtab = QWidget()
         horizontalLayout = QHBoxLayout(newtab)
         table = myQTableWidget(newtab)
@@ -272,7 +273,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
             
 
     @QtCore.pyqtSlot() 
-    def on_actionShowDividends_activated(self):
+    def on_actionShowDividends_triggered(self):
         newtab = QWidget()
         horizontalLayout = QHBoxLayout(newtab)
         table = myQTableWidget(newtab)
@@ -286,7 +287,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
             
        
     @QtCore.pyqtSlot() 
-    def on_actionShowExpenses_activated(self):     
+    def on_actionShowExpenses_triggered(self):     
         id_tiposoperaciones=1
         newtab = QWidget()
         horizontalLayout = QHBoxLayout(newtab)
@@ -301,7 +302,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         
     
     @QtCore.pyqtSlot() 
-    def on_actionSellingOperationsPlusDividends_activated(self):
+    def on_actionSellingOperationsPlusDividends_triggered(self):
         m=QMessageBox()
         message=self.tr("Gains and dividends sum from this month is {0}. In this year it's value rises to {1}").format(self.mem.localcurrency.string(self.sumpopup[self.month-1]), self.mem.localcurrency.string(self.sumpopup[12]))
 
