@@ -24,10 +24,8 @@ class wdgJointReport(QWidget, Ui_wdgJointReport):
                 
         anoinicio=Assets(self.mem).primera_datetime_con_datos_usuario().year       
 
-#        ran=datetime.date.today().year-anoinicio+1
-        
         self.wy.initiate(anoinicio, datetime.date.today().year, datetime.date.today().year)
-        QObject.connect(self.wy, SIGNAL("changed"), self.on_wy_changed)
+        self.wy.changed.connect(self.on_wy_changed)
 
         if str2bool(self.mem.config.get_value("settings", "gainsyear"))==True:
             self.tab.removeTab(1)
