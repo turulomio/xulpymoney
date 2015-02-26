@@ -38,8 +38,8 @@ class Source(QObject):
 
     def myqtablewidget_errors(self, tabla, section):
         tabla.setColumnCount(2)
-        tabla.setHorizontalHeaderItem(0, QTableWidgetItem(QApplication.translate(section, "Date and time", None, QApplication.UnicodeUTF8)))
-        tabla.setHorizontalHeaderItem(1, QTableWidgetItem(QApplication.translate(section, "Log", None, QApplication.UnicodeUTF8)))
+        tabla.setHorizontalHeaderItem(0, QTableWidgetItem(QApplication.translate(section, "Date and time" )))
+        tabla.setHorizontalHeaderItem(1, QTableWidgetItem(QApplication.translate(section, "Log" )))
         tabla.clearContents()
         tabla.settings(section,  self.mem)       
         tabla.setRowCount(len(self.errors))

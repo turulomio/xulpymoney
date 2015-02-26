@@ -730,13 +730,13 @@ class SetAccountOperations:
             diff=1
         else:
             tabla.setColumnCount(5)
-        tabla.setHorizontalHeaderItem(0, QTableWidgetItem(QApplication.translate(section, "Date", None, QApplication.UnicodeUTF8)))
+        tabla.setHorizontalHeaderItem(0, QTableWidgetItem(QApplication.translate(section, "Date" )))
         if show_account==True:
-            tabla.setHorizontalHeaderItem(diff, QTableWidgetItem(QApplication.translate(section, "Account", None, QApplication.UnicodeUTF8)))
-        tabla.setHorizontalHeaderItem(1+diff, QTableWidgetItem(QApplication.translate(section, "Concept", None, QApplication.UnicodeUTF8)))
-        tabla.setHorizontalHeaderItem(2+diff,  QTableWidgetItem(QApplication.translate(section, "Amount", None, QApplication.UnicodeUTF8)))
-        tabla.setHorizontalHeaderItem(3+diff, QTableWidgetItem(QApplication.translate(section, "Balance", None, QApplication.UnicodeUTF8)))
-        tabla.setHorizontalHeaderItem(4+diff, QTableWidgetItem(QApplication.translate(section, "Comment", None, QApplication.UnicodeUTF8)))
+            tabla.setHorizontalHeaderItem(diff, QTableWidgetItem(QApplication.translate(section, "Account" )))
+        tabla.setHorizontalHeaderItem(1+diff, QTableWidgetItem(QApplication.translate(section, "Concept" )))
+        tabla.setHorizontalHeaderItem(2+diff,  QTableWidgetItem(QApplication.translate(section, "Amount" )))
+        tabla.setHorizontalHeaderItem(3+diff, QTableWidgetItem(QApplication.translate(section, "Balance" )))
+        tabla.setHorizontalHeaderItem(4+diff, QTableWidgetItem(QApplication.translate(section, "Comment" )))
         ##DATA 
         tabla.clearContents()
         tabla.settings(section,  self.mem)       
@@ -801,14 +801,14 @@ class SetDividends:
         if show_investment==True:
             diff=1
         table.setColumnCount(7+diff)
-        table.setHorizontalHeaderItem(0, QTableWidgetItem(QApplication.translate("Core", "Date", None, QApplication.UnicodeUTF8)))
-        table.setHorizontalHeaderItem(diff, QTableWidgetItem(QApplication.translate("Core", "Product", None, QApplication.UnicodeUTF8)))
-        table.setHorizontalHeaderItem(diff+1, QTableWidgetItem(QApplication.translate("Core", "Concept", None, QApplication.UnicodeUTF8)))
-        table.setHorizontalHeaderItem(diff+2, QTableWidgetItem(QApplication.translate("Core", "Gross", None, QApplication.UnicodeUTF8)))
-        table.setHorizontalHeaderItem(diff+3, QTableWidgetItem(QApplication.translate("Core", "Withholding", None, QApplication.UnicodeUTF8)))
-        table.setHorizontalHeaderItem(diff+4, QTableWidgetItem(QApplication.translate("Core", "Comission", None, QApplication.UnicodeUTF8)))
-        table.setHorizontalHeaderItem(diff+5, QTableWidgetItem(QApplication.translate("Core", "Net", None, QApplication.UnicodeUTF8)))
-        table.setHorizontalHeaderItem(diff+6, QTableWidgetItem(QApplication.translate("Core", "DPS", None, QApplication.UnicodeUTF8)))
+        table.setHorizontalHeaderItem(0, QTableWidgetItem(QApplication.translate("Core", "Date" )))
+        table.setHorizontalHeaderItem(diff, QTableWidgetItem(QApplication.translate("Core", "Product" )))
+        table.setHorizontalHeaderItem(diff+1, QTableWidgetItem(QApplication.translate("Core", "Concept" )))
+        table.setHorizontalHeaderItem(diff+2, QTableWidgetItem(QApplication.translate("Core", "Gross" )))
+        table.setHorizontalHeaderItem(diff+3, QTableWidgetItem(QApplication.translate("Core", "Withholding" )))
+        table.setHorizontalHeaderItem(diff+4, QTableWidgetItem(QApplication.translate("Core", "Comission" )))
+        table.setHorizontalHeaderItem(diff+5, QTableWidgetItem(QApplication.translate("Core", "Net" )))
+        table.setHorizontalHeaderItem(diff+6, QTableWidgetItem(QApplication.translate("Core", "DPS" )))
         #DATA
         table.settings(section,  self.mem)        
         table.clearContents()
@@ -1170,17 +1170,17 @@ class SetInvestmentOperations(SetIO):
         if homogeneous==False:
             diff=2
         tabla.setColumnCount(8+diff)
-        tabla.setHorizontalHeaderItem(0, QTableWidgetItem(QApplication.translate("Core", "Date", None, QApplication.UnicodeUTF8)))
+        tabla.setHorizontalHeaderItem(0, QTableWidgetItem(QApplication.translate("Core", "Date" )))
         if homogeneous==False:
-            tabla.setHorizontalHeaderItem(diff-1, QTableWidgetItem(QApplication.translate("Core", "Product", None, QApplication.UnicodeUTF8)))
-            tabla.setHorizontalHeaderItem(diff, QTableWidgetItem(QApplication.translate("Core", "Account", None, QApplication.UnicodeUTF8)))
-        tabla.setHorizontalHeaderItem(diff+1, QTableWidgetItem(QApplication.translate("Core", "Operation type", None, QApplication.UnicodeUTF8)))
-        tabla.setHorizontalHeaderItem(diff+2, QTableWidgetItem(QApplication.translate("Core", "Shares", None, QApplication.UnicodeUTF8)))
-        tabla.setHorizontalHeaderItem(diff+3, QTableWidgetItem(QApplication.translate("Core", "Valor acción", None, QApplication.UnicodeUTF8)))
-        tabla.setHorizontalHeaderItem(diff+4, QTableWidgetItem(QApplication.translate("Core", "Importe", None, QApplication.UnicodeUTF8)))
-        tabla.setHorizontalHeaderItem(diff+5, QTableWidgetItem(QApplication.translate("Core", "Comission", None, QApplication.UnicodeUTF8)))
-        tabla.setHorizontalHeaderItem(diff+6, QTableWidgetItem(QApplication.translate("Core", "Taxes", None, QApplication.UnicodeUTF8)))
-        tabla.setHorizontalHeaderItem(diff+7, QTableWidgetItem(QApplication.translate("Core", "Total", None, QApplication.UnicodeUTF8)))
+            tabla.setHorizontalHeaderItem(diff-1, QTableWidgetItem(QApplication.translate("Core", "Product" )))
+            tabla.setHorizontalHeaderItem(diff, QTableWidgetItem(QApplication.translate("Core", "Account" )))
+        tabla.setHorizontalHeaderItem(diff+1, QTableWidgetItem(QApplication.translate("Core", "Operation type" )))
+        tabla.setHorizontalHeaderItem(diff+2, QTableWidgetItem(QApplication.translate("Core", "Shares" )))
+        tabla.setHorizontalHeaderItem(diff+3, QTableWidgetItem(QApplication.translate("Core", "Valor acción" )))
+        tabla.setHorizontalHeaderItem(diff+4, QTableWidgetItem(QApplication.translate("Core", "Importe" )))
+        tabla.setHorizontalHeaderItem(diff+5, QTableWidgetItem(QApplication.translate("Core", "Comission" )))
+        tabla.setHorizontalHeaderItem(diff+6, QTableWidgetItem(QApplication.translate("Core", "Taxes" )))
+        tabla.setHorizontalHeaderItem(diff+7, QTableWidgetItem(QApplication.translate("Core", "Total" )))
         #DATA 
         tabla.clearContents()
         tabla.settings(section,  self.mem)       
@@ -1297,19 +1297,19 @@ class SetInvestmentOperationsCurrent(SetIO):
         if homogeneous==False:
             diff=2
         tabla.setColumnCount(10+diff)
-        tabla.setHorizontalHeaderItem(0, QTableWidgetItem(QApplication.translate("Core", "Date", None, QApplication.UnicodeUTF8)))
+        tabla.setHorizontalHeaderItem(0, QTableWidgetItem(QApplication.translate("Core", "Date" )))
         if homogeneous==False:
-            tabla.setHorizontalHeaderItem(diff-1, QTableWidgetItem(QApplication.translate("Core", "Product", None, QApplication.UnicodeUTF8)))
-            tabla.setHorizontalHeaderItem(diff, QTableWidgetItem(QApplication.translate("Core", "Account", None, QApplication.UnicodeUTF8)))
-        tabla.setHorizontalHeaderItem(diff+1, QTableWidgetItem(QApplication.translate("Core", "Shares", None, QApplication.UnicodeUTF8)))
-        tabla.setHorizontalHeaderItem(diff+2, QTableWidgetItem(QApplication.translate("Core", "Price", None, QApplication.UnicodeUTF8)))
-        tabla.setHorizontalHeaderItem(diff+3, QTableWidgetItem(QApplication.translate("Core", "Invested", None, QApplication.UnicodeUTF8)))
-        tabla.setHorizontalHeaderItem(diff+4, QTableWidgetItem(QApplication.translate("Core", "Current balance", None, QApplication.UnicodeUTF8)))
-        tabla.setHorizontalHeaderItem(diff+5, QTableWidgetItem(QApplication.translate("Core", "Pending", None, QApplication.UnicodeUTF8)))
-        tabla.setHorizontalHeaderItem(diff+6, QTableWidgetItem(QApplication.translate("Core", "% annual", None, QApplication.UnicodeUTF8)))
-        tabla.setHorizontalHeaderItem(diff+7, QTableWidgetItem(QApplication.translate("Core", "% APR", None, QApplication.UnicodeUTF8)))
-        tabla.setHorizontalHeaderItem(diff+8, QTableWidgetItem(QApplication.translate("Core", "% Total", None, QApplication.UnicodeUTF8)))
-        tabla.setHorizontalHeaderItem(diff+9, QTableWidgetItem(QApplication.translate("Core", "Benchmark", None, QApplication.UnicodeUTF8)))
+            tabla.setHorizontalHeaderItem(diff-1, QTableWidgetItem(QApplication.translate("Core", "Product" )))
+            tabla.setHorizontalHeaderItem(diff, QTableWidgetItem(QApplication.translate("Core", "Account" )))
+        tabla.setHorizontalHeaderItem(diff+1, QTableWidgetItem(QApplication.translate("Core", "Shares" )))
+        tabla.setHorizontalHeaderItem(diff+2, QTableWidgetItem(QApplication.translate("Core", "Price" )))
+        tabla.setHorizontalHeaderItem(diff+3, QTableWidgetItem(QApplication.translate("Core", "Invested" )))
+        tabla.setHorizontalHeaderItem(diff+4, QTableWidgetItem(QApplication.translate("Core", "Current balance" )))
+        tabla.setHorizontalHeaderItem(diff+5, QTableWidgetItem(QApplication.translate("Core", "Pending" )))
+        tabla.setHorizontalHeaderItem(diff+6, QTableWidgetItem(QApplication.translate("Core", "% annual" )))
+        tabla.setHorizontalHeaderItem(diff+7, QTableWidgetItem(QApplication.translate("Core", "% APR" )))
+        tabla.setHorizontalHeaderItem(diff+8, QTableWidgetItem(QApplication.translate("Core", "% Total" )))
+        tabla.setHorizontalHeaderItem(diff+9, QTableWidgetItem(QApplication.translate("Core", "Benchmark" )))
         #DATA
         tabla.settings(section,  self.mem)
         if len(self.arr)==0:
@@ -1523,19 +1523,19 @@ class SetInvestmentOperationsHistorical(SetIO):
         """Rellena datos de un array de objetos de InvestmentOperationHistorical, devuelve totales ver código"""
         self.order_by_fechaventa()
         tabla.setColumnCount(13)
-        tabla.setHorizontalHeaderItem(0, QTableWidgetItem(QApplication.translate("Core", "Date", None, QApplication.UnicodeUTF8)))
-        tabla.setHorizontalHeaderItem(1, QTableWidgetItem(QApplication.translate("Core", "Years", None, QApplication.UnicodeUTF8)))
-        tabla.setHorizontalHeaderItem(2, QTableWidgetItem(QApplication.translate("Core", "Product", None, QApplication.UnicodeUTF8)))
-        tabla.setHorizontalHeaderItem(3, QTableWidgetItem(QApplication.translate("Core", "Operation type", None, QApplication.UnicodeUTF8)))
-        tabla.setHorizontalHeaderItem(4, QTableWidgetItem(QApplication.translate("Core", "Shares", None, QApplication.UnicodeUTF8)))
-        tabla.setHorizontalHeaderItem(5, QTableWidgetItem(QApplication.translate("Core", "Initial balance", None, QApplication.UnicodeUTF8)))
-        tabla.setHorizontalHeaderItem(6, QTableWidgetItem(QApplication.translate("Core", "Final balance", None, QApplication.UnicodeUTF8)))
-        tabla.setHorizontalHeaderItem(7, QTableWidgetItem(QApplication.translate("Core", "Gross selling operations", None, QApplication.UnicodeUTF8)))
-        tabla.setHorizontalHeaderItem(8, QTableWidgetItem(QApplication.translate("Core", "Comissions", None, QApplication.UnicodeUTF8)))
-        tabla.setHorizontalHeaderItem(9, QTableWidgetItem(QApplication.translate("Core", "Taxes", None, QApplication.UnicodeUTF8)))
-        tabla.setHorizontalHeaderItem(10, QTableWidgetItem(QApplication.translate("Core", "Net selling operations", None, QApplication.UnicodeUTF8)))
-        tabla.setHorizontalHeaderItem(11, QTableWidgetItem(QApplication.translate("Core", "% Net APR", None, QApplication.UnicodeUTF8)))
-        tabla.setHorizontalHeaderItem(12, QTableWidgetItem(QApplication.translate("Core", "% Net Total", None, QApplication.UnicodeUTF8)))
+        tabla.setHorizontalHeaderItem(0, QTableWidgetItem(QApplication.translate("Core", "Date" )))
+        tabla.setHorizontalHeaderItem(1, QTableWidgetItem(QApplication.translate("Core", "Years" )))
+        tabla.setHorizontalHeaderItem(2, QTableWidgetItem(QApplication.translate("Core", "Product" )))
+        tabla.setHorizontalHeaderItem(3, QTableWidgetItem(QApplication.translate("Core", "Operation type" )))
+        tabla.setHorizontalHeaderItem(4, QTableWidgetItem(QApplication.translate("Core", "Shares" )))
+        tabla.setHorizontalHeaderItem(5, QTableWidgetItem(QApplication.translate("Core", "Initial balance" )))
+        tabla.setHorizontalHeaderItem(6, QTableWidgetItem(QApplication.translate("Core", "Final balance" )))
+        tabla.setHorizontalHeaderItem(7, QTableWidgetItem(QApplication.translate("Core", "Gross selling operations" )))
+        tabla.setHorizontalHeaderItem(8, QTableWidgetItem(QApplication.translate("Core", "Comissions" )))
+        tabla.setHorizontalHeaderItem(9, QTableWidgetItem(QApplication.translate("Core", "Taxes" )))
+        tabla.setHorizontalHeaderItem(10, QTableWidgetItem(QApplication.translate("Core", "Net selling operations" )))
+        tabla.setHorizontalHeaderItem(11, QTableWidgetItem(QApplication.translate("Core", "% Net APR" )))
+        tabla.setHorizontalHeaderItem(12, QTableWidgetItem(QApplication.translate("Core", "% Net Total" )))
         #DATA
         tabla.settings(section,  self.mem)        
         
@@ -3338,10 +3338,10 @@ class Currency:
         text= (self.string(n,  digits))
         a=QTableWidgetItem(text)
         a.setTextAlignment(Qt.AlignVCenter|Qt.AlignRight)
-#        if n==None:
-#            a.setTextColor(QColor(0, 0, 255))
-#        elif n<0:
-#            a.setTextColor(QColor(255, 0, 0))
+        if n==None:
+            a.setForeground(QColor(0, 0, 255))
+        elif n<0:
+            a.setForeground(QColor(255, 0, 0))
         return a
 
 class ProductMode:
@@ -3384,9 +3384,9 @@ class Money:
         a=QTableWidgetItem(text)
         a.setTextAlignment(Qt.AlignVCenter|Qt.AlignRight)
         if n==None:
-            a.setTextColor(QColor(0, 0, 255))
+            a.setForeground(QColor(0, 0, 255))
         elif n<0:
-            a.setTextColor(QColor(255, 0, 0))
+            a.setForeground(QColor(255, 0, 0))
         return a
 
     def suma_d(self,cur, money, dattime):
@@ -3427,8 +3427,8 @@ class SetDPS:
         
     def myqtablewidget(self, table, section):
         table.setColumnCount(2)
-        table.setHorizontalHeaderItem(0, QTableWidgetItem(QApplication.translate("Core", "Date", None, QApplication.UnicodeUTF8)))
-        table.setHorizontalHeaderItem(1, QTableWidgetItem(QApplication.translate("Core", "Gross", None, QApplication.UnicodeUTF8)))
+        table.setHorizontalHeaderItem(0, QTableWidgetItem(QApplication.translate("Core", "Date" )))
+        table.setHorizontalHeaderItem(1, QTableWidgetItem(QApplication.translate("Core", "Gross" )))
         self.sort()
         table.settings(section,  self.mem)        
         table.clearContents()
@@ -3874,9 +3874,9 @@ class SetQuotes:
         
     def myqtablewidget(self, tabla, section):
         tabla.setColumnCount(3)
-        tabla.setHorizontalHeaderItem(0, QTableWidgetItem(QApplication.translate(section, "Date and time", None, QApplication.UnicodeUTF8)))
-        tabla.setHorizontalHeaderItem(1, QTableWidgetItem(QApplication.translate(section, "Product", None, QApplication.UnicodeUTF8)))
-        tabla.setHorizontalHeaderItem(2, QTableWidgetItem(QApplication.translate(section, "Price", None, QApplication.UnicodeUTF8)))        
+        tabla.setHorizontalHeaderItem(0, QTableWidgetItem(QApplication.translate(section, "Date and time" )))
+        tabla.setHorizontalHeaderItem(1, QTableWidgetItem(QApplication.translate(section, "Product" )))
+        tabla.setHorizontalHeaderItem(2, QTableWidgetItem(QApplication.translate(section, "Price" )))        
         tabla.clearContents()
         tabla.settings(section,  self.mem)       
         tabla.setRowCount(len(self.arr))
@@ -5344,7 +5344,7 @@ def qdatetime(dt, zone,  pixmap=True):
 #            resultado=str(dt.date())+" "+str(dt.hour).zfill(2)+":"+str(dt.minute).zfill(2)   
     a=QTableWidgetItem(resultado)
     if dt==None:
-        a.setTextColor(QColor(0, 0, 255))
+        a.setForeground(QColor(0, 0, 255))
     a.setTextAlignment(Qt.AlignVCenter|Qt.AlignRight)
     return a
 
@@ -5548,9 +5548,9 @@ def qright(string, digits=None):
     a.setTextAlignment(Qt.AlignVCenter|Qt.AlignRight)
     try:#If is a number corized it
         if string==None:
-            a.setTextColor(QColor(0, 0, 255))
+            a.setForeground(QColor(0, 0, 255))
         elif string<0:
-            a.setTextColor(QColor(255, 0, 0))
+            a.setForeground(QColor(255, 0, 0))
     except:
         pass
     return a
@@ -5559,10 +5559,10 @@ def qtpc(n, rnd=2):
     text= tpc(n, rnd)
     a=QTableWidgetItem(text)
     a.setTextAlignment(Qt.AlignVCenter|Qt.AlignRight)
-#    if n==None:
-#        a.setTextColor(QColor(0, 0, 255))
-#    elif n<0:
-#        a.setTextColor(QColor(255, 0, 0))
+    if n==None:
+        a.setForeground(QColor(0, 0, 255))
+    elif n<0:
+        a.setForeground(QColor(255, 0, 0))
     return a
       
 

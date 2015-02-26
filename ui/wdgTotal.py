@@ -16,6 +16,11 @@ import calendar,  datetime
 from matplotlib.figure import Figure
 class canvasTotal(FigureCanvasQTAgg):
     def __init__(self, mem, parent):
+        return
+        
+        
+        
+        
         self.mem=mem
         self.fig = Figure()
         FigureCanvasQTAgg.__init__(self, self.fig)
@@ -110,12 +115,12 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         self.wyChart.label.setText(self.tr("Data from selected year"))
         self.wyChart.changed.connect(self.on_wyChart_changed)
 
-
-        self.canvas=canvasTotal(self.mem,  self)
-        self.ntb = NavigationToolbar2QT(self.canvas, self)
-        
-        self.tabGraphTotal.addWidget(self.canvas)
-        self.tabGraphTotal.addWidget(self.ntb)
+#########
+#########        self.canvas=canvasTotal(self.mem,  self)
+#########        self.ntb = NavigationToolbar2QT(self.canvas, self)
+#########        
+#########        self.tabGraphTotal.addWidget(self.canvas)
+#########        self.tabGraphTotal.addWidget(self.ntb)
         
         self.tab.setCurrentIndex(0)
         self.load_data()
@@ -195,7 +200,12 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         print ("wdgTotal > load_data: {0}".format(final-inicio))
 
 
-    def load_graphic(self):          
+    def load_graphic(self):   
+        return
+        
+        
+        
+        
         inicio=datetime.datetime.now()  
         data=[]#date,valor
         zero=[]#date, valor zero

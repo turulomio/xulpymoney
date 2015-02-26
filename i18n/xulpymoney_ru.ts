@@ -88,7 +88,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="487"/>
+        <location filename="libxulpymoney.py" line="1530"/>
         <source>Product</source>
         <translation type="unfinished"></translation>
     </message>
@@ -193,7 +193,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="490"/>
+        <location filename="libxulpymoney.py" line="1307"/>
         <source>Price</source>
         <translation type="unfinished"></translation>
     </message>
@@ -498,6 +498,146 @@ Total purged in global process: {1}</source>
         <source>I couldn&apos;t order data due to they have null values</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location filename="libxulpymoney.py" line="3433"/>
+        <source>Date</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="libxulpymoney.py" line="808"/>
+        <source>Concept</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="libxulpymoney.py" line="3434"/>
+        <source>Gross</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="libxulpymoney.py" line="810"/>
+        <source>Withholding</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="libxulpymoney.py" line="1183"/>
+        <source>Comission</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="libxulpymoney.py" line="812"/>
+        <source>Net</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="libxulpymoney.py" line="813"/>
+        <source>DPS</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="libxulpymoney.py" line="1305"/>
+        <source>Account</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="libxulpymoney.py" line="1531"/>
+        <source>Operation type</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message encoding="UTF-8">
+        <location filename="libxulpymoney.py" line="1181"/>
+        <source>Valor acción</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="libxulpymoney.py" line="1182"/>
+        <source>Importe</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="libxulpymoney.py" line="1537"/>
+        <source>Taxes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="libxulpymoney.py" line="1185"/>
+        <source>Total</source>
+        <translation type="unfinished">общий</translation>
+    </message>
+    <message>
+        <location filename="libxulpymoney.py" line="1308"/>
+        <source>Invested</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="libxulpymoney.py" line="1309"/>
+        <source>Current balance</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="libxulpymoney.py" line="1310"/>
+        <source>Pending</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="libxulpymoney.py" line="1311"/>
+        <source>% annual</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="libxulpymoney.py" line="1312"/>
+        <source>% APR</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="libxulpymoney.py" line="1313"/>
+        <source>% Total</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="libxulpymoney.py" line="1314"/>
+        <source>Benchmark</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="libxulpymoney.py" line="1529"/>
+        <source>Years</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="libxulpymoney.py" line="1533"/>
+        <source>Initial balance</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="libxulpymoney.py" line="1534"/>
+        <source>Final balance</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="libxulpymoney.py" line="1535"/>
+        <source>Gross selling operations</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="libxulpymoney.py" line="1536"/>
+        <source>Comissions</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="libxulpymoney.py" line="1538"/>
+        <source>Net selling operations</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="libxulpymoney.py" line="1539"/>
+        <source>% Net APR</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="libxulpymoney.py" line="1540"/>
+        <source>% Net Total</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>canvasChart</name>
@@ -631,17 +771,17 @@ Total purged in global process: {1}</source>
 <context>
     <name>canvasTotal</name>
     <message>
-        <location filename="ui/wdgTotal.py" line="79"/>
+        <location filename="ui/wdgTotal.py" line="84"/>
         <source>Total assets</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgTotal.py" line="80"/>
+        <location filename="ui/wdgTotal.py" line="85"/>
         <source>Zero risk assets</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgTotal.py" line="81"/>
+        <location filename="ui/wdgTotal.py" line="86"/>
         <source>Bond assets</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4805,12 +4945,12 @@ S&#xc3;&#xb3;lo se contabilizar&#xc3;&#xa1; cuando se vendan las acciones</sourc
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgJointReport.py" line="251"/>
+        <location filename="ui/wdgJointReport.py" line="249"/>
         <source>% APR from {}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgJointReport.py" line="252"/>
+        <location filename="ui/wdgJointReport.py" line="250"/>
         <source>Balance at {0}, {1}</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5413,57 +5553,57 @@ S&#xc3;&#xb3;lo se contabilizar&#xc3;&#xa1; cuando se vendan las acciones</sourc
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgTotal.py" line="110"/>
+        <location filename="ui/wdgTotal.py" line="115"/>
         <source>Data from selected year</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgTotal.py" line="134"/>
+        <location filename="ui/wdgTotal.py" line="139"/>
         <source>Balance at {0}-12-31: {1}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgTotal.py" line="255"/>
+        <location filename="ui/wdgTotal.py" line="265"/>
         <source>Incomes of {0} of {1}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgTotal.py" line="271"/>
+        <location filename="ui/wdgTotal.py" line="281"/>
         <source>Product selling operations of {0} of {1}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgTotal.py" line="285"/>
+        <location filename="ui/wdgTotal.py" line="295"/>
         <source>Dividends of {0} of {1}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgTotal.py" line="300"/>
+        <location filename="ui/wdgTotal.py" line="310"/>
         <source>Expenses of {0} of {1}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgTotal.py" line="317"/>
+        <location filename="ui/wdgTotal.py" line="327"/>
         <source>You can&apos;t close this tab</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgTotal.py" line="88"/>
+        <location filename="ui/wdgTotal.py" line="93"/>
         <source>Filling report data</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgTotal.py" line="88"/>
+        <location filename="ui/wdgTotal.py" line="93"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgTotal.py" line="90"/>
+        <location filename="ui/wdgTotal.py" line="95"/>
         <source>Calculating data...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgTotal.py" line="307"/>
+        <location filename="ui/wdgTotal.py" line="317"/>
         <source>Gains and dividends sum from this month is {0}. In this year it&apos;s value rises to {1}</source>
         <translation type="unfinished"></translation>
     </message>

@@ -21,7 +21,7 @@ class wdgConcepts(QWidget, Ui_wdgConcepts):
         
         anoinicio=Assets(self.mem).primera_datetime_con_datos_usuario().year       
         self.wdgYM.initiate(anoinicio,  datetime.date.today().year, datetime.date.today().year, datetime.date.today().month)
-        QObject.connect(self.wdgYM, SIGNAL("changed"), self.on_wdgYM_changed)
+        self.wdgYM.changed.connect(self.on_wdgYM_changed)
         
         self.on_wdgYM_changed()
         
