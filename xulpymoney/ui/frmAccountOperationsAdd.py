@@ -5,6 +5,8 @@ from Ui_frmAccountOperationsAdd import *
 from libxulpymoney import *
 
 class frmAccountOperationsAdd(QDialog, Ui_frmAccountOperationsAdd):
+    OperAccountIBMed=pyqtSignal()
+    OperCreditCardIBMed=pyqtSignal()
     def __init__(self, mem, cuentas, cuenta, opercuenta=None, tarjeta=None ,  opertarjeta=None ,  parent=None):
         """TIPOS DE ENTRADAS:        
          1   selAccount=x: Inserción de Opercuentas y edición de cuentas
@@ -96,7 +98,7 @@ class frmAccountOperationsAdd(QDialog, Ui_frmAccountOperationsAdd):
             self.opercuenta.cuenta=self.mem.data.accounts_active.find(id_cuentas)#Se puede cambiar
             self.opercuenta.save()
             self.mem.con.commit()        #Se debe hacer el commit antes para que al actualizar con el signal salga todos los datos
-            self.emit(SIGNAL("OperAccountIBMed"), ())
+            self.OperAccountIBMed.emit()
             self.wdgDT.set(self.mem, self.wdgDT.datetime()+datetime.timedelta(seconds=1), self.wdgDT.zone)
         elif self.tipo==2:            
             self.opercuenta.datetime=self.wdgDT.datetime()
@@ -107,14 +109,14 @@ class frmAccountOperationsAdd(QDialog, Ui_frmAccountOperationsAdd):
             self.opercuenta.cuenta=self.mem.data.accounts_active.find(id_cuentas)#Se puede cambiar
             self.opercuenta.save()
             self.mem.con.commit()        #Se debe hacer el commit antes para que al actualizar con el signal salga todos los datos
-            self.emit(SIGNAL("OperAccountIBMed"), ())
+            self.OperAccountIBMed.emit()
             self.done(0)
         elif self.tipo==3:
             self.opertarjeta=CreditCardOperation(self.mem).init__create(self.wdgDT.datetime(), concepto, concepto.tipooperacion, importe, comentario, self.tarjeta, False, None, None )
             self.opertarjeta.save()
             self.mem.con.commit()        
             self.tarjeta.op_diferido.append(self.opertarjeta)
-            self.emit(SIGNAL("OperCreditCardIBMed"), (True))
+            self.OperCreditCardIBMed.emit()
             self.wdgDT.set(self.mem, self.wdgDT.datetime()+datetime.timedelta(seconds=1), self.wdgDT.zone)
         elif self.tipo==4:            
             self.opertarjeta.datetime=self.wdgDT.datetime()
@@ -124,6 +126,6 @@ class frmAccountOperationsAdd(QDialog, Ui_frmAccountOperationsAdd):
             self.opertarjeta.comentario=comentario
             self.opertarjeta.save()
             self.mem.con.commit()        #Se debe hacer el commit antes para que al actualizar con el signal salga todos los datos
-            self.emit(SIGNAL("OperCreditCardIBMed"), ())
+            self.OperCreditCardIBMed.emit()
             self.done(0)            
     

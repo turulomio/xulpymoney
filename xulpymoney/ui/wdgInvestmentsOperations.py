@@ -15,7 +15,7 @@ class wdgInvestmentsOperations(QWidget, Ui_wdgInvestmentsOperations):
 
         self.mem.data.load_inactives()
         self.wym.initiate(fechainicio.year, datetime.date.today().year, datetime.date.today().year,  datetime.date.today().month)
-        QObject.connect(self.wym, SIGNAL("changed"), self.on_wym_changed)
+        self.wym.changed.connect(self.on_wym_changed)
         self.setOperations=SetInvestmentOperations(self.mem)
         self.setCurrent=SetInvestmentOperationsCurrent(self.mem)
         self.selOperation=None#For table

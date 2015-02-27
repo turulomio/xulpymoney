@@ -953,32 +953,32 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmAccountOperationsAdd.py" line="29"/>
+        <location filename="ui/frmAccountOperationsAdd.py" line="31"/>
         <source>Credit card operation update</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmAccountOperationsAdd.py" line="39"/>
+        <location filename="ui/frmAccountOperationsAdd.py" line="41"/>
         <source>New credit card operation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmAccountOperationsAdd.py" line="46"/>
+        <location filename="ui/frmAccountOperationsAdd.py" line="48"/>
         <source>Account operation update</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmAccountOperationsAdd.py" line="76"/>
+        <location filename="ui/frmAccountOperationsAdd.py" line="78"/>
         <source>Expenses can not have a positive amount</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmAccountOperationsAdd.py" line="83"/>
+        <location filename="ui/frmAccountOperationsAdd.py" line="85"/>
         <source>Incomes can not have a negative amount</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmAccountOperationsAdd.py" line="69"/>
+        <location filename="ui/frmAccountOperationsAdd.py" line="71"/>
         <source>You must set the operation amount</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4370,87 +4370,87 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>wdgIndexRange</name>
     <message>
-        <location filename="ui/Ui_wdgIndexRange.py" line="166"/>
+        <location filename="ui/Ui_wdgIndexRange.py" line="165"/>
         <source> %</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgIndexRange.py" line="170"/>
+        <location filename="ui/Ui_wdgIndexRange.py" line="169"/>
         <source>1000</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgIndexRange.py" line="179"/>
+        <location filename="ui/Ui_wdgIndexRange.py" line="178"/>
         <source>...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgIndexRange.py" line="168"/>
+        <location filename="ui/Ui_wdgIndexRange.py" line="167"/>
         <source>4000</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgIndexRange.py" line="171"/>
+        <location filename="ui/Ui_wdgIndexRange.py" line="170"/>
         <source>Update ranges</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgIndexRange.py" line="173"/>
+        <location filename="ui/Ui_wdgIndexRange.py" line="172"/>
         <source>Range</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgIndexRange.py" line="175"/>
+        <location filename="ui/Ui_wdgIndexRange.py" line="174"/>
         <source>Investments</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgIndexRange.py" line="163"/>
+        <location filename="ui/Ui_wdgIndexRange.py" line="162"/>
         <source>Investments by index range</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgIndexRange.py" line="164"/>
+        <location filename="ui/Ui_wdgIndexRange.py" line="163"/>
         <source>Report data</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgIndexRange.py" line="165"/>
+        <location filename="ui/Ui_wdgIndexRange.py" line="164"/>
         <source>Percentage between ranges</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgIndexRange.py" line="167"/>
+        <location filename="ui/Ui_wdgIndexRange.py" line="166"/>
         <source>Money to invest</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgIndexRange.py" line="169"/>
+        <location filename="ui/Ui_wdgIndexRange.py" line="168"/>
         <source>Index lowest limit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgIndexRange.py" line="180"/>
+        <location filename="ui/Ui_wdgIndexRange.py" line="179"/>
         <source>Top</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgIndexRange.py" line="181"/>
+        <location filename="ui/Ui_wdgIndexRange.py" line="180"/>
         <source>Middle</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgIndexRange.py" line="182"/>
+        <location filename="ui/Ui_wdgIndexRange.py" line="181"/>
         <source>Bottom</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgIndexRange.py" line="176"/>
+        <location filename="ui/Ui_wdgIndexRange.py" line="175"/>
         <source>Show benchmark report</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgIndexRange.py" line="178"/>
+        <location filename="ui/Ui_wdgIndexRange.py" line="177"/>
         <source>Add a price to the benchmark</source>
         <translation type="unfinished"></translation>
     </message>

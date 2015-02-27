@@ -63,7 +63,7 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
 
             anoinicio=Assets(self.mem).primera_datetime_con_datos_usuario().year       
             self.wdgYM.initiate(anoinicio,  datetime.date.today().year, datetime.date.today().year, datetime.date.today().month)
-            QObject.connect(self.wdgYM, SIGNAL("changed"), self.on_wdgYM_changed)
+            self.wdgYM.changed.connect(self.on_wdgYM_changed)
 
             self.on_wdgYM_changed()
             self.on_chkCreditCards_stateChanged(self.chkCreditCards.checkState())        
@@ -201,7 +201,7 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
     @QtCore.pyqtSlot() 
     def on_actionOperationAdd_triggered(self):
         w=frmAccountOperationsAdd(self.mem, self.mem.data.accounts_active,  self.selAccount, None, None)
-        self.connect(w, SIGNAL("OperAccountIBMed"), self.on_wdgYM_changed)
+        w.OperAccountIBMed.connect(self.on_wdgYM_changed)
         w.exec_()
         self.load_tblOperaciones()
         self.tblOperaciones.clearSelection()
@@ -241,7 +241,7 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
     @QtCore.pyqtSlot() 
     def on_actionOperationEdit_triggered(self):
         w=frmAccountOperationsAdd(self.mem, self.mem.data.accounts_active,  self.selAccount, self.selOperAccount, None)
-        self.connect(w, SIGNAL("OperAccountIBMed"), self.on_wdgYM_changed)#Actualiza movimientos como si cmd
+        w.OperAccountIBMed.connect(self.on_wdgYM_changed)
         w.exec_()
         self.load_tblOperaciones()
         self.tblOperaciones.clearSelection()
@@ -260,13 +260,13 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
     def on_actionCreditCardOperAdd_triggered(self):
         if self.selCreditCard.pagodiferido==False:
             w=frmAccountOperationsAdd(self.mem, self.mem.data.accounts_active, self.selAccount, None)
-            self.connect(w, SIGNAL("OperAccountIBMed"), self.on_wdgYM_changed)
+            w.OperAccountIBMed.connect(self.on_wdgYM_changed)
             w.lblTitulo.setText(self.selCreditCard.name)
             w.txtComentario.setText(self.tr("CreditCard {0}. ").format(self.selCreditCard.name))
             w.exec_()
         else:            
             w=frmAccountOperationsAdd(self.mem, self.mem.data.accounts_active,  self.selAccount, None, self.selCreditCard)
-            self.connect(w, SIGNAL("OperCreditCardIBMed"), self.load_tabOperCreditCards)
+            w.OperCreditCardIBMed.connect(self.load_tabOperCreditCards)
             w.lblTitulo.setText(self.tr("CreditCard {0}").format(self.selCreditCard.name))
             w.exec_()
             
@@ -276,7 +276,7 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
         for s in self.setSelOperCreditCards:
             selOperCreditCard=s
         w=frmAccountOperationsAdd(self.mem, self.mem.data.accounts_active,  self.selAccount, None, self.selCreditCard, selOperCreditCard)
-        self.connect(w, SIGNAL("OperCreditCardIBMed"), self.load_tabOperCreditCards)
+        w.OperCreditCardIBMed.connect(self.load_tabOperCreditCards)
         w.lblTitulo.setText(self.tr("CreditCard {0}").format(self.selCreditCard.name))
         w.exec_()
 
