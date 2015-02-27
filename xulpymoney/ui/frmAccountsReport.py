@@ -63,9 +63,8 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
 
             anoinicio=Assets(self.mem).primera_datetime_con_datos_usuario().year       
             self.wdgYM.initiate(anoinicio,  datetime.date.today().year, datetime.date.today().year, datetime.date.today().month)
-            self.wdgYM.changed.connect(self.on_wdgYM_changed)
-
             self.on_wdgYM_changed()
+            self.wdgYM.changed.connect(self.on_wdgYM_changed)
             self.on_chkCreditCards_stateChanged(self.chkCreditCards.checkState())        
             
 
@@ -176,10 +175,11 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
     def on_wdgYM_changed(self):
         cur = self.mem.con.cursor()      
         self.opercuentas=[]
-        self.saldoiniciomensual=self.selAccount.balance( str(datetime.date(self.wdgYM.year, self.wdgYM.month, 1)-datetime.timedelta(days=1)))         
+        self.saldoiniciomensual=self.selAccount.balance(datetime.date(self.wdgYM.year, self.wdgYM.month, 1)-datetime.timedelta(days=1))         
         if self.saldoiniciomensual==None:
             self.saldoiniciomensual=0
-        cur.execute("select * from opercuentas where id_cuentas="+str(self.selAccount.id)+" and date_part('year',datetime)="+str(self.wdgYM.year)+" and date_part('month',datetime)="+str(self.wdgYM.month)+" order by datetime, id_opercuentas")
+        
+        cur.execute("select * from opercuentas where id_cuentas=%s and date_part('year',datetime)=%s and date_part('month',datetime)=%s order by datetime, id_opercuentas", (self.selAccount.id, self.wdgYM.year, self.wdgYM.month))
         for o in cur:
             self.opercuentas.append(AccountOperation(self.mem).init__db_row(o, self.mem.conceptos.find(o['id_conceptos']), self.mem.tiposoperaciones.find(o['id_tiposoperaciones']), self.selAccount))
         cur.close()     

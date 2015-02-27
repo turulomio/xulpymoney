@@ -1231,7 +1231,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmAccountsReport.py" line="133"/>
+        <location filename="ui/frmAccountsReport.py" line="132"/>
         <source>I can&apos;t delete the credit card, because it has dependent registers</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1923,27 +1923,27 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmInvestmentReport.py" line="39"/>
+        <location filename="ui/frmInvestmentReport.py" line="38"/>
         <source>Add a new investment</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmInvestmentReport.py" line="105"/>
+        <location filename="ui/frmInvestmentReport.py" line="104"/>
         <source>Current operations average age: {0}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmInvestmentReport.py" line="148"/>
+        <location filename="ui/frmInvestmentReport.py" line="147"/>
         <source>Before adding a operation, you must add the current price of the product.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmInvestmentReport.py" line="231"/>
+        <location filename="ui/frmInvestmentReport.py" line="230"/>
         <source>You must select a MyStocks product to continue.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmInvestmentReport.py" line="319"/>
+        <location filename="ui/frmInvestmentReport.py" line="318"/>
         <source>Selected: {0}</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2003,37 +2003,37 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmInvestmentReport.py" line="77"/>
+        <location filename="ui/frmInvestmentReport.py" line="76"/>
         <source>Estimation review date: {0}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmInvestmentReport.py" line="79"/>
+        <location filename="ui/frmInvestmentReport.py" line="78"/>
         <source>Estimated balance: {0} ({1} after taxes)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmInvestmentReport.py" line="80"/>
+        <location filename="ui/frmInvestmentReport.py" line="79"/>
         <source>% Invested: {0}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmInvestmentReport.py" line="185"/>
+        <location filename="ui/frmInvestmentReport.py" line="184"/>
         <source>Shares transfer couldn&apos;t be done.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmInvestmentReport.py" line="78"/>
+        <location filename="ui/frmInvestmentReport.py" line="77"/>
         <source>Estimated annual dividend is {0} ({1} per share)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmInvestmentReport.py" line="81"/>
+        <location filename="ui/frmInvestmentReport.py" line="80"/>
         <source>% APR from invested: {0}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmInvestmentReport.py" line="137"/>
+        <location filename="ui/frmInvestmentReport.py" line="136"/>
         <source>Divest / Reinvest simulation</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5767,12 +5767,12 @@ S&#xc3;&#xb3;lo se contabilizar&#xc3;&#xa1; cuando se vendan las acciones</sourc
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgYearMonth.py" line="49"/>
+        <location filename="ui/wdgYearMonth.py" line="50"/>
         <source>I can&apos;t show the next month</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgYearMonth.py" line="63"/>
+        <location filename="ui/wdgYearMonth.py" line="64"/>
         <source>I can&apos;t show the previous month</source>
         <translation type="unfinished"></translation>
     </message>
