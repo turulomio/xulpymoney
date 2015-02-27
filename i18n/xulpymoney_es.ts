@@ -1232,7 +1232,7 @@ p, li { white-space: pre-wrap; }
         <translation>Actualizar los datos de la cuenta</translation>
     </message>
     <message>
-        <location filename="ui/frmAccountsReport.py" line="133"/>
+        <location filename="ui/frmAccountsReport.py" line="132"/>
         <source>I can&apos;t delete the credit card, because it has dependent registers</source>
         <translation>No puedo borrar la tarjeta de crédito, porque tiene registros dependientes</translation>
     </message>
@@ -1924,27 +1924,27 @@ p, li { white-space: pre-wrap; }
         <translation>realizar Split / Contrasplit</translation>
     </message>
     <message>
-        <location filename="ui/frmInvestmentReport.py" line="39"/>
+        <location filename="ui/frmInvestmentReport.py" line="38"/>
         <source>Add a new investment</source>
         <translation>Añadir una nueva inversión</translation>
     </message>
     <message>
-        <location filename="ui/frmInvestmentReport.py" line="105"/>
+        <location filename="ui/frmInvestmentReport.py" line="104"/>
         <source>Current operations average age: {0}</source>
         <translation>Media de edad de las operaciones actuales: {0}</translation>
     </message>
     <message>
-        <location filename="ui/frmInvestmentReport.py" line="148"/>
+        <location filename="ui/frmInvestmentReport.py" line="147"/>
         <source>Before adding a operation, you must add the current price of the product.</source>
         <translation>Antes de añadir una operación, debe añadir el valor actual del producto.</translation>
     </message>
     <message>
-        <location filename="ui/frmInvestmentReport.py" line="231"/>
+        <location filename="ui/frmInvestmentReport.py" line="230"/>
         <source>You must select a MyStocks product to continue.</source>
         <translation>Debe seleccionar un producto de MyStocks para continuar.</translation>
     </message>
     <message>
-        <location filename="ui/frmInvestmentReport.py" line="319"/>
+        <location filename="ui/frmInvestmentReport.py" line="318"/>
         <source>Selected: {0}</source>
         <translation>Seleccionado: {0}</translation>
     </message>
@@ -2004,37 +2004,37 @@ p, li { white-space: pre-wrap; }
         <translation>% Invertido</translation>
     </message>
     <message>
-        <location filename="ui/frmInvestmentReport.py" line="77"/>
+        <location filename="ui/frmInvestmentReport.py" line="76"/>
         <source>Estimation review date: {0}</source>
         <translation>Fecha de revisión de la estimación: {0}</translation>
     </message>
     <message>
-        <location filename="ui/frmInvestmentReport.py" line="79"/>
+        <location filename="ui/frmInvestmentReport.py" line="78"/>
         <source>Estimated balance: {0} ({1} after taxes)</source>
         <translation>Saldo estimado: {0} ({1} después de impuestos)</translation>
     </message>
     <message>
-        <location filename="ui/frmInvestmentReport.py" line="80"/>
+        <location filename="ui/frmInvestmentReport.py" line="79"/>
         <source>% Invested: {0}</source>
         <translation>% Invertido: {0}</translation>
     </message>
     <message>
-        <location filename="ui/frmInvestmentReport.py" line="185"/>
+        <location filename="ui/frmInvestmentReport.py" line="184"/>
         <source>Shares transfer couldn&apos;t be done.</source>
         <translation>El traspaso de acciones no ha podido ser realizado.</translation>
     </message>
     <message>
-        <location filename="ui/frmInvestmentReport.py" line="78"/>
+        <location filename="ui/frmInvestmentReport.py" line="77"/>
         <source>Estimated annual dividend is {0} ({1} per share)</source>
         <translation>La estimación anual de dividendo es {0} ({1} por acción)</translation>
     </message>
     <message>
-        <location filename="ui/frmInvestmentReport.py" line="81"/>
+        <location filename="ui/frmInvestmentReport.py" line="80"/>
         <source>% APR from invested: {0}</source>
         <translation>% TAE de lo invertido: {0}</translation>
     </message>
     <message>
-        <location filename="ui/frmInvestmentReport.py" line="137"/>
+        <location filename="ui/frmInvestmentReport.py" line="136"/>
         <source>Divest / Reinvest simulation</source>
         <translation>Simulación de Desinversión / Reinversión</translation>
     </message>
@@ -5772,12 +5772,12 @@ S&#xc3;&#xb3;lo se contabilizar&#xc3;&#xa1; cuando se vendan las acciones</sourc
         <translation>Siguiente mes</translation>
     </message>
     <message>
-        <location filename="ui/wdgYearMonth.py" line="49"/>
+        <location filename="ui/wdgYearMonth.py" line="50"/>
         <source>I can&apos;t show the next month</source>
         <translation>No puedo mostrar el mes siguiente</translation>
     </message>
     <message>
-        <location filename="ui/wdgYearMonth.py" line="63"/>
+        <location filename="ui/wdgYearMonth.py" line="64"/>
         <source>I can&apos;t show the previous month</source>
         <translation>No puedo mostrar el mes anterior</translation>
     </message>

@@ -18,9 +18,10 @@ class wdgYearMonth(QWidget, Ui_wdgYearMonth):
             print (function_name(self), "Firstyear is None")
             return
         
-        
         self.firstyear=firstyear
         self.lastyear=lastyear
+        self.year=currentyear
+        self.month=currentmonth
         for year in range(firstyear, lastyear+1):
             self.cmbYear.addItem(str(year), year)
         self.set(currentyear, currentmonth)

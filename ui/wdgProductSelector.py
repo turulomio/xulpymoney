@@ -93,11 +93,11 @@ class frmProductSelector(QDialog):
         self.lblFound.setText(self.tr("Found registers"))
 
         self.setTabOrder(self.txt, self.cmd)
-        self.setTabOrder(self.cmd, self.tblInvestments)                                                                                                                                                                                                                                        
-        self.connect(self.cmd,SIGNAL('released()'),  self.on_cmd_released)                                                                                                                                                                                                         
-        self.connect(self.txt,SIGNAL('returnPressed()'),  self.on_cmd_released)                                                                                                                                                                                              
-        self.connect(self.tblInvestments,SIGNAL('itemSelectionChanged()'),  self.on_tblInvestments_itemSelectionChanged)                                                                                                             
-        self.connect(self.tblInvestments,SIGNAL('cellDoubleClicked(int,int)'),  self.on_tblInvestments_cellDoubleClicked)
+        self.setTabOrder(self.cmd, self.tblInvestments)
+        self.cmd.released.connect(self.on_cmd_released)
+        self.txt.returnPressed.connect(self.on_cmd_released)                    
+        self.tblInvestments.itemSelectionChanged.connect(self.on_tblInvestments_itemSelectionChanged)
+        self.tblInvestments.cellDoubleClicked.connect(self.on_tblInvestments_cellDoubleClicked)
         
     def on_cmd_released(self):
         if len(self.txt.text().upper())<=3:            
