@@ -6,7 +6,7 @@ import datetime,  time,  pytz,   psycopg2,  psycopg2.extras,  sys,  codecs,  os,
 from decimal import *
 
 version="0.1"
-version_date=datetime.date(2014,10,5)
+version_date=datetime.date(2015,3,1)
 
 class AccountOperationOfInvestmentOperation:
     """Clase parar trabajar con las opercuentas generadas automaticamente por los movimientos de las inversiones"""
