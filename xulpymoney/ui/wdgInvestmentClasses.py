@@ -5,7 +5,7 @@ from PyQt5.QtGui import *
 from Ui_wdgInvestmentClasses import *
 from libxulpymoney import *
 
-from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg
+from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg
 from matplotlib.figure import Figure
 class canvasPie(FigureCanvasQTAgg):
     def __init__(self, parent=None):

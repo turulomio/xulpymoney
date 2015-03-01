@@ -3,7 +3,7 @@ from PyQt5.QtGui import *
 from libxulpymoney import *
 from matplotlib.finance import *
 from decimal import Decimal
-from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg
+from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg
 from matplotlib.dates import *
 from matplotlib.pyplot import *
 from matplotlib.figure import Figure
@@ -217,7 +217,8 @@ class canvasChart(FigureCanvasQTAgg):
         
         QMetaObject.connectSlotsByName(self)
         self.setContextMenuPolicy(Qt.CustomContextMenu)
-        self.connect(self,SIGNAL('customContextMenuRequested(QPoint)'), self.on_customContextMenuRequested)
+        self.customContextMenuRequested.connect(self.on_customContextMenuRequested)
+
 
     def showLegend(self):
         """Alterna mostrando y desmostrando legend, empieza con sí"""
