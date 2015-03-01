@@ -10,7 +10,7 @@ from frmSplit import *
 from frmEstimationsAdd import *
 from frmDPSAdd import *
 from canvaschart import *
-from matplotlib.backends.backend_qt4agg import NavigationToolbar2QT 
+from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT 
 
 class frmProductReport(QDialog, Ui_frmProductReport):
     def __init__(self, mem,  product, inversion=None, parent = None, name = None, modal = False):
@@ -59,15 +59,15 @@ class frmProductReport(QDialog, Ui_frmProductReport):
             if self.product.id>0:
                 self.grpInformation.setEnabled(False)
 
-######        self.canvasIntraday=canvasChartIntraday( self.mem, self)
-######        self.ntbIntraday = NavigationToolbar2QT(self.canvasIntraday, self)
-######        self.layIntraday.addWidget(self.canvasIntraday)
-######        self.layIntraday.addWidget(self.ntbIntraday)
-######        
-######        self.canvasHistorical=canvasChartHistorical( self.mem, self)
-######        self.ntbHistorical=NavigationToolbar2QT(self.canvasHistorical, self)
-######        self.layHistorical.addWidget(self.canvasHistorical)
-######        self.layHistorical.addWidget(self.ntbHistorical)
+        self.canvasIntraday=canvasChartIntraday( self.mem, self)
+        self.ntbIntraday = NavigationToolbar2QT(self.canvasIntraday, self)
+        self.layIntraday.addWidget(self.canvasIntraday)
+        self.layIntraday.addWidget(self.ntbIntraday)
+        
+        self.canvasHistorical=canvasChartHistorical( self.mem, self)
+        self.ntbHistorical=NavigationToolbar2QT(self.canvasHistorical, self)
+        self.layHistorical.addWidget(self.canvasHistorical)
+        self.layHistorical.addWidget(self.ntbHistorical)
                 
         self.mem.stockexchanges.qcombobox(self.cmbBolsa)
         self.mem.investmentsmodes.qcombobox(self.cmbPCI)
@@ -191,23 +191,23 @@ class frmProductReport(QDialog, Ui_frmProductReport):
     def load_graphics(self):
         self.product.result.intradia.load_from_db(self.calendar.selectedDate().toPyDate(), self.product)
         
-########        #Canvas Historical
-########        if len(self.product.result.ohclDaily.arr)<2:#Needs 2 to show just a line
-########            self.canvasHistorical.hide()
-########            self.ntbHistorical.hide()
-########        else:
-########            self.canvasHistorical.load_data(self.product, self.inversion)
-########            self.canvasHistorical.show()
-########            self.ntbHistorical.show() 
-########            
-########        #Canvas Intradia
-########        if len(self.product.result.intradia.arr)<2:
-########            self.canvasIntraday.hide()
-########            self.ntbIntraday.hide()
-########        else:
-########            self.canvasIntraday.load_data_intraday(self.product)
-########            self.canvasIntraday.show()
-########            self.ntbIntraday.show()       
+        #Canvas Historical
+        if len(self.product.result.ohclDaily.arr)<2:#Needs 2 to show just a line
+            self.canvasHistorical.hide()
+            self.ntbHistorical.hide()
+        else:
+            self.canvasHistorical.load_data(self.product, self.inversion)
+            self.canvasHistorical.show()
+            self.ntbHistorical.show() 
+            
+        #Canvas Intradia
+        if len(self.product.result.intradia.arr)<2:
+            self.canvasIntraday.hide()
+            self.ntbIntraday.hide()
+        else:
+            self.canvasIntraday.load_data_intraday(self.product)
+            self.canvasIntraday.show()
+            self.ntbIntraday.show()       
         
         #tblIntradia
         if len(self.product.result.intradia.arr)==0:

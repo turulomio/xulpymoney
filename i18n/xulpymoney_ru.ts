@@ -675,72 +675,72 @@ Total purged in global process: {1}</source>
 <context>
     <name>canvasChartHistorical</name>
     <message>
-        <location filename="ui/canvaschart.py" line="346"/>
+        <location filename="ui/canvaschart.py" line="347"/>
         <source>Selling price</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/canvaschart.py" line="347"/>
+        <location filename="ui/canvaschart.py" line="348"/>
         <source>Average purchase price</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/canvaschart.py" line="449"/>
+        <location filename="ui/canvaschart.py" line="450"/>
         <source>1 day</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/canvaschart.py" line="453"/>
+        <location filename="ui/canvaschart.py" line="454"/>
         <source>1 week</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/canvaschart.py" line="457"/>
+        <location filename="ui/canvaschart.py" line="458"/>
         <source>1 month</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/canvaschart.py" line="461"/>
+        <location filename="ui/canvaschart.py" line="462"/>
         <source>1 year</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/canvaschart.py" line="344"/>
+        <location filename="ui/canvaschart.py" line="345"/>
         <source>SMA200</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/canvaschart.py" line="345"/>
+        <location filename="ui/canvaschart.py" line="346"/>
         <source>SMA50</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/canvaschart.py" line="416"/>
+        <location filename="ui/canvaschart.py" line="417"/>
         <source>Intraday</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/canvaschart.py" line="600"/>
+        <location filename="ui/canvaschart.py" line="601"/>
         <source>Lines</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/canvaschart.py" line="610"/>
+        <location filename="ui/canvaschart.py" line="611"/>
         <source>Candles</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/canvaschart.py" line="621"/>
+        <location filename="ui/canvaschart.py" line="622"/>
         <source>Indicators</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/canvaschart.py" line="348"/>
+        <location filename="ui/canvaschart.py" line="349"/>
         <source>Purchase point</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/canvaschart.py" line="349"/>
+        <location filename="ui/canvaschart.py" line="350"/>
         <source>Sales point</source>
         <translation type="unfinished"></translation>
     </message>
@@ -748,22 +748,22 @@ Total purged in global process: {1}</source>
 <context>
     <name>canvasChartIntraday</name>
     <message>
-        <location filename="ui/canvaschart.py" line="277"/>
+        <location filename="ui/canvaschart.py" line="278"/>
         <source>Lines</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/canvaschart.py" line="284"/>
+        <location filename="ui/canvaschart.py" line="285"/>
         <source>Candles</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/canvaschart.py" line="291"/>
+        <location filename="ui/canvaschart.py" line="292"/>
         <source>Indicators</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/canvaschart.py" line="299"/>
+        <location filename="ui/canvaschart.py" line="300"/>
         <source>Intraday</source>
         <translation type="unfinished"></translation>
     </message>
@@ -771,17 +771,17 @@ Total purged in global process: {1}</source>
 <context>
     <name>canvasTotal</name>
     <message>
-        <location filename="ui/wdgTotal.py" line="84"/>
+        <location filename="ui/wdgTotal.py" line="79"/>
         <source>Total assets</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgTotal.py" line="85"/>
+        <location filename="ui/wdgTotal.py" line="80"/>
         <source>Zero risk assets</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgTotal.py" line="86"/>
+        <location filename="ui/wdgTotal.py" line="81"/>
         <source>Bond assets</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5553,57 +5553,57 @@ S&#xc3;&#xb3;lo se contabilizar&#xc3;&#xa1; cuando se vendan las acciones</sourc
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgTotal.py" line="115"/>
+        <location filename="ui/wdgTotal.py" line="109"/>
         <source>Data from selected year</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgTotal.py" line="139"/>
+        <location filename="ui/wdgTotal.py" line="135"/>
         <source>Balance at {0}-12-31: {1}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgTotal.py" line="265"/>
+        <location filename="ui/wdgTotal.py" line="257"/>
         <source>Incomes of {0} of {1}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgTotal.py" line="281"/>
+        <location filename="ui/wdgTotal.py" line="273"/>
         <source>Product selling operations of {0} of {1}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgTotal.py" line="295"/>
+        <location filename="ui/wdgTotal.py" line="287"/>
         <source>Dividends of {0} of {1}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgTotal.py" line="310"/>
+        <location filename="ui/wdgTotal.py" line="302"/>
         <source>Expenses of {0} of {1}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgTotal.py" line="327"/>
+        <location filename="ui/wdgTotal.py" line="319"/>
         <source>You can&apos;t close this tab</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgTotal.py" line="93"/>
+        <location filename="ui/wdgTotal.py" line="88"/>
         <source>Filling report data</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgTotal.py" line="93"/>
+        <location filename="ui/wdgTotal.py" line="88"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgTotal.py" line="95"/>
+        <location filename="ui/wdgTotal.py" line="90"/>
         <source>Calculating data...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgTotal.py" line="317"/>
+        <location filename="ui/wdgTotal.py" line="309"/>
         <source>Gains and dividends sum from this month is {0}. In this year it&apos;s value rises to {1}</source>
         <translation type="unfinished"></translation>
     </message>

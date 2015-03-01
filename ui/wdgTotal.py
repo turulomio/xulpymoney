@@ -5,8 +5,8 @@ from libxulpymoney import *
 from libxulpymoney import *
 from matplotlib.finance import *
 
-from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg
-from matplotlib.backends.backend_qt4agg import NavigationToolbar2QT 
+from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg
+from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT 
 
 from matplotlib.dates import *
 from Ui_wdgTotal import *
@@ -16,11 +16,6 @@ import calendar,  datetime
 from matplotlib.figure import Figure
 class canvasTotal(FigureCanvasQTAgg):
     def __init__(self, mem, parent):
-        return
-        
-        
-        
-        
         self.mem=mem
         self.fig = Figure()
         FigureCanvasQTAgg.__init__(self, self.fig)
@@ -110,23 +105,24 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         self.table.settings("wdgTotal",  self.mem)
         
         self.wyData.initiate(fechainicio.year, datetime.date.today().year, datetime.date.today().year)
-        self.wyData.changed.connect(self.on_wyData_changed)
         self.wyChart.initiate(fechainicio.year, datetime.date.today().year, datetime.date.today().year)
         self.wyChart.label.setText(self.tr("Data from selected year"))
-        self.wyChart.changed.connect(self.on_wyChart_changed)
 
-#########
-#########        self.canvas=canvasTotal(self.mem,  self)
-#########        self.ntb = NavigationToolbar2QT(self.canvas, self)
-#########        
-#########        self.tabGraphTotal.addWidget(self.canvas)
-#########        self.tabGraphTotal.addWidget(self.ntb)
+        self.canvas=canvasTotal(self.mem,  self)
+        self.ntb = NavigationToolbar2QT(self.canvas, self)
+        
+        self.tabGraphTotal.addWidget(self.canvas)
+        self.tabGraphTotal.addWidget(self.ntb)
         
         self.tab.setCurrentIndex(0)
         self.load_data()
+        self.wyData.changed.connect(self.on_wyData_mychanged)#Used my due to it took default on_wyData_changed
+        self.wyChart.changed.connect(self.on_wyChart_mychanged)
+        print ("Finished")
 
         
     def load_data(self):        
+        print ("loading data")
         self.table.clearContents()
         inicio=datetime.datetime.now()     
         sumgastos=0
@@ -201,11 +197,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
 
 
     def load_graphic(self):   
-        return
-        
-        
-        
-        
+        print("loading graphic")
         inicio=datetime.datetime.now()  
         data=[]#date,valor
         zero=[]#date, valor zero
@@ -239,16 +231,16 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         self.canvas.mydraw(self.mem, data, zero,  bonds)
         print ("wdgTotal > load_graphic: {0}".format(datetime.datetime.now()-inicio))
 
-    def on_wyData_changed(self):
+    def on_wyData_mychanged(self):
         self.load_data()    
         
-    def on_wyChart_changed(self):
+    def on_wyChart_mychanged(self):
         self.load_graphic()      
         
 
     def on_tab_currentChanged(self, index):
         if  index==1 and self.canvas.plotted==False: #If has not been plotted, plots it.
-            self.on_wyChart_changed()
+            self.on_wyChart_mychanged()
             
         
     @QtCore.pyqtSlot() 
