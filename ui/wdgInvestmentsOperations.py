@@ -15,7 +15,7 @@ class wdgInvestmentsOperations(QWidget, Ui_wdgInvestmentsOperations):
 
         self.mem.data.load_inactives()
         self.wym.initiate(fechainicio.year, datetime.date.today().year, datetime.date.today().year,  datetime.date.today().month)
-        self.wym.changed.connect(self.on_wym_changed)
+        self.wym.changed.connect(self.on_wym_mychanged)
         self.setOperations=SetInvestmentOperations(self.mem)
         self.setCurrent=SetInvestmentOperationsCurrent(self.mem)
         self.selOperation=None#For table
@@ -53,7 +53,7 @@ class wdgInvestmentsOperations(QWidget, Ui_wdgInvestmentsOperations):
     def on_radYear_toggled(self, toggle):
         self.load()
         
-    def on_wym_changed(self):
+    def on_wym_mychanged(self):
         self.load()    
 
     def on_table_itemSelectionChanged(self):
