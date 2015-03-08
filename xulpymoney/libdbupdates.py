@@ -239,7 +239,14 @@ class Update:
             cur.close()
             self.mem.con.commit()
             self.set_database_version(201502131010)     
-  
+        if self.dbversion<201503081017:
+            cur=self.mem.con.cursor()
+            cur.execute("CREATE TABLE annualtargets ( year integer NOT NULL,  percentage numeric(6,2),  CONSTRAINT annualtargets_pk PRIMARY KEY (year)) WITH (  OIDS=FALSE);")
+            cur.execute("ALTER TABLE annualtargets OWNER TO postgres;")
+            cur.execute("CREATE INDEX annualtargets_index_year ON annualtargets USING btree (year);")
+            cur.close()
+            self.mem.con.commit()
+            self.set_database_version(201503081017)     
 
         """AFTER EXECUTING I MUST RUN SQL UPDATE SCRIPT TO UPDATE FUTURE INSTALLATIONS
     

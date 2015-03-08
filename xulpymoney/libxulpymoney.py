@@ -2860,6 +2860,78 @@ class OperationType:
         self.name=name
         return self
 
+class AnnualTarget:
+    def __init__(self, mem):
+        self.mem=mem
+        self.year=None
+        self.percentage=None
+        self.lastyear_assests=None
+        self.saved_in_db=False #Controls if AnnualTarget is saved in the table annualtargets
+    
+    def init__from_db(self, year, lastyear_assests=None):
+        """Fills the object with data from db.
+        If lastyear_assests=None it gets the assests from db"""
+        cur=self.mem.con.cursor()
+        
+        if lastyear_assests==None:
+            self.lastyear_assests=Assets(self.mem).saldo_total(self.mem.data.investments_all(),  datetime.date(year-1, 12, 31))
+        else:
+            self.lastyear_assests=lastyear_assests
+        
+        cur.execute("select * from annualtargets where year=%s", (year, ))
+        if cur.rowcount==0:
+            self.year=year
+            self.percentage=0
+        else:
+            row=cur.fetchone()
+            self.year=year
+            self.percentage=row['percentage']
+            self.saved_in_db=True
+        cur.close()
+        return self
+        
+    def save(self):
+        cur=self.mem.con.cursor()
+        if self.saved_in_db==False:
+            cur.execute("insert into annualtargets (year, percentage) values (%s,%s)", (self.year, self.percentage))
+            self.saved_in_db=True
+        else:
+            cur.execute("update annualtargets set percentage=%s where year=%s", (self.percentage, self.year))
+        cur.close()
+        
+    def annual_balance(self):
+        """Returns the percentage of the last year assests"""
+        return self.lastyear_assests*self.percentage/100
+        
+    def monthly_balance(self):
+        """Returns the monthly balance (annual/12)"""
+        return self.annual_balance()/12
+        
+    def qtablewidgetitem_monthly(self, amount):
+        """returns a qtablewidgetitem colored"""
+        item=self.mem.localcurrency.qtablewidgetitem(amount)
+        if amount<self.monthly_balance():   
+            item.setBackground(QColor(255, 148, 148))
+        else:
+            item.setBackground(QColor(148, 255, 148))
+        return item
+        
+    def qtablewidgetitem_annual(self, amount):
+        item=self.mem.localcurrency.qtablewidgetitem(amount)
+        if amount<self.annual_balance():   
+            item.setBackground(QColor(255, 148, 148))
+        else:
+            item.setBackground(QColor(148, 255, 148))
+        return item
+    def qtablewidgetitem_accumulated(self, amount, month):
+        """month: january=1"""
+        item=self.mem.localcurrency.qtablewidgetitem(amount)
+        if amount<self.monthly_balance()*month:   
+            item.setBackground(QColor(255, 148, 148))
+        else:
+            item.setBackground(QColor(148, 255, 148))
+        return item
+        
 
 class Assets:
     def __init__(self, mem):
