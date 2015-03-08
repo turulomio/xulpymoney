@@ -103,8 +103,12 @@ class wdgTotal(QWidget, Ui_wdgTotal):
             return
         
         self.table.settings("wdgTotal",  self.mem)
+        self.tblTargets.settings("wdgTotal", self.mem)
+        
+        self.annualtarget=None#AnnualTarget Object
         
         self.wyData.initiate(fechainicio.year, datetime.date.today().year, datetime.date.today().year)
+        self.wyTarget.initiate(fechainicio.year, datetime.date.today().year, datetime.date.today().year)
         self.wyChart.initiate(fechainicio.year, datetime.date.today().year, datetime.date.today().year)
         self.wyChart.label.setText(self.tr("Data from selected year"))
 
@@ -118,9 +122,8 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         self.load_data()
         self.wyData.changed.connect(self.on_wyData_mychanged)#Used my due to it took default on_wyData_changed
         self.wyChart.changed.connect(self.on_wyChart_mychanged)
-        print ("Finished")
+        self.wyTarget.changed.connect(self.on_wyTarget_mychanged)
 
-        
     def load_data(self):        
         print ("loading data")
         self.table.clearContents()
@@ -196,6 +199,8 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         print ("wdgTotal > load_data: {0}".format(final-inicio))
 
 
+
+
     def load_graphic(self):   
         print("loading graphic")
         inicio=datetime.datetime.now()  
@@ -234,13 +239,51 @@ class wdgTotal(QWidget, Ui_wdgTotal):
     def on_wyData_mychanged(self):
         self.load_data()    
         
+    @pyqtSlot() 
+    def on_wyTarget_mychanged(self):
+        print ("loading targets")
+        self.annualtarget=AnnualTarget(self.mem).init__from_db(self.wyTarget.year) 
+        self.lblTarget.setText(self.tr("Annual target percentage of total assests balance at {}-12-31 ( {} )".format(self.annualtarget.year-1, self.mem.localcurrency.string(self.annualtarget.lastyear_assests))))
+        self.spinTarget.setValue(float(self.annualtarget.percentage))
+        self.tblTargets.clearContents()
+        inicio=datetime.datetime.now()     
+        sumdividends=Decimal(0)
+        sumconsolidado=Decimal(0)
+        sumdc=Decimal(0)
+        for i in range(12): 
+            dividends=Investment(self.mem).dividends_neto(  self.wyTarget.year, i+1)
+            consolidado=Assets(self.mem).consolidado_neto(self.mem.data.investments_all(), self.wyTarget.year, i+1)
+            dc=dividends+consolidado
+            sumdividends=sumdividends+dividends
+            sumconsolidado=sumconsolidado+consolidado
+            sumdc=sumdc+dc           
+            self.tblTargets.setItem(0, i, self.mem.localcurrency.qtablewidgetitem(consolidado))
+            self.tblTargets.setItem(1, i, self.mem.localcurrency.qtablewidgetitem(dividends))
+            self.tblTargets.setItem(3, i, self.annualtarget.qtablewidgetitem_monthly(dc))
+            self.tblTargets.setItem(4, i, self.mem.localcurrency.qtablewidgetitem(self.annualtarget.monthly_balance()))
+            self.tblTargets.setItem(6, i, self.annualtarget.qtablewidgetitem_accumulated(sumdc, i+1))
+            self.tblTargets.setItem(7, i, self.mem.localcurrency.qtablewidgetitem(self.annualtarget.monthly_balance()*(i+1)))
+        self.tblTargets.setItem(0, 12, self.mem.localcurrency.qtablewidgetitem(sumconsolidado))
+        self.tblTargets.setItem(1, 12, self.mem.localcurrency.qtablewidgetitem(sumdividends))
+        self.tblTargets.setItem(3, 12, self.annualtarget.qtablewidgetitem_annual(sumdc))
+        self.tblTargets.setItem(4, 12, self.mem.localcurrency.qtablewidgetitem(self.annualtarget.annual_balance()))
+        self.tblTargets.setCurrentCell(0, datetime.date.today().month-1)   
+        print ("wdgTargets > load_data: {0}".format(datetime.datetime.now()  -inicio))
+        
     def on_wyChart_mychanged(self):
         self.load_graphic()      
         
+    def on_cmdTargets_released(self):
+        self.annualtarget.percentage=self.spinTarget.value()
+        self.annualtarget.save()
+        self.mem.con.commit()
+        self.on_wyTarget_mychanged()
 
     def on_tab_currentChanged(self, index):
-        if  index==1 and self.canvas.plotted==False: #If has not been plotted, plots it.
+        if  index==2 and self.canvas.plotted==False: #If has not been plotted, plots it.
             self.on_wyChart_mychanged()
+        if index==1:
+            self.on_wyTarget_mychanged()
             
         
     @QtCore.pyqtSlot() 
@@ -313,7 +356,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
     
     def on_tab_tabCloseRequested(self, index):
         """Only removes dinamic tabs"""
-        if index in (0, 1):
+        if index in (0, 1, 2):
             m=QMessageBox()
             m.setIcon(QMessageBox.Information)
             m.setText(self.tr("You can't close this tab"))

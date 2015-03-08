@@ -469,6 +469,18 @@ SET default_tablespace = '';
 SET default_with_oids = false;
 
 --
+-- Name: annualtargets; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE annualtargets (
+    year integer NOT NULL,
+    percentage numeric(6,2)
+);
+
+
+ALTER TABLE annualtargets OWNER TO postgres;
+
+--
 -- Name: bolsas; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -1209,6 +1221,14 @@ ALTER TABLE ONLY opercuentasdeoperinversiones ALTER COLUMN id_opercuentas SET DE
 
 
 --
+-- Name: annualtargets_pk; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY annualtargets
+    ADD CONSTRAINT annualtargets_pk PRIMARY KEY (year);
+
+
+--
 -- Name: bolsas_pk; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -1326,6 +1346,13 @@ ALTER TABLE ONLY quotes
 
 ALTER TABLE ONLY tarjetas
     ADD CONSTRAINT tarjetas_pkey PRIMARY KEY (id_tarjetas);
+
+
+--
+-- Name: annualtargets_index_year; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX annualtargets_index_year ON annualtargets USING btree (year);
 
 
 --
@@ -1683,6 +1710,16 @@ REVOKE ALL ON FUNCTION last(anyelement) FROM postgres;
 GRANT ALL ON FUNCTION last(anyelement) TO postgres;
 GRANT ALL ON FUNCTION last(anyelement) TO PUBLIC;
 GRANT ALL ON FUNCTION last(anyelement) TO xulpymoney_user;
+
+
+--
+-- Name: annualtargets; Type: ACL; Schema: public; Owner: postgres
+--
+
+REVOKE ALL ON TABLE annualtargets FROM PUBLIC;
+REVOKE ALL ON TABLE annualtargets FROM postgres;
+GRANT ALL ON TABLE annualtargets TO postgres;
+GRANT ALL ON TABLE annualtargets TO xulpymoney_user;
 
 
 --
@@ -6371,6 +6408,7 @@ INSERT INTO products VALUES ('Lockheed Martin Corp.', NULL, 'USD', 1, NULL, 7687
 INSERT INTO products VALUES ('Loewe AG', 'DE0006494107', 'EUR', 1, '|DEUTSCHEBOERSE|', 81290, NULL, NULL, NULL, NULL, 100, 'c', 0, 5, NULL, NULL, NULL, 'DEUTSCHEBOERSE#DE0006494107||de||False', false);
 INSERT INTO products VALUES ('Loews Corp.', NULL, 'USD', 1, NULL, 76587, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, NULL, 'NYSE#L||us||False', false);
 INSERT INTO products VALUES ('LOGICA', 'GB0005227086', 'EUR', 1, '|EURONEXT|', 80207, NULL, NULL, NULL, NULL, 100, 'c', 0, 12, NULL, NULL, NULL, 'EURONEXT#GB0005227086||nl||False', false);
+INSERT INTO products VALUES ('Logista Holdings', 'ES0105027009 ', 'EUR', 1, '|MERCADOCONTINUO|', 81705, 'http://www.logista.es', NULL, NULL, NULL, 100, 'c', 0, 1, 'LOG.MC', '{9}', '{3}', NULL, false);
 INSERT INTO products VALUES ('Logitech International S.A.', NULL, 'USD', 1, '|NASDAQ100|', 76329, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, NULL, 'LOGI||us||False', false);
 INSERT INTO products VALUES ('Logwin AG', 'LU0106198319', 'EUR', 1, '|DEUTSCHEBOERSE|', 80624, NULL, NULL, NULL, NULL, 100, 'c', 0, 5, NULL, NULL, NULL, 'DEUTSCHEBOERSE#LU0106198319||de||False', false);
 INSERT INTO products VALUES ('Lone Pine Resources Inc.', NULL, 'USD', 1, NULL, 79617, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, NULL, 'NYSE#LPR||us||False', false);
@@ -8817,7 +8855,7 @@ INSERT INTO bolsas VALUES (6, 'it', '07:00:00', 'Bolsa de Milán', '17:38:00', '
 INSERT INTO bolsas VALUES (7, 'jp', '09:00:00', 'Bolsa de Tokio', '20:00:00', 'Asia/Tokyo');
 INSERT INTO bolsas VALUES (8, 'cn', '00:00:00', 'Bolsa de Hong Kong', '20:00:00', 'Asia/Hong_Kong');
 INSERT INTO bolsas VALUES (9, 'pt', '07:00:00', 'Bolsa de Lisboa', '17:38:00', 'Europe/Lisbon');
-INSERT INTO globals VALUES (1, 'Version', '201502120631');
+INSERT INTO globals VALUES (1, 'Version', '201503081017');
 INSERT INTO globals VALUES (6, 'Admin mode', NULL);
 DELETE FROM products WHERE id<=0;
 ALTER SEQUENCE seq_conceptos START WITH 100 RESTART;
