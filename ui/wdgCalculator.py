@@ -19,6 +19,9 @@ class wdgCalculator(QWidget, Ui_wdgCalculator):
             self.hasProducts=False        
             return
         self.product=self.mem.data.products_all().find(self.mem.config.get_value("wdgCalculator", "Product"))
+        
+        self.load_cmbPrice()
+        
         self.mem.data.products_all().qcombobox(self.cmbProducts, self.product)
         self.txtAmount.setText(self.mem.config.get_value("wdgCalculator", "Invested"))
 
@@ -27,15 +30,32 @@ class wdgCalculator(QWidget, Ui_wdgCalculator):
             self.spnProductPriceVariation.setValue(percentagevariation)
             self.txtAmount.setText(amount)
 
+    def load_cmbPrice(self):       
+        self.cmbPrice.clear() 
+        self.cmbPrice.addItem(self.tr("Penultimate price ({})".format(str(self.product.result.basic.penultimate.datetime)[:16])))
+        self.cmbPrice.addItem(self.tr("Last price ({})".format(str(self.product.result.basic.last.datetime)[:16])))
+        self.cmbPrice.setCurrentIndex(1)#Last price
+
+    @pyqtSlot(int)  
+    def on_cmbPrice_currentIndexChanged(self, index):
+        if index==1:
+            self.txtProductPrice.setText(self.product.result.basic.last.quote)
+        else:
+            self.txtProductPrice.setText(self.product.result.basic.penultimate.quote)
+            
+        self.txtFinalPrice.setText(self.txtProductPrice.decimal()*Decimal(1+Decimal(self.spnProductPriceVariation.value())*self.txtLeveraged.decimal()/100))
+        self.calculate()
+            
     @pyqtSlot(int)  
     def on_cmbProducts_currentIndexChanged(self, index):
         self.product=self.mem.data.products_all().find(self.cmbProducts.itemData(index))
         if self.product:
             self.mem.config.set_value("wdgCalculator", "Product", self.product.id)##Save selected product
             self.mem.config.save()
-        self.lblProductPrice.setText(self.tr("Current price ({0})").format(str(self.product.result.basic.last.datetime)[:16]))
+            
+        self.load_cmbPrice()
+        
         self.txtLeveraged.setText(self.product.apalancado.multiplier)
-        self.txtProductPrice.setText(self.product.result.basic.last.quote)
         self.txtFinalPrice.setText(self.txtProductPrice.decimal()*Decimal(1+Decimal(self.spnProductPriceVariation.value())*self.txtLeveraged.decimal()/100))
         self.calculate()
         
