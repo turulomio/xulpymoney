@@ -3763,94 +3763,94 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>wdgCalculator</name>
     <message>
-        <location filename="ui/Ui_wdgCalculator.py" line="150"/>
+        <location filename="ui/Ui_wdgCalculator.py" line="155"/>
         <source>Investment calculator</source>
         <translation>Calculadora de inversiones</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgCalculator.py" line="151"/>
-        <source>Product selection</source>
-        <translation>Selección de producto</translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_wdgCalculator.py" line="152"/>
+        <location filename="ui/Ui_wdgCalculator.py" line="157"/>
         <source>Select a product</source>
         <translation>Selecciona un producto</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgCalculator.py" line="153"/>
-        <source>Current price</source>
-        <translation>Precio actual</translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_wdgCalculator.py" line="154"/>
+        <location filename="ui/Ui_wdgCalculator.py" line="158"/>
         <source>Variation from current price</source>
         <translation>Variación del precio actual</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgCalculator.py" line="155"/>
+        <location filename="ui/Ui_wdgCalculator.py" line="159"/>
         <source> %</source>
         <translation> %</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgCalculator.py" line="156"/>
+        <location filename="ui/Ui_wdgCalculator.py" line="160"/>
         <source>Final price</source>
         <translation>Precio final</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgCalculator.py" line="159"/>
+        <location filename="ui/Ui_wdgCalculator.py" line="163"/>
         <source>Shares calc</source>
         <translation>Cálculo de acciones</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgCalculator.py" line="160"/>
+        <location filename="ui/Ui_wdgCalculator.py" line="164"/>
         <source>Amount to invest</source>
         <translation>Cantidad a invertir</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgCalculator.py" line="161"/>
+        <location filename="ui/Ui_wdgCalculator.py" line="165"/>
         <source>Shares</source>
         <translation>Acciones</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgCalculator.py" line="162"/>
+        <location filename="ui/Ui_wdgCalculator.py" line="166"/>
         <source>Calc estimations</source>
         <translation>Estimaciones de cálculo</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgCalculator.py" line="166"/>
+        <location filename="ui/Ui_wdgCalculator.py" line="170"/>
         <source>Price</source>
         <translation>Precio</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgCalculator.py" line="168"/>
+        <location filename="ui/Ui_wdgCalculator.py" line="172"/>
         <source>Gains</source>
         <translation>Ganancias</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgCalculator.py" line="164"/>
+        <location filename="ui/Ui_wdgCalculator.py" line="168"/>
         <source>% Gains</source>
         <translation>% Ganancias</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgCalculator.py" line="157"/>
+        <location filename="ui/Ui_wdgCalculator.py" line="161"/>
         <source>Leveraged product</source>
         <translation>Producto apalancado</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgCalculator.py" line="158"/>
+        <location filename="ui/Ui_wdgCalculator.py" line="162"/>
         <source>1</source>
         <translation>1</translation>
-    </message>
-    <message>
-        <location filename="ui/wdgCalculator.py" line="36"/>
-        <source>Current price ({0})</source>
-        <translation>Precio actual ({0})</translation>
     </message>
     <message>
         <location filename="ui/wdgCalculator.py" line="17"/>
         <source>You need to create at least one investment</source>
         <translation>Necesitas crear al menos una inversión</translation>
+    </message>
+    <message>
+        <location filename="ui/wdgCalculator.py" line="36"/>
+        <source>Last price ({})</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/wdgCalculator.py" line="35"/>
+        <source>Penultimate price ({})</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_wdgCalculator.py" line="156"/>
+        <source>Product settings</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

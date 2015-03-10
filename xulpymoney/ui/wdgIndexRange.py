@@ -159,7 +159,7 @@ class wdgIndexRange(QWidget, Ui_wdgIndexRange):
     @QtCore.pyqtSlot() 
     def on_actionBottom_triggered(self):        
         d=QDialog(self)        
-        d.setFixedSize(670, 670)
+        d.setFixedSize(850, 850)
         d.setWindowTitle(self.tr("Investment calculator"))
         w=wdgCalculator(self.mem)
         w.init__percentagevariation_amount(self.range.currentPriceBottomVariation(), self.txtInvertir.decimal())
@@ -173,7 +173,7 @@ class wdgIndexRange(QWidget, Ui_wdgIndexRange):
     @QtCore.pyqtSlot() 
     def on_actionTop_triggered(self):        
         d=QDialog(self)
-        d.setFixedSize(670, 670)
+        d.setFixedSize(850, 850)
         d.setWindowTitle(self.tr("Investment calculator"))
         w=wdgCalculator(self.mem)
         w.init__percentagevariation_amount(self.range.currentPriceTopVariation(), self.txtInvertir.decimal())
@@ -187,7 +187,7 @@ class wdgIndexRange(QWidget, Ui_wdgIndexRange):
     @QtCore.pyqtSlot() 
     def on_actionMiddle_triggered(self):        
         d=QDialog(self)        
-        d.setFixedSize(670, 670)
+        d.setFixedSize(850, 850)
         d.setWindowTitle(self.tr("Investment calculator"))
         w=wdgCalculator(self.mem)
         w.init__percentagevariation_amount(self.range.currentPriceMiddleVariation(), self.txtInvertir.decimal())

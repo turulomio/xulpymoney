@@ -113,7 +113,7 @@ class frmMain(QMainWindow, Ui_frmMain):
     @QtCore.pyqtSlot()  
     def on_actionCalculator_triggered(self):
         d=QDialog(self)        
-        d.setFixedSize(670, 670)
+        d.setFixedSize(850, 850)
         d.setWindowTitle(self.tr("Investment calculator"))
         w=wdgCalculator(self.mem)
         lay = QVBoxLayout(d)
