@@ -639,6 +639,7 @@ class SetCountries(SetCommons):
         self.append(Country().init__create("be",QApplication.translate("Core","Belgium")))
         self.append(Country().init__create("cn",QApplication.translate("Core","China")))
         self.append(Country().init__create("de",QApplication.translate("Core","Germany")))
+        self.append(Country().init__create("earth",QApplication.translate("Core","Earth")))
         self.append(Country().init__create("en",QApplication.translate("Core","United Kingdom")))
         self.append(Country().init__create("eu",QApplication.translate("Core","Europe")))
         self.append(Country().init__create("fi",QApplication.translate("Core","Finland")))
@@ -5232,6 +5233,8 @@ class Country:
             return QPixmap(":/countries/ireland.gif")
         elif self.id=="it":
             return QPixmap(":/countries/italy.gif")
+        elif self.id=="earth":
+            return QPixmap(":/countries/earth.png")
         elif self.id=="es":
             return QPixmap(":/countries/spain.gif")
         elif self.id=="eu":
@@ -5239,7 +5242,7 @@ class Country:
         elif self.id=="de":
             return QPixmap(":/countries/germany.gif")
         elif self.id=="fi":
-            return QPixmap(":/countries/fi.jpg")
+            return QPixmap(":/countries/finland.gif")
         elif self.id=="nl":
             return QPixmap(":/countries/nethland.gif")
         elif self.id=="en":

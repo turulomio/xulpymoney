@@ -58,8 +58,10 @@
   <qresource prefix="/countries">
     <file>belgium.gif</file>
     <file>china.gif</file>
+    <file>earth.png</file>
     <file>eu.gif</file>
     <file>france.gif</file>
+    <file>finland.gif</file>
     <file>germany.gif</file>
     <file>ireland.gif</file>
     <file>italy.gif</file>
