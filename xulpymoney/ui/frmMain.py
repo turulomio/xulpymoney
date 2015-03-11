@@ -89,8 +89,6 @@ class frmMain(QMainWindow, Ui_frmMain):
                     m.setText(self.tr("Bad 'Admin mode' password. You are logged as a normal user"))
                     m.exec_()   
 
-        
-        
     @QtCore.pyqtSlot()  
     def on_actionExit_triggered(self):
         self.mem.__del__()

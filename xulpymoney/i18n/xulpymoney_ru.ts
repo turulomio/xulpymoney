@@ -63,7 +63,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmMain.py" line="446"/>
+        <location filename="ui/frmMain.py" line="444"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
@@ -98,12 +98,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmMain.py" line="446"/>
+        <location filename="ui/frmMain.py" line="444"/>
         <source>Purging innecesary data from all products</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmMain.py" line="448"/>
+        <location filename="ui/frmMain.py" line="446"/>
         <source>Purging quotes from all products</source>
         <translation type="unfinished"></translation>
     </message>
@@ -423,7 +423,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmMain.py" line="454"/>
+        <location filename="ui/frmMain.py" line="452"/>
         <source>Purging quotes from {0}.
 Total purged in global process: {1}</source>
         <translation type="unfinished"></translation>
@@ -2353,7 +2353,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmMain.py" line="474"/>
+        <location filename="ui/frmMain.py" line="472"/>
         <source>{0} quotes have been purged from {1} products</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2403,7 +2403,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmMain.py" line="339"/>
+        <location filename="ui/frmMain.py" line="337"/>
         <source>There aren&apos;t favorite products</source>
         <translation type="unfinished"></translation>
     </message>
