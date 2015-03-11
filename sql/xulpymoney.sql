@@ -8845,7 +8845,7 @@ INSERT INTO bolsas VALUES (11, 'be', '07:00:00', 'Bolsa de Bélgica', '17:38:00'
 INSERT INTO bolsas VALUES (12, 'nl', '07:00:00', 'Bolsa de Amsterdam', '17:38:00', 'Europe/Madrid');
 INSERT INTO bolsas VALUES (13, 'ie', '07:00:00', 'Bolsa de Dublín', '17:38:00', 'Europe/Madrid');
 INSERT INTO bolsas VALUES (14, 'fi', '07:00:00', 'Bolsa de Helsinki', '17:38:00', 'Europe/Madrid');
-INSERT INTO bolsas VALUES (15, 'es', '09:00:00', 'No cotiza en mercados oficiales', '17:38:00', 'Europe/Madrid');
+INSERT INTO bolsas VALUES (15, 'earth', '09:00:00', 'No cotiza en mercados oficiales', '17:38:00', 'Europe/Madrid');
 INSERT INTO bolsas VALUES (1, 'es', '09:00:00', 'Bolsa de Madrid', '17:38:00', 'Europe/Madrid');
 INSERT INTO bolsas VALUES (2, 'us', '09:30:00', 'Bolsa de New York', '16:38:00', 'America/New_York');
 INSERT INTO bolsas VALUES (3, 'fr', '09:00:00', 'Bolsa de París', '17:38:00', 'Europe/Paris');
@@ -8855,7 +8855,7 @@ INSERT INTO bolsas VALUES (6, 'it', '07:00:00', 'Bolsa de Milán', '17:38:00', '
 INSERT INTO bolsas VALUES (7, 'jp', '09:00:00', 'Bolsa de Tokio', '20:00:00', 'Asia/Tokyo');
 INSERT INTO bolsas VALUES (8, 'cn', '00:00:00', 'Bolsa de Hong Kong', '20:00:00', 'Asia/Hong_Kong');
 INSERT INTO bolsas VALUES (9, 'pt', '07:00:00', 'Bolsa de Lisboa', '17:38:00', 'Europe/Lisbon');
-INSERT INTO globals VALUES (1, 'Version', '201503081017');
+INSERT INTO globals VALUES (1, 'Version', '201503110632');
 INSERT INTO globals VALUES (6, 'Admin mode', NULL);
 DELETE FROM products WHERE id<=0;
 ALTER SEQUENCE seq_conceptos START WITH 100 RESTART;

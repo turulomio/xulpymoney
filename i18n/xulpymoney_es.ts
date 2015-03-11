@@ -63,7 +63,7 @@
         <translation>Eliminando datos innecesarios</translation>
     </message>
     <message>
-        <location filename="ui/frmMain.py" line="446"/>
+        <location filename="ui/frmMain.py" line="444"/>
         <source>Cancel</source>
         <translation>Cancelar</translation>
     </message>
@@ -98,12 +98,12 @@
         <translation>El producto asociado no está activo. Debes activarlo primero</translation>
     </message>
     <message>
-        <location filename="ui/frmMain.py" line="446"/>
+        <location filename="ui/frmMain.py" line="444"/>
         <source>Purging innecesary data from all products</source>
         <translation>Purgando datos innecesarios de todos los productos</translation>
     </message>
     <message>
-        <location filename="ui/frmMain.py" line="448"/>
+        <location filename="ui/frmMain.py" line="446"/>
         <source>Purging quotes from all products</source>
         <translation>Purgando valores de todos los productos</translation>
     </message>
@@ -423,7 +423,7 @@
         <translation>Purgadas {0} cotizaciones de {1}</translation>
     </message>
     <message>
-        <location filename="ui/frmMain.py" line="454"/>
+        <location filename="ui/frmMain.py" line="452"/>
         <source>Purging quotes from {0}.
 Total purged in global process: {1}</source>
         <translation>Purgando cotizaciones de {0}.
@@ -2367,7 +2367,7 @@ p, li { white-space: pre-wrap; }
         <translation>F5</translation>
     </message>
     <message>
-        <location filename="ui/frmMain.py" line="474"/>
+        <location filename="ui/frmMain.py" line="472"/>
         <source>{0} quotes have been purged from {1} products</source>
         <translation>{0} cotizaciones han sido eliminadas de {1} productos</translation>
     </message>
@@ -2402,7 +2402,7 @@ p, li { white-space: pre-wrap; }
         <translation>Productos con ISIN duplicado</translation>
     </message>
     <message>
-        <location filename="ui/frmMain.py" line="339"/>
+        <location filename="ui/frmMain.py" line="337"/>
         <source>There aren&apos;t favorite products</source>
         <translation>No hay productos favoritos</translation>
     </message>
