@@ -242,7 +242,6 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         self.annualtarget=None#AnnualTarget Object
         
         self.wyData.initiate(fechainicio.year, datetime.date.today().year, datetime.date.today().year)
-        self.wyTarget.initiate(fechainicio.year, datetime.date.today().year, datetime.date.today().year)
         self.wyChart.initiate(fechainicio.year, datetime.date.today().year, datetime.date.today().year)
         self.wyChart.label.setText(self.tr("Data from selected year"))
 
@@ -254,9 +253,9 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         
         self.tab.setCurrentIndex(0)
         self.load_data()
+        self.load_targets()
         self.wyData.changed.connect(self.on_wyData_mychanged)#Used my due to it took default on_wyData_changed
         self.wyChart.changed.connect(self.on_wyChart_mychanged)
-        self.wyTarget.changed.connect(self.on_wyTarget_mychanged)
 
     def load_data(self):        
         print ("loading data")
@@ -265,7 +264,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         self.setData=TotalYear(self.mem, self.wyData.year)
         self.lblPreviousYear.setText(self.tr("Balance at {0}-12-31: {1}".format(self.setData.year-1, self.mem.localcurrency.string(self.setData.total_last_year))))
         for i, m in enumerate(self.setData.arr):
-            if m.year==datetime.date.today().year and m.month<=datetime.date.today().month:
+            if m.year<datetime.date.today().year or (m.year==datetime.date.today().year and m.month<=datetime.date.today().month):
                 self.table.setItem(0, i, self.mem.localcurrency.qtablewidgetitem(m.incomes()))
                 self.table.setItem(1, i, self.mem.localcurrency.qtablewidgetitem(m.gains()))
                 self.table.setItem(2, i, self.mem.localcurrency.qtablewidgetitem(m.dividends()))
@@ -287,8 +286,30 @@ class wdgTotal(QWidget, Ui_wdgTotal):
 
         final=datetime.datetime.now()          
         print ("wdgTotal > load_data: {0}".format(final-inicio))
-
-
+    def load_targets(self):
+        print ("loading targets")
+        self.annualtarget=AnnualTarget(self.mem).init__from_db(self.wyData.year) 
+        self.lblTarget.setText(self.tr("Annual target percentage of total assests balance at {}-12-31 ( {} )".format(self.annualtarget.year-1, self.mem.localcurrency.string(self.annualtarget.lastyear_assests))))
+        self.spinTarget.setValue(float(self.annualtarget.percentage))
+        self.tblTargets.clearContents()
+        inicio=datetime.datetime.now()     
+        sumd_g=Decimal(0)
+        for i in range(1, 13): 
+            m=self.setData.find(self.setData.year, i)
+            sumd_g=sumd_g+m.d_g()
+            self.tblTargets.setItem(0, i-1, self.mem.localcurrency.qtablewidgetitem(m.gains()))
+            self.tblTargets.setItem(1, i-1, self.mem.localcurrency.qtablewidgetitem(m.dividends()))
+            self.tblTargets.setItem(3, i-1, self.annualtarget.qtablewidgetitem_monthly(m.d_g()))
+            self.tblTargets.setItem(4, i-1, self.mem.localcurrency.qtablewidgetitem(self.annualtarget.monthly_balance()))
+            self.tblTargets.setItem(6, i-1, self.annualtarget.qtablewidgetitem_accumulated(sumd_g, i))
+            self.tblTargets.setItem(7, i-1, self.mem.localcurrency.qtablewidgetitem(self.annualtarget.monthly_balance()*i))
+        self.tblTargets.setItem(0, 12, self.mem.localcurrency.qtablewidgetitem(self.setData.gains()))
+        self.tblTargets.setItem(1, 12, self.mem.localcurrency.qtablewidgetitem(self.setData.dividends()))
+        self.tblTargets.setItem(3, 12, self.annualtarget.qtablewidgetitem_annual(sumd_g))
+        self.tblTargets.setItem(4, 12, self.mem.localcurrency.qtablewidgetitem(self.annualtarget.annual_balance()))
+        self.tblTargets.setCurrentCell(2, datetime.date.today().month-1)   
+        print ("wdgTargets > load_data_targets: {0}".format(datetime.datetime.now()  -inicio))
+        
 
 
     def load_graphic(self):   
@@ -328,38 +349,8 @@ class wdgTotal(QWidget, Ui_wdgTotal):
 
     def on_wyData_mychanged(self):
         self.load_data()    
-        
-    @pyqtSlot() 
-    def on_wyTarget_mychanged(self):
-        print ("loading targets")
-        self.annualtarget=AnnualTarget(self.mem).init__from_db(self.wyTarget.year) 
-        self.lblTarget.setText(self.tr("Annual target percentage of total assests balance at {}-12-31 ( {} )".format(self.annualtarget.year-1, self.mem.localcurrency.string(self.annualtarget.lastyear_assests))))
-        self.spinTarget.setValue(float(self.annualtarget.percentage))
-        self.tblTargets.clearContents()
-        inicio=datetime.datetime.now()     
-        sumdividends=Decimal(0)
-        sumconsolidado=Decimal(0)
-        sumdc=Decimal(0)
-        for i in range(12): 
-            dividends=Investment(self.mem).dividends_neto(  self.wyTarget.year, i+1)
-            consolidado=Assets(self.mem).consolidado_neto(self.mem.data.investments_all(), self.wyTarget.year, i+1)
-            dc=dividends+consolidado
-            sumdividends=sumdividends+dividends
-            sumconsolidado=sumconsolidado+consolidado
-            sumdc=sumdc+dc           
-            self.tblTargets.setItem(0, i, self.mem.localcurrency.qtablewidgetitem(consolidado))
-            self.tblTargets.setItem(1, i, self.mem.localcurrency.qtablewidgetitem(dividends))
-            self.tblTargets.setItem(3, i, self.annualtarget.qtablewidgetitem_monthly(dc))
-            self.tblTargets.setItem(4, i, self.mem.localcurrency.qtablewidgetitem(self.annualtarget.monthly_balance()))
-            self.tblTargets.setItem(6, i, self.annualtarget.qtablewidgetitem_accumulated(sumdc, i+1))
-            self.tblTargets.setItem(7, i, self.mem.localcurrency.qtablewidgetitem(self.annualtarget.monthly_balance()*(i+1)))
-        self.tblTargets.setItem(0, 12, self.mem.localcurrency.qtablewidgetitem(sumconsolidado))
-        self.tblTargets.setItem(1, 12, self.mem.localcurrency.qtablewidgetitem(sumdividends))
-        self.tblTargets.setItem(3, 12, self.annualtarget.qtablewidgetitem_annual(sumdc))
-        self.tblTargets.setItem(4, 12, self.mem.localcurrency.qtablewidgetitem(self.annualtarget.annual_balance()))
-        self.tblTargets.setCurrentCell(0, datetime.date.today().month-1)   
-        print ("wdgTargets > load_data: {0}".format(datetime.datetime.now()  -inicio))
-        
+        self.load_targets()
+
     def on_wyChart_mychanged(self):
         self.load_graphic()      
         
@@ -367,14 +358,11 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         self.annualtarget.percentage=self.spinTarget.value()
         self.annualtarget.save()
         self.mem.con.commit()
-        self.on_wyTarget_mychanged()
+        self.load_targets()
 
     def on_tab_currentChanged(self, index):
-        if  index==2 and self.canvas.plotted==False: #If has not been plotted, plots it.
+        if  index==1 and self.canvas.plotted==False: #If has not been plotted, plots it.
             self.on_wyChart_mychanged()
-        if index==1:
-            self.on_wyTarget_mychanged()
-            
         
     @QtCore.pyqtSlot() 
     def on_actionShowIncomes_triggered(self):
@@ -439,7 +427,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
     @QtCore.pyqtSlot() 
     def on_actionSellingOperationsPlusDividends_triggered(self):
         m=QMessageBox()
-        value=self.setData.find(self.setData.year, self.month)
+        value=self.setData.find(self.setData.year, self.month).d_g()
         message=self.tr("Gains and dividends sum from this month is {0}. In this year it's value rises to {1}").format(self.mem.localcurrency.string(value), self.mem.localcurrency.string(self.sumpopup[12]))
 
         m.setText(message)

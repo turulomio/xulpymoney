@@ -33,7 +33,7 @@
      <item>
       <widget class="QTabWidget" name="tab">
        <property name="currentIndex">
-        <number>1</number>
+        <number>0</number>
        </property>
        <property name="tabsClosable">
         <bool>true</bool>
@@ -48,7 +48,7 @@
         </attribute>
         <layout class="QHBoxLayout" name="horizontalLayout_3">
          <item>
-          <layout class="QVBoxLayout" name="verticalLayout">
+          <layout class="QVBoxLayout" name="verticalLayout_7">
            <item>
             <layout class="QHBoxLayout" name="horizontalLayout">
              <item>
@@ -83,395 +83,383 @@
             </layout>
            </item>
            <item>
-            <widget class="QLabel" name="lblPreviousYear">
-             <property name="font">
-              <font>
-               <pointsize>8</pointsize>
-               <weight>75</weight>
-               <bold>true</bold>
-              </font>
+            <widget class="QTabWidget" name="tabData">
+             <property name="tabPosition">
+              <enum>QTabWidget::West</enum>
              </property>
-             <property name="alignment">
-              <set>Qt::AlignCenter</set>
+             <property name="currentIndex">
+              <number>0</number>
              </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="myQTableWidget" name="table">
-             <property name="contextMenuPolicy">
-              <enum>Qt::CustomContextMenu</enum>
-             </property>
-             <property name="editTriggers">
-              <set>QAbstractItemView::NoEditTriggers</set>
-             </property>
-             <property name="selectionMode">
-              <enum>QAbstractItemView::SingleSelection</enum>
-             </property>
-             <property name="selectionBehavior">
-              <enum>QAbstractItemView::SelectItems</enum>
-             </property>
-             <property name="sortingEnabled">
-              <bool>false</bool>
-             </property>
-             <row>
-              <property name="text">
-               <string>Incomes</string>
-              </property>
-             </row>
-             <row>
-              <property name="text">
-               <string>Gains</string>
-              </property>
-             </row>
-             <row>
-              <property name="text">
-               <string>Dividends</string>
-              </property>
-             </row>
-             <row>
-              <property name="text">
-               <string>Expenses</string>
-              </property>
-             </row>
-             <row>
-              <property name="text">
-               <string>I+G+D-E</string>
-              </property>
-             </row>
-             <row>
-              <property name="text">
-               <string/>
-              </property>
-             </row>
-             <row>
-              <property name="text">
-               <string>Accounts</string>
-              </property>
-             </row>
-             <row>
-              <property name="text">
-               <string>Investments</string>
-              </property>
-             </row>
-             <row>
-              <property name="text">
-               <string>Total</string>
-              </property>
-             </row>
-             <row>
-              <property name="text">
-               <string>Monthly difference</string>
-              </property>
-             </row>
-             <row>
-              <property name="text">
-               <string/>
-              </property>
-             </row>
-             <row>
-              <property name="text">
-               <string>% Year to date</string>
-              </property>
-             </row>
-             <column>
-              <property name="text">
-               <string>January</string>
-              </property>
-             </column>
-             <column>
-              <property name="text">
-               <string>February</string>
-              </property>
-             </column>
-             <column>
-              <property name="text">
-               <string>March</string>
-              </property>
-             </column>
-             <column>
-              <property name="text">
-               <string>April</string>
-              </property>
-             </column>
-             <column>
-              <property name="text">
-               <string>May</string>
-              </property>
-             </column>
-             <column>
-              <property name="text">
-               <string>June</string>
-              </property>
-             </column>
-             <column>
-              <property name="text">
-               <string>July</string>
-              </property>
-             </column>
-             <column>
-              <property name="text">
-               <string>August</string>
-              </property>
-             </column>
-             <column>
-              <property name="text">
-               <string>September</string>
-              </property>
-             </column>
-             <column>
-              <property name="text">
-               <string>October</string>
-              </property>
-             </column>
-             <column>
-              <property name="text">
-               <string>November</string>
-              </property>
-             </column>
-             <column>
-              <property name="text">
-               <string>December</string>
-              </property>
-             </column>
-             <column>
-              <property name="text">
-               <string>Total</string>
-              </property>
-             </column>
-            </widget>
-           </item>
-          </layout>
-         </item>
-        </layout>
-       </widget>
-       <widget class="QWidget" name="tab_2">
-        <attribute name="icon">
-         <iconset resource="../images/xulpymoney.qrc">
-          <normaloff>:/xulpymoney/gafas.png</normaloff>:/xulpymoney/gafas.png</iconset>
-        </attribute>
-        <attribute name="title">
-         <string>Annual target return</string>
-        </attribute>
-        <layout class="QHBoxLayout" name="horizontalLayout_7">
-         <item>
-          <layout class="QVBoxLayout" name="verticalLayout_5">
-           <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_4">
-             <item>
-              <spacer name="horizontalSpacer_5">
-               <property name="orientation">
-                <enum>Qt::Horizontal</enum>
-               </property>
-               <property name="sizeHint" stdset="0">
-                <size>
-                 <width>40</width>
-                 <height>20</height>
-                </size>
-               </property>
-              </spacer>
-             </item>
-             <item>
-              <widget class="wdgYear" name="wyTarget" native="true"/>
-             </item>
-             <item>
-              <spacer name="horizontalSpacer_6">
-               <property name="orientation">
-                <enum>Qt::Horizontal</enum>
-               </property>
-               <property name="sizeHint" stdset="0">
-                <size>
-                 <width>40</width>
-                 <height>20</height>
-                </size>
-               </property>
-              </spacer>
-             </item>
-            </layout>
-           </item>
-           <item>
-            <layout class="QVBoxLayout" name="verticalLayout_3">
-             <item>
-              <layout class="QHBoxLayout" name="horizontalLayout_5">
+             <widget class="QWidget" name="tab_3">
+              <attribute name="icon">
+               <iconset resource="../images/xulpymoney.qrc">
+                <normaloff>:/xulpymoney/coins.png</normaloff>:/xulpymoney/coins.png</iconset>
+              </attribute>
+              <attribute name="title">
+               <string>Data in the year</string>
+              </attribute>
+              <layout class="QHBoxLayout" name="horizontalLayout_8">
                <item>
-                <spacer name="horizontalSpacer_7">
-                 <property name="orientation">
-                  <enum>Qt::Horizontal</enum>
-                 </property>
-                 <property name="sizeHint" stdset="0">
-                  <size>
-                   <width>40</width>
-                   <height>20</height>
-                  </size>
-                 </property>
-                </spacer>
-               </item>
-               <item>
-                <widget class="QLabel" name="lblTarget">
-                 <property name="text">
-                  <string>Annual target percentage</string>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QDoubleSpinBox" name="spinTarget">
-                 <property name="alignment">
-                  <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-                 </property>
-                 <property name="suffix">
-                  <string> %</string>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QToolButton" name="cmdTargets">
-                 <property name="text">
-                  <string/>
-                 </property>
-                 <property name="icon">
-                  <iconset resource="../images/xulpymoney.qrc">
-                   <normaloff>:/xulpymoney/save.png</normaloff>:/xulpymoney/save.png</iconset>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <spacer name="horizontalSpacer_8">
-                 <property name="orientation">
-                  <enum>Qt::Horizontal</enum>
-                 </property>
-                 <property name="sizeHint" stdset="0">
-                  <size>
-                   <width>40</width>
-                   <height>20</height>
-                  </size>
-                 </property>
-                </spacer>
+                <layout class="QVBoxLayout" name="verticalLayout">
+                 <item>
+                  <widget class="QLabel" name="lblPreviousYear">
+                   <property name="font">
+                    <font>
+                     <pointsize>8</pointsize>
+                     <weight>75</weight>
+                     <bold>true</bold>
+                    </font>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="myQTableWidget" name="table">
+                   <property name="contextMenuPolicy">
+                    <enum>Qt::CustomContextMenu</enum>
+                   </property>
+                   <property name="editTriggers">
+                    <set>QAbstractItemView::NoEditTriggers</set>
+                   </property>
+                   <property name="selectionMode">
+                    <enum>QAbstractItemView::SingleSelection</enum>
+                   </property>
+                   <property name="selectionBehavior">
+                    <enum>QAbstractItemView::SelectItems</enum>
+                   </property>
+                   <property name="sortingEnabled">
+                    <bool>false</bool>
+                   </property>
+                   <row>
+                    <property name="text">
+                     <string>Incomes</string>
+                    </property>
+                   </row>
+                   <row>
+                    <property name="text">
+                     <string>Gains</string>
+                    </property>
+                   </row>
+                   <row>
+                    <property name="text">
+                     <string>Dividends</string>
+                    </property>
+                   </row>
+                   <row>
+                    <property name="text">
+                     <string>Expenses</string>
+                    </property>
+                   </row>
+                   <row>
+                    <property name="text">
+                     <string>I+G+D-E</string>
+                    </property>
+                   </row>
+                   <row>
+                    <property name="text">
+                     <string/>
+                    </property>
+                   </row>
+                   <row>
+                    <property name="text">
+                     <string>Accounts</string>
+                    </property>
+                   </row>
+                   <row>
+                    <property name="text">
+                     <string>Investments</string>
+                    </property>
+                   </row>
+                   <row>
+                    <property name="text">
+                     <string>Total</string>
+                    </property>
+                   </row>
+                   <row>
+                    <property name="text">
+                     <string>Monthly difference</string>
+                    </property>
+                   </row>
+                   <row>
+                    <property name="text">
+                     <string/>
+                    </property>
+                   </row>
+                   <row>
+                    <property name="text">
+                     <string>% Year to date</string>
+                    </property>
+                   </row>
+                   <column>
+                    <property name="text">
+                     <string>January</string>
+                    </property>
+                   </column>
+                   <column>
+                    <property name="text">
+                     <string>February</string>
+                    </property>
+                   </column>
+                   <column>
+                    <property name="text">
+                     <string>March</string>
+                    </property>
+                   </column>
+                   <column>
+                    <property name="text">
+                     <string>April</string>
+                    </property>
+                   </column>
+                   <column>
+                    <property name="text">
+                     <string>May</string>
+                    </property>
+                   </column>
+                   <column>
+                    <property name="text">
+                     <string>June</string>
+                    </property>
+                   </column>
+                   <column>
+                    <property name="text">
+                     <string>July</string>
+                    </property>
+                   </column>
+                   <column>
+                    <property name="text">
+                     <string>August</string>
+                    </property>
+                   </column>
+                   <column>
+                    <property name="text">
+                     <string>September</string>
+                    </property>
+                   </column>
+                   <column>
+                    <property name="text">
+                     <string>October</string>
+                    </property>
+                   </column>
+                   <column>
+                    <property name="text">
+                     <string>November</string>
+                    </property>
+                   </column>
+                   <column>
+                    <property name="text">
+                     <string>December</string>
+                    </property>
+                   </column>
+                   <column>
+                    <property name="text">
+                     <string>Total</string>
+                    </property>
+                   </column>
+                  </widget>
+                 </item>
+                </layout>
                </item>
               </layout>
-             </item>
-            </layout>
-           </item>
-           <item>
-            <widget class="myQTableWidget" name="tblTargets">
-             <property name="contextMenuPolicy">
-              <enum>Qt::CustomContextMenu</enum>
-             </property>
-             <property name="editTriggers">
-              <set>QAbstractItemView::NoEditTriggers</set>
-             </property>
-             <property name="selectionMode">
-              <enum>QAbstractItemView::SingleSelection</enum>
-             </property>
-             <property name="selectionBehavior">
-              <enum>QAbstractItemView::SelectItems</enum>
-             </property>
-             <property name="sortingEnabled">
-              <bool>false</bool>
-             </property>
-             <row>
-              <property name="text">
-               <string>Gains</string>
-              </property>
-             </row>
-             <row>
-              <property name="text">
-               <string>Dividends</string>
-              </property>
-             </row>
-             <row>
-              <property name="text">
-               <string/>
-              </property>
-             </row>
-             <row>
-              <property name="text">
-               <string>G+D</string>
-              </property>
-             </row>
-             <row>
-              <property name="text">
-               <string>Monthly target</string>
-              </property>
-             </row>
-             <row>
-              <property name="text">
-               <string/>
-              </property>
-             </row>
-             <row>
-              <property name="text">
-               <string>Accumulated G+D</string>
-              </property>
-             </row>
-             <row>
-              <property name="text">
-               <string>Accumulated target</string>
-              </property>
-             </row>
-             <column>
-              <property name="text">
-               <string>January</string>
-              </property>
-             </column>
-             <column>
-              <property name="text">
-               <string>February</string>
-              </property>
-             </column>
-             <column>
-              <property name="text">
-               <string>March</string>
-              </property>
-             </column>
-             <column>
-              <property name="text">
-               <string>April</string>
-              </property>
-             </column>
-             <column>
-              <property name="text">
-               <string>May</string>
-              </property>
-             </column>
-             <column>
-              <property name="text">
-               <string>June</string>
-              </property>
-             </column>
-             <column>
-              <property name="text">
-               <string>July</string>
-              </property>
-             </column>
-             <column>
-              <property name="text">
-               <string>August</string>
-              </property>
-             </column>
-             <column>
-              <property name="text">
-               <string>September</string>
-              </property>
-             </column>
-             <column>
-              <property name="text">
-               <string>October</string>
-              </property>
-             </column>
-             <column>
-              <property name="text">
-               <string>November</string>
-              </property>
-             </column>
-             <column>
-              <property name="text">
-               <string>December</string>
-              </property>
-             </column>
-             <column>
-              <property name="text">
-               <string>Total</string>
-              </property>
-             </column>
+             </widget>
+             <widget class="QWidget" name="tab_4">
+              <attribute name="icon">
+               <iconset resource="../images/xulpymoney.qrc">
+                <normaloff>:/xulpymoney/gafas.png</normaloff>:/xulpymoney/gafas.png</iconset>
+              </attribute>
+              <attribute name="title">
+               <string>Annual target return</string>
+              </attribute>
+              <layout class="QHBoxLayout" name="horizontalLayout_4">
+               <item>
+                <layout class="QVBoxLayout" name="verticalLayout_3">
+                 <item>
+                  <layout class="QHBoxLayout" name="horizontalLayout_5">
+                   <item>
+                    <spacer name="horizontalSpacer_7">
+                     <property name="orientation">
+                      <enum>Qt::Horizontal</enum>
+                     </property>
+                     <property name="sizeHint" stdset="0">
+                      <size>
+                       <width>40</width>
+                       <height>20</height>
+                      </size>
+                     </property>
+                    </spacer>
+                   </item>
+                   <item>
+                    <widget class="QLabel" name="lblTarget">
+                     <property name="text">
+                      <string>Annual target percentage</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QDoubleSpinBox" name="spinTarget">
+                     <property name="alignment">
+                      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                     </property>
+                     <property name="suffix">
+                      <string> %</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QToolButton" name="cmdTargets">
+                     <property name="text">
+                      <string/>
+                     </property>
+                     <property name="icon">
+                      <iconset resource="../images/xulpymoney.qrc">
+                       <normaloff>:/xulpymoney/save.png</normaloff>:/xulpymoney/save.png</iconset>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <spacer name="horizontalSpacer_8">
+                     <property name="orientation">
+                      <enum>Qt::Horizontal</enum>
+                     </property>
+                     <property name="sizeHint" stdset="0">
+                      <size>
+                       <width>40</width>
+                       <height>20</height>
+                      </size>
+                     </property>
+                    </spacer>
+                   </item>
+                  </layout>
+                 </item>
+                 <item>
+                  <widget class="myQTableWidget" name="tblTargets">
+                   <property name="contextMenuPolicy">
+                    <enum>Qt::CustomContextMenu</enum>
+                   </property>
+                   <property name="editTriggers">
+                    <set>QAbstractItemView::NoEditTriggers</set>
+                   </property>
+                   <property name="selectionMode">
+                    <enum>QAbstractItemView::SingleSelection</enum>
+                   </property>
+                   <property name="selectionBehavior">
+                    <enum>QAbstractItemView::SelectItems</enum>
+                   </property>
+                   <property name="sortingEnabled">
+                    <bool>false</bool>
+                   </property>
+                   <row>
+                    <property name="text">
+                     <string>Gains</string>
+                    </property>
+                   </row>
+                   <row>
+                    <property name="text">
+                     <string>Dividends</string>
+                    </property>
+                   </row>
+                   <row>
+                    <property name="text">
+                     <string/>
+                    </property>
+                   </row>
+                   <row>
+                    <property name="text">
+                     <string>G+D</string>
+                    </property>
+                   </row>
+                   <row>
+                    <property name="text">
+                     <string>Monthly target</string>
+                    </property>
+                   </row>
+                   <row>
+                    <property name="text">
+                     <string/>
+                    </property>
+                   </row>
+                   <row>
+                    <property name="text">
+                     <string>Accumulated G+D</string>
+                    </property>
+                   </row>
+                   <row>
+                    <property name="text">
+                     <string>Accumulated target</string>
+                    </property>
+                   </row>
+                   <column>
+                    <property name="text">
+                     <string>January</string>
+                    </property>
+                   </column>
+                   <column>
+                    <property name="text">
+                     <string>February</string>
+                    </property>
+                   </column>
+                   <column>
+                    <property name="text">
+                     <string>March</string>
+                    </property>
+                   </column>
+                   <column>
+                    <property name="text">
+                     <string>April</string>
+                    </property>
+                   </column>
+                   <column>
+                    <property name="text">
+                     <string>May</string>
+                    </property>
+                   </column>
+                   <column>
+                    <property name="text">
+                     <string>June</string>
+                    </property>
+                   </column>
+                   <column>
+                    <property name="text">
+                     <string>July</string>
+                    </property>
+                   </column>
+                   <column>
+                    <property name="text">
+                     <string>August</string>
+                    </property>
+                   </column>
+                   <column>
+                    <property name="text">
+                     <string>September</string>
+                    </property>
+                   </column>
+                   <column>
+                    <property name="text">
+                     <string>October</string>
+                    </property>
+                   </column>
+                   <column>
+                    <property name="text">
+                     <string>November</string>
+                    </property>
+                   </column>
+                   <column>
+                    <property name="text">
+                     <string>December</string>
+                    </property>
+                   </column>
+                   <column>
+                    <property name="text">
+                     <string>Total</string>
+                    </property>
+                   </column>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+              </layout>
+             </widget>
             </widget>
            </item>
           </layout>
