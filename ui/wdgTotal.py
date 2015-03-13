@@ -10,7 +10,7 @@ from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT
 
 from matplotlib.dates import *
 from Ui_wdgTotal import *
-import calendar,  datetime
+import datetime
 
 # Matplotlib Figure object
 from matplotlib.figure import Figure
@@ -80,6 +80,141 @@ class canvasTotal(FigureCanvasQTAgg):
             self.labels.append((self.plot_zero,self.tr("Zero risk assets")))
             self.labels.append((self.plot_bonds,self.tr("Bond assets")))
 
+
+class TotalMonth:
+    def __init__(self, mem, year, month):
+        self.mem=mem
+        self.year=year
+        self.month=month
+        self.expenses_value=None
+        self.dividends_value=None
+        self.incomes_value=None
+        self.gains_value=None
+        self.total_accounts_value=None
+        self.total_investments_value=None
+        
+    def i_d_g_e(self):
+        return self.incomes()+self.dividends()+self.gains()+self.expenses()
+        
+    def d_g(self):
+        """Dividends+gains"""
+        return self.gains()+self.dividends()
+        
+    def expenses(self):
+        if self.expenses_value==None:
+            self.expenses_value=Assets(self.mem).saldo_por_tipo_operacion( self.year,self.month, 1)#La facturación de tarjeta dentro esta por el union
+        return self.expenses_value
+        
+    def dividends(self):
+        if self.dividends_value==None:
+            self.dividends_value=Investment(self.mem).dividends_neto(  self.year, self.month)
+        return self.dividends_value
+        
+    def incomes(self):
+        if self.incomes_value==None:
+            self.incomes_value=Assets(self.mem).saldo_por_tipo_operacion(  self.year,self.month,2)-self.dividends()
+        return self.incomes_value
+        
+    def gains(self):
+        if self.gains_value==None:
+            self.gains_value=Assets(self.mem).consolidado_neto(self.mem.data.investments_all(), self.year, self.month)
+        return self.gains_value
+        
+    def name(self):
+        return "{}-{}".format(year, month)
+        
+    def last_day(self):
+        date=datetime.date(self.year, self.month, 1)
+        if date.month == 12:
+            return date.replace(day=31)
+        return date.replace(month=date.month+1, day=1) - datetime.timedelta(days=1)
+            
+    def first_day(self):
+        return datetime.date(self.year, self.month, self.day)
+        
+    def total(self):
+        """Total assests in the month"""
+        return self.total_accounts()+self.total_investments()
+        
+    def total_accounts(self):
+        if self.total_accounts_value==None:
+            self.total_accounts_value=Assets(self.mem).saldo_todas_cuentas( self.last_day())
+        return self.total_accounts_value
+        
+    def total_investments(self):
+        if self.total_investments_value==None:
+            self.total_investments_value=Assets(self.mem).saldo_todas_inversiones(self.mem.data.investments_all(),  self.last_day())
+        return self.total_investments_value
+ 
+
+class TotalYear:
+    """Set of 12 totalmonths in the same year"""
+    def __init__(self, mem, year):
+        self.mem=mem
+        self.year=year
+        self.arr=[]
+        self.total_last_year=Assets(self.mem).saldo_total(self.mem.data.investments_all(),  datetime.date(self.year-1, 12, 31))
+        self.generate()
+        
+    def generate(self):
+        for i in range(1, 13):
+            self.arr.append(TotalMonth(self.mem, self.year, i))
+        
+    def find(self, year, month):
+        for m in self.arr:
+            if m.year==year and m.month==month:
+                return m
+        return None
+        
+    def expenses(self):
+        result=Decimal(0)
+        for m in self.arr:
+            result=result+m.expenses()
+        return result
+        
+    def i_d_g_e(self):
+        return self.incomes()+self.dividends()+self.gains()+self.expenses()
+        
+    def incomes(self):
+        result=Decimal(0)
+        for m in self.arr:
+            result=result+m.incomes()
+        return result
+
+    def gains(self):
+        result=Decimal(0)
+        for m in self.arr:
+            result=result+m.gains()
+        return result        
+
+    def dividends(self):
+        result=Decimal(0)
+        for m in self.arr:
+            result=result+m.dividends()
+        return result
+        
+    def difference_with_previous_month(self, totalmonth):
+        """Calculates difference between totalmonth and the total with previous month"""
+        if totalmonth.month==1:
+            totalprevious=self.total_last_year
+        else:
+            previous=self.find(self.year, totalmonth.month-1)
+            totalprevious=previous.total()
+        return totalmonth.total()-totalprevious
+        
+
+    def difference_with_previous_year(self):
+        """Calculates difference between totalmonth of december and the total last year"""
+        return self.find(self.year, 12).total()-self.total_last_year
+        
+    def assets_percentage_in_month(self, month):
+        """Calculates the percentage of the assets in this month from total last year"""
+        if self.total_last_year==Decimal(0):
+            return None
+        m=self.find(self.year, month)
+        return 100*(m.total()-self.total_last_year)/self.total_last_year    
+
+
 class wdgTotal(QWidget, Ui_wdgTotal):
     def __init__(self, mem,  parent=None):
         QWidget.__init__(self, parent)
@@ -89,14 +224,13 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         self.progress.setModal(True)
         self.progress.setWindowTitle(self.tr("Calculating data..."))
         self.progress.setMinimumDuration(0)        
-        self.sumpopup=[]
-        self.month=None#Used for popup
-        for i in range(0, 13):
-            self.sumpopup.append(0)
 
         fechainicio=Assets(self.mem).primera_datetime_con_datos_usuario()         
 
         self.mem.data.load_inactives()
+        
+        self.setData=None#Ser´a un TotalYear
+        self.setTarget=None
         
         if fechainicio==None: #Base de datos vacía
             self.tab.setEnabled(False)
@@ -128,71 +262,27 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         print ("loading data")
         self.table.clearContents()
         inicio=datetime.datetime.now()     
-        sumgastos=0
-        sumdividends=0
-        sumingresos=0        
-        sumconsolidado=0
-        sumdiferencia=0
-        
-        totallastmonth=Assets(self.mem).saldo_total(self.mem.data.investments_all(),  datetime.date(self.wyData.year-1, 12, 31))#Mes de 12 31 año anteriro
-        self.lblPreviousYear.setText(self.tr("Balance at {0}-12-31: {1}".format(self.wyData.year-1, self.mem.localcurrency.string(totallastmonth))))
-        inicioano=totallastmonth
-
-        for i in range(12): 
-            gastos=Assets(self.mem).saldo_por_tipo_operacion( self.wyData.year,i+1,1)#La facturación de tarjeta dentro esta por el union
-            dividends=Investment(self.mem).dividends_neto(  self.wyData.year, i+1)
-            ingresos=Assets(self.mem).saldo_por_tipo_operacion(  self.wyData.year,i+1,2)-dividends #Se quitan los dividends que luego se suman
-            consolidado=Assets(self.mem).consolidado_neto(self.mem.data.investments_all(), self.wyData.year, i+1)
-            gi=ingresos+dividends+consolidado+gastos
-            self.sumpopup[i]=consolidado+dividends
-            
-            sumgastos=sumgastos+gastos
-            sumdividends=sumdividends+dividends
-            sumingresos=sumingresos+ingresos
-            sumconsolidado=sumconsolidado+consolidado
-            sumgi=sumgastos+sumdividends+sumingresos+sumconsolidado
-
-            if  datetime.date.today()<datetime.date(self.wyData.year, i+1, 1):
-                cuentas=0
-                inversiones=0
-                total=0
-                diferencia=0
-                tpc=0
-            else:
-                fecha=datetime.date (self.wyData.year, i+1, calendar.monthrange(self.wyData.year, i+1)[1])#Último día de mes.
-                cuentas=Assets(self.mem).saldo_todas_cuentas( fecha)
-                inversiones=Assets(self.mem).saldo_todas_inversiones(self.mem.data.investments_all(),  fecha)
-                total=cuentas+inversiones
-                diferencia=total-totallastmonth
-                sumdiferencia=sumdiferencia+diferencia
-                totallastmonth=total
-                if inicioano==0:
-                    tpc=None
-                else:
-                    tpc=100*(total-inicioano)/inicioano    
-            
-            self.table.setItem(0, i, self.mem.localcurrency.qtablewidgetitem(ingresos))
-            self.table.setItem(1, i, self.mem.localcurrency.qtablewidgetitem(consolidado))
-            self.table.setItem(2, i, self.mem.localcurrency.qtablewidgetitem(dividends))
-            self.table.setItem(3, i, self.mem.localcurrency.qtablewidgetitem(gastos))
-            self.table.setItem(4, i, self.mem.localcurrency.qtablewidgetitem(gi))
-            self.table.setItem(6, i, self.mem.localcurrency.qtablewidgetitem(cuentas))
-            self.table.setItem(7, i, self.mem.localcurrency.qtablewidgetitem(inversiones))
-            self.table.setItem(8, i, self.mem.localcurrency.qtablewidgetitem(total))
-            self.table.setItem(9, i, self.mem.localcurrency.qtablewidgetitem(diferencia))
-            self.table.setItem(11, i, qtpc(tpc))
-        self.table.setItem(0, 12, self.mem.localcurrency.qtablewidgetitem(sumingresos))
-        self.table.setItem(1, 12, self.mem.localcurrency.qtablewidgetitem(sumconsolidado))
-        self.table.setItem(2, 12, self.mem.localcurrency.qtablewidgetitem(sumdividends))
-        self.table.setItem(3, 12, self.mem.localcurrency.qtablewidgetitem(sumgastos))
-        self.table.setItem(4, 12, self.mem.localcurrency.qtablewidgetitem(sumgi))      
-        self.sumpopup[12]=sumconsolidado+sumdividends
-        self.table.setItem(9, 12, self.mem.localcurrency.qtablewidgetitem(sumdiferencia))    
-        if inicioano==0:
-            self.table.setItem(11, 12, qtpc(None))     
-        else:
-            self.table.setItem(11, 12, qtpc(sumdiferencia*100/inicioano))       
-        
+        self.setData=TotalYear(self.mem, self.wyData.year)
+        self.lblPreviousYear.setText(self.tr("Balance at {0}-12-31: {1}".format(self.setData.year-1, self.mem.localcurrency.string(self.setData.total_last_year))))
+        for i, m in enumerate(self.setData.arr):
+            if m.year==datetime.date.today().year and m.month<=datetime.date.today().month:
+                self.table.setItem(0, i, self.mem.localcurrency.qtablewidgetitem(m.incomes()))
+                self.table.setItem(1, i, self.mem.localcurrency.qtablewidgetitem(m.gains()))
+                self.table.setItem(2, i, self.mem.localcurrency.qtablewidgetitem(m.dividends()))
+                self.table.setItem(3, i, self.mem.localcurrency.qtablewidgetitem(m.expenses()))
+                self.table.setItem(4, i, self.mem.localcurrency.qtablewidgetitem(m.i_d_g_e()))
+                self.table.setItem(6, i, self.mem.localcurrency.qtablewidgetitem(m.total_accounts()))
+                self.table.setItem(7, i, self.mem.localcurrency.qtablewidgetitem(m.total_investments()))
+                self.table.setItem(8, i, self.mem.localcurrency.qtablewidgetitem(m.total()))
+                self.table.setItem(9, i, self.mem.localcurrency.qtablewidgetitem(self.setData.difference_with_previous_month(m)))
+                self.table.setItem(11, i, qtpc(self.setData.assets_percentage_in_month(m.month)))
+        self.table.setItem(0, 12, self.mem.localcurrency.qtablewidgetitem(self.setData.incomes()))
+        self.table.setItem(1, 12, self.mem.localcurrency.qtablewidgetitem(self.setData.gains()))
+        self.table.setItem(2, 12, self.mem.localcurrency.qtablewidgetitem(self.setData.dividends()))
+        self.table.setItem(3, 12, self.mem.localcurrency.qtablewidgetitem(self.setData.expenses()))
+        self.table.setItem(4, 12, self.mem.localcurrency.qtablewidgetitem(self.setData.i_d_g_e()))      
+        self.table.setItem(9, 12, self.mem.localcurrency.qtablewidgetitem(self.setData.difference_with_previous_year()))    
+        self.table.setItem(11, 12, qtpc(self.setData.assets_percentage_in_month(12)))        
         self.table.setCurrentCell(6, datetime.date.today().month-1)
 
         final=datetime.datetime.now()          
@@ -349,7 +439,8 @@ class wdgTotal(QWidget, Ui_wdgTotal):
     @QtCore.pyqtSlot() 
     def on_actionSellingOperationsPlusDividends_triggered(self):
         m=QMessageBox()
-        message=self.tr("Gains and dividends sum from this month is {0}. In this year it's value rises to {1}").format(self.mem.localcurrency.string(self.sumpopup[self.month-1]), self.mem.localcurrency.string(self.sumpopup[12]))
+        value=self.setData.find(self.setData.year, self.month)
+        message=self.tr("Gains and dividends sum from this month is {0}. In this year it's value rises to {1}").format(self.mem.localcurrency.string(value), self.mem.localcurrency.string(self.sumpopup[12]))
 
         m.setText(message)
         m.exec_()    
