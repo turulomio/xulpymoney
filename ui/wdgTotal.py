@@ -2,18 +2,17 @@ from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 from libxulpymoney import *
-from libxulpymoney import *
-from matplotlib.finance import *
 
+from matplotlib.finance import *
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg
 from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT 
-
 from matplotlib.dates import *
+from matplotlib.figure import Figure
+
 from Ui_wdgTotal import *
 import datetime
 
 # Matplotlib Figure object
-from matplotlib.figure import Figure
 class canvasTotal(FigureCanvasQTAgg):
     def __init__(self, mem, parent):
         self.mem=mem
@@ -32,33 +31,26 @@ class canvasTotal(FigureCanvasQTAgg):
     def price(self, x): 
         return self.mem.localcurrency.string(x)
         
-    def mydraw(self, mem, data, zero,  bonds):
+    def mydraw(self, mem, dates,  total, zero,  bonds):
         self.plotted=True
         self.ax.clear()
-
-        (dates, total)=zip(*data)
-        (datesz, zero)=zip(*zero)
-        (datesb, bonds)=zip(*bonds)
-        if len(dates)<36:
-            self.ax.xaxis.set_minor_locator(MonthLocator())
-            self.ax.xaxis.set_major_locator(MonthLocator())
-            self.ax.xaxis.set_major_formatter( DateFormatter('%Y-%m'))   
-        elif len(dates)>=36:
-            self.ax.xaxis.set_minor_locator(YearLocator())
-            self.ax.xaxis.set_major_locator(YearLocator())    
-            self.ax.xaxis.set_major_formatter( DateFormatter('%Y'))                   
+        
+        self.ax.xaxis.set_major_locator(YearLocator())    
+        self.ax.xaxis.set_minor_locator(MonthLocator())
+        self.ax.xaxis.set_major_formatter( DateFormatter('%Y'))        
+        self.ax.xaxis.set_minor_formatter( DateFormatter(''))                   
         self.ax.autoscale_view()
         
         # format the coords message box
-        self.ax.fmt_xdata = DateFormatter('%Y-%m-%d')
+        self.ax.fmt_xdata = DateFormatter('%Y-%m')
         self.ax.fmt_ydata = self.price
         self.ax.grid(True)
-        self.fig.autofmt_xdate()
+#        self.fig.autofmt_xdate()
         self.plot_main, =self.ax.plot_date(dates, total, '-')
-        self.plot_zero, =self.ax.plot_date(datesz, zero, '-')
-        self.plot_bonds, =self.ax.plot_date(datesb, bonds, '-')
+        self.plot_zero, =self.ax.plot_date(dates, zero, '-')
+        self.plot_bonds, =self.ax.plot_date(dates, bonds, '-')
         self.showLegend()
-        self.draw()
+        self.draw()        
         
     def showLegend(self):
         """Alterna mostrando y desmostrando legend, empieza con sí"""
@@ -82,6 +74,7 @@ class canvasTotal(FigureCanvasQTAgg):
 
 
 class TotalMonth:
+    """All values are calculated in last day of the month"""
     def __init__(self, mem, year, month):
         self.mem=mem
         self.year=year
@@ -92,6 +85,8 @@ class TotalMonth:
         self.gains_value=None
         self.total_accounts_value=None
         self.total_investments_value=None
+        self.total_zerorisk_value=None
+        self.total_bonds_value=None
         
     def i_d_g_e(self):
         return self.incomes()+self.dividends()+self.gains()+self.expenses()
@@ -145,8 +140,17 @@ class TotalMonth:
         if self.total_investments_value==None:
             self.total_investments_value=Assets(self.mem).saldo_todas_inversiones(self.mem.data.investments_all(),  self.last_day())
         return self.total_investments_value
- 
-
+        
+    def total_zerorisk(self): 
+        if self.total_zerorisk_value==None:
+            self.total_zerorisk_value=Assets(self.mem).patrimonio_riesgo_cero(self.mem.data.investments_all(), self.last_day())
+        return self.total_zerorisk_value
+        
+    def total_bonds(self):
+        if self.total_bonds_value==None:
+            self.total_bonds_value=Assets(self.mem).saldo_todas_inversiones_bonds(self.last_day())
+        return self.total_bonds_value
+        
 class TotalYear:
     """Set of 12 totalmonths in the same year"""
     def __init__(self, mem, year):
@@ -215,6 +219,55 @@ class TotalYear:
         return 100*(m.total()-self.total_last_year)/self.total_last_year    
 
 
+
+class TotalGraphic:
+    """Set of totalmonths to generate a graphic"""
+    def __init__(self, mem, startyear, startmonth):
+        self.mem=mem
+        self.startyear=startyear
+        self.startmonth=startmonth
+        self.arr=[]
+        self.generate()
+        
+    def generate(self):
+        date=self.previousmonth_lastday()
+        while datetime.date.today()>=date:
+            self.arr.append(TotalMonth(self.mem, date.year, date.month))
+            date=self.nextmonth_firstday(date)#Only gets year  and month, so  I can use first day
+        
+    def find(self, year, month):
+        for m in self.arr:
+            if m.year==year and m.month==month:
+                return m
+        return None
+        
+    def length(self):
+        return len(self.arr)
+        
+    def previousmonth_lastday(self, date=None):
+        """If date is None, it users start year and start month"""
+        if date==None:
+            date=datetime.date(self.startyear, self.startmonth, 1)
+        return datetime.date(date.year, date.month, 1)-datetime.timedelta(days=1)
+        
+    def nextmonth_firstday(self, date=None):
+        """If date is None, date is today"""
+        if date==None:
+            date=datetime.date.today()
+            
+        if date.month==12:
+            month=1
+            year=date.year+1
+        else:
+            month=date.month+1
+            year=date.year
+            
+        return datetime.date(year, month, 1)
+
+        
+        
+
+
 class wdgTotal(QWidget, Ui_wdgTotal):
     def __init__(self, mem,  parent=None):
         QWidget.__init__(self, parent)
@@ -230,7 +283,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         self.mem.data.load_inactives()
         
         self.setData=None#Ser´a un TotalYear
-        self.setTarget=None
+        self.setGraphic=None #Ser´a un TotalGraphic
         
         if fechainicio==None: #Base de datos vacía
             self.tab.setEnabled(False)
@@ -242,7 +295,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         self.annualtarget=None#AnnualTarget Object
         
         self.wyData.initiate(fechainicio.year, datetime.date.today().year, datetime.date.today().year)
-        self.wyChart.initiate(fechainicio.year, datetime.date.today().year, datetime.date.today().year)
+        self.wyChart.initiate(fechainicio.year, datetime.date.today().year, datetime.date.today().year-3)
         self.wyChart.label.setText(self.tr("Data from selected year"))
 
         self.canvas=canvasTotal(self.mem,  self)
@@ -315,36 +368,27 @@ class wdgTotal(QWidget, Ui_wdgTotal):
     def load_graphic(self):   
         print("loading graphic")
         inicio=datetime.datetime.now()  
-        data=[]#date,valor
+        total=[]#date,valor
         zero=[]#date, valor zero
         bonds=[]
+        dates=[]
+        
+        self.setGraphic=TotalGraphic(self.mem, self.wyChart.year, 1)
 
-        maximum=13*(datetime.date.today().year-self.wyChart.year)+datetime.date.today().month
         self.progress.reset()
-        self.progress.setMinimum(1)
-        self.progress.setMaximum(maximum)
+        self.progress.setMaximum(self.setGraphic.length())
         self.progress.forceShow()
-        self.progress.setValue(0)       
-        for year in range(self.wyChart.year, datetime.date.today().year+1):
-            for month in range(1, 14):#12 primeros de mes y el 31 de diciembre
-                self.progress.setValue(self.progress.value()+1)
-                if month==13:
-                    date=datetime.date(year, 12, 31)
-                else:
-                    date=datetime.date(year, month, 1)
-                    
-                if date.month==datetime.date.today().month and date.year==datetime.date.today().year:
-                    date=datetime.date.today()
-                elif self.progress.wasCanceled() or (date>datetime.date.today()):
-                    break
-                
+        self.progress.setValue(0)  
+        for m in self.setGraphic.arr:
+            if self.progress.wasCanceled():
+                break
+            self.progress.setValue(self.progress.value()+1)
+            dates.append(m.last_day())
+            total.append(m.total())
+            zero.append(m.total_zerorisk())
+            bonds.append(m.total_bonds())
 
-                data.append((date,Assets(self.mem).saldo_total(self.mem.data.investments_all(), date)))
-                zero.append((date,Assets(self.mem).patrimonio_riesgo_cero(self.mem.data.investments_all(), date)))
-                bonds.append((date,Assets(self.mem).saldo_todas_inversiones_bonds(date)))
-
-        self.progress.setValue(maximum)                
-        self.canvas.mydraw(self.mem, data, zero,  bonds)
+        self.canvas.mydraw(self.mem, dates, total, zero,  bonds)
         print ("wdgTotal > load_graphic: {0}".format(datetime.datetime.now()-inicio))
 
     def on_wyData_mychanged(self):

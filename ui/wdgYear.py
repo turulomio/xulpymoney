@@ -18,12 +18,15 @@ class wdgYear(QWidget, Ui_wdgYear):
             print (function_name(self), "Firstyear is None")
             return
         
-        
         self.firstyear=firstyear
         self.lastyear=lastyear
         for year in range(firstyear, lastyear+1):
             self.cmbYear.addItem(str(year), year)
-        self.set(currentyear)
+            
+        if currentyear<firstyear:#If I set a currentyear that doesn't exist
+            self.set(firstyear)
+        else:
+            self.set(currentyear)
         
     def set(self,  year):
         self.year=year

@@ -777,17 +777,17 @@ Purgadas en total en el proceso global: {1}</translation>
 <context>
     <name>canvasTotal</name>
     <message>
-        <location filename="ui/wdgTotal.py" line="79"/>
+        <location filename="ui/wdgTotal.py" line="71"/>
         <source>Total assets</source>
         <translation>Todo el patrimonio</translation>
     </message>
     <message>
-        <location filename="ui/wdgTotal.py" line="80"/>
+        <location filename="ui/wdgTotal.py" line="72"/>
         <source>Zero risk assets</source>
         <translation>Patrimonio de riesgo nulo</translation>
     </message>
     <message>
-        <location filename="ui/wdgTotal.py" line="81"/>
+        <location filename="ui/wdgTotal.py" line="73"/>
         <source>Bond assets</source>
         <translation>Patrimonio de renta fija</translation>
     </message>
@@ -5561,57 +5561,57 @@ S&#xc3;&#xb3;lo se contabilizar&#xc3;&#xa1; cuando se vendan las acciones</sourc
         <translation>Octubre</translation>
     </message>
     <message>
-        <location filename="ui/wdgTotal.py" line="246"/>
+        <location filename="ui/wdgTotal.py" line="299"/>
         <source>Data from selected year</source>
         <translation>Datos del año seleccionado</translation>
     </message>
     <message>
-        <location filename="ui/wdgTotal.py" line="265"/>
+        <location filename="ui/wdgTotal.py" line="318"/>
         <source>Balance at {0}-12-31: {1}</source>
         <translation>Saldo a {0}-12-31: {1}</translation>
     </message>
     <message>
-        <location filename="ui/wdgTotal.py" line="378"/>
+        <location filename="ui/wdgTotal.py" line="422"/>
         <source>Incomes of {0} of {1}</source>
         <translation>Ingresos de {0} de {1}</translation>
     </message>
     <message>
-        <location filename="ui/wdgTotal.py" line="394"/>
+        <location filename="ui/wdgTotal.py" line="438"/>
         <source>Product selling operations of {0} of {1}</source>
         <translation>Operaciones de venta del producto de {0} de {1}</translation>
     </message>
     <message>
-        <location filename="ui/wdgTotal.py" line="408"/>
+        <location filename="ui/wdgTotal.py" line="452"/>
         <source>Dividends of {0} of {1}</source>
         <translation>Dividendos de {0} de {1}</translation>
     </message>
     <message>
-        <location filename="ui/wdgTotal.py" line="423"/>
+        <location filename="ui/wdgTotal.py" line="467"/>
         <source>Expenses of {0} of {1}</source>
         <translation>Gastos de {0} de {1}</translation>
     </message>
     <message>
-        <location filename="ui/wdgTotal.py" line="441"/>
+        <location filename="ui/wdgTotal.py" line="485"/>
         <source>You can&apos;t close this tab</source>
         <translation>No puedes cerrar esta pestaña</translation>
     </message>
     <message>
-        <location filename="ui/wdgTotal.py" line="223"/>
+        <location filename="ui/wdgTotal.py" line="276"/>
         <source>Filling report data</source>
         <translation>Rellenando datos del informe</translation>
     </message>
     <message>
-        <location filename="ui/wdgTotal.py" line="223"/>
+        <location filename="ui/wdgTotal.py" line="276"/>
         <source>Cancel</source>
         <translation>Cancelar</translation>
     </message>
     <message>
-        <location filename="ui/wdgTotal.py" line="225"/>
+        <location filename="ui/wdgTotal.py" line="278"/>
         <source>Calculating data...</source>
         <translation>Calculando datos...</translation>
     </message>
     <message>
-        <location filename="ui/wdgTotal.py" line="431"/>
+        <location filename="ui/wdgTotal.py" line="475"/>
         <source>Gains and dividends sum from this month is {0}. In this year it&apos;s value rises to {1}</source>
         <translation>La suma de las ganancias y los dividendos de este mes es {0}. En este año su valor asciende a {1}</translation>
     </message>
@@ -5661,7 +5661,7 @@ S&#xc3;&#xb3;lo se contabilizar&#xc3;&#xa1; cuando se vendan las acciones</sourc
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgTotal.py" line="292"/>
+        <location filename="ui/wdgTotal.py" line="345"/>
         <source>Annual target percentage of total assests balance at {}-12-31 ( {} )</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5709,12 +5709,12 @@ S&#xc3;&#xb3;lo se contabilizar&#xc3;&#xa1; cuando se vendan las acciones</sourc
         <translation>Año actual</translation>
     </message>
     <message>
-        <location filename="ui/wdgYear.py" line="42"/>
+        <location filename="ui/wdgYear.py" line="45"/>
         <source>I can&apos;t show the next year</source>
         <translation>No puedo mostrar el año siguiente</translation>
     </message>
     <message>
-        <location filename="ui/wdgYear.py" line="52"/>
+        <location filename="ui/wdgYear.py" line="55"/>
         <source>I can&apos;t show the previous year</source>
         <translation>No puedo mostrar el año anterior</translation>
     </message>
