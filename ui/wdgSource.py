@@ -96,8 +96,6 @@ class wdgSource(QWidget, Ui_wdgSource):
         for worker in self.agrupation:
             worker.step_finished.connect(self.progress_step)
             worker.run_finished.connect(self.worker_run_finished)
-#            QObject.connect(worker, SIGNAL("step_finished"), self.progress_step)   
-#            QObject.connect(worker, SIGNAL("run_finished"), self.worker_run_finished)   
         
         #Starts
         self.started.emit()

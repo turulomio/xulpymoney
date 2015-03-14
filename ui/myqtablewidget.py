@@ -10,8 +10,7 @@ class myQTableWidget(QTableWidget):
         self.section=None
         self.array=[]     #Es un array de strings no de int, con los datos para config
         self.verticalHeader().setSectionResizeMode(QHeaderView.ResizeToContents)
-        self.mytimer.timeout.connect(self.checksettings)
-#        QObject.connect(self.mytimer, SIGNAL("timeout()"), self.checksettings)        
+        self.mytimer.timeout.connect(self.checksettings) 
 
     def __del__(self):
         self.mytimer.stop()
