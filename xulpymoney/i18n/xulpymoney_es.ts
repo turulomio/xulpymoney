@@ -3418,44 +3418,39 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>frmSplit</name>
     <message>
-        <location filename="ui/frmSplit.ui" line="36"/>
+        <location filename="ui/Ui_frmSplit.py" line="125"/>
         <source>Split / Contrasplit</source>
         <translation>Split / Contrasplit</translation>
     </message>
     <message>
-        <location filename="ui/frmSplit.ui" line="104"/>
+        <location filename="ui/Ui_frmSplit.py" line="126"/>
         <source>Current Shares</source>
         <translation>Acciones actuales</translation>
     </message>
     <message>
-        <location filename="ui/frmSplit.ui" line="114"/>
+        <location filename="ui/Ui_frmSplit.py" line="127"/>
         <source>1</source>
         <translation>1</translation>
     </message>
     <message>
-        <location filename="ui/frmSplit.ui" line="139"/>
+        <location filename="ui/Ui_frmSplit.py" line="128"/>
         <source>Final Shares</source>
         <translation>Acciones finales</translation>
     </message>
     <message>
-        <location filename="ui/frmSplit.ui" line="149"/>
+        <location filename="ui/Ui_frmSplit.py" line="129"/>
         <source>10</source>
         <translation>10</translation>
     </message>
     <message>
-        <location filename="ui/frmSplit.ui" line="14"/>
+        <location filename="ui/Ui_frmSplit.py" line="124"/>
         <source>Split / Contrasplit relation</source>
         <translation>Relación de Split / Contrasplit</translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="ui/frmSplit.py" line="44"/>
+        <location filename="ui/frmSplit.py" line="43"/>
         <source>If you have 1000 shares of 10 € of price, you will have {0:.6f} shares of {1:.6f} € of price after the {2}</source>
         <translation>Si tienes 1000 acciones a 10 €, tendrás {0:.6f} acciones a {1:.6f} € después del {2}</translation>
-    </message>
-    <message>
-        <location filename="ui/frmSplit.ui" line="70"/>
-        <source>Shares relation</source>
-        <translation>Relación de acciones</translation>
     </message>
     <message>
         <location filename="ui/frmSplit.py" line="30"/>
@@ -5323,17 +5318,17 @@ S&#xc3;&#xb3;lo se contabilizar&#xc3;&#xa1; cuando se vendan las acciones</sourc
         <translation>Errores</translation>
     </message>
     <message>
-        <location filename="ui/wdgSource.py" line="129"/>
+        <location filename="ui/wdgSource.py" line="127"/>
         <source>{} Inserted</source>
         <translation>{} Insertados</translation>
     </message>
     <message>
-        <location filename="ui/wdgSource.py" line="130"/>
+        <location filename="ui/wdgSource.py" line="128"/>
         <source>{} Edited</source>
         <translation>{} Modificados</translation>
     </message>
     <message>
-        <location filename="ui/wdgSource.py" line="131"/>
+        <location filename="ui/wdgSource.py" line="129"/>
         <source>{} Ignored</source>
         <translation>{} Ignorados</translation>
     </message>
@@ -5343,17 +5338,17 @@ S&#xc3;&#xb3;lo se contabilizar&#xc3;&#xa1; cuando se vendan las acciones</sourc
         <translation>Actualizaciones insertadas</translation>
     </message>
     <message>
-        <location filename="ui/wdgSource.py" line="164"/>
+        <location filename="ui/wdgSource.py" line="162"/>
         <source>Edited quotes</source>
         <translation>Actualizaciones modificadas</translation>
     </message>
     <message>
-        <location filename="ui/wdgSource.py" line="174"/>
+        <location filename="ui/wdgSource.py" line="172"/>
         <source>Ignored quotes</source>
         <translation>Actualizaciones ignoradas</translation>
     </message>
     <message>
-        <location filename="ui/wdgSource.py" line="204"/>
+        <location filename="ui/wdgSource.py" line="202"/>
         <source>Error procesing the source</source>
         <translation>Error al procesar la fuente de datos</translation>
     </message>
@@ -5383,12 +5378,12 @@ S&#xc3;&#xb3;lo se contabilizar&#xc3;&#xa1; cuando se vendan las acciones</sourc
         <translation>Erróneos</translation>
     </message>
     <message>
-        <location filename="ui/wdgSource.py" line="133"/>
+        <location filename="ui/wdgSource.py" line="131"/>
         <source>{} bad</source>
         <translation>{} malos</translation>
     </message>
     <message>
-        <location filename="ui/wdgSource.py" line="132"/>
+        <location filename="ui/wdgSource.py" line="130"/>
         <source>{} errors parsing the source</source>
         <translation>{} errores parseando la fuente</translation>
     </message>
@@ -5403,7 +5398,7 @@ S&#xc3;&#xb3;lo se contabilizar&#xc3;&#xa1; cuando se vendan las acciones</sourc
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgSource.py" line="134"/>
+        <location filename="ui/wdgSource.py" line="132"/>
         <source>{} products</source>
         <translation type="unfinished"></translation>
     </message>

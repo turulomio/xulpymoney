@@ -97,15 +97,11 @@ class SourceParsePage(Source):
         self.products.load_from_db(self.sql)     
         self.next_step()
         self.loaded_page.connect(self.on_load_page)
-#        QObject.connect(self, SIGNAL("load_page"), self.on_load_page)   
         self.loaded_page.emit()
-#        self.emit(SIGNAL("load_page"))
         self.next_step()
         
         self.parse_page.connect(self.on_parse_page)
         self.parse_page.emit()
-#        QObject.connect(self, SIGNAL("parse_page"), self.on_parse_page)      
-#        self.emit(SIGNAL("parse_page")) 
         self.next_step()
  
         self.quotes_save()
@@ -114,7 +110,6 @@ class SourceParsePage(Source):
         
         self.finished=True
         self.run_finished.emit()
-#        self.emit(SIGNAL("run_finished"))
         self.next_step()
         
         
@@ -147,8 +142,7 @@ class SourceIterateProducts(Source):
         self.sleep=sleep#wait between products
         self.type=type#0 silent in xulpymoney, 1 console
         self.sql=sql
-        self.execute_product.connect(self.on_execute_product)
-#        QObject.connect(self, SIGNAL("execute_product(int)"), self.on_execute_product)       
+        self.execute_product.connect(self.on_execute_product) 
 
         
     def steps(self):

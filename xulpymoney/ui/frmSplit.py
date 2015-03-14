@@ -31,14 +31,13 @@ class frmSplit(QDialog, Ui_frmSplit):
         self.wdgDtEnd.grp.setTitle(self.tr("Select the day and time of end"))
         self.wdgDtStart.set(self.mem, self.all.first_quote().datetime, self.mem.localzone)
         self.wdgDtEnd.set(self.mem, datetime.datetime.now(), self.mem.localzone)
-        QObject.connect(self.wdgDtStart, SIGNAL("changed"), self.on_wdgDtStart_changed)   
-        QObject.connect(self.wdgDtEnd, SIGNAL("changed"), self.on_wdgDtEnd_changed)   
+        self.wdgDtStart.changed.connect(self.on_wdgDtStart_changed)
+        self.wdgDtEnd.changed.connect(self.on_wdgDtEnd_changed)
         self.split=None
         self.generateExample()
         
         
     def generateExample(self):
-        print("New split")
         try:
             self.split=Split(self.mem, self.product, self.txtInitial.decimal(), self.txtFinal.decimal(), self.wdgDtStart.datetime(), self.wdgDtEnd.datetime())
             self.lblExample.setText(self.tr("If you have 1000 shares of 10 € of price, you will have {0:.6f} shares of {1:.6f} € of price after the {2}".format(self.split.convertShares(1000),self.split.convertPrices(10),  self.split.type())))
