@@ -1,6 +1,7 @@
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from myqtablewidget import *
+from frmProductReport import *
 
 class wdgProductSelector(QWidget):
     """Para usarlo promocionar un qwidget en designer y darle los comportamientos de tamaña que neceseite
@@ -9,8 +10,11 @@ class wdgProductSelector(QWidget):
         QWidget.__init__(self, parent)
         self.selected=None
     
-    def setupUi(self, mem):
+    def setupUi(self, mem, investment=None):
+        """Investement is used to set investment pointer. It's usefull to see investment data in product report"""
         self.mem=mem
+        self.investment=investment#Optional
+        
         self.horizontalLayout_2 = QHBoxLayout(self)
         self.horizontalLayout = QHBoxLayout()
         self.label = QLabel(self)
@@ -19,7 +23,7 @@ class wdgProductSelector(QWidget):
         self.txt = QLineEdit(self)                                                                                                                                       
         self.txt.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)                                                                             
         self.txt.setReadOnly(True)      
-        self.txt.setToolTip(self.tr("Press the search button"))                                                                                                                                                           
+        self.txt.setToolTip(self.tr("Press the search button"))           
         self.horizontalLayout.addWidget(self.txt)                                                                                                                                 
         self.cmd= QToolButton(self)               
         icon = QIcon()
@@ -28,27 +32,44 @@ class wdgProductSelector(QWidget):
         self.horizontalLayout.addWidget(self.cmd)                                                                                                                            
         self.horizontalLayout_2.addLayout(self.horizontalLayout)                
         self.cmd.released.connect(self.on_cmd_released)
-#        self.connect(self.cmd,SIGNAL('released()'),  self.on_cmd_released)
+        self.cmd.setToolTip(self.tr("Press to select a product"))
+                                                                                                          
+        self.cmdProduct= QToolButton(self)    
+        icon2 = QIcon()
+        icon2.addPixmap(QPixmap(":/xulpymoney/books.png"), QIcon.Normal, QIcon.Off)
+        self.cmdProduct.setIcon(icon2)                                                                                                       
+        self.horizontalLayout.addWidget(self.cmdProduct)  
+        self.cmdProduct.setToolTip(self.tr("Press to see selected product information"))                    
+        self.cmdProduct.released.connect(self.on_cmdProduct_released)
+        self.cmdProduct.setEnabled(False)
 
     def on_cmd_released(self):
         d=frmProductSelector(self, self.mem)
         d.exec_()
         self.setSelected(d.products.selected)
+        
+    def on_cmdProduct_released(self):
+        w=frmProductReport(self.mem, self.selected, self.investment,  self)
+        w.exec_()
             
     def setSelected(self, product):
         """Recibe un objeto Product. No se usará posteriormente, por lo que puede no estar completo con get_basic.:."""
         self.selected=product
         if self.selected==None:
             self.txt.setText(self.tr("Not selected"))
-        else:
+            self.cmdProduct.setEnabled(False)     
+            self.txt.setToolTip(self.tr("Press the search button"))                                                                                                                                                           
+        else:      
             self.txt.setText("{0} ({1})".format(self.selected.name, self.selected.id))
+            self.cmdProduct.setEnabled(True)
+            self.txt.setToolTip(self.tr("Selected product"))    
         
 
 class frmProductSelector(QDialog):
     def __init__(self, parent, mem):
         QDialog.__init__(self, parent)
         self.mem=mem
-        self.products=[]
+        self.products=SetProducts(self.mem)
         self.resize(1024, 500)
         self.horizontalLayout_2 = QHBoxLayout(self)
         self.verticalLayout = QVBoxLayout()
@@ -106,7 +127,6 @@ class frmProductSelector(QDialog):
             m.exec_()  
             return
 
-        self.products=SetProducts(self.mem)
         self.products.load_from_db("select * from products where id::text like '%"+(self.txt.text().upper())+
                     "%' or upper(name) like '%"+(self.txt.text().upper())+
                     "%' or upper(isin) like '%"+(self.txt.text().upper())+
@@ -120,10 +140,7 @@ class frmProductSelector(QDialog):
         self.done(0)
     
     def on_tblInvestments_itemSelectionChanged(self):
-        try:
-            for i in self.tblInvestments.selectedItems():
-                if i.column()==0:
-                    self.products.selected=self.products.arr[i.row()]
-            print (self.products.selected)
-        except:
-            self.selected=None
+        self.products.selected=None
+        for i in self.tblInvestments.selectedItems():
+            if i.column()==0:
+                self.products.selected=self.products.arr[i.row()]

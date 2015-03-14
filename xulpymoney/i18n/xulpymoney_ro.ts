@@ -3022,32 +3022,32 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>frmProductSelector</name>
     <message>
-        <location filename="ui/wdgProductSelector.py" line="90"/>
+        <location filename="ui/wdgProductSelector.py" line="111"/>
         <source>Select a product</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgProductSelector.py" line="91"/>
+        <location filename="ui/wdgProductSelector.py" line="112"/>
         <source>Product list</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgProductSelector.py" line="93"/>
+        <location filename="ui/wdgProductSelector.py" line="114"/>
         <source>Found registers</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgProductSelector.py" line="105"/>
+        <location filename="ui/wdgProductSelector.py" line="126"/>
         <source>Search too wide. You need more than 3 characters</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgProductSelector.py" line="116"/>
+        <location filename="ui/wdgProductSelector.py" line="136"/>
         <source>Found {0} registers</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgProductSelector.py" line="92"/>
+        <location filename="ui/wdgProductSelector.py" line="113"/>
         <source>Search by code, ISIN, ticker or product name</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5019,18 +5019,33 @@ S&#xc3;&#xb3;lo se contabilizar&#xc3;&#xa1; cuando se vendan las acciones</sourc
 <context>
     <name>wdgProductSelector</name>
     <message>
-        <location filename="ui/wdgProductSelector.py" line="17"/>
+        <location filename="ui/wdgProductSelector.py" line="21"/>
         <source>Select a product</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgProductSelector.py" line="22"/>
+        <location filename="ui/wdgProductSelector.py" line="61"/>
         <source>Press the search button</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgProductSelector.py" line="42"/>
+        <location filename="ui/wdgProductSelector.py" line="59"/>
         <source>Not selected</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/wdgProductSelector.py" line="35"/>
+        <source>Press to select a product</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/wdgProductSelector.py" line="42"/>
+        <source>Press to see selected product information</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/wdgProductSelector.py" line="65"/>
+        <source>Selected product</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
