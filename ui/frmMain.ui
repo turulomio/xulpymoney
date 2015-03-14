@@ -46,7 +46,7 @@
      <x>0</x>
      <y>0</y>
      <width>1186</width>
-     <height>20</height>
+     <height>25</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuAyuda">
@@ -278,7 +278,7 @@
     <string>Exit</string>
    </property>
    <property name="shortcut">
-    <string>Esc</string>
+    <string>Alt+Esc</string>
    </property>
   </action>
   <action name="actionAbout">

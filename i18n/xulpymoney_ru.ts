@@ -2068,11 +2068,6 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished">Xulpymoney</translation>
     </message>
     <message>
-        <location filename="ui/Ui_frmMain.py" line="467"/>
-        <source>Esc</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="ui/Ui_frmMain.py" line="470"/>
         <source>F10</source>
         <translation type="unfinished"></translation>
@@ -2490,6 +2485,11 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="ui/Ui_frmMain.py" line="573"/>
         <source>Obsolete bonds</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_frmMain.py" line="467"/>
+        <source>Alt+Esc</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
