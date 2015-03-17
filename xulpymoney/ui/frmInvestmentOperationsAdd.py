@@ -12,7 +12,6 @@ class frmInvestmentOperationsAdd(QDialog, Ui_frmInvestmentOperationsAdd):
         self.inversion=inversion
         self.operinversion=operinversion
   
-        self.mem.tiposoperaciones.qcombobox(self.cmbTiposOperaciones)
         self.wdgDT.show_microseconds(False)
         
         if self.operinversion==None:#nuevo movimiento
@@ -20,11 +19,12 @@ class frmInvestmentOperationsAdd(QDialog, Ui_frmInvestmentOperationsAdd):
             self.operinversion=InvestmentOperation(self.mem)
             self.operinversion.inversion=self.inversion
             self.lblTitulo.setText(self.tr("New operation of {}").format(self.inversion.name))
+            self.mem.tiposoperaciones.qcombobox_investments_operations(self.cmbTiposOperaciones)
             self.wdgDT.set(self.mem)
         else:#editar movimiento
             self.type=2
             self.lblTitulo.setText(self.tr("{} operation edition").format(self.inversion.name))
-            self.cmbTiposOperaciones.setCurrentIndex(self.cmbTiposOperaciones.findData(self.operinversion.tipooperacion.id))
+            self.mem.tiposoperaciones.qcombobox_investments_operations(self.cmbTiposOperaciones, self.operinversion.tipooperacion)
             self.wdgDT.set(self.mem, self.operinversion.datetime, self.mem.localzone)
             self.txtImporte.setText(self.operinversion.importe)
             self.txtImpuestos.setText(self.operinversion.impuestos)
