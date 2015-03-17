@@ -3099,22 +3099,34 @@ class SetOperationTypes(SetCommons):
         self.append(OperationType().init__create( QApplication.translate("Core","Transfer of shares. Origin"), 9)) #No se contabiliza
         self.append(OperationType().init__create( QApplication.translate("Core","Transfer of shares. Destiny"), 10)) #No se contabiliza     
 
-    def qcombobox_basic(self, combo, selected=None):
-        """Selected is a Operation Type id"""
+
+    def qcombobox_basic(self, combo,  selected=None):
+        """Load lust some items
+        Selected is and object
+        It sorts by name the arr""" 
+        self.order_by_name()
         combo.clear()
-        combo.addItem(self.dic_arr['1'].name,  self.dic_arr['1'].id)
-        combo.addItem(self.dic_arr['2'].name,  self.dic_arr['2'].id)
+        for n in (1, 2):
+            a=self.dic_arr[str(n)]
+            combo.addItem(a.name, a.id)
+
         if selected!=None:
             combo.setCurrentIndex(combo.findData(selected.id))
-        
-        
-    def clone_only_operinversiones(self):
-        """Devuelve los tipos de operación específicos de operinversiones. en un arr de la forma"""
-        resultado=SetOperationTypes(self.mem)
-        for key,  t in self.dic_arr.items():
-            if key in ('4', '5', '6', '8'):
-                resultado.dic_arr[str(key)]=t
-        return resultado
+            
+            
+    def qcombobox_investments_operations(self, combo,  selected=None):
+        """Load lust some items
+        Selected is and object
+        It sorts by name the arr""" 
+        self.order_by_name()
+        combo.clear()
+        for n in (4, 5, 6, 8):
+            a=self.dic_arr[str(n)]
+            combo.addItem(a.name, a.id)
+
+        if selected!=None:
+            combo.setCurrentIndex(combo.findData(selected.id))
+
 
 def mylog(text):
     f=open("/tmp/xulpymoney.log","a")
