@@ -6,19 +6,16 @@ from decimal import Decimal
 class myQLineEdit(QLineEdit):
     def __init__(self, parent):
         QWidget.__init__(self, parent)       
-        self.setValidator(QDoubleValidator(self))
-        self.setMaxLength(12)
+#        self.setValidator(QDoubleValidator(self)) ##Failed to show point from numerical pad
         self.textChanged.connect(self.on_textChanged)
-#        self.connect(self,SIGNAL('textChanged(QString)'), self.on_textChanged)
+        self.setMaxLength(15)
         
         
     def isValid(self):
         """Devuelve si el textedit es un float o un decimal valido"""
-        try:
-            Decimal(self.text())
-            return True
-        except:
+        if self.decimal()==None:
             return False
+        return True
             
     def setBackgroundRed(self, red):
         if red==True:
@@ -26,9 +23,8 @@ class myQLineEdit(QLineEdit):
         else:
             css=""
         self.setStyleSheet(css)
-            
-        
-    @pyqtSlot(str) 
+ 
+    @pyqtSlot(str)
     def on_textChanged(self, text):
         pos=self.cursorPosition()
         text=text.replace(",", ".")
@@ -38,8 +34,18 @@ class myQLineEdit(QLineEdit):
             self.setBackgroundRed(False)
         else:
             self.setBackgroundRed(True)
-        self.setCursorPosition(pos)
-
+        self.setCursorPosition(pos)     
+        
+#    def keyReleaseEvent(self, event):
+#        super(myQLineEdit, self).keyReleaseEvent(event)
+#        if event.text() in ("0123456789.,"):
+#            print("acepted")
+#            event.accept()
+#            return
+#        print ("ignore")
+#        print (event.text())
+#        event.ignore()
+        
     def decimal(self):
         """Devuelve el decimal o un None si hay error"""
         try:
