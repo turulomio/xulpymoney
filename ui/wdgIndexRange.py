@@ -46,10 +46,13 @@ class wdgIndexRange(QWidget, Ui_wdgIndexRange):
         self.benchmark=self.mem.data.benchmark
         self.table.settings("wdgIndexRange",  self.mem)
         
-        self.spin.setValue(float(self.mem.config.get_value("wdgIndexRange", "spin")))
-        self.txtInvertir.setText(self.mem.config.get_value("wdgIndexRange", "txtInvertir"))
-        self.txtMinimo.setText(self.mem.config.get_value("wdgIndexRange", "txtMinimo"))
+        self.gl_wdgIndexRange_spin=Global(self.mem, "wdgIndexRange", "spin")
+        self.gl_wdgIndexRange_txtInvertir=Global(self.mem, "wdgIndexRange", "txtInvertir")
+        self.gl_wdgIndexRange_txtMinimo=Global(self.mem, "wdgIndexRange", "txtMinimo")
         
+        self.spin.setValue(float(self.gl_wdgIndexRange_spin.get()))
+        self.txtInvertir.setText(self.gl_wdgIndexRange_txtInvertir.get())
+        self.txtMinimo.setText(self.gl_wdgIndexRange_txtMinimo.get())        
         self.load_data()
         
         self.selRange=None#Range() in right click
@@ -116,15 +119,10 @@ class wdgIndexRange(QWidget, Ui_wdgIndexRange):
         print ("wdgIndexRange > load_data: {0}".format(datetime.datetime.now()-inicio))
 
     def on_cmd_pressed(self):
-        if self.spin.value()!=float(self.mem.config.get_value("wdgIndexRange", "spin")):
-            self.mem.config.set_value("wdgIndexRange", "spin", self.spin.value())
-            self.mem.config.save()
-        if self.txtInvertir.text()!=self.mem.config.get_value("wdgIndexRange", "txtInvertir"):
-            self.mem.config.set_value("wdgIndexRange", "txtInvertir", self.txtInvertir.text())
-            self.mem.config.save()
-        if self.txtMinimo.text()!=self.mem.config.get_value("wdgIndexRange", "txtMinimo"):
-            self.mem.config.set_value("wdgIndexRange", "txtMinimo", self.txtMinimo.text())
-            self.mem.config.save()
+        self.gl_wdgIndexRange_spin.set(Decimal(self.spin.value()))
+        self.gl_wdgIndexRange_txtInvertir.set(self.txtInvertir.text())
+        self.gl_wdgIndexRange_txtMinimo.set(self.txtMinimo.text())
+        self.mem.con.commit()
         self.load_data()
 
     def on_cmdIRAnalisis_pressed(self):

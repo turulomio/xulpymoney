@@ -43,6 +43,31 @@ class frmMain(QMainWindow, Ui_frmMain):
         self.menuBar.setEnabled(bool)
         self.toolBar.setEnabled(bool)
         
+    @pyqtSlot()
+    def on_actionGlobalReport_triggered(self):
+        print("Generando")
+        writer=QTextDocumentWriter("prueba.odt")
+#        editor=QTextEditor()
+        doc=QTextDocument(self)
+#        cursor=QTextCursor(doc)
+#        cursor.insertText("Code less. Create more.");
+#        cursor.insertBlock();
+#        cursor.insertText("Code less. Create more.");
+
+
+        doc.setHtml(
+"""<html>
+<body>
+<h1>Hola</h1>
+prueba
+</body>
+</html>""");
+        
+
+        writer.setFormat("odf")
+        writer.write(doc)
+        os.system("lowriter prueba.odt")
+        
     def init__continue(self):
         """Used to add frmAccess automatic access"""
         self.access=frmAccess(self.mem,  self)
