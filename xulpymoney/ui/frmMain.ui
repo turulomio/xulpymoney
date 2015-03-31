@@ -46,7 +46,7 @@
      <x>0</x>
      <y>0</y>
      <width>1186</width>
-     <height>25</height>
+     <height>20</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuAyuda">
@@ -73,6 +73,8 @@
     <addaction name="actionIndexRange"/>
     <addaction name="actionJointReport"/>
     <addaction name="actionTotalReport"/>
+    <addaction name="separator"/>
+    <addaction name="actionGlobalReport"/>
    </widget>
    <widget class="QMenu" name="menuCuentas">
     <property name="title">
@@ -258,6 +260,7 @@
    <addaction name="actionJointReport"/>
    <addaction name="actionReportAPR"/>
    <addaction name="actionTotalReport"/>
+   <addaction name="actionGlobalReport"/>
    <addaction name="separator"/>
    <addaction name="actionCalculator"/>
    <addaction name="separator"/>
@@ -945,6 +948,18 @@
    </property>
    <property name="toolTip">
     <string>Obsolete bonds</string>
+   </property>
+  </action>
+  <action name="actionGlobalReport">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/new.png</normaloff>:/xulpymoney/new.png</iconset>
+   </property>
+   <property name="text">
+    <string>Generate global report</string>
+   </property>
+   <property name="toolTip">
+    <string>Generate global report</string>
    </property>
   </action>
  </widget>

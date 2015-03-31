@@ -5020,9 +5020,6 @@ class MemProducts:
         d['settings#language']='en'
         d['wdgProducts#favoritos']=""
         d['settings_mystocks#fillfromyear']='2005'
-        d['wdgIndexRange#spin']='2'
-        d['wdgIndexRange#txtInvertir']='4000'
-        d['wdgIndexRange#txtMinimo']='1000'
         d['frmCalculator#Invested']='10000'
         d['frmCalculator#Product']='0'
         return d
@@ -5125,70 +5122,85 @@ class MemProducts:
         print (resultado,  "check_admin_mode")
         return resultado
         
+class Global:
+    def __init__(self, mem, section, name):
+        self.mem=mem
+        self.section=section
+        self.name=name
+        self._id=None#Used to store calculated value
+        self._default=None
+        self._value=None
+    
+    def in_db(self):
+        """Returns true if globals is saved in database"""
+        cur=self.mem.con.cursor()
+        cur.execute("select value from globals where id_globals=%s", (self.id(), ))
+        num=cur.rowcount
+        cur.close()
+        if num==0:
+            return False
+        else:
+            return True
+  
+    def get(self):
+        """Gets a global. In case value wasn't in database it inserts in database its value and return its value
         
-
-
-#    def get_database_init_date(self):
-#        cur=self.con.cursor()
-#        cur.execute("select value from globals where id_globals=5;")
-#        resultado=cur.fetchone()['value']
-#        cur.close()
-#        return resultado
-#
-#    def get_session_counter(self):
-#        cur=self.con.cursor()
-#        cur.execute("select value from globals where id_globals=3;")
-#        resultado=cur.fetchone()['value']
-#        cur.close()
-#        return resultado
-#
-#    def get_system_counter(self):
-#        cur=self.con.cursor()
-#        cur.execute("select value from globals where id_globals=2;")
-#        resultado=cur.fetchone()['value']
-#        cur.close()
-#        return resultado
-#
-#    def set_database_init_date(self, valor):
-#        cur=self.con.cursor()
-#        cur.execute("update globals set value=%s where id_globals=5;", (valor, ))
-#        cur.close()
-
-
-#
-#    def set_session_counter(self, valor):
-#        cur=self.con.cursor()
-#        cur.execute("update globals set value=%s where id_globals=3;", (valor, ))
-#        cur.close()
-#
-#    def set_system_counter(self, valor):
-#        cur=self.con.cursor()
-#        cur.execute("update globals set value=%s where id_globals=2;", (valor, ))
-#        cur.close()
-#    
-#    def set_sourceforge_version(self):
-#        cur=self.con.cursor()
-#        try:
-#            serverversion= ""
-#            comand='http://mystocks.svn.sourceforge.net/viewvc/mystocks/libxulpymoney.py'
-#            web=urllib.request.urlopen(comand)
-#            for line in web:
-#                if line.decode().find('return "20')!=-1:
-#                    if len(line.decode().split('"')[1])==8:
-#                        serverversion=line.decode().split('"')[1]        
-#                        cur.execute("update globals set value=%s where id_globals=4;", (serverversion, ))
-#                        log("VERSION-SOURCEFORGE", "", QApplication.translate("Core","Sourceforge version detected: {}").format(serverversion))
-#        except:
-#            log("VERSION-SOURCEFORGE", "", QApplication.translate("Core","Error buscando la versión actual de Sourceforge"))                    
-#        cur.close()
-#    def get_sourceforge_version(self):
-#        cur=self.con.cursor()
-#        cur.execute("select value from globals where id_globals=4;")
-#        resultado=cur.fetchone()['value']
-#        cur.close()
-#        return resultado
-
+        If you want to add a new global, you must change id and default"""
+        if self._value!=None:
+            return self._value
+            
+        cur=self.mem.con.cursor()
+        cur.execute("select value from globals where id_globals=%s", (self.id(), ))
+        if cur.rowcount==0:
+            self._value=self.default()
+            return self._value
+        else:
+            self._value=cur.fetchone()[0]
+            cur.close()
+            return self._value
         
+    def set(self, value):
+        """Set the global value.
+        It doesn't makes a commit, you must do it manually
+        value can't be None
+        """
+        cur=self.mem.con.cursor()
+        if self.in_db()==False:
+            cur.execute("insert into globals (id_globals, global,value) values(%s,%s,%s)", (self.id(),  self.string(), value))     
+        else:
+            cur.execute("update globals set global=%s, value=%s where id_globals=%s", (self.string(), value, self.id()))
+        cur.close()
+        self._value=value
+        
+    def string(self):
+        """Returns a string for global field in table globals"""
+        return "{}#{}".format(self.section,self.name)
+
+    def default(self):
+        """Returns default value
+        Default value can't be None"""
+        if self._default!=None:
+            return self._default
+        if self.section=="wdgIndexRange" and self.name=="spin":
+            self._default= "2"
+        elif self.section=="wdgIndexRange" and self.name=="txtInvertir":
+            self._default= "10000"
+        elif self.section=="wdgIndexRange" and self.name=="txtMinimo":
+            self._default= "1000"
+        return self._default
+
+    def id(self):
+        """Converts section and name to id of table globals"""
+        if self._id!=None:
+            return self._id
+        if self.section=="wdgIndexRange" and self.name=="spin":
+            self._id=7
+        elif self.section=="wdgIndexRange" and self.name=="txtInvertir":
+            self._id=8
+        elif self.section=="wdgIndexRange" and self.name=="txtMinimo":
+            self._id=9
+        return self._id
+
 class MemXulpymoney(MemProducts):
     def __init__(self):
         MemProducts.__init__(self)
