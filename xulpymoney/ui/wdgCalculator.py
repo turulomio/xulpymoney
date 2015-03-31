@@ -18,12 +18,16 @@ class wdgCalculator(QWidget, Ui_wdgCalculator):
             m.exec_()
             self.hasProducts=False        
             return
-        self.product=self.mem.data.products_all().find(self.mem.config.get_value("wdgCalculator", "Product"))
+            
+        self.gl_wdgCalculator_product=Global(self.mem, "wdgCalculator", "product")
+        self.gl_wdgCalculator_invested=Global(self.mem, "wdgCalculator", "invested")
+            
+        self.product=self.mem.data.products_all().find(int(self.gl_wdgCalculator_product.get()))
         
-        self.load_cmbPrice()
         
         self.mem.data.products_all().qcombobox(self.cmbProducts, self.product)
-        self.txtAmount.setText(self.mem.config.get_value("wdgCalculator", "Invested"))
+        self.load_cmbPrice()
+        self.txtAmount.setText(self.gl_wdgCalculator_invested.get())
 
     def init__percentagevariation_amount(self, percentagevariation, amount):
         if self.hasProducts==True:
@@ -31,10 +35,11 @@ class wdgCalculator(QWidget, Ui_wdgCalculator):
             self.txtAmount.setText(amount)
 
     def load_cmbPrice(self):       
-        self.cmbPrice.clear() 
-        self.cmbPrice.addItem(self.tr("Penultimate price ({})".format(str(self.product.result.basic.penultimate.datetime)[:16])))
-        self.cmbPrice.addItem(self.tr("Last price ({})".format(str(self.product.result.basic.last.datetime)[:16])))
-        self.cmbPrice.setCurrentIndex(1)#Last price
+        if self.product:
+            self.cmbPrice.clear() 
+            self.cmbPrice.addItem(self.tr("Penultimate price ({})".format(str(self.product.result.basic.penultimate.datetime)[:16])))
+            self.cmbPrice.addItem(self.tr("Last price ({})".format(str(self.product.result.basic.last.datetime)[:16])))
+            self.cmbPrice.setCurrentIndex(1)#Last price
 
     @pyqtSlot(int)  
     def on_cmbPrice_currentIndexChanged(self, index):
@@ -50,8 +55,8 @@ class wdgCalculator(QWidget, Ui_wdgCalculator):
     def on_cmbProducts_currentIndexChanged(self, index):
         self.product=self.mem.data.products_all().find(self.cmbProducts.itemData(index))
         if self.product:
-            self.mem.config.set_value("wdgCalculator", "Product", self.product.id)##Save selected product
-            self.mem.config.save()
+            self.gl_wdgCalculator_product.set(self.product.id)
+            self.mem.con.commit()
             
         self.load_cmbPrice()
         
@@ -69,8 +74,8 @@ class wdgCalculator(QWidget, Ui_wdgCalculator):
         
     def on_txtAmount_textChanged(self):
         if self.txtAmount.isValid():
-            self.mem.config.set_value("wdgCalculator", "Invested", self.txtAmount.decimal())##Save invested amount
-            self.mem.config.save()
+            self.gl_wdgCalculator_invested.set(self.txtAmount.decimal())
+            self.mem.con.commit()
         self.calculate()
 
     def calculate(self):

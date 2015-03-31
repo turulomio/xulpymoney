@@ -5020,8 +5020,6 @@ class MemProducts:
         d['settings#language']='en'
         d['wdgProducts#favoritos']=""
         d['settings_mystocks#fillfromyear']='2005'
-        d['frmCalculator#Invested']='10000'
-        d['frmCalculator#Product']='0'
         return d
             
             
@@ -5121,7 +5119,7 @@ class MemProducts:
         cur.close()
         print (resultado,  "check_admin_mode")
         return resultado
-        
+
 class Global:
     def __init__(self, mem, section, name):
         self.mem=mem
@@ -5187,6 +5185,10 @@ class Global:
             self._default= "10000"
         elif self.section=="wdgIndexRange" and self.name=="txtMinimo":
             self._default= "1000"
+        elif self.section=="wdgCalculator" and self.name=="product":
+            self._default="0"
+        elif self.section=="wdgCalculator" and self.name=="invested":
+            self._default="10000"
         return self._default
 
     def id(self):
@@ -5199,6 +5201,10 @@ class Global:
             self._id=8
         elif self.section=="wdgIndexRange" and self.name=="txtMinimo":
             self._id=9
+        elif self.section=="wdgCalculator" and self.name=="product":
+            self._id=10
+        elif self.section=="wdgCalculator" and self.name=="invested":
+            self._id=11
         return self._id
 
 class MemXulpymoney(MemProducts):
