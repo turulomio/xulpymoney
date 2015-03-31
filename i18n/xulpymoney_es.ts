@@ -53,7 +53,7 @@
         <translation>La tarjeta de crédito está inactiva. Debes activarla primero</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5644"/>
+        <location filename="libxulpymoney.py" line="5652"/>
         <source>This option is being developed</source>
         <translation>Esta opción está en desarrollo</translation>
     </message>
@@ -273,12 +273,12 @@
         <translation>Cargando inversiones...</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5605"/>
+        <location filename="libxulpymoney.py" line="5613"/>
         <source>True</source>
         <translation>Verdadero</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5608"/>
+        <location filename="libxulpymoney.py" line="5616"/>
         <source>False</source>
         <translation>Falso</translation>
     </message>
@@ -343,37 +343,37 @@
         <translation>Transferencia de acciones. Destino</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5536"/>
+        <location filename="libxulpymoney.py" line="5544"/>
         <source>year</source>
         <translation>año</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5538"/>
+        <location filename="libxulpymoney.py" line="5546"/>
         <source>years</source>
         <translation>años</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5540"/>
+        <location filename="libxulpymoney.py" line="5548"/>
         <source>month</source>
         <translation>mes</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5542"/>
+        <location filename="libxulpymoney.py" line="5550"/>
         <source>months</source>
         <translation>meses</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5544"/>
+        <location filename="libxulpymoney.py" line="5552"/>
         <source>day</source>
         <translation>día</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5546"/>
+        <location filename="libxulpymoney.py" line="5554"/>
         <source>days</source>
         <translation>días</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5547"/>
+        <location filename="libxulpymoney.py" line="5555"/>
         <source>{} {}, {} {} and {} {}</source>
         <translation>{} {}, {} {} y {} {}</translation>
     </message>
@@ -495,7 +495,7 @@ Purgadas en total en el proceso global: {1}</translation>
         <translation>% Dividendo</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5649"/>
+        <location filename="libxulpymoney.py" line="5657"/>
         <source>I couldn&apos;t order data due to they have null values</source>
         <translation>No pudo ordenar los datos debido a que hay valores nulos</translation>
     </message>
@@ -3843,12 +3843,12 @@ p, li { white-space: pre-wrap; }
         <translation>Necesitas crear al menos una inversión</translation>
     </message>
     <message>
-        <location filename="ui/wdgCalculator.py" line="36"/>
+        <location filename="ui/wdgCalculator.py" line="41"/>
         <source>Last price ({})</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgCalculator.py" line="35"/>
+        <location filename="ui/wdgCalculator.py" line="40"/>
         <source>Penultimate price ({})</source>
         <translation type="unfinished"></translation>
     </message>
