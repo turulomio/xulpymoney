@@ -172,15 +172,62 @@ def odt_generated_directly():
 
 
 def odt_generated_from_template():
-    pass
-
+    def metodo1():
+        """First load all and copys to new"""
+        print ("ahora")
+        textdoc = odf.opendocument.load("report.odt")
+        newdoc = odf.opendocument.OpenDocumentText()
+        for style in textdoc.styles.childNodes[:]:
+            newdoc.styles.addElement(style)
+      
+        for autostyle in textdoc.automaticstyles.childNodes[:]:
+            newdoc.automaticstyles.addElement(autostyle)
+            
+        for master in textdoc.masterstyles.childNodes[:]:
+            newdoc.masterstyles.addElement(master)
+            
+        h=odf.text.H(outlinelevel=1, stylename="Heading 1", text="My fivczxvxzvzrst text")
+        newdoc.text.addElement(h)
+        p = odf.text.P(text="Hello world. ")
+        boldpart = odf.text.Span(stylename="Bold",text="This part is bold. ")
+        p.addElement(boldpart)
+        p.addText("This is after bold.")
+        newdoc.text.addElement(p)
+        newdoc.save('modified1.odt')
+    
+    def metodo2():
+        textdoc = odf.opendocument.load("report.odt")
+        h=odf.text.H(outlinelevel=1, stylename="Heading 1", text="My first text")
+        textdoc.text.addElement(h)
+        p = odf.text.P(text="Hello world. ")
+        boldpart = odf.text.Span(stylename="Bold",text="This part is bold. ")
+        p.addElement(boldpart)
+        p.addText("This is after bold.")
+        textdoc.text.addElement(p)
+        textdoc.save('modified2.odt')
+    ##############333
+    metodo1()
+    metodo2()
 
 
 ##ODT generated from template
 
 
 
-
+#
+#def replace_text():
+#    textdoc = odf.opendocument.load("myfile.odt")
+#    texts = textdoc.getElementsByType(text.P)
+#    s = len(texts)
+#    for i in range(s):
+#        old_text = teletype.extractText(texts[i])
+#        new_text = old_text.replace('something','something else')
+#        new_S = text.P()
+#        new_S.setAttribute("stylename",texts[i].getAttribute("stylename"))
+#        new_S.addText(new_text)
+#        texts[i].parentNode.insertBefore(new_S,texts[i])
+#        texts[i].parentNode.removeChild(texts[i])
+#    textdoc.save('myfile.odt')
 
 
 
