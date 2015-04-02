@@ -1,6 +1,6 @@
 #!/usr/bin/python2
 # -*- coding: utf-8 -*-
-
+# PUEDES MIRAR DENTRO DE UN DOCUMENTO CON LO QUE QUIERAS CONSEGUIR Y SIMULARLO EN ODF
 
 
 ## ODT generated directly
@@ -13,52 +13,80 @@ import odf.meta
 import odf.dc
 
 def odt_generated_directly():
+    def styles_page():  
+        pagelayout = odf.style.PageLayout(name="MyLayoutdddd")
+        textdoc.automaticstyles.addElement(pagelayout)
+        pagelayout.addElement(odf.style.PageLayoutProperties(margin="5cm", pagewidth="28cm", pageheight="21cm", printorientation="landscape"))
+        mp = odf.style.MasterPage(name="Standardddd", pagelayoutname=pagelayout)
+        textdoc.masterstyles.addElement(mp)
+    
+    def styles_automatic():
+        # Create automatic styles for the column widths.
+        # We want two different widths, one in inches, the other one in metric.
+        # ODF Standard section 15.9.1
+        widthshort = odf.style.Style(name="Wshort", family="table-column")
+        widthshort.addElement(odf.style.TableColumnProperties(columnwidth="1.7cm"))
+        textdoc.automaticstyles.addElement(widthshort)
+        
+        widthwide = odf.style.Style(name="Wwide", family="table-column")
+        widthwide.addElement(odf.style.TableColumnProperties(columnwidth="1.5in"))
+        textdoc.automaticstyles.addElement(widthwide)
+        
+        # An automatic style
+        boldstyle = odf.style.Style(name="Bold", family="text")
+        boldprop = odf.style.TextProperties(fontweight="bold")
+        boldstyle.addElement(boldprop)
+        textdoc.automaticstyles.addElement(boldstyle)
+        
+        sPageBreak= odf.style.Style(name="PageBreak", family="paragraph")
+        sPageBreak.addElement(odf.style.ParagraphProperties(breakbefore="page"))
+        textdoc.automaticstyles.addElement(sPageBreak)
+        
+    
+
+    def styles():
+        h1style = odf.style.Style(name="Heading 1", family="paragraph")
+        h1style.addElement(odf.style.TextProperties(attributes={'fontsize':"16pt",'fontweight':"bold" }))
+        textdoc.styles.addElement(h1style)
+        
+        h2style = odf.style.Style(name="Heading 2", family="paragraph")
+        h2style.addElement(odf.style.TextProperties(attributes={'fontsize':"14pt",'fontweight':"bold" }))
+        textdoc.styles.addElement(h2style)
+        
+        tablecontents = odf.style.Style(name="TableContents", family="paragraph")
+        tablecontents.addElement(odf.style.ParagraphProperties(numberlines="false", linenumber="0"))
+        textdoc.styles.addElement(tablecontents)
+
+            
+        
     def metadata():
         textdoc.meta.addElement(odf.dc.Title(text="pyodf example"))
         textdoc.meta.addElement(odf.dc.Description(text=u"This is a nice description of Muñoz"))
         textdoc.meta.addElement(odf.meta.InitialCreator(text=u"Mariano Muñoz Marqu´inez"))
         textdoc.meta.addElement(odf.dc.Creator(text=u'đđðæßðđæ€ł'))
         
+    def pagebreak():    
+        p=odf.text.P(stylename="PageBreak")#Is an automatic style
+        textdoc.text.addElement(p)
+
+    def link():
+        para = odf.text.P()
+        anchor = odf.text.A(href="http://www.com/", text="A link label")
+        para.addElement(anchor)
+        textdoc.text.addElement(para)
         
     #######################################
     textdoc = odf.opendocument.OpenDocumentText()
 
     metadata()
-    
-    
-    
-    # Styles
-    s = textdoc.styles
-    h1style = odf.style.Style(name="Heading 1", family="paragraph")
-    h1style.addElement(odf.style.TextProperties(attributes={'fontsize':"24pt",'fontweight':"bold" }))
-    s.addElement(h1style)
-    
-    tablecontents = odf.style.Style(name="Table Contents", family="paragraph")
-    tablecontents.addElement(odf.style.ParagraphProperties(numberlines="false", linenumber="0"))
-    textdoc.styles.addElement(tablecontents)
-    
-    # Create automatic styles for the column widths.
-    # We want two different widths, one in inches, the other one in metric.
-    # ODF Standard section 15.9.1
-    widthshort = odf.style.Style(name="Wshort", family="table-column")
-    widthshort.addElement(odf.style.TableColumnProperties(columnwidth="1.7cm"))
-    textdoc.automaticstyles.addElement(widthshort)
-    
-    widthwide = odf.style.Style(name="Wwide", family="table-column")
-    widthwide.addElement(odf.style.TableColumnProperties(columnwidth="1.5in"))
-    textdoc.automaticstyles.addElement(widthwide)
-    
-    # An automatic style
-    boldstyle = odf.style.Style(name="Bold", family="text")
-    boldprop = odf.style.TextProperties(fontweight="bold")
-    boldstyle.addElement(boldprop)
-    textdoc.automaticstyles.addElement(boldstyle)
-    
-    
+    styles_page()
+    styles_automatic()
+    styles()
+
     
     
     # Text
-    h=odf.text.H(outlinelevel=1, stylename=h1style, text="My first text")
+    h=odf.text.H(outlinelevel=1, stylename="Heading 1", text="My first text")
     textdoc.text.addElement(h)
     p = odf.text.P(text="Hello world. ")
     boldpart = odf.text.Span(stylename="Bold",text="This part is bold. ")
@@ -67,8 +95,8 @@ def odt_generated_directly():
     textdoc.text.addElement(p)
     
     table = odf.table.Table()
-    table.addElement(odf.table.TableColumn(numbercolumnsrepeated=4,stylename=widthshort))
-    table.addElement(odf.table.TableColumn(numbercolumnsrepeated=3,stylename=widthwide))
+    table.addElement(odf.table.TableColumn(numbercolumnsrepeated=4,stylename="Wshort"))
+    table.addElement(odf.table.TableColumn(numbercolumnsrepeated=3,stylename="Wwide"))
     
     f = open('/etc/passwd')
     for i in range(5):
@@ -80,14 +108,17 @@ def odt_generated_directly():
         for val in rec:
             tc = odf.table.TableCell()
             tr.addElement(tc)
-            p = odf.text.P(stylename=tablecontents,text=val)
+            p = odf.text.P(stylename="TableContents",text=val)
             tc.addElement(p)
     
     textdoc.text.addElement(table)
     
+    pagebreak()
+    
+    link()
     
     ###Generating images
-    textdoc.text.addElement(odf.text.H(outlinelevel=1,text='Generating An Image', stylename=h1style))
+    textdoc.text.addElement(odf.text.H(outlinelevel=2,text='Generating An Image', stylename="Heading 2"))
     p = odf.text.P()
     
     href = textdoc.addPicture("../images/spain.gif")
@@ -98,9 +129,10 @@ def odt_generated_directly():
     textdoc.text.addElement(p)
     
     
+    pagebreak()
     
     ###Foot note
-    textdoc.text.addElement(odf.text.H(outlinelevel=1,text='Footnotes (Heading 1)',stylename=h1style))
+    textdoc.text.addElement(odf.text.H(outlinelevel=1,text='Footnotes (Heading 1)',stylename="Heading 1"))
     p = odf.text.P()
     textdoc.text.addElement(p)
     p.addText("This sentence has an accompanying footnote.")
@@ -115,6 +147,8 @@ def odt_generated_directly():
     
     
     
+    pagebreak()
+    textdoc.text.addElement(odf.text.H(outlinelevel=1,text='Generating An Image', stylename="Heading 1"))
     
     textdoc.save("odfpy_generated_directly.odt")
 
