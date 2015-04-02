@@ -53,7 +53,7 @@
         <translation>La tarjeta de crédito está inactiva. Debes activarla primero</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5652"/>
+        <location filename="libxulpymoney.py" line="5650"/>
         <source>This option is being developed</source>
         <translation>Esta opción está en desarrollo</translation>
     </message>
@@ -63,7 +63,7 @@
         <translation>Eliminando datos innecesarios</translation>
     </message>
     <message>
-        <location filename="ui/frmMain.py" line="469"/>
+        <location filename="ui/frmMain.py" line="464"/>
         <source>Cancel</source>
         <translation>Cancelar</translation>
     </message>
@@ -73,7 +73,7 @@
         <translation>Eliminando cotizaciones</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5085"/>
+        <location filename="libxulpymoney.py" line="5083"/>
         <source>Error conecting to Xulpymoney</source>
         <translation>Error al conectar a Xulpymoney</translation>
     </message>
@@ -98,12 +98,12 @@
         <translation>El producto asociado no está activo. Debes activarlo primero</translation>
     </message>
     <message>
-        <location filename="ui/frmMain.py" line="469"/>
+        <location filename="ui/frmMain.py" line="464"/>
         <source>Purging innecesary data from all products</source>
         <translation>Purgando datos innecesarios de todos los productos</translation>
     </message>
     <message>
-        <location filename="ui/frmMain.py" line="471"/>
+        <location filename="ui/frmMain.py" line="466"/>
         <source>Purging quotes from all products</source>
         <translation>Purgando valores de todos los productos</translation>
     </message>
@@ -273,12 +273,12 @@
         <translation>Cargando inversiones...</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5613"/>
+        <location filename="libxulpymoney.py" line="5611"/>
         <source>True</source>
         <translation>Verdadero</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5616"/>
+        <location filename="libxulpymoney.py" line="5614"/>
         <source>False</source>
         <translation>Falso</translation>
     </message>
@@ -343,37 +343,37 @@
         <translation>Transferencia de acciones. Destino</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5544"/>
+        <location filename="libxulpymoney.py" line="5542"/>
         <source>year</source>
         <translation>año</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5546"/>
+        <location filename="libxulpymoney.py" line="5544"/>
         <source>years</source>
         <translation>años</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5548"/>
+        <location filename="libxulpymoney.py" line="5546"/>
         <source>month</source>
         <translation>mes</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5550"/>
+        <location filename="libxulpymoney.py" line="5548"/>
         <source>months</source>
         <translation>meses</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5552"/>
+        <location filename="libxulpymoney.py" line="5550"/>
         <source>day</source>
         <translation>día</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5554"/>
+        <location filename="libxulpymoney.py" line="5552"/>
         <source>days</source>
         <translation>días</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5555"/>
+        <location filename="libxulpymoney.py" line="5553"/>
         <source>{} {}, {} {} and {} {}</source>
         <translation>{} {}, {} {} y {} {}</translation>
     </message>
@@ -423,7 +423,7 @@
         <translation>Purgadas {0} cotizaciones de {1}</translation>
     </message>
     <message>
-        <location filename="ui/frmMain.py" line="477"/>
+        <location filename="ui/frmMain.py" line="472"/>
         <source>Purging quotes from {0}.
 Total purged in global process: {1}</source>
         <translation>Purgando cotizaciones de {0}.
@@ -440,7 +440,7 @@ Purgadas en total en el proceso global: {1}</translation>
         <translation>Lenguaje local detectado: {0}</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5086"/>
+        <location filename="libxulpymoney.py" line="5084"/>
         <source>Connection done</source>
         <translation>Conexión realizada</translation>
     </message>
@@ -495,7 +495,7 @@ Purgadas en total en el proceso global: {1}</translation>
         <translation>% Dividendo</translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5657"/>
+        <location filename="libxulpymoney.py" line="5655"/>
         <source>I couldn&apos;t order data due to they have null values</source>
         <translation>No pudo ordenar los datos debido a que hay valores nulos</translation>
     </message>
@@ -642,6 +642,29 @@ Purgadas en total en el proceso global: {1}</translation>
     <message>
         <location filename="libxulpymoney.py" line="644"/>
         <source>Earth</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ODT</name>
+    <message>
+        <location filename="libodfgenerator.py" line="28"/>
+        <source>Current assets report</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="libodfgenerator.py" line="31"/>
+        <source>Your current balance is {}.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="libodfgenerator.py" line="113"/>
+        <source>Assets report</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="libodfgenerator.py" line="114"/>
+        <source>This is an automatic generated report from Xulpymoney</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2362,7 +2385,7 @@ p, li { white-space: pre-wrap; }
         <translation>F5</translation>
     </message>
     <message>
-        <location filename="ui/frmMain.py" line="497"/>
+        <location filename="ui/frmMain.py" line="492"/>
         <source>{0} quotes have been purged from {1} products</source>
         <translation>{0} cotizaciones han sido eliminadas de {1} productos</translation>
     </message>
@@ -2397,32 +2420,32 @@ p, li { white-space: pre-wrap; }
         <translation>Productos con ISIN duplicado</translation>
     </message>
     <message>
-        <location filename="ui/frmMain.py" line="362"/>
+        <location filename="ui/frmMain.py" line="357"/>
         <source>There aren&apos;t favorite products</source>
         <translation>No hay productos favoritos</translation>
     </message>
     <message>
-        <location filename="ui/frmMain.py" line="93"/>
+        <location filename="ui/frmMain.py" line="88"/>
         <source>Please introduce Admin Mode password</source>
         <translation>Por favor introduzca la contraseña del &apos;Modo administrador&apos;</translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="ui/frmMain.py" line="107"/>
+        <location filename="ui/frmMain.py" line="102"/>
         <source>Xulpymoney 2010-{0} © (Admin mode)</source>
         <translation>Xulpymoney 2010-{0} © (Modo administrador)</translation>
     </message>
     <message>
-        <location filename="ui/frmMain.py" line="102"/>
+        <location filename="ui/frmMain.py" line="97"/>
         <source>You have set the admin mode password. Please login again</source>
         <translation>Se ha establecido la contraseña del &apos;Modo administrador&apos;. Por favor conéctese otra vez</translation>
     </message>
     <message>
-        <location filename="ui/frmMain.py" line="110"/>
+        <location filename="ui/frmMain.py" line="105"/>
         <source>You are logged as an administrator</source>
         <translation>Se ha conectado como administrador</translation>
     </message>
     <message>
-        <location filename="ui/frmMain.py" line="114"/>
+        <location filename="ui/frmMain.py" line="109"/>
         <source>Bad &apos;Admin mode&apos; password. You are logged as a normal user</source>
         <translation>Contraseña errónea del &apos;Modo administrador&apos;. Usted se ha conectado como un usuario normal</translation>
     </message>
