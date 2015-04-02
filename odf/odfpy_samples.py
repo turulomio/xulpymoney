@@ -58,7 +58,9 @@ table.addElement(odf.table.TableColumn(numbercolumnsrepeated=4,stylename=widthsh
 table.addElement(odf.table.TableColumn(numbercolumnsrepeated=3,stylename=widthwide))
 
 f = open('/etc/passwd')
-for line in f:
+for i in range(5):
+#for line in f:
+    line=f.readline()
     rec = line.strip().split(":")
     tr = odf.table.TableRow()
     table.addElement(tr)
@@ -81,6 +83,24 @@ p.addElement(f)
 img = odf.draw.Image(href=href, type="simple", show="embed", actuate="onLoad")
 f.addElement(img)
 textdoc.text.addElement(p)
+
+
+
+###Foot note
+textdoc.text.addElement(odf.text.H(outlinelevel=1,text='Footnotes (Heading 1)',stylename=h1style))
+p = odf.text.P()
+textdoc.text.addElement(p)
+p.addText("This sentence has an accompanying footnote.")
+note = odf.text.Note(id="ftn0", noteclass="footnote")
+p.addElement(note)
+note.addElement(odf.text.NoteCitation(text='1'))
+notebody = odf.text.NoteBody()
+note.addElement(notebody)
+notebody.addElement(odf.text.P(stylename="Footnote", text="You are reading a footnote."))
+p.addElement(odf.text.S(c=2))
+p.addText("Where does the text after a footnote go?")
+
+
 
 
 textdoc.save("odfpy_generated_directly.odt")
