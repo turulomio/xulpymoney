@@ -58,6 +58,19 @@ def odt_generated_directly():
         textdoc.styles.addElement(tablecontents)
 
             
+    def tablacontenido():
+        """LO SAQUE VIENDO UN FODT CON TABLA DE CONTENIDOS"""
+        content=odf.text.TableOfContent(name="Tabla de contenido")
+        source=odf.text.TableOfContentSource()
+        t1=odf.text.TableOfContentEntryTemplate(outlinelevel=1, stylename="Heading 1")
+        t1.addElement(odf.text.IndexEntryChapter())
+        t1.addElement(odf.text.IndexEntryText())
+        t1.addElement(odf.text.IndexEntryPageNumber())
+        source.addElement(t1)
+        source.addElement(odf.text.TableOfContentEntryTemplate(outlinelevel=2, stylename="Heading 1"))
+        source.addElement(odf.text.TableOfContentEntryTemplate(outlinelevel=3, stylename="Heading 1"))
+        content.addElement(source)
+        textdoc.text.addElement(content)
         
     def metadata():
         textdoc.meta.addElement(odf.dc.Title(text="pyodf example"))
@@ -86,6 +99,8 @@ def odt_generated_directly():
     
     
     # Text
+    tablacontenido()
+    pagebreak()
     h=odf.text.H(outlinelevel=1, stylename="Heading 1", text="My first text")
     textdoc.text.addElement(h)
     p = odf.text.P(text="Hello world. ")
