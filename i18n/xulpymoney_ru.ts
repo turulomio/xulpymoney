@@ -53,7 +53,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5652"/>
+        <location filename="libxulpymoney.py" line="5650"/>
         <source>This option is being developed</source>
         <translation type="unfinished"></translation>
     </message>
@@ -63,7 +63,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmMain.py" line="469"/>
+        <location filename="ui/frmMain.py" line="464"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
@@ -73,7 +73,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5085"/>
+        <location filename="libxulpymoney.py" line="5083"/>
         <source>Error conecting to Xulpymoney</source>
         <translation type="unfinished"></translation>
     </message>
@@ -98,12 +98,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmMain.py" line="469"/>
+        <location filename="ui/frmMain.py" line="464"/>
         <source>Purging innecesary data from all products</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmMain.py" line="471"/>
+        <location filename="ui/frmMain.py" line="466"/>
         <source>Purging quotes from all products</source>
         <translation type="unfinished"></translation>
     </message>
@@ -273,12 +273,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5613"/>
+        <location filename="libxulpymoney.py" line="5611"/>
         <source>True</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5616"/>
+        <location filename="libxulpymoney.py" line="5614"/>
         <source>False</source>
         <translation type="unfinished"></translation>
     </message>
@@ -343,37 +343,37 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5544"/>
+        <location filename="libxulpymoney.py" line="5542"/>
         <source>year</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5546"/>
+        <location filename="libxulpymoney.py" line="5544"/>
         <source>years</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5548"/>
+        <location filename="libxulpymoney.py" line="5546"/>
         <source>month</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5550"/>
+        <location filename="libxulpymoney.py" line="5548"/>
         <source>months</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5552"/>
+        <location filename="libxulpymoney.py" line="5550"/>
         <source>day</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5554"/>
+        <location filename="libxulpymoney.py" line="5552"/>
         <source>days</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5555"/>
+        <location filename="libxulpymoney.py" line="5553"/>
         <source>{} {}, {} {} and {} {}</source>
         <translation type="unfinished"></translation>
     </message>
@@ -423,7 +423,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmMain.py" line="477"/>
+        <location filename="ui/frmMain.py" line="472"/>
         <source>Purging quotes from {0}.
 Total purged in global process: {1}</source>
         <translation type="unfinished"></translation>
@@ -439,7 +439,7 @@ Total purged in global process: {1}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5086"/>
+        <location filename="libxulpymoney.py" line="5084"/>
         <source>Connection done</source>
         <translation type="unfinished"></translation>
     </message>
@@ -494,7 +494,7 @@ Total purged in global process: {1}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libxulpymoney.py" line="5657"/>
+        <location filename="libxulpymoney.py" line="5655"/>
         <source>I couldn&apos;t order data due to they have null values</source>
         <translation type="unfinished"></translation>
     </message>
@@ -641,6 +641,29 @@ Total purged in global process: {1}</source>
     <message>
         <location filename="libxulpymoney.py" line="644"/>
         <source>Earth</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ODT</name>
+    <message>
+        <location filename="libodfgenerator.py" line="28"/>
+        <source>Current assets report</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="libodfgenerator.py" line="31"/>
+        <source>Your current balance is {}.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="libodfgenerator.py" line="113"/>
+        <source>Assets report</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="libodfgenerator.py" line="114"/>
+        <source>This is an automatic generated report from Xulpymoney</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2348,7 +2371,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmMain.py" line="497"/>
+        <location filename="ui/frmMain.py" line="492"/>
         <source>{0} quotes have been purged from {1} products</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2398,32 +2421,32 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmMain.py" line="362"/>
+        <location filename="ui/frmMain.py" line="357"/>
         <source>There aren&apos;t favorite products</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmMain.py" line="93"/>
+        <location filename="ui/frmMain.py" line="88"/>
         <source>Please introduce Admin Mode password</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="ui/frmMain.py" line="107"/>
+        <location filename="ui/frmMain.py" line="102"/>
         <source>Xulpymoney 2010-{0} © (Admin mode)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmMain.py" line="102"/>
+        <location filename="ui/frmMain.py" line="97"/>
         <source>You have set the admin mode password. Please login again</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmMain.py" line="110"/>
+        <location filename="ui/frmMain.py" line="105"/>
         <source>You are logged as an administrator</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/frmMain.py" line="114"/>
+        <location filename="ui/frmMain.py" line="109"/>
         <source>Bad &apos;Admin mode&apos; password. You are logged as a normal user</source>
         <translation type="unfinished"></translation>
     </message>

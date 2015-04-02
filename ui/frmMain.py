@@ -45,28 +45,23 @@ class frmMain(QMainWindow, Ui_frmMain):
         
     @pyqtSlot()
     def on_actionGlobalReport_triggered(self):
-        print("Generando")
-        writer=QTextDocumentWriter("prueba.odt")
-#        editor=QTextEditor()
-        doc=QTextDocument(self)
-#        cursor=QTextCursor(doc)
-#        cursor.insertText("Code less. Create more.");
-#        cursor.insertBlock();
-#        cursor.insertText("Code less. Create more.");
-
-
-        doc.setHtml(
-"""<html>
-<body>
-<h1>Hola</h1>
-prueba
-</body>
-</html>""");
+        import libodfgenerator
+        file="prueba.odt"
+        doc=libodfgenerator.ODT(self.mem, file)
+        doc.generate()
         
+        
+        #3Open file
+        if os.path.exists("/usr/bin/lowriter"):
+            QProcess.startDetached("lowriter", [file, ] )
+        elif os.path.exists("/usr/bin/kfmclient"):
+            QProcess.startDetached("kfmclient", ["openURL", file] )
+        elif os.path.exists("/usr/bin/gnome-open"):
+            QProcess.startDetached( "gnome-open '" + file + "'" );
+        else:         
+            QDesktopServices.openUrl(QUrl("file://"+file));
 
-        writer.setFormat("odf")
-        writer.write(doc)
-        os.system("lowriter prueba.odt")
+
         
     def init__continue(self):
         """Used to add frmAccess automatic access"""

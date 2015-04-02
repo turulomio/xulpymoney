@@ -2,6 +2,7 @@ SOURCES         = \
                   libdbupdates.py \
                   libsources.py \
                   libxulpymoney.py \
+                  libodfgenerator.py \
                   sources/source_mercadocontinuo.py \
                   sources/source_sg_warrants.py \
                   sources/source_yahoohistorical.py \
