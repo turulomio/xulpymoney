@@ -11,6 +11,7 @@ import odf.table
 import odf.draw
 import odf.meta
 import odf.dc
+import odf.teletype
 
 def odt_generated_directly():
     def styles_page():  
@@ -196,8 +197,9 @@ def odt_generated_from_template():
         newdoc.save('modified1.odt')
     
     def metodo2():
+        """Con este metodo se carga el report, aunque tenga portada, contenidos etc. Y se empieza a insertar desde el final."""
         textdoc = odf.opendocument.load("report.odt")
-        h=odf.text.H(outlinelevel=1, stylename="Heading 1", text="My first text")
+        h=odf.text.H(outlinelevel=1, stylename="Heading 1", text="AQUI EMPIEZZAMy first text")
         textdoc.text.addElement(h)
         p = odf.text.P(text="Hello world. ")
         boldpart = odf.text.Span(stylename="Bold",text="This part is bold. ")
@@ -214,20 +216,20 @@ def odt_generated_from_template():
 
 
 
-#
-#def replace_text():
-#    textdoc = odf.opendocument.load("myfile.odt")
-#    texts = textdoc.getElementsByType(text.P)
-#    s = len(texts)
-#    for i in range(s):
-#        old_text = teletype.extractText(texts[i])
-#        new_text = old_text.replace('something','something else')
-#        new_S = text.P()
-#        new_S.setAttribute("stylename",texts[i].getAttribute("stylename"))
-#        new_S.addText(new_text)
-#        texts[i].parentNode.insertBefore(new_S,texts[i])
-#        texts[i].parentNode.removeChild(texts[i])
-#    textdoc.save('myfile.odt')
+
+def replace_text():
+    textdoc = odf.opendocument.load("report.odt")
+    texts = textdoc.getElementsByType(odf.text.P)
+    s = len(texts)
+    for i in range(s):
+        old_text = odf.teletype.extractText(texts[i])
+        new_text = old_text.replace('Hola','Esto es un Hola reemplazado')
+        new_S = odf.text.P()
+        new_S.setAttribute("stylename",texts[i].getAttribute("stylename"))
+        new_S.addText(new_text)
+        texts[i].parentNode.insertBefore(new_S,texts[i])
+        texts[i].parentNode.removeChild(texts[i])
+    textdoc.save('replaced.odt')
 
 
 
@@ -282,5 +284,6 @@ def ods_generated_from_template():
 ############################################
 odt_generated_directly()
 odt_generated_from_template()
+replace_text()
 ods_generated_directly()
 ods_generated_from_template()
