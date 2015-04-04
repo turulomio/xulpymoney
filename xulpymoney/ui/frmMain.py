@@ -45,13 +45,14 @@ class frmMain(QMainWindow, Ui_frmMain):
         
     @pyqtSlot()
     def on_actionGlobalReport_triggered(self):
+        self.mem.data.load_inactives()
         import libodfgenerator
-        file="prueba.odt"
-        doc=libodfgenerator.ODT(self.mem, file)
+        file="AssetsReport.odt"
+        doc=libodfgenerator.AssetsReport(self.mem, file, "/usr/share/xulpymoney/report.odt")
         doc.generate()
         
         
-        #3Open file
+        #Open file
         if os.path.exists("/usr/bin/lowriter"):
             QProcess.startDetached("lowriter", [file, ] )
         elif os.path.exists("/usr/bin/kfmclient"):
