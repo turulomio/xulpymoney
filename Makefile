@@ -78,6 +78,7 @@ install:
 
 	install -m 644 -o root GPL-3.txt CHANGELOG.txt AUTHORS.txt RELEASES.txt $(PREFIXSHARE)
 	install -m 644 -o root sql/xulpymoney.sql $(PREFIXSHARE)/sql
+	install -m 644 -o root odf/report.odt $(PREFIXSHARE)
 
 uninstall:
 	rm $(PREFIXBIN)/xulpymoney
