@@ -74,7 +74,7 @@ class ODT(QObject):
 
     
         #Table columns
-        table = odf.table.Table()
+        table = odf.table.Table(stylename="Tabla{}".format(number))
         for i, head in enumerate(header):
             table.addElement(odf.table.TableColumn(stylename="Tabla{}.{}".format(number, chr(65+i))))  
             
@@ -100,6 +100,8 @@ class ODT(QObject):
                 tc.addElement(p)
         
         self.doc.text.addElement(table)
+        
+
     def pageBreak(self):    
         p=odf.text.P(stylename="PageBreak")#Is an automatic style
         self.doc.text.addElement(p)
