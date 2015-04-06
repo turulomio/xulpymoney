@@ -365,7 +365,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         
 
 
-    def load_graphic(self, save=False):   
+    def load_graphic(self, savefile=None):   
         print("loading graphic")
         inicio=datetime.datetime.now()  
         total=[]#date,valor
@@ -390,8 +390,8 @@ class wdgTotal(QWidget, Ui_wdgTotal):
 
         self.canvas.mydraw(self.mem, dates, total, zero,  bonds)
         
-        if save==True:
-            self.canvas.fig.savefig("/tmp/total.png", dpi=200)
+        if savefile!=None:
+            self.canvas.fig.savefig(savefile, dpi=200)
         
         print ("wdgTotal > load_graphic: {0}".format(datetime.datetime.now()-inicio))
 
