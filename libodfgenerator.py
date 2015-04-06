@@ -180,13 +180,36 @@ class AssetsReport(ODT):
         
         ### Assests current year
         self.header(self.tr("Assets current year evolution"), 2)
-        w=wdgInvestments(self.mem)
-        w.resize(1280, 30*self.mem.data.investments_active.length())
-        w.tblInvestments.on_cellDoubleClicked(0, 0)
-        p=QPixmap(w.size())
-        w.render(p)
-        p.save("{}/wdgInvestments.png".format(self.dir))
-        self.image("{}/wdgInvestments.png".format(self.dir), 17, 12)
+#        w=wdgInvestments(self.mem)
+#        w.resize(1280, 30*self.mem.data.investments_active.length())
+#        w.tblInvestments.on_cellDoubleClicked(0, 0)
+#        p=QPixmap(w.size())
+#        w.render(p)
+#        p.save("{}/wdgInvestments.png".format(self.dir))
+#        self.image("{}/wdgInvestments.png".format(self.dir), 17, 12)
+        sumpendiente=0
+        suminvertido=0
+        sumpositivos=0
+        sumnegativos=0
+        data=[]
+        self.mem.data.investments_active.order_by_percentage_sellingpoint()
+        for inv in self.mem.data.investments_active.arr:            
+            suminvertido=suminvertido+inv.invertido()
+            pendiente=inv.pendiente()
+            if pendiente>0:
+                sumpositivos=sumpositivos+pendiente
+            else:
+                sumnegativos=sumnegativos+pendiente
+            suminvertido=suminvertido+inv.tpc_invertido()
+            arr=("{0} ({1})".format(inv.name, inv.cuenta.name), c(inv.balance()), c(pendiente), tpc(inv.tpc_invertido()), tpc(inv.tpc_venta()))
+            data.append(arr)
+
+        self.table( [self.tr("Investment"), self.tr("Balance"), self.tr("Gains"), self.tr("% Invested"), self.tr("% Selling point")], ["<", ">", ">", ">", ">"], data, [3, 2, 2, 2, 2], 12, 2)       
+        
+        if suminvertido!=0:
+            self.simpleParagraph(self.tr("Invested assets: {}. Pending: {} - {} = {} ({} assets). Assets average age: {}").format(c(suminvertido), c(sumpositivos),  c(-sumnegativos),  c(sumpendiente), tpc(100*sumpendiente/suminvertido) ,  days_to_year_month(self.mem.data.investments_active.average_age())))
+        else:
+            self.simpleParagraph(self.tr("There aren't invested assets"))
         
         
         ### Assets evolution graphic
