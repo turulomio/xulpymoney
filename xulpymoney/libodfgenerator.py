@@ -7,6 +7,7 @@ import odf.table
 import odf.draw
 import odf.meta
 import odf.dc
+from wdgTotal import *
 from libxulpymoney import *
 
 class ODT(QObject):
@@ -43,7 +44,7 @@ class ODT(QObject):
         
         
         
-    def table(self, header, data, sizes, font, number)       :
+    def table(self, header, orientation,  data, sizes, font, number)       :
         """Headerl text
         Data: data
         sizes: arr with column widths in cm
@@ -93,14 +94,25 @@ class ODT(QObject):
         for row in data:
             tr = odf.table.TableRow()
             table.addElement(tr)
-            for col in row:
+            for i, col in enumerate(row):
                 tc = odf.table.TableCell(stylename="Tabla{}.Cell".format(number))
                 tr.addElement(tc)
-                p = odf.text.P(stylename="Table Contents",text=col)
+                if orientation[i]=="<":
+                    p = odf.text.P(stylename="Table Contents",text=col)
+                elif orientation[i]==">":
+                    p = odf.text.P(stylename="Contenido de la tabla derecha",text=col)
                 tc.addElement(p)
         
         self.doc.text.addElement(table)
         
+    def image(self, filename, width, height):
+        p = odf.text.P(stylename="Illustration")
+        href = self.doc.addPicture(filename)
+        f = odf.draw.Frame(name="filename", anchortype="as-char", width="{}cm".format(width), height="{}cm".format(height)) #, width="2cm", height="2cm", zindex="0")
+        p.addElement(f)
+        img = odf.draw.Image(href=href, type="simple", show="embed", actuate="onLoad")
+        f.addElement(img)
+        self.doc.text.addElement(p)
 
     def pageBreak(self):    
         p=odf.text.P(stylename="PageBreak")#Is an automatic style
@@ -139,30 +151,38 @@ class AssetsReport(ODT):
         self.pageBreak()
         
     def body(self):
+        c=self.mem.localcurrency.string
         ## About
         self.header(self.tr("About Xulpymoney"), 1)
         self.header(self.tr("About this report"), 2)
         self.pageBreak()
         ## Assets
         self.header(self.tr("Assets"), 1)
-        self.simpleParagraph(self.tr("The total assets of the user is {}.").format(self.mem.localcurrency.string(self.vTotal)))
+        self.simpleParagraph(self.tr("The total assets of the user is {}.").format(c(self.vTotal)))
         if self.vTotalLastYear!=0:
             moreorless="more"
             if self.vTotal-self.vTotalLastYear<0:
                 moreorless="less"
             self.simpleParagraph(self.tr("It's a {} {} of the total assets at the end of the last year.").format(tpc(100*(self.vTotal-self.vTotalLastYear)/self.vTotalLastYear), moreorless))
         
+        ### Assets by bank
         self.header(self.tr("Assets by bank"), 2)
-        self.table( ["Empresa", "Valor"], [['TEF', 2345], ['SAN', 33456]], [4, 5], 11, 1)       
+        data=[]
+        self.mem.data.banks_active.order_by_name()
+        for bank in self.mem.data.banks_active.arr:
+            data.append((bank.name, c(bank.balance(self.mem.data.accounts_active, self.mem.data.investments_active))))
+        self.table( [self.tr("Bank"), self.tr("Balance")], ["<", ">"], data, [3, 2], 12, 1)       
+        
+        ### Assets evolution graphic
+        self.header(self.tr("Assets evolution"), 2)
+        
+        w=wdgTotal(self.mem)
+        w.load_graphic(True)
+        self.image("/tmp/total.png", 15, 10)
         self.simpleParagraph("")
         
-        self.table( ["Empresa", "Valor"], [['TEF', 2345], ['SAN', 33456]], [2, 5], 11, 2)       
-        
-        self.simpleParagraph("")
-        self.table( ["Empresa", "Valor"], [['TEF', 2345], ['SAN', 33456]], [5, 5], 11, 3)       
-        
-        self.table( ["Empresa", "Valor"], [['TEF', 2345], ['SAN', 33456]], [3, 5], 11, 4)       
         self.pageBreak()
+        
         
         ## Statistics
         self.header(self.tr("Statistics"), 1)
