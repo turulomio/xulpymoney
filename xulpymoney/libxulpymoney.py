@@ -4778,10 +4778,6 @@ class TUpdateData(threading.Thread):
                 if self.mem.closing==True:
                     return
                 time.sleep(1)
-            
-            
-        
-
 
 class Type:
     def __init__(self):
@@ -4791,8 +4787,6 @@ class Type:
         self.id=id
         self.name=name
         return self
-        
-
 
 class Agrupation:
     """Una inversión pertenece a una lista de agrupaciones ibex, indices europeos

@@ -7,7 +7,9 @@ import odf.table
 import odf.draw
 import odf.meta
 import odf.dc
+import os
 from wdgTotal import *
+from wdgInvestments import *
 from libxulpymoney import *
 
 class ODT(QObject):
@@ -129,8 +131,11 @@ class ODT(QObject):
 class AssetsReport(ODT):
     def __init__(self, mem, filename, template):
         ODT.__init__(self, mem, filename, template)
+        self.dir=None#Directory in tmp
         
     def generate(self):
+        self.dir='/tmp/AssetsReport-{}'.format(datetime.datetime.now())
+        os.makedirs(self.dir)
         self.variables()
         self.metadata()
         self.cover()
@@ -173,14 +178,43 @@ class AssetsReport(ODT):
             data.append((bank.name, c(bank.balance(self.mem.data.accounts_active, self.mem.data.investments_active))))
         self.table( [self.tr("Bank"), self.tr("Balance")], ["<", ">"], data, [3, 2], 12, 1)       
         
+        ### Assests current year
+        self.header(self.tr("Assets current year evolution"), 2)
+        w=wdgInvestments(self.mem)
+        w.resize(1280, 30*self.mem.data.investments_active.length())
+        w.tblInvestments.on_cellDoubleClicked(0, 0)
+        p=QPixmap(w.size())
+        w.render(p)
+        p.save("{}/wdgInvestments.png".format(self.dir))
+        self.image("{}/wdgInvestments.png".format(self.dir), 17, 12)
+        
+        
         ### Assets evolution graphic
-        self.header(self.tr("Assets evolution"), 2)
+        self.header(self.tr("Assets graphical evolution"), 2)
         
         w=wdgTotal(self.mem)
-        w.load_graphic(True)
-        self.image("/tmp/total.png", 15, 10)
+        w.load_graphic("{}/wdgTotal.png".format(self.dir))
+        self.image("{}/wdgTotal.png".format(self.dir), 15, 10)
         self.simpleParagraph("")
         
+        self.pageBreak()
+        
+        
+        ## Accounts
+        self.header(self.tr("Current Accounts"), 1)
+        self.pageBreak()
+        
+        ## Investments
+        self.header(self.tr("Current investments"), 1)
+        
+        self.header(self.tr("Investments list"), 2)
+        
+        
+        ### Graphics wdgInvestments clases
+        self.header(self.tr("Investments group by variable percentage"), 2)
+        self.header(self.tr("Investments group by investment type"), 2)
+        self.header(self.tr("Investments group by leverage"), 2)
+        self.header(self.tr("Investments group by investment product"), 2)
         self.pageBreak()
         
         
