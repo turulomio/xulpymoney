@@ -100,6 +100,7 @@ SOURCES         = \
                   ui/Ui_wdgYearMonth.py \
                   ui/wdgpie.py \
                   xulpymoney.py \
+                  xulpymoney_sync_quotes.py \
                   xulpymoney_init.py
 
 FORMS           = \
