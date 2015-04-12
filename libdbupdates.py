@@ -254,6 +254,24 @@ class Update:
             cur.close()
             self.mem.con.commit()
             self.set_database_version(201503110632)  
+
+        if self.dbversion<201504121011:
+            cur=self.mem.con.cursor()
+            cur.execute("update products set obsolete=%s where id=%s;", (True, 74744))
+            cur.execute("update products set obsolete=%s where id=%s;", (True, 74959))
+            cur.execute("update products set obsolete=%s where id=%s;", (True, 74967))
+            cur.execute("update products set obsolete=%s where id=%s;", (True, 75052))
+            cur.execute("update products set obsolete=%s where id=%s;", (True, 75053))
+            cur.execute("update products set obsolete=%s where id=%s;", (True, 75135))
+            cur.execute("update products set obsolete=%s where id=%s;", (True, 75136))
+            cur.execute("update products set obsolete=%s where id=%s;", (True, 75140))
+            cur.execute("update products set obsolete=%s where id=%s;", (True, 75147))
+            cur.execute("update products set obsolete=%s where id=%s;", (True, 75280))
+            cur.execute("update products set obsolete=%s where id=%s;", (True, 75284))
+            cur.execute("update products set ticker=%s, priority=%s, priorityhistorical=%s where id=%s;", ('TIT.MI',[1, ],[3, ],  75067))
+            cur.close()
+            self.mem.con.commit()
+            self.set_database_version(201504121011)                 
         """AFTER EXECUTING I MUST RUN SQL UPDATE SCRIPT TO UPDATE FUTURE INSTALLATIONS
     
     OJO EN LOS REEMPLAZOS MASIVOS PORQUE UN ACTIVE DE PRODUCTS LUEGO PASA A LLAMARSE AUTOUPDATE PERO DEBERA MANTENERSSE EN SU MOMENTO TEMPORAL"""  
