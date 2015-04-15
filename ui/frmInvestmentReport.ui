@@ -52,6 +52,10 @@
         <number>0</number>
        </property>
        <widget class="QWidget" name="tab_12">
+        <attribute name="icon">
+         <iconset resource="../images/xulpymoney.qrc">
+          <normaloff>:/xulpymoney/bundle.png</normaloff>:/xulpymoney/bundle.png</iconset>
+        </attribute>
         <attribute name="title">
          <string>Investment data</string>
         </attribute>
@@ -170,6 +174,10 @@
         </layout>
        </widget>
        <widget class="QWidget" name="tabInvestmentCurrent">
+        <attribute name="icon">
+         <iconset resource="../images/xulpymoney.qrc">
+          <normaloff>:/xulpymoney/document-edit.png</normaloff>:/xulpymoney/document-edit.png</iconset>
+        </attribute>
         <attribute name="title">
          <string>Current status</string>
         </attribute>
@@ -214,6 +222,10 @@
         </layout>
        </widget>
        <widget class="QWidget" name="tabOperacionesHistoricas">
+        <attribute name="icon">
+         <iconset resource="../images/xulpymoney.qrc">
+          <normaloff>:/xulpymoney/document-edit.png</normaloff>:/xulpymoney/document-edit.png</iconset>
+        </attribute>
         <attribute name="title">
          <string>Operations</string>
         </attribute>
@@ -251,6 +263,10 @@
         </layout>
        </widget>
        <widget class="QWidget" name="tab_2">
+        <attribute name="icon">
+         <iconset resource="../images/xulpymoney.qrc">
+          <normaloff>:/xulpymoney/history2.png</normaloff>:/xulpymoney/history2.png</iconset>
+        </attribute>
         <attribute name="title">
          <string>Historical operations</string>
         </attribute>
@@ -277,6 +293,10 @@
         </layout>
        </widget>
        <widget class="QWidget" name="tabDividends">
+        <attribute name="icon">
+         <iconset resource="../images/xulpymoney.qrc">
+          <normaloff>:/xulpymoney/star.png</normaloff>:/xulpymoney/star.png</iconset>
+        </attribute>
         <attribute name="title">
          <string>Dividends</string>
         </attribute>

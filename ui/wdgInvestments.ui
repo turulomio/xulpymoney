@@ -146,7 +146,7 @@
   <action name="actionInvestmentReport">
    <property name="icon">
     <iconset resource="../images/xulpymoney.qrc">
-     <normaloff>:/xulpymoney/report2.png</normaloff>:/xulpymoney/report2.png</iconset>
+     <normaloff>:/xulpymoney/bundle.png</normaloff>:/xulpymoney/bundle.png</iconset>
    </property>
    <property name="text">
     <string>Investment report</string>
@@ -229,7 +229,7 @@
   <action name="actionProduct">
    <property name="icon">
     <iconset resource="../images/xulpymoney.qrc">
-     <normaloff>:/xulpymoney/kmplot.jpg</normaloff>:/xulpymoney/kmplot.jpg</iconset>
+     <normaloff>:/xulpymoney/books.png</normaloff>:/xulpymoney/books.png</iconset>
    </property>
    <property name="text">
     <string>Product report</string>

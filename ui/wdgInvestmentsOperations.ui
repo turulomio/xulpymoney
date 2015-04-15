@@ -36,6 +36,10 @@
         <number>1</number>
        </property>
        <widget class="QWidget" name="tab_1">
+        <attribute name="icon">
+         <iconset resource="../images/xulpymoney.qrc">
+          <normaloff>:/xulpymoney/document-edit.png</normaloff>:/xulpymoney/document-edit.png</iconset>
+        </attribute>
         <attribute name="title">
          <string>Operations list</string>
         </attribute>
@@ -132,6 +136,10 @@
         </layout>
        </widget>
        <widget class="QWidget" name="tab_2">
+        <attribute name="icon">
+         <iconset resource="../images/xulpymoney.qrc">
+          <normaloff>:/xulpymoney/document-edit.png</normaloff>:/xulpymoney/document-edit.png</iconset>
+        </attribute>
         <attribute name="title">
          <string>Current investment status</string>
         </attribute>
@@ -168,7 +176,7 @@
   <action name="actionShowInvestment">
    <property name="icon">
     <iconset resource="../images/xulpymoney.qrc">
-     <normaloff>:/xulpymoney/coins.png</normaloff>:/xulpymoney/coins.png</iconset>
+     <normaloff>:/xulpymoney/bundle.png</normaloff>:/xulpymoney/bundle.png</iconset>
    </property>
    <property name="text">
     <string>Show investment</string>
@@ -180,7 +188,7 @@
   <action name="actionShowInvestmentOperation">
    <property name="icon">
     <iconset resource="../images/xulpymoney.qrc">
-     <normaloff>:/xulpymoney/history2.png</normaloff>:/xulpymoney/history2.png</iconset>
+     <normaloff>:/xulpymoney/document-edit.png</normaloff>:/xulpymoney/document-edit.png</iconset>
    </property>
    <property name="text">
     <string>Show investment operation</string>
@@ -192,7 +200,7 @@
   <action name="actionShowAccount">
    <property name="icon">
     <iconset resource="../images/xulpymoney.qrc">
-     <normaloff>:/xulpymoney/books.png</normaloff>:/xulpymoney/books.png</iconset>
+     <normaloff>:/xulpymoney/coins.png</normaloff>:/xulpymoney/coins.png</iconset>
    </property>
    <property name="text">
     <string>Show account</string>
@@ -204,7 +212,7 @@
   <action name="actionShowProduct">
    <property name="icon">
     <iconset resource="../images/xulpymoney.qrc">
-     <normaloff>:/xulpymoney/kmplot.jpg</normaloff>:/xulpymoney/kmplot.jpg</iconset>
+     <normaloff>:/xulpymoney/books.png</normaloff>:/xulpymoney/books.png</iconset>
    </property>
    <property name="text">
     <string>Show product</string>
