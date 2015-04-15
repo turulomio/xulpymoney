@@ -271,7 +271,14 @@ class Update:
             cur.execute("update products set ticker=%s, priority=%s, priorityhistorical=%s where id=%s;", ('TIT.MI',[1, ],[3, ],  75067))
             cur.close()
             self.mem.con.commit()
-            self.set_database_version(201504121011)                 
+            self.set_database_version(201504121011)     
+            
+        if self.dbversion<201504150622:
+            cur=self.mem.con.cursor()
+            cur.execute("update products set tpc=% where id=%s;", (0, 76309))
+            cur.close()
+            self.mem.con.commit()
+            self.set_database_version(201504150622)                 
         """AFTER EXECUTING I MUST RUN SQL UPDATE SCRIPT TO UPDATE FUTURE INSTALLATIONS
     
     OJO EN LOS REEMPLAZOS MASIVOS PORQUE UN ACTIVE DE PRODUCTS LUEGO PASA A LLAMARSE AUTOUPDATE PERO DEBERA MANTENERSSE EN SU MOMENTO TEMPORAL"""  
