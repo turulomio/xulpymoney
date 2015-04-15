@@ -7023,7 +7023,7 @@ INSERT INTO products VALUES ('OMNOVA Solutions Inc.', NULL, 'USD', 1, NULL, 7989
 INSERT INTO products VALUES ('OneBeacon Insurance Group Ltd. Cl A', NULL, 'USD', 1, NULL, 79778, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, NULL, 'NYSE#OB||us||False', false);
 INSERT INTO products VALUES ('One Liberty Properties Inc.', NULL, 'USD', 1, NULL, 79940, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, NULL, 'NYSE#OLP||us||False', false);
 INSERT INTO products VALUES ('ONEOK Inc.', NULL, 'USD', 1, NULL, 75419, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, NULL, 'NYSE#OKE||us||False', false);
-INSERT INTO products VALUES ('OPENBANK CORTO PLAZO', 'ES0178172039', 'EUR', 2, '|BMF|0012|', 76309, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, NULL, NULL, '{8}', 'ES0178172039||es||False', false);
+INSERT INTO products VALUES ('OPENBANK CORTO PLAZO', 'ES0178172039', 'EUR', 2, '|BMF|0012|', 76309, NULL, NULL, NULL, NULL, 0, 'c', 0, 1, NULL, NULL, '{8}', 'ES0178172039||es||False', false);
 INSERT INTO products VALUES ('OPENBANK EUROINDICE 50', 'ES0168651034', 'EUR', 2, '|BMF|0012|', 76310, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, NULL, NULL, '{8}', 'ES0168651034||es||False', false);
 INSERT INTO products VALUES ('OPENBANK IBEX 35', 'ES0119203034', 'EUR', 2, '|BMF|0012|', 76486, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, NULL, NULL, '{8}', 'ES0119203034||es||False', false);
 INSERT INTO products VALUES ('OPEN FUND', 'ES0138906039', 'EUR', 2, '|BMF|0125|', 77839, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, NULL, NULL, '{8}', 'ES0138906039||es||False', true);
@@ -8857,7 +8857,7 @@ INSERT INTO bolsas VALUES (8, 'cn', '00:00:00', 'Bolsa de Hong Kong', '20:00:00'
 INSERT INTO bolsas VALUES (9, 'pt', '07:00:00', 'Bolsa de Lisboa', '17:38:00', 'Europe/Lisbon');
 INSERT INTO globals VALUES (10, 'wdgCalculator#product', '79228');
 INSERT INTO globals VALUES (11, 'wdgCalculator#invested', '15000');
-INSERT INTO globals VALUES (1, 'Version', '201504121011');
+INSERT INTO globals VALUES (1, 'Version', '201504150622');
 INSERT INTO globals VALUES (6, 'Admin mode', NULL);
 INSERT INTO globals VALUES (7, 'wdgIndexRange#spin', '2');
 INSERT INTO globals VALUES (8, 'wdgIndexRange#txtInvertir', '15000');

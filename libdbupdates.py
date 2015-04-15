@@ -275,7 +275,7 @@ class Update:
             
         if self.dbversion<201504150622:
             cur=self.mem.con.cursor()
-            cur.execute("update products set tpc=% where id=%s;", (0, 76309))
+            cur.execute("update products set tpc=%s where id=%s;", (0, 76309))
             cur.close()
             self.mem.con.commit()
             self.set_database_version(201504150622)                 
