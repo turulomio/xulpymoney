@@ -46,7 +46,7 @@
      <x>0</x>
      <y>0</y>
      <width>1186</width>
-     <height>20</height>
+     <height>25</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuAyuda">
@@ -338,7 +338,7 @@
   <action name="actionDividendsReport">
    <property name="icon">
     <iconset resource="../images/xulpymoney.qrc">
-     <normaloff>:/xulpymoney/dinero.png</normaloff>:/xulpymoney/dinero.png</iconset>
+     <normaloff>:/xulpymoney/star.png</normaloff>:/xulpymoney/star.png</iconset>
    </property>
    <property name="text">
     <string>Dividends report</string>
@@ -479,7 +479,7 @@
   <action name="actionInvestmentsOperations">
    <property name="icon">
     <iconset resource="../images/xulpymoney.qrc">
-     <normaloff>:/xulpymoney/books.png</normaloff>:/xulpymoney/books.png</iconset>
+     <normaloff>:/xulpymoney/document-edit.png</normaloff>:/xulpymoney/document-edit.png</iconset>
    </property>
    <property name="text">
     <string>Investment operations list</string>

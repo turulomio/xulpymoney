@@ -54,7 +54,7 @@
        <widget class="QWidget" name="tabMovimientos">
         <attribute name="icon">
          <iconset resource="../images/xulpymoney.qrc">
-          <normaloff>:/xulpymoney/books.png</normaloff>:/xulpymoney/books.png</iconset>
+          <normaloff>:/xulpymoney/coins.png</normaloff>:/xulpymoney/coins.png</iconset>
         </attribute>
         <attribute name="title">
          <string>Account</string>

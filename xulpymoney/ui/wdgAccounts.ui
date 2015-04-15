@@ -124,7 +124,7 @@
   <action name="actionAccountReport">
    <property name="icon">
     <iconset resource="../images/xulpymoney.qrc">
-     <normaloff>:/xulpymoney/report2.png</normaloff>:/xulpymoney/report2.png</iconset>
+     <normaloff>:/xulpymoney/coins.png</normaloff>:/xulpymoney/coins.png</iconset>
    </property>
    <property name="text">
     <string>Account report</string>
