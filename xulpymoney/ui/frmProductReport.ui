@@ -57,7 +57,7 @@
         <enum>QTabWidget::West</enum>
        </property>
        <property name="currentIndex">
-        <number>1</number>
+        <number>2</number>
        </property>
        <widget class="QWidget" name="tabInformacion">
         <attribute name="title">
@@ -537,7 +537,7 @@
          <item>
           <widget class="QTabWidget" name="tabGraphics">
            <property name="currentIndex">
-            <number>1</number>
+            <number>0</number>
            </property>
            <widget class="QWidget" name="tabGraphicsIntraday">
             <attribute name="title">
@@ -793,6 +793,11 @@
                   <string>% APR</string>
                  </property>
                 </column>
+                <column>
+                 <property name="text">
+                  <string>Gains</string>
+                 </property>
+                </column>
                 <item row="0" column="0">
                  <property name="text">
                   <string/>
@@ -821,6 +826,17 @@
                  <property name="text">
                   <string/>
                  </property>
+                 <property name="background">
+                  <brush brushstyle="BDiagPattern">
+                   <color alpha="255">
+                    <red>0</red>
+                    <green>0</green>
+                    <blue>0</blue>
+                   </color>
+                  </brush>
+                 </property>
+                </item>
+                <item row="0" column="4">
                  <property name="background">
                   <brush brushstyle="BDiagPattern">
                    <color alpha="255">

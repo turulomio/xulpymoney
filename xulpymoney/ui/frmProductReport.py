@@ -89,9 +89,13 @@ class frmProductReport(QDialog, Ui_frmProductReport):
                 days=(datetime.datetime.now(pytz.timezone(self.mem.localzone.name))-quote.datetime).days+1
                 self.tblTPC.setItem(row, 2, qtpc(round(tpc, 2)))    
                 self.tblTPC.setItem(row, 3,  qtpc(round(tpc*365/days, 2)))
+                if self.inversion:
+                    self.grpHistoricos.setTitle(self.tr('Report of historic prices. You have {} shares valued at {}.').format(self.inversion.acciones(), self.product.currency.string(self.inversion.balance())))
+                    self.tblTPC.setItem(row, 4,  self.product.currency.qtablewidgetitem(self.inversion.acciones()*(self.product.result.basic.last.quote-quote.quote)))
             except:
                 self.tblTPC.setItem(row, 2, qtpc(None))    
                 self.tblTPC.setItem(row, 3,  qtpc(None))     
+                self.tblTPC.setItem(row, 3,  self.product.currency.qtablewidgetitem(None))     
                 
         self.product.agrupations.qcombobox(self.cmbAgrupations)
         self.product.priority.qcombobox(self.cmbPriority)

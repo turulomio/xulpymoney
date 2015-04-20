@@ -194,7 +194,7 @@
   <action name="actionProductReport">
    <property name="icon">
     <iconset resource="../images/xulpymoney.qrc">
-     <normaloff>:/xulpymoney/history.png</normaloff>:/xulpymoney/history.png</iconset>
+     <normaloff>:/xulpymoney/books.png</normaloff>:/xulpymoney/books.png</iconset>
    </property>
    <property name="text">
     <string>Product report</string>
