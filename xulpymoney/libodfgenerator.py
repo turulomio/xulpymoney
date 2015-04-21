@@ -10,6 +10,7 @@ import odf.dc
 import os
 from wdgTotal import *
 from wdgInvestments import *
+from wdgInvestmentClasses import *
 from libxulpymoney import *
 
 class ODT(QObject):
@@ -180,7 +181,29 @@ class AssetsReport(ODT):
         
         ### Assests current year
         self.header(self.tr("Assets current year evolution"), 2)
-#        w=wdgInvestments(self.mem)
+
+        
+        
+        ### Assets evolution graphic
+        self.header(self.tr("Assets graphical evolution"), 2)
+        
+        w=wdgTotal(self.mem)
+        w.load_graphic("{}/wdgTotal.png".format(self.dir))
+        self.image("{}/wdgTotal.png".format(self.dir), 15, 10)
+        self.simpleParagraph("")
+        
+        self.pageBreak()
+        
+        
+        ## Accounts
+        self.header(self.tr("Current Accounts"), 1)
+        self.pageBreak()
+        
+        ## Investments
+        self.header(self.tr("Current investments"), 1)
+        
+        self.header(self.tr("Investments list"), 2)
+        #        w=wdgInvestments(self.mem)
 #        w.resize(1280, 30*self.mem.data.investments_active.length())
 #        w.tblInvestments.on_cellDoubleClicked(0, 0)
 #        p=QPixmap(w.size())
@@ -211,33 +234,51 @@ class AssetsReport(ODT):
         else:
             self.simpleParagraph(self.tr("There aren't invested assets"))
         
+        ### Graphics wdgInvestments clases
+        w=wdgInvestmentClasses(self.mem)
         
-        ### Assets evolution graphic
-        self.header(self.tr("Assets graphical evolution"), 2)
-        
-        w=wdgTotal(self.mem)
-        w.load_graphic("{}/wdgTotal.png".format(self.dir))
-        self.image("{}/wdgTotal.png".format(self.dir), 15, 10)
+        wit=15
+        self.header(self.tr("Investments group by variable percentage"), 2)
+        w.canvasTPC.savePixmap("{}/wdgInvestmentsClasses_canvasTPC.png".format(self.dir))
+        wi, he=w.canvasTPC.savePixmapLegend("{}/wdgInvestmentsClasses_canvasTPC_legend.png".format(self.dir))
+        self.image("{}/wdgInvestmentsClasses_canvasTPC.png".format(self.dir), 15, 10)
+        self.image("{}/wdgInvestmentsClasses_canvasTPC_legend.png".format(self.dir), wit, he)
         self.simpleParagraph("")
         
-        self.pageBreak()
-        
-        
-        ## Accounts
-        self.header(self.tr("Current Accounts"), 1)
-        self.pageBreak()
-        
-        ## Investments
-        self.header(self.tr("Current investments"), 1)
-        
-        self.header(self.tr("Investments list"), 2)
-        
-        
-        ### Graphics wdgInvestments clases
-        self.header(self.tr("Investments group by variable percentage"), 2)
         self.header(self.tr("Investments group by investment type"), 2)
+        w.canvasTipo.savePixmap("{}/wdgInvestmentsClasses_canvasTipo.png".format(self.dir))
+        wi, he=w.canvasTipo.savePixmapLegend("{}/wdgInvestmentsClasses_canvasTipo_legend.png".format(self.dir))
+        self.image("{}/wdgInvestmentsClasses_canvasTipo.png".format(self.dir), 15, 10)
+        self.image("{}/wdgInvestmentsClasses_canvasTipo_legend.png".format(self.dir), wit, he)
+        self.simpleParagraph("") 
+        
         self.header(self.tr("Investments group by leverage"), 2)
+        w.canvasApalancado.savePixmap("{}/wdgInvestmentsClasses_canvasApalancado.png".format(self.dir))
+        wi, he=w.canvasApalancado.savePixmapLegend("{}/wdgInvestmentsClasses_canvasApalancado_legend.png".format(self.dir))
+        self.image("{}/wdgInvestmentsClasses_canvasApalancado.png".format(self.dir), 15, 10)
+        self.image("{}/wdgInvestmentsClasses_canvasApalancado_legend.png".format(self.dir), wit, he)
+        self.simpleParagraph("")       
+        
         self.header(self.tr("Investments group by investment product"), 2)
+        w.canvasProduct.savePixmap("{}/wdgInvestmentsClasses_canvasProduct.png".format(self.dir))
+        wi, he=w.canvasProduct.savePixmapLegend("{}/wdgInvestmentsClasses_canvasProduct_legend.png".format(self.dir))
+        self.image("{}/wdgInvestmentsClasses_canvasProduct.png".format(self.dir), 15, 10)
+        self.image("{}/wdgInvestmentsClasses_canvasProduct_legend.png".format(self.dir), wit, he)
+        self.simpleParagraph("")       
+        
+        self.header(self.tr("Investments group by country"), 2)
+        w.canvasCountry.savePixmap("{}/wdgInvestmentsClasses_canvasCountry.png".format(self.dir))
+        wi, he=w.canvasCountry.savePixmapLegend("{}/wdgInvestmentsClasses_canvasCountry_legend.png".format(self.dir))
+        self.image("{}/wdgInvestmentsClasses_canvasCountry.png".format(self.dir), 15, 10)
+        self.image("{}/wdgInvestmentsClasses_canvasCountry_legend.png".format(self.dir), wit, he)
+        self.simpleParagraph("")       
+        
+        self.header(self.tr("Investments group by Call/Put/Inline"), 2)
+        w.canvasPCI.savePixmap("{}/wdgInvestmentsClasses_canvasPCI.png".format(self.dir))
+        wi, he=w.canvasPCI.savePixmapLegend("{}/wdgInvestmentsClasses_canvasPCI_legend.png".format(self.dir))
+        self.image("{}/wdgInvestmentsClasses_canvasPCI.png".format(self.dir), 15, 10)
+        self.image("{}/wdgInvestmentsClasses_canvasPCI_legend.png".format(self.dir), wit, he)
+        self.simpleParagraph("")       
         self.pageBreak()
         
         

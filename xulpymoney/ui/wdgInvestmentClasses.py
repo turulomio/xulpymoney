@@ -2,6 +2,7 @@ from libxulpymoney import *
 import math
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
+import pylab
 from Ui_wdgInvestmentClasses import *
 from libxulpymoney import *
 
@@ -37,6 +38,28 @@ class canvasPie(FigureCanvasQTAgg):
         self.fig.text(0, 0, "Total: {0} €".format(round(sum(self.fracs), 2)))
 
         self.draw()
+
+    def savePixmap(self, filename, dpi=250):
+        """Saves a pixmap of the pie"""
+        current=self.showlegend
+        if self.showlegend==True:
+            self.showLegend(False)
+        self.fig.savefig(filename, dpi=dpi)        
+        self.showLegend(current)
+
+    def savePixmapLegend(self, filename, dpi=250):
+        """Saves a pixmap of the legend"""
+        wi=8
+        he=0.45*len(self.labels)
+        # create a second figure for the legend
+        figLegend = pylab.figure(figsize = (wi,he))
+
+        # produce a legend for the objects in the other figure
+        pylab.figlegend(self.patches, self.labels, loc = 'upper left')
+
+        # save the two figures to files
+        figLegend.savefig(filename, dpi=dpi)        
+        return (wi, he)
 
     def showLegend(self, bool):
         if bool==False:

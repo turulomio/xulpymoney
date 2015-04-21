@@ -49,12 +49,14 @@ class frmMain(QMainWindow, Ui_frmMain):
         import libodfgenerator
         file="AssetsReport.odt"
         doc=libodfgenerator.AssetsReport(self.mem, file, "/usr/share/xulpymoney/report.odt")
+#        os.system("libreoffice --headless --convert-to pdf {}".format(file))
         doc.generate()
         
         
         #Open file
         if os.path.exists("/usr/bin/lowriter"):
             QProcess.startDetached("lowriter", [file, ] )
+#            QProcess.startDetached("okular", [file[:-3]+"pdf", ] )
         elif os.path.exists("/usr/bin/kfmclient"):
             QProcess.startDetached("kfmclient", ["openURL", file] )
         elif os.path.exists("/usr/bin/gnome-open"):
