@@ -685,6 +685,13 @@ class SetAccounts(SetCommons):
             c.balance()
             self.append(c)
         cur.close()
+        
+    def balance(self, date=None):
+        """Give the sum of all accounts balances in self.arr"""
+        res=Decimal(0)
+        for ac in self.arr:
+            res=res+ac.balance(date)
+        return res
 
 
 class SetAccountOperations:
