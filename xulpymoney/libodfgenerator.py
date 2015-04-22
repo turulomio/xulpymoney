@@ -79,17 +79,27 @@ class ODT(QObject):
         
         
         #TAble contents style
-        s = odf.style.Style(name="Tabla{}.TableContents{}".format(self.seqTables, size), family="paragraph")
-        s.addElement(odf.style.TextProperties(attributes={'fontsize':"{}pt".format(size),'fontweight':"bold" }))
+        
+        s= odf.style.Style(name="Tabla{}.Heading{}".format(self.seqTables, font), family="paragraph",parentstylename='Table Heading' )
+        s.addElement(odf.style.TextProperties(attributes={'fontsize':"{}pt".format(font), }))
+        s.addElement(odf.style.ParagraphProperties(attributes={'textalign':'center', }))
         self.doc.styles.addElement(s)
         
-        s = odf.style.Style(name="Tabla{}.TableContentsRight{}".format(self.seqTables, size), family="paragraph")
-        s.addElement(odf.style.TextProperties(attributes={'fontsize':"{}pt".format(size),'fontweight':"bold" }))
+        s = odf.style.Style(name="Tabla{}.TableContents{}".format(self.seqTables, font), family="paragraph")
+        s.addElement(odf.style.TextProperties(attributes={'fontsize':"{}pt".format(font), }))
         self.doc.styles.addElement(s)
+        
+        s = odf.style.Style(name="Tabla{}.TableContentsRight{}".format(self.seqTables, font), family="paragraph")
+        s.addElement(odf.style.TextProperties(attributes={'fontsize':"{}pt".format(font), }))
+        s.addElement(odf.style.ParagraphProperties(attributes={'textalign':'end', }))
+        self.doc.styles.addElement(s)
+        
+        
+        
         
         #Table header style
-        s = odf.style.Style(name="Tabla{}.HeaderCell{}".format(self.seqTables, size), family="paragraph")
-        s.addElement(odf.style.TextProperties(attributes={'fontsize':"{}pt".format(size+1),'fontweight':"bold" }))
+        s = odf.style.Style(name="Tabla{}.HeaderCell{}".format(self.seqTables, font), family="paragraph")
+        s.addElement(odf.style.TextProperties(attributes={'fontsize':"{}pt".format(font+1),'fontweight':"bold" }))
         self.doc.styles.addElement(s)
         
         
@@ -106,8 +116,8 @@ class ODT(QObject):
         tablerow=odf.table.TableRow()
         headerrow.addElement(tablerow)
         for i, head in enumerate(header):
-            p=odf.text.P(stylename="Table Heading", text=head)
-            tablecell=odf.table.TableCell(stylename="Tabla{}.HeaderCell{}".format(self.seqTables, size))
+            p=odf.text.P(stylename="Tabla{}.Heading{}".format(self.seqTables, font), text=head)
+            tablecell=odf.table.TableCell(stylename="Tabla{}.HeaderCell{}".format(self.seqTables, font))
             tablecell.addElement(p)
             tablerow.addElement(tablecell)
         table.addElement(headerrow)
@@ -120,9 +130,9 @@ class ODT(QObject):
                 tc = odf.table.TableCell(stylename="Tabla{}.Cell".format(self.seqTables))
                 tr.addElement(tc)
                 if orientation[i]=="<":
-                    p = odf.text.P(stylename="Tabla{}.TableContents{}".format(self.seqTables, size),text=col)
+                    p = odf.text.P(stylename="Tabla{}.TableContents{}".format(self.seqTables, font),text=col)
                 elif orientation[i]==">":
-                    p = odf.text.P(stylename="Tabla{}.TableContentsRight{}".format(self.seqTables, size),text=col)
+                    p = odf.text.P(stylename="Tabla{}.TableContentsRight{}".format(self.seqTables, font),text=col)
                 tc.addElement(p)
         
         self.doc.text.addElement(table)
@@ -194,9 +204,13 @@ class AssetsReport(ODT):
         self.header(self.tr("Assets by bank"), 2)
         data=[]
         self.mem.data.banks_active.order_by_name()
+        sumbalances=0
         for bank in self.mem.data.banks_active.arr:
-            data.append((bank.name, c(bank.balance(self.mem.data.accounts_active, self.mem.data.investments_active))))
-        self.table( [self.tr("Bank"), self.tr("Balance")], ["<", ">"], data, [3, 2], 10)       
+            balance=bank.balance(self.mem.data.accounts_active, self.mem.data.investments_active)
+            sumbalances=sumbalances+balance
+            data.append((bank.name, c(balance)))
+        self.table( [self.tr("Bank"), self.tr("Balance")], ["<", ">"], data, [3, 2], 12)       
+        self.simpleParagraph(self.tr("Sum of all bank balances is {}").format(c(sumbalances)))
         
         ### Assests current year
         self.header(self.tr("Assets current year evolution"), 2)
@@ -220,9 +234,9 @@ class AssetsReport(ODT):
         self.mem.data.accounts_active.order_by_name()
         for account in self.mem.data.accounts_active.arr:
             data.append((account.name, account.eb.name, c(account.balance())))
-        self.table( [self.tr("Account"), self.tr("Bank"),  self.tr("Balance")], ["<","<",  ">"], data, [5,5, 2], 10)       
+        self.table( [self.tr("Account"), self.tr("Bank"),  self.tr("Balance")], ["<","<",  ">"], data, [5,5, 2], 11)       
         
-        self.simpleParagraph(self.tr("The sum of all account balances is {}").format(c(self.mem.data.accounts_active.balance())))
+        self.simpleParagraph(self.tr("Sum of all account balances is {}").format(c(self.mem.data.accounts_active.balance())))
 
         
         self.pageBreak()
@@ -255,13 +269,16 @@ class AssetsReport(ODT):
             arr=("{0} ({1})".format(inv.name, inv.cuenta.name), c(inv.balance()), c(pendiente), tpc(inv.tpc_invertido()), tpc(inv.tpc_venta()))
             data.append(arr)
 
-        self.table( [self.tr("Investment"), self.tr("Balance"), self.tr("Gains"), self.tr("% Invested"), self.tr("% Selling point")], ["<", ">", ">", ">", ">"], data, [3, 2, 2, 2, 2], 12)       
+        self.table( [self.tr("Investment"), self.tr("Balance"), self.tr("Gains"), self.tr("% Invested"), self.tr("% Selling point")], ["<", ">", ">", ">", ">"], data, [3, 1, 1, 1,1], 8)       
         
+        sumpendiente=sumpositivos+sumnegativos
         if suminvertido!=0:
-            self.simpleParagraph(self.tr("Invested assets: {}. Pending: {} - {} = {} ({} assets). Assets average age: {}").format(c(suminvertido), c(sumpositivos),  c(-sumnegativos),  c(sumpendiente), tpc(100*sumpendiente/suminvertido) ,  days_to_year_month(self.mem.data.investments_active.average_age())))
+            self.simpleParagraph(self.tr("Sum of all invested assets is {}.").format(c(suminvertido)))
+            self.simpleParagraph(self.tr("Investment gains (positive minus negative results): {} - {} are {}, what represents a {} of total assets.").format( c(sumpositivos),  c(-sumnegativos),  c(sumpendiente), tpc(100*sumpendiente/suminvertido) ))
+            self.simpleParagraph(self.tr(" Assets average age: {}").format(  days_to_year_month(self.mem.data.investments_active.average_age())))
         else:
             self.simpleParagraph(self.tr("There aren't invested assets"))
-        
+        self.pageBreak()
         ### Graphics wdgInvestments clases
         w=wdgInvestmentClasses(self.mem)
         
@@ -272,6 +289,7 @@ class AssetsReport(ODT):
         self.image("{}/wdgInvestmentsClasses_canvasTPC.png".format(self.dir), 15, 10)
         self.image("{}/wdgInvestmentsClasses_canvasTPC_legend.png".format(self.dir), wit, he)
         self.simpleParagraph("")
+        self.pageBreak()
         
         self.header(self.tr("Investments group by investment type"), 2)
         w.canvasTipo.savePixmap("{}/wdgInvestmentsClasses_canvasTipo.png".format(self.dir))
@@ -279,6 +297,7 @@ class AssetsReport(ODT):
         self.image("{}/wdgInvestmentsClasses_canvasTipo.png".format(self.dir), 15, 10)
         self.image("{}/wdgInvestmentsClasses_canvasTipo_legend.png".format(self.dir), wit, he)
         self.simpleParagraph("") 
+        self.pageBreak()
         
         self.header(self.tr("Investments group by leverage"), 2)
         w.canvasApalancado.savePixmap("{}/wdgInvestmentsClasses_canvasApalancado.png".format(self.dir))
@@ -286,6 +305,7 @@ class AssetsReport(ODT):
         self.image("{}/wdgInvestmentsClasses_canvasApalancado.png".format(self.dir), 15, 10)
         self.image("{}/wdgInvestmentsClasses_canvasApalancado_legend.png".format(self.dir), wit, he)
         self.simpleParagraph("")       
+        self.pageBreak()
         
         self.header(self.tr("Investments group by investment product"), 2)
         w.canvasProduct.savePixmap("{}/wdgInvestmentsClasses_canvasProduct.png".format(self.dir))
@@ -293,6 +313,7 @@ class AssetsReport(ODT):
         self.image("{}/wdgInvestmentsClasses_canvasProduct.png".format(self.dir), 15, 10)
         self.image("{}/wdgInvestmentsClasses_canvasProduct_legend.png".format(self.dir), wit, he)
         self.simpleParagraph("")       
+        self.pageBreak()
         
         self.header(self.tr("Investments group by country"), 2)
         w.canvasCountry.savePixmap("{}/wdgInvestmentsClasses_canvasCountry.png".format(self.dir))
@@ -300,6 +321,7 @@ class AssetsReport(ODT):
         self.image("{}/wdgInvestmentsClasses_canvasCountry.png".format(self.dir), 15, 10)
         self.image("{}/wdgInvestmentsClasses_canvasCountry_legend.png".format(self.dir), wit, he)
         self.simpleParagraph("")       
+        self.pageBreak()
         
         self.header(self.tr("Investments group by Call/Put/Inline"), 2)
         w.canvasPCI.savePixmap("{}/wdgInvestmentsClasses_canvasPCI.png".format(self.dir))
