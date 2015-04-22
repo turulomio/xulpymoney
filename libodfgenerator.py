@@ -32,6 +32,7 @@ class ODT(QObject):
             for master in templatedoc.masterstyles.childNodes[:]:
                 self.doc.masterstyles.addElement(master)
             
+        self.seqTables=0#Sequence of tables
         
     def emptyParagraph(self, style="Standard", number=1):
         for i in range(number):
@@ -47,40 +48,58 @@ class ODT(QObject):
         
         
         
-    def table(self, header, orientation,  data, sizes, font, number)       :
+    def table(self, header, orientation,  data, sizes, font):
         """Headerl text
         Data: data
         sizes: arr with column widths in cm
-        size=font size
-        number=name"""  
+        size=font size"""  
     
+        self.seqTables=self.seqTables+1
         tablesize=sum(sizes)
         
-        s=odf.style.Style(name="Tabla{}".format(number))
+        s=odf.style.Style(name="Tabla{}".format(self.seqTables))
         s.addElement(odf.style.TableProperties(width="{}cm".format(tablesize), align="center"))
         self.doc.automaticstyles.addElement(s)
         
         #Column sizes
         for i, size in enumerate(sizes):
-            sc= odf.style.Style(name="Tabla{}.{}".format(number, chr(65+i)), family="table-column")
+            sc= odf.style.Style(name="Tabla{}.{}".format(self.seqTables, chr(65+i)), family="table-column")
             sc.addElement(odf.style.TableColumnProperties(columnwidth="{}cm".format(sizes[i])))
             self.doc.automaticstyles.addElement(sc)
         
         #Cell header style
-        sch=odf.style.Style(name="Tabla{}.HeaderCell".format(number, chr(65), 1), family="table-cell")
+        sch=odf.style.Style(name="Tabla{}.HeaderCell".format(self.seqTables, chr(65), 1), family="table-cell")
         sch.addElement(odf.style.TableCellProperties(border="0.05pt solid #000000"))
         self.doc.automaticstyles.addElement(sch)        
         
         #Cell normal
-        sch=odf.style.Style(name="Tabla{}.Cell".format(number), family="table-cell")
+        sch=odf.style.Style(name="Tabla{}.Cell".format(self.seqTables), family="table-cell")
         sch.addElement(odf.style.TableCellProperties(border="0.05pt solid #000000"))
         self.doc.automaticstyles.addElement(sch)
-
+        
+        
+        #TAble contents style
+        s = odf.style.Style(name="Tabla{}.TableContents{}".format(self.seqTables, size), family="paragraph")
+        s.addElement(odf.style.TextProperties(attributes={'fontsize':"{}pt".format(size),'fontweight':"bold" }))
+        self.doc.styles.addElement(s)
+        
+        s = odf.style.Style(name="Tabla{}.TableContentsRight{}".format(self.seqTables, size), family="paragraph")
+        s.addElement(odf.style.TextProperties(attributes={'fontsize':"{}pt".format(size),'fontweight':"bold" }))
+        self.doc.styles.addElement(s)
+        
+        #Table header style
+        s = odf.style.Style(name="Tabla{}.HeaderCell{}".format(self.seqTables, size), family="paragraph")
+        s.addElement(odf.style.TextProperties(attributes={'fontsize':"{}pt".format(size+1),'fontweight':"bold" }))
+        self.doc.styles.addElement(s)
+        
+        
     
         #Table columns
-        table = odf.table.Table(stylename="Tabla{}".format(number))
+        table = odf.table.Table(stylename="Tabla{}".format(self.seqTables))
         for i, head in enumerate(header):
-            table.addElement(odf.table.TableColumn(stylename="Tabla{}.{}".format(number, chr(65+i))))  
+            table.addElement(odf.table.TableColumn(stylename="Tabla{}.{}".format(self.seqTables, chr(65+i))))  
+            
+            
             
         #Header rows
         headerrow=odf.table.TableHeaderRows()
@@ -88,7 +107,7 @@ class ODT(QObject):
         headerrow.addElement(tablerow)
         for i, head in enumerate(header):
             p=odf.text.P(stylename="Table Heading", text=head)
-            tablecell=odf.table.TableCell(stylename="Tabla{}.HeaderCell".format(number))
+            tablecell=odf.table.TableCell(stylename="Tabla{}.HeaderCell{}".format(self.seqTables, size))
             tablecell.addElement(p)
             tablerow.addElement(tablecell)
         table.addElement(headerrow)
@@ -98,12 +117,12 @@ class ODT(QObject):
             tr = odf.table.TableRow()
             table.addElement(tr)
             for i, col in enumerate(row):
-                tc = odf.table.TableCell(stylename="Tabla{}.Cell".format(number))
+                tc = odf.table.TableCell(stylename="Tabla{}.Cell".format(self.seqTables))
                 tr.addElement(tc)
                 if orientation[i]=="<":
-                    p = odf.text.P(stylename="Table Contents",text=col)
+                    p = odf.text.P(stylename="Tabla{}.TableContents{}".format(self.seqTables, size),text=col)
                 elif orientation[i]==">":
-                    p = odf.text.P(stylename="Contenido de la tabla derecha",text=col)
+                    p = odf.text.P(stylename="Tabla{}.TableContentsRight{}".format(self.seqTables, size),text=col)
                 tc.addElement(p)
         
         self.doc.text.addElement(table)
@@ -177,7 +196,7 @@ class AssetsReport(ODT):
         self.mem.data.banks_active.order_by_name()
         for bank in self.mem.data.banks_active.arr:
             data.append((bank.name, c(bank.balance(self.mem.data.accounts_active, self.mem.data.investments_active))))
-        self.table( [self.tr("Bank"), self.tr("Balance")], ["<", ">"], data, [3, 2], 12, 1)       
+        self.table( [self.tr("Bank"), self.tr("Balance")], ["<", ">"], data, [3, 2], 10)       
         
         ### Assests current year
         self.header(self.tr("Assets current year evolution"), 2)
@@ -197,6 +216,15 @@ class AssetsReport(ODT):
         
         ## Accounts
         self.header(self.tr("Current Accounts"), 1)
+        data=[]
+        self.mem.data.accounts_active.order_by_name()
+        for account in self.mem.data.accounts_active.arr:
+            data.append((account.name, account.eb.name, c(account.balance())))
+        self.table( [self.tr("Account"), self.tr("Bank"),  self.tr("Balance")], ["<","<",  ">"], data, [5,5, 2], 10)       
+        
+        self.simpleParagraph(self.tr("The sum of all account balances is {}").format(c(self.mem.data.accounts_active.balance())))
+
+        
         self.pageBreak()
         
         ## Investments
@@ -227,7 +255,7 @@ class AssetsReport(ODT):
             arr=("{0} ({1})".format(inv.name, inv.cuenta.name), c(inv.balance()), c(pendiente), tpc(inv.tpc_invertido()), tpc(inv.tpc_venta()))
             data.append(arr)
 
-        self.table( [self.tr("Investment"), self.tr("Balance"), self.tr("Gains"), self.tr("% Invested"), self.tr("% Selling point")], ["<", ">", ">", ">", ">"], data, [3, 2, 2, 2, 2], 12, 2)       
+        self.table( [self.tr("Investment"), self.tr("Balance"), self.tr("Gains"), self.tr("% Invested"), self.tr("% Selling point")], ["<", ">", ">", ">", ">"], data, [3, 2, 2, 2, 2], 12)       
         
         if suminvertido!=0:
             self.simpleParagraph(self.tr("Invested assets: {}. Pending: {} - {} = {} ({} assets). Assets average age: {}").format(c(suminvertido), c(sumpositivos),  c(-sumnegativos),  c(sumpendiente), tpc(100*sumpendiente/suminvertido) ,  days_to_year_month(self.mem.data.investments_active.average_age())))
