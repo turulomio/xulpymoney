@@ -250,7 +250,7 @@ class AssetsReport(ODT):
         target=AnnualTarget(self.mem).init__from_db(datetime.date.today().year)
         self.simpleParagraph(self.tr("The investment system has established a {} year target.").format(tpc(target.percentage))+" " +
                 self.tr("With this target you will gain {} at the end of the year.").format(c(target.annual_balance())) +" " +
-                self.tr("Up to date you have got  {} (gains + dividends) what represents a {} of the target").format(c(setData.dividends()+setData.gains()), tpc((setData.gains()+setData.dividends())*100/target.annual_balance())))
+                self.tr("Up to date you have got  {} (gains + dividends) what represents a {} of the target.").format(c(setData.dividends()+setData.gains()), tpc((setData.gains()+setData.dividends())*100/target.annual_balance())))
         self.pageBreak()
         ### Assets evolution graphic
         self.header(self.tr("Assets graphical evolution"), 2)
