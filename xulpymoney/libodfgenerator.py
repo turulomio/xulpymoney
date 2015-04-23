@@ -227,11 +227,31 @@ class AssetsReport(ODT):
         self.table( [self.tr("Bank"), self.tr("Balance")], ["<", ">"], data, [3, 2], 12)       
         self.simpleParagraph(self.tr("Sum of all bank balances is {}").format(c(sumbalances)))
         
+        self.pageBreak(True)
         ### Assests current year
         self.header(self.tr("Assets current year evolution"), 2)
-
         
+        setData=TotalYear(self.mem, datetime.date.today().year)
+        columns=[]
+        columns.append([self.tr("Incomes"), self.tr("Gains"), self.tr("Dividends"), self.tr("Expenses"), self.tr("I+G+D-E"), "",  self.tr("Accounts"), self.tr("Investments"), self.tr("Total"),"",  self.tr("Monthly difference"), "",  self.tr("% current year")])
+        self.simpleParagraph(self.tr("Assets Balance at {0}-12-31 is {1}".format(setData.year-1, self.mem.localcurrency.string(setData.total_last_year))))
+        for i, m in enumerate(setData.arr):
+            if m.year<datetime.date.today().year or (m.year==datetime.date.today().year and m.month<=datetime.date.today().month):
+                columns.append([c(m.incomes()), c(m.gains()), c(m.dividends()), c(m.expenses()), c(m.i_d_g_e()), "", c(m.total_accounts()), c(m.total_investments()), c(m.total()),"",  c(setData.difference_with_previous_month(m)),"",  tpc(setData.assets_percentage_in_month(m.month))])
+            else:
+                columns.append(["","","","","","","","","", "", "", "", ""])
+        columns.append([c(setData.incomes()), c(setData.gains()), c(setData.dividends()), c(setData.expenses()), c(setData.i_d_g_e()), "", "", "", "", "", c(setData.difference_with_previous_year()), "", tpc(setData.assets_percentage_in_month(12))]) 
+        data=zip(*columns)
         
+        self.table(   [self.tr("Concept"), self.tr("January"),  self.tr("February"), self.tr("March"), self.tr("April"), self.tr("May"), self.tr("June"), self.tr("July"), self.tr("Augost"), self.tr("September"), self.tr("October"), self.tr("November"), self.tr("December"), self.tr("Total")], 
+                            ["<", ">", ">", ">", ">", ">", ">", ">", ">", ">", ">", ">", ">", ">"], data, [3, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2], 7)       
+                
+        ## Target
+        target=AnnualTarget(self.mem).init__from_db(datetime.date.today().year)
+        self.simpleParagraph(self.tr("The investment system has established a {} year target.").format(tpc(target.percentage))+" " +
+                self.tr("With this target you will gain {} at the end of the year.").format(c(target.annual_balance())) +" " +
+                self.tr("Up to date you have got  {} (gains + dividends) what represents a {} of the target").format(c(setData.dividends()+setData.gains()), tpc((setData.gains()+setData.dividends())*100/target.annual_balance())))
+        self.pageBreak()
         ### Assets evolution graphic
         self.header(self.tr("Assets graphical evolution"), 2)
         
@@ -261,13 +281,6 @@ class AssetsReport(ODT):
         
         self.header(self.tr("Investments list"), 2)
         self.simpleParagraph(self.tr("Next list is sorted by the distance in percent to the selling point."))
-        #        w=wdgInvestments(self.mem)
-#        w.resize(1280, 30*self.mem.data.investments_active.length())
-#        w.tblInvestments.on_cellDoubleClicked(0, 0)
-#        p=QPixmap(w.size())
-#        w.render(p)
-#        p.save("{}/wdgInvestments.png".format(self.dir))
-#        self.image("{}/wdgInvestments.png".format(self.dir), 17, 12)
         sumpendiente=0
         suminvertido=0
         sumpositivos=0
@@ -344,13 +357,7 @@ class AssetsReport(ODT):
         wi, he=w.canvasPCI.savePixmapLegend("{}/wdgInvestmentsClasses_canvasPCI_legend.png".format(self.dir))
         self.image("{}/wdgInvestmentsClasses_canvasPCI.png".format(self.dir), 15, 10)
         self.image("{}/wdgInvestmentsClasses_canvasPCI_legend.png".format(self.dir), wit, he)
-        self.simpleParagraph("")       
-        self.pageBreak()
-        
-        
-        ## Statistics
-        self.header(self.tr("Statistics"), 1)
-        self.pageBreak()
+        self.simpleParagraph("")
         
         
     def metadata(self):
