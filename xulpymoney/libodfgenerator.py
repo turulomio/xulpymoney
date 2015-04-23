@@ -31,6 +31,16 @@ class ODT(QObject):
                 
             for master in templatedoc.masterstyles.childNodes[:]:
                 self.doc.masterstyles.addElement(master)
+                
+        #Pagebreak styles horizontal y vertical        
+        s = odf.style.Style(name="PH", family="paragraph",  parentstylename="Standard", masterpagename="Landscape")
+        s.addElement(odf.style.ParagraphProperties(pagenumber="auto"))
+        self.doc.styles.addElement(s)
+        s = odf.style.Style(name="PV", family="paragraph",  parentstylename="Standard", masterpagename="Standard")
+        s.addElement(odf.style.ParagraphProperties(pagenumber="auto"))
+        self.doc.styles.addElement(s)
+        
+        
             
         self.seqTables=0#Sequence of tables
         
@@ -146,8 +156,13 @@ class ODT(QObject):
         f.addElement(img)
         self.doc.text.addElement(p)
 
-    def pageBreak(self):    
+    def pageBreak(self,  horizontal=False):    
         p=odf.text.P(stylename="PageBreak")#Is an automatic style
+        self.doc.text.addElement(p)
+        if horizontal==True:
+            p=odf.text.P(stylename="PH")
+        else:
+            p=odf.text.P(stylename="PV")
         self.doc.text.addElement(p)
 #
 #    def link(self):
@@ -239,12 +254,13 @@ class AssetsReport(ODT):
         self.simpleParagraph(self.tr("Sum of all account balances is {}").format(c(self.mem.data.accounts_active.balance())))
 
         
-        self.pageBreak()
+        self.pageBreak(True)
         
         ## Investments
         self.header(self.tr("Current investments"), 1)
         
         self.header(self.tr("Investments list"), 2)
+        self.simpleParagraph(self.tr("Next list is sorted by the distance in percent to the selling point."))
         #        w=wdgInvestments(self.mem)
 #        w.resize(1280, 30*self.mem.data.investments_active.length())
 #        w.tblInvestments.on_cellDoubleClicked(0, 0)
@@ -269,7 +285,7 @@ class AssetsReport(ODT):
             arr=("{0} ({1})".format(inv.name, inv.cuenta.name), c(inv.balance()), c(pendiente), tpc(inv.tpc_invertido()), tpc(inv.tpc_venta()))
             data.append(arr)
 
-        self.table( [self.tr("Investment"), self.tr("Balance"), self.tr("Gains"), self.tr("% Invested"), self.tr("% Selling point")], ["<", ">", ">", ">", ">"], data, [3, 1, 1, 1,1], 8)       
+        self.table( [self.tr("Investment"), self.tr("Balance"), self.tr("Gains"), self.tr("% Invested"), self.tr("% Selling point")], ["<", ">", ">", ">", ">"], data, [3, 1, 1, 1,1], 9)       
         
         sumpendiente=sumpositivos+sumnegativos
         if suminvertido!=0:
