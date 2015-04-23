@@ -8,12 +8,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libodfgenerator.py" line="356"/>
+        <location filename="libodfgenerator.py" line="364"/>
         <source>Assets report</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libodfgenerator.py" line="357"/>
+        <location filename="libodfgenerator.py" line="365"/>
         <source>This is an automatic generated report from Xulpymoney</source>
         <translation type="unfinished"></translation>
     </message>
@@ -38,11 +38,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libodfgenerator.py" line="351"/>
-        <source>Statistics</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="libodfgenerator.py" line="211"/>
         <source>The total assets of the user is {}.</source>
         <translation type="unfinished"></translation>
@@ -58,112 +53,112 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libodfgenerator.py" line="252"/>
+        <location filename="libodfgenerator.py" line="272"/>
         <source>Bank</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libodfgenerator.py" line="287"/>
+        <location filename="libodfgenerator.py" line="301"/>
         <source>Balance</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libodfgenerator.py" line="231"/>
+        <location filename="libodfgenerator.py" line="232"/>
         <source>Assets current year evolution</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libodfgenerator.py" line="236"/>
+        <location filename="libodfgenerator.py" line="256"/>
         <source>Assets graphical evolution</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libodfgenerator.py" line="247"/>
+        <location filename="libodfgenerator.py" line="267"/>
         <source>Current Accounts</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libodfgenerator.py" line="260"/>
+        <location filename="libodfgenerator.py" line="280"/>
         <source>Current investments</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libodfgenerator.py" line="262"/>
+        <location filename="libodfgenerator.py" line="282"/>
         <source>Investments list</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libodfgenerator.py" line="301"/>
+        <location filename="libodfgenerator.py" line="315"/>
         <source>Investments group by variable percentage</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libodfgenerator.py" line="309"/>
+        <location filename="libodfgenerator.py" line="323"/>
         <source>Investments group by investment type</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libodfgenerator.py" line="317"/>
+        <location filename="libodfgenerator.py" line="331"/>
         <source>Investments group by leverage</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libodfgenerator.py" line="325"/>
+        <location filename="libodfgenerator.py" line="339"/>
         <source>Investments group by investment product</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libodfgenerator.py" line="287"/>
+        <location filename="libodfgenerator.py" line="301"/>
         <source>Investment</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libodfgenerator.py" line="287"/>
+        <location filename="libodfgenerator.py" line="301"/>
         <source>Gains</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libodfgenerator.py" line="287"/>
+        <location filename="libodfgenerator.py" line="301"/>
         <source>% Invested</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libodfgenerator.py" line="287"/>
+        <location filename="libodfgenerator.py" line="301"/>
         <source>% Selling point</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libodfgenerator.py" line="295"/>
+        <location filename="libodfgenerator.py" line="309"/>
         <source>There aren&apos;t invested assets</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libodfgenerator.py" line="333"/>
+        <location filename="libodfgenerator.py" line="347"/>
         <source>Investments group by country</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libodfgenerator.py" line="341"/>
+        <location filename="libodfgenerator.py" line="355"/>
         <source>Investments group by Call/Put/Inline</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libodfgenerator.py" line="252"/>
+        <location filename="libodfgenerator.py" line="272"/>
         <source>Account</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libodfgenerator.py" line="293"/>
+        <location filename="libodfgenerator.py" line="307"/>
         <source> Assets average age: {}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libodfgenerator.py" line="291"/>
+        <location filename="libodfgenerator.py" line="305"/>
         <source>Sum of all invested assets is {}.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libodfgenerator.py" line="292"/>
+        <location filename="libodfgenerator.py" line="306"/>
         <source>Investment gains (positive minus negative results): {} - {} are {}, what represents a {} of total assets.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -173,8 +168,143 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libodfgenerator.py" line="254"/>
+        <location filename="libodfgenerator.py" line="274"/>
         <source>Sum of all account balances is {}</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="libodfgenerator.py" line="283"/>
+        <source>Next list is sorted by the distance in percent to the selling point.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="libodfgenerator.py" line="246"/>
+        <source>Concept</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="libodfgenerator.py" line="246"/>
+        <source>January</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="libodfgenerator.py" line="246"/>
+        <source>February</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="libodfgenerator.py" line="246"/>
+        <source>March</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="libodfgenerator.py" line="246"/>
+        <source>April</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="libodfgenerator.py" line="246"/>
+        <source>May</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="libodfgenerator.py" line="246"/>
+        <source>June</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="libodfgenerator.py" line="246"/>
+        <source>July</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="libodfgenerator.py" line="246"/>
+        <source>Augost</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="libodfgenerator.py" line="246"/>
+        <source>September</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="libodfgenerator.py" line="246"/>
+        <source>October</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="libodfgenerator.py" line="246"/>
+        <source>November</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="libodfgenerator.py" line="246"/>
+        <source>December</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="libodfgenerator.py" line="246"/>
+        <source>Total</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="libodfgenerator.py" line="236"/>
+        <source>Incomes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="libodfgenerator.py" line="236"/>
+        <source>Dividends</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="libodfgenerator.py" line="236"/>
+        <source>Expenses</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="libodfgenerator.py" line="236"/>
+        <source>I+G+D-E</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="libodfgenerator.py" line="236"/>
+        <source>Accounts</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="libodfgenerator.py" line="236"/>
+        <source>Investments</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="libodfgenerator.py" line="236"/>
+        <source>Monthly difference</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="libodfgenerator.py" line="236"/>
+        <source>% current year</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="libodfgenerator.py" line="237"/>
+        <source>Assets Balance at {0}-12-31 is {1}</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="libodfgenerator.py" line="251"/>
+        <source>The investment system has established a {} year target.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="libodfgenerator.py" line="251"/>
+        <source>With this target you will gain {} at the end of the year.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="libodfgenerator.py" line="251"/>
+        <source>Up to date you have got  {} (gains + dividends) what represents a {} of the target</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -5764,32 +5894,32 @@ S&#xc3;&#xb3;lo se contabilizar&#xc3;&#xa1; cuando se vendan las acciones</sourc
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgTotal.py" line="318"/>
+        <location filename="ui/wdgTotal.py" line="320"/>
         <source>Balance at {0}-12-31: {1}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgTotal.py" line="426"/>
+        <location filename="ui/wdgTotal.py" line="428"/>
         <source>Incomes of {0} of {1}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgTotal.py" line="442"/>
+        <location filename="ui/wdgTotal.py" line="444"/>
         <source>Product selling operations of {0} of {1}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgTotal.py" line="456"/>
+        <location filename="ui/wdgTotal.py" line="458"/>
         <source>Dividends of {0} of {1}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgTotal.py" line="471"/>
+        <location filename="ui/wdgTotal.py" line="473"/>
         <source>Expenses of {0} of {1}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgTotal.py" line="489"/>
+        <location filename="ui/wdgTotal.py" line="491"/>
         <source>You can&apos;t close this tab</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5809,7 +5939,7 @@ S&#xc3;&#xb3;lo se contabilizar&#xc3;&#xa1; cuando se vendan las acciones</sourc
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgTotal.py" line="479"/>
+        <location filename="ui/wdgTotal.py" line="481"/>
         <source>Gains and dividends sum from this month is {0}. In this year it&apos;s value rises to {1}</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5859,7 +5989,7 @@ S&#xc3;&#xb3;lo se contabilizar&#xc3;&#xa1; cuando se vendan las acciones</sourc
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgTotal.py" line="345"/>
+        <location filename="ui/wdgTotal.py" line="347"/>
         <source>Annual target percentage of total assests balance at {}-12-31 ( {} )</source>
         <translation type="unfinished"></translation>
     </message>

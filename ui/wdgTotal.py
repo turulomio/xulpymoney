@@ -310,6 +310,8 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         self.wyData.changed.connect(self.on_wyData_mychanged)#Used my due to it took default on_wyData_changed
         self.wyChart.changed.connect(self.on_wyChart_mychanged)
 
+
+
     def load_data(self):        
         print ("loading data")
         self.table.clearContents()
