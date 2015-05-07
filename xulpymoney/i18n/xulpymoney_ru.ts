@@ -304,7 +304,7 @@
     </message>
     <message>
         <location filename="libodfgenerator.py" line="251"/>
-        <source>Up to date you have got  {} (gains + dividends) what represents a {} of the target</source>
+        <source>Up to date you have got  {} (gains + dividends) what represents a {} of the target.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
