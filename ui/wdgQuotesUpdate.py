@@ -9,82 +9,84 @@ class wdgQuotesUpdate(QWidget, Ui_wdgQuotesUpdate):
         self.setupUi(self)
         self.mem=mem
         self.parent=parent
-        self.sources_active=0
+        
+        self.sources=SetWdgSources(self.mem)#All wdgSources agrupations
+        self.running_sources=SetWdgSources(self.mem)#wdgSources running
 
         self.wyahoo=wdgSource(self.mem, Sources.WorkerYahoo, self)    
-        self.wyahoo.started.connect(self.after_source_start)
-        self.wyahoo.finished.connect(self.after_source_stop)
         self.layIntraday.addWidget(self.wyahoo, 0, 0)
+        self.sources.append(self.wyahoo)
         
-        self.wmc=wdgSource(self.mem, Sources.WorkerMercadoContinuo, self)      
-        self.wmc.started.connect(self.after_source_start)
-        self.wmc.finished.connect(self.after_source_stop)
+        self.wmc=wdgSource(self.mem, Sources.WorkerMercadoContinuo, self)     
         self.layIntraday.addWidget(self.wmc, 1, 0)
+        self.sources.append(self.wmc)
         
         self.wyahoohistorical=wdgSource(self.mem, Sources.WorkerYahooHistorical, self)   
-        self.wyahoohistorical.started.connect(self.after_source_start)
-        self.wyahoohistorical.finished.connect(self.after_source_stop)    
         self.layDaily.addWidget(self.wyahoohistorical)
+        self.sources.append(self.wyahoohistorical)
         
         self.wmorning=wdgSource(self.mem, Sources.WorkerMorningstar, self)
-        self.wmorning.started.connect(self.after_source_start)
-        self.wmorning.finished.connect(self.after_source_stop)
         self.layDaily.addWidget(self.wmorning)
+        self.sources.append(self.wmorning)
+        
+        for s in self.sources.arr:#Conects after finishing a wdgSource
+            s.finished.connect(self.after_source_stop)
         
         self.on_chkUserOnly_stateChanged(self.chkUserOnly.checkState())
         
-    def on_chkUserOnly_stateChanged(self, state):
-        self.wyahoo.chkUserOnly.setCheckState(state)
-        self.wyahoohistorical.chkUserOnly.setCheckState(state)
-        self.wmc.chkUserOnly.setCheckState(state)
-        self.wmorning.chkUserOnly.setCheckState(state)
-        
-    def on_cmdIntraday_released(self):
-        if self.wyahoo.cmdRun.isEnabled():
-            self.wyahoo.on_cmdRun_released()
-        if self.wmc.cmdRun.isEnabled():
-            self.wmc.on_cmdRun_released()
-        
-        self.mem.data.reload_prices()
-        
-        
-    def on_cmdDaily_released(self):
-        if self.wyahoohistorical.cmdRun.isEnabled():
-            self.wyahoohistorical.on_cmdRun_released()
-        if self.wmorning.cmdRun.isEnabled():
-            self.wmorning.on_cmdRun_released()
+    def running_sources_run(self):
+        """Used to set unenabled fine"""
+        for s in self.running_sources.arr:
+            if s.status==0:
+                s.prepare()
             
-        self.mem.data.reload_prices()
-            
-        
-    def on_cmdAll_released(self):        
-        if self.wyahoo.cmdRun.isEnabled():
-            self.wyahoo.on_cmdRun_released()
-        if self.wmc.cmdRun.isEnabled():
-            self.wmc.on_cmdRun_released()
-        if self.wyahoohistorical.cmdRun.isEnabled():
-            self.wyahoohistorical.on_cmdRun_released()
-        if self.wmorning.cmdRun.isEnabled():
-            self.wmorning.on_cmdRun_released()
-            
-        self.mem.data.reload_prices()
-        
-    def after_source_start(self):
-        self.sources_active=self.sources_active+1
         self.mem.frmMain.actionsEnabled(False)
         #Disables  button when wdgSources cmdRun are disabled
+        
         if self.wyahoo.cmdRun.isEnabled()==False and self.wmc.cmdRun.isEnabled()==False:
             self.cmdIntraday.setEnabled(False)
         if self.wyahoohistorical.cmdRun.isEnabled()==False and self.wmorning.isEnabled()==False:
             self.cmdDaily.setEnabled(False)
         if self.cmdDaily.isEnabled()==False and self.cmdIntraday.isEnabled()==False:
             self.cmdAll.setEnabled(False)
-        QCoreApplication.processEvents()
+
+        QCoreApplication.processEvents()   
         
+        for s in self.running_sources.arr:
+            print (s,  self.running_sources.arr)
+            if s.status==1:
+                s.on_cmdRun_released()
+        
+    def on_chkUserOnly_stateChanged(self, state):
+        for s in self.sources.arr:
+            s.chkUserOnly.setCheckState(state)
+        
+    def on_cmdIntraday_released(self):
+        self.running_sources.append(self.wyahoo)
+        self.running_sources.append(self.wmc)
+        
+        self.running_sources_run()
+            
+        
+    def on_cmdDaily_released(self):
+        self.running_sources.append(self.wyahoohistorical)
+        self.running_sources.append(self.wmorning)
+        
+        self.running_sources_run()
+
+    def on_cmdAll_released(self):        
+        for s in sources.arr:
+            self.running_sources.append(s)
+        self.running_sources_run()
+
     def after_source_stop(self):
-        self.sources_active=self.sources_active-1
-        if self.sources_active==0:
+        print (self.running_sources.length())
+        self.running_sources.remove_finished()
+        print (self.running_sources.length())
+                
+        if self.running_sources.length()==0:
             self.mem.frmMain.actionsEnabled(True)
+            self.mem.data.reload_prices()
         QCoreApplication.processEvents()            
             
             
