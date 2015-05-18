@@ -4693,114 +4693,114 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>wdgIndexRange</name>
     <message>
-        <location filename="ui/Ui_wdgIndexRange.py" line="164"/>
+        <location filename="ui/Ui_wdgIndexRange.py" line="169"/>
         <source> %</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgIndexRange.py" line="168"/>
+        <location filename="ui/Ui_wdgIndexRange.py" line="173"/>
         <source>1000</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgIndexRange.py" line="177"/>
+        <location filename="ui/Ui_wdgIndexRange.py" line="178"/>
         <source>...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgIndexRange.py" line="166"/>
+        <location filename="ui/Ui_wdgIndexRange.py" line="171"/>
         <source>4000</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgIndexRange.py" line="169"/>
+        <location filename="ui/Ui_wdgIndexRange.py" line="174"/>
         <source>Update ranges</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgIndexRange.py" line="171"/>
+        <location filename="ui/Ui_wdgIndexRange.py" line="180"/>
         <source>Range</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgIndexRange.py" line="173"/>
+        <location filename="ui/Ui_wdgIndexRange.py" line="182"/>
         <source>Investments</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgIndexRange.py" line="161"/>
+        <location filename="ui/Ui_wdgIndexRange.py" line="166"/>
         <source>Investments by index range</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgIndexRange.py" line="162"/>
+        <location filename="ui/Ui_wdgIndexRange.py" line="167"/>
         <source>Report data</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgIndexRange.py" line="163"/>
+        <location filename="ui/Ui_wdgIndexRange.py" line="168"/>
         <source>Percentage between ranges</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgIndexRange.py" line="165"/>
+        <location filename="ui/Ui_wdgIndexRange.py" line="170"/>
         <source>Money to invest</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgIndexRange.py" line="167"/>
+        <location filename="ui/Ui_wdgIndexRange.py" line="172"/>
         <source>Index lowest limit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgIndexRange.py" line="178"/>
+        <location filename="ui/Ui_wdgIndexRange.py" line="183"/>
         <source>Top</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgIndexRange.py" line="179"/>
+        <location filename="ui/Ui_wdgIndexRange.py" line="184"/>
         <source>Middle</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgIndexRange.py" line="180"/>
+        <location filename="ui/Ui_wdgIndexRange.py" line="185"/>
         <source>Bottom</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgIndexRange.py" line="174"/>
+        <location filename="ui/Ui_wdgIndexRange.py" line="175"/>
         <source>Show benchmark report</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgIndexRange.py" line="176"/>
+        <location filename="ui/Ui_wdgIndexRange.py" line="177"/>
         <source>Add a price to the benchmark</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgIndexRange.py" line="67"/>
+        <location filename="ui/wdgIndexRange.py" line="83"/>
         <source>{0} {1} ({2}): {3} shares of {4} = {5}
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgIndexRange.py" line="117"/>
+        <location filename="ui/wdgIndexRange.py" line="132"/>
         <source>Green colorized ranges of {} benchmark are covered by zero risk and bonds balance ({}).</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgIndexRange.py" line="117"/>
-        <source>Current benchmark price at {} is {}.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/wdgIndexRange.py" line="117"/>
-        <source>Last daily variation: {}.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/wdgIndexRange.py" line="190"/>
+        <location filename="ui/wdgIndexRange.py" line="208"/>
         <source>Investment calculator</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/wdgIndexRange.py" line="65"/>
+        <source>Benchmark penultimate price ({}) is {}</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/wdgIndexRange.py" line="66"/>
+        <source>Benchmark last price ({}) is {}. Last dayly variation: {}.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

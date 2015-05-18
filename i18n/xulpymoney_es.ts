@@ -4696,116 +4696,116 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>wdgIndexRange</name>
     <message>
-        <location filename="ui/Ui_wdgIndexRange.py" line="164"/>
+        <location filename="ui/Ui_wdgIndexRange.py" line="169"/>
         <source> %</source>
         <translation> %</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgIndexRange.py" line="168"/>
+        <location filename="ui/Ui_wdgIndexRange.py" line="173"/>
         <source>1000</source>
         <translation>1000</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgIndexRange.py" line="177"/>
+        <location filename="ui/Ui_wdgIndexRange.py" line="178"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgIndexRange.py" line="166"/>
+        <location filename="ui/Ui_wdgIndexRange.py" line="171"/>
         <source>4000</source>
         <translation>4000</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgIndexRange.py" line="169"/>
+        <location filename="ui/Ui_wdgIndexRange.py" line="174"/>
         <source>Update ranges</source>
         <translation>Actualizar los rangos</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgIndexRange.py" line="171"/>
+        <location filename="ui/Ui_wdgIndexRange.py" line="180"/>
         <source>Range</source>
         <translation>Rango</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgIndexRange.py" line="173"/>
+        <location filename="ui/Ui_wdgIndexRange.py" line="182"/>
         <source>Investments</source>
         <translation>Inversiones</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgIndexRange.py" line="161"/>
+        <location filename="ui/Ui_wdgIndexRange.py" line="166"/>
         <source>Investments by index range</source>
         <translation>Inversiones por rango de índice</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgIndexRange.py" line="162"/>
+        <location filename="ui/Ui_wdgIndexRange.py" line="167"/>
         <source>Report data</source>
         <translation>Datos del informe</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgIndexRange.py" line="163"/>
+        <location filename="ui/Ui_wdgIndexRange.py" line="168"/>
         <source>Percentage between ranges</source>
         <translation>Tanto por ciento entre rangos</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgIndexRange.py" line="165"/>
+        <location filename="ui/Ui_wdgIndexRange.py" line="170"/>
         <source>Money to invest</source>
         <translation>Dinero a invertir</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgIndexRange.py" line="167"/>
+        <location filename="ui/Ui_wdgIndexRange.py" line="172"/>
         <source>Index lowest limit</source>
         <translation>Límite más bajo del índice</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgIndexRange.py" line="178"/>
+        <location filename="ui/Ui_wdgIndexRange.py" line="183"/>
         <source>Top</source>
         <translation>Parte alta</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgIndexRange.py" line="179"/>
+        <location filename="ui/Ui_wdgIndexRange.py" line="184"/>
         <source>Middle</source>
         <translation>Medio</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgIndexRange.py" line="180"/>
+        <location filename="ui/Ui_wdgIndexRange.py" line="185"/>
         <source>Bottom</source>
         <translation>Parte baja</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgIndexRange.py" line="174"/>
+        <location filename="ui/Ui_wdgIndexRange.py" line="175"/>
         <source>Show benchmark report</source>
         <translation>Mostrar el informe del índice de referencia</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgIndexRange.py" line="176"/>
+        <location filename="ui/Ui_wdgIndexRange.py" line="177"/>
         <source>Add a price to the benchmark</source>
         <translation>Añadir una cotización del índice de referencia</translation>
     </message>
     <message>
-        <location filename="ui/wdgIndexRange.py" line="67"/>
+        <location filename="ui/wdgIndexRange.py" line="83"/>
         <source>{0} {1} ({2}): {3} shares of {4} = {5}
 </source>
         <translation>{0} {1} ({2}): {3} acciones de {4} = {5}
 </translation>
     </message>
     <message>
-        <location filename="ui/wdgIndexRange.py" line="117"/>
+        <location filename="ui/wdgIndexRange.py" line="132"/>
         <source>Green colorized ranges of {} benchmark are covered by zero risk and bonds balance ({}).</source>
         <translation>Los rangos de verde del índice {} están cubiertos por el saldo de patrimonio de riesgo cero y renta fija ({}).</translation>
     </message>
     <message>
-        <location filename="ui/wdgIndexRange.py" line="117"/>
-        <source>Current benchmark price at {} is {}.</source>
-        <translation>El precio del actual índice de referencia a las {} es {}.</translation>
-    </message>
-    <message>
-        <location filename="ui/wdgIndexRange.py" line="117"/>
-        <source>Last daily variation: {}.</source>
-        <translation>Variación del último día: {}.</translation>
-    </message>
-    <message>
-        <location filename="ui/wdgIndexRange.py" line="190"/>
+        <location filename="ui/wdgIndexRange.py" line="208"/>
         <source>Investment calculator</source>
         <translation>Calculadora de inversiones</translation>
+    </message>
+    <message>
+        <location filename="ui/wdgIndexRange.py" line="65"/>
+        <source>Benchmark penultimate price ({}) is {}</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/wdgIndexRange.py" line="66"/>
+        <source>Benchmark last price ({}) is {}. Last dayly variation: {}.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -5580,7 +5580,7 @@ S&#xc3;&#xb3;lo se contabilizar&#xc3;&#xa1; cuando se vendan las acciones</sourc
     <message>
         <location filename="ui/Ui_wdgQuotesUpdate.py" line="106"/>
         <source>Auxiliar tables</source>
-        <translation>Tablas auxiliares</translation>
+        <translation type="unfinished">Tablas auxiliares</translation>
     </message>
     <message>
         <location filename="ui/Ui_wdgQuotesUpdate.py" line="107"/>
@@ -5590,32 +5590,32 @@ S&#xc3;&#xb3;lo se contabilizar&#xc3;&#xa1; cuando se vendan las acciones</sourc
     <message>
         <location filename="ui/Ui_wdgQuotesUpdate.py" line="108"/>
         <source>Update only investments of the user</source>
-        <translation>Actualizar sólo las inversiones del usuario</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/Ui_wdgQuotesUpdate.py" line="109"/>
         <source>Intraday sources</source>
-        <translation>Fuentes intradía</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/Ui_wdgQuotesUpdate.py" line="110"/>
         <source>Update all intraday sources</source>
-        <translation>Actualizar todas las fuentes intradía</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/Ui_wdgQuotesUpdate.py" line="111"/>
         <source>Daily sources</source>
-        <translation>Fuentes diarias</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/Ui_wdgQuotesUpdate.py" line="112"/>
         <source>Update all daily sources</source>
-        <translation>Actualizar todas las fuentes diarias</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/Ui_wdgQuotesUpdate.py" line="113"/>
         <source>Update all sources</source>
-        <translation>Actualizar todas las fuentes</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

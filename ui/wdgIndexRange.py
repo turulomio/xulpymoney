@@ -6,13 +6,14 @@ from frmProductReport import *
 from wdgCalculator import *
 
 class Range:
-    def __init__(self, product,  bottom , top):
-        """Calcula los rangos"""
+    def __init__(self, product,  bottom , top, price):
+        """Calcula los rangos
+        price, es el precio puede ser pasado el ´ultimo o el pen´ultimo"""
         self.product=product
         self.bottom=bottom
         self.top=top
         self.middle=Decimal((self.bottom+self.top)/2)
-        self.current=product.result.basic.last.quote
+        self.current=price
         
     def currentPriceBottomVariation(self):
         """Calcs variation percentage from current price to bottom price"""
@@ -53,9 +54,24 @@ class wdgIndexRange(QWidget, Ui_wdgIndexRange):
         self.spin.setValue(float(self.gl_wdgIndexRange_spin.get()))
         self.txtInvertir.setText(self.gl_wdgIndexRange_txtInvertir.get())
         self.txtMinimo.setText(self.gl_wdgIndexRange_txtMinimo.get())        
+        self.cmbBenchmarkCurrent_load()
         self.load_data()
         
         self.selRange=None#Range() in right click
+        
+    def cmbBenchmarkCurrent_load(self):       
+        if self.benchmark:
+            self.cmbBenchmarkCurrent.clear() 
+            self.cmbBenchmarkCurrent.addItem(self.tr("Benchmark penultimate price ({}) is {}".format(str(self.benchmark.result.basic.penultimate.datetime)[:16], self.benchmark.currency.string(self.benchmark.result.basic.penultimate.quote))))
+            self.cmbBenchmarkCurrent.addItem(self.tr("Benchmark last price ({}) is {}. Last dayly variation: {}.".format(str(self.benchmark.result.basic.last.datetime)[:16], self.benchmark.currency.string(self.benchmark.result.basic.last.quote),tpc(self.benchmark.result.basic.tpc_diario()) )))
+            self.cmbBenchmarkCurrent.setCurrentIndex(1)#Last price
+            
+    def cmbBenchmarkCurrent_price(self):
+        """Returns price of Benchmark selected in combo"""
+        if self.cmbBenchmarkCurrent.currentIndex()==1:
+            return self.benchmark.result.basic.last.quote
+        else:
+            return self.benchmark.result.basic.penultimate.quote
 
     def load_data(self):
         def inversiones(arr,min,max):
@@ -82,7 +98,7 @@ class wdgIndexRange(QWidget, Ui_wdgIndexRange):
         #Makes and array from  minimum to benchmark maximum + 2% to minimum
         ranges=[]       
         if maxoper==0:##NO hay operinvestments
-            maximo=self.benchmark.result.basic.last.quote*(1+2*Decimal(self.spin.value()/100))
+            maximo=self.cmbBenchmarkCurrent_price()*(1+2*Decimal(self.spin.value()/100))
         else:
             maximo=maxoper*(1+2*Decimal(self.spin.value()/100))##1.04 en caso de 2
         minimo=int(self.txtMinimo.text())
@@ -99,23 +115,20 @@ class wdgIndexRange(QWidget, Ui_wdgIndexRange):
         self.table.clearContents()
         self.table.setRowCount(len(ranges))
         colorized=0
-        print (self.benchmark.result.basic.last.quote,  self.mem.data.benchmark.result.basic.last.quote, 2)
         for i, r in enumerate(ranges):###De mayor a menor
             top=int(r*(1+(self.spin.value()/100)))
             bottom=r
             self.table.setItem(i, 0,qcenter("{}-{}".format(bottom, top)))
             self.table.setItem(i, 1,QTableWidgetItem(inversiones(arr, bottom, top)))
-            if bottom<self.benchmark.result.basic.last.quote:
-                if self.benchmark.result.basic.last.quote<=top: ##Colorize current price
+            if bottom<self.cmbBenchmarkCurrent_price():
+                if self.cmbBenchmarkCurrent_price()<=top: ##Colorize current price
                     self.table.item(i, 0).setBackground(QColor(255, 160, 160))
                 if colorized<=rangescovered:
                     self.table.item(i, 1).setBackground(QColor(160, 255, 160))
                     colorized=colorized+1
 
         #Prints label
-        self.lblTotal.setText(self.tr("Green colorized ranges of {} benchmark are covered by zero risk and bonds balance ({}).").format(self.benchmark.name, self.mem.localcurrency.string(zeroriskplusbonds)) + "\n" +
-                                      self.tr("Current benchmark price at {} is {}.").format( str(self.benchmark.result.basic.last.datetime)[:16],  self.benchmark.currency.string(self.benchmark.result.basic.last.quote)) + "\n"+
-                                      self.tr("Last daily variation: {}.").format(tpc(self.benchmark.result.basic.tpc_diario())))
+        self.lblTotal.setText(self.tr("Green colorized ranges of {} benchmark are covered by zero risk and bonds balance ({}).").format(self.benchmark.name, self.mem.localcurrency.string(zeroriskplusbonds)))
         print ("wdgIndexRange > load_data: {0}".format(datetime.datetime.now()-inicio))
 
     def on_cmd_pressed(self):
@@ -125,6 +138,10 @@ class wdgIndexRange(QWidget, Ui_wdgIndexRange):
         self.mem.con.commit()
         self.load_data()
 
+    @pyqtSlot(int)  
+    def on_cmbBenchmarkCurrent_currentIndexChanged(self, index):
+        self.load_data()
+        
     def on_cmdIRAnalisis_pressed(self):
         w=frmProductReport(self.mem, self.benchmark, None,  self)
         w.exec_()
@@ -133,6 +150,7 @@ class wdgIndexRange(QWidget, Ui_wdgIndexRange):
         w=frmQuotesIBM(self.mem, self.benchmark, None,  self)
         w.exec_() 
         self.benchmark.result.basic.load_from_db()
+        self.cmbBenchmarkCurrent_load()
         self.load_data()
 
     def on_table_customContextMenuRequested(self,  pos):
@@ -150,7 +168,7 @@ class wdgIndexRange(QWidget, Ui_wdgIndexRange):
         try:
             for i in self.table.selectedItems():#itera por cada item no row.
                 if i.column()==0:
-                    self.range=Range(self.benchmark, int(i.text().split("-")[0]), int(i.text().split("-")[1]))
+                    self.range=Range(self.benchmark, int(i.text().split("-")[0]), int(i.text().split("-")[1]), self.cmbBenchmarkCurrent_price())
         except:
             self.range=None
 
