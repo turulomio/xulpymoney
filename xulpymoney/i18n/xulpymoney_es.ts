@@ -5641,17 +5641,17 @@ S&#xc3;&#xb3;lo se contabilizar&#xc3;&#xa1; cuando se vendan las acciones</sourc
         <translation>Errores</translation>
     </message>
     <message>
-        <location filename="ui/wdgSource.py" line="127"/>
+        <location filename="ui/wdgSource.py" line="169"/>
         <source>{} Inserted</source>
         <translation>{} Insertados</translation>
     </message>
     <message>
-        <location filename="ui/wdgSource.py" line="128"/>
+        <location filename="ui/wdgSource.py" line="170"/>
         <source>{} Edited</source>
         <translation>{} Modificados</translation>
     </message>
     <message>
-        <location filename="ui/wdgSource.py" line="129"/>
+        <location filename="ui/wdgSource.py" line="171"/>
         <source>{} Ignored</source>
         <translation>{} Ignorados</translation>
     </message>
@@ -5661,17 +5661,17 @@ S&#xc3;&#xb3;lo se contabilizar&#xc3;&#xa1; cuando se vendan las acciones</sourc
         <translation>Actualizaciones insertadas</translation>
     </message>
     <message>
-        <location filename="ui/wdgSource.py" line="162"/>
+        <location filename="ui/wdgSource.py" line="204"/>
         <source>Edited quotes</source>
         <translation>Actualizaciones modificadas</translation>
     </message>
     <message>
-        <location filename="ui/wdgSource.py" line="172"/>
+        <location filename="ui/wdgSource.py" line="214"/>
         <source>Ignored quotes</source>
         <translation>Actualizaciones ignoradas</translation>
     </message>
     <message>
-        <location filename="ui/wdgSource.py" line="202"/>
+        <location filename="ui/wdgSource.py" line="244"/>
         <source>Error procesing the source</source>
         <translation>Error al procesar la fuente de datos</translation>
     </message>
@@ -5701,12 +5701,12 @@ S&#xc3;&#xb3;lo se contabilizar&#xc3;&#xa1; cuando se vendan las acciones</sourc
         <translation>Erróneos</translation>
     </message>
     <message>
-        <location filename="ui/wdgSource.py" line="131"/>
+        <location filename="ui/wdgSource.py" line="173"/>
         <source>{} bad</source>
         <translation>{} malos</translation>
     </message>
     <message>
-        <location filename="ui/wdgSource.py" line="130"/>
+        <location filename="ui/wdgSource.py" line="172"/>
         <source>{} errors parsing the source</source>
         <translation>{} errores parseando la fuente</translation>
     </message>
@@ -5721,27 +5721,27 @@ S&#xc3;&#xb3;lo se contabilizar&#xc3;&#xa1; cuando se vendan las acciones</sourc
         <translation>Buscadas</translation>
     </message>
     <message>
-        <location filename="ui/wdgSource.py" line="132"/>
+        <location filename="ui/wdgSource.py" line="174"/>
         <source>{} products</source>
         <translation>{} productos</translation>
     </message>
     <message>
-        <location filename="ui/wdgSource.py" line="26"/>
+        <location filename="ui/wdgSource.py" line="58"/>
         <source>Yahoo source</source>
         <translation>Fuente de Yahoo</translation>
     </message>
     <message>
-        <location filename="ui/wdgSource.py" line="28"/>
+        <location filename="ui/wdgSource.py" line="60"/>
         <source>Yahoo historical source</source>
         <translation>Fuente histórica de Yahoo</translation>
     </message>
     <message>
-        <location filename="ui/wdgSource.py" line="30"/>
+        <location filename="ui/wdgSource.py" line="62"/>
         <source>Mercado Continuo source</source>
         <translation>Fuente del Mercado Continuo</translation>
     </message>
     <message>
-        <location filename="ui/wdgSource.py" line="32"/>
+        <location filename="ui/wdgSource.py" line="64"/>
         <source>Morningstar source</source>
         <translation>Fuente de Morningstar</translation>
     </message>

@@ -230,7 +230,6 @@ class WorkerMercadoContinuo(SourceParsePage):
             self.finished=True
             print ("run_finished")
             self.run_finished.emit()
-#            self.emit(SIGNAL("run_finished"))
             self.next_step()
 
 

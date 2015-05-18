@@ -10,6 +10,37 @@ class Sources:
     WorkerMercadoContinuo=3
     WorkerMorningstar=4
 
+class SetWdgSources:
+    """Set of wdgSources"""
+    def __init__(self, mem):
+        self.mem=mem
+        self.arr=[]
+        
+    def append(self, s):
+        self.arr.append(s)
+#        
+#    def remove(self, s):
+#        if s in self.arr:
+#            self.arr.remove(s)
+            
+    def remove_finished(self):
+        toremove=[]
+        for s in self.arr:
+            if s.isFinished():
+                toremove.append(s)
+                
+        for r in toremove:
+            self.arr.remove(r)
+            
+    def allFinished(self):
+        for s in self.arr:
+            if s.isFinished()==False:
+                return False
+        return True
+        
+    def length(self):
+        return len(self.arr)
+    
 
 class wdgSource(QWidget, Ui_wdgSource):
     started=pyqtSignal()
@@ -19,6 +50,7 @@ class wdgSource(QWidget, Ui_wdgSource):
         self.setupUi(self)
         self.mem=mem
         self.parent=parent
+        self.status=0# O Sin empezar, 1 Prepared, 2 Started, 3 Finished
         self.steps=None#Define the steps of the self.progress bar
         self.class_sources=class_sources
         self.widgettoupdate=self.parent.parent
@@ -30,6 +62,18 @@ class wdgSource(QWidget, Ui_wdgSource):
                 self.grp.setTitle(self.tr("Mercado Continuo source"))
         elif self.class_sources==Sources.WorkerMorningstar:
                 self.grp.setTitle(self.tr("Morningstar source"))
+                
+    def isFinished(self):
+        if self.status==3:
+            return True
+        return False
+        
+        
+    def prepare(self):
+        """Not running yet, but preparing GUI"""
+        self.status=1
+        self.cmdRun.setEnabled(False)     
+        self.chkUserOnly.setEnabled(False)
 
     def strUserOnly(self,  withindex=False):
         """Returns a sql string if products must be filtered by user invesments"""
@@ -65,10 +109,7 @@ class wdgSource(QWidget, Ui_wdgSource):
 
     def on_cmdRun_released(self):
         """Without multiprocess due to needs one independent connection per thread"""
-        self.cmdRun.setEnabled(False)     
-        self.chkUserOnly.setEnabled(False)
-        
-        #Create objects
+
         self.agrupation=[]#used to iterate workers 
         self.totals=Source(self.mem)# Used to show totals of agrupation
         self.products=SetProducts(self.mem)#Total of products of an Agrupation
@@ -98,6 +139,7 @@ class wdgSource(QWidget, Ui_wdgSource):
             worker.run_finished.connect(self.worker_run_finished)
         
         #Starts
+        self.status=2
         self.started.emit()
         for worker in self.agrupation:
             self.currentWorker=worker
@@ -136,8 +178,8 @@ class wdgSource(QWidget, Ui_wdgSource):
         self.cmdBad.setEnabled(True)       
         self.cmdSearched.setEnabled(True)
         self.cmdCancel.setEnabled(False)
+        self.status=3
         self.finished.emit()
-#        self.emit(SIGNAL("finished")) 
         
         
     def on_cmdCancel_released(self):
