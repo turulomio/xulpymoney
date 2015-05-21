@@ -11,7 +11,6 @@ class wdgQuotesUpdate(QWidget, Ui_wdgQuotesUpdate):
         self.parent=parent
         
         self.sources=SetWdgSources(self.mem)#All wdgSources agrupations
-        self.running_sources=SetWdgSources(self.mem)#wdgSources running
 
         self.wyahoo=wdgSource(self.mem, Sources.WorkerYahoo, self)    
         self.layIntraday.addWidget(self.wyahoo, 0, 0)
@@ -36,7 +35,7 @@ class wdgQuotesUpdate(QWidget, Ui_wdgQuotesUpdate):
         
     def running_sources_run(self):
         """Used to set unenabled fine"""
-        for s in self.running_sources.arr:
+        for s in self.sources.runners:
             if s.status==0:
                 s.prepare()
             
@@ -52,39 +51,40 @@ class wdgQuotesUpdate(QWidget, Ui_wdgQuotesUpdate):
 
         QCoreApplication.processEvents()   
         
-        for s in self.running_sources.arr:
-            print (s,  self.running_sources.arr)
+        for s in self.sources.runners:
+            print (s,  self.sources.runners)
             if s.status==1:
                 s.on_cmdRun_released()
+        print ("FINISHED RUNNING_SOURCES_RUN, AQUI PROBLEMA")
         
     def on_chkUserOnly_stateChanged(self, state):
         for s in self.sources.arr:
             s.chkUserOnly.setCheckState(state)
         
     def on_cmdIntraday_released(self):
-        self.running_sources.append(self.wyahoo)
-        self.running_sources.append(self.wmc)
+        self.sources.append_runners(self.wyahoo)
+        self.sources.append_runners(self.wmc)
         
         self.running_sources_run()
             
         
     def on_cmdDaily_released(self):
-        self.running_sources.append(self.wyahoohistorical)
-        self.running_sources.append(self.wmorning)
+        self.sources.append_runners(self.wyahoohistorical)
+        self.sources.append_runners(self.wmorning)
         
         self.running_sources_run()
 
     def on_cmdAll_released(self):        
         for s in sources.arr:
-            self.running_sources.append(s)
+            self.sources.append_runners(s)
         self.running_sources_run()
 
     def after_source_stop(self):
-        print (self.running_sources.length())
-        self.running_sources.remove_finished()
-        print (self.running_sources.length())
+        print (self.sources.length_runners())
+        self.sources.remove_finished()
+        print (self.sources.length_runners())
                 
-        if self.running_sources.length()==0:
+        if self.sources.length_runners()==0:
             self.mem.frmMain.actionsEnabled(True)
             self.mem.data.reload_prices()
         QCoreApplication.processEvents()            

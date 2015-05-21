@@ -15,31 +15,31 @@ class SetWdgSources:
     def __init__(self, mem):
         self.mem=mem
         self.arr=[]
+        self.runners=[]#Array of selected to run
         
     def append(self, s):
         self.arr.append(s)
-#        
-#    def remove(self, s):
-#        if s in self.arr:
-#            self.arr.remove(s)
+        
+    def append_runners(self, s):
+        self.runners.append(s)
             
     def remove_finished(self):
-        toremove=[]
+        """Remove finished wdgSource from self.runners, iterating self.arr"""
         for s in self.arr:
             if s.isFinished():
-                toremove.append(s)
-                
-        for r in toremove:
-            self.arr.remove(r)
-            
+                self.runners.remove(s)
+
     def allFinished(self):
-        for s in self.arr:
+        for s in self.runners:
             if s.isFinished()==False:
                 return False
         return True
         
     def length(self):
         return len(self.arr)
+        
+    def length_runners(self):
+        return len(self.runners)
     
 
 class wdgSource(QWidget, Ui_wdgSource):
@@ -50,7 +50,7 @@ class wdgSource(QWidget, Ui_wdgSource):
         self.setupUi(self)
         self.mem=mem
         self.parent=parent
-        self.status=0# O Sin empezar, 1 Prepared, 2 Started, 3 Finished
+        self.status=0# O Sin empezar, 1 Prepared, only needs to cmdRun, 2 Started, 3 Finished
         self.steps=None#Define the steps of the self.progress bar
         self.class_sources=class_sources
         self.widgettoupdate=self.parent.parent
@@ -131,7 +131,7 @@ class wdgSource(QWidget, Ui_wdgSource):
         elif self.class_sources==Sources.WorkerMorningstar:
             self.worker=WorkerMorningstar(self.mem, 0,  "select * from products where priorityhistorical[1]=8 and obsolete=false {} order by name;".format(self.strUserOnly()))
             self.agrupation.append(self.worker)
-        self.currentWorker=self.agrupation[0]# Current worker working
+#        self.currentWorker=self.agrupation[0]# Current worker working
 
         #Make connections
         for worker in self.agrupation:
