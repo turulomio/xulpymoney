@@ -1,7 +1,7 @@
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from Ui_wdgQuotesUpdate import *
-from wdgSource import *
+from libsources import *
 
 class wdgQuotesUpdate(QWidget, Ui_wdgQuotesUpdate):
     def __init__(self, mem,  parent = None, name = None):
@@ -10,33 +10,30 @@ class wdgQuotesUpdate(QWidget, Ui_wdgQuotesUpdate):
         self.mem=mem
         self.parent=parent
         
-        self.sources=SetWdgSources(self.mem)#All wdgSources agrupations
-
-        self.wyahoo=wdgSource(self.mem, Sources.WorkerYahoo, self)    
-        self.layIntraday.addWidget(self.wyahoo, 0, 0)
-        self.sources.append(self.wyahoo)
-        
-        self.wmc=wdgSource(self.mem, Sources.WorkerMercadoContinuo, self)     
-        self.layIntraday.addWidget(self.wmc, 1, 0)
-        self.sources.append(self.wmc)
-        
-        self.wyahoohistorical=wdgSource(self.mem, Sources.WorkerYahooHistorical, self)   
-        self.layDaily.addWidget(self.wyahoohistorical)
-        self.sources.append(self.wyahoohistorical)
-        
-        self.wmorning=wdgSource(self.mem, Sources.WorkerMorningstar, self)
-        self.layDaily.addWidget(self.wmorning)
-        self.sources.append(self.wmorning)
-        
-        for s in self.sources.arr:#Conects after finishing a wdgSource
-            s.finished.connect(self.after_source_stop)
+        self.sources=SetSources(self.mem)#All sources
+        self.sources.append(WorkerYahooHistorical, self.wyahoohistorical)
+        self.sources.append(WorkerYahoo, self.wyahoo)
+        self.sources.append(WorkerMercadoContinuo,self.wmc)
+        self.sources.append(WorkerMorningstar, self.wmorningstar)
+        self.sources.runs_finished.connect(self.runners_finished)
+#        
+#        for s in self.sources.arr:#Conects after finishing a wdgSource
+#            s.ui.finished.connect(self.after_source_stop)
         
         self.on_chkUserOnly_stateChanged(self.chkUserOnly.checkState())
+    
+
         
+    def setSQL(self):
+        self.wyahoohistorical.source.setSQL( "select * from products where priorityhistorical[1]=3 and obsolete=false {} order by name".format(self.wyahoohistorical.strUserOnly(True)))
+        self.wyahoo.append("select * from products where priority[1]=1 and obsolete=false {}".format(self.yahoo.strUserOnly(True)))
+        self.wmc.append("select * from products where 9=any(priority) and obsolete=false {} order by name".format(self.wmc.strUserOnly()))
+        self.wmorningstar.append("select * from products where priorityhistorical[1]=8 and obsolete=false {} order by name;".format(self.wmorningstar.strUserOnly()))
+
     def running_sources_run(self):
         """Used to set unenabled fine"""
         for s in self.sources.runners:
-            if s.status==0:
+            if s.ui.status==0:
                 s.prepare()
             
         self.mem.frmMain.actionsEnabled(False)
@@ -44,7 +41,7 @@ class wdgQuotesUpdate(QWidget, Ui_wdgQuotesUpdate):
         
         if self.wyahoo.cmdRun.isEnabled()==False and self.wmc.cmdRun.isEnabled()==False:
             self.cmdIntraday.setEnabled(False)
-        if self.wyahoohistorical.cmdRun.isEnabled()==False and self.wmorning.isEnabled()==False:
+        if self.wyahoohistorical.cmdRun.isEnabled()==False and self.wmorningstar.isEnabled()==False:
             self.cmdDaily.setEnabled(False)
         if self.cmdDaily.isEnabled()==False and self.cmdIntraday.isEnabled()==False:
             self.cmdAll.setEnabled(False)
@@ -52,25 +49,30 @@ class wdgQuotesUpdate(QWidget, Ui_wdgQuotesUpdate):
         QCoreApplication.processEvents()   
         
         for s in self.sources.runners:
-            print (s,  self.sources.runners)
-            if s.status==1:
-                s.on_cmdRun_released()
-        print ("FINISHED RUNNING_SOURCES_RUN, AQUI PROBLEMA")
+            if s.ui.status==1:
+                s.ui.on_cmdRun_released()
+        
+    def runners_finished(self):
+        self.mem.frmMain.actionsEnabled(True)
+        self.mem.data.reload_prices()
+        QCoreApplication.processEvents()       
+        self.sources.runners=[]
+                    
         
     def on_chkUserOnly_stateChanged(self, state):
         for s in self.sources.arr:
-            s.chkUserOnly.setCheckState(state)
+            s.ui.chkUserOnly.setCheckState(state)
         
     def on_cmdIntraday_released(self):
-        self.sources.append_runners(self.wyahoo)
-        self.sources.append_runners(self.wmc)
+        self.sources.append_runners(self.wyahoo.source)
+        self.sources.append_runners(self.wmc.source)
         
         self.running_sources_run()
             
         
     def on_cmdDaily_released(self):
-        self.sources.append_runners(self.wyahoohistorical)
-        self.sources.append_runners(self.wmorning)
+        self.sources.append_runners(self.wyahoohistorical.source)
+        self.sources.append_runners(self.wmorningstar.source)
         
         self.running_sources_run()
 
@@ -78,15 +80,3 @@ class wdgQuotesUpdate(QWidget, Ui_wdgQuotesUpdate):
         for s in sources.arr:
             self.sources.append_runners(s)
         self.running_sources_run()
-
-    def after_source_stop(self):
-        print (self.sources.length_runners())
-        self.sources.remove_finished()
-        print (self.sources.length_runners())
-                
-        if self.sources.length_runners()==0:
-            self.mem.frmMain.actionsEnabled(True)
-            self.mem.data.reload_prices()
-        QCoreApplication.processEvents()            
-            
-            

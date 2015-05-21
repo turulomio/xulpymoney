@@ -70,12 +70,19 @@
                  <x>0</x>
                  <y>0</y>
                  <width>341</width>
-                 <height>301</height>
+                 <height>292</height>
                 </rect>
                </property>
                <layout class="QVBoxLayout" name="verticalLayout_7">
                 <item>
-                 <layout class="QGridLayout" name="layIntraday"/>
+                 <layout class="QGridLayout" name="layIntraday">
+                  <item row="0" column="0">
+                   <widget class="wdgSource" name="wyahoo" native="true"/>
+                  </item>
+                  <item row="1" column="0">
+                   <widget class="wdgSource" name="wmc" native="true"/>
+                  </item>
+                 </layout>
                 </item>
                </layout>
               </widget>
@@ -118,12 +125,19 @@
                  <x>0</x>
                  <y>0</y>
                  <width>341</width>
-                 <height>301</height>
+                 <height>292</height>
                 </rect>
                </property>
                <layout class="QVBoxLayout" name="verticalLayout_3">
                 <item>
-                 <layout class="QVBoxLayout" name="layDaily"/>
+                 <layout class="QVBoxLayout" name="layDaily">
+                  <item>
+                   <widget class="wdgSource" name="wyahoohistorical" native="true"/>
+                  </item>
+                  <item>
+                   <widget class="wdgSource" name="wmorningstar" native="true"/>
+                  </item>
+                 </layout>
                 </item>
                </layout>
               </widget>
@@ -192,6 +206,14 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>wdgSource</class>
+   <extends>QWidget</extends>
+   <header location="global">libsources</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources>
   <include location="../images/xulpymoney.qrc"/>
  </resources>
