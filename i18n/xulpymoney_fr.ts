@@ -953,6 +953,54 @@ Total purged in global process: {1}</source>
     </message>
 </context>
 <context>
+    <name>Source</name>
+    <message>
+        <location filename="libsources.py" line="287"/>
+        <source>Source Name unknown</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>WorkerMercadoContinuo</name>
+    <message>
+        <location filename="libsources.py" line="475"/>
+        <source>Mercado Continuo source</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>WorkerMorningstar</name>
+    <message>
+        <location filename="libsources.py" line="536"/>
+        <source>Morningstar source</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>WorkerSGWarrants</name>
+    <message>
+        <location filename="libsources.py" line="578"/>
+        <source>SG Warrants source</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>WorkerYahoo</name>
+    <message>
+        <location filename="libsources.py" line="628"/>
+        <source>Yahoo source</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>WorkerYahooHistorical</name>
+    <message>
+        <location filename="libsources.py" line="697"/>
+        <source>Yahoo Historical source</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>canvasChart</name>
     <message>
         <location filename="ui/canvaschart.py" line="199"/>
@@ -5573,42 +5621,42 @@ S&#xc3;&#xb3;lo se contabilizar&#xc3;&#xa1; cuando se vendan las acciones</sourc
 <context>
     <name>wdgQuotesUpdate</name>
     <message>
-        <location filename="ui/Ui_wdgQuotesUpdate.py" line="106"/>
+        <location filename="ui/Ui_wdgQuotesUpdate.py" line="118"/>
         <source>Auxiliar tables</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgQuotesUpdate.py" line="107"/>
+        <location filename="ui/Ui_wdgQuotesUpdate.py" line="119"/>
         <source>If it&apos;s unchecked, Xulpymoney will update all products marked as autoupdate</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgQuotesUpdate.py" line="108"/>
+        <location filename="ui/Ui_wdgQuotesUpdate.py" line="120"/>
         <source>Update only investments of the user</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgQuotesUpdate.py" line="109"/>
+        <location filename="ui/Ui_wdgQuotesUpdate.py" line="121"/>
         <source>Intraday sources</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgQuotesUpdate.py" line="110"/>
+        <location filename="ui/Ui_wdgQuotesUpdate.py" line="122"/>
         <source>Update all intraday sources</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgQuotesUpdate.py" line="111"/>
+        <location filename="ui/Ui_wdgQuotesUpdate.py" line="123"/>
         <source>Daily sources</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgQuotesUpdate.py" line="112"/>
+        <location filename="ui/Ui_wdgQuotesUpdate.py" line="124"/>
         <source>Update all daily sources</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgQuotesUpdate.py" line="113"/>
+        <location filename="ui/Ui_wdgQuotesUpdate.py" line="125"/>
         <source>Update all sources</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5636,17 +5684,17 @@ S&#xc3;&#xb3;lo se contabilizar&#xc3;&#xa1; cuando se vendan las acciones</sourc
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgSource.py" line="169"/>
+        <location filename="libsources.py" line="194"/>
         <source>{} Inserted</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgSource.py" line="170"/>
+        <location filename="libsources.py" line="195"/>
         <source>{} Edited</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgSource.py" line="171"/>
+        <location filename="libsources.py" line="196"/>
         <source>{} Ignored</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5656,17 +5704,17 @@ S&#xc3;&#xb3;lo se contabilizar&#xc3;&#xa1; cuando se vendan las acciones</sourc
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgSource.py" line="204"/>
+        <location filename="libsources.py" line="229"/>
         <source>Edited quotes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgSource.py" line="214"/>
+        <location filename="libsources.py" line="239"/>
         <source>Ignored quotes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgSource.py" line="244"/>
+        <location filename="libsources.py" line="269"/>
         <source>Error procesing the source</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5696,12 +5744,12 @@ S&#xc3;&#xb3;lo se contabilizar&#xc3;&#xa1; cuando se vendan las acciones</sourc
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgSource.py" line="173"/>
+        <location filename="libsources.py" line="198"/>
         <source>{} bad</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgSource.py" line="172"/>
+        <location filename="libsources.py" line="197"/>
         <source>{} errors parsing the source</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5716,28 +5764,8 @@ S&#xc3;&#xb3;lo se contabilizar&#xc3;&#xa1; cuando se vendan las acciones</sourc
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/wdgSource.py" line="174"/>
+        <location filename="libsources.py" line="199"/>
         <source>{} products</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/wdgSource.py" line="58"/>
-        <source>Yahoo source</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/wdgSource.py" line="60"/>
-        <source>Yahoo historical source</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/wdgSource.py" line="62"/>
-        <source>Mercado Continuo source</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui/wdgSource.py" line="64"/>
-        <source>Morningstar source</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

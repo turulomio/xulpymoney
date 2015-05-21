@@ -3,6 +3,275 @@ import urllib
 import time
 from PyQt5.QtWebKitWidgets import *
 
+from PyQt5.QtCore import *
+from PyQt5.QtGui import *
+from Ui_wdgSource import *
+#from libsources import *
+from myqtablewidget import *
+
+class Sources:
+    WorkerYahoo=1
+    WorkerYahooHistorical=2
+    WorkerMercadoContinuo=3
+    WorkerMorningstar=4
+
+class SetSources(QObject):
+    """Set of wdgSources"""
+    runs_finished=pyqtSignal()
+    def __init__(self, mem):
+        QObject.__init__(self)
+        self.mem=mem
+        self.arr=[]
+        self.runners=[]#Array of selected to run
+
+    def append(self, Worker, wdgSource=None):
+        """Add a source especifing class, sql and wdgSource el widget"""
+        if Worker==WorkerYahooHistorical:
+            s=WorkerYahooHistorical(self.mem, 0)
+        elif Worker==WorkerYahoo:
+            s=WorkerYahoo(self.mem)
+        elif Worker==WorkerMercadoContinuo:
+            s=WorkerMercadoContinuo(self.mem)
+        elif Worker==WorkerMorningstar:
+            s=WorkerMorningstar(self, 0)
+        self.arr.append(s)
+        s.setWdgSource(wdgSource) #Links source with wdg
+        wdgSource.setSource(self.mem, s) #Links wdg with source
+        s.run_finished.connect(self.checkFinished)
+
+        
+    def append_runners(self, s):
+        self.runners.append(s)
+            
+    def remove_finished(self):
+        """Remove finished wdgSource from self.runners, iterating self.arr"""
+        for s in self.arr:
+            if s.isFinished():
+                self.runners.remove(s)
+
+    def allFinished(self):
+        for s in self.runners:
+            if s.isFinished()==False:
+                return False
+        return True
+        
+    def checkFinished(self):
+        if self.allFinished():
+            self.runner_finished.emit()
+            
+        
+    def length(self):
+        return len(self.arr)
+        
+    def length_runners(self):
+        return len(self.runners)
+    
+
+class wdgSource(QWidget, Ui_wdgSource):
+    started=pyqtSignal()
+    finished=pyqtSignal()
+    def __init__(self, parent = None, name = None):
+        QWidget.__init__(self,  parent)
+        self.setupUi(self)
+        self.mem=None
+        self.source=None
+        self.parent=parent
+        self.status=0# O Sin empezar, 1 Prepared, only needs to cmdRun, 2 Started, 3 Finished
+        self.steps=None#Define the steps of the self.progress bar
+        self.widgettoupdate=self.parent.parent
+        
+        
+    def setSource(self, mem, source):
+        self.mem=mem
+        self.source=source
+        self.grp.setTitle(self.source.name())
+                
+    def isFinished(self):
+        if self.status==3:
+            return True
+        return False
+            
+    def strUserOnly(self,  withindex=False):
+        """Returns a sql string if products must be filtered by user invesments"""
+        if self.chkUserOnly.isChecked():
+            if withindex==False:
+                return " and id in (select distinct(products_id) from inversiones) "
+            else:
+                return " and (id in (select distinct(products_id) from inversiones) or id in (select distinct (id) from products where type=3))"
+        return ""
+
+        
+    def prepare(self):
+        """Not running yet, but preparing GUI"""
+        self.status=1
+        self.cmdRun.setEnabled(False)     
+        self.chkUserOnly.setEnabled(False)
+
+
+    def setWidgetToUpdate(self, widget):
+        """Used to update when runing, by default is parent parent"""
+        self.widgettoupdate=widget
+        
+    def progress_step(self,  last=False):
+        """Define max steps y value. 
+        If last=True puts the value to the max"""
+        if self.class_sources==Sources.WorkerYahoo:
+            self.progress.setMaximum(len(self.agrupation)*self.agrupation[0].steps())
+        elif self.class_sources==Sources.WorkerYahooHistorical:
+            self.progress.setMaximum(self.agrupation[0].steps())
+        elif self.class_sources==Sources.WorkerMercadoContinuo:      
+            self.progress.setMaximum(self.agrupation[0].steps())
+        elif self.class_sources==Sources.WorkerMorningstar:
+            self.progress.setMaximum(self.agrupation[0].steps())
+            
+        if last==True:
+            self.progress.setValue(self.progress.maximum())
+        else:
+            self.progress.setValue(self.progress.value()+1)
+        self.widgettoupdate.update()
+        QCoreApplication.processEvents() 
+
+    def on_cmdRun_released(self):
+        """Without multiprocess due to needs one independent connection per thread"""
+
+#        self.agrupation=[]#used to iterate workers 
+#        self.totals=Source(self.mem)# Used to show totals of agrupation
+#        self.products=SetProducts(self.mem)#Total of products of an Agrupation
+#        if self.class_sources==Sources.WorkerYahoo:
+#            cur=self.mem.con.cursor()
+#            cur.execute("select count(*) from products where priority[1]=1 and obsolete=false {}".format(self.strUserOnly(True)))
+#            num=cur.fetchone()[0]
+#            step=150
+#            for i in range (0, int(num/step)+1):
+#                self.worker=WorkerYahoo(self.mem, "select * from products where priority[1]=1 and obsolete=false {} order by name limit {} offset {};".format(self.strUserOnly(True), step, step*i))
+#                self.agrupation.append(self.worker)
+#            cur.close()           
+#        elif self.class_sources==Sources.WorkerYahooHistorical:
+#            self.worker=WorkerYahooHistorical(self.mem, 0, "select * from products where priorityhistorical[1]=3 and obsolete=false {} order by name".format(self.strUserOnly(True)))
+#            self.agrupation.append(self.worker)
+#        elif self.class_sources==Sources.WorkerMercadoContinuo:                
+#            self.worker=WorkerMercadoContinuo(self.mem, "select * from products where 9=any(priority) and obsolete=false {} order by name".format(self.strUserOnly()))
+#            self.agrupation.append(self.worker)
+#        elif self.class_sources==Sources.WorkerMorningstar:
+#            self.worker=WorkerMorningstar(self.mem, 0,  "select * from products where priorityhistorical[1]=8 and obsolete=false {} order by name;".format(self.strUserOnly()))
+#            self.agrupation.append(self.worker)
+##        self.currentWorker=self.agrupation[0]# Current worker working
+
+#        #Make connections
+#        for worker in self.agrupation:
+#            worker.step_finished.connect(self.progress_step)
+#            worker.run_finished.connect(self.worker_run_finished)
+        
+        #Starts
+        self.status=2
+        self.started.emit()
+        self.source.run()
+#        for worker in self.agrupation:
+#            self.currentWorker=worker
+#            worker.run()
+            
+            
+    def worker_run_finished(self):
+        for worker in self.agrupation:
+            if worker.finished==False:
+                return
+        #Si pasa es que todos han acab ado
+        for worker in self.agrupation:
+            self.products=self.products.union(worker.products, self.mem )
+            worker.inserted.addTo(self.totals.inserted)
+            worker.modified.addTo(self.totals.modified)
+            worker.ignored.addTo(self.totals.ignored)
+            worker.bad.addTo(self.totals.bad)
+            worker.quotes.addTo(self.totals.quotes)
+            self.totals.errors=worker.errors+self.totals.errors
+            QCoreApplication.processEvents()
+            self.update()
+            if worker.stopping==True:
+                self.progress_step(True)
+                break
+        
+        self.cmdInserted.setText(self.tr("{} Inserted").format(self.totals.inserted.length()))
+        self.cmdEdited.setText(self.tr("{} Edited").format(self.totals.modified.length()))
+        self.cmdIgnored.setText(self.tr("{} Ignored").format(self.totals.ignored.length()))
+        self.cmdErrors.setText(self.tr("{} errors parsing the source").format(len(self.totals.errors)))
+        self.cmdBad.setText(self.tr("{} bad").format(self.totals.bad.length()))
+        self.cmdSearched.setText(self.tr("{} products".format(self.products.length())))
+        self.cmdInserted.setEnabled(True)
+        self.cmdIgnored.setEnabled(True)
+        self.cmdEdited.setEnabled(True)
+        self.cmdErrors.setEnabled(True)
+        self.cmdBad.setEnabled(True)       
+        self.cmdSearched.setEnabled(True)
+        self.cmdCancel.setEnabled(False)
+        self.status=3
+        self.finished.emit()
+        
+        
+    def on_cmdCancel_released(self):
+        self.cmdCancel.setEnabled(False)
+        self.currentWorker.stopping=True
+        self.currentWorker=None# Current worker working
+
+    def on_cmdInserted_released(self):
+        d=QDialog(self)        
+        d.showMaximized()
+        d.setWindowTitle(self.tr("Inserted quotes"))
+        t=myQTableWidget(d)
+        self.totals.inserted.myqtablewidget(t, "wdgSource")
+        lay = QVBoxLayout(d)
+        lay.addWidget(t)
+        d.show()
+        
+    def on_cmdEdited_released(self):
+        d=QDialog(self)        
+        d.showMaximized()
+        d.setWindowTitle(self.tr("Edited quotes"))
+        t=myQTableWidget(d)
+        self.totals.modified.myqtablewidget(t, "wdgSource")
+        lay = QVBoxLayout(d)
+        lay.addWidget(t)
+        d.show()
+        
+    def on_cmdIgnored_released(self):
+        d=QDialog(self)        
+        d.showMaximized()
+        d.setWindowTitle(self.tr("Ignored quotes"))
+        t=myQTableWidget(d)
+        self.totals.ignored.myqtablewidget(t, "wdgSource")
+        lay = QVBoxLayout(d)
+        lay.addWidget(t)
+        d.show()
+        
+    def on_cmdErrors_released(self):
+        d=QDialog(self)        
+        d.showMaximized()
+        d.setWindowTitle(self.tr("Error procesing the source"))
+        terrors=myQTableWidget(d)
+        self.totals.myqtablewidget_errors(terrors, "wdgSource")
+        lay = QVBoxLayout(d)
+        lay.addWidget(terrors)
+        d.show()
+
+    def on_cmdBad_released(self):
+        d=QDialog(self)        
+        d.showMaximized()
+        d.setWindowTitle(self.tr("Error procesing the source"))
+        t=myQTableWidget(d)
+        self.totals.bad.myqtablewidget(t, "wdgSource")
+        lay = QVBoxLayout(d)
+        lay.addWidget(t)
+        d.show()
+        
+    def on_cmdSearched_released(self):
+        d=QDialog(self)        
+        d.showMaximized()
+        d.setWindowTitle(self.tr("Error procesing the source"))
+        t=myQTableWidget(d)
+        self.products.myqtablewidget(t, "wdgSource")
+        lay = QVBoxLayout(d)
+        lay.addWidget(t)
+        d.show()
+
 class Source(QObject):
     """Clase nueva para todas las sources
     Debera:
@@ -14,6 +283,7 @@ class Source(QObject):
     def __init__(self, mem):
         QObject.__init__(self)
         self.mem=mem
+        self._name=self.tr("Source Name unknown")
         self.products=SetProducts(self.mem)
         self.quotes=SetQuotes(self.mem)#Quotes without valida
         self.errors=[]#Array the strings
@@ -25,6 +295,21 @@ class Source(QObject):
         self.finished=False
         self.step=0#step of the source run. maximal is in steps()
         self.stopping=False
+        self.ui=None#This must be linked to a wdgSource with setWdgSource
+        self.agrupation=[]#Used if it must bu run several times due to large amounts (Yahoo)
+        self.sql=None
+        
+    def setSQL(self, sql):
+        """Establish sql"""
+        
+    def setWdgSource(self, widget):
+        self.ui=widget
+        
+    def setName(self, name):
+        self._name=name
+        
+    def name(self):
+        return self._name
         
     def log(self, error):
         self.errors.append("{} {}".format(datetime.datetime.now(), error))
@@ -32,9 +317,6 @@ class Source(QObject):
     def next_step(self):
         self.step=self.step+1
         self.step_finished.emit()
-
-            
-
 
     def myqtablewidget_errors(self, tabla, section):
         tabla.setColumnCount(2)
@@ -87,13 +369,12 @@ class SourceParsePage(Source):
     loaded_page=pyqtSignal()
     parse_page=pyqtSignal()
     run_finished=pyqtSignal()
-    def __init__(self, mem, sql ):
+    def __init__(self, mem,  ):
         Source.__init__(self, mem)
 
         self.url="urlempty"
-        self.sql=sql
         
-    def run(self):
+    def run(self):  
         self.products.load_from_db(self.sql)     
         self.next_step()
         self.loaded_page.connect(self.on_load_page)
@@ -137,11 +418,10 @@ class SourceIterateProducts(Source):
     - check_quotes"""
     execute_product=pyqtSignal(int)
     run_finished=pyqtSignal()
-    def __init__(self, mem, sql, type=2, sleep=0):
+    def __init__(self, mem,  type=2, sleep=0):
         Source.__init__(self, mem)
         self.sleep=sleep#wait between products
         self.type=type#0 silent in xulpymoney, 1 console
-        self.sql=sql
         self.execute_product.connect(self.on_execute_product) 
 
         
@@ -153,7 +433,6 @@ class SourceIterateProducts(Source):
         self.products.load_from_db(self.sql)
         self.next_step()
  
-
         self.products_iterate()
         
         self.quotes_save()
@@ -162,7 +441,6 @@ class SourceIterateProducts(Source):
         
         self.finished=True
         self.run_finished.emit()
-#        self.emit(SIGNAL("run_finished"))
         self.next_step()
         
         
@@ -191,8 +469,9 @@ class SourceIterateProducts(Source):
 
 
 class WorkerMercadoContinuo(SourceParsePage):
-    def __init__(self,  mem, sql):
-        SourceParsePage.__init__(self, mem, sql)   
+    def __init__(self,  mem):
+        SourceParsePage.__init__(self, mem)   
+        self.setName(self.tr("Mercado Continuo source"))
         self.webView= QWebView()
         self.webView.loadFinished.connect(self.on_load_page)
         
@@ -251,8 +530,9 @@ class WorkerMercadoContinuo(SourceParsePage):
 
 class WorkerMorningstar(SourceIterateProducts):
     """Clase que recorre las inversiones activas y busca la última  que tiene el microsecond 4. Busca en internet los historicals a partir de esa fecha"""
-    def __init__(self, mem, type, sql,  sleep=0):
-        SourceIterateProducts.__init__(self, mem,sql, type, sleep)    
+    def __init__(self, mem, type,   sleep=0):
+        SourceIterateProducts.__init__(self, mem,type, sleep)    
+        self.setName(self.tr("Morningstar source"))
         
     def on_execute_product(self,  id_product):
         """inico y fin son dos dates entre los que conseguir los datos."""
@@ -293,7 +573,8 @@ class WorkerMorningstar(SourceIterateProducts):
 class WorkerSGWarrants(SourceParsePage):
     """Clase que recorre las inversiones activas y calcula según este la prioridad de la previsión"""
     def __init__(self, mem):
-        SourceParsePage.__init__(self, mem, 'select * from products where type=5;')
+        SourceParsePage.__init__(self, mem)
+        self.setName(self.tr("SG Warrants source"))
         
         
     def on_load_page(self):
@@ -341,8 +622,9 @@ class WorkerSGWarrants(SourceParsePage):
 
 class WorkerYahoo(SourceParsePage):
     """Clase que recorre las inversiones activas y calcula según este la prioridad de la previsión"""
-    def __init__(self, mem, sql):
-        SourceParsePage.__init__(self, mem, sql)
+    def __init__(self, mem):
+        SourceParsePage.__init__(self, mem)
+        self.setName(self.tr("Yahoo source"))
 
     def sum_tickers(self):
         s=""
@@ -389,13 +671,28 @@ class WorkerYahoo(SourceParsePage):
             except:#
                 self.log("Error parsing: {}".format(i[:-1]))
                 continue                
+                
+    def run(self):
+        self.agrupation=[]#used to iterate workers 
+        self.totals=Source(self.mem)# Used to show totals of agrupation
+        self.products=SetProducts(self.mem)#Total of products of an Agrupation
+        if self.class_sources==Sources.WorkerYahoo:
+            cur=self.mem.con.cursor()
+            cur.execute("select count(*) from products where priority[1]=1 and obsolete=false {}".format(self.strUserOnly(True)))
+            num=cur.fetchone()[0]
+            step=150
+            for i in range (0, int(num/step)+1):
+                self.worker=WorkerYahoo(self.mem, "select * from products where priority[1]=1 and obsolete=false {} order by name limit {} offset {};".format(self.strUserOnly(True), step, step*i))
+                self.agrupation.append(self.worker)
+            cur.close()           
 
 
 class WorkerYahooHistorical(SourceIterateProducts):
     """Clase que recorre las inversiones activas y busca la última  que tiene el microsecond 4. Busca en internet los historicals a partir de esa fecha"""
-    def __init__(self, mem, type, sql,  sleep=0):
-        SourceIterateProducts.__init__(self, mem,sql, type, sleep)
-        #SourceIterateProducts.__init__(self, mem,"select * from products where id in (79329,81105)", type, sleep)      
+    def __init__(self, mem, type,  sleep=0):
+        SourceIterateProducts.__init__(self, mem,type, sleep)
+        #SourceIterateProducts.__init__(self, mem,"select * from products where id in (79329,81105)", type, sleep)
+        self.setName(self.tr("Yahoo Historical source"))
         
     def on_execute_product(self,  id_product):
         """inico y fin son dos dates entre los que conseguir los datos."""
