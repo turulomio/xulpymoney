@@ -88,7 +88,7 @@
               <enum>QTabWidget::West</enum>
              </property>
              <property name="currentIndex">
-              <number>0</number>
+              <number>2</number>
              </property>
              <widget class="QWidget" name="tab_3">
               <attribute name="icon">
@@ -454,6 +454,151 @@
                      <string>Total</string>
                     </property>
                    </column>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+              </layout>
+             </widget>
+             <widget class="QWidget" name="tab_2">
+              <attribute name="icon">
+               <iconset resource="../images/xulpymoney.qrc">
+                <normaloff>:/xulpymoney/tools-wizard.png</normaloff>:/xulpymoney/tools-wizard.png</iconset>
+              </attribute>
+              <attribute name="title">
+               <string>Invest or work?</string>
+              </attribute>
+              <layout class="QHBoxLayout" name="horizontalLayout_7">
+               <item>
+                <layout class="QVBoxLayout" name="verticalLayout_5">
+                 <item>
+                  <widget class="myQTableWidget" name="tblInvestOrWork">
+                   <property name="contextMenuPolicy">
+                    <enum>Qt::CustomContextMenu</enum>
+                   </property>
+                   <property name="editTriggers">
+                    <set>QAbstractItemView::NoEditTriggers</set>
+                   </property>
+                   <property name="selectionMode">
+                    <enum>QAbstractItemView::SingleSelection</enum>
+                   </property>
+                   <property name="selectionBehavior">
+                    <enum>QAbstractItemView::SelectItems</enum>
+                   </property>
+                   <property name="sortingEnabled">
+                    <bool>false</bool>
+                   </property>
+                   <row>
+                    <property name="text">
+                     <string>Total Gains</string>
+                    </property>
+                   </row>
+                   <row>
+                    <property name="text">
+                     <string>Expenses</string>
+                    </property>
+                   </row>
+                   <row>
+                    <property name="text">
+                     <string/>
+                    </property>
+                   </row>
+                   <row>
+                    <property name="text">
+                     <string>Total Gains - Expenses</string>
+                    </property>
+                   </row>
+                   <row>
+                    <property name="text">
+                     <string/>
+                    </property>
+                   </row>
+                   <row>
+                    <property name="text">
+                     <string>Result</string>
+                    </property>
+                   </row>
+                   <column>
+                    <property name="text">
+                     <string>January</string>
+                    </property>
+                   </column>
+                   <column>
+                    <property name="text">
+                     <string>February</string>
+                    </property>
+                   </column>
+                   <column>
+                    <property name="text">
+                     <string>March</string>
+                    </property>
+                   </column>
+                   <column>
+                    <property name="text">
+                     <string>April</string>
+                    </property>
+                   </column>
+                   <column>
+                    <property name="text">
+                     <string>May</string>
+                    </property>
+                   </column>
+                   <column>
+                    <property name="text">
+                     <string>June</string>
+                    </property>
+                   </column>
+                   <column>
+                    <property name="text">
+                     <string>July</string>
+                    </property>
+                   </column>
+                   <column>
+                    <property name="text">
+                     <string>August</string>
+                    </property>
+                   </column>
+                   <column>
+                    <property name="text">
+                     <string>September</string>
+                    </property>
+                   </column>
+                   <column>
+                    <property name="text">
+                     <string>October</string>
+                    </property>
+                   </column>
+                   <column>
+                    <property name="text">
+                     <string>November</string>
+                    </property>
+                   </column>
+                   <column>
+                    <property name="text">
+                     <string>December</string>
+                    </property>
+                   </column>
+                   <column>
+                    <property name="text">
+                     <string>Total</string>
+                    </property>
+                   </column>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="lblInvestOrWork">
+                   <property name="font">
+                    <font>
+                     <weight>75</weight>
+                     <bold>true</bold>
+                    </font>
+                   </property>
+                   <property name="text">
+                    <string/>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
+                   </property>
                   </widget>
                  </item>
                 </layout>

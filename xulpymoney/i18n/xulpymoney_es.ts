@@ -135,27 +135,27 @@
     <message>
         <location filename="libodfgenerator.py" line="347"/>
         <source>Investments group by country</source>
-        <translation type="unfinished"></translation>
+        <translation>Inversiones agrupadas por país</translation>
     </message>
     <message>
         <location filename="libodfgenerator.py" line="355"/>
         <source>Investments group by Call/Put/Inline</source>
-        <translation type="unfinished"></translation>
+        <translation>Inversiones agrupadas por Call/Put/Inline</translation>
     </message>
     <message>
         <location filename="libodfgenerator.py" line="272"/>
         <source>Account</source>
-        <translation type="unfinished">Cuenta</translation>
+        <translation>Cuenta</translation>
     </message>
     <message>
         <location filename="libodfgenerator.py" line="307"/>
         <source> Assets average age: {}</source>
-        <translation type="unfinished"></translation>
+        <translation> Edad media del patrimonio: {}</translation>
     </message>
     <message>
         <location filename="libodfgenerator.py" line="305"/>
         <source>Sum of all invested assets is {}.</source>
-        <translation type="unfinished"></translation>
+        <translation>La suma de todo el patrimonio invertido es {}.</translation>
     </message>
     <message>
         <location filename="libodfgenerator.py" line="306"/>
@@ -165,12 +165,12 @@
     <message>
         <location filename="libodfgenerator.py" line="228"/>
         <source>Sum of all bank balances is {}</source>
-        <translation type="unfinished"></translation>
+        <translation>La suma de todos los saldos de los bancos es {}</translation>
     </message>
     <message>
         <location filename="libodfgenerator.py" line="274"/>
         <source>Sum of all account balances is {}</source>
-        <translation type="unfinished"></translation>
+        <translation>La suma de todos los saldos de las cuentas es {}</translation>
     </message>
     <message>
         <location filename="libodfgenerator.py" line="283"/>
@@ -180,42 +180,42 @@
     <message>
         <location filename="libodfgenerator.py" line="246"/>
         <source>Concept</source>
-        <translation type="unfinished">Concepto</translation>
+        <translation>Concepto</translation>
     </message>
     <message>
         <location filename="libodfgenerator.py" line="246"/>
         <source>January</source>
-        <translation type="unfinished">Enero</translation>
+        <translation>Enero</translation>
     </message>
     <message>
         <location filename="libodfgenerator.py" line="246"/>
         <source>February</source>
-        <translation type="unfinished">Febrero</translation>
+        <translation>Febrero</translation>
     </message>
     <message>
         <location filename="libodfgenerator.py" line="246"/>
         <source>March</source>
-        <translation type="unfinished">Marzo</translation>
+        <translation>Marzo</translation>
     </message>
     <message>
         <location filename="libodfgenerator.py" line="246"/>
         <source>April</source>
-        <translation type="unfinished">Abril</translation>
+        <translation>Abril</translation>
     </message>
     <message>
         <location filename="libodfgenerator.py" line="246"/>
         <source>May</source>
-        <translation type="unfinished">Mayo</translation>
+        <translation>Mayo</translation>
     </message>
     <message>
         <location filename="libodfgenerator.py" line="246"/>
         <source>June</source>
-        <translation type="unfinished">Junio</translation>
+        <translation>Junio</translation>
     </message>
     <message>
         <location filename="libodfgenerator.py" line="246"/>
         <source>July</source>
-        <translation type="unfinished">Julio</translation>
+        <translation>Julio</translation>
     </message>
     <message>
         <location filename="libodfgenerator.py" line="246"/>
@@ -225,82 +225,82 @@
     <message>
         <location filename="libodfgenerator.py" line="246"/>
         <source>September</source>
-        <translation type="unfinished">Septiembre</translation>
+        <translation>Septiembre</translation>
     </message>
     <message>
         <location filename="libodfgenerator.py" line="246"/>
         <source>October</source>
-        <translation type="unfinished">Octubre</translation>
+        <translation>Octubre</translation>
     </message>
     <message>
         <location filename="libodfgenerator.py" line="246"/>
         <source>November</source>
-        <translation type="unfinished">Noviembre</translation>
+        <translation>Noviembre</translation>
     </message>
     <message>
         <location filename="libodfgenerator.py" line="246"/>
         <source>December</source>
-        <translation type="unfinished">Diciembre</translation>
+        <translation>Diciembre</translation>
     </message>
     <message>
         <location filename="libodfgenerator.py" line="246"/>
         <source>Total</source>
-        <translation type="unfinished">Total</translation>
+        <translation>Total</translation>
     </message>
     <message>
         <location filename="libodfgenerator.py" line="236"/>
         <source>Incomes</source>
-        <translation type="unfinished">Ingresos</translation>
+        <translation>Ingresos</translation>
     </message>
     <message>
         <location filename="libodfgenerator.py" line="236"/>
         <source>Dividends</source>
-        <translation type="unfinished">Dividendos</translation>
+        <translation>Dividendos</translation>
     </message>
     <message>
         <location filename="libodfgenerator.py" line="236"/>
         <source>Expenses</source>
-        <translation type="unfinished">Gastos</translation>
+        <translation>Gastos</translation>
     </message>
     <message>
         <location filename="libodfgenerator.py" line="236"/>
         <source>I+G+D-E</source>
-        <translation type="unfinished">I+C+D-G</translation>
+        <translation>I+C+D-G</translation>
     </message>
     <message>
         <location filename="libodfgenerator.py" line="236"/>
         <source>Accounts</source>
-        <translation type="unfinished">Cuentas</translation>
+        <translation>Cuentas</translation>
     </message>
     <message>
         <location filename="libodfgenerator.py" line="236"/>
         <source>Investments</source>
-        <translation type="unfinished">Inversiones</translation>
+        <translation>Inversiones</translation>
     </message>
     <message>
         <location filename="libodfgenerator.py" line="236"/>
         <source>Monthly difference</source>
-        <translation type="unfinished">Diferencia mensual</translation>
+        <translation>Diferencia mensual</translation>
     </message>
     <message>
         <location filename="libodfgenerator.py" line="236"/>
         <source>% current year</source>
-        <translation type="unfinished"></translation>
+        <translation>% año actual</translation>
     </message>
     <message>
         <location filename="libodfgenerator.py" line="237"/>
         <source>Assets Balance at {0}-12-31 is {1}</source>
-        <translation type="unfinished"></translation>
+        <translation>El saldo del patrimonio el {}-12-31 es {1}</translation>
     </message>
     <message>
         <location filename="libodfgenerator.py" line="251"/>
         <source>The investment system has established a {} year target.</source>
-        <translation type="unfinished"></translation>
+        <translation>El sistema de inversión ha establecido un objetivo anual del {}</translation>
     </message>
     <message>
         <location filename="libodfgenerator.py" line="251"/>
         <source>With this target you will gain {} at the end of the year.</source>
-        <translation type="unfinished"></translation>
+        <translation>Con este objetivo ganará {} al final del año.</translation>
     </message>
     <message>
         <location filename="libodfgenerator.py" line="251"/>
@@ -974,7 +974,7 @@ Purgadas en total en el proceso global: {1}</translation>
     <message>
         <location filename="libsources.py" line="536"/>
         <source>Morningstar source</source>
-        <translation type="unfinished">Fuente de Morningstar</translation>
+        <translation>Fuente de Morningstar</translation>
     </message>
 </context>
 <context>
@@ -990,7 +990,7 @@ Purgadas en total en el proceso global: {1}</translation>
     <message>
         <location filename="libsources.py" line="628"/>
         <source>Yahoo source</source>
-        <translation type="unfinished">Fuente de Yahoo</translation>
+        <translation>Fuente de Yahoo</translation>
     </message>
 </context>
 <context>
@@ -5628,7 +5628,7 @@ S&#xc3;&#xb3;lo se contabilizar&#xc3;&#xa1; cuando se vendan las acciones</sourc
     <message>
         <location filename="ui/Ui_wdgQuotesUpdate.py" line="118"/>
         <source>Auxiliar tables</source>
-        <translation type="unfinished">Tablas auxiliares</translation>
+        <translation>Tablas auxiliares</translation>
     </message>
     <message>
         <location filename="ui/Ui_wdgQuotesUpdate.py" line="119"/>
@@ -5638,12 +5638,12 @@ S&#xc3;&#xb3;lo se contabilizar&#xc3;&#xa1; cuando se vendan las acciones</sourc
     <message>
         <location filename="ui/Ui_wdgQuotesUpdate.py" line="120"/>
         <source>Update only investments of the user</source>
-        <translation type="unfinished"></translation>
+        <translation>Actualizar sólo las inversiones del usuario</translation>
     </message>
     <message>
         <location filename="ui/Ui_wdgQuotesUpdate.py" line="121"/>
         <source>Intraday sources</source>
-        <translation type="unfinished"></translation>
+        <translation>Fuentes intradía</translation>
     </message>
     <message>
         <location filename="ui/Ui_wdgQuotesUpdate.py" line="122"/>
@@ -5782,254 +5782,304 @@ S&#xc3;&#xb3;lo se contabilizar&#xc3;&#xa1; cuando se vendan las acciones</sourc
 <context>
     <name>wdgTotal</name>
     <message>
-        <location filename="ui/Ui_wdgTotal.py" line="352"/>
+        <location filename="ui/Ui_wdgTotal.py" line="454"/>
         <source>Total</source>
         <translation>Total</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgTotal.py" line="263"/>
+        <location filename="ui/Ui_wdgTotal.py" line="329"/>
         <source>Total report</source>
         <translation>Informe total</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgTotal.py" line="354"/>
+        <location filename="ui/Ui_wdgTotal.py" line="456"/>
         <source>Data</source>
         <translation>Datos</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgTotal.py" line="355"/>
+        <location filename="ui/Ui_wdgTotal.py" line="457"/>
         <source>Chart</source>
         <translation>Gráfico</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgTotal.py" line="266"/>
+        <location filename="ui/Ui_wdgTotal.py" line="332"/>
         <source>Incomes</source>
         <translation>Ingresos</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgTotal.py" line="272"/>
+        <location filename="ui/Ui_wdgTotal.py" line="424"/>
         <source>Expenses</source>
         <translation>Gastos</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgTotal.py" line="276"/>
+        <location filename="ui/Ui_wdgTotal.py" line="342"/>
         <source>Accounts</source>
         <translation>Cuentas</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgTotal.py" line="278"/>
+        <location filename="ui/Ui_wdgTotal.py" line="344"/>
         <source>Investments</source>
         <translation>Inversiones</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgTotal.py" line="328"/>
+        <location filename="ui/Ui_wdgTotal.py" line="430"/>
         <source>January</source>
         <translation>Enero</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgTotal.py" line="332"/>
+        <location filename="ui/Ui_wdgTotal.py" line="434"/>
         <source>March</source>
         <translation>Marzo</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgTotal.py" line="334"/>
+        <location filename="ui/Ui_wdgTotal.py" line="436"/>
         <source>April</source>
         <translation>Abril</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgTotal.py" line="336"/>
+        <location filename="ui/Ui_wdgTotal.py" line="438"/>
         <source>May</source>
         <translation>Mayo</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgTotal.py" line="338"/>
+        <location filename="ui/Ui_wdgTotal.py" line="440"/>
         <source>June</source>
         <translation>Junio</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgTotal.py" line="340"/>
+        <location filename="ui/Ui_wdgTotal.py" line="442"/>
         <source>July</source>
         <translation>Julio</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgTotal.py" line="348"/>
+        <location filename="ui/Ui_wdgTotal.py" line="450"/>
         <source>November</source>
         <translation>Noviembre</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgTotal.py" line="350"/>
+        <location filename="ui/Ui_wdgTotal.py" line="452"/>
         <source>December</source>
         <translation>Diciembre</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgTotal.py" line="357"/>
+        <location filename="ui/Ui_wdgTotal.py" line="459"/>
         <source>Show income operations</source>
         <translation>Mostrar operaciones de ingresos</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgTotal.py" line="358"/>
+        <location filename="ui/Ui_wdgTotal.py" line="460"/>
         <source>Show expense operations</source>
         <translation>Mostrar operaciones de gastos</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgTotal.py" line="360"/>
+        <location filename="ui/Ui_wdgTotal.py" line="462"/>
         <source>Show dividends</source>
         <translation>Mostrar dividendos</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgTotal.py" line="362"/>
+        <location filename="ui/Ui_wdgTotal.py" line="464"/>
         <source>Show selling operations</source>
         <translation>Mostrar operaciones de venta</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgTotal.py" line="364"/>
+        <location filename="ui/Ui_wdgTotal.py" line="466"/>
         <source>Selling operations + Dividends report</source>
         <translation>Informe de operaciones de venta más dividendos</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgTotal.py" line="318"/>
+        <location filename="ui/Ui_wdgTotal.py" line="384"/>
         <source>Dividends</source>
         <translation>Dividendos</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgTotal.py" line="282"/>
+        <location filename="ui/Ui_wdgTotal.py" line="348"/>
         <source>Monthly difference</source>
         <translation>Diferencia mensual</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgTotal.py" line="284"/>
+        <location filename="ui/Ui_wdgTotal.py" line="350"/>
         <source>% Year to date</source>
         <translation>% año actual</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgTotal.py" line="330"/>
+        <location filename="ui/Ui_wdgTotal.py" line="432"/>
         <source>February</source>
         <translation>Febrero</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgTotal.py" line="342"/>
+        <location filename="ui/Ui_wdgTotal.py" line="444"/>
         <source>August</source>
         <translation>Agosto</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgTotal.py" line="344"/>
+        <location filename="ui/Ui_wdgTotal.py" line="446"/>
         <source>September</source>
         <translation>Septiembre</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgTotal.py" line="346"/>
+        <location filename="ui/Ui_wdgTotal.py" line="448"/>
         <source>October</source>
         <translation>Octubre</translation>
     </message>
     <message>
-        <location filename="ui/wdgTotal.py" line="299"/>
+        <location filename="ui/wdgTotal.py" line="303"/>
         <source>Data from selected year</source>
         <translation>Datos del año seleccionado</translation>
     </message>
     <message>
-        <location filename="ui/wdgTotal.py" line="320"/>
+        <location filename="ui/wdgTotal.py" line="325"/>
         <source>Balance at {0}-12-31: {1}</source>
         <translation>Saldo a {0}-12-31: {1}</translation>
     </message>
     <message>
-        <location filename="ui/wdgTotal.py" line="428"/>
+        <location filename="ui/wdgTotal.py" line="473"/>
         <source>Incomes of {0} of {1}</source>
         <translation>Ingresos de {0} de {1}</translation>
     </message>
     <message>
-        <location filename="ui/wdgTotal.py" line="444"/>
+        <location filename="ui/wdgTotal.py" line="489"/>
         <source>Product selling operations of {0} of {1}</source>
         <translation>Operaciones de venta del producto de {0} de {1}</translation>
     </message>
     <message>
-        <location filename="ui/wdgTotal.py" line="458"/>
+        <location filename="ui/wdgTotal.py" line="503"/>
         <source>Dividends of {0} of {1}</source>
         <translation>Dividendos de {0} de {1}</translation>
     </message>
     <message>
-        <location filename="ui/wdgTotal.py" line="473"/>
+        <location filename="ui/wdgTotal.py" line="518"/>
         <source>Expenses of {0} of {1}</source>
         <translation>Gastos de {0} de {1}</translation>
     </message>
     <message>
-        <location filename="ui/wdgTotal.py" line="491"/>
+        <location filename="ui/wdgTotal.py" line="536"/>
         <source>You can&apos;t close this tab</source>
         <translation>No puedes cerrar esta pestaña</translation>
     </message>
     <message>
-        <location filename="ui/wdgTotal.py" line="276"/>
+        <location filename="ui/wdgTotal.py" line="280"/>
         <source>Filling report data</source>
         <translation>Rellenando datos del informe</translation>
     </message>
     <message>
-        <location filename="ui/wdgTotal.py" line="276"/>
+        <location filename="ui/wdgTotal.py" line="280"/>
         <source>Cancel</source>
         <translation>Cancelar</translation>
     </message>
     <message>
-        <location filename="ui/wdgTotal.py" line="278"/>
+        <location filename="ui/wdgTotal.py" line="282"/>
         <source>Calculating data...</source>
         <translation>Calculando datos...</translation>
     </message>
     <message>
-        <location filename="ui/wdgTotal.py" line="481"/>
+        <location filename="ui/wdgTotal.py" line="526"/>
         <source>Gains and dividends sum from this month is {0}. In this year it&apos;s value rises to {1}</source>
         <translation>La suma de las ganancias y los dividendos de este mes es {0}. En este año su valor asciende a {1}</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgTotal.py" line="316"/>
+        <location filename="ui/Ui_wdgTotal.py" line="382"/>
         <source>Gains</source>
         <translation>Ganancias</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgTotal.py" line="274"/>
+        <location filename="ui/Ui_wdgTotal.py" line="340"/>
         <source>I+G+D-E</source>
         <translation>I+C+D-G</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgTotal.py" line="353"/>
+        <location filename="ui/Ui_wdgTotal.py" line="419"/>
         <source>Annual target return</source>
         <translation>Importe del objetivo anual</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgTotal.py" line="312"/>
+        <location filename="ui/Ui_wdgTotal.py" line="378"/>
         <source>Annual target percentage</source>
         <translation>Porcentaje del objetivo anual</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgTotal.py" line="313"/>
+        <location filename="ui/Ui_wdgTotal.py" line="379"/>
         <source> %</source>
         <translation> %</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgTotal.py" line="320"/>
+        <location filename="ui/Ui_wdgTotal.py" line="386"/>
         <source>G+D</source>
         <translation>P+D</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgTotal.py" line="322"/>
+        <location filename="ui/Ui_wdgTotal.py" line="388"/>
         <source>Monthly target</source>
         <translation>Objetivo mensual</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgTotal.py" line="324"/>
+        <location filename="ui/Ui_wdgTotal.py" line="390"/>
         <source>Accumulated G+D</source>
         <translation>P+D acumulado</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgTotal.py" line="326"/>
+        <location filename="ui/Ui_wdgTotal.py" line="392"/>
         <source>Accumulated target</source>
         <translation>Objetivo acumulado</translation>
     </message>
     <message>
-        <location filename="ui/wdgTotal.py" line="347"/>
+        <location filename="ui/wdgTotal.py" line="352"/>
         <source>Annual target percentage of total assests balance at {}-12-31 ( {} )</source>
         <translation>Porcentaje del objetivo anual del patrimonio en el día {}-12-31 ( {} )</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgTotal.py" line="311"/>
+        <location filename="ui/Ui_wdgTotal.py" line="377"/>
         <source>Data in the year</source>
         <translation>Datos en el año</translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_wdgTotal.py" line="455"/>
+        <source>Invest or work?</source>
+        <translation>¿Invertir o trabajar?</translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_wdgTotal.py" line="422"/>
+        <source>Total Gains</source>
+        <translation>Ganancias totales</translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_wdgTotal.py" line="426"/>
+        <source>Total Gains - Expenses</source>
+        <translation>Ganancias totales - Gastos</translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_wdgTotal.py" line="428"/>
+        <source>Result</source>
+        <translation>Resultado</translation>
+    </message>
+    <message>
+        <location filename="ui/wdgTotal.py" line="409"/>
+        <source>Investment taxes are not evaluated in this report</source>
+        <translation>No se evalúan los impuestos que el usuario debe pagar por sus inversiones</translation>
+    </message>
+    <message>
+        <location filename="ui/wdgTotal.py" line="407"/>
+        <source>Total gains are the result of adding dividends to gains</source>
+        <translation>Las ganancias totales son el resultado de sumar los dividendos y las ganancias</translation>
+    </message>
+    <message>
+        <location filename="ui/wdgTotal.py" line="408"/>
+        <source>Difference between total gains and expenses shows if user could cover his expenses with his total gains</source>
+        <translation>La diferencia de las ganancias totales y los gastos, muestra si el usuario puede cubrir sus gastos con las ganancias totales generadas</translation>
+    </message>
+    <message>
+        <location filename="ui/wdgTotal.py" line="406"/>
+        <source>This report shows if the user could retire due to its investments</source>
+        <translation>Este informe muestra si el usuario podría dejar de trabajar, dedicándose a invertir</translation>
+    </message>
+    <message>
+        <location filename="ui/wdgTotal.py" line="382"/>
+        <source>Work</source>
+        <translation>Trabajar</translation>
+    </message>
+    <message>
+        <location filename="ui/wdgTotal.py" line="385"/>
+        <source>Invest</source>
+        <translation>Invertir</translation>
     </message>
 </context>
 <context>

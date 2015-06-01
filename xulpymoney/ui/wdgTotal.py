@@ -197,6 +197,10 @@ class TotalYear:
             result=result+m.dividends()
         return result
         
+    def d_g(self):
+        """Dividends+gains"""
+        return self.gains()+self.dividends()
+        
     def difference_with_previous_month(self, totalmonth):
         """Calculates difference between totalmonth and the total with previous month"""
         if totalmonth.month==1:
@@ -307,6 +311,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         self.tab.setCurrentIndex(0)
         self.load_data()
         self.load_targets()
+        self.load_invest_or_work()
         self.wyData.changed.connect(self.on_wyData_mychanged)#Used my due to it took default on_wyData_changed
         self.wyChart.changed.connect(self.on_wyChart_mychanged)
 
@@ -364,7 +369,45 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         self.tblTargets.setItem(4, 12, self.mem.localcurrency.qtablewidgetitem(self.annualtarget.annual_balance()))
         self.tblTargets.setCurrentCell(2, datetime.date.today().month-1)   
         print ("wdgTargets > load_data_targets: {0}".format(datetime.datetime.now()  -inicio))
+    def load_invest_or_work(self):
+        def qresult(dg_e):
+            """Returns a qtablewidgetitem with work or invest
+            dg_e=dividends+gains-expenses
+            dg_i=dividends+gains-incomes
+            """
+            item=qcenter("")
+            if dg_e==0:
+                return item
+            if dg_e<0:
+                item.setText(self.tr("Work"))
+                item.setBackground(QColor(255, 148, 148))
+            else:
+                item.setText(self.tr("Invest"))
+                item.setBackground(QColor(148, 255, 148))
+            return item            
+        ##------------------------------------------------
+        print ("loading invest or work")
+        inicio=datetime.datetime.now()    
+        self.tblInvestOrWork.clearContents()
+        for i in range(1, 13): 
+            m=self.setData.find(self.setData.year, i)
+            self.tblInvestOrWork.setItem(0, i-1, self.mem.localcurrency.qtablewidgetitem(m.d_g()))
+            self.tblInvestOrWork.setItem(1, i-1, self.mem.localcurrency.qtablewidgetitem(m.expenses()))
+            self.tblInvestOrWork.setItem(3, i-1, self.mem.localcurrency.qtablewidgetitem(m.d_g()+m.expenses()))#Es mas porque es - y gastos -
+            self.tblInvestOrWork.setItem(5, i-1, qresult(m.d_g()+m.expenses()))
+        self.tblInvestOrWork.setItem(0, 12, self.mem.localcurrency.qtablewidgetitem(self.setData.d_g()))
+        self.tblInvestOrWork.setItem(1, 12, self.mem.localcurrency.qtablewidgetitem(self.setData.expenses()))
+        self.tblInvestOrWork.setItem(3, 12, self.mem.localcurrency.qtablewidgetitem(self.setData.d_g()+self.setData.expenses()))
+        self.tblInvestOrWork.setItem(5, 12, qresult(self.setData.d_g()+self.setData.expenses()))
+        self.tblInvestOrWork.setCurrentCell(2, datetime.date.today().month-1)   
         
+        s=""
+        s=s+self.tr("This report shows if the user could retire due to its investments") +"\n\n"
+        s=s+self.tr("Total gains are the result of adding dividends to gains")+"\n\n"
+        s=s+self.tr("Difference between total gains and expenses shows if user could cover his expenses with his total gains")+"\n\n"
+        s=s+self.tr("Investment taxes are not evaluated in this report")
+        self.lblInvestOrWork.setText(s)
+        print ("wdgTotal > load invest or work: {0}".format(datetime.datetime.now()  -inicio))
 
 
     def load_graphic(self, savefile=None):   
@@ -400,6 +443,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
     def on_wyData_mychanged(self):
         self.load_data()    
         self.load_targets()
+        self.load_invest_or_work()
 
     def on_wyChart_mychanged(self):
         self.load_graphic()      
@@ -485,7 +529,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
     
     def on_tab_tabCloseRequested(self, index):
         """Only removes dinamic tabs"""
-        if index in (0, 1, 2):
+        if index in (0, 1):
             m=QMessageBox()
             m.setIcon(QMessageBox.Information)
             m.setText(self.tr("You can't close this tab"))
