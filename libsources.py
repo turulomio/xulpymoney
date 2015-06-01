@@ -57,7 +57,7 @@ class SetSources(QObject):
         
     def checkFinished(self):
         if self.allFinished():
-            self.runner_finished.emit()
+            self.runs_finished.emit()
             
         
     def length(self):
@@ -68,7 +68,6 @@ class SetSources(QObject):
     
 
 class wdgSource(QWidget, Ui_wdgSource):
-    started=pyqtSignal()
     finished=pyqtSignal()
     def __init__(self, parent = None, name = None):
         QWidget.__init__(self,  parent)
@@ -85,84 +84,67 @@ class wdgSource(QWidget, Ui_wdgSource):
         self.mem=mem
         self.source=source
         self.grp.setTitle(self.source.name())
+        self.source.step_finished.connect(self.progress_step)
+        self.source.run_finished.connect(self.worker_run_finished)
                 
     def isFinished(self):
         if self.status==3:
             return True
         return False
             
-    def strUserOnly(self,  withindex=False):
-        """Returns a sql string if products must be filtered by user invesments"""
-        if self.chkUserOnly.isChecked():
-            if withindex==False:
-                return " and id in (select distinct(products_id) from inversiones) "
-            else:
-                return " and (id in (select distinct(products_id) from inversiones) or id in (select distinct (id) from products where type=3))"
-        return ""
-
-        
+       
     def prepare(self):
         """Not running yet, but preparing GUI"""
         self.status=1
         self.cmdRun.setEnabled(False)     
         self.chkUserOnly.setEnabled(False)
-        self.setSQL(self.chkUserOnly.isChecked())
+        self.source.setSQL(self.chkUserOnly.isChecked())
+        self.progress.setMaximum(self.source.steps())
 
     def setWidgetToUpdate(self, widget):
         """Used to update when runing, by default is parent parent"""
         self.widgettoupdate=widget
         
-    def progress_step(self,  last=False):
-        """Define max steps y value. 
-        If last=True puts the value to the max"""
-        if self.class_sources==Sources.WorkerYahoo:
-            self.progress.setMaximum(len(self.agrupation)*self.agrupation[0].steps())
-        elif self.class_sources==Sources.WorkerYahooHistorical:
-            self.progress.setMaximum(self.agrupation[0].steps())
-        elif self.class_sources==Sources.WorkerMercadoContinuo:      
-            self.progress.setMaximum(self.agrupation[0].steps())
-        elif self.class_sources==Sources.WorkerMorningstar:
-            self.progress.setMaximum(self.agrupation[0].steps())
-            
-        if last==True:
-            self.progress.setValue(self.progress.maximum())
-        else:
-            self.progress.setValue(self.progress.value()+1)
-        self.widgettoupdate.update()
+    def progress_step(self):
+        """Update progress bar"""
+        self.progress.setValue(self.source.step)
+#        print (self.widgettoupdate)
+        #self.widgettoupdate.update()
         QCoreApplication.processEvents() 
 
     def on_cmdRun_released(self):
         """Without multiprocess due to needs one independent connection per thread"""
+        if self.status==0:#Cmd directly in wdgSource
+            self.prepare()
         self.status=2
-        self.started.emit()
         self.source.run()
             
             
     def worker_run_finished(self):
-        for worker in self.agrupation:
-            if worker.finished==False:
-                return
+#        for worker in self.agrupation:
+#            if worker.finished==False:
+#                return
         #Si pasa es que todos han acab ado
-        for worker in self.agrupation:
-            self.products=self.products.union(worker.products, self.mem )
-            worker.inserted.addTo(self.totals.inserted)
-            worker.modified.addTo(self.totals.modified)
-            worker.ignored.addTo(self.totals.ignored)
-            worker.bad.addTo(self.totals.bad)
-            worker.quotes.addTo(self.totals.quotes)
-            self.totals.errors=worker.errors+self.totals.errors
-            QCoreApplication.processEvents()
-            self.update()
-            if worker.stopping==True:
-                self.progress_step(True)
-                break
+#        for worker in self.agrupation:
+#            self.products=self.products.union(worker.products, self.mem )
+#            worker.inserted.addTo(self.totals.inserted)
+#            worker.modified.addTo(self.totals.modified)
+#            worker.ignored.addTo(self.totals.ignored)
+#            worker.bad.addTo(self.totals.bad)
+#            worker.quotes.addTo(self.totals.quotes)
+#            self.totals.errors=worker.errors+self.totals.errors
+#            QCoreApplication.processEvents()
+#            self.update()
+#            if worker.stopping==True:
+#                self.progress_step(True)
+#                break
         
-        self.cmdInserted.setText(self.tr("{} Inserted").format(self.totals.inserted.length()))
-        self.cmdEdited.setText(self.tr("{} Edited").format(self.totals.modified.length()))
-        self.cmdIgnored.setText(self.tr("{} Ignored").format(self.totals.ignored.length()))
-        self.cmdErrors.setText(self.tr("{} errors parsing the source").format(len(self.totals.errors)))
-        self.cmdBad.setText(self.tr("{} bad").format(self.totals.bad.length()))
-        self.cmdSearched.setText(self.tr("{} products".format(self.products.length())))
+        self.cmdInserted.setText(self.tr("{} Inserted").format(self.source.inserted.length()))
+        self.cmdEdited.setText(self.tr("{} Edited").format(self.source.modified.length()))
+        self.cmdIgnored.setText(self.tr("{} Ignored").format(self.source.ignored.length()))
+        self.cmdErrors.setText(self.tr("{} errors parsing the source").format(len(self.source.errors)))
+        self.cmdBad.setText(self.tr("{} bad").format(self.source.bad.length()))
+        self.cmdSearched.setText(self.tr("{} products".format(self.source.products.length())))
         self.cmdInserted.setEnabled(True)
         self.cmdIgnored.setEnabled(True)
         self.cmdEdited.setEnabled(True)
@@ -184,7 +166,7 @@ class wdgSource(QWidget, Ui_wdgSource):
         d.showMaximized()
         d.setWindowTitle(self.tr("Inserted quotes"))
         t=myQTableWidget(d)
-        self.totals.inserted.myqtablewidget(t, "wdgSource")
+        self.source.inserted.myqtablewidget(t, "wdgSource")
         lay = QVBoxLayout(d)
         lay.addWidget(t)
         d.show()
@@ -194,7 +176,7 @@ class wdgSource(QWidget, Ui_wdgSource):
         d.showMaximized()
         d.setWindowTitle(self.tr("Edited quotes"))
         t=myQTableWidget(d)
-        self.totals.modified.myqtablewidget(t, "wdgSource")
+        self.source.modified.myqtablewidget(t, "wdgSource")
         lay = QVBoxLayout(d)
         lay.addWidget(t)
         d.show()
@@ -204,7 +186,7 @@ class wdgSource(QWidget, Ui_wdgSource):
         d.showMaximized()
         d.setWindowTitle(self.tr("Ignored quotes"))
         t=myQTableWidget(d)
-        self.totals.ignored.myqtablewidget(t, "wdgSource")
+        self.source.ignored.myqtablewidget(t, "wdgSource")
         lay = QVBoxLayout(d)
         lay.addWidget(t)
         d.show()
@@ -214,7 +196,7 @@ class wdgSource(QWidget, Ui_wdgSource):
         d.showMaximized()
         d.setWindowTitle(self.tr("Error procesing the source"))
         terrors=myQTableWidget(d)
-        self.totals.myqtablewidget_errors(terrors, "wdgSource")
+        self.source.myqtablewidget_errors(terrors, "wdgSource")
         lay = QVBoxLayout(d)
         lay.addWidget(terrors)
         d.show()
@@ -224,7 +206,7 @@ class wdgSource(QWidget, Ui_wdgSource):
         d.showMaximized()
         d.setWindowTitle(self.tr("Error procesing the source"))
         t=myQTableWidget(d)
-        self.totals.bad.myqtablewidget(t, "wdgSource")
+        self.source.bad.myqtablewidget(t, "wdgSource")
         lay = QVBoxLayout(d)
         lay.addWidget(t)
         d.show()
@@ -234,7 +216,7 @@ class wdgSource(QWidget, Ui_wdgSource):
         d.showMaximized()
         d.setWindowTitle(self.tr("Error procesing the source"))
         t=myQTableWidget(d)
-        self.products.myqtablewidget(t, "wdgSource")
+        self.source.products.myqtablewidget(t, "wdgSource")
         lay = QVBoxLayout(d)
         lay.addWidget(t)
         d.show()
@@ -324,9 +306,13 @@ class Source(QObject):
         cadena=cadena.replace(',','.')#Cambia coma por punto
         return cadena        
         
+        
+    def setSQL(self, useronly):
+        print ("This function must be overrided in Worker")
+        
     def steps(self):
         """Define  the number of steps of the source run"""
-        pass
+        print ("This function must be overrided in Worker")
 
         
 class SourceParsePage(Source):
@@ -479,7 +465,7 @@ class WorkerMercadoContinuo(SourceParsePage):
 
     def steps(self):
         """Define  the number of steps of the source run"""
-        return 4
+        return 4 #CORRECT
 
     def run(self):
         self.products.load_from_db(self.sql)     
@@ -546,6 +532,9 @@ class WorkerMorningstar(SourceIterateProducts):
         else:
             self.sql="select * from products where priorityhistorical[1]=8 and obsolete=false order by name;"
 
+    def steps(self):
+        """Define  the number of steps of the source run"""
+        return 4 #CORRECT
 class WorkerSGWarrants(SourceParsePage):
     """Clase que recorre las inversiones activas y calcula según este la prioridad de la previsión"""
     def __init__(self, mem):
@@ -603,15 +592,18 @@ class WorkerSGWarrants(SourceParsePage):
         else:
             self.sql="MALselect * from products where 9=any(priority) and obsolete=false order by name".format(self.strUserOnly())
 
+    def steps(self):
+        """Define  the number of steps of the source run"""
+        return 4 #CORRECT
 class WorkerYahoo(SourceParsePage):
     """Clase que recorre las inversiones activas y calcula según este la prioridad de la previsión"""
     def __init__(self, mem):
         SourceParsePage.__init__(self, mem)
         self.setName(self.tr("Yahoo source"))
 
-    def sum_tickers(self):
+    def sum_tickers(self, setproducts):
         s=""
-        for p in self.products.arr:
+        for p in setproducts.arr:
             if p.ticker==None:
                 continue
             if p.ticker=="":
@@ -622,17 +614,19 @@ class WorkerYahoo(SourceParsePage):
     def setSQL(self, useronly):
         self.userinvestmentsonly=useronly
         if self.userinvestmentsonly==True:
-            self.sql="select * from products where priority[1]=1 and obsolete=false and id in (select distinct(products_id) from inversiones) order by name".format(self.strUserOnly())
+            self.sql="select * from products where priority[1]=1 and obsolete=false and id in (select distinct(products_id) from inversiones) order by name"
         else:
-            self.sql="select * from products where priority[1]=1 and obsolete=false order by name".format(self.strUserOnly())
+            self.sql="select * from products where priority[1]=1 and obsolete=false order by name"
 
-    def on_load_page(self):
+    def my_load_page(self, setproducts):
         "Overrides SourceParsePage"
-        self.url='http://download.finance.yahoo.com/d/quotes.csv?s=' + self.sum_tickers() + '&f=sl1d1t1&e=.csv'
-        SourceParsePage.on_load_page(self)
+        self.url='http://download.finance.yahoo.com/d/quotes.csv?s=' + self.sum_tickers(setproducts) + '&f=sl1d1t1&e=.csv'
+
+        self.web=self.load_page(self.url)
+        if self.web==None:
+            return
         
-        
-    def on_parse_page(self):
+    def my_parse_page(self):
         "Overrides SourceParsePage"
         for i in self.web.readlines():
             try:
@@ -663,18 +657,43 @@ class WorkerYahoo(SourceParsePage):
                 continue                
                 
     def run(self):
-        self.agrupation=[]#used to iterate workers 
+        """OVerrides ParsePage"""
+        self.agrupation=[]#used to iterate sets de products 
         self.totals=Source(self.mem)# Used to show totals of agrupation
         self.products=SetProducts(self.mem)#Total of products of an Agrupation
-        cur=self.mem.con.cursor()
-        cur.execute("select count(*) from products where priority[1]=1 and obsolete=false {}".format(self.strUserOnly(True)))
-        num=cur.fetchone()[0]
-        step=150
-        for i in range (0, int(num/step)+1):
-            self.worker=WorkerYahoo(self.mem, "select * from products where priority[1]=1 and obsolete=false {} order by name limit {} offset {};".format(self.strUserOnly(True), step, step*i))
-            self.agrupation.append(self.worker)
-        cur.close()           
+        self.products.load_from_db(self.sql)    
+        items=150
+        
+        print (self.products.length())
+        
+        print ("blocks", int(self.products.length()/items)+1 )
+        
+        for i in range(int(self.products.length()/items)+1) :#Creo tantos SetProducts como bloques de 150
+            self.agrupation.append(SetProducts(self.mem))
+            
+        for i, p in enumerate(self.products.arr):
+            self.agrupation[int(i/items)].append(p)#Añado en array que correspoonda el p
+            
+        for setproduct in self.agrupation:  
+            print ("setproduct length",  setproduct.length())
+            self.my_load_page(setproduct)
+            self.next_step()
+            self.my_parse_page()
+            self.next_step()
+            
+        self.quotes_save()
+        self.mem.con.commit()
+        self.next_step()
+            
+        self.finished=True
+        self.run_finished.emit()
+        self.next_step()
 
+
+
+    def steps(self):
+        """Define  the number of steps of the source run"""
+        return 4 #CORRECT
 
 class WorkerYahooHistorical(SourceIterateProducts):
     """Clase que recorre las inversiones activas y busca la última  que tiene el microsecond 4. Busca en internet los historicals a partir de esa fecha"""
@@ -724,3 +743,7 @@ class WorkerYahooHistorical(SourceIterateProducts):
         else:
             self.sql="select * from products where priorityhistorical[1]=3 and obsolete=false order by name"
 
+
+    def steps(self):
+        """Define  the number of steps of the source run"""
+        return 4 #CORRECT

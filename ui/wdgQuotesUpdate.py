@@ -16,9 +16,6 @@ class wdgQuotesUpdate(QWidget, Ui_wdgQuotesUpdate):
         self.sources.append(WorkerMercadoContinuo,self.wmc)
         self.sources.append(WorkerMorningstar, self.wmorningstar)
         self.sources.runs_finished.connect(self.runners_finished)
-#        
-#        for s in self.sources.arr:#Conects after finishing a wdgSource
-#            s.ui.finished.connect(self.after_source_stop)
         
         self.on_chkUserOnly_stateChanged(self.chkUserOnly.checkState())
     
@@ -47,6 +44,7 @@ class wdgQuotesUpdate(QWidget, Ui_wdgQuotesUpdate):
                 s.ui.on_cmdRun_released()
         
     def runners_finished(self):
+        print ("wdgQuotesUpdate runners finished")
         self.mem.frmMain.actionsEnabled(True)
         self.mem.data.reload_prices()
         QCoreApplication.processEvents()       
