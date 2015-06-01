@@ -88,7 +88,7 @@
               <enum>QTabWidget::West</enum>
              </property>
              <property name="currentIndex">
-              <number>2</number>
+              <number>0</number>
              </property>
              <widget class="QWidget" name="tab_3">
               <attribute name="icon">
@@ -351,42 +351,27 @@
                    </property>
                    <row>
                     <property name="text">
-                     <string>Gains</string>
-                    </property>
-                   </row>
-                   <row>
-                    <property name="text">
-                     <string>Dividends</string>
-                    </property>
-                   </row>
-                   <row>
-                    <property name="text">
-                     <string/>
-                    </property>
-                   </row>
-                   <row>
-                    <property name="text">
-                     <string>G+D</string>
-                    </property>
-                   </row>
-                   <row>
-                    <property name="text">
                      <string>Monthly target</string>
                     </property>
                    </row>
                    <row>
                     <property name="text">
+                     <string>Total Gains</string>
+                    </property>
+                   </row>
+                   <row>
+                    <property name="text">
                      <string/>
                     </property>
                    </row>
                    <row>
                     <property name="text">
-                     <string>Accumulated G+D</string>
+                     <string>Accumulated target</string>
                     </property>
                    </row>
                    <row>
                     <property name="text">
-                     <string>Accumulated target</string>
+                     <string>Accumulated total gains</string>
                     </property>
                    </row>
                    <column>
@@ -454,6 +439,19 @@
                      <string>Total</string>
                     </property>
                    </column>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="lblTargets">
+                   <property name="font">
+                    <font>
+                     <weight>75</weight>
+                     <bold>true</bold>
+                    </font>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
+                   </property>
                   </widget>
                  </item>
                 </layout>
