@@ -46,7 +46,7 @@
      <x>0</x>
      <y>0</y>
      <width>1186</width>
-     <height>25</height>
+     <height>23</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuAyuda">
@@ -296,7 +296,7 @@
     <string>About</string>
    </property>
    <property name="shortcut">
-    <string>F10</string>
+    <string>F2</string>
    </property>
   </action>
   <action name="actionIndexRange">
@@ -366,6 +366,9 @@
    </property>
    <property name="toolTip">
     <string>Total report</string>
+   </property>
+   <property name="shortcut">
+    <string>F10</string>
    </property>
   </action>
   <action name="actionJointReport">

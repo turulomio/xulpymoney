@@ -23,12 +23,6 @@ class wdgQuotesUpdate(QWidget, Ui_wdgQuotesUpdate):
         self.on_chkUserOnly_stateChanged(self.chkUserOnly.checkState())
     
 
-        
-    def setSQL(self):
-        self.wyahoohistorical.source.setSQL( "select * from products where priorityhistorical[1]=3 and obsolete=false {} order by name".format(self.wyahoohistorical.strUserOnly(True)))
-        self.wyahoo.append("select * from products where priority[1]=1 and obsolete=false {}".format(self.yahoo.strUserOnly(True)))
-        self.wmc.append("select * from products where 9=any(priority) and obsolete=false {} order by name".format(self.wmc.strUserOnly()))
-        self.wmorningstar.append("select * from products where priorityhistorical[1]=8 and obsolete=false {} order by name;".format(self.wmorningstar.strUserOnly()))
 
     def running_sources_run(self):
         """Used to set unenabled fine"""

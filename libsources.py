@@ -106,7 +106,7 @@ class wdgSource(QWidget, Ui_wdgSource):
         self.status=1
         self.cmdRun.setEnabled(False)     
         self.chkUserOnly.setEnabled(False)
-
+        self.setSQL(self.chkUserOnly.isChecked())
 
     def setWidgetToUpdate(self, widget):
         """Used to update when runing, by default is parent parent"""
@@ -133,42 +133,9 @@ class wdgSource(QWidget, Ui_wdgSource):
 
     def on_cmdRun_released(self):
         """Without multiprocess due to needs one independent connection per thread"""
-
-#        self.agrupation=[]#used to iterate workers 
-#        self.totals=Source(self.mem)# Used to show totals of agrupation
-#        self.products=SetProducts(self.mem)#Total of products of an Agrupation
-#        if self.class_sources==Sources.WorkerYahoo:
-#            cur=self.mem.con.cursor()
-#            cur.execute("select count(*) from products where priority[1]=1 and obsolete=false {}".format(self.strUserOnly(True)))
-#            num=cur.fetchone()[0]
-#            step=150
-#            for i in range (0, int(num/step)+1):
-#                self.worker=WorkerYahoo(self.mem, "select * from products where priority[1]=1 and obsolete=false {} order by name limit {} offset {};".format(self.strUserOnly(True), step, step*i))
-#                self.agrupation.append(self.worker)
-#            cur.close()           
-#        elif self.class_sources==Sources.WorkerYahooHistorical:
-#            self.worker=WorkerYahooHistorical(self.mem, 0, "select * from products where priorityhistorical[1]=3 and obsolete=false {} order by name".format(self.strUserOnly(True)))
-#            self.agrupation.append(self.worker)
-#        elif self.class_sources==Sources.WorkerMercadoContinuo:                
-#            self.worker=WorkerMercadoContinuo(self.mem, "select * from products where 9=any(priority) and obsolete=false {} order by name".format(self.strUserOnly()))
-#            self.agrupation.append(self.worker)
-#        elif self.class_sources==Sources.WorkerMorningstar:
-#            self.worker=WorkerMorningstar(self.mem, 0,  "select * from products where priorityhistorical[1]=8 and obsolete=false {} order by name;".format(self.strUserOnly()))
-#            self.agrupation.append(self.worker)
-##        self.currentWorker=self.agrupation[0]# Current worker working
-
-#        #Make connections
-#        for worker in self.agrupation:
-#            worker.step_finished.connect(self.progress_step)
-#            worker.run_finished.connect(self.worker_run_finished)
-        
-        #Starts
         self.status=2
         self.started.emit()
         self.source.run()
-#        for worker in self.agrupation:
-#            self.currentWorker=worker
-#            worker.run()
             
             
     def worker_run_finished(self):
@@ -298,9 +265,6 @@ class Source(QObject):
         self.ui=None#This must be linked to a wdgSource with setWdgSource
         self.agrupation=[]#Used if it must bu run several times due to large amounts (Yahoo)
         self.sql=None
-        
-    def setSQL(self, sql):
-        """Establish sql"""
         
     def setWdgSource(self, widget):
         self.ui=widget
@@ -523,7 +487,13 @@ class WorkerMercadoContinuo(SourceParsePage):
         self.webView.load(QUrl("http://www.bolsamadrid.es/esp/aspx/Mercados/Precios.aspx?mercado=MC"))            
 
         
-        
+    def setSQL(self, useronly):
+        self.userinvestmentsonly=useronly
+        if self.userinvestmentsonly==True:
+            self.sql="select * from products where 9=any(priority) and obsolete=false and id in (select distinct(products_id) from inversiones) order by name"
+        else:
+            self.sql="select * from products where 9=any(priority) and obsolete=false order by name"
+
     def on_parse_page(self):
         pass
 
@@ -568,7 +538,13 @@ class WorkerMorningstar(SourceIterateProducts):
                         self.quotes.append(Quote(self.mem).init__create(product, dat, value))
                         return
         self.log("Error parsing: {}".format(product.name))
-            
+        
+    def setSQL(self, useronly):
+        self.userinvestmentsonly=useronly
+        if self.userinvestmentsonly==True:
+            self.sql="select * from products where priorityhistorical[1]=8 and obsolete=false and id in (select distinct(products_id) from inversiones) order by name;"
+        else:
+            self.sql="select * from products where priorityhistorical[1]=8 and obsolete=false order by name;"
 
 class WorkerSGWarrants(SourceParsePage):
     """Clase que recorre las inversiones activas y calcula según este la prioridad de la previsión"""
@@ -619,6 +595,13 @@ class WorkerSGWarrants(SourceParsePage):
             except:#
                 self.log("Error parsing: {}".format(i[:-1]))
                 continue
+        
+    def setSQL(self, useronly):
+        self.userinvestmentsonly=useronly
+        if self.userinvestmentsonly==True:
+            self.sql="MALselect * from products where 9=any(priority) and obsolete=false and id in (select distinct(products_id) from inversiones) order by name".format(self.strUserOnly())
+        else:
+            self.sql="MALselect * from products where 9=any(priority) and obsolete=false order by name".format(self.strUserOnly())
 
 class WorkerYahoo(SourceParsePage):
     """Clase que recorre las inversiones activas y calcula según este la prioridad de la previsión"""
@@ -635,7 +618,14 @@ class WorkerYahoo(SourceParsePage):
                 continue
             s=s+p.ticker+"+"
         return s[:-1]
-        
+                
+    def setSQL(self, useronly):
+        self.userinvestmentsonly=useronly
+        if self.userinvestmentsonly==True:
+            self.sql="select * from products where priority[1]=1 and obsolete=false and id in (select distinct(products_id) from inversiones) order by name".format(self.strUserOnly())
+        else:
+            self.sql="select * from products where priority[1]=1 and obsolete=false order by name".format(self.strUserOnly())
+
     def on_load_page(self):
         "Overrides SourceParsePage"
         self.url='http://download.finance.yahoo.com/d/quotes.csv?s=' + self.sum_tickers() + '&f=sl1d1t1&e=.csv'
@@ -676,15 +666,14 @@ class WorkerYahoo(SourceParsePage):
         self.agrupation=[]#used to iterate workers 
         self.totals=Source(self.mem)# Used to show totals of agrupation
         self.products=SetProducts(self.mem)#Total of products of an Agrupation
-        if self.class_sources==Sources.WorkerYahoo:
-            cur=self.mem.con.cursor()
-            cur.execute("select count(*) from products where priority[1]=1 and obsolete=false {}".format(self.strUserOnly(True)))
-            num=cur.fetchone()[0]
-            step=150
-            for i in range (0, int(num/step)+1):
-                self.worker=WorkerYahoo(self.mem, "select * from products where priority[1]=1 and obsolete=false {} order by name limit {} offset {};".format(self.strUserOnly(True), step, step*i))
-                self.agrupation.append(self.worker)
-            cur.close()           
+        cur=self.mem.con.cursor()
+        cur.execute("select count(*) from products where priority[1]=1 and obsolete=false {}".format(self.strUserOnly(True)))
+        num=cur.fetchone()[0]
+        step=150
+        for i in range (0, int(num/step)+1):
+            self.worker=WorkerYahoo(self.mem, "select * from products where priority[1]=1 and obsolete=false {} order by name limit {} offset {};".format(self.strUserOnly(True), step, step*i))
+            self.agrupation.append(self.worker)
+        cur.close()           
 
 
 class WorkerYahooHistorical(SourceIterateProducts):
@@ -727,4 +716,11 @@ class WorkerYahooHistorical(SourceIterateProducts):
             self.quotes.append(Quote(self.mem).init__create(product,datetimelow, Decimal(datos[3])))#low
             self.quotes.append(Quote(self.mem).init__create(product,datetimehigh, Decimal(datos[2])))#high
             self.quotes.append(Quote(self.mem).init__create(product, datetimefirst, Decimal(datos[1])))#open
+        
+    def setSQL(self, useronly):
+        self.userinvestmentsonly=useronly
+        if self.userinvestmentsonly==True:
+            self.sql="select * from products where priorityhistorical[1]=3 and obsolete=false and id in (select distinct(products_id) from inversiones) order by name"
+        else:
+            self.sql="select * from products where priorityhistorical[1]=3 and obsolete=false order by name"
 

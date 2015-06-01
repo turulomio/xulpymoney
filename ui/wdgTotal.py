@@ -357,17 +357,21 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         for i in range(1, 13): 
             m=self.setData.find(self.setData.year, i)
             sumd_g=sumd_g+m.d_g()
-            self.tblTargets.setItem(0, i-1, self.mem.localcurrency.qtablewidgetitem(m.gains()))
-            self.tblTargets.setItem(1, i-1, self.mem.localcurrency.qtablewidgetitem(m.dividends()))
-            self.tblTargets.setItem(3, i-1, self.annualtarget.qtablewidgetitem_monthly(m.d_g()))
-            self.tblTargets.setItem(4, i-1, self.mem.localcurrency.qtablewidgetitem(self.annualtarget.monthly_balance()))
-            self.tblTargets.setItem(6, i-1, self.annualtarget.qtablewidgetitem_accumulated(sumd_g, i))
-            self.tblTargets.setItem(7, i-1, self.mem.localcurrency.qtablewidgetitem(self.annualtarget.monthly_balance()*i))
-        self.tblTargets.setItem(0, 12, self.mem.localcurrency.qtablewidgetitem(self.setData.gains()))
-        self.tblTargets.setItem(1, 12, self.mem.localcurrency.qtablewidgetitem(self.setData.dividends()))
-        self.tblTargets.setItem(3, 12, self.annualtarget.qtablewidgetitem_annual(sumd_g))
-        self.tblTargets.setItem(4, 12, self.mem.localcurrency.qtablewidgetitem(self.annualtarget.annual_balance()))
+            self.tblTargets.setItem(0, i-1, self.mem.localcurrency.qtablewidgetitem(self.annualtarget.monthly_balance()))
+            self.tblTargets.setItem(1, i-1, self.annualtarget.qtablewidgetitem_monthly(m.d_g()))
+            self.tblTargets.setItem(3, i-1, self.mem.localcurrency.qtablewidgetitem(self.annualtarget.monthly_balance()*i))
+            self.tblTargets.setItem(4, i-1, self.annualtarget.qtablewidgetitem_accumulated(sumd_g, i))
+        self.tblTargets.setItem(0, 12, self.mem.localcurrency.qtablewidgetitem(self.annualtarget.annual_balance()))
+        self.tblTargets.setItem(1, 12, self.annualtarget.qtablewidgetitem_annual(sumd_g))
         self.tblTargets.setCurrentCell(2, datetime.date.today().month-1)   
+                
+        s=""
+        s=s+self.tr("This report shows if the user reaches the annual and monthly target.") +"\n\n"
+        s=s+self.tr("Total gains are the result of adding dividends to gains")+"\n\n"
+        s=s+self.tr("The cumulative target row shows compliance of the target in the year.")+"\n\n"
+        s=s+self.tr("Green color shows that target has been reached.")
+        self.lblTargets.setText(s)
+        
         print ("wdgTargets > load_data_targets: {0}".format(datetime.datetime.now()  -inicio))
     def load_invest_or_work(self):
         def qresult(dg_e):
