@@ -42,7 +42,6 @@ class SetSources(QObject):
             s=WorkerMorningstar(self, 0)
         self.arr.append(s)
         s.setWdgSource(wdgSource) #Links source with wdg
-        wdgSource.setSource(self.mem, s) #Links wdg with source
 
         
     def append_runners(self, s):
@@ -235,6 +234,7 @@ class Source(QObject):
         
     def setWdgSource(self, widget):
         self.ui=widget
+        widget.setSource(self.mem, self) #Links wdg with source
         
     def setName(self, name):
         self._name=name
