@@ -25,7 +25,7 @@ class wdgQuotesUpdate(QWidget, Ui_wdgQuotesUpdate):
         """Used to set unenabled fine"""
         for s in self.sources.runners:
             if s.ui.status==0:
-                s.prepare()
+                s.ui.prepare()
             
         self.mem.frmMain.actionsEnabled(False)
         #Disables  button when wdgSources cmdRun are disabled
@@ -46,6 +46,7 @@ class wdgQuotesUpdate(QWidget, Ui_wdgQuotesUpdate):
     def runners_finished(self):
         print ("wdgQuotesUpdate runners finished")
         self.mem.frmMain.actionsEnabled(True)
+        print ("wdgQuotesUpdate reloading prices")
         self.mem.data.reload_prices()
         QCoreApplication.processEvents()       
         self.sources.runners=[]
