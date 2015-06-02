@@ -9,6 +9,12 @@ from Ui_wdgSource import *
 #from libsources import *
 from myqtablewidget import *
 
+class SourceStatus:
+    Loaded=0 #Means Source object has been ccreated
+    Prepared=1 # Has been comunicated sql and prepared ui, if there
+    Running=2 #Fetching page and processing
+    Finished=3 # Finished
+
 class Sources:
     WorkerYahoo=1
     WorkerYahooHistorical=2
@@ -37,7 +43,6 @@ class SetSources(QObject):
         self.arr.append(s)
         s.setWdgSource(wdgSource) #Links source with wdg
         wdgSource.setSource(self.mem, s) #Links wdg with source
-        s.run_finished.connect(self.checkFinished)
 
         
     def append_runners(self, s):
@@ -51,7 +56,7 @@ class SetSources(QObject):
 
     def allFinished(self):
         for s in self.runners:
-            if s.finished==False:
+            if s.getStatus()!=SourceStatus.Finished:
                 return False
         return True
         
@@ -68,15 +73,12 @@ class SetSources(QObject):
     
 
 class wdgSource(QWidget, Ui_wdgSource):
-    finished=pyqtSignal()
     def __init__(self, parent = None, name = None):
         QWidget.__init__(self,  parent)
         self.setupUi(self)
         self.mem=None
         self.source=None
         self.parent=parent
-        self.status=0# O Sin empezar, 1 Prepared, only needs to cmdRun, 2 Started, 3 Finished
-        self.steps=None#Define the steps of the self.progress bar
         self.widgettoupdate=self.parent.parent
         
         
@@ -84,78 +86,49 @@ class wdgSource(QWidget, Ui_wdgSource):
         self.mem=mem
         self.source=source
         self.grp.setTitle(self.source.name())
-        self.source.step_finished.connect(self.progress_step)
-        self.source.run_finished.connect(self.worker_run_finished)
-                
-    def isFinished(self):
-        if self.status==3:
-            return True
-        return False
-            
-       
-    def prepare(self):
+        self.source.stepFinished.connect(self.on_stepFinished)
+        self.source.statusChanged.connect(self.on_statusChanged)
+
+    def on_statusChanged(self, status):
         """Not running yet, but preparing GUI"""
-        self.status=1
-        self.cmdRun.setEnabled(False)     
-        self.chkUserOnly.setEnabled(False)
-        self.source.setSQL(self.chkUserOnly.isChecked())
-        self.progress.setMaximum(self.source.steps())
+        
+        print("wdgSource statusChanged", status)
+        if status==SourceStatus.Prepared:
+            self.cmdRun.setEnabled(False)     
+            self.chkUserOnly.setEnabled(False)
+            self.progress.setMaximum(self.source.steps())
+        elif status==SourceStatus.Running:
+            pass
+        elif status==SourceStatus.Finished:
+            self.cmdInserted.setText(self.tr("{} Inserted").format(self.source.inserted.length()))
+            self.cmdEdited.setText(self.tr("{} Edited").format(self.source.modified.length()))
+            self.cmdIgnored.setText(self.tr("{} Ignored").format(self.source.ignored.length()))
+            self.cmdErrors.setText(self.tr("{} errors parsing the source").format(len(self.source.errors)))
+            self.cmdBad.setText(self.tr("{} bad").format(self.source.bad.length()))
+            self.cmdSearched.setText(self.tr("{} products".format(self.source.products.length())))
+            self.cmdInserted.setEnabled(True)
+            self.cmdIgnored.setEnabled(True)
+            self.cmdEdited.setEnabled(True)
+            self.cmdErrors.setEnabled(True)
+            self.cmdBad.setEnabled(True)       
+            self.cmdSearched.setEnabled(True)
+            self.cmdCancel.setEnabled(False)
 
     def setWidgetToUpdate(self, widget):
         """Used to update when runing, by default is parent parent"""
         self.widgettoupdate=widget
         
-    def progress_step(self):
+    def on_stepFinished(self):
         """Update progress bar"""
         self.progress.setValue(self.source.step)
-#        print (self.widgettoupdate)
-        #self.widgettoupdate.update()
         QCoreApplication.processEvents() 
 
     def on_cmdRun_released(self):
         """Without multiprocess due to needs one independent connection per thread"""
-        if self.status==0:#Cmd directly in wdgSource
-            self.prepare()
-        self.status=2
+        if self.source.getStatus()==SourceStatus.Loaded:#Cmd directly in wdgSource
+            self.source.setSQL(self.chkUserOnly.isChecked())
         self.source.run()
-            
-            
-    def worker_run_finished(self):
-#        for worker in self.agrupation:
-#            if worker.finished==False:
-#                return
-        #Si pasa es que todos han acab ado
-#        for worker in self.agrupation:
-#            self.products=self.products.union(worker.products, self.mem )
-#            worker.inserted.addTo(self.totals.inserted)
-#            worker.modified.addTo(self.totals.modified)
-#            worker.ignored.addTo(self.totals.ignored)
-#            worker.bad.addTo(self.totals.bad)
-#            worker.quotes.addTo(self.totals.quotes)
-#            self.totals.errors=worker.errors+self.totals.errors
-#            QCoreApplication.processEvents()
-#            self.update()
-#            if worker.stopping==True:
-#                self.progress_step(True)
-#                break
-        
-        self.cmdInserted.setText(self.tr("{} Inserted").format(self.source.inserted.length()))
-        self.cmdEdited.setText(self.tr("{} Edited").format(self.source.modified.length()))
-        self.cmdIgnored.setText(self.tr("{} Ignored").format(self.source.ignored.length()))
-        self.cmdErrors.setText(self.tr("{} errors parsing the source").format(len(self.source.errors)))
-        self.cmdBad.setText(self.tr("{} bad").format(self.source.bad.length()))
-        self.cmdSearched.setText(self.tr("{} products".format(self.source.products.length())))
-        self.cmdInserted.setEnabled(True)
-        self.cmdIgnored.setEnabled(True)
-        self.cmdEdited.setEnabled(True)
-        self.cmdErrors.setEnabled(True)
-        self.cmdBad.setEnabled(True)       
-        self.cmdSearched.setEnabled(True)
-        self.cmdCancel.setEnabled(False)
-        self.status=3
-        self.finished.emit()
-        
-        
+
     def on_cmdCancel_released(self):
         self.cmdCancel.setEnabled(False)
         self.currentWorker.stopping=True
@@ -229,7 +202,9 @@ class Source(QObject):
     - fech_page
     - parse_page
     - check_quotes"""
-    step_finished=pyqtSignal()
+    stepFinished=pyqtSignal()
+    statusChanged=pyqtSignal(int)
+    finished=pyqtSignal()
     def __init__(self, mem):
         QObject.__init__(self)
         self.mem=mem
@@ -242,12 +217,21 @@ class Source(QObject):
         self.modified=SetQuotes(self.mem)
         self.inserted=SetQuotes(self.mem)
         self.bad=SetQuotes(self.mem)
-        self.finished=False
+        self._status=None
+        self.setStatus(SourceStatus.Loaded)
         self.step=0#step of the source run. maximal is in steps()
         self.stopping=False
         self.ui=None#This must be linked to a wdgSource with setWdgSource
         self.agrupation=[]#Used if it must bu run several times due to large amounts (Yahoo)
         self.sql=None
+        
+    def setStatus(self, status):
+        print ("{}: setStatus {}".format(self.name(), self.getStatus()))
+        self._status=status
+        self.statusChanged.emit(status)
+        
+    def getStatus(self):
+        return self._status
         
     def setWdgSource(self, widget):
         self.ui=widget
@@ -263,7 +247,7 @@ class Source(QObject):
         
     def next_step(self):
         self.step=self.step+1
-        self.step_finished.emit()
+        self.stepFinished.emit()
 
     def myqtablewidget_errors(self, tabla, section):
         tabla.setColumnCount(2)
@@ -319,13 +303,13 @@ class Source(QObject):
 class SourceParsePage(Source):
     loaded_page=pyqtSignal()
     parse_page=pyqtSignal()
-    run_finished=pyqtSignal()
     def __init__(self, mem,  ):
         Source.__init__(self, mem)
 
         self.url="urlempty"
         
     def run(self):  
+        self.setStatus(SourceStatus.Running)
         self.products.load_from_db(self.sql)     
         self.next_step()
         self.loaded_page.connect(self.on_load_page)
@@ -340,9 +324,7 @@ class SourceParsePage(Source):
         self.mem.con.commit()
         self.next_step()
         
-        self.finished=True
-        self.run_finished.emit()
-        self.next_step()
+        self.setStatus(SourceStatus.Finished)
         
         
     def steps(self):
@@ -368,7 +350,6 @@ class SourceIterateProducts(Source):
     - parse_page
     - check_quotes"""
     execute_product=pyqtSignal(int)
-    run_finished=pyqtSignal()
     def __init__(self, mem,  type=2, sleep=0):
         Source.__init__(self, mem)
         self.sleep=sleep#wait between products
@@ -381,6 +362,7 @@ class SourceIterateProducts(Source):
         return self.products.length()+3
         
     def run(self):
+        self.setStatus(SourceStatus.Running)
         self.products.load_from_db(self.sql)
         self.next_step()
  
@@ -390,8 +372,7 @@ class SourceIterateProducts(Source):
         self.mem.con.commit()
         self.next_step()
         
-        self.finished=True
-        self.run_finished.emit()
+        self.setStatus(SourceStatus.Finished)
         self.next_step()
         
         
@@ -457,29 +438,25 @@ class WorkerMercadoContinuo(SourceParsePage):
             self.mem.con.commit()
             self.next_step()
             
-            self.finished=True
-            print ("run_finished")
-            self.run_finished.emit()
-            self.next_step()
-
-
+            self.setStatus(SourceStatus.Finished)
 
     def steps(self):
         """Define  the number of steps of the source run"""
-        return 4 #CORRECT
+        return 3
 
     def run(self):
+        self.setStatus(SourceStatus.Running)
         self.products.load_from_db(self.sql)     
         self.next_step()
         self.webView.load(QUrl("http://www.bolsamadrid.es/esp/aspx/Mercados/Precios.aspx?mercado=MC"))            
 
         
     def setSQL(self, useronly):
-        self.userinvestmentsonly=useronly
-        if self.userinvestmentsonly==True:
+        if useronly==True:
             self.sql="select * from products where 9=any(priority) and obsolete=false and id in (select distinct(products_id) from inversiones) order by name"
         else:
             self.sql="select * from products where 9=any(priority) and obsolete=false order by name"
+        self.setStatus(SourceStatus.Prepared)
 
     def on_parse_page(self):
         pass
@@ -532,6 +509,7 @@ class WorkerMorningstar(SourceIterateProducts):
             self.sql="select * from products where priorityhistorical[1]=8 and obsolete=false and id in (select distinct(products_id) from inversiones) order by name;"
         else:
             self.sql="select * from products where priorityhistorical[1]=8 and obsolete=false order by name;"
+        self.setStatus(SourceStatus.Prepared)
 
     def steps(self):
         """Define  the number of steps of the source run"""
@@ -592,6 +570,7 @@ class WorkerSGWarrants(SourceParsePage):
             self.sql="MALselect * from products where 9=any(priority) and obsolete=false and id in (select distinct(products_id) from inversiones) order by name".format(self.strUserOnly())
         else:
             self.sql="MALselect * from products where 9=any(priority) and obsolete=false order by name".format(self.strUserOnly())
+        self.setStatus(SourceStatus.Prepared)
 
     def steps(self):
         """Define  the number of steps of the source run"""
@@ -618,6 +597,7 @@ class WorkerYahoo(SourceParsePage):
             self.sql="select * from products where priority[1]=1 and obsolete=false and id in (select distinct(products_id) from inversiones) order by name"
         else:
             self.sql="select * from products where priority[1]=1 and obsolete=false order by name"
+        self.setStatus(SourceStatus.Prepared)
 
     def my_load_page(self, setproducts):
         "Overrides SourceParsePage"
@@ -659,6 +639,7 @@ class WorkerYahoo(SourceParsePage):
                 
     def run(self):
         """OVerrides ParsePage"""
+        self.setStatus(SourceStatus.Running)
         self.agrupation=[]#used to iterate sets de products 
         self.totals=Source(self.mem)# Used to show totals of agrupation
         self.products=SetProducts(self.mem)#Total of products of an Agrupation
@@ -686,9 +667,7 @@ class WorkerYahoo(SourceParsePage):
         self.mem.con.commit()
         self.next_step()
             
-        self.finished=True
-        self.run_finished.emit()
-        self.next_step()
+        self.setStatus(SourceStatus.Finished)
 
 
 
@@ -743,6 +722,7 @@ class WorkerYahooHistorical(SourceIterateProducts):
             self.sql="select * from products where priorityhistorical[1]=3 and obsolete=false and id in (select distinct(products_id) from inversiones) order by name"
         else:
             self.sql="select * from products where priorityhistorical[1]=3 and obsolete=false order by name"
+        self.setStatus(SourceStatus.Loaded)
 
 
     def steps(self):
