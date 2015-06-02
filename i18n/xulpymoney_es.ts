@@ -980,7 +980,7 @@ Purgadas en total en el proceso global: {1}</translation>
 <context>
     <name>WorkerSGWarrants</name>
     <message>
-        <location filename="libsources.py" line="521"/>
+        <location filename="libsources.py" line="520"/>
         <source>SG Warrants source</source>
         <translation type="unfinished"></translation>
     </message>
@@ -988,7 +988,7 @@ Purgadas en total en el proceso global: {1}</translation>
 <context>
     <name>WorkerYahoo</name>
     <message>
-        <location filename="libsources.py" line="582"/>
+        <location filename="libsources.py" line="581"/>
         <source>Yahoo source</source>
         <translation>Fuente de Yahoo</translation>
     </message>
@@ -996,7 +996,7 @@ Purgadas en total en el proceso global: {1}</translation>
 <context>
     <name>WorkerYahooHistorical</name>
     <message>
-        <location filename="libsources.py" line="684"/>
+        <location filename="libsources.py" line="683"/>
         <source>Yahoo Historical source</source>
         <translation type="unfinished"></translation>
     </message>
