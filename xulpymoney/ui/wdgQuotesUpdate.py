@@ -69,6 +69,7 @@ class wdgQuotesUpdate(QWidget, Ui_wdgQuotesUpdate):
         self.running_sources_run()
 
     def on_cmdAll_released(self):        
-        for s in sources.arr:
+        for s in self.sources.arr:
             self.sources.append_runners(s)
+            
         self.running_sources_run()

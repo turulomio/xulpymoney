@@ -979,7 +979,7 @@ Total purged in global process: {1}</source>
 <context>
     <name>WorkerSGWarrants</name>
     <message>
-        <location filename="libsources.py" line="521"/>
+        <location filename="libsources.py" line="520"/>
         <source>SG Warrants source</source>
         <translation type="unfinished"></translation>
     </message>
@@ -987,7 +987,7 @@ Total purged in global process: {1}</source>
 <context>
     <name>WorkerYahoo</name>
     <message>
-        <location filename="libsources.py" line="582"/>
+        <location filename="libsources.py" line="581"/>
         <source>Yahoo source</source>
         <translation type="unfinished"></translation>
     </message>
@@ -995,7 +995,7 @@ Total purged in global process: {1}</source>
 <context>
     <name>WorkerYahooHistorical</name>
     <message>
-        <location filename="libsources.py" line="684"/>
+        <location filename="libsources.py" line="683"/>
         <source>Yahoo Historical source</source>
         <translation type="unfinished"></translation>
     </message>

@@ -39,7 +39,7 @@ class SetSources(QObject):
         elif Worker==WorkerMercadoContinuo:
             s=WorkerMercadoContinuo(self.mem)
         elif Worker==WorkerMorningstar:
-            s=WorkerMorningstar(self, 0)
+            s=WorkerMorningstar(self.mem, 0)
         self.arr.append(s)
         s.setWdgSource(wdgSource) #Links source with wdg
 
@@ -504,8 +504,7 @@ class WorkerMorningstar(SourceIterateProducts):
         self.log("Error parsing: {}".format(product.name))
         
     def setSQL(self, useronly):
-        self.userinvestmentsonly=useronly
-        if self.userinvestmentsonly==True:
+        if useronly==True:
             self.sql="select * from products where priorityhistorical[1]=8 and obsolete=false and id in (select distinct(products_id) from inversiones) order by name;"
         else:
             self.sql="select * from products where priorityhistorical[1]=8 and obsolete=false order by name;"
