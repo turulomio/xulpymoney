@@ -51,7 +51,7 @@ class SetSources(QObject):
 
     def allFinished(self):
         for s in self.runners:
-            if s.isFinished()==False:
+            if s.finished==False:
                 return False
         return True
         
@@ -162,9 +162,10 @@ class wdgSource(QWidget, Ui_wdgSource):
         self.currentWorker=None# Current worker working
 
     def on_cmdInserted_released(self):
-        d=QDialog(self)        
-        d.showMaximized()
-        d.setWindowTitle(self.tr("Inserted quotes"))
+        d=QDialog(self)     
+        d.resize(800, 600)
+        #d.showMaximized()
+        d.setWindowTitle(self.tr("Inserted quotes from {}").format(self.source.name()))
         t=myQTableWidget(d)
         self.source.inserted.myqtablewidget(t, "wdgSource")
         lay = QVBoxLayout(d)
@@ -173,8 +174,8 @@ class wdgSource(QWidget, Ui_wdgSource):
         
     def on_cmdEdited_released(self):
         d=QDialog(self)        
-        d.showMaximized()
-        d.setWindowTitle(self.tr("Edited quotes"))
+        d.resize(800, 600)
+        d.setWindowTitle(self.tr("Edited quotes from {}").format(self.source.name()))
         t=myQTableWidget(d)
         self.source.modified.myqtablewidget(t, "wdgSource")
         lay = QVBoxLayout(d)
@@ -183,8 +184,8 @@ class wdgSource(QWidget, Ui_wdgSource):
         
     def on_cmdIgnored_released(self):
         d=QDialog(self)        
-        d.showMaximized()
-        d.setWindowTitle(self.tr("Ignored quotes"))
+        d.resize(800, 600)
+        d.setWindowTitle(self.tr("Ignored quotes from {}").format(self.source.name()))
         t=myQTableWidget(d)
         self.source.ignored.myqtablewidget(t, "wdgSource")
         lay = QVBoxLayout(d)
@@ -193,8 +194,8 @@ class wdgSource(QWidget, Ui_wdgSource):
         
     def on_cmdErrors_released(self):
         d=QDialog(self)        
-        d.showMaximized()
-        d.setWindowTitle(self.tr("Error procesing the source"))
+        d.resize(800, 600)
+        d.setWindowTitle(self.tr("Errors procesing the source {}").format(self.source.name()))
         terrors=myQTableWidget(d)
         self.source.myqtablewidget_errors(terrors, "wdgSource")
         lay = QVBoxLayout(d)
@@ -203,8 +204,8 @@ class wdgSource(QWidget, Ui_wdgSource):
 
     def on_cmdBad_released(self):
         d=QDialog(self)        
-        d.showMaximized()
-        d.setWindowTitle(self.tr("Error procesing the source"))
+        d.resize(800, 600)
+        d.setWindowTitle(self.tr("Bad prices procesing the source {}").format(self.source.name()))
         t=myQTableWidget(d)
         self.source.bad.myqtablewidget(t, "wdgSource")
         lay = QVBoxLayout(d)
@@ -213,8 +214,8 @@ class wdgSource(QWidget, Ui_wdgSource):
         
     def on_cmdSearched_released(self):
         d=QDialog(self)        
-        d.showMaximized()
-        d.setWindowTitle(self.tr("Error procesing the source"))
+        d.resize(800, 600)
+        d.setWindowTitle(self.tr("Searched products from {}").format(self.source.name()))
         t=myQTableWidget(d)
         self.source.products.myqtablewidget(t, "wdgSource")
         lay = QVBoxLayout(d)

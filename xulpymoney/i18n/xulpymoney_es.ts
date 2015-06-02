@@ -956,7 +956,7 @@ Purgadas en total en el proceso global: {1}</translation>
 <context>
     <name>Source</name>
     <message>
-        <location filename="libsources.py" line="235"/>
+        <location filename="libsources.py" line="236"/>
         <source>Source Name unknown</source>
         <translation type="unfinished"></translation>
     </message>
@@ -964,7 +964,7 @@ Purgadas en total en el proceso global: {1}</translation>
 <context>
     <name>WorkerMercadoContinuo</name>
     <message>
-        <location filename="libsources.py" line="424"/>
+        <location filename="libsources.py" line="425"/>
         <source>Mercado Continuo source</source>
         <translation type="unfinished">Fuente del Mercado Continuo</translation>
     </message>
@@ -972,7 +972,7 @@ Purgadas en total en el proceso global: {1}</translation>
 <context>
     <name>WorkerMorningstar</name>
     <message>
-        <location filename="libsources.py" line="491"/>
+        <location filename="libsources.py" line="492"/>
         <source>Morningstar source</source>
         <translation>Fuente de Morningstar</translation>
     </message>
@@ -980,7 +980,7 @@ Purgadas en total en el proceso global: {1}</translation>
 <context>
     <name>WorkerSGWarrants</name>
     <message>
-        <location filename="libsources.py" line="542"/>
+        <location filename="libsources.py" line="543"/>
         <source>SG Warrants source</source>
         <translation type="unfinished"></translation>
     </message>
@@ -988,7 +988,7 @@ Purgadas en total en el proceso global: {1}</translation>
 <context>
     <name>WorkerYahoo</name>
     <message>
-        <location filename="libsources.py" line="602"/>
+        <location filename="libsources.py" line="603"/>
         <source>Yahoo source</source>
         <translation>Fuente de Yahoo</translation>
     </message>
@@ -996,7 +996,7 @@ Purgadas en total en el proceso global: {1}</translation>
 <context>
     <name>WorkerYahooHistorical</name>
     <message>
-        <location filename="libsources.py" line="704"/>
+        <location filename="libsources.py" line="705"/>
         <source>Yahoo Historical source</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5709,21 +5709,6 @@ S&#xc3;&#xb3;lo se contabilizar&#xc3;&#xa1; cuando se vendan las acciones</sourc
         <translation>Actualizaciones insertadas</translation>
     </message>
     <message>
-        <location filename="libsources.py" line="177"/>
-        <source>Edited quotes</source>
-        <translation>Actualizaciones modificadas</translation>
-    </message>
-    <message>
-        <location filename="libsources.py" line="187"/>
-        <source>Ignored quotes</source>
-        <translation>Actualizaciones ignoradas</translation>
-    </message>
-    <message>
-        <location filename="libsources.py" line="217"/>
-        <source>Error procesing the source</source>
-        <translation>Error al procesar la fuente de datos</translation>
-    </message>
-    <message>
         <location filename="ui/Ui_wdgSource.py" line="117"/>
         <source>Show source parse errors</source>
         <translation>Mostrar errores de la fuente de datos</translation>
@@ -5777,6 +5762,36 @@ S&#xc3;&#xb3;lo se contabilizar&#xc3;&#xa1; cuando se vendan las acciones</sourc
         <location filename="ui/Ui_wdgSource.py" line="116"/>
         <source>Update progress</source>
         <translation>Progreso de actualización</translation>
+    </message>
+    <message>
+        <location filename="libsources.py" line="168"/>
+        <source>Inserted quotes from {}</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="libsources.py" line="178"/>
+        <source>Edited quotes from {}</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="libsources.py" line="188"/>
+        <source>Ignored quotes from {}</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="libsources.py" line="198"/>
+        <source>Errors procesing the source {}</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="libsources.py" line="208"/>
+        <source>Bad prices procesing the source {}</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="libsources.py" line="218"/>
+        <source>Searched products from {}</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
