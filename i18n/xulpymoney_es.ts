@@ -956,7 +956,7 @@ Purgadas en total en el proceso global: {1}</translation>
 <context>
     <name>Source</name>
     <message>
-        <location filename="libsources.py" line="236"/>
+        <location filename="libsources.py" line="211"/>
         <source>Source Name unknown</source>
         <translation type="unfinished"></translation>
     </message>
@@ -964,7 +964,7 @@ Purgadas en total en el proceso global: {1}</translation>
 <context>
     <name>WorkerMercadoContinuo</name>
     <message>
-        <location filename="libsources.py" line="425"/>
+        <location filename="libsources.py" line="406"/>
         <source>Mercado Continuo source</source>
         <translation type="unfinished">Fuente del Mercado Continuo</translation>
     </message>
@@ -972,7 +972,7 @@ Purgadas en total en el proceso global: {1}</translation>
 <context>
     <name>WorkerMorningstar</name>
     <message>
-        <location filename="libsources.py" line="492"/>
+        <location filename="libsources.py" line="469"/>
         <source>Morningstar source</source>
         <translation>Fuente de Morningstar</translation>
     </message>
@@ -980,7 +980,7 @@ Purgadas en total en el proceso global: {1}</translation>
 <context>
     <name>WorkerSGWarrants</name>
     <message>
-        <location filename="libsources.py" line="543"/>
+        <location filename="libsources.py" line="521"/>
         <source>SG Warrants source</source>
         <translation type="unfinished"></translation>
     </message>
@@ -988,7 +988,7 @@ Purgadas en total en el proceso global: {1}</translation>
 <context>
     <name>WorkerYahoo</name>
     <message>
-        <location filename="libsources.py" line="603"/>
+        <location filename="libsources.py" line="582"/>
         <source>Yahoo source</source>
         <translation>Fuente de Yahoo</translation>
     </message>
@@ -996,7 +996,7 @@ Purgadas en total en el proceso global: {1}</translation>
 <context>
     <name>WorkerYahooHistorical</name>
     <message>
-        <location filename="libsources.py" line="705"/>
+        <location filename="libsources.py" line="684"/>
         <source>Yahoo Historical source</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5689,17 +5689,17 @@ S&#xc3;&#xb3;lo se contabilizar&#xc3;&#xa1; cuando se vendan las acciones</sourc
         <translation>Errores</translation>
     </message>
     <message>
-        <location filename="libsources.py" line="142"/>
+        <location filename="libsources.py" line="103"/>
         <source>{} Inserted</source>
         <translation>{} Insertados</translation>
     </message>
     <message>
-        <location filename="libsources.py" line="143"/>
+        <location filename="libsources.py" line="104"/>
         <source>{} Edited</source>
         <translation>{} Modificados</translation>
     </message>
     <message>
-        <location filename="libsources.py" line="144"/>
+        <location filename="libsources.py" line="105"/>
         <source>{} Ignored</source>
         <translation>{} Ignorados</translation>
     </message>
@@ -5734,12 +5734,12 @@ S&#xc3;&#xb3;lo se contabilizar&#xc3;&#xa1; cuando se vendan las acciones</sourc
         <translation>Erróneos</translation>
     </message>
     <message>
-        <location filename="libsources.py" line="146"/>
+        <location filename="libsources.py" line="107"/>
         <source>{} bad</source>
         <translation>{} malos</translation>
     </message>
     <message>
-        <location filename="libsources.py" line="145"/>
+        <location filename="libsources.py" line="106"/>
         <source>{} errors parsing the source</source>
         <translation>{} errores parseando la fuente</translation>
     </message>
@@ -5754,7 +5754,7 @@ S&#xc3;&#xb3;lo se contabilizar&#xc3;&#xa1; cuando se vendan las acciones</sourc
         <translation>Buscadas</translation>
     </message>
     <message>
-        <location filename="libsources.py" line="147"/>
+        <location filename="libsources.py" line="108"/>
         <source>{} products</source>
         <translation>{} productos</translation>
     </message>
@@ -5764,32 +5764,32 @@ S&#xc3;&#xb3;lo se contabilizar&#xc3;&#xa1; cuando se vendan las acciones</sourc
         <translation>Progreso de actualización</translation>
     </message>
     <message>
-        <location filename="libsources.py" line="168"/>
+        <location filename="libsources.py" line="141"/>
         <source>Inserted quotes from {}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libsources.py" line="178"/>
+        <location filename="libsources.py" line="151"/>
         <source>Edited quotes from {}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libsources.py" line="188"/>
+        <location filename="libsources.py" line="161"/>
         <source>Ignored quotes from {}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libsources.py" line="198"/>
+        <location filename="libsources.py" line="171"/>
         <source>Errors procesing the source {}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libsources.py" line="208"/>
+        <location filename="libsources.py" line="181"/>
         <source>Bad prices procesing the source {}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libsources.py" line="218"/>
+        <location filename="libsources.py" line="191"/>
         <source>Searched products from {}</source>
         <translation type="unfinished"></translation>
     </message>
