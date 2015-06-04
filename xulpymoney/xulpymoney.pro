@@ -90,7 +90,6 @@ SOURCES         = \
                   ui/Ui_wdgProducts.py \
                   ui/wdgQuotesUpdate.py \
                   ui/Ui_wdgQuotesUpdate.py \
-                  ui/wdgSource.py \
                   ui/Ui_wdgSource.py \
                   ui/wdgTotal.py \
                   ui/Ui_wdgTotal.py \

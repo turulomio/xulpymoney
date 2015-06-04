@@ -6,7 +6,6 @@ from PyQt5.QtWebKitWidgets import *
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from Ui_wdgSource import *
-#from libsources import *
 from myqtablewidget import *
 
 class SourceStatus:
@@ -78,40 +77,41 @@ class wdgSource(QWidget, Ui_wdgSource):
         self.mem=None
         self.source=None
         self.parent=parent
-        self.widgettoupdate=self.parent.parent
+        self.widgettoupdate=self.parent.parent  
+        
+        menu=QMenu()
+        menu.addAction(self.actionProducts)
+        menu.addSeparator()   
+        menu.addAction(self.actionInserted)   
+        menu.addAction(self.actionEdited)   
+        menu.addAction(self.actionIgnored)   
+        menu.addAction(self.actionErrors)        
+        menu.addAction(self.actionWrong)
+        menu.addSeparator()   
+        menu.addAction(self.actionHTML)
+        self.cmdDropDown.setMenu(menu)
         
         
     def setSource(self, mem, source):
         self.mem=mem
         self.source=source
-        self.grp.setTitle(self.source.name())
+        self.grp.setTitle(self.source.getName())
         self.source.stepFinished.connect(self.on_stepFinished)
         self.source.statusChanged.connect(self.on_statusChanged)
 
     def on_statusChanged(self, status):
-        """Not running yet, but preparing GUI"""
-        
         print("wdgSource statusChanged", status)
         if status==SourceStatus.Prepared:
             self.cmdRun.setEnabled(False)     
             self.chkUserOnly.setEnabled(False)
-            self.progress.setMaximum(self.source.steps())
-        elif status==SourceStatus.Running:
-            pass
         elif status==SourceStatus.Finished:
-            self.cmdInserted.setText(self.tr("{} Inserted").format(self.source.inserted.length()))
-            self.cmdEdited.setText(self.tr("{} Edited").format(self.source.modified.length()))
-            self.cmdIgnored.setText(self.tr("{} Ignored").format(self.source.ignored.length()))
-            self.cmdErrors.setText(self.tr("{} errors parsing the source").format(len(self.source.errors)))
-            self.cmdBad.setText(self.tr("{} bad").format(self.source.bad.length()))
-            self.cmdSearched.setText(self.tr("{} products".format(self.source.products.length())))
-            self.cmdInserted.setEnabled(True)
-            self.cmdIgnored.setEnabled(True)
-            self.cmdEdited.setEnabled(True)
-            self.cmdErrors.setEnabled(True)
-            self.cmdBad.setEnabled(True)       
-            self.cmdSearched.setEnabled(True)
-            self.cmdCancel.setEnabled(False)
+            self.cmdDropDown.setEnabled(True)
+            self.actionInserted.setText(self.tr("Inserted quotes ({})").format(self.source.inserted.length()))
+            self.actionEdited.setText(self.tr("Edited quotes ({})").format(self.source.modified.length()))
+            self.actionIgnored.setText(self.tr("Ignored quotes ({})").format(self.source.ignored.length()))
+            self.actionErrors.setText(self.tr("Parsing errors ({})").format(len(self.source.errors)))
+            self.actionWrong.setText(self.tr("Wrong quotes ({})").format(self.source.bad.length()))
+            self.actionProducts.setText(self.tr("Products searched ({})".format(self.source.products.length())))
 
     def setWidgetToUpdate(self, widget):
         """Used to update when runing, by default is parent parent"""
@@ -120,6 +120,7 @@ class wdgSource(QWidget, Ui_wdgSource):
     def on_stepFinished(self):
         """Update progress bar"""
         self.progress.setValue(self.source.step)
+        self.progress.setMaximum(self.source.steps())
         QCoreApplication.processEvents() 
 
     def on_cmdRun_released(self):
@@ -128,71 +129,95 @@ class wdgSource(QWidget, Ui_wdgSource):
             self.source.setSQL(self.chkUserOnly.isChecked())
         self.source.run()
 
+
+
     def on_cmdCancel_released(self):
         self.cmdCancel.setEnabled(False)
         self.currentWorker.stopping=True
         self.currentWorker=None# Current worker working
 
-    def on_cmdInserted_released(self):
+    @QtCore.pyqtSlot() 
+    def on_actionInserted_triggered(self):
         d=QDialog(self)     
         d.resize(800, 600)
-        #d.showMaximized()
-        d.setWindowTitle(self.tr("Inserted quotes from {}").format(self.source.name()))
+        d.setWindowTitle(self.tr("Inserted quotes from {}").format(self.source.getName()))
         t=myQTableWidget(d)
         self.source.inserted.myqtablewidget(t, "wdgSource")
         lay = QVBoxLayout(d)
         lay.addWidget(t)
         d.show()
         
-    def on_cmdEdited_released(self):
+    @QtCore.pyqtSlot() 
+    def on_actionEdited_triggered(self):
         d=QDialog(self)        
         d.resize(800, 600)
-        d.setWindowTitle(self.tr("Edited quotes from {}").format(self.source.name()))
+        d.setWindowTitle(self.tr("Edited quotes from {}").format(self.source.getName()))
         t=myQTableWidget(d)
         self.source.modified.myqtablewidget(t, "wdgSource")
         lay = QVBoxLayout(d)
         lay.addWidget(t)
         d.show()
         
-    def on_cmdIgnored_released(self):
+    @QtCore.pyqtSlot() 
+    def on_actionIgnored_triggered(self):
         d=QDialog(self)        
         d.resize(800, 600)
-        d.setWindowTitle(self.tr("Ignored quotes from {}").format(self.source.name()))
+        d.setWindowTitle(self.tr("Ignored quotes from {}").format(self.source.getName()))
         t=myQTableWidget(d)
         self.source.ignored.myqtablewidget(t, "wdgSource")
         lay = QVBoxLayout(d)
         lay.addWidget(t)
         d.show()
         
-    def on_cmdErrors_released(self):
+    @QtCore.pyqtSlot() 
+    def on_actionErrors_triggered(self):
         d=QDialog(self)        
         d.resize(800, 600)
-        d.setWindowTitle(self.tr("Errors procesing the source {}").format(self.source.name()))
+        d.setWindowTitle(self.tr("Errors procesing the source {}").format(self.source.getName()))
         terrors=myQTableWidget(d)
         self.source.myqtablewidget_errors(terrors, "wdgSource")
         lay = QVBoxLayout(d)
         lay.addWidget(terrors)
         d.show()
 
-    def on_cmdBad_released(self):
+    @QtCore.pyqtSlot() 
+    def on_actionWrong_triggered(self):
         d=QDialog(self)        
         d.resize(800, 600)
-        d.setWindowTitle(self.tr("Bad prices procesing the source {}").format(self.source.name()))
+        d.setWindowTitle(self.tr("Bad prices procesing the source {}").format(self.source.getName()))
         t=myQTableWidget(d)
         self.source.bad.myqtablewidget(t, "wdgSource")
         lay = QVBoxLayout(d)
         lay.addWidget(t)
         d.show()
         
-    def on_cmdSearched_released(self):
+    @QtCore.pyqtSlot() 
+    def on_actionProducts_triggered(self):
         d=QDialog(self)        
         d.resize(800, 600)
-        d.setWindowTitle(self.tr("Searched products from {}").format(self.source.name()))
+        d.setWindowTitle(self.tr("Searched products from {}").format(self.source.getName()))
         t=myQTableWidget(d)
         self.source.products.myqtablewidget(t, "wdgSource")
         lay = QVBoxLayout(d)
         lay.addWidget(t)
-        d.show()
+        d.show()        
+    @QtCore.pyqtSlot() 
+    def on_actionHTML_triggered(self):
+        if os.path.exists("/usr/bin/kwrite"):
+            file="/tmp/xulpymoney-weblog-{}.txt".format(self.source.getName())
+            f=open(file, "w")
+            f.write(self.source.weblog)
+            f.close()
+            QProcess.startDetached("kwrite", [file,  ] )
+        else:
+            d=QDialog(self)        
+            d.resize(800, 600)
+            d.setWindowTitle(self.tr("Showing HTML").format(self.source.getName()))
+            t=QTextEdit(d)
+            t.setText(self.source.weblog)
+            lay = QVBoxLayout(d)
+            lay.addWidget(t)
+            d.show()
 
 class Source(QObject):
     """Clase nueva para todas las sources
@@ -223,9 +248,10 @@ class Source(QObject):
         self.ui=None#This must be linked to a wdgSource with setWdgSource
         self.agrupation=[]#Used if it must bu run several times due to large amounts (Yahoo)
         self.sql=None
+        self.weblog=""#Stores all web downloads, to show later in ui to debug
         
     def setStatus(self, status):
-        print ("{}: setStatus {}".format(self.name(), self.getStatus()))
+        print ("{}: setStatus {}".format(self.getName(), self.getStatus()))
         self._status=status
         self.statusChanged.emit(status)
         
@@ -239,7 +265,7 @@ class Source(QObject):
     def setName(self, name):
         self._name=name
         
-    def name(self):
+    def getName(self):
         return self._name
         
     def log(self, error):
@@ -261,6 +287,18 @@ class Source(QObject):
             strdate="{} {}".format(a[0], a[1])
             tabla.setItem(rownumber, 0, qleft(strdate))
             tabla.setItem(rownumber, 1, qleft(line[len(strdate)+1:]))
+            
+    def toWebLog(self,  object):
+        self.weblog=self.weblog +"\n\n\n###### FETCHED AT {} #######\n\n\n".format(datetime.datetime.now())
+        print ("toWebLog", object.__class__.__name__)
+        if object.__class__.__name__=='HTTPResponse':
+            for line in object.readlines():
+                self.weblog=self.weblog+b2s(line)
+        elif object.__class__.__name__=='list':
+            for line in object:
+                self.weblog=self.weblog+line +"\n"
+
+        
             
     def quotes_save(self):
         """Saves all quotes after product iteration. If I want to do something different. I must override this function"""
@@ -373,7 +411,6 @@ class SourceIterateProducts(Source):
         self.next_step()
         
         self.setStatus(SourceStatus.Finished)
-        self.next_step()
         
         
         
@@ -394,7 +431,6 @@ class SourceIterateProducts(Source):
                 self.quotes.clear()
                 break
             self.execute_product.emit(product.id)
-#            self.emit(SIGNAL("execute_product(int)"), product.id)
             self.next_step()
             time.sleep(self.sleep)#time step
         print("")
@@ -413,6 +449,7 @@ class WorkerMercadoContinuo(SourceParsePage):
         self.frame.evaluateJavaScript("__doPostBack('ctl00$Contenido$Todos','')")
         if self.frame.toHtml().find("Completo")==-1:
             self.web=self.frame.toHtml().split("\n")
+            self.toWebLog(self.web)
             for l in self.web:
                 if l.find("ISIN=")!=-1:
                     isin=l.split("ISIN=")[1].split('">')[0]
@@ -478,13 +515,16 @@ class WorkerMorningstar(SourceIterateProducts):
 
         #Search morningstar code
         url='http://www.morningstar.es/es/funds/SecuritySearchResults.aspx?search='+product.isin+'&type='
-        web=self.load_page(url)
-        if web==None:
-            self.log("Error downloading page")
+        mweb=self.load_page(url)
+        if mweb==None:
             return
+        web=[]
+        ##TRansform httpresopone to list to iterate several times
+        for line in mweb.readlines():
+            web.append(b2s(line))
+        self.toWebLog(web)
             
-        for i in web.readlines(): 
-            i=b2s(i)
+        for i in web: 
             if i.find("searchIsin")!=-1:
                 urlmorningstar=i.split('href="')[1].split('">')[0]
                 url2='http://www.morningstar.es'+urlmorningstar        
@@ -512,7 +552,7 @@ class WorkerMorningstar(SourceIterateProducts):
 
     def steps(self):
         """Define  the number of steps of the source run"""
-        return 4 #CORRECT
+        return 2+ self.products.length()#CORRECT
 class WorkerSGWarrants(SourceParsePage):
     """Clase que recorre las inversiones activas y calcula según este la prioridad de la previsión"""
     def __init__(self, mem):
@@ -602,15 +642,20 @@ class WorkerYahoo(SourceParsePage):
         "Overrides SourceParsePage"
         self.url='http://download.finance.yahoo.com/d/quotes.csv?s=' + self.sum_tickers(setproducts) + '&f=sl1d1t1&e=.csv'
 
-        self.web=self.load_page(self.url)
-        if self.web==None:
+        web=self.load_page(self.url)
+        if web==None:
+            self.web=None
             return
+        self.web=[]
+        ##TRansform httpresopone to list to iterate several times
+        for line in web.readlines():
+            self.web.append(b2s(line))
+        self.toWebLog(self.web)
         
     def my_parse_page(self):
         "Overrides SourceParsePage"
-        for i in self.web.readlines():
+        for i in self.web:
             try:
-                i=b2s(i)
                 datos=i[:-2].split(",")#Se quita dos creo que por caracter final linea windeos.
                 product=self.products.find_by_ticker(datos[0][1:-1])
 
@@ -646,9 +691,7 @@ class WorkerYahoo(SourceParsePage):
         items=150
         
         print (self.products.length())
-        
-        print ("blocks", int(self.products.length()/items)+1 )
-        
+               
         for i in range(int(self.products.length()/items)+1) :#Creo tantos SetProducts como bloques de 150
             self.agrupation.append(SetProducts(self.mem))
             
@@ -672,7 +715,7 @@ class WorkerYahoo(SourceParsePage):
 
     def steps(self):
         """Define  the number of steps of the source run"""
-        return 4 #CORRECT
+        return len(self.agrupation)*2 +1#CORRECT
 
 class WorkerYahooHistorical(SourceIterateProducts):
     """Clase que recorre las inversiones activas y busca la última  que tiene el microsecond 4. Busca en internet los historicals a partir de esa fecha"""
@@ -686,19 +729,21 @@ class WorkerYahooHistorical(SourceIterateProducts):
         product=self.products.find(id_product)
 
         ultima=product.fecha_ultima_actualizacion_historica()
-        if ultima==datetime.date.today()-datetime.timedelta(days=1):
-            return
+#        if ultima==datetime.date.today()-datetime.timedelta(days=1):
+#            return
         inicio= ultima+datetime.timedelta(days=1)
         fin= datetime.date.today()
         url='http://ichart.finance.yahoo.com/table.csv?s='+product.ticker+'&a='+str(inicio.month-1)+'&b='+str(inicio.day)+'&c='+str(inicio.year)+'&d='+str(fin.month-1)+'&e='+str(fin.day)+'&f='+str(fin.year)+'&g=d&ignore=.csv'
-
-        web=self.load_page(url)
-        if web==None:
+        mweb=self.load_page(url)
+        if mweb==None:
             return
+        web=[]
+        ##TRansform httpresopone to list to iterate several times
+        for line in mweb.readlines():
+            web.append(b2s(line))
+        self.toWebLog(web)
         
-        web.readline()
-        for i in web.readlines(): 
-            i=b2s(i)
+        for i in web: 
             datos=i.split(",")
             fecha=datos[0].split("-")
             date=datetime.date(int(fecha[0]), int(fecha[1]),  int(fecha[2]))
@@ -726,4 +771,4 @@ class WorkerYahooHistorical(SourceIterateProducts):
 
     def steps(self):
         """Define  the number of steps of the source run"""
-        return 4 #CORRECT
+        return 2+self.products.length() #CORRECT
