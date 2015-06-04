@@ -956,7 +956,7 @@ Purgadas en total en el proceso global: {1}</translation>
 <context>
     <name>Source</name>
     <message>
-        <location filename="libsources.py" line="210"/>
+        <location filename="libsources.py" line="235"/>
         <source>Source Name unknown</source>
         <translation type="unfinished"></translation>
     </message>
@@ -964,7 +964,7 @@ Purgadas en total en el proceso global: {1}</translation>
 <context>
     <name>WorkerMercadoContinuo</name>
     <message>
-        <location filename="libsources.py" line="406"/>
+        <location filename="libsources.py" line="442"/>
         <source>Mercado Continuo source</source>
         <translation type="unfinished">Fuente del Mercado Continuo</translation>
     </message>
@@ -972,7 +972,7 @@ Purgadas en total en el proceso global: {1}</translation>
 <context>
     <name>WorkerMorningstar</name>
     <message>
-        <location filename="libsources.py" line="469"/>
+        <location filename="libsources.py" line="506"/>
         <source>Morningstar source</source>
         <translation>Fuente de Morningstar</translation>
     </message>
@@ -980,7 +980,7 @@ Purgadas en total en el proceso global: {1}</translation>
 <context>
     <name>WorkerSGWarrants</name>
     <message>
-        <location filename="libsources.py" line="520"/>
+        <location filename="libsources.py" line="560"/>
         <source>SG Warrants source</source>
         <translation type="unfinished"></translation>
     </message>
@@ -988,7 +988,7 @@ Purgadas en total en el proceso global: {1}</translation>
 <context>
     <name>WorkerYahoo</name>
     <message>
-        <location filename="libsources.py" line="581"/>
+        <location filename="libsources.py" line="621"/>
         <source>Yahoo source</source>
         <translation>Fuente de Yahoo</translation>
     </message>
@@ -996,7 +996,7 @@ Purgadas en total en el proceso global: {1}</translation>
 <context>
     <name>WorkerYahooHistorical</name>
     <message>
-        <location filename="libsources.py" line="683"/>
+        <location filename="libsources.py" line="726"/>
         <source>Yahoo Historical source</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5669,128 +5669,113 @@ S&#xc3;&#xb3;lo se contabilizar&#xc3;&#xa1; cuando se vendan las acciones</sourc
 <context>
     <name>wdgSource</name>
     <message>
-        <location filename="ui/Ui_wdgSource.py" line="123"/>
-        <source>Inserted</source>
-        <translation>Insertadas</translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_wdgSource.py" line="127"/>
-        <source>Ignored</source>
-        <translation>Ignorados</translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_wdgSource.py" line="125"/>
-        <source>Edited</source>
-        <translation>Modificadas</translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_wdgSource.py" line="118"/>
-        <source>Errors</source>
-        <translation>Errores</translation>
-    </message>
-    <message>
-        <location filename="libsources.py" line="102"/>
-        <source>{} Inserted</source>
-        <translation>{} Insertados</translation>
-    </message>
-    <message>
-        <location filename="libsources.py" line="103"/>
-        <source>{} Edited</source>
-        <translation>{} Modificados</translation>
-    </message>
-    <message>
-        <location filename="libsources.py" line="104"/>
-        <source>{} Ignored</source>
-        <translation>{} Ignorados</translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_wdgSource.py" line="122"/>
-        <source>Inserted quotes</source>
-        <translation>Actualizaciones insertadas</translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_wdgSource.py" line="117"/>
-        <source>Show source parse errors</source>
-        <translation>Mostrar errores de la fuente de datos</translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_wdgSource.py" line="126"/>
-        <source>Show quotes that are already in the database</source>
-        <translation>Mostrar actualizaciones que ya están en la base de datos</translation>
-    </message>
-    <message>
         <location filename="ui/Ui_wdgSource.py" line="124"/>
-        <source>Updated quotes with the same product, date and time</source>
-        <translation>Actualizaciones modificadas con el mismo producto, fecha y hora</translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_wdgSource.py" line="128"/>
-        <source>Show quotes that can&apos;t be saved (price 0...)</source>
-        <translation>Mostrar actualizaciones que no pueden ser grabadas (precio 0...)</translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_wdgSource.py" line="129"/>
-        <source>Wrong</source>
-        <translation>Erróneos</translation>
-    </message>
-    <message>
-        <location filename="libsources.py" line="106"/>
-        <source>{} bad</source>
-        <translation>{} malos</translation>
-    </message>
-    <message>
-        <location filename="libsources.py" line="105"/>
-        <source>{} errors parsing the source</source>
-        <translation>{} errores parseando la fuente</translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_wdgSource.py" line="119"/>
         <source>User only</source>
         <translation>Sólo de usuario</translation>
     </message>
     <message>
-        <location filename="ui/Ui_wdgSource.py" line="121"/>
-        <source>Searched</source>
-        <translation>Buscadas</translation>
-    </message>
-    <message>
-        <location filename="libsources.py" line="107"/>
-        <source>{} products</source>
-        <translation>{} productos</translation>
-    </message>
-    <message>
-        <location filename="ui/Ui_wdgSource.py" line="116"/>
+        <location filename="ui/Ui_wdgSource.py" line="123"/>
         <source>Update progress</source>
         <translation>Progreso de actualización</translation>
     </message>
     <message>
-        <location filename="libsources.py" line="140"/>
+        <location filename="libsources.py" line="143"/>
         <source>Inserted quotes from {}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libsources.py" line="150"/>
+        <location filename="libsources.py" line="154"/>
         <source>Edited quotes from {}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libsources.py" line="160"/>
+        <location filename="libsources.py" line="165"/>
         <source>Ignored quotes from {}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libsources.py" line="170"/>
+        <location filename="libsources.py" line="176"/>
         <source>Errors procesing the source {}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libsources.py" line="180"/>
+        <location filename="libsources.py" line="187"/>
         <source>Bad prices procesing the source {}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="libsources.py" line="190"/>
+        <location filename="libsources.py" line="198"/>
         <source>Searched products from {}</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_wdgSource.py" line="126"/>
+        <source>Products searched</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_wdgSource.py" line="128"/>
+        <source>Parsing errors</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_wdgSource.py" line="132"/>
+        <source>Edited quotes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_wdgSource.py" line="134"/>
+        <source>Ignored quotes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_wdgSource.py" line="136"/>
+        <source>Wrong quotes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_wdgSource.py" line="138"/>
+        <source>Show HTML</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/Ui_wdgSource.py" line="130"/>
+        <source>Inserted quotes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="libsources.py" line="109"/>
+        <source>Inserted quotes ({})</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="libsources.py" line="110"/>
+        <source>Edited quotes ({})</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="libsources.py" line="111"/>
+        <source>Ignored quotes ({})</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="libsources.py" line="112"/>
+        <source>Parsing errors ({})</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="libsources.py" line="113"/>
+        <source>Wrong quotes ({})</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="libsources.py" line="114"/>
+        <source>Products searched ({})</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="libsources.py" line="215"/>
+        <source>Showing HTML</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

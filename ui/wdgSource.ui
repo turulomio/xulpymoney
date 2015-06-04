@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>636</width>
-    <height>140</height>
+    <width>712</width>
+    <height>100</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -19,13 +19,13 @@
   <property name="minimumSize">
    <size>
     <width>0</width>
-    <height>140</height>
+    <height>100</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
     <width>16777215</width>
-    <height>140</height>
+    <height>100</height>
    </size>
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout_4">
@@ -65,29 +65,6 @@
            <widget class="QProgressBar" name="progress">
             <property name="value">
              <number>0</number>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="cmdErrors">
-            <property name="enabled">
-             <bool>false</bool>
-            </property>
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="toolTip">
-             <string>Show source parse errors</string>
-            </property>
-            <property name="styleSheet">
-             <string notr="true">
-background-color: rgb(255, 192, 192);</string>
-            </property>
-            <property name="text">
-             <string>Errors</string>
             </property>
            </widget>
           </item>
@@ -133,72 +110,23 @@ background-color: rgb(255, 192, 192);</string>
             </property>
            </widget>
           </item>
-         </layout>
-        </item>
-        <item>
-         <layout class="QHBoxLayout" name="horizontalLayout">
           <item>
-           <widget class="QPushButton" name="cmdSearched">
-            <property name="enabled">
-             <bool>false</bool>
-            </property>
-            <property name="toolTip">
-             <string>Inserted quotes</string>
-            </property>
-            <property name="text">
-             <string>Searched</string>
+           <widget class="Line" name="line_2">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
             </property>
            </widget>
           </item>
           <item>
-           <widget class="QPushButton" name="cmdInserted">
+           <widget class="QToolButton" name="cmdDropDown">
             <property name="enabled">
              <bool>false</bool>
             </property>
-            <property name="toolTip">
-             <string>Inserted quotes</string>
-            </property>
             <property name="text">
-             <string>Inserted</string>
+             <string/>
             </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="cmdEdited">
-            <property name="enabled">
-             <bool>false</bool>
-            </property>
-            <property name="toolTip">
-             <string>Updated quotes with the same product, date and time</string>
-            </property>
-            <property name="text">
-             <string>Edited</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="cmdIgnored">
-            <property name="enabled">
-             <bool>false</bool>
-            </property>
-            <property name="toolTip">
-             <string>Show quotes that are already in the database</string>
-            </property>
-            <property name="text">
-             <string>Ignored</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="cmdBad">
-            <property name="enabled">
-             <bool>false</bool>
-            </property>
-            <property name="toolTip">
-             <string>Show quotes that can't be saved (price 0...)</string>
-            </property>
-            <property name="text">
-             <string>Wrong</string>
+            <property name="popupMode">
+             <enum>QToolButton::InstantPopup</enum>
             </property>
            </widget>
           </item>
@@ -210,6 +138,86 @@ background-color: rgb(255, 192, 192);</string>
     </layout>
    </item>
   </layout>
+  <action name="actionProducts">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/document-preview-archive.png</normaloff>:/xulpymoney/document-preview-archive.png</iconset>
+   </property>
+   <property name="text">
+    <string>Products searched</string>
+   </property>
+   <property name="toolTip">
+    <string>Products searched</string>
+   </property>
+  </action>
+  <action name="actionErrors">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/button_cancel.png</normaloff>:/xulpymoney/button_cancel.png</iconset>
+   </property>
+   <property name="text">
+    <string>Parsing errors</string>
+   </property>
+   <property name="toolTip">
+    <string>Parsing errors</string>
+   </property>
+  </action>
+  <action name="actionInserted">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/add.png</normaloff>:/xulpymoney/add.png</iconset>
+   </property>
+   <property name="text">
+    <string>Inserted quotes</string>
+   </property>
+   <property name="toolTip">
+    <string>Inserted quotes</string>
+   </property>
+  </action>
+  <action name="actionEdited">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/editar.png</normaloff>:/xulpymoney/editar.png</iconset>
+   </property>
+   <property name="text">
+    <string>Edited quotes</string>
+   </property>
+   <property name="toolTip">
+    <string>Edited quotes</string>
+   </property>
+  </action>
+  <action name="actionIgnored">
+   <property name="text">
+    <string>Ignored quotes</string>
+   </property>
+   <property name="toolTip">
+    <string>Ignored quotes</string>
+   </property>
+  </action>
+  <action name="actionWrong">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/checkbox0.png</normaloff>:/xulpymoney/checkbox0.png</iconset>
+   </property>
+   <property name="text">
+    <string>Wrong quotes</string>
+   </property>
+   <property name="toolTip">
+    <string>Wrong quotes</string>
+   </property>
+  </action>
+  <action name="actionHTML">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/history2.png</normaloff>:/xulpymoney/history2.png</iconset>
+   </property>
+   <property name="text">
+    <string>Show HTML</string>
+   </property>
+   <property name="toolTip">
+    <string>Show HTML</string>
+   </property>
+  </action>
  </widget>
  <resources>
   <include location="../images/xulpymoney.qrc"/>
