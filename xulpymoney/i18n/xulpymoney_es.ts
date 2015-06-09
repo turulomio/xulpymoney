@@ -964,7 +964,7 @@ Purgadas en total en el proceso global: {1}</translation>
 <context>
     <name>WorkerMercadoContinuo</name>
     <message>
-        <location filename="libsources.py" line="442"/>
+        <location filename="libsources.py" line="440"/>
         <source>Mercado Continuo source</source>
         <translation type="unfinished">Fuente del Mercado Continuo</translation>
     </message>
@@ -972,7 +972,7 @@ Purgadas en total en el proceso global: {1}</translation>
 <context>
     <name>WorkerMorningstar</name>
     <message>
-        <location filename="libsources.py" line="506"/>
+        <location filename="libsources.py" line="504"/>
         <source>Morningstar source</source>
         <translation>Fuente de Morningstar</translation>
     </message>
@@ -980,7 +980,7 @@ Purgadas en total en el proceso global: {1}</translation>
 <context>
     <name>WorkerSGWarrants</name>
     <message>
-        <location filename="libsources.py" line="560"/>
+        <location filename="libsources.py" line="558"/>
         <source>SG Warrants source</source>
         <translation type="unfinished"></translation>
     </message>
@@ -988,7 +988,7 @@ Purgadas en total en el proceso global: {1}</translation>
 <context>
     <name>WorkerYahoo</name>
     <message>
-        <location filename="libsources.py" line="621"/>
+        <location filename="libsources.py" line="619"/>
         <source>Yahoo source</source>
         <translation>Fuente de Yahoo</translation>
     </message>
@@ -996,7 +996,7 @@ Purgadas en total en el proceso global: {1}</translation>
 <context>
     <name>WorkerYahooHistorical</name>
     <message>
-        <location filename="libsources.py" line="726"/>
+        <location filename="libsources.py" line="724"/>
         <source>Yahoo Historical source</source>
         <translation type="unfinished"></translation>
     </message>
