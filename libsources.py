@@ -290,7 +290,7 @@ class Source(QObject):
             
     def toWebLog(self,  object):
         self.weblog=self.weblog +"\n\n\n###### FETCHED AT {} #######\n\n\n".format(datetime.datetime.now())
-        print ("toWebLog", object.__class__.__name__)
+#        print ("toWebLog", object.__class__.__name__)
         if object.__class__.__name__=='HTTPResponse':
             for line in object.readlines():
                 self.weblog=self.weblog+b2s(line)
@@ -298,8 +298,6 @@ class Source(QObject):
             for line in object:
                 self.weblog=self.weblog+line +"\n"
 
-        
-            
     def quotes_save(self):
         """Saves all quotes after product iteration. If I want to do something different. I must override this function"""
         
@@ -729,8 +727,8 @@ class WorkerYahooHistorical(SourceIterateProducts):
         product=self.products.find(id_product)
 
         ultima=product.fecha_ultima_actualizacion_historica()
-#        if ultima==datetime.date.today()-datetime.timedelta(days=1):
-#            return
+        if ultima==datetime.date.today()-datetime.timedelta(days=1):
+            return
         inicio= ultima+datetime.timedelta(days=1)
         fin= datetime.date.today()
         url='http://ichart.finance.yahoo.com/table.csv?s='+product.ticker+'&a='+str(inicio.month-1)+'&b='+str(inicio.day)+'&c='+str(inicio.year)+'&d='+str(fin.month-1)+'&e='+str(fin.day)+'&f='+str(fin.year)+'&g=d&ignore=.csv'
@@ -740,12 +738,14 @@ class WorkerYahooHistorical(SourceIterateProducts):
         web=[]
         ##TRansform httpresopone to list to iterate several times
         for line in mweb.readlines():
-            web.append(b2s(line))
+            web.append(b2s(line)[:-1])
+        web=web[1:]#Quita primera file de encabezado
         self.toWebLog(web)
         
         for i in web: 
             datos=i.split(",")
             fecha=datos[0].split("-")
+            print  (fecha)
             date=datetime.date(int(fecha[0]), int(fecha[1]),  int(fecha[2]))
             
             datestart=dt(date,product.stockexchange.starts,product.stockexchange.zone)
