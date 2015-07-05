@@ -100,7 +100,7 @@ class wdgBanks(QWidget, Ui_wdgBanks):
             return
                    
         for i in self.mem.data.investments_all().arr:
-            if i.cuenta.eb.id==self.banks.selected.id:
+            if i.account.eb.id==self.banks.selected.id:
                 if (self.chkActives.isChecked() and i.active==True) or (self.chkActives.isChecked()==False):
                     self.investments.append(i)
         

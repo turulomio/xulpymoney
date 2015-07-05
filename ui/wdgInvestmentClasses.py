@@ -108,7 +108,7 @@ class wdgInvestmentClasses(QWidget, Ui_wdgInvestmentClasses):
         self.canvasProduct=canvasPie(self)
         self.layProduct.addWidget(self.canvasProduct)      
         
-        self.cuentas=Assets(self.mem).saldo_todas_cuentas(self.hoy)
+        self.accounts=Assets(self.mem).saldo_todas_cuentas(self.hoy)
         self.tab.setCurrentIndex(2)
         self.update()
                
@@ -139,7 +139,7 @@ class wdgInvestmentClasses(QWidget, Ui_wdgInvestmentClasses):
                     else:
                         total=total+i.invertido()
             if r==0:
-                total=total+self.cuentas
+                total=total+self.accounts
             if total>0:
                 labels.append("{0}% variable".format(r*10))
                 data.append(total)
@@ -164,7 +164,7 @@ class wdgInvestmentClasses(QWidget, Ui_wdgInvestmentClasses):
                         total=total+i.invertido()
             labels.append(m.name)
             if m.id=='c':
-                data.append(total+self.cuentas)
+                data.append(total+self.accounts)
             else:
                 data.append(total)
             explode.append(0)
@@ -185,7 +185,7 @@ class wdgInvestmentClasses(QWidget, Ui_wdgInvestmentClasses):
                     else:
                         total=total+i.invertido()
             if t.id==11:#Accounts
-                total=total+self.cuentas
+                total=total+self.accounts
             if total>0:
                 labels.append(t.name)
                 data.append(total)
@@ -211,7 +211,7 @@ class wdgInvestmentClasses(QWidget, Ui_wdgInvestmentClasses):
                     else:
                         total=total+i.invertido()
             if a.id==0:#Accounts
-                total=total+self.cuentas
+                total=total+self.accounts
             if total>0:
                 labels.append(a.name)
                 data.append(total)
@@ -262,7 +262,7 @@ class wdgInvestmentClasses(QWidget, Ui_wdgInvestmentClasses):
                 data.append(self.mem.data.investments_active.invertido_misma_investment(i))
             explode.append(0)
         labels.append(self.tr("Accounts"))
-        data.append(self.cuentas)
+        data.append(self.accounts)
         explode.append(0.15)            
         
         self.canvasProduct.mydraw(data, labels,  explode)  

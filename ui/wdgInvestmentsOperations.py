@@ -69,9 +69,9 @@ class wdgInvestmentsOperations(QWidget, Ui_wdgInvestmentsOperations):
     @QtCore.pyqtSlot() 
     def on_actionShowAccount_triggered(self):
         if self.tab.currentIndex()==0:#Operation list
-            cuenta=self.selOperation.inversion.cuenta
+            cuenta=self.selOperation.inversion.account
         else:#Current operation list
-            cuenta=self.selCurrentOperation.inversion.cuenta
+            cuenta=self.selCurrentOperation.inversion.account
         w=frmAccountsReport(self.mem, cuenta, self)
         w.exec_()
         self.load()
@@ -112,7 +112,7 @@ class wdgInvestmentsOperations(QWidget, Ui_wdgInvestmentsOperations):
         self.actionShowInvestmentOperation.setEnabled(False)
         self.actionShowProduct.setEnabled(False)
         if self.selOperation!=None:
-            if self.selOperation.inversion.cuenta.active==True:#only enabled if it's active
+            if self.selOperation.inversion.account.active==True:#only enabled if it's active
                 self.actionShowAccount.setEnabled(True)
             if self.selOperation.inversion.active==True:
                 self.actionShowInvestment.setEnabled(True)

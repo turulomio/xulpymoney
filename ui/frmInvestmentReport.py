@@ -52,7 +52,7 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
             self.txtVenta.setText(str((self.inversion.venta)))
             self.ise.setSelected(self.inversion.product)
             self.cmdPuntoVenta.setEnabled(True)
-            self.cmbAccount.setCurrentIndex(self.cmbAccount.findData(self.inversion.cuenta.id))
+            self.cmbAccount.setCurrentIndex(self.cmbAccount.findData(self.inversion.account.id))
             self.update_tables()      
             if len(self.op.arr)!=0 or len(self.dividends.arr)!=0:#CmbAccount está desabilitado si hay dividends o operinversiones
                 self.cmbAccount.setEnabled(False)  
@@ -264,7 +264,7 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
             self.cmdInvestment.setEnabled(False)
         
     def on_tblOperaciones_customContextMenuRequested(self,  pos):
-        if self.inversion.qmessagebox_inactive() or self.inversion.cuenta.qmessagebox_inactive()or self.inversion.cuenta.eb.qmessagebox_inactive():
+        if self.inversion.qmessagebox_inactive() or self.inversion.account.qmessagebox_inactive()or self.inversion.account.eb.qmessagebox_inactive():
             return
         
         if self.op.selected==None:
@@ -296,7 +296,7 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
 
     def on_tblInvestmentCurrent_customContextMenuRequested(self,  pos):
         
-        if self.inversion.qmessagebox_inactive() or self.inversion.cuenta.qmessagebox_inactive() or self.inversion.cuenta.eb.qmessagebox_inactive():
+        if self.inversion.qmessagebox_inactive() or self.inversion.account.qmessagebox_inactive() or self.inversion.account.eb.qmessagebox_inactive():
             return
         menu=QMenu()
         menu.addAction(self.actionDisReinvest)
@@ -319,7 +319,7 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
         
         
     def on_tblDividends_customContextMenuRequested(self,  pos):
-        if self.inversion.qmessagebox_inactive() or self.inversion.cuenta.qmessagebox_inactive() or self.inversion.cuenta.eb.qmessagebox_inactive():
+        if self.inversion.qmessagebox_inactive() or self.inversion.account.qmessagebox_inactive() or self.inversion.account.eb.qmessagebox_inactive():
             return
         
         if self.selDividend==None:
