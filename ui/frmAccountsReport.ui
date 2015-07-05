@@ -49,7 +49,7 @@
      <item>
       <widget class="QTabWidget" name="tab">
        <property name="currentIndex">
-        <number>0</number>
+        <number>1</number>
        </property>
        <widget class="QWidget" name="tabMovimientos">
         <attribute name="icon">
@@ -433,7 +433,7 @@
                 <bool>false</bool>
                </property>
                <property name="currentIndex">
-                <number>0</number>
+                <number>1</number>
                </property>
                <widget class="QWidget" name="tab_2">
                 <attribute name="title">
@@ -601,7 +601,11 @@
                       </widget>
                      </item>
                      <item>
-                      <widget class="QComboBox" name="cmbFechasPago"/>
+                      <widget class="QComboBox" name="cmbFechasPago">
+                       <property name="sizeAdjustPolicy">
+                        <enum>QComboBox::AdjustToContents</enum>
+                       </property>
+                      </widget>
                      </item>
                      <item>
                       <spacer name="horizontalSpacer">
@@ -650,36 +654,6 @@
                      <attribute name="verticalHeaderVisible">
                       <bool>false</bool>
                      </attribute>
-                     <column>
-                      <property name="text">
-                       <string>Id</string>
-                      </property>
-                     </column>
-                     <column>
-                      <property name="text">
-                       <string>Date</string>
-                      </property>
-                     </column>
-                     <column>
-                      <property name="text">
-                       <string>Concept</string>
-                      </property>
-                     </column>
-                     <column>
-                      <property name="text">
-                       <string>Amount</string>
-                      </property>
-                     </column>
-                     <column>
-                      <property name="text">
-                       <string>Balance</string>
-                      </property>
-                     </column>
-                     <column>
-                      <property name="text">
-                       <string>Comment</string>
-                      </property>
-                     </column>
                     </widget>
                    </item>
                   </layout>
