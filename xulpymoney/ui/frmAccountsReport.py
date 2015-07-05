@@ -27,6 +27,9 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
         self.opercuentas=[]#Array de objetos CUentaOperacion
         self.tarjetas=[]
         
+        self.setCreditCardOperations=None#selected Current credit card operations
+        self.setPaidCreditCardOperations=None#Paid set credit card operations
+        
         self.totalOperCreditCards=0
         
         self.saldoiniciomensual=0#Almacena el inicio según on_cmdMovimientos_released
@@ -113,12 +116,12 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
             
         if self.actionCreditCardActivate.isChecked():#Ha pasado de inactiva a activa
             self.selCreditCard.active=True
-            self.mem.data.tarjetas_inactive.remove(self.selCreditCard)
-            self.mem.data.tarjetas_active.append(self.selCreditCard)
+            self.mem.data.creditcards_inactive.remove(self.selCreditCard)
+            self.mem.data.creditcards_active.append(self.selCreditCard)
         else:
             self.selCreditCard.active=False
-            self.mem.data.tarjetas_inactive.append(self.selCreditCard)
-            self.mem.data.tarjetas_active.remove(self.selCreditCard)
+            self.mem.data.creditcards_inactive.append(self.selCreditCard)
+            self.mem.data.creditcards_active.remove(self.selCreditCard)
         self.selCreditCard.save()
         self.mem.con.commit()
         
@@ -132,16 +135,16 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
             m.setText(self.tr("I can't delete the credit card, because it has dependent registers"))
             m.exec_()                 
         self.mem.con.commit()
-        self.mem.data.tarjetas_active.arr.remove(self.selCreditCard)
+        self.mem.data.creditcards_active.arr.remove(self.selCreditCard)
         self.tblCreditCards.clearSelection()
         self.on_chkCreditCards_stateChanged(self.chkCreditCards.checkState())
 
     def on_chkCreditCards_stateChanged(self, state):        
         if state==Qt.Unchecked:
-            self.tarjetas=self.mem.data.tarjetas_active.clone_of_account(self.selAccount)
+            self.tarjetas=self.mem.data.creditcards_active.clone_of_account(self.selAccount)
         else:
             self.mem.data.load_inactives()
-            self.tarjetas=self.mem.data.tarjetas_inactive.clone_of_account(self.selAccount)
+            self.tarjetas=self.mem.data.creditcards_inactive.clone_of_account(self.selAccount)
         self.load_tabCreditCards() 
         self.selCreditCard=None
         self.tblCreditCards.clearSelection()
@@ -462,7 +465,7 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
         cur.execute("delete from opercuentas where id_opercuentas=%s", (id_opercuentas, ))#No merece crear objeto
         cur.execute("update opertarjetas set fechapago=null, pagado=false, id_opercuentas=null where id_opercuentas=%s", (id_opercuentas, ) )
         self.mem.con.commit()
-        self.selCreditCard.get_opertarjetas_diferidas_pendientes()
+        self.selCreditCard.get_opercreditcards_diferidas_pendientes()
         self.on_cmdMovimientos_released()
         self.load_tabOperCreditCards()
         cur.close()     
@@ -470,42 +473,24 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
         
     @QtCore.pyqtSlot(int) 
     def on_cmbFechasPago_currentIndexChanged(self, index):
-        id_opercuentas=self.cmbFechasPago.itemData(int(self.cmbFechasPago.currentIndex()))
-        print (id_opercuentas)            
-        con=self.mem.connect_from_config()
-        cur = con.cursor()      
-        cur.execute("select id_opertarjetas,datetime,conceptos.concepto,importe,comentario from opertarjetas,conceptos where opertarjetas.id_conceptos=conceptos.id_conceptos and id_opercuentas=%s;", (id_opercuentas, ))
-        self.tblOpertarjetasHistoricas.clearContents()
-        self.tblOpertarjetasHistoricas.setRowCount(cur.rowcount);       
-        balance=0
-        for rec in cur:
-            balance=balance+rec['importe']
-            self.tblOpertarjetasHistoricas.setItem(cur.rownumber-1, 0, QTableWidgetItem(str(rec['id_opertarjetas'])))
-            self.tblOpertarjetasHistoricas.setItem(cur.rownumber-1, 1, QTableWidgetItem(str(rec['datetime'])))
-            self.tblOpertarjetasHistoricas.setItem(cur.rownumber-1, 2, QTableWidgetItem((rec['concepto'])))
-            self.tblOpertarjetasHistoricas.setItem(cur.rownumber-1, 3, self.selAccount.currency.qtablewidgetitem(rec['importe']))
-            self.tblOpertarjetasHistoricas.setItem(cur.rownumber-1, 4, self.selAccount.currency.qtablewidgetitem(balance))
-            self.tblOpertarjetasHistoricas.setItem(cur.rownumber-1, 5, QTableWidgetItem((rec['comentario'])))
-        cur.close()     
-        self.mem.disconnect(con)      
+        if index==-1:#Empty
+            return
+        id_opercuentas=self.cmbFechasPago.itemData(index)
+        self.setPaidCreditCardOperations=SetCreditCardOperations(self.mem)
+        self.setPaidCreditCardOperations.load_from_db("select * from opertarjetas where id_opercuentas={};".format(id_opercuentas, ))
+        self.setPaidCreditCardOperations.myqtablewidget(self.tblOpertarjetasHistoricas, "frmAccountsReport")
 
     def on_tabOpertarjetasDiferidas_currentChanged(self, index): 
         if  index==1: #PAGOS
             #Carga combo
             self.cmbFechasPago.clear()
-            con=self.mem.connect_from_config()
-            cur = con.cursor()       
-            cur2=con.cursor()
+            cur = self.mem.con.cursor()       
             cur.execute("select distinct(fechapago), id_opercuentas from opertarjetas where id_tarjetas=%s and fechapago is not null  order by fechapago;", (self.selCreditCard.id, ))
-            for row in cur:  
-                cur2.execute("select importe from opercuentas where id_opercuentas=%s", (row['id_opercuentas'], ))
-                importe=cur2.fetchone()["importe"]
-                self.cmbFechasPago.addItem(self.tr("{0} was made a paid of {1}").format(row['fechapago'],  self.mem.localcurrency.string(-importe)),row['id_opercuentas'])
+            for row in cur:   
+                ao=AccountOperation(self.mem).init__db_query(row['id_opercuentas'])
+                self.cmbFechasPago.addItem(self.tr("{0} was made a paid of {1}").format(row['fechapago'],  self.mem.localcurrency.string(-ao.importe))    , ao.id)
             self.cmbFechasPago.setCurrentIndex(cur.rowcount-1)
             cur.close()     
-            cur2.close()
-            self.mem.disconnect(con)      
-            
 
     def on_txtAccount_textChanged(self):
         self.cmdDatos.setEnabled(True)

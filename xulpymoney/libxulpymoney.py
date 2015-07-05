@@ -720,7 +720,7 @@ class SetAccountOperations:
             if row['id_tarjetas']==-1:
                 comentario=row['comentario']
             else:
-                comentario=QApplication.translate("Core","Paid with {0}. {1}").format(self.mem.data.tarjetas_all().find(row['id_tarjetas']).name, row['comentario'] )
+                comentario=QApplication.translate("Core","Paid with {0}. {1}").format(self.mem.data.creditcards_all().find(row['id_tarjetas']).name, row['comentario'] )
             
             co=AccountOperation(self.mem).init__create(row['datetime'], self.mem.conceptos.find(row['id_conceptos']), self.mem.tiposoperaciones.find(row['id_tiposoperaciones']), row['importe'], comentario,  self.mem.data.accounts_all().find(row['id_cuentas']))
             self.arr.append(co)
@@ -1927,6 +1927,9 @@ class AccountOperation:
 
     def init__db_query(self, id_opercuentas):
         """Creates a AccountOperation querying database for an id_opercuentas"""
+        if id_opercuentas==None:
+            print ("id_opercuentas not found")
+            return None
         resultado=None
         cur=self.mem.con.cursor()
         cur.execute("select * from opercuentas where id_opercuentas=%s", (id_opercuentas, ))
@@ -2022,8 +2025,8 @@ class DBData:
         self.banks_active.load_from_db("select * from entidadesbancarias where active=true")
         self.accounts_active=SetAccounts(self.mem, self.banks_active)
         self.accounts_active.load_from_db("select * from cuentas where active=true")
-        self.tarjetas_active=SetCreditCards(self.mem, self.mem.data.accounts_active)
-        self.tarjetas_active.load_from_db("select * from tarjetas where active=true")
+        self.creditcards_active=SetCreditCards(self.mem, self.mem.data.accounts_active)
+        self.creditcards_active.load_from_db("select * from tarjetas where active=true")
         self.products_active=SetProducts(self.mem)
         self.products_active.load_from_inversiones_query("select distinct(products_id) from inversiones where active=true")
         self.investments_active=SetInvestments(self.mem, self.accounts_active, self.products_active, self.benchmark)
@@ -2040,8 +2043,8 @@ class DBData:
             self.accounts_inactive=SetAccounts(self.mem, self.banks_all())
             self.accounts_inactive.load_from_db("select * from cuentas where active=false")
         
-            self.tarjetas_inactive=SetCreditCards(self.mem, self.accounts_all())
-            self.tarjetas_inactive.load_from_db("select * from tarjetas where active=false")
+            self.creditcards_inactive=SetCreditCards(self.mem, self.accounts_all())
+            self.creditcards_inactive.load_from_db("select * from tarjetas where active=false")
             
             self.products_inactive=SetProducts(self.mem)
             self.products_inactive.load_from_inversiones_query("select distinct(products_id) from inversiones where active=false")
@@ -2093,8 +2096,8 @@ class DBData:
     def accounts_all(self):
         return self.accounts_active.union(self.accounts_inactive, self.mem, self.banks_all())
         
-    def tarjetas_all(self):
-        return self.tarjetas_active.union(self.tarjetas_inactive, self.mem,  self.accounts_all())
+    def creditcards_all(self):
+        return self.creditcards_active.union(self.creditcards_inactive, self.mem,  self.accounts_all())
         
     def investments_all(self):
         return self.investments_active.union(self.investments_inactive, self.mem, self.accounts_all(), self.products_all(), self.benchmark)
@@ -2135,9 +2138,9 @@ class DBData:
     def creditcards_set(self, active):
         """Function to point to list if is active or not"""
         if active==True:
-            return self.tarjetas_active
+            return self.creditcards_active
         else:
-            return self.tarjetas_inactive
+            return self.creditcards_inactive
 
         
 class Dividend:
@@ -2772,7 +2775,7 @@ class CreditCard:
             cur.close()
             return True
         
-    def get_opertarjetas_diferidas_pendientes(self):
+    def get_opercreditcards_diferidas_pendientes(self):
         """Funci`on que carga un array con objetos inversion operacion y con ellos calcula el set de actual e historicas"""
         cur=self.mem.con.cursor()
         self.op_diferido=[]
@@ -3074,7 +3077,7 @@ class SetCreditCards(SetCommons):
         for row in cur:
             t=CreditCard(self.mem).init__db_row(row, self.cuentas.find(row['id_cuentas']))
             if t.pagodiferido==True:
-                t.get_opertarjetas_diferidas_pendientes()
+                t.get_opercreditcards_diferidas_pendientes()
 #            self.dic_arr[str(t.id)]=t
             self.arr.append(t)
         cur.close()
@@ -3087,8 +3090,62 @@ class SetCreditCards(SetCommons):
                 s.arr.append(t)
         return s
 
-       
+class SetCreditCardOperations:
+    def __init__(self, mem):
+        self.mem=mem
+        self.arr=[]
         
+    def clear(self):
+        del self.arr
+        self.arr=[]
+
+    def balance(self):
+        """Returns the balance of all credit card operations"""
+        result=Decimal(0)
+        for o in self.arr:
+            result=result+o.importe
+        return result
+        
+    def append(self, objeto):
+        self.arr.append(objeto)
+
+    def length(self):
+        return len(self.arr)
+        
+    def load_from_db(self, sql):
+        cur=self.mem.con.cursor()
+        cur.execute(sql)#"Select * from opercuentas"
+        for row in cur:        
+            co=CreditCardOperation(self.mem).init__db_row(row, self.mem.tiposoperaciones.find(row['id_tiposoperaciones']), self.mem.data.creditcards_all().find(row['id_tarjetas']), AccountOperation(self.mem).init__db_query(row['id_opercuentas']))
+            self.append(co)
+        cur.close()
+    
+    def sort(self):       
+        self.arr=sorted(self.arr, key=lambda e: e.datetime,  reverse=False) 
+        
+    def myqtablewidget(self, tabla, section):
+        """Section es donde guardar en el config file, coincide con el nombre del formulario en el que está la tabla
+        show_account muestra la cuenta cuando las opercuentas son de diversos cuentas (Estudios totales)"""
+        ##HEADERS
+        tabla.setColumnCount(5)
+        tabla.setHorizontalHeaderItem(0, QTableWidgetItem(QApplication.translate(section, "Date" )))
+        tabla.setHorizontalHeaderItem(1, QTableWidgetItem(QApplication.translate(section, "Concept" )))
+        tabla.setHorizontalHeaderItem(2,  QTableWidgetItem(QApplication.translate(section, "Amount" )))
+        tabla.setHorizontalHeaderItem(3, QTableWidgetItem(QApplication.translate(section, "Balance" )))
+        tabla.setHorizontalHeaderItem(4, QTableWidgetItem(QApplication.translate(section, "Comment" )))
+        ##DATA 
+        tabla.clearContents()
+        tabla.settings(section,  self.mem)       
+        tabla.setRowCount(self.length())
+        balance=Decimal(0)
+        self.sort()
+        for rownumber, a in enumerate(self.arr):
+            balance=balance+a.importe
+            tabla.setItem(rownumber, 0, qdatetime(a.datetime, self.mem.localzone))
+            tabla.setItem(rownumber, 1, qleft(a.concepto.name))
+            tabla.setItem(rownumber, 2, self.mem.localcurrency.qtablewidgetitem(a.importe))
+            tabla.setItem(rownumber, 3, self.mem.localcurrency.qtablewidgetitem(balance))
+            tabla.setItem(rownumber, 4, qleft(a.comentario))
 class SetOperationTypes(SetCommons):
     def __init__(self, mem):
         SetCommons.__init__(self)
