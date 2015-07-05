@@ -17,7 +17,7 @@ class frmAccountOperationsAdd(QDialog, Ui_frmAccountOperationsAdd):
         self.setupUi(self)
         self.mem=mem
         
-        self.cuenta=cuenta
+        self.account=cuenta
         self.opercuenta=opercuenta
         self.tarjeta=tarjeta
         self.opertarjeta=opertarjeta
@@ -34,7 +34,7 @@ class frmAccountOperationsAdd(QDialog, Ui_frmAccountOperationsAdd):
             self.tipo=4            
             self.wdgDT.set(self.mem, self.opertarjeta.datetime, self.mem.localzone)
             self.cmbConcepts.setCurrentIndex(self.cmbConcepts.findData(self.opertarjeta.concepto.id))
-            self.cmbAccounts.setCurrentIndex(self.cmbAccounts.findData(self.opertarjeta.tarjeta.cuenta.id))
+            self.cmbAccounts.setCurrentIndex(self.cmbAccounts.findData(self.opertarjeta.tarjeta.account.id))
             self.txtImporte.setText(str(self.opertarjeta.importe))
             self.txtComentario.setText(self.opertarjeta.comentario)
         elif tarjeta!=None:
@@ -49,7 +49,7 @@ class frmAccountOperationsAdd(QDialog, Ui_frmAccountOperationsAdd):
             self.lblTitulo.setText(self.tr("Account operation update"))
             self.wdgDT.set(self.mem, self.opercuenta.datetime, self.mem.localzone)
             self.cmbConcepts.setCurrentIndex(self.cmbConcepts.findData(self.opercuenta.concepto.id))
-            self.cmbAccounts.setCurrentIndex(self.cmbAccounts.findData(self.opercuenta.cuenta.id))
+            self.cmbAccounts.setCurrentIndex(self.cmbAccounts.findData(self.opercuenta.account.id))
             self.txtImporte.setText(str(self.opercuenta.importe))
             self.txtComentario.setText((self.opercuenta.comentario))    
         else:
@@ -57,7 +57,7 @@ class frmAccountOperationsAdd(QDialog, Ui_frmAccountOperationsAdd):
             self.setWindowTitle(self.tr("New account operation"))
             self.lblTitulo.setText(self.tr("New account operation"))
             self.wdgDT.set(self.mem)
-            self.cmbAccounts.setCurrentIndex(self.cmbAccounts.findData(self.cuenta.id))
+            self.cmbAccounts.setCurrentIndex(self.cmbAccounts.findData(self.account.id))
 
         
     def on_cmd_released(self):
@@ -89,13 +89,13 @@ class frmAccountOperationsAdd(QDialog, Ui_frmAccountOperationsAdd):
                     
         if self.tipo==1:
             self.opercuenta=AccountOperation(self.mem)
-            self.opercuenta.cuenta=self.cuenta
+            self.opercuenta.account=self.account
             self.opercuenta.datetime=self.wdgDT.datetime()
             self.opercuenta.concepto=concepto
             self.opercuenta.tipooperacion=concepto.tipooperacion
             self.opercuenta.importe=importe
             self.opercuenta.comentario=comentario
-            self.opercuenta.cuenta=self.mem.data.accounts_active.find(id_cuentas)#Se puede cambiar
+            self.opercuenta.account=self.mem.data.accounts_active.find(id_cuentas)#Se puede cambiar
             self.opercuenta.save()
             self.mem.con.commit()        #Se debe hacer el commit antes para que al actualizar con el signal salga todos los datos
             self.OperAccountIBMed.emit()
@@ -106,7 +106,7 @@ class frmAccountOperationsAdd(QDialog, Ui_frmAccountOperationsAdd):
             self.opercuenta.tipooperacion=concepto.tipooperacion
             self.opercuenta.importe=importe
             self.opercuenta.comentario=comentario
-            self.opercuenta.cuenta=self.mem.data.accounts_active.find(id_cuentas)#Se puede cambiar
+            self.opercuenta.account=self.mem.data.accounts_active.find(id_cuentas)#Se puede cambiar
             self.opercuenta.save()
             self.mem.con.commit()        #Se debe hacer el commit antes para que al actualizar con el signal salga todos los datos
             self.OperAccountIBMed.emit()

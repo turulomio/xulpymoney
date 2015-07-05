@@ -51,7 +51,7 @@ class wdgDividendsReport(QWidget, Ui_wdgDividendsReport):
                 divestimado=inv.dividend_bruto_estimado()
             
             self.tblInvestments.setItem(i, 0,QTableWidgetItem(inv.name))
-            self.tblInvestments.setItem(i, 1, QTableWidgetItem(inv.cuenta.eb.name))
+            self.tblInvestments.setItem(i, 1, QTableWidgetItem(inv.account.eb.name))
             self.tblInvestments.setItem(i, 2, inv.product.currency.qtablewidgetitem(inv.product.result.basic.last.quote))
             self.tblInvestments.setItem(i, 3, inv.product.currency.qtablewidgetitem(dpa))    
             self.tblInvestments.setItem(i, 4, qright(str(inv.acciones())))

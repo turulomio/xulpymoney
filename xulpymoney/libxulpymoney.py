@@ -18,7 +18,7 @@ class AccountOperationOfInvestmentOperation:
         self.tipooperacion=None
         self.importe=None
         self.comentario=None #Documented in comment
-        self.cuenta=None
+        self.account=None
         self.operinversion=None
         self.inversion=None
         
@@ -28,7 +28,7 @@ class AccountOperationOfInvestmentOperation:
         self.tipooperacion=tipooperacion
         self.importe=importe
         self.comentario=comentario
-        self.cuenta=cuenta
+        self.account=cuenta
         self.operinversion=operinversion
         self.inversion=inversion
         return self
@@ -38,10 +38,10 @@ class AccountOperationOfInvestmentOperation:
     def save(self):
         cur=self.mem.con.cursor()
         if self.id==None:
-            cur.execute("insert into opercuentasdeoperinversiones (datetime, id_conceptos, id_tiposoperaciones, importe, comentario,id_cuentas, id_operinversiones,id_inversiones) values ( %s,%s,%s,%s,%s,%s,%s,%s) returning id_opercuentas", (self.datetime, self.concepto.id, self.tipooperacion.id, self.importe, self.comentario, self.cuenta.id, self.operinversion.id, self.inversion.id))
+            cur.execute("insert into opercuentasdeoperinversiones (datetime, id_conceptos, id_tiposoperaciones, importe, comentario,id_cuentas, id_operinversiones,id_inversiones) values ( %s,%s,%s,%s,%s,%s,%s,%s) returning id_opercuentas", (self.datetime, self.concepto.id, self.tipooperacion.id, self.importe, self.comentario, self.account.id, self.operinversion.id, self.inversion.id))
             self.id=cur.fetchone()[0]
         else:
-            cur.execute("UPDATE FALTA  set datetime=%s, id_conceptos=%s, id_tiposoperaciones=%s, importe=%s, comentario=%s, id_cuentas=%s where id_opercuentas=%s", (self.datetime, self.concepto.id, self.tipooperacion.id,  self.importe,  self.comentario,  self.cuenta.id,  self.id))
+            cur.execute("UPDATE FALTA  set datetime=%s, id_conceptos=%s, id_tiposoperaciones=%s, importe=%s, comentario=%s, id_cuentas=%s where id_opercuentas=%s", (self.datetime, self.concepto.id, self.tipooperacion.id,  self.importe,  self.comentario,  self.account.id,  self.id))
         cur.close()
 
 
@@ -160,7 +160,7 @@ class SetInvestments(SetCommons):
         SetCommons.__init__(self)
 #        self.arr=[]
         self.mem=mem
-        self.cuentas=cuentas
+        self.accounts=cuentas
         self.products=products
         self.benchmark=benchmark  ##Objeto product
             
@@ -177,7 +177,7 @@ class SetInvestments(SetCommons):
                 pd.setValue(cur.rownumber)
                 pd.update()
                 QApplication.processEvents()
-            inv=Investment(self.mem).init__db_row(row,  self.cuentas.find(row['id_cuentas']), self.products.find(row['products_id']))
+            inv=Investment(self.mem).init__db_row(row,  self.accounts.find(row['id_cuentas']), self.products.find(row['products_id']))
             inv.get_operinversiones()
             inv.op_actual.get_valor_benchmark(self.benchmark)
             self.append(inv)
@@ -229,7 +229,7 @@ class SetInvestments(SetCommons):
         arr=[]
         for i in self.arr:
             if i.active==True and i.product==investmentmq:
-                arr.append(("{0} - {1}".format(i.cuenta.eb.name, i.name), i.id))
+                arr.append(("{0} - {1}".format(i.account.eb.name, i.name), i.id))
                         
         arr=sorted(arr, key=lambda a: a[0]  ,  reverse=False)  
         for a in arr:
@@ -251,7 +251,7 @@ class SetInvestments(SetCommons):
             if tipo==0:
                 arr.append((i.name, i.id))            
             elif tipo==1:
-                arr.append(("{0} - {1}".format(i.cuenta.eb.name, i.name), i.id))
+                arr.append(("{0} - {1}".format(i.account.eb.name, i.name), i.id))
                 
         
         arr=sorted(arr, key=lambda a: a[0]  ,  reverse=False)  
@@ -281,7 +281,7 @@ class SetInvestments(SetCommons):
         now=self.mem.localzone.now()
 
         if comision!=0:
-            op_cuenta=AccountOperation(self.mem).init__create(now.date(), self.mem.conceptos.find(38), self.mem.tiposoperaciones.find(1), -comision, "Traspaso de valores", origen.cuenta)
+            op_cuenta=AccountOperation(self.mem).init__create(now.date(), self.mem.conceptos.find(38), self.mem.tiposoperaciones.find(1), -comision, "Traspaso de valores", origen.account)
             op_cuenta.save()           
             comentario="{0}|{1}".format(destino.id, op_cuenta.id)
         else:
@@ -754,7 +754,7 @@ class SetAccountOperations:
             balance=balance+a.importe
             tabla.setItem(rownumber, 0, qdatetime(a.datetime, self.mem.localzone))
             if show_account==True:
-                tabla.setItem(rownumber, diff, QTableWidgetItem(a.cuenta.name))
+                tabla.setItem(rownumber, diff, QTableWidgetItem(a.account.name))
             tabla.setItem(rownumber, 1+diff, qleft(a.concepto.name))
             tabla.setItem(rownumber, 2+diff, self.mem.localcurrency.qtablewidgetitem(a.importe))
             tabla.setItem(rownumber, 3+diff, self.mem.localcurrency.qtablewidgetitem(balance))
@@ -1200,7 +1200,7 @@ class SetInvestmentOperations(SetIO):
                 tabla.item(rownumber, 0).setIcon(QIcon(":/xulpymoney/new.png"))
             if homogeneous==False:
                 tabla.setItem(rownumber, diff-1, qleft(a.inversion.name))
-                tabla.setItem(rownumber, diff, qleft(a.inversion.cuenta.name))
+                tabla.setItem(rownumber, diff, qleft(a.inversion.account.name))
             tabla.setItem(rownumber, diff+1, QTableWidgetItem(a.tipooperacion.name))
             tabla.setItem(rownumber, diff+2, qright(a.acciones))
             tabla.setItem(rownumber, diff+3, self.mem.localcurrency.qtablewidgetitem(a.valor_accion))
@@ -1350,7 +1350,7 @@ class SetInvestmentOperationsCurrent(SetIO):
                 tabla.item(rownumber, 0).setIcon(QIcon(":/xulpymoney/new.png"))
             if homogeneous==False:
                 tabla.setItem(rownumber, diff-1, qleft(a.inversion.name))
-                tabla.setItem(rownumber, diff, qleft(a.inversion.cuenta.name))
+                tabla.setItem(rownumber, diff, qleft(a.inversion.account.name))
             tabla.setItem(rownumber, diff+1, qright("{0:.6f}".format(a.acciones)))
             tabla.setItem(rownumber, diff+2, a.inversion.product.currency.qtablewidgetitem(a.valor_accion, 6))
             tabla.setItem(rownumber, diff+3, a.inversion.product.currency.qtablewidgetitem(invertido))
@@ -1906,7 +1906,7 @@ class AccountOperation:
         self.tipooperacion=None
         self.importe=None
         self.comentario=None #Documented in comment
-        self.cuenta=None
+        self.account=None
         
     def __repr__(self):
         return "AccountOperation {0}. datetime: {1}. Importe:{2}. Concept:{3}".format(self.id, self.datetime, self.importe, self.concepto)
@@ -1918,7 +1918,7 @@ class AccountOperation:
         self.tipooperacion=tipooperacion
         self.importe=importe
         self.comentario=comentario
-        self.cuenta=cuenta
+        self.account=cuenta
         return self
         
     def init__db_row(self, row, concepto,  tipooperacion, cuenta):
@@ -1964,9 +1964,9 @@ class AccountOperation:
         """
         c=self.comentario.split("|")
         if self.concepto.id in (62, 39, 50, 63, 65) and len(c)==4:#"{0}|{1}|{2}|{3}".format(self.inversion.name, self.bruto, self.retencion, self.comision)
-            return QApplication.translate("Core","{0[0]}. Gross: {0[1]} {1}. Witholding tax: {0[2]} {1}. Comission: {0[3]} {1}").format(c, self.cuenta.currency.symbol)
+            return QApplication.translate("Core","{0[0]}. Gross: {0[1]} {1}. Witholding tax: {0[2]} {1}. Comission: {0[3]} {1}").format(c, self.account.currency.symbol)
         elif self.concepto.id in (29, 35) and len(c)==5:#{0}|{1}|{2}|{3}".format(row['inversion'], importe, comision, impuestos)
-            return QApplication.translate("Core","{0[1]}: {0[0]} shares. Amount: {0[2]} {1}. Comission: {0[3]} {1}. Taxes: {0[4]} {1}").format(c, self.cuenta.currency.symbol)
+            return QApplication.translate("Core","{0[1]}: {0[0]} shares. Amount: {0[2]} {1}. Comission: {0[3]} {1}. Taxes: {0[4]} {1}").format(c, self.account.currency.symbol)
         elif self.concepto.id==40 and len(c)==2:#"{0}|{1}".format(self.selCreditCard.name, len(self.setSelOperCreditCards))
             return QApplication.translate("Core","CreditCard: {0[0]}. Made {0[1]} payments").format(c)
         elif self.concepto.id==4 and len(c)==3:#Transfer from origin
@@ -2005,10 +2005,10 @@ class AccountOperation:
     def save(self):
         cur=self.mem.con.cursor()
         if self.id==None:
-            cur.execute("insert into opercuentas (datetime, id_conceptos, id_tiposoperaciones, importe, comentario, id_cuentas) values ( %s,%s,%s,%s,%s,%s) returning id_opercuentas",(self.datetime, self.concepto.id, self.tipooperacion.id, self.importe, self.comentario, self.cuenta.id))
+            cur.execute("insert into opercuentas (datetime, id_conceptos, id_tiposoperaciones, importe, comentario, id_cuentas) values ( %s,%s,%s,%s,%s,%s) returning id_opercuentas",(self.datetime, self.concepto.id, self.tipooperacion.id, self.importe, self.comentario, self.account.id))
             self.id=cur.fetchone()[0]
         else:
-            cur.execute("update opercuentas set datetime=%s, id_conceptos=%s, id_tiposoperaciones=%s, importe=%s, comentario=%s, id_cuentas=%s where id_opercuentas=%s", (self.datetime, self.concepto.id, self.tipooperacion.id,  self.importe,  self.comentario,  self.cuenta.id,  self.id))
+            cur.execute("update opercuentas set datetime=%s, id_conceptos=%s, id_tiposoperaciones=%s, importe=%s, comentario=%s, id_cuentas=%s where id_opercuentas=%s", (self.datetime, self.concepto.id, self.tipooperacion.id,  self.importe,  self.comentario,  self.account.id,  self.id))
         cur.close()
         
 class DBData:
@@ -2201,7 +2201,7 @@ class Dividend:
         cur=self.mem.con.cursor()
         comentario="{0}|{1}|{2}|{3}".format(self.inversion.name, self.bruto, self.retencion, self.comision)
         if self.id==None:#Insertar
-            oc=AccountOperation(self.mem).init__create( self.fecha,self.concepto, self.concepto.tipooperacion, self.neto, comentario, self.inversion.cuenta)
+            oc=AccountOperation(self.mem).init__create( self.fecha,self.concepto, self.concepto.tipooperacion, self.neto, comentario, self.inversion.account)
             oc.save()
             self.opercuenta=oc
             #Añade el dividend
@@ -2285,16 +2285,16 @@ class InvestmentOperation:
         cur.close()
         if self.tipooperacion.id==4:#Compra Acciones
             #Se pone un registro de compra de acciones que resta el balance de la opercuenta
-            c=AccountOperationOfInvestmentOperation(self.mem).init__create(self.datetime, self.mem.conceptos.find(29), self.tipooperacion, -self.importe-self.comision, self.comentario, self.inversion.cuenta, self,self.inversion)
+            c=AccountOperationOfInvestmentOperation(self.mem).init__create(self.datetime, self.mem.conceptos.find(29), self.tipooperacion, -self.importe-self.comision, self.comentario, self.inversion.account, self,self.inversion)
             c.save()
         elif self.tipooperacion.id==5:#// Venta Acciones
             #//Se pone un registro de compra de acciones que resta el balance de la opercuenta
-            c=AccountOperationOfInvestmentOperation(self.mem).init__create(self.datetime, self.mem.conceptos.find(35), self.tipooperacion, self.importe-self.comision-self.impuestos, self.comentario, self.inversion.cuenta, self,self.inversion)
+            c=AccountOperationOfInvestmentOperation(self.mem).init__create(self.datetime, self.mem.conceptos.find(35), self.tipooperacion, self.importe-self.comision-self.impuestos, self.comentario, self.inversion.account, self,self.inversion)
             c.save()
         elif self.tipooperacion.id==6:
             #//Si hubiera comisión se añade la comisión.
             if(self.comision!=0):
-                c=AccountOperationOfInvestmentOperation(self.mem).init__create(self.datetime, self.mem.conceptos.find(38), self.mem.tiposoperaciones.find(1), -self.comision-self.impuestos, self.comentario, self.inversion.cuenta, self,self.inversion)
+                c=AccountOperationOfInvestmentOperation(self.mem).init__create(self.datetime, self.mem.conceptos.find(38), self.mem.tiposoperaciones.find(1), -self.comision-self.impuestos, self.comentario, self.inversion.account, self,self.inversion)
                 c.save()
     
     def copy(self):
@@ -2306,7 +2306,7 @@ class InvestmentOperation:
     def comment(self):
         """Función que genera un comentario parseado según el tipo de operación o concepto"""
         if self.tipooperacion.id==9:#"Traspaso de valores. Origen"#"{0}|{1}|{2}|{3}".format(self.inversion.name, self.bruto, self.retencion, self.comision)
-            return QApplication.translate("Core","Traspaso de valores realizado a {0}".format(self.comentario.split("|"), self.cuenta.currency.symbol))
+            return QApplication.translate("Core","Traspaso de valores realizado a {0}".format(self.comentario.split("|"), self.account.currency.symbol))
         else:
             return self.comentario
 
@@ -2390,7 +2390,7 @@ class Bank:
         
         #Recorre balance inversiones
         for i in setinversiones.arr:
-            if i.cuenta.eb.id==self.id:
+            if i.account.eb.id==self.id:
                 resultado=resultado+i.balance()
         return resultado
         
@@ -2535,7 +2535,7 @@ class Investment:
         self.venta=None
 #        self.id_cuentas=None
         self.product=None#Puntero a objeto MQInvestment
-        self.cuenta=None#Vincula a un objeto  Account
+        self.account=None#Vincula a un objeto  Account
         self.active=None
         self.op=None#Es un objeto SetInvestmentOperations
         self.op_actual=None#Es un objeto Setoperinversionesactual
@@ -2545,7 +2545,7 @@ class Investment:
     def create(self, name, venta, cuenta, inversionmq):
         self.name=name
         self.venta=venta
-        self.cuenta=cuenta
+        self.account=cuenta
         self.product=inversionmq
         self.active=True
         return self
@@ -2555,10 +2555,10 @@ class Investment:
         """Inserta o actualiza la inversión dependiendo de si id=None o no"""
         cur=self.mem.con.cursor()
         if self.id==None:
-            cur.execute("insert into inversiones (inversion, venta, id_cuentas, active, products_id) values (%s, %s,%s,%s,%s) returning id_inversiones", (self.name, self.venta, self.cuenta.id, self.active, self.product.id))    
+            cur.execute("insert into inversiones (inversion, venta, id_cuentas, active, products_id) values (%s, %s,%s,%s,%s) returning id_inversiones", (self.name, self.venta, self.account.id, self.active, self.product.id))    
             self.id=cur.fetchone()[0]
         else:
-            cur.execute("update inversiones set inversion=%s, venta=%s, id_cuentas=%s, active=%s, products_id=%s where id_inversiones=%s", (self.name, self.venta, self.cuenta.id, self.active, self.product.id, self.id))
+            cur.execute("update inversiones set inversion=%s, venta=%s, id_cuentas=%s, active=%s, products_id=%s where id_inversiones=%s", (self.name, self.venta, self.account.id, self.active, self.product.id, self.id))
         cur.close()
 
     def __repr__(self):
@@ -2568,7 +2568,7 @@ class Investment:
         self.id=row['id_inversiones']
         self.name=row['inversion']
         self.venta=row['venta']
-        self.cuenta=cuenta
+        self.account=cuenta
         self.product=mqinvestment
         self.active=row['active']
         return self
@@ -2736,19 +2736,19 @@ class CreditCard:
         self.mem=mem
         self.id=None
         self.name=None
-        self.cuenta=None
+        self.account=None
         self.pagodiferido=None
         self.saldomaximo=None
         self.active=None
         self.numero=None
         
-        self.op_diferido=[]#array que almacena objetos CreditCard operacion que son en diferido
+#        self.op_diferido=SetCreditCardOperations(self.mem)#array que almacena objetos CreditCard operacion que son en diferido, los carga
         
     def init__create(self, name, cuenta, pagodiferido, saldomaximo, activa, numero, id=None):
         """El parámetro cuenta es un objeto cuenta, si no se tuviera en tiempo de creación se asigna None"""
         self.id=id
         self.name=name
-        self.cuenta=cuenta
+        self.account=cuenta
         self.pagodiferido=pagodiferido
         self.saldomaximo=saldomaximo
         self.active=activa
@@ -2774,15 +2774,15 @@ class CreditCard:
             cur.execute(sql)
             cur.close()
             return True
-        
-    def get_opercreditcards_diferidas_pendientes(self):
-        """Funci`on que carga un array con objetos inversion operacion y con ellos calcula el set de actual e historicas"""
-        cur=self.mem.con.cursor()
-        self.op_diferido=[]
-        cur.execute("SELECT * from opertarjetas where id_tarjetas=%s and pagado=false", (self.id, ))
-        for row in cur:
-            self.op_diferido.append(CreditCardOperation(self.mem).init__db_row(row, self.mem.conceptos.find(row['id_conceptos']), self.mem.tiposoperaciones.find(row['id_tiposoperaciones']), self))
-        cur.close()
+#        
+#    def get_opercreditcards_diferidas_pendientes(self):
+#        """Funci`on que carga un array con objetos inversion operacion y con ellos calcula el set de actual e historicas"""
+#        cur=self.mem.con.cursor()
+#        self.op_diferido=[]
+#        cur.execute("SELECT * from opertarjetas where id_tarjetas=%s and pagado=false", (self.id, ))
+#        for row in cur:
+#            self.op_diferido.append(CreditCardOperation(self.mem).init__db_row(row, self.mem.conceptos.find(row['id_conceptos']), self.mem.tiposoperaciones.find(row['id_tiposoperaciones']), self))
+#        cur.close()
         
     def qmessagebox_inactive(self):
         if self.active==False:
@@ -2796,19 +2796,22 @@ class CreditCard:
     def save(self):
         cur=self.mem.con.cursor()
         if self.id==None:
-            cur.execute("insert into tarjetas (tarjeta,id_cuentas,pagodiferido,saldomaximo,active,numero) values (%s, %s, %s,%s,%s,%s) returning id_tarjetas", (self.name, self.cuenta.id,  self.pagodiferido ,  self.saldomaximo, self.active, self.numero))
+            cur.execute("insert into tarjetas (tarjeta,id_cuentas,pagodiferido,saldomaximo,active,numero) values (%s, %s, %s,%s,%s,%s) returning id_tarjetas", (self.name, self.account.id,  self.pagodiferido ,  self.saldomaximo, self.active, self.numero))
             self.id=cur.fetchone()[0]
         else:
-            cur.execute("update tarjetas set tarjeta=%s, id_cuentas=%s, pagodiferido=%s, saldomaximo=%s, active=%s, numero=%s where id_tarjetas=%s", (self.name, self.cuenta.id,  self.pagodiferido ,  self.saldomaximo, self.active, self.numero, self.id))
+            cur.execute("update tarjetas set tarjeta=%s, id_cuentas=%s, pagodiferido=%s, saldomaximo=%s, active=%s, numero=%s where id_tarjetas=%s", (self.name, self.account.id,  self.pagodiferido ,  self.saldomaximo, self.active, self.numero, self.id))
 
         cur.close()
         
     def saldo_pendiente(self):
         """Es el balance solo de operaciones difreidas sin pagar"""
-        resultado=0
-        for o in self.op_diferido:
-            resultado=resultado+ o.importe
-        return resultado
+        cur=self.mem.con.cursor()
+        cur.execute("select sum(importe) from opertarjetas where id_tarjetas=%s and pagado=false;", [self.id])
+        result=cur.fetchone()[0]
+        cur.close()
+        if result==None:
+            result=Decimal(0)
+        return result
 
 class CreditCardOperation:
     def __init__(self, mem):
@@ -2825,6 +2828,20 @@ class CreditCardOperation:
         self.fechapago=None
         self.opercuenta=None
         
+        
+#    def __repr__(self):
+#        return """CreditCardOperation ({})
+#    - Datetime: {}
+#    - Concepto: {}
+#    - Tipo de operaci´on: {}
+#    - Importe: {}
+#    - Comentario: {}
+#    - Tarjeta: {} ({})
+#    - Pagado: {}
+#    - Fecha de pago: {}
+#    - Operaci´on de cuenta: {}
+#        """.format(self.id, self.datetime, self.concepto.name, self.tipooperacion.name, self.importe, self.comentario, self.tarjeta.name,  self.tarjeta.id, self.pagado, self.fechapago, self.opercuenta.id)
+#        
     def init__create(self, dt,  concepto, tipooperacion, importe, comentario, tarjeta, pagado=None, fechapago=None, opercuenta=None, id_opertarjetas=None):
         """pagado, fechapago y opercuenta solo se rellena cuando se paga"""
         self.id=id_opertarjetas
@@ -3069,24 +3086,33 @@ class SetCreditCards(SetCommons):
     def __init__(self, mem, cuentas):
         SetCommons.__init__(self)
         self.mem=mem   
-        self.cuentas=cuentas
+        self.accounts=cuentas
 
     def load_from_db(self, sql):
         cur=self.mem.con.cursor()
         cur.execute(sql)#"Select * from tarjetas")
         for row in cur:
-            t=CreditCard(self.mem).init__db_row(row, self.cuentas.find(row['id_cuentas']))
-            if t.pagodiferido==True:
-                t.get_opercreditcards_diferidas_pendientes()
-#            self.dic_arr[str(t.id)]=t
+            t=CreditCard(self.mem).init__db_row(row, self.accounts.find(row['id_cuentas']))
+#            if t.pagodiferido==True:
+#                t.op_diferido.load_from_db(mogrify(self.mem.con,"select * from opertarjetas where id_tarjetas=%s and pagado=false", [t.id, ]))
             self.arr.append(t)
         cur.close()
+        
+    def myqtablewidget(self, table, section):
+        table.setRowCount(self.length())        
+        for i, t in enumerate(self.arr):
+            table.setItem(i, 0, QTableWidgetItem(t.name))
+            table.setItem(i, 1, QTableWidgetItem(str(t.numero)))
+            table.setItem(i, 2, qbool(t.active))
+            table.setItem(i, 3, qbool(t.pagodiferido))
+            table.setItem(i, 4, t.account.currency.qtablewidgetitem(t.saldomaximo ))
+            table.setItem(i, 5, t.account.currency.qtablewidgetitem(t.saldo_pendiente()))
             
     def clone_of_account(self, cuenta):
         """Devuelve un SetCreditCards con las tarjetas de una determinada cuenta"""
-        s=SetCreditCards(self.mem, self.cuentas)
+        s=SetCreditCards(self.mem, self.accounts)
         for t in self.arr:
-            if t.cuenta==cuenta:
+            if t.account==cuenta:
                 s.arr.append(t)
         return s
 
@@ -3094,6 +3120,7 @@ class SetCreditCardOperations:
     def __init__(self, mem):
         self.mem=mem
         self.arr=[]
+        self.selected=None#Used to work with selected items in arr
         
     def clear(self):
         del self.arr
@@ -3113,10 +3140,12 @@ class SetCreditCardOperations:
         return len(self.arr)
         
     def load_from_db(self, sql):
+        del self.arr
+        self.arr=[]
         cur=self.mem.con.cursor()
         cur.execute(sql)#"Select * from opercuentas"
         for row in cur:        
-            co=CreditCardOperation(self.mem).init__db_row(row, self.mem.tiposoperaciones.find(row['id_tiposoperaciones']), self.mem.data.creditcards_all().find(row['id_tarjetas']), AccountOperation(self.mem).init__db_query(row['id_opercuentas']))
+            co=CreditCardOperation(self.mem).init__db_row(row, self.mem.conceptos.find(row['id_conceptos']), self.mem.tiposoperaciones.find(row['id_tiposoperaciones']), self.mem.data.creditcards_all().find(row['id_tarjetas']), AccountOperation(self.mem).init__db_query(row['id_opercuentas']))
             self.append(co)
         cur.close()
     
@@ -3196,6 +3225,16 @@ def mylog(text):
     f=open("/tmp/xulpymoney.log","a")
     f.write(str(datetime.datetime.now()) + "|" + text + "\n")
     f.close()
+    
+def mogrify(con, sql, arr):
+    """Generate sql strings with psycopg
+    sql=psycopg sql stsring
+    arr is an array of parameters"""
+    cur=con.cursor()
+    result=cur.mogrify(sql, arr)
+    cur.close()
+    return result
+    
     
 def decimal_check(dec):
     print ("Decimal check", dec, dec.__class__,  dec.__repr__(),  "prec:",  getcontext().prec)

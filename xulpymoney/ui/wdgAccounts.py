@@ -10,17 +10,17 @@ class wdgAccounts(QWidget, Ui_wdgAccounts):
         self.setupUi(self)
         self.mem=mem
         self.tblAccounts.settings("wdgAccounts",  self.mem)
-        self.cuentas=self.mem.data.accounts_active
+        self.accounts=self.mem.data.accounts_active
         self.selAccount=None
         self.child=None#Used to access childs in automate unittests
         self.load_table()
 
     def load_table(self):
         """Función que carga la tabla de cuentas"""
-        self.cuentas.order_by_name()
-        self.tblAccounts.setRowCount(self.cuentas.length());
+        self.accounts.order_by_name()
+        self.tblAccounts.setRowCount(self.accounts.length());
         sumsaldos=0
-        for i, c in enumerate(self.cuentas.arr):
+        for i, c in enumerate(self.accounts.arr):
             self.tblAccounts.setItem(i, 0, QTableWidgetItem((c.name)))
             self.tblAccounts.setItem(i, 1, QTableWidgetItem((c.eb.name)))
             self.tblAccounts.setItem(i, 2, QTableWidgetItem((c.numero)))
@@ -65,10 +65,10 @@ class wdgAccounts(QWidget, Ui_wdgAccounts):
         
     def on_chkInactivas_stateChanged(self, state):
         if state==Qt.Unchecked:
-            self.cuentas=self.mem.data.accounts_active
+            self.accounts=self.mem.data.accounts_active
         else:
             self.mem.data.load_inactives()
-            self.cuentas=self.mem.data.accounts_inactive
+            self.accounts=self.mem.data.accounts_inactive
         self.load_table()
         
 
@@ -125,6 +125,6 @@ class wdgAccounts(QWidget, Ui_wdgAccounts):
         self.selAccount=None
         for i in self.tblAccounts.selectedItems():#itera por cada item no row.
             if i.column()==0:
-                self.selAccount=self.cuentas.arr[i.row()]
+                self.selAccount=self.accounts.arr[i.row()]
                 break
         print (self.selAccount)

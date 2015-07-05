@@ -71,7 +71,7 @@ class frmSellingPoint(QDialog, Ui_frmSellingPoint):
                 pendiente=rec.pendiente(current_value)
                 sumpendiente=sumpendiente+pendiente
                 table.setItem(i, 0, qdatetime(rec.datetime, rec.inversion.product.stockexchange.zone))
-                table.setItem(i, 1, QTableWidgetItem("{0} ({1})".format(rec.inversion.name, rec.inversion.cuenta.eb.name)))
+                table.setItem(i, 1, QTableWidgetItem("{0} ({1})".format(rec.inversion.name, rec.inversion.account.eb.name)))
                 table.setItem(i, 2,  QTableWidgetItem(rec.tipooperacion.name))
                 table.setItem(i, 3, qright(str(rec.acciones)))
                 table.setItem(i, 4, self.inversion.product.currency.qtablewidgetitem(rec.valor_accion))

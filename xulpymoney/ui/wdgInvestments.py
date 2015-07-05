@@ -34,7 +34,7 @@ class wdgInvestments(QWidget, Ui_wdgInvestments):
         sumnegativos=0
         gainsyear=str2bool(self.mem.config.get_value("settings", "gainsyear"))
         for inv in self.inversiones.arr:            
-            self.tblInvestments.setItem(i, 0, QTableWidgetItem("{0} ({1})".format(inv.name, inv.cuenta.name)))            
+            self.tblInvestments.setItem(i, 0, QTableWidgetItem("{0} ({1})".format(inv.name, inv.account.name)))            
             self.tblInvestments.setItem(i, 1, qdatetime(inv.product.result.basic.last.datetime, inv.product.stockexchange.zone))
             self.tblInvestments.setItem(i, 2, inv.product.currency.qtablewidgetitem(inv.product.result.basic.last.quote,  6))#Se debería recibir el parametro currency
             
@@ -76,12 +76,12 @@ class wdgInvestments(QWidget, Ui_wdgInvestments):
         self.tblInvestments.setRowCount(len(self.inversiones.arr))
         self.tblInvestments.clearContents()
         for i, inv in enumerate(self.inversiones.arr):
-            self.tblInvestments.setItem(i, 0, QTableWidgetItem("{0} ({1})".format(inv.name, inv.cuenta.name)))
+            self.tblInvestments.setItem(i, 0, QTableWidgetItem("{0} ({1})".format(inv.name, inv.account.name)))
             self.tblInvestments.setItem(i, 5, inv.product.currency.qtablewidgetitem(inv.balance()))
 
     @QtCore.pyqtSlot() 
     def on_actionActive_triggered(self):
-        if self.selInvestment.cuenta.eb.qmessagebox_inactive()  or self.selInvestment.cuenta.qmessagebox_inactive():
+        if self.selInvestment.account.eb.qmessagebox_inactive()  or self.selInvestment.account.qmessagebox_inactive():
             return  
         
         self.mem.data.load_inactives()

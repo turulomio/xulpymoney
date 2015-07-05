@@ -295,7 +295,7 @@ class AssetsReport(ODT):
             else:
                 sumnegativos=sumnegativos+pendiente
             suminvertido=suminvertido+inv.tpc_invertido()
-            arr=("{0} ({1})".format(inv.name, inv.cuenta.name), c(inv.balance()), c(pendiente), tpc(inv.tpc_invertido()), tpc(inv.tpc_venta()))
+            arr=("{0} ({1})".format(inv.name, inv.account.name), c(inv.balance()), c(pendiente), tpc(inv.tpc_invertido()), tpc(inv.tpc_venta()))
             data.append(arr)
 
         self.table( [self.tr("Investment"), self.tr("Balance"), self.tr("Gains"), self.tr("% Invested"), self.tr("% Selling point")], ["<", ">", ">", ">", ">"], data, [3, 1, 1, 1,1], 9)       

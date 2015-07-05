@@ -13,12 +13,12 @@ class frmCreditCardsAdd(QDialog, Ui_frmCreditCardsAdd):
         QWidget.__init__(self, parent)
         self.setupUi(self)
         self.mem=mem
-        self.cuenta=cuenta
+        self.account=cuenta
 
         if tarjeta==None:
             self.tipo=1#Insertar
             self.tarjeta=CreditCard(self.mem)
-            self.lblTitle.setText(self.tr("New credit card of {0}").format(self.cuenta.name))
+            self.lblTitle.setText(self.tr("New credit card of {0}").format(self.account.name))
         else:
             self.tipo=2#Modificar
             self.tarjeta=tarjeta
@@ -30,7 +30,7 @@ class frmCreditCardsAdd(QDialog, Ui_frmCreditCardsAdd):
             
     def on_cmd_pressed(self):
         self.tarjeta.name=self.txtCreditCard.text()
-        self.tarjeta.cuenta=self.cuenta
+        self.tarjeta.account=self.account
         self.tarjeta.pagodiferido=c2b(self.chkDelayed.checkState())
         self.tarjeta.saldomaximo=self.txtMaximum.decimal()
         self.tarjeta.numero=self.txtNumber.text()

@@ -37,14 +37,14 @@ class TestXulpymoneyData(unittest.TestCase):
         self.frmMain.w.on_chkInactivas_stateChanged(self.frmMain.w.chkInactivas.checkState())
         self.frmMain.w.load_table()
         ##Edit
-        self.frmMain.w.tblAccounts.setCurrentCell(self.frmMain.w.cuentas.arr_position(5), 0)
+        self.frmMain.w.tblAccounts.setCurrentCell(self.frmMain.w.accounts.arr_position(5), 0)
         w=frmAccountsReport(self.mem, self.frmMain.w.selAccount)
         w.txtAccount.setText("Cuenta Corriente Santander")
         w.on_cmdDatos_released()
         self.frmMain.w.on_chkInactivas_stateChanged(self.frmMain.w.chkInactivas.checkState())
         self.frmMain.w.load_table()
         ##Delete
-        self.frmMain.w.tblAccounts.setCurrentCell(self.frmMain.w.cuentas.arr_position(5), 0)
+        self.frmMain.w.tblAccounts.setCurrentCell(self.frmMain.w.accounts.arr_position(5), 0)
         self.frmMain.w.on_actionAccountDelete_triggered()
         ##Add other
         w=frmAccountsReport(self.mem, None)
