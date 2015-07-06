@@ -120,7 +120,10 @@ class wdgAccounts(QWidget, Ui_wdgAccounts):
         self.child=frmTransfer(self.mem, self.selAccount)
         self.child.exec_()
         self.load_table()
-
+        
+    def on_tblAccounts_cellDoubleClicked(self, row,  column):
+        self.on_actionAccountReport_triggered()
+        
     def on_tblAccounts_itemSelectionChanged(self):
         self.selAccount=None
         for i in self.tblAccounts.selectedItems():#itera por cada item no row.

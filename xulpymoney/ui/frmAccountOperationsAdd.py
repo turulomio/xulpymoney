@@ -115,7 +115,7 @@ class frmAccountOperationsAdd(QDialog, Ui_frmAccountOperationsAdd):
             self.opertarjeta=CreditCardOperation(self.mem).init__create(self.wdgDT.datetime(), concepto, concepto.tipooperacion, importe, comentario, self.tarjeta, False, None, None )
             self.opertarjeta.save()
             self.mem.con.commit()        
-            self.tarjeta.op_diferido.append(self.opertarjeta)
+#            self.tarjeta.op_diferido.append(self.opertarjeta)
             self.OperCreditCardIBMed.emit()
             self.wdgDT.set(self.mem, self.wdgDT.datetime()+datetime.timedelta(seconds=1), self.wdgDT.zone)
         elif self.tipo==4:            
