@@ -5591,7 +5591,6 @@ def log(tipo, funcion,  mensaje):
     print (printmessage[:-1])
     f.close()
 
-
 def b2s(b, code='UTF-8'):
     """Bytes 2 string"""
     return b.decode(code)
@@ -5609,8 +5608,6 @@ def c2b(state):
         return True
     else:
         return False
-        
-
 
 def b2c(booleano):
     """Bool to QCheckstate"""
@@ -5618,9 +5615,6 @@ def b2c(booleano):
         return Qt.Checked
     else:
         return Qt.Unchecked     
-        
-
-
 
 def day_end(dattime, zone):
     """Saca cuando acaba el dia de un dattime en una zona concreta"""
