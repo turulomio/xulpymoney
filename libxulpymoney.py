@@ -699,17 +699,19 @@ class SetAccountOperations:
     def __init__(self, mem):
         self.mem=mem
         self.arr=[]
-        
+        self.selected=None
     def append(self, objeto):
         self.arr.append(objeto)
 
+    def length(self):
+        return len (self.arr)
         
     def load_from_db(self, sql):
         cur=self.mem.con.cursor()
         cur.execute(sql)#"Select * from opercuentas"
         for row in cur:        
-            co=AccountOperation(self.mem).init__create(row['datetime'], self.mem.conceptos.find(row['id_conceptos']), self.mem.tiposoperaciones.find(row['id_tiposoperaciones']), row['importe'], row['comentario'],  self.mem.data.accounts_all().find(row['id_cuentas']))
-            self.arr.append(co)
+            co=AccountOperation(self.mem).init__create(row['datetime'], self.mem.conceptos.find(row['id_conceptos']), self.mem.tiposoperaciones.find(row['id_tiposoperaciones']), row['importe'], row['comentario'],  self.mem.data.accounts_all().find(row['id_cuentas']), row['id_opercuentas'])
+            self.append(co)
         cur.close()
     
     def load_from_db_with_creditcard(self, sql):
@@ -723,8 +725,9 @@ class SetAccountOperations:
                 comentario=QApplication.translate("Core","Paid with {0}. {1}").format(self.mem.data.creditcards_all().find(row['id_tarjetas']).name, row['comentario'] )
             
             co=AccountOperation(self.mem).init__create(row['datetime'], self.mem.conceptos.find(row['id_conceptos']), self.mem.tiposoperaciones.find(row['id_tiposoperaciones']), row['importe'], comentario,  self.mem.data.accounts_all().find(row['id_cuentas']))
-            self.arr.append(co)
+            self.append(co)
         cur.close()
+
     def sort(self):       
         self.arr=sorted(self.arr, key=lambda e: e.datetime,  reverse=False) 
         
@@ -759,6 +762,20 @@ class SetAccountOperations:
             tabla.setItem(rownumber, 2+diff, self.mem.localcurrency.qtablewidgetitem(a.importe))
             tabla.setItem(rownumber, 3+diff, self.mem.localcurrency.qtablewidgetitem(balance))
             tabla.setItem(rownumber, 4+diff, qleft(a.comentario))
+            
+    def myqtablewidget_lastmonthbalance(self, table, section,  account, lastmonthbalance):
+        table.clearContents()
+        table.settings(section,  self.mem)   
+        table.setRowCount(self.length()+1)        
+        table.setItem(0, 1, QTableWidgetItem(QApplication.translate("Core", "Starting month balance")))
+        table.setItem(0, 3, account.currency.qtablewidgetitem(lastmonthbalance))
+        for i, o in enumerate(self.arr):
+            lastmonthbalance=lastmonthbalance+o.importe
+            table.setItem(i+1, 0, qdatetime(o.datetime, self.mem.localzone))
+            table.setItem(i+1, 1, QTableWidgetItem(o.concepto.name))
+            table.setItem(i+1, 2, account.currency.qtablewidgetitem(o.importe))
+            table.setItem(i+1, 3, account.currency.qtablewidgetitem(lastmonthbalance))
+            table.setItem(i+1, 4, QTableWidgetItem(o.comment()))                   
 
 class SetCurrencies(SetCommons):
     def __init__(self, mem):
