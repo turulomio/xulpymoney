@@ -3093,9 +3093,7 @@ class SetCreditCards(SetCommons):
         cur.execute(sql)#"Select * from tarjetas")
         for row in cur:
             t=CreditCard(self.mem).init__db_row(row, self.accounts.find(row['id_cuentas']))
-#            if t.pagodiferido==True:
-#                t.op_diferido.load_from_db(mogrify(self.mem.con,"select * from opertarjetas where id_tarjetas=%s and pagado=false", [t.id, ]))
-            self.arr.append(t)
+            self.append(t)
         cur.close()
         
     def myqtablewidget(self, table, section):
