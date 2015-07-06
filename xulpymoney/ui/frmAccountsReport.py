@@ -7,7 +7,7 @@ from frmCreditCardsAdd import *
 from frmInvestmentOperationsAdd import *
 
 class frmAccountsReport(QDialog, Ui_frmAccountsReport):
-    def __init__(self, mem, cuenta,  parent=None):
+    def __init__(self, mem, account,  parent=None):
         """
             selIdAccount=None Inserción de cuentas
             selIdAccount=X. Modificación de cuentas cuando click en cmd y resto de trabajos"""
@@ -19,15 +19,11 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
         self.mem=mem
         self.mem.data.load_inactives()
                 
-        self.selOperAccount=None #Registro de oper cuentas
-        self.selAccount=cuenta#Registro de selAccount
+        self.account=account#Registro de account
         
-        self.accountoperations=[]#Array de objetos CUentaOperacion
-        self.creditcards=None#SetCreditCard,
-        self.creditcardoperations=SetCreditCardOperations(self.mem)#SetCreditCardOperations
-        
-        
-        self.lastMonthBalance=0#Almacena el inicio según on_cmdMovimientos_released
+        self.accountoperations=None#SetAccountOperations. Selected will be an AccountOperation
+        self.creditcards=None#SetCreditCard. Selected will be a CreditCard
+        self.creditcardoperations=SetCreditCardOperations(self.mem)#SetCreditCardOperations. Selected will be another SetCreditCardOperations
           
         self.tblOperaciones.settings("frmAccountsReport",  self.mem)
         self.tblCreditCards.settings("frmAccountsReport",  self.mem)
@@ -39,7 +35,7 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
         self.mem.currencies.qcombobox(self.cmbCurrency)
         self.mem.data.banks_active.qcombobox(self.cmbEB)
                     
-        if self.selAccount==None:
+        if self.account==None:
             self.lblTitulo.setText(self.tr("New account data"))
             self.tab.setCurrentIndex(0)
             self.tab.setTabEnabled(1, False)
@@ -49,29 +45,29 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
             self.cmdDatos.setText(self.tr("Add a new account"))
         else:               
             self.tab.setCurrentIndex(0)
-            self.lblTitulo.setText(self.selAccount.name)
-            self.txtAccount.setText(self.selAccount.name)
-            self.txtNumero.setText(str(self.selAccount.numero))            
-            self.cmbEB.setCurrentIndex(self.cmbEB.findData(self.selAccount.eb.id))
+            self.lblTitulo.setText(self.account.name)
+            self.txtAccount.setText(self.account.name)
+            self.txtNumero.setText(str(self.account.numero))            
+            self.cmbEB.setCurrentIndex(self.cmbEB.findData(self.account.eb.id))
             self.cmbEB.setEnabled(False)    
-            self.cmbCurrency.setCurrentIndex(self.cmbCurrency.findData(self.selAccount.currency.id))
+            self.cmbCurrency.setCurrentIndex(self.cmbCurrency.findData(self.account.currency.id))
             self.cmbCurrency.setEnabled(False)
-            self.chkActiva.setChecked(b2c(self.selAccount.active))
+            self.chkActiva.setChecked(b2c(self.account.active))
             self.cmdDatos.setText(self.tr("Update account data"))
 
             anoinicio=Assets(self.mem).primera_datetime_con_datos_usuario().year       
             self.wdgYM.initiate(anoinicio,  datetime.date.today().year, datetime.date.today().year, datetime.date.today().month)
-            self.on_wdgYM_changed()
+            self.accountoperations_reload()
             self.wdgYM.changed.connect(self.on_wdgYM_changed)
             self.creditcards_reload()        
             
 
     def creditcards_reload(self): 
         if self.chkCreditCards.checkState()==Qt.Unchecked:
-            self.creditcards=self.mem.data.creditcards_active.clone_of_account(self.selAccount)
+            self.creditcards=self.mem.data.creditcards_active.clone_of_account(self.account)
         else:
             self.mem.data.load_inactives()
-            self.creditcards=self.mem.data.creditcards_inactive.clone_of_account(self.selAccount)  
+            self.creditcards=self.mem.data.creditcards_inactive.clone_of_account(self.account)  
         self.creditcards.myqtablewidget(self.tblCreditCards, "frmAccountsReport")
         self.creditcards.selected=None
         self.tblCreditCards.clearSelection()
@@ -85,20 +81,20 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
 
     @QtCore.pyqtSlot() 
     def on_actionCreditCardAdd_triggered(self):
-        w=frmCreditCardsAdd(self.mem,  self.selAccount,  None, self)
+        w=frmCreditCardsAdd(self.mem,  self.account,  None, self)
         w.exec_()
         self.on_chkCreditCards_stateChanged(Qt.Unchecked)
         
     @QtCore.pyqtSlot() 
     def on_actionCreditCardEdit_triggered(self):
-        w=frmCreditCardsAdd(self.mem, self.selAccount,  self.creditcards.selected, self)
+        w=frmCreditCardsAdd(self.mem, self.account,  self.creditcards.selected, self)
         w.exec_()
         self.tblCreditCards.clearSelection()
         self.creditcards_reload()
         
     @QtCore.pyqtSlot() 
     def on_actionCreditCardActivate_triggered(self):
-        if self.selAccount.qmessagebox_inactive() or self.selAccount.eb.qmessagebox_inactive():
+        if self.account.qmessagebox_inactive() or self.account.eb.qmessagebox_inactive():
             return
             
         if self.creditcards.selected.active==False:#Ha pasado de inactiva a activa
@@ -136,119 +132,93 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
         active=c2b(self.chkActiva.checkState())
         currency=self.cmbCurrency.itemData(self.cmbCurrency.currentIndex())
 
-        if self.selAccount==None:
+        if self.account==None:
             cu=Account(self.mem).init__create(cuenta, self.mem.data.banks_active.find(id_entidadesbancarias), active, numerocuenta, self.mem.currencies.find(currency))
             cu.save()
             self.mem.data.accounts_active.append(cu) #Always to active
         else:
-            self.selAccount.eb=self.mem.data.banks_active.find(id_entidadesbancarias)
-            self.selAccount.name=cuenta
-            self.selAccount.numero=numerocuenta
-            self.selAccount.active=active
-            self.selAccount.currency=self.mem.currencies.find(currency)
-            self.selAccount.save()
-            self.lblTitulo.setText(self.selAccount.name)
+            self.account.eb=self.mem.data.banks_active.find(id_entidadesbancarias)
+            self.account.name=cuenta
+            self.account.numero=numerocuenta
+            self.account.active=active
+            self.account.currency=self.mem.currencies.find(currency)
+            self.account.save()
+            self.lblTitulo.setText(self.account.name)
         self.mem.con.commit()
         
-        if self.selAccount==None:
+        if self.account==None:
             self.done(0)
         self.cmdDatos.setEnabled(False)   
 
     @pyqtSlot()
     def on_wdgYM_changed(self):
-        cur = self.mem.con.cursor()      
-        self.accountoperations=[]
-        self.lastMonthBalance=self.selAccount.balance(datetime.date(self.wdgYM.year, self.wdgYM.month, 1)-datetime.timedelta(days=1))         
-        if self.lastMonthBalance==None:
-            self.lastMonthBalance=0
-        
-        cur.execute("select * from opercuentas where id_cuentas=%s and date_part('year',datetime)=%s and date_part('month',datetime)=%s order by datetime, id_opercuentas", (self.selAccount.id, self.wdgYM.year, self.wdgYM.month))
-        for o in cur:
-            self.accountoperations.append(AccountOperation(self.mem).init__db_row(o, self.mem.conceptos.find(o['id_conceptos']), self.mem.tiposoperaciones.find(o['id_tiposoperaciones']), self.selAccount))
-        cur.close()     
-        self.load_tblOperaciones()  
+        self.accountoperations_reload()
             
-    def load_tblOperaciones(self):
-        self.tblOperaciones.setRowCount(len(self.accountoperations)+1)        
-        self.tblOperaciones.setItem(0, 1, QTableWidgetItem(self.tr("Starting month balance")))
-        self.tblOperaciones.setItem(0, 3, self.selAccount.currency.qtablewidgetitem(self.lastMonthBalance))
-        saldoinicio=self.lastMonthBalance
-        for i, o in enumerate(self.accountoperations):
-            saldoinicio=saldoinicio+o.importe
-            self.tblOperaciones.setItem(i+1, 0, qdatetime(o.datetime, self.mem.localzone))
-            self.tblOperaciones.setItem(i+1, 1, QTableWidgetItem(o.concepto.name))
-            self.tblOperaciones.setItem(i+1, 2, self.selAccount.currency.qtablewidgetitem(o.importe))
-            self.tblOperaciones.setItem(i+1, 3, self.selAccount.currency.qtablewidgetitem(saldoinicio))
-            self.tblOperaciones.setItem(i+1, 4, QTableWidgetItem(o.comment()))        
+    def accountoperations_reload(self):    
+        lastMonthBalance=self.account.balance(datetime.date(self.wdgYM.year, self.wdgYM.month, 1)-datetime.timedelta(days=1))     
+          
+        self.accountoperations=SetAccountOperations(self.mem)           
+        self.accountoperations.load_from_db(mogrify(self.mem.con,"select * from opercuentas where id_cuentas=%s and date_part('year',datetime)=%s and date_part('month',datetime)=%s order by datetime, id_opercuentas", [self.account.id, self.wdgYM.year, self.wdgYM.month]))
+        self.accountoperations.myqtablewidget_lastmonthbalance(self.tblOperaciones, "frmAccountsReport", self.account,  lastMonthBalance)   
+        self.tblOperaciones.clearSelection()
+        self.accountoperations.selected=None
 
     @QtCore.pyqtSlot() 
     def on_actionOperationAdd_triggered(self):
-        w=frmAccountOperationsAdd(self.mem, self.mem.data.accounts_active,  self.selAccount, None, None)
-        w.OperAccountIBMed.connect(self.on_wdgYM_changed)
+        w=frmAccountOperationsAdd(self.mem, self.mem.data.accounts_active,  self.account, None, None)
+        w.OperAccountIBMed.connect(self.accountoperations_reload)
         w.exec_()
-        self.load_tblOperaciones()
-        self.tblOperaciones.clearSelection()
-        self.selOperAccount=None
-
-
+        self.accountoperations_reload()
 
     @QtCore.pyqtSlot() 
     def on_actionTransferDelete_triggered(self):
+
+        oc_other=AccountOperation(self.mem).init__db_query(int(self.accountoperations.selected.comentario.split("|")[1]))
         
-        oc_other=AccountOperation(self.mem).init__db_query(int(self.selOperAccount.comentario.split("|")[1]))
-        
-        if self.selOperAccount.concepto.id==4:#Tranfer origin
-            account_origin=self.selAccount
-            account_destiny=self.mem.data.accounts_all().find(int(self.selOperAccount.comentario.split("|")[0]))
-            oc_comision_id=int(self.selOperAccount.comentario.split("|")[2])
+        if self.accountoperations.selected.concepto.id==4:#Tranfer origin
+            account_origin=self.account
+            account_destiny=self.mem.data.accounts_all().find(int(self.accountoperations.selected.comentario.split("|")[0]))
+            oc_comision_id=int(self.accountoperations.selected.comentario.split("|")[2])
     
-        if self.selOperAccount.concepto.id==5:#Tranfer destiny
-            account_origin=self.mem.data.accounts_all().find(int(self.selOperAccount.comentario.split("|")[0]))
-            account_destiny=self.selAccount
+        if self.accountoperations.selected.concepto.id==5:#Tranfer destiny
+            account_origin=self.mem.data.accounts_all().find(int(self.accountoperations.selected.comentario.split("|")[0]))
+            account_destiny=self.account
             oc_comision_id=int(oc_other.comentario.split("|")[2])
             
-        message=self.tr("Do you really want to delete transfer from {0} to {1}, with amount {2} and it's commision?").format(account_origin.name, account_destiny.name, self.selOperAccount.importe)
+        message=self.tr("Do you really want to delete transfer from {0} to {1}, with amount {2} and it's commision?").format(account_origin.name, account_destiny.name, self.accountoperations.selected.importe)
         reply = QMessageBox.question(self, 'Message', message, QMessageBox.Yes, QMessageBox.No)
             
         if reply == QMessageBox.Yes:
             if oc_comision_id!=0:
                 oc_comision=AccountOperation(self.mem).init__db_query(oc_comision_id)
                 oc_comision.borrar()
-            self.selOperAccount.borrar()
+            self.accountoperations.selected.borrar()
             oc_other.borrar()
             self.mem.con.commit()
-            self.on_wdgYM_changed()
-            self.tblOperaciones.clearSelection()
-            self.selOperAccount=None
+            self.accountoperations_reload()
         
     @QtCore.pyqtSlot() 
     def on_actionOperationEdit_triggered(self):
-        w=frmAccountOperationsAdd(self.mem, self.mem.data.accounts_active,  self.selAccount, self.selOperAccount, None)
-        w.OperAccountIBMed.connect(self.on_wdgYM_changed)
+        w=frmAccountOperationsAdd(self.mem, self.mem.data.accounts_active,  self.account, self.accountoperations.selected, None)
+        w.OperAccountIBMed.connect(self.accountoperations_reload)
         w.exec_()
-        self.load_tblOperaciones()
-        self.tblOperaciones.clearSelection()
-        self.selOperAccount=None
 
     @QtCore.pyqtSlot() 
     def on_actionOperationDelete_triggered(self):
-        self.selOperAccount.borrar() 
-        self.mem.con.commit()  
-        self.accountoperations.remove(self.selOperAccount)         
-        self.load_tblOperaciones()
-        self.tblOperaciones.clearSelection()
-        self.selOperAccount=None
+        self.accountoperations.selected.borrar() 
+        self.mem.con.commit()         
+        self.accountoperations_reload()
 
     @QtCore.pyqtSlot() 
     def on_actionCreditCardOperAdd_triggered(self):
         if self.creditcards.selected.pagodiferido==False:
-            w=frmAccountOperationsAdd(self.mem, self.mem.data.accounts_active, self.selAccount, None)
-            w.OperAccountIBMed.connect(self.on_wdgYM_changed)
+            w=frmAccountOperationsAdd(self.mem, self.mem.data.accounts_active, self.account, None)
+            w.OperAccountIBMed.connect(self.accountoperations_reload)
             w.lblTitulo.setText(self.creditcards.selected.name)
             w.txtComentario.setText(self.tr("CreditCard {0}. ").format(self.creditcards.selected.name))
             w.exec_()
         else:            
-            w=frmAccountOperationsAdd(self.mem, self.mem.data.accounts_active,  self.selAccount, None, self.creditcards.selected)
+            w=frmAccountOperationsAdd(self.mem, self.mem.data.accounts_active,  self.account, None, self.creditcards.selected)
             w.OperCreditCardIBMed.connect(self.creditcardoperations_reload)
             w.lblTitulo.setText(self.tr("CreditCard {0}").format(self.creditcards.selected.name))
             w.exec_()
@@ -257,7 +227,7 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
     def on_actionCreditCardOperEdit_triggered(self):
         #Como es unico
         selOperCreditCard=self.creditcardoperations.selected.arr[0]
-        w=frmAccountOperationsAdd(self.mem, self.mem.data.accounts_active,  self.selAccount, None, self.creditcards.selected, selOperCreditCard)
+        w=frmAccountOperationsAdd(self.mem, self.mem.data.accounts_active,  self.account, None, self.creditcards.selected, selOperCreditCard)
         w.OperCreditCardIBMed.connect(self.creditcardoperations_reload)
         w.lblTitulo.setText(self.tr("CreditCard {0}").format(self.creditcards.selected.name))
         w.exec_()
@@ -272,37 +242,33 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
 
     @QtCore.pyqtSlot() 
     def on_actionInvestmentOperationDelete_triggered(self):
-        investmentoperation=InvestmentOperation(self.mem).init__from_accountoperation(self.selOperAccount)
+        investmentoperation=InvestmentOperation(self.mem).init__from_accountoperation(self.accountoperations.selected)
         investmentoperation.inversion.op.remove(investmentoperation)
         self.mem.con.commit()     
-        self.on_wdgYM_changed()
-        self.tblOperaciones.clearSelection()
-        self.selOperAccount=None
+        self.accountoperations_reload()
 
 
     @QtCore.pyqtSlot() 
     def on_actionInvestmentOperationEdit_triggered(self):
-        investmentoperation=InvestmentOperation(self.mem).init__from_accountoperation(self.selOperAccount)
+        investmentoperation=InvestmentOperation(self.mem).init__from_accountoperation(self.accountoperations.selected)
         w=frmInvestmentOperationsAdd(self.mem, investmentoperation.inversion, investmentoperation, self)
         w.exec_()
-        self.on_wdgYM_changed()
-        self.tblOperaciones.clearSelection()
-        self.selOperAccount=None
+        self.accountoperations_reload()
 
     def on_tblOperaciones_customContextMenuRequested(self,  pos):      
-        if self.selAccount.qmessagebox_inactive() or self.selAccount.eb.qmessagebox_inactive():
+        if self.account.qmessagebox_inactive() or self.account.eb.qmessagebox_inactive():
             return
 
-        if self.selOperAccount==None:
+        if self.accountoperations.selected==None:
             self.actionOperationDelete.setEnabled(False)
             self.actionOperationEdit.setEnabled(False)   
             self.actionTransferDelete.setEnabled(False)
         else:
-            if self.selOperAccount.es_editable()==False:
+            if self.accountoperations.selected.es_editable()==False:
                 self.actionOperationDelete.setEnabled(False)
                 self.actionOperationEdit.setEnabled(False)   
                 #Una transferencia bien formada no es editable solo con transfer delete.
-                if (self.selOperAccount.concepto.id==4 and len(self.selOperAccount.comentario.split("|"))==3) or (self.selOperAccount.concepto.id==5 and len(self.selOperAccount.comentario.split("|"))==2):#Tranfer origin or Tranfer destine
+                if (self.accountoperations.selected.concepto.id==4 and len(self.accountoperations.selected.comentario.split("|"))==3) or (self.accountoperations.selected.concepto.id==5 and len(self.accountoperations.selected.comentario.split("|"))==2):#Tranfer origin or Tranfer destine
                     self.actionTransferDelete.setEnabled(True)
                 else:
                     self.actionTransferDelete.setEnabled(False)
@@ -317,8 +283,8 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
         menu.addAction(self.actionOperationDelete)
         menu.addSeparator()
         menu.addAction(self.actionTransferDelete)
-        if self.selOperAccount!=None:
-            if self.selOperAccount.concepto.id in [29, 35]:#Shares sale or purchase, allow edit or delete investment operation
+        if self.accountoperations.selected!=None:
+            if self.accountoperations.selected.concepto.id in [29, 35]:#Shares sale or purchase, allow edit or delete investment operation
                 menu.addSeparator()
                 menu.addAction(self.actionInvestmentOperationEdit)
                 menu.addAction(self.actionInvestmentOperationDelete)
@@ -327,14 +293,15 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
     def on_tblOperaciones_itemSelectionChanged(self):
         try:
             for i in self.tblOperaciones.selectedItems():#itera por cada item no row.
-                self.selOperAccount=self.accountoperations[i.row()-1]
+                if i.column()==0:
+                    self.accountoperations.selected=self.accountoperations.arr[i.row()-1]
         except:
-            self.selOperAccount=None
-        print ("Seleccionado: " +  str(self.selOperAccount))
+            self.accountoperations.selected=None
+        print ("Seleccionado: " +  str(self.accountoperations.selected))
         
 
     def on_tblCreditCards_customContextMenuRequested(self,  pos):
-        if self.selAccount.qmessagebox_inactive():
+        if self.account.qmessagebox_inactive():
             return 
         menu=QMenu()
         menu.addAction(self.actionCreditCardOperAdd)
@@ -373,16 +340,18 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
             self.tblCreditCardOpers.setRowCount(0)
             return
 
-        if self.creditcards.selected.pagodiferido==True:
-            self.creditcardoperations_reload()
-        else:
-            self.tblCreditCardOpers.setRowCount(0)
         self.tabOpertarjetasDiferidas.setCurrentIndex(0)
         self.tabOpertarjetasDiferidas.setEnabled(self.creditcards.selected.pagodiferido)
+        
+        if self.creditcards.selected.pagodiferido==True:
+            self.creditcardoperations_reload()
+            self.grpPago.setEnabled(False)
+        else:
+            self.tblCreditCardOpers.setRowCount(0)
         print ("Seleccionado: " +  str(self.creditcards.selected.name))
 
     def on_tblCreditCardOpers_customContextMenuRequested(self,  pos):
-        if self.selAccount.qmessagebox_inactive() or self.selAccount.eb.qmessagebox_inactive() or self.creditcards.selected.qmessagebox_inactive():
+        if self.account.qmessagebox_inactive() or self.account.eb.qmessagebox_inactive() or self.creditcards.selected.qmessagebox_inactive():
             return
         
         if self.creditcardoperations.selected.length()!=1: # 0 o más de 1
@@ -417,7 +386,7 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
     def on_cmdPago_released(self):
         comentario="{0}|{1}".format(self.creditcards.selected.name, self.creditcardoperations.selected.length())
         fechapago=self.calPago.date().toPyDate()
-        c=AccountOperation(self.mem).init__create(fechapago, self.mem.conceptos.find(40), self.mem.tiposoperaciones.find(7), self.creditcardoperations.selected.balance(), comentario, self.selAccount)
+        c=AccountOperation(self.mem).init__create(fechapago, self.mem.conceptos.find(40), self.mem.tiposoperaciones.find(7), self.creditcardoperations.selected.balance(), comentario, self.account)
         c.save()
         
         #Modifica el registro y lo pone como pagado y la datetime de pago y añade la opercuenta
@@ -428,7 +397,7 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
             o.save()
         self.mem.con.commit()
         self.creditcardoperations_reload()         
-        self.on_wdgYM_changed()  
+        self.accountoperations_reload()  
 
     
     def on_cmdDevolverPago_released(self):

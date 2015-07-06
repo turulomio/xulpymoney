@@ -4,42 +4,42 @@ from Ui_frmCreditCardsAdd import *
 from libxulpymoney import *
 
 class frmCreditCardsAdd(QDialog, Ui_frmCreditCardsAdd):
-    def __init__(self, mem,  cuenta,  tarjeta,  parent=None):
+    def __init__(self, mem,  account,  creditcard,  parent=None):
         """
             Account es registro
-            Si tarjeta=None # Insertar
-            Si tarjeta=reg(CreditCard) #Modificar
+            Si creditcard=None # Insertar
+            Si creditcard=reg(CreditCard) #Modificar
         """
         QWidget.__init__(self, parent)
         self.setupUi(self)
         self.mem=mem
-        self.account=cuenta
+        self.account=account
 
-        if tarjeta==None:
+        if creditcard==None:
             self.tipo=1#Insertar
-            self.tarjeta=CreditCard(self.mem)
+            self.creditcard=CreditCard(self.mem)
             self.lblTitle.setText(self.tr("New credit card of {0}").format(self.account.name))
+            self.creditcard.active=True
         else:
             self.tipo=2#Modificar
-            self.tarjeta=tarjeta
-            self.lblTitle.setText(self.tr("Updating {} credit card").format(self.tarjeta.name))
-            self.txtCreditCard.setText(self.tarjeta.name)
-            self.chkDelayed.setChecked(b2c(self.tarjeta.active))
-            self.txtMaximum.setText(str(self.tarjeta.saldomaximo))
-            self.txtNumber.setText(self.tarjeta.numero)
+            self.creditcard=creditcard
+            self.lblTitle.setText(self.tr("Updating {} credit card").format(self.creditcard.name))
+            self.txtCreditCard.setText(self.creditcard.name)
+            self.chkDelayed.setChecked(b2c(self.creditcard.pagodiferido))
+            self.txtMaximum.setText(str(self.creditcard.saldomaximo))
+            self.txtNumber.setText(self.creditcard.numero)
             
     def on_cmd_pressed(self):
-        self.tarjeta.name=self.txtCreditCard.text()
-        self.tarjeta.account=self.account
-        self.tarjeta.pagodiferido=c2b(self.chkDelayed.checkState())
-        self.tarjeta.saldomaximo=self.txtMaximum.decimal()
-        self.tarjeta.numero=self.txtNumber.text()
-        self.tarjeta.active=True
-        self.tarjeta.save()
+        self.creditcard.name=self.txtCreditCard.text()
+        self.creditcard.account=self.account
+        self.creditcard.pagodiferido=c2b(self.chkDelayed.checkState())
+        self.creditcard.saldomaximo=self.txtMaximum.decimal()
+        self.creditcard.numero=self.txtNumber.text()
+        self.creditcard.save()
         self.mem.con.commit()        
         
         if self.tipo==1:#insertar
-            self.mem.data.creditcards_active.append(self.tarjeta)
+            self.mem.data.creditcards_active.append(self.creditcard)
         
         self.done(0)
     
