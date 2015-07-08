@@ -175,7 +175,7 @@
     <message>
         <location filename="../libodfgenerator.py" line="283"/>
         <source>Next list is sorted by the distance in percent to the selling point.</source>
-        <translation type="unfinished"></translation>
+        <translation>La siguiente lista está ordenada por la distancia en tanto por cierto al punto de venta.</translation>
     </message>
     <message>
         <location filename="../libodfgenerator.py" line="246"/>
@@ -371,7 +371,7 @@
         <translation>Eliminando datos innecesarios</translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="504"/>
+        <location filename="../ui/frmMain.py" line="500"/>
         <source>Cancel</source>
         <translation>Cancelar</translation>
     </message>
@@ -406,12 +406,12 @@
         <translation>El producto asociado no está activo. Debes activarlo primero</translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="504"/>
+        <location filename="../ui/frmMain.py" line="500"/>
         <source>Purging innecesary data from all products</source>
         <translation>Purgando datos innecesarios de todos los productos</translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="506"/>
+        <location filename="../ui/frmMain.py" line="502"/>
         <source>Purging quotes from all products</source>
         <translation>Purgando valores de todos los productos</translation>
     </message>
@@ -731,7 +731,7 @@
         <translation>Purgadas {0} cotizaciones de {1}</translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="512"/>
+        <location filename="../ui/frmMain.py" line="508"/>
         <source>Purging quotes from {0}.
 Total purged in global process: {1}</source>
         <translation>Purgando cotizaciones de {0}.
@@ -947,24 +947,33 @@ Purgadas en total en el proceso global: {1}</translation>
         <source>Earth</source>
         <translation>Tierra</translation>
     </message>
-    <message encoding="UTF-8">
-        <location filename="../libxulpymoney.py" line="1206"/>
-        <source>Valor acción</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <location filename="../libxulpymoney.py" line="772"/>
         <source>Starting month balance</source>
-        <translation type="unfinished">Saldo inicial del mes</translation>
+        <translation>Saldo inicial del mes</translation>
     </message>
     <message>
         <location filename="../ui/frmMain.py" line="320"/>
         <source>Syncing databases from {} ({}) to {} ({})</source>
-        <translation type="unfinished"></translation>
+        <translation>Sincronizando bases de datos desde {} ({}) a {} ({})</translation>
     </message>
     <message>
         <location filename="../ui/frmMain.py" line="322"/>
         <source>Processing products...</source>
+        <translation>Procesando productos...</translation>
+    </message>
+    <message>
+        <location filename="../libsources.py" line="880"/>
+        <source>From {} desynchronized products added:
+    - {} quotes
+    - {} dividends per share
+    - {} dividend per share estimations
+    - {} earnings per share estimations</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message encoding="UTF-8">
+        <location filename="../libxulpymoney.py" line="1206"/>
+        <source>Valor acción</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -981,7 +990,7 @@ Purgadas en total en el proceso global: {1}</translation>
     <message>
         <location filename="../libsources.py" line="439"/>
         <source>Mercado Continuo source</source>
-        <translation type="unfinished">Fuente del Mercado Continuo</translation>
+        <translation>Fuente del Mercado Continuo</translation>
     </message>
 </context>
 <context>
@@ -1262,32 +1271,32 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>frmAccess</name>
     <message>
-        <location filename="../ui/Ui_frmAccess.py" line="143"/>
+        <location filename="../ui/Ui_frmAccess.py" line="164"/>
         <source>Language</source>
         <translation>Idioma</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_frmAccess.py" line="138"/>
+        <location filename="../ui/Ui_frmAccess.py" line="165"/>
         <source>Server</source>
         <translation>Servidor</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_frmAccess.py" line="139"/>
+        <location filename="../ui/Ui_frmAccess.py" line="166"/>
         <source>Port</source>
         <translation>Puerto</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_frmAccess.py" line="140"/>
+        <location filename="../ui/Ui_frmAccess.py" line="167"/>
         <source>Database</source>
         <translation>Base de datos</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_frmAccess.py" line="141"/>
+        <location filename="../ui/Ui_frmAccess.py" line="168"/>
         <source>User</source>
         <translation>Usuario</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_frmAccess.py" line="142"/>
+        <location filename="../ui/Ui_frmAccess.py" line="169"/>
         <source>Password</source>
         <translation>Contraseña</translation>
     </message>
@@ -1295,6 +1304,11 @@ p, li { white-space: pre-wrap; }
         <location filename="../ui/frmAccess.py" line="21"/>
         <source>Xulpymoney - Access</source>
         <translation>Xulpymoney - Acceso</translation>
+    </message>
+    <message>
+        <location filename="../ui/frmAccess.py" line="71"/>
+        <source>Error conecting to {} database in {} server</source>
+        <translation>Error al conectar a la base de datos {} del servidor {}</translation>
     </message>
 </context>
 <context>
@@ -2718,7 +2732,7 @@ p, li { white-space: pre-wrap; }
         <translation>F5</translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="532"/>
+        <location filename="../ui/frmMain.py" line="528"/>
         <source>{0} quotes have been purged from {1} products</source>
         <translation>{0} cotizaciones han sido eliminadas de {1} productos</translation>
     </message>
@@ -2753,27 +2767,27 @@ p, li { white-space: pre-wrap; }
         <translation>Productos con ISIN duplicado</translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="397"/>
+        <location filename="../ui/frmMain.py" line="393"/>
         <source>There aren&apos;t favorite products</source>
         <translation>No hay productos favoritos</translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="95"/>
+        <location filename="../ui/frmMain.py" line="97"/>
         <source>Please introduce Admin Mode password</source>
         <translation>Por favor introduzca la contraseña del &apos;Modo administrador&apos;</translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="104"/>
+        <location filename="../ui/frmMain.py" line="106"/>
         <source>You have set the admin mode password. Please login again</source>
         <translation>Se ha establecido la contraseña del &apos;Modo administrador&apos;. Por favor conéctese otra vez</translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="112"/>
+        <location filename="../ui/frmMain.py" line="114"/>
         <source>You are logged as an administrator</source>
         <translation>Se ha conectado como administrador</translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="116"/>
+        <location filename="../ui/frmMain.py" line="118"/>
         <source>Bad &apos;Admin mode&apos; password. You are logged as a normal user</source>
         <translation>Contraseña errónea del &apos;Modo administrador&apos;. Usted se ha conectado como un usuario normal</translation>
     </message>
@@ -2853,39 +2867,39 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="109"/>
+        <location filename="../ui/frmMain.py" line="111"/>
         <source>Xulpymoney 2010-{0} &#xc2;&#xa9; (Admin mode)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../ui/Ui_frmMain.py" line="588"/>
         <source>Move products information</source>
-        <translation type="unfinished"></translation>
+        <translation>Mover información de productos</translation>
     </message>
     <message>
         <location filename="../ui/Ui_frmMain.py" line="589"/>
         <source>Move products information to another database</source>
-        <translation type="unfinished"></translation>
+        <translation>Mover información de productos a otra base de datos</translation>
     </message>
     <message>
         <location filename="../ui/Ui_frmMain.py" line="590"/>
         <source>F9</source>
-        <translation type="unfinished">F9</translation>
-    </message>
-    <message>
-        <location filename="../ui/frmMain.py" line="329"/>
-        <source>Synced {} products and {} quotes</source>
-        <translation type="unfinished"></translation>
+        <translation>F9</translation>
     </message>
     <message>
         <location filename="../ui/frmMain.py" line="316"/>
         <source>Databases can&apos;t be the same</source>
-        <translation type="unfinished"></translation>
+        <translation>La base de datos no puede ser la misma</translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="309"/>
-        <source>Error conecting to target database</source>
-        <translation type="unfinished"></translation>
+        <location filename="../ui/frmMain.py" line="304"/>
+        <source>Please login to the target xulpymoney database</source>
+        <translation>Por favor conectesé a la base de datos destino de Xulpymoney</translation>
+    </message>
+    <message>
+        <location filename="../ui/frmMain.py" line="73"/>
+        <source>Please login to the xulpymoney database</source>
+        <translation>Por favor conectesé a la base de datos de Xulpymoney</translation>
     </message>
 </context>
 <context>
@@ -5683,7 +5697,7 @@ S&#xc3;&#xb3;lo se contabilizar&#xc3;&#xa1; cuando se vendan las acciones</sourc
     <message>
         <location filename="../ui/Ui_wdgQuotesUpdate.py" line="122"/>
         <source>Update all intraday sources</source>
-        <translation type="unfinished"></translation>
+        <translation>Actualizar todas las fuentes intradía</translation>
     </message>
     <message>
         <location filename="../ui/Ui_wdgQuotesUpdate.py" line="123"/>
@@ -5746,7 +5760,7 @@ S&#xc3;&#xb3;lo se contabilizar&#xc3;&#xa1; cuando se vendan las acciones</sourc
     <message>
         <location filename="../ui/Ui_wdgSource.py" line="126"/>
         <source>Products searched</source>
-        <translation type="unfinished"></translation>
+        <translation>Productos buscados</translation>
     </message>
     <message>
         <location filename="../ui/Ui_wdgSource.py" line="128"/>
@@ -5756,27 +5770,27 @@ S&#xc3;&#xb3;lo se contabilizar&#xc3;&#xa1; cuando se vendan las acciones</sourc
     <message>
         <location filename="../ui/Ui_wdgSource.py" line="132"/>
         <source>Edited quotes</source>
-        <translation type="unfinished"></translation>
+        <translation>Cotizaciones modificadas</translation>
     </message>
     <message>
         <location filename="../ui/Ui_wdgSource.py" line="134"/>
         <source>Ignored quotes</source>
-        <translation type="unfinished"></translation>
+        <translation>Cotizaciones ignoradas</translation>
     </message>
     <message>
         <location filename="../ui/Ui_wdgSource.py" line="136"/>
         <source>Wrong quotes</source>
-        <translation type="unfinished"></translation>
+        <translation>Cotizaciones erróneas</translation>
     </message>
     <message>
         <location filename="../ui/Ui_wdgSource.py" line="138"/>
         <source>Show HTML</source>
-        <translation type="unfinished"></translation>
+        <translation>Mostrar HTML</translation>
     </message>
     <message>
         <location filename="../ui/Ui_wdgSource.py" line="130"/>
         <source>Inserted quotes</source>
-        <translation type="unfinished"></translation>
+        <translation>Cotizaciones insertadas</translation>
     </message>
     <message>
         <location filename="../libsources.py" line="109"/>
@@ -5811,7 +5825,7 @@ S&#xc3;&#xb3;lo se contabilizar&#xc3;&#xa1; cuando se vendan las acciones</sourc
     <message>
         <location filename="../libsources.py" line="215"/>
         <source>Showing HTML</source>
-        <translation type="unfinished"></translation>
+        <translation>Mostrando HTML</translation>
     </message>
 </context>
 <context>

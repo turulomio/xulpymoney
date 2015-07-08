@@ -371,7 +371,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="504"/>
+        <location filename="../ui/frmMain.py" line="500"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
@@ -406,12 +406,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="504"/>
+        <location filename="../ui/frmMain.py" line="500"/>
         <source>Purging innecesary data from all products</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="506"/>
+        <location filename="../ui/frmMain.py" line="502"/>
         <source>Purging quotes from all products</source>
         <translation type="unfinished"></translation>
     </message>
@@ -731,7 +731,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="512"/>
+        <location filename="../ui/frmMain.py" line="508"/>
         <source>Purging quotes from {0}.
 Total purged in global process: {1}</source>
         <translation type="unfinished"></translation>
@@ -964,6 +964,15 @@ Total purged in global process: {1}</source>
     <message>
         <location filename="../ui/frmMain.py" line="322"/>
         <source>Processing products...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../libsources.py" line="880"/>
+        <source>From {} desynchronized products added:
+    - {} quotes
+    - {} dividends per share
+    - {} dividend per share estimations
+    - {} earnings per share estimations</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1261,38 +1270,43 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>frmAccess</name>
     <message>
-        <location filename="../ui/Ui_frmAccess.py" line="143"/>
+        <location filename="../ui/Ui_frmAccess.py" line="164"/>
         <source>Language</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_frmAccess.py" line="138"/>
+        <location filename="../ui/Ui_frmAccess.py" line="165"/>
         <source>Server</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_frmAccess.py" line="139"/>
+        <location filename="../ui/Ui_frmAccess.py" line="166"/>
         <source>Port</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_frmAccess.py" line="140"/>
+        <location filename="../ui/Ui_frmAccess.py" line="167"/>
         <source>Database</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_frmAccess.py" line="141"/>
+        <location filename="../ui/Ui_frmAccess.py" line="168"/>
         <source>User</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_frmAccess.py" line="142"/>
+        <location filename="../ui/Ui_frmAccess.py" line="169"/>
         <source>Password</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../ui/frmAccess.py" line="21"/>
         <source>Xulpymoney - Access</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/frmAccess.py" line="71"/>
+        <source>Error conecting to {} database in {} server</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2707,7 +2721,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="532"/>
+        <location filename="../ui/frmMain.py" line="528"/>
         <source>{0} quotes have been purged from {1} products</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2757,32 +2771,32 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="397"/>
+        <location filename="../ui/frmMain.py" line="393"/>
         <source>There aren&apos;t favorite products</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="95"/>
+        <location filename="../ui/frmMain.py" line="97"/>
         <source>Please introduce Admin Mode password</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="../ui/frmMain.py" line="109"/>
+        <location filename="../ui/frmMain.py" line="111"/>
         <source>Xulpymoney 2010-{0} © (Admin mode)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="104"/>
+        <location filename="../ui/frmMain.py" line="106"/>
         <source>You have set the admin mode password. Please login again</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="112"/>
+        <location filename="../ui/frmMain.py" line="114"/>
         <source>You are logged as an administrator</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="116"/>
+        <location filename="../ui/frmMain.py" line="118"/>
         <source>Bad &apos;Admin mode&apos; password. You are logged as a normal user</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2872,18 +2886,18 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="329"/>
-        <source>Synced {} products and {} quotes</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../ui/frmMain.py" line="316"/>
         <source>Databases can&apos;t be the same</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="309"/>
-        <source>Error conecting to target database</source>
+        <location filename="../ui/frmMain.py" line="304"/>
+        <source>Please login to the target xulpymoney database</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/frmMain.py" line="73"/>
+        <source>Please login to the xulpymoney database</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

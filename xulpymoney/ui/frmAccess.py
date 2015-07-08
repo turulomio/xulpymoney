@@ -26,6 +26,7 @@ class frmAccess(QDialog, Ui_frmAccess):
         self.txtPort.setText(self.mem.config.get_value("frmAccess", "port" ))
         self.txtUser.setText(self.mem.config.get_value("frmAccess", "user" ))
         self.txtServer.setText(self.mem.config.get_value("frmAccess", "server" ))
+        self.txtPass.setFocus()
         
     def config_save(self):
         self.mem.config.set_value("frmAccess", "db", self.txtDB.text() )

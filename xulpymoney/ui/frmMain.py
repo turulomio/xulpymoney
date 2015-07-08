@@ -70,6 +70,7 @@ class frmMain(QMainWindow, Ui_frmMain):
     def init__continue(self):
         """Used to add frmAccess automatic access"""
         self.access=frmAccess(self.mem,  self)
+        self.access.lbl.setText(self.tr("Please login to the xulpymoney database"))
         self.access.config_load()
         self.access.exec_()
         self.retranslateUi(self)
@@ -300,6 +301,7 @@ class frmMain(QMainWindow, Ui_frmMain):
     @QtCore.pyqtSlot()  
     def on_actionMoveData_triggered(self):
         target=frmAccess(self.mem,  self)
+        target.lbl.setText(self.tr("Please login to the target xulpymoney database"))
         target.txtPort.setText("5432")
         target.txtServer.setText("127.0.0.1")
         target.txtUser.setText("postgres")
@@ -320,12 +322,8 @@ class frmMain(QMainWindow, Ui_frmMain):
             pd.setWindowTitle(QApplication.translate("Core","Processing products..."))
             pd.forceShow()
             
-            (products_synced, quotes_synced)=sync_data(self.mem.con, target.con, pd)
-            
-            m=QMessageBox()
-            m.setIcon(QMessageBox.Information)
-            m.setText(self.tr("Synced {} products and {} quotes").format(products_synced, quotes_synced))
-            m.exec_()    
+            sync_data(self.mem.con, target.con, pd)
+
 
     @QtCore.pyqtSlot()  
     def on_actionNasdaq100_triggered(self):
