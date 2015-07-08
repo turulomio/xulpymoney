@@ -74,7 +74,8 @@ class frmMain(QMainWindow, Ui_frmMain):
         self.access.exec_()
         self.retranslateUi(self)
         
-        if self.access.result()==QDialog.Rejected:
+        if self.access.result()==QDialog.Rejected: 
+            self.access.qmessagebox_error_connecting()
             self.on_actionExit_triggered()
             sys.exit(1)
         self.access.config_save()
@@ -303,11 +304,8 @@ class frmMain(QMainWindow, Ui_frmMain):
         target.txtServer.setText("127.0.0.1")
         target.txtUser.setText("postgres")
         target.exec_()
-        if target.result()==QDialog.Rejected:                
-            m=QMessageBox()
-            m.setIcon(QMessageBox.Information)
-            m.setText(self.tr("Error conecting to target database"))
-            m.exec_()   
+        if target.result()==QDialog.Rejected:             
+            target.qmessagebox_error_connecting()
             return
         else:
             if target.txtDB.text().strip()==self.access.txtDB.text().strip() and target.txtServer.text().strip()==self.access.txtServer.text().strip():            

@@ -63,3 +63,8 @@ class frmAccess(QDialog, Ui_frmAccess):
     def on_cmdYN_rejected(self):
         self.reject()
 
+    def qmessagebox_error_connecting(self):
+            m=QMessageBox()
+            m.setIcon(QMessageBox.Information)
+            m.setText(self.tr("Error conecting to {} database in {} server").format(self.txtDB.text(), self.txtServer.text()))
+            m.exec_()   
