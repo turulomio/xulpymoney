@@ -6,6 +6,7 @@ from Ui_frmMain import *
 from frmAbout import *
 import libdbupdates
 from libxulpymoney import *
+from libsources import sync_data
 from frmAccess import *
 from wdgTotal import *
 from wdgDividendsReport import *
@@ -69,13 +70,16 @@ class frmMain(QMainWindow, Ui_frmMain):
     def init__continue(self):
         """Used to add frmAccess automatic access"""
         self.access=frmAccess(self.mem,  self)
+        self.access.config_load()
         self.access.exec_()
         self.retranslateUi(self)
         
         if self.access.result()==QDialog.Rejected:
             self.on_actionExit_triggered()
             sys.exit(1)
-
+        self.access.config_save()
+        self.mem.con=self.access.con
+        
         ##Update database
         libdbupdates.Update(self.mem)
         
@@ -292,6 +296,39 @@ class frmMain(QMainWindow, Ui_frmMain):
         self.w.show()
 
         
+    @QtCore.pyqtSlot()  
+    def on_actionMoveData_triggered(self):
+        target=frmAccess(self.mem,  self)
+        target.txtPort.setText("5432")
+        target.txtServer.setText("127.0.0.1")
+        target.txtUser.setText("postgres")
+        target.exec_()
+        if target.result()==QDialog.Rejected:                
+            m=QMessageBox()
+            m.setIcon(QMessageBox.Information)
+            m.setText(self.tr("Error conecting to target database"))
+            m.exec_()   
+            return
+        else:
+            if target.txtDB.text().strip()==self.access.txtDB.text().strip() and target.txtServer.text().strip()==self.access.txtServer.text().strip():            
+                m=QMessageBox()
+                m.setIcon(QMessageBox.Information)
+                m.setText(self.tr("Databases can't be the same"))
+                m.exec_()   
+                return
+                
+            pd= QProgressDialog(QApplication.translate("Core","Syncing databases from {} ({}) to {} ({})").format(self.access.txtServer.text(), self.access.txtDB.text(), target.txtServer.text(), target.txtDB.text()), None, 0, 10)
+            pd.setModal(True)
+            pd.setWindowTitle(QApplication.translate("Core","Processing products..."))
+            pd.forceShow()
+            
+            (products_synced, quotes_synced)=sync_data(self.mem.con, target.con, pd)
+            
+            m=QMessageBox()
+            m.setIcon(QMessageBox.Information)
+            m.setText(self.tr("Synced {} products and {} quotes").format(products_synced, quotes_synced))
+            m.exec_()    
+
     @QtCore.pyqtSlot()  
     def on_actionNasdaq100_triggered(self):
         self.w.close()

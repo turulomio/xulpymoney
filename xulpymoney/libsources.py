@@ -433,7 +433,6 @@ class SourceIterateProducts(Source):
             time.sleep(self.sleep)#time step
         print("")
 
-
 class WorkerMercadoContinuo(SourceParsePage):
     def __init__(self,  mem):
         SourceParsePage.__init__(self, mem)   
@@ -772,3 +771,57 @@ class WorkerYahooHistorical(SourceIterateProducts):
     def steps(self):
         """Define  the number of steps of the source run"""
         return 2+self.products.length() #CORRECT
+
+##################################
+
+def sync_data(con_source, con_target, progress=None):
+    """con is con_target, 
+    progress is a pointer to progressbar
+    returns a tuple (numberofproductssynced, numberofquotessynced)"""
+    #Checks if database has same version
+    cur_target=con_target.cursor()
+    cur2_target=con_target.cursor()
+    cur_source=con_source.cursor()
+    
+    
+    #Checks if database has same version
+    cur_source.execute("select value from globals where id_globals=1")
+    cur_target.execute("select value from globals where id_globals=1")
+    
+    if cur_source.fetchone()[0]!=cur_target.fetchone()[0]:
+        print ("Databases has diferent versions, please update them")
+        sys.exit(0)
+    
+    quotes=0#Number of quotes synced
+    products=0#Number of products synced
+    
+    #Iterate all products
+    cur_target.execute("select id,name from products where id>0 order by name;")
+    print ("Syncing {} products".format (cur_target.rowcount))
+    for row in cur_target:
+        #Search last datetime
+        cur2_target.execute("select max(datetime) as max from quotes where id=%s", (row['id'], ))
+        max=cur2_target.fetchone()[0]
+        #Ask for quotes in source with last datetime
+        if max==None:#No hay ningun registro y selecciona todos
+            cur_source.execute("select * from quotes where id=%s", (row['id'], ))
+        else:#Hay registro y selecciona los posteriores a el
+            cur_source.execute("select * from quotes where id=%s and datetime>%s", (row['id'], max))
+        if cur_source.rowcount!=0:
+            print("  - Syncing {} since {} ".format(row['name'], max),end="")
+            products=products+1
+            for  row_source in cur_source: #Inserts them 
+                cur2_target.execute("insert into quotes (id, datetime, quote) values (%s,%s,%s)", ( row_source['id'], row_source['datetime'], row_source['quote']))
+                quotes=quotes+1
+                print (".",end="")
+            print("")
+            
+        if progress!=None:#If there's a progress bar
+            progress.setValue(cur_target.rownumber)
+            progress.setMaximum(cur_target.rowcount)
+            QCoreApplication.processEvents()
+    con_target.commit()
+            
+    print ("Added {} quotes from {} desynchronized products".format(quotes,  products))
+    return (products, quotes)
+

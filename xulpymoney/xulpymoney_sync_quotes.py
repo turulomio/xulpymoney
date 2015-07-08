@@ -4,10 +4,10 @@ import argparse
 import getpass
 import psycopg2
 import psycopg2.extras
+from libsources import sync_data
 
 ## TO SYNC MINE IN PAPA
 ##python3 xulpymoney_sync_quotes.py --db_source xulpymoney -d xulpymoneypapa
-
 parser=argparse.ArgumentParser("xulpymoney_sync_quotes")
 parser.add_argument('-Us', '--user_source', help='Postgresql source user', default='postgres')
 parser.add_argument('-ps', '--port_source', help='Postgresql source server port', default=5432)
@@ -43,49 +43,4 @@ except psycopg2.Error as e:
     print ("Error conecting to Xulpymoney")
     sys.exit(2)
 
-#Checks if database has same version
-cur=con.cursor()
-cur2=con.cursor()
-cur_source=con_source.cursor()
-
-
-#Checks if database has same version
-cur_source.execute("select value from globals where id_globals=1")
-cur.execute("select value from globals where id_globals=1")
-
-if cur_source.fetchone()[0]!=cur.fetchone()[0]:
-    print ("Databases has diferent versions, please update them")
-    sys.exit(0)
-
-count=0
-products=0
-
-#Iterate all products
-cur.execute("select id,name from products where id>0 order by name;")
-print ("Syncing {} products".format (cur.rowcount))
-for row in cur:
-    #Search last datetime
-    cur2.execute("select max(datetime) as max from quotes where id=%s", (row['id'], ))
-    max=cur2.fetchone()[0]
-    #Ask for quotes in source with last datetime
-    if max==None:#No hay ningun registro y selecciona todos
-        cur_source.execute("select * from quotes where id=%s", (row['id'], ))
-    else:#Hay registro y selecciona los posteriores a el
-        cur_source.execute("select * from quotes where id=%s and datetime>%s", (row['id'], max))
-    if cur_source.rowcount!=0:
-        print("  - Syncing {} since {} ".format(row['name'], max),end="")
-        products=products+1
-        for  row_source in cur_source: #Inserts them 
-            cur2.execute("insert into quotes (id, datetime, quote) values (%s,%s,%s)", ( row_source['id'], row_source['datetime'], row_source['quote']))
-            count=count+1
-            print (".",end="")
-        print("")
-
-
-cur.close()
-cur2.close()
-cur_source.close()
-con_source.close()
-con.commit()
-con.close()
-print ("Added {} quotes from {} desynchronized products".format(count,  products))
+sync_data(con_source, con)
