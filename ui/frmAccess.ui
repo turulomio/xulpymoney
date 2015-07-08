@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>450</width>
-    <height>332</height>
+    <width>358</width>
+    <height>377</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -26,7 +26,7 @@
   <property name="modal">
    <bool>true</bool>
   </property>
-  <layout class="QHBoxLayout" name="horizontalLayout_3">
+  <layout class="QHBoxLayout" name="horizontalLayout_8">
    <item>
     <layout class="QVBoxLayout" name="verticalLayout">
      <item>
@@ -45,7 +45,7 @@
         </spacer>
        </item>
        <item>
-        <widget class="QLabel" name="lbl">
+        <widget class="QLabel" name="lblPixmap">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -94,19 +94,75 @@
       </layout>
      </item>
      <item>
-      <layout class="QFormLayout" name="formLayout">
-       <property name="fieldGrowthPolicy">
-        <enum>QFormLayout::ExpandingFieldsGrow</enum>
+      <widget class="QLabel" name="lbl">
+       <property name="font">
+        <font>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
        </property>
-       <item row="2" column="0">
+       <property name="text">
+        <string/>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout">
+       <item>
+        <widget class="QLabel" name="lblLanguage">
+         <property name="text">
+          <string>Language</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QComboBox" name="cmbLanguages">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>200</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::NoFocus</enum>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <widget class="Line" name="line">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_3">
+       <item>
         <widget class="QLabel" name="lblServer">
          <property name="text">
           <string>Server</string>
          </property>
         </widget>
        </item>
-       <item row="2" column="1">
+       <item>
         <widget class="QLineEdit" name="txtServer">
+         <property name="maximumSize">
+          <size>
+           <width>200</width>
+           <height>16777215</height>
+          </size>
+         </property>
          <property name="inputMethodHints">
           <set>Qt::ImhNone</set>
          </property>
@@ -118,51 +174,96 @@
          </property>
         </widget>
        </item>
-       <item row="3" column="0">
+      </layout>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_4">
+       <item>
         <widget class="QLabel" name="lblPort">
          <property name="text">
           <string>Port</string>
          </property>
         </widget>
        </item>
-       <item row="3" column="1">
+       <item>
         <widget class="QLineEdit" name="txtPort">
+         <property name="maximumSize">
+          <size>
+           <width>200</width>
+           <height>16777215</height>
+          </size>
+         </property>
          <property name="text">
           <string/>
          </property>
         </widget>
        </item>
-       <item row="4" column="0">
+      </layout>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_5">
+       <item>
         <widget class="QLabel" name="lblDatabase">
          <property name="text">
           <string>Database</string>
          </property>
         </widget>
        </item>
-       <item row="5" column="0">
+       <item>
+        <widget class="QLineEdit" name="txtDB">
+         <property name="maximumSize">
+          <size>
+           <width>200</width>
+           <height>16777215</height>
+          </size>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_6">
+       <item>
         <widget class="QLabel" name="lblUser">
          <property name="text">
           <string>User</string>
          </property>
         </widget>
        </item>
-       <item row="5" column="1">
-        <widget class="QLineEdit" name="txtUser"/>
+       <item>
+        <widget class="QLineEdit" name="txtUser">
+         <property name="maximumSize">
+          <size>
+           <width>200</width>
+           <height>16777215</height>
+          </size>
+         </property>
+        </widget>
        </item>
-       <item row="6" column="0">
+      </layout>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_7">
+       <item>
         <widget class="QLabel" name="lblPass">
          <property name="text">
           <string>Password</string>
          </property>
         </widget>
        </item>
-       <item row="6" column="1">
+       <item>
         <widget class="QLineEdit" name="txtPass">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>200</width>
+           <height>16777215</height>
+          </size>
          </property>
          <property name="inputMethodHints">
           <set>Qt::ImhHiddenText|Qt::ImhNoAutoUppercase|Qt::ImhNoPredictiveText</set>
@@ -171,37 +272,6 @@
           <enum>QLineEdit::Password</enum>
          </property>
         </widget>
-       </item>
-       <item row="0" column="0">
-        <widget class="QLabel" name="label">
-         <property name="text">
-          <string>Language</string>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="1">
-        <widget class="QComboBox" name="cmbLanguages">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="1">
-        <widget class="Line" name="line">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-        </widget>
-       </item>
-       <item row="4" column="1">
-        <layout class="QHBoxLayout" name="horizontalLayout">
-         <item>
-          <widget class="QLineEdit" name="txtDB"/>
-         </item>
-        </layout>
        </item>
       </layout>
      </item>
@@ -231,7 +301,6 @@
  <tabstops>
   <tabstop>txtPass</tabstop>
   <tabstop>cmdYN</tabstop>
-  <tabstop>cmbLanguages</tabstop>
   <tabstop>txtServer</tabstop>
   <tabstop>txtPort</tabstop>
   <tabstop>txtDB</tabstop>
