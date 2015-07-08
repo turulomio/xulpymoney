@@ -104,6 +104,8 @@
     <addaction name="separator"/>
     <addaction name="actionAuxiliarTables"/>
     <addaction name="separator"/>
+    <addaction name="actionMoveData"/>
+    <addaction name="separator"/>
     <addaction name="actionSettings"/>
     <addaction name="separator"/>
     <addaction name="actionExit"/>
@@ -963,6 +965,21 @@
    </property>
    <property name="toolTip">
     <string>Generate global report</string>
+   </property>
+  </action>
+  <action name="actionMoveData">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/transfer.png</normaloff>:/xulpymoney/transfer.png</iconset>
+   </property>
+   <property name="text">
+    <string>Move products information</string>
+   </property>
+   <property name="toolTip">
+    <string>Move products information to another database</string>
+   </property>
+   <property name="shortcut">
+    <string>F9</string>
    </property>
   </action>
  </widget>

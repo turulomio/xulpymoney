@@ -5,6 +5,7 @@ from Ui_frmAccess import *
 
 class frmAccess(QDialog, Ui_frmAccess):
     def __init__(self, mem, parent = None, name = None, modal = False):
+        """Returns accepted if conection is done, or rejected if there's an error"""""
         QDialog.__init__(self,  parent)
         self.mem=mem
         self.setModal(True)
@@ -17,10 +18,23 @@ class frmAccess(QDialog, Ui_frmAccess):
         icon.addPixmap(pix, QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.setWindowIcon(icon)        
         self.setWindowTitle(self.tr("Xulpymoney - Access"))
+        
+        self.con=None#Pointer to connection
+        
+    def config_load(self):
         self.txtDB.setText(self.mem.config.get_value("frmAccess", "db" ))
         self.txtPort.setText(self.mem.config.get_value("frmAccess", "port" ))
         self.txtUser.setText(self.mem.config.get_value("frmAccess", "user" ))
         self.txtServer.setText(self.mem.config.get_value("frmAccess", "server" ))
+        
+    def config_save(self):
+        self.mem.config.set_value("frmAccess", "db", self.txtDB.text() )
+        self.mem.config.set_value("frmAccess", "port",  self.txtPort.text())
+        self.mem.config.set_value("frmAccess", "user" ,  self.txtUser.text())
+        self.mem.config.set_value("frmAccess", "server", self.txtServer.text())   
+        self.mem.config.set_value("settings", "language", self.cmbLanguages.itemData(self.cmbLanguages.currentIndex()))
+        self.mem.password=self.txtPass.text()
+        self.mem.config.save()      
 
     @pyqtSlot(str)      
     def on_cmbLanguages_currentIndexChanged(self, stri):
@@ -30,14 +44,9 @@ class frmAccess(QDialog, Ui_frmAccess):
     def make_connection(self):
         """Función que realiza la conexión devolviendo true o false con el éxito"""
         try:
-            self.mem.config.set_value("frmAccess", "db", self.txtDB.text() )
-            self.mem.config.set_value("frmAccess", "port",  self.txtPort.text())
-            self.mem.config.set_value("frmAccess", "user" ,  self.txtUser.text())
-            self.mem.config.set_value("frmAccess", "server", self.txtServer.text())   
-            self.mem.config.set_value("settings", "language", self.cmbLanguages.itemData(self.cmbLanguages.currentIndex()))
-            self.mem.config.save()      
-            self.mem.password=self.txtPass.text()
-            self.mem.con=self.mem.connect_from_config()                       
+            self.con=self.mem.connect(self.txtDB.text(), self.txtPort.text(), self.txtUser.text(), self.txtServer.text(), self.txtPass.text()) [0]      
+            if self.con==None:
+                return False
             return True
         except:
             print ("Error in function make_connection",  self.mem.con)
