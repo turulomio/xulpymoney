@@ -12,14 +12,21 @@ class frmAccess(QDialog, Ui_frmAccess):
         self.setupUi(self)
         self.parent=parent
         self.mem.languages.qcombobox(self.cmbLanguages,self.mem.languages.find(self.mem.config.get_value("settings", "language")))
-
-        icon = QtGui.QIcon()
-        pix=QtGui.QPixmap(":xulpymoney/coins.png")
-        icon.addPixmap(pix, QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.setWindowIcon(icon)        
-        self.setWindowTitle(self.tr("Xulpymoney - Access"))
-        
+        self.setPixmap(QPixmap(":xulpymoney/coins.png"))
+        self.setTitle(self.tr("Xulpymoney - Access"))
         self.con=None#Pointer to connection
+
+
+    def setPixmap(self, qpixmap):
+        icon = QtGui.QIcon()
+        icon.addPixmap(qpixmap, QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.setWindowIcon(icon)        
+        
+    def setTitle(self, text):
+        self.setWindowTitle(text)
+        
+    def setLabel(self, text):
+        self.lbl.setText(text)
         
     def config_load(self):
         self.txtDB.setText(self.mem.config.get_value("frmAccess", "db" ))
