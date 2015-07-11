@@ -41,66 +41,98 @@
       </widget>
      </item>
      <item>
-      <widget class="myQTableWidget" name="table">
-       <property name="editTriggers">
-        <set>QAbstractItemView::NoEditTriggers</set>
+      <widget class="QTabWidget" name="tab">
+       <property name="currentIndex">
+        <number>1</number>
        </property>
-       <property name="selectionMode">
-        <enum>QAbstractItemView::SingleSelection</enum>
-       </property>
-       <attribute name="verticalHeaderVisible">
-        <bool>false</bool>
-       </attribute>
-       <column>
-        <property name="text">
-         <string>Year</string>
-        </property>
-       </column>
-       <column>
-        <property name="text">
-         <string>Initial balance</string>
-        </property>
-       </column>
-       <column>
-        <property name="text">
-         <string>Final balance</string>
-        </property>
-       </column>
-       <column>
-        <property name="text">
-         <string>Difference</string>
-        </property>
-       </column>
-       <column>
-        <property name="text">
-         <string>Incomes</string>
-        </property>
-       </column>
-       <column>
-        <property name="text">
-         <string>Gains</string>
-        </property>
-       </column>
-       <column>
-        <property name="text">
-         <string>Dividends</string>
-        </property>
-       </column>
-       <column>
-        <property name="text">
-         <string>Expenses</string>
-        </property>
-       </column>
-       <column>
-        <property name="text">
-         <string>I+G+D-E</string>
-        </property>
-       </column>
-       <column>
-        <property name="text">
-         <string>% APR</string>
-        </property>
-       </column>
+       <widget class="QWidget" name="tab_5">
+        <attribute name="icon">
+         <iconset resource="../images/xulpymoney.qrc">
+          <normaloff>:/xulpymoney/document-edit.png</normaloff>:/xulpymoney/document-edit.png</iconset>
+        </attribute>
+        <attribute name="title">
+         <string>Data</string>
+        </attribute>
+        <layout class="QHBoxLayout" name="horizontalLayout">
+         <item>
+          <widget class="myQTableWidget" name="table">
+           <property name="editTriggers">
+            <set>QAbstractItemView::NoEditTriggers</set>
+           </property>
+           <property name="selectionMode">
+            <enum>QAbstractItemView::SingleSelection</enum>
+           </property>
+           <attribute name="verticalHeaderVisible">
+            <bool>false</bool>
+           </attribute>
+           <column>
+            <property name="text">
+             <string>Year</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>Initial balance</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>Final balance</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>Difference</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>Incomes</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>Gains</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>Dividends</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>Expenses</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>I+G+D-E</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>% APR</string>
+            </property>
+           </column>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QWidget" name="tabChart">
+        <attribute name="icon">
+         <iconset resource="../images/xulpymoney.qrc">
+          <normaloff>:/xulpymoney/pie.png</normaloff>:/xulpymoney/pie.png</iconset>
+        </attribute>
+        <attribute name="title">
+         <string>Chart</string>
+        </attribute>
+        <layout class="QHBoxLayout" name="horizontalLayout_3">
+         <item>
+          <layout class="QVBoxLayout" name="tabGraph"/>
+         </item>
+        </layout>
+       </widget>
       </widget>
      </item>
     </layout>

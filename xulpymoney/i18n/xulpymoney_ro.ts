@@ -1025,6 +1025,29 @@ Total purged in global process: {1}</source>
     </message>
 </context>
 <context>
+    <name>canvasAPR</name>
+    <message>
+        <location filename="../ui/wdgAPR.py" line="71"/>
+        <source>Incomes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/wdgAPR.py" line="72"/>
+        <source>Expenses</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/wdgAPR.py" line="73"/>
+        <source>Gains</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/wdgAPR.py" line="74"/>
+        <source>Dividends</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>canvasChart</name>
     <message>
         <location filename="../ui/canvaschart.py" line="199"/>
@@ -1300,12 +1323,12 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmAccess.py" line="21"/>
+        <location filename="../ui/frmAccess.py" line="17"/>
         <source>Xulpymoney - Access</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmAccess.py" line="71"/>
+        <location filename="../ui/frmAccess.py" line="78"/>
         <source>Error conecting to {} database in {} server</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3937,78 +3960,88 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>wdgAPR</name>
     <message>
-        <location filename="../ui/Ui_wdgAPR.py" line="73"/>
+        <location filename="../ui/Ui_wdgAPR.py" line="94"/>
         <source>Year</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgAPR.py" line="75"/>
+        <location filename="../ui/Ui_wdgAPR.py" line="96"/>
         <source>Initial balance</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgAPR.py" line="77"/>
+        <location filename="../ui/Ui_wdgAPR.py" line="98"/>
         <source>Final balance</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgAPR.py" line="81"/>
+        <location filename="../ui/Ui_wdgAPR.py" line="102"/>
         <source>Incomes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgAPR.py" line="87"/>
+        <location filename="../ui/Ui_wdgAPR.py" line="108"/>
         <source>Expenses</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgAPR.py" line="85"/>
+        <location filename="../ui/Ui_wdgAPR.py" line="106"/>
         <source>Dividends</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgAPR.py" line="71"/>
+        <location filename="../ui/wdgAPR.py" line="162"/>
         <source>TOTAL</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgAPR.py" line="71"/>
+        <location filename="../ui/Ui_wdgAPR.py" line="92"/>
         <source>APR and total assests report</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgAPR.py" line="79"/>
+        <location filename="../ui/Ui_wdgAPR.py" line="100"/>
         <source>Difference</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgAPR.py" line="83"/>
+        <location filename="../ui/Ui_wdgAPR.py" line="104"/>
         <source>Gains</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgAPR.py" line="89"/>
+        <location filename="../ui/Ui_wdgAPR.py" line="110"/>
         <source>I+G+D-E</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgAPR.py" line="91"/>
+        <location filename="../ui/Ui_wdgAPR.py" line="112"/>
         <source>% APR</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgAPR.py" line="11"/>
+        <location filename="../ui/wdgAPR.py" line="82"/>
         <source>Filling data of the report</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgAPR.py" line="11"/>
+        <location filename="../ui/wdgAPR.py" line="82"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgAPR.py" line="13"/>
+        <location filename="../ui/wdgAPR.py" line="84"/>
         <source>Calculating data...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/Ui_wdgAPR.py" line="113"/>
+        <source>Data</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/Ui_wdgAPR.py" line="114"/>
+        <source>Chart</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

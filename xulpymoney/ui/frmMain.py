@@ -70,7 +70,7 @@ class frmMain(QMainWindow, Ui_frmMain):
     def init__continue(self):
         """Used to add frmAccess automatic access"""
         self.access=frmAccess(self.mem,  self)
-        self.access.lbl.setText(self.tr("Please login to the xulpymoney database"))
+        self.access.setLabel(self.tr("Please login to the xulpymoney database"))
         self.access.config_load()
         self.access.exec_()
         self.retranslateUi(self)
@@ -301,7 +301,7 @@ class frmMain(QMainWindow, Ui_frmMain):
     @QtCore.pyqtSlot()  
     def on_actionMoveData_triggered(self):
         target=frmAccess(self.mem,  self)
-        target.lbl.setText(self.tr("Please login to the target xulpymoney database"))
+        target.setLabel(self.tr("Please login to the target xulpymoney database"))
         target.txtPort.setText("5432")
         target.txtServer.setText("127.0.0.1")
         target.txtUser.setText("postgres")
