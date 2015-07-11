@@ -5207,87 +5207,87 @@ Diferencia diaria: {5}. Edad media del patrimonio: {6}</translation>
 <context>
     <name>wdgJointReport</name>
     <message>
-        <location filename="../ui/Ui_wdgJointReport.py" line="309"/>
+        <location filename="../ui/Ui_wdgJointReport.py" line="318"/>
         <source>Historical investment report</source>
         <translation>Informe de inversiones históricas</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgJointReport.py" line="338"/>
+        <location filename="../ui/Ui_wdgJointReport.py" line="347"/>
         <source>Historical report</source>
         <translation>Informe histórico</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgJointReport.py" line="333"/>
+        <location filename="../ui/Ui_wdgJointReport.py" line="342"/>
         <source>Current balance</source>
         <translation>Saldo actual</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgJointReport.py" line="363"/>
+        <location filename="../ui/Ui_wdgJointReport.py" line="372"/>
         <source>Selling operations</source>
         <translation>Operaciones de venta</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgJointReport.py" line="431"/>
+        <location filename="../ui/Ui_wdgJointReport.py" line="440"/>
         <source>Date</source>
         <translation>Fecha</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgJointReport.py" line="392"/>
+        <location filename="../ui/Ui_wdgJointReport.py" line="401"/>
         <source>Years</source>
         <translation>Años</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgJointReport.py" line="433"/>
+        <location filename="../ui/Ui_wdgJointReport.py" line="442"/>
         <source>Investment</source>
         <translation>Inversión</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgJointReport.py" line="435"/>
+        <location filename="../ui/Ui_wdgJointReport.py" line="444"/>
         <source>Operation type</source>
         <translation>Tipo de operación</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgJointReport.py" line="398"/>
+        <location filename="../ui/Ui_wdgJointReport.py" line="407"/>
         <source>Initial balance</source>
         <translation>Saldo inicial</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgJointReport.py" line="400"/>
+        <location filename="../ui/Ui_wdgJointReport.py" line="409"/>
         <source>Final balance</source>
         <translation>Saldo final</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgJointReport.py" line="406"/>
+        <location filename="../ui/Ui_wdgJointReport.py" line="415"/>
         <source>Taxes</source>
         <translation>Impuestos</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgJointReport.py" line="388"/>
+        <location filename="../ui/Ui_wdgJointReport.py" line="397"/>
         <source>Selling operations &lt;= year</source>
         <translation>Operaciones de venta &lt;= año</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgJointReport.py" line="413"/>
+        <location filename="../ui/Ui_wdgJointReport.py" line="422"/>
         <source>Selling operations &gt; year</source>
         <translation>Operaciones de venta &gt; año</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgJointReport.py" line="424"/>
+        <location filename="../ui/Ui_wdgJointReport.py" line="433"/>
         <source>Dividends</source>
         <translation>Dividendos</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgJointReport.py" line="417"/>
+        <location filename="../ui/Ui_wdgJointReport.py" line="426"/>
         <source>Concept</source>
         <translation>Concepto</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgJointReport.py" line="421"/>
+        <location filename="../ui/Ui_wdgJointReport.py" line="430"/>
         <source>Account</source>
         <translation>Cuenta</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgJointReport.py" line="425"/>
+        <location filename="../ui/Ui_wdgJointReport.py" line="434"/>
         <source>En este listado se muestran los a&#xc3;&#xb1;adidos de acciones a coste cero que se han producido en el a&#xc3;&#xb1;o
 
 Es  un listado informativo y no ser&#xc3;&#xa1;n contabilizadas en los informes ya que se producir&#xc3;&#xad;a una doble contabilidad
@@ -5296,119 +5296,124 @@ S&#xc3;&#xb3;lo se contabilizar&#xc3;&#xa1; cuando se vendan las acciones</sourc
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgJointReport.py" line="437"/>
+        <location filename="../ui/Ui_wdgJointReport.py" line="446"/>
         <source>Shares</source>
         <translation>Acciones</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgJointReport.py" line="439"/>
+        <location filename="../ui/Ui_wdgJointReport.py" line="448"/>
         <source>Balance</source>
         <translation>Saldo</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgJointReport.py" line="440"/>
+        <location filename="../ui/Ui_wdgJointReport.py" line="449"/>
         <source>Shares addition</source>
         <translation>Añadido de acciones</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgJointReport.py" line="402"/>
+        <location filename="../ui/Ui_wdgJointReport.py" line="411"/>
         <source>Gross gains</source>
         <translation>Ganancias brutas</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgJointReport.py" line="313"/>
+        <location filename="../ui/Ui_wdgJointReport.py" line="322"/>
         <source>Investment operation comissions</source>
         <translation>Comisiones de las operaciones de inversión</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgJointReport.py" line="315"/>
+        <location filename="../ui/Ui_wdgJointReport.py" line="324"/>
         <source>Investment operation taxes</source>
         <translation>Impuestos de las operaciones de inversión</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgJointReport.py" line="317"/>
+        <location filename="../ui/Ui_wdgJointReport.py" line="326"/>
         <source>Investment net gains</source>
         <translation>Ganancias netas de la inversión</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgJointReport.py" line="319"/>
+        <location filename="../ui/Ui_wdgJointReport.py" line="328"/>
         <source>Gross dividends</source>
         <translation>Dividendos brutos</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgJointReport.py" line="321"/>
+        <location filename="../ui/Ui_wdgJointReport.py" line="330"/>
         <source>Dividend withholdings</source>
         <translation>Retención de dividendos</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgJointReport.py" line="323"/>
+        <location filename="../ui/Ui_wdgJointReport.py" line="332"/>
         <source>Net dividends</source>
         <translation>Dividendos netos</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgJointReport.py" line="325"/>
+        <location filename="../ui/Ui_wdgJointReport.py" line="334"/>
         <source>Custody fees</source>
         <translation>Comisiones de custodia</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgJointReport.py" line="327"/>
+        <location filename="../ui/Ui_wdgJointReport.py" line="336"/>
         <source>Taxes payment</source>
         <translation>Pago de impuestos</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgJointReport.py" line="329"/>
+        <location filename="../ui/Ui_wdgJointReport.py" line="338"/>
         <source>Gains without paying taxes</source>
         <translation>Ganancias sin pagar impuestos</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgJointReport.py" line="331"/>
+        <location filename="../ui/Ui_wdgJointReport.py" line="340"/>
         <source>Gains after paying taxes</source>
         <translation>Ganancias después de pagar impuestos</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgJointReport.py" line="335"/>
+        <location filename="../ui/Ui_wdgJointReport.py" line="344"/>
         <source>Amount</source>
         <translation>Importe</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgJointReport.py" line="337"/>
+        <location filename="../ui/Ui_wdgJointReport.py" line="346"/>
         <source>% APR</source>
         <translation>% TAE</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgJointReport.py" line="404"/>
+        <location filename="../ui/Ui_wdgJointReport.py" line="413"/>
         <source>Comissions</source>
         <translation>Comisiones</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgJointReport.py" line="408"/>
+        <location filename="../ui/Ui_wdgJointReport.py" line="417"/>
         <source>Net gains</source>
         <translation>Ganancias netas</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgJointReport.py" line="410"/>
+        <location filename="../ui/Ui_wdgJointReport.py" line="419"/>
         <source>% Net APR</source>
         <translation>% TAE Neto</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgJointReport.py" line="412"/>
+        <location filename="../ui/Ui_wdgJointReport.py" line="421"/>
         <source>% Net Total</source>
         <translation>% Total neto</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgJointReport.py" line="423"/>
+        <location filename="../ui/Ui_wdgJointReport.py" line="432"/>
         <source>Net before taxes</source>
         <translation>Neto antes de impuestos</translation>
     </message>
     <message>
-        <location filename="../ui/wdgJointReport.py" line="249"/>
+        <location filename="../ui/wdgJointReport.py" line="261"/>
         <source>% APR from {}</source>
         <translation>% TAE desde {}</translation>
     </message>
     <message>
-        <location filename="../ui/wdgJointReport.py" line="250"/>
+        <location filename="../ui/wdgJointReport.py" line="262"/>
         <source>Balance at {0}, {1}</source>
         <translation>Saldo a {0}, {1}</translation>
+    </message>
+    <message>
+        <location filename="../ui/wdgJointReport.py" line="95"/>
+        <source>Positive gross selling operations: {}. Negative gross selling operations: {}.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

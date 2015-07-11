@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>889</width>
-    <height>727</height>
+    <width>862</width>
+    <height>698</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -75,7 +75,7 @@
         <bool>true</bool>
        </property>
        <property name="currentIndex">
-        <number>5</number>
+        <number>1</number>
        </property>
        <widget class="QWidget" name="tab_3">
         <attribute name="icon">
@@ -233,7 +233,7 @@ font: 75 12pt &quot;Sans Serif&quot;;</string>
         <attribute name="title">
          <string>Selling operations</string>
         </attribute>
-        <layout class="QHBoxLayout" name="horizontalLayout_3">
+        <layout class="QVBoxLayout" name="verticalLayout_2">
          <item>
           <widget class="myQTableWidget" name="tblInvestments">
            <property name="contextMenuPolicy">
@@ -314,6 +314,22 @@ font: 75 12pt &quot;Sans Serif&quot;;</string>
              <string>% Net Total</string>
             </property>
            </column>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="lblPositiveNegative">
+           <property name="font">
+            <font>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
           </widget>
          </item>
         </layout>
