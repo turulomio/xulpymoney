@@ -139,10 +139,23 @@ class ODT(QObject):
             for i, col in enumerate(row):
                 tc = odf.table.TableCell(stylename="Tabla{}.Cell".format(self.seqTables))
                 tr.addElement(tc)
+                
+                #Parses orientation
                 if orientation[i]=="<":
-                    p = odf.text.P(stylename="Tabla{}.TableContents{}".format(self.seqTables, font),text=col)
+                    p = odf.text.P(stylename="Tabla{}.TableContents{}".format(self.seqTables, font))
                 elif orientation[i]==">":
-                    p = odf.text.P(stylename="Tabla{}.TableContentsRight{}".format(self.seqTables, font),text=col)
+                    p = odf.text.P(stylename="Tabla{}.TableContentsRight{}".format(self.seqTables, font))
+                
+                #Colorize numbers less than zero
+                try:#Formato 23 €
+                    if float(col.split(" ")[0])<0:
+                        s=odf.text.Span(text=col, stylename="Rojo")
+                    else:
+                        s=odf.text.Span(text=col)
+                except:
+                    s=odf.text.Span(text=col)                    
+                p.addElement(s)
+                
                 tc.addElement(p)
         
         self.doc.text.addElement(table)
