@@ -83,7 +83,17 @@ class frmMain(QMainWindow, Ui_frmMain):
         self.mem.con=self.access.con
         
         ##Update database
-        libdbupdates.Update(self.mem)
+        update=libdbupdates.Update(self.mem)
+        if update.need_update()==True:
+            if update.check_superuser_role(self.access.txtUser.text())==True:
+                update.run()
+            else:
+                m=QMessageBox()
+                m.setIcon(QMessageBox.Information)
+                m.setText(self.tr("Xulpymoney needs to be updated. Please login with a superuser role."))
+                m.exec_()   
+                self.on_actionExit_triggered()
+                sys.exit(2)
         
         
         self.mem.actualizar_memoria() ##CARGA TODOS LOS DATOS Y LOS VINCULA       

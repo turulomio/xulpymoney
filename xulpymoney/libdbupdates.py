@@ -17,8 +17,58 @@ class Update:
     """
     def __init__(self, mem):
         self.mem=mem
+        self.dbversion=self.get_database_version()    
+        self.lastcodeupdate=201507151008
+
+   
+    def get_database_version(self):
+        """REturns None or an Int"""
+        cur=self.mem.con.cursor()
+        cur.execute("select value from globals where id_globals=1;")
+        if cur.rowcount==0:
+            cur.close()
+            return None
+        resultado=cur.fetchone()['value']
+        cur.close()
+        self.dbversion=int(resultado)
+        return self.dbversion
         
-        self.dbversion=self.get_database_version()     
+    def set_database_version(self, valor):
+        """Tiene el commit"""
+        print ("**** Updating database from {} to {}".format(self.dbversion, valor))
+        cur=self.mem.con.cursor()
+        if self.dbversion==None:
+            cur.execute("insert into globals (id_globals,global,value) values (%s,%s,%s);", (1,"Version", valor ))
+        else:
+            cur.execute("update globals set global=%s, value=%s where id_globals=1;", ("Version", valor ))
+        cur.close()        
+        self.dbversion=valor
+        self.mem.con.commit()
+        
+    def need_update(self):
+        """Returns if update must be done"""
+        if self.dbversion>self.lastcodeupdate:
+            print ("WARNING. DBVEERSION > LAST CODE UPDATE, PLEASE UPDATE LASTCODEUPDATE IN CLASS")
+            
+            
+        
+        if self.dbversion==self.lastcodeupdate:
+            return False
+        return True
+        
+
+    def check_superuser_role(self, username):
+        """Checks if the user has superuser role"""
+        res=False
+        cur=self.mem.con.cursor()
+        cur.execute("SELECT rolsuper FROM pg_roles where rolname=%s;", (username, ))
+        if cur.rowcount==1:
+            if cur.fetchone()[0]==True:
+                res=True
+        cur.close()
+        return res
+        
+    def run(self): 
         if self.dbversion==None:
             self.set_database_version(200912310000)
         if self.dbversion<201001010000:
@@ -278,32 +328,17 @@ class Update:
             cur.execute("update products set tpc=%s where id=%s;", (0, 76309))
             cur.close()
             self.mem.con.commit()
-            self.set_database_version(201504150622)                 
-        """AFTER EXECUTING I MUST RUN SQL UPDATE SCRIPT TO UPDATE FUTURE INSTALLATIONS
+            self.set_database_version(201504150622)   
+        if self.dbversion<201507151008:
+            cur=self.mem.con.cursor()#Empty due to check role probes
+            cur.close()
+            self.mem.con.commit()
+            self.set_database_version(201507151008)              
+            
+        """       WARNING                    ADD ALWAYS LAST UPDATE CODE                         WARNING
+        
+        
+        AFTER EXECUTING I MUST RUN SQL UPDATE SCRIPT TO UPDATE FUTURE INSTALLATIONS
     
     OJO EN LOS REEMPLAZOS MASIVOS PORQUE UN ACTIVE DE PRODUCTS LUEGO PASA A LLAMARSE AUTOUPDATE PERO DEBERA MANTENERSSE EN SU MOMENTO TEMPORAL"""  
         print ("**** Database already updated")
-   
-    def get_database_version(self):
-        """REturns None or an Int"""
-        cur=self.mem.con.cursor()
-        cur.execute("select value from globals where id_globals=1;")
-        if cur.rowcount==0:
-            cur.close()
-            return None
-        resultado=cur.fetchone()['value']
-        cur.close()
-        self.dbversion=int(resultado)
-        return self.dbversion
-        
-    def set_database_version(self, valor):
-        """Tiene el commit"""
-        print ("**** Updating database from {} to {}".format(self.dbversion, valor))
-        cur=self.mem.con.cursor()
-        if self.dbversion==None:
-            cur.execute("insert into globals (id_globals,global,value) values (%s,%s,%s);", (1,"Version", valor ))
-        else:
-            cur.execute("update globals set global=%s, value=%s where id_globals=1;", ("Version", valor ))
-        cur.close()        
-        self.dbversion=valor
-        self.mem.con.commit()
