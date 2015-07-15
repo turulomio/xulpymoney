@@ -371,7 +371,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="500"/>
+        <location filename="../ui/frmMain.py" line="510"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
@@ -406,12 +406,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="500"/>
+        <location filename="../ui/frmMain.py" line="510"/>
         <source>Purging innecesary data from all products</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="502"/>
+        <location filename="../ui/frmMain.py" line="512"/>
         <source>Purging quotes from all products</source>
         <translation type="unfinished"></translation>
     </message>
@@ -731,7 +731,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="508"/>
+        <location filename="../ui/frmMain.py" line="518"/>
         <source>Purging quotes from {0}.
 Total purged in global process: {1}</source>
         <translation type="unfinished"></translation>
@@ -957,12 +957,12 @@ Total purged in global process: {1}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="320"/>
+        <location filename="../ui/frmMain.py" line="330"/>
         <source>Syncing databases from {} ({}) to {} ({})</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="322"/>
+        <location filename="../ui/frmMain.py" line="332"/>
         <source>Processing products...</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2744,7 +2744,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="528"/>
+        <location filename="../ui/frmMain.py" line="538"/>
         <source>{0} quotes have been purged from {1} products</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2794,32 +2794,32 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="393"/>
+        <location filename="../ui/frmMain.py" line="403"/>
         <source>There aren&apos;t favorite products</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="97"/>
+        <location filename="../ui/frmMain.py" line="107"/>
         <source>Please introduce Admin Mode password</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="../ui/frmMain.py" line="111"/>
+        <location filename="../ui/frmMain.py" line="121"/>
         <source>Xulpymoney 2010-{0} © (Admin mode)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="106"/>
+        <location filename="../ui/frmMain.py" line="116"/>
         <source>You have set the admin mode password. Please login again</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="114"/>
+        <location filename="../ui/frmMain.py" line="124"/>
         <source>You are logged as an administrator</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="118"/>
+        <location filename="../ui/frmMain.py" line="128"/>
         <source>Bad &apos;Admin mode&apos; password. You are logged as a normal user</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2909,18 +2909,23 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="316"/>
+        <location filename="../ui/frmMain.py" line="326"/>
         <source>Databases can&apos;t be the same</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="304"/>
+        <location filename="../ui/frmMain.py" line="314"/>
         <source>Please login to the target xulpymoney database</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../ui/frmMain.py" line="73"/>
         <source>Please login to the xulpymoney database</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/frmMain.py" line="93"/>
+        <source>Xulpymoney needs to be updated. Please login with a superuser role.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

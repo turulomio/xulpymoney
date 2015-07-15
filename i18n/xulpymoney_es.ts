@@ -371,7 +371,7 @@
         <translation>Eliminando datos innecesarios</translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="500"/>
+        <location filename="../ui/frmMain.py" line="510"/>
         <source>Cancel</source>
         <translation>Cancelar</translation>
     </message>
@@ -406,12 +406,12 @@
         <translation>El producto asociado no está activo. Debes activarlo primero</translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="500"/>
+        <location filename="../ui/frmMain.py" line="510"/>
         <source>Purging innecesary data from all products</source>
         <translation>Purgando datos innecesarios de todos los productos</translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="502"/>
+        <location filename="../ui/frmMain.py" line="512"/>
         <source>Purging quotes from all products</source>
         <translation>Purgando valores de todos los productos</translation>
     </message>
@@ -731,7 +731,7 @@
         <translation>Purgadas {0} cotizaciones de {1}</translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="508"/>
+        <location filename="../ui/frmMain.py" line="518"/>
         <source>Purging quotes from {0}.
 Total purged in global process: {1}</source>
         <translation>Purgando cotizaciones de {0}.
@@ -953,12 +953,12 @@ Purgadas en total en el proceso global: {1}</translation>
         <translation>Saldo inicial del mes</translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="320"/>
+        <location filename="../ui/frmMain.py" line="330"/>
         <source>Syncing databases from {} ({}) to {} ({})</source>
         <translation>Sincronizando bases de datos desde {} ({}) a {} ({})</translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="322"/>
+        <location filename="../ui/frmMain.py" line="332"/>
         <source>Processing products...</source>
         <translation>Procesando productos...</translation>
     </message>
@@ -2755,7 +2755,7 @@ p, li { white-space: pre-wrap; }
         <translation>F5</translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="528"/>
+        <location filename="../ui/frmMain.py" line="538"/>
         <source>{0} quotes have been purged from {1} products</source>
         <translation>{0} cotizaciones han sido eliminadas de {1} productos</translation>
     </message>
@@ -2790,27 +2790,27 @@ p, li { white-space: pre-wrap; }
         <translation>Productos con ISIN duplicado</translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="393"/>
+        <location filename="../ui/frmMain.py" line="403"/>
         <source>There aren&apos;t favorite products</source>
         <translation>No hay productos favoritos</translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="97"/>
+        <location filename="../ui/frmMain.py" line="107"/>
         <source>Please introduce Admin Mode password</source>
         <translation>Por favor introduzca la contraseña del &apos;Modo administrador&apos;</translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="106"/>
+        <location filename="../ui/frmMain.py" line="116"/>
         <source>You have set the admin mode password. Please login again</source>
         <translation>Se ha establecido la contraseña del &apos;Modo administrador&apos;. Por favor conéctese otra vez</translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="114"/>
+        <location filename="../ui/frmMain.py" line="124"/>
         <source>You are logged as an administrator</source>
         <translation>Se ha conectado como administrador</translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="118"/>
+        <location filename="../ui/frmMain.py" line="128"/>
         <source>Bad &apos;Admin mode&apos; password. You are logged as a normal user</source>
         <translation>Contraseña errónea del &apos;Modo administrador&apos;. Usted se ha conectado como un usuario normal</translation>
     </message>
@@ -2890,7 +2890,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="111"/>
+        <location filename="../ui/frmMain.py" line="121"/>
         <source>Xulpymoney 2010-{0} &#xc2;&#xa9; (Admin mode)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2910,12 +2910,12 @@ p, li { white-space: pre-wrap; }
         <translation>F9</translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="316"/>
+        <location filename="../ui/frmMain.py" line="326"/>
         <source>Databases can&apos;t be the same</source>
         <translation>La base de datos no puede ser la misma</translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="304"/>
+        <location filename="../ui/frmMain.py" line="314"/>
         <source>Please login to the target xulpymoney database</source>
         <translation>Por favor conectesé a la base de datos destino de Xulpymoney</translation>
     </message>
@@ -2923,6 +2923,11 @@ p, li { white-space: pre-wrap; }
         <location filename="../ui/frmMain.py" line="73"/>
         <source>Please login to the xulpymoney database</source>
         <translation>Por favor conectesé a la base de datos de Xulpymoney</translation>
+    </message>
+    <message>
+        <location filename="../ui/frmMain.py" line="93"/>
+        <source>Xulpymoney needs to be updated. Please login with a superuser role.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
