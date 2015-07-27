@@ -13,7 +13,6 @@ except:
     pass
 
 app = QApplication(sys.argv)
-QTextCodec.setCodecForTr(QTextCodec.codecForName("UTF-8"));
 
 translator = QTranslator(app)
 locale=QLocale()

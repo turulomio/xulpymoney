@@ -742,7 +742,7 @@ Total purged in global process: {1}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../xulpymoney_init.py" line="23"/>
+        <location filename="../xulpymoney_init.py" line="22"/>
         <source>Local language detected:{0}</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1966,77 +1966,77 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmInit.py" line="130"/>
+        <location filename="../ui/frmInit.py" line="131"/>
         <source>Personal Management</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmInit.py" line="131"/>
+        <location filename="../ui/frmInit.py" line="132"/>
         <source>Cash</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmInit.py" line="132"/>
+        <location filename="../ui/frmInit.py" line="133"/>
         <source>Initiating bank account</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmInit.py" line="133"/>
+        <location filename="../ui/frmInit.py" line="134"/>
         <source>Transfer. Origin</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmInit.py" line="134"/>
+        <location filename="../ui/frmInit.py" line="135"/>
         <source>Transfer. Destination</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmInit.py" line="138"/>
+        <location filename="../ui/frmInit.py" line="139"/>
         <source>Dividends</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmInit.py" line="139"/>
+        <location filename="../ui/frmInit.py" line="140"/>
         <source>Credit card billing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmInit.py" line="140"/>
+        <location filename="../ui/frmInit.py" line="141"/>
         <source>Added shares</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmInit.py" line="141"/>
+        <location filename="../ui/frmInit.py" line="142"/>
         <source>Attendance bonus</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmInit.py" line="142"/>
+        <location filename="../ui/frmInit.py" line="143"/>
         <source>Custody commission</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmInit.py" line="143"/>
+        <location filename="../ui/frmInit.py" line="144"/>
         <source>Dividends. Sale of rights</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmInit.py" line="144"/>
+        <location filename="../ui/frmInit.py" line="145"/>
         <source>Bonds. Running coupon payment</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmInit.py" line="145"/>
+        <location filename="../ui/frmInit.py" line="146"/>
         <source>Bonds. Running coupon collection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmInit.py" line="146"/>
+        <location filename="../ui/frmInit.py" line="147"/>
         <source>Bonds. Coupon collection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmInit.py" line="137"/>
+        <location filename="../ui/frmInit.py" line="138"/>
         <source>Bank commissions</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2067,42 +2067,42 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmInit.py" line="31"/>
+        <location filename="../ui/frmInit.py" line="32"/>
         <source>Do you want to create needed Xulpymoney databases in {0}?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmInit.py" line="147"/>
+        <location filename="../ui/frmInit.py" line="148"/>
         <source>Paysheet</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmInit.py" line="148"/>
+        <location filename="../ui/frmInit.py" line="149"/>
         <source>Supermarket</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmInit.py" line="149"/>
+        <location filename="../ui/frmInit.py" line="150"/>
         <source>Restaurant</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmInit.py" line="150"/>
+        <location filename="../ui/frmInit.py" line="151"/>
         <source>Gas</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmInit.py" line="135"/>
+        <location filename="../ui/frmInit.py" line="136"/>
         <source>Purchase investment product</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmInit.py" line="136"/>
+        <location filename="../ui/frmInit.py" line="137"/>
         <source>Sale investment product</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmInit.py" line="41"/>
+        <location filename="../ui/frmInit.py" line="42"/>
         <source>Error creating database. Maybe it already exist</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2132,7 +2132,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmInit.py" line="47"/>
+        <location filename="../ui/frmInit.py" line="48"/>
         <source>Database created. Xulpymoney needs to insert quotes from yahoo. This is a long process. Do you want to insert them now?</source>
         <translation type="unfinished"></translation>
     </message>

@@ -4,7 +4,6 @@ import psycopg2,  psycopg2.extras
 from Ui_frmInit import *
 from libsources import *
 from libxulpymoney import *
-from wdgSource import *
 
 class frmInit(QDialog, Ui_frmInit):
     def __init__(self, parent = None, name = None, modal = False):
@@ -19,7 +18,9 @@ class frmInit(QDialog, Ui_frmInit):
             
         print (a)
         self.mem.languages.qcombobox(self.cmbLanguage, self.mem.languages.find(a))
-        self.wyahoohistorical=wdgSource(self.mem, Sources.WorkerYahooHistorical, self) 
+        source=WorkerYahooHistorical(self.mem, 0 )
+        self.wyahoohistorical=wdgSource(self) 
+        self.wyahoohistorical.setSource(self.mem, source)
         self.laySource.addWidget(self.wyahoohistorical)
         self.wyahoohistorical.setEnabled(False)
         self.wyahoohistorical.setWidgetToUpdate(self)
