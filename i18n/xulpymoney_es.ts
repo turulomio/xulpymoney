@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="es_ES" sourcelanguage="en">
+<!DOCTYPE TS><TS version="2.0" language="es_ES" sourcelanguage="en">
 <context>
     <name>AssetsReport</name>
     <message>
@@ -744,7 +743,7 @@ Purgadas en total en el proceso global: {1}</translation>
         <translation>Tarjeta de crédito: {0[0]}. Hechos {0[1]} pagos</translation>
     </message>
     <message>
-        <location filename="../xulpymoney_init.py" line="23"/>
+        <location filename="../xulpymoney_init.py" line="22"/>
         <source>Local language detected:{0}</source>
         <translation>Lenguaje local detectado: {0}</translation>
     </message>
@@ -976,10 +975,10 @@ Purgadas en total en el proceso global: {1}</translation>
     - {} estimaciones de dividendo por acción
     - {} estimaciones de beneficio por acción</translation>
     </message>
-    <message>
+    <message encoding="UTF-8">
         <location filename="../libxulpymoney.py" line="1206"/>
         <source>Valor acción</source>
-        <translation>Price</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1218,21 +1217,21 @@ Purgadas en total en el proceso global: {1}</translation>
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;La pÃ¡gina del proyecto se encuentra en &lt;a href=&quot;http://glparchis.sourceforge.net&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;http://xulpymoney.sourceforge.net&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;La p&#xc3;&#xa1;gina del proyecto se encuentra en &lt;a href=&quot;http://glparchis.sourceforge.net&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;http://xulpymoney.sourceforge.net&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; text-decoration: underline; color:#0057ae;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Este programa ha sido desarrollado por Mariano MuÃ±oz.&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Este programa ha sido desarrollado por Mariano Mu&#xc3;&#xb1;oz.&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Ha sido traducido por:&lt;/p&gt;
-&lt;ul style=&quot;margin-top: 0px; margin-bottom: 0px; margin-left: 0px; margin-right: 0px; -qt-list-indent: 1;&quot;&gt;&lt;li style=&quot; margin-top:12px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Mariano MuÃ±oz&lt;/li&gt;&lt;/ul&gt;
+&lt;ul style=&quot;margin-top: 0px; margin-bottom: 0px; margin-left: 0px; margin-right: 0px; -qt-list-indent: 1;&quot;&gt;&lt;li style=&quot; margin-top:12px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Mariano Mu&#xc3;&#xb1;oz&lt;/li&gt;&lt;/ul&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;a los siguientes idiomas&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:1; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;ul style=&quot;margin-top: 0px; margin-bottom: 0px; margin-left: 0px; margin-right: 0px; -qt-list-indent: 1;&quot;&gt;&lt;li style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;EspaÃ±ol&lt;/li&gt;
+&lt;ul style=&quot;margin-top: 0px; margin-bottom: 0px; margin-left: 0px; margin-right: 0px; -qt-list-indent: 1;&quot;&gt;&lt;li style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Espa&#xc3;&#xb1;ol&lt;/li&gt;
 &lt;li style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;English&lt;/li&gt;&lt;/ul&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; text-decoration: underline; color:#0057ae;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Los avatares han sido extraÃ­dos de la pÃ¡gina &lt;a href=&quot;http://www.nobleavatar.com/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;http://www.nobleavatar.com/&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Los avatares han sido extra&#xc3;&#xad;dos de la p&#xc3;&#xa1;gina &lt;a href=&quot;http://www.nobleavatar.com/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;http://www.nobleavatar.com/&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation></translation>
     </message>
     <message>
@@ -1242,12 +1241,12 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../ui/Ui_frmAbout.py" line="327"/>
-        <source>NÃºmero de Deuda pÃºblica</source>
+        <source>N&#xc3;&#xba;mero de Deuda p&#xc3;&#xba;blica</source>
         <translation></translation>
     </message>
     <message>
         <location filename="../ui/Ui_frmAbout.py" line="329"/>
-        <source>NÃºmero de Deuda privada</source>
+        <source>N&#xc3;&#xba;mero de Deuda privada</source>
         <translation></translation>
     </message>
     <message>
@@ -1526,7 +1525,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../ui/Ui_frmAccountsReport.py" line="431"/>
-        <source>XXXX â¬</source>
+        <source>XXXX &#xe2;&#x82;&#xac;</source>
         <translation>XXXX €</translation>
     </message>
     <message>
@@ -1971,77 +1970,77 @@ p, li { white-space: pre-wrap; }
         <translation>Base de datos Xulpymoney</translation>
     </message>
     <message>
-        <location filename="../ui/frmInit.py" line="130"/>
+        <location filename="../ui/frmInit.py" line="131"/>
         <source>Personal Management</source>
         <translation>Gestión personal</translation>
     </message>
     <message>
-        <location filename="../ui/frmInit.py" line="131"/>
+        <location filename="../ui/frmInit.py" line="132"/>
         <source>Cash</source>
         <translation>Efectivo</translation>
     </message>
     <message>
-        <location filename="../ui/frmInit.py" line="132"/>
+        <location filename="../ui/frmInit.py" line="133"/>
         <source>Initiating bank account</source>
         <translation>Iniciando cuenta bancaria</translation>
     </message>
     <message>
-        <location filename="../ui/frmInit.py" line="133"/>
+        <location filename="../ui/frmInit.py" line="134"/>
         <source>Transfer. Origin</source>
         <translation>Transferencia. Origen</translation>
     </message>
     <message>
-        <location filename="../ui/frmInit.py" line="134"/>
+        <location filename="../ui/frmInit.py" line="135"/>
         <source>Transfer. Destination</source>
         <translation>Transferencia. Destino</translation>
     </message>
     <message>
-        <location filename="../ui/frmInit.py" line="138"/>
+        <location filename="../ui/frmInit.py" line="139"/>
         <source>Dividends</source>
         <translation>Dividendos</translation>
     </message>
     <message>
-        <location filename="../ui/frmInit.py" line="139"/>
+        <location filename="../ui/frmInit.py" line="140"/>
         <source>Credit card billing</source>
         <translation>Facturación de tarjeta de crédito</translation>
     </message>
     <message>
-        <location filename="../ui/frmInit.py" line="140"/>
+        <location filename="../ui/frmInit.py" line="141"/>
         <source>Added shares</source>
         <translation>Añadido de acciones</translation>
     </message>
     <message>
-        <location filename="../ui/frmInit.py" line="141"/>
+        <location filename="../ui/frmInit.py" line="142"/>
         <source>Attendance bonus</source>
         <translation>Prima de asistencia</translation>
     </message>
     <message>
-        <location filename="../ui/frmInit.py" line="142"/>
+        <location filename="../ui/frmInit.py" line="143"/>
         <source>Custody commission</source>
         <translation>Comisión de custodia</translation>
     </message>
     <message>
-        <location filename="../ui/frmInit.py" line="143"/>
+        <location filename="../ui/frmInit.py" line="144"/>
         <source>Dividends. Sale of rights</source>
         <translation>Dividendos. Venta de derechos</translation>
     </message>
     <message>
-        <location filename="../ui/frmInit.py" line="144"/>
+        <location filename="../ui/frmInit.py" line="145"/>
         <source>Bonds. Running coupon payment</source>
         <translation>Deuda. Pago de cupón corrido</translation>
     </message>
     <message>
-        <location filename="../ui/frmInit.py" line="145"/>
+        <location filename="../ui/frmInit.py" line="146"/>
         <source>Bonds. Running coupon collection</source>
         <translation>Deuda. Cobro de cupón corrido</translation>
     </message>
     <message>
-        <location filename="../ui/frmInit.py" line="146"/>
+        <location filename="../ui/frmInit.py" line="147"/>
         <source>Bonds. Coupon collection</source>
         <translation>Deuda. Cobro de cupón</translation>
     </message>
     <message>
-        <location filename="../ui/frmInit.py" line="137"/>
+        <location filename="../ui/frmInit.py" line="138"/>
         <source>Bank commissions</source>
         <translation>Comisiones bancarias</translation>
     </message>
@@ -2071,42 +2070,42 @@ p, li { white-space: pre-wrap; }
         <translation>xulpymoney</translation>
     </message>
     <message>
-        <location filename="../ui/frmInit.py" line="31"/>
+        <location filename="../ui/frmInit.py" line="32"/>
         <source>Do you want to create needed Xulpymoney databases in {0}?</source>
         <translation>¿Quieres crear las bases de datos  de Xulpymoney en {0}?</translation>
     </message>
     <message>
-        <location filename="../ui/frmInit.py" line="147"/>
+        <location filename="../ui/frmInit.py" line="148"/>
         <source>Paysheet</source>
         <translation>Nómina</translation>
     </message>
     <message>
-        <location filename="../ui/frmInit.py" line="148"/>
+        <location filename="../ui/frmInit.py" line="149"/>
         <source>Supermarket</source>
         <translation>Supermercado</translation>
     </message>
     <message>
-        <location filename="../ui/frmInit.py" line="149"/>
+        <location filename="../ui/frmInit.py" line="150"/>
         <source>Restaurant</source>
         <translation>Restaurante</translation>
     </message>
     <message>
-        <location filename="../ui/frmInit.py" line="150"/>
+        <location filename="../ui/frmInit.py" line="151"/>
         <source>Gas</source>
         <translation>Gasolina</translation>
     </message>
     <message>
-        <location filename="../ui/frmInit.py" line="135"/>
+        <location filename="../ui/frmInit.py" line="136"/>
         <source>Purchase investment product</source>
         <translation>Compra de producto de inversión</translation>
     </message>
     <message>
-        <location filename="../ui/frmInit.py" line="136"/>
+        <location filename="../ui/frmInit.py" line="137"/>
         <source>Sale investment product</source>
         <translation>Venta de producto de inversión</translation>
     </message>
     <message>
-        <location filename="../ui/frmInit.py" line="41"/>
+        <location filename="../ui/frmInit.py" line="42"/>
         <source>Error creating database. Maybe it already exist</source>
         <translation>Error al crear la base de datos. Puede que ya exista</translation>
     </message>
@@ -2136,7 +2135,7 @@ p, li { white-space: pre-wrap; }
         <translation>Salir</translation>
     </message>
     <message>
-        <location filename="../ui/frmInit.py" line="47"/>
+        <location filename="../ui/frmInit.py" line="48"/>
         <source>Database created. Xulpymoney needs to insert quotes from yahoo. This is a long process. Do you want to insert them now?</source>
         <translation>Base de datos creada. Xulpymoney necesita insertar cotizaciones de inversión desde Yahoo. Es un proceso largo. ¿Quiere insertarlas ahora?</translation>
     </message>
@@ -2891,12 +2890,12 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../ui/frmMain.py" line="39"/>
-        <source>Xulpymoney 2010-{0} Â©</source>
+        <source>Xulpymoney 2010-{0} &#xc2;&#xa9;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../ui/frmMain.py" line="121"/>
-        <source>Xulpymoney 2010-{0} Â© (Admin mode)</source>
+        <source>Xulpymoney 2010-{0} &#xc2;&#xa9; (Admin mode)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3754,10 +3753,10 @@ p, li { white-space: pre-wrap; }
         <source>Set selling price to all investments  of {0} to gain {1}</source>
         <translation>Establece el precio de venta para todas las inversiones a {0} para ganar {1}</translation>
     </message>
-    <message>
+    <message encoding="UTF-8">
         <location filename="../ui/Ui_frmSellingPoint.py" line="218"/>
         <source>Set the selling point to 0 €</source>
-        <translation>Establecer el punto de venta a 0 €</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -3912,7 +3911,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../ui/frmSplit.py" line="43"/>
-        <source>If you have 1000 shares of 10 â¬ of price, you will have {0:.6f} shares of {1:.6f} â¬ of price after the {2}</source>
+        <source>If you have 1000 shares of 10 &#xe2;&#x82;&#xac; of price, you will have {0:.6f} shares of {1:.6f} &#xe2;&#x82;&#xac; of price after the {2}</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -4477,7 +4476,7 @@ p, li { white-space: pre-wrap; }
         <translation>No puedes cerrar esta pestaña</translation>
     </message>
 </context>
-<context>
+<context encoding="UTF-8">
     <name>wdgDatetime</name>
     <message>
         <location filename="../ui/Ui_wdgDatetime.py" line="66"/>
@@ -4516,10 +4515,10 @@ p, li { white-space: pre-wrap; }
         <translation>Fecha y hora seleccionada:
 {0}</translation>
     </message>
-    <message>
+    <message encoding="UTF-8">
         <location filename="../ui/Ui_wdgDatetime.py" line="70"/>
         <source> μs</source>
-        <translation> μs</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -5298,11 +5297,11 @@ Diferencia diaria: {5}. Edad media del patrimonio: {6}</translation>
     </message>
     <message>
         <location filename="../ui/Ui_wdgJointReport.py" line="434"/>
-        <source>En este listado se muestran los aÃ±adidos de acciones a coste cero que se han producido en el aÃ±o
+        <source>En este listado se muestran los a&#xc3;&#xb1;adidos de acciones a coste cero que se han producido en el a&#xc3;&#xb1;o
 
-Es  un listado informativo y no serÃ¡n contabilizadas en los informes ya que se producirÃ­a una doble contabilidad
+Es  un listado informativo y no ser&#xc3;&#xa1;n contabilizadas en los informes ya que se producir&#xc3;&#xad;a una doble contabilidad
 
-SÃ³lo se contabilizarÃ¡ cuando se vendan las acciones</source>
+S&#xc3;&#xb3;lo se contabilizar&#xc3;&#xa1; cuando se vendan las acciones</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
