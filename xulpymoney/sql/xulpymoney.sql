@@ -344,6 +344,25 @@ Se reduce más de 30 veces el tiempo de ejecución';
 
 
 --
+-- Name: quote(integer[], timestamp with time zone); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION quote(p_ids integer[], p_datetime timestamp with time zone) RETURNS SETOF quote_type
+    LANGUAGE plpythonu
+    AS $$ 
+  resultado=[]
+  regq=plpy.execute(" select id, last(quote), last(datetime) from quotes where id in ({0}) ad datetime<='{1}' group by id".format(str(p_ids)[1:-1],p_datetime))
+  for r in regq:
+    resultado.append({ "id": r[0], "datetime": r[2], "quote": r[1] })
+  return resultado
+    
+    
+$$;
+
+
+ALTER FUNCTION public.quote(p_ids integer[], p_datetime timestamp with time zone) OWNER TO postgres;
+
+--
 -- Name: quote(integer, date); Type: FUNCTION; Schema: public; Owner: postgres
 --
 
@@ -383,25 +402,6 @@ $$;
 
 
 ALTER FUNCTION public.quote(p_id integer, p_datetime timestamp with time zone) OWNER TO postgres;
-
---
--- Name: quote(integer[], timestamp with time zone); Type: FUNCTION; Schema: public; Owner: postgres
---
-
-CREATE FUNCTION quote(p_ids integer[], p_datetime timestamp with time zone) RETURNS SETOF quote_type
-    LANGUAGE plpythonu
-    AS $$ 
-  resultado=[]
-  regq=plpy.execute(" select id, last(quote), last(datetime) from quotes where id in ({0}) ad datetime<='{1}' group by id".format(str(p_ids)[1:-1],p_datetime))
-  for r in regq:
-    resultado.append({ "id": r[0], "datetime": r[2], "quote": r[1] })
-  return resultado
-    
-    
-$$;
-
-
-ALTER FUNCTION public.quote(p_ids integer[], p_datetime timestamp with time zone) OWNER TO postgres;
 
 --
 -- Name: quote2(integer[], timestamp with time zone); Type: FUNCTION; Schema: public; Owner: postgres
@@ -951,7 +951,8 @@ CREATE TABLE operinversiones (
     valor_accion numeric(100,6),
     divisa numeric(10,6) DEFAULT NULL::numeric,
     datetime timestamp with time zone,
-    comentario text
+    comentario text,
+    show_in_ranges boolean DEFAULT true
 );
 
 
@@ -1636,6 +1637,17 @@ GRANT ALL ON FUNCTION penultimate(p_id integer, p_lastdate date) TO xulpymoney_u
 
 
 --
+-- Name: quote(integer[], timestamp with time zone); Type: ACL; Schema: public; Owner: postgres
+--
+
+REVOKE ALL ON FUNCTION quote(p_ids integer[], p_datetime timestamp with time zone) FROM PUBLIC;
+REVOKE ALL ON FUNCTION quote(p_ids integer[], p_datetime timestamp with time zone) FROM postgres;
+GRANT ALL ON FUNCTION quote(p_ids integer[], p_datetime timestamp with time zone) TO postgres;
+GRANT ALL ON FUNCTION quote(p_ids integer[], p_datetime timestamp with time zone) TO PUBLIC;
+GRANT ALL ON FUNCTION quote(p_ids integer[], p_datetime timestamp with time zone) TO xulpymoney_user;
+
+
+--
 -- Name: quote(integer, date); Type: ACL; Schema: public; Owner: postgres
 --
 
@@ -1655,17 +1667,6 @@ REVOKE ALL ON FUNCTION quote(p_id integer, p_datetime timestamp with time zone) 
 GRANT ALL ON FUNCTION quote(p_id integer, p_datetime timestamp with time zone) TO postgres;
 GRANT ALL ON FUNCTION quote(p_id integer, p_datetime timestamp with time zone) TO PUBLIC;
 GRANT ALL ON FUNCTION quote(p_id integer, p_datetime timestamp with time zone) TO xulpymoney_user;
-
-
---
--- Name: quote(integer[], timestamp with time zone); Type: ACL; Schema: public; Owner: postgres
---
-
-REVOKE ALL ON FUNCTION quote(p_ids integer[], p_datetime timestamp with time zone) FROM PUBLIC;
-REVOKE ALL ON FUNCTION quote(p_ids integer[], p_datetime timestamp with time zone) FROM postgres;
-GRANT ALL ON FUNCTION quote(p_ids integer[], p_datetime timestamp with time zone) TO postgres;
-GRANT ALL ON FUNCTION quote(p_ids integer[], p_datetime timestamp with time zone) TO PUBLIC;
-GRANT ALL ON FUNCTION quote(p_ids integer[], p_datetime timestamp with time zone) TO xulpymoney_user;
 
 
 --
@@ -8856,11 +8857,11 @@ INSERT INTO bolsas VALUES (7, 'jp', '09:00:00', 'Bolsa de Tokio', '20:00:00', 'A
 INSERT INTO bolsas VALUES (8, 'cn', '00:00:00', 'Bolsa de Hong Kong', '20:00:00', 'Asia/Hong_Kong');
 INSERT INTO bolsas VALUES (9, 'pt', '07:00:00', 'Bolsa de Lisboa', '17:38:00', 'Europe/Lisbon');
 INSERT INTO globals VALUES (10, 'wdgCalculator#product', '79228');
-INSERT INTO globals VALUES (11, 'wdgCalculator#invested', '15000');
-INSERT INTO globals VALUES (1, 'Version', '201504150622');
+INSERT INTO globals VALUES (11, 'wdgCalculator#invested', '12500');
+INSERT INTO globals VALUES (1, 'Version', '201507291626');
 INSERT INTO globals VALUES (6, 'Admin mode', NULL);
 INSERT INTO globals VALUES (7, 'wdgIndexRange#spin', '2');
-INSERT INTO globals VALUES (8, 'wdgIndexRange#txtInvertir', '15000');
+INSERT INTO globals VALUES (8, 'wdgIndexRange#txtInvertir', '12500');
 INSERT INTO globals VALUES (9, 'wdgIndexRange#txtMinimo', '1000');
 DELETE FROM products WHERE id<=0;
 ALTER SEQUENCE seq_conceptos START WITH 100 RESTART;

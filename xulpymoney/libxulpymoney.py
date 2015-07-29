@@ -287,13 +287,13 @@ class SetInvestments(SetCommons):
         else:
             comentario="{0}|{1}".format(destino.id, "None")
         
-        op_origen=InvestmentOperation(self.mem).init__create( self.mem.tiposoperaciones.find(9), now, origen,  -numacciones, 0,0, comision, 0, comentario)
+        op_origen=InvestmentOperation(self.mem).init__create( self.mem.tiposoperaciones.find(9), now, origen,  -numacciones, 0,0, comision, 0, comentario, True)
         op_origen.save( False)      
 
         #NO ES OPTIMO YA QUE POR CADA SAVE SE CALCULA TODO
         comentario="{0}".format(op_origen.id)
         for o in origen.op_actual.arr:
-            op_destino=InvestmentOperation(self.mem).init__create( self.mem.tiposoperaciones.find(10), now, destino,  o.acciones, o.importe, o.impuestos, o.comision, o.valor_accion, comentario)
+            op_destino=InvestmentOperation(self.mem).init__create( self.mem.tiposoperaciones.find(10), now, destino,  o.acciones, o.importe, o.impuestos, o.comision, o.valor_accion, comentario,  o.show_in_ranges)
             op_destino.save( False)
             
         #Vuelvo a introducir el comentario de la opercuenta
@@ -1218,7 +1218,13 @@ class SetInvestmentOperations(SetIO):
             if homogeneous==False:
                 tabla.setItem(rownumber, diff-1, qleft(a.inversion.name))
                 tabla.setItem(rownumber, diff, qleft(a.inversion.account.name))
+                
             tabla.setItem(rownumber, diff+1, QTableWidgetItem(a.tipooperacion.name))
+            if a.show_in_ranges==True:
+                tabla.item(rownumber, diff+1).setIcon(QIcon(":/xulpymoney/eye.png"))
+            else:
+                tabla.item(rownumber, diff+1).setIcon(QIcon(":/xulpymoney/eye_red.png"))
+            
             tabla.setItem(rownumber, diff+2, qright(a.acciones))
             tabla.setItem(rownumber, diff+3, self.mem.localcurrency.qtablewidgetitem(a.valor_accion))
             tabla.setItem(rownumber, diff+4, self.mem.localcurrency.qtablewidgetitem(a.importe))
@@ -2248,6 +2254,7 @@ class InvestmentOperation:
         self.datetime=None
         self.comentario=None
         self.archivada=None
+        self.show_in_ranges=True
         
     def __repr__(self):
         return ("IO {0} ({1}). {2} {3}. Acciones: {4}. Valor:{5}. IdObject: {6}".format(self.inversion.name, self.inversion.id,  self.datetime, self.tipooperacion.name,  self.acciones,  self.valor_accion, id(self)))
@@ -2263,9 +2270,11 @@ class InvestmentOperation:
         self.valor_accion=row['valor_accion']
         self.datetime=row['datetime']
         self.comentario=row['comentario']
+        self.show_in_ranges=row['show_in_ranges']
         return self
         
-    def init__create(self, tipooperacion, datetime, inversion, acciones, importe, impuestos, comision, valor_accion, comentario,  id=None):
+    def init__create(self, tipooperacion, datetime, inversion, acciones, importe, impuestos, comision, valor_accion, comentario, show_in_ranges,   id=None):
+        print (show_in_ranges, id)
         self.id=id
         self.tipooperacion=tipooperacion
         self.datetime=datetime
@@ -2276,6 +2285,7 @@ class InvestmentOperation:
         self.comision=comision
         self.valor_accion=valor_accion
         self.comentario=comentario
+        self.show_in_ranges=show_in_ranges
         return self
         
     def init__from_accountoperation(self, accountoperation):
@@ -2317,7 +2327,7 @@ class InvestmentOperation:
     def copy(self):
         """Crea una inversion operacion desde otra inversionoepracion. NO es un enlace es un objeto clone"""
         resultado=InvestmentOperation(self.mem)
-        resultado.init__create(self.tipooperacion, self.datetime, self.inversion, self.acciones, self.importe, self.impuestos, self.comision, self.valor_accion, self.comentario, self.id)
+        resultado.init__create(self.tipooperacion, self.datetime, self.inversion, self.acciones, self.importe, self.impuestos, self.comision, self.valor_accion, self.comentario,  self.show_in_ranges, self.id)
         return resultado
                 
     def comment(self):
@@ -2335,11 +2345,11 @@ class InvestmentOperation:
     def save(self, recalculate=True,  autocommit=True):
         cur=self.mem.con.cursor()
         if self.id==None:#insertar
-            cur.execute("insert into operinversiones(datetime, id_tiposoperaciones,  importe, acciones,  impuestos,  comision,  valor_accion, comentario, id_inversiones) values (%s, %s, %s, %s, %s, %s, %s, %s,%s) returning id_operinversiones", (self.datetime, self.tipooperacion.id, self.importe, self.acciones, self.impuestos, self.comision, self.valor_accion, self.comentario, self.inversion.id))
+            cur.execute("insert into operinversiones(datetime, id_tiposoperaciones,  importe, acciones,  impuestos,  comision,  valor_accion, comentario, show_in_ranges, id_inversiones) values (%s, %s, %s, %s, %s, %s, %s, %s,%s,%s) returning id_operinversiones", (self.datetime, self.tipooperacion.id, self.importe, self.acciones, self.impuestos, self.comision, self.valor_accion, self.comentario, self.show_in_ranges,  self.inversion.id))
             self.id=cur.fetchone()[0]
             self.inversion.op.append(self)
         else:
-            cur.execute("update operinversiones set datetime=%s, id_tiposoperaciones=%s, importe=%s, acciones=%s, impuestos=%s, comision=%s, valor_accion=%s, comentario=%s, id_inversiones=%s where id_operinversiones=%s", (self.datetime, self.tipooperacion.id, self.importe, self.acciones, self.impuestos, self.comision, self.valor_accion, self.comentario, self.inversion.id, self.id))
+            cur.execute("update operinversiones set datetime=%s, id_tiposoperaciones=%s, importe=%s, acciones=%s, impuestos=%s, comision=%s, valor_accion=%s, comentario=%s, id_inversiones=%s, show_in_ranges=%s where id_operinversiones=%s", (self.datetime, self.tipooperacion.id, self.importe, self.acciones, self.impuestos, self.comision, self.valor_accion, self.comentario, self.inversion.id, self.show_in_ranges,  self.id))
         if recalculate==True:
             (self.inversion.op_actual,  self.inversion.op_historica)=self.inversion.op.calcular()   
             self.actualizar_cuentaoperacion_asociada()

@@ -96,10 +96,10 @@ class wdgDisReinvest(QWidget, Ui_wdgDisReinvest):
         d=InvestmentOperation(self.mem)
         id_operinversiones=self.operinversiones.arr[len(self.operinversiones.arr)-1].id+1 ##Para simular un id_operinversiones real, le asignamos uno
         if self.radDes.isChecked():#DESINVERSION
-            d.init__create(self.mem.tiposoperaciones.find(5), datetime.datetime.now(pytz.timezone(self.mem.localzone.name)), self.inversion, -acciones, importe, impuestos, comision, valor_accion, "", id_operinversiones)
+            d.init__create(self.mem.tiposoperaciones.find(5), datetime.datetime.now(pytz.timezone(self.mem.localzone.name)), self.inversion, -acciones, importe, impuestos, comision, valor_accion, "",  True, id_operinversiones)
         else:#REINVERSION
-            d.init__create(self.mem.tiposoperaciones.find(4), datetime.datetime.now(pytz.timezone(self.mem.localzone.name)), self.inversion, acciones, importe, impuestos, comision, valor_accion, "",  id_operinversiones)
-            d.init__create(self.mem.tiposoperaciones.find(4), datetime.datetime.now(pytz.timezone(self.mem.localzone.name)), self.inversion, acciones, importe, impuestos, comision, valor_accion, "",  id_operinversiones)
+            d.init__create(self.mem.tiposoperaciones.find(4), datetime.datetime.now(pytz.timezone(self.mem.localzone.name)), self.inversion, acciones, importe, impuestos, comision, valor_accion, "", True,  id_operinversiones)
+            d.init__create(self.mem.tiposoperaciones.find(4), datetime.datetime.now(pytz.timezone(self.mem.localzone.name)), self.inversion, acciones, importe, impuestos, comision, valor_accion, "",  True, id_operinversiones)
         operaciones.arr.append(d)
 
 
