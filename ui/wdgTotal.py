@@ -526,7 +526,8 @@ class wdgTotal(QWidget, Ui_wdgTotal):
     def on_actionSellingOperationsPlusDividends_triggered(self):
         m=QMessageBox()
         value=self.setData.find(self.setData.year, self.month).d_g()
-        message=self.tr("Gains and dividends sum from this month is {0}. In this year it's value rises to {1}").format(self.mem.localcurrency.string(value), self.mem.localcurrency.string(self.sumpopup[12]))
+        valueyear=self.setData.d_g()
+        message=self.tr("Gains and dividends sum from this month is {0}. In this year it's value rises to {1}").format(self.mem.localcurrency.string(value), self.mem.localcurrency.string(valueyear))
 
         m.setText(message)
         m.exec_()    

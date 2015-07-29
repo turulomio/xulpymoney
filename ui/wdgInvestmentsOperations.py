@@ -95,7 +95,14 @@ class wdgInvestmentsOperations(QWidget, Ui_wdgInvestmentsOperations):
         w=frmProductReport(self.mem, investment.product, investment, self)
         w.exec_()
         self.load()
-
+                
+    @QtCore.pyqtSlot() 
+    def on_actionRangeReport_triggered(self):
+        self.selOperation.show_in_ranges= not self.selOperation.show_in_ranges
+        self.selOperation.save()
+        self.mem.con.commit()
+        self.load()
+        
     @QtCore.pyqtSlot() 
     def on_actionShowInvestmentOperation_triggered(self):
         if self.tab.currentIndex()==0:#Operation list
@@ -105,6 +112,7 @@ class wdgInvestmentsOperations(QWidget, Ui_wdgInvestmentsOperations):
         w=frmInvestmentOperationsAdd(self.mem, operation.inversion, operation, self)
         w.exec_()
         self.load()
+        
 
     def on_table_customContextMenuRequested(self,  pos):
         self.actionShowAccount.setEnabled(False)
@@ -118,6 +126,12 @@ class wdgInvestmentsOperations(QWidget, Ui_wdgInvestmentsOperations):
                 self.actionShowInvestment.setEnabled(True)
                 self.actionShowInvestmentOperation.setEnabled(True)
             self.actionShowProduct.setEnabled(True)
+            if self.selOperation.show_in_ranges==True:
+                self.actionRangeReport.setText(self.tr("Hide in range report"))
+                self.actionRangeReport.setIcon(QIcon(":/xulpymoney/eye_red.png"))
+            else:
+                self.actionRangeReport.setText(self.tr("Show in range report"))
+                self.actionRangeReport.setIcon(QIcon(":/xulpymoney/eye.png"))
 
         menu=QMenu()
         menu.addAction(self.actionShowAccount)   
@@ -127,6 +141,8 @@ class wdgInvestmentsOperations(QWidget, Ui_wdgInvestmentsOperations):
         menu.addAction(self.actionShowInvestmentOperation)      
         menu.addSeparator()
         menu.addAction(self.actionShowProduct)
+        menu.addSeparator()
+        menu.addAction(self.actionRangeReport)
         menu.exec_(self.table.mapToGlobal(pos))
                 
     def on_tblCurrent_customContextMenuRequested(self,  pos):

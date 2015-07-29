@@ -142,6 +142,11 @@ class wdgIndexRange(QWidget, Ui_wdgIndexRange):
     def on_cmbBenchmarkCurrent_currentIndexChanged(self, index):
         self.load_data()
         
+    def on_cmbShow_options_currentIndexChanged(self, index):
+        pass
+        
+        
+        
     def on_cmdIRAnalisis_pressed(self):
         w=frmProductReport(self.mem, self.benchmark, None,  self)
         w.exec_()

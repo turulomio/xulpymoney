@@ -474,8 +474,6 @@ p, li { white-space: pre-wrap; }
  </customwidgets>
  <resources>
   <include location="../images/xulpymoney.qrc"/>
-  <include location="../images/xulpymoney.qrc"/>
-  <include location="../images/xulpymoney.qrc"/>
  </resources>
  <connections/>
 </ui>

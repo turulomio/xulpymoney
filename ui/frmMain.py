@@ -94,7 +94,8 @@ class frmMain(QMainWindow, Ui_frmMain):
                 m.exec_()   
                 self.on_actionExit_triggered()
                 sys.exit(2)
-        
+                
+        self.statusBar.addWidget(QLabel(self.tr("Server: {}:{}      Database: {}      User: {}").format(self.access.txtServer.text(), self.access.txtPort.text(),  self.access.txtDB.text(), self.access.txtUser.text())))
         
         self.mem.actualizar_memoria() ##CARGA TODOS LOS DATOS Y LOS VINCULA       
         

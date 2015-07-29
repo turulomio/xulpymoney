@@ -270,7 +270,7 @@
    <addaction name="separator"/>
    <addaction name="actionExit"/>
   </widget>
-  <widget class="QStatusBar" name="status"/>
+  <widget class="QStatusBar" name="statusBar"/>
   <action name="actionExit">
    <property name="icon">
     <iconset resource="../images/xulpymoney.qrc">

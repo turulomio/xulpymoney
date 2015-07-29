@@ -18,7 +18,7 @@ class Update:
     def __init__(self, mem):
         self.mem=mem
         self.dbversion=self.get_database_version()    
-        self.lastcodeupdate=201507151008
+        self.lastcodeupdate=201507291626
 
    
     def get_database_version(self):
@@ -333,7 +333,21 @@ class Update:
             cur=self.mem.con.cursor()#Empty due to check role probes
             cur.close()
             self.mem.con.commit()
-            self.set_database_version(201507151008)              
+            self.set_database_version(201507151008)        
+        if self.dbversion<201507291541:
+            cur=self.mem.con.cursor()
+            cur.execute("alter table operinversiones add column show_in_ranges boolean")
+            cur.execute("alter table operinversiones alter column show_in_ranges set default true;")
+            cur.execute("update operinversiones set show_in_ranges =true")
+            cur.close()
+            self.mem.con.commit()
+            self.set_database_version(201507291541)         
+        if self.dbversion<201507291626:
+            cur=self.mem.con.cursor()
+            cur.execute("update operinversiones set show_in_ranges=false where id_tiposoperaciones in (5,6)")
+            cur.close()
+            self.mem.con.commit()
+            self.set_database_version(201507291626)         
             
         """       WARNING                    ADD ALWAYS LAST UPDATE CODE                         WARNING
         
