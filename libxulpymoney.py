@@ -179,7 +179,6 @@ class SetInvestments(SetCommons):
                 QApplication.processEvents()
             inv=Investment(self.mem).init__db_row(row,  self.accounts.find(row['id_cuentas']), self.products.find(row['products_id']))
             inv.get_operinversiones()
-            inv.op_actual.get_valor_benchmark(self.benchmark)
             self.append(inv)
         cur.close()  
         
@@ -1085,13 +1084,14 @@ class SetInvestmentOperations(SetIO):
         for o in self.arr:      
 #            print ("Despues ",  sioa.acciones(), o)              
             if o.acciones>=0:#Compra
-                sioa.arr.append(InvestmentOperationCurrent(self.mem).init__create(o, o.tipooperacion, o.datetime, o.inversion, o.acciones, o.importe, o.impuestos, o.comision, o.valor_accion,  o.id))
+                sioa.arr.append(InvestmentOperationCurrent(self.mem).init__create(o, o.tipooperacion, o.datetime, o.inversion, o.acciones, o.importe, o.impuestos, o.comision, o.valor_accion,  o.show_in_ranges,  o.id))
             else:#Venta
                 if abs(o.acciones)>sioa.acciones():
                     print (o.acciones, sioa.acciones(),  o)
                     print("No puedo vender más acciones que las que tengo. EEEEEEEEEERRRRRRRRRRRROOOOORRRRR")
                     sys.exit(0)
                 sioa.historizar(o, sioh)
+        sioa.get_valor_benchmark(self.mem.data.benchmark)
         return (sioa, sioh)
 #        
 #    def calcular(self ):
@@ -1474,7 +1474,7 @@ class SetInvestmentOperationsCurrent(SetIO):
                     comisiones=comisiones+io.comision+ioa.comision
                     impuestos=impuestos+io.impuestos+ioa.impuestos
                     sioh.arr.append(InvestmentOperationHistorical(self.mem).init__create(ioa, io.inversion, ioa.datetime.date(), -accionesventa*io.valor_accion, io.tipooperacion, -accionesventa, comisiones, impuestos, io.datetime.date(), ioa.valor_accion, io.valor_accion))
-                    self.arr.insert(0, InvestmentOperationCurrent(self.mem).init__create(ioa, ioa.tipooperacion, ioa.datetime, ioa.inversion,  ioa.acciones-abs(accionesventa), (ioa.acciones-abs(accionesventa))*ioa.valor_accion,  0, 0, ioa.valor_accion, ioa.id))
+                    self.arr.insert(0, InvestmentOperationCurrent(self.mem).init__create(ioa, ioa.tipooperacion, ioa.datetime, ioa.inversion,  ioa.acciones-abs(accionesventa), (ioa.acciones-abs(accionesventa))*ioa.valor_accion,  0, 0, ioa.valor_accion, ioa.show_in_ranges,  ioa.id))
                     self.arr.remove(ioa)
                     accionesventa=Decimal('0')#Sale bucle
                     break
@@ -1738,11 +1738,12 @@ class InvestmentOperationCurrent:
         self.comision=None
         self.valor_accion=None
         self.referenciaindice=None##Debera cargarse desde fuera. No se carga con row.. Almacena un Quote, para comprobar si es el indice correcto ver self.referenciaindice.id
+        self.show_in_ranges=True
         
     def __repr__(self):
         return ("IOA {0}. {1} {2}. Acciones: {3}. Valor:{4}".format(self.inversion.name,  self.datetime, self.tipooperacion.name,  self.acciones,  self.valor_accion))
         
-    def init__create(self, operinversion, tipooperacion, datetime, inversion, acciones, importe, impuestos, comision, valor_accion, id=None):
+    def init__create(self, operinversion, tipooperacion, datetime, inversion, acciones, importe, impuestos, comision, valor_accion, show_in_ranges,  id=None):
         """Investment es un objeto Investment"""
         self.id=id
         self.operinversion=operinversion
@@ -1754,6 +1755,7 @@ class InvestmentOperationCurrent:
         self.impuestos=impuestos
         self.comision=comision
         self.valor_accion=valor_accion
+        self.show_in_ranges=show_in_ranges
         return self
                                 
     def init__db_row(self,  row,  inversion,  operinversion, tipooperacion):
@@ -1767,10 +1769,11 @@ class InvestmentOperationCurrent:
         self.impuestos=row['impuestos']
         self.comision=row['comision']
         self.valor_accion=row['valor_accion']
+        self.show_in_ranges=row['show_in_ranges']
         return self
         
     def copy(self):
-        return self.init__create(self.operinversion, self.tipooperacion, self.datetime, self.inversion, self.acciones, self.importe, self.impuestos, self.comision, self.valor_accion, self.id)
+        return self.init__create(self.operinversion, self.tipooperacion, self.datetime, self.inversion, self.acciones, self.importe, self.impuestos, self.comision, self.valor_accion, self.show_in_ranges,  self.id)
                 
     def age(self):
         """Average age of the current investment operations in days"""

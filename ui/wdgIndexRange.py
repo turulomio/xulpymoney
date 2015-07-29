@@ -88,11 +88,27 @@ class wdgIndexRange(QWidget, Ui_wdgIndexRange):
         arr=[]
         maxoper=0
         for i in self.mem.data.investments_active.arr:
-            if i.product.tpc!=0 and i.product.type.id not in (7, 9):
                 for o in i.op_actual.arr:
-                    if maxoper<o.referenciaindice.quote:
-                        maxoper=o.referenciaindice.quote
-                    arr.append((o.referenciaindice.quote, o))
+                    if self.cmbShowOptions.currentIndex()==0 and o.show_in_ranges==True:#Show qualified        
+                        if maxoper<o.referenciaindice.quote:
+                            maxoper=o.referenciaindice.quote
+                        arr.append((o.referenciaindice.quote, o))                    
+                    elif self.cmbShowOptions.currentIndex()==1 and i.product.type.id in (1, 4, 5):            #Shares, Warrants, ETF
+                        if maxoper<o.referenciaindice.quote:
+                            maxoper=o.referenciaindice.quote
+                        arr.append((o.referenciaindice.quote, o))             
+                    elif self.cmbShowOptions.currentIndex()==2 and i.product.type.id in (7, 8):            #Bonds
+                        if maxoper<o.referenciaindice.quote:
+                            maxoper=o.referenciaindice.quote
+                        arr.append((o.referenciaindice.quote, o))             
+                    elif self.cmbShowOptions.currentIndex()==3 and i.product.type.id in (2, ):            #Funds
+                        if maxoper<o.referenciaindice.quote:
+                            maxoper=o.referenciaindice.quote
+                        arr.append((o.referenciaindice.quote, o))       
+                    elif self.cmbShowOptions.currentIndex()==4:            
+                        if maxoper<o.referenciaindice.quote:
+                            maxoper=o.referenciaindice.quote
+                        arr.append((o.referenciaindice.quote, o))             
         arr=sorted(arr, key=lambda row: row[1].datetime,  reverse=False) 
         
         #Makes and array from  minimum to benchmark maximum + 2% to minimum
@@ -142,11 +158,9 @@ class wdgIndexRange(QWidget, Ui_wdgIndexRange):
     def on_cmbBenchmarkCurrent_currentIndexChanged(self, index):
         self.load_data()
         
-    def on_cmbShow_options_currentIndexChanged(self, index):
-        pass
-        
-        
-        
+    def on_cmbShowOptions_currentIndexChanged(self, index):
+        self.load_data()
+
     def on_cmdIRAnalisis_pressed(self):
         w=frmProductReport(self.mem, self.benchmark, None,  self)
         w.exec_()
