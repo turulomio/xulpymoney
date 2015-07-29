@@ -319,7 +319,7 @@
          </property>
          <item>
           <property name="text">
-           <string>Show qualified investment operations</string>
+           <string>Marked to show investment operations</string>
           </property>
           <property name="icon">
            <iconset resource="../images/xulpymoney.qrc">
@@ -328,7 +328,17 @@
          </item>
          <item>
           <property name="text">
-           <string>Show ETF and Shares Investment operations</string>
+           <string>Show ETF, Shares and Warrants Investment operations</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Show bonds</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Show funds</string>
           </property>
          </item>
          <item>

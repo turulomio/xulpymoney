@@ -101,6 +101,8 @@ class wdgInvestmentsOperations(QWidget, Ui_wdgInvestmentsOperations):
         self.selOperation.show_in_ranges= not self.selOperation.show_in_ranges
         self.selOperation.save()
         self.mem.con.commit()
+        #self.selOperation doesn't belong to self.mem.data, it's a set of this widget, so I need to reload investment of the self.mem.data
+        self.mem.data.investments_all().find(self.selOperation.inversion.id).get_operinversiones()
         self.load()
         
     @QtCore.pyqtSlot() 
