@@ -1649,7 +1649,7 @@ p, li { white-space: pre-wrap; }
         <translation>No puedo borrar la tarjeta de crédito, porque tiene registros dependientes</translation>
     </message>
     <message>
-        <location filename="../ui/frmAccountsReport.py" line="431"/>
+        <location filename="../ui/frmAccountsReport.py" line="435"/>
         <source>{0} was made a paid of {1}</source>
         <translation>{0} se hizo un pago de {1}</translation>
     </message>
