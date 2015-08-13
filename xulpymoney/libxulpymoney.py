@@ -2234,7 +2234,7 @@ class Dividend:
             sql="insert into dividends (fecha, valorxaccion, bruto, retencion, neto, id_inversiones,id_opercuentas, comision, id_conceptos) values ('"+str(self.fecha)+"', "+str(self.dpa)+", "+str(self.bruto)+", "+str(self.retencion)+", "+str(self.neto)+", "+str(self.inversion.id)+", "+str(self.opercuenta.id)+", "+str(self.comision)+", "+str(self.concepto.id)+")"
             cur.execute(sql)
         else:
-            self.opercuenta.fecha=self.fecha
+            self.opercuenta.datetime=self.fecha
             self.opercuenta.importe=self.neto
             self.opercuenta.comentario=comentario
             self.opercuenta.concepto=self.concepto
