@@ -2016,7 +2016,7 @@ class AccountOperation:
         63 y 65,66 renta fija cuponcorrido"""
         if self.concepto==None:
             return False
-        if self.concepto.id in (29, 35, 39, 40, 50,  62, 63, 65):#div, factur tarj:
+        if self.concepto.id in (29, 35, 39, 40, 50,  62, 63, 65, 66):#div, factur tarj:
             return False
         c=self.comentario.split("|")
         if self.concepto.id == 38 and c[0]=="Transfer" and len(c)==3:#Comision bancaria por transferencia
