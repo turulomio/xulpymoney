@@ -254,4 +254,4 @@ class wdgInvestments(QWidget, Ui_wdgInvestments):
             )
             m.exec_()     
         else:
-            myQTableWidget.on_cellDoubleClicked(self.tblInvestments, row, column)
+            self.on_actionInvestmentReport_triggered()
