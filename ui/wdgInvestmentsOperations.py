@@ -35,10 +35,21 @@ class wdgInvestmentsOperations(QWidget, Ui_wdgInvestmentsOperations):
         del self.setOperations.arr
         self.setOperations.arr=[]
         cur=self.mem.con.cursor()
+        filters=""
+        if self.cmbFilters.currentIndex()==0:#All
+            filters=""
+        elif self.cmbFilters.currentIndex()==1:#Purchasing
+            filters=" and id_tiposoperaciones in (4)"
+        elif self.cmbFilters.currentIndex()==2:#Purchasing
+            filters=" and id_tiposoperaciones in (5)"
+        elif self.cmbFilters.currentIndex()==3:#Purchasing
+            filters=" and id_tiposoperaciones not in (4, 5)"
+        
+        
         if self.radYear.isChecked()==True:
-            cur.execute("select * from operinversiones where date_part('year',datetime)=%s order by datetime",(self.wy.year, ) )
+            cur.execute("select * from operinversiones where date_part('year',datetime)=%s "+filters+" order by datetime",(self.wy.year,  ) )
         else:
-            cur.execute("select * from operinversiones where date_part('year',datetime)=%s and date_part('month',datetime)=%s order by datetime",(self.wym.year, self.wym.month) )
+            cur.execute("select * from operinversiones where date_part('year',datetime)=%s and date_part('month',datetime)=%s "+filters+" order by datetime",(self.wym.year, self.wym.month) )
         for row in cur:
             self.setOperations.append(InvestmentOperation(self.mem).init__db_row(row, self.mem.data.investments_all().find(row['id_inversiones']), self.mem.tiposoperaciones.find(row['id_tiposoperaciones'])))
         cur.close()
@@ -53,7 +64,9 @@ class wdgInvestmentsOperations(QWidget, Ui_wdgInvestmentsOperations):
         self.setCurrent.myqtablewidget(self.tblCurrent, "wdgInvestmentsOperations")
 
         
-        
+    @QtCore.pyqtSlot(int) 
+    def on_cmbFilters_currentIndexChanged(self, index):
+        self.load()
         
     def on_radYear_toggled(self, toggle):
         if toggle==True:

@@ -43,9 +43,9 @@
         <attribute name="title">
          <string>Operations list</string>
         </attribute>
-        <layout class="QHBoxLayout" name="horizontalLayout_4">
+        <layout class="QHBoxLayout" name="horizontalLayout_7">
          <item>
-          <layout class="QVBoxLayout" name="verticalLayout_2">
+          <layout class="QVBoxLayout" name="verticalLayout_4">
            <item>
             <widget class="QGroupBox" name="groupBox">
              <property name="title">
@@ -53,53 +53,79 @@
              </property>
              <layout class="QHBoxLayout" name="horizontalLayout_6">
               <item>
-               <layout class="QVBoxLayout" name="verticalLayout_3">
+               <layout class="QVBoxLayout" name="verticalLayout_2">
                 <item>
-                 <layout class="QHBoxLayout" name="horizontalLayout_3">
+                 <layout class="QVBoxLayout" name="verticalLayout_3">
                   <item>
-                   <widget class="QRadioButton" name="radYear">
-                    <property name="text">
-                     <string>Show all investment operations from selected year</string>
-                    </property>
-                   </widget>
+                   <layout class="QHBoxLayout" name="horizontalLayout_3">
+                    <item>
+                     <widget class="QRadioButton" name="radYear">
+                      <property name="text">
+                       <string>Show all investment operations from selected year</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item>
+                     <widget class="wdgYear" name="wy" native="true"/>
+                    </item>
+                    <item>
+                     <spacer name="horizontalSpacer_2">
+                      <property name="orientation">
+                       <enum>Qt::Horizontal</enum>
+                      </property>
+                      <property name="sizeHint" stdset="0">
+                       <size>
+                        <width>40</width>
+                        <height>20</height>
+                       </size>
+                      </property>
+                     </spacer>
+                    </item>
+                   </layout>
                   </item>
                   <item>
-                   <widget class="wdgYear" name="wy" native="true">
-                    <zorder>horizontalSpacer_2</zorder>
-                   </widget>
-                  </item>
-                  <item>
-                   <spacer name="horizontalSpacer_2">
-                    <property name="orientation">
-                     <enum>Qt::Horizontal</enum>
-                    </property>
-                    <property name="sizeHint" stdset="0">
-                     <size>
-                      <width>40</width>
-                      <height>20</height>
-                     </size>
-                    </property>
-                   </spacer>
+                   <layout class="QHBoxLayout" name="horizontalLayout_2">
+                    <item>
+                     <widget class="QRadioButton" name="radYearMonth">
+                      <property name="text">
+                       <string>Show investment operations from selected year and month</string>
+                      </property>
+                      <property name="checked">
+                       <bool>true</bool>
+                      </property>
+                     </widget>
+                    </item>
+                    <item>
+                     <widget class="wdgYearMonth" name="wym" native="true"/>
+                    </item>
+                    <item>
+                     <spacer name="horizontalSpacer">
+                      <property name="orientation">
+                       <enum>Qt::Horizontal</enum>
+                      </property>
+                      <property name="sizeHint" stdset="0">
+                       <size>
+                        <width>40</width>
+                        <height>20</height>
+                       </size>
+                      </property>
+                     </spacer>
+                    </item>
+                   </layout>
                   </item>
                  </layout>
                 </item>
                 <item>
-                 <layout class="QHBoxLayout" name="horizontalLayout_2">
+                 <widget class="Line" name="line">
+                  <property name="orientation">
+                   <enum>Qt::Horizontal</enum>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <layout class="QHBoxLayout" name="horizontalLayout_4">
                   <item>
-                   <widget class="QRadioButton" name="radYearMonth">
-                    <property name="text">
-                     <string>Show investment operations from selected year and month</string>
-                    </property>
-                    <property name="checked">
-                     <bool>true</bool>
-                    </property>
-                   </widget>
-                  </item>
-                  <item>
-                   <widget class="wdgYearMonth" name="wym" native="true"/>
-                  </item>
-                  <item>
-                   <spacer name="horizontalSpacer">
+                   <spacer name="horizontalSpacer_3">
                     <property name="orientation">
                      <enum>Qt::Horizontal</enum>
                     </property>
@@ -110,6 +136,49 @@
                      </size>
                     </property>
                    </spacer>
+                  </item>
+                  <item>
+                   <widget class="QComboBox" name="cmbFilters">
+                    <property name="sizeAdjustPolicy">
+                     <enum>QComboBox::AdjustToContents</enum>
+                    </property>
+                    <item>
+                     <property name="text">
+                      <string>Show all investment operations</string>
+                     </property>
+                     <property name="icon">
+                      <iconset resource="../images/xulpymoney.qrc">
+                       <normaloff>:/xulpymoney/star.png</normaloff>:/xulpymoney/star.png</iconset>
+                     </property>
+                    </item>
+                    <item>
+                     <property name="text">
+                      <string>Show purchasing investment operations</string>
+                     </property>
+                     <property name="icon">
+                      <iconset resource="../images/xulpymoney.qrc">
+                       <normaloff>:/xulpymoney/add.png</normaloff>:/xulpymoney/add.png</iconset>
+                     </property>
+                    </item>
+                    <item>
+                     <property name="text">
+                      <string>Show selling investment operations</string>
+                     </property>
+                     <property name="icon">
+                      <iconset resource="../images/xulpymoney.qrc">
+                       <normaloff>:/xulpymoney/list-remove.png</normaloff>:/xulpymoney/list-remove.png</iconset>
+                     </property>
+                    </item>
+                    <item>
+                     <property name="text">
+                      <string>Exclude selling and purchasing investment operations</string>
+                     </property>
+                     <property name="icon">
+                      <iconset resource="../images/xulpymoney.qrc">
+                       <normaloff>:/xulpymoney/eye_red.png</normaloff>:/xulpymoney/eye_red.png</iconset>
+                     </property>
+                    </item>
+                   </widget>
                   </item>
                  </layout>
                 </item>
