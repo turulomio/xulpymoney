@@ -14,8 +14,13 @@ class wdgInvestmentsOperations(QWidget, Ui_wdgInvestmentsOperations):
         fechainicio=Assets(self.mem).primera_datetime_con_datos_usuario()         
 
         self.mem.data.load_inactives()
+        self.wy.initiate(fechainicio.year, datetime.date.today().year, datetime.date.today().year)
+        self.wy.changed.connect(self.on_wy_mychanged)
+        self.wy.label.hide()
+        self.wy.hide()
         self.wym.initiate(fechainicio.year, datetime.date.today().year, datetime.date.today().year,  datetime.date.today().month)
         self.wym.changed.connect(self.on_wym_mychanged)
+        self.wym.label.hide()
         self.setOperations=SetInvestmentOperations(self.mem)
         self.setCurrent=SetInvestmentOperationsCurrent(self.mem)
         self.selOperation=None#For table
@@ -31,7 +36,7 @@ class wdgInvestmentsOperations(QWidget, Ui_wdgInvestmentsOperations):
         self.setOperations.arr=[]
         cur=self.mem.con.cursor()
         if self.radYear.isChecked()==True:
-            cur.execute("select * from operinversiones where date_part('year',datetime)=%s order by datetime",(self.wym.year, ) )
+            cur.execute("select * from operinversiones where date_part('year',datetime)=%s order by datetime",(self.wy.year, ) )
         else:
             cur.execute("select * from operinversiones where date_part('year',datetime)=%s and date_part('month',datetime)=%s order by datetime",(self.wym.year, self.wym.month) )
         for row in cur:
@@ -51,9 +56,17 @@ class wdgInvestmentsOperations(QWidget, Ui_wdgInvestmentsOperations):
         
         
     def on_radYear_toggled(self, toggle):
+        if toggle==True:
+            self.wym.hide()
+            self.wy.show()
+        else:
+            self.wym.show()
+            self.wy.hide()
         self.load()
         
     def on_wym_mychanged(self):
+        self.load()            
+    def on_wy_mychanged(self):
         self.load()    
 
     def on_table_itemSelectionChanged(self):

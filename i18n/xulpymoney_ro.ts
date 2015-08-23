@@ -5184,62 +5184,62 @@ Daily Diff: {5}. Assets average age: {6}</source>
 <context>
     <name>wdgInvestmentsOperations</name>
     <message>
-        <location filename="../ui/Ui_wdgInvestmentsOperations.py" line="125"/>
+        <location filename="../ui/Ui_wdgInvestmentsOperations.py" line="136"/>
         <source>List options</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgInvestmentsOperations.py" line="126"/>
+        <location filename="../ui/Ui_wdgInvestmentsOperations.py" line="137"/>
         <source>Show all investment operations from selected year</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgInvestmentsOperations.py" line="127"/>
+        <location filename="../ui/Ui_wdgInvestmentsOperations.py" line="138"/>
         <source>Show investment operations from selected year and month</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgInvestmentsOperations.py" line="131"/>
+        <location filename="../ui/Ui_wdgInvestmentsOperations.py" line="142"/>
         <source>Show investment</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgInvestmentsOperations.py" line="133"/>
+        <location filename="../ui/Ui_wdgInvestmentsOperations.py" line="144"/>
         <source>Show investment operation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgInvestmentsOperations.py" line="135"/>
+        <location filename="../ui/Ui_wdgInvestmentsOperations.py" line="146"/>
         <source>Show account</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgInvestmentsOperations.py" line="124"/>
+        <location filename="../ui/Ui_wdgInvestmentsOperations.py" line="135"/>
         <source>Investment operations list</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgInvestmentsOperations.py" line="137"/>
+        <location filename="../ui/Ui_wdgInvestmentsOperations.py" line="148"/>
         <source>Show product</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgInvestmentsOperations.py" line="128"/>
+        <location filename="../ui/Ui_wdgInvestmentsOperations.py" line="139"/>
         <source>Operations list</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgInvestmentsOperations.py" line="129"/>
+        <location filename="../ui/Ui_wdgInvestmentsOperations.py" line="140"/>
         <source>Current investment status</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgInvestmentsOperations.py" line="139"/>
+        <location filename="../ui/Ui_wdgInvestmentsOperations.py" line="150"/>
         <source>Hide in range report</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgInvestmentsOperations.py" line="135"/>
+        <location filename="../ui/wdgInvestmentsOperations.py" line="148"/>
         <source>Show in range report</source>
         <translation type="unfinished"></translation>
     </message>
