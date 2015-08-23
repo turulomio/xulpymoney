@@ -1954,7 +1954,6 @@ class AccountOperation:
     def init__db_query(self, id_opercuentas):
         """Creates a AccountOperation querying database for an id_opercuentas"""
         if id_opercuentas==None:
-            print ("id_opercuentas not found")
             return None
         resultado=None
         cur=self.mem.con.cursor()

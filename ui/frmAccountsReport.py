@@ -62,7 +62,8 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
             self.creditcards_reload()        
             
 
-    def creditcards_reload(self): 
+    def creditcards_reload(self):
+        """update_balance_index is used to update credit card balance and remain credit card selected"""
         if self.chkCreditCards.checkState()==Qt.Unchecked:
             self.creditcards=self.mem.data.creditcards_active.clone_of_account(self.account)
         else:
@@ -72,11 +73,22 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
         self.creditcards.selected=None
         self.tblCreditCards.clearSelection()
 
+
+
+
     def creditcardoperations_reload(self):     
         self.creditcardoperations.load_from_db(mogrify(self.mem.con,"select * from opertarjetas where id_tarjetas=%s and pagado=false", [self.creditcards.selected.id, ]))
         self.creditcardoperations.myqtablewidget(self.tblCreditCardOpers, "frmAccountsReport")
         self.creditcardoperations.selected=SetCreditCardOperations(self.mem)
-        
+        ##UPdates creditcard balance
+        row=None
+        try:
+            for i in self.tblCreditCards.selectedItems():#itera por cada item no row.
+                row=i.row()
+            self.tblCreditCards.item(row,  5).setText(self.account.currency.string(self.creditcards.selected.saldo_pendiente()))
+        except:
+            pass
+ 
         
 
     @QtCore.pyqtSlot() 
