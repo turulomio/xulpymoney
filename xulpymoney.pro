@@ -1,5 +1,6 @@
 SOURCES         = \
                   libdbupdates.py \
+                  libsimulations.py \
                   libsources.py \
                   libxulpymoney.py \
                   libodfgenerator.py \
@@ -88,6 +89,10 @@ SOURCES         = \
                   ui/Ui_wdgMergeCodes.py \
                   ui/wdgProducts.py \
                   ui/Ui_wdgProducts.py \
+                  ui/wdgSimulations.py \
+                  ui/Ui_wdgSimulations.py \
+                  ui/wdgSimulationsAdd.py \
+                  ui/Ui_wdgSimulationsAdd.py \
                   ui/wdgQuotesUpdate.py \
                   ui/Ui_wdgQuotesUpdate.py \
                   ui/Ui_wdgSource.py \
@@ -141,6 +146,8 @@ FORMS           = \
                   ui/wdgJointReport.ui \
                   ui/wdgMergeCodes.ui \
                   ui/wdgProducts.ui \
+                  ui/wdgSimulations.ui \
+                  ui/wdgSimulationsAdd.ui \
                   ui/wdgSource.ui \
                   ui/wdgTotal.ui \
                   ui/wdgYear.ui \

@@ -1176,6 +1176,36 @@ CREATE SEQUENCE seq_tarjetas
 ALTER TABLE seq_tarjetas OWNER TO postgres;
 
 --
+-- Name: simulations_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE simulations_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE simulations_seq OWNER TO postgres;
+
+--
+-- Name: simulations; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE simulations (
+    database text,
+    id integer DEFAULT nextval('simulations_seq'::regclass) NOT NULL,
+    starting timestamp with time zone,
+    ending timestamp with time zone,
+    type integer,
+    creation timestamp with time zone
+);
+
+
+ALTER TABLE simulations OWNER TO postgres;
+
+--
 -- Name: status; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -1339,6 +1369,14 @@ ALTER TABLE ONLY status
 
 ALTER TABLE ONLY quotes
     ADD CONSTRAINT quotes_pk PRIMARY KEY (id_quotes);
+
+
+--
+-- Name: simulations_pk; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY simulations
+    ADD CONSTRAINT simulations_pk PRIMARY KEY (id);
 
 
 --
@@ -8856,12 +8894,12 @@ INSERT INTO bolsas VALUES (6, 'it', '07:00:00', 'Bolsa de Milán', '17:38:00', '
 INSERT INTO bolsas VALUES (7, 'jp', '09:00:00', 'Bolsa de Tokio', '20:00:00', 'Asia/Tokyo');
 INSERT INTO bolsas VALUES (8, 'cn', '00:00:00', 'Bolsa de Hong Kong', '20:00:00', 'Asia/Hong_Kong');
 INSERT INTO bolsas VALUES (9, 'pt', '07:00:00', 'Bolsa de Lisboa', '17:38:00', 'Europe/Lisbon');
-INSERT INTO globals VALUES (10, 'wdgCalculator#product', '79228');
-INSERT INTO globals VALUES (11, 'wdgCalculator#invested', '12500');
-INSERT INTO globals VALUES (1, 'Version', '201507291626');
+INSERT INTO globals VALUES (10, 'wdgCalculator#product', '81394');
+INSERT INTO globals VALUES (11, 'wdgCalculator#invested', '8000');
+INSERT INTO globals VALUES (1, 'Version', '201508242037');
 INSERT INTO globals VALUES (6, 'Admin mode', NULL);
 INSERT INTO globals VALUES (7, 'wdgIndexRange#spin', '2');
-INSERT INTO globals VALUES (8, 'wdgIndexRange#txtInvertir', '12500');
+INSERT INTO globals VALUES (8, 'wdgIndexRange#txtInvertir', '8000');
 INSERT INTO globals VALUES (9, 'wdgIndexRange#txtMinimo', '1000');
 DELETE FROM products WHERE id<=0;
 ALTER SEQUENCE seq_conceptos START WITH 100 RESTART;

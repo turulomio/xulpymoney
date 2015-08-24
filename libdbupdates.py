@@ -18,7 +18,7 @@ class Update:
     def __init__(self, mem):
         self.mem=mem
         self.dbversion=self.get_database_version()    
-        self.lastcodeupdate=201507291626
+        self.lastcodeupdate=201508242037
 
    
     def get_database_version(self):
@@ -348,6 +348,17 @@ class Update:
             cur.close()
             self.mem.con.commit()
             self.set_database_version(201507291626)         
+        if self.dbversion<201508242037:
+            cur=self.mem.con.cursor()
+            cur.execute("CREATE SEQUENCE simulations_seq  INCREMENT 1  MINVALUE 1  MAXVALUE 9223372036854775807  START 1  CACHE 1;")
+            cur.execute("CREATE TABLE simulations(  database text,  id integer NOT NULL DEFAULT nextval('simulations_seq'::regclass),  starting timestamp with time zone,  ending timestamp with time zone,  type integer,  creation timestamp with time zone,  CONSTRAINT simulations_pk PRIMARY KEY (id)) WITH (OIDS=FALSE);")
+            cur.close()
+            self.mem.con.commit()
+            self.set_database_version(201508242037)         
+            
+            
+
+
             
         """       WARNING                    ADD ALWAYS LAST UPDATE CODE                         WARNING
         
