@@ -2341,17 +2341,17 @@ p, li { white-space: pre-wrap; }
         <translation>Media de edad de las operaciones actuales: {0}</translation>
     </message>
     <message>
-        <location filename="../ui/frmInvestmentReport.py" line="147"/>
+        <location filename="../ui/frmInvestmentReport.py" line="155"/>
         <source>Before adding a operation, you must add the current price of the product.</source>
         <translation>Antes de añadir una operación, debe añadir el valor actual del producto.</translation>
     </message>
     <message>
-        <location filename="../ui/frmInvestmentReport.py" line="230"/>
+        <location filename="../ui/frmInvestmentReport.py" line="238"/>
         <source>You must select a MyStocks product to continue.</source>
         <translation>Debe seleccionar un producto de MyStocks para continuar.</translation>
     </message>
     <message>
-        <location filename="../ui/frmInvestmentReport.py" line="318"/>
+        <location filename="../ui/frmInvestmentReport.py" line="326"/>
         <source>Selected: {0}</source>
         <translation>Seleccionado: {0}</translation>
     </message>
@@ -2426,7 +2426,7 @@ p, li { white-space: pre-wrap; }
         <translation>% Invertido: {0}</translation>
     </message>
     <message>
-        <location filename="../ui/frmInvestmentReport.py" line="184"/>
+        <location filename="../ui/frmInvestmentReport.py" line="192"/>
         <source>Shares transfer couldn&apos;t be done.</source>
         <translation>El traspaso de acciones no ha podido ser realizado.</translation>
     </message>

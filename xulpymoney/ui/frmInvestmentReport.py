@@ -127,14 +127,12 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
         self.mem.con.commit()
         self.on_chkHistoricalDividends_stateChanged(self.chkHistoricalDividends.checkState())
 
-                
     @QtCore.pyqtSlot() 
     def on_actionDisReinvest_triggered(self):
-        #Llama a form
-        d=QDialog(self)       
-        d.showMaximized() 
+        d=QDialog()       
+        d.showMaximized()
         d.setWindowTitle(self.tr("Divest / Reinvest simulation"))
-        w=wdgDisReinvest(self.mem, self.inversion)
+        w=wdgDisReinvest(self.mem, self.inversion, d)
         lay = QVBoxLayout(d)
         lay.addWidget(w)
         d.exec_()
