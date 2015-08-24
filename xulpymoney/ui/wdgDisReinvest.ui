@@ -41,6 +41,9 @@
          <property name="text">
           <string>Reinvest simulation</string>
          </property>
+         <property name="checked">
+          <bool>true</bool>
+         </property>
         </widget>
        </item>
        <item>
@@ -49,7 +52,7 @@
           <string>Disinvest simulation</string>
          </property>
          <property name="checked">
-          <bool>true</bool>
+          <bool>false</bool>
          </property>
         </widget>
        </item>
@@ -214,7 +217,7 @@
         <enum>QTabWidget::West</enum>
        </property>
        <property name="currentIndex">
-        <number>0</number>
+        <number>1</number>
        </property>
        <widget class="QWidget" name="tab_5">
         <attribute name="title">
@@ -224,7 +227,7 @@
          <item>
           <widget class="QTabWidget" name="tabResultados_2">
            <property name="currentIndex">
-            <number>2</number>
+            <number>1</number>
            </property>
            <widget class="QWidget" name="tab_9">
             <attribute name="title">

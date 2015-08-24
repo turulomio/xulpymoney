@@ -17,16 +17,12 @@ class wdgDisReinvest(QWidget, Ui_wdgDisReinvest):
             m.setText(self.tr("There aren't shares for this investment"))
             m.exec_()     
             return
-#        
-#        self.tblInvestmentsActualDespues.settings("wdgDisReinvest",  self.mem)
-#        self.tblInvestmentsActualAntes.settings("wdgDisReinvest",  self.mem)
-#        self.tblOperaciones.settings("wdgDisReinvest",  self.mem)        
-#        self.tblInvestmentsHistoricas.settings("wdgDisReinvest",  self.mem)         
         
  
         self.operinversiones=self.inversion.op.clone()#No hacer clone_from_datetime porque falla por haber borrado un actual por venta de balance operación
 
         self.txtValorAccion.setText(str(self.inversion.product.result.basic.last.quote))
+        self.txtSimulacion.setText(Global(self.mem, "wdgIndexRange", "txtInvertir").get())
         self.tabResultados.setCurrentIndex(1)
         self.on_radDes_clicked()
 
