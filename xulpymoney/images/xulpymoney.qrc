@@ -1,5 +1,7 @@
 <RCC>
   <qresource prefix="/xulpymoney">
+    <file>replication.png</file>
+    <file>database.png</file>
     <file>eye_red.png</file>
     <file>eye.png</file>
     <file>kcalc.png</file>

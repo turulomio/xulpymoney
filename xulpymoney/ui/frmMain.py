@@ -25,6 +25,7 @@ from frmTransfer import *
 from frmSettings import *
 from frmHelp import *
 from wdgProducts import *
+from wdgSimulations import *
 from wdgQuotesUpdate import *
 
 class frmMain(QMainWindow, Ui_frmMain):
@@ -308,32 +309,41 @@ class frmMain(QMainWindow, Ui_frmMain):
         self.w.on_actionSortDividend_triggered()
         self.w.show()
 
+    @QtCore.pyqtSlot()  
+    def on_actionSimulations_triggered(self):
+        d=QDialog(self)
+        d.setWindowTitle(self.tr("Xulpymoney Simulations"))
+        w=wdgSimulations(self.mem, d)
+        lay = QVBoxLayout(d)
+        lay.addWidget(w)
+        d.exec_() 
+    
         
     @QtCore.pyqtSlot()  
-    def on_actionMoveData_triggered(self):
-        target=frmAccess(self.mem,  self)
-        target.setLabel(self.tr("Please login to the target xulpymoney database"))
-        target.txtPort.setText("5432")
-        target.txtServer.setText("127.0.0.1")
-        target.txtUser.setText("postgres")
-        target.exec_()
-        if target.result()==QDialog.Rejected:             
-            target.qmessagebox_error_connecting()
+    def on_actionSyncProducts_triggered(self):
+        source=frmAccess(self.mem,  self)
+        source.setLabel(self.tr("Please login to the source xulpymoney database"))
+        source.txtPort.setText("5432")
+        source.txtServer.setText("127.0.0.1")
+        source.txtUser.setText("postgres")
+        source.exec_()
+        if source.result()==QDialog.Rejected:             
+            source.qmessagebox_error_connecting()
             return
         else:
-            if target.txtDB.text().strip()==self.access.txtDB.text().strip() and target.txtServer.text().strip()==self.access.txtServer.text().strip():            
+            if source.txtDB.text().strip()==self.access.txtDB.text().strip() and source.txtServer.text().strip()==self.access.txtServer.text().strip():            
                 m=QMessageBox()
                 m.setIcon(QMessageBox.Information)
                 m.setText(self.tr("Databases can't be the same"))
                 m.exec_()   
                 return
                 
-            pd= QProgressDialog(QApplication.translate("Core","Syncing databases from {} ({}) to {} ({})").format(self.access.txtServer.text(), self.access.txtDB.text(), target.txtServer.text(), target.txtDB.text()), None, 0, 10)
+            pd= QProgressDialog(QApplication.translate("Core","Syncing databases from {} ({}) to {} ({})").format(source.txtServer.text(), source.txtDB.text(), self.access.txtServer.text(), self.access.txtDB.text()), None, 0, 10)
             pd.setModal(True)
             pd.setWindowTitle(QApplication.translate("Core","Processing products..."))
             pd.forceShow()
             
-            sync_data(self.mem.con, target.con, pd)
+            sync_data(source.con, self.mem.con, pd)
 
 
     @QtCore.pyqtSlot()  

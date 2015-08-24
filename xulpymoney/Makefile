@@ -47,6 +47,8 @@ compile:
 	pyuic5 ui/wdgDatetime.ui > ui/Ui_wdgDatetime.py &
 	pyuic5 ui/wdgProducts.ui > ui/Ui_wdgProducts.py &
 	pyuic5 ui/wdgQuotesUpdate.ui > ui/Ui_wdgQuotesUpdate.py &
+	pyuic5 ui/wdgSimulations.ui > ui/Ui_wdgSimulations.py &
+	pyuic5 ui/wdgSimulationsAdd.ui > ui/Ui_wdgSimulationsAdd.py &
 	pyuic5 ui/wdgSource.ui > ui/Ui_wdgSource.py &
 	pyuic5 ui/wdgInvestmentsOperations.ui > ui/Ui_wdgInvestmentsOperations.py &
 	pyuic5 ui/wdgMergeCodes.ui > ui/Ui_wdgMergeCodes.py &
@@ -69,7 +71,7 @@ install:
 	install -m 755 -o root xulpymoney_init.py $(PREFIXBIN)/xulpymoney_init
 	install -m 755 -o root xulpymoney_sync_quotes.py $(PREFIXBIN)/xulpymoney_sync_quotes
 	install -m 755 -o root xulpymoney_simulation_indexrange.py $(PREFIXBIN)/xulpymoney_simulation_indexrange
-	install -m 644 -o root ui/*.py libxulpymoney.py libdbupdates.py libsources.py libodfgenerator.py images/*.py  $(PREFIXLIB)
+	install -m 644 -o root ui/*.py libxulpymoney.py libdbupdates.py libsources.py libodfgenerator.py libsimulations.py images/*.py  $(PREFIXLIB)
 	install -m 644 -o root i18n/*.qm $(PREFIXLIB)
 	install -m 644 -o root sources/*.py $(PREFIXLIB)
 

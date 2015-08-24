@@ -104,9 +104,9 @@
     <addaction name="separator"/>
     <addaction name="actionAuxiliarTables"/>
     <addaction name="separator"/>
-    <addaction name="actionMoveData"/>
-    <addaction name="separator"/>
     <addaction name="actionSettings"/>
+    <addaction name="separator"/>
+    <addaction name="actionSimulations"/>
     <addaction name="separator"/>
     <addaction name="actionExit"/>
    </widget>
@@ -225,6 +225,8 @@
     <addaction name="separator"/>
     <addaction name="actionPriceUpdates"/>
     <addaction name="actionReloadPrices"/>
+    <addaction name="separator"/>
+    <addaction name="actionSyncProducts"/>
    </widget>
    <addaction name="menuXulpymoney"/>
    <addaction name="menuBancos"/>
@@ -967,19 +969,34 @@
     <string>Generate global report</string>
    </property>
   </action>
-  <action name="actionMoveData">
+  <action name="actionSyncProducts">
    <property name="icon">
     <iconset resource="../images/xulpymoney.qrc">
-     <normaloff>:/xulpymoney/transfer.png</normaloff>:/xulpymoney/transfer.png</iconset>
+     <normaloff>:/xulpymoney/database.png</normaloff>:/xulpymoney/database.png</iconset>
    </property>
    <property name="text">
-    <string>Move products information</string>
+    <string>Sync products from other Xulpymoney</string>
    </property>
    <property name="toolTip">
     <string>Move products information to another database</string>
    </property>
    <property name="shortcut">
     <string>F9</string>
+   </property>
+  </action>
+  <action name="actionSimulations">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/replication.png</normaloff>:/xulpymoney/replication.png</iconset>
+   </property>
+   <property name="text">
+    <string>Simulations</string>
+   </property>
+   <property name="toolTip">
+    <string>Simulations</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+S</string>
    </property>
   </action>
  </widget>
