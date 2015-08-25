@@ -46,20 +46,21 @@ class wdgDatetime(QWidget, Ui_wdgDatetime):
             
     def on_cmdNow_released(self):
         self.set(self.mem, datetime.datetime.now(), self.mem.localzone)
-        
-               
+
     def set(self,  mem, dt=None,  zone=None):
         """Can be called several times"""
         self.mem=mem
+        if self.cmbZone.count()==0:#Load combo zone, before, problems with on_changed
+            self.mem.zones.qcombobox(self.cmbZone)  
+            
         if dt==None or zone==None:
             self.on_cmdNow_released()
             return
             
         if self.showZone==False:
-            self.zone=self.mem.localzone
+            self.on_cmbZone_currentIndexChanged(self.mem.localzone.name)
         else:
-            self.zone=zone  
-        self.mem.zones.qcombobox(self.cmbZone, self.zone)      
+            self.on_cmbZone_currentIndexChanged(zone.name)
         
         self.teDate.setSelectedDate(dt.date())
         
@@ -95,7 +96,7 @@ class wdgDatetime(QWidget, Ui_wdgDatetime):
         
     @pyqtSlot(str)      
     def on_cmbZone_currentIndexChanged(self, stri):
-        self.zone=self.mem.zones.find(self.cmbZone.itemData(self.cmbZone.currentIndex()))
+        self.zone=self.mem.zones.find_by_name(stri)
         self.updateTooltip()
         self.changed.emit()
         

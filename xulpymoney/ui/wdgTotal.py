@@ -282,7 +282,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         self.progress.setWindowTitle(self.tr("Calculating data..."))
         self.progress.setMinimumDuration(0)        
 
-        fechainicio=Assets(self.mem).primera_datetime_con_datos_usuario()         
+        fechainicio=Assets(self.mem).first_datetime_with_user_data()         
 
         self.mem.data.load_inactives()
         

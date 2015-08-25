@@ -99,28 +99,10 @@
       </layout>
      </item>
      <item>
-      <widget class="QComboBox" name="comboBox">
+      <widget class="QComboBox" name="cmbSimulationTypes">
        <property name="sizeAdjustPolicy">
         <enum>QComboBox::AdjustToContents</enum>
        </property>
-       <item>
-        <property name="text">
-         <string>Xulpymoney between dates</string>
-        </property>
-        <property name="icon">
-         <iconset resource="../images/xulpymoney.qrc">
-          <normaloff>:/xulpymoney/database.png</normaloff>:/xulpymoney/database.png</iconset>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Simulating current benchmark between dates</string>
-        </property>
-        <property name="icon">
-         <iconset resource="../images/xulpymoney.qrc">
-          <normaloff>:/xulpymoney/replication.png</normaloff>:/xulpymoney/replication.png</iconset>
-        </property>
-       </item>
       </widget>
      </item>
      <item>
@@ -132,7 +114,7 @@
          </property>
          <layout class="QHBoxLayout" name="horizontalLayout">
           <item>
-           <widget class="wdgDatetime" name="widget" native="true"/>
+           <widget class="wdgDatetime" name="wdgStarting" native="true"/>
           </item>
          </layout>
         </widget>
@@ -144,7 +126,7 @@
          </property>
          <layout class="QHBoxLayout" name="horizontalLayout_2">
           <item>
-           <widget class="wdgDatetime" name="widget_2" native="true"/>
+           <widget class="wdgDatetime" name="wdgEnding" native="true"/>
           </item>
          </layout>
         </widget>
@@ -152,7 +134,7 @@
       </layout>
      </item>
      <item>
-      <widget class="QDialogButtonBox" name="buttonBox">
+      <widget class="QDialogButtonBox" name="buttonbox">
        <property name="standardButtons">
         <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
        </property>

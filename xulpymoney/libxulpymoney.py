@@ -1,7 +1,11 @@
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
-import datetime,  time,  pytz,   psycopg2,  psycopg2.extras,  sys,  codecs,  os,  configparser,  inspect,  threading, argparse, getpass
+import datetime
+import time
+import pytz
+import psycopg2
+import psycopg2.extras,  sys,  codecs,  os,  configparser,  inspect,  threading, argparse, getpass
 
 from decimal import *
 
@@ -154,7 +158,25 @@ class SetCommons:
             if resultado.find(p.id, False)==None:
                 resultado.append(p)
         return resultado
+class SetSimulationTypes(SetCommons):
+    def __init__(self, mem):
+        SetCommons.__init__(self)
+        self.mem=mem
 
+    def load_all(self):
+        self.append(SimulationType().init__create(1,QApplication.translate("Core","Xulpymoney between dates")))
+        self.append(SimulationType().init__create(2,QApplication.translate("Core","Xulpymvoney only investments between dates")))
+        self.append(SimulationType().init__create(3,QApplication.translate("Core","Simulating current benchmark between dates")))
+        
+    def qcombobox(self, combo,  selected=None):
+        """selected is a SimulationType object""" 
+        ###########################
+        combo.clear()
+        for a in self.arr:
+            combo.addItem(a.qicon(), a.name, a.id)
+
+        if selected!=None:
+                combo.setCurrentIndex(combo.findData(selected.id))
 class SetInvestments(SetCommons):
     def __init__(self, mem, cuentas, products, benchmark):
         SetCommons.__init__(self)
@@ -528,7 +550,37 @@ class SetProductsModes(SetCommons):
         self.append(ProductMode(self.mem).init__create("p",QApplication.translate("Core","Put")))
         self.append(ProductMode(self.mem).init__create("c",QApplication.translate("Core","Call")))
         self.append(ProductMode(self.mem).init__create("i",QApplication.translate("Core","Inline")))
+
+class SetSimulations(SetCommons):
+    def __init__(self, mem):
+        SetCommons.__init__(self)
+        self.mem=mem
+            
+    def load_from_db(self, sql,  original_db):
+        cur=self.mem.con.cursor()
+        cur.execute(sql)
+        for row in cur:
+            s=Simulation(self.mem, original_db).init__db_row(row)
+            self.append(s)
+        cur.close()  
         
+    def myqtablewidget(self, table, section):
+        table.setColumnCount(4)
+        table.setHorizontalHeaderItem(0, QTableWidgetItem(QApplication.translate("Core", "Creation" )))
+        table.setHorizontalHeaderItem(1, QTableWidgetItem(QApplication.translate("Core", "Type" )))
+        table.setHorizontalHeaderItem(2, QTableWidgetItem(QApplication.translate("Core", "Starting" )))
+        table.setHorizontalHeaderItem(3, QTableWidgetItem(QApplication.translate("Core", "Ending" )))
+        table.settings(section,  self.mem)        
+        table.clearContents()
+        table.setRowCount(self.length())
+        for i, a in enumerate(self.arr):
+            table.setItem(i, 0, qdatetime(a.creation, self.mem.localzone))
+            table.setItem(i, 1, qleft(a.type.name))
+            table.item(i, 1).setIcon(a.type.qicon())
+            table.setItem(i, 2, qdatetime(a.starting, self.mem.localzone))
+            table.setItem(i, 3, qdatetime(a.ending, self.mem.localzone))
+
+
 class SetStockExchanges(SetCommons):
     def __init__(self, mem):
         SetCommons.__init__(self)
@@ -2994,7 +3046,7 @@ class Assets:
     def __init__(self, mem):
         self.mem=mem        
     
-    def primera_datetime_con_datos_usuario(self):        
+    def first_datetime_with_user_data(self):        
         """Devuelve la datetime actual si no hay datos. Base de datos vacía"""
         cur=self.mem.con.cursor()
         sql='select datetime from opercuentas UNION all select datetime from operinversiones UNION all select datetime from opertarjetas order by datetime limit 1;'
@@ -3460,7 +3512,7 @@ class StockExchange:
         self.country=country
         self.starts=row['starts']
         self.closes=row['closes']
-        self.zone=self.mem.zones.find(row['zone'])#Intente hacer objeto pero era absurdo.
+        self.zone=self.mem.zones.find_by_name(row['zone'])
         return self
 
 class Color:
@@ -4780,8 +4832,69 @@ class PriorityHistorical:
         self.id=id
         self.name=name
         return self
+
+    
+class Simulation:
+    def __init__(self,mem, original_db):
+        """Types are defined in combo ui wdgSimulationsADd
+        database is the database which data is going to be simulated"""
+        self.mem=mem
+        self.database=original_db
+        self.id=None
+        self.name=None#self.simulated_db, used to reuse SetCommons
+        self.creation=None
+        self.type=None
+        self.starting=None
+        self.ending=None
         
+    def init__create(self, type_id, starting, ending):
+        """Used only to create a new one"""
+        self.type=self.mem.simulationtypes.find(type_id)
+        self.starting=starting
+        self.ending=ending
+        self.creation=self.mem.localzone.now()
+        return self
         
+    def simulated_db(self):
+        """Returns"""
+        return "{}_{}".format(self.database, self.id)    
+
+    def init__db_row(self, row):
+        self.id=row['id']
+        self.database=row['database']
+        self.creation=row['creation']
+        self.type=self.mem.simulationtypes.find(row['type'])
+        self.starting=row['starting']
+        self.ending=row['ending']
+        return self
+        
+    def save(self):
+        cur=self.mem.con.cursor()
+        print (self.type)
+        if self.id==None:
+            cur.execute("insert into simulations (database, type, starting, ending, creation) values (%s,%s,%s,%s,%s) returning id", (self.database, self.type.id, self.starting, self.ending, self.creation))
+            self.id=cur.fetchone()[0]
+            self.name=self.simulated_db()
+        else:
+            cur.execute("update simulations set database=%s, type=%s, starting=%s, ending=%s, creation=%s where id=%s", (self.database, self.type.id, self.starting, self.ending, self.creation, self.id))
+        cur.close()
+
+
+class SimulationType:
+    def __init__(self):
+        self.id=None
+        self.name=None
+    def init__create(self, id, name):
+        self.id=id
+        self.name=name
+        return self
+        
+
+    def qicon(self):
+        if self.id in (1, 2):
+            return QIcon(":/xulpymoney/database.png")
+        else:
+            return QIcon(":/xulpymoney/replication.png")    
 class Split:
     """Class to make calculations with splits or contrasplits, between two datetimes"""
     def __init__(self, mem, product, sharesinitial,  sharesfinal,  dtinitial, dtfinal):
@@ -5104,6 +5217,7 @@ class MemProducts:
         self.stockexchanges=SetStockExchanges(self)
         self.currencies=SetCurrencies(self)
         self.types=SetTypes(self)
+        self.simulationtypes=SetSimulationTypes(self)
         self.agrupations=SetAgrupations(self)
         self.leverages=SetLeverages(self)
         self.priorities=SetPriorities(self)
@@ -5172,9 +5286,11 @@ class MemProducts:
         print ("Cargando MemProducts")
         self.currencies.load_all()
         self.investmentsmodes.load_all()
+        self.simulationtypes.load_all()
         self.zones.load_all()
         
-        self.localzone=self.zones.find(self.config.get_value("settings", "localzone"))
+        self.localzone=self.zones.find_by_name(self.config.get_value("settings", "localzone"))
+        print (self.localzone)
         self.dividendwithholding=Decimal(self.config.get_value("settings", "dividendwithholding"))
         self.taxcapitalappreciation=Decimal(self.config.get_value("settings", "taxcapitalappreciation"))
         self.taxcapitalappreciationbelow=Decimal(self.config.get_value("settings", "taxcapitalappreciationbelow"))
@@ -5434,6 +5550,9 @@ class Zone:
     def now(self):
         return datetime.datetime.now(pytz.timezone(self.name))
         
+    def __repr__(self):
+        return "Zone ({}): {}".format(str(self.id), str(self.name))
+        
 class SetZones(SetCommons):
     def __init__(self, mem):
         SetCommons.__init__(self)
@@ -5452,6 +5571,7 @@ class SetZones(SetCommons):
 
     def qcombobox(self, combo, zone=None):
         """Carga entidades bancarias en combo"""
+        combo.clear()
         for a in self.arr:
             combo.addItem(a.country.qicon(), a.name, a.name)
 
@@ -5459,14 +5579,14 @@ class SetZones(SetCommons):
             combo.setCurrentIndex(combo.findText(zone.name))
 
             
-    def find(self, name,  log=False):
+    def find_by_name(self, name,  log=False):
         """self.find() search by id (number).
         This function replaces  it and searches by name (Europe/Madrid)"""
         for a in self.arr:
             if a.name==name:
                 return a
         if log:
-            print ("SetCommons ({}) fails finding {}".format(self.__class__.__name__, id))
+            print ("SetCommons ({}) fails finding {}".format(self.__class__.__name__, name))
         return None
 
 ## FUNCTIONS #############################################
@@ -5660,13 +5780,6 @@ def days_to_year_month(days):
         strdays=QApplication.translate("Core", "days")
     return QApplication.translate("Core", "{} {}, {} {} and {} {}").format(years, stryears,  months,  strmonths, days,  strdays)
 
-#def dic2list(dic):
-#    """Función que convierte un diccionario pasado como parametro a una lista de objetos"""
-#    resultado=[]
-#    for k,  v in dic.items():
-#        resultado.append(v)
-#    return resultado
-
 def dt(date, hour, zone):
     """Función que devuleve un datetime con zone info.
     Zone is an object."""
@@ -5674,13 +5787,6 @@ def dt(date, hour, zone):
     a=datetime.datetime(date.year,  date.month,  date.day,  hour.hour,  hour.minute,  hour.second, hour.microsecond)
     a=z.localize(a)
     return a
-
-#        
-#def s2pd(s):
-#    """python string isodate 2 python datetime.date"""
-#    a=str(s).split(" ")[0]#por si viene un 2222-22-22 12:12
-#    a=str(s).split("-")
-#    return datetime.date(int(a[0]), int(a[1]),  int(a[2]))
     
 def str2bool(s):
     """Converts strings True or False to boolean"""
@@ -5688,26 +5794,6 @@ def str2bool(s):
         return True
     return False
     
-
-#def cur2dict(cur):
-#    """Función que convierte un cursor a una lista de diccionarioº"""
-#    resultado=[]
-#    for row in cur:
-#            d={}
-#            for key,col in enumerate(cur.description):
-#                    d[col[0]]=row[col[0]]
-#            resultado.append(d)
-#    return resultado
-#
-#def cur2dictdict(cur, indexcolumn):
-#    """Función que convierte un cursor a un diccionario de diccionarioº"""
-#    resultado={}
-#    for row in cur:
-#        d={}
-#        for key,col in enumerate(cur.description):
-#                d[col[0]]=row[col[0]]
-#        resultado[str(row[indexcolumn])]=d
-#    return resultado
 
 
 def qbool(bool):
