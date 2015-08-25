@@ -22,7 +22,7 @@ class wdgJointReport(QWidget, Ui_wdgJointReport):
         self.totalDividendsBrutos=0
         self.totalDividendsRetenciones=0
                 
-        anoinicio=Assets(self.mem).primera_datetime_con_datos_usuario().year       
+        anoinicio=Assets(self.mem).first_datetime_with_user_data().year       
 
         self.wy.initiate(anoinicio, datetime.date.today().year, datetime.date.today().year)
         self.wy.changed.connect(self.on_wy_changed)

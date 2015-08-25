@@ -105,7 +105,7 @@ class wdgAPR(QWidget, Ui_wdgAPR):
 
     def load_data(self):        
         inicio=datetime.datetime.now()       
-        anoinicio=Assets(self.mem).primera_datetime_con_datos_usuario().year       
+        anoinicio=Assets(self.mem).first_datetime_with_user_data().year       
         anofinal=datetime.date.today().year+1        
         
         self.progress.reset()
