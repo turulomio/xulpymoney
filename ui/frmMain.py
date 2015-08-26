@@ -31,6 +31,8 @@ from wdgQuotesUpdate import *
 class frmMain(QMainWindow, Ui_frmMain):
     """Clase principal del programa"""
     def __init__(self, mem, parent = 0,  flags = False):
+        """mem must be a MemXulpymoney con el parametro mem.con con un objecto Conection activo"""
+        
         QMainWindow.__init__(self, None)
         self.setupUi(self)
         self.showMaximized()
@@ -40,34 +42,7 @@ class frmMain(QMainWindow, Ui_frmMain):
         self.setWindowTitle(self.tr("Xulpymoney 2010-{0} ©").format(version_date.year))
         
         self.w=QWidget()       
-        
-    def actionsEnabled(self, bool):
-        self.menuBar.setEnabled(bool)
-        self.toolBar.setEnabled(bool)
-        
-    @pyqtSlot()
-    def on_actionGlobalReport_triggered(self):
-        self.mem.data.load_inactives()
-        import libodfgenerator
-        file="AssetsReport.odt"
-        doc=libodfgenerator.AssetsReport(self.mem, file, "/usr/share/xulpymoney/report.odt")
-#        os.system("libreoffice --headless --convert-to pdf {}".format(file))
-        doc.generate()
-        
-        
-        #Open file
-        if os.path.exists("/usr/bin/lowriter"):
-            QProcess.startDetached("lowriter", [file, ] )
-#            QProcess.startDetached("okular", [file[:-3]+"pdf", ] )
-        elif os.path.exists("/usr/bin/kfmclient"):
-            QProcess.startDetached("kfmclient", ["openURL", file] )
-        elif os.path.exists("/usr/bin/gnome-open"):
-            QProcess.startDetached( "gnome-open '" + file + "'" );
-        else:         
-            QDesktopServices.openUrl(QUrl("file://"+file));
-
-
-        
+                
     def init__continue(self):
         """Used to add frmAccess automatic access"""
         self.access=frmAccess(self.mem,  self)
@@ -129,6 +104,33 @@ class frmMain(QMainWindow, Ui_frmMain):
                     self.adminmode=False        
                     m.setText(self.tr("Bad 'Admin mode' password. You are logged as a normal user"))
                     m.exec_()   
+    def actionsEnabled(self, bool):
+        self.menuBar.setEnabled(bool)
+        self.toolBar.setEnabled(bool)
+        
+    @pyqtSlot()
+    def on_actionGlobalReport_triggered(self):
+        self.mem.data.load_inactives()
+        import libodfgenerator
+        file="AssetsReport.odt"
+        doc=libodfgenerator.AssetsReport(self.mem, file, "/usr/share/xulpymoney/report.odt")
+#        os.system("libreoffice --headless --convert-to pdf {}".format(file))
+        doc.generate()
+        
+        
+        #Open file
+        if os.path.exists("/usr/bin/lowriter"):
+            QProcess.startDetached("lowriter", [file, ] )
+#            QProcess.startDetached("okular", [file[:-3]+"pdf", ] )
+        elif os.path.exists("/usr/bin/kfmclient"):
+            QProcess.startDetached("kfmclient", ["openURL", file] )
+        elif os.path.exists("/usr/bin/gnome-open"):
+            QProcess.startDetached( "gnome-open '" + file + "'" );
+        else:         
+            QDesktopServices.openUrl(QUrl("file://"+file));
+
+
+
 
     @QtCore.pyqtSlot()  
     def on_actionExit_triggered(self):

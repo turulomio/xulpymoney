@@ -5,11 +5,13 @@ from Ui_wdgSimulationsAdd import *
 from libxulpymoney import Assets,  Simulation,  Connection,  DBAdmin
 
 class wdgSimulationsAdd(QWidget, Ui_wdgSimulationsAdd):
-    def __init__(self, mem,  parent = None, name = None):
+    def __init__(self, mem,   parent = None, name = None):
+        """Simulations is the SetSimulations where the new simulation is going to be appended"""
         QWidget.__init__(self,  parent)
         self.setupUi(self)
         self.mem=mem
         self.parent=parent
+        self.simulation=None#Simulation to be created
         self.mem.simulationtypes.qcombobox(self.cmbSimulationTypes)
         self.wdgStarting.set(self.mem, Assets(self.mem).first_datetime_with_user_data(), self.mem.localzone)
         self.wdgEnding.set(self.mem)
@@ -25,27 +27,33 @@ class wdgSimulationsAdd(QWidget, Ui_wdgSimulationsAdd):
         
         
         type_id=self.cmbSimulationTypes.itemData(self.cmbSimulationTypes.currentIndex())
-        s=Simulation(self.mem, self.mem.con.db).init__create(type_id, self.wdgStarting.datetime(), self.wdgEnding.datetime())
-        s.save()
-        self.simcon=Connection().init__create(self.mem.con.user, self.mem.con.password, self.mem.con.server, self.mem.con.port, self.mem.con.db)
-        self.simcon.connect()
-
+        self.simulation=Simulation(self.mem, self.mem.con.db).init__create(type_id, self.wdgStarting.datetime(), self.wdgEnding.datetime())
+        self.simulation.save()
         
-        if self.simcon.is_active()==False:
-            self.access.qmessagebox_error_connecting()
-            self.mem.con.rollback()
-            self.parent.reject()
-            return
+        
+        #Necesita solo roll superusuario y self.mem.con lo tiene
+        createadmin=DBAdmin(self.mem.con)
+        createadmin.create_db(self.simulation.simulated_db())
+        self.mem.con.commit()
             
 
-        admin=DBAdmin(self.simcon)
-        admin.create_db(s.simulated_db())
-        if s.type==1:
-            pass
+        #Crea nueva conexi´on
+        self.con_sim=Connection().init__create(self.mem.con.user, self.mem.con.password, self.mem.con.server, self.mem.con.port, self.simulation.simulated_db())
+        self.con_sim.connect()        
+        admin=DBAdmin(self.con_sim)
+        admin.xulpymoney_basic_schema()
+        self.con_sim.commit()
+        if self.simulation.type.id==1:#Copy between dates
+            admin.copy(self.mem.con, "select * from cuentas  order by id_cuentas",  "cuentas")
             
+            admin.copy(self.mem.con, "select * from inversiones order by id_inversiones",  "inversiones")
             
-        self.mem.con.commit()
-        self.simcon.commit()
+            already_conceptos=self.con_sim.cursor_one_column("select id_conceptos from conceptos order by id_conceptos")
+            mog=self.mem.con.mogrify("select * from conceptos where id_conceptos not in %s  order by id_conceptos ", (tuple(already_conceptos), ))
+            admin.copy(self.mem.con, mog,  "conceptos")
+            
+        self.con_sim.commit()
+        self.con_sim.disconnect()
         self.parent.accept()    
         
     @pyqtSlot()

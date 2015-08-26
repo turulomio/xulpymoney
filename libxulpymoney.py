@@ -3,9 +3,11 @@ from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 import datetime
 import time
+import io
 import pytz
 import psycopg2
-import psycopg2.extras,  sys,  codecs,  os,  configparser,  inspect,  threading, argparse, getpass
+import psycopg2.extras
+import sys,  codecs,  os,  configparser,  inspect,  threading, argparse, getpass
 
 from decimal import *
 
@@ -34,6 +36,31 @@ class Connection:
         
     def cursor(self):
         return self._con.cursor()
+        
+    
+    def mogrify(self, sql, arr):
+        """Mogrify text"""
+        cur=self._con.cursor()
+        s=cur.mogrify(sql, arr)
+        cur.close()
+        return  s
+        
+    def cursor_one_row(self, sql, arr=[]):
+        """Returns only one row"""
+        cur=self._con.cursor()
+        cur.execute(sql, arr)
+        row=cur.fetchone()
+        cur.close()
+        return row        
+        
+    def cursor_one_column(self, sql, arr=[]):
+        """Returns un array with the results of the column"""
+        cur=self._con.cursor()
+        cur.execute(sql, arr)
+        for row in cur:
+            arr.append(row[0])
+        cur.close()
+        return arr
         
     def commit(self):
         self._con.commit()
@@ -2177,10 +2204,11 @@ class AccountOperation:
         
 class DBAdmin:
     def __init__(self, connection):
-        """connection is an object Connection"""
+        """connection is an object Connection to a database"""
         self.con=connection
 
     def create_db(self, database):
+        """It has database parameter, due to I connect to template to create database"""
         if self.con.is_superuser():
             new=Connection().init__create(self.con.user, self.con.password, self.con.server, self.con.port, "template1")
             new.connect()
@@ -2201,6 +2229,7 @@ class DBAdmin:
             return False
         
     def drop_db(self, database):
+        """It has database parameter, due to I connect to template to drop database"""
         if self.con.is_superuser():
             new=Connection().init__create(self.con.user, self.con.password, self.con.server, self.con.port, "template1")
             new.connect()
@@ -2221,12 +2250,61 @@ class DBAdmin:
         
 
     def load_script(self, file):
-        cur= con.cursor()
+        cur= self.con.cursor()
         procedures  = open(file,'r').read() 
         cur.execute(procedures)
         
-        con.commit()
+        self.con.commit()
         cur.close()       
+        
+        
+    def copy(self, con_origin, sql,  table_destiny ):
+        """Used to copy between tables, and sql to table_destiny, table origin and destiny must have the same structure"""
+        if sql.__class__==bytes:
+            sql=sql.decode('UTF-8')
+        f=io.StringIO()
+        cur_origin=con_origin.cursor()
+        cur_origin.copy_expert("copy ({}) to stdout".format(sql), f)
+        cur_origin.close()
+        f.seek(0)
+        cur_destiny=self.con.cursor()
+        cur_destiny.copy_from(f, table_destiny)
+        cur_destiny.close()
+        f.seek(0)
+        print (f.read())
+        f.close()
+        
+    def xulpymoney_basic_schema(self):
+        try:
+            self.load_script("/usr/share/xulpymoney/sql/xulpymoney.sql")
+            cur= self.con.cursor()
+            cur.execute("insert into entidadesbancarias values(3,'{0}', true)".format(QApplication.translate("Core","Personal Management")))
+            cur.execute("insert into cuentas values(4,'{0}',3,true,NULL,'EUR')".format(QApplication.translate("Core","Cash")))
+            cur.execute("insert into conceptos values(1,'{0}',2,false)".format(QApplication.translate("Core","Initiating bank account")))
+            cur.execute("insert into conceptos values(4,'{0}',3,false)".format(QApplication.translate("Core","Transfer. Origin")))
+            cur.execute("insert into conceptos values(5,'{0}',3,false)".format(QApplication.translate("Core","Transfer. Destination")))
+            cur.execute("insert into conceptos values(29,'{0}',4,false)".format(QApplication.translate("Core","Purchase investment product")))
+            cur.execute("insert into conceptos values(35,'{0}',5,false)".format(QApplication.translate("Core","Sale investment product")))
+            cur.execute("insert into conceptos values(38,'{0}',1,false)".format(QApplication.translate("Core","Bank commissions")))
+            cur.execute("insert into conceptos values(39,'{0}',2,false)".format(QApplication.translate("Core","Dividends")))
+            cur.execute("insert into conceptos values(40,'{0}',7,false)".format(QApplication.translate("Core","Credit card billing")))
+            cur.execute("insert into conceptos values(43,'{0}',6,false)".format(QApplication.translate("Core","Added shares")))
+            cur.execute("insert into conceptos values(50,'{0}',2,false)".format(QApplication.translate("Core","Attendance bonus")))
+            cur.execute("insert into conceptos values(59,'{0}',1,false)".format(QApplication.translate("Core","Custody commission")))
+            cur.execute("insert into conceptos values(62,'{0}',2,false)".format(QApplication.translate("Core","Dividends. Sale of rights")))
+            cur.execute("insert into conceptos values(63,'{0}',1,false)".format(QApplication.translate("Core","Bonds. Running coupon payment")))
+            cur.execute("insert into conceptos values(65,'{0}',2,false)".format(QApplication.translate("Core","Bonds. Running coupon collection")))
+            cur.execute("insert into conceptos values(66,'{0}',2,false)".format(QApplication.translate("Core","Bonds. Coupon collection")))
+            cur.execute("insert into conceptos values(2,'{0}',2,true)".format(QApplication.translate("Core","Paysheet")))
+            cur.execute("insert into conceptos values(3,'{0}',1,true)".format(QApplication.translate("Core","Supermarket")))
+            cur.execute("insert into conceptos values(6,'{0}',1,true)".format(QApplication.translate("Core","Restaurant")))
+            cur.execute("insert into conceptos values(7,'{0}',1,true)".format(QApplication.translate("Core","Gas")))
+            cur.close()
+            return True
+        except:
+            print ("Error creating xulpymoney basic schema")
+            return False
+
         
 class DBData:
     def __init__(self, mem):
@@ -3445,15 +3523,15 @@ def mylog(text):
     f.write(str(datetime.datetime.now()) + "|" + text + "\n")
     f.close()
     
-def mogrify(con, sql, arr):
-    """Generate sql strings with psycopg
-    sql=psycopg sql stsring
-    arr is an array of parameters"""
-    cur=con.cursor()
-    result=cur.mogrify(sql, arr)
-    cur.close()
-    return result
-    
+#def mogrify(con, sql, arr):
+#    """Generate sql strings with psycopg
+#    sql=psycopg sql stsring
+#    arr is an array of parameters"""
+#    cur=con.cursor()
+#    result=cur.mogrify(sql, arr)
+#    cur.close()
+#    return result
+#    
     
 def decimal_check(dec):
     print ("Decimal check", dec, dec.__class__,  dec.__repr__(),  "prec:",  getcontext().prec)
@@ -3947,7 +4025,7 @@ class EstimationEPS:
         if cur.fetchone()[0]==0:
             cur.execute("insert into estimations_eps(id, year, estimation, date_estimation, source, manual) values (%s,%s,%s,%s,%s,%s)", (self.product.id, self.year, self.estimation, self.date_estimation, self.source, self.manual))
 
-            print (cur.mogrify("insert into estimations_eps (id, year, estimation, date_estimation, source, manual) values (%s,%s,%s,%s,%s,%s)", (self.product.id, self.year, self.estimation, self.date_estimation, self.source, self.manual)))
+#            print (cur.mogrify("insert into estimations_eps (id, year, estimation, date_estimation, source, manual) values (%s,%s,%s,%s,%s,%s)", (self.product.id, self.year, self.estimation, self.date_estimation, self.source, self.manual)))
         elif self.estimation!=None:            
             cur.execute("update estimations_eps set estimation=%s, date_estimation=%s, source=%s, manual=%s where id=%s and year=%s", (self.estimation, self.date_estimation, self.source, self.manual, self.product.id, self.year))
         cur.close()
@@ -5023,6 +5101,20 @@ class Simulation:
         cur=self.mem.con.cursor()
         cur.execute("delete from simulations where id=%s", (self.id, ))
         cur.close()
+
+#class SimulationTools:
+#    def __init__(self, mem, con_sim):
+#        self.mem=mem
+#        self.con_mem=self.mem.con
+#        self.con_sim=con_sim
+#        
+#    def accounts_insert(self, sql):
+#        cur_mem=self.con_mem.cursor()
+#        cur_mem.execute(sql)
+#        for row in cur_mem:
+#            
+        
+    
 
 class SimulationType:
     def __init__(self):

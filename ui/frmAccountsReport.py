@@ -77,7 +77,7 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
 
 
     def creditcardoperations_reload(self):     
-        self.creditcardoperations.load_from_db(mogrify(self.mem.con,"select * from opertarjetas where id_tarjetas=%s and pagado=false", [self.creditcards.selected.id, ]))
+        self.creditcardoperations.load_from_db(self.mem.con.mogrify("select * from opertarjetas where id_tarjetas=%s and pagado=false", [self.creditcards.selected.id, ]))
         self.creditcardoperations.myqtablewidget(self.tblCreditCardOpers, "frmAccountsReport")
         self.creditcardoperations.selected=SetCreditCardOperations(self.mem)
         ##UPdates creditcard balance
@@ -170,7 +170,7 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
         lastMonthBalance=self.account.balance(datetime.date(self.wdgYM.year, self.wdgYM.month, 1)-datetime.timedelta(days=1))     
           
         self.accountoperations=SetAccountOperations(self.mem)           
-        self.accountoperations.load_from_db(mogrify(self.mem.con,"select * from opercuentas where id_cuentas=%s and date_part('year',datetime)=%s and date_part('month',datetime)=%s order by datetime, id_opercuentas", [self.account.id, self.wdgYM.year, self.wdgYM.month]))
+        self.accountoperations.load_from_db(self.mem.con.mogrify("select * from opercuentas where id_cuentas=%s and date_part('year',datetime)=%s and date_part('month',datetime)=%s order by datetime, id_opercuentas", [self.account.id, self.wdgYM.year, self.wdgYM.month]))
         self.accountoperations.myqtablewidget_lastmonthbalance(self.tblOperaciones, "frmAccountsReport", self.account,  lastMonthBalance)   
         self.tblOperaciones.clearSelection()
         self.accountoperations.selected=None

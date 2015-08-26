@@ -124,6 +124,7 @@ class frmInit(QDialog, Ui_frmInit):
         
     @pyqtSlot()
     def create_xulpymoney(self):
+        print ("OBSOLETE USE DBADMIN")
         try:
             self.load_script(self.txtXulpymoney.text(), "/usr/share/xulpymoney/sql/xulpymoney.sql")
             
