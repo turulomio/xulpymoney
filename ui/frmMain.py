@@ -342,9 +342,9 @@ class frmMain(QMainWindow, Ui_frmMain):
                 m.exec_()   
                 return
                 
-            pd= QProgressDialog(QApplication.translate("Core","Syncing databases from {} ({}) to {} ({})").format(source.txtServer.text(), source.txtDB.text(), self.access.txtServer.text(), self.access.txtDB.text()), None, 0, 10)
+            pd= QProgressDialog(tr("Syncing databases from {} ({}) to {} ({})").format(source.txtServer.text(), source.txtDB.text(), self.access.txtServer.text(), self.access.txtDB.text()), None, 0, 10)
             pd.setModal(True)
-            pd.setWindowTitle(QApplication.translate("Core","Processing products..."))
+            pd.setWindowTitle(tr("Processing products..."))
             pd.forceShow()
             
             sync_data(source.con, self.mem.con, pd)
@@ -522,15 +522,15 @@ class frmMain(QMainWindow, Ui_frmMain):
         curms.close()
                
         
-        pd= QProgressDialog(QApplication.translate("Core","Purging innecesary data from all products"), QApplication.translate("Core","Cancel"), 0,len(products))
+        pd= QProgressDialog(tr("Purging innecesary data from all products"), tr("Cancel"), 0,len(products))
         pd.setModal(True)
-        pd.setWindowTitle(QApplication.translate("Core","Purging quotes from all products"))
+        pd.setWindowTitle(tr("Purging quotes from all products"))
         pd.setMinimumDuration(0)          
         counter=0      
         
         for i, inv in enumerate(products):
             pd.setValue(i)
-            pd.setLabelText(QApplication.translate("Core","Purging quotes from {0}.\nTotal purged in global process: {1}").format(inv.name,  counter))
+            pd.setLabelText(tr("Purging quotes from {0}.\nTotal purged in global process: {1}").format(inv.name,  counter))
             pd.update()
             QApplication.processEvents()
             if pd.wasCanceled():
