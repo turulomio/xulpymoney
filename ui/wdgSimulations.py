@@ -2,8 +2,10 @@ from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 from wdgSimulationsAdd import *
+import libdbupdates
+import frmMain
 from Ui_wdgSimulations import *
-from libxulpymoney import SetSimulations
+from libxulpymoney import SetSimulations, MemXulpymoney, version_date
 
 class wdgSimulations(QWidget, Ui_wdgSimulations):
     def __init__(self, mem,  parent = None, name = None):
@@ -14,10 +16,10 @@ class wdgSimulations(QWidget, Ui_wdgSimulations):
         self.parent=parent
         self.simulations=SetSimulations(self.mem)
         cur=self.mem.con.cursor()
-        database=self.mem.frmMain.access.txtDB.text()
-        self.simulations.load_from_db(self.mem.con.mogrify("select * from simulations where database=%s order by creation",(database, ) ), database)
+        self.simulations.load_from_db(self.mem.con.mogrify("select * from simulations where database=%s order by creation",(self.mem.con.db, ) ), self.mem.con.db)
         cur.close()
         self.reload()
+        self.mem_sim=None
         
     def reload(self):
         self.simulations.myqtablewidget(self.tblSimulations, "wdgSimulations")
@@ -61,5 +63,27 @@ class wdgSimulations(QWidget, Ui_wdgSimulations):
             self.reload()
 
     def on_cmdConnect_released(self):
-        pass
+        simcon=Connection().init__create(self.mem.con.user, self.mem.con.password, self.mem.con.server, self.mem.con.port, self.simulations.selected.simulated_db())
+        simcon.connect()
+        self.mem_sim=MemXulpymoney()
+        self.mem_sim.con=simcon
+        
+        ##Update database
+        update=libdbupdates.Update(self.mem_sim)
+        if update.need_update()==True:
+            update.run()
+        
+        self.mem_sim.frmMain = frmMain.frmMain(self.mem_sim)
+        #No puedo visualizarlo, luego voy a usar un qdialog , ya que qmainwindow viene de qwidget.
+        
+        d=QDialog(self)        
+        d.setStyleSheet("QDialog { background-color: rgb(255, 182, 182);  }");        
+        d.setWindowTitle(self.tr("Xulpymoney SIMULATED IN {} 2010-{} ©").format(self.simulations.selected.simulated_db(),  version_date.year))
+        icon = QIcon()
+        icon.addPixmap(QPixmap(":/xulpymoney/replication.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        d.setWindowIcon(icon)
+        d.showMaximized()
+        lay = QVBoxLayout(d)
+        lay.addWidget(self.mem_sim.frmMain)
+        d.exec_()
         
