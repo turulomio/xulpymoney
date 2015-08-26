@@ -2,6 +2,7 @@ from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 from Ui_frmAccess import *
+from libxulpymoney import Connection
 
 class frmAccess(QDialog, Ui_frmAccess):
     def __init__(self, mem, parent = None, name = None, modal = False):
@@ -14,7 +15,7 @@ class frmAccess(QDialog, Ui_frmAccess):
         self.mem.languages.qcombobox(self.cmbLanguages,self.mem.languages.find(self.mem.config.get_value("settings", "language")))
         self.setPixmap(QPixmap(":xulpymoney/coins.png"))
         self.setTitle(self.tr("Xulpymoney - Access"))
-        self.con=None#Pointer to connection
+        self.con=Connection()#Pointer to connection
 
 
     def setPixmap(self, qpixmap):
@@ -52,27 +53,36 @@ class frmAccess(QDialog, Ui_frmAccess):
     def make_connection(self):
         """Función que realiza la conexión devolviendo true o false con el éxito"""
         try:
-            self.con=self.mem.connect(self.txtDB.text(), self.txtPort.text(), self.txtUser.text(), self.txtServer.text(), self.txtPass.text()) [0]      
-            if self.con==None:
-                return False
-            return True
+            self.con.init__create(self.txtUser.text(), self.txtPass.text(), self.txtServer.text(), self.txtPort.text(), self.txtDB.text())
+            self.con.connect()
+            return self.con.is_active()
         except:
             print ("Error in function make_connection",  self.mem.con)
             return False
     
     @QtCore.pyqtSlot() 
     def on_cmdYN_accepted(self):
-        if self.make_connection()==False:
+        self.con.init__create(self.txtUser.text(), self.txtPass.text(), self.txtServer.text(), self.txtPort.text(), self.txtDB.text())
+        self.con.connect()
+        if self.con.is_active():
+            self.accept()
+        else:
             self.reject()
-            return
-        self.accept()
 
     @QtCore.pyqtSlot() 
     def on_cmdYN_rejected(self):
         self.reject()
 
     def qmessagebox_error_connecting(self):
-            m=QMessageBox()
-            m.setIcon(QMessageBox.Information)
-            m.setText(self.tr("Error conecting to {} database in {} server").format(self.txtDB.text(), self.txtServer.text()))
-            m.exec_()   
+        m=QMessageBox()
+        m.setIcon(QMessageBox.Information)
+        m.setText(self.tr("Error conecting to {} database in {} server").format(self.txtDB.text(), self.txtServer.text()))
+        m.exec_()   
+            
+    def qmessagebox_error_not_superuser(self):
+        m=QMessageBox()
+        m.setIcon(QMessageBox.Information)
+        m.setText(self.tr("The role of the user is not an administrator"))
+        m.exec_()   
+            
+

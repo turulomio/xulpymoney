@@ -11,6 +11,83 @@ from decimal import *
 
 version="0.1"
 version_date=datetime.date(2015,3,1)
+class Connection:
+    """Futuro conection object"""
+    def __init__(self):
+        self.user=None
+        self.password=None
+        self.server=None
+        self.port=None
+        self.db=None
+        self._con=None
+        self.active=False
+        
+        self.init=None
+        
+    def init__create(self, user, password, server, port, db):
+        self.user=user
+        self.password=password
+        self.server=server
+        self.port=port
+        self.db=db
+        return self
+        
+    def cursor(self):
+        return self._con.cursor()
+        
+    def commit(self):
+        self._con.commit()
+        
+    def rollback(self):
+        self._con.rollback()
+        
+        
+    def connection_string(self):
+        return "dbname='{}' port='{}' user='{}' host='{}' password='{}'".format(self.db, self.port, self.user, self.server, self.password)
+        
+    def connect(self, connection_string=None):
+        """Used in code to connect using last self.strcon"""
+        if connection_string==None:
+            s=self.connection_string()
+        else:
+            s=connection_string        
+        try:
+            self._con=psycopg2.extras.DictConnection(s)
+        except psycopg2.Error as e:
+            print (e.pgcode, e.pgerror)
+            return
+#            self._con(None, QApplication.translate("Core","Error conecting to Xulpymoney"))
+        self.active=True
+        self.init=datetime.datetime.now()
+        
+    def disconnect(self):
+        self._con.close()
+        
+    def is_active(self):
+        return self.active
+        
+        
+    def is_superuser(self):
+        """Checks if the user has superuser role"""
+        res=False
+        cur=self.cursor()
+        cur.execute("SELECT rolsuper FROM pg_roles where rolname=%s;", (self.user, ))
+        if cur.rowcount==1:
+            if cur.fetchone()[0]==True:
+                res=True
+        cur.close()
+        return res
+#        
+#        
+#    def connect(self,  db,  port, user, host, pasw):        
+#        self.strcon="dbname='{}' port='{}' user='{}' host='{}' password='{}'".format(db, port, user, host, pasw)
+#        try:
+#            con=psycopg2.extras.DictConnection(self.strcon)
+#        except psycopg2.Error as e:
+#            print (e.pgcode, e.pgerror)
+#            return (None, QApplication.translate("Core","Error conecting to Xulpymoney"))
+#        return (con, QApplication.translate("Core", "Connection done"))
+    
 
 class AccountOperationOfInvestmentOperation:
     """Clase parar trabajar con las opercuentas generadas automaticamente por los movimientos de las inversiones"""
@@ -557,7 +634,8 @@ class SetSimulations(SetCommons):
         self.mem=mem
             
     def delete(self, simulation):
-        """simulation is an object"""
+        """Deletes from db and removes object from array.
+        simulation is an object"""
         simulation.delete()
         self.remove(simulation)
 
@@ -570,11 +648,12 @@ class SetSimulations(SetCommons):
         cur.close()  
         
     def myqtablewidget(self, table, section):
-        table.setColumnCount(4)
+        table.setColumnCount(5)
         table.setHorizontalHeaderItem(0, QTableWidgetItem(QApplication.translate("Core", "Creation" )))
         table.setHorizontalHeaderItem(1, QTableWidgetItem(QApplication.translate("Core", "Type" )))
-        table.setHorizontalHeaderItem(2, QTableWidgetItem(QApplication.translate("Core", "Starting" )))
-        table.setHorizontalHeaderItem(3, QTableWidgetItem(QApplication.translate("Core", "Ending" )))
+        table.setHorizontalHeaderItem(2, QTableWidgetItem(QApplication.translate("Core", "Database" )))
+        table.setHorizontalHeaderItem(3, QTableWidgetItem(QApplication.translate("Core", "Starting" )))
+        table.setHorizontalHeaderItem(4, QTableWidgetItem(QApplication.translate("Core", "Ending" )))
         table.settings(section,  self.mem)        
         table.clearContents()
         table.setRowCount(self.length())
@@ -582,8 +661,9 @@ class SetSimulations(SetCommons):
             table.setItem(i, 0, qdatetime(a.creation, self.mem.localzone))
             table.setItem(i, 1, qleft(a.type.name))
             table.item(i, 1).setIcon(a.type.qicon())
-            table.setItem(i, 2, qdatetime(a.starting, self.mem.localzone))
-            table.setItem(i, 3, qdatetime(a.ending, self.mem.localzone))
+            table.setItem(i, 2, qleft(a.simulated_db()))
+            table.setItem(i, 3, qdatetime(a.starting, self.mem.localzone))
+            table.setItem(i, 4, qdatetime(a.ending, self.mem.localzone))
 
 
 class SetStockExchanges(SetCommons):
@@ -1898,6 +1978,8 @@ class InvestmentOperationCurrent:
             dias=1
         return Decimal(365*self.tpc_total(last)/dias)
         
+        
+
 class Concept:
     def __init__(self, mem):
         self.mem=mem
@@ -2092,6 +2174,59 @@ class AccountOperation:
         else:
             cur.execute("update opercuentas set datetime=%s, id_conceptos=%s, id_tiposoperaciones=%s, importe=%s, comentario=%s, id_cuentas=%s where id_opercuentas=%s", (self.datetime, self.concepto.id, self.tipooperacion.id,  self.importe,  self.comentario,  self.account.id,  self.id))
         cur.close()
+        
+class DBAdmin:
+    def __init__(self, connection):
+        """connection is an object Connection"""
+        self.con=connection
+
+    def create_db(self, database):
+        if self.con.is_superuser():
+            new=Connection().init__create(self.con.user, self.con.password, self.con.server, self.con.port, "template1")
+            new.connect()
+            new._con.set_isolation_level(0)#Si no no me dejaba
+            print (database)
+#            try:
+            cur=new.cursor()
+            cur.execute("create database {0};".format(database))
+#            except:
+#                print ("Error in create_db()")
+#            finally:
+            cur.close()
+            new.disconnect()
+            return False
+            return True
+        else:
+            print ("You need to be superuser to create database")
+            return False
+        
+    def drop_db(self, database):
+        if self.con.is_superuser():
+            new=Connection().init__create(self.con.user, self.con.password, self.con.server, self.con.port, "template1")
+            new.connect()
+            new._con.set_isolation_level(0)#Si no no me dejaba            
+            try:
+                cur=new.cursor()
+                cur.execute("drop database {0};".format(database))
+            except:
+                print ("Error in drop()")
+            finally:
+                cur.close()
+                new.disconnect()
+                return False
+            return True
+        else:
+            print ("You need to be superuser to drop a database")
+            return False
+        
+
+    def load_script(self, file):
+        cur= con.cursor()
+        procedures  = open(file,'r').read() 
+        cur.execute(procedures)
+        
+        con.commit()
+        cur.close()       
         
 class DBData:
     def __init__(self, mem):
@@ -5213,7 +5348,6 @@ class MemProducts:
 #        self.dic_activas={}#Diccionario cuyo indice es el id de la inversión id['1'] corresponde a la IvestmenActive(1) #se usa en mystocksd
         
         self.con=None#Conexión
-        self.strcon=None#Conection string. Used in connect_auto
         
         
         #Needed for translations and are data
@@ -5310,41 +5444,41 @@ class MemProducts:
         self.stockexchanges.load_all_from_db()
         self.agrupations.load_all()
         self.leverages.load_all()
-        
-    def connect_auto(self):
-        """Used in code to connect using last self.strcon"""
-        self.con=psycopg2.extras.DictConnection(self.strcon)
-        print (datetime.datetime.now(),"Connect")
-        
-        
-    def connect(self,  db,  port, user, host, pasw):        
-        self.strcon="dbname='{}' port='{}' user='{}' host='{}' password='{}'".format(db, port, user, host, pasw)
-        try:
-            con=psycopg2.extras.DictConnection(self.strcon)
-        except psycopg2.Error as e:
-            print (e.pgcode, e.pgerror)
-            return (None, QApplication.translate("Core","Error conecting to Xulpymoney"))
-        return (con, QApplication.translate("Core", "Connection done"))
-    
-        
-    def connect_from_config(self):        
-        (con, log)=self.connect(self.config.get_value("frmAccess", "db"),  self.config.get_value("frmAccess", "port"), self.config.get_value("frmAccess", "user"), self.config.get_value("frmAccess", "server"),  self.password)
-        if con==None:
-            m=QMessageBox()
-            m.setText(log)
-            m.setIcon(QMessageBox.Information)
-            m.exec_()        
-            sys.exit()
-        return con
-        
-    def disconnect(self, con):
-        con.close()
-        
-    def disconnect_auto(self):
-        """Disconnect in code"""
-        self.con.close()
-        print (datetime.datetime.now(),"Disconnect")
- 
+#        
+#    def connect_auto(self):
+#        """Used in code to connect using last self.strcon"""
+#        self.con=psycopg2.extras.DictConnection(self.strcon)
+#        print (datetime.datetime.now(),"Connect")
+#        
+#        
+#    def connect(self,  db,  port, user, host, pasw):        
+#        self.strcon="dbname='{}' port='{}' user='{}' host='{}' password='{}'".format(db, port, user, host, pasw)
+#        try:
+#            con=psycopg2.extras.DictConnection(self.strcon)
+#        except psycopg2.Error as e:
+#            print (e.pgcode, e.pgerror)
+#            return (None, QApplication.translate("Core","Error conecting to Xulpymoney"))
+#        return (con, QApplication.translate("Core", "Connection done"))
+#    
+#        
+#    def connect_from_config(self):        
+#        (con, log)=self.connect(self.config.get_value("frmAccess", "db"),  self.config.get_value("frmAccess", "port"), self.config.get_value("frmAccess", "user"), self.config.get_value("frmAccess", "server"),  self.password)
+#        if con==None:
+#            m=QMessageBox()
+#            m.setText(log)
+#            m.setIcon(QMessageBox.Information)
+#            m.exec_()        
+#            sys.exit()
+#        return con
+#        
+#    def disconnect(self, con):
+#        con.close()
+#        
+#    def disconnect_auto(self):
+#        """Disconnect in code"""
+#        self.con.close()
+#        print (datetime.datetime.now(),"Disconnect")
+# 
             
             
     def set_admin_mode(self, pasw):

@@ -74,6 +74,7 @@ class frmInit(QDialog, Ui_frmInit):
 
     @pyqtSlot()
     def create_db(self, database):
+        print ("Deprectted, user DBAdmin instead")
         strtemplate1="dbname='template1' port='%s' user='%s' host='%s' password='%s'" % (self.txtPort.text(), self.txtUser.text(),  self.txtServer.text(), self.txtPass.text())
         cont=psycopg2.extras.DictConnection(strtemplate1)
         cont.set_isolation_level(0)                                    
@@ -90,6 +91,7 @@ class frmInit(QDialog, Ui_frmInit):
         return True
         
     def drop_db(self):
+        print ("Deprectted, user DBAdmin instead")
         strtemplate1="dbname='template1' port='%s' user='%s' host='%s' password='%s'" % (self.txtPort.text(), self.txtUser.text(),  self.txtServer.text(), self.txtPass.text())
         cont=psycopg2.extras.DictConnection(strtemplate1)
         cont.set_isolation_level(0)                                    
@@ -107,6 +109,7 @@ class frmInit(QDialog, Ui_frmInit):
         
 
     def load_script(self, database, file):
+        print ("Deprectted, user DBAdmin instead")
         strtemplate1="dbname='%s' port='%s' user='%s' host='%s' password='%s'" % (database, self.txtPort.text(), self.txtUser.text(),  self.txtServer.text(), self.txtPass.text())
         con=psycopg2.extras.DictConnection(strtemplate1)
         con.set_isolation_level(0)

@@ -59,6 +59,7 @@ class Update:
 
     def check_superuser_role(self, username):
         """Checks if the user has superuser role"""
+        print ("""DEPRECATED check_superuser_role""")
         res=False
         cur=self.mem.con.cursor()
         cur.execute("SELECT rolsuper FROM pg_roles where rolname=%s;", (username, ))
