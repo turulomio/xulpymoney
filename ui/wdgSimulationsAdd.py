@@ -9,13 +9,11 @@ class wdgSimulationsAdd(QWidget, Ui_wdgSimulationsAdd):
         QWidget.__init__(self,  parent)
         self.setupUi(self)
         self.mem=mem
-        self.result=QDialog.Rejected# Is a widget
         self.parent=parent
         self.mem.simulationtypes.qcombobox(self.cmbSimulationTypes)
         self.wdgStarting.set(self.mem, Assets(self.mem).first_datetime_with_user_data(), self.mem.localzone)
         self.wdgEnding.set(self.mem)
-        
-        
+
     @pyqtSlot()
     def on_buttonbox_accepted(self):
         database=self.mem.frmMain.access.txtDB.text()
@@ -23,4 +21,8 @@ class wdgSimulationsAdd(QWidget, Ui_wdgSimulationsAdd):
         s=Simulation(self.mem, database).init__create(type_id, self.wdgStarting.datetime(), self.wdgEnding.datetime())
         s.save()
         self.mem.con.commit()
-        self.result=QDialog.accepted
+        self.parent.accept()    
+        
+    @pyqtSlot()
+    def on_buttonbox_rejected(self):
+        self.parent.reject()

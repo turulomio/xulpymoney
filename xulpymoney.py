@@ -13,7 +13,11 @@ except:
     pass
 
 app = QApplication(sys.argv)
+app.setOrganizationName("Mariano Muñoz ©")
+app.setOrganizationDomain("turulomio.users.sourceforge.net")
+app.setApplicationName("Xulpymoney")
 #QTextCodec.setCodecForTr(QTextCodec.codecForName("UTF-8"))
+
 
 mem=MemXulpymoney()
 

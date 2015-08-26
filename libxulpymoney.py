@@ -556,6 +556,11 @@ class SetSimulations(SetCommons):
         SetCommons.__init__(self)
         self.mem=mem
             
+    def delete(self, simulation):
+        """simulation is an object"""
+        simulation.delete()
+        self.remove(simulation)
+
     def load_from_db(self, sql,  original_db):
         cur=self.mem.con.cursor()
         cur.execute(sql)
@@ -4879,6 +4884,10 @@ class Simulation:
             cur.execute("update simulations set database=%s, type=%s, starting=%s, ending=%s, creation=%s where id=%s", (self.database, self.type.id, self.starting, self.ending, self.creation, self.id))
         cur.close()
 
+    def delete(self):
+        cur=self.mem.con.cursor()
+        cur.execute("delete from simulations where id=%s", (self.id, ))
+        cur.close()
 
 class SimulationType:
     def __init__(self):
@@ -5453,6 +5462,8 @@ class MemXulpymoney(MemProducts):
         self.data=DBData(self)
         self.frmMain=None #Pointer to mainwidget
         self.closing=False#Used to close threads
+        self.settings=QSettings()
+        
         
         
 
