@@ -29,8 +29,7 @@ class wdgSimulations(QWidget, Ui_wdgSimulations):
         lay = QVBoxLayout(d)
         lay.addWidget(t)
         d.exec_()
-        if d.result()==QDialog.Accepted:
-            self.reload()
+        self.reload()
 
     def on_tblSimulations_itemSelectionChanged(self):
         self.simulations.selected=None
@@ -49,7 +48,15 @@ class wdgSimulations(QWidget, Ui_wdgSimulations):
         reply = QMessageBox.question(self, 'Deleting a simulation', self.tr("Do you really want to delete this simulation?"), QMessageBox.Yes, QMessageBox.No)            
         if reply == QMessageBox.Yes:
             self.simulations.delete(self.simulations.selected)
+            
+            simcon=Connection().init__create(self.mem.con.user, self.mem.con.password, self.mem.con.server, self.mem.con.port, self.mem.con.db)
+            simcon.connect()
+
+
+            admin=DBAdmin(simcon)
+            admin.drop_db(self.simulations.selected.simulated_db())
             self.mem.con.commit()
+            simcon.commit()            
             self.reload()
 
     def on_cmdConnect_released(self):
