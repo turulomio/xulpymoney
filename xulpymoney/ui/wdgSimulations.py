@@ -15,7 +15,7 @@ class wdgSimulations(QWidget, Ui_wdgSimulations):
         self.simulations=SetSimulations(self.mem)
         cur=self.mem.con.cursor()
         database=self.mem.frmMain.access.txtDB.text()
-        self.simulations.load_from_db(cur.mogrify("select * from simulations where database=%s order by creation",(database, ) ), database)
+        self.simulations.load_from_db(self.mem.con.mogrify("select * from simulations where database=%s order by creation",(database, ) ), database)
         cur.close()
         self.reload()
         
@@ -29,6 +29,7 @@ class wdgSimulations(QWidget, Ui_wdgSimulations):
         lay = QVBoxLayout(d)
         lay.addWidget(t)
         d.exec_()
+        self.simulations.append(t.simulation)
         self.reload()
 
     def on_tblSimulations_itemSelectionChanged(self):
