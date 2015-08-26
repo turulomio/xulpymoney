@@ -312,11 +312,13 @@ class frmMain(QMainWindow, Ui_frmMain):
     @QtCore.pyqtSlot()  
     def on_actionSimulations_triggered(self):
         d=QDialog(self)
+        d.resize(self.mem.settings.value("wdgSimulations/qdialog", QSize(1024, 768)))
         d.setWindowTitle(self.tr("Xulpymoney Simulations"))
         w=wdgSimulations(self.mem, d)
         lay = QVBoxLayout(d)
         lay.addWidget(w)
         d.exec_() 
+        self.mem.settings.setValue("wdgSimulations/qdialog", d.size())
     
         
     @QtCore.pyqtSlot()  

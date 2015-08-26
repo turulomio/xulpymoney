@@ -119,19 +119,37 @@
               <property name="text">
                <string>Create</string>
               </property>
+              <property name="icon">
+               <iconset resource="../images/xulpymoney.qrc">
+                <normaloff>:/xulpymoney/add.png</normaloff>:/xulpymoney/add.png</iconset>
+              </property>
              </widget>
             </item>
             <item>
              <widget class="QPushButton" name="cmdDelete">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
               <property name="text">
                <string>Delete</string>
+              </property>
+              <property name="icon">
+               <iconset resource="../images/xulpymoney.qrc">
+                <normaloff>:/xulpymoney/list-remove.png</normaloff>:/xulpymoney/list-remove.png</iconset>
               </property>
              </widget>
             </item>
             <item>
              <widget class="QPushButton" name="cmdConnect">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
               <property name="text">
                <string>Connect</string>
+              </property>
+              <property name="icon">
+               <iconset resource="../images/xulpymoney.qrc">
+                <normaloff>:/xulpymoney/transfer.png</normaloff>:/xulpymoney/transfer.png</iconset>
               </property>
              </widget>
             </item>

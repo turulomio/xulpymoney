@@ -29,7 +29,29 @@ class wdgSimulations(QWidget, Ui_wdgSimulations):
         lay = QVBoxLayout(d)
         lay.addWidget(t)
         d.exec_()
-        if t.result==QDialog.Accepted:
+        if d.result()==QDialog.Accepted:
             self.reload()
+
+    def on_tblSimulations_itemSelectionChanged(self):
+        self.simulations.selected=None
+        for i in self.tblSimulations.selectedItems():#itera por cada item no row.
+            if i.column()==0:
+                self.simulations.selected=self.simulations.arr[i.row()]
+                
+        if self.simulations.selected==None:
+            self.cmdDelete.setEnabled(False)
+            self.cmdConnect.setEnabled(False)
+        else:
+            self.cmdDelete.setEnabled(True)
+            self.cmdConnect.setEnabled(True)
             
+    def on_cmdDelete_released(self):
+        reply = QMessageBox.question(self, 'Deleting a simulation', self.tr("Do you really want to delete this simulation?"), QMessageBox.Yes, QMessageBox.No)            
+        if reply == QMessageBox.Yes:
+            self.simulations.delete(self.simulations.selected)
+            self.mem.con.commit()
+            self.reload()
+
+    def on_cmdConnect_released(self):
+        pass
         
