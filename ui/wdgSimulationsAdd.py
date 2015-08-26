@@ -63,7 +63,16 @@ class wdgSimulationsAdd(QWidget, Ui_wdgSimulationsAdd):
             admin.copy(self.mem.con, mog,  "products")
             
             admin.copy(self.mem.con, "select * from quotes ",  "quotes")
+            
+            admin.copy(self.mem.con, "select * from dps ",  "dps")
+            
+            admin.copy(self.mem.con, "select * from estimations_dps",  "estimations_dps")
+            
+            admin.copy(self.mem.con, "select * from estimations_eps ",  "estimations_eps")
+            
             admin.copy(self.mem.con, "select * from inversiones order by id_inversiones",  "inversiones")
+            
+            admin.copy(self.mem.con, "select * from dividends order by id_dividends",  "dividends")
             
             already_conceptos=self.con_sim.cursor_one_column("select id_conceptos from conceptos order by id_conceptos")
             mog=self.mem.con.mogrify("select * from conceptos where id_conceptos not in %s  order by id_conceptos ", (tuple(already_conceptos), ))
