@@ -49,12 +49,18 @@ class wdgSimulationsAdd(QWidget, Ui_wdgSimulationsAdd):
         admin=DBAdmin(self.con_sim)
         admin.xulpymoney_basic_schema()
         self.con_sim.commit()
-        if self.simulation.type.id==1:#Copy between dates
+        if self.simulation.type.id==1:#Copy between dates                    
             already_banks=self.con_sim.cursor_one_column("select id_entidadesbancarias from entidadesbancarias order by id_entidadesbancarias")
             mog=self.mem.con.mogrify("select * from entidadesbancarias where id_entidadesbancarias not in %s  order by id_entidadesbancarias", (tuple(already_banks), ))
             admin.copy(self.mem.con, mog,  "entidadesbancarias")
             
             admin.copy(self.mem.con, "select * from cuentas  order by id_cuentas",  "cuentas")
+            
+            admin.copy(self.mem.con, "select * from tarjetas  order by id_tarjetas",  "tarjetas")
+
+            already_products=self.con_sim.cursor_one_column("select id from products order by id")#Rest personal products
+            mog=self.mem.con.mogrify("select * from products where id not in %s  order by id", (tuple(already_products), ))
+            admin.copy(self.mem.con, mog,  "products")
             
             admin.copy(self.mem.con, "select * from quotes ",  "quotes")
             admin.copy(self.mem.con, "select * from inversiones order by id_inversiones",  "inversiones")

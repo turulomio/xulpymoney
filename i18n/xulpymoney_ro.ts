@@ -5298,38 +5298,38 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgInvestments.py" line="70"/>
+        <location filename="../ui/wdgInvestments.py" line="71"/>
         <source>Invested assets: {0}. Pending: {1} - {2} = {3} ({4} assets)
 Daily Diff: {5}. Assets average age: {6}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgInvestments.py" line="72"/>
+        <location filename="../ui/wdgInvestments.py" line="73"/>
         <source>There aren&apos;t invested assets</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgInvestments.py" line="231"/>
+        <location filename="../ui/wdgInvestments.py" line="232"/>
         <source>Order by</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgInvestments.py" line="250"/>
+        <location filename="../ui/wdgInvestments.py" line="251"/>
         <source>Shares number: {0}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgInvestments.py" line="250"/>
+        <location filename="../ui/wdgInvestments.py" line="251"/>
         <source>Purchase price average: {0}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgInvestments.py" line="250"/>
+        <location filename="../ui/wdgInvestments.py" line="251"/>
         <source>Selling point: {}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgInvestments.py" line="250"/>
+        <location filename="../ui/wdgInvestments.py" line="251"/>
         <source>Selling all shares you get {}</source>
         <translation type="unfinished"></translation>
     </message>
