@@ -5306,39 +5306,39 @@ p, li { white-space: pre-wrap; }
         <translation>Recibiendo datos...</translation>
     </message>
     <message>
-        <location filename="../ui/wdgInvestments.py" line="71"/>
+        <location filename="../ui/wdgInvestments.py" line="70"/>
         <source>Invested assets: {0}. Pending: {1} - {2} = {3} ({4} assets)
 Daily Diff: {5}. Assets average age: {6}</source>
         <translation>Patrimonio invertido: {0}. Pendiente: {1} - {2} = {3} ({4} patrimonio)
 Diferencia diaria: {5}. Edad media del patrimonio: {6}</translation>
     </message>
     <message>
-        <location filename="../ui/wdgInvestments.py" line="73"/>
+        <location filename="../ui/wdgInvestments.py" line="72"/>
         <source>There aren&apos;t invested assets</source>
         <translation>No hay activos invertidos</translation>
     </message>
     <message>
-        <location filename="../ui/wdgInvestments.py" line="232"/>
+        <location filename="../ui/wdgInvestments.py" line="231"/>
         <source>Order by</source>
         <translation>Ordenado por</translation>
     </message>
     <message>
-        <location filename="../ui/wdgInvestments.py" line="251"/>
+        <location filename="../ui/wdgInvestments.py" line="250"/>
         <source>Shares number: {0}</source>
         <translation>Número de acciones: {0}</translation>
     </message>
     <message>
-        <location filename="../ui/wdgInvestments.py" line="251"/>
+        <location filename="../ui/wdgInvestments.py" line="250"/>
         <source>Purchase price average: {0}</source>
         <translation>Precio medio de compra: {0}</translation>
     </message>
     <message>
-        <location filename="../ui/wdgInvestments.py" line="251"/>
+        <location filename="../ui/wdgInvestments.py" line="250"/>
         <source>Selling point: {}</source>
         <translation>Punto de venta: {}</translation>
     </message>
     <message>
-        <location filename="../ui/wdgInvestments.py" line="251"/>
+        <location filename="../ui/wdgInvestments.py" line="250"/>
         <source>Selling all shares you get {}</source>
         <translation>Vendiendo todas las acciones consigues {}</translation>
     </message>
