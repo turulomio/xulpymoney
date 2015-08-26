@@ -17,11 +17,17 @@ class wdgSimulationsAdd(QWidget, Ui_wdgSimulationsAdd):
         self.wdgEnding.set(self.mem)
         self.simcon=None#Simulation connection
 
-
+            
+    def qmessagebox_error_not_superuser(self):
+        m=QMessageBox()
+        m.setIcon(QMessageBox.Information)
+        m.setText(self.tr("The role of the user is not an administrator"))
+        m.exec_()   
+            
     @pyqtSlot()
     def on_buttonbox_accepted(self):
         if self.mem.con.is_superuser()==False:
-            self.mem.frmMain.access.qmessagebox_error_not_superuser()
+            self.qmessagebox_error_not_superuser()
             self.parent.reject()
             return
         
@@ -44,8 +50,13 @@ class wdgSimulationsAdd(QWidget, Ui_wdgSimulationsAdd):
         admin.xulpymoney_basic_schema()
         self.con_sim.commit()
         if self.simulation.type.id==1:#Copy between dates
+            already_banks=self.con_sim.cursor_one_column("select id_entidadesbancarias from entidadesbancarias order by id_entidadesbancarias")
+            mog=self.mem.con.mogrify("select * from entidadesbancarias where id_entidadesbancarias not in %s  order by id_entidadesbancarias", (tuple(already_banks), ))
+            admin.copy(self.mem.con, mog,  "entidadesbancarias")
+            
             admin.copy(self.mem.con, "select * from cuentas  order by id_cuentas",  "cuentas")
             
+            admin.copy(self.mem.con, "select * from quotes ",  "quotes")
             admin.copy(self.mem.con, "select * from inversiones order by id_inversiones",  "inversiones")
             
             already_conceptos=self.con_sim.cursor_one_column("select id_conceptos from conceptos order by id_conceptos")

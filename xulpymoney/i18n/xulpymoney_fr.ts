@@ -1,6 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS><TS version="2.0">
 <context>
+    <name>@default</name>
+    <message>
+        <location filename="../xulpymoney.py" line="32"/>
+        <source>Please login to the xulpymoney database</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../xulpymoney.py" line="50"/>
+        <source>Xulpymoney needs to be updated. Please login with a superuser role.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>AssetsReport</name>
     <message>
         <location filename="../libodfgenerator.py" line="210"/>
@@ -371,7 +384,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="523"/>
+        <location filename="../ui/frmMain.py" line="525"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
@@ -401,12 +414,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="523"/>
+        <location filename="../ui/frmMain.py" line="525"/>
         <source>Purging innecesary data from all products</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="525"/>
+        <location filename="../ui/frmMain.py" line="527"/>
         <source>Purging quotes from all products</source>
         <translation type="unfinished"></translation>
     </message>
@@ -726,7 +739,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="531"/>
+        <location filename="../ui/frmMain.py" line="533"/>
         <source>Purging quotes from {0}.
 Total purged in global process: {1}</source>
         <translation type="unfinished"></translation>
@@ -947,12 +960,12 @@ Total purged in global process: {1}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="343"/>
+        <location filename="../ui/frmMain.py" line="345"/>
         <source>Syncing databases from {} ({}) to {} ({})</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="345"/>
+        <location filename="../ui/frmMain.py" line="347"/>
         <source>Processing products...</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2589,7 +2602,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="../ui/frmMain.py" line="40"/>
+        <location filename="../ui/frmMain.py" line="42"/>
         <source>Xulpymoney 2010-{0} ©</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2879,7 +2892,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="551"/>
+        <location filename="../ui/frmMain.py" line="553"/>
         <source>{0} quotes have been purged from {1} products</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2929,32 +2942,32 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="416"/>
+        <location filename="../ui/frmMain.py" line="418"/>
         <source>There aren&apos;t favorite products</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="109"/>
+        <location filename="../ui/frmMain.py" line="84"/>
         <source>Please introduce Admin Mode password</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="../ui/frmMain.py" line="123"/>
+        <location filename="../ui/frmMain.py" line="98"/>
         <source>Xulpymoney 2010-{0} © (Admin mode)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="118"/>
+        <location filename="../ui/frmMain.py" line="93"/>
         <source>You have set the admin mode password. Please login again</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="126"/>
+        <location filename="../ui/frmMain.py" line="101"/>
         <source>You are logged as an administrator</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="130"/>
+        <location filename="../ui/frmMain.py" line="105"/>
         <source>Bad &apos;Admin mode&apos; password. You are logged as a normal user</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3039,22 +3052,12 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="339"/>
+        <location filename="../ui/frmMain.py" line="341"/>
         <source>Databases can&apos;t be the same</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../ui/frmMain.py" line="74"/>
-        <source>Please login to the xulpymoney database</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ui/frmMain.py" line="94"/>
-        <source>Xulpymoney needs to be updated. Please login with a superuser role.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ui/frmMain.py" line="99"/>
         <source>Server: {}:{}      Database: {}      User: {}</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3064,7 +3067,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="327"/>
+        <location filename="../ui/frmMain.py" line="329"/>
         <source>Please login to the source xulpymoney database</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3074,7 +3077,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="316"/>
+        <location filename="../ui/frmMain.py" line="318"/>
         <source>Xulpymoney Simulations</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5996,13 +5999,18 @@ S&#xc3;&#xb3;lo se contabilizar&#xc3;&#xa1; cuando se vendan las acciones</sourc
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgSimulations.py" line="27"/>
+        <location filename="../ui/wdgSimulations.py" line="29"/>
         <source>Create new simulation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgSimulations.py" line="49"/>
+        <location filename="../ui/wdgSimulations.py" line="51"/>
         <source>Do you really want to delete this simulation?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/wdgSimulations.py" line="81"/>
+        <source>Xulpymoney SIMULATED IN {} 2010-{} &#xc2;&#xa9;</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -6026,6 +6034,11 @@ S&#xc3;&#xb3;lo se contabilizar&#xc3;&#xa1; cuando se vendan las acciones</sourc
     <message>
         <location filename="../ui/Ui_wdgSimulationsAdd.py" line="88"/>
         <source>End date and time</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/wdgSimulationsAdd.py" line="24"/>
+        <source>The role of the user is not an administrator</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

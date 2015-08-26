@@ -5510,8 +5510,8 @@ class MemProducts:
 
     def __del__(self):
         if self.con:#Cierre por reject en frmAccess
-            self.disconnect(self.con)
-    
+            self.con.disconnect()
+            
     def setQTranslator(self, qtranslator):
         self.qtranslator=qtranslator
 
@@ -6111,6 +6111,8 @@ def qtpc(n, rnd=2):
         a.setForeground(QColor(255, 0, 0))
     return a
       
+def tr(s):
+    QApplication.translate("Core", s)
 
 def tpc(n, rnd=2):
     if n==None:

@@ -4,7 +4,7 @@ from PyQt5.QtWidgets import *
 import sys
 from Ui_frmMain import *
 from frmAbout import *
-import libdbupdates
+#import libdbupdates
 from libxulpymoney import *
 from libsources import sync_data
 from frmAccess import *
@@ -43,35 +43,35 @@ class frmMain(QMainWindow, Ui_frmMain):
         
         self.w=QWidget()       
                 
-    def init__continue(self):
-        """Used to add frmAccess automatic access"""
-        self.access=frmAccess(self.mem,  self)
-        self.access.setLabel(self.tr("Please login to the xulpymoney database"))
-        self.access.config_load()
-        self.access.exec_()
-        self.retranslateUi(self)
-        
-        if self.access.result()==QDialog.Rejected: 
-            self.access.qmessagebox_error_connecting()
-            self.on_actionExit_triggered()
-            sys.exit(1)
-        self.access.config_save()
-        self.mem.con=self.access.con
-        
-        ##Update database
-        update=libdbupdates.Update(self.mem)
-        if update.need_update()==True:
-            if update.check_superuser_role(self.access.txtUser.text())==True:
-                update.run()
-            else:
-                m=QMessageBox()
-                m.setIcon(QMessageBox.Information)
-                m.setText(self.tr("Xulpymoney needs to be updated. Please login with a superuser role."))
-                m.exec_()   
-                self.on_actionExit_triggered()
-                sys.exit(2)
+#    def init__continue(self):
+#        """Used to add frmAccess automatic access"""
+#        self.access=frmAccess(self.mem,  self)
+#        self.access.setLabel(self.tr("Please login to the xulpymoney database"))
+#        self.access.config_load()
+#        self.access.exec_()
+#        self.retranslateUi(self)
+#        
+#        if self.access.result()==QDialog.Rejected: 
+#            self.access.qmessagebox_error_connecting()
+#            self.on_actionExit_triggered()
+#            sys.exit(1)
+#        self.access.config_save()
+#        self.mem.con=self.access.con
+#        
+#        ##Update database
+#        update=libdbupdates.Update(self.mem)
+#        if update.need_update()==True:
+#            if update.check_superuser_role(self.access.txtUser.text())==True:
+#                update.run()
+#            else:
+#                m=QMessageBox()
+#                m.setIcon(QMessageBox.Information)
+#                m.setText(self.tr("Xulpymoney needs to be updated. Please login with a superuser role."))
+#                m.exec_()   
+#                self.on_actionExit_triggered()
+#                sys.exit(2)
                 
-        self.statusBar.addWidget(QLabel(self.tr("Server: {}:{}      Database: {}      User: {}").format(self.access.txtServer.text(), self.access.txtPort.text(),  self.access.txtDB.text(), self.access.txtUser.text())))
+        self.statusBar.addWidget(QLabel(self.tr("Server: {}:{}      Database: {}      User: {}").format(self.mem.con.server, self.mem.con.port,  self.mem.con.db, self.mem.con.user)))
         
         self.mem.actualizar_memoria() ##CARGA TODOS LOS DATOS Y LOS VINCULA       
         
@@ -335,7 +335,7 @@ class frmMain(QMainWindow, Ui_frmMain):
             source.qmessagebox_error_connecting()
             return
         else:
-            if source.txtDB.text().strip()==self.access.txtDB.text().strip() and source.txtServer.text().strip()==self.access.txtServer.text().strip():            
+            if source.con.db.strip()==self.mem.con.db.strip() and source.con.server.strip()==self.mem.con.server.strip():            
                 m=QMessageBox()
                 m.setIcon(QMessageBox.Information)
                 m.setText(self.tr("Databases can't be the same"))
