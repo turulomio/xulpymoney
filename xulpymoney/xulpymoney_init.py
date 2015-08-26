@@ -19,7 +19,7 @@ locale=QLocale()
 a=locale.system().name()
 if len(a)!=2:
     a=a[:-len(a)+2]
-s= QApplication.translate("Core",  "Local language detected:{0}").format(a)
+s= tr(  "Local language detected:{0}").format(a)
 print (s)
 translator.load("/usr/lib/xulpymoney/xulpymoney_" + a + ".qm")
 app.installTranslator(translator);
