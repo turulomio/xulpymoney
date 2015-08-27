@@ -16,6 +16,7 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
          2   inversion=x"""
         QWidget.__init__(self, parent)
         self.setupUi(self)
+        self.hide()
         self.showMaximized()
         self.mem=mem
         self.inversion=inversion
@@ -61,6 +62,8 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
             self.update_tables()      
             if len(self.op.arr)!=0 or len(self.dividends.arr)!=0:#CmbAccount está desabilitado si hay dividends o operinversiones
                 self.cmbAccount.setEnabled(False)  
+        
+        self.show()
 
     def load_tabDividends(self):        
         (sumneto, sumbruto, sumretencion, sumcomision)=self.dividends.myqtablewidget(self.tblDividends, "frmInvestmentReport")
@@ -158,6 +161,12 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
             
         w=frmInvestmentOperationsAdd(self.mem, self.inversion, None, self)
         w.exec_()
+        
+        #if num shares after add is 0, changes expiration date to today-1
+        if self.inversion.acciones()==0:
+            self.calExpiration.setSelectedDate(datetime.date.today()-datetime.timedelta(days=1))
+            self.on_cmdInvestment_released()
+            
         self.update_tables()    
         
     @QtCore.pyqtSlot() 
@@ -165,6 +174,11 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
         w=frmInvestmentOperationsAdd(self.mem, self.inversion, self.op.selected, self)
         w.exec_()
         self.update_tables() 
+        
+        #if num shares after add is 0, changes expiration date to today-1
+        if self.inversion.acciones()==0:
+            self.calExpiration.setSelectedDate(datetime.date.today()-datetime.timedelta(days=1))
+            self.on_cmdInvestment_released()
 
     @QtCore.pyqtSlot() 
     def on_actionSplit_triggered(self):
@@ -177,6 +191,12 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
     def on_actionSharesTransfer_triggered(self):
         w=frmSharesTransfer(self.mem, self.inversion, self)
         w.exec_()
+        
+        #if num shares after add is 0, changes expiration date to today-1
+        if self.inversion.acciones()==0:
+            self.calExpiration.setSelectedDate(datetime.date.today()-datetime.timedelta(days=1))
+            self.on_cmdInvestment_released()
+        
         self.update_tables()                 
         
     @QtCore.pyqtSlot() 
@@ -200,6 +220,12 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
     def on_actionOperationDelete_triggered(self):
         self.inversion.op.remove(self.op.selected)#debe borrarse de self.inversion.op, no de self.op, ya qque self.update_tables reescribe clone_from_datetime
         self.mem.con.commit()     
+        
+        #if num shares after add is 0, changes expiration date to today-1
+        if self.inversion.acciones()==0:
+            self.calExpiration.setSelectedDate(datetime.date.today()-datetime.timedelta(days=1))
+            self.on_cmdInvestment_released()
+        
         self.update_tables()
 
     def on_chkHistoricalDividends_stateChanged(self, state):
