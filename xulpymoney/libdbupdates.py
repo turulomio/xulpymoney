@@ -18,7 +18,7 @@ class Update:
     def __init__(self, mem):
         self.mem=mem
         self.dbversion=self.get_database_version()    
-        self.lastcodeupdate=201508242037
+        self.lastcodeupdate=201508270623
 
    
     def get_database_version(self):
@@ -356,6 +356,13 @@ class Update:
             cur.close()
             self.mem.con.commit()
             self.set_database_version(201508242037)         
+        if self.dbversion<201508270623:
+            cur=self.mem.con.cursor()
+            cur.execute("alter table inversiones  add column selling_expiration date default now()")
+            cur.execute("update inversiones set selling_expiration=now();")
+            cur.close()
+            self.mem.con.commit()
+            self.set_database_version(201508270623)         
             
             
 

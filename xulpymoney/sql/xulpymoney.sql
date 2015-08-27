@@ -727,7 +727,8 @@ CREATE TABLE inversiones (
     active boolean DEFAULT true NOT NULL,
     id_cuentas integer NOT NULL,
     venta numeric(100,6) DEFAULT 0 NOT NULL,
-    products_id integer
+    products_id integer,
+    selling_expiration date DEFAULT now()
 );
 
 
@@ -2110,6 +2111,26 @@ GRANT ALL ON SEQUENCE seq_opertarjetas TO xulpymoney_user;
 REVOKE ALL ON SEQUENCE seq_tarjetas FROM PUBLIC;
 REVOKE ALL ON SEQUENCE seq_tarjetas FROM postgres;
 GRANT ALL ON SEQUENCE seq_tarjetas TO xulpymoney_user;
+
+
+--
+-- Name: simulations_seq; Type: ACL; Schema: public; Owner: postgres
+--
+
+REVOKE ALL ON SEQUENCE simulations_seq FROM PUBLIC;
+REVOKE ALL ON SEQUENCE simulations_seq FROM postgres;
+GRANT ALL ON SEQUENCE simulations_seq TO postgres;
+GRANT ALL ON SEQUENCE simulations_seq TO xulpymoney_user;
+
+
+--
+-- Name: simulations; Type: ACL; Schema: public; Owner: postgres
+--
+
+REVOKE ALL ON TABLE simulations FROM PUBLIC;
+REVOKE ALL ON TABLE simulations FROM postgres;
+GRANT ALL ON TABLE simulations TO postgres;
+GRANT ALL ON TABLE simulations TO xulpymoney_user;
 
 
 --
@@ -8896,7 +8917,7 @@ INSERT INTO bolsas VALUES (8, 'cn', '00:00:00', 'Bolsa de Hong Kong', '20:00:00'
 INSERT INTO bolsas VALUES (9, 'pt', '07:00:00', 'Bolsa de Lisboa', '17:38:00', 'Europe/Lisbon');
 INSERT INTO globals VALUES (10, 'wdgCalculator#product', '81394');
 INSERT INTO globals VALUES (11, 'wdgCalculator#invested', '8000');
-INSERT INTO globals VALUES (1, 'Version', '201508242037');
+INSERT INTO globals VALUES (1, 'Version', '201508270623');
 INSERT INTO globals VALUES (6, 'Admin mode', NULL);
 INSERT INTO globals VALUES (7, 'wdgIndexRange#spin', '2');
 INSERT INTO globals VALUES (8, 'wdgIndexRange#txtInvertir', '8000');
