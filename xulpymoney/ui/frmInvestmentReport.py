@@ -16,7 +16,6 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
          2   inversion=x"""
         QWidget.__init__(self, parent)
         self.setupUi(self)
-        self.hide()
         self.showMaximized()
         self.mem=mem
         self.inversion=inversion
@@ -62,8 +61,6 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
             self.update_tables()      
             if len(self.op.arr)!=0 or len(self.dividends.arr)!=0:#CmbAccount está desabilitado si hay dividends o operinversiones
                 self.cmbAccount.setEnabled(False)  
-        
-        self.show()
 
     def load_tabDividends(self):        
         (sumneto, sumbruto, sumretencion, sumcomision)=self.dividends.myqtablewidget(self.tblDividends, "frmInvestmentReport")
