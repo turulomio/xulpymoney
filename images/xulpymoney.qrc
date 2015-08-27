@@ -1,5 +1,7 @@
 <RCC>
   <qresource prefix="/xulpymoney">
+    <file>alarm_clock.png</file>
+    <file>expired.jpg</file>
     <file>replication.png</file>
     <file>database.png</file>
     <file>eye_red.png</file>

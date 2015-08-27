@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1017</width>
-    <height>662</height>
+    <width>716</width>
+    <height>520</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -59,7 +59,7 @@
         <attribute name="title">
          <string>Investment data</string>
         </attribute>
-        <layout class="QHBoxLayout" name="horizontalLayout_16">
+        <layout class="QHBoxLayout" name="horizontalLayout_12">
          <item>
           <layout class="QVBoxLayout" name="verticalLayout">
            <item>
@@ -108,6 +108,20 @@
             </layout>
            </item>
            <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_8">
+             <item>
+              <widget class="wdgProductSelector" name="ise" native="true">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
             <layout class="QHBoxLayout" name="horizontalLayout_5">
              <item>
               <widget class="QLabel" name="label_4">
@@ -146,14 +160,30 @@
             </layout>
            </item>
            <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_8">
+            <layout class="QHBoxLayout" name="horizontalLayout_10">
              <item>
-              <widget class="wdgProductSelector" name="ise" native="true">
+              <widget class="QCheckBox" name="chkExpiration">
+               <property name="text">
+                <string>Add selling order experation</string>
+               </property>
+               <property name="checked">
+                <bool>true</bool>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QCalendarWidget" name="calExpiration">
                <property name="sizePolicy">
-                <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                  <horstretch>0</horstretch>
                  <verstretch>0</verstretch>
                 </sizepolicy>
+               </property>
+               <property name="firstDayOfWeek">
+                <enum>Qt::Monday</enum>
+               </property>
+               <property name="verticalHeaderFormat">
+                <enum>QCalendarWidget::NoVerticalHeader</enum>
                </property>
               </widget>
              </item>
@@ -557,5 +587,22 @@
  <resources>
   <include location="../images/xulpymoney.qrc"/>
  </resources>
- <connections/>
+ <connections>
+  <connection>
+   <sender>chkExpiration</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>calExpiration</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>157</x>
+     <y>390</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>653</x>
+     <y>400</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>
