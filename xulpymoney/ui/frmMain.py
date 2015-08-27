@@ -342,7 +342,7 @@ class frmMain(QMainWindow, Ui_frmMain):
                 m.exec_()   
                 return
                 
-            pd= QProgressDialog(tr("Syncing databases from {} ({}) to {} ({})").format(source.txtServer.text(), source.txtDB.text(), self.access.txtServer.text(), self.access.txtDB.text()), None, 0, 10)
+            pd= QProgressDialog(tr("Syncing databases from {} ({}) to {} ({})").format(source.txtServer.text(), source.txtDB.text(), self.mem.con.server, self.mem.con.db), None, 0, 10)
             pd.setModal(True)
             pd.setWindowTitle(tr("Processing products..."))
             pd.forceShow()
