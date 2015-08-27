@@ -6,6 +6,7 @@ import libdbupdates
 import frmMain
 from Ui_wdgSimulations import *
 from libxulpymoney import SetSimulations, MemXulpymoney, version_date
+from libqmessagebox import *
 
 class wdgSimulations(QWidget, Ui_wdgSimulations):
     def __init__(self, mem,  parent = None, name = None):
@@ -64,6 +65,9 @@ class wdgSimulations(QWidget, Ui_wdgSimulations):
             self.reload()
 
     def on_cmdConnect_released(self):
+        if not self.mem.con.is_superuser():
+            qmessagebox_connexion_not_superuser()
+            return
         simcon=Connection().init__create(self.mem.con.user, self.mem.con.password, self.mem.con.server, self.mem.con.port, self.simulations.selected.simulated_db())
         simcon.connect()
         self.mem_sim=MemXulpymoney()

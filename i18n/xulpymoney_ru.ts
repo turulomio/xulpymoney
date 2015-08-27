@@ -6011,17 +6011,17 @@ S&#xc3;&#xb3;lo se contabilizar&#xc3;&#xa1; cuando se vendan las acciones</sourc
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgSimulations.py" line="29"/>
+        <location filename="../ui/wdgSimulations.py" line="30"/>
         <source>Create new simulation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgSimulations.py" line="51"/>
+        <location filename="../ui/wdgSimulations.py" line="53"/>
         <source>Do you really want to delete this simulation?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgSimulations.py" line="81"/>
+        <location filename="../ui/wdgSimulations.py" line="86"/>
         <source>Xulpymoney SIMULATED IN {} 2010-{} &#xc2;&#xa9;</source>
         <translation type="unfinished"></translation>
     </message>

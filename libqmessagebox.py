@@ -14,7 +14,7 @@ def qmessagebox_connexion_error(database, server):
     m.setText(tr("Error conecting to {} database in {} server").format(database, server))
     m.exec_()   
             
-def qmessagebox_connexion_superuser():
+def qmessagebox_connexion_not_superuser():
     m=QMessageBox()
     m.setIcon(QMessageBox.Information)
     m.setText(tr("The role of the user is not an administrator"))
