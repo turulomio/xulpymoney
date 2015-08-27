@@ -359,7 +359,7 @@ class Update:
         if self.dbversion<201508270623:
             cur=self.mem.con.cursor()
             cur.execute("alter table inversiones  add column selling_expiration date default now()")
-            cur.execute("update inversiones set selling_expiration=now();")
+            cur.execute("update inversiones set selling_expiration=now()::date-1;")
             cur.close()
             self.mem.con.commit()
             self.set_database_version(201508270623)         
