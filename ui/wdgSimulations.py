@@ -31,8 +31,9 @@ class wdgSimulations(QWidget, Ui_wdgSimulations):
         lay = QVBoxLayout(d)
         lay.addWidget(t)
         d.exec_()
-        self.simulations.append(t.simulation)
-        self.reload()
+        if d.result()==QDialog.Accepted:
+            self.simulations.append(t.simulation)
+            self.reload()
 
     def on_tblSimulations_itemSelectionChanged(self):
         self.simulations.selected=None

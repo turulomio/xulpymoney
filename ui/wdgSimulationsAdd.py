@@ -17,20 +17,12 @@ class wdgSimulationsAdd(QWidget, Ui_wdgSimulationsAdd):
         self.wdgEnding.set(self.mem)
         self.simcon=None#Simulation connection
 
-            
-    def qmessagebox_error_not_superuser(self):
-        m=QMessageBox()
-        m.setIcon(QMessageBox.Information)
-        m.setText(self.tr("The role of the user is not an administrator"))
-        m.exec_()   
-            
     @pyqtSlot()
     def on_buttonbox_accepted(self):
         if self.mem.con.is_superuser()==False:
-            self.qmessagebox_error_not_superuser()
+            qmessagebox_connexion_superuser()
             self.parent.reject()
             return
-        
         
         type_id=self.cmbSimulationTypes.itemData(self.cmbSimulationTypes.currentIndex())
         self.simulation=Simulation(self.mem, self.mem.con.db).init__create(type_id, self.wdgStarting.datetime(), self.wdgEnding.datetime())
@@ -41,7 +33,6 @@ class wdgSimulationsAdd(QWidget, Ui_wdgSimulationsAdd):
         createadmin=DBAdmin(self.mem.con)
         createadmin.create_db(self.simulation.simulated_db())
         self.mem.con.commit()
-            
 
         #Crea nueva conexi´on
         self.con_sim=Connection().init__create(self.mem.con.user, self.mem.con.password, self.mem.con.server, self.mem.con.port, self.simulation.simulated_db())

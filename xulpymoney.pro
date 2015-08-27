@@ -1,6 +1,6 @@
 SOURCES         = \
                   libdbupdates.py \
-                  libsimulations.py \
+                  libqmessagebox.py \
                   libsources.py \
                   libxulpymoney.py \
                   libodfgenerator.py \

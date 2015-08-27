@@ -55,20 +55,7 @@ class Update:
         if self.dbversion==self.lastcodeupdate:
             return False
         return True
-        
 
-    def check_superuser_role(self, username):
-        """Checks if the user has superuser role"""
-        print ("""DEPRECATED check_superuser_role""")
-        res=False
-        cur=self.mem.con.cursor()
-        cur.execute("SELECT rolsuper FROM pg_roles where rolname=%s;", (username, ))
-        if cur.rowcount==1:
-            if cur.fetchone()[0]==True:
-                res=True
-        cur.close()
-        return res
-        
     def run(self): 
         if self.dbversion==None:
             self.set_database_version(200912310000)
