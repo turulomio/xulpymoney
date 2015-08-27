@@ -60,8 +60,9 @@ class wdgInvestments(QWidget, Ui_wdgInvestments):
                 self.tblInvestments.item(i, 7).setIcon(QIcon(":/xulpymoney/new.png"))
             tpc_venta=inv.tpc_venta()
             self.tblInvestments.setItem(i, 8, qtpc(tpc_venta))
-            if inv.selling_expiration<datetime.date.today():
-                self.tblInvestments.item(i, 8).setIcon(QIcon(":/xulpymoney/alarm_clock.png"))
+            if inv.selling_expiration:
+                if inv.selling_expiration<datetime.date.today():
+                    self.tblInvestments.item(i, 8).setIcon(QIcon(":/xulpymoney/alarm_clock.png"))
             if tpc_invertido!=None and tpc_venta!=None:
                 if tpc_invertido<=-50:   
                     self.tblInvestments.item(i, 7).setBackground(QColor(255, 148, 148))
