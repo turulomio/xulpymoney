@@ -42,35 +42,7 @@ class frmMain(QMainWindow, Ui_frmMain):
         self.setWindowTitle(self.tr("Xulpymoney 2010-{0} ©").format(version_date.year))
         
         self.w=QWidget()       
-                
-#    def init__continue(self):
-#        """Used to add frmAccess automatic access"""
-#        self.access=frmAccess(self.mem,  self)
-#        self.access.setLabel(self.tr("Please login to the xulpymoney database"))
-#        self.access.config_load()
-#        self.access.exec_()
-#        self.retranslateUi(self)
-#        
-#        if self.access.result()==QDialog.Rejected: 
-#            self.access.qmessagebox_error_connecting()
-#            self.on_actionExit_triggered()
-#            sys.exit(1)
-#        self.access.config_save()
-#        self.mem.con=self.access.con
-#        
-#        ##Update database
-#        update=libdbupdates.Update(self.mem)
-#        if update.need_update()==True:
-#            if update.check_superuser_role(self.access.txtUser.text())==True:
-#                update.run()
-#            else:
-#                m=QMessageBox()
-#                m.setIcon(QMessageBox.Information)
-#                m.setText(self.tr("Xulpymoney needs to be updated. Please login with a superuser role."))
-#                m.exec_()   
-#                self.on_actionExit_triggered()
-#                sys.exit(2)
-                
+
         self.statusBar.addWidget(QLabel(self.tr("Server: {}:{}      Database: {}      User: {}").format(self.mem.con.server, self.mem.con.port,  self.mem.con.db, self.mem.con.user)))
         
         self.mem.actualizar_memoria() ##CARGA TODOS LOS DATOS Y LOS VINCULA       
@@ -332,7 +304,7 @@ class frmMain(QMainWindow, Ui_frmMain):
         source.txtUser.setText("postgres")
         source.exec_()
         if source.result()==QDialog.Rejected:             
-            source.qmessagebox_error_connecting()
+            qmessagebox_connexion_error(source.con.db, source.con.server)
             return
         else:
             if source.con.db.strip()==self.mem.con.db.strip() and source.con.server.strip()==self.mem.con.server.strip():            

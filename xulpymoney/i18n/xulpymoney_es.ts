@@ -3,12 +3,12 @@
 <context>
     <name>@default</name>
     <message>
-        <location filename="../xulpymoney.py" line="32"/>
+        <location filename="../xulpymoney.py" line="33"/>
         <source>Please login to the xulpymoney database</source>
         <translation>Por favor conectesé a la base de datos de Xulpymoney</translation>
     </message>
     <message>
-        <location filename="../xulpymoney.py" line="50"/>
+        <location filename="../libqmessagebox.py" line="8"/>
         <source>Xulpymoney needs to be updated. Please login with a superuser role.</source>
         <translation>Xulpymoney necesita ser actualizado. Por favor entre con el rol de superusuario.</translation>
     </message>
@@ -653,7 +653,7 @@
         <translation>Eliminando datos innecesarios</translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="525"/>
+        <location filename="../ui/frmMain.py" line="497"/>
         <source>Cancel</source>
         <translation>Cancelar</translation>
     </message>
@@ -773,27 +773,27 @@
         <translation>No pudo ordenar los datos debido a que hay valores nulos</translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="345"/>
+        <location filename="../ui/frmMain.py" line="317"/>
         <source>Syncing databases from {} ({}) to {} ({})</source>
         <translation>Sincronizando bases de datos desde {} ({}) a {} ({})</translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="347"/>
+        <location filename="../ui/frmMain.py" line="319"/>
         <source>Processing products...</source>
         <translation>Procesando productos...</translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="525"/>
+        <location filename="../ui/frmMain.py" line="497"/>
         <source>Purging innecesary data from all products</source>
         <translation>Purgando datos innecesarios de todos los productos</translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="527"/>
+        <location filename="../ui/frmMain.py" line="499"/>
         <source>Purging quotes from all products</source>
         <translation>Purgando valores de todos los productos</translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="533"/>
+        <location filename="../ui/frmMain.py" line="505"/>
         <source>Purging quotes from {0}.
 Total purged in global process: {1}</source>
         <translation>Purgando cotizaciones de {0}.
@@ -803,6 +803,16 @@ Purgadas en total en el proceso global: {1}</translation>
         <location filename="../xulpymoney_init.py" line="22"/>
         <source>Local language detected:{0}</source>
         <translation>Lenguaje local detectado: {0}</translation>
+    </message>
+    <message>
+        <location filename="../libqmessagebox.py" line="14"/>
+        <source>Error conecting to {} database in {} server</source>
+        <translation type="unfinished">Error al conectar a la base de datos {} del servidor {}</translation>
+    </message>
+    <message>
+        <location filename="../libqmessagebox.py" line="20"/>
+        <source>The role of the user is not an administrator</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1479,16 +1489,6 @@ p, li { white-space: pre-wrap; }
         <location filename="../ui/frmAccess.py" line="18"/>
         <source>Xulpymoney - Access</source>
         <translation>Xulpymoney - Acceso</translation>
-    </message>
-    <message>
-        <location filename="../ui/frmAccess.py" line="80"/>
-        <source>Error conecting to {} database in {} server</source>
-        <translation>Error al conectar a la base de datos {} del servidor {}</translation>
-    </message>
-    <message>
-        <location filename="../ui/frmAccess.py" line="86"/>
-        <source>The role of the user is not an administrator</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2484,22 +2484,22 @@ p, li { white-space: pre-wrap; }
         <translation>realizar Split / Contrasplit</translation>
     </message>
     <message>
-        <location filename="../ui/frmInvestmentReport.py" line="39"/>
+        <location filename="../ui/frmInvestmentReport.py" line="38"/>
         <source>Add a new investment</source>
         <translation>Añadir una nueva inversión</translation>
     </message>
     <message>
-        <location filename="../ui/frmInvestmentReport.py" line="112"/>
+        <location filename="../ui/frmInvestmentReport.py" line="109"/>
         <source>Current operations average age: {0}</source>
         <translation>Media de edad de las operaciones actuales: {0}</translation>
     </message>
     <message>
-        <location filename="../ui/frmInvestmentReport.py" line="153"/>
+        <location filename="../ui/frmInvestmentReport.py" line="150"/>
         <source>Before adding a operation, you must add the current price of the product.</source>
         <translation>Antes de añadir una operación, debe añadir el valor actual del producto.</translation>
     </message>
     <message>
-        <location filename="../ui/frmInvestmentReport.py" line="352"/>
+        <location filename="../ui/frmInvestmentReport.py" line="349"/>
         <source>Selected: {0}</source>
         <translation>Seleccionado: {0}</translation>
     </message>
@@ -2559,37 +2559,37 @@ p, li { white-space: pre-wrap; }
         <translation>% Invertido</translation>
     </message>
     <message>
-        <location filename="../ui/frmInvestmentReport.py" line="84"/>
+        <location filename="../ui/frmInvestmentReport.py" line="81"/>
         <source>Estimation review date: {0}</source>
         <translation>Fecha de revisión de la estimación: {0}</translation>
     </message>
     <message>
-        <location filename="../ui/frmInvestmentReport.py" line="86"/>
+        <location filename="../ui/frmInvestmentReport.py" line="83"/>
         <source>Estimated balance: {0} ({1} after taxes)</source>
         <translation>Saldo estimado: {0} ({1} después de impuestos)</translation>
     </message>
     <message>
-        <location filename="../ui/frmInvestmentReport.py" line="87"/>
+        <location filename="../ui/frmInvestmentReport.py" line="84"/>
         <source>% Invested: {0}</source>
         <translation>% Invertido: {0}</translation>
     </message>
     <message>
-        <location filename="../ui/frmInvestmentReport.py" line="207"/>
+        <location filename="../ui/frmInvestmentReport.py" line="204"/>
         <source>Shares transfer couldn&apos;t be done.</source>
         <translation>El traspaso de acciones no ha podido ser realizado.</translation>
     </message>
     <message>
-        <location filename="../ui/frmInvestmentReport.py" line="85"/>
+        <location filename="../ui/frmInvestmentReport.py" line="82"/>
         <source>Estimated annual dividend is {0} ({1} per share)</source>
         <translation>La estimación anual de dividendo es {0} ({1} por acción)</translation>
     </message>
     <message>
-        <location filename="../ui/frmInvestmentReport.py" line="88"/>
+        <location filename="../ui/frmInvestmentReport.py" line="85"/>
         <source>% APR from invested: {0}</source>
         <translation>% TAE de lo invertido: {0}</translation>
     </message>
     <message>
-        <location filename="../ui/frmInvestmentReport.py" line="142"/>
+        <location filename="../ui/frmInvestmentReport.py" line="139"/>
         <source>Divest / Reinvest simulation</source>
         <translation>Simulación de Desinversión / Reinversión</translation>
     </message>
@@ -2599,7 +2599,7 @@ p, li { white-space: pre-wrap; }
         <translation>TAE</translation>
     </message>
     <message>
-        <location filename="../ui/frmInvestmentReport.py" line="259"/>
+        <location filename="../ui/frmInvestmentReport.py" line="256"/>
         <source>You must select a product to continue.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2917,7 +2917,7 @@ p, li { white-space: pre-wrap; }
         <translation>F5</translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="553"/>
+        <location filename="../ui/frmMain.py" line="525"/>
         <source>{0} quotes have been purged from {1} products</source>
         <translation>{0} cotizaciones han sido eliminadas de {1} productos</translation>
     </message>
@@ -2952,27 +2952,27 @@ p, li { white-space: pre-wrap; }
         <translation>Productos con ISIN duplicado</translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="418"/>
+        <location filename="../ui/frmMain.py" line="390"/>
         <source>There aren&apos;t favorite products</source>
         <translation>No hay productos favoritos</translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="84"/>
+        <location filename="../ui/frmMain.py" line="56"/>
         <source>Please introduce Admin Mode password</source>
         <translation>Por favor introduzca la contraseña del &apos;Modo administrador&apos;</translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="93"/>
+        <location filename="../ui/frmMain.py" line="65"/>
         <source>You have set the admin mode password. Please login again</source>
         <translation>Se ha establecido la contraseña del &apos;Modo administrador&apos;. Por favor conéctese otra vez</translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="101"/>
+        <location filename="../ui/frmMain.py" line="73"/>
         <source>You are logged as an administrator</source>
         <translation>Se ha conectado como administrador</translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="105"/>
+        <location filename="../ui/frmMain.py" line="77"/>
         <source>Bad &apos;Admin mode&apos; password. You are logged as a normal user</source>
         <translation>Contraseña errónea del &apos;Modo administrador&apos;. Usted se ha conectado como un usuario normal</translation>
     </message>
@@ -3052,7 +3052,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="98"/>
+        <location filename="../ui/frmMain.py" line="70"/>
         <source>Xulpymoney 2010-{0} &#xc2;&#xa9; (Admin mode)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3067,12 +3067,12 @@ p, li { white-space: pre-wrap; }
         <translation>F9</translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="341"/>
+        <location filename="../ui/frmMain.py" line="313"/>
         <source>Databases can&apos;t be the same</source>
         <translation>La base de datos no puede ser la misma</translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="74"/>
+        <location filename="../ui/frmMain.py" line="46"/>
         <source>Server: {}:{}      Database: {}      User: {}</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3082,7 +3082,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="329"/>
+        <location filename="../ui/frmMain.py" line="301"/>
         <source>Please login to the source xulpymoney database</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3092,7 +3092,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="318"/>
+        <location filename="../ui/frmMain.py" line="290"/>
         <source>Xulpymoney Simulations</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6053,11 +6053,6 @@ S&#xc3;&#xb3;lo se contabilizar&#xc3;&#xa1; cuando se vendan las acciones</sourc
     <message>
         <location filename="../ui/Ui_wdgSimulationsAdd.py" line="88"/>
         <source>End date and time</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ui/wdgSimulationsAdd.py" line="24"/>
-        <source>The role of the user is not an administrator</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

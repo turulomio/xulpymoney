@@ -7,6 +7,7 @@ sys.path.append("/usr/lib/xulpymoney")
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 import libdbupdates
+from libqmessagebox import *
 from frmMain import *
 
 try:
@@ -34,7 +35,7 @@ access.config_load()
 access.exec_()
 
 if access.result()==QDialog.Rejected: 
-    access.qmessagebox_error_connecting()
+    qmessagebox_connexion_error(access.con.db, access.con.server)
     sys.exit(1)
 access.config_save()
 mem.con=access.con
@@ -42,13 +43,10 @@ mem.con=access.con
 ##Update database
 update=libdbupdates.Update(mem)
 if update.need_update()==True:
-    if update.check_superuser_role(access.txtUser.text())==True:
+    if mem.con.is_superuser():
         update.run()
     else:
-        m=QMessageBox()
-        m.setIcon(QMessageBox.Information)
-        m.setText(tr("Xulpymoney needs to be updated. Please login with a superuser role."))
-        m.exec_()   
+        qmessagebox_xulpymoney_update_and_superuser()
         sys.exit(2)
 if "admin" in sys.argv:
     mem.adminmode=True
