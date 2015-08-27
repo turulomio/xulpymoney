@@ -50,7 +50,11 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
             self.lblTitulo.setText((self.inversion.name))
             self.txtInvestment.setText((self.inversion.name))
             self.txtVenta.setText(str((self.inversion.venta)))
-            self.calExpiration.setSelectedDate(self.inversion.selling_expiration)
+            if self.inversion.selling_expiration==None:
+                self.chkExpiration.setCheckState(Qt.Unchecked)
+            else:
+                self.chkExpiration.setCheckState(Qt.Checked)
+                self.calExpiration.setSelectedDate(self.inversion.selling_expiration)
             self.ise.setSelected(self.inversion.product)
             self.cmdPuntoVenta.setEnabled(True)
             self.cmbAccount.setCurrentIndex(self.cmbAccount.findData(self.inversion.account.id))
@@ -222,18 +226,21 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
         
 
             
-    def on_cmdInvestment_pressed(self):
+    def on_cmdInvestment_released(self):
         if self.ise.selected==None:
             m=QMessageBox()
             m.setIcon(QMessageBox.Information)
-            m.setText(self.tr("You must select a MyStocks product to continue."))
+            m.setText(self.tr("You must select a product to continue."))
             m.exec_()     
             return
         inversion=self.txtInvestment.text()
         venta=self.txtVenta.decimal()
         id_cuentas=int(self.cmbAccount.itemData(self.cmbAccount.currentIndex()))
         products_id=int(self.ise.selected.id) 
-        expiration=self.calExpiration.selectedDate().toPyDate()
+        if self.chkExpiration.checkState()==Qt.Unchecked:
+            expiration=None
+        else:
+            expiration=self.calExpiration.selectedDate().toPyDate()
         
         
         if self.mem.data.products_active.find(products_id)==None:
