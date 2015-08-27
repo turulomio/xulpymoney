@@ -50,6 +50,7 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
             self.lblTitulo.setText((self.inversion.name))
             self.txtInvestment.setText((self.inversion.name))
             self.txtVenta.setText(str((self.inversion.venta)))
+            self.calExpiration.setSelectedDate(self.inversion.selling_expiration)
             self.ise.setSelected(self.inversion.product)
             self.cmdPuntoVenta.setEnabled(True)
             self.cmbAccount.setCurrentIndex(self.cmbAccount.findData(self.inversion.account.id))
@@ -231,7 +232,8 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
         inversion=self.txtInvestment.text()
         venta=self.txtVenta.decimal()
         id_cuentas=int(self.cmbAccount.itemData(self.cmbAccount.currentIndex()))
-        products_id=int(self.ise.selected.id)
+        products_id=int(self.ise.selected.id) 
+        expiration=self.calExpiration.selectedDate().toPyDate()
         
         
         if self.mem.data.products_active.find(products_id)==None:
@@ -244,7 +246,7 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
         
 
         if self.tipo==1:        #insertar
-            i=Investment(self.mem).create(inversion,   venta,  self.mem.data.accounts_active.find(id_cuentas),  self.mem.data.products_active.find(products_id))      
+            i=Investment(self.mem).create(inversion,   venta,  self.mem.data.accounts_active.find(id_cuentas), expiration, self.mem.data.products_active.find(products_id))      
             i.save()
             self.mem.con.commit()
             ##Se añade a mem y vincula. No carga datos porque products_id debe existir            
@@ -257,6 +259,7 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
             self.inversion.name=inversion
             self.inversion.venta=venta
             self.inversion.product=self.mem.data.products_active.find(products_id)
+            self.inversion.selling_expiration=expiration
             self.inversion.save()##El id y el id_cuentas no se pueden modificar
             self.mem.con.commit()
             self.cmdInvestment.setEnabled(False)

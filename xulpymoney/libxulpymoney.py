@@ -2839,14 +2839,16 @@ class Investment:
         self.op=None#Es un objeto SetInvestmentOperations
         self.op_actual=None#Es un objeto Setoperinversionesactual
         self.op_historica=None#setoperinversioneshistorica
+        self.selling_expiration=None
         
         
-    def create(self, name, venta, cuenta, inversionmq):
+    def create(self, name, venta, cuenta, inversionmq, selling_expiration):
         self.name=name
         self.venta=venta
         self.account=cuenta
         self.product=inversionmq
         self.active=True
+        self.selling_expiration=selling_expiration
         return self
     
     
@@ -2854,10 +2856,10 @@ class Investment:
         """Inserta o actualiza la inversión dependiendo de si id=None o no"""
         cur=self.mem.con.cursor()
         if self.id==None:
-            cur.execute("insert into inversiones (inversion, venta, id_cuentas, active, products_id) values (%s, %s,%s,%s,%s) returning id_inversiones", (self.name, self.venta, self.account.id, self.active, self.product.id))    
+            cur.execute("insert into inversiones (inversion, venta, id_cuentas, active, selling_expiration,products_id) values (%s, %s,%s,%s,%s,%s) returning id_inversiones", (self.name, self.venta, self.account.id, self.active, self.selling_expiration,  self.product.id))    
             self.id=cur.fetchone()[0]
         else:
-            cur.execute("update inversiones set inversion=%s, venta=%s, id_cuentas=%s, active=%s, products_id=%s where id_inversiones=%s", (self.name, self.venta, self.account.id, self.active, self.product.id, self.id))
+            cur.execute("update inversiones set inversion=%s, venta=%s, id_cuentas=%s, active=%s, selling_expiration=%s, products_id=%s where id_inversiones=%s", (self.name, self.venta, self.account.id, self.active, self.selling_expiration,  self.product.id, self.id))
         cur.close()
 
     def __repr__(self):
@@ -2870,6 +2872,7 @@ class Investment:
         self.account=cuenta
         self.product=mqinvestment
         self.active=row['active']
+        self.selling_expiration=row['selling_expiration']
         return self
 
 
