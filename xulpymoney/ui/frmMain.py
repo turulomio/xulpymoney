@@ -241,7 +241,7 @@ class frmMain(QMainWindow, Ui_frmMain):
 
     @QtCore.pyqtSlot()  
     def on_actionTransfer_triggered(self):
-        w=frmTransfer(self.mem, self)
+        w=frmTransfer(self.mem, parent=self)
         w.exec_()
         self.on_actionAccounts_triggered()
 

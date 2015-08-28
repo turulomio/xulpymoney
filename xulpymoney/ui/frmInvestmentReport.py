@@ -98,16 +98,16 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
         else:
             self.op=self.inversion.op
         self.op.selected=None
-        self.op.myqtablewidget(self.tblOperaciones, "frmInvestmentReport")
+        self.op.myqtablewidget(self.tblOperaciones)
             
         
     def update_tables(self):             
         #Actualiza el indice de referencia porque ha cambiado
         self.inversion.op_actual.get_valor_benchmark(self.mem.data.benchmark)
         self.on_chkOperaciones_stateChanged(self.chkOperaciones.checkState())
-        self.inversion.op_actual.myqtablewidget(self.tblInvestmentCurrent,  "frmInvestmentReport")
+        self.inversion.op_actual.myqtablewidget(self.tblInvestmentCurrent)
         self.lblAge.setText(self.tr("Current operations average age: {0}".format(days_to_year_month(self.inversion.op_actual.average_age()))))
-        self.inversion.op_historica.myqtablewidget(self.tblInvestmentHistorical,  "frmInvestmentReport"  )
+        self.inversion.op_historica.myqtablewidget(self.tblInvestmentHistorical  )
         if self.inversion!=None:#We are adding a new investment
             self.on_chkHistoricalDividends_stateChanged(self.chkHistoricalDividends.checkState())
     
