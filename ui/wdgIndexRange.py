@@ -45,7 +45,7 @@ class wdgIndexRange(QWidget, Ui_wdgIndexRange):
         self.mem.data.load_inactives()
         
         self.benchmark=self.mem.data.benchmark
-        self.table.settings("wdgIndexRange",  self.mem)
+        self.table.settings(self.mem)
         
         self.gl_wdgIndexRange_spin=Global(self.mem, "wdgIndexRange", "spin")
         self.gl_wdgIndexRange_txtInvertir=Global(self.mem, "wdgIndexRange", "txtInvertir")

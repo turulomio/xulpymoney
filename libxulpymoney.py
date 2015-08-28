@@ -315,7 +315,47 @@ class SetInvestments(SetCommons):
             resultado.add(inv.product.id)
         return list(resultado)
             
-
+    def myqtablewidget(self, table):
+        table.setRowCount(len(self.arr))
+        table.clearContents()
+        d={"sumpendiente":Decimal(0), "sumdiario":Decimal(0), "suminvertido":Decimal(0), "sumpositivos":Decimal(0), "sumnegativos":Decimal(0)} 
+        gainsyear=str2bool(self.mem.config.get_value("settings", "gainsyear"))
+        for i, inv in enumerate(self.arr):
+            table.setItem(i, 0, QTableWidgetItem("{0} ({1})".format(inv.name, inv.account.name)))            
+            table.setItem(i, 1, qdatetime(inv.product.result.basic.last.datetime, inv.product.stockexchange.zone))
+            table.setItem(i, 2, inv.product.currency.qtablewidgetitem(inv.product.result.basic.last.quote,  6))#Se debería recibir el parametro currency
+            
+            diario=inv.diferencia_saldo_diario()
+            try:
+                d["sumdiario"]=d["sumdiario"]+diario
+            except:
+                pass
+            table.setItem(i, 3, inv.product.currency.qtablewidgetitem(diario))
+            table.setItem(i, 4, qtpc(inv.product.result.basic.tpc_diario()))
+            table.setItem(i, 5, inv.product.currency.qtablewidgetitem(inv.balance()))
+            d["suminvertido"]=d["suminvertido"]+inv.invertido()
+            pendiente=inv.pendiente()
+            if pendiente>0:
+                d["sumpositivos"]=d["sumpositivos"]+pendiente
+            else:
+                d["sumnegativos"]=d["sumnegativos"]+pendiente
+            d["sumpendiente"]=d["sumpendiente"]+pendiente
+            table.setItem(i, 6, inv.product.currency.qtablewidgetitem(pendiente))
+            tpc_invertido=inv.tpc_invertido()
+            table.setItem(i, 7, qtpc(tpc_invertido))
+            if gainsyear==True and inv.op_actual.less_than_a_year()==True:
+                table.item(i, 7).setIcon(QIcon(":/xulpymoney/new.png"))
+            tpc_venta=inv.tpc_venta()
+            table.setItem(i, 8, qtpc(tpc_venta))
+            if inv.selling_expiration:
+                if inv.selling_expiration<datetime.date.today():
+                    table.item(i, 8).setIcon(QIcon(":/xulpymoney/alarm_clock.png"))
+            if tpc_invertido!=None and tpc_venta!=None:
+                if tpc_invertido<=-50:   
+                    table.item(i, 7).setBackground(QColor(255, 148, 148))
+                if (tpc_venta<=5 and tpc_venta>0) or tpc_venta<0:
+                    table.item(i, 8).setBackground(QColor(148, 255, 148))
+        return d
     
     def average_age(self):
         """Average age of the investments in this set in days"""
@@ -600,12 +640,12 @@ class SetProducts(SetCommons):
         return result
         
         
-    def myqtablewidget(self, table, section):
+    def myqtablewidget(self, table):
         tachado = QFont()
         tachado.setStrikeOut(True)        #Fuente tachada
         transfer=QIcon(":/xulpymoney/transfer.png")
         table.setColumnCount(8)
-        table.settings(section,  self.mem)    
+        table.settings(   self.mem)    
         table.setHorizontalHeaderItem(0, QTableWidgetItem(tr("Id")))
         table.setHorizontalHeaderItem(1, QTableWidgetItem(tr("Product")))
         table.setHorizontalHeaderItem(2, QTableWidgetItem(tr("ISIN")))
@@ -674,14 +714,14 @@ class SetSimulations(SetCommons):
             self.append(s)
         cur.close()  
         
-    def myqtablewidget(self, table, section):
+    def myqtablewidget(self, table):
         table.setColumnCount(5)
         table.setHorizontalHeaderItem(0, QTableWidgetItem(tr( "Creation" )))
         table.setHorizontalHeaderItem(1, QTableWidgetItem(tr( "Type" )))
         table.setHorizontalHeaderItem(2, QTableWidgetItem(tr( "Database" )))
         table.setHorizontalHeaderItem(3, QTableWidgetItem(tr( "Starting" )))
         table.setHorizontalHeaderItem(4, QTableWidgetItem(tr( "Ending" )))
-        table.settings(section,  self.mem)        
+        table.settings(   self.mem)        
         table.clearContents()
         table.setRowCount(self.length())
         for i, a in enumerate(self.arr):
@@ -894,7 +934,7 @@ class SetAccountOperations:
     def sort(self):       
         self.arr=sorted(self.arr, key=lambda e: e.datetime,  reverse=False) 
         
-    def myqtablewidget(self, tabla, section, show_account=False):
+    def myqtablewidget(self, tabla,   show_account=False):
         """Section es donde guardar en el config file, coincide con el nombre del formulario en el que está la tabla
         show_account muestra la cuenta cuando las opercuentas son de diversos cuentas (Estudios totales)"""
         ##HEADERS
@@ -913,7 +953,7 @@ class SetAccountOperations:
         tabla.setHorizontalHeaderItem(4+diff, QTableWidgetItem(QApplication.translate(section, "Comment" )))
         ##DATA 
         tabla.clearContents()
-        tabla.settings(section,  self.mem)       
+        tabla.settings(   self.mem)       
         tabla.setRowCount(len(self.arr))
         balance=0
         for rownumber, a in enumerate(self.arr):
@@ -926,9 +966,9 @@ class SetAccountOperations:
             tabla.setItem(rownumber, 3+diff, self.mem.localcurrency.qtablewidgetitem(balance))
             tabla.setItem(rownumber, 4+diff, qleft(a.comentario))
             
-    def myqtablewidget_lastmonthbalance(self, table, section,  account, lastmonthbalance):
+    def myqtablewidget_lastmonthbalance(self, table,    account, lastmonthbalance):
         table.clearContents()
-        table.settings(section,  self.mem)   
+        table.settings(   self.mem)   
         table.setRowCount(self.length()+1)        
         table.setItem(0, 1, QTableWidgetItem(tr( "Starting month balance")))
         table.setItem(0, 3, account.currency.qtablewidgetitem(lastmonthbalance))
@@ -982,7 +1022,7 @@ class SetDividends:
     def sort(self):       
         self.arr=sorted(self.arr, key=lambda e: e.fecha,  reverse=False) 
         
-    def myqtablewidget(self, table, section, show_investment=False):
+    def myqtablewidget(self, table,   show_investment=False):
         """Section es donde guardar en el config file, coincide con el nombre del formulario en el que está la table
         Devuelve sumatorios"""
         diff=0
@@ -998,7 +1038,7 @@ class SetDividends:
         table.setHorizontalHeaderItem(diff+5, QTableWidgetItem(tr( "Net" )))
         table.setHorizontalHeaderItem(diff+6, QTableWidgetItem(tr( "DPS" )))
         #DATA
-        table.settings(section,  self.mem)        
+        table.settings(   self.mem)        
         table.clearContents()
 
 
@@ -1073,10 +1113,10 @@ class SetEstimationsDPS:
     def sort(self):
         self.arr=sorted(self.arr, key=lambda c: c.year,  reverse=False)         
         
-    def myqtablewidget(self, table, section):
+    def myqtablewidget(self, table):
         """settings, must be thrown before, not in each reload"""
         self.sort()
-        table.settings(section,  self.mem)        
+        table.settings(   self.mem)        
         table.clearContents()
         table.setRowCount(len(self.arr))
         for i, e in enumerate(self.arr):
@@ -1129,9 +1169,9 @@ class SetEstimationsEPS:
     def sort(self):
         self.arr=sorted(self.arr, key=lambda c: c.year,  reverse=False)         
         
-    def myqtablewidget(self, table, section):
+    def myqtablewidget(self, table):
         self.sort()
-        table.settings(section,  self.mem)        
+        table.settings(   self.mem)        
         table.clearContents()
         table.setRowCount(len(self.arr))
         for i, e in enumerate(self.arr):
@@ -1351,7 +1391,7 @@ class SetInvestmentOperations(SetIO):
 #            
 
         
-    def myqtablewidget(self, tabla, section):
+    def myqtablewidget(self, tabla):
         """Section es donde guardar en el config file, coincide con el nombre del formulario en el que está la tabla"""
         self.order_by_datetime()
         diff=0
@@ -1372,7 +1412,7 @@ class SetInvestmentOperations(SetIO):
         tabla.setHorizontalHeaderItem(diff+7, QTableWidgetItem(tr( "Total" )))
         #DATA 
         tabla.clearContents()
-        tabla.settings(section,  self.mem)       
+        tabla.settings(   self.mem)       
         tabla.setRowCount(len(self.arr))
         gainsyear=str2bool(self.mem.config.get_value("settings", "gainsyear"))
         for rownumber, a in enumerate(self.arr):
@@ -1475,7 +1515,7 @@ class SetInvestmentOperationsCurrent(SetIO):
                 return True
         return False
         
-    def myqtablewidget(self,  tabla,  section ):
+    def myqtablewidget(self,  tabla ):
         """Función que rellena una tabla pasada como parámetro con datos procedentes de un array de objetos
         InvestmentOperationCurrent y dos valores de mystocks para rellenar los tpc correspodientes
         
@@ -1506,7 +1546,7 @@ class SetInvestmentOperationsCurrent(SetIO):
         tabla.setHorizontalHeaderItem(diff+8, QTableWidgetItem(tr( "% Total" )))
         tabla.setHorizontalHeaderItem(diff+9, QTableWidgetItem(tr( "Benchmark" )))
         #DATA
-        tabla.settings(section,  self.mem)
+        tabla.settings(   self.mem)
         if len(self.arr)==0:
             tabla.setRowCount(0)
             return
@@ -1714,7 +1754,7 @@ class SetInvestmentOperationsHistorical(SetIO):
                     if o.fecha_venta.year==year and o.fecha_venta.month==month:
                         resultado=resultado+o.consolidado_neto_antes_impuestos()
         return resultado
-    def myqtablewidget(self, tabla, section):
+    def myqtablewidget(self, tabla):
         """Rellena datos de un array de objetos de InvestmentOperationHistorical, devuelve totales ver código"""
         self.order_by_fechaventa()
         tabla.setColumnCount(13)
@@ -1732,7 +1772,7 @@ class SetInvestmentOperationsHistorical(SetIO):
         tabla.setHorizontalHeaderItem(11, QTableWidgetItem(tr( "% Net APR" )))
         tabla.setHorizontalHeaderItem(12, QTableWidgetItem(tr( "% Net Total" )))
         #DATA
-        tabla.settings(section,  self.mem)        
+        tabla.settings(   self.mem)        
         
         
         (sumbruto, sumneto)=(0, 0);
@@ -3398,7 +3438,7 @@ class SetCreditCards(SetCommons):
             self.append(t)
         cur.close()
         
-    def myqtablewidget(self, table, section):
+    def myqtablewidget(self, table):
         table.setRowCount(self.length())        
         for i, t in enumerate(self.arr):
             table.setItem(i, 0, QTableWidgetItem(t.name))
@@ -3452,7 +3492,7 @@ class SetCreditCardOperations:
     def sort(self):       
         self.arr=sorted(self.arr, key=lambda e: e.datetime,  reverse=False) 
         
-    def myqtablewidget(self, tabla, section):
+    def myqtablewidget(self, tabla):
         """Section es donde guardar en el config file, coincide con el nombre del formulario en el que está la tabla
         show_account muestra la cuenta cuando las opercuentas son de diversos cuentas (Estudios totales)"""
         ##HEADERS
@@ -3464,7 +3504,7 @@ class SetCreditCardOperations:
         tabla.setHorizontalHeaderItem(4, QTableWidgetItem(QApplication.translate(section, "Comment" )))
         ##DATA 
         tabla.clearContents()
-        tabla.settings(section,  self.mem)       
+        tabla.settings(   self.mem)       
         tabla.setRowCount(self.length())
         balance=Decimal(0)
         self.sort()
@@ -3526,20 +3566,8 @@ def mylog(text):
     f.write(str(datetime.datetime.now()) + "|" + text + "\n")
     f.close()
     
-#def mogrify(con, sql, arr):
-#    """Generate sql strings with psycopg
-#    sql=psycopg sql stsring
-#    arr is an array of parameters"""
-#    cur=con.cursor()
-#    result=cur.mogrify(sql, arr)
-#    cur.close()
-#    return result
-#    
-    
 def decimal_check(dec):
     print ("Decimal check", dec, dec.__class__,  dec.__repr__(),  "prec:",  getcontext().prec)
-    
-
 
 class SetAgrupations(SetCommons):
     """Se usa para meter en mem las agrupaciones, pero también para crear agrupaciones en las inversiones"""
@@ -3913,12 +3941,12 @@ class SetDPS:
     def sort(self):
         self.arr=sorted(self.arr, key=lambda c: c.date,  reverse=False)         
         
-    def myqtablewidget(self, table, section):
+    def myqtablewidget(self, table):
         table.setColumnCount(2)
         table.setHorizontalHeaderItem(0, QTableWidgetItem(tr( "Date" )))
         table.setHorizontalHeaderItem(1, QTableWidgetItem(tr( "Gross" )))
         self.sort()
-        table.settings(section,  self.mem)        
+        table.settings(   self.mem)        
         table.clearContents()
         table.setRowCount(len(self.arr))
         for i, e in enumerate(self.arr):
@@ -4360,13 +4388,13 @@ class SetQuotes:
         del self.arr
         self.arr=[]
         
-    def myqtablewidget(self, tabla, section):
+    def myqtablewidget(self, tabla):
         tabla.setColumnCount(3)
         tabla.setHorizontalHeaderItem(0, QTableWidgetItem(QApplication.translate(section, "Date and time" )))
         tabla.setHorizontalHeaderItem(1, QTableWidgetItem(QApplication.translate(section, "Product" )))
         tabla.setHorizontalHeaderItem(2, QTableWidgetItem(QApplication.translate(section, "Price" )))        
         tabla.clearContents()
-        tabla.settings(section,  self.mem)       
+        tabla.settings(   self.mem)       
         tabla.setRowCount(len(self.arr))
         for rownumber, a in enumerate(self.arr):
             tabla.setItem(rownumber, 0, qdatetime(a.datetime, self.mem.localzone))
@@ -5831,36 +5859,6 @@ class SetZones(SetCommons):
 
 ## FUNCTIONS #############################################
 
-def arr_split(arr, wanted_parts=1):
-    length = len(arr)
-    return [ arr[i*length // wanted_parts: (i+1)*length // wanted_parts] 
-             for i in range(wanted_parts) ]
-
-#def arr2stralmohadilla(arr):
-#    resultado=""
-#    for a in arr:
-#        resultado=resultado + str(a) + "#"
-#    return resultado[:-1]
-#        
-#def stralmohadilla2arr(string, type="s"):
-#    """SE utiliza para matplotlib dsde consola"""
-#    arr=string.split("#")
-#    resultado=[]
-#    for a in arr:
-#            if type=="s":
-#                    resultado.append(a.decode('UTF-8'))
-#            elif type=="f":
-#                    resultado.append(float(a))
-##                       return numpy.array(resultado)
-#            elif type=="t":
-#                    dat=a.split(":")
-#                    resultado.append(datetime.time(int(dat[0]),int(dat[1])))
-#            elif type=="dt":
-#                    resultado.append(datetime.datetime.strptime(a, "%Y/%m/%d %H:%M"))
-#            elif type=="d":
-#                    resultado.append(datetime.datetime.strptime(a, "%Y-%m-%d").toordinal())
-#    return resultado
-
 def ampm_to_24(hora, pmam):
     #    Conversión de AM/PM a 24 horas
     #  	  	 
@@ -6078,16 +6076,6 @@ def qleft(string):
     a.setTextAlignment(Qt.AlignVCenter|Qt.AlignLeft)
     return a
 
-def qmessagebox_developing():
-    m=QMessageBox()
-    m.setIcon(QMessageBox.Information)
-    m.setText(tr( "This option is being developed"))
-    m.exec_()    
-def qmessagebox_error_ordering():
-    m=QMessageBox()
-    m.setIcon(QMessageBox.Information)
-    m.setText(tr( "I couldn't order data due to they have null values"))
-    m.exec_()    
     
 def qright(string, digits=None):
     """When digits, limits the number to """

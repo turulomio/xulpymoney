@@ -18,9 +18,9 @@ class wdgBanks(QWidget, Ui_wdgBanks):
 
 
         
-        self.tblEB.settings("wdgBanks",  self.mem)
-        self.tblAccounts.settings("wdgBanks",  self.mem)
-        self.tblInvestments.settings("wdgBanks",  self.mem)
+        self.tblEB.settings(self.mem)
+        self.tblAccounts.settings(self.mem)
+        self.tblInvestments.settings(self.mem)
         
         self.on_chkActives_stateChanged(Qt.Checked)#Carga eb
 

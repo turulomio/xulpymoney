@@ -4,7 +4,6 @@ from PyQt5.QtWidgets import *
 import sys
 from Ui_frmMain import *
 from frmAbout import *
-#import libdbupdates
 from libxulpymoney import *
 from libsources import sync_data
 from frmAccess import *
@@ -109,6 +108,7 @@ class frmMain(QMainWindow, Ui_frmMain):
         self.mem.__del__()
         print ("App correctly closed")
         self.close()
+        self.destroy()
         
     @pyqtSlot()
     def on_actionAbout_triggered(self):
@@ -118,7 +118,7 @@ class frmMain(QMainWindow, Ui_frmMain):
     @QtCore.pyqtSlot()  
     def on_actionBanks_triggered(self):
         self.w.close()
-        self.w=wdgBanks(self.mem)
+        self.w=wdgBanks(self.mem, self)
                 
         self.layout.addWidget(self.w)
         self.w.show()
@@ -128,7 +128,7 @@ class frmMain(QMainWindow, Ui_frmMain):
         d=QDialog(self)        
         d.setFixedSize(850, 850)
         d.setWindowTitle(self.tr("Investment calculator"))
-        w=wdgCalculator(self.mem)
+        w=wdgCalculator(self.mem, self)
         lay = QVBoxLayout(d)
         lay.addWidget(w)
         if w.hasProducts==True:
@@ -139,7 +139,7 @@ class frmMain(QMainWindow, Ui_frmMain):
     @QtCore.pyqtSlot()  
     def on_actionConcepts_triggered(self):
         self.w.close()
-        self.w=wdgConcepts(self.mem)
+        self.w=wdgConcepts(self.mem, self)
                 
         self.layout.addWidget(self.w)
         self.w.show()
@@ -147,7 +147,7 @@ class frmMain(QMainWindow, Ui_frmMain):
     @QtCore.pyqtSlot()  
     def on_actionAccounts_triggered(self):
         self.w.close()
-        self.w=wdgAccounts(self.mem)
+        self.w=wdgAccounts(self.mem, self)
                 
         self.layout.addWidget(self.w)
         self.w.show()
@@ -160,7 +160,7 @@ class frmMain(QMainWindow, Ui_frmMain):
     @QtCore.pyqtSlot()  
     def on_actionDividendsReport_triggered(self):
         self.w.close()
-        self.w=wdgDividendsReport(self.mem)
+        self.w=wdgDividendsReport(self.mem, self)
                 
         self.layout.addWidget(self.w)
         self.w.show()
@@ -168,7 +168,7 @@ class frmMain(QMainWindow, Ui_frmMain):
     @QtCore.pyqtSlot()  
     def on_actionInvestmentsClasses_triggered(self):
         self.w.close()
-        self.w=wdgInvestmentClasses(self.mem)
+        self.w=wdgInvestmentClasses(self.mem, self)
                 
         self.layout.addWidget(self.w)
         self.w.show()
@@ -176,7 +176,7 @@ class frmMain(QMainWindow, Ui_frmMain):
     @QtCore.pyqtSlot()  
     def on_actionJointReport_triggered(self):
         self.w.close()
-        self.w=wdgJointReport(self.mem)
+        self.w=wdgJointReport(self.mem, self)
                 
         self.layout.addWidget(self.w)
         self.w.show()        
@@ -184,7 +184,7 @@ class frmMain(QMainWindow, Ui_frmMain):
     @QtCore.pyqtSlot()  
     def on_actionTotalReport_triggered(self):
         self.w.close()
-        self.w=wdgTotal(self.mem)
+        self.w=wdgTotal(self.mem, self)
                 
         self.layout.addWidget(self.w)
         self.w.show()
@@ -196,19 +196,19 @@ class frmMain(QMainWindow, Ui_frmMain):
     @QtCore.pyqtSlot()  
     def on_actionReportAPR_triggered(self):
         self.w.close()
-        self.w=wdgAPR(self.mem)
+        self.w=wdgAPR(self.mem, self)
               
         self.layout.addWidget(self.w)
         self.w.show()
         
     @QtCore.pyqtSlot()  
     def on_actionHelp_triggered(self):
-        w=frmHelp(self.mem)
+        w=frmHelp(self.mem, self)
         w.exec_()
     @QtCore.pyqtSlot()  
     def on_actionIndexRange_triggered(self):
         self.w.close()
-        self.w=wdgIndexRange(self.mem)
+        self.w=wdgIndexRange(self.mem, self)
                 
         self.layout.addWidget(self.w)
         self.w.show()
@@ -217,21 +217,20 @@ class frmMain(QMainWindow, Ui_frmMain):
     @QtCore.pyqtSlot()  
     def on_actionInvestments_triggered(self):
         self.w.close()
-        self.w=wdgInvestments(self.mem)
-               
+        self.w=wdgInvestments(self.mem, self)               
         self.layout.addWidget(self.w)
         self.w.show()
         
     @QtCore.pyqtSlot()  
     def on_actionInvestmentsOperations_triggered(self):
         self.w.close()
-        self.w=wdgInvestmentsOperations(self.mem)
+        self.w=wdgInvestmentsOperations(self.mem, self)
         self.layout.addWidget(self.w)
         self.w.show()
 
     @QtCore.pyqtSlot()  
     def on_actionAuxiliarTables_triggered(self):
-        w=frmAuxiliarTables(self.mem)
+        w=frmAuxiliarTables(self.mem, self)
         w.exec_()
         
     @QtCore.pyqtSlot()  
@@ -242,7 +241,7 @@ class frmMain(QMainWindow, Ui_frmMain):
 
     @QtCore.pyqtSlot()  
     def on_actionTransfer_triggered(self):
-        w=frmTransfer(self.mem)
+        w=frmTransfer(self.mem, self)
         w.exec_()
         self.on_actionAccounts_triggered()
 
@@ -655,7 +654,7 @@ class frmMain(QMainWindow, Ui_frmMain):
 
     @QtCore.pyqtSlot()  
     def on_actionTablasAuxiliares_triggered(self):
-        w=frmAuxiliarTables(self.mem)
+        w=frmAuxiliarTables(self.mem, self)
         w.tblTipos_reload()
         w.exec_()
 

@@ -13,7 +13,7 @@ class wdgMergeCodes(QWidget, Ui_wdgMergeCodes):
         self.setupUi(self)
         self.mem.data.load_inactives()
 
-        self.table.settings("wdgMergeCodes",  self.mem)    
+        self.table.settings(self.mem)    
         self.reload()
         
     def on_cmdInterchange_released(self):

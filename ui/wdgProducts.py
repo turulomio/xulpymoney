@@ -14,13 +14,13 @@ class wdgProducts(QWidget, Ui_wdgProducts):
         self.mem=mem
         self.products=SetProducts(self.mem)
         self.products.selected=[]#Can be selected several products
-        self.tblInvestments.settings("wdgProducts",  self.mem)    
+        self.tblInvestments.settings(self.mem)    
         self.mem.stockexchanges.qcombobox(self.cmbStockExchange)
         self.favoritos=self.mem.config.get_list( "wdgProducts", "favoritos")
         self.showingfavorites=False#Switch to know if widget is showing favorites            
 
         self.build_array(sql)
-        self.products.myqtablewidget(self.tblInvestments,"wdgProducts")
+        self.products.myqtablewidget(self.tblInvestments)
     
     def build_array(self, sql):
         self.sql=sql
@@ -39,7 +39,7 @@ class wdgProducts(QWidget, Ui_wdgProducts):
                 else:
                     self.sql="select * from products where id=-99999999"
             self.build_array(self.sql)
-            self.products.myqtablewidget(self.tblInvestments,"wdgProducts")
+            self.products.myqtablewidget(self.tblInvestments)
         else:
             self.favoritos.append(str(self.products.selected[0].id))
         print ("Favoritos", self.favoritos)
@@ -49,7 +49,7 @@ class wdgProducts(QWidget, Ui_wdgProducts):
     @QtCore.pyqtSlot()  
     def on_actionIbex35_triggered(self):
         self.build_array("select * from products where agrupations like '%|IBEX|%' order by name,id")
-        self.products.myqtablewidget(self.tblInvestments,"wdgProducts")       
+        self.products.myqtablewidget(self.tblInvestments)       
 
     @QtCore.pyqtSlot() 
     def on_actionProductDelete_triggered(self):
@@ -76,7 +76,7 @@ class wdgProducts(QWidget, Ui_wdgProducts):
             cur.close()     
             self.mem.disconnect(con)    
             self.build_array(self.sql)
-            self.products.myqtablewidget(self.tblInvestments,"wdgProducts")  
+            self.products.myqtablewidget(self.tblInvestments)  
             
 
     @QtCore.pyqtSlot() 
@@ -84,43 +84,43 @@ class wdgProducts(QWidget, Ui_wdgProducts):
         w=frmProductReport(self.mem, None, self)
         w.exec_()        
         self.build_array(self.sql)
-        self.products.myqtablewidget(self.tblInvestments,"wdgProducts")
+        self.products.myqtablewidget(self.tblInvestments)
 
     @QtCore.pyqtSlot() 
     def on_actionProductReport_triggered(self):
         w=frmProductReport(self.mem, self.products.selected[0], None,  self)
         w.exec_()        
         self.build_array(self.sql)
-        self.products.myqtablewidget(self.tblInvestments,"wdgProducts")
+        self.products.myqtablewidget(self.tblInvestments)
         
     @QtCore.pyqtSlot() 
     def on_actionSortTPCDiario_triggered(self):
         if self.products.order_by_daily_tpc():
-            self.products.myqtablewidget(self.tblInvestments,"wdgProducts")        
+            self.products.myqtablewidget(self.tblInvestments)        
         else:
             qmessagebox_error_ordering()
         
     @QtCore.pyqtSlot() 
     def on_actionSortTPCAnual_triggered(self):
         if self.products.order_by_annual_tpc():
-            self.products.myqtablewidget(self.tblInvestments,"wdgProducts")        
+            self.products.myqtablewidget(self.tblInvestments)        
         else:
             qmessagebox_error_ordering()
         
     @QtCore.pyqtSlot() 
     def on_actionSortHour_triggered(self):
         self.products.order_by_datetime()
-        self.products.myqtablewidget(self.tblInvestments,"wdgProducts")        
+        self.products.myqtablewidget(self.tblInvestments)        
         
     @QtCore.pyqtSlot() 
     def on_actionSortName_triggered(self):
         self.products.order_by_name()
-        self.products.myqtablewidget(self.tblInvestments,"wdgProducts")        
+        self.products.myqtablewidget(self.tblInvestments)        
         
     @QtCore.pyqtSlot() 
     def on_actionSortDividend_triggered(self):
         if self.products.order_by_dividend():
-            self.products.myqtablewidget(self.tblInvestments,"wdgProducts")        
+            self.products.myqtablewidget(self.tblInvestments)        
         else:
             qmessagebox_error_ordering()     
         
@@ -146,7 +146,7 @@ class wdgProducts(QWidget, Ui_wdgProducts):
                 "%' or upper(ticker) like '%"+(self.txt.text().upper())+
                 "%' or upper(comentario) like '%"+(self.txt.text().upper())+
                 "%') "+ stockexchangefilter)
-        self.products.myqtablewidget(self.tblInvestments,"wdgProducts")          
+        self.products.myqtablewidget(self.tblInvestments)          
 
 
     def on_tblInvestments_customContextMenuRequested(self,  pos):
@@ -223,7 +223,7 @@ class wdgProducts(QWidget, Ui_wdgProducts):
         lay.addWidget(w)
         d.exec_()
         self.build_array(self.sql)
-        self.products.myqtablewidget(self.tblInvestments,"wdgProducts")
+        self.products.myqtablewidget(self.tblInvestments)
 
     
     def on_tblInvestments_itemSelectionChanged(self):
@@ -253,7 +253,7 @@ class wdgProducts(QWidget, Ui_wdgProducts):
         w=frmQuotesIBM(self.mem,  self.products.selected[0])
         w.exec_()               
         self.build_array(self.sql)
-        self.products.myqtablewidget(self.tblInvestments,"wdgProducts")  
+        self.products.myqtablewidget(self.tblInvestments)  
 
     @QtCore.pyqtSlot()  
     def on_actionEstimationDPSNew_triggered(self):
@@ -261,5 +261,5 @@ class wdgProducts(QWidget, Ui_wdgProducts):
         d.exec_()
         if d.result()==QDialog.Accepted:
             self.build_array(self.sql)
-            self.products.myqtablewidget(self.tblInvestments,"wdgProducts")  
+            self.products.myqtablewidget(self.tblInvestments)  
             

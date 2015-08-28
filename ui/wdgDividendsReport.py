@@ -14,7 +14,7 @@ class wdgDividendsReport(QWidget, Ui_wdgDividendsReport):
         self.mem=mem
         self.inversiones=[]
 
-        self.tblInvestments.settings("wdgDividendsReport",  self.mem)
+        self.tblInvestments.settings(self.mem)
         
         self.on_chkInactivas_stateChanged(Qt.Unchecked)
 

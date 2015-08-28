@@ -134,7 +134,7 @@ class frmProductSelector(QDialog):
                     "%' or upper(comentario) like '%"+(self.txt.text().upper())+
                     "%' order by name")
         self.lblFound.setText(self.tr("Found {0} registers").format(self.products.length()))
-        self.products.myqtablewidget(self.tblInvestments, "wdgProductSelector")  
+        self.products.myqtablewidget(self.tblInvestments)  
         
     def on_tblInvestments_cellDoubleClicked(self, row, column):
         self.done(0)
