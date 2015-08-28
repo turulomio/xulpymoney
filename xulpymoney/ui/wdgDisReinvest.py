@@ -100,7 +100,7 @@ class wdgDisReinvest(QWidget, Ui_wdgDisReinvest):
 
 
         (operinversionesactual, operinversioneshistoricas)=operaciones.calcular()
-        operaciones.myqtablewidget(self.tblOperaciones, "wdgDisReinvest")
-        self.inversion.op_actual.myqtablewidget(self.tblInvestmentsActualAntes, "wdgDisReinvest")
-        operinversionesactual.myqtablewidget(self.tblInvestmentsActualDespues, "wdgDisReinvest")
-        operinversioneshistoricas.myqtablewidget(self.tblInvestmentsHistoricas, "wdgDisReinvest")
+        operaciones.myqtablewidget(self.tblOperaciones)
+        self.inversion.op_actual.myqtablewidget(self.tblInvestmentsActualAntes)
+        operinversionesactual.myqtablewidget(self.tblInvestmentsActualDespues)
+        operinversioneshistoricas.myqtablewidget(self.tblInvestmentsHistoricas)

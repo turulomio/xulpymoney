@@ -20,7 +20,7 @@ class frmAbout(QDialog, Ui_frmAbout):
         self.setModal(True)
         self.setupUi(self)
         
-        self.tblStatistics.settings("frmAbout", self.mem)
+        self.tblStatistics.settings(self.mem)
         self.load_tblStatistics() 
         self.cmd.clicked.connect(self.on_cmd_clicked)
     

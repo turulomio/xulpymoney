@@ -83,7 +83,7 @@ class wdgAPR(QWidget, Ui_wdgAPR):
         self.progress.setModal(True)
         self.progress.setWindowTitle(self.tr("Calculating data..."))
         self.progress.setMinimumDuration(0)        
-        self.table.settings("wdgAPR",  self.mem)
+        self.table.settings(self.mem)
         
         
         self.dates=[]

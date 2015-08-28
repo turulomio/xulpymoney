@@ -19,7 +19,7 @@ class frmAuxiliarTables(QDialog, Ui_frmAuxiliarTables):
         self.setupUi(self)
         self.mem=mem
 
-        self.tblConcepts.settings("frmAuxiliarTables",  self.mem)
+        self.tblConcepts.settings(self.mem)
         
         self.mem.tiposoperaciones.qcombobox_basic(self.cmbOperationType)
         self.selConcept=None

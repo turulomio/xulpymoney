@@ -23,7 +23,7 @@ class wdgSimulations(QWidget, Ui_wdgSimulations):
         self.mem_sim=None
         
     def reload(self):
-        self.simulations.myqtablewidget(self.tblSimulations, "wdgSimulations")
+        self.simulations.myqtablewidget(self.tblSimulations)
 
     def on_cmdCreate_released(self):
         d=QDialog(self)     

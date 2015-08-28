@@ -10,6 +10,7 @@ class wdgCalculator(QWidget, Ui_wdgCalculator):
         self.setupUi(self)
         self.mem=mem
         self.mem.data.load_inactives()
+        self.table.settings(self.mem)
         self.hasProducts=True#Permits to show/hide the widget from external dialog
         if self.mem.data.products_all().length()==0:
             m=QMessageBox()

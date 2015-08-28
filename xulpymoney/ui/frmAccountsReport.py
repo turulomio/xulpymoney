@@ -25,10 +25,10 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
         self.creditcards=None#SetCreditCard. Selected will be a CreditCard
         self.creditcardoperations=SetCreditCardOperations(self.mem)#SetCreditCardOperations. Selected will be another SetCreditCardOperations
           
-        self.tblOperaciones.settings("frmAccountsReport",  self.mem)
-        self.tblCreditCards.settings("frmAccountsReport",  self.mem)
-        self.tblCreditCardOpers.settings("frmAccountsReport",  self.mem)
-        self.tblOpertarjetasHistoricas.settings("frmAccountsReport",  self.mem)
+        self.tblOperaciones.settings(self.mem)
+        self.tblCreditCards.settings(self.mem)
+        self.tblCreditCardOpers.settings(self.mem)
+        self.tblOpertarjetasHistoricas.settings(self.mem)
     
         self.calPago.setDate(QDate.currentDate())
         

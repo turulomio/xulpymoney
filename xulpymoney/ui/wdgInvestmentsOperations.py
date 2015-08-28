@@ -25,8 +25,8 @@ class wdgInvestmentsOperations(QWidget, Ui_wdgInvestmentsOperations):
         self.setCurrent=SetInvestmentOperationsCurrent(self.mem)
         self.selOperation=None#For table
         self.selCurrentOperation=None#For tblCurrent
-        self.table.settings("wdgInvestmentsOperations",  self.mem)
-        self.tblCurrent.settings("wdgInvestmentsOperations",  self.mem)
+        self.table.settings(self.mem)
+        self.tblCurrent.settings(self.mem)
         self.tab.setCurrentIndex(0)
         self.load()
         self.load_current()
@@ -54,14 +54,14 @@ class wdgInvestmentsOperations(QWidget, Ui_wdgInvestmentsOperations):
             self.setOperations.append(InvestmentOperation(self.mem).init__db_row(row, self.mem.data.investments_all().find(row['id_inversiones']), self.mem.tiposoperaciones.find(row['id_tiposoperaciones'])))
         cur.close()
         
-        self.setOperations.myqtablewidget(self.table, "wdgInvestmentsOperations")
+        self.setOperations.myqtablewidget(self.table)
         
     def load_current(self):
         for inv in self.mem.data.investments_active.arr:
             for o in inv.op_actual.arr:
                 self.setCurrent.append(o)
         self.setCurrent.order_by_datetime()
-        self.setCurrent.myqtablewidget(self.tblCurrent, "wdgInvestmentsOperations")
+        self.setCurrent.myqtablewidget(self.tblCurrent)
 
         
     @QtCore.pyqtSlot(int) 

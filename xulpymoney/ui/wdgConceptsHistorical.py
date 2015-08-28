@@ -14,7 +14,7 @@ class wdgConceptsHistorical(QWidget, Ui_wdgConceptsHistorical):
         self.month=None#Used to show popup with month or year report if is 0->Year, else->Month
         self.year=None
         self.firstyear=None
-        self.table.settings("wdgConceptsHistorical",  self.mem)
+        self.table.settings(self.mem)
         self.reload()
 
     def reload(self):
@@ -65,7 +65,7 @@ class wdgConceptsHistorical(QWidget, Ui_wdgConceptsHistorical):
         set=SetAccountOperations(self.mem)
         set.load_from_db_with_creditcard("select datetime, id_conceptos, id_tiposoperaciones, importe, comentario, id_cuentas , -1 as id_tarjetas from opercuentas where id_conceptos={0} and date_part('year',datetime)={1} and date_part('month',datetime)={2} union all select datetime, id_conceptos, id_tiposoperaciones, importe, comentario, id_cuentas ,tarjetas.id_tarjetas as id_tarjetas from opertarjetas,tarjetas where opertarjetas.id_tarjetas=tarjetas.id_tarjetas and id_conceptos={0} and date_part('year',datetime)={1} and date_part('month',datetime)={2}".format (self.concepto.id, self.year, self.month))
         set.sort()
-        set.myqtablewidget(table, "wdgConceptsHistorical", True)
+        set.myqtablewidget(table, True)
         horizontalLayout.addWidget(table)
         self.tab.addTab(newtab, self.tr("Report of {0} of {1}".format(self.table.horizontalHeaderItem(self.month).text(), self.year)))
         self.tab.setCurrentWidget(newtab)
@@ -79,7 +79,7 @@ class wdgConceptsHistorical(QWidget, Ui_wdgConceptsHistorical):
         set=SetAccountOperations(self.mem)
         set.load_from_db_with_creditcard("select datetime, id_conceptos, id_tiposoperaciones, importe, comentario, id_cuentas , -1 as id_tarjetas from opercuentas where id_conceptos={0} and date_part('year',datetime)={1} union all select datetime, id_conceptos, id_tiposoperaciones, importe, comentario, id_cuentas ,tarjetas.id_tarjetas as id_tarjetas from opertarjetas,tarjetas where opertarjetas.id_tarjetas=tarjetas.id_tarjetas and id_conceptos={0} and date_part('year',datetime)={1}".format (self.concepto.id, self.year))
         set.sort()
-        set.myqtablewidget(table, "wdgConceptsHistorical", True)
+        set.myqtablewidget(table, True)
         horizontalLayout.addWidget(table)
         self.tab.addTab(newtab, self.tr("Report of {0}".format(self.year)))
         self.tab.setCurrentWidget(newtab)

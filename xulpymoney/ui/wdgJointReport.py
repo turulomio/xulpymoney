@@ -8,12 +8,12 @@ class wdgJointReport(QWidget, Ui_wdgJointReport):
         QWidget.__init__(self, parent)
         self.setupUi(self)
         self.mem=mem
-        self.tblEstudio.settings("wdgJointReport",  self.mem)
-        self.tblDividends.settings("wdgJointReport",  self.mem)
-        self.tblInvestments.settings("wdgJointReport",  self.mem)
-        self.tblLess.settings("wdgJointReport",  self.mem)
-        self.tblMore.settings("wdgJointReport",  self.mem)
-        self.tblAdded.settings("wdgJointReport",  self.mem)
+        self.tblEstudio.settings(self.mem)
+        self.tblDividends.settings(self.mem)
+        self.tblInvestments.settings(self.mem)
+        self.tblLess.settings(self.mem)
+        self.tblMore.settings(self.mem)
+        self.tblAdded.settings(self.mem)
         
         
         self.mem.data.load_inactives()
@@ -81,7 +81,7 @@ class wdgJointReport(QWidget, Ui_wdgJointReport):
     def load_dividends(self):
         set=SetDividends(self.mem)
         set.load_from_db("select * from dividends where id_conceptos not in (63) and date_part('year',fecha)={0} order by fecha".format(self.wy.year))
-        (self.totalDividendsNetos, self.totalDividendsBrutos, self.totalDividendsRetenciones, sumcomision)=set.myqtablewidget(self.tblDividends, "wdgJointReport", True)
+        (self.totalDividendsNetos, self.totalDividendsBrutos, self.totalDividendsRetenciones, sumcomision)=set.myqtablewidget(self.tblDividends, True)
 
     def textPositiveNegative(self, setinvestmentoperationshistorical ):
         """Generate text with positive and negative operations"""
@@ -100,7 +100,7 @@ class wdgJointReport(QWidget, Ui_wdgJointReport):
             for o in i.op_historica.arr:
                 if o.fecha_venta.year==self.wy.year and o.tipooperacion.id in (5, 8):#Venta y traspaso fondos inversion
                     operaciones.arr.append(o)
-        (self.totalBruto, self.totalComisiones, self.totalImpuestos, self.totalNeto)=operaciones.myqtablewidget(self.tblInvestments, "wdgJointReport")
+        (self.totalBruto, self.totalComisiones, self.totalImpuestos, self.totalNeto)=operaciones.myqtablewidget(self.tblInvestments)
         self.lblPositiveNegative.setText(self.textPositiveNegative(operaciones))
 
     def load_less(self):
@@ -110,7 +110,7 @@ class wdgJointReport(QWidget, Ui_wdgJointReport):
                 if o.fecha_venta.year==self.wy.year and o.tipooperacion.id in (5, 8) and o.less_than_a_year()==True:#Venta y traspaso fondos inversion
                     operaciones.arr.append(o)
         operaciones.sort()
-        (self.totalBrutoLess, self.totalComisionesLess, self.totalImpuestosLess, self.totalNetoLess)=operaciones.myqtablewidget(self.tblLess, "wdgJointReport")
+        (self.totalBrutoLess, self.totalComisionesLess, self.totalImpuestosLess, self.totalNetoLess)=operaciones.myqtablewidget(self.tblLess)
 
     def load_more(self):
         operaciones=SetInvestmentOperationsHistorical(self.mem)
@@ -119,7 +119,7 @@ class wdgJointReport(QWidget, Ui_wdgJointReport):
                 if o.fecha_venta.year==self.wy.year and o.tipooperacion.id in (5, 8) and o.less_than_a_year()==False:#Venta y traspaso fondos inversion
                     operaciones.arr.append(o)
         operaciones.sort()
-        (self.totalBrutoMore, self.totalComisionesMore, self.totalImpuestosMore, self.totalNetoMore)=operaciones.myqtablewidget(self.tblMore, "wdgJointReport")
+        (self.totalBrutoMore, self.totalComisionesMore, self.totalImpuestosMore, self.totalNetoMore)=operaciones.myqtablewidget(self.tblMore)
 
 
     def load_rendimientos_less(self):
