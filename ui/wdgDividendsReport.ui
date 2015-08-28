@@ -54,7 +54,7 @@
        <item>
         <widget class="QLabel" name="label">
          <property name="text">
-          <string>Dividends per share are red colorized when they are outdated more than</string>
+          <string>Dividends per share are with a clock are outdated more than</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignCenter</set>
@@ -87,7 +87,7 @@
         <widget class="QPushButton" name="cmd">
          <property name="icon">
           <iconset resource="../images/xulpymoney.qrc">
-           <normaloff>:/xulpymoney/tools-wizard.png</normaloff>:/xulpymoney/tools-wizard.png</iconset>
+           <normaloff>:/xulpymoney/alarm_clock.png</normaloff>:/xulpymoney/alarm_clock.png</iconset>
          </property>
         </widget>
        </item>

@@ -241,8 +241,6 @@ class SetCommons:
         """Deletes all items"""
         self.arr=[]
         self.dic_arr={}
-#        for a in self.arr:
-#            self.remove(a)
                 
     def clone(self,  *initparams):
         """Returns other Set object, with items referenced, ojo con las formas de las instancias
