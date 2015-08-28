@@ -41,6 +41,7 @@ class frmProductReport(QDialog, Ui_frmProductReport):
         
         self.tblTPC.settings(self.mem)    
         self.tblDaily.settings(self.mem)    
+        self.tblWeekly.settings(self.mem)
         self.tblMonthly.settings(self.mem)    
         self.tblYearly.settings(self.mem)    
         self.tblIntradia.settings(self.mem)    
@@ -156,9 +157,9 @@ class frmProductReport(QDialog, Ui_frmProductReport):
             self.product.estimations_eps.load_from_db()#No cargada por defecto en product
             self.product.dps.load_from_db()
 
-            self.product.estimations_dps.myqtablewidget(self.tblDividendsEstimations, "frmProductReport")   
-            self.product.estimations_eps.myqtablewidget(self.tblEPS, "frmProductReport")            
-            self.product.dps.myqtablewidget(self.tblDPSPaid, "frmProductReport")            
+            self.product.estimations_dps.myqtablewidget(self.tblDividendsEstimations)   
+            self.product.estimations_eps.myqtablewidget(self.tblEPS)            
+            self.product.dps.myqtablewidget(self.tblDPSPaid)            
             inicio=datetime.datetime.now()
             self.load_information()
             print ("Datos informacion cargados:",  datetime.datetime.now()-inicio)
@@ -300,13 +301,13 @@ class frmProductReport(QDialog, Ui_frmProductReport):
             self.selDPS.borrar()
             self.mem.con.commit()
             self.product.dps.arr.remove(self.selDPS)
-            self.product.dps.myqtablewidget(self.tblDPSPaid,  "frmProductReport")
+            self.product.dps.myqtablewidget(self.tblDPSPaid)
         
     @pyqtSlot()
     def on_actionDPSNew_triggered(self):
         d=frmDPSAdd(self.mem, self.product)
         d.exec_()
-        self.product.dps.myqtablewidget(self.tblDPSPaid, "frmProductReport")
+        self.product.dps.myqtablewidget(self.tblDPSPaid)
 
     @pyqtSlot()
     def on_actionEstimationDPSDelete_triggered(self):
@@ -314,13 +315,13 @@ class frmProductReport(QDialog, Ui_frmProductReport):
             self.selEstimationDPS.borrar()
             self.product.estimations_dps.arr.remove(self.selEstimationDPS)
             self.mem.con.commit()
-            self.product.estimations_dps.myqtablewidget(self.tblDividendsEstimations, "frmProductReport")
+            self.product.estimations_dps.myqtablewidget(self.tblDividendsEstimations)
         
     @pyqtSlot()
     def on_actionEstimationDPSNew_triggered(self):
         d=frmEstimationsAdd(self.mem, self.product, "dps")
         d.exec_()
-        self.product.estimations_dps.myqtablewidget(self.tblDividendsEstimations, "frmProductReport")
+        self.product.estimations_dps.myqtablewidget(self.tblDividendsEstimations)
 
     @pyqtSlot()
     def on_actionEstimationEPSDelete_triggered(self):
@@ -328,13 +329,13 @@ class frmProductReport(QDialog, Ui_frmProductReport):
             self.selEstimationEPS.borrar()
             self.product.estimations_eps.arr.remove(self.selEstimationEPS)
             self.mem.con.commit()
-            self.product.estimations_eps.myqtablewidget(self.tblEPS, "frmProductReport")
+            self.product.estimations_eps.myqtablewidget(self.tblEPS)
         
     @pyqtSlot()
     def on_actionEstimationEPSNew_triggered(self):
         d=frmEstimationsAdd(self.mem, self.product, "eps")
         d.exec_()
-        self.product.estimations_eps.myqtablewidget(self.tblEPS,  "frmProductReport")
+        self.product.estimations_eps.myqtablewidget(self.tblEPS)
 
     @pyqtSlot()
     def on_actionPurgeDay_triggered(self):

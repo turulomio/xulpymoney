@@ -942,13 +942,13 @@ class SetAccountOperations:
             diff=1
         else:
             tabla.setColumnCount(5)
-        tabla.setHorizontalHeaderItem(0, QTableWidgetItem(QApplication.translate(section, "Date" )))
+        tabla.setHorizontalHeaderItem(0, QTableWidgetItem(tr("Date" )))
         if show_account==True:
-            tabla.setHorizontalHeaderItem(diff, QTableWidgetItem(QApplication.translate(section, "Account" )))
-        tabla.setHorizontalHeaderItem(1+diff, QTableWidgetItem(QApplication.translate(section, "Concept" )))
-        tabla.setHorizontalHeaderItem(2+diff,  QTableWidgetItem(QApplication.translate(section, "Amount" )))
-        tabla.setHorizontalHeaderItem(3+diff, QTableWidgetItem(QApplication.translate(section, "Balance" )))
-        tabla.setHorizontalHeaderItem(4+diff, QTableWidgetItem(QApplication.translate(section, "Comment" )))
+            tabla.setHorizontalHeaderItem(diff, QTableWidgetItem(tr("Account" )))
+        tabla.setHorizontalHeaderItem(1+diff, QTableWidgetItem(tr("Concept" )))
+        tabla.setHorizontalHeaderItem(2+diff,  QTableWidgetItem(tr("Amount" )))
+        tabla.setHorizontalHeaderItem(3+diff, QTableWidgetItem(tr("Balance" )))
+        tabla.setHorizontalHeaderItem(4+diff, QTableWidgetItem(tr("Comment" )))
         ##DATA 
         tabla.clearContents()
         tabla.settings(   self.mem)       
@@ -3495,11 +3495,11 @@ class SetCreditCardOperations:
         show_account muestra la cuenta cuando las opercuentas son de diversos cuentas (Estudios totales)"""
         ##HEADERS
         tabla.setColumnCount(5)
-        tabla.setHorizontalHeaderItem(0, QTableWidgetItem(QApplication.translate(section, "Date" )))
-        tabla.setHorizontalHeaderItem(1, QTableWidgetItem(QApplication.translate(section, "Concept" )))
-        tabla.setHorizontalHeaderItem(2,  QTableWidgetItem(QApplication.translate(section, "Amount" )))
-        tabla.setHorizontalHeaderItem(3, QTableWidgetItem(QApplication.translate(section, "Balance" )))
-        tabla.setHorizontalHeaderItem(4, QTableWidgetItem(QApplication.translate(section, "Comment" )))
+        tabla.setHorizontalHeaderItem(0, QTableWidgetItem(tr("Date" )))
+        tabla.setHorizontalHeaderItem(1, QTableWidgetItem(tr("Concept" )))
+        tabla.setHorizontalHeaderItem(2,  QTableWidgetItem(tr("Amount" )))
+        tabla.setHorizontalHeaderItem(3, QTableWidgetItem(tr("Balance" )))
+        tabla.setHorizontalHeaderItem(4, QTableWidgetItem(tr("Comment" )))
         ##DATA 
         tabla.clearContents()
         tabla.settings(   self.mem)       
@@ -4388,9 +4388,9 @@ class SetQuotes:
         
     def myqtablewidget(self, tabla):
         tabla.setColumnCount(3)
-        tabla.setHorizontalHeaderItem(0, QTableWidgetItem(QApplication.translate(section, "Date and time" )))
-        tabla.setHorizontalHeaderItem(1, QTableWidgetItem(QApplication.translate(section, "Product" )))
-        tabla.setHorizontalHeaderItem(2, QTableWidgetItem(QApplication.translate(section, "Price" )))        
+        tabla.setHorizontalHeaderItem(0, QTableWidgetItem(tr("Date and time" )))
+        tabla.setHorizontalHeaderItem(1, QTableWidgetItem(tr("Product" )))
+        tabla.setHorizontalHeaderItem(2, QTableWidgetItem(tr("Price" )))        
         tabla.clearContents()
         tabla.settings(   self.mem)       
         tabla.setRowCount(len(self.arr))

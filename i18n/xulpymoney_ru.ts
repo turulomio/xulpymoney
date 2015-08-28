@@ -53,7 +53,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="1763"/>
+        <location filename="../libxulpymoney.py" line="4395"/>
         <source>Product</source>
         <translation type="unfinished"></translation>
     </message>
@@ -68,7 +68,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="1540"/>
+        <location filename="../libxulpymoney.py" line="4396"/>
         <source>Price</source>
         <translation type="unfinished"></translation>
     </message>
@@ -258,7 +258,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="1034"/>
+        <location filename="../libxulpymoney.py" line="3501"/>
         <source>Concept</source>
         <translation type="unfinished"></translation>
     </message>
@@ -811,6 +811,26 @@ Total purged in global process: {1}</source>
     <message>
         <location filename="../libqmessagebox.py" line="20"/>
         <source>The role of the user is not an administrator</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../libxulpymoney.py" line="3502"/>
+        <source>Amount</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../libxulpymoney.py" line="3503"/>
+        <source>Balance</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../libxulpymoney.py" line="3504"/>
+        <source>Comment</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../libxulpymoney.py" line="4394"/>
+        <source>Date and time</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3497,12 +3517,12 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.py" line="408"/>
+        <location filename="../ui/frmProductReport.py" line="409"/>
         <source>{0} quotes have been purged from {1}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.py" line="450"/>
+        <location filename="../ui/frmProductReport.py" line="451"/>
         <source>You have to add a quote and a dividend per share estimation to the new product</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3517,27 +3537,27 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.py" line="57"/>
+        <location filename="../ui/frmProductReport.py" line="58"/>
         <source>Add a new product</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.py" line="478"/>
+        <location filename="../ui/frmProductReport.py" line="479"/>
         <source>Agrupation selection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.py" line="489"/>
+        <location filename="../ui/frmProductReport.py" line="490"/>
         <source>Priority selection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.py" line="502"/>
+        <location filename="../ui/frmProductReport.py" line="503"/>
         <source>Historical data priority selection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.py" line="243"/>
+        <location filename="../ui/frmProductReport.py" line="244"/>
         <source>Daily maximum variance: {} ({})</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3607,7 +3627,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.py" line="260"/>
+        <location filename="../ui/frmProductReport.py" line="261"/>
         <source>Year {}</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3632,7 +3652,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.py" line="93"/>
+        <location filename="../ui/frmProductReport.py" line="94"/>
         <source>Report of historic prices. You have {} shares valued at {}.</source>
         <translation type="unfinished"></translation>
     </message>
