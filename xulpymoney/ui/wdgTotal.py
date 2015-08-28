@@ -501,7 +501,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
                 if o.fecha_venta.year==self.wyData.year and o.fecha_venta.month==self.month and o.tipooperacion.id in (5, 8):#Venta y traspaso fondos inversion
                     set.arr.append(o)
         set.order_by_fechaventa()
-        set.myqtablewidget(table, "wdgTotal")
+        set.myqtablewidget(table)
         horizontalLayout.addWidget(table)
         self.tab.addTab(newtab, self.tr("Product selling operations of {0} of {1}").format(self.table.horizontalHeaderItem(self.month-1).text(), self.wyData.year))
         self.tab.setCurrentWidget(newtab)
