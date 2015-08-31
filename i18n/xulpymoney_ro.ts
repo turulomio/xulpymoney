@@ -1732,17 +1732,17 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmAccountsReport.py" line="200"/>
+        <location filename="../ui/frmAccountsReport.py" line="203"/>
         <source>Do you really want to delete transfer from {0} to {1}, with amount {2} and it&apos;s commision?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmAccountsReport.py" line="230"/>
+        <location filename="../ui/frmAccountsReport.py" line="233"/>
         <source>CreditCard {0}. </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmAccountsReport.py" line="244"/>
+        <location filename="../ui/frmAccountsReport.py" line="247"/>
         <source>CreditCard {0}</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1797,27 +1797,27 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmAccountsReport.py" line="39"/>
+        <location filename="../ui/frmAccountsReport.py" line="42"/>
         <source>New account data</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmAccountsReport.py" line="45"/>
+        <location filename="../ui/frmAccountsReport.py" line="48"/>
         <source>Add a new account</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmAccountsReport.py" line="56"/>
+        <location filename="../ui/frmAccountsReport.py" line="59"/>
         <source>Update account data</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmAccountsReport.py" line="130"/>
+        <location filename="../ui/frmAccountsReport.py" line="133"/>
         <source>I can&apos;t delete the credit card, because it has dependent registers</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmAccountsReport.py" line="447"/>
+        <location filename="../ui/frmAccountsReport.py" line="450"/>
         <source>{0} was made a paid of {1}</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4301,7 +4301,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgAccounts.py" line="55"/>
+        <location filename="../ui/wdgAccounts.py" line="53"/>
         <source>This account has associated investments, credit cards or operations. It can&apos;t be deleted</source>
         <translation type="unfinished"></translation>
     </message>

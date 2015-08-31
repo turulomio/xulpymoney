@@ -9,12 +9,9 @@ class myQTableWidget(QTableWidget):
         self.parent=parent
         self.mem=None
         self.parentname=None
-        self.verticalHeader().setSectionResizeMode(QHeaderView.ResizeToContents)
-        self.horizontalHeader().sectionResized.connect(self.sectionResized)
 
 
     def sectionResized(self, logicalIndex, oldSize, newSize):
-
         self.mem.settings.setValue("{}/{}_horizontalheader_state".format(self.parentname, self.objectName()), self.horizontalHeader().saveState() )
         
     def settings(self, mem, parentname=None):
@@ -25,7 +22,9 @@ class myQTableWidget(QTableWidget):
             self.parentname=parentname
         self.mem=mem
 
+        self.verticalHeader().setSectionResizeMode(QHeaderView.ResizeToContents)
         self.horizontalHeader().setSectionResizeMode(QHeaderView.Interactive)
+        self.horizontalHeader().sectionResized.connect(self.sectionResized)
         state=self.mem.settings.value("{}/{}_horizontalheader_state".format(self.parentname, self.objectName()))
         if state:
             self.horizontalHeader().restoreState(state)
