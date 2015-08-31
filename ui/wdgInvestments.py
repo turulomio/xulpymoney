@@ -26,8 +26,10 @@ class wdgInvestments(QWidget, Ui_wdgInvestments):
     def tblInvestments_reload(self):
         """Función que carga la tabla de inversiones con el orden que tenga el arr serl.inversiones"""
         if self.chkInactivas.checkState()==Qt.Checked:
+            self.tblInvestments.setSaveSettings(False) #Must be before than hidden, because hide resizes
             self.tblInvestments.setColumnHidden(8, True)
         else:
+            self.tblInvestments.setSaveSettings(True)
             self.tblInvestments.setColumnHidden(8, False)
             
         r=self.inversiones.myqtablewidget(self.tblInvestments)

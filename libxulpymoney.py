@@ -345,7 +345,7 @@ class SetInvestments(SetCommons):
                 table.item(i, 7).setIcon(QIcon(":/xulpymoney/new.png"))
             tpc_venta=inv.tpc_venta()
             table.setItem(i, 8, qtpc(tpc_venta))
-            if inv.selling_expiration:
+            if inv.selling_expiration!=None:
                 if inv.selling_expiration<datetime.date.today():
                     table.item(i, 8).setIcon(QIcon(":/xulpymoney/alarm_clock.png"))
             if tpc_invertido!=None and tpc_venta!=None:

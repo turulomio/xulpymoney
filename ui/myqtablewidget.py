@@ -9,10 +9,15 @@ class myQTableWidget(QTableWidget):
         self.parent=parent
         self.mem=None
         self.parentname=None
+        self._save_settings=True
 
+    def setSaveSettings(self, state):
+        """Used when i don't want my columns with being saved"""
+        self._save_settings=state
 
     def sectionResized(self, logicalIndex, oldSize, newSize):
-        self.mem.settings.setValue("{}/{}_horizontalheader_state".format(self.parentname, self.objectName()), self.horizontalHeader().saveState() )
+        if self._save_settings==True:
+            self.mem.settings.setValue("{}/{}_horizontalheader_state".format(self.parentname, self.objectName()), self.horizontalHeader().saveState() )
         
     def settings(self, mem, parentname=None):
         """Sometimes parentname is not wdg or frm  Widget (may be a groupbox), so I must define it manually"""    
