@@ -308,6 +308,7 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
             else:
                 self.actionOperationDelete.setEnabled(True)
                 self.actionOperationEdit.setEnabled(True)
+                
             
             
         menu=QMenu()
@@ -324,23 +325,43 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
         menu.addSeparator()
         menu.addAction(self.actionSplit)
         menu.exec_(self.tblOperaciones.mapToGlobal(pos))
-
+        
+    def on_tblInvestmentCurrent_itemSelectionChanged(self):
+        self.inversion.op_actual.selected=None
+        try:
+            for i in self.tblInvestmentCurrent.selectedItems():#itera por cada item no row.
+                if i.row()<self.inversion.op_actual.length():#Due to total file
+                    self.inversion.op_actual.selected=self.op.arr[i.row()]
+        except:
+            self.inversion.op_actual.selected=None
+        print (self.tr("Selected: {0}".format(str(self.inversion.op_actual.selected))))
+        
+        
     def on_tblInvestmentCurrent_customContextMenuRequested(self,  pos):
         
         if self.inversion.qmessagebox_inactive() or self.inversion.account.qmessagebox_inactive() or self.inversion.account.eb.qmessagebox_inactive():
             return
+                
+        if self.inversion.op_actual.selected:
+            self.actionChangeBenchmarkPrice.setEnabled(True)
+        else:
+            self.actionChangeBenchmarkPrice.setEnabled(False)
+            
         menu=QMenu()
         menu.addAction(self.actionDisReinvest)
         menu.addSeparator()
         menu.addAction(self.actionOperationAdd)
         menu.addSeparator()
         menu.addAction(self.actionSharesTransfer)
+        menu.addSeparator()
+        menu.addAction(self.actionChangeBenchmarkPrice)
         
         
         menu.exec_(self.tblInvestmentCurrent.mapToGlobal(pos))
 
 
     def on_tblOperaciones_itemSelectionChanged(self):
+        self.op.selected=None
         try:
             for i in self.tblOperaciones.selectedItems():#itera por cada item no row.
                 self.op.selected=self.op.arr[i.row()]
