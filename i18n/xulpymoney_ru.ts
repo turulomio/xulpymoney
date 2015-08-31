@@ -298,7 +298,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="5327"/>
+        <location filename="../libxulpymoney.py" line="5331"/>
         <source>Shares</source>
         <translation type="unfinished"></translation>
     </message>
@@ -668,97 +668,97 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="5328"/>
+        <location filename="../libxulpymoney.py" line="5332"/>
         <source>Funds</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="5329"/>
+        <location filename="../libxulpymoney.py" line="5333"/>
         <source>Indexes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="5330"/>
+        <location filename="../libxulpymoney.py" line="5334"/>
         <source>ETF</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="5331"/>
+        <location filename="../libxulpymoney.py" line="5335"/>
         <source>Warrants</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="5332"/>
+        <location filename="../libxulpymoney.py" line="5336"/>
         <source>Currencies</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="5333"/>
+        <location filename="../libxulpymoney.py" line="5337"/>
         <source>Public Bond</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="5334"/>
+        <location filename="../libxulpymoney.py" line="5338"/>
         <source>Pension plans</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="5335"/>
+        <location filename="../libxulpymoney.py" line="5339"/>
         <source>Private Bond</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="5336"/>
+        <location filename="../libxulpymoney.py" line="5340"/>
         <source>Deposit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="5337"/>
+        <location filename="../libxulpymoney.py" line="5341"/>
         <source>Accounts</source>
         <translation type="unfinished">счета</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="6016"/>
+        <location filename="../libxulpymoney.py" line="6020"/>
         <source>year</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="6018"/>
+        <location filename="../libxulpymoney.py" line="6022"/>
         <source>years</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="6020"/>
+        <location filename="../libxulpymoney.py" line="6024"/>
         <source>month</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="6022"/>
+        <location filename="../libxulpymoney.py" line="6026"/>
         <source>months</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="6024"/>
+        <location filename="../libxulpymoney.py" line="6028"/>
         <source>day</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="6026"/>
+        <location filename="../libxulpymoney.py" line="6030"/>
         <source>days</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="6027"/>
+        <location filename="../libxulpymoney.py" line="6031"/>
         <source>{} {}, {} {} and {} {}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="6051"/>
+        <location filename="../libxulpymoney.py" line="6055"/>
         <source>True</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="6054"/>
+        <location filename="../libxulpymoney.py" line="6058"/>
         <source>False</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2511,12 +2511,12 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmInvestmentReport.py" line="150"/>
+        <location filename="../ui/frmInvestmentReport.py" line="157"/>
         <source>Before adding a operation, you must add the current price of the product.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmInvestmentReport.py" line="370"/>
+        <location filename="../ui/frmInvestmentReport.py" line="377"/>
         <source>Selected: {0}</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2591,7 +2591,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmInvestmentReport.py" line="204"/>
+        <location filename="../ui/frmInvestmentReport.py" line="211"/>
         <source>Shares transfer couldn&apos;t be done.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2606,7 +2606,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmInvestmentReport.py" line="139"/>
+        <location filename="../ui/frmInvestmentReport.py" line="146"/>
         <source>Divest / Reinvest simulation</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2616,7 +2616,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmInvestmentReport.py" line="256"/>
+        <location filename="../ui/frmInvestmentReport.py" line="263"/>
         <source>You must select a product to continue.</source>
         <translation type="unfinished"></translation>
     </message>
