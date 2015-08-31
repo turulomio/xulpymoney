@@ -638,6 +638,18 @@
     <string>make Split / Contrasplit</string>
    </property>
   </action>
+  <action name="actionChangeBenchmarkPrice">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/editar.png</normaloff>:/xulpymoney/editar.png</iconset>
+   </property>
+   <property name="text">
+    <string>Change benchmark price</string>
+   </property>
+   <property name="toolTip">
+    <string>Change benchmark price</string>
+   </property>
+  </action>
  </widget>
  <customwidgets>
   <customwidget>
