@@ -35,14 +35,12 @@ class wdgAccounts(QWidget, Ui_wdgAccounts):
         self.child=self.child=frmAccountsReport(self.mem,   self.selAccount, self)
         self.child.exec_()
         self.on_chkInactivas_stateChanged(self.chkInactivas.checkState())
-        self.load_table()
         
     @QtCore.pyqtSlot() 
     def on_actionAccountAdd_triggered(self):
         self.child=frmAccountsReport(self.mem, None)
         self.child.exec_()
         self.on_chkInactivas_stateChanged(self.chkInactivas.checkState())
-        self.load_table()
       
     @QtCore.pyqtSlot() 
     def on_actionAccountDelete_triggered(self):

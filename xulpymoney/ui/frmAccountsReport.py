@@ -11,7 +11,7 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
         """
             selIdAccount=None Inserción de cuentas
             selIdAccount=X. Modificación de cuentas cuando click en cmd y resto de trabajos"""
-        QWidget.__init__(self, parent)
+        QDialog.__init__(self, parent)
         self.setupUi(self)
         self.showMaximized()
         self.cmdDatos.setEnabled(False)     
@@ -69,7 +69,7 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
         else:
             self.mem.data.load_inactives()
             self.creditcards=self.mem.data.creditcards_inactive.clone_of_account(self.account)  
-        self.creditcards.myqtablewidget(self.tblCreditCards, "frmAccountsReport")
+        self.creditcards.myqtablewidget(self.tblCreditCards)
         self.creditcards.selected=None
         self.tblCreditCards.clearSelection()
 
@@ -78,7 +78,7 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
 
     def creditcardoperations_reload(self):     
         self.creditcardoperations.load_from_db(self.mem.con.mogrify("select * from opertarjetas where id_tarjetas=%s and pagado=false", [self.creditcards.selected.id, ]))
-        self.creditcardoperations.myqtablewidget(self.tblCreditCardOpers, "frmAccountsReport")
+        self.creditcardoperations.myqtablewidget(self.tblCreditCardOpers)
         self.creditcardoperations.selected=SetCreditCardOperations(self.mem)
         ##UPdates creditcard balance
         row=None
@@ -171,7 +171,7 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
           
         self.accountoperations=SetAccountOperations(self.mem)           
         self.accountoperations.load_from_db(self.mem.con.mogrify("select * from opercuentas where id_cuentas=%s and date_part('year',datetime)=%s and date_part('month',datetime)=%s order by datetime, id_opercuentas", [self.account.id, self.wdgYM.year, self.wdgYM.month]))
-        self.accountoperations.myqtablewidget_lastmonthbalance(self.tblOperaciones, "frmAccountsReport", self.account,  lastMonthBalance)   
+        self.accountoperations.myqtablewidget_lastmonthbalance(self.tblOperaciones,  self.account,  lastMonthBalance)   
         self.tblOperaciones.clearSelection()
         self.accountoperations.selected=None
 
@@ -434,7 +434,7 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
         id_opercuentas=self.cmbFechasPago.itemData(index)
         setPaidCreditCardOperations=SetCreditCardOperations(self.mem)
         setPaidCreditCardOperations.load_from_db("select * from opertarjetas where id_opercuentas={};".format(id_opercuentas, ))
-        setPaidCreditCardOperations.myqtablewidget(self.tblOpertarjetasHistoricas, "frmAccountsReport")
+        setPaidCreditCardOperations.myqtablewidget(self.tblOpertarjetasHistoricas)
 
     def on_tabOpertarjetasDiferidas_currentChanged(self, index): 
         if  index==1: #PAGOS
