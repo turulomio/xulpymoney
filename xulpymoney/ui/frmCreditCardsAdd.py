@@ -2,6 +2,7 @@ from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from Ui_frmCreditCardsAdd import *
 from libxulpymoney import *
+from libqmessagebox import qmessagebox_number_invalid
 
 class frmCreditCardsAdd(QDialog, Ui_frmCreditCardsAdd):
     def __init__(self, mem,  account,  creditcard,  parent=None):
@@ -30,16 +31,19 @@ class frmCreditCardsAdd(QDialog, Ui_frmCreditCardsAdd):
             self.txtNumber.setText(self.creditcard.numero)
             
     def on_cmd_pressed(self):
-        self.creditcard.name=self.txtCreditCard.text()
-        self.creditcard.account=self.account
-        self.creditcard.pagodiferido=c2b(self.chkDelayed.checkState())
-        self.creditcard.saldomaximo=self.txtMaximum.decimal()
-        self.creditcard.numero=self.txtNumber.text()
-        self.creditcard.save()
-        self.mem.con.commit()        
+        if self.txtMaximum.isValid():
+            self.creditcard.name=self.txtCreditCard.text()
+            self.creditcard.account=self.account
+            self.creditcard.pagodiferido=c2b(self.chkDelayed.checkState())
+            self.creditcard.saldomaximo=self.txtMaximum.decimal()
+            self.creditcard.numero=self.txtNumber.text()
+            self.creditcard.save()
+            self.mem.con.commit()        
+            
+            if self.tipo==1:#insertar
+                self.mem.data.creditcards_active.append(self.creditcard)
         
-        if self.tipo==1:#insertar
-            self.mem.data.creditcards_active.append(self.creditcard)
-        
-        self.done(0)
+            self.done(0)
+        else:
+            qmessagebox_number_invalid()
     
