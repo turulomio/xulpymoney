@@ -133,6 +133,13 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
         self.on_chkHistoricalDividends_stateChanged(self.chkHistoricalDividends.checkState())
 
     @QtCore.pyqtSlot() 
+    def on_actionChangeBenchmarkPrice_triggered(self):
+        w=frmQuotesIBM(self.mem, self.mem.data.benchmark, self.inversion.op_actual.selected.referenciaindice, self)
+        w.txtQuote.setFocus()
+        w.exec_() 
+        self.update_tables()
+
+    @QtCore.pyqtSlot() 
     def on_actionDisReinvest_triggered(self):
         d=QDialog()       
         d.showMaximized()
@@ -331,7 +338,7 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
         try:
             for i in self.tblInvestmentCurrent.selectedItems():#itera por cada item no row.
                 if i.row()<self.inversion.op_actual.length():#Due to total file
-                    self.inversion.op_actual.selected=self.op.arr[i.row()]
+                    self.inversion.op_actual.selected=self.inversion.op_actual.arr[i.row()]
         except:
             self.inversion.op_actual.selected=None
         print (self.tr("Selected: {0}".format(str(self.inversion.op_actual.selected))))

@@ -4655,12 +4655,16 @@ class Quote:
         self.quote=quote
         return self
         
-    def exists(self, cur):
-        """Función que comprueba si existe en la base de datos y devuelve el valor de quote en caso positivo en una dupla"""     
+    def exists(self):
+        """Función que comprueba si existe en la base de datos y devuelve el valor de quote en caso positivo en una dupla""" 
+        (status, reg)=(False, None)
+        cur=self.mem.con.cursor()
         cur.execute("select quote from quotes where id=%s and  datetime=%s;", (self.product.id, self.datetime))
-        if cur.rowcount==0: #No Existe el registro
-            return (False,  None)
-        return (True,  cur.fetchone()['quote'])
+        if cur.rowcount!=0:
+            reg=cur.fetchone()[0]
+            status=True
+        cur.close()
+        return (status, reg)
         
         
     def can_be_saved(self):
@@ -4676,20 +4680,20 @@ class Quote:
         No hace commit a la conexión
         Devuelve un número 1 si insert, 2 update, 3 ya  exisitia
         """
+        r=None
         cur=self.mem.con.cursor()
-        exists=self.exists(cur)
+        exists=self.exists()
         if exists[0]==False:
             cur.execute('insert into quotes (id, datetime, quote) values (%s,%s,%s)', ( self.product.id, self.datetime, self.quote))
-            cur.close()
-            return 1
+            r=1
         else:
             if exists[1]!=self.quote:
-                cur.execute("update quotes set quote=%swhere id=%s and datetime=%s", (self.quote, self.product.id, self.datetime))
-                cur.close()
-                return 2
+                cur.execute("update quotes set quote=%s where id=%s and datetime=%s", (self.quote, self.product.id, self.datetime))
+                r=2
             else: #ignored
-                cur.close()
-                return 3
+                r=3
+        cur.close()
+        return r
                 
     def delete(self):
         cur=self.mem.con.cursor()
@@ -4713,7 +4717,7 @@ class Quote:
         cur.execute(sql)
         row=cur.fetchone()
         cur.close()
-        return self.init__db_row(row, dt)
+        return self.init__db_row(row, product,  dt)
                 
     def init__from_query_penultima(self,product,  lastdate=None):
         cur=self.mem.con.cursor()
@@ -4723,7 +4727,7 @@ class Quote:
             cur.execute("select * from penultimate(%s,%s)", (product.id, lastdate ))
         row=cur.fetchone()
         cur.close()
-        return self.init__db_row(row, None)        
+        return self.init__db_row(row, product)        
         
     def init__from_query_triplete(self, product): 
         """Función que busca el last, penultimate y endlastyear de golpe
