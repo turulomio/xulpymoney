@@ -124,15 +124,15 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
                 
     @QtCore.pyqtSlot() 
     def on_actionCreditCardDelete_triggered(self):
-        if self.creditcards.selected.borrar()==False:
+        if self.creditcards.selected.is_deletable()==False:
             m=QMessageBox()
             m.setIcon(QMessageBox.Information)
             m.setText(self.tr("I can't delete the credit card, because it has dependent registers"))
-            m.exec_()                 
-        self.mem.con.commit()
-        self.mem.data.creditcards_active.arr.remove(self.creditcards.selected)
-        self.tblCreditCards.clearSelection()
-        self.creditcards_reload()
+            m.exec_()
+        else:
+            self.mem.data.creditcards_active.delete(self.creditcards.selected)#self.creditcards is only a clone and is reloaded later
+            self.mem.con.commit()
+            self.creditcards_reload()
 
     def on_chkCreditCards_stateChanged(self, state):      
        self.creditcards_reload() 

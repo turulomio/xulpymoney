@@ -3100,29 +3100,24 @@ class CreditCard:
         self.init__create(row['tarjeta'], cuenta, row['pagodiferido'], row['saldomaximo'], row['active'], row['numero'], row['id_tarjetas'])
         return self
                     
-    def borrar(self):
+    def delete(self):
+        cur=self.mem.con.cursor()
+        cur.execute("delete from tarjetas where id_tarjetas=%s", (self.id, ))
+        cur.close()
+        
+    def is_deletable(self):
         """
-            Devuelve False si no ha podido borrarse por haber dependientes.
+            Devuelve False si no puede borrarse por haber dependientes.
         """
+        res=0
         cur=self.mem.con.cursor()
         cur.execute("select count(*) from opertarjetas where id_tarjetas=%s", (self.id, ))
-        if cur.fetchone()['count']>0: # tiene dependientes
-            cur.close()
-            return False
-        else:
-            sql="delete from tarjetas where id_tarjetas="+ str(self.id);
-            cur.execute(sql)
-            cur.close()
+        res=cur.fetchone()[0]
+        cur.close()
+        if res==0:
             return True
-#        
-#    def get_opercreditcards_diferidas_pendientes(self):
-#        """Funci`on que carga un array con objetos inversion operacion y con ellos calcula el set de actual e historicas"""
-#        cur=self.mem.con.cursor()
-#        self.op_diferido=[]
-#        cur.execute("SELECT * from opertarjetas where id_tarjetas=%s and pagado=false", (self.id, ))
-#        for row in cur:
-#            self.op_diferido.append(CreditCardOperation(self.mem).init__db_row(row, self.mem.conceptos.find(row['id_conceptos']), self.mem.tiposoperaciones.find(row['id_tiposoperaciones']), self))
-#        cur.close()
+        else:
+            return False
         
     def qmessagebox_inactive(self):
         if self.active==False:
@@ -3427,6 +3422,14 @@ class SetCreditCards(SetCommons):
         SetCommons.__init__(self)
         self.mem=mem   
         self.accounts=cuentas
+
+            
+    def delete(self, creditcard):
+        """Deletes from db and removes object from array.
+        creditcard is an object"""
+        creditcard.delete()
+        self.remove(creditcard)
+
 
     def load_from_db(self, sql):
         cur=self.mem.con.cursor()
