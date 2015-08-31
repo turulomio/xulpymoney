@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS><TS version="2.0" language="es_ES" sourcelanguage="en">
+<!DOCTYPE TS>
+<TS version="2.1" language="es_ES" sourcelanguage="en">
 <context>
     <name>@default</name>
     <message>
@@ -15,17 +16,17 @@
     <message>
         <location filename="../libxulpymoney.py" line="269"/>
         <source>Xulpymoney between dates</source>
-        <translation type="unfinished"></translation>
+        <translation>Xulpymoney entre dos fechas</translation>
     </message>
     <message>
         <location filename="../libxulpymoney.py" line="270"/>
         <source>Xulpymvoney only investments between dates</source>
-        <translation type="unfinished"></translation>
+        <translation>Solo inversiones de Xulpymoney entre dos fechas</translation>
     </message>
     <message>
         <location filename="../libxulpymoney.py" line="271"/>
         <source>Simulating current benchmark between dates</source>
-        <translation type="unfinished"></translation>
+        <translation>Simulación del actual índice de referencia entre dos fechas</translation>
     </message>
     <message>
         <location filename="../libxulpymoney.py" line="295"/>
@@ -304,7 +305,7 @@
     </message>
     <message>
         <location filename="../libxulpymoney.py" line="1408"/>
-        <source>Valor acci&#xc3;&#xb3;n</source>
+        <source>Valor acciÃ³n</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -545,7 +546,7 @@
     <message>
         <location filename="../libxulpymoney.py" line="2648"/>
         <source>Traspaso de valores realizado a {0}</source>
-        <translation type="unfinished"></translation>
+        <translation>Shares transfer made at {0}</translation>
     </message>
     <message>
         <location filename="../libxulpymoney.py" line="2709"/>
@@ -807,32 +808,32 @@ Purgadas en total en el proceso global: {1}</translation>
     <message>
         <location filename="../libqmessagebox.py" line="14"/>
         <source>Error conecting to {} database in {} server</source>
-        <translation type="unfinished">Error al conectar a la base de datos {} del servidor {}</translation>
+        <translation>Error al conectar a la base de datos {} del servidor {}</translation>
     </message>
     <message>
         <location filename="../libqmessagebox.py" line="20"/>
         <source>The role of the user is not an administrator</source>
-        <translation type="unfinished"></translation>
+        <translation>El rol del usuario no es de administrador</translation>
     </message>
     <message>
         <location filename="../libxulpymoney.py" line="3502"/>
         <source>Amount</source>
-        <translation type="unfinished">Importe</translation>
+        <translation>Importe</translation>
     </message>
     <message>
         <location filename="../libxulpymoney.py" line="3503"/>
         <source>Balance</source>
-        <translation type="unfinished">Saldo</translation>
+        <translation>Saldo</translation>
     </message>
     <message>
         <location filename="../libxulpymoney.py" line="3504"/>
         <source>Comment</source>
-        <translation type="unfinished">Comentario</translation>
+        <translation>Comentario</translation>
     </message>
     <message>
         <location filename="../libxulpymoney.py" line="4394"/>
         <source>Date and time</source>
-        <translation type="unfinished"></translation>
+        <translation>Fecha y hora</translation>
     </message>
 </context>
 <context>
@@ -1395,21 +1396,21 @@ Purgadas en total en el proceso global: {1}</translation>
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;La p&#xc3;&#xa1;gina del proyecto se encuentra en &lt;a href=&quot;http://glparchis.sourceforge.net&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;http://xulpymoney.sourceforge.net&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;La pÃ¡gina del proyecto se encuentra en &lt;a href=&quot;http://glparchis.sourceforge.net&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;http://xulpymoney.sourceforge.net&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; text-decoration: underline; color:#0057ae;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Este programa ha sido desarrollado por Mariano Mu&#xc3;&#xb1;oz.&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Este programa ha sido desarrollado por Mariano MuÃ±oz.&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Ha sido traducido por:&lt;/p&gt;
-&lt;ul style=&quot;margin-top: 0px; margin-bottom: 0px; margin-left: 0px; margin-right: 0px; -qt-list-indent: 1;&quot;&gt;&lt;li style=&quot; margin-top:12px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Mariano Mu&#xc3;&#xb1;oz&lt;/li&gt;&lt;/ul&gt;
+&lt;ul style=&quot;margin-top: 0px; margin-bottom: 0px; margin-left: 0px; margin-right: 0px; -qt-list-indent: 1;&quot;&gt;&lt;li style=&quot; margin-top:12px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Mariano MuÃ±oz&lt;/li&gt;&lt;/ul&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;a los siguientes idiomas&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:1; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;ul style=&quot;margin-top: 0px; margin-bottom: 0px; margin-left: 0px; margin-right: 0px; -qt-list-indent: 1;&quot;&gt;&lt;li style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Espa&#xc3;&#xb1;ol&lt;/li&gt;
+&lt;ul style=&quot;margin-top: 0px; margin-bottom: 0px; margin-left: 0px; margin-right: 0px; -qt-list-indent: 1;&quot;&gt;&lt;li style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;EspaÃ±ol&lt;/li&gt;
 &lt;li style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;English&lt;/li&gt;&lt;/ul&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; text-decoration: underline; color:#0057ae;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Los avatares han sido extra&#xc3;&#xad;dos de la p&#xc3;&#xa1;gina &lt;a href=&quot;http://www.nobleavatar.com/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;http://www.nobleavatar.com/&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Los avatares han sido extraÃ­dos de la pÃ¡gina &lt;a href=&quot;http://www.nobleavatar.com/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;http://www.nobleavatar.com/&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation></translation>
     </message>
     <message>
@@ -1419,12 +1420,12 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../ui/Ui_frmAbout.py" line="327"/>
-        <source>N&#xc3;&#xba;mero de Deuda p&#xc3;&#xba;blica</source>
+        <source>NÃºmero de Deuda pÃºblica</source>
         <translation></translation>
     </message>
     <message>
         <location filename="../ui/Ui_frmAbout.py" line="329"/>
-        <source>N&#xc3;&#xba;mero de Deuda privada</source>
+        <source>NÃºmero de Deuda privada</source>
         <translation></translation>
     </message>
     <message>
@@ -1698,7 +1699,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../ui/Ui_frmAccountsReport.py" line="431"/>
-        <source>XXXX &#xe2;&#x82;&#xac;</source>
+        <source>XXXX â¬</source>
         <translation>XXXX €</translation>
     </message>
     <message>
@@ -2621,17 +2622,17 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../ui/frmInvestmentReport.py" line="263"/>
         <source>You must select a product to continue.</source>
-        <translation type="unfinished"></translation>
+        <translation>Debe seleccionar un producto para continuar.</translation>
     </message>
     <message>
         <location filename="../ui/Ui_frmInvestmentReport.py" line="333"/>
         <source>Add selling order expiration</source>
-        <translation type="unfinished"></translation>
+        <translation>Añadir la fecha de expiración de la orden de venta</translation>
     </message>
     <message>
         <location filename="../ui/Ui_frmInvestmentReport.py" line="372"/>
         <source>Change benchmark price</source>
-        <translation type="unfinished"></translation>
+        <translation>Cambiar el precio del índice de referencia</translation>
     </message>
 </context>
 <context>
@@ -3073,12 +3074,12 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../ui/frmMain.py" line="41"/>
-        <source>Xulpymoney 2010-{0} &#xc2;&#xa9;</source>
+        <source>Xulpymoney 2010-{0} Â©</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../ui/frmMain.py" line="69"/>
-        <source>Xulpymoney 2010-{0} &#xc2;&#xa9; (Admin mode)</source>
+        <source>Xulpymoney 2010-{0} Â© (Admin mode)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3099,32 +3100,32 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../ui/frmMain.py" line="45"/>
         <source>Server: {}:{}      Database: {}      User: {}</source>
-        <translation type="unfinished"></translation>
+        <translation>Servidor: {}:{}      Base de datos: {}      Usuario: {}</translation>
     </message>
     <message>
         <location filename="../ui/Ui_frmMain.py" line="597"/>
         <source>Sync products from other Xulpymoney</source>
-        <translation type="unfinished"></translation>
+        <translation>Sincronizar productos desde otro Xulpymoney</translation>
     </message>
     <message>
         <location filename="../ui/frmMain.py" line="300"/>
         <source>Please login to the source xulpymoney database</source>
-        <translation type="unfinished"></translation>
+        <translation>Por favor, conéctese a la base de datos fuente de Xulpymoney</translation>
     </message>
     <message>
         <location filename="../ui/Ui_frmMain.py" line="601"/>
         <source>Simulations</source>
-        <translation type="unfinished"></translation>
+        <translation>Simulaciones</translation>
     </message>
     <message>
         <location filename="../ui/frmMain.py" line="289"/>
         <source>Xulpymoney Simulations</source>
-        <translation type="unfinished"></translation>
+        <translation>Simulaciones de Xulpymoney</translation>
     </message>
     <message>
         <location filename="../ui/Ui_frmMain.py" line="602"/>
         <source>Ctrl+S</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+S</translation>
     </message>
 </context>
 <context>
@@ -3946,10 +3947,10 @@ p, li { white-space: pre-wrap; }
         <source>Set selling price to all investments  of {0} to gain {1}</source>
         <translation>Establece el precio de venta para todas las inversiones a {0} para ganar {1}</translation>
     </message>
-    <message encoding="UTF-8">
+    <message>
         <location filename="../ui/Ui_frmSellingPoint.py" line="218"/>
         <source>Set the selling point to 0 €</source>
-        <translation type="unfinished"></translation>
+        <translation>Establecer el punto de venta a 0 €</translation>
     </message>
 </context>
 <context>
@@ -4104,7 +4105,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../ui/frmSplit.py" line="43"/>
-        <source>If you have 1000 shares of 10 &#xe2;&#x82;&#xac; of price, you will have {0:.6f} shares of {1:.6f} &#xe2;&#x82;&#xac; of price after the {2}</source>
+        <source>If you have 1000 shares of 10 â¬ of price, you will have {0:.6f} shares of {1:.6f} â¬ of price after the {2}</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -4669,7 +4670,7 @@ p, li { white-space: pre-wrap; }
         <translation>No puedes cerrar esta pestaña</translation>
     </message>
 </context>
-<context encoding="UTF-8">
+<context>
     <name>wdgDatetime</name>
     <message>
         <location filename="../ui/Ui_wdgDatetime.py" line="66"/>
@@ -4708,10 +4709,10 @@ p, li { white-space: pre-wrap; }
         <translation>Fecha y hora seleccionada:
 {0}</translation>
     </message>
-    <message encoding="UTF-8">
+    <message>
         <location filename="../ui/Ui_wdgDatetime.py" line="70"/>
         <source> μs</source>
-        <translation type="unfinished"></translation>
+        <translation> μs</translation>
     </message>
 </context>
 <context>
@@ -5142,27 +5143,27 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../ui/Ui_wdgIndexRange.py" line="214"/>
         <source>Show all investment operations</source>
-        <translation type="unfinished"></translation>
+        <translation>Mostrar todas las operaciones de inversión</translation>
     </message>
     <message>
         <location filename="../ui/Ui_wdgIndexRange.py" line="212"/>
         <source>Show bonds</source>
-        <translation type="unfinished"></translation>
+        <translation>Mostrar la renta fija</translation>
     </message>
     <message>
         <location filename="../ui/Ui_wdgIndexRange.py" line="211"/>
         <source>Show ETF, Shares and Warrants Investment operations</source>
-        <translation type="unfinished"></translation>
+        <translation>Mostrar operaciones de inversión de ETF, acciones y warrants</translation>
     </message>
     <message>
         <location filename="../ui/Ui_wdgIndexRange.py" line="213"/>
         <source>Show funds</source>
-        <translation type="unfinished"></translation>
+        <translation>Mostrar fondos de inversión</translation>
     </message>
     <message>
         <location filename="../ui/Ui_wdgIndexRange.py" line="210"/>
         <source>Marked to show investment operations</source>
-        <translation type="unfinished"></translation>
+        <translation>Mostrar las operaciones de inversión marcadas</translation>
     </message>
 </context>
 <context>
@@ -5433,32 +5434,32 @@ Diferencia diaria: {5}. Edad media del patrimonio: {6}</translation>
     <message>
         <location filename="../ui/Ui_wdgInvestmentsOperations.py" line="183"/>
         <source>Hide in range report</source>
-        <translation type="unfinished"></translation>
+        <translation>Ocultar en el informe de rangos</translation>
     </message>
     <message>
         <location filename="../ui/wdgInvestmentsOperations.py" line="163"/>
         <source>Show in range report</source>
-        <translation type="unfinished"></translation>
+        <translation>Mostrar en el informe de rangos</translation>
     </message>
     <message>
         <location filename="../ui/Ui_wdgInvestmentsOperations.py" line="168"/>
         <source>Show all investment operations</source>
-        <translation type="unfinished"></translation>
+        <translation>Mostrar todas las operaciones de inversión</translation>
     </message>
     <message>
         <location filename="../ui/Ui_wdgInvestmentsOperations.py" line="169"/>
         <source>Show purchasing investment operations</source>
-        <translation type="unfinished"></translation>
+        <translation>Mostrar las operaciones de inversión de compra</translation>
     </message>
     <message>
         <location filename="../ui/Ui_wdgInvestmentsOperations.py" line="170"/>
         <source>Show selling investment operations</source>
-        <translation type="unfinished"></translation>
+        <translation>Mostrar las operaciones de inversión de venta</translation>
     </message>
     <message>
         <location filename="../ui/Ui_wdgInvestmentsOperations.py" line="171"/>
         <source>Exclude selling and purchasing investment operations</source>
-        <translation type="unfinished"></translation>
+        <translation>Excluir las operaciones de inversión de venta y de compra</translation>
     </message>
 </context>
 <context>
@@ -5545,11 +5546,11 @@ Diferencia diaria: {5}. Edad media del patrimonio: {6}</translation>
     </message>
     <message>
         <location filename="../ui/Ui_wdgJointReport.py" line="434"/>
-        <source>En este listado se muestran los a&#xc3;&#xb1;adidos de acciones a coste cero que se han producido en el a&#xc3;&#xb1;o
+        <source>En este listado se muestran los aÃ±adidos de acciones a coste cero que se han producido en el aÃ±o
 
-Es  un listado informativo y no ser&#xc3;&#xa1;n contabilizadas en los informes ya que se producir&#xc3;&#xad;a una doble contabilidad
+Es  un listado informativo y no serÃ¡n contabilizadas en los informes ya que se producirÃ­a una doble contabilidad
 
-S&#xc3;&#xb3;lo se contabilizar&#xc3;&#xa1; cuando se vendan las acciones</source>
+SÃ³lo se contabilizarÃ¡ cuando se vendan las acciones</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -5670,7 +5671,7 @@ S&#xc3;&#xb3;lo se contabilizar&#xc3;&#xa1; cuando se vendan las acciones</sourc
     <message>
         <location filename="../ui/wdgJointReport.py" line="95"/>
         <source>Positive gross selling operations: {}. Negative gross selling operations: {}.</source>
-        <translation type="unfinished"></translation>
+        <translation>Bruto de las operaciones positivas de venta: {}. Bruto de las operaciones negativas de venta: {}</translation>
     </message>
 </context>
 <context>
@@ -5977,7 +5978,7 @@ S&#xc3;&#xb3;lo se contabilizar&#xc3;&#xa1; cuando se vendan las acciones</sourc
     <message>
         <location filename="../ui/Ui_wdgQuotesUpdate.py" line="119"/>
         <source>If it&apos;s unchecked, Xulpymoney will update all products marked as autoupdate</source>
-        <translation type="unfinished"></translation>
+        <translation>Si está sin seleccionar, Xulpymoney actualizará todos los productos marcados con actualización automática</translation>
     </message>
     <message>
         <location filename="../ui/Ui_wdgQuotesUpdate.py" line="120"/>
@@ -6020,41 +6021,41 @@ S&#xc3;&#xb3;lo se contabilizar&#xc3;&#xa1; cuando se vendan las acciones</sourc
     <message>
         <location filename="../ui/Ui_wdgSimulations.py" line="94"/>
         <source>Xulpymoney simulations</source>
-        <translation type="unfinished"></translation>
+        <translation>Simulaciones de Xulpymoney</translation>
     </message>
     <message>
         <location filename="../ui/Ui_wdgSimulations.py" line="95"/>
         <source>Simulations</source>
-        <translation type="unfinished"></translation>
+        <translation>Simulaciones</translation>
     </message>
     <message>
         <location filename="../ui/Ui_wdgSimulations.py" line="96"/>
         <source>Create</source>
-        <translation type="unfinished"></translation>
+        <translation>Crear</translation>
     </message>
     <message>
         <location filename="../ui/Ui_wdgSimulations.py" line="97"/>
         <source>Delete</source>
-        <translation type="unfinished"></translation>
+        <translation>Borrar</translation>
     </message>
     <message>
         <location filename="../ui/Ui_wdgSimulations.py" line="98"/>
         <source>Connect</source>
-        <translation type="unfinished"></translation>
+        <translation>Conectar</translation>
     </message>
     <message>
         <location filename="../ui/wdgSimulations.py" line="30"/>
         <source>Create new simulation</source>
-        <translation type="unfinished"></translation>
+        <translation>Crear una nueva simulación</translation>
     </message>
     <message>
         <location filename="../ui/wdgSimulations.py" line="53"/>
         <source>Do you really want to delete this simulation?</source>
-        <translation type="unfinished"></translation>
+        <translation>¿De verdad quiere borrar esta simulación?</translation>
     </message>
     <message>
         <location filename="../ui/wdgSimulations.py" line="86"/>
-        <source>Xulpymoney SIMULATED IN {} 2010-{} &#xc2;&#xa9;</source>
+        <source>Xulpymoney SIMULATED IN {} 2010-{} Â©</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -6068,17 +6069,17 @@ S&#xc3;&#xb3;lo se contabilizar&#xc3;&#xa1; cuando se vendan las acciones</sourc
     <message>
         <location filename="../ui/Ui_wdgSimulationsAdd.py" line="86"/>
         <source>Create new simulation</source>
-        <translation type="unfinished"></translation>
+        <translation>Crear una nueva simulación</translation>
     </message>
     <message>
         <location filename="../ui/Ui_wdgSimulationsAdd.py" line="87"/>
         <source>Start date and time</source>
-        <translation type="unfinished"></translation>
+        <translation>Fecha y hora de inicio</translation>
     </message>
     <message>
         <location filename="../ui/Ui_wdgSimulationsAdd.py" line="88"/>
         <source>End date and time</source>
-        <translation type="unfinished"></translation>
+        <translation>Fecha y hora de finalización</translation>
     </message>
 </context>
 <context>

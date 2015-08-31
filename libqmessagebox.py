@@ -32,3 +32,9 @@ def qmessagebox_error_ordering():
     m.setIcon(QMessageBox.Information)
     m.setText(tr( "I couldn't order data due to they have null values"))
     m.exec_()    
+
+def qmessagebox_number_invalid():
+    m=QMessageBox()
+    m.setIcon(QMessageBox.Information)
+    m.setText(tr( "You have written and invalid number"))
+    m.exec_()    
