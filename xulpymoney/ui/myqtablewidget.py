@@ -10,6 +10,9 @@ class myQTableWidget(QTableWidget):
         self.mem=None
         self.parentname=None
         self._save_settings=True
+        self.verticalHeader().sectionResizeMode(QHeaderView.Fixed)
+        self.verticalHeader().setDefaultSectionSize(24)
+
 
     def setSaveSettings(self, state):
         """Used when i don't want my columns with being saved"""
