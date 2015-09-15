@@ -84,8 +84,21 @@ class wdgAPR(QWidget, Ui_wdgAPR):
         self.progress.setWindowTitle(self.tr("Calculating data..."))
         self.progress.setMinimumDuration(0)        
         self.table.settings(self.mem)
+        self.tblReport.settings(self.mem)
+        self.mem.data.load_inactives()
+        firstyear=Assets(self.mem).first_datetime_with_user_data().year
+        self.wdgYear. initiate(firstyear,  datetime.date.today().year, firstyear)#Push an wdgYear changed
+
+    def on_wdgYear_changed(self):        
         
+        self.progress.reset()
+        self.progress.setMinimum(1)
+        self.progress.setMaximum((datetime.date.today().year-self.wdgYear.year+1)*2)
+        self.progress.forceShow()
+        self.progress.setValue(1)
         
+        self.table.clear()
+        self.tblReport.clear()
         self.dates=[]
         self.incomes=[]
         self.expenses=[]
@@ -93,8 +106,9 @@ class wdgAPR(QWidget, Ui_wdgAPR):
         self.dividends=[]
         
         
-        self.mem.data.load_inactives()
+        
         self.load_data()
+        self.load_report()
 
         self.canvas=canvasAPR(self.mem,  self)
         self.ntb = NavigationToolbar2QT(self.canvas, self)
@@ -105,14 +119,9 @@ class wdgAPR(QWidget, Ui_wdgAPR):
 
     def load_data(self):        
         inicio=datetime.datetime.now()       
-        anoinicio=Assets(self.mem).first_datetime_with_user_data().year       
+        anoinicio=self.wdgYear.year
         anofinal=datetime.date.today().year+1        
         
-        self.progress.reset()
-        self.progress.setMinimum(1)
-        self.progress.setMaximum(anofinal-anoinicio+1)
-        self.progress.forceShow()
-        self.progress.setValue(1)
         self.table.setRowCount(anofinal-anoinicio+1)
         lastsaldo=0
         sumdividends=0
@@ -166,4 +175,38 @@ class wdgAPR(QWidget, Ui_wdgAPR):
         self.table.setItem(anofinal-anoinicio, 7, self.mem.localcurrency.qtablewidgetitem(sumexpenses))
         self.table.setItem(anofinal-anoinicio, 8, self.mem.localcurrency.qtablewidgetitem(sumicdg))
         final=datetime.datetime.now()          
-        print ("wdgAPR > load_data: {0}".format(final-inicio))
+        print ("wdgAPR > load_data: {}".format(final-inicio))
+
+    def load_report(self):        
+        print ("Initializating load_report")
+        inicio=datetime.datetime.now()       
+        anoinicio=self.wdgYear.year
+        anofinal=datetime.date.today().year+1        
+        (sumgd, )=(0, )
+        self.tblReport.setRowCount(anofinal-anoinicio+1)
+        for i in range(anoinicio, anofinal):
+            if self.progress.wasCanceled():
+                break;
+            else:
+                self.progress.setValue(self.progress.value()+1)                     
+            si=Assets(self.mem).saldo_total(self.mem.data.investments_all(),  datetime.date(i-1, 12, 31))
+            sf=Assets(self.mem).saldo_total(self.mem.data.investments_all(),  datetime.date(i, 12, 31))
+            sinvested=Assets(self.mem).invested(datetime.date(i, 12, 31))
+            sbalance=Assets(self.mem).saldo_todas_inversiones(self.mem.data.investments_all(), datetime.date(i, 12, 31))
+            gd=Assets(self.mem).consolidado_neto(self.mem.data.investments_all(),  i)+Investment(self.mem).dividends_bruto(i)
+            sumgd=sumgd+gd
+
+            self.tblReport.setItem(i-anoinicio, 0, qcenter(i))
+            self.tblReport.setItem(i-anoinicio, 1, self.mem.localcurrency.qtablewidgetitem(si))
+            self.tblReport.setItem(i-anoinicio, 2, self.mem.localcurrency.qtablewidgetitem(sf))
+            
+            self.tblReport.setItem(i-anoinicio, 4, self.mem.localcurrency.qtablewidgetitem(sinvested))
+            self.tblReport.setItem(i-anoinicio, 5, self.mem.localcurrency.qtablewidgetitem(sbalance))
+            self.tblReport.setItem(i-anoinicio, 6, self.mem.localcurrency.qtablewidgetitem(sbalance- sinvested))
+            
+            self.tblReport.setItem(i-anoinicio, 8, self.mem.localcurrency.qtablewidgetitem(gd))
+
+        self.tblReport.setItem(anofinal-anoinicio, 0, qcenter((self.tr("TOTAL"))))
+        self.tblReport.setItem(anofinal-anoinicio, 8, self.mem.localcurrency.qtablewidgetitem(sumgd))
+        final=datetime.datetime.now()          
+        print ("wdgAPR > load_report: {0}".format(final-inicio))

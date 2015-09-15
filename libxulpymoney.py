@@ -2880,13 +2880,14 @@ class Investment:
         self.selling_expiration=None
         
         
-    def create(self, name, venta, cuenta, inversionmq, selling_expiration):
+    def init__create(self, name, venta, cuenta, inversionmq, selling_expiration, active, id=None):
         self.name=name
         self.venta=venta
         self.account=cuenta
         self.product=inversionmq
-        self.active=True
+        self.active=active
         self.selling_expiration=selling_expiration
+        self.id=id
         return self
     
     
@@ -2936,14 +2937,19 @@ class Investment:
             cur.execute("delete from inversiones where id_inversiones=%s", (self.id, ))
 
         
-    def get_operinversiones(self):
-        """Funci`on que carga un array con objetos inversion operacion y con ellos calcula el set de actual e historicas"""
+    def get_operinversiones(self, date=None):
+        """Funci`on que carga un array con objetos inversion operacion y con ellos calcula el set de actual e historicas
+        date is used to get invested balance in a particular date"""
         cur=self.mem.con.cursor()
         self.op=SetInvestmentOperations(self.mem)
-        cur.execute("SELECT * from operinversiones where id_inversiones=%s order by datetime", (self.id, ))
+        if date==None:
+            cur.execute("select * from operinversiones where id_inversiones=%s order by datetime", (self.id, ))
+        else:
+            cur.execute("select * from operinversiones where id_inversiones=%s and datetime::date<=%s order by datetime", (self.id, date))
         for row in cur:
             self.op.append(InvestmentOperation(self.mem).init__db_row(row, self, self.mem.tiposoperaciones.find(row['id_tiposoperaciones'])))
         (self.op_actual,  self.op_historica)=self.op.calcular()
+        
         cur.close()
         
 
@@ -3032,26 +3038,28 @@ class Investment:
                 Necesita haber cargado mq getbasic y operinversionesactual"""     
         acciones=self.acciones(fecha)
         if acciones==0 or self.product.result.basic.last.quote==None:#Empty xulpy
-            return 0
+            return Decimal(0)
                 
         if fecha==None:
             return acciones*self.product.result.basic.last.quote
         else:
-            if acciones==0:
-                return Decimal('0')
             quote=Quote(self.mem).init__from_query(self.product, day_end_from_date(fecha, self.mem.localzone))
             if quote.datetime==None:
                 print ("Investment balance: {0} ({1}) en {2} no tiene valor".format(self.name, self.product.id, fecha))
                 return Decimal('0')
             return acciones*quote.quote
         
-    def invertido(self):       
+    def invertido(self, date=None):       
         """Función que calcula el balance invertido partiendo de las acciones y el precio de compra
         Necesita haber cargado mq getbasic y operinversionesactual"""
-        resultado=Decimal('0')
-        for o in self.op_actual.arr:
-            resultado=resultado+(o.acciones*o.valor_accion)
-        return resultado
+        if date==None or date==datetime.date.today():#Current
+            return self.op_actual.invertido()
+        else:
+            ### 0 Creo una vinversion fake para reutilizar codigo, cargando operinversiones hasta date
+            invfake=Investment(self.mem).init__create(self.name, self.venta, self.account, self.product, self.selling_expiration, self.active, self.id)
+            invfake.active=self.active
+            invfake.get_operinversiones(date)
+            return invfake.op_actual.invertido()
                 
     def tpc_invertido(self):       
         """Función que calcula el tpc invertido partiendo de las balance actual y el invertido
@@ -3349,6 +3357,21 @@ class Assets:
 #        print ("core > Total > saldo_todas_inversiones_riego_cero: {0}".format(datetime.datetime.now()-inicio))
         return resultado
 
+        
+    def invested(self, date=None):
+        """Devuelve el patrimonio invertido en una determinada fecha"""
+        if date==None or date==datetime.date.today():
+            array=self.mem.data.investments_active.arr #Current and active
+        else:
+            array=self.mem.data.investments_all().arr#All, because i don't know witch one was active.
+        
+        r=Decimal(0)
+        for inv in array:
+            invert=inv.invertido(date)
+#            print ("Invertido", inv.name, date,  invert,  inv.balance(date))
+            r=r+invert
+        return r
+        
     def saldo_todas_inversiones_bonds(self, fecha):        
         """Versión que se calcula en cliente muy optimizada
         Fecha None calcula  el balance actual
