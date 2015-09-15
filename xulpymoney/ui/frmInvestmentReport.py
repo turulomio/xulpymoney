@@ -283,7 +283,7 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
         
 
         if self.tipo==1:        #insertar
-            i=Investment(self.mem).create(inversion,   venta,  self.mem.data.accounts_active.find(id_cuentas), expiration, self.mem.data.products_active.find(products_id))      
+            i=Investment(self.mem).init__create(inversion,   venta,  self.mem.data.accounts_active.find(id_cuentas), self.mem.data.products_active.find(products_id), expiration, True)      
             i.save()
             self.mem.con.commit()
             ##Se añade a mem y vincula. No carga datos porque products_id debe existir            
