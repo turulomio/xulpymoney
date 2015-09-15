@@ -78,6 +78,7 @@ class wdgAPR(QWidget, Ui_wdgAPR):
     def __init__(self, mem,  parent=None):
         QWidget.__init__(self, parent)
         self.setupUi(self)
+        self.tab.setCurrentIndex(0)
         self.mem=mem
         self.progress = QProgressDialog(self.tr("Filling data of the report"), self.tr("Cancel"), 0,0)
         self.progress.setModal(True)
@@ -203,10 +204,24 @@ class wdgAPR(QWidget, Ui_wdgAPR):
             self.tblReport.setItem(i-anoinicio, 4, self.mem.localcurrency.qtablewidgetitem(sinvested))
             self.tblReport.setItem(i-anoinicio, 5, self.mem.localcurrency.qtablewidgetitem(sbalance))
             self.tblReport.setItem(i-anoinicio, 6, self.mem.localcurrency.qtablewidgetitem(sbalance- sinvested))
+            self.tblReport.setItem(i-anoinicio, 7, qtpc(100*(sbalance- sinvested)/sinvested))
             
-            self.tblReport.setItem(i-anoinicio, 8, self.mem.localcurrency.qtablewidgetitem(gd))
+            self.tblReport.setItem(i-anoinicio, 9, self.mem.localcurrency.qtablewidgetitem(gd))
 
         self.tblReport.setItem(anofinal-anoinicio, 0, qcenter((self.tr("TOTAL"))))
-        self.tblReport.setItem(anofinal-anoinicio, 8, self.mem.localcurrency.qtablewidgetitem(sumgd))
+        self.tblReport.setItem(anofinal-anoinicio, 9, self.mem.localcurrency.qtablewidgetitem(sumgd))
+        
+        diff=Assets(self.mem).saldo_todas_inversiones(self.mem.data.investments_all(), datetime.date.today())-Assets(self.mem).invested(datetime.date.today())
+        s=""
+        s=self.tr("From {} I have generated {}.").format(self.wdgYear.year, self.mem.localcurrency.string(sumgd))
+        s=s+"\n"+self.tr("Difference between invested amount and current invesment balance is {}").format(self.mem.localcurrency.string(diff))
+        if sumgd+diff>=0:
+            s=s+"\n"+self.tr("So I'm wining {}. {} per year.").format(self.mem.localcurrency.string(sumgd+diff), self.mem.localcurrency.string((sumgd+diff)/(datetime.date.today().year-self.wdgYear.year+1)))
+        else:
+            s=s+"\n"+self.tr("So I'm losing {} which is {} per year.").format(self.mem.localcurrency.string(sumgd+diff), self.mem.localcurrency.string((sumgd+diff)/(datetime.date.today().year-self.wdgYear.year+1)))
+        
+        self.lblReport.setText(s)
+        
+        
         final=datetime.datetime.now()          
         print ("wdgAPR > load_report: {0}".format(final-inicio))
