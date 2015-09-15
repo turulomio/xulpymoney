@@ -2398,9 +2398,6 @@ class DBData:
             load()
         
     def reload(self, force=True):
-
-        
-        
         self.load_actives()
         self.load_inactives(force)
         

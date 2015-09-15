@@ -46,7 +46,7 @@ class wdgQuotesUpdate(QWidget, Ui_wdgQuotesUpdate):
                 print ("wdgQuotesUpdate runners finished")
                 self.mem.frmMain.actionsEnabled(True)
                 print ("wdgQuotesUpdate reloading prices")
-                self.mem.data.reload_prices()
+                self.mem.data.reload()
                 QCoreApplication.processEvents()       
                 self.sources.runners=[]
                     
