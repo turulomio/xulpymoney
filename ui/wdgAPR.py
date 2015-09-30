@@ -87,11 +87,16 @@ class wdgAPR(QWidget, Ui_wdgAPR):
         self.table.settings(self.mem)
         self.tblReport.settings(self.mem)
         self.mem.data.load_inactives()
-        firstyear=Assets(self.mem).first_datetime_with_user_data().year
-        self.wdgYear. initiate(firstyear,  datetime.date.today().year, firstyear)#Push an wdgYear changed
-
-    def on_wdgYear_changed(self):        
         
+        firstyear=self.mem.settings.value("wdgAPR/cmbYear")
+        if not firstyear:
+            firstyear=Assets(self.mem).first_datetime_with_user_data().year        
+        firstyear=int(firstyear)
+
+        self.wdgYear.initiate(firstyear,  datetime.date.today().year, firstyear)#Push an wdgYear changed
+
+    def on_wdgYear_changed(self):
+        self.mem.settings.setValue("wdgAPR/cmbYear", self.wdgYear.year )
         self.progress.reset()
         self.progress.setMinimum(1)
         self.progress.setMaximum((datetime.date.today().year-self.wdgYear.year+1)*2)
@@ -216,7 +221,7 @@ class wdgAPR(QWidget, Ui_wdgAPR):
         s=self.tr("From {} I have generated {}.").format(self.wdgYear.year, self.mem.localcurrency.string(sumgd))
         s=s+"\n"+self.tr("Difference between invested amount and current invesment balance is {}").format(self.mem.localcurrency.string(diff))
         if sumgd+diff>=0:
-            s=s+"\n"+self.tr("So I'm wining {}. {} per year.").format(self.mem.localcurrency.string(sumgd+diff), self.mem.localcurrency.string((sumgd+diff)/(datetime.date.today().year-self.wdgYear.year+1)))
+            s=s+"\n"+self.tr("So I'm wining {} which is {} per year.").format(self.mem.localcurrency.string(sumgd+diff), self.mem.localcurrency.string((sumgd+diff)/(datetime.date.today().year-self.wdgYear.year+1)))
         else:
             s=s+"\n"+self.tr("So I'm losing {} which is {} per year.").format(self.mem.localcurrency.string(sumgd+diff), self.mem.localcurrency.string((sumgd+diff)/(datetime.date.today().year-self.wdgYear.year+1)))
         
