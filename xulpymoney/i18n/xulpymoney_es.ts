@@ -4204,7 +4204,7 @@ p, li { white-space: pre-wrap; }
         <translation>Dividendos</translation>
     </message>
     <message>
-        <location filename="../ui/wdgAPR.py" line="211"/>
+        <location filename="../ui/wdgAPR.py" line="216"/>
         <source>TOTAL</source>
         <translation>TOTAL</translation>
     </message>
@@ -4289,23 +4289,23 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgAPR.py" line="217"/>
+        <location filename="../ui/wdgAPR.py" line="222"/>
         <source>From {} I have generated {}.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgAPR.py" line="218"/>
+        <location filename="../ui/wdgAPR.py" line="223"/>
         <source>Difference between invested amount and current invesment balance is {}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgAPR.py" line="220"/>
-        <source>So I&apos;m wining {}. {} per year.</source>
+        <location filename="../ui/wdgAPR.py" line="227"/>
+        <source>So I&apos;m losing {} which is {} per year.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgAPR.py" line="222"/>
-        <source>So I&apos;m losing {} which is {} per year.</source>
+        <location filename="../ui/wdgAPR.py" line="225"/>
+        <source>So I&apos;m wining {} which is {} per year.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
