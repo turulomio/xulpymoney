@@ -19,6 +19,8 @@ class wdgQuotesUpdate(QWidget, Ui_wdgQuotesUpdate):
             s.statusChanged.connect(self.on_source_statusChanged)
         
         self.on_chkUserOnly_stateChanged(self.chkUserOnly.checkState())
+        self.wyahoohistorical.chkUserOnly.setCheckState(Qt.Unchecked)#Yahoo historical must check all products
+        
     
 
 
