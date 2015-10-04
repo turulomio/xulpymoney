@@ -12,6 +12,7 @@ class myQTableWidget(QTableWidget):
         self._save_settings=True
         self.verticalHeader().sectionResizeMode(QHeaderView.Fixed)
         self.verticalHeader().setDefaultSectionSize(24)
+        self.setAlternatingRowColors(True)
 
 
     def setSaveSettings(self, state):
@@ -25,7 +26,10 @@ class myQTableWidget(QTableWidget):
     def settings(self, mem, parentname=None):
         """Sometimes parentname is not wdg or frm  Widget (may be a groupbox), so I must define it manually"""    
         if parentname==None:
-            self.parentname=self.parent.objectName()
+            if self.parent.objectName()!=None:
+                self.parentname=self.parent.objectName()
+            else:
+                self.parentname="NoParentName"
         else:
             self.parentname=parentname
         self.mem=mem

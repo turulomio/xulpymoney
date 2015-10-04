@@ -39,7 +39,7 @@ class frmMain(QMainWindow, Ui_frmMain):
         self.mem=mem
         self.sqlvacio="select * from products where id=-999999"
         self.setWindowTitle(self.tr("Xulpymoney 2010-{0} \xa9").format(version_date.year))
-        print ("Xulpymoney 2010-{0} © €".encode('unicode-escape'))
+#        print ("Xulpymoney 2010-{0} © €".encode('unicode-escape'))
         
         self.w=QWidget()       
 

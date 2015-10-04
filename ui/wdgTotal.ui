@@ -703,6 +703,18 @@
     <string>Show selling operations</string>
    </property>
   </action>
+  <action name="actionShowComissions">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/bank.png</normaloff>:/xulpymoney/bank.png</iconset>
+   </property>
+   <property name="text">
+    <string>Show Comissions</string>
+   </property>
+   <property name="toolTip">
+    <string>Show Comissions</string>
+   </property>
+  </action>
  </widget>
  <customwidgets>
   <customwidget>

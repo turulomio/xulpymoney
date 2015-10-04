@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="es_ES" sourcelanguage="en">
+<!DOCTYPE TS><TS version="2.0" language="es_ES" sourcelanguage="en">
 <context>
     <name>@default</name>
     <message>
@@ -309,7 +308,7 @@
         <translation>Impuestos</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="1419"/>
+        <location filename="../ui/wdgTotal.py" line="637"/>
         <source>Total</source>
         <translation>Total</translation>
     </message>
@@ -744,12 +743,12 @@
         <translation>{} {}, {} {} y {} {}</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="6085"/>
+        <location filename="../libxulpymoney.py" line="6090"/>
         <source>True</source>
         <translation>Verdadero</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="6088"/>
+        <location filename="../libxulpymoney.py" line="6093"/>
         <source>False</source>
         <translation>Falso</translation>
     </message>
@@ -829,6 +828,81 @@ Purgadas en total en el proceso global: {1}</translation>
         <location filename="../libqmessagebox.py" line="39"/>
         <source>You have written and invalid number</source>
         <translation>Ha escrito un número inválido</translation>
+    </message>
+    <message>
+        <location filename="../ui/wdgTotal.py" line="619"/>
+        <source>January</source>
+        <translation type="unfinished">Enero</translation>
+    </message>
+    <message>
+        <location filename="../ui/wdgTotal.py" line="620"/>
+        <source>February</source>
+        <translation type="unfinished">Febrero</translation>
+    </message>
+    <message>
+        <location filename="../ui/wdgTotal.py" line="621"/>
+        <source>March</source>
+        <translation type="unfinished">Marzo</translation>
+    </message>
+    <message>
+        <location filename="../ui/wdgTotal.py" line="622"/>
+        <source>April</source>
+        <translation type="unfinished">Abril</translation>
+    </message>
+    <message>
+        <location filename="../ui/wdgTotal.py" line="623"/>
+        <source>May</source>
+        <translation type="unfinished">Mayo</translation>
+    </message>
+    <message>
+        <location filename="../ui/wdgTotal.py" line="624"/>
+        <source>June</source>
+        <translation type="unfinished">Junio</translation>
+    </message>
+    <message>
+        <location filename="../ui/wdgTotal.py" line="625"/>
+        <source>July</source>
+        <translation type="unfinished">Julio</translation>
+    </message>
+    <message>
+        <location filename="../ui/wdgTotal.py" line="626"/>
+        <source>August</source>
+        <translation type="unfinished">Agosto</translation>
+    </message>
+    <message>
+        <location filename="../ui/wdgTotal.py" line="627"/>
+        <source>September</source>
+        <translation type="unfinished">Septiembre</translation>
+    </message>
+    <message>
+        <location filename="../ui/wdgTotal.py" line="628"/>
+        <source>October</source>
+        <translation type="unfinished">Octubre</translation>
+    </message>
+    <message>
+        <location filename="../ui/wdgTotal.py" line="629"/>
+        <source>November</source>
+        <translation type="unfinished">Noviembre</translation>
+    </message>
+    <message>
+        <location filename="../ui/wdgTotal.py" line="630"/>
+        <source>December</source>
+        <translation type="unfinished">Diciembre</translation>
+    </message>
+    <message>
+        <location filename="../ui/wdgTotal.py" line="634"/>
+        <source>Bank comissions</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/wdgTotal.py" line="635"/>
+        <source>Custody fees</source>
+        <translation type="unfinished">Comisiones de custodia</translation>
+    </message>
+    <message>
+        <location filename="../ui/wdgTotal.py" line="636"/>
+        <source>Invesment operation comissions</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1391,21 +1465,21 @@ Purgadas en total en el proceso global: {1}</translation>
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;La pÃ¡gina del proyecto se encuentra en &lt;a href=&quot;http://glparchis.sourceforge.net&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;http://xulpymoney.sourceforge.net&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;La p&#xc3;&#xa1;gina del proyecto se encuentra en &lt;a href=&quot;http://glparchis.sourceforge.net&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;http://xulpymoney.sourceforge.net&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; text-decoration: underline; color:#0057ae;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Este programa ha sido desarrollado por Mariano MuÃ±oz.&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Este programa ha sido desarrollado por Mariano Mu&#xc3;&#xb1;oz.&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Ha sido traducido por:&lt;/p&gt;
-&lt;ul style=&quot;margin-top: 0px; margin-bottom: 0px; margin-left: 0px; margin-right: 0px; -qt-list-indent: 1;&quot;&gt;&lt;li style=&quot; margin-top:12px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Mariano MuÃ±oz&lt;/li&gt;&lt;/ul&gt;
+&lt;ul style=&quot;margin-top: 0px; margin-bottom: 0px; margin-left: 0px; margin-right: 0px; -qt-list-indent: 1;&quot;&gt;&lt;li style=&quot; margin-top:12px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Mariano Mu&#xc3;&#xb1;oz&lt;/li&gt;&lt;/ul&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;a los siguientes idiomas&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:1; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;ul style=&quot;margin-top: 0px; margin-bottom: 0px; margin-left: 0px; margin-right: 0px; -qt-list-indent: 1;&quot;&gt;&lt;li style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;EspaÃ±ol&lt;/li&gt;
+&lt;ul style=&quot;margin-top: 0px; margin-bottom: 0px; margin-left: 0px; margin-right: 0px; -qt-list-indent: 1;&quot;&gt;&lt;li style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Espa&#xc3;&#xb1;ol&lt;/li&gt;
 &lt;li style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;English&lt;/li&gt;&lt;/ul&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; text-decoration: underline; color:#0057ae;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Los avatares han sido extraÃ­dos de la pÃ¡gina &lt;a href=&quot;http://www.nobleavatar.com/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;http://www.nobleavatar.com/&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Los avatares han sido extra&#xc3;&#xad;dos de la p&#xc3;&#xa1;gina &lt;a href=&quot;http://www.nobleavatar.com/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;http://www.nobleavatar.com/&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation></translation>
     </message>
     <message>
@@ -1415,12 +1489,12 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../ui/Ui_frmAbout.py" line="327"/>
-        <source>NÃºmero de Deuda pÃºblica</source>
+        <source>N&#xc3;&#xba;mero de Deuda p&#xc3;&#xba;blica</source>
         <translation></translation>
     </message>
     <message>
         <location filename="../ui/Ui_frmAbout.py" line="329"/>
-        <source>NÃºmero de Deuda privada</source>
+        <source>N&#xc3;&#xba;mero de Deuda privada</source>
         <translation></translation>
     </message>
     <message>
@@ -1694,7 +1768,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../ui/Ui_frmAccountsReport.py" line="431"/>
-        <source>XXXX â¬</source>
+        <source>XXXX &#xe2;&#x82;&#xac;</source>
         <translation>XXXX €</translation>
     </message>
     <message>
@@ -3074,7 +3148,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../ui/frmMain.py" line="70"/>
-        <source>Xulpymoney 2010-{0} Â© (Admin mode)</source>
+        <source>Xulpymoney 2010-{0} &#xc2;&#xa9; (Admin mode)</source>
         <translation>Xulpymoney 2010-{0} Â© (Admin mode)</translation>
     </message>
     <message>
@@ -3124,12 +3198,12 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../ui/frmMain.py" line="41"/>
-        <source>Xulpymoney 2010-{0} ©</source>
+        <source>Xulpymoney 2010-{0} &#xa9;</source>
         <translation>Xulpymoney 2010-{0} ©</translation>
     </message>
     <message>
         <location filename="../ui/frmMain.py" line="60"/>
-        <source>Xulpymoney 2010-{0} © (Admin mode)</source>
+        <source>Xulpymoney 2010-{0} &#xa9; (Admin mode)</source>
         <translation>Xulpymoney 2010-{0} © (Admin mode)</translation>
     </message>
 </context>
@@ -3952,10 +4026,10 @@ p, li { white-space: pre-wrap; }
         <source>Set selling price to all investments  of {0} to gain {1}</source>
         <translation>Establece el precio de venta para todas las inversiones a {0} para ganar {1}</translation>
     </message>
-    <message>
+    <message encoding="UTF-8">
         <location filename="../ui/Ui_frmSellingPoint.py" line="218"/>
         <source>Set the selling point to 0 €</source>
-        <translation>Set the selling point to 0 €</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -4725,7 +4799,7 @@ p, li { white-space: pre-wrap; }
         <translation>No puedes cerrar esta pestaña</translation>
     </message>
 </context>
-<context>
+<context encoding="UTF-8">
     <name>wdgDatetime</name>
     <message>
         <location filename="../ui/Ui_wdgDatetime.py" line="66"/>
@@ -4764,10 +4838,10 @@ p, li { white-space: pre-wrap; }
         <translation>Fecha y hora seleccionada:
 {0}</translation>
     </message>
-    <message>
+    <message encoding="UTF-8">
         <location filename="../ui/Ui_wdgDatetime.py" line="70"/>
         <source> μs</source>
-        <translation> μs</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -5601,11 +5675,11 @@ Diferencia diaria: {5}. Edad media de las inversiones: {6}</translation>
     </message>
     <message>
         <location filename="../ui/Ui_wdgJointReport.py" line="434"/>
-        <source>En este listado se muestran los aÃ±adidos de acciones a coste cero que se han producido en el aÃ±o
+        <source>En este listado se muestran los a&#xc3;&#xb1;adidos de acciones a coste cero que se han producido en el a&#xc3;&#xb1;o
 
-Es  un listado informativo y no serÃ¡n contabilizadas en los informes ya que se producirÃ­a una doble contabilidad
+Es  un listado informativo y no ser&#xc3;&#xa1;n contabilizadas en los informes ya que se producir&#xc3;&#xad;a una doble contabilidad
 
-SÃ³lo se contabilizarÃ¡ cuando se vendan las acciones</source>
+S&#xc3;&#xb3;lo se contabilizar&#xc3;&#xa1; cuando se vendan las acciones</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -6110,7 +6184,7 @@ SÃ³lo se contabilizarÃ¡ cuando se vendan las acciones</source>
     </message>
     <message>
         <location filename="../ui/wdgSimulations.py" line="86"/>
-        <source>Xulpymoney SIMULATED IN {} 2010-{} ©</source>
+        <source>Xulpymoney SIMULATED IN {} 2010-{} &#xa9;</source>
         <translation>Xulpymoney SIMULATED IN {} 2010-{} ©</translation>
     </message>
 </context>
@@ -6253,137 +6327,137 @@ SÃ³lo se contabilizarÃ¡ cuando se vendan las acciones</source>
 <context>
     <name>wdgTotal</name>
     <message>
-        <location filename="../ui/Ui_wdgTotal.py" line="447"/>
+        <location filename="../ui/Ui_wdgTotal.py" line="452"/>
         <source>Total</source>
         <translation>Total</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgTotal.py" line="326"/>
+        <location filename="../ui/Ui_wdgTotal.py" line="331"/>
         <source>Total report</source>
         <translation>Informe total</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgTotal.py" line="449"/>
+        <location filename="../ui/Ui_wdgTotal.py" line="454"/>
         <source>Data</source>
         <translation>Datos</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgTotal.py" line="450"/>
+        <location filename="../ui/Ui_wdgTotal.py" line="455"/>
         <source>Chart</source>
         <translation>Gráfico</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgTotal.py" line="329"/>
+        <location filename="../ui/Ui_wdgTotal.py" line="334"/>
         <source>Incomes</source>
         <translation>Ingresos</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgTotal.py" line="417"/>
+        <location filename="../ui/Ui_wdgTotal.py" line="422"/>
         <source>Expenses</source>
         <translation>Gastos</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgTotal.py" line="339"/>
+        <location filename="../ui/Ui_wdgTotal.py" line="344"/>
         <source>Accounts</source>
         <translation>Cuentas</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgTotal.py" line="341"/>
+        <location filename="../ui/Ui_wdgTotal.py" line="346"/>
         <source>Investments</source>
         <translation>Inversiones</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgTotal.py" line="423"/>
+        <location filename="../ui/Ui_wdgTotal.py" line="428"/>
         <source>January</source>
         <translation>Enero</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgTotal.py" line="427"/>
+        <location filename="../ui/Ui_wdgTotal.py" line="432"/>
         <source>March</source>
         <translation>Marzo</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgTotal.py" line="429"/>
+        <location filename="../ui/Ui_wdgTotal.py" line="434"/>
         <source>April</source>
         <translation>Abril</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgTotal.py" line="431"/>
+        <location filename="../ui/Ui_wdgTotal.py" line="436"/>
         <source>May</source>
         <translation>Mayo</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgTotal.py" line="433"/>
+        <location filename="../ui/Ui_wdgTotal.py" line="438"/>
         <source>June</source>
         <translation>Junio</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgTotal.py" line="435"/>
+        <location filename="../ui/Ui_wdgTotal.py" line="440"/>
         <source>July</source>
         <translation>Julio</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgTotal.py" line="443"/>
+        <location filename="../ui/Ui_wdgTotal.py" line="448"/>
         <source>November</source>
         <translation>Noviembre</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgTotal.py" line="445"/>
+        <location filename="../ui/Ui_wdgTotal.py" line="450"/>
         <source>December</source>
         <translation>Diciembre</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgTotal.py" line="452"/>
+        <location filename="../ui/Ui_wdgTotal.py" line="457"/>
         <source>Show income operations</source>
         <translation>Mostrar operaciones de ingresos</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgTotal.py" line="453"/>
+        <location filename="../ui/Ui_wdgTotal.py" line="458"/>
         <source>Show expense operations</source>
         <translation>Mostrar operaciones de gastos</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgTotal.py" line="455"/>
+        <location filename="../ui/Ui_wdgTotal.py" line="460"/>
         <source>Show dividends</source>
         <translation>Mostrar dividendos</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgTotal.py" line="457"/>
+        <location filename="../ui/Ui_wdgTotal.py" line="462"/>
         <source>Show selling operations</source>
         <translation>Mostrar operaciones de venta</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgTotal.py" line="333"/>
+        <location filename="../ui/Ui_wdgTotal.py" line="338"/>
         <source>Dividends</source>
         <translation>Dividendos</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgTotal.py" line="345"/>
+        <location filename="../ui/Ui_wdgTotal.py" line="350"/>
         <source>Monthly difference</source>
         <translation>Diferencia mensual</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgTotal.py" line="347"/>
+        <location filename="../ui/Ui_wdgTotal.py" line="352"/>
         <source>% Year to date</source>
         <translation>% año actual</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgTotal.py" line="425"/>
+        <location filename="../ui/Ui_wdgTotal.py" line="430"/>
         <source>February</source>
         <translation>Febrero</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgTotal.py" line="437"/>
+        <location filename="../ui/Ui_wdgTotal.py" line="442"/>
         <source>August</source>
         <translation>Agosto</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgTotal.py" line="439"/>
+        <location filename="../ui/Ui_wdgTotal.py" line="444"/>
         <source>September</source>
         <translation>Septiembre</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgTotal.py" line="441"/>
+        <location filename="../ui/Ui_wdgTotal.py" line="446"/>
         <source>October</source>
         <translation>Octubre</translation>
     </message>
@@ -6398,27 +6472,22 @@ SÃ³lo se contabilizarÃ¡ cuando se vendan las acciones</source>
         <translation>Saldo a {0}-12-31: {1}</translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="478"/>
+        <location filename="../ui/wdgTotal.py" line="493"/>
         <source>Incomes of {0} of {1}</source>
         <translation>Ingresos de {0} de {1}</translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="508"/>
-        <source>Product selling operations of {0} of {1}</source>
-        <translation>Operaciones de venta del producto de {0} de {1}</translation>
-    </message>
-    <message>
-        <location filename="../ui/wdgTotal.py" line="522"/>
+        <location filename="../ui/wdgTotal.py" line="600"/>
         <source>Dividends of {0} of {1}</source>
         <translation>Dividendos de {0} de {1}</translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="492"/>
+        <location filename="../ui/wdgTotal.py" line="538"/>
         <source>Expenses of {0} of {1}</source>
         <translation>Gastos de {0} de {1}</translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="530"/>
+        <location filename="../ui/wdgTotal.py" line="683"/>
         <source>You can&apos;t close this tab</source>
         <translation>No puedes cerrar esta pestaña</translation>
     </message>
@@ -6438,37 +6507,37 @@ SÃ³lo se contabilizarÃ¡ cuando se vendan las acciones</source>
         <translation>Calculando datos...</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgTotal.py" line="331"/>
+        <location filename="../ui/Ui_wdgTotal.py" line="336"/>
         <source>Gains</source>
         <translation>Ganancias</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgTotal.py" line="337"/>
+        <location filename="../ui/Ui_wdgTotal.py" line="342"/>
         <source>I+G+D-E</source>
         <translation>I+C+D-G</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgTotal.py" line="412"/>
+        <location filename="../ui/Ui_wdgTotal.py" line="417"/>
         <source>Annual target return</source>
         <translation>Importe del objetivo anual</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgTotal.py" line="375"/>
+        <location filename="../ui/Ui_wdgTotal.py" line="380"/>
         <source>Annual target percentage</source>
         <translation>Porcentaje del objetivo anual</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgTotal.py" line="376"/>
+        <location filename="../ui/Ui_wdgTotal.py" line="381"/>
         <source> %</source>
         <translation> %</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgTotal.py" line="379"/>
+        <location filename="../ui/Ui_wdgTotal.py" line="384"/>
         <source>Monthly target</source>
         <translation>Objetivo mensual</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgTotal.py" line="383"/>
+        <location filename="../ui/Ui_wdgTotal.py" line="388"/>
         <source>Accumulated target</source>
         <translation>Objetivo acumulado</translation>
     </message>
@@ -6478,27 +6547,27 @@ SÃ³lo se contabilizarÃ¡ cuando se vendan las acciones</source>
         <translation>Porcentaje del objetivo anual del patrimonio en el día {}-12-31 ( {} )</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgTotal.py" line="374"/>
+        <location filename="../ui/Ui_wdgTotal.py" line="379"/>
         <source>Data in the year</source>
         <translation>Datos en el año</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgTotal.py" line="448"/>
+        <location filename="../ui/Ui_wdgTotal.py" line="453"/>
         <source>Invest or work?</source>
         <translation>¿Invertir o trabajar?</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgTotal.py" line="415"/>
+        <location filename="../ui/Ui_wdgTotal.py" line="420"/>
         <source>Total Gains</source>
         <translation>Ganancias totales</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgTotal.py" line="419"/>
+        <location filename="../ui/Ui_wdgTotal.py" line="424"/>
         <source>Total Gains - Expenses</source>
         <translation>Ganancias totales - Gastos</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgTotal.py" line="421"/>
+        <location filename="../ui/Ui_wdgTotal.py" line="426"/>
         <source>Result</source>
         <translation>Resultado</translation>
     </message>
@@ -6548,9 +6617,44 @@ SÃ³lo se contabilizarÃ¡ cuando se vendan las acciones</source>
         <translation>El color verde muestra que se ha llegado al objetivo.</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgTotal.py" line="385"/>
+        <location filename="../ui/Ui_wdgTotal.py" line="390"/>
         <source>Accumulated total gains</source>
         <translation>Ganancias totales acumuladas</translation>
+    </message>
+    <message>
+        <location filename="../ui/wdgTotal.py" line="597"/>
+        <source>Dividends of {0}</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/wdgTotal.py" line="526"/>
+        <source>Expenses of {0}</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/wdgTotal.py" line="481"/>
+        <source>Incomes of {}</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/wdgTotal.py" line="572"/>
+        <source>Selling operations of {0}</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/wdgTotal.py" line="576"/>
+        <source>Selling operations of {0} of {1}</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/wdgTotal.py" line="674"/>
+        <source>Commision report of {}</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/Ui_wdgTotal.py" line="464"/>
+        <source>Show Comissions</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
