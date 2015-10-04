@@ -259,6 +259,22 @@
                    </column>
                   </widget>
                  </item>
+                 <item>
+                  <widget class="QLabel" name="lblInvested">
+                   <property name="font">
+                    <font>
+                     <weight>75</weight>
+                     <bold>true</bold>
+                    </font>
+                   </property>
+                   <property name="text">
+                    <string/>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
+                   </property>
+                  </widget>
+                 </item>
                 </layout>
                </item>
               </layout>
