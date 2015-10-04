@@ -1266,6 +1266,13 @@ class SetInvestmentOperations(SetIO):
     def __init__(self, mem):
         SetIO.__init__(self, mem)
         
+    def get_highest_io_id(self):
+        """Get the highest IO.Id of the arr"""
+        max=0
+        for i in self.arr:
+            if i.id>max:
+                max=i.id
+        return max
         
     def remove(self,  io):      
         """io is an InvestmentOPeration object

@@ -15,8 +15,9 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
          1   : Inserción de Opercuentas
          2   inversion=x"""
         QWidget.__init__(self, parent)
+        QApplication.setOverrideCursor(Qt.WaitCursor)
+        self.hide()
         self.setupUi(self)
-        self.showMaximized()
         self.mem=mem
         self.inversion=inversion
         
@@ -61,6 +62,9 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
             self.update_tables()      
             if len(self.op.arr)!=0 or len(self.dividends.arr)!=0:#CmbAccount está desabilitado si hay dividends o operinversiones
                 self.cmbAccount.setEnabled(False)  
+
+        self.showMaximized()
+        QApplication.restoreOverrideCursor()
 
     def load_tabDividends(self):        
         (sumneto, sumbruto, sumretencion, sumcomision)=self.dividends.myqtablewidget(self.tblDividends, "frmInvestmentReport")
@@ -142,12 +146,13 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
     @QtCore.pyqtSlot() 
     def on_actionDisReinvest_triggered(self):
         d=QDialog()       
-        d.showMaximized()
+        d.resize(self.mem.settings.value("frmInvestmentReport/qdialog_disreinvest", QSize(1024, 768)))
         d.setWindowTitle(self.tr("Divest / Reinvest simulation"))
         w=wdgDisReinvest(self.mem, self.inversion, d)
         lay = QVBoxLayout(d)
         lay.addWidget(w)
         d.exec_()
+        self.mem.settings.setValue("frmInvestmentReport/qdialog_disreinvest", d.size())
         
     @QtCore.pyqtSlot() 
     def on_actionOperationAdd_triggered(self):

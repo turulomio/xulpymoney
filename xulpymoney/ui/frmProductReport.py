@@ -20,9 +20,8 @@ class frmProductReport(QDialog, Ui_frmProductReport):
         """
         QDialog.__init__(self,  parent)
         self.hide()
-        QApplication.processEvents()
+        QApplication.setOverrideCursor(Qt.WaitCursor)
         self.setupUi(self)
-        self.showMaximized()        
 
         self.mem=mem
         self.product=product
@@ -77,6 +76,8 @@ class frmProductReport(QDialog, Ui_frmProductReport):
         self.mem.types.qcombobox(self.cmbTipo)
 
         self.update_due_to_quotes_change()    
+        self.showMaximized()        
+        QApplication.restoreOverrideCursor()
         
     def load_information(self):
         def row_tblTPV(quote,  row):
