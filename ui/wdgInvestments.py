@@ -34,7 +34,7 @@ class wdgInvestments(QWidget, Ui_wdgInvestments):
             
         r=self.inversiones.myqtablewidget(self.tblInvestments)
         if r["suminvertido"]!=0:
-            self.lblTotal.setText(self.tr("Invested assets: {0}. Pending: {1} - {2} = {3} ({4} assets)\nDaily Diff: {5}. Assets average age: {6}").format(self.mem.localcurrency.string(r['suminvertido']), self.mem.localcurrency.string(r['sumpositivos']),  self.mem.localcurrency.string(-r['sumnegativos']),  self.mem.localcurrency.string(r['sumpendiente']), tpc(100*r['sumpendiente']/r['suminvertido']) , self.mem.localcurrency.string( r['sumdiario']), days_to_year_month(self.inversiones.average_age())))
+            self.lblTotal.setText(self.tr("Invested assets: {0}. Pending: {1} - {2} = {3} ({4} assets)\nDaily Diff: {5}. Investment average age: {6}").format(self.mem.localcurrency.string(r['suminvertido']), self.mem.localcurrency.string(r['sumpositivos']),  self.mem.localcurrency.string(-r['sumnegativos']),  self.mem.localcurrency.string(r['sumpendiente']), tpc(100*r['sumpendiente']/r['suminvertido']) , self.mem.localcurrency.string( r['sumdiario']), days_to_year_month(self.inversiones.average_age())))
         else:
             self.lblTotal.setText(self.tr("There aren't invested assets"))
 
