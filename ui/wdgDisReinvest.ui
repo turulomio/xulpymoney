@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>958</width>
-    <height>567</height>
+    <width>1016</width>
+    <height>625</height>
    </rect>
   </property>
   <property name="windowIcon">
@@ -149,7 +149,7 @@
              </widget>
             </item>
             <item>
-             <widget class="QLineEdit" name="txtAcciones">
+             <widget class="myQLineEdit" name="txtAcciones">
               <property name="enabled">
                <bool>false</bool>
               </property>
@@ -179,7 +179,7 @@
              </widget>
             </item>
             <item>
-             <widget class="QLineEdit" name="txtImporte">
+             <widget class="myQLineEdit" name="txtImporte">
               <property name="enabled">
                <bool>false</bool>
               </property>
@@ -212,12 +212,12 @@
       </widget>
      </item>
      <item>
-      <widget class="QTabWidget" name="tabWidget">
+      <widget class="QTabWidget" name="tabAB">
        <property name="tabPosition">
         <enum>QTabWidget::West</enum>
        </property>
        <property name="currentIndex">
-        <number>1</number>
+        <number>0</number>
        </property>
        <widget class="QWidget" name="tab_5">
         <attribute name="title">
@@ -225,7 +225,7 @@
         </attribute>
         <layout class="QHBoxLayout" name="horizontalLayout_18">
          <item>
-          <widget class="QTabWidget" name="tabResultados_2">
+          <widget class="QTabWidget" name="tabOpAcHi">
            <property name="currentIndex">
             <number>1</number>
            </property>

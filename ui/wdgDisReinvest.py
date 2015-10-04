@@ -11,30 +11,28 @@ class wdgDisReinvest(QWidget, Ui_wdgDisReinvest):
         self.mem=mem
         self.inversion=inversion
                 
-        if len(self.inversion.op_actual.arr)==0:
+        if self.inversion.op_actual.length()==0:
             m=QMessageBox()
             m.setIcon(QMessageBox.Information)
             m.setText(self.tr("There aren't shares for this investment"))
             m.exec_()     
             return
-        
- 
-        self.operinversiones=self.inversion.op.clone()#No hacer clone_from_datetime porque falla por haber borrado un actual por venta de balance operación
 
-        self.txtValorAccion.setText(str(self.inversion.product.result.basic.last.quote))
+        self.txtValorAccion.setText(self.inversion.product.result.basic.last.quote)
         self.txtSimulacion.setText(Global(self.mem, "wdgIndexRange", "txtInvertir").get())
-        self.tabResultados.setCurrentIndex(1)
-        self.on_radDes_clicked()
+        self.tabOpAcHi.setCurrentIndex(1)
+        self.tabAB.setCurrentIndex(1)
+        
+        self.inversion.op_actual.myqtablewidget(self.tblInvestmentsActualAntes)
+        self.on_radRe_clicked()
 
     def acciones(self):
-        """Debe calcularse las acciones"""
         resultado=0
-        perdida=Decimal(self.txtSimulacion.text())       #Va disminuyendo con las distintas operaciones
-       
+        
         if self.radDes.isChecked():#DESINVERSION
-            (operinversionesactual, operinversioneshistoricas)=self.operinversiones.calcular()
+            perdida=self.txtSimulacion.decimal()#Va disminuyendo con las distintas operaciones
             q=Quote(self.mem).init__create(self.inversion.product, datetime.datetime.now(pytz.timezone(self.mem.localzone.name)), self.txtValorAccion.decimal())
-            for rec in operinversionesactual.arr:
+            for rec in self.inversion.op_actual.arr:
                 pendiente=rec.pendiente(q)
                 if perdida+pendiente==0:
                     resultado=resultado+Decimal(str(rec.acciones))
@@ -45,7 +43,6 @@ class wdgDisReinvest(QWidget, Ui_wdgDisReinvest):
                 elif perdida+pendiente<0:
                     # Si de tantas acciones queda pendiente "pendiente"
                     # X                                queda la perdida
-#                    balance=abs(perdida*rec.invertido()/pendiente)
                     acciones=abs(int(perdida*rec.acciones/pendiente))
                     resultado=resultado+Decimal(acciones)#Se resta porque se debe calcular antes de quitarse el pendiente
                     break
@@ -58,49 +55,55 @@ class wdgDisReinvest(QWidget, Ui_wdgDisReinvest):
         self.lblTitulo.setText(self.tr("Divest report of {0}").format(self.inversion.name))
         self.lblSimulacion.setText(self.tr("Divest loss to asume"))
         self.lblValor.setText(self.tr("Selling price"))
+        self.tabAB.setCurrentIndex(1)
         
     @QtCore.pyqtSlot() 
     def on_radRe_clicked(self):
         self.lblTitulo.setText(self.tr("Reinvest report of {0}").format(self.inversion.name))
         self.lblSimulacion.setText(self.tr("Amount to reinvest"))
         self.lblValor.setText(self.tr("Purchase price"))
+        self.tabAB.setCurrentIndex(1)
    
-    def on_cmd_released(self):
+    def on_cmd_released(self): 
+        self.sim_op=None
+        self.sim_opactual=None
+        self.sim_ophistorica=None
+
         if self.txtSimulacion.decimal()<=Decimal('0'):
             m=QMessageBox()
             m.setIcon(QMessageBox.Information)
             m.setText(self.tr("Simulation value must be positive"))
             m.exec_()    
             return
+            
         valor_accion=self.txtValorAccion.decimal()
         impuestos=0
         comision=self.txtComision.decimal()
+        
         if valor_accion==0:
             m=QMessageBox()
             m.setIcon(QMessageBox.Information)
             m.setText(self.tr("Share price can't be 0"))
             m.exec_()    
             return
+        
         acciones=self.acciones()
         importe=valor_accion*acciones
-        self.txtAcciones.setText(str(acciones))
-        self.txtImporte.setText(str(importe))
-        (operinversionesactualantes, operinversioneshistoricasantes)=self.operinversiones.calcular()
+        self.txtAcciones.setText(acciones)
+        self.txtImporte.setText(importe)
 
         #Creamos un nuevo operinversiones 
-        operaciones=self.operinversiones.clone()
-        d=InvestmentOperation(self.mem)
-        id_operinversiones=self.operinversiones.arr[len(self.operinversiones.arr)-1].id+1 ##Para simular un id_operinversiones real, le asignamos uno
+        self.sim_op=self.inversion.op.clone()
+        id_operinversiones=self.sim_op.get_highest_io_id ()+1##Para simular un id_operinversiones real, le asignamos uno
         if self.radDes.isChecked():#DESINVERSION
-            d.init__create(self.mem.tiposoperaciones.find(5), datetime.datetime.now(pytz.timezone(self.mem.localzone.name)), self.inversion, -acciones, importe, impuestos, comision, valor_accion, "",  True, id_operinversiones)
+            d=InvestmentOperation(self.mem).init__create(self.mem.tiposoperaciones.find(5), datetime.datetime.now(pytz.timezone(self.mem.localzone.name)), self.inversion, -acciones, importe, impuestos, comision, valor_accion, "",  True, id_operinversiones)
         else:#REINVERSION
-            d.init__create(self.mem.tiposoperaciones.find(4), datetime.datetime.now(pytz.timezone(self.mem.localzone.name)), self.inversion, acciones, importe, impuestos, comision, valor_accion, "", True,  id_operinversiones)
-            d.init__create(self.mem.tiposoperaciones.find(4), datetime.datetime.now(pytz.timezone(self.mem.localzone.name)), self.inversion, acciones, importe, impuestos, comision, valor_accion, "",  True, id_operinversiones)
-        operaciones.arr.append(d)
+            d=InvestmentOperation(self.mem).init__create(self.mem.tiposoperaciones.find(4), datetime.datetime.now(pytz.timezone(self.mem.localzone.name)), self.inversion, acciones, importe, impuestos, comision, valor_accion, "",  True, id_operinversiones)
+        self.sim_op.arr.append(d)
 
-
-        (operinversionesactual, operinversioneshistoricas)=operaciones.calcular()
-        operaciones.myqtablewidget(self.tblOperaciones)
-        self.inversion.op_actual.myqtablewidget(self.tblInvestmentsActualAntes)
-        operinversionesactual.myqtablewidget(self.tblInvestmentsActualDespues)
-        operinversioneshistoricas.myqtablewidget(self.tblInvestmentsHistoricas)
+        (self.sim_opactual, self.sim_ophistorica)=self.sim_op.calcular()
+        self.sim_op.myqtablewidget(self.tblOperaciones)
+        self.sim_opactual.myqtablewidget(self.tblInvestmentsActualDespues)
+        self.sim_ophistorica.myqtablewidget(self.tblInvestmentsHistoricas)
+        self.tabAB.setCurrentIndex(0)
+        self.tabOpAcHi.setCurrentIndex(1)
