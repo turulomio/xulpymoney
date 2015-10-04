@@ -464,61 +464,214 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         
     @QtCore.pyqtSlot() 
     def on_actionShowIncomes_triggered(self):
-        id_tiposoperaciones=2
+        
         newtab = QWidget()
         horizontalLayout = QHBoxLayout(newtab)
         table = myQTableWidget(newtab)
+        table.setObjectName("tblShowIncomes")
+        table.setEditTriggers(QAbstractItemView.NoEditTriggers)
+        table.setSelectionMode(QAbstractItemView.SingleSelection)
+        table.verticalHeader().setVisible(False)
+        
+        id_tiposoperaciones=2
         set=SetAccountOperations(self.mem)
-        set.load_from_db("select id_opercuentas, datetime, id_conceptos, id_tiposoperaciones, importe, comentario, id_cuentas from opercuentas where id_tiposoperaciones={0} and date_part('year',datetime)={1} and date_part('month',datetime)={2} and id_conceptos not in ({3}) union all select id_opercuentas, datetime, id_conceptos, id_tiposoperaciones, importe, comentario, id_cuentas from opertarjetas,tarjetas where opertarjetas.id_tarjetas=tarjetas.id_tarjetas and id_tiposoperaciones={0} and date_part('year',datetime)={1} and date_part('month',datetime)={2}".format (id_tiposoperaciones, self.wyData.year, self.month, list2string(self.mem.conceptos.considered_dividends_in_totals())))
+        if self.month==13:#Year
+            tabtitle=self.tr("Incomes of {}").format(self.wyData.year)
+            set.load_from_db("""select id_opercuentas, datetime, id_conceptos, id_tiposoperaciones, importe, comentario, id_cuentas 
+                                                    from opercuentas 
+                                                    where id_tiposoperaciones={0} and 
+                                                        date_part('year',datetime)={1} and
+                                                        id_conceptos not in ({2}) 
+                                                union all select id_opercuentas, datetime, id_conceptos, id_tiposoperaciones, importe, comentario, id_cuentas 
+                                                    from opertarjetas,tarjetas 
+                                                    where opertarjetas.id_tarjetas=tarjetas.id_tarjetas and 
+                                                        id_tiposoperaciones={0} and 
+                                                        date_part('year',datetime)={1}""".format (id_tiposoperaciones, self.wyData.year, list2string(self.mem.conceptos.considered_dividends_in_totals())))
+        else:#Month
+            tabtitle=self.tr("Incomes of {0} of {1}").format(self.table.horizontalHeaderItem(self.month-1).text(), self.wyData.year)
+            set.load_from_db("""select id_opercuentas, datetime, id_conceptos, id_tiposoperaciones, importe, comentario, id_cuentas 
+                                                    from opercuentas 
+                                                    where id_tiposoperaciones={0} and 
+                                                        date_part('year',datetime)={1} and 
+                                                        date_part('month',datetime)={2} and 
+                                                        id_conceptos not in ({3}) 
+                                                union all select id_opercuentas, datetime, id_conceptos, id_tiposoperaciones, importe, comentario, id_cuentas 
+                                                    from opertarjetas,tarjetas 
+                                                    where opertarjetas.id_tarjetas=tarjetas.id_tarjetas and 
+                                                        id_tiposoperaciones={0} and 
+                                                        date_part('year',datetime)={1} and 
+                                                        date_part('month',datetime)={2}""".format (id_tiposoperaciones, self.wyData.year, self.month, list2string(self.mem.conceptos.considered_dividends_in_totals())))
         set.sort()
-        set.myqtablewidget(table,  True)
+        set.myqtablewidget(table,  True,  "wdgTotal")
         horizontalLayout.addWidget(table)
-        self.tab.addTab(newtab, self.tr("Incomes of {0} of {1}").format(self.table.horizontalHeaderItem(self.month-1).text(), self.wyData.year))
-        self.tab.setCurrentWidget(newtab)
+        self.tab.addTab(newtab, tabtitle)
+        self.tab.setCurrentWidget(newtab)            
+
        
     @QtCore.pyqtSlot() 
     def on_actionShowExpenses_triggered(self):     
-        id_tiposoperaciones=1
         newtab = QWidget()
         horizontalLayout = QHBoxLayout(newtab)
         table = myQTableWidget(newtab)
+        table.setObjectName("tblShowExpenses")
+        table.setEditTriggers(QAbstractItemView.NoEditTriggers)
+        table.setSelectionMode(QAbstractItemView.SingleSelection)
+        table.verticalHeader().setVisible(False)
+        
+        id_tiposoperaciones=1
         set=SetAccountOperations(self.mem)
-        set.load_from_db_with_creditcard("select datetime, id_conceptos, id_tiposoperaciones, importe, comentario, id_cuentas , -1 as id_tarjetas from opercuentas where id_tiposoperaciones={0} and date_part('year',datetime)={1} and date_part('month',datetime)={2} union all select datetime, id_conceptos, id_tiposoperaciones, importe, comentario, id_cuentas ,tarjetas.id_tarjetas as id_tarjetas from opertarjetas,tarjetas where opertarjetas.id_tarjetas=tarjetas.id_tarjetas and id_tiposoperaciones={0} and date_part('year',datetime)={1} and date_part('month',datetime)={2}".format (id_tiposoperaciones, self.wyData.year, self.month)      )
+        if self.month==13:#Year
+            tabtitle=self.tr("Expenses of {0}").format(self.wyData.year)
+            set.load_from_db("""select datetime, id_conceptos, id_tiposoperaciones, importe, comentario, id_cuentas , -1 as id_tarjetas 
+                                                from opercuentas 
+                                                where id_tiposoperaciones={0} and 
+                                                           date_part('year',datetime)={1} 
+                                                union all 
+                                                select datetime, id_conceptos, id_tiposoperaciones, importe, comentario, id_cuentas ,tarjetas.id_tarjetas as id_tarjetas 
+                                                from opertarjetas,tarjetas 
+                                                where opertarjetas.id_tarjetas=tarjetas.id_tarjetas and 
+                                                            id_tiposoperaciones={0} and 
+                                                            date_part('year',datetime)={1}""".format (id_tiposoperaciones, self.wyData.year))
+        else:#Month
+            tabtitle=self.tr("Expenses of {0} of {1}").format(self.table.horizontalHeaderItem(self.month-1).text(), self.wyData.year)
+            set.load_from_db("""select datetime, id_conceptos, id_tiposoperaciones, importe, comentario, id_cuentas , -1 as id_tarjetas 
+                                                from opercuentas 
+                                                where id_tiposoperaciones={0} and 
+                                                           date_part('year',datetime)={1} and 
+                                                           date_part('month',datetime)={2} 
+                                                union all 
+                                                select datetime, id_conceptos, id_tiposoperaciones, importe, comentario, id_cuentas ,tarjetas.id_tarjetas as id_tarjetas 
+                                                from opertarjetas,tarjetas 
+                                                where opertarjetas.id_tarjetas=tarjetas.id_tarjetas and 
+                                                            id_tiposoperaciones={0} and 
+                                                            date_part('year',datetime)={1} and 
+                                                            date_part('month',datetime)={2}""".format (id_tiposoperaciones, self.wyData.year, self.month))
         set.sort()
-        set.myqtablewidget(table,  True)
+        set.myqtablewidget(table,  True,  "wdgTotal")
         horizontalLayout.addWidget(table)
-        self.tab.addTab(newtab, self.tr("Expenses of {0} of {1}").format(self.table.horizontalHeaderItem(self.month-1).text(), self.wyData.year))
-        self.tab.setCurrentWidget(newtab)
+        self.tab.addTab(newtab, tabtitle)
+        self.tab.setCurrentWidget(newtab)            
+        
         
     @QtCore.pyqtSlot() 
     def on_actionShowSellingOperations_triggered(self):
         newtab = QWidget()
         horizontalLayout = QHBoxLayout(newtab)
         table = myQTableWidget(newtab)
+        table.setObjectName("tblShowShellingOperations")
+        table.setEditTriggers(QAbstractItemView.NoEditTriggers)
+        table.setSelectionMode(QAbstractItemView.SingleSelection)
+        table.verticalHeader().setVisible(False)
+        
         set=SetInvestmentOperationsHistorical(self.mem)
         for i in self.mem.data.investments_all().arr:
             for o in i.op_historica.arr:
-                if o.fecha_venta.year==self.wyData.year and o.fecha_venta.month==self.month and o.tipooperacion.id in (5, 8):#Venta y traspaso fondos inversion
-                    set.arr.append(o)
+                if self.month==13:#Year
+                    tabtitle=self.tr("Selling operations of {0}").format(self.wyData.year)
+                    if o.fecha_venta.year==self.wyData.year and o.tipooperacion.id in (5, 8):#Venta y traspaso fondos inversion
+                        set.arr.append(o)
+                else:#Month
+                    tabtitle=self.tr("Selling operations of {0} of {1}").format(self.table.horizontalHeaderItem(self.month-1).text(), self.wyData.year)
+                    if o.fecha_venta.year==self.wyData.year and o.fecha_venta.month==self.month and o.tipooperacion.id in (5, 8):#Venta y traspaso fondos inversion
+                        set.arr.append(o)
         set.order_by_fechaventa()
-        set.myqtablewidget(table)
+        set.myqtablewidget(table, "wdgTotal")
         horizontalLayout.addWidget(table)
-        self.tab.addTab(newtab, self.tr("Product selling operations of {0} of {1}").format(self.table.horizontalHeaderItem(self.month-1).text(), self.wyData.year))
+        self.tab.addTab(newtab, tabtitle)
         self.tab.setCurrentWidget(newtab)
-            
 
     @QtCore.pyqtSlot() 
     def on_actionShowDividends_triggered(self):
         newtab = QWidget()
         horizontalLayout = QHBoxLayout(newtab)
         table = myQTableWidget(newtab)
+        table.setObjectName("tblShowDividends")
+        table.setEditTriggers(QAbstractItemView.NoEditTriggers)
+        table.setSelectionMode(QAbstractItemView.SingleSelection)
+        table.verticalHeader().setVisible(False)
+        
         set=SetDividends(self.mem)
-        set.load_from_db("select * from dividends where id_conceptos not in (63) and date_part('year',fecha)={0} and date_part('month',fecha)={1}".format (self.wyData.year, self.month))
+        if self.month==13:#Year
+            tabtitle=self.tr("Dividends of {0}").format(self.wyData.year)
+            set.load_from_db("select * from dividends where id_conceptos not in (63) and date_part('year',fecha)={0}".format (self.wyData.year))
+        else:#Month
+            tabtitle=self.tr("Dividends of {0} of {1}").format(self.table.horizontalHeaderItem(self.month-1).text(), self.wyData.year)
+            set.load_from_db("select * from dividends where id_conceptos not in (63) and date_part('year',fecha)={0} and date_part('month',fecha)={1}".format (self.wyData.year, self.month))
         set.sort()
-        set.myqtablewidget(table,  True)
+        set.myqtablewidget(table,  True,  "wdgTotal")
         horizontalLayout.addWidget(table)
-        self.tab.addTab(newtab, self.tr("Dividends of {0} of {1}").format(self.table.horizontalHeaderItem(self.month-1).text(), self.wyData.year))
+        self.tab.addTab(newtab, tabtitle)
         self.tab.setCurrentWidget(newtab)            
+
+
+    @QtCore.pyqtSlot() 
+    def on_actionShowComissions_triggered(self):
+        newtab = QWidget()
+        horizontalLayout = QHBoxLayout(newtab)
+        table = myQTableWidget(newtab)
+        table.setObjectName("tblShowComissions")
+        table.setEditTriggers(QAbstractItemView.NoEditTriggers)
+        table.setSelectionMode(QAbstractItemView.SingleSelection)
+        
+        table.setColumnCount(13)
+        table.setHorizontalHeaderItem(0, QTableWidgetItem(tr( "January" )))
+        table.setHorizontalHeaderItem(1, QTableWidgetItem(tr( "February" )))
+        table.setHorizontalHeaderItem(2, QTableWidgetItem(tr( "March" )))
+        table.setHorizontalHeaderItem(3, QTableWidgetItem(tr( "April" )))
+        table.setHorizontalHeaderItem(4, QTableWidgetItem(tr( "May" )))
+        table.setHorizontalHeaderItem(5, QTableWidgetItem(tr( "June" )))
+        table.setHorizontalHeaderItem(6, QTableWidgetItem(tr( "July" )))
+        table.setHorizontalHeaderItem(7, QTableWidgetItem(tr( "August" )))
+        table.setHorizontalHeaderItem(8, QTableWidgetItem(tr( "September" )))
+        table.setHorizontalHeaderItem(9, QTableWidgetItem(tr( "October" )))
+        table.setHorizontalHeaderItem(10, QTableWidgetItem(tr( "November" )))
+        table.setHorizontalHeaderItem(11, QTableWidgetItem(tr( "December" )))
+        table.setHorizontalHeaderItem(12, QTableWidgetItem(tr( "Total" )))
+        
+        table.setRowCount(4)
+        table.setVerticalHeaderItem(0, QTableWidgetItem(tr( "Bank comissions" )))
+        table.setVerticalHeaderItem(1, QTableWidgetItem(tr( "Custody fees" )))
+        table.setVerticalHeaderItem(2, QTableWidgetItem(tr( "Invesment operation comissions" )))
+        table.setVerticalHeaderItem(3, QTableWidgetItem(tr( "Total" )))
+
+        table.settings(self.mem,  "wdgTotal")
+        (sum_bank_comissions, sum_custody_fees, sum_investment_comissions)=(Decimal("0"), Decimal("0"), Decimal("0"))
+
+        for column in range (12):
+            bank_comissions=none2decimal0(self.mem.con.cursor_one_row("""select sum(importe) 
+                                                                                                            from opercuentas 
+                                                                                                            where id_conceptos=%s and 
+                                                                                                                date_part('year',datetime)=%s and 
+                                                                                                                date_part('month',datetime)=%s;""", (38, self.wyData.year, column+1))[0])
+            table.setItem(0, column, self.mem.localcurrency.qtablewidgetitem(bank_comissions))    
+            sum_bank_comissions=sum_bank_comissions+bank_comissions
+            
+            custody_fees=none2decimal0(self.mem.con.cursor_one_row("""select sum(importe) 
+                                                                                                            from opercuentas 
+                                                                                                            where id_conceptos=%s and 
+                                                                                                                date_part('year',datetime)=%s and 
+                                                                                                                date_part('month',datetime)=%s;""", (59, self.wyData.year, column+1))[0])
+            table.setItem(1, column, self.mem.localcurrency.qtablewidgetitem(custody_fees))    
+            sum_custody_fees=sum_custody_fees+custody_fees
+            
+            investment_comissions=-none2decimal0(self.mem.con.cursor_one_row("""select sum(comision) 
+                                                                                                            from operinversiones  
+                                                                                                            where date_part('year',datetime)=%s and 
+                                                                                                                date_part('month',datetime)=%s;""", (self.wyData.year, column+1))[0])
+            table.setItem(2, column, self.mem.localcurrency.qtablewidgetitem(investment_comissions))    
+            sum_investment_comissions=sum_investment_comissions+investment_comissions
+            
+            table.setItem(3, column, self.mem.localcurrency.qtablewidgetitem(bank_comissions+custody_fees+investment_comissions))    
+        
+        table.setItem(0, 12, self.mem.localcurrency.qtablewidgetitem(sum_bank_comissions))    
+        table.setItem(1, 12, self.mem.localcurrency.qtablewidgetitem(sum_custody_fees))    
+        table.setItem(2, 12, self.mem.localcurrency.qtablewidgetitem(sum_investment_comissions))    
+        table.setItem(3, 12, self.mem.localcurrency.qtablewidgetitem(sum_bank_comissions+sum_custody_fees+sum_investment_comissions))    
+
+        horizontalLayout.addWidget(table)
+        self.tab.addTab(newtab, self.tr("Commision report of {}").format(self.wyData.year))
+        self.tab.setCurrentWidget(newtab)        
+            
 
     def on_tab_tabCloseRequested(self, index):
         """Only removes dinamic tabs"""
@@ -537,13 +690,11 @@ class wdgTotal(QWidget, Ui_wdgTotal):
             self.actionShowExpenses.setEnabled(False)
             self.actionShowSellingOperations.setEnabled(False)
             self.actionShowDividends.setEnabled(False)
-            self.actionSellingOperationsPlusDividends.setEnabled(False)
         else:
             self.actionShowIncomes.setEnabled(True)
             self.actionShowExpenses.setEnabled(True)
             self.actionShowSellingOperations.setEnabled(True)
             self.actionShowDividends.setEnabled(True)
-            self.actionSellingOperationsPlusDividends.setEnabled(True)
 
         menu=QMenu()
         menu.addAction(self.actionShowIncomes)
@@ -551,13 +702,11 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         menu.addAction(self.actionShowDividends)
         menu.addAction(self.actionShowExpenses)
         menu.addSeparator()
-        menu.addAction(self.actionSellingOperationsPlusDividends)      
+        menu.addAction(self.actionShowComissions)
         menu.exec_(self.table.mapToGlobal(pos))
 
     def on_table_itemSelectionChanged(self):
         self.month=None
         for i in self.table.selectedItems():#itera por cada item no row.
             self.month=i.column()+1
-            if self.month>12:
-                self.month=None
         print ("Selected month: {0}.".format(self.month))

@@ -932,7 +932,7 @@ class SetAccountOperations:
     def sort(self):       
         self.arr=sorted(self.arr, key=lambda e: e.datetime,  reverse=False) 
         
-    def myqtablewidget(self, tabla,   show_account=False):
+    def myqtablewidget(self, tabla,   show_account=False,  parentname=None):
         """Section es donde guardar en el config file, coincide con el nombre del formulario en el que está la tabla
         show_account muestra la cuenta cuando las opercuentas son de diversos cuentas (Estudios totales)"""
         ##HEADERS
@@ -951,7 +951,7 @@ class SetAccountOperations:
         tabla.setHorizontalHeaderItem(4+diff, QTableWidgetItem(tr("Comment" )))
         ##DATA 
         tabla.clearContents()
-        tabla.settings(   self.mem)       
+        tabla.settings(   self.mem, parentname)       
         tabla.setRowCount(len(self.arr))
         balance=0
         for rownumber, a in enumerate(self.arr):
@@ -1020,7 +1020,7 @@ class SetDividends:
     def sort(self):       
         self.arr=sorted(self.arr, key=lambda e: e.fecha,  reverse=False) 
         
-    def myqtablewidget(self, table,   show_investment=False):
+    def myqtablewidget(self, table,   show_investment=False,  parentname=None ):
         """Section es donde guardar en el config file, coincide con el nombre del formulario en el que está la table
         Devuelve sumatorios"""
         diff=0
@@ -1036,7 +1036,7 @@ class SetDividends:
         table.setHorizontalHeaderItem(diff+5, QTableWidgetItem(tr( "Net" )))
         table.setHorizontalHeaderItem(diff+6, QTableWidgetItem(tr( "DPS" )))
         #DATA
-        table.settings(   self.mem)        
+        table.settings(   self.mem,  parentname)        
         table.clearContents()
 
 
@@ -1759,7 +1759,7 @@ class SetInvestmentOperationsHistorical(SetIO):
                     if o.fecha_venta.year==year and o.fecha_venta.month==month:
                         resultado=resultado+o.consolidado_neto_antes_impuestos()
         return resultado
-    def myqtablewidget(self, tabla):
+    def myqtablewidget(self, tabla, parentname=None):
         """Rellena datos de un array de objetos de InvestmentOperationHistorical, devuelve totales ver código"""
         self.order_by_fechaventa()
         tabla.setColumnCount(13)
@@ -1777,7 +1777,7 @@ class SetInvestmentOperationsHistorical(SetIO):
         tabla.setHorizontalHeaderItem(11, QTableWidgetItem(tr( "% Net APR" )))
         tabla.setHorizontalHeaderItem(12, QTableWidgetItem(tr( "% Net Total" )))
         #DATA
-        tabla.settings(   self.mem)        
+        tabla.settings(self.mem,  parentname)
         
         
         (sumbruto, sumneto)=(0, 0);
@@ -6063,6 +6063,11 @@ def str2bool(s):
     if s=="True":
         return True
     return False
+    
+def none2decimal0(s):
+    if s==None:
+        return Decimal('0')
+    return s
     
 
 
