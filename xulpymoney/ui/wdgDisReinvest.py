@@ -52,14 +52,14 @@ class wdgDisReinvest(QWidget, Ui_wdgDisReinvest):
             
     @QtCore.pyqtSlot() 
     def on_radDes_clicked(self):
-        self.lblTitulo.setText(self.tr("Divest report of {0}").format(self.inversion.name))
+        self.lblTitulo.setText(self.tr("Divest simulation of {0}").format(self.inversion.name))
         self.lblSimulacion.setText(self.tr("Divest loss to asume"))
         self.lblValor.setText(self.tr("Selling price"))
         self.tabAB.setCurrentIndex(1)
         
     @QtCore.pyqtSlot() 
     def on_radRe_clicked(self):
-        self.lblTitulo.setText(self.tr("Reinvest report of {0}").format(self.inversion.name))
+        self.lblTitulo.setText(self.tr("Reinvest simulation of {0}").format(self.inversion.name))
         self.lblSimulacion.setText(self.tr("Amount to reinvest"))
         self.lblValor.setText(self.tr("Purchase price"))
         self.tabAB.setCurrentIndex(1)

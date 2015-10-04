@@ -38,7 +38,8 @@ class frmMain(QMainWindow, Ui_frmMain):
         
         self.mem=mem
         self.sqlvacio="select * from products where id=-999999"
-        self.setWindowTitle(self.tr("Xulpymoney 2010-{0} ©").format(version_date.year))
+        self.setWindowTitle(self.tr("Xulpymoney 2010-{0} \xa9").format(version_date.year))
+        print ("Xulpymoney 2010-{0} © €".encode('unicode-escape'))
         
         self.w=QWidget()       
 
@@ -56,7 +57,7 @@ class frmMain(QMainWindow, Ui_frmMain):
             if input[1]==True:
                 res=self.mem.check_admin_mode(input[0])
                 if res==None:
-                    self.setWindowTitle(self.tr("Xulpymoney 2010-{0} © (Admin mode)").format(version_date.year))
+                    self.setWindowTitle(self.tr("Xulpymoney 2010-{0} \xa9 (Admin mode)").format(version_date.year))
                     self.setWindowIcon(self.mem.qicon_admin())
                     self.update()
                     self.mem.set_admin_mode(input[0])

@@ -83,7 +83,7 @@ class wdgSimulations(QWidget, Ui_wdgSimulations):
         
         d=QDialog(self)        
         d.setStyleSheet("QDialog { background-color: rgb(255, 182, 182);  }");        
-        d.setWindowTitle(self.tr("Xulpymoney SIMULATED IN {} 2010-{} ©").format(self.simulations.selected.simulated_db(),  version_date.year))
+        d.setWindowTitle(self.tr("Xulpymoney SIMULATED IN {} 2010-{} \xa9").format(self.simulations.selected.simulated_db(),  version_date.year))
         icon = QIcon()
         icon.addPixmap(QPixmap(":/xulpymoney/replication.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         d.setWindowIcon(icon)
