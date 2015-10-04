@@ -5385,12 +5385,6 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgInvestments.py" line="37"/>
-        <source>Invested assets: {0}. Pending: {1} - {2} = {3} ({4} assets)
-Daily Diff: {5}. Assets average age: {6}</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../ui/wdgInvestments.py" line="39"/>
         <source>There aren&apos;t invested assets</source>
         <translation type="unfinished"></translation>
@@ -5423,6 +5417,12 @@ Daily Diff: {5}. Assets average age: {6}</source>
     <message>
         <location filename="../ui/Ui_wdgInvestments.py" line="155"/>
         <source>% Invested</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/wdgInvestments.py" line="37"/>
+        <source>Invested assets: {0}. Pending: {1} - {2} = {3} ({4} assets)
+Daily Diff: {5}. Investment average age: {6}</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
