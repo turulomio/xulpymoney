@@ -715,16 +715,16 @@
     <string>Show Comissions</string>
    </property>
   </action>
-  <action name="actionShowPaidTaxes">
+  <action name="actionShowTaxes">
    <property name="icon">
     <iconset resource="../images/xulpymoney.qrc">
      <normaloff>:/xulpymoney/study.png</normaloff>:/xulpymoney/study.png</iconset>
    </property>
    <property name="text">
-    <string>Show paid taxes</string>
+    <string>Show taxes</string>
    </property>
    <property name="toolTip">
-    <string>Show paid taxes</string>
+    <string>Show taxes</string>
    </property>
   </action>
  </widget>

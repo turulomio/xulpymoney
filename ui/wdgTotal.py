@@ -772,7 +772,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         self.tab.setCurrentWidget(newtab)        
             
     @QtCore.pyqtSlot() 
-    def on_actionShowPaidTaxes_triggered(self):
+    def on_actionShowTaxes_triggered(self):
         newtab = QWidget()
         horizontalLayout = QHBoxLayout(newtab)
         table = myQTableWidget(newtab)
@@ -860,27 +860,26 @@ class wdgTotal(QWidget, Ui_wdgTotal):
             self.tab.setCurrentIndex(0)
             self.tab.removeTab(index)
             
-    def on_table_customContextMenuRequested(self,  pos):
-        if self.month==None:
-            self.actionShowIncomes.setEnabled(False)
-            self.actionShowExpenses.setEnabled(False)
-            self.actionShowSellingOperations.setEnabled(False)
-            self.actionShowDividends.setEnabled(False)
+    def on_table_cellDoubleClicked(self, row, column):
+        if row==0:#incomes
+            self.on_actionShowIncomes_triggered()
+        elif row==1:#Gains
+            self.on_actionShowSellingOperations_triggered()
+        elif row==2:#Dividends
+            self.on_actionShowDividends_triggered()
+        elif row==3: #Expenses
+            self.on_actionShowExpenses_triggered()
         else:
-            self.actionShowIncomes.setEnabled(True)
-            self.actionShowExpenses.setEnabled(True)
-            self.actionShowSellingOperations.setEnabled(True)
-            self.actionShowDividends.setEnabled(True)
-
+            m=QMessageBox()
+            m.setIcon(QMessageBox.Information)
+            m.setText(self.tr("You only can double click in incomes, gains, dividends and expenses.") + "\n\n" + self.tr("Make right click to see comission and tax reports"))
+            m.exec_()   
+        
+    def on_table_customContextMenuRequested(self,  pos):
         menu=QMenu()
-        menu.addAction(self.actionShowIncomes)
-        menu.addAction(self.actionShowSellingOperations)
-        menu.addAction(self.actionShowDividends)
-        menu.addAction(self.actionShowExpenses)
-        menu.addSeparator()
         menu.addAction(self.actionShowComissions)
         menu.addSeparator()
-        menu.addAction(self.actionShowPaidTaxes)
+        menu.addAction(self.actionShowTaxes)
         menu.exec_(self.table.mapToGlobal(pos))
 
     def on_table_itemSelectionChanged(self):
