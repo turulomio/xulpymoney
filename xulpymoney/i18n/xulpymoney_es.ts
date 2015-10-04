@@ -653,7 +653,7 @@
         <translation>Eliminando datos innecesarios</translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="496"/>
+        <location filename="../ui/frmMain.py" line="503"/>
         <source>Cancel</source>
         <translation>Cancelar</translation>
     </message>
@@ -773,27 +773,27 @@
         <translation>No pudo ordenar los datos debido a que hay valores nulos</translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="316"/>
+        <location filename="../ui/frmMain.py" line="323"/>
         <source>Syncing databases from {} ({}) to {} ({})</source>
         <translation>Sincronizando bases de datos desde {} ({}) a {} ({})</translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="318"/>
+        <location filename="../ui/frmMain.py" line="325"/>
         <source>Processing products...</source>
         <translation>Procesando productos...</translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="496"/>
+        <location filename="../ui/frmMain.py" line="503"/>
         <source>Purging innecesary data from all products</source>
         <translation>Purgando datos innecesarios de todos los productos</translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="498"/>
+        <location filename="../ui/frmMain.py" line="505"/>
         <source>Purging quotes from all products</source>
         <translation>Purgando valores de todos los productos</translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="504"/>
+        <location filename="../ui/frmMain.py" line="511"/>
         <source>Purging quotes from {0}.
 Total purged in global process: {1}</source>
         <translation>Purgando cotizaciones de {0}.
@@ -2952,7 +2952,7 @@ p, li { white-space: pre-wrap; }
         <translation>F5</translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="524"/>
+        <location filename="../ui/frmMain.py" line="531"/>
         <source>{0} quotes have been purged from {1} products</source>
         <translation>{0} cotizaciones han sido eliminadas de {1} productos</translation>
     </message>
@@ -2987,7 +2987,7 @@ p, li { white-space: pre-wrap; }
         <translation>Productos con ISIN duplicado</translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="389"/>
+        <location filename="../ui/frmMain.py" line="396"/>
         <source>There aren&apos;t favorite products</source>
         <translation>No hay productos favoritos</translation>
     </message>
@@ -3102,7 +3102,7 @@ p, li { white-space: pre-wrap; }
         <translation>F9</translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="312"/>
+        <location filename="../ui/frmMain.py" line="314"/>
         <source>Databases can&apos;t be the same</source>
         <translation>La base de datos no puede ser la misma</translation>
     </message>
