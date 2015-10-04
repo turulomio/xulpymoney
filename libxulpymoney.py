@@ -83,7 +83,7 @@ class Connection:
         except psycopg2.Error as e:
             print (e.pgcode, e.pgerror)
             return
-#            self._con(None, tr("Error conecting to Xulpymoney"))
+#            self._con(None, QApplication.translate("Core","Error conecting to Xulpymoney"))
         self.active=True
         self.init=datetime.datetime.now()
         
@@ -112,8 +112,8 @@ class Connection:
 #            con=psycopg2.extras.DictConnection(self.strcon)
 #        except psycopg2.Error as e:
 #            print (e.pgcode, e.pgerror)
-#            return (None, tr("Error conecting to Xulpymoney"))
-#        return (con, tr( "Connection done"))
+#            return (None, QApplication.translate("Core","Error conecting to Xulpymoney"))
+#        return (con, QApplication.translate("Core", "Connection done"))
     
 
 class AccountOperationOfInvestmentOperation:
@@ -266,9 +266,9 @@ class SetSimulationTypes(SetCommons):
         self.mem=mem
 
     def load_all(self):
-        self.append(SimulationType().init__create(1,tr("Xulpymoney between dates")))
-        self.append(SimulationType().init__create(2,tr("Xulpymvoney only investments between dates")))
-        self.append(SimulationType().init__create(3,tr("Simulating current benchmark between dates")))
+        self.append(SimulationType().init__create(1,QApplication.translate("Core","Xulpymoney between dates")))
+        self.append(SimulationType().init__create(2,QApplication.translate("Core","Xulpymvoney only investments between dates")))
+        self.append(SimulationType().init__create(3,QApplication.translate("Core","Simulating current benchmark between dates")))
         
     def qcombobox(self, combo,  selected=None):
         """selected is a SimulationType object""" 
@@ -292,9 +292,9 @@ class SetInvestments(SetCommons):
         cur=self.mem.con.cursor()
         cur.execute(sql)#"Select * from inversiones"
         if progress==True:
-            pd= QProgressDialog(tr("Loading {0} investments from database").format(cur.rowcount),None, 0,cur.rowcount)
+            pd= QProgressDialog(QApplication.translate("Core","Loading {0} investments from database").format(cur.rowcount),None, 0,cur.rowcount)
             pd.setModal(True)
-            pd.setWindowTitle(tr("Loading investments..."))
+            pd.setWindowTitle(QApplication.translate("Core","Loading investments..."))
             pd.forceShow()
         for row in cur:
             if progress==True:
@@ -580,9 +580,9 @@ class SetProducts(SetCommons):
         cur=self.mem.con.cursor()
         cur.execute(sql)#"select * from products where id in ("+lista+")" 
         if progress==True:
-            pd= QProgressDialog(tr("Loading {0} products from database").format(cur.rowcount),None, 0,cur.rowcount)
+            pd= QProgressDialog(QApplication.translate("Core","Loading {0} products from database").format(cur.rowcount),None, 0,cur.rowcount)
             pd.setModal(True)
-            pd.setWindowTitle(tr("Loading products..."))
+            pd.setWindowTitle(QApplication.translate("Core","Loading products..."))
             pd.forceShow()
         for rowms in cur:
             if progress==True:
@@ -644,14 +644,14 @@ class SetProducts(SetCommons):
         transfer=QIcon(":/xulpymoney/transfer.png")
         table.setColumnCount(8)
         table.settings(   self.mem)    
-        table.setHorizontalHeaderItem(0, QTableWidgetItem(tr("Id")))
-        table.setHorizontalHeaderItem(1, QTableWidgetItem(tr("Product")))
-        table.setHorizontalHeaderItem(2, QTableWidgetItem(tr("ISIN")))
-        table.setHorizontalHeaderItem(3, QTableWidgetItem(tr("Last update")))
-        table.setHorizontalHeaderItem(4, QTableWidgetItem(tr("Price")))
-        table.setHorizontalHeaderItem(5, QTableWidgetItem(tr("% Daily")))
-        table.setHorizontalHeaderItem(6, QTableWidgetItem(tr("% Year to date")))
-        table.setHorizontalHeaderItem(7, QTableWidgetItem(tr("% Dividend")))
+        table.setHorizontalHeaderItem(0, QTableWidgetItem(QApplication.translate("Core","Id")))
+        table.setHorizontalHeaderItem(1, QTableWidgetItem(QApplication.translate("Core","Product")))
+        table.setHorizontalHeaderItem(2, QTableWidgetItem(QApplication.translate("Core","ISIN")))
+        table.setHorizontalHeaderItem(3, QTableWidgetItem(QApplication.translate("Core","Last update")))
+        table.setHorizontalHeaderItem(4, QTableWidgetItem(QApplication.translate("Core","Price")))
+        table.setHorizontalHeaderItem(5, QTableWidgetItem(QApplication.translate("Core","% Daily")))
+        table.setHorizontalHeaderItem(6, QTableWidgetItem(QApplication.translate("Core","% Year to date")))
+        table.setHorizontalHeaderItem(7, QTableWidgetItem(QApplication.translate("Core","% Dividend")))
    
         table.clearSelection()    
         table.setFocus()
@@ -689,9 +689,9 @@ class SetProductsModes(SetCommons):
         self.mem=mem     
     
     def load_all(self):
-        self.append(ProductMode(self.mem).init__create("p",tr("Put")))
-        self.append(ProductMode(self.mem).init__create("c",tr("Call")))
-        self.append(ProductMode(self.mem).init__create("i",tr("Inline")))
+        self.append(ProductMode(self.mem).init__create("p",QApplication.translate("Core","Put")))
+        self.append(ProductMode(self.mem).init__create("c",QApplication.translate("Core","Call")))
+        self.append(ProductMode(self.mem).init__create("i",QApplication.translate("Core","Inline")))
 
 class SetSimulations(SetCommons):
     def __init__(self, mem):
@@ -714,11 +714,11 @@ class SetSimulations(SetCommons):
         
     def myqtablewidget(self, table):
         table.setColumnCount(5)
-        table.setHorizontalHeaderItem(0, QTableWidgetItem(tr( "Creation" )))
-        table.setHorizontalHeaderItem(1, QTableWidgetItem(tr( "Type" )))
-        table.setHorizontalHeaderItem(2, QTableWidgetItem(tr( "Database" )))
-        table.setHorizontalHeaderItem(3, QTableWidgetItem(tr( "Starting" )))
-        table.setHorizontalHeaderItem(4, QTableWidgetItem(tr( "Ending" )))
+        table.setHorizontalHeaderItem(0, QTableWidgetItem(QApplication.translate("Core", "Creation" )))
+        table.setHorizontalHeaderItem(1, QTableWidgetItem(QApplication.translate("Core", "Type" )))
+        table.setHorizontalHeaderItem(2, QTableWidgetItem(QApplication.translate("Core", "Database" )))
+        table.setHorizontalHeaderItem(3, QTableWidgetItem(QApplication.translate("Core", "Starting" )))
+        table.setHorizontalHeaderItem(4, QTableWidgetItem(QApplication.translate("Core", "Ending" )))
         table.settings(   self.mem)        
         table.clearContents()
         table.setRowCount(self.length())
@@ -836,23 +836,23 @@ class SetCountries(SetCommons):
         self.mem=mem   
         
     def load_all(self):
-        self.append(Country().init__create("es",tr("Spain")))
-        self.append(Country().init__create("be",tr("Belgium")))
-        self.append(Country().init__create("cn",tr("China")))
-        self.append(Country().init__create("de",tr("Germany")))
-        self.append(Country().init__create("earth",tr("Earth")))
-        self.append(Country().init__create("en",tr("United Kingdom")))
-        self.append(Country().init__create("eu",tr("Europe")))
-        self.append(Country().init__create("fi",tr("Finland")))
-        self.append(Country().init__create("fr",tr("France")))
-        self.append(Country().init__create("ie",tr("Ireland")))
-        self.append(Country().init__create("it",tr("Italy")))
-        self.append(Country().init__create("jp",tr("Japan")))
-        self.append(Country().init__create("nl",tr("Netherlands")))
-        self.append(Country().init__create("pt",tr("Portugal")))
-        self.append(Country().init__create("us",tr("United States of America")))
-        self.append(Country().init__create("ro",tr("Romanian")))
-        self.append(Country().init__create("ru",tr("Rusia")))
+        self.append(Country().init__create("es",QApplication.translate("Core","Spain")))
+        self.append(Country().init__create("be",QApplication.translate("Core","Belgium")))
+        self.append(Country().init__create("cn",QApplication.translate("Core","China")))
+        self.append(Country().init__create("de",QApplication.translate("Core","Germany")))
+        self.append(Country().init__create("earth",QApplication.translate("Core","Earth")))
+        self.append(Country().init__create("en",QApplication.translate("Core","United Kingdom")))
+        self.append(Country().init__create("eu",QApplication.translate("Core","Europe")))
+        self.append(Country().init__create("fi",QApplication.translate("Core","Finland")))
+        self.append(Country().init__create("fr",QApplication.translate("Core","France")))
+        self.append(Country().init__create("ie",QApplication.translate("Core","Ireland")))
+        self.append(Country().init__create("it",QApplication.translate("Core","Italy")))
+        self.append(Country().init__create("jp",QApplication.translate("Core","Japan")))
+        self.append(Country().init__create("nl",QApplication.translate("Core","Netherlands")))
+        self.append(Country().init__create("pt",QApplication.translate("Core","Portugal")))
+        self.append(Country().init__create("us",QApplication.translate("Core","United States of America")))
+        self.append(Country().init__create("ro",QApplication.translate("Core","Romanian")))
+        self.append(Country().init__create("ru",QApplication.translate("Core","Rusia")))
         self.order_by_name()
 
     def qcombobox(self, combo,  country=None):
@@ -923,7 +923,7 @@ class SetAccountOperations:
             if row['id_tarjetas']==-1:
                 comentario=row['comentario']
             else:
-                comentario=tr("Paid with {0}. {1}").format(self.mem.data.creditcards_all().find(row['id_tarjetas']).name, row['comentario'] )
+                comentario=QApplication.translate("Core","Paid with {0}. {1}").format(self.mem.data.creditcards_all().find(row['id_tarjetas']).name, row['comentario'] )
             
             co=AccountOperation(self.mem).init__create(row['datetime'], self.mem.conceptos.find(row['id_conceptos']), self.mem.tiposoperaciones.find(row['id_tiposoperaciones']), row['importe'], comentario,  self.mem.data.accounts_all().find(row['id_cuentas']))
             self.append(co)
@@ -942,13 +942,13 @@ class SetAccountOperations:
             diff=1
         else:
             tabla.setColumnCount(5)
-        tabla.setHorizontalHeaderItem(0, QTableWidgetItem(tr("Date" )))
+        tabla.setHorizontalHeaderItem(0, QTableWidgetItem(QApplication.translate("Core","Date" )))
         if show_account==True:
-            tabla.setHorizontalHeaderItem(diff, QTableWidgetItem(tr("Account" )))
-        tabla.setHorizontalHeaderItem(1+diff, QTableWidgetItem(tr("Concept" )))
-        tabla.setHorizontalHeaderItem(2+diff,  QTableWidgetItem(tr("Amount" )))
-        tabla.setHorizontalHeaderItem(3+diff, QTableWidgetItem(tr("Balance" )))
-        tabla.setHorizontalHeaderItem(4+diff, QTableWidgetItem(tr("Comment" )))
+            tabla.setHorizontalHeaderItem(diff, QTableWidgetItem(QApplication.translate("Core","Account" )))
+        tabla.setHorizontalHeaderItem(1+diff, QTableWidgetItem(QApplication.translate("Core","Concept" )))
+        tabla.setHorizontalHeaderItem(2+diff,  QTableWidgetItem(QApplication.translate("Core","Amount" )))
+        tabla.setHorizontalHeaderItem(3+diff, QTableWidgetItem(QApplication.translate("Core","Balance" )))
+        tabla.setHorizontalHeaderItem(4+diff, QTableWidgetItem(QApplication.translate("Core","Comment" )))
         ##DATA 
         tabla.clearContents()
         tabla.settings(   self.mem, parentname)       
@@ -968,7 +968,7 @@ class SetAccountOperations:
         table.clearContents()
         table.settings(   self.mem)   
         table.setRowCount(self.length()+1)        
-        table.setItem(0, 1, QTableWidgetItem(tr( "Starting month balance")))
+        table.setItem(0, 1, QTableWidgetItem(QApplication.translate("Core", "Starting month balance")))
         table.setItem(0, 3, account.currency.qtablewidgetitem(lastmonthbalance))
         for i, o in enumerate(self.arr):
             lastmonthbalance=lastmonthbalance+o.importe
@@ -984,12 +984,12 @@ class SetCurrencies(SetCommons):
         self.mem=mem   
     
     def load_all(self):
-        self.append(Currency().init__create(tr("Chinese Yoan"), "¥", 'CNY'))
-        self.append(Currency().init__create(tr("Euro"), "€", "EUR"))
-        self.append(Currency().init__create(tr("Pound"),"£", 'GBP'))
-        self.append(Currency().init__create(tr("Japones Yen"), '¥', "JPY"))
-        self.append(Currency().init__create(tr("American Dolar"), '$', 'USD'))
-        self.append(Currency().init__create(tr("Units"), 'u', 'u'))
+        self.append(Currency().init__create(QApplication.translate("Core","Chinese Yoan"), "¥", 'CNY'))
+        self.append(Currency().init__create(QApplication.translate("Core","Euro"), "€", "EUR"))
+        self.append(Currency().init__create(QApplication.translate("Core","Pound"),"£", 'GBP'))
+        self.append(Currency().init__create(QApplication.translate("Core","Japones Yen"), '¥', "JPY"))
+        self.append(Currency().init__create(QApplication.translate("Core","American Dolar"), '$', 'USD'))
+        self.append(Currency().init__create(QApplication.translate("Core","Units"), 'u', 'u'))
 
 
     def qcombobox(self, combo, selectedcurrency=None):
@@ -1027,14 +1027,14 @@ class SetDividends:
         if show_investment==True:
             diff=1
         table.setColumnCount(7+diff)
-        table.setHorizontalHeaderItem(0, QTableWidgetItem(tr( "Date" )))
-        table.setHorizontalHeaderItem(diff, QTableWidgetItem(tr( "Product" )))
-        table.setHorizontalHeaderItem(diff+1, QTableWidgetItem(tr( "Concept" )))
-        table.setHorizontalHeaderItem(diff+2, QTableWidgetItem(tr( "Gross" )))
-        table.setHorizontalHeaderItem(diff+3, QTableWidgetItem(tr( "Withholding" )))
-        table.setHorizontalHeaderItem(diff+4, QTableWidgetItem(tr( "Comission" )))
-        table.setHorizontalHeaderItem(diff+5, QTableWidgetItem(tr( "Net" )))
-        table.setHorizontalHeaderItem(diff+6, QTableWidgetItem(tr( "DPS" )))
+        table.setHorizontalHeaderItem(0, QTableWidgetItem(QApplication.translate("Core", "Date" )))
+        table.setHorizontalHeaderItem(diff, QTableWidgetItem(QApplication.translate("Core", "Product" )))
+        table.setHorizontalHeaderItem(diff+1, QTableWidgetItem(QApplication.translate("Core", "Concept" )))
+        table.setHorizontalHeaderItem(diff+2, QTableWidgetItem(QApplication.translate("Core", "Gross" )))
+        table.setHorizontalHeaderItem(diff+3, QTableWidgetItem(QApplication.translate("Core", "Withholding" )))
+        table.setHorizontalHeaderItem(diff+4, QTableWidgetItem(QApplication.translate("Core", "Comission" )))
+        table.setHorizontalHeaderItem(diff+5, QTableWidgetItem(QApplication.translate("Core", "Net" )))
+        table.setHorizontalHeaderItem(diff+6, QTableWidgetItem(QApplication.translate("Core", "DPS" )))
         #DATA
         table.settings(   self.mem,  parentname)        
         table.clearContents()
@@ -1404,17 +1404,17 @@ class SetInvestmentOperations(SetIO):
         if homogeneous==False:
             diff=2
         tabla.setColumnCount(8+diff)
-        tabla.setHorizontalHeaderItem(0, QTableWidgetItem(tr( "Date" )))
+        tabla.setHorizontalHeaderItem(0, QTableWidgetItem(QApplication.translate("Core", "Date" )))
         if homogeneous==False:
-            tabla.setHorizontalHeaderItem(diff-1, QTableWidgetItem(tr( "Product" )))
-            tabla.setHorizontalHeaderItem(diff, QTableWidgetItem(tr( "Account" )))
-        tabla.setHorizontalHeaderItem(diff+1, QTableWidgetItem(tr( "Operation type" )))
-        tabla.setHorizontalHeaderItem(diff+2, QTableWidgetItem(tr( "Shares" )))
-        tabla.setHorizontalHeaderItem(diff+3, QTableWidgetItem(tr( "Price" )))
-        tabla.setHorizontalHeaderItem(diff+4, QTableWidgetItem(tr( "Amount" )))
-        tabla.setHorizontalHeaderItem(diff+5, QTableWidgetItem(tr( "Comission" )))
-        tabla.setHorizontalHeaderItem(diff+6, QTableWidgetItem(tr( "Taxes" )))
-        tabla.setHorizontalHeaderItem(diff+7, QTableWidgetItem(tr( "Total" )))
+            tabla.setHorizontalHeaderItem(diff-1, QTableWidgetItem(QApplication.translate("Core", "Product" )))
+            tabla.setHorizontalHeaderItem(diff, QTableWidgetItem(QApplication.translate("Core", "Account" )))
+        tabla.setHorizontalHeaderItem(diff+1, QTableWidgetItem(QApplication.translate("Core", "Operation type" )))
+        tabla.setHorizontalHeaderItem(diff+2, QTableWidgetItem(QApplication.translate("Core", "Shares" )))
+        tabla.setHorizontalHeaderItem(diff+3, QTableWidgetItem(QApplication.translate("Core", "Price" )))
+        tabla.setHorizontalHeaderItem(diff+4, QTableWidgetItem(QApplication.translate("Core", "Amount" )))
+        tabla.setHorizontalHeaderItem(diff+5, QTableWidgetItem(QApplication.translate("Core", "Comission" )))
+        tabla.setHorizontalHeaderItem(diff+6, QTableWidgetItem(QApplication.translate("Core", "Taxes" )))
+        tabla.setHorizontalHeaderItem(diff+7, QTableWidgetItem(QApplication.translate("Core", "Total" )))
         #DATA 
         tabla.clearContents()
         tabla.settings(   self.mem)       
@@ -1537,19 +1537,19 @@ class SetInvestmentOperationsCurrent(SetIO):
         if homogeneous==False:
             diff=2
         tabla.setColumnCount(10+diff)
-        tabla.setHorizontalHeaderItem(0, QTableWidgetItem(tr( "Date" )))
+        tabla.setHorizontalHeaderItem(0, QTableWidgetItem(QApplication.translate("Core", "Date" )))
         if homogeneous==False:
-            tabla.setHorizontalHeaderItem(diff-1, QTableWidgetItem(tr( "Product" )))
-            tabla.setHorizontalHeaderItem(diff, QTableWidgetItem(tr( "Account" )))
-        tabla.setHorizontalHeaderItem(diff+1, QTableWidgetItem(tr( "Shares" )))
-        tabla.setHorizontalHeaderItem(diff+2, QTableWidgetItem(tr( "Price" )))
-        tabla.setHorizontalHeaderItem(diff+3, QTableWidgetItem(tr( "Invested" )))
-        tabla.setHorizontalHeaderItem(diff+4, QTableWidgetItem(tr( "Current balance" )))
-        tabla.setHorizontalHeaderItem(diff+5, QTableWidgetItem(tr( "Pending" )))
-        tabla.setHorizontalHeaderItem(diff+6, QTableWidgetItem(tr( "% annual" )))
-        tabla.setHorizontalHeaderItem(diff+7, QTableWidgetItem(tr( "% APR" )))
-        tabla.setHorizontalHeaderItem(diff+8, QTableWidgetItem(tr( "% Total" )))
-        tabla.setHorizontalHeaderItem(diff+9, QTableWidgetItem(tr( "Benchmark" )))
+            tabla.setHorizontalHeaderItem(diff-1, QTableWidgetItem(QApplication.translate("Core", "Product" )))
+            tabla.setHorizontalHeaderItem(diff, QTableWidgetItem(QApplication.translate("Core", "Account" )))
+        tabla.setHorizontalHeaderItem(diff+1, QTableWidgetItem(QApplication.translate("Core", "Shares" )))
+        tabla.setHorizontalHeaderItem(diff+2, QTableWidgetItem(QApplication.translate("Core", "Price" )))
+        tabla.setHorizontalHeaderItem(diff+3, QTableWidgetItem(QApplication.translate("Core", "Invested" )))
+        tabla.setHorizontalHeaderItem(diff+4, QTableWidgetItem(QApplication.translate("Core", "Current balance" )))
+        tabla.setHorizontalHeaderItem(diff+5, QTableWidgetItem(QApplication.translate("Core", "Pending" )))
+        tabla.setHorizontalHeaderItem(diff+6, QTableWidgetItem(QApplication.translate("Core", "% annual" )))
+        tabla.setHorizontalHeaderItem(diff+7, QTableWidgetItem(QApplication.translate("Core", "% APR" )))
+        tabla.setHorizontalHeaderItem(diff+8, QTableWidgetItem(QApplication.translate("Core", "% Total" )))
+        tabla.setHorizontalHeaderItem(diff+9, QTableWidgetItem(QApplication.translate("Core", "Benchmark" )))
         #DATA
         tabla.settings(   self.mem)
         if len(self.arr)==0:
@@ -1763,19 +1763,19 @@ class SetInvestmentOperationsHistorical(SetIO):
         """Rellena datos de un array de objetos de InvestmentOperationHistorical, devuelve totales ver código"""
         self.order_by_fechaventa()
         tabla.setColumnCount(13)
-        tabla.setHorizontalHeaderItem(0, QTableWidgetItem(tr( "Date" )))
-        tabla.setHorizontalHeaderItem(1, QTableWidgetItem(tr( "Years" )))
-        tabla.setHorizontalHeaderItem(2, QTableWidgetItem(tr( "Product" )))
-        tabla.setHorizontalHeaderItem(3, QTableWidgetItem(tr( "Operation type" )))
-        tabla.setHorizontalHeaderItem(4, QTableWidgetItem(tr( "Shares" )))
-        tabla.setHorizontalHeaderItem(5, QTableWidgetItem(tr( "Initial balance" )))
-        tabla.setHorizontalHeaderItem(6, QTableWidgetItem(tr( "Final balance" )))
-        tabla.setHorizontalHeaderItem(7, QTableWidgetItem(tr( "Gross selling operations" )))
-        tabla.setHorizontalHeaderItem(8, QTableWidgetItem(tr( "Comissions" )))
-        tabla.setHorizontalHeaderItem(9, QTableWidgetItem(tr( "Taxes" )))
-        tabla.setHorizontalHeaderItem(10, QTableWidgetItem(tr( "Net selling operations" )))
-        tabla.setHorizontalHeaderItem(11, QTableWidgetItem(tr( "% Net APR" )))
-        tabla.setHorizontalHeaderItem(12, QTableWidgetItem(tr( "% Net Total" )))
+        tabla.setHorizontalHeaderItem(0, QTableWidgetItem(QApplication.translate("Core", "Date" )))
+        tabla.setHorizontalHeaderItem(1, QTableWidgetItem(QApplication.translate("Core", "Years" )))
+        tabla.setHorizontalHeaderItem(2, QTableWidgetItem(QApplication.translate("Core", "Product" )))
+        tabla.setHorizontalHeaderItem(3, QTableWidgetItem(QApplication.translate("Core", "Operation type" )))
+        tabla.setHorizontalHeaderItem(4, QTableWidgetItem(QApplication.translate("Core", "Shares" )))
+        tabla.setHorizontalHeaderItem(5, QTableWidgetItem(QApplication.translate("Core", "Initial balance" )))
+        tabla.setHorizontalHeaderItem(6, QTableWidgetItem(QApplication.translate("Core", "Final balance" )))
+        tabla.setHorizontalHeaderItem(7, QTableWidgetItem(QApplication.translate("Core", "Gross selling operations" )))
+        tabla.setHorizontalHeaderItem(8, QTableWidgetItem(QApplication.translate("Core", "Comissions" )))
+        tabla.setHorizontalHeaderItem(9, QTableWidgetItem(QApplication.translate("Core", "Taxes" )))
+        tabla.setHorizontalHeaderItem(10, QTableWidgetItem(QApplication.translate("Core", "Net selling operations" )))
+        tabla.setHorizontalHeaderItem(11, QTableWidgetItem(QApplication.translate("Core", "% Net APR" )))
+        tabla.setHorizontalHeaderItem(12, QTableWidgetItem(QApplication.translate("Core", "% Net Total" )))
         #DATA
         tabla.settings(self.mem,  parentname)
         
@@ -2200,17 +2200,17 @@ class AccountOperation:
         """
         c=self.comentario.split("|")
         if self.concepto.id in (62, 39, 50, 63, 65) and len(c)==4:#"{0}|{1}|{2}|{3}".format(self.inversion.name, self.bruto, self.retencion, self.comision)
-            return tr("{0[0]}. Gross: {0[1]} {1}. Witholding tax: {0[2]} {1}. Comission: {0[3]} {1}").format(c, self.account.currency.symbol)
+            return QApplication.translate("Core","{0[0]}. Gross: {0[1]} {1}. Witholding tax: {0[2]} {1}. Comission: {0[3]} {1}").format(c, self.account.currency.symbol)
         elif self.concepto.id in (29, 35) and len(c)==5:#{0}|{1}|{2}|{3}".format(row['inversion'], importe, comision, impuestos)
-            return tr("{0[1]}: {0[0]} shares. Amount: {0[2]} {1}. Comission: {0[3]} {1}. Taxes: {0[4]} {1}").format(c, self.account.currency.symbol)
+            return QApplication.translate("Core","{0[1]}: {0[0]} shares. Amount: {0[2]} {1}. Comission: {0[3]} {1}. Taxes: {0[4]} {1}").format(c, self.account.currency.symbol)
         elif self.concepto.id==40 and len(c)==2:#"{0}|{1}".format(self.selCreditCard.name, len(self.setSelOperCreditCards))
-            return tr("CreditCard: {0[0]}. Made {0[1]} payments").format(c)
+            return QApplication.translate("Core","CreditCard: {0[0]}. Made {0[1]} payments").format(c)
         elif self.concepto.id==4 and len(c)==3:#Transfer from origin
-            return tr( "Transfer to {0}").format(self.mem.data.accounts_all().find(int(c[0])).name)
+            return QApplication.translate("Core", "Transfer to {0}").format(self.mem.data.accounts_all().find(int(c[0])).name)
         elif self.concepto.id==5 and len(c)==2:#Transfer received in destiny
-            return tr( "Transfer received from {0}").format(self.mem.data.accounts_all().find(int(c[0])).name)
+            return QApplication.translate("Core", "Transfer received from {0}").format(self.mem.data.accounts_all().find(int(c[0])).name)
         elif self.concepto.id==38 and c[0]=="Transfer":#Comision bancaria por transferencia
-            return tr( "Due to account transfer of {0} from {1}").format(self.mem.localcurrency.string(float(c[1])), self.mem.data.accounts_all().find(int(c[2])).name)
+            return QApplication.translate("Core", "Due to account transfer of {0} from {1}").format(self.mem.localcurrency.string(float(c[1])), self.mem.data.accounts_all().find(int(c[2])).name)
         else:
             return self.comentario 
         
@@ -2323,27 +2323,29 @@ class DBAdmin:
         try:
             self.load_script("/usr/share/xulpymoney/sql/xulpymoney.sql")
             cur= self.con.cursor()
-            cur.execute("insert into entidadesbancarias values(3,'{0}', true)".format(tr("Personal Management")))
-            cur.execute("insert into cuentas values(4,'{0}',3,true,NULL,'EUR')".format(tr("Cash")))
-            cur.execute("insert into conceptos values(1,'{0}',2,false)".format(tr("Initiating bank account")))
-            cur.execute("insert into conceptos values(4,'{0}',3,false)".format(tr("Transfer. Origin")))
-            cur.execute("insert into conceptos values(5,'{0}',3,false)".format(tr("Transfer. Destination")))
-            cur.execute("insert into conceptos values(29,'{0}',4,false)".format(tr("Purchase investment product")))
-            cur.execute("insert into conceptos values(35,'{0}',5,false)".format(tr("Sale investment product")))
-            cur.execute("insert into conceptos values(38,'{0}',1,false)".format(tr("Bank commissions")))
-            cur.execute("insert into conceptos values(39,'{0}',2,false)".format(tr("Dividends")))
-            cur.execute("insert into conceptos values(40,'{0}',7,false)".format(tr("Credit card billing")))
-            cur.execute("insert into conceptos values(43,'{0}',6,false)".format(tr("Added shares")))
-            cur.execute("insert into conceptos values(50,'{0}',2,false)".format(tr("Attendance bonus")))
-            cur.execute("insert into conceptos values(59,'{0}',1,false)".format(tr("Custody commission")))
-            cur.execute("insert into conceptos values(62,'{0}',2,false)".format(tr("Dividends. Sale of rights")))
-            cur.execute("insert into conceptos values(63,'{0}',1,false)".format(tr("Bonds. Running coupon payment")))
-            cur.execute("insert into conceptos values(65,'{0}',2,false)".format(tr("Bonds. Running coupon collection")))
-            cur.execute("insert into conceptos values(66,'{0}',2,false)".format(tr("Bonds. Coupon collection")))
-            cur.execute("insert into conceptos values(2,'{0}',2,true)".format(tr("Paysheet")))
-            cur.execute("insert into conceptos values(3,'{0}',1,true)".format(tr("Supermarket")))
-            cur.execute("insert into conceptos values(6,'{0}',1,true)".format(tr("Restaurant")))
-            cur.execute("insert into conceptos values(7,'{0}',1,true)".format(tr("Gas")))
+            cur.execute("insert into entidadesbancarias values(3,'{0}', true)".format(QApplication.translate("Core","Personal Management")))
+            cur.execute("insert into cuentas values(4,'{0}',3,true,NULL,'EUR')".format(QApplication.translate("Core","Cash")))
+            cur.execute("insert into conceptos values(1,'{0}',2,false)".format(QApplication.translate("Core","Initiating bank account")))
+            cur.execute("insert into conceptos values(4,'{0}',3,false)".format(QApplication.translate("Core","Transfer. Origin")))
+            cur.execute("insert into conceptos values(5,'{0}',3,false)".format(QApplication.translate("Core","Transfer. Destination")))
+            cur.execute("insert into conceptos values(6,'{0}',2,false)".format(QApplication.translate("Core","Taxes. Returned")))
+            cur.execute("insert into conceptos values(29,'{0}',4,false)".format(QApplication.translate("Core","Purchase investment product")))
+            cur.execute("insert into conceptos values(35,'{0}',5,false)".format(QApplication.translate("Core","Sale investment product")))
+            cur.execute("insert into conceptos values(37,'{0}',1,false)".format(QApplication.translate("Core","Taxes. Paid")))
+            cur.execute("insert into conceptos values(38,'{0}',1,false)".format(QApplication.translate("Core","Bank commissions")))
+            cur.execute("insert into conceptos values(39,'{0}',2,false)".format(QApplication.translate("Core","Dividends")))
+            cur.execute("insert into conceptos values(40,'{0}',7,false)".format(QApplication.translate("Core","Credit card billing")))
+            cur.execute("insert into conceptos values(43,'{0}',6,false)".format(QApplication.translate("Core","Added shares")))
+            cur.execute("insert into conceptos values(50,'{0}',2,false)".format(QApplication.translate("Core","Attendance bonus")))
+            cur.execute("insert into conceptos values(59,'{0}',1,false)".format(QApplication.translate("Core","Custody commission")))
+            cur.execute("insert into conceptos values(62,'{0}',2,false)".format(QApplication.translate("Core","Dividends. Sale of rights")))
+            cur.execute("insert into conceptos values(63,'{0}',1,false)".format(QApplication.translate("Core","Bonds. Running coupon payment")))
+            cur.execute("insert into conceptos values(65,'{0}',2,false)".format(QApplication.translate("Core","Bonds. Running coupon collection")))
+            cur.execute("insert into conceptos values(66,'{0}',2,false)".format(QApplication.translate("Core","Bonds. Coupon collection")))
+            cur.execute("insert into conceptos values(2,'{0}',2,true)".format(QApplication.translate("Core","Paysheet")))
+            cur.execute("insert into conceptos values(3,'{0}',1,true)".format(QApplication.translate("Core","Supermarket")))
+            cur.execute("insert into conceptos values(6,'{0}',1,true)".format(QApplication.translate("Core","Restaurant")))
+            cur.execute("insert into conceptos values(7,'{0}',1,true)".format(QApplication.translate("Core","Gas")))
             cur.close()
             return True
         except:
@@ -2416,9 +2418,9 @@ class DBData:
         else:
             products=self.products_all()
         
-        pd= QProgressDialog(tr("Reloading {0} product prices from database").format(len(products.arr)),None, 0,products.length())
+        pd= QProgressDialog(QApplication.translate("Core","Reloading {0} product prices from database").format(len(products.arr)),None, 0,products.length())
         pd.setModal(True)
-        pd.setWindowTitle(tr("Reloading prices..."))
+        pd.setWindowTitle(QApplication.translate("Core","Reloading prices..."))
         pd.forceShow()
         for i, p in enumerate(products.arr):
             pd.setValue(i)
@@ -2647,7 +2649,7 @@ class InvestmentOperation:
     def comment(self):
         """Función que genera un comentario parseado según el tipo de operación o concepto"""
         if self.tipooperacion.id==9:#"Traspaso de valores. Origen"#"{0}|{1}|{2}|{3}".format(self.inversion.name, self.bruto, self.retencion, self.comision)
-            return tr("Traspaso de valores realizado a {0}".format(self.comentario.split("|"), self.account.currency.symbol))
+            return QApplication.translate("Core","Traspaso de valores realizado a {0}".format(self.comentario.split("|"), self.account.currency.symbol))
         else:
             return self.comentario
 
@@ -2708,7 +2710,7 @@ class Bank:
         if self.active==False:
             m=QMessageBox()
             m.setIcon(QMessageBox.Information)
-            m.setText(tr( "The associated bank is not active. You must activate it first"))
+            m.setText(QApplication.translate("Core", "The associated bank is not active. You must activate it first"))
             m.exec_()    
             return True
         return False
@@ -2854,7 +2856,7 @@ class Account:
         if self.active==False:
             m=QMessageBox()
             m.setIcon(QMessageBox.Information)
-            m.setText(tr( "The associated account is not active. You must activate it first"))
+            m.setText(QApplication.translate("Core", "The associated account is not active. You must activate it first"))
             m.exec_()    
             return True
         return False
@@ -3032,7 +3034,7 @@ class Investment:
         if self.active==False:
             m=QMessageBox()
             m.setIcon(QMessageBox.Information)
-            m.setText(tr( "The associated product is not active. You must activate it first"))
+            m.setText(QApplication.translate("Core", "The associated product is not active. You must activate it first"))
             m.exec_()    
             return True
         return False
@@ -3135,7 +3137,7 @@ class CreditCard:
         if self.active==False:
             m=QMessageBox()
             m.setIcon(QMessageBox.Information)
-            m.setText(tr( "The associated credit card is not active. You must activate it first"))
+            m.setText(QApplication.translate("Core", "The associated credit card is not active. You must activate it first"))
             m.exec_()    
             return True
         return False
@@ -3525,11 +3527,11 @@ class SetCreditCardOperations:
         show_account muestra la cuenta cuando las opercuentas son de diversos cuentas (Estudios totales)"""
         ##HEADERS
         tabla.setColumnCount(5)
-        tabla.setHorizontalHeaderItem(0, QTableWidgetItem(tr("Date" )))
-        tabla.setHorizontalHeaderItem(1, QTableWidgetItem(tr("Concept" )))
-        tabla.setHorizontalHeaderItem(2,  QTableWidgetItem(tr("Amount" )))
-        tabla.setHorizontalHeaderItem(3, QTableWidgetItem(tr("Balance" )))
-        tabla.setHorizontalHeaderItem(4, QTableWidgetItem(tr("Comment" )))
+        tabla.setHorizontalHeaderItem(0, QTableWidgetItem(QApplication.translate("Core","Date" )))
+        tabla.setHorizontalHeaderItem(1, QTableWidgetItem(QApplication.translate("Core","Concept" )))
+        tabla.setHorizontalHeaderItem(2,  QTableWidgetItem(QApplication.translate("Core","Amount" )))
+        tabla.setHorizontalHeaderItem(3, QTableWidgetItem(QApplication.translate("Core","Balance" )))
+        tabla.setHorizontalHeaderItem(4, QTableWidgetItem(QApplication.translate("Core","Comment" )))
         ##DATA 
         tabla.clearContents()
         tabla.settings(   self.mem)       
@@ -3549,16 +3551,16 @@ class SetOperationTypes(SetCommons):
         self.mem=mem     
         
     def load(self):
-        self.append(OperationType().init__create( tr("Expense"), 1))
-        self.append(OperationType().init__create( tr("Income"), 2))
-        self.append(OperationType().init__create( tr("Transfer"), 3))
-        self.append(OperationType().init__create( tr("Purchase of shares"), 4))
-        self.append(OperationType().init__create( tr("Sale of shares"), 5))
-        self.append(OperationType().init__create( tr("Added of shares"), 6))
-        self.append(OperationType().init__create( tr("Credit card billing"), 7))
-        self.append(OperationType().init__create( tr("Transfer of funds"), 8)) #Se contabilizan como ganancia
-        self.append(OperationType().init__create( tr("Transfer of shares. Origin"), 9)) #No se contabiliza
-        self.append(OperationType().init__create( tr("Transfer of shares. Destiny"), 10)) #No se contabiliza     
+        self.append(OperationType().init__create( QApplication.translate("Core","Expense"), 1))
+        self.append(OperationType().init__create( QApplication.translate("Core","Income"), 2))
+        self.append(OperationType().init__create( QApplication.translate("Core","Transfer"), 3))
+        self.append(OperationType().init__create( QApplication.translate("Core","Purchase of shares"), 4))
+        self.append(OperationType().init__create( QApplication.translate("Core","Sale of shares"), 5))
+        self.append(OperationType().init__create( QApplication.translate("Core","Added of shares"), 6))
+        self.append(OperationType().init__create( QApplication.translate("Core","Credit card billing"), 7))
+        self.append(OperationType().init__create( QApplication.translate("Core","Transfer of funds"), 8)) #Se contabilizan como ganancia
+        self.append(OperationType().init__create( QApplication.translate("Core","Transfer of shares. Origin"), 9)) #No se contabiliza
+        self.append(OperationType().init__create( QApplication.translate("Core","Transfer of shares. Destiny"), 10)) #No se contabiliza     
 
 
     def qcombobox_basic(self, combo,  selected=None):
@@ -3693,11 +3695,11 @@ class SetLeverages(SetCommons):
         self.mem=mem
 
     def load_all(self):
-        self.append(Leverage(self.mem).init__create(0 ,tr("Not leveraged"), 1))
-        self.append(Leverage(self.mem).init__create( 1,tr("Variable leverage (Warrants)"), 10))
-        self.append(Leverage(self.mem).init__create( 2,tr("Leverage x2"), 2))
-        self.append(Leverage(self.mem).init__create( 3,tr("Leverage x3"), 3))
-        self.append(Leverage(self.mem).init__create( 4,tr("Leverage x4"), 4))
+        self.append(Leverage(self.mem).init__create(0 ,QApplication.translate("Core","Not leveraged"), 1))
+        self.append(Leverage(self.mem).init__create( 1,QApplication.translate("Core","Variable leverage (Warrants)"), 10))
+        self.append(Leverage(self.mem).init__create( 2,QApplication.translate("Core","Leverage x2"), 2))
+        self.append(Leverage(self.mem).init__create( 3,QApplication.translate("Core","Leverage x3"), 3))
+        self.append(Leverage(self.mem).init__create( 4,QApplication.translate("Core","Leverage x4"), 4))
 
 
 class SetPriorities(SetCommons):
@@ -3744,8 +3746,8 @@ class SetPrioritiesHistorical(SetCommons):
         self.mem=mem
 
     def load_all(self):
-        self.append(PriorityHistorical().init__create(3,tr("Individual. Yahoo historicals")))
-        self.append(PriorityHistorical().init__create(8,tr("Individual. Morningstar funds")))
+        self.append(PriorityHistorical().init__create(3,QApplication.translate("Core","Individual. Yahoo historicals")))
+        self.append(PriorityHistorical().init__create(8,QApplication.translate("Core","Individual. Morningstar funds")))
             
     def init__create_from_db(self, arr):
         """Convierte el array de enteros de la base datos en un array de objetos priority"""
@@ -3971,8 +3973,8 @@ class SetDPS:
         
     def myqtablewidget(self, table):
         table.setColumnCount(2)
-        table.setHorizontalHeaderItem(0, QTableWidgetItem(tr( "Date" )))
-        table.setHorizontalHeaderItem(1, QTableWidgetItem(tr( "Gross" )))
+        table.setHorizontalHeaderItem(0, QTableWidgetItem(QApplication.translate("Core", "Date" )))
+        table.setHorizontalHeaderItem(1, QTableWidgetItem(QApplication.translate("Core", "Gross" )))
         self.sort()
         table.settings(   self.mem)        
         table.clearContents()
@@ -4418,9 +4420,9 @@ class SetQuotes:
         
     def myqtablewidget(self, tabla):
         tabla.setColumnCount(3)
-        tabla.setHorizontalHeaderItem(0, QTableWidgetItem(tr("Date and time" )))
-        tabla.setHorizontalHeaderItem(1, QTableWidgetItem(tr("Product" )))
-        tabla.setHorizontalHeaderItem(2, QTableWidgetItem(tr("Price" )))        
+        tabla.setHorizontalHeaderItem(0, QTableWidgetItem(QApplication.translate("Core","Date and time" )))
+        tabla.setHorizontalHeaderItem(1, QTableWidgetItem(QApplication.translate("Core","Product" )))
+        tabla.setHorizontalHeaderItem(2, QTableWidgetItem(QApplication.translate("Core","Price" )))        
         tabla.clearContents()
         tabla.settings(   self.mem)       
         tabla.setRowCount(len(self.arr))
@@ -4490,15 +4492,15 @@ class SetQuotesAllIntradays:
         Si devuelve None, es que ha sido cancelado por el usuario, y no debería hacerse un comiti en el UI
         Sólo purga fichas menores a hoy()-30"""
         if progress==True:
-            pd= QProgressDialog(tr("Purging innecesary data"), tr("Cancel"), 0,len(self.arr))
+            pd= QProgressDialog(QApplication.translate("Core","Purging innecesary data"), QApplication.translate("Core","Cancel"), 0,len(self.arr))
             pd.setModal(True)
-            pd.setWindowTitle(tr("Purging quotes"))
+            pd.setWindowTitle(QApplication.translate("Core","Purging quotes"))
             pd.setMinimumDuration(0)          
         counter=0
         for i, sqi in enumerate(self.arr):
             if progress==True:
                 pd.setValue(i)
-                pd.setLabelText(tr("Purged {0} quotes from {1}").format(counter, self.product.name))
+                pd.setLabelText(QApplication.translate("Core","Purged {0} quotes from {1}").format(counter, self.product.name))
                 pd.update()
                 QApplication.processEvents()
                 if pd.wasCanceled():
@@ -5355,17 +5357,17 @@ class SetTypes(SetCommons):
         
             
     def load_all(self):
-        self.append(Type().init__create(1,tr("Shares")))
-        self.append(Type().init__create(2,tr("Funds")))
-        self.append(Type().init__create(3,tr("Indexes")))
-        self.append(Type().init__create(4,tr("ETF")))
-        self.append(Type().init__create(5,tr("Warrants")))
-        self.append(Type().init__create(6,tr("Currencies")))
-        self.append(Type().init__create(7,tr("Public Bond")))
-        self.append(Type().init__create(8,tr("Pension plans")))
-        self.append(Type().init__create(9,tr("Private Bond")))
-        self.append(Type().init__create(10,tr("Deposit")))
-        self.append(Type().init__create(11,tr("Accounts")))
+        self.append(Type().init__create(1,QApplication.translate("Core","Shares")))
+        self.append(Type().init__create(2,QApplication.translate("Core","Funds")))
+        self.append(Type().init__create(3,QApplication.translate("Core","Indexes")))
+        self.append(Type().init__create(4,QApplication.translate("Core","ETF")))
+        self.append(Type().init__create(5,QApplication.translate("Core","Warrants")))
+        self.append(Type().init__create(6,QApplication.translate("Core","Currencies")))
+        self.append(Type().init__create(7,QApplication.translate("Core","Public Bond")))
+        self.append(Type().init__create(8,QApplication.translate("Core","Pension plans")))
+        self.append(Type().init__create(9,QApplication.translate("Core","Private Bond")))
+        self.append(Type().init__create(10,QApplication.translate("Core","Deposit")))
+        self.append(Type().init__create(11,QApplication.translate("Core","Accounts")))
 
     def products(self):
         return {k:v for k,v in self.dic_arr.items() if k in ("1", "2", "4", "5", "7","8")}
@@ -5612,8 +5614,8 @@ class MemProducts:
 #            con=psycopg2.extras.DictConnection(self.strcon)
 #        except psycopg2.Error as e:
 #            print (e.pgcode, e.pgerror)
-#            return (None, tr("Error conecting to Xulpymoney"))
-#        return (con, tr( "Connection done"))
+#            return (None, QApplication.translate("Core","Error conecting to Xulpymoney"))
+#        return (con, QApplication.translate("Core", "Connection done"))
 #    
 #        
 #    def connect_from_config(self):        
@@ -6037,18 +6039,18 @@ def days_to_year_month(days):
     months=(days-years*365)//30
     days=int(days -years*365 -months*30)
     if years==1:
-        stryears=tr( "year")
+        stryears=QApplication.translate("Core", "year")
     else:
-        stryears=tr( "years")
+        stryears=QApplication.translate("Core", "years")
     if months==1:
-        strmonths=tr( "month")
+        strmonths=QApplication.translate("Core", "month")
     else:
-        strmonths=tr( "months")
+        strmonths=QApplication.translate("Core", "months")
     if days==1:
-        strdays=tr( "day")
+        strdays=QApplication.translate("Core", "day")
     else:
-        strdays=tr( "days")
-    return tr( "{} {}, {} {} and {} {}").format(years, stryears,  months,  strmonths, days,  strdays)
+        strdays=QApplication.translate("Core", "days")
+    return QApplication.translate("Core", "{} {}, {} {} and {} {}").format(years, stryears,  months,  strmonths, days,  strdays)
 
 def dt(date, hour, zone):
     """Función que devuleve un datetime con zone info.
@@ -6077,10 +6079,10 @@ def qbool(bool):
     a.setFlags( Qt.ItemIsSelectable |  Qt.ItemIsEnabled )#Set no editable
     if bool:
         a.setCheckState(Qt.Checked);
-        a.setText(tr("True"))
+        a.setText(QApplication.translate("Core","True"))
     else:
         a.setCheckState(Qt.Unchecked);
-        a.setText(tr("False"))
+        a.setText(QApplication.translate("Core","False"))
     a.setTextAlignment(Qt.AlignVCenter|Qt.AlignCenter)
     return a
     
@@ -6138,9 +6140,11 @@ def qtpc(n, rnd=2):
     elif n<0:
         a.setForeground(QColor(255, 0, 0))
     return a
-      
-def tr(s):
-    return QApplication.translate("Core",  s)
+#      
+#def QApplication.translate("Core",s):
+#    return QApplication.translate("Core",  s)
+#    
+
 
 def tpc(n, rnd=2):
     if n==None:

@@ -522,25 +522,25 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         set=SetAccountOperations(self.mem)
         if self.month==13:#Year
             tabtitle=self.tr("Expenses of {0}").format(self.wyData.year)
-            set.load_from_db("""select datetime, id_conceptos, id_tiposoperaciones, importe, comentario, id_cuentas , -1 as id_tarjetas 
+            set.load_from_db("""select id_opercuentas, datetime, id_conceptos, id_tiposoperaciones, importe, comentario, id_cuentas , -1 as id_tarjetas 
                                                 from opercuentas 
                                                 where id_tiposoperaciones={0} and 
                                                            date_part('year',datetime)={1} 
                                                 union all 
-                                                select datetime, id_conceptos, id_tiposoperaciones, importe, comentario, id_cuentas ,tarjetas.id_tarjetas as id_tarjetas 
+                                                select id_opercuentas, datetime, id_conceptos, id_tiposoperaciones, importe, comentario, id_cuentas ,tarjetas.id_tarjetas as id_tarjetas 
                                                 from opertarjetas,tarjetas 
                                                 where opertarjetas.id_tarjetas=tarjetas.id_tarjetas and 
                                                             id_tiposoperaciones={0} and 
                                                             date_part('year',datetime)={1}""".format (id_tiposoperaciones, self.wyData.year))
         else:#Month
             tabtitle=self.tr("Expenses of {0} of {1}").format(self.table.horizontalHeaderItem(self.month-1).text(), self.wyData.year)
-            set.load_from_db("""select datetime, id_conceptos, id_tiposoperaciones, importe, comentario, id_cuentas , -1 as id_tarjetas 
+            set.load_from_db("""select id_opercuentas, datetime, id_conceptos, id_tiposoperaciones, importe, comentario, id_cuentas , -1 as id_tarjetas 
                                                 from opercuentas 
                                                 where id_tiposoperaciones={0} and 
                                                            date_part('year',datetime)={1} and 
                                                            date_part('month',datetime)={2} 
                                                 union all 
-                                                select datetime, id_conceptos, id_tiposoperaciones, importe, comentario, id_cuentas ,tarjetas.id_tarjetas as id_tarjetas 
+                                                select id_opercuentas, datetime, id_conceptos, id_tiposoperaciones, importe, comentario, id_cuentas ,tarjetas.id_tarjetas as id_tarjetas 
                                                 from opertarjetas,tarjetas 
                                                 where opertarjetas.id_tarjetas=tarjetas.id_tarjetas and 
                                                             id_tiposoperaciones={0} and 
@@ -614,25 +614,25 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         table.setSelectionMode(QAbstractItemView.SingleSelection)
         
         table.setColumnCount(13)
-        table.setHorizontalHeaderItem(0, QTableWidgetItem(tr( "January" )))
-        table.setHorizontalHeaderItem(1, QTableWidgetItem(tr( "February" )))
-        table.setHorizontalHeaderItem(2, QTableWidgetItem(tr( "March" )))
-        table.setHorizontalHeaderItem(3, QTableWidgetItem(tr( "April" )))
-        table.setHorizontalHeaderItem(4, QTableWidgetItem(tr( "May" )))
-        table.setHorizontalHeaderItem(5, QTableWidgetItem(tr( "June" )))
-        table.setHorizontalHeaderItem(6, QTableWidgetItem(tr( "July" )))
-        table.setHorizontalHeaderItem(7, QTableWidgetItem(tr( "August" )))
-        table.setHorizontalHeaderItem(8, QTableWidgetItem(tr( "September" )))
-        table.setHorizontalHeaderItem(9, QTableWidgetItem(tr( "October" )))
-        table.setHorizontalHeaderItem(10, QTableWidgetItem(tr( "November" )))
-        table.setHorizontalHeaderItem(11, QTableWidgetItem(tr( "December" )))
-        table.setHorizontalHeaderItem(12, QTableWidgetItem(tr( "Total" )))
+        table.setHorizontalHeaderItem(0, QTableWidgetItem(self.tr( "January" )))
+        table.setHorizontalHeaderItem(1, QTableWidgetItem(self.tr( "February" )))
+        table.setHorizontalHeaderItem(2, QTableWidgetItem(self.tr( "March" )))
+        table.setHorizontalHeaderItem(3, QTableWidgetItem(self.tr( "April" )))
+        table.setHorizontalHeaderItem(4, QTableWidgetItem(self.tr( "May" )))
+        table.setHorizontalHeaderItem(5, QTableWidgetItem(self.tr( "June" )))
+        table.setHorizontalHeaderItem(6, QTableWidgetItem(self.tr( "July" )))
+        table.setHorizontalHeaderItem(7, QTableWidgetItem(self.tr( "August" )))
+        table.setHorizontalHeaderItem(8, QTableWidgetItem(self.tr( "September" )))
+        table.setHorizontalHeaderItem(9, QTableWidgetItem(self.tr( "October" )))
+        table.setHorizontalHeaderItem(10, QTableWidgetItem(self.tr( "November" )))
+        table.setHorizontalHeaderItem(11, QTableWidgetItem(self.tr( "December" )))
+        table.setHorizontalHeaderItem(12, QTableWidgetItem(self.tr( "Total" )))
         
         table.setRowCount(4)
-        table.setVerticalHeaderItem(0, QTableWidgetItem(tr( "Bank comissions" )))
-        table.setVerticalHeaderItem(1, QTableWidgetItem(tr( "Custody fees" )))
-        table.setVerticalHeaderItem(2, QTableWidgetItem(tr( "Invesment operation comissions" )))
-        table.setVerticalHeaderItem(3, QTableWidgetItem(tr( "Total" )))
+        table.setVerticalHeaderItem(0, QTableWidgetItem(self.tr( "Bank comissions" )))
+        table.setVerticalHeaderItem(1, QTableWidgetItem(self.tr( "Custody fees" )))
+        table.setVerticalHeaderItem(2, QTableWidgetItem(self.tr( "Invesment operation comissions" )))
+        table.setVerticalHeaderItem(3, QTableWidgetItem(self.tr( "Total" )))
 
         table.settings(self.mem,  "wdgTotal")
         (sum_bank_comissions, sum_custody_fees, sum_investment_comissions)=(Decimal("0"), Decimal("0"), Decimal("0"))
