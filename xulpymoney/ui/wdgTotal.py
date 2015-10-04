@@ -672,6 +672,83 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         self.tab.addTab(newtab, self.tr("Commision report of {}").format(self.wyData.year))
         self.tab.setCurrentWidget(newtab)        
             
+    @QtCore.pyqtSlot() 
+    def on_actionShowPaidTaxes_triggered(self):
+        newtab = QWidget()
+        horizontalLayout = QHBoxLayout(newtab)
+        table = myQTableWidget(newtab)
+        table.setObjectName("tblShowPaidTaxes")
+        table.setEditTriggers(QAbstractItemView.NoEditTriggers)
+        table.setSelectionMode(QAbstractItemView.SingleSelection)
+        
+        table.setColumnCount(13)
+        table.setHorizontalHeaderItem(0, QTableWidgetItem(self.tr( "January" )))
+        table.setHorizontalHeaderItem(1, QTableWidgetItem(self.tr( "February" )))
+        table.setHorizontalHeaderItem(2, QTableWidgetItem(self.tr( "March" )))
+        table.setHorizontalHeaderItem(3, QTableWidgetItem(self.tr( "April" )))
+        table.setHorizontalHeaderItem(4, QTableWidgetItem(self.tr( "May" )))
+        table.setHorizontalHeaderItem(5, QTableWidgetItem(self.tr( "June" )))
+        table.setHorizontalHeaderItem(6, QTableWidgetItem(self.tr( "July" )))
+        table.setHorizontalHeaderItem(7, QTableWidgetItem(self.tr( "August" )))
+        table.setHorizontalHeaderItem(8, QTableWidgetItem(self.tr( "September" )))
+        table.setHorizontalHeaderItem(9, QTableWidgetItem(self.tr( "October" )))
+        table.setHorizontalHeaderItem(10, QTableWidgetItem(self.tr( "November" )))
+        table.setHorizontalHeaderItem(11, QTableWidgetItem(self.tr( "December" )))
+        table.setHorizontalHeaderItem(12, QTableWidgetItem(self.tr( "Total" )))
+        
+        table.setRowCount(5)
+        table.setVerticalHeaderItem(0, QTableWidgetItem(self.tr( "Investment operation retentions" )))
+        table.setVerticalHeaderItem(1, QTableWidgetItem(self.tr( "Dividend retentions" )))
+        table.setVerticalHeaderItem(2, QTableWidgetItem(self.tr( "Other paid taxes" )))
+        table.setVerticalHeaderItem(3, QTableWidgetItem(self.tr( "Returned taxes" )))
+        table.setVerticalHeaderItem(4,  QTableWidgetItem(self.tr( "Total" )))
+
+        table.settings(self.mem,  "wdgTotal")
+        (sum_io_retentions, sum_div_retentions, sum_other_taxes,  sum_returned_taxes)=(Decimal("0"), Decimal("0"), Decimal("0"), Decimal("0"))
+
+        for column in range (12):
+            io_retentions=-none2decimal0(self.mem.con.cursor_one_row("""select sum(impuestos) 
+                                                                                                                                from operinversiones  
+                                                                                                                                where date_part('year',datetime)=%s and 
+                                                                                                                                    date_part('month',datetime)=%s;""", (self.wyData.year, column+1))[0])
+            table.setItem(0, column, self.mem.localcurrency.qtablewidgetitem(io_retentions))    
+            sum_io_retentions=sum_io_retentions+io_retentions
+            
+            div_retentions=-none2decimal0(self.mem.con.cursor_one_row("""select sum(retencion) 
+                                                                                                            from dividends 
+                                                                                                            where date_part('year',fecha)=%s and 
+                                                                                                                date_part('month',fecha)=%s;""", (self.wyData.year, column+1))[0])
+            table.setItem(1, column, self.mem.localcurrency.qtablewidgetitem(div_retentions))    
+            sum_div_retentions=sum_div_retentions+div_retentions
+            
+            other_taxes=none2decimal0(self.mem.con.cursor_one_row("""select sum(importe) 
+                                                                                                            from opercuentas 
+                                                                                                            where id_conceptos=%s and 
+                                                                                                                date_part('year',datetime)=%s and 
+                                                                                                                date_part('month',datetime)=%s;""", (37, self.wyData.year, column+1))[0])
+            table.setItem(2, column, self.mem.localcurrency.qtablewidgetitem(other_taxes))    
+            sum_other_taxes=sum_other_taxes+other_taxes         
+            
+            returned_taxes=none2decimal0(self.mem.con.cursor_one_row("""select sum(importe) 
+                                                                                                            from opercuentas 
+                                                                                                            where id_conceptos=%s and 
+                                                                                                                date_part('year',datetime)=%s and 
+                                                                                                                date_part('month',datetime)=%s;""", (6, self.wyData.year, column+1))[0])
+            table.setItem(3, column, self.mem.localcurrency.qtablewidgetitem(returned_taxes))    
+            sum_returned_taxes=sum_returned_taxes+returned_taxes
+            
+            table.setItem(4, column, self.mem.localcurrency.qtablewidgetitem(io_retentions+div_retentions+other_taxes+returned_taxes))    
+        
+        table.setItem(0, 12, self.mem.localcurrency.qtablewidgetitem(sum_io_retentions))    
+        table.setItem(1, 12, self.mem.localcurrency.qtablewidgetitem(sum_div_retentions))    
+        table.setItem(2, 12, self.mem.localcurrency.qtablewidgetitem(sum_other_taxes))    
+        table.setItem(3, 12, self.mem.localcurrency.qtablewidgetitem(sum_returned_taxes))    
+        table.setItem(4, 12, self.mem.localcurrency.qtablewidgetitem(sum_io_retentions+sum_div_retentions+sum_other_taxes))    
+
+        horizontalLayout.addWidget(table)
+        self.tab.addTab(newtab, self.tr("Taxes report of {}").format(self.wyData.year))
+        self.tab.setCurrentWidget(newtab)        
+            
 
     def on_tab_tabCloseRequested(self, index):
         """Only removes dinamic tabs"""
@@ -703,6 +780,8 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         menu.addAction(self.actionShowExpenses)
         menu.addSeparator()
         menu.addAction(self.actionShowComissions)
+        menu.addSeparator()
+        menu.addAction(self.actionShowPaidTaxes)
         menu.exec_(self.table.mapToGlobal(pos))
 
     def on_table_itemSelectionChanged(self):
