@@ -69,9 +69,8 @@
     </property>
     <addaction name="actionConcepts"/>
     <addaction name="actionDividendsReport"/>
-    <addaction name="actionReportAPR"/>
+    <addaction name="actionEvolutionReport"/>
     <addaction name="actionIndexRange"/>
-    <addaction name="actionJointReport"/>
     <addaction name="actionTotalReport"/>
     <addaction name="separator"/>
     <addaction name="actionGlobalReport"/>
@@ -261,10 +260,10 @@
    <addaction name="separator"/>
    <addaction name="actionIndexRange"/>
    <addaction name="actionConcepts"/>
-   <addaction name="actionJointReport"/>
-   <addaction name="actionReportAPR"/>
+   <addaction name="actionEvolutionReport"/>
    <addaction name="actionTotalReport"/>
-   <addaction name="actionGlobalReport"/>
+   <addaction name="separator"/>
+   <addaction name="actionPriceUpdates"/>
    <addaction name="separator"/>
    <addaction name="actionCalculator"/>
    <addaction name="separator"/>
@@ -348,16 +347,16 @@
     <string>Dividends report</string>
    </property>
   </action>
-  <action name="actionReportAPR">
+  <action name="actionEvolutionReport">
    <property name="icon">
     <iconset resource="../images/xulpymoney.qrc">
-     <normaloff>:/xulpymoney/statistics.png</normaloff>:/xulpymoney/statistics.png</iconset>
+     <normaloff>:/xulpymoney/dinero.png</normaloff>:/xulpymoney/dinero.png</iconset>
    </property>
    <property name="text">
-    <string>Heritage report</string>
+    <string>Evolution report</string>
    </property>
    <property name="toolTip">
-    <string>Heritage report</string>
+    <string>Evolution report</string>
    </property>
   </action>
   <action name="actionTotalReport">
@@ -373,18 +372,6 @@
    </property>
    <property name="shortcut">
     <string>F10</string>
-   </property>
-  </action>
-  <action name="actionJointReport">
-   <property name="icon">
-    <iconset resource="../images/xulpymoney.qrc">
-     <normaloff>:/xulpymoney/history2.png</normaloff>:/xulpymoney/history2.png</iconset>
-   </property>
-   <property name="text">
-    <string>Joint report</string>
-   </property>
-   <property name="toolTip">
-    <string>Joint report</string>
    </property>
   </action>
   <action name="actionAccounts">

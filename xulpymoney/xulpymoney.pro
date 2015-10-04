@@ -83,8 +83,6 @@ SOURCES         = \
                   ui/Ui_wdgInvestments.py \
                   ui/wdgInvestmentsOperations.py \
                   ui/Ui_wdgInvestmentsOperations.py \
-                  ui/wdgJointReport.py \
-                  ui/Ui_wdgJointReport.py \
                   ui/wdgMergeCodes.py \
                   ui/Ui_wdgMergeCodes.py \
                   ui/wdgProducts.py \
