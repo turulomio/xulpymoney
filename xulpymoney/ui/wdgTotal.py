@@ -343,9 +343,15 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         self.table.setItem(9, 12, self.mem.localcurrency.qtablewidgetitem(self.setData.difference_with_previous_year()))    
         self.table.setItem(11, 12, qtpc(self.setData.assets_percentage_in_month(12)))        
         self.table.setCurrentCell(6, datetime.date.today().month-1)
-
+        s=""
+        s=self.tr("This year I've generated {}.").format(self.mem.localcurrency.string(self.setData.gains()+self.setData.dividends()))
+        invested=Assets(self.mem).invested(datetime.date.today())
+        current=Assets(self.mem).saldo_todas_inversiones(self.mem.data.investments_all(), datetime.date.today())
+        s=s+"\n"+self.tr("Difference between invested amount and current invesment balance: {} - {} = {}").format(self.mem.localcurrency.string(invested),  self.mem.localcurrency.string(current),  self.mem.localcurrency.string(current-invested))
+        self.lblInvested.setText(s)
         final=datetime.datetime.now()          
         print ("wdgTotal > load_data: {0}".format(final-inicio))
+
     def load_targets(self):
         print ("loading targets")
         self.annualtarget=AnnualTarget(self.mem).init__from_db(self.wyData.year) 
