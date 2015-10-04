@@ -26,7 +26,6 @@ compile:
 	pyuic5 ui/wdgDisReinvest.ui > ui/Ui_wdgDisReinvest.py &
 	pyuic5 ui/frmAccountsReport.ui > ui/Ui_frmAccountsReport.py &
 	pyuic5 ui/wdgInvestmentClasses.ui > ui/Ui_wdgInvestmentClasses.py &
-	pyuic5 ui/wdgJointReport.ui > ui/Ui_wdgJointReport.py &
 	pyuic5 ui/wdgDividendsReport.ui > ui/Ui_wdgDividendsReport.py &
 	pyuic5 ui/wdgAPR.ui > ui/Ui_wdgAPR.py &
 	pyuic5 ui/wdgIndexRange.ui > ui/Ui_wdgIndexRange.py &

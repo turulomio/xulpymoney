@@ -10,7 +10,6 @@ from frmAccess import *
 from wdgTotal import *
 from wdgDividendsReport import *
 from wdgInvestmentClasses import *
-from wdgJointReport import *
 from wdgAPR import *
 from wdgAccounts import *
 from wdgBanks import *
@@ -175,14 +174,6 @@ class frmMain(QMainWindow, Ui_frmMain):
         self.w.show()
 
     @QtCore.pyqtSlot()  
-    def on_actionJointReport_triggered(self):
-        self.w.close()
-        self.w=wdgJointReport(self.mem, self)
-                
-        self.layout.addWidget(self.w)
-        self.w.show()        
-            
-    @QtCore.pyqtSlot()  
     def on_actionTotalReport_triggered(self):
         self.w.close()
         self.w=wdgTotal(self.mem, self)
@@ -195,7 +186,7 @@ class frmMain(QMainWindow, Ui_frmMain):
         self.mem.data.reload_prices()
 
     @QtCore.pyqtSlot()  
-    def on_actionReportAPR_triggered(self):
+    def on_actionEvolutionReport_triggered(self):
         self.w.close()
         self.w=wdgAPR(self.mem, self)
               
