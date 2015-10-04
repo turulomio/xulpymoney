@@ -141,7 +141,6 @@ FORMS           = \
                   ui/wdgInvestmentClasses.ui \
                   ui/wdgInvestments.ui \
                   ui/wdgInvestmentsOperations.ui \
-                  ui/wdgJointReport.ui \
                   ui/wdgMergeCodes.ui \
                   ui/wdgProducts.ui \
                   ui/wdgSimulations.ui \
