@@ -2,6 +2,7 @@ from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 import datetime
 from libxulpymoney import *
+from libqmessagebox import qmessagebox_error_ordering
 from Ui_wdgDividendsReport import *
 from frmInvestmentReport import *
 from frmProductReport import *

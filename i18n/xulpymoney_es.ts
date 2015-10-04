@@ -4286,7 +4286,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../ui/wdgAPR.py" line="222"/>
         <source>From {} I have generated {}.</source>
-        <translation>De {} he generado {}.</translation>
+        <translation type="unfinished">Desde {} he generado {}.</translation>
     </message>
     <message>
         <location filename="../ui/wdgAPR.py" line="223"/>
@@ -5070,7 +5070,7 @@ p, li { white-space: pre-wrap; }
         <translation>Informe de producto</translation>
     </message>
     <message>
-        <location filename="../ui/wdgDividendsReport.py" line="65"/>
+        <location filename="../ui/wdgDividendsReport.py" line="66"/>
         <source>If I keep this investment during a year, I&apos;ll get {0}</source>
         <translation>Si mantuviera esta inversión durante un año, obtendría {0}</translation>
     </message>
