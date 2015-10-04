@@ -26,11 +26,10 @@ mem=MemXulpymoney()
 mem.setQTranslator(QTranslator(app))
 mem.qtranslator.load("/usr/lib/xulpymoney/xulpymoney_{0}.qm".format(mem.config.get_value("settings", "language")))
 app.installTranslator(mem.qtranslator)
-
-
+print (mem.config.get_value("settings", "language"))
 
 access=frmAccess(mem)
-access.setLabel(tr("Please login to the xulpymoney database"))
+access.setLabel(QApplication.translate("Core","Please login to the xulpymoney database"))
 access.config_load()
 access.exec_()
 

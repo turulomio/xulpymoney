@@ -1,3 +1,4 @@
+from PyQt5.QtCore import *
 from libxulpymoney import *
 class Update:
     """DB update system
@@ -18,7 +19,7 @@ class Update:
     def __init__(self, mem):
         self.mem=mem
         self.dbversion=self.get_database_version()    
-        self.lastcodeupdate=201508270623
+        self.lastcodeupdate=201510041406
 
    
     def get_database_version(self):
@@ -350,6 +351,22 @@ class Update:
             cur.close()
             self.mem.con.commit()
             self.set_database_version(201508270623)         
+        if self.dbversion<201510041406:#Cambia pago de impuesto a sistema
+            cur=self.mem.con.cursor()
+            #Comprueba si tiene los id_conceptos ocupados de impuestos 6 y 37
+            cur.execute("select * from conceptos where id_conceptos=6")
+            if cur.rowcount==0:
+                cur.execute("insert into conceptos(id_conceptos, concepto, id_tiposoperaciones,editable) values(%s,%s, %s, %s)", (6, QApplication.translate("Core","Taxes. Returned"), 2,  False ))
+            else:
+                cur.execute("update conceptos set editable=%s where id_conceptos=%s", ( False, 6 ))
+            cur.execute("select * from conceptos where id_conceptos=37")
+            if cur.rowcount==0:
+                cur.execute("insert into conceptos(id_conceptos, concepto, id_tiposoperaciones,editable) values(%s,%s, %s, %s)", (37, QApplication.translate("Core","Taxes. Paid"), 1,  False ))
+            else:
+                cur.execute("update conceptos set editable=%s where id_conceptos=%s", ( False, 37 ))
+            cur.close()
+            self.mem.con.commit()
+            self.set_database_version(201510041406)         
             
             
 

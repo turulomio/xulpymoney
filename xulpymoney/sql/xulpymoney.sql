@@ -8915,12 +8915,12 @@ INSERT INTO bolsas VALUES (6, 'it', '07:00:00', 'Bolsa de Milán', '17:38:00', '
 INSERT INTO bolsas VALUES (7, 'jp', '09:00:00', 'Bolsa de Tokio', '20:00:00', 'Asia/Tokyo');
 INSERT INTO bolsas VALUES (8, 'cn', '00:00:00', 'Bolsa de Hong Kong', '20:00:00', 'Asia/Hong_Kong');
 INSERT INTO bolsas VALUES (9, 'pt', '07:00:00', 'Bolsa de Lisboa', '17:38:00', 'Europe/Lisbon');
-INSERT INTO globals VALUES (10, 'wdgCalculator#product', '81394');
-INSERT INTO globals VALUES (11, 'wdgCalculator#invested', '8000');
-INSERT INTO globals VALUES (1, 'Version', '201508270623');
+INSERT INTO globals VALUES (10, 'wdgCalculator#product', '79244');
+INSERT INTO globals VALUES (11, 'wdgCalculator#invested', '6000');
+INSERT INTO globals VALUES (1, 'Version', '201510041406');
 INSERT INTO globals VALUES (6, 'Admin mode', NULL);
 INSERT INTO globals VALUES (7, 'wdgIndexRange#spin', '2');
-INSERT INTO globals VALUES (8, 'wdgIndexRange#txtInvertir', '8000');
+INSERT INTO globals VALUES (8, 'wdgIndexRange#txtInvertir', '6000');
 INSERT INTO globals VALUES (9, 'wdgIndexRange#txtMinimo', '1000');
 DELETE FROM products WHERE id<=0;
 ALTER SEQUENCE seq_conceptos START WITH 100 RESTART;
