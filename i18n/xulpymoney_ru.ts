@@ -4162,57 +4162,57 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>wdgAPR</name>
     <message>
-        <location filename="../ui/Ui_wdgAPR.py" line="170"/>
+        <location filename="../ui/Ui_wdgAPR.py" line="164"/>
         <source>Year</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgAPR.py" line="172"/>
+        <location filename="../ui/Ui_wdgAPR.py" line="145"/>
         <source>Initial balance</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgAPR.py" line="153"/>
+        <location filename="../ui/Ui_wdgAPR.py" line="147"/>
         <source>Final balance</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgAPR.py" line="157"/>
+        <location filename="../ui/Ui_wdgAPR.py" line="151"/>
         <source>Incomes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgAPR.py" line="163"/>
+        <location filename="../ui/Ui_wdgAPR.py" line="157"/>
         <source>Expenses</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgAPR.py" line="161"/>
+        <location filename="../ui/Ui_wdgAPR.py" line="155"/>
         <source>Dividends</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgAPR.py" line="216"/>
+        <location filename="../ui/wdgAPR.py" line="211"/>
         <source>TOTAL</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgAPR.py" line="155"/>
+        <location filename="../ui/Ui_wdgAPR.py" line="149"/>
         <source>Difference</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgAPR.py" line="159"/>
+        <location filename="../ui/Ui_wdgAPR.py" line="153"/>
         <source>Gains</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgAPR.py" line="165"/>
+        <location filename="../ui/Ui_wdgAPR.py" line="159"/>
         <source>I+G+D-E</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgAPR.py" line="167"/>
+        <location filename="../ui/Ui_wdgAPR.py" line="161"/>
         <source>% APR</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4232,67 +4232,62 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgAPR.py" line="174"/>
-        <source>Last balance</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ui/Ui_wdgAPR.py" line="168"/>
+        <location filename="../ui/Ui_wdgAPR.py" line="162"/>
         <source>Assets report</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgAPR.py" line="185"/>
+        <location filename="../ui/Ui_wdgAPR.py" line="175"/>
         <source>Invested report</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgAPR.py" line="176"/>
+        <location filename="../ui/Ui_wdgAPR.py" line="166"/>
         <source>Invested balance</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgAPR.py" line="178"/>
+        <location filename="../ui/Ui_wdgAPR.py" line="168"/>
         <source>Investment valoration</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgAPR.py" line="180"/>
+        <location filename="../ui/Ui_wdgAPR.py" line="170"/>
         <source>Diff</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgAPR.py" line="186"/>
+        <location filename="../ui/Ui_wdgAPR.py" line="176"/>
         <source>Assets report chart</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgAPR.py" line="182"/>
+        <location filename="../ui/Ui_wdgAPR.py" line="172"/>
         <source>%</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgAPR.py" line="184"/>
+        <location filename="../ui/Ui_wdgAPR.py" line="174"/>
         <source>Gains + Dividends</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgAPR.py" line="222"/>
+        <location filename="../ui/wdgAPR.py" line="217"/>
         <source>From {} I have generated {}.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgAPR.py" line="223"/>
+        <location filename="../ui/wdgAPR.py" line="218"/>
         <source>Difference between invested amount and current invesment balance is {}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgAPR.py" line="227"/>
+        <location filename="../ui/wdgAPR.py" line="222"/>
         <source>So I&apos;m losing {} which is {} per year.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgAPR.py" line="225"/>
+        <location filename="../ui/wdgAPR.py" line="220"/>
         <source>So I&apos;m wining {} which is {} per year.</source>
         <translation type="unfinished"></translation>
     </message>

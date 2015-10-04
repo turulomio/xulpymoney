@@ -4166,57 +4166,57 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>wdgAPR</name>
     <message>
-        <location filename="../ui/Ui_wdgAPR.py" line="170"/>
+        <location filename="../ui/Ui_wdgAPR.py" line="164"/>
         <source>Year</source>
         <translation>Año</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgAPR.py" line="172"/>
+        <location filename="../ui/Ui_wdgAPR.py" line="145"/>
         <source>Initial balance</source>
         <translation>Saldo inicial</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgAPR.py" line="153"/>
+        <location filename="../ui/Ui_wdgAPR.py" line="147"/>
         <source>Final balance</source>
         <translation>Saldo final</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgAPR.py" line="157"/>
+        <location filename="../ui/Ui_wdgAPR.py" line="151"/>
         <source>Incomes</source>
         <translation>Ingresos</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgAPR.py" line="163"/>
+        <location filename="../ui/Ui_wdgAPR.py" line="157"/>
         <source>Expenses</source>
         <translation>Gastos</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgAPR.py" line="161"/>
+        <location filename="../ui/Ui_wdgAPR.py" line="155"/>
         <source>Dividends</source>
         <translation>Dividendos</translation>
     </message>
     <message>
-        <location filename="../ui/wdgAPR.py" line="216"/>
+        <location filename="../ui/wdgAPR.py" line="211"/>
         <source>TOTAL</source>
         <translation>TOTAL</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgAPR.py" line="155"/>
+        <location filename="../ui/Ui_wdgAPR.py" line="149"/>
         <source>Difference</source>
         <translation>Diferencia</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgAPR.py" line="159"/>
+        <location filename="../ui/Ui_wdgAPR.py" line="153"/>
         <source>Gains</source>
         <translation>Ganancias</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgAPR.py" line="165"/>
+        <location filename="../ui/Ui_wdgAPR.py" line="159"/>
         <source>I+G+D-E</source>
         <translation>I+C+D-G</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgAPR.py" line="167"/>
+        <location filename="../ui/Ui_wdgAPR.py" line="161"/>
         <source>% APR</source>
         <translation>% TAE</translation>
     </message>
@@ -4236,67 +4236,62 @@ p, li { white-space: pre-wrap; }
         <translation>Calculando datos...</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgAPR.py" line="174"/>
-        <source>Last balance</source>
-        <translation>Último saldo</translation>
-    </message>
-    <message>
-        <location filename="../ui/Ui_wdgAPR.py" line="168"/>
+        <location filename="../ui/Ui_wdgAPR.py" line="162"/>
         <source>Assets report</source>
         <translation>Informe de patrimonio</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgAPR.py" line="185"/>
+        <location filename="../ui/Ui_wdgAPR.py" line="175"/>
         <source>Invested report</source>
         <translation>Informe de lo invertido</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgAPR.py" line="176"/>
+        <location filename="../ui/Ui_wdgAPR.py" line="166"/>
         <source>Invested balance</source>
         <translation>Saldo invertido</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgAPR.py" line="178"/>
+        <location filename="../ui/Ui_wdgAPR.py" line="168"/>
         <source>Investment valoration</source>
         <translation>Valoración de las inversiones</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgAPR.py" line="180"/>
+        <location filename="../ui/Ui_wdgAPR.py" line="170"/>
         <source>Diff</source>
         <translation>Diferencia</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgAPR.py" line="186"/>
+        <location filename="../ui/Ui_wdgAPR.py" line="176"/>
         <source>Assets report chart</source>
         <translation>Gráfico del informe de patrimonio</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgAPR.py" line="182"/>
+        <location filename="../ui/Ui_wdgAPR.py" line="172"/>
         <source>%</source>
         <translation>%</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgAPR.py" line="184"/>
+        <location filename="../ui/Ui_wdgAPR.py" line="174"/>
         <source>Gains + Dividends</source>
         <translation>Ganancias + Dividendos</translation>
     </message>
     <message>
-        <location filename="../ui/wdgAPR.py" line="222"/>
+        <location filename="../ui/wdgAPR.py" line="217"/>
         <source>From {} I have generated {}.</source>
         <translation>Desde {} he generado {}.</translation>
     </message>
     <message>
-        <location filename="../ui/wdgAPR.py" line="223"/>
+        <location filename="../ui/wdgAPR.py" line="218"/>
         <source>Difference between invested amount and current invesment balance is {}</source>
         <translation>La diferencia entre la cantidad invertida y el valor actual de las inversiones es {}</translation>
     </message>
     <message>
-        <location filename="../ui/wdgAPR.py" line="227"/>
+        <location filename="../ui/wdgAPR.py" line="222"/>
         <source>So I&apos;m losing {} which is {} per year.</source>
         <translation>Por lo que estoy perdiendo {}, es decir, {} por año.</translation>
     </message>
     <message>
-        <location filename="../ui/wdgAPR.py" line="225"/>
+        <location filename="../ui/wdgAPR.py" line="220"/>
         <source>So I&apos;m wining {} which is {} per year.</source>
         <translation>Por lo que estoy ganando {}, es decir, {} por año.</translation>
     </message>
