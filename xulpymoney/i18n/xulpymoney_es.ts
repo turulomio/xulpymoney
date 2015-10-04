@@ -6362,11 +6362,6 @@ Diferencia diaria: {5}. Edad media de las inversiones: {6}</translation>
         <translation>Mostrar comisiones</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgTotal.py" line="471"/>
-        <source>Show paid taxes</source>
-        <translation>Mostrar impuestos pagados</translation>
-    </message>
-    <message>
         <location filename="../ui/wdgTotal.py" line="850"/>
         <source>Taxes report of {}</source>
         <translation>Informe de impuestos de {}</translation>
@@ -6429,6 +6424,21 @@ Diferencia diaria: {5}. Edad media de las inversiones: {6}</translation>
     <message>
         <location filename="../ui/wdgTotal.py" line="663"/>
         <source>Selling operations of {0} of {1} (Sold before a year)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/wdgTotal.py" line="877"/>
+        <source>You only can double click in incomes, gains, dividends and expenses.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/wdgTotal.py" line="877"/>
+        <source>Make right click to see comission and tax reports</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/Ui_wdgTotal.py" line="471"/>
+        <source>Show taxes</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
