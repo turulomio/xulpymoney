@@ -703,18 +703,6 @@
     <string>Show selling operations</string>
    </property>
   </action>
-  <action name="actionSellingOperationsPlusDividends">
-   <property name="icon">
-    <iconset resource="../images/xulpymoney.qrc">
-     <normaloff>:/xulpymoney/history2.png</normaloff>:/xulpymoney/history2.png</iconset>
-   </property>
-   <property name="text">
-    <string>Selling operations + Dividends report</string>
-   </property>
-   <property name="toolTip">
-    <string>Selling operations + Dividends report</string>
-   </property>
-  </action>
  </widget>
  <customwidgets>
   <customwidget>
