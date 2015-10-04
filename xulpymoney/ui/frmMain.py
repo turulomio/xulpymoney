@@ -296,6 +296,8 @@ class frmMain(QMainWindow, Ui_frmMain):
         
     @QtCore.pyqtSlot()  
     def on_actionSyncProducts_triggered(self):
+        self.w.hide()
+        
         source=frmAccess(self.mem,  self)
         source.setLabel(self.tr("Please login to the source xulpymoney database"))
         source.txtPort.setText(self.mem.settings.value("frmMain/syncproducts_port", "5432"))
@@ -326,6 +328,8 @@ class frmMain(QMainWindow, Ui_frmMain):
             pd.forceShow()
             
             sync_data(source.con, self.mem.con, pd)
+            
+            self.mem.data.reload()
 
 
     @QtCore.pyqtSlot()  
