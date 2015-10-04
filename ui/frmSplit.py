@@ -40,7 +40,7 @@ class frmSplit(QDialog, Ui_frmSplit):
     def generateExample(self):
         try:
             self.split=Split(self.mem, self.product, self.txtInitial.decimal(), self.txtFinal.decimal(), self.wdgDtStart.datetime(), self.wdgDtEnd.datetime())
-            self.lblExample.setText(self.tr("If you have 1000 shares of 10 € of price, you will have {0:.6f} shares of {1:.6f} € of price after the {2}".format(self.split.convertShares(1000),self.split.convertPrices(10),  self.split.type())))
+            self.lblExample.setText(self.tr("If you have 1000 shares of 10 \u20ac of price, you will have {0:.6f} shares of {1:.6f} \u20ac of price after the {2}".format(self.split.convertShares(1000),self.split.convertPrices(10),  self.split.type())))
             self.buttonbox.button(QDialogButtonBox.Ok).setEnabled(True)
         except:
             self.lblExample.setText("")

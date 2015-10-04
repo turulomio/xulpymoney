@@ -256,7 +256,7 @@ class AssetsReport(ODT):
         columns.append([c(setData.incomes()), c(setData.gains()), c(setData.dividends()), c(setData.expenses()), c(setData.i_d_g_e()), "", "", "", "", "", c(setData.difference_with_previous_year()), "", tpc(setData.assets_percentage_in_month(12))]) 
         data=zip(*columns)
         
-        self.table(   [self.tr("Concept"), self.tr("January"),  self.tr("February"), self.tr("March"), self.tr("April"), self.tr("May"), self.tr("June"), self.tr("July"), self.tr("Augost"), self.tr("September"), self.tr("October"), self.tr("November"), self.tr("December"), self.tr("Total")], 
+        self.table(   [self.tr("Concept"), self.tr("January"),  self.tr("February"), self.tr("March"), self.tr("April"), self.tr("May"), self.tr("June"), self.tr("July"), self.tr("August"), self.tr("September"), self.tr("October"), self.tr("November"), self.tr("December"), self.tr("Total")], 
                             ["<", ">", ">", ">", ">", ">", ">", ">", ">", ">", ">", ">", ">", ">"], data, [3, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2], 7)       
                 
         ## Target

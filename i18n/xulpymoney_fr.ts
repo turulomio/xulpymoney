@@ -303,16 +303,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="1415"/>
-        <source>Valor acci&#xc3;&#xb3;n</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../libxulpymoney.py" line="1416"/>
-        <source>Importe</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../libxulpymoney.py" line="1777"/>
         <source>Taxes</source>
         <translation type="unfinished"></translation>
@@ -653,7 +643,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="507"/>
+        <location filename="../ui/frmMain.py" line="508"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
@@ -773,27 +763,27 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="325"/>
+        <location filename="../ui/frmMain.py" line="326"/>
         <source>Syncing databases from {} ({}) to {} ({})</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="327"/>
+        <location filename="../ui/frmMain.py" line="328"/>
         <source>Processing products...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="507"/>
+        <location filename="../ui/frmMain.py" line="508"/>
         <source>Purging innecesary data from all products</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="509"/>
+        <location filename="../ui/frmMain.py" line="510"/>
         <source>Purging quotes from all products</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="515"/>
+        <location filename="../ui/frmMain.py" line="516"/>
         <source>Purging quotes from {0}.
 Total purged in global process: {1}</source>
         <translation type="unfinished"></translation>
@@ -1058,11 +1048,6 @@ Total purged in global process: {1}</source>
     </message>
     <message>
         <location filename="../libodfgenerator.py" line="259"/>
-        <source>Augost</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../libodfgenerator.py" line="259"/>
         <source>September</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1144,6 +1129,11 @@ Total purged in global process: {1}</source>
     <message>
         <location filename="../libodfgenerator.py" line="264"/>
         <source>Up to date you have got  {} (gains + dividends) what represents a {} of the target.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../libodfgenerator.py" line="259"/>
+        <source>August</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2646,11 +2636,6 @@ p, li { white-space: pre-wrap; }
         <source>toolBar</source>
         <translation type="unfinished"></translation>
     </message>
-    <message encoding="UTF-8">
-        <location filename="../ui/frmMain.py" line="41"/>
-        <source>Xulpymoney 2010-{0} ©</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <location filename="../ui/Ui_frmMain.py" line="473"/>
         <source>Xulpymoney</source>
@@ -2937,7 +2922,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="535"/>
+        <location filename="../ui/frmMain.py" line="536"/>
         <source>{0} quotes have been purged from {1} products</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2987,32 +2972,32 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="400"/>
+        <location filename="../ui/frmMain.py" line="401"/>
         <source>There aren&apos;t favorite products</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="55"/>
+        <location filename="../ui/frmMain.py" line="56"/>
         <source>Please introduce Admin Mode password</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="../ui/frmMain.py" line="69"/>
+        <location filename="../ui/frmMain.py" line="70"/>
         <source>Xulpymoney 2010-{0} © (Admin mode)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="64"/>
+        <location filename="../ui/frmMain.py" line="65"/>
         <source>You have set the admin mode password. Please login again</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="72"/>
+        <location filename="../ui/frmMain.py" line="73"/>
         <source>You are logged as an administrator</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="76"/>
+        <location filename="../ui/frmMain.py" line="77"/>
         <source>Bad &apos;Admin mode&apos; password. You are logged as a normal user</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3097,12 +3082,12 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="316"/>
+        <location filename="../ui/frmMain.py" line="317"/>
         <source>Databases can&apos;t be the same</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="45"/>
+        <location filename="../ui/frmMain.py" line="46"/>
         <source>Server: {}:{}      Database: {}      User: {}</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3112,7 +3097,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="302"/>
+        <location filename="../ui/frmMain.py" line="303"/>
         <source>Please login to the source xulpymoney database</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3122,13 +3107,23 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="289"/>
+        <location filename="../ui/frmMain.py" line="290"/>
         <source>Xulpymoney Simulations</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../ui/Ui_frmMain.py" line="602"/>
         <source>Ctrl+S</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/frmMain.py" line="41"/>
+        <source>Xulpymoney 2010-{0} &#xa9;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/frmMain.py" line="60"/>
+        <source>Xulpymoney 2010-{0} &#xa9; (Admin mode)</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -4096,11 +4091,6 @@ p, li { white-space: pre-wrap; }
         <source>Split / Contrasplit relation</source>
         <translation type="unfinished"></translation>
     </message>
-    <message encoding="UTF-8">
-        <location filename="../ui/frmSplit.py" line="43"/>
-        <source>If you have 1000 shares of 10 € of price, you will have {0:.6f} shares of {1:.6f} € of price after the {2}</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <location filename="../ui/frmSplit.py" line="30"/>
         <source>Select the day and time of start</source>
@@ -4109,6 +4099,11 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../ui/frmSplit.py" line="31"/>
         <source>Select the day and time of end</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/frmSplit.py" line="43"/>
+        <source>If you have 1000 shares of 10 u20ac of price, you will have {0:.6f} shares of {1:.6f} u20ac of price after the {2}</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -4770,198 +4765,193 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>wdgDisReinvest</name>
     <message>
-        <location filename="../ui/Ui_wdgDisReinvest.py" line="307"/>
+        <location filename="../ui/Ui_wdgDisReinvest.py" line="316"/>
         <source>Operation data</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgDisReinvest.py" line="308"/>
+        <location filename="../ui/Ui_wdgDisReinvest.py" line="317"/>
         <source>1000</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgDisReinvest.py" line="309"/>
+        <location filename="../ui/Ui_wdgDisReinvest.py" line="318"/>
         <source>0</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgDisReinvest.py" line="310"/>
+        <location filename="../ui/Ui_wdgDisReinvest.py" line="319"/>
         <source>Bank comission</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgDisReinvest.py" line="311"/>
+        <location filename="../ui/Ui_wdgDisReinvest.py" line="320"/>
         <source>10</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgDisReinvest.py" line="312"/>
+        <location filename="../ui/Ui_wdgDisReinvest.py" line="321"/>
         <source>Shares number</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgDisReinvest.py" line="374"/>
+        <location filename="../ui/Ui_wdgDisReinvest.py" line="383"/>
         <source>After</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgDisReinvest.py" line="331"/>
+        <location filename="../ui/Ui_wdgDisReinvest.py" line="340"/>
         <source>Investment operations</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgDisReinvest.py" line="316"/>
+        <location filename="../ui/Ui_wdgDisReinvest.py" line="325"/>
         <source>Id</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgDisReinvest.py" line="376"/>
+        <location filename="../ui/Ui_wdgDisReinvest.py" line="385"/>
         <source>Date</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgDisReinvest.py" line="358"/>
+        <location filename="../ui/Ui_wdgDisReinvest.py" line="367"/>
         <source>Operation type</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgDisReinvest.py" line="378"/>
+        <location filename="../ui/Ui_wdgDisReinvest.py" line="387"/>
         <source>Shares</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgDisReinvest.py" line="380"/>
+        <location filename="../ui/Ui_wdgDisReinvest.py" line="389"/>
         <source>Price</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgDisReinvest.py" line="382"/>
+        <location filename="../ui/Ui_wdgDisReinvest.py" line="391"/>
         <source>Balance</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgDisReinvest.py" line="328"/>
+        <location filename="../ui/Ui_wdgDisReinvest.py" line="337"/>
         <source>Comission</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgDisReinvest.py" line="368"/>
+        <location filename="../ui/Ui_wdgDisReinvest.py" line="377"/>
         <source>Taxes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgDisReinvest.py" line="350"/>
+        <location filename="../ui/Ui_wdgDisReinvest.py" line="359"/>
         <source>Investment current state</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgDisReinvest.py" line="384"/>
+        <location filename="../ui/Ui_wdgDisReinvest.py" line="393"/>
         <source>Pending</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgDisReinvest.py" line="343"/>
+        <location filename="../ui/Ui_wdgDisReinvest.py" line="352"/>
         <source>% Annual</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgDisReinvest.py" line="388"/>
+        <location filename="../ui/Ui_wdgDisReinvest.py" line="397"/>
         <source>% APR</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgDisReinvest.py" line="390"/>
+        <location filename="../ui/Ui_wdgDisReinvest.py" line="399"/>
         <source>% Total</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgDisReinvest.py" line="392"/>
+        <location filename="../ui/Ui_wdgDisReinvest.py" line="401"/>
         <source>Benchmark</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgDisReinvest.py" line="373"/>
+        <location filename="../ui/Ui_wdgDisReinvest.py" line="382"/>
         <source>Historical operations</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgDisReinvest.py" line="354"/>
+        <location filename="../ui/Ui_wdgDisReinvest.py" line="363"/>
         <source>Years</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgDisReinvest.py" line="356"/>
+        <location filename="../ui/Ui_wdgDisReinvest.py" line="365"/>
         <source>Investment</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgDisReinvest.py" line="360"/>
+        <location filename="../ui/Ui_wdgDisReinvest.py" line="369"/>
         <source>Initial balance</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgDisReinvest.py" line="362"/>
+        <location filename="../ui/Ui_wdgDisReinvest.py" line="371"/>
         <source>Final balance</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgDisReinvest.py" line="364"/>
+        <location filename="../ui/Ui_wdgDisReinvest.py" line="373"/>
         <source>Gross</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgDisReinvest.py" line="366"/>
+        <location filename="../ui/Ui_wdgDisReinvest.py" line="375"/>
         <source>Comissions</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgDisReinvest.py" line="370"/>
+        <location filename="../ui/Ui_wdgDisReinvest.py" line="379"/>
         <source>Net</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgDisReinvest.py" line="394"/>
+        <location filename="../ui/Ui_wdgDisReinvest.py" line="403"/>
         <source>Before</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgDisReinvest.py" line="305"/>
+        <location filename="../ui/Ui_wdgDisReinvest.py" line="314"/>
         <source>Reinvest simulation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgDisReinvest.py" line="306"/>
+        <location filename="../ui/Ui_wdgDisReinvest.py" line="315"/>
         <source>Disinvest simulation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgDisReinvest.py" line="313"/>
+        <location filename="../ui/Ui_wdgDisReinvest.py" line="322"/>
         <source>Amount</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgDisReinvest.py" line="314"/>
+        <location filename="../ui/Ui_wdgDisReinvest.py" line="323"/>
         <source>Make simulation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgDisReinvest.py" line="393"/>
+        <location filename="../ui/Ui_wdgDisReinvest.py" line="402"/>
         <source>Investment situation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgDisReinvest.py" line="386"/>
+        <location filename="../ui/Ui_wdgDisReinvest.py" line="395"/>
         <source>% Year to Date</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../ui/wdgDisReinvest.py" line="17"/>
         <source>There aren&apos;t shares for this investment</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ui/wdgDisReinvest.py" line="55"/>
-        <source>Divest report of {0}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4972,11 +4962,6 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../ui/wdgDisReinvest.py" line="57"/>
         <source>Selling price</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ui/wdgDisReinvest.py" line="62"/>
-        <source>Reinvest report of {0}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4997,6 +4982,16 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../ui/wdgDisReinvest.py" line="86"/>
         <source>Share price can&apos;t be 0</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/wdgDisReinvest.py" line="55"/>
+        <source>Divest simulation of {0}</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/wdgDisReinvest.py" line="62"/>
+        <source>Reinvest simulation of {0}</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -6105,7 +6100,7 @@ S&#xc3;&#xb3;lo se contabilizar&#xc3;&#xa1; cuando se vendan las acciones</sourc
     </message>
     <message>
         <location filename="../ui/wdgSimulations.py" line="86"/>
-        <source>Xulpymoney SIMULATED IN {} 2010-{} &#xc2;&#xa9;</source>
+        <source>Xulpymoney SIMULATED IN {} 2010-{} &#xa9;</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
