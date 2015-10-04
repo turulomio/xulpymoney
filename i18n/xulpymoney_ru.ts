@@ -6397,7 +6397,7 @@ S&#xc3;&#xb3;lo se contabilizar&#xc3;&#xa1; cuando se vendan las acciones</sourc
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="600"/>
+        <location filename="../ui/wdgTotal.py" line="699"/>
         <source>Dividends of {0} of {1}</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6407,7 +6407,7 @@ S&#xc3;&#xb3;lo se contabilizar&#xc3;&#xa1; cuando se vendan las acciones</sourc
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="760"/>
+        <location filename="../ui/wdgTotal.py" line="859"/>
         <source>You can&apos;t close this tab</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6542,7 +6542,7 @@ S&#xc3;&#xb3;lo se contabilizar&#xc3;&#xa1; cuando se vendan las acciones</sourc
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="597"/>
+        <location filename="../ui/wdgTotal.py" line="696"/>
         <source>Dividends of {0}</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6557,17 +6557,17 @@ S&#xc3;&#xb3;lo se contabilizar&#xc3;&#xa1; cuando se vendan las acciones</sourc
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="572"/>
+        <location filename="../ui/wdgTotal.py" line="577"/>
         <source>Selling operations of {0}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="576"/>
+        <location filename="../ui/wdgTotal.py" line="585"/>
         <source>Selling operations of {0} of {1}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="674"/>
+        <location filename="../ui/wdgTotal.py" line="773"/>
         <source>Commision report of {}</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6582,43 +6582,68 @@ S&#xc3;&#xb3;lo se contabilizar&#xc3;&#xa1; cuando se vendan las acciones</sourc
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="751"/>
+        <location filename="../ui/wdgTotal.py" line="850"/>
         <source>Taxes report of {}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="702"/>
+        <location filename="../ui/wdgTotal.py" line="801"/>
         <source>Investment operation retentions</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="703"/>
+        <location filename="../ui/wdgTotal.py" line="802"/>
         <source>Dividend retentions</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="704"/>
+        <location filename="../ui/wdgTotal.py" line="803"/>
         <source>Other paid taxes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="705"/>
+        <location filename="../ui/wdgTotal.py" line="804"/>
         <source>Returned taxes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="634"/>
+        <location filename="../ui/wdgTotal.py" line="733"/>
         <source>Bank comissions</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="635"/>
+        <location filename="../ui/wdgTotal.py" line="734"/>
         <source>Custody fees</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="636"/>
+        <location filename="../ui/wdgTotal.py" line="735"/>
         <source>Invesment operation comissions</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/wdgTotal.py" line="673"/>
+        <source>Positive gross selling operations: {}. Negative gross selling operations: {}.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/wdgTotal.py" line="616"/>
+        <source>Selling operations of {0}  (Sold after a year)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/wdgTotal.py" line="624"/>
+        <source>Selling operations of {0} of {1} (Sold after a year)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/wdgTotal.py" line="655"/>
+        <source>Selling operations of {0} (Sold before a year)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/wdgTotal.py" line="663"/>
+        <source>Selling operations of {0} of {1} (Sold before a year)</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
