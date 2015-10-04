@@ -195,26 +195,21 @@ class wdgAPR(QWidget, Ui_wdgAPR):
                 break;
             else:
                 self.progress.setValue(self.progress.value()+1)                     
-            si=Assets(self.mem).saldo_total(self.mem.data.investments_all(),  datetime.date(i-1, 12, 31))
-            sf=Assets(self.mem).saldo_total(self.mem.data.investments_all(),  datetime.date(i, 12, 31))
             sinvested=Assets(self.mem).invested(datetime.date(i, 12, 31))
             sbalance=Assets(self.mem).saldo_todas_inversiones(self.mem.data.investments_all(), datetime.date(i, 12, 31))
             gd=Assets(self.mem).consolidado_neto(self.mem.data.investments_all(),  i)+Investment(self.mem).dividends_bruto(i)
             sumgd=sumgd+gd
 
             self.tblReport.setItem(i-anoinicio, 0, qcenter(i))
-            self.tblReport.setItem(i-anoinicio, 1, self.mem.localcurrency.qtablewidgetitem(si))
-            self.tblReport.setItem(i-anoinicio, 2, self.mem.localcurrency.qtablewidgetitem(sf))
+            self.tblReport.setItem(i-anoinicio, 1, self.mem.localcurrency.qtablewidgetitem(sinvested))
+            self.tblReport.setItem(i-anoinicio, 2, self.mem.localcurrency.qtablewidgetitem(sbalance))
+            self.tblReport.setItem(i-anoinicio, 3, self.mem.localcurrency.qtablewidgetitem(sbalance- sinvested))
+            self.tblReport.setItem(i-anoinicio, 4, qtpc(100*(sbalance- sinvested)/sinvested))
             
-            self.tblReport.setItem(i-anoinicio, 4, self.mem.localcurrency.qtablewidgetitem(sinvested))
-            self.tblReport.setItem(i-anoinicio, 5, self.mem.localcurrency.qtablewidgetitem(sbalance))
-            self.tblReport.setItem(i-anoinicio, 6, self.mem.localcurrency.qtablewidgetitem(sbalance- sinvested))
-            self.tblReport.setItem(i-anoinicio, 7, qtpc(100*(sbalance- sinvested)/sinvested))
-            
-            self.tblReport.setItem(i-anoinicio, 9, self.mem.localcurrency.qtablewidgetitem(gd))
+            self.tblReport.setItem(i-anoinicio, 6, self.mem.localcurrency.qtablewidgetitem(gd))
 
         self.tblReport.setItem(anofinal-anoinicio, 0, qcenter((self.tr("TOTAL"))))
-        self.tblReport.setItem(anofinal-anoinicio, 9, self.mem.localcurrency.qtablewidgetitem(sumgd))
+        self.tblReport.setItem(anofinal-anoinicio, 6, self.mem.localcurrency.qtablewidgetitem(sumgd))
         
         diff=Assets(self.mem).saldo_todas_inversiones(self.mem.data.investments_all(), datetime.date.today())-Assets(self.mem).invested(datetime.date.today())
         s=""
