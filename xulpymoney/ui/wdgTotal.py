@@ -519,19 +519,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         horizontalLayout.addWidget(table)
         self.tab.addTab(newtab, self.tr("Dividends of {0} of {1}").format(self.table.horizontalHeaderItem(self.month-1).text(), self.wyData.year))
         self.tab.setCurrentWidget(newtab)            
-            
 
-    
-    @QtCore.pyqtSlot() 
-    def on_actionSellingOperationsPlusDividends_triggered(self):
-        m=QMessageBox()
-        value=self.setData.find(self.setData.year, self.month).d_g()
-        valueyear=self.setData.d_g()
-        message=self.tr("Gains and dividends sum from this month is {0}. In this year it's value rises to {1}").format(self.mem.localcurrency.string(value), self.mem.localcurrency.string(valueyear))
-
-        m.setText(message)
-        m.exec_()    
-    
     def on_tab_tabCloseRequested(self, index):
         """Only removes dinamic tabs"""
         if index in (0, 1):
