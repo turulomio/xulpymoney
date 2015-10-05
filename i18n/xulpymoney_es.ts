@@ -329,12 +329,12 @@
         <translation>Cuentas</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="2333"/>
+        <location filename="../libxulpymoney.py" line="2335"/>
         <source>Taxes. Returned</source>
         <translation>Impuestos. Devolución</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="2336"/>
+        <location filename="../libxulpymoney.py" line="2340"/>
         <source>Taxes. Paid</source>
         <translation>Impuestos. Pago</translation>
     </message>
@@ -624,32 +624,32 @@
         <translation>Iniciando cuenta bancaria</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="2331"/>
+        <location filename="../libxulpymoney.py" line="2333"/>
         <source>Transfer. Origin</source>
         <translation>Transferencia. Origen</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="2332"/>
+        <location filename="../libxulpymoney.py" line="2334"/>
         <source>Transfer. Destination</source>
         <translation>Transferencia. Destino</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="2334"/>
+        <location filename="../libxulpymoney.py" line="2338"/>
         <source>Purchase investment product</source>
         <translation>Compra de producto de inversión</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="2335"/>
+        <location filename="../libxulpymoney.py" line="2339"/>
         <source>Sale investment product</source>
         <translation>Venta de producto de inversión</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="2337"/>
+        <location filename="../libxulpymoney.py" line="2341"/>
         <source>Bank commissions</source>
         <translation>Comisiones bancarias</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="2338"/>
+        <location filename="../libxulpymoney.py" line="2342"/>
         <source>Dividends</source>
         <translation>Dividendos</translation>
     </message>
@@ -659,57 +659,57 @@
         <translation>Facturación de tarjeta de crédito</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="2340"/>
+        <location filename="../libxulpymoney.py" line="2344"/>
         <source>Added shares</source>
         <translation>Añadido de acciones</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="2341"/>
+        <location filename="../libxulpymoney.py" line="2345"/>
         <source>Attendance bonus</source>
         <translation>Prima de asistencia</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="2342"/>
+        <location filename="../libxulpymoney.py" line="2346"/>
         <source>Custody commission</source>
         <translation>Comisión de custodia</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="2343"/>
+        <location filename="../libxulpymoney.py" line="2347"/>
         <source>Dividends. Sale of rights</source>
         <translation>Dividendos. Venta de derechos</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="2344"/>
+        <location filename="../libxulpymoney.py" line="2348"/>
         <source>Bonds. Running coupon payment</source>
         <translation>Deuda. Pago de cupón corrido</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="2345"/>
+        <location filename="../libxulpymoney.py" line="2349"/>
         <source>Bonds. Running coupon collection</source>
         <translation>Deuda. Cobro de cupón corrido</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="2346"/>
+        <location filename="../libxulpymoney.py" line="2350"/>
         <source>Bonds. Coupon collection</source>
         <translation>Deuda. Cobro de cupón</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="2347"/>
+        <location filename="../libxulpymoney.py" line="2331"/>
         <source>Paysheet</source>
         <translation>Nómina</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="2348"/>
+        <location filename="../libxulpymoney.py" line="2332"/>
         <source>Supermarket</source>
         <translation>Supermercado</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="2349"/>
+        <location filename="../libxulpymoney.py" line="2337"/>
         <source>Restaurant</source>
         <translation>Restaurante</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="2350"/>
+        <location filename="../libxulpymoney.py" line="2336"/>
         <source>Gas</source>
         <translation>Gasolina</translation>
     </message>
@@ -4191,11 +4191,6 @@ p, li { white-space: pre-wrap; }
         <translation>Gastos</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgAPR.py" line="155"/>
-        <source>Dividends</source>
-        <translation>Dividendos</translation>
-    </message>
-    <message>
         <location filename="../ui/wdgAPR.py" line="211"/>
         <source>TOTAL</source>
         <translation>TOTAL</translation>
@@ -4204,11 +4199,6 @@ p, li { white-space: pre-wrap; }
         <location filename="../ui/Ui_wdgAPR.py" line="149"/>
         <source>Difference</source>
         <translation>Diferencia</translation>
-    </message>
-    <message>
-        <location filename="../ui/Ui_wdgAPR.py" line="153"/>
-        <source>Gains</source>
-        <translation>Ganancias</translation>
     </message>
     <message>
         <location filename="../ui/Ui_wdgAPR.py" line="159"/>
@@ -4271,11 +4261,6 @@ p, li { white-space: pre-wrap; }
         <translation>%</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgAPR.py" line="174"/>
-        <source>Gains + Dividends</source>
-        <translation>Ganancias + Dividendos</translation>
-    </message>
-    <message>
         <location filename="../ui/wdgAPR.py" line="217"/>
         <source>From {} I have generated {}.</source>
         <translation>Desde {} he generado {}.</translation>
@@ -4294,6 +4279,21 @@ p, li { white-space: pre-wrap; }
         <location filename="../ui/wdgAPR.py" line="220"/>
         <source>So I&apos;m wining {} which is {} per year.</source>
         <translation>Por lo que estoy ganando {}, es decir, {} por año.</translation>
+    </message>
+    <message>
+        <location filename="../ui/Ui_wdgAPR.py" line="153"/>
+        <source>Net gains</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/Ui_wdgAPR.py" line="155"/>
+        <source>Net dividends</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/Ui_wdgAPR.py" line="174"/>
+        <source>Net Gains + Dividends</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

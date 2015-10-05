@@ -143,7 +143,7 @@ class wdgAPR(QWidget, Ui_wdgAPR):
             si=lastsaldo
             sf=Assets(self.mem).saldo_total(self.mem.data.investments_all(),  datetime.date(i, 12, 31))
             expenses=Assets(self.mem).saldo_anual_por_tipo_operacion( i,1)#+Assets(self.mem).saldo_anual_por_tipo_operacion (cur,i, 7)#expenses + Facturación de tarjeta
-            dividends=Investment(self.mem).dividends_bruto( i)
+            dividends=Investment(self.mem).dividends_neto( i)
             incomes=Assets(self.mem).saldo_anual_por_tipo_operacion(  i,2)-dividends #Se quitan los dividends que luego se suman
             gains=Assets(self.mem).consolidado_neto(self.mem.data.investments_all(),  i)
             
@@ -197,7 +197,7 @@ class wdgAPR(QWidget, Ui_wdgAPR):
                 self.progress.setValue(self.progress.value()+1)                     
             sinvested=Assets(self.mem).invested(datetime.date(i, 12, 31))
             sbalance=Assets(self.mem).saldo_todas_inversiones(self.mem.data.investments_all(), datetime.date(i, 12, 31))
-            gd=Assets(self.mem).consolidado_neto(self.mem.data.investments_all(),  i)+Investment(self.mem).dividends_bruto(i)
+            gd=Assets(self.mem).consolidado_neto(self.mem.data.investments_all(),  i)+Investment(self.mem).dividends_neto(i)
             sumgd=sumgd+gd
 
             self.tblReport.setItem(i-anoinicio, 0, qcenter(i))

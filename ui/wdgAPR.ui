@@ -125,12 +125,12 @@
            </column>
            <column>
             <property name="text">
-             <string>Gains</string>
+             <string>Net gains</string>
             </property>
            </column>
            <column>
             <property name="text">
-             <string>Dividends</string>
+             <string>Net dividends</string>
             </property>
            </column>
            <column>
@@ -200,7 +200,7 @@
              </column>
              <column>
               <property name="text">
-               <string>Gains + Dividends</string>
+               <string>Net Gains + Dividends</string>
               </property>
              </column>
             </widget>
