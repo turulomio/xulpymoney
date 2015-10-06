@@ -88,20 +88,21 @@ class wdgAPR(QWidget, Ui_wdgAPR):
         self.tblReport.settings(self.mem)
         self.mem.data.load_inactives()
         
-        firstyear=self.mem.settings.value("wdgAPR/cmbYear")
-        if not firstyear:
-            firstyear=Assets(self.mem).first_datetime_with_user_data().year        
-        firstyear=int(firstyear)
+        firstyear=Assets(self.mem).first_datetime_with_user_data().year        
+        currentyear=int(self.mem.settings.value("wdgAPR/cmbYear", firstyear))
+        self.wdgYear.initiate(firstyear,  datetime.date.today().year, currentyear)#Push an wdgYear changed
+        self.wdgYear.changed.connect(self.on_my_wdgYear_changed)
+        self.on_my_wdgYear_changed()
+        
 
-        self.wdgYear.initiate(firstyear,  datetime.date.today().year, firstyear)#Push an wdgYear changed
-
-    def on_wdgYear_changed(self):
+    def on_my_wdgYear_changed(self):
+        print ("on_wdgYear_changed", self.wdgYear.year)
         self.mem.settings.setValue("wdgAPR/cmbYear", self.wdgYear.year )
         self.progress.reset()
-        self.progress.setMinimum(1)
+        self.progress.setMinimum(0)
         self.progress.setMaximum((datetime.date.today().year-self.wdgYear.year+1)*2)
         self.progress.forceShow()
-        self.progress.setValue(1)
+        self.progress.setValue(0)
         
         self.table.clear()
         self.tblReport.clear()
@@ -110,9 +111,7 @@ class wdgAPR(QWidget, Ui_wdgAPR):
         self.expenses=[]
         self.gains=[]
         self.dividends=[]
-        
-        
-        
+
         self.load_data()
         self.load_report()
 
@@ -126,16 +125,16 @@ class wdgAPR(QWidget, Ui_wdgAPR):
     def load_data(self):        
         inicio=datetime.datetime.now()       
         anoinicio=self.wdgYear.year
-        anofinal=datetime.date.today().year+1        
+        anofinal=datetime.date.today().year
         
-        self.table.setRowCount(anofinal-anoinicio+1)
+        self.table.setRowCount(anofinal-anoinicio+1+1)
         lastsaldo=0
         sumdividends=0
         sumgains=0
         sumexpenses=0
         sumincomes=0
         sumicdg=0
-        for i in range(anoinicio, anofinal):
+        for i in range(anoinicio, anofinal+1):
             if self.progress.wasCanceled():
                 break;
             else:
@@ -174,12 +173,12 @@ class wdgAPR(QWidget, Ui_wdgAPR):
                 tae=(sf -si)*100/si
             self.table.setItem(i-anoinicio, 9, qtpc(tae))
             lastsaldo=sf
-        self.table.setItem(anofinal-anoinicio, 0, qcenter((self.tr("TOTAL"))))
-        self.table.setItem(anofinal-anoinicio, 4, self.mem.localcurrency.qtablewidgetitem(sumincomes))
-        self.table.setItem(anofinal-anoinicio, 5, self.mem.localcurrency.qtablewidgetitem(sumgains))
-        self.table.setItem(anofinal-anoinicio, 6, self.mem.localcurrency.qtablewidgetitem(sumdividends))
-        self.table.setItem(anofinal-anoinicio, 7, self.mem.localcurrency.qtablewidgetitem(sumexpenses))
-        self.table.setItem(anofinal-anoinicio, 8, self.mem.localcurrency.qtablewidgetitem(sumicdg))
+        self.table.setItem(anofinal-anoinicio+1, 0, qcenter((self.tr("TOTAL"))))
+        self.table.setItem(anofinal-anoinicio+1, 4, self.mem.localcurrency.qtablewidgetitem(sumincomes))
+        self.table.setItem(anofinal-anoinicio+1, 5, self.mem.localcurrency.qtablewidgetitem(sumgains))
+        self.table.setItem(anofinal-anoinicio+1, 6, self.mem.localcurrency.qtablewidgetitem(sumdividends))
+        self.table.setItem(anofinal-anoinicio+1, 7, self.mem.localcurrency.qtablewidgetitem(sumexpenses))
+        self.table.setItem(anofinal-anoinicio+1, 8, self.mem.localcurrency.qtablewidgetitem(sumicdg))
         final=datetime.datetime.now()          
         print ("wdgAPR > load_data: {}".format(final-inicio))
 
@@ -187,10 +186,10 @@ class wdgAPR(QWidget, Ui_wdgAPR):
         print ("Initializating load_report")
         inicio=datetime.datetime.now()       
         anoinicio=self.wdgYear.year
-        anofinal=datetime.date.today().year+1        
+        anofinal=datetime.date.today().year
         (sumgd, )=(0, )
-        self.tblReport.setRowCount(anofinal-anoinicio+1)
-        for i in range(anoinicio, anofinal):
+        self.tblReport.setRowCount(anofinal-anoinicio+1+1)
+        for i in range(anoinicio, anofinal+1):
             if self.progress.wasCanceled():
                 break;
             else:
@@ -208,8 +207,8 @@ class wdgAPR(QWidget, Ui_wdgAPR):
             
             self.tblReport.setItem(i-anoinicio, 6, self.mem.localcurrency.qtablewidgetitem(gd))
 
-        self.tblReport.setItem(anofinal-anoinicio, 0, qcenter((self.tr("TOTAL"))))
-        self.tblReport.setItem(anofinal-anoinicio, 6, self.mem.localcurrency.qtablewidgetitem(sumgd))
+        self.tblReport.setItem(anofinal-anoinicio+1, 0, qcenter((self.tr("TOTAL"))))
+        self.tblReport.setItem(anofinal-anoinicio+1, 6, self.mem.localcurrency.qtablewidgetitem(sumgd))
         
         diff=Assets(self.mem).saldo_todas_inversiones(self.mem.data.investments_all(), datetime.date.today())-Assets(self.mem).invested(datetime.date.today())
         s=""
