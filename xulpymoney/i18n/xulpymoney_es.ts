@@ -4191,7 +4191,7 @@ p, li { white-space: pre-wrap; }
         <translation>Gastos</translation>
     </message>
     <message>
-        <location filename="../ui/wdgAPR.py" line="211"/>
+        <location filename="../ui/wdgAPR.py" line="210"/>
         <source>TOTAL</source>
         <translation>TOTAL</translation>
     </message>
@@ -4261,22 +4261,22 @@ p, li { white-space: pre-wrap; }
         <translation>%</translation>
     </message>
     <message>
-        <location filename="../ui/wdgAPR.py" line="217"/>
+        <location filename="../ui/wdgAPR.py" line="216"/>
         <source>From {} I have generated {}.</source>
         <translation>Desde {} he generado {}.</translation>
     </message>
     <message>
-        <location filename="../ui/wdgAPR.py" line="218"/>
+        <location filename="../ui/wdgAPR.py" line="217"/>
         <source>Difference between invested amount and current invesment balance is {}</source>
         <translation>La diferencia entre la cantidad invertida y el valor actual de las inversiones es {}</translation>
     </message>
     <message>
-        <location filename="../ui/wdgAPR.py" line="222"/>
+        <location filename="../ui/wdgAPR.py" line="221"/>
         <source>So I&apos;m losing {} which is {} per year.</source>
         <translation>Por lo que estoy perdiendo {}, es decir, {} por año.</translation>
     </message>
     <message>
-        <location filename="../ui/wdgAPR.py" line="220"/>
+        <location filename="../ui/wdgAPR.py" line="219"/>
         <source>So I&apos;m wining {} which is {} per year.</source>
         <translation>Por lo que estoy ganando {}, es decir, {} por año.</translation>
     </message>
