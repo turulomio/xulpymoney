@@ -23,12 +23,12 @@ class wdgCalculator(QWidget, Ui_wdgCalculator):
         self.gl_wdgCalculator_product=Global(self.mem, "wdgCalculator", "product")
         self.gl_wdgCalculator_invested=Global(self.mem, "wdgCalculator", "invested")
             
+        self.txtAmount.setText(self.gl_wdgCalculator_invested.get())
         self.product=self.mem.data.products_all().find(int(self.gl_wdgCalculator_product.get()))
         
         
         self.mem.data.products_all().qcombobox(self.cmbProducts, self.product)
         self.load_cmbPrice()
-        self.txtAmount.setText(self.gl_wdgCalculator_invested.get())
 
     def init__percentagevariation_amount(self, percentagevariation, amount):
         if self.hasProducts==True:
