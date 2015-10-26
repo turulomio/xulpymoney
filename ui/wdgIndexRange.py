@@ -63,7 +63,7 @@ class wdgIndexRange(QWidget, Ui_wdgIndexRange):
         if self.benchmark:
             self.cmbBenchmarkCurrent.clear() 
             self.cmbBenchmarkCurrent.addItem(self.tr("Benchmark penultimate price ({}) is {}".format(str(self.benchmark.result.basic.penultimate.datetime)[:16], self.benchmark.currency.string(self.benchmark.result.basic.penultimate.quote))))
-            self.cmbBenchmarkCurrent.addItem(self.tr("Benchmark last price ({}) is {}. Last dayly variation: {}.".format(str(self.benchmark.result.basic.last.datetime)[:16], self.benchmark.currency.string(self.benchmark.result.basic.last.quote),tpc(self.benchmark.result.basic.tpc_diario()) )))
+            self.cmbBenchmarkCurrent.addItem(self.tr("Benchmark last price ({}) is {}. Last daily variation: {}.".format(str(self.benchmark.result.basic.last.datetime)[:16], self.benchmark.currency.string(self.benchmark.result.basic.last.quote),tpc(self.benchmark.result.basic.tpc_diario()) )))
             self.cmbBenchmarkCurrent.setCurrentIndex(1)#Last price
             
     def cmbBenchmarkCurrent_price(self):
