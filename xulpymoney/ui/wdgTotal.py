@@ -276,11 +276,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
     def __init__(self, mem,  parent=None):
         QWidget.__init__(self, parent)
         self.setupUi(self)
-        self.mem=mem
-        self.progress = QProgressDialog(self.tr("Filling report data"), self.tr("Cancel"), 0,0)
-        self.progress.setModal(True)
-        self.progress.setWindowTitle(self.tr("Calculating data..."))
-        self.progress.setMinimumDuration(0)        
+        self.mem=mem   
 
         fechainicio=Assets(self.mem).first_datetime_with_user_data()         
 
@@ -430,14 +426,16 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         
         self.setGraphic=TotalGraphic(self.mem, self.wyChart.year, 1)
 
-        self.progress.reset()
-        self.progress.setMaximum(self.setGraphic.length())
-        self.progress.forceShow()
-        self.progress.setValue(0)  
+        progress = QProgressDialog(self.tr("Filling report data"), self.tr("Cancel"), 0,self.setGraphic.length())
+        progress.setModal(True)
+        progress.setWindowTitle(self.tr("Calculating data..."))
+#        progress.setMinimumDuration(0)     
+#        progress.setMaximum()
+#        progress.setValue(0)  
         for m in self.setGraphic.arr:
-            if self.progress.wasCanceled():
+            if progress.wasCanceled():
                 break
-            self.progress.setValue(self.progress.value()+1)
+            progress.setValue(progress.value()+1)
             dates.append(m.last_day())
             total.append(m.total())
             zero.append(m.total_zerorisk())
