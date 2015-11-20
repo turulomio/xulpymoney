@@ -5580,102 +5580,102 @@ Daily Diff: {5}. Investment average age: {6}</source>
 <context>
     <name>wdgProducts</name>
     <message>
-        <location filename="../ui/Ui_wdgProducts.py" line="186"/>
+        <location filename="../ui/Ui_wdgProducts.py" line="187"/>
         <source>Products list</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgProducts.py" line="191"/>
+        <location filename="../ui/Ui_wdgProducts.py" line="192"/>
         <source>Code</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgProducts.py" line="195"/>
+        <location filename="../ui/Ui_wdgProducts.py" line="196"/>
         <source>ISIN</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgProducts.py" line="197"/>
+        <location filename="../ui/Ui_wdgProducts.py" line="198"/>
         <source>Last update</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgProducts.py" line="206"/>
+        <location filename="../ui/Ui_wdgProducts.py" line="207"/>
         <source>Registers found</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgProducts.py" line="219"/>
+        <location filename="../ui/Ui_wdgProducts.py" line="220"/>
         <source>Ibex 35</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgProducts.py" line="230"/>
+        <location filename="../ui/Ui_wdgProducts.py" line="231"/>
         <source>New DPS estimation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgProducts.py" line="231"/>
+        <location filename="../ui/Ui_wdgProducts.py" line="232"/>
         <source>New Dividend per share estimation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgProducts.py" line="232"/>
+        <location filename="../ui/Ui_wdgProducts.py" line="233"/>
         <source>Purge investment</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgProducts.py" line="233"/>
+        <location filename="../ui/Ui_wdgProducts.py" line="234"/>
         <source>Deletes quotes innecesary. Leaves open, high, low and close quotes.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgProducts.py" line="199"/>
+        <location filename="../ui/Ui_wdgProducts.py" line="200"/>
         <source>Price</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgProducts.py" line="208"/>
+        <location filename="../ui/Ui_wdgProducts.py" line="209"/>
         <source>Product report</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgProducts.py" line="220"/>
+        <location filename="../ui/Ui_wdgProducts.py" line="221"/>
         <source>New product</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgProducts.py" line="222"/>
+        <location filename="../ui/Ui_wdgProducts.py" line="223"/>
         <source>Delete product</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgProducts.py" line="187"/>
+        <location filename="../ui/Ui_wdgProducts.py" line="188"/>
         <source>Select your search</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgProducts.py" line="189"/>
+        <location filename="../ui/Ui_wdgProducts.py" line="190"/>
         <source>Filter by stock exchange</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgProducts.py" line="193"/>
+        <location filename="../ui/Ui_wdgProducts.py" line="194"/>
         <source>Product</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgProducts.py" line="210"/>
+        <location filename="../ui/Ui_wdgProducts.py" line="211"/>
         <source>% Daily</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgProducts.py" line="203"/>
+        <location filename="../ui/Ui_wdgProducts.py" line="204"/>
         <source>% Year to date</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgProducts.py" line="205"/>
+        <location filename="../ui/Ui_wdgProducts.py" line="206"/>
         <source>% Dividend</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5690,7 +5690,7 @@ Daily Diff: {5}. Investment average age: {6}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgProducts.py" line="247"/>
+        <location filename="../ui/wdgProducts.py" line="250"/>
         <source>{0} quotes have been purged from {1}</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5705,62 +5705,62 @@ Daily Diff: {5}. Investment average age: {6}</source>
         <translation type="unfinished">Xulpymoney</translation>
     </message>
     <message>
-        <location filename="../ui/wdgProducts.py" line="133"/>
+        <location filename="../ui/wdgProducts.py" line="136"/>
         <source>Search too wide. You need more than 3 characters</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgProducts.py" line="168"/>
+        <location filename="../ui/wdgProducts.py" line="171"/>
         <source>Remove from favorites</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgProducts.py" line="225"/>
+        <location filename="../ui/Ui_wdgProducts.py" line="226"/>
         <source>Add to favorites</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgProducts.py" line="221"/>
+        <location filename="../ui/wdgProducts.py" line="224"/>
         <source>Merging codes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgProducts.py" line="212"/>
+        <location filename="../ui/Ui_wdgProducts.py" line="213"/>
         <source>% Annual</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgProducts.py" line="214"/>
+        <location filename="../ui/Ui_wdgProducts.py" line="215"/>
         <source>Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgProducts.py" line="216"/>
+        <location filename="../ui/Ui_wdgProducts.py" line="217"/>
         <source>Dividend</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgProducts.py" line="218"/>
+        <location filename="../ui/Ui_wdgProducts.py" line="219"/>
         <source>Hour</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgProducts.py" line="227"/>
+        <location filename="../ui/Ui_wdgProducts.py" line="228"/>
         <source>Merge selected codes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgProducts.py" line="229"/>
+        <location filename="../ui/Ui_wdgProducts.py" line="230"/>
         <source>New price</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgProducts.py" line="180"/>
+        <location filename="../ui/wdgProducts.py" line="183"/>
         <source>Order by</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgProducts.py" line="188"/>
+        <location filename="../ui/Ui_wdgProducts.py" line="189"/>
         <source>Search by code, ISIN, ticker or product name</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5770,12 +5770,12 @@ Daily Diff: {5}. Investment average age: {6}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgProducts.py" line="221"/>
+        <location filename="../ui/Ui_wdgProducts.py" line="222"/>
         <source>New user product</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgProducts.py" line="223"/>
+        <location filename="../ui/Ui_wdgProducts.py" line="224"/>
         <source>Delete user product</source>
         <translation type="unfinished"></translation>
     </message>

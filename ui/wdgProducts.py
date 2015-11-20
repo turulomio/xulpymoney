@@ -126,7 +126,10 @@ class wdgProducts(QWidget, Ui_wdgProducts):
         
     def on_txt_returnPressed(self):
         self.on_cmd_pressed()
-        
+
+    def on_tblInvestments_cellDoubleClicked(self, row, column):
+        self.on_actionProductReport_triggered()
+
     def on_cmd_pressed(self):
         if len(self.txt.text().upper())<=3:            
             m=QMessageBox()

@@ -5587,102 +5587,102 @@ Diferencia diaria: {5}. Edad media de las inversiones: {6}</translation>
 <context>
     <name>wdgProducts</name>
     <message>
-        <location filename="../ui/Ui_wdgProducts.py" line="186"/>
+        <location filename="../ui/Ui_wdgProducts.py" line="187"/>
         <source>Products list</source>
         <translation>Listado de productos</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgProducts.py" line="191"/>
+        <location filename="../ui/Ui_wdgProducts.py" line="192"/>
         <source>Code</source>
         <translation>Código</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgProducts.py" line="195"/>
+        <location filename="../ui/Ui_wdgProducts.py" line="196"/>
         <source>ISIN</source>
         <translation>ISIN</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgProducts.py" line="197"/>
+        <location filename="../ui/Ui_wdgProducts.py" line="198"/>
         <source>Last update</source>
         <translation>Última actualización</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgProducts.py" line="206"/>
+        <location filename="../ui/Ui_wdgProducts.py" line="207"/>
         <source>Registers found</source>
         <translation>Registros encontrados</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgProducts.py" line="219"/>
+        <location filename="../ui/Ui_wdgProducts.py" line="220"/>
         <source>Ibex 35</source>
         <translation>Ibex 35</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgProducts.py" line="230"/>
+        <location filename="../ui/Ui_wdgProducts.py" line="231"/>
         <source>New DPS estimation</source>
         <translation>Nueva estimación de dividendo por acción</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgProducts.py" line="231"/>
+        <location filename="../ui/Ui_wdgProducts.py" line="232"/>
         <source>New Dividend per share estimation</source>
         <translation>Nueva estimación de dividendo por acción</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgProducts.py" line="232"/>
+        <location filename="../ui/Ui_wdgProducts.py" line="233"/>
         <source>Purge investment</source>
         <translation>Purgar inversión</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgProducts.py" line="233"/>
+        <location filename="../ui/Ui_wdgProducts.py" line="234"/>
         <source>Deletes quotes innecesary. Leaves open, high, low and close quotes.</source>
         <translation>Borra cotizaciones innecesarias. Deja cotización de apertura, más alta, más baja y de cierre.</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgProducts.py" line="199"/>
+        <location filename="../ui/Ui_wdgProducts.py" line="200"/>
         <source>Price</source>
         <translation>Precio</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgProducts.py" line="208"/>
+        <location filename="../ui/Ui_wdgProducts.py" line="209"/>
         <source>Product report</source>
         <translation>Informe de producto</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgProducts.py" line="220"/>
+        <location filename="../ui/Ui_wdgProducts.py" line="221"/>
         <source>New product</source>
         <translation>Nuevo producto</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgProducts.py" line="222"/>
+        <location filename="../ui/Ui_wdgProducts.py" line="223"/>
         <source>Delete product</source>
         <translation>Borrar el producto</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgProducts.py" line="187"/>
+        <location filename="../ui/Ui_wdgProducts.py" line="188"/>
         <source>Select your search</source>
         <translation>Selecciona tu búsqueda</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgProducts.py" line="189"/>
+        <location filename="../ui/Ui_wdgProducts.py" line="190"/>
         <source>Filter by stock exchange</source>
         <translation>Filtrar por bolsa</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgProducts.py" line="193"/>
+        <location filename="../ui/Ui_wdgProducts.py" line="194"/>
         <source>Product</source>
         <translation>Producto</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgProducts.py" line="210"/>
+        <location filename="../ui/Ui_wdgProducts.py" line="211"/>
         <source>% Daily</source>
         <translation>% Diario</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgProducts.py" line="203"/>
+        <location filename="../ui/Ui_wdgProducts.py" line="204"/>
         <source>% Year to date</source>
         <translation>% año actual</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgProducts.py" line="205"/>
+        <location filename="../ui/Ui_wdgProducts.py" line="206"/>
         <source>% Dividend</source>
         <translation>% Dividendo</translation>
     </message>
@@ -5697,7 +5697,7 @@ Diferencia diaria: {5}. Edad media de las inversiones: {6}</translation>
         <translation>Borrando datos del producto seleccionado ({0}). Si el producto usaba actualizaciones manuales, los datos no serán recuperados. ¿Quieres continuar?</translation>
     </message>
     <message>
-        <location filename="../ui/wdgProducts.py" line="247"/>
+        <location filename="../ui/wdgProducts.py" line="250"/>
         <source>{0} quotes have been purged from {1}</source>
         <translation>{0} cotizaciones han sido purgadas de {1}</translation>
     </message>
@@ -5712,62 +5712,62 @@ Diferencia diaria: {5}. Edad media de las inversiones: {6}</translation>
         <translation>Xulpymoney</translation>
     </message>
     <message>
-        <location filename="../ui/wdgProducts.py" line="133"/>
+        <location filename="../ui/wdgProducts.py" line="136"/>
         <source>Search too wide. You need more than 3 characters</source>
         <translation>Búsqueda demasiado extensa. Necesita más de 3 caracteres</translation>
     </message>
     <message>
-        <location filename="../ui/wdgProducts.py" line="168"/>
+        <location filename="../ui/wdgProducts.py" line="171"/>
         <source>Remove from favorites</source>
         <translation>Borrar de favoritos</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgProducts.py" line="225"/>
+        <location filename="../ui/Ui_wdgProducts.py" line="226"/>
         <source>Add to favorites</source>
         <translation>Añadir a favoritos</translation>
     </message>
     <message>
-        <location filename="../ui/wdgProducts.py" line="221"/>
+        <location filename="../ui/wdgProducts.py" line="224"/>
         <source>Merging codes</source>
         <translation>Juntando códigos</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgProducts.py" line="212"/>
+        <location filename="../ui/Ui_wdgProducts.py" line="213"/>
         <source>% Annual</source>
         <translation>% Anual</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgProducts.py" line="214"/>
+        <location filename="../ui/Ui_wdgProducts.py" line="215"/>
         <source>Name</source>
         <translation>Nombre</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgProducts.py" line="216"/>
+        <location filename="../ui/Ui_wdgProducts.py" line="217"/>
         <source>Dividend</source>
         <translation>Dividendo</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgProducts.py" line="218"/>
+        <location filename="../ui/Ui_wdgProducts.py" line="219"/>
         <source>Hour</source>
         <translation>Hora</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgProducts.py" line="227"/>
+        <location filename="../ui/Ui_wdgProducts.py" line="228"/>
         <source>Merge selected codes</source>
         <translation>Unir los códigos seleccionados</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgProducts.py" line="229"/>
+        <location filename="../ui/Ui_wdgProducts.py" line="230"/>
         <source>New price</source>
         <translation>Nueva cotización</translation>
     </message>
     <message>
-        <location filename="../ui/wdgProducts.py" line="180"/>
+        <location filename="../ui/wdgProducts.py" line="183"/>
         <source>Order by</source>
         <translation>Ordenado por</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgProducts.py" line="188"/>
+        <location filename="../ui/Ui_wdgProducts.py" line="189"/>
         <source>Search by code, ISIN, ticker or product name</source>
         <translation>Buscar por código, ISIN, ticker o nombre de producto</translation>
     </message>
@@ -5777,12 +5777,12 @@ Diferencia diaria: {5}. Edad media de las inversiones: {6}</translation>
         <translation>Este producto no puede ser eliminado al ser un producto del sistema</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgProducts.py" line="221"/>
+        <location filename="../ui/Ui_wdgProducts.py" line="222"/>
         <source>New user product</source>
         <translation>Nuevo producto de usuario</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgProducts.py" line="223"/>
+        <location filename="../ui/Ui_wdgProducts.py" line="224"/>
         <source>Delete user product</source>
         <translation>Borrar producto de usuario</translation>
     </message>
@@ -5792,42 +5792,42 @@ Diferencia diaria: {5}. Edad media de las inversiones: {6}</translation>
     <message>
         <location filename="../ui/Ui_wdgQuotesUpdate.py" line="118"/>
         <source>Auxiliar tables</source>
-        <translation>Tablas auxiliares</translation>
+        <translation type="unfinished">Tablas auxiliares</translation>
     </message>
     <message>
         <location filename="../ui/Ui_wdgQuotesUpdate.py" line="119"/>
         <source>If it&apos;s unchecked, Xulpymoney will update all products marked as autoupdate</source>
-        <translation>Si está desmarcado, Xulpymoney actualizará todos los productos marcados como auto actualizables</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../ui/Ui_wdgQuotesUpdate.py" line="120"/>
         <source>Update only investments of the user</source>
-        <translation>Actualizar sólo las inversiones del usuario</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../ui/Ui_wdgQuotesUpdate.py" line="121"/>
         <source>Intraday sources</source>
-        <translation>Fuentes intradía</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../ui/Ui_wdgQuotesUpdate.py" line="122"/>
         <source>Update all intraday sources</source>
-        <translation>Actualizar todas las fuentes intradía</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../ui/Ui_wdgQuotesUpdate.py" line="123"/>
         <source>Daily sources</source>
-        <translation>Fuentes diarias</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../ui/Ui_wdgQuotesUpdate.py" line="124"/>
         <source>Update all daily sources</source>
-        <translation>Actualizar todas las fuentes diarias</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../ui/Ui_wdgQuotesUpdate.py" line="125"/>
         <source>Update all sources</source>
-        <translation>Actualizar todas las fuentes</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
