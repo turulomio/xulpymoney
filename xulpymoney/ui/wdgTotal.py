@@ -289,8 +289,9 @@ class wdgTotal(QWidget, Ui_wdgTotal):
             self.tab.setEnabled(False)
             return
         
-        self.table.settings(self.mem)
-        self.tblTargets.settings(self.mem)
+        self.table.settings(self.mem, "wdgTotal")
+        self.tblTargets.settings(self.mem, "wdgTotal")
+        self.tblInvestOrWork.settings(self.mem,  "wdgTotal")
         
         self.annualtarget=None#AnnualTarget Object
         
