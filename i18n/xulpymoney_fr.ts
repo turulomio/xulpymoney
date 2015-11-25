@@ -6143,47 +6143,47 @@ Daily Diff: {5}. Investment average age: {6}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="299"/>
+        <location filename="../ui/wdgTotal.py" line="300"/>
         <source>Data from selected year</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="321"/>
+        <location filename="../ui/wdgTotal.py" line="322"/>
         <source>Balance at {0}-12-31: {1}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="498"/>
+        <location filename="../ui/wdgTotal.py" line="499"/>
         <source>Incomes of {0} of {1}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="704"/>
+        <location filename="../ui/wdgTotal.py" line="705"/>
         <source>Dividends of {0} of {1}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="543"/>
+        <location filename="../ui/wdgTotal.py" line="544"/>
         <source>Expenses of {0} of {1}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="864"/>
+        <location filename="../ui/wdgTotal.py" line="865"/>
         <source>You can&apos;t close this tab</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="432"/>
+        <location filename="../ui/wdgTotal.py" line="433"/>
         <source>Filling report data</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="432"/>
+        <location filename="../ui/wdgTotal.py" line="433"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="434"/>
+        <location filename="../ui/wdgTotal.py" line="435"/>
         <source>Calculating data...</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6223,7 +6223,7 @@ Daily Diff: {5}. Investment average age: {6}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="355"/>
+        <location filename="../ui/wdgTotal.py" line="356"/>
         <source>Annual target percentage of total assests balance at {}-12-31 ( {} )</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6253,47 +6253,47 @@ Daily Diff: {5}. Investment average age: {6}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="417"/>
+        <location filename="../ui/wdgTotal.py" line="418"/>
         <source>Investment taxes are not evaluated in this report</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="415"/>
+        <location filename="../ui/wdgTotal.py" line="416"/>
         <source>Total gains are the result of adding dividends to gains</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="416"/>
+        <location filename="../ui/wdgTotal.py" line="417"/>
         <source>Difference between total gains and expenses shows if user could cover his expenses with his total gains</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="414"/>
+        <location filename="../ui/wdgTotal.py" line="415"/>
         <source>This report shows if the user could retire due to its investments</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="390"/>
+        <location filename="../ui/wdgTotal.py" line="391"/>
         <source>Work</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="393"/>
+        <location filename="../ui/wdgTotal.py" line="394"/>
         <source>Invest</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="373"/>
+        <location filename="../ui/wdgTotal.py" line="374"/>
         <source>This report shows if the user reaches the annual and monthly target.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="375"/>
+        <location filename="../ui/wdgTotal.py" line="376"/>
         <source>The cumulative target row shows compliance of the target in the year.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="376"/>
+        <location filename="../ui/wdgTotal.py" line="377"/>
         <source>Green color shows that target has been reached.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6303,32 +6303,32 @@ Daily Diff: {5}. Investment average age: {6}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="701"/>
+        <location filename="../ui/wdgTotal.py" line="702"/>
         <source>Dividends of {0}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="531"/>
+        <location filename="../ui/wdgTotal.py" line="532"/>
         <source>Expenses of {0}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="486"/>
+        <location filename="../ui/wdgTotal.py" line="487"/>
         <source>Incomes of {}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="582"/>
+        <location filename="../ui/wdgTotal.py" line="583"/>
         <source>Selling operations of {0}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="590"/>
+        <location filename="../ui/wdgTotal.py" line="591"/>
         <source>Selling operations of {0} of {1}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="778"/>
+        <location filename="../ui/wdgTotal.py" line="779"/>
         <source>Commision report of {}</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6338,77 +6338,77 @@ Daily Diff: {5}. Investment average age: {6}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="855"/>
+        <location filename="../ui/wdgTotal.py" line="856"/>
         <source>Taxes report of {}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="806"/>
+        <location filename="../ui/wdgTotal.py" line="807"/>
         <source>Investment operation retentions</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="807"/>
+        <location filename="../ui/wdgTotal.py" line="808"/>
         <source>Dividend retentions</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="808"/>
+        <location filename="../ui/wdgTotal.py" line="809"/>
         <source>Other paid taxes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="809"/>
+        <location filename="../ui/wdgTotal.py" line="810"/>
         <source>Returned taxes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="738"/>
+        <location filename="../ui/wdgTotal.py" line="739"/>
         <source>Bank comissions</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="739"/>
+        <location filename="../ui/wdgTotal.py" line="740"/>
         <source>Custody fees</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="740"/>
+        <location filename="../ui/wdgTotal.py" line="741"/>
         <source>Invesment operation comissions</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="678"/>
+        <location filename="../ui/wdgTotal.py" line="679"/>
         <source>Positive gross selling operations: {}. Negative gross selling operations: {}.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="621"/>
+        <location filename="../ui/wdgTotal.py" line="622"/>
         <source>Selling operations of {0}  (Sold after a year)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="629"/>
+        <location filename="../ui/wdgTotal.py" line="630"/>
         <source>Selling operations of {0} of {1} (Sold after a year)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="660"/>
+        <location filename="../ui/wdgTotal.py" line="661"/>
         <source>Selling operations of {0} (Sold before a year)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="668"/>
+        <location filename="../ui/wdgTotal.py" line="669"/>
         <source>Selling operations of {0} of {1} (Sold before a year)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="882"/>
+        <location filename="../ui/wdgTotal.py" line="883"/>
         <source>You only can double click in incomes, gains, dividends and expenses.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="882"/>
+        <location filename="../ui/wdgTotal.py" line="883"/>
         <source>Make right click to see comission and tax reports</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6418,12 +6418,12 @@ Daily Diff: {5}. Investment average age: {6}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="344"/>
+        <location filename="../ui/wdgTotal.py" line="345"/>
         <source>This year I&apos;ve generated {}.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="347"/>
+        <location filename="../ui/wdgTotal.py" line="348"/>
         <source>Difference between invested amount and current invesment balance: {} - {} = {}</source>
         <translation type="unfinished"></translation>
     </message>

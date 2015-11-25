@@ -20,6 +20,13 @@ class myQTableWidget(QTableWidget):
         self._save_settings=state
 
     def sectionResized(self, logicalIndex, oldSize, newSize):
+        modifiers = QApplication.keyboardModifiers()
+        if modifiers == Qt.ShiftModifier:
+            for i in range(self.columnCount()):
+                self.setColumnWidth(i, newSize)
+        elif modifiers == Qt.ControlModifier:
+            self.resizeColumnsToContents()
+            self.resizeRowsToContents()
         if self._save_settings==True:
             self.mem.settings.setValue("{}/{}_horizontalheader_state".format(self.parentname, self.objectName()), self.horizontalHeader().saveState() )
         
@@ -54,7 +61,3 @@ class myQTableWidget(QTableWidget):
                 self.setColumnWidth(i, self.sizeHintForColumn(i))
         self.resizeRowsToContents()
 
-    def on_cellDoubleClicked(self, row,  column):
-        """Resizes to minimum contents"""
-        self.resizeColumnsToContents()
-        self.resizeRowsToContents()
