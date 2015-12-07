@@ -1649,13 +1649,13 @@ class SetInvestmentOperationsCurrent(SetIO):
     
     def valor_medio_compra(self):
         """Devuelve el valor medio de compra de todas las operaciones de inversión actual"""
-        numacciones=0
-        numaccionesxvalor=0
+        numacciones=Decimal(0)
+        numaccionesxvalor=Decimal(0)
         for o in self.arr:
             numacciones=numacciones+o.acciones
             numaccionesxvalor=numaccionesxvalor+o.acciones*o.valor_accion
-        if numacciones==0:
-            return 0
+        if numacciones==Decimal(0):
+            return Dedimal(0)
         return numaccionesxvalor/numacciones
  
     def historizar(self, io,  sioh):

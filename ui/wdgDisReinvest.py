@@ -23,6 +23,9 @@ class wdgDisReinvest(QWidget, Ui_wdgDisReinvest):
         self.tabOpAcHi.setCurrentIndex(1)
         self.tabAB.setCurrentIndex(1)
         
+        self.tblGainsAfter.settings(self.mem, "wdgDisReinvest")
+        self.tblGainsBefore.settings(self.mem, "wdgDisReinvest")
+        
         self.inversion.op_actual.myqtablewidget(self.tblInvestmentsActualAntes)
         self.on_radRe_clicked()
 
@@ -107,3 +110,15 @@ class wdgDisReinvest(QWidget, Ui_wdgDisReinvest):
         self.sim_ophistorica.myqtablewidget(self.tblInvestmentsHistoricas)
         self.tabAB.setCurrentIndex(0)
         self.tabOpAcHi.setCurrentIndex(1)
+        self.gains(self.tblGainsBefore, self.inversion.acciones(), self.inversion.op_actual.valor_medio_compra())
+        self.gains(self.tblGainsAfter,  self.inversion.acciones()+self.acciones(), self.sim_opactual.valor_medio_compra())
+        
+    def gains(self, table,  shares,  averageprice):
+        porcentages=[2.5, 5, 7.5, 10, 15, 30]
+        table.clearContents()
+        table.setRowCount(len(porcentages))
+        for i, tpc in enumerate(porcentages):        
+            table.setItem(i, 0, qtpc(tpc))
+            tpcprice= averageprice*Decimal(1+tpc/100)
+            table.setItem(i, 1, self.mem.localcurrency.qtablewidgetitem(tpcprice))       
+            table.setItem(i, 2, self.mem.localcurrency.qtablewidgetitem(shares*(tpcprice-averageprice)))
