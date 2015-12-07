@@ -4764,187 +4764,187 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>wdgDisReinvest</name>
     <message>
-        <location filename="../ui/Ui_wdgDisReinvest.py" line="316"/>
+        <location filename="../ui/Ui_wdgDisReinvest.py" line="358"/>
         <source>Operation data</source>
         <translation>Datos de la operación</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgDisReinvest.py" line="317"/>
+        <location filename="../ui/Ui_wdgDisReinvest.py" line="359"/>
         <source>1000</source>
         <translation>1000</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgDisReinvest.py" line="318"/>
+        <location filename="../ui/Ui_wdgDisReinvest.py" line="360"/>
         <source>0</source>
         <translation>0</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgDisReinvest.py" line="319"/>
+        <location filename="../ui/Ui_wdgDisReinvest.py" line="361"/>
         <source>Bank comission</source>
         <translation>Comisión bancaria</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgDisReinvest.py" line="320"/>
+        <location filename="../ui/Ui_wdgDisReinvest.py" line="362"/>
         <source>10</source>
         <translation>10</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgDisReinvest.py" line="321"/>
+        <location filename="../ui/Ui_wdgDisReinvest.py" line="363"/>
         <source>Shares number</source>
         <translation>Número de acciones</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgDisReinvest.py" line="383"/>
+        <location filename="../ui/Ui_wdgDisReinvest.py" line="432"/>
         <source>After</source>
         <translation>Después</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgDisReinvest.py" line="340"/>
+        <location filename="../ui/Ui_wdgDisReinvest.py" line="382"/>
         <source>Investment operations</source>
         <translation>Operaciones de la inversión</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgDisReinvest.py" line="325"/>
+        <location filename="../ui/Ui_wdgDisReinvest.py" line="367"/>
         <source>Id</source>
         <translation>Id</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgDisReinvest.py" line="385"/>
+        <location filename="../ui/Ui_wdgDisReinvest.py" line="434"/>
         <source>Date</source>
         <translation>Fecha</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgDisReinvest.py" line="367"/>
+        <location filename="../ui/Ui_wdgDisReinvest.py" line="409"/>
         <source>Operation type</source>
         <translation>Tipo de operación</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgDisReinvest.py" line="387"/>
+        <location filename="../ui/Ui_wdgDisReinvest.py" line="436"/>
         <source>Shares</source>
         <translation>Acciones</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgDisReinvest.py" line="389"/>
+        <location filename="../ui/Ui_wdgDisReinvest.py" line="455"/>
         <source>Price</source>
         <translation>Valor</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgDisReinvest.py" line="391"/>
+        <location filename="../ui/Ui_wdgDisReinvest.py" line="440"/>
         <source>Balance</source>
         <translation>Saldo</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgDisReinvest.py" line="337"/>
+        <location filename="../ui/Ui_wdgDisReinvest.py" line="379"/>
         <source>Comission</source>
         <translation>Comisión</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgDisReinvest.py" line="377"/>
+        <location filename="../ui/Ui_wdgDisReinvest.py" line="419"/>
         <source>Taxes</source>
         <translation>Impuestos</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgDisReinvest.py" line="359"/>
+        <location filename="../ui/Ui_wdgDisReinvest.py" line="401"/>
         <source>Investment current state</source>
         <translation>Estado actual de la inversión</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgDisReinvest.py" line="393"/>
+        <location filename="../ui/Ui_wdgDisReinvest.py" line="442"/>
         <source>Pending</source>
         <translation>Pendiente</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgDisReinvest.py" line="352"/>
+        <location filename="../ui/Ui_wdgDisReinvest.py" line="394"/>
         <source>% Annual</source>
         <translation>% Anual</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgDisReinvest.py" line="397"/>
+        <location filename="../ui/Ui_wdgDisReinvest.py" line="446"/>
         <source>% APR</source>
         <translation>% TAE</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgDisReinvest.py" line="399"/>
+        <location filename="../ui/Ui_wdgDisReinvest.py" line="448"/>
         <source>% Total</source>
         <translation>% Total</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgDisReinvest.py" line="401"/>
+        <location filename="../ui/Ui_wdgDisReinvest.py" line="450"/>
         <source>Benchmark</source>
         <translation>Índice de referencia</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgDisReinvest.py" line="382"/>
+        <location filename="../ui/Ui_wdgDisReinvest.py" line="424"/>
         <source>Historical operations</source>
         <translation>Operaciones históricas</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgDisReinvest.py" line="363"/>
+        <location filename="../ui/Ui_wdgDisReinvest.py" line="405"/>
         <source>Years</source>
         <translation>Años</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgDisReinvest.py" line="365"/>
+        <location filename="../ui/Ui_wdgDisReinvest.py" line="407"/>
         <source>Investment</source>
         <translation>Inversión</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgDisReinvest.py" line="369"/>
+        <location filename="../ui/Ui_wdgDisReinvest.py" line="411"/>
         <source>Initial balance</source>
         <translation>Saldo inicial</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgDisReinvest.py" line="371"/>
+        <location filename="../ui/Ui_wdgDisReinvest.py" line="413"/>
         <source>Final balance</source>
         <translation>Saldo final</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgDisReinvest.py" line="373"/>
+        <location filename="../ui/Ui_wdgDisReinvest.py" line="415"/>
         <source>Gross</source>
         <translation>Bruto</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgDisReinvest.py" line="375"/>
+        <location filename="../ui/Ui_wdgDisReinvest.py" line="417"/>
         <source>Comissions</source>
         <translation>Comisiones</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgDisReinvest.py" line="379"/>
+        <location filename="../ui/Ui_wdgDisReinvest.py" line="421"/>
         <source>Net</source>
         <translation>Neto</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgDisReinvest.py" line="403"/>
+        <location filename="../ui/Ui_wdgDisReinvest.py" line="459"/>
         <source>Before</source>
         <translation>Antes</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgDisReinvest.py" line="314"/>
+        <location filename="../ui/Ui_wdgDisReinvest.py" line="356"/>
         <source>Reinvest simulation</source>
         <translation>Simulación de reinversión</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgDisReinvest.py" line="315"/>
+        <location filename="../ui/Ui_wdgDisReinvest.py" line="357"/>
         <source>Disinvest simulation</source>
         <translation>Simulación de desinversión</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgDisReinvest.py" line="322"/>
+        <location filename="../ui/Ui_wdgDisReinvest.py" line="364"/>
         <source>Amount</source>
         <translation>Importe</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgDisReinvest.py" line="323"/>
+        <location filename="../ui/Ui_wdgDisReinvest.py" line="365"/>
         <source>Make simulation</source>
         <translation>Realizar simulación</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgDisReinvest.py" line="402"/>
+        <location filename="../ui/Ui_wdgDisReinvest.py" line="451"/>
         <source>Investment situation</source>
         <translation>Situación de la inversión</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgDisReinvest.py" line="395"/>
+        <location filename="../ui/Ui_wdgDisReinvest.py" line="444"/>
         <source>% Year to Date</source>
         <translation>% año actual</translation>
     </message>
@@ -4954,44 +4954,59 @@ p, li { white-space: pre-wrap; }
         <translation>No hay acciones para esta inversión</translation>
     </message>
     <message>
-        <location filename="../ui/wdgDisReinvest.py" line="56"/>
+        <location filename="../ui/wdgDisReinvest.py" line="59"/>
         <source>Divest loss to asume</source>
         <translation>Pérdida de desinversión a asumir</translation>
     </message>
     <message>
-        <location filename="../ui/wdgDisReinvest.py" line="57"/>
+        <location filename="../ui/wdgDisReinvest.py" line="60"/>
         <source>Selling price</source>
         <translation>Punto de venta</translation>
     </message>
     <message>
-        <location filename="../ui/wdgDisReinvest.py" line="63"/>
+        <location filename="../ui/wdgDisReinvest.py" line="66"/>
         <source>Amount to reinvest</source>
         <translation>Cantidad a reinvertir</translation>
     </message>
     <message>
-        <location filename="../ui/wdgDisReinvest.py" line="64"/>
+        <location filename="../ui/wdgDisReinvest.py" line="67"/>
         <source>Purchase price</source>
         <translation>Precio de compra</translation>
     </message>
     <message>
-        <location filename="../ui/wdgDisReinvest.py" line="75"/>
+        <location filename="../ui/wdgDisReinvest.py" line="78"/>
         <source>Simulation value must be positive</source>
         <translation>El valor de la simulación debe ser positivo</translation>
     </message>
     <message>
-        <location filename="../ui/wdgDisReinvest.py" line="86"/>
+        <location filename="../ui/wdgDisReinvest.py" line="89"/>
         <source>Share price can&apos;t be 0</source>
         <translation>El precio de la acción no puede ser 0</translation>
     </message>
     <message>
-        <location filename="../ui/wdgDisReinvest.py" line="55"/>
+        <location filename="../ui/wdgDisReinvest.py" line="58"/>
         <source>Divest simulation of {0}</source>
         <translation>Simulación de desinversión de {0}</translation>
     </message>
     <message>
-        <location filename="../ui/wdgDisReinvest.py" line="62"/>
+        <location filename="../ui/wdgDisReinvest.py" line="65"/>
         <source>Reinvest simulation of {0}</source>
         <translation>Simulación de reinversión de {0}</translation>
+    </message>
+    <message>
+        <location filename="../ui/Ui_wdgDisReinvest.py" line="458"/>
+        <source>Gains estimations</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/Ui_wdgDisReinvest.py" line="453"/>
+        <source>% Gains</source>
+        <translation type="unfinished">% Ganancias</translation>
+    </message>
+    <message>
+        <location filename="../ui/Ui_wdgDisReinvest.py" line="457"/>
+        <source>Gains</source>
+        <translation type="unfinished">Ganancias</translation>
     </message>
 </context>
 <context>
