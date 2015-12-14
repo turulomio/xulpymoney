@@ -3131,7 +3131,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../ui/Ui_frmMain.py" line="604"/>
         <source>Last operation</source>
-        <translation type="unfinished"></translation>
+        <translation>Última operación</translation>
     </message>
 </context>
 <context>
@@ -5001,17 +5001,17 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../ui/Ui_wdgDisReinvest.py" line="458"/>
         <source>Gains estimations</source>
-        <translation type="unfinished"></translation>
+        <translation>Estimaciones de ganancia</translation>
     </message>
     <message>
         <location filename="../ui/Ui_wdgDisReinvest.py" line="453"/>
         <source>% Gains</source>
-        <translation type="unfinished">% Ganancias</translation>
+        <translation>% Ganancias</translation>
     </message>
     <message>
         <location filename="../ui/Ui_wdgDisReinvest.py" line="457"/>
         <source>Gains</source>
-        <translation type="unfinished">Ganancias</translation>
+        <translation>Ganancias</translation>
     </message>
 </context>
 <context>
@@ -5229,7 +5229,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../ui/wdgIndexRange.py" line="66"/>
         <source>Benchmark last price ({}) is {}. Last daily variation: {}.</source>
-        <translation type="unfinished"></translation>
+        <translation>El último precio del índice de referencia ({}) es {}. Última variación diaria {}.</translation>
     </message>
 </context>
 <context>
@@ -5518,112 +5518,112 @@ Diferencia diaria: {5}. Edad media de las inversiones: {6}</translation>
     <message>
         <location filename="../ui/Ui_wdgLastCurrent.py" line="116"/>
         <source>Investment</source>
-        <translation type="unfinished">Inversión</translation>
+        <translation>Inversión</translation>
     </message>
     <message>
         <location filename="../ui/Ui_wdgLastCurrent.py" line="118"/>
         <source>Last operation</source>
-        <translation type="unfinished"></translation>
+        <translation>Última operación</translation>
     </message>
     <message>
         <location filename="../ui/Ui_wdgLastCurrent.py" line="120"/>
         <source>Last shares</source>
-        <translation type="unfinished"></translation>
+        <translation>Últimas acciones</translation>
     </message>
     <message>
         <location filename="../ui/Ui_wdgLastCurrent.py" line="122"/>
         <source>Total shares</source>
-        <translation type="unfinished"></translation>
+        <translation>Acciones totales</translation>
     </message>
     <message>
         <location filename="../ui/Ui_wdgLastCurrent.py" line="124"/>
         <source>Balance</source>
-        <translation type="unfinished">Saldo</translation>
+        <translation>Saldo</translation>
     </message>
     <message>
         <location filename="../ui/Ui_wdgLastCurrent.py" line="126"/>
         <source>Pending</source>
-        <translation type="unfinished">Pendiente</translation>
+        <translation>Pendiente</translation>
     </message>
     <message>
         <location filename="../ui/Ui_wdgLastCurrent.py" line="138"/>
         <source>% Invested</source>
-        <translation type="unfinished">% Invertido</translation>
+        <translation>% Invertido</translation>
     </message>
     <message>
         <location filename="../ui/Ui_wdgLastCurrent.py" line="136"/>
         <source>% Selling point</source>
-        <translation type="unfinished">% punto de venta</translation>
+        <translation>% punto de venta</translation>
     </message>
     <message>
         <location filename="../ui/Ui_wdgLastCurrent.py" line="134"/>
         <source>Investment report</source>
-        <translation type="unfinished">Informe de la inversión</translation>
+        <translation>Informe de la inversión</translation>
     </message>
     <message>
         <location filename="../ui/Ui_wdgLastCurrent.py" line="140"/>
         <source>Name</source>
-        <translation type="unfinished">Nombre</translation>
+        <translation>Nombre</translation>
     </message>
     <message>
         <location filename="../ui/Ui_wdgLastCurrent.py" line="142"/>
         <source>Time</source>
-        <translation type="unfinished">Hora</translation>
+        <translation>Hora</translation>
     </message>
     <message>
         <location filename="../ui/Ui_wdgLastCurrent.py" line="144"/>
         <source>Product report</source>
-        <translation type="unfinished">Informe de producto</translation>
+        <translation>Informe de producto</translation>
     </message>
     <message>
         <location filename="../ui/wdgLastCurrent.py" line="82"/>
         <source>Order by</source>
-        <translation type="unfinished">Ordenado por</translation>
+        <translation>Ordenado por</translation>
     </message>
     <message>
         <location filename="../ui/wdgLastCurrent.py" line="106"/>
         <source>Shares number: {0}</source>
-        <translation type="unfinished">Número de acciones: {0}</translation>
+        <translation>Número de acciones: {0}</translation>
     </message>
     <message>
         <location filename="../ui/wdgLastCurrent.py" line="106"/>
         <source>Purchase price average: {0}</source>
-        <translation type="unfinished">Precio medio de compra: {0}</translation>
+        <translation>Precio medio de compra: {0}</translation>
     </message>
     <message>
         <location filename="../ui/wdgLastCurrent.py" line="106"/>
         <source>Selling point: {}</source>
-        <translation type="unfinished">Punto de venta: {}</translation>
+        <translation>Punto de venta: {}</translation>
     </message>
     <message>
         <location filename="../ui/wdgLastCurrent.py" line="106"/>
         <source>Selling all shares you get {}</source>
-        <translation type="unfinished">Vendiendo todas las acciones consigues {}</translation>
+        <translation>Vendiendo todas las acciones consigues {}</translation>
     </message>
     <message>
         <location filename="../ui/Ui_wdgLastCurrent.py" line="112"/>
         <source>Last operation investments report</source>
-        <translation type="unfinished"></translation>
+        <translation>Informe de la última operación de las inversiones</translation>
     </message>
     <message>
         <location filename="../ui/Ui_wdgLastCurrent.py" line="128"/>
         <source>% Last</source>
-        <translation type="unfinished"></translation>
+        <translation>% Última</translation>
     </message>
     <message>
         <location filename="../ui/Ui_wdgLastCurrent.py" line="113"/>
         <source>Percentage gains got in last operation investment</source>
-        <translation type="unfinished"></translation>
+        <translation>Porcentaje de ganancias obtenido en la última operación de la inversión</translation>
     </message>
     <message>
         <location filename="../ui/Ui_wdgLastCurrent.py" line="114"/>
         <source> %</source>
-        <translation type="unfinished"> %</translation>
+        <translation> %</translation>
     </message>
     <message>
         <location filename="../ui/Ui_wdgLastCurrent.py" line="146"/>
         <source>% Last operation</source>
-        <translation type="unfinished"></translation>
+        <translation>% Última operación</translation>
     </message>
 </context>
 <context>
@@ -5925,7 +5925,7 @@ Diferencia diaria: {5}. Edad media de las inversiones: {6}</translation>
     <message>
         <location filename="../ui/Ui_wdgQuotesUpdate.py" line="118"/>
         <source>Auxiliar tables</source>
-        <translation type="unfinished">Tablas auxiliares</translation>
+        <translation>Tablas auxiliares</translation>
     </message>
     <message>
         <location filename="../ui/Ui_wdgQuotesUpdate.py" line="119"/>

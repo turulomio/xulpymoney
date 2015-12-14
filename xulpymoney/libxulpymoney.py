@@ -282,7 +282,6 @@ class SetSimulationTypes(SetCommons):
 class SetInvestments(SetCommons):
     def __init__(self, mem, cuentas, products, benchmark):
         SetCommons.__init__(self)
-#        self.arr=[]
         self.mem=mem
         self.accounts=cuentas
         self.products=products
@@ -371,7 +370,7 @@ class SetInvestments(SetCommons):
             table.setItem(i, 6, qtpc(lasttpc))
             table.setItem(i, 7, qtpc(inv.tpc_invertido()))
             table.setItem(i, 8, qtpc(inv.tpc_venta()))
-            if lasttpc<=-percentage:   
+            if lasttpc<=percentage:   
                 table.item(i, 6).setBackground(QColor(255, 148, 148))
             
 #            if gainsyear==True and inv.op_actual.less_than_a_year()==True:

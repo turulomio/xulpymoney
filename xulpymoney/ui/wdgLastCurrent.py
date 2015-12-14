@@ -90,7 +90,6 @@ class wdgLastCurrent(QWidget, Ui_wdgLastCurrent):
 
     @QtCore.pyqtSlot(int)  
     def on_spin_valueChanged(self, value):
-        print(value)
         self.tblInvestments_reload()
 
     def on_tblInvestments_itemSelectionChanged(self):
