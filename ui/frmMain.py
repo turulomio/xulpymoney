@@ -25,6 +25,7 @@ from frmHelp import *
 from wdgProducts import *
 from wdgSimulations import *
 from wdgQuotesUpdate import *
+from wdgLastCurrent import *
 
 class frmMain(QMainWindow, Ui_frmMain):
     """Clase principal del programa"""
@@ -210,6 +211,12 @@ class frmMain(QMainWindow, Ui_frmMain):
     def on_actionInvestments_triggered(self):
         self.w.close()
         self.w=wdgInvestments(self.mem, self)               
+        self.layout.addWidget(self.w)
+        self.w.show()
+    @QtCore.pyqtSlot()  
+    def on_actionLastOperation_triggered(self):
+        self.w.close()
+        self.w=wdgLastCurrent(self.mem, self)               
         self.layout.addWidget(self.w)
         self.w.show()
         

@@ -354,7 +354,37 @@ class SetInvestments(SetCommons):
                 if (tpc_venta<=5 and tpc_venta>0) or tpc_venta<0:
                     table.item(i, 8).setBackground(QColor(148, 255, 148))
         return d
-    
+    def myqtablewidget_lastCurrent(self, table,  percentage):
+        """
+            Percentage is the colored percentage to show
+        """
+        table.setRowCount(len(self.arr))
+        table.clearContents()
+        for i, inv in enumerate(self.arr):
+            table.setItem(i, 0, QTableWidgetItem("{0} ({1})".format(inv.name, inv.account.name)))
+            table.setItem(i, 1, qdatetime(inv.op_actual.arr[inv.op_actual.length()-1].datetime, self.mem.localzone))
+            table.setItem(i, 2, qright(inv.op_actual.arr[inv.op_actual.length()-1].acciones))
+            table.setItem(i, 3, qright(inv.op_actual.acciones()))
+            table.setItem(i, 4,  inv.product.currency.qtablewidgetitem(inv.balance()))
+            table.setItem(i, 5, inv.product.currency.qtablewidgetitem(inv.pendiente()))
+            lasttpc=inv.op_actual.arr[inv.op_actual.length()-1].tpc_total(inv.product.result.basic.last.quote)
+            table.setItem(i, 6, qtpc(lasttpc))
+            table.setItem(i, 7, qtpc(inv.tpc_invertido()))
+            table.setItem(i, 8, qtpc(inv.tpc_venta()))
+            if lasttpc<=-percentage:   
+                table.item(i, 6).setBackground(QColor(255, 148, 148))
+            
+#            if gainsyear==True and inv.op_actual.less_than_a_year()==True:
+#                table.item(i, 8).setIcon(QIcon(":/xulpymoney/new.png"))
+#            if inv.selling_expiration!=None:
+#                if inv.selling_expiration<datetime.date.today():
+#                    table.item(i, 9).setIcon(QIcon(":/xulpymoney/alarm_clock.png"))
+#            if tpc_invertido!=None and tpc_venta!=None:
+#                if tpc_invertido<=-50:   
+#                    table.item(i, 7).setBackground(QColor(255, 148, 148))
+#                if (tpc_venta<=5 and tpc_venta>0) or tpc_venta<0:
+#                    table.item(i, 8).setBackground(QColor(148, 255, 148))
+#        return d
     def average_age(self):
         """Average age of the investments in this set in days"""
         #Extracts all currentinvestmentoperations
@@ -496,6 +526,24 @@ class SetInvestments(SetCommons):
             return True
         except:
             return False
+
+
+    def order_by_percentage_last_operation(self):
+        """Orders the Set using self.arr"""
+        try:
+            self.arr=sorted(self.arr, key=lambda inv: inv.op_actual.arr[inv.op_actual.length()-1].tpc_total(inv.product.result.basic.last.quote),  reverse=True) 
+            return True
+        except:
+            return False
+            
+    def order_by_datetime_last_operation(self):
+        """Orders the Set using self.arr"""
+        try:
+            self.arr=sorted(self.arr, key=lambda inv: inv.op_actual.arr[inv.op_actual.length()-1].datetime,  reverse=False) 
+            return True
+        except:
+            return False
+
 
     def order_by_percentage_sellingpoint(self):
         """Orders the Set using self.arr"""
