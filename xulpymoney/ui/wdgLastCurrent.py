@@ -12,8 +12,9 @@ class wdgLastCurrent(QWidget, Ui_wdgLastCurrent):
         QWidget.__init__(self, parent)
         self.setupUi(self)
         self.mem=mem
+        self.selInvestment=None
         self.tblInvestments.settings(self.mem)
-        self.on_actionSortTPCVenta_triggered()
+        self.on_actionSortTPCLast_triggered()
         
     def tblInvestments_reload(self):
         self.mem.data.investments_active.myqtablewidget_lastCurrent(self.tblInvestments, self.spin.value())
