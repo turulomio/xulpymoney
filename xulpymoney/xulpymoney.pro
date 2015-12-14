@@ -83,6 +83,8 @@ SOURCES         = \
                   ui/Ui_wdgInvestments.py \
                   ui/wdgInvestmentsOperations.py \
                   ui/Ui_wdgInvestmentsOperations.py \
+                  ui/wdgLastCurrent.py \
+                  ui/Ui_wdgLastCurrent.py \
                   ui/wdgMergeCodes.py \
                   ui/Ui_wdgMergeCodes.py \
                   ui/wdgProducts.py \
@@ -141,6 +143,7 @@ FORMS           = \
                   ui/wdgInvestmentClasses.ui \
                   ui/wdgInvestments.ui \
                   ui/wdgInvestmentsOperations.ui \
+                  ui/wdgLastCurrent.ui \
                   ui/wdgMergeCodes.ui \
                   ui/wdgProducts.ui \
                   ui/wdgSimulations.ui \
