@@ -5181,11 +5181,6 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgIndexRange.py" line="148"/>
-        <source>Green colorized ranges of {} benchmark are covered by zero risk and bonds balance ({}).</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../ui/wdgIndexRange.py" line="227"/>
         <source>Investment calculator</source>
         <translation type="unfinished"></translation>
@@ -5223,6 +5218,11 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../ui/wdgIndexRange.py" line="66"/>
         <source>Benchmark last price ({}) is {}. Last daily variation: {}.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/wdgIndexRange.py" line="148"/>
+        <source>{} green colorized ranges of {} benchmark are covered by zero risk and bonds balance ({}).</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

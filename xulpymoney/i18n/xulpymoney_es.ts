@@ -5187,11 +5187,6 @@ p, li { white-space: pre-wrap; }
 </translation>
     </message>
     <message>
-        <location filename="../ui/wdgIndexRange.py" line="148"/>
-        <source>Green colorized ranges of {} benchmark are covered by zero risk and bonds balance ({}).</source>
-        <translation>Los rangos de verde del índice {} están cubiertos por el saldo de patrimonio de riesgo cero y renta fija ({}).</translation>
-    </message>
-    <message>
         <location filename="../ui/wdgIndexRange.py" line="227"/>
         <source>Investment calculator</source>
         <translation>Calculadora de inversiones</translation>
@@ -5230,6 +5225,11 @@ p, li { white-space: pre-wrap; }
         <location filename="../ui/wdgIndexRange.py" line="66"/>
         <source>Benchmark last price ({}) is {}. Last daily variation: {}.</source>
         <translation>El último precio del índice de referencia ({}) es {}. Última variación diaria {}.</translation>
+    </message>
+    <message>
+        <location filename="../ui/wdgIndexRange.py" line="148"/>
+        <source>{} green colorized ranges of {} benchmark are covered by zero risk and bonds balance ({}).</source>
+        <translation>Los {} rangos de verde del índice {} están cubiertos por el saldo del patrimonio de riesgo cero y de renta fija ({}).</translation>
     </message>
 </context>
 <context>
