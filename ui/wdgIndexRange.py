@@ -144,7 +144,7 @@ class wdgIndexRange(QWidget, Ui_wdgIndexRange):
                     colorized=colorized+1
 
         #Prints label
-        self.lblTotal.setText(self.tr("Green colorized ranges of {} benchmark are covered by zero risk and bonds balance ({}).").format(self.benchmark.name, self.mem.localcurrency.string(zeroriskplusbonds)))
+        self.lblTotal.setText(self.tr("{} green colorized ranges of {} benchmark are covered by zero risk and bonds balance ({}).").format(colorized, self.benchmark.name, self.mem.localcurrency.string(zeroriskplusbonds)))
         print ("wdgIndexRange > load_data: {0}".format(datetime.datetime.now()-inicio))
 
     def on_cmd_pressed(self):
