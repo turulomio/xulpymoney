@@ -4260,22 +4260,22 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgAPR.py" line="216"/>
+        <location filename="../ui/wdgAPR.py" line="217"/>
         <source>From {} I have generated {}.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgAPR.py" line="217"/>
+        <location filename="../ui/wdgAPR.py" line="218"/>
         <source>Difference between invested amount and current invesment balance is {}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgAPR.py" line="221"/>
+        <location filename="../ui/wdgAPR.py" line="222"/>
         <source>So I&apos;m losing {} which is {} per year.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgAPR.py" line="219"/>
+        <location filename="../ui/wdgAPR.py" line="220"/>
         <source>So I&apos;m wining {} which is {} per year.</source>
         <translation type="unfinished"></translation>
     </message>
