@@ -25,11 +25,9 @@ class wdgCalculator(QWidget, Ui_wdgCalculator):
             
         self.txtAmount.setText(self.gl_wdgCalculator_invested.get())
         self.product=self.mem.data.products_all().find(int(self.gl_wdgCalculator_product.get()))
-        
-        
         self.mem.data.products_all().qcombobox(self.cmbProducts, self.product)
         self.load_cmbPrice()
-
+        
     def init__percentagevariation_amount(self, percentagevariation, amount):
         if self.hasProducts==True:
             self.spnProductPriceVariation.setValue(percentagevariation)
@@ -54,6 +52,8 @@ class wdgCalculator(QWidget, Ui_wdgCalculator):
             
     @pyqtSlot(int)  
     def on_cmbProducts_currentIndexChanged(self, index):
+        """To invoke this function you must call self.cmbProducts.setCurrentIndex()"""
+        
         self.product=self.mem.data.products_all().find(self.cmbProducts.itemData(index))
         if self.product:
             self.gl_wdgCalculator_product.set(self.product.id)

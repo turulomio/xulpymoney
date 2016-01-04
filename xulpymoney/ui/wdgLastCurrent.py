@@ -6,6 +6,7 @@ from Ui_wdgLastCurrent import *
 from frmInvestmentReport import *
 from frmQuotesIBM import *
 from frmProductReport import *
+from wdgCalculator import *
 
 class wdgLastCurrent(QWidget, Ui_wdgLastCurrent):
     def __init__(self, mem,  parent=None):
@@ -24,7 +25,19 @@ class wdgLastCurrent(QWidget, Ui_wdgLastCurrent):
         w=frmInvestmentReport(self.mem, self.selInvestment, self)
         w.exec_()
         self.tblInvestments_reload()
-
+        
+    @QtCore.pyqtSlot() 
+    def on_actionCalculate_triggered(self):
+        d=QDialog(self)        
+        d.setFixedSize(850, 850)
+        d.setWindowTitle(self.tr("Investment last operation calculator"))
+        w=wdgCalculator(self.mem)
+        w.cmbProducts.setCurrentIndex(w.cmbProducts.findData(self.selInvestment.product.id))
+        price=self.selInvestment.op_actual.arr[self.selInvestment.op_actual.length()-1].valor_accion*(1+self.spin.value()/Decimal(100))#Is + because -·-
+        w.txtFinalPrice.setText(price)
+        lay = QVBoxLayout(d)
+        lay.addWidget(w)
+        d.show()
                 
     @QtCore.pyqtSlot() 
     def on_actionProduct_triggered(self):
@@ -77,6 +90,8 @@ class wdgLastCurrent(QWidget, Ui_wdgLastCurrent):
             self.actionProduct.setEnabled(True)
 
         menu=QMenu()
+        menu.addAction(self.actionCalculate)
+        menu.addSeparator()
         menu.addAction(self.actionInvestmentReport)        
         menu.addAction(self.actionProduct)
         menu.addSeparator()
@@ -110,4 +125,4 @@ class wdgLastCurrent(QWidget, Ui_wdgLastCurrent):
             )
             m.exec_()     
         else:
-            self.on_actionInvestmentReport_triggered()
+            self.on_actionCalculate_triggered()

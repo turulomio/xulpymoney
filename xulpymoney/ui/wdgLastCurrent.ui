@@ -245,6 +245,18 @@
     <string>% Last operation</string>
    </property>
   </action>
+  <action name="actionCalculate">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/tools-wizard.png</normaloff>:/xulpymoney/tools-wizard.png</iconset>
+   </property>
+   <property name="text">
+    <string>Calculate reinvest price</string>
+   </property>
+   <property name="toolTip">
+    <string>Calculate reinvest price</string>
+   </property>
+  </action>
  </widget>
  <customwidgets>
   <customwidget>
