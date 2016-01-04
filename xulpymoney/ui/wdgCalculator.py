@@ -8,6 +8,7 @@ class wdgCalculator(QWidget, Ui_wdgCalculator):
         """Compulsory fields are final price and amount"""
         QWidget.__init__(self, parent)
         self.setupUi(self)
+        
         self.mem=mem
         self.mem.data.load_inactives()
         self.table.settings(self.mem)
@@ -18,22 +19,18 @@ class wdgCalculator(QWidget, Ui_wdgCalculator):
             m.setText(self.tr("You need to create at least one investment"))
             m.exec_()
             self.hasProducts=False        
+            self.close()
             return
             
         self.gl_wdgCalculator_product=Global(self.mem, "wdgCalculator", "product")
-        self.gl_wdgCalculator_invested=Global(self.mem, "wdgCalculator", "invested")
             
-        self.txtAmount.setText(self.gl_wdgCalculator_invested.get())
+        self.txtAmount.setText(Decimal(self.mem.settings.value("wdgIndexRange/invertir", "10000")))
         self.product=self.mem.data.products_all().find(int(self.gl_wdgCalculator_product.get()))
         self.mem.data.products_all().qcombobox(self.cmbProducts, self.product)
-        self.load_cmbPrice()
-        
-    def init__percentagevariation_amount(self, percentagevariation, amount):
-        if self.hasProducts==True:
-            self.spnProductPriceVariation.setValue(percentagevariation)
-            self.txtAmount.setText(amount)
+        self.cmbPrice_load()
 
-    def load_cmbPrice(self):       
+
+    def cmbPrice_load(self):       
         if self.product:
             self.cmbPrice.clear() 
             self.cmbPrice.addItem(self.tr("Penultimate price ({})".format(str(self.product.result.basic.penultimate.datetime)[:16])))
@@ -42,12 +39,16 @@ class wdgCalculator(QWidget, Ui_wdgCalculator):
 
     @pyqtSlot(int)  
     def on_cmbPrice_currentIndexChanged(self, index):
+        """To invoke this function you must call self.cmbPrice.setCurrentIndex()"""
         if index==1:
             self.txtProductPrice.setText(self.product.result.basic.last.quote)
         else:
             self.txtProductPrice.setText(self.product.result.basic.penultimate.quote)
             
+        self.txtFinalPrice.textChanged.disconnect()
         self.txtFinalPrice.setText(self.txtProductPrice.decimal()*Decimal(1+Decimal(self.spnProductPriceVariation.value())*self.txtLeveraged.decimal()/100))
+        self.txtFinalPrice.textChanged.connect(self.on_txtFinalPrice_textChanged)
+        
         self.calculate()
             
     @pyqtSlot(int)  
@@ -59,10 +60,14 @@ class wdgCalculator(QWidget, Ui_wdgCalculator):
             self.gl_wdgCalculator_product.set(self.product.id)
             self.mem.con.commit()
             
-        self.load_cmbPrice()
+        self.cmbPrice_load()
         
         self.txtLeveraged.setText(self.product.apalancado.multiplier)
+        
+        self.txtFinalPrice.textChanged.disconnect()
         self.txtFinalPrice.setText(self.txtProductPrice.decimal()*Decimal(1+Decimal(self.spnProductPriceVariation.value())*self.txtLeveraged.decimal()/100))
+        self.txtFinalPrice.textChanged.connect(self.on_txtFinalPrice_textChanged)
+        
         self.calculate()
         
         
@@ -71,12 +76,12 @@ class wdgCalculator(QWidget, Ui_wdgCalculator):
         self.on_cmbProducts_currentIndexChanged(self.cmbProducts.currentIndex())
         
     def on_txtFinalPrice_textChanged(self):
+        self.spnProductPriceVariation.valueChanged.disconnect()
+        self.spnProductPriceVariation.setValue(100*(self.txtFinalPrice.decimal()-self.txtProductPrice.decimal())/self.txtProductPrice.decimal())
+        self.spnProductPriceVariation.valueChanged.connect(self.on_spnProductPriceVariation_valueChanged)
         self.calculate()
-        
+
     def on_txtAmount_textChanged(self):
-        if self.txtAmount.isValid():
-            self.gl_wdgCalculator_invested.set(self.txtAmount.decimal())
-            self.mem.con.commit()
         self.calculate()
 
     def calculate(self):
@@ -92,4 +97,3 @@ class wdgCalculator(QWidget, Ui_wdgCalculator):
                 tpcprice= self.txtFinalPrice.decimal()*Decimal(1+tpc/100)
                 self.table.setItem(i, 1, self.product.currency.qtablewidgetitem(tpcprice))       
                 self.table.setItem(i, 2, self.product.currency.qtablewidgetitem(self.txtShares.decimal()*(tpcprice-self.txtFinalPrice.decimal())))
-

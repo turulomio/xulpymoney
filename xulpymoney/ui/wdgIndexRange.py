@@ -46,14 +46,11 @@ class wdgIndexRange(QWidget, Ui_wdgIndexRange):
         
         self.benchmark=self.mem.data.benchmark
         self.table.settings(self.mem)
+                
+        self.spin.setValue(float(self.mem.settings.value("wdgIndexRange/spin", "2")))
+        self.txtInvertir.setText(Decimal(self.mem.settings.value("wdgIndexRange/invertir", "10000")))
+        self.txtMinimo.setText(Decimal(self.mem.settings.value("wdgIndexRange/minimo", "1000")))        
         
-        self.gl_wdgIndexRange_spin=Global(self.mem, "wdgIndexRange", "spin")
-        self.gl_wdgIndexRange_txtInvertir=Global(self.mem, "wdgIndexRange", "txtInvertir")
-        self.gl_wdgIndexRange_txtMinimo=Global(self.mem, "wdgIndexRange", "txtMinimo")
-        
-        self.spin.setValue(float(self.gl_wdgIndexRange_spin.get()))
-        self.txtInvertir.setText(self.gl_wdgIndexRange_txtInvertir.get())
-        self.txtMinimo.setText(self.gl_wdgIndexRange_txtMinimo.get())        
         self.cmbBenchmarkCurrent_load()
         self.load_data()
         
@@ -148,10 +145,9 @@ class wdgIndexRange(QWidget, Ui_wdgIndexRange):
         print ("wdgIndexRange > load_data: {0}".format(datetime.datetime.now()-inicio))
 
     def on_cmd_pressed(self):
-        self.gl_wdgIndexRange_spin.set(Decimal(self.spin.value()))
-        self.gl_wdgIndexRange_txtInvertir.set(self.txtInvertir.text())
-        self.gl_wdgIndexRange_txtMinimo.set(self.txtMinimo.text())
-        self.mem.con.commit()
+        self.mem.settings.setValue("wdgIndexRange/spin", self.spin.value())
+        self.mem.settings.setValue("wdgIndexRange/invertir", self.txtInvertir.text())
+        self.mem.settings.setValue("wdgIndexRange/minimo", self.txtMinimo.text())
         self.load_data()
 
     @pyqtSlot(int)  
@@ -197,7 +193,7 @@ class wdgIndexRange(QWidget, Ui_wdgIndexRange):
         d.setFixedSize(850, 850)
         d.setWindowTitle(self.tr("Investment calculator"))
         w=wdgCalculator(self.mem)
-        w.init__percentagevariation_amount(self.range.currentPriceBottomVariation(), self.txtInvertir.decimal())
+        w.spnProductPriceVariation.setValue(self.range.currentPriceBottomVariation())
         lay = QVBoxLayout(d)
         lay.addWidget(w)
         if w.hasProducts==True:
@@ -211,7 +207,7 @@ class wdgIndexRange(QWidget, Ui_wdgIndexRange):
         d.setFixedSize(850, 850)
         d.setWindowTitle(self.tr("Investment calculator"))
         w=wdgCalculator(self.mem)
-        w.init__percentagevariation_amount(self.range.currentPriceTopVariation(), self.txtInvertir.decimal())
+        w.spnProductPriceVariation.setValue(self.range.currentPriceTopVariation())
         lay = QVBoxLayout(d)
         lay.addWidget(w)
         if w.hasProducts==True:
@@ -225,7 +221,7 @@ class wdgIndexRange(QWidget, Ui_wdgIndexRange):
         d.setFixedSize(850, 850)
         d.setWindowTitle(self.tr("Investment calculator"))
         w=wdgCalculator(self.mem)
-        w.init__percentagevariation_amount(self.range.currentPriceMiddleVariation(), self.txtInvertir.decimal())
+        w.spnProductPriceVariation.setValue(self.range.currentPriceMiddleVariation())
         lay = QVBoxLayout(d)
         lay.addWidget(w)
         if w.hasProducts==True:
