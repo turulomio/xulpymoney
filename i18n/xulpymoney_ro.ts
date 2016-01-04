@@ -4534,17 +4534,17 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgCalculator.py" line="18"/>
+        <location filename="../ui/wdgCalculator.py" line="19"/>
         <source>You need to create at least one investment</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgCalculator.py" line="40"/>
+        <location filename="../ui/wdgCalculator.py" line="37"/>
         <source>Last price ({})</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgCalculator.py" line="39"/>
+        <location filename="../ui/wdgCalculator.py" line="36"/>
         <source>Penultimate price ({})</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5173,18 +5173,18 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgIndexRange.py" line="83"/>
+        <location filename="../ui/wdgIndexRange.py" line="80"/>
         <source>{0} {1} ({2}): {3} shares of {4} = {5}
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgIndexRange.py" line="227"/>
+        <location filename="../ui/wdgIndexRange.py" line="223"/>
         <source>Investment calculator</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgIndexRange.py" line="65"/>
+        <location filename="../ui/wdgIndexRange.py" line="62"/>
         <source>Benchmark penultimate price ({}) is {}</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5214,12 +5214,12 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgIndexRange.py" line="66"/>
+        <location filename="../ui/wdgIndexRange.py" line="63"/>
         <source>Benchmark last price ({}) is {}. Last daily variation: {}.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgIndexRange.py" line="148"/>
+        <location filename="../ui/wdgIndexRange.py" line="145"/>
         <source>{} green colorized ranges of {} benchmark are covered by zero risk and bonds balance ({}).</source>
         <translation type="unfinished"></translation>
     </message>
