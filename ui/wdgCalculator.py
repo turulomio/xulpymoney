@@ -22,11 +22,10 @@ class wdgCalculator(QWidget, Ui_wdgCalculator):
             self.close()
             return
             
-        self.gl_wdgCalculator_product=Global(self.mem, "wdgCalculator", "product")
             
         self.txtAmount.setText(Decimal(self.mem.settings.value("wdgIndexRange/invertir", "10000")))
-        self.product=self.mem.data.products_all().find(int(self.gl_wdgCalculator_product.get()))
-        self.mem.data.products_all().qcombobox(self.cmbProducts, self.product)
+        self.product=self.mem.data.products_all().find(int(self.mem.settings.value("wdgCalculator/product", "0")))
+        self.mem.data.products_all().qcombobox_not_obsolete(self.cmbProducts, self.product)
         self.cmbPrice_load()
 
 
@@ -57,8 +56,7 @@ class wdgCalculator(QWidget, Ui_wdgCalculator):
         
         self.product=self.mem.data.products_all().find(self.cmbProducts.itemData(index))
         if self.product:
-            self.gl_wdgCalculator_product.set(self.product.id)
-            self.mem.con.commit()
+            self.mem.settings.setValue("wdgCalculator/product", self.product.id)
             
         self.cmbPrice_load()
         

@@ -19,7 +19,7 @@ class wdgDisReinvest(QWidget, Ui_wdgDisReinvest):
             return
 
         self.txtValorAccion.setText(self.inversion.product.result.basic.last.quote)
-        self.txtSimulacion.setText(Global(self.mem, "wdgIndexRange", "txtInvertir").get())
+        self.txtSimulacion.setText(Decimal(self.mem.settings.value("wdgIndexRange/invertir", "10000")))
         self.tabOpAcHi.setCurrentIndex(1)
         self.tabAB.setCurrentIndex(1)
         
