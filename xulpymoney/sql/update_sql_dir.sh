@@ -25,4 +25,3 @@ echo "ALTER SEQUENCE seq_conceptos START WITH 100 RESTART;" >> xulpymoney.sql
 echo "ALTER SEQUENCE seq_entidadesbancarias START WITH 4 RESTART;" >> xulpymoney.sql
 echo "ALTER SEQUENCE seq_cuentas START WITH 5 RESTART;" >> xulpymoney.sql
 echo "UPDATE globals set value=NULL where id_globals=6;" >> xulpymoney.sql
-echo "DELETE FROM globals where id_globals>6;" >> xulpymoney.sql

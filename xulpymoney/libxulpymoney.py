@@ -674,7 +674,19 @@ class SetProducts(SetCommons):
             return True
         except:
             return False
+            
+    def qcombobox_not_obsolete(self, combo,  selected=None):
+        """Load set items in a comobo using id and name
+        Selected is and object
+        It sorts by name the arr""" 
+        self.order_by_name()
+        combo.clear()
+        for a in self.arr:
+            if a.obsolete==False:
+                combo.addItem(a.name, a.id)
 
+        if selected!=None:
+            combo.setCurrentIndex(combo.findData(selected.id))
     def subset_with_same_type(self, type):
         """Returns a SetProduct with all products with the type passed as parameter.
         Type is an object"""
@@ -5707,92 +5719,7 @@ class MemProducts:
         print (resultado,  "check_admin_mode")
         return resultado
 
-class Global:
-    def __init__(self, mem, section, name):
-        self.mem=mem
-        self.section=section
-        self.name=name
-        self._id=None#Used to store calculated value
-        self._default=None
-        self._value=None
-    
-    def in_db(self):
-        """Returns true if globals is saved in database"""
-        cur=self.mem.con.cursor()
-        cur.execute("select value from globals where id_globals=%s", (self.id(), ))
-        num=cur.rowcount
-        cur.close()
-        if num==0:
-            return False
-        else:
-            return True
-  
-    def get(self):
-        """Gets a global. In case value wasn't in database it inserts in database its value and return its value
-        
-        If you want to add a new global, you must change id and default"""
-        if self._value!=None:
-            return self._value
-            
-        cur=self.mem.con.cursor()
-        cur.execute("select value from globals where id_globals=%s", (self.id(), ))
-        if cur.rowcount==0:
-            self._value=self.default()
-            return self._value
-        else:
-            self._value=cur.fetchone()[0]
-            cur.close()
-            return self._value
-        
-    def set(self, value):
-        """Set the global value.
-        It doesn't makes a commit, you must do it manually
-        value can't be None
-        """
-        cur=self.mem.con.cursor()
-        if self.in_db()==False:
-            cur.execute("insert into globals (id_globals, global,value) values(%s,%s,%s)", (self.id(),  self.string(), value))     
-        else:
-            cur.execute("update globals set global=%s, value=%s where id_globals=%s", (self.string(), value, self.id()))
-        cur.close()
-        self._value=value
-        
-    def string(self):
-        """Returns a string for global field in table globals"""
-        return "{}#{}".format(self.section,self.name)
 
-    def default(self):
-        """Returns default value
-        Default value can't be None"""
-        if self._default!=None:
-            return self._default
-        if self.section=="wdgIndexRange" and self.name=="spin":
-            self._default= "2"
-        elif self.section=="wdgIndexRange" and self.name=="txtInvertir":
-            self._default= "10000"
-        elif self.section=="wdgIndexRange" and self.name=="txtMinimo":
-            self._default= "1000"
-        elif self.section=="wdgCalculator" and self.name=="product":
-            self._default="0"
-        elif self.section=="wdgCalculator" and self.name=="invested":
-            self._default="10000"
-        return self._default
-
-    def id(self):
-        """Converts section and name to id of table globals"""
-        if self._id!=None:
-            return self._id
-        if self.section=="wdgIndexRange" and self.name=="spin":
-            self._id=7
-        elif self.section=="wdgIndexRange" and self.name=="txtInvertir":
-            self._id=8
-        elif self.section=="wdgIndexRange" and self.name=="txtMinimo":
-            self._id=9
-        elif self.section=="wdgCalculator" and self.name=="product":
-            self._id=10
-        elif self.section=="wdgCalculator" and self.name=="invested":
-            self._id=11
-        return self._id
 
 class MemXulpymoney(MemProducts):
     def __init__(self):

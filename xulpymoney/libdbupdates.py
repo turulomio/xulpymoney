@@ -19,7 +19,7 @@ class Update:
     def __init__(self, mem):
         self.mem=mem
         self.dbversion=self.get_database_version()    
-        self.lastcodeupdate=201510041406
+        self.lastcodeupdate=201601050843
 
    
     def get_database_version(self):
@@ -366,7 +366,13 @@ class Update:
                 cur.execute("update conceptos set editable=%s where id_conceptos=%s", ( False, 37 ))
             cur.close()
             self.mem.con.commit()
-            self.set_database_version(201510041406)         
+            self.set_database_version(201510041406)        
+        if self.dbversion<201601050843:
+            cur=self.mem.con.cursor()
+            cur.execute("delete from globals where id_globals>=7")
+            cur.close()
+            self.mem.con.commit()
+            self.set_database_version(201601050843)          
             
             
 
