@@ -77,7 +77,7 @@ class wdgCalculator(QWidget, Ui_wdgCalculator):
         
     def on_txtFinalPrice_textChanged(self):
         self.spnProductPriceVariation.valueChanged.disconnect()
-        self.spnProductPriceVariation.setValue(100*(self.txtFinalPrice.decimal()-self.txtProductPrice.decimal())/self.txtProductPrice.decimal())
+        self.spnProductPriceVariation.setValue(100*(self.txtFinalPrice.decimal()-self.txtProductPrice.decimal())/self.txtProductPrice.decimal()/self.txtLeveraged.decimal())
         self.spnProductPriceVariation.valueChanged.connect(self.on_spnProductPriceVariation_valueChanged)
         self.calculate()
 
