@@ -5719,7 +5719,54 @@ class MemProducts:
         print (resultado,  "check_admin_mode")
         return resultado
 
-
+class SettingsDB:
+    def __init__(self, mem):
+        self.mem=mem
+    
+    def in_db(self, name):
+        """Returns true if globals is saved in database"""
+        cur=self.mem.con.cursor()
+        cur.execute("select value from globals where id_globals=%s", (self.id(name), ))
+        num=cur.rowcount
+        cur.close()
+        if num==0:
+            return False
+        else:
+            return True
+  
+    def value(self, name, default):
+        """Search in database if not use default"""            
+        cur=self.mem.con.cursor()
+        cur.execute("select value from globals where id_globals=%s", (self.id(name), ))
+        if cur.rowcount==0:
+            return default
+        else:
+            value=cur.fetchone()[0]
+            cur.close()
+            return value
+        
+    def setValue(self, name, value):
+        """Set the global value.
+        It doesn't makes a commit, you must do it manually
+        value can't be None
+        """
+        cur=self.mem.con.cursor()
+        if self.in_db(name)==False:
+            cur.execute("insert into globals (id_globals, global,value) values(%s,%s,%s)", (self.id(name),  name, value))     
+        else:
+            cur.execute("update globals set global=%s, value=%s where id_globals=%s", (name, value, self.id(name)))
+        cur.close()
+        self.mem.con.commit()
+        
+    def id(self,  name):
+        """Converts section and name to id of table globals"""
+        if name=="wdgIndexRange/spin":
+            return 7
+        elif name=="wdgIndexRange/invertir":
+            return 8
+        elif name=="wdgIndexRange/minimo":
+            return 9
+        return None
 
 class MemXulpymoney(MemProducts):
     def __init__(self):
@@ -5728,6 +5775,7 @@ class MemXulpymoney(MemProducts):
         self.frmMain=None #Pointer to mainwidget
         self.closing=False#Used to close threads
         self.settings=QSettings()
+        self.settingsdb=SettingsDB(self)
         
         
         

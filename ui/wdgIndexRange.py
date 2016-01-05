@@ -47,9 +47,9 @@ class wdgIndexRange(QWidget, Ui_wdgIndexRange):
         self.benchmark=self.mem.data.benchmark
         self.table.settings(self.mem)
                 
-        self.spin.setValue(float(self.mem.settings.value("wdgIndexRange/spin", "2")))
-        self.txtInvertir.setText(Decimal(self.mem.settings.value("wdgIndexRange/invertir", "10000")))
-        self.txtMinimo.setText(Decimal(self.mem.settings.value("wdgIndexRange/minimo", "1000")))        
+        self.spin.setValue(float(self.mem.settingsdb.value("wdgIndexRange/spin", "2")))
+        self.txtInvertir.setText(Decimal(self.mem.settingsdb.value("wdgIndexRange/invertir", "10000")))
+        self.txtMinimo.setText(Decimal(self.mem.settingsdb.value("wdgIndexRange/minimo", "1000")))        
         
         self.cmbBenchmarkCurrent_load()
         self.load_data()
@@ -145,9 +145,9 @@ class wdgIndexRange(QWidget, Ui_wdgIndexRange):
         print ("wdgIndexRange > load_data: {0}".format(datetime.datetime.now()-inicio))
 
     def on_cmd_pressed(self):
-        self.mem.settings.setValue("wdgIndexRange/spin", self.spin.value())
-        self.mem.settings.setValue("wdgIndexRange/invertir", self.txtInvertir.text())
-        self.mem.settings.setValue("wdgIndexRange/minimo", self.txtMinimo.text())
+        self.mem.settingsdb.setValue("wdgIndexRange/spin", self.spin.value())
+        self.mem.settingsdb.setValue("wdgIndexRange/invertir", self.txtInvertir.text())
+        self.mem.settingsdb.setValue("wdgIndexRange/minimo", self.txtMinimo.text())
         self.load_data()
 
     @pyqtSlot(int)  

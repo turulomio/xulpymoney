@@ -23,7 +23,7 @@ class wdgCalculator(QWidget, Ui_wdgCalculator):
             return
             
             
-        self.txtAmount.setText(Decimal(self.mem.settings.value("wdgIndexRange/invertir", "10000")))
+        self.txtAmount.setText(Decimal(self.mem.settingsdb.value("wdgIndexRange/invertir", "10000")))
         self.product=self.mem.data.products_all().find(int(self.mem.settings.value("wdgCalculator/product", "0")))
         self.mem.data.products_all().qcombobox_not_obsolete(self.cmbProducts, self.product)
         self.cmbPrice_load()
