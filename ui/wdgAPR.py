@@ -210,7 +210,7 @@ class wdgAPR(QWidget, Ui_wdgAPR):
         self.tblReport.setItem(anofinal-anoinicio+1, 0, qcenter((self.tr("TOTAL"))))
         self.tblReport.setItem(anofinal-anoinicio+1, 6, self.mem.localcurrency.qtablewidgetitem(sumgd))
         
-        lastyear=datetime.date(2015, 12, 31)
+        lastyear=datetime.date(datetime.date.today().year, 12, 31)
         diff=Assets(self.mem).saldo_todas_inversiones(self.mem.data.investments_all(), lastyear)-Assets(self.mem).invested(lastyear)
         s=""
         s=self.tr("From {} I have generated {}.").format(self.wdgYear.year, self.mem.localcurrency.string(sumgd))
