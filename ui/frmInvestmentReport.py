@@ -29,8 +29,7 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
         self.mem.data.load_inactives()
         
         self.ise.setupUi(self.mem,  self.inversion)
-        self.tblDividends.settings(self.mem)
-        self.cmdInvestment.setEnabled(False)                                     
+        self.tblDividends.settings(self.mem)                                 
         self.ise.cmd.released.connect(self.on_cmdISE_released)
         self.mem.data.accounts_active.qcombobox(self.cmbAccount)
         
@@ -48,9 +47,9 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
         else:
             self.tipo=2    
             self.tab.setCurrentIndex(1)
-            self.lblTitulo.setText((self.inversion.name))
-            self.txtInvestment.setText((self.inversion.name))
-            self.txtVenta.setText(str((self.inversion.venta)))
+            self.lblTitulo.setText(self.inversion.name)
+            self.txtInvestment.setText(self.inversion.name)
+            self.txtVenta.setText(self.inversion.venta)
             if self.inversion.selling_expiration==None:
                 self.chkExpiration.setCheckState(Qt.Unchecked)
             else:
@@ -63,6 +62,7 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
             if len(self.op.arr)!=0 or len(self.dividends.arr)!=0:#CmbAccount está desabilitado si hay dividends o operinversiones
                 self.cmbAccount.setEnabled(False)  
 
+        self.cmdInvestment.setEnabled(False)    
         self.showMaximized()
         QApplication.restoreOverrideCursor()
 
@@ -257,6 +257,8 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
     def on_txtInvestment_textChanged(self):
         self.cmdInvestment.setEnabled(True)
     def on_cmbTipoInvestment_currentIndexChanged(self, index):
+        self.cmdInvestment.setEnabled(True)
+    def on_calExpiration_selectionChanged(self):
         self.cmdInvestment.setEnabled(True)
         
 
