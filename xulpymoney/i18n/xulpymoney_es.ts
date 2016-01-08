@@ -2506,7 +2506,7 @@ p, li { white-space: pre-wrap; }
         <translation>realizar Split / Contrasplit</translation>
     </message>
     <message>
-        <location filename="../ui/frmInvestmentReport.py" line="39"/>
+        <location filename="../ui/frmInvestmentReport.py" line="38"/>
         <source>Add a new investment</source>
         <translation>Añadir una nueva inversión</translation>
     </message>
@@ -2521,7 +2521,7 @@ p, li { white-space: pre-wrap; }
         <translation>Antes de añadir una operación, debe añadir el valor actual del producto.</translation>
     </message>
     <message>
-        <location filename="../ui/frmInvestmentReport.py" line="382"/>
+        <location filename="../ui/frmInvestmentReport.py" line="384"/>
         <source>Selected: {0}</source>
         <translation>Seleccionado: {0}</translation>
     </message>
@@ -2621,7 +2621,7 @@ p, li { white-space: pre-wrap; }
         <translation>TAE</translation>
     </message>
     <message>
-        <location filename="../ui/frmInvestmentReport.py" line="268"/>
+        <location filename="../ui/frmInvestmentReport.py" line="270"/>
         <source>You must select a product to continue.</source>
         <translation>Debe seleccionar un producto para continuar.</translation>
     </message>
