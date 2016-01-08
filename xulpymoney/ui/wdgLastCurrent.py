@@ -7,6 +7,7 @@ from frmInvestmentReport import *
 from frmQuotesIBM import *
 from frmProductReport import *
 from wdgCalculator import *
+from wdgDisReinvest import *
 
 class wdgLastCurrent(QWidget, Ui_wdgLastCurrent):
     def __init__(self, mem,  parent=None):
@@ -37,7 +38,20 @@ class wdgLastCurrent(QWidget, Ui_wdgLastCurrent):
         w.txtFinalPrice.setText(price)
         lay = QVBoxLayout(d)
         lay.addWidget(w)
-        d.show()
+        d.show()        
+        
+    @QtCore.pyqtSlot() 
+    def on_actionReinvest_triggered(self):
+        d=QDialog()       
+        d.resize(self.mem.settings.value("frmInvestmentReport/qdialog_disreinvest", QSize(1024, 768)))
+        d.setWindowTitle(self.tr("Divest / Reinvest simulation"))
+        w=wdgDisReinvest(self.mem, self.selInvestment, d)
+        price=self.selInvestment.op_actual.arr[self.selInvestment.op_actual.length()-1].valor_accion*(1+self.spin.value()/Decimal(100))#Is + because -·-        
+        w.txtValorAccion.setText(price)
+        lay = QVBoxLayout(d)
+        lay.addWidget(w)
+        d.exec_()
+        self.mem.settings.setValue("frmInvestmentReport/qdialog_disreinvest", d.size())
                 
     @QtCore.pyqtSlot() 
     def on_actionProduct_triggered(self):
@@ -91,6 +105,8 @@ class wdgLastCurrent(QWidget, Ui_wdgLastCurrent):
 
         menu=QMenu()
         menu.addAction(self.actionCalculate)
+        menu.addSeparator()
+        menu.addAction(self.actionReinvest)
         menu.addSeparator()
         menu.addAction(self.actionInvestmentReport)        
         menu.addAction(self.actionProduct)

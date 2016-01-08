@@ -5516,124 +5516,134 @@ Diferencia diaria: {5}. Edad media de las inversiones: {6}</translation>
 <context>
     <name>wdgLastCurrent</name>
     <message>
-        <location filename="../ui/Ui_wdgLastCurrent.py" line="121"/>
+        <location filename="../ui/Ui_wdgLastCurrent.py" line="126"/>
         <source>Investment</source>
         <translation>Inversión</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgLastCurrent.py" line="123"/>
+        <location filename="../ui/Ui_wdgLastCurrent.py" line="128"/>
         <source>Last operation</source>
         <translation>Última operación</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgLastCurrent.py" line="125"/>
+        <location filename="../ui/Ui_wdgLastCurrent.py" line="130"/>
         <source>Last shares</source>
         <translation>Últimas acciones</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgLastCurrent.py" line="127"/>
+        <location filename="../ui/Ui_wdgLastCurrent.py" line="132"/>
         <source>Total shares</source>
         <translation>Acciones totales</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgLastCurrent.py" line="129"/>
+        <location filename="../ui/Ui_wdgLastCurrent.py" line="134"/>
         <source>Balance</source>
         <translation>Saldo</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgLastCurrent.py" line="131"/>
+        <location filename="../ui/Ui_wdgLastCurrent.py" line="136"/>
         <source>Pending</source>
         <translation>Pendiente</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgLastCurrent.py" line="143"/>
+        <location filename="../ui/Ui_wdgLastCurrent.py" line="148"/>
         <source>% Invested</source>
         <translation>% Invertido</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgLastCurrent.py" line="141"/>
+        <location filename="../ui/Ui_wdgLastCurrent.py" line="146"/>
         <source>% Selling point</source>
         <translation>% punto de venta</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgLastCurrent.py" line="139"/>
+        <location filename="../ui/Ui_wdgLastCurrent.py" line="144"/>
         <source>Investment report</source>
         <translation>Informe de la inversión</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgLastCurrent.py" line="145"/>
+        <location filename="../ui/Ui_wdgLastCurrent.py" line="150"/>
         <source>Name</source>
         <translation>Nombre</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgLastCurrent.py" line="147"/>
+        <location filename="../ui/Ui_wdgLastCurrent.py" line="152"/>
         <source>Time</source>
         <translation>Hora</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgLastCurrent.py" line="149"/>
+        <location filename="../ui/Ui_wdgLastCurrent.py" line="154"/>
         <source>Product report</source>
         <translation>Informe de producto</translation>
     </message>
     <message>
-        <location filename="../ui/wdgLastCurrent.py" line="98"/>
+        <location filename="../ui/wdgLastCurrent.py" line="114"/>
         <source>Order by</source>
         <translation>Ordenado por</translation>
     </message>
     <message>
-        <location filename="../ui/wdgLastCurrent.py" line="121"/>
+        <location filename="../ui/wdgLastCurrent.py" line="137"/>
         <source>Shares number: {0}</source>
         <translation>Número de acciones: {0}</translation>
     </message>
     <message>
-        <location filename="../ui/wdgLastCurrent.py" line="121"/>
+        <location filename="../ui/wdgLastCurrent.py" line="137"/>
         <source>Purchase price average: {0}</source>
         <translation>Precio medio de compra: {0}</translation>
     </message>
     <message>
-        <location filename="../ui/wdgLastCurrent.py" line="121"/>
+        <location filename="../ui/wdgLastCurrent.py" line="137"/>
         <source>Selling point: {}</source>
         <translation>Punto de venta: {}</translation>
     </message>
     <message>
-        <location filename="../ui/wdgLastCurrent.py" line="121"/>
+        <location filename="../ui/wdgLastCurrent.py" line="137"/>
         <source>Selling all shares you get {}</source>
         <translation>Vendiendo todas las acciones consigues {}</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgLastCurrent.py" line="117"/>
+        <location filename="../ui/Ui_wdgLastCurrent.py" line="122"/>
         <source>Last operation investments report</source>
         <translation>Informe de la última operación de las inversiones</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgLastCurrent.py" line="133"/>
+        <location filename="../ui/Ui_wdgLastCurrent.py" line="138"/>
         <source>% Last</source>
         <translation>% Última</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgLastCurrent.py" line="118"/>
+        <location filename="../ui/Ui_wdgLastCurrent.py" line="123"/>
         <source>Percentage gains got in last operation investment</source>
         <translation>Porcentaje de ganancias obtenido en la última operación de la inversión</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgLastCurrent.py" line="119"/>
+        <location filename="../ui/Ui_wdgLastCurrent.py" line="124"/>
         <source> %</source>
         <translation> %</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgLastCurrent.py" line="151"/>
+        <location filename="../ui/Ui_wdgLastCurrent.py" line="156"/>
         <source>% Last operation</source>
         <translation>% Última operación</translation>
     </message>
     <message>
-        <location filename="../ui/wdgLastCurrent.py" line="33"/>
+        <location filename="../ui/wdgLastCurrent.py" line="34"/>
         <source>Investment last operation calculator</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgLastCurrent.py" line="153"/>
+        <location filename="../ui/Ui_wdgLastCurrent.py" line="158"/>
         <source>Calculate reinvest price</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/Ui_wdgLastCurrent.py" line="160"/>
+        <source>Reinvest</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/wdgLastCurrent.py" line="47"/>
+        <source>Divest / Reinvest simulation</source>
+        <translation type="unfinished">Simulación de Desinversión / Reinversión</translation>
     </message>
 </context>
 <context>
