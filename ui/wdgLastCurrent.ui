@@ -257,6 +257,18 @@
     <string>Calculate reinvest price</string>
    </property>
   </action>
+  <action name="actionReinvest">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/coins.png</normaloff>:/xulpymoney/coins.png</iconset>
+   </property>
+   <property name="text">
+    <string>Reinvest</string>
+   </property>
+   <property name="toolTip">
+    <string>Reinvest</string>
+   </property>
+  </action>
  </widget>
  <customwidgets>
   <customwidget>
