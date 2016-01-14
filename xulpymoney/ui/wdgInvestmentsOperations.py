@@ -88,9 +88,12 @@ class wdgInvestmentsOperations(QWidget, Ui_wdgInvestmentsOperations):
             self.selOperation=self.setOperations.arr[i.row()]
             
     def on_tblCurrent_itemSelectionChanged(self):
-        self.selCurrentOperation=None
-        for i in self.tblCurrent.selectedItems():#itera por cada item no row.
-            self.selCurrentOperation=self.setCurrent.arr[i.row()]
+        try: #Due it has one more row and crashes
+            for i in self.tblCurrent.selectedItems():#itera por cada item no row.
+                self.selCurrentOperation=self.setCurrent.arr[i.row()]
+        except:
+            self.selCurrentOperation=None
+            
     
     @QtCore.pyqtSlot() 
     def on_actionShowAccount_triggered(self):

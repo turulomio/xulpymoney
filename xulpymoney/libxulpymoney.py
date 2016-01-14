@@ -1645,15 +1645,18 @@ class SetInvestmentOperationsCurrent(SetIO):
                 tabla.setItem(rownumber, diff+9, a.inversion.product.currency.qtablewidgetitem(a.referenciaindice.quote))
             rownumber=rownumber+1
         tabla.setItem(rownumber, diff+0, QTableWidgetItem(("TOTAL")))
-        tabla.setItem(rownumber, diff+1, qright(str(sumacciones)))
-        if sumacciones==0:
-            tabla.setItem(rownumber, diff+2, a.inversion.product.currency.qtablewidgetitem(0))
+        if homogeneous==True:
+            tabla.setItem(rownumber, diff+1, qright(str(sumacciones)))
+            if sumacciones==0:
+                tabla.setItem(rownumber, diff+2, a.inversion.product.currency.qtablewidgetitem(0))
+            else:
+                tabla.setItem(rownumber, diff+2, a.inversion.product.currency.qtablewidgetitem(sum_accionesXvalor/sumacciones, 6))
         else:
-            tabla.setItem(rownumber, diff+2, a.inversion.product.currency.qtablewidgetitem(sum_accionesXvalor/sumacciones, 6))
+            tabla.setItem(rownumber, 0, qleft(days_to_year_month(self.average_age())))
         tabla.setItem(rownumber, diff+3, a.inversion.product.currency.qtablewidgetitem(suminvertido))
         tabla.setItem(rownumber, diff+4, a.inversion.product.currency.qtablewidgetitem(sumsaldo))
         tabla.setItem(rownumber, diff+5, a.inversion.product.currency.qtablewidgetitem(sumpendiente))
-        tabla.setItem(rownumber, diff+7, qtpc(self.tpc_tae(a.inversion.product.result.basic.last.quote)))
+        tabla.setItem(rownumber, diff+7, qtpc(self.tpc_tae()))
         tabla.setItem(rownumber, diff+8, qtpc(self.tpc_total(sumpendiente, suminvertido)))
             
 
@@ -1663,22 +1666,16 @@ class SetInvestmentOperationsCurrent(SetIO):
             resultado=resultado+o.pendiente(lastquote)
         return resultado
                 
-    def tpc_tae(self, last):
-        sumacciones=0
-        axtae=0
+    def tpc_tae(self):
+        suminvertido=0
+        invertidoxtae=0
         for o in self.arr:
-            sumacciones=sumacciones+o.acciones
-            axtae=axtae+o.acciones*o.tpc_tae(last)
-        if sumacciones==0:
+            suminvertido=suminvertido+o.invertido()
+            invertidoxtae=invertidoxtae+o.invertido()*o.tpc_tae(o.inversion.product.result.basic.last.quote)
+        if suminvertido==0:
             return None
-        return axtae/sumacciones
-            
-        dias=(datetime.date.today()-self.datetime.date()).days +1 #Account el primer día
-        if dias==0:
-            dias=1
-        return Decimal(365*self.tpc_total(last)/dias)
-        
-        
+        return invertidoxtae/suminvertido
+    
     def tpc_total(self, sumpendiente=None, suminvertido=None):
         """Si se pasan por parametros se optimizan los calculos"""
         if sumpendiente==None:
@@ -2085,7 +2082,6 @@ class InvestmentOperationCurrent:
         return 100*(last-endlastyear)/endlastyear
     
     def tpc_total(self,  last):
-
         if last==None:#initiating xulpymoney
             return 0        
         if self.valor_accion==0:
