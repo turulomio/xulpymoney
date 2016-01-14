@@ -372,18 +372,7 @@ class SetInvestments(SetCommons):
             table.setItem(i, 8, qtpc(inv.tpc_venta()))
             if lasttpc<=percentage:   
                 table.item(i, 6).setBackground(QColor(255, 148, 148))
-            
-#            if gainsyear==True and inv.op_actual.less_than_a_year()==True:
-#                table.item(i, 8).setIcon(QIcon(":/xulpymoney/new.png"))
-#            if inv.selling_expiration!=None:
-#                if inv.selling_expiration<datetime.date.today():
-#                    table.item(i, 9).setIcon(QIcon(":/xulpymoney/alarm_clock.png"))
-#            if tpc_invertido!=None and tpc_venta!=None:
-#                if tpc_invertido<=-50:   
-#                    table.item(i, 7).setBackground(QColor(255, 148, 148))
-#                if (tpc_venta<=5 and tpc_venta>0) or tpc_venta<0:
-#                    table.item(i, 8).setBackground(QColor(148, 255, 148))
-#        return d
+
     def average_age(self):
         """Average age of the investments in this set in days"""
         #Extracts all currentinvestmentoperations
@@ -5766,6 +5755,8 @@ class SettingsDB:
             return 8
         elif name=="wdgIndexRange/minimo":
             return 9
+        elif name=="wdgLastCurrent/spin":
+            return 10
         return None
 
 class MemXulpymoney(MemProducts):

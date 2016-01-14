@@ -16,6 +16,7 @@ class wdgLastCurrent(QWidget, Ui_wdgLastCurrent):
         self.mem=mem
         self.selInvestment=None
         self.tblInvestments.settings(self.mem)
+        self.spin.setValue(int(self.mem.settingsdb.value("wdgLastCurrent/spin", "-25")))
         self.on_actionSortTPCLast_triggered()
         
     def tblInvestments_reload(self):
@@ -120,9 +121,9 @@ class wdgLastCurrent(QWidget, Ui_wdgLastCurrent):
         menu.addMenu(ordenar)        
         menu.exec_(self.tblInvestments.mapToGlobal(pos))
 
-    @QtCore.pyqtSlot(int)  
-    def on_spin_valueChanged(self, value):
+    def on_cmd_released(self):
         self.tblInvestments_reload()
+        self.mem.settingsdb.setValue("wdgLastCurrent/spin", self.spin.value())
 
     def on_tblInvestments_itemSelectionChanged(self):
         self.selInvestment=None
