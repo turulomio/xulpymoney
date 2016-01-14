@@ -41,7 +41,7 @@ class frmAuxiliarTables(QDialog, Ui_frmAuxiliarTables):
         self.tblConcepts.clearSelection()
         self.grpConcept.setEnabled(True)
         self.cmbOperationType.setEnabled(True)
-        self.selConcept=Concept(self.mem).init__create(self.tr("Add a concept"), self.mem.tiposoperaciones.find(1), True)
+        self.selConcept=Concept(self.mem).init__create(self.tr("Add a concept"), self.mem.tiposoperaciones.find_by_id(1), True)
         self.txtConcept.setText(self.selConcept.name)
         self.cmbOperationType.setCurrentIndex(0)
 
@@ -63,7 +63,7 @@ class frmAuxiliarTables(QDialog, Ui_frmAuxiliarTables):
         if self.selConcept.id==None:
             isnew=True
         self.selConcept.name=self.txtConcept.text()
-        self.selConcept.tipooperacion=self.mem.tiposoperaciones.find(self.cmbOperationType.itemData(self.cmbOperationType.currentIndex()))
+        self.selConcept.tipooperacion=self.mem.tiposoperaciones.find_by_id(self.cmbOperationType.itemData(self.cmbOperationType.currentIndex()))
         self.selConcept.editable=True
         self.selConcept.save()
         self.mem.con.commit()

@@ -29,8 +29,7 @@ class frmSellingPoint(QDialog, Ui_frmSellingPoint):
         self.puntoventa=Decimal(0)#Guarda el resultado de los cálculos
         self.operinversiones=None 
 
-
-        if str2bool(self.mem.config.get_value("settings", "gainsyear"))==True:
+        if self.mem.gainsyear==True:
             self.chkGainsTime.setCheckState(Qt.Checked)
         else:
             self.chkGainsTime.setEnabled(False)

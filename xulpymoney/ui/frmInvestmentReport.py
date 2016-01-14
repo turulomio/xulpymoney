@@ -214,7 +214,7 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
         self.op.selected.save()
         self.mem.con.commit()
         #self.op doesn't belong to self.mem.data, it's a set of this widget, so I need to reload investment of the self.mem.data
-        self.mem.data.investments_all().find(self.inversion.id).get_operinversiones()
+        self.mem.data.investments_all().find_by_id(self.inversion.id).get_operinversiones()
         self.update_tables()
 
     @QtCore.pyqtSlot() 
@@ -289,7 +289,7 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
             expiration=self.calExpiration.selectedDate().toPyDate()
         
         
-        if self.mem.data.products_active.find(products_id)==None:
+        if self.mem.data.products_active.find_by_id(products_id)==None:
             print ("Cargando otro mqinversiones")
             inv=Product(self.mem).init__db(products_id)
             inv.estimations_dps.load_from_db()
@@ -299,7 +299,7 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
         
 
         if self.tipo==1:        #insertar
-            i=Investment(self.mem).init__create(inversion,   venta,  self.mem.data.accounts_active.find(id_cuentas), self.mem.data.products_active.find(products_id), expiration, True)      
+            i=Investment(self.mem).init__create(inversion,   venta,  self.mem.data.accounts_active.find_by_id(id_cuentas), self.mem.data.products_active.find_by_id(products_id), expiration, True)      
             i.save()
             self.mem.con.commit()
             ##Se añade a mem y vincula. No carga datos porque products_id debe existir            
@@ -311,7 +311,7 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
         elif self.tipo==2:
             self.inversion.name=inversion
             self.inversion.venta=venta
-            self.inversion.product=self.mem.data.products_active.find(products_id)
+            self.inversion.product=self.mem.data.products_active.find_by_id(products_id)
             self.inversion.selling_expiration=expiration
             self.inversion.save()##El id y el id_cuentas no se pueden modificar
             self.mem.con.commit()

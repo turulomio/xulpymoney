@@ -16,7 +16,7 @@ class frmSelector(QDialog, Ui_frmSelector):
         
         tmpset=self.set.clone(self.mem)##Lo uso para no borrar mientras itero sale error
         for a in tmpset.arr:
-            if self.selected.find(a.id)!=None:
+            if self.selected.find_by_id(a.id)!=None:
                 self.set.remove(a)
         
         self.load_tbl()

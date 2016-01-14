@@ -677,8 +677,8 @@ class wdgTotal(QWidget, Ui_wdgTotal):
             horizontalLayout.addWidget(lbl)
             self.tab.addTab(newtab, tabtitle)
             self.tab.setCurrentWidget(newtab)            
-        ##################################3333
-        if str2bool(self.mem.config.get_value("settings", "gainsyear"))==True:
+        ##################################
+        if self.mem.gainsyear==True:
             show_less()
             show_more()
         else:

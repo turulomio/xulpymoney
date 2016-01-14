@@ -16,7 +16,6 @@ class wdgProducts(QWidget, Ui_wdgProducts):
         self.products.selected=[]#Can be selected several products
         self.tblInvestments.settings(self.mem)    
         self.mem.stockexchanges.qcombobox(self.cmbStockExchange)
-        self.favoritos=self.mem.config.get_list( "wdgProducts", "favoritos")
         self.showingfavorites=False#Switch to know if widget is showing favorites            
 
         self.build_array(sql)
@@ -31,20 +30,19 @@ class wdgProducts(QWidget, Ui_wdgProducts):
         
     @QtCore.pyqtSlot()  
     def on_actionFavorites_triggered(self):      
-        if str(self.products.selected[0].id) in self.favoritos:
-            self.favoritos.remove(str(self.products.selected[0].id))
+        if self.products.selected[0].id in self.mem.favorites:
+            self.mem.favorites.remove(self.products.selected[0].id)
             if self.showingfavorites==True:
-                if len(self.favoritos)>0:
-                    self.sql="select * from products where id in ("+str(self.favoritos)[1:-1]+") order by name, id"
+                if len(self.mem.favorites)>0:
+                    self.sql="select * from products where id in ("+list2string(self.mem.favorites)+") order by name, id"
                 else:
                     self.sql="select * from products where id=-99999999"
             self.build_array(self.sql)
             self.products.myqtablewidget(self.tblInvestments)
         else:
-            self.favoritos.append(str(self.products.selected[0].id))
-        print ("Favoritos", self.favoritos)
-        self.mem.config.set_list("wdgProducts",  "favoritos",  self.favoritos)
-        self.mem.config.save()
+            self.mem.favorites.append(self.products.selected[0].id)
+        print ("Favoritos", self.mem.favorites)
+        self.mem.save_MemSettingsDB()
 
     @QtCore.pyqtSlot()  
     def on_actionIbex35_triggered(self):
@@ -140,7 +138,7 @@ class wdgProducts(QWidget, Ui_wdgProducts):
         #Stock exchange Filter
         stockexchangefilter=""
         if self.chkStockExchange.checkState()==Qt.Checked:
-            bolsa=self.mem.stockexchanges.find(self.cmbStockExchange.itemData(self.cmbStockExchange.currentIndex()))            
+            bolsa=self.mem.stockexchanges.find_by_id(self.cmbStockExchange.itemData(self.cmbStockExchange.currentIndex()))            
             stockexchangefilter=" and id_bolsas={0} ".format(bolsa.id)
 
         self.build_array("select * from products where (id::text like '%"+(self.txt.text().upper())+
@@ -166,7 +164,7 @@ class wdgProducts(QWidget, Ui_wdgProducts):
         menu.addAction(self.actionMergeCodes)
         menu.addAction(self.actionFavorites)
         if len(self.products.selected)==1:
-            if str(self.products.selected[0].id) in self.favoritos:
+            if self.products.selected[0].id in self.mem.favorites:
                 self.actionFavorites.setText(self.tr("Remove from favorites"))
             else:
                 self.actionFavorites.setText(self.tr("Add to favorites"))

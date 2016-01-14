@@ -145,15 +145,15 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
         currency=self.cmbCurrency.itemData(self.cmbCurrency.currentIndex())
 
         if self.account==None:
-            cu=Account(self.mem).init__create(cuenta, self.mem.data.banks_active.find(id_entidadesbancarias), active, numerocuenta, self.mem.currencies.find(currency))
+            cu=Account(self.mem).init__create(cuenta, self.mem.data.banks_active.find_by_id(id_entidadesbancarias), active, numerocuenta, self.mem.currencies.find_by_id(currency))
             cu.save()
             self.mem.data.accounts_active.append(cu) #Always to active
         else:
-            self.account.eb=self.mem.data.banks_active.find(id_entidadesbancarias)
+            self.account.eb=self.mem.data.banks_active.find_by_id(id_entidadesbancarias)
             self.account.name=cuenta
             self.account.numero=numerocuenta
             self.account.active=active
-            self.account.currency=self.mem.currencies.find(currency)
+            self.account.currency=self.mem.currencies.find_by_id(currency)
             self.account.save()
             self.lblTitulo.setText(self.account.name)
         self.mem.con.commit()
@@ -189,11 +189,11 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
         
         if self.accountoperations.selected.concepto.id==4:#Tranfer origin
             account_origin=self.account
-            account_destiny=self.mem.data.accounts_all().find(int(self.accountoperations.selected.comentario.split("|")[0]))
+            account_destiny=self.mem.data.accounts_all().find_by_id(int(self.accountoperations.selected.comentario.split("|")[0]))
             oc_comision_id=int(self.accountoperations.selected.comentario.split("|")[2])
     
         if self.accountoperations.selected.concepto.id==5:#Tranfer destiny
-            account_origin=self.mem.data.accounts_all().find(int(self.accountoperations.selected.comentario.split("|")[0]))
+            account_origin=self.mem.data.accounts_all().find_by_id(int(self.accountoperations.selected.comentario.split("|")[0]))
             account_destiny=self.account
             oc_comision_id=int(oc_other.comentario.split("|")[2])
             
@@ -402,7 +402,7 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
     def on_cmdPago_released(self):
         comentario="{0}|{1}".format(self.creditcards.selected.name, self.creditcardoperations.selected.length())
         fechapago=self.calPago.date().toPyDate()
-        c=AccountOperation(self.mem).init__create(fechapago, self.mem.conceptos.find(40), self.mem.tiposoperaciones.find(7), self.creditcardoperations.selected.balance(), comentario, self.account)
+        c=AccountOperation(self.mem).init__create(fechapago, self.mem.conceptos.find_by_id(40), self.mem.tiposoperaciones.find_by_id(7), self.creditcardoperations.selected.balance(), comentario, self.account)
         c.save()
         
         #Modifica el registro y lo pone como pagado y la datetime de pago y añade la opercuenta

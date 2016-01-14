@@ -24,7 +24,7 @@ class wdgCalculator(QWidget, Ui_wdgCalculator):
             
             
         self.txtAmount.setText(Decimal(self.mem.settingsdb.value("wdgIndexRange/invertir", "10000")))
-        self.product=self.mem.data.products_all().find(int(self.mem.settings.value("wdgCalculator/product", "0")))
+        self.product=self.mem.data.products_all().find_by_id(int(self.mem.settings.value("wdgCalculator/product", "0")))
         self.mem.data.products_all().qcombobox_not_obsolete(self.cmbProducts, self.product)
         self.cmbPrice_load()
 
@@ -54,7 +54,7 @@ class wdgCalculator(QWidget, Ui_wdgCalculator):
     def on_cmbProducts_currentIndexChanged(self, index):
         """To invoke this function you must call self.cmbProducts.setCurrentIndex()"""
         
-        self.product=self.mem.data.products_all().find(self.cmbProducts.itemData(index))
+        self.product=self.mem.data.products_all().find_by_id(self.cmbProducts.itemData(index))
         if self.product:
             self.mem.settings.setValue("wdgCalculator/product", self.product.id)
             

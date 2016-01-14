@@ -46,18 +46,16 @@ class canvasChart(FigureCanvasQTAgg):
 
     def settings(self, section):		
         self.section=section
-        self.actionSMA50.setChecked(str2bool(self.mem.config_ui.get_value(section, "sma50" )))
-        self.actionSMA200.setChecked(str2bool(self.mem.config_ui.get_value(section, "sma200" )))           
+        self.actionSMA50.setChecked(str2bool(self.mem.settings.value(section+ "/sma50", "True" )))
+        self.actionSMA200.setChecked(str2bool(self.mem.settings.value(section +"/sma200", "True" )))           
 
     @pyqtSlot()
     def on_actionSMA50_triggered(self):
-        self.mem.config_ui.set_value(self.section, "sma50",   self.actionSMA50.isChecked())
-        self.mem.config_ui.save()
+        self.mem.settings.setValue(self.section+ "/sma50",   self.actionSMA50.isChecked())
         
     @pyqtSlot()
     def on_actionSMA200_triggered(self):
-        self.mem.config_ui.set_value(self.section, "sma200",   self.actionSMA200.isChecked())
-        self.mem.config_ui.save()
+        self.mem.settings.setValue(self.section+ "/sma200",   self.actionSMA200.isChecked())
 
     def draw_sma50(self,  datime, quotes):
         #Calculamos según
@@ -262,7 +260,7 @@ class canvasChartIntraday(canvasChart):
         self.draw_lines_from_quotes()
     
     def on_actionLinesIntraday_triggered(self):
-        self.mem.config_ui.set_value(self.section, "type",   ChartType.lines)
+        self.mem.settings.setValue(self.section+ "/type",   ChartType.lines)
         (dates, quotes)=zip(*self.data)
         self.draw_lines_from_quotes(dates, quotes)
 
@@ -387,8 +385,8 @@ class canvasChartHistorical(canvasChart):
 
     def mydraw(self):
         """Punto de entrada de inicio, cambio de rueda, """
-        type=int(self.mem.config_ui.get_value(self.section, "type"))
-        interval=int(self.mem.config_ui.get_value(self.section, "interval"))
+        type=int(self.mem.settings.value(self.section+ "/type", "0"))
+        interval=int(self.mem.settings.value(self.section+ "/interval", "1"))
         if type==ChartType.lines:
             if interval==1:
                 self.setdata=self.product.result.ohclDaily
@@ -480,8 +478,8 @@ class canvasChartHistorical(canvasChart):
         
     @pyqtSlot()
     def on_actionOHCL1d_triggered(self):
-        self.mem.config_ui.set_value(self.section, "type", ChartType.ohcl)
-        self.mem.config_ui.set_value(self.section, "interval",   "1")
+        self.mem.settings.setValue(self.section+"/type", ChartType.ohcl)
+        self.mem.settings.setValue(self.section+"/interval",   "1")
         self.ohcl(self.setdata, datetime.timedelta(days=1))     
         self.draw_selling_point()
         self.draw_average_purchase_price()
@@ -490,8 +488,8 @@ class canvasChartHistorical(canvasChart):
 
     @pyqtSlot()
     def on_actionLines1d_triggered(self):
-        self.mem.config_ui.set_value(self.section, "type",   ChartType.lines)
-        self.mem.config_ui.set_value(self.section, "interval",   "1")
+        self.mem.settings.setValue(self.section+"/type",   ChartType.lines)
+        self.mem.settings.setValue(self.section+"/interval",   "1")
         self.draw_lines_from_ohcl()
         self.draw_selling_point()
         self.draw_average_purchase_price()
@@ -500,8 +498,8 @@ class canvasChartHistorical(canvasChart):
 
     @pyqtSlot()
     def on_actionCandles1d_triggered(self):
-        self.mem.config_ui.set_value(self.section, "type",   ChartType.candles)
-        self.mem.config_ui.set_value(self.section, "interval",   "1")
+        self.mem.settings.setValue(self.section+"/type",   ChartType.candles)
+        self.mem.settings.setValue(self.section+"/interval",   "1")
         self.candles(datetime.timedelta(days=1))
         if self.setdata.length()<1000:
             self.ax.xaxis.set_minor_locator(DayLocator())
@@ -514,8 +512,8 @@ class canvasChartHistorical(canvasChart):
 
     @pyqtSlot()
     def on_actionOHCL7d_triggered(self):
-        self.mem.config_ui.set_value(self.section, "type", ChartType.ohcl)
-        self.mem.config_ui.set_value(self.section, "interval",   "7")
+        self.mem.settings.setValue(self.section+"/type", ChartType.ohcl)
+        self.mem.settings.setValue(self.section+"/interval",   "7")
         self.ohcl(self.setdata, datetime.timedelta(days=7))     
         self.draw_selling_point()
         self.draw_average_purchase_price()
@@ -523,8 +521,8 @@ class canvasChartHistorical(canvasChart):
 
     @pyqtSlot()
     def on_actionOHCL30d_triggered(self):
-        self.mem.config_ui.set_value(self.section, "type", ChartType.ohcl)
-        self.mem.config_ui.set_value(self.section, "interval",   "30")
+        self.mem.settings.setValue(self.section+"/type", ChartType.ohcl)
+        self.mem.settings.setValue(self.section+"/interval",   "30")
         self.ohcl(self.setdata, datetime.timedelta(days=30))     
         self.draw_selling_point()
         self.draw_average_purchase_price()
@@ -532,8 +530,8 @@ class canvasChartHistorical(canvasChart):
 
     @pyqtSlot()
     def on_actionOHCL365d_triggered(self):
-        self.mem.config_ui.set_value(self.section, "type", ChartType.ohcl)
-        self.mem.config_ui.set_value(self.section, "interval",   "365")
+        self.mem.settings.setValue(self.section+"/type", ChartType.ohcl)
+        self.mem.settings.setValue(self.section+"/interval",   "365")
         self.ohcl(self.setdata, datetime.timedelta(days=365))     
         self.draw_selling_point()
         self.draw_average_purchase_price()

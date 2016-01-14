@@ -504,7 +504,7 @@ class WorkerMorningstar(SourceIterateProducts):
         
     def on_execute_product(self,  id_product):
         """inico y fin son dos dates entre los que conseguir los datos."""
-        product=self.products.find(id_product)
+        product=self.products.find_by_id(id_product)
         
         if product.result.basic.last.datetime.date()==datetime.date.today()-datetime.timedelta(days=1):#if I already got yesterday's price return
             self.log("I already got yesterday's price: {}".format(product.name))
@@ -594,7 +594,7 @@ class WorkerSGWarrants(SourceParsePage):
                 H=ampm_to_24(H, pm)
                 dat=datetime.date(Y, M, d)
                 tim=datetime.time(H, m)
-                bolsa=self.mem.stockexchanges.find(2)#'US/Eastern'
+                bolsa=self.mem.stockexchanges.find_by_id(2)#'US/Eastern'
                 self.quotes.append(Quote(self.mem).init__create(product,dt(dat,tim,bolsa.zone), quote))
             except:#
                 self.log("Error parsing: {}".format(i[:-1]))
@@ -672,7 +672,7 @@ class WorkerYahoo(SourceParsePage):
                 H=ampm_to_24(H, pm)
                 dat=datetime.date(Y, M, d)
                 tim=datetime.time(H, m)
-                bolsa=self.mem.stockexchanges.find(2)#'US/Eastern'
+                bolsa=self.mem.stockexchanges.find_by_id(2)#'US/Eastern'
                 self.quotes.append(Quote(self.mem).init__create(product,dt(dat,tim,bolsa.zone), quote))
             except:#
                 self.log("Error parsing: {}".format(i[:-1]))
@@ -723,7 +723,7 @@ class WorkerYahooHistorical(SourceIterateProducts):
         
     def on_execute_product(self,  id_product):
         """inico y fin son dos dates entre los que conseguir los datos."""
-        product=self.products.find(id_product)
+        product=self.products.find_by_id(id_product)
 
         ultima=product.fecha_ultima_actualizacion_historica()
         if ultima==datetime.date.today()-datetime.timedelta(days=1):
