@@ -15,7 +15,7 @@ class frmSharesTransfer(QDialog, Ui_frmSharesTransfer):
 
     @QtCore.pyqtSlot()  
     def on_buttons_accepted(self):
-        destino=self.mem.data.investments_active.find(self.combo.itemData(self.combo.currentIndex()))
+        destino=self.mem.data.investments_active.find_by_id(self.combo.itemData(self.combo.currentIndex()))
         if self.origen==destino:            
             m=QMessageBox()
             m.setIcon(QMessageBox.Information)

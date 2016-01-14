@@ -19,37 +19,38 @@ class frmSettings(QDialog, Ui_frmSettings):
         self.setupUi(self)
         self.mem=mem
         self.mem.data.load_inactives()
-        self.mem.currencies.qcombobox(self.cmbCurrencies,self.mem.currencies.find(self.mem.config.get_value("settings", "localcurrency")))
-        self.mem.languages.qcombobox(self.cmbLanguages,self.mem.languages.find(self.mem.config.get_value("settings", "language")))
-        self.mem.zones.qcombobox(self.cmbZones, self.mem.zones.find_by_name(self.mem.config.get_value("settings", "localzone")))
+        self.mem.currencies.qcombobox(self.cmbCurrencies,self.mem.localcurrency)
+        self.mem.languages.qcombobox(self.cmbLanguages,self.mem.language)
+        self.mem.zones.qcombobox(self.cmbZones, self.mem.localzone)
         self.indexes=SetProducts(self.mem)
         self.indexes.load_from_db("select * from products where type=3 order by name")
         self.indexes.order_by_name()
         self.indexes.qcombobox(self.cmbIndex, self.mem.data.benchmark)
-        self.spnDividendPercentage.setValue(float(self.mem.config.get_value("settings", "dividendwithholding"))*100)
-        self.spnGainsPercentaje.setValue(float(self.mem.config.get_value("settings", "taxcapitalappreciation"))*100)
-        self.spnGainsPercentajeBelow.setValue(float(self.mem.config.get_value("settings", "taxcapitalappreciationbelow"))*100)
-        gainsyear=str2bool(self.mem.config.get_value("settings", "gainsyear"))
-        self.chkGainsYear.setChecked(b2c(gainsyear))
-        if gainsyear==False:
+        self.spnDividendPercentage.setValue(float(self.mem.dividendwithholding)*100)
+        self.spnGainsPercentaje.setValue(float(self.mem.taxcapitalappreciation)*100)
+        self.spnGainsPercentajeBelow.setValue(float(self.mem.taxcapitalappreciationbelow)*100)
+        self.chkGainsYear.setChecked(b2c(self.mem.gainsyear))
+        if self.mem.gainsyear==False:
             self.spnGainsPercentajeBelow.setEnabled(False)
 
     @pyqtSlot(str)      
     def on_cmbLanguages_currentIndexChanged(self, stri):
-        self.mem.languages.cambiar(self.cmbLanguages.itemData(self.cmbLanguages.currentIndex()))
+        self.mem.language=self.mem.languages.find_by_id(self.cmbLanguages.itemData(self.cmbLanguages.currentIndex()))
+        self.mem.settings.setValue("mem/language", self.mem.language.id)
+        self.mem.languages.cambiar(self.mem.language.id)
         self.retranslateUi(self)
 
     @pyqtSlot()
     def on_buttonbox_accepted(self):
-        self.mem.config.set_value("settings", "localcurrency", self.cmbCurrencies.itemData(self.cmbCurrencies.currentIndex()))
-        self.mem.config.set_value("settings", "language", self.cmbLanguages.itemData(self.cmbLanguages.currentIndex()))
-        self.mem.config.set_value("settings", "localzone", self.cmbZones.itemData(self.cmbZones.currentIndex()))
-        self.mem.config.set_value("settings", "benchmark", self.cmbIndex.itemData(self.cmbIndex.currentIndex()))
-        self.mem.config.set_value("settings", "dividendwithholding", self.spnDividendPercentage.value()/100)
-        self.mem.config.set_value("settings", "taxcapitalappreciation", self.spnGainsPercentaje.value()/100)
-        self.mem.config.set_value("settings", "taxcapitalappreciationbelow", self.spnGainsPercentajeBelow.value()/100)
-        self.mem.config.set_value("settings", "gainsyear", str(c2b(self.chkGainsYear.checkState())))
-        self.mem.config.save()
+        self.mem.localcurrency=self.mem.currencies.find_by_id(self.cmbCurrencies.itemData(self.cmbCurrencies.currentIndex()))
+        self.mem.localzone=self.mem.zones.find_by_id(self.cmbZones.itemData(self.cmbZones.currentIndex()))
+        self.mem.data.benchmark=Product(self.mem).init__db(self.cmbIndex.itemData(self.cmbIndex.currentIndex()))
+        self.mem.data.benchmark.result.basic.load_from_db()
+        self.mem.dividendwithholding=Decimal(self.spnDividendPercentage.value())/100
+        self.mem.taxcapitalappreciation=Decimal(self.spnGainsPercentaje.value())/100
+        self.mem.taxcapitalappreciationbelow=Decimal(self.spnGainsPercentajeBelow.value())/100
+        self.mem.gainsyear=c2b(self.chkGainsYear.checkState())
+        self.mem.save_MemSettingsDB()
         
         self.mem.languages.cambiar(self.cmbLanguages.itemData(self.cmbLanguages.currentIndex()))       
         self.retranslateUi(self)

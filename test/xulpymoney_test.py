@@ -70,7 +70,7 @@ class TestXulpymoneyData(unittest.TestCase):
         w.on_cmdInvestment_pressed()
         
         #Load benchmark qquotes
-        w=WorkerYahooHistorical(mem, 1,  "select * from products where id="+str(self.mem.config.get_value("settings", "benchmark" )))
+        w=WorkerYahooHistorical(mem, 1,  "select * from products where id="+str(self.mem.benchmark.id))
         w.run()
         
         
@@ -111,12 +111,12 @@ if __name__ == '__main__':
         #Load data Xulpymoney infraestructure
         mem=MemXulpymoney()
         mem.setQTranslator(QTranslator(app))
-        mem.qtranslator.load("/usr/lib/xulpymoney/xulpymoney_{0}.qm".format(mem.config.get_value("settings", "language")))
+        mem.qtranslator.load("/usr/lib/xulpymoney/xulpymoney_{0}.qm".format(mem.language.id))
         app.installTranslator(mem.qtranslator)
         frmMain= frmMain(mem)
         strcon="dbname='xulpymoney_pruebas' port='5432' user='postgres' host='127.0.0.1' password='*'"
         mem.con=psycopg2.extras.DictConnection(strcon) 
-        mem.actualizar_memoria()       
+        mem.load_db_data()       
         
         #Launch tests
         unittest.main(argv=[sys.argv[0]])

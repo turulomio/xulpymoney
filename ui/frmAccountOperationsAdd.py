@@ -61,7 +61,7 @@ class frmAccountOperationsAdd(QDialog, Ui_frmAccountOperationsAdd):
 
         
     def on_cmd_released(self):
-        concepto=self.mem.conceptos.find(self.cmbConcepts.itemData(self.cmbConcepts.currentIndex()))
+        concepto=self.mem.conceptos.find_by_id(self.cmbConcepts.itemData(self.cmbConcepts.currentIndex()))
         importe=self.txtImporte.decimal()
         comentario=self.txtComentario.text()
         id_cuentas=self.cmbAccounts.itemData(self.cmbAccounts.currentIndex()) #Sólo se usará en 1 y 2.
@@ -95,7 +95,7 @@ class frmAccountOperationsAdd(QDialog, Ui_frmAccountOperationsAdd):
             self.opercuenta.tipooperacion=concepto.tipooperacion
             self.opercuenta.importe=importe
             self.opercuenta.comentario=comentario
-            self.opercuenta.account=self.mem.data.accounts_active.find(id_cuentas)#Se puede cambiar
+            self.opercuenta.account=self.mem.data.accounts_active.find_by_id(id_cuentas)#Se puede cambiar
             self.opercuenta.save()
             self.mem.con.commit()        #Se debe hacer el commit antes para que al actualizar con el signal salga todos los datos
             self.OperAccountIBMed.emit()
@@ -106,7 +106,7 @@ class frmAccountOperationsAdd(QDialog, Ui_frmAccountOperationsAdd):
             self.opercuenta.tipooperacion=concepto.tipooperacion
             self.opercuenta.importe=importe
             self.opercuenta.comentario=comentario
-            self.opercuenta.account=self.mem.data.accounts_active.find(id_cuentas)#Se puede cambiar
+            self.opercuenta.account=self.mem.data.accounts_active.find_by_id(id_cuentas)#Se puede cambiar
             self.opercuenta.save()
             self.mem.con.commit()        #Se debe hacer el commit antes para que al actualizar con el signal salga todos los datos
             self.OperAccountIBMed.emit()

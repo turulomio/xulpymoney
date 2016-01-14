@@ -17,7 +17,7 @@ class frmInit(QDialog, Ui_frmInit):
             a=a[:-len(a)+2]
             
         print (a)
-        self.mem.languages.qcombobox(self.cmbLanguage, self.mem.languages.find(a))
+        self.mem.languages.qcombobox(self.cmbLanguage, self.mem.languages.find_by_id(a))
         source=WorkerYahooHistorical(self.mem, 0 )
         self.wyahoohistorical=wdgSource(self) 
         self.wyahoohistorical.setSource(self.mem, source)
@@ -51,7 +51,7 @@ class frmInit(QDialog, Ui_frmInit):
                 strtemplate1="dbname='%s' port='%s' user='%s' host='%s' password='%s'" % (self.txtXulpymoney.text(), self.txtPort.text(), self.txtUser.text(),  self.txtServer.text(), self.txtPass.text())
                 self.mem.con=psycopg2.extras.DictConnection(strtemplate1)
                 self.mem.con.set_isolation_level(0)
-                self.mem.actualizar_memoria()     
+                self.mem.load_db_data()     
                 self.cmdCreate.setEnabled(False)
                 self.wyahoohistorical.setEnabled(True)
                 self.wyahoohistorical.on_cmdRun_released()

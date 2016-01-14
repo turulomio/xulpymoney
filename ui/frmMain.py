@@ -45,7 +45,7 @@ class frmMain(QMainWindow, Ui_frmMain):
 
         self.statusBar.addWidget(QLabel(self.tr("Server: {}:{}      Database: {}      User: {}").format(self.mem.con.server, self.mem.con.port,  self.mem.con.db, self.mem.con.user)))
         
-        self.mem.actualizar_memoria() ##CARGA TODOS LOS DATOS Y LOS VINCULA       
+        self.mem.load_db_data() ##CARGA TODOS LOS DATOS Y LOS VINCULA       
         
         
         
@@ -392,15 +392,14 @@ class frmMain(QMainWindow, Ui_frmMain):
 
     @QtCore.pyqtSlot()  
     def on_actionFavorites_triggered(self):
-        favoritos=self.mem.config.get_list("wdgProducts",  "favoritos")
-        if len(favoritos)==0:
+        if len(self.mem.favorites)==0:
             m=QMessageBox()
             m.setIcon(QMessageBox.Information)
             m.setText(self.tr("There aren't favorite products"))
             m.exec_()     
             return
         self.w.close()
-        self.w=wdgProducts(self.mem,  "select * from products where id in ("+str(favoritos)[1:-1]+") order by name, id")
+        self.w=wdgProducts(self.mem,  "select * from products where id in ("+list2string(self.mem.favorites)+") order by name, id")
         self.w.showingfavorites=True
 
         self.layout.addWidget(self.w)

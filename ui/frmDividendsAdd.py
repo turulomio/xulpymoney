@@ -74,7 +74,7 @@ class frmDividendsAdd(QDialog, Ui_frmDividendsAdd):
 
 
     def on_cmd_pressed(self):
-        concepto=self.mem.conceptos.find(self.cmb.itemData(self.cmb.currentIndex()))
+        concepto=self.mem.conceptos.find_by_id(self.cmb.itemData(self.cmb.currentIndex()))
         tipooperacion=concepto.tipooperacion
                         
         if tipooperacion.id==1 and (self.txtBruto.decimal()>Decimal('0') or self.txtNeto.decimal()>Decimal('0')):

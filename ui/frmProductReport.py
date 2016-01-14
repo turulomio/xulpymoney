@@ -220,7 +220,7 @@ class frmProductReport(QDialog, Ui_frmProductReport):
             self.tblIntradia.clear()
         else:
             self.tblIntradia.setRowCount(len(self.product.result.intradia.arr))
-            QuoteDayBefore=self.product.result.ohclDaily.find(self.calendar.selectedDate().toPyDate()-datetime.timedelta(days=1))#day before as selected
+            QuoteDayBefore=self.product.result.ohclDaily.find_by_id(self.calendar.selectedDate().toPyDate()-datetime.timedelta(days=1))#day before as selected
     
             ##Construye tabla
             for i , q in enumerate(self.product.result.intradia.arr):
@@ -421,8 +421,8 @@ class frmProductReport(QDialog, Ui_frmProductReport):
             return
         self.product.name=self.txtName.text()
         self.product.isin=self.txtISIN.text()
-        self.product.currency=self.mem.currencies.find(self.cmbCurrency.itemData(self.cmbCurrency.currentIndex()))
-        self.product.type=self.mem.types.find(self.cmbTipo.itemData(self.cmbTipo.currentIndex()))
+        self.product.currency=self.mem.currencies.find_by_id(self.cmbCurrency.itemData(self.cmbCurrency.currentIndex()))
+        self.product.type=self.mem.types.find_by_id(self.cmbTipo.itemData(self.cmbTipo.currentIndex()))
         self.product.agrupations=SetAgrupations(self.mem).clone_from_combo(self.cmbAgrupations)
         self.product.obsolete=c2b(self.chkObsolete.checkState())
         self.product.web=self.txtWeb.text()
@@ -430,9 +430,9 @@ class frmProductReport(QDialog, Ui_frmProductReport):
         self.product.phone=self.txtPhone.text()
         self.product.mail=self.txtMail.text()
         self.product.tpc=int(self.txtTPC.text())
-        self.product.mode=self.mem.investmentsmodes.find(self.cmbPCI.itemData(self.cmbPCI.currentIndex()))
-        self.product.apalancado=self.mem.leverages.find(self.cmbApalancado.itemData(self.cmbApalancado.currentIndex()))
-        self.product.stockexchange=self.mem.stockexchanges.find(self.cmbBolsa.itemData(self.cmbBolsa.currentIndex()))
+        self.product.mode=self.mem.investmentsmodes.find_by_id(self.cmbPCI.itemData(self.cmbPCI.currentIndex()))
+        self.product.apalancado=self.mem.leverages.find_by_id(self.cmbApalancado.itemData(self.cmbApalancado.currentIndex()))
+        self.product.stockexchange=self.mem.stockexchanges.find_by_id(self.cmbBolsa.itemData(self.cmbBolsa.currentIndex()))
         self.product.ticker=self.txtYahoo.text()
         self.product.priority=SetPriorities(self.mem).init__create_from_combo(self.cmbPriority)
         self.product.priorityhistorical=SetPrioritiesHistorical(self.mem).init__create_from_combo(self.cmbPriorityHistorical)
