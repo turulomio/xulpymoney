@@ -650,6 +650,18 @@
     <string>Change benchmark price</string>
    </property>
   </action>
+  <action name="actionRangeReport">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/eye.png</normaloff>:/xulpymoney/eye.png</iconset>
+   </property>
+   <property name="text">
+    <string>Hide in range report</string>
+   </property>
+   <property name="toolTip">
+    <string>Hide in range report</string>
+   </property>
+  </action>
  </widget>
  <customwidgets>
   <customwidget>

@@ -207,7 +207,16 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
             self.on_cmdInvestment_released()
         
         self.update_tables()                 
-        
+    
+    @QtCore.pyqtSlot() 
+    def on_actionRangeReport_triggered(self):
+        self.op.selected.show_in_ranges= not self.op.selected.show_in_ranges
+        self.op.selected.save()
+        self.mem.con.commit()
+        #self.op doesn't belong to self.mem.data, it's a set of this widget, so I need to reload investment of the self.mem.data
+        self.mem.data.investments_all().find(self.inversion.id).get_operinversiones()
+        self.update_tables()
+
     @QtCore.pyqtSlot() 
     def on_actionSharesTransferUndo_triggered(self):
         if self.mem.data.investments_active.traspaso_valores_deshacer(self.op.selected)==False:
@@ -315,6 +324,7 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
         if self.op.selected==None:
             self.actionOperationDelete.setEnabled(False)
             self.actionOperationEdit.setEnabled(False)
+            self.actionRangeReport.setEnabled(False)
         else:
             if self.op.selected.tipooperacion.id==10:#Traspaso valores destino
                 self.actionOperationDelete.setEnabled(False)
@@ -322,9 +332,8 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
             else:
                 self.actionOperationDelete.setEnabled(True)
                 self.actionOperationEdit.setEnabled(True)
-                
-            
-            
+            self.actionRangeReport.setEnabled(True)
+
         menu=QMenu()
         menu.addAction(self.actionOperationAdd)
         
@@ -336,6 +345,8 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
                 menu.addSeparator()
                 menu.addAction(self.actionSharesTransferUndo)
                 
+        menu.addSeparator()
+        menu.addAction(self.actionRangeReport)
         menu.addSeparator()
         menu.addAction(self.actionSplit)
         menu.exec_(self.tblOperaciones.mapToGlobal(pos))
@@ -379,6 +390,12 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
         try:
             for i in self.tblOperaciones.selectedItems():#itera por cada item no row.
                 self.op.selected=self.op.arr[i.row()]
+                if self.op.selected.show_in_ranges==True:
+                    self.actionRangeReport.setText(self.tr("Hide in range report"))
+                    self.actionRangeReport.setIcon(QIcon(":/xulpymoney/eye_red.png"))
+                else:
+                    self.actionRangeReport.setText(self.tr("Show in range report"))
+                    self.actionRangeReport.setIcon(QIcon(":/xulpymoney/eye.png"))
         except:
             self.op.selected=None
         print (self.tr("Selected: {0}".format(str(self.op.selected))))
