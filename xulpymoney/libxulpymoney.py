@@ -980,18 +980,18 @@ class SetAccountOperations:
     def sort(self):       
         self.arr=sorted(self.arr, key=lambda e: e.datetime,  reverse=False) 
         
-    def myqtablewidget(self, tabla,   show_account=False,  parentname=None):
+    def myqtablewidget(self, tabla,   show_accounts=False,  parentname=None):
         """Section es donde guardar en el config file, coincide con el nombre del formulario en el que está la tabla
-        show_account muestra la cuenta cuando las opercuentas son de diversos cuentas (Estudios totales)"""
+        show_accounts muestra la cuenta cuando las opercuentas son de diversos cuentas (Estudios totales)"""
         ##HEADERS
         diff=0
-        if show_account==True:
+        if show_accounts==True:
             tabla.setColumnCount(6)
             diff=1
         else:
             tabla.setColumnCount(5)
         tabla.setHorizontalHeaderItem(0, QTableWidgetItem(QApplication.translate("Core","Date" )))
-        if show_account==True:
+        if show_accounts==True:
             tabla.setHorizontalHeaderItem(diff, QTableWidgetItem(QApplication.translate("Core","Account" )))
         tabla.setHorizontalHeaderItem(1+diff, QTableWidgetItem(QApplication.translate("Core","Concept" )))
         tabla.setHorizontalHeaderItem(2+diff,  QTableWidgetItem(QApplication.translate("Core","Amount" )))
@@ -1005,7 +1005,7 @@ class SetAccountOperations:
         for rownumber, a in enumerate(self.arr):
             balance=balance+a.importe
             tabla.setItem(rownumber, 0, qdatetime(a.datetime, self.mem.localzone))
-            if show_account==True:
+            if show_accounts==True:
                 tabla.setItem(rownumber, diff, QTableWidgetItem(a.account.name))
             tabla.setItem(rownumber, 1+diff, qleft(a.concepto.name))
             tabla.setItem(rownumber, 2+diff, self.mem.localcurrency.qtablewidgetitem(a.importe))
@@ -1568,7 +1568,7 @@ class SetInvestmentOperationsCurrent(SetIO):
                 return True
         return False
         
-    def myqtablewidget(self,  tabla ):
+    def myqtablewidget_heterogeneus(self,  tabla, show_accounts=False):
         """Función que rellena una tabla pasada como parámetro con datos procedentes de un array de objetos
         InvestmentOperationCurrent y dos valores de mystocks para rellenar los tpc correspodientes
         
@@ -1576,17 +1576,14 @@ class SetInvestmentOperationsCurrent(SetIO):
         
         Parámetros
             - tabla myQTableWidget en la que rellenar los datos
-            - setoperinversion. Vincula a una inversión que  Debe tener cargado mq con get_basic y las operaciones de inversión calculadas
-        last es el último quote de la inversión"""
-        self.order_by_datetime()
+        """
         #UI
         diff=0
-        homogeneous=self.isHomogeneous()
-        if homogeneous==False:
+        if show_accounts==True:
             diff=2
         tabla.setColumnCount(10+diff)
         tabla.setHorizontalHeaderItem(0, QTableWidgetItem(QApplication.translate("Core", "Date" )))
-        if homogeneous==False:
+        if show_accounts==True:
             tabla.setHorizontalHeaderItem(diff-1, QTableWidgetItem(QApplication.translate("Core", "Product" )))
             tabla.setHorizontalHeaderItem(diff, QTableWidgetItem(QApplication.translate("Core", "Account" )))
         tabla.setHorizontalHeaderItem(diff+1, QTableWidgetItem(QApplication.translate("Core", "Shares" )))
@@ -1600,13 +1597,10 @@ class SetInvestmentOperationsCurrent(SetIO):
         tabla.setHorizontalHeaderItem(diff+9, QTableWidgetItem(QApplication.translate("Core", "Benchmark" )))
         #DATA
         tabla.settings(   self.mem)
-        if len(self.arr)==0:
+        if self.length()==0:
             tabla.setRowCount(0)
             return
-#        inversion=self.arr[0].inversion
-#        numdigitos=inversion.product.result.decimalesSignificativos()
-        sumacciones=Decimal('0')
-        sum_accionesXvalor=Decimal('0')
+            
         sumsaldo=Decimal('0')
         sumpendiente=Decimal('0')
         suminvertido=Decimal('0')
@@ -1615,7 +1609,6 @@ class SetInvestmentOperationsCurrent(SetIO):
         rownumber=0
         gainsyear=str2bool(self.mem.config.get_value("settings", "gainsyear"))
         for rownumber, a in enumerate(self.arr):
-            sumacciones=Decimal(sumacciones)+Decimal(str(a.acciones))
             balance=a.balance(a.inversion.product.result.basic.last)
             pendiente=a.pendiente(a.inversion.product.result.basic.last)
             invertido=a.invertido()
@@ -1623,12 +1616,11 @@ class SetInvestmentOperationsCurrent(SetIO):
             sumsaldo=sumsaldo+balance
             sumpendiente=sumpendiente+pendiente
             suminvertido=suminvertido+invertido
-            sum_accionesXvalor=sum_accionesXvalor+a.acciones*a.valor_accion
     
             tabla.setItem(rownumber, 0, qdatetime(a.datetime, self.mem.localzone))
             if gainsyear==True and a.less_than_a_year()==True:
                 tabla.item(rownumber, 0).setIcon(QIcon(":/xulpymoney/new.png"))
-            if homogeneous==False:
+            if show_accounts==True:
                 tabla.setItem(rownumber, diff-1, qleft(a.inversion.name))
                 tabla.setItem(rownumber, diff, qleft(a.inversion.account.name))
             tabla.setItem(rownumber, diff+1, qright("{0:.6f}".format(a.acciones)))
@@ -1643,22 +1635,104 @@ class SetInvestmentOperationsCurrent(SetIO):
                 tabla.setItem(rownumber, diff+9, a.inversion.product.currency.qtablewidgetitem(None))
             else:
                 tabla.setItem(rownumber, diff+9, a.inversion.product.currency.qtablewidgetitem(a.referenciaindice.quote))
-            rownumber=rownumber+1
-        tabla.setItem(rownumber, diff+0, QTableWidgetItem(("TOTAL")))
-        if homogeneous==True:
-            tabla.setItem(rownumber, diff+1, qright(str(sumacciones)))
-            if sumacciones==0:
-                tabla.setItem(rownumber, diff+2, a.inversion.product.currency.qtablewidgetitem(0))
-            else:
-                tabla.setItem(rownumber, diff+2, a.inversion.product.currency.qtablewidgetitem(sum_accionesXvalor/sumacciones, 6))
+
+        tabla.setItem(self.length(), 0, qleft(days_to_year_month(self.average_age())))
+        tabla.setItem(self.length(), diff+0, QTableWidgetItem(("TOTAL")))
+        tabla.setItem(self.length(), diff+3, a.inversion.product.currency.qtablewidgetitem(suminvertido))
+        tabla.setItem(self.length(), diff+4, a.inversion.product.currency.qtablewidgetitem(sumsaldo))
+        tabla.setItem(self.length(), diff+5, a.inversion.product.currency.qtablewidgetitem(sumpendiente))
+        tabla.setItem(self.length(), diff+7, qtpc(self.tpc_tae()))
+        tabla.setItem(self.length(), diff+8, qtpc(self.tpc_total(sumpendiente, suminvertido)))
+        
+    def myqtablewidget_homogeneus(self,  tabla,  show_accounts=False, quote=None):
+        """Función que rellena una tabla pasada como parámetro con datos procedentes de un array de objetos
+        InvestmentOperationCurrent y dos valores de mystocks para rellenar los tpc correspodientes
+        
+        Se dibujan las columnas pero las propiedad alternate color... deben ser en designer
+        
+        Parámetros
+            - tabla myQTableWidget en la que rellenar los datos
+            - quote, si queremos cargar las operinversiones con un valor determinado se pasar´a la quote correspondiente
+        """
+        if show_accounts==True:
+            diff=2
         else:
-            tabla.setItem(rownumber, 0, qleft(days_to_year_month(self.average_age())))
-        tabla.setItem(rownumber, diff+3, a.inversion.product.currency.qtablewidgetitem(suminvertido))
-        tabla.setItem(rownumber, diff+4, a.inversion.product.currency.qtablewidgetitem(sumsaldo))
-        tabla.setItem(rownumber, diff+5, a.inversion.product.currency.qtablewidgetitem(sumpendiente))
-        tabla.setItem(rownumber, diff+7, qtpc(self.tpc_tae()))
-        tabla.setItem(rownumber, diff+8, qtpc(self.tpc_total(sumpendiente, suminvertido)))
+            diff=0
             
+        tabla.setColumnCount(10+diff)
+        tabla.setHorizontalHeaderItem(0, QTableWidgetItem(QApplication.translate("Core", "Date" )))
+        if show_accounts==True:
+            tabla.setHorizontalHeaderItem(diff-1, QTableWidgetItem(QApplication.translate("Core", "Product" )))
+            tabla.setHorizontalHeaderItem(diff, QTableWidgetItem(QApplication.translate("Core", "Account" )))
+        tabla.setHorizontalHeaderItem(diff+1, QTableWidgetItem(QApplication.translate("Core", "Shares" )))
+        tabla.setHorizontalHeaderItem(diff+2, QTableWidgetItem(QApplication.translate("Core", "Price" )))
+        tabla.setHorizontalHeaderItem(diff+3, QTableWidgetItem(QApplication.translate("Core", "Invested" )))
+        tabla.setHorizontalHeaderItem(diff+4, QTableWidgetItem(QApplication.translate("Core", "Current balance" )))
+        tabla.setHorizontalHeaderItem(diff+5, QTableWidgetItem(QApplication.translate("Core", "Pending" )))
+        tabla.setHorizontalHeaderItem(diff+6, QTableWidgetItem(QApplication.translate("Core", "% annual" )))
+        tabla.setHorizontalHeaderItem(diff+7, QTableWidgetItem(QApplication.translate("Core", "% APR" )))
+        tabla.setHorizontalHeaderItem(diff+8, QTableWidgetItem(QApplication.translate("Core", "% Total" )))
+        tabla.setHorizontalHeaderItem(diff+9, QTableWidgetItem(QApplication.translate("Core", "Benchmark" )))
+        #DATA
+        tabla.settings(self.mem)
+        if self.length()==0:
+            tabla.setRowCount(0)
+            return
+            
+
+        if quote==None:
+            quote=self.arr[0].inversion.product.result.basic.last
+        
+        sumacciones=Decimal('0')
+        sum_accionesXvalor=Decimal('0')
+        sumsaldo=Decimal('0')
+        sumpendiente=Decimal('0')
+        suminvertido=Decimal('0')
+        tabla.clearContents()
+        tabla.setRowCount(self.length()+1)
+        gainsyear=str2bool(self.mem.config.get_value("settings", "gainsyear"))
+        for rownumber, a in enumerate(self.arr):
+            sumacciones=sumacciones+a.acciones
+            balance=a.balance(quote)
+            pendiente=a.pendiente(quote)
+            invertido=a.invertido()
+    
+            sumsaldo=sumsaldo+balance
+            sumpendiente=sumpendiente+pendiente
+            suminvertido=suminvertido+invertido
+            sum_accionesXvalor=sum_accionesXvalor+a.acciones*a.valor_accion
+    
+            tabla.setItem(rownumber, 0, qdatetime(a.datetime, self.mem.localzone))
+            if gainsyear==True and a.less_than_a_year()==True:
+                tabla.item(rownumber, 0).setIcon(QIcon(":/xulpymoney/new.png"))
+            if show_accounts==True:
+                tabla.setItem(rownumber, diff-1, qleft(a.inversion.name))
+                tabla.setItem(rownumber, diff, qleft(a.inversion.account.name))
+            tabla.setItem(rownumber, diff+1, qright("{0:.6f}".format(a.acciones)))
+            tabla.setItem(rownumber, diff+2, a.inversion.product.currency.qtablewidgetitem(a.valor_accion, 6))
+            tabla.setItem(rownumber, diff+3, a.inversion.product.currency.qtablewidgetitem(invertido))
+            tabla.setItem(rownumber, diff+4, a.inversion.product.currency.qtablewidgetitem(balance))
+            tabla.setItem(rownumber, diff+5, a.inversion.product.currency.qtablewidgetitem(pendiente))
+            tabla.setItem(rownumber, diff+6, qtpc(a.tpc_anual(quote.quote, a.inversion.product.result.basic.endlastyear.quote)))
+            tabla.setItem(rownumber, diff+7, qtpc(a.tpc_tae(quote.quote)))
+            tabla.setItem(rownumber, diff+8, qtpc(a.tpc_total(quote.quote)))
+            if a.referenciaindice==None:
+                tabla.setItem(rownumber, diff+9, a.inversion.product.currency.qtablewidgetitem(None))
+            else:
+                tabla.setItem(rownumber, diff+9, a.inversion.product.currency.qtablewidgetitem(a.referenciaindice.quote))
+                
+        tabla.setItem(self.length(), diff+0, QTableWidgetItem(("TOTAL")))
+        tabla.setItem(self.length(), diff+1, qright(str(sumacciones)))
+        if sumacciones==0:
+            tabla.setItem(self.length(), diff+2, a.inversion.product.currency.qtablewidgetitem(0))
+        else:
+            tabla.setItem(self.length(), diff+2, a.inversion.product.currency.qtablewidgetitem(sum_accionesXvalor/sumacciones, 6))
+        tabla.setItem(self.length(), diff+3, a.inversion.product.currency.qtablewidgetitem(suminvertido))
+        tabla.setItem(self.length(), diff+4, a.inversion.product.currency.qtablewidgetitem(sumsaldo))
+        tabla.setItem(self.length(), diff+5, a.inversion.product.currency.qtablewidgetitem(sumpendiente))
+        tabla.setItem(self.length(), diff+7, qtpc(self.tpc_tae()))
+        tabla.setItem(self.length(), diff+8, qtpc(self.tpc_total(sumpendiente, suminvertido)))
+        return (sumacciones, suminvertido, sumpendiente)
 
     def pendiente(self, lastquote):
         resultado=0
@@ -3568,7 +3642,7 @@ class SetCreditCardOperations:
         
     def myqtablewidget(self, tabla):
         """Section es donde guardar en el config file, coincide con el nombre del formulario en el que está la tabla
-        show_account muestra la cuenta cuando las opercuentas son de diversos cuentas (Estudios totales)"""
+        show_accounts muestra la cuenta cuando las opercuentas son de diversos cuentas (Estudios totales)"""
         ##HEADERS
         tabla.setColumnCount(5)
         tabla.setHorizontalHeaderItem(0, QTableWidgetItem(QApplication.translate("Core","Date" )))
