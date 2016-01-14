@@ -42,7 +42,7 @@ class wdgDividendsReport(QWidget, Ui_wdgDividendsReport):
         self.tblInvestments.setRowCount(len(self.inversiones.arr));
         sumdiv=Decimal(0)
         for i, inv in enumerate(self.inversiones.arr):
-            if inv.product.estimations_dps.find_by_id(datetime.date.today().year)==None:
+            if inv.product.estimations_dps.find(datetime.date.today().year)==None:
                 dpa=0
                 tpc=0
                 divestimado=0
