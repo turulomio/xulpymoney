@@ -41,6 +41,7 @@ class frmInvestmentOperationsAdd(QDialog, Ui_frmInvestmentOperationsAdd):
         self.operinversion.acciones=self.txtAcciones.decimal()
         if id_tiposoperaciones==5: #Venta
             self.operinversion.importe=self.txtImporteBruto.decimal()
+            self.operinversion.show_in_ranges=False
             if self.operinversion.acciones>Decimal('0'):
                 m=QMessageBox()
                 m.setIcon(QMessageBox.Information)

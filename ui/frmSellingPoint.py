@@ -27,7 +27,7 @@ class frmSellingPoint(QDialog, Ui_frmSellingPoint):
             return
         
         self.puntoventa=Decimal(0)#Guarda el resultado de los cálculos
-        self.operinversiones=[]            #0-fecha, 1-banco, 2-acciones, 3-valor-compra, 4-invertido, 5 pendiente, 6-tipooper
+        self.operinversiones=None 
 
 
         if str2bool(self.mem.config.get_value("settings", "gainsyear"))==True:
@@ -42,53 +42,24 @@ class frmSellingPoint(QDialog, Ui_frmSellingPoint):
         
     def __calcular(self):    
         def load_array():
-            tmp=[]
             if self.chkPonderanAll.checkState()==Qt.Checked:#Ponderan misma inversion
                 for  inv in self.mem.data.investments_active.arr:
                     if inv.product.id==self.inversion.product.id:
                         for op in inv.op_actual.arr:
-                            tmp.append(op)                
+                            self.operinversiones.append(op)                
             else:# No ponderan misma inversion
-                tmp=list(self.inversion.op_actual.arr) 
+                self.operinversiones=self.inversion.op_actual.clone()
                 
-            #Quita operaciones menos de un año si ha lugar
+            #Quita operaciones menos de un año si a lugar
             if self.chkGainsTime.checkState()==Qt.Checked:
-                for o in tmp:
-                    if o.less_than_a_year()==False:
-                        self.operinversiones.append(o)
-            else:
-                self.operinversiones=tmp
-                
-        def load_table(table, current_value):
-            sumacciones=Decimal(0)
-            suminvertido=Decimal(0)
-            sumpendiente=Decimal(0)
-            table.clearContents()
-            table.setRowCount(len(self.operinversiones)+1)
-            for i, rec in enumerate(self.operinversiones):
-                sumacciones=sumacciones+rec.acciones
-                suminvertido=suminvertido+rec.invertido()
-                pendiente=rec.pendiente(current_value)
-                sumpendiente=sumpendiente+pendiente
-                table.setItem(i, 0, qdatetime(rec.datetime, rec.inversion.product.stockexchange.zone))
-                table.setItem(i, 1, QTableWidgetItem("{0} ({1})".format(rec.inversion.name, rec.inversion.account.eb.name)))
-                table.setItem(i, 2,  QTableWidgetItem(rec.tipooperacion.name))
-                table.setItem(i, 3, qright(str(rec.acciones)))
-                table.setItem(i, 4, self.inversion.product.currency.qtablewidgetitem(rec.valor_accion))
-                table.setItem(i, 5, self.inversion.product.currency.qtablewidgetitem(rec.importe))
-                table.setItem(i, 6, self.inversion.product.currency.qtablewidgetitem(pendiente))
-            table.setItem(len(self.operinversiones), 1, qright("Total"))        
-            table.setItem(len(self.operinversiones), 3, qright(str(sumacciones)))
-            if sumacciones!=0:
-                table.setItem(len(self.operinversiones), 4, self.inversion.product.currency.qtablewidgetitem(suminvertido/sumacciones))
-            table.setItem(len(self.operinversiones), 5, self.inversion.product.currency.qtablewidgetitem(suminvertido))
-            table.setItem(len(self.operinversiones), 6, self.inversion.product.currency.qtablewidgetitem(sumpendiente))
-            return (sumacciones, suminvertido, sumpendiente)
+                for o in self.operinversiones.arr:
+                    if o.less_than_a_year()==True:
+                        self.operinversiones.remove(o)
         ###########################
-        del self.operinversiones
-        self.operinversiones=[]
+        self.operinversiones=SetInvestmentOperationsCurrent(self.mem)
         load_array()
-        (sumacciones, suminvertido, sumpendiente)=load_table(self.table, self.inversion.product.result.basic.last)
+        self.operinversiones.order_by_datetime()
+        (sumacciones, suminvertido, sumpendiente)=self.operinversiones.myqtablewidget_homogeneus(self.table, True, self.inversion.product.result.basic.last)
         
         if sumacciones==0:
             self.puntoventa=0
@@ -101,19 +72,19 @@ class frmSellingPoint(QDialog, Ui_frmSellingPoint):
                     self.puntoventa=Decimal(self.txtPrice.text())
                     self.cmd.setEnabled(True)
                 else:
-                    self.puntoventa=0
+                    self.puntoventa=Decimal(0)
                     self.cmd.setEnabled(False)
             elif self.radGain.isChecked()==True:
                 if self.txtGanancia.isValid():#Si hay un numero bien
                     self.puntoventa=round((self.txtGanancia.decimal()+suminvertido)/sumacciones, 2)
                     self.cmd.setEnabled(True)
                 else:
-                    self.puntoventa=0
+                    self.puntoventa=Decimal(0)
                     self.cmd.setEnabled(False)
 
         self.tab.setTabText(1, self.tr("Selling point: {0}".format(self.inversion.product.currency.string(self.puntoventa))) )
         self.tab.setTabText(0, self.tr("Current state: {0}".format(self.inversion.product.currency.string(self.inversion.product.result.basic.last.quote))) )
-        (sumacciones, suminvertido, sumpendiente)=load_table(self.tableSP, Quote(self.mem).init__create(self.inversion.product, self.mem.localzone.now(), self.puntoventa))                    
+        (sumacciones, suminvertido, sumpendiente)=self.operinversiones.myqtablewidget_homogeneus(self.tableSP, True, Quote(self.mem).init__create(self.inversion.product, self.mem.localzone.now(), self.puntoventa)) 
         
         if self.chkPonderanAll.checkState()==Qt.Checked:
             self.cmd.setText(self.tr("Set selling price to all investments  of {0} to gain {1}").format(self.inversion.product.currency.string(self.puntoventa), self.inversion.product.currency.string(sumpendiente)))
