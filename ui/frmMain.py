@@ -298,6 +298,7 @@ class frmMain(QMainWindow, Ui_frmMain):
         self.w.hide()
         
         source=frmAccess(self.mem,  self)
+        source.showLanguage(False)
         source.setLabel(self.tr("Please login to the source xulpymoney database"))
         source.txtPort.setText(self.mem.settings.value("frmMain/syncproducts_port", "5432"))
         source.txtServer.setText(self.mem.settings.value("frmMain/syncproducts_server", "127.0.0.1"))

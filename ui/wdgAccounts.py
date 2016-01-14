@@ -9,7 +9,7 @@ class wdgAccounts(QWidget, Ui_wdgAccounts):
         QWidget.__init__(self, parent)
         self.setupUi(self)
         self.mem=mem
-        self.tblAccounts.settings(self.mem)
+        self.tblAccounts.settings(self.mem, "wdgAccounts")
         self.accounts=self.mem.data.accounts_active
         self.selAccount=None
         self.child=None#Used to access childs in automate unittests

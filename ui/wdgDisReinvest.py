@@ -25,6 +25,10 @@ class wdgDisReinvest(QWidget, Ui_wdgDisReinvest):
         
         self.tblGainsAfter.settings(self.mem, "wdgDisReinvest")
         self.tblGainsBefore.settings(self.mem, "wdgDisReinvest")
+        self.tblInvestmentsActualDespues.settings(self.mem, "wdgDisReinvest")
+        self.tblInvestmentsActualAntes.settings(self.mem, "wdgDisReinvest")
+        self.tblInvestmentsHistoricas.settings(self.mem, "wdgDisReinvest")
+        self.tblOperaciones.settings(self.mem, "wdgDisReinvest")
         
         self.inversion.op_actual.myqtablewidget_homogeneus(self.tblInvestmentsActualAntes)
         self.on_radRe_clicked()
