@@ -25,8 +25,8 @@ class wdgInvestmentsOperations(QWidget, Ui_wdgInvestmentsOperations):
         self.setCurrent=SetInvestmentOperationsCurrent(self.mem)
         self.selOperation=None#For table
         self.selCurrentOperation=None#For tblCurrent
-        self.table.settings(self.mem)
-        self.tblCurrent.settings(self.mem)
+        self.table.settings(self.mem,  "wdgInvestmentsOperations")
+        self.tblCurrent.settings(self.mem, "wdgInvestmentsOperations")
         self.tab.setCurrentIndex(0)
         self.load()
         self.load_current()

@@ -45,7 +45,7 @@ class wdgIndexRange(QWidget, Ui_wdgIndexRange):
         self.mem.data.load_inactives()
         
         self.benchmark=self.mem.data.benchmark
-        self.table.settings(self.mem)
+        self.table.settings(self.mem, "wdgIndexRange")
                 
         self.spin.setValue(float(self.mem.settingsdb.value("wdgIndexRange/spin", "2")))
         self.txtInvertir.setText(Decimal(self.mem.settingsdb.value("wdgIndexRange/invertir", "10000")))

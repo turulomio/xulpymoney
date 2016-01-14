@@ -15,7 +15,7 @@ class wdgLastCurrent(QWidget, Ui_wdgLastCurrent):
         self.setupUi(self)
         self.mem=mem
         self.selInvestment=None
-        self.tblInvestments.settings(self.mem)
+        self.tblInvestments.settings(self.mem, "wdgLastCurrent")
         self.spin.setValue(int(self.mem.settingsdb.value("wdgLastCurrent/spin", "-25")))
         self.on_actionSortTPCLast_triggered()
         

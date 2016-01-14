@@ -697,7 +697,6 @@ class SetProducts(SetCommons):
         tachado.setStrikeOut(True)        #Fuente tachada
         transfer=QIcon(":/xulpymoney/transfer.png")
         table.setColumnCount(8)
-        table.settings(   self.mem)    
         table.setHorizontalHeaderItem(0, QTableWidgetItem(QApplication.translate("Core","Id")))
         table.setHorizontalHeaderItem(1, QTableWidgetItem(QApplication.translate("Core","Product")))
         table.setHorizontalHeaderItem(2, QTableWidgetItem(QApplication.translate("Core","ISIN")))
@@ -773,7 +772,6 @@ class SetSimulations(SetCommons):
         table.setHorizontalHeaderItem(2, QTableWidgetItem(QApplication.translate("Core", "Database" )))
         table.setHorizontalHeaderItem(3, QTableWidgetItem(QApplication.translate("Core", "Starting" )))
         table.setHorizontalHeaderItem(4, QTableWidgetItem(QApplication.translate("Core", "Ending" )))
-        table.settings(   self.mem)        
         table.clearContents()
         table.setRowCount(self.length())
         for i, a in enumerate(self.arr):
@@ -1020,7 +1018,6 @@ class SetAccountOperations:
             
     def myqtablewidget_lastmonthbalance(self, table,    account, lastmonthbalance):
         table.clearContents()
-        table.settings(   self.mem)   
         table.setRowCount(self.length()+1)        
         table.setItem(0, 1, QTableWidgetItem(QApplication.translate("Core", "Starting month balance")))
         table.setItem(0, 3, account.currency.qtablewidgetitem(lastmonthbalance))
@@ -1089,8 +1086,7 @@ class SetDividends:
         table.setHorizontalHeaderItem(diff+4, QTableWidgetItem(QApplication.translate("Core", "Comission" )))
         table.setHorizontalHeaderItem(diff+5, QTableWidgetItem(QApplication.translate("Core", "Net" )))
         table.setHorizontalHeaderItem(diff+6, QTableWidgetItem(QApplication.translate("Core", "DPS" )))
-        #DATA
-        table.settings(   self.mem,  parentname)        
+        #DATA  
         table.clearContents()
 
 
@@ -1167,8 +1163,7 @@ class SetEstimationsDPS:
         
     def myqtablewidget(self, table):
         """settings, must be thrown before, not in each reload"""
-        self.sort()
-        table.settings(   self.mem)        
+        self.sort()  
         table.clearContents()
         table.setRowCount(len(self.arr))
         for i, e in enumerate(self.arr):
@@ -1222,8 +1217,7 @@ class SetEstimationsEPS:
         self.arr=sorted(self.arr, key=lambda c: c.year,  reverse=False)         
         
     def myqtablewidget(self, table):
-        self.sort()
-        table.settings(   self.mem)        
+        self.sort()     
         table.clearContents()
         table.setRowCount(len(self.arr))
         for i, e in enumerate(self.arr):
@@ -1470,8 +1464,7 @@ class SetInvestmentOperations(SetIO):
         tabla.setHorizontalHeaderItem(diff+6, QTableWidgetItem(QApplication.translate("Core", "Taxes" )))
         tabla.setHorizontalHeaderItem(diff+7, QTableWidgetItem(QApplication.translate("Core", "Total" )))
         #DATA 
-        tabla.clearContents()
-        tabla.settings(   self.mem)       
+        tabla.clearContents()  
         tabla.setRowCount(len(self.arr))
         for rownumber, a in enumerate(self.arr):
             tabla.setItem(rownumber, 0, qdatetime(a.datetime, a.inversion.product.stockexchange.zone))
@@ -1601,7 +1594,6 @@ class SetInvestmentOperationsCurrent(SetIO):
         tabla.setHorizontalHeaderItem(diff+8, QTableWidgetItem(QApplication.translate("Core", "% Total" )))
         tabla.setHorizontalHeaderItem(diff+9, QTableWidgetItem(QApplication.translate("Core", "Benchmark" )))
         #DATA
-        tabla.settings(   self.mem)
         if self.length()==0:
             tabla.setRowCount(0)
             return
@@ -1678,7 +1670,6 @@ class SetInvestmentOperationsCurrent(SetIO):
         tabla.setHorizontalHeaderItem(diff+8, QTableWidgetItem(QApplication.translate("Core", "% Total" )))
         tabla.setHorizontalHeaderItem(diff+9, QTableWidgetItem(QApplication.translate("Core", "Benchmark" )))
         #DATA
-        tabla.settings(self.mem)
         if self.length()==0:
             tabla.setRowCount(0)
             return
@@ -1898,9 +1889,7 @@ class SetInvestmentOperationsHistorical(SetIO):
         tabla.setHorizontalHeaderItem(10, QTableWidgetItem(QApplication.translate("Core", "Net selling operations" )))
         tabla.setHorizontalHeaderItem(11, QTableWidgetItem(QApplication.translate("Core", "% Net APR" )))
         tabla.setHorizontalHeaderItem(12, QTableWidgetItem(QApplication.translate("Core", "% Net Total" )))
-        #DATA
-        tabla.settings(self.mem,  parentname)
-        
+        #DATA       
         
         (sumbruto, sumneto)=(0, 0);
         sumsaldosinicio=0;
@@ -3654,8 +3643,7 @@ class SetCreditCardOperations:
         tabla.setHorizontalHeaderItem(3, QTableWidgetItem(QApplication.translate("Core","Balance" )))
         tabla.setHorizontalHeaderItem(4, QTableWidgetItem(QApplication.translate("Core","Comment" )))
         ##DATA 
-        tabla.clearContents()
-        tabla.settings(   self.mem)       
+        tabla.clearContents()   
         tabla.setRowCount(self.length())
         balance=Decimal(0)
         self.sort()
@@ -4096,8 +4084,7 @@ class SetDPS:
         table.setColumnCount(2)
         table.setHorizontalHeaderItem(0, QTableWidgetItem(QApplication.translate("Core", "Date" )))
         table.setHorizontalHeaderItem(1, QTableWidgetItem(QApplication.translate("Core", "Gross" )))
-        self.sort()
-        table.settings(   self.mem)        
+        self.sort()   
         table.clearContents()
         table.setRowCount(len(self.arr))
         for i, e in enumerate(self.arr):
@@ -4543,8 +4530,7 @@ class SetQuotes:
         tabla.setHorizontalHeaderItem(0, QTableWidgetItem(QApplication.translate("Core","Date and time" )))
         tabla.setHorizontalHeaderItem(1, QTableWidgetItem(QApplication.translate("Core","Product" )))
         tabla.setHorizontalHeaderItem(2, QTableWidgetItem(QApplication.translate("Core","Price" )))        
-        tabla.clearContents()
-        tabla.settings(   self.mem)       
+        tabla.clearContents() 
         tabla.setRowCount(len(self.arr))
         for rownumber, a in enumerate(self.arr):
             tabla.setItem(rownumber, 0, qdatetime(a.datetime, self.mem.localzone))

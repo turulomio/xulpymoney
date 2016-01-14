@@ -16,8 +16,8 @@ class wdgConcepts(QWidget, Ui_wdgConcepts):
         self.incomes=self.mem.conceptos.clone_x_tipooperacion(2)
         self.incomeslist=None
 
-        self.tblExpenses.settings(self.mem)
-        self.tblIncomes.settings(self.mem)
+        self.tblExpenses.settings(self.mem, "wdgConcepts")
+        self.tblIncomes.settings(self.mem, "wdgConcepts")
         
         anoinicio=Assets(self.mem).first_datetime_with_user_data().year       
         self.wdgYM.initiate(anoinicio,  datetime.date.today().year, datetime.date.today().year, datetime.date.today().month)

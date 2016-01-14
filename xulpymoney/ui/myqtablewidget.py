@@ -29,6 +29,7 @@ class myQTableWidget(QTableWidget):
             self.resizeRowsToContents()
         if self._save_settings==True:
             self.mem.settings.setValue("{}/{}_horizontalheader_state".format(self.parentname, self.objectName()), self.horizontalHeader().saveState() )
+            print("Saved {}/{}_horizontalheader_state".format(self.parentname, self.objectName()))
         
     def settings(self, mem, parentname=None):
         """Sometimes parentname is not wdg or frm  Widget (may be a groupbox), so I must define it manually"""    

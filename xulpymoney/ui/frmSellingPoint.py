@@ -35,8 +35,8 @@ class frmSellingPoint(QDialog, Ui_frmSellingPoint):
             self.chkGainsTime.setEnabled(False)
 
 
-        self.table.settings(self.mem)
-        self.tableSP.settings(self.mem)
+        self.table.settings(self.mem, "frmSellingPoint")
+        self.tableSP.settings(self.mem, "frmSellingPoint")
         self.__calcular()
         
     def __calcular(self):    

@@ -14,7 +14,7 @@ class wdgConceptsHistorical(QWidget, Ui_wdgConceptsHistorical):
         self.month=None#Used to show popup with month or year report if is 0->Year, else->Month
         self.year=None
         self.firstyear=None
-        self.table.settings(self.mem)
+        self.table.settings(self.mem, "wdgConceptsHistorical")
         self.reload()
 
     def reload(self):

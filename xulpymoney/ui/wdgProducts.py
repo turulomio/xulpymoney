@@ -14,7 +14,7 @@ class wdgProducts(QWidget, Ui_wdgProducts):
         self.mem=mem
         self.products=SetProducts(self.mem)
         self.products.selected=[]#Can be selected several products
-        self.tblInvestments.settings(self.mem)    
+        self.tblInvestments.settings(self.mem, "wdgProducts")
         self.mem.stockexchanges.qcombobox(self.cmbStockExchange)
         self.showingfavorites=False#Switch to know if widget is showing favorites            
 

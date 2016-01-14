@@ -16,7 +16,7 @@ class wdgInvestments(QWidget, Ui_wdgInvestments):
         self.selInvestment=None##Apunta a un objeto inversión
         self.loadedinactive=False
 
-        self.tblInvestments.settings(self.mem)
+        self.tblInvestments.settings(self.mem, "wdgInvestments")
         self.on_chkInactivas_stateChanged(self.chkInactivas.checkState())#Carga la tabla
     
     def tblInvestments_reload(self):

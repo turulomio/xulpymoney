@@ -29,6 +29,12 @@ class frmAccess(QDialog, Ui_frmAccess):
     def setLabel(self, text):
         self.lbl.setText(text)
         
+    def showLanguage(self, boolean):
+        if boolean==False:
+            self.cmbLanguages.hide()
+            self.lblLanguage.hide()
+        
+        
     def config_load(self):
         self.txtDB.setText(self.mem.settings.value("frmAccess/db", "xulpymoney" ))
         self.txtPort.setText(self.mem.settings.value("frmAccess/port", "5432"))
