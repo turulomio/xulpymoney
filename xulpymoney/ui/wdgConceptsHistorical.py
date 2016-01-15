@@ -35,7 +35,7 @@ class wdgConceptsHistorical(QWidget, Ui_wdgConceptsHistorical):
         if cur.rowcount!=0:
             arr=cur.fetchall()            
         cur.close()
-        
+        self.table.applySettings()
         #Coloca filas y años
         self.firstyear=int(arr[0][0])
         rows=int(datetime.date.today().year-self.firstyear+1)
@@ -62,6 +62,7 @@ class wdgConceptsHistorical(QWidget, Ui_wdgConceptsHistorical):
         newtab = QWidget()
         horizontalLayout = QHBoxLayout(newtab)
         table = myQTableWidget(newtab)
+        table.settings(self.mem, "wdgConceptsHistorical",  "tblShowMonth")
         set=SetAccountOperations(self.mem)
         set.load_from_db_with_creditcard("select datetime, id_conceptos, id_tiposoperaciones, importe, comentario, id_cuentas , -1 as id_tarjetas from opercuentas where id_conceptos={0} and date_part('year',datetime)={1} and date_part('month',datetime)={2} union all select datetime, id_conceptos, id_tiposoperaciones, importe, comentario, id_cuentas ,tarjetas.id_tarjetas as id_tarjetas from opertarjetas,tarjetas where opertarjetas.id_tarjetas=tarjetas.id_tarjetas and id_conceptos={0} and date_part('year',datetime)={1} and date_part('month',datetime)={2}".format (self.concepto.id, self.year, self.month))
         set.sort()
@@ -76,6 +77,7 @@ class wdgConceptsHistorical(QWidget, Ui_wdgConceptsHistorical):
         newtab = QWidget()
         horizontalLayout = QHBoxLayout(newtab)
         table = myQTableWidget(newtab)
+        table.settings(self.mem, "wdgConceptsHistorical",  "tblShowYear")
         set=SetAccountOperations(self.mem)
         set.load_from_db_with_creditcard("select datetime, id_conceptos, id_tiposoperaciones, importe, comentario, id_cuentas , -1 as id_tarjetas from opercuentas where id_conceptos={0} and date_part('year',datetime)={1} union all select datetime, id_conceptos, id_tiposoperaciones, importe, comentario, id_cuentas ,tarjetas.id_tarjetas as id_tarjetas from opertarjetas,tarjetas where opertarjetas.id_tarjetas=tarjetas.id_tarjetas and id_conceptos={0} and date_part('year',datetime)={1}".format (self.concepto.id, self.year))
         set.sort()

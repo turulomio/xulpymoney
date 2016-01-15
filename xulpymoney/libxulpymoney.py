@@ -321,6 +321,7 @@ class SetInvestments(SetCommons):
             
     def myqtablewidget(self, table):
         table.setRowCount(len(self.arr))
+        table.applySettings()
         table.clearContents()
         d={"sumpendiente":Decimal(0), "sumdiario":Decimal(0), "suminvertido":Decimal(0), "sumpositivos":Decimal(0), "sumnegativos":Decimal(0)} 
         for i, inv in enumerate(self.arr):
@@ -364,6 +365,7 @@ class SetInvestments(SetCommons):
             Percentage is the colored percentage to show
         """
         table.setRowCount(len(self.arr))
+        table.applySettings()
         table.clearContents()
         for i, inv in enumerate(self.arr):
             table.setItem(i, 0, QTableWidgetItem("{0} ({1})".format(inv.name, inv.account.name)))
@@ -706,6 +708,7 @@ class SetProducts(SetCommons):
         table.setHorizontalHeaderItem(6, QTableWidgetItem(QApplication.translate("Core","% Year to date")))
         table.setHorizontalHeaderItem(7, QTableWidgetItem(QApplication.translate("Core","% Dividend")))
    
+        table.applySettings()
         table.clearSelection()    
         table.setFocus()
         table.horizontalHeader().setStretchLastSection(False)   
@@ -773,6 +776,7 @@ class SetSimulations(SetCommons):
         table.setHorizontalHeaderItem(3, QTableWidgetItem(QApplication.translate("Core", "Starting" )))
         table.setHorizontalHeaderItem(4, QTableWidgetItem(QApplication.translate("Core", "Ending" )))
         table.clearContents()
+        table.applySettings()
         table.setRowCount(self.length())
         for i, a in enumerate(self.arr):
             table.setItem(i, 0, qdatetime(a.creation, self.mem.localzone))
@@ -1003,7 +1007,7 @@ class SetAccountOperations:
         tabla.setHorizontalHeaderItem(4+diff, QTableWidgetItem(QApplication.translate("Core","Comment" )))
         ##DATA 
         tabla.clearContents()
-        tabla.settings(   self.mem, parentname)       
+        tabla.applySettings()  
         tabla.setRowCount(len(self.arr))
         balance=0
         for rownumber, a in enumerate(self.arr):
@@ -1017,6 +1021,7 @@ class SetAccountOperations:
             tabla.setItem(rownumber, 4+diff, qleft(a.comentario))
             
     def myqtablewidget_lastmonthbalance(self, table,    account, lastmonthbalance):
+        table.applySettings()
         table.clearContents()
         table.setRowCount(self.length()+1)        
         table.setItem(0, 1, QTableWidgetItem(QApplication.translate("Core", "Starting month balance")))
@@ -1087,6 +1092,7 @@ class SetDividends:
         table.setHorizontalHeaderItem(diff+5, QTableWidgetItem(QApplication.translate("Core", "Net" )))
         table.setHorizontalHeaderItem(diff+6, QTableWidgetItem(QApplication.translate("Core", "DPS" )))
         #DATA  
+        table.applySettings()
         table.clearContents()
 
 
@@ -1164,6 +1170,7 @@ class SetEstimationsDPS:
     def myqtablewidget(self, table):
         """settings, must be thrown before, not in each reload"""
         self.sort()  
+        table.applySettings()
         table.clearContents()
         table.setRowCount(len(self.arr))
         for i, e in enumerate(self.arr):
@@ -1218,6 +1225,7 @@ class SetEstimationsEPS:
         
     def myqtablewidget(self, table):
         self.sort()     
+        table.applySettings()
         table.clearContents()
         table.setRowCount(len(self.arr))
         for i, e in enumerate(self.arr):
@@ -1464,6 +1472,7 @@ class SetInvestmentOperations(SetIO):
         tabla.setHorizontalHeaderItem(diff+6, QTableWidgetItem(QApplication.translate("Core", "Taxes" )))
         tabla.setHorizontalHeaderItem(diff+7, QTableWidgetItem(QApplication.translate("Core", "Total" )))
         #DATA 
+        tabla.applySettings()
         tabla.clearContents()  
         tabla.setRowCount(len(self.arr))
         for rownumber, a in enumerate(self.arr):
@@ -1601,6 +1610,7 @@ class SetInvestmentOperationsCurrent(SetIO):
         sumsaldo=Decimal('0')
         sumpendiente=Decimal('0')
         suminvertido=Decimal('0')
+        tabla.applySettings()
         tabla.clearContents()
         tabla.setRowCount(len(self.arr)+1)
         rownumber=0
@@ -1683,6 +1693,7 @@ class SetInvestmentOperationsCurrent(SetIO):
         sumsaldo=Decimal('0')
         sumpendiente=Decimal('0')
         suminvertido=Decimal('0')
+        tabla.applySettings()
         tabla.clearContents()
         tabla.setRowCount(self.length()+1)
         for rownumber, a in enumerate(self.arr):
@@ -1904,6 +1915,7 @@ class SetInvestmentOperationsHistorical(SetIO):
         sumoperacionesnegativas=0;
         sumimpuestos=0;
         sumcomision=0;        
+        tabla.applySettings()
         tabla.clearContents()
         tabla.setRowCount(self.length()+1)
         for rownumber, a in enumerate(self.arr):
@@ -3598,6 +3610,7 @@ class SetCreditCards(SetCommons):
         cur.close()
         
     def myqtablewidget(self, table):
+        table.applySettings()
         table.setRowCount(self.length())        
         for i, t in enumerate(self.arr):
             table.setItem(i, 0, QTableWidgetItem(t.name))
@@ -3662,6 +3675,7 @@ class SetCreditCardOperations:
         tabla.setHorizontalHeaderItem(3, QTableWidgetItem(QApplication.translate("Core","Balance" )))
         tabla.setHorizontalHeaderItem(4, QTableWidgetItem(QApplication.translate("Core","Comment" )))
         ##DATA 
+        tabla.applySettings()
         tabla.clearContents()   
         tabla.setRowCount(self.length())
         balance=Decimal(0)
@@ -4104,6 +4118,7 @@ class SetDPS:
         table.setHorizontalHeaderItem(0, QTableWidgetItem(QApplication.translate("Core", "Date" )))
         table.setHorizontalHeaderItem(1, QTableWidgetItem(QApplication.translate("Core", "Gross" )))
         self.sort()   
+        table.applySettings()
         table.clearContents()
         table.setRowCount(len(self.arr))
         for i, e in enumerate(self.arr):
@@ -4549,6 +4564,7 @@ class SetQuotes:
         tabla.setHorizontalHeaderItem(0, QTableWidgetItem(QApplication.translate("Core","Date and time" )))
         tabla.setHorizontalHeaderItem(1, QTableWidgetItem(QApplication.translate("Core","Product" )))
         tabla.setHorizontalHeaderItem(2, QTableWidgetItem(QApplication.translate("Core","Price" )))        
+        tabla.applySettings()
         tabla.clearContents() 
         tabla.setRowCount(len(self.arr))
         for rownumber, a in enumerate(self.arr):

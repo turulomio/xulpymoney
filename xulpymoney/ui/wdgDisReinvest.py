@@ -119,6 +119,7 @@ class wdgDisReinvest(QWidget, Ui_wdgDisReinvest):
         
     def gains(self, table,  shares,  averageprice):
         porcentages=[2.5, 5, 7.5, 10, 15, 30]
+        table.applySettings()
         table.clearContents()
         table.setRowCount(len(porcentages))
         for i, tpc in enumerate(porcentages):        

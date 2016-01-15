@@ -127,6 +127,7 @@ class wdgAPR(QWidget, Ui_wdgAPR):
         anoinicio=self.wdgYear.year
         anofinal=datetime.date.today().year
         
+        self.table.applySettings()
         self.table.setRowCount(anofinal-anoinicio+1+1)
         lastsaldo=0
         sumdividends=0
@@ -188,6 +189,7 @@ class wdgAPR(QWidget, Ui_wdgAPR):
         anoinicio=self.wdgYear.year
         anofinal=datetime.date.today().year
         (sumgd, )=(0, )
+        self.tblReport.applySettings()
         self.tblReport.setRowCount(anofinal-anoinicio+1+1)
         for i in range(anoinicio, anofinal+1):
             if self.progress.wasCanceled():

@@ -134,7 +134,8 @@ class frmProductReport(QDialog, Ui_frmProductReport):
             docemeses=Quote(self.mem).init__from_query(self.product, day_end(now-datetime.timedelta(days=365), self.product.stockexchange.zone))          
             unmes=Quote(self.mem).init__from_query(self.product, day_end(now-datetime.timedelta(days=30), self.product.stockexchange.zone))          
             unasemana=Quote(self.mem).init__from_query(self.product, day_end(now-datetime.timedelta(days=7), self.product.stockexchange.zone))             
-                
+            
+            self.tblTPC.applySettings()
             self.tblTPC.setItem(0, 0, qdatetime(self.product.result.basic.last.datetime, self.product.stockexchange.zone))   
             self.tblTPC.setItem(0, 1, self.product.currency.qtablewidgetitem(self.product.result.basic.last.quote,  6))
             
@@ -174,6 +175,7 @@ class frmProductReport(QDialog, Ui_frmProductReport):
     def load_historicas(self): 
         def setTable(table, data):
             table.setRowCount(len(data.arr))
+            table.applySettings()
             table.clearContents()
             if len(data.arr)==0:
                 return
@@ -219,6 +221,7 @@ class frmProductReport(QDialog, Ui_frmProductReport):
         if len(self.product.result.intradia.arr)==0:
             self.tblIntradia.clear()
         else:
+            self.tblIntradia.applySettings()
             self.tblIntradia.setRowCount(len(self.product.result.intradia.arr))
             QuoteDayBefore=self.product.result.ohclDaily.find(self.calendar.selectedDate().toPyDate()-datetime.timedelta(days=1))#day before as selected
     
@@ -255,6 +258,7 @@ class frmProductReport(QDialog, Ui_frmProductReport):
         
         minyear=self.product.result.ohclMonthly.arr[0].year
         rowcount=int(datetime.date.today().year-minyear+1)
+        self.tblMensuales.applySettings()
         self.tblMensuales.setRowCount(rowcount)    
         
         #Rellena titulos
