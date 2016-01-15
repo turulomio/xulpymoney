@@ -102,6 +102,7 @@ class frmProductSelector(QDialog):
         self.tblInvestments.setEditTriggers(QAbstractItemView.NoEditTriggers)
         self.tblInvestments.setSelectionBehavior(QAbstractItemView.SelectRows)
         self.tblInvestments.setSelectionMode(QAbstractItemView.SingleSelection)
+        self.tblInvestments.settings(self.mem, "frmProductReport")
 
         self.tblInvestments.verticalHeader().setVisible(False)
         self.verticalLayout.addWidget(self.tblInvestments)
