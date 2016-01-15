@@ -2498,6 +2498,55 @@ class DBData:
     def __init__(self, mem):
         self.mem=mem
         self.loaded_inactive=False
+        
+        
+    def load_all(self):
+        """
+            This method will subsitute load_actives and load_inactives
+        """
+        inicio=datetime.datetime.now()
+        self.benchmark=Product(self.mem).init__db(self.mem.settingsdb.value("mem/benchmark", "79329" ))
+        self.benchmark.result.basic.load_from_db()
+        
+        banks=SetBanks(self.mem)
+        self.banks_active=SetBanks(self.mem)
+        self.banks_inactive=SetBanks(self.mem)
+        banks.load_from_db("select * from entidadesbancarias")
+        for b in banks.arr:
+            if b.active==True:
+                self.banks_active.append(b)
+            else:
+                self.banks_inactive.append(b)
+
+        accounts=SetAccounts(self.mem, self.banks_all())
+        accounts.load_from_db("select * from cuentas where active=true")
+        self.accounts_active=SetAccounts(self.mem, self.banks_active)
+        self.accounts_inactive=SetAccounts(self.mem, self.banks_inactive)
+        for a in accounts.arr:
+            if a.active==True:
+                self.accounts_active.append(a)
+            else:
+                self.accounts_inactive.append(a)
+
+        creditcards=SetCreditCards(self.mem, self.accounts_all())
+        creditcards.load_from_db("select * from tarjetas where active=true")
+        self.creditcards_active=SetCreditCards(self.mem, self.accounts_active)
+        self.creditcards_inactive=SetCreditCards(self.mem, self.accounts_inactive)
+        for a in creditcards.arr:
+            if a.active==True:
+                self.creditcards_active.append(a)
+            else:
+                self.creditcards_inactive.append(a)
+                
+        
+        products=SetProducts(self.mem)
+        products.load_from_inversiones_query("select distinct(products_id) from inversiones")
+        #ME QUEDE AQUI
+        self.products_active=SetProducts(self.mem)
+        self.products_inactive=SetProducts(self.mem)
+        self.investments_active=SetInvestments(self.mem, self.accounts_active, self.products_active, self.benchmark)
+        self.investments_active.load_from_db("select * from inversiones where active=true", True)
+        print("Cargando actives",  datetime.datetime.now()-inicio)
 
 
     def load_actives(self):
