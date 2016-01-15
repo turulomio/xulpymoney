@@ -13,7 +13,7 @@ class myQTableWidget(QTableWidget):
         self.verticalHeader().sectionResizeMode(QHeaderView.Fixed)
         self.verticalHeader().setDefaultSectionSize(24)
         self.setAlternatingRowColors(True)
-
+        self.saved_printed=False#To avoid printing a lot of times
 
     def setSaveSettings(self, state):
         """Used when i don't want my columns with being saved"""
@@ -29,17 +29,13 @@ class myQTableWidget(QTableWidget):
             self.resizeRowsToContents()
         if self._save_settings==True:
             self.mem.settings.setValue("{}/{}_horizontalheader_state".format(self.parentname, self.objectName()), self.horizontalHeader().saveState() )
-#            print("Saved {}/{}_horizontalheader_state".format(self.parentname, self.objectName()))
+            if self.saved_printed==False: 
+                state=self.mem.settings.value("{}/{}_horizontalheader_state".format(self.parentname, self.objectName()))##Only to print
+                print("Saved {}/{}_horizontalheader_state:  {}".format(self.parentname, self.objectName(), state))
+                self.saved_printed=True
         
-    def settings(self, mem, parentname=None):
-        """Sometimes parentname is not wdg or frm  Widget (may be a groupbox), so I must define it manually"""    
-        if parentname==None:
-            if self.parent.objectName()!=None:
-                self.parentname=self.parent.objectName()
-            else:
-                self.parentname="NoParentName"
-        else:
-            self.parentname=parentname
+    def settings(self, mem, parentname):
+        self.parentname=parentname
         self.mem=mem
 
         self.verticalHeader().setSectionResizeMode(QHeaderView.ResizeToContents)
@@ -47,6 +43,7 @@ class myQTableWidget(QTableWidget):
         self.horizontalHeader().sectionResized.connect(self.sectionResized)
         state=self.mem.settings.value("{}/{}_horizontalheader_state".format(self.parentname, self.objectName()))
         if state:
+            print("Loaded {}/{}_horizontalheader_state: {}".format(self.parentname, self.objectName(), state))
             self.horizontalHeader().restoreState(state)
         
 
