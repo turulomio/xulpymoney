@@ -5104,10 +5104,10 @@ class SetOHCLDaily(SetOHCL):
             return SetQuotesBasic(self.mem, self.product).init__create(None, None,  None)
         ohcl=self.arr[len(self.arr)-1]#last
         last=Quote(self.mem).init__create(self.product, dt(ohcl.date, self.product.stockexchange.closes,  self.product.stockexchange.zone), ohcl.close)
-        ohcl=self.find_by_id(ohcl.date-datetime.timedelta(days=1))#penultimate
+        ohcl=self.find(ohcl.date-datetime.timedelta(days=1))#penultimate
         if ohcl!=None:
             penultimate=Quote(self.mem).init__create(self.product, dt(ohcl.date, self.product.stockexchange.closes,  self.product.stockexchange.zone), ohcl.close)
-        ohcl=self.find_by_id(datetime.date(datetime.date.today().year-1, 12, 31))#endlastyear
+        ohcl=self.find(datetime.date(datetime.date.today().year-1, 12, 31))#endlastyear
         if ohcl!=None:
             endlastyear=Quote(self.mem).init__create(self.product, dt(ohcl.date, self.product.stockexchange.closes,  self.product.stockexchange.zone), ohcl.close)        
         return SetQuotesBasic(self.mem, self.product).init__create(last, penultimate, endlastyear)

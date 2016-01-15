@@ -220,7 +220,7 @@ class frmProductReport(QDialog, Ui_frmProductReport):
             self.tblIntradia.clear()
         else:
             self.tblIntradia.setRowCount(len(self.product.result.intradia.arr))
-            QuoteDayBefore=self.product.result.ohclDaily.find_by_id(self.calendar.selectedDate().toPyDate()-datetime.timedelta(days=1))#day before as selected
+            QuoteDayBefore=self.product.result.ohclDaily.find(self.calendar.selectedDate().toPyDate()-datetime.timedelta(days=1))#day before as selected
     
             ##Construye tabla
             for i , q in enumerate(self.product.result.intradia.arr):
