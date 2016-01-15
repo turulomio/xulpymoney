@@ -125,6 +125,7 @@ class wdgIndexRange(QWidget, Ui_wdgIndexRange):
         rangescovered=int(zeroriskplusbonds/self.txtInvertir.decimal())##zero risk assests
         
         #Iterates all ranges and prints table
+        self.table.applySettings()
         self.table.clearContents()
         self.table.setRowCount(len(ranges))
         colorized=0

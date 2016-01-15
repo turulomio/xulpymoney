@@ -30,6 +30,7 @@ class wdgConcepts(QWidget, Ui_wdgConcepts):
     def load_gastos(self,  year,  month):
         
         (self.expenseslist, totalexpenses,  totalaverageexpenses)=self.expenses.percentage_monthly(year, month)
+        self.tblExpenses.applySettings()
         self.tblExpenses.clearContents()
         self.tblExpenses.setRowCount(len(self.expenseslist)+1)
         
@@ -52,6 +53,7 @@ class wdgConcepts(QWidget, Ui_wdgConcepts):
 
     def load_ingresos(self,  year,  month):
         (self.incomeslist, totalincomes,  totalaverageincomes)=self.incomes.percentage_monthly(year, month)
+        self.tblIncomes.applySettings()
         self.tblIncomes.clearContents()
         self.tblIncomes.setRowCount(len(self.incomeslist)+1)
         

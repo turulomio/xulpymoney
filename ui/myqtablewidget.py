@@ -8,7 +8,7 @@ class myQTableWidget(QTableWidget):
         QTableWidget.__init__(self, parent)
         self.parent=parent
         self.mem=None
-        self.parentname=None
+        self.sectionname=None
         self._save_settings=True
         self.verticalHeader().sectionResizeMode(QHeaderView.Fixed)
         self.verticalHeader().setDefaultSectionSize(24)
@@ -28,22 +28,26 @@ class myQTableWidget(QTableWidget):
             self.resizeColumnsToContents()
             self.resizeRowsToContents()
         if self._save_settings==True:
-            self.mem.settings.setValue("{}/{}_horizontalheader_state".format(self.parentname, self.objectName()), self.horizontalHeader().saveState() )
+            self.mem.settings.setValue("{}/{}_horizontalheader_state".format(self.sectionname, self.objectName()), self.horizontalHeader().saveState() )
             if self.saved_printed==False: 
-                state=self.mem.settings.value("{}/{}_horizontalheader_state".format(self.parentname, self.objectName()))##Only to print
-                print("Saved {}/{}_horizontalheader_state:  {}".format(self.parentname, self.objectName(), state))
+                print("Saved {}/{}_horizontalheader_state".format(self.sectionname, self.objectName()))
                 self.saved_printed=True
         
-    def settings(self, mem, parentname):
-        self.parentname=parentname
+    def settings(self, mem, sectionname,  objectname=None):
+        """objectname used for dinamic tables"""
         self.mem=mem
+        self.sectionname=sectionname
+        if objectname!=None:
+            self.setObjectName(objectname)
 
+    def applySettings(self):
+        """settings must be defined before"""
         self.verticalHeader().setSectionResizeMode(QHeaderView.ResizeToContents)
         self.horizontalHeader().setSectionResizeMode(QHeaderView.Interactive)
         self.horizontalHeader().sectionResized.connect(self.sectionResized)
-        state=self.mem.settings.value("{}/{}_horizontalheader_state".format(self.parentname, self.objectName()))
+        state=self.mem.settings.value("{}/{}_horizontalheader_state".format(self.sectionname, self.objectName()))
         if state:
-            print("Loaded {}/{}_horizontalheader_state: {}".format(self.parentname, self.objectName(), state))
+#            print("Loaded {}/{}_horizontalheader_state".format(self.sectionname, self.objectName()))
             self.horizontalHeader().restoreState(state)
         
 

@@ -38,6 +38,7 @@ class wdgDividendsReport(QWidget, Ui_wdgDividendsReport):
         if self.inversiones.order_by_dividend()==False:
             qmessagebox_error_ordering()     
         
+        self.tblInvestments.applySettings()
         self.tblInvestments.clearContents()
         self.tblInvestments.setRowCount(len(self.inversiones.arr));
         sumdiv=Decimal(0)

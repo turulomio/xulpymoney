@@ -28,6 +28,7 @@ class wdgBanks(QWidget, Ui_wdgBanks):
     def load_eb(self):
         self.banks.order_by_name()
         self.tblEB.clearContents()
+        self.tblEB.applySettings()
         self.tblEB.setRowCount(self.banks.length()+1)
         sumsaldos=Decimal(0)
         for i,  e in enumerate(self.banks.arr):
@@ -41,6 +42,7 @@ class wdgBanks(QWidget, Ui_wdgBanks):
         
     def load_cuentas(self):
         self.accounts.order_by_name()
+        self.tblAccounts.applySettings()
         self.tblAccounts.clearContents()
         self.tblAccounts.setRowCount(self.accounts.length()+1);
         sumsaldos=0
@@ -56,6 +58,7 @@ class wdgBanks(QWidget, Ui_wdgBanks):
                 
     def load_inversiones(self):
         self.investments.order_by_name()
+        self.tblInvestments.applySettings()
         self.tblInvestments.clearContents()
         self.tblInvestments.setRowCount(self.investments.length()+1);
         sumsaldos=0

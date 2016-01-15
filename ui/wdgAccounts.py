@@ -18,6 +18,7 @@ class wdgAccounts(QWidget, Ui_wdgAccounts):
     def load_table(self):
         """Función que carga la tabla de cuentas"""
         self.accounts.order_by_name()
+        self.tblAccounts.applySettings()
         self.tblAccounts.setRowCount(self.accounts.length());
         sumsaldos=0
         for i, c in enumerate(self.accounts.arr):
