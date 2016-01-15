@@ -1872,25 +1872,30 @@ class SetInvestmentOperationsHistorical(SetIO):
                     if o.fecha_venta.year==year and o.fecha_venta.month==month:
                         resultado=resultado+o.consolidado_neto_antes_impuestos()
         return resultado
-    def myqtablewidget(self, tabla, parentname=None):
+    def myqtablewidget(self, tabla, show_accounts=False):
         """Rellena datos de un array de objetos de InvestmentOperationHistorical, devuelve totales ver código"""
-        self.order_by_fechaventa()
-        tabla.setColumnCount(13)
+        diff=0
+        if show_accounts==True:
+            diff=1
+        
+        
+        tabla.setColumnCount(13+diff)
         tabla.setHorizontalHeaderItem(0, QTableWidgetItem(QApplication.translate("Core", "Date" )))
         tabla.setHorizontalHeaderItem(1, QTableWidgetItem(QApplication.translate("Core", "Years" )))
         tabla.setHorizontalHeaderItem(2, QTableWidgetItem(QApplication.translate("Core", "Product" )))
-        tabla.setHorizontalHeaderItem(3, QTableWidgetItem(QApplication.translate("Core", "Operation type" )))
-        tabla.setHorizontalHeaderItem(4, QTableWidgetItem(QApplication.translate("Core", "Shares" )))
-        tabla.setHorizontalHeaderItem(5, QTableWidgetItem(QApplication.translate("Core", "Initial balance" )))
-        tabla.setHorizontalHeaderItem(6, QTableWidgetItem(QApplication.translate("Core", "Final balance" )))
-        tabla.setHorizontalHeaderItem(7, QTableWidgetItem(QApplication.translate("Core", "Gross selling operations" )))
-        tabla.setHorizontalHeaderItem(8, QTableWidgetItem(QApplication.translate("Core", "Comissions" )))
-        tabla.setHorizontalHeaderItem(9, QTableWidgetItem(QApplication.translate("Core", "Taxes" )))
-        tabla.setHorizontalHeaderItem(10, QTableWidgetItem(QApplication.translate("Core", "Net selling operations" )))
-        tabla.setHorizontalHeaderItem(11, QTableWidgetItem(QApplication.translate("Core", "% Net APR" )))
-        tabla.setHorizontalHeaderItem(12, QTableWidgetItem(QApplication.translate("Core", "% Net Total" )))
+        if show_accounts==True:
+            tabla.setHorizontalHeaderItem(3, QTableWidgetItem(QApplication.translate("Core", "Account" )))
+        tabla.setHorizontalHeaderItem(3+diff, QTableWidgetItem(QApplication.translate("Core", "Operation type" )))
+        tabla.setHorizontalHeaderItem(4+diff, QTableWidgetItem(QApplication.translate("Core", "Shares" )))
+        tabla.setHorizontalHeaderItem(5+diff, QTableWidgetItem(QApplication.translate("Core", "Initial balance" )))
+        tabla.setHorizontalHeaderItem(6+diff, QTableWidgetItem(QApplication.translate("Core", "Final balance" )))
+        tabla.setHorizontalHeaderItem(7+diff, QTableWidgetItem(QApplication.translate("Core", "Gross selling operations" )))
+        tabla.setHorizontalHeaderItem(8+diff, QTableWidgetItem(QApplication.translate("Core", "Comissions" )))
+        tabla.setHorizontalHeaderItem(9+diff, QTableWidgetItem(QApplication.translate("Core", "Taxes" )))
+        tabla.setHorizontalHeaderItem(10+diff, QTableWidgetItem(QApplication.translate("Core", "Net selling operations" )))
+        tabla.setHorizontalHeaderItem(11+diff, QTableWidgetItem(QApplication.translate("Core", "% Net APR" )))
+        tabla.setHorizontalHeaderItem(12+diff, QTableWidgetItem(QApplication.translate("Core", "% Net Total" )))
         #DATA       
-        
         (sumbruto, sumneto)=(0, 0);
         sumsaldosinicio=0;
         sumsaldosfinal=0;
@@ -1900,7 +1905,7 @@ class SetInvestmentOperationsHistorical(SetIO):
         sumimpuestos=0;
         sumcomision=0;        
         tabla.clearContents()
-        tabla.setRowCount(len(self.arr)+1)
+        tabla.setRowCount(self.length()+1)
         for rownumber, a in enumerate(self.arr):
             saldoinicio=a.bruto_compra()
             saldofinal=a.bruto_venta()
@@ -1909,7 +1914,6 @@ class SetInvestmentOperationsHistorical(SetIO):
             sumcomision=sumcomision+Decimal(str(a.comision))
             neto=a.consolidado_neto()
             
-    
             sumbruto=sumbruto+bruto;
             sumneto=sumneto+neto
             sumsaldosinicio=sumsaldosinicio+saldoinicio;
@@ -1924,27 +1928,30 @@ class SetInvestmentOperationsHistorical(SetIO):
             tabla.setItem(rownumber, 0,QTableWidgetItem(str(a.fecha_venta)))    
             tabla.setItem(rownumber, 1,QTableWidgetItem(str(round(a.years(), 2))))    
             tabla.setItem(rownumber, 2,QTableWidgetItem(a.inversion.name))
-            tabla.setItem(rownumber, 3,QTableWidgetItem(a.tipooperacion.name))
-            tabla.setItem(rownumber, 4,qright(a.acciones))
-            tabla.setItem(rownumber, 5,self.mem.localcurrency.qtablewidgetitem(saldoinicio))
-            tabla.setItem(rownumber, 6,self.mem.localcurrency.qtablewidgetitem(saldofinal))
-            tabla.setItem(rownumber, 7,self.mem.localcurrency.qtablewidgetitem(bruto))
-            tabla.setItem(rownumber, 8,self.mem.localcurrency.qtablewidgetitem(a.comision))
-            tabla.setItem(rownumber, 9,self.mem.localcurrency.qtablewidgetitem(a.impuestos))
-            tabla.setItem(rownumber, 10,self.mem.localcurrency.qtablewidgetitem(neto))
-            tabla.setItem(rownumber, 11,qtpc(a.tpc_tae_neto()))
-            tabla.setItem(rownumber, 12,qtpc(a.tpc_total_neto()))
-            rownumber=rownumber+1
-        if len(self.arr)>0:
-            tabla.setItem(len(self.arr), 2,QTableWidgetItem("TOTAL"))    
+            if show_accounts==True:
+                tabla.setItem(rownumber, 3,QTableWidgetItem(a.inversion.account.name))
+                
+            tabla.setItem(rownumber, 3+diff,QTableWidgetItem(a.tipooperacion.name))
+            tabla.setItem(rownumber, 4+diff,qright(a.acciones))
+            tabla.setItem(rownumber, 5+diff,self.mem.localcurrency.qtablewidgetitem(saldoinicio))
+            tabla.setItem(rownumber, 6+diff,self.mem.localcurrency.qtablewidgetitem(saldofinal))
+            tabla.setItem(rownumber, 7+diff,self.mem.localcurrency.qtablewidgetitem(bruto))
+            tabla.setItem(rownumber, 8+diff,self.mem.localcurrency.qtablewidgetitem(a.comision))
+            tabla.setItem(rownumber, 9+diff,self.mem.localcurrency.qtablewidgetitem(a.impuestos))
+            tabla.setItem(rownumber, 10+diff,self.mem.localcurrency.qtablewidgetitem(neto))
+            tabla.setItem(rownumber, 11+diff,qtpc(a.tpc_tae_neto()))
+            tabla.setItem(rownumber, 12+diff,qtpc(a.tpc_total_neto()))
+        if self.length()>0:
+            tabla.setItem(self.length(), 2,QTableWidgetItem("TOTAL"))    
             currency=self.arr[0].inversion.product.currency
-            tabla.setItem(len(self.arr), 5,currency.qtablewidgetitem(sumsaldosinicio))    
-            tabla.setItem(len(self.arr), 6,currency.qtablewidgetitem(sumsaldosfinal))    
-            tabla.setItem(len(self.arr), 7,currency.qtablewidgetitem(sumbruto))    
-            tabla.setItem(len(self.arr), 8,currency.qtablewidgetitem(sumcomision))    
-            tabla.setItem(len(self.arr), 9,currency.qtablewidgetitem(sumimpuestos))    
-            tabla.setItem(len(self.arr), 10,currency.qtablewidgetitem(sumneto))    
-            tabla.setCurrentCell(len(self.arr), 4)       
+            tabla.setItem(self.length(), 5+diff,currency.qtablewidgetitem(sumsaldosinicio))    
+            tabla.setItem(self.length(), 6+diff,currency.qtablewidgetitem(sumsaldosfinal))    
+            tabla.setItem(self.length(), 7+diff,currency.qtablewidgetitem(sumbruto))    
+            tabla.setItem(self.length(), 8+diff,currency.qtablewidgetitem(sumcomision))    
+            tabla.setItem(self.length(), 9+diff,currency.qtablewidgetitem(sumimpuestos))    
+            tabla.setItem(self.length(), 10+diff,currency.qtablewidgetitem(sumneto))    
+            tabla.setItem(self.length(), 12+diff,qtpc(self.tpc_total_neto()))    
+            tabla.setCurrentCell(self.length(), 4+diff)       
         return (sumbruto, sumcomision, sumimpuestos, sumneto)
     
 
@@ -1952,6 +1959,18 @@ class SetInvestmentOperationsHistorical(SetIO):
         """Sort by selling date"""
         self.arr=sorted(self.arr, key=lambda o: o.fecha_venta,  reverse=False)      
         
+    def bruto_compra(self):
+        resultado=Decimal(0)
+        for o in self.arr:
+            resultado=resultado+o.bruto_compra()
+        return resultado
+
+        
+    def tpc_total_neto(self):
+        bruto=self.bruto_compra()
+        if bruto!=0:
+            return 100*self.consolidado_neto()/bruto
+        return 0    
 class InvestmentOperationHistorical:
     def __init__(self, mem):
         self.mem=mem 

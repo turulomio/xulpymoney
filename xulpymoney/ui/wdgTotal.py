@@ -593,7 +593,8 @@ class wdgTotal(QWidget, Ui_wdgTotal):
                             else:
                                 negative=negative+o.consolidado_bruto()
             set.order_by_fechaventa()
-            set.myqtablewidget(table, "wdgTotal")
+            set.myqtablewidget(table, True)
+            table.settings(self.mem, "wdgTotal")
             horizontalLayout.addWidget(table)
             lbl.setText(self.tr("Positive gross selling operations: {}. Negative gross selling operations: {}.").format(self.mem.localcurrency.string(positive), self.mem.localcurrency.string(negative)))
             horizontalLayout.addWidget(lbl)

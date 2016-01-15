@@ -31,7 +31,6 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
         self.ise.setupUi(self.mem,  self.inversion)
         self.tblDividends.settings(self.mem, "frmInvestmentReport")         
         self.tblInvestmentCurrent.settings(self.mem, "frmInvestmentReport")
-        self.tblInvestmentHistorical.settings(self.mem, "frmInvestmentReport")
         self.tblOperaciones.settings(self.mem, "frmInvestmentReport")
         self.ise.cmd.released.connect(self.on_cmdISE_released)
         self.mem.data.accounts_active.qcombobox(self.cmbAccount)
