@@ -3159,7 +3159,7 @@ class Investment:
         if year==None:
             year=datetime.date.today().year
         try:
-            return self.acciones()*self.product.estimations_dps.find_by_id(year).estimation
+            return self.acciones()*self.product.estimations_dps.find(year).estimation
         except:
             return 0
         

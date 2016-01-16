@@ -5097,7 +5097,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgDividendsReport.py" line="67"/>
+        <location filename="../ui/wdgDividendsReport.py" line="68"/>
         <source>If I keep this investment during a year, I&apos;ll get {0}</source>
         <translation type="unfinished"></translation>
     </message>

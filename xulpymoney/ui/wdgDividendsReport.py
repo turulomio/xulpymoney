@@ -51,6 +51,7 @@ class wdgDividendsReport(QWidget, Ui_wdgDividendsReport):
                 dpa=inv.product.estimations_dps.currentYear().estimation
                 tpc=inv.product.estimations_dps.currentYear().percentage()
                 divestimado=inv.dividend_bruto_estimado()
+            print ()
             
             self.tblInvestments.setItem(i, 0,QTableWidgetItem(inv.name))
             self.tblInvestments.setItem(i, 1, QTableWidgetItem(inv.account.eb.name))
