@@ -2398,107 +2398,107 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>frmInvestmentReport</name>
     <message>
-        <location filename="../ui/Ui_frmInvestmentReport.py" line="332"/>
+        <location filename="../ui/Ui_frmInvestmentReport.py" line="340"/>
         <source>Investment report</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_frmInvestmentReport.py" line="340"/>
+        <location filename="../ui/Ui_frmInvestmentReport.py" line="349"/>
         <source>Investment data</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_frmInvestmentReport.py" line="333"/>
+        <location filename="../ui/Ui_frmInvestmentReport.py" line="341"/>
         <source>Associated account</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_frmInvestmentReport.py" line="334"/>
+        <location filename="../ui/Ui_frmInvestmentReport.py" line="342"/>
         <source>Investment name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_frmInvestmentReport.py" line="335"/>
+        <location filename="../ui/Ui_frmInvestmentReport.py" line="343"/>
         <source>New investment</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_frmInvestmentReport.py" line="336"/>
+        <location filename="../ui/Ui_frmInvestmentReport.py" line="344"/>
         <source>Selling price</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_frmInvestmentReport.py" line="337"/>
+        <location filename="../ui/Ui_frmInvestmentReport.py" line="345"/>
         <source>0</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_frmInvestmentReport.py" line="339"/>
+        <location filename="../ui/Ui_frmInvestmentReport.py" line="348"/>
         <source>Update investment</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_frmInvestmentReport.py" line="341"/>
+        <location filename="../ui/Ui_frmInvestmentReport.py" line="350"/>
         <source>Current status</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_frmInvestmentReport.py" line="343"/>
+        <location filename="../ui/Ui_frmInvestmentReport.py" line="352"/>
         <source>Operations</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_frmInvestmentReport.py" line="342"/>
+        <location filename="../ui/Ui_frmInvestmentReport.py" line="351"/>
         <source>Show all operations</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_frmInvestmentReport.py" line="344"/>
+        <location filename="../ui/Ui_frmInvestmentReport.py" line="353"/>
         <source>Historical operations</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_frmInvestmentReport.py" line="353"/>
+        <location filename="../ui/Ui_frmInvestmentReport.py" line="362"/>
         <source>Dividends</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_frmInvestmentReport.py" line="345"/>
+        <location filename="../ui/Ui_frmInvestmentReport.py" line="354"/>
         <source>Show historical dividends</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_frmInvestmentReport.py" line="346"/>
+        <location filename="../ui/Ui_frmInvestmentReport.py" line="355"/>
         <source>Estimation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_frmInvestmentReport.py" line="352"/>
+        <location filename="../ui/Ui_frmInvestmentReport.py" line="361"/>
         <source>% APR</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_frmInvestmentReport.py" line="359"/>
+        <location filename="../ui/Ui_frmInvestmentReport.py" line="368"/>
         <source>Add new dividend</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_frmInvestmentReport.py" line="361"/>
+        <location filename="../ui/Ui_frmInvestmentReport.py" line="370"/>
         <source>Delete dividend</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_frmInvestmentReport.py" line="369"/>
+        <location filename="../ui/Ui_frmInvestmentReport.py" line="378"/>
         <source>Edit dividend</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_frmInvestmentReport.py" line="374"/>
+        <location filename="../ui/Ui_frmInvestmentReport.py" line="383"/>
         <source>Make Split / Contrasplit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_frmInvestmentReport.py" line="375"/>
+        <location filename="../ui/Ui_frmInvestmentReport.py" line="384"/>
         <source>make Split / Contrasplit</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2518,62 +2518,62 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmInvestmentReport.py" line="404"/>
+        <location filename="../ui/frmInvestmentReport.py" line="405"/>
         <source>Selected: {0}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_frmInvestmentReport.py" line="349"/>
+        <location filename="../ui/Ui_frmInvestmentReport.py" line="358"/>
         <source>Estimated balance</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_frmInvestmentReport.py" line="355"/>
+        <location filename="../ui/Ui_frmInvestmentReport.py" line="364"/>
         <source>New operation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_frmInvestmentReport.py" line="357"/>
+        <location filename="../ui/Ui_frmInvestmentReport.py" line="366"/>
         <source>Delete operation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_frmInvestmentReport.py" line="363"/>
+        <location filename="../ui/Ui_frmInvestmentReport.py" line="372"/>
         <source>Edit operation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_frmInvestmentReport.py" line="365"/>
+        <location filename="../ui/Ui_frmInvestmentReport.py" line="374"/>
         <source>Disinvest / Reinvest report</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_frmInvestmentReport.py" line="367"/>
+        <location filename="../ui/Ui_frmInvestmentReport.py" line="376"/>
         <source>Selling point calculation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_frmInvestmentReport.py" line="371"/>
+        <location filename="../ui/Ui_frmInvestmentReport.py" line="380"/>
         <source>Undo shares transfer to another bank</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_frmInvestmentReport.py" line="373"/>
+        <location filename="../ui/Ui_frmInvestmentReport.py" line="382"/>
         <source>Transfer shares to another bank</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_frmInvestmentReport.py" line="348"/>
+        <location filename="../ui/Ui_frmInvestmentReport.py" line="357"/>
         <source>Review date</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_frmInvestmentReport.py" line="350"/>
+        <location filename="../ui/Ui_frmInvestmentReport.py" line="359"/>
         <source>Collected dividends</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_frmInvestmentReport.py" line="351"/>
+        <location filename="../ui/Ui_frmInvestmentReport.py" line="360"/>
         <source>% Invested</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2613,33 +2613,38 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_frmInvestmentReport.py" line="347"/>
+        <location filename="../ui/Ui_frmInvestmentReport.py" line="356"/>
         <source>APR</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmInvestmentReport.py" line="282"/>
+        <location filename="../ui/frmInvestmentReport.py" line="283"/>
         <source>You must select a product to continue.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_frmInvestmentReport.py" line="338"/>
+        <location filename="../ui/Ui_frmInvestmentReport.py" line="346"/>
         <source>Add selling order expiration</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_frmInvestmentReport.py" line="377"/>
+        <location filename="../ui/Ui_frmInvestmentReport.py" line="386"/>
         <source>Change benchmark price</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_frmInvestmentReport.py" line="379"/>
+        <location filename="../ui/Ui_frmInvestmentReport.py" line="388"/>
         <source>Hide in range report</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmInvestmentReport.py" line="400"/>
+        <location filename="../ui/frmInvestmentReport.py" line="401"/>
         <source>Show in range report</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/Ui_frmInvestmentReport.py" line="347"/>
+        <source>Change calendar date to today</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

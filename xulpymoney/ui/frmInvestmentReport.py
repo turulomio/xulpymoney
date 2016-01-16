@@ -273,7 +273,8 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
     def on_calExpiration_selectionChanged(self):
         self.cmdInvestment.setEnabled(True)
         
-
+    def on_cmdToday_released(self):
+        self.calExpiration.setSelectedDate(datetime.date.today())
             
     def on_cmdInvestment_released(self):
         if self.ise.selected==None:
