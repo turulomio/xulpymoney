@@ -25,6 +25,7 @@ class canvasTotal(FigureCanvasQTAgg):
         self.plot_main=None
         self.plot_zero=None
         self.plot_bonds=None
+        self.plot_nonzero=None
         self.plotted=False#Shown if the graphics has been plotted anytime.
         
     
@@ -34,6 +35,12 @@ class canvasTotal(FigureCanvasQTAgg):
     def mydraw(self, mem, dates,  total, zero,  bonds):
         self.plotted=True
         self.ax.clear()
+        
+        risk=[]
+        for i in range(len(dates)):
+            risk.append(total[i]-zero[i]-bonds[i])
+        
+        
         
         self.ax.xaxis.set_major_locator(YearLocator())    
         self.ax.xaxis.set_minor_locator(MonthLocator())
@@ -49,6 +56,8 @@ class canvasTotal(FigureCanvasQTAgg):
         self.plot_main, =self.ax.plot_date(dates, total, '-')
         self.plot_zero, =self.ax.plot_date(dates, zero, '-')
         self.plot_bonds, =self.ax.plot_date(dates, bonds, '-')
+        self.plot_risk, =self.ax.plot_date(dates, risk, '-')
+        
         self.showLegend()
         self.draw()        
         
@@ -70,6 +79,7 @@ class canvasTotal(FigureCanvasQTAgg):
         if len(self.labels)==0:
             self.labels.append((self.plot_main, self.tr("Total assets")))
             self.labels.append((self.plot_zero,self.tr("Zero risk assets")))
+            self.labels.append((self.plot_risk,self.tr("Risk assets")))
             self.labels.append((self.plot_bonds,self.tr("Bond assets")))
 
 
