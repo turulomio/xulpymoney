@@ -60,7 +60,7 @@ class wdgCalculator(QWidget, Ui_wdgCalculator):
             
         self.cmbPrice_load()
         
-        self.txtLeveraged.setText(self.product.apalancado.multiplier)
+        self.txtLeveraged.setText(self.product.leveraged.multiplier)
         
         self.txtFinalPrice.textChanged.disconnect()
         self.txtFinalPrice.setText(self.txtProductPrice.decimal()*Decimal(1+Decimal(self.spnProductPriceVariation.value())*self.txtLeveraged.decimal()/100))

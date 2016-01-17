@@ -2,12 +2,16 @@
 -- PostgreSQL database dump
 --
 
+-- Dumped from database version 9.5.0
+-- Dumped by pg_dump version 9.5.0
+
 SET statement_timeout = 0;
 SET lock_timeout = 0;
 SET client_encoding = 'UTF8';
 SET standard_conforming_strings = on;
 SET check_function_bodies = false;
 SET client_min_messages = warning;
+SET row_security = off;
 
 --
 -- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
@@ -469,7 +473,7 @@ SET default_tablespace = '';
 SET default_with_oids = false;
 
 --
--- Name: annualtargets; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: annualtargets; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE annualtargets (
@@ -481,30 +485,7 @@ CREATE TABLE annualtargets (
 ALTER TABLE annualtargets OWNER TO postgres;
 
 --
--- Name: bolsas; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
---
-
-CREATE TABLE bolsas (
-    id_bolsas integer NOT NULL,
-    country text,
-    starts time without time zone,
-    name text,
-    closes time without time zone,
-    zone text
-);
-
-
-ALTER TABLE bolsas OWNER TO postgres;
-
---
--- Name: COLUMN bolsas.starts; Type: COMMENT; Schema: public; Owner: postgres
---
-
-COMMENT ON COLUMN bolsas.starts IS 'Hora de inicio de descargas en UTC';
-
-
---
--- Name: conceptos; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: conceptos; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE conceptos (
@@ -520,7 +501,7 @@ ALTER TABLE conceptos OWNER TO postgres;
 SET default_with_oids = true;
 
 --
--- Name: cuentas; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: cuentas; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE cuentas (
@@ -566,7 +547,7 @@ ALTER TABLE dps_seq OWNER TO postgres;
 SET default_with_oids = false;
 
 --
--- Name: dps; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: dps; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE dps (
@@ -622,7 +603,7 @@ ALTER SEQUENCE dividendospagos_id_dividendospagos_seq OWNED BY dps.id_dps;
 
 
 --
--- Name: dividends; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: dividends; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE dividends (
@@ -644,7 +625,7 @@ ALTER TABLE dividends OWNER TO postgres;
 SET default_with_oids = true;
 
 --
--- Name: entidadesbancarias; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: entidadesbancarias; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE entidadesbancarias (
@@ -659,7 +640,7 @@ ALTER TABLE entidadesbancarias OWNER TO postgres;
 SET default_with_oids = false;
 
 --
--- Name: estimations_dps; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: estimations_dps; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE estimations_dps (
@@ -682,7 +663,7 @@ COMMENT ON TABLE estimations_dps IS 'Dividends per share';
 
 
 --
--- Name: estimations_eps; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: estimations_eps; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE estimations_eps (
@@ -705,7 +686,7 @@ COMMENT ON TABLE estimations_eps IS 'Earnings per share';
 
 
 --
--- Name: globals; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: globals; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE globals (
@@ -718,7 +699,7 @@ CREATE TABLE globals (
 ALTER TABLE globals OWNER TO postgres;
 
 --
--- Name: inversiones; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: inversiones; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE inversiones (
@@ -749,7 +730,7 @@ CREATE SEQUENCE investments_seq
 ALTER TABLE investments_seq OWNER TO postgres;
 
 --
--- Name: quotes; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: quotes; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE quotes (
@@ -774,8 +755,8 @@ CREATE VIEW tmpohlcdaily AS
     min(quotes.datetime) AS first,
     max(quotes.datetime) AS last
    FROM quotes
-  GROUP BY quotes.id, (quotes.datetime)::date
-  ORDER BY (quotes.datetime)::date DESC;
+  GROUP BY quotes.id, ((quotes.datetime)::date)
+  ORDER BY ((quotes.datetime)::date) DESC;
 
 
 ALTER TABLE tmpohlcdaily OWNER TO postgres;
@@ -811,7 +792,7 @@ CREATE VIEW tmpohlcmonthly AS
     min(quotes.datetime) AS first,
     max(quotes.datetime) AS last
    FROM quotes
-  GROUP BY quotes.id, date_part('year'::text, quotes.datetime), date_part('month'::text, quotes.datetime);
+  GROUP BY quotes.id, (date_part('year'::text, quotes.datetime)), (date_part('month'::text, quotes.datetime));
 
 
 ALTER TABLE tmpohlcmonthly OWNER TO postgres;
@@ -848,7 +829,7 @@ CREATE VIEW tmpohlcweekly AS
     min(quotes.datetime) AS first,
     max(quotes.datetime) AS last
    FROM quotes
-  GROUP BY quotes.id, date_part('year'::text, quotes.datetime), date_part('week'::text, quotes.datetime);
+  GROUP BY quotes.id, (date_part('year'::text, quotes.datetime)), (date_part('week'::text, quotes.datetime));
 
 
 ALTER TABLE tmpohlcweekly OWNER TO postgres;
@@ -884,7 +865,7 @@ CREATE VIEW tmpohlcyearly AS
     min(quotes.datetime) AS first,
     max(quotes.datetime) AS last
    FROM quotes
-  GROUP BY quotes.id, date_part('year'::text, quotes.datetime);
+  GROUP BY quotes.id, (date_part('year'::text, quotes.datetime));
 
 
 ALTER TABLE tmpohlcyearly OWNER TO postgres;
@@ -908,7 +889,7 @@ CREATE VIEW ohlcyearly AS
 ALTER TABLE ohlcyearly OWNER TO postgres;
 
 --
--- Name: opercuentas; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: opercuentas; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE opercuentas (
@@ -925,7 +906,7 @@ CREATE TABLE opercuentas (
 ALTER TABLE opercuentas OWNER TO postgres;
 
 --
--- Name: opercuentasdeoperinversiones; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: opercuentasdeoperinversiones; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE opercuentasdeoperinversiones (
@@ -938,7 +919,7 @@ INHERITS (opercuentas);
 ALTER TABLE opercuentasdeoperinversiones OWNER TO postgres;
 
 --
--- Name: operinversiones; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: operinversiones; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE operinversiones (
@@ -967,7 +948,7 @@ COMMENT ON COLUMN operinversiones.divisa IS 'Campo que calcula el cociente entre
 
 
 --
--- Name: opertarjetas; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: opertarjetas; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE opertarjetas (
@@ -987,7 +968,7 @@ CREATE TABLE opertarjetas (
 ALTER TABLE opertarjetas OWNER TO postgres;
 
 --
--- Name: products; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: products; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE products (
@@ -1001,14 +982,14 @@ CREATE TABLE products (
     address text,
     phone text,
     mail text,
-    tpc integer DEFAULT 100 NOT NULL,
+    percentage integer DEFAULT 100 NOT NULL,
     pci character(1) DEFAULT 'c'::bpchar NOT NULL,
-    apalancado integer DEFAULT 0 NOT NULL,
-    id_bolsas integer NOT NULL,
+    leveraged integer DEFAULT 0 NOT NULL,
+    stockmarkets_id integer NOT NULL,
     ticker text,
     priority integer[],
     priorityhistorical integer[],
-    comentario text,
+    comment text,
     obsolete boolean DEFAULT false NOT NULL
 );
 
@@ -1191,7 +1172,7 @@ CREATE SEQUENCE simulations_seq
 ALTER TABLE simulations_seq OWNER TO postgres;
 
 --
--- Name: simulations; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: simulations; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE simulations (
@@ -1207,7 +1188,7 @@ CREATE TABLE simulations (
 ALTER TABLE simulations OWNER TO postgres;
 
 --
--- Name: status; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: status; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE status (
@@ -1229,7 +1210,30 @@ COMMENT ON TABLE status IS 'Tabla que contiene el estado de myquotesd, se borra 
 
 
 --
--- Name: tarjetas; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: stockmarkets; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE stockmarkets (
+    id integer NOT NULL,
+    country text,
+    starts time without time zone,
+    name text,
+    closes time without time zone,
+    zone text
+);
+
+
+ALTER TABLE stockmarkets OWNER TO postgres;
+
+--
+-- Name: COLUMN stockmarkets.starts; Type: COMMENT; Schema: public; Owner: postgres
+--
+
+COMMENT ON COLUMN stockmarkets.starts IS 'Hora de inicio de descargas en UTC';
+
+
+--
+-- Name: tarjetas; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE tarjetas (
@@ -1253,7 +1257,7 @@ ALTER TABLE ONLY opercuentasdeoperinversiones ALTER COLUMN id_opercuentas SET DE
 
 
 --
--- Name: annualtargets_pk; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: annualtargets_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY annualtargets
@@ -1261,15 +1265,15 @@ ALTER TABLE ONLY annualtargets
 
 
 --
--- Name: bolsas_pk; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: bolsas_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY bolsas
-    ADD CONSTRAINT bolsas_pk PRIMARY KEY (id_bolsas);
+ALTER TABLE ONLY stockmarkets
+    ADD CONSTRAINT bolsas_pk PRIMARY KEY (id);
 
 
 --
--- Name: conceptos_pk; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: conceptos_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY conceptos
@@ -1277,7 +1281,7 @@ ALTER TABLE ONLY conceptos
 
 
 --
--- Name: dividendos_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: dividendos_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY dividends
@@ -1285,7 +1289,7 @@ ALTER TABLE ONLY dividends
 
 
 --
--- Name: dps_pk; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: dps_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY dps
@@ -1293,7 +1297,7 @@ ALTER TABLE ONLY dps
 
 
 --
--- Name: estimacion_eps_pk; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: estimacion_eps_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY estimations_eps
@@ -1301,7 +1305,7 @@ ALTER TABLE ONLY estimations_eps
 
 
 --
--- Name: estimations_dps_pk; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: estimations_dps_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY estimations_dps
@@ -1309,7 +1313,7 @@ ALTER TABLE ONLY estimations_dps
 
 
 --
--- Name: investments_pk; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: investments_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY products
@@ -1317,7 +1321,7 @@ ALTER TABLE ONLY products
 
 
 --
--- Name: opertarjetas_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: opertarjetas_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY opertarjetas
@@ -1325,7 +1329,7 @@ ALTER TABLE ONLY opertarjetas
 
 
 --
--- Name: pk_globals; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: pk_globals; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY globals
@@ -1333,7 +1337,7 @@ ALTER TABLE ONLY globals
 
 
 --
--- Name: pk_inversiones; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: pk_inversiones; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY inversiones
@@ -1341,7 +1345,7 @@ ALTER TABLE ONLY inversiones
 
 
 --
--- Name: pk_opercuentas; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: pk_opercuentas; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY opercuentas
@@ -1349,7 +1353,7 @@ ALTER TABLE ONLY opercuentas
 
 
 --
--- Name: pk_operinversiones; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: pk_operinversiones; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY operinversiones
@@ -1357,7 +1361,7 @@ ALTER TABLE ONLY operinversiones
 
 
 --
--- Name: pk_status; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: pk_status; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY status
@@ -1365,7 +1369,7 @@ ALTER TABLE ONLY status
 
 
 --
--- Name: quotes_pk; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: quotes_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY quotes
@@ -1373,7 +1377,7 @@ ALTER TABLE ONLY quotes
 
 
 --
--- Name: simulations_pk; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: simulations_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY simulations
@@ -1381,7 +1385,7 @@ ALTER TABLE ONLY simulations
 
 
 --
--- Name: tarjetas_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: tarjetas_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY tarjetas
@@ -1389,133 +1393,133 @@ ALTER TABLE ONLY tarjetas
 
 
 --
--- Name: annualtargets_index_year; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+-- Name: annualtargets_index_year; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX annualtargets_index_year ON annualtargets USING btree (year);
 
 
 --
--- Name: conceptos-id_conceptos-index; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+-- Name: conceptos-id_conceptos-index; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE UNIQUE INDEX "conceptos-id_conceptos-index" ON conceptos USING btree (id_conceptos);
 
 
 --
--- Name: cuentas-id_cuentas-index; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+-- Name: cuentas-id_cuentas-index; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX "cuentas-id_cuentas-index" ON cuentas USING btree (id_cuentas);
 
 
 --
--- Name: dividendos-id_inversiones-index; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+-- Name: dividendos-id_inversiones-index; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX "dividendos-id_inversiones-index" ON dividends USING btree (id_inversiones);
 
 
 --
--- Name: dividendosestimaciones_id; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+-- Name: dividendosestimaciones_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX dividendosestimaciones_id ON estimations_dps USING btree (id);
 
 
 --
--- Name: entidadesbancarias-id_entidadesbancarias-index; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+-- Name: entidadesbancarias-id_entidadesbancarias-index; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE UNIQUE INDEX "entidadesbancarias-id_entidadesbancarias-index" ON entidadesbancarias USING btree (id_entidadesbancarias);
 
 
 --
--- Name: estimaciones_eps; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+-- Name: estimaciones_eps; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX estimaciones_eps ON estimations_eps USING btree (id);
 
 
 --
--- Name: inversiones-id_cuentas-index; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+-- Name: inversiones-id_cuentas-index; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX "inversiones-id_cuentas-index" ON inversiones USING btree (id_cuentas);
 
 
 --
--- Name: inversiones-id_inversiones-index; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+-- Name: inversiones-id_inversiones-index; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE UNIQUE INDEX "inversiones-id_inversiones-index" ON inversiones USING btree (id_inversiones);
 
 
 --
--- Name: investments_id; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+-- Name: investments_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX investments_id ON products USING btree (id);
 
 
 --
--- Name: opercuentas-id_cuentas-index; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+-- Name: opercuentas-id_cuentas-index; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX "opercuentas-id_cuentas-index" ON opercuentas USING btree (id_cuentas);
 
 
 --
--- Name: opercuentas-id_opercuentas-index; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+-- Name: opercuentas-id_opercuentas-index; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE UNIQUE INDEX "opercuentas-id_opercuentas-index" ON opercuentas USING btree (id_opercuentas);
 
 
 --
--- Name: operinversiones-id_inversiones-index; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+-- Name: operinversiones-id_inversiones-index; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX "operinversiones-id_inversiones-index" ON operinversiones USING btree (id_inversiones);
 
 
 --
--- Name: operinversiones-id_operinversiones-index; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+-- Name: operinversiones-id_operinversiones-index; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE UNIQUE INDEX "operinversiones-id_operinversiones-index" ON operinversiones USING btree (id_operinversiones);
 
 
 --
--- Name: opertarjetas-id_opertarjetas-index; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+-- Name: opertarjetas-id_opertarjetas-index; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX "opertarjetas-id_opertarjetas-index" ON opertarjetas USING btree (id_opertarjetas);
 
 
 --
--- Name: opertarjetas-id_tarjetas-index; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+-- Name: opertarjetas-id_tarjetas-index; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX "opertarjetas-id_tarjetas-index" ON opertarjetas USING btree (id_tarjetas);
 
 
 --
--- Name: quotes_id; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+-- Name: quotes_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX quotes_id ON quotes USING btree (id);
 
 
 --
--- Name: quotes_id_datetime; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+-- Name: quotes_id_datetime; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX quotes_id_datetime ON quotes USING btree (id, datetime);
 
 
 --
--- Name: tmpinversionesheredada-id_cuentas-index; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+-- Name: tmpinversionesheredada-id_cuentas-index; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX "tmpinversionesheredada-id_cuentas-index" ON opercuentasdeoperinversiones USING btree (id_cuentas);
@@ -1760,15 +1764,6 @@ REVOKE ALL ON TABLE annualtargets FROM PUBLIC;
 REVOKE ALL ON TABLE annualtargets FROM postgres;
 GRANT ALL ON TABLE annualtargets TO postgres;
 GRANT ALL ON TABLE annualtargets TO xulpymoney_user;
-
-
---
--- Name: bolsas; Type: ACL; Schema: public; Owner: postgres
---
-
-REVOKE ALL ON TABLE bolsas FROM PUBLIC;
-REVOKE ALL ON TABLE bolsas FROM postgres;
-GRANT ALL ON TABLE bolsas TO xulpymoney_user;
 
 
 --
@@ -2140,6 +2135,15 @@ GRANT ALL ON TABLE simulations TO xulpymoney_user;
 REVOKE ALL ON TABLE status FROM PUBLIC;
 REVOKE ALL ON TABLE status FROM postgres;
 GRANT ALL ON TABLE status TO xulpymoney_user;
+
+
+--
+-- Name: stockmarkets; Type: ACL; Schema: public; Owner: postgres
+--
+
+REVOKE ALL ON TABLE stockmarkets FROM PUBLIC;
+REVOKE ALL ON TABLE stockmarkets FROM postgres;
+GRANT ALL ON TABLE stockmarkets TO xulpymoney_user;
 
 
 --
@@ -8900,28 +8904,36 @@ INSERT INTO products VALUES ('ZON MULTIMEDIA', 'PTZON0AM0006', 'EUR', 1, '|EURON
 INSERT INTO products VALUES ('zooplus AG', 'DE0005111702', 'EUR', 1, '|DEUTSCHEBOERSE|', 81109, NULL, NULL, NULL, NULL, 100, 'c', 0, 5, NULL, NULL, NULL, 'DEUTSCHEBOERSE#DE0005111702||de||False', false);
 INSERT INTO products VALUES ('ZUBLIN IMMOBILIERE', 'FR0010298901', 'EUR', 1, '|EURONEXT|', 78722, NULL, NULL, NULL, NULL, 100, 'c', 0, 3, NULL, NULL, NULL, 'EURONEXT#FR0010298901||fr||False', false);
 INSERT INTO products VALUES ('Zuoan Fashion Ltd.', NULL, 'USD', 1, NULL, 78062, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, NULL, 'NYSE#ZA||us||False', false);
-INSERT INTO bolsas VALUES (10, 'eu', '07:00:00', 'Bolsa Europea', '17:38:00', 'Europe/Madrid');
-INSERT INTO bolsas VALUES (11, 'be', '07:00:00', 'Bolsa de Bélgica', '17:38:00', 'Europe/Madrid');
-INSERT INTO bolsas VALUES (12, 'nl', '07:00:00', 'Bolsa de Amsterdam', '17:38:00', 'Europe/Madrid');
-INSERT INTO bolsas VALUES (13, 'ie', '07:00:00', 'Bolsa de Dublín', '17:38:00', 'Europe/Madrid');
-INSERT INTO bolsas VALUES (14, 'fi', '07:00:00', 'Bolsa de Helsinki', '17:38:00', 'Europe/Madrid');
-INSERT INTO bolsas VALUES (15, 'earth', '09:00:00', 'No cotiza en mercados oficiales', '17:38:00', 'Europe/Madrid');
-INSERT INTO bolsas VALUES (1, 'es', '09:00:00', 'Bolsa de Madrid', '17:38:00', 'Europe/Madrid');
-INSERT INTO bolsas VALUES (2, 'us', '09:30:00', 'Bolsa de New York', '16:38:00', 'America/New_York');
-INSERT INTO bolsas VALUES (3, 'fr', '09:00:00', 'Bolsa de París', '17:38:00', 'Europe/Paris');
-INSERT INTO bolsas VALUES (4, 'en', '07:00:00', 'Bolsa de Londres', '17:38:00', 'Europe/London');
-INSERT INTO bolsas VALUES (5, 'de', '09:00:00', 'Bosa de Frankfurt', '17:38:00', 'Europe/Berlin');
-INSERT INTO bolsas VALUES (6, 'it', '07:00:00', 'Bolsa de Milán', '17:38:00', 'Europe/Rome');
-INSERT INTO bolsas VALUES (7, 'jp', '09:00:00', 'Bolsa de Tokio', '20:00:00', 'Asia/Tokyo');
-INSERT INTO bolsas VALUES (8, 'cn', '00:00:00', 'Bolsa de Hong Kong', '20:00:00', 'Asia/Hong_Kong');
-INSERT INTO bolsas VALUES (9, 'pt', '07:00:00', 'Bolsa de Lisboa', '17:38:00', 'Europe/Lisbon');
-INSERT INTO globals VALUES (10, 'wdgCalculator#product', '79244');
-INSERT INTO globals VALUES (11, 'wdgCalculator#invested', '6000');
-INSERT INTO globals VALUES (1, 'Version', '201510041406');
+INSERT INTO stockmarkets VALUES (10, 'eu', '07:00:00', 'Bolsa Europea', '17:38:00', 'Europe/Madrid');
+INSERT INTO stockmarkets VALUES (11, 'be', '07:00:00', 'Bolsa de Bélgica', '17:38:00', 'Europe/Madrid');
+INSERT INTO stockmarkets VALUES (12, 'nl', '07:00:00', 'Bolsa de Amsterdam', '17:38:00', 'Europe/Madrid');
+INSERT INTO stockmarkets VALUES (13, 'ie', '07:00:00', 'Bolsa de Dublín', '17:38:00', 'Europe/Madrid');
+INSERT INTO stockmarkets VALUES (14, 'fi', '07:00:00', 'Bolsa de Helsinki', '17:38:00', 'Europe/Madrid');
+INSERT INTO stockmarkets VALUES (15, 'earth', '09:00:00', 'No cotiza en mercados oficiales', '17:38:00', 'Europe/Madrid');
+INSERT INTO stockmarkets VALUES (1, 'es', '09:00:00', 'Bolsa de Madrid', '17:38:00', 'Europe/Madrid');
+INSERT INTO stockmarkets VALUES (2, 'us', '09:30:00', 'Bolsa de New York', '16:38:00', 'America/New_York');
+INSERT INTO stockmarkets VALUES (3, 'fr', '09:00:00', 'Bolsa de París', '17:38:00', 'Europe/Paris');
+INSERT INTO stockmarkets VALUES (4, 'en', '07:00:00', 'Bolsa de Londres', '17:38:00', 'Europe/London');
+INSERT INTO stockmarkets VALUES (5, 'de', '09:00:00', 'Bosa de Frankfurt', '17:38:00', 'Europe/Berlin');
+INSERT INTO stockmarkets VALUES (6, 'it', '07:00:00', 'Bolsa de Milán', '17:38:00', 'Europe/Rome');
+INSERT INTO stockmarkets VALUES (7, 'jp', '09:00:00', 'Bolsa de Tokio', '20:00:00', 'Asia/Tokyo');
+INSERT INTO stockmarkets VALUES (8, 'cn', '00:00:00', 'Bolsa de Hong Kong', '20:00:00', 'Asia/Hong_Kong');
+INSERT INTO stockmarkets VALUES (9, 'pt', '07:00:00', 'Bolsa de Lisboa', '17:38:00', 'Europe/Lisbon');
+INSERT INTO globals VALUES (10, 'wdgLastCurrent/spin', '-25');
+INSERT INTO globals VALUES (11, 'mem/localcurrency', 'EUR');
+INSERT INTO globals VALUES (12, 'mem/localzone', 'Europe/Madrid');
+INSERT INTO globals VALUES (13, 'mem/benchmarkid', '79329');
+INSERT INTO globals VALUES (14, 'mem/dividendwithholding', '0.19');
+INSERT INTO globals VALUES (15, 'mem/taxcapitalappreciation', '0.19');
+INSERT INTO globals VALUES (16, 'mem/taxcapitalappreciationbelow', '0.5');
+INSERT INTO globals VALUES (17, 'mem/gainsyear', 'false');
+INSERT INTO globals VALUES (18, 'mem/favorites', '79329, 81680');
+INSERT INTO globals VALUES (19, 'mem/fillfromyear', '2005');
+INSERT INTO globals VALUES (1, 'Version', '201601170811');
 INSERT INTO globals VALUES (6, 'Admin mode', NULL);
-INSERT INTO globals VALUES (7, 'wdgIndexRange#spin', '2');
-INSERT INTO globals VALUES (8, 'wdgIndexRange#txtInvertir', '6000');
-INSERT INTO globals VALUES (9, 'wdgIndexRange#txtMinimo', '1000');
+INSERT INTO globals VALUES (7, 'wdgIndexRange/spin', '2.0');
+INSERT INTO globals VALUES (8, 'wdgIndexRange/invertir', '4400');
+INSERT INTO globals VALUES (9, 'wdgIndexRange/minimo', '1000');
 DELETE FROM products WHERE id<=0;
 ALTER SEQUENCE seq_conceptos START WITH 100 RESTART;
 ALTER SEQUENCE seq_entidadesbancarias START WITH 4 RESTART;

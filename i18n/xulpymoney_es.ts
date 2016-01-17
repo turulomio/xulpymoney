@@ -311,7 +311,7 @@
 <context>
     <name>Core</name>
     <message>
-        <location filename="../libsources.py" line="880"/>
+        <location filename="../libsources.py" line="879"/>
         <source>From {} desynchronized products added:
     - {} quotes
     - {} dividends per share
@@ -3557,7 +3557,7 @@ p, li { white-space: pre-wrap; }
         <translation>{0} cotizaciones han sido purgadas de {1}</translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.py" line="456"/>
+        <location filename="../ui/frmProductReport.py" line="450"/>
         <source>You have to add a quote and a dividend per share estimation to the new product</source>
         <translation>Tienes que añadir un valor y una estimación del dividendo por acción al nuevo producto</translation>
     </message>
@@ -5865,32 +5865,32 @@ Diferencia diaria: {5}. Edad media de las inversiones: {6}</translation>
         <translation>Encontrados {0} registros</translation>
     </message>
     <message>
-        <location filename="../ui/wdgProducts.py" line="66"/>
+        <location filename="../ui/wdgProducts.py" line="67"/>
         <source>Deleting data from selected product ({0}). If you use manual update mode, data won&apos;t be recovered. Do you want to continue?</source>
         <translation>Borrando datos del producto seleccionado ({0}). Si el producto usaba actualizaciones manuales, los datos no serán recuperados. ¿Quieres continuar?</translation>
     </message>
     <message>
-        <location filename="../ui/wdgProducts.py" line="248"/>
+        <location filename="../ui/wdgProducts.py" line="247"/>
         <source>{0} quotes have been purged from {1}</source>
         <translation>{0} cotizaciones han sido purgadas de {1}</translation>
     </message>
     <message>
-        <location filename="../ui/wdgProducts.py" line="56"/>
+        <location filename="../ui/wdgProducts.py" line="57"/>
         <source>This product can&apos;t be removed, because is marked as not romavable</source>
         <translation>Este producto no puede ser eliminado, porque está marcado como no borrable</translation>
     </message>
     <message>
-        <location filename="../ui/wdgProducts.py" line="66"/>
+        <location filename="../ui/wdgProducts.py" line="67"/>
         <source>Xulpymoney</source>
         <translation>Xulpymoney</translation>
     </message>
     <message>
-        <location filename="../ui/wdgProducts.py" line="134"/>
+        <location filename="../ui/wdgProducts.py" line="133"/>
         <source>Search too wide. You need more than 3 characters</source>
         <translation>Búsqueda demasiado extensa. Necesita más de 3 caracteres</translation>
     </message>
     <message>
-        <location filename="../ui/wdgProducts.py" line="169"/>
+        <location filename="../ui/wdgProducts.py" line="168"/>
         <source>Remove from favorites</source>
         <translation>Borrar de favoritos</translation>
     </message>
@@ -5900,7 +5900,7 @@ Diferencia diaria: {5}. Edad media de las inversiones: {6}</translation>
         <translation>Añadir a favoritos</translation>
     </message>
     <message>
-        <location filename="../ui/wdgProducts.py" line="222"/>
+        <location filename="../ui/wdgProducts.py" line="221"/>
         <source>Merging codes</source>
         <translation>Juntando códigos</translation>
     </message>
@@ -5935,7 +5935,7 @@ Diferencia diaria: {5}. Edad media de las inversiones: {6}</translation>
         <translation>Nueva cotización</translation>
     </message>
     <message>
-        <location filename="../ui/wdgProducts.py" line="181"/>
+        <location filename="../ui/wdgProducts.py" line="180"/>
         <source>Order by</source>
         <translation>Ordenado por</translation>
     </message>
@@ -5945,7 +5945,7 @@ Diferencia diaria: {5}. Edad media de las inversiones: {6}</translation>
         <translation>Buscar por código, ISIN, ticker o nombre de producto</translation>
     </message>
     <message>
-        <location filename="../ui/wdgProducts.py" line="62"/>
+        <location filename="../ui/wdgProducts.py" line="63"/>
         <source>This product can&apos;t be removed, because is a system product</source>
         <translation>Este producto no puede ser eliminado al ser un producto del sistema</translation>
     </message>

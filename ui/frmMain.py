@@ -345,12 +345,12 @@ class frmMain(QMainWindow, Ui_frmMain):
         self.w.close()
         cur=self.mem.con.cursor()
         #ßaca los isin duplicados buscando distintct isin, bolsa con mas de dos registros
-        cur.execute("select isin, id_bolsas, count(*) as num from products  where isin!='' group by isin, id_bolsas having count(*)>1 order by num desc;")
+        cur.execute("select isin, stockmarkets_id, count(*) as num from products  where isin!='' group by isin, stockmarkets_id having count(*)>1 order by num desc;")
         isins=set([])
         for row in cur:
             isins.add(row['isin'] )
         if len(isins)>0:
-            self.w=wdgProducts(self.mem,  "select * from products where isin in ("+list2string(list(isins))+") order by isin, id_bolsas")
+            self.w=wdgProducts(self.mem,  "select * from products where isin in ("+list2string(list(isins))+") order by isin, stockmarkets_id")
         else:
             self.w=wdgProducts(self.mem, self.sqlvacio)
 
@@ -569,14 +569,14 @@ class frmMain(QMainWindow, Ui_frmMain):
     @QtCore.pyqtSlot()  
     def on_actionIndexesAll_triggered(self):
         self.w.close()
-        self.w=wdgProducts(self.mem,  "select  * from products where type=3 order by id_bolsas,name")
+        self.w=wdgProducts(self.mem,  "select  * from products where type=3 order by stockmarkets_id,name")
         self.layout.addWidget(self.w)
         self.w.show()      
         
     @QtCore.pyqtSlot()  
     def on_actionIndexesObsolete_triggered(self):
         self.w.close()
-        self.w=wdgProducts(self.mem,  "select  * from products where type=3 and obsolete=true order by id_bolsas,name")
+        self.w=wdgProducts(self.mem,  "select  * from products where type=3 and obsolete=true order by stockmarkets_id,name")
         self.layout.addWidget(self.w)
         self.w.show()        
                 

@@ -69,7 +69,7 @@ class frmProductReport(QDialog, Ui_frmProductReport):
         self.layHistorical.addWidget(self.canvasHistorical)
         self.layHistorical.addWidget(self.ntbHistorical)
                 
-        self.mem.stockexchanges.qcombobox(self.cmbBolsa)
+        self.mem.stockmarkets.qcombobox(self.cmbBolsa)
         self.mem.investmentsmodes.qcombobox(self.cmbPCI)
         self.mem.currencies.qcombobox(self.cmbCurrency)
         self.mem.leverages.qcombobox(self.cmbApalancado)
@@ -104,11 +104,11 @@ class frmProductReport(QDialog, Ui_frmProductReport):
         self.product.priorityhistorical.qcombobox(self.cmbPriorityHistorical)
 
         self.lblInvestment.setText("{} ( {} )".format(self.product.name, self.product.id))
-        self.txtTPC.setText(str(self.product.tpc))
+        self.txtTPC.setText(str(self.product.percentage))
         self.txtName.setText(self.product.name)
         self.txtISIN.setText(self.product.isin)
         self.txtYahoo.setText(self.product.ticker)
-        self.txtComentario.setText(self.product.comentario)
+        self.txtComentario.setText(self.product.comment)
         self.txtAddress.setText(self.product.address)
         self.txtWeb.setText(self.product.web)
         self.txtMail.setText(self.product.mail)
@@ -119,24 +119,24 @@ class frmProductReport(QDialog, Ui_frmProductReport):
         if self.product.obsolete==True:
             self.chkObsolete.setCheckState(Qt.Checked)          
 
-        self.cmbBolsa.setCurrentIndex(self.cmbBolsa.findData(self.product.stockexchange.id))
+        self.cmbBolsa.setCurrentIndex(self.cmbBolsa.findData(self.product.stockmarket.id))
         self.cmbCurrency.setCurrentIndex(self.cmbCurrency.findData(self.product.currency.id))
         self.cmbPCI.setCurrentIndex(self.cmbPCI.findData(self.product.mode.id))
         self.cmbTipo.setCurrentIndex(self.cmbTipo.findData(self.product.type.id))
-        self.cmbApalancado.setCurrentIndex(self.cmbApalancado.findData(self.product.apalancado.id))
+        self.cmbApalancado.setCurrentIndex(self.cmbApalancado.findData(self.product.leveraged.id))
         
         if len(self.product.result.ohclDaily.arr)!=0:
             now=self.mem.localzone.now()
             penultimate=self.product.result.basic.penultimate
-            iniciosemana=Quote(self.mem).init__from_query(self.product,  day_end(now-datetime.timedelta(days=datetime.date.today().weekday()+1), self.product.stockexchange.zone))
-            iniciomes=Quote(self.mem).init__from_query(self.product, dt(datetime.date(now.year, now.month, 1), datetime.time(0, 0), self.product.stockexchange.zone))
-            inicioano=Quote(self.mem).init__from_query(self.product, dt(datetime.date(now.year, 1, 1), datetime.time(0, 0), self.product.stockexchange.zone))             
-            docemeses=Quote(self.mem).init__from_query(self.product, day_end(now-datetime.timedelta(days=365), self.product.stockexchange.zone))          
-            unmes=Quote(self.mem).init__from_query(self.product, day_end(now-datetime.timedelta(days=30), self.product.stockexchange.zone))          
-            unasemana=Quote(self.mem).init__from_query(self.product, day_end(now-datetime.timedelta(days=7), self.product.stockexchange.zone))             
+            iniciosemana=Quote(self.mem).init__from_query(self.product,  day_end(now-datetime.timedelta(days=datetime.date.today().weekday()+1), self.product.stockmarket.zone))
+            iniciomes=Quote(self.mem).init__from_query(self.product, dt(datetime.date(now.year, now.month, 1), datetime.time(0, 0), self.product.stockmarket.zone))
+            inicioano=Quote(self.mem).init__from_query(self.product, dt(datetime.date(now.year, 1, 1), datetime.time(0, 0), self.product.stockmarket.zone))             
+            docemeses=Quote(self.mem).init__from_query(self.product, day_end(now-datetime.timedelta(days=365), self.product.stockmarket.zone))          
+            unmes=Quote(self.mem).init__from_query(self.product, day_end(now-datetime.timedelta(days=30), self.product.stockmarket.zone))          
+            unasemana=Quote(self.mem).init__from_query(self.product, day_end(now-datetime.timedelta(days=7), self.product.stockmarket.zone))             
             
             self.tblTPC.applySettings()
-            self.tblTPC.setItem(0, 0, qdatetime(self.product.result.basic.last.datetime, self.product.stockexchange.zone))   
+            self.tblTPC.setItem(0, 0, qdatetime(self.product.result.basic.last.datetime, self.product.stockmarket.zone))   
             self.tblTPC.setItem(0, 1, self.product.currency.qtablewidgetitem(self.product.result.basic.last.quote,  6))
             
             row_tblTPV(penultimate, 2)
@@ -417,53 +417,53 @@ class frmProductReport(QDialog, Ui_frmProductReport):
             self.mem.con.rollback()
         
     def on_cmdSave_pressed(self):
-        if self.product.id>0:
+        if self.product.id==None:
+            self.product.name=self.txtName.text()
+            self.product.isin=self.txtISIN.text()
+            self.product.currency=self.mem.currencies.find_by_id(self.cmbCurrency.itemData(self.cmbCurrency.currentIndex()))
+            self.product.type=self.mem.types.find_by_id(self.cmbTipo.itemData(self.cmbTipo.currentIndex()))
+            self.product.agrupations=SetAgrupations(self.mem).clone_from_combo(self.cmbAgrupations)
+            self.product.obsolete=c2b(self.chkObsolete.checkState())
+            self.product.web=self.txtWeb.text()
+            self.product.address=self.txtAddress.text()
+            self.product.phone=self.txtPhone.text()
+            self.product.mail=self.txtMail.text()
+            self.product.percentage=int(self.txtTPC.text())
+            self.product.mode=self.mem.investmentsmodes.find_by_id(self.cmbPCI.itemData(self.cmbPCI.currentIndex()))
+            self.product.leveraged=self.mem.leverages.find_by_id(self.cmbApalancado.itemData(self.cmbApalancado.currentIndex()))
+            self.product.stockmarket=self.mem.stockmarkets.find_by_id(self.cmbBolsa.itemData(self.cmbBolsa.currentIndex()))
+            self.product.ticker=self.txtYahoo.text()
+            self.product.priority=SetPriorities(self.mem).init__create_from_combo(self.cmbPriority)
+            self.product.priorityhistorical=SetPrioritiesHistorical(self.mem).init__create_from_combo(self.cmbPriorityHistorical)
+            self.product.comment=self.txtComentario.text()
+            
+            insertarquote=False#se hace antes porque id despues de save ya tiene valor
+            if self.product.id==None:
+                insertarquote=True
+                
+            self.product.save()
+            self.mem.con.commit()  
+            
+            if insertarquote==True:
+                m=QMessageBox()
+                m.setIcon(QMessageBox.Information)
+                m.setText(self.tr("You have to add a quote and a dividend per share estimation to the new product"))
+                m.exec_()                
+                w=frmQuotesIBM(self.mem,  self.product)
+                while w.result()!=QDialog.Accepted:
+                    w.exec_()    
+        
+                d=frmEstimationsAdd(self.mem, self.product, "dps")
+                while d.result()!=QDialog.Accepted:
+                    d.exec_()   
+                self.done(0)
+
+        elif self.product.id>0:
             m=QMessageBox()
             m.setText("Only developers can change system products. You can create a new personal product or fill a ticket in the sourceforge page. It will be updated soon")
             m.setIcon(QMessageBox.Information)
             m.exec_()        
             return
-        self.product.name=self.txtName.text()
-        self.product.isin=self.txtISIN.text()
-        self.product.currency=self.mem.currencies.find_by_id(self.cmbCurrency.itemData(self.cmbCurrency.currentIndex()))
-        self.product.type=self.mem.types.find_by_id(self.cmbTipo.itemData(self.cmbTipo.currentIndex()))
-        self.product.agrupations=SetAgrupations(self.mem).clone_from_combo(self.cmbAgrupations)
-        self.product.obsolete=c2b(self.chkObsolete.checkState())
-        self.product.web=self.txtWeb.text()
-        self.product.address=self.txtAddress.text()
-        self.product.phone=self.txtPhone.text()
-        self.product.mail=self.txtMail.text()
-        self.product.tpc=int(self.txtTPC.text())
-        self.product.mode=self.mem.investmentsmodes.find_by_id(self.cmbPCI.itemData(self.cmbPCI.currentIndex()))
-        self.product.apalancado=self.mem.leverages.find_by_id(self.cmbApalancado.itemData(self.cmbApalancado.currentIndex()))
-        self.product.stockexchange=self.mem.stockexchanges.find_by_id(self.cmbBolsa.itemData(self.cmbBolsa.currentIndex()))
-        self.product.ticker=self.txtYahoo.text()
-        self.product.priority=SetPriorities(self.mem).init__create_from_combo(self.cmbPriority)
-        self.product.priorityhistorical=SetPrioritiesHistorical(self.mem).init__create_from_combo(self.cmbPriorityHistorical)
-        self.product.comentario=self.txtComentario.text()
-        
-        insertarquote=False#se hace antes porque id despues de save ya tiene valor
-        if self.product.id==None:
-            insertarquote=True
-            
-        self.product.save()
-        self.mem.con.commit()  
-        
-        if insertarquote==True:
-
-            m=QMessageBox()
-            m.setIcon(QMessageBox.Information)
-            m.setText(self.tr("You have to add a quote and a dividend per share estimation to the new product"))
-            m.exec_()                
-            w=frmQuotesIBM(self.mem,  self.product)
-            while w.result()!=QDialog.Accepted:
-                w.exec_()    
-    
-            d=frmEstimationsAdd(self.mem, self.product, "dps")
-            while d.result()!=QDialog.Accepted:
-                d.exec_()   
-            self.done(0)
-
     def on_cmdAgrupations_released(self):
         ##Se debe clonar, porque selector borra
         if self.cmbTipo.itemData(self.cmbTipo.currentIndex())==2:#Fondos de inversión

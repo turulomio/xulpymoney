@@ -15,7 +15,7 @@ class wdgProducts(QWidget, Ui_wdgProducts):
         self.products=SetProducts(self.mem)
         self.products.selected=[]#Can be selected several products
         self.tblInvestments.settings(self.mem, "wdgProducts")
-        self.mem.stockexchanges.qcombobox(self.cmbStockExchange)
+        self.mem.stockmarkets.qcombobox(self.cmbStockExchange)
         self.showingfavorites=False#Switch to know if widget is showing favorites            
 
         self.build_array(sql)
@@ -51,6 +51,7 @@ class wdgProducts(QWidget, Ui_wdgProducts):
 
     @QtCore.pyqtSlot() 
     def on_actionProductDelete_triggered(self):
+        self.mem.data.load_inactives()
         if self.products.selected[0].is_deletable()==False:
             m=QMessageBox()
             m.setText(self.tr("This product can't be removed, because is marked as not romavable"))
@@ -65,14 +66,12 @@ class wdgProducts(QWidget, Ui_wdgProducts):
             
         respuesta = QMessageBox.warning(self, self.tr("Xulpymoney"), self.tr("Deleting data from selected product ({0}). If you use manual update mode, data won't be recovered. Do you want to continue?".format(self.products.selected[0].id)), QMessageBox.Ok | QMessageBox.Cancel)
         if respuesta==QMessageBox.Ok:
-            con=self.mem.connect_from_config()
-            cur = con.cursor()
+            cur = self.mem.con.cursor()
             cur.execute("delete from products where id=%s", (self.products.selected[0].id, ))
             cur.execute("delete from quotes where id=%s", (self.products.selected[0].id, ))
             cur.execute("delete from estimations_dps where id=%s", (self.products.selected[0].id, ))
-            con.commit()
+            self.mem.con.commit()
             cur.close()     
-            self.mem.disconnect(con)    
             self.build_array(self.sql)
             self.products.myqtablewidget(self.tblInvestments)  
             
@@ -136,17 +135,17 @@ class wdgProducts(QWidget, Ui_wdgProducts):
             return
             
         #Stock exchange Filter
-        stockexchangefilter=""
+        stockmarketfilter=""
         if self.chkStockExchange.checkState()==Qt.Checked:
-            bolsa=self.mem.stockexchanges.find_by_id(self.cmbStockExchange.itemData(self.cmbStockExchange.currentIndex()))            
-            stockexchangefilter=" and id_bolsas={0} ".format(bolsa.id)
+            bolsa=self.mem.stockmarkets.find_by_id(self.cmbStockExchange.itemData(self.cmbStockExchange.currentIndex()))            
+            stockmarketfilter=" and stockmarkets_id={0} ".format(bolsa.id)
 
         self.build_array("select * from products where (id::text like '%"+(self.txt.text().upper())+
                 "%' or upper(name) like '%"+(self.txt.text().upper())+
                 "%' or upper(isin) like '%"+(self.txt.text().upper())+
                 "%' or upper(ticker) like '%"+(self.txt.text().upper())+
-                "%' or upper(comentario) like '%"+(self.txt.text().upper())+
-                "%') "+ stockexchangefilter)
+                "%' or upper(comment) like '%"+(self.txt.text().upper())+
+                "%') "+ stockmarketfilter)
         self.products.myqtablewidget(self.tblInvestments)          
 
 

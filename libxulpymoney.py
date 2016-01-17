@@ -326,7 +326,7 @@ class SetInvestments(SetCommons):
         d={"sumpendiente":Decimal(0), "sumdiario":Decimal(0), "suminvertido":Decimal(0), "sumpositivos":Decimal(0), "sumnegativos":Decimal(0)} 
         for i, inv in enumerate(self.arr):
             table.setItem(i, 0, QTableWidgetItem("{0} ({1})".format(inv.name, inv.account.name)))            
-            table.setItem(i, 1, qdatetime(inv.product.result.basic.last.datetime, inv.product.stockexchange.zone))
+            table.setItem(i, 1, qdatetime(inv.product.result.basic.last.datetime, inv.product.stockmarket.zone))
             table.setItem(i, 2, inv.product.currency.qtablewidgetitem(inv.product.result.basic.last.quote,  6))#Se debería recibir el parametro currency
             
             diario=inv.diferencia_saldo_diario()
@@ -717,9 +717,9 @@ class SetProducts(SetCommons):
         for i, p in enumerate(self.arr):
             table.setItem(i, 0, QTableWidgetItem(str(p.id)))
             table.setItem(i, 1, QTableWidgetItem(p.name.upper()))
-            table.item(i, 1).setIcon(p.stockexchange.country.qicon())
+            table.item(i, 1).setIcon(p.stockmarket.country.qicon())
             table.setItem(i, 2, QTableWidgetItem(p.isin))   
-            table.setItem(i, 3, qdatetime(p.result.basic.last.datetime, p.stockexchange.zone))#, self.mem.localzone.name)))
+            table.setItem(i, 3, qdatetime(p.result.basic.last.datetime, p.stockmarket.zone))#, self.mem.localzone.name)))
             table.setItem(i, 4, p.currency.qtablewidgetitem(p.result.basic.last.quote, 6 ))  
 
             table.setItem(i, 5, qtpc(p.result.basic.tpc_diario()))
@@ -787,16 +787,16 @@ class SetSimulations(SetCommons):
             table.setItem(i, 4, qdatetime(a.ending, self.mem.localzone))
 
 
-class SetStockExchanges(SetCommons):
+class SetStockMarkets(SetCommons):
     def __init__(self, mem):
         SetCommons.__init__(self)
         self.mem=mem     
     
     def load_all_from_db(self):
         cur=self.mem.con.cursor()
-        cur.execute("Select * from bolsas")
+        cur.execute("select * from stockmarkets")
         for row in cur:
-            self.append(StockExchange(self.mem).init__db_row(row, self.mem.countries.find_by_id(row['country'])))
+            self.append(StockMarket(self.mem).init__db_row(row, self.mem.countries.find_by_id(row['country'])))
         cur.close()
 
 class SetConcepts(SetCommons):
@@ -1231,7 +1231,7 @@ class SetEstimationsEPS:
         for i, e in enumerate(self.arr):
             table.setItem(i, 0, qcenter(str(e.year)))
             table.setItem(i, 1, self.product.currency.qtablewidgetitem(e.estimation, 6))       
-            table.setItem(i, 2, qright(e.PER(Quote(self.mem).init__from_query(self.product, day_end_from_date(datetime.date(e.year, 12, 31), self.product.stockexchange.zone))), 2))
+            table.setItem(i, 2, qright(e.PER(Quote(self.mem).init__from_query(self.product, day_end_from_date(datetime.date(e.year, 12, 31), self.product.stockmarket.zone))), 2))
             table.setItem(i, 3, qdate(e.date_estimation))
             table.setItem(i, 4, QTableWidgetItem(e.source))
             table.setItem(i, 5, qbool(e.manual)) 
@@ -1476,7 +1476,7 @@ class SetInvestmentOperations(SetIO):
         tabla.clearContents()  
         tabla.setRowCount(len(self.arr))
         for rownumber, a in enumerate(self.arr):
-            tabla.setItem(rownumber, 0, qdatetime(a.datetime, a.inversion.product.stockexchange.zone))
+            tabla.setItem(rownumber, 0, qdatetime(a.datetime, a.inversion.product.stockmarket.zone))
             if self.mem.gainsyear==True and a.less_than_a_year()==True:
                 tabla.item(rownumber, 0).setIcon(QIcon(":/xulpymoney/new.png"))
             if homogeneous==False:
@@ -3545,7 +3545,7 @@ class Assets:
         resultado=0
 #        inicio=datetime.datetime.now()
         for inv in setinversiones.arr:
-            if inv.product.tpc==0:        
+            if inv.product.percentage==0:        
                 if fecha==None:
                     resultado=resultado+inv.balance()
                 else:
@@ -3805,28 +3805,28 @@ class SetAgrupations(SetCommons):
             return r
         
     def load_all(self):
-        self.append(Agrupation(self.mem).init__create( "ERROR","Agrupación errónea", self.mem.types.find_by_id(3), self.mem.stockexchanges.find_by_id(1) ))
-        self.append(Agrupation(self.mem).init__create( "IBEX","Ibex 35", self.mem.types.find_by_id(3), self.mem.stockexchanges.find_by_id(1) ))
-        self.append(Agrupation(self.mem).init__create( "MERCADOCONTINUO","Mercado continuo español", self.mem.types.find_by_id(3), self.mem.stockexchanges.find_by_id(1) ))
-        self.append(Agrupation(self.mem).init__create("CAC",  "CAC 40 de París", self.mem.types.find_by_id(3),self.mem.stockexchanges.find_by_id(3) ))
-        self.append(Agrupation(self.mem).init__create( "EUROSTOXX","Eurostoxx 50", self.mem.types.find_by_id(3),self.mem.stockexchanges.find_by_id(10)  ))
-        self.append(Agrupation(self.mem).init__create( "DAX","DAX", self.mem.types.find_by_id(3), self.mem.stockexchanges.find_by_id(5)  ))
-        self.append(Agrupation(self.mem).init__create("SP500",  "Standard & Poors 500", self.mem.types.find_by_id(3), self.mem.stockexchanges.find_by_id(2)  ))
-        self.append(Agrupation(self.mem).init__create( "NASDAQ100","Nasdaq 100", self.mem.types.find_by_id(3), self.mem.stockexchanges.find_by_id(2)  ))
-        self.append(Agrupation(self.mem).init__create( "EURONEXT",  "EURONEXT", self.mem.types.find_by_id(3), self.mem.stockexchanges.find_by_id(10)  ))
-        self.append(Agrupation(self.mem).init__create( "DEUTSCHEBOERSE",  "DEUTSCHEBOERSE", self.mem.types.find_by_id(3), self.mem.stockexchanges.find_by_id(5)  ))
-        self.append(Agrupation(self.mem).init__create( "LATIBEX",  "LATIBEX", self.mem.types.find_by_id(3), self.mem.stockexchanges.find_by_id(1)  ))
+        self.append(Agrupation(self.mem).init__create( "ERROR","Agrupación errónea", self.mem.types.find_by_id(3), self.mem.stockmarkets.find_by_id(1) ))
+        self.append(Agrupation(self.mem).init__create( "IBEX","Ibex 35", self.mem.types.find_by_id(3), self.mem.stockmarkets.find_by_id(1) ))
+        self.append(Agrupation(self.mem).init__create( "MERCADOCONTINUO","Mercado continuo español", self.mem.types.find_by_id(3), self.mem.stockmarkets.find_by_id(1) ))
+        self.append(Agrupation(self.mem).init__create("CAC",  "CAC 40 de París", self.mem.types.find_by_id(3),self.mem.stockmarkets.find_by_id(3) ))
+        self.append(Agrupation(self.mem).init__create( "EUROSTOXX","Eurostoxx 50", self.mem.types.find_by_id(3),self.mem.stockmarkets.find_by_id(10)  ))
+        self.append(Agrupation(self.mem).init__create( "DAX","DAX", self.mem.types.find_by_id(3), self.mem.stockmarkets.find_by_id(5)  ))
+        self.append(Agrupation(self.mem).init__create("SP500",  "Standard & Poors 500", self.mem.types.find_by_id(3), self.mem.stockmarkets.find_by_id(2)  ))
+        self.append(Agrupation(self.mem).init__create( "NASDAQ100","Nasdaq 100", self.mem.types.find_by_id(3), self.mem.stockmarkets.find_by_id(2)  ))
+        self.append(Agrupation(self.mem).init__create( "EURONEXT",  "EURONEXT", self.mem.types.find_by_id(3), self.mem.stockmarkets.find_by_id(10)  ))
+        self.append(Agrupation(self.mem).init__create( "DEUTSCHEBOERSE",  "DEUTSCHEBOERSE", self.mem.types.find_by_id(3), self.mem.stockmarkets.find_by_id(5)  ))
+        self.append(Agrupation(self.mem).init__create( "LATIBEX",  "LATIBEX", self.mem.types.find_by_id(3), self.mem.stockmarkets.find_by_id(1)  ))
 
-        self.append(Agrupation(self.mem).init__create( "e_fr_LYXOR","LYXOR", self.mem.types.find_by_id(4),self.mem.stockexchanges.find_by_id(3)  ))
-        self.append(Agrupation(self.mem).init__create( "e_de_DBXTRACKERS","Deutsche Bank X-Trackers", self.mem.types.find_by_id(4),self.mem.stockexchanges.find_by_id(5)  ))
+        self.append(Agrupation(self.mem).init__create( "e_fr_LYXOR","LYXOR", self.mem.types.find_by_id(4),self.mem.stockmarkets.find_by_id(3)  ))
+        self.append(Agrupation(self.mem).init__create( "e_de_DBXTRACKERS","Deutsche Bank X-Trackers", self.mem.types.find_by_id(4),self.mem.stockmarkets.find_by_id(5)  ))
         
-        self.append(Agrupation(self.mem).init__create("f_es_0014",  "Gestora BBVA", self.mem.types.find_by_id(2), self.mem.stockexchanges.find_by_id(1) ))
-        self.append(Agrupation(self.mem).init__create( "f_es_0043","Gestora Renta 4", self.mem.types.find_by_id(2), self.mem.stockexchanges.find_by_id(1)))
-        self.append(Agrupation(self.mem).init__create("f_es_0055","Gestora Bankinter", self.mem.types.find_by_id(2),self.mem.stockexchanges.find_by_id(1) ))
-        self.append(Agrupation(self.mem).init__create( "f_es_BMF","Fondos de la bolsa de Madrid", self.mem.types.find_by_id(2), self.mem.stockexchanges.find_by_id(1) ))
+        self.append(Agrupation(self.mem).init__create("f_es_0014",  "Gestora BBVA", self.mem.types.find_by_id(2), self.mem.stockmarkets.find_by_id(1) ))
+        self.append(Agrupation(self.mem).init__create( "f_es_0043","Gestora Renta 4", self.mem.types.find_by_id(2), self.mem.stockmarkets.find_by_id(1)))
+        self.append(Agrupation(self.mem).init__create("f_es_0055","Gestora Bankinter", self.mem.types.find_by_id(2),self.mem.stockmarkets.find_by_id(1) ))
+        self.append(Agrupation(self.mem).init__create( "f_es_BMF","Fondos de la bolsa de Madrid", self.mem.types.find_by_id(2), self.mem.stockmarkets.find_by_id(1) ))
 
-        self.append(Agrupation(self.mem).init__create( "w_fr_SG","Warrants Societe Generale", self.mem.types.find_by_id(5),self.mem.stockexchanges.find_by_id(3) ))
-        self.append(Agrupation(self.mem).init__create("w_es_BNP","Warrants BNP Paribas", self.mem.types.find_by_id(5),self.mem.stockexchanges.find_by_id(1)))
+        self.append(Agrupation(self.mem).init__create( "w_fr_SG","Warrants Societe Generale", self.mem.types.find_by_id(5),self.mem.stockmarkets.find_by_id(3) ))
+        self.append(Agrupation(self.mem).init__create("w_es_BNP","Warrants BNP Paribas", self.mem.types.find_by_id(5),self.mem.stockmarkets.find_by_id(1)))
   
     def clone_by_type(self,  type):
         """Muestra las agrupaciónes de un tipo pasado como parámetro. El parámetro type es un objeto Type"""
@@ -3963,7 +3963,7 @@ class SetPrioritiesHistorical(SetCommons):
             self.append(self.mem.prioritieshistorical.find_by_id(cmb.itemData(i)))
         return self
 
-class StockExchange:
+class StockMarket:
     def __init__(self, mem):
         self.mem=mem
         self.id=None
@@ -3977,7 +3977,7 @@ class StockExchange:
         return self.name
         
     def init__db_row(self, row,  country):
-        self.id=row['id_bolsas']
+        self.id=row['id']
         self.name=row['name']
         self.country=country
         self.starts=row['starts']
@@ -4365,14 +4365,14 @@ class Product:
         self.address=None
         self.phone=None
         self.mail=None
-        self.tpc=None
+        self.percentage=None
         self.mode=None#Anterior mode investmentmode
-        self.apalancado=None
-        self.stockexchange=None
+        self.leveraged=None
+        self.stockmarket=None
         self.ticker=None
         self.priority=None
         self.priorityhistorical=None
-        self.comentario=None
+        self.comment=None
         self.obsolete=None
         
         self.result=None#Variable en la que se almacena QuotesResult
@@ -4381,7 +4381,7 @@ class Product:
         self.dps=SetDPS(self.mem, self)
 
     def __repr__(self):
-        return "{0} ({1}) de la {2}".format(self.name , self.id, self.stockexchange.name)
+        return "{0} ({1}) de la {2}".format(self.name , self.id, self.stockmarket.name)
                 
     def init__db_row(self, row):
         """row es una fila de un pgcursro de investmentes"""
@@ -4395,20 +4395,20 @@ class Product:
         self.address=row['address']
         self.phone=row['phone']
         self.mail=row['mail']
-        self.tpc=row['tpc']
+        self.percentage=row['percentage']
         self.mode=self.mem.investmentsmodes.find_by_id(row['pci'])
-        self.apalancado=self.mem.leverages.find_by_id(row['apalancado'])
-        self.stockexchange=self.mem.stockexchanges.find_by_id(row['id_bolsas'])
+        self.leveraged=self.mem.leverages.find_by_id(row['leveraged'])
+        self.stockmarket=self.mem.stockmarkets.find_by_id(row['stockmarkets_id'])
         self.ticker=row['ticker']
         self.priority=SetPriorities(self.mem).init__create_from_db(row['priority'])
         self.priorityhistorical=SetPrioritiesHistorical(self.mem).init__create_from_db(row['priorityhistorical'])
-        self.comentario=row['comentario']
+        self.comment=row['comment']
         self.obsolete=row['obsolete']
         
         self.result=QuotesResult(self.mem,self)
         return self
 
-    def init__create(self, name,  isin, currency, type, agrupations, active, web, address, phone, mail, tpc, mode, apalancado, bolsa, ticker, priority, priorityhistorical, comentario, obsolete, id=None):
+    def init__create(self, name,  isin, currency, type, agrupations, active, web, address, phone, mail, percentage, mode, leveraged, stockmarket, ticker, priority, priorityhistorical, comment, obsolete, id=None):
         """agrupations es un setagrupation, priority un SetPriorities y priorityhistorical un SetPrioritieshistorical"""
         self.name=name
         self.isin=isin
@@ -4421,14 +4421,14 @@ class Product:
         self.address=address
         self.phone=phone
         self.mail=mail
-        self.tpc=tpc
+        self.percentage=percentage
         self.mode=mode
-        self.apalancado=apalancado        
-        self.stockexchange=id_stockexchanges
+        self.leveraged=leveraged        
+        self.stockmarket=stockmarket
         self.ticker=ticker
         self.priority=priority
         self.priorityhistorical=priorityhistorical
-        self.comentario=comentario
+        self.comment=comment
         self.obsolete=obsolete
         
         self.result=QuotesResult(self.mem,self)
@@ -4450,10 +4450,10 @@ class Product:
         if self.id==None:
             cur.execute(" select min(id)-1 from products;")
             id=cur.fetchone()[0]
-            cur.execute("insert into products (id, name,  isin,  currency,  type,  agrupations,   web, address,  phone, mail, tpc, pci,  apalancado, id_bolsas, ticker, priority, priorityhistorical , comentario,  obsolete) values (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",  (id, self.name,  self.isin,  self.currency.id,  self.type.id,  self.agrupations.dbstring(), self.web, self.address,  self.phone, self.mail, self.tpc, self.mode.id,  self.apalancado.id, self.stockexchange.id, self.ticker, self.priority.array_of_id(), self.priorityhistorical.array_of_id() , self.comentario, self.obsolete))
+            cur.execute("insert into products (id, name,  isin,  currency,  type,  agrupations,   web, address,  phone, mail, percentage, pci,  leveraged, stockmarkets_id, ticker, priority, priorityhistorical , comment,  obsolete) values (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",  (id, self.name,  self.isin,  self.currency.id,  self.type.id,  self.agrupations.dbstring(), self.web, self.address,  self.phone, self.mail, self.percentage, self.mode.id,  self.leveraged.id, self.stockmarket.id, self.ticker, self.priority.array_of_id(), self.priorityhistorical.array_of_id() , self.comment, self.obsolete))
             self.id=id
         else:
-            cur.execute("update products set name=%s, isin=%s,currency=%s,type=%s, agrupations=%s, web=%s, address=%s, phone=%s, mail=%s, tpc=%s, pci=%s, apalancado=%s, id_bolsas=%s, ticker=%s, priority=%s, priorityhistorical=%s, comentario=%s, obsolete=%s where id=%s", ( self.name,  self.isin,  self.currency.id,  self.type.id,  self.agrupations.dbstring(),  self.web, self.address,  self.phone, self.mail, self.tpc, self.mode.id,  self.apalancado.id, self.stockexchange.id, self.ticker, self.priority.array_of_id(), self.priorityhistorical.array_of_id() , self.comentario, self.obsolete,  self.id))
+            cur.execute("update products set name=%s, isin=%s,currency=%s,type=%s, agrupations=%s, web=%s, address=%s, phone=%s, mail=%s, percentage=%s, pci=%s, leveraged=%s, stockmarkets_id=%s, ticker=%s, priority=%s, priorityhistorical=%s, comment=%s, obsolete=%s where id=%s", ( self.name,  self.isin,  self.currency.id,  self.type.id,  self.agrupations.dbstring(),  self.web, self.address,  self.phone, self.mail, self.percentage, self.mode.id,  self.leveraged.id, self.stockmarket.id, self.ticker, self.priority.array_of_id(), self.priorityhistorical.array_of_id() , self.comment, self.obsolete,  self.id))
         cur.close()
     
 
@@ -4619,7 +4619,7 @@ class SetQuotes:
         for rownumber, a in enumerate(self.arr):
             tabla.setItem(rownumber, 0, qdatetime(a.datetime, self.mem.localzone))
             tabla.setItem(rownumber, 1, qleft(a.product.name))
-            tabla.item(rownumber, 1).setIcon(a.product.stockexchange.country.qicon())
+            tabla.item(rownumber, 1).setIcon(a.product.stockmarket.country.qicon())
             tabla.setItem(rownumber, 2, a.product.currency.qtablewidgetitem(a.quote))
                 
                 
@@ -4649,10 +4649,10 @@ class SetQuotesAllIntradays:
         dt_end=None
         for row in cur:
             if dt_end==None:#Loads the first datetime
-                dt_end=day_end(row['datetime'], self.product.stockexchange.zone)
+                dt_end=day_end(row['datetime'], self.product.stockmarket.zone)
             if row['datetime']>dt_end:#Cambio de SetQuotesIntraday
                 self.arr.append(SetQuotesIntraday(self.mem).init__create(self.product, dt_end.date(), intradayarr))
-                dt_end=day_end(row['datetime'], self.product.stockexchange.zone)
+                dt_end=day_end(row['datetime'], self.product.stockmarket.zone)
                 #crea otro intradayarr
                 del intradayarr
                 intradayarr=[]
@@ -4759,7 +4759,7 @@ class SetQuotesIntraday(SetQuotes):
         self.product=product
         self.date=date
         cur=self.mem.con.cursor()
-        iniciodia=day_start_from_date(date, self.product.stockexchange.zone)
+        iniciodia=day_start_from_date(date, self.product.stockmarket.zone)
         siguientedia=iniciodia+datetime.timedelta(days=1)
         cur.execute("select * from quotes where id=%s and datetime>=%s and datetime<%s order by datetime", (self.product.id,  iniciodia, siguientedia))
         for row in cur:
@@ -4989,7 +4989,7 @@ class OHCLDaily:
         return self
     def datetime(self):
         """Devuelve un datetime usado para dibujar en gráficos"""
-        return day_end_from_date(self.date, self.product.stockexchange.zone)
+        return day_end_from_date(self.date, self.product.stockmarket.zone)
     def print_time(self):
         return "{0}".format(self.date)
         
@@ -5045,7 +5045,7 @@ class OHCLMonthly:
         return o
     def datetime(self):
         """Devuelve un datetime usado para dibujar en gráficos, pongo el día 28 para no calcular el último"""
-        return day_end_from_date(datetime.date(self.year, self.month, 28), self.product.stockexchange.zone)
+        return day_end_from_date(datetime.date(self.year, self.month, 28), self.product.stockmarket.zone)
         
         
     def delete(self):
@@ -5093,7 +5093,7 @@ class OHCLWeekly:
         dlt = datetime.timedelta(days = (self.week-1)*7)
 #        return d + dlt,  d + dlt + timedelta(days=6) ## first day, end day
         lastday= d + dlt + datetime.timedelta(days=6)
-        return day_end_from_date(lastday, self.product.stockexchange.zone)
+        return day_end_from_date(lastday, self.product.stockmarket.zone)
         
     def print_time(self):
         return "{0}-{1}".format(self.year, self.week)
@@ -5130,7 +5130,7 @@ class OHCLYearly:
         return o
     def datetime(self):
         """Devuelve un datetime usado para dibujar en gráficos"""
-        return day_end_from_date(datetime.date(self.year, 12, 31), self.product.stockexchange.zone)
+        return day_end_from_date(datetime.date(self.year, 12, 31), self.product.stockmarket.zone)
     def print_time(self):
         return "{0}".format(int(self.year))
     
@@ -5187,13 +5187,13 @@ class SetOHCLDaily(SetOHCL):
         if len(self.arr)==0:
             return SetQuotesBasic(self.mem, self.product).init__create(None, None,  None)
         ohcl=self.arr[len(self.arr)-1]#last
-        last=Quote(self.mem).init__create(self.product, dt(ohcl.date, self.product.stockexchange.closes,  self.product.stockexchange.zone), ohcl.close)
+        last=Quote(self.mem).init__create(self.product, dt(ohcl.date, self.product.stockmarket.closes,  self.product.stockmarket.zone), ohcl.close)
         ohcl=self.find(ohcl.date-datetime.timedelta(days=1))#penultimate
         if ohcl!=None:
-            penultimate=Quote(self.mem).init__create(self.product, dt(ohcl.date, self.product.stockexchange.closes,  self.product.stockexchange.zone), ohcl.close)
+            penultimate=Quote(self.mem).init__create(self.product, dt(ohcl.date, self.product.stockmarket.closes,  self.product.stockmarket.zone), ohcl.close)
         ohcl=self.find(datetime.date(datetime.date.today().year-1, 12, 31))#endlastyear
         if ohcl!=None:
-            endlastyear=Quote(self.mem).init__create(self.product, dt(ohcl.date, self.product.stockexchange.closes,  self.product.stockexchange.zone), ohcl.close)        
+            endlastyear=Quote(self.mem).init__create(self.product, dt(ohcl.date, self.product.stockmarket.closes,  self.product.stockmarket.zone), ohcl.close)        
         return SetQuotesBasic(self.mem, self.product).init__create(last, penultimate, endlastyear)
                
 class SetOHCLWeekly(SetOHCL):
@@ -5530,14 +5530,14 @@ class Agrupation:
         self.id=None
         self.name=None
         self.type=None
-        self.stockexchange=None
+        self.stockmarket=None
 
         
     def init__create(self, id,  name, type, bolsa):
         self.id=id
         self.name=name
         self.type=type
-        self.stockexchange=bolsa
+        self.stockmarket=bolsa
         return self
         
 class SetTypes(SetCommons):
@@ -5772,8 +5772,8 @@ class MemXulpymoney:
         self.types=SetTypes(self)
         self.types.load_all()
         
-        self.stockexchanges=SetStockExchanges(self)
-        self.stockexchanges.load_all_from_db()
+        self.stockmarkets=SetStockMarkets(self)
+        self.stockmarkets.load_all_from_db()
         
         self.agrupations=SetAgrupations(self)
         self.agrupations.load_all()
