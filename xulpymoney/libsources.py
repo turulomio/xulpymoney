@@ -456,12 +456,12 @@ class WorkerMercadoContinuo(SourceParsePage):
                         date=datetime.date(int(arrdate[2]),  int(arrdate[1]),  int(arrdate[0]))
                         strtime=l.split('class="Ult" align="center">')[1].split("</td>")[0]
                         if strtime=="Cierre":
-                            time=p.stockexchange.closes
+                            time=p.stockmarket.closes
                         else:
                             arrtime=strtime.split(":")
                             time=datetime.time(int(arrtime[0]), int(arrtime[1]))
                         quot=Decimal(self.comaporpunto(l.split("</a></td><td>")[1].split("</td><td ")[0]))
-                        datime=dt(date,time,p.stockexchange.zone)
+                        datime=dt(date,time,p.stockmarket.zone)
                         quote=Quote(self.mem).init__create(p, datime, quot)    
                         self.quotes.append(quote)
                     else:
@@ -534,7 +534,7 @@ class WorkerMorningstar(SourceIterateProducts):
                         datestr=l.split("<br />")[1].split("</span")[0]
                         datarr=datestr.split("/")
                         date=datetime.date(int(datarr[2]), int(datarr[1]), int(datarr[0]))
-                        dat=dt(date, product.stockexchange.closes, product.stockexchange.zone)
+                        dat=dt(date, product.stockmarket.closes, product.stockmarket.zone)
                         value=Decimal(self.comaporpunto(l.split('line text">')[1].split("</td")[0].split("\xa0")[1]))
                         self.quotes.append(Quote(self.mem).init__create(product, dat, value))
                         return
@@ -594,7 +594,7 @@ class WorkerSGWarrants(SourceParsePage):
                 H=ampm_to_24(H, pm)
                 dat=datetime.date(Y, M, d)
                 tim=datetime.time(H, m)
-                bolsa=self.mem.stockexchanges.find_by_id(2)#'US/Eastern'
+                bolsa=self.mem.stockmarkets.find_by_id(2)#'US/Eastern'
                 self.quotes.append(Quote(self.mem).init__create(product,dt(dat,tim,bolsa.zone), quote))
             except:#
                 self.log("Error parsing: {}".format(i[:-1]))
@@ -672,7 +672,7 @@ class WorkerYahoo(SourceParsePage):
                 H=ampm_to_24(H, pm)
                 dat=datetime.date(Y, M, d)
                 tim=datetime.time(H, m)
-                bolsa=self.mem.stockexchanges.find_by_id(2)#'US/Eastern'
+                bolsa=self.mem.stockmarkets.find_by_id(2)#'US/Eastern'
                 self.quotes.append(Quote(self.mem).init__create(product,dt(dat,tim,bolsa.zone), quote))
             except:#
                 self.log("Error parsing: {}".format(i[:-1]))
@@ -744,11 +744,10 @@ class WorkerYahooHistorical(SourceIterateProducts):
         for i in web: 
             datos=i.split(",")
             fecha=datos[0].split("-")
-            print  (fecha)
             date=datetime.date(int(fecha[0]), int(fecha[1]),  int(fecha[2]))
             
-            datestart=dt(date,product.stockexchange.starts,product.stockexchange.zone)
-            dateends=dt(date,product.stockexchange.closes,product.stockexchange.zone)
+            datestart=dt(date,product.stockmarket.starts,product.stockmarket.zone)
+            dateends=dt(date,product.stockmarket.closes,product.stockmarket.zone)
             datetimefirst=datestart-datetime.timedelta(seconds=1)
             datetimelow=(datestart+(dateends-datestart)*1/3)
             datetimehigh=(datestart+(dateends-datestart)*2/3)

@@ -14,7 +14,7 @@ PGPASSWORD=$password pg_dump -s -U $MYUSER -h $MYHOST -p $MYPORT $DATABASE > xul
 PGPASSWORD=$password pg_dump -a -U $MYUSER -h $MYHOST -p $MYPORT $DATABASE -t products --insert > xulpymoney.products
 cat xulpymoney.products| grep -i 'INSERT INTO' | sort >> xulpymoney.sql
 rm xulpymoney.products
-PGPASSWORD=$password pg_dump -a -U $MYUSER -h $MYHOST -p $MYPORT $DATABASE -t bolsas --insert > xulpymoney.bolsas
+PGPASSWORD=$password pg_dump -a -U $MYUSER -h $MYHOST -p $MYPORT $DATABASE -t stockmarkets --insert > xulpymoney.bolsas
 cat xulpymoney.bolsas| grep -i 'INSERT INTO' | sort >> xulpymoney.sql
 rm xulpymoney.bolsas
 PGPASSWORD=$password pg_dump -a -U $MYUSER -h $MYHOST -p $MYPORT $DATABASE -t globals --insert > xulpymoney.globals

@@ -133,7 +133,7 @@ class wdgInvestmentClasses(QWidget, Ui_wdgInvestmentClasses):
         for r in range(0, 11):
             total=0
             for i in self.mem.data.investments_active.arr:
-                if math.ceil(i.product.tpc/10.0)==r:
+                if math.ceil(i.product.percentage/10.0)==r:
                     if self.radCurrent.isChecked():
                         total=total+i.balance()
                     else:
@@ -205,7 +205,7 @@ class wdgInvestmentClasses(QWidget, Ui_wdgInvestmentClasses):
         for a in self.mem.leverages.arr:
             total=0
             for i in self.mem.data.investments_active.arr:
-                if i.product.apalancado==a:
+                if i.product.leveraged==a:
                     if self.radCurrent.isChecked():
                         total=total+i.balance()
                     else:
@@ -227,7 +227,7 @@ class wdgInvestmentClasses(QWidget, Ui_wdgInvestmentClasses):
         for c in self.mem.countries.arr:
             total=0
             for i in self.mem.data.investments_active.arr:
-                if i.product.stockexchange.country==c:
+                if i.product.stockmarket.country==c:
                     if self.radCurrent.isChecked():
                         total=total+i.balance()
                     else:

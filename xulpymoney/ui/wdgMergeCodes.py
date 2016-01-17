@@ -26,7 +26,7 @@ class wdgMergeCodes(QWidget, Ui_wdgMergeCodes):
         #Carga tabla origen
         cur = self.mem.con.cursor()
         self.table.setItem(0, 0, qcenter(str(self.destino.id)))
-        self.table.item(0, 0).setIcon(self.destino.stockexchange.country.qicon())
+        self.table.item(0, 0).setIcon(self.destino.stockmarket.country.qicon())
         self.table.setItem(0, 1, QTableWidgetItem(self.destino.name))
         self.table.setItem(0, 2, QTableWidgetItem(self.destino.isin))
         cur.execute("select count(*) from quotes where id=%s", (self.destino.id, ))
@@ -36,7 +36,7 @@ class wdgMergeCodes(QWidget, Ui_wdgMergeCodes):
 
         ##################
         self.table.setItem(1, 0, qcenter(str(self.origen.id)))
-        self.table.item(1, 0).setIcon(self.origen.stockexchange.country.qicon())
+        self.table.item(1, 0).setIcon(self.origen.stockmarket.country.qicon())
         self.table.setItem(1, 1, QTableWidgetItem(self.origen.name))
         self.table.setItem(1, 2, QTableWidgetItem(self.origen.isin))
         cur.execute("select count(*) from quotes where id=%s", (self.origen.id, ))

@@ -19,7 +19,7 @@ class Update:
     def __init__(self, mem):
         self.mem=mem
         self.dbversion=self.get_database_version()    
-        self.lastcodeupdate=201601050843
+        self.lastcodeupdate=201601170811
 
    
     def get_database_version(self):
@@ -373,6 +373,18 @@ class Update:
             cur.close()
             self.mem.con.commit()
             self.set_database_version(201601050843)          
+        if self.dbversion<201601170811:
+            cur=self.mem.con.cursor()
+            cur.execute("alter table products rename comentario to comment")
+            cur.execute("alter table products rename id_bolsas to stockmarkets_id")
+            cur.execute("alter table products rename apalancado to leveraged")
+            cur.execute("alter table products rename tpc to percentage")
+            
+            cur.execute("alter table bolsas rename to stockmarkets")
+            cur.execute("alter table stockmarkets rename id_bolsas to id")
+            cur.close()
+            self.mem.con.commit()
+            self.set_database_version(201601170811)          
             
             
 

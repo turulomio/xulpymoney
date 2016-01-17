@@ -311,7 +311,7 @@
 <context>
     <name>Core</name>
     <message>
-        <location filename="../libsources.py" line="880"/>
+        <location filename="../libsources.py" line="879"/>
         <source>From {} desynchronized products added:
     - {} quotes
     - {} dividends per share
@@ -3554,7 +3554,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.py" line="456"/>
+        <location filename="../ui/frmProductReport.py" line="450"/>
         <source>You have to add a quote and a dividend per share estimation to the new product</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5858,32 +5858,32 @@ Daily Diff: {5}. Investment average age: {6}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgProducts.py" line="66"/>
+        <location filename="../ui/wdgProducts.py" line="67"/>
         <source>Deleting data from selected product ({0}). If you use manual update mode, data won&apos;t be recovered. Do you want to continue?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgProducts.py" line="248"/>
+        <location filename="../ui/wdgProducts.py" line="247"/>
         <source>{0} quotes have been purged from {1}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgProducts.py" line="56"/>
+        <location filename="../ui/wdgProducts.py" line="57"/>
         <source>This product can&apos;t be removed, because is marked as not romavable</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgProducts.py" line="66"/>
+        <location filename="../ui/wdgProducts.py" line="67"/>
         <source>Xulpymoney</source>
         <translation type="unfinished">Xulpymoney</translation>
     </message>
     <message>
-        <location filename="../ui/wdgProducts.py" line="134"/>
+        <location filename="../ui/wdgProducts.py" line="133"/>
         <source>Search too wide. You need more than 3 characters</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgProducts.py" line="169"/>
+        <location filename="../ui/wdgProducts.py" line="168"/>
         <source>Remove from favorites</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5893,7 +5893,7 @@ Daily Diff: {5}. Investment average age: {6}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgProducts.py" line="222"/>
+        <location filename="../ui/wdgProducts.py" line="221"/>
         <source>Merging codes</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5928,7 +5928,7 @@ Daily Diff: {5}. Investment average age: {6}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgProducts.py" line="181"/>
+        <location filename="../ui/wdgProducts.py" line="180"/>
         <source>Order by</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5938,7 +5938,7 @@ Daily Diff: {5}. Investment average age: {6}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgProducts.py" line="62"/>
+        <location filename="../ui/wdgProducts.py" line="63"/>
         <source>This product can&apos;t be removed, because is a system product</source>
         <translation type="unfinished"></translation>
     </message>
