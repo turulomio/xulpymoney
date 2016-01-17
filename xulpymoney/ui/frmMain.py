@@ -37,6 +37,8 @@ class frmMain(QMainWindow, Ui_frmMain):
         self.showMaximized()
         
         self.mem=mem
+
+        self.mem.con.inactivity_timeout.connect(self.inactivity_timeout)        
         self.sqlvacio="select * from products where id=-999999"
         self.setWindowTitle(self.tr("Xulpymoney 2010-{0} \xa9").format(version_date.year))
 #        print ("Xulpymoney 2010-{0} © €".encode('unicode-escape'))
@@ -102,6 +104,10 @@ class frmMain(QMainWindow, Ui_frmMain):
             QDesktopServices.openUrl(QUrl("file://"+file));
 
 
+    def inactivity_timeout(self):
+        self.hide()
+        qmessagebox_connexion_inactivity_timeout(self.mem.con.inactivity_timeout_minutes)
+        self.on_actionExit_triggered()
 
 
     @QtCore.pyqtSlot()  

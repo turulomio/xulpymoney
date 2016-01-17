@@ -12,7 +12,13 @@ def qmessagebox_connexion_error(database, server):
     m.setIcon(QMessageBox.Information)
     m.setText(QApplication.translate("Core","Error conecting to {} database in {} server").format(database, server))
     m.exec_()   
-            
+
+def qmessagebox_connexion_inactivity_timeout(minutes):
+    m=QMessageBox()
+    m.setIcon(QMessageBox.Information)
+    m.setText(QApplication.translate("Core","Disconnecting due to {} minutes of inactivity.".format(minutes)))
+    m.exec_()    
+
 def qmessagebox_connexion_not_superuser():
     m=QMessageBox()
     m.setIcon(QMessageBox.Information)
