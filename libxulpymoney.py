@@ -13,17 +13,25 @@ from decimal import *
 
 version="0.1"
 version_date=datetime.date(2015,3,1)
-class Connection:
+class Connection(QObject):
     """Futuro conection object"""
+    inactivity_timeout=pyqtSignal()
     def __init__(self):
+        QObject.__init__(self)
+        
         self.user=None
         self.password=None
         self.server=None
         self.port=None
         self.db=None
         self._con=None
-        self.active=False
+        self._active=False
         
+        self._lastuse=datetime.datetime.now()#Datetime who saves the las use of connection
+        self.inactivity_timeout_minutes=10
+        self._timerlastuse = QTimer()
+        self._timerlastuse.timeout.connect(self._check_inactivity)
+        self._timerlastuse.start(60000)
         self.init=None
         
     def init__create(self, user, password, server, port, db):
@@ -34,7 +42,14 @@ class Connection:
         self.db=db
         return self
         
+    def _check_inactivity(self):
+        if datetime.datetime.now()-self._lastuse>datetime.timedelta(minutes=self.inactivity_timeout_minutes):
+            self.disconnect()
+            self._timerlastuse.stop()
+            self.inactivity_timeout.emit()
+
     def cursor(self):
+        self._lastuse=datetime.datetime.now()
         return self._con.cursor()
         
     
@@ -47,6 +62,7 @@ class Connection:
         
     def cursor_one_row(self, sql, arr=[]):
         """Returns only one row"""
+        self._lastuse=datetime.datetime.now()
         cur=self._con.cursor()
         cur.execute(sql, arr)
         row=cur.fetchone()
@@ -55,6 +71,7 @@ class Connection:
         
     def cursor_one_column(self, sql, arr=[]):
         """Returns un array with the results of the column"""
+        self._lastuse=datetime.datetime.now()
         cur=self._con.cursor()
         cur.execute(sql, arr)
         for row in cur:
@@ -84,14 +101,16 @@ class Connection:
             print (e.pgcode, e.pgerror)
             return
 #            self._con(None, QApplication.translate("Core","Error conecting to Xulpymoney"))
-        self.active=True
+        self._active=True
         self.init=datetime.datetime.now()
+        self._lastuse=datetime.datetime.now()
         
     def disconnect(self):
+        self._active=False
         self._con.close()
         
     def is_active(self):
-        return self.active
+        return self._active
         
         
     def is_superuser(self):
