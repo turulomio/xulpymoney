@@ -29,9 +29,6 @@ class Connection(QObject):
         
         self._lastuse=datetime.datetime.now()#Datetime who saves the las use of connection
         self.inactivity_timeout_minutes=10
-        self._timerlastuse = QTimer()
-        self._timerlastuse.timeout.connect(self._check_inactivity)
-        self._timerlastuse.start(60000)
         self.init=None
         
     def init__create(self, user, password, server, port, db):
@@ -104,6 +101,9 @@ class Connection(QObject):
         self._active=True
         self.init=datetime.datetime.now()
         self._lastuse=datetime.datetime.now()
+        self._timerlastuse = QTimer()
+        self._timerlastuse.timeout.connect(self._check_inactivity)
+        self._timerlastuse.start(60000)
         
     def disconnect(self):
         self._active=False
