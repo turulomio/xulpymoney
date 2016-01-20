@@ -27,7 +27,7 @@ class Connection(QObject):
         self._con=None
         self._active=False
         
-        self._lastuse=datetime.datetime.now()#Datetime who saves the las use of connection
+        self.restart_timeout()
         self.inactivity_timeout_minutes=30
         self.init=None
         
@@ -44,10 +44,15 @@ class Connection(QObject):
             self.disconnect()
             self._timerlastuse.stop()
             self.inactivity_timeout.emit()
+        print ("Remaining time {}".format(self._lastuse+datetime.timedelta(minutes=self.inactivity_timeout_minutes)-datetime.datetime.now()))
 
     def cursor(self):
-        self._lastuse=datetime.datetime.now()
+        self.restart_timeout()#Datetime who saves the las use of connection
         return self._con.cursor()
+        
+    def restart_timeout(self):
+        """Resets timeout, usefull in long process without database connections"""
+        self._lastuse=datetime.datetime.now()
         
     
     def mogrify(self, sql, arr):
@@ -59,7 +64,7 @@ class Connection(QObject):
         
     def cursor_one_row(self, sql, arr=[]):
         """Returns only one row"""
-        self._lastuse=datetime.datetime.now()
+        self.restart_timeout()
         cur=self._con.cursor()
         cur.execute(sql, arr)
         row=cur.fetchone()
@@ -68,7 +73,7 @@ class Connection(QObject):
         
     def cursor_one_column(self, sql, arr=[]):
         """Returns un array with the results of the column"""
-        self._lastuse=datetime.datetime.now()
+        self.restart_timeout()
         cur=self._con.cursor()
         cur.execute(sql, arr)
         for row in cur:
@@ -100,13 +105,15 @@ class Connection(QObject):
 #            self._con(None, QApplication.translate("Core","Error conecting to Xulpymoney"))
         self._active=True
         self.init=datetime.datetime.now()
-        self._lastuse=datetime.datetime.now()
+        self.restart_timeout()
         self._timerlastuse = QTimer()
         self._timerlastuse.timeout.connect(self._check_inactivity)
         self._timerlastuse.start(60000)
         
     def disconnect(self):
         self._active=False
+        if self._timerlastuse.isActive()==True:
+            self._timerlastuse.stop()
         self._con.close()
         
     def is_active(self):

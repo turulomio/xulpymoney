@@ -538,6 +538,7 @@ class WorkerMorningstar(SourceIterateProducts):
                         value=Decimal(self.comaporpunto(l.split('line text">')[1].split("</td")[0].split("\xa0")[1]))
                         self.quotes.append(Quote(self.mem).init__create(product, dat, value))
                         return
+            self.mem.con.restart_timeout()#To avoid connection timeout (long process)
         self.log("Error parsing: {}".format(product.name))
         
     def setSQL(self, useronly):
