@@ -5405,27 +5405,27 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgInvestments.py" line="178"/>
+        <location filename="../ui/wdgInvestments.py" line="179"/>
         <source>Order by</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgInvestments.py" line="197"/>
+        <location filename="../ui/wdgInvestments.py" line="198"/>
         <source>Shares number: {0}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgInvestments.py" line="197"/>
+        <location filename="../ui/wdgInvestments.py" line="198"/>
         <source>Purchase price average: {0}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgInvestments.py" line="197"/>
+        <location filename="../ui/wdgInvestments.py" line="198"/>
         <source>Selling point: {}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgInvestments.py" line="197"/>
+        <location filename="../ui/wdgInvestments.py" line="198"/>
         <source>Selling all shares you get {}</source>
         <translation type="unfinished"></translation>
     </message>
