@@ -6330,22 +6330,22 @@ Diferencia diaria: {5}. Edad media de las inversiones: {6}</translation>
         <translation>Datos del año seleccionado</translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="332"/>
+        <location filename="../ui/wdgTotal.py" line="333"/>
         <source>Balance at {0}-12-31: {1}</source>
         <translation>Saldo a {0}-12-31: {1}</translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="509"/>
+        <location filename="../ui/wdgTotal.py" line="510"/>
         <source>Incomes of {0} of {1}</source>
         <translation>Ingresos de {0} de {1}</translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="715"/>
+        <location filename="../ui/wdgTotal.py" line="716"/>
         <source>Dividends of {0} of {1}</source>
         <translation>Dividendos de {0} de {1}</translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="554"/>
+        <location filename="../ui/wdgTotal.py" line="555"/>
         <source>Expenses of {0} of {1}</source>
         <translation>Gastos de {0} de {1}</translation>
     </message>
@@ -6355,17 +6355,17 @@ Diferencia diaria: {5}. Edad media de las inversiones: {6}</translation>
         <translation>No puedes cerrar esta pestaña</translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="443"/>
+        <location filename="../ui/wdgTotal.py" line="446"/>
         <source>Filling report data</source>
         <translation>Rellenando datos del informe</translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="443"/>
+        <location filename="../ui/wdgTotal.py" line="446"/>
         <source>Cancel</source>
         <translation>Cancelar</translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="445"/>
+        <location filename="../ui/wdgTotal.py" line="448"/>
         <source>Calculating data...</source>
         <translation>Calculando datos...</translation>
     </message>
@@ -6405,7 +6405,7 @@ Diferencia diaria: {5}. Edad media de las inversiones: {6}</translation>
         <translation>Objetivo acumulado</translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="366"/>
+        <location filename="../ui/wdgTotal.py" line="367"/>
         <source>Annual target percentage of total assests balance at {}-12-31 ( {} )</source>
         <translation>Porcentaje del objetivo anual del patrimonio en el día {}-12-31 ( {} )</translation>
     </message>
@@ -6435,47 +6435,47 @@ Diferencia diaria: {5}. Edad media de las inversiones: {6}</translation>
         <translation>Resultado</translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="428"/>
+        <location filename="../ui/wdgTotal.py" line="431"/>
         <source>Investment taxes are not evaluated in this report</source>
         <translation>No se evalúan los impuestos que el usuario debe pagar por sus inversiones</translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="426"/>
+        <location filename="../ui/wdgTotal.py" line="429"/>
         <source>Total gains are the result of adding dividends to gains</source>
         <translation>Las ganancias totales son el resultado de sumar los dividendos y las ganancias</translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="427"/>
+        <location filename="../ui/wdgTotal.py" line="430"/>
         <source>Difference between total gains and expenses shows if user could cover his expenses with his total gains</source>
         <translation>La diferencia de las ganancias totales y los gastos, muestra si el usuario puede cubrir sus gastos con las ganancias totales generadas</translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="425"/>
+        <location filename="../ui/wdgTotal.py" line="428"/>
         <source>This report shows if the user could retire due to its investments</source>
         <translation>Este informe muestra si el usuario podría dejar de trabajar, dedicándose a invertir</translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="401"/>
+        <location filename="../ui/wdgTotal.py" line="403"/>
         <source>Work</source>
         <translation>Trabajar</translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="404"/>
+        <location filename="../ui/wdgTotal.py" line="406"/>
         <source>Invest</source>
         <translation>Invertir</translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="384"/>
+        <location filename="../ui/wdgTotal.py" line="386"/>
         <source>This report shows if the user reaches the annual and monthly target.</source>
         <translation>Este informe muestra si el usuario alcanza el objetivo mensual y anual.</translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="386"/>
+        <location filename="../ui/wdgTotal.py" line="388"/>
         <source>The cumulative target row shows compliance of the target in the year.</source>
         <translation>En la fila de objetivo acumulado, se puede observar como va el cumplimiento del objetivo en el año.</translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="387"/>
+        <location filename="../ui/wdgTotal.py" line="389"/>
         <source>Green color shows that target has been reached.</source>
         <translation>El color verde muestra que se ha llegado al objetivo.</translation>
     </message>
@@ -6485,27 +6485,27 @@ Diferencia diaria: {5}. Edad media de las inversiones: {6}</translation>
         <translation>Ganancias totales acumuladas</translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="712"/>
+        <location filename="../ui/wdgTotal.py" line="713"/>
         <source>Dividends of {0}</source>
         <translation>Dividendos de {0}</translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="542"/>
+        <location filename="../ui/wdgTotal.py" line="543"/>
         <source>Expenses of {0}</source>
         <translation>Gastos de {0}</translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="497"/>
+        <location filename="../ui/wdgTotal.py" line="498"/>
         <source>Incomes of {}</source>
         <translation>Ingresos de {0}</translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="593"/>
+        <location filename="../ui/wdgTotal.py" line="594"/>
         <source>Selling operations of {0}</source>
         <translation>Operaciones de venta de {0}</translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="601"/>
+        <location filename="../ui/wdgTotal.py" line="602"/>
         <source>Selling operations of {0} of {1}</source>
         <translation>Operaciones de venta de {0} de {1}</translation>
     </message>
@@ -6545,42 +6545,42 @@ Diferencia diaria: {5}. Edad media de las inversiones: {6}</translation>
         <translation>Impuestos devueltos</translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="749"/>
+        <location filename="../ui/wdgTotal.py" line="750"/>
         <source>Bank comissions</source>
         <translation>Comisiones del banco</translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="750"/>
+        <location filename="../ui/wdgTotal.py" line="751"/>
         <source>Custody fees</source>
         <translation>Comisiones de custodia</translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="751"/>
+        <location filename="../ui/wdgTotal.py" line="752"/>
         <source>Invesment operation comissions</source>
         <translation>Comisiones de las operaciones de inversión</translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="689"/>
+        <location filename="../ui/wdgTotal.py" line="690"/>
         <source>Positive gross selling operations: {}. Negative gross selling operations: {}.</source>
         <translation>Bruto de las operaciones positivas de venta: {}. Bruto de las operaciones negativas de venta: {}.</translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="632"/>
+        <location filename="../ui/wdgTotal.py" line="633"/>
         <source>Selling operations of {0}  (Sold after a year)</source>
         <translation>Operaciones de venta de {0} (Vendidas después de un año)</translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="640"/>
+        <location filename="../ui/wdgTotal.py" line="641"/>
         <source>Selling operations of {0} of {1} (Sold after a year)</source>
         <translation>Operaciones de venta de {0} de {1} (Vendidas después de un año)</translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="671"/>
+        <location filename="../ui/wdgTotal.py" line="672"/>
         <source>Selling operations of {0} (Sold before a year)</source>
         <translation>Operaciones de venta de {0} (Vendidas antes de un año)</translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="679"/>
+        <location filename="../ui/wdgTotal.py" line="680"/>
         <source>Selling operations of {0} of {1} (Sold before a year)</source>
         <translation>Operaciones de venta de {0} de {1} (Vendidas antes de un año)</translation>
     </message>
@@ -6600,12 +6600,12 @@ Diferencia diaria: {5}. Edad media de las inversiones: {6}</translation>
         <translation>Mostrar impuestos</translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="355"/>
+        <location filename="../ui/wdgTotal.py" line="356"/>
         <source>This year I&apos;ve generated {}.</source>
         <translation>Este año he generado {}.</translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="358"/>
+        <location filename="../ui/wdgTotal.py" line="359"/>
         <source>Difference between invested amount and current invesment balance: {} - {} = {}</source>
         <translation>La difrencia entre la cantidad invertida y el saldo actual de la inversión es: {} - {} = {}</translation>
     </message>
