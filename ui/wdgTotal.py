@@ -327,6 +327,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
     def load_data(self):        
         print ("loading data")
         self.table.clearContents()
+        self.table.applySettings()
         inicio=datetime.datetime.now()     
         self.setData=TotalYear(self.mem, self.wyData.year)
         self.lblPreviousYear.setText(self.tr("Balance at {0}-12-31: {1}".format(self.setData.year-1, self.mem.localcurrency.string(self.setData.total_last_year))))
@@ -365,6 +366,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         self.lblTarget.setText(self.tr("Annual target percentage of total assests balance at {}-12-31 ( {} )".format(self.annualtarget.year-1, self.mem.localcurrency.string(self.annualtarget.lastyear_assests))))
         self.spinTarget.setValue(float(self.annualtarget.percentage))
         self.tblTargets.clearContents()
+        self.tblTargets.applySettings()
         inicio=datetime.datetime.now()     
         sumd_g=Decimal(0)
         for i in range(1, 13): 
@@ -406,6 +408,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         print ("loading invest or work")
         inicio=datetime.datetime.now()    
         self.tblInvestOrWork.clearContents()
+        self.tblInvestOrWork.applySettings()
         for i in range(1, 13): 
             m=self.setData.find(self.setData.year, i)
             self.tblInvestOrWork.setItem(0, i-1, self.mem.localcurrency.qtablewidgetitem(m.d_g()))
@@ -440,9 +443,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         progress = QProgressDialog(self.tr("Filling report data"), self.tr("Cancel"), 0,self.setGraphic.length())
         progress.setModal(True)
         progress.setWindowTitle(self.tr("Calculating data..."))
-#        progress.setMinimumDuration(0)     
-#        progress.setMaximum()
-#        progress.setValue(0)  
+        
         for m in self.setGraphic.arr:
             if progress.wasCanceled():
                 break
@@ -699,7 +700,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         newtab = QWidget()
         horizontalLayout = QHBoxLayout(newtab)
         table = myQTableWidget(newtab)
-        table.setObjectName("tblShowDividends")
+        table.settings(self.mem,"wdgTotal","tblShowDividends")
         table.setEditTriggers(QAbstractItemView.NoEditTriggers)
         table.setSelectionMode(QAbstractItemView.SingleSelection)
         table.verticalHeader().setVisible(False)
@@ -712,7 +713,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
             tabtitle=self.tr("Dividends of {0} of {1}").format(self.table.horizontalHeaderItem(self.month-1).text(), self.wyData.year)
             set.load_from_db("select * from dividends where id_conceptos not in (63) and date_part('year',fecha)={0} and date_part('month',fecha)={1}".format (self.wyData.year, self.month))
         set.sort()
-        set.myqtablewidget(table,  True,  "wdgTotal")
+        set.myqtablewidget(table,  True)
         horizontalLayout.addWidget(table)
         self.tab.addTab(newtab, tabtitle)
         self.tab.setCurrentWidget(newtab)            
@@ -723,7 +724,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         newtab = QWidget()
         horizontalLayout = QHBoxLayout(newtab)
         table = myQTableWidget(newtab)
-        table.setObjectName("tblShowComissions")
+        table.settings(self.mem,"wdgTotal","tblShowComissions")
         table.setEditTriggers(QAbstractItemView.NoEditTriggers)
         table.setSelectionMode(QAbstractItemView.SingleSelection)
         
@@ -747,8 +748,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         table.setVerticalHeaderItem(1, QTableWidgetItem(self.tr( "Custody fees" )))
         table.setVerticalHeaderItem(2, QTableWidgetItem(self.tr( "Invesment operation comissions" )))
         table.setVerticalHeaderItem(3, QTableWidgetItem(self.tr( "Total" )))
-
-        table.settings(self.mem,  "wdgTotal")
+        table.applySettings()
         (sum_bank_comissions, sum_custody_fees, sum_investment_comissions)=(Decimal("0"), Decimal("0"), Decimal("0"))
 
         for column in range (12):
@@ -791,7 +791,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         newtab = QWidget()
         horizontalLayout = QHBoxLayout(newtab)
         table = myQTableWidget(newtab)
-        table.setObjectName("tblShowPaidTaxes")
+        table.settings(self.mem,"wdgTotal","tblShowPaidTaxes")
         table.setEditTriggers(QAbstractItemView.NoEditTriggers)
         table.setSelectionMode(QAbstractItemView.SingleSelection)
         
@@ -817,7 +817,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         table.setVerticalHeaderItem(3, QTableWidgetItem(self.tr( "Returned taxes" )))
         table.setVerticalHeaderItem(4,  QTableWidgetItem(self.tr( "Total" )))
 
-        table.settings(self.mem,  "wdgTotal")
+        table.appySettings()
         (sum_io_retentions, sum_div_retentions, sum_other_taxes,  sum_returned_taxes)=(Decimal("0"), Decimal("0"), Decimal("0"), Decimal("0"))
 
         for column in range (12):

@@ -1095,7 +1095,7 @@ class SetDividends:
     def sort(self):       
         self.arr=sorted(self.arr, key=lambda e: e.fecha,  reverse=False) 
         
-    def myqtablewidget(self, table,   show_investment=False,  parentname=None ):
+    def myqtablewidget(self, table,   show_investment=False):
         """Section es donde guardar en el config file, coincide con el nombre del formulario en el que está la table
         Devuelve sumatorios"""
         diff=0
