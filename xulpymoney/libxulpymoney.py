@@ -102,13 +102,12 @@ class Connection(QObject):
         except psycopg2.Error as e:
             print (e.pgcode, e.pgerror)
             return
-#            self._con(None, QApplication.translate("Core","Error conecting to Xulpymoney"))
         self._active=True
         self.init=datetime.datetime.now()
         self.restart_timeout()
         self._timerlastuse = QTimer()
         self._timerlastuse.timeout.connect(self._check_inactivity)
-        self._timerlastuse.start(60000)
+        self._timerlastuse.start(300000)
         
     def disconnect(self):
         self._active=False
@@ -130,17 +129,7 @@ class Connection(QObject):
                 res=True
         cur.close()
         return res
-#        
-#        
-#    def connect(self,  db,  port, user, host, pasw):        
-#        self.strcon="dbname='{}' port='{}' user='{}' host='{}' password='{}'".format(db, port, user, host, pasw)
-#        try:
-#            con=psycopg2.extras.DictConnection(self.strcon)
-#        except psycopg2.Error as e:
-#            print (e.pgcode, e.pgerror)
-#            return (None, QApplication.translate("Core","Error conecting to Xulpymoney"))
-#        return (con, QApplication.translate("Core", "Connection done"))
-    
+
 
 class AccountOperationOfInvestmentOperation:
     """Clase parar trabajar con las opercuentas generadas automaticamente por los movimientos de las inversiones"""
