@@ -3,6 +3,7 @@ from PyQt5.QtGui import *
 from Ui_wdgProducts import *
 from frmProductReport import *
 from libxulpymoney import *
+from libqmessagebox import *
 from frmQuotesIBM import *
 from wdgMergeCodes import *
 from frmEstimationsAdd import *
