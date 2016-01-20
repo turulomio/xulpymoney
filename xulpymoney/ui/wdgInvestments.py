@@ -56,7 +56,7 @@ class wdgInvestments(QWidget, Ui_wdgInvestments):
             self.mem.data.investments_active.remove(self.selInvestment)
             if self.mem.data.investments_inactive!=None:#Puede que no se haya cargado
                 self.mem.data.investments_inactive.append(self.selInvestment)
-        self.on_chkInactivas_stateChanged(self.chkInactivas.checkState())#Carga la tabla
+        self.chkInactivas.setCheckState(Qt.Unchecked)#Carga la tabla
 
             
     @QtCore.pyqtSlot() 
