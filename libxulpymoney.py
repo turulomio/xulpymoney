@@ -2820,7 +2820,7 @@ class InvestmentOperation:
         row=cur.fetchone()
         cur.close()
         investment=self.mem.data.investments_all().find_by_id(row['id_inversiones'])
-        return investment.op.find_by_id(row['id_operinversiones'])
+        return investment.op.find(row['id_operinversiones'])
 
     def actualizar_cuentaoperacion_asociada(self):
         """Esta función actualiza la tabla opercuentasdeoperinversiones que es una tabla donde 
