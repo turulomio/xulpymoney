@@ -132,7 +132,7 @@ class frmProductSelector(QDialog):
                     "%' or upper(name) like '%"+(self.txt.text().upper())+
                     "%' or upper(isin) like '%"+(self.txt.text().upper())+
                     "%' or upper(ticker) like '%"+(self.txt.text().upper())+
-                    "%' or upper(comentario) like '%"+(self.txt.text().upper())+
+                    "%' or upper(comment) like '%"+(self.txt.text().upper())+
                     "%' order by name")
         self.lblFound.setText(self.tr("Found {0} registers").format(self.products.length()))
         self.products.myqtablewidget(self.tblInvestments)  
