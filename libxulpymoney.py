@@ -3963,6 +3963,63 @@ class SetLeverages(SetCommons):
         self.append(Leverage(self.mem).init__create( 4,QApplication.translate("Core","Leverage x4"), 4))
 
 
+class SetOrders:
+    def __init__(self, mem):
+        self.mem=mem
+        self.arr=[]
+        self.selected=None
+        
+    def init__from_db(self, sql):
+        cur=self.mem.con.cursor()
+        cur.execute(sql)
+        for row in cur:
+            self.append(Order(self.mem).init__db_row(row))
+        cur.close()
+        
+    def append(self, objeto):
+        self.arr.append(objeto)
+        
+    def remove(self, objeto):
+        """Remove from array"""
+        self.arr.remove(objeto)
+
+    def length(self):
+        return len(self.arr)
+
+    def order_by_date(self):
+        """Ordena por datetime"""
+        self.arr=sorted(self.arr, key=lambda o:o.date)
+        
+        
+    def myqtablewidget(self, table):
+        table.setColumnCount(8)
+        table.setHorizontalHeaderItem(0, QTableWidgetItem(QApplication.translate("Core","Date")))
+        table.setHorizontalHeaderItem(1, QTableWidgetItem(QApplication.translate("Core","Investment")))
+        table.setHorizontalHeaderItem(2, QTableWidgetItem(QApplication.translate("Core","Account")))
+        table.setHorizontalHeaderItem(3, QTableWidgetItem(QApplication.translate("Core","Shares")))
+        table.setHorizontalHeaderItem(4, QTableWidgetItem(QApplication.translate("Core","Price")))
+        table.setHorizontalHeaderItem(5, QTableWidgetItem(QApplication.translate("Core","Amount")))
+        table.setHorizontalHeaderItem(6, QTableWidgetItem(QApplication.translate("Core","Expiration")))
+        table.setHorizontalHeaderItem(7, QTableWidgetItem(QApplication.translate("Core","Executed")))
+   
+        table.applySettings()
+        table.clearSelection()    
+        table.horizontalHeader().setStretchLastSection(False)   
+        table.clearContents()
+        table.setRowCount(self.length())
+        for i, p in enumerate(self.arr):
+            table.setItem(i, 0, qdate(self.date))
+            table.setItem(i, 1, qleft(self.investment.name))
+            table.setItem(i, 2, qleft(self.investment.account.name))   
+            table.setItem(i, 3, qright(self.shares))#, self.mem.localzone.name)))
+            table.setItem(i, 4, self.investment.product.currency.qtablewidgetitem(self.price))
+            table.setItem(i, 5, self.mem.localcurrency.qtablewidgetitem(self.amount))
+            table.setItem(i, 6, qdate(self.expiration))           
+            if self.io==None:
+                table.setItem(i, 7, qbool(False))
+            else:
+                table.setItem(i, 7, qbool(True))
+
 class SetPriorities(SetCommons):
     def __init__(self, mem):
         """Usa la variable mem.Agrupations. Debe ser una lista no un diccionario porque importa el orden"""
