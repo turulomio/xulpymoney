@@ -46,7 +46,7 @@
      <x>0</x>
      <y>0</y>
      <width>1186</width>
-     <height>28</height>
+     <height>23</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuAyuda">
@@ -88,6 +88,8 @@
      <string>Investments</string>
     </property>
     <addaction name="actionInvestments"/>
+    <addaction name="separator"/>
+    <addaction name="actionOrders"/>
     <addaction name="separator"/>
     <addaction name="actionInvestmentsClasses"/>
     <addaction name="separator"/>
@@ -258,6 +260,8 @@
    <addaction name="actionBanks"/>
    <addaction name="actionAccounts"/>
    <addaction name="actionInvestments"/>
+   <addaction name="separator"/>
+   <addaction name="actionOrders"/>
    <addaction name="separator"/>
    <addaction name="actionIndexRange"/>
    <addaction name="actionConcepts"/>
@@ -999,6 +1003,18 @@
    </property>
    <property name="toolTip">
     <string>Last operation</string>
+   </property>
+  </action>
+  <action name="actionOrders">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/editar.png</normaloff>:/xulpymoney/editar.png</iconset>
+   </property>
+   <property name="text">
+    <string>Market orders</string>
+   </property>
+   <property name="toolTip">
+    <string>Market orders</string>
    </property>
   </action>
  </widget>
