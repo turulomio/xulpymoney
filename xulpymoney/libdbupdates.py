@@ -19,7 +19,7 @@ class Update:
     def __init__(self, mem):
         self.mem=mem
         self.dbversion=self.get_database_version()    
-        self.lastcodeupdate=201601170811
+        self.lastcodeupdate=201601290517
 
    
     def get_database_version(self):
@@ -385,8 +385,29 @@ class Update:
             cur.close()
             self.mem.con.commit()
             self.set_database_version(201601170811)          
+        if self.dbversion<201601290517:
+            cur=self.mem.con.cursor()
+            cur.execute("CREATE SEQUENCE orders_seq  INCREMENT 1  MINVALUE 1  MAXVALUE 9223372036854775807  START 1  CACHE 1;")
+            cur.execute("""
+                CREATE TABLE orders (
+                    id integer NOT NULL DEFAULT nextval('orders_seq'::regclass),  
+                    date date NOT NULL,  
+                    expiration date NOT NULL,  
+                    amount numeric(100,2),  
+                    shares numeric(100,6),  
+                    price numeric(100,2),  
+                    investments_id integer NOT NULL,  
+                    investmentoperations_id integer, 
+                    CONSTRAINT orders_pk PRIMARY KEY (id),
+                    CONSTRAINT orders_investments_id_fk_inversiones_id_inversiones FOREIGN KEY (investments_id) REFERENCES public.inversiones (id_inversiones) MATCH SIMPLE  ON UPDATE NO ACTION ON DELETE RESTRICT
+                ) WITH (  OIDS=FALSE);
+            """)
+            cur.close()
+            self.mem.con.commit()
+            self.set_database_version(201601290517)                      
             
             
+
 
 
             

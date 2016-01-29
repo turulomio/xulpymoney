@@ -31,6 +31,8 @@ compile:
 	pyuic5 ui/wdgIndexRange.ui > ui/Ui_wdgIndexRange.py &
 	pyuic5 ui/wdgInvestments.ui > ui/Ui_wdgInvestments.py &
 	pyuic5 ui/wdgLastCurrent.ui > ui/Ui_wdgLastCurrent.py &
+	pyuic5 ui/wdgOrders.ui > ui/Ui_wdgOrders.py &
+	pyuic5 ui/wdgOrdersAdd.ui > ui/Ui_wdgOrdersAdd.py &
 	pyuic5 ui/frmDividendsAdd.ui > ui/Ui_frmDividendsAdd.py &
 	pyuic5 ui/frmInvestmentReport.ui > ui/Ui_frmInvestmentReport.py &
 	pyuic5 ui/frmInvestmentOperationsAdd.ui > ui/Ui_frmInvestmentOperationsAdd.py &

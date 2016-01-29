@@ -22,6 +22,7 @@ from frmAuxiliarTables import *
 from frmTransfer import *
 from frmSettings import *
 from frmHelp import *
+from wdgOrders import *
 from wdgProducts import *
 from wdgSimulations import *
 from wdgQuotesUpdate import *
@@ -691,6 +692,12 @@ class frmMain(QMainWindow, Ui_frmMain):
         self.layout.addWidget(self.w)
         self.w.show()
         
+    @QtCore.pyqtSlot()  
+    def on_actionOrders_triggered(self):  
+        self.w.close()
+        self.w=wdgOrders(self.mem, self)
+        self.layout.addWidget(self.w)
+
 
     @QtCore.pyqtSlot()  
     def on_actionPriceUpdates_triggered(self):  

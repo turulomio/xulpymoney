@@ -968,6 +968,38 @@ CREATE TABLE opertarjetas (
 ALTER TABLE opertarjetas OWNER TO postgres;
 
 --
+-- Name: orders_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE orders_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE orders_seq OWNER TO postgres;
+
+--
+-- Name: orders; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE orders (
+    id integer DEFAULT nextval('orders_seq'::regclass) NOT NULL,
+    date date NOT NULL,
+    expiration date NOT NULL,
+    amount numeric(100,2),
+    shares numeric(100,6),
+    price numeric(100,2),
+    investments_id integer NOT NULL,
+    investmentoperations_id integer
+);
+
+
+ALTER TABLE orders OWNER TO postgres;
+
+--
 -- Name: products; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -1329,6 +1361,14 @@ ALTER TABLE ONLY opertarjetas
 
 
 --
+-- Name: orders_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY orders
+    ADD CONSTRAINT orders_pk PRIMARY KEY (id);
+
+
+--
 -- Name: pk_globals; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1523,6 +1563,14 @@ CREATE INDEX quotes_id_datetime ON quotes USING btree (id, datetime);
 --
 
 CREATE INDEX "tmpinversionesheredada-id_cuentas-index" ON opercuentasdeoperinversiones USING btree (id_cuentas);
+
+
+--
+-- Name: orders_investments_id_fk_inversiones_id_inversiones; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY orders
+    ADD CONSTRAINT orders_investments_id_fk_inversiones_id_inversiones FOREIGN KEY (investments_id) REFERENCES inversiones(id_inversiones) ON DELETE RESTRICT;
 
 
 --
@@ -8927,12 +8975,12 @@ INSERT INTO globals VALUES (14, 'mem/dividendwithholding', '0.19');
 INSERT INTO globals VALUES (15, 'mem/taxcapitalappreciation', '0.19');
 INSERT INTO globals VALUES (16, 'mem/taxcapitalappreciationbelow', '0.5');
 INSERT INTO globals VALUES (17, 'mem/gainsyear', 'false');
-INSERT INTO globals VALUES (18, 'mem/favorites', '79329, 81680');
+INSERT INTO globals VALUES (18, 'mem/favorites', '79329, 81680, -33');
 INSERT INTO globals VALUES (19, 'mem/fillfromyear', '2005');
-INSERT INTO globals VALUES (1, 'Version', '201601170811');
+INSERT INTO globals VALUES (1, 'Version', '201601290517');
 INSERT INTO globals VALUES (6, 'Admin mode', NULL);
 INSERT INTO globals VALUES (7, 'wdgIndexRange/spin', '2.0');
-INSERT INTO globals VALUES (8, 'wdgIndexRange/invertir', '4400');
+INSERT INTO globals VALUES (8, 'wdgIndexRange/invertir', '2700');
 INSERT INTO globals VALUES (9, 'wdgIndexRange/minimo', '1000');
 DELETE FROM products WHERE id<=0;
 ALTER SEQUENCE seq_conceptos START WITH 100 RESTART;

@@ -2821,6 +2821,20 @@ class InvestmentOperation:
         cur.close()
         investment=self.mem.data.investments_all().find_by_id(row['id_inversiones'])
         return investment.op.find(row['id_operinversiones'])
+        
+    def find_by_mem(self, investment, id):
+        """
+            Searchs in mem (needed investments_all())
+            invesment is an Investment object
+            id is the invesmentoperation to find
+        """
+        for i in self.mem.data.investments_all():
+            if invesment.id==i.id:
+                found=i.op.find(id)
+                if found!=None:
+                    return found
+        print ("Investment operation {} hasn't been found in mem".format(id))
+        return None
 
     def actualizar_cuentaoperacion_asociada(self):
         """Esta función actualiza la tabla opercuentasdeoperinversiones que es una tabla donde 
@@ -3431,6 +3445,47 @@ class CreditCardOperation:
             else:
                 cur.execute("update opertarjetas set datetime=%s, id_conceptos=%s, id_tiposoperaciones=%s, importe=%s, comentario=%s, id_tarjetas=%s, pagado=%s, fechapago=%s, id_opercuentas=%s where id_opertarjetas=%s", (self.datetime, self.concepto.id, self.tipooperacion.id,  self.importe,  self.comentario, self.tarjeta.id, self.pagado, self.fechapago, self.opercuenta.id, self.id))
         cur.close()
+        
+        
+class Order:
+    def __init__(self, mem):
+        self.mem=mem
+        self.id=None
+        self.date=None
+        self.expiration=None
+        self.amount=None
+        self.price=None
+        self.shares=None
+        self.investment=None
+        self.io=None
+        
+    def init__db_row(self, row):
+        self.id=row['id']
+        self.date=row['date']
+        self.expiration=row['expiration']
+        self.amount=row['amount']
+        self.price=row['price']
+        self.shares=row['shares']
+        self.investment=self.mem.data.investments_all().find_by_id(row['investments_id'])
+        if row['investmentoperations_id']!=None:
+            self.io=InvestmentOperation(self.mem).find_by_mem(row['investmentoperations_id'])
+
+    def save(self, recalculate=True,  autocommit=True):
+        cur=self.mem.con.cursor()
+        if self.id==None:#insertar
+            cur.execute("insert into operinversiones(datetime, id_tiposoperaciones,  importe, acciones,  impuestos,  comision,  valor_accion, comentario, show_in_ranges, id_inversiones) values (%s, %s, %s, %s, %s, %s, %s, %s,%s,%s) returning id_operinversiones", (self.datetime, self.tipooperacion.id, self.importe, self.acciones, self.impuestos, self.comision, self.valor_accion, self.comentario, self.show_in_ranges,  self.inversion.id))
+            self.id=cur.fetchone()[0]
+            self.inversion.op.append(self)
+        else:
+            cur.execute("update operinversiones set datetime=%s, id_tiposoperaciones=%s, importe=%s, acciones=%s, impuestos=%s, comision=%s, valor_accion=%s, comentario=%s, id_inversiones=%s, show_in_ranges=%s where id_operinversiones=%s", (self.datetime, self.tipooperacion.id, self.importe, self.acciones, self.impuestos, self.comision, self.valor_accion, self.comentario, self.inversion.id, self.show_in_ranges,  self.id))
+        if recalculate==True:
+            (self.inversion.op_actual,  self.inversion.op_historica)=self.inversion.op.calcular()   
+            self.actualizar_cuentaoperacion_asociada()
+        if autocommit==True:
+            self.mem.con.commit()
+        cur.close()
+
+        
         
 class OperationType:
     def __init__(self):

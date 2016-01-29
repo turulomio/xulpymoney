@@ -96,6 +96,10 @@ SOURCES         = \
                   ui/wdgQuotesUpdate.py \
                   ui/Ui_wdgQuotesUpdate.py \
                   ui/Ui_wdgSource.py \
+                  ui/wdgOrders.py \
+                  ui/Ui_wdgOrders.py \
+                  ui/wdgOrdersAdd.py \
+                  ui/Ui_wdgOrdersAdd.py \
                   ui/wdgTotal.py \
                   ui/Ui_wdgTotal.py \
                   ui/wdgYear.py \
@@ -145,6 +149,8 @@ FORMS           = \
                   ui/wdgInvestmentsOperations.ui \
                   ui/wdgLastCurrent.ui \
                   ui/wdgMergeCodes.ui \
+                  ui/wdgOrders.ui \
+                  ui/wdgOrdersAdd.ui \
                   ui/wdgProducts.ui \
                   ui/wdgSimulations.ui \
                   ui/wdgSimulationsAdd.ui \
