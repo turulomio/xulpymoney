@@ -66,7 +66,7 @@ class wdgAccounts(QWidget, Ui_wdgAccounts):
         if state==Qt.Unchecked:
             self.accounts=self.mem.data.accounts_active
         else:
-            self.mem.data.load_inactives()
+             
             self.accounts=self.mem.data.accounts_inactive
         self.load_table()
         
@@ -101,7 +101,7 @@ class wdgAccounts(QWidget, Ui_wdgAccounts):
         if self.selAccount.eb.qmessagebox_inactive()==True:
             return
         
-        self.mem.data.load_inactives()#Debe tenerlas para borrarla luego
+         #Debe tenerlas para borrarla luego
         self.selAccount.active=self.chkInactivas.isChecked()
         self.selAccount.save()
         self.mem.con.commit()     

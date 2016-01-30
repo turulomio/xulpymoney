@@ -11,7 +11,7 @@ class wdgMergeCodes(QWidget, Ui_wdgMergeCodes):
         self.origen=origen
         self.destino=destino
         self.setupUi(self)
-        self.mem.data.load_inactives()
+         
 
         self.table.settings(self.mem, "wdgMergeCodes") 
         self.reload()

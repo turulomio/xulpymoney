@@ -18,7 +18,7 @@ class frmSettings(QDialog, Ui_frmSettings):
         self.setModal(True)
         self.setupUi(self)
         self.mem=mem
-        self.mem.data.load_inactives()
+         
         self.mem.currencies.qcombobox(self.cmbCurrencies,self.mem.localcurrency)
         self.mem.languages.qcombobox(self.cmbLanguages,self.mem.language)
         self.mem.zones.qcombobox(self.cmbZones, self.mem.localzone)

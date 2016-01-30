@@ -443,7 +443,8 @@ class SetInvestments(SetCommons):
         """Activas puede tomar None. Muestra Todas, True. Muestra activas y False Muestra inactivas
         tipo es una variable que controla la forma de visualizar
         0: inversion
-        1: eb - inversion"""
+        1: eb - inversion
+        2: inversion (cuenta)"""
         arr=[]
         for i in self.arr:
             if activas==True:
@@ -455,7 +456,9 @@ class SetInvestments(SetCommons):
             if tipo==0:
                 arr.append((i.name, i.id))            
             elif tipo==1:
-                arr.append(("{0} - {1}".format(i.account.eb.name, i.name), i.id))
+                arr.append(("{} - {}".format(i.account.eb.name, i.name), i.id))
+            elif tipo==2:
+                arr.append(("{} ({})".format(i.name, i.account.name), i.id))
                 
         
         arr=sorted(arr, key=lambda a: a[0]  ,  reverse=False)  
@@ -1794,7 +1797,7 @@ class SetInvestmentOperationsCurrent(SetIO):
             numacciones=numacciones+o.acciones
             numaccionesxvalor=numaccionesxvalor+o.acciones*o.valor_accion
         if numacciones==Decimal(0):
-            return Dedimal(0)
+            return Decimal(0)
         return numaccionesxvalor/numacciones
  
     def historizar(self, io,  sioh):
@@ -2563,7 +2566,8 @@ class DBData:
         self.investments_active.load_from_db("select * from inversiones where active=true", True)
         print("Cargando actives",  datetime.datetime.now()-inicio)
 
-
+        self.orders=SetOrders(self.mem).init__from_db("select * from orders where expiration>=now()::date and investmentoperations_id is null")
+    
     def load_actives(self):
         inicio=datetime.datetime.now()
         self.benchmark=Product(self.mem).init__db(self.mem.settingsdb.value("mem/benchmark", "79329" ))
@@ -2578,6 +2582,7 @@ class DBData:
         self.products_active.load_from_inversiones_query("select distinct(products_id) from inversiones where active=true")
         self.investments_active=SetInvestments(self.mem, self.accounts_active, self.products_active, self.benchmark)
         self.investments_active.load_from_db("select * from inversiones where active=true", True)
+
         print("Cargando actives",  datetime.datetime.now()-inicio)
         
     def load_inactives(self, force=False):
@@ -2598,6 +2603,7 @@ class DBData:
 
             self.investments_inactive=SetInvestments(self.mem, self.accounts_all(), self.products_all(), self.benchmark)
             self.investments_inactive.load_from_db("select * from inversiones where active=false",  True)
+            self.orders=SetOrders(self.mem).init__from_db("select * from orders where expiration>=now()::date and investmentoperations_id is null")
             
             print("\n","Cargando inactives",  datetime.datetime.now()-inicio)
             self.loaded_inactive=True
@@ -3469,20 +3475,26 @@ class Order:
         self.investment=self.mem.data.investments_all().find_by_id(row['investments_id'])
         if row['investmentoperations_id']!=None:
             self.io=InvestmentOperation(self.mem).find_by_mem(row['investmentoperations_id'])
+        return self
 
-    def save(self, recalculate=True,  autocommit=True):
+    def save(self, autocommit=False):
         cur=self.mem.con.cursor()
-        if self.id==None:#insertar
-            cur.execute("insert into operinversiones(datetime, id_tiposoperaciones,  importe, acciones,  impuestos,  comision,  valor_accion, comentario, show_in_ranges, id_inversiones) values (%s, %s, %s, %s, %s, %s, %s, %s,%s,%s) returning id_operinversiones", (self.datetime, self.tipooperacion.id, self.importe, self.acciones, self.impuestos, self.comision, self.valor_accion, self.comentario, self.show_in_ranges,  self.inversion.id))
-            self.id=cur.fetchone()[0]
-            self.inversion.op.append(self)
+        if self.io==None:
+            investmentoperations_id=None
         else:
-            cur.execute("update operinversiones set datetime=%s, id_tiposoperaciones=%s, importe=%s, acciones=%s, impuestos=%s, comision=%s, valor_accion=%s, comentario=%s, id_inversiones=%s, show_in_ranges=%s where id_operinversiones=%s", (self.datetime, self.tipooperacion.id, self.importe, self.acciones, self.impuestos, self.comision, self.valor_accion, self.comentario, self.inversion.id, self.show_in_ranges,  self.id))
-        if recalculate==True:
-            (self.inversion.op_actual,  self.inversion.op_historica)=self.inversion.op.calcular()   
-            self.actualizar_cuentaoperacion_asociada()
+            investmentoperations_id=self.io.id
+        if self.id==None:#insertar
+            cur.execute("insert into orders(date, expiration, amount, shares, price,investments_id, investmentoperations_id) values (%s, %s, %s, %s, %s, %s, %s) returning id", (self.date,  self.expiration, self.amount, self.shares, self.price, self.investment.id, investmentoperations_id))
+            self.id=cur.fetchone()[0]
+        else:
+            cur.execute("update orders set date=%s, expiration=%s, amount=%s, shares=%s, price=%s, investments_id=%s, investmentoperations_id=%s where id=%s", (self.date,  self.expiration, self.amount, self.shares, self.price, self.investment.id, investmentoperations_id, self.id))
         if autocommit==True:
             self.mem.con.commit()
+        cur.close()
+        
+    def remove(self):
+        cur=self.mem.con.cursor()
+        cur.execute("delete from orders where id=%s", (self.id, ))
         cur.close()
 
         
@@ -3975,13 +3987,18 @@ class SetOrders:
         for row in cur:
             self.append(Order(self.mem).init__db_row(row))
         cur.close()
+        return self
         
     def append(self, objeto):
         self.arr.append(objeto)
         
-    def remove(self, objeto):
+    def remove(self, order, remove_from_mem=True):
         """Remove from array"""
-        self.arr.remove(objeto)
+        self.arr.remove(order)#Remove from array
+        order.remove()#Database
+        if remove_from_mem==True:#Remove from mem
+            if order in self.mem.data.orders.arr:
+                self.mem.data.orders.remove(order, False)#To avoid recursivity
 
     def length(self):
         return len(self.arr)
@@ -3990,35 +4007,47 @@ class SetOrders:
         """Ordena por datetime"""
         self.arr=sorted(self.arr, key=lambda o:o.date)
         
+    def date_first_db_order(self):
+        """First order date"""
+        cur=self.mem.con.cursor()
+        cur.execute("select date from orders order by date limit 1")
+        r=cur.fetchone()
+        cur.close()
+        if r==None:#To avoid crashed returns today if null
+            return datetime.date.today()
+        else:
+            return r[0]
         
     def myqtablewidget(self, table):
         table.setColumnCount(8)
         table.setHorizontalHeaderItem(0, QTableWidgetItem(QApplication.translate("Core","Date")))
-        table.setHorizontalHeaderItem(1, QTableWidgetItem(QApplication.translate("Core","Investment")))
-        table.setHorizontalHeaderItem(2, QTableWidgetItem(QApplication.translate("Core","Account")))
-        table.setHorizontalHeaderItem(3, QTableWidgetItem(QApplication.translate("Core","Shares")))
-        table.setHorizontalHeaderItem(4, QTableWidgetItem(QApplication.translate("Core","Price")))
-        table.setHorizontalHeaderItem(5, QTableWidgetItem(QApplication.translate("Core","Amount")))
-        table.setHorizontalHeaderItem(6, QTableWidgetItem(QApplication.translate("Core","Expiration")))
+        table.setHorizontalHeaderItem(1, QTableWidgetItem(QApplication.translate("Core","Expiration")))
+        table.setHorizontalHeaderItem(2, QTableWidgetItem(QApplication.translate("Core","Investment")))
+        table.setHorizontalHeaderItem(3, QTableWidgetItem(QApplication.translate("Core","Account")))
+        table.setHorizontalHeaderItem(4, QTableWidgetItem(QApplication.translate("Core","Shares")))
+        table.setHorizontalHeaderItem(5, QTableWidgetItem(QApplication.translate("Core","Price")))
+        table.setHorizontalHeaderItem(6, QTableWidgetItem(QApplication.translate("Core","Amount")))
         table.setHorizontalHeaderItem(7, QTableWidgetItem(QApplication.translate("Core","Executed")))
    
         table.applySettings()
-        table.clearSelection()    
         table.horizontalHeader().setStretchLastSection(False)   
         table.clearContents()
         table.setRowCount(self.length())
         for i, p in enumerate(self.arr):
-            table.setItem(i, 0, qdate(self.date))
-            table.setItem(i, 1, qleft(self.investment.name))
-            table.setItem(i, 2, qleft(self.investment.account.name))   
-            table.setItem(i, 3, qright(self.shares))#, self.mem.localzone.name)))
-            table.setItem(i, 4, self.investment.product.currency.qtablewidgetitem(self.price))
-            table.setItem(i, 5, self.mem.localcurrency.qtablewidgetitem(self.amount))
-            table.setItem(i, 6, qdate(self.expiration))           
-            if self.io==None:
+            table.setItem(i, 0, qdate(p.date))
+            table.setItem(i, 1, qdate(p.expiration))      
+            if p.expiration<datetime.date.today():
+                table.item(i, 1).setBackground( QColor(255, 182, 182))       
+            table.setItem(i, 2, qleft(p.investment.name))
+            table.setItem(i, 3, qleft(p.investment.account.name))   
+            table.setItem(i, 4, qright(p.shares))#, p.mem.localzone.name)))
+            table.setItem(i, 5, p.investment.product.currency.qtablewidgetitem(p.price))
+            table.setItem(i, 6, self.mem.localcurrency.qtablewidgetitem(p.amount))   
+            if p.io==None:
                 table.setItem(i, 7, qbool(False))
             else:
                 table.setItem(i, 7, qbool(True))
+            
 
 class SetPriorities(SetCommons):
     def __init__(self, mem):
@@ -5701,7 +5730,7 @@ class Maintenance:
         self.mem=mem
         
     def regenera_todas_opercuentasdeoperinversiones(self):
-        self.mem.data.load_inactives()
+         
         for inv in self.mem.data.investments_all().arr:
             print (inv)
             inv.actualizar_cuentasoperaciones_asociadas()

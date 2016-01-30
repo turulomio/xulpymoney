@@ -49,6 +49,8 @@ class frmMain(QMainWindow, Ui_frmMain):
         self.statusBar.addWidget(QLabel(self.tr("Server: {}:{}      Database: {}      User: {}").format(self.mem.con.server, self.mem.con.port,  self.mem.con.db, self.mem.con.user)))
         
         self.mem.load_db_data() ##CARGA TODOS LOS DATOS Y LOS VINCULA       
+        self.mem.data.load_inactives()
+        
         
         
         
@@ -85,7 +87,7 @@ class frmMain(QMainWindow, Ui_frmMain):
         
     @pyqtSlot()
     def on_actionGlobalReport_triggered(self):
-        self.mem.data.load_inactives()
+         
         import libodfgenerator
         file="AssetsReport.odt"
         doc=libodfgenerator.AssetsReport(self.mem, file, "/usr/share/xulpymoney/report.odt")

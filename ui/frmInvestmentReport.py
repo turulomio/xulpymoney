@@ -26,7 +26,7 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
         #arrays asociados a tablas
         self.op=None#Sera un SetInvestmentOperations
         self.dividends=SetDividends(self.mem)
-        self.mem.data.load_inactives()
+         
         
         self.ise.setupUi(self.mem,  self.inversion)
         self.tblDividends.settings(self.mem, "frmInvestmentReport")         

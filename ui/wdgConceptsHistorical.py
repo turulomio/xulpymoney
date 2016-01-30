@@ -9,7 +9,7 @@ class wdgConceptsHistorical(QWidget, Ui_wdgConceptsHistorical):
         self.setupUi(self)
         self.mem=mem
         self.concepto=concepto
-        self.mem.data.load_inactives()
+         
 
         self.month=None#Used to show popup with month or year report if is 0->Year, else->Month
         self.year=None

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>826</width>
-    <height>591</height>
+    <width>792</width>
+    <height>370</height>
    </rect>
   </property>
   <property name="windowIcon">
@@ -27,7 +27,7 @@
         </font>
        </property>
        <property name="text">
-        <string>Market orders</string>
+        <string>Market purchase orders</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
@@ -83,16 +83,46 @@
         </spacer>
        </item>
        <item>
-        <widget class="QCheckBox" name="chkExpired">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
+        <widget class="QComboBox" name="cmbMode">
+         <property name="sizeAdjustPolicy">
+          <enum>QComboBox::AdjustToContents</enum>
          </property>
-         <property name="text">
-          <string>Show expired orders only</string>
-         </property>
+         <item>
+          <property name="text">
+           <string>Show current orders</string>
+          </property>
+          <property name="icon">
+           <iconset resource="../images/xulpymoney.qrc">
+            <normaloff>:/xulpymoney/new.png</normaloff>:/xulpymoney/new.png</iconset>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Show expired orders</string>
+          </property>
+          <property name="icon">
+           <iconset resource="../images/xulpymoney.qrc">
+            <normaloff>:/xulpymoney/expired.jpg</normaloff>:/xulpymoney/expired.jpg</iconset>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Show executed orders</string>
+          </property>
+          <property name="icon">
+           <iconset resource="../images/xulpymoney.qrc">
+            <normaloff>:/xulpymoney/tools-wizard.png</normaloff>:/xulpymoney/tools-wizard.png</iconset>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Show all</string>
+          </property>
+          <property name="icon">
+           <iconset resource="../images/xulpymoney.qrc">
+            <normaloff>:/xulpymoney/eye.png</normaloff>:/xulpymoney/eye.png</iconset>
+          </property>
+         </item>
         </widget>
        </item>
        <item>
@@ -132,75 +162,52 @@
     </layout>
    </item>
   </layout>
-  <action name="actionInvestmentReport">
-   <property name="icon">
-    <iconset resource="../images/xulpymoney.qrc">
-     <normaloff>:/xulpymoney/report2.png</normaloff>:/xulpymoney/report2.png</iconset>
-   </property>
-   <property name="text">
-    <string>Investment report</string>
-   </property>
-   <property name="toolTip">
-    <string>Investment report</string>
-   </property>
-  </action>
-  <action name="actionAccountReport">
-   <property name="icon">
-    <iconset resource="../images/xulpymoney.qrc">
-     <normaloff>:/xulpymoney/report2.png</normaloff>:/xulpymoney/report2.png</iconset>
-   </property>
-   <property name="text">
-    <string>Account report</string>
-   </property>
-   <property name="toolTip">
-    <string>Account report</string>
-   </property>
-  </action>
-  <action name="actionBankAdd">
+  <action name="actionOrderNew">
    <property name="icon">
     <iconset resource="../images/xulpymoney.qrc">
      <normaloff>:/xulpymoney/add.png</normaloff>:/xulpymoney/add.png</iconset>
    </property>
    <property name="text">
-    <string>New bank</string>
+    <string>New purchase order</string>
    </property>
    <property name="toolTip">
-    <string>New bank</string>
+    <string>New purchase order</string>
    </property>
   </action>
-  <action name="actionBankDelete">
+  <action name="actionOrderDelete">
    <property name="icon">
     <iconset resource="../images/xulpymoney.qrc">
      <normaloff>:/xulpymoney/button_cancel.png</normaloff>:/xulpymoney/button_cancel.png</iconset>
    </property>
    <property name="text">
-    <string>Delete bank</string>
+    <string>Delete purchase order</string>
    </property>
    <property name="toolTip">
-    <string>Delete bank</string>
+    <string>Delete purchase order</string>
    </property>
   </action>
-  <action name="actionBankEdit">
+  <action name="actionOrderEdit">
    <property name="icon">
     <iconset resource="../images/xulpymoney.qrc">
      <normaloff>:/xulpymoney/editar.png</normaloff>:/xulpymoney/editar.png</iconset>
    </property>
    <property name="text">
-    <string>Edit bank</string>
+    <string>Edit purchase order</string>
    </property>
    <property name="toolTip">
-    <string>Edit bank</string>
+    <string>Edit purchase order</string>
    </property>
   </action>
-  <action name="actionActive">
-   <property name="checkable">
-    <bool>true</bool>
+  <action name="actionExecute">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/tools-wizard.png</normaloff>:/xulpymoney/tools-wizard.png</iconset>
    </property>
    <property name="text">
-    <string>Is it active?</string>
+    <string>Execute order</string>
    </property>
    <property name="toolTip">
-    <string>Is it active?</string>
+    <string>Execute order</string>
    </property>
   </action>
  </widget>
