@@ -11,7 +11,7 @@ class wdgBanks(QWidget, Ui_wdgBanks):
         self.setupUi(self)
         self.mem=mem
         
-        self.mem.data.load_inactives()
+         
         self.banks=None#Set in on_chkActives_stateChanged
         self.investments=SetInvestments(self.mem, self.mem.data.accounts_all(), self.mem.data.products_all(), self.mem.data.benchmark) #Set
         self.accounts=SetAccounts(self.mem, self.mem.data.banks_all())#Set

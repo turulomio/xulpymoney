@@ -290,7 +290,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
 
         fechainicio=Assets(self.mem).first_datetime_with_user_data()         
 
-        self.mem.data.load_inactives()
+         
         
         self.setData=None#Ser´a un TotalYear
         self.setGraphic=None #Ser´a un TotalGraphic

@@ -17,7 +17,7 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
         self.cmdDatos.setEnabled(False)     
         
         self.mem=mem
-        self.mem.data.load_inactives()
+         
                 
         self.account=account#Registro de account
         
@@ -67,7 +67,7 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
         if self.chkCreditCards.checkState()==Qt.Unchecked:
             self.creditcards=self.mem.data.creditcards_active.clone_of_account(self.account)
         else:
-            self.mem.data.load_inactives()
+             
             self.creditcards=self.mem.data.creditcards_inactive.clone_of_account(self.account)  
         self.creditcards.myqtablewidget(self.tblCreditCards)
         self.creditcards.selected=None

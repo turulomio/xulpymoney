@@ -13,7 +13,7 @@ class wdgInvestmentsOperations(QWidget, Ui_wdgInvestmentsOperations):
         self.mem=mem
         fechainicio=Assets(self.mem).first_datetime_with_user_data()         
 
-        self.mem.data.load_inactives()
+         
         self.wy.initiate(fechainicio.year, datetime.date.today().year, datetime.date.today().year)
         self.wy.changed.connect(self.on_wy_mychanged)
         self.wy.label.hide()

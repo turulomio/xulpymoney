@@ -86,7 +86,7 @@ class wdgAPR(QWidget, Ui_wdgAPR):
         self.progress.setMinimumDuration(0)        
         self.table.settings(self.mem, "wdgAPR")
         self.tblReport.settings(self.mem, "wdgAPR")
-        self.mem.data.load_inactives()
+         
         
         firstyear=Assets(self.mem).first_datetime_with_user_data().year        
         currentyear=int(self.mem.settings.value("wdgAPR/cmbYear", firstyear))

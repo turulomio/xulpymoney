@@ -40,7 +40,7 @@ class wdgInvestments(QWidget, Ui_wdgInvestments):
         if self.selInvestment.account.eb.qmessagebox_inactive()  or self.selInvestment.account.qmessagebox_inactive():
             return  
         
-        self.mem.data.load_inactives()
+         
         if self.actionActive.isChecked()==True:
             self.selInvestment.active=True
         else:
@@ -137,7 +137,7 @@ class wdgInvestments(QWidget, Ui_wdgInvestments):
             self.inversiones=self.mem.data.investments_active
             self.on_actionSortTPCVenta_triggered()
         else:
-            self.mem.data.load_inactives()
+             
             self.inversiones=self.mem.data.investments_inactive
             self.on_actionSortName_triggered()
         self.tblInvestments_reload()

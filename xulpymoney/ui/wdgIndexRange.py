@@ -42,7 +42,7 @@ class wdgIndexRange(QWidget, Ui_wdgIndexRange):
         QWidget.__init__(self, parent)
         self.setupUi(self)
         self.mem=mem
-        self.mem.data.load_inactives()
+         
         
         self.benchmark=self.mem.data.benchmark
         self.table.settings(self.mem, "wdgIndexRange")

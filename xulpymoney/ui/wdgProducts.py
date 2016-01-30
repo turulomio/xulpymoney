@@ -52,7 +52,7 @@ class wdgProducts(QWidget, Ui_wdgProducts):
 
     @QtCore.pyqtSlot() 
     def on_actionProductDelete_triggered(self):
-        self.mem.data.load_inactives()
+         
         if self.products.selected[0].is_deletable()==False:
             m=QMessageBox()
             m.setText(self.tr("This product can't be removed, because is marked as not romavable"))

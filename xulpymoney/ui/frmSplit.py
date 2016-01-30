@@ -18,7 +18,7 @@ class frmSplit(QDialog, Ui_frmSplit):
             self.setObjectName(name)
         self.mem=mem
         self.product=product
-        self.mem.data.load_inactives()
+         
         self.setModal(True)
         self.setupUi(self)
         
