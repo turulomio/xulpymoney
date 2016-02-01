@@ -5772,12 +5772,12 @@ Diferencia diaria: {5}. Edad media de las inversiones: {6}</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgOrders.py" line="22"/>
+        <location filename="../ui/wdgOrders.py" line="23"/>
         <source>Add new order</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgOrders.py" line="32"/>
+        <location filename="../ui/wdgOrders.py" line="34"/>
         <source>Edit order</source>
         <translation type="unfinished"></translation>
     </message>

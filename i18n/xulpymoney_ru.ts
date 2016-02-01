@@ -5765,12 +5765,12 @@ Daily Diff: {5}. Investment average age: {6}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgOrders.py" line="22"/>
+        <location filename="../ui/wdgOrders.py" line="23"/>
         <source>Add new order</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgOrders.py" line="32"/>
+        <location filename="../ui/wdgOrders.py" line="34"/>
         <source>Edit order</source>
         <translation type="unfinished"></translation>
     </message>

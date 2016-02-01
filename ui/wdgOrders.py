@@ -19,21 +19,23 @@ class wdgOrders(QWidget, Ui_wdgOrders):
     @QtCore.pyqtSlot()  
     def on_actionOrderNew_triggered(self):
         d=QDialog(self)     
+        d.setModal(True)
         d.setWindowTitle(self.tr("Add new order"))
         w=wdgOrdersAdd(self.mem, None, None, d)
         lay = QVBoxLayout(d)
         lay.addWidget(w)
-        d.show()    
+        d.exec_()    
         self.on_cmbMode_currentIndexChanged(self.cmbMode.currentIndex())
     
     @QtCore.pyqtSlot()  
     def on_actionOrderEdit_triggered(self):
         d=QDialog(self)     
+        d.setModal(True)
         d.setWindowTitle(self.tr("Edit order"))
         w=wdgOrdersAdd(self.mem, self.orders.selected, self.orders.selected.investment, d)
         lay = QVBoxLayout(d)
         lay.addWidget(w)
-        d.show()
+        d.exec_()
         self.on_cmbMode_currentIndexChanged(self.cmbMode.currentIndex())
         
     @QtCore.pyqtSlot() 
