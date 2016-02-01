@@ -39,6 +39,7 @@ class wdgOrdersAdd(QWidget, Ui_wdgOrdersAdd):
             return
         if self.order==None:
             self.order=Order(self.mem)
+            self.mem.data.orders.append(self.order)#Object can be added here (before commit)
         self.order.date=self.deDate.date().toPyDate()
         self.order.expiration=self.deExpiration.date().toPyDate()
         self.order.shares=self.txtShares.decimal()
@@ -47,8 +48,6 @@ class wdgOrdersAdd(QWidget, Ui_wdgOrdersAdd):
         self.order.investment=self.mem.data.investments_active.find_by_id(self.cmbInvestments.itemData(self.cmbInvestments.currentIndex()))
         self.order.save()
         self.mem.con.commit()
-        if self.order==None:
-            self.mem.data.orders.append(self.order)
         self.close()
         self.parent.accept()
 
