@@ -1,6 +1,5 @@
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
-import psycopg2,  psycopg2.extras
 from Ui_frmInit import *
 from libsources import *
 from libxulpymoney import *
@@ -67,10 +66,6 @@ class frmInit(QDialog, Ui_frmInit):
 
             respuesta2 = QMessageBox.warning(self, self.windowTitle(), self.tr("Database created. Xulpymoney needs to insert quotes from yahoo. This is a long process. Do you want to insert them now?"), QMessageBox.Ok | QMessageBox.Cancel)
             if respuesta2==QMessageBox.Ok:             
-#                #Insert quotes of yahoo
-#                strtemplate1="dbname='%s' port='%s' user='%s' host='%s' password='%s'" % (self.txtXulpymoney.text(), self.txtPort.text(), self.txtUser.text(),  self.txtServer.text(), self.txtPass.text())
-#                self.mem.con=psycopg2.extras.DictConnection(strtemplate1)
-#                self.mem.con.set_isolation_level(0)
                 self.mem.load_db_data()     
                 self.cmdCreate.setEnabled(False)
                 self.wyahoohistorical.setEnabled(True)
@@ -86,93 +81,3 @@ class frmInit(QDialog, Ui_frmInit):
 
     def on_cmdExit_released(self):
         self.close()
-
-
-#    @pyqtSlot()
-#    def create_db(self, database):
-#        print ("Deprectted, user DBAdmin instead")
-#        strtemplate1="dbname='template1' port='%s' user='%s' host='%s' password='%s'" % (self.txtPort.text(), self.txtUser.text(),  self.txtServer.text(), self.txtPass.text())
-#        cont=psycopg2.extras.DictConnection(strtemplate1)
-#        cont.set_isolation_level(0)                                    
-#        try:
-#            cur=cont.cursor()
-#            cur.execute("create database {0};".format(database))
-#            cur.close()
-#            cont.close()
-#        except:
-#            print ("Error in create_db()")
-#            cur.close()
-#            cont.close()
-#            return False
-#        return True
-#        
-    def drop_db(self):
-        print ("Deprectted, user DBAdmin instead")
-        strtemplate1="dbname='template1' port='%s' user='%s' host='%s' password='%s'" % (self.txtPort.text(), self.txtUser.text(),  self.txtServer.text(), self.txtPass.text())
-        cont=psycopg2.extras.DictConnection(strtemplate1)
-        cont.set_isolation_level(0)                                    
-        try:
-            cur=cont.cursor()
-            cur.execute("drop database xulpymoney_pruebas;")
-            cur.close()
-            cont.close()
-        except:
-            print ("Error in drop_db()")
-            cur.close()
-            cont.close()
-            return False
-        return True
-        
-
-    def load_script(self, database, file):
-        print ("Deprectted, user DBAdmin instead")
-        strtemplate1="dbname='%s' port='%s' user='%s' host='%s' password='%s'" % (database, self.txtPort.text(), self.txtUser.text(),  self.txtServer.text(), self.txtPass.text())
-        con=psycopg2.extras.DictConnection(strtemplate1)
-        con.set_isolation_level(0)
-        cur= con.cursor()
-        procedures  = open(file,'r').read() 
-        cur.execute(procedures)
-        
-        con.commit()
-        cur.close()
-        con.close()
-
-        
-    @pyqtSlot()
-    def create_xulpymoney(self):
-        print ("OBSOLETE USE DBADMIN")
-        try:
-            self.load_script(self.txtXulpymoney.text(), "/usr/share/xulpymoney/sql/xulpymoney.sql")
-            
-            strtemplate1="dbname='%s' port='%s' user='%s' host='%s' password='%s'" % (self.txtXulpymoney.text(), self.txtPort.text(), self.txtUser.text(),  self.txtServer.text(), self.txtPass.text())
-            con=psycopg2.extras.DictConnection(strtemplate1)
-            con.set_isolation_level(0)
-            cur= con.cursor()
-            cur.execute("insert into entidadesbancarias values(3,'{0}', true)".format(self.tr("Personal Management")))
-            cur.execute("insert into cuentas values(4,'{0}',3,true,NULL,'EUR')".format(self.tr("Cash")))
-            cur.execute("insert into conceptos values(1,'{0}',2,false)".format(self.tr("Initiating bank account")))
-            cur.execute("insert into conceptos values(4,'{0}',3,false)".format(self.tr("Transfer. Origin")))
-            cur.execute("insert into conceptos values(5,'{0}',3,false)".format(self.tr("Transfer. Destination")))
-            cur.execute("insert into conceptos values(29,'{0}',4,false)".format(self.tr("Purchase investment product")))
-            cur.execute("insert into conceptos values(35,'{0}',5,false)".format(self.tr("Sale investment product")))
-            cur.execute("insert into conceptos values(38,'{0}',1,false)".format(self.tr("Bank commissions")))
-            cur.execute("insert into conceptos values(39,'{0}',2,false)".format(self.tr("Dividends")))
-            cur.execute("insert into conceptos values(40,'{0}',7,false)".format(self.tr("Credit card billing")))
-            cur.execute("insert into conceptos values(43,'{0}',6,false)".format(self.tr("Added shares")))
-            cur.execute("insert into conceptos values(50,'{0}',2,false)".format(self.tr("Attendance bonus")))
-            cur.execute("insert into conceptos values(59,'{0}',1,false)".format(self.tr("Custody commission")))
-            cur.execute("insert into conceptos values(62,'{0}',2,false)".format(self.tr("Dividends. Sale of rights")))
-            cur.execute("insert into conceptos values(63,'{0}',1,false)".format(self.tr("Bonds. Running coupon payment")))
-            cur.execute("insert into conceptos values(65,'{0}',2,false)".format(self.tr("Bonds. Running coupon collection")))
-            cur.execute("insert into conceptos values(66,'{0}',2,false)".format(self.tr("Bonds. Coupon collection")))
-            cur.execute("insert into conceptos values(2,'{0}',2,true)".format(self.tr("Paysheet")))
-            cur.execute("insert into conceptos values(3,'{0}',1,true)".format(self.tr("Supermarket")))
-            cur.execute("insert into conceptos values(6,'{0}',1,true)".format(self.tr("Restaurant")))
-            cur.execute("insert into conceptos values(7,'{0}',1,true)".format(self.tr("Gas")))
-            con.commit()
-            cur.close()
-            con.close()
-            return True
-        except:
-            print ("Error in create_xulpymoney()")
-            return False
