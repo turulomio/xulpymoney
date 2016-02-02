@@ -2410,23 +2410,26 @@ class DBAdmin:
     def __init__(self, connection):
         """connection is an object Connection to a database"""
         self.con=connection
+        
+    def connection_template1(self):
+        cont=Connection().init__create(self.con.user, self.con.password, self.con.server, self.con.port, "template1")
+        cont.connect()
+        return cont
 
     def create_db(self, database):
         """It has database parameter, due to I connect to template to create database"""
-        if self.con.is_superuser():
-            new=Connection().init__create(self.con.user, self.con.password, self.con.server, self.con.port, "template1")
-            new.connect()
-            new._con.set_isolation_level(0)#Si no no me dejaba
+        cont=self.connection_template1()
+        cont._con.set_isolation_level(0)#Si no no me dejaba
+        if cont.is_superuser():
             print (database)
 #            try:
-            cur=new.cursor()
+            cur=cont.cursor()
             cur.execute("create database {0};".format(database))
 #            except:
 #                print ("Error in create_db()")
 #            finally:
             cur.close()
-            new.disconnect()
-            return False
+            cont.disconnect()
             return True
         else:
             print ("You need to be superuser to create database")
@@ -2479,7 +2482,7 @@ class DBAdmin:
         f.close()
         
     def xulpymoney_basic_schema(self):
-        try:
+#        try:
             self.load_script("/usr/share/xulpymoney/sql/xulpymoney.sql")
             cur= self.con.cursor()
             cur.execute("insert into entidadesbancarias values(3,'{0}', true)".format(QApplication.translate("Core","Personal Management")))
@@ -2506,10 +2509,10 @@ class DBAdmin:
             cur.execute("insert into conceptos values(65,'{0}',2,false)".format(QApplication.translate("Core","Bonds. Running coupon collection")))
             cur.execute("insert into conceptos values(66,'{0}',2,false)".format(QApplication.translate("Core","Bonds. Coupon collection")))
             cur.close()
-            return True
-        except:
-            print ("Error creating xulpymoney basic schema")
-            return False
+#            return True
+#        except:
+#            print ("Error creating xulpymoney basic schema")
+#            return False
 
         
 class DBData:

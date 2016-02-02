@@ -9,7 +9,7 @@ class frmInit(QDialog, Ui_frmInit):
     def __init__(self, parent = None, name = None, modal = False):
         QDialog.__init__(self,  parent)
         self.setupUi(self)
-        self.mem=MemProducts()
+        self.mem=MemXulpymoney()
         
         locale=QLocale()
         a=locale.system().name()
@@ -37,28 +37,44 @@ class frmInit(QDialog, Ui_frmInit):
             self.txtServer.setEnabled(False)
             self.txtUser.setEnabled(False)
             self.txtXulpymoney.setEnabled(False)
-            if self.create_db(self.txtXulpymoney.text())==False  or self.create_xulpymoney()==False:
+            
+            con=Connection()
+            con.user=self.txtUser.text()
+            con.db=self.txtXulpymoney.text()
+            con.server=self.txtServer.text()
+            con.port=self.txtPort.text()
+            con.password=self.txtPass.text()
+            self.mem.con=con            
+            admin=DBAdmin(self.mem.con)
+            
+            if admin.create_db(self.txtXulpymoney.text())==False:
                 m=QMessageBox()
                 m.setText(self.tr("Error creating database. Maybe it already exist"))
                 m.exec_()        
                 self.reject()
                 return
-
+            
+            #Una vez creada la base de datos me conecto
+            self.mem.con.connect()
+            
+            if admin.xulpymoney_basic_schema()==False:
+                m=QMessageBox()
+                m.setText(self.tr("Error creating database. Maybe it already exist"))
+                m.exec_()        
+                self.reject()
+                return
+            self.mem.con.commit()
 
             respuesta2 = QMessageBox.warning(self, self.windowTitle(), self.tr("Database created. Xulpymoney needs to insert quotes from yahoo. This is a long process. Do you want to insert them now?"), QMessageBox.Ok | QMessageBox.Cancel)
             if respuesta2==QMessageBox.Ok:             
-                #Insert quotes of yahoo
-                strtemplate1="dbname='%s' port='%s' user='%s' host='%s' password='%s'" % (self.txtXulpymoney.text(), self.txtPort.text(), self.txtUser.text(),  self.txtServer.text(), self.txtPass.text())
-                self.mem.con=psycopg2.extras.DictConnection(strtemplate1)
-                self.mem.con.set_isolation_level(0)
+#                #Insert quotes of yahoo
+#                strtemplate1="dbname='%s' port='%s' user='%s' host='%s' password='%s'" % (self.txtXulpymoney.text(), self.txtPort.text(), self.txtUser.text(),  self.txtServer.text(), self.txtPass.text())
+#                self.mem.con=psycopg2.extras.DictConnection(strtemplate1)
+#                self.mem.con.set_isolation_level(0)
                 self.mem.load_db_data()     
                 self.cmdCreate.setEnabled(False)
                 self.wyahoohistorical.setEnabled(True)
-                self.wyahoohistorical.on_cmdRun_released()
-#                
-#                m=QMessageBox()
-#                m.setText(self.tr("Process finished. Now you can use Xulpymoney"))
-#                m.exec_()         
+                self.wyahoohistorical.on_cmdRun_released()  
         else:
             self.cmbLanguage.setEnabled(True)
             self.txtPass.setEnabled(True)
@@ -72,24 +88,24 @@ class frmInit(QDialog, Ui_frmInit):
         self.close()
 
 
-    @pyqtSlot()
-    def create_db(self, database):
-        print ("Deprectted, user DBAdmin instead")
-        strtemplate1="dbname='template1' port='%s' user='%s' host='%s' password='%s'" % (self.txtPort.text(), self.txtUser.text(),  self.txtServer.text(), self.txtPass.text())
-        cont=psycopg2.extras.DictConnection(strtemplate1)
-        cont.set_isolation_level(0)                                    
-        try:
-            cur=cont.cursor()
-            cur.execute("create database {0};".format(database))
-            cur.close()
-            cont.close()
-        except:
-            print ("Error in create_db()")
-            cur.close()
-            cont.close()
-            return False
-        return True
-        
+#    @pyqtSlot()
+#    def create_db(self, database):
+#        print ("Deprectted, user DBAdmin instead")
+#        strtemplate1="dbname='template1' port='%s' user='%s' host='%s' password='%s'" % (self.txtPort.text(), self.txtUser.text(),  self.txtServer.text(), self.txtPass.text())
+#        cont=psycopg2.extras.DictConnection(strtemplate1)
+#        cont.set_isolation_level(0)                                    
+#        try:
+#            cur=cont.cursor()
+#            cur.execute("create database {0};".format(database))
+#            cur.close()
+#            cont.close()
+#        except:
+#            print ("Error in create_db()")
+#            cur.close()
+#            cont.close()
+#            return False
+#        return True
+#        
     def drop_db(self):
         print ("Deprectted, user DBAdmin instead")
         strtemplate1="dbname='template1' port='%s' user='%s' host='%s' password='%s'" % (self.txtPort.text(), self.txtUser.text(),  self.txtServer.text(), self.txtPass.text())
