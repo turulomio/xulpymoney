@@ -1054,7 +1054,7 @@ ALTER TABLE quotes_seq OWNER TO postgres;
 --
 
 CREATE SEQUENCE seq_conceptos
-    START WITH 100
+    START WITH 1
     INCREMENT BY 1
     NO MINVALUE
     NO MAXVALUE
@@ -1068,7 +1068,7 @@ ALTER TABLE seq_conceptos OWNER TO postgres;
 --
 
 CREATE SEQUENCE seq_cuentas
-    START WITH 5
+    START WITH 0
     INCREMENT BY 1
     MINVALUE 0
     MAXVALUE 1000000
@@ -1096,7 +1096,7 @@ ALTER TABLE seq_dividendos OWNER TO postgres;
 --
 
 CREATE SEQUENCE seq_entidadesbancarias
-    START WITH 4
+    START WITH 0
     INCREMENT BY 1
     MINVALUE 0
     MAXVALUE 100000000
@@ -1807,6 +1807,7 @@ INSERT INTO products VALUES ('Alcatel-Lucent', NULL, 'USD', 1, NULL, 77831, NULL
 INSERT INTO products VALUES ('ALCATEL LUCENT NV', 'FR0010985861', 'EUR', 1, '|EURONEXT|', 77598, NULL, NULL, NULL, NULL, 100, 'c', 0, 3, NULL, NULL, NULL, 'EURONEXT#FR0010985861||fr||False', false);
 INSERT INTO products VALUES ('Alcoa Inc.', 'US0138171014', 'USD', 1, '|SP500|', 79310, '', '', '', '', 100, 'c', 0, 2, 'AA', '{1}', '{3}', 'NYSE#AA||us||False', false);
 INSERT INTO products VALUES ('ALDETA', 'FR0000036634', 'EUR', 1, '|EURONEXT|', 75505, NULL, NULL, NULL, NULL, 100, 'c', 0, 3, NULL, NULL, NULL, 'EURONEXT#FR0000036634||fr||False', false);
+INSERT INTO products VALUES ('ALDIDE S.A.', '', 'EUR', 1, '', -32, '', '', '', '', 100, 'c', 0, 1, NULL, NULL, NULL, 'ALDIDE||es||True', true);
 INSERT INTO products VALUES ('aleo solar Aktiengesellschaft', 'DE000A0JM634', 'EUR', 1, '|DEUTSCHEBOERSE|', 78601, NULL, NULL, NULL, NULL, 100, 'c', 0, 5, NULL, NULL, NULL, 'DEUTSCHEBOERSE#DE000A0JM634||de||False', false);
 INSERT INTO products VALUES ('Alere Inc.', NULL, 'USD', 1, NULL, 77128, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, NULL, 'NYSE#ALR||us||False', false);
 INSERT INTO products VALUES ('Alexander & Baldwin Inc.', NULL, 'USD', 1, NULL, 78726, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, NULL, 'NYSE#ALEX||us||False', false);
@@ -2933,6 +2934,7 @@ INSERT INTO products VALUES ('BRISA', 'PTBRI0AM0000', 'EUR', 1, '|EURONEXT|', 78
 INSERT INTO products VALUES ('Bristol-Myers Squibb Co.', '', 'USD', 1, '|SP500|', 78903, '', '', '', '', 100, 'c', 0, 2, 'BMY', '{1}', '{3}', 'NYSE#BMY||us||False', false);
 INSERT INTO products VALUES ('Bristow Group Inc.', NULL, 'USD', 1, NULL, 79055, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, NULL, 'NYSE#BRS||us||False', false);
 INSERT INTO products VALUES ('British Petroleum BP', 'GB0007980591', 'GBP', 1, '', 75006, '', '', '', '', 100, 'c', 0, 4, 'BP.L', '{1}', '{3}', 'BP.L||None||False', false);
+INSERT INTO products VALUES ('British petroleum for early xulpymoney', '', 'EUR', 11, '', -26, '', '', '', '', 100, 'c', 0, 4, NULL, '{}', '{}', '', true);
 INSERT INTO products VALUES ('Broadcom Corporation', 'US1113201073', 'USD', 1, '|NASDAQ100|SP500|', 76527, '', '', '', '', 100, 'c', 0, 2, 'BRCM', '{1}', '{3}', 'BRCM||us||False', false);
 INSERT INTO products VALUES ('Broadridge Financial Solutions Inc.', NULL, 'USD', 1, NULL, 77303, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, NULL, 'NYSE#BR||us||False', false);
 INSERT INTO products VALUES ('Brookdale Senior Living Inc.', NULL, 'USD', 1, NULL, 75521, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, NULL, 'NYSE#BKD||us||False', false);
@@ -3938,7 +3940,14 @@ INSERT INTO products VALUES ('Demand Media Inc.', NULL, 'USD', 1, NULL, 79902, N
 INSERT INTO products VALUES ('Denbury Resources Inc.', NULL, 'USD', 1, NULL, 77000, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, NULL, 'NYSE#DNR||us||False', false);
 INSERT INTO products VALUES ('DENTSPLY International Inc.', 'US2490301072', 'USD', 1, '|NASDAQ100|', 77606, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, NULL, 'XRAY||us||False', false);
 INSERT INTO products VALUES ('DEOLEO', 'ES0110047919', 'EUR', 1, '|MERCADOCONTINUO|', 78473, '', '', '', '', 100, 'c', 0, 1, 'OLE.MC', '{9}', '{3}', 'MC#ES0110047919||es||False', false);
+INSERT INTO products VALUES ('DEPOSITO BANKINTER', '', 'EUR', 10, '', -3, '', '', '', '', 0, 'c', 0, 1, NULL, NULL, NULL, 'DEPOSITO BANKINTER||es||True', false);
+INSERT INTO products VALUES ('DEPOSITO BARCLAYS', NULL, 'EUR', 2, NULL, -4, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, NULL, NULL, NULL, 'DEPOSITO BARCLAYS||es||True', false);
+INSERT INTO products VALUES ('Depósito Estructurado Bankinter', '', 'EUR', 10, '', -9, '', '', '', '', 100, 'i', 0, 1, NULL, NULL, NULL, '', false);
+INSERT INTO products VALUES ('DEPOSITO IBERCAJA', '', 'EUR', 10, '', -5, '', '', '', '', 100, 'c', 0, 1, '', '{}', '{}', '', false);
+INSERT INTO products VALUES ('DEPOSITO LACAIXA', NULL, 'EUR', 2, NULL, -6, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, NULL, NULL, NULL, 'DEPOSITO LACAIXA||es||True', false);
 INSERT INTO products VALUES ('Derby Cycle AG', 'DE000A1H6HN1', 'EUR', 1, '|DEUTSCHEBOERSE|', 79508, NULL, NULL, NULL, NULL, 100, 'c', 0, 5, NULL, NULL, NULL, 'DEUTSCHEBOERSE#DE000A1H6HN1||de||False', false);
+INSERT INTO products VALUES ('DERECHOS BANCO SANTANDER', NULL, 'EUR', 2, NULL, -7, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, NULL, NULL, NULL, 'DERECHOS BANCO DE SANTANDER||es||True', false);
+INSERT INTO products VALUES ('DERECHOS IBERDROLA', '', 'EUR', 1, '', -8, '', '', '', '', 100, 'c', 0, 1, NULL, NULL, NULL, 'DERECHOS IBERDROLA||None||False', false);
 INSERT INTO products VALUES ('DERICHEBOURG', 'FR0000053381', 'EUR', 1, '|EURONEXT|', 79000, NULL, NULL, NULL, NULL, 100, 'c', 0, 3, NULL, NULL, NULL, 'EURONEXT#FR0000053381||fr||False', false);
 INSERT INTO products VALUES ('Desarrolladora Homex S.A.B. de C.V.', NULL, 'USD', 1, NULL, 78199, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, NULL, 'NYSE#HXM||us||False', false);
 INSERT INTO products VALUES ('Deufol AG', 'DE0005101505', 'EUR', 1, '|DEUTSCHEBOERSE|', 78762, NULL, NULL, NULL, NULL, 100, 'c', 0, 5, NULL, NULL, NULL, 'DEUTSCHEBOERSE#DE0005101505||de||False', false);
@@ -6041,6 +6050,7 @@ INSERT INTO products VALUES ('MANRESA PREMIUM', 'ES0117141038', 'EUR', 2, '|BMF|
 INSERT INTO products VALUES ('MANRESA VALOR', 'ES0117142002', 'EUR', 2, '|BMF|0076|', 77043, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, NULL, NULL, '{8}', 'ES0117142002||es||False', true);
 INSERT INTO products VALUES ('MAN SE St', 'DE0005937007', 'EUR', 1, '|DAX|DEUTSCHEBOERSE|', 81294, '', '', '', '', 100, 'c', 0, 5, NULL, NULL, NULL, 'DEUTSCHEBOERSE#DE0005937007||de||False', false);
 INSERT INTO products VALUES ('MAN SE Vz', 'DE0005937031', 'EUR', 1, '|DEUTSCHEBOERSE|', 81295, NULL, NULL, NULL, NULL, 100, 'c', 0, 5, NULL, NULL, NULL, 'DEUTSCHEBOERSE#DE0005937031||de||False', false);
+INSERT INTO products VALUES ('MANUEL PASCUAL SALCEDO S.A.', '', 'EUR', 1, '', -2, '', '', '', '', 100, 'c', 0, 1, NULL, NULL, NULL, 'MANUEL PASCUAL SALCEDO||es||True', true);
 INSERT INTO products VALUES ('Manulife Financial Corp.', NULL, 'USD', 1, NULL, 78046, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, NULL, 'NYSE#MFC||us||False', false);
 INSERT INTO products VALUES ('MANUTAN INTL', 'FR0000032302', 'EUR', 1, '|EURONEXT|', 78308, NULL, NULL, NULL, NULL, 100, 'c', 0, 3, NULL, NULL, NULL, 'EURONEXT#FR0000032302||fr||False', false);
 INSERT INTO products VALUES ('Manz AG', 'DE000A0JQ5U3', 'EUR', 1, '|DEUTSCHEBOERSE|', 81300, NULL, NULL, NULL, NULL, 100, 'c', 0, 5, NULL, NULL, NULL, 'DEUTSCHEBOERSE#DE000A0JQ5U3||de||False', false);
@@ -7033,6 +7043,7 @@ INSERT INTO products VALUES ('RENTA FIJA 21', 'ES0126517038', 'EUR', 2, '|BMF|01
 INSERT INTO products VALUES ('RENTMADRID 2', 'ES0173441033', 'EUR', 2, '|BMF|0085|', 81455, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, NULL, NULL, '{8}', 'ES0173441033||es||False', false);
 INSERT INTO products VALUES ('RENTMADRID', 'ES0173426034', 'EUR', 2, '|BMF|0085|', 81451, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, NULL, NULL, '{8}', 'ES0173426034||es||False', true);
 INSERT INTO products VALUES ('Reply Deutschland AG', 'DE0005501456', 'EUR', 1, '|DEUTSCHEBOERSE|', 80760, NULL, NULL, NULL, NULL, 100, 'c', 0, 5, NULL, NULL, NULL, 'DEUTSCHEBOERSE#DE0005501456||de||False', false);
+INSERT INTO products VALUES ('REPO Obligaciones del tesoro público', '', 'EUR', 7, '', -18, '', '', '', '', 100, 'c', 0, 1, NULL, NULL, NULL, '', false);
 INSERT INTO products VALUES ('REpower Systems SE', 'DE0006177033', 'EUR', 1, '|DEUTSCHEBOERSE|', 75455, NULL, NULL, NULL, NULL, 100, 'c', 0, 5, NULL, NULL, NULL, 'DEUTSCHEBOERSE#DE0006177033||de||False', false);
 INSERT INTO products VALUES ('REPSOL YPF', 'ES0173516115', 'EUR', 1, '|EUROSTOXX|IBEX|MERCADOCONTINUO|', 79360, '', '', '', '', 100, 'c', 0, 1, 'REP.MC', '{9}', '{3}', 'MC#ES0173516115||es||False', false);
 INSERT INTO products VALUES ('Republic Services Inc.', NULL, 'USD', 1, NULL, 75384, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, NULL, 'NYSE#RSG||us||False', false);
@@ -8326,8 +8337,21 @@ INSERT INTO stockmarkets VALUES (6, 'it', '07:00:00', 'Bolsa de Milán', '17:38:
 INSERT INTO stockmarkets VALUES (7, 'jp', '09:00:00', 'Bolsa de Tokio', '20:00:00', 'Asia/Tokyo');
 INSERT INTO stockmarkets VALUES (8, 'cn', '00:00:00', 'Bolsa de Hong Kong', '20:00:00', 'Asia/Hong_Kong');
 INSERT INTO stockmarkets VALUES (9, 'pt', '07:00:00', 'Bolsa de Lisboa', '17:38:00', 'Europe/Lisbon');
+INSERT INTO globals VALUES (10, 'wdgLastCurrent/spin', '-25');
+INSERT INTO globals VALUES (11, 'mem/localcurrency', 'EUR');
+INSERT INTO globals VALUES (12, 'mem/localzone', 'Europe/Madrid');
+INSERT INTO globals VALUES (13, 'mem/benchmarkid', '79329');
+INSERT INTO globals VALUES (14, 'mem/dividendwithholding', '0.19');
+INSERT INTO globals VALUES (15, 'mem/taxcapitalappreciation', '0.19');
+INSERT INTO globals VALUES (16, 'mem/taxcapitalappreciationbelow', '0.5');
+INSERT INTO globals VALUES (17, 'mem/gainsyear', 'false');
+INSERT INTO globals VALUES (18, 'mem/favorites', '79329, 81680, -33');
+INSERT INTO globals VALUES (19, 'mem/fillfromyear', '2005');
 INSERT INTO globals VALUES (1, 'Version', '201601290517');
 INSERT INTO globals VALUES (6, 'Admin mode', NULL);
+INSERT INTO globals VALUES (7, 'wdgIndexRange/spin', '2.0');
+INSERT INTO globals VALUES (8, 'wdgIndexRange/invertir', '2775');
+INSERT INTO globals VALUES (9, 'wdgIndexRange/minimo', '1000');
 DELETE FROM products WHERE id<=0;
 ALTER SEQUENCE seq_conceptos START WITH 100 RESTART;
 ALTER SEQUENCE seq_entidadesbancarias START WITH 4 RESTART;
