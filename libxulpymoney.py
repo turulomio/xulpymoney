@@ -396,6 +396,39 @@ class SetInvestments(SetCommons):
             if lasttpc<=percentage:   
                 table.item(i, 6).setBackground(QColor(255, 148, 148))
 
+    def myqtablewidget_sellingpoints(self, table):
+        """Crea un set y luego construye la tabla"""
+        
+        set=SetInvestments(self.mem,  self.accounts, self.products, self.benchmark)
+        for inv in self.arr:
+            if inv.selling_expiration!=None:
+                set.append(inv)
+        set.order_by_selling_expiration()
+        
+        table.setColumnCount(6)
+        table.setHorizontalHeaderItem(0, QTableWidgetItem(QApplication.translate("Core","Date")))
+        table.setHorizontalHeaderItem(1, QTableWidgetItem(QApplication.translate("Core","Expiration")))
+        table.setHorizontalHeaderItem(2, QTableWidgetItem(QApplication.translate("Core","Investment")))
+        table.setHorizontalHeaderItem(3, QTableWidgetItem(QApplication.translate("Core","Account")))
+        table.setHorizontalHeaderItem(4, QTableWidgetItem(QApplication.translate("Core","Shares")))
+        table.setHorizontalHeaderItem(5, QTableWidgetItem(QApplication.translate("Core","Price")))
+   
+#        table.horizontalHeader().setStretchLastSection(False)   
+        table.applySettings()
+        table.clearContents()
+        table.setRowCount(set.length())
+        for i, inv in enumerate(set.arr):
+            if inv.selling_expiration!=None:
+                table.setItem(i, 0, qdate(inv.op_actual.last().datetime.date()))
+                table.setItem(i, 1, qdate(inv.selling_expiration))    
+                if inv.selling_expiration<datetime.date.today():
+                    table.item(i, 1).setBackground( QColor(255, 182, 182))       
+                table.setItem(i, 2, qleft(inv.name))
+                table.setItem(i, 3, qleft(inv.account.name))   
+                table.setItem(i, 4, qright(inv.acciones()))
+                table.setItem(i, 5, inv.product.currency.qtablewidgetitem(inv.venta))
+                
+                
     def average_age(self):
         """Average age of the investments in this set in days"""
         #Extracts all currentinvestmentoperations
@@ -537,6 +570,13 @@ class SetInvestments(SetCommons):
         """Orders the Set using self.arr"""
         try:
             self.arr=sorted(self.arr, key=lambda inv: inv.product.result.basic.tpc_diario(),  reverse=True) 
+            return True
+        except:
+            return False
+    def order_by_selling_expiration(self):
+        """Orders the Set using self.arr"""
+        try:
+            self.arr=sorted(self.arr, key=lambda inv: inv.selling_expiration,  reverse=False) 
             return True
         except:
             return False
@@ -1586,6 +1626,13 @@ class SetInvestmentOperationsCurrent(SetIO):
             if self.arr[i].inversion!=inversion:
                 return False
         return True
+
+    def last(self):
+        """Returns last current operation"""
+        if self.length()==0:
+            return None
+        else:
+            return self.arr[self.length()-1]
     
     def less_than_a_year(self):
         for o in self.arr:
@@ -2569,7 +2616,7 @@ class DBData:
         self.investments_active.load_from_db("select * from inversiones where active=true", True)
         print("Cargando actives",  datetime.datetime.now()-inicio)
 
-        self.orders=SetOrders(self.mem).init__from_db("select * from orders where expiration>=now()::date and executed is null")
+#        self.orders=SetOrders(self.mem).init__from_db("select * from orders where expiration>=now()::date and executed is null")
     
     def load_actives(self):
         inicio=datetime.datetime.now()
@@ -2606,7 +2653,7 @@ class DBData:
 
             self.investments_inactive=SetInvestments(self.mem, self.accounts_all(), self.products_all(), self.benchmark)
             self.investments_inactive.load_from_db("select * from inversiones where active=false",  True)
-            self.orders=SetOrders(self.mem).init__from_db("select * from orders where expiration>=now()::date and executed is null")
+#            self.orders=SetOrders(self.mem).init__from_db("select * from orders where expiration>=now()::date and executed is null")
             
             print("\n","Cargando inactives",  datetime.datetime.now()-inicio)
             self.loaded_inactive=True
@@ -3495,7 +3542,15 @@ class Order:
         cur.execute("delete from orders where id=%s", (self.id, ))
         cur.close()
 
-        
+    def qmessagebox_reminder(self):
+        if self.shares<0:
+            type="Sell"
+        else:
+            type="Buy"
+        m=QMessageBox()
+        m.setIcon(QMessageBox.Information)
+        m.setText(QApplication.translate("Core","Don't forget to tell your bank to add and order for:\n{} ({})\n{} {} shares to {}".format(self.investment.name, self.investment.account.name, type, abs(self.shares), self.investment.product.currency.string(self.price, 6))))
+        m.exec_()   
         
 class OperationType:
     def __init__(self):
@@ -3990,13 +4045,10 @@ class SetOrders:
     def append(self, objeto):
         self.arr.append(objeto)
         
-    def remove(self, order, remove_from_mem=True):
+    def remove(self, order):
         """Remove from array"""
         self.arr.remove(order)#Remove from array
         order.remove()#Database
-        if remove_from_mem==True:#Remove from mem
-            if order in self.mem.data.orders.arr:
-                self.mem.data.orders.remove(order, False)#To avoid recursivity
 
     def length(self):
         return len(self.arr)
@@ -4006,7 +4058,7 @@ class SetOrders:
         self.arr=sorted(self.arr, key=lambda o:o.date)
         
     def date_first_db_order(self):
-        """First order date"""
+        """First order date. It searches in database not in array"""
         cur=self.mem.con.cursor()
         cur.execute("select date from orders order by date limit 1")
         r=cur.fetchone()
@@ -4027,8 +4079,8 @@ class SetOrders:
         table.setHorizontalHeaderItem(6, QTableWidgetItem(QApplication.translate("Core","Amount")))
         table.setHorizontalHeaderItem(7, QTableWidgetItem(QApplication.translate("Core","Executed")))
    
-        table.applySettings()
         table.horizontalHeader().setStretchLastSection(False)   
+        table.applySettings()
         table.clearContents()
         table.setRowCount(self.length())
         for i, p in enumerate(self.arr):

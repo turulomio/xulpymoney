@@ -104,6 +104,9 @@ class wdgLastCurrent(QWidget, Ui_wdgLastCurrent):
             self.actionInvestmentReport.setEnabled(True)
             self.actionProduct.setEnabled(True)
 
+
+        self.actionCalculate.setText("Calculate order at {} since last operation".format(tpc(self.spin.value())))
+        self.actionReinvest.setText("Simulate reinvestment at {} since last operation".format(tpc(self.spin.value())))
         menu=QMenu()
         menu.addAction(self.actionCalculate)
         menu.addSeparator()

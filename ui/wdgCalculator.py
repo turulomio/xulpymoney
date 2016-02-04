@@ -2,6 +2,7 @@ from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from Ui_wdgCalculator import *
 from libxulpymoney import *
+from wdgOrdersAdd import *
 
 class wdgCalculator(QWidget, Ui_wdgCalculator):
     def __init__(self, mem,  parent=None):
@@ -67,6 +68,19 @@ class wdgCalculator(QWidget, Ui_wdgCalculator):
         self.txtFinalPrice.textChanged.connect(self.on_txtFinalPrice_textChanged)
         
         self.calculate()
+        
+        
+    @pyqtSlot()
+    def on_cmdOrder_released(self):
+        d=QDialog(self)     
+        d.setModal(True)
+        d.setWindowTitle(self.tr("Add new order"))
+        w=wdgOrdersAdd(self.mem, None, None, d)
+        w.txtShares.setText(self.txtShares.decimal())
+        w.txtPrice.setText(self.txtFinalPrice.decimal())
+        lay = QVBoxLayout(d)
+        lay.addWidget(w)
+        d.exec_()
         
         
     @pyqtSlot(float)  
