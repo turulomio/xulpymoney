@@ -993,7 +993,7 @@ CREATE TABLE orders (
     shares numeric(100,6),
     price numeric(100,2),
     investments_id integer NOT NULL,
-    investmentoperations_id integer
+    executed timestamp with time zone
 );
 
 
@@ -8347,10 +8347,10 @@ INSERT INTO globals VALUES (16, 'mem/taxcapitalappreciationbelow', '0.5');
 INSERT INTO globals VALUES (17, 'mem/gainsyear', 'false');
 INSERT INTO globals VALUES (18, 'mem/favorites', '79329, 81680, -33');
 INSERT INTO globals VALUES (19, 'mem/fillfromyear', '2005');
-INSERT INTO globals VALUES (1, 'Version', '201601290517');
+INSERT INTO globals VALUES (1, 'Version', '201602040422');
 INSERT INTO globals VALUES (6, 'Admin mode', NULL);
 INSERT INTO globals VALUES (7, 'wdgIndexRange/spin', '2.0');
-INSERT INTO globals VALUES (8, 'wdgIndexRange/invertir', '2775');
+INSERT INTO globals VALUES (8, 'wdgIndexRange/invertir', '2750');
 INSERT INTO globals VALUES (9, 'wdgIndexRange/minimo', '1000');
 DELETE FROM products WHERE id<=0;
 ALTER SEQUENCE seq_conceptos START WITH 100 RESTART;

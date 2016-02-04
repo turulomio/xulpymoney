@@ -19,7 +19,7 @@ class Update:
     def __init__(self, mem):
         self.mem=mem
         self.dbversion=self.get_database_version()    
-        self.lastcodeupdate=201601290517
+        self.lastcodeupdate=201602040422
 
    
     def get_database_version(self):
@@ -404,7 +404,20 @@ class Update:
             """)
             cur.close()
             self.mem.con.commit()
-            self.set_database_version(201601290517)                      
+            self.set_database_version(201601290517)             
+        if self.dbversion<201602040412:
+            cur=self.mem.con.cursor()
+            cur.execute("alter table orders drop investmentoperations_id")
+            cur.execute("alter table orders add investmentoperations_id timestamp with time zone")
+            cur.close()
+            self.mem.con.commit()
+            self.set_database_version(201602040412)             
+        if self.dbversion<201602040422:
+            cur=self.mem.con.cursor()
+            cur.execute("alter table orders rename investmentoperations_id to executed")
+            cur.close()
+            self.mem.con.commit()
+            self.set_database_version(201602040422)                  
             
             
 
