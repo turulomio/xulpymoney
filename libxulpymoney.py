@@ -2569,7 +2569,7 @@ class DBData:
         self.investments_active.load_from_db("select * from inversiones where active=true", True)
         print("Cargando actives",  datetime.datetime.now()-inicio)
 
-        self.orders=SetOrders(self.mem).init__from_db("select * from orders where expiration>=now()::date and investmentoperations_id is null")
+        self.orders=SetOrders(self.mem).init__from_db("select * from orders where expiration>=now()::date and executed is null")
     
     def load_actives(self):
         inicio=datetime.datetime.now()
@@ -2606,7 +2606,7 @@ class DBData:
 
             self.investments_inactive=SetInvestments(self.mem, self.accounts_all(), self.products_all(), self.benchmark)
             self.investments_inactive.load_from_db("select * from inversiones where active=false",  True)
-            self.orders=SetOrders(self.mem).init__from_db("select * from orders where expiration>=now()::date and investmentoperations_id is null")
+            self.orders=SetOrders(self.mem).init__from_db("select * from orders where expiration>=now()::date and executed is null")
             
             print("\n","Cargando inactives",  datetime.datetime.now()-inicio)
             self.loaded_inactive=True
@@ -3466,7 +3466,7 @@ class Order:
         self.price=None
         self.shares=None
         self.investment=None
-        self.io=None
+        self.executed=None
         
     def init__db_row(self, row):
         self.id=row['id']
@@ -3476,21 +3476,16 @@ class Order:
         self.price=row['price']
         self.shares=row['shares']
         self.investment=self.mem.data.investments_all().find_by_id(row['investments_id'])
-        if row['investmentoperations_id']!=None:
-            self.io=InvestmentOperation(self.mem).find_by_mem(row['investmentoperations_id'])
+        self.executed=row['executed']
         return self
 
     def save(self, autocommit=False):
         cur=self.mem.con.cursor()
-        if self.io==None:
-            investmentoperations_id=None
-        else:
-            investmentoperations_id=self.io.id
         if self.id==None:#insertar
-            cur.execute("insert into orders(date, expiration, amount, shares, price,investments_id, investmentoperations_id) values (%s, %s, %s, %s, %s, %s, %s) returning id", (self.date,  self.expiration, self.amount, self.shares, self.price, self.investment.id, investmentoperations_id))
+            cur.execute("insert into orders(date, expiration, amount, shares, price,investments_id, executed) values (%s, %s, %s, %s, %s, %s, %s) returning id", (self.date,  self.expiration, self.amount, self.shares, self.price, self.investment.id, self.executed))
             self.id=cur.fetchone()[0]
         else:
-            cur.execute("update orders set date=%s, expiration=%s, amount=%s, shares=%s, price=%s, investments_id=%s, investmentoperations_id=%s where id=%s", (self.date,  self.expiration, self.amount, self.shares, self.price, self.investment.id, investmentoperations_id, self.id))
+            cur.execute("update orders set date=%s, expiration=%s, amount=%s, shares=%s, price=%s, investments_id=%s, executed=%s where id=%s", (self.date,  self.expiration, self.amount, self.shares, self.price, self.investment.id, self.executed, self.id))
         if autocommit==True:
             self.mem.con.commit()
         cur.close()
@@ -4043,14 +4038,10 @@ class SetOrders:
                 table.item(i, 1).setBackground( QColor(255, 182, 182))       
             table.setItem(i, 2, qleft(p.investment.name))
             table.setItem(i, 3, qleft(p.investment.account.name))   
-            table.setItem(i, 4, qright(p.shares))#, p.mem.localzone.name)))
+            table.setItem(i, 4, qright(p.shares))
             table.setItem(i, 5, p.investment.product.currency.qtablewidgetitem(p.price))
             table.setItem(i, 6, self.mem.localcurrency.qtablewidgetitem(p.amount))   
-            if p.io==None:
-                table.setItem(i, 7, qbool(False))
-            else:
-                table.setItem(i, 7, qbool(True))
-            
+            table.setItem(i, 7, qdatetime(p.executed, self.mem.localzone))
 
 class SetPriorities(SetCommons):
     def __init__(self, mem):
