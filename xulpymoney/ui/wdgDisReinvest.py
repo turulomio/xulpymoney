@@ -2,6 +2,7 @@ from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from Ui_wdgDisReinvest import *
 from libxulpymoney import *
+from wdgOrdersAdd import *
 from decimal import *
 
 class wdgDisReinvest(QWidget, Ui_wdgDisReinvest):
@@ -63,6 +64,7 @@ class wdgDisReinvest(QWidget, Ui_wdgDisReinvest):
         self.lblSimulacion.setText(self.tr("Divest loss to asume"))
         self.lblValor.setText(self.tr("Selling price"))
         self.tabAB.setCurrentIndex(1)
+        self.cmdOrder.setEnabled(False)
         
     @QtCore.pyqtSlot() 
     def on_radRe_clicked(self):
@@ -70,6 +72,7 @@ class wdgDisReinvest(QWidget, Ui_wdgDisReinvest):
         self.lblSimulacion.setText(self.tr("Amount to reinvest"))
         self.lblValor.setText(self.tr("Purchase price"))
         self.tabAB.setCurrentIndex(1)
+        self.cmdOrder.setEnabled(False)
    
     def on_cmd_released(self): 
         self.sim_op=None
@@ -116,6 +119,23 @@ class wdgDisReinvest(QWidget, Ui_wdgDisReinvest):
         self.tabOpAcHi.setCurrentIndex(1)
         self.gains(self.tblGainsBefore, self.inversion.acciones(), self.inversion.op_actual.valor_medio_compra())
         self.gains(self.tblGainsAfter,  self.inversion.acciones()+self.acciones(), self.sim_opactual.valor_medio_compra())
+        
+        self.cmdOrder.setEnabled(True)
+                
+    @pyqtSlot()
+    def on_cmdOrder_released(self):
+        d=QDialog(self)     
+        d.setModal(True)
+        d.setWindowTitle(self.tr("Add new order"))
+        w=wdgOrdersAdd(self.mem, None, self.inversion, d)
+        w.txtShares.setText(self.txtAcciones.decimal())
+        if self.radDes.isChecked():#DESINVERSION
+            w.txtPrice.setText(-self.txtValorAccion.decimal())
+        else:#REINVERSION
+            w.txtPrice.setText(self.txtValorAccion.decimal())
+        lay = QVBoxLayout(d)
+        lay.addWidget(w)
+        d.exec_()
         
     def gains(self, table,  shares,  averageprice):
         porcentages=[2.5, 5, 7.5, 10, 15, 30]

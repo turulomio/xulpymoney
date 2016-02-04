@@ -495,10 +495,10 @@
      <normaloff>:/xulpymoney/kcalc.png</normaloff>:/xulpymoney/kcalc.png</iconset>
    </property>
    <property name="text">
-    <string>Investment calculator</string>
+    <string>Order calculator</string>
    </property>
    <property name="toolTip">
-    <string>Investment calculator</string>
+    <string>Order calculator</string>
    </property>
   </action>
   <action name="actionSearch">

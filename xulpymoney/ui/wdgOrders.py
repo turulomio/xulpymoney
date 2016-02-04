@@ -11,9 +11,11 @@ class wdgOrders(QWidget, Ui_wdgOrders):
         self.mem=mem
         self.orders=None 
          
-        self.wdgYear.initiate(self.mem.data.orders.date_first_db_order().year,  datetime.date.today().year, datetime.date.today().year)
         self.tblOrders.settings(self.mem, "wdgOrders")
+        self.tblSellingPoints.settings(self.mem, "wdgOrders")
+        self.mem.data.investments_active.myqtablewidget_sellingpoints(self.tblSellingPoints)
         self.on_cmbMode_currentIndexChanged(self.cmbMode.currentIndex())
+        self.wdgYear.initiate(self.orders.date_first_db_order().year,  datetime.date.today().year, datetime.date.today().year)
         
         
     @QtCore.pyqtSlot()  
@@ -40,7 +42,17 @@ class wdgOrders(QWidget, Ui_wdgOrders):
         
     @QtCore.pyqtSlot() 
     def on_actionOrderDelete_triggered(self):
-        self.orders.remove(self.orders.selected, True)
+        self.orders.remove(self.orders.selected)
+        self.mem.con.commit()
+        self.on_cmbMode_currentIndexChanged(self.cmbMode.currentIndex())
+        
+    @QtCore.pyqtSlot() 
+    def on_actionExecute_triggered(self):
+        if self.orders.selected.executed==None:
+            self.orders.selected.executed=self.mem.localzone.now()#Set execution
+        else:
+            self.orders.selected.executed=None#Remove execution
+        self.orders.selected.save()
         self.mem.con.commit()
         self.on_cmbMode_currentIndexChanged(self.cmbMode.currentIndex())
         
@@ -48,8 +60,16 @@ class wdgOrders(QWidget, Ui_wdgOrders):
     @pyqtSlot(int)     
     def on_cmbMode_currentIndexChanged(self, index):
         if index==0:#Current
-            self.wdgYear.hide()
-            self.orders=self.mem.data.orders
+            self.wdgYear.hide()            
+            self.orders=SetOrders(self.mem).init__from_db("""
+                SELECT * 
+                FROM 
+                    ORDERS
+                WHERE
+                    EXPIRATION>NOW()::DATE AND
+                    EXECUTED IS NULL
+                ORDER BY DATE
+           """)
         elif index==1: #show expired
             self.wdgYear.show()
             self.orders=SetOrders(self.mem).init__from_db(self.mem.con.mogrify("""
@@ -59,7 +79,7 @@ class wdgOrders(QWidget, Ui_wdgOrders):
                 WHERE
                     DATE BETWEEN '%s-1-1' AND '%s-12-31' AND
                     EXPIRATION<NOW()::DATE AND
-                    INVESTMENTOPERATIONS_ID IS NULL
+                    EXECUTED IS NULL
                 ORDER BY DATE
            """, (self.wdgYear.year, self.wdgYear.year)))
         elif index==2: #show executed
@@ -70,7 +90,7 @@ class wdgOrders(QWidget, Ui_wdgOrders):
                     ORDERS
                 WHERE
                     DATE BETWEEN '%s-1-1' AND '%s-12-31' AND
-                    INVESTMENTOPERATIONS_ID IS NOT NULL
+                    EXECUTED IS NOT NULL
                 ORDER BY DATE
            """, (self.wdgYear.year, self.wdgYear.year)))
         else:
@@ -94,6 +114,10 @@ class wdgOrders(QWidget, Ui_wdgOrders):
             self.actionOrderDelete.setEnabled(True)
             self.actionOrderEdit.setEnabled(True)
             self.actionExecute.setEnabled(True)
+            if self.orders.selected.executed==None:
+                self.actionExecute.setText("Execute order")
+            else:
+                self.actionExecute.setText("Remove execution time")
             
         menu=QMenu()
         menu.addAction(self.actionOrderNew)

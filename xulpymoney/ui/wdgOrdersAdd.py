@@ -27,7 +27,10 @@ class wdgOrdersAdd(QWidget, Ui_wdgOrdersAdd):
         self.mem.data.investments_active.qcombobox(self.cmbInvestments, 2, True)
         if self.investment!=None:
             self.cmbInvestments.setCurrentIndex(self.cmbInvestments.findData(self.investment.id))
+        else:
+            self.cmbInvestments.setCurrentIndex(self.cmbInvestments.findData(-1))
             
+        
     @pyqtSlot()
     def on_buttonbox_accepted(self):
         self.date=self.deDate.date()
@@ -37,18 +40,26 @@ class wdgOrdersAdd(QWidget, Ui_wdgOrdersAdd):
             m.setText(self.tr("Incorrect data. Try again."))
             m.exec_()    
             return
+        investment=self.mem.data.investments_active.find_by_id(self.cmbInvestments.itemData(self.cmbInvestments.currentIndex()))
+        if investment==None:
+            m=QMessageBox()
+            m.setIcon(QMessageBox.Information)
+            m.setText(self.tr("You must select an investment"))
+            m.exec_()    
+            return
+            
         if self.order==None:
             self.order=Order(self.mem)
-            self.mem.data.orders.append(self.order)#Object can be added here (before commit)
         self.order.date=self.deDate.date().toPyDate()
         self.order.expiration=self.deExpiration.date().toPyDate()
         self.order.shares=self.txtShares.decimal()
         self.order.amount=self.txtAmount.decimal()
         self.order.price=self.txtPrice.decimal()
-        self.order.investment=self.mem.data.investments_active.find_by_id(self.cmbInvestments.itemData(self.cmbInvestments.currentIndex()))
+        self.order.investment=investment
+        
         self.order.save()
         self.mem.con.commit()
-        self.close()
+        self.order.qmessagebox_reminder()
         self.parent.accept()
 
     @pyqtSlot()
