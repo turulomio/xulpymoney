@@ -15,7 +15,7 @@ class wdgOrders(QWidget, Ui_wdgOrders):
          
         self.tblOrders.settings(self.mem, "wdgOrders")
         self.tblSellingPoints.settings(self.mem, "wdgOrders")
-        self.mem.data.investments_active.myqtablewidget_sellingpoints(self.tblSellingPoints)
+        self.mem.data.investments_active().myqtablewidget_sellingpoints(self.tblSellingPoints)
         self.on_cmbMode_currentIndexChanged(self.cmbMode.currentIndex())
         self.wdgYear.initiate(self.orders.date_first_db_order().year,  datetime.date.today().year, datetime.date.today().year)
         

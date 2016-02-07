@@ -10,7 +10,7 @@ class wdgAccounts(QWidget, Ui_wdgAccounts):
         self.setupUi(self)
         self.mem=mem
         self.tblAccounts.settings(self.mem, "wdgAccounts")
-        self.accounts=self.mem.data.accounts_active
+        self.accounts=self.mem.data.accounts_active()
         self.selAccount=None
         self.child=None#Used to access childs in automate unittests
         self.load_table()
@@ -57,17 +57,17 @@ class wdgAccounts(QWidget, Ui_wdgAccounts):
             self.selAccount.borrar(cur)
             self.mem.con.commit()
             #Only can't be deleted an active account, so I remove from active set
-            self.mem.data.accounts_active.remove(self.selAccount)
+            self.mem.data.accounts.remove(self.selAccount)
         cur.close()
         self.on_chkInactivas_stateChanged(self.chkInactivas.checkState())
         self.load_table()
         
     def on_chkInactivas_stateChanged(self, state):
         if state==Qt.Unchecked:
-            self.accounts=self.mem.data.accounts_active
+            self.accounts=self.mem.data.accounts_active()
         else:
              
-            self.accounts=self.mem.data.accounts_inactive
+            self.accounts=self.mem.data.accounts_inactive()
         self.load_table()
         
 
@@ -106,12 +106,13 @@ class wdgAccounts(QWidget, Ui_wdgAccounts):
         self.selAccount.save()
         self.mem.con.commit()     
         #Recoloca en los Setcuentas
-        if self.selAccount.active==True:#Está todavía en inactivas
-            self.mem.data.accounts_active.append(self.selAccount)
-            self.mem.data.accounts_inactive.remove(self.selAccount)
-        else:#Está todavía en activas
-            self.mem.data.accounts_active.remove(self.selAccount)
-            self.mem.data.accounts_inactive.append(self.selAccount)    
+#        if self.selAccount.active==True:#Está todavía en inactivas
+#            self.mem.data.accounts_active().append(self.selAccount)
+#            self.mem.data.accounts_inactive().remove(self.selAccount)
+#        else:#Está todavía en activas
+#            self.mem.data.accounts_active().remove(self.selAccount)
+#            self.mem.data.accounts_inactive().append(self.selAccount)    
+        self.on_chkInactivas_stateChanged(self.chkInactivas.checkState())
         self.load_table()
 
     @QtCore.pyqtSlot()  

@@ -215,7 +215,7 @@ class SetCommons:
     def find_by_arr(self, id,  log=False):
         """log permite localizar errores en find. Ojo hay veces que hay find fallidos buscados como en UNION
                 inicio=datetime.datetime.now()
-        self.mem.data.products_all().find_by_id(80230)
+        self.mem.data.products.find_by_id(80230)
         print (datetime.datetime.now()-inicio)
         self.mem.agrupations.find_by_arr(80230)
         print (datetime.datetime.now()-inicio)
@@ -1025,7 +1025,7 @@ class SetAccountOperations:
         cur=self.mem.con.cursor()
         cur.execute(sql)#"Select * from opercuentas"
         for row in cur:        
-            co=AccountOperation(self.mem).init__create(row['datetime'], self.mem.conceptos.find_by_id(row['id_conceptos']), self.mem.tiposoperaciones.find_by_id(row['id_tiposoperaciones']), row['importe'], row['comentario'],  self.mem.data.accounts_all().find_by_id(row['id_cuentas']), row['id_opercuentas'])
+            co=AccountOperation(self.mem).init__create(row['datetime'], self.mem.conceptos.find_by_id(row['id_conceptos']), self.mem.tiposoperaciones.find_by_id(row['id_tiposoperaciones']), row['importe'], row['comentario'],  self.mem.data.accounts.find_by_id(row['id_cuentas']), row['id_opercuentas'])
             self.append(co)
         cur.close()
     
@@ -1037,9 +1037,9 @@ class SetAccountOperations:
             if row['id_tarjetas']==-1:
                 comentario=row['comentario']
             else:
-                comentario=QApplication.translate("Core","Paid with {0}. {1}").format(self.mem.data.creditcards_all().find_by_id(row['id_tarjetas']).name, row['comentario'] )
+                comentario=QApplication.translate("Core","Paid with {0}. {1}").format(self.mem.data.creditcards.find_by_id(row['id_tarjetas']).name, row['comentario'] )
             
-            co=AccountOperation(self.mem).init__create(row['datetime'], self.mem.conceptos.find_by_id(row['id_conceptos']), self.mem.tiposoperaciones.find_by_id(row['id_tiposoperaciones']), row['importe'], comentario,  self.mem.data.accounts_all().find_by_id(row['id_cuentas']))
+            co=AccountOperation(self.mem).init__create(row['datetime'], self.mem.conceptos.find_by_id(row['id_conceptos']), self.mem.tiposoperaciones.find_by_id(row['id_tiposoperaciones']), row['importe'], comentario,  self.mem.data.accounts.find_by_id(row['id_cuentas']))
             self.append(co)
         cur.close()
 
@@ -1125,7 +1125,7 @@ class SetDividends:
         cur=self.mem.con.cursor()
         cur.execute( sql)#"select * from dividends where id_inversiones=%s order by fecha", (self.inversion.id, )
         for row in cur:
-            inversion=self.mem.data.investments_all().find_by_id(row['id_inversiones'])
+            inversion=self.mem.data.investments.find_by_id(row['id_inversiones'])
             oc=AccountOperation(self.mem).init__db_query(row['id_opercuentas'])
             print(oc)
             self.arr.append(Dividend(self.mem).init__db_row(row, inversion, oc, self.mem.conceptos.find_by_id(row['id_conceptos']) ))
@@ -2377,7 +2377,7 @@ class AccountOperation:
         cur.execute("select * from opercuentas where id_opercuentas=%s", (id_opercuentas, ))
         for row in cur:
             concepto=self.mem.conceptos.find_by_id(row['id_conceptos'])
-            resultado=self.init__db_row(row, concepto, concepto.tipooperacion, self.mem.data.accounts_all().find_by_id(row['id_cuentas']))
+            resultado=self.init__db_row(row, concepto, concepto.tipooperacion, self.mem.data.accounts.find_by_id(row['id_cuentas']))
         cur.close()
         return resultado
 
@@ -2412,11 +2412,11 @@ class AccountOperation:
         elif self.concepto.id==40 and len(c)==2:#"{0}|{1}".format(self.selCreditCard.name, len(self.setSelOperCreditCards))
             return QApplication.translate("Core","CreditCard: {0[0]}. Made {0[1]} payments").format(c)
         elif self.concepto.id==4 and len(c)==3:#Transfer from origin
-            return QApplication.translate("Core", "Transfer to {0}").format(self.mem.data.accounts_all().find_by_id(int(c[0])).name)
+            return QApplication.translate("Core", "Transfer to {0}").format(self.mem.data.accounts.find_by_id(int(c[0])).name)
         elif self.concepto.id==5 and len(c)==2:#Transfer received in destiny
-            return QApplication.translate("Core", "Transfer received from {0}").format(self.mem.data.accounts_all().find_by_id(int(c[0])).name)
+            return QApplication.translate("Core", "Transfer received from {0}").format(self.mem.data.accounts.find_by_id(int(c[0])).name)
         elif self.concepto.id==38 and c[0]=="Transfer":#Comision bancaria por transferencia
-            return QApplication.translate("Core", "Due to account transfer of {0} from {1}").format(self.mem.localcurrency.string(float(c[1])), self.mem.data.accounts_all().find_by_id(int(c[2])).name)
+            return QApplication.translate("Core", "Due to account transfer of {0} from {1}").format(self.mem.localcurrency.string(float(c[1])), self.mem.data.accounts.find_by_id(int(c[2])).name)
         else:
             return self.comentario 
         
@@ -2568,7 +2568,7 @@ class DBData:
         self.loaded_inactive=False
         
         
-    def load_all(self):
+    def load(self):
         """
             This method will subsitute load_actives and load_inactives
         """
@@ -2576,171 +2576,131 @@ class DBData:
         self.benchmark=Product(self.mem).init__db(self.mem.settingsdb.value("mem/benchmark", "79329" ))
         self.benchmark.result.basic.load_from_db()
         
-        banks=SetBanks(self.mem)
-        self.banks_active=SetBanks(self.mem)
-        self.banks_inactive=SetBanks(self.mem)
-        banks.load_from_db("select * from entidadesbancarias")
-        for b in banks.arr:
-            if b.active==True:
-                self.banks_active.append(b)
-            else:
-                self.banks_inactive.append(b)
+        self.banks=SetBanks(self.mem)
+        self.banks.load_from_db("select * from entidadesbancarias")
 
-        accounts=SetAccounts(self.mem, self.banks_all())
-        accounts.load_from_db("select * from cuentas where active=true")
-        self.accounts_active=SetAccounts(self.mem, self.banks_active)
-        self.accounts_inactive=SetAccounts(self.mem, self.banks_inactive)
-        for a in accounts.arr:
-            if a.active==True:
-                self.accounts_active.append(a)
-            else:
-                self.accounts_inactive.append(a)
+        self.accounts=SetAccounts(self.mem, self.banks)
+        self.accounts.load_from_db("select * from cuentas")
 
-        creditcards=SetCreditCards(self.mem, self.accounts_all())
-        creditcards.load_from_db("select * from tarjetas where active=true")
-        self.creditcards_active=SetCreditCards(self.mem, self.accounts_active)
-        self.creditcards_inactive=SetCreditCards(self.mem, self.accounts_inactive)
-        for a in creditcards.arr:
-            if a.active==True:
-                self.creditcards_active.append(a)
-            else:
-                self.creditcards_inactive.append(a)
-                
-        
-        products=SetProducts(self.mem)
-        products.load_from_inversiones_query("select distinct(products_id) from inversiones")
-        #ME QUEDE AQUI
-        self.products_active=SetProducts(self.mem)
-        self.products_inactive=SetProducts(self.mem)
-        self.investments_active=SetInvestments(self.mem, self.accounts_active, self.products_active, self.benchmark)
-        self.investments_active.load_from_db("select * from inversiones where active=true", True)
-        print("Cargando actives",  datetime.datetime.now()-inicio)
+        self.creditcards=SetCreditCards(self.mem, self.accounts)
+        self.creditcards.load_from_db("select * from tarjetas")
 
-#        self.orders=SetOrders(self.mem).init__from_db("select * from orders where expiration>=now()::date and executed is null")
-    
-    def load_actives(self):
-        inicio=datetime.datetime.now()
-        self.benchmark=Product(self.mem).init__db(self.mem.settingsdb.value("mem/benchmark", "79329" ))
-        self.benchmark.result.basic.load_from_db()
-        self.banks_active=SetBanks(self.mem)
-        self.banks_active.load_from_db("select * from entidadesbancarias where active=true")
-        self.accounts_active=SetAccounts(self.mem, self.banks_active)
-        self.accounts_active.load_from_db("select * from cuentas where active=true")
-        self.creditcards_active=SetCreditCards(self.mem, self.mem.data.accounts_active)
-        self.creditcards_active.load_from_db("select * from tarjetas where active=true")
-        self.products_active=SetProducts(self.mem)
-        self.products_active.load_from_inversiones_query("select distinct(products_id) from inversiones where active=true")
-        self.investments_active=SetInvestments(self.mem, self.accounts_active, self.products_active, self.benchmark)
-        self.investments_active.load_from_db("select * from inversiones where active=true", True)
+        self.products=SetProducts(self.mem)
+        self.products.load_from_inversiones_query("select distinct(products_id) from inversiones")
+        
+        self.investments=SetInvestments(self.mem, self.accounts, self.products, self.benchmark)
+        self.investments.load_from_db("select * from inversiones", True)
+        
+        print("Cargando data",  datetime.datetime.now()-inicio)
 
-        print("Cargando actives",  datetime.datetime.now()-inicio)
-        
-    def load_inactives(self, force=False):
-        def load():
-            inicio=datetime.datetime.now()
-            
-            self.banks_inactive=SetBanks(self.mem)
-            self.banks_inactive.load_from_db("select * from entidadesbancarias where active=false")
-
-            self.accounts_inactive=SetAccounts(self.mem, self.banks_all())
-            self.accounts_inactive.load_from_db("select * from cuentas where active=false")
-        
-            self.creditcards_inactive=SetCreditCards(self.mem, self.accounts_all())
-            self.creditcards_inactive.load_from_db("select * from tarjetas where active=false")
-            
-            self.products_inactive=SetProducts(self.mem)
-            self.products_inactive.load_from_inversiones_query("select distinct(products_id) from inversiones where active=false")
-
-            self.investments_inactive=SetInvestments(self.mem, self.accounts_all(), self.products_all(), self.benchmark)
-            self.investments_inactive.load_from_db("select * from inversiones where active=false",  True)
-#            self.orders=SetOrders(self.mem).init__from_db("select * from orders where expiration>=now()::date and executed is null")
-            
-            print("\n","Cargando inactives",  datetime.datetime.now()-inicio)
-            self.loaded_inactive=True
-        #######################
-        if force==False:
-            if self.loaded_inactive==True:
-                print ("Ya está cargada las inactives")
-                return
-            else:
-                load()
-        else:#No están cargadas
-            load()
-        
-    def reload(self, force=True):
-        self.load_actives()
-        self.load_inactives(force)
-        
-        
     def reload_prices(self):
-        ##Selecting products to update
-        if self.loaded_inactive==False:
-            products=self.products_active
-        else:
-            products=self.products_all()
-        
-        pd= QProgressDialog(QApplication.translate("Core","Reloading {0} product prices from database").format(len(products.arr)),None, 0,products.length())
+        pd= QProgressDialog(QApplication.translate("Core","Reloading {0} product prices from database").format(self.products.length()),None, 0,self.products.length())
         pd.setModal(True)
         pd.setWindowTitle(QApplication.translate("Core","Reloading prices..."))
         pd.forceShow()
-        for i, p in enumerate(products.arr):
+        for i, p in enumerate(self.products.arr):
             pd.setValue(i)
             pd.update()
             QApplication.processEvents()
             p.result.basic.load_from_db()
         self.mem.data.benchmark.result.basic.load_from_db()        
         
-    def banks_all(self):
-        return self.banks_active.union(self.banks_inactive, self.mem)
         
-    def accounts_all(self):
-        return self.accounts_active.union(self.accounts_inactive, self.mem, self.banks_all())
+    def accounts_active(self):        
+        r=SetAccounts(self.mem, self.banks)
+        for b in self.accounts.arr:
+            if b.active==True:
+                r.append(b)
+        return r 
+
+    def accounts_inactive(self):        
+        r=SetAccounts(self.mem, self.banks)
+        for b in self.accounts.arr:
+            if b.active==False:
+                r.append(b)
+        return r
         
-    def creditcards_all(self):
-        return self.creditcards_active.union(self.creditcards_inactive, self.mem,  self.accounts_all())
+    def banks_active(self):        
+        r=SetBanks(self.mem)
+        for b in self.banks.arr:
+            if b.active==True:
+                r.append(b)
+        return r        
         
-    def investments_all(self):
-        return self.investments_active.union(self.investments_inactive, self.mem, self.accounts_all(), self.products_all(), self.benchmark)
+    def banks_inactive(self):        
+        r=SetBanks(self.mem)
+        for b in self.banks.arr:
+            if b.active==False:
+                r.append(b)
+        return r        
         
-    def products_all(self):
-        return self.products_active.union(self.products_inactive, self.mem)
+    def creditcards_active(self):        
+        r=SetCreditCards(self.mem, self.accounts)
+        for b in self.creditcards.arr:
+            if b.active==True:
+                r.append(b)
+        return r        
+        
+    def creditcards_inactive(self):        
+        r=SetCreditCards(self.mem, self.accounts)
+        for b in self.creditcards.arr:
+            if b.active==False:
+                r.append(b)
+        return r
+            
+    def investments_active(self):        
+        r=SetInvestments(self.mem, self.accounts, self.products, self.benchmark)
+        for b in self.investments.arr:
+            if b.active==True:
+                r.append(b)
+        return r        
+        
+    def investments_inactive(self):        
+        r=SetInvestments(self.mem, self.accounts, self.products, self.benchmark)
+        for b in self.investments.arr:
+            if b.active==False:
+                r.append(b)
+        return r        
+#    def banks_all(self):
+#        return self.banks_active().union(self.banks_inactive(), self.mem)
+#        
+#    def accounts_all(self):
+#        return self.accounts_active().union(self.accounts_inactive(), self.mem, self.banks)
+        
+#    def creditcards_all(self):
+#        return self.creditcards_active().union(self.creditcards_inactive(), self.mem,  self.accounts)
+#        
+#    def investments_all(self):
+#        return self.investments_active().union(self.investments_inactive(), self.mem, self.accounts, self.products, self.benchmark)
     
     
     def banks_set(self, active):
         """Function to point to list if is active or not"""
         if active==True:
-            return self.banks_active
+            return self.banks_active()
         else:
-            self.load_inactives()
-            return self.banks_inactive    
+            return self.banks_inactive()
             
     def accounts_set(self, active):
         """Function to point to list if is active or not"""
         if active==True:
-            return self.accounts_active
+            return self.accounts_active()
         else:
-            return self.accounts_inactive    
+            return self.accounts_inactive()
     
     def investments_set(self, active):
         """Function to point to list if is active or not"""
         if active==True:
-            return self.investments_active
+            return self.investments_active()()
         else:
-            return self.investments_inactive
-            
-    def products_set(self, active):
-        """Function to point to list if is active or not"""
-        if active==True:
-            return self.products_active
-        else:
-            return self.products_inactive            
-            
+            return self.investments_inactive()()
+
     def creditcards_set(self, active):
         """Function to point to list if is active or not"""
         if active==True:
-            return self.creditcards_active
+            return self.creditcards_active()()
         else:
-            return self.creditcards_inactive
+            return self.creditcards_inactive()()
 
         
 class Dividend:
@@ -2875,7 +2835,7 @@ class InvestmentOperation:
             return None
         row=cur.fetchone()
         cur.close()
-        investment=self.mem.data.investments_all().find_by_id(row['id_inversiones'])
+        investment=self.mem.data.investments.find_by_id(row['id_inversiones'])
         return investment.op.find(row['id_operinversiones'])
         
     def find_by_mem(self, investment, id):
@@ -2884,7 +2844,7 @@ class InvestmentOperation:
             invesment is an Investment object
             id is the invesmentoperation to find
         """
-        for i in self.mem.data.investments_all():
+        for i in self.mem.data.investments:
             if invesment.id==i.id:
                 found=i.op.find(id)
                 if found!=None:
@@ -3015,7 +2975,7 @@ class Bank:
     def es_borrable(self):
         """Función que devuelve un booleano si una cuenta es borrable, es decir, que no tenga registros dependientes."""
         #Recorre balance cuentas
-        for c  in self.mem.data.accounts_all().arr:
+        for c  in self.mem.data.accounts.arr:
             if c.eb.id==self.id:
                 if c.es_borrable()==self.id:
                     return False
@@ -3522,7 +3482,7 @@ class Order:
         self.amount=row['amount']
         self.price=row['price']
         self.shares=row['shares']
-        self.investment=self.mem.data.investments_all().find_by_id(row['investments_id'])
+        self.investment=self.mem.data.investments.find_by_id(row['investments_id'])
         self.executed=row['executed']
         return self
 
@@ -3576,7 +3536,7 @@ class AnnualTarget:
         cur=self.mem.con.cursor()
         
         if lastyear_assests==None:
-            self.lastyear_assests=Assets(self.mem).saldo_total(self.mem.data.investments_all(),  datetime.date(year-1, 12, 31))
+            self.lastyear_assests=Assets(self.mem).saldo_total(self.mem.data.investments,  datetime.date(year-1, 12, 31))
         else:
             self.lastyear_assests=lastyear_assests
         
@@ -3692,9 +3652,9 @@ class Assets:
     def invested(self, date=None):
         """Devuelve el patrimonio invertido en una determinada fecha"""
         if date==None or date==datetime.date.today():
-            array=self.mem.data.investments_active.arr #Current and active
+            array=self.mem.data.investments_active().arr #Current and active
         else:
-            array=self.mem.data.investments_all().arr#All, because i don't know witch one was active.
+            array=self.mem.data.investments.arr#All, because i don't know witch one was active.
         
         r=Decimal(0)
         for inv in array:
@@ -3709,7 +3669,7 @@ class Assets:
         """
         resultado=0
 #        inicio=datetime.datetime.now()
-        for inv in self.mem.data.investments_all().arr:
+        for inv in self.mem.data.investments.arr:
             if inv.product.type.id in (7, 9):#public and private bonds        
                 if fecha==None:
                     resultado=resultado+inv.balance()
@@ -3841,7 +3801,7 @@ class SetCreditCardOperations:
         cur=self.mem.con.cursor()
         cur.execute(sql)#"Select * from opercuentas"
         for row in cur:        
-            co=CreditCardOperation(self.mem).init__db_row(row, self.mem.conceptos.find_by_id(row['id_conceptos']), self.mem.tiposoperaciones.find_by_id(row['id_tiposoperaciones']), self.mem.data.creditcards_all().find_by_id(row['id_tarjetas']), AccountOperation(self.mem).init__db_query(row['id_opercuentas']))
+            co=CreditCardOperation(self.mem).init__db_row(row, self.mem.conceptos.find_by_id(row['id_conceptos']), self.mem.tiposoperaciones.find_by_id(row['id_tiposoperaciones']), self.mem.data.creditcards.find_by_id(row['id_tarjetas']), AccountOperation(self.mem).init__db_query(row['id_opercuentas']))
             self.append(co)
         cur.close()
     
@@ -4685,7 +4645,7 @@ class Product:
             return False
             
         #Search in all investments
-        for i in self.mem.data.investments_all().arr:
+        for i in self.mem.data.investments.arr:
             if i.product.id==self.id:
                 return False
         
@@ -5645,7 +5605,7 @@ class Split:
         
     def updateOperInvestments(self):
         """Transforms de number of shares and its price of the array of InvestmentOperation"""
-        for inv in self.mem.data.investments_all().arr:
+        for inv in self.mem.data.investments.arr:
             if inv.product.id==self.product.id:
                 for oi in inv.op.arr:
                     if self.dtinitial<=oi.datetime and self.dtfinal>=oi.datetime:
@@ -5656,7 +5616,7 @@ class Split:
         
     def updateDividends(self):
         """Transforms de dpa of an array of dividends"""
-        for inv in self.mem.data.investments_all().arr:
+        for inv in self.mem.data.investments.arr:
             if inv.product.id==self.product.id:
                 dividends=SetDividends(self.mem)
                 dividends.load_from_db("select * from dividends where id_inversiones={0} order by fecha".format(inv.id ))  
@@ -5696,9 +5656,9 @@ class TUpdateData(threading.Thread):
             
             ##Selecting products to update
             if self.mem.data.loaded_inactive==False:
-                products=self.mem.data.products_active
+                products=self.mem.data.products
             else:
-                products=self.mem.data.products_all()
+                products=self.mem.data.products
                 
             self.mem.data.benchmark.result.basic.load_from_db()
             
@@ -5777,7 +5737,7 @@ class Maintenance:
         
     def regenera_todas_opercuentasdeoperinversiones(self):
          
-        for inv in self.mem.data.investments_all().arr:
+        for inv in self.mem.data.investments.arr:
             print (inv)
             inv.actualizar_cuentasoperaciones_asociadas()
         self.mem.con.commit()        
@@ -5788,7 +5748,7 @@ class Maintenance:
         datet=dt(date, datetime.time(22, 00), self.mem.localzone)
         sumbalance=0
         print ("{0:<40s} {1:>15s} {2:>15s} {3:>15s}".format("Investments at {0}".format(date), "Shares", "Price", "Balance"))
-        for inv in self.mem.data.investments_all().arr:
+        for inv in self.mem.data.investments.arr:
             balance=inv.balance(date)
             sumbalance=sumbalance+balance
             acciones=inv.acciones(date)
@@ -5984,7 +5944,7 @@ class MemXulpymoney:
         self.leverages.load_all()
 
         self.data=DBData(self)
-        self.data.load_actives()
+        self.data.load()
         
         #mem Variables con base de datos
         self.dividendwithholding=Decimal(self.settingsdb.value("mem/dividendwithholding", "0.19"))

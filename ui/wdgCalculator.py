@@ -14,7 +14,7 @@ class wdgCalculator(QWidget, Ui_wdgCalculator):
          
         self.table.settings(self.mem, "wdgCalculator")
         self.hasProducts=True#Permits to show/hide the widget from external dialog
-        if self.mem.data.products_all().length()==0:
+        if self.mem.data.products.length()==0:
             m=QMessageBox()
             m.setIcon(QMessageBox.Information)
             m.setText(self.tr("You need to create at least one investment"))
@@ -25,8 +25,8 @@ class wdgCalculator(QWidget, Ui_wdgCalculator):
             
             
         self.txtAmount.setText(Decimal(self.mem.settingsdb.value("wdgIndexRange/invertir", "10000")))
-        self.product=self.mem.data.products_all().find_by_id(int(self.mem.settings.value("wdgCalculator/product", "0")))
-        self.mem.data.products_all().qcombobox_not_obsolete(self.cmbProducts, self.product)
+        self.product=self.mem.data.products.find_by_id(int(self.mem.settings.value("wdgCalculator/product", "0")))
+        self.mem.data.products.qcombobox_not_obsolete(self.cmbProducts, self.product)
         self.cmbPrice_load()
 
 
@@ -55,7 +55,7 @@ class wdgCalculator(QWidget, Ui_wdgCalculator):
     def on_cmbProducts_currentIndexChanged(self, index):
         """To invoke this function you must call self.cmbProducts.setCurrentIndex()"""
         
-        self.product=self.mem.data.products_all().find_by_id(self.cmbProducts.itemData(index))
+        self.product=self.mem.data.products.find_by_id(self.cmbProducts.itemData(index))
         if self.product:
             self.mem.settings.setValue("wdgCalculator/product", self.product.id)
             

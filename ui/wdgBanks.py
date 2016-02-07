@@ -13,8 +13,8 @@ class wdgBanks(QWidget, Ui_wdgBanks):
         
          
         self.banks=None#Set in on_chkActives_stateChanged
-        self.investments=SetInvestments(self.mem, self.mem.data.accounts_all(), self.mem.data.products_all(), self.mem.data.benchmark) #Set
-        self.accounts=SetAccounts(self.mem, self.mem.data.banks_all())#Set
+        self.investments=SetInvestments(self.mem, self.mem.data.accounts, self.mem.data.products, self.mem.data.benchmark) #Set
+        self.accounts=SetAccounts(self.mem, self.mem.data.banks)#Set
 
 
         
@@ -34,7 +34,7 @@ class wdgBanks(QWidget, Ui_wdgBanks):
         for i,  e in enumerate(self.banks.arr):
             self.tblEB.setItem(i, 0, QTableWidgetItem(e.name))
             self.tblEB.setCellWidget(i, 1, wdgBool(e.active))
-            balanc=e.balance(self.mem.data.accounts_active, self.mem.data.investments_active)
+            balanc=e.balance(self.mem.data.accounts_active(), self.mem.data.investments_active())
             self.tblEB.setItem(i, 2, self.mem.localcurrency.qtablewidgetitem(balanc))
             sumsaldos=sumsaldos+balanc    
         self.tblEB.setItem(self.banks.length(), 0, QTableWidgetItem(self.tr('TOTAL')))
@@ -73,10 +73,7 @@ class wdgBanks(QWidget, Ui_wdgBanks):
         
         
     def on_chkActives_stateChanged(self, state):
-        if self.chkActives.isChecked():
-            self.banks=self.mem.data.banks_set(self.chkActives.isChecked())
-        else:
-            self.banks=self.mem.data.banks_all()
+        self.banks=self.mem.data.banks_set(self.chkActives.isChecked())
         self.load_eb()
         self.tblEB.clearSelection()   
         self.tblAccounts.setRowCount(0)
@@ -102,12 +99,12 @@ class wdgBanks(QWidget, Ui_wdgBanks):
             self.tblInvestments.clearContents()
             return
                    
-        for i in self.mem.data.investments_all().arr:
+        for i in self.mem.data.investments.arr:
             if i.account.eb.id==self.banks.selected.id:
                 if (self.chkActives.isChecked() and i.active==True) or (self.chkActives.isChecked()==False):
                     self.investments.append(i)
         
-        for v in self.mem.data.accounts_all().arr:
+        for v in self.mem.data.accounts.arr:
             if v.eb.id==self.banks.selected.id:
                 if (self.chkActives.isChecked() and v.active==True) or (self.chkActives.isChecked()==False):
                     self.accounts.append(v)
@@ -207,7 +204,7 @@ class wdgBanks(QWidget, Ui_wdgBanks):
         eb=Bank(self.mem).init__create(bank)
         eb.save()
         self.mem.con.commit()  
-        self.mem.data.banks_active.append(eb)
+        self.mem.data.banks.append(eb)
         self.load_eb()
 
 
@@ -226,16 +223,17 @@ class wdgBanks(QWidget, Ui_wdgBanks):
         
     @QtCore.pyqtSlot() 
     def on_actionActive_triggered(self):
-        self.banks.selected.active=self.actionActive.isChecked()
+        self.banks.selected.active=not self.banks.selected.active
         self.banks.selected.save()
         self.mem.con.commit()   
         
         #Recoloca en los SetInvestments
         print (self.banks.selected)
-        if self.banks.selected.active==True:#Está todavía en inactivas
-            self.mem.data.banks_active.append(self.banks.selected)
-            self.mem.data.banks_inactive.remove(self.banks.selected)
-        else:#Está todavía en activas
-            self.mem.data.banks_active.remove(self.banks.selected)
-            self.mem.data.banks_inactive.append(self.banks.selected)
+#        if self.banks.selected.active==True:#Está todavía en inactivas
+#            self.mem.data.banks_active().append(self.banks.selected)
+#            self.mem.data.banks_inactive().remove(self.banks.selected)
+#        else:#Está todavía en activas
+#            self.mem.data.banks_active().remove(self.banks.selected)
+#            self.mem.data.banks_inactive().append(self.banks.selected)
+        self.on_chkActives_stateChanged(self.chkActives.checkState())
         self.load_eb()

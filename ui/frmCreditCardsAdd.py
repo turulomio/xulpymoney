@@ -41,7 +41,7 @@ class frmCreditCardsAdd(QDialog, Ui_frmCreditCardsAdd):
             self.mem.con.commit()        
             
             if self.tipo==1:#insertar
-                self.mem.data.creditcards_active.append(self.creditcard)
+                self.mem.data.creditcards.append(self.creditcard)
         
             self.done(0)
         else:

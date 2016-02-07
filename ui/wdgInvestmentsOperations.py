@@ -51,13 +51,13 @@ class wdgInvestmentsOperations(QWidget, Ui_wdgInvestmentsOperations):
         else:
             cur.execute("select * from operinversiones where date_part('year',datetime)=%s and date_part('month',datetime)=%s "+filters+" order by datetime",(self.wym.year, self.wym.month) )
         for row in cur:
-            self.setOperations.append(InvestmentOperation(self.mem).init__db_row(row, self.mem.data.investments_all().find_by_id(row['id_inversiones']), self.mem.tiposoperaciones.find_by_id(row['id_tiposoperaciones'])))
+            self.setOperations.append(InvestmentOperation(self.mem).init__db_row(row, self.mem.data.investments.find_by_id(row['id_inversiones']), self.mem.tiposoperaciones.find_by_id(row['id_tiposoperaciones'])))
         cur.close()
         
         self.setOperations.myqtablewidget(self.table)
         
     def load_current(self):
-        for inv in self.mem.data.investments_active.arr:
+        for inv in self.mem.data.investments_active().arr:
             for o in inv.op_actual.arr:
                 self.setCurrent.append(o)
         self.setCurrent.order_by_datetime()
@@ -131,7 +131,7 @@ class wdgInvestmentsOperations(QWidget, Ui_wdgInvestmentsOperations):
         self.selOperation.save()
         self.mem.con.commit()
         #self.selOperation doesn't belong to self.mem.data, it's a set of this widget, so I need to reload investment of the self.mem.data
-        self.mem.data.investments_all().find_by_id(self.selOperation.inversion.id).get_operinversiones()
+        self.mem.data.investments.find_by_id(self.selOperation.inversion.id).get_operinversiones()
         self.load()
         
     @QtCore.pyqtSlot() 
