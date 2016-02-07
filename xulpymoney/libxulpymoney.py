@@ -401,7 +401,7 @@ class SetInvestments(SetCommons):
         
         set=SetInvestments(self.mem,  self.accounts, self.products, self.benchmark)
         for inv in self.arr:
-            if inv.selling_expiration!=None:
+            if inv.selling_expiration!=None and inv.acciones()>0:
                 set.append(inv)
         set.order_by_selling_expiration()
         
