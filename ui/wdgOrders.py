@@ -54,7 +54,11 @@ class wdgOrders(QWidget, Ui_wdgOrders):
             qmessagebox_investment_Inactive()
             return
         
-        
+        if self.orders.selected.executed==None:#Only adds operation if it's not executed
+            w=frmInvestmentReport(self.mem, self.orders.selected.investment, self)
+            w.frmInvestmentOperationsAdd_initiated.connect(self.load_OrderData)
+            w.on_actionOperationAdd_triggered()        
+            w.exec_()
         
         if self.orders.selected.executed==None:
             self.orders.selected.executed=self.mem.localzone.now()#Set execution
@@ -63,16 +67,17 @@ class wdgOrders(QWidget, Ui_wdgOrders):
         self.orders.selected.save()
         self.mem.con.commit()
         
-        w=frmInvestmentReport(self.mem, self.orders.selected.investment, self)
-        w.frmInvestmentOperationsAdd_initiated.connect(self.load_OrderData)
-        w.on_actionOperationAdd_triggered()        
-        w.exec_()
+
         
 
         self.on_cmbMode_currentIndexChanged(self.cmbMode.currentIndex())
         
     def load_OrderData(self, frm):
         """Carga los datos de la orden en el frmInvestmentOperationsAdd"""
+        if self.orders.selected.shares<0:
+            frm.cmbTiposOperaciones.setCurrentIndex(frm.cmbTiposOperaciones.findData(5))#Sale
+        else:
+            frm.cmbTiposOperaciones.setCurrentIndex(frm.cmbTiposOperaciones.findData(4))#Purchase
         frm.txtAcciones.setText(self.orders.selected.shares)
         frm.txtValorAccion.setText(self.orders.selected.price)
         
