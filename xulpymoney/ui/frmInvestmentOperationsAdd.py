@@ -31,7 +31,7 @@ class frmInvestmentOperationsAdd(QDialog, Ui_frmInvestmentOperationsAdd):
             self.txtComision.setText(self.operinversion.comision)
             self.txtValorAccion.setText(self.operinversion.valor_accion)
             self.txtAcciones.setText(self.operinversion.acciones)
-
+            
     def on_cmd_released(self):        
         id_tiposoperaciones=int(self.cmbTiposOperaciones.itemData(self.cmbTiposOperaciones.currentIndex()))
         self.operinversion.tipooperacion=self.mem.tiposoperaciones.find_by_id(id_tiposoperaciones)
