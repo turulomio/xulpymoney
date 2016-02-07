@@ -66,9 +66,6 @@ class wdgOrders(QWidget, Ui_wdgOrders):
             self.orders.selected.executed=None#Remove execution
         self.orders.selected.save()
         self.mem.con.commit()
-        
-
-        
 
         self.on_cmbMode_currentIndexChanged(self.cmbMode.currentIndex())
         
