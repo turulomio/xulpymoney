@@ -33,7 +33,7 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
         self.calPago.setDate(QDate.currentDate())
         
         self.mem.currencies.qcombobox(self.cmbCurrency)
-        self.mem.data.banks_active.qcombobox(self.cmbEB)
+        self.mem.data.banks_active().qcombobox(self.cmbEB)
                     
         if self.account==None:
             self.lblTitulo.setText(self.tr("New account data"))
@@ -65,16 +65,12 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
     def creditcards_reload(self):
         """update_balance_index is used to update credit card balance and remain credit card selected"""
         if self.chkCreditCards.checkState()==Qt.Unchecked:
-            self.creditcards=self.mem.data.creditcards_active.clone_of_account(self.account)
+            self.creditcards=self.mem.data.creditcards_active().clone_of_account(self.account)
         else:
-             
-            self.creditcards=self.mem.data.creditcards_inactive.clone_of_account(self.account)  
+            self.creditcards=self.mem.data.creditcards_inactive().clone_of_account(self.account)  
         self.creditcards.myqtablewidget(self.tblCreditCards)
         self.creditcards.selected=None
         self.tblCreditCards.clearSelection()
-
-
-
 
     def creditcardoperations_reload(self):     
         self.creditcardoperations.load_from_db(self.mem.con.mogrify("select * from opertarjetas where id_tarjetas=%s and pagado=false", [self.creditcards.selected.id, ]))
@@ -88,8 +84,6 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
             self.tblCreditCards.item(row,  5).setText(self.account.currency.string(self.creditcards.selected.saldo_pendiente()))
         except:
             pass
- 
-        
 
     @QtCore.pyqtSlot() 
     def on_actionCreditCardAdd_triggered(self):
@@ -108,15 +102,8 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
     def on_actionCreditCardActivate_triggered(self):
         if self.account.qmessagebox_inactive() or self.account.eb.qmessagebox_inactive():
             return
-            
-        if self.creditcards.selected.active==False:#Ha pasado de inactiva a activa
-            self.creditcards.selected.active=True
-            self.mem.data.creditcards_inactive.remove(self.creditcards.selected)
-            self.mem.data.creditcards_active.append(self.creditcards.selected)
-        else:
-            self.creditcards.selected.active=False
-            self.mem.data.creditcards_inactive.append(self.creditcards.selected)
-            self.mem.data.creditcards_active.remove(self.creditcards.selected)
+
+        self.creditcards.selected.active=not self.creditcards.selected.active
         self.creditcards.selected.save()
         self.mem.con.commit()
         
@@ -130,7 +117,7 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
             m.setText(self.tr("I can't delete the credit card, because it has dependent registers"))
             m.exec_()
         else:
-            self.mem.data.creditcards_active.delete(self.creditcards.selected)#self.creditcards is only a clone and is reloaded later
+            self.mem.data.creditcards.delete(self.creditcards.selected)#self.creditcards is only a clone and is reloaded later
             self.mem.con.commit()
             self.creditcards_reload()
 
@@ -145,11 +132,11 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
         currency=self.cmbCurrency.itemData(self.cmbCurrency.currentIndex())
 
         if self.account==None:
-            cu=Account(self.mem).init__create(cuenta, self.mem.data.banks_active.find_by_id(id_entidadesbancarias), active, numerocuenta, self.mem.currencies.find_by_id(currency))
+            cu=Account(self.mem).init__create(cuenta, self.mem.data.banks_active().find_by_id(id_entidadesbancarias), active, numerocuenta, self.mem.currencies.find_by_id(currency))
             cu.save()
-            self.mem.data.accounts_active.append(cu) #Always to active
+            self.mem.data.accounts.append(cu) #Always to active
         else:
-            self.account.eb=self.mem.data.banks_active.find_by_id(id_entidadesbancarias)
+            self.account.eb=self.mem.data.banks_active().find_by_id(id_entidadesbancarias)
             self.account.name=cuenta
             self.account.numero=numerocuenta
             self.account.active=active
@@ -189,11 +176,11 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
         
         if self.accountoperations.selected.concepto.id==4:#Tranfer origin
             account_origin=self.account
-            account_destiny=self.mem.data.accounts_all().find_by_id(int(self.accountoperations.selected.comentario.split("|")[0]))
+            account_destiny=self.mem.data.accounts.find_by_id(int(self.accountoperations.selected.comentario.split("|")[0]))
             oc_comision_id=int(self.accountoperations.selected.comentario.split("|")[2])
     
         if self.accountoperations.selected.concepto.id==5:#Tranfer destiny
-            account_origin=self.mem.data.accounts_all().find_by_id(int(self.accountoperations.selected.comentario.split("|")[0]))
+            account_origin=self.mem.data.accounts.find_by_id(int(self.accountoperations.selected.comentario.split("|")[0]))
             account_destiny=self.account
             oc_comision_id=int(oc_other.comentario.split("|")[2])
             

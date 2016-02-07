@@ -122,7 +122,7 @@ class TotalMonth:
         
     def gains(self):
         if self.gains_value==None:
-            self.gains_value=Assets(self.mem).consolidado_neto(self.mem.data.investments_all(), self.year, self.month)
+            self.gains_value=Assets(self.mem).consolidado_neto(self.mem.data.investments, self.year, self.month)
         return self.gains_value
         
     def name(self):
@@ -148,12 +148,12 @@ class TotalMonth:
         
     def total_investments(self):
         if self.total_investments_value==None:
-            self.total_investments_value=Assets(self.mem).saldo_todas_inversiones(self.mem.data.investments_all(),  self.last_day())
+            self.total_investments_value=Assets(self.mem).saldo_todas_inversiones(self.mem.data.investments,  self.last_day())
         return self.total_investments_value
         
     def total_zerorisk(self): 
         if self.total_zerorisk_value==None:
-            self.total_zerorisk_value=Assets(self.mem).patrimonio_riesgo_cero(self.mem.data.investments_all(), self.last_day())
+            self.total_zerorisk_value=Assets(self.mem).patrimonio_riesgo_cero(self.mem.data.investments, self.last_day())
         return self.total_zerorisk_value
         
     def total_bonds(self):
@@ -167,7 +167,7 @@ class TotalYear:
         self.mem=mem
         self.year=year
         self.arr=[]
-        self.total_last_year=Assets(self.mem).saldo_total(self.mem.data.investments_all(),  datetime.date(self.year-1, 12, 31))
+        self.total_last_year=Assets(self.mem).saldo_total(self.mem.data.investments,  datetime.date(self.year-1, 12, 31))
         self.generate()
         
     def generate(self):
@@ -354,7 +354,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         s=""
         s=self.tr("This year I've generated {}.").format(self.mem.localcurrency.string(self.setData.gains()+self.setData.dividends()))
         invested=Assets(self.mem).invested(datetime.date.today())
-        current=Assets(self.mem).saldo_todas_inversiones(self.mem.data.investments_all(), datetime.date.today())
+        current=Assets(self.mem).saldo_todas_inversiones(self.mem.data.investments, datetime.date.today())
         s=s+"\n"+self.tr("Difference between invested amount and current invesment balance: {} - {} = {}").format(self.mem.localcurrency.string(invested),  self.mem.localcurrency.string(current),  self.mem.localcurrency.string(current-invested))
         self.lblInvested.setText(s)
         final=datetime.datetime.now()          
@@ -585,7 +585,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
             lbl=QLabel(newtab)
             
             set=SetInvestmentOperationsHistorical(self.mem)
-            for i in self.mem.data.investments_all().arr:
+            for i in self.mem.data.investments.arr:
                 for o in i.op_historica.arr:
                     if self.month==13:#Year
                         tabtitle=self.tr("Selling operations of {0}").format(self.wyData.year)
@@ -624,7 +624,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
             lbl=QLabel(newtab)
             
             set=SetInvestmentOperationsHistorical(self.mem)
-            for i in self.mem.data.investments_all().arr:
+            for i in self.mem.data.investments.arr:
                 for o in i.op_historica.arr:
                     if self.month==13:#Year
                         tabtitle=self.tr("Selling operations of {0}  (Sold after a year)").format(self.wyData.year)
@@ -663,7 +663,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
             lbl=QLabel(newtab)
             
             set=SetInvestmentOperationsHistorical(self.mem)
-            for i in self.mem.data.investments_all().arr:
+            for i in self.mem.data.investments.arr:
                 for o in i.op_historica.arr:
                     if self.month==13:#Year
                         tabtitle=self.tr("Selling operations of {0} (Sold before a year)").format(self.wyData.year)

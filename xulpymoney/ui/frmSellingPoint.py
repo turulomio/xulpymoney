@@ -42,7 +42,7 @@ class frmSellingPoint(QDialog, Ui_frmSellingPoint):
     def __calcular(self):    
         def load_array():
             if self.chkPonderanAll.checkState()==Qt.Checked:#Ponderan misma inversion
-                for  inv in self.mem.data.investments_active.arr:
+                for  inv in self.mem.data.investments_active().arr:
                     if inv.product.id==self.inversion.product.id:
                         for op in inv.op_actual.arr:
                             self.operinversiones.append(op)                

@@ -49,7 +49,7 @@ class frmMain(QMainWindow, Ui_frmMain):
         self.statusBar.addWidget(QLabel(self.tr("Server: {}:{}      Database: {}      User: {}").format(self.mem.con.server, self.mem.con.port,  self.mem.con.db, self.mem.con.user)))
         
         self.mem.load_db_data() ##CARGA TODOS LOS DATOS Y LOS VINCULA       
-        self.mem.data.load_inactives()
+         
         
         
         
@@ -164,7 +164,7 @@ class frmMain(QMainWindow, Ui_frmMain):
     
     @QtCore.pyqtSlot()  
     def on_actionMemory_triggered(self):        
-        self.mem.data.reload()
+        self.mem.data.load()
         
         
     @QtCore.pyqtSlot()  

@@ -35,7 +35,7 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
         self.tblOperaciones.settings(self.mem, "frmInvestmentReport")
         self.tblInvestmentHistorical.settings(self.mem, "frmInvestmentReport")
         self.ise.cmd.released.connect(self.on_cmdISE_released)
-        self.mem.data.accounts_active.qcombobox(self.cmbAccount)
+        self.mem.data.accounts_active().qcombobox(self.cmbAccount)
         
         if self.inversion==None:
             self.tipo=1
@@ -219,12 +219,12 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
         self.op.selected.save()
         self.mem.con.commit()
         #self.op doesn't belong to self.mem.data, it's a set of this widget, so I need to reload investment of the self.mem.data
-        self.mem.data.investments_all().find_by_id(self.inversion.id).get_operinversiones()
+        self.mem.data.investments.find_by_id(self.inversion.id).get_operinversiones()
         self.update_tables()
 
     @QtCore.pyqtSlot() 
     def on_actionSharesTransferUndo_triggered(self):
-        if self.mem.data.investments_active.traspaso_valores_deshacer(self.op.selected)==False:
+        if self.mem.data.investments_active().traspaso_valores_deshacer(self.op.selected)==False:
             m=QMessageBox()
             m.setIcon(QMessageBox.Information)
             m.setText(self.tr("Shares transfer couldn't be done."))
@@ -295,29 +295,29 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
             expiration=self.calExpiration.selectedDate().toPyDate()
         
         
-        if self.mem.data.products_active.find_by_id(products_id)==None:
+        if self.mem.data.products.find_by_id(products_id)==None:
             print ("Cargando otro mqinversiones")
             inv=Product(self.mem).init__db(products_id)
             inv.estimations_dps.load_from_db()
             inv.result.basic.load_from_db()
-            self.mem.data.products_active.append(inv)
+            self.mem.data.products.append(inv)
             
         
 
         if self.tipo==1:        #insertar
-            i=Investment(self.mem).init__create(inversion,   venta,  self.mem.data.accounts_active.find_by_id(id_cuentas), self.mem.data.products_active.find_by_id(products_id), expiration, True)      
+            i=Investment(self.mem).init__create(inversion,   venta,  self.mem.data.accounts_active().find_by_id(id_cuentas), self.mem.data.products.find_by_id(products_id), expiration, True)      
             i.save()
             self.mem.con.commit()
             ##Se añade a mem y vincula. No carga datos porque products_id debe existir            
             #Lo añade con las operaciones vacias pero calculadas.
             i.op=SetInvestmentOperations(self.mem)
             (i.op_actual, i.op_historica)=i.op.calcular()
-            self.mem.data.investments_active.append(i)
+            self.mem.data.investments.append(i)
             self.done(0)
         elif self.tipo==2:
             self.inversion.name=inversion
             self.inversion.venta=venta
-            self.inversion.product=self.mem.data.products_active.find_by_id(products_id)
+            self.inversion.product=self.mem.data.products.find_by_id(products_id)
             self.inversion.selling_expiration=expiration
             self.inversion.save()##El id y el id_cuentas no se pueden modificar
             self.mem.con.commit()

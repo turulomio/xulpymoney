@@ -51,7 +51,7 @@ class MemSimulation(MemXulpymoney):
 
 
     def investment_find_by_name(self, name):
-        for i in mem.data.investments_all().arr:
+        for i in mem.data.investments.arr:
             if i.name==name:
                 return i
         return None

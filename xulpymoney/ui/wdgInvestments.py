@@ -47,15 +47,7 @@ class wdgInvestments(QWidget, Ui_wdgInvestments):
             self.selInvestment.active=False
         self.selInvestment.save()
         self.mem.con.commit()     
-        #Recoloca en los SetInvestments
-        if self.selInvestment.active==True:#Está todavía en inactivas
-            self.mem.data.investments_active.append(self.selInvestment)
-            if self.mem.data.investments_inactive!=None:#Puede que no se haya cargado
-                self.mem.data.investments_inactive.remove(self.selInvestment)
-        else:#Está todavía en activas
-            self.mem.data.investments_active.remove(self.selInvestment)
-            if self.mem.data.investments_inactive!=None:#Puede que no se haya cargado
-                self.mem.data.investments_inactive.append(self.selInvestment)
+
         self.chkInactivas.setCheckState(Qt.Unchecked)
         self.on_chkInactivas_stateChanged(Qt.Unchecked)#Carga la tabla
 
@@ -65,7 +57,7 @@ class wdgInvestments(QWidget, Ui_wdgInvestments):
         cur = self.mem.con.cursor()
         self.selInvestment.borrar(cur)
         self.mem.con.commit()
-        self.mem.data.investments_active.remove(self.selInvestment)
+        self.mem.data.investments_active().remove(self.selInvestment)
         cur.close()
         self.on_chkInactivas_stateChanged(self.chkInactivas.checkState())#Carga la tabla
 
@@ -134,11 +126,10 @@ class wdgInvestments(QWidget, Ui_wdgInvestments):
             
     def on_chkInactivas_stateChanged(self, state):
         if state==Qt.Unchecked:
-            self.inversiones=self.mem.data.investments_active
+            self.inversiones=self.mem.data.investments_active()
             self.on_actionSortTPCVenta_triggered()
         else:
-             
-            self.inversiones=self.mem.data.investments_inactive
+            self.inversiones=self.mem.data.investments_inactive()
             self.on_actionSortName_triggered()
         self.tblInvestments_reload()
         self.tblInvestments.clearSelection()

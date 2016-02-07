@@ -20,7 +20,7 @@ class wdgLastCurrent(QWidget, Ui_wdgLastCurrent):
         self.on_actionSortTPCLast_triggered()
         
     def tblInvestments_reload(self):
-        self.mem.data.investments_active.myqtablewidget_lastCurrent(self.tblInvestments, self.spin.value())
+        self.mem.data.investments_active().myqtablewidget_lastCurrent(self.tblInvestments, self.spin.value())
         
     @QtCore.pyqtSlot() 
     def on_actionInvestmentReport_triggered(self):
@@ -62,35 +62,35 @@ class wdgLastCurrent(QWidget, Ui_wdgLastCurrent):
    
     @QtCore.pyqtSlot() 
     def on_actionSortTPCVenta_triggered(self):
-        if self.mem.data.investments_active.order_by_percentage_sellingpoint():
+        if self.mem.data.investments_active().order_by_percentage_sellingpoint():
             self.tblInvestments_reload()    
         else:
             qmessagebox_error_ordering()     
         
     @QtCore.pyqtSlot() 
     def on_actionSortTPC_triggered(self):
-        if self.mem.data.investments_active.order_by_percentage_invested():
+        if self.mem.data.investments_active().order_by_percentage_invested():
             self.tblInvestments_reload()    
         else:
             qmessagebox_error_ordering()     
         
     @QtCore.pyqtSlot() 
     def on_actionSortHour_triggered(self):
-        if self.mem.data.investments_active.order_by_datetime_last_operation():
+        if self.mem.data.investments_active().order_by_datetime_last_operation():
             self.tblInvestments_reload()    
         else:
             qmessagebox_error_ordering()     
         
     @QtCore.pyqtSlot() 
     def on_actionSortName_triggered(self):
-        if self.mem.data.investments_active.order_by_name():
+        if self.mem.data.investments_active().order_by_name():
             self.tblInvestments_reload()    
         else:
             qmessagebox_error_ordering()     
             
     @QtCore.pyqtSlot() 
     def on_actionSortTPCLast_triggered(self):
-        if self.mem.data.investments_active.order_by_percentage_last_operation():
+        if self.mem.data.investments_active().order_by_percentage_last_operation():
             self.tblInvestments_reload()    
         else:
             qmessagebox_error_ordering()     
@@ -131,7 +131,7 @@ class wdgLastCurrent(QWidget, Ui_wdgLastCurrent):
     def on_tblInvestments_itemSelectionChanged(self):
         self.selInvestment=None
         for i in self.tblInvestments.selectedItems():#itera por cada item no row.
-            self.selInvestment=self.mem.data.investments_active.arr[i.row()]
+            self.selInvestment=self.mem.data.investments_active().arr[i.row()]
 
     @QtCore.pyqtSlot(int, int) 
     def on_tblInvestments_cellDoubleClicked(self, row, column):

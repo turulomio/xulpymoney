@@ -201,8 +201,8 @@ class AssetsReport(ODT):
         self.doc.save(self.filename)   
         
     def variables(self):
-        self.vTotalLastYear=Assets(self.mem).saldo_total(self.mem.data.investments_all(),  datetime.date(datetime.date.today().year-1, 12, 31))
-        self.vTotal=Assets(self.mem).saldo_total(self.mem.data.investments_all(),  datetime.date.today())
+        self.vTotalLastYear=Assets(self.mem).saldo_total(self.mem.data.investments,  datetime.date(datetime.date.today().year-1, 12, 31))
+        self.vTotal=Assets(self.mem).saldo_total(self.mem.data.investments,  datetime.date.today())
 
 
     def cover(self):
@@ -231,10 +231,10 @@ class AssetsReport(ODT):
         ### Assets by bank
         self.header(self.tr("Assets by bank"), 2)
         data=[]
-        self.mem.data.banks_active.order_by_name()
+        self.mem.data.banks_active().order_by_name()
         sumbalances=0
-        for bank in self.mem.data.banks_active.arr:
-            balance=bank.balance(self.mem.data.accounts_active, self.mem.data.investments_active)
+        for bank in self.mem.data.banks_active().arr:
+            balance=bank.balance(self.mem.data.accounts_active(), self.mem.data.investments_active())
             sumbalances=sumbalances+balance
             data.append((bank.name, c(balance)))
         self.table( [self.tr("Bank"), self.tr("Balance")], ["<", ">"], data, [3, 2], 12)       
@@ -279,12 +279,12 @@ class AssetsReport(ODT):
         ## Accounts
         self.header(self.tr("Current Accounts"), 1)
         data=[]
-        self.mem.data.accounts_active.order_by_name()
-        for account in self.mem.data.accounts_active.arr:
+        self.mem.data.accounts_active().order_by_name()
+        for account in self.mem.data.accounts_active().arr:
             data.append((account.name, account.eb.name, c(account.balance())))
         self.table( [self.tr("Account"), self.tr("Bank"),  self.tr("Balance")], ["<","<",  ">"], data, [5,5, 2], 11)       
         
-        self.simpleParagraph(self.tr("Sum of all account balances is {}").format(c(self.mem.data.accounts_active.balance())))
+        self.simpleParagraph(self.tr("Sum of all account balances is {}").format(c(self.mem.data.accounts_active().balance())))
 
         
         self.pageBreak(True)
@@ -299,8 +299,8 @@ class AssetsReport(ODT):
         sumpositivos=0
         sumnegativos=0
         data=[]
-        self.mem.data.investments_active.order_by_percentage_sellingpoint()
-        for inv in self.mem.data.investments_active.arr:            
+        self.mem.data.investments_active().order_by_percentage_sellingpoint()
+        for inv in self.mem.data.investments_active().arr:            
             suminvertido=suminvertido+inv.invertido()
             pendiente=inv.pendiente()
             if pendiente>0:
@@ -317,7 +317,7 @@ class AssetsReport(ODT):
         if suminvertido!=0:
             self.simpleParagraph(self.tr("Sum of all invested assets is {}.").format(c(suminvertido)))
             self.simpleParagraph(self.tr("Investment gains (positive minus negative results): {} - {} are {}, what represents a {} of total assets.").format( c(sumpositivos),  c(-sumnegativos),  c(sumpendiente), tpc(100*sumpendiente/suminvertido) ))
-            self.simpleParagraph(self.tr(" Assets average age: {}").format(  days_to_year_month(self.mem.data.investments_active.average_age())))
+            self.simpleParagraph(self.tr(" Assets average age: {}").format(  days_to_year_month(self.mem.data.investments_active().average_age())))
         else:
             self.simpleParagraph(self.tr("There aren't invested assets"))
         self.pageBreak()
