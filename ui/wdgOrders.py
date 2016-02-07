@@ -1,8 +1,10 @@
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from libxulpymoney import *
+from libqmessagebox import *
 from wdgOrdersAdd import *
 from Ui_wdgOrders import *
+from frmInvestmentReport import *
 
 class wdgOrders(QWidget, Ui_wdgOrders):
     def __init__(self, mem,  parent=None):
@@ -48,13 +50,31 @@ class wdgOrders(QWidget, Ui_wdgOrders):
         
     @QtCore.pyqtSlot() 
     def on_actionExecute_triggered(self):
+        if self.orders.selected.investment.active==False:
+            qmessagebox_investment_Inactive()
+            return
+        
+        
+        
         if self.orders.selected.executed==None:
             self.orders.selected.executed=self.mem.localzone.now()#Set execution
         else:
             self.orders.selected.executed=None#Remove execution
         self.orders.selected.save()
         self.mem.con.commit()
+        
+        w=frmInvestmentReport(self.mem, self.orders.selected.investment, self)
+        w.frmInvestmentOperationsAdd_initiated.connect(self.load_OrderData)
+        w.on_actionOperationAdd_triggered()        
+        w.exec_()
+        
+
         self.on_cmbMode_currentIndexChanged(self.cmbMode.currentIndex())
+        
+    def load_OrderData(self, frm):
+        """Carga los datos de la orden en el frmInvestmentOperationsAdd"""
+        frm.txtAcciones.setText(self.orders.selected.shares)
+        frm.txtValorAccion.setText(self.orders.selected.price)
         
         
     @pyqtSlot(int)     

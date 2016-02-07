@@ -9,6 +9,7 @@ from frmSharesTransfer import *
 from libxulpymoney import *
 
 class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
+    frmInvestmentOperationsAdd_initiated=pyqtSignal(frmInvestmentOperationsAdd)#Se usa para cargar datos de ordenes en los datos de este formulario
     def __init__(self, mem, inversion=None,  parent=None):
         """Accounts es un set cuentas"""
         """TIPOS DE ENTRADAS:        
@@ -172,6 +173,7 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
                 return
             
         w=frmInvestmentOperationsAdd(self.mem, self.inversion, None, self)
+        self.frmInvestmentOperationsAdd_initiated.emit(w)
         w.exec_()
         
         #if num shares after add is 0, changes expiration date to today-1

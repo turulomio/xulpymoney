@@ -774,32 +774,32 @@
         <translation>Falso</translation>
     </message>
     <message>
-        <location filename="../libqmessagebox.py" line="6"/>
+        <location filename="../libqmessagebox.py" line="12"/>
         <source>Xulpymoney needs to be updated. Please login with a superuser role.</source>
         <translation>Xulpymoney necesita ser actualizado. Por favor entre con el rol de superusuario.</translation>
     </message>
     <message>
-        <location filename="../libqmessagebox.py" line="12"/>
+        <location filename="../libqmessagebox.py" line="18"/>
         <source>Error conecting to {} database in {} server</source>
         <translation>Error al conectar a la base de datos {} del servidor {}</translation>
     </message>
     <message>
-        <location filename="../libqmessagebox.py" line="24"/>
+        <location filename="../libqmessagebox.py" line="30"/>
         <source>The role of the user is not an administrator</source>
         <translation>El rol del usuario no es de administrador</translation>
     </message>
     <message>
-        <location filename="../libqmessagebox.py" line="31"/>
+        <location filename="../libqmessagebox.py" line="37"/>
         <source>This option is being developed</source>
         <translation>Esta opción está en desarrollo</translation>
     </message>
     <message>
-        <location filename="../libqmessagebox.py" line="37"/>
+        <location filename="../libqmessagebox.py" line="43"/>
         <source>I couldn&apos;t order data due to they have null values</source>
         <translation>No pudo ordenar los datos debido a que hay valores nulos</translation>
     </message>
     <message>
-        <location filename="../libqmessagebox.py" line="43"/>
+        <location filename="../libqmessagebox.py" line="49"/>
         <source>You have written and invalid number</source>
         <translation>Ha escrito un número inválido</translation>
     </message>
@@ -1168,6 +1168,11 @@ Purgadas en total en el proceso global: {1}</translation>
     <message>
         <location filename="../libxulpymoney.py" line="4083"/>
         <source>Executed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../libqmessagebox.py" line="6"/>
+        <source>Selected investment is inactive. Your must activate first.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2421,22 +2426,22 @@ p, li { white-space: pre-wrap; }
         <translation>realizar Split / Contrasplit</translation>
     </message>
     <message>
-        <location filename="../ui/frmInvestmentReport.py" line="41"/>
+        <location filename="../ui/frmInvestmentReport.py" line="42"/>
         <source>Add a new investment</source>
         <translation>Añadir una nueva inversión</translation>
     </message>
     <message>
-        <location filename="../ui/frmInvestmentReport.py" line="116"/>
+        <location filename="../ui/frmInvestmentReport.py" line="117"/>
         <source>Current operations average age: {0}</source>
         <translation>Media de edad de las operaciones actuales: {0}</translation>
     </message>
     <message>
-        <location filename="../ui/frmInvestmentReport.py" line="165"/>
+        <location filename="../ui/frmInvestmentReport.py" line="166"/>
         <source>Before adding a operation, you must add the current price of the product.</source>
         <translation>Antes de añadir una operación, debe añadir el valor actual del producto.</translation>
     </message>
     <message>
-        <location filename="../ui/frmInvestmentReport.py" line="405"/>
+        <location filename="../ui/frmInvestmentReport.py" line="407"/>
         <source>Selected: {0}</source>
         <translation>Seleccionado: {0}</translation>
     </message>
@@ -2496,37 +2501,37 @@ p, li { white-space: pre-wrap; }
         <translation>% Invertido</translation>
     </message>
     <message>
-        <location filename="../ui/frmInvestmentReport.py" line="88"/>
+        <location filename="../ui/frmInvestmentReport.py" line="89"/>
         <source>Estimation review date: {0}</source>
         <translation>Fecha de revisión de la estimación: {0}</translation>
     </message>
     <message>
-        <location filename="../ui/frmInvestmentReport.py" line="90"/>
+        <location filename="../ui/frmInvestmentReport.py" line="91"/>
         <source>Estimated balance: {0} ({1} after taxes)</source>
         <translation>Saldo estimado: {0} ({1} después de impuestos)</translation>
     </message>
     <message>
-        <location filename="../ui/frmInvestmentReport.py" line="91"/>
+        <location filename="../ui/frmInvestmentReport.py" line="92"/>
         <source>% Invested: {0}</source>
         <translation>% Invertido: {0}</translation>
     </message>
     <message>
-        <location filename="../ui/frmInvestmentReport.py" line="228"/>
+        <location filename="../ui/frmInvestmentReport.py" line="230"/>
         <source>Shares transfer couldn&apos;t be done.</source>
         <translation>El traspaso de acciones no ha podido ser realizado.</translation>
     </message>
     <message>
-        <location filename="../ui/frmInvestmentReport.py" line="89"/>
+        <location filename="../ui/frmInvestmentReport.py" line="90"/>
         <source>Estimated annual dividend is {0} ({1} per share)</source>
         <translation>La estimación anual de dividendo es {0} ({1} por acción)</translation>
     </message>
     <message>
-        <location filename="../ui/frmInvestmentReport.py" line="92"/>
+        <location filename="../ui/frmInvestmentReport.py" line="93"/>
         <source>% APR from invested: {0}</source>
         <translation>% TAE de lo invertido: {0}</translation>
     </message>
     <message>
-        <location filename="../ui/frmInvestmentReport.py" line="153"/>
+        <location filename="../ui/frmInvestmentReport.py" line="154"/>
         <source>Divest / Reinvest simulation</source>
         <translation>Simulación de Desinversión / Reinversión</translation>
     </message>
@@ -2536,7 +2541,7 @@ p, li { white-space: pre-wrap; }
         <translation>TAE</translation>
     </message>
     <message>
-        <location filename="../ui/frmInvestmentReport.py" line="283"/>
+        <location filename="../ui/frmInvestmentReport.py" line="285"/>
         <source>You must select a product to continue.</source>
         <translation>Debe seleccionar un producto para continuar.</translation>
     </message>
@@ -2556,7 +2561,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished">Ocultar en el informe de rangos</translation>
     </message>
     <message>
-        <location filename="../ui/frmInvestmentReport.py" line="401"/>
+        <location filename="../ui/frmInvestmentReport.py" line="403"/>
         <source>Show in range report</source>
         <translation type="unfinished">Mostrar en el informe de rangos</translation>
     </message>
@@ -5687,12 +5692,12 @@ Diferencia diaria: {5}. Edad media de las inversiones: {6}</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgOrders.py" line="25"/>
+        <location filename="../ui/wdgOrders.py" line="27"/>
         <source>Add new order</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgOrders.py" line="36"/>
+        <location filename="../ui/wdgOrders.py" line="38"/>
         <source>Edit order</source>
         <translation type="unfinished"></translation>
     </message>

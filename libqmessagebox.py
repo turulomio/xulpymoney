@@ -1,6 +1,12 @@
 
 from PyQt5.QtWidgets import *
 
+def qmessagebox_investment_Inactive():
+    m=QMessageBox()
+    m.setIcon(QMessageBox.Information)
+    m.setText(QApplication.translate("Core","Selected investment is inactive. Your must activate first."))
+    m.exec_()   
+
 def qmessagebox_xulpymoney_update_and_superuser():
     m=QMessageBox()
     m.setIcon(QMessageBox.Information)
