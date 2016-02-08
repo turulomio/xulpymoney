@@ -226,7 +226,6 @@
     <addaction name="actionSearch"/>
     <addaction name="separator"/>
     <addaction name="actionPriceUpdates"/>
-    <addaction name="actionReloadPrices"/>
     <addaction name="separator"/>
     <addaction name="actionSyncProducts"/>
    </widget>
@@ -838,21 +837,6 @@
    </property>
    <property name="shortcut">
     <string>F8</string>
-   </property>
-  </action>
-  <action name="actionReloadPrices">
-   <property name="icon">
-    <iconset resource="../images/xulpymoney.qrc">
-     <normaloff>:/xulpymoney/new.png</normaloff>:/xulpymoney/new.png</iconset>
-   </property>
-   <property name="text">
-    <string>Reload current prices</string>
-   </property>
-   <property name="toolTip">
-    <string>Reload current prices</string>
-   </property>
-   <property name="shortcut">
-    <string>F5</string>
    </property>
   </action>
   <action name="actionProductsInvestmentActive">

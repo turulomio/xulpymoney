@@ -2593,17 +2593,17 @@ class DBData:
         
         print("Cargando data",  datetime.datetime.now()-inicio)
 
-    def reload_prices(self):
-        pd= QProgressDialog(QApplication.translate("Core","Reloading {0} product prices from database").format(self.products.length()),None, 0,self.products.length())
-        pd.setModal(True)
-        pd.setWindowTitle(QApplication.translate("Core","Reloading prices..."))
-        pd.forceShow()
-        for i, p in enumerate(self.products.arr):
-            pd.setValue(i)
-            pd.update()
-            QApplication.processEvents()
-            p.result.basic.load_from_db()
-        self.mem.data.benchmark.result.basic.load_from_db()        
+#    def reload_prices(self):
+#        pd= QProgressDialog(QApplication.translate("Core","Reloading {0} product prices from database").format(self.products.length()),None, 0,self.products.length())
+#        pd.setModal(True)
+#        pd.setWindowTitle(QApplication.translate("Core","Reloading prices..."))
+#        pd.forceShow()
+#        for i, p in enumerate(self.products.arr):
+#            pd.setValue(i)
+#            pd.update()
+#            QApplication.processEvents()
+#            p.result.basic.load_from_db()
+#        self.mem.data.benchmark.result.basic.load_from_db()        
         
         
     def accounts_active(self):        
@@ -5653,17 +5653,11 @@ class TUpdateData(threading.Thread):
         print ("TUpdateData started")
         while True:
             inicio=datetime.datetime.now()
-            
-            ##Selecting products to update
-            if self.mem.data.loaded_inactive==False:
-                products=self.mem.data.products
-            else:
-                products=self.mem.data.products
-                
+                            
             self.mem.data.benchmark.result.basic.load_from_db()
             
             ##Update loop
-            for inv in products.arr:
+            for inv in self.mem.data.products.arr:
                 if self.mem.closing==True:
                     return
                 inv.result.basic.load_from_db()
