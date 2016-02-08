@@ -5534,27 +5534,27 @@ Daily Diff: {5}. Investment average age: {6}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgLastCurrent.py" line="118"/>
+        <location filename="../ui/wdgLastCurrent.py" line="122"/>
         <source>Order by</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgLastCurrent.py" line="141"/>
+        <location filename="../ui/wdgLastCurrent.py" line="145"/>
         <source>Shares number: {0}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgLastCurrent.py" line="141"/>
+        <location filename="../ui/wdgLastCurrent.py" line="145"/>
         <source>Purchase price average: {0}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgLastCurrent.py" line="141"/>
+        <location filename="../ui/wdgLastCurrent.py" line="145"/>
         <source>Selling point: {}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgLastCurrent.py" line="141"/>
+        <location filename="../ui/wdgLastCurrent.py" line="145"/>
         <source>Selling all shares you get {}</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5584,7 +5584,7 @@ Daily Diff: {5}. Investment average age: {6}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgLastCurrent.py" line="35"/>
+        <location filename="../ui/wdgLastCurrent.py" line="34"/>
         <source>Investment last operation calculator</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5599,7 +5599,7 @@ Daily Diff: {5}. Investment average age: {6}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgLastCurrent.py" line="48"/>
+        <location filename="../ui/wdgLastCurrent.py" line="47"/>
         <source>Divest / Reinvest simulation</source>
         <translation type="unfinished"></translation>
     </message>
