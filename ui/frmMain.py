@@ -190,10 +190,10 @@ class frmMain(QMainWindow, Ui_frmMain):
                 
         self.layout.addWidget(self.w)
         self.w.show()
-
-    @QtCore.pyqtSlot()  
-    def on_actionReloadPrices_triggered(self):
-        self.mem.data.reload_prices()
+#
+#    @QtCore.pyqtSlot()  
+#    def on_actionReloadPrices_triggered(self):
+#        self.mem.data.reload_prices()
 
     @QtCore.pyqtSlot()  
     def on_actionEvolutionReport_triggered(self):
@@ -207,6 +207,7 @@ class frmMain(QMainWindow, Ui_frmMain):
     def on_actionHelp_triggered(self):
         w=frmHelp(self.mem, self)
         w.exec_()
+
     @QtCore.pyqtSlot()  
     def on_actionIndexRange_triggered(self):
         self.w.close()
@@ -338,7 +339,7 @@ class frmMain(QMainWindow, Ui_frmMain):
             
             sync_data(source.con, self.mem.con, pd)
             
-            self.mem.data.reload()
+            self.mem.data.load()
 
 
     @QtCore.pyqtSlot()  
