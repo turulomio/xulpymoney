@@ -384,12 +384,12 @@ class SetInvestments(SetCommons):
         table.clearContents()
         for i, inv in enumerate(self.arr):
             table.setItem(i, 0, QTableWidgetItem("{0} ({1})".format(inv.name, inv.account.name)))
-            table.setItem(i, 1, qdatetime(inv.op_actual.arr[inv.op_actual.length()-1].datetime, self.mem.localzone))
-            table.setItem(i, 2, qright(inv.op_actual.arr[inv.op_actual.length()-1].acciones))
+            table.setItem(i, 1, qdatetime(inv.op_actual.last().datetime, self.mem.localzone))
+            table.setItem(i, 2, qright(inv.op_actual.last().acciones))
             table.setItem(i, 3, qright(inv.op_actual.acciones()))
             table.setItem(i, 4,  inv.product.currency.qtablewidgetitem(inv.balance()))
             table.setItem(i, 5, inv.product.currency.qtablewidgetitem(inv.pendiente()))
-            lasttpc=inv.op_actual.arr[inv.op_actual.length()-1].tpc_total(inv.product.result.basic.last.quote)
+            lasttpc=inv.op_actual.last().tpc_total(inv.product.result.basic.last.quote)
             table.setItem(i, 6, qtpc(lasttpc))
             table.setItem(i, 7, qtpc(inv.tpc_invertido()))
             table.setItem(i, 8, qtpc(inv.tpc_venta()))
@@ -585,7 +585,7 @@ class SetInvestments(SetCommons):
     def order_by_percentage_last_operation(self):
         """Orders the Set using self.arr"""
         try:
-            self.arr=sorted(self.arr, key=lambda inv: inv.op_actual.arr[inv.op_actual.length()-1].tpc_total(inv.product.result.basic.last.quote),  reverse=True) 
+            self.arr=sorted(self.arr, key=lambda inv: inv.op_actual.last().tpc_total(inv.product.result.basic.last.quote),  reverse=True) 
             return True
         except:
             return False
@@ -593,7 +593,7 @@ class SetInvestments(SetCommons):
     def order_by_datetime_last_operation(self):
         """Orders the Set using self.arr"""
         try:
-            self.arr=sorted(self.arr, key=lambda inv: inv.op_actual.arr[inv.op_actual.length()-1].datetime,  reverse=False) 
+            self.arr=sorted(self.arr, key=lambda inv: inv.op_actual.last().datetime,  reverse=False) 
             return True
         except:
             return False

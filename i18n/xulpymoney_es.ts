@@ -5541,27 +5541,27 @@ Diferencia diaria: {5}. Edad media de las inversiones: {6}</translation>
         <translation>Informe de producto</translation>
     </message>
     <message>
-        <location filename="../ui/wdgLastCurrent.py" line="118"/>
+        <location filename="../ui/wdgLastCurrent.py" line="122"/>
         <source>Order by</source>
         <translation>Ordenado por</translation>
     </message>
     <message>
-        <location filename="../ui/wdgLastCurrent.py" line="141"/>
+        <location filename="../ui/wdgLastCurrent.py" line="145"/>
         <source>Shares number: {0}</source>
         <translation>Número de acciones: {0}</translation>
     </message>
     <message>
-        <location filename="../ui/wdgLastCurrent.py" line="141"/>
+        <location filename="../ui/wdgLastCurrent.py" line="145"/>
         <source>Purchase price average: {0}</source>
         <translation>Precio medio de compra: {0}</translation>
     </message>
     <message>
-        <location filename="../ui/wdgLastCurrent.py" line="141"/>
+        <location filename="../ui/wdgLastCurrent.py" line="145"/>
         <source>Selling point: {}</source>
         <translation>Punto de venta: {}</translation>
     </message>
     <message>
-        <location filename="../ui/wdgLastCurrent.py" line="141"/>
+        <location filename="../ui/wdgLastCurrent.py" line="145"/>
         <source>Selling all shares you get {}</source>
         <translation>Vendiendo todas las acciones consigues {}</translation>
     </message>
@@ -5591,7 +5591,7 @@ Diferencia diaria: {5}. Edad media de las inversiones: {6}</translation>
         <translation>% Última operación</translation>
     </message>
     <message>
-        <location filename="../ui/wdgLastCurrent.py" line="35"/>
+        <location filename="../ui/wdgLastCurrent.py" line="34"/>
         <source>Investment last operation calculator</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5606,7 +5606,7 @@ Diferencia diaria: {5}. Edad media de las inversiones: {6}</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgLastCurrent.py" line="48"/>
+        <location filename="../ui/wdgLastCurrent.py" line="47"/>
         <source>Divest / Reinvest simulation</source>
         <translation type="unfinished">Simulación de Desinversión / Reinversión</translation>
     </message>
