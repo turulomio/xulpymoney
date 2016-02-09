@@ -3096,6 +3096,79 @@ class Account:
             return True
         return False
             
+            
+class DateValue:
+    def __init__(self, date, value):
+        self.date=date
+        self.value=value
+        
+    def suma(self, dv):
+        """Returns sum of self.value and dv.value"""
+        return self.value+dv.value
+        
+class SetDateValue:
+    def __init__(self):
+        self.arr=[]
+        
+    def length(self):
+        return len(self.arr)
+        
+    def dates(self):
+        res=[]
+        for dv in self.arr:
+            res.append(dv.date)
+        return res
+        
+    def index_by_date(self, date):
+        """Returns the index of the array, searching the date"""
+        for i, dv in enumerate(self.arr):
+            if dv.date==date:
+                return i
+        return None
+                
+                    
+    def values(self):
+        res=[]
+        for dv in self.arr:
+            res.append(dv.value)
+        return res
+        
+    def sma(self, index,  max):
+        """Return a date value with the sma (max)., item is the index to get sma, Max normal max is 50 or 200"""
+        sma=Decimal(0)
+        if index<max:
+            return DateValue(self.arr[index], sma)
+        for dv in self.arr[index-max:index]:
+            sma=sma+dv.value
+        return DateValue(self.arr[index], sma/Decimal(max))
+
+    def append(self, dv):
+        self.arr.append(dv)
+        
+    def average(self):
+        suma=Decimal(0)
+        for dv in self.arr:
+            suma=suma+dv.value
+        if self.length()>0:
+            return suma/self.length()
+        return None
+
+    def arr_sma(self, max):
+        """Returns s SetDateValue with the calculated sma"""
+        res=SetDateValue()
+        if self.length()<max:
+            return res
+        for i in range(max, self.length()):
+            self.append(self.sma(i, max))
+        return res
+
+    def tpc_to_last_sma200(self, origin):
+        """Return the percentage from origin to sma200 last"""
+        lastsma=self.sma(self.length()-1, 200)
+        if lastsma.value==None:
+            return None
+        return 100*(lastsma.value-origin)/origin
+
 class Investment:
     """Clase que encapsula todas las funciones que se pueden realizar con una Inversión
     
@@ -5141,6 +5214,7 @@ class OHCLDaily:
         self.close=None
         self.high=None
         self.low=None
+        
     def init__from_dbrow(self, row, product):
         self.product=product
         self.date=row['date']
@@ -5149,9 +5223,11 @@ class OHCLDaily:
         self.high=row['high']
         self.low=row['low']
         return self
+        
     def datetime(self):
         """Devuelve un datetime usado para dibujar en gráficos"""
         return day_end_from_date(self.date, self.product.stockmarket.zone)
+        
     def print_time(self):
         return "{0}".format(self.date)
         
@@ -5170,7 +5246,6 @@ class OHCLDaily:
         cur=self.mem.con.cursor()
         cur.execute("delete from quotes where id=%s and datetime::date=%s", (self.product.id, self.date))
         cur.close()
-        
         
 class OHCLMonthly:
     def __init__(self, mem):
@@ -5320,6 +5395,9 @@ class SetOHCL:
             self.append(self.itemclass(self.mem).init__from_dbrow(row, self.product))
         cur.close()
         
+    def last(self):
+        """REturn last ohcl"""
+        return self.arr[self.length()-1]
         
     def length(self):
         return len (self.arr)
@@ -5357,7 +5435,22 @@ class SetOHCLDaily(SetOHCL):
         if ohcl!=None:
             endlastyear=Quote(self.mem).init__create(self.product, dt(ohcl.date, self.product.stockmarket.closes,  self.product.stockmarket.zone), ohcl.close)        
         return SetQuotesBasic(self.mem, self.product).init__create(last, penultimate, endlastyear)
-               
+
+    def close_to_setdv(self, date=None):
+        """Convert setohcldaily to setdv. From date """
+        res=SetDateValue()
+        if date==None:
+            for o in self.arr:
+                res.append(DateValue(o.date, o.close))
+        else:
+            for o in self.arr:
+                if o.date>=date:
+                    res.append(DateValue(o.date, o.close))
+        return res
+
+
+        
+
 class SetOHCLWeekly(SetOHCL):
     def __init__(self, mem, product):
         SetOHCL.__init__(self, mem, product)
