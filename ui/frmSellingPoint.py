@@ -26,6 +26,18 @@ class frmSellingPoint(QDialog, Ui_frmSellingPoint):
             m.exec_()     
             return
         
+        inicio=datetime.datetime.now()
+        self.mem.data.benchmark.result.get_basic_and_ohcls()
+        print("Load",  datetime.datetime.now()-inicio)
+        setdv=self.mem.data.benchmark.result.ohclDaily.close_to_setdv()
+        print  (setdv.average())
+        self.tpcsma200=setdv.tpc_to_last_sma200(self.mem.data.benchmark.result.basic.last.quote)
+        print("Setdv y sma",  datetime.datetime.now()-inicio)
+        self.txtSMA200.setText(tpc(self.tpcsma200))
+        if self.tpcsma200<Decimal(2.5):
+            self.radSMA200.setEnabled(False)
+        
+        
         self.puntoventa=Decimal(0)#Guarda el resultado de los cálculos
         self.operinversiones=None 
 
@@ -80,6 +92,8 @@ class frmSellingPoint(QDialog, Ui_frmSellingPoint):
                 else:
                     self.puntoventa=Decimal(0)
                     self.cmd.setEnabled(False)
+            elif self.radSMA200.isChecked()==True:
+                self.puntoventa=round(suminvertido*(1+self.tpcsma200/100)/sumacciones, 2)
 
         self.tab.setTabText(1, self.tr("Selling point: {0}".format(self.inversion.product.currency.string(self.puntoventa))) )
         self.tab.setTabText(0, self.tr("Current state: {0}".format(self.inversion.product.currency.string(self.inversion.product.result.basic.last.quote))) )
@@ -97,6 +111,9 @@ class frmSellingPoint(QDialog, Ui_frmSellingPoint):
         self.__calcular()
         
     def on_radGain_clicked(self):
+        self.__calcular()
+        
+    def on_radSMA200_clicked(self):
         self.__calcular()
         
     @QtCore.pyqtSlot(str) 
