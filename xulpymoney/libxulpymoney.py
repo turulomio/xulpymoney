@@ -1723,7 +1723,7 @@ class SetInvestmentOperationsCurrent(SetIO):
         
         Parámetros
             - tabla myQTableWidget en la que rellenar los datos
-            - quote, si queremos cargar las operinversiones con un valor determinado se pasar´a la quote correspondiente
+            - quote, si queremos cargar las operinversiones con un valor determinado se pasar´a la quote correspondiente. Es un Objeto quote
         """
         if show_accounts==True:
             diff=2

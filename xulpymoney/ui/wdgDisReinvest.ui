@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1016</width>
-    <height>625</height>
+    <height>685</height>
    </rect>
   </property>
   <property name="windowIcon">
@@ -295,7 +295,7 @@
         <enum>QTabWidget::West</enum>
        </property>
        <property name="currentIndex">
-        <number>0</number>
+        <number>3</number>
        </property>
        <widget class="QWidget" name="tab_5">
         <attribute name="title">
@@ -554,6 +554,170 @@
                <column>
                 <property name="text">
                  <string>Gains</string>
+                </property>
+               </column>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QWidget" name="tab_11">
+        <attribute name="title">
+         <string>After at</string>
+        </attribute>
+        <layout class="QHBoxLayout" name="horizontalLayout_25">
+         <item>
+          <widget class="QTabWidget" name="tabResultados_3">
+           <property name="currentIndex">
+            <number>0</number>
+           </property>
+           <widget class="QWidget" name="tab_12">
+            <attribute name="title">
+             <string>Investment situation</string>
+            </attribute>
+            <layout class="QHBoxLayout" name="horizontalLayout_23">
+             <item>
+              <widget class="myQTableWidget" name="tblInvestmentsActualDespuesAt">
+               <property name="contextMenuPolicy">
+                <enum>Qt::CustomContextMenu</enum>
+               </property>
+               <property name="alternatingRowColors">
+                <bool>true</bool>
+               </property>
+               <property name="selectionMode">
+                <enum>QAbstractItemView::NoSelection</enum>
+               </property>
+               <attribute name="verticalHeaderVisible">
+                <bool>false</bool>
+               </attribute>
+               <column>
+                <property name="text">
+                 <string>Date</string>
+                </property>
+               </column>
+               <column>
+                <property name="text">
+                 <string>Shares</string>
+                </property>
+               </column>
+               <column>
+                <property name="text">
+                 <string>Price</string>
+                </property>
+               </column>
+               <column>
+                <property name="text">
+                 <string>Balance</string>
+                </property>
+               </column>
+               <column>
+                <property name="text">
+                 <string>Pending</string>
+                </property>
+               </column>
+               <column>
+                <property name="text">
+                 <string>% Year to Date</string>
+                </property>
+               </column>
+               <column>
+                <property name="text">
+                 <string>% APR</string>
+                </property>
+               </column>
+               <column>
+                <property name="text">
+                 <string>% Total</string>
+                </property>
+               </column>
+               <column>
+                <property name="text">
+                 <string>Benchmark</string>
+                </property>
+               </column>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QWidget" name="tab_3">
+        <attribute name="title">
+         <string>Before at</string>
+        </attribute>
+        <layout class="QHBoxLayout" name="horizontalLayout_22">
+         <item>
+          <widget class="QTabWidget" name="tabResultados_2">
+           <property name="currentIndex">
+            <number>0</number>
+           </property>
+           <widget class="QWidget" name="tab_7">
+            <attribute name="title">
+             <string>Investment situation</string>
+            </attribute>
+            <layout class="QHBoxLayout" name="horizontalLayout_20">
+             <item>
+              <widget class="myQTableWidget" name="tblInvestmentsActualAntesAt">
+               <property name="contextMenuPolicy">
+                <enum>Qt::CustomContextMenu</enum>
+               </property>
+               <property name="alternatingRowColors">
+                <bool>true</bool>
+               </property>
+               <property name="selectionMode">
+                <enum>QAbstractItemView::NoSelection</enum>
+               </property>
+               <attribute name="verticalHeaderVisible">
+                <bool>false</bool>
+               </attribute>
+               <column>
+                <property name="text">
+                 <string>Date</string>
+                </property>
+               </column>
+               <column>
+                <property name="text">
+                 <string>Shares</string>
+                </property>
+               </column>
+               <column>
+                <property name="text">
+                 <string>Price</string>
+                </property>
+               </column>
+               <column>
+                <property name="text">
+                 <string>Balance</string>
+                </property>
+               </column>
+               <column>
+                <property name="text">
+                 <string>Pending</string>
+                </property>
+               </column>
+               <column>
+                <property name="text">
+                 <string>% Year to Date</string>
+                </property>
+               </column>
+               <column>
+                <property name="text">
+                 <string>% APR</string>
+                </property>
+               </column>
+               <column>
+                <property name="text">
+                 <string>% Total</string>
+                </property>
+               </column>
+               <column>
+                <property name="text">
+                 <string>Benchmark</string>
                 </property>
                </column>
               </widget>

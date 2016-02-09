@@ -59,9 +59,16 @@ class wdgLastCurrent(QWidget, Ui_wdgLastCurrent):
         w.exec_()
         self.tblInvestments_reload()
    
+    def setInvestments(self):
+        self.investments=SetInvestments(self.mem, self.mem.data.accounts, self.mem.data.products,  self.mem.data.benchmark)
+        for i in self.mem.data.investments_active().arr:
+            if i.op_actual.acciones()>0:
+                self.investments.append(i)
+   
+   
     @QtCore.pyqtSlot() 
     def on_actionSortTPCVenta_triggered(self):
-        self.investments=self.mem.data.investments_active()
+        self.setInvestments()
         if self.investments.order_by_percentage_sellingpoint():
             self.tblInvestments_reload()    
         else:
@@ -69,7 +76,7 @@ class wdgLastCurrent(QWidget, Ui_wdgLastCurrent):
         
     @QtCore.pyqtSlot() 
     def on_actionSortTPC_triggered(self):
-        self.investments=self.mem.data.investments_active()
+        self.setInvestments()
         if self.investments.order_by_percentage_invested():
             self.tblInvestments_reload()    
         else:
@@ -77,7 +84,7 @@ class wdgLastCurrent(QWidget, Ui_wdgLastCurrent):
         
     @QtCore.pyqtSlot() 
     def on_actionSortHour_triggered(self):
-        self.investments=self.mem.data.investments_active()
+        self.setInvestments()
         if self.investments.order_by_datetime_last_operation():
             self.tblInvestments_reload()    
         else:
@@ -85,7 +92,7 @@ class wdgLastCurrent(QWidget, Ui_wdgLastCurrent):
         
     @QtCore.pyqtSlot() 
     def on_actionSortName_triggered(self):
-        self.investments=self.mem.data.investments_active()
+        self.setInvestments()
         if self.investments.order_by_name():
             self.tblInvestments_reload()    
         else:
@@ -93,7 +100,7 @@ class wdgLastCurrent(QWidget, Ui_wdgLastCurrent):
             
     @QtCore.pyqtSlot() 
     def on_actionSortTPCLast_triggered(self):
-        self.investments=self.mem.data.investments_active()
+        self.setInvestments()
         if self.investments.order_by_percentage_last_operation():
             self.tblInvestments_reload()    
         else:

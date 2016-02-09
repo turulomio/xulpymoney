@@ -22,11 +22,12 @@ class wdgDisReinvest(QWidget, Ui_wdgDisReinvest):
         self.txtValorAccion.setText(self.inversion.product.result.basic.last.quote)
         self.txtSimulacion.setText(Decimal(self.mem.settingsdb.value("wdgIndexRange/invertir", "10000")))
         self.tabOpAcHi.setCurrentIndex(1)
-        self.tabAB.setCurrentIndex(1)
         
         self.tblGainsAfter.settings(self.mem, "wdgDisReinvest")
         self.tblGainsBefore.settings(self.mem, "wdgDisReinvest")
         self.tblInvestmentsActualDespues.settings(self.mem, "wdgDisReinvest")
+        self.tblInvestmentsActualDespuesAt.settings(self.mem, "wdgDisReinvest")
+        self.tblInvestmentsActualAntesAt.settings(self.mem, "wdgDisReinvest")
         self.tblInvestmentsActualAntes.settings(self.mem, "wdgDisReinvest")
         self.tblInvestmentsHistoricas.settings(self.mem, "wdgDisReinvest")
         self.tblOperaciones.settings(self.mem, "wdgDisReinvest")
@@ -62,22 +63,30 @@ class wdgDisReinvest(QWidget, Ui_wdgDisReinvest):
     def on_radDes_clicked(self):
         self.lblTitulo.setText(self.tr("Divest simulation of {0}").format(self.inversion.name))
         self.lblSimulacion.setText(self.tr("Divest loss to asume"))
-        self.lblValor.setText(self.tr("Selling price"))
-        self.tabAB.setCurrentIndex(1)
+        self.lblValor.setText(self.tr("Selling price (Current: {})").format(self.inversion.product.currency.string(self.inversion.product.result.basic.last.quote)))
+        self.tabAB.setCurrentIndex(3)
         self.cmdOrder.setEnabled(False)
         
     @QtCore.pyqtSlot() 
     def on_radRe_clicked(self):
         self.lblTitulo.setText(self.tr("Reinvest simulation of {0}").format(self.inversion.name))
         self.lblSimulacion.setText(self.tr("Amount to reinvest"))
-        self.lblValor.setText(self.tr("Purchase price"))
-        self.tabAB.setCurrentIndex(1)
+        self.lblValor.setText(self.tr("Purchase price (Current: {})").format(self.inversion.product.currency.string(self.inversion.product.result.basic.last.quote)))
+        self.tabAB.setCurrentIndex(3)
         self.cmdOrder.setEnabled(False)
    
     def on_cmd_released(self): 
         self.sim_op=None
         self.sim_opactual=None
         self.sim_ophistorica=None
+        
+        
+        at=Quote(self.mem).init__create(self.inversion.product, datetime.datetime.now(), self.txtValorAccion.decimal())
+        
+        self.tabAB.setTabText(0, self.tr("After at {}").format(self.inversion.product.currency.string(self.inversion.product.result.basic.last.quote)))
+        self.tabAB.setTabText(1, self.tr("After at {}").format(self.inversion.product.currency.string(at.quote)))
+        self.tabAB.setTabText(2, self.tr("Before at {}").format(self.inversion.product.currency.string(at.quote)))
+        self.tabAB.setTabText(3, self.tr("Before at {}").format(self.inversion.product.currency.string(self.inversion.product.result.basic.last.quote)))
 
         if self.txtSimulacion.decimal()<=Decimal('0'):
             m=QMessageBox()
@@ -112,13 +121,23 @@ class wdgDisReinvest(QWidget, Ui_wdgDisReinvest):
         self.sim_op.arr.append(d)
 
         (self.sim_opactual, self.sim_ophistorica)=self.sim_op.calcular()
+        #After
         self.sim_op.myqtablewidget(self.tblOperaciones)
-        self.sim_opactual.myqtablewidget_homogeneus(self.tblInvestmentsActualDespues)
+        self.sim_opactual.myqtablewidget_homogeneus(self.tblInvestmentsActualDespues, quote=self.inversion.product.result.basic.last)
         self.sim_ophistorica.myqtablewidget(self.tblInvestmentsHistoricas)
-        self.tabAB.setCurrentIndex(0)
+        self.gains(self.tblGainsAfter,  self.inversion.acciones()+self.acciones(), self.sim_opactual.valor_medio_compra())
+        
+        #After at
+        self.sim_opactual.myqtablewidget_homogeneus(self.tblInvestmentsActualDespuesAt, quote=at)
+        
+        #Before at
+        self.inversion.op_actual.myqtablewidget_homogeneus(self.tblInvestmentsActualAntesAt, quote=at)
+        
+        
+        #Before
+        self.tabAB.setCurrentIndex(1)
         self.tabOpAcHi.setCurrentIndex(1)
         self.gains(self.tblGainsBefore, self.inversion.acciones(), self.inversion.op_actual.valor_medio_compra())
-        self.gains(self.tblGainsAfter,  self.inversion.acciones()+self.acciones(), self.sim_opactual.valor_medio_compra())
         
         self.cmdOrder.setEnabled(True)
                 
