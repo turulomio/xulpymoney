@@ -57,7 +57,32 @@ class frmProductReport(QDialog, Ui_frmProductReport):
             self.cmdSave.setText(self.tr("Add a new product"))
         else:
             if self.product.id>0:
-                self.grpInformation.setEnabled(False)
+#                self.grpInformation.setEnabled(False)
+                self.txtISIN.setReadOnly(True)
+                self.txtName.setReadOnly(True)
+                self.txtWeb.setReadOnly(True)
+                self.txtAddress.setReadOnly(True)
+                self.txtMail.setReadOnly(True)
+                self.txtTPC.setReadOnly(True)
+                self.txtPhone.setReadOnly(True)
+                self.txtYahoo.setReadOnly(True)
+                self.txtComentario.setReadOnly(True)
+                self.cmbCurrency.setEnabled(False)
+                self.cmbTipo.setEnabled(False)
+                self.cmbAgrupations.setEnabled(False)
+                self.cmdAgrupations.setEnabled(False)
+                self.chkActive.setEnabled(False)
+                self.cmbPCI.setEnabled(False)
+                self.cmbApalancado.setEnabled(False)
+                self.cmbBolsa.setEnabled(False)
+                self.cmbPriority.setEnabled(False)
+                self.cmdPriority.setEnabled(False)
+                self.cmbPriorityHistorical.setEnabled(False)
+                self.cmdPriorityHistorical.setEnabled(False)
+                self.chkObsolete.setEnabled(False)
+                self.cmdSave.setEnabled(False)
+                
+                
 
         self.canvasIntraday=canvasChartIntraday( self.mem, self)
         self.ntbIntraday = NavigationToolbar2QT(self.canvasIntraday, self)

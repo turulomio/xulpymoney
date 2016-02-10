@@ -2695,7 +2695,7 @@ INSERT INTO products VALUES ('B.COM.PORTUGUES', 'PTBCP0AM0007', 'EUR', 1, '|EURO
 INSERT INTO products VALUES ('BCPDI11(0.04399P1)', 'PTBCP0AMI015', 'EUR', 1, '|EURONEXT|', 77398, NULL, NULL, NULL, NULL, 100, 'c', 0, 9, NULL, NULL, NULL, 'EURONEXT#PTBCP0AMI015||pt||False', false);
 INSERT INTO products VALUES ('BCPS (0.1113585P1)', 'PTBCP0AMS055', 'EUR', 1, '|EURONEXT|', 75002, NULL, NULL, NULL, NULL, 100, 'c', 0, 9, NULL, NULL, NULL, 'EURONEXT#PTBCP0AMS055||pt||False', false);
 INSERT INTO products VALUES ('BDI - BioEnergy International AG', 'AT0000A02177', 'EUR', 1, '|DEUTSCHEBOERSE|', 77948, NULL, NULL, NULL, NULL, 100, 'c', 0, 5, NULL, NULL, NULL, 'DEUTSCHEBOERSE#AT0000A02177||de||False', false);
-INSERT INTO products VALUES ('Beam Inc.', 'US0737301038', 'USD', 1, '|SP500|', 77904, '', '', '', '', 100, 'c', 0, 2, 'BEAM', '{1}', '{3}', 'NYSE#BEAM||us||False', false);
+INSERT INTO products VALUES ('Beam Inc.', 'US0737301038', 'USD', 1, '|SP500|', 77904, '', '', '', '', 100, 'c', 0, 2, 'BEAM', '{1}', '{3}', 'NYSE#BEAM||us||False', true);
 INSERT INTO products VALUES ('BEAM', 'US0737301038', 'EUR', 1, '|EURONEXT|', 75548, NULL, NULL, NULL, NULL, 100, 'c', 0, 12, NULL, NULL, NULL, 'EURONEXT#US0737301038||nl||False', false);
 INSERT INTO products VALUES ('Beate Uhse AG', 'DE0007551400', 'EUR', 1, '|DEUTSCHEBOERSE|', 80555, NULL, NULL, NULL, NULL, 100, 'c', 0, 5, NULL, NULL, NULL, 'DEUTSCHEBOERSE#DE0007551400||de||False', false);
 INSERT INTO products VALUES ('Beazer Homes USA Inc.', NULL, 'USD', 1, NULL, 80958, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, NULL, 'NYSE#BZH||us||False', false);
@@ -5629,7 +5629,7 @@ INSERT INTO products VALUES ('I.R.I.S STRIP (D)', 'BE0005555264', 'EUR', 1, '|EU
 INSERT INTO products VALUES ('Iron Mountain Inc.', NULL, 'USD', 1, NULL, 76323, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, NULL, 'NYSE#IRM||us||False', false);
 INSERT INTO products VALUES ('IRSA-Inversiones y Representaciones S.A. GDS', NULL, 'USD', 1, NULL, 80975, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, NULL, 'NYSE#IRS||us||False', false);
 INSERT INTO products VALUES ('iShares MSCI Brazil Index', NULL, 'USD', 4, NULL, 76643, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, NULL, NULL, NULL, 'EWZ||br||False', false);
-INSERT INTO products VALUES ('iShares S&P 500 Index', NULL, 'USD', 4, NULL, 75704, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, NULL, 'IVV||us||False', false);
+INSERT INTO products VALUES ('iShares S&P 500 Index', 'US4642872000', 'USD', 4, NULL, 75704, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, 'IVV', '{1}', '{3}', 'IVV||us||False', false);
 INSERT INTO products VALUES ('iSoftStone Holdings Ltd.', NULL, 'USD', 1, NULL, 79706, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, NULL, 'NYSE#ISS||us||False', false);
 INSERT INTO products VALUES ('ISRA VISION AG', 'DE0005488100', 'EUR', 1, '|DEUTSCHEBOERSE|', 80330, NULL, NULL, NULL, NULL, 100, 'c', 0, 5, NULL, NULL, NULL, 'DEUTSCHEBOERSE#DE0005488100||de||False', false);
 INSERT INTO products VALUES ('iStar Financial Inc.', NULL, 'USD', 1, NULL, 80912, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, NULL, 'NYSE#SFI||us||False', false);
@@ -6717,7 +6717,7 @@ INSERT INTO products VALUES ('Potash Corp. of Saskatchewan Inc.', NULL, 'USD', 1
 INSERT INTO products VALUES ('Powerland AG', 'DE000PLD5558', 'EUR', 1, '|DEUTSCHEBOERSE|', 80584, NULL, NULL, NULL, NULL, 100, 'c', 0, 5, NULL, NULL, NULL, 'DEUTSCHEBOERSE#DE000PLD5558||de||False', false);
 INSERT INTO products VALUES ('PPG Industries Inc.', NULL, 'USD', 1, NULL, 78307, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, NULL, 'NYSE#PPG||us||False', false);
 INSERT INTO products VALUES ('PPL Corp.', NULL, 'USD', 1, NULL, 78125, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, NULL, 'NYSE#PPL||us||False', false);
-INSERT INTO products VALUES ('PPR', 'FR0000121485', 'EUR', 1, '|CAC|', 75625, '', '', '', '', 100, 'c', 0, 3, 'PP.PA', '{1}', '{3}', 'PP.PA||fr||False', false);
+INSERT INTO products VALUES ('PPR', 'FR0000121485', 'EUR', 1, '|CAC|', 75625, '', '', '', '', 100, 'c', 0, 3, 'PP.PA', '{1}', '{3}', 'PP.PA||fr||False', true);
 INSERT INTO products VALUES ('PPR NV', 'FR0010988808', 'EUR', 1, '|EURONEXT|', 77866, NULL, NULL, NULL, NULL, 100, 'c', 0, 3, NULL, NULL, NULL, 'EURONEXT#FR0010988808||fr||False', false);
 INSERT INTO products VALUES ('PPRNV', 'FR0011160233', 'EUR', 1, '|EURONEXT|', 80025, NULL, NULL, NULL, NULL, 100, 'c', 0, 3, NULL, NULL, NULL, 'EURONEXT#FR0011160233||fr||False', false);
 INSERT INTO products VALUES ('Praktiker AG', 'DE000A0F6MD5', 'EUR', 1, '|DEUTSCHEBOERSE|', 80585, NULL, NULL, NULL, NULL, 100, 'c', 0, 5, NULL, NULL, NULL, 'DEUTSCHEBOERSE#DE000A0F6MD5||de||False', false);
@@ -8193,7 +8193,7 @@ INSERT INTO products VALUES ('Warrant Bonus Cap Societe Generale 9 20121221', 'N
 INSERT INTO products VALUES ('Warrant Bonus Cap Telefónica 9.4 20121221', 'NL0009802602', 'EUR', 5, '|w_es_BNP|', 74741, '', '', '', '', 100, 'i', 1, 1, NULL, '{5}', '{}', '', true);
 INSERT INTO products VALUES ('WARRANTS CALL SG IBEX 7000 20151218', '', 'EUR', 5, '', 81696, '', '', '', '', 100, 'c', 1, 1, NULL, '{}', '{}', '', true);
 INSERT INTO products VALUES ('WARRANTS CALL SG IBEX 8000 20151218', '', 'EUR', 5, '', 81697, '', '', '', '', 100, 'c', 1, 1, NULL, '{}', '{}', '', true);
-INSERT INTO products VALUES ('WARRANTS CALL SG IBEX 9000 20151218', '', 'EUR', 5, '', 81698, '', '', '', '', 100, 'c', 1, 1, NULL, NULL, NULL, '', false);
+INSERT INTO products VALUES ('WARRANTS CALL SG IBEX 9000 20151218', '', 'EUR', 5, '', 81698, '', '', '', '', 100, 'c', 1, 1, NULL, NULL, NULL, '', true);
 INSERT INTO products VALUES ('WARRANT TELEFONICA Put 12 19/12/2014', '', 'EUR', 5, '|w_fr_SG|', 74744, '', '', '', '', 100, 'p', 1, 3, 'B7856', NULL, NULL, 'SGW#B7856||None||False', true);
 INSERT INTO products VALUES ('Washington Post Co. Cl B', NULL, 'USD', 1, NULL, 81601, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, NULL, 'NYSE#WPO||us||False', false);
 INSERT INTO products VALUES ('Washington Real Estate Investment Trust', NULL, 'USD', 1, NULL, 77654, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, NULL, 'NYSE#WRE||us||False', false);
@@ -8337,7 +8337,7 @@ INSERT INTO stockmarkets VALUES (6, 'it', '07:00:00', 'Bolsa de Milán', '17:38:
 INSERT INTO stockmarkets VALUES (7, 'jp', '09:00:00', 'Bolsa de Tokio', '20:00:00', 'Asia/Tokyo');
 INSERT INTO stockmarkets VALUES (8, 'cn', '00:00:00', 'Bolsa de Hong Kong', '20:00:00', 'Asia/Hong_Kong');
 INSERT INTO stockmarkets VALUES (9, 'pt', '07:00:00', 'Bolsa de Lisboa', '17:38:00', 'Europe/Lisbon');
-INSERT INTO globals VALUES (10, 'wdgLastCurrent/spin', '-25');
+INSERT INTO globals VALUES (10, 'wdgLastCurrent/spin', '-33');
 INSERT INTO globals VALUES (11, 'mem/localcurrency', 'EUR');
 INSERT INTO globals VALUES (12, 'mem/localzone', 'Europe/Madrid');
 INSERT INTO globals VALUES (13, 'mem/benchmarkid', '79329');
@@ -8347,10 +8347,10 @@ INSERT INTO globals VALUES (16, 'mem/taxcapitalappreciationbelow', '0.5');
 INSERT INTO globals VALUES (17, 'mem/gainsyear', 'false');
 INSERT INTO globals VALUES (18, 'mem/favorites', '79329, 81680, -33');
 INSERT INTO globals VALUES (19, 'mem/fillfromyear', '2005');
-INSERT INTO globals VALUES (1, 'Version', '201602040422');
+INSERT INTO globals VALUES (1, 'Version', '201602100700');
 INSERT INTO globals VALUES (6, 'Admin mode', NULL);
 INSERT INTO globals VALUES (7, 'wdgIndexRange/spin', '2.0');
-INSERT INTO globals VALUES (8, 'wdgIndexRange/invertir', '2750');
+INSERT INTO globals VALUES (8, 'wdgIndexRange/invertir', '2600');
 INSERT INTO globals VALUES (9, 'wdgIndexRange/minimo', '1000');
 DELETE FROM products WHERE id<=0;
 ALTER SEQUENCE seq_conceptos START WITH 100 RESTART;

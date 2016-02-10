@@ -19,7 +19,7 @@ class Update:
     def __init__(self, mem):
         self.mem=mem
         self.dbversion=self.get_database_version()    
-        self.lastcodeupdate=201602040422
+        self.lastcodeupdate=201602100700
 
    
     def get_database_version(self):
@@ -417,8 +417,16 @@ class Update:
             cur.execute("alter table orders rename investmentoperations_id to executed")
             cur.close()
             self.mem.con.commit()
-            self.set_database_version(201602040422)                  
-            
+            self.set_database_version(201602040422)    
+        if self.dbversion<201602100700:
+            cur=self.mem.con.cursor()
+            cur.execute("update products set isin=%s, ticker=%s, priority=%s, priorityhistorical=%s where id=%s;", ("US4642872000", "IVV",[1, ],[3, ],75704))
+            cur.execute("update products set obsolete=%s where id=%s;", (True, 75625))
+            cur.execute("update products set obsolete=%s where id=%s;", (True, 81698))
+            cur.execute("update products set obsolete=%s where id=%s;", (True, 77904))
+            cur.close()
+            self.mem.con.commit()
+            self.set_database_version(201602100700)                  
             
 
 
