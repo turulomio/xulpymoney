@@ -24,7 +24,7 @@ class wdgOrdersAdd(QWidget, Ui_wdgOrdersAdd):
             self.txtAmount.setText(self.order.amount)
             self.txtPrice.setText(self.order.price)
             
-        self.mem.data.investments_active().qcombobox(self.cmbInvestments, 2, True)
+        self.mem.data.investments.qcombobox(self.cmbInvestments, 2)
         if self.investment!=None:
             self.cmbInvestments.setCurrentIndex(self.cmbInvestments.findData(self.investment.id))
         else:

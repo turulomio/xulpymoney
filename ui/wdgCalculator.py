@@ -24,26 +24,43 @@ class wdgCalculator(QWidget, Ui_wdgCalculator):
             return
             
             
+        self.product=None#Product selected in cmbProducts
+        self.investment=None#Invested selected in cmbInvestments
+        self.selProduct=None#Real product. Selected from an investment or a product
+        
+        self.cmbProducts.currentIndexChanged.disconnect()
+        self.cmbInvestments.currentIndexChanged.disconnect()
+        self.mem.data.products.qcombobox_not_obsolete(self.cmbProducts, None)
+        self.mem.data.investments.qcombobox(self.cmbInvestments, 2,  None)
+        self.cmbProducts.currentIndexChanged.connect(self.on_cmbProducts_currentIndexChanged)
+        self.cmbInvestments.currentIndexChanged.connect(self.on_cmbInvestments_currentIndexChanged)
+        
+    def setProduct(self,  product):
+        self.cmbProducts.setCurrentIndex(self.cmbProducts.findData(product.id))
         self.txtAmount.setText(Decimal(self.mem.settingsdb.value("wdgIndexRange/invertir", "10000")))
-        self.product=self.mem.data.products.find_by_id(int(self.mem.settings.value("wdgCalculator/product", "0")))
-        self.mem.data.products.qcombobox_not_obsolete(self.cmbProducts, self.product)
-        self.cmbPrice_load()
+        
+    def setInvestment(self, investment):
+        self.cmbInvestments.setCurrentIndex(self.cmbInvestments.findData(investment.id))
+        self.txtAmount.setText(Decimal(self.mem.settingsdb.value("wdgIndexRange/invertir", "10000")))
 
 
     def cmbPrice_load(self):       
-        if self.product:
+        if self.selProduct:
             self.cmbPrice.clear() 
-            self.cmbPrice.addItem(self.tr("Penultimate price ({})".format(str(self.product.result.basic.penultimate.datetime)[:16])))
-            self.cmbPrice.addItem(self.tr("Last price ({})".format(str(self.product.result.basic.last.datetime)[:16])))
+            self.cmbPrice.addItem(self.tr("Penultimate price ({})".format(str(self.selProduct.result.basic.penultimate.datetime)[:16])))
+            self.cmbPrice.addItem(self.tr("Last price ({})".format(str(self.selProduct.result.basic.last.datetime)[:16])))
             self.cmbPrice.setCurrentIndex(1)#Last price
+        else:
+            self.cmbPrice.clear()
+        
 
     @pyqtSlot(int)  
     def on_cmbPrice_currentIndexChanged(self, index):
         """To invoke this function you must call self.cmbPrice.setCurrentIndex()"""
         if index==1:
-            self.txtProductPrice.setText(self.product.result.basic.last.quote)
+            self.txtProductPrice.setText(self.selProduct.result.basic.last.quote)
         else:
-            self.txtProductPrice.setText(self.product.result.basic.penultimate.quote)
+            self.txtProductPrice.setText(self.selProduct.result.basic.penultimate.quote)
             
         self.txtFinalPrice.textChanged.disconnect()
         self.txtFinalPrice.setText(self.txtProductPrice.decimal()*Decimal(1+Decimal(self.spnProductPriceVariation.value())*self.txtLeveraged.decimal()/100))
@@ -54,20 +71,54 @@ class wdgCalculator(QWidget, Ui_wdgCalculator):
     @pyqtSlot(int)  
     def on_cmbProducts_currentIndexChanged(self, index):
         """To invoke this function you must call self.cmbProducts.setCurrentIndex()"""
-        
+        print("cmbProducts", index)
+        self.cmbInvestments.currentIndexChanged.disconnect()
+        self.cmbInvestments.setCurrentIndex(-1)
+        self.cmbInvestments.currentIndexChanged.connect(self.on_cmbInvestments_currentIndexChanged)
+        self.cmdOrder.setEnabled(False)
         self.product=self.mem.data.products.find_by_id(self.cmbProducts.itemData(index))
+        self.investment=None
+        
         if self.product:
+            self.selProduct=self.product
             self.mem.settings.setValue("wdgCalculator/product", self.product.id)
             
-        self.cmbPrice_load()
+            self.cmbPrice_load()
+            
+            self.txtLeveraged.setText(self.product.leveraged.multiplier)
+            
+            self.txtFinalPrice.textChanged.disconnect()
+            self.txtFinalPrice.setText(self.txtProductPrice.decimal()*Decimal(1+Decimal(self.spnProductPriceVariation.value())*self.txtLeveraged.decimal()/100))
+            self.txtFinalPrice.textChanged.connect(self.on_txtFinalPrice_textChanged)
         
-        self.txtLeveraged.setText(self.product.leveraged.multiplier)
+            self.calculate()
+        else:
+            self.selProduct=None
+                    
+    @pyqtSlot(int)  
+    def on_cmbInvestments_currentIndexChanged(self, index):
+        """To invoke this function you must call self.cmbProducts.setCurrentIndex()"""
+        print("cmbInvestments", index)
+        self.cmbProducts.currentIndexChanged.disconnect()
+        self.cmbProducts.setCurrentIndex(-1)
+        self.cmbProducts.currentIndexChanged.connect(self.on_cmbProducts_currentIndexChanged)
+        self.cmdOrder.setEnabled(True)
         
-        self.txtFinalPrice.textChanged.disconnect()
-        self.txtFinalPrice.setText(self.txtProductPrice.decimal()*Decimal(1+Decimal(self.spnProductPriceVariation.value())*self.txtLeveraged.decimal()/100))
-        self.txtFinalPrice.textChanged.connect(self.on_txtFinalPrice_textChanged)
-        
-        self.calculate()
+        self.investment=self.mem.data.investments.find_by_id(self.cmbInvestments.itemData(index))
+        if self.investment:
+            self.selProduct=self.investment.product
+            self.mem.settings.setValue("wdgCalculator/product", self.investment.product.id)
+                
+            self.cmbPrice_load()
+            
+            self.txtLeveraged.setText(self.investment.product.leveraged.multiplier)        
+            self.txtFinalPrice.textChanged.disconnect()
+            self.txtFinalPrice.setText(self.txtProductPrice.decimal()*Decimal(1+Decimal(self.spnProductPriceVariation.value())*self.txtLeveraged.decimal()/100))
+            self.txtFinalPrice.textChanged.connect(self.on_txtFinalPrice_textChanged)
+            
+            self.calculate()
+        else:
+            self.selProduct=None
         
         
     @pyqtSlot()
@@ -75,7 +126,7 @@ class wdgCalculator(QWidget, Ui_wdgCalculator):
         d=QDialog(self)     
         d.setModal(True)
         d.setWindowTitle(self.tr("Add new order"))
-        w=wdgOrdersAdd(self.mem, None, None, d)
+        w=wdgOrdersAdd(self.mem, None, self.investment, d)
         w.txtShares.setText(self.txtShares.decimal())
         w.txtPrice.setText(self.txtFinalPrice.decimal())
         lay = QVBoxLayout(d)
@@ -98,14 +149,17 @@ class wdgCalculator(QWidget, Ui_wdgCalculator):
 
     def calculate(self):
         """Checks if compulsory fields are ok, if not changes style to red, else calculate table and shares"""
+            
         if self.txtAmount.isValid() and self.txtFinalPrice.isValid():
-            if self.product.type.id in (1, 4):#Shares
+            if self.selProduct.type.id in (1, 4):#Shares
                 self.txtShares.setText(round(self.txtAmount.decimal()/self.txtFinalPrice.decimal(), 0))
+            else:
+                self.txtShares.setText(round(self.txtAmount.decimal()/self.txtFinalPrice.decimal(), 6))
             porcentages=[2.5, 5, 7.5, 10, 15, 30]
             self.table.clearContents()
             self.table.setRowCount(len(porcentages))
             for i, tpc in enumerate(porcentages):        
                 self.table.setItem(i, 0, qtpc(tpc))
                 tpcprice= self.txtFinalPrice.decimal()*Decimal(1+tpc/100)
-                self.table.setItem(i, 1, self.product.currency.qtablewidgetitem(tpcprice))       
-                self.table.setItem(i, 2, self.product.currency.qtablewidgetitem(self.txtShares.decimal()*(tpcprice-self.txtFinalPrice.decimal())))
+                self.table.setItem(i, 1, self.selProduct.currency.qtablewidgetitem(tpcprice))       
+                self.table.setItem(i, 2, self.selProduct.currency.qtablewidgetitem(self.txtShares.decimal()*(tpcprice-self.txtFinalPrice.decimal())))

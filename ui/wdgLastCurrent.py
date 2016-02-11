@@ -33,7 +33,7 @@ class wdgLastCurrent(QWidget, Ui_wdgLastCurrent):
         d.setFixedSize(850, 850)
         d.setWindowTitle(self.tr("Investment last operation calculator"))
         w=wdgCalculator(self.mem)
-        w.cmbProducts.setCurrentIndex(w.cmbProducts.findData(self.investments.selected.product.id))
+        w.setInvestment(self.investments.selected)
         price=self.investments.selected.op_actual.last().valor_accion*(1+self.spin.value()/Decimal(100))#Is + because -·-
         w.txtFinalPrice.setText(price)
         lay = QVBoxLayout(d)
