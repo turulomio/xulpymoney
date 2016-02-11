@@ -5156,7 +5156,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgIndexRange.py" line="224"/>
+        <location filename="../ui/wdgIndexRange.py" line="226"/>
         <source>Investment calculator</source>
         <translation type="unfinished"></translation>
     </message>
