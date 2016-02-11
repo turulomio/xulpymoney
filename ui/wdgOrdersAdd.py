@@ -40,7 +40,7 @@ class wdgOrdersAdd(QWidget, Ui_wdgOrdersAdd):
             m.setText(self.tr("Incorrect data. Try again."))
             m.exec_()    
             return
-        investment=self.mem.data.investments_active().find_by_id(self.cmbInvestments.itemData(self.cmbInvestments.currentIndex()))
+        investment=self.mem.data.investments.find_by_id(self.cmbInvestments.itemData(self.cmbInvestments.currentIndex()))
         if investment==None:
             m=QMessageBox()
             m.setIcon(QMessageBox.Information)
