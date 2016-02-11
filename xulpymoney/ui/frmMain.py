@@ -139,6 +139,7 @@ class frmMain(QMainWindow, Ui_frmMain):
         d.setFixedSize(850, 850)
         d.setWindowTitle(self.tr("Investment calculator"))
         w=wdgCalculator(self.mem, self)
+        w.setProduct(self.mem.data.products.find_by_id(int(self.mem.settings.value("wdgCalculator/product", "0"))))
         lay = QVBoxLayout(d)
         lay.addWidget(w)
         if w.hasProducts==True:

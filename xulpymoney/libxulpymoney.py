@@ -472,12 +472,14 @@ class SetInvestments(SetCommons):
         for a in arr:
             combo.addItem(a[0], a[1])
 
-    def qcombobox(self, combo, tipo, activas=None):
+    def qcombobox(self, combo, tipo, selected=None, obsolete_product=False, activas=None):
         """Activas puede tomar None. Muestra Todas, True. Muestra activas y False Muestra inactivas
         tipo es una variable que controla la forma de visualizar
         0: inversion
         1: eb - inversion
-        2: inversion (cuenta)"""
+        2: inversion (cuenta)
+        
+        selected is an Investment object"""
         arr=[]
         for i in self.arr:
             if activas==True:
@@ -486,6 +488,13 @@ class SetInvestments(SetCommons):
             elif activas==False:
                 if i.active==True:
                     continue
+                    
+            if obsolete_product==False:
+                if i.product.obsolete==True:
+                    continue
+                
+                    
+                    
             if tipo==0:
                 arr.append((i.name, i.id))            
             elif tipo==1:
@@ -497,6 +506,10 @@ class SetInvestments(SetCommons):
         arr=sorted(arr, key=lambda a: a[0]  ,  reverse=False)  
         for a in arr:
             combo.addItem(a[0], a[1])
+        if selected==None:
+            combo.setCurrentIndex(-1)
+        else:
+            combo.setCurrentIndex(combo.findData(selected.id))
             
     def traspaso_valores(self, origen, destino, numacciones, comision):
         """Función que realiza un traspaso de valores desde una inversion origen a destino
