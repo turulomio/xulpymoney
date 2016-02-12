@@ -426,7 +426,15 @@ class Update:
             cur.execute("update products set obsolete=%s where id=%s;", (True, 77904))
             cur.close()
             self.mem.con.commit()
-            self.set_database_version(201602100700)                  
+            self.set_database_version(201602100700)       
+#        if self.dbversion<201602120700:
+#            cur=self.mem.con.cursor()
+##                        cur.execute("""insert into products (id, name,  isin,  currency,  type,  agrupations,   web, address,  phone, mail, tpc, pci,  apalancado, id_bolsas, ticker, priority, priorityhistorical , comentario,  obsolete) values  (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)""",
+##                (81701, 'Abengoa B',  'ES0105200002', 'EUR', 1, '|IBEX|MERCADOCONTINUO|', None, None, None, None, 100, 'c',0, 1, 'ABG-P.MC',[1, ],[3, ], None, False))
+#            cur.execute("update products set agrupations=%s where id=%s", ( '|IBEX|MERCADOCONTINUO|',81111 ))
+#            cur.close()
+#            self.mem.con.commit()
+#            self.set_database_version(201602120700)                  
             
 
 
