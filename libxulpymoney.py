@@ -241,8 +241,16 @@ class SetCommons:
         
     def order_by_name(self):
         """Orders the Set using self.arr"""
+        self.arr=sorted(self.arr, key=lambda c: c.name,  reverse=False)   
         try:
             self.arr=sorted(self.arr, key=lambda c: c.name,  reverse=False)       
+            return True
+        except:
+            return False        
+    def order_by_upper_name(self):
+        """Orders the Set using self.arr"""
+        try:
+            self.arr=sorted(self.arr, key=lambda c: c.name.upper(),  reverse=False)       
             return True
         except:
             return False

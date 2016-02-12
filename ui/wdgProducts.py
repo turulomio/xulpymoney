@@ -25,7 +25,7 @@ class wdgProducts(QWidget, Ui_wdgProducts):
     def build_array(self, sql):
         self.sql=sql
         self.products.load_from_db(self.sql, True)
-        self.products.order_by_name()
+        self.products.order_by_upper_name()
         self.lblFound.setText(self.tr("Found {0} records".format(self.products.length())))
 
         
@@ -112,7 +112,7 @@ class wdgProducts(QWidget, Ui_wdgProducts):
         
     @QtCore.pyqtSlot() 
     def on_actionSortName_triggered(self):
-        self.products.order_by_name()
+        self.products.order_by_upper_name()
         self.products.myqtablewidget(self.tblInvestments)        
         
     @QtCore.pyqtSlot() 
