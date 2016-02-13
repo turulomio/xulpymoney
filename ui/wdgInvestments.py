@@ -151,11 +151,12 @@ class wdgInvestments(QWidget, Ui_wdgInvestments):
                 self.actionInvestmentDelete.setEnabled(True)
             else:
                 self.actionInvestmentDelete.setEnabled(False)
+                
             if self.selInvestment.active==True:
-                self.actionActive.setChecked(True)
+                self.actionActive.setText(self.tr('Deactivate investment'))
             else:
-                self.actionActive.setChecked(False)
-
+                self.actionActive.setText(self.tr('Activate investment'))
+                
         menu=QMenu()
         menu.addAction(self.actionInvestmentAdd)
         menu.addAction(self.actionInvestmentDelete)   

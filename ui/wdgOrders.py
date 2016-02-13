@@ -50,8 +50,7 @@ class wdgOrders(QWidget, Ui_wdgOrders):
         
     @QtCore.pyqtSlot() 
     def on_actionExecute_triggered(self):
-        if self.orders.selected.investment.active==False:
-            qmessagebox_investment_Inactive()
+        if self.orders.selected.investment.questionbox_inactive()==QMessageBox.No:#It's not active, after all.
             return
         
         if self.orders.selected.executed==None:#Only adds operation if it's not executed

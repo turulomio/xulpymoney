@@ -480,8 +480,11 @@ class SetInvestments(SetCommons):
         for a in arr:
             combo.addItem(a[0], a[1])
 
-    def qcombobox(self, combo, tipo, selected=None, obsolete_product=False, activas=None):
-        """Activas puede tomar None. Muestra Todas, True. Muestra activas y False Muestra inactivas
+    def qcombobox(self, combo, tipo, selected=None, obsolete_product=False, investments_active=True,  accounts_active=True):
+        """
+        Investments_active puede tomar None. Muestra Todas, True. Muestra activas y False Muestra inactivas
+        Accounts_active puede tomar None. Muestra Todas, True. Muestra activas y False Muestra inactivas
+        Obsolete_product puede tomar True: Muestra tambien obsoletos y False, no muestra los obsoletos
         tipo es una variable que controla la forma de visualizar
         0: inversion
         1: eb - inversion
@@ -490,19 +493,25 @@ class SetInvestments(SetCommons):
         selected is an Investment object"""
         arr=[]
         for i in self.arr:
-            if activas==True:
+            if accounts_active==True:
+                if i.account.active==False:
+                    continue
+            elif accounts_active==False:
+                if i.account.active==True:
+                    continue
+                    
+            if investments_active==True:
                 if i.active==False:
                     continue
-            elif activas==False:
+            elif investments_active==False:
                 if i.active==True:
                     continue
                     
             if obsolete_product==False:
                 if i.product.obsolete==True:
                     continue
-                
-                    
-                    
+
+
             if tipo==0:
                 arr.append((i.name, i.id))            
             elif tipo==1:
@@ -3367,6 +3376,19 @@ class Investment:
             m.exec_()    
             return True
         return False
+
+    def questionbox_inactive(self):
+        """It makes a database commit"""
+        if self.active==False:
+            reply = QMessageBox.question(None, QApplication.translate("Core", 'Investment activation question'), QApplication.translate("Core", "Investment {} ({}) is inactive.\nDo you want to activate it?").format(self.name, self.account.name), QMessageBox.Yes, QMessageBox.No)          
+            if reply==QMessageBox.Yes:
+                self.active=True
+                self.save()
+                self.mem.con.commit()
+                return QMessageBox.Yes
+            return QMessageBox.No
+        return QMessageBox.Yes
+        
     def balance(self, fecha=None):
         """Función que calcula el balance de la inversión
             Si el cur es None se calcula el actual 
@@ -4132,8 +4154,6 @@ class SetOrders:
         table.setHorizontalHeaderItem(5, QTableWidgetItem(QApplication.translate("Core","Price")))
         table.setHorizontalHeaderItem(6, QTableWidgetItem(QApplication.translate("Core","Amount")))
         table.setHorizontalHeaderItem(7, QTableWidgetItem(QApplication.translate("Core","Executed")))
-   
-        table.horizontalHeader().setStretchLastSection(False)   
         table.applySettings()
         table.clearContents()
         table.setRowCount(self.length())
