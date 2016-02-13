@@ -216,9 +216,6 @@
    </property>
   </action>
   <action name="actionActive">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
    <property name="text">
     <string>Is it active?</string>
    </property>

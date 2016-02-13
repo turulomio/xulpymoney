@@ -31,7 +31,7 @@ class wdgCalculator(QWidget, Ui_wdgCalculator):
         self.cmbProducts.currentIndexChanged.disconnect()
         self.cmbInvestments.currentIndexChanged.disconnect()
         self.mem.data.products.qcombobox_not_obsolete(self.cmbProducts, None)
-        self.mem.data.investments.qcombobox(self.cmbInvestments, 2,  None)
+        self.mem.data.investments.qcombobox(self.cmbInvestments, 2, selected=None, obsolete_product=False, investments_active=None,  accounts_active=True)
         self.cmbProducts.currentIndexChanged.connect(self.on_cmbProducts_currentIndexChanged)
         self.cmbInvestments.currentIndexChanged.connect(self.on_cmbInvestments_currentIndexChanged)
         
