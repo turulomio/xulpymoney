@@ -1148,33 +1148,34 @@ Purgadas en total en el proceso global: {1}</translation>
     <message>
         <location filename="../libxulpymoney.py" line="4154"/>
         <source>Investment</source>
-        <translation type="unfinished">Inversión</translation>
+        <translation>Inversión</translation>
     </message>
     <message>
         <location filename="../libxulpymoney.py" line="4153"/>
         <source>Expiration</source>
-        <translation type="unfinished"></translation>
+        <translation>Expiración</translation>
     </message>
     <message>
         <location filename="../libxulpymoney.py" line="4159"/>
         <source>Executed</source>
-        <translation type="unfinished"></translation>
+        <translation>Ejecutado</translation>
     </message>
     <message>
         <location filename="../libqmessagebox.py" line="6"/>
         <source>Selected investment is inactive. Your must activate first.</source>
-        <translation type="unfinished"></translation>
+        <translation>La inversión seleccionada está desactivada. Debe activarla primero.</translation>
     </message>
     <message>
         <location filename="../libxulpymoney.py" line="3385"/>
         <source>Investment activation question</source>
-        <translation type="unfinished"></translation>
+        <translation>Pregunta de activación de la inversión</translation>
     </message>
     <message>
         <location filename="../libxulpymoney.py" line="3385"/>
         <source>Investment {} ({}) is inactive.
 Do you want to activate it?</source>
-        <translation type="unfinished"></translation>
+        <translation>La inversión {} ({}) está desactivada.
+¿Quiere activarla?</translation>
     </message>
 </context>
 <context>
@@ -1397,7 +1398,7 @@ Do you want to activate it?</source>
     <message>
         <location filename="../ui/wdgTotal.py" line="82"/>
         <source>Risk assets</source>
-        <translation type="unfinished"></translation>
+        <translation>Patrimonio con riesgo variable</translation>
     </message>
 </context>
 <context>
@@ -2559,17 +2560,17 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../ui/Ui_frmInvestmentReport.py" line="388"/>
         <source>Hide in range report</source>
-        <translation type="unfinished">Ocultar en el informe de rangos</translation>
+        <translation>Ocultar en el informe de rangos</translation>
     </message>
     <message>
         <location filename="../ui/frmInvestmentReport.py" line="403"/>
         <source>Show in range report</source>
-        <translation type="unfinished">Mostrar en el informe de rangos</translation>
+        <translation>Mostrar en el informe de rangos</translation>
     </message>
     <message>
         <location filename="../ui/Ui_frmInvestmentReport.py" line="347"/>
         <source>Change calendar date to today</source>
-        <translation type="unfinished"></translation>
+        <translation>Cambiar la fecha a hoy</translation>
     </message>
 </context>
 <context>
@@ -3062,12 +3063,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../ui/Ui_frmMain.py" line="606"/>
         <source>Market orders</source>
-        <translation type="unfinished"></translation>
+        <translation>Órdenes de mercado</translation>
     </message>
     <message>
         <location filename="../ui/Ui_frmMain.py" line="527"/>
         <source>Order calculator</source>
-        <translation type="unfinished"></translation>
+        <translation>Calculadora de órdenes</translation>
     </message>
 </context>
 <context>
@@ -3889,14 +3890,14 @@ p, li { white-space: pre-wrap; }
         <source>Set selling price to all investments  of {0} to gain {1}</source>
         <translation>Establece el precio de venta para todas las inversiones a {0} para ganar {1}</translation>
     </message>
-    <message encoding="UTF-8">
-        <location filename="../ui/Ui_frmSellingPoint.py" line="236"/>
-        <source>Set the selling point to 0 €</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <location filename="../ui/Ui_frmSellingPoint.py" line="201"/>
         <source>Select percentage to benchmark SMA200</source>
+        <translation>Selecciona el porcentage de la media móvil 200 del índice</translation>
+    </message>
+    <message encoding="UTF-8">
+        <location filename="../ui/Ui_frmSellingPoint.py" line="236"/>
+        <source>Set the selling point to 0 €</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -4498,22 +4499,22 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../ui/wdgCalculator.py" line="128"/>
         <source>Add new order</source>
-        <translation type="unfinished"></translation>
+        <translation>Añade una nueva orden</translation>
     </message>
     <message>
         <location filename="../ui/Ui_wdgCalculator.py" line="199"/>
         <source>Add order annotation</source>
-        <translation type="unfinished"></translation>
+        <translation>Añade un anotación de orden</translation>
     </message>
     <message>
         <location filename="../ui/Ui_wdgCalculator.py" line="194"/>
         <source>Select an investment</source>
-        <translation type="unfinished"></translation>
+        <translation>Selecciona una inversión</translation>
     </message>
     <message>
         <location filename="../ui/Ui_wdgCalculator.py" line="195"/>
         <source>or Select a product</source>
-        <translation type="unfinished"></translation>
+        <translation>o Selecciona un producto de inversión</translation>
     </message>
 </context>
 <context>
@@ -4962,42 +4963,42 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../ui/Ui_wdgDisReinvest.py" line="456"/>
         <source>Add order annotations</source>
-        <translation type="unfinished"></translation>
+        <translation>Añadir una anotación de orden</translation>
     </message>
     <message>
         <location filename="../ui/wdgDisReinvest.py" line="148"/>
         <source>Add new order</source>
-        <translation type="unfinished"></translation>
+        <translation>Añadir una nueva orden</translation>
     </message>
     <message>
         <location filename="../ui/Ui_wdgDisReinvest.py" line="544"/>
         <source>After at</source>
-        <translation type="unfinished"></translation>
+        <translation>Después</translation>
     </message>
     <message>
         <location filename="../ui/Ui_wdgDisReinvest.py" line="564"/>
         <source>Before at</source>
-        <translation type="unfinished"></translation>
+        <translation>Antes</translation>
     </message>
     <message>
         <location filename="../ui/wdgDisReinvest.py" line="87"/>
         <source>After at {}</source>
-        <translation type="unfinished"></translation>
+        <translation>Después a {}</translation>
     </message>
     <message>
         <location filename="../ui/wdgDisReinvest.py" line="89"/>
         <source>Before at {}</source>
-        <translation type="unfinished"></translation>
+        <translation>Antes a {}</translation>
     </message>
     <message>
         <location filename="../ui/wdgDisReinvest.py" line="66"/>
         <source>Selling price (Current: {})</source>
-        <translation type="unfinished"></translation>
+        <translation>Precio de venta (Cotización actual: {})</translation>
     </message>
     <message>
         <location filename="../ui/wdgDisReinvest.py" line="74"/>
         <source>Purchase price (Current: {})</source>
-        <translation type="unfinished"></translation>
+        <translation>Precio de compra (Cotización actual: {})</translation>
     </message>
 </context>
 <context>
@@ -5418,12 +5419,12 @@ Diferencia diaria: {5}. Edad media de las inversiones: {6}</translation>
     <message>
         <location filename="../ui/wdgInvestments.py" line="156"/>
         <source>Deactivate investment</source>
-        <translation type="unfinished"></translation>
+        <translation>Desactivar inversión</translation>
     </message>
     <message>
         <location filename="../ui/wdgInvestments.py" line="158"/>
         <source>Activate investment</source>
-        <translation type="unfinished"></translation>
+        <translation>Activar inversión</translation>
     </message>
 </context>
 <context>
@@ -5624,22 +5625,22 @@ Diferencia diaria: {5}. Edad media de las inversiones: {6}</translation>
     <message>
         <location filename="../ui/wdgLastCurrent.py" line="34"/>
         <source>Investment last operation calculator</source>
-        <translation type="unfinished"></translation>
+        <translation>Calculadora de la última operación de la inversión</translation>
     </message>
     <message>
         <location filename="../ui/Ui_wdgLastCurrent.py" line="167"/>
         <source>Calculate reinvest price</source>
-        <translation type="unfinished"></translation>
+        <translation>Calcular el precio de reinversión</translation>
     </message>
     <message>
         <location filename="../ui/Ui_wdgLastCurrent.py" line="169"/>
         <source>Reinvest</source>
-        <translation type="unfinished"></translation>
+        <translation>Reinvertir</translation>
     </message>
     <message>
         <location filename="../ui/wdgLastCurrent.py" line="47"/>
         <source>Divest / Reinvest simulation</source>
-        <translation type="unfinished">Simulación de Desinversión / Reinversión</translation>
+        <translation>Simulación de Desinversión / Reinversión</translation>
     </message>
 </context>
 <context>
@@ -5705,67 +5706,67 @@ Diferencia diaria: {5}. Edad media de las inversiones: {6}</translation>
     <message>
         <location filename="../ui/Ui_wdgOrders.py" line="136"/>
         <source>New purchase order</source>
-        <translation type="unfinished"></translation>
+        <translation>Nueva orden de compra</translation>
     </message>
     <message>
         <location filename="../ui/Ui_wdgOrders.py" line="138"/>
         <source>Delete purchase order</source>
-        <translation type="unfinished"></translation>
+        <translation>Borrar orden de compra</translation>
     </message>
     <message>
         <location filename="../ui/Ui_wdgOrders.py" line="140"/>
         <source>Edit purchase order</source>
-        <translation type="unfinished"></translation>
+        <translation>Editar orden de compra</translation>
     </message>
     <message>
         <location filename="../ui/Ui_wdgOrders.py" line="142"/>
         <source>Execute order</source>
-        <translation type="unfinished"></translation>
+        <translation>Ejecutar orden</translation>
     </message>
     <message>
         <location filename="../ui/wdgOrders.py" line="27"/>
         <source>Add new order</source>
-        <translation type="unfinished"></translation>
+        <translation>Añade una nueva orden</translation>
     </message>
     <message>
         <location filename="../ui/wdgOrders.py" line="38"/>
         <source>Edit order</source>
-        <translation type="unfinished"></translation>
+        <translation>Editar orden</translation>
     </message>
     <message>
         <location filename="../ui/Ui_wdgOrders.py" line="129"/>
         <source>Show current orders</source>
-        <translation type="unfinished"></translation>
+        <translation>Mostrar las órdenes vigentes</translation>
     </message>
     <message>
         <location filename="../ui/Ui_wdgOrders.py" line="130"/>
         <source>Show expired orders</source>
-        <translation type="unfinished"></translation>
+        <translation>Mostrar las órdenes expiradas</translation>
     </message>
     <message>
         <location filename="../ui/Ui_wdgOrders.py" line="131"/>
         <source>Show executed orders</source>
-        <translation type="unfinished"></translation>
+        <translation>Mostrar las órdenes ejecutadas</translation>
     </message>
     <message>
         <location filename="../ui/Ui_wdgOrders.py" line="132"/>
         <source>Show all</source>
-        <translation type="unfinished"></translation>
+        <translation>Mostrar todo</translation>
     </message>
     <message>
         <location filename="../ui/Ui_wdgOrders.py" line="128"/>
         <source>Orders list</source>
-        <translation type="unfinished"></translation>
+        <translation>Lista de órdenes</translation>
     </message>
     <message>
         <location filename="../ui/Ui_wdgOrders.py" line="133"/>
         <source>Order annotations list</source>
-        <translation type="unfinished"></translation>
+        <translation>Lista de anotaciones de órdenes</translation>
     </message>
     <message>
         <location filename="../ui/Ui_wdgOrders.py" line="134"/>
         <source>Selling point orders</source>
-        <translation type="unfinished"></translation>
+        <translation>Punto de venta de órdenes</translation>
     </message>
 </context>
 <context>
@@ -5773,82 +5774,82 @@ Diferencia diaria: {5}. Edad media de las inversiones: {6}</translation>
     <message>
         <location filename="../ui/Ui_wdgOrdersAdd.py" line="145"/>
         <source>Investment report</source>
-        <translation type="unfinished">Informe de la inversión</translation>
+        <translation>Informe de la inversión</translation>
     </message>
     <message>
         <location filename="../ui/Ui_wdgOrdersAdd.py" line="147"/>
         <source>Account report</source>
-        <translation type="unfinished"></translation>
+        <translation>Informe de la cuenta</translation>
     </message>
     <message>
         <location filename="../ui/Ui_wdgOrdersAdd.py" line="149"/>
         <source>New bank</source>
-        <translation type="unfinished">Nuevo banco</translation>
+        <translation>Nuevo banco</translation>
     </message>
     <message>
         <location filename="../ui/Ui_wdgOrdersAdd.py" line="151"/>
         <source>Delete bank</source>
-        <translation type="unfinished">Borrar banco</translation>
+        <translation>Borrar banco</translation>
     </message>
     <message>
         <location filename="../ui/Ui_wdgOrdersAdd.py" line="153"/>
         <source>Edit bank</source>
-        <translation type="unfinished">Modificar banco</translation>
+        <translation>Modificar banco</translation>
     </message>
     <message>
         <location filename="../ui/Ui_wdgOrdersAdd.py" line="155"/>
         <source>Is it active?</source>
-        <translation type="unfinished">¿Está activa?</translation>
+        <translation>¿Está activa?</translation>
     </message>
     <message>
         <location filename="../ui/Ui_wdgOrdersAdd.py" line="133"/>
         <source>Active investment</source>
-        <translation type="unfinished"></translation>
+        <translation>Inversión activa</translation>
     </message>
     <message>
         <location filename="../ui/Ui_wdgOrdersAdd.py" line="137"/>
         <source>yyyy/MM/dd</source>
-        <translation type="unfinished">yyyy/MM/dd</translation>
+        <translation>yyyy/MM/dd</translation>
     </message>
     <message>
         <location filename="../ui/Ui_wdgOrdersAdd.py" line="134"/>
         <source>Order date</source>
-        <translation type="unfinished"></translation>
+        <translation>Fecha de la orden</translation>
     </message>
     <message>
         <location filename="../ui/Ui_wdgOrdersAdd.py" line="136"/>
         <source>Order expiration date</source>
-        <translation type="unfinished"></translation>
+        <translation>Fecha de expiración de la orden</translation>
     </message>
     <message>
         <location filename="../ui/Ui_wdgOrdersAdd.py" line="138"/>
         <source>Shares number</source>
-        <translation type="unfinished">Número de acciones</translation>
+        <translation>Número de acciones</translation>
     </message>
     <message>
         <location filename="../ui/Ui_wdgOrdersAdd.py" line="140"/>
         <source>Price</source>
-        <translation type="unfinished"></translation>
+        <translation>Precio</translation>
     </message>
     <message>
         <location filename="../ui/Ui_wdgOrdersAdd.py" line="142"/>
         <source>Amount</source>
-        <translation type="unfinished">Importe</translation>
+        <translation>Importe</translation>
     </message>
     <message>
         <location filename="../ui/wdgOrdersAdd.py" line="40"/>
         <source>Incorrect data. Try again.</source>
-        <translation type="unfinished">Datos incorrectos. Inténtelo otra vez.</translation>
+        <translation>Datos incorrectos. Inténtelo otra vez.</translation>
     </message>
     <message>
         <location filename="../ui/Ui_wdgOrdersAdd.py" line="143"/>
         <source>0</source>
-        <translation type="unfinished">0</translation>
+        <translation>0</translation>
     </message>
     <message>
         <location filename="../ui/wdgOrdersAdd.py" line="47"/>
         <source>You must select an investment</source>
-        <translation type="unfinished"></translation>
+        <translation>Debe seleccionar una inversión</translation>
     </message>
 </context>
 <context>
@@ -6092,7 +6093,7 @@ Diferencia diaria: {5}. Edad media de las inversiones: {6}</translation>
     <message>
         <location filename="../ui/Ui_wdgQuotesUpdate.py" line="118"/>
         <source>Auxiliar tables</source>
-        <translation type="unfinished">Tablas auxiliares</translation>
+        <translation>Tablas auxiliares</translation>
     </message>
     <message>
         <location filename="../ui/Ui_wdgQuotesUpdate.py" line="119"/>
@@ -6127,7 +6128,7 @@ Diferencia diaria: {5}. Edad media de las inversiones: {6}</translation>
     <message>
         <location filename="../ui/Ui_wdgQuotesUpdate.py" line="125"/>
         <source>Update all sources</source>
-        <translation type="unfinished"></translation>
+        <translation>Actualizar todas las fuentes</translation>
     </message>
 </context>
 <context>
