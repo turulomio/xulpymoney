@@ -87,7 +87,7 @@ class wdgOrders(QWidget, Ui_wdgOrders):
                 FROM 
                     ORDERS
                 WHERE
-                    EXPIRATION>NOW()::DATE AND
+                    EXPIRATION>=NOW()::DATE AND
                     EXECUTED IS NULL
                 ORDER BY DATE
            """)
