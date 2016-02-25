@@ -411,7 +411,7 @@ class SetInvestments(SetCommons):
         for inv in self.arr:
             if inv.selling_expiration!=None and inv.acciones()>0:
                 set.append(inv)
-        set.order_by_selling_expiration()
+        set.order_by_percentage_sellingpoint()
         
         table.setColumnCount(7)
         table.setHorizontalHeaderItem(0, QTableWidgetItem(QApplication.translate("Core","Date")))
@@ -422,7 +422,6 @@ class SetInvestments(SetCommons):
         table.setHorizontalHeaderItem(5, QTableWidgetItem(QApplication.translate("Core","Price")))
         table.setHorizontalHeaderItem(6, QTableWidgetItem(QApplication.translate("Core","% selling point")))
    
-#        table.horizontalHeader().setStretchLastSection(False)   
         table.applySettings()
         table.clearContents()
         table.setRowCount(set.length())
@@ -4154,8 +4153,19 @@ class SetOrders:
         return len(self.arr)
 
     def order_by_date(self):
-        """Ordena por datetime"""
         self.arr=sorted(self.arr, key=lambda o:o.date)
+    def order_by_expiration(self):
+        self.arr=sorted(self.arr, key=lambda o:o.expiration)
+    def order_by_execution(self):
+        self.arr=sorted(self.arr, key=lambda o:o.executed)
+        
+        
+        
+    def order_by_percentage_from_current_price(self):
+        try:
+            self.arr=sorted(self.arr, key=lambda o:o.percentage_from_current_price(), reverse=True)
+        except:
+            qmessagebox_error_ordering()
         
     def date_first_db_order(self):
         """First order date. It searches in database not in array"""
