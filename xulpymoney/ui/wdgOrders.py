@@ -91,6 +91,7 @@ class wdgOrders(QWidget, Ui_wdgOrders):
                     EXECUTED IS NULL
                 ORDER BY DATE
            """)
+            self.orders.order_by_percentage_from_current_price()
         elif index==1: #show expired
             self.wdgYear.show()
             self.orders=SetOrders(self.mem).init__from_db(self.mem.con.mogrify("""
@@ -103,6 +104,7 @@ class wdgOrders(QWidget, Ui_wdgOrders):
                     EXECUTED IS NULL
                 ORDER BY DATE
            """, (self.wdgYear.year, self.wdgYear.year)))
+            self.orders.order_by_expiration()
         elif index==2: #show executed
             self.wdgYear.show()
             self.orders=SetOrders(self.mem).init__from_db(self.mem.con.mogrify("""
@@ -114,6 +116,7 @@ class wdgOrders(QWidget, Ui_wdgOrders):
                     EXECUTED IS NOT NULL
                 ORDER BY DATE
            """, (self.wdgYear.year, self.wdgYear.year)))
+            self.orders.order_by_execution()
         else:
             self.wdgYear.show()
             self.orders=SetOrders(self.mem).init__from_db(self.mem.con.mogrify("""
@@ -125,6 +128,7 @@ class wdgOrders(QWidget, Ui_wdgOrders):
                 ORDER BY DATE
            """, (self.wdgYear.year, self.wdgYear.year)))
         self.orders.myqtablewidget(self.tblOrders)
+        self.orders.order_by_date()
        
     def on_tblOrders_customContextMenuRequested(self,  pos):
         if self.orders.selected==None:
