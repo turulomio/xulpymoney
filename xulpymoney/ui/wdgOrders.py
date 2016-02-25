@@ -127,8 +127,8 @@ class wdgOrders(QWidget, Ui_wdgOrders):
                     DATE BETWEEN '%s-1-1' AND '%s-12-31'
                 ORDER BY DATE
            """, (self.wdgYear.year, self.wdgYear.year)))
-        self.orders.myqtablewidget(self.tblOrders)
         self.orders.order_by_date()
+        self.orders.myqtablewidget(self.tblOrders)
        
     def on_tblOrders_customContextMenuRequested(self,  pos):
         if self.orders.selected==None:
