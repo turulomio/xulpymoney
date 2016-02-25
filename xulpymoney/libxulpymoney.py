@@ -372,7 +372,7 @@ class SetInvestments(SetCommons):
             table.setItem(i, 7, qtpc(tpc_invertido))
             if self.mem.gainsyear==True and inv.op_actual.less_than_a_year()==True:
                 table.item(i, 7).setIcon(QIcon(":/xulpymoney/new.png"))
-            tpc_venta=inv.tpc_venta()
+            tpc_venta=inv.percentage_to_selling_point()
             table.setItem(i, 8, qtpc(tpc_venta))
             if inv.selling_expiration!=None:
                 if inv.selling_expiration<datetime.date.today():
@@ -400,7 +400,7 @@ class SetInvestments(SetCommons):
             lasttpc=inv.op_actual.last().tpc_total(inv.product.result.basic.last.quote)
             table.setItem(i, 6, qtpc(lasttpc))
             table.setItem(i, 7, qtpc(inv.tpc_invertido()))
-            table.setItem(i, 8, qtpc(inv.tpc_venta()))
+            table.setItem(i, 8, qtpc(inv.percentage_to_selling_point()))
             if lasttpc<=percentage:   
                 table.item(i, 6).setBackground(QColor(255, 148, 148))
 
@@ -413,13 +413,14 @@ class SetInvestments(SetCommons):
                 set.append(inv)
         set.order_by_selling_expiration()
         
-        table.setColumnCount(6)
+        table.setColumnCount(7)
         table.setHorizontalHeaderItem(0, QTableWidgetItem(QApplication.translate("Core","Date")))
         table.setHorizontalHeaderItem(1, QTableWidgetItem(QApplication.translate("Core","Expiration")))
         table.setHorizontalHeaderItem(2, QTableWidgetItem(QApplication.translate("Core","Investment")))
         table.setHorizontalHeaderItem(3, QTableWidgetItem(QApplication.translate("Core","Account")))
         table.setHorizontalHeaderItem(4, QTableWidgetItem(QApplication.translate("Core","Shares")))
         table.setHorizontalHeaderItem(5, QTableWidgetItem(QApplication.translate("Core","Price")))
+        table.setHorizontalHeaderItem(6, QTableWidgetItem(QApplication.translate("Core","% selling point")))
    
 #        table.horizontalHeader().setStretchLastSection(False)   
         table.applySettings()
@@ -435,6 +436,7 @@ class SetInvestments(SetCommons):
                 table.setItem(i, 3, qleft(inv.account.name))   
                 table.setItem(i, 4, qright(inv.acciones()))
                 table.setItem(i, 5, inv.product.currency.qtablewidgetitem(inv.venta))
+                table.setItem(i, 6, qtpc(inv.percentage_to_selling_point()))
                 
                 
     def average_age(self):
@@ -632,7 +634,7 @@ class SetInvestments(SetCommons):
     def order_by_percentage_sellingpoint(self):
         """Orders the Set using self.arr"""
         try:
-            self.arr=sorted(self.arr, key=lambda inv: ( inv.tpc_venta(), -inv.tpc_invertido()),  reverse=False) #Ordenado por dos criterios
+            self.arr=sorted(self.arr, key=lambda inv: ( inv.percentage_to_selling_point(), -inv.tpc_invertido()),  reverse=False) #Ordenado por dos criterios
             return True
         except:
             return False
@@ -3425,7 +3427,7 @@ class Investment:
         if invertido==0:
             return 0
         return (self.balance()-invertido)*100/invertido
-    def tpc_venta(self):       
+    def percentage_to_selling_point(self):       
         """Función que calcula el tpc venta partiendo de las el last y el valor_venta
         Necesita haber cargado mq getbasic y operinversionesactual"""
         if self.venta==0 or self.venta==None or self.product.result.basic.last.quote==None or self.product.result.basic.last.quote==0:
@@ -3601,6 +3603,22 @@ class Order:
         self.investment=self.mem.data.investments.find_by_id(row['investments_id'])
         self.executed=row['executed']
         return self
+        
+    def is_in_force(self):
+        "Est´a vigente"
+        if self.is_expired()==False and self.is_executed()==False:
+            return True
+        return False
+
+    def is_expired(self):
+        if self.expiration<datetime.date.today():
+            return True
+        return False
+        
+    def is_executed(self):
+        if self.executed!=None:
+            return True
+        return False
 
     def save(self, autocommit=False):
         cur=self.mem.con.cursor()
@@ -3627,6 +3645,12 @@ class Order:
         m.setIcon(QMessageBox.Information)
         m.setText(QApplication.translate("Core","Don't forget to tell your bank to add and order for:\n{} ({})\n{} {} shares to {}".format(self.investment.name, self.investment.account.name, type, abs(self.shares), self.investment.product.currency.string(self.price, 6))))
         m.exec_()   
+        
+    def percentage_from_current_price(self):
+        """Calculates percentage from current price to order price"""
+        if self.price!=0:
+            return Decimal(100)*(self.price-self.investment.product.result.basic.last.quote)/self.price
+        return None
         
 class OperationType:
     def __init__(self):
@@ -4145,7 +4169,7 @@ class SetOrders:
             return r[0]
         
     def myqtablewidget(self, table):
-        table.setColumnCount(8)
+        table.setColumnCount(9)
         table.setHorizontalHeaderItem(0, QTableWidgetItem(QApplication.translate("Core","Date")))
         table.setHorizontalHeaderItem(1, QTableWidgetItem(QApplication.translate("Core","Expiration")))
         table.setHorizontalHeaderItem(2, QTableWidgetItem(QApplication.translate("Core","Investment")))
@@ -4153,21 +4177,35 @@ class SetOrders:
         table.setHorizontalHeaderItem(4, QTableWidgetItem(QApplication.translate("Core","Shares")))
         table.setHorizontalHeaderItem(5, QTableWidgetItem(QApplication.translate("Core","Price")))
         table.setHorizontalHeaderItem(6, QTableWidgetItem(QApplication.translate("Core","Amount")))
-        table.setHorizontalHeaderItem(7, QTableWidgetItem(QApplication.translate("Core","Executed")))
+        table.setHorizontalHeaderItem(7, QTableWidgetItem(QApplication.translate("Core","% from current")))
+        table.setHorizontalHeaderItem(8, QTableWidgetItem(QApplication.translate("Core","Executed")))
         table.applySettings()
         table.clearContents()
         table.setRowCount(self.length())
         for i, p in enumerate(self.arr):
             table.setItem(i, 0, qdate(p.date))
             table.setItem(i, 1, qdate(p.expiration))      
-            if p.expiration<datetime.date.today():
-                table.item(i, 1).setBackground( QColor(255, 182, 182))       
             table.setItem(i, 2, qleft(p.investment.name))
             table.setItem(i, 3, qleft(p.investment.account.name))   
             table.setItem(i, 4, qright(p.shares))
             table.setItem(i, 5, p.investment.product.currency.qtablewidgetitem(p.price))
             table.setItem(i, 6, self.mem.localcurrency.qtablewidgetitem(p.amount))   
-            table.setItem(i, 7, qdatetime(p.executed, self.mem.localzone))
+            if p.is_in_force():
+                table.setItem(i, 7, qtpc(p.percentage_from_current_price()))
+            else:
+                table.setItem(i, 7, QTableWidgetItem(""))
+            if p.is_executed():
+                table.setItem(i, 8, qdatetime(p.executed, self.mem.localzone))
+            else:
+                table.setItem(i, 8, QTableWidgetItem(""))
+                
+            #Color
+            if p.is_executed():
+                for column in range (table.columnCount()):
+                    table.item(i, column).setBackground( QColor(182, 255, 182))                     
+            elif p.is_expired():
+                for column in range (table.columnCount()):
+                    table.item(i, column).setBackground( QColor(255, 182, 182))     
 
 class SetPriorities(SetCommons):
     def __init__(self, mem):
