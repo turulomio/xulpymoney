@@ -19,7 +19,7 @@ class Update:
     def __init__(self, mem):
         self.mem=mem
         self.dbversion=self.get_database_version()    
-        self.lastcodeupdate=201602100700
+        self.lastcodeupdate=201602260424
 
    
     def get_database_version(self):
@@ -426,16 +426,17 @@ class Update:
             cur.execute("update products set obsolete=%s where id=%s;", (True, 77904))
             cur.close()
             self.mem.con.commit()
-            self.set_database_version(201602100700)       
-#        if self.dbversion<201602120700:
-#            cur=self.mem.con.cursor()
-##                        cur.execute("""insert into products (id, name,  isin,  currency,  type,  agrupations,   web, address,  phone, mail, tpc, pci,  apalancado, id_bolsas, ticker, priority, priorityhistorical , comentario,  obsolete) values  (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)""",
-##                (81701, 'Abengoa B',  'ES0105200002', 'EUR', 1, '|IBEX|MERCADOCONTINUO|', None, None, None, None, 100, 'c',0, 1, 'ABG-P.MC',[1, ],[3, ], None, False))
-#            cur.execute("update products set agrupations=%s where id=%s", ( '|IBEX|MERCADOCONTINUO|',81111 ))
-#            cur.close()
-#            self.mem.con.commit()
-#            self.set_database_version(201602120700)                  
-            
+            self.set_database_version(201602100700)         
+        if self.dbversion<201602260424:
+            cur=self.mem.con.cursor()
+            cur.execute("ALTER TABLE entidadesbancarias  ADD CONSTRAINT entidadesbancarias_pk PRIMARY KEY (id_entidadesbancarias)")
+            cur.execute("ALTER TABLE cuentas  ADD CONSTRAINT cuentas_pk PRIMARY KEY (id_cuentas)")
+            cur.execute("ALTER TABLE cuentas  ADD CONSTRAINT cuentas_fk_id_entidadesbancarias FOREIGN KEY (id_entidadesbancarias) REFERENCES entidadesbancarias (id_entidadesbancarias) ON UPDATE NO ACTION ON DELETE RESTRICT")
+            cur.execute("ALTER TABLE dividends  ADD CONSTRAINT dividendos_fk_id_inversiones FOREIGN KEY (id_inversiones) REFERENCES inversiones (id_inversiones) ON UPDATE NO ACTION ON DELETE RESTRICT")
+            cur.execute("ALTER TABLE dividends ADD CONSTRAINT dividendos_fk_id_conceptos FOREIGN KEY (id_conceptos) REFERENCES public.conceptos (id_conceptos) ON UPDATE NO ACTION ON DELETE RESTRICT")
+            cur.close()
+            self.mem.con.commit()
+            self.set_database_version(201602260424)       
 
 
 
