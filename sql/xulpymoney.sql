@@ -1614,11 +1614,35 @@ ALTER TABLE ONLY dps
 
 
 --
+-- Name: estimations_dps_fk_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY estimations_dps
+    ADD CONSTRAINT estimations_dps_fk_id FOREIGN KEY (id) REFERENCES products(id) ON DELETE RESTRICT;
+
+
+--
+-- Name: estimations_eps_fk_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY estimations_eps
+    ADD CONSTRAINT estimations_eps_fk_id FOREIGN KEY (id) REFERENCES products(id) ON DELETE RESTRICT;
+
+
+--
 -- Name: inversiones_fk_id_cuentas; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY inversiones
     ADD CONSTRAINT inversiones_fk_id_cuentas FOREIGN KEY (id_cuentas) REFERENCES cuentas(id_cuentas) ON DELETE RESTRICT;
+
+
+--
+-- Name: inversiones_fk_products_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY inversiones
+    ADD CONSTRAINT inversiones_fk_products_id FOREIGN KEY (products_id) REFERENCES products(id) ON DELETE RESTRICT;
 
 
 --
@@ -8467,7 +8491,7 @@ INSERT INTO globals VALUES (16, 'mem/taxcapitalappreciationbelow', '0.5');
 INSERT INTO globals VALUES (17, 'mem/gainsyear', 'false');
 INSERT INTO globals VALUES (18, 'mem/favorites', '79329, 81680, -33');
 INSERT INTO globals VALUES (19, 'mem/fillfromyear', '2005');
-INSERT INTO globals VALUES (1, 'Version', '201602260442');
+INSERT INTO globals VALUES (1, 'Version', '201602260535');
 INSERT INTO globals VALUES (6, 'Admin mode', NULL);
 INSERT INTO globals VALUES (7, 'wdgIndexRange/spin', '2.0');
 INSERT INTO globals VALUES (8, 'wdgIndexRange/invertir', '2525');

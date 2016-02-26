@@ -19,7 +19,7 @@ class Update:
     def __init__(self, mem):
         self.mem=mem
         self.dbversion=self.get_database_version()    
-        self.lastcodeupdate=201602260424
+        self.lastcodeupdate=201602260535
 
    
     def get_database_version(self):
@@ -433,11 +433,44 @@ class Update:
             cur.execute("ALTER TABLE cuentas  ADD CONSTRAINT cuentas_pk PRIMARY KEY (id_cuentas)")
             cur.execute("ALTER TABLE cuentas  ADD CONSTRAINT cuentas_fk_id_entidadesbancarias FOREIGN KEY (id_entidadesbancarias) REFERENCES entidadesbancarias (id_entidadesbancarias) ON UPDATE NO ACTION ON DELETE RESTRICT")
             cur.execute("ALTER TABLE dividends  ADD CONSTRAINT dividendos_fk_id_inversiones FOREIGN KEY (id_inversiones) REFERENCES inversiones (id_inversiones) ON UPDATE NO ACTION ON DELETE RESTRICT")
-            cur.execute("ALTER TABLE dividends ADD CONSTRAINT dividendos_fk_id_conceptos FOREIGN KEY (id_conceptos) REFERENCES public.conceptos (id_conceptos) ON UPDATE NO ACTION ON DELETE RESTRICT")
+            cur.execute("ALTER TABLE dividends ADD CONSTRAINT dividendos_fk_id_conceptos FOREIGN KEY (id_conceptos) REFERENCES conceptos (id_conceptos) ON UPDATE NO ACTION ON DELETE RESTRICT")
             cur.close()
             self.mem.con.commit()
-            self.set_database_version(201602260424)       
-
+            self.set_database_version(201602260424)      
+        if self.dbversion<201602260442:
+            cur=self.mem.con.cursor()
+            cur.execute("delete from quotes where id=7932")
+            cur.execute("delete from quotes where id=81497")
+            cur.execute("ALTER TABLE dps  ADD CONSTRAINT dps_fk_id FOREIGN KEY (id) REFERENCES products (id)  ON UPDATE NO ACTION ON DELETE RESTRICT")
+            cur.execute("ALTER TABLE inversiones ADD CONSTRAINT inversiones_fk_id_cuentas FOREIGN KEY (id_cuentas) REFERENCES cuentas (id_cuentas) ON UPDATE NO ACTION ON DELETE RESTRICT")
+            cur.execute("ALTER TABLE opercuentas ADD CONSTRAINT opercuentas_fk_id_conceptos FOREIGN KEY (id_conceptos) REFERENCES conceptos (id_conceptos) ON UPDATE NO ACTION ON DELETE RESTRICT")
+            cur.execute("ALTER TABLE opercuentas ADD CONSTRAINT opercuentas_fk_id_cuentas FOREIGN KEY (id_cuentas) REFERENCES cuentas (id_cuentas) ON UPDATE NO ACTION ON DELETE RESTRICT;")
+            cur.execute("ALTER TABLE operinversiones  ADD CONSTRAINT operinversiones_fk_id_inversiones FOREIGN KEY (id_inversiones) REFERENCES inversiones (id_inversiones) ON UPDATE NO ACTION ON DELETE RESTRICT")
+            cur.execute("ALTER TABLE opertarjetas ADD CONSTRAINT opertarjetas_fk_id_conceptos FOREIGN KEY (id_conceptos) REFERENCES conceptos (id_conceptos) ON UPDATE NO ACTION ON DELETE RESTRICT")
+            cur.execute("ALTER TABLE opertarjetas ADD CONSTRAINT opertarjetas_fk_id_tarjetas FOREIGN KEY (id_tarjetas) REFERENCES tarjetas (id_tarjetas) ON UPDATE NO ACTION ON DELETE RESTRICT")
+            cur.execute("ALTER TABLE products ADD CONSTRAINT products_fk_stockmarkets_id FOREIGN KEY (stockmarkets_id) REFERENCES stockmarkets (id) ON UPDATE NO ACTION ON DELETE RESTRICT")
+            cur.execute("ALTER TABLE quotes ADD CONSTRAINT quotes_fk_id FOREIGN KEY (id) REFERENCES products(id) ON UPDATE NO ACTION ON DELETE RESTRICT")
+            cur.execute("ALTER TABLE tarjetas ADD CONSTRAINT tarjetas_fk_id_cuentas FOREIGN KEY (id_cuentas) REFERENCES cuentas(id_cuentas) ON UPDATE NO ACTION ON DELETE RESTRICT")
+            cur.close()
+            self.mem.con.commit()
+            self.set_database_version(201602260442)       
+        if self.dbversion<201602260535:
+            cur=self.mem.con.cursor()
+            cur.execute("delete from estimations_dps where id=37")
+            cur.execute("delete from estimations_dps where id=40")
+            cur.execute("delete from estimations_dps where id=74")
+            cur.execute("delete from estimations_dps where id=110")
+            cur.execute("delete from estimations_dps where id=127")
+            cur.execute("delete from estimations_dps where id=151")
+            cur.execute("delete from estimations_dps where id=174")
+            cur.execute("delete from estimations_dps where id=167")
+            cur.execute("delete from estimations_dps where id=216")
+            cur.execute("ALTER TABLE estimations_dps ADD CONSTRAINT estimations_dps_fk_id FOREIGN KEY (id) REFERENCES products (id) ON UPDATE NO ACTION ON DELETE RESTRICT")
+            cur.execute("ALTER TABLE estimations_eps ADD CONSTRAINT estimations_eps_fk_id FOREIGN KEY (id) REFERENCES products (id) ON UPDATE NO ACTION ON DELETE RESTRICT")
+            cur.execute("ALTER TABLE inversiones ADD CONSTRAINT inversiones_fk_products_id FOREIGN KEY (products_id) REFERENCES products (id) ON UPDATE NO ACTION ON DELETE RESTRICT")
+            cur.close()
+            self.mem.con.commit()
+            self.set_database_version(201602260535)       
 
 
             
