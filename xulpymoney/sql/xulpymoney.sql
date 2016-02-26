@@ -2,8 +2,8 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 9.5.0
--- Dumped by pg_dump version 9.5.0
+-- Dumped from database version 9.5.1
+-- Dumped by pg_dump version 9.5.1
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -1313,6 +1313,14 @@ ALTER TABLE ONLY conceptos
 
 
 --
+-- Name: cuentas_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY cuentas
+    ADD CONSTRAINT cuentas_pk PRIMARY KEY (id_cuentas);
+
+
+--
 -- Name: dividendos_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1326,6 +1334,14 @@ ALTER TABLE ONLY dividends
 
 ALTER TABLE ONLY dps
     ADD CONSTRAINT dps_pk PRIMARY KEY (id_dps);
+
+
+--
+-- Name: entidadesbancarias_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY entidadesbancarias
+    ADD CONSTRAINT entidadesbancarias_pk PRIMARY KEY (id_entidadesbancarias);
 
 
 --
@@ -1563,6 +1579,30 @@ CREATE INDEX quotes_id_datetime ON quotes USING btree (id, datetime);
 --
 
 CREATE INDEX "tmpinversionesheredada-id_cuentas-index" ON opercuentasdeoperinversiones USING btree (id_cuentas);
+
+
+--
+-- Name: cuentas_fk_id_entidadesbancarias; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY cuentas
+    ADD CONSTRAINT cuentas_fk_id_entidadesbancarias FOREIGN KEY (id_entidadesbancarias) REFERENCES entidadesbancarias(id_entidadesbancarias) ON DELETE RESTRICT;
+
+
+--
+-- Name: dividendos_fk_id_conceptos; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY dividends
+    ADD CONSTRAINT dividendos_fk_id_conceptos FOREIGN KEY (id_conceptos) REFERENCES conceptos(id_conceptos) ON DELETE RESTRICT;
+
+
+--
+-- Name: dividendos_fk_id_inversiones; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY dividends
+    ADD CONSTRAINT dividendos_fk_id_inversiones FOREIGN KEY (id_inversiones) REFERENCES inversiones(id_inversiones) ON DELETE RESTRICT;
 
 
 --
@@ -8337,7 +8377,7 @@ INSERT INTO stockmarkets VALUES (6, 'it', '07:00:00', 'Bolsa de Milán', '17:38:
 INSERT INTO stockmarkets VALUES (7, 'jp', '09:00:00', 'Bolsa de Tokio', '20:00:00', 'Asia/Tokyo');
 INSERT INTO stockmarkets VALUES (8, 'cn', '00:00:00', 'Bolsa de Hong Kong', '20:00:00', 'Asia/Hong_Kong');
 INSERT INTO stockmarkets VALUES (9, 'pt', '07:00:00', 'Bolsa de Lisboa', '17:38:00', 'Europe/Lisbon');
-INSERT INTO globals VALUES (10, 'wdgLastCurrent/spin', '-33');
+INSERT INTO globals VALUES (10, 'wdgLastCurrent/spin', '-23');
 INSERT INTO globals VALUES (11, 'mem/localcurrency', 'EUR');
 INSERT INTO globals VALUES (12, 'mem/localzone', 'Europe/Madrid');
 INSERT INTO globals VALUES (13, 'mem/benchmarkid', '79329');
@@ -8347,10 +8387,10 @@ INSERT INTO globals VALUES (16, 'mem/taxcapitalappreciationbelow', '0.5');
 INSERT INTO globals VALUES (17, 'mem/gainsyear', 'false');
 INSERT INTO globals VALUES (18, 'mem/favorites', '79329, 81680, -33');
 INSERT INTO globals VALUES (19, 'mem/fillfromyear', '2005');
-INSERT INTO globals VALUES (1, 'Version', '201602100700');
+INSERT INTO globals VALUES (1, 'Version', '201602260424');
 INSERT INTO globals VALUES (6, 'Admin mode', NULL);
 INSERT INTO globals VALUES (7, 'wdgIndexRange/spin', '2.0');
-INSERT INTO globals VALUES (8, 'wdgIndexRange/invertir', '2600');
+INSERT INTO globals VALUES (8, 'wdgIndexRange/invertir', '2525');
 INSERT INTO globals VALUES (9, 'wdgIndexRange/minimo', '1000');
 DELETE FROM products WHERE id<=0;
 ALTER SEQUENCE seq_conceptos START WITH 100 RESTART;
