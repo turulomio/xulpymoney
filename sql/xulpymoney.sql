@@ -1606,11 +1606,91 @@ ALTER TABLE ONLY dividends
 
 
 --
+-- Name: dps_fk_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY dps
+    ADD CONSTRAINT dps_fk_id FOREIGN KEY (id) REFERENCES products(id) ON DELETE RESTRICT;
+
+
+--
+-- Name: inversiones_fk_id_cuentas; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY inversiones
+    ADD CONSTRAINT inversiones_fk_id_cuentas FOREIGN KEY (id_cuentas) REFERENCES cuentas(id_cuentas) ON DELETE RESTRICT;
+
+
+--
+-- Name: opercuentas_fk_id_conceptos; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY opercuentas
+    ADD CONSTRAINT opercuentas_fk_id_conceptos FOREIGN KEY (id_conceptos) REFERENCES conceptos(id_conceptos) ON DELETE RESTRICT;
+
+
+--
+-- Name: opercuentas_fk_id_cuentas; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY opercuentas
+    ADD CONSTRAINT opercuentas_fk_id_cuentas FOREIGN KEY (id_cuentas) REFERENCES cuentas(id_cuentas) ON DELETE RESTRICT;
+
+
+--
+-- Name: operinversiones_fk_id_inversiones; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY operinversiones
+    ADD CONSTRAINT operinversiones_fk_id_inversiones FOREIGN KEY (id_inversiones) REFERENCES inversiones(id_inversiones) ON DELETE RESTRICT;
+
+
+--
+-- Name: opertarjetas_fk_id_conceptos; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY opertarjetas
+    ADD CONSTRAINT opertarjetas_fk_id_conceptos FOREIGN KEY (id_conceptos) REFERENCES conceptos(id_conceptos) ON DELETE RESTRICT;
+
+
+--
+-- Name: opertarjetas_fk_id_tarjetas; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY opertarjetas
+    ADD CONSTRAINT opertarjetas_fk_id_tarjetas FOREIGN KEY (id_tarjetas) REFERENCES tarjetas(id_tarjetas) ON DELETE RESTRICT;
+
+
+--
 -- Name: orders_investments_id_fk_inversiones_id_inversiones; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY orders
     ADD CONSTRAINT orders_investments_id_fk_inversiones_id_inversiones FOREIGN KEY (investments_id) REFERENCES inversiones(id_inversiones) ON DELETE RESTRICT;
+
+
+--
+-- Name: products_fk_stockmarkets_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY products
+    ADD CONSTRAINT products_fk_stockmarkets_id FOREIGN KEY (stockmarkets_id) REFERENCES stockmarkets(id) ON DELETE RESTRICT;
+
+
+--
+-- Name: quotes_fk_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY quotes
+    ADD CONSTRAINT quotes_fk_id FOREIGN KEY (id) REFERENCES products(id) ON DELETE RESTRICT;
+
+
+--
+-- Name: tarjetas_fk_id_cuentas; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY tarjetas
+    ADD CONSTRAINT tarjetas_fk_id_cuentas FOREIGN KEY (id_cuentas) REFERENCES cuentas(id_cuentas) ON DELETE RESTRICT;
 
 
 --
@@ -8387,7 +8467,7 @@ INSERT INTO globals VALUES (16, 'mem/taxcapitalappreciationbelow', '0.5');
 INSERT INTO globals VALUES (17, 'mem/gainsyear', 'false');
 INSERT INTO globals VALUES (18, 'mem/favorites', '79329, 81680, -33');
 INSERT INTO globals VALUES (19, 'mem/fillfromyear', '2005');
-INSERT INTO globals VALUES (1, 'Version', '201602260424');
+INSERT INTO globals VALUES (1, 'Version', '201602260442');
 INSERT INTO globals VALUES (6, 'Admin mode', NULL);
 INSERT INTO globals VALUES (7, 'wdgIndexRange/spin', '2.0');
 INSERT INTO globals VALUES (8, 'wdgIndexRange/invertir', '2525');
