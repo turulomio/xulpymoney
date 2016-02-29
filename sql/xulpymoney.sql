@@ -3,7 +3,7 @@
 --
 
 -- Dumped from database version 9.5.1
--- Dumped by pg_dump version 9.5.1
+-- Dumped by pg_dump version 9.5.0
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -140,19 +140,6 @@ $$;
 ALTER FUNCTION public.cuentas_saldo(fechaparametro date) OWNER TO postgres;
 
 --
--- Name: first_agg(anyelement, anyelement); Type: FUNCTION; Schema: public; Owner: postgres
---
-
-CREATE FUNCTION first_agg(anyelement, anyelement) RETURNS anyelement
-    LANGUAGE sql IMMUTABLE STRICT
-    AS $_$
-        SELECT $1;
-$_$;
-
-
-ALTER FUNCTION public.first_agg(anyelement, anyelement) OWNER TO postgres;
-
---
 -- Name: historic(text); Type: FUNCTION; Schema: public; Owner: postgres
 --
 
@@ -268,19 +255,6 @@ $$;
 
 
 ALTER FUNCTION public.inversion_type(p_code text) OWNER TO postgres;
-
---
--- Name: last_agg(anyelement, anyelement); Type: FUNCTION; Schema: public; Owner: postgres
---
-
-CREATE FUNCTION last_agg(anyelement, anyelement) RETURNS anyelement
-    LANGUAGE sql IMMUTABLE STRICT
-    AS $_$
-        SELECT $2;
-$_$;
-
-
-ALTER FUNCTION public.last_agg(anyelement, anyelement) OWNER TO postgres;
 
 --
 -- Name: multiout_simple_setof(integer); Type: FUNCTION; Schema: public; Owner: postgres
@@ -443,30 +417,6 @@ $$;
 
 
 ALTER FUNCTION public.quote_endmonth(p_code text) OWNER TO postgres;
-
---
--- Name: first(anyelement); Type: AGGREGATE; Schema: public; Owner: postgres
---
-
-CREATE AGGREGATE first(anyelement) (
-    SFUNC = first_agg,
-    STYPE = anyelement
-);
-
-
-ALTER AGGREGATE public.first(anyelement) OWNER TO postgres;
-
---
--- Name: last(anyelement); Type: AGGREGATE; Schema: public; Owner: postgres
---
-
-CREATE AGGREGATE last(anyelement) (
-    SFUNC = last_agg,
-    STYPE = anyelement
-);
-
-
-ALTER AGGREGATE public.last(anyelement) OWNER TO postgres;
 
 SET default_tablespace = '';
 
@@ -730,165 +680,6 @@ CREATE SEQUENCE investments_seq
 ALTER TABLE investments_seq OWNER TO postgres;
 
 --
--- Name: quotes; Type: TABLE; Schema: public; Owner: postgres
---
-
-CREATE TABLE quotes (
-    datetime timestamp with time zone,
-    quote numeric(18,6),
-    id_quotes integer DEFAULT nextval(('"quotes_seq"'::text)::regclass) NOT NULL,
-    id integer
-);
-
-
-ALTER TABLE quotes OWNER TO postgres;
-
---
--- Name: tmpohlcdaily; Type: VIEW; Schema: public; Owner: postgres
---
-
-CREATE VIEW tmpohlcdaily AS
- SELECT quotes.id,
-    (quotes.datetime)::date AS date,
-    max(quotes.quote) AS high,
-    min(quotes.quote) AS low,
-    min(quotes.datetime) AS first,
-    max(quotes.datetime) AS last
-   FROM quotes
-  GROUP BY quotes.id, ((quotes.datetime)::date)
-  ORDER BY ((quotes.datetime)::date) DESC;
-
-
-ALTER TABLE tmpohlcdaily OWNER TO postgres;
-
---
--- Name: ohlcdaily; Type: VIEW; Schema: public; Owner: postgres
---
-
-CREATE VIEW ohlcdaily AS
- SELECT tmpohlcdaily.id,
-    tmpohlcdaily.date,
-    ( SELECT quote.quote
-           FROM quote(tmpohlcdaily.id, tmpohlcdaily.first) quote(id, datetime, quote)) AS first,
-    tmpohlcdaily.low,
-    tmpohlcdaily.high,
-    ( SELECT quote.quote
-           FROM quote(tmpohlcdaily.id, tmpohlcdaily.last) quote(id, datetime, quote)) AS last
-   FROM tmpohlcdaily;
-
-
-ALTER TABLE ohlcdaily OWNER TO postgres;
-
---
--- Name: tmpohlcmonthly; Type: VIEW; Schema: public; Owner: postgres
---
-
-CREATE VIEW tmpohlcmonthly AS
- SELECT quotes.id,
-    date_part('year'::text, quotes.datetime) AS year,
-    date_part('month'::text, quotes.datetime) AS month,
-    max(quotes.quote) AS high,
-    min(quotes.quote) AS low,
-    min(quotes.datetime) AS first,
-    max(quotes.datetime) AS last
-   FROM quotes
-  GROUP BY quotes.id, (date_part('year'::text, quotes.datetime)), (date_part('month'::text, quotes.datetime));
-
-
-ALTER TABLE tmpohlcmonthly OWNER TO postgres;
-
---
--- Name: ohlcmonthly; Type: VIEW; Schema: public; Owner: postgres
---
-
-CREATE VIEW ohlcmonthly AS
- SELECT tmpohlcmonthly.id,
-    tmpohlcmonthly.year,
-    tmpohlcmonthly.month,
-    ( SELECT quote.quote
-           FROM quote(tmpohlcmonthly.id, tmpohlcmonthly.first) quote(id, datetime, quote)) AS first,
-    tmpohlcmonthly.low,
-    tmpohlcmonthly.high,
-    ( SELECT quote.quote
-           FROM quote(tmpohlcmonthly.id, tmpohlcmonthly.last) quote(id, datetime, quote)) AS last
-   FROM tmpohlcmonthly;
-
-
-ALTER TABLE ohlcmonthly OWNER TO postgres;
-
---
--- Name: tmpohlcweekly; Type: VIEW; Schema: public; Owner: postgres
---
-
-CREATE VIEW tmpohlcweekly AS
- SELECT quotes.id,
-    date_part('year'::text, quotes.datetime) AS year,
-    date_part('week'::text, quotes.datetime) AS week,
-    max(quotes.quote) AS high,
-    min(quotes.quote) AS low,
-    min(quotes.datetime) AS first,
-    max(quotes.datetime) AS last
-   FROM quotes
-  GROUP BY quotes.id, (date_part('year'::text, quotes.datetime)), (date_part('week'::text, quotes.datetime));
-
-
-ALTER TABLE tmpohlcweekly OWNER TO postgres;
-
---
--- Name: ohlcweekly; Type: VIEW; Schema: public; Owner: postgres
---
-
-CREATE VIEW ohlcweekly AS
- SELECT tmpohlcweekly.id,
-    tmpohlcweekly.year,
-    tmpohlcweekly.week,
-    ( SELECT quote.quote
-           FROM quote(tmpohlcweekly.id, tmpohlcweekly.first) quote(id, datetime, quote)) AS first,
-    tmpohlcweekly.low,
-    tmpohlcweekly.high,
-    ( SELECT quote.quote
-           FROM quote(tmpohlcweekly.id, tmpohlcweekly.last) quote(id, datetime, quote)) AS last
-   FROM tmpohlcweekly;
-
-
-ALTER TABLE ohlcweekly OWNER TO postgres;
-
---
--- Name: tmpohlcyearly; Type: VIEW; Schema: public; Owner: postgres
---
-
-CREATE VIEW tmpohlcyearly AS
- SELECT quotes.id,
-    date_part('year'::text, quotes.datetime) AS year,
-    max(quotes.quote) AS high,
-    min(quotes.quote) AS low,
-    min(quotes.datetime) AS first,
-    max(quotes.datetime) AS last
-   FROM quotes
-  GROUP BY quotes.id, (date_part('year'::text, quotes.datetime));
-
-
-ALTER TABLE tmpohlcyearly OWNER TO postgres;
-
---
--- Name: ohlcyearly; Type: VIEW; Schema: public; Owner: postgres
---
-
-CREATE VIEW ohlcyearly AS
- SELECT tmpohlcyearly.id,
-    tmpohlcyearly.year,
-    ( SELECT quote.quote
-           FROM quote(tmpohlcyearly.id, tmpohlcyearly.first) quote(id, datetime, quote)) AS first,
-    tmpohlcyearly.low,
-    tmpohlcyearly.high,
-    ( SELECT quote.quote
-           FROM quote(tmpohlcyearly.id, tmpohlcyearly.last) quote(id, datetime, quote)) AS last
-   FROM tmpohlcyearly;
-
-
-ALTER TABLE ohlcyearly OWNER TO postgres;
-
---
 -- Name: opercuentas; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -1034,6 +825,20 @@ ALTER TABLE products OWNER TO postgres;
 
 COMMENT ON COLUMN products.obsolete IS 'Comprueba si esta obsoleta la inversión';
 
+
+--
+-- Name: quotes; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE quotes (
+    datetime timestamp with time zone,
+    quote numeric(18,6),
+    id_quotes integer DEFAULT nextval(('"quotes_seq"'::text)::regclass) NOT NULL,
+    id integer
+);
+
+
+ALTER TABLE quotes OWNER TO postgres;
 
 --
 -- Name: quotes_seq; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -1220,28 +1025,6 @@ CREATE TABLE simulations (
 ALTER TABLE simulations OWNER TO postgres;
 
 --
--- Name: status; Type: TABLE; Schema: public; Owner: postgres
---
-
-CREATE TABLE status (
-    source text NOT NULL,
-    process text NOT NULL,
-    status text,
-    internets integer DEFAULT 0,
-    statuschange timestamp without time zone
-);
-
-
-ALTER TABLE status OWNER TO postgres;
-
---
--- Name: TABLE status; Type: COMMENT; Schema: public; Owner: postgres
---
-
-COMMENT ON TABLE status IS 'Tabla que contiene el estado de myquotesd, se borra al arrancar myquotesd y se va rellenando automáticamente';
-
-
---
 -- Name: stockmarkets; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -1414,14 +1197,6 @@ ALTER TABLE ONLY opercuentas
 
 ALTER TABLE ONLY operinversiones
     ADD CONSTRAINT pk_operinversiones PRIMARY KEY (id_operinversiones);
-
-
---
--- Name: pk_status; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY status
-    ADD CONSTRAINT pk_status PRIMARY KEY (source, process);
 
 
 --
@@ -8491,7 +8266,7 @@ INSERT INTO globals VALUES (16, 'mem/taxcapitalappreciationbelow', '0.5');
 INSERT INTO globals VALUES (17, 'mem/gainsyear', 'false');
 INSERT INTO globals VALUES (18, 'mem/favorites', '79329, 81680, -33');
 INSERT INTO globals VALUES (19, 'mem/fillfromyear', '2005');
-INSERT INTO globals VALUES (1, 'Version', '201602260535');
+INSERT INTO globals VALUES (1, 'Version', '201602291116');
 INSERT INTO globals VALUES (6, 'Admin mode', NULL);
 INSERT INTO globals VALUES (7, 'wdgIndexRange/spin', '2.0');
 INSERT INTO globals VALUES (8, 'wdgIndexRange/invertir', '2525');

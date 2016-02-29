@@ -19,7 +19,7 @@ class Update:
     def __init__(self, mem):
         self.mem=mem
         self.dbversion=self.get_database_version()    
-        self.lastcodeupdate=201602260535
+        self.lastcodeupdate=201602291116
 
    
     def get_database_version(self):
@@ -471,7 +471,24 @@ class Update:
             cur.close()
             self.mem.con.commit()
             self.set_database_version(201602260535)       
-
+        if self.dbversion<201602291116:
+            cur=self.mem.con.cursor()
+            cur.execute("DROP VIEW ohlcdaily")
+            cur.execute("DROP VIEW ohlcmonthly")
+            cur.execute("DROP VIEW ohlcweekly")
+            cur.execute("DROP VIEW ohlcyearly")
+            cur.execute("DROP VIEW tmpohlcdaily")
+            cur.execute("DROP VIEW tmpohlcmonthly")
+            cur.execute("DROP VIEW tmpohlcweekly")
+            cur.execute("DROP VIEW tmpohlcyearly")
+            cur.execute("DROP AGGREGATE first(anyelement)")
+            cur.execute("DROP AGGREGATE last(anyelement)")
+            cur.execute("DROP FUNCTION first_agg(anyelement, anyelement)")
+            cur.execute("DROP FUNCTION last_agg(anyelement, anyelement)")
+            cur.execute("DROP TABLE status")
+            cur.close()
+            self.mem.con.commit()
+            self.set_database_version(201602291116)       
 
             
         """       WARNING                    ADD ALWAYS LAST UPDATE CODE                         WARNING

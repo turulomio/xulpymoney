@@ -5611,13 +5611,65 @@ class QuotesResult:
         
     def get_basic_and_ohcls(self):
         """Tambien sirve para recargar"""
-        inicio=datetime.datetime.now()
-        self.ohclDaily.load_from_db("select * from ohlcdaily where id={0} order by date".format(self.product.id))#necesario para usar luego ohcl_otros
-        self.ohclMonthly.load_from_db("select * from ohlcMonthly where id={0} order by year,month".format(self.product.id))
-        self.ohclWeekly.load_from_db("select * from ohlcWeekly where id={0} order by year,week".format(self.product.id))
-        self.ohclYearly.load_from_db("select * from ohlcYearly where id={0} order by year".format(self.product.id))
+        inicioall=datetime.datetime.now()
+        self.ohclDaily.load_from_db("""
+            select 
+                id, 
+                datetime::date as date, 
+                (array_agg(quote order by datetime))[1] as first, 
+                min(quote) as low, 
+                max(quote) as high, 
+                (array_agg(quote order by datetime desc))[1] as last 
+            from quotes 
+            where id={} 
+            group by id, datetime::date order by datetime::date desc
+            """.format(self.product.id))#necesario para usar luego ohcl_otros
+            
+        self.ohclMonthly.load_from_db("""
+            select 
+                id, 
+                date_part('year',datetime) as year, 
+                date_part('month', datetime) as month, 
+                (array_agg(quote order by datetime))[1] as first, 
+                min(quote) as low, 
+                max(quote) as high, 
+                (array_agg(quote order by datetime desc))[1] as last 
+            from quotes 
+            where id={} 
+            group by id, year, month 
+            order by year desc ,month desc;
+        """.format(self.product.id))
+        
+        self.ohclWeekly.load_from_db("""
+            select 
+                id, 
+                date_part('year',datetime) as year, 
+                date_part('week', datetime) as week, 
+                (array_agg(quote order by datetime))[1] as first, 
+                min(quote) as low, 
+                max(quote) as high, 
+                (array_agg(quote order by datetime desc))[1] as last 
+            from quotes 
+            where id={} 
+            group by id, year, week 
+            order by year desc ,week desc;
+        """.format(self.product.id))
+        
+        self.ohclYearly.load_from_db("""
+            select 
+                id, 
+                date_part('year',datetime) as year, 
+                (array_agg(quote order by datetime))[1] as first, 
+                min(quote) as low, max(quote) as high, 
+                (array_agg(quote order by datetime desc))[1] as last 
+            from quotes 
+            where id={} 
+            group by id, year 
+            order by year desc
+        """.format(self.product.id))
+        
         self.basic=self.ohclDaily.setquotesbasic()
-        print ("Datos db cargados:",  datetime.datetime.now()-inicio)
+        print ("Datos db cargados:",  datetime.datetime.now()-inicioall)
 
 
 class Leverage:
