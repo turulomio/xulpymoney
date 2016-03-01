@@ -3473,12 +3473,12 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.py" line="439"/>
+        <location filename="../ui/frmProductReport.py" line="436"/>
         <source>{0} quotes have been purged from {1}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.py" line="475"/>
+        <location filename="../ui/frmProductReport.py" line="472"/>
         <source>You have to add a quote and a dividend per share estimation to the new product</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3498,22 +3498,22 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.py" line="509"/>
+        <location filename="../ui/frmProductReport.py" line="506"/>
         <source>Agrupation selection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.py" line="520"/>
+        <location filename="../ui/frmProductReport.py" line="517"/>
         <source>Priority selection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.py" line="533"/>
+        <location filename="../ui/frmProductReport.py" line="530"/>
         <source>Historical data priority selection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.py" line="273"/>
+        <location filename="../ui/frmProductReport.py" line="270"/>
         <source>Daily maximum variance: {} ({})</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3583,7 +3583,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.py" line="291"/>
+        <location filename="../ui/frmProductReport.py" line="288"/>
         <source>Year {}</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3608,7 +3608,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.py" line="120"/>
+        <location filename="../ui/frmProductReport.py" line="117"/>
         <source>Report of historic prices. You have {} shares valued at {}.</source>
         <translation type="unfinished"></translation>
     </message>
