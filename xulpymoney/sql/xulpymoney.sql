@@ -3,7 +3,7 @@
 --
 
 -- Dumped from database version 9.5.1
--- Dumped by pg_dump version 9.5.0
+-- Dumped by pg_dump version 9.5.1
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -1532,7 +1532,7 @@ INSERT INTO products VALUES ('ABANTE VALOR', 'ES0190052037', 'EUR', 2, '|BMF|019
 INSERT INTO products VALUES ('ABB Ltd.', 'CH0012221716', 'USD', 1, NULL, 78545, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, 'ABB', '{1}', '{3}', 'NYSE#ABB||us||False', false);
 INSERT INTO products VALUES ('Abbott Laboratories', 'US0028241000', 'USD', 1, '|SP500|', 76790, '', '', '', '', 100, 'c', 0, 2, 'ABT', '{1}', '{3}', 'NYSE#ABT||us||False', false);
 INSERT INTO products VALUES ('ABC ARBITRAGE', 'FR0004040608', 'EUR', 1, '|EURONEXT|', 77334, NULL, NULL, NULL, NULL, 100, 'c', 0, 3, NULL, NULL, NULL, 'EURONEXT#FR0004040608||fr||False', false);
-INSERT INTO products VALUES ('Abengoa B', 'ES0105200002', 'EUR', 1, '|IBEX|MERCADOCONTINUO|', 81701, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, 'ABG-P.MC', '{9}', '{3}', NULL, false);
+INSERT INTO products VALUES ('Abengoa B', 'ES0105200002', 'EUR', 1, '|MERCADOCONTINUO|', 81701, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, 'ABG-P.MC', '{9}', '{3}', NULL, false);
 INSERT INTO products VALUES ('ABENGOA', 'ES0105200416', 'EUR', 1, '|MERCADOCONTINUO|', 81093, '', '', '', '', 100, 'c', 0, 1, 'ABG.MC', '{9}', '{3}', 'MC#ES0105200416||es||False', false);
 INSERT INTO products VALUES ('Abercrombie & Fitch Co.', '', 'USD', 1, '|SP500|', 75638, '', '', '', '', 100, 'c', 0, 2, 'ANF', '{1}', '{3}', 'NYSE#ANF||us||False', false);
 INSERT INTO products VALUES ('Abertis Infraestructuras S.A.', 'ES0111845014', 'EUR', 1, '|IBEX|MERCADOCONTINUO|', 78269, '', '', '', '', 100, 'c', 0, 1, 'ABE.MC', '{9}', '{3}', 'MC#ES0111845014||es||False', false);
@@ -1573,7 +1573,7 @@ INSERT INTO products VALUES ('ACCSYS', 'GB00B0LMC530', 'EUR', 1, '|EURONEXT|', 7
 INSERT INTO products VALUES ('Accuride Corp.', 'US00439T2069', 'USD', 1, '', 79854, '', '', '', '', 100, 'c', 0, 2, 'ACW', '{1}', '{3}', 'NYSE#ACW||us||False', false);
 INSERT INTO products VALUES ('A.C. DINAMICO', 'ES0107383038', 'EUR', 2, '|BMF|0128|', 78092, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, NULL, NULL, '{8}', 'ES0107383038||es||False', true);
 INSERT INTO products VALUES ('ACE Ltd.', '', 'USD', 1, '|SP500|', 79262, '', '', '', '', 100, 'c', 0, 2, 'ACE', '{1}', '{3}', 'NYSE#ACE||us||False', false);
-INSERT INTO products VALUES ('ACERINOX', 'ES0132105018', 'EUR', 1, '|MERCADOCONTINUO|', 78325, '', '', '', '', 100, 'c', 0, 1, 'ACX.MC', '{9}', '{3}', 'MC#ES0132105018||es||False', false);
+INSERT INTO products VALUES ('ACERINOX', 'ES0132105018', 'EUR', 1, '|IBEX|MERCADOCONTINUO|', 78325, '', '', '', '', 100, 'c', 0, 1, 'ACX.MC', '{9}', '{3}', 'MC#ES0132105018||es||False', false);
 INSERT INTO products VALUES ('AC EUROSTOXX GARANTIZADO 100', 'ES0107396006', 'EUR', 2, '|BMF|0128|', 78190, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, NULL, NULL, '{8}', 'ES0107396006||es||False', true);
 INSERT INTO products VALUES ('AC FONDEPOSITO PLUS', 'ES0114941034', 'EUR', 2, '|BMF|0128|', 77467, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, NULL, NULL, '{8}', 'ES0114941034||es||False', true);
 INSERT INTO products VALUES ('AC INVERSION FI', 'ES0107367007', 'EUR', 2, '|f_es_BMF|', 74762, '', '', '', '', 100, 'c', 0, 1, NULL, NULL, '{8}', 'ES0107367007||None||False', true);
@@ -1619,7 +1619,7 @@ INSERT INTO products VALUES ('AEGON INVERSION MF', 'ES0147614038', 'EUR', 2, '|B
 INSERT INTO products VALUES ('AEGON INVERSION MV', 'ES0147616033', 'EUR', 2, '|BMF|0098|', 78317, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, NULL, NULL, '{8}', 'ES0147616033||es||False', false);
 INSERT INTO products VALUES ('Aegon', 'NL0000303709', 'EUR', 1, '', 75341, '', '', '', '', 100, 'c', 0, 12, NULL, NULL, NULL, 'AGN.AS||nl||False', false);
 INSERT INTO products VALUES ('Aegon N.V.', NULL, 'USD', 1, NULL, 77902, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, NULL, 'NYSE#AEG||us||False', false);
-INSERT INTO products VALUES ('AENA S.A.', 'ES0105046009 ', 'EUR', 1, '|MERCADOCONTINUO|', 81704, 'http://www.aena.es', NULL, NULL, NULL, 100, 'c', 0, 1, 'AENA.MC', '{9}', '{3}', NULL, false);
+INSERT INTO products VALUES ('AENA S.A.', 'ES0105046009 ', 'EUR', 1, '|IBEX|MERCADOCONTINUO|', 81704, 'http://www.aena.es', NULL, NULL, NULL, 100, 'c', 0, 1, 'AENA.MC', '{9}', '{3}', NULL, false);
 INSERT INTO products VALUES ('AerCap Holdings N.V.', NULL, 'USD', 1, NULL, 75604, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, NULL, 'NYSE#AER||us||False', false);
 INSERT INTO products VALUES ('Aeroflex Holding Corp.', NULL, 'USD', 1, NULL, 80960, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, NULL, 'NYSE#ARX||us||False', false);
 INSERT INTO products VALUES ('Aeropostale Inc.', NULL, 'USD', 1, NULL, 81613, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, NULL, 'NYSE#ARO||us||False', false);
@@ -2786,7 +2786,7 @@ INSERT INTO products VALUES ('BOIRON', 'FR0000061129', 'EUR', 1, '|EURONEXT|', 7
 INSERT INTO products VALUES ('Boise Inc.', NULL, 'USD', 1, NULL, 77453, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, NULL, 'NYSE#BZ||us||False', false);
 INSERT INTO products VALUES ('BOLLORE', 'FR0000039299', 'EUR', 1, '|EURONEXT|', 75986, NULL, NULL, NULL, NULL, 100, 'c', 0, 3, NULL, NULL, NULL, 'EURONEXT#FR0000039299||fr||False', false);
 INSERT INTO products VALUES ('BOLSALIDER', 'ES0115068035', 'EUR', 2, '|BMF|0029|', 76723, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, NULL, NULL, '{8}', 'ES0115068035||es||False', false);
-INSERT INTO products VALUES ('Bolsas y mercados españoles', 'ES0115056139', 'EUR', 1, '|IBEX|MERCADOCONTINUO|', 80840, '', '', '', '', 100, 'c', 0, 1, 'BME.MC', '{9}', '{3}', 'MC#ES0115056139||es||False', false);
+INSERT INTO products VALUES ('Bolsas y mercados españoles', 'ES0115056139', 'EUR', 1, '|MERCADOCONTINUO|', 80840, '', '', '', '', 100, 'c', 0, 1, 'BME.MC', '{9}', '{3}', 'MC#ES0115056139||es||False', false);
 INSERT INTO products VALUES ('BONA RENDA', 'ES0115091037', 'EUR', 2, '|BMF|0029|', 76686, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, NULL, NULL, '{8}', 'ES0115091037||es||False', false);
 INSERT INTO products VALUES ('BONBSAAR2016', 'FR0010734509', 'EUR', 1, '|EURONEXT|', 77198, NULL, NULL, NULL, NULL, 100, 'c', 0, 3, NULL, NULL, NULL, 'EURONEXT#FR0010734509||fr||False', false);
 INSERT INTO products VALUES ('BOND MANAGERS FUND', 'ES0115039036', 'EUR', 2, '|BMF|0195|', 77485, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, NULL, NULL, '{8}', 'ES0115039036||es||False', true);
@@ -5575,7 +5575,7 @@ INSERT INTO products VALUES ('Jaguar Mining Inc.', NULL, 'USD', 1, NULL, 80905, 
 INSERT INTO products VALUES ('Janus Capital Group Inc.', NULL, 'USD', 1, NULL, 76781, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, NULL, 'NYSE#JNS||us||False', false);
 INSERT INTO products VALUES ('Jarden Corp.', NULL, 'USD', 1, NULL, 76698, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, NULL, 'NYSE#JAH||us||False', false);
 INSERT INTO products VALUES ('JAXX SE', 'DE000A0JRU67', 'EUR', 1, '|DEUTSCHEBOERSE|', 80323, NULL, NULL, NULL, NULL, 100, 'c', 0, 5, NULL, NULL, NULL, 'DEUTSCHEBOERSE#DE000A0JRU67||de||False', false);
-INSERT INTO products VALUES ('JAZZTEL', 'GB00B5TMSP21', 'EUR', 1, '|IBEX|MERCADOCONTINUO|', 79201, '', '', '', '', 100, 'c', 0, 1, 'JAZ.MC', '{9}', '{3}', 'MC#GB00B5TMSP21||es||False', false);
+INSERT INTO products VALUES ('JAZZTEL', 'GB00B5TMSP21', 'EUR', 1, '|MERCADOCONTINUO|', 79201, '', '', '', '', 100, 'c', 0, 1, 'JAZ.MC', '{9}', '{3}', 'MC#GB00B5TMSP21||es||False', true);
 INSERT INTO products VALUES ('J.B. Hunt Transport Services, I', NULL, 'USD', 1, '|NASDAQ100|', 76437, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, NULL, 'JBHT||us||False', false);
 INSERT INTO products VALUES ('JCDECAUX NV', 'FR0010987289', 'EUR', 1, '|EURONEXT|', 76009, NULL, NULL, NULL, NULL, 100, 'c', 0, 3, NULL, NULL, NULL, 'EURONEXT#FR0010987289||fr||False', false);
 INSERT INTO products VALUES ('JC DECAUX SA.', 'FR0000077919', 'EUR', 1, '|EURONEXT|', 79846, NULL, NULL, NULL, NULL, 100, 'c', 0, 3, NULL, NULL, NULL, 'EURONEXT#FR0000077919||fr||False', false);
@@ -6121,6 +6121,7 @@ INSERT INTO products VALUES ('Mercury General Corp.', NULL, 'USD', 1, NULL, 7918
 INSERT INTO products VALUES ('Meredith Corp.', NULL, 'USD', 1, NULL, 78059, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, NULL, 'NYSE#MDP||us||False', false);
 INSERT INTO products VALUES ('Meritage Homes Corp.', NULL, 'USD', 1, NULL, 80902, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, NULL, 'NYSE#MTH||us||False', false);
 INSERT INTO products VALUES ('Meritor Inc.', NULL, 'USD', 1, NULL, 76938, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, NULL, 'NYSE#MTOR||us||False', false);
+INSERT INTO products VALUES ('Merlin Properties Socimi S.A.', 'ES0105025003  ', 'EUR', 1, '|IBEX|MERCADOCONTINUO|', 81706, 'http://www.merlinproperties.com/', NULL, NULL, NULL, 100, 'c', 0, 1, 'MRL.MC', '{9}', '{3}', NULL, false);
 INSERT INTO products VALUES ('MERRIL LINCH JAPAN OPORTUNITIES FUND', 'LU0171289225', 'EUR', 2, '', 75042, '', '', '', '', 100, 'c', 0, 1, NULL, NULL, '{8}', 'MERRIL LINCH JAPAN OPORTUNITIES FUND||None||False', false);
 INSERT INTO products VALUES ('MERSEN', 'FR0000039620', 'EUR', 1, '|EURONEXT|', 77639, NULL, NULL, NULL, NULL, 100, 'c', 0, 3, NULL, NULL, NULL, 'EURONEXT#FR0000039620||fr||False', false);
 INSERT INTO products VALUES ('MERSEN NV', 'FR0010978718', 'EUR', 1, '|EURONEXT|', 75929, NULL, NULL, NULL, NULL, 100, 'c', 0, 3, NULL, NULL, NULL, 'EURONEXT#FR0010978718||fr||False', false);
@@ -8256,7 +8257,7 @@ INSERT INTO stockmarkets VALUES (6, 'it', '07:00:00', 'Bolsa de Milán', '17:38:
 INSERT INTO stockmarkets VALUES (7, 'jp', '09:00:00', 'Bolsa de Tokio', '20:00:00', 'Asia/Tokyo');
 INSERT INTO stockmarkets VALUES (8, 'cn', '00:00:00', 'Bolsa de Hong Kong', '20:00:00', 'Asia/Hong_Kong');
 INSERT INTO stockmarkets VALUES (9, 'pt', '07:00:00', 'Bolsa de Lisboa', '17:38:00', 'Europe/Lisbon');
-INSERT INTO globals VALUES (10, 'wdgLastCurrent/spin', '-23');
+INSERT INTO globals VALUES (10, 'wdgLastCurrent/spin', '-33');
 INSERT INTO globals VALUES (11, 'mem/localcurrency', 'EUR');
 INSERT INTO globals VALUES (12, 'mem/localzone', 'Europe/Madrid');
 INSERT INTO globals VALUES (13, 'mem/benchmarkid', '79329');
@@ -8266,10 +8267,10 @@ INSERT INTO globals VALUES (16, 'mem/taxcapitalappreciationbelow', '0.5');
 INSERT INTO globals VALUES (17, 'mem/gainsyear', 'false');
 INSERT INTO globals VALUES (18, 'mem/favorites', '79329, 81680, -33');
 INSERT INTO globals VALUES (19, 'mem/fillfromyear', '2005');
-INSERT INTO globals VALUES (1, 'Version', '201602291116');
+INSERT INTO globals VALUES (1, 'Version', '201603010710');
 INSERT INTO globals VALUES (6, 'Admin mode', NULL);
 INSERT INTO globals VALUES (7, 'wdgIndexRange/spin', '2.0');
-INSERT INTO globals VALUES (8, 'wdgIndexRange/invertir', '2525');
+INSERT INTO globals VALUES (8, 'wdgIndexRange/invertir', '2575');
 INSERT INTO globals VALUES (9, 'wdgIndexRange/minimo', '1000');
 DELETE FROM products WHERE id<=0;
 ALTER SEQUENCE seq_conceptos START WITH 100 RESTART;

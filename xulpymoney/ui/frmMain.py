@@ -262,7 +262,7 @@ class frmMain(QMainWindow, Ui_frmMain):
     @QtCore.pyqtSlot()  
     def on_actionCAC40_triggered(self):
         self.w.close()
-        self.w=wdgProducts(self.mem,  "select * from products where agrupations like '%|CAC|%' order by name,id")
+        self.w=wdgProducts(self.mem,  "select * from products where agrupations like '%|CAC|%' and obsolete=false order by name,id")
 
         self.layout.addWidget(self.w)
         self.w.show()                
@@ -346,7 +346,7 @@ class frmMain(QMainWindow, Ui_frmMain):
     @QtCore.pyqtSlot()  
     def on_actionNasdaq100_triggered(self):
         self.w.close()
-        self.w=wdgProducts(self.mem,  "select * from products where agrupations like '%|NASDAQ100|%' order by name,id")
+        self.w=wdgProducts(self.mem,  "select * from products where agrupations like '%|NASDAQ100|%' and obsolete=false  order by name,id")
 
         self.layout.addWidget(self.w)
         self.w.show()
@@ -396,7 +396,7 @@ class frmMain(QMainWindow, Ui_frmMain):
     @QtCore.pyqtSlot()  
     def on_actionEurostoxx50_triggered(self):
         self.w.close()
-        self.w=wdgProducts(self.mem,  "select * from products where agrupations like '%|EUROSTOXX|%' order by name,id")
+        self.w=wdgProducts(self.mem,  "select * from products where agrupations like '%|EUROSTOXX|%'  and obsolete=false order by name,id")
 
         self.layout.addWidget(self.w)
         self.w.show()
@@ -566,7 +566,7 @@ class frmMain(QMainWindow, Ui_frmMain):
     @QtCore.pyqtSlot()  
     def on_actionIbex35_triggered(self):
         self.w.close()
-        self.w=wdgProducts(self.mem,  "select  * from products where agrupations like '%|IBEX|%' order by name,id")
+        self.w=wdgProducts(self.mem,  "select  * from products where agrupations like '%|IBEX|%' and obsolete=false  order by name,id")
         self.layout.addWidget(self.w)
         self.w.show()        
 
@@ -594,7 +594,7 @@ class frmMain(QMainWindow, Ui_frmMain):
     @QtCore.pyqtSlot()  
     def on_actionSP500_triggered(self):
         self.w.close()
-        self.w=wdgProducts(self.mem,  "select * from products where agrupations like '%|SP500|%' order by name,id")
+        self.w=wdgProducts(self.mem,  "select * from products where agrupations like '%|SP500|%'  and obsolete=false order by name,id")
 
         self.layout.addWidget(self.w)
         self.w.show()
@@ -683,7 +683,7 @@ class frmMain(QMainWindow, Ui_frmMain):
     @QtCore.pyqtSlot()  
     def on_actionXetra_triggered(self):
         self.w.close()
-        self.w=wdgProducts(self.mem,  "select * from products where agrupations like '%|DAX|%' order by name,id")
+        self.w=wdgProducts(self.mem,  "select * from products where agrupations like '%|DAX|%'  and obsolete=false order by name,id")
 
         self.layout.addWidget(self.w)
         self.w.show()        

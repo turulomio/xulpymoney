@@ -47,7 +47,7 @@ class wdgProducts(QWidget, Ui_wdgProducts):
 
     @QtCore.pyqtSlot()  
     def on_actionIbex35_triggered(self):
-        self.build_array("select * from products where agrupations like '%|IBEX|%' order by name,id")
+        self.build_array("select * from products where agrupations like '%|IBEX|%' and obsolete=False order by name,id")
         self.products.myqtablewidget(self.tblInvestments)       
 
     @QtCore.pyqtSlot() 

@@ -5513,9 +5513,9 @@ class SetOHCLDaily(SetOHCL):
         last=None
         penultimate=None
         endlastyear=None
-        if len(self.arr)==0:
+        if self.length()==0:
             return SetQuotesBasic(self.mem, self.product).init__create(None, None,  None)
-        ohcl=self.arr[len(self.arr)-1]#last
+        ohcl=self.arr[self.length()-1]#last
         last=Quote(self.mem).init__create(self.product, dt(ohcl.date, self.product.stockmarket.closes,  self.product.stockmarket.zone), ohcl.close)
         ohcl=self.find(ohcl.date-datetime.timedelta(days=1))#penultimate
         if ohcl!=None:
@@ -5525,6 +5525,7 @@ class SetOHCLDaily(SetOHCL):
             endlastyear=Quote(self.mem).init__create(self.product, dt(ohcl.date, self.product.stockmarket.closes,  self.product.stockmarket.zone), ohcl.close)        
         return SetQuotesBasic(self.mem, self.product).init__create(last, penultimate, endlastyear)
 
+        
     def close_to_setdv(self, date=None):
         """Convert setohcldaily to setdv. From date """
         res=SetDateValue()
@@ -5622,7 +5623,8 @@ class QuotesResult:
                 (array_agg(quote order by datetime desc))[1] as last 
             from quotes 
             where id={} 
-            group by id, datetime::date order by datetime::date desc
+            group by id, datetime::date 
+            order by datetime::date 
             """.format(self.product.id))#necesario para usar luego ohcl_otros
             
         self.ohclMonthly.load_from_db("""
@@ -5637,7 +5639,7 @@ class QuotesResult:
             from quotes 
             where id={} 
             group by id, year, month 
-            order by year desc ,month desc;
+            order by year, month
         """.format(self.product.id))
         
         self.ohclWeekly.load_from_db("""
@@ -5652,7 +5654,7 @@ class QuotesResult:
             from quotes 
             where id={} 
             group by id, year, week 
-            order by year desc ,week desc;
+            order by year, week 
         """.format(self.product.id))
         
         self.ohclYearly.load_from_db("""
@@ -5665,7 +5667,7 @@ class QuotesResult:
             from quotes 
             where id={} 
             group by id, year 
-            order by year desc
+            order by year 
         """.format(self.product.id))
         
         self.basic=self.ohclDaily.setquotesbasic()

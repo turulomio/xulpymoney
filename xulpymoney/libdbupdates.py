@@ -19,7 +19,7 @@ class Update:
     def __init__(self, mem):
         self.mem=mem
         self.dbversion=self.get_database_version()    
-        self.lastcodeupdate=201602291116
+        self.lastcodeupdate=201603010710
 
    
     def get_database_version(self):
@@ -487,8 +487,26 @@ class Update:
             cur.execute("DROP FUNCTION last_agg(anyelement, anyelement)")
             cur.execute("DROP TABLE status")
             cur.close()
-            self.mem.con.commit()
+            self.mem.con.commit() 
             self.set_database_version(201602291116)       
+        if self.dbversion<201603010700:
+            cur=self.mem.con.cursor()
+            cur.execute("update products set agrupations=%s where id=%s", ( '|MERCADOCONTINUO|',81701 ))
+            cur.execute("update products set agrupations=%s where id=%s", ( '|IBEX|MERCADOCONTINUO|',78325 ))
+            cur.execute("update products set agrupations=%s where id=%s", ( '|IBEX|MERCADOCONTINUO|', 81704))
+            cur.execute("update products set obsolete=%s where id=%s;", (True, 79201))
+            cur.execute("insert into products (id, name,  isin,  currency,  type,  agrupations,   web, address,  phone, mail, percentage, pci,  leveraged, stockmarkets_id, ticker, priority, priorityhistorical , comment,  obsolete) values (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
+                    (81706, 'Merlin Properties Socimi S.A.', 'ES0105025003  ', 'EUR', 1, '|IBEX|MERCADOCONTINUO|', 'http://www.merlinproperties.com/', None, None, None, 100, 'c', 0, 1, 'MRL.MC', [9, ],[3, ], None, False ))
+            cur.close()
+            self.mem.con.commit()
+            self.set_database_version(201603010700)      
+        if self.dbversion<201603010710:
+            cur=self.mem.con.cursor()
+            cur.execute("update products set agrupations=%s where id=%s", ( '|MERCADOCONTINUO|',79201 ))
+            cur.execute("update products set agrupations=%s where id=%s", ( '|MERCADOCONTINUO|',80840 ))
+            cur.close()
+            self.mem.con.commit()
+            self.set_database_version(201603010710)        
 
             
         """       WARNING                    ADD ALWAYS LAST UPDATE CODE                         WARNING
