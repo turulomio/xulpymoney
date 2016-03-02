@@ -48,38 +48,62 @@ class frmProductReport(QDialog, Ui_frmProductReport):
         self.tblDividendsEstimations.settings(self.mem, "frmProductReport")    
         self.tblDPSPaid.settings(self.mem, "frmProductReport")
         self.tblEPS.settings(self.mem, "frmProductReport")
-                
-        if self.product==None:
+
+
+        if self.product==None: #Insertar
             self.product=Product(self.mem)
+            self.cmdSave.setText(self.tr("Add a new product"))
+            
             self.tab.setTabEnabled(1, False)
             self.tab.setTabEnabled(2, False)
             self.tab.setTabEnabled(3, False)
-            self.cmdSave.setText(self.tr("Add a new product"))
-        else:
-            if self.product.id>0:
-#                self.grpInformation.setEnabled(False)
-                self.txtISIN.setReadOnly(True)
-                self.txtName.setReadOnly(True)
-                self.txtWeb.setReadOnly(True)
-                self.txtAddress.setReadOnly(True)
-                self.txtMail.setReadOnly(True)
-                self.txtTPC.setReadOnly(True)
-                self.txtPhone.setReadOnly(True)
-                self.txtYahoo.setReadOnly(True)
-                self.txtComentario.setReadOnly(True)
-                self.cmbCurrency.setEnabled(False)
-                self.cmbTipo.setEnabled(False)
-                self.cmdAgrupations.setEnabled(False)
-                self.chkActive.setEnabled(False)
-                self.cmbPCI.setEnabled(False)
-                self.cmbApalancado.setEnabled(False)
-                self.cmbBolsa.setEnabled(False)
-                self.cmdPriority.setEnabled(False)
-                self.cmdPriorityHistorical.setEnabled(False)
-                self.chkObsolete.setEnabled(False)
-                self.cmdSave.setEnabled(False)
-                
-                
+            self.mem.stockmarkets.qcombobox(self.cmbBolsa)
+            self.mem.investmentsmodes.qcombobox(self.cmbPCI)
+            self.mem.currencies.qcombobox(self.cmbCurrency)
+            self.mem.leverages.qcombobox(self.cmbApalancado)
+            self.mem.types.qcombobox(self.cmbTipo)
+        elif self.product.id<0: #Editar
+            self.mem.stockmarkets.qcombobox(self.cmbBolsa)
+            self.mem.investmentsmodes.qcombobox(self.cmbPCI)
+            self.mem.currencies.qcombobox(self.cmbCurrency)
+            self.mem.leverages.qcombobox(self.cmbApalancado)
+            self.mem.types.qcombobox(self.cmbTipo)
+        elif self.product.id>=0:#Readonly
+            self.txtISIN.setReadOnly(True)
+            self.txtName.setReadOnly(True)
+            self.txtWeb.setReadOnly(True)
+            self.txtAddress.setReadOnly(True)
+            self.txtMail.setReadOnly(True)
+            self.txtTPC.setReadOnly(True)
+            self.txtPhone.setReadOnly(True)
+            self.txtYahoo.setReadOnly(True)
+            self.txtComentario.setReadOnly(True)
+            self.cmdAgrupations.setEnabled(False)
+            self.cmdPriority.setEnabled(False)
+            self.cmdPriorityHistorical.setEnabled(False)
+            self.chkObsolete.setEnabled(False)
+            self.cmdSave.setEnabled(False)
+            
+            bolsa=SetStockMarkets(mem)
+            bolsa.append(self.product.stockmarket)
+            bolsa.qcombobox(self.cmbBolsa)
+            
+            productmodes=SetProductsModes(mem)
+            productmodes.append(self.product.mode)
+            productmodes.qcombobox(self.cmbPCI)
+            
+            currencies=SetCurrencies(mem)
+            currencies.append(self.product.currency)
+            currencies.qcombobox(self.cmbCurrency)
+            
+            leverages=SetLeverages(mem)
+            leverages.append(self.product.leveraged)
+            leverages.qcombobox(self.cmbApalancado)
+            
+            types=SetTypes(mem)
+            types.append(self.product.type)
+            types.qcombobox(self.cmbTipo)
+            
 
         self.canvasIntraday=canvasChartIntraday( self.mem, self)
         self.ntbIntraday = NavigationToolbar2QT(self.canvasIntraday, self)
@@ -91,11 +115,6 @@ class frmProductReport(QDialog, Ui_frmProductReport):
         self.layHistorical.addWidget(self.canvasHistorical)
         self.layHistorical.addWidget(self.ntbHistorical)
                 
-        self.mem.stockmarkets.qcombobox(self.cmbBolsa)
-        self.mem.investmentsmodes.qcombobox(self.cmbPCI)
-        self.mem.currencies.qcombobox(self.cmbCurrency)
-        self.mem.leverages.qcombobox(self.cmbApalancado)
-        self.mem.types.qcombobox(self.cmbTipo)
 
         self.update_due_to_quotes_change()    
         self.showMaximized()        
@@ -137,7 +156,10 @@ class frmProductReport(QDialog, Ui_frmProductReport):
         self.txtPhone.setText(self.product.phone)
 
         if self.product.has_autoupdate()==True:
-            self.chkActive.setCheckState(Qt.Checked)
+            self.lblAutoupdate.setText('<img src=":/xulpymoney/transfer.png" width="16" height="16"/>  {}'.format(self.tr("Product prices are updated automatically")))
+        else:
+            self.lblAutoupdate.setText(self.tr("Product prices are not updated automatically"))
+            
         if self.product.obsolete==True:
             self.chkObsolete.setCheckState(Qt.Checked)          
 
