@@ -324,442 +324,442 @@
     - {} estimaciones de beneficio por acción</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="5946"/>
+        <location filename="../libxulpymoney.py" line="5945"/>
         <source>Accounts</source>
         <translation>Cuentas</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="2576"/>
+        <location filename="../libxulpymoney.py" line="2575"/>
         <source>Taxes. Returned</source>
         <translation>Impuestos. Devolución</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="2581"/>
+        <location filename="../libxulpymoney.py" line="2580"/>
         <source>Taxes. Paid</source>
         <translation>Impuestos. Pago</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="325"/>
+        <location filename="../libxulpymoney.py" line="324"/>
         <source>Loading {0} investments from database</source>
         <translation>Cargando {0} inversiones de la base de datos</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="327"/>
+        <location filename="../libxulpymoney.py" line="326"/>
         <source>Loading investments...</source>
         <translation>Cargando inversiones...</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="719"/>
+        <location filename="../libxulpymoney.py" line="718"/>
         <source>Loading {0} products from database</source>
         <translation>Cargando {0} productos de la base de datos</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="721"/>
+        <location filename="../libxulpymoney.py" line="720"/>
         <source>Loading products...</source>
         <translation>Cargando productos...</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="794"/>
+        <location filename="../libxulpymoney.py" line="793"/>
         <source>Id</source>
         <translation>Id</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="4932"/>
+        <location filename="../libxulpymoney.py" line="4931"/>
         <source>Product</source>
         <translation>Producto</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="796"/>
+        <location filename="../libxulpymoney.py" line="795"/>
         <source>ISIN</source>
         <translation>ISIN</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="797"/>
+        <location filename="../libxulpymoney.py" line="796"/>
         <source>Last update</source>
         <translation>Última actualización</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="4933"/>
+        <location filename="../libxulpymoney.py" line="4932"/>
         <source>Price</source>
         <translation>Valor</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="799"/>
+        <location filename="../libxulpymoney.py" line="798"/>
         <source>% Daily</source>
         <translation>% Diario</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="800"/>
+        <location filename="../libxulpymoney.py" line="799"/>
         <source>% Year to date</source>
         <translation>% año actual</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="801"/>
+        <location filename="../libxulpymoney.py" line="800"/>
         <source>% Dividend</source>
         <translation>% Dividendo</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="865"/>
+        <location filename="../libxulpymoney.py" line="864"/>
         <source>Creation</source>
         <translation>Creación</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="866"/>
+        <location filename="../libxulpymoney.py" line="865"/>
         <source>Type</source>
         <translation>Tipo</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="867"/>
+        <location filename="../libxulpymoney.py" line="866"/>
         <source>Database</source>
         <translation>Base de datos</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="868"/>
+        <location filename="../libxulpymoney.py" line="867"/>
         <source>Starting</source>
         <translation>Comenzando</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="869"/>
+        <location filename="../libxulpymoney.py" line="868"/>
         <source>Ending</source>
         <translation>Finalizando</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="4485"/>
+        <location filename="../libxulpymoney.py" line="4484"/>
         <source>Date</source>
         <translation>Fecha</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="4180"/>
+        <location filename="../libxulpymoney.py" line="4179"/>
         <source>Account</source>
         <translation>Cuenta</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="3959"/>
+        <location filename="../libxulpymoney.py" line="3958"/>
         <source>Concept</source>
         <translation>Concepto</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="4183"/>
+        <location filename="../libxulpymoney.py" line="4182"/>
         <source>Amount</source>
         <translation>Importe</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="3961"/>
+        <location filename="../libxulpymoney.py" line="3960"/>
         <source>Balance</source>
         <translation>Saldo</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="3962"/>
+        <location filename="../libxulpymoney.py" line="3961"/>
         <source>Comment</source>
         <translation>Comentario</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="1119"/>
+        <location filename="../libxulpymoney.py" line="1118"/>
         <source>Starting month balance</source>
         <translation>Saldo inicial del mes</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="1135"/>
+        <location filename="../libxulpymoney.py" line="1134"/>
         <source>Chinese Yoan</source>
         <translation>Yoan Chino</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="1136"/>
+        <location filename="../libxulpymoney.py" line="1135"/>
         <source>Euro</source>
         <translation>Euro</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="1137"/>
+        <location filename="../libxulpymoney.py" line="1136"/>
         <source>Pound</source>
         <translation>Libra esterlina</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="1138"/>
+        <location filename="../libxulpymoney.py" line="1137"/>
         <source>Japones Yen</source>
         <translation>Yen Japonés</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="1139"/>
+        <location filename="../libxulpymoney.py" line="1138"/>
         <source>American Dolar</source>
         <translation>Dólar americano</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="1140"/>
+        <location filename="../libxulpymoney.py" line="1139"/>
         <source>Units</source>
         <translation>Unidades</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="4486"/>
+        <location filename="../libxulpymoney.py" line="4485"/>
         <source>Gross</source>
         <translation>Bruto</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="1182"/>
+        <location filename="../libxulpymoney.py" line="1181"/>
         <source>Withholding</source>
         <translation>Retención</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="1563"/>
+        <location filename="../libxulpymoney.py" line="1562"/>
         <source>Comission</source>
         <translation>Comisión</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="1184"/>
+        <location filename="../libxulpymoney.py" line="1183"/>
         <source>Net</source>
         <translation>Neto</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="1185"/>
+        <location filename="../libxulpymoney.py" line="1184"/>
         <source>DPS</source>
         <translation>DPA</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="1998"/>
+        <location filename="../libxulpymoney.py" line="1997"/>
         <source>Operation type</source>
         <translation>Tipo de operación</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="5936"/>
+        <location filename="../libxulpymoney.py" line="5935"/>
         <source>Shares</source>
         <translation>Acciones</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="2004"/>
+        <location filename="../libxulpymoney.py" line="2003"/>
         <source>Taxes</source>
         <translation>Impuestos</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="1565"/>
+        <location filename="../libxulpymoney.py" line="1564"/>
         <source>Total</source>
         <translation>Total</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="1774"/>
+        <location filename="../libxulpymoney.py" line="1773"/>
         <source>Invested</source>
         <translation>Invertido</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="1775"/>
+        <location filename="../libxulpymoney.py" line="1774"/>
         <source>Current balance</source>
         <translation>Saldo actual</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="1776"/>
+        <location filename="../libxulpymoney.py" line="1775"/>
         <source>Pending</source>
         <translation>Pendiente</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="1777"/>
+        <location filename="../libxulpymoney.py" line="1776"/>
         <source>% annual</source>
         <translation>% Anual</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="1778"/>
+        <location filename="../libxulpymoney.py" line="1777"/>
         <source>% APR</source>
         <translation>% TAE</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="1779"/>
+        <location filename="../libxulpymoney.py" line="1778"/>
         <source>% Total</source>
         <translation>% Total</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="1780"/>
+        <location filename="../libxulpymoney.py" line="1779"/>
         <source>Benchmark</source>
         <translation>Índice de referencia</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="1994"/>
+        <location filename="../libxulpymoney.py" line="1993"/>
         <source>Years</source>
         <translation>Años</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="2000"/>
+        <location filename="../libxulpymoney.py" line="1999"/>
         <source>Initial balance</source>
         <translation>Saldo inicial</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="2001"/>
+        <location filename="../libxulpymoney.py" line="2000"/>
         <source>Final balance</source>
         <translation>Saldo final</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="2002"/>
+        <location filename="../libxulpymoney.py" line="2001"/>
         <source>Gross selling operations</source>
         <translation>Operaciones de venta brutas</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="2003"/>
+        <location filename="../libxulpymoney.py" line="2002"/>
         <source>Comissions</source>
         <translation>Comisiones</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="2005"/>
+        <location filename="../libxulpymoney.py" line="2004"/>
         <source>Net selling operations</source>
         <translation>Operaciones de venta netas</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="2006"/>
+        <location filename="../libxulpymoney.py" line="2005"/>
         <source>% Net APR</source>
         <translation>% TAE Neto</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="2007"/>
+        <location filename="../libxulpymoney.py" line="2006"/>
         <source>% Net Total</source>
         <translation>% Total neto</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="2569"/>
+        <location filename="../libxulpymoney.py" line="2568"/>
         <source>Personal Management</source>
         <translation>Gestión personal</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="2570"/>
+        <location filename="../libxulpymoney.py" line="2569"/>
         <source>Cash</source>
         <translation>Efectivo</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="2571"/>
+        <location filename="../libxulpymoney.py" line="2570"/>
         <source>Initiating bank account</source>
         <translation>Iniciando cuenta bancaria</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="2574"/>
+        <location filename="../libxulpymoney.py" line="2573"/>
         <source>Transfer. Origin</source>
         <translation>Transferencia. Origen</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="2575"/>
+        <location filename="../libxulpymoney.py" line="2574"/>
         <source>Transfer. Destination</source>
         <translation>Transferencia. Destino</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="2579"/>
+        <location filename="../libxulpymoney.py" line="2578"/>
         <source>Purchase investment product</source>
         <translation>Compra de producto de inversión</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="2580"/>
+        <location filename="../libxulpymoney.py" line="2579"/>
         <source>Sale investment product</source>
         <translation>Venta de producto de inversión</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="2582"/>
+        <location filename="../libxulpymoney.py" line="2581"/>
         <source>Bank commissions</source>
         <translation>Comisiones bancarias</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="2583"/>
+        <location filename="../libxulpymoney.py" line="2582"/>
         <source>Dividends</source>
         <translation>Dividendos</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="3988"/>
+        <location filename="../libxulpymoney.py" line="3987"/>
         <source>Credit card billing</source>
         <translation>Facturación de tarjeta de crédito</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="2585"/>
+        <location filename="../libxulpymoney.py" line="2584"/>
         <source>Added shares</source>
         <translation>Añadido de acciones</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="2586"/>
+        <location filename="../libxulpymoney.py" line="2585"/>
         <source>Attendance bonus</source>
         <translation>Prima de asistencia</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="2587"/>
+        <location filename="../libxulpymoney.py" line="2586"/>
         <source>Custody commission</source>
         <translation>Comisión de custodia</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="2588"/>
+        <location filename="../libxulpymoney.py" line="2587"/>
         <source>Dividends. Sale of rights</source>
         <translation>Dividendos. Venta de derechos</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="2589"/>
+        <location filename="../libxulpymoney.py" line="2588"/>
         <source>Bonds. Running coupon payment</source>
         <translation>Deuda. Pago de cupón corrido</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="2590"/>
+        <location filename="../libxulpymoney.py" line="2589"/>
         <source>Bonds. Running coupon collection</source>
         <translation>Deuda. Cobro de cupón corrido</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="2591"/>
+        <location filename="../libxulpymoney.py" line="2590"/>
         <source>Bonds. Coupon collection</source>
         <translation>Deuda. Cobro de cupón</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="2572"/>
+        <location filename="../libxulpymoney.py" line="2571"/>
         <source>Paysheet</source>
         <translation>Nómina</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="2573"/>
+        <location filename="../libxulpymoney.py" line="2572"/>
         <source>Supermarket</source>
         <translation>Supermercado</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="2578"/>
+        <location filename="../libxulpymoney.py" line="2577"/>
         <source>Restaurant</source>
         <translation>Restaurante</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="2577"/>
+        <location filename="../libxulpymoney.py" line="2576"/>
         <source>Gas</source>
         <translation>Gasolina</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="2982"/>
+        <location filename="../libxulpymoney.py" line="2981"/>
         <source>The associated bank is not active. You must activate it first</source>
         <translation>El banco asociado está inactivo. Debes activarlo primero</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="3128"/>
+        <location filename="../libxulpymoney.py" line="3127"/>
         <source>The associated account is not active. You must activate it first</source>
         <translation>La cuenta asociada está inactiva. Debes activarla primero</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="3379"/>
+        <location filename="../libxulpymoney.py" line="3378"/>
         <source>The associated product is not active. You must activate it first</source>
         <translation>El producto asociado no está activo. Debes activarlo primero</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="3495"/>
+        <location filename="../libxulpymoney.py" line="3494"/>
         <source>The associated credit card is not active. You must activate it first</source>
         <translation>La tarjeta de crédito está inactiva. Debes activarla primero</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="4931"/>
+        <location filename="../libxulpymoney.py" line="4930"/>
         <source>Date and time</source>
         <translation>Fecha y hora</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="5003"/>
+        <location filename="../libxulpymoney.py" line="5002"/>
         <source>Purging innecesary data</source>
         <translation>Eliminando datos innecesarios</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="5005"/>
+        <location filename="../libxulpymoney.py" line="5004"/>
         <source>Purging quotes</source>
         <translation>Eliminando cotizaciones</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="5011"/>
+        <location filename="../libxulpymoney.py" line="5010"/>
         <source>Purged {0} quotes from {1}</source>
         <translation>Purgadas {0} cotizaciones de {1}</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="6514"/>
+        <location filename="../libxulpymoney.py" line="6513"/>
         <source>True</source>
         <translation>Verdadero</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="6517"/>
+        <location filename="../libxulpymoney.py" line="6516"/>
         <source>False</source>
         <translation>Falso</translation>
     </message>
@@ -794,272 +794,272 @@
         <translation>Ha escrito un número inválido</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="300"/>
+        <location filename="../libxulpymoney.py" line="299"/>
         <source>Xulpymoney between dates</source>
         <translation>Xulpymoney entre dos fechas</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="301"/>
+        <location filename="../libxulpymoney.py" line="300"/>
         <source>Xulpymvoney only investments between dates</source>
         <translation>Solo inversiones de Xulpymoney entre dos fechas</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="302"/>
+        <location filename="../libxulpymoney.py" line="301"/>
         <source>Simulating current benchmark between dates</source>
         <translation>Simulación del actual índice de referencia entre dos fechas</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="840"/>
+        <location filename="../libxulpymoney.py" line="839"/>
         <source>Put</source>
         <translation>Put</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="841"/>
+        <location filename="../libxulpymoney.py" line="840"/>
         <source>Call</source>
         <translation>Call</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="842"/>
+        <location filename="../libxulpymoney.py" line="841"/>
         <source>Inline</source>
         <translation>Inline</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="987"/>
+        <location filename="../libxulpymoney.py" line="986"/>
         <source>Spain</source>
         <translation>España</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="988"/>
+        <location filename="../libxulpymoney.py" line="987"/>
         <source>Belgium</source>
         <translation>Bélgica</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="989"/>
+        <location filename="../libxulpymoney.py" line="988"/>
         <source>China</source>
         <translation>China</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="990"/>
+        <location filename="../libxulpymoney.py" line="989"/>
         <source>Germany</source>
         <translation>Alemania</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="991"/>
+        <location filename="../libxulpymoney.py" line="990"/>
         <source>Earth</source>
         <translation>Tierra</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="992"/>
+        <location filename="../libxulpymoney.py" line="991"/>
         <source>United Kingdom</source>
         <translation>Reino Unido</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="993"/>
+        <location filename="../libxulpymoney.py" line="992"/>
         <source>Europe</source>
         <translation>Europa</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="994"/>
+        <location filename="../libxulpymoney.py" line="993"/>
         <source>Finland</source>
         <translation>Finlandia</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="995"/>
+        <location filename="../libxulpymoney.py" line="994"/>
         <source>France</source>
         <translation>Francia</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="996"/>
+        <location filename="../libxulpymoney.py" line="995"/>
         <source>Ireland</source>
         <translation>Irlanda</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="997"/>
+        <location filename="../libxulpymoney.py" line="996"/>
         <source>Italy</source>
         <translation>Italia</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="998"/>
+        <location filename="../libxulpymoney.py" line="997"/>
         <source>Japan</source>
         <translation>Japón</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="999"/>
+        <location filename="../libxulpymoney.py" line="998"/>
         <source>Netherlands</source>
         <translation>Paises Bajos</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="1000"/>
+        <location filename="../libxulpymoney.py" line="999"/>
         <source>Portugal</source>
         <translation>Portugal</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="1001"/>
+        <location filename="../libxulpymoney.py" line="1000"/>
         <source>United States of America</source>
         <translation>Estados Unidos</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="1002"/>
+        <location filename="../libxulpymoney.py" line="1001"/>
         <source>Romanian</source>
         <translation>Rumanía</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="1003"/>
+        <location filename="../libxulpymoney.py" line="1002"/>
         <source>Rusia</source>
         <translation>Rusia</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="4117"/>
+        <location filename="../libxulpymoney.py" line="4116"/>
         <source>Not leveraged</source>
         <translation>No apalancado</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="4118"/>
+        <location filename="../libxulpymoney.py" line="4117"/>
         <source>Variable leverage (Warrants)</source>
         <translation>Apalancamiento variable (Warrants)</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="4119"/>
+        <location filename="../libxulpymoney.py" line="4118"/>
         <source>Leverage x2</source>
         <translation>Apalancamiento x2</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="4120"/>
+        <location filename="../libxulpymoney.py" line="4119"/>
         <source>Leverage x3</source>
         <translation>Apalancamiento x3</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="4121"/>
+        <location filename="../libxulpymoney.py" line="4120"/>
         <source>Leverage x4</source>
         <translation>Apalancamiento x4</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="4258"/>
+        <location filename="../libxulpymoney.py" line="4257"/>
         <source>Individual. Yahoo historicals</source>
         <translation>Individuales. Históricos de Yahoo</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="4259"/>
+        <location filename="../libxulpymoney.py" line="4258"/>
         <source>Individual. Morningstar funds</source>
         <translation>Individuales. Fondos de inversión de Morningstar</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="5937"/>
+        <location filename="../libxulpymoney.py" line="5936"/>
         <source>Funds</source>
         <translation>Fondos de inversión</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="5938"/>
+        <location filename="../libxulpymoney.py" line="5937"/>
         <source>Indexes</source>
         <translation>Índices</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="5939"/>
+        <location filename="../libxulpymoney.py" line="5938"/>
         <source>ETF</source>
         <translation>ETF</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="5940"/>
+        <location filename="../libxulpymoney.py" line="5939"/>
         <source>Warrants</source>
         <translation>Warrants</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="5941"/>
+        <location filename="../libxulpymoney.py" line="5940"/>
         <source>Currencies</source>
         <translation>Divisas</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="5942"/>
+        <location filename="../libxulpymoney.py" line="5941"/>
         <source>Public Bond</source>
         <translation>Renta fija pública</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="5943"/>
+        <location filename="../libxulpymoney.py" line="5942"/>
         <source>Pension plans</source>
         <translation>Planes de pensiones</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="5944"/>
+        <location filename="../libxulpymoney.py" line="5943"/>
         <source>Private Bond</source>
         <translation>Renta fija privada</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="5945"/>
+        <location filename="../libxulpymoney.py" line="5944"/>
         <source>Deposit</source>
         <translation>Depósitos</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="2443"/>
+        <location filename="../libxulpymoney.py" line="2442"/>
         <source>{0[0]}. Gross: {0[1]} {1}. Witholding tax: {0[2]} {1}. Comission: {0[3]} {1}</source>
         <translation>{0[0]}. Bruto: {0[1]} {1}. Retención: {0[2]} {1}. Comisión: {0[3]} {1}</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="2445"/>
+        <location filename="../libxulpymoney.py" line="2444"/>
         <source>{0[1]}: {0[0]} shares. Amount: {0[2]} {1}. Comission: {0[3]} {1}. Taxes: {0[4]} {1}</source>
         <translation>{0[1]}: {0[0]} acciones. Importe: {0[2]} {1}. Comisión: {0[3]} {1}. Impuestos: {0[4]} {1}</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="2447"/>
+        <location filename="../libxulpymoney.py" line="2446"/>
         <source>CreditCard: {0[0]}. Made {0[1]} payments</source>
         <translation>Tarjeta de crédito: {0[0]}. Hechos {0[1]} pagos</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="2449"/>
+        <location filename="../libxulpymoney.py" line="2448"/>
         <source>Transfer to {0}</source>
         <translation>Transferencia a {0}</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="2451"/>
+        <location filename="../libxulpymoney.py" line="2450"/>
         <source>Transfer received from {0}</source>
         <translation>Transferencia recibida de {0}</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="2453"/>
+        <location filename="../libxulpymoney.py" line="2452"/>
         <source>Due to account transfer of {0} from {1}</source>
         <translation>Debida a transferencia entre cuentas de {0} a {1}</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="3982"/>
+        <location filename="../libxulpymoney.py" line="3981"/>
         <source>Expense</source>
         <translation>Gasto</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="3983"/>
+        <location filename="../libxulpymoney.py" line="3982"/>
         <source>Income</source>
         <translation>Ingreso</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="3984"/>
+        <location filename="../libxulpymoney.py" line="3983"/>
         <source>Transfer</source>
         <translation>Transferencia</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="3985"/>
+        <location filename="../libxulpymoney.py" line="3984"/>
         <source>Purchase of shares</source>
         <translation>Compra de acciones</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="3986"/>
+        <location filename="../libxulpymoney.py" line="3985"/>
         <source>Sale of shares</source>
         <translation>Venta de acciones</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="3987"/>
+        <location filename="../libxulpymoney.py" line="3986"/>
         <source>Added of shares</source>
         <translation>Añadido de acciones</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="3989"/>
+        <location filename="../libxulpymoney.py" line="3988"/>
         <source>Transfer of funds</source>
         <translation>Transferencia de fondos de inversión</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="3990"/>
+        <location filename="../libxulpymoney.py" line="3989"/>
         <source>Transfer of shares. Origin</source>
         <translation>Transferencia de acciones. Origen</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="3991"/>
+        <location filename="../libxulpymoney.py" line="3990"/>
         <source>Transfer of shares. Destiny</source>
         <translation>Transferencia de acciones. Destino</translation>
     </message>
@@ -1069,42 +1069,42 @@
         <translation>Cancelar</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="6485"/>
+        <location filename="../libxulpymoney.py" line="6484"/>
         <source>{} {}, {} {} and {} {}</source>
         <translation>{} {}, {} {} y {} {}</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="1074"/>
+        <location filename="../libxulpymoney.py" line="1073"/>
         <source>Paid with {0}. {1}</source>
         <translation>Pagado con {0}. {1}</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="6474"/>
+        <location filename="../libxulpymoney.py" line="6473"/>
         <source>year</source>
         <translation>año</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="6476"/>
+        <location filename="../libxulpymoney.py" line="6475"/>
         <source>years</source>
         <translation>años</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="6478"/>
+        <location filename="../libxulpymoney.py" line="6477"/>
         <source>month</source>
         <translation>mes</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="6480"/>
+        <location filename="../libxulpymoney.py" line="6479"/>
         <source>months</source>
         <translation>meses</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="6482"/>
+        <location filename="../libxulpymoney.py" line="6481"/>
         <source>day</source>
         <translation>día</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="6484"/>
+        <location filename="../libxulpymoney.py" line="6483"/>
         <source>days</source>
         <translation>días</translation>
     </message>
@@ -1146,17 +1146,17 @@ Purgadas en total en el proceso global: {1}</translation>
         <translation>Lenguaje local detectado: {0}</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="4179"/>
+        <location filename="../libxulpymoney.py" line="4178"/>
         <source>Investment</source>
         <translation>Inversión</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="4178"/>
+        <location filename="../libxulpymoney.py" line="4177"/>
         <source>Expiration</source>
         <translation>Expiración</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="4185"/>
+        <location filename="../libxulpymoney.py" line="4184"/>
         <source>Executed</source>
         <translation>Ejecutado</translation>
     </message>
@@ -1166,24 +1166,24 @@ Purgadas en total en el proceso global: {1}</translation>
         <translation>La inversión seleccionada está desactivada. Debe activarla primero.</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="3387"/>
+        <location filename="../libxulpymoney.py" line="3386"/>
         <source>Investment activation question</source>
         <translation>Pregunta de activación de la inversión</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="3387"/>
+        <location filename="../libxulpymoney.py" line="3386"/>
         <source>Investment {} ({}) is inactive.
 Do you want to activate it?</source>
         <translation>La inversión {} ({}) está desactivada.
 ¿Quiere activarla?</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="4184"/>
+        <location filename="../libxulpymoney.py" line="4183"/>
         <source>% from current</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="424"/>
+        <location filename="../libxulpymoney.py" line="423"/>
         <source>% selling point</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3499,17 +3499,17 @@ p, li { white-space: pre-wrap; }
         <translation>Añadir un nuevo producto</translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.py" line="529"/>
+        <location filename="../ui/frmProductReport.py" line="528"/>
         <source>Agrupation selection</source>
         <translation>Selección de agrupaciones</translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.py" line="540"/>
+        <location filename="../ui/frmProductReport.py" line="539"/>
         <source>Priority selection</source>
         <translation>Selección de prioridades</translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.py" line="553"/>
+        <location filename="../ui/frmProductReport.py" line="552"/>
         <source>Historical data priority selection</source>
         <translation>Selección de prioridades de datos históricos</translation>
     </message>

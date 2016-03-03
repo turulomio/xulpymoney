@@ -461,7 +461,7 @@ class frmProductReport(QDialog, Ui_frmProductReport):
             self.mem.con.rollback()
         
     def on_cmdSave_pressed(self):
-        if self.product.id==None:
+        if self.product.id==None or self.product.id<0:
             self.product.name=self.txtName.text()
             self.product.isin=self.txtISIN.text()
             self.product.currency=self.mem.currencies.find_by_id(self.cmbCurrency.itemData(self.cmbCurrency.currentIndex()))
@@ -524,7 +524,6 @@ class frmProductReport(QDialog, Ui_frmProductReport):
             selected=SetAgrupations(self.mem)#Vacio
         else:
             selected=self.product.agrupations
-        agr.append(self.mem.agrupations.find_by_id("ERROR"))
         f=frmSelector(self.mem, agr, selected)
         f.lbl.setText(self.tr("Agrupation selection"))
         f.exec_()
