@@ -4030,16 +4030,8 @@ class SetAgrupations(SetCommons):
         """Usa la variable mem.Agrupations"""
         SetCommons.__init__(self)
         self.mem=mem
-        
-    def find_by_id(self, id):
-        r=super(SetAgrupations, self).find_by_id(id)
-        if r==None:
-            return self.dic_arr["ERROR"]
-        else:
-            return r
-        
+
     def load_all(self):
-        self.append(Agrupation(self.mem).init__create( "ERROR","Agrupación errónea", self.mem.types.find_by_id(3), self.mem.stockmarkets.find_by_id(1) ))
         self.append(Agrupation(self.mem).init__create( "IBEX","Ibex 35", self.mem.types.find_by_id(3), self.mem.stockmarkets.find_by_id(1) ))
         self.append(Agrupation(self.mem).init__create( "MERCADOCONTINUO","Mercado continuo español", self.mem.types.find_by_id(3), self.mem.stockmarkets.find_by_id(1) ))
         self.append(Agrupation(self.mem).init__create("CAC",  "CAC 40 de París", self.mem.types.find_by_id(3),self.mem.stockmarkets.find_by_id(3) ))
@@ -4054,10 +4046,8 @@ class SetAgrupations(SetCommons):
         self.append(Agrupation(self.mem).init__create( "e_fr_LYXOR","LYXOR", self.mem.types.find_by_id(4),self.mem.stockmarkets.find_by_id(3)  ))
         self.append(Agrupation(self.mem).init__create( "e_de_DBXTRACKERS","Deutsche Bank X-Trackers", self.mem.types.find_by_id(4),self.mem.stockmarkets.find_by_id(5)  ))
         
-        self.append(Agrupation(self.mem).init__create("f_es_0014",  "Gestora BBVA", self.mem.types.find_by_id(2), self.mem.stockmarkets.find_by_id(1) ))
-        self.append(Agrupation(self.mem).init__create( "f_es_0043","Gestora Renta 4", self.mem.types.find_by_id(2), self.mem.stockmarkets.find_by_id(1)))
-        self.append(Agrupation(self.mem).init__create("f_es_0055","Gestora Bankinter", self.mem.types.find_by_id(2),self.mem.stockmarkets.find_by_id(1) ))
         self.append(Agrupation(self.mem).init__create( "f_es_BMF","Fondos de la bolsa de Madrid", self.mem.types.find_by_id(2), self.mem.stockmarkets.find_by_id(1) ))
+        self.append(Agrupation(self.mem).init__create( "f_fr_CARMIGNAC","Gestora CARMIGNAC", self.mem.types.find_by_id(2), self.mem.stockmarkets.find_by_id(3) ))
 
         self.append(Agrupation(self.mem).init__create( "w_fr_SG","Warrants Societe Generale", self.mem.types.find_by_id(5),self.mem.stockmarkets.find_by_id(3) ))
         self.append(Agrupation(self.mem).init__create("w_es_BNP","Warrants BNP Paribas", self.mem.types.find_by_id(5),self.mem.stockmarkets.find_by_id(1)))

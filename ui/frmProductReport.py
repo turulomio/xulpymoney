@@ -516,7 +516,7 @@ class frmProductReport(QDialog, Ui_frmProductReport):
             agr=self.mem.agrupations.clone_acciones()
         elif self.cmbTipo.itemData(self.cmbTipo.currentIndex())==4:#ETFs
             agr=self.mem.agrupations.clone_etfs()
-        elif self.cmbTipo.itemData(self.cmbTipo.currentIndex())==5:#ETFs
+        elif self.cmbTipo.itemData(self.cmbTipo.currentIndex())==5:#Warrants
             agr=self.mem.agrupations.clone_warrants()
         else:
             agr=self.mem.agrupations.clone(self.mem)
@@ -524,6 +524,7 @@ class frmProductReport(QDialog, Ui_frmProductReport):
             selected=SetAgrupations(self.mem)#Vacio
         else:
             selected=self.product.agrupations
+        agr.append(self.mem.agrupations.find_by_id("ERROR"))
         f=frmSelector(self.mem, agr, selected)
         f.lbl.setText(self.tr("Agrupation selection"))
         f.exec_()

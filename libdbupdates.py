@@ -19,7 +19,7 @@ class Update:
     def __init__(self, mem):
         self.mem=mem
         self.dbversion=self.get_database_version()    
-        self.lastcodeupdate=201603010710
+        self.lastcodeupdate=201603030541
 
    
     def get_database_version(self):
@@ -507,6 +507,27 @@ class Update:
             cur.close()
             self.mem.con.commit()
             self.set_database_version(201603010710)        
+        if self.dbversion<201603030510:
+            cur=self.mem.con.cursor()
+            cur.execute("update products set agrupations=null where id=%s", ( 81480,  ))
+            cur.execute("update products set agrupations='|f_es_BMF|' where agrupations ilike '%|00%'")
+            cur.execute("update products set agrupations='|f_es_BMF|' where agrupations ilike '%\_00%'")
+            cur.close()
+            self.mem.con.commit()
+            self.set_database_version(201603030510)        
+        if self.dbversion<201603030535:
+            cur=self.mem.con.cursor()
+            cur.execute("update products set agrupations='|f_es_BMF|' where agrupations ilike '%BMF%'")
+            cur.close()
+            self.mem.con.commit()
+            self.set_database_version(201603030535)       
+        if self.dbversion<201603030541:
+            cur=self.mem.con.cursor()
+            cur.execute("update products set agrupations='|f_fr_CARMIGNAC|' where agrupations ilike '%CARMIGNAC%'")
+            cur.execute("update products set agrupations='|w_fr_SG|' where agrupations ilike '%SGW%'")
+            cur.close()
+            self.mem.con.commit()
+            self.set_database_version(201603030541)        
 
             
         """       WARNING                    ADD ALWAYS LAST UPDATE CODE                         WARNING
