@@ -817,7 +817,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         table.setVerticalHeaderItem(3, QTableWidgetItem(self.tr( "Returned taxes" )))
         table.setVerticalHeaderItem(4,  QTableWidgetItem(self.tr( "Total" )))
 
-        table.appySettings()
+        table.applySettings()
         (sum_io_retentions, sum_div_retentions, sum_other_taxes,  sum_returned_taxes)=(Decimal("0"), Decimal("0"), Decimal("0"), Decimal("0"))
 
         for column in range (12):

@@ -2806,7 +2806,6 @@ INSERT INTO products VALUES ('Bono Telefónica 4.18 20221129', 'ES0278430998', '
 INSERT INTO products VALUES ('Booz Allen & Hamilton Inc.', NULL, 'USD', 1, NULL, 79808, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, NULL, 'NYSE#BAH||us||False', false);
 INSERT INTO products VALUES ('BOREAS GLOBAL', 'ES0114902002', 'EUR', 2, '|f_es_BMF|', 77609, NULL, NULL, NULL, NULL, 100, 'c', 0, 1, NULL, NULL, '{8}', 'ES0114902002||es||False', false);
 INSERT INTO products VALUES ('BorgWarner Inc.', '', 'USD', 1, '|SP500|', 78270, '', '', '', '', 100, 'c', 0, 2, 'BWA', '{1}', '{3}', 'NYSE#BWA||us||False', false);
-INSERT INTO products VALUES ('BORRAR', '12121212', 'GBP', 1, '', -33, '', '', '', '', 100, 'c', 1, 10, '', '{}', '{}', '', false);
 INSERT INTO products VALUES ('BOSKALIS WESTMIN', 'NL0000852580', 'EUR', 1, '|EURONEXT|', 78000, NULL, NULL, NULL, NULL, 100, 'c', 0, 12, NULL, NULL, NULL, 'EURONEXT#NL0000852580||nl||False', false);
 INSERT INTO products VALUES ('Boston Beer Co. Cl A', NULL, 'USD', 1, NULL, 78032, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, NULL, 'NYSE#SAM||us||False', false);
 INSERT INTO products VALUES ('Boston Properties Inc.', '', 'USD', 1, '|SP500|', 78306, '', '', '', '', 100, 'c', 0, 2, 'BXP', '{1}', '{3}', 'NYSE#BXP||us||False', false);
