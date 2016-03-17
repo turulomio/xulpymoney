@@ -5386,27 +5386,27 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgInvestments.py" line="171"/>
+        <location filename="../ui/wdgInvestments.py" line="172"/>
         <source>Order by</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgInvestments.py" line="190"/>
+        <location filename="../ui/wdgInvestments.py" line="191"/>
         <source>Shares number: {0}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgInvestments.py" line="190"/>
+        <location filename="../ui/wdgInvestments.py" line="191"/>
         <source>Purchase price average: {0}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgInvestments.py" line="190"/>
+        <location filename="../ui/wdgInvestments.py" line="191"/>
         <source>Selling point: {}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgInvestments.py" line="190"/>
+        <location filename="../ui/wdgInvestments.py" line="191"/>
         <source>Selling all shares you get {}</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5422,12 +5422,12 @@ Daily Diff: {5}. Investment average age: {6}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgInvestments.py" line="156"/>
+        <location filename="../ui/wdgInvestments.py" line="157"/>
         <source>Deactivate investment</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgInvestments.py" line="158"/>
+        <location filename="../ui/wdgInvestments.py" line="159"/>
         <source>Activate investment</source>
         <translation type="unfinished"></translation>
     </message>

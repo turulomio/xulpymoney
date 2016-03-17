@@ -39,12 +39,8 @@ class wdgInvestments(QWidget, Ui_wdgInvestments):
     def on_actionActive_triggered(self):
         if self.selInvestment.account.eb.qmessagebox_inactive()  or self.selInvestment.account.qmessagebox_inactive():
             return  
-        
-         
-        if self.actionActive.isChecked()==True:
-            self.selInvestment.active=True
-        else:
-            self.selInvestment.active=False
+    
+        self.selInvestment.active=not self.selInvestment.active
         self.selInvestment.save()
         self.mem.con.commit()     
 
@@ -124,6 +120,7 @@ class wdgInvestments(QWidget, Ui_wdgInvestments):
         else:
             qmessagebox_error_ordering()     
             
+    @QtCore.pyqtSlot(int) 
     def on_chkInactivas_stateChanged(self, state):
         if state==Qt.Unchecked:
             self.inversiones=self.mem.data.investments_active()
@@ -131,7 +128,6 @@ class wdgInvestments(QWidget, Ui_wdgInvestments):
         else:
             self.inversiones=self.mem.data.investments_inactive()
             self.on_actionSortName_triggered()
-        self.tblInvestments_reload()
         self.tblInvestments.clearSelection()
         self.selInvestment=None   
 
