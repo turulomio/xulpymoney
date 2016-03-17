@@ -5395,27 +5395,27 @@ p, li { white-space: pre-wrap; }
         <translation>No hay activos invertidos</translation>
     </message>
     <message>
-        <location filename="../ui/wdgInvestments.py" line="171"/>
+        <location filename="../ui/wdgInvestments.py" line="172"/>
         <source>Order by</source>
         <translation>Ordenado por</translation>
     </message>
     <message>
-        <location filename="../ui/wdgInvestments.py" line="190"/>
+        <location filename="../ui/wdgInvestments.py" line="191"/>
         <source>Shares number: {0}</source>
         <translation>Número de acciones: {0}</translation>
     </message>
     <message>
-        <location filename="../ui/wdgInvestments.py" line="190"/>
+        <location filename="../ui/wdgInvestments.py" line="191"/>
         <source>Purchase price average: {0}</source>
         <translation>Precio medio de compra: {0}</translation>
     </message>
     <message>
-        <location filename="../ui/wdgInvestments.py" line="190"/>
+        <location filename="../ui/wdgInvestments.py" line="191"/>
         <source>Selling point: {}</source>
         <translation>Punto de venta: {}</translation>
     </message>
     <message>
-        <location filename="../ui/wdgInvestments.py" line="190"/>
+        <location filename="../ui/wdgInvestments.py" line="191"/>
         <source>Selling all shares you get {}</source>
         <translation>Vendiendo todas las acciones consigues {}</translation>
     </message>
@@ -5432,12 +5432,12 @@ Daily Diff: {5}. Investment average age: {6}</source>
 Diferencia diaria: {5}. Edad media de las inversiones: {6}</translation>
     </message>
     <message>
-        <location filename="../ui/wdgInvestments.py" line="156"/>
+        <location filename="../ui/wdgInvestments.py" line="157"/>
         <source>Deactivate investment</source>
         <translation>Desactivar inversión</translation>
     </message>
     <message>
-        <location filename="../ui/wdgInvestments.py" line="158"/>
+        <location filename="../ui/wdgInvestments.py" line="159"/>
         <source>Activate investment</source>
         <translation>Activar inversión</translation>
     </message>
