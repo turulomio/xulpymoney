@@ -19,7 +19,7 @@ class Update:
     def __init__(self, mem):
         self.mem=mem
         self.dbversion=self.get_database_version()    
-        self.lastcodeupdate=201603030541
+        self.lastcodeupdate=201603210933
 
    
     def get_database_version(self):
@@ -528,6 +528,13 @@ class Update:
             cur.close()
             self.mem.con.commit()
             self.set_database_version(201603030541)        
+        if self.dbversion<201603210933:
+            cur=self.mem.con.cursor()            
+            cur.execute("insert into products (id, name,  isin,  currency,  type,  agrupations,   web, address,  phone, mail, percentage, pci,  leveraged, stockmarkets_id, ticker, priority, priorityhistorical , comment,  obsolete) values  (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
+                (81707, 'Put IBEX 35 | 9000 € | 20/05/16 | F2644',  'LU1298303105', 'EUR', 5, '|w_fr_SG|', None, None, None, None, 100, 'p',1, 1, '', None,  None, None, False))
+            cur.close()
+            self.mem.con.commit()
+            self.set_database_version(201603210933)        
 
             
         """       WARNING                    ADD ALWAYS LAST UPDATE CODE                         WARNING
