@@ -10,8 +10,8 @@ class myQTableWidget(QTableWidget):
         self.mem=None
         self.sectionname=None
         self._save_settings=True
-        self.verticalHeader().sectionResizeMode(QHeaderView.Fixed)
-        self.verticalHeader().setDefaultSectionSize(24)
+        self.verticalHeader().setSectionResizeMode(QHeaderView.Fixed)
+        self.verticalHeader().setDefaultSectionSize(24) 
         self.setAlternatingRowColors(True)
         self.saved_printed=False#To avoid printing a lot of times
 
@@ -42,7 +42,7 @@ class myQTableWidget(QTableWidget):
 
     def applySettings(self):
         """settings must be defined before"""
-        self.verticalHeader().setSectionResizeMode(QHeaderView.ResizeToContents)
+#        self.verticalHeader().setSectionResizeMode(QHeaderView.ResizeToContents)
         self.horizontalHeader().setSectionResizeMode(QHeaderView.Interactive)
         self.horizontalHeader().sectionResized.connect(self.sectionResized)
         state=self.mem.settings.value("{}/{}_horizontalheader_state".format(self.sectionname, self.objectName()))
@@ -61,5 +61,7 @@ class myQTableWidget(QTableWidget):
         for i in range(self.columnCount()):
             if self.sizeHintForColumn(i)>self.columnWidth(i):
                 self.setColumnWidth(i, self.sizeHintForColumn(i))
-        self.resizeRowsToContents()
+#        self.resizeRowsToContents()
+        self.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeToContents)
+        self.horizontalHeader().setSectionResizeMode(QHeaderView.Interactive)
 
