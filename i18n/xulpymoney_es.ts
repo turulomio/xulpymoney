@@ -5182,19 +5182,19 @@ p, li { white-space: pre-wrap; }
         <translation>Añadir una cotización del índice de referencia</translation>
     </message>
     <message>
-        <location filename="../ui/wdgIndexRange.py" line="80"/>
+        <location filename="../ui/wdgIndexRange.py" line="81"/>
         <source>{0} {1} ({2}): {3} shares of {4} = {5}
 </source>
         <translation>{0} {1} ({2}): {3} acciones de {4} = {5}
 </translation>
     </message>
     <message>
-        <location filename="../ui/wdgIndexRange.py" line="226"/>
+        <location filename="../ui/wdgIndexRange.py" line="227"/>
         <source>Investment calculator</source>
         <translation>Calculadora de inversiones</translation>
     </message>
     <message>
-        <location filename="../ui/wdgIndexRange.py" line="62"/>
+        <location filename="../ui/wdgIndexRange.py" line="63"/>
         <source>Benchmark penultimate price ({}) is {}</source>
         <translation>Penúltimo precio del índice de referencia ({}) es {}</translation>
     </message>
@@ -5224,12 +5224,12 @@ p, li { white-space: pre-wrap; }
         <translation>Mostrar las operaciones de inversión marcadas</translation>
     </message>
     <message>
-        <location filename="../ui/wdgIndexRange.py" line="63"/>
+        <location filename="../ui/wdgIndexRange.py" line="64"/>
         <source>Benchmark last price ({}) is {}. Last daily variation: {}.</source>
         <translation>El último precio del índice de referencia ({}) es {}. Última variación diaria {}.</translation>
     </message>
     <message>
-        <location filename="../ui/wdgIndexRange.py" line="146"/>
+        <location filename="../ui/wdgIndexRange.py" line="147"/>
         <source>{} green colorized ranges of {} benchmark are covered by zero risk and bonds balance ({}).</source>
         <translation>Los {} rangos de verde del índice {} están cubiertos por el saldo del patrimonio de riesgo cero y de renta fija ({}).</translation>
     </message>

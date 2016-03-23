@@ -10,10 +10,20 @@ class myQTableWidget(QTableWidget):
         self.mem=None
         self.sectionname=None
         self._save_settings=True
-        self.verticalHeader().setSectionResizeMode(QHeaderView.Fixed)
-        self.verticalHeader().setDefaultSectionSize(24) 
         self.setAlternatingRowColors(True)
         self.saved_printed=False#To avoid printing a lot of times
+#        self.setVerticalHeaderHeight(24)
+        
+        
+#    def setVerticalHeaderHeight(self, height):
+#        """height, if null default."""
+#        if height==None:
+#            self.verticalHeader().setSectionResizeMode(QHeaderView.ResizeToContents)
+#            self.verticalHeader().setSectionResizeMode(QHeaderView.Interactive)
+##            self.resizeColumnsToContents()
+#        else:
+#            self.verticalHeader().setSectionResizeMode(QHeaderView.Fixed)
+#            self.verticalHeader().setDefaultSectionSize(24) 
 
     def setSaveSettings(self, state):
         """Used when i don't want my columns with being saved"""
@@ -25,8 +35,12 @@ class myQTableWidget(QTableWidget):
             for i in range(self.columnCount()):
                 self.setColumnWidth(i, newSize)
         elif modifiers == Qt.ControlModifier:
-            self.resizeColumnsToContents()
             self.resizeRowsToContents()
+            self.resizeColumnsToContents()
+        self.save()
+            
+            
+    def save(self):
         if self._save_settings==True:
             self.mem.settings.setValue("{}/{}_horizontalheader_state".format(self.sectionname, self.objectName()), self.horizontalHeader().saveState() )
             if self.saved_printed==False: 
@@ -61,7 +75,7 @@ class myQTableWidget(QTableWidget):
         for i in range(self.columnCount()):
             if self.sizeHintForColumn(i)>self.columnWidth(i):
                 self.setColumnWidth(i, self.sizeHintForColumn(i))
-#        self.resizeRowsToContents()
-        self.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeToContents)
-        self.horizontalHeader().setSectionResizeMode(QHeaderView.Interactive)
+        self.resizeRowsToContents()
+#        self.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeToContents)
+#        self.horizontalHeader().setSectionResizeMode(QHeaderView.Interactive)
 
