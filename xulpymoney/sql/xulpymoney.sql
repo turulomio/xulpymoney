@@ -2,8 +2,8 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 9.5.1
--- Dumped by pg_dump version 9.5.1
+-- Dumped from database version 9.5.2
+-- Dumped by pg_dump version 9.5.2
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -563,7 +563,7 @@ CREATE TABLE dividends (
     retencion numeric(100,2) NOT NULL,
     neto numeric(100,2),
     valorxaccion numeric(100,6),
-    fecha date,
+    fecha timestamp with time zone,
     id_opercuentas integer,
     comision numeric(100,2),
     id_conceptos integer DEFAULT 39 NOT NULL
@@ -750,7 +750,7 @@ CREATE TABLE opertarjetas (
     comentario text,
     id_tarjetas integer NOT NULL,
     pagado boolean NOT NULL,
-    fechapago date,
+    fechapago timestamp with time zone,
     id_opercuentas bigint,
     datetime timestamp with time zone
 );
@@ -6820,6 +6820,7 @@ INSERT INTO products VALUES ('Put IBEX 35 | 9000 € | 16/03/12 | B7620', 'FR001
 INSERT INTO products VALUES ('Put IBEX 35 | 9000 € | 16/09/11 | B4748', 'FR0010984666', 'EUR', 5, '|w_fr_SG|', 76605, NULL, NULL, NULL, NULL, 100, 'p', 1, 3, NULL, NULL, NULL, 'SGW#B4748||fr||False', true);
 INSERT INTO products VALUES ('Put IBEX 35 | 9000 € | 16/12/11 | B5149', 'FR0011002831', 'EUR', 5, '|w_fr_SG|', 76231, NULL, NULL, NULL, NULL, 100, 'p', 1, 3, NULL, NULL, NULL, 'SGW#B5149||fr||False', true);
 INSERT INTO products VALUES ('Put IBEX 35 | 9000 € | 18/11/11 | B9551', 'FR0011080803', 'EUR', 5, '|w_fr_SG|', 76039, NULL, NULL, NULL, NULL, 100, 'p', 1, 3, NULL, NULL, NULL, 'SGW#B9551||fr||False', true);
+INSERT INTO products VALUES ('Put IBEX 35 | 9000 € | 20/05/16 | F2644', 'LU1298303105', 'EUR', 5, '|w_fr_SG|', 81707, NULL, NULL, NULL, NULL, 100, 'p', 1, 1, '', NULL, NULL, NULL, false);
 INSERT INTO products VALUES ('Put IBEX 35 | 9000 € | 21/09/12 | C3300', 'FR0011168400', 'EUR', 5, '|w_fr_SG|', 76833, NULL, NULL, NULL, NULL, 100, 'p', 1, 3, NULL, NULL, NULL, 'SGW#C3300||fr||False', true);
 INSERT INTO products VALUES ('Put IBEX 35 | 9250 € | 17/02/12 | B9711', 'FR0011083906', 'EUR', 5, '|w_fr_SG|', 74818, NULL, NULL, NULL, NULL, 100, 'p', 1, 3, NULL, NULL, NULL, 'SGW#B9711||fr||False', true);
 INSERT INTO products VALUES ('Put IBEX 35 | 9250 € | 18/05/12 | C2139', 'FR0011145473', 'EUR', 5, '|w_fr_SG|', 79313, NULL, NULL, NULL, NULL, 100, 'p', 1, 3, NULL, NULL, NULL, 'SGW#C2139||fr||False', true);
@@ -8267,10 +8268,10 @@ INSERT INTO globals VALUES (16, 'mem/taxcapitalappreciationbelow', '0.5');
 INSERT INTO globals VALUES (17, 'mem/gainsyear', 'false');
 INSERT INTO globals VALUES (18, 'mem/favorites', '79329, 81680, -33');
 INSERT INTO globals VALUES (19, 'mem/fillfromyear', '2005');
-INSERT INTO globals VALUES (1, 'Version', '201603030541');
+INSERT INTO globals VALUES (1, 'Version', '201604170750');
 INSERT INTO globals VALUES (6, 'Admin mode', NULL);
 INSERT INTO globals VALUES (7, 'wdgIndexRange/spin', '2.0');
-INSERT INTO globals VALUES (8, 'wdgIndexRange/invertir', '2600');
+INSERT INTO globals VALUES (8, 'wdgIndexRange/invertir', '2825');
 INSERT INTO globals VALUES (9, 'wdgIndexRange/minimo', '1000');
 DELETE FROM products WHERE id<=0;
 ALTER SEQUENCE seq_conceptos START WITH 100 RESTART;
