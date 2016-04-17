@@ -19,7 +19,7 @@ class Update:
     def __init__(self, mem):
         self.mem=mem
         self.dbversion=self.get_database_version()    
-        self.lastcodeupdate=201603210933
+        self.lastcodeupdate=201604170750
 
    
     def get_database_version(self):
@@ -535,6 +535,13 @@ class Update:
             cur.close()
             self.mem.con.commit()
             self.set_database_version(201603210933)        
+        if self.dbversion<201604170750:
+            cur=self.mem.con.cursor()            
+            cur.execute("alter table dividends alter column fecha set data type timestamp with time zone using fecha  + interval '12 hours'")
+            cur.execute("alter table opertarjetas alter column fechapago set data type timestamp with time zone using fechapago  + interval '12 hours'")
+            cur.close()
+            self.mem.con.commit()
+            self.set_database_version(201604170750)        
 
             
         """       WARNING                    ADD ALWAYS LAST UPDATE CODE                         WARNING

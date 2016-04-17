@@ -15,6 +15,9 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
         self.setupUi(self)
         self.showMaximized()
         self.cmdDatos.setEnabled(False)     
+        self.wdgDtPago.show_microseconds(False)
+        self.wdgDtPago.show_timezone(False)
+        self.wdgDtPago.setTitle(self.tr("Select payment time"))
         
         self.mem=mem
          
@@ -30,7 +33,7 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
         self.tblCreditCardOpers.settings(self.mem, "frmAccountsReport")
         self.tblOpertarjetasHistoricas.settings(self.mem, "frmAccountsReport")
     
-        self.calPago.setDate(QDate.currentDate())
+        self.wdgDtPago.set(self.mem, None, self.mem.localzone)
         
         self.mem.currencies.qcombobox(self.cmbCurrency)
         self.mem.data.banks_active().qcombobox(self.cmbEB)
@@ -388,13 +391,12 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
  
     def on_cmdPago_released(self):
         comentario="{0}|{1}".format(self.creditcards.selected.name, self.creditcardoperations.selected.length())
-        fechapago=self.calPago.date().toPyDate()
-        c=AccountOperation(self.mem).init__create(fechapago, self.mem.conceptos.find_by_id(40), self.mem.tiposoperaciones.find_by_id(7), self.creditcardoperations.selected.balance(), comentario, self.account)
+        c=AccountOperation(self.mem).init__create(self.wdgDtPago.datetime(), self.mem.conceptos.find_by_id(40), self.mem.tiposoperaciones.find_by_id(7), self.creditcardoperations.selected.balance(), comentario, self.account)
         c.save()
         
         #Modifica el registro y lo pone como pagado y la datetime de pago y añade la opercuenta
         for o in self.creditcardoperations.selected.arr:
-            o.fechapago=fechapago
+            o.fechapago=self.wdgDtPago.datetime()
             o.pagado=True
             o.opercuenta=c
             o.save()
@@ -410,6 +412,7 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
         cur.execute("update opertarjetas set fechapago=null, pagado=false, id_opercuentas=null where id_opercuentas=%s", (id_opercuentas, ) )
         self.mem.con.commit()
         cur.close()     
+        self.accountoperations_reload()
         self.creditcardoperations_reload()
         self.tabOpertarjetasDiferidas.setCurrentIndex(0)     
         
@@ -431,7 +434,7 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
             cur.execute("select distinct(fechapago), id_opercuentas from opertarjetas where id_tarjetas=%s and fechapago is not null  order by fechapago;", (self.creditcards.selected.id, ))
             for row in cur:   
                 ao=AccountOperation(self.mem).init__db_query(row['id_opercuentas'])
-                self.cmbFechasPago.addItem(self.tr("{0} was made a paid of {1}").format(row['fechapago'],  self.mem.localcurrency.string(-ao.importe))    , ao.id)
+                self.cmbFechasPago.addItem(self.tr("{0} was made a paid of {1}").format(str(row['fechapago'])[0:19],  self.mem.localcurrency.string(-ao.importe))    , ao.id)
             self.cmbFechasPago.setCurrentIndex(cur.rowcount-1)
             cur.close()     
 

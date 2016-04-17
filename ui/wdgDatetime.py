@@ -47,6 +47,9 @@ class wdgDatetime(QWidget, Ui_wdgDatetime):
     def on_cmdNow_released(self):
         self.set(self.mem, datetime.datetime.now(), self.mem.localzone)
 
+    def setTitle(self, title):
+        self.grp.setTitle(title)
+
     def set(self,  mem, dt=None,  zone=None):
         """Can be called several times"""
         self.mem=mem
