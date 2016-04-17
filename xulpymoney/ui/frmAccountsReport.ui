@@ -49,7 +49,7 @@
      <item>
       <widget class="QTabWidget" name="tab">
        <property name="currentIndex">
-        <number>0</number>
+        <number>1</number>
        </property>
        <widget class="QWidget" name="tabMovimientos">
         <attribute name="icon">
@@ -433,7 +433,7 @@
                 <bool>false</bool>
                </property>
                <property name="currentIndex">
-                <number>1</number>
+                <number>0</number>
                </property>
                <widget class="QWidget" name="tab_2">
                 <attribute name="title">
@@ -511,6 +511,18 @@
                    </item>
                    <item>
                     <widget class="QGroupBox" name="grpPago">
+                     <property name="sizePolicy">
+                      <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+                       <horstretch>0</horstretch>
+                       <verstretch>0</verstretch>
+                      </sizepolicy>
+                     </property>
+                     <property name="maximumSize">
+                      <size>
+                       <width>400</width>
+                       <height>16777215</height>
+                      </size>
+                     </property>
                      <property name="title">
                       <string>Selected operations delayed payment</string>
                      </property>
@@ -537,21 +549,7 @@
                         <item>
                          <layout class="QHBoxLayout" name="horizontalLayout_10">
                           <item>
-                           <widget class="QLabel" name="label_5">
-                            <property name="text">
-                             <string>Payment date</string>
-                            </property>
-                           </widget>
-                          </item>
-                          <item>
-                           <widget class="QDateEdit" name="calPago">
-                            <property name="displayFormat">
-                             <string>yyyy/MM/dd</string>
-                            </property>
-                            <property name="calendarPopup">
-                             <bool>true</bool>
-                            </property>
-                           </widget>
+                           <widget class="wdgDatetime" name="wdgDtPago" native="true"/>
                           </item>
                          </layout>
                         </item>
@@ -833,6 +831,12 @@
    <class>wdgYearMonth</class>
    <extends>QWidget</extends>
    <header location="global">wdgYearMonth</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>wdgDatetime</class>
+   <extends>QWidget</extends>
+   <header location="global">wdgDatetime</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

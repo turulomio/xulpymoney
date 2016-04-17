@@ -16,6 +16,8 @@ class frmDividendsAdd(QDialog, Ui_frmDividendsAdd):
         
         self.neto=0
         self.tpc=0
+        self.wdgDT.show_microseconds(False)
+        self.wdgDT.show_timezone(False)
         if dividend==None:#insertar
             if self.inversion.product.type.id in (7, 9):#Bonds
                 self.mem.conceptos.load_bonds_qcombobox(self.cmb)
@@ -24,12 +26,13 @@ class frmDividendsAdd(QDialog, Ui_frmDividendsAdd):
             self.dividend=Dividend(self.mem)
             self.dividend.inversion=inversion
             self.cmd.setText(self.tr("Add new dividend"))
+            self.wdgDT.set(self.mem, None, self.mem.localzone)
         else:#modificar 
             if self.inversion.product.type.id in (7, 9):#Bonds
                 self.mem.conceptos.load_bonds_qcombobox(self.cmb, self.dividend.concepto) 
             else:
                 self.mem.conceptos.load_dividend_qcombobox(self.cmb, self.dividend.concepto) 
-            self.cal.setSelectedDate(self.dividend.fecha)
+            self.wdgDT.set(self.mem, self.dividend.fecha, self.mem.localzone)
             self.txtBruto.setText(self.dividend.bruto)
             self.txtNeto.setText(self.dividend.neto)
             self.txtRetencion.setText(self.dividend.retencion)
@@ -104,7 +107,7 @@ class frmDividendsAdd(QDialog, Ui_frmDividendsAdd):
             self.dividend.retencion=self.txtRetencion.decimal()
             self.dividend.neto=self.neto
             self.dividend.dpa=self.txtDPA.decimal()
-            self.dividend.fecha=self.cal.selectedDate().toPyDate()
+            self.dividend.fecha=self.wdgDT.datetime()
             self.dividend.comision=self.txtComision.decimal()
         except:            
             m=QMessageBox()

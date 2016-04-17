@@ -242,7 +242,6 @@ class SetCommons:
         
     def order_by_name(self):
         """Orders the Set using self.arr"""
-        self.arr=sorted(self.arr, key=lambda c: c.name,  reverse=False)   
         try:
             self.arr=sorted(self.arr, key=lambda c: c.name,  reverse=False)       
             return True
@@ -1196,16 +1195,16 @@ class SetDividends:
             sumbruto=sumbruto+d.bruto
             sumretencion=sumretencion+d.retencion
             sumcomision=sumcomision+d.comision
-            table.setItem(i, 0, QTableWidgetItem(str(d.fecha)))
+            table.setItem(i, 0, qdatetime(d.fecha, self.mem.localzone))
             if show_investment==True:
                 table.setItem(i, diff, qleft(d.inversion.name))
-            table.setItem(i, diff+1, QTableWidgetItem(str(d.opercuenta.concepto.name)))
+            table.setItem(i, diff+1, qleft(d.opercuenta.concepto.name))
             table.setItem(i, diff+2, self.mem.localcurrency.qtablewidgetitem(d.bruto))
             table.setItem(i, diff+3, self.mem.localcurrency.qtablewidgetitem(d.retencion))
             table.setItem(i, diff+4, self.mem.localcurrency.qtablewidgetitem(d.comision))
             table.setItem(i, diff+5, self.mem.localcurrency.qtablewidgetitem(d.neto))
             table.setItem(i, diff+6, self.mem.localcurrency.qtablewidgetitem(d.dpa))
-        table.setItem(len(self.arr), diff+1, QTableWidgetItem("TOTAL"))
+        table.setItem(len(self.arr), diff+1, qleft(QApplication.translate("core","TOTAL")))
         table.setItem(len(self.arr), diff+2, self.mem.localcurrency.qtablewidgetitem(sumbruto))
         table.setItem(len(self.arr), diff+3, self.mem.localcurrency.qtablewidgetitem(sumretencion))
         table.setItem(len(self.arr), diff+4, self.mem.localcurrency.qtablewidgetitem(sumcomision))
