@@ -1180,12 +1180,12 @@ Do you want to activate it?</source>
     <message>
         <location filename="../libxulpymoney.py" line="4183"/>
         <source>% from current</source>
-        <translation type="unfinished"></translation>
+        <translation>% desde actual</translation>
     </message>
     <message>
         <location filename="../libxulpymoney.py" line="423"/>
         <source>% selling point</source>
-        <translation type="unfinished"></translation>
+        <translation>% al punto de venta</translation>
     </message>
 </context>
 <context>
@@ -1416,7 +1416,7 @@ Do you want to activate it?</source>
     <message>
         <location filename="../libxulpymoney.py" line="1209"/>
         <source>TOTAL</source>
-        <translation type="unfinished">TOTAL</translation>
+        <translation>TOTAL</translation>
     </message>
 </context>
 <context>
@@ -1871,7 +1871,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../ui/frmAccountsReport.py" line="20"/>
         <source>Select payment time</source>
-        <translation type="unfinished"></translation>
+        <translation>Selecciona el momento del pago</translation>
     </message>
 </context>
 <context>
@@ -3619,12 +3619,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../ui/frmProductReport.py" line="159"/>
         <source>Product prices are updated automatically</source>
-        <translation type="unfinished"></translation>
+        <translation>Los precios de los productos son actualizados automáticamente</translation>
     </message>
     <message>
         <location filename="../ui/frmProductReport.py" line="161"/>
         <source>Product prices are not updated automatically</source>
-        <translation type="unfinished"></translation>
+        <translation>Los precios de los productos no son actualizados automáticamente</translation>
     </message>
 </context>
 <context>
@@ -6111,42 +6111,42 @@ Diferencia diaria: {5}. Edad media de las inversiones: {6}</translation>
     <message>
         <location filename="../ui/Ui_wdgQuotesUpdate.py" line="118"/>
         <source>Auxiliar tables</source>
-        <translation type="unfinished">Tablas auxiliares</translation>
+        <translation>Tablas auxiliares</translation>
     </message>
     <message>
         <location filename="../ui/Ui_wdgQuotesUpdate.py" line="119"/>
         <source>If it&apos;s unchecked, Xulpymoney will update all products marked as autoupdate</source>
-        <translation type="unfinished"></translation>
+        <translation>Si no está marcado. Xulpymoney actualizará todos los productos marcados como actualizables automáticamente</translation>
     </message>
     <message>
         <location filename="../ui/Ui_wdgQuotesUpdate.py" line="120"/>
         <source>Update only investments of the user</source>
-        <translation type="unfinished"></translation>
+        <translation>Actualizar solo las inversiones del usuario</translation>
     </message>
     <message>
         <location filename="../ui/Ui_wdgQuotesUpdate.py" line="121"/>
         <source>Intraday sources</source>
-        <translation type="unfinished"></translation>
+        <translation>Fuentes intradía</translation>
     </message>
     <message>
         <location filename="../ui/Ui_wdgQuotesUpdate.py" line="122"/>
         <source>Update all intraday sources</source>
-        <translation type="unfinished"></translation>
+        <translation>Actualizar todas las fuentes intradía</translation>
     </message>
     <message>
         <location filename="../ui/Ui_wdgQuotesUpdate.py" line="123"/>
         <source>Daily sources</source>
-        <translation type="unfinished"></translation>
+        <translation>Fuentes diarias</translation>
     </message>
     <message>
         <location filename="../ui/Ui_wdgQuotesUpdate.py" line="124"/>
         <source>Update all daily sources</source>
-        <translation type="unfinished"></translation>
+        <translation>Actualizar todas las fuentes diarias</translation>
     </message>
     <message>
         <location filename="../ui/Ui_wdgQuotesUpdate.py" line="125"/>
         <source>Update all sources</source>
-        <translation type="unfinished"></translation>
+        <translation>Actualizar todas las fuentes</translation>
     </message>
 </context>
 <context>
