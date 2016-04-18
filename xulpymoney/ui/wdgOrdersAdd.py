@@ -15,7 +15,7 @@ class wdgOrdersAdd(QWidget, Ui_wdgOrdersAdd):
         if order==None:
             self.lbl.setText("Add new order")
             self.deDate.setDate(datetime.date.today())
-            self.deExpiration.setDate(datetime.date.today()+datetime.timedelta(days=1))
+            self.deExpiration.setDate(datetime.date.today())
         else:
             self.lbl.setText("Edit order")
             self.deDate.setDate(self.order.date)
