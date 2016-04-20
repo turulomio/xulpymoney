@@ -2450,7 +2450,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmInvestmentReport.py" line="407"/>
+        <location filename="../ui/frmInvestmentReport.py" line="411"/>
         <source>Selected: {0}</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2550,7 +2550,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmInvestmentReport.py" line="285"/>
+        <location filename="../ui/frmInvestmentReport.py" line="289"/>
         <source>You must select a product to continue.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2570,7 +2570,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmInvestmentReport.py" line="403"/>
+        <location filename="../ui/frmInvestmentReport.py" line="407"/>
         <source>Show in range report</source>
         <translation type="unfinished"></translation>
     </message>
