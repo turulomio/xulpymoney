@@ -251,6 +251,8 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
         
         self.update_tables()
 
+        
+        
     def on_chkHistoricalDividends_stateChanged(self, state):
         dtfo=self.inversion.op_actual.datetime_first_operation()
         self.tblDividends.clearSelection()
@@ -273,6 +275,8 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
     def on_cmbTipoInvestment_currentIndexChanged(self, index):
         self.cmdInvestment.setEnabled(True)
     def on_calExpiration_selectionChanged(self):
+        self.cmdInvestment.setEnabled(True)
+    def on_chkExpiration_stateChanged(self, state):
         self.cmdInvestment.setEnabled(True)
         
     def on_cmdToday_released(self):
