@@ -19,7 +19,7 @@ class Update:
     def __init__(self, mem):
         self.mem=mem
         self.dbversion=self.get_database_version()    
-        self.lastcodeupdate=201604170750
+        self.lastcodeupdate=201604220610
 
    
     def get_database_version(self):
@@ -542,7 +542,13 @@ class Update:
             cur.close()
             self.mem.con.commit()
             self.set_database_version(201604170750)        
-
+        if self.dbversion<201604220610:
+            cur=self.mem.con.cursor()            
+            cur.execute("insert into conceptos values(67,'{}',2,false)".format(QApplication.translate("Core","Credit card refund")))     
+            cur.close()
+            self.mem.con.commit()
+            self.set_database_version(201604220610)        
+     
             
         """       WARNING                    ADD ALWAYS LAST UPDATE CODE                         WARNING
         

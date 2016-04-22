@@ -820,6 +820,18 @@
     <string>Delete associated investment operation</string>
    </property>
   </action>
+  <action name="actionCreditCardOperRefund">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/Money.png</normaloff>:/xulpymoney/Money.png</iconset>
+   </property>
+   <property name="text">
+    <string>Credit card operation refund</string>
+   </property>
+   <property name="toolTip">
+    <string>Credit card operation refund</string>
+   </property>
+  </action>
  </widget>
  <customwidgets>
   <customwidget>
