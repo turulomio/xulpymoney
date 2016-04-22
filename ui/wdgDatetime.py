@@ -15,6 +15,7 @@ class wdgDatetime(QWidget, Ui_wdgDatetime):
         QWidget.__init__(self,  parent)
         self.setupUi(self)
         self.mem=None
+        self.teMicroseconds.setSuffix(self.tr(" \u03bcs"))        
         self.showMicroseconds=True
         self.showSeconds=True
         self.showZone=True

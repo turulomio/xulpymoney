@@ -336,7 +336,7 @@
      <item>
       <widget class="QPushButton" name="cmd">
        <property name="text">
-        <string>Set the selling point to 0 €</string>
+        <string>Set the selling point</string>
        </property>
       </widget>
      </item>
