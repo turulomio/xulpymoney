@@ -3894,11 +3894,6 @@ p, li { white-space: pre-wrap; }
         <source>Include shares of the same product from different investments</source>
         <translation type="unfinished"></translation>
     </message>
-    <message encoding="UTF-8">
-        <location filename="../ui/Ui_frmSellingPoint.py" line="236"/>
-        <source>Set the selling point to 0 €</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <location filename="../ui/frmSellingPoint.py" line="19"/>
         <source>You can&apos;t set a selling price to a unsaved investment</source>
@@ -3932,6 +3927,11 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../ui/Ui_frmSellingPoint.py" line="201"/>
         <source>Select percentage to benchmark SMA200</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/Ui_frmSellingPoint.py" line="236"/>
+        <source>Set the selling point</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -4711,7 +4711,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
 </context>
-<context encoding="UTF-8">
+<context>
     <name>wdgDatetime</name>
     <message>
         <location filename="../ui/Ui_wdgDatetime.py" line="66"/>
@@ -4733,25 +4733,25 @@ p, li { white-space: pre-wrap; }
         <source>Select microseconds</source>
         <translation type="unfinished"></translation>
     </message>
-    <message encoding="UTF-8">
-        <location filename="../ui/Ui_wdgDatetime.py" line="70"/>
-        <source> μs</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
-        <location filename="../ui/Ui_wdgDatetime.py" line="71"/>
+        <location filename="../ui/Ui_wdgDatetime.py" line="70"/>
         <source>Set current time</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgDatetime.py" line="72"/>
+        <location filename="../ui/Ui_wdgDatetime.py" line="71"/>
         <source>Now</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgDatetime.py" line="107"/>
+        <location filename="../ui/wdgDatetime.py" line="108"/>
         <source>Selected datetime:
 {0}</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/wdgDatetime.py" line="18"/>
+        <source> u03bcs</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

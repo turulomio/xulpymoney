@@ -1190,12 +1190,12 @@ Do you want to activate it?</source>
     <message>
         <location filename="../libxulpymoney.py" line="2591"/>
         <source>Credit card refund</source>
-        <translation type="unfinished"></translation>
+        <translation>Devolución de tarjeta de crédito</translation>
     </message>
     <message>
         <location filename="../libxulpymoney.py" line="3607"/>
         <source>Refund of {} credit card payment which had an amount of {}. {}</source>
-        <translation type="unfinished"></translation>
+        <translation>Devolución del pago de tarjeta de credito de fecha {} y cantidad {}. {}</translation>
     </message>
 </context>
 <context>
@@ -1628,12 +1628,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../ui/frmAccountOperationsAdd.py" line="34"/>
         <source>Credit card operation refund</source>
-        <translation type="unfinished"></translation>
+        <translation>Devolución de una operación de tarjeta de crédito</translation>
     </message>
     <message>
         <location filename="../ui/frmAccountOperationsAdd.py" line="52"/>
         <source>Credit card: {}</source>
-        <translation type="unfinished"></translation>
+        <translation>Tarjeta de crédito: {}</translation>
     </message>
 </context>
 <context>
@@ -1891,7 +1891,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../ui/Ui_frmAccountsReport.py" line="471"/>
         <source>Credit card operation refund</source>
-        <translation type="unfinished"></translation>
+        <translation>Devolución de una operación de tarjeta de crédito</translation>
     </message>
 </context>
 <context>
@@ -3933,10 +3933,10 @@ p, li { white-space: pre-wrap; }
         <source>Select percentage to benchmark SMA200</source>
         <translation>Selecciona el porcentage de la media móvil 200 del índice</translation>
     </message>
-    <message encoding="UTF-8">
+    <message>
         <location filename="../ui/Ui_frmSellingPoint.py" line="236"/>
-        <source>Set the selling point to 0 €</source>
-        <translation type="unfinished"></translation>
+        <source>Set the selling point</source>
+        <translation>Establece el punto de venta</translation>
     </message>
 </context>
 <context>
@@ -4716,7 +4716,7 @@ p, li { white-space: pre-wrap; }
         <translation>No puedes cerrar esta pestaña</translation>
     </message>
 </context>
-<context encoding="UTF-8">
+<context>
     <name>wdgDatetime</name>
     <message>
         <location filename="../ui/Ui_wdgDatetime.py" line="66"/>
@@ -4739,26 +4739,26 @@ p, li { white-space: pre-wrap; }
         <translation>Selecciona los microsegundos</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgDatetime.py" line="71"/>
+        <location filename="../ui/Ui_wdgDatetime.py" line="70"/>
         <source>Set current time</source>
         <translation>Poner la hora actual</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgDatetime.py" line="72"/>
+        <location filename="../ui/Ui_wdgDatetime.py" line="71"/>
         <source>Now</source>
         <translation>Ahora</translation>
     </message>
     <message>
-        <location filename="../ui/wdgDatetime.py" line="107"/>
+        <location filename="../ui/wdgDatetime.py" line="108"/>
         <source>Selected datetime:
 {0}</source>
         <translation>Fecha y hora seleccionada:
 {0}</translation>
     </message>
-    <message encoding="UTF-8">
-        <location filename="../ui/Ui_wdgDatetime.py" line="70"/>
-        <source> μs</source>
-        <translation type="unfinished"></translation>
+    <message>
+        <location filename="../ui/wdgDatetime.py" line="18"/>
+        <source> u03bcs</source>
+        <translation> u03bcs</translation>
     </message>
 </context>
 <context>
