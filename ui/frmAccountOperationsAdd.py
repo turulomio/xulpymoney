@@ -1,4 +1,3 @@
-
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from Ui_frmAccountOperationsAdd import *
@@ -7,12 +6,14 @@ from libxulpymoney import *
 class frmAccountOperationsAdd(QDialog, Ui_frmAccountOperationsAdd):
     OperAccountIBMed=pyqtSignal()
     OperCreditCardIBMed=pyqtSignal()
-    def __init__(self, mem, cuentas, cuenta, opercuenta=None, tarjeta=None ,  opertarjeta=None ,  parent=None):
+    def __init__(self, mem, cuentas=None, cuenta=None, opercuenta=None, tarjeta=None ,  opertarjeta=None ,  parent=None,  refund=False):
         """TIPOS DE ENTRADAS:        
          1   selAccount=x: Inserción de Opercuentas y edición de cuentas
-         2   selAccount=x, selMovimiento=x Modificación de opercuentas
-         3   selAccount=x, selMovimiento=x , tarjeta=x, Inserción de opertarjetas
-         4   selAccount=x, selMovimiento=x , tarjeta=x, opertarjeta Modificación de opertarjetas"""
+         2   selAccount=x, opercuenta=x Modificación de opercuentas e insecioon de opertarjetas a d´ebito
+         3   selAccount=x, opercuenta=None , tarjeta=x, Inserción de opertarjetas en diferido
+         4   selAccount=x, opercuenta=None , tarjeta=x, opertarjeta=x Modificación de opertarjetas
+         5   selAccount=None, opercuenta=None, tarjeta=None, opertarjeta=x, refund=True Refund of opertarjetas. 
+         """
         QWidget.__init__(self, parent)
         self.setupUi(self)
         self.mem=mem
@@ -21,15 +22,26 @@ class frmAccountOperationsAdd(QDialog, Ui_frmAccountOperationsAdd):
         self.opercuenta=opercuenta
         self.tarjeta=tarjeta
         self.opertarjeta=opertarjeta
+        self.refund=refund
 
         self.mem.conceptos.load_opercuentas_qcombobox(self.cmbConcepts)
         self.mem.data.accounts_active().qcombobox(self.cmbAccounts)
         self.wdgDT.show_microseconds(False)
 
-        if opertarjeta!=None:
-            self.setWindowTitle(self.tr("Credit card operation update"))
+        if self.account==None and self.opercuenta==None and self.tarjeta==None and self.opertarjeta!=None and  refund==True:
+            self.tipo=5
+            self.setWindowTitle(self.tr("Credit card: {}").format(self.opertarjeta.tarjeta.name))
+            self.lblTitulo.setText(self.tr("Credit card operation refund"))
+            self.cmbAccounts.setEnabled(False)
+            self.wdgDT.set(self.mem)
+            self.cmbConcepts.setCurrentIndex(self.cmbConcepts.findData(67))
+            self.cmbConcepts.setEnabled(False)
+            self.cmbAccounts.setCurrentIndex(self.cmbAccounts.findData(self.opertarjeta.tarjeta.account.id))
+            self.txtImporte.setText(-self.opertarjeta.importe)
+        elif opertarjeta!=None:
+            self.setWindowTitle(self.tr("Credit card: {}").format(self.opertarjeta.tarjeta.name))
             self.lblTitulo.setText(self.tr("Credit card operation update"))
-            self.cmbAccounts.hide()
+            self.cmbAccounts.setEnabled(False)
             self.tipo=4            
             self.wdgDT.set(self.mem, self.opertarjeta.datetime, self.mem.localzone)
             self.cmbConcepts.setCurrentIndex(self.cmbConcepts.findData(self.opertarjeta.concepto.id))
@@ -37,10 +49,10 @@ class frmAccountOperationsAdd(QDialog, Ui_frmAccountOperationsAdd):
             self.txtImporte.setText(str(self.opertarjeta.importe))
             self.txtComentario.setText(self.opertarjeta.comentario)
         elif tarjeta!=None:
-            self.setWindowTitle(self.tr("New credit card operation"))
+            self.setWindowTitle(self.tr("Credit card: {}").format(self.tarjeta.name))
             self.lblTitulo.setText(self.tr("New credit card operation"))
             self.wdgDT.set(self.mem)
-            self.cmbAccounts.hide()
+            self.cmbAccounts.setEnabled(False)
             self.tipo=3
         elif self.opercuenta!=None:
             self.tipo=2
@@ -114,7 +126,6 @@ class frmAccountOperationsAdd(QDialog, Ui_frmAccountOperationsAdd):
             self.opertarjeta=CreditCardOperation(self.mem).init__create(self.wdgDT.datetime(), concepto, concepto.tipooperacion, importe, comentario, self.tarjeta, False, None, None )
             self.opertarjeta.save()
             self.mem.con.commit()        
-#            self.tarjeta.op_diferido.append(self.opertarjeta)
             self.OperCreditCardIBMed.emit()
             self.wdgDT.set(self.mem, self.wdgDT.datetime()+datetime.timedelta(seconds=1), self.wdgDT.zone)
         elif self.tipo==4:            
@@ -124,6 +135,19 @@ class frmAccountOperationsAdd(QDialog, Ui_frmAccountOperationsAdd):
             self.opertarjeta.importe=importe
             self.opertarjeta.comentario=comentario
             self.opertarjeta.save()
+            self.mem.con.commit()        #Se debe hacer el commit antes para que al actualizar con el signal salga todos los datos
+            self.OperCreditCardIBMed.emit()
+            self.done(0)            
+        elif self.tipo==5:         
+            refund=CreditCardOperation(self.mem)
+            refund.datetime=self.wdgDT.datetime()
+            refund.concepto=concepto
+            refund.tarjeta=self.opertarjeta.tarjeta
+            refund.tipooperacion=concepto.tipooperacion
+            refund.pagado=False
+            refund.importe=importe
+            refund.comentario="Refund|{}|{}".format(self.opertarjeta.id, self.txtComentario.text())
+            refund.save()
             self.mem.con.commit()        #Se debe hacer el commit antes para que al actualizar con el signal salga todos los datos
             self.OperCreditCardIBMed.emit()
             self.done(0)            

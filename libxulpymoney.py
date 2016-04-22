@@ -2572,7 +2572,7 @@ class DBAdmin:
             cur.execute("insert into conceptos values(5,'{0}',3,false)".format(QApplication.translate("Core","Transfer. Destination")))
             cur.execute("insert into conceptos values(6,'{0}',2,false)".format(QApplication.translate("Core","Taxes. Returned")))
             cur.execute("insert into conceptos values(7,'{0}',1,true)".format(QApplication.translate("Core","Gas")))
-            cur.execute("insert into conceptos values(8,'{0}',1,true)".format(QApplication.translate("Core","Restaurant")))
+            cur.execute("insert into conceptos values(8,'{0}',1,true)".format(QApplication.translate("Core","Restaurant")))  
             cur.execute("insert into conceptos values(29,'{0}',4,false)".format(QApplication.translate("Core","Purchase investment product")))
             cur.execute("insert into conceptos values(35,'{0}',5,false)".format(QApplication.translate("Core","Sale investment product")))
             cur.execute("insert into conceptos values(37,'{0}',1,false)".format(QApplication.translate("Core","Taxes. Paid")))
@@ -2586,6 +2586,7 @@ class DBAdmin:
             cur.execute("insert into conceptos values(63,'{0}',1,false)".format(QApplication.translate("Core","Bonds. Running coupon payment")))
             cur.execute("insert into conceptos values(65,'{0}',2,false)".format(QApplication.translate("Core","Bonds. Running coupon collection")))
             cur.execute("insert into conceptos values(66,'{0}',2,false)".format(QApplication.translate("Core","Bonds. Coupon collection")))
+            cur.execute("insert into conceptos values(67,'{0}',2,false)".format(QApplication.translate("Core","Credit card refund")))          
             cur.close()
 #            return True
 #        except:
@@ -3556,7 +3557,20 @@ class CreditCardOperation:
         self.fechapago=fechapago
         self.opercuenta=opercuenta
         return self
-        
+            
+            
+    def init__db_query(self, id):
+        """Creates a CreditCardOperation querying database for an id_opertarjetas"""
+        if id==None:
+            return None
+        cur=self.mem.con.cursor()
+        cur.execute("select * from opertarjetas where id_opertarjetas=%s", (id, ))
+        for row in cur:
+            concepto=self.mem.conceptos.find_by_id(row['id_conceptos'])
+            self.init__db_row(row, concepto, concepto.tipooperacion, self.mem.data.creditcards.find_by_id(row['id_tarjetas']))
+        cur.close()
+        return self
+
     def init__db_row(self, row, concepto, tipooperacion, tarjeta, opercuenta=None):
         return self.init__create(row['datetime'],  concepto, tipooperacion, row['importe'], row['comentario'], tarjeta, row['pagado'], row['fechapago'], opercuenta, row['id_opertarjetas'])
         
@@ -3579,7 +3593,18 @@ class CreditCardOperation:
                 cur.execute("update opertarjetas set datetime=%s, id_conceptos=%s, id_tiposoperaciones=%s, importe=%s, comentario=%s, id_tarjetas=%s, pagado=%s, fechapago=%s, id_opercuentas=%s where id_opertarjetas=%s", (self.datetime, self.concepto.id, self.tipooperacion.id,  self.importe,  self.comentario, self.tarjeta.id, self.pagado, self.fechapago, self.opercuenta.id, self.id))
         cur.close()
         
-        
+    def comment(self):
+        """Función que genera un comentario parseado según el tipo de operación o concepto
+        Opertarjetas refund:
+            El comentario es : "Refund|id_opertarjetas|lastcomment"
+        """
+        c=self.comentario.split("|")
+        if self.concepto.id==67 and c[0]=="Refund":#CreditCardOperation refund
+            opertarjeta=CreditCardOperation(self.mem).init__db_query(int(c[1]))        
+            return QApplication.translate("Core", "Refund of {} credit card payment which had an amount of {}. {}").format(str(opertarjeta.datetime)[0:19], opertarjeta.tarjeta.account.currency.string(opertarjeta.importe), c[2])
+        else:
+            return self.comentario 
+
 class Order:
     def __init__(self, mem):
         self.mem=mem
@@ -3969,7 +3994,7 @@ class SetCreditCardOperations:
             tabla.setItem(rownumber, 1, qleft(a.concepto.name))
             tabla.setItem(rownumber, 2, self.mem.localcurrency.qtablewidgetitem(a.importe))
             tabla.setItem(rownumber, 3, self.mem.localcurrency.qtablewidgetitem(balance))
-            tabla.setItem(rownumber, 4, qleft(a.comentario))
+            tabla.setItem(rownumber, 4, qleft(a.comment()))
 class SetOperationTypes(SetCommons):
     def __init__(self, mem):
         SetCommons.__init__(self)

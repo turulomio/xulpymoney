@@ -222,7 +222,6 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
         else:            
             w=frmAccountOperationsAdd(self.mem, self.mem.data.accounts_active,  self.account, None, self.creditcards.selected)
             w.OperCreditCardIBMed.connect(self.creditcardoperations_reload)
-            w.lblTitulo.setText(self.tr("CreditCard {0}").format(self.creditcards.selected.name))
             w.exec_()
             
     @QtCore.pyqtSlot() 
@@ -231,7 +230,6 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
         selOperCreditCard=self.creditcardoperations.selected.arr[0]
         w=frmAccountOperationsAdd(self.mem, self.mem.data.accounts_active,  self.account, None, self.creditcards.selected, selOperCreditCard)
         w.OperCreditCardIBMed.connect(self.creditcardoperations_reload)
-        w.lblTitulo.setText(self.tr("CreditCard {0}").format(self.creditcards.selected.name))
         w.exec_()
 
     @QtCore.pyqtSlot() 
@@ -241,7 +239,13 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
             self.creditcardoperations.arr.remove(o)
         self.mem.con.commit()
         self.creditcardoperations_reload()
-
+        
+    @QtCore.pyqtSlot() 
+    def on_actionCreditCardOperRefund_triggered(self):
+        w=frmAccountOperationsAdd(self.mem, opertarjeta=self.creditcardoperations.selected.arr[0], refund=True)
+        w.OperCreditCardIBMed.connect(self.creditcardoperations_reload)
+        w.exec_()
+            
     @QtCore.pyqtSlot() 
     def on_actionInvestmentOperationDelete_triggered(self):
         investmentoperation=InvestmentOperation(self.mem).init__from_accountoperation(self.accountoperations.selected)
@@ -363,14 +367,21 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
         if self.creditcardoperations.selected.length()!=1: # 0 o más de 1
             self.actionCreditCardOperDelete.setEnabled(False)
             self.actionCreditCardOperEdit.setEnabled(False)
+            self.actionCreditCardOperRefund.setEnabled(False)
         else:
             self.actionCreditCardOperDelete.setEnabled(True)
             self.actionCreditCardOperEdit.setEnabled(True)
+            if self.creditcards.selected.pagodiferido==True and self.creditcardoperations.selected.arr[0].importe<0:#Only difered purchases
+                self.actionCreditCardOperRefund.setEnabled(True)
+            else:
+                self.actionCreditCardOperRefund.setEnabled(False)
             
         menu=QMenu()
         menu.addAction(self.actionCreditCardOperAdd)
         menu.addAction(self.actionCreditCardOperEdit)
         menu.addAction(self.actionCreditCardOperDelete)
+        menu.addSeparator()
+        menu.addAction(self.actionCreditCardOperRefund)
         menu.exec_(self.tblCreditCardOpers.mapToGlobal(pos))
 
 
