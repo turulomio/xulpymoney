@@ -1152,6 +1152,14 @@ ALTER TABLE ONLY products
 
 
 --
+-- Name: opercuentasdeoperinversiones_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY opercuentasdeoperinversiones
+    ADD CONSTRAINT opercuentasdeoperinversiones_pk PRIMARY KEY (id_opercuentas);
+
+
+--
 -- Name: opertarjetas_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1224,52 +1232,10 @@ ALTER TABLE ONLY tarjetas
 
 
 --
--- Name: annualtargets_index_year; Type: INDEX; Schema: public; Owner: postgres
---
-
-CREATE INDEX annualtargets_index_year ON annualtargets USING btree (year);
-
-
---
--- Name: conceptos-id_conceptos-index; Type: INDEX; Schema: public; Owner: postgres
---
-
-CREATE UNIQUE INDEX "conceptos-id_conceptos-index" ON conceptos USING btree (id_conceptos);
-
-
---
--- Name: cuentas-id_cuentas-index; Type: INDEX; Schema: public; Owner: postgres
---
-
-CREATE INDEX "cuentas-id_cuentas-index" ON cuentas USING btree (id_cuentas);
-
-
---
 -- Name: dividendos-id_inversiones-index; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX "dividendos-id_inversiones-index" ON dividends USING btree (id_inversiones);
-
-
---
--- Name: dividendosestimaciones_id; Type: INDEX; Schema: public; Owner: postgres
---
-
-CREATE INDEX dividendosestimaciones_id ON estimations_dps USING btree (id);
-
-
---
--- Name: entidadesbancarias-id_entidadesbancarias-index; Type: INDEX; Schema: public; Owner: postgres
---
-
-CREATE UNIQUE INDEX "entidadesbancarias-id_entidadesbancarias-index" ON entidadesbancarias USING btree (id_entidadesbancarias);
-
-
---
--- Name: estimaciones_eps; Type: INDEX; Schema: public; Owner: postgres
---
-
-CREATE INDEX estimaciones_eps ON estimations_eps USING btree (id);
 
 
 --
@@ -1280,20 +1246,6 @@ CREATE INDEX "inversiones-id_cuentas-index" ON inversiones USING btree (id_cuent
 
 
 --
--- Name: inversiones-id_inversiones-index; Type: INDEX; Schema: public; Owner: postgres
---
-
-CREATE UNIQUE INDEX "inversiones-id_inversiones-index" ON inversiones USING btree (id_inversiones);
-
-
---
--- Name: investments_id; Type: INDEX; Schema: public; Owner: postgres
---
-
-CREATE INDEX investments_id ON products USING btree (id);
-
-
---
 -- Name: opercuentas-id_cuentas-index; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -1301,31 +1253,10 @@ CREATE INDEX "opercuentas-id_cuentas-index" ON opercuentas USING btree (id_cuent
 
 
 --
--- Name: opercuentas-id_opercuentas-index; Type: INDEX; Schema: public; Owner: postgres
---
-
-CREATE UNIQUE INDEX "opercuentas-id_opercuentas-index" ON opercuentas USING btree (id_opercuentas);
-
-
---
 -- Name: operinversiones-id_inversiones-index; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX "operinversiones-id_inversiones-index" ON operinversiones USING btree (id_inversiones);
-
-
---
--- Name: operinversiones-id_operinversiones-index; Type: INDEX; Schema: public; Owner: postgres
---
-
-CREATE UNIQUE INDEX "operinversiones-id_operinversiones-index" ON operinversiones USING btree (id_operinversiones);
-
-
---
--- Name: opertarjetas-id_opertarjetas-index; Type: INDEX; Schema: public; Owner: postgres
---
-
-CREATE INDEX "opertarjetas-id_opertarjetas-index" ON opertarjetas USING btree (id_opertarjetas);
 
 
 --
@@ -8269,10 +8200,10 @@ INSERT INTO globals VALUES (16, 'mem/taxcapitalappreciationbelow', '0.5');
 INSERT INTO globals VALUES (17, 'mem/gainsyear', 'false');
 INSERT INTO globals VALUES (18, 'mem/favorites', '79329, 81680, -33');
 INSERT INTO globals VALUES (19, 'mem/fillfromyear', '2005');
-INSERT INTO globals VALUES (1, 'Version', '201604220610');
+INSERT INTO globals VALUES (1, 'Version', '201604240810');
 INSERT INTO globals VALUES (6, 'Admin mode', NULL);
 INSERT INTO globals VALUES (7, 'wdgIndexRange/spin', '2.0');
-INSERT INTO globals VALUES (8, 'wdgIndexRange/invertir', '2600');
+INSERT INTO globals VALUES (8, 'wdgIndexRange/invertir', '2825');
 INSERT INTO globals VALUES (9, 'wdgIndexRange/minimo', '1000');
 DELETE FROM products WHERE id<=0;
 ALTER SEQUENCE seq_conceptos START WITH 100 RESTART;

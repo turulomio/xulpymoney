@@ -19,7 +19,7 @@ class Update:
     def __init__(self, mem):
         self.mem=mem
         self.dbversion=self.get_database_version()    
-        self.lastcodeupdate=201604220610
+        self.lastcodeupdate=201604240810
 
    
     def get_database_version(self):
@@ -548,6 +548,26 @@ class Update:
             cur.close()
             self.mem.con.commit()
             self.set_database_version(201604220610)        
+        if self.dbversion<201604240810:
+            cur=self.mem.con.cursor()            
+            cur.execute("drop index annualtargets_index_year")     
+            cur.execute('drop index "conceptos-id_conceptos-index"')     
+            cur.execute('drop index "cuentas-id_cuentas-index"')     
+            cur.execute('drop index "entidadesbancarias-id_entidadesbancarias-index" cascade')     
+            cur.execute('drop index dividendosestimaciones_id')     
+            cur.execute('drop index estimaciones_eps')     
+            cur.execute('drop index "inversiones-id_inversiones-index"')     
+            cur.execute('drop index "opercuentas-id_opercuentas-index"')     
+            cur.execute('drop index "operinversiones-id_operinversiones-index"')     
+            cur.execute('drop index "opertarjetas-id_opertarjetas-index"')     
+            cur.execute('drop index investments_id')     
+            cur.execute('ALTER TABLE opercuentasdeoperinversiones ADD CONSTRAINT opercuentasdeoperinversiones_pk PRIMARY KEY (id_opercuentas)')
+            cur.execute("ALTER TABLE cuentas ADD CONSTRAINT cuentas_fk_id_entidadesbancarias FOREIGN KEY (id_entidadesbancarias) REFERENCES entidadesbancarias(id_entidadesbancarias) ON UPDATE NO ACTION ON DELETE RESTRICT")
+            
+            #cuentas_fk_id_entidadesbancarias  
+            cur.close()
+            self.mem.con.commit()
+            self.set_database_version(201604240810)        
      
             
         """       WARNING                    ADD ALWAYS LAST UPDATE CODE                         WARNING
