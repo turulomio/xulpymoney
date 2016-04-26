@@ -1,8 +1,13 @@
 #!/usr/bin/python3
 import sys
 import os
+import platform
 
-sys.path.append("/usr/lib/xulpymoney")
+if platform.system()=="Windows":
+    sys.path.append("ui/")
+    sys.path.append("images/")
+else:
+    sys.path.append("/usr/lib/xulpymoney")
 
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *

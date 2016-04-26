@@ -12,7 +12,7 @@ from libqmessagebox import *
 
 from decimal import *
 
-version="0.1"
+version="20150301"
 version_date=datetime.date(2015,3,1)
 class Connection(QObject):
     """Futuro conection object"""
