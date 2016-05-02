@@ -12,8 +12,8 @@ from libqmessagebox import *
 
 from decimal import *
 
-version="20150301"
-version_date=datetime.date(2015,3,1)
+version="20160502"
+version_date=datetime.date(2016, 5, 2)
 class Connection(QObject):
     """Futuro conection object"""
     inactivity_timeout=pyqtSignal()

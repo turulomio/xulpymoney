@@ -3,7 +3,7 @@ import sys
 import os
 import subprocess
 import platform
-import PyQt5
+import pytz
 sys.path.append('ui')
 sys.path.append('images')
 from libxulpymoney import version
@@ -64,6 +64,7 @@ include_files.append(("i18n/xulpymoney_ru.qm", "i18n/xulpymoney_ru.qm"))
 if sys.platform=='win32':
       base = 'Win32GUI'
       include_files.append("xulpymoney.iss")
+      include_files.append(pytz.__path__[0])
       build_msi_options = {
            'upgrade_code': '{3849730B-2375-4F76-B4A5-347857A23B9B}',
            'add_to_path': False,
@@ -71,7 +72,7 @@ if sys.platform=='win32':
             }
  
       build_exe_options = dict(
-            includes = ['PyQt5.QtNetwork', 'PyQt5.QtWebKit', 'PyQt5.QtPrintSupport', 'matplotlib.backends.backend_tkagg', 'tkinter', 'tkinter.filedialog', 'pytz' ],
+            includes = ['PyQt5.QtNetwork', 'PyQt5.QtWebKit', 'PyQt5.QtPrintSupport', 'matplotlib.backends.backend_tkagg', 'tkinter', 'tkinter.filedialog', 'setuptools' ],
             excludes=[], 
             include_files=include_files)
 

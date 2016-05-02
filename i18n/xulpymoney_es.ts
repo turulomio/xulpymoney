@@ -1109,7 +1109,7 @@
         <translation>días</translation>
     </message>
     <message>
-        <location filename="../xulpymoney.py" line="37"/>
+        <location filename="../xulpymoney.py" line="31"/>
         <source>Please login to the xulpymoney database</source>
         <translation>Por favor, autentíquese en la base de datos de xulpymoney</translation>
     </message>
