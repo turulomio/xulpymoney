@@ -12,7 +12,7 @@ class frmAccess(QDialog, Ui_frmAccess):
         self.setModal(True)
         self.setupUi(self)
         self.parent=parent
-        self.mem.languages.qcombobox(self.cmbLanguages,self.mem.language)
+        self.mem.languages.qcombobox(self.cmbLanguages, self.mem.language)
         self.setPixmap(QPixmap(":xulpymoney/coins.png"))
         self.setTitle(self.tr("Xulpymoney - Access"))
         self.con=Connection()#Pointer to connection

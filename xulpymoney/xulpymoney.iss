@@ -49,8 +49,9 @@ Source: "library.zip"; DestDir: "{app}"; Flags: ignoreversion
 Source: "platforms\*"; DestDir: "{app}\platforms\"; Flags: ignoreversion recursesubdirs createallsubdirs     
 Source: "imageformats\*"; DestDir: "{app}\imageformats\"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "mpl-data\*"; DestDir: "{app}\mpl-data\"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "tcl\*"; DestDir: "{app}\tcl\"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "tcl\*"; DestDir: "{app}\tcl\"; Flags: ignoreversion recursesubdirs createallsubdirs    
 Source: "tk\*"; DestDir: "{app}\tk\"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "pytz\*"; DestDir: "{app}\pytz\"; Flags: ignoreversion recursesubdirs createallsubdirs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]

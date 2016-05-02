@@ -1,6 +1,5 @@
 #!/usr/bin/python3
 import sys
-import os
 import platform
 
 if platform.system()=="Windows":
@@ -14,11 +13,6 @@ from PyQt5.QtGui import *
 import libdbupdates
 from libqmessagebox import *
 from frmMain import *
-
-try:
-    os.makedirs(os.environ['HOME'] + "/.xulpymoney/")
-except:
-    pass
 
 app = QApplication(sys.argv)
 app.setOrganizationName("Mariano Muñoz ©")
