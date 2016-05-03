@@ -322,6 +322,7 @@ class SetInvestments(SetCommons):
         cur.execute(sql)#"Select * from inversiones"
         if progress==True:
             pd= QProgressDialog(QApplication.translate("Core","Loading {0} investments from database").format(cur.rowcount),None, 0,cur.rowcount)
+            pd.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
             pd.setModal(True)
             pd.setWindowTitle(QApplication.translate("Core","Loading investments..."))
             pd.forceShow()
@@ -714,6 +715,7 @@ class SetProducts(SetCommons):
         cur.execute(sql)#"select * from products where id in ("+lista+")" 
         if progress==True:
             pd= QProgressDialog(QApplication.translate("Core","Loading {0} products from database").format(cur.rowcount),None, 0,cur.rowcount)
+            pd.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
             pd.setModal(True)
             pd.setWindowTitle(QApplication.translate("Core","Loading products..."))
             pd.forceShow()
@@ -5024,6 +5026,7 @@ class SetQuotesAllIntradays:
             pd= QProgressDialog(QApplication.translate("Core","Purging innecesary data"), QApplication.translate("Core","Cancel"), 0,len(self.arr))
             pd.setModal(True)
             pd.setWindowTitle(QApplication.translate("Core","Purging quotes"))
+            pd.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
             pd.setMinimumDuration(0)          
         counter=0
         for i, sqi in enumerate(self.arr):

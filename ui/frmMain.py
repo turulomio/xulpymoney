@@ -336,6 +336,7 @@ class frmMain(QMainWindow, Ui_frmMain):
             pd= QProgressDialog(QApplication.translate("Core","Syncing databases from {} ({}) to {} ({})").format(source.txtServer.text(), source.txtDB.text(), self.mem.con.server, self.mem.con.db), None, 0, 10)
             pd.setModal(True)
             pd.setWindowTitle(QApplication.translate("Core","Processing products..."))
+            pd.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
             pd.forceShow()
             
             sync_data(source.con, self.mem.con, pd)
@@ -517,6 +518,7 @@ class frmMain(QMainWindow, Ui_frmMain):
         pd= QProgressDialog(QApplication.translate("Core","Purging innecesary data from all products"), QApplication.translate("Core","Cancel"), 0,len(products))
         pd.setModal(True)
         pd.setWindowTitle(QApplication.translate("Core","Purging quotes from all products"))
+        pd.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
         pd.setMinimumDuration(0)          
         counter=0      
         
