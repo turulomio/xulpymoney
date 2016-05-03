@@ -443,6 +443,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         progress = QProgressDialog(self.tr("Filling report data"), self.tr("Cancel"), 0,self.setGraphic.length())
         progress.setModal(True)
         progress.setWindowTitle(self.tr("Calculating data..."))
+        progress.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
         
         for m in self.setGraphic.arr:
             if progress.wasCanceled():

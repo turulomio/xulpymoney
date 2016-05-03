@@ -83,6 +83,7 @@ class wdgAPR(QWidget, Ui_wdgAPR):
         self.progress = QProgressDialog(self.tr("Filling data of the report"), self.tr("Cancel"), 0,0)
         self.progress.setModal(True)
         self.progress.setWindowTitle(self.tr("Calculating data..."))
+        self.progress.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
         self.progress.setMinimumDuration(0)        
         self.table.settings(self.mem, "wdgAPR")
         self.tblReport.settings(self.mem, "wdgAPR")

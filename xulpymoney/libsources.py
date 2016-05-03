@@ -79,6 +79,8 @@ class wdgSource(QWidget, Ui_wdgSource):
         self.parent=parent
         self.widgettoupdate=self.parent.parent  
         
+        self.progress.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
+        
         menu=QMenu()
         menu.addAction(self.actionProducts)
         menu.addSeparator()   
