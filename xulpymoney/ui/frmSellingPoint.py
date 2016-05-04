@@ -15,12 +15,14 @@ class frmSellingPoint(QDialog, Ui_frmSellingPoint):
         
         if self.inversion.id==None:
             m=QMessageBox()
+            m.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
             m.setIcon(QMessageBox.Information)
             m.setText(self.tr("You can't set a selling price to a unsaved investment"))
             m.exec_()     
             return
         if len(self.inversion.op_actual.arr)==0:
             m=QMessageBox()
+            m.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
             m.setIcon(QMessageBox.Information)
             m.setText(self.tr("You don't have shares to sale in this investment"))
             m.exec_()     

@@ -14,6 +14,7 @@ class wdgDisReinvest(QWidget, Ui_wdgDisReinvest):
                 
         if self.inversion.op_actual.length()==0:
             m=QMessageBox()
+            m.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
             m.setIcon(QMessageBox.Information)
             m.setText(self.tr("There aren't shares for this investment"))
             m.exec_()     
@@ -90,6 +91,7 @@ class wdgDisReinvest(QWidget, Ui_wdgDisReinvest):
 
         if self.txtSimulacion.decimal()<=Decimal('0'):
             m=QMessageBox()
+            m.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
             m.setIcon(QMessageBox.Information)
             m.setText(self.tr("Simulation value must be positive"))
             m.exec_()    
@@ -101,6 +103,7 @@ class wdgDisReinvest(QWidget, Ui_wdgDisReinvest):
         
         if valor_accion==0:
             m=QMessageBox()
+            m.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
             m.setIcon(QMessageBox.Information)
             m.setText(self.tr("Share price can't be 0"))
             m.exec_()    

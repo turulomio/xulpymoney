@@ -182,6 +182,7 @@ class wdgInvestments(QWidget, Ui_wdgInvestments):
     def on_tblInvestments_cellDoubleClicked(self, row, column):
         if column==8:#TPC Venta
             m=QMessageBox()
+            m.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
             m.setIcon(QMessageBox.Information)
             m.setText(self.tr("Shares number: {0}").format(self.selInvestment.acciones())+"\n"+
                     self.tr("Purchase price average: {0}").format(self.selInvestment.product.currency.string(self.selInvestment.op_actual.valor_medio_compra()))+"\n"+

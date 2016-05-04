@@ -82,6 +82,7 @@ class frmDividendsAdd(QDialog, Ui_frmDividendsAdd):
                         
         if tipooperacion.id==1 and (self.txtBruto.decimal()>Decimal('0') or self.txtNeto.decimal()>Decimal('0')):
             m=QMessageBox()
+            m.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
             m.setIcon(QMessageBox.Information)
             m.setText(self.tr("Expenses can't have a positive amount"))
             m.exec_()    
@@ -89,12 +90,14 @@ class frmDividendsAdd(QDialog, Ui_frmDividendsAdd):
             
         if tipooperacion.id==2 and (self.txtBruto.decimal()<Decimal('0') or self.txtNeto.decimal()<Decimal('0')):
             m=QMessageBox()
+            m.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
             m.setIcon(QMessageBox.Information)
             m.setText(self.tr("Incomes can't have a negative amount"))
             m.exec_()
             return
         if self.txtRetencion.decimal()<Decimal('0') or self.txtDPA.decimal()<Decimal('0') or self.txtComision.decimal()<Decimal('0'):
             m=QMessageBox()
+            m.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
             m.setIcon(QMessageBox.Information)
             m.setText(self.tr("Retention, earnings por share and commission must be greater than zero"))
             m.exec_()    
@@ -111,6 +114,7 @@ class frmDividendsAdd(QDialog, Ui_frmDividendsAdd):
             self.dividend.comision=self.txtComision.decimal()
         except:            
             m=QMessageBox()
+            m.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
             m.setIcon(QMessageBox.Information)
             m.setText(self.tr("Data error. Please check them."))
             m.exec_()    

@@ -454,6 +454,7 @@ class frmProductReport(QDialog, Ui_frmProductReport):
         if numpurged!=None:#Canceled
             self.mem.con.commit()
             m=QMessageBox()
+            m.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
             m.setIcon(QMessageBox.Information)
             m.setText(self.tr("{0} quotes have been purged from {1}".format(numpurged, self.product.name)))
             m.exec_()    
@@ -490,6 +491,7 @@ class frmProductReport(QDialog, Ui_frmProductReport):
             
             if insertarquote==True:
                 m=QMessageBox()
+                m.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
                 m.setIcon(QMessageBox.Information)
                 m.setText(self.tr("You have to add a quote and a dividend per share estimation to the new product"))
                 m.exec_()                
@@ -504,6 +506,7 @@ class frmProductReport(QDialog, Ui_frmProductReport):
 
         elif self.product.id>0:
             m=QMessageBox()
+            m.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
             m.setText("Only developers can change system products. You can create a new personal product or fill a ticket in the sourceforge page. It will be updated soon")
             m.setIcon(QMessageBox.Information)
             m.exec_()        

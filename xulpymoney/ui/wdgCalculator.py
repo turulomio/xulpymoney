@@ -16,6 +16,7 @@ class wdgCalculator(QWidget, Ui_wdgCalculator):
         self.hasProducts=True#Permits to show/hide the widget from external dialog
         if self.mem.data.products.length()==0:
             m=QMessageBox()
+            m.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
             m.setIcon(QMessageBox.Information)
             m.setText(self.tr("You need to create at least one investment"))
             m.exec_()

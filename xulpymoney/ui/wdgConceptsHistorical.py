@@ -117,6 +117,7 @@ class wdgConceptsHistorical(QWidget, Ui_wdgConceptsHistorical):
         """Only removes dinamic tabs"""
         if index==0:
             m=QMessageBox()
+            m.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
             m.setIcon(QMessageBox.Information)
             m.setText(self.tr("You can't close this tab"))
             m.exec_()  

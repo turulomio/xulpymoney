@@ -57,6 +57,7 @@ class frmMain(QMainWindow, Ui_frmMain):
         ##Admin mode
         if self.mem.adminmode:
             m=QMessageBox()
+            m.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
             m.setIcon(QMessageBox.Information)
             input=QInputDialog.getText(self,  "Xulpymoney",  self.tr("Please introduce Admin Mode password"), QLineEdit.Password)
             if input[1]==True:
@@ -323,6 +324,7 @@ class frmMain(QMainWindow, Ui_frmMain):
         else:
             if source.con.db.strip()==self.mem.con.db.strip() and source.con.server.strip()==self.mem.con.server.strip():            
                 m=QMessageBox()
+                m.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
                 m.setIcon(QMessageBox.Information)
                 m.setText(self.tr("Databases can't be the same"))
                 m.exec_()   
@@ -407,6 +409,7 @@ class frmMain(QMainWindow, Ui_frmMain):
     def on_actionFavorites_triggered(self):
         if len(self.mem.favorites)==0:
             m=QMessageBox()
+            m.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
             m.setIcon(QMessageBox.Information)
             m.setText(self.tr("There aren't favorite products"))
             m.exec_()     
@@ -543,6 +546,7 @@ class frmMain(QMainWindow, Ui_frmMain):
                 self.mem.con.commit()
         
         m=QMessageBox()
+        m.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
         m.setIcon(QMessageBox.Information)
         m.setText(self.tr("{0} quotes have been purged from {1} products".format(counter, len(products))))
         m.exec_()    

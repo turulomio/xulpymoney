@@ -50,6 +50,7 @@ class frmQuotesIBM(QDialog, Ui_frmQuotesIBM):
     def on_buttonbox_accepted(self):
         if self.txtQuote.decimal()==None:
             m=QMessageBox()
+            m.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
             m.setIcon(QMessageBox.Information)
             m.setText(self.tr("Incorrect data. Try again."))
             m.exec_()    

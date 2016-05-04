@@ -18,6 +18,7 @@ class frmSharesTransfer(QDialog, Ui_frmSharesTransfer):
         destino=self.mem.data.investments_active().find_by_id(self.combo.itemData(self.combo.currentIndex()))
         if self.origen==destino:            
             m=QMessageBox()
+            m.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
             m.setIcon(QMessageBox.Information)
             m.setText(self.tr("Origin and destiny transfer can't be the same"))
             m.exec_()  
@@ -25,6 +26,7 @@ class frmSharesTransfer(QDialog, Ui_frmSharesTransfer):
             
         if self.txtComision.decimal()<Decimal('0'):
             m=QMessageBox()
+            m.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
             m.setIcon(QMessageBox.Information)
             m.setText(self.tr("Comission must be a positive amount"))
             m.exec_()
@@ -32,6 +34,7 @@ class frmSharesTransfer(QDialog, Ui_frmSharesTransfer):
             
         if self.mem.data.investments_active().traspaso_valores(self.origen, destino, self.txtAcciones.decimal(), self.txtComision.decimal())==False: 
             m=QMessageBox()
+            m.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
             m.setIcon(QMessageBox.Information)
             m.setText(self.tr("The shares transfer couldn't be done"))
             m.exec_()  

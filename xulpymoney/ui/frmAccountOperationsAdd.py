@@ -79,6 +79,7 @@ class frmAccountOperationsAdd(QDialog, Ui_frmAccountOperationsAdd):
         
         if not importe:
             m=QMessageBox()
+            m.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
             m.setIcon(QMessageBox.Information)
             m.setText(self.tr("You must set the operation amount"))
             m.exec_()    
@@ -86,6 +87,7 @@ class frmAccountOperationsAdd(QDialog, Ui_frmAccountOperationsAdd):
         
         if concepto.tipooperacion.id==1 and importe>0:
             m=QMessageBox()
+            m.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
             m.setIcon(QMessageBox.Information)
             m.setText(self.tr("Expenses can not have a positive amount"))
             m.exec_()    
@@ -93,6 +95,7 @@ class frmAccountOperationsAdd(QDialog, Ui_frmAccountOperationsAdd):
             
         if concepto.tipooperacion.id==2 and importe<0:
             m=QMessageBox()
+            m.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
             m.setIcon(QMessageBox.Information)
             m.setText(self.tr("Incomes can not have a negative amount"))
             m.exec_()

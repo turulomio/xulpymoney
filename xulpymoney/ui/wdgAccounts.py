@@ -50,6 +50,7 @@ class wdgAccounts(QWidget, Ui_wdgAccounts):
         cur = self.mem.con.cursor()
         if self.selAccount.es_borrable()==False:
             m=QMessageBox()
+            m.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
             m.setIcon(QMessageBox.Information)
             m.setText(self.tr("This account has associated investments, credit cards or operations. It can't be deleted"))
             m.exec_()

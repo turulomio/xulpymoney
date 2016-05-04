@@ -183,6 +183,7 @@ class wdgBanks(QWidget, Ui_wdgBanks):
             return        
         if self.banks.selected.es_borrable()==False:
             m=QMessageBox()
+            m.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
             m.setIcon(QMessageBox.Information)
             m.setText(self.tr("This bank has dependent accounts and it can't be deleted"))
             m.exec_()
