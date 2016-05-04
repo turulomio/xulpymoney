@@ -48,6 +48,7 @@ class frmInit(QDialog, Ui_frmInit):
             
             if admin.create_db(self.txtXulpymoney.text())==False:
                 m=QMessageBox()
+                m.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
                 m.setText(self.tr("Error creating database. Maybe it already exist"))
                 m.exec_()        
                 self.reject()
@@ -58,6 +59,7 @@ class frmInit(QDialog, Ui_frmInit):
             
             if admin.xulpymoney_basic_schema()==False:
                 m=QMessageBox()
+                m.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
                 m.setText(self.tr("Error creating database. Maybe it already exist"))
                 m.exec_()        
                 self.reject()

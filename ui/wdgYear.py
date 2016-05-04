@@ -41,6 +41,7 @@ class wdgYear(QWidget, Ui_wdgYear):
     def on_cmdNext_pressed(self):
         if self.year==self.lastyear:
             m=QMessageBox()
+            m.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
             m.setIcon(QMessageBox.Information)
             m.setText(self.tr("I can't show the next year"))
             m.exec_()   
@@ -51,6 +52,7 @@ class wdgYear(QWidget, Ui_wdgYear):
     def on_cmdPrevious_pressed(self):
         if self.firstyear==self.year:
             m=QMessageBox()
+            m.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
             m.setIcon(QMessageBox.Information)
             m.setText(self.tr("I can't show the previous year"))
             m.exec_()   

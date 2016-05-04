@@ -869,6 +869,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         """Only removes dinamic tabs"""
         if index in (0, 1):
             m=QMessageBox()
+            m.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
             m.setIcon(QMessageBox.Information)
             m.setText(self.tr("You can't close this tab"))
             m.exec_()  
@@ -887,6 +888,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
             self.on_actionShowExpenses_triggered()
         else:
             m=QMessageBox()
+            m.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
             m.setIcon(QMessageBox.Information)
             m.setText(self.tr("You only can double click in incomes, gains, dividends and expenses.") + "\n\n" + self.tr("Make right click to see comission and tax reports"))
             m.exec_()   

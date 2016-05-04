@@ -55,12 +55,14 @@ class wdgProducts(QWidget, Ui_wdgProducts):
          
         if self.products.selected[0].is_deletable()==False:
             m=QMessageBox()
+            m.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
             m.setText(self.tr("This product can't be removed, because is marked as not romavable"))
             m.exec_()    
             return
             
         if self.products.selected[0].is_system()==True:
             m=QMessageBox()
+            m.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
             m.setText(self.tr("This product can't be removed, because is a system product"))
             m.exec_()    
             return
@@ -133,6 +135,7 @@ class wdgProducts(QWidget, Ui_wdgProducts):
     def on_cmd_pressed(self):
         if len(self.txt.text().upper())<=3:            
             m=QMessageBox()
+            m.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
             m.setText(self.tr("Search too wide. You need more than 3 characters"))
             m.exec_()  
             return
@@ -245,6 +248,7 @@ class wdgProducts(QWidget, Ui_wdgProducts):
         if numpurged!=None:#Canceled
             self.mem.con.commit()
             m=QMessageBox()
+            m.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
             m.setIcon(QMessageBox.Information)
             m.setText(self.tr("{0} quotes have been purged from {1}".format(numpurged, self.products.selected[0].name)))
             m.exec_()    

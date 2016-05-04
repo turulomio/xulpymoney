@@ -885,6 +885,7 @@ def sync_data(con_source, con_target, progress=None):
     - {} earnings per share estimations""").format(  products,  quotes, dps, estimation_dps,  estimation_eps)
             
         m=QMessageBox()
+        m.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
         m.setIcon(QMessageBox.Information)
         m.setText(s)
         m.exec_()        

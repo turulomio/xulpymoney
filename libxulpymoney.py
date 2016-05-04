@@ -12,8 +12,8 @@ from libqmessagebox import *
 
 from decimal import *
 
-version="20160502"
-version_date=datetime.date(2016, 5, 2)
+version="20160504"
+version_date=datetime.date(2016, 5, 4)
 class Connection(QObject):
     """Futuro conection object"""
     inactivity_timeout=pyqtSignal()
@@ -2978,6 +2978,7 @@ class Bank:
     def qmessagebox_inactive(self):
         if self.active==False:
             m=QMessageBox()
+            m.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
             m.setIcon(QMessageBox.Information)
             m.setText(QApplication.translate("Core", "The associated bank is not active. You must activate it first"))
             m.exec_()    
@@ -3124,6 +3125,7 @@ class Account:
     def qmessagebox_inactive(self):
         if self.active==False:
             m=QMessageBox()
+            m.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
             m.setIcon(QMessageBox.Information)
             m.setText(QApplication.translate("Core", "The associated account is not active. You must activate it first"))
             m.exec_()    
@@ -3375,6 +3377,7 @@ class Investment:
     def qmessagebox_inactive(self):
         if self.active==False:
             m=QMessageBox()
+            m.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
             m.setIcon(QMessageBox.Information)
             m.setText(QApplication.translate("Core", "The associated product is not active. You must activate it first"))
             m.exec_()    
@@ -3491,6 +3494,7 @@ class CreditCard:
     def qmessagebox_inactive(self):
         if self.active==False:
             m=QMessageBox()
+            m.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
             m.setIcon(QMessageBox.Information)
             m.setText(QApplication.translate("Core", "The associated credit card is not active. You must activate it first"))
             m.exec_()    
@@ -3668,6 +3672,7 @@ class Order:
         else:
             type="Buy"
         m=QMessageBox()
+        m.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
         m.setIcon(QMessageBox.Information)
         m.setText(QApplication.translate("Core","Don't forget to tell your bank to add and order for:\n{} ({})\n{} {} shares to {}".format(self.investment.name, self.investment.account.name, type, abs(self.shares), self.investment.product.currency.string(self.price, 6))))
         m.exec_()   

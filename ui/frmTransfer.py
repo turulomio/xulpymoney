@@ -27,12 +27,14 @@ class frmTransfer(QDialog, Ui_frmTransfer):
             comision=abs(self.txtComision.decimal())
         except:
             m=QMessageBox()
+            m.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
             m.setIcon(QMessageBox.Information)
             m.setText(self.tr("Error adding data"))
             m.exec_()             
             return            
         if id_origen==id_destino:
             m=QMessageBox()
+            m.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
             m.setIcon(QMessageBox.Information)
             m.setText(self.tr("Origin and destiny accounts can't be the same"))
             m.exec_()             

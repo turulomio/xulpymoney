@@ -44,6 +44,7 @@ class frmInvestmentOperationsAdd(QDialog, Ui_frmInvestmentOperationsAdd):
             self.operinversion.show_in_ranges=False
             if self.operinversion.acciones>Decimal('0'):
                 m=QMessageBox()
+                m.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
                 m.setIcon(QMessageBox.Information)
                 m.setText(self.tr("Sale Shares number must be negative"))
                 m.exec_()    
@@ -52,6 +53,7 @@ class frmInvestmentOperationsAdd(QDialog, Ui_frmInvestmentOperationsAdd):
             self.operinversion.importe=self.txtImporte.decimal()
             if self.operinversion.acciones<0: 
                 m=QMessageBox()
+                m.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
                 m.setIcon(QMessageBox.Information)
                 m.setText(self.tr("Purchase shares number must be positive"))
                 m.exec_()    
@@ -60,6 +62,7 @@ class frmInvestmentOperationsAdd(QDialog, Ui_frmInvestmentOperationsAdd):
             self.operinversion.importe=self.txtImporte.decimal()
             if self.operinversion.acciones<0: 
                 m=QMessageBox()
+                m.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
                 m.setIcon(QMessageBox.Information)
                 m.setText(self.tr("Added shares number must be positive"))
                 m.exec_()    
@@ -69,6 +72,7 @@ class frmInvestmentOperationsAdd(QDialog, Ui_frmInvestmentOperationsAdd):
         
         if self.operinversion.impuestos<Decimal('0') or  self.operinversion.comision<Decimal('0') or self.operinversion.valor_accion<Decimal('0'):            
             m=QMessageBox()
+            m.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
             m.setIcon(QMessageBox.Information)
             m.setText(self.tr("Share price, taxes and comission must be positive amounts"))
             m.exec_()    

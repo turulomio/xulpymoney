@@ -162,6 +162,7 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
     def on_actionOperationAdd_triggered(self):
         if self.inversion.product.result.basic.last.quote==None:
             m=QMessageBox()
+            m.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
             m.setIcon(QMessageBox.Information)
             m.setText(self.tr("Before adding a operation, you must add the current price of the product."))
             m.exec_()    
@@ -226,6 +227,7 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
     def on_actionSharesTransferUndo_triggered(self):
         if self.mem.data.investments_active().traspaso_valores_deshacer(self.op.selected)==False:
             m=QMessageBox()
+            m.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
             m.setIcon(QMessageBox.Information)
             m.setText(self.tr("Shares transfer couldn't be done."))
             m.exec_()          
@@ -285,6 +287,7 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
     def on_cmdInvestment_released(self):
         if self.ise.selected==None:
             m=QMessageBox()
+            m.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
             m.setIcon(QMessageBox.Information)
             m.setText(self.tr("You must select a product to continue."))
             m.exec_()     

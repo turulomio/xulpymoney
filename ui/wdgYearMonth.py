@@ -46,6 +46,7 @@ class wdgYearMonth(QWidget, Ui_wdgYearMonth):
         if self.month==12:
             if self.year==self.lastyear:
                 m=QMessageBox()
+                m.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
                 m.setIcon(QMessageBox.Information)
                 m.setText(self.tr("I can't show the next month"))
                 m.exec_()   
@@ -60,6 +61,7 @@ class wdgYearMonth(QWidget, Ui_wdgYearMonth):
         if self.month==1:
             if self.firstyear==self.year:
                 m=QMessageBox()
+                m.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
                 m.setIcon(QMessageBox.Information)
                 m.setText(self.tr("I can't show the previous month"))
                 m.exec_()   

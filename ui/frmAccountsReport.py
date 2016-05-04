@@ -116,6 +116,7 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
     def on_actionCreditCardDelete_triggered(self):
         if self.creditcards.selected.is_deletable()==False:
             m=QMessageBox()
+            m.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
             m.setIcon(QMessageBox.Information)
             m.setText(self.tr("I can't delete the credit card, because it has dependent registers"))
             m.exec_()

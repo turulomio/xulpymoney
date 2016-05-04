@@ -124,6 +124,7 @@ class frmProductSelector(QDialog):
     def on_cmd_released(self):
         if len(self.txt.text().upper())<=3:            
             m=QMessageBox()
+            m.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
             m.setText(self.tr("Search too wide. You need more than 3 characters"))
             m.exec_()  
             return
