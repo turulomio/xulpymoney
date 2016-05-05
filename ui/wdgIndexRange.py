@@ -55,6 +55,7 @@ class wdgIndexRange(QWidget, Ui_wdgIndexRange):
         self.load_data()
         
         self.selRange=None#Range() in right click
+        self.table.setVerticalHeaderHeight(None)
         
     def cmbBenchmarkCurrent_load(self):       
         if self.benchmark:
