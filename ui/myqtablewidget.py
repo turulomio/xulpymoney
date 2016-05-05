@@ -12,7 +12,19 @@ class myQTableWidget(QTableWidget):
         self._save_settings=True
         self.setAlternatingRowColors(True)
         self.saved_printed=False#To avoid printing a lot of times
-#        self.setVerticalHeaderHeight(24)
+        self.setStyleSheet("""
+QHeaderView::section{
+padding-left=0px;
+color:red;
+padding-top=0px;
+}
+
+QTableWidget{
+padding:1px;
+}
+""")
+        self.verticalHeader().setContentsMargins(0, 0, 0, 0)
+        #        self.setVerticalHeaderHeight(24)
         
         
 #    def setVerticalHeaderHeight(self, height):
@@ -75,7 +87,7 @@ class myQTableWidget(QTableWidget):
         for i in range(self.columnCount()):
             if self.sizeHintForColumn(i)>self.columnWidth(i):
                 self.setColumnWidth(i, self.sizeHintForColumn(i))
-        self.resizeRowsToContents()
+#        self.resizeRowsToContents()
 #        self.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeToContents)
 #        self.horizontalHeader().setSectionResizeMode(QHeaderView.Interactive)
 
