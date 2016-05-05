@@ -50,6 +50,7 @@ class frmMain(QMainWindow, Ui_frmMain):
         
         self.mem.load_db_data() ##CARGA TODOS LOS DATOS Y LOS VINCULA       
          
+        print("aquí",self.styleSheet())
         
         
         

@@ -12,32 +12,17 @@ class myQTableWidget(QTableWidget):
         self._save_settings=True
         self.setAlternatingRowColors(True)
         self.saved_printed=False#To avoid printing a lot of times
-#        self.setStyleSheet("""
-#QHeaderView::section{
-#padding-left=0px;
-#color:red;
-#padding-top=0px;
-#}
-#
-#QTableWidget{
-#padding:1px;
-#}
-#""")
-#        self.verticalHeader().setContentsMargins(0, 0, 0, 0)
-        self.verticalHeader().setDefaultSectionSize(24) 
         self.verticalHeader().setSectionResizeMode(QHeaderView.ResizeToContents)
-        #        self.setVerticalHeaderHeight(24)
+        self.setVerticalHeaderHeight(24)
         
         
-#    def setVerticalHeaderHeight(self, height):
-#        """height, if null default."""
-#        if height==None:
-#            self.verticalHeader().setSectionResizeMode(QHeaderView.ResizeToContents)
-#            self.verticalHeader().setSectionResizeMode(QHeaderView.Interactive)
-##            self.resizeColumnsToContents()
-#        else:
-#            self.verticalHeader().setSectionResizeMode(QHeaderView.Fixed)
-#            self.verticalHeader().setDefaultSectionSize(24) 
+    def setVerticalHeaderHeight(self, height):
+        """height, if null default."""
+        if height==None:
+            self.verticalHeader().setSectionResizeMode(QHeaderView.ResizeToContents)
+        else:
+            self.verticalHeader().setSectionResizeMode(QHeaderView.Fixed)
+            self.verticalHeader().setDefaultSectionSize(24) 
 
     def setSaveSettings(self, state):
         """Used when i don't want my columns with being saved"""
