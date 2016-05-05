@@ -12,17 +12,19 @@ class myQTableWidget(QTableWidget):
         self._save_settings=True
         self.setAlternatingRowColors(True)
         self.saved_printed=False#To avoid printing a lot of times
-        self.verticalHeader().setSectionResizeMode(QHeaderView.ResizeToContents)
-        self.setVerticalHeaderHeight(24)
+        self._last_height=None
         
         
     def setVerticalHeaderHeight(self, height):
-        """height, if null default."""
+        """height, if null default.
+        Must be after settings"""
         if height==None:
             self.verticalHeader().setSectionResizeMode(QHeaderView.ResizeToContents)
+            self._last_height=None
         else:
             self.verticalHeader().setSectionResizeMode(QHeaderView.Fixed)
-            self.verticalHeader().setDefaultSectionSize(24) 
+            self.verticalHeader().setDefaultSectionSize(height) 
+            self._last_height=height
 
     def setSaveSettings(self, state):
         """Used when i don't want my columns with being saved"""
@@ -49,18 +51,17 @@ class myQTableWidget(QTableWidget):
     def settings(self, mem, sectionname,  objectname=None):
         """objectname used for dinamic tables"""
         self.mem=mem
+        self.setVerticalHeaderHeight(int(self.mem.settings.value("myQTableWidget/rowheight", 24)))
         self.sectionname=sectionname
         if objectname!=None:
             self.setObjectName(objectname)
 
     def applySettings(self):
         """settings must be defined before"""
-#        self.verticalHeader().setSectionResizeMode(QHeaderView.ResizeToContents)
         self.horizontalHeader().setSectionResizeMode(QHeaderView.Interactive)
         self.horizontalHeader().sectionResized.connect(self.sectionResized)
         state=self.mem.settings.value("{}/{}_horizontalheader_state".format(self.sectionname, self.objectName()))
         if state:
-#            print("Loaded {}/{}_horizontalheader_state".format(self.sectionname, self.objectName()))
             self.horizontalHeader().restoreState(state)
         
 
@@ -74,7 +75,16 @@ class myQTableWidget(QTableWidget):
         for i in range(self.columnCount()):
             if self.sizeHintForColumn(i)>self.columnWidth(i):
                 self.setColumnWidth(i, self.sizeHintForColumn(i))
-#        self.resizeRowsToContents()
-#        self.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeToContents)
-#        self.horizontalHeader().setSectionResizeMode(QHeaderView.Interactive)
+
+    @pyqtSlot()
+    def keyPressEvent(self, event):
+        if self._last_height==None:
+            return
+        if  event.matches(QKeySequence.ZoomIn):
+                self.mem.settings.setValue("myQTableWidget/rowheight", self.mem.settings.value("myQTableWidget/rowheight", 24)+1)
+                print("plus")
+        elif  event.matches(QKeySequence.ZoomOut):
+                self.mem.settings.setValue("myQTableWidget/rowheight", self.mem.settings.value("myQTableWidget/rowheight", 24)-1)
+                print("minus")
+        self.setVerticalHeaderHeight(self.mem.settings.value("myQTableWidget/rowheight", 24))
 

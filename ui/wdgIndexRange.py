@@ -46,6 +46,7 @@ class wdgIndexRange(QWidget, Ui_wdgIndexRange):
         
         self.benchmark=self.mem.data.benchmark
         self.table.settings(self.mem, "wdgIndexRange")
+        self.table.setVerticalHeaderHeight(None)#Must be after settings
                 
         self.spin.setValue(float(self.mem.settingsdb.value("wdgIndexRange/spin", "2")))
         self.txtInvertir.setText(Decimal(self.mem.settingsdb.value("wdgIndexRange/invertir", "10000")))
@@ -55,7 +56,6 @@ class wdgIndexRange(QWidget, Ui_wdgIndexRange):
         self.load_data()
         
         self.selRange=None#Range() in right click
-        self.table.setVerticalHeaderHeight(None)
         
     def cmbBenchmarkCurrent_load(self):       
         if self.benchmark:
