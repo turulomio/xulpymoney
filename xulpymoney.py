@@ -21,10 +21,8 @@ app.setApplicationName("Xulpymoney")
 
 
 mem=MemXulpymoney()
-
 mem.setQTranslator(QTranslator(app))
-mem.qtranslator.load("/usr/lib/xulpymoney/xulpymoney_{0}.qm".format(mem.language.id))
-app.installTranslator(mem.qtranslator)
+mem.languages.cambiar(mem.language.id)
 print (mem.language.id)     
 
 access=frmAccess(mem)
