@@ -12,18 +12,20 @@ class myQTableWidget(QTableWidget):
         self._save_settings=True
         self.setAlternatingRowColors(True)
         self.saved_printed=False#To avoid printing a lot of times
-        self.setStyleSheet("""
-QHeaderView::section{
-padding-left=0px;
-color:red;
-padding-top=0px;
-}
-
-QTableWidget{
-padding:1px;
-}
-""")
-        self.verticalHeader().setContentsMargins(0, 0, 0, 0)
+#        self.setStyleSheet("""
+#QHeaderView::section{
+#padding-left=0px;
+#color:red;
+#padding-top=0px;
+#}
+#
+#QTableWidget{
+#padding:1px;
+#}
+#""")
+#        self.verticalHeader().setContentsMargins(0, 0, 0, 0)
+        self.verticalHeader().setDefaultSectionSize(24) 
+        self.verticalHeader().setSectionResizeMode(QHeaderView.ResizeToContents)
         #        self.setVerticalHeaderHeight(24)
         
         
