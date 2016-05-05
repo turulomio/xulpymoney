@@ -3,6 +3,7 @@ from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 import datetime
 import time
+import platform
 import io
 import pytz
 import psycopg2
@@ -5601,9 +5602,11 @@ class SetLanguages(SetCommons):
 
     def cambiar(self, id):  
         """language es un string"""
-        self.mem.qtranslator.load("/usr/lib/xulpymoney/xulpymoney_" + id + ".qm")
-        qApp.installTranslator(self.mem.qtranslator);
-
+        if platform.system()=="Windows":
+            self.mem.qtranslator.load("i18n/xulpymoney_{0}.qm".format(id))
+        else:
+            self.mem.qtranslator.load("/usr/lib/xulpymoney/xulpymoney_{0}.qm".format(id))
+        qApp.installTranslator(self.mem.qtranslator)
  
 class OHCL:
     def __init__(self, product, datetime, open, close, high, low ):
