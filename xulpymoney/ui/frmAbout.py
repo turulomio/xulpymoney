@@ -22,14 +22,7 @@ class frmAbout(QDialog, Ui_frmAbout):
         
         self.tblStatistics.settings(self.mem, "frmAbout")
         self.load_tblStatistics() 
-        self.cmd.clicked.connect(self.on_cmd_clicked)
-    
-    @QtCore.pyqtSlot() 
-    def on_cmd_clicked(self):
-        """
-        Slot documentation goes here.
-        """
-        self.done(0)
+        self.tblStatistics.applySettings()    
     
     def load_tblStatistics(self):
         def pais(cur, columna, bolsa):
