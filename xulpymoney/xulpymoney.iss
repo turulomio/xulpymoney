@@ -10,14 +10,14 @@
 ; NOTE: The value of AppId uniquely identifies this application.
 ; Do not use the same AppId value in installers for other applications.
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
-AppId={{3849730B-2375-4F76-B4A5-A6677456AB9B}
+AppId={{3849730B-2375-4F76-B4A5-A66774565432}
 AppName={#MyAppName}
 AppVersion={#VERSION_NAME}
 AppPublisher={#MyAppPublisher}
 AppPublisherURL={#MyAppURL}
 AppSupportURL={#MyAppURL}
 AppUpdatesURL={#MyAppURL}
-DefaultDirName={pf}\devicensinlan
+DefaultDirName={pf}\xulpymoney
 DisableDirPage=yes
 DefaultGroupName={#MyAppName}
 AllowNoIcons=yes
