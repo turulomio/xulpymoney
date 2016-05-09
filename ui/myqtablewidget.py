@@ -80,11 +80,11 @@ class myQTableWidget(QTableWidget):
     def keyPressEvent(self, event):
         if self._last_height==None:
             return
-        height=self.mem.settings.value("myQTableWidget/rowheight", 24)
+        height=int(self.mem.settings.value("myQTableWidget/rowheight", 24))
         if  event.matches(QKeySequence.ZoomIn):
             self.mem.settings.setValue("myQTableWidget/rowheight", height+1)
         elif  event.matches(QKeySequence.ZoomOut):
             self.mem.settings.setValue("myQTableWidget/rowheight", height-1)
         print("Setting myQTableWidget/rowheight set to {}".format(self.mem.settings.value("myQTableWidget/rowheight", 24)))
-        self.setVerticalHeaderHeight(self.mem.settings.value("myQTableWidget/rowheight", 24))
+        self.setVerticalHeaderHeight(int(self.mem.settings.value("myQTableWidget/rowheight", 24)))
 
