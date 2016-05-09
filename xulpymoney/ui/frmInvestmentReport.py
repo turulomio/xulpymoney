@@ -295,36 +295,31 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
         inversion=self.txtInvestment.text()
         venta=self.txtVenta.decimal()
         id_cuentas=int(self.cmbAccount.itemData(self.cmbAccount.currentIndex()))
-        products_id=int(self.ise.selected.id) 
+        product=self.ise.selected
         if self.chkExpiration.checkState()==Qt.Unchecked:
             expiration=None
         else:
             expiration=self.calExpiration.selectedDate().toPyDate()
-        
-        
-        if self.mem.data.products.find_by_id(products_id)==None:
-            print ("Cargando otro mqinversiones")
-            inv=Product(self.mem).init__db(products_id)
-            inv.estimations_dps.load_from_db()
-            inv.result.basic.load_from_db()
-            self.mem.data.products.append(inv)
-            
-        
+
+        if self.mem.data.products.find_by_id(product.id)==None:
+            print ("Cargando otro producto en mem")
+            product.estimations_dps.load_from_db()
+            product.result.basic.load_from_db()
+            self.mem.data.products.append(product)        
 
         if self.tipo==1:        #insertar
-            i=Investment(self.mem).init__create(inversion,   venta,  self.mem.data.accounts_active().find_by_id(id_cuentas), self.mem.data.products.find_by_id(products_id), expiration, True)      
-            i.save()
-            self.mem.con.commit()
-            ##Se añade a mem y vincula. No carga datos porque products_id debe existir            
+            self.inversion=Investment(self.mem).init__create(inversion,   venta,  self.mem.data.accounts_active().find_by_id(id_cuentas), product, expiration, True)      
+            self.inversion.save()
+            self.mem.con.commit()    
             #Lo añade con las operaciones vacias pero calculadas.
-            i.op=SetInvestmentOperations(self.mem)
-            (i.op_actual, i.op_historica)=i.op.calcular()
-            self.mem.data.investments.append(i)
+            self.inversion.op=SetInvestmentOperations(self.mem)
+            (self.inversion.op_actual, self.inversion.op_historica)=self.inversion.op.calcular()
+            self.mem.data.investments.append(self.inversion)
             self.done(0)
         elif self.tipo==2:
             self.inversion.name=inversion
             self.inversion.venta=venta
-            self.inversion.product=self.mem.data.products.find_by_id(products_id)
+            self.inversion.product=product
             self.inversion.selling_expiration=expiration
             self.inversion.save()##El id y el id_cuentas no se pueden modificar
             self.mem.con.commit()

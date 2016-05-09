@@ -13,7 +13,7 @@ from libqmessagebox import *
 
 from decimal import *
 
-version="20160506"
+version="20160509"
 version_date=datetime.date(2016, 5, 6)
 class Connection(QObject):
     """Futuro conection object"""
@@ -492,8 +492,10 @@ class SetInvestments(SetCommons):
         0: inversion
         1: eb - inversion
         2: inversion (cuenta)
+        3: Cuenta - inversion
         
         selected is an Investment object"""
+        combo.clear()
         arr=[]
         for i in self.arr:
             if accounts_active==True:
@@ -521,6 +523,8 @@ class SetInvestments(SetCommons):
                 arr.append(("{} - {}".format(i.account.eb.name, i.name), i.id))
             elif tipo==2:
                 arr.append(("{} ({})".format(i.name, i.account.name), i.id))
+            elif tipo==3:
+                arr.append(("{} - {}".format(i.account.name, i.name), i.id))
                 
         
         arr=sorted(arr, key=lambda a: a[0]  ,  reverse=False)  
@@ -784,7 +788,6 @@ class SetProducts(SetCommons):
             if a.type.id==type.id:
                 result.append(a)
         return result
-        
         
     def myqtablewidget(self, table):
         tachado = QFont()
@@ -3247,7 +3250,7 @@ class Investment:
         cur=self.mem.con.cursor()
         if self.id==None:
             cur.execute("insert into inversiones (inversion, venta, id_cuentas, active, selling_expiration,products_id) values (%s, %s,%s,%s,%s,%s) returning id_inversiones", (self.name, self.venta, self.account.id, self.active, self.selling_expiration,  self.product.id))    
-            self.id=cur.fetchone()[0]
+            self.id=cur.fetchone()[0]                
         else:
             cur.execute("update inversiones set inversion=%s, venta=%s, id_cuentas=%s, active=%s, selling_expiration=%s, products_id=%s where id_inversiones=%s", (self.name, self.venta, self.account.id, self.active, self.selling_expiration,  self.product.id, self.id))
         cur.close()
@@ -4790,8 +4793,10 @@ class Product:
         return self.init__db_row(row)
 
     def save(self):
-        """Esta función inserta una inversión manual"""
-        """Los arrays deberan pasarse como parametros ARRAY[1,2,,3,] o None"""
+        """
+            Esta función inserta una inversión manua
+            Los arrays deberan pasarse como parametros ARRAY[1,2,,3,] o None
+        """
         
         cur=self.mem.con.cursor()
         if self.id==None:
@@ -4823,7 +4828,20 @@ class Product:
             
         return False
         
-        
+    def setinvestments(self):
+        """Returns a SetInvestments object with all the investments of the product. Investments can be active or inactive"""
+        set=SetInvestments(self.mem, self.mem.data.accounts, self.mem.data.products, self.mem.data.benchmark)
+        sql="""
+            SELECT * 
+            FROM 
+                inversiones 
+            WHERE
+                products_id={}
+            ORDER BY
+                inversion
+        """.format(self.id)
+        set.load_from_db(sql,  progress=False)
+        return set
         
     def is_deletable(self):
         if self.is_system():
