@@ -324,7 +324,7 @@
     - {} estimaciones de beneficio por acción</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="5982"/>
+        <location filename="../libxulpymoney.py" line="5997"/>
         <source>Accounts</source>
         <translation>Cuentas</translation>
     </message>
@@ -349,12 +349,12 @@
         <translation>Cargando inversiones...</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="720"/>
+        <location filename="../libxulpymoney.py" line="721"/>
         <source>Loading {0} products from database</source>
         <translation>Cargando {0} productos de la base de datos</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="723"/>
+        <location filename="../libxulpymoney.py" line="724"/>
         <source>Loading products...</source>
         <translation>Cargando productos...</translation>
     </message>
@@ -364,7 +364,7 @@
         <translation>Id</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="4965"/>
+        <location filename="../libxulpymoney.py" line="4980"/>
         <source>Product</source>
         <translation>Producto</translation>
     </message>
@@ -379,7 +379,7 @@
         <translation>Última actualización</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="4966"/>
+        <location filename="../libxulpymoney.py" line="4981"/>
         <source>Price</source>
         <translation>Valor</translation>
     </message>
@@ -519,7 +519,7 @@
         <translation>Tipo de operación</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="5972"/>
+        <location filename="../libxulpymoney.py" line="5987"/>
         <source>Shares</source>
         <translation>Acciones</translation>
     </message>
@@ -734,32 +734,32 @@
         <translation>La tarjeta de crédito está inactiva. Debes activarla primero</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="4964"/>
+        <location filename="../libxulpymoney.py" line="4979"/>
         <source>Date and time</source>
         <translation>Fecha y hora</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="5036"/>
+        <location filename="../libxulpymoney.py" line="5051"/>
         <source>Purging innecesary data</source>
         <translation>Eliminando datos innecesarios</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="5038"/>
+        <location filename="../libxulpymoney.py" line="5053"/>
         <source>Purging quotes</source>
         <translation>Eliminando cotizaciones</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="5045"/>
+        <location filename="../libxulpymoney.py" line="5060"/>
         <source>Purged {0} quotes from {1}</source>
         <translation>Purgadas {0} cotizaciones de {1}</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="6550"/>
+        <location filename="../libxulpymoney.py" line="6565"/>
         <source>True</source>
         <translation>Verdadero</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="6553"/>
+        <location filename="../libxulpymoney.py" line="6568"/>
         <source>False</source>
         <translation>Falso</translation>
     </message>
@@ -944,47 +944,47 @@
         <translation>Individuales. Fondos de inversión de Morningstar</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="5973"/>
+        <location filename="../libxulpymoney.py" line="5988"/>
         <source>Funds</source>
         <translation>Fondos de inversión</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="5974"/>
+        <location filename="../libxulpymoney.py" line="5989"/>
         <source>Indexes</source>
         <translation>Índices</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="5975"/>
+        <location filename="../libxulpymoney.py" line="5990"/>
         <source>ETF</source>
         <translation>ETF</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="5976"/>
+        <location filename="../libxulpymoney.py" line="5991"/>
         <source>Warrants</source>
         <translation>Warrants</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="5977"/>
+        <location filename="../libxulpymoney.py" line="5992"/>
         <source>Currencies</source>
         <translation>Divisas</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="5978"/>
+        <location filename="../libxulpymoney.py" line="5993"/>
         <source>Public Bond</source>
         <translation>Renta fija pública</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="5979"/>
+        <location filename="../libxulpymoney.py" line="5994"/>
         <source>Pension plans</source>
         <translation>Planes de pensiones</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="5980"/>
+        <location filename="../libxulpymoney.py" line="5995"/>
         <source>Private Bond</source>
         <translation>Renta fija privada</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="5981"/>
+        <location filename="../libxulpymoney.py" line="5996"/>
         <source>Deposit</source>
         <translation>Depósitos</translation>
     </message>
@@ -1069,7 +1069,7 @@
         <translation>Cancelar</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="6521"/>
+        <location filename="../libxulpymoney.py" line="6536"/>
         <source>{} {}, {} {} and {} {}</source>
         <translation>{} {}, {} {} y {} {}</translation>
     </message>
@@ -1079,32 +1079,32 @@
         <translation>Pagado con {0}. {1}</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="6510"/>
+        <location filename="../libxulpymoney.py" line="6525"/>
         <source>year</source>
         <translation>año</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="6512"/>
+        <location filename="../libxulpymoney.py" line="6527"/>
         <source>years</source>
         <translation>años</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="6514"/>
+        <location filename="../libxulpymoney.py" line="6529"/>
         <source>month</source>
         <translation>mes</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="6516"/>
+        <location filename="../libxulpymoney.py" line="6531"/>
         <source>months</source>
         <translation>meses</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="6518"/>
+        <location filename="../libxulpymoney.py" line="6533"/>
         <source>day</source>
         <translation>día</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="6520"/>
+        <location filename="../libxulpymoney.py" line="6535"/>
         <source>days</source>
         <translation>días</translation>
     </message>
@@ -2471,7 +2471,7 @@ p, li { white-space: pre-wrap; }
         <translation>Antes de añadir una operación, debe añadir el valor actual del producto.</translation>
     </message>
     <message>
-        <location filename="../ui/frmInvestmentReport.py" line="414"/>
+        <location filename="../ui/frmInvestmentReport.py" line="409"/>
         <source>Selected: {0}</source>
         <translation>Seleccionado: {0}</translation>
     </message>
@@ -2591,7 +2591,7 @@ p, li { white-space: pre-wrap; }
         <translation>Ocultar en el informe de rangos</translation>
     </message>
     <message>
-        <location filename="../ui/frmInvestmentReport.py" line="410"/>
+        <location filename="../ui/frmInvestmentReport.py" line="405"/>
         <source>Show in range report</source>
         <translation>Mostrar en el informe de rangos</translation>
     </message>
@@ -4445,109 +4445,109 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>wdgCalculator</name>
     <message>
-        <location filename="../ui/Ui_wdgCalculator.py" line="187"/>
+        <location filename="../ui/Ui_wdgCalculator.py" line="182"/>
         <source>Investment calculator</source>
         <translation>Calculadora de inversiones</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgCalculator.py" line="189"/>
+        <location filename="../ui/Ui_wdgCalculator.py" line="186"/>
         <source>Variation from current price</source>
         <translation>Variación del precio actual</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgCalculator.py" line="190"/>
+        <location filename="../ui/Ui_wdgCalculator.py" line="187"/>
         <source> %</source>
         <translation> %</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgCalculator.py" line="193"/>
+        <location filename="../ui/Ui_wdgCalculator.py" line="190"/>
         <source>Final price</source>
         <translation>Precio final</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgCalculator.py" line="196"/>
+        <location filename="../ui/Ui_wdgCalculator.py" line="191"/>
         <source>Shares calc</source>
         <translation>Cálculo de acciones</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgCalculator.py" line="197"/>
+        <location filename="../ui/Ui_wdgCalculator.py" line="192"/>
         <source>Amount to invest</source>
         <translation>Cantidad a invertir</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgCalculator.py" line="198"/>
+        <location filename="../ui/Ui_wdgCalculator.py" line="193"/>
         <source>Shares</source>
         <translation>Acciones</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgCalculator.py" line="200"/>
+        <location filename="../ui/Ui_wdgCalculator.py" line="195"/>
         <source>Calc estimations</source>
         <translation>Estimaciones de cálculo</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgCalculator.py" line="204"/>
+        <location filename="../ui/Ui_wdgCalculator.py" line="199"/>
         <source>Price</source>
         <translation>Precio</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgCalculator.py" line="206"/>
+        <location filename="../ui/Ui_wdgCalculator.py" line="201"/>
         <source>Gains</source>
         <translation>Ganancias</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgCalculator.py" line="202"/>
+        <location filename="../ui/Ui_wdgCalculator.py" line="197"/>
         <source>% Gains</source>
         <translation>% Ganancias</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgCalculator.py" line="191"/>
+        <location filename="../ui/Ui_wdgCalculator.py" line="188"/>
         <source>Leveraged product</source>
         <translation>Producto apalancado</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgCalculator.py" line="192"/>
+        <location filename="../ui/Ui_wdgCalculator.py" line="189"/>
         <source>1</source>
         <translation>1</translation>
     </message>
     <message>
-        <location filename="../ui/wdgCalculator.py" line="21"/>
+        <location filename="../ui/wdgCalculator.py" line="23"/>
         <source>You need to create at least one investment</source>
         <translation>Necesitas crear al menos una inversión</translation>
     </message>
     <message>
-        <location filename="../ui/wdgCalculator.py" line="52"/>
+        <location filename="../ui/wdgCalculator.py" line="49"/>
         <source>Last price ({})</source>
         <translation>Último precio ({})</translation>
     </message>
     <message>
-        <location filename="../ui/wdgCalculator.py" line="51"/>
+        <location filename="../ui/wdgCalculator.py" line="46"/>
         <source>Penultimate price ({})</source>
         <translation>Penúltimo precio ({})</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgCalculator.py" line="188"/>
+        <location filename="../ui/Ui_wdgCalculator.py" line="183"/>
         <source>Product settings</source>
         <translation>Preferencias del producto</translation>
     </message>
     <message>
-        <location filename="../ui/wdgCalculator.py" line="129"/>
+        <location filename="../ui/wdgCalculator.py" line="98"/>
         <source>Add new order</source>
         <translation>Añade una nueva orden</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgCalculator.py" line="199"/>
+        <location filename="../ui/Ui_wdgCalculator.py" line="194"/>
         <source>Add order annotation</source>
         <translation>Añade un anotación de orden</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgCalculator.py" line="194"/>
-        <source>Select an investment</source>
-        <translation>Selecciona una inversión</translation>
+        <location filename="../ui/Ui_wdgCalculator.py" line="184"/>
+        <source>Select a product</source>
+        <translation type="unfinished">Selecciona un producto</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgCalculator.py" line="195"/>
-        <source>or Select a product</source>
-        <translation>o Selecciona un producto de inversión</translation>
+        <location filename="../ui/Ui_wdgCalculator.py" line="185"/>
+        <source>Select your personal investment</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

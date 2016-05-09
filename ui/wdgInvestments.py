@@ -50,6 +50,7 @@ class wdgInvestments(QWidget, Ui_wdgInvestments):
             
     @QtCore.pyqtSlot() 
     def on_actionInvestmentDelete_triggered(self):
+        print("ening")
         cur = self.mem.con.cursor()
         self.selInvestment.borrar(cur)
         self.mem.con.commit()
