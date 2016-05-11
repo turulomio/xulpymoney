@@ -4843,6 +4843,28 @@ class Product:
         set.load_from_db(sql,  progress=False)
         return set
         
+    def has_basic_data(self):
+        """Returns (True,True,True,True) if product has last and penultimate quotes (last, penultimate, endlastyear, thisyearestimation_dps)"""
+        result=QuotesResult(self.mem, self)
+        result.get_basic_and_ohcls()
+        dps=EstimationDPS(self.mem).init__from_db(self, datetime.date.today().year)
+        print (dps.estimation, dps)
+        (last, penultimate, endlastyear, estimation)=(False, False, False, False)
+        if result.basic.last: 
+            if result.basic.last.quote:
+                last=True
+        if result.basic.penultimate: 
+            if result.basic.penultimate.quote:
+                penultimate=True
+        if result.basic.endlastyear: 
+            if result.basic.endlastyear.quote:
+                endlastyear=True
+        if dps:
+           if dps.estimation!=None:
+                estimation=True
+        return (last, penultimate, endlastyear, estimation)
+        
+        
     def is_deletable(self):
         if self.is_system():
             return False

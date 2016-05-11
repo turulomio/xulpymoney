@@ -79,7 +79,7 @@ install:
 
 
 	install -m 644 -o root xulpymoney.desktop $(PREFIXAPPLICATIONS)
-	install -m 644 -o root images/dinero.png $(PREFIXPIXMAPS)/xulpymoney.png
+	install -m 644 -o root images/coins.png $(PREFIXPIXMAPS)/xulpymoney.png
 
 	install -m 644 -o root GPL-3.txt CHANGELOG.txt AUTHORS.txt RELEASES.txt $(PREFIXSHARE)
 	install -m 644 -o root sql/xulpymoney.sql $(PREFIXSHARE)/sql

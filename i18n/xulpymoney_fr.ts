@@ -320,7 +320,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="6000"/>
+        <location filename="../libxulpymoney.py" line="6022"/>
         <source>Accounts</source>
         <translation type="unfinished"></translation>
     </message>
@@ -360,7 +360,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="4983"/>
+        <location filename="../libxulpymoney.py" line="5005"/>
         <source>Product</source>
         <translation type="unfinished"></translation>
     </message>
@@ -375,7 +375,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="4984"/>
+        <location filename="../libxulpymoney.py" line="5006"/>
         <source>Price</source>
         <translation type="unfinished"></translation>
     </message>
@@ -515,7 +515,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="5990"/>
+        <location filename="../libxulpymoney.py" line="6012"/>
         <source>Shares</source>
         <translation type="unfinished"></translation>
     </message>
@@ -730,32 +730,32 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="4982"/>
+        <location filename="../libxulpymoney.py" line="5004"/>
         <source>Date and time</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="5054"/>
+        <location filename="../libxulpymoney.py" line="5076"/>
         <source>Purging innecesary data</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="5056"/>
+        <location filename="../libxulpymoney.py" line="5078"/>
         <source>Purging quotes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="5063"/>
+        <location filename="../libxulpymoney.py" line="5085"/>
         <source>Purged {0} quotes from {1}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="6568"/>
+        <location filename="../libxulpymoney.py" line="6590"/>
         <source>True</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="6571"/>
+        <location filename="../libxulpymoney.py" line="6593"/>
         <source>False</source>
         <translation type="unfinished"></translation>
     </message>
@@ -940,47 +940,47 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="5991"/>
+        <location filename="../libxulpymoney.py" line="6013"/>
         <source>Funds</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="5992"/>
+        <location filename="../libxulpymoney.py" line="6014"/>
         <source>Indexes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="5993"/>
+        <location filename="../libxulpymoney.py" line="6015"/>
         <source>ETF</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="5994"/>
+        <location filename="../libxulpymoney.py" line="6016"/>
         <source>Warrants</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="5995"/>
+        <location filename="../libxulpymoney.py" line="6017"/>
         <source>Currencies</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="5996"/>
+        <location filename="../libxulpymoney.py" line="6018"/>
         <source>Public Bond</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="5997"/>
+        <location filename="../libxulpymoney.py" line="6019"/>
         <source>Pension plans</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="5998"/>
+        <location filename="../libxulpymoney.py" line="6020"/>
         <source>Private Bond</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="5999"/>
+        <location filename="../libxulpymoney.py" line="6021"/>
         <source>Deposit</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1065,7 +1065,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="6539"/>
+        <location filename="../libxulpymoney.py" line="6561"/>
         <source>{} {}, {} {} and {} {}</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1075,32 +1075,32 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="6528"/>
+        <location filename="../libxulpymoney.py" line="6550"/>
         <source>year</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="6530"/>
+        <location filename="../libxulpymoney.py" line="6552"/>
         <source>years</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="6532"/>
+        <location filename="../libxulpymoney.py" line="6554"/>
         <source>month</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="6534"/>
+        <location filename="../libxulpymoney.py" line="6556"/>
         <source>months</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="6536"/>
+        <location filename="../libxulpymoney.py" line="6558"/>
         <source>day</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="6538"/>
+        <location filename="../libxulpymoney.py" line="6560"/>
         <source>days</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3491,11 +3491,6 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.py" line="496"/>
-        <source>You have to add a quote and a dividend per share estimation to the new product</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../ui/Ui_frmProductReport.py" line="1001"/>
         <source>Annotation date</source>
         <translation type="unfinished"></translation>
@@ -3511,17 +3506,17 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.py" line="531"/>
+        <location filename="../ui/frmProductReport.py" line="553"/>
         <source>Agrupation selection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.py" line="542"/>
+        <location filename="../ui/frmProductReport.py" line="564"/>
         <source>Priority selection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.py" line="555"/>
+        <location filename="../ui/frmProductReport.py" line="577"/>
         <source>Historical data priority selection</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3633,6 +3628,36 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../ui/frmProductReport.py" line="161"/>
         <source>Product prices are not updated automatically</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/frmProductReport.py" line="491"/>
+        <source>You have to add three quotes (last, penultimate and end last year quotes) and current year dividend per share estimation to the new product</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/frmProductReport.py" line="500"/>
+        <source>Please add the product last quote</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/frmProductReport.py" line="508"/>
+        <source>Please add the product penultimate quote</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/frmProductReport.py" line="515"/>
+        <source>Please add the product endlastyear quote</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/frmProductReport.py" line="521"/>
+        <source>Please add current year dividend per share estimation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/frmProductReport.py" line="522"/>
+        <source>Product: {0} ({1})</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

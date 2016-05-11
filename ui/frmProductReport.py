@@ -480,30 +480,51 @@ class frmProductReport(QDialog, Ui_frmProductReport):
             self.product.ticker=self.txtYahoo.text()
             self.product.priority=SetPriorities(self.mem).init__create_from_combo(self.cmbPriority)
             self.product.priorityhistorical=SetPrioritiesHistorical(self.mem).init__create_from_combo(self.cmbPriorityHistorical)
-            self.product.comment=self.txtComentario.text()
-            
-            insertarquote=False#se hace antes porque id despues de save ya tiene valor
-            if self.product.id==None:
-                insertarquote=True
-                
+            self.product.comment=self.txtComentario.text()                
             self.product.save()
             self.mem.con.commit()  
-            
-            if insertarquote==True:
-                m=QMessageBox()
-                m.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
-                m.setIcon(QMessageBox.Information)
-                m.setText(self.tr("You have to add a quote and a dividend per share estimation to the new product"))
-                m.exec_()                
-                w=frmQuotesIBM(self.mem,  self.product)
-                while w.result()!=QDialog.Accepted:
-                    w.exec_()    
-        
-                d=frmEstimationsAdd(self.mem, self.product, "dps")
-                while d.result()!=QDialog.Accepted:
-                    d.exec_()   
-                self.done(0)
+                        
+                        
+            m=QMessageBox()
+            m.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
+            m.setIcon(QMessageBox.Information)
+            m.setText(self.tr("You have to add three quotes (last, penultimate and end last year quotes) and current year dividend per share estimation to the new product"))
+            m.exec_()   
 
+            (last, penultimate, endlastyear, estimations_dps)=self.product.has_basic_data()
+            while (last, penultimate, endlastyear, estimations_dps)!=(True, True, True, True):
+                now=datetime.datetime.now()
+                if last==False:
+                    w=frmQuotesIBM(self.mem,  self.product)
+                    w.wdgDT.set(self.mem, now, self.mem.localzone)
+                    w.lblInvestment.setText(self.tr("Please add the product last quote"))
+                    w.setWindowTitle(self.tr("Product: {0} ({1})").format(self.product.name,  self.product.id))
+                    w.exec_()          
+                        
+                if penultimate==False:
+                    penultimate=now-datetime.timedelta(days=1)
+                    w=frmQuotesIBM(self.mem,  self.product)
+                    w.wdgDT.set(self.mem, datetime.datetime(penultimate.year, penultimate.month, penultimate.day, self.product.stockmarket.closes.hour, self.product.stockmarket.closes.minute), self.mem.localzone)
+                    w.lblInvestment.setText(self.tr("Please add the product penultimate quote"))
+                    w.setWindowTitle(self.tr("Product: {0} ({1})").format(self.product.name,  self.product.id))
+                    w.exec_()    
+                    
+                if endlastyear==False:
+                    w=frmQuotesIBM(self.mem,  self.product)
+                    w.wdgDT.set(self.mem, datetime.datetime(now.year-1, 12, 31, self.product.stockmarket.closes.hour, self.product.stockmarket.closes.minute), self.mem.localzone)
+                    w.lblInvestment.setText(self.tr("Please add the product endlastyear quote"))
+                    w.setWindowTitle(self.tr("Product: {0} ({1})").format(self.product.name,  self.product.id))
+                    w.exec_()    
+                
+                if estimations_dps==False:
+                    d=frmEstimationsAdd(self.mem, self.product, "dps")
+                    d.lbl.setText(self.tr("Please add current year dividend per share estimation"))
+                    w.setWindowTitle(self.tr("Product: {0} ({1})").format(self.product.name,  self.product.id))
+                    d.exec_()   
+                
+                (last, penultimate, endlastyear, estimations_dps)=self.product.has_basic_data()
+                print(last, penultimate, endlastyear, estimations_dps)
+            self.done(0)
         elif self.product.id>0:
             m=QMessageBox()
             m.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
@@ -511,6 +532,7 @@ class frmProductReport(QDialog, Ui_frmProductReport):
             m.setIcon(QMessageBox.Information)
             m.exec_()        
             return
+
     def on_cmdAgrupations_released(self):
         ##Se debe clonar, porque selector borra
         if self.cmbTipo.itemData(self.cmbTipo.currentIndex())==2:#Fondos de inversión
