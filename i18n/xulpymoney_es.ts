@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS><TS version="2.0" language="es_ES" sourcelanguage="en">
+<!DOCTYPE TS>
+<TS version="2.1" language="es_ES" sourcelanguage="en">
 <context>
     <name>AssetsReport</name>
     <message>
@@ -1429,7 +1430,7 @@ Do you want to activate it?</source>
         <translation>TOTAL</translation>
     </message>
 </context>
-<context encoding="UTF-8">
+<context>
     <name>frmAbout</name>
     <message>
         <location filename="../ui/Ui_frmAbout.py" line="312"/>
@@ -1443,12 +1444,12 @@ Do you want to activate it?</source>
     </message>
     <message>
         <location filename="../ui/Ui_frmAbout.py" line="324"/>
-        <source>N&#xc3;&#xba;mero de Deuda p&#xc3;&#xba;blica</source>
+        <source>NÃºmero de Deuda pÃºblica</source>
         <translation></translation>
     </message>
     <message>
         <location filename="../ui/Ui_frmAbout.py" line="326"/>
-        <source>N&#xc3;&#xba;mero de Deuda privada</source>
+        <source>NÃºmero de Deuda privada</source>
         <translation></translation>
     </message>
     <message>
@@ -1491,7 +1492,7 @@ Do you want to activate it?</source>
         <source>Effective products</source>
         <translation>Productos existentes</translation>
     </message>
-    <message encoding="UTF-8">
+    <message>
         <location filename="../ui/Ui_frmAbout.py" line="293"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
@@ -1517,7 +1518,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../ui/Ui_frmAbout.py" line="333"/>
         <source>Products</source>
-        <translation type="unfinished">Productos</translation>
+        <translation>Productos</translation>
     </message>
 </context>
 <context>
@@ -1755,7 +1756,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../ui/Ui_frmAccountsReport.py" line="442"/>
-        <source>XXXX &#xe2;&#x82;&#xac;</source>
+        <source>XXXX â¬</source>
         <translation>XXXX €</translation>
     </message>
     <message>
@@ -3020,7 +3021,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../ui/frmMain.py" line="77"/>
-        <source>Xulpymoney 2010-{0} &#xc2;&#xa9; (Admin mode)</source>
+        <source>Xulpymoney 2010-{0} Â© (Admin mode)</source>
         <translation>Xulpymoney 2010-{0} Â© (Admin mode)</translation>
     </message>
     <message>
@@ -3070,12 +3071,12 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../ui/frmMain.py" line="44"/>
-        <source>Xulpymoney 2010-{0} &#xa9;</source>
+        <source>Xulpymoney 2010-{0} ©</source>
         <translation>Xulpymoney 2010-{0} ©</translation>
     </message>
     <message>
         <location filename="../ui/frmMain.py" line="67"/>
-        <source>Xulpymoney 2010-{0} &#xa9; (Admin mode)</source>
+        <source>Xulpymoney 2010-{0} © (Admin mode)</source>
         <translation>Xulpymoney 2010-{0} © (Admin mode)</translation>
     </message>
     <message>
@@ -3639,32 +3640,32 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../ui/frmProductReport.py" line="491"/>
         <source>You have to add three quotes (last, penultimate and end last year quotes) and current year dividend per share estimation to the new product</source>
-        <translation type="unfinished"></translation>
+        <translation>Tienes que añadir tres cotizaciones (la última, la penúltima y la del fin del año pasado) y la estimación de dividendo por acción del año actual, al nuevo producto</translation>
     </message>
     <message>
         <location filename="../ui/frmProductReport.py" line="500"/>
         <source>Please add the product last quote</source>
-        <translation type="unfinished"></translation>
+        <translation>Por favor, añada la última cotización del producto</translation>
     </message>
     <message>
         <location filename="../ui/frmProductReport.py" line="508"/>
         <source>Please add the product penultimate quote</source>
-        <translation type="unfinished"></translation>
+        <translation>Por favor, añada la penúltima cotización del producto</translation>
     </message>
     <message>
         <location filename="../ui/frmProductReport.py" line="515"/>
         <source>Please add the product endlastyear quote</source>
-        <translation type="unfinished"></translation>
+        <translation>Por favor, añada la última cotización del año pasado del producto</translation>
     </message>
     <message>
         <location filename="../ui/frmProductReport.py" line="521"/>
         <source>Please add current year dividend per share estimation</source>
-        <translation type="unfinished"></translation>
+        <translation>Por favor añada la estimación de dividendo por acción del producto del año actual</translation>
     </message>
     <message>
         <location filename="../ui/frmProductReport.py" line="522"/>
         <source>Product: {0} ({1})</source>
-        <translation type="unfinished"></translation>
+        <translation>Producto: {0} ({1})</translation>
     </message>
 </context>
 <context>
@@ -4567,12 +4568,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../ui/Ui_wdgCalculator.py" line="184"/>
         <source>Select a product</source>
-        <translation type="unfinished">Selecciona un producto</translation>
+        <translation>Selecciona un producto</translation>
     </message>
     <message>
         <location filename="../ui/Ui_wdgCalculator.py" line="185"/>
         <source>Select your personal investment</source>
-        <translation type="unfinished"></translation>
+        <translation>Selección tu inversión personal</translation>
     </message>
 </context>
 <context>
@@ -6233,7 +6234,7 @@ Diferencia diaria: {5}. Edad media de las inversiones: {6}</translation>
     </message>
     <message>
         <location filename="../ui/wdgSimulations.py" line="87"/>
-        <source>Xulpymoney SIMULATED IN {} 2010-{} &#xa9;</source>
+        <source>Xulpymoney SIMULATED IN {} 2010-{} ©</source>
         <translation>Xulpymoney SIMULATED IN {} 2010-{} ©</translation>
     </message>
 </context>
