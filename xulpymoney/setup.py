@@ -59,6 +59,7 @@ include_files.append(("i18n/xulpymoney_es.qm", "i18n/xulpymoney_es.qm"))
 include_files.append(("i18n/xulpymoney_fr.qm", "i18n/xulpymoney_fr.qm"))
 include_files.append(("i18n/xulpymoney_ro.qm", "i18n/xulpymoney_ro.qm"))
 include_files.append(("i18n/xulpymoney_ru.qm", "i18n/xulpymoney_ru.qm"))
+include_files.append(("sql/xulpymoney.sql", "sql/xulpymoney.sql"))
 
 #Build options
 if sys.platform=='win32':
@@ -84,7 +85,8 @@ else:#linux
       options=dict(build_exe = build_options)
 
 executables = [
-      Executable('xulpymoney.py', base=base, icon='images/xulpymoney.ico', shortcutName= name, shortcutDir='ProgramMenuFolder')
+      Executable('xulpymoney.py', base=base, icon='images/xulpymoney.ico', shortcutName= name, shortcutDir='ProgramMenuFolder'), 
+      Executable('xulpymoney_init.py', base=base, icon='images/xulpymoney.ico', shortcutName= name, shortcutDir='ProgramMenuFolder')
 ]
 
 setup(name=name,
