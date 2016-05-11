@@ -1,7 +1,7 @@
 [Desktop Entry]
 Name=Xulpymoney
 Type=Application
-Comment=Accounting system with MyQuotes support
+Comment=Home and financial accounting system
 Exec=xulpymoney
 TryExec=xulpymoney
 Icon=/usr/share/pixmaps/xulpymoney.png
