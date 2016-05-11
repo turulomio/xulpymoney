@@ -40,8 +40,9 @@ Name: "spanish"; MessagesFile: "compiler:Languages\Spanish.isl"
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked; OnlyBelowVersion: 0,6.1
 
-[Files]
+[Files]  
 Source: "xulpymoney.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "xulpymoney_init.exe"; DestDir: "{app}"; Flags: ignoreversion
 Source: "*.pyd"; DestDir: "{app}"; Flags: ignoreversion  
 Source: "i18n/*.qm"; DestDir: "{app}/i18n/"; Flags: ignoreversion   
 Source: "*.dll"; DestDir: "{app}"; Flags: ignoreversion
@@ -50,12 +51,14 @@ Source: "platforms\*"; DestDir: "{app}\platforms\"; Flags: ignoreversion recurse
 Source: "imageformats\*"; DestDir: "{app}\imageformats\"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "mpl-data\*"; DestDir: "{app}\mpl-data\"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "tcl\*"; DestDir: "{app}\tcl\"; Flags: ignoreversion recursesubdirs createallsubdirs    
-Source: "tk\*"; DestDir: "{app}\tk\"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "tk\*"; DestDir: "{app}\tk\"; Flags: ignoreversion recursesubdirs createallsubdirs     
 Source: "pytz\*"; DestDir: "{app}\pytz\"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "sql\*"; DestDir: "{app}\sql\"; Flags: ignoreversion recursesubdirs createallsubdirs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
-[Icons]
+[Icons]  
 Name: "{group}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"
+Name: "{group}\{#MyAppName}"; Filename: "{app}\xulpymoney_init.exe"
 Name: "{group}\{cm:ProgramOnTheWeb,{#MyAppName}}"; Filename: "{#MyAppURL}"
 Name: "{group}\{cm:UninstallProgram,{#MyAppName}}"; Filename: "{uninstallexe}"
 Name: "{commondesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: desktopicon

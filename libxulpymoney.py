@@ -13,8 +13,8 @@ from libqmessagebox import *
 
 from decimal import *
 
-version="20160509"
-version_date=datetime.date(2016, 5, 6)
+version="20160511"
+version_date=datetime.date(2016, 5, 11)
 class Connection(QObject):
     """Futuro conection object"""
     inactivity_timeout=pyqtSignal()
@@ -2567,7 +2567,10 @@ class DBAdmin:
         
     def xulpymoney_basic_schema(self):
 #        try:
-            self.load_script("/usr/share/xulpymoney/sql/xulpymoney.sql")
+            if platform.system()=="Windows":
+                self.load_script("sql/xulpymoney.sql")
+            else:
+                self.load_script("/usr/share/xulpymoney/sql/xulpymoney.sql")
             cur= self.con.cursor()
             cur.execute("insert into entidadesbancarias values(3,'{0}', true)".format(QApplication.translate("Core","Personal Management")))
             cur.execute("insert into cuentas values(4,'{0}',3,true,NULL,'EUR')".format(QApplication.translate("Core","Cash")))
