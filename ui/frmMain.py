@@ -83,6 +83,10 @@ class frmMain(QMainWindow, Ui_frmMain):
                     self.adminmode=False        
                     m.setText(self.tr("Bad 'Admin mode' password. You are logged as a normal user"))
                     m.exec_()   
+                    
+                    
+        r=Report(self.mem)
+        r.ibex35_tpc_down_and_up(2)
     def actionsEnabled(self, bool):
         self.menuBar.setEnabled(bool)
         self.toolBar.setEnabled(bool)

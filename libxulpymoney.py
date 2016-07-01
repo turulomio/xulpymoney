@@ -1046,6 +1046,32 @@ class SetAccounts(SetCommons):
         return res
 
 
+class Report:
+    """Class to make studiies and reports"""
+    def __init__(self, mem):
+        self.mem=mem
+        
+    def ibex35_tpc_down_and_up(self, tpc):
+        id_product=79329
+        ibex=Product(self.mem).init__db(id_product)
+        ibex.result=QuotesResult(self.mem, ibex)
+        ibex.result.get_basic_and_ohcls()
+        bajan=0
+        subenfinal=0
+        for ohcl in ibex.result.ohclDaily.arr:
+            if ohcl.low<=ohcl.open*Decimal(1-tpc/100):
+                bajan=bajan+1
+                if ohcl.close>=ohcl.open:
+                    subenfinal=subenfinal+1
+        print("""
+IBEX (Informe de d´ias que baja un {}% y luego sube
+    Numero registros: {}
+    N´umero bajan: {}
+    N´umero bajan y suben al final: {}
+    % Exito= {}
+""".format(tpc, ibex.result.ohclDaily.length(), bajan, subenfinal, subenfinal/bajan*100))
+        
+
 class SetAccountOperations:
     """Clase es un array ordenado de objetos newInvestmentOperation"""
     def __init__(self, mem):
@@ -6440,6 +6466,13 @@ def qdate(date):
     return qcenter(str(date))
 
 
+def qmessagebox(text):
+    m=QMessageBox()
+    m.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
+    m.setIcon(QMessageBox.Information)
+    m.setText(text)
+    m.exec_()   
+    
 def qdatetime(dt, zone,  pixmap=True):
     """dt es un datetime con timezone
     dt, tiene timezone, 
