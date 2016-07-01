@@ -51,6 +51,17 @@ class wdgLastCurrent(QWidget, Ui_wdgLastCurrent):
         lay = QVBoxLayout(d)
         lay.addWidget(w)
         d.exec_()
+        self.mem.settings.setValue("frmInvestmentReport/qdialog_disreinvest", d.size())        
+        
+    @QtCore.pyqtSlot() 
+    def on_actionReinvestCurrent_triggered(self):
+        d=QDialog()       
+        d.resize(self.mem.settings.value("frmInvestmentReport/qdialog_disreinvest", QSize(1024, 768)))
+        d.setWindowTitle(self.tr("Divest / Reinvest simulation"))
+        w=wdgDisReinvest(self.mem, self.investments.selected, d)
+        lay = QVBoxLayout(d)
+        lay.addWidget(w)
+        d.exec_()
         self.mem.settings.setValue("frmInvestmentReport/qdialog_disreinvest", d.size())
                 
     @QtCore.pyqtSlot() 
@@ -121,6 +132,7 @@ class wdgLastCurrent(QWidget, Ui_wdgLastCurrent):
         menu=QMenu()
         menu.addAction(self.actionCalculate)
         menu.addSeparator()
+        menu.addAction(self.actionReinvestCurrent)
         menu.addAction(self.actionReinvest)
         menu.addSeparator()
         menu.addAction(self.actionInvestmentReport)        

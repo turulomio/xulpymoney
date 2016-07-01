@@ -35,19 +35,14 @@ class wdgOrdersAdd(QWidget, Ui_wdgOrdersAdd):
     def on_buttonbox_accepted(self):
         self.date=self.deDate.date()
         if not (self.txtAmount.isValid() and self.txtPrice.isValid() and self.txtShares.isValid()):
-            m=QMessageBox()
-            m.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
-            m.setIcon(QMessageBox.Information)
-            m.setText(self.tr("Incorrect data. Try again."))
-            m.exec_()    
+            qmessagebox(self.tr("Incorrect data. Try again."))
             return
         investment=self.mem.data.investments.find_by_id(self.cmbInvestments.itemData(self.cmbInvestments.currentIndex()))
         if investment==None:
-            m=QMessageBox()
-            m.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
-            m.setIcon(QMessageBox.Information)
-            m.setText(self.tr("You must select an investment"))
-            m.exec_()    
+            qmessagebox(self.tr("You must select an investment"))
+            return
+        if self.deExpiration.date()<self.deDate.date():
+            qmessagebox(self.tr("Expiration date can't be less than order date."))
             return
             
         if self.order==None:
