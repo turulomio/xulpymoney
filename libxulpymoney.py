@@ -1437,6 +1437,15 @@ class SetIO:
     def order_by_datetime(self):
         """Ordena por datetime"""
         self.arr=sorted(self.arr, key=lambda o:o.datetime)
+        
+    def setDistinctProducts(self):
+        """Extracts distinct products in IO"""
+        s=set([])
+        for o in self.arr:
+            s.add(o.product)
+        result=SetProducts(self.mem)
+        result.arr=list(s)
+        return result
 
 class SetInvestmentOperations(SetIO):       
     """Clase es un array ordenado de objetos newInvestmentOperation"""

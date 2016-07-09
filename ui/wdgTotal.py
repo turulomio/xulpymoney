@@ -786,6 +786,44 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         horizontalLayout.addWidget(table)
         self.tab.addTab(newtab, self.tr("Commision report of {}").format(self.wyData.year))
         self.tab.setCurrentWidget(newtab)        
+        
+
+    @QtCore.pyqtSlot() 
+    def on_actionShowGainsByProduct_triggered(self):
+        set=SetInvestmentOperationsHistorical(self.mem)
+        for i in self.mem.data.investments.arr:
+            for o in i.op_historica.arr:
+                if o.fecha_venta.year==self.wyData.year and o.tipooperacion.id in (5, 8):#Venta y traspaso fondos inversion
+                    set.arr.append(o)
+
+        newtab = QWidget()
+        horizontalLayout = QHBoxLayout(newtab)
+        table = myQTableWidget(newtab)
+        table.settings(self.mem,"wdgTotal","tblShowGainsByProduct")
+        table.setEditTriggers(QAbstractItemView.NoEditTriggers)
+        table.setSelectionMode(QAbstractItemView.SingleSelection)
+        
+        table.setColumnCount(2)
+        
+        table.setRowCount(set.length())
+        table.setVerticalHeaderItem(0, QTableWidgetItem(self.tr( "Product" )))
+        table.setVerticalHeaderItem(1, QTableWidgetItem(self.tr( "Brut gains" )))
+        table.applySettings()
+        sum_gains=Decimal("0")
+        products=set.SetDistinctProducts()
+        
+        for i, p in enumerate(products.arr):
+            table.setItem(0, i, p.name)    
+            temp=Decimal('0')
+            for o in set.arr:
+                if p.id==o.id:
+                    temp=temp+o.consolidado_bruto()
+            sum_gains=sum_gains+temp
+            table.setItem(1, i, temp)
+            
+        horizontalLayout.addWidget(table)
+        self.tab.addTab(newtab, self.tr("Gains by product of {}").format(self.wyData.year))
+        self.tab.setCurrentWidget(newtab)        
             
     @QtCore.pyqtSlot() 
     def on_actionShowTaxes_triggered(self):
