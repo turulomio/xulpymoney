@@ -1633,22 +1633,22 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmAccountsReport.ui" line="89"/>
+        <location filename="../ui/Ui_frmAccountsReport.py" line="399"/>
         <source>Account data</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmAccountsReport.ui" line="102"/>
+        <location filename="../ui/Ui_frmAccountsReport.py" line="400"/>
         <source>Select the bank it belongs to</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmAccountsReport.ui" line="122"/>
+        <location filename="../ui/Ui_frmAccountsReport.py" line="401"/>
         <source>Account name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmAccountsReport.ui" line="145"/>
+        <location filename="../ui/Ui_frmAccountsReport.py" line="402"/>
         <source>Account currency</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1788,7 +1788,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmAccountsReport.ui" line="17"/>
+        <location filename="../ui/Ui_frmAccountsReport.py" line="398"/>
         <source>Account report</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3725,47 +3725,47 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>frmSelector</name>
     <message>
-        <location filename="../ui/frmSelector.ui" line="123"/>
+        <location filename="../ui/Ui_frmSelector.py" line="97"/>
         <source>Id</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmSelector.ui" line="77"/>
+        <location filename="../ui/Ui_frmSelector.py" line="92"/>
         <source>^</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmSelector.ui" line="84"/>
+        <location filename="../ui/Ui_frmSelector.py" line="93"/>
         <source>&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmSelector.ui" line="91"/>
+        <location filename="../ui/Ui_frmSelector.py" line="94"/>
         <source>&lt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmSelector.ui" line="98"/>
+        <location filename="../ui/Ui_frmSelector.py" line="95"/>
         <source>V</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmSelector.ui" line="31"/>
+        <location filename="../ui/Ui_frmSelector.py" line="87"/>
         <source>Investment</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmSelector.ui" line="67"/>
+        <location filename="../ui/Ui_frmSelector.py" line="91"/>
         <source>Selected elements</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmSelector.ui" line="128"/>
+        <location filename="../ui/Ui_frmSelector.py" line="99"/>
         <source>Elements</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmSelector.ui" line="138"/>
+        <location filename="../ui/Ui_frmSelector.py" line="100"/>
         <source>Accept selection</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4821,7 +4821,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgDisReinvest.py" line="578"/>
+        <location filename="../ui/Ui_wdgDisReinvest.py" line="538"/>
         <source>Date</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4831,17 +4831,17 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgDisReinvest.py" line="580"/>
+        <location filename="../ui/Ui_wdgDisReinvest.py" line="540"/>
         <source>Shares</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgDisReinvest.py" line="599"/>
+        <location filename="../ui/Ui_wdgDisReinvest.py" line="542"/>
         <source>Price</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgDisReinvest.py" line="584"/>
+        <location filename="../ui/Ui_wdgDisReinvest.py" line="494"/>
         <source>Balance</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4861,7 +4861,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgDisReinvest.py" line="586"/>
+        <location filename="../ui/Ui_wdgDisReinvest.py" line="496"/>
         <source>Pending</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4871,17 +4871,17 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgDisReinvest.py" line="590"/>
+        <location filename="../ui/Ui_wdgDisReinvest.py" line="500"/>
         <source>% APR</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgDisReinvest.py" line="592"/>
+        <location filename="../ui/Ui_wdgDisReinvest.py" line="527"/>
         <source>% Total</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgDisReinvest.py" line="594"/>
+        <location filename="../ui/Ui_wdgDisReinvest.py" line="504"/>
         <source>Benchmark</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4926,7 +4926,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgDisReinvest.py" line="603"/>
+        <location filename="../ui/wdgDisReinvest.ui" line="733"/>
         <source>Before</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4951,12 +4951,12 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgDisReinvest.py" line="595"/>
+        <location filename="../ui/wdgDisReinvest.ui" line="743"/>
         <source>Investment situation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgDisReinvest.py" line="588"/>
+        <location filename="../ui/wdgDisReinvest.ui" line="787"/>
         <source>% Year to Date</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4996,17 +4996,17 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgDisReinvest.py" line="602"/>
+        <location filename="../ui/Ui_wdgDisReinvest.py" line="535"/>
         <source>Gains estimations</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgDisReinvest.py" line="597"/>
+        <location filename="../ui/Ui_wdgDisReinvest.py" line="530"/>
         <source>% Gains</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgDisReinvest.py" line="601"/>
+        <location filename="../ui/Ui_wdgDisReinvest.py" line="534"/>
         <source>Gains</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5021,12 +5021,12 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgDisReinvest.py" line="556"/>
+        <location filename="../ui/wdgDisReinvest.ui" line="569"/>
         <source>After at</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgDisReinvest.py" line="576"/>
+        <location filename="../ui/wdgDisReinvest.ui" line="651"/>
         <source>Before at</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5478,57 +5478,57 @@ Daily Diff: {5}. Investment average age: {6}</source>
 <context>
     <name>wdgInvestmentsOperations</name>
     <message>
-        <location filename="../ui/wdgInvestmentsOperations.ui" line="52"/>
+        <location filename="../ui/Ui_wdgInvestmentsOperations.py" line="167"/>
         <source>List options</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgInvestmentsOperations.ui" line="64"/>
+        <location filename="../ui/Ui_wdgInvestmentsOperations.py" line="168"/>
         <source>Show all investment operations from selected year</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgInvestmentsOperations.ui" line="91"/>
+        <location filename="../ui/Ui_wdgInvestmentsOperations.py" line="169"/>
         <source>Show investment operations from selected year and month</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgInvestmentsOperations.ui" line="269"/>
+        <location filename="../ui/Ui_wdgInvestmentsOperations.py" line="177"/>
         <source>Show investment</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgInvestmentsOperations.ui" line="281"/>
+        <location filename="../ui/Ui_wdgInvestmentsOperations.py" line="179"/>
         <source>Show investment operation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgInvestmentsOperations.ui" line="293"/>
+        <location filename="../ui/Ui_wdgInvestmentsOperations.py" line="181"/>
         <source>Show account</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgInvestmentsOperations.ui" line="26"/>
+        <location filename="../ui/Ui_wdgInvestmentsOperations.py" line="166"/>
         <source>Investment operations list</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgInvestmentsOperations.ui" line="305"/>
+        <location filename="../ui/Ui_wdgInvestmentsOperations.py" line="183"/>
         <source>Show product</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgInvestmentsOperations.ui" line="44"/>
+        <location filename="../ui/Ui_wdgInvestmentsOperations.py" line="174"/>
         <source>Operations list</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgInvestmentsOperations.ui" line="228"/>
+        <location filename="../ui/Ui_wdgInvestmentsOperations.py" line="175"/>
         <source>Current investment status</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgInvestmentsOperations.py" line="163"/>
+        <location filename="../ui/Ui_wdgInvestmentsOperations.py" line="185"/>
         <source>Hide in range report</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5538,22 +5538,22 @@ Daily Diff: {5}. Investment average age: {6}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgInvestmentsOperations.ui" line="147"/>
+        <location filename="../ui/Ui_wdgInvestmentsOperations.py" line="170"/>
         <source>Show all investment operations</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgInvestmentsOperations.ui" line="156"/>
+        <location filename="../ui/Ui_wdgInvestmentsOperations.py" line="171"/>
         <source>Show purchasing investment operations</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgInvestmentsOperations.ui" line="165"/>
+        <location filename="../ui/Ui_wdgInvestmentsOperations.py" line="172"/>
         <source>Show selling investment operations</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgInvestmentsOperations.ui" line="174"/>
+        <location filename="../ui/Ui_wdgInvestmentsOperations.py" line="173"/>
         <source>Exclude selling and purchasing investment operations</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6376,137 +6376,137 @@ Daily Diff: {5}. Investment average age: {6}</source>
 <context>
     <name>wdgTotal</name>
     <message>
-        <location filename="../ui/Ui_wdgTotal.py" line="435"/>
+        <location filename="../ui/Ui_wdgTotal.py" line="474"/>
         <source>Total</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgTotal.py" line="350"/>
+        <location filename="../ui/Ui_wdgTotal.py" line="353"/>
         <source>Total report</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.ui" line="47"/>
+        <location filename="../ui/Ui_wdgTotal.py" line="476"/>
         <source>Data</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.ui" line="634"/>
+        <location filename="../ui/Ui_wdgTotal.py" line="477"/>
         <source>Chart</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgTotal.py" line="353"/>
+        <location filename="../ui/Ui_wdgTotal.py" line="356"/>
         <source>Incomes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgTotal.py" line="441"/>
+        <location filename="../ui/Ui_wdgTotal.py" line="444"/>
         <source>Expenses</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgTotal.py" line="363"/>
+        <location filename="../ui/Ui_wdgTotal.py" line="366"/>
         <source>Accounts</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgTotal.py" line="365"/>
+        <location filename="../ui/Ui_wdgTotal.py" line="368"/>
         <source>Investments</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgTotal.py" line="447"/>
+        <location filename="../ui/Ui_wdgTotal.py" line="450"/>
         <source>January</source>
         <translation type="unfinished">Janvier</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgTotal.py" line="451"/>
+        <location filename="../ui/Ui_wdgTotal.py" line="454"/>
         <source>March</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgTotal.py" line="453"/>
+        <location filename="../ui/Ui_wdgTotal.py" line="456"/>
         <source>April</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgTotal.py" line="455"/>
+        <location filename="../ui/Ui_wdgTotal.py" line="458"/>
         <source>May</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgTotal.py" line="457"/>
+        <location filename="../ui/Ui_wdgTotal.py" line="460"/>
         <source>June</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgTotal.py" line="423"/>
+        <location filename="../ui/Ui_wdgTotal.py" line="462"/>
         <source>July</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgTotal.py" line="431"/>
+        <location filename="../ui/Ui_wdgTotal.py" line="470"/>
         <source>November</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgTotal.py" line="433"/>
+        <location filename="../ui/Ui_wdgTotal.py" line="472"/>
         <source>December</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.ui" line="690"/>
+        <location filename="../ui/Ui_wdgTotal.py" line="479"/>
         <source>Show income operations</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.ui" line="695"/>
+        <location filename="../ui/Ui_wdgTotal.py" line="480"/>
         <source>Show expense operations</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.ui" line="707"/>
+        <location filename="../ui/Ui_wdgTotal.py" line="482"/>
         <source>Show dividends</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.ui" line="719"/>
+        <location filename="../ui/Ui_wdgTotal.py" line="484"/>
         <source>Show selling operations</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgTotal.py" line="357"/>
+        <location filename="../ui/Ui_wdgTotal.py" line="360"/>
         <source>Dividends</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgTotal.py" line="369"/>
+        <location filename="../ui/Ui_wdgTotal.py" line="372"/>
         <source>Monthly difference</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgTotal.py" line="371"/>
+        <location filename="../ui/Ui_wdgTotal.py" line="374"/>
         <source>% Year to date</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgTotal.py" line="449"/>
+        <location filename="../ui/Ui_wdgTotal.py" line="452"/>
         <source>February</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgTotal.py" line="425"/>
+        <location filename="../ui/Ui_wdgTotal.py" line="464"/>
         <source>August</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgTotal.py" line="427"/>
+        <location filename="../ui/Ui_wdgTotal.py" line="466"/>
         <source>September</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgTotal.py" line="429"/>
+        <location filename="../ui/Ui_wdgTotal.py" line="468"/>
         <source>October</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6536,7 +6536,7 @@ Daily Diff: {5}. Investment average age: {6}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="915"/>
+        <location filename="../ui/wdgTotal.py" line="916"/>
         <source>You can&apos;t close this tab</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6556,37 +6556,37 @@ Daily Diff: {5}. Investment average age: {6}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgTotal.py" line="355"/>
+        <location filename="../ui/Ui_wdgTotal.py" line="358"/>
         <source>Gains</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgTotal.py" line="361"/>
+        <location filename="../ui/Ui_wdgTotal.py" line="364"/>
         <source>I+G+D-E</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgTotal.py" line="436"/>
+        <location filename="../ui/Ui_wdgTotal.py" line="439"/>
         <source>Annual target return</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgTotal.py" line="399"/>
+        <location filename="../ui/Ui_wdgTotal.py" line="402"/>
         <source>Annual target percentage</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgTotal.py" line="400"/>
+        <location filename="../ui/Ui_wdgTotal.py" line="403"/>
         <source> %</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgTotal.py" line="403"/>
+        <location filename="../ui/Ui_wdgTotal.py" line="406"/>
         <source>Monthly target</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgTotal.py" line="407"/>
+        <location filename="../ui/Ui_wdgTotal.py" line="410"/>
         <source>Accumulated target</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6596,27 +6596,27 @@ Daily Diff: {5}. Investment average age: {6}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgTotal.py" line="398"/>
+        <location filename="../ui/Ui_wdgTotal.py" line="401"/>
         <source>Data in the year</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.ui" line="483"/>
+        <location filename="../ui/Ui_wdgTotal.py" line="475"/>
         <source>Invest or work?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgTotal.py" line="439"/>
+        <location filename="../ui/Ui_wdgTotal.py" line="442"/>
         <source>Total Gains</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgTotal.py" line="443"/>
+        <location filename="../ui/Ui_wdgTotal.py" line="446"/>
         <source>Total Gains - Expenses</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgTotal.py" line="445"/>
+        <location filename="../ui/Ui_wdgTotal.py" line="448"/>
         <source>Result</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6666,7 +6666,7 @@ Daily Diff: {5}. Investment average age: {6}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgTotal.py" line="409"/>
+        <location filename="../ui/Ui_wdgTotal.py" line="412"/>
         <source>Accumulated total gains</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6701,32 +6701,32 @@ Daily Diff: {5}. Investment average age: {6}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.ui" line="731"/>
+        <location filename="../ui/Ui_wdgTotal.py" line="486"/>
         <source>Show Comissions</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="905"/>
+        <location filename="../ui/wdgTotal.py" line="906"/>
         <source>Taxes report of {}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="856"/>
+        <location filename="../ui/wdgTotal.py" line="857"/>
         <source>Investment operation retentions</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="857"/>
+        <location filename="../ui/wdgTotal.py" line="858"/>
         <source>Dividend retentions</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="858"/>
+        <location filename="../ui/wdgTotal.py" line="859"/>
         <source>Other paid taxes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="859"/>
+        <location filename="../ui/wdgTotal.py" line="860"/>
         <source>Returned taxes</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6771,17 +6771,17 @@ Daily Diff: {5}. Investment average age: {6}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="934"/>
+        <location filename="../ui/wdgTotal.py" line="935"/>
         <source>You only can double click in incomes, gains, dividends and expenses.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="934"/>
+        <location filename="../ui/wdgTotal.py" line="935"/>
         <source>Make right click to see comission and tax reports</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.ui" line="743"/>
+        <location filename="../ui/Ui_wdgTotal.py" line="488"/>
         <source>Show taxes</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6806,8 +6806,13 @@ Daily Diff: {5}. Investment average age: {6}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="828"/>
+        <location filename="../ui/wdgTotal.py" line="829"/>
         <source>Gains by product of {}</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/Ui_wdgTotal.py" line="490"/>
+        <source>Gains by product</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
