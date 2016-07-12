@@ -1442,7 +1442,7 @@ class SetIO:
         """Extracts distinct products in IO"""
         s=set([])
         for o in self.arr:
-            s.add(o.product)
+            s.add(o.inversion.product)
         result=SetProducts(self.mem)
         result.arr=list(s)
         return result

@@ -85,8 +85,8 @@ class frmMain(QMainWindow, Ui_frmMain):
                     m.exec_()   
                     
                     
-        r=Report(self.mem)
-        r.ibex35_tpc_down_and_up(2)
+#        r=Report(self.mem)
+#        r.ibex35_tpc_down_and_up(2)
     def actionsEnabled(self, bool):
         self.menuBar.setEnabled(bool)
         self.toolBar.setEnabled(bool)

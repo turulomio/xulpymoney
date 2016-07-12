@@ -743,6 +743,18 @@
     <string>Show taxes</string>
    </property>
   </action>
+  <action name="actionGainsByProduct">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/coins.png</normaloff>:/xulpymoney/coins.png</iconset>
+   </property>
+   <property name="text">
+    <string>Gains by product</string>
+   </property>
+   <property name="toolTip">
+    <string>Gains by product</string>
+   </property>
+  </action>
  </widget>
  <customwidgets>
   <customwidget>
