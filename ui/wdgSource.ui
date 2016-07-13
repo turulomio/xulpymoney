@@ -125,6 +125,10 @@
             <property name="text">
              <string/>
             </property>
+            <property name="icon">
+             <iconset resource="../images/xulpymoney.qrc">
+              <normaloff>:/xulpymoney/star.png</normaloff>:/xulpymoney/star.png</iconset>
+            </property>
             <property name="popupMode">
              <enum>QToolButton::InstantPopup</enum>
             </property>
