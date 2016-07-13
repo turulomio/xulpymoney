@@ -96,6 +96,26 @@ CREATE TYPE quotehistoric_type AS (
 ALTER TYPE quotehistoric_type OWNER TO postgres;
 
 --
+-- Name: create_role_if_not_exists(name); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION create_role_if_not_exists(rolename name) RETURNS text
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+    IF NOT EXISTS (SELECT * FROM pg_roles WHERE rolname = rolename) THEN
+        EXECUTE format('CREATE ROLE %I', rolename);
+        RETURN 'CREATE ROLE';
+    ELSE
+        RETURN format('ROLE ''%I'' ALREADY EXISTS', rolename);
+    END IF;
+END;
+$$;
+
+
+ALTER FUNCTION public.create_role_if_not_exists(rolename name) OWNER TO postgres;
+
+--
 -- Name: cuenta_saldo(integer, date); Type: FUNCTION; Schema: public; Owner: postgres
 --
 
@@ -8200,7 +8220,7 @@ INSERT INTO globals VALUES (16, 'mem/taxcapitalappreciationbelow', '0.5');
 INSERT INTO globals VALUES (17, 'mem/gainsyear', 'false');
 INSERT INTO globals VALUES (18, 'mem/favorites', '79329, 81680, -33, 81458');
 INSERT INTO globals VALUES (19, 'mem/fillfromyear', '2005');
-INSERT INTO globals VALUES (1, 'Version', '201604240810');
+INSERT INTO globals VALUES (1, 'Version', '201607132000');
 INSERT INTO globals VALUES (6, 'Admin mode', NULL);
 INSERT INTO globals VALUES (7, 'wdgIndexRange/spin', '2.0');
 INSERT INTO globals VALUES (8, 'wdgIndexRange/invertir', '3500');
@@ -8211,3 +8231,7 @@ ALTER SEQUENCE seq_entidadesbancarias START WITH 4 RESTART;
 ALTER SEQUENCE seq_cuentas START WITH 5 RESTART;
 UPDATE globals set value=NULL where id_globals=6;
 DELETE FROM globals where id_globals>6;
+SELECT create_role_if_not_exists('xulpymoney_admin');
+SELECT create_role_if_not_exists('xulpymoney_user');
+GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA PUBLIC TO xulpymoney_admin;
+GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA PUBLIC TO xulpymoney_admin;

@@ -6161,42 +6161,42 @@ Diferencia diaria: {5}. Edad media de las inversiones: {6}</translation>
     <message>
         <location filename="../ui/Ui_wdgQuotesUpdate.py" line="120"/>
         <source>Auxiliar tables</source>
-        <translation>Tablas auxiliares</translation>
+        <translation type="unfinished">Tablas auxiliares</translation>
     </message>
     <message>
         <location filename="../ui/Ui_wdgQuotesUpdate.py" line="121"/>
         <source>If it&apos;s unchecked, Xulpymoney will update all products marked as autoupdate</source>
-        <translation>Si no está marcado. Xulpymoney actualizará todos los productos marcados como actualizables automáticamente</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../ui/Ui_wdgQuotesUpdate.py" line="122"/>
         <source>Update only investments of the user</source>
-        <translation>Actualizar solo las inversiones del usuario</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../ui/Ui_wdgQuotesUpdate.py" line="123"/>
         <source>Intraday sources</source>
-        <translation>Fuentes intradía</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../ui/Ui_wdgQuotesUpdate.py" line="124"/>
         <source>Update all intraday sources</source>
-        <translation>Actualizar todas las fuentes intradía</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../ui/Ui_wdgQuotesUpdate.py" line="125"/>
         <source>Daily sources</source>
-        <translation>Fuentes diarias</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../ui/Ui_wdgQuotesUpdate.py" line="126"/>
         <source>Update all daily sources</source>
-        <translation>Actualizar todas las fuentes diarias</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../ui/Ui_wdgQuotesUpdate.py" line="127"/>
         <source>Update all sources</source>
-        <translation>Actualizar todas las fuentes</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

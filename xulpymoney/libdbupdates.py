@@ -19,7 +19,7 @@ class Update:
     def __init__(self, mem):
         self.mem=mem
         self.dbversion=self.get_database_version()    
-        self.lastcodeupdate=201604240810
+        self.lastcodeupdate=201607132000
 
    
     def get_database_version(self):
@@ -568,7 +568,24 @@ class Update:
             cur.close()
             self.mem.con.commit()
             self.set_database_version(201604240810)        
-     
+        if self.dbversion<201607132000:
+            cur=self.mem.con.cursor()            
+            cur.execute("""CREATE OR REPLACE FUNCTION create_role_if_not_exists(rolename NAME) RETURNS TEXT AS
+$$
+BEGIN
+    IF NOT EXISTS (SELECT * FROM pg_roles WHERE rolname = rolename) THEN
+        EXECUTE format('CREATE ROLE %I', rolename);
+        RETURN 'CREATE ROLE';
+    ELSE
+        RETURN format('ROLE ''%I'' ALREADY EXISTS', rolename);
+    END IF;
+END;
+$$
+LANGUAGE plpgsql;""")     
+            cur.close()
+            self.mem.con.commit()
+            self.set_database_version(201607132000)        
+
             
         """       WARNING                    ADD ALWAYS LAST UPDATE CODE                         WARNING
         
