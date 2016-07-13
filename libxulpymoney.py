@@ -1380,6 +1380,11 @@ class SetBanks(SetCommons):
             self.append(Bank(self.mem).init__db_row(row))
         cur.close()            
         
+    def delete(self, bank):
+        """Deletes from db and removes object from array.
+        bank is an object"""
+        bank.delete()
+        self.remove(bank)
 
 class SetIO:
     def __init__(self, mem):
@@ -3066,7 +3071,7 @@ class Bank:
                     return False
         return True
         
-    def borrar(self):
+    def delete(self):
         """Función que borra. You must use es_borrable before"""
         cur=self.mem.con.cursor()
         cur.execute("delete from entidadesbancarias where id_entidadesbancarias=%s", (self.id, ))  
