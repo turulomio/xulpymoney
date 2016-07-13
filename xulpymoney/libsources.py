@@ -94,6 +94,8 @@ class wdgSource(QWidget, Ui_wdgSource):
         menu.addAction(self.actionHTML)
         self.cmdDropDown.setMenu(menu)
         
+        self.cmdCancel.setEnabled(False)
+        
         
     def setSource(self, mem, source):
         self.mem=mem
@@ -108,7 +110,8 @@ class wdgSource(QWidget, Ui_wdgSource):
             self.cmdRun.setEnabled(False)     
             self.chkUserOnly.setEnabled(False)
         elif status==SourceStatus.Finished:
-            self.cmdDropDown.setEnabled(True)
+            self.cmdCancel.setEnabled(False)
+            self.cmdDropDown.setEnabled(True)       
             self.actionInserted.setText(self.tr("Inserted quotes ({})").format(self.source.inserted.length()))
             self.actionEdited.setText(self.tr("Edited quotes ({})").format(self.source.modified.length()))
             self.actionIgnored.setText(self.tr("Ignored quotes ({})").format(self.source.ignored.length()))
@@ -128,6 +131,9 @@ class wdgSource(QWidget, Ui_wdgSource):
 
     def on_cmdRun_released(self):
         """Without multiprocess due to needs one independent connection per thread"""
+        self.cmdCancel.setEnabled(True)
+        self.cmdRun.setEnabled(False)
+        self.chkUserOnly.setEnabled(False)
         if self.source.getStatus()==SourceStatus.Loaded:#Cmd directly in wdgSource
             self.source.setSQL(self.chkUserOnly.isChecked())
         self.source.run()
