@@ -8,7 +8,6 @@ DATABASE=${4:-xulpymoney}
 echo "Introduzca la contraseña de administrador de postgres"
 read -s password
 
-
 echo "Debe ejecutarse desde el directorio sql"
 PGPASSWORD=$password pg_dump --no-privileges -s -U $MYUSER -h $MYHOST -p $MYPORT $DATABASE > xulpymoney.sql
 PGPASSWORD=$password pg_dump --no-privileges -a -U $MYUSER -h $MYHOST -p $MYPORT $DATABASE -t stockmarkets --insert > xulpymoney.bolsas
@@ -27,8 +26,16 @@ echo "ALTER SEQUENCE seq_cuentas START WITH 5 RESTART;" >> xulpymoney.sql
 echo "UPDATE globals set value=NULL where id_globals=6;" >> xulpymoney.sql
 echo "DELETE FROM globals where id_globals>6;" >> xulpymoney.sql
 
+echo "SELECT create_role_if_not_exists('xulpymoney_admin');" >> xulpymoney.sql
+echo "GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA PUBLIC TO xulpymoney_admin;" >> xulpymoney.sql
+echo "GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA PUBLIC TO xulpymoney_admin;" >> xulpymoney.sql
+
+echo "SELECT create_role_if_not_exists('xulpymoney_user');" >> xulpymoney.sql  
+echo "GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA PUBLIC TO xulpymoney_user;" >> xulpymoney.sql
+echo "GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA PUBLIC TO xulpymoney_user;" >> xulpymoney.sql
+
 ##QUOTES
-PGPASSWORD=$password pg_dump --no-privileges -a -U $MYUSER -h $MYHOST -p $MYPORT $DATABASE -t quotes --insert > xulpymoney.quotes
-cat xulpymoney.quotes| grep -i 'INSERT INTO' | sort >> quotes.sql
-rm xulpymoney.quotes
-echo "DELETE FROM quotes where id<0;" >> quotes.sql
+#PGPASSWORD=$password pg_dump --no-privileges -a -U $MYUSER -h $MYHOST -p $MYPORT $DATABASE -t quotes --insert > xulpymoney.quotes
+#cat xulpymoney.quotes| grep -i 'INSERT INTO' | sort >> quotes.sql
+#rm xulpymoney.quotes
+#echo "DELETE FROM quotes where id<0;" >> quotes.sql
