@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>691</width>
-    <height>483</height>
+    <width>437</width>
+    <height>266</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -35,7 +35,7 @@
         </font>
        </property>
        <property name="text">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Pressing OK, you will create needed database to run Xulpymoney. It'll be created in the language selected&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Pressing the button below, you will create needed database to run Xulpymoney. It'll be created in the language selected&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="scaledContents">
         <bool>false</bool>
@@ -152,7 +152,7 @@
           </sizepolicy>
          </property>
          <property name="inputMethodHints">
-          <set>Qt::ImhHiddenText|Qt::ImhNoAutoUppercase|Qt::ImhNoPredictiveText</set>
+          <set>Qt::ImhHiddenText|Qt::ImhNoAutoUppercase|Qt::ImhNoPredictiveText|Qt::ImhSensitiveData</set>
          </property>
          <property name="echoMode">
           <enum>QLineEdit::Password</enum>
@@ -192,20 +192,6 @@
       <widget class="Line" name="line">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <layout class="QVBoxLayout" name="laySource"/>
-     </item>
-     <item>
-      <widget class="QPushButton" name="cmdExit">
-       <property name="text">
-        <string>Exit</string>
-       </property>
-       <property name="icon">
-        <iconset resource="../images/xulpymoney.qrc">
-         <normaloff>:/xulpymoney/exit.png</normaloff>:/xulpymoney/exit.png</iconset>
        </property>
       </widget>
      </item>

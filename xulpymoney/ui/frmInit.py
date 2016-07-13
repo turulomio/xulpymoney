@@ -17,21 +17,10 @@ class frmInit(QDialog, Ui_frmInit):
             
         print (a)
         self.mem.languages.qcombobox(self.cmbLanguage, self.mem.languages.find_by_id(a))
-        source=WorkerYahooHistorical(self.mem, 0 )
-        self.wyahoohistorical=wdgSource(self) 
-        source.setWdgSource(self.wyahoohistorical) #Links source with wdg
-        self.wyahoohistorical.setSource(self.mem, source)
-        self.laySource.addWidget(self.wyahoohistorical)
-        self.wyahoohistorical.setEnabled(False)
-        self.wyahoohistorical.chkUserOnly.setCheckState(Qt.Unchecked)
-        self.wyahoohistorical.chkUserOnly.hide()
-        self.wyahoohistorical.setWidgetToUpdate(self)
-
-
     
     @pyqtSlot()
     def on_cmdCreate_released(self):
-        respuesta = QMessageBox.warning(self, self.windowTitle(), self.tr("Do you want to create needed Xulpymoney databases in {0}?".format(self.cmbLanguage.currentText())), QMessageBox.Ok | QMessageBox.Cancel)
+        respuesta = QMessageBox.warning(self, self.windowTitle(), self.tr("Do you want to create {} databases in {0}?".format(self.txtXulpymoney.text(), self.cmbLanguage.currentText())), QMessageBox.Ok | QMessageBox.Cancel)
         if respuesta==QMessageBox.Ok:             
             self.cmbLanguage.setEnabled(False)
             self.txtPass.setEnabled(False)
@@ -50,10 +39,7 @@ class frmInit(QDialog, Ui_frmInit):
             admin=DBAdmin(self.mem.con)
             
             if admin.create_db(self.txtXulpymoney.text())==False:
-                m=QMessageBox()
-                m.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
-                m.setText(self.tr("Error creating database. Maybe it already exist"))
-                m.exec_()        
+                qmessagebox(self.tr("Error creating database. Maybe it already exist"))
                 self.reject()
                 return
             
@@ -61,20 +47,13 @@ class frmInit(QDialog, Ui_frmInit):
             self.mem.con.connect()
             
             if admin.xulpymoney_basic_schema()==False:
-                m=QMessageBox()
-                m.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
-                m.setText(self.tr("Error creating database. Maybe it already exist"))
-                m.exec_()        
+                qmessagebox(self.tr("Error processing SQL init scripts"))
                 self.reject()
                 return
             self.mem.con.commit()
             self.cmdCreate.setEnabled(False)
 
-            respuesta2 = QMessageBox.warning(self, self.windowTitle(), self.tr("Database created. Xulpymoney needs to insert quotes from yahoo. This is a long process. Do you want to insert them now?"), QMessageBox.Ok | QMessageBox.Cancel)
-            if respuesta2==QMessageBox.Ok:             
-                self.mem.load_db_data()     
-                self.wyahoohistorical.setEnabled(True)
-                self.wyahoohistorical.on_cmdRun_released()  
+            qmessagebox(self.tr("Database created. User xulpymoney_user and xulpymoney_admin have been created. Please run Xulpymoney and login"))
         else:
             self.cmbLanguage.setEnabled(True)
             self.txtPass.setEnabled(True)
@@ -82,7 +61,3 @@ class frmInit(QDialog, Ui_frmInit):
             self.txtServer.setEnabled(True)
             self.txtUser.setEnabled(True)
             self.txtXulpymoney.setEnabled(True)
-            
-
-    def on_cmdExit_released(self):
-        self.close()

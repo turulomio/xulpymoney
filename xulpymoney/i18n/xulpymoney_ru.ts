@@ -2180,89 +2180,89 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>frmInit</name>
     <message>
-        <location filename="../ui/Ui_frmInit.py" line="141"/>
+        <location filename="../ui/Ui_frmInit.py" line="132"/>
         <source>127.0.0.1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_frmInit.py" line="143"/>
+        <location filename="../ui/Ui_frmInit.py" line="134"/>
         <source>5432</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_frmInit.py" line="145"/>
+        <location filename="../ui/Ui_frmInit.py" line="136"/>
         <source>postgres</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_frmInit.py" line="147"/>
+        <location filename="../ui/Ui_frmInit.py" line="138"/>
         <source>Xulpymoney Database</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_frmInit.py" line="140"/>
+        <location filename="../ui/Ui_frmInit.py" line="131"/>
         <source>Server</source>
         <translation type="unfinished">сервер</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_frmInit.py" line="142"/>
+        <location filename="../ui/Ui_frmInit.py" line="133"/>
         <source>Port</source>
         <translation type="unfinished">
 Пуэрто-</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_frmInit.py" line="144"/>
+        <location filename="../ui/Ui_frmInit.py" line="135"/>
         <source>User</source>
         <translation type="unfinished">пользователь</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_frmInit.py" line="146"/>
+        <location filename="../ui/Ui_frmInit.py" line="137"/>
         <source>Password</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_frmInit.py" line="148"/>
+        <location filename="../ui/Ui_frmInit.py" line="139"/>
         <source>xulpymoney</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmInit.py" line="34"/>
-        <source>Do you want to create needed Xulpymoney databases in {0}?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ui/frmInit.py" line="66"/>
+        <location filename="../ui/frmInit.py" line="42"/>
         <source>Error creating database. Maybe it already exist</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_frmInit.py" line="137"/>
+        <location filename="../ui/Ui_frmInit.py" line="128"/>
         <source>Initializating Xulpymoney database</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_frmInit.py" line="138"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Pressing OK, you will create needed database to run Xulpymoney. It&apos;ll be created in the language selected&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ui/Ui_frmInit.py" line="139"/>
+        <location filename="../ui/Ui_frmInit.py" line="130"/>
         <source>Database language</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_frmInit.py" line="149"/>
+        <location filename="../ui/Ui_frmInit.py" line="140"/>
         <source>Create database</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_frmInit.py" line="150"/>
-        <source>Exit</source>
+        <location filename="../ui/Ui_frmInit.py" line="129"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Pressing the button below, you will create needed database to run Xulpymoney. It&apos;ll be created in the language selected&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmInit.py" line="73"/>
-        <source>Database created. Xulpymoney needs to insert quotes from yahoo. This is a long process. Do you want to insert them now?</source>
+        <location filename="../ui/frmInit.py" line="23"/>
+        <source>Do you want to create {} databases in {0}?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/frmInit.py" line="50"/>
+        <source>Error processing SQL init scripts</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/frmInit.py" line="56"/>
+        <source>Database created. User xulpymoney_user and xulpymoney_admin have been created. Please run Xulpymoney and login</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
