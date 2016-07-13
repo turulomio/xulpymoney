@@ -188,11 +188,9 @@ class wdgBanks(QWidget, Ui_wdgBanks):
             m.setText(self.tr("This bank has dependent accounts and it can't be deleted"))
             m.exec_()
         else:
-            self.banks.selected.borrar()
-            #Se borra de la lista de wdgBanks ebs y del diccionario raiz 
-            self.banks.remove(self.banks.selected)
+            self.mem.data.banks.delete(self.banks.selected)
             self.mem.con.commit()  
-            self.load_eb()    
+            self.on_chkActives_stateChanged(self.chkActives.checkState())    
         
     @QtCore.pyqtSlot()  
     def on_actionBankAdd_triggered(self):
@@ -206,7 +204,7 @@ class wdgBanks(QWidget, Ui_wdgBanks):
         eb.save()
         self.mem.con.commit()  
         self.mem.data.banks.append(eb)
-        self.load_eb()
+        self.on_chkActives_stateChanged(self.chkActives.checkState())
 
 
     @QtCore.pyqtSlot()  
@@ -220,7 +218,7 @@ class wdgBanks(QWidget, Ui_wdgBanks):
         self.banks.selected.name=bank
         self.banks.selected.save()
         self.mem.con.commit()
-        self.load_eb()   
+        self.on_chkActives_stateChanged(self.chkActives.checkState())   
         
     @QtCore.pyqtSlot() 
     def on_actionActive_triggered(self):
@@ -237,4 +235,3 @@ class wdgBanks(QWidget, Ui_wdgBanks):
 #            self.mem.data.banks_active().remove(self.banks.selected)
 #            self.mem.data.banks_inactive().append(self.banks.selected)
         self.on_chkActives_stateChanged(self.chkActives.checkState())
-        self.load_eb()
