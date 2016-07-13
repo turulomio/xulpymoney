@@ -1247,6 +1247,14 @@ class SetDividends:
         """Deletes all items"""
         del self.arr 
         self.arr=[]
+        
+        
+    def gross(self):
+        """gross amount"""
+        r=Decimal('0')
+        for d in self.arr:
+            r=r+d.bruto
+        return r
     
 class SetEstimationsDPS:
     def __init__(self, mem,  product):
@@ -6055,8 +6063,17 @@ class SetTypes(SetCommons):
         self.append(Type().init__create(10,QApplication.translate("Core","Deposit")))
         self.append(Type().init__create(11,QApplication.translate("Core","Accounts")))
 
-    def products(self):
-        return {k:v for k,v in self.dic_arr.items() if k in ("1", "2", "4", "5", "7","8")}
+
+    def investment_types(self):
+        """Returns a SetTypes without Indexes and Accounts"""
+        r=SetTypes(self.mem)
+        for t in self.arr:
+            if t.id not in (3, 11):
+                r.append(t)
+        return r
+#
+#    def products(self):
+#        return {k:v for k,v in self.dic_arr.items() if k in ("1", "2", "4", "5", "7","8")}
 
 class Language:
     def __init__(self, mem, id, name):
