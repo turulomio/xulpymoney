@@ -4764,7 +4764,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgDatetime.py" line="108"/>
+        <location filename="../ui/wdgDatetime.py" line="113"/>
         <source>Selected datetime:
 {0}</source>
         <translation type="unfinished"></translation>

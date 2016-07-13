@@ -51,6 +51,11 @@ class wdgDatetime(QWidget, Ui_wdgDatetime):
     def setTitle(self, title):
         self.grp.setTitle(title)
 
+    def setCombine(self, mem, date, time, zone):
+        """Use datetime combine to pass date and time"""
+        self.set(mem, datetime.datetime.combine(date, time), zone)
+
+
     def set(self,  mem, dt=None,  zone=None):
         """Can be called several times"""
         self.mem=mem

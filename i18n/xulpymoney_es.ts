@@ -4769,7 +4769,7 @@ p, li { white-space: pre-wrap; }
         <translation>Ahora</translation>
     </message>
     <message>
-        <location filename="../ui/wdgDatetime.py" line="108"/>
+        <location filename="../ui/wdgDatetime.py" line="113"/>
         <source>Selected datetime:
 {0}</source>
         <translation>Fecha y hora seleccionada:
