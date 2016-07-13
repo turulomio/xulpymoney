@@ -19,9 +19,12 @@ class frmInit(QDialog, Ui_frmInit):
         self.mem.languages.qcombobox(self.cmbLanguage, self.mem.languages.find_by_id(a))
         source=WorkerYahooHistorical(self.mem, 0 )
         self.wyahoohistorical=wdgSource(self) 
+        source.setWdgSource(self.wyahoohistorical) #Links source with wdg
         self.wyahoohistorical.setSource(self.mem, source)
         self.laySource.addWidget(self.wyahoohistorical)
         self.wyahoohistorical.setEnabled(False)
+        self.wyahoohistorical.chkUserOnly.setCheckState(Qt.Unchecked)
+        self.wyahoohistorical.chkUserOnly.hide()
         self.wyahoohistorical.setWidgetToUpdate(self)
 
 
@@ -65,11 +68,11 @@ class frmInit(QDialog, Ui_frmInit):
                 self.reject()
                 return
             self.mem.con.commit()
+            self.cmdCreate.setEnabled(False)
 
             respuesta2 = QMessageBox.warning(self, self.windowTitle(), self.tr("Database created. Xulpymoney needs to insert quotes from yahoo. This is a long process. Do you want to insert them now?"), QMessageBox.Ok | QMessageBox.Cancel)
             if respuesta2==QMessageBox.Ok:             
                 self.mem.load_db_data()     
-                self.cmdCreate.setEnabled(False)
                 self.wyahoohistorical.setEnabled(True)
                 self.wyahoohistorical.on_cmdRun_released()  
         else:

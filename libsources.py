@@ -1,4 +1,5 @@
 from libxulpymoney import *
+import os
 import urllib
 import time
 from PyQt5.QtWebKitWidgets import *
@@ -135,8 +136,7 @@ class wdgSource(QWidget, Ui_wdgSource):
 
     def on_cmdCancel_released(self):
         self.cmdCancel.setEnabled(False)
-        self.currentWorker.stopping=True
-        self.currentWorker=None# Current worker working
+        self.source.stopping=True
 
     @QtCore.pyqtSlot() 
     def on_actionInserted_triggered(self):
@@ -144,6 +144,7 @@ class wdgSource(QWidget, Ui_wdgSource):
         d.resize(800, 600)
         d.setWindowTitle(self.tr("Inserted quotes from {}").format(self.source.getName()))
         t=myQTableWidget(d)
+        t.settings(self.mem,"wdgSource" , "tblInserted")
         self.source.inserted.myqtablewidget(t)
         lay = QVBoxLayout(d)
         lay.addWidget(t)
@@ -155,6 +156,7 @@ class wdgSource(QWidget, Ui_wdgSource):
         d.resize(800, 600)
         d.setWindowTitle(self.tr("Edited quotes from {}").format(self.source.getName()))
         t=myQTableWidget(d)
+        t.settings(self.mem,"wdgSource" , "tblEdited")
         self.source.modified.myqtablewidget(t)
         lay = QVBoxLayout(d)
         lay.addWidget(t)
@@ -166,6 +168,7 @@ class wdgSource(QWidget, Ui_wdgSource):
         d.resize(800, 600)
         d.setWindowTitle(self.tr("Ignored quotes from {}").format(self.source.getName()))
         t=myQTableWidget(d)
+        t.settings(self.mem,"wdgSource" , "tblIgnored")
         self.source.ignored.myqtablewidget(t)
         lay = QVBoxLayout(d)
         lay.addWidget(t)
@@ -177,6 +180,7 @@ class wdgSource(QWidget, Ui_wdgSource):
         d.resize(800, 600)
         d.setWindowTitle(self.tr("Errors procesing the source {}").format(self.source.getName()))
         terrors=myQTableWidget(d)
+        terrors.settings(self.mem,"wdgSource" , "tblErrors")
         self.source.myqtablewidget_errors(terrors)
         lay = QVBoxLayout(d)
         lay.addWidget(terrors)
@@ -188,6 +192,7 @@ class wdgSource(QWidget, Ui_wdgSource):
         d.resize(800, 600)
         d.setWindowTitle(self.tr("Bad prices procesing the source {}").format(self.source.getName()))
         t=myQTableWidget(d)
+        t.settings(self.mem,"wdgSource" , "tblWrong")
         self.source.bad.myqtablewidget(t)
         lay = QVBoxLayout(d)
         lay.addWidget(t)
@@ -199,6 +204,7 @@ class wdgSource(QWidget, Ui_wdgSource):
         d.resize(800, 600)
         d.setWindowTitle(self.tr("Searched products from {}").format(self.source.getName()))
         t=myQTableWidget(d)
+        t.settings(self.mem,"wdgSource" , "tblProducts")
         self.source.products.myqtablewidget(t)
         lay = QVBoxLayout(d)
         lay.addWidget(t)
@@ -279,10 +285,10 @@ class Source(QObject):
 
     def myqtablewidget_errors(self, tabla):
         tabla.setColumnCount(2)
-        tabla.setHorizontalHeaderItem(0, QTableWidgetItem(QApplication.translate(section, "Date and time" )))
-        tabla.setHorizontalHeaderItem(1, QTableWidgetItem(QApplication.translate(section, "Log" )))
+        tabla.setHorizontalHeaderItem(0, QTableWidgetItem(QApplication.translate("Core", "Date and time" )))
+        tabla.setHorizontalHeaderItem(1, QTableWidgetItem(QApplication.translate("Core", "Log" )))
         tabla.clearContents()
-        tabla.settings(   self.mem)       
+        tabla.applySettings()
         tabla.setRowCount(len(self.errors))
         for rownumber, line in enumerate(self.errors):
             a=line.split(" ")
