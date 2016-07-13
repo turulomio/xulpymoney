@@ -781,7 +781,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         table.setItem(0, 12, self.mem.localcurrency.qtablewidgetitem(sum_bank_comissions))    
         table.setItem(1, 12, self.mem.localcurrency.qtablewidgetitem(sum_custody_fees))    
         table.setItem(2, 12, self.mem.localcurrency.qtablewidgetitem(sum_investment_comissions))    
-        table.setItem(3, 12, self.mem.localcurrency.qtablewidgetitem(sum_bank_comissions+sum_custody_ifees+sum_investment_comissions))    
+        table.setItem(3, 12, self.mem.localcurrency.qtablewidgetitem(sum_bank_comissions+sum_custody_fees+sum_investment_comissions))    
 
         horizontalLayout.addWidget(table)
         self.tab.addTab(newtab, self.tr("Commision report of {}").format(self.wyData.year))
@@ -790,14 +790,16 @@ class wdgTotal(QWidget, Ui_wdgTotal):
 
     @QtCore.pyqtSlot() 
     def on_actionGainsByProduct_triggered(self):
-        for p in self.mem.data.products.arr:
-            pass
-        products=[]
-        set=SetInvestmentOperationsHistorical(self.mem)
-        for i in self.mem.data.investments.arr:
-            for o in i.op_historica.arr:
-                if o.fecha_venta.year==self.wyData.year and o.tipooperacion.id in (5, 8):#Venta y traspaso fondos inversion
-                    set.arr.append(o)
+            
+        
+#        for p in self.mem.data.products.arr:
+#            pass
+#        products=[]
+#        set=SetInvestmentOperationsHistorical(self.mem)
+#        for i in self.mem.data.investments.arr:
+#            for o in i.op_historica.arr:
+#                if o.fecha_venta.year==self.wyData.year and o.tipooperacion.id in (5, 8):#Venta y traspaso fondos inversion
+##                    set.arr.append(o)
                     
 
         newtab = QWidget()
@@ -807,24 +809,44 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         table.setEditTriggers(QAbstractItemView.NoEditTriggers)
         table.setSelectionMode(QAbstractItemView.SingleSelection)
         
-        table.setColumnCount(2)
+        table.setColumnCount(3)
         
-        table.setRowCount(set.length())
         table.setHorizontalHeaderItem(0, QTableWidgetItem(self.tr( "Product" )))
         table.setHorizontalHeaderItem(1, QTableWidgetItem(self.tr( "Brut gains" )))
+        table.setHorizontalHeaderItem(2, QTableWidgetItem(self.tr("Brut dividends")))
         table.applySettings()
         sum_gains=Decimal("0")
-        products=set.setDistinctProducts()
+        sum_dividens=Decimal("0")
         
-        for i, p in enumerate(products.arr):
-            table.setItem(i, 0, qleft(p.name))    
-            temp=Decimal('0')
-            for o in set.arr:
-                if p.id==o.inversion.product.id:
-                    temp=temp+o.consolidado_bruto()
-                    print(temp)
-            sum_gains=sum_gains+temp
-            table.setItem(i, 1, self.mem.localcurrency.qtablewidgetitem(temp))
+        
+        settypes=self.mem.types.investment_types()
+        table.setRowCount(settypes.length()+2)
+        
+        for i, type in enumerate(settypes.arr):
+            table.setItem(i, 0, qleft(type.name))    
+            gains=Decimal('0')
+            dividends=Decimal('0')
+            for inv in self.mem.data.investments.arr:
+                if inv.product.type.id==type.id:
+                    #gains
+                    for o in inv.op_historica.arr:
+                        if o.fecha_venta.year==self.wyData.year and o.tipooperacion.id in (5, 8):
+                            gains=gains+o.consolidado_bruto()
+                    #dividends
+                    setdiv=SetDividends(self.mem)
+                    setdiv.load_from_db(self.mem.con.mogrify("select * from dividends where id_inversiones=%s and fecha>=%s and fecha<=%s order by fecha", (inv.id, datetime.datetime(self.wyData.year, 1, 1, 0, 0, 0), datetime.datetime(self.wyData.year+1, 12, 31, 23, 59, 59))))
+                    dividends=dividends+setdiv.gross()
+            table.setItem(i, 1, self.mem.localcurrency.qtablewidgetitem(gains))
+            table.setItem(i, 2, self.mem.localcurrency.qtablewidgetitem(dividends))
+            sum_gains=sum_gains+gains
+            sum_dividens=sum_dividens+dividends
+            
+        table.setItem(i+1, 0, qleft(self.tr("Total")))
+        table.setItem(i+1, 1, self.mem.localcurrency.qtablewidgetitem(sum_gains))
+        table.setItem(i+1, 2, self.mem.localcurrency.qtablewidgetitem(sum_dividens))
+        
+        table.setItem(i+2, 0, qleft(self.tr("Gains+Dividends")))
+        table.setItem(i+2, 1, self.mem.localcurrency.qtablewidgetitem(sum_gains+sum_dividens))
             
         horizontalLayout.addWidget(table)
         self.tab.addTab(newtab, self.tr("Gains by product of {}").format(self.wyData.year))
