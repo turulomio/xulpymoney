@@ -2548,20 +2548,32 @@ class DBAdmin:
         cont.connect()
         return cont
 
+
+    def check_connection(self):
+        """It has database parameter, due to I connect to template to create database"""
+        try:
+            cont=self.connection_template1()
+            cont._con.set_isolation_level(0)#Si no no me dejaba
+            cont.disconnect()
+            return True
+        except:
+            print ("Conection to template1 failed")
+            return False
+
     def create_db(self, database):
         """It has database parameter, due to I connect to template to create database"""
         cont=self.connection_template1()
         cont._con.set_isolation_level(0)#Si no no me dejaba
         if cont.is_superuser():
-            print (database)
-#            try:
-            cur=cont.cursor()
-            cur.execute("create database {0};".format(database))
-#            except:
-#                print ("Error in create_db()")
-#            finally:
-            cur.close()
-            cont.disconnect()
+            try:
+                cur=cont.cursor()
+                cur.execute("create database {0};".format(database))
+            except:
+                print ("Error in create_db()")
+                return False
+            finally:
+                cur.close()
+                cont.disconnect()
             return True
         else:
             print ("You need to be superuser to create database")
@@ -2614,7 +2626,7 @@ class DBAdmin:
         f.close()
         
     def xulpymoney_basic_schema(self):
-#        try:
+        try:
             if platform.system()=="Windows":
                 self.load_script("sql/xulpymoney.sql")
             else:
@@ -2645,10 +2657,10 @@ class DBAdmin:
             cur.execute("insert into conceptos values(66,'{0}',2,false)".format(QApplication.translate("Core","Bonds. Coupon collection")))
             cur.execute("insert into conceptos values(67,'{0}',2,false)".format(QApplication.translate("Core","Credit card refund")))          
             cur.close()
-#            return True
-#        except:
-#            print ("Error creating xulpymoney basic schema")
-#            return False
+            return True
+        except:
+            print ("Error creating xulpymoney basic schema")
+            return False
 
         
 class DBData:
@@ -5697,6 +5709,7 @@ class SetLanguages(SetCommons):
             self.mem.qtranslator.load("i18n/xulpymoney_{0}.qm".format(id))
         else:
             self.mem.qtranslator.load("/usr/lib/xulpymoney/xulpymoney_{0}.qm".format(id))
+        print("Language changed to {}".format(id))
         qApp.installTranslator(self.mem.qtranslator)
  
 class OHCL:
