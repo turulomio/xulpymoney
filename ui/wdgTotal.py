@@ -789,29 +789,17 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         
 
     @QtCore.pyqtSlot() 
-    def on_actionGainsByProduct_triggered(self):
-            
-        
-#        for p in self.mem.data.products.arr:
-#            pass
-#        products=[]
-#        set=SetInvestmentOperationsHistorical(self.mem)
-#        for i in self.mem.data.investments.arr:
-#            for o in i.op_historica.arr:
-#                if o.fecha_venta.year==self.wyData.year and o.tipooperacion.id in (5, 8):#Venta y traspaso fondos inversion
-##                    set.arr.append(o)
-                    
-
+    def on_actionGainsByProductType_triggered(self):
         newtab = QWidget()
         horizontalLayout = QHBoxLayout(newtab)
         table = myQTableWidget(newtab)
-        table.settings(self.mem,"wdgTotal","tblGainsByProduct")
+        table.settings(self.mem,"wdgTotal","tblGainsByProductType")
         table.setEditTriggers(QAbstractItemView.NoEditTriggers)
         table.setSelectionMode(QAbstractItemView.SingleSelection)
         
         table.setColumnCount(3)
         
-        table.setHorizontalHeaderItem(0, QTableWidgetItem(self.tr( "Product" )))
+        table.setHorizontalHeaderItem(0, QTableWidgetItem(self.tr( "Product type" )))
         table.setHorizontalHeaderItem(1, QTableWidgetItem(self.tr( "Brut gains" )))
         table.setHorizontalHeaderItem(2, QTableWidgetItem(self.tr("Brut dividends")))
         table.applySettings()
@@ -849,7 +837,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         table.setItem(i+2, 1, self.mem.localcurrency.qtablewidgetitem(sum_gains+sum_dividens))
             
         horizontalLayout.addWidget(table)
-        self.tab.addTab(newtab, self.tr("Gains by product of {}").format(self.wyData.year))
+        self.tab.addTab(newtab, self.tr("Gains by product type of {}").format(self.wyData.year))
         self.tab.setCurrentWidget(newtab)        
             
     @QtCore.pyqtSlot() 
@@ -964,7 +952,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         menu.addSeparator()
         menu.addAction(self.actionShowTaxes)
         menu.addSeparator()
-        menu.addAction(self.actionGainsByProduct)
+        menu.addAction(self.actionGainsByProductType)
         menu.exec_(self.table.mapToGlobal(pos))
 
     def on_table_itemSelectionChanged(self):
