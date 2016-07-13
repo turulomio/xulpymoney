@@ -33,9 +33,3 @@ echo "GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA PUBLIC TO xulpymoney_admin
 echo "SELECT create_role_if_not_exists('xulpymoney_user');" >> xulpymoney.sql  
 echo "GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA PUBLIC TO xulpymoney_user;" >> xulpymoney.sql
 echo "GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA PUBLIC TO xulpymoney_user;" >> xulpymoney.sql
-
-##QUOTES
-#PGPASSWORD=$password pg_dump --no-privileges -a -U $MYUSER -h $MYHOST -p $MYPORT $DATABASE -t quotes --insert > xulpymoney.quotes
-#cat xulpymoney.quotes| grep -i 'INSERT INTO' | sort >> quotes.sql
-#rm xulpymoney.quotes
-#echo "DELETE FROM quotes where id<0;" >> quotes.sql
