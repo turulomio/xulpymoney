@@ -336,7 +336,7 @@ class frmProductReport(QDialog, Ui_frmProductReport):
     @QtCore.pyqtSlot() 
     def on_actionDividendXuNew_triggered(self):
         w=frmDividendsAdd(self.mem, self.inversion,  None)
-        w.cal.setSelectedDate(self.selDPS.date)
+        w.wdgDT.setCombine(self.mem, self.selDPS.date, self.product.stockmarket.closes, self.product.stockmarket.zone)
         gross=self.selDPS.gross*self.inversion.acciones(self.selDPS.date)
         w.txtBruto.setText(gross)
         w.txtDPA.setText(self.selDPS.gross)
