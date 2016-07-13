@@ -201,8 +201,12 @@
  </widget>
  <tabstops>
   <tabstop>txtPass</tabstop>
+  <tabstop>txtXulpymoney</tabstop>
+  <tabstop>cmdCreate</tabstop>
+  <tabstop>cmbLanguage</tabstop>
   <tabstop>txtServer</tabstop>
   <tabstop>txtPort</tabstop>
+  <tabstop>txtUser</tabstop>
  </tabstops>
  <resources>
   <include location="../images/xulpymoney.qrc"/>
