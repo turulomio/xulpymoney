@@ -6089,6 +6089,15 @@ class SetTypes(SetCommons):
             if t.id not in (3, 11):
                 r.append(t)
         return r
+        
+        
+    def with_operation_comissions_types(self):
+        """Returns a SetTypes with types which product operations  has comissions"""
+        r=SetTypes(self.mem)
+        for t in self.arr:
+            if t.id not in (2, 3, 8, 10, 11):
+                r.append(t)
+        return r
 #
 #    def products(self):
 #        return {k:v for k,v in self.dic_arr.items() if k in ("1", "2", "4", "5", "7","8")}
