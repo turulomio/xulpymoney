@@ -791,7 +791,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
     @QtCore.pyqtSlot() 
     def on_actionGainsByProductType_triggered(self):
         newtab = QWidget()
-        horizontalLayout = QHBoxLayout(newtab)
+        vlayout = QVBoxLayout(newtab)
         table = myQTableWidget(newtab)
         table.settings(self.mem,"wdgTotal","tblGainsByProductType")
         table.setEditTriggers(QAbstractItemView.NoEditTriggers)
@@ -833,17 +833,25 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         table.setItem(i+1, 1, self.mem.localcurrency.qtablewidgetitem(sum_gains))
         table.setItem(i+1, 2, self.mem.localcurrency.qtablewidgetitem(sum_dividens))
         
-        table.setItem(i+2, 0, qleft(self.tr("Gains+Dividends")))
-        table.setItem(i+2, 1, self.mem.localcurrency.qtablewidgetitem(sum_gains+sum_dividens))
+        label=QLabel(newtab)
+        font = QFont()
+        font.setPointSize(8)
+        font.setBold(True)
+        font.setWeight(75)
+        label.setFont(font)
+        label.setAlignment(QtCore.Qt.AlignCenter)
+        cs=self.mem.localcurrency.string
+        label.setText(self.tr("Gains + Dividends: {} + {} = {}".format(cs(sum_gains), cs(sum_dividens), cs(sum_gains+sum_dividens))))
             
-        horizontalLayout.addWidget(table)
+        vlayout.addWidget(table)
+        vlayout.addWidget(label)
         self.tab.addTab(newtab, self.tr("Gains by product type of {}").format(self.wyData.year))
         self.tab.setCurrentWidget(newtab)        
             
     @QtCore.pyqtSlot() 
     def on_actionShowTaxes_triggered(self):
         newtab = QWidget()
-        horizontalLayout = QHBoxLayout(newtab)
+        horizontalLayout = QVBoxLayout(newtab)
         table = myQTableWidget(newtab)
         table.settings(self.mem,"wdgTotal","tblShowPaidTaxes")
         table.setEditTriggers(QAbstractItemView.NoEditTriggers)
