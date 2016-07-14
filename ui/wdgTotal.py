@@ -723,7 +723,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
     @QtCore.pyqtSlot() 
     def on_actionShowComissions_triggered(self):
         newtab = QWidget()
-        horizontalLayout = QHBoxLayout(newtab)
+        vlayout = QVBoxLayout(newtab)
         table = myQTableWidget(newtab)
         table.settings(self.mem,"wdgTotal","tblShowComissions")
         table.setEditTriggers(QAbstractItemView.NoEditTriggers)
@@ -777,13 +777,33 @@ class wdgTotal(QWidget, Ui_wdgTotal):
             sum_investment_comissions=sum_investment_comissions+investment_comissions
             
             table.setItem(3, column, self.mem.localcurrency.qtablewidgetitem(bank_comissions+custody_fees+investment_comissions))    
-        
         table.setItem(0, 12, self.mem.localcurrency.qtablewidgetitem(sum_bank_comissions))    
         table.setItem(1, 12, self.mem.localcurrency.qtablewidgetitem(sum_custody_fees))    
         table.setItem(2, 12, self.mem.localcurrency.qtablewidgetitem(sum_investment_comissions))    
         table.setItem(3, 12, self.mem.localcurrency.qtablewidgetitem(sum_bank_comissions+sum_custody_fees+sum_investment_comissions))    
+        vlayout.addWidget(table)
 
-        horizontalLayout.addWidget(table)
+        #Number of operations
+        num_operations=0
+        settypes=self.mem.types.with_operation_comissions_types()
+        for i, type in enumerate(settypes.arr):
+            for inv in self.mem.data.investments.arr:
+                if inv.product.type.id==type.id:
+                    for o in inv.op.arr:
+                        if o.datetime.year==self.wyData.year and o.tipooperacion.id in (4, 5):#Purchase and sale
+                            num_operations=num_operations+1            
+        if num_operations>0:
+            label=QLabel(newtab)
+            font = QFont()
+            font.setPointSize(8)
+            font.setBold(True)
+            font.setWeight(75)
+            label.setFont(font)
+            label.setAlignment(QtCore.Qt.AlignCenter)
+            cs=self.mem.localcurrency.string
+            label.setText(self.tr("Number of purchase and sale investment operations: {}. Comissions average: {}".format(int(num_operations), cs(sum_investment_comissions/num_operations))))
+            vlayout.addWidget(label)
+            
         self.tab.addTab(newtab, self.tr("Commision report of {}").format(self.wyData.year))
         self.tab.setCurrentWidget(newtab)        
         
@@ -808,7 +828,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         
         
         settypes=self.mem.types.investment_types()
-        table.setRowCount(settypes.length()+2)
+        table.setRowCount(settypes.length()+1)
         
         for i, type in enumerate(settypes.arr):
             table.setItem(i, 0, qleft(type.name))    
