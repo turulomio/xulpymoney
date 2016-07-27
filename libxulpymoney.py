@@ -1713,11 +1713,12 @@ class SetInvestmentOperationsCurrent(SetIO):
         return True
 
     def last(self):
-        """Returns last current operation"""
-        if self.length()==0:
-            return None
-        else:
-            return self.arr[self.length()-1]
+        """Returns last current operation with valor_accion greater than 0"""
+        for o in reversed(self.arr):
+            if o.valor_accion==Decimal(0):#Añadidos
+                continue
+            return o
+        return None 
     
     def less_than_a_year(self):
         for o in self.arr:
