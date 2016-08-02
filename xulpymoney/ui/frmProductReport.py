@@ -1,9 +1,9 @@
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
+from Ui_frmProductReport import *
 from myqtablewidget import *
 from libxulpymoney import *
 from frmSelector import *
-from Ui_frmProductReport import *
 from frmDividendsAdd import *
 from frmQuotesIBM import *
 from frmSplit import *
@@ -114,6 +114,17 @@ class frmProductReport(QDialog, Ui_frmProductReport):
         self.ntbHistorical=NavigationToolbar2QT(self.canvasHistorical, self)
         self.layHistorical.addWidget(self.canvasHistorical)
         self.layHistorical.addWidget(self.ntbHistorical)
+        
+        
+        #Compare
+        self.pseCompare.setupUi(self.mem, self.inversion)
+        self.pseCompare.label.setText(self.tr("Select a product to compare"))
+        self.pseCompare.setSelected(self.mem.data.benchmark)
+        
+        self.canvasCompare=canvasChartCompare( self.mem, self.product, self.mem.data.benchmark, self)
+        self.ntbCompare=NavigationToolbar2QT(self.canvasCompare, self)
+        self.layCompareProduct.addWidget(self.canvasCompare)
+        self.layCompareProduct.addWidget(self.ntbCompare)
                 
 
         self.update_due_to_quotes_change()    
@@ -294,6 +305,8 @@ class frmProductReport(QDialog, Ui_frmProductReport):
             self.tblIntradia.setFocus()
             self.tblIntradia.setCurrentCell(len(self.product.result.intradia.arr)-1, 0)
             self.tblIntradia.clearSelection()
+            
+        ##Comparate prices
 
     def load_mensuales(self):
         if len(self.product.result.ohclMonthly.arr)==0:
