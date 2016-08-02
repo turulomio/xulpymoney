@@ -117,11 +117,13 @@ class frmProductReport(QDialog, Ui_frmProductReport):
         
         
         #Compare
+        self.comparation=ProductComparation(self.mem, self.product, self.mem.data.benchmark)
+        
         self.pseCompare.setupUi(self.mem, self.inversion)
         self.pseCompare.label.setText(self.tr("Select a product to compare"))
         self.pseCompare.setSelected(self.mem.data.benchmark)
         
-        self.canvasCompare=canvasChartCompare( self.mem, self.product, self.mem.data.benchmark, self)
+        self.canvasCompare=canvasChartCompare( self.mem, self.comparation, self)
         self.ntbCompare=NavigationToolbar2QT(self.canvasCompare, self)
         self.layCompareProduct.addWidget(self.canvasCompare)
         self.layCompareProduct.addWidget(self.ntbCompare)

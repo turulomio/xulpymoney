@@ -4495,6 +4495,73 @@ class Currency:
             a.setForeground(QColor(255, 0, 0))
         return a
 
+class ProductComparation:
+    """Compares two products, removes ohclDaily that aren't in both products"""
+    def __init__(self, mem, product1, product2):
+        self.mem=mem
+        
+        self.product1=product1
+        self.product2=product2     
+        self.set1=SetOHCLDaily(self.mem, self.product1)#Set with common data. Needed in order to not broke self.product1 data
+        self.set2=SetOHCLDaily(self.mem, self.product2)
+        
+        self.__commonDates=None
+
+        #Load data if necesary
+        for p in [self.product1, self.product2]:
+            if p.result.ohclDaily.length()==0:
+                p.result.get_basic_and_ohcls()  
+  
+        self.__removeNotCommon()
+            
+    def __removeNotCommon(self):
+        self.__commonDates=list(set(self.product1.result.ohclDaily.dates()) & set(self.product2.result.ohclDaily.dates()))
+        self.__commonDates=sorted(self.__commonDates, key=lambda c: c,  reverse=False)     
+        for ohcl in self.product1.result.ohclDaily.arr:
+            if ohcl.date in self.__commonDates:
+                self.set1.append(ohcl)
+        for ohcl in self.product2.result.ohclDaily.arr:
+            if ohcl.date in self.__commonDates:
+                self.set2.append(ohcl)
+        
+        
+    def dates(self):
+        """Returns a list with common dates"""
+        return self.__commonDates
+        
+    def product1Closes(self):
+        r=[]
+        for ohcl in self.set1.arr:
+            r.append(ohcl.close)
+        return r        
+
+    def product2Closes(self):
+        r=[]
+        for ohcl in self.set2.arr:
+            r.append(ohcl.close)
+        return r
+    
+    def product1ClosesDividingFirst(self):
+        """Divides set1 by a factor to get the same price in the first ohcl
+        It controls leverage too"""
+        factor=self.set1.first().close/self.set2.first().close#*self.product1.leveraged.multiplier
+        print("Factor", factor)
+        r=[]
+        for ohcl in self.set1.arr:
+            r.append(ohcl.close/factor)
+        return r
+        
+    def product1PercentageFromFirstProduct2Price(self):
+        """Usa el primer valor de set 2 y la va sumando los porcentajes de set1. Contrala leverages"""
+        r=[]
+        last=self.set2.first().close
+        r.append(last)
+        for index in range(1, self.set1.length()):
+            last=last*(1+ self.set1.percentage(index)/Decimal(100)/self.product1.leveraged.multiplier)
+            r.append(last)
+        return r
+            
+
 class ProductMode:
     def __init__(self, mem):
         self.mem=mem
@@ -5612,6 +5679,19 @@ class SetOHCL:
             self.append(self.itemclass(self.mem).init__from_dbrow(row, self.product))
         cur.close()
         
+        
+    def percentage(self, index):
+        """CAlcula el incremento en % del index del array partiendo de index -1"""
+        return Decimal(100)*(self.arr[index].close-self.arr[index-1].close)/self.arr[index-1].close
+        
+    def first(self):
+        """Return first ohcl"""
+        if self.length()>0:
+            return self.arr[0]
+        else:
+            print ("There is no first item in SetOHCL")
+            return None
+        
     def last(self):
         """REturn last ohcl"""
         return self.arr[self.length()-1]
@@ -5622,8 +5702,21 @@ class SetOHCL:
 
     def append(self, o):
         self.arr.append(o)
-        
-        
+
+    def closes(self):
+        """Returns a list with all the close of the array"""
+        closes=[]
+        for ohcl in self.arr:
+            closes.append(ohcl.close)
+        return closes
+
+    def datetimes(self):
+        """Returns a list with all the datetimes of the array"""
+        datetimes=[]
+        for ohcl in self.arr:
+            datetimes.append(ohcl.datetimes())
+        return datetimes
+
 class SetOHCLDaily(SetOHCL):
     def __init__(self, mem, product):
         SetOHCL.__init__(self, mem, product)
@@ -5667,6 +5760,13 @@ class SetOHCLDaily(SetOHCL):
         return res
 
 
+
+    def dates(self):
+        """Returns a list with all the dates of the array"""
+        r=[]
+        for ohcl in self.arr:
+            r.append(ohcl.date)
+        return r
         
 
 class SetOHCLWeekly(SetOHCL):
@@ -5725,7 +5825,7 @@ class OHCL:
     def get_interval(self, ohclposterior):
         """Calcula el intervalo entre dos ohcl. El posteror es el que se pasa como parámetro"""
         return ohclposterior.datetime-self.datetime
-
+        
         
 class QuotesResult:
     """Función que consigue resultados de mystocks de un id pasado en el constructor"""
