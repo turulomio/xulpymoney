@@ -49,9 +49,11 @@ class frmSellingPoint(QDialog, Ui_frmSellingPoint):
             self.chkGainsTime.setEnabled(False)
 
 
+
         self.table.settings(self.mem, "frmSellingPoint")
         self.tableSP.settings(self.mem, "frmSellingPoint")
-        self.__calcular()
+        
+        self.cmbTPC.setCurrentText("{} %".format(self.mem.settingsdb.value("frmSellingPoint/lastgainpercentage",  5)))
         
     def __calcular(self):    
         def load_array():
@@ -146,4 +148,10 @@ class frmSellingPoint(QDialog, Ui_frmSellingPoint):
                 inv.venta=self.puntoventa
                 inv.save()
             self.mem.con.commit()
+        
+        #Save in settings the last selling percentage, if that's the case
+        if self.radTPC.isChecked():
+            percentage=Decimal(self.cmbTPC.currentText().replace(" %", ""))
+            self.mem.settingsdb.setValue("frmSellingPoint/lastgainpercentage", percentage)
+        
         self.done(0)

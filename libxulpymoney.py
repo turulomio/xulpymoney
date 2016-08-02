@@ -6204,6 +6204,8 @@ class SettingsDB:
             return 18
         elif name=="mem/fillfromyear":
             return 19
+        elif name=="frmSellingPoint/lastgainpercentage":
+            return 20
         return None
 
 class MemXulpymoney:
