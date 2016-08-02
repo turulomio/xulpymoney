@@ -4544,7 +4544,7 @@ class ProductComparation:
     def product1ClosesDividingFirst(self):
         """Divides set1 by a factor to get the same price in the first ohcl
         It controls leverage too"""
-        factor=self.set1.first().close/self.set2.first().close#*self.product1.leveraged.multiplier
+        factor=self.set1.first().close/self.set2.first().close*self.product1.leveraged.multiplier
         print("Factor", factor)
         r=[]
         for ohcl in self.set1.arr:
