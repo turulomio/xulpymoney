@@ -10,7 +10,7 @@
     <x>0</x>
     <y>0</y>
     <width>1045</width>
-    <height>768</height>
+    <height>775</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -57,7 +57,7 @@
         <enum>QTabWidget::West</enum>
        </property>
        <property name="currentIndex">
-        <number>0</number>
+        <number>1</number>
        </property>
        <widget class="QWidget" name="tabInformacion">
         <attribute name="title">
@@ -651,7 +651,7 @@
          <item>
           <widget class="QTabWidget" name="tabGraphics">
            <property name="currentIndex">
-            <number>0</number>
+            <number>2</number>
            </property>
            <widget class="QWidget" name="tabGraphicsIntraday">
             <attribute name="title">
@@ -815,6 +815,53 @@
                 </item>
                </layout>
               </widget>
+             </item>
+            </layout>
+           </widget>
+           <widget class="QWidget" name="tab_4">
+            <attribute name="title">
+             <string>Compare</string>
+            </attribute>
+            <layout class="QHBoxLayout" name="horizontalLayout_41">
+             <item>
+              <layout class="QVBoxLayout" name="verticalLayout_9">
+               <item>
+                <layout class="QHBoxLayout" name="horizontalLayout_25">
+                 <item>
+                  <spacer name="horizontalSpacer_5">
+                   <property name="orientation">
+                    <enum>Qt::Horizontal</enum>
+                   </property>
+                   <property name="sizeHint" stdset="0">
+                    <size>
+                     <width>40</width>
+                     <height>20</height>
+                    </size>
+                   </property>
+                  </spacer>
+                 </item>
+                 <item>
+                  <widget class="wdgProductSelector" name="pseCompare" native="true"/>
+                 </item>
+                 <item>
+                  <spacer name="horizontalSpacer_6">
+                   <property name="orientation">
+                    <enum>Qt::Horizontal</enum>
+                   </property>
+                   <property name="sizeHint" stdset="0">
+                    <size>
+                     <width>40</width>
+                     <height>20</height>
+                    </size>
+                   </property>
+                  </spacer>
+                 </item>
+                </layout>
+               </item>
+               <item>
+                <layout class="QVBoxLayout" name="layCompareProduct"/>
+               </item>
+              </layout>
              </item>
             </layout>
            </widget>
@@ -1655,6 +1702,12 @@
    <class>myQTableWidget</class>
    <extends>QTableWidget</extends>
    <header location="global">myqtablewidget</header>
+  </customwidget>
+  <customwidget>
+   <class>wdgProductSelector</class>
+   <extends>QWidget</extends>
+   <header location="global">wdgProductSelector</header>
+   <container>1</container>
   </customwidget>
  </customwidgets>
  <resources>

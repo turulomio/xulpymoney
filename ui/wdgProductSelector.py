@@ -1,7 +1,6 @@
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from myqtablewidget import *
-from frmProductReport import *
 
 class wdgProductSelector(QWidget):
     """Para usarlo promocionar un qwidget en designer y darle los comportamientos de tamaña que neceseite
@@ -146,3 +145,5 @@ class frmProductSelector(QDialog):
         for i in self.tblInvestments.selectedItems():
             if i.column()==0:
                 self.products.selected=self.products.arr[i.row()]
+
+from frmProductReport import * ##No dejaba importar por recursivo

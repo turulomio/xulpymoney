@@ -299,7 +299,106 @@ class canvasChartIntraday(canvasChart):
         self.actionLinesIntraday.setObjectName("actionLinesIntraday")
         self.common_actions()
         
+                
+class canvasChartCompare(FigureCanvasQTAgg):
+    def __init__(self, mem,   product1,  product2, parent):
+        self.mem=mem
         
+        self.product1=product1#Has already OHCLDaily
+        self.product2=product2        
+        
+        #Load data if necesary
+        for p in [self.product1, self.product2]:
+            if p.result.ohclDaily.length()==0:
+                p.result.get_basic_and_ohcls()
+                
+        # setup Matplotlib Figure and Axis
+        self.fig = Figure()
+        FigureCanvasQTAgg.__init__(self, self.fig)
+        # we define the widget as expandable
+        FigureCanvasQTAgg.setSizePolicy(self,QSizePolicy.Expanding, QSizePolicy.Expanding)
+        # notify the system of updated policy
+        FigureCanvasQTAgg.updateGeometry(self)        
+        
+        self.ax= self.fig.add_subplot(111)
+        self.plot1=None
+        self.plot2=None
+
+        self.from_dt=self.common_start_date()
+        
+        self.mydraw()
+        
+    def common_start_date(self):
+        try:
+            if self.product1.result.ohclDaily.arr[0].datetime()>self.product2.result.ohclDaily.arr[0].datetime():
+                return self.product1.result.ohclDaily.arr[0].datetime()
+            else:
+                return self.product2.result.ohclDaily.arr[0].datetime()
+        except:
+            return self.mem.localzone.now()-datetime.timedelta(days=365)#Show days from this date
+
+#    def setupUi(self):
+#        pass
+#        self.fig.canvas.mpl_connect('scroll_event', self.on_wheelEvent)
+        
+#    @pyqtSlot()
+#    def on_wheelEvent(self, event):
+#        now=self.mem.localzone.now()
+#        if event.button=='up':
+#            self.from_dt=self.from_dt+datetime.timedelta(days=365)
+#        else:
+#            self.from_dt=self.from_dt-datetime.timedelta(days=365)
+#        if self.from_dt>now-datetime.timedelta(days=365):
+#            self.from_dt=now-datetime.timedelta(days=365)
+#            QApplication.beep()
+#        self.mydraw()
+        
+    def price(self, x): 
+        return self.product1.currency.string(x)        
+        
+    def mydraw(self):
+        self.draw_lines_from_ohcl(self.product1)
+        self.draw_lines_from_ohcl(self.product2)        
+        self.draw()
+        
+    def draw_lines_from_ohcl(self, product):
+        """self.setdata es un SetOHCLDaily"""
+        if product.result.ohclDaily.length()<2:
+            return
+            
+        dates=[]
+        quotes=[]
+        for ohcl in product.result.ohclDaily.arr:
+            if ohcl.datetime()>self.from_dt:
+                dates.append(ohcl.datetime())
+                quotes.append(ohcl.close/product.result.ohclDaily.arr[0].close/product.leveraged.multiplier)
+
+        self.get_locators()
+        if product==self.product1:
+            if self.plot1: self.plot1.clear()
+            self.plot1=self.ax.plot_date(dates, quotes, '-')
+        else:
+            if self.plot2: self.plot2.clear()
+            self.plot2=self.ax.plot_date(dates, quotes, '-')
+        self.draw()
+    
+    def get_locators(self):
+        interval=(self.mem.localzone.now()-self.from_dt).days+1
+        
+        if interval<365:
+            self.ax.xaxis.set_minor_locator(MonthLocator())
+            self.ax.xaxis.set_major_locator(MonthLocator())
+            self.ax.xaxis.set_major_formatter( DateFormatter('%Y-%m-%d'))   
+            self.ax.fmt_xdata=DateFormatter('%Y-%m-%d')
+        elif interval>=365:
+            self.ax.xaxis.set_minor_locator(MonthLocator())
+            self.ax.xaxis.set_major_locator(YearLocator())   
+            self.ax.xaxis.set_major_formatter( DateFormatter('%Y'))        
+            self.ax.fmt_xdata=DateFormatter('%Y-%m-%d')
+                        
+        self.ax.fmt_ydata = self.price  
+        self.ax.grid(True)
+
 class canvasChartHistorical(canvasChart):
     def __init__(self, mem,   parent):
         self.mem=mem
