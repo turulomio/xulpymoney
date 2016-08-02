@@ -319,8 +319,11 @@ class canvasChartCompare(FigureCanvasQTAgg):
         
         self.mydraw(1)
 
-    def price(self, x): 
-        return "Pepito de los palotes {}".format(x)##self.comparation.product1.currency.string(x)        
+    def label(self, date, y): 
+#        return "Pepito de los palotes {}".format(x)##self.comparation.product1.currency.string(x)        
+        dt=matplotlib.dates.num2date(date)
+        dat=dt.date()
+        return self.tr("{}. {}: {}, {}: {}.".format(dat, self.comparation.product1.name, self.comparation.set1.find(dat).close, self.comparation.product2.name, self.comparation.set2.find(dat).close))
         
     def mydraw(self, type=0):
         """self.setdata es un SetOHCLDaily"""
@@ -344,14 +347,14 @@ class canvasChartCompare(FigureCanvasQTAgg):
             self.ax.xaxis.set_minor_locator(MonthLocator())
             self.ax.xaxis.set_major_locator(MonthLocator())
             self.ax.xaxis.set_major_formatter( DateFormatter('%Y-%m-%d'))   
-            self.ax.fmt_xdata=DateFormatter('%Y-%m-%d')
+#            self.ax.fmt_xdata=DateFormatter('%Y-%m-%d')
         elif interval>=365:
             self.ax.xaxis.set_minor_locator(MonthLocator())
             self.ax.xaxis.set_major_locator(YearLocator())   
             self.ax.xaxis.set_major_formatter( DateFormatter('%Y'))        
-            self.ax.fmt_xdata=DateFormatter('%Y-%m-%d')
+#            self.ax.fmt_xdata=DateFormatter('%Y-%m-%d')
                         
-        self.ax.fmt_ydata = self.price  
+        self.ax.format_coord = self.label  
         self.ax.grid(True)
 
 

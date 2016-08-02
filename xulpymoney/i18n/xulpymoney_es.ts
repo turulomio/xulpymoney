@@ -1303,74 +1303,82 @@ Do you want to activate it?</source>
     </message>
 </context>
 <context>
+    <name>canvasChartCompare</name>
+    <message>
+        <location filename="../ui/canvaschart.py" line="326"/>
+        <source>{}. {}: {}, {}: {}.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>canvasChartHistorical</name>
     <message>
-        <location filename="../ui/canvaschart.py" line="400"/>
+        <location filename="../ui/canvaschart.py" line="403"/>
         <source>Selling price</source>
         <translation>Punto de venta</translation>
     </message>
     <message>
-        <location filename="../ui/canvaschart.py" line="401"/>
+        <location filename="../ui/canvaschart.py" line="404"/>
         <source>Average purchase price</source>
         <translation>Precio medio de compra</translation>
     </message>
     <message>
-        <location filename="../ui/canvaschart.py" line="503"/>
+        <location filename="../ui/canvaschart.py" line="506"/>
         <source>1 day</source>
         <translation>1 día</translation>
     </message>
     <message>
-        <location filename="../ui/canvaschart.py" line="507"/>
+        <location filename="../ui/canvaschart.py" line="510"/>
         <source>1 week</source>
         <translation>1 semana</translation>
     </message>
     <message>
-        <location filename="../ui/canvaschart.py" line="511"/>
+        <location filename="../ui/canvaschart.py" line="514"/>
         <source>1 month</source>
         <translation>1 mes</translation>
     </message>
     <message>
-        <location filename="../ui/canvaschart.py" line="515"/>
+        <location filename="../ui/canvaschart.py" line="518"/>
         <source>1 year</source>
         <translation>1 año</translation>
     </message>
     <message>
-        <location filename="../ui/canvaschart.py" line="398"/>
+        <location filename="../ui/canvaschart.py" line="401"/>
         <source>SMA200</source>
         <translation>MMS200</translation>
     </message>
     <message>
-        <location filename="../ui/canvaschart.py" line="399"/>
+        <location filename="../ui/canvaschart.py" line="402"/>
         <source>SMA50</source>
         <translation>MMS50</translation>
     </message>
     <message>
-        <location filename="../ui/canvaschart.py" line="470"/>
+        <location filename="../ui/canvaschart.py" line="473"/>
         <source>Intraday</source>
         <translation>Intradía</translation>
     </message>
     <message>
-        <location filename="../ui/canvaschart.py" line="654"/>
+        <location filename="../ui/canvaschart.py" line="657"/>
         <source>Lines</source>
         <translation>Líneas</translation>
     </message>
     <message>
-        <location filename="../ui/canvaschart.py" line="664"/>
+        <location filename="../ui/canvaschart.py" line="667"/>
         <source>Candles</source>
         <translation>Velas</translation>
     </message>
     <message>
-        <location filename="../ui/canvaschart.py" line="675"/>
+        <location filename="../ui/canvaschart.py" line="678"/>
         <source>Indicators</source>
         <translation>Indicadores</translation>
     </message>
     <message>
-        <location filename="../ui/canvaschart.py" line="402"/>
+        <location filename="../ui/canvaschart.py" line="405"/>
         <source>Purchase point</source>
         <translation>Punto de compra</translation>
     </message>
     <message>
-        <location filename="../ui/canvaschart.py" line="403"/>
+        <location filename="../ui/canvaschart.py" line="406"/>
         <source>Sales point</source>
         <translation>Punto de venta</translation>
     </message>
