@@ -4,8 +4,7 @@ from libxulpymoney import *
 from matplotlib.finance import *
 from decimal import Decimal
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg
-from matplotlib.dates import *
-from matplotlib.pyplot import *
+from matplotlib.dates import MonthLocator, YearLocator, HourLocator,  DateFormatter,  num2date
 from matplotlib.figure import Figure
 
 class ChartType:
@@ -246,18 +245,8 @@ class canvasChartIntraday(FigureCanvasQTAgg):
         
         self.mem=mem
 
-    def draw_lines_from_quotes(self):
-        """Deben estar con tz, se recibe data porque puede recortarese según zoom
-        set is a SetQuotesIntraday"""
-        self.ax.clear()
-        if self.setquotesintraday.length()<2:
-            return
-
-        self.get_locators()
-        self.ax.plot_date(self.setquotesintraday.datetimes(), self.setquotesintraday.quotes(), '-',  tz=pytz.timezone(self.mem.localzone.name),  label=self.product.name)        
-        self.draw()
-
     def get_locators(self):
+        self.ax.set_title(self.tr("Intraday graph"))
         self.ax.xaxis.set_major_locator(HourLocator(interval=1 , tz=pytz.timezone(self.mem.localzone.name)))
         self.ax.xaxis.set_minor_locator(HourLocator(interval=1 , tz=pytz.timezone(self.mem.localzone.name)))
         self.ax.xaxis.set_major_formatter(DateFormatter('%H:%M'))    
@@ -270,7 +259,16 @@ class canvasChartIntraday(FigureCanvasQTAgg):
         """Loads a SetQuotesIntraday"""
         self.product=product
         self.setquotesintraday=setquotesintraday
-        self.draw_lines_from_quotes()
+        
+        if self.setquotesintraday.length()<2:
+            return
+
+        self.ax.clear()
+        self.get_locators()
+        self.ax.plot_date(self.setquotesintraday.datetimes(), self.setquotesintraday.quotes(), '-',  tz=pytz.timezone(self.mem.localzone.name),  label=self.product.name)        
+        self.ax.set_ylabel(self.tr("{} quotes ({})".format(self.product.name, self.product.currency.symbol)))
+        self.ax.set_xlabel("{}".format(self.setquotesintraday.date))
+        self.draw()
         
     def price(self, x): 
         return self.product.currency.string(x)
@@ -289,37 +287,66 @@ class canvasChartCompare(FigureCanvasQTAgg):
         # notify the system of updated policy
         FigureCanvasQTAgg.updateGeometry(self)        
         
-        self.ax= self.fig.add_subplot(111)
         self.plot1=None
         self.plot2=None
         
+        
+        
         self.mydraw(self.type)
 
-    def label(self, date, y): 
-#        return "Pepito de los palotes {}".format(x)##self.comparation.product1.currency.string(x)        
-        dt=matplotlib.dates.num2date(date)
+    def footer(self, date, y): 
+        dt=num2date(date)
         dat=dt.date()
         return self.tr("{}. {}: {}, {}: {}.".format(dat, self.comparation.product1.name, self.comparation.set1.find(dat).close, self.comparation.product2.name, self.comparation.set2.find(dat).close))
         
     def mydraw(self, type):
         """self.setdata es un SetOHCLDaily"""
+        self.ax= self.fig.add_subplot(111)
+        self.ax.grid()
         if type==0:#Not changed data
+            self.ax.set_title(self.tr("Comparing products showing prices"))
+            self.ax.set_ylabel(self.tr("{} quotes ({})".format(self.comparation.product1.name, self.comparation.product1.currency.symbol)))
+            self.ax2=self.ax.twinx()
+            self.ax2.set_ylabel(self.tr("{} quotes ({})".format(self.comparation.product2.name, self.comparation.product2.currency.symbol)))
             self.plot1=self.ax.plot_date(self.comparation.dates(), self.comparation.product1Closes(), '-',  color="blue", label=self.comparation.product1.name)
-            self.plot2=self.ax.plot_date(self.comparation.dates(), self.comparation.product2Closes(), '-', color="green", label=self.comparation.product2.name)
-        elif type==1:#Dividing value to get same at the first.
-            self.plot1=self.ax.plot_date(self.comparation.dates(), self.comparation.product1ClosesDividingFirst(), '-',  color="blue", label=self.comparation.product1.name)
-            self.plot2=self.ax.plot_date(self.comparation.dates(), self.comparation.product2Closes(), '-', color="green", label=self.comparation.product2.name)
+            self.plot2=self.ax2.plot_date(self.comparation.dates(), self.comparation.product2Closes(), '-', color="green", label=self.comparation.product2.name)
+            self.ax2.legend(loc="upper right")
+            self.ax2.format_coord = self.footer
+            self.get_locators()
+            self.ax.legend(loc="upper left")
+#        elif type==1:#Dividing value to get same at the first.
+#            self.plot1=self.ax.plot_date(self.comparation.dates(), self.comparation.product1ClosesDividingFirst(), '-',  color="blue", label=self.comparation.product1.name)
+#            self.plot2=self.ax.plot_date(self.comparation.dates(), self.comparation.product2Closes(), '-', color="green", label=self.comparation.product2.name)
+#            self.ax.format_coord = self.footer  
+#            self.get_locators()
+#            self.ax.legend(loc="upper left")
         elif type==2:#Dividing value to get same at the first.
             self.plot1=self.ax.plot_date(self.comparation.dates(), self.comparation.product1ClosesDividingFirstLeveragedReduced(), '-',  color="blue", label=self.comparation.product1.name)
             self.plot2=self.ax.plot_date(self.comparation.dates(), self.comparation.product2Closes(), '-', color="green", label=self.comparation.product2.name)
+            self.ax.format_coord = self.footer  
+            self.get_locators()
+            self.ax.legend(loc="upper left")
         elif type==3:#Controlling percentage evolution.
+            self.ax.set_title(self.tr("Comparing products with percentage evolution"))
             self.plot1=self.ax.plot_date(self.comparation.dates(), self.comparation.product1PercentageFromFirstProduct2Price(), '-',  color="blue", label=self.comparation.product1.name)
             self.plot2=self.ax.plot_date(self.comparation.dates(), self.comparation.product2Closes(), '-', color="green", label=self.comparation.product2.name)
+            self.ax.format_coord = self.footer  
+            self.get_locators()
+            self.ax.legend(loc="upper left")
         elif type==4:#Controlling percentage evolution.
+            self.ax.set_title(self.tr("Comparing products with percentage evolution considering leverage multiplier"))
             self.plot1=self.ax.plot_date(self.comparation.dates(), self.comparation.product1PercentageFromFirstProduct2PriceLeveragedReduced(), '-',  color="blue", label=self.comparation.product1.name)
             self.plot2=self.ax.plot_date(self.comparation.dates(), self.comparation.product2Closes(), '-', color="green", label=self.comparation.product2.name)
-        self.get_locators()
-        self.ax.legend()
+            self.ax.format_coord = self.footer  
+            self.get_locators()
+            self.ax.legend(loc="upper left")
+        elif type==1:#Scatter
+            self.ax.set_title(self.tr("Comparing products with a scattering"))
+            self.ax.set_ylabel(self.tr("{} quotes ({})".format(self.comparation.product2.name, self.comparation.product2.currency.symbol)))
+            self.ax.set_xlabel(self.tr("{} quotes ({})".format(self.comparation.product1.name, self.comparation.product1.currency.symbol)))
+            self.plot1=self.ax.scatter(self.comparation.product1Closes(), self.comparation.product2Closes(), c=[date2num(date) for date in self.comparation.dates()])
+            self.ax.annotate(xy=(5, 5), xycoords="figure pixels",  s=self.tr("Blue circles are older quotes and red ones are newer."))
+        
         self.draw()
 
     def get_locators(self):
@@ -329,14 +356,10 @@ class canvasChartCompare(FigureCanvasQTAgg):
             self.ax.xaxis.set_minor_locator(MonthLocator())
             self.ax.xaxis.set_major_locator(MonthLocator())
             self.ax.xaxis.set_major_formatter( DateFormatter('%Y-%m-%d'))   
-#            self.ax.fmt_xdata=DateFormatter('%Y-%m-%d')
         elif interval>=365:
             self.ax.xaxis.set_minor_locator(MonthLocator())
             self.ax.xaxis.set_major_locator(YearLocator())   
-            self.ax.xaxis.set_major_formatter( DateFormatter('%Y'))        
-#            self.ax.fmt_xdata=DateFormatter('%Y-%m-%d')
-                        
-        self.ax.format_coord = self.label  
+            self.ax.xaxis.set_major_formatter( DateFormatter('%Y'))
         self.ax.grid(True)
 
 
