@@ -326,7 +326,7 @@ class canvasChartCompare(FigureCanvasQTAgg):
         dat=dt.date()
         return self.tr("{}. {}: {}, {}: {}.".format(dat, self.comparation.product1.name, self.comparation.set1.find(dat).close, self.comparation.product2.name, self.comparation.set2.find(dat).close))
         
-    def mydraw(self, type=0):
+    def mydraw(self, type):
         """self.setdata es un SetOHCLDaily"""
         if type==0:#Not changed data
             self.plot1=self.ax.plot_date(self.comparation.dates(), self.comparation.product1Closes(), '-',  color="blue", label=self.comparation.product1.name)

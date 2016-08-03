@@ -3236,282 +3236,282 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.ui" line="954"/>
+        <location filename="../ui/frmProductReport.ui" line="984"/>
         <source>Historical prices</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.ui" line="962"/>
+        <location filename="../ui/frmProductReport.ui" line="992"/>
         <source>Report of historic prices</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.ui" line="969"/>
+        <location filename="../ui/frmProductReport.ui" line="999"/>
         <source>Last price</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.ui" line="979"/>
+        <location filename="../ui/frmProductReport.ui" line="1009"/>
         <source>Daily variation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.ui" line="984"/>
+        <location filename="../ui/frmProductReport.ui" line="1014"/>
         <source>Weekly variation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.ui" line="989"/>
+        <location filename="../ui/frmProductReport.ui" line="1019"/>
         <source>Monthly variation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.ui" line="994"/>
+        <location filename="../ui/frmProductReport.ui" line="1024"/>
         <source>Annual variation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.ui" line="1004"/>
+        <location filename="../ui/frmProductReport.ui" line="1034"/>
         <source>Last 7 days variation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.ui" line="1009"/>
+        <location filename="../ui/frmProductReport.ui" line="1039"/>
         <source>Last 30 days variation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.ui" line="1014"/>
+        <location filename="../ui/frmProductReport.ui" line="1044"/>
         <source>Last 12 months variation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.ui" line="1319"/>
+        <location filename="../ui/frmProductReport.ui" line="1349"/>
         <source>Date</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.ui" line="1575"/>
+        <location filename="../ui/frmProductReport.ui" line="1605"/>
         <source>Price</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.ui" line="1523"/>
+        <location filename="../ui/frmProductReport.ui" line="1553"/>
         <source>%</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.ui" line="1034"/>
+        <location filename="../ui/frmProductReport.ui" line="1064"/>
         <source>% APR</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.ui" line="1101"/>
+        <location filename="../ui/frmProductReport.ui" line="1131"/>
         <source>Purge investment from innecesary quotes. Leaves high, low, open and close quotes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.ui" line="1104"/>
+        <location filename="../ui/frmProductReport.ui" line="1134"/>
         <source>Purge investment</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.ui" line="1115"/>
+        <location filename="../ui/frmProductReport.ui" line="1145"/>
         <source>Make Split / Contrasplit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.ui" line="1128"/>
+        <location filename="../ui/frmProductReport.ui" line="1158"/>
         <source>Product prices</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.ui" line="1141"/>
+        <location filename="../ui/frmProductReport.ui" line="1171"/>
         <source>Daily prices</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.ui" line="1329"/>
+        <location filename="../ui/frmProductReport.ui" line="1359"/>
         <source>Open</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.ui" line="1334"/>
+        <location filename="../ui/frmProductReport.ui" line="1364"/>
         <source>Higher</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.ui" line="1339"/>
+        <location filename="../ui/frmProductReport.ui" line="1369"/>
         <source>Lower</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.ui" line="1185"/>
+        <location filename="../ui/frmProductReport.ui" line="1215"/>
         <source>Agrupation Start</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.ui" line="1194"/>
+        <location filename="../ui/frmProductReport.ui" line="1224"/>
         <source>Weekly prices</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.ui" line="1344"/>
+        <location filename="../ui/frmProductReport.ui" line="1374"/>
         <source>Agrupation start</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.ui" line="1247"/>
+        <location filename="../ui/frmProductReport.ui" line="1277"/>
         <source>Monthly prices</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.ui" line="1300"/>
+        <location filename="../ui/frmProductReport.ui" line="1330"/>
         <source>Annual prices</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.ui" line="1357"/>
+        <location filename="../ui/frmProductReport.ui" line="1387"/>
         <source>Monthly returns</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.ui" line="1570"/>
+        <location filename="../ui/frmProductReport.ui" line="1600"/>
         <source>Year</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.ui" line="1375"/>
+        <location filename="../ui/frmProductReport.ui" line="1405"/>
         <source>January</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.ui" line="1380"/>
+        <location filename="../ui/frmProductReport.ui" line="1410"/>
         <source>February</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.ui" line="1385"/>
+        <location filename="../ui/frmProductReport.ui" line="1415"/>
         <source>March</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.ui" line="1390"/>
+        <location filename="../ui/frmProductReport.ui" line="1420"/>
         <source>April</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.ui" line="1395"/>
+        <location filename="../ui/frmProductReport.ui" line="1425"/>
         <source>May</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.ui" line="1400"/>
+        <location filename="../ui/frmProductReport.ui" line="1430"/>
         <source>June</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.ui" line="1405"/>
+        <location filename="../ui/frmProductReport.ui" line="1435"/>
         <source>July</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.ui" line="1410"/>
+        <location filename="../ui/frmProductReport.ui" line="1440"/>
         <source>August</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.ui" line="1415"/>
+        <location filename="../ui/frmProductReport.ui" line="1445"/>
         <source>September</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.ui" line="1420"/>
+        <location filename="../ui/frmProductReport.ui" line="1450"/>
         <source>October</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.ui" line="1425"/>
+        <location filename="../ui/frmProductReport.ui" line="1455"/>
         <source>November</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.ui" line="1430"/>
+        <location filename="../ui/frmProductReport.ui" line="1460"/>
         <source>December</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.ui" line="1435"/>
+        <location filename="../ui/frmProductReport.ui" line="1465"/>
         <source>Total</source>
         <translation type="unfinished">общий</translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.ui" line="1453"/>
+        <location filename="../ui/frmProductReport.ui" line="1483"/>
         <source>Other data</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.ui" line="1467"/>
+        <location filename="../ui/frmProductReport.ui" line="1497"/>
         <source>DPS Paid</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.ui" line="1494"/>
+        <location filename="../ui/frmProductReport.ui" line="1524"/>
         <source>DPS Estimations</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.ui" line="1595"/>
+        <location filename="../ui/frmProductReport.ui" line="1625"/>
         <source>Manual</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.ui" line="1551"/>
+        <location filename="../ui/frmProductReport.ui" line="1581"/>
         <source>EPS Estimations</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.ui" line="1580"/>
+        <location filename="../ui/frmProductReport.ui" line="1610"/>
         <source>PER</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.ui" line="1665"/>
+        <location filename="../ui/frmProductReport.ui" line="1695"/>
         <source>Purge Day</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.ui" line="1668"/>
+        <location filename="../ui/frmProductReport.ui" line="1698"/>
         <source>Purge Day from innecesary quotes. Leaves high, low, open and close quotes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.ui" line="1680"/>
+        <location filename="../ui/frmProductReport.ui" line="1710"/>
         <source>Edit Quote</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.ui" line="1716"/>
+        <location filename="../ui/frmProductReport.ui" line="1746"/>
         <source>New DPS</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.ui" line="1728"/>
+        <location filename="../ui/frmProductReport.ui" line="1758"/>
         <source>Remove DPS</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.py" line="500"/>
+        <location filename="../ui/frmProductReport.py" line="512"/>
         <source>{0} quotes have been purged from {1}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.ui" line="1585"/>
+        <location filename="../ui/frmProductReport.ui" line="1615"/>
         <source>Annotation date</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.ui" line="1590"/>
+        <location filename="../ui/frmProductReport.ui" line="1620"/>
         <source>Source</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3521,22 +3521,22 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.py" line="594"/>
+        <location filename="../ui/frmProductReport.py" line="606"/>
         <source>Agrupation selection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.py" line="605"/>
+        <location filename="../ui/frmProductReport.py" line="617"/>
         <source>Priority selection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.py" line="618"/>
+        <location filename="../ui/frmProductReport.py" line="630"/>
         <source>Historical data priority selection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.py" line="331"/>
+        <location filename="../ui/frmProductReport.py" line="343"/>
         <source>Daily maximum variance: {} ({})</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3566,112 +3566,112 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.ui" line="1620"/>
+        <location filename="../ui/frmProductReport.ui" line="1650"/>
         <source>New price</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.ui" line="1632"/>
+        <location filename="../ui/frmProductReport.ui" line="1662"/>
         <source>Delete price from selected day</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.ui" line="1644"/>
+        <location filename="../ui/frmProductReport.ui" line="1674"/>
         <source>New dividend per share estimation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.ui" line="1656"/>
+        <location filename="../ui/frmProductReport.ui" line="1686"/>
         <source>Remove dividend per share estimation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.ui" line="1692"/>
+        <location filename="../ui/frmProductReport.ui" line="1722"/>
         <source>New earnings per share estimation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.ui" line="1704"/>
+        <location filename="../ui/frmProductReport.ui" line="1734"/>
         <source>Remove earnings per share estimation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.ui" line="1740"/>
+        <location filename="../ui/frmProductReport.ui" line="1770"/>
         <source>Selected investment dividend</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.ui" line="1363"/>
+        <location filename="../ui/frmProductReport.ui" line="1393"/>
         <source>Table has been calculted with the last price of the previous month and the last price of the corresponding month</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.py" line="351"/>
+        <location filename="../ui/frmProductReport.py" line="363"/>
         <source>Year {}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.ui" line="1752"/>
+        <location filename="../ui/frmProductReport.ui" line="1782"/>
         <source>Delete all prices from selected day</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.ui" line="1764"/>
+        <location filename="../ui/frmProductReport.ui" line="1794"/>
         <source>Delete all prices from selected month</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.ui" line="1776"/>
+        <location filename="../ui/frmProductReport.ui" line="1806"/>
         <source>Delete all prices from selected year</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.ui" line="1039"/>
+        <location filename="../ui/frmProductReport.ui" line="1069"/>
         <source>Gains</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.py" line="175"/>
+        <location filename="../ui/frmProductReport.py" line="187"/>
         <source>Report of historic prices. You have {} shares valued at {}.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.py" line="198"/>
+        <location filename="../ui/frmProductReport.py" line="210"/>
         <source>Product prices are updated automatically</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.py" line="200"/>
+        <location filename="../ui/frmProductReport.py" line="212"/>
         <source>Product prices are not updated automatically</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.py" line="532"/>
+        <location filename="../ui/frmProductReport.py" line="544"/>
         <source>You have to add three quotes (last, penultimate and end last year quotes) and current year dividend per share estimation to the new product</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.py" line="541"/>
+        <location filename="../ui/frmProductReport.py" line="553"/>
         <source>Please add the product last quote</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.py" line="549"/>
+        <location filename="../ui/frmProductReport.py" line="561"/>
         <source>Please add the product penultimate quote</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.py" line="556"/>
+        <location filename="../ui/frmProductReport.py" line="568"/>
         <source>Please add the product endlastyear quote</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.py" line="562"/>
+        <location filename="../ui/frmProductReport.py" line="574"/>
         <source>Please add current year dividend per share estimation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.py" line="563"/>
+        <location filename="../ui/frmProductReport.py" line="575"/>
         <source>Product: {0} ({1})</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3701,11 +3701,6 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.py" line="139"/>
-        <source>Comparation can&apos;t be made</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../ui/frmProductReport.ui" line="878"/>
         <source>Dividing prices to get the same start value. Leveraged reduced</source>
         <translation type="unfinished"></translation>
@@ -3721,18 +3716,38 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.ui" line="928"/>
+        <location filename="../ui/frmProductReport.ui" line="958"/>
         <source>Shows comparation data</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.py" line="154"/>
+        <location filename="../ui/frmProductReport.py" line="166"/>
         <source>Comparation data table</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.ui" line="921"/>
+        <location filename="../ui/frmProductReport.ui" line="951"/>
         <source>Press to see data</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/frmProductReport.ui" line="921"/>
+        <source>From date</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/frmProductReport.ui" line="931"/>
+        <source>yyyy-MM-dd</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/frmProductReport.py" line="139"/>
+        <source>You must select a product to compare with.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/frmProductReport.py" line="146"/>
+        <source>Comparation can&apos;t be made.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
