@@ -115,23 +115,49 @@ class frmProductReport(QDialog, Ui_frmProductReport):
         self.layHistorical.addWidget(self.canvasHistorical)
         self.layHistorical.addWidget(self.ntbHistorical)
         
-        
-        #Compare
-        self.comparation=ProductComparation(self.mem, self.product, self.mem.data.benchmark)
-        
         self.pseCompare.setupUi(self.mem, self.inversion)
         self.pseCompare.label.setText(self.tr("Select a product to compare"))
         self.pseCompare.setSelected(self.mem.data.benchmark)
-        
-        self.canvasCompare=canvasChartCompare( self.mem, self.comparation, self)
-        self.ntbCompare=NavigationToolbar2QT(self.canvasCompare, self)
-        self.layCompareProduct.addWidget(self.canvasCompare)
-        self.layCompareProduct.addWidget(self.ntbCompare)
-                
+        self.pseCompare.selectionChanged.connect(self.load_comparation)
+        self.ntbCompare=None
+        self.canvasCompare=None
+        self.load_comparation()
 
         self.update_due_to_quotes_change()    
         self.showMaximized()        
         QApplication.restoreOverrideCursor()
+        
+        
+    def load_comparation(self):
+        """Loads comparation canvas"""
+        inicio=datetime.datetime.now()
+        self.comparation=ProductComparation(self.mem, self.product, self.pseCompare.selected)
+        if self.ntbCompare!=None:
+            self.layCompareProduct.removeWidget(self.canvasCompare)
+            self.layCompareProduct.removeWidget(self.ntbCompare)
+        if self.comparation.canBeMade()==False:
+            qmessagebox(self.tr("Comparation can't be made"))
+            return
+        self.canvasCompare=canvasChartCompare( self.mem, self.comparation, self.cmbCompareTypes.currentIndex(),  self)
+        self.ntbCompare=NavigationToolbar2QT(self.canvasCompare, self)
+        self.layCompareProduct.addWidget(self.canvasCompare)
+        self.layCompareProduct.addWidget(self.ntbCompare)
+        print ("Comparation took {}".format(datetime.datetime.now()-inicio))
+
+    @pyqtSlot(str)      
+    def on_cmbCompareTypes_currentIndexChanged(self, text):
+        self.load_comparation()
+        
+    def on_cmdComparationData_released(self):
+        d=QDialog(self)        
+        d.resize(800, 600)
+        d.setWindowTitle(self.tr("Comparation data table"))
+        table=myQTableWidget(d)
+        table.settings(self.mem,"frmProductReport" , "tblCompartionData")
+        self.comparation.myqtablewidget(table)
+        lay = QVBoxLayout(d)
+        lay.addWidget(table)
+        d.show()
         
     def load_information(self):
         def row_tblTPV(quote,  row):
