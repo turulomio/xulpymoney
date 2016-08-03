@@ -5390,6 +5390,22 @@ class SetQuotesIntraday(SetQuotes):
         print (function_name(self), "Quote not found")
         return None
 
+    def datetimes(self):
+        """Returns a list with datetimes"""
+        r=[]
+        for quote in self.arr:
+            r.append(quote.datetime)
+        return r
+        
+    def quotes(self):
+        """Show product quotes of the day"""
+        r=[]
+        for quote in self.arr:
+            r.append(quote.quote)
+        return r
+
+
+
     def purge(self):
         """Función que purga una inversión en un día dado, dejando ohlc y microsecond=5, que son los no borrables.
         Devuelve el número que se han quitado
