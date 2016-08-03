@@ -4504,7 +4504,6 @@ class ProductComparation:
         self.product2=product2     
         self.set1=SetOHCLDaily(self.mem, self.product1)#Set with common data. Needed in order to not broke self.product1 data
         self.set2=SetOHCLDaily(self.mem, self.product2)
-        
         self.__commonDates=None
 
         #Load data if necesary
@@ -4513,6 +4512,13 @@ class ProductComparation:
                 p.result.get_basic_and_ohcls()  
   
         self.__removeNotCommon()
+            
+            
+    def canBeMade(self):
+        """Returns a boolean if comparation can be made"""
+        if len(self.__commonDates)==0:
+            return False
+        return True
             
     def __removeNotCommon(self):
         self.__commonDates=list(set(self.product1.result.ohclDaily.dates()) & set(self.product2.result.ohclDaily.dates()))
@@ -4523,8 +4529,27 @@ class ProductComparation:
         for ohcl in self.product2.result.ohclDaily.arr:
             if ohcl.date in self.__commonDates:
                 self.set2.append(ohcl)
+
+    def myqtablewidget(self, tabla):
+        arr=[]#date, product1, product2
+        for i, date in enumerate(self.__commonDates):
+            arr.append((date, self.set1.arr[i].close, self.set2.arr[i].close))
+            
+        tabla.setColumnCount(3)
+        tabla.setHorizontalHeaderItem(0, QTableWidgetItem(QApplication.translate("Core","Date" )))
+        tabla.setHorizontalHeaderItem(1, QTableWidgetItem(self.product1.name))
+        tabla.setHorizontalHeaderItem(2,  QTableWidgetItem(self.product2.name))
+        ##DATA 
+        tabla.clearContents()
+        tabla.applySettings()  
+        tabla.setRowCount(len(self.__commonDates))
         
-        
+        for i, a in enumerate(arr):
+            tabla.setItem(i, 0, qdate(a[0]))
+            tabla.setItem(i, 1, self.product1.currency.qtablewidgetitem(a[1]))
+            tabla.setItem(i, 2, self.product1.currency.qtablewidgetitem(a[2]))
+        tabla.setSortingEnabled(True)
+
     def dates(self):
         """Returns a list with common dates"""
         return self.__commonDates
@@ -4542,6 +4567,15 @@ class ProductComparation:
         return r
     
     def product1ClosesDividingFirst(self):
+        """Divides set1 by a factor to get the same price in the first ohcl"""
+        factor=self.set1.first().close/self.set2.first().close
+        print("Factor", factor)
+        r=[]
+        for ohcl in self.set1.arr:
+            r.append(ohcl.close/factor)
+        return r    
+
+    def product1ClosesDividingFirstLeveragedReduced(self):
         """Divides set1 by a factor to get the same price in the first ohcl
         It controls leverage too"""
         factor=self.set1.first().close/self.set2.first().close*self.product1.leveraged.multiplier
@@ -4552,6 +4586,16 @@ class ProductComparation:
         return r
         
     def product1PercentageFromFirstProduct2Price(self):
+        """Usa el primer valor de set 2 y la va sumando los porcentajes de set1. """
+        r=[]
+        last=self.set2.first().close
+        r.append(last)
+        for index in range(1, self.set1.length()):
+            last=last*(1+ self.set1.percentage(index)/Decimal(100))
+            r.append(last)
+        return r    
+        
+    def product1PercentageFromFirstProduct2PriceLeveragedReduced(self):
         """Usa el primer valor de set 2 y la va sumando los porcentajes de set1. Contrala leverages"""
         r=[]
         last=self.set2.first().close

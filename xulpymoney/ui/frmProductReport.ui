@@ -828,19 +828,6 @@
                <item>
                 <layout class="QHBoxLayout" name="horizontalLayout_25">
                  <item>
-                  <spacer name="horizontalSpacer_5">
-                   <property name="orientation">
-                    <enum>Qt::Horizontal</enum>
-                   </property>
-                   <property name="sizeHint" stdset="0">
-                    <size>
-                     <width>40</width>
-                     <height>20</height>
-                    </size>
-                   </property>
-                  </spacer>
-                 </item>
-                 <item>
                   <widget class="wdgProductSelector" name="pseCompare" native="true"/>
                  </item>
                  <item>
@@ -855,6 +842,99 @@
                     </size>
                    </property>
                   </spacer>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="label_2">
+                   <property name="text">
+                    <string>Select a method to compare</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QComboBox" name="cmbCompareTypes">
+                   <property name="sizeAdjustPolicy">
+                    <enum>QComboBox::AdjustToContents</enum>
+                   </property>
+                   <item>
+                    <property name="text">
+                     <string>Not changed data</string>
+                    </property>
+                    <property name="icon">
+                     <iconset resource="../images/xulpymoney.qrc">
+                      <normaloff>:/xulpymoney/eye.png</normaloff>:/xulpymoney/eye.png</iconset>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Dividing prices to get the same start value</string>
+                    </property>
+                    <property name="icon">
+                     <iconset resource="../images/xulpymoney.qrc">
+                      <normaloff>:/xulpymoney/eye.png</normaloff>:/xulpymoney/eye.png</iconset>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Dividing prices to get the same start value. Leveraged reduced</string>
+                    </property>
+                    <property name="icon">
+                     <iconset resource="../images/xulpymoney.qrc">
+                      <normaloff>:/xulpymoney/eye_red.png</normaloff>:/xulpymoney/eye_red.png</iconset>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Controling percentage evolution</string>
+                    </property>
+                    <property name="icon">
+                     <iconset resource="../images/xulpymoney.qrc">
+                      <normaloff>:/xulpymoney/eye.png</normaloff>:/xulpymoney/eye.png</iconset>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Controlling percentage evolution. Leveraged reduced</string>
+                    </property>
+                    <property name="icon">
+                     <iconset resource="../images/xulpymoney.qrc">
+                      <normaloff>:/xulpymoney/eye_red.png</normaloff>:/xulpymoney/eye_red.png</iconset>
+                    </property>
+                   </item>
+                  </widget>
+                 </item>
+                 <item>
+                  <spacer name="horizontalSpacer_5">
+                   <property name="orientation">
+                    <enum>Qt::Horizontal</enum>
+                   </property>
+                   <property name="sizeHint" stdset="0">
+                    <size>
+                     <width>40</width>
+                     <height>20</height>
+                    </size>
+                   </property>
+                  </spacer>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="label_6">
+                   <property name="text">
+                    <string>Press to see data</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QToolButton" name="cmdComparationData">
+                   <property name="toolTip">
+                    <string>Shows comparation data</string>
+                   </property>
+                   <property name="text">
+                    <string/>
+                   </property>
+                   <property name="icon">
+                    <iconset resource="../images/xulpymoney.qrc">
+                     <normaloff>:/xulpymoney/database.png</normaloff>:/xulpymoney/database.png</iconset>
+                   </property>
+                  </widget>
                  </item>
                 </layout>
                </item>

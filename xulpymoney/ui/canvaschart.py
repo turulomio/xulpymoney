@@ -301,9 +301,10 @@ class canvasChartIntraday(canvasChart):
         
                 
 class canvasChartCompare(FigureCanvasQTAgg):
-    def __init__(self, mem,   productcomparation, parent):
+    def __init__(self, mem,   productcomparation, type,  parent):
         self.mem=mem
         self.comparation=productcomparation
+        self.type=type
                 
         # setup Matplotlib Figure and Axis
         self.fig = Figure()
@@ -317,7 +318,7 @@ class canvasChartCompare(FigureCanvasQTAgg):
         self.plot1=None
         self.plot2=None
         
-        self.mydraw(1)
+        self.mydraw(self.type)
 
     def label(self, date, y): 
 #        return "Pepito de los palotes {}".format(x)##self.comparation.product1.currency.string(x)        
@@ -333,8 +334,14 @@ class canvasChartCompare(FigureCanvasQTAgg):
         elif type==1:#Dividing value to get same at the first.
             self.plot1=self.ax.plot_date(self.comparation.dates(), self.comparation.product1ClosesDividingFirst(), '-',  color="blue", label=self.comparation.product1.name)
             self.plot2=self.ax.plot_date(self.comparation.dates(), self.comparation.product2Closes(), '-', color="green", label=self.comparation.product2.name)
-        elif type==2:#Controlling percentage evolution.
+        elif type==2:#Dividing value to get same at the first.
+            self.plot1=self.ax.plot_date(self.comparation.dates(), self.comparation.product1ClosesDividingFirstLeveragedReduced(), '-',  color="blue", label=self.comparation.product1.name)
+            self.plot2=self.ax.plot_date(self.comparation.dates(), self.comparation.product2Closes(), '-', color="green", label=self.comparation.product2.name)
+        elif type==3:#Controlling percentage evolution.
             self.plot1=self.ax.plot_date(self.comparation.dates(), self.comparation.product1PercentageFromFirstProduct2Price(), '-',  color="blue", label=self.comparation.product1.name)
+            self.plot2=self.ax.plot_date(self.comparation.dates(), self.comparation.product2Closes(), '-', color="green", label=self.comparation.product2.name)
+        elif type==4:#Controlling percentage evolution.
+            self.plot1=self.ax.plot_date(self.comparation.dates(), self.comparation.product1PercentageFromFirstProduct2PriceLeveragedReduced(), '-',  color="blue", label=self.comparation.product1.name)
             self.plot2=self.ax.plot_date(self.comparation.dates(), self.comparation.product2Closes(), '-', color="green", label=self.comparation.product2.name)
         self.get_locators()
         self.ax.legend()

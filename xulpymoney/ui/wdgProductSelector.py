@@ -5,6 +5,7 @@ from myqtablewidget import *
 class wdgProductSelector(QWidget):
     """Para usarlo promocionar un qwidget en designer y darle los comportamientos de tamaña que neceseite
     incluso añadirlo a un layout."""
+    selectionChanged=pyqtSignal()
     def __init__(self, parent):
         QWidget.__init__(self, parent)
         self.selected=None
@@ -62,6 +63,7 @@ class wdgProductSelector(QWidget):
             self.txt.setText("{0} ({1})".format(self.selected.name, self.selected.id))
             self.cmdProduct.setEnabled(True)
             self.txt.setToolTip(self.tr("Selected product"))    
+            self.selectionChanged.emit()
         
 
 class frmProductSelector(QDialog):
