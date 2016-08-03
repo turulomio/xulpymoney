@@ -308,7 +308,7 @@ class frmProductReport(QDialog, Ui_frmProductReport):
             self.canvasIntraday.hide()
             self.ntbIntraday.hide()
         else:
-            self.canvasIntraday.load_data_intraday(self.product)
+            self.canvasIntraday.updateData(self.product,  self.product.result.intradia)
             self.canvasIntraday.show()
             self.ntbIntraday.show()       
         

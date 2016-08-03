@@ -232,17 +232,30 @@ class canvasChart(FigureCanvasQTAgg):
     def mouseReleaseEvent(self,  event):
         self.showLegend()
 
-class canvasChartIntraday(canvasChart):
+class canvasChartIntraday(FigureCanvasQTAgg):
     def __init__(self, mem,  parent):
+        # setup Matplotlib Figure and Axis
+        self.fig = Figure()
+        FigureCanvasQTAgg.__init__(self, self.fig)
+        # we define the widget as expandable
+        FigureCanvasQTAgg.setSizePolicy(self,QSizePolicy.Expanding, QSizePolicy.Expanding)
+        # notify the system of updated policy
+        FigureCanvasQTAgg.updateGeometry(self)        
+        
+        self.ax = self.fig.add_subplot(111)
+        
         self.mem=mem
-        canvasChart.__init__(self, parent)
-        self.setupUi()
-        self.settings("canvasIntraday")
 
-
-    def clear(self):
-        """Clear canvas"""
+    def draw_lines_from_quotes(self):
+        """Deben estar con tz, se recibe data porque puede recortarese según zoom
+        set is a SetQuotesIntraday"""
         self.ax.clear()
+        if self.setquotesintraday.length()<2:
+            return
+
+        self.get_locators()
+        self.ax.plot_date(self.setquotesintraday.datetimes(), self.setquotesintraday.quotes(), '-',  tz=pytz.timezone(self.mem.localzone.name),  label=self.product.name)        
+        self.draw()
 
     def get_locators(self):
         self.ax.xaxis.set_major_locator(HourLocator(interval=1 , tz=pytz.timezone(self.mem.localzone.name)))
@@ -253,53 +266,15 @@ class canvasChartIntraday(canvasChart):
         self.ax.fmt_ydata = self.price  
         self.ax.grid(True)
 
-    def load_data_intraday(self, product):
-        """Needs basic e Intraday"""
+    def updateData(self, product, setquotesintraday):
+        """Loads a SetQuotesIntraday"""
         self.product=product
-        self.setdata=self.product.result.intradia
+        self.setquotesintraday=setquotesintraday
         self.draw_lines_from_quotes()
-    
-    def on_actionLinesIntraday_triggered(self):
-        self.mem.settings.setValue(self.section+ "/type",   ChartType.lines)
-        (dates, quotes)=zip(*self.data)
-        self.draw_lines_from_quotes(dates, quotes)
+        
+    def price(self, x): 
+        return self.product.currency.string(x)
 
-       
-    def on_customContextMenuRequested(self, pos):
-        menu=QMenu()
-        ohcl=QMenu("OHCL")
-        ohcl.addAction(self.actionOHCL5m)
-        ohcl.addAction(self.actionOHCL10m)
-        ohcl.addAction(self.actionOHCL30m)
-        ohcl.addAction(self.actionOHCL60m)
-        menu.addMenu(ohcl)        
-        lines=QMenu(self.tr("Lines"))
-        lines.addAction(self.actionLinesIntraday)
-        lines.addAction(self.actionLines5m)
-        lines.addAction(self.actionLines10m)
-        lines.addAction(self.actionLines30m)
-        lines.addAction(self.actionLines60m)
-        menu.addMenu(lines)        
-        candles=QMenu(self.tr("Candles"))
-        candles.addAction(self.actionCandles5m)
-        candles.addAction(self.actionCandles10m)
-        candles.addAction(self.actionCandles30m)
-        candles.addAction(self.actionCandles60m)
-        menu.addMenu(candles)        
-        menu.addSeparator()
-        indicadores=QMenu(self.tr("Indicators"))
-        indicadores.addAction(self.actionSMA50)
-        indicadores.addAction(self.actionSMA200)
-        menu.addMenu(indicadores)            
-        menu.exec_(self.mapToGlobal(pos))
-        
-    def setupUi(self):
-        self.actionLinesIntraday=QAction(self)
-        self.actionLinesIntraday.setText(self.tr("Intraday"))
-        self.actionLinesIntraday.setObjectName("actionLinesIntraday")
-        self.common_actions()
-        
-                
 class canvasChartCompare(FigureCanvasQTAgg):
     def __init__(self, mem,   productcomparation, type,  parent):
         self.mem=mem
