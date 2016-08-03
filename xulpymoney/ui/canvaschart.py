@@ -12,225 +12,6 @@ class ChartType:
     ohcl=1
     candles=2
 
-class canvasChart(FigureCanvasQTAgg):
-    """
-        RECIBE DATOS DE LA FORMA DATETIME,VALUE
-    
-    Class to represent the FigureCanvasQTAgg widget
-    type 0:lineas
-            since: datetime desde el que mostrar datos
-            period: forma en que se muestran 0:5 minutos, 1: 15 minutos, 2:1 hora,3:diario,4:semanal,5 mensual
-
-    Se crea el objeto
-    objeto.settings
-    objeto.load_data"""
-    def __init__(self, parent):
-        # setup Matplotlib Figure and Axis
-        self.fig = Figure()
-        FigureCanvasQTAgg.__init__(self, self.fig)
-        # we define the widget as expandable
-        FigureCanvasQTAgg.setSizePolicy(self,QSizePolicy.Expanding, QSizePolicy.Expanding)
-        # notify the system of updated policy
-        FigureCanvasQTAgg.updateGeometry(self)        
-        
-        self.ax = self.fig.add_subplot(111)
-        
-        self.setdata=None#Set to draw, must be pointed
-        
-        self.plot_sma200=None
-        self.plot_sma50=None
- 
-    def price(self, x): 
-        return self.product.currency.string(x)
-
-    def settings(self, section):		
-        self.section=section
-        self.actionSMA50.setChecked(str2bool(self.mem.settings.value(section+ "/sma50", "True" )))
-        self.actionSMA200.setChecked(str2bool(self.mem.settings.value(section +"/sma200", "True" )))           
-
-    @pyqtSlot()
-    def on_actionSMA50_triggered(self):
-        self.mem.settings.setValue(self.section+ "/sma50",   self.actionSMA50.isChecked())
-        
-    @pyqtSlot()
-    def on_actionSMA200_triggered(self):
-        self.mem.settings.setValue(self.section+ "/sma200",   self.actionSMA200.isChecked())
-
-    def draw_sma50(self,  datime, quotes):
-        #Calculamos según
-        """
-        Calculamos segun
-        a=[1,2,3,4]
-        sum([0:2])=3
-        """
-        if self.actionSMA50.isChecked()==False:
-            return
-        if len(quotes)<50:
-            return
-        dat=[]
-        sma=[]
-        for i in range(50, len(quotes)):
-            dat.append(datime[i-1])
-            sma.append(sum(quotes[i-50:i])/Decimal(50))
-        self.plot_sma50, =self.ax.plot_date(dat, sma, '-',  color='gray')     
-    
-    def draw_sma200(self, datime, quotes):
-        if self.actionSMA200.isChecked()==False:
-            return
-        if len(quotes)<200:
-            return
-        dat=[]
-        sma=[]
-        for i in range(200, len(quotes)):
-            dat.append(datime[i-1])
-            sma.append(sum(quotes[i-200:i])/Decimal(200))
-        self.plot_sma200, =self.ax.plot_date(dat, sma, '-', color="red")    
-        
-    def draw_lines_from_ohcl(self):
-        """self.setdata es un SetOHCLDaily"""
-        self.clear()
-        if self.setdata.length()<2:
-            return
-            
-        dates=[]
-        quotes=[]
-        for ohcl in self.setdata.arr:
-            dt=ohcl.datetime()
-            if dt>self.from_dt:
-                dates.append(dt)
-                quotes.append(ohcl.close)
-
-        self.get_locators()
-        self.ax.plot_date(dates, quotes, '-')
-        self.draw_sma50(dates, quotes)
-        self.draw_sma200(dates, quotes)
-        self.draw()
-        
-    def draw_lines_from_quotes(self):
-        """Deben estar con tz, se recibe data porque puede recortarese según zoom
-        set is a SetQuotesIntraday"""
-        self.clear()
-        if self.setdata.length()<2:
-            return
-        (datetimes, quotes)=([], [])
-        for q in self.setdata.arr:
-            datetimes.append(q.datetime)
-            quotes.append(q.quote)
-
-        self.get_locators()
-        self.ax.plot_date(datetimes, quotes, '-',  tz=pytz.timezone(self.mem.localzone.name))
-        
-        self.draw_sma50(datetimes, quotes)
-        self.draw_sma200(datetimes, quotes)
-        self.draw()
-
-        
-    def ohcl(self, setohcl,  interval):
-        """setohcl es un setohcl"""
-        self.clear()
-        if setohcl.length()<2:
-            return
-        quotes=[]
-        dates=[]
-        close=[]
-        self.get_locators()
-        for d in setohcl.arr:
-            quotes.append((d.datetime().toordinal(), d.open, d.close,  d.high, d.low))         #ESTE ES EL CAUSEANTE NO SE VEA MENOR DE DIARIO TOOARDIANL
-            dates.append(d.datetime())
-            close.append(d.close)
-        self.ax.fmt_xdata = DateFormatter('%Y-%m-%d')
-        left=self.from_dt.toordinal()-interval.days#De margen
-        right=self.mem.localzone.now().toordinal()+interval.days
-        self.ax.set_xlim(left, right)
-        plot_day_summary_oclh(self.ax, quotes,  ticksize=3)
-        self.draw_sma50(dates, close)
-        self.draw_sma200(dates, close)
-
-
-    def common_actions(self):
-        self.actionSMA50=QAction(self)
-        self.actionSMA50.setText(self.tr("Simple moving average 50"))
-        self.actionSMA50.setCheckable(True)
-        self.actionSMA50.setObjectName("actionSMA50")
-        self.actionSMA200=QAction(self)
-        self.actionSMA200.setText(self.tr("Simple moving average 200"))
-        self.actionSMA200.setCheckable(True)
-        self.actionSMA200.setObjectName("actionSMA200")
-        
-        self.actionLines5m=QAction(self)
-        self.actionLines5m.setText(self.tr("5 minutes"))
-        self.actionLines5m.setObjectName("actionLines5m")
-        self.actionLines5m.setEnabled(False)
-        self.actionLines10m=QAction(self)
-        self.actionLines10m.setText(self.tr("10 minutes"))
-        self.actionLines10m.setObjectName("actionLines10m")
-        self.actionLines10m.setEnabled(False)
-        self.actionLines30m=QAction(self)
-        self.actionLines30m.setText(self.tr("30 minutes"))
-        self.actionLines30m.setObjectName("actionLines30m")
-        self.actionLines30m.setEnabled(False)
-        self.actionLines60m=QAction(self)
-        self.actionLines60m.setText(self.tr("1 hour"))
-        self.actionLines60m.setObjectName("actionLines60m")
-        self.actionLines60m.setEnabled(False)
-        
-        
-        self.actionOHCL5m=QAction(self)
-        self.actionOHCL5m.setText(self.tr("5 minutes"))
-        self.actionOHCL5m.setObjectName("actionOHCL5m")
-        self.actionOHCL5m.setEnabled(False)
-        self.actionOHCL10m=QAction(self)
-        self.actionOHCL10m.setText(self.tr("10 minutes"))
-        self.actionOHCL10m.setEnabled(False)
-        self.actionOHCL10m.setObjectName("actionOHCL10m")
-        self.actionOHCL30m=QAction(self)
-        self.actionOHCL30m.setText(self.tr("30 minutes"))
-        self.actionOHCL30m.setEnabled(False)
-        self.actionOHCL30m.setObjectName("actionOHCL30m")
-        self.actionOHCL60m=QAction(self)
-        self.actionOHCL60m.setText(self.tr("1 hour"))
-        self.actionOHCL60m.setEnabled(False)
-        self.actionOHCL60m.setObjectName("actionOHCL60m")
-        
-        self.actionCandles5m=QAction(self)
-        self.actionCandles5m.setText(self.tr("5 minutes"))
-        self.actionCandles5m.setEnabled(False)
-        self.actionCandles5m.setObjectName("actionCandles5m")
-        self.actionCandles10m=QAction(self)
-        self.actionCandles10m.setText(self.tr("10 minutes"))
-        self.actionCandles10m.setEnabled(False)
-        self.actionCandles10m.setObjectName("actionCandles10m")
-        self.actionCandles30m=QAction(self)
-        self.actionCandles30m.setText(self.tr("30 minutes"))
-        self.actionCandles30m.setEnabled(False)
-        self.actionCandles30m.setObjectName("actionCandles30m")
-        self.actionCandles60m=QAction(self)
-        self.actionCandles60m.setText(self.tr("1 hour"))
-        self.actionCandles60m.setEnabled(False)
-        self.actionCandles60m.setObjectName("actionCandles60m")
-        
-        self.labels=[]#Array de tuplas (plot,label)
-
-        
-        QMetaObject.connectSlotsByName(self)
-        self.setContextMenuPolicy(Qt.CustomContextMenu)
-        self.customContextMenuRequested.connect(self.on_customContextMenuRequested)
-
-
-    def showLegend(self):
-        """Alterna mostrando y desmostrando legend, empieza con sí"""
-        self.makeLegend()
-                
-        if self.ax.legend_==None:
-            (plots, labels)=zip(*self.labels)
-            self.ax.legend( plots, labels, loc="best")
-        else:
-            self.ax.legend_=None
-        self.draw()
-
-    def mouseReleaseEvent(self,  event):
-        self.showLegend()
-
 class canvasChartIntraday(FigureCanvasQTAgg):
     def __init__(self, mem,  parent):
         # setup Matplotlib Figure and Axis
@@ -363,120 +144,28 @@ class canvasChartCompare(FigureCanvasQTAgg):
         self.ax.grid(True)
 
 
-class canvasChartHistorical(canvasChart):
+class canvasChartHistorical(FigureCanvasQTAgg):                
     def __init__(self, mem,   parent):
         self.mem=mem
-        canvasChart.__init__(self, parent)
-        self.setupUi()
+        # setup Matplotlib Figure and Axis
+        self.fig = Figure()
+        FigureCanvasQTAgg.__init__(self, self.fig)
+        # we define the widget as expandable
+        FigureCanvasQTAgg.setSizePolicy(self,QSizePolicy.Expanding, QSizePolicy.Expanding)
+        # notify the system of updated policy
+        FigureCanvasQTAgg.updateGeometry(self)      
+        self.ax= self.fig.add_subplot(111)
         self.plot_average=None
         self.plot_selling=None
         self.plot_purchases=None
         self.plot_sales=None
+        self.plot_sma200=None
+        self.plot_sma50=None
         self.from_dt=self.mem.localzone.now()-datetime.timedelta(days=365)#Show days from this date
-        self.settings("canvasHistorical")
 
-        
-    def candles(self, interval):
-        """Interval 0.05 5minutos
-        1 1 dia
-        
-        setdata es un SetOHCLDaily"""
-        self.clear()
-        if self.setdata.length()==0:
-            return
-
-        quotes=[]
-        for d in self.setdata.arr:
-            quotes.append((d.date.toordinal(), d.open, d.close, d.high, d.low))
-
-
-        # format the coords message box
-        self.ax.fmt_xdata = DateFormatter('%Y-%m-%d')
-        self.ax.fmt_ydata = self.price
-        self.ax.grid(True)
-        candlestick(self.ax,quotes,   width=0.6)
-        self.ax.xaxis_date()
-
-    def clear(self):
-        """Clear canvas, doesn't work"""
-        self.ax.clear()
-    
-    def makeLegend(self):
-        if len(self.labels)==0:
-            self.labels.append((self.plot_sma200, self.tr("SMA200")))
-            self.labels.append((self.plot_sma50,self.tr("SMA50")))
-            self.labels.append((self.plot_selling, self.tr("Selling price")))
-            self.labels.append((self.plot_average, self.tr("Average purchase price")))
-            self.labels.append((self.plot_purchases, self.tr("Purchase point")))
-            self.labels.append((self.plot_sales, self.tr("Sales point")))
-#            
-#    def setData(self, arr):
-#        result=[]
-#        for o in arr: #Insert o from date
-#            if self.from_dt<o.datetime().date():
-#                result.append(o)
-#                
-#        if self.sd==False:##Sin descontar dividends, es decir sumando dividends desde principio
-#            return result
-#        else:
-#            result2=[]
-#            for a in result:
-#                o=a.clone()
-#                sum=self.product.dps.sum(o.datetime().date())
-#                o.close=o.close+sum
-#                o.high=o.high+sum
-#                o.low=o.low+sum
-#                o.open=o.open+sum
-#                result2.append(o)
-#            return result2            
-#                
-        
-            
-#        if self.sd==False:##Sin descontar dividends, es decir sumando dividends desde principio
-#            return arr[len(arr)-self.num:len(arr)]
-#        else:
-#            result=[]
-#            for a in arr[len(arr)-self.num:len(arr)]:
-#                o=a.clone()
-#                sum=self.product.dps.sum(o.datetime().date())
-#                o.close=o.close+sum
-#                o.high=o.high+sum
-#                o.low=o.low+sum
-#                o.open=o.open+sum
-#                result.append(o)
-#            return result
-
-    def mydraw(self):
-        """Punto de entrada de inicio, cambio de rueda, """
-        type=int(self.mem.settings.value(self.section+ "/type", "0"))
-        interval=int(self.mem.settings.value(self.section+ "/interval", "1"))
-        if type==ChartType.lines:
-            if interval==1:
-                self.setdata=self.product.result.ohclDaily
-                self.on_actionLines1d_triggered()
-        elif type==ChartType.ohcl:
-            if interval==1:
-                self.setdata=self.product.result.ohclDaily
-                self.on_actionOHCL1d_triggered()
-            if interval==7:
-                self.setdata=self.product.result.ohclWeekly
-                self.on_actionOHCL7d_triggered()
-            if interval==30:
-                self.setdata=self.product.result.ohclMonthly
-                self.on_actionOHCL30d_triggered()
-            if interval==365:
-                self.setdata=self.product.result.ohclYearly
-                self.on_actionOHCL365d_triggered()
-        elif type==ChartType.candles:
-            self.setdata=self.product.result.ohclDaily
-            self.on_actionCandles1d_triggered()
-        self.draw()
-
-
-    def setupUi(self):
-        self.actionLinesIntraday=QAction(self)
-        self.actionLinesIntraday.setText(self.tr("Intraday"))
-        self.actionLinesIntraday.setObjectName("actionLinesIntraday")
+#        self.actionLinesIntraday=QAction(self)
+#        self.actionLinesIntraday.setText(self.tr("Intraday"))
+#        self.actionLinesIntraday.setObjectName("actionLinesIntraday")
         
         self.actionLines1d=QAction(self)
         self.actionLines1d.setText(self.tr("1 day"))
@@ -524,8 +213,181 @@ class canvasChartHistorical(canvasChart):
         self.actionCandles365d.setEnabled(False)
         self.actionCandles365d.setObjectName("actionCandles365d")
         
-        self.common_actions()
+        self.actionSMA50=QAction(self)
+        self.actionSMA50.setText(self.tr("Simple moving average 50"))
+        self.actionSMA50.setCheckable(True)
+        self.actionSMA50.setObjectName("actionSMA50")
+        self.actionSMA200=QAction(self)
+        self.actionSMA200.setText(self.tr("Simple moving average 200"))
+        self.actionSMA200.setCheckable(True)
+        self.actionSMA200.setObjectName("actionSMA200")
+        
+#        self.actionLines5m=QAction(self)
+#        self.actionLines5m.setText(self.tr("5 minutes"))
+#        self.actionLines5m.setObjectName("actionLines5m")
+#        self.actionLines5m.setEnabled(False)
+#        self.actionLines10m=QAction(self)
+#        self.actionLines10m.setText(self.tr("10 minutes"))
+#        self.actionLines10m.setObjectName("actionLines10m")
+#        self.actionLines10m.setEnabled(False)
+#        self.actionLines30m=QAction(self)
+#        self.actionLines30m.setText(self.tr("30 minutes"))
+#        self.actionLines30m.setObjectName("actionLines30m")
+#        self.actionLines30m.setEnabled(False)
+#        self.actionLines60m=QAction(self)
+#        self.actionLines60m.setText(self.tr("1 hour"))
+#        self.actionLines60m.setObjectName("actionLines60m")
+#        self.actionLines60m.setEnabled(False)
+        
+        
+#        self.actionOHCL5m=QAction(self)
+#        self.actionOHCL5m.setText(self.tr("5 minutes"))
+#        self.actionOHCL5m.setObjectName("actionOHCL5m")
+#        self.actionOHCL5m.setEnabled(False)
+#        self.actionOHCL10m=QAction(self)
+#        self.actionOHCL10m.setText(self.tr("10 minutes"))
+#        self.actionOHCL10m.setEnabled(False)
+#        self.actionOHCL10m.setObjectName("actionOHCL10m")
+#        self.actionOHCL30m=QAction(self)
+#        self.actionOHCL30m.setText(self.tr("30 minutes"))
+#        self.actionOHCL30m.setEnabled(False)
+#        self.actionOHCL30m.setObjectName("actionOHCL30m")
+#        self.actionOHCL60m=QAction(self)
+#        self.actionOHCL60m.setText(self.tr("1 hour"))
+#        self.actionOHCL60m.setEnabled(False)
+#        self.actionOHCL60m.setObjectName("actionOHCL60m")
+#        
+#        self.actionCandles5m=QAction(self)
+#        self.actionCandles5m.setText(self.tr("5 minutes"))
+#        self.actionCandles5m.setEnabled(False)
+#        self.actionCandles5m.setObjectName("actionCandles5m")
+#        self.actionCandles10m=QAction(self)
+#        self.actionCandles10m.setText(self.tr("10 minutes"))
+#        self.actionCandles10m.setEnabled(False)
+#        self.actionCandles10m.setObjectName("actionCandles10m")
+#        self.actionCandles30m=QAction(self)
+#        self.actionCandles30m.setText(self.tr("30 minutes"))
+#        self.actionCandles30m.setEnabled(False)
+#        self.actionCandles30m.setObjectName("actionCandles30m")
+#        self.actionCandles60m=QAction(self)
+#        self.actionCandles60m.setText(self.tr("1 hour"))
+#        self.actionCandles60m.setEnabled(False)
+#        self.actionCandles60m.setObjectName("actionCandles60m")
+        
+        self.labels=[]#Array de tuplas (plot,label)
+
+        
+        QMetaObject.connectSlotsByName(self)
+        self.setContextMenuPolicy(Qt.CustomContextMenu)
+        self.customContextMenuRequested.connect(self.on_customContextMenuRequested)
         self.fig.canvas.mpl_connect('scroll_event', self.on_wheelEvent)
+        self.actionSMA50.setChecked(str2bool(self.mem.settings.value("canvasHistorical/sma50", "True" )))
+        self.actionSMA200.setChecked(str2bool(self.mem.settings.value("canvasHistorical/sma200", "True" )))           
+ 
+#    def price(self, x): 
+#        return self.product.currency.string(x)
+
+    def footer(self, date, y): 
+        dt=num2date(date)
+        dat=dt.date()
+        return self.tr("{}: {}.".format(dat, self.product.currency.string(self.setdata.find(dat).close)))
+    @pyqtSlot()
+    def on_actionSMA50_triggered(self):
+        self.mem.settings.setValue("canvasHistorical/sma50",   self.actionSMA50.isChecked())
+        
+    @pyqtSlot()
+    def on_actionSMA200_triggered(self):
+        self.mem.settings.setValue("canvasHistorical/sma200",   self.actionSMA200.isChecked())
+
+    def draw_sma50(self,  datime, quotes):
+        #Calculamos según
+        """
+        Calculamos segun
+        a=[1,2,3,4]
+        sum([0:2])=3
+        """
+        if self.actionSMA50.isChecked()==False:
+            return
+        if len(quotes)<50:
+            return
+        dat=[]
+        sma=[]
+        for i in range(50, len(quotes)):
+            dat.append(datime[i-1])
+            sma.append(sum(quotes[i-50:i])/Decimal(50))
+        self.plot_sma50, =self.ax.plot_date(dat, sma, '-',  color='gray')     
+    
+    def draw_sma200(self, datime, quotes):
+        if self.actionSMA200.isChecked()==False:
+            return
+        if len(quotes)<200:
+            return
+        dat=[]
+        sma=[]
+        for i in range(200, len(quotes)):
+            dat.append(datime[i-1])
+            sma.append(sum(quotes[i-200:i])/Decimal(200))
+        self.plot_sma200, =self.ax.plot_date(dat, sma, '-', color="red")    
+        
+        
+    def candles(self, interval):
+        """Interval 0.05 5minutos
+        1 1 dia
+        
+        setdata es un SetOHCLDaily"""
+        self.ax.clear()
+        if self.setdata.length()==0:
+            return
+
+        quotes=[]
+        for d in self.setdata.arr:
+            quotes.append((d.date.toordinal(), d.open, d.close, d.high, d.low))
+
+
+        # format the coords message box
+        self.ax.format_coord = self.footer  
+        self.ax.grid(True)
+        candlestick(self.ax,quotes,   width=0.6)
+        self.ax.xaxis_date()
+    
+    def makeLegend(self):
+        if len(self.labels)==0:
+            self.labels.append((self.plot_sma200, self.tr("SMA200")))
+            self.labels.append((self.plot_sma50,self.tr("SMA50")))
+            self.labels.append((self.plot_selling, self.tr("Selling price")))
+            self.labels.append((self.plot_average, self.tr("Average purchase price")))
+            self.labels.append((self.plot_purchases, self.tr("Purchase point")))
+            self.labels.append((self.plot_sales, self.tr("Sales point")))
+
+    def mydraw(self):
+        """Punto de entrada de inicio, cambio de rueda, """
+        type=int(self.mem.settings.value("canvasHistorical/type", "0"))
+        interval=int(self.mem.settings.value("canvasHistorical/interval", "1"))
+        if type==ChartType.lines:
+            if interval==1:
+                self.setdata=self.product.result.ohclDaily
+                self.on_actionLines1d_triggered()
+        elif type==ChartType.ohcl:
+            if interval==1:
+                self.setdata=self.product.result.ohclDaily
+                self.on_actionOHCL1d_triggered()
+            if interval==7:
+                self.setdata=self.product.result.ohclWeekly
+                self.on_actionOHCL7d_triggered()
+            if interval==30:
+                self.setdata=self.product.result.ohclMonthly
+                self.on_actionOHCL30d_triggered()
+            if interval==365:
+                self.setdata=self.product.result.ohclYearly
+                self.on_actionOHCL365d_triggered()
+        elif type==ChartType.candles:
+            self.setdata=self.product.result.ohclDaily
+            self.on_actionCandles1d_triggered()
+        self.ax.set_ylabel(self.tr("{} quotes ({})".format(self.product.name, self.product.currency.symbol)))
+        self.ax.set_title(self.tr("Historical graph"))
+        self.draw()
+
+
         
     @pyqtSlot()
     def on_wheelEvent(self, event):
@@ -541,8 +403,8 @@ class canvasChartHistorical(canvasChart):
         
     @pyqtSlot()
     def on_actionOHCL1d_triggered(self):
-        self.mem.settings.setValue(self.section+"/type", ChartType.ohcl)
-        self.mem.settings.setValue(self.section+"/interval",   "1")
+        self.mem.settings.setValue("canvasHistorical/type", ChartType.ohcl)
+        self.mem.settings.setValue("canvasHistorical/interval",   "1")
         self.ohcl(self.setdata, datetime.timedelta(days=1))     
         self.draw_selling_point()
         self.draw_average_purchase_price()
@@ -551,8 +413,8 @@ class canvasChartHistorical(canvasChart):
 
     @pyqtSlot()
     def on_actionLines1d_triggered(self):
-        self.mem.settings.setValue(self.section+"/type",   ChartType.lines)
-        self.mem.settings.setValue(self.section+"/interval",   "1")
+        self.mem.settings.setValue("canvasHistorical/type",   ChartType.lines)
+        self.mem.settings.setValue("canvasHistorical/interval",   "1")
         self.draw_lines_from_ohcl()
         self.draw_selling_point()
         self.draw_average_purchase_price()
@@ -561,8 +423,8 @@ class canvasChartHistorical(canvasChart):
 
     @pyqtSlot()
     def on_actionCandles1d_triggered(self):
-        self.mem.settings.setValue(self.section+"/type",   ChartType.candles)
-        self.mem.settings.setValue(self.section+"/interval",   "1")
+        self.mem.settings.setValue("canvasHistorical/type",   ChartType.candles)
+        self.mem.settings.setValue("canvasHistorical/interval",   "1")
         self.candles(datetime.timedelta(days=1))
         if self.setdata.length()<1000:
             self.ax.xaxis.set_minor_locator(DayLocator())
@@ -575,8 +437,8 @@ class canvasChartHistorical(canvasChart):
 
     @pyqtSlot()
     def on_actionOHCL7d_triggered(self):
-        self.mem.settings.setValue(self.section+"/type", ChartType.ohcl)
-        self.mem.settings.setValue(self.section+"/interval",   "7")
+        self.mem.settings.setValue("canvasHistorical/type", ChartType.ohcl)
+        self.mem.settings.setValue("canvasHistorical/interval",   "7")
         self.ohcl(self.setdata, datetime.timedelta(days=7))     
         self.draw_selling_point()
         self.draw_average_purchase_price()
@@ -584,8 +446,8 @@ class canvasChartHistorical(canvasChart):
 
     @pyqtSlot()
     def on_actionOHCL30d_triggered(self):
-        self.mem.settings.setValue(self.section+"/type", ChartType.ohcl)
-        self.mem.settings.setValue(self.section+"/interval",   "30")
+        self.mem.settings.setValue("canvasHistorical/type", ChartType.ohcl)
+        self.mem.settings.setValue("canvasHistorical/interval",   "30")
         self.ohcl(self.setdata, datetime.timedelta(days=30))     
         self.draw_selling_point()
         self.draw_average_purchase_price()
@@ -593,8 +455,8 @@ class canvasChartHistorical(canvasChart):
 
     @pyqtSlot()
     def on_actionOHCL365d_triggered(self):
-        self.mem.settings.setValue(self.section+"/type", ChartType.ohcl)
-        self.mem.settings.setValue(self.section+"/interval",   "365")
+        self.mem.settings.setValue("canvasHistorical/type", ChartType.ohcl)
+        self.mem.settings.setValue("canvasHistorical/interval",   "365")
         self.ohcl(self.setdata, datetime.timedelta(days=365))     
         self.draw_selling_point()
         self.draw_average_purchase_price()
@@ -650,42 +512,101 @@ class canvasChartHistorical(canvasChart):
     def on_customContextMenuRequested(self, pos):
         menu=QMenu()
         ohcl=QMenu("OHCL")
-        ohcl.addAction(self.actionOHCL5m)
-        ohcl.addAction(self.actionOHCL10m)
-        ohcl.addAction(self.actionOHCL30m)
-        ohcl.addAction(self.actionOHCL60m)
         ohcl.addAction(self.actionOHCL1d)
         ohcl.addAction(self.actionOHCL7d)
         ohcl.addAction(self.actionOHCL30d)
         ohcl.addAction(self.actionOHCL365d)
         menu.addMenu(ohcl)        
         lines=QMenu(self.tr("Lines"))
-        lines.addAction(self.actionLines5m)
-        lines.addAction(self.actionLines10m)
-        lines.addAction(self.actionLines30m)
-        lines.addAction(self.actionLines60m)
         lines.addAction(self.actionLines1d)
         lines.addAction(self.actionLines7d)
         lines.addAction(self.actionLines30d)
         lines.addAction(self.actionLines365d)
         menu.addMenu(lines)        
         candles=QMenu(self.tr("Candles"))
-        candles.addAction(self.actionCandles5m)
-        candles.addAction(self.actionCandles10m)
-        candles.addAction(self.actionCandles30m)
-        candles.addAction(self.actionCandles60m)
         candles.addAction(self.actionCandles1d)
         candles.addAction(self.actionCandles7d)
         candles.addAction(self.actionCandles30d)
         candles.addAction(self.actionCandles365d)
         menu.addMenu(candles)        
         menu.addSeparator()
-        indicadores=QMenu(self.tr("Indicators"))
-        indicadores.addAction(self.actionSMA50)
-        indicadores.addAction(self.actionSMA200)
-        menu.addMenu(indicadores)            
+        menu.addAction(self.actionSMA50)
+        menu.addAction(self.actionSMA200)
         menu.exec_(self.mapToGlobal(pos)) 
+
+    def draw_lines_from_ohcl(self):
+        """self.setdata es un SetOHCLDaily"""
+        self.ax.clear()
+        if self.setdata.length()<2:
+            return
+            
+        dates=[]
+        quotes=[]
+        for ohcl in self.setdata.arr:
+            dt=ohcl.datetime()
+            if dt>self.from_dt:
+                dates.append(dt)
+                quotes.append(ohcl.close)
+
+        self.get_locators()
+        self.ax.plot_date(dates, quotes, '-')
+        self.draw_sma50(dates, quotes)
+        self.draw_sma200(dates, quotes)
+        self.draw()
         
+    def draw_lines_from_quotes(self):
+        """Deben estar con tz, se recibe data porque puede recortarese según zoom
+        set is a SetQuotesIntraday"""
+        self.ax.clear()
+        if self.setdata.length()<2:
+            return
+        (datetimes, quotes)=([], [])
+        for q in self.setdata.arr:
+            datetimes.append(q.datetime)
+            quotes.append(q.quote)
+
+        self.get_locators()
+        self.ax.plot_date(datetimes, quotes, '-',  tz=pytz.timezone(self.mem.localzone.name))
+        
+        self.draw_sma50(datetimes, quotes)
+        self.draw_sma200(datetimes, quotes)
+        self.draw()
+
+        
+    def ohcl(self, setohcl,  interval):
+        """setohcl es un setohcl"""
+        self.ax.clear()
+        if setohcl.length()<2:
+            return
+        quotes=[]
+        dates=[]
+        close=[]
+        self.get_locators()
+        for d in setohcl.arr:
+            quotes.append((d.datetime().toordinal(), d.open, d.close,  d.high, d.low))         #ESTE ES EL CAUSEANTE NO SE VEA MENOR DE DIARIO TOOARDIANL
+            dates.append(d.datetime())
+            close.append(d.close)
+        self.ax.fmt_xdata = DateFormatter('%Y-%m-%d')
+        left=self.from_dt.toordinal()-interval.days#De margen
+        right=self.mem.localzone.now().toordinal()+interval.days
+        self.ax.set_xlim(left, right)
+        plot_day_summary_oclh(self.ax, quotes,  ticksize=3)
+        self.draw_sma50(dates, close)
+        self.draw_sma200(dates, close)
+
+    def showLegend(self):
+        """Alterna mostrando y desmostrando legend, empieza con sí"""
+        self.makeLegend()
+                
+        if self.ax.legend_==None:
+            (plots, labels)=zip(*self.labels)
+            self.ax.legend( plots, labels, loc="best")
+        else:
+            self.ax.legend_=None
+        self.draw()
+
+    def mouseReleaseEvent(self,  event):
+        self.showLegend()
     def get_locators(self):
         interval=(self.mem.localzone.now()-self.from_dt).days+1
         
@@ -693,14 +614,13 @@ class canvasChartHistorical(canvasChart):
             self.ax.xaxis.set_minor_locator(MonthLocator())
             self.ax.xaxis.set_major_locator(MonthLocator())
             self.ax.xaxis.set_major_formatter( DateFormatter('%Y-%m-%d'))   
-            self.ax.fmt_xdata=DateFormatter('%Y-%m-%d')
+#            self.ax.fmt_xdata=DateFormatter('%Y-%m-%d')
         elif interval>=365:
             self.ax.xaxis.set_minor_locator(MonthLocator())
             self.ax.xaxis.set_major_locator(YearLocator())   
             self.ax.xaxis.set_major_formatter( DateFormatter('%Y'))        
-            self.ax.fmt_xdata=DateFormatter('%Y-%m-%d')
                         
-        self.ax.fmt_ydata = self.price  
+        self.ax.format_coord = self.footer  
         self.ax.grid(True)
 
     def load_data(self, product,   inversion=None, SD=False):
