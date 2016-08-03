@@ -1272,32 +1272,32 @@ Do you want to activate it?</source>
 <context>
     <name>canvasChart</name>
     <message>
-        <location filename="../ui/canvaschart.py" line="197"/>
+        <location filename="../ui/canvaschart.py" line="196"/>
         <source>5 minutes</source>
         <translation>5 minutos</translation>
     </message>
     <message>
-        <location filename="../ui/canvaschart.py" line="201"/>
+        <location filename="../ui/canvaschart.py" line="200"/>
         <source>10 minutes</source>
         <translation>10 minutos</translation>
     </message>
     <message>
-        <location filename="../ui/canvaschart.py" line="205"/>
+        <location filename="../ui/canvaschart.py" line="204"/>
         <source>30 minutes</source>
         <translation>30 minutos</translation>
     </message>
     <message>
-        <location filename="../ui/canvaschart.py" line="209"/>
+        <location filename="../ui/canvaschart.py" line="208"/>
         <source>1 hour</source>
         <translation>1 hora</translation>
     </message>
     <message>
-        <location filename="../ui/canvaschart.py" line="153"/>
+        <location filename="../ui/canvaschart.py" line="152"/>
         <source>Simple moving average 50</source>
         <translation>Media móvil simple 50</translation>
     </message>
     <message>
-        <location filename="../ui/canvaschart.py" line="157"/>
+        <location filename="../ui/canvaschart.py" line="156"/>
         <source>Simple moving average 200</source>
         <translation>Media móvil simple 200</translation>
     </message>
@@ -1305,82 +1305,125 @@ Do you want to activate it?</source>
 <context>
     <name>canvasChartCompare</name>
     <message>
-        <location filename="../ui/canvaschart.py" line="309"/>
+        <location filename="../ui/canvaschart.py" line="300"/>
         <source>{}. {}: {}, {}: {}.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/canvaschart.py" line="346"/>
+        <source>{} quotes ({})</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/canvaschart.py" line="307"/>
+        <source>Comparing products showing prices</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/canvaschart.py" line="330"/>
+        <source>Comparing products with percentage evolution</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/canvaschart.py" line="337"/>
+        <source>Comparing products with percentage evolution considering leverage multiplier</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/canvaschart.py" line="344"/>
+        <source>Comparing products with a scattering</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/canvaschart.py" line="348"/>
+        <source>Blue circles are older quotes and red ones are newer.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>canvasChartHistorical</name>
     <message>
-        <location filename="../ui/canvaschart.py" line="392"/>
+        <location filename="../ui/canvaschart.py" line="408"/>
         <source>Selling price</source>
         <translation>Punto de venta</translation>
     </message>
     <message>
-        <location filename="../ui/canvaschart.py" line="393"/>
+        <location filename="../ui/canvaschart.py" line="409"/>
         <source>Average purchase price</source>
         <translation>Precio medio de compra</translation>
     </message>
     <message>
-        <location filename="../ui/canvaschart.py" line="495"/>
+        <location filename="../ui/canvaschart.py" line="511"/>
         <source>1 day</source>
         <translation>1 día</translation>
     </message>
     <message>
-        <location filename="../ui/canvaschart.py" line="499"/>
+        <location filename="../ui/canvaschart.py" line="515"/>
         <source>1 week</source>
         <translation>1 semana</translation>
     </message>
     <message>
-        <location filename="../ui/canvaschart.py" line="503"/>
+        <location filename="../ui/canvaschart.py" line="519"/>
         <source>1 month</source>
         <translation>1 mes</translation>
     </message>
     <message>
-        <location filename="../ui/canvaschart.py" line="507"/>
+        <location filename="../ui/canvaschart.py" line="523"/>
         <source>1 year</source>
         <translation>1 año</translation>
     </message>
     <message>
-        <location filename="../ui/canvaschart.py" line="390"/>
+        <location filename="../ui/canvaschart.py" line="406"/>
         <source>SMA200</source>
         <translation>MMS200</translation>
     </message>
     <message>
-        <location filename="../ui/canvaschart.py" line="391"/>
+        <location filename="../ui/canvaschart.py" line="407"/>
         <source>SMA50</source>
         <translation>MMS50</translation>
     </message>
     <message>
-        <location filename="../ui/canvaschart.py" line="462"/>
+        <location filename="../ui/canvaschart.py" line="478"/>
         <source>Intraday</source>
         <translation>Intradía</translation>
     </message>
     <message>
-        <location filename="../ui/canvaschart.py" line="646"/>
+        <location filename="../ui/canvaschart.py" line="662"/>
         <source>Lines</source>
         <translation>Líneas</translation>
     </message>
     <message>
-        <location filename="../ui/canvaschart.py" line="656"/>
+        <location filename="../ui/canvaschart.py" line="672"/>
         <source>Candles</source>
         <translation>Velas</translation>
     </message>
     <message>
-        <location filename="../ui/canvaschart.py" line="667"/>
+        <location filename="../ui/canvaschart.py" line="683"/>
         <source>Indicators</source>
         <translation>Indicadores</translation>
     </message>
     <message>
-        <location filename="../ui/canvaschart.py" line="394"/>
+        <location filename="../ui/canvaschart.py" line="410"/>
         <source>Purchase point</source>
         <translation>Punto de compra</translation>
     </message>
     <message>
-        <location filename="../ui/canvaschart.py" line="395"/>
+        <location filename="../ui/canvaschart.py" line="411"/>
         <source>Sales point</source>
         <translation>Punto de venta</translation>
+    </message>
+</context>
+<context>
+    <name>canvasChartIntraday</name>
+    <message>
+        <location filename="../ui/canvaschart.py" line="269"/>
+        <source>{} quotes ({})</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/canvaschart.py" line="249"/>
+        <source>Intraday graph</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -3482,7 +3525,7 @@ p, li { white-space: pre-wrap; }
         <translation>Borrar dividendo por acción</translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.py" line="512"/>
+        <location filename="../ui/frmProductReport.py" line="513"/>
         <source>{0} quotes have been purged from {1}</source>
         <translation>{0} cotizaciones han sido purgadas de {1}</translation>
     </message>
@@ -3502,22 +3545,22 @@ p, li { white-space: pre-wrap; }
         <translation>Añadir un nuevo producto</translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.py" line="606"/>
+        <location filename="../ui/frmProductReport.py" line="607"/>
         <source>Agrupation selection</source>
         <translation>Selección de agrupaciones</translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.py" line="617"/>
+        <location filename="../ui/frmProductReport.py" line="618"/>
         <source>Priority selection</source>
         <translation>Selección de prioridades</translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.py" line="630"/>
+        <location filename="../ui/frmProductReport.py" line="631"/>
         <source>Historical data priority selection</source>
         <translation>Selección de prioridades de datos históricos</translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.py" line="343"/>
+        <location filename="../ui/frmProductReport.py" line="344"/>
         <source>Daily maximum variance: {} ({})</source>
         <translation>Variación máxima diaria: {} ({})</translation>
     </message>
@@ -3587,7 +3630,7 @@ p, li { white-space: pre-wrap; }
         <translation>La tabla ha sido calculado con el último precio del mes anterior y el último precio del mes correspondiente</translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.py" line="363"/>
+        <location filename="../ui/frmProductReport.py" line="364"/>
         <source>Year {}</source>
         <translation>Año {}</translation>
     </message>
@@ -3612,47 +3655,47 @@ p, li { white-space: pre-wrap; }
         <translation>Ganancias</translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.py" line="187"/>
+        <location filename="../ui/frmProductReport.py" line="188"/>
         <source>Report of historic prices. You have {} shares valued at {}.</source>
         <translation>Informe de precios históricos. Tiene {} acciones valoradas en {}.</translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.py" line="210"/>
+        <location filename="../ui/frmProductReport.py" line="211"/>
         <source>Product prices are updated automatically</source>
         <translation>Los precios de los productos son actualizados automáticamente</translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.py" line="212"/>
+        <location filename="../ui/frmProductReport.py" line="213"/>
         <source>Product prices are not updated automatically</source>
         <translation>Los precios de los productos no son actualizados automáticamente</translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.py" line="544"/>
+        <location filename="../ui/frmProductReport.py" line="545"/>
         <source>You have to add three quotes (last, penultimate and end last year quotes) and current year dividend per share estimation to the new product</source>
         <translation>Tienes que añadir tres cotizaciones (la última, la penúltima y la del fin del año pasado) y la estimación de dividendo por acción del año actual, al nuevo producto</translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.py" line="553"/>
+        <location filename="../ui/frmProductReport.py" line="554"/>
         <source>Please add the product last quote</source>
         <translation>Por favor, añada la última cotización del producto</translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.py" line="561"/>
+        <location filename="../ui/frmProductReport.py" line="562"/>
         <source>Please add the product penultimate quote</source>
         <translation>Por favor, añada la penúltima cotización del producto</translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.py" line="568"/>
+        <location filename="../ui/frmProductReport.py" line="569"/>
         <source>Please add the product endlastyear quote</source>
         <translation>Por favor, añada la última cotización del año pasado del producto</translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.py" line="574"/>
+        <location filename="../ui/frmProductReport.py" line="575"/>
         <source>Please add current year dividend per share estimation</source>
         <translation>Por favor añada la estimación de dividendo por acción del producto del año actual</translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.py" line="575"/>
+        <location filename="../ui/frmProductReport.py" line="576"/>
         <source>Product: {0} ({1})</source>
         <translation>Producto: {0} ({1})</translation>
     </message>
@@ -3702,7 +3745,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.py" line="166"/>
+        <location filename="../ui/frmProductReport.py" line="167"/>
         <source>Comparation data table</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3727,7 +3770,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.py" line="146"/>
+        <location filename="../ui/frmProductReport.py" line="148"/>
         <source>Comparation can&apos;t be made.</source>
         <translation type="unfinished"></translation>
     </message>

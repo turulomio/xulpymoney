@@ -119,7 +119,7 @@ class frmProductReport(QDialog, Ui_frmProductReport):
         self.pseCompare.label.setText(self.tr("Select a product to compare"))
         self.pseCompare.setSelected(self.mem.data.benchmark)
         self.pseCompare.selectionChanged.connect(self.load_comparation)
-        self.cmbCompareTypes.setCurrentIndex(3)
+        self.cmbCompareTypes.setCurrentIndex(0)
         self.cmbCompareTypes.currentIndexChanged.connect(self.on_my_cmbCompareTypes_currentIndexChanged)
         self.ntbCompare=None
         self.canvasCompare=None
@@ -140,6 +140,8 @@ class frmProductReport(QDialog, Ui_frmProductReport):
             return
         self.comparation=ProductComparation(self.mem, self.product, self.pseCompare.selected)
         if self.ntbCompare!=None:
+            self.canvasCompare.hide()
+            self.ntbCompare.hide()
             self.layCompareProduct.removeWidget(self.canvasCompare)
             self.layCompareProduct.removeWidget(self.ntbCompare)
         if self.comparation.canBeMade()==False:
@@ -157,7 +159,6 @@ class frmProductReport(QDialog, Ui_frmProductReport):
         print ("Comparation took {}".format(datetime.datetime.now()-inicio))
 
     def on_my_cmbCompareTypes_currentIndexChanged(self, int):
-        print("on_my")
         self.load_comparation()
         
     def on_cmdComparationData_released(self):
