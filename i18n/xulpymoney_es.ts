@@ -1270,72 +1270,39 @@ Do you want to activate it?</source>
     </message>
 </context>
 <context>
-    <name>canvasChart</name>
-    <message>
-        <location filename="../ui/canvaschart.py" line="196"/>
-        <source>5 minutes</source>
-        <translation>5 minutos</translation>
-    </message>
-    <message>
-        <location filename="../ui/canvaschart.py" line="200"/>
-        <source>10 minutes</source>
-        <translation>10 minutos</translation>
-    </message>
-    <message>
-        <location filename="../ui/canvaschart.py" line="204"/>
-        <source>30 minutes</source>
-        <translation>30 minutos</translation>
-    </message>
-    <message>
-        <location filename="../ui/canvaschart.py" line="208"/>
-        <source>1 hour</source>
-        <translation>1 hora</translation>
-    </message>
-    <message>
-        <location filename="../ui/canvaschart.py" line="152"/>
-        <source>Simple moving average 50</source>
-        <translation>Media móvil simple 50</translation>
-    </message>
-    <message>
-        <location filename="../ui/canvaschart.py" line="156"/>
-        <source>Simple moving average 200</source>
-        <translation>Media móvil simple 200</translation>
-    </message>
-</context>
-<context>
     <name>canvasChartCompare</name>
     <message>
-        <location filename="../ui/canvaschart.py" line="300"/>
+        <location filename="../ui/canvaschart.py" line="81"/>
         <source>{}. {}: {}, {}: {}.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/canvaschart.py" line="346"/>
+        <location filename="../ui/canvaschart.py" line="127"/>
         <source>{} quotes ({})</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/canvaschart.py" line="307"/>
+        <location filename="../ui/canvaschart.py" line="88"/>
         <source>Comparing products showing prices</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/canvaschart.py" line="330"/>
+        <location filename="../ui/canvaschart.py" line="111"/>
         <source>Comparing products with percentage evolution</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/canvaschart.py" line="337"/>
+        <location filename="../ui/canvaschart.py" line="118"/>
         <source>Comparing products with percentage evolution considering leverage multiplier</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/canvaschart.py" line="344"/>
+        <location filename="../ui/canvaschart.py" line="125"/>
         <source>Comparing products with a scattering</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/canvaschart.py" line="348"/>
+        <location filename="../ui/canvaschart.py" line="129"/>
         <source>Blue circles are older quotes and red ones are newer.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1343,85 +1310,100 @@ Do you want to activate it?</source>
 <context>
     <name>canvasChartHistorical</name>
     <message>
-        <location filename="../ui/canvaschart.py" line="408"/>
+        <location filename="../ui/canvaschart.py" line="357"/>
         <source>Selling price</source>
         <translation>Punto de venta</translation>
     </message>
     <message>
-        <location filename="../ui/canvaschart.py" line="409"/>
+        <location filename="../ui/canvaschart.py" line="358"/>
         <source>Average purchase price</source>
         <translation>Precio medio de compra</translation>
     </message>
     <message>
-        <location filename="../ui/canvaschart.py" line="511"/>
+        <location filename="../ui/canvaschart.py" line="200"/>
         <source>1 day</source>
         <translation>1 día</translation>
     </message>
     <message>
-        <location filename="../ui/canvaschart.py" line="515"/>
+        <location filename="../ui/canvaschart.py" line="204"/>
         <source>1 week</source>
         <translation>1 semana</translation>
     </message>
     <message>
-        <location filename="../ui/canvaschart.py" line="519"/>
+        <location filename="../ui/canvaschart.py" line="208"/>
         <source>1 month</source>
         <translation>1 mes</translation>
     </message>
     <message>
-        <location filename="../ui/canvaschart.py" line="523"/>
+        <location filename="../ui/canvaschart.py" line="212"/>
         <source>1 year</source>
         <translation>1 año</translation>
     </message>
     <message>
-        <location filename="../ui/canvaschart.py" line="406"/>
+        <location filename="../ui/canvaschart.py" line="355"/>
         <source>SMA200</source>
         <translation>MMS200</translation>
     </message>
     <message>
-        <location filename="../ui/canvaschart.py" line="407"/>
+        <location filename="../ui/canvaschart.py" line="356"/>
         <source>SMA50</source>
         <translation>MMS50</translation>
     </message>
     <message>
-        <location filename="../ui/canvaschart.py" line="478"/>
-        <source>Intraday</source>
-        <translation>Intradía</translation>
-    </message>
-    <message>
-        <location filename="../ui/canvaschart.py" line="662"/>
+        <location filename="../ui/canvaschart.py" line="520"/>
         <source>Lines</source>
         <translation>Líneas</translation>
     </message>
     <message>
-        <location filename="../ui/canvaschart.py" line="672"/>
+        <location filename="../ui/canvaschart.py" line="526"/>
         <source>Candles</source>
         <translation>Velas</translation>
     </message>
     <message>
-        <location filename="../ui/canvaschart.py" line="683"/>
-        <source>Indicators</source>
-        <translation>Indicadores</translation>
-    </message>
-    <message>
-        <location filename="../ui/canvaschart.py" line="410"/>
+        <location filename="../ui/canvaschart.py" line="359"/>
         <source>Purchase point</source>
         <translation>Punto de compra</translation>
     </message>
     <message>
-        <location filename="../ui/canvaschart.py" line="411"/>
+        <location filename="../ui/canvaschart.py" line="360"/>
         <source>Sales point</source>
         <translation>Punto de venta</translation>
+    </message>
+    <message>
+        <location filename="../ui/canvaschart.py" line="217"/>
+        <source>Simple moving average 50</source>
+        <translation type="unfinished">Media móvil simple 50</translation>
+    </message>
+    <message>
+        <location filename="../ui/canvaschart.py" line="221"/>
+        <source>Simple moving average 200</source>
+        <translation type="unfinished">Media móvil simple 200</translation>
+    </message>
+    <message>
+        <location filename="../ui/canvaschart.py" line="386"/>
+        <source>{} quotes ({})</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/canvaschart.py" line="293"/>
+        <source>{}: {}.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/canvaschart.py" line="387"/>
+        <source>Historical graph</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>canvasChartIntraday</name>
     <message>
-        <location filename="../ui/canvaschart.py" line="269"/>
+        <location filename="../ui/canvaschart.py" line="50"/>
         <source>{} quotes ({})</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/canvaschart.py" line="249"/>
+        <location filename="../ui/canvaschart.py" line="30"/>
         <source>Intraday graph</source>
         <translation type="unfinished"></translation>
     </message>
