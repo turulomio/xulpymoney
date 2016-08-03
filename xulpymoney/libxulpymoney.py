@@ -4500,6 +4500,7 @@ class ProductComparation:
     def __init__(self, mem, product1, product2):
         self.mem=mem
         
+        self.__fromDate=None#None all array.
         self.product1=product1
         self.product2=product2     
         self.set1=SetOHCLDaily(self.mem, self.product1)#Set with common data. Needed in order to not broke self.product1 data
@@ -4512,10 +4513,13 @@ class ProductComparation:
                 p.result.get_basic_and_ohcls()  
   
         self.__removeNotCommon()
-            
+        
+    def setFromDate(self, date):
+        """Only affect to functions returning data, not to constructor"""
+        self.__fromDate=date            
             
     def canBeMade(self):
-        """Returns a boolean if comparation can be made"""
+        """Returns a boolean if comparation can be made"""        
         if len(self.__commonDates)==0:
             return False
         return True
@@ -4549,58 +4553,69 @@ class ProductComparation:
             tabla.setItem(i, 1, self.product1.currency.qtablewidgetitem(a[1]))
             tabla.setItem(i, 2, self.product1.currency.qtablewidgetitem(a[2]))
         tabla.setSortingEnabled(True)
+        
+    def index(self, date):
+        """Returns date index in array"""
+        if date==None:
+            return 0
+        for i, d in enumerate(self.__commonDates):
+            if date<=d:
+                return i
+        return 0
 
     def dates(self):
         """Returns a list with common dates"""
-        return self.__commonDates
+        return self.__commonDates[self.index(self.__fromDate):len(self.__commonDates)]
         
     def product1Closes(self):
         r=[]
         for ohcl in self.set1.arr:
             r.append(ohcl.close)
-        return r        
+        return r[self.index(self.__fromDate):len(self.__commonDates)]
 
     def product2Closes(self):
         r=[]
         for ohcl in self.set2.arr:
             r.append(ohcl.close)
-        return r
+        return r[self.index(self.__fromDate):len(self.__commonDates)]
     
     def product1ClosesDividingFirst(self):
         """Divides set1 by a factor to get the same price in the first ohcl"""
-        factor=self.set1.first().close/self.set2.first().close
-        print("Factor", factor)
+        idx=self.index(self.__fromDate)
+        factor=self.set1.arr[idx].close/self.set2.arr[idx].close
         r=[]
         for ohcl in self.set1.arr:
             r.append(ohcl.close/factor)
-        return r    
+        return r[idx:len(self.__commonDates)]
 
     def product1ClosesDividingFirstLeveragedReduced(self):
         """Divides set1 by a factor to get the same price in the first ohcl
         It controls leverage too"""
-        factor=self.set1.first().close/self.set2.first().close*self.product1.leveraged.multiplier
-        print("Factor", factor)
+        idx=self.index(self.__fromDate)
+        factor=self.set1.arr[idx].close/self.set2.arr[idx].close*self.product1.leveraged.multiplier
         r=[]
         for ohcl in self.set1.arr:
             r.append(ohcl.close/factor)
-        return r
+        return r[idx:len(self.__commonDates)]
         
     def product1PercentageFromFirstProduct2Price(self):
         """Usa el primer valor de set 2 y la va sumando los porcentajes de set1. """
+        idx=self.index(self.__fromDate)
         r=[]
-        last=self.set2.first().close
+        last=self.set2.arr[idx].close
         r.append(last)
-        for index in range(1, self.set1.length()):
+        for index in range(idx+1, self.set1.length()):
             last=last*(1+ self.set1.percentage(index)/Decimal(100))
             r.append(last)
-        return r    
+        return r 
         
     def product1PercentageFromFirstProduct2PriceLeveragedReduced(self):
         """Usa el primer valor de set 2 y la va sumando los porcentajes de set1. Contrala leverages"""
+        idx=self.index(self.__fromDate)
         r=[]
-        last=self.set2.first().close
+        last=self.set2.arr[idx].close
         r.append(last)
-        for index in range(1, self.set1.length()):
+        for index in range(idx+1, self.set1.length()):
             last=last*(1+ self.set1.percentage(index)/Decimal(100)/self.product1.leveraged.multiplier)
             r.append(last)
         return r

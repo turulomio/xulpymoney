@@ -119,10 +119,14 @@ class frmProductReport(QDialog, Ui_frmProductReport):
         self.pseCompare.label.setText(self.tr("Select a product to compare"))
         self.pseCompare.setSelected(self.mem.data.benchmark)
         self.pseCompare.selectionChanged.connect(self.load_comparation)
+        self.cmbCompareTypes.setCurrentIndex(3)
+        self.cmbCompareTypes.currentIndexChanged.connect(self.on_my_cmbCompareTypes_currentIndexChanged)
         self.ntbCompare=None
         self.canvasCompare=None
         self.load_comparation()
 
+        self.deCompare.dateChanged.connect(self.load_comparation)
+        
         self.update_due_to_quotes_change()    
         self.showMaximized()        
         QApplication.restoreOverrideCursor()
@@ -131,21 +135,29 @@ class frmProductReport(QDialog, Ui_frmProductReport):
     def load_comparation(self):
         """Loads comparation canvas"""
         inicio=datetime.datetime.now()
+        if self.pseCompare.selected==None:
+            qmessagebox(self.tr("You must select a product to compare with."))
+            return
         self.comparation=ProductComparation(self.mem, self.product, self.pseCompare.selected)
         if self.ntbCompare!=None:
             self.layCompareProduct.removeWidget(self.canvasCompare)
             self.layCompareProduct.removeWidget(self.ntbCompare)
         if self.comparation.canBeMade()==False:
-            qmessagebox(self.tr("Comparation can't be made"))
+            qmessagebox(self.tr("Comparation can't be made."))
             return
+        
+        self.deCompare.setMinimumDate(self.comparation.dates()[0])
+        self.deCompare.setMaximumDate(self.comparation.dates()[len(self.comparation.dates())-1-1])#Es menos 2, ya que hay alguna funcion de comparation que lo necesita
+        self.comparation.setFromDate(self.deCompare.date())
+            
         self.canvasCompare=canvasChartCompare( self.mem, self.comparation, self.cmbCompareTypes.currentIndex(),  self)
         self.ntbCompare=NavigationToolbar2QT(self.canvasCompare, self)
         self.layCompareProduct.addWidget(self.canvasCompare)
         self.layCompareProduct.addWidget(self.ntbCompare)
         print ("Comparation took {}".format(datetime.datetime.now()-inicio))
 
-    @pyqtSlot(str)      
-    def on_cmbCompareTypes_currentIndexChanged(self, text):
+    def on_my_cmbCompareTypes_currentIndexChanged(self, int):
+        print("on_my")
         self.load_comparation()
         
     def on_cmdComparationData_released(self):
