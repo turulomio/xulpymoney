@@ -1,5 +1,6 @@
 <RCC>
   <qresource prefix="/xulpymoney">
+    <file>compare.png</file>
     <file>today.png</file>
     <file>alarm_clock.png</file>
     <file>expired.jpg</file>

@@ -819,6 +819,10 @@
             </layout>
            </widget>
            <widget class="QWidget" name="tab_4">
+            <attribute name="icon">
+             <iconset resource="../images/xulpymoney.qrc">
+              <normaloff>:/xulpymoney/compare.png</normaloff>:/xulpymoney/compare.png</iconset>
+            </attribute>
             <attribute name="title">
              <string>Compare</string>
             </attribute>
@@ -866,16 +870,7 @@
                    </item>
                    <item>
                     <property name="text">
-                     <string>Dividing prices to get the same start value</string>
-                    </property>
-                    <property name="icon">
-                     <iconset resource="../images/xulpymoney.qrc">
-                      <normaloff>:/xulpymoney/eye.png</normaloff>:/xulpymoney/eye.png</iconset>
-                    </property>
-                   </item>
-                   <item>
-                    <property name="text">
-                     <string>Dividing prices to get the same start value. Leveraged reduced</string>
+                     <string>Scattering product prices</string>
                     </property>
                     <property name="icon">
                      <iconset resource="../images/xulpymoney.qrc">
@@ -962,7 +957,7 @@
                    </property>
                    <property name="icon">
                     <iconset resource="../images/xulpymoney.qrc">
-                     <normaloff>:/xulpymoney/database.png</normaloff>:/xulpymoney/database.png</iconset>
+                     <normaloff>:/xulpymoney/compare.png</normaloff>:/xulpymoney/compare.png</iconset>
                    </property>
                   </widget>
                  </item>
@@ -1821,8 +1816,6 @@
   </customwidget>
  </customwidgets>
  <resources>
-  <include location="../images/xulpymoney.qrc"/>
-  <include location="../images/xulpymoney.qrc"/>
   <include location="../images/xulpymoney.qrc"/>
  </resources>
  <connections/>
