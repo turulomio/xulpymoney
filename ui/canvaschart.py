@@ -11,6 +11,22 @@ class ChartType:
     lines=0
     ohcl=1
     candles=2
+    
+    
+class wdgMatplotlib(QWidget):
+    def __init__(self):
+        pass
+
+class canvas(FigureCanvasQTAgg):
+    def __init__(self, parent):       
+        # setup Matplotlib Figure and Axis
+        self.fig = Figure()
+        FigureCanvasQTAgg.__init__(self, self.fig)
+        # we define the widget as expandable
+        FigureCanvasQTAgg.setSizePolicy(self,QSizePolicy.Expanding, QSizePolicy.Expanding)
+        # notify the system of updated policy
+        FigureCanvasQTAgg.updateGeometry(self)        
+
 
 class canvasChartIntraday(FigureCanvasQTAgg):
     def __init__(self, mem,  parent):
@@ -27,7 +43,7 @@ class canvasChartIntraday(FigureCanvasQTAgg):
         self.mem=mem
 
     def get_locators(self):
-        self.ax.set_title(self.tr("Intraday graph"))
+        self.ax.set_title(self.tr("Intraday graph"), fontsize=30, fontweight="bold", y=1.02)
         self.ax.xaxis.set_major_locator(HourLocator(interval=1 , tz=pytz.timezone(self.mem.localzone.name)))
         self.ax.xaxis.set_minor_locator(HourLocator(interval=1 , tz=pytz.timezone(self.mem.localzone.name)))
         self.ax.xaxis.set_major_formatter(DateFormatter('%H:%M'))    
@@ -85,7 +101,7 @@ class canvasChartCompare(FigureCanvasQTAgg):
         self.ax= self.fig.add_subplot(111)
         self.ax.grid()
         if type==0:#Not changed data
-            self.ax.set_title(self.tr("Comparing products showing prices"))
+            self.ax.set_title(self.tr("Comparing product quotes"), fontsize=30, fontweight="bold", y=1.02)
             self.ax.set_ylabel(self.tr("{} quotes ({})".format(self.comparation.product1.name, self.comparation.product1.currency.symbol)))
             self.ax2=self.ax.twinx()
             self.ax2.set_ylabel(self.tr("{} quotes ({})".format(self.comparation.product2.name, self.comparation.product2.currency.symbol)))
@@ -95,38 +111,26 @@ class canvasChartCompare(FigureCanvasQTAgg):
             self.ax2.format_coord = self.footer
             self.get_locators()
             self.ax.legend(loc="upper left")
-#        elif type==1:#Dividing value to get same at the first.
-#            self.plot1=self.ax.plot_date(self.comparation.dates(), self.comparation.product1ClosesDividingFirst(), '-',  color="blue", label=self.comparation.product1.name)
-#            self.plot2=self.ax.plot_date(self.comparation.dates(), self.comparation.product2Closes(), '-', color="green", label=self.comparation.product2.name)
-#            self.ax.format_coord = self.footer  
-#            self.get_locators()
-#            self.ax.legend(loc="upper left")
-        elif type==2:#Dividing value to get same at the first.
-            self.plot1=self.ax.plot_date(self.comparation.dates(), self.comparation.product1ClosesDividingFirstLeveragedReduced(), '-',  color="blue", label=self.comparation.product1.name)
-            self.plot2=self.ax.plot_date(self.comparation.dates(), self.comparation.product2Closes(), '-', color="green", label=self.comparation.product2.name)
-            self.ax.format_coord = self.footer  
-            self.get_locators()
-            self.ax.legend(loc="upper left")
-        elif type==3:#Controlling percentage evolution.
-            self.ax.set_title(self.tr("Comparing products with percentage evolution"))
+        elif type==1:#Scatter
+            self.ax.set_title(self.tr("Comparing products with a scattering"), fontsize=30, fontweight="bold", y=1.02)
+            self.ax.set_ylabel(self.tr("{} quotes ({})".format(self.comparation.product2.name, self.comparation.product2.currency.symbol)))
+            self.ax.set_xlabel(self.tr("{} quotes ({})".format(self.comparation.product1.name, self.comparation.product1.currency.symbol)))
+            self.plot1=self.ax.scatter(self.comparation.product1Closes(), self.comparation.product2Closes(), c=[date2num(date) for date in self.comparation.dates()])
+            self.ax.annotate(xy=(5, 5), xycoords="figure pixels",  s=self.tr("Blue circles are older quotes and red ones are newer."))
+        elif type==2:#Controlling percentage evolution.
+            self.ax.set_title(self.tr("Comparing products with percentage evolution"), fontsize=30, fontweight="bold", y=1.02)
             self.plot1=self.ax.plot_date(self.comparation.dates(), self.comparation.product1PercentageFromFirstProduct2Price(), '-',  color="blue", label=self.comparation.product1.name)
             self.plot2=self.ax.plot_date(self.comparation.dates(), self.comparation.product2Closes(), '-', color="green", label=self.comparation.product2.name)
             self.ax.format_coord = self.footer  
             self.get_locators()
             self.ax.legend(loc="upper left")
-        elif type==4:#Controlling percentage evolution.
-            self.ax.set_title(self.tr("Comparing products with percentage evolution considering leverage multiplier"))
+        elif type==3:#Controlling percentage evolution.
+            self.ax.set_title(self.tr("Comparing products with percentage evolution considering leverage multiplier"), fontsize=30, fontweight="bold", y=1.02)
             self.plot1=self.ax.plot_date(self.comparation.dates(), self.comparation.product1PercentageFromFirstProduct2PriceLeveragedReduced(), '-',  color="blue", label=self.comparation.product1.name)
             self.plot2=self.ax.plot_date(self.comparation.dates(), self.comparation.product2Closes(), '-', color="green", label=self.comparation.product2.name)
             self.ax.format_coord = self.footer  
             self.get_locators()
             self.ax.legend(loc="upper left")
-        elif type==1:#Scatter
-            self.ax.set_title(self.tr("Comparing products with a scattering"))
-            self.ax.set_ylabel(self.tr("{} quotes ({})".format(self.comparation.product2.name, self.comparation.product2.currency.symbol)))
-            self.ax.set_xlabel(self.tr("{} quotes ({})".format(self.comparation.product1.name, self.comparation.product1.currency.symbol)))
-            self.plot1=self.ax.scatter(self.comparation.product1Closes(), self.comparation.product2Closes(), c=[date2num(date) for date in self.comparation.dates()])
-            self.ax.annotate(xy=(5, 5), xycoords="figure pixels",  s=self.tr("Blue circles are older quotes and red ones are newer."))
         
         self.draw()
 
@@ -384,7 +388,7 @@ class canvasChartHistorical(FigureCanvasQTAgg):
             self.setdata=self.product.result.ohclDaily
             self.on_actionCandles1d_triggered()
         self.ax.set_ylabel(self.tr("{} quotes ({})".format(self.product.name, self.product.currency.symbol)))
-        self.ax.set_title(self.tr("Historical graph"))
+        self.ax.set_title(self.tr("Historical graph"), fontsize=30, fontweight="bold", y=1.02)
         self.draw()
 
 
