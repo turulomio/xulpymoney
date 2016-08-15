@@ -327,7 +327,7 @@ class frmMain(QMainWindow, Ui_frmMain):
             qmessagebox_connexion_error(source.con.db, source.con.server)
             return
         else:
-            if source.con.db.strip()==self.mem.con.db.strip() and source.con.server.strip()==self.mem.con.server.strip():            
+            if source.con.db.strip()==self.mem.con.db.strip() and source.con.server.strip()==self.mem.con.server.strip() and source.con.port==self.mem.con.port:
                 m=QMessageBox()
                 m.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
                 m.setIcon(QMessageBox.Information)
