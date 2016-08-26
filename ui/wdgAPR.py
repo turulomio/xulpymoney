@@ -90,7 +90,7 @@ class wdgAPR(QWidget, Ui_wdgAPR):
          
         
         firstyear=Assets(self.mem).first_datetime_with_user_data().year        
-        currentyear=int(self.mem.settings.value("wdgAPR/cmbYear", firstyear))
+        currentyear=int(self.mem.settingsdb.value("wdgAPR/cmbYear", firstyear))
         self.wdgYear.initiate(firstyear,  datetime.date.today().year, currentyear)#Push an wdgYear changed
         self.wdgYear.changed.connect(self.on_my_wdgYear_changed)
         self.on_my_wdgYear_changed()
@@ -98,7 +98,7 @@ class wdgAPR(QWidget, Ui_wdgAPR):
 
     def on_my_wdgYear_changed(self):
         print ("on_wdgYear_changed", self.wdgYear.year)
-        self.mem.settings.setValue("wdgAPR/cmbYear", self.wdgYear.year )
+        self.mem.settingsdb.setValue("wdgAPR/cmbYear", self.wdgYear.year )
         self.progress.reset()
         self.progress.setMinimum(0)
         self.progress.setMaximum((datetime.date.today().year-self.wdgYear.year+1)*2)

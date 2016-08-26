@@ -6381,6 +6381,8 @@ class SettingsDB:
             return 19
         elif name=="frmSellingPoint/lastgainpercentage":
             return 20
+        elif name=="wdgAPR/cmbYear":
+            return 21
         return None
 
 class MemXulpymoney:
