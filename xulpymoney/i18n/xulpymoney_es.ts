@@ -754,12 +754,12 @@
         <translation>Purgadas {0} cotizaciones de {1}</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="6857"/>
+        <location filename="../libxulpymoney.py" line="6859"/>
         <source>True</source>
         <translation>Verdadero</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="6860"/>
+        <location filename="../libxulpymoney.py" line="6862"/>
         <source>False</source>
         <translation>Falso</translation>
     </message>
@@ -1069,7 +1069,7 @@
         <translation>Cancelar</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="6828"/>
+        <location filename="../libxulpymoney.py" line="6830"/>
         <source>{} {}, {} {} and {} {}</source>
         <translation>{} {}, {} {} y {} {}</translation>
     </message>
@@ -1079,32 +1079,32 @@
         <translation>Pagado con {0}. {1}</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="6817"/>
+        <location filename="../libxulpymoney.py" line="6819"/>
         <source>year</source>
         <translation>año</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="6819"/>
+        <location filename="../libxulpymoney.py" line="6821"/>
         <source>years</source>
         <translation>años</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="6821"/>
+        <location filename="../libxulpymoney.py" line="6823"/>
         <source>month</source>
         <translation>mes</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="6823"/>
+        <location filename="../libxulpymoney.py" line="6825"/>
         <source>months</source>
         <translation>meses</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="6825"/>
+        <location filename="../libxulpymoney.py" line="6827"/>
         <source>day</source>
         <translation>día</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="6827"/>
+        <location filename="../libxulpymoney.py" line="6829"/>
         <source>days</source>
         <translation>días</translation>
     </message>
