@@ -202,7 +202,7 @@ class canvasChartHistorical(FigureCanvasQTAgg):
         
         self.actionCandles1d=QAction(self)
         self.actionCandles1d.setText(self.tr("1 day"))
-        self.actionCandles1d.setEnabled(False)
+        self.actionCandles1d.setEnabled(True)
         self.actionCandles1d.setObjectName("actionCandles1d")
         self.actionCandles7d=QAction(self)
         self.actionCandles7d.setText(self.tr("1 week"))
@@ -294,7 +294,10 @@ class canvasChartHistorical(FigureCanvasQTAgg):
     def footer(self, date, y): 
         dt=num2date(date)
         dat=dt.date()
-        return self.tr("{}: {}.".format(dat, self.product.currency.string(self.setdata.find(dat).close)))
+        try:
+            return self.tr("{}: {}.".format(dat, self.product.currency.string(self.setdata.find(dat).close)))
+        except:
+            return "Not found"
     @pyqtSlot()
     def on_actionSMA50_triggered(self):
         self.mem.settings.setValue("canvasHistorical/sma50",   self.actionSMA50.isChecked())
@@ -345,13 +348,13 @@ class canvasChartHistorical(FigureCanvasQTAgg):
 
         quotes=[]
         for d in self.setdata.arr:
-            quotes.append((d.date.toordinal(), d.open, d.close, d.high, d.low))
-
+            if d.datetime()>self.from_dt:
+                quotes.append((d.date.toordinal(), d.open, d.high, d.low, d.close))
 
         # format the coords message box
-        self.ax.format_coord = self.footer  
+#        self.ax.format_coord = self.footer  
         self.ax.grid(True)
-        candlestick(self.ax,quotes,   width=0.6)
+        candlestick2_ohlc(self.ax, self.setdata.opens(self.from_dt), self.setdata.highs(self.from_dt),  self.setdata.lows(self.from_dt), self.setdata.closes(self.from_dt),   width=0.7,  colorup='g')
         self.ax.xaxis_date()
     
     def makeLegend(self):

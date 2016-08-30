@@ -5778,18 +5778,59 @@ class SetOHCL:
     def append(self, o):
         self.arr.append(o)
 
-    def closes(self):
+    def closes(self, from_dt=None):
         """Returns a list with all the close of the array"""
         closes=[]
-        for ohcl in self.arr:
-            closes.append(ohcl.close)
+        if from_dt==None:
+            for ohcl in self.arr:
+                closes.append(ohcl.close)
+        else:
+            for ohcl in self.arr:
+                if ohcl.datetime()>=from_dt:
+                    closes.append(ohcl.close)
         return closes
+
+    def opens(self, from_dt=None):
+        """Returns a list with all the open of the array"""
+        opens=[]
+        if from_dt==None:
+            for ohcl in self.arr:
+                opens.append(ohcl.open)
+        else:
+            for ohcl in self.arr:
+                if ohcl.datetime()>=from_dt:
+                    opens.append(ohcl.open)
+        return opens
+
+    def highs(self, from_dt=None):
+        """Returns a list with all the high of the array"""
+        highs=[]
+        if from_dt==None:
+            for ohcl in self.arr:
+                highs.append(ohcl.high)
+        else:
+            for ohcl in self.arr:
+                if ohcl.datetime()>=from_dt:
+                    highs.append(ohcl.high)
+        return highs
+
+    def lows(self, from_dt=None):
+        """Returns a list with all the low of the array"""
+        lows=[]
+        if from_dt==None:
+            for ohcl in self.arr:
+                lows.append(ohcl.low)
+        else:
+            for ohcl in self.arr:
+                if ohcl.datetime()>=from_dt:
+                    lows.append(ohcl.low)
+        return lows
 
     def datetimes(self):
         """Returns a list with all the datetimes of the array"""
         datetimes=[]
         for ohcl in self.arr:
-            datetimes.append(ohcl.datetimes())
+            datetimes.append(ohcl.datetime())
         return datetimes
 
 class SetOHCLDaily(SetOHCL):
