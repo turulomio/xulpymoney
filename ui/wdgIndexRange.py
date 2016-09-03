@@ -115,15 +115,15 @@ class wdgIndexRange(QWidget, Ui_wdgIndexRange):
             maximo=self.cmbBenchmarkCurrent_price()*(1+2*Decimal(self.spin.value()/100))
         else:
             maximo=maxoper*(1+2*Decimal(self.spin.value()/100))##1.04 en caso de 2
-        minimo=int(self.txtMinimo.text())
+        minimo=self.txtMinimo.decimal()
         PuntRange=minimo
         while PuntRange<maximo:
             ranges.insert(0, PuntRange)
-            PuntRange=int(PuntRange*(1+(self.spin.value()/100)))
+            PuntRange=PuntRange*(1+Decimal(self.spin.value()/100))
     
         #Calculate zero risk assests and range number covered
         zeroriskplusbonds=Assets(self.mem).patrimonio_riesgo_cero(self.mem.data.investments_active(), datetime.date.today()) +Assets(self.mem).saldo_todas_inversiones_bonds(datetime.date.today())
-        rangescovered=int(zeroriskplusbonds/self.txtInvertir.decimal())##zero risk assests
+        rangescovered=int(zeroriskplusbonds/self.txtInvertir.decimal())
         
         #Iterates all ranges and prints table
         self.table.applySettings()
@@ -131,9 +131,9 @@ class wdgIndexRange(QWidget, Ui_wdgIndexRange):
         self.table.setRowCount(len(ranges))
         colorized=0
         for i, r in enumerate(ranges):###De mayor a menor
-            top=int(r*(1+(self.spin.value()/100)))
+            top=r*(1+Decimal(self.spin.value()/100))
             bottom=r
-            self.table.setItem(i, 0,qcenter("{}-{}".format(bottom, top)))
+            self.table.setItem(i, 0,qcenter("{}-{}".format(int(bottom), int(top))))
             self.table.setItem(i, 1,QTableWidgetItem(inversiones(arr, bottom, top)))
             if bottom<self.cmbBenchmarkCurrent_price():
                 if self.cmbBenchmarkCurrent_price()<=top: ##Colorize current price
