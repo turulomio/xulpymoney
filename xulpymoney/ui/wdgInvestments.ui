@@ -259,6 +259,18 @@
     <string>Delete investment</string>
    </property>
   </action>
+  <action name="actionProductPriceLastRemove">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/list-remove.png</normaloff>:/xulpymoney/list-remove.png</iconset>
+   </property>
+   <property name="text">
+    <string>Remove last product price</string>
+   </property>
+   <property name="toolTip">
+    <string>Remove last product price</string>
+   </property>
+  </action>
  </widget>
  <customwidgets>
   <customwidget>

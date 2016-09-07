@@ -5479,97 +5479,97 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>wdgInvestments</name>
     <message>
-        <location filename="../ui/Ui_wdgInvestments.py" line="125"/>
+        <location filename="../ui/Ui_wdgInvestments.py" line="128"/>
         <source>Investments list</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgInvestments.py" line="126"/>
+        <location filename="../ui/Ui_wdgInvestments.py" line="129"/>
         <source>Show inactive investments</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgInvestments.py" line="128"/>
+        <location filename="../ui/Ui_wdgInvestments.py" line="131"/>
         <source>Investment</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgInvestments.py" line="130"/>
+        <location filename="../ui/Ui_wdgInvestments.py" line="133"/>
         <source>Last datetime</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgInvestments.py" line="132"/>
+        <location filename="../ui/Ui_wdgInvestments.py" line="135"/>
         <source>Last value</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgInvestments.py" line="134"/>
+        <location filename="../ui/Ui_wdgInvestments.py" line="137"/>
         <source>Daily difference</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgInvestments.py" line="136"/>
+        <location filename="../ui/Ui_wdgInvestments.py" line="139"/>
         <source>% Intraday</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgInvestments.py" line="138"/>
+        <location filename="../ui/Ui_wdgInvestments.py" line="141"/>
         <source>Balance</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgInvestments.py" line="140"/>
+        <location filename="../ui/Ui_wdgInvestments.py" line="143"/>
         <source>Pending</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgInvestments.py" line="152"/>
+        <location filename="../ui/Ui_wdgInvestments.py" line="155"/>
         <source>% Selling point</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgInvestments.py" line="146"/>
+        <location filename="../ui/Ui_wdgInvestments.py" line="149"/>
         <source>New investment</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgInvestments.py" line="148"/>
+        <location filename="../ui/Ui_wdgInvestments.py" line="151"/>
         <source>Investment report</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgInvestments.py" line="150"/>
+        <location filename="../ui/Ui_wdgInvestments.py" line="153"/>
         <source>% Daily</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgInvestments.py" line="156"/>
+        <location filename="../ui/Ui_wdgInvestments.py" line="159"/>
         <source>Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgInvestments.py" line="158"/>
+        <location filename="../ui/Ui_wdgInvestments.py" line="161"/>
         <source>Time</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgInvestments.py" line="160"/>
+        <location filename="../ui/Ui_wdgInvestments.py" line="163"/>
         <source>Is it active?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgInvestments.py" line="162"/>
+        <location filename="../ui/Ui_wdgInvestments.py" line="165"/>
         <source>Product report</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgInvestments.py" line="164"/>
+        <location filename="../ui/Ui_wdgInvestments.py" line="167"/>
         <source>Add product price</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgInvestments.py" line="166"/>
+        <location filename="../ui/Ui_wdgInvestments.py" line="169"/>
         <source>Delete investment</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5579,32 +5579,32 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgInvestments.py" line="168"/>
+        <location filename="../ui/wdgInvestments.py" line="178"/>
         <source>Order by</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgInvestments.py" line="188"/>
+        <location filename="../ui/wdgInvestments.py" line="198"/>
         <source>Shares number: {0}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgInvestments.py" line="188"/>
+        <location filename="../ui/wdgInvestments.py" line="198"/>
         <source>Purchase price average: {0}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgInvestments.py" line="188"/>
+        <location filename="../ui/wdgInvestments.py" line="198"/>
         <source>Selling point: {}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgInvestments.py" line="188"/>
+        <location filename="../ui/wdgInvestments.py" line="198"/>
         <source>Selling all shares you get {}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/Ui_wdgInvestments.py" line="154"/>
+        <location filename="../ui/Ui_wdgInvestments.py" line="157"/>
         <source>% Invested</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5615,13 +5615,18 @@ Daily Diff: {5}. Investment average age: {6}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgInvestments.py" line="153"/>
+        <location filename="../ui/wdgInvestments.py" line="162"/>
         <source>Deactivate investment</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgInvestments.py" line="155"/>
+        <location filename="../ui/wdgInvestments.py" line="164"/>
         <source>Activate investment</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/Ui_wdgInvestments.py" line="171"/>
+        <source>Remove last product price</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

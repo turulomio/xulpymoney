@@ -85,6 +85,13 @@ class wdgInvestments(QWidget, Ui_wdgInvestments):
         w.exec_()
         self.selInvestment.product.result.basic.load_from_db()
         self.on_chkInactivas_stateChanged(self.chkInactivas.checkState())#Carga la tabla
+        
+    @QtCore.pyqtSlot() 
+    def on_actionProductPriceLastRemove_triggered(self):
+        self.selInvestment.product.result.basic.last.delete()
+        self.mem.con.commit()
+        self.selInvestment.product.result.basic.load_from_db()
+        self.on_chkInactivas_stateChanged(self.chkInactivas.checkState())#Carga la tabla
 
     @QtCore.pyqtSlot() 
     def on_actionSortTPCDiario_triggered(self):
@@ -139,6 +146,7 @@ class wdgInvestments(QWidget, Ui_wdgInvestments):
             self.actionActive.setEnabled(False)
             self.actionProduct.setEnabled(False)
             self.actionProductPrice.setEnabled(False)
+            self.actionProductPriceLastRemove.setEnabled(False)
         else:
             self.actionInvestmentReport.setEnabled(True)
             self.actionActive.setEnabled(True)       
@@ -148,6 +156,7 @@ class wdgInvestments(QWidget, Ui_wdgInvestments):
                 self.actionInvestmentDelete.setEnabled(True)
             else:
                 self.actionInvestmentDelete.setEnabled(False)
+            self.actionProductPriceLastRemove.setEnabled(True)
                 
             if self.selInvestment.active==True:
                 self.actionActive.setText(self.tr('Deactivate investment'))
@@ -162,6 +171,7 @@ class wdgInvestments(QWidget, Ui_wdgInvestments):
         menu.addAction(self.actionProduct)
         menu.addSeparator()
         menu.addAction(self.actionProductPrice)
+        menu.addAction(self.actionProductPriceLastRemove)
         menu.addSeparator()
         menu.addAction(self.actionActive)
         menu.addSeparator()        
