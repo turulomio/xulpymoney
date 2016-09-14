@@ -156,6 +156,23 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
     @pyqtSlot()
     def on_wdgYM_changed(self):
         self.accountoperations_reload()
+        
+    def on_OperationChanged(self, type_initial, id_initial, type_final, id_final):
+        """0 Account 1 CreditCard"""
+        if type_initial==0 and type_final==0:
+            self.accountoperations_reload()
+        elif type_initial==0 and type_final==1:
+            self.accountoperations_reload()
+            self.creditcards_reload()
+        elif type_initial==1 and type_final==0:
+            self.accountoperations_reload()
+            self.creditcardoperations_reload()
+        elif type_initial==1 and type_final==1:
+            if id_initial==id_final:
+                self.creditcardoperations_reload()
+            else:
+                self.creditcards_reload()
+        
             
     def accountoperations_reload(self):    
         lastMonthBalance=self.account.balance(datetime.date(self.wdgYM.year, self.wdgYM.month, 1)-datetime.timedelta(days=1))     
@@ -168,8 +185,8 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
 
     @QtCore.pyqtSlot() 
     def on_actionOperationAdd_triggered(self):
-        w=frmAccountOperationsAdd(self.mem, self.mem.data.accounts_active,  self.account, None, None)
-        w.OperAccountIBMed.connect(self.accountoperations_reload)
+        w=frmAccountOperationsAdd(self.mem, self.account)
+        w.OperationChanged.connect(self.on_OperationChanged)
         w.exec_()
         self.accountoperations_reload()
 
@@ -202,8 +219,8 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
         
     @QtCore.pyqtSlot() 
     def on_actionOperationEdit_triggered(self):
-        w=frmAccountOperationsAdd(self.mem, self.mem.data.accounts_active,  self.account, self.accountoperations.selected, None)
-        w.OperAccountIBMed.connect(self.accountoperations_reload)
+        w=frmAccountOperationsAdd(self.mem, self.account, self.accountoperations.selected)
+        w.OperationChanged.connect(self.on_OperationChanged)
         w.exec_()
 
     @QtCore.pyqtSlot() 
@@ -214,23 +231,16 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
 
     @QtCore.pyqtSlot() 
     def on_actionCreditCardOperAdd_triggered(self):
-        if self.creditcards.selected.pagodiferido==False:
-            w=frmAccountOperationsAdd(self.mem, self.mem.data.accounts_active, self.account, None)
-            w.OperAccountIBMed.connect(self.accountoperations_reload)
-            w.lblTitulo.setText(self.creditcards.selected.name)
-            w.txtComentario.setText(self.tr("CreditCard {0}. ").format(self.creditcards.selected.name))
-            w.exec_()
-        else:            
-            w=frmAccountOperationsAdd(self.mem, self.mem.data.accounts_active,  self.account, None, self.creditcards.selected)
-            w.OperCreditCardIBMed.connect(self.creditcardoperations_reload)
-            w.exec_()
+        w=frmAccountOperationsAdd(self.mem, self.account, None, self.creditcards.selected)
+        w.OperationChanged.connect(self.on_OperationChanged)
+        w.exec_()
             
     @QtCore.pyqtSlot() 
     def on_actionCreditCardOperEdit_triggered(self):
         #Como es unico
         selOperCreditCard=self.creditcardoperations.selected.arr[0]
-        w=frmAccountOperationsAdd(self.mem, self.mem.data.accounts_active,  self.account, None, self.creditcards.selected, selOperCreditCard)
-        w.OperCreditCardIBMed.connect(self.creditcardoperations_reload)
+        w=frmAccountOperationsAdd(self.mem,  self.account, None, self.creditcards.selected, selOperCreditCard)
+        w.OperationChanged.connect(self.on_OperationChanged)
         w.exec_()
 
     @QtCore.pyqtSlot() 
@@ -244,7 +254,7 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
     @QtCore.pyqtSlot() 
     def on_actionCreditCardOperRefund_triggered(self):
         w=frmAccountOperationsAdd(self.mem, opertarjeta=self.creditcardoperations.selected.arr[0], refund=True)
-        w.OperCreditCardIBMed.connect(self.creditcardoperations_reload)
+        w.OperationChanged.connect(self.on_OperationChanged)
         w.exec_()
             
     @QtCore.pyqtSlot() 

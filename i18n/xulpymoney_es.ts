@@ -1571,74 +1571,79 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>frmAccountOperationsAdd</name>
     <message>
-        <location filename="../ui/Ui_frmAccountOperationsAdd.py" line="96"/>
+        <location filename="../ui/Ui_frmAccountOperationsAdd.py" line="113"/>
         <source>New account operation</source>
         <translation>Nueva operación de cuenta</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_frmAccountOperationsAdd.py" line="97"/>
-        <source>Select an account</source>
-        <translation>Selecciona una cuenta</translation>
-    </message>
-    <message>
-        <location filename="../ui/Ui_frmAccountOperationsAdd.py" line="98"/>
+        <location filename="../ui/Ui_frmAccountOperationsAdd.py" line="116"/>
         <source>Select a concept</source>
         <translation>Selecciona un concepto</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_frmAccountOperationsAdd.py" line="99"/>
+        <location filename="../ui/Ui_frmAccountOperationsAdd.py" line="117"/>
         <source>Add an amount</source>
         <translation>Añade el importe</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_frmAccountOperationsAdd.py" line="100"/>
+        <location filename="../ui/Ui_frmAccountOperationsAdd.py" line="118"/>
         <source>Add a comment</source>
         <translation>Introduzca un comentario</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_frmAccountOperationsAdd.py" line="101"/>
+        <location filename="../ui/Ui_frmAccountOperationsAdd.py" line="119"/>
         <source>Save</source>
         <translation>Grabar</translation>
     </message>
     <message>
-        <location filename="../ui/frmAccountOperationsAdd.py" line="43"/>
+        <location filename="../ui/frmAccountOperationsAdd.py" line="52"/>
         <source>Credit card operation update</source>
         <translation>Actualizar la operación de tarjeta de crédito</translation>
     </message>
     <message>
-        <location filename="../ui/frmAccountOperationsAdd.py" line="53"/>
+        <location filename="../ui/frmAccountOperationsAdd.py" line="65"/>
         <source>New credit card operation</source>
         <translation>Nueva operación de tarjeta de crédito</translation>
     </message>
     <message>
-        <location filename="../ui/frmAccountOperationsAdd.py" line="60"/>
+        <location filename="../ui/frmAccountOperationsAdd.py" line="71"/>
         <source>Account operation update</source>
         <translation>Actualizar la operación de cuenta</translation>
     </message>
     <message>
-        <location filename="../ui/frmAccountOperationsAdd.py" line="92"/>
+        <location filename="../ui/frmAccountOperationsAdd.py" line="121"/>
         <source>Expenses can not have a positive amount</source>
         <translation>Los gastos no pueden ser una cantidad positiva</translation>
     </message>
     <message>
-        <location filename="../ui/frmAccountOperationsAdd.py" line="100"/>
+        <location filename="../ui/frmAccountOperationsAdd.py" line="129"/>
         <source>Incomes can not have a negative amount</source>
         <translation>Los ingresos no pueden ser una cantidad negativa</translation>
     </message>
     <message>
-        <location filename="../ui/frmAccountOperationsAdd.py" line="84"/>
+        <location filename="../ui/frmAccountOperationsAdd.py" line="113"/>
         <source>You must set the operation amount</source>
         <translation>Debe establecer un importe para la operación</translation>
     </message>
     <message>
-        <location filename="../ui/frmAccountOperationsAdd.py" line="34"/>
+        <location filename="../ui/frmAccountOperationsAdd.py" line="42"/>
         <source>Credit card operation refund</source>
         <translation>Devolución de una operación de tarjeta de crédito</translation>
     </message>
     <message>
-        <location filename="../ui/frmAccountOperationsAdd.py" line="52"/>
-        <source>Credit card: {}</source>
-        <translation>Tarjeta de crédito: {}</translation>
+        <location filename="../ui/Ui_frmAccountOperationsAdd.py" line="114"/>
+        <source>Se&amp;lect an account</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/Ui_frmAccountOperationsAdd.py" line="115"/>
+        <source>Selec&amp;t a credit card</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/frmAccountOperationsAdd.py" line="182"/>
+        <source>CreditCard {0}. {1}</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1794,14 +1799,9 @@ p, li { white-space: pre-wrap; }
         <translation>Borrar transferencia</translation>
     </message>
     <message>
-        <location filename="../ui/frmAccountsReport.py" line="191"/>
+        <location filename="../ui/frmAccountsReport.py" line="208"/>
         <source>Do you really want to delete transfer from {0} to {1}, with amount {2} and it&apos;s commision?</source>
         <translation>¿De verdad quiere borrar la transferencia de {0} a {1}, de importe {2} y su comisión?</translation>
-    </message>
-    <message>
-        <location filename="../ui/frmAccountsReport.py" line="221"/>
-        <source>CreditCard {0}. </source>
-        <translation>Tarjeta de crédito {0}. </translation>
     </message>
     <message>
         <location filename="../ui/Ui_frmAccountsReport.py" line="398"/>
@@ -1874,7 +1874,7 @@ p, li { white-space: pre-wrap; }
         <translation>No puedo borrar la tarjeta de crédito, porque tiene registros dependientes</translation>
     </message>
     <message>
-        <location filename="../ui/frmAccountsReport.py" line="449"/>
+        <location filename="../ui/frmAccountsReport.py" line="459"/>
         <source>{0} was made a paid of {1}</source>
         <translation>{0} se hizo un pago de {1}</translation>
     </message>
