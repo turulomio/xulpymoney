@@ -8,7 +8,7 @@ class frmAccountOperationsAdd(QDialog, Ui_frmAccountOperationsAdd):
     def __init__(self, mem, account=None, opercuenta=None, tarjeta=None ,  opertarjeta=None,  refund=False,  parent=None, ):
         """TIPOS DE ENTRADAS:        
          1   selAccount=x: Inserción de Opercuentas y edición de cuentas
-         2   selAccount=x, opercuenta=x Modificación de opercuentas e insecioon de opertarjetas a d´ebito
+         2   selAccount=x, opercuenta=x Modificación de opercuentas e insecioon de opertarjetas a débito
          3   selAccount=x, opercuenta=None , tarjeta=x, Inserción de opertarjetas en diferido
          4   selAccount=x, opercuenta=None , tarjeta=x, opertarjeta=x Modificación de opertarjetas
          5   selAccount=None, opercuenta=None, tarjeta=None, opertarjeta=x, refund=True Refund of opertarjetas. 
@@ -17,9 +17,9 @@ class frmAccountOperationsAdd(QDialog, Ui_frmAccountOperationsAdd):
          Original puede ser un 
             operaccount, para poder editarla
             opercreditcard, para poder editarlo y refund (aunque existe el booleano self.refund para diferenciarlo)
-            None, para productos nuevos
+            -999, para productos nuevos, ya que no puedo sacar null por la señal.
             
-        Luego usar´e el objeto original para la modificaci´on ya que despu´es se sale de este dialogo y si es uno nuevo dejar´e origianl a None y usarre uno nuevo que llamar´e final
+        Luego usaré el objeto original para la modificaci´on ya que después se sale de este dialogo y si es uno nuevo dejaré origianl a None y usarre uno nuevo que llamaré final
          """
         QWidget.__init__(self, parent)
         self.setupUi(self)
@@ -84,9 +84,9 @@ class frmAccountOperationsAdd(QDialog, Ui_frmAccountOperationsAdd):
 
 
     def type_and_id(self, product):
-        """0 if account,  1 if credit card"""
+        """0 if account,  1 if credit card. Como no puedo pasar Null por la señal, saco con -999"""
         if product==None:
-            return [None, None]
+            return [-999, -999]
         if product.__class__==AccountOperation:
             return (0, product.account.id)
         if product.__class__==CreditCardOperation:
@@ -173,7 +173,7 @@ class frmAccountOperationsAdd(QDialog, Ui_frmAccountOperationsAdd):
                 return
 
         elif self.radCreditCards.isChecked():#Producto final es un opercreditcard
-            if tarjeta.pagodiferido==False:#Pago d´ebito
+            if tarjeta.pagodiferido==False:#Pago débito
                 final=AccountOperation(self.mem)
                 final.datetime=self.wdgDT.datetime()
                 final.concepto=concepto
@@ -191,7 +191,7 @@ class frmAccountOperationsAdd(QDialog, Ui_frmAccountOperationsAdd):
             elif self.original==None:#CreditCardOperation nueva
                 final=CreditCardOperation(self.mem).init__create(self.wdgDT.datetime(), concepto, concepto.tipooperacion, importe, comentario, tarjeta, False, None, None )
                 final.save()
-                self.mem.con.commit()        
+                self.mem.con.commit()
                 self.emit_OperationChanged(self.type_and_id(self.original), self.type_and_id(final))
                 self.wdgDT.set(self.mem, self.wdgDT.datetime()+datetime.timedelta(seconds=1), self.wdgDT.zone)
                 return

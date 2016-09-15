@@ -2479,7 +2479,7 @@ class AccountOperation:
             El comentario en transferencias: other_account|other_operaccount|comission_operaccount|commision
                 - other_account: id_accounts of the other account
                 - other_operaccount: id_opercuentas in order to remove them.
-                - comission_operaccount: comission. Si es 0 es que no hay comision porque tambi´en es 0
+                - comission_operaccount: comission. Si es 0 es que no hay comision porque también es 0
         Transferencias 5 destino:
             El comentario en transferencias destino no tiene comission: other_account|other_operaccount
                 - other_account: id_accounts of the other account
@@ -3173,7 +3173,7 @@ class Account:
             cur.execute("delete from cuentas where id_cuentas=%s", (self.id, ))
 
     def transferencia(self, datetime, cuentaorigen, cuentadestino, importe, comision):
-        """Si el oc_comision_id es 0 es que no hay comision porque tambi´en es 0"""
+        """Si el oc_comision_id es 0 es que no hay comision porque también es 0"""
         #Ojo los comentarios est´an dependientes.
         if comision>0:
             commentcomission="Transfer|{0}|{1}".format(importe, cuentaorigen.id)

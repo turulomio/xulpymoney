@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>511</width>
+    <width>508</width>
     <height>78</height>
    </rect>
   </property>
@@ -31,7 +31,7 @@
         <string/>
        </property>
        <property name="pixmap">
-        <pixmap resource="../images/xulpymoney.qrc">:/xulpymoney/database.png</pixmap>
+        <pixmap resource="../images/xulpymoney.qrc">:/xulpymoney/curiosity.png</pixmap>
        </property>
        <property name="scaledContents">
         <bool>true</bool>
