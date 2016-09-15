@@ -46,26 +46,28 @@
      <x>0</x>
      <y>0</y>
      <width>1186</width>
-     <height>21</height>
+     <height>30</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuAyuda">
     <property name="title">
-     <string>Help</string>
+     <string>He&amp;lp</string>
     </property>
     <addaction name="actionAbout"/>
+    <addaction name="separator"/>
+    <addaction name="actionCuriosities"/>
     <addaction name="separator"/>
     <addaction name="actionHelp"/>
    </widget>
    <widget class="QMenu" name="menuBancos">
     <property name="title">
-     <string>Banks</string>
+     <string>&amp;Banks</string>
     </property>
     <addaction name="actionBanks"/>
    </widget>
    <widget class="QMenu" name="menuInformes">
     <property name="title">
-     <string>Reports</string>
+     <string>&amp;Reports</string>
     </property>
     <addaction name="actionConcepts"/>
     <addaction name="actionDividendsReport"/>
@@ -77,7 +79,7 @@
    </widget>
    <widget class="QMenu" name="menuCuentas">
     <property name="title">
-     <string>Accounts</string>
+     <string>A&amp;ccounts</string>
     </property>
     <addaction name="actionAccounts"/>
     <addaction name="separator"/>
@@ -85,7 +87,7 @@
    </widget>
    <widget class="QMenu" name="menuInversiones">
     <property name="title">
-     <string>Investments</string>
+     <string>&amp;Investments</string>
     </property>
     <addaction name="actionInvestments"/>
     <addaction name="separator"/>
@@ -100,7 +102,7 @@
    </widget>
    <widget class="QMenu" name="menuXulpymoney">
     <property name="title">
-     <string>Xulpymoney</string>
+     <string>&amp;Xulpymoney</string>
     </property>
     <addaction name="actionMemory"/>
     <addaction name="separator"/>
@@ -114,11 +116,11 @@
    </widget>
    <widget class="QMenu" name="menuProducts">
     <property name="title">
-     <string>Products</string>
+     <string>Prod&amp;ucts</string>
     </property>
     <widget class="QMenu" name="menuIndexes">
      <property name="title">
-      <string>Indexes</string>
+      <string>&amp;Indexes</string>
      </property>
      <addaction name="actionEurostoxx50"/>
      <addaction name="actionIbex35"/>
@@ -135,14 +137,14 @@
     </widget>
     <widget class="QMenu" name="menuMaintenance">
      <property name="title">
-      <string>Maintenance</string>
+      <string>&amp;Maintenance</string>
      </property>
      <addaction name="separator"/>
      <addaction name="actionPurgeAll"/>
     </widget>
     <widget class="QMenu" name="menuReports">
      <property name="title">
-      <string>Reports</string>
+      <string>&amp;Reports</string>
      </property>
      <addaction name="actionDividends"/>
      <addaction name="separator"/>
@@ -160,7 +162,7 @@
     </widget>
     <widget class="QMenu" name="menuShares">
      <property name="title">
-      <string>Shares</string>
+      <string>&amp;Shares</string>
      </property>
      <addaction name="actionSharesAll"/>
      <addaction name="separator"/>
@@ -168,13 +170,13 @@
     </widget>
     <widget class="QMenu" name="menuCurrencies">
      <property name="title">
-      <string>Currencies</string>
+      <string>&amp;Currencies</string>
      </property>
      <addaction name="actionCurrenciesAll"/>
     </widget>
     <widget class="QMenu" name="menuBonds">
      <property name="title">
-      <string>Bonds</string>
+      <string>&amp;Bonds</string>
      </property>
      <addaction name="actionBondsPrivate"/>
      <addaction name="actionBondsPublic"/>
@@ -184,7 +186,7 @@
     </widget>
     <widget class="QMenu" name="menuFunds">
      <property name="title">
-      <string>Funds</string>
+      <string>&amp;Funds</string>
      </property>
      <addaction name="actionFundsAll"/>
      <addaction name="separator"/>
@@ -192,7 +194,7 @@
     </widget>
     <widget class="QMenu" name="menuETF">
      <property name="title">
-      <string>ETF</string>
+      <string>&amp;ETF</string>
      </property>
      <addaction name="actionETFAll"/>
      <addaction name="separator"/>
@@ -200,7 +202,7 @@
     </widget>
     <widget class="QMenu" name="menuWarrants">
      <property name="title">
-      <string>Warrants</string>
+      <string>&amp;Warrants</string>
      </property>
      <addaction name="actionWarrantsInline"/>
      <addaction name="actionWarrantsPut"/>
@@ -314,7 +316,7 @@
      <normaloff>:/xulpymoney/report.png</normaloff>:/xulpymoney/report.png</iconset>
    </property>
    <property name="text">
-    <string>Index range</string>
+    <string>&amp;Index range</string>
    </property>
    <property name="toolTip">
     <string>Index range</string>
@@ -326,7 +328,7 @@
      <normaloff>:/xulpymoney/bundle.png</normaloff>:/xulpymoney/bundle.png</iconset>
    </property>
    <property name="text">
-    <string>Investments</string>
+    <string>&amp;Investments</string>
    </property>
    <property name="toolTip">
     <string>Investments</string>
@@ -338,7 +340,7 @@
      <normaloff>:/xulpymoney/table.png</normaloff>:/xulpymoney/table.png</iconset>
    </property>
    <property name="text">
-    <string>Auxiliar tables</string>
+    <string>&amp;Auxiliar tables</string>
    </property>
    <property name="toolTip">
     <string>Auxiliar tables</string>
@@ -350,7 +352,7 @@
      <normaloff>:/xulpymoney/star.png</normaloff>:/xulpymoney/star.png</iconset>
    </property>
    <property name="text">
-    <string>Dividends report</string>
+    <string>&amp;Dividends report</string>
    </property>
   </action>
   <action name="actionEvolutionReport">
@@ -359,7 +361,7 @@
      <normaloff>:/xulpymoney/dinero.png</normaloff>:/xulpymoney/dinero.png</iconset>
    </property>
    <property name="text">
-    <string>Evolution report</string>
+    <string>&amp;Evolution report</string>
    </property>
    <property name="toolTip">
     <string>Evolution report</string>
@@ -371,7 +373,7 @@
      <normaloff>:/xulpymoney/report2.png</normaloff>:/xulpymoney/report2.png</iconset>
    </property>
    <property name="text">
-    <string>Total report</string>
+    <string>&amp;Total report</string>
    </property>
    <property name="toolTip">
     <string>Total report</string>
@@ -386,7 +388,7 @@
      <normaloff>:/xulpymoney/coins.png</normaloff>:/xulpymoney/coins.png</iconset>
    </property>
    <property name="text">
-    <string>Accounts</string>
+    <string>&amp;Accounts</string>
    </property>
    <property name="toolTip">
     <string>Accounts</string>
@@ -398,7 +400,7 @@
      <normaloff>:/xulpymoney/bank.png</normaloff>:/xulpymoney/bank.png</iconset>
    </property>
    <property name="text">
-    <string>Banks</string>
+    <string>&amp;Banks</string>
    </property>
    <property name="toolTip">
     <string>Banks</string>
@@ -410,7 +412,7 @@
      <normaloff>:/xulpymoney/pie.png</normaloff>:/xulpymoney/pie.png</iconset>
    </property>
    <property name="text">
-    <string>Investment types report</string>
+    <string>Investment types &amp;report</string>
    </property>
   </action>
   <action name="actionTransfer">
@@ -419,7 +421,7 @@
      <normaloff>:/xulpymoney/transfer.png</normaloff>:/xulpymoney/transfer.png</iconset>
    </property>
    <property name="text">
-    <string>Transfer</string>
+    <string>&amp;Transfer</string>
    </property>
    <property name="toolTip">
     <string>Transfer</string>
@@ -431,7 +433,7 @@
      <normaloff>:/xulpymoney/hucha.png</normaloff>:/xulpymoney/hucha.png</iconset>
    </property>
    <property name="text">
-    <string>Concepts</string>
+    <string>&amp;Concepts</string>
    </property>
    <property name="toolTip">
     <string>Concepts</string>
@@ -443,7 +445,7 @@
      <normaloff>:/xulpymoney/transfer.png</normaloff>:/xulpymoney/transfer.png</iconset>
    </property>
    <property name="text">
-    <string>Update memory</string>
+    <string>&amp;Update memory</string>
    </property>
    <property name="toolTip">
     <string>Update memory</string>
@@ -455,7 +457,7 @@
      <normaloff>:/xulpymoney/configure.png</normaloff>:/xulpymoney/configure.png</iconset>
    </property>
    <property name="text">
-    <string>Settings</string>
+    <string>&amp;Settings</string>
    </property>
    <property name="toolTip">
     <string>Settings</string>
@@ -467,7 +469,7 @@
      <normaloff>:/xulpymoney/books.png</normaloff>:/xulpymoney/books.png</iconset>
    </property>
    <property name="text">
-    <string>Help</string>
+    <string>&amp;Help</string>
    </property>
    <property name="toolTip">
     <string>Help</string>
@@ -482,7 +484,7 @@
      <normaloff>:/xulpymoney/document-edit.png</normaloff>:/xulpymoney/document-edit.png</iconset>
    </property>
    <property name="text">
-    <string>Investment operations list</string>
+    <string>I&amp;nvestment operations list</string>
    </property>
    <property name="toolTip">
     <string>Investment operations list</string>
@@ -494,7 +496,7 @@
      <normaloff>:/xulpymoney/kcalc.png</normaloff>:/xulpymoney/kcalc.png</iconset>
    </property>
    <property name="text">
-    <string>Order calculator</string>
+    <string>&amp;Order calculator</string>
    </property>
    <property name="toolTip">
     <string>Order calculator</string>
@@ -518,7 +520,7 @@
      <normaloff>:/xulpymoney/kmplot.jpg</normaloff>:/xulpymoney/kmplot.jpg</iconset>
    </property>
    <property name="text">
-    <string>All Indexes</string>
+    <string>&amp;All Indexes</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+I</string>
@@ -530,7 +532,7 @@
      <normaloff>:/countries/spain.gif</normaloff>:/countries/spain.gif</iconset>
    </property>
    <property name="text">
-    <string>Ibex 35</string>
+    <string>&amp;Ibex 35</string>
    </property>
   </action>
   <action name="actionEurostoxx50">
@@ -539,7 +541,7 @@
      <normaloff>:/countries/eu.gif</normaloff>:/countries/eu.gif</iconset>
    </property>
    <property name="text">
-    <string>Eurostoxx 50</string>
+    <string>&amp;Eurostoxx 50</string>
    </property>
   </action>
   <action name="actionSP500">
@@ -548,7 +550,7 @@
      <normaloff>:/countries/usa.gif</normaloff>:/countries/usa.gif</iconset>
    </property>
    <property name="text">
-    <string>S&amp;&amp;P 500</string>
+    <string>&amp;S&amp;&amp;P 500</string>
    </property>
   </action>
   <action name="actionCAC40">
@@ -557,7 +559,7 @@
      <normaloff>:/countries/france.gif</normaloff>:/countries/france.gif</iconset>
    </property>
    <property name="text">
-    <string>CAC 40</string>
+    <string>&amp;CAC 40</string>
    </property>
   </action>
   <action name="actionNasdaq100">
@@ -566,7 +568,7 @@
      <normaloff>:/countries/usa.gif</normaloff>:/countries/usa.gif</iconset>
    </property>
    <property name="text">
-    <string>Nasdaq 100</string>
+    <string>&amp;Nasdaq 100</string>
    </property>
   </action>
   <action name="actionMC">
@@ -575,7 +577,7 @@
      <normaloff>:/countries/spain.gif</normaloff>:/countries/spain.gif</iconset>
    </property>
    <property name="text">
-    <string>Mercado Continuo</string>
+    <string>&amp;Mercado Continuo</string>
    </property>
   </action>
   <action name="actionXetra">
@@ -584,7 +586,7 @@
      <normaloff>:/countries/germany.gif</normaloff>:/countries/germany.gif</iconset>
    </property>
    <property name="text">
-    <string>Xetra</string>
+    <string>&amp;Xetra</string>
    </property>
   </action>
   <action name="actionProductsAutoUpdate">
@@ -593,7 +595,7 @@
      <normaloff>:/xulpymoney/transfer.png</normaloff>:/xulpymoney/transfer.png</iconset>
    </property>
    <property name="text">
-    <string>Products with auto update</string>
+    <string>&amp;Products with auto update</string>
    </property>
    <property name="toolTip">
     <string>Products with auto update</string>
@@ -605,7 +607,7 @@
      <normaloff>:/xulpymoney/checkbox0.png</normaloff>:/xulpymoney/checkbox0.png</iconset>
    </property>
    <property name="text">
-    <string>Obsolete products</string>
+    <string>&amp;Obsolete products</string>
    </property>
    <property name="toolTip">
     <string>Obsolete products</string>
@@ -617,7 +619,7 @@
      <normaloff>:/xulpymoney/keko.png</normaloff>:/xulpymoney/keko.png</iconset>
    </property>
    <property name="text">
-    <string>User products</string>
+    <string>&amp;User products</string>
    </property>
    <property name="toolTip">
     <string>User products</string>
@@ -629,7 +631,7 @@
      <normaloff>:/xulpymoney/Money.png</normaloff>:/xulpymoney/Money.png</iconset>
    </property>
    <property name="text">
-    <string>All currencies</string>
+    <string>&amp;All currencies</string>
    </property>
    <property name="toolTip">
     <string>All currencies</string>
@@ -641,7 +643,7 @@
      <normaloff>:/xulpymoney/star.png</normaloff>:/xulpymoney/star.png</iconset>
    </property>
    <property name="text">
-    <string>Show favorites</string>
+    <string>S&amp;how favorites</string>
    </property>
    <property name="toolTip">
     <string>Show favorites</string>
@@ -653,7 +655,7 @@
      <normaloff>:/xulpymoney/editar.png</normaloff>:/xulpymoney/editar.png</iconset>
    </property>
    <property name="text">
-    <string>Products without auto update</string>
+    <string>Products &amp;without auto update</string>
    </property>
    <property name="toolTip">
     <string>Products without auto update</string>
@@ -665,7 +667,7 @@
      <normaloff>:/images/dinero.png</normaloff>:/images/dinero.png</iconset>
    </property>
    <property name="text">
-    <string>Biggest dividends</string>
+    <string>&amp;Biggest dividends</string>
    </property>
    <property name="toolTip">
     <string>Biggest dividends</string>
@@ -677,7 +679,7 @@
      <normaloff>:/xulpymoney/coins.png</normaloff>:/xulpymoney/coins.png</iconset>
    </property>
    <property name="text">
-    <string>All call warrants</string>
+    <string>All &amp;call warrants</string>
    </property>
   </action>
   <action name="actionWarrantsPut">
@@ -686,7 +688,7 @@
      <normaloff>:/xulpymoney/coins.png</normaloff>:/xulpymoney/coins.png</iconset>
    </property>
    <property name="text">
-    <string>All put warrants</string>
+    <string>All &amp;put warrants</string>
    </property>
   </action>
   <action name="actionWarrantsInline">
@@ -695,7 +697,7 @@
      <normaloff>:/xulpymoney/coins.png</normaloff>:/xulpymoney/coins.png</iconset>
    </property>
    <property name="text">
-    <string>All inline warrants</string>
+    <string>&amp;All inline warrants</string>
    </property>
   </action>
   <action name="actionBondsAll">
@@ -704,7 +706,7 @@
      <normaloff>:/xulpymoney/history2.png</normaloff>:/xulpymoney/history2.png</iconset>
    </property>
    <property name="text">
-    <string>All bonds</string>
+    <string>All &amp;bonds</string>
    </property>
    <property name="toolTip">
     <string>All bonds</string>
@@ -716,7 +718,7 @@
      <normaloff>:/xulpymoney/kmplot.jpg</normaloff>:/xulpymoney/kmplot.jpg</iconset>
    </property>
    <property name="text">
-    <string>All shares</string>
+    <string>&amp;All shares</string>
    </property>
    <property name="toolTip">
     <string>All shares</string>
@@ -728,7 +730,7 @@
      <normaloff>:/xulpymoney/history2.png</normaloff>:/xulpymoney/history2.png</iconset>
    </property>
    <property name="text">
-    <string>All public bonds</string>
+    <string>All &amp;public bonds</string>
    </property>
    <property name="toolTip">
     <string>All public bonds</string>
@@ -740,7 +742,7 @@
      <normaloff>:/xulpymoney/history2.png</normaloff>:/xulpymoney/history2.png</iconset>
    </property>
    <property name="text">
-    <string>All private bonds</string>
+    <string>&amp;All private bonds</string>
    </property>
    <property name="toolTip">
     <string>All private bonds</string>
@@ -752,7 +754,7 @@
      <normaloff>:/xulpymoney/coins.png</normaloff>:/xulpymoney/coins.png</iconset>
    </property>
    <property name="text">
-    <string>All warrants</string>
+    <string>All &amp;warrants</string>
    </property>
    <property name="toolTip">
     <string>All warrants</string>
@@ -764,7 +766,7 @@
      <normaloff>:/xulpymoney/document-preview-archive.png</normaloff>:/xulpymoney/document-preview-archive.png</iconset>
    </property>
    <property name="text">
-    <string>Duplicated ISIN products</string>
+    <string>&amp;Duplicated ISIN products</string>
    </property>
    <property name="toolTip">
     <string>Duplicated ISIN products</string>
@@ -776,7 +778,7 @@
      <normaloff>:/xulpymoney/tools-wizard.png</normaloff>:/xulpymoney/tools-wizard.png</iconset>
    </property>
    <property name="text">
-    <string>Purge all investments</string>
+    <string>&amp;Purge all investments</string>
    </property>
    <property name="toolTip">
     <string>Purge all investments</string>
@@ -788,7 +790,7 @@
      <normaloff>:/countries/spain.gif</normaloff>:/countries/spain.gif</iconset>
    </property>
    <property name="text">
-    <string>LATIBEX</string>
+    <string>&amp;LATIBEX</string>
    </property>
    <property name="toolTip">
     <string>LATIBEX</string>
@@ -800,7 +802,7 @@
      <normaloff>:/xulpymoney/gafas.png</normaloff>:/xulpymoney/gafas.png</iconset>
    </property>
    <property name="text">
-    <string>Products without ISIN</string>
+    <string>Produ&amp;cts without ISIN</string>
    </property>
    <property name="toolTip">
     <string>Products without ISIN</string>
@@ -812,7 +814,7 @@
      <normaloff>:/images/kmplot.jpg</normaloff>:/images/kmplot.jpg</iconset>
    </property>
    <property name="text">
-    <string>All ETF</string>
+    <string>&amp;All ETF</string>
    </property>
   </action>
   <action name="actionFundsAll">
@@ -821,7 +823,7 @@
      <normaloff>:/images/document-preview.png</normaloff>:/images/document-preview.png</iconset>
    </property>
    <property name="text">
-    <string>All funds</string>
+    <string>&amp;All funds</string>
    </property>
   </action>
   <action name="actionPriceUpdates">
@@ -830,7 +832,7 @@
      <normaloff>:/xulpymoney/transfer.png</normaloff>:/xulpymoney/transfer.png</iconset>
    </property>
    <property name="text">
-    <string>Price updates</string>
+    <string>&amp;Price updates</string>
    </property>
    <property name="toolTip">
     <string>Price updates</string>
@@ -845,7 +847,7 @@
      <normaloff>:/xulpymoney/books.png</normaloff>:/xulpymoney/books.png</iconset>
    </property>
    <property name="text">
-    <string>Products of active investment</string>
+    <string>P&amp;roducts of active investment</string>
    </property>
    <property name="toolTip">
     <string>Products of active investment</string>
@@ -857,7 +859,7 @@
      <normaloff>:/xulpymoney/books.png</normaloff>:/xulpymoney/books.png</iconset>
    </property>
    <property name="text">
-    <string>Products of inactive investment</string>
+    <string>Products of &amp;inactive investment</string>
    </property>
    <property name="toolTip">
     <string>Products of inactive investment</string>
@@ -869,7 +871,7 @@
      <normaloff>:/xulpymoney/checkbox0.png</normaloff>:/xulpymoney/checkbox0.png</iconset>
    </property>
    <property name="text">
-    <string>Obsolete Indexes</string>
+    <string>&amp;Obsolete Indexes</string>
    </property>
    <property name="toolTip">
     <string>Obsolete Indexes</string>
@@ -881,7 +883,7 @@
      <normaloff>:/xulpymoney/checkbox0.png</normaloff>:/xulpymoney/checkbox0.png</iconset>
    </property>
    <property name="text">
-    <string>Obsolete shares</string>
+    <string>&amp;Obsolete shares</string>
    </property>
    <property name="toolTip">
     <string>Obsolete shares</string>
@@ -893,7 +895,7 @@
      <normaloff>:/xulpymoney/checkbox0.png</normaloff>:/xulpymoney/checkbox0.png</iconset>
    </property>
    <property name="text">
-    <string>Obsolete ETFs</string>
+    <string>&amp;Obsolete ETFs</string>
    </property>
    <property name="toolTip">
     <string>Obsolete ETFs</string>
@@ -905,7 +907,7 @@
      <normaloff>:/xulpymoney/checkbox0.png</normaloff>:/xulpymoney/checkbox0.png</iconset>
    </property>
    <property name="text">
-    <string>Obsolete warrants</string>
+    <string>&amp;Obsolete warrants</string>
    </property>
    <property name="toolTip">
     <string>Obsolete warrants</string>
@@ -917,7 +919,7 @@
      <normaloff>:/xulpymoney/checkbox0.png</normaloff>:/xulpymoney/checkbox0.png</iconset>
    </property>
    <property name="text">
-    <string>Obsolete funds</string>
+    <string>&amp;Obsolete funds</string>
    </property>
    <property name="toolTip">
     <string>Obsolete funds</string>
@@ -929,7 +931,7 @@
      <normaloff>:/xulpymoney/checkbox0.png</normaloff>:/xulpymoney/checkbox0.png</iconset>
    </property>
    <property name="text">
-    <string>Obsolete bonds</string>
+    <string>&amp;Obsolete bonds</string>
    </property>
    <property name="toolTip">
     <string>Obsolete bonds</string>
@@ -941,7 +943,7 @@
      <normaloff>:/xulpymoney/new.png</normaloff>:/xulpymoney/new.png</iconset>
    </property>
    <property name="text">
-    <string>Generate global report</string>
+    <string>&amp;Generate global report</string>
    </property>
    <property name="toolTip">
     <string>Generate global report</string>
@@ -953,7 +955,7 @@
      <normaloff>:/xulpymoney/database.png</normaloff>:/xulpymoney/database.png</iconset>
    </property>
    <property name="text">
-    <string>Sync products from other Xulpymoney</string>
+    <string>Sync products from &amp;other Xulpymoney</string>
    </property>
    <property name="toolTip">
     <string>Move products information to another database</string>
@@ -968,7 +970,7 @@
      <normaloff>:/xulpymoney/replication.png</normaloff>:/xulpymoney/replication.png</iconset>
    </property>
    <property name="text">
-    <string>Simulations</string>
+    <string>S&amp;imulations</string>
    </property>
    <property name="toolTip">
     <string>Simulations</string>
@@ -983,7 +985,7 @@
      <normaloff>:/xulpymoney/document-preview-archive.png</normaloff>:/xulpymoney/document-preview-archive.png</iconset>
    </property>
    <property name="text">
-    <string>Last operation</string>
+    <string>&amp;Last operation</string>
    </property>
    <property name="toolTip">
     <string>Last operation</string>
@@ -995,10 +997,22 @@
      <normaloff>:/xulpymoney/editar.png</normaloff>:/xulpymoney/editar.png</iconset>
    </property>
    <property name="text">
-    <string>Market orders</string>
+    <string>&amp;Market orders</string>
    </property>
    <property name="toolTip">
     <string>Market orders</string>
+   </property>
+  </action>
+  <action name="actionCuriosities">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/curiosity.png</normaloff>:/xulpymoney/curiosity.png</iconset>
+   </property>
+   <property name="text">
+    <string>Curiosities</string>
+   </property>
+   <property name="toolTip">
+    <string>Curiosities</string>
    </property>
   </action>
  </widget>

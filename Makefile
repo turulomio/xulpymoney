@@ -46,6 +46,8 @@ compile:
 	pyuic5 ui/frmQuotesIBM.ui > ui/Ui_frmQuotesIBM.py &
 	pyuic5 ui/frmSelector.ui > ui/Ui_frmSelector.py &
 	pyuic5 ui/frmEstimationsAdd.ui > ui/Ui_frmEstimationsAdd.py &
+	pyuic5 ui/wdgCuriosity.ui > ui/Ui_wdgCuriosity.py &
+	pyuic5 ui/wdgCuriosities.ui > ui/Ui_wdgCuriosities.py &
 	pyuic5 ui/wdgDatetime.ui > ui/Ui_wdgDatetime.py &
 	pyuic5 ui/wdgProducts.ui > ui/Ui_wdgProducts.py &
 	pyuic5 ui/wdgQuotesUpdate.ui > ui/Ui_wdgQuotesUpdate.py &
