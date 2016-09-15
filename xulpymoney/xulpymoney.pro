@@ -69,6 +69,10 @@ SOURCES         = \
                   ui/Ui_wdgConcepts.py \
                   ui/wdgConceptsHistorical.py \
                   ui/Ui_wdgConceptsHistorical.py \
+                  ui/wdgCuriosities.py \
+                  ui/Ui_wdgCuriosities.py \
+                  ui/wdgCuriosity.py \
+                  ui/Ui_wdgCuriosity.py \
                   ui/wdgDatetime.py \
                   ui/Ui_wdgDatetime.py \
                   ui/wdgDisReinvest.py \
@@ -140,6 +144,7 @@ FORMS           = \
                   ui/wdgCalculator.ui \
                   ui/wdgConcepts.ui \
                   ui/wdgConceptsHistorical.ui \
+                  ui/wdgCuriosities.ui \
                   ui/wdgDatetime.ui \
                   ui/wdgDisReinvest.ui \
                   ui/wdgDividendsReport.ui \

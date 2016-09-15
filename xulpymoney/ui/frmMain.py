@@ -15,6 +15,7 @@ from wdgAccounts import *
 from wdgBanks import *
 from wdgConcepts import *
 from wdgCalculator import *
+from wdgCuriosities import *
 from wdgIndexRange import *
 from wdgInvestments import *
 from wdgInvestmentsOperations import *
@@ -277,6 +278,13 @@ class frmMain(QMainWindow, Ui_frmMain):
         self.w.close()
         self.w=wdgProducts(self.mem,  "select * from products where obsolete=false order by name")
 
+        self.layout.addWidget(self.w)
+        self.w.show()
+    
+    @QtCore.pyqtSlot()  
+    def on_actionCuriosities_triggered(self):
+        self.w.close()
+        self.w=wdgCuriosities(self.mem,  self)
         self.layout.addWidget(self.w)
         self.w.show()
     
