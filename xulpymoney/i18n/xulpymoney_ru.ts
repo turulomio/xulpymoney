@@ -1794,7 +1794,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmAccountsReport.py" line="208"/>
+        <location filename="../ui/frmAccountsReport.py" line="211"/>
         <source>Do you really want to delete transfer from {0} to {1}, with amount {2} and it&apos;s commision?</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1869,7 +1869,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmAccountsReport.py" line="459"/>
+        <location filename="../ui/frmAccountsReport.py" line="462"/>
         <source>{0} was made a paid of {1}</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5049,12 +5049,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>wdgCuriosities</name>
     <message>
-        <location filename="../ui/Ui_wdgCuriosities.py" line="71"/>
-        <source>Form</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ui/Ui_wdgCuriosities.py" line="72"/>
+        <location filename="../ui/Ui_wdgCuriosities.py" line="51"/>
         <source>Xulpymoney curiosities</source>
         <translation type="unfinished"></translation>
     </message>
