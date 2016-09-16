@@ -2,6 +2,7 @@ from PyQt5.QtWidgets import QWidget, QSpacerItem, QSizePolicy
 from Ui_wdgCuriosities import *
 from wdgCuriosity import *
 from libxulpymoney import Assets
+from decimal import Decimal
 
 class wdgCuriosities(QWidget, Ui_wdgCuriosities):
     def __init__(self, mem,  parent = None):
@@ -13,15 +14,34 @@ class wdgCuriosities(QWidget, Ui_wdgCuriosities):
         c.setTitle(self.tr("Since when there is data in the database?"))
         c.setText("The first data is from {}".format(Assets(self.mem).first_datetime_with_user_data()))
         self.layout.addWidget(c)
+        
+
         c=wdgCuriosity(self.mem)
-        c.setTitle(self.tr("Which is the investment I gain more money?"))
+        c.setTitle(self.tr("Which is the investment I gain more money in the last three years?"))
+        selected=None
+        maxgains=Decimal(0)
+        for inv in self.mem.data.investments.arr:
+            consolidado=inv.op_historica.consolidado_bruto()
+            if maxgains<consolidado:
+                maxgains=consolidado
+                selected=inv
+                print (inv.name, consolidado)
+        if selected==None:
+            c.setText(self.tr("You still hasn't gains"))
+        else:
+            c.setText(self.tr("The investment I gain more money is {} in {} ({}). I got {}.".format(selected.name,selected.account.name, selected.account.eb.name, self.mem.localcurrency.string(maxgains))))
         self.layout.addWidget(c)
+
+
         c=wdgCuriosity(self.mem)
-        c.setTitle(self.tr("Which is the product I gain more money?"))
+        c.setTitle(self.tr("Which is the product I gain more money in the last three years?"))
         self.layout.addWidget(c)
+        
         c=wdgCuriosity(self.mem)
         c.setTitle(self.tr("Which is the benchmark highest and lowest price?"))
+        c.setText(self.tr("Current benchmarck ({}) highest price is {}. It took place at {}".format(self.mem.data.benchmark.name,self.mem.data.benchmark.currency.string(self.mem.data.benchmark.result.ohclDaily.highest().close),self.mem.data.benchmark.currency.string(self.mem.data.benchmark.result.ohclDaily.highest().datetime()))))
         self.layout.addWidget(c)
+
         c=wdgCuriosity(self.mem)
         c.setTitle(self.tr("How many quotes are there in the database?"))
         self.layout.addWidget(c)
