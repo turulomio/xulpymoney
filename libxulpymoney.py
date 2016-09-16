@@ -3296,8 +3296,7 @@ class Investment:
         self.op_actual=None#Es un objeto Setoperinversionesactual
         self.op_historica=None#setoperinversioneshistorica
         self.selling_expiration=None
-        
-        
+
     def init__create(self, name, venta, cuenta, inversionmq, selling_expiration, active, id=None):
         self.name=name
         self.venta=venta
@@ -3307,7 +3306,6 @@ class Investment:
         self.selling_expiration=selling_expiration
         self.id=id
         return self
-    
     
     def save(self):
         """Inserta o actualiza la inversión dependiendo de si id=None o no"""
@@ -5448,10 +5446,9 @@ class SetQuotesIntraday(SetQuotes):
         h=self.high().quote
         l=self.low().quote
         return Decimal(100*(h-l)/l)
-        
-        
+
 class Quote:
-    """"Un quote no puede estar duplicado en un datetime solo puede haber uno"""
+    """Un quote no puede estar duplicado en un datetime solo puede haber uno"""
     def __init__(self, mem):
         self.mem=mem
         self.product=None
@@ -5832,6 +5829,24 @@ class SetOHCL:
         for ohcl in self.arr:
             datetimes.append(ohcl.datetime())
         return datetimes
+
+    def highest(self):
+        if self.length()==0:
+            return None
+        r=self.arr[0]
+        for ohcl in self.arr:
+            if ohcl.close>=r.close:
+                r=ohcl
+        return r
+        
+    def lowest(self):
+        if self.length()==0:
+            return None
+        r=self.arr[0]
+        for ohcl in self.arr:
+            if ohcl.close<=r.close:
+                r=ohcl
+        return r
 
 class SetOHCLDaily(SetOHCL):
     def __init__(self, mem, product):
