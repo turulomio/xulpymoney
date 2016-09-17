@@ -83,6 +83,15 @@ class Connection(QObject):
         cur.close()
         return arr
         
+    def cursor_one_field(self, sql, arr=[]):
+        """Returns only one field"""
+        self.restart_timeout()
+        cur=self._con.cursor()
+        cur.execute(sql, arr)
+        row=cur.fetchone()[0]
+        cur.close()
+        return row      
+        
     def commit(self):
         self._con.commit()
         
@@ -2667,9 +2676,7 @@ class DBAdmin:
 class DBData:
     def __init__(self, mem):
         self.mem=mem
-        self.loaded_inactive=False
-        
-        
+
     def load(self):
         """
             This method will subsitute load_actives and load_inactives
