@@ -165,12 +165,17 @@ class canvasChartHistorical(FigureCanvasQTAgg):
         self.plot_sales=None
         self.plot_sma200=None
         self.plot_sma50=None
+        self.plot_reference_buy=None
+        self.plot_reference_sell=None
+        self.plot_reference_1=None
+        self.plot_reference_2=None
+        self.plot_reference_3=None
+        self.plot_reference_4=None
+        self.plot_reference_5=None
         self.from_dt=self.mem.localzone.now()-datetime.timedelta(days=365)#Show days from this date
-
-#        self.actionLinesIntraday=QAction(self)
-#        self.actionLinesIntraday.setText(self.tr("Intraday"))
-#        self.actionLinesIntraday.setObjectName("actionLinesIntraday")
         
+        self.purchase_type=None#None ninguno 0 con reinversi´on personalizada, 1 con reinversi´on dinero invertido, 2 con reinversi´on dinero invertido x2 y 3 con reinversion dinero invertido x1.5 
+
         self.actionLines1d=QAction(self)
         self.actionLines1d.setText(self.tr("1 day"))
         self.actionLines1d.setObjectName("actionLines1d")
@@ -226,58 +231,9 @@ class canvasChartHistorical(FigureCanvasQTAgg):
         self.actionSMA200.setCheckable(True)
         self.actionSMA200.setObjectName("actionSMA200")
         
-#        self.actionLines5m=QAction(self)
-#        self.actionLines5m.setText(self.tr("5 minutes"))
-#        self.actionLines5m.setObjectName("actionLines5m")
-#        self.actionLines5m.setEnabled(False)
-#        self.actionLines10m=QAction(self)
-#        self.actionLines10m.setText(self.tr("10 minutes"))
-#        self.actionLines10m.setObjectName("actionLines10m")
-#        self.actionLines10m.setEnabled(False)
-#        self.actionLines30m=QAction(self)
-#        self.actionLines30m.setText(self.tr("30 minutes"))
-#        self.actionLines30m.setObjectName("actionLines30m")
-#        self.actionLines30m.setEnabled(False)
-#        self.actionLines60m=QAction(self)
-#        self.actionLines60m.setText(self.tr("1 hour"))
-#        self.actionLines60m.setObjectName("actionLines60m")
-#        self.actionLines60m.setEnabled(False)
-        
-        
-#        self.actionOHCL5m=QAction(self)
-#        self.actionOHCL5m.setText(self.tr("5 minutes"))
-#        self.actionOHCL5m.setObjectName("actionOHCL5m")
-#        self.actionOHCL5m.setEnabled(False)
-#        self.actionOHCL10m=QAction(self)
-#        self.actionOHCL10m.setText(self.tr("10 minutes"))
-#        self.actionOHCL10m.setEnabled(False)
-#        self.actionOHCL10m.setObjectName("actionOHCL10m")
-#        self.actionOHCL30m=QAction(self)
-#        self.actionOHCL30m.setText(self.tr("30 minutes"))
-#        self.actionOHCL30m.setEnabled(False)
-#        self.actionOHCL30m.setObjectName("actionOHCL30m")
-#        self.actionOHCL60m=QAction(self)
-#        self.actionOHCL60m.setText(self.tr("1 hour"))
-#        self.actionOHCL60m.setEnabled(False)
-#        self.actionOHCL60m.setObjectName("actionOHCL60m")
-#        
-#        self.actionCandles5m=QAction(self)
-#        self.actionCandles5m.setText(self.tr("5 minutes"))
-#        self.actionCandles5m.setEnabled(False)
-#        self.actionCandles5m.setObjectName("actionCandles5m")
-#        self.actionCandles10m=QAction(self)
-#        self.actionCandles10m.setText(self.tr("10 minutes"))
-#        self.actionCandles10m.setEnabled(False)
-#        self.actionCandles10m.setObjectName("actionCandles10m")
-#        self.actionCandles30m=QAction(self)
-#        self.actionCandles30m.setText(self.tr("30 minutes"))
-#        self.actionCandles30m.setEnabled(False)
-#        self.actionCandles30m.setObjectName("actionCandles30m")
-#        self.actionCandles60m=QAction(self)
-#        self.actionCandles60m.setText(self.tr("1 hour"))
-#        self.actionCandles60m.setEnabled(False)
-#        self.actionCandles60m.setObjectName("actionCandles60m")
-        
+        self.actionPurchaseReferences=QAction(self)
+        self.actionPurchaseReferences.setText(self.tr("Show purchase references"))
+        self.actionPurchaseReferences.setObjectName("actionPurchaseReferences")
         self.labels=[]#Array de tuplas (plot,label)
 
         
@@ -287,9 +243,6 @@ class canvasChartHistorical(FigureCanvasQTAgg):
         self.fig.canvas.mpl_connect('scroll_event', self.on_wheelEvent)
         self.actionSMA50.setChecked(str2bool(self.mem.settings.value("canvasHistorical/sma50", "True" )))
         self.actionSMA200.setChecked(str2bool(self.mem.settings.value("canvasHistorical/sma200", "True" )))           
- 
-#    def price(self, x): 
-#        return self.product.currency.string(x)
 
     def footer(self, date, y): 
         dt=num2date(date)
@@ -306,8 +259,13 @@ class canvasChartHistorical(FigureCanvasQTAgg):
     def on_actionSMA200_triggered(self):
         self.mem.settings.setValue("canvasHistorical/sma200",   self.actionSMA200.isChecked())
 
+    @pyqtSlot()
+    def on_actionPurchaseReferences_triggered(self):
+        #self.mem.settings.setValue("canvasHistorical/sma50",   self.actionSMA50.isChecked())
+        self.purchase_type=2
+        self.mydraw()
+
     def draw_sma50(self,  datime, quotes):
-        #Calculamos según
         """
         Calculamos segun
         a=[1,2,3,4]
@@ -350,9 +308,6 @@ class canvasChartHistorical(FigureCanvasQTAgg):
         for d in self.setdata.arr:
             if d.datetime()>self.from_dt:
                 quotes.append((d.date.toordinal(), d.open, d.high, d.low, d.close))
-
-        # format the coords message box
-#        self.ax.format_coord = self.footer  
         self.ax.grid(True)
         candlestick2_ohlc(self.ax, self.setdata.opens(self.from_dt), self.setdata.highs(self.from_dt),  self.setdata.lows(self.from_dt), self.setdata.closes(self.from_dt),   width=0.7,  colorup='g')
         self.ax.xaxis_date()
@@ -365,6 +320,7 @@ class canvasChartHistorical(FigureCanvasQTAgg):
             self.labels.append((self.plot_average, self.tr("Average purchase price")))
             self.labels.append((self.plot_purchases, self.tr("Purchase point")))
             self.labels.append((self.plot_sales, self.tr("Sales point")))
+            self.labels.append((self.plot_reference_buy, self.tr("Purchase references")))
 
     def mydraw(self):
         """Punto de entrada de inicio, cambio de rueda, """
@@ -394,7 +350,51 @@ class canvasChartHistorical(FigureCanvasQTAgg):
         self.ax.set_title(self.tr("Historical graph"), fontsize=30, fontweight="bold", y=1.02)
         self.draw()
 
+    def draw_purchaseReferences(self, datime, quotes):
+        if not self.purchase_type:
+            return
+        """Es un porcentaje  de disminuci´on haciendo compras de capital x2
+        Si compro a 20 luego compro el doble a un -33% me queda de media todo 15.06 que es un 15.06/20 0.753%
+        """
+        percentages2=[0.753, 0.5185, 0.3495, 0.23464]
+        
+#        input=QInputDialog.getText(self,  "Xulpymoney",  self.tr("Please introduce an amount"))
+#        if input[1]==True:
+#            try:
+#                amount=Decimal(input[0])
+#            except:
+#                qmessagebox(self.tr("Amount is not a number"))
+#                return
+        percentage=Decimal(self.mem.settingsdb.value("frmSellingPoint/lastgainpercentage",  5))
+        if self.inversion==None:
+            if self.purchase_type==2:
+                (dat, buy, sell, r1, r2, r3, r4)=([], [], [], [], [], [], [])                
+                dat.append(datime[0])
+                dat.append(datime[len(datime)-1])
+                buy.append(quotes[len(quotes)-1])
+                buy.append(quotes[len(quotes)-1])
+                sell.append(buy[0]*(1+percentage/Decimal(100)))
+                sell.append(buy[0]*(1+percentage/Decimal(100)))
+                r1.append(buy[0]*Decimal(percentages2[0])*(1+percentage/Decimal(100)))
+                r1.append(buy[0]*Decimal(percentages2[0])*(1+percentage/Decimal(100)))
+                r2.append(buy[0]*Decimal(percentages2[1])*(1+percentage/Decimal(100)))
+                r2.append(buy[0]*Decimal(percentages2[1])*(1+percentage/Decimal(100)))
+                r3.append(buy[0]*Decimal(percentages2[2])*(1+percentage/Decimal(100)))
+                r3.append(buy[0]*Decimal(percentages2[2])*(1+percentage/Decimal(100)))
+                r4.append(buy[0]*Decimal(percentages2[3])*(1+percentage/Decimal(100)))
+                r4.append(buy[0]*Decimal(percentages2[3])*(1+percentage/Decimal(100)))
 
+        print("Compro a {}. Vendo a {} que es un {} %".format(buy[0], buy[0]*(1+percentage/Decimal(100)), percentage))
+        print("r1: punto medio compra {}. Vendo a {} que es un {}".format(buy[0]*Decimal(percentages2[0]),buy[0]*Decimal(percentages2[0])*(1+percentage/Decimal(100)) , percentage))
+        print("r2: punto medio compra {}. Vendo a {} que es un {}".format(buy[0]*Decimal(percentages2[1]),buy[0]*Decimal(percentages2[1])*(1+percentage/Decimal(100)) , percentage))
+        print("r3: punto medio compra {}. Vendo a {} que es un {}".format(buy[0]*Decimal(percentages2[2]),buy[0]*Decimal(percentages2[2])*(1+percentage/Decimal(100)) , percentage))
+        print("r4: punto medio compra {}. Vendo a {} que es un {}".format(buy[0]*Decimal(percentages2[3]),buy[0]*Decimal(percentages2[3])*(1+percentage/Decimal(100)) , percentage))
+        self.plot_reference_sell, =self.ax.plot_date(dat, sell, '-.',  color='green')     
+        self.plot_reference_buy, =self.ax.plot_date(dat, buy, '-.',  color='orange')     
+        self.plot_reference_1, =self.ax.plot_date(dat, r1, '-.',  color='red')     
+        self.plot_reference_2, =self.ax.plot_date(dat, r2, '-.',  color='red')     
+#        self.plot_reference_3, =self.ax.plot_date(dat, r3, '-.',  color='red')     
+#        self.plot_reference_4, =self.ax.plot_date(dat, r4, '-.',  color='red')     
         
     @pyqtSlot()
     def on_wheelEvent(self, event):
@@ -539,6 +539,8 @@ class canvasChartHistorical(FigureCanvasQTAgg):
         menu.addSeparator()
         menu.addAction(self.actionSMA50)
         menu.addAction(self.actionSMA200)
+        menu.addSeparator()
+        menu.addAction(self.actionPurchaseReferences)
         menu.exec_(self.mapToGlobal(pos)) 
 
     def draw_lines_from_ohcl(self):
@@ -559,6 +561,7 @@ class canvasChartHistorical(FigureCanvasQTAgg):
         self.ax.plot_date(dates, quotes, '-')
         self.draw_sma50(dates, quotes)
         self.draw_sma200(dates, quotes)
+        self.draw_purchaseReferences(dates, quotes)
         self.draw()
         
     def draw_lines_from_quotes(self):
@@ -577,6 +580,7 @@ class canvasChartHistorical(FigureCanvasQTAgg):
         
         self.draw_sma50(datetimes, quotes)
         self.draw_sma200(datetimes, quotes)
+        self.draw_purchaseReferences(datetimes, quotes)
         self.draw()
 
         
