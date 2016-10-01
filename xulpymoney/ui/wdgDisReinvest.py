@@ -4,6 +4,7 @@ from Ui_wdgDisReinvest import *
 from libxulpymoney import *
 from wdgOrdersAdd import *
 from decimal import *
+from canvaschart import canvasChartHistoricalReinvest
 
 class wdgDisReinvest(QWidget, Ui_wdgDisReinvest):
     def __init__(self, mem, inversion,  parent=None):
@@ -144,6 +145,16 @@ class wdgDisReinvest(QWidget, Ui_wdgDisReinvest):
         
         self.cmdOrder.setEnabled(True)
                 
+    @pyqtSlot()
+    def on_cmdGraph_released(self):
+        d=QDialog(self)     
+        d.setWindowTitle(self.tr("Reinvest graph"))
+        w=canvasChartHistoricalReinvest(self.mem, d)
+        w.load_data_reinvest(self.inversion, self.sim_opactual)
+        lay = QVBoxLayout(d)
+        lay.addWidget(w)
+        d.exec_()
+
     @pyqtSlot()
     def on_cmdOrder_released(self):
         d=QDialog(self)     
