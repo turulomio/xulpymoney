@@ -734,14 +734,12 @@ class canvasChartHistoricalReinvest(FigureCanvasQTAgg):
 
     def draw_investment_operations(self):
         """Draws an horizontal line with the selling point price"""
-        if self.inversion==None:
-            return
-        if self.inversion.op.length()>0:
+        if self.setop.length()>0:
             dates_p=[]#purchase
             quotes_p=[]
             dates_s=[]#sales
             quotes_s=[]
-            for o in self.inversion.op.arr:
+            for o in self.setop.arr:
                 if o.datetime>=self.from_dt:
                     if o.acciones>=0:
                         dates_p.append(o.datetime.date())
@@ -815,8 +813,9 @@ class canvasChartHistoricalReinvest(FigureCanvasQTAgg):
         self.ax.format_coord = self.footer  
         self.ax.grid(True)
 
-    def load_data_reinvest(self,  inversion, setcurrent):
+    def load_data_reinvest(self,  inversion, setop, setcurrent):
         self.setcurrent=setcurrent
+        self.setop=setop
         self.inversion=inversion
         self.product=self.inversion.product
         if self.inversion!=None:
