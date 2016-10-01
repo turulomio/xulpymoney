@@ -144,9 +144,11 @@ class wdgDisReinvest(QWidget, Ui_wdgDisReinvest):
         self.gains(self.tblGainsBefore, self.inversion.acciones(), self.inversion.op_actual.valor_medio_compra())
         
         self.cmdOrder.setEnabled(True)
+        self.cmdGraph.setEnabled(True)
                 
     @pyqtSlot()
     def on_cmdGraph_released(self):
+        self.inversion.product.result.get_basic_and_ohcls()
         d=QDialog(self)     
         d.setWindowTitle(self.tr("Reinvest graph"))
         w=canvasChartHistoricalReinvest(self.mem, d)

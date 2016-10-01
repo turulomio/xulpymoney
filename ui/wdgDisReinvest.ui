@@ -276,12 +276,24 @@
        </item>
        <item>
         <widget class="QToolButton" name="cmdGraph">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
+         <property name="toolTip">
+          <string>Show operations in a graph</string>
+         </property>
          <property name="text">
           <string/>
          </property>
          <property name="icon">
           <iconset resource="../images/xulpymoney.qrc">
            <normaloff>:/xulpymoney/report.png</normaloff>:/xulpymoney/report.png</iconset>
+         </property>
+         <property name="iconSize">
+          <size>
+           <width>64</width>
+           <height>64</height>
+          </size>
          </property>
         </widget>
        </item>

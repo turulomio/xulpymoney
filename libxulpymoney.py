@@ -1692,6 +1692,18 @@ class SetInvestmentOperationsCurrent(SetIO):
         else:
             return 0
             
+    def average_price(self):
+        """Calcula el precio medio de compra"""
+        shares=Decimal(0)
+        sharesxprice=Decimal(0)
+        for o in self.arr:
+            shares=shares+o.acciones
+            sharesxprice=sharesxprice+o.acciones*o.valor_accion
+
+        if shares==Decimal(0):
+            return Decimal(0)            
+        return sharesxprice/shares
+            
     def datetime_first_operation(self):
         if len(self.arr)==0:
             return None

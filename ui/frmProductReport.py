@@ -347,7 +347,6 @@ class frmProductReport(QDialog, Ui_frmProductReport):
             self.tblIntradia.setCurrentCell(len(self.product.result.intradia.arr)-1, 0)
             self.tblIntradia.clearSelection()
             
-        ##Comparate prices
 
     def load_mensuales(self):
         if len(self.product.result.ohclMonthly.arr)==0:
