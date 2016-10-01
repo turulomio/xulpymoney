@@ -152,7 +152,7 @@ class wdgDisReinvest(QWidget, Ui_wdgDisReinvest):
         d=QDialog(self)     
         d.setWindowTitle(self.tr("Reinvest graph"))
         w=canvasChartHistoricalReinvest(self.mem, d)
-        w.load_data_reinvest(self.inversion, self.sim_opactual)
+        w.load_data_reinvest(self.inversion, self.sim_op,  self.sim_opactual)
         lay = QVBoxLayout(d)
         lay.addWidget(w)
         d.exec_()
