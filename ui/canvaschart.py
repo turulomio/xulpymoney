@@ -251,6 +251,7 @@ class canvasChartHistorical(FigureCanvasQTAgg):
             return self.tr("{}: {}.".format(dat, self.product.currency.string(self.setdata.find(dat).close)))
         except:
             return "Not found"
+
     @pyqtSlot()
     def on_actionSMA50_triggered(self):
         self.mem.settings.setValue("canvasHistorical/sma50",   self.actionSMA50.isChecked())
@@ -539,8 +540,9 @@ class canvasChartHistorical(FigureCanvasQTAgg):
         menu.addSeparator()
         menu.addAction(self.actionSMA50)
         menu.addAction(self.actionSMA200)
-        menu.addSeparator()
-        menu.addAction(self.actionPurchaseReferences)
+        if self.inversion==None:
+            menu.addSeparator()
+            menu.addAction(self.actionPurchaseReferences)
         menu.exec_(self.mapToGlobal(pos)) 
 
     def draw_lines_from_ohcl(self):
@@ -643,3 +645,12 @@ class canvasChartHistorical(FigureCanvasQTAgg):
                 self.from_dt=day_start(self.inversion.op_actual.datetime_first_operation(), self.mem.localzone)
         self.sd=SD#Sin descontar dividends, es decir sumará los dividends a las quotes.
         self.mydraw()
+
+class canvasChartHistoricalReinvest(canvasChartHistorical):
+    def __init__(self, mem, parent):
+        canvasChartHistorical.__init__(self, mem, parent)
+        self.setoper=None
+
+    def load_data_reinvest(self,  inversion, setcurrent):
+        self.load_data(inversion.product, inversion, False)
+        self.setcurrent=setcurrent

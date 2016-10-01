@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1016</width>
-    <height>685</height>
+    <width>818</width>
+    <height>585</height>
    </rect>
   </property>
   <property name="windowIcon">
@@ -272,6 +272,17 @@
            </layout>
           </item>
          </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QToolButton" name="cmdGraph">
+         <property name="text">
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset resource="../images/xulpymoney.qrc">
+           <normaloff>:/xulpymoney/report.png</normaloff>:/xulpymoney/report.png</iconset>
+         </property>
         </widget>
        </item>
        <item>
