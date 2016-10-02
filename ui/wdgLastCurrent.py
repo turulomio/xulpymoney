@@ -163,7 +163,7 @@ class wdgLastCurrent(QWidget, Ui_wdgLastCurrent):
             m.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
             m.setIcon(QMessageBox.Information)
             m.setText(self.tr("Shares number: {0}").format(self.investments.selected.acciones())+"\n"+
-                    self.tr("Purchase price average: {0}").format(self.investments.selected.product.currency.string(self.investments.selected.op_actual.valor_medio_compra()))+"\n"+
+                    self.tr("Purchase price average: {0}").format(self.investments.selected.product.currency.string(self.investments.selected.op_actual.average_price()))+"\n"+
                     self.tr("Selling point: {}").format(self.investments.selected.product.currency.string(self.investments.selected.venta))+"\n"+
                     self.tr("Selling all shares you get {}").format(self.investments.selected.product.currency.string(self.investments.selected.op_actual.pendiente(Quote(self.mem).init__create(self.investments.selected.product, self.mem.localzone.now(),  self.investments.selected.venta))))
             )

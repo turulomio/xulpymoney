@@ -5,6 +5,7 @@ from libxulpymoney import *
 from wdgOrdersAdd import *
 from decimal import *
 from canvaschart import canvasChartHistoricalReinvest
+from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT 
 
 class wdgDisReinvest(QWidget, Ui_wdgDisReinvest):
     def __init__(self, mem, inversion,  parent=None):
@@ -129,7 +130,7 @@ class wdgDisReinvest(QWidget, Ui_wdgDisReinvest):
         self.sim_op.myqtablewidget(self.tblOperaciones)
         self.sim_opactual.myqtablewidget_homogeneus(self.tblInvestmentsActualDespues, quote=self.inversion.product.result.basic.last)
         self.sim_ophistorica.myqtablewidget(self.tblInvestmentsHistoricas)
-        self.gains(self.tblGainsAfter,  self.inversion.acciones()+self.acciones(), self.sim_opactual.valor_medio_compra())
+        self.gains(self.tblGainsAfter,  self.inversion.acciones()+self.acciones(), self.sim_opactual.average_price())
         
         #After at
         self.sim_opactual.myqtablewidget_homogeneus(self.tblInvestmentsActualDespuesAt, quote=at)
@@ -141,7 +142,7 @@ class wdgDisReinvest(QWidget, Ui_wdgDisReinvest):
         #Before
         self.tabAB.setCurrentIndex(1)
         self.tabOpAcHi.setCurrentIndex(1)
-        self.gains(self.tblGainsBefore, self.inversion.acciones(), self.inversion.op_actual.valor_medio_compra())
+        self.gains(self.tblGainsBefore, self.inversion.acciones(), self.inversion.op_actual.average_price())
         
         self.cmdOrder.setEnabled(True)
         self.cmdGraph.setEnabled(True)
@@ -151,10 +152,13 @@ class wdgDisReinvest(QWidget, Ui_wdgDisReinvest):
         self.inversion.product.result.get_basic_and_ohcls()
         d=QDialog(self)     
         d.setWindowTitle(self.tr("Reinvest graph"))
+        d.showMaximized()
         w=canvasChartHistoricalReinvest(self.mem, d)
+        ntb= NavigationToolbar2QT(w, d)
         w.load_data_reinvest(self.inversion, self.sim_op,  self.sim_opactual)
         lay = QVBoxLayout(d)
         lay.addWidget(w)
+        lay.addWidget(ntb)
         d.exec_()
 
     @pyqtSlot()

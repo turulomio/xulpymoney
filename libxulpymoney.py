@@ -1678,7 +1678,7 @@ class SetInvestmentOperationsCurrent(SetIO):
             inversion=self.arr[0].inversion.id
         except:
             inversion= "Desconocido"
-        return ("SetIOA Inv: {0}. N.Registros: {1}. N.Acciones: {2}. Invertido: {3}. Valor medio:{4}".format(inversion,  len(self.arr), self.acciones(),  self.invertido(),  self.valor_medio_compra()))
+        return ("SetIOA Inv: {0}. N.Registros: {1}. N.Acciones: {2}. Invertido: {3}. Valor medio:{4}".format(inversion,  len(self.arr), self.acciones(),  self.invertido(),  self.average_price()))
                         
     def average_age(self):
         """Average age of the current investment operations in days"""
@@ -1942,18 +1942,7 @@ class SetInvestmentOperationsCurrent(SetIO):
         for o in self.arr:
             o.get_referencia_indice(indice)
         cur.close()
-    
-    def valor_medio_compra(self):
-        """Devuelve el valor medio de compra de todas las operaciones de inversión actual"""
-        numacciones=Decimal(0)
-        numaccionesxvalor=Decimal(0)
-        for o in self.arr:
-            numacciones=numacciones+o.acciones
-            numaccionesxvalor=numaccionesxvalor+o.acciones*o.valor_accion
-        if numacciones==Decimal(0):
-            return Decimal(0)
-        return numaccionesxvalor/numacciones
- 
+
     def historizar(self, io,  sioh):
         """
         io es una Investmentoperacion de venta
@@ -5842,11 +5831,16 @@ class SetOHCL:
                     lows.append(ohcl.low)
         return lows
 
-    def datetimes(self):
+    def datetimes(self, from_dt=None):
         """Returns a list with all the datetimes of the array"""
         datetimes=[]
-        for ohcl in self.arr:
-            datetimes.append(ohcl.datetime())
+        if from_dt==None:
+            for ohcl in self.arr:
+                datetimes.append(ohcl.datetime())
+        else:
+            for ohcl in self.arr:
+                if ohcl.datetime()>=from_dt:
+                    datetimes.append(ohcl.datetime())
         return datetimes
 
     def highest(self):
