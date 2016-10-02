@@ -102,29 +102,17 @@ class wdgCalculator(QWidget, Ui_wdgCalculator):
         lay = QVBoxLayout(d)
         lay.addWidget(w)
         d.exec_()
-#
-#    @pyqtSlot()
-#    def on_cmdInvestmentAdd_released(self):        
-#        w=frmInvestmentReport(self.mem,   None, self)
-#        w.exec_()
-#        self.cmbInvestments.currentIndexChanged.disconnect()
-#        self.cmbProducts.currentIndexChanged.disconnect()
-#        self.mem.data.products.qcombobox_not_obsolete(self.cmbProducts, None)
-#        self.cmbProducts.currentIndexChanged.connect(self.on_cmbProducts_currentIndexChanged)
-#        self.cmbInvestments.currentIndexChanged.connect(self.on_cmbInvestments_currentIndexChanged)
-#        self.cmbProducts.setCurrentIndex(self.cmbProducts.findData(w.inversion.product.id))   
-#        self.cmbInvestments.setCurrentIndex(self.cmbInvestments.findData(w.inversion.id))
-#
-#
-##
-##    @pyqtSlot()
-##    def on_cmdProductAdd_released(self):   
-##        w=frmProductReport(self.mem, None, self)
-##        w.exec_()
-##        self.cmbProducts.currentIndexChanged.disconnect()
-##        self.mem.data.products.qcombobox_not_obsolete(self.cmbProducts, w.product)
-##        self.cmbProducts.currentIndexChanged.connect(self.on_cmbProducts_currentIndexChanged)
-##        self.cmbProducts.setCurrentIndex(self.cmbProducts.findData(w.product.id))
+
+    @pyqtSlot()
+    def on_cmdGraph_released(self):
+        self.product.result.get_basic_and_ohcls()
+        d=QDialog(self)     
+        d.setWindowTitle(self.tr("Purchase graph"))
+        w=canvasChartHistoricalBuy(self.mem, d)
+        w.load_data(self.product, self.txtFinalPrice.decimal())
+        lay = QVBoxLayout(d)
+        lay.addWidget(w)
+        d.exec_()
 
     @pyqtSlot(float)
     def on_spnProductPriceVariation_valueChanged(self, value):
