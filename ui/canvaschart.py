@@ -685,11 +685,14 @@ class canvasChartHistoricalBuy(FigureCanvasQTAgg):
     def draw_purchaseReferences(self):        
         """Es un porcentaje  de disminuci´on haciendo compras de capital x2
         Si compro a 20 luego compro el doble a un -33% me queda de media todo 15.06 que es un 15.06/20 0.753%
+        Es decir precio medio de compra / precio inicial de compra
         """
         if not self.purchase_type:
             return
 
         percentages2=[0.753, 0.5185, 0.3495, 0.23464]
+        percentagespersonal=[0.777, 0.5225, 0.4035, 0.269]
+        percentagesmy=percentagespersonal
         
 #        input=QInputDialog.getText(self,  "Xulpymoney",  self.tr("Please introduce an amount"))
 #        if input[1]==True:
@@ -708,20 +711,20 @@ class canvasChartHistoricalBuy(FigureCanvasQTAgg):
             buy.append(self.buyprice)
             sell.append(self.buyprice*(1+percentage/Decimal(100)))
             sell.append(self.buyprice*(1+percentage/Decimal(100)))
-            r1.append(self.buyprice*Decimal(percentages2[0])*(1+percentage/Decimal(100)))
-            r1.append(self.buyprice*Decimal(percentages2[0])*(1+percentage/Decimal(100)))
-            r2.append(self.buyprice*Decimal(percentages2[1])*(1+percentage/Decimal(100)))
-            r2.append(self.buyprice*Decimal(percentages2[1])*(1+percentage/Decimal(100)))
-            r3.append(self.buyprice*Decimal(percentages2[2])*(1+percentage/Decimal(100)))
-            r3.append(self.buyprice*Decimal(percentages2[2])*(1+percentage/Decimal(100)))
-            r4.append(self.buyprice*Decimal(percentages2[3])*(1+percentage/Decimal(100)))
-            r4.append(self.buyprice*Decimal(percentages2[3])*(1+percentage/Decimal(100)))
+            r1.append(self.buyprice*Decimal(percentagesmy[0])*(1+percentage/Decimal(100)))
+            r1.append(self.buyprice*Decimal(percentagesmy[0])*(1+percentage/Decimal(100)))
+            r2.append(self.buyprice*Decimal(percentagesmy[1])*(1+percentage/Decimal(100)))
+            r2.append(self.buyprice*Decimal(percentagesmy[1])*(1+percentage/Decimal(100)))
+            r3.append(self.buyprice*Decimal(percentagesmy[2])*(1+percentage/Decimal(100)))
+            r3.append(self.buyprice*Decimal(percentagesmy[2])*(1+percentage/Decimal(100)))
+            r4.append(self.buyprice*Decimal(percentagesmy[3])*(1+percentage/Decimal(100)))
+            r4.append(self.buyprice*Decimal(percentagesmy[3])*(1+percentage/Decimal(100)))
 
         print("Compro a {}. Vendo a {} que es un {} %".format(self.buyprice, self.buyprice*(1+percentage/Decimal(100)), percentage))
-        print("r1: punto medio compra {}. Vendo a {} que es un {}".format(self.buyprice*Decimal(percentages2[0]),self.buyprice*Decimal(percentages2[0])*(1+percentage/Decimal(100)) , percentage))
-        print("r2: punto medio compra {}. Vendo a {} que es un {}".format(self.buyprice*Decimal(percentages2[1]),self.buyprice*Decimal(percentages2[1])*(1+percentage/Decimal(100)) , percentage))
-        print("r3: punto medio compra {}. Vendo a {} que es un {}".format(self.buyprice*Decimal(percentages2[2]),self.buyprice*Decimal(percentages2[2])*(1+percentage/Decimal(100)) , percentage))
-        print("r4: punto medio compra {}. Vendo a {} que es un {}".format(self.buyprice*Decimal(percentages2[3]),self.buyprice*Decimal(percentages2[3])*(1+percentage/Decimal(100)) , percentage))
+        print("r1: punto medio compra {}. Vendo a {} que es un {}".format(self.buyprice*Decimal(percentagesmy[0]),self.buyprice*Decimal(percentagesmy[0])*(1+percentage/Decimal(100)) , percentage))
+        print("r2: punto medio compra {}. Vendo a {} que es un {}".format(self.buyprice*Decimal(percentagesmy[1]),self.buyprice*Decimal(percentagesmy[1])*(1+percentage/Decimal(100)) , percentage))
+        print("r3: punto medio compra {}. Vendo a {} que es un {}".format(self.buyprice*Decimal(percentagesmy[2]),self.buyprice*Decimal(percentagesmy[2])*(1+percentage/Decimal(100)) , percentage))
+        print("r4: punto medio compra {}. Vendo a {} que es un {}".format(self.buyprice*Decimal(percentagesmy[3]),self.buyprice*Decimal(percentagesmy[3])*(1+percentage/Decimal(100)) , percentage))
         self.plot_reference_sell, =self.ax.plot_date(dat, sell, '-.',  color='green')     
         self.plot_reference_buy, =self.ax.plot_date(dat, buy, '-.',  color='orange')     
         self.plot_reference_1, =self.ax.plot_date(dat, r1, '-.',  color='red')     
