@@ -1310,145 +1310,198 @@ Do you want to activate it?</source>
 <context>
     <name>canvasChartHistorical</name>
     <message>
-        <location filename="../ui/canvaschart.py" line="320"/>
+        <location filename="../ui/canvaschart.py" line="305"/>
         <source>Selling price</source>
         <translation>Punto de venta</translation>
     </message>
     <message>
-        <location filename="../ui/canvaschart.py" line="321"/>
+        <location filename="../ui/canvaschart.py" line="306"/>
         <source>Average purchase price</source>
         <translation>Precio medio de compra</translation>
     </message>
     <message>
-        <location filename="../ui/canvaschart.py" line="209"/>
+        <location filename="../ui/canvaschart.py" line="202"/>
         <source>1 day</source>
         <translation>1 día</translation>
     </message>
     <message>
-        <location filename="../ui/canvaschart.py" line="213"/>
+        <location filename="../ui/canvaschart.py" line="206"/>
         <source>1 week</source>
         <translation>1 semana</translation>
     </message>
     <message>
-        <location filename="../ui/canvaschart.py" line="217"/>
+        <location filename="../ui/canvaschart.py" line="210"/>
         <source>1 month</source>
         <translation>1 mes</translation>
     </message>
     <message>
-        <location filename="../ui/canvaschart.py" line="221"/>
+        <location filename="../ui/canvaschart.py" line="214"/>
         <source>1 year</source>
         <translation>1 año</translation>
     </message>
     <message>
-        <location filename="../ui/canvaschart.py" line="318"/>
+        <location filename="../ui/canvaschart.py" line="303"/>
         <source>SMA200</source>
         <translation>MMS200</translation>
     </message>
     <message>
-        <location filename="../ui/canvaschart.py" line="319"/>
+        <location filename="../ui/canvaschart.py" line="304"/>
         <source>SMA50</source>
         <translation>MMS50</translation>
     </message>
     <message>
-        <location filename="../ui/canvaschart.py" line="528"/>
+        <location filename="../ui/canvaschart.py" line="466"/>
         <source>Lines</source>
         <translation>Líneas</translation>
     </message>
     <message>
-        <location filename="../ui/canvaschart.py" line="534"/>
+        <location filename="../ui/canvaschart.py" line="472"/>
         <source>Candles</source>
         <translation>Velas</translation>
     </message>
     <message>
-        <location filename="../ui/canvaschart.py" line="322"/>
+        <location filename="../ui/canvaschart.py" line="307"/>
         <source>Purchase point</source>
         <translation>Punto de compra</translation>
     </message>
     <message>
-        <location filename="../ui/canvaschart.py" line="323"/>
+        <location filename="../ui/canvaschart.py" line="308"/>
         <source>Sales point</source>
         <translation>Punto de venta</translation>
     </message>
     <message>
-        <location filename="../ui/canvaschart.py" line="226"/>
+        <location filename="../ui/canvaschart.py" line="219"/>
         <source>Simple moving average 50</source>
         <translation type="unfinished">Media móvil simple 50</translation>
     </message>
     <message>
-        <location filename="../ui/canvaschart.py" line="230"/>
+        <location filename="../ui/canvaschart.py" line="223"/>
         <source>Simple moving average 200</source>
         <translation type="unfinished">Media móvil simple 200</translation>
     </message>
     <message>
-        <location filename="../ui/canvaschart.py" line="350"/>
+        <location filename="../ui/canvaschart.py" line="334"/>
         <source>{} quotes ({})</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/canvaschart.py" line="251"/>
+        <location filename="../ui/canvaschart.py" line="241"/>
         <source>{}: {}.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/canvaschart.py" line="351"/>
+        <location filename="../ui/canvaschart.py" line="335"/>
+        <source>Historical graph</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>canvasChartHistoricalBuy</name>
+    <message>
+        <location filename="../ui/canvaschart.py" line="608"/>
+        <source>Simple moving average 50</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/canvaschart.py" line="612"/>
+        <source>Simple moving average 200</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/canvaschart.py" line="630"/>
+        <source>{}: {}.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/canvaschart.py" line="734"/>
+        <source>SMA200</source>
+        <translation type="unfinished">MMS200</translation>
+    </message>
+    <message>
+        <location filename="../ui/canvaschart.py" line="735"/>
+        <source>SMA50</source>
+        <translation type="unfinished">MMS50</translation>
+    </message>
+    <message>
+        <location filename="../ui/canvaschart.py" line="680"/>
+        <source>{} quotes ({})</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/canvaschart.py" line="681"/>
         <source>Historical graph</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/canvaschart.py" line="235"/>
-        <source>Show purchase references</source>
+        <location filename="../ui/canvaschart.py" line="736"/>
+        <source>Purchase reference</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/canvaschart.py" line="324"/>
-        <source>Purchase references</source>
+        <location filename="../ui/canvaschart.py" line="737"/>
+        <source>Sell references</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/canvaschart.py" line="738"/>
+        <source>First reinvestment selling point</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/canvaschart.py" line="739"/>
+        <source>Second reinvestment selling point</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/canvaschart.py" line="740"/>
+        <source>Third reinvestment selling point</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>canvasChartHistoricalReinvest</name>
     <message>
-        <location filename="../ui/canvaschart.py" line="680"/>
+        <location filename="../ui/canvaschart.py" line="847"/>
         <source>{}: {}.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/canvaschart.py" line="687"/>
+        <location filename="../ui/canvaschart.py" line="854"/>
         <source>Selling price</source>
         <translation type="unfinished">Punto de venta</translation>
     </message>
     <message>
-        <location filename="../ui/canvaschart.py" line="688"/>
+        <location filename="../ui/canvaschart.py" line="855"/>
         <source>Average purchase price</source>
         <translation type="unfinished">Precio medio de compra</translation>
     </message>
     <message>
-        <location filename="../ui/canvaschart.py" line="689"/>
+        <location filename="../ui/canvaschart.py" line="856"/>
         <source>Purchase point</source>
         <translation type="unfinished">Punto de compra</translation>
     </message>
     <message>
-        <location filename="../ui/canvaschart.py" line="690"/>
+        <location filename="../ui/canvaschart.py" line="857"/>
         <source>Sales point</source>
         <translation type="unfinished">Punto de venta</translation>
     </message>
     <message>
-        <location filename="../ui/canvaschart.py" line="833"/>
+        <location filename="../ui/canvaschart.py" line="1000"/>
         <source>{} quotes ({})</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/canvaschart.py" line="834"/>
+        <location filename="../ui/canvaschart.py" line="1001"/>
         <source>Historical graph</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/canvaschart.py" line="691"/>
+        <location filename="../ui/canvaschart.py" line="858"/>
         <source>New purchase average</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/canvaschart.py" line="692"/>
+        <location filename="../ui/canvaschart.py" line="859"/>
         <source>New selling reference</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4878,22 +4931,22 @@ p, li { white-space: pre-wrap; }
         <translation>Acciones</translation>
     </message>
     <message>
-        <location filename="../ui/wdgCalculator.ui" line="305"/>
+        <location filename="../ui/wdgCalculator.ui" line="323"/>
         <source>Calc estimations</source>
         <translation>Estimaciones de cálculo</translation>
     </message>
     <message>
-        <location filename="../ui/wdgCalculator.ui" line="332"/>
+        <location filename="../ui/wdgCalculator.ui" line="350"/>
         <source>Price</source>
         <translation>Precio</translation>
     </message>
     <message>
-        <location filename="../ui/wdgCalculator.ui" line="337"/>
+        <location filename="../ui/wdgCalculator.ui" line="355"/>
         <source>Gains</source>
         <translation>Ganancias</translation>
     </message>
     <message>
-        <location filename="../ui/wdgCalculator.ui" line="327"/>
+        <location filename="../ui/wdgCalculator.ui" line="345"/>
         <source>% Gains</source>
         <translation>% Ganancias</translation>
     </message>
@@ -4933,7 +4986,7 @@ p, li { white-space: pre-wrap; }
         <translation>Añade una nueva orden</translation>
     </message>
     <message>
-        <location filename="../ui/wdgCalculator.ui" line="292"/>
+        <location filename="../ui/wdgCalculator.ui" line="310"/>
         <source>Add order annotation</source>
         <translation>Añade un anotación de orden</translation>
     </message>
@@ -4946,6 +4999,16 @@ p, li { white-space: pre-wrap; }
         <location filename="../ui/wdgCalculator.ui" line="100"/>
         <source>Select your personal investment</source>
         <translation>Selección tu inversión personal</translation>
+    </message>
+    <message>
+        <location filename="../ui/wdgCalculator.py" line="110"/>
+        <source>Purchase graph</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/wdgCalculator.ui" line="292"/>
+        <source>Show purchase graph</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -6698,6 +6761,49 @@ Diferencia diaria: {5}. Edad media de las inversiones: {6}</translation>
         <location filename="../ui/wdgProducts.ui" line="299"/>
         <source>Delete user product</source>
         <translation>Borrar producto de usuario</translation>
+    </message>
+</context>
+<context>
+    <name>wdgQuotesUpdate</name>
+    <message>
+        <location filename="../ui/Ui_wdgQuotesUpdate.py" line="120"/>
+        <source>Auxiliar tables</source>
+        <translation type="unfinished">Tablas auxiliares</translation>
+    </message>
+    <message>
+        <location filename="../ui/Ui_wdgQuotesUpdate.py" line="121"/>
+        <source>If it&apos;s unchecked, Xulpymoney will update all products marked as autoupdate</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/Ui_wdgQuotesUpdate.py" line="122"/>
+        <source>Update only investments of the user</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/Ui_wdgQuotesUpdate.py" line="123"/>
+        <source>Intraday sources</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/Ui_wdgQuotesUpdate.py" line="124"/>
+        <source>Update all intraday sources</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/Ui_wdgQuotesUpdate.py" line="125"/>
+        <source>Daily sources</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/Ui_wdgQuotesUpdate.py" line="126"/>
+        <source>Update all daily sources</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/Ui_wdgQuotesUpdate.py" line="127"/>
+        <source>Update all sources</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

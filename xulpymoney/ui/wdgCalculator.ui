@@ -287,6 +287,24 @@
         </spacer>
        </item>
        <item>
+        <widget class="QPushButton" name="cmdGraph">
+         <property name="text">
+          <string>Show purchase graph</string>
+         </property>
+         <property name="icon">
+          <iconset resource="../images/xulpymoney.qrc">
+           <normaloff>:/xulpymoney/report.png</normaloff>:/xulpymoney/report.png</iconset>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="Line" name="line">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+        </widget>
+       </item>
+       <item>
         <widget class="QPushButton" name="cmdOrder">
          <property name="text">
           <string>Add order annotation</string>
