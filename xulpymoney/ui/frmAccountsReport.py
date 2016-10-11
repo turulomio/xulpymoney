@@ -159,7 +159,7 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
         
     def on_OperationChanged(self, type_initial, id_initial, type_final, id_final):
         """0 Account 1 CreditCard"""
-#        print( type_initial, id_initial, type_final, id_final)
+        print( "on_OperationChanged", type_initial, id_initial, type_final, id_final)
         if type_initial==0 and type_final==0 and id_final==self.account.id:
             self.accountoperations_reload()
         elif type_initial==0 and type_final==1:
@@ -175,6 +175,9 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
                 self.creditcards_reload()
         elif type_initial==-999 and type_final==1 and id_final==self.creditcards.selected.id:#Si meto una creditcard operation nueva de la tarjeta seleccionada
             self.creditcardoperations_reload()
+        elif type_initial==-999 and type_final==0 and id_final==self.account.id:#Opercuenta nueva de la cuenta reportada
+            self.accountoperations_reload()
+            
         
             
     def accountoperations_reload(self):    
