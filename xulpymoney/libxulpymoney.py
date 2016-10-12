@@ -2,6 +2,7 @@ from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 import datetime
+import logging
 import time
 import platform
 import io
@@ -5954,7 +5955,7 @@ class SetLanguages(SetCommons):
             self.mem.qtranslator.load("i18n/xulpymoney_{0}.qm".format(id))
         else:
             self.mem.qtranslator.load("/usr/lib/xulpymoney/xulpymoney_{0}.qm".format(id))
-        print("Language changed to {}".format(id))
+        logging.info("Language changed to {}".format(id))
         qApp.installTranslator(self.mem.qtranslator)
  
 class OHCL:

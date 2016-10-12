@@ -33,7 +33,6 @@ class frmMain(QMainWindow, Ui_frmMain):
     """Clase principal del programa"""
     def __init__(self, mem, parent = 0,  flags = False):
         """mem must be a MemXulpymoney con el parametro mem.con con un objecto Conection activo"""
-        
         QMainWindow.__init__(self, None)
         self.setupUi(self)
         self.showMaximized()
@@ -43,19 +42,14 @@ class frmMain(QMainWindow, Ui_frmMain):
         self.mem.con.inactivity_timeout.connect(self.inactivity_timeout)        
         self.sqlvacio="select * from products where id=-999999"
         self.setWindowTitle(self.tr("Xulpymoney 2010-{0} \xa9").format(version_date.year))
-#        print ("Xulpymoney 2010-{0} © €".encode('unicode-escape'))
+        #print ("Xulpymoney 2010-{0} © €".encode('unicode-escape'))
         
         self.w=QWidget()       
 
         self.statusBar.addWidget(QLabel(self.tr("Server: {}:{}      Database: {}      User: {}").format(self.mem.con.server, self.mem.con.port,  self.mem.con.db, self.mem.con.user)))
         
         self.mem.load_db_data() ##CARGA TODOS LOS DATOS Y LOS VINCULA       
-         
-        print("aquí",self.styleSheet())
-        
-        
-        
-        
+       
         ##Admin mode
         if self.mem.adminmode:
             m=QMessageBox()
@@ -84,10 +78,7 @@ class frmMain(QMainWindow, Ui_frmMain):
                     self.adminmode=False        
                     m.setText(self.tr("Bad 'Admin mode' password. You are logged as a normal user"))
                     m.exec_()   
-                    
-                    
-#        r=Report(self.mem)
-#        r.ibex35_tpc_down_and_up(2)
+
     def actionsEnabled(self, bool):
         self.menuBar.setEnabled(bool)
         self.toolBar.setEnabled(bool)
