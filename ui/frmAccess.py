@@ -12,7 +12,9 @@ class frmAccess(QDialog, Ui_frmAccess):
         self.setModal(True)
         self.setupUi(self)
         self.parent=parent
+        self.cmbLanguages.disconnect()
         self.mem.languages.qcombobox(self.cmbLanguages, self.mem.language)
+        self.cmbLanguages.currentIndexChanged.connect(self.on_cmbLanguages_currentIndexChanged)
         self.setPixmap(QPixmap(":xulpymoney/coins.png"))
         self.setTitle(self.tr("Xulpymoney - Access"))
         self.con=Connection()#Pointer to connection
@@ -50,7 +52,7 @@ class frmAccess(QDialog, Ui_frmAccess):
         self.mem.settings.setValue("mem/language", self.cmbLanguages.itemData(self.cmbLanguages.currentIndex()))
         self.mem.language=self.mem.languages.find_by_id(self.cmbLanguages.itemData(self.cmbLanguages.currentIndex()))
 
-    @pyqtSlot(str)      
+    @pyqtSlot(int)      
     def on_cmbLanguages_currentIndexChanged(self, stri):
         self.mem.language=self.mem.languages.find_by_id(self.cmbLanguages.itemData(self.cmbLanguages.currentIndex()))
         self.mem.settings.setValue("mem/language", self.mem.language.id)
@@ -72,8 +74,11 @@ class frmAccess(QDialog, Ui_frmAccess):
         self.con.init__create(self.txtUser.text(), self.txtPass.text(), self.txtServer.text(), self.txtPort.text(), self.txtDB.text())
         self.con.connect()
         if self.con.is_active():
+            self.config_save()
             self.accept()
         else:
+            qmessagebox_connexion_error(self.con.db, self.con.server)
+            sys.exit(1)
             self.reject()
 
     @QtCore.pyqtSlot() 
