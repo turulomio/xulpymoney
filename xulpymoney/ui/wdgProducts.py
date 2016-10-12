@@ -89,6 +89,17 @@ class wdgProducts(QWidget, Ui_wdgProducts):
         self.products.myqtablewidget(self.tblInvestments)
 
     @QtCore.pyqtSlot() 
+    def on_actionPurchaseGraphic_triggered(self):
+        self.products.selected[0].result.get_basic_and_ohcls()
+        d=QDialog(self)     
+        d.setWindowTitle(self.tr("Purchase graph"))
+        w=canvasChartHistoricalBuy(self.mem, d)
+        w.load_data(self.products.selected[0], self.products.selected[0].result.basic.last.quote)
+        lay = QVBoxLayout(d)
+        lay.addWidget(w)
+        d.exec_()
+        
+    @QtCore.pyqtSlot() 
     def on_actionProductReport_triggered(self):
         w=frmProductReport(self.mem, self.products.selected[0], None,  self)
         w.exec_()        
@@ -159,6 +170,7 @@ class wdgProducts(QWidget, Ui_wdgProducts):
 
         menu=QMenu()
         menu.addAction(self.actionProductReport)
+        menu.addAction(self.actionPurchaseGraphic)
         menu.addSeparator()
         menu.addAction(self.actionProductNew)
         menu.addAction(self.actionProductDelete)
@@ -197,6 +209,7 @@ class wdgProducts(QWidget, Ui_wdgProducts):
             self.actionProductDelete.setEnabled(True)
             self.actionFavorites.setEnabled(True)
             self.actionProductReport.setEnabled(True)
+            self.actionPurchaseGraphic.setEnabled(True)
             self.actionIbex35.setEnabled(True)
             self.actionQuoteNew.setEnabled(True)
             self.actionEstimationDPSNew.setEnabled(True)
@@ -206,6 +219,7 @@ class wdgProducts(QWidget, Ui_wdgProducts):
             self.actionProductDelete.setEnabled(False)
             self.actionFavorites.setEnabled(False)
             self.actionProductReport.setEnabled(False)
+            self.actionPurchaseGraphic.setEnabled(False)
             self.actionIbex35.setEnabled(False)
             self.actionQuoteNew.setEnabled(False)
             self.actionEstimationDPSNew.setEnabled(False)
