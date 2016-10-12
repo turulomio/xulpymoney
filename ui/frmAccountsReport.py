@@ -173,8 +173,10 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
                 self.creditcardoperations_reload()
             else:
                 self.creditcards_reload()
-        elif type_initial==-999 and type_final==1 and id_final==self.creditcards.selected.id:#Si meto una creditcard operation nueva de la tarjeta seleccionada
+        elif type_initial==-999 and type_final==1 and id_final==self.creditcards.selected.id and self.creditcards.selected.pagodiferido==True:#Si meto una creditcard operation nueva de la tarjeta seleccionada con pago diferido
             self.creditcardoperations_reload()
+        elif type_initial==-999 and type_final==1 and id_final==self.creditcards.selected.id and self.creditcards.selected.pagodiferido==False:#Si meto una creditcard operation nueva de la tarjeta seleccionada sin pago diferido
+            self.accountoperations_reload()
         elif type_initial==-999 and type_final==0 and id_final==self.account.id:#Opercuenta nueva de la cuenta reportada
             self.accountoperations_reload()
             
