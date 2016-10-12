@@ -359,6 +359,18 @@
     <string>Deletes quotes innecesary. Leaves open, high, low and close quotes.</string>
    </property>
   </action>
+  <action name="actionPurchaseGraphic">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/report.png</normaloff>:/xulpymoney/report.png</iconset>
+   </property>
+   <property name="text">
+    <string>Show purchase graphic</string>
+   </property>
+   <property name="toolTip">
+    <string>Show purchase graphic</string>
+   </property>
+  </action>
  </widget>
  <customwidgets>
   <customwidget>

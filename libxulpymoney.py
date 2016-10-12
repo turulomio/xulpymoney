@@ -6504,8 +6504,6 @@ class MemXulpymoney:
     def setQTranslator(self, qtranslator):
         self.qtranslator=qtranslator
 
-            
-            
     def set_admin_mode(self, pasw):
         cur=self.con.cursor()
         cur.execute("update globals set value=md5(%s) where id_globals=6;", (pasw, ))
