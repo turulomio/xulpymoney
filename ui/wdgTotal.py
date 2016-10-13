@@ -29,29 +29,38 @@ class canvasTotal(FigureCanvasQTAgg):
         self.plotted=False#Shown if the graphics has been plotted anytime.
 
     def footer(self, date, y): 
-        dt=num2date(date)
-        dat=dt.date()
         try:
-            index=self.dates.index(dat)
+            dt=num2date(date)
+            lastday=self.totalgraphic.find(dt.year, dt.month).last_day()#Need last day of a month to show
+            index=self.dates.index(lastday)
             c=self.mem.localcurrency.string
-            return self.tr("Date: {}. Total assests {}. Zero risk: {}. Bonds: {}".format(dat, c(self.total[index]), c(self.zero[index]), c(self.bonds[index])))
+            return self.tr("Date: {}. Total assests {}. Zero risk: {}. Bonds: {}".format(lastday, c(self.total[index]), c(self.zero[index]), c(self.bonds[index])))
         except:
             return "Not found"
             
-    def mydraw(self, mem, dates,  total, zero,  bonds):
+    def mydraw(self, mem, totalgraphic):
         self.plotted=True
-        self.dates=dates
-        self.total=total
-        self.zero=zero
-        self.bonds=bonds
-        
+        (self.dates, self.total, self.zero, self.bonds, self.risk)=([], [], [], [], [])
+        self.totalgraphic=totalgraphic
         self.ax.clear()
         
-        risk=[]
-        for i in range(len(dates)):
-            risk.append(total[i]-zero[i]-bonds[i])
+        progress = QProgressDialog(self.tr("Filling report data"), self.tr("Cancel"), 0,self.totalgraphic.length())
+        progress.setModal(True)
+        progress.setWindowTitle(self.tr("Calculating data..."))
+        progress.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
         
-        
+        for m in self.totalgraphic.arr:
+            if progress.wasCanceled():
+                break
+            progress.setValue(progress.value()+1)
+            self.dates.append(m.last_day())
+            total=m.total()
+            self.total.append(total)
+            zero=m.total_zerorisk()
+            self.zero.append(zero)
+            bonds=m.total_bonds()
+            self.bonds.append(bonds)
+            self.risk.append(total-zero-bonds)
         
         self.ax.xaxis.set_major_locator(YearLocator())    
         self.ax.xaxis.set_minor_locator(MonthLocator())
@@ -63,11 +72,10 @@ class canvasTotal(FigureCanvasQTAgg):
         self.ax.fmt_xdata = DateFormatter('%Y-%m')
         self.ax.format_coord = self.footer  
         self.ax.grid(True)
-#        self.fig.autofmt_xdate()
-        self.plot_main, =self.ax.plot_date(dates, total, '-')
-        self.plot_zero, =self.ax.plot_date(dates, zero, '-')
-        self.plot_bonds, =self.ax.plot_date(dates, bonds, '-')
-        self.plot_risk, =self.ax.plot_date(dates, risk, '-')
+        self.plot_main, =self.ax.plot_date(self.dates, self.total, '-')
+        self.plot_zero, =self.ax.plot_date(self.dates, self.zero, '-')
+        self.plot_bonds, =self.ax.plot_date(self.dates, self.bonds, '-')
+        self.plot_risk, =self.ax.plot_date(self.dates, self.risk, '-')
         
         self.showLegend()
         self.draw()        
@@ -444,28 +452,10 @@ class wdgTotal(QWidget, Ui_wdgTotal):
     def load_graphic(self, savefile=None):   
         print("loading graphic")
         inicio=datetime.datetime.now()  
-        total=[]
-        zero=[]
-        bonds=[]
-        dates=[]
         
         self.setGraphic=TotalGraphic(self.mem, self.wyChart.year, 1)
-
-        progress = QProgressDialog(self.tr("Filling report data"), self.tr("Cancel"), 0,self.setGraphic.length())
-        progress.setModal(True)
-        progress.setWindowTitle(self.tr("Calculating data..."))
-        progress.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
+        self.canvas.mydraw(self.mem, self.setGraphic)
         
-        for m in self.setGraphic.arr:
-            if progress.wasCanceled():
-                break
-            progress.setValue(progress.value()+1)
-            dates.append(m.last_day())
-            total.append(m.total())
-            zero.append(m.total_zerorisk())
-            bonds.append(m.total_bonds())
-
-        self.canvas.mydraw(self.mem, dates, total, zero,  bonds)
         
         if savefile!=None:
             self.canvas.fig.savefig(savefile, dpi=200)
