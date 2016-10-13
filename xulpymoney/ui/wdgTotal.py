@@ -27,13 +27,24 @@ class canvasTotal(FigureCanvasQTAgg):
         self.plot_bonds=None
         self.plot_nonzero=None
         self.plotted=False#Shown if the graphics has been plotted anytime.
-        
-    
-    def price(self, x): 
-        return self.mem.localcurrency.string(x)
-        
+
+    def footer(self, date, y): 
+        dt=num2date(date)
+        dat=dt.date()
+        try:
+            index=self.dates.index(dat)
+            c=self.mem.localcurrency.string
+            return self.tr("Date: {}. Total assests {}. Zero risk: {}. Bonds: {}".format(dat, c(self.total[index]), c(self.zero[index]), c(self.bonds[index])))
+        except:
+            return "Not found"
+            
     def mydraw(self, mem, dates,  total, zero,  bonds):
         self.plotted=True
+        self.dates=dates
+        self.total=total
+        self.zero=zero
+        self.bonds=bonds
+        
         self.ax.clear()
         
         risk=[]
@@ -50,7 +61,7 @@ class canvasTotal(FigureCanvasQTAgg):
         
         # format the coords message box
         self.ax.fmt_xdata = DateFormatter('%Y-%m')
-        self.ax.fmt_ydata = self.price
+        self.ax.format_coord = self.footer  
         self.ax.grid(True)
 #        self.fig.autofmt_xdate()
         self.plot_main, =self.ax.plot_date(dates, total, '-')
@@ -433,8 +444,8 @@ class wdgTotal(QWidget, Ui_wdgTotal):
     def load_graphic(self, savefile=None):   
         print("loading graphic")
         inicio=datetime.datetime.now()  
-        total=[]#date,valor
-        zero=[]#date, valor zero
+        total=[]
+        zero=[]
         bonds=[]
         dates=[]
         
