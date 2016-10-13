@@ -226,7 +226,6 @@ class canvasChartHistorical(FigureCanvasQTAgg):
         
         self.labels=[]#Array de tuplas (plot,label)
 
-        
         QMetaObject.connectSlotsByName(self)
         self.setContextMenuPolicy(Qt.CustomContextMenu)
         self.customContextMenuRequested.connect(self.on_customContextMenuRequested)
@@ -249,7 +248,6 @@ class canvasChartHistorical(FigureCanvasQTAgg):
     @pyqtSlot()
     def on_actionSMA200_triggered(self):
         self.mem.settings.setValue("canvasHistorical/sma200",   self.actionSMA200.isChecked())
-
 
     def draw_sma50(self,  datime, quotes):
         """
@@ -279,8 +277,7 @@ class canvasChartHistorical(FigureCanvasQTAgg):
             dat.append(datime[i-1])
             sma.append(sum(quotes[i-200:i])/Decimal(200))
         self.plot_sma200, =self.ax.plot_date(dat, sma, '-', color="red")    
-        
-        
+
     def candles(self, interval):
         """Interval 0.05 5minutos
         1 1 dia
@@ -600,7 +597,6 @@ class canvasChartHistoricalBuy(FigureCanvasQTAgg):
         self.plot_reference_3=None
         self.plot_reference_4=None
         self.plot_reference_5=None
-        self.from_dt=self.mem.localzone.now()-datetime.timedelta(days=365)#Show days from this date
         
         self.purchase_type=None#None ninguno 0 con reinversi´on personalizada, 1 con reinversi´on dinero invertido, 2 con reinversi´on dinero invertido x2 y 3 con reinversion dinero invertido x1.5 
        
@@ -804,6 +800,7 @@ class canvasChartHistoricalBuy(FigureCanvasQTAgg):
     def load_data(self, product,  buyprice):
         """Debe tener cargado los ohcl, no el all"""
         self.product=product
+        self.from_dt=self.product.result.ohclDaily.arr[0].datetime()
         self.buyprice=buyprice
         self.mydraw()
 
