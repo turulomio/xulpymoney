@@ -57,6 +57,7 @@ SOURCES         = \
                   ui/wdgProductSelector.py \
                   ui/myqlineedit.py \
                   ui/myqtablewidget.py \
+                  ui/wdgCurrencyConversion.py \
                   ui/wdgAPR.py \
                   ui/Ui_wdgAPR.py \
                   ui/wdgAccounts.py \

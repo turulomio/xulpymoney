@@ -2714,7 +2714,7 @@ class DBData:
         self.currencies=SetProducts(self.mem)
         self.currencies.load_from_db("select * from products where type=6")
         for p in self.currencies.arr:
-            p.result.get_basic_and_ohcls()
+            p.result.get_all()
         
         
         print("Cargando data",  datetime.datetime.now()-inicio)
@@ -4677,7 +4677,7 @@ class Money:
         if self.currency==money.currency:
             return Money(self.mem, self.amount+money.amount, self.currency)
         else:
-            b=money.convert_from_date(self.currency)
+            b=money.convert_from_datetime(self.currency)
             return Money(self.mem, self.amount+b.amount, self.currency)
             
         
@@ -4686,15 +4686,20 @@ class Money:
         if self.currency==money.currency:
             return Money(self.mem, self.amount-money.amount, self.currency)
         else:
-            b=money.convert_from_date(self.currency)
+            b=money.convert_from_datetime(self.currency)
             return Money(self.mem, self.amount-b.amount, self.currency)
         
     def __mul__(self, money):
-        """Si las divisas son distintas, queda el resultado con la divisa del primero"""
+        """Si las divisas son distintas, queda el resultado con la divisa del primero
+        En caso de querer multiplicar por un numero debe ser despues
+        money*4
+        """
+        if money.__class__ in (int,  float, Decimal):
+            return Money(self.mem, self.amount*money, self.currency)
         if self.currency==money.currency:
             return Money(self.mem, self.amount*money.amount, self.currency)
         else:
-            b=money.convert_from_date(self.currency)
+            b=money.convert_from_datetime(self.currency)
             return Money(self.mem, self.amount*b.amount, self.currency)
     
     def __truediv__(self, money):
@@ -4702,11 +4707,11 @@ class Money:
         if self.currency==money.currency:
             return Money(self.mem, self.amount/money.amount, self.currency)
         else:
-            b=money.convert_from_date(self.currency)
+            b=money.convert_from_datetime(self.currency)
             return Money(self.mem, self.amount/b.amount, self.currency)
         
     def __repr__(self):
-        return "Money: {}".format(self.string())
+        return self.string(2)
         
     def string(self,   digits=2):
         return self.currency.string(self.amount, digits)
@@ -4717,38 +4722,58 @@ class Money:
         else:
             return False
             
-    def GETZero(self):
+    def isGETZero(self):
         if self.amount>=Decimal(0):
             return True
         else:
             return False
             
-    def minus(self):
+    def __neg__(self):
         """Devuelve otro money con el amount con signo cambiado"""
         return Money(self.mem, -self.amount, self.currency)
         
     def local(self, date=None):
         """Converts a Money to local currency
         Date==None means today"""
-        return self.convert_from_date(self.mem.localcurrency, date)
+        return self.convert_from_datetime(self.mem.localcurrency, date)
+#        
+#    def convert_from_datetime(self, currency, date=None):
+#        """Converts self money to currency, using ohcldaily"""
+#        if self.currency==currency:
+#            return self
+#        init=datetime.datetime.now()
+#        if date==None:
+#            date=datetime.date.today()
+#        factor=self.conversionFactor(currency)
+#        result=Money(self.mem, self.amount*factor, currency)
+#        logging.info("Money conversion. {} to {} using factor {} took {}".format(self.string(6), result.string(6), factor, datetime.datetime.now()-init))
+#        return result        
         
-    def convert_from_date(self, currency, date=None):
+    def convert_from_datetime(self, currency, dt=None):
         """Converts self money to currency"""
         if self.currency==currency:
             return self
-
-        if date==None:
-            date=datetime.date.today()
-            
+        init=datetime.datetime.now()
+        if dt==None:
+            dt=self.mem.localzone.now()
+        factor=self.conversionFactor(currency, dt)
+        result=Money(self.mem, self.amount*factor, currency)
+        logging.info("Money conversion. {} to {} at {} took {}".format(self.string(6), result.string(6), dt, datetime.datetime.now()-init))
+        return result
+        
+    def conversionFactor(self, currency, dt):
+        """Factor to convert from self currency to parameter currency, using datetime from result. allsetquotesintraday, uses mem"""
+        if self.currency==currency:
+            return Decimal(1)
+        
         if self.currency.id=="EUR":
             if currency.id=="USD":
-                factor=self.mem.data.currencies.find_by_id(74747).result.ohclDaily.find(date).close
+                return self.mem.data.currencies.find_by_id(74747).result.all.find(dt).quote
         elif self.currency.id=="USD":
             if currency.id=="EUR":
-                factor =1/self.mem.data.currencies.find_by_id(74747).result.ohclDaily.find(date).close
-        result=Money(self.mem, self.amount*factor, currency)
-        logging.info("Money conversion. {} to {} using factor {}".format(self.string(6), result.string(6), factor))
-        return result
+                return 1/self.mem.data.currencies.find_by_id(74747).result.all.find(dt).quote
+        loggin.critical("No existe factor de conversi´on")
+        return None
         
     def convert_from_factor(self, currency, factor):
         """Converts self money to currency, multiplicando el amount del self con el factor y obteniendo la nueva currency pasada como parametro"""
@@ -5340,7 +5365,7 @@ class SetQuotesAllIntradays:
         """Recorro de mayor a menor"""
         for i,  sqi in enumerate(reversed(self.arr)):
             if sqi.date<=dattime.date():
-                return sql.find_by_id(dattime)
+                return sqi.find(dattime)
         print (function_name(self), "Quote not found")
         return None
             
@@ -5479,7 +5504,7 @@ class SetQuotesIntraday(SetQuotes):
         for q in reversed(self.arr):
             if q.datetime<=dt:
                 return q
-        print (function_name(self), "Quote not found")
+        logging.critical("Quote not found at {}".format(dt))
         return None
 
     def datetimes(self):
@@ -6134,6 +6159,9 @@ class QuotesResult:
         self.basic=self.ohclDaily.setquotesbasic()
         print ("Datos db cargados:",  datetime.datetime.now()-inicioall)
 
+    def get_all(self):
+        """Gets all in a set intradays form"""
+        self.all.load_from_db(self.product)
 
 class Leverage:
     def __init__(self, mem):
