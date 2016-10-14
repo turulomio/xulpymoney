@@ -39,6 +39,8 @@ class frmMain(QMainWindow, Ui_frmMain):
         
         self.mem=mem
 
+
+
         self.mem.con.inactivity_timeout.connect(self.inactivity_timeout)        
         self.sqlvacio="select * from products where id=-999999"
         self.setWindowTitle(self.tr("Xulpymoney 2010-{0} \xa9").format(version_date.year))
@@ -50,6 +52,17 @@ class frmMain(QMainWindow, Ui_frmMain):
         
         self.mem.load_db_data() ##CARGA TODOS LOS DATOS Y LOS VINCULA       
        
+#        a=Money(self.mem, 1, self.mem.localcurrency)
+#        b=Money(self.mem, 1,  self.mem.currencies.find_by_id("USD"))
+#        print(a)
+#        print(b)
+#        print(b.local())
+#        print(a.convert(self.mem.currencies.find_by_id("USD")))
+#        
+#        print(a+b)
+#        print(b+a)
+#        print(a*b)
+#        print(a/b)
         ##Admin mode
         if self.mem.adminmode:
             m=QMessageBox()

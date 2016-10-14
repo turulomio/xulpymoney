@@ -29,10 +29,10 @@ class wdgInvestments(QWidget, Ui_wdgInvestments):
             self.tblInvestments.setColumnHidden(8, False)
             
         r=self.inversiones.myqtablewidget(self.tblInvestments)
-        if r["suminvertido"]!=0:
-            self.lblTotal.setText(self.tr("Invested assets: {0}. Pending: {1} - {2} = {3} ({4} assets)\nDaily Diff: {5}. Investment average age: {6}").format(self.mem.localcurrency.string(r['suminvertido']), self.mem.localcurrency.string(r['sumpositivos']),  self.mem.localcurrency.string(-r['sumnegativos']),  self.mem.localcurrency.string(r['sumpendiente']), tpc(100*r['sumpendiente']/r['suminvertido']) , self.mem.localcurrency.string( r['sumdiario']), days_to_year_month(self.inversiones.average_age())))
-        else:
+        if r["suminvertido"].isZero():
             self.lblTotal.setText(self.tr("There aren't invested assets"))
+        else:
+            self.lblTotal.setText(self.tr("Invested assets: {0}. Pending: {1} - {2} = {3} ({4} assets)\nDaily Diff: {5}. Investment average age: {6}").format(r['suminvertido'].string(), r['sumpositivos'].string(),  r['sumnegativos'].minus().string(),  r['sumpendiente'].string(), tpc(100*r['sumpendiente'].amount/r['suminvertido'].amount) , r['sumdiario'].string(), days_to_year_month(self.inversiones.average_age())))
 
 
     @QtCore.pyqtSlot() 
