@@ -19,7 +19,7 @@ class Update:
     def __init__(self, mem):
         self.mem=mem
         self.dbversion=self.get_database_version()    
-        self.lastcodeupdate=201607132000
+        self.lastcodeupdate=201610141057
 
    
     def get_database_version(self):
@@ -586,6 +586,16 @@ LANGUAGE plpgsql;""")
             self.mem.con.commit()
             self.set_database_version(201607132000)        
 
+        if self.dbversion<201610141057:
+            cur=self.mem.con.cursor()                        
+            cur.execute("ALTER TABLE operinversiones   ADD COLUMN currency_conversion numeric(10,6) DEFAULT 1")
+            cur.execute("UPDATE operinversiones SET currency_conversion=1")
+            cur.execute("ALTER TABLE operinversiones  ALTER COLUMN currency_conversion SET NOT NULL")
+            cur.execute("COMMENT ON COLUMN operinversiones.currency_conversion IS 'Conversión de divisa de la inversión a la de la cuenta. Multiplicando acciones*valor_accion*currency_conversion obtenemos el precio en la divisa de la cuenta de inversion->cuenta. Los impuestos y la comisión van en la divisa de la cuenta y no necesita conversión.'")
+
+            cur.close()
+            self.mem.con.commit()
+            self.set_database_version(201610141057)        
             
         """       WARNING                    ADD ALWAYS LAST UPDATE CODE                         WARNING
         

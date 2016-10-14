@@ -645,7 +645,22 @@ class WorkerYahoo(SourceParsePage):
     def setSQL(self, useronly):
         self.userinvestmentsonly=useronly
         if self.userinvestmentsonly==True:
-            self.sql="select * from products where (priority[1]=1 and obsolete=false and id in (select distinct(products_id) from inversiones)) or id={} order by name".format(self.mem.data.benchmark.id)
+            self.sql="""
+                select * 
+                from 
+                    products 
+                where 
+                    priority[1]=1 and 
+                    obsolete=false and 
+                    id in 
+                        (
+                            select distinct(products_id) from inversiones UNION 
+                            select id from products where id={} UNION 
+                            select id from products where type=6
+                        )
+                order by name
+            """.format(self.mem.data.benchmark.id)#type=76 divisas
+            
         else:
             self.sql="select * from products where priority[1]=1 and obsolete=false order by name"
         self.setStatus(SourceStatus.Prepared)
@@ -776,7 +791,21 @@ class WorkerYahooHistorical(SourceIterateProducts):
     def setSQL(self, useronly):
         self.userinvestmentsonly=useronly
         if self.userinvestmentsonly==True:
-            self.sql="select * from products where (priorityhistorical[1]=3 and obsolete=false and id in (select distinct(products_id) from inversiones)) or id={} order by name".format(self.mem.data.benchmark.id)
+            self.sql="""
+                select * 
+                from 
+                    products 
+                where 
+                    priorityhistorical[1]=3 and 
+                    obsolete=false and 
+                    id in 
+                        (
+                            select distinct(products_id) from inversiones UNION 
+                            select id from products where id={} UNION 
+                            select id from products where type=6
+                        )
+                order by name
+            """.format(self.mem.data.benchmark.id)#type=76 divisas
         else:
             self.sql="select * from products where priorityhistorical[1]=3 and obsolete=false order by name"
         self.setStatus(SourceStatus.Loaded)
