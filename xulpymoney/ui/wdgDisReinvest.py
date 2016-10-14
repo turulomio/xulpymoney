@@ -116,6 +116,9 @@ class wdgDisReinvest(QWidget, Ui_wdgDisReinvest):
         self.txtAcciones.setText(acciones)
         self.txtImporte.setText(importe)
 
+        logging.error("Factor de conversion no siempre es 1")
+        currency_conversion=1
+
         #Creamos un nuevo operinversiones 
         self.sim_op=self.inversion.op.clone()
         id_operinversiones=self.sim_op.get_highest_io_id ()+1##Para simular un id_operinversiones real, le asignamos uno

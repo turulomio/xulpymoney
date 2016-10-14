@@ -320,7 +320,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="6417"/>
+        <location filename="../libxulpymoney.py" line="6445"/>
         <source>Accounts</source>
         <translation type="unfinished"></translation>
     </message>
@@ -360,7 +360,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="5287"/>
+        <location filename="../libxulpymoney.py" line="5312"/>
         <source>Product</source>
         <translation type="unfinished"></translation>
     </message>
@@ -375,7 +375,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="5288"/>
+        <location filename="../libxulpymoney.py" line="5313"/>
         <source>Price</source>
         <translation type="unfinished"></translation>
     </message>
@@ -420,7 +420,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="4803"/>
+        <location filename="../libxulpymoney.py" line="4828"/>
         <source>Date</source>
         <translation type="unfinished"></translation>
     </message>
@@ -485,7 +485,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="4804"/>
+        <location filename="../libxulpymoney.py" line="4829"/>
         <source>Gross</source>
         <translation type="unfinished"></translation>
     </message>
@@ -515,7 +515,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="6407"/>
+        <location filename="../libxulpymoney.py" line="6435"/>
         <source>Shares</source>
         <translation type="unfinished"></translation>
     </message>
@@ -730,32 +730,32 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="5286"/>
+        <location filename="../libxulpymoney.py" line="5311"/>
         <source>Date and time</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="5358"/>
+        <location filename="../libxulpymoney.py" line="5383"/>
         <source>Purging innecesary data</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="5360"/>
+        <location filename="../libxulpymoney.py" line="5385"/>
         <source>Purging quotes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="5367"/>
+        <location filename="../libxulpymoney.py" line="5392"/>
         <source>Purged {0} quotes from {1}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="7014"/>
+        <location filename="../libxulpymoney.py" line="7042"/>
         <source>True</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="7017"/>
+        <location filename="../libxulpymoney.py" line="7045"/>
         <source>False</source>
         <translation type="unfinished"></translation>
     </message>
@@ -940,47 +940,47 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="6408"/>
+        <location filename="../libxulpymoney.py" line="6436"/>
         <source>Funds</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="6409"/>
+        <location filename="../libxulpymoney.py" line="6437"/>
         <source>Indexes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="6410"/>
+        <location filename="../libxulpymoney.py" line="6438"/>
         <source>ETF</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="6411"/>
+        <location filename="../libxulpymoney.py" line="6439"/>
         <source>Warrants</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="6412"/>
+        <location filename="../libxulpymoney.py" line="6440"/>
         <source>Currencies</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="6413"/>
+        <location filename="../libxulpymoney.py" line="6441"/>
         <source>Public Bond</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="6414"/>
+        <location filename="../libxulpymoney.py" line="6442"/>
         <source>Pension plans</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="6415"/>
+        <location filename="../libxulpymoney.py" line="6443"/>
         <source>Private Bond</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="6416"/>
+        <location filename="../libxulpymoney.py" line="6444"/>
         <source>Deposit</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1060,12 +1060,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="538"/>
+        <location filename="../ui/frmMain.py" line="541"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="6985"/>
+        <location filename="../libxulpymoney.py" line="7013"/>
         <source>{} {}, {} {} and {} {}</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1075,32 +1075,32 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="6974"/>
+        <location filename="../libxulpymoney.py" line="7002"/>
         <source>year</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="6976"/>
+        <location filename="../libxulpymoney.py" line="7004"/>
         <source>years</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="6978"/>
+        <location filename="../libxulpymoney.py" line="7006"/>
         <source>month</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="6980"/>
+        <location filename="../libxulpymoney.py" line="7008"/>
         <source>months</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="6982"/>
+        <location filename="../libxulpymoney.py" line="7010"/>
         <source>day</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="6984"/>
+        <location filename="../libxulpymoney.py" line="7012"/>
         <source>days</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1110,27 +1110,27 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="355"/>
+        <location filename="../ui/frmMain.py" line="358"/>
         <source>Syncing databases from {} ({}) to {} ({})</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="357"/>
+        <location filename="../ui/frmMain.py" line="360"/>
         <source>Processing products...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="538"/>
+        <location filename="../ui/frmMain.py" line="541"/>
         <source>Purging innecesary data from all products</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="540"/>
+        <location filename="../ui/frmMain.py" line="543"/>
         <source>Purging quotes from all products</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="547"/>
+        <location filename="../ui/frmMain.py" line="550"/>
         <source>Purging quotes from {0}.
 Total purged in global process: {1}</source>
         <translation type="unfinished"></translation>
@@ -2438,7 +2438,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmInvestmentOperationsAdd.ui" line="259"/>
+        <location filename="../ui/frmInvestmentOperationsAdd.ui" line="225"/>
         <source>0</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2448,27 +2448,27 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmInvestmentOperationsAdd.ui" line="168"/>
+        <location filename="../ui/frmInvestmentOperationsAdd.ui" line="134"/>
         <source>Taxes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmInvestmentOperationsAdd.ui" line="192"/>
+        <location filename="../ui/frmInvestmentOperationsAdd.ui" line="158"/>
         <source>Comission</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmInvestmentOperationsAdd.ui" line="216"/>
+        <location filename="../ui/frmInvestmentOperationsAdd.ui" line="182"/>
         <source>Gross amount</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmInvestmentOperationsAdd.ui" line="243"/>
+        <location filename="../ui/frmInvestmentOperationsAdd.ui" line="209"/>
         <source>Net amount</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmInvestmentOperationsAdd.ui" line="268"/>
+        <location filename="../ui/frmInvestmentOperationsAdd.ui" line="234"/>
         <source>Save</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2505,16 +2505,6 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../ui/frmInvestmentOperationsAdd.ui" line="120"/>
         <source>Price in account currency</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ui/frmInvestmentOperationsAdd.ui" line="144"/>
-        <source>Conversion Factor</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ui/frmInvestmentOperationsAdd.ui" line="157"/>
-        <source>1</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2869,7 +2859,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="151"/>
+        <location filename="../ui/frmMain.py" line="154"/>
         <source>Investment calculator</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2924,7 +2914,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="568"/>
+        <location filename="../ui/frmMain.py" line="571"/>
         <source>{0} quotes have been purged from {1} products</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2964,32 +2954,32 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="431"/>
+        <location filename="../ui/frmMain.py" line="434"/>
         <source>There aren&apos;t favorite products</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="71"/>
+        <location filename="../ui/frmMain.py" line="74"/>
         <source>Please introduce Admin Mode password</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="75"/>
+        <location filename="../ui/frmMain.py" line="78"/>
         <source>Xulpymoney 2010-{0} &#xa9; (Admin mode)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="80"/>
+        <location filename="../ui/frmMain.py" line="83"/>
         <source>You have set the admin mode password. Please login again</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="88"/>
+        <location filename="../ui/frmMain.py" line="91"/>
         <source>You are logged as an administrator</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="92"/>
+        <location filename="../ui/frmMain.py" line="95"/>
         <source>Bad &apos;Admin mode&apos; password. You are logged as a normal user</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3074,7 +3064,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="346"/>
+        <location filename="../ui/frmMain.py" line="349"/>
         <source>Databases can&apos;t be the same</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3084,7 +3074,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="331"/>
+        <location filename="../ui/frmMain.py" line="334"/>
         <source>Please login to the source xulpymoney database</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3094,7 +3084,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="317"/>
+        <location filename="../ui/frmMain.py" line="320"/>
         <source>Xulpymoney Simulations</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3129,7 +3119,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="85"/>
+        <location filename="../ui/frmMain.py" line="88"/>
         <source>Xulpymoney 2010-{0} &#xc2;&#xa9; (Admin mode)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5307,6 +5297,14 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
+    <name>wdgCurrencyConversion</name>
+    <message>
+        <location filename="../ui/wdgCurrencyConversion.py" line="23"/>
+        <source>Factor conversion from {} to {} at {}. So {} are {}.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>wdgDatetime</name>
     <message>
         <location filename="../ui/wdgDatetime.ui" line="17"/>
@@ -5593,7 +5591,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgDisReinvest.py" line="168"/>
+        <location filename="../ui/wdgDisReinvest.py" line="171"/>
         <source>Add new order</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5628,7 +5626,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgDisReinvest.py" line="154"/>
+        <location filename="../ui/wdgDisReinvest.py" line="157"/>
         <source>Reinvest graph</source>
         <translation type="unfinished"></translation>
     </message>
