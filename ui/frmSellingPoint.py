@@ -71,7 +71,7 @@ class frmSellingPoint(QDialog, Ui_frmSellingPoint):
                     if o.less_than_a_year()==True:
                         self.operinversiones.remove(o)
         ###########################
-        self.operinversiones=SetInvestmentOperationsCurrent(self.mem)
+        self.operinversiones=SetInvestmentOperationsCurrentHomogeneus(self.mem)
         load_array()
         self.operinversiones.order_by_datetime()
         (sumacciones, suminvertido, sumpendiente)=self.operinversiones.myqtablewidget_homogeneus(self.table, True, self.inversion.product.result.basic.last)

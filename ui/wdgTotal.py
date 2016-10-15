@@ -131,7 +131,7 @@ class TotalMonth:
         
     def dividends(self):
         if self.dividends_value==None:
-            self.dividends_value=Investment(self.mem).dividends_neto(  self.year, self.month)
+            self.dividends_value=Assets(self.mem).dividends_neto(  self.year, self.month)
         return self.dividends_value
         
     def incomes(self):
@@ -200,7 +200,7 @@ class TotalYear:
         return None
         
     def expenses(self):
-        result=Decimal(0)
+        result=Money(self.mem, 0, self.mem.localcurrency)
         for m in self.arr:
             result=result+m.expenses()
         return result
@@ -209,19 +209,19 @@ class TotalYear:
         return self.incomes()+self.dividends()+self.gains()+self.expenses()
         
     def incomes(self):
-        result=Decimal(0)
+        result=Money(self.mem, 0, self.mem.localcurrency)
         for m in self.arr:
             result=result+m.incomes()
         return result
 
     def gains(self):
-        result=Decimal(0)
+        result=Money(self.mem, 0, self.mem.localcurrency)
         for m in self.arr:
             result=result+m.gains()
         return result        
 
     def dividends(self):
-        result=Decimal(0)
+        result=Money(self.mem, 0, self.mem.localcurrency)
         for m in self.arr:
             result=result+m.dividends()
         return result
@@ -249,7 +249,7 @@ class TotalYear:
         if self.total_last_year==Decimal(0):
             return None
         m=self.find(self.year, month)
-        return 100*(m.total()-self.total_last_year)/self.total_last_year    
+        return 100*((m.total()-self.total_last_year)/self.total_last_year).amount
 
 
 
@@ -349,11 +349,11 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         self.table.applySettings()
         inicio=datetime.datetime.now()     
         self.setData=TotalYear(self.mem, self.wyData.year)
-        self.lblPreviousYear.setText(self.tr("Balance at {0}-12-31: {1}".format(self.setData.year-1, self.mem.localcurrency.string(self.setData.total_last_year))))
+        self.lblPreviousYear.setText(self.tr("Balance at {0}-12-31: {1}".format(self.setData.year-1, self.setData.total_last_year)))
         for i, m in enumerate(self.setData.arr):
             if m.year<datetime.date.today().year or (m.year==datetime.date.today().year and m.month<=datetime.date.today().month):
-                self.table.setItem(0, i, self.mem.localcurrency.qtablewidgetitem(m.incomes()))
-                self.table.setItem(1, i, self.mem.localcurrency.qtablewidgetitem(m.gains()))
+                self.table.setItem(0, i, m.incomes().qtablewidgetitem())
+                self.table.setItem(1, i, m.gains().qtablewidgetitem())
                 self.table.setItem(2, i, self.mem.localcurrency.qtablewidgetitem(m.dividends()))
                 self.table.setItem(3, i, self.mem.localcurrency.qtablewidgetitem(m.expenses()))
                 self.table.setItem(4, i, self.mem.localcurrency.qtablewidgetitem(m.i_d_g_e()))

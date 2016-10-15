@@ -22,7 +22,7 @@ class wdgInvestmentsOperations(QWidget, Ui_wdgInvestmentsOperations):
         self.wym.changed.connect(self.on_wym_mychanged)
         self.wym.label.hide()
         self.setOperations=SetInvestmentOperations(self.mem)
-        self.setCurrent=SetInvestmentOperationsCurrent(self.mem)
+        self.setCurrent=SetInvestmentOperationsCurrentHeterogeneus(self.mem)
         self.selOperation=None#For table
         self.selCurrentOperation=None#For tblCurrent
         self.table.settings(self.mem,  "wdgInvestmentsOperations")
