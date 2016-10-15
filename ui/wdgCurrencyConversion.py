@@ -1,43 +1,51 @@
-from PyQt5.QtWidgets import *
-from PyQt5.QtGui import *
+from PyQt5.QtWidgets import QWidget, QHBoxLayout, QToolButton, QInputDialog, QLineEdit, QSizePolicy
+from PyQt5.QtGui import QIcon, QPixmap
 from myqlineedit import myQLineEdit
-from libxulpymoney import Money
+from decimal import Decimal
 
 class wdgCurrencyConversion(QWidget):
     def __init__(self, parent):
         QWidget.__init__(self, parent)
         lay = QHBoxLayout(self)
-        self.txt=myQLineEdit(self)
-        self.cmd= QToolButton(self)               
+        self.txt=myQLineEdit(self)       
+        sizePolicy = QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.txt.sizePolicy().hasHeightForWidth())
+        self.txt.setSizePolicy(sizePolicy)
+        self.txt.setReadOnly(True)
+        self.cmd= QToolButton(self)             
+        self.cmd.released.connect(self.on_cmd_released)
         icon = QIcon()
         icon.addPixmap(QPixmap(":/xulpymoney/add.png"), QIcon.Normal, QIcon.Off)
         self.cmd.setIcon(icon)     
         lay.addWidget(self.txt)
         lay.addWidget(self.cmd)
 
-    def setConversion(self, mem, from_currency, to_currency, dt, example):
-        """Llena el texto con los datos de la conversi´on"""
-        self.mem=mem
-        self.mfrom=Money(self.mem, example, from_currency)
-        self.txt.setText(self.mfrom.conversionFactor(to_currency, dt))
-        self.txt.setToolTip(self.tr("Factor conversion from {} to {} at {}. So {} are {}.".format(from_currency.id, to_currency.id, dt, self.mfrom, self.mfrom.convert_from_datetime(to_currency, dt))))
-
-    def setBackgroundRed(self, red):
-        if red==True:
-            css = """QLineEdit { background-color: rgb(255, 182, 182); }"""
+    def setConversion(self, mfrom, tcurrency, dt, factor=None):
+        """Llena el texto con los datos de la conversi´on. Can be invoked several times
+        Si se pasa el parametro factor, ya se calculan los datos, Se usa para modificaciones"""
+        self.mem=mfrom.mem
+        self.mfrom=mfrom
+        self.tcurrency=tcurrency
+        self.dt=dt
+        if factor==None:
+            self.factor=self.mfrom.conversionFactor(tcurrency, dt)
         else:
-            css=""
-        self.setStyleSheet(css)
- 
-        
-    def decimal(self):
-        """Devuelve el decimal o un None si hay error"""
-        try:
-            return Decimal(self.text())
-        except:
-            return None
+            self.factor=factor
+        self.txt.setText(self.mfrom.convert_from_factor(tcurrency, self.factor).amount)
+        self.txt.setToolTip(self.tr("Factor conversion from {} to {} at {} is {}. So {} are {}.".format(self.mfrom.currency.id, tcurrency.id, dt, self.factor,  self.mfrom, self.mfrom.convert_from_factor(tcurrency, self.factor))))
 
-    def setText(self, num):
-        """This funcion  overrides QLineEdit settext and lets enter numbers, int, float, decimals"""
-        super(myQLineEdit, self).setText(str(num))
-        
+    def decimal(self):
+        return self.txt.decimal()
+ 
+    def on_cmd_released(self):
+        if self.factor==None:
+            input=QInputDialog.getText(self,  "Xulpymoney",  self.tr("Please introduce the relation between {} and {}. To help you I set value at {}.".format(self.mfrom.currency.id, self.tcurrency.id, self.dt)), QLineEdit.Normal, str(self.mfrom.conversionFactor(self.tcurrency, self.dt)))
+        else:
+            input=QInputDialog.getText(self,  "Xulpymoney",  self.tr("Please change relation between {} and {} if necessary".format(self.mfrom.currency.id, self.tcurrency.id)), QLineEdit.Normal, str(self.factor))
+        if input[1]==True:
+            try:
+                self.setConversion(self.mfrom, self.tcurrency, self.dt, Decimal(input[0]))
+            except:
+                pass

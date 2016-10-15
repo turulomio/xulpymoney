@@ -13,6 +13,11 @@ class frmInvestmentOperationsAdd(QDialog, Ui_frmInvestmentOperationsAdd):
         self.operinversion=operinversion
   
         self.wdgDT.show_microseconds(False)
+        self.lblValorAccion.setText(self.tr("Price in {}".format(self.inversion.product.currency.symbol)))
+        self.lblConversion.setText(self.tr("Price converted to {}".format(self.inversion.account.currency.symbol)))
+        if self.inversion.product.currency==self.inversion.account.currency:
+            self.lblConversion.hide()
+            self.wdgCurrencyConversion.hide()
         
         if self.operinversion==None:#nuevo movimiento
             self.type=1
@@ -21,25 +26,25 @@ class frmInvestmentOperationsAdd(QDialog, Ui_frmInvestmentOperationsAdd):
             self.lblTitulo.setText(self.tr("New operation of {}").format(self.inversion.name))
             self.mem.tiposoperaciones.qcombobox_investments_operations(self.cmbTiposOperaciones)
             self.wdgDT.set(self.mem)
+            self.wdgCurrencyConversion.setConversion(Money(self.mem, self.txtValorAccion.decimal(), self.inversion.product.currency), self.inversion.account.currency, self.wdgDT.datetime(), None)
         else:#editar movimiento
             self.type=2
             self.lblTitulo.setText(self.tr("{} operation edition").format(self.inversion.name))
             self.mem.tiposoperaciones.qcombobox_investments_operations(self.cmbTiposOperaciones, self.operinversion.tipooperacion)
             self.wdgDT.set(self.mem, self.operinversion.datetime, self.mem.localzone)
+            self.wdgCurrencyConversion.setConversion(Money(self.mem, self.txtValorAccion.decimal(), self.inversion.product.currency), self.inversion.account.currency, self.wdgDT.datetime(), self.operinversion.currency_conversion)
             self.txtImporte.setText(self.operinversion.importe)
             self.txtImpuestos.setText(self.operinversion.impuestos)
             self.txtComision.setText(self.operinversion.comision)
             self.txtValorAccion.setText(self.operinversion.valor_accion)
             self.txtAcciones.setText(self.operinversion.acciones)
-            self.wdgCurrencyConversion.setConversion(self.mem, self.operinversion.inversion.product.currency, self.operinversion.inversion.account.currency, self.operinversion.datetime, self.txtValorAccion.decimal())
-            
     def on_cmd_released(self):        
         id_tiposoperaciones=int(self.cmbTiposOperaciones.itemData(self.cmbTiposOperaciones.currentIndex()))
         self.operinversion.tipooperacion=self.mem.tiposoperaciones.find_by_id(id_tiposoperaciones)
         self.operinversion.impuestos=self.txtImpuestos.decimal()
         self.operinversion.comision=self.txtComision.decimal()
         self.operinversion.valor_accion=self.txtValorAccion.decimal()
-        self.operinversion.currency_conversion=self.txtCurrencyConversion.decimal()
+        self.operinversion.currency_conversion=self.wdgCurrencyConversion.factor
         self.operinversion.acciones=self.txtAcciones.decimal()
         if id_tiposoperaciones==5: #Venta
             self.operinversion.importe=self.txtImporteBruto.decimal()
@@ -125,6 +130,7 @@ class frmInvestmentOperationsAdd(QDialog, Ui_frmInvestmentOperationsAdd):
         
         
     def on_txtValorAccion_textChanged(self):
+        self.wdgCurrencyConversion.setConversion(Money(self.mem, self.txtValorAccion.decimal(), self.inversion.product.currency), self.inversion.account.currency, self.wdgDT.datetime(), self.wdgCurrencyConversion.factor)
         self.on_txtAcciones_textChanged()
         
     def on_txtComision_textChanged(self):

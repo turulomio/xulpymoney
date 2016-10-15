@@ -1060,7 +1060,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="541"/>
+        <location filename="../ui/frmMain.py" line="527"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1110,27 +1110,27 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="358"/>
+        <location filename="../ui/frmMain.py" line="344"/>
         <source>Syncing databases from {} ({}) to {} ({})</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="360"/>
+        <location filename="../ui/frmMain.py" line="346"/>
         <source>Processing products...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="541"/>
+        <location filename="../ui/frmMain.py" line="527"/>
         <source>Purging innecesary data from all products</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="543"/>
+        <location filename="../ui/frmMain.py" line="529"/>
         <source>Purging quotes from all products</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="550"/>
+        <location filename="../ui/frmMain.py" line="536"/>
         <source>Purging quotes from {0}.
 Total purged in global process: {1}</source>
         <translation type="unfinished"></translation>
@@ -2473,38 +2473,48 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmInvestmentOperationsAdd.py" line="21"/>
+        <location filename="../ui/frmInvestmentOperationsAdd.py" line="26"/>
         <source>New operation of {}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmInvestmentOperationsAdd.py" line="26"/>
+        <location filename="../ui/frmInvestmentOperationsAdd.py" line="32"/>
         <source>{} operation edition</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmInvestmentOperationsAdd.py" line="51"/>
+        <location filename="../ui/frmInvestmentOperationsAdd.py" line="56"/>
         <source>Sale Shares number must be negative</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmInvestmentOperationsAdd.py" line="60"/>
+        <location filename="../ui/frmInvestmentOperationsAdd.py" line="65"/>
         <source>Purchase shares number must be positive</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmInvestmentOperationsAdd.py" line="79"/>
+        <location filename="../ui/frmInvestmentOperationsAdd.py" line="84"/>
         <source>Share price, taxes and comission must be positive amounts</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmInvestmentOperationsAdd.py" line="69"/>
+        <location filename="../ui/frmInvestmentOperationsAdd.py" line="74"/>
         <source>Added shares number must be positive</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../ui/frmInvestmentOperationsAdd.ui" line="120"/>
         <source>Price in account currency</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/frmInvestmentOperationsAdd.py" line="16"/>
+        <source>Price in {}</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/frmInvestmentOperationsAdd.py" line="17"/>
+        <source>Price converted to {}</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2859,7 +2869,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="154"/>
+        <location filename="../ui/frmMain.py" line="140"/>
         <source>Investment calculator</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2914,7 +2924,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="571"/>
+        <location filename="../ui/frmMain.py" line="557"/>
         <source>{0} quotes have been purged from {1} products</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2954,32 +2964,32 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="434"/>
+        <location filename="../ui/frmMain.py" line="420"/>
         <source>There aren&apos;t favorite products</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="74"/>
+        <location filename="../ui/frmMain.py" line="60"/>
         <source>Please introduce Admin Mode password</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="78"/>
+        <location filename="../ui/frmMain.py" line="64"/>
         <source>Xulpymoney 2010-{0} &#xa9; (Admin mode)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="83"/>
+        <location filename="../ui/frmMain.py" line="69"/>
         <source>You have set the admin mode password. Please login again</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="91"/>
+        <location filename="../ui/frmMain.py" line="77"/>
         <source>You are logged as an administrator</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="95"/>
+        <location filename="../ui/frmMain.py" line="81"/>
         <source>Bad &apos;Admin mode&apos; password. You are logged as a normal user</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3064,7 +3074,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="349"/>
+        <location filename="../ui/frmMain.py" line="335"/>
         <source>Databases can&apos;t be the same</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3074,7 +3084,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="334"/>
+        <location filename="../ui/frmMain.py" line="320"/>
         <source>Please login to the source xulpymoney database</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3084,7 +3094,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="320"/>
+        <location filename="../ui/frmMain.py" line="306"/>
         <source>Xulpymoney Simulations</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3119,7 +3129,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmMain.py" line="88"/>
+        <location filename="../ui/frmMain.py" line="74"/>
         <source>Xulpymoney 2010-{0} &#xc2;&#xa9; (Admin mode)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5299,8 +5309,18 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>wdgCurrencyConversion</name>
     <message>
-        <location filename="../ui/wdgCurrencyConversion.py" line="23"/>
-        <source>Factor conversion from {} to {} at {}. So {} are {}.</source>
+        <location filename="../ui/wdgCurrencyConversion.py" line="37"/>
+        <source>Factor conversion from {} to {} at {} is {}. So {} are {}.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/wdgCurrencyConversion.py" line="44"/>
+        <source>Please introduce the relation between {} and {}. To help you I set value at {}.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/wdgCurrencyConversion.py" line="46"/>
+        <source>Please change relation between {} and {} if necessary</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
