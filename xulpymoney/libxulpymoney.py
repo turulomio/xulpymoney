@@ -360,41 +360,39 @@ class SetInvestments(SetCommons):
         table.setRowCount(len(self.arr))
         table.applySettings()
         table.clearContents()
-        d={"sumpendiente":Money(self.mem), "sumdiario":Money(self.mem), "suminvertido":Money(self.mem), "sumpositivos":Money(self.mem), "sumnegativos":Money(self.mem)} 
+        d={"sumpendiente":Money(self.mem), "sumdiario":Money(self.mem), "suminvertido":Money(self.mem), "sumpositivos":Money(self.mem), "sumnegativos":Money(self.mem)} #Sera localcurrency
         for i, inv in enumerate(self.arr):
             table.setItem(i, 0, QTableWidgetItem("{0} ({1})".format(inv.name, inv.account.name)))            
             table.setItem(i, 1, qdatetime(inv.product.result.basic.last.datetime, inv.product.stockmarket.zone))
             table.setItem(i, 2, inv.product.currency.qtablewidgetitem(inv.product.result.basic.last.quote,  6))#Se debería recibir el parametro currency
             
-            diario=inv.diferencia_saldo_diario()
-            mdiario=Money(self.mem, diario, inv.product.currency)
+            diario=inv.diferencia_saldo_diario().local()
             try:
-                d["sumdiario"]=d["sumdiario"]+mdiario
+                d["sumdiario"]=d["sumdiario"]+diario
             except:
                 pass
-            table.setItem(i, 3, mdiario.local().qtablewidgetitem())
+            table.setItem(i, 3, diario.qtablewidgetitem())
             table.setItem(i, 4, qtpc(inv.product.result.basic.tpc_diario()))
             
-            mbalance=Money(self.mem, inv.balance(), inv.product.currency)
+            balance=inv.balance().local()
+            table.setItem(i, 5, balance.qtablewidgetitem())
             
+            invertido=inv.invertido().local()
+            d["suminvertido"]=d["suminvertido"]+invertido
             
-            table.setItem(i, 5, mbalance.local().qtablewidgetitem())
-            
-            minvertido=Money(self.mem, inv.invertido(), inv.product.currency)
-            d["suminvertido"]=d["suminvertido"]+minvertido
-            
-            pendiente=inv.pendiente()
-            mpendiente=Money(self.mem, pendiente, inv.product.currency)
-            if pendiente>0:
-                d["sumpositivos"]=d["sumpositivos"]+mpendiente
+            pendiente=inv.pendiente().local()
+            if pendiente.isGETZero():
+                d["sumpositivos"]=d["sumpositivos"]+pendiente
             else:
-                d["sumnegativos"]=d["sumnegativos"]+mpendiente
-            d["sumpendiente"]=d["sumpendiente"]+mpendiente
-            table.setItem(i, 6, mpendiente.local().qtablewidgetitem())
+                d["sumnegativos"]=d["sumnegativos"]+pendiente
+            d["sumpendiente"]=d["sumpendiente"]+pendiente
+            table.setItem(i, 6, pendiente.qtablewidgetitem())
+            
             tpc_invertido=inv.tpc_invertido()
             table.setItem(i, 7, qtpc(tpc_invertido))
             if self.mem.gainsyear==True and inv.op_actual.less_than_a_year()==True:
                 table.item(i, 7).setIcon(QIcon(":/xulpymoney/new.png"))
+            
             tpc_venta=inv.percentage_to_selling_point()
             table.setItem(i, 8, qtpc(tpc_venta))
             if inv.selling_expiration!=None:
@@ -465,7 +463,7 @@ class SetInvestments(SetCommons):
     def average_age(self):
         """Average age of the investments in this set in days"""
         #Extracts all currentinvestmentoperations
-        set=SetInvestmentOperationsCurrent(self.mem)
+        set=SetInvestmentOperationsCurrentHeterogeneus(self.mem)
         for inv in self.arr:
             for o in inv.op_actual.arr:
                 set.arr.append(o)
@@ -1437,14 +1435,20 @@ class SetIO:
                 
     def clone(self):
         """Links all items in self. arr to a new set. Linked points the same object"""
-        result=self.__class__(self.mem)
+        if self.__class__==SetInvestmentOperationsCurrentHeterogeneus:
+            result=self.__class__(self.mem)
+        else:
+            result=self.__class__(self.mem, self.investment)
         for a in self.arr:
             result.append(a)
         return result
                 
     def clone_from_datetime(self, dt):
         """Función que devuelve otro SetInvestmentOperations con las oper que tienen datetime mayor o igual a la pasada como parametro."""
-        result=self.__class__(self.mem)#Para que coja la clase del objeto que lo invoca
+        if self.__class__==SetInvestmentOperationsCurrentHeterogeneus:
+            result=self.__class__(self.mem)
+        else:
+            result=self.__class__(self.mem, self.investment)
         if dt==None:
             return self.clone()
         for a in self.arr:
@@ -1455,14 +1459,20 @@ class SetIO:
                 
     def copy(self):
         """Copy all items in self. arr. Copy is generate a copy in a diferent memoriy direction"""
-        result=self.__class__(self.mem)
+        if self.__class__==SetInvestmentOperationsCurrentHeterogeneus:
+            result=self.__class__(self.mem)
+        else:
+            result=self.__class__(self.mem, self.investment)
         for a in self.arr:
             result.append(a.clone())
         return result
                 
     def copy_from_datetime(self, dt):
         """Función que devuelve otro SetInvestmentOperations con las oper que tienen datetime mayor o igual a la pasada como parametro."""
-        result=self.__class__(self.mem)#Para que coja la clase del objeto que lo invoca
+        if self.__class__==SetInvestmentOperationsCurrentHeterogeneus:
+            result=self.__class__(self.mem)
+        else:
+            result=self.__class__(self.mem, self.investment)
         if dt==None:
             return self.copy()
         for a in self.arr:
@@ -1486,7 +1496,8 @@ class SetIO:
         result.arr=list(s)
         return result
 
-class SetInvestmentOperations(SetIO):       
+
+class SetInvestmentOperationsHeterogeneus(SetIO):       
     """Clase es un array ordenado de objetos newInvestmentOperation"""
     def __init__(self, mem):
         SetIO.__init__(self, mem)
@@ -1511,114 +1522,6 @@ class SetInvestmentOperations(SetIO):
         (io.inversion.op_actual,  io.inversion.op_historica)=io.inversion.op.calcular()
         io.inversion.actualizar_cuentasoperaciones_asociadas()#Regenera toda la inversi´on.
         
-    def calcular(self):
-        """Realiza los cálculos y devuelve dos arrays"""
-        sioh=SetInvestmentOperationsHistorical(self.mem)
-        sioa=SetInvestmentOperationsCurrent(self.mem)       
-        for o in self.arr:      
-#            print ("Despues ",  sioa.acciones(), o)              
-            if o.acciones>=0:#Compra
-                sioa.arr.append(InvestmentOperationCurrent(self.mem).init__create(o, o.tipooperacion, o.datetime, o.inversion, o.acciones, o.importe, o.impuestos, o.comision, o.valor_accion,  o.show_in_ranges,  o.id))
-            else:#Venta
-                if abs(o.acciones)>sioa.acciones():
-                    print (o.acciones, sioa.acciones(),  o)
-                    print("No puedo vender más acciones que las que tengo. EEEEEEEEEERRRRRRRRRRRROOOOORRRRR")
-                    sys.exit(0)
-                sioa.historizar(o, sioh)
-        sioa.get_valor_benchmark(self.mem.data.benchmark)
-        return (sioa, sioh)
-#        
-#    def calcular(self ):
-#        """Realiza los calculos y devuelve dos arrys."""
-#        def comisiones_impuestos(dif, p, n):
-#            """Función que calcula lo simpuestos y las comisiones según el momento de actualizar
-#            en el que se encuentre"""
-#            (impuestos, comisiones)=(0, 0)
-#            if dif==0: #Coincide la compra con la venta 
-#                impuestos=n.impuestos+p.impuestos
-#                comisiones=n.comision+p.comision
-#                n.impuestos=0
-#                n.comision=0
-#                return (impuestos, comisiones)
-#            elif dif<0:
-#                """La venta no se ha acabado
-#                    Las comision de compra se meten, pero no las de venta"""
-#                impuestos=p.impuestos
-#                comisiones=p.comision
-#                p.impuestos=0
-#                p.comision=0#Aunque se borra pero se quita por que se ha cobrado
-#                return (impuestos, comisiones)
-#            elif(dif>0):
-#                """La venta se ha acabado y queda un nuevo p sin impuestos ni comision
-#                    Los impuestos y las comision se meten
-#                """
-#                impuestos=n.impuestos+p.impuestos
-#                comisiones=n.comision+p.comision
-#                n.impuestos=0
-#                n.comision=0
-#                p.impuestos=0
-#                p.comision=0
-#                return (impuestos, comisiones)
-#
-#            
-#        ##########################################
-#        operinversioneshistorica=SetInvestmentOperationsHistorical(self.mem)
-#        #Crea un array copia de self.arr, porque eran vinculos 
-#        self.order_by_datetime()
-#        arr=[]
-#        for a in self.arr:   
-#            arr.append(a.copy())
-#        arr=sorted(arr, key=lambda a:a.id) 
-#
-#
-#        while (True):#Bucle recursivo.            
-#            pos=[]
-#            for p in arr:
-#                if p.acciones>0:
-#                    pos.append(p)
-#            #Mira si hay negativos y sino sale
-#            n=None
-#            for neg in arr:
-#                if neg.acciones<0:
-#                    n=neg
-#                    break
-#            if n==None:
-#                break
-#            elif len(pos)==0:#Se qudaba pillado
-#                break
-#            
-#            #Solo impuestos y comisiones la primera vez
-#            for p in pos:
-#                dif=p.acciones+n.acciones
-#                (impuestos, comisiones)=comisiones_impuestos(dif, p, n)
-#                if dif==0: #Si es 0 se inserta el historico que coincide con la venta y se borra el registro negativ
-#                    operinversioneshistorica.append(InvestmentOperationHistorical(self.mem).init__create(n, n.inversion, p.datetime.date(), -n.acciones*n.valor_accion,n.tipooperacion, n.acciones, comisiones, impuestos, n.datetime.date(), p.valor_accion, n.valor_accion))
-#                    arr.remove(n)
-#                    arr.remove(p)
-#                    break
-#                elif dif<0:#   //Si es <0 es decir hay más acciones negativas que positivas. Se debe introducir en el historico la tmpoperinversion y borrarlo y volver a recorrer el bucle. Restando a n.acciones las acciones ya apuntadas en el historico
-#                    operinversioneshistorica.append(InvestmentOperationHistorical(self.mem).init__create(p, p.inversion, p.datetime.date(), p.acciones*n.valor_accion,n.tipooperacion, -p.acciones, comisiones, impuestos, n.datetime.date(), p.valor_accion, n.valor_accion))
-#                    arr.remove(p)
-#                    n.acciones=n.acciones+p.acciones#ya que n.acciones es negativo
-#
-#                elif(dif>0):
-#                    """Cuando es >0 es decir hay mas acciones positivos se añade el registro en el historico 
-#                    con los datos de la operacion negativa en su totalidad. Se borra el registro de negativos y 
-#                    de positivos en operinversionesactual y se inserta uno con los datos positivos menos lo 
-#                    quitado por el registro negativo. Y se sale del bucle. 
-#                    //Aqui no se inserta la comision porque solo cuando se acaba las acciones positivos   """
-#                    operinversioneshistorica.append(InvestmentOperationHistorical(self.mem).init__create(p, n.inversion, p.datetime.date(), -n.acciones*n.valor_accion,n.tipooperacion, n.acciones, comisiones, impuestos, n.datetime.date(), p.valor_accion, n.valor_accion))
-#                    arr.remove(p)
-#                    arr.remove(n)
-#                    arr.append(InvestmentOperation(self.mem).init__create( p.tipooperacion, p.datetime, p.inversion,  p.acciones-(-n.acciones), (p.acciones-(-n.acciones))*n.valor_accion,  0, 0, p.valor_accion, "",  p.id))
-#                    arr=sorted(arr, key=lambda a:a.id)              
-#                    break;
-#        #Crea array operinversionesactual, ya que arr es operinversiones
-#        operinversionesactual=SetInvestmentOperationsCurrent(self.mem)
-#        for a in arr:
-#            operinversionesactual.append(InvestmentOperationCurrent(self.mem).init__create(a.id, a.tipooperacion, a.datetime, a.inversion,  a.acciones, a.importe,  a.impuestos, a.comision, a.valor_accion))
-#        return (operinversionesactual, operinversioneshistorica)
-#            
 
         
     def myqtablewidget(self, tabla):
@@ -1675,18 +1578,81 @@ class SetInvestmentOperations(SetIO):
                 return o
         return None
 
-    def isHomogeneous(self):
-        """Devuelve true si todas las inversiones son de la misma inversion"""
-        if len(self.arr)==0:
-            return True
-        inversion=self.arr[0].inversion
-        for i in range(1, len(self.arr)):
-            if self.arr[i].inversion!=inversion:
-                return False
-        return True
 
 
-class SetInvestmentOperationsCurrent(SetIO):    
+class SetInvestmentOperationsHomogeneus(SetInvestmentOperationsHeterogeneus):
+    def __init__(self, mem, investment):
+        SetInvestmentOperationsHeterogeneus.__init__(self, mem)
+        self.investment=investment
+
+
+    def calcular(self):
+        """Realiza los cálculos y devuelve dos arrays"""
+        sioh=SetInvestmentOperationsHistoricalHomogeneus(self.mem, self.investment)
+        sioa=SetInvestmentOperationsCurrentHomogeneus(self.mem, self.investment)       
+        for o in self.arr:      
+#            print ("Despues ",  sioa.acciones(), o)              
+            if o.acciones>=0:#Compra
+                sioa.arr.append(InvestmentOperationCurrent(self.mem).init__create(o, o.tipooperacion, o.datetime, o.inversion, o.acciones, o.importe, o.impuestos, o.comision, o.valor_accion,  o.show_in_ranges,  o.id))
+            else:#Venta
+                if abs(o.acciones)>sioa.acciones():
+                    print (o.acciones, sioa.acciones(),  o)
+                    print("No puedo vender más acciones que las que tengo. EEEEEEEEEERRRRRRRRRRRROOOOORRRRR")
+                    sys.exit(0)
+                sioa.historizar(o, sioh)
+        sioa.get_valor_benchmark(self.mem.data.benchmark)
+        return (sioa, sioh)
+
+        
+    def myqtablewidget(self, tabla, show_accounts=False):
+        """Section es donde guardar en el config file, coincide con el nombre del formulario en el que está la tabla"""
+        self.order_by_datetime()
+        diff=0
+        if show_accounts==True:
+            diff=2
+        tabla.setColumnCount(8+diff)
+        tabla.setHorizontalHeaderItem(0, QTableWidgetItem(QApplication.translate("Core", "Date" )))
+        if show_accounts==False:
+            tabla.setHorizontalHeaderItem(diff-1, QTableWidgetItem(QApplication.translate("Core", "Product" )))
+            tabla.setHorizontalHeaderItem(diff, QTableWidgetItem(QApplication.translate("Core", "Account" )))
+        tabla.setHorizontalHeaderItem(diff+1, QTableWidgetItem(QApplication.translate("Core", "Operation type" )))
+        tabla.setHorizontalHeaderItem(diff+2, QTableWidgetItem(QApplication.translate("Core", "Shares" )))
+        tabla.setHorizontalHeaderItem(diff+3, QTableWidgetItem(QApplication.translate("Core", "Price" )))
+        tabla.setHorizontalHeaderItem(diff+4, QTableWidgetItem(QApplication.translate("Core", "Amount" )))
+        tabla.setHorizontalHeaderItem(diff+5, QTableWidgetItem(QApplication.translate("Core", "Comission" )))
+        tabla.setHorizontalHeaderItem(diff+6, QTableWidgetItem(QApplication.translate("Core", "Taxes" )))
+        tabla.setHorizontalHeaderItem(diff+7, QTableWidgetItem(QApplication.translate("Core", "Total" )))
+        #DATA 
+        tabla.applySettings()
+        tabla.clearContents()  
+        tabla.setRowCount(len(self.arr))
+        for rownumber, a in enumerate(self.arr):
+            tabla.setItem(rownumber, 0, qdatetime(a.datetime, a.inversion.product.stockmarket.zone))
+            if self.mem.gainsyear==True and a.less_than_a_year()==True:
+                tabla.item(rownumber, 0).setIcon(QIcon(":/xulpymoney/new.png"))
+            if show_accounts==False:
+                tabla.setItem(rownumber, diff-1, qleft(a.inversion.name))
+                tabla.setItem(rownumber, diff, qleft(a.inversion.account.name))
+                
+            tabla.setItem(rownumber, diff+1, QTableWidgetItem(a.tipooperacion.name))
+            if a.show_in_ranges==True:
+                tabla.item(rownumber, diff+1).setIcon(QIcon(":/xulpymoney/eye.png"))
+            else:
+                tabla.item(rownumber, diff+1).setIcon(QIcon(":/xulpymoney/eye_red.png"))
+            
+            tabla.setItem(rownumber, diff+2, qright(a.acciones))
+            tabla.setItem(rownumber, diff+3, a.inversion.product.currency.qtablewidgetitem(a.valor_accion))
+            tabla.setItem(rownumber, diff+4, a.inversion.product.currency.qtablewidgetitem(a.importe))
+            tabla.setItem(rownumber, diff+5, a.inversion.product.currency.qtablewidgetitem(a.comision))
+            tabla.setItem(rownumber, diff+6, a.inversion.product.currency.qtablewidgetitem(a.impuestos))
+            if a.acciones>=0:
+                tabla.setItem(rownumber, diff+7, a.inversion.product.currency.qtablewidgetitem(a.importe+a.comision+a.impuestos))
+            else:
+                tabla.setItem(rownumber, diff+7, a.inversion.product.currency.qtablewidgetitem(a.importe-a.comision-a.impuestos))
+
+
+
+class SetInvestmentOperationsCurrentHeterogeneus(SetIO):    
     """Clase es un array ordenado de objetos newInvestmentOperation"""
     def __init__(self, mem):
         SetIO.__init__(self, mem)
@@ -1702,12 +1668,12 @@ class SetInvestmentOperationsCurrent(SetIO):
         (sumbalance, sumbalanceage)=(Decimal(0), Decimal(0))
         for o in self.arr:
             balance=o.balance(o.inversion.product.result.basic.last)
-            sumbalance=sumbalance+balance
-            sumbalanceage=sumbalanceage+balance*o.age()
+            sumbalance=sumbalance+balance.amount
+            sumbalanceage=sumbalanceage+balance.amount*o.age()
         if sumbalance!=Decimal(0):
             return round(sumbalanceage/sumbalance, 2)
         else:
-            return 0
+            return Decimal(0)
             
     def average_price(self):
         """Calcula el precio medio de compra"""
@@ -1735,20 +1701,21 @@ class SetInvestmentOperationsCurrent(SetIO):
             
     
     def invertido(self):
-        resultado=0
+        """Al ser heterogeneo da el resultado en Money local"""
+        resultado=Money(self.mem, 0, self.mem.localcurrency)
         for o in self.arr:
-            resultado=resultado+o.invertido()
+            resultado=resultado+o.invertido().local()
         return resultado
         
-    def isHomogeneous(self):
-        """Devuelve true si todas las inversiones son de la misma inversion"""
-        if len(self.arr)==0:
-            return True
-        inversion=self.arr[0].inversion
-        for i in range(1, len(self.arr)):
-            if self.arr[i].inversion!=inversion:
-                return False
-        return True
+#    def isHomogeneous(self):
+#        """Devuelve true si todas las inversiones son de la misma inversion"""
+#        if len(self.arr)==0:
+#            return True
+#        inversion=self.arr[0].inversion
+#        for i in range(1, len(self.arr)):
+#            if self.arr[i].inversion!=inversion:
+#                return False
+#        return True
 
     def last(self):
         """Returns last current operation with valor_accion greater than 0"""
@@ -1838,101 +1805,10 @@ class SetInvestmentOperationsCurrent(SetIO):
         tabla.setItem(self.length(), diff+5, a.inversion.product.currency.qtablewidgetitem(sumpendiente))
         tabla.setItem(self.length(), diff+7, qtpc(self.tpc_tae()))
         tabla.setItem(self.length(), diff+8, qtpc(self.tpc_total(sumpendiente, suminvertido)))
-        
-    def myqtablewidget_homogeneus(self,  tabla,  show_accounts=False, quote=None, account_currency=False):
-        """Función que rellena una tabla pasada como parámetro con datos procedentes de un array de objetos
-        InvestmentOperationCurrent y dos valores de mystocks para rellenar los tpc correspodientes
-        
-        Se dibujan las columnas pero las propiedad alternate color... deben ser en designer
-        
-        Parámetros
-            - tabla myQTableWidget en la que rellenar los datos
-            - quote, si queremos cargar las operinversiones con un valor determinado se pasar´a la quote correspondiente. Es un Objeto quote
-            - account_currency. Si es Falsa muestra la moneda de la inversi´on si es verdadera con la currency de la cuentaº
-        """
-        if show_accounts==True:
-            diff=2
-        else:
-            diff=0
-            
-        tabla.setColumnCount(10+diff)
-        tabla.setHorizontalHeaderItem(0, QTableWidgetItem(QApplication.translate("Core", "Date" )))
-        if show_accounts==True:
-            tabla.setHorizontalHeaderItem(diff-1, QTableWidgetItem(QApplication.translate("Core", "Product" )))
-            tabla.setHorizontalHeaderItem(diff, QTableWidgetItem(QApplication.translate("Core", "Account" )))
-        tabla.setHorizontalHeaderItem(diff+1, QTableWidgetItem(QApplication.translate("Core", "Shares" )))
-        tabla.setHorizontalHeaderItem(diff+2, QTableWidgetItem(QApplication.translate("Core", "Price" )))
-        tabla.setHorizontalHeaderItem(diff+3, QTableWidgetItem(QApplication.translate("Core", "Invested" )))
-        tabla.setHorizontalHeaderItem(diff+4, QTableWidgetItem(QApplication.translate("Core", "Current balance" )))
-        tabla.setHorizontalHeaderItem(diff+5, QTableWidgetItem(QApplication.translate("Core", "Pending" )))
-        tabla.setHorizontalHeaderItem(diff+6, QTableWidgetItem(QApplication.translate("Core", "% annual" )))
-        tabla.setHorizontalHeaderItem(diff+7, QTableWidgetItem(QApplication.translate("Core", "% APR" )))
-        tabla.setHorizontalHeaderItem(diff+8, QTableWidgetItem(QApplication.translate("Core", "% Total" )))
-        tabla.setHorizontalHeaderItem(diff+9, QTableWidgetItem(QApplication.translate("Core", "Benchmark" )))
-        #DATA
-        if self.length()==0:
-            tabla.setRowCount(0)
-            return
-            
 
-        if quote==None:
-            quote=self.arr[0].inversion.product.result.basic.last
-        
-        if account_currency==False:
-            currency=self.arr[0].inversion.product.currency
-        else:
-            currency=self.arr[0].inversion.account.currency
-        
-        [sumacciones, sum_accionesXvalor, sumsaldo, sumpendiente, suminvertido]=(Decimal(), Money(self.mem, 0, currency), Money(self.mem, 0, currency), Money(self.mem, 0, currency), Money(self.mem, 0, currency))
-        
-        tabla.applySettings()
-        tabla.clearContents()
-        tabla.setRowCount(self.length()+1)
-        for rownumber, a in enumerate(self.arr):
-            sumacciones=sumacciones+a.acciones
-            balance=a.balance(quote)
-            pendiente=a.pendiente(quote)
-            invertido=a.invertido()
-    
-            sumsaldo=sumsaldo+balance
-            sumpendiente=sumpendiente+pendiente
-            suminvertido=suminvertido+invertido
-            sum_accionesXvalor=sum_accionesXvalor+a.acciones*a.valor_accion
-    
-            tabla.setItem(rownumber, 0, qdatetime(a.datetime, self.mem.localzone))
-            if self.mem.gainsyear==True and a.less_than_a_year()==True:
-                tabla.item(rownumber, 0).setIcon(QIcon(":/xulpymoney/new.png"))
-            if show_accounts==True:
-                tabla.setItem(rownumber, diff-1, qleft(a.inversion.name))
-                tabla.setItem(rownumber, diff, qleft(a.inversion.account.name))
-            tabla.setItem(rownumber, diff+1, qright("{0:.6f}".format(a.acciones)))
-            tabla.setItem(rownumber, diff+2, a.inversion.product.currency.qtablewidgetitem(a.valor_accion, 6))
-            tabla.setItem(rownumber, diff+3, a.inversion.product.currency.qtablewidgetitem(invertido))
-            tabla.setItem(rownumber, diff+4, a.inversion.product.currency.qtablewidgetitem(balance))
-            tabla.setItem(rownumber, diff+5, a.inversion.product.currency.qtablewidgetitem(pendiente))
-            tabla.setItem(rownumber, diff+6, qtpc(a.tpc_anual(quote.quote, a.inversion.product.result.basic.endlastyear.quote)))
-            tabla.setItem(rownumber, diff+7, qtpc(a.tpc_tae(quote.quote)))
-            tabla.setItem(rownumber, diff+8, qtpc(a.tpc_total(quote.quote)))
-            if a.referenciaindice==None:
-                tabla.setItem(rownumber, diff+9, self.mem.data.benchmark.currency.qtablewidgetitem(None))
-            else:
-                tabla.setItem(rownumber, diff+9, self.mem.data.benchmark.currency.qtablewidgetitem(a.referenciaindice.quote))
-                
-        tabla.setItem(self.length(), diff+0, QTableWidgetItem(("TOTAL")))
-        tabla.setItem(self.length(), diff+1, qright(str(sumacciones)))
-        if sumacciones==0:
-            tabla.setItem(self.length(), diff+2, a.inversion.product.currency.qtablewidgetitem(0))
-        else:
-            tabla.setItem(self.length(), diff+2, a.inversion.product.currency.qtablewidgetitem(sum_accionesXvalor/sumacciones, 6))
-        tabla.setItem(self.length(), diff+3, a.inversion.product.currency.qtablewidgetitem(suminvertido))
-        tabla.setItem(self.length(), diff+4, a.inversion.product.currency.qtablewidgetitem(sumsaldo))
-        tabla.setItem(self.length(), diff+5, a.inversion.product.currency.qtablewidgetitem(sumpendiente))
-        tabla.setItem(self.length(), diff+7, qtpc(self.tpc_tae()))
-        tabla.setItem(self.length(), diff+8, qtpc(self.tpc_total(sumpendiente, suminvertido)))
-        return (sumacciones, suminvertido, sumpendiente)
 
     def pendiente(self, lastquote):
-        resultado=0
+        resultado=Money(self.mem, 0, self.inversion.product.currency)
         for o in self.arr:
             resultado=resultado+o.pendiente(lastquote)
         return resultado
@@ -1941,8 +1817,8 @@ class SetInvestmentOperationsCurrent(SetIO):
         suminvertido=0
         invertidoxtae=0
         for o in self.arr:
-            suminvertido=suminvertido+o.invertido()
-            invertidoxtae=invertidoxtae+o.invertido()*o.tpc_tae(o.inversion.product.result.basic.last.quote)
+            suminvertido=suminvertido+o.invertido().amount
+            invertidoxtae=invertidoxtae+o.invertido().amount*o.tpc_tae(o.inversion.product.result.basic.last.quote)
         if suminvertido==0:
             return None
         return invertidoxtae/suminvertido
@@ -2016,18 +1892,123 @@ class SetInvestmentOperationsCurrent(SetIO):
             print ("  - ", oia)
         
         
- 
-class SetInvestmentOperationsHistorical(SetIO):       
+class SetInvestmentOperationsCurrentHomogeneus(SetInvestmentOperationsCurrentHeterogeneus):
+    def __init__(self, mem, investment):
+        SetInvestmentOperationsCurrentHeterogeneus.__init__(self, mem)
+        self.investment=investment
+
+    def invertido(self):
+        """Al ser homegeneo da el resultado en Money del producto"""
+        resultado=Money(self.mem, 0, self.investment.product.currency)
+        for o in self.arr:
+            resultado=resultado+o.invertido()
+        return resultado
+        
+    def myqtablewidget(self,  tabla,  show_accounts=False, quote=None, account_currency=False):
+        """Función que rellena una tabla pasada como parámetro con datos procedentes de un array de objetos
+        InvestmentOperationCurrent y dos valores de mystocks para rellenar los tpc correspodientes
+        
+        Se dibujan las columnas pero las propiedad alternate color... deben ser en designer
+        
+        Parámetros
+            - tabla myQTableWidget en la que rellenar los datos
+            - quote, si queremos cargar las operinversiones con un valor determinado se pasar´a la quote correspondiente. Es un Objeto quote
+            - account_currency. Si es Falsa muestra la moneda de la inversi´on si es verdadera con la currency de la cuentaº
+        """
+        if show_accounts==True:
+            diff=2
+        else:
+            diff=0
+            
+        tabla.setColumnCount(10+diff)
+        tabla.setHorizontalHeaderItem(0, QTableWidgetItem(QApplication.translate("Core", "Date" )))
+        if show_accounts==True:
+            tabla.setHorizontalHeaderItem(diff-1, QTableWidgetItem(QApplication.translate("Core", "Product" )))
+            tabla.setHorizontalHeaderItem(diff, QTableWidgetItem(QApplication.translate("Core", "Account" )))
+        tabla.setHorizontalHeaderItem(diff+1, QTableWidgetItem(QApplication.translate("Core", "Shares" )))
+        tabla.setHorizontalHeaderItem(diff+2, QTableWidgetItem(QApplication.translate("Core", "Price" )))
+        tabla.setHorizontalHeaderItem(diff+3, QTableWidgetItem(QApplication.translate("Core", "Invested" )))
+        tabla.setHorizontalHeaderItem(diff+4, QTableWidgetItem(QApplication.translate("Core", "Current balance" )))
+        tabla.setHorizontalHeaderItem(diff+5, QTableWidgetItem(QApplication.translate("Core", "Pending" )))
+        tabla.setHorizontalHeaderItem(diff+6, QTableWidgetItem(QApplication.translate("Core", "% annual" )))
+        tabla.setHorizontalHeaderItem(diff+7, QTableWidgetItem(QApplication.translate("Core", "% APR" )))
+        tabla.setHorizontalHeaderItem(diff+8, QTableWidgetItem(QApplication.translate("Core", "% Total" )))
+        tabla.setHorizontalHeaderItem(diff+9, QTableWidgetItem(QApplication.translate("Core", "Benchmark" )))
+        #DATA
+        if self.length()==0:
+            tabla.setRowCount(0)
+            return
+            
+
+        if quote==None:
+            quote=self.arr[0].inversion.product.result.basic.last
+        
+        if account_currency==False:
+            currency=self.arr[0].inversion.product.currency
+        else:
+            currency=self.arr[0].inversion.account.currency
+        
+        [sumacciones, sum_accionesXvalor, sumsaldo, sumpendiente, suminvertido]=(Decimal(0), Decimal(0), Money(self.mem, 0, currency), Money(self.mem, 0, currency), Money(self.mem, 0, currency))
+        
+        tabla.applySettings()
+        tabla.clearContents()
+        tabla.setRowCount(self.length()+1)
+        for rownumber, a in enumerate(self.arr):
+            sumacciones=sumacciones+a.acciones
+            
+            balance=a.balance(quote).convert_from_datetime(currency)
+            pendiente=a.pendiente(quote).convert_from_datetime(currency)
+            invertido=a.invertido().convert_from_datetime(currency)
+    
+            sumsaldo=sumsaldo+balance
+            sumpendiente=sumpendiente+pendiente
+            suminvertido=suminvertido+invertido
+            sum_accionesXvalor=sum_accionesXvalor+a.acciones*a.valor_accion
+    
+            tabla.setItem(rownumber, 0, qdatetime(a.datetime, self.mem.localzone))
+            if self.mem.gainsyear==True and a.less_than_a_year()==True:
+                tabla.item(rownumber, 0).setIcon(QIcon(":/xulpymoney/new.png"))
+            if show_accounts==True:
+                tabla.setItem(rownumber, diff-1, qleft(a.inversion.name))
+                tabla.setItem(rownumber, diff, qleft(a.inversion.account.name))
+            tabla.setItem(rownumber, diff+1, qright("{0:.6f}".format(a.acciones)))
+            tabla.setItem(rownumber, diff+2, self.investment.product.currency.qtablewidgetitem(a.valor_accion, 6))
+            tabla.setItem(rownumber, diff+3, invertido.qtablewidgetitem())
+            tabla.setItem(rownumber, diff+4, balance.qtablewidgetitem())
+            tabla.setItem(rownumber, diff+5, pendiente.qtablewidgetitem())
+            tabla.setItem(rownumber, diff+6, qtpc(a.tpc_anual(quote.quote, self.investment.product.result.basic.endlastyear.quote)))
+            tabla.setItem(rownumber, diff+7, qtpc(a.tpc_tae(quote.quote)))
+            tabla.setItem(rownumber, diff+8, qtpc(a.tpc_total(quote.quote)))
+            if a.referenciaindice==None:
+                tabla.setItem(rownumber, diff+9, self.mem.data.benchmark.currency.qtablewidgetitem(None))
+            else:
+                tabla.setItem(rownumber, diff+9, self.mem.data.benchmark.currency.qtablewidgetitem(a.referenciaindice.quote))
+                
+        tabla.setItem(self.length(), diff+0, QTableWidgetItem(("TOTAL")))
+        tabla.setItem(self.length(), diff+1, qright(str(sumacciones)))
+        if sumacciones==0:
+            tabla.setItem(self.length(), diff+2, self.investment.product.currency.qtablewidgetitem(0))
+        else:
+            tabla.setItem(self.length(), diff+2, self.investment.product.currency.qtablewidgetitem(sum_accionesXvalor/sumacciones, 6))
+        tabla.setItem(self.length(), diff+3, suminvertido.qtablewidgetitem())
+        tabla.setItem(self.length(), diff+4, sumsaldo.qtablewidgetitem())
+        tabla.setItem(self.length(), diff+5, sumpendiente.qtablewidgetitem())
+        tabla.setItem(self.length(), diff+7, qtpc(self.tpc_tae()))
+        tabla.setItem(self.length(), diff+8, qtpc(self.tpc_total(sumpendiente.amount, suminvertido.amount)))
+        return (sumacciones, suminvertido, sumpendiente)
+
+class SetInvestmentOperationsHistoricalHeterogeneus(SetIO):       
     """Clase es un array ordenado de objetos newInvestmentOperation"""
     def __init__(self, mem):
         SetIO.__init__(self, mem)
 
         
     def consolidado_bruto(self,  year=None,  month=None):
-        resultado=0
+        resultado=Money(self.mem, 0, self.mem.localcurrency)
+        logging.error("ESTA MAL, HAY QUEW CALCULAR EL CONSOLIDADO BRUTO EN LA DATETIME DE LA OPERACICON")
         for o in self.arr:        
             if year==None:#calculo historico
-                resultado=resultado+o.consolidado_neto()
+                resultado=resultado+o.consolidado_bruto()
             else:                
                 if month==None:#Calculo anual
                     if o.fecha_venta.year==year:
@@ -2038,7 +2019,8 @@ class SetInvestmentOperationsHistorical(SetIO):
         return resultado        
         
     def consolidado_neto(self,  year=None,  month=None):
-        resultado=0
+        resultado=Money(self.mem, 0, self.mem.localcurrency)
+        logging.error("ESTA MAL, HAY QUEW CALCULAR EL CONSOLIDADO BRUTO EN LA DATETIME DE LA OPERACICON")
         for o in self.arr:        
             if year==None:#calculo historico
                 resultado=resultado+o.consolidado_neto()
@@ -2052,7 +2034,8 @@ class SetInvestmentOperationsHistorical(SetIO):
         return resultado
         
     def consolidado_neto_antes_impuestos(self,  year=None,  month=None):
-        resultado=0
+        resultado=Money(self.mem, 0, self.mem.localcurrency)
+        logging.error("ESTA MAL, HAY QUEW CALCULAR EL CONSOLIDADO BRUTO EN LA DATETIME DE LA OPERACICON")
         for o in self.arr:        
             if year==None:#calculo historico
                 resultado=resultado+o.consolidado_neto_antes_impuestos()
@@ -2151,19 +2134,150 @@ class SetInvestmentOperationsHistorical(SetIO):
     def order_by_fechaventa(self):
         """Sort by selling date"""
         self.arr=sorted(self.arr, key=lambda o: o.fecha_venta,  reverse=False)      
+
+        
+
+        
+class SetInvestmentOperationsHistoricalHomogeneus(SetInvestmentOperationsHistoricalHeterogeneus):
+    def __init__(self, mem, investment):
+        SetInvestmentOperationsHistoricalHeterogeneus.__init__(self, mem)
+        self.investment=investment
+                
+    def consolidado_bruto(self,  year=None,  month=None):
+        resultado=Money(self.mem, 0, self.investment.product.currency)
+        for o in self.arr:        
+            if year==None:#calculo historico
+                resultado=resultado+o.consolidado_bruto()
+            else:                
+                if month==None:#Calculo anual
+                    if o.fecha_venta.year==year:
+                        resultado=resultado+o.consolidado_bruto()
+                else:#Calculo mensual
+                    if o.fecha_venta.year==year and o.fecha_venta.month==month:
+                        resultado=resultado+o.consolidado_bruto()
+        return resultado
+        
+    def consolidado_neto(self,  year=None,  month=None):
+        resultado=Money(self.mem, 0, self.investment.product.currency)
+        for o in self.arr:        
+            if year==None:#calculo historico
+                resultado=resultado+o.consolidado_neto()
+            else:                
+                if month==None:#Calculo anual
+                    if o.fecha_venta.year==year:
+                        resultado=resultado+o.consolidado_neto()
+                else:#Calculo mensual
+                    if o.fecha_venta.year==year and o.fecha_venta.month==month:
+                        resultado=resultado+o.consolidado_neto()
+        return resultado
+        
+    def consolidado_neto_antes_impuestos(self,  year=None,  month=None):
+        resultado=Money(self.mem, 0, self.investment.product.currency)
+        for o in self.arr:        
+            if year==None:#calculo historico
+                resultado=resultado+o.consolidado_neto_antes_impuestos()
+            else:                
+                if month==None:#Calculo anual
+                    if o.fecha_venta.year==year:
+                        resultado=resultado+o.consolidado_neto_antes_impuestos()
+                else:#Calculo mensual
+                    if o.fecha_venta.year==year and o.fecha_venta.month==month:
+                        resultado=resultado+o.consolidado_neto_antes_impuestos()
+        return resultado
         
     def bruto_compra(self):
-        resultado=Decimal(0)
+        resultado=Money(self.mem, 0, self.investment.product.currency)
         for o in self.arr:
             resultado=resultado+o.bruto_compra()
         return resultado
-
-        
     def tpc_total_neto(self):
         bruto=self.bruto_compra()
         if bruto!=0:
-            return 100*self.consolidado_neto()/bruto
+            return 100*(self.consolidado_neto()/bruto).amount
         return 0    
+    def myqtablewidget(self, tabla, show_accounts=False):
+        """Rellena datos de un array de objetos de InvestmentOperationHistorical, devuelve totales ver código"""
+        diff=0
+        if show_accounts==True:
+            diff=1
+            
+        tabla.setColumnCount(13+diff)
+        tabla.setHorizontalHeaderItem(0, QTableWidgetItem(QApplication.translate("Core", "Date" )))
+        tabla.setHorizontalHeaderItem(1, QTableWidgetItem(QApplication.translate("Core", "Years" )))
+        tabla.setHorizontalHeaderItem(2, QTableWidgetItem(QApplication.translate("Core", "Product" )))
+        if show_accounts==True:
+            tabla.setHorizontalHeaderItem(3, QTableWidgetItem(QApplication.translate("Core", "Account" )))
+        tabla.setHorizontalHeaderItem(3+diff, QTableWidgetItem(QApplication.translate("Core", "Operation type" )))
+        tabla.setHorizontalHeaderItem(4+diff, QTableWidgetItem(QApplication.translate("Core", "Shares" )))
+        tabla.setHorizontalHeaderItem(5+diff, QTableWidgetItem(QApplication.translate("Core", "Initial balance" )))
+        tabla.setHorizontalHeaderItem(6+diff, QTableWidgetItem(QApplication.translate("Core", "Final balance" )))
+        tabla.setHorizontalHeaderItem(7+diff, QTableWidgetItem(QApplication.translate("Core", "Gross selling operations" )))
+        tabla.setHorizontalHeaderItem(8+diff, QTableWidgetItem(QApplication.translate("Core", "Comissions" )))
+        tabla.setHorizontalHeaderItem(9+diff, QTableWidgetItem(QApplication.translate("Core", "Taxes" )))
+        tabla.setHorizontalHeaderItem(10+diff, QTableWidgetItem(QApplication.translate("Core", "Net selling operations" )))
+        tabla.setHorizontalHeaderItem(11+diff, QTableWidgetItem(QApplication.translate("Core", "% Net APR" )))
+        tabla.setHorizontalHeaderItem(12+diff, QTableWidgetItem(QApplication.translate("Core", "% Net Total" )))
+        #DATA       
+        (sumbruto, sumneto)=(Money(self.mem, 0, self.investment.product.currency), Money(self.mem, 0, self.investment.product.currency))
+        sumsaldosinicio=Money(self.mem, 0, self.investment.product.currency)
+        sumsaldosfinal=Money(self.mem, 0, self.investment.product.currency)
+        
+        sumoperacionespositivas=Money(self.mem, 0, self.investment.product.currency)
+        sumoperacionesnegativas=Money(self.mem, 0, self.investment.product.currency)
+        sumimpuestos=0
+        sumcomision=0
+ 
+ 
+        tabla.applySettings()
+        tabla.clearContents()
+        tabla.setRowCount(self.length()+1)
+        for rownumber, a in enumerate(self.arr):
+            saldoinicio=a.bruto_compra()
+            saldofinal=a.bruto_venta()
+            bruto=a.consolidado_bruto()
+            sumimpuestos=sumimpuestos+a.impuestos
+            sumcomision=sumcomision+a.comision
+            neto=a.consolidado_neto()
+            
+            sumbruto=sumbruto+bruto
+            sumneto=sumneto+neto
+            sumsaldosinicio=sumsaldosinicio+saldoinicio
+            sumsaldosfinal=sumsaldosfinal+saldofinal
+    
+            #Calculo de operaciones positivas y negativas
+            if bruto.isGETZero():
+                sumoperacionespositivas=sumoperacionespositivas+bruto 
+            else:
+                sumoperacionesnegativas=sumoperacionesnegativas+bruto
+    
+            tabla.setItem(rownumber, 0,qdate(a.fecha_venta,))
+            tabla.setItem(rownumber, 1,QTableWidgetItem(str(round(a.years(), 2))))    
+            tabla.setItem(rownumber, 2,QTableWidgetItem(a.inversion.name))
+            if show_accounts==True:
+                tabla.setItem(rownumber, 3,QTableWidgetItem(a.inversion.account.name))
+                
+            tabla.setItem(rownumber, 3+diff,QTableWidgetItem(a.tipooperacion.name))
+            tabla.setItem(rownumber, 4+diff,qright(a.acciones))
+            tabla.setItem(rownumber, 5+diff,saldoinicio.qtablewidgetitem())
+            tabla.setItem(rownumber, 6+diff,saldofinal.qtablewidgetitem())
+            tabla.setItem(rownumber, 7+diff,bruto.qtablewidgetitem())
+            tabla.setItem(rownumber, 8+diff,self.investment.product.currency.qtablewidgetitem(a.comision))
+            tabla.setItem(rownumber, 9+diff,self.investment.product.currency.qtablewidgetitem(a.impuestos))
+            tabla.setItem(rownumber, 10+diff,neto.qtablewidgetitem())
+            tabla.setItem(rownumber, 11+diff,qtpc(a.tpc_tae_neto()))
+            tabla.setItem(rownumber, 12+diff,qtpc(a.tpc_total_neto()))
+        if self.length()>0:
+            tabla.setItem(self.length(), 2,QTableWidgetItem("TOTAL"))
+            tabla.setItem(self.length(), 5+diff,sumsaldosinicio.qtablewidgetitem())
+            tabla.setItem(self.length(), 6+diff,sumsaldosfinal.qtablewidgetitem())
+            tabla.setItem(self.length(), 7+diff,sumbruto.qtablewidgetitem())  
+            tabla.setItem(self.length(), 8+diff,self.investment.product.currency.qtablewidgetitem(sumcomision))    
+            tabla.setItem(self.length(), 9+diff,self.investment.product.currency.qtablewidgetitem(sumimpuestos))    
+            tabla.setItem(self.length(), 10+diff,sumneto.qtablewidgetitem())
+            tabla.setItem(self.length(), 12+diff,qtpc(self.tpc_total_neto()))    
+            tabla.setCurrentCell(self.length(), 4+diff)       
+        return (sumbruto, sumcomision, sumimpuestos, sumneto)
+    
 class InvestmentOperationHistorical:
     def __init__(self, mem):
         self.mem=mem 
@@ -2171,7 +2285,6 @@ class InvestmentOperationHistorical:
         self.operinversion=None
         self.inversion=None
         self.fecha_inicio=None
-#        self.importe=None
         self.tipooperacion=None
         self.acciones=None#Es negativo
         self.comision=None
@@ -2186,7 +2299,6 @@ class InvestmentOperationHistorical:
         self.operinversion=operinversion
         self.inversion=inversion
         self.fecha_inicio=fecha_inicio
-#        self.importe=importe
         self.tipooperacion=tipooperacion
         self.acciones=acciones
         self.comision=comision
@@ -2205,28 +2317,28 @@ class InvestmentOperationHistorical:
     def consolidado_bruto(self):
         """Solo acciones"""
         if self.tipooperacion.id in (9, 10):
-            return 0
+            return Money(self.mem, 0, self.inversion.product.currency)
         return self.bruto_venta()-self.bruto_compra()
         
     def consolidado_neto(self):
         if self.tipooperacion.id in (9, 10):
-            return 0
-        return self.consolidado_bruto() -self.comision -self.impuestos
+            return Money(self.mem, 0, self.inversion.product.currency)
+        return Money(self.mem, self.consolidado_bruto().amount -self.comision -self.impuestos, self.inversion.product.currency)
         
     def consolidado_neto_antes_impuestos(self):
         if self.tipooperacion.id in (9, 10):
-            return 0
-        return self.consolidado_bruto() -self.comision 
+            return Money(self.mem, 0, self.inversion.product.currency)
+        return Money(self.mem, self.consolidado_bruto().amount -self.comision , self.inversion.product.currency)
         
     def bruto_compra(self):
         if self.tipooperacion.id in (9, 10):
-            return 0
-        return -self.acciones*self.valor_accion_compra
+            return Money(self.mem, 0, self.inversion.product.currency)
+        return Money(self.mem, -self.acciones*self.valor_accion_compra, self.inversion.product.currency)
         
     def bruto_venta(self):
         if self.tipooperacion.id in (9, 10):
-            return 0
-        return -self.acciones*self.valor_accion_venta
+            return Money(self.mem, 0, self.inversion.product.currency)
+        return Money(self.mem,  -self.acciones*self.valor_accion_venta, self.inversion.product.currency)
         
     def days(self):
         return (self.fecha_venta-self.fecha_inicio).days
@@ -2237,25 +2349,25 @@ class InvestmentOperationHistorical:
             return Decimal(1/365.0)
         else:
                 return dias/Decimal(365)
+
     def tpc_total_neto(self):
         bruto=self.bruto_compra()
         if bruto!=0:
-            return 100*self.consolidado_neto()/bruto
+            return 100*(self.consolidado_neto()/bruto).amount
         return 0
         
     def tpc_total_bruto(self):
         bruto=self.bruto_compra()
         if bruto!=0:
-            return 100*self.consolidado_bruto()/bruto
+            return 100*(self.consolidado_bruto()/bruto).amount
         return 0 #Debería ponerse con valor el día de agregación
         
     def tpc_tae_neto(self):
         dias=(self.fecha_venta-self.fecha_inicio).days +1 #Account el primer día
         if dias==0:
             dias=1
-        return Decimal(365*self.tpc_total_neto()/dias)
-        
-                
+        return Decimal(365*(self.tpc_total_neto()/dias))
+
 class InvestmentOperationCurrent:
     def __init__(self, mem):
         self.mem=mem 
@@ -2325,14 +2437,14 @@ class InvestmentOperationCurrent:
         """Función que devuelve el importe invertido teniendo en cuenta las acciones actuales de la operinversión y el valor de compra
         Si se usa  el importe no fuNCIONA PASO CON EL PUNTOI DE VENTA.
         """
-        return self.acciones*self.valor_accion
+        return Money(self.mem, self.acciones*self.valor_accion, self.inversion.product.currency)
         
     def balance(self,  lastquote):
         """Función que calcula el balance actual de la operinversion actual
                 - lastquote: objeto Quote"""
         if self.acciones==0 or lastquote.quote==None:#Empty xulpy
-            return 0
-        return self.acciones*lastquote.quote
+            return Money(self.mem, 0, self.inversion.product.currency)
+        return Money(self.mem, self.acciones*lastquote.quote, self.inversion.product.currency)
 
         
     def less_than_a_year(self):
@@ -3394,7 +3506,7 @@ class Investment:
         """Funci`on que carga un array con objetos inversion operacion y con ellos calcula el set de actual e historicas
         date is used to get invested balance in a particular date"""
         cur=self.mem.con.cursor()
-        self.op=SetInvestmentOperations(self.mem)
+        self.op=SetInvestmentOperationsHomogeneus(self.mem, self)
         if date==None:
             cur.execute("select * from operinversiones where id_inversiones=%s order by datetime", (self.id, ))
         else:
@@ -3428,38 +3540,7 @@ class Investment:
             return Money(self.mem, self.acciones()*(self.product.result.basic.last.quote-self.product.result.basic.penultimate.quote), self.product.currency)
         except:
             return None
-            
-    def dividends_neto(self, ano,  mes=None):
-        """Dividend cobrado en un año y mes pasado como parámetro, independientemente de si la inversión esta activa o no.
-        El 63 es un gasto aunque también este registrado en dividends."""
-        cur=self.mem.con.cursor()
-        if mes==None:#Calcula en el año
-            cur.execute("select sum(neto) as neto from dividends where id_conceptos not in (63) and date_part('year',fecha) = "+str(ano))
-            resultado=cur.fetchone()[0]
-        else:
-            cur.execute("select sum(neto) as neto from dividends where id_conceptos not in (63) and date_part('year',fecha) = "+str(ano)+" and date_part('month',fecha)= " + str(mes))
-            resultado=cur.fetchone()[0]   
-        if resultado==None:
-            resultado=0
-        cur.close()
-        return Money(self.mem, resultado, self.account.currency)
 
-    def dividends_bruto(self,  ano,  mes=None):
-        """Dividend cobrado en un año y mes pasado como parámetro, independientemente de si la inversión esta activa o no"""
-        
-        cur=self.mem.con.cursor()
-        if mes==None:#Calcula en el año
-            cur.execute("select sum(bruto) as bruto from dividends where id_conceptos not in (63) and  date_part('year',fecha) = "+str(ano))
-            resultado=cur.fetchone()[0]
-        else:
-            cur.execute("select sum(bruto) as bruto from dividends where id_conceptos not in (63) and  date_part('year',fecha) = "+str(ano)+" and date_part('month',fecha)= " + str(mes))
-            resultado=cur.fetchone()[0]   
-        if resultado==None:
-            resultado=0
-        cur.close()
-        return Money(self.mem, resultado, self.account.currency)
-    
-        
     def acciones(self, fecha=None):
         """Función que saca el número de acciones de las self.op_actual"""
         if fecha==None:
@@ -3476,7 +3557,7 @@ class Investment:
     def pendiente(self):
         """Función que calcula el balance  pendiente de la inversión
                 Necesita haber cargado mq getbasic y operinversionesactual"""
-        return Money(self.mem, self.balance()-self.invertido(), self.product.currency)
+        return self.balance()-self.invertido()
         
     def qmessagebox_inactive(self):
         if self.active==False:
@@ -3521,21 +3602,21 @@ class Investment:
         """Función que calcula el balance invertido partiendo de las acciones y el precio de compra
         Necesita haber cargado mq getbasic y operinversionesactual"""
         if date==None or date==datetime.date.today():#Current
-            return Money(self.mem, self.op_actual.invertido(), self.product.currency)
+            return self.op_actual.invertido()
         else:
             ### 0 Creo una vinversion fake para reutilizar codigo, cargando operinversiones hasta date
             invfake=Investment(self.mem).init__create(self.name, self.venta, self.account, self.product, self.selling_expiration, self.active, self.id)
             invfake.active=self.active
             invfake.get_operinversiones(date)
-            return Money(self.mem, invfake.op_actual.invertido(),  self.product.currency)
+            return invfake.op_actual.invertido()
                 
     def tpc_invertido(self):       
         """Función que calcula el tpc invertido partiendo de las balance actual y el invertido
         Necesita haber cargado mq getbasic y operinversionesactual"""
-        invertido=self.invertido()
+        invertido=self.invertido().amount
         if invertido==0:
             return 0
-        return (self.balance()-invertido)*100/invertido
+        return (self.balance().amount-invertido)*100/invertido
 
     def percentage_to_selling_point(self):       
         """Función que calcula el tpc venta partiendo de las el last y el valor_venta
@@ -3889,12 +3970,10 @@ class Assets:
     def saldo_todas_cuentas(self,  datetime=None):
         """Si cur es none y datetime calcula el balance actual."""
         cur=self.mem.con.cursor()
-        resultado=0
-        sql="select cuentas_saldo('"+str(datetime)+"') as balance;";
-        cur.execute(sql)
+        cur.execute("select cuentas_saldo('"+str(datetime)+"') as balance")
         resultado=cur.fetchone()[0] 
         cur.close()
-        return resultado;
+        return Money(self.mem, resultado, self.mem.localcurrency)
 
         
     def saldo_total(self, setinversiones,  datetime):
@@ -3904,7 +3983,7 @@ class Assets:
         
     def saldo_todas_inversiones(self, setinversiones,   fecha):
         """Versión que se calcula en cliente muy optimizada"""
-        resultado=0
+        resultado=Money(self.mem, 0, self.mem.localcurrency)
         for i in setinversiones.arr:
             resultado=resultado+i.balance(fecha)                 
         return resultado
@@ -3913,17 +3992,44 @@ class Assets:
         """Versión que se calcula en cliente muy optimizada
         Fecha None calcula  el balance actual
         """
-        resultado=0
+        resultado=Money(self.mem, 0, self.mem.localcurrency)
 #        inicio=datetime.datetime.now()
         for inv in setinversiones.arr:
             if inv.product.percentage==0:        
-                if fecha==None:
-                    resultado=resultado+inv.balance()
-                else:
-                    resultado=resultado+inv.balance( fecha)
+                resultado=resultado+inv.balance( fecha).local()
 #        print ("core > Total > saldo_todas_inversiones_riego_cero: {0}".format(datetime.datetime.now()-inicio))
         return resultado
+            
+    def dividends_neto(self, ano,  mes=None):
+        """Dividend cobrado en un año y mes pasado como parámetro, independientemente de si la inversión esta activa o no.
+        El 63 es un gasto aunque también este registrado en dividends."""
+        cur=self.mem.con.cursor()
+        if mes==None:#Calcula en el año
+            cur.execute("select sum(neto) as neto from dividends where id_conceptos not in (63) and date_part('year',fecha) = "+str(ano))
+            resultado=cur.fetchone()[0]
+        else:
+            cur.execute("select sum(neto) as neto from dividends where id_conceptos not in (63) and date_part('year',fecha) = "+str(ano)+" and date_part('month',fecha)= " + str(mes))
+            resultado=cur.fetchone()[0]   
+        if resultado==None:
+            resultado=0
+        cur.close()
+        return Money(self.mem, resultado, self.mem.localcurrency)
 
+    def dividends_bruto(self,  ano,  mes=None):
+        """Dividend cobrado en un año y mes pasado como parámetro, independientemente de si la inversión esta activa o no"""
+        
+        cur=self.mem.con.cursor()
+        if mes==None:#Calcula en el año
+            cur.execute("select sum(bruto) as bruto from dividends where id_conceptos not in (63) and  date_part('year',fecha) = "+str(ano))
+            resultado=cur.fetchone()[0]
+        else:
+            cur.execute("select sum(bruto) as bruto from dividends where id_conceptos not in (63) and  date_part('year',fecha) = "+str(ano)+" and date_part('month',fecha)= " + str(mes))
+            resultado=cur.fetchone()[0]   
+        if resultado==None:
+            resultado=0
+        cur.close()
+        return Money(self.mem, resultado, self.mem.localcurrency)
+        
         
     def invested(self, date=None):
         """Devuelve el patrimonio invertido en una determinada fecha"""
@@ -3932,18 +4038,16 @@ class Assets:
         else:
             array=self.mem.data.investments.arr#All, because i don't know witch one was active.
         
-        r=Decimal(0)
+        r=Money(self.mem, 0, self.mem.localcurrency)
         for inv in array:
-            invert=inv.invertido(date)
-#            print ("Invertido", inv.name, date,  invert,  inv.balance(date))
-            r=r+invert
+            r=r+inv.invertido(date)
         return r
         
-    def saldo_todas_inversiones_bonds(self, fecha):        
+    def saldo_todas_inversiones_bonds(self, fecha=None):        
         """Versión que se calcula en cliente muy optimizada
         Fecha None calcula  el balance actual
         """
-        resultado=0
+        resultado=Money(self.mem, 0, self.mem.localcurrency)
 #        inicio=datetime.datetime.now()
         for inv in self.mem.data.investments.arr:
             if inv.product.type.id in (7, 9):#public and private bonds        
@@ -3958,42 +4062,87 @@ class Assets:
         """CAlcula el patrimonio de riego cero"""
         return self.saldo_todas_cuentas(fecha)+self.saldo_todas_inversiones_riesgo_cero(setinversiones, fecha)
 
-    def saldo_anual_por_tipo_operacion(self,  ano,  id_tiposoperaciones):   
+    def saldo_anual_por_tipo_operacion(self,  year,  id_tiposoperaciones):   
         """Opercuentas y opertarjetas"""
-        cur=self.mem.con.cursor()
-        sql="select sum(Importe) as importe from opercuentas where id_tiposoperaciones="+str(id_tiposoperaciones)+" and date_part('year',datetime) = "+str(ano)  + " union all select sum(Importe) as importe from opertarjetas where id_tiposoperaciones="+str(id_tiposoperaciones)+" and date_part('year',datetime) = "+str(ano)
-        cur.execute(sql)        
-        resultado=0
-        for i in cur:
-            if i['importe']==None:
-                continue
-            resultado=resultado+i['importe']
-        cur.close()
+        resultado=Money(self.mem, 0, self.mem.localcurrency)
+        for currency in self.mem.currencies.arr:
+            cur=self.mem.con.cursor()
+            sql="""
+                select sum(Importe) as importe 
+                from 
+                    opercuentas,
+                    cuentas
+                where 
+                    id_tiposoperaciones={0} and 
+                    date_part('year',datetime)={1} and
+                    cuentas.currency='{2}' and
+                    cuentas.id_cuentas=opercuentas.id_cuentas   
+            union all 
+                select sum(Importe) as importe 
+                from 
+                    opertarjetas ,
+                    tarjetas,
+                    cuentas
+                where 
+                    id_tiposoperaciones={0} and 
+                    date_part('year',datetime)={1} and
+                    cuentas.currency='{2}' and
+                    cuentas.id_cuentas=tarjetas.id_cuentas and
+                    tarjetas.id_tarjetas=opertarjetas.id_tarjetas""".format(id_tiposoperaciones, year,  currency.id)
+            cur.execute(sql)        
+            for i in cur:
+                if i['importe']==None:
+                    continue
+                resultado=resultado+Money(self.mem, i['importe'], currency).local()
+            cur.close()
         return resultado
 
-    def saldo_por_tipo_operacion(self,  ano,  mes,  id_tiposoperaciones):   
+    def saldo_por_tipo_operacion(self,  year,  month,  id_tiposoperaciones):   
         """Opercuentas y opertarjetas"""
-        cur=self.mem.con.cursor()
-        sql="select sum(Importe) as importe from opercuentas where id_tiposoperaciones="+str(id_tiposoperaciones)+" and date_part('year',datetime) = "+str(ano)+" and date_part('month',datetime)= " + str(mes) + " union all select sum(Importe) as importe from opertarjetas where id_tiposoperaciones="+str(id_tiposoperaciones)+" and date_part('year',datetime) = "+str(ano)+" and date_part('month',datetime)= " + str(mes)
-        cur.execute(sql)        
-        
-        resultado=0
-        for i in cur:
-            if i['importe']==None:
-                continue
-            resultado=resultado+i['importe']
-        cur.close()
+        resultado=Money(self.mem, 0, self.mem.localcurrency)
+        for currency in self.mem.currencies.arr:
+            cur=self.mem.con.cursor()
+            sql="""
+                select sum(Importe) as importe 
+                from 
+                    opercuentas,
+                    cuentas
+                where 
+                    id_tiposoperaciones={0} and 
+                    date_part('year',datetime)={1} and
+                    date_part('month',datetime)={2} and
+                    cuentas.currency='{3}' and
+                    cuentas.id_cuentas=opercuentas.id_cuentas   
+            union all 
+                select sum(Importe) as importe 
+                from 
+                    opertarjetas ,
+                    tarjetas,
+                    cuentas
+                where 
+                    id_tiposoperaciones={0} and 
+                    date_part('year',datetime)={1} and
+                    date_part('month',datetime)={2} and
+                    cuentas.currency='{3}' and
+                    cuentas.id_cuentas=tarjetas.id_cuentas and
+                    tarjetas.id_tarjetas=opertarjetas.id_tarjetas""".format(id_tiposoperaciones, year, month,  currency.id)
+            cur.execute(sql)        
+            for i in cur:
+                if i['importe']==None:
+                    continue
+                resultado=resultado+Money(self.mem, i['importe'], currency).local()
+            cur.close()
         return resultado
         
     def consolidado_bruto(self, setinversiones,  year=None, month=None):
         """Si year es none calcula el historicca  si month es nonve calcula el anual sino el mensual"""
-        resultado=0
+        resultado=Money(self.mem, 0, self.mem.localcurrency)
         for i in setinversiones.arr:        
             resultado=resultado+i.op_historica.consolidado_bruto(year, month)
         return resultado
     def consolidado_neto_antes_impuestos(self, setinversiones, year=None, month=None):
         """Si year es none calcula el historicca  si month es nonve calcula el anual sino el mensual"""
-        resultado=0
+        resultado=Money(self.mem, 0, self.mem.localcurrency)
         for i in setinversiones.arr:        
             resultado=resultado+i.op_historica.consolidado_neto_antes_impuestos(year, month)
         return resultado
@@ -4001,7 +4150,7 @@ class Assets:
                 
     def consolidado_neto(self, setinversiones, year=None, month=None):
         """Si year es none calcula el historicca  si month es nonve calcula el anual sino el mensual"""
-        resultado=0
+        resultado=Money(self.mem, 0, self.mem.localcurrency)
         for i in setinversiones.arr:        
             resultado=resultado+i.op_historica.consolidado_neto(year, month)
         return resultado        

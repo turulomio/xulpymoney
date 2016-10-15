@@ -113,9 +113,9 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
         #Actualiza el indice de referencia porque ha cambiado
         self.inversion.op_actual.get_valor_benchmark(self.mem.data.benchmark)
         self.on_chkOperaciones_stateChanged(self.chkOperaciones.checkState())
-        self.inversion.op_actual.myqtablewidget_homogeneus(self.tblInvestmentCurrent, False)
+        self.inversion.op_actual.myqtablewidget(self.tblInvestmentCurrent, False)
         self.lblAge.setText(self.tr("Current operations average age: {0}".format(days_to_year_month(self.inversion.op_actual.average_age()))))
-        self.inversion.op_historica.myqtablewidget(self.tblInvestmentHistorical  )
+        self.inversion.op_historica.myqtablewidget(self.tblInvestmentHistorical )
         if self.inversion!=None:#We are adding a new investment
             self.on_chkHistoricalDividends_stateChanged(self.chkHistoricalDividends.checkState())
     
