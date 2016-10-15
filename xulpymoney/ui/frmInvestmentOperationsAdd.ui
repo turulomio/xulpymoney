@@ -91,7 +91,7 @@
      <item>
       <layout class="QHBoxLayout" name="horizontalLayout_6">
        <item>
-        <widget class="QLabel" name="label_6">
+        <widget class="QLabel" name="lblValorAccion">
          <property name="text">
           <string>Price</string>
          </property>
@@ -115,7 +115,7 @@
      <item>
       <layout class="QHBoxLayout" name="horizontalLayout_11">
        <item>
-        <widget class="QLabel" name="label_8">
+        <widget class="QLabel" name="lblConversion">
          <property name="text">
           <string>Price in account currency</string>
          </property>

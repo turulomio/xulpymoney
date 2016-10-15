@@ -1820,9 +1820,9 @@ class SetInvestmentOperationsCurrent(SetIO):
             tabla.setItem(rownumber, diff+7, qtpc(a.tpc_tae(a.inversion.product.result.basic.last.quote)))
             tabla.setItem(rownumber, diff+8, qtpc(a.tpc_total(a.inversion.product.result.basic.last.quote)))
             if a.referenciaindice==None:
-                tabla.setItem(rownumber, diff+9, a.inversion.product.currency.qtablewidgetitem(None))
+                tabla.setItem(rownumber, diff+9, self.mem.data.benchmark.currency.qtablewidgetitem(None))
             else:
-                tabla.setItem(rownumber, diff+9, a.inversion.product.currency.qtablewidgetitem(a.referenciaindice.quote))
+                tabla.setItem(rownumber, diff+9, self.mem.data.benchmark.currency.qtablewidgetitem(a.referenciaindice.quote))
 
         tabla.setItem(self.length(), 0, qleft(days_to_year_month(self.average_age())))
         tabla.setItem(self.length(), diff+0, QTableWidgetItem(("TOTAL")))
@@ -1904,9 +1904,9 @@ class SetInvestmentOperationsCurrent(SetIO):
             tabla.setItem(rownumber, diff+7, qtpc(a.tpc_tae(quote.quote)))
             tabla.setItem(rownumber, diff+8, qtpc(a.tpc_total(quote.quote)))
             if a.referenciaindice==None:
-                tabla.setItem(rownumber, diff+9, a.inversion.product.currency.qtablewidgetitem(None))
+                tabla.setItem(rownumber, diff+9, self.mem.data.benchmark.currency.qtablewidgetitem(None))
             else:
-                tabla.setItem(rownumber, diff+9, a.inversion.product.currency.qtablewidgetitem(a.referenciaindice.quote))
+                tabla.setItem(rownumber, diff+9, self.mem.data.benchmark.currency.qtablewidgetitem(a.referenciaindice.quote))
                 
         tabla.setItem(self.length(), diff+0, QTableWidgetItem(("TOTAL")))
         tabla.setItem(self.length(), diff+1, qright(str(sumacciones)))
