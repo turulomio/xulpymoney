@@ -3920,7 +3920,7 @@ class AnnualTarget:
         
     def annual_balance(self):
         """Returns the percentage of the last year assests"""
-        return self.lastyear_assests*self.percentage/100
+        return self.lastyear_assests.amount*self.percentage/100
         
     def monthly_balance(self):
         """Returns the monthly balance (annual/12)"""
