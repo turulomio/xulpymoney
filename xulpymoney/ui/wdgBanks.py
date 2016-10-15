@@ -30,30 +30,30 @@ class wdgBanks(QWidget, Ui_wdgBanks):
         self.tblEB.clearContents()
         self.tblEB.applySettings()
         self.tblEB.setRowCount(self.banks.length()+1)
-        sumsaldos=Decimal(0)
+        sumsaldos=Money(self.mem, 0, self.mem.localcurrency)
         for i,  e in enumerate(self.banks.arr):
             self.tblEB.setItem(i, 0, QTableWidgetItem(e.name))
             self.tblEB.setCellWidget(i, 1, wdgBool(e.active))
             balanc=e.balance(self.mem.data.accounts_active(), self.mem.data.investments_active())
-            self.tblEB.setItem(i, 2, self.mem.localcurrency.qtablewidgetitem(balanc))
+            self.tblEB.setItem(i, 2, balanc.qtablewidgetitem())
             sumsaldos=sumsaldos+balanc    
         self.tblEB.setItem(self.banks.length(), 0, QTableWidgetItem(self.tr('TOTAL')))
-        self.tblEB.setItem(self.banks.length(), 2, self.mem.localcurrency.qtablewidgetitem(sumsaldos))        
+        self.tblEB.setItem(self.banks.length(), 2, sumsaldos.qtablewidgetitem())
         
     def load_cuentas(self):
         self.accounts.order_by_name()
         self.tblAccounts.applySettings()
         self.tblAccounts.clearContents()
         self.tblAccounts.setRowCount(self.accounts.length()+1);
-        sumsaldos=0
+        sumsaldos=Money(self.mem, 0,  self.mem.localcurrency)
         for i,  c in enumerate(self.accounts.arr):
             self.tblAccounts.setItem(i, 0, QTableWidgetItem(c.name))
             self.tblAccounts.setCellWidget(i, 1, wdgBool(c.active))
-            balance=c.balance()
-            self.tblAccounts.setItem(i, 2, self.mem.localcurrency.qtablewidgetitem(balance))
+            balance=c.balance().local()
+            self.tblAccounts.setItem(i, 2, balance.qtablewidgetitem())
             sumsaldos=sumsaldos+balance
         self.tblAccounts.setItem(self.accounts.length(), 0, QTableWidgetItem(self.tr('TOTAL')))
-        self.tblAccounts.setItem(self.accounts.length(), 2, self.mem.localcurrency.qtablewidgetitem(sumsaldos))                
+        self.tblAccounts.setItem(self.accounts.length(), 2, sumsaldos.qtablewidgetitem())  
         
                 
     def load_inversiones(self):
@@ -61,15 +61,15 @@ class wdgBanks(QWidget, Ui_wdgBanks):
         self.tblInvestments.applySettings()
         self.tblInvestments.clearContents()
         self.tblInvestments.setRowCount(self.investments.length()+1);
-        sumsaldos=0
+        sumsaldos=Money(self.mem,  0,  self.mem.localcurrency)
         for i, inv in enumerate(self.investments.arr):
             self.tblInvestments.setItem(i, 0, QTableWidgetItem(inv.name))
             self.tblInvestments.setCellWidget(i, 1, wdgBool(inv.active))
-            balanc=inv.balance()
-            self.tblInvestments.setItem(i, 2, self.mem.localcurrency.qtablewidgetitem(balanc))
+            balanc=inv.balance().local()
+            self.tblInvestments.setItem(i, 2, balanc.qtablewidgetitem())
             sumsaldos=sumsaldos+balanc
         self.tblInvestments.setItem(self.investments.length(), 0, QTableWidgetItem(self.tr('TOTAL')))
-        self.tblInvestments.setItem(self.investments.length(), 2, self.mem.localcurrency.qtablewidgetitem(sumsaldos))                
+        self.tblInvestments.setItem(self.investments.length(), 2, sumsaldos.qtablewidgetitem())
         
         
     def on_chkActives_stateChanged(self, state):

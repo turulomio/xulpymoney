@@ -301,6 +301,7 @@ class SetCommons:
             if resultado.find_by_id(p.id, False)==None:
                 resultado.append(p)
         return resultado
+
 class SetSimulationTypes(SetCommons):
     def __init__(self, mem):
         SetCommons.__init__(self)
@@ -320,6 +321,7 @@ class SetSimulationTypes(SetCommons):
 
         if selected!=None:
                 combo.setCurrentIndex(combo.findData(selected.id))
+
 class SetInvestments(SetCommons):
     def __init__(self, mem, cuentas, products, benchmark):
         SetCommons.__init__(self)
@@ -404,6 +406,7 @@ class SetInvestments(SetCommons):
                 if (tpc_venta<=5 and tpc_venta>0) or tpc_venta<0:
                     table.item(i, 8).setBackground(QColor(148, 255, 148))
         return d
+
     def myqtablewidget_lastCurrent(self, table,  percentage):
         """
             Percentage is the colored percentage to show
@@ -457,8 +460,8 @@ class SetInvestments(SetCommons):
                 table.setItem(i, 4, qright(inv.acciones()))
                 table.setItem(i, 5, inv.product.currency.qtablewidgetitem(inv.venta))
                 table.setItem(i, 6, qtpc(inv.percentage_to_selling_point()))
-                
-                
+
+
     def average_age(self):
         """Average age of the investments in this set in days"""
         #Extracts all currentinvestmentoperations
@@ -474,7 +477,7 @@ class SetInvestments(SetCommons):
     def saldo_misma_investment(self, product):
         """Devuelve el balance de todas las inversiones que tienen el mismo product.bolsa
         product es un objeto Product"""
-        resultado=Decimal(0)
+        resultado=Money(self.mem, 0, product.currency)
         for i in self.arr:
             if i.product==product:
                 resultado=resultado+i.balance()
@@ -483,7 +486,7 @@ class SetInvestments(SetCommons):
     def invertido_misma_investment(self, product):
         """Devuelve el balance de todas las inversiones que tienen el mismo product.bolsa
         product es un objeto Product"""
-        resultado=Decimal(0)
+        resultado=Money(self.mem, 0, product.currency)
         for i in self.arr:
             if i.product==product:
                 resultado=resultado+i.invertido()
@@ -1060,6 +1063,7 @@ class SetAccounts(SetCommons):
     def balance(self, date=None):
         """Give the sum of all accounts balances in self.arr"""
         res=Decimal(0)
+        logging.error("NO SE HACE EL MONEY POR SER HETEROGENEO")
         for ac in self.arr:
             res=res+ac.balance(date)
         return res
@@ -1097,6 +1101,7 @@ class SetAccountOperations:
         self.mem=mem
         self.arr=[]
         self.selected=None
+        
     def append(self, objeto):
         self.arr.append(objeto)
 
@@ -1165,13 +1170,14 @@ class SetAccountOperations:
         table.clearContents()
         table.setRowCount(self.length()+1)        
         table.setItem(0, 1, QTableWidgetItem(QApplication.translate("Core", "Starting month balance")))
-        table.setItem(0, 3, account.currency.qtablewidgetitem(lastmonthbalance))
+        table.setItem(0, 3, lastmonthbalance.qtablewidgetitem())
         for i, o in enumerate(self.arr):
-            lastmonthbalance=lastmonthbalance+o.importe
+            importe=Money(self.mem, o.importe, account.currency)
+            lastmonthbalance=lastmonthbalance+importe
             table.setItem(i+1, 0, qdatetime(o.datetime, self.mem.localzone))
             table.setItem(i+1, 1, QTableWidgetItem(o.concepto.name))
-            table.setItem(i+1, 2, account.currency.qtablewidgetitem(o.importe))
-            table.setItem(i+1, 3, account.currency.qtablewidgetitem(lastmonthbalance))
+            table.setItem(i+1, 2, importe.qtablewidgetitem())
+            table.setItem(i+1, 3, lastmonthbalance.qtablewidgetitem())
             table.setItem(i+1, 4, QTableWidgetItem(o.comment()))                   
 
 class SetCurrencies(SetCommons):
@@ -1271,6 +1277,7 @@ class SetDividends:
     def gross(self):
         """gross amount"""
         r=Decimal('0')
+        logging.error("NO SE HACE EL MONEY POR ")
         for d in self.arr:
             r=r+d.bruto
         return r
@@ -1832,7 +1839,7 @@ class SetInvestmentOperationsCurrent(SetIO):
         tabla.setItem(self.length(), diff+7, qtpc(self.tpc_tae()))
         tabla.setItem(self.length(), diff+8, qtpc(self.tpc_total(sumpendiente, suminvertido)))
         
-    def myqtablewidget_homogeneus(self,  tabla,  show_accounts=False, quote=None):
+    def myqtablewidget_homogeneus(self,  tabla,  show_accounts=False, quote=None, account_currency=False):
         """Función que rellena una tabla pasada como parámetro con datos procedentes de un array de objetos
         InvestmentOperationCurrent y dos valores de mystocks para rellenar los tpc correspodientes
         
@@ -1841,6 +1848,7 @@ class SetInvestmentOperationsCurrent(SetIO):
         Parámetros
             - tabla myQTableWidget en la que rellenar los datos
             - quote, si queremos cargar las operinversiones con un valor determinado se pasar´a la quote correspondiente. Es un Objeto quote
+            - account_currency. Si es Falsa muestra la moneda de la inversi´on si es verdadera con la currency de la cuentaº
         """
         if show_accounts==True:
             diff=2
@@ -1870,11 +1878,13 @@ class SetInvestmentOperationsCurrent(SetIO):
         if quote==None:
             quote=self.arr[0].inversion.product.result.basic.last
         
-        sumacciones=Decimal('0')
-        sum_accionesXvalor=Decimal('0')
-        sumsaldo=Decimal('0')
-        sumpendiente=Decimal('0')
-        suminvertido=Decimal('0')
+        if account_currency==False:
+            currency=self.arr[0].inversion.product.currency
+        else:
+            currency=self.arr[0].inversion.account.currency
+        
+        [sumacciones, sum_accionesXvalor, sumsaldo, sumpendiente, suminvertido]=(Decimal(), Money(self.mem, 0, currency), Money(self.mem, 0, currency), Money(self.mem, 0, currency), Money(self.mem, 0, currency))
+        
         tabla.applySettings()
         tabla.clearContents()
         tabla.setRowCount(self.length()+1)
@@ -3090,16 +3100,16 @@ class Bank:
         cur.close()
         
     def balance(self, setcuentas,  setinversiones):
-        resultado=0
+        resultado=Money(self, 0, self.mem.localcurrency)
         #Recorre balance cuentas
-        for v in setcuentas.arr:
-            if v.eb.id==self.id:
-                resultado=resultado+v.balance()
+        for c in setcuentas.arr:
+            if c.eb.id==self.id:
+                resultado=resultado+c.balance().local()
         
         #Recorre balance inversiones
         for i in setinversiones.arr:
             if i.account.eb.id==self.id:
-                resultado=resultado+i.balance()
+                resultado=resultado+i.balance().local()
         return resultado
         
     def es_borrable(self):
@@ -3156,8 +3166,8 @@ class Account:
         res=cur.fetchone()[0]
         cur.close()
         if res==None:
-            return 0        
-        return res
+            return Money(self.mem, 0, self.currency)
+        return Money(self.mem, res, self.currency)
             
     def init__create(self, name,  eb, activa, numero, currency, id=None):
         self.id=id
@@ -3406,16 +3416,16 @@ class Investment:
         if year==None:
             year=datetime.date.today().year
         try:
-            return self.acciones()*self.product.estimations_dps.find(year).estimation
+            return Money(self.mem, self.acciones()*self.product.estimations_dps.find(year).estimation, self.product.currency)
         except:
-            return 0
+            return Money(self.mem, 0, self.product.currency)
         
         
     def diferencia_saldo_diario(self):
         """Función que calcula la diferencia de balance entre last y penultimate
         Necesita haber cargado mq getbasic y operinversionesactual"""
         try:
-            return self.acciones()*(self.product.result.basic.last.quote-self.product.result.basic.penultimate.quote)
+            return Money(self.mem, self.acciones()*(self.product.result.basic.last.quote-self.product.result.basic.penultimate.quote), self.product.currency)
         except:
             return None
             
@@ -3432,7 +3442,8 @@ class Investment:
         if resultado==None:
             resultado=0
         cur.close()
-        return resultado;                   
+        return Money(self.mem, resultado, self.account.currency)
+
     def dividends_bruto(self,  ano,  mes=None):
         """Dividend cobrado en un año y mes pasado como parámetro, independientemente de si la inversión esta activa o no"""
         
@@ -3446,7 +3457,7 @@ class Investment:
         if resultado==None:
             resultado=0
         cur.close()
-        return resultado;                
+        return Money(self.mem, resultado, self.account.currency)
     
         
     def acciones(self, fecha=None):
@@ -3465,7 +3476,7 @@ class Investment:
     def pendiente(self):
         """Función que calcula el balance  pendiente de la inversión
                 Necesita haber cargado mq getbasic y operinversionesactual"""
-        return self.balance()-self.invertido()
+        return Money(self.mem, self.balance()-self.invertido(), self.product.currency)
         
     def qmessagebox_inactive(self):
         if self.active==False:
@@ -3495,28 +3506,28 @@ class Investment:
                 Necesita haber cargado mq getbasic y operinversionesactual"""     
         acciones=self.acciones(fecha)
         if acciones==0 or self.product.result.basic.last.quote==None:#Empty xulpy
-            return Decimal(0)
+            return Money(self.mem, 0, self.product.currency)
                 
         if fecha==None:
-            return acciones*self.product.result.basic.last.quote
+            return Money(self.mem,  acciones*self.product.result.basic.last.quote, self.product.currency)
         else:
             quote=Quote(self.mem).init__from_query(self.product, day_end_from_date(fecha, self.mem.localzone))
             if quote.datetime==None:
                 print ("Investment balance: {0} ({1}) en {2} no tiene valor".format(self.name, self.product.id, fecha))
-                return Decimal('0')
-            return acciones*quote.quote
+                return Money(self.mem, 0, self.product.currency)
+            return Money(self.mem, acciones*quote.quote, self.product.currency)
         
     def invertido(self, date=None):       
         """Función que calcula el balance invertido partiendo de las acciones y el precio de compra
         Necesita haber cargado mq getbasic y operinversionesactual"""
         if date==None or date==datetime.date.today():#Current
-            return self.op_actual.invertido()
+            return Money(self.mem, self.op_actual.invertido(), self.product.currency)
         else:
             ### 0 Creo una vinversion fake para reutilizar codigo, cargando operinversiones hasta date
             invfake=Investment(self.mem).init__create(self.name, self.venta, self.account, self.product, self.selling_expiration, self.active, self.id)
             invfake.active=self.active
             invfake.get_operinversiones(date)
-            return invfake.op_actual.invertido()
+            return Money(self.mem, invfake.op_actual.invertido(),  self.product.currency)
                 
     def tpc_invertido(self):       
         """Función que calcula el tpc invertido partiendo de las balance actual y el invertido
@@ -3525,6 +3536,7 @@ class Investment:
         if invertido==0:
             return 0
         return (self.balance()-invertido)*100/invertido
+
     def percentage_to_selling_point(self):       
         """Función que calcula el tpc venta partiendo de las el last y el valor_venta
         Necesita haber cargado mq getbasic y operinversionesactual"""
@@ -4511,7 +4523,7 @@ class Currency:
     def qtablewidgetitem(self, n, digits=2):
         """Devuelve un QTableWidgetItem mostrando un currency
         curren es un objeto Curryency"""
-        text= (self.string(n,  digits))
+        text= self.string(n,  digits)
         a=QTableWidgetItem(text)
         a.setTextAlignment(Qt.AlignVCenter|Qt.AlignRight)
         if n==None:
@@ -4732,10 +4744,10 @@ class Money:
         """Devuelve otro money con el amount con signo cambiado"""
         return Money(self.mem, -self.amount, self.currency)
         
-    def local(self, date=None):
+    def local(self, dt=None):
         """Converts a Money to local currency
         Date==None means today"""
-        return self.convert_from_datetime(self.mem.localcurrency, date)
+        return self.convert_from_datetime(self.mem.localcurrency, dt)
 #        
 #    def convert_from_datetime(self, currency, date=None):
 #        """Converts self money to currency, using ohcldaily"""
