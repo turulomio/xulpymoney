@@ -417,8 +417,8 @@ class SetInvestments(SetCommons):
             table.setItem(i, 1, qdatetime(inv.op_actual.last().datetime, self.mem.localzone))
             table.setItem(i, 2, qright(inv.op_actual.last().acciones))
             table.setItem(i, 3, qright(inv.op_actual.acciones()))
-            table.setItem(i, 4,  inv.product.currency.qtablewidgetitem(inv.balance()))
-            table.setItem(i, 5, inv.product.currency.qtablewidgetitem(inv.pendiente()))
+            table.setItem(i, 4,  inv.balance().qtablewidgetitem())
+            table.setItem(i, 5, inv.pendiente().qtablewidgetitem())
             lasttpc=inv.op_actual.last().tpc_total(inv.product.result.basic.last.quote)
             table.setItem(i, 6, qtpc(lasttpc))
             table.setItem(i, 7, qtpc(inv.tpc_invertido()))
@@ -1604,15 +1604,18 @@ class SetInvestmentOperationsHomogeneus(SetInvestmentOperationsHeterogeneus):
         return (sioa, sioh)
 
         
-    def myqtablewidget(self, tabla, show_accounts=False):
-        """Section es donde guardar en el config file, coincide con el nombre del formulario en el que está la tabla"""
+    def myqtablewidget(self, tabla, show_accounts=False, account_currency=False):
+        """Section es donde guardar en el config file, coincide con el nombre del formulario en el que está la tabla
+        show_accounts, muestra el producto y la cuenta
+        account_currency muestra los money en la currency de la cuenta
+        """
         self.order_by_datetime()
         diff=0
         if show_accounts==True:
             diff=2
         tabla.setColumnCount(8+diff)
         tabla.setHorizontalHeaderItem(0, QTableWidgetItem(QApplication.translate("Core", "Date" )))
-        if show_accounts==False:
+        if show_accounts==True:
             tabla.setHorizontalHeaderItem(diff-1, QTableWidgetItem(QApplication.translate("Core", "Product" )))
             tabla.setHorizontalHeaderItem(diff, QTableWidgetItem(QApplication.translate("Core", "Account" )))
         tabla.setHorizontalHeaderItem(diff+1, QTableWidgetItem(QApplication.translate("Core", "Operation type" )))
@@ -1626,11 +1629,13 @@ class SetInvestmentOperationsHomogeneus(SetInvestmentOperationsHeterogeneus):
         tabla.applySettings()
         tabla.clearContents()  
         tabla.setRowCount(len(self.arr))
+
         for rownumber, a in enumerate(self.arr):
             tabla.setItem(rownumber, 0, qdatetime(a.datetime, a.inversion.product.stockmarket.zone))
             if self.mem.gainsyear==True and a.less_than_a_year()==True:
                 tabla.item(rownumber, 0).setIcon(QIcon(":/xulpymoney/new.png"))
-            if show_accounts==False:
+                
+            if show_accounts==True:
                 tabla.setItem(rownumber, diff-1, qleft(a.inversion.name))
                 tabla.setItem(rownumber, diff, qleft(a.inversion.account.name))
                 
@@ -1641,16 +1646,29 @@ class SetInvestmentOperationsHomogeneus(SetInvestmentOperationsHeterogeneus):
                 tabla.item(rownumber, diff+1).setIcon(QIcon(":/xulpymoney/eye_red.png"))
             
             tabla.setItem(rownumber, diff+2, qright(a.acciones))
-            tabla.setItem(rownumber, diff+3, a.inversion.product.currency.qtablewidgetitem(a.valor_accion))
-            tabla.setItem(rownumber, diff+4, a.inversion.product.currency.qtablewidgetitem(a.importe))
-            tabla.setItem(rownumber, diff+5, a.inversion.product.currency.qtablewidgetitem(a.comision))
-            tabla.setItem(rownumber, diff+6, a.inversion.product.currency.qtablewidgetitem(a.impuestos))
-            if a.acciones>=0:
-                tabla.setItem(rownumber, diff+7, a.inversion.product.currency.qtablewidgetitem(a.importe+a.comision+a.impuestos))
+
+            valor_accion=Money(self.mem, a.valor_accion, self.investment.product.currency)
+            if account_currency==False:
+                tabla.setItem(rownumber, diff+3, valor_accion.qtablewidgetitem())
             else:
-                tabla.setItem(rownumber, diff+7, a.inversion.product.currency.qtablewidgetitem(a.importe-a.comision-a.impuestos))
-
-
+                tabla.setItem(rownumber, diff+3, valor_accion.convert(self.investment.account.currency, a.datetime).qtablewidgetitem())
+                
+            importe=Money(self.mem, a.importe, self.investment.product.currency)
+            if account_currency==False:
+                tabla.setItem(rownumber, diff+4, importe.qtablewidgetitem())
+            else:
+                tabla.setItem(rownumber, diff+4, importe.convert(self.investment.account.currency, a.datetime).qtablewidgetitem())
+            
+            comision=Money(self.mem, a.comision, self.investment.account.currency)
+            tabla.setItem(rownumber, diff+5, comision.qtablewidgetitem())
+            
+            impuestos=Money(self.mem, a.impuestos, self.investment.account.currency)
+            tabla.setItem(rownumber, diff+6, impuestos.qtablewidgetitem())
+            if account_currency==False:
+                gastos=importe+comision.convert(self.investment.product.currency, a.datetime)+impuestos.convert(self.investment.product.currency, a.datetime) if a.acciones>=0  else importe-comision.convert(self.investment.product.currency, a.datetime)-impuestos.convert(self.investment.product.currency, a.datetime)
+            else:
+                gastos=importe.convert(self.investment.account.currency, a.datetime)+comision+impuestos if a.acciones>=0  else importe.convert(self.investment.account.currency, a.datetime)-comision-impuestos
+            tabla.setItem(rownumber, diff+7, gastos.qtablewidgetitem())
 
 class SetInvestmentOperationsCurrentHeterogeneus(SetIO):    
     """Clase es un array ordenado de objetos newInvestmentOperation"""
@@ -1731,7 +1749,7 @@ class SetInvestmentOperationsCurrentHeterogeneus(SetIO):
                 return True
         return False
         
-    def myqtablewidget_heterogeneus(self,  tabla, show_accounts=False):
+    def myqtablewidget(self,  tabla, show_accounts=False):
         """Función que rellena una tabla pasada como parámetro con datos procedentes de un array de objetos
         InvestmentOperationCurrent y dos valores de mystocks para rellenar los tpc correspodientes
         
@@ -1956,9 +1974,9 @@ class SetInvestmentOperationsCurrentHomogeneus(SetInvestmentOperationsCurrentHet
         for rownumber, a in enumerate(self.arr):
             sumacciones=sumacciones+a.acciones
             
-            balance=a.balance(quote).convert_from_datetime(currency)
-            pendiente=a.pendiente(quote).convert_from_datetime(currency)
-            invertido=a.invertido().convert_from_datetime(currency)
+            balance=a.balance(quote).convert(currency, a.datetime)
+            pendiente=a.pendiente(quote).convert(currency, a.datetime)
+            invertido=a.invertido().convert(currency, a.datetime)
     
             sumsaldo=sumsaldo+balance
             sumpendiente=sumpendiente+pendiente
@@ -1968,11 +1986,16 @@ class SetInvestmentOperationsCurrentHomogeneus(SetInvestmentOperationsCurrentHet
             tabla.setItem(rownumber, 0, qdatetime(a.datetime, self.mem.localzone))
             if self.mem.gainsyear==True and a.less_than_a_year()==True:
                 tabla.item(rownumber, 0).setIcon(QIcon(":/xulpymoney/new.png"))
+            
             if show_accounts==True:
                 tabla.setItem(rownumber, diff-1, qleft(a.inversion.name))
                 tabla.setItem(rownumber, diff, qleft(a.inversion.account.name))
+            
             tabla.setItem(rownumber, diff+1, qright("{0:.6f}".format(a.acciones)))
-            tabla.setItem(rownumber, diff+2, self.investment.product.currency.qtablewidgetitem(a.valor_accion, 6))
+            
+            valor_accion=Money(self.mem, a.valor_accion, self.investment.product.currency).convert(currency, a.datetime)#Convertir con el currency de su datetime
+            tabla.setItem(rownumber, diff+2, valor_accion.qtablewidgetitem())
+            
             tabla.setItem(rownumber, diff+3, invertido.qtablewidgetitem())
             tabla.setItem(rownumber, diff+4, balance.qtablewidgetitem())
             tabla.setItem(rownumber, diff+5, pendiente.qtablewidgetitem())
@@ -4838,7 +4861,7 @@ class Money:
         if self.currency==money.currency:
             return Money(self.mem, self.amount+money.amount, self.currency)
         else:
-            b=money.convert_from_datetime(self.currency)
+            b=money.convert(self.currency)
             return Money(self.mem, self.amount+b.amount, self.currency)
             
         
@@ -4847,7 +4870,7 @@ class Money:
         if self.currency==money.currency:
             return Money(self.mem, self.amount-money.amount, self.currency)
         else:
-            b=money.convert_from_datetime(self.currency)
+            b=money.convert(self.currency)
             return Money(self.mem, self.amount-b.amount, self.currency)
         
     def __mul__(self, money):
@@ -4860,7 +4883,7 @@ class Money:
         if self.currency==money.currency:
             return Money(self.mem, self.amount*money.amount, self.currency)
         else:
-            b=money.convert_from_datetime(self.currency)
+            b=money.convert(self.currency)
             return Money(self.mem, self.amount*b.amount, self.currency)
     
     def __truediv__(self, money):
@@ -4868,7 +4891,7 @@ class Money:
         if self.currency==money.currency:
             return Money(self.mem, self.amount/money.amount, self.currency)
         else:
-            b=money.convert_from_datetime(self.currency)
+            b=money.convert(self.currency)
             return Money(self.mem, self.amount/b.amount, self.currency)
         
     def __repr__(self):
@@ -4896,9 +4919,9 @@ class Money:
     def local(self, dt=None):
         """Converts a Money to local currency
         Date==None means today"""
-        return self.convert_from_datetime(self.mem.localcurrency, dt)
+        return self.convert(self.mem.localcurrency, dt)
 #        
-#    def convert_from_datetime(self, currency, date=None):
+#    def convert(self, currency, date=None):
 #        """Converts self money to currency, using ohcldaily"""
 #        if self.currency==currency:
 #            return self
@@ -4910,9 +4933,9 @@ class Money:
 #        logging.info("Money conversion. {} to {} using factor {} took {}".format(self.string(6), result.string(6), factor, datetime.datetime.now()-init))
 #        return result        
         
-    def convert_from_datetime(self, currency, dt=None):
+    def convert(self, currency, dt=None):
         """Converts self money to currency"""
-        if self.currency==currency:
+        if self.currency==currency or self.amount==Decimal(0):
             return self
         init=datetime.datetime.now()
         if dt==None:
@@ -5526,8 +5549,12 @@ class SetQuotesAllIntradays:
         """Recorro de mayor a menor"""
         for i,  sqi in enumerate(reversed(self.arr)):
             if sqi.date<=dattime.date():
-                return sqi.find(dattime)
-        print (function_name(self), "Quote not found")
+                found=sqi.find(dattime)
+                if found==None:#Si no lo encuntra por que hay un quote de la misma fecha, pero es mayor que el que busco. Daba errores
+                    continue
+                else:
+                    return found                    
+        logging.critical("Quote not found in SetQuotesAllIntradays of {} at {}".format(self.product, dattime))
         return None
             
             
@@ -5665,7 +5692,7 @@ class SetQuotesIntraday(SetQuotes):
         for q in reversed(self.arr):
             if q.datetime<=dt:
                 return q
-        logging.critical("Quote not found at {}".format(dt))
+        logging.info("Quote not found in SetQuotesIntraday ({}) of {} at {}. En el set hay {}".format(self.date,  self.product, dt, self.arr))
         return None
 
     def datetimes(self):

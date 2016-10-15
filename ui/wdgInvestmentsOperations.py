@@ -61,7 +61,7 @@ class wdgInvestmentsOperations(QWidget, Ui_wdgInvestmentsOperations):
             for o in inv.op_actual.arr:
                 self.setCurrent.append(o)
         self.setCurrent.order_by_datetime()
-        self.setCurrent.myqtablewidget_heterogeneus(self.tblCurrent, True)
+        self.setCurrent.myqtablewidget(self.tblCurrent, True)
 
         
     @QtCore.pyqtSlot(int) 

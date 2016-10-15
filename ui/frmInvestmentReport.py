@@ -32,8 +32,11 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
         self.ise.setupUi(self.mem,  self.inversion)
         self.tblDividends.settings(self.mem, "frmInvestmentReport")         
         self.tblInvestmentCurrent.settings(self.mem, "frmInvestmentReport")
-        self.tblOperaciones.settings(self.mem, "frmInvestmentReport")
+        self.tblInvestmentCurrentAccountCurrency.settings(self.mem, "frmInvestmentReport")
+        self.tblOperations.settings(self.mem, "frmInvestmentReport")
+        self.tblOperationsAccountCurrency.settings(self.mem, "frmInvestmentReport")
         self.tblInvestmentHistorical.settings(self.mem, "frmInvestmentReport")
+        self.tblInvestmentHistoricalAccountCurrency.settings(self.mem,  "frmInvestmentReport")
         self.ise.cmd.released.connect(self.on_cmdISE_released)
         self.mem.data.accounts_active().qcombobox(self.cmbAccount)
         
@@ -106,14 +109,26 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
         else:
             self.op=self.inversion.op
         self.op.selected=None
-        self.op.myqtablewidget(self.tblOperaciones)
+        self.op.myqtablewidget(self.tblOperations)
+        
+        if self.inversion.product.currency==self.inversion.account.currency:#Multidivisa
+            self.grpOperationsAccountCurrency.hide()
+        else:
+            self.op.myqtablewidget(self.tblOperationsAccountCurrency, account_currency=True)
             
         
     def update_tables(self):             
         #Actualiza el indice de referencia porque ha cambiado
         self.inversion.op_actual.get_valor_benchmark(self.mem.data.benchmark)
+        
         self.on_chkOperaciones_stateChanged(self.chkOperaciones.checkState())
+        
         self.inversion.op_actual.myqtablewidget(self.tblInvestmentCurrent, False)
+        if self.inversion.product.currency==self.inversion.account.currency:#Multidivisa
+            self.grpCurrentAccountCurrency.hide()
+        else:
+            self.inversion.op_actual.myqtablewidget(self.tblInvestmentCurrentAccountCurrency, account_currency=True)
+        
         self.lblAge.setText(self.tr("Current operations average age: {0}".format(days_to_year_month(self.inversion.op_actual.average_age()))))
         self.inversion.op_historica.myqtablewidget(self.tblInvestmentHistorical )
         if self.inversion!=None:#We are adding a new investment
@@ -325,7 +340,7 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
             self.mem.con.commit()
             self.cmdInvestment.setEnabled(False)
         
-    def on_tblOperaciones_customContextMenuRequested(self,  pos):
+    def on_tblOperations_customContextMenuRequested(self,  pos):
         if self.inversion.qmessagebox_inactive() or self.inversion.account.qmessagebox_inactive()or self.inversion.account.eb.qmessagebox_inactive():
             return
         
@@ -357,7 +372,7 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
         menu.addAction(self.actionRangeReport)
         menu.addSeparator()
         menu.addAction(self.actionSplit)
-        menu.exec_(self.tblOperaciones.mapToGlobal(pos))
+        menu.exec_(self.tblOperations.mapToGlobal(pos))
         
     def on_tblInvestmentCurrent_itemSelectionChanged(self):
         self.inversion.op_actual.selected=None
@@ -393,10 +408,10 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
         menu.exec_(self.tblInvestmentCurrent.mapToGlobal(pos))
 
 
-    def on_tblOperaciones_itemSelectionChanged(self):
+    def on_tblOperations_itemSelectionChanged(self):
         self.op.selected=None
         try:
-            for i in self.tblOperaciones.selectedItems():#itera por cada item no row.
+            for i in self.tblOperations.selectedItems():#itera por cada item no row.
                 self.op.selected=self.op.arr[i.row()]
                 if self.op.selected.show_in_ranges==True:
                     self.actionRangeReport.setText(self.tr("Hide in range report"))
