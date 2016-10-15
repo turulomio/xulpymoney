@@ -20,15 +20,15 @@ class wdgAccounts(QWidget, Ui_wdgAccounts):
         self.accounts.order_by_name()
         self.tblAccounts.applySettings()
         self.tblAccounts.setRowCount(self.accounts.length());
-        sumsaldos=0
+        sumsaldos=Money(self.mem, 0, self.mem.localcurrency)
         for i, c in enumerate(self.accounts.arr):
-            self.tblAccounts.setItem(i, 0, QTableWidgetItem((c.name)))
-            self.tblAccounts.setItem(i, 1, QTableWidgetItem((c.eb.name)))
-            self.tblAccounts.setItem(i, 2, QTableWidgetItem((c.numero)))
+            self.tblAccounts.setItem(i, 0, QTableWidgetItem(c.name))
+            self.tblAccounts.setItem(i, 1, QTableWidgetItem(c.eb.name))
+            self.tblAccounts.setItem(i, 2, QTableWidgetItem(c.numero))
             balance=c.balance()
-            self.tblAccounts.setItem(i, 3, c.currency.qtablewidgetitem(balance))
-            sumsaldos=sumsaldos+balance  
-        self.lblTotal.setText(self.tr("Accounts balance: {0}".format(self.mem.localcurrency.string(sumsaldos))))
+            self.tblAccounts.setItem(i, 3, balance.local().qtablewidgetitem())
+            sumsaldos=sumsaldos+balance.local()
+        self.lblTotal.setText(self.tr("Accounts balance: {0}".format(sumsaldos)))
         self.tblAccounts.clearSelection()
         
     @QtCore.pyqtSlot() 
