@@ -354,27 +354,27 @@ class wdgTotal(QWidget, Ui_wdgTotal):
             if m.year<datetime.date.today().year or (m.year==datetime.date.today().year and m.month<=datetime.date.today().month):
                 self.table.setItem(0, i, m.incomes().qtablewidgetitem())
                 self.table.setItem(1, i, m.gains().qtablewidgetitem())
-                self.table.setItem(2, i, self.mem.localcurrency.qtablewidgetitem(m.dividends()))
-                self.table.setItem(3, i, self.mem.localcurrency.qtablewidgetitem(m.expenses()))
-                self.table.setItem(4, i, self.mem.localcurrency.qtablewidgetitem(m.i_d_g_e()))
-                self.table.setItem(6, i, self.mem.localcurrency.qtablewidgetitem(m.total_accounts()))
-                self.table.setItem(7, i, self.mem.localcurrency.qtablewidgetitem(m.total_investments()))
-                self.table.setItem(8, i, self.mem.localcurrency.qtablewidgetitem(m.total()))
-                self.table.setItem(9, i, self.mem.localcurrency.qtablewidgetitem(self.setData.difference_with_previous_month(m)))
+                self.table.setItem(2, i, m.dividends().qtablewidgetitem())
+                self.table.setItem(3, i, m.expenses().qtablewidgetitem())
+                self.table.setItem(4, i, m.i_d_g_e().qtablewidgetitem())
+                self.table.setItem(6, i, m.total_accounts().qtablewidgetitem())
+                self.table.setItem(7, i, m.total_investments().qtablewidgetitem())
+                self.table.setItem(8, i, m.total().qtablewidgetitem())
+                self.table.setItem(9, i, self.setData.difference_with_previous_month(m).qtablewidgetitem())
                 self.table.setItem(11, i, qtpc(self.setData.assets_percentage_in_month(m.month)))
-        self.table.setItem(0, 12, self.mem.localcurrency.qtablewidgetitem(self.setData.incomes()))
-        self.table.setItem(1, 12, self.mem.localcurrency.qtablewidgetitem(self.setData.gains()))
-        self.table.setItem(2, 12, self.mem.localcurrency.qtablewidgetitem(self.setData.dividends()))
-        self.table.setItem(3, 12, self.mem.localcurrency.qtablewidgetitem(self.setData.expenses()))
-        self.table.setItem(4, 12, self.mem.localcurrency.qtablewidgetitem(self.setData.i_d_g_e()))      
-        self.table.setItem(9, 12, self.mem.localcurrency.qtablewidgetitem(self.setData.difference_with_previous_year()))    
+        self.table.setItem(0, 12, self.setData.incomes().qtablewidgetitem())
+        self.table.setItem(1, 12, self.setData.gains().qtablewidgetitem())
+        self.table.setItem(2, 12, self.setData.dividends().qtablewidgetitem())
+        self.table.setItem(3, 12, self.setData.expenses().qtablewidgetitem())
+        self.table.setItem(4, 12, self.setData.i_d_g_e().qtablewidgetitem())      
+        self.table.setItem(9, 12, self.setData.difference_with_previous_year().qtablewidgetitem())    
         self.table.setItem(11, 12, qtpc(self.setData.assets_percentage_in_month(12)))        
         self.table.setCurrentCell(6, datetime.date.today().month-1)
         s=""
-        s=self.tr("This year I've generated {}.").format(self.mem.localcurrency.string(self.setData.gains()+self.setData.dividends()))
+        s=self.tr("This year I've generated {}.").format(self.setData.gains()+self.setData.dividends())
         invested=Assets(self.mem).invested(datetime.date.today())
         current=Assets(self.mem).saldo_todas_inversiones(self.mem.data.investments, datetime.date.today())
-        s=s+"\n"+self.tr("Difference between invested amount and current invesment balance: {} - {} = {}").format(self.mem.localcurrency.string(invested),  self.mem.localcurrency.string(current),  self.mem.localcurrency.string(current-invested))
+        s=s+"\n"+self.tr("Difference between invested amount and current invesment balance: {} - {} = {}").format(invested,  current,  current-invested)
         self.lblInvested.setText(s)
         final=datetime.datetime.now()          
         print ("wdgTotal > load_data: {0}".format(final-inicio))
@@ -382,21 +382,21 @@ class wdgTotal(QWidget, Ui_wdgTotal):
     def load_targets(self):
         print ("loading targets")
         self.annualtarget=AnnualTarget(self.mem).init__from_db(self.wyData.year) 
-        self.lblTarget.setText(self.tr("Annual target percentage of total assests balance at {}-12-31 ( {} )".format(self.annualtarget.year-1, self.mem.localcurrency.string(self.annualtarget.lastyear_assests))))
+        self.lblTarget.setText(self.tr("Annual target percentage of total assests balance at {}-12-31 ( {} )".format(self.annualtarget.year-1, self.annualtarget.lastyear_assests)))
         self.spinTarget.setValue(float(self.annualtarget.percentage))
         self.tblTargets.clearContents()
         self.tblTargets.applySettings()
         inicio=datetime.datetime.now()     
-        sumd_g=Decimal(0)
+        sumd_g=Money(self.mem, 0, self.mem.localcurrency)
         for i in range(1, 13): 
             m=self.setData.find(self.setData.year, i)
             sumd_g=sumd_g+m.d_g()
             self.tblTargets.setItem(0, i-1, self.mem.localcurrency.qtablewidgetitem(self.annualtarget.monthly_balance()))
-            self.tblTargets.setItem(1, i-1, self.annualtarget.qtablewidgetitem_monthly(m.d_g()))
+            self.tblTargets.setItem(1, i-1, self.annualtarget.qtablewidgetitem_monthly(m.d_g().amount))
             self.tblTargets.setItem(3, i-1, self.mem.localcurrency.qtablewidgetitem(self.annualtarget.monthly_balance()*i))
-            self.tblTargets.setItem(4, i-1, self.annualtarget.qtablewidgetitem_accumulated(sumd_g, i))
+            self.tblTargets.setItem(4, i-1, self.annualtarget.qtablewidgetitem_accumulated(sumd_g.amount, i))
         self.tblTargets.setItem(0, 12, self.mem.localcurrency.qtablewidgetitem(self.annualtarget.annual_balance()))
-        self.tblTargets.setItem(1, 12, self.annualtarget.qtablewidgetitem_annual(sumd_g))
+        self.tblTargets.setItem(1, 12, self.annualtarget.qtablewidgetitem_annual(sumd_g.amount))
         self.tblTargets.setCurrentCell(2, datetime.date.today().month-1)   
                 
         s=""
@@ -414,9 +414,9 @@ class wdgTotal(QWidget, Ui_wdgTotal):
             dg_i=dividends+gains-incomes
             """
             item=qcenter("")
-            if dg_e==0:
+            if dg_e.isZero():
                 return item
-            if dg_e<0:
+            if not dg_e.isGETZero():
                 item.setText(self.tr("Work"))
                 item.setBackground(QColor(255, 148, 148))
             else:
@@ -430,13 +430,13 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         self.tblInvestOrWork.applySettings()
         for i in range(1, 13): 
             m=self.setData.find(self.setData.year, i)
-            self.tblInvestOrWork.setItem(0, i-1, self.mem.localcurrency.qtablewidgetitem(m.d_g()))
-            self.tblInvestOrWork.setItem(1, i-1, self.mem.localcurrency.qtablewidgetitem(m.expenses()))
-            self.tblInvestOrWork.setItem(3, i-1, self.mem.localcurrency.qtablewidgetitem(m.d_g()+m.expenses()))#Es mas porque es - y gastos -
+            self.tblInvestOrWork.setItem(0, i-1, m.d_g().qtablewidgetitem())
+            self.tblInvestOrWork.setItem(1, i-1, m.expenses().qtablewidgetitem())
+            self.tblInvestOrWork.setItem(3, i-1, (m.d_g()+m.expenses()).qtablewidgetitem())#Es mas porque es - y gastos -
             self.tblInvestOrWork.setItem(5, i-1, qresult(m.d_g()+m.expenses()))
-        self.tblInvestOrWork.setItem(0, 12, self.mem.localcurrency.qtablewidgetitem(self.setData.d_g()))
-        self.tblInvestOrWork.setItem(1, 12, self.mem.localcurrency.qtablewidgetitem(self.setData.expenses()))
-        self.tblInvestOrWork.setItem(3, 12, self.mem.localcurrency.qtablewidgetitem(self.setData.d_g()+self.setData.expenses()))
+        self.tblInvestOrWork.setItem(0, 12, self.setData.d_g().qtablewidgetitem())
+        self.tblInvestOrWork.setItem(1, 12, self.setData.expenses().qtablewidgetitem())
+        self.tblInvestOrWork.setItem(3, 12, (self.setData.d_g()+self.setData.expenses()).qtablewidgetitem())
         self.tblInvestOrWork.setItem(5, 12, qresult(self.setData.d_g()+self.setData.expenses()))
         self.tblInvestOrWork.setCurrentCell(2, datetime.date.today().month-1)   
         
@@ -833,8 +833,8 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         
         for i, type in enumerate(settypes.arr):
             table.setItem(i, 0, qleft(type.name))    
-            gains=Decimal('0')
-            dividends=Decimal('0')
+            gains=Money(self.mem,  0,  self.mem.localcurrency)
+            dividends=Money(self.mem,  0,  self.mem.localcurrency)
             for inv in self.mem.data.investments.arr:
                 if inv.product.type.id==type.id:
                     #gains
@@ -845,8 +845,8 @@ class wdgTotal(QWidget, Ui_wdgTotal):
                     setdiv=SetDividends(self.mem)
                     setdiv.load_from_db(self.mem.con.mogrify("select * from dividends where id_inversiones=%s and fecha>=%s and fecha<=%s order by fecha", (inv.id, datetime.datetime(self.wyData.year, 1, 1, 0, 0, 0), datetime.datetime(self.wyData.year+1, 12, 31, 23, 59, 59))))
                     dividends=dividends+setdiv.gross()
-            table.setItem(i, 1, self.mem.localcurrency.qtablewidgetitem(gains))
-            table.setItem(i, 2, self.mem.localcurrency.qtablewidgetitem(dividends))
+            table.setItem(i, 1, gains.qtablewidgetitem())
+            table.setItem(i, 2, dividends.qtablewidgetitem())
             sum_gains=sum_gains+gains
             sum_dividens=sum_dividens+dividends
             
