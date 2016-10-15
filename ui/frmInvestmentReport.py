@@ -28,6 +28,13 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
         self.op=None#Sera un SetInvestmentOperations
         self.dividends=SetDividends(self.mem)
          
+         
+#        for o in self.inversion.op.arr:
+#            print(o)
+#        for o in self.inversion.op_actual.arr:
+#            print(o)
+#        for o in self.inversion.op_historica.arr:
+#            print(o)
         
         self.ise.setupUi(self.mem,  self.inversion)
         self.tblDividends.settings(self.mem, "frmInvestmentReport")         
@@ -124,13 +131,16 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
         self.on_chkOperaciones_stateChanged(self.chkOperaciones.checkState())
         
         self.inversion.op_actual.myqtablewidget(self.tblInvestmentCurrent, False)
+        self.inversion.op_historica.myqtablewidget(self.tblInvestmentHistorical )
         if self.inversion.product.currency==self.inversion.account.currency:#Multidivisa
             self.grpCurrentAccountCurrency.hide()
+            self.grpHistoricalAccountCurrency.hide()
         else:
             self.inversion.op_actual.myqtablewidget(self.tblInvestmentCurrentAccountCurrency, account_currency=True)
+            self.inversion.op_historica.myqtablewidget(self.tblInvestmentHistoricalAccountCurrency, account_currency=True )
         
         self.lblAge.setText(self.tr("Current operations average age: {0}".format(days_to_year_month(self.inversion.op_actual.average_age()))))
-        self.inversion.op_historica.myqtablewidget(self.tblInvestmentHistorical )
+        
         if self.inversion!=None:#We are adding a new investment
             self.on_chkHistoricalDividends_stateChanged(self.chkHistoricalDividends.checkState())
     
