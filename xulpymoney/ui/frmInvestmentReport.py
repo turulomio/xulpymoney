@@ -15,7 +15,7 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
         """TIPOS DE ENTRADAS:        
          1   : Inserción de Opercuentas
          2   inversion=x"""
-        QWidget.__init__(self, parent)
+        QDialog.__init__(self, parent)
         QApplication.setOverrideCursor(Qt.WaitCursor)
         self.hide()
         self.setupUi(self)
@@ -26,7 +26,6 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
         
         #arrays asociados a tablas
         self.op=None#Sera un SetInvestmentOperations
-        self.dividends=SetDividendsHomogeneus(self.mem, self.inversion)
          
          
 #        for o in self.inversion.op.arr:
@@ -37,6 +36,9 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
 #            print(o)
         
         self.ise.setupUi(self.mem,  self.inversion)
+        
+        self.dividends=SetDividendsHomogeneus(self.mem, self.inversion)
+        
         self.tblDividends.settings(self.mem, "frmInvestmentReport")         
         self.tblDividendsAccountCurrency.settings(self.mem, "frmInvestmentReport")
         self.tblInvestmentCurrent.settings(self.mem, "frmInvestmentReport")
@@ -288,6 +290,7 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
     def on_chkHistoricalDividends_stateChanged(self, state):
         dtfo=self.inversion.op_actual.datetime_first_operation()
         self.tblDividends.clearSelection()
+        self.tblDividendsAccountCurrency.clearSelection()
         self.selDividend=None        
 
         if state==Qt.Unchecked and dtfo!=None:   
