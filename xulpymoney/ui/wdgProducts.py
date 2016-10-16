@@ -92,6 +92,7 @@ class wdgProducts(QWidget, Ui_wdgProducts):
     def on_actionPurchaseGraphic_triggered(self):
         self.products.selected[0].result.get_basic_and_ohcls()
         d=QDialog(self)     
+        d.showMaximized()
         d.setWindowTitle(self.tr("Purchase graph"))
         w=canvasChartHistoricalBuy(self.mem, d)
         w.load_data(self.products.selected[0], self.products.selected[0].result.basic.last.quote)
