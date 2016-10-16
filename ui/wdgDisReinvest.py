@@ -35,7 +35,7 @@ class wdgDisReinvest(QWidget, Ui_wdgDisReinvest):
         self.tblInvestmentsHistoricas.settings(self.mem, "wdgDisReinvest")
         self.tblOperaciones.settings(self.mem, "wdgDisReinvest")
         
-        self.inversion.op_actual.myqtablewidget_homogeneus(self.tblInvestmentsActualAntes)
+        self.inversion.op_actual.myqtablewidget(self.tblInvestmentsActualAntes)
         self.on_radRe_clicked()
 
     def acciones(self):
@@ -131,15 +131,15 @@ class wdgDisReinvest(QWidget, Ui_wdgDisReinvest):
         (self.sim_opactual, self.sim_ophistorica)=self.sim_op.calcular()
         #After
         self.sim_op.myqtablewidget(self.tblOperaciones)
-        self.sim_opactual.myqtablewidget_homogeneus(self.tblInvestmentsActualDespues, quote=self.inversion.product.result.basic.last)
+        self.sim_opactual.myqtablewidget(self.tblInvestmentsActualDespues, quote=self.inversion.product.result.basic.last)
         self.sim_ophistorica.myqtablewidget(self.tblInvestmentsHistoricas)
         self.gains(self.tblGainsAfter,  self.inversion.acciones()+self.acciones(), self.sim_opactual.average_price())
         
         #After at
-        self.sim_opactual.myqtablewidget_homogeneus(self.tblInvestmentsActualDespuesAt, quote=at)
+        self.sim_opactual.myqtablewidget(self.tblInvestmentsActualDespuesAt, quote=at)
         
         #Before at
-        self.inversion.op_actual.myqtablewidget_homogeneus(self.tblInvestmentsActualAntesAt, quote=at)
+        self.inversion.op_actual.myqtablewidget(self.tblInvestmentsActualAntesAt, quote=at)
         
         
         #Before

@@ -577,7 +577,7 @@
             </widget>
            </item>
            <item>
-            <widget class="QGroupBox" name="grpDividendsAccocuntCurrency">
+            <widget class="QGroupBox" name="grpDividendsAccountCurrency">
              <property name="title">
               <string>Dividends in account currency</string>
              </property>

@@ -1576,7 +1576,7 @@ class SetInvestmentOperationsHeterogeneus(SetIO):
         cur.execute("delete from operinversiones where id_operinversiones=%s",(io.id, ))
         cur.close()
         
-        super(SetInvestmentOperations, self).remove(io)
+        super(SetInvestmentOperationsHeterogeneus, self).remove(io)
         
         (io.inversion.op_actual,  io.inversion.op_historica)=io.inversion.op.calcular()
         io.inversion.actualizar_cuentasoperaciones_asociadas()#Regenera toda la inversión.
