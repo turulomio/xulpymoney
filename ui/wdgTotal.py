@@ -54,11 +54,11 @@ class canvasTotal(FigureCanvasQTAgg):
                 break
             progress.setValue(progress.value()+1)
             self.dates.append(m.last_day())
-            total=m.total()
+            total=m.total().amount
             self.total.append(total)
-            zero=m.total_zerorisk()
+            zero=m.total_zerorisk().amount
             self.zero.append(zero)
-            bonds=m.total_bonds()
+            bonds=m.total_bonds().amount
             self.bonds.append(bonds)
             self.risk.append(total-zero-bonds)
         
@@ -707,7 +707,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         table.setSelectionMode(QAbstractItemView.SingleSelection)
         table.verticalHeader().setVisible(False)
         
-        set=SetDividends(self.mem)
+        set=SetDividendsHeterogeneus(self.mem)
         if self.month==13:#Year
             tabtitle=self.tr("Dividends of {0}").format(self.wyData.year)
             set.load_from_db("select * from dividends where id_conceptos not in (63) and date_part('year',fecha)={0}".format (self.wyData.year))
@@ -842,7 +842,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
                         if o.fecha_venta.year==self.wyData.year and o.tipooperacion.id in (5, 8):
                             gains=gains+o.consolidado_bruto()
                     #dividends
-                    setdiv=SetDividends(self.mem)
+                    setdiv=SetDividendsHeterogeneus(self.mem)
                     setdiv.load_from_db(self.mem.con.mogrify("select * from dividends where id_inversiones=%s and fecha>=%s and fecha<=%s order by fecha", (inv.id, datetime.datetime(self.wyData.year, 1, 1, 0, 0, 0), datetime.datetime(self.wyData.year+1, 12, 31, 23, 59, 59))))
                     dividends=dividends+setdiv.gross()
             table.setItem(i, 1, gains.qtablewidgetitem())

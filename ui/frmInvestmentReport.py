@@ -26,7 +26,7 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
         
         #arrays asociados a tablas
         self.op=None#Sera un SetInvestmentOperations
-        self.dividends=SetDividends(self.mem)
+        self.dividends=SetDividendsHomogeneus(self.mem, self.inversion)
          
          
 #        for o in self.inversion.op.arr:
@@ -38,6 +38,7 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
         
         self.ise.setupUi(self.mem,  self.inversion)
         self.tblDividends.settings(self.mem, "frmInvestmentReport")         
+        self.tblDividendsAccountCurrency.settings(self.mem, "frmInvestmentReport")
         self.tblInvestmentCurrent.settings(self.mem, "frmInvestmentReport")
         self.tblInvestmentCurrentAccountCurrency.settings(self.mem, "frmInvestmentReport")
         self.tblOperations.settings(self.mem, "frmInvestmentReport")
@@ -81,12 +82,16 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
         QApplication.restoreOverrideCursor()
 
     def load_tabDividends(self):        
-        (sumneto, sumbruto, sumretencion, sumcomision)=self.dividends.myqtablewidget(self.tblDividends, "frmInvestmentReport")
+        (sumneto, sumbruto, sumretencion, sumcomision)=self.dividends.myqtablewidget(self.tblDividends)
+        if self.inversion.account.currency==self.inversion.product.currency:
+            self.grpDividendsAccountCurrency.hide()
+        else:
+            self.dividends.myqtablewidget(self.tblDividendsAccountCurrency, account_currency=True)
         if self.chkHistoricalDividends.checkState()==Qt.Unchecked:
             if len(self.dividends.arr)>0 and len(self.inversion.op_actual.arr)>0:
                 importeinvertido=self.inversion.invertido()
                 dias=(datetime.date.today()-self.inversion.op_actual.datetime_first_operation().date()).days+1
-                dtpc=100*sumbruto/importeinvertido
+                dtpc=100*sumbruto.amount/importeinvertido.amount
                 dtae=365*dtpc/abs(dias)
             else:
                 dtpc=0

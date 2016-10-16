@@ -167,7 +167,7 @@ class canvasChartHistorical(FigureCanvasQTAgg):
         self.plot_sma50=None
         self.from_dt=self.mem.localzone.now()-datetime.timedelta(days=365)#Show days from this date
         
-        self.purchase_type=None#None ninguno 0 con reinversi´on personalizada, 1 con reinversi´on dinero invertido, 2 con reinversi´on dinero invertido x2 y 3 con reinversion dinero invertido x1.5 
+        self.purchase_type=None#None ninguno 0 con reinversión personalizada, 1 con reinversión dinero invertido, 2 con reinversión dinero invertido x2 y 3 con reinversion dinero invertido x1.5 
 
         self.actionLines1d=QAction(self)
         self.actionLines1d.setText(self.tr("1 day"))
@@ -598,7 +598,7 @@ class canvasChartHistoricalBuy(FigureCanvasQTAgg):
         self.plot_reference_4=None
         self.plot_reference_5=None
         
-        self.purchase_type=None#None ninguno 0 con reinversi´on personalizada, 1 con reinversi´on dinero invertido, 2 con reinversi´on dinero invertido x2 y 3 con reinversion dinero invertido x1.5 
+        self.purchase_type=None#None ninguno 0 con reinversión personalizada, 1 con reinversión dinero invertido, 2 con reinversión dinero invertido x2 y 3 con reinversion dinero invertido x1.5 
        
         self.actionSMA50=QAction(self)
         self.actionSMA50.setText(self.tr("Simple moving average 50"))
@@ -678,7 +678,7 @@ class canvasChartHistoricalBuy(FigureCanvasQTAgg):
         self.draw()
 
     def draw_newPurchaseReferences(self):        
-        """Es un porcentaje  de disminuci´on haciendo compras de capital x2
+        """Es un porcentaje  de disminución haciendo compras de capital x2
         Si compro a 20 luego compro el doble a un -33% me queda de media todo 15.06 que es un 15.06/20 0.753%
         Es decir precio medio de compra / precio inicial de compra
         """
@@ -823,7 +823,7 @@ class canvasChartHistoricalReinvest(FigureCanvasQTAgg):
         self.plot_new_selling=None
         self.from_dt=self.mem.localzone.now()-datetime.timedelta(days=365)#Show days from this date
         
-        self.purchase_type=None#None ninguno 0 con reinversi´on personalizada, 1 con reinversi´on dinero invertido, 2 con reinversi´on dinero invertido x2 y 3 con reinversion dinero invertido x1.5 
+        self.purchase_type=None#None ninguno 0 con reinversión personalizada, 1 con reinversión dinero invertido, 2 con reinversión dinero invertido x2 y 3 con reinversion dinero invertido x1.5 
 
         self.labels=[]#Array de tuplas (plot,label)
 

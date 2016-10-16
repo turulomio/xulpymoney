@@ -285,7 +285,7 @@ class SetCommons:
                 
     def clone(self,  *initparams):
         """Returns other Set object, with items referenced, ojo con las formas de las instancias
-        initparams son los parametros de iniciaci´on de la clase"""
+        initparams son los parametros de iniciación de la clase"""
         result=self.__class__(*initparams)#Para que coja la clase del objeto que lo invoca
         for a in self.arr:
             result.append(a)
@@ -293,7 +293,7 @@ class SetCommons:
         
     def union(self,  set,  *initparams):
         """Returns a new set, with the union comparing id
-        initparams son los parametros de iniciaci´on de la clse"""        
+        initparams son los parametros de iniciación de la clse"""        
         resultado=self.__class__(*initparams)#Para que coja la clase del objeto que lo invoca SetProduct(self.mem), luego ser´a self.mem
         for p in self.arr:
             resultado.append(p)
@@ -357,6 +357,7 @@ class SetInvestments(SetCommons):
         return list(resultado)
             
     def myqtablewidget(self, table):
+        """Esta tabla muestra los money con la moneda local"""
         table.setRowCount(len(self.arr))
         table.applySettings()
         table.clearContents()
@@ -367,10 +368,7 @@ class SetInvestments(SetCommons):
             table.setItem(i, 2, inv.product.currency.qtablewidgetitem(inv.product.result.basic.last.quote,  6))#Se debería recibir el parametro currency
             
             diario=inv.diferencia_saldo_diario().local()
-            try:
-                d["sumdiario"]=d["sumdiario"]+diario
-            except:
-                pass
+            d["sumdiario"]=d["sumdiario"]+diario
             table.setItem(i, 3, diario.qtablewidgetitem())
             table.setItem(i, 4, qtpc(inv.product.result.basic.tpc_diario()))
             
@@ -1036,7 +1034,7 @@ class SetCountries(SetCommons):
                 combo.setCurrentIndex(combo.findData(country.id))
 
     def qcombobox_translation(self, combo,  country=None):
-        """Función que carga en un combo pasado como parámetro con los pa´ises que tienen traducci´on""" 
+        """Función que carga en un combo pasado como parámetro con los pa´ises que tienen traducción""" 
         for cu in [self.find_by_id("es"),self.find_by_id("fr"),self.find_by_id("ro"),self.find_by_id("ru"),self.find_by_id("en") ]:
             combo.addItem(cu.qicon(), cu.name, cu.id)
 
@@ -1199,12 +1197,22 @@ class SetCurrencies(SetCommons):
         if selectedcurrency!=None:
                 combo.setCurrentIndex(combo.findData(selectedcurrency.id))
 
-class SetDividends:
+class SetDividendsHeterogeneus:
     """Class that  groups dividends from a Xulpymoney Product"""
     def __init__(self, mem):
         self.mem=mem
         self.arr=[]
-        
+            
+    def gross(self):
+        """gross amount in self.mem.localcurrency"""
+        r=Money(self.mem, 0, self.mem.localcurrency)
+        for d in self.arr:
+            r=r+d.gross().local()
+        return r
+
+    def length(self):
+        return len(self.arr)
+
     def load_from_db(self, sql):    
         del self.arr
         self.arr=[]
@@ -1272,14 +1280,65 @@ class SetDividends:
         self.arr=[]
         
         
-    def gross(self):
+
+        
+class SetDividendsHomogeneus(SetDividendsHeterogeneus):
+    def __init__(self, mem, investment):
+        SetDividendsHeterogeneus.__init__(self, mem)
+        self.investment=investment
+        
+    def gross(self, account_currency=False):
         """gross amount"""
-        r=Decimal('0')
-        logging.error("NO SE HACE EL MONEY POR ")
+        if account_currency==False:
+            r=Money(self.mem, 0, self.investment.product.currency)
+        else:
+            r=Money(self.mem, 0, self.investment.account.currency)
         for d in self.arr:
-            r=r+d.bruto
+            r=r+d.gross(account_currency)
         return r
-    
+        
+    def myqtablewidget(self, table, account_currency=False):
+        """Section es donde guardar en el config file, coincide con el nombre del formulario en el que está la table
+        Devuelve sumatorios"""
+
+        table.setColumnCount(7)
+        table.setHorizontalHeaderItem(0, QTableWidgetItem(QApplication.translate("Core", "Date" )))
+        table.setHorizontalHeaderItem(1, QTableWidgetItem(QApplication.translate("Core", "Concept" )))
+        table.setHorizontalHeaderItem(2, QTableWidgetItem(QApplication.translate("Core", "Gross" )))
+        table.setHorizontalHeaderItem(3, QTableWidgetItem(QApplication.translate("Core", "Withholding" )))
+        table.setHorizontalHeaderItem(4, QTableWidgetItem(QApplication.translate("Core", "Comission" )))
+        table.setHorizontalHeaderItem(5, QTableWidgetItem(QApplication.translate("Core", "Net" )))
+        table.setHorizontalHeaderItem(6, QTableWidgetItem(QApplication.translate("Core", "DPS" )))
+        #DATA  
+        table.applySettings()
+        table.clearContents()
+        
+        currency=self.investment.product.currency if account_currency==False else self.investment.account.currency
+
+        table.setRowCount(self.length()+1)
+        sumneto=Money(self.mem, 0, currency)
+        sumbruto=Money(self.mem, 0, currency)
+        sumretencion=Money(self.mem, 0, currency)
+        sumcomision=Money(self.mem, 0, currency)
+        for i, d in enumerate(self.arr):
+            sumneto=sumneto+d.net(account_currency)
+            sumbruto=sumbruto+d.gross(account_currency)
+            sumretencion=sumretencion+d.retention(account_currency)
+            sumcomision=sumcomision+d.comission(account_currency)
+            table.setItem(i, 0, qdatetime(d.fecha, self.mem.localzone))
+            table.setItem(i, 1, qleft(d.opercuenta.concepto.name))
+            table.setItem(i, 2, d.gross(account_currency).qtablewidgetitem())
+            table.setItem(i, 3, d.retention(account_currency).qtablewidgetitem())
+            table.setItem(i, 4, d.comission(account_currency).qtablewidgetitem())
+            table.setItem(i, 5, d.net(account_currency).qtablewidgetitem())
+            table.setItem(i, 6, d.dps(account_currency).qtablewidgetitem())
+        table.setItem(self.length(), 1, qleft(QApplication.translate("core","TOTAL")))
+        table.setItem(self.length(), 2, sumbruto.qtablewidgetitem())
+        table.setItem(self.length(), 3, sumretencion.qtablewidgetitem())
+        table.setItem(self.length(), 4, sumcomision.qtablewidgetitem())
+        table.setItem(self.length(), 5, sumneto.qtablewidgetitem())
+        return (sumneto, sumbruto, sumretencion, sumcomision)
+        
 class SetEstimationsDPS:
     def __init__(self, mem,  product):
         self.arr=[]
@@ -1520,7 +1579,7 @@ class SetInvestmentOperationsHeterogeneus(SetIO):
         super(SetInvestmentOperations, self).remove(io)
         
         (io.inversion.op_actual,  io.inversion.op_historica)=io.inversion.op.calcular()
-        io.inversion.actualizar_cuentasoperaciones_asociadas()#Regenera toda la inversi´on.
+        io.inversion.actualizar_cuentasoperaciones_asociadas()#Regenera toda la inversión.
         
 
         
@@ -1931,7 +1990,7 @@ class SetInvestmentOperationsCurrentHomogeneus(SetInvestmentOperationsCurrentHet
         Parámetros
             - tabla myQTableWidget en la que rellenar los datos
             - quote, si queremos cargar las operinversiones con un valor determinado se pasar´a la quote correspondiente. Es un Objeto quote
-            - account_currency. Si es Falsa muestra la moneda de la inversi´on si es verdadera con la currency de la cuentaº
+            - account_currency. Si es Falsa muestra la moneda de la inversión si es verdadera con la currency de la cuentaº
         """
         if show_accounts==True:
             diff=2
@@ -2026,49 +2085,46 @@ class SetInvestmentOperationsHistoricalHeterogeneus(SetIO):
         SetIO.__init__(self, mem)
 
         
-    def consolidado_bruto(self,  year=None,  month=None):
+    def consolidado_bruto(self,  year=None,  month=None, account_currency=False):
         resultado=Money(self.mem, 0, self.mem.localcurrency)
-        logging.error("ESTA MAL, HAY QUEW CALCULAR EL CONSOLIDADO BRUTO EN LA DATETIME DE LA OPERACICON")
         for o in self.arr:        
             if year==None:#calculo historico
-                resultado=resultado+o.consolidado_bruto()
+                resultado=resultado+o.consolidado_bruto(account_currency)
             else:                
                 if month==None:#Calculo anual
                     if o.fecha_venta.year==year:
-                        resultado=resultado+o.consolidado_bruto()
+                        resultado=resultado+o.consolidado_bruto(account_currency)
                 else:#Calculo mensual
                     if o.fecha_venta.year==year and o.fecha_venta.month==month:
-                        resultado=resultado+o.consolidado_bruto()
+                        resultado=resultado+o.consolidado_bruto(account_currency)
         return resultado        
         
-    def consolidado_neto(self,  year=None,  month=None):
+    def consolidado_neto(self,  year=None,  month=None, account_currency=False):
         resultado=Money(self.mem, 0, self.mem.localcurrency)
-        logging.error("ESTA MAL, HAY QUEW CALCULAR EL CONSOLIDADO BRUTO EN LA DATETIME DE LA OPERACICON")
         for o in self.arr:        
             if year==None:#calculo historico
-                resultado=resultado+o.consolidado_neto()
+                resultado=resultado+o.consolidado_neto(account_currency)
             else:                
                 if month==None:#Calculo anual
                     if o.fecha_venta.year==year:
-                        resultado=resultado+o.consolidado_neto()
+                        resultado=resultado+o.consolidado_neto(account_currency)
                 else:#Calculo mensual
                     if o.fecha_venta.year==year and o.fecha_venta.month==month:
-                        resultado=resultado+o.consolidado_neto()
+                        resultado=resultado+o.consolidado_neto(account_currency)
         return resultado
         
-    def consolidado_neto_antes_impuestos(self,  year=None,  month=None):
+    def consolidado_neto_antes_impuestos(self,  year=None,  month=None, account_currency=False):
         resultado=Money(self.mem, 0, self.mem.localcurrency)
-        logging.error("ESTA MAL, HAY QUEW CALCULAR EL CONSOLIDADO BRUTO EN LA DATETIME DE LA OPERACICON")
         for o in self.arr:        
             if year==None:#calculo historico
-                resultado=resultado+o.consolidado_neto_antes_impuestos()
+                resultado=resultado+o.consolidado_neto_antes_impuestos(account_currency)
             else:                
                 if month==None:#Calculo anual
                     if o.fecha_venta.year==year:
-                        resultado=resultado+o.consolidado_neto_antes_impuestos()
+                        resultado=resultado+o.consolidado_neto_antes_impuestos(account_currency)
                 else:#Calculo mensual
                     if o.fecha_venta.year==year and o.fecha_venta.month==month:
-                        resultado=resultado+o.consolidado_neto_antes_impuestos()
+                        resultado=resultado+o.consolidado_neto_antes_impuestos(account_currency)
         return resultado
 
     def myqtablewidget(self, tabla, show_accounts=False):
@@ -2516,7 +2572,7 @@ class InvestmentOperationCurrent:
         if account_currency==False:
             return Money(self.mem, self.acciones*self.valor_accion, self.inversion.product.currency)
         else:
-            return Money(self.mem, self.acciones*self.valor_accion, self.inversion.product.currency).convert_from_factor(self.inversion.account.currency, self.currency_conversion)#Usa el factor del dia de la operacic´on
+            return Money(self.mem, self.acciones*self.valor_accion, self.inversion.product.currency).convert_from_factor(self.inversion.account.currency, self.currency_conversion)#Usa el factor del dia de la operacicón
         
     def balance(self,  lastquote, account_currency=False):
         """Función que calcula el balance actual de la operinversion actual
@@ -3046,11 +3102,12 @@ class Dividend:
         self.opercuenta=None
         self.comision=None
         self.concepto=None#Puedeser 39 o 62 para derechos venta
+        self.currency_conversion=None
 
     def __repr__(self):
         return ("Instancia de Dividend: {0} ({1})".format( self.neto, self.id))
         
-    def init__create(self,  inversion,  bruto,  retencion, neto,  dpa,  fecha,  comision,  concepto, opercuenta=None,  id=None):
+    def init__create(self,  inversion,  bruto,  retencion, neto,  dpa,  fecha,  comision,  concepto, currency_conversion,  opercuenta=None,  id=None):
         """Opercuenta puede no aparecer porque se asigna al hacer un save que es cuando se crea. Si id=None,opercuenta debe ser None"""
         self.id=id
         self.inversion=inversion
@@ -3062,10 +3119,11 @@ class Dividend:
         self.opercuenta=opercuenta
         self.comision=comision
         self.concepto=concepto
+        self.currency_conversion=currency_conversion
         return self
         
     def init__db_row(self, row, inversion,  opercuenta,  concepto):
-        return self.init__create(inversion,  row['bruto'],  row['retencion'], row['neto'],  row['valorxaccion'],  row['fecha'],   row['comision'],  concepto, opercuenta, row['id_dividends'])
+        return self.init__create(inversion,  row['bruto'],  row['retencion'], row['neto'],  row['valorxaccion'],  row['fecha'],   row['comision'],  concepto, row['currency_conversion'], opercuenta, row['id_dividends'])
         
     def borrar(self):
         """Borra un dividend, para ello borra el registro de la tabla dividends 
@@ -3076,6 +3134,34 @@ class Dividend:
         self.opercuenta.borrar()
         cur.execute("delete from dividends where id_dividends=%s", (self.id, ))
         cur.close()
+        
+    def gross(self, account_currency=False):
+        if account_currency==False:
+            return Money(self.mem, self.bruto, self.inversion.product.currency)
+        else:
+            return Money(self.mem, self.bruto, self.inversion.product.currency).convert_from_factor(self.inversion.account.currency, self.currency_conversion)
+    def net(self, account_currency=False):
+        if account_currency==False:
+            return Money(self.mem, self.neto, self.inversion.product.currency)
+        else:
+            return Money(self.mem, self.neto, self.inversion.product.currency).convert_from_factor(self.inversion.account.currency, self.currency_conversion)
+    def retention(self, account_currency=False):
+        if account_currency==False:
+            return Money(self.mem, self.retencion, self.inversion.product.currency)
+        else:
+            return Money(self.mem, self.retencion, self.inversion.product.currency).convert_from_factor(self.inversion.account.currency, self.currency_conversion)
+    def dps(self, account_currency=False):
+        "Dividend per share"
+        if account_currency==False:
+            return Money(self.mem, self.dpa, self.inversion.product.currency)
+        else:
+            return Money(self.mem, self.dpa, self.inversion.product.currency).convert_from_factor(self.inversion.account.currency, self.currency_conversion)
+    def comission(self, account_currency=False):
+        if account_currency==False:
+            return Money(self.mem, self.comision, self.inversion.account.currency).convert_from_factor(self.inversion.product.currency, 1/self.currency_conversion)
+        else:
+            return Money(self.mem, self.comision, self.inversion.account.currency)
+            
         
     def neto_antes_impuestos(self):
         return self.bruto-self.comision
@@ -3095,7 +3181,7 @@ class Dividend:
             oc.save()
             self.opercuenta=oc
             #Añade el dividend
-            sql="insert into dividends (fecha, valorxaccion, bruto, retencion, neto, id_inversiones,id_opercuentas, comision, id_conceptos) values ('"+str(self.fecha)+"', "+str(self.dpa)+", "+str(self.bruto)+", "+str(self.retencion)+", "+str(self.neto)+", "+str(self.inversion.id)+", "+str(self.opercuenta.id)+", "+str(self.comision)+", "+str(self.concepto.id)+")"
+            sql="insert into dividends (fecha, valorxaccion, bruto, retencion, neto, id_inversiones,id_opercuentas, comision, id_conceptos,currency_conversion) values ('"+str(self.fecha)+"', "+str(self.dpa)+", "+str(self.bruto)+", "+str(self.retencion)+", "+str(self.neto)+", "+str(self.inversion.id)+", "+str(self.opercuenta.id)+", "+str(self.comision)+", "+str(self.concepto.id) +", "+str(self.currency_conversion)+")"
             cur.execute(sql)
         else:
             self.opercuenta.datetime=self.fecha
@@ -3104,7 +3190,7 @@ class Dividend:
             self.opercuenta.concepto=self.concepto
             self.opercuenta.tipooperacion=self.concepto.tipooperacion
             self.opercuenta.save()
-            cur.execute("update dividends set fecha=%s, valorxaccion=%s, bruto=%s, retencion=%s, neto=%s, id_inversiones=%s, id_opercuentas=%s, comision=%s, id_conceptos=%s where id_dividends=%s", (self.fecha, self.dpa, self.bruto, self.retencion, self.neto, self.inversion.id, self.opercuenta.id, self.comision, self.concepto.id, self.id))
+            cur.execute("update dividends set fecha=%s, valorxaccion=%s, bruto=%s, retencion=%s, neto=%s, id_inversiones=%s, id_opercuentas=%s, comision=%s, id_conceptos=%s, currency_conversion=%s where id_dividends=%s", (self.fecha, self.dpa, self.bruto, self.retencion, self.neto, self.inversion.id, self.opercuenta.id, self.comision, self.concepto.id, self.currency_conversion, self.id))
         cur.close()
 
 class InvestmentOperation:
@@ -3190,7 +3276,7 @@ class InvestmentOperation:
         se almacenan las opercuentas automaticas por las operaciones con inversiones. Es una tabla 
         que se puede actualizar en cualquier momento con esta función"""
         self.comentario="{0}|{1}|{2}|{3}|{4}".format(self.acciones, self.inversion.name, self.importe, self.comision, self.impuestos)
-        #/Borra de la tabla opercuentasdeoperinversiones los de la operinversi´on pasada como par´ametro
+        #/Borra de la tabla opercuentasdeoperinversiones los de la operinversión pasada como par´ametro
         cur=self.mem.con.cursor()
         cur.execute("delete from opercuentasdeoperinversiones where id_operinversiones=%s",(self.id, )) 
         cur.close()
@@ -3572,7 +3658,7 @@ class Investment:
         
 
     def actualizar_cuentasoperaciones_asociadas(self):
-        #Borra las opercuentasdeoperinversiones de la inversi´on actual
+        #Borra las opercuentasdeoperinversiones de la inversión actual
         cur=self.mem.con.cursor()
         cur.execute("delete from opercuentasdeoperinversiones where id_inversiones=%s", (self.id, ));
         cur.close()
@@ -3621,7 +3707,8 @@ class Investment:
         try:
             return Money(self.mem, self.acciones()*(self.product.result.basic.last.quote-self.product.result.basic.penultimate.quote), self.product.currency)
         except:
-            return None
+            logging.error("{} no tenia suficientes quotes en {}".format(function_name(self), self.name))
+            return Money(self.mem,  0,  self.product.currency)
 
     def acciones(self, fecha=None):
         """Función que saca el número de acciones de las self.op_actual"""
@@ -3809,13 +3896,13 @@ class CreditCardOperation:
 #        return """CreditCardOperation ({})
 #    - Datetime: {}
 #    - Concepto: {}
-#    - Tipo de operaci´on: {}
+#    - Tipo de operación: {}
 #    - Importe: {}
 #    - Comentario: {}
 #    - Tarjeta: {} ({})
 #    - Pagado: {}
 #    - Fecha de pago: {}
-#    - Operaci´on de cuenta: {}
+#    - Operación de cuenta: {}
 #        """.format(self.id, self.datetime, self.concepto.name, self.tipooperacion.name, self.importe, self.comentario, self.tarjeta.name,  self.tarjeta.id, self.pagado, self.fechapago, self.opercuenta.id)
 #        
     def init__create(self, dt,  concepto, tipooperacion, importe, comentario, tarjeta, pagado=None, fechapago=None, opercuenta=None, id_opertarjetas=None):
@@ -4067,7 +4154,7 @@ class Assets:
         """Versión que se calcula en cliente muy optimizada"""
         resultado=Money(self.mem, 0, self.mem.localcurrency)
         for i in setinversiones.arr:
-            resultado=resultado+i.balance(fecha)                 
+            resultado=resultado+i.balance(fecha).local() 
         return resultado
         
     def saldo_todas_inversiones_riesgo_cero(self, setinversiones, fecha=None):
@@ -4085,6 +4172,7 @@ class Assets:
     def dividends_neto(self, ano,  mes=None):
         """Dividend cobrado en un año y mes pasado como parámetro, independientemente de si la inversión esta activa o no.
         El 63 es un gasto aunque también este registrado en dividends."""
+        logging.error("DEBE CONTROLAR LA MULTIDIVISA")
         cur=self.mem.con.cursor()
         if mes==None:#Calcula en el año
             cur.execute("select sum(neto) as neto from dividends where id_conceptos not in (63) and date_part('year',fecha) = "+str(ano))
@@ -4099,7 +4187,7 @@ class Assets:
 
     def dividends_bruto(self,  ano,  mes=None):
         """Dividend cobrado en un año y mes pasado como parámetro, independientemente de si la inversión esta activa o no"""
-        
+        logging.error("DEBE CONTROLAR LA MULTIDIVISA")
         cur=self.mem.con.cursor()
         if mes==None:#Calcula en el año
             cur.execute("select sum(bruto) as bruto from dividends where id_conceptos not in (63) and  date_part('year',fecha) = "+str(ano))
@@ -4122,7 +4210,7 @@ class Assets:
         
         r=Money(self.mem, 0, self.mem.localcurrency)
         for inv in array:
-            r=r+inv.invertido(date)
+            r=r+inv.invertido(date).local()
         return r
         
     def saldo_todas_inversiones_bonds(self, fecha=None):        
@@ -4134,9 +4222,9 @@ class Assets:
         for inv in self.mem.data.investments.arr:
             if inv.product.type.id in (7, 9):#public and private bonds        
                 if fecha==None:
-                    resultado=resultado+inv.balance()
+                    resultado=resultado+inv.balance().local()
                 else:
-                    resultado=resultado+inv.balance( fecha)
+                    resultado=resultado+inv.balance( fecha).local()
 #        print ("core > Assets > saldo_todas_inversiones_bonds: {0}".format(datetime.datetime.now()-inicio))
         return resultado
 
@@ -4234,7 +4322,7 @@ class Assets:
         """Si year es none calcula el historicca  si month es nonve calcula el anual sino el mensual"""
         resultado=Money(self.mem, 0, self.mem.localcurrency)
         for i in setinversiones.arr:        
-            resultado=resultado+i.op_historica.consolidado_neto(year, month)
+            resultado=resultado+i.op_historica.consolidado_neto(year, month).local()
         return resultado        
 
 
@@ -4733,6 +4821,9 @@ class Currency:
         self.name=None
         self.symbol=None
         self.id=None
+
+    def __repr__(self):
+        return ("Currency: {} ({})".format( self.id, self.symbol))
         
     def init__create(self, name, symbol,  id=None):
         self.name=name
@@ -4920,8 +5011,9 @@ class Money:
         if self.currency==money.currency:
             return Money(self.mem, self.amount+money.amount, self.currency)
         else:
+            print (self.currency, money.currency )
             logging.error("Before adding, please convert to the same currency")
-            sys.exit(1)
+            raise MoneyOperationException("MoneyOperationException")
 #            b=money.convert(self.currency)
 #            return Money(self.mem, self.amount+b.amount, self.currency)
             
@@ -4987,29 +5079,20 @@ class Money:
         """Converts a Money to local currency
         Date==None means today"""
         return self.convert(self.mem.localcurrency, dt)
-#        
-#    def convert(self, currency, date=None):
-#        """Converts self money to currency, using ohcldaily"""
-#        if self.currency==currency:
-#            return self
-#        init=datetime.datetime.now()
-#        if date==None:
-#            date=datetime.date.today()
-#        factor=self.conversionFactor(currency)
-#        result=Money(self.mem, self.amount*factor, currency)
-#        logging.info("Money conversion. {} to {} using factor {} took {}".format(self.string(6), result.string(6), factor, datetime.datetime.now()-init))
-#        return result        
         
     def convert(self, currency, dt=None):
         """Converts self money to currency"""
-        if self.currency==currency or self.amount==Decimal(0):
+        if self.currency==currency:
             return self
+        if self.amount==Decimal(0):
+            return Money(self.mem, 0, currency)
+            
         init=datetime.datetime.now()
         if dt==None:
             dt=self.mem.localzone.now()
         factor=self.conversionFactor(currency, dt)
         result=Money(self.mem, self.amount*factor, currency)
-        logging.info("Money conversion. {} to {} at {} took {}".format(self.string(6), result.string(6), dt, datetime.datetime.now()-init))
+        logging.debug("Money conversion. {} to {} at {} took {}".format(self.string(6), result.string(6), dt, datetime.datetime.now()-init))
         return result
         
     def conversionFactor(self, currency, dt):
@@ -5023,7 +5106,7 @@ class Money:
         elif self.currency.id=="USD":
             if currency.id=="EUR":
                 return 1/self.mem.data.currencies.find_by_id(74747).result.all.find(dt).quote
-        loggin.critical("No existe factor de conversi´on")
+        loggin.critical("No existe factor de conversión")
         return None
         
     def convert_from_factor(self, currency, factor):
@@ -6601,7 +6684,7 @@ class Split:
         """Transforms de dpa of an array of dividends"""
         for inv in self.mem.data.investments.arr:
             if inv.product.id==self.product.id:
-                dividends=SetDividends(self.mem)
+                dividends=SetDividendsHomogeneus(self.mem, inv)
                 dividends.load_from_db("select * from dividends where id_inversiones={0} order by fecha".format(inv.id ))  
                 for d in dividends.arr:
                     if self.dtinitial.date()<=d.fecha and self.dtfinal.date()>=d.fecha:
@@ -6726,7 +6809,7 @@ class Language:
     
             
 class Maintenance:
-    """Funciones de mantenimiento y ayuda a la programaci´on y depuraci´on"""
+    """Funciones de mantenimiento y ayuda a la programación y depuración"""
     def __init__(self, mem):
         self.mem=mem
         

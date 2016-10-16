@@ -41,31 +41,29 @@ class wdgDividendsReport(QWidget, Ui_wdgDividendsReport):
         self.tblInvestments.applySettings()
         self.tblInvestments.clearContents()
         self.tblInvestments.setRowCount(len(self.inversiones.arr));
-        sumdiv=Decimal(0)
+        sumdiv=Money(self.mem, 0, self.mem.localcurrency)
         for i, inv in enumerate(self.inversiones.arr):
             if inv.product.estimations_dps.find(datetime.date.today().year)==None:
                 dpa=0
                 tpc=0
-                divestimado=0
+                divestimado=Money(self.mem, 0, self.mem.localcurrency)
             else:
                 dpa=inv.product.estimations_dps.currentYear().estimation
                 tpc=inv.product.estimations_dps.currentYear().percentage()
-                divestimado=inv.dividend_bruto_estimado()
-            print ()
-            
+                divestimado=inv.dividend_bruto_estimado().local()            
             self.tblInvestments.setItem(i, 0,QTableWidgetItem(inv.name))
             self.tblInvestments.setItem(i, 1, QTableWidgetItem(inv.account.eb.name))
             self.tblInvestments.setItem(i, 2, inv.product.currency.qtablewidgetitem(inv.product.result.basic.last.quote))
             self.tblInvestments.setItem(i, 3, inv.product.currency.qtablewidgetitem(dpa))    
-            self.tblInvestments.setItem(i, 4, qright(str(inv.acciones())))
+            self.tblInvestments.setItem(i, 4, qright(inv.acciones()))
             sumdiv=sumdiv+divestimado
-            self.tblInvestments.setItem(i, 5, inv.product.currency.qtablewidgetitem(divestimado))
+            self.tblInvestments.setItem(i, 5, divestimado.qtablewidgetitem())
             self.tblInvestments.setItem(i, 6, qtpc(tpc))
                 
             #Colorea si está desactualizado
             if inv.product.estimations_dps.dias_sin_actualizar()>self.spin.value():
                 self.tblInvestments.item(i, 3).setIcon(QIcon(":/xulpymoney/alarm_clock.png"))
-        self.lblTotal.setText(self.tr("If I keep this investment during a year, I'll get {0}").format( self.mem.localcurrency.string(sumdiv)))
+        self.lblTotal.setText(self.tr("If I keep this investment during a year, I'll get {0}").format( sumdiv))
             
         
     @QtCore.pyqtSlot() 
