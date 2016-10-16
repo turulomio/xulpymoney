@@ -582,36 +582,37 @@ class wdgTotal(QWidget, Ui_wdgTotal):
             table.setSelectionMode(QAbstractItemView.SingleSelection)
             table.verticalHeader().setVisible(False)
             
-            positive=Decimal(0)
-            negative=Decimal(0)
+            positive=Money(self.mem, 0, self.mem.localcurrency)
+            negative=Money(self.mem, 0, self.mem.localcurrency)
             lbl=QLabel(newtab)
             
-            set=SetInvestmentOperationsHistorical(self.mem)
+            set=SetInvestmentOperationsHistoricalHeterogeneus(self.mem)
             for i in self.mem.data.investments.arr:
                 for o in i.op_historica.arr:
                     if self.month==13:#Year
                         tabtitle=self.tr("Selling operations of {0}").format(self.wyData.year)
                         if o.fecha_venta.year==self.wyData.year and o.tipooperacion.id in (5, 8):#Venta y traspaso fondos inversion
                             set.arr.append(o)
-                            if o.consolidado_bruto()>=0:
-                                positive=positive+o.consolidado_bruto()
+                            if o.consolidado_bruto().isGETZero():
+                                positive=positive+o.consolidado_bruto().local()
                             else:
-                                negative=negative+o.consolidado_bruto()
+                                negative=negative+o.consolidado_bruto().local()
                     else:#Month
                         tabtitle=self.tr("Selling operations of {0} of {1}").format(self.table.horizontalHeaderItem(self.month-1).text(), self.wyData.year)
                         if o.fecha_venta.year==self.wyData.year and o.fecha_venta.month==self.month and o.tipooperacion.id in (5, 8):#Venta y traspaso fondos inversion
                             set.arr.append(o)
-                            if o.consolidado_bruto()>=0:
-                                positive=positive+o.consolidado_bruto()
+                            if o.consolidado_bruto().isGETZero():
+                                positive=positive+o.consolidado_bruto().local()
                             else:
-                                negative=negative+o.consolidado_bruto()
+                                negative=negative+o.consolidado_bruto().local()
             set.order_by_fechaventa()
-            set.myqtablewidget(table, True)
+            set.myqtablewidget(table)
             horizontalLayout.addWidget(table)
-            lbl.setText(self.tr("Positive gross selling operations: {}. Negative gross selling operations: {}.").format(self.mem.localcurrency.string(positive), self.mem.localcurrency.string(negative)))
+            lbl.setText(self.tr("Positive gross selling operations: {}. Negative gross selling operations: {}.").format(positive, negative))
             horizontalLayout.addWidget(lbl)
             self.tab.addTab(newtab, tabtitle)
             self.tab.setCurrentWidget(newtab)
+
         def show_more():
             newtab = QWidget()
             horizontalLayout = QVBoxLayout(newtab)
@@ -824,9 +825,8 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         table.setHorizontalHeaderItem(1, QTableWidgetItem(self.tr( "Brut gains" )))
         table.setHorizontalHeaderItem(2, QTableWidgetItem(self.tr("Brut dividends")))
         table.applySettings()
-        sum_gains=Decimal("0")
-        sum_dividens=Decimal("0")
-        
+        sum_gains=Money(self.mem)
+        sum_dividens=Money(self.mem)
         
         settypes=self.mem.types.investment_types()
         table.setRowCount(settypes.length()+1)
@@ -840,19 +840,19 @@ class wdgTotal(QWidget, Ui_wdgTotal):
                     #gains
                     for o in inv.op_historica.arr:
                         if o.fecha_venta.year==self.wyData.year and o.tipooperacion.id in (5, 8):
-                            gains=gains+o.consolidado_bruto()
+                            gains=gains+o.consolidado_bruto().local()
                     #dividends
                     setdiv=SetDividendsHeterogeneus(self.mem)
                     setdiv.load_from_db(self.mem.con.mogrify("select * from dividends where id_inversiones=%s and fecha>=%s and fecha<=%s order by fecha", (inv.id, datetime.datetime(self.wyData.year, 1, 1, 0, 0, 0), datetime.datetime(self.wyData.year+1, 12, 31, 23, 59, 59))))
-                    dividends=dividends+setdiv.gross()
+                    dividends=dividends+setdiv.gross().local()
             table.setItem(i, 1, gains.qtablewidgetitem())
             table.setItem(i, 2, dividends.qtablewidgetitem())
             sum_gains=sum_gains+gains
             sum_dividens=sum_dividens+dividends
             
         table.setItem(i+1, 0, qleft(self.tr("Total")))
-        table.setItem(i+1, 1, self.mem.localcurrency.qtablewidgetitem(sum_gains))
-        table.setItem(i+1, 2, self.mem.localcurrency.qtablewidgetitem(sum_dividens))
+        table.setItem(i+1, 1, sum_gains.qtablewidgetitem())
+        table.setItem(i+1, 2, sum_dividens.qtablewidgetitem())
         
         label=QLabel(newtab)
         font = QFont()
@@ -861,8 +861,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         font.setWeight(75)
         label.setFont(font)
         label.setAlignment(QtCore.Qt.AlignCenter)
-        cs=self.mem.localcurrency.string
-        label.setText(self.tr("Gains + Dividends: {} + {} = {}".format(cs(sum_gains), cs(sum_dividens), cs(sum_gains+sum_dividens))))
+        label.setText(self.tr("Gains + Dividends: {} + {} = {}".format(sum_gains, sum_dividens, sum_gains+sum_dividens)))
             
         vlayout.addWidget(table)
         vlayout.addWidget(label)
