@@ -1584,51 +1584,43 @@ class SetInvestmentOperationsHeterogeneus(SetIO):
 
         
     def myqtablewidget(self, tabla):
-        """Section es donde guardar en el config file, coincide con el nombre del formulario en el que está la tabla"""
+        """Muestra los resultados en self.mem.localcurrency al ser heterogeneo().local()"""
         self.order_by_datetime()
-        diff=0
-        homogeneous=self.isHomogeneous()
-        if homogeneous==False:
-            diff=2
-        tabla.setColumnCount(8+diff)
+        tabla.setColumnCount(10)
         tabla.setHorizontalHeaderItem(0, QTableWidgetItem(QApplication.translate("Core", "Date" )))
-        if homogeneous==False:
-            tabla.setHorizontalHeaderItem(diff-1, QTableWidgetItem(QApplication.translate("Core", "Product" )))
-            tabla.setHorizontalHeaderItem(diff, QTableWidgetItem(QApplication.translate("Core", "Account" )))
-        tabla.setHorizontalHeaderItem(diff+1, QTableWidgetItem(QApplication.translate("Core", "Operation type" )))
-        tabla.setHorizontalHeaderItem(diff+2, QTableWidgetItem(QApplication.translate("Core", "Shares" )))
-        tabla.setHorizontalHeaderItem(diff+3, QTableWidgetItem(QApplication.translate("Core", "Price" )))
-        tabla.setHorizontalHeaderItem(diff+4, QTableWidgetItem(QApplication.translate("Core", "Amount" )))
-        tabla.setHorizontalHeaderItem(diff+5, QTableWidgetItem(QApplication.translate("Core", "Comission" )))
-        tabla.setHorizontalHeaderItem(diff+6, QTableWidgetItem(QApplication.translate("Core", "Taxes" )))
-        tabla.setHorizontalHeaderItem(diff+7, QTableWidgetItem(QApplication.translate("Core", "Total" )))
+        tabla.setHorizontalHeaderItem(1, QTableWidgetItem(QApplication.translate("Core", "Product" )))
+        tabla.setHorizontalHeaderItem(2, QTableWidgetItem(QApplication.translate("Core", "Account" )))
+        tabla.setHorizontalHeaderItem(3, QTableWidgetItem(QApplication.translate("Core", "Operation type" )))
+        tabla.setHorizontalHeaderItem(4, QTableWidgetItem(QApplication.translate("Core", "Shares" )))
+        tabla.setHorizontalHeaderItem(5, QTableWidgetItem(QApplication.translate("Core", "Price" )))
+        tabla.setHorizontalHeaderItem(6, QTableWidgetItem(QApplication.translate("Core", "Amount" )))
+        tabla.setHorizontalHeaderItem(7, QTableWidgetItem(QApplication.translate("Core", "Comission" )))
+        tabla.setHorizontalHeaderItem(8, QTableWidgetItem(QApplication.translate("Core", "Taxes" )))
+        tabla.setHorizontalHeaderItem(9, QTableWidgetItem(QApplication.translate("Core", "Total" )))
         #DATA 
         tabla.applySettings()
         tabla.clearContents()  
-        tabla.setRowCount(len(self.arr))
+        tabla.setRowCount(self.length())
         for rownumber, a in enumerate(self.arr):
             tabla.setItem(rownumber, 0, qdatetime(a.datetime, a.inversion.product.stockmarket.zone))
             if self.mem.gainsyear==True and a.less_than_a_year()==True:
                 tabla.item(rownumber, 0).setIcon(QIcon(":/xulpymoney/new.png"))
-            if homogeneous==False:
-                tabla.setItem(rownumber, diff-1, qleft(a.inversion.name))
-                tabla.setItem(rownumber, diff, qleft(a.inversion.account.name))
-                
-            tabla.setItem(rownumber, diff+1, QTableWidgetItem(a.tipooperacion.name))
-            if a.show_in_ranges==True:
-                tabla.item(rownumber, diff+1).setIcon(QIcon(":/xulpymoney/eye.png"))
-            else:
-                tabla.item(rownumber, diff+1).setIcon(QIcon(":/xulpymoney/eye_red.png"))
+        
+            tabla.setItem(rownumber, 1, qleft(a.inversion.name))
+            tabla.setItem(rownumber, 2, qleft(a.inversion.account.name))
             
-            tabla.setItem(rownumber, diff+2, qright(a.acciones))
-            tabla.setItem(rownumber, diff+3, a.inversion.product.currency.qtablewidgetitem(a.valor_accion))
-            tabla.setItem(rownumber, diff+4, a.inversion.product.currency.qtablewidgetitem(a.importe))
-            tabla.setItem(rownumber, diff+5, a.inversion.product.currency.qtablewidgetitem(a.comision))
-            tabla.setItem(rownumber, diff+6, a.inversion.product.currency.qtablewidgetitem(a.impuestos))
-            if a.acciones>=0:
-                tabla.setItem(rownumber, diff+7, a.inversion.product.currency.qtablewidgetitem(a.importe+a.comision+a.impuestos))
+            tabla.setItem(rownumber, 3, qleft(a.tipooperacion.name))
+            if a.show_in_ranges==True:
+                tabla.item(rownumber, 3).setIcon(QIcon(":/xulpymoney/eye.png"))
             else:
-                tabla.setItem(rownumber, diff+7, a.inversion.product.currency.qtablewidgetitem(a.importe-a.comision-a.impuestos))
+                tabla.item(rownumber, 3).setIcon(QIcon(":/xulpymoney/eye_red.png"))
+            
+            tabla.setItem(rownumber, 4, qright(a.acciones))
+            tabla.setItem(rownumber, 5, a.price().local().qtablewidgetitem())
+            tabla.setItem(rownumber, 6, a.gross().local().qtablewidgetitem())
+            tabla.setItem(rownumber, 7, a.comission().local().qtablewidgetitem())
+            tabla.setItem(rownumber, 8, a.taxes().local().qtablewidgetitem())
+            tabla.setItem(rownumber, 9, a.net().local().qtablewidgetitem())
 
     def find(self,  investmentoperation_id):
         """Returns an investmenoperation with the id equals to the parameter"""
@@ -1808,49 +1800,40 @@ class SetInvestmentOperationsCurrentHeterogeneus(SetIO):
                 return True
         return False
         
-    def myqtablewidget(self,  tabla, show_accounts=False):
-        """Función que rellena una tabla pasada como parámetro con datos procedentes de un array de objetos
-        InvestmentOperationCurrent y dos valores de mystocks para rellenar los tpc correspodientes
-        
-        Se dibujan las columnas pero las propiedad alternate color... deben ser en designer
-        
-        Parámetros
+    def myqtablewidget(self,  tabla):
+        """Parámetros
             - tabla myQTableWidget en la que rellenar los datos
+            
+            Al ser heterogeneo se calcula con self.mem.localcurrency
         """
-        #UI
-        diff=0
-        if show_accounts==True:
-            diff=2
-        tabla.setColumnCount(10+diff)
+        tabla.setColumnCount(12)
         tabla.setHorizontalHeaderItem(0, QTableWidgetItem(QApplication.translate("Core", "Date" )))
-        if show_accounts==True:
-            tabla.setHorizontalHeaderItem(diff-1, QTableWidgetItem(QApplication.translate("Core", "Product" )))
-            tabla.setHorizontalHeaderItem(diff, QTableWidgetItem(QApplication.translate("Core", "Account" )))
-        tabla.setHorizontalHeaderItem(diff+1, QTableWidgetItem(QApplication.translate("Core", "Shares" )))
-        tabla.setHorizontalHeaderItem(diff+2, QTableWidgetItem(QApplication.translate("Core", "Price" )))
-        tabla.setHorizontalHeaderItem(diff+3, QTableWidgetItem(QApplication.translate("Core", "Invested" )))
-        tabla.setHorizontalHeaderItem(diff+4, QTableWidgetItem(QApplication.translate("Core", "Current balance" )))
-        tabla.setHorizontalHeaderItem(diff+5, QTableWidgetItem(QApplication.translate("Core", "Pending" )))
-        tabla.setHorizontalHeaderItem(diff+6, QTableWidgetItem(QApplication.translate("Core", "% annual" )))
-        tabla.setHorizontalHeaderItem(diff+7, QTableWidgetItem(QApplication.translate("Core", "% APR" )))
-        tabla.setHorizontalHeaderItem(diff+8, QTableWidgetItem(QApplication.translate("Core", "% Total" )))
-        tabla.setHorizontalHeaderItem(diff+9, QTableWidgetItem(QApplication.translate("Core", "Benchmark" )))
+        tabla.setHorizontalHeaderItem(1, QTableWidgetItem(QApplication.translate("Core", "Product" )))
+        tabla.setHorizontalHeaderItem(2, QTableWidgetItem(QApplication.translate("Core", "Account" )))
+        tabla.setHorizontalHeaderItem(3, QTableWidgetItem(QApplication.translate("Core", "Shares" )))
+        tabla.setHorizontalHeaderItem(4, QTableWidgetItem(QApplication.translate("Core", "Price" )))
+        tabla.setHorizontalHeaderItem(5, QTableWidgetItem(QApplication.translate("Core", "Invested" )))
+        tabla.setHorizontalHeaderItem(6, QTableWidgetItem(QApplication.translate("Core", "Current balance" )))
+        tabla.setHorizontalHeaderItem(7, QTableWidgetItem(QApplication.translate("Core", "Pending" )))
+        tabla.setHorizontalHeaderItem(8, QTableWidgetItem(QApplication.translate("Core", "% annual" )))
+        tabla.setHorizontalHeaderItem(9, QTableWidgetItem(QApplication.translate("Core", "% APR" )))
+        tabla.setHorizontalHeaderItem(10, QTableWidgetItem(QApplication.translate("Core", "% Total" )))
+        tabla.setHorizontalHeaderItem(11, QTableWidgetItem(QApplication.translate("Core", "Benchmark" )))
         #DATA
         if self.length()==0:
             tabla.setRowCount(0)
             return
             
-        sumsaldo=Decimal('0')
-        sumpendiente=Decimal('0')
-        suminvertido=Decimal('0')
+        sumsaldo=Money(self.mem, 0, self.mem.localcurrency)
+        sumpendiente=Money(self.mem, 0, self.mem.localcurrency)
+        suminvertido=Money(self.mem, 0, self.mem.localcurrency)
         tabla.applySettings()
         tabla.clearContents()
-        tabla.setRowCount(len(self.arr)+1)
-        rownumber=0
+        tabla.setRowCount(self.length()+1)
         for rownumber, a in enumerate(self.arr):
-            balance=a.balance(a.inversion.product.result.basic.last)
-            pendiente=a.pendiente(a.inversion.product.result.basic.last)
-            invertido=a.invertido()
+            balance=a.balance(a.inversion.product.result.basic.last).local()
+            pendiente=a.pendiente(a.inversion.product.result.basic.last).local()
+            invertido=a.invertido().local()
     
             sumsaldo=sumsaldo+balance
             sumpendiente=sumpendiente+pendiente
@@ -1859,29 +1842,28 @@ class SetInvestmentOperationsCurrentHeterogeneus(SetIO):
             tabla.setItem(rownumber, 0, qdatetime(a.datetime, self.mem.localzone))
             if self.mem.gainsyear==True and a.less_than_a_year()==True:
                 tabla.item(rownumber, 0).setIcon(QIcon(":/xulpymoney/new.png"))
-            if show_accounts==True:
-                tabla.setItem(rownumber, diff-1, qleft(a.inversion.name))
-                tabla.setItem(rownumber, diff, qleft(a.inversion.account.name))
-            tabla.setItem(rownumber, diff+1, qright("{0:.6f}".format(a.acciones)))
-            tabla.setItem(rownumber, diff+2, a.inversion.product.currency.qtablewidgetitem(a.valor_accion, 6))
-            tabla.setItem(rownumber, diff+3, a.inversion.product.currency.qtablewidgetitem(invertido))
-            tabla.setItem(rownumber, diff+4, a.inversion.product.currency.qtablewidgetitem(balance))
-            tabla.setItem(rownumber, diff+5, a.inversion.product.currency.qtablewidgetitem(pendiente))
-            tabla.setItem(rownumber, diff+6, qtpc(a.tpc_anual(a.inversion.product.result.basic.last.quote, a.inversion.product.result.basic.endlastyear.quote)))
-            tabla.setItem(rownumber, diff+7, qtpc(a.tpc_tae(a.inversion.product.result.basic.last.quote)))
-            tabla.setItem(rownumber, diff+8, qtpc(a.tpc_total(a.inversion.product.result.basic.last.quote)))
+            tabla.setItem(rownumber, 1, qleft(a.inversion.name))
+            tabla.setItem(rownumber, 2, qleft(a.inversion.account.name))
+            tabla.setItem(rownumber, 3, qright("{0:.6f}".format(a.acciones)))
+            tabla.setItem(rownumber, 4, a.price().local().qtablewidgetitem())
+            tabla.setItem(rownumber, 5, invertido.qtablewidgetitem())
+            tabla.setItem(rownumber, 6, balance.qtablewidgetitem())
+            tabla.setItem(rownumber, 7, pendiente.qtablewidgetitem())
+            tabla.setItem(rownumber, 8, qtpc(a.tpc_anual(a.inversion.product.result.basic.last.quote, a.inversion.product.result.basic.endlastyear.quote)))
+            tabla.setItem(rownumber, 9, qtpc(a.tpc_tae(a.inversion.product.result.basic.last.quote)))
+            tabla.setItem(rownumber, 10, qtpc(a.tpc_total(a.inversion.product.result.basic.last.quote)))
             if a.referenciaindice==None:
-                tabla.setItem(rownumber, diff+9, self.mem.data.benchmark.currency.qtablewidgetitem(None))
+                tabla.setItem(rownumber, 11, self.mem.data.benchmark.currency.qtablewidgetitem(None))
             else:
-                tabla.setItem(rownumber, diff+9, self.mem.data.benchmark.currency.qtablewidgetitem(a.referenciaindice.quote))
+                tabla.setItem(rownumber, 11, self.mem.data.benchmark.currency.qtablewidgetitem(a.referenciaindice.quote))
 
         tabla.setItem(self.length(), 0, qleft(days_to_year_month(self.average_age())))
-        tabla.setItem(self.length(), diff+0, QTableWidgetItem(("TOTAL")))
-        tabla.setItem(self.length(), diff+3, a.inversion.product.currency.qtablewidgetitem(suminvertido))
-        tabla.setItem(self.length(), diff+4, a.inversion.product.currency.qtablewidgetitem(sumsaldo))
-        tabla.setItem(self.length(), diff+5, a.inversion.product.currency.qtablewidgetitem(sumpendiente))
-        tabla.setItem(self.length(), diff+7, qtpc(self.tpc_tae()))
-        tabla.setItem(self.length(), diff+8, qtpc(self.tpc_total(sumpendiente, suminvertido)))
+        tabla.setItem(self.length(), 0, QTableWidgetItem(("TOTAL")))
+        tabla.setItem(self.length(), 5, suminvertido.qtablewidgetitem())
+        tabla.setItem(self.length(), 6, sumsaldo.qtablewidgetitem())
+        tabla.setItem(self.length(), 7, sumpendiente.qtablewidgetitem())
+        tabla.setItem(self.length(), 8, qtpc(self.tpc_tae()))
+        tabla.setItem(self.length(), 9, qtpc(self.tpc_total(sumpendiente.amount, suminvertido.amount)))
 
 
     def pendiente(self, lastquote):
@@ -2573,7 +2555,37 @@ class InvestmentOperationCurrent:
             return Money(self.mem, self.acciones*self.valor_accion, self.inversion.product.currency)
         else:
             return Money(self.mem, self.acciones*self.valor_accion, self.inversion.product.currency).convert_from_factor(self.inversion.account.currency, self.currency_conversion)#Usa el factor del dia de la operacicón
-        
+    
+    def price(self, account_currency=False):
+        if account_currency==False:
+            return Money(self.mem, self.valor_accion, self.inversion.product.currency)
+        else:
+            return Money(self.mem, self.valor_accion, self.inversion.product.currency).convert_from_factor(self.inversion.account.currency, self.currency_conversion)
+            
+    def gross(self, account_currency=False):
+        if account_currency==False:
+            return Money(self.mem, self.acciones*self.valor_accion, self.inversion.product.currency)
+        else:
+            return Money(self.mem, self.acciones*self.valor_accion, self.inversion.product.currency).convert_from_factor(self.inversion.account.currency, self.currency_conversion)
+            
+    def net(self, account_currency=False):
+        if self.acciones>=Decimal(0):
+            return self.gross(account_currency)+self.comission(account_currency)+self.taxes(account_currency)
+        else:
+            return self.gross(account_currency)-self.comission(account_currency)-self.taxes(account_currency)
+            
+    def taxes(self, account_currency=False):
+        if account_currency==False:
+            return Money(self.mem, self.impuestos, self.inversion.account.currency).convert_from_factor(self.inversion.product.currency, 1/self.currency_conversion)
+        else:
+            return Money(self.mem, self.valor_accion, self.inversion.account.currency)
+            
+    def comission(self, account_currency=False):
+        if account_currency==False:
+            return Money(self.mem, self.comision, self.inversion.account.currency).convert_from_factor(self.inversion.product.currency, 1/self.currency_conversion)
+        else:
+            return Money(self.mem, self.comision, self.inversion.account.currency)
+            
     def balance(self,  lastquote, account_currency=False):
         """Función que calcula el balance actual de la operinversion actual
                 - lastquote: objeto Quote
@@ -3213,6 +3225,7 @@ class InvestmentOperation:
     def __repr__(self):
         return ("IO {0} ({1}). {2} {3}. Acciones: {4}. Valor:{5}. IdObject: {6}. Currency conversion {7}".format(self.inversion.name, self.inversion.id,  self.datetime, self.tipooperacion.name,  self.acciones,  self.valor_accion, id(self), self.currency_conversion))
         
+        
     def init__db_row(self,  row, inversion,  tipooperacion):
         self.id=row['id_operinversiones']
         self.tipooperacion=tipooperacion
@@ -3257,6 +3270,36 @@ class InvestmentOperation:
         investment=self.mem.data.investments.find_by_id(row['id_inversiones'])
         return investment.op.find(row['id_operinversiones'])
         
+    def price(self, account_currency=False):
+        if account_currency==False:
+            return Money(self.mem, self.valor_accion, self.inversion.product.currency)
+        else:
+            return Money(self.mem, self.valor_accion, self.inversion.product.currency).convert_from_factor(self.inversion.account.currency, self.currency_conversion)
+            
+    def gross(self, account_currency=False):
+        if account_currency==False:
+            return Money(self.mem, self.acciones*self.valor_accion, self.inversion.product.currency)
+        else:
+            return Money(self.mem, self.acciones*self.valor_accion, self.inversion.product.currency).convert_from_factor(self.inversion.account.currency, self.currency_conversion)
+            
+    def net(self, account_currency=False):
+        if self.acciones>=Decimal(0):
+            return self.gross(account_currency)+self.comission(account_currency)+self.taxes(account_currency)
+        else:
+            return self.gross(account_currency)-self.comission(account_currency)-self.taxes(account_currency)
+            
+    def taxes(self, account_currency=False):
+        if account_currency==False:
+            return Money(self.mem, self.impuestos, self.inversion.account.currency).convert_from_factor(self.inversion.product.currency, 1/self.currency_conversion)
+        else:
+            return Money(self.mem, self.valor_accion, self.inversion.account.currency)
+            
+    def comission(self, account_currency=False):
+        if account_currency==False:
+            return Money(self.mem, self.comision, self.inversion.account.currency).convert_from_factor(self.inversion.product.currency, 1/self.currency_conversion)
+        else:
+            return Money(self.mem, self.comision, self.inversion.account.currency)
+
     def find_by_mem(self, investment, id):
         """
             Searchs in mem (needed investments_all())
