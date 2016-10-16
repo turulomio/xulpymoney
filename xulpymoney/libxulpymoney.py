@@ -5028,6 +5028,14 @@ class Money:
 #            b=money.convert(self.currency)
 #            return Money(self.mem, self.amount-b.amount, self.currency)
         
+    def __lt__(self, money):
+        if self.currency==money.currency:
+            if self.amount < money.amount:
+                return True
+            return False
+        else:
+            logging.error("Before lt ordering, please convert to the same currency")
+        
     def __mul__(self, money):
         """Si las divisas son distintas, queda el resultado con la divisa del primero
         En caso de querer multiplicar por un numero debe ser despues
@@ -5067,6 +5075,11 @@ class Money:
             
     def isGETZero(self):
         if self.amount>=Decimal(0):
+            return True
+        else:
+            return False            
+    def isGTZero(self):
+        if self.amount>Decimal(0):
             return True
         else:
             return False
