@@ -18,6 +18,8 @@ class frmDividendsAdd(QDialog, Ui_frmDividendsAdd):
         self.tpc=0
         self.wdgDT.show_microseconds(False)
         self.wdgDT.show_timezone(False)
+        self.lblGross.setText(self.tr("Gross in {}".format(self.inversion.product.currency.symbol)))
+        self.lblGrossAccount.setText(self.tr("Gross converted to {}".format(self.inversion.account.currency.symbol)))
         if dividend==None:#insertar
             if self.inversion.product.type.id in (7, 9):#Bonds
                 self.mem.conceptos.load_bonds_qcombobox(self.cmb)
@@ -27,12 +29,14 @@ class frmDividendsAdd(QDialog, Ui_frmDividendsAdd):
             self.dividend.inversion=inversion
             self.cmd.setText(self.tr("Add new dividend"))
             self.wdgDT.set(self.mem, None, self.mem.localzone)
+            self.wdgCurrencyConversion.setConversion(Money(self.mem, self.txtBruto.decimal(), self.inversion.product.currency), self.inversion.account.currency, self.wdgDT.datetime(), None)
         else:#modificar 
             if self.inversion.product.type.id in (7, 9):#Bonds
                 self.mem.conceptos.load_bonds_qcombobox(self.cmb, self.dividend.concepto) 
             else:
                 self.mem.conceptos.load_dividend_qcombobox(self.cmb, self.dividend.concepto) 
             self.wdgDT.set(self.mem, self.dividend.fecha, self.mem.localzone)
+            self.wdgCurrencyConversion.setConversion(Money(self.mem, self.txtBruto.decimal(), self.inversion.product.currency), self.inversion.account.currency, self.wdgDT.datetime(), self.dividend.currency_conversion)
             self.txtBruto.setText(self.dividend.bruto)
             self.txtNeto.setText(self.dividend.neto)
             self.txtRetencion.setText(self.dividend.retencion)
@@ -41,6 +45,7 @@ class frmDividendsAdd(QDialog, Ui_frmDividendsAdd):
             self.cmd.setText(self.tr("Edit dividend"))
  
     def on_txtBruto_textChanged(self):
+        self.wdgCurrencyConversion.setConversion(Money(self.mem, self.txtBruto.decimal(), self.inversion.product.currency), self.inversion.account.currency, self.wdgDT.datetime(), self.wdgCurrencyConversion.factor)
         self.calcular()
         
     def on_txtRetencion_textChanged(self):
@@ -112,6 +117,7 @@ class frmDividendsAdd(QDialog, Ui_frmDividendsAdd):
             self.dividend.dpa=self.txtDPA.decimal()
             self.dividend.fecha=self.wdgDT.datetime()
             self.dividend.comision=self.txtComision.decimal()
+            self.dividend.currency_conversion=self.wdgCurrencyConversion.factor
         except:            
             m=QMessageBox()
             m.setWindowIcon(QIcon(":/xulpymoney/coins.png"))

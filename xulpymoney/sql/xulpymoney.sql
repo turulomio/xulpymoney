@@ -2,11 +2,12 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 9.5.3
--- Dumped by pg_dump version 9.5.3
+-- Dumped from database version 9.6.0
+-- Dumped by pg_dump version 9.6.0
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
 SET client_encoding = 'UTF8';
 SET standard_conforming_strings = on;
 SET check_function_bodies = false;
@@ -586,11 +587,19 @@ CREATE TABLE dividends (
     fecha timestamp with time zone,
     id_opercuentas integer,
     comision numeric(100,2),
-    id_conceptos integer DEFAULT 39 NOT NULL
+    id_conceptos integer DEFAULT 39 NOT NULL,
+    currency_conversion numeric(10,6) DEFAULT 1 NOT NULL
 );
 
 
 ALTER TABLE dividends OWNER TO postgres;
+
+--
+-- Name: COLUMN dividends.currency_conversion; Type: COMMENT; Schema: public; Owner: postgres
+--
+
+COMMENT ON COLUMN dividends.currency_conversion IS 'Conversión de divisa del dividendo a la de la cuenta. Bruto, retención, neto y valorxaccion van en la divisa de la inversión. La comisión va en la divisa de la cuenta y no necesita conversión. Para convertir a la divisa de la cuenta gross*currency_conversion';
+
 
 SET default_with_oids = true;
 
@@ -745,7 +754,8 @@ CREATE TABLE operinversiones (
     divisa numeric(10,6) DEFAULT NULL::numeric,
     datetime timestamp with time zone,
     comentario text,
-    show_in_ranges boolean DEFAULT true
+    show_in_ranges boolean DEFAULT true,
+    currency_conversion numeric(10,6) DEFAULT 1 NOT NULL
 );
 
 
@@ -756,6 +766,13 @@ ALTER TABLE operinversiones OWNER TO postgres;
 --
 
 COMMENT ON COLUMN operinversiones.divisa IS 'Campo que calcula el cociente entre la divisa de la divisa de la cuenta bancaria asociada entre la divisa de la inversión es decir EUR/USD. Si eur es la cuenta bancariaa y usd la divisa de la inversión';
+
+
+--
+-- Name: COLUMN operinversiones.currency_conversion; Type: COMMENT; Schema: public; Owner: postgres
+--
+
+COMMENT ON COLUMN operinversiones.currency_conversion IS 'Conversión de divisa de la inversión a la de la cuenta. Multiplicando acciones*valor_accion*currency_conversion obtenemos el precio en la divisa de la cuenta de inversion->cuenta. Los impuestos y la comisión van en la divisa de la cuenta y no necesita conversión.';
 
 
 --
@@ -1085,14 +1102,14 @@ CREATE TABLE tarjetas (
 ALTER TABLE tarjetas OWNER TO postgres;
 
 --
--- Name: id_opercuentas; Type: DEFAULT; Schema: public; Owner: postgres
+-- Name: opercuentasdeoperinversiones id_opercuentas; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY opercuentasdeoperinversiones ALTER COLUMN id_opercuentas SET DEFAULT nextval(('"seq_opercuentas"'::text)::regclass);
 
 
 --
--- Name: annualtargets_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: annualtargets annualtargets_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY annualtargets
@@ -1100,7 +1117,7 @@ ALTER TABLE ONLY annualtargets
 
 
 --
--- Name: bolsas_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: stockmarkets bolsas_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY stockmarkets
@@ -1108,7 +1125,7 @@ ALTER TABLE ONLY stockmarkets
 
 
 --
--- Name: conceptos_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: conceptos conceptos_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY conceptos
@@ -1116,7 +1133,7 @@ ALTER TABLE ONLY conceptos
 
 
 --
--- Name: cuentas_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: cuentas cuentas_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY cuentas
@@ -1124,7 +1141,7 @@ ALTER TABLE ONLY cuentas
 
 
 --
--- Name: dividendos_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: dividends dividendos_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY dividends
@@ -1132,7 +1149,7 @@ ALTER TABLE ONLY dividends
 
 
 --
--- Name: dps_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: dps dps_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY dps
@@ -1140,7 +1157,7 @@ ALTER TABLE ONLY dps
 
 
 --
--- Name: entidadesbancarias_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: entidadesbancarias entidadesbancarias_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY entidadesbancarias
@@ -1148,7 +1165,7 @@ ALTER TABLE ONLY entidadesbancarias
 
 
 --
--- Name: estimacion_eps_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: estimations_eps estimacion_eps_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY estimations_eps
@@ -1156,7 +1173,7 @@ ALTER TABLE ONLY estimations_eps
 
 
 --
--- Name: estimations_dps_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: estimations_dps estimations_dps_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY estimations_dps
@@ -1164,7 +1181,7 @@ ALTER TABLE ONLY estimations_dps
 
 
 --
--- Name: investments_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: products investments_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY products
@@ -1172,7 +1189,7 @@ ALTER TABLE ONLY products
 
 
 --
--- Name: opercuentasdeoperinversiones_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: opercuentasdeoperinversiones opercuentasdeoperinversiones_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY opercuentasdeoperinversiones
@@ -1180,7 +1197,7 @@ ALTER TABLE ONLY opercuentasdeoperinversiones
 
 
 --
--- Name: opertarjetas_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: opertarjetas opertarjetas_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY opertarjetas
@@ -1188,7 +1205,7 @@ ALTER TABLE ONLY opertarjetas
 
 
 --
--- Name: orders_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: orders orders_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY orders
@@ -1196,7 +1213,7 @@ ALTER TABLE ONLY orders
 
 
 --
--- Name: pk_globals; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: globals pk_globals; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY globals
@@ -1204,7 +1221,7 @@ ALTER TABLE ONLY globals
 
 
 --
--- Name: pk_inversiones; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: inversiones pk_inversiones; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY inversiones
@@ -1212,7 +1229,7 @@ ALTER TABLE ONLY inversiones
 
 
 --
--- Name: pk_opercuentas; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: opercuentas pk_opercuentas; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY opercuentas
@@ -1220,7 +1237,7 @@ ALTER TABLE ONLY opercuentas
 
 
 --
--- Name: pk_operinversiones; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: operinversiones pk_operinversiones; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY operinversiones
@@ -1228,7 +1245,7 @@ ALTER TABLE ONLY operinversiones
 
 
 --
--- Name: quotes_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: quotes quotes_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY quotes
@@ -1236,7 +1253,7 @@ ALTER TABLE ONLY quotes
 
 
 --
--- Name: simulations_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: simulations simulations_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY simulations
@@ -1244,7 +1261,7 @@ ALTER TABLE ONLY simulations
 
 
 --
--- Name: tarjetas_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: tarjetas tarjetas_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY tarjetas
@@ -1308,7 +1325,7 @@ CREATE INDEX "tmpinversionesheredada-id_cuentas-index" ON opercuentasdeoperinver
 
 
 --
--- Name: cuentas_fk_id_entidadesbancarias; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: cuentas cuentas_fk_id_entidadesbancarias; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY cuentas
@@ -1316,7 +1333,7 @@ ALTER TABLE ONLY cuentas
 
 
 --
--- Name: dividendos_fk_id_conceptos; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: dividends dividendos_fk_id_conceptos; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY dividends
@@ -1324,7 +1341,7 @@ ALTER TABLE ONLY dividends
 
 
 --
--- Name: dividendos_fk_id_inversiones; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: dividends dividendos_fk_id_inversiones; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY dividends
@@ -1332,7 +1349,7 @@ ALTER TABLE ONLY dividends
 
 
 --
--- Name: dps_fk_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: dps dps_fk_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY dps
@@ -1340,7 +1357,7 @@ ALTER TABLE ONLY dps
 
 
 --
--- Name: estimations_dps_fk_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: estimations_dps estimations_dps_fk_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY estimations_dps
@@ -1348,7 +1365,7 @@ ALTER TABLE ONLY estimations_dps
 
 
 --
--- Name: estimations_eps_fk_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: estimations_eps estimations_eps_fk_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY estimations_eps
@@ -1356,7 +1373,7 @@ ALTER TABLE ONLY estimations_eps
 
 
 --
--- Name: inversiones_fk_id_cuentas; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: inversiones inversiones_fk_id_cuentas; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY inversiones
@@ -1364,7 +1381,7 @@ ALTER TABLE ONLY inversiones
 
 
 --
--- Name: inversiones_fk_products_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: inversiones inversiones_fk_products_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY inversiones
@@ -1372,7 +1389,7 @@ ALTER TABLE ONLY inversiones
 
 
 --
--- Name: opercuentas_fk_id_conceptos; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: opercuentas opercuentas_fk_id_conceptos; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY opercuentas
@@ -1380,7 +1397,7 @@ ALTER TABLE ONLY opercuentas
 
 
 --
--- Name: opercuentas_fk_id_cuentas; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: opercuentas opercuentas_fk_id_cuentas; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY opercuentas
@@ -1388,7 +1405,7 @@ ALTER TABLE ONLY opercuentas
 
 
 --
--- Name: operinversiones_fk_id_inversiones; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: operinversiones operinversiones_fk_id_inversiones; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY operinversiones
@@ -1396,7 +1413,7 @@ ALTER TABLE ONLY operinversiones
 
 
 --
--- Name: opertarjetas_fk_id_conceptos; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: opertarjetas opertarjetas_fk_id_conceptos; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY opertarjetas
@@ -1404,7 +1421,7 @@ ALTER TABLE ONLY opertarjetas
 
 
 --
--- Name: opertarjetas_fk_id_tarjetas; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: opertarjetas opertarjetas_fk_id_tarjetas; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY opertarjetas
@@ -1412,7 +1429,7 @@ ALTER TABLE ONLY opertarjetas
 
 
 --
--- Name: orders_investments_id_fk_inversiones_id_inversiones; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: orders orders_investments_id_fk_inversiones_id_inversiones; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY orders
@@ -1420,7 +1437,7 @@ ALTER TABLE ONLY orders
 
 
 --
--- Name: products_fk_stockmarkets_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: products products_fk_stockmarkets_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY products
@@ -1428,7 +1445,7 @@ ALTER TABLE ONLY products
 
 
 --
--- Name: quotes_fk_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: quotes quotes_fk_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY quotes
@@ -1436,7 +1453,7 @@ ALTER TABLE ONLY quotes
 
 
 --
--- Name: tarjetas_fk_id_cuentas; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: tarjetas tarjetas_fk_id_cuentas; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY tarjetas
@@ -8218,13 +8235,15 @@ INSERT INTO globals VALUES (14, 'mem/dividendwithholding', '0.19');
 INSERT INTO globals VALUES (15, 'mem/taxcapitalappreciation', '0.19');
 INSERT INTO globals VALUES (16, 'mem/taxcapitalappreciationbelow', '0.5');
 INSERT INTO globals VALUES (17, 'mem/gainsyear', 'false');
-INSERT INTO globals VALUES (18, 'mem/favorites', '79329, 81680, -33, 81458');
+INSERT INTO globals VALUES (18, 'mem/favorites', '79329, 81680, -33, 81458, 80876, 77199, 81440, 76309, 79374, 81702, 80515, 78687, 81347, 79192, 77529, 80840, 79204, 78327, 78281, 78717, 79142, 81394, 74747, 76113');
 INSERT INTO globals VALUES (19, 'mem/fillfromyear', '2005');
-INSERT INTO globals VALUES (1, 'Version', '201607132000');
+INSERT INTO globals VALUES (1, 'Version', '201610161057');
+INSERT INTO globals VALUES (20, 'frmSellingPoint/lastgainpercentage', '10');
+INSERT INTO globals VALUES (21, 'wdgAPR/cmbYear', '2012');
 INSERT INTO globals VALUES (6, 'Admin mode', NULL);
 INSERT INTO globals VALUES (7, 'wdgIndexRange/spin', '2.0');
-INSERT INTO globals VALUES (8, 'wdgIndexRange/invertir', '3500');
-INSERT INTO globals VALUES (9, 'wdgIndexRange/minimo', '1000');
+INSERT INTO globals VALUES (8, 'wdgIndexRange/invertir', '2500');
+INSERT INTO globals VALUES (9, 'wdgIndexRange/minimo', '500');
 DELETE FROM products WHERE id<=0;
 ALTER SEQUENCE seq_conceptos START WITH 100 RESTART;
 ALTER SEQUENCE seq_entidadesbancarias START WITH 4 RESTART;
@@ -8232,6 +8251,8 @@ ALTER SEQUENCE seq_cuentas START WITH 5 RESTART;
 UPDATE globals set value=NULL where id_globals=6;
 DELETE FROM globals where id_globals>6;
 SELECT create_role_if_not_exists('xulpymoney_admin');
-SELECT create_role_if_not_exists('xulpymoney_user');
 GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA PUBLIC TO xulpymoney_admin;
 GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA PUBLIC TO xulpymoney_admin;
+SELECT create_role_if_not_exists('xulpymoney_user');
+GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA PUBLIC TO xulpymoney_user;
+GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA PUBLIC TO xulpymoney_user;

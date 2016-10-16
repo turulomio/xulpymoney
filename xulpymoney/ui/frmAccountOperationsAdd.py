@@ -13,13 +13,13 @@ class frmAccountOperationsAdd(QDialog, Ui_frmAccountOperationsAdd):
          4   selAccount=x, opercuenta=None , tarjeta=x, opertarjeta=x Modificación de opertarjetas
          5   selAccount=None, opercuenta=None, tarjeta=None, opertarjeta=x, refund=True Refund of opertarjetas. 
          
-         Debido a que se puede cambiar de opercuenta a opercreditcard grabo el producto original, en el caso de modificaci´on
+         Debido a que se puede cambiar de opercuenta a opercreditcard grabo el producto original, en el caso de modificación
          Original puede ser un 
             operaccount, para poder editarla
             opercreditcard, para poder editarlo y refund (aunque existe el booleano self.refund para diferenciarlo)
             -999, para productos nuevos, ya que no puedo sacar null por la señal.
             
-        Luego usaré el objeto original para la modificaci´on ya que después se sale de este dialogo y si es uno nuevo dejaré origianl a None y usarre uno nuevo que llamaré final
+        Luego usaré el objeto original para la modificación ya que después se sale de este dialogo y si es uno nuevo dejaré origianl a None y usarre uno nuevo que llamaré final
          """
         QWidget.__init__(self, parent)
         self.setupUi(self)
@@ -144,7 +144,7 @@ class frmAccountOperationsAdd(QDialog, Ui_frmAccountOperationsAdd):
                 self.emit_OperationChanged(self.type_and_id(self.original), self.type_and_id(final))
                 self.wdgDT.set(self.mem, self.wdgDT.datetime()+datetime.timedelta(seconds=1), self.wdgDT.zone)
                 return
-            elif self.original.__class__==CreditCardOperation:#Modificaci´on  de opercreditcard por operaccount hay que borrar opercreditcard
+            elif self.original.__class__==CreditCardOperation:#Modificación  de opercreditcard por operaccount hay que borrar opercreditcard
                 final=AccountOperation(self.mem)
                 final.datetime=self.wdgDT.datetime()
                 final.concepto=concepto
@@ -209,7 +209,7 @@ class frmAccountOperationsAdd(QDialog, Ui_frmAccountOperationsAdd):
                 self.emit_OperationChanged(self.type_and_id(self.original), self.type_and_id(refund))
                 self.done(0) 
                 return
-            elif self.original.__class__==AccountOperation:#Modificaci´on  de opercreditcard por operaccount hay que borrar opercreditcard
+            elif self.original.__class__==AccountOperation:#Modificación  de opercreditcard por operaccount hay que borrar opercreditcard
                 final=CreditCardOperation(self.mem).init__create(self.wdgDT.datetime(), concepto, concepto.tipooperacion, importe, comentario, tarjeta, False, None, None )
                 final.save()
                 self.original.borrar()

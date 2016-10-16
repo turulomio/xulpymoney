@@ -130,12 +130,12 @@ class wdgAPR(QWidget, Ui_wdgAPR):
         
         self.table.applySettings()
         self.table.setRowCount(anofinal-anoinicio+1+1)
-        lastsaldo=0
-        sumdividends=0
-        sumgains=0
-        sumexpenses=0
-        sumincomes=0
-        sumicdg=0
+        lastsaldo=Money(self.mem)
+        sumdividends=Money(self.mem)
+        sumgains=Money(self.mem)
+        sumexpenses=Money(self.mem)
+        sumincomes=Money(self.mem)
+        sumicdg=Money(self.mem)
         for i in range(anoinicio, anofinal+1):
             if self.progress.wasCanceled():
                 break;
@@ -149,38 +149,38 @@ class wdgAPR(QWidget, Ui_wdgAPR):
             gains=Assets(self.mem).consolidado_neto(self.mem.data.investments,  i)
             
             self.dates.append(datetime.datetime(i, 12, 31))
-            self.expenses.append(-expenses)
-            self.dividends.append(dividends)
-            self.incomes.append(incomes)
-            self.gains.append(gains)
+            self.expenses.append(-expenses.amount)
+            self.dividends.append(dividends.amount)
+            self.incomes.append(incomes.amount)
+            self.gains.append(gains.amount)
 
             gi=incomes+dividends+gains+expenses     
             self.table.setItem(i-anoinicio, 0, qcenter(str(i)))
-            self.table.setItem(i-anoinicio, 1, self.mem.localcurrency.qtablewidgetitem(si))
-            self.table.setItem(i-anoinicio, 2, self.mem.localcurrency.qtablewidgetitem(sf))
-            self.table.setItem(i-anoinicio, 3, self.mem.localcurrency.qtablewidgetitem(sf-si))
-            self.table.setItem(i-anoinicio, 4, self.mem.localcurrency.qtablewidgetitem(incomes))
-            self.table.setItem(i-anoinicio, 5, self.mem.localcurrency.qtablewidgetitem(gains))
-            self.table.setItem(i-anoinicio, 6, self.mem.localcurrency.qtablewidgetitem(dividends))
-            self.table.setItem(i-anoinicio, 7, self.mem.localcurrency.qtablewidgetitem(expenses))
-            self.table.setItem(i-anoinicio, 8, self.mem.localcurrency.qtablewidgetitem(gi))
+            self.table.setItem(i-anoinicio, 1, si.qtablewidgetitem())
+            self.table.setItem(i-anoinicio, 2, sf.qtablewidgetitem())
+            self.table.setItem(i-anoinicio, 3, (sf-si).qtablewidgetitem())
+            self.table.setItem(i-anoinicio, 4, incomes.qtablewidgetitem())
+            self.table.setItem(i-anoinicio, 5, gains.qtablewidgetitem())
+            self.table.setItem(i-anoinicio, 6, dividends.qtablewidgetitem())
+            self.table.setItem(i-anoinicio, 7, expenses.qtablewidgetitem())
+            self.table.setItem(i-anoinicio, 8, gi.qtablewidgetitem())
             sumdividends=sumdividends+dividends
             sumgains=sumgains+gains
             sumexpenses=sumexpenses+expenses
             sumincomes=sumincomes+incomes
             sumicdg=sumicdg+gi
-            if si==0:
+            if si.isZero():
                 tae=0
             else:
-                tae=(sf -si)*100/si
+                tae=(sf -si).amount*100/si.amount
             self.table.setItem(i-anoinicio, 9, qtpc(tae))
             lastsaldo=sf
         self.table.setItem(anofinal-anoinicio+1, 0, qcenter((self.tr("TOTAL"))))
-        self.table.setItem(anofinal-anoinicio+1, 4, self.mem.localcurrency.qtablewidgetitem(sumincomes))
-        self.table.setItem(anofinal-anoinicio+1, 5, self.mem.localcurrency.qtablewidgetitem(sumgains))
-        self.table.setItem(anofinal-anoinicio+1, 6, self.mem.localcurrency.qtablewidgetitem(sumdividends))
-        self.table.setItem(anofinal-anoinicio+1, 7, self.mem.localcurrency.qtablewidgetitem(sumexpenses))
-        self.table.setItem(anofinal-anoinicio+1, 8, self.mem.localcurrency.qtablewidgetitem(sumicdg))
+        self.table.setItem(anofinal-anoinicio+1, 4, sumincomes.qtablewidgetitem())
+        self.table.setItem(anofinal-anoinicio+1, 5, sumgains.qtablewidgetitem())
+        self.table.setItem(anofinal-anoinicio+1, 6, sumdividends.qtablewidgetitem())
+        self.table.setItem(anofinal-anoinicio+1, 7, sumexpenses.qtablewidgetitem())
+        self.table.setItem(anofinal-anoinicio+1, 8, sumicdg.qtablewidgetitem())
         final=datetime.datetime.now()          
         print ("wdgAPR > load_data: {}".format(final-inicio))
 
@@ -189,7 +189,7 @@ class wdgAPR(QWidget, Ui_wdgAPR):
         inicio=datetime.datetime.now()       
         anoinicio=self.wdgYear.year
         anofinal=datetime.date.today().year
-        (sumgd, )=(0, )
+        sumgd=Money(self.mem, 0, self.mem.localcurrency)
         self.tblReport.applySettings()
         self.tblReport.setRowCount(anofinal-anoinicio+1+1)
         for i in range(anoinicio, anofinal+1):
@@ -203,27 +203,27 @@ class wdgAPR(QWidget, Ui_wdgAPR):
             sumgd=sumgd+gd
 
             self.tblReport.setItem(i-anoinicio, 0, qcenter(i))
-            self.tblReport.setItem(i-anoinicio, 1, self.mem.localcurrency.qtablewidgetitem(sinvested))
-            self.tblReport.setItem(i-anoinicio, 2, self.mem.localcurrency.qtablewidgetitem(sbalance))
-            self.tblReport.setItem(i-anoinicio, 3, self.mem.localcurrency.qtablewidgetitem(sbalance- sinvested))
-            if sinvested>0:
-                self.tblReport.setItem(i-anoinicio, 4, qtpc(100*(sbalance- sinvested)/sinvested))
+            self.tblReport.setItem(i-anoinicio, 1, sinvested.qtablewidgetitem())
+            self.tblReport.setItem(i-anoinicio, 2, sbalance.qtablewidgetitem())
+            self.tblReport.setItem(i-anoinicio, 3, (sbalance-sinvested).qtablewidgetitem())
+            if sinvested.isGETZero():
+                self.tblReport.setItem(i-anoinicio, 4, qtpc(100*(sbalance- sinvested).amount/sinvested.amount))
             else:
                 self.tblReport.setItem(i-anoinicio, 4,qtpc(None))
-            self.tblReport.setItem(i-anoinicio, 6, self.mem.localcurrency.qtablewidgetitem(gd))
+            self.tblReport.setItem(i-anoinicio, 6, gd.qtablewidgetitem())
 
         self.tblReport.setItem(anofinal-anoinicio+1, 0, qcenter((self.tr("TOTAL"))))
-        self.tblReport.setItem(anofinal-anoinicio+1, 6, self.mem.localcurrency.qtablewidgetitem(sumgd))
+        self.tblReport.setItem(anofinal-anoinicio+1, 6, sumgd.qtablewidgetitem())
         
         lastyear=datetime.date(datetime.date.today().year, 12, 31)
         diff=Assets(self.mem).saldo_todas_inversiones(self.mem.data.investments, lastyear)-Assets(self.mem).invested(lastyear)
         s=""
-        s=self.tr("From {} I have generated {}.").format(self.wdgYear.year, self.mem.localcurrency.string(sumgd))
-        s=s+"\n"+self.tr("Difference between invested amount and current invesment balance is {}").format(self.mem.localcurrency.string(diff))
-        if diff+sumgd>=0:
-            s=s+"\n"+self.tr("So I'm wining {} which is {} per year.").format(self.mem.localcurrency.string(sumgd+diff), self.mem.localcurrency.string((sumgd+diff)/(datetime.date.today().year-self.wdgYear.year+1)))
+        s=self.tr("From {} I have generated {}.").format(self.wdgYear.year, sumgd)
+        s=s+"\n"+self.tr("Difference between invested amount and current invesment balance is {}").format(diff)
+        if (diff+sumgd).isGETZero():
+            s=s+"\n"+self.tr("So I'm wining {} which is {} per year.").format(sumgd+diff, self.mem.localcurrency.string((sumgd+diff).amount/(datetime.date.today().year-self.wdgYear.year+1)))
         else:
-            s=s+"\n"+self.tr("So I'm losing {} which is {} per year.").format(self.mem.localcurrency.string(sumgd+diff), self.mem.localcurrency.string((sumgd+diff)/(datetime.date.today().year-self.wdgYear.year+1)))
+            s=s+"\n"+self.tr("So I'm losing {} which is {} per year.").format(sumgd+diff, self.mem.localcurrency.string((sumgd+diff).amount/(datetime.date.today().year-self.wdgYear.year+1)))
         
         self.lblReport.setText(s)
         

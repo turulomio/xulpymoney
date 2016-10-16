@@ -2,15 +2,15 @@ from PyQt5.QtCore import *
 from libxulpymoney import *
 class Update:
     """DB update system
-    Cuando vaya a crear una nueva modificaci´on pondre otro if con menor que current date para uqe se ejecute solo una vez al final, tendra que 
+    Cuando vaya a crear una nueva modificación pondre otro if con menor que current date para uqe se ejecute solo una vez al final, tendra que 
     poner al final self.me.set_database_version(current date)
     
     To check if this class works fine, you must use a subversion 
         Subversion      DBVersion
         1702                None
     
-    El sistema update sql ya tiene globals y  mete la versi´on de la base de datos del desarrollador, no obstante,
-    El desarrollador deber´a meter por c´odigo todos los cambios, ha ser preferible usando objetos.7
+    El sistema update sql ya tiene globals y  mete la versión de la base de datos del desarrollador, no obstante,
+    El desarrollador deber´a meter por código todos los cambios, ha ser preferible usando objetos.7
     
     AFTER EXECUTING I MUST RUN SQL UPDATE SCRIPT TO UPDATE FUTURE INSTALLATIONS
     
@@ -19,7 +19,7 @@ class Update:
     def __init__(self, mem):
         self.mem=mem
         self.dbversion=self.get_database_version()    
-        self.lastcodeupdate=201610141057
+        self.lastcodeupdate=201610161057
 
    
     def get_database_version(self):
@@ -596,6 +596,16 @@ LANGUAGE plpgsql;""")
             cur.close()
             self.mem.con.commit()
             self.set_database_version(201610141057)        
+        if self.dbversion<201610161057:
+            cur=self.mem.con.cursor()                        
+            cur.execute("ALTER TABLE dividends ADD COLUMN currency_conversion numeric(10,6) DEFAULT 1")
+            cur.execute("UPDATE dividends SET currency_conversion=1")
+            cur.execute("ALTER TABLE dividends  ALTER COLUMN currency_conversion SET NOT NULL")
+            cur.execute("COMMENT ON COLUMN dividends.currency_conversion IS 'Conversión de divisa del dividendo a la de la cuenta. Bruto, retención, neto y valorxaccion van en la divisa de la inversión. La comisión va en la divisa de la cuenta y no necesita conversión. Para convertir a la divisa de la cuenta gross*currency_conversion'")
+
+            cur.close()
+            self.mem.con.commit()
+            self.set_database_version(201610161057)                    
             
         """       WARNING                    ADD ALWAYS LAST UPDATE CODE                         WARNING
         

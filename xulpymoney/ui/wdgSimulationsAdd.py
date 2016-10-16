@@ -34,7 +34,7 @@ class wdgSimulationsAdd(QWidget, Ui_wdgSimulationsAdd):
         createadmin.create_db(self.simulation.simulated_db())
         self.mem.con.commit()
 
-        #Crea nueva conexi´on
+        #Crea nueva conexión
         self.con_sim=Connection().init__create(self.mem.con.user, self.mem.con.password, self.mem.con.server, self.mem.con.port, self.simulation.simulated_db())
         self.con_sim.connect()        
         admin=DBAdmin(self.con_sim)

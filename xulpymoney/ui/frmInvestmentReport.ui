@@ -49,7 +49,7 @@
         <bool>true</bool>
        </property>
        <property name="currentIndex">
-        <number>1</number>
+        <number>4</number>
        </property>
        <widget class="QWidget" name="tab_12">
         <attribute name="icon">
@@ -540,7 +540,7 @@
         </attribute>
         <layout class="QHBoxLayout" name="horizontalLayout_7">
          <item>
-          <layout class="QVBoxLayout" name="verticalLayout_5">
+          <layout class="QVBoxLayout" name="verticalLayout_16">
            <item>
             <widget class="QCheckBox" name="chkHistoricalDividends">
              <property name="text">
@@ -549,22 +549,59 @@
             </widget>
            </item>
            <item>
-            <widget class="myQTableWidget" name="tblDividends">
-             <property name="contextMenuPolicy">
-              <enum>Qt::CustomContextMenu</enum>
+            <widget class="QGroupBox" name="grpDividendsInvestmentCurrency">
+             <property name="title">
+              <string>Dividends in investment currency</string>
              </property>
-             <property name="alternatingRowColors">
-              <bool>true</bool>
+             <layout class="QVBoxLayout" name="verticalLayout_5">
+              <item>
+               <widget class="myQTableWidget" name="tblDividends">
+                <property name="contextMenuPolicy">
+                 <enum>Qt::CustomContextMenu</enum>
+                </property>
+                <property name="alternatingRowColors">
+                 <bool>true</bool>
+                </property>
+                <property name="selectionMode">
+                 <enum>QAbstractItemView::SingleSelection</enum>
+                </property>
+                <property name="selectionBehavior">
+                 <enum>QAbstractItemView::SelectRows</enum>
+                </property>
+                <attribute name="verticalHeaderVisible">
+                 <bool>false</bool>
+                </attribute>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item>
+            <widget class="QGroupBox" name="grpDividendsAccocuntCurrency">
+             <property name="title">
+              <string>Dividends in account currency</string>
              </property>
-             <property name="selectionMode">
-              <enum>QAbstractItemView::SingleSelection</enum>
-             </property>
-             <property name="selectionBehavior">
-              <enum>QAbstractItemView::SelectRows</enum>
-             </property>
-             <attribute name="verticalHeaderVisible">
-              <bool>false</bool>
-             </attribute>
+             <layout class="QVBoxLayout" name="verticalLayout_15">
+              <item>
+               <widget class="myQTableWidget" name="tblDividendsAccountCurrency">
+                <property name="contextMenuPolicy">
+                 <enum>Qt::CustomContextMenu</enum>
+                </property>
+                <property name="alternatingRowColors">
+                 <bool>true</bool>
+                </property>
+                <property name="selectionMode">
+                 <enum>QAbstractItemView::SingleSelection</enum>
+                </property>
+                <property name="selectionBehavior">
+                 <enum>QAbstractItemView::SelectRows</enum>
+                </property>
+                <attribute name="verticalHeaderVisible">
+                 <bool>false</bool>
+                </attribute>
+               </widget>
+              </item>
+             </layout>
             </widget>
            </item>
            <item>

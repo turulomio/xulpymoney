@@ -23,7 +23,7 @@ class wdgCurrencyConversion(QWidget):
         lay.addWidget(self.cmd)
 
     def setConversion(self, mfrom, tcurrency, dt, factor=None):
-        """Llena el texto con los datos de la conversi´on. Can be invoked several times
+        """Llena el texto con los datos de la conversión. Can be invoked several times
         Si se pasa el parametro factor, ya se calculan los datos, Se usa para modificaciones"""
         self.mem=mfrom.mem
         self.mfrom=mfrom
