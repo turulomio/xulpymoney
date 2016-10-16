@@ -2354,8 +2354,8 @@ class SetInvestmentOperationsHistoricalHomogeneus(SetInvestmentOperationsHistori
             tabla.setItem(rownumber, 6+diff,bruto.qtablewidgetitem())
             
             sumimpuestos=sumimpuestos+a.taxes(account_currency)
-            sumcomision=sumcomision+a.comissions(account_currency)
-            tabla.setItem(rownumber, 7+diff,a.comissions(account_currency).qtablewidgetitem())
+            sumcomision=sumcomision+a.comission(account_currency)
+            tabla.setItem(rownumber, 7+diff,a.comission(account_currency).qtablewidgetitem())
             tabla.setItem(rownumber, 8+diff,a.taxes(account_currency).qtablewidgetitem())
             
             tabla.setItem(rownumber, 9+diff,neto.qtablewidgetitem())
