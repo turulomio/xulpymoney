@@ -592,11 +592,16 @@ class canvasChartHistoricalBuy(FigureCanvasQTAgg):
         self.plot_sma50=None
         self.plot_reference_buy=None
         self.plot_reference_sell=None
-        self.plot_reference_1=None
-        self.plot_reference_2=None
-        self.plot_reference_3=None
-        self.plot_reference_4=None
-        self.plot_reference_5=None
+        self.plot_reference_1b=None
+        self.plot_reference_1s=None
+        self.plot_reference_2b=None
+        self.plot_reference_2s=None
+        self.plot_reference_3b=None
+        self.plot_reference_3s=None
+        self.plot_reference_1a=None#Average
+        self.plot_reference_2a=None
+        self.plot_reference_3a=None
+        
         
         self.purchase_type=None#None ninguno 0 con reinversión personalizada, 1 con reinversión dinero invertido, 2 con reinversión dinero invertido x2 y 3 con reinversion dinero invertido x1.5 
        
@@ -693,43 +698,64 @@ class canvasChartHistoricalBuy(FigureCanvasQTAgg):
         percentage=Decimal(self.mem.settingsdb.value("frmSellingPoint/lastgainpercentage",  5))
 
         if self.purchase_type==2:
-            (dat, buy, sell, r1, r2, r3)=([], [], [], [], [], [])
+            
+            dat=[]
             dat.append(self.from_dt)
             dat.append(datetime.datetime.now())
-            buy.append(self.buyprice)
-            buy.append(self.buyprice)
-            sell.append(self.buyprice*(1+percentage/Decimal(100)))
-            sell.append(self.buyprice*(1+percentage/Decimal(100)))
-            r1.append(self.buyprice*Decimal(percentagesmy[0])*(1+percentage/Decimal(100)))
-            r1.append(self.buyprice*Decimal(percentagesmy[0])*(1+percentage/Decimal(100)))
-            r2.append(self.buyprice*Decimal(percentagesmy[1])*(1+percentage/Decimal(100)))
-            r2.append(self.buyprice*Decimal(percentagesmy[1])*(1+percentage/Decimal(100)))
-            r3.append(self.buyprice*Decimal(percentagesmy[2])*(1+percentage/Decimal(100)))
-            r3.append(self.buyprice*Decimal(percentagesmy[2])*(1+percentage/Decimal(100)))
+            self.price_sell=self.price_buy*(1+percentage/Decimal(100))
+            
+            self.price_a1=self.price_buy*Decimal(percentagesmy[0])
+            self.price_s1=self.price_a1*(1+percentage/Decimal(100))
+            self.price_b1=self.price_buy*Decimal(1-0.33)
+            
+            self.price_a2=self.price_buy*Decimal(percentagesmy[1])
+            self.price_s2=self.price_a2*(1+percentage/Decimal(100))
+            self.price_b2=self.price_b1*Decimal(1-0.33)
+            
+            self.price_a3=self.price_buy*Decimal(percentagesmy[2])
+            self.price_s3=self.price_a3*(1+percentage/Decimal(100))
+            self.price_b3=self.price_b2*Decimal(1-0.33)
+            
+#
+#        print("Compro a {}. Vendo a {} que es un {} %".format(self.price_buy, sell.price_sell,  percentage))
+#        print("r1: punto medio compra {}. Vendo a {} que es un {}".format(self.buyprice])*(+percentage/Decimal(100)) , percentage))
+#        print("r2: punto medio compra {}. Vendo a {} que es un {}".format(self.buyprice*Decimal(percentagesmy[1]),self.buyprice*Decimal(percentagesmy[1])*(1+percentage/Decimal(100)) , percentage))
+#        print("r3: punto medio compra {}. Vendo a {} que es un {}".format(self.buyprice*Decimal(percentagesmy[2]),self.buyprice*Decimal(percentagesmy[2])*(1+percentage/Decimal(100)) , percentage))
+        self.plot_reference_sell, =self.ax.plot_date(dat, [self.price_sell]*2, '-',  color='green')     
+        self.plot_reference_buy, =self.ax.plot_date(dat, [self.price_buy]*2, '-',  color='red')     
+        
+        self.plot_reference_s1, =self.ax.plot_date(dat, [self.price_s1]*2, '--',  color='green')    
+        self.plot_reference_b1, =self.ax.plot_date(dat, [self.price_b1]*2, '--',  color='red')     
+        self.plot_reference_a1, =self.ax.plot_date(dat, [self.price_a1]*2, '--',  color='orange')      
+        
+        self.plot_reference_s2, =self.ax.plot_date(dat, [self.price_s2]*2, '-.',  color='green')     
+        self.plot_reference_b2, =self.ax.plot_date(dat, [self.price_b2]*2, '-.',  color='red')   
+        self.plot_reference_a2, =self.ax.plot_date(dat, [self.price_a2]*2, '-.',  color='orange')     
+        
+        self.plot_reference_s3, =self.ax.plot_date(dat, [self.price_s3]*2, ':',  color='green')     
+        self.plot_reference_b3, =self.ax.plot_date(dat, [self.price_b3]*2, ':',  color='red')     
+        self.plot_reference_a3, =self.ax.plot_date(dat, [self.price_a3]*2, ':',  color='orange')     
 
-        print("Compro a {}. Vendo a {} que es un {} %".format(self.buyprice, self.buyprice*(1+percentage/Decimal(100)), percentage))
-        print("r1: punto medio compra {}. Vendo a {} que es un {}".format(self.buyprice*Decimal(percentagesmy[0]),self.buyprice*Decimal(percentagesmy[0])*(1+percentage/Decimal(100)) , percentage))
-        print("r2: punto medio compra {}. Vendo a {} que es un {}".format(self.buyprice*Decimal(percentagesmy[1]),self.buyprice*Decimal(percentagesmy[1])*(1+percentage/Decimal(100)) , percentage))
-        print("r3: punto medio compra {}. Vendo a {} que es un {}".format(self.buyprice*Decimal(percentagesmy[2]),self.buyprice*Decimal(percentagesmy[2])*(1+percentage/Decimal(100)) , percentage))
-        self.plot_reference_sell, =self.ax.plot_date(dat, sell, '-.',  color='green')     
-        self.plot_reference_buy, =self.ax.plot_date(dat, buy, '-.',  color='orange')     
-        self.plot_reference_1, =self.ax.plot_date(dat, r1, '-.',  color='red')     
-        self.plot_reference_2, =self.ax.plot_date(dat, r2, '-.',  color='red')     
-        self.plot_reference_3, =self.ax.plot_date(dat, r3, '-.',  color='red')     
-        c=self.product.currency.string
-        self.ax.annotate(xy=(5, 20), xycoords="figure pixels",  s=self.tr("Lines calculated investing: 2500 €, 3500 €, 12000 €, 12000 €"))
-        self.ax.annotate(xy=(5, 5), xycoords="figure pixels",  s=self.tr("Gains percentage: {}. First Purchase price: {}. First Selling price: {}. Second: {}. Third: {}. Forth: {}.".format(tpc(percentage), c(self.buyprice), c(self.buyprice*(1+percentage/Decimal(100))), c(self.buyprice*Decimal(percentagesmy[0])*(1+percentage/Decimal(100))), c(self.buyprice*Decimal(percentagesmy[1])*(1+percentage/Decimal(100))), c(self.buyprice*Decimal(percentagesmy[2])*(1+percentage/Decimal(100))))))
-
+        self.ax.annotate(xy=(5, 5), xycoords="figure pixels",  s=self.tr("Lines calculated investing: 2500 €, 3500 €, 12000 €, 12000 €"))
+        #self.ax.annotate(xy=(5, 5), xycoords="figure pixels",  s=self.tr("Gains percentage: {}. First Purchase price: {}. First Selling price: {}. Second: {}. Third: {}. Forth: {}.".format(tpc(percentage), c(self.price_buy), c(sell.self.buyprice*(1+percentage/Decimal(100))), c(self.buyprice*Decimal(percentagesmy[0])*(1+percentage/Decimal(100))), c(self.buyprice*Decimal(percentagesmy[1])*(1+percentage/Decimal(100))), c(self.buyprice*Decimal(percentagesmy[2])*(1+percentage/Decimal(100))))))
 
     def makeLegend(self):
         if len(self.labels)==0:
+            c=self.product.currency.string
             self.labels.append((self.plot_sma200, self.tr("SMA200")))
             self.labels.append((self.plot_sma50,self.tr("SMA50")))
-            self.labels.append((self.plot_reference_buy, self.tr("Purchase reference")))
-            self.labels.append((self.plot_reference_sell, self.tr("Sell references")))
-            self.labels.append((self.plot_reference_1, self.tr("First reinvestment selling point")))
-            self.labels.append((self.plot_reference_2, self.tr("Second reinvestment selling point")))
-            self.labels.append((self.plot_reference_3, self.tr("Third reinvestment selling point")))
+            self.labels.append((self.plot_reference_buy, self.tr("Purchase reference ({})".format(c(self.price_buy)))))
+            self.labels.append((self.plot_reference_sell, self.tr("Sell reference ({})".format(c(self.price_sell)))))
+            self.labels.append((self.plot_reference_s1,  self.tr("First reinvestment selling point ({})".format(c(self.price_s1)))))
+            self.labels.append((self.plot_reference_a1, self.tr("First reinvestment average purchase point ({})".format(c(self.price_a1)))))
+            self.labels.append((self.plot_reference_b1, self.tr("First reinvestment purchase point ({})".format(c(self.price_b1)))))
+            self.labels.append((self.plot_reference_s2, self.tr("Second reinvestment selling point ({})".format(c(self.price_s2)))))
+            self.labels.append((self.plot_reference_a2, self.tr("Second reinvestment average purchase point ({})".format(c(self.price_a2)))))
+            self.labels.append((self.plot_reference_b2, self.tr("Second reinvestment purchase point ({})".format(c(self.price_b2)))))
+            self.labels.append((self.plot_reference_s3, self.tr("Third reinvestment selling point ({})".format(c(self.price_s3)))))
+            self.labels.append((self.plot_reference_a3, self.tr("Third reinvestment average purchase point ({})".format(c(self.price_a3)))))
+            self.labels.append((self.plot_reference_b3, self.tr("Third reinvestment purchase point ({})".format(c(self.price_b3)))))
+
         
     @pyqtSlot()
     def on_wheelEvent(self, event):
@@ -801,7 +827,14 @@ class canvasChartHistoricalBuy(FigureCanvasQTAgg):
         """Debe tener cargado los ohcl, no el all"""
         self.product=product
         self.from_dt=self.product.result.ohclDaily.arr[0].datetime()
-        self.buyprice=buyprice
+        self.price_buy=buyprice
+        self.price_sell=None
+        self.price_b1=None
+        self.price_b2=None
+        self.price_b3=None
+        self.price_s1=None
+        self.price_s2=None
+        self.price_s3=None
         self.mydraw()
 
 class canvasChartHistoricalReinvest(FigureCanvasQTAgg):
