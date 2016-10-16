@@ -21,7 +21,7 @@ class wdgInvestmentsOperations(QWidget, Ui_wdgInvestmentsOperations):
         self.wym.initiate(fechainicio.year, datetime.date.today().year, datetime.date.today().year,  datetime.date.today().month)
         self.wym.changed.connect(self.on_wym_mychanged)
         self.wym.label.hide()
-        self.setOperations=SetInvestmentOperations(self.mem)
+        self.setOperations=SetInvestmentOperationsHeterogeneus(self.mem)
         self.setCurrent=SetInvestmentOperationsCurrentHeterogeneus(self.mem)
         self.selOperation=None#For table
         self.selCurrentOperation=None#For tblCurrent
@@ -61,7 +61,7 @@ class wdgInvestmentsOperations(QWidget, Ui_wdgInvestmentsOperations):
             for o in inv.op_actual.arr:
                 self.setCurrent.append(o)
         self.setCurrent.order_by_datetime()
-        self.setCurrent.myqtablewidget(self.tblCurrent, True)
+        self.setCurrent.myqtablewidget(self.tblCurrent)
 
         
     @QtCore.pyqtSlot(int) 
