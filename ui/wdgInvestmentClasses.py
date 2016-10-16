@@ -107,7 +107,7 @@ class wdgInvestmentClasses(QWidget, Ui_wdgInvestmentClasses):
         self.canvasProduct=canvasPie(self)
         self.layProduct.addWidget(self.canvasProduct)      
         
-        self.accounts=Assets(self.mem).saldo_todas_cuentas(self.hoy)
+        self.accounts=Assets(self.mem).saldo_todas_cuentas(self.hoy).local()
         self.tab.setCurrentIndex(2)
         self.update()
                
@@ -129,27 +129,27 @@ class wdgInvestmentClasses(QWidget, Ui_wdgInvestmentClasses):
         labels=[]
         data=[]
         explode=[]
-        sumtotal=0
+        sumtotal=Money(self.mem, 0, self.mem.localcurrency)
         for r in range(0, 11):
-            total=0
+            total=Money(self.mem, 0,  self.mem.localcurrency)
             for i in self.mem.data.investments_active().arr:
                 if math.ceil(i.product.percentage/10.0)==r:
                     if self.radCurrent.isChecked():
-                        total=total+i.balance()
+                        total=total+i.balance().local()
                     else:
-                        total=total+i.invertido()
+                        total=total+i.invertido().local()
             if r==0:
                 total=total+self.accounts
-            if total>0:
+            if total.isGTZero():
                 labels.append("{0}% variable".format(r*10))
-                data.append(total)
+                data.append(total.amount)
                 explode.append(0)
             sumtotal=sumtotal+total
         if self.radCurrent.isChecked():    
             self.canvasTPC.ax.set_title(self.tr("Investment current balance by variable percentage"), fontsize=30, fontweight="bold", y=1.02)   
         else:
             self.canvasTPC.ax.set_title(self.tr("Invested balance by variable percentage"), fontsize=30, fontweight="bold", y=1.02)   
-        self.canvasTPC.ax.annotate(xy=(5, 5), xycoords="figure pixels",  s=self.tr("Total: {0}".format(self.mem.localcurrency.string(sumtotal))))
+        self.canvasTPC.ax.annotate(xy=(5, 5), xycoords="figure pixels",  s=self.tr("Total: {0}".format(sumtotal)))
         self.canvasTPC.mydraw(data, labels,  explode)       
 
 
@@ -159,29 +159,29 @@ class wdgInvestmentClasses(QWidget, Ui_wdgInvestmentClasses):
         labels=[]
         data=[]
         explode=[]
-        sumtotal=0
+        sumtotal=Money(self.mem, 0, self.mem.localcurrency)
 
         for m in self.mem.investmentsmodes.arr:
-            total=0
+            total=Money(self.mem, 0,  self.mem.localcurrency)
             for i in self.mem.data.investments_active().arr:
                 if i.product.mode==m:
                     if self.radCurrent.isChecked():
-                        total=total+i.balance()
+                        total=total+i.balance().local()
                     else:
-                        total=total+i.invertido()
+                        total=total+i.invertido().local()
             labels.append(m.name)
             if m.id=='c':
                 total=total+self.accounts
-                data.append(total)
+                data.append(total.amount)
             else:
-                data.append(total)
+                data.append(total.amount)
             explode.append(0)
             sumtotal=sumtotal+total
         if self.radCurrent.isChecked():    
             self.canvasPCI.ax.set_title(self.tr("Investment current balance by Put / Call / Inline"), fontsize=30, fontweight="bold", y=1.02)   
         else:
             self.canvasPCI.ax.set_title(self.tr("Invested balance by Put / Call / Inline"), fontsize=30, fontweight="bold", y=1.02)   
-        self.canvasPCI.ax.annotate(xy=(5, 5), xycoords="figure pixels",  s=self.tr("Total: {0}".format(self.mem.localcurrency.string(sumtotal))))
+        self.canvasPCI.ax.annotate(xy=(5, 5), xycoords="figure pixels",  s=self.tr("Total: {0}".format(sumtotal)))
         self.canvasPCI.mydraw(data, labels,  explode)  
 
         
@@ -190,20 +190,20 @@ class wdgInvestmentClasses(QWidget, Ui_wdgInvestmentClasses):
         labels=[]
         data=[]
         explode=[]
-        sumtotal=0
+        sumtotal=Money(self.mem, 0, self.mem.localcurrency)
         for t in self.mem.types.arr:
-            total=0
+            total=Money(self.mem, 0,  self.mem.localcurrency)
             for i in self.mem.data.investments_active().arr:
                 if i.product.type==t:
                     if self.radCurrent.isChecked():
-                        total=total+i.balance()
+                        total=total+i.balance().local()
                     else:
-                        total=total+i.invertido()
+                        total=total+i.invertido().local()
             if t.id==11:#Accounts
                 total=total+self.accounts
-            if total>0:
+            if total.isGTZero():
                 labels.append(t.name)
-                data.append(total)
+                data.append(total.amount)
                 if t.id==11:#Accounts
                     explode.append(0.15)        
                 else:
@@ -213,7 +213,7 @@ class wdgInvestmentClasses(QWidget, Ui_wdgInvestmentClasses):
             self.canvasTipo.ax.set_title(self.tr("Investment current balance by product type"), fontsize=30, fontweight="bold", y=1.02)   
         else:
             self.canvasTipo.ax.set_title(self.tr("Invested balance by product type"), fontsize=30, fontweight="bold", y=1.02)   
-        self.canvasTipo.ax.annotate(xy=(5, 5), xycoords="figure pixels",  s=self.tr("Total: {0}".format(self.mem.localcurrency.string(sumtotal))))
+        self.canvasTipo.ax.annotate(xy=(5, 5), xycoords="figure pixels",  s=self.tr("Total: {0}".format(sumtotal)))
         self.canvasTipo.mydraw(data, labels,  explode)  
 
         
@@ -222,28 +222,28 @@ class wdgInvestmentClasses(QWidget, Ui_wdgInvestmentClasses):
         labels=[]
         data=[]
         explode=[]
-        sumtotal=0
+        sumtotal=Money(self.mem, 0, self.mem.localcurrency)
                 
         for a in self.mem.leverages.arr:
-            total=0
+            total=Money(self.mem, 0,  self.mem.localcurrency)
             for i in self.mem.data.investments_active().arr:
                 if i.product.leveraged==a:
                     if self.radCurrent.isChecked():
-                        total=total+i.balance()
+                        total=total+i.balance().local()
                     else:
-                        total=total+i.invertido()
+                        total=total+i.invertido().local()
             if a.id==0:#Accounts
                 total=total+self.accounts
-            if total>0:
+            if total.isGTZero():
                 labels.append(a.name)
-                data.append(total)
+                data.append(total.amount)
                 explode.append(0)
             sumtotal=sumtotal+total
         if self.radCurrent.isChecked():    
             self.canvasApalancado.ax.set_title(self.tr("Investment current balance by leverage"), fontsize=30, fontweight="bold", y=1.02)   
         else:
             self.canvasApalancado.ax.set_title(self.tr("Invested balance by leverage"), fontsize=30, fontweight="bold", y=1.02)   
-        self.canvasApalancado.ax.annotate(xy=(5, 5), xycoords="figure pixels",  s=self.tr("Total: {0}".format(self.mem.localcurrency.string(sumtotal))))
+        self.canvasApalancado.ax.annotate(xy=(5, 5), xycoords="figure pixels",  s=self.tr("Total: {0}".format(sumtotal)))
         self.canvasApalancado.mydraw(data, labels,  explode)  
         
     def scriptCountry(self):
@@ -251,26 +251,26 @@ class wdgInvestmentClasses(QWidget, Ui_wdgInvestmentClasses):
         labels=[]
         data=[]
         explode=[]
-        sumtotal=0
+        sumtotal=Money(self.mem, 0, self.mem.localcurrency)
                 
         for c in self.mem.countries.arr:
-            total=0
+            total=Money(self.mem, 0,  self.mem.localcurrency)
             for i in self.mem.data.investments_active().arr:
                 if i.product.stockmarket.country==c:
                     if self.radCurrent.isChecked():
-                        total=total+i.balance()
+                        total=total+i.balance().local()
                     else:
-                        total=total+i.invertido()
-            if total>0:
+                        total=total+i.invertido().local()
+            if total.isGTZero():
                 labels.append(c.name)
-                data.append(total)
+                data.append(total.amount)
                 explode.append(0)
             sumtotal=sumtotal+total
         if self.radCurrent.isChecked():    
             self.canvasCountry.ax.set_title(self.tr("Investment current balance by country"), fontsize=30, fontweight="bold", y=1.02)   
         else:
             self.canvasCountry.ax.set_title(self.tr("Invested balance by country"), fontsize=30, fontweight="bold", y=1.02)   
-        self.canvasCountry.ax.annotate(xy=(5, 5), xycoords="figure pixels",  s=self.tr("Total: {0}".format(self.mem.localcurrency.string(sumtotal))))
+        self.canvasCountry.ax.annotate(xy=(5, 5), xycoords="figure pixels",  s=self.tr("Total: {0}".format(sumtotal)))
         self.canvasCountry.mydraw(data, labels,  explode)  
 
     def scriptProduct(self):
@@ -278,7 +278,7 @@ class wdgInvestmentClasses(QWidget, Ui_wdgInvestmentClasses):
         labels=[]
         data=[]
         explode=[]
-        sumtotal=0
+        sumtotal=Money(self.mem, 0, self.mem.localcurrency)
         #Saca products active
         s=set([])
         for i in self.mem.data.investments_active().arr:
@@ -293,20 +293,21 @@ class wdgInvestmentClasses(QWidget, Ui_wdgInvestmentClasses):
         for i in arr:
             labels.append(i.name)
             if self.radCurrent.isChecked():
-                saldo=self.mem.data.investments_active().saldo_misma_investment(i)
+                saldo=self.mem.data.investments_active().saldo_misma_investment(i).local()
             else:
-                saldo=self.mem.data.investments_active().invertido_misma_investment(i)
-            data.append(saldo)
+                saldo=self.mem.data.investments_active().invertido_misma_investment(i).local()
+            data.append(saldo.amount)
             explode.append(0)
             sumtotal=sumtotal+saldo 
         sumtotal=sumtotal+self.accounts
         labels.append(self.tr("Accounts"))
-        data.append(self.accounts)
+        data.append(self.accounts.amount)
         explode.append(0.15)            
+        print(data)
         
         if self.radCurrent.isChecked():    
             self.canvasProduct.ax.set_title(self.tr("Investment current balance by product"), fontsize=30, fontweight="bold", y=1.02)   
         else:
             self.canvasProduct.ax.set_title(self.tr("Invested balance by product"), fontsize=30, fontweight="bold", y=1.02)   
-        self.canvasProduct.ax.annotate(xy=(5, 5), xycoords="figure pixels",  s=self.tr("Total: {0}".format(self.mem.localcurrency.string(sumtotal))))
+        self.canvasProduct.ax.annotate(xy=(5, 5), xycoords="figure pixels",  s=self.tr("Total: {0}".format(sumtotal)))
         self.canvasProduct.mydraw(data, labels,  explode)  
