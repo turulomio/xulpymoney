@@ -446,7 +446,7 @@ class canvasChartHistorical(FigureCanvasQTAgg):
         quotes=[]
         dates.append(self.from_dt-datetime.timedelta(days=7))#To see more margin
         dates.append(datetime.date.today()+datetime.timedelta(days=7))
-        average=self.inversion.op_actual.average_price()
+        average=self.inversion.op_actual.average_price().amount
         quotes.append(average)
         quotes.append(average)
         self.plot_average, =self.ax.plot_date(dates, quotes, 'r--', color="orange",  tz=pytz.timezone(self.mem.localzone.name))
