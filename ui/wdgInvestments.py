@@ -196,9 +196,9 @@ class wdgInvestments(QWidget, Ui_wdgInvestments):
             m.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
             m.setIcon(QMessageBox.Information)
             m.setText(self.tr("Shares number: {0}").format(self.selInvestment.acciones())+"\n"+
-                    self.tr("Purchase price average: {0}").format(self.selInvestment.product.currency.string(self.selInvestment.op_actual.average_price()))+"\n"+
-                    self.tr("Selling point: {}").format(self.selInvestment.product.currency.string(self.selInvestment.venta))+"\n"+
-                    self.tr("Selling all shares you get {}").format(self.selInvestment.product.currency.string(self.selInvestment.op_actual.pendiente(Quote(self.mem).init__create(self.selInvestment.product, self.mem.localzone.now(),  self.selInvestment.venta))))
+                    self.tr("Purchase price average: {0}").format(self.selInvestment.op_actual.average_price().local())+"\n"+
+                    self.tr("Selling point: {}").format(self.selInvestment.venta)+"\n"+
+                    self.tr("Selling all shares you get {}").format(self.selInvestment.op_actual.pendiente(Quote(self.mem).init__create(self.selInvestment.product, self.mem.localzone.now(),  self.selInvestment.venta)).local())
             )
             m.exec_()     
         else:

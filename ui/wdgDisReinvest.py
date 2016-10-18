@@ -187,5 +187,5 @@ class wdgDisReinvest(QWidget, Ui_wdgDisReinvest):
         for i, tpc in enumerate(porcentages):        
             table.setItem(i, 0, qtpc(tpc))
             tpcprice= averageprice*Decimal(1+tpc/100)
-            table.setItem(i, 1, self.mem.localcurrency.qtablewidgetitem(tpcprice))       
-            table.setItem(i, 2, self.mem.localcurrency.qtablewidgetitem(shares*(tpcprice-averageprice)))
+            table.setItem(i, 1, tpcprice.qtablewidgetitem())
+            table.setItem(i, 2, ((tpcprice-averageprice)*shares).qtablewidgetitem())
