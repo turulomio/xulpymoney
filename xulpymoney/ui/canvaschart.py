@@ -888,7 +888,7 @@ class canvasChartHistoricalReinvest(FigureCanvasQTAgg):
         (dat, average, sell)=([], [], [])                
         dat.append(self.setcurrent.arr[0].datetime)
         dat.append(datetime.datetime.now())
-        avg=self.setcurrent.average_price()
+        avg=self.setcurrent.average_price().amount
         sellprice=avg*(1+percentage/Decimal(100))
         
         average.append(avg)
@@ -943,7 +943,7 @@ class canvasChartHistoricalReinvest(FigureCanvasQTAgg):
         (dates, buy, sell)=([], [], [])                
         dates.append(self.from_dt-datetime.timedelta(days=7))#To see more margin
         dates.append(datetime.date.today()+datetime.timedelta(days=7))
-        average=self.inversion.op_actual.average_price()
+        average=self.inversion.op_actual.average_price().amount
         buy.append(average)
         buy.append(average)
         percentage=Decimal(self.mem.settingsdb.value("frmSellingPoint/lastgainpercentage",  5))
