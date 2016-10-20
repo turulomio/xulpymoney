@@ -84,20 +84,20 @@ class frmSellingPoint(QDialog, Ui_frmSellingPoint):
                 self.puntoventa=round(suminvertido.amount*(1+tpc/100)/sumacciones, 2)
             elif self.radPrice.isChecked()==True:
                 if self.txtPrice.isValid():#Si hay un numero bien
-                    self.puntoventa=Decimal(self.txtPrice.text())
+                    self.puntoventa=self.txtPrice.decimal()
                     self.cmd.setEnabled(True)
                 else:
                     self.puntoventa=Decimal(0)
                     self.cmd.setEnabled(False)
             elif self.radGain.isChecked()==True:
                 if self.txtGanancia.isValid():#Si hay un numero bien
-                    self.puntoventa=round((self.txtGanancia.decimal()+suminvertido)/sumacciones, 2)
+                    self.puntoventa=round((self.txtGanancia.decimal()+suminvertido.amount)/sumacciones, 2)
                     self.cmd.setEnabled(True)
                 else:
                     self.puntoventa=Decimal(0)
                     self.cmd.setEnabled(False)
             elif self.radSMA200.isChecked()==True:
-                self.puntoventa=round(suminvertido*(1+self.tpcsma200/100)/sumacciones, 2)
+                self.puntoventa=round(suminvertido.amount*(1+self.tpcsma200/100)/sumacciones, 2)
 
         self.tab.setTabText(1, self.tr("Selling point: {0}".format(self.inversion.product.currency.string(self.puntoventa))) )
         self.tab.setTabText(0, self.tr("Current state: {0}".format(self.inversion.product.currency.string(self.inversion.product.result.basic.last.quote))) )
