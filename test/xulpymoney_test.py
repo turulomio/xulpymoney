@@ -62,17 +62,17 @@ class TestXulpymoneyData(unittest.TestCase):
         w=frmInvestmentReport(self.mem, None)
         w.cmbAccount.setCurrentIndex(w.cmbAccount.findData(6))
         w.txtInvestment.setText("Telefónica")
-        d=frmProductSelector(None, self.mem)
+        d=frmProductSelector(w.ise, self.mem)
         d.txt.setText("78241")
         d.on_cmd_released()
         d.tblInvestments.setCurrentCell(0, 0)
-        w.ise.setSelected(d.selected)
-        w.on_cmdInvestment_pressed()
+        w.ise.setSelected(d.products.selected)
+        w.on_cmdInvestment_released()
         
         #Load benchmark qquotes
-        w=WorkerYahooHistorical(mem, 1,  "select * from products where id="+str(self.mem.benchmark.id))
-        w.run()
-        
+#        w=WorkerYahooHistorical(mem, 1,  "select * from products where id="+str(self.mem.benchmark.id))
+#        w.run()
+#        
         
         
         
@@ -84,7 +84,7 @@ class TestXulpymoneyControlData(unittest.TestCase):
         self.frmMain=frmMain   
         
     def test_wdgProducts_search(self):
-        self.frmMain.on_actionSearch_triggered(self)
+        self.frmMain.on_actionSearch_triggered()
         self.frmMain.w.txt.setText("monetario")
         self.frmMain.w.on_cmd_pressed()
         self.assertEqual(17, self.frmMain.w.tblInvestments.rowCount())        
@@ -130,9 +130,9 @@ if __name__ == '__main__':
 #        mem.setQTranslator(QTranslator(app))
 #        mem.qtranslator.load("/usr/lib/xulpymoney/xulpymoney_{0}.qm".format(mem.language.id))
 #        app.installTranslator(mem.qtranslator)
+    mem.con=Connection().init__create(access.con.user, access.con.password, access.con.server, access.con.port, "xulpymoney_pruebas")
+    mem.con.connect()
     frmMain= frmMain(mem)
-    strcon="dbname='xulpymoney_pruebas' port='5432' user='postgres' host='127.0.0.1' password='{}'".format(access.con.password)
-    mem.con=psycopg2.extras.DictConnection(strcon) 
     mem.load_db_data()       
 #        
         #Launch tests
