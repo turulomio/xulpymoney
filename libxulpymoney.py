@@ -2880,22 +2880,46 @@ class DBAdmin:
         cont=self.connection_template1()
         cont._con.set_isolation_level(0)#Si no no me dejaba
         if cont.is_superuser():
-            try:
-                cur=cont.cursor()
-                cur.execute("create database {0};".format(database))
-            except:
-                print ("Error in create_db()")
-                return False
-            finally:
-                cur.close()
-                cont.disconnect()
-            return True
+#            try:
+            cur=cont.cursor()
+            cur.execute("create database {0};".format(database))
+#            except:
+#                print ("Error in create_db()")
+#                return False
+#            finally:
+#                cur.close()
+#                cont.disconnect()
+#            return True
         else:
             print ("You need to be superuser to create database")
             return False
         
+        
+    def db_exists(self, database):
+        """Hace conexi´on automatica a template usando la con """
+        new=Connection().init__create(self.con.user, self.con.password, self.con.server, self.con.port, "template1")
+        new.connect()
+        new._con.set_isolation_level(0)#Si no no me dejaba            
+#            try:
+        cur=new.cursor()
+        cur.execute("SELECT 1 AS result FROM pg_database WHERE datname=%s", (database, ))
+        
+        if cur.rowcount==1:
+            cur.close()
+            new.disconnect
+            return True
+        cur.close()
+        new.disconnect()
+        return False
+#            except:
+        
     def drop_db(self, database):
         """It has database parameter, due to I connect to template to drop database"""
+        
+        if self.db_exists(database)==False:
+            print("Database doesn't exist")
+            return True
+        
         if self.con.is_superuser():
             new=Connection().init__create(self.con.user, self.con.password, self.con.server, self.con.port, "template1")
             new.connect()
@@ -2909,6 +2933,7 @@ class DBAdmin:
                 cur.close()
                 new.disconnect()
                 return False
+            print("Database droped")
             return True
         else:
             print ("You need to be superuser to drop a database")

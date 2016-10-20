@@ -84,7 +84,7 @@ class TestXulpymoneyControlData(unittest.TestCase):
         self.frmMain=frmMain   
         
     def test_wdgProducts_search(self):
-        self.frmMain.on_actionSearch_triggered()
+        self.frmMain.on_actionSearch_triggered(self)
         self.frmMain.w.txt.setText("monetario")
         self.frmMain.w.on_cmd_pressed()
         self.assertEqual(17, self.frmMain.w.tblInvestments.rowCount())        
@@ -92,7 +92,7 @@ class TestXulpymoneyControlData(unittest.TestCase):
 if __name__ == '__main__':
     #Create db pruebas
     app = QApplication(sys.argv)
-    QTextCodec.setCodecForTr(QTextCodec.codecForName("UTF-8"));
+#    QTextCodec.setCodecForTr(QTextCodec.codecForName("UTF-8"));
     
     translator = QTranslator(app)
     locale=QLocale()
@@ -104,23 +104,40 @@ if __name__ == '__main__':
     translator.load("/usr/lib/xulpymoney/xulpymoney_" + a + ".qm")
     app.installTranslator(translator);
     
+    mem=MemXulpymoney()
+    mem.setQTranslator(QTranslator(app))
+    #Crea conexi´on con frmAccess
+    access=frmAccess(mem)
+    access.txtServer.setText("127.0.0.1")
+    access.txtPort.setText("5432")
+    access.txtDB.setText("template1")
+    access.txtUser.setText("postgres")
+    access.exec_()
+    dbadmin=DBAdmin(access.con)
+    dbadmin.drop_db("xulpymoney_pruebas")
+    
+    print(access.con)
+    access.con.disconnect()
     frm = frmInit() 
     frm.txtXulpymoney.setText("xulpymoney_pruebas")
-    frm.drop_db() 
-    if frm.create_db(frm.txtXulpymoney.text()) and frm.create_xulpymoney():
-        #Load data Xulpymoney infraestructure
-        mem=MemXulpymoney()
-        mem.setQTranslator(QTranslator(app))
-        mem.qtranslator.load("/usr/lib/xulpymoney/xulpymoney_{0}.qm".format(mem.language.id))
-        app.installTranslator(mem.qtranslator)
-        frmMain= frmMain(mem)
-        strcon="dbname='xulpymoney_pruebas' port='5432' user='postgres' host='127.0.0.1' password='*'"
-        mem.con=psycopg2.extras.DictConnection(strcon) 
-        mem.load_db_data()       
-        
+    frm.txtPass.setText(access.con.password)
+    frm.on_cmdCreate_released()
+#    con=Connection().init__create(access.con.user, access.con.password, access.con.server.access.con.port, "xulpymoney_pruebas")
+#    frm.drop_db() 
+#    if frm.create_db(frm.txtXulpymoney.text()) and frm.create_xulpymoney():
+#        #Load data Xulpymoney infraestructure
+#        mem=MemXulpymoney()
+#        mem.setQTranslator(QTranslator(app))
+#        mem.qtranslator.load("/usr/lib/xulpymoney/xulpymoney_{0}.qm".format(mem.language.id))
+#        app.installTranslator(mem.qtranslator)
+    frmMain= frmMain(mem)
+    strcon="dbname='xulpymoney_pruebas' port='5432' user='postgres' host='127.0.0.1' password='{}'".format(access.con.password)
+    mem.con=psycopg2.extras.DictConnection(strcon) 
+    mem.load_db_data()       
+#        
         #Launch tests
-        unittest.main(argv=[sys.argv[0]])
-    else:
-        print("No pude crear db")
+    unittest.main(argv=[sys.argv[0]])
+#    else:
+#        print("No pude crear db")
 
  
