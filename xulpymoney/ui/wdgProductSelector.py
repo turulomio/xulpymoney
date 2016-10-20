@@ -139,6 +139,8 @@ class frmProductSelector(QDialog):
         self.lblFound.setText(self.tr("Found {0} registers").format(self.products.length()))
         self.products.myqtablewidget(self.tblInvestments)  
         
+        print("Aqui")
+        
     def on_tblInvestments_cellDoubleClicked(self, row, column):
         self.done(0)
     

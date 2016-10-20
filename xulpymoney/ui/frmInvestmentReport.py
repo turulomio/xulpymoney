@@ -345,7 +345,7 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
             self.inversion.save()
             self.mem.con.commit()    
             #Lo añade con las operaciones vacias pero calculadas.
-            self.inversion.op=SetInvestmentOperations(self.mem)
+            self.inversion.op=SetInvestmentOperationsHomogeneus(self.mem, self.inversion)
             (self.inversion.op_actual, self.inversion.op_historica)=self.inversion.op.calcular()
             self.mem.data.investments.append(self.inversion)
             self.done(0)
