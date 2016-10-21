@@ -13,6 +13,26 @@ class TestXulpymoneyData(unittest.TestCase):
         self.frmMain=frmMain 
         
     def test_data_minimal(self):
+        #Check empyt actions
+#        self.frmMain.on_actionAbout_triggered()
+        self.frmMain.on_actionAccounts_triggered()
+        self.frmMain.on_actionActive_triggered()
+#        self.frmMain.on_actionAuxiliarTables_triggered()
+        self.frmMain.on_actionBanks_triggered()
+        self.frmMain.on_actionBondsAll_triggered()
+        self.frmMain.on_actionBondsObsolete_triggered()
+        self.frmMain.on_actionBondsPrivate_triggered()
+        self.frmMain.on_actionBondsPublic_triggered()
+        self.frmMain.on_actionCAC40_triggered()
+        self.frmMain.on_actionCalculator_triggered()
+        self.frmMain.on_actionConcepts_triggered()
+        self.frmMain.on_actionCuriosities_triggered()
+        self.frmMain.on_actionCurrenciesAll_triggered()
+        self.frmMain.on_actionDividendsReport_triggered()
+        
+        
+        
+        
         #Banks IBM        
         self.frmMain.on_actionBanks_triggered()
         self.frmMain.w.bank_add("Banco Santander malo")#It will be bank 4
@@ -112,6 +132,7 @@ if __name__ == '__main__':
     access.txtPort.setText("5432")
     access.txtDB.setText("template1")
     access.txtUser.setText("postgres")
+    access.txtPass.setFocus()
     access.exec_()
     dbadmin=DBAdmin(access.con)
     dbadmin.drop_db("xulpymoney_pruebas")
