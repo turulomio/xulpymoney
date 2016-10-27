@@ -206,8 +206,8 @@ class wdgAPR(QWidget, Ui_wdgAPR):
             self.tblReport.setItem(i-anoinicio, 1, sinvested.qtablewidgetitem())
             self.tblReport.setItem(i-anoinicio, 2, sbalance.qtablewidgetitem())
             self.tblReport.setItem(i-anoinicio, 3, (sbalance-sinvested).qtablewidgetitem())
-            if sinvested.isGETZero():
-                self.tblReport.setItem(i-anoinicio, 4, qtpc(100*(sbalance- sinvested).amount/sinvested.amount))
+            if sinvested.isGTZero():
+                self.tblReport.setItem(i-anoinicio, 4, qtpc(100*(sbalance-sinvested).amount/sinvested.amount))
             else:
                 self.tblReport.setItem(i-anoinicio, 4,qtpc(None))
             self.tblReport.setItem(i-anoinicio, 6, gd.qtablewidgetitem())
