@@ -3,7 +3,7 @@
 --
 
 -- Dumped from database version 9.6.0
--- Dumped by pg_dump version 9.6.0
+-- Dumped by pg_dump version 9.6.1
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -5856,6 +5856,9 @@ INSERT INTO products VALUES ('LYXNDX1ETF', 'FR0007063177', 'EUR', 4, NULL, 79232
 INSERT INTO products VALUES ('LYXOR ETF DAILY SHORTDAX X2 | DAX 30, INDEX', NULL, 'EUR', 4, '|e_fr_LYXOR|', 81692, NULL, '', '', '', 100, 'p', 2, 3, 'DSD.PA', '{1}', '{3}', NULL, false);
 INSERT INTO products VALUES ('Lyxor ETF EURO STOXX 50 Daily Leverage', 'FR0010468983', 'EUR', 4, '|e_fr_LYXOR|', 81394, '', '', '', '', 100, 'c', 2, 3, 'LVE.PA', '{1}', '{3}', 'LVE.PA||fr||False', false);
 INSERT INTO products VALUES ('LYXOR ETF LEVDAX | DAX 30, INDEX', 'LU0252634307', 'EUR', 4, '', 81693, '', '', '', '', 100, 'c', 2, 3, 'LVD.PA', '{1}', '{3}', '', false);
+INSERT INTO products VALUES ('LYXOR ETF LEVERAGED CAC 40', 'FR0010592014  ', 'EUR', 4, '', 81709, '', NULL, NULL, NULL, 100, 'c', 2, 3, 'LVC.PA', '{1}', '{3}', NULL, false);
+INSERT INTO products VALUES ('LYXOR ETF LEVERAGED DAX', 'LU0252634307  ', 'EUR', 4, '', 81710, '', NULL, NULL, NULL, 100, 'c', 2, 3, 'LVD.PA', '{1}', '{3}', NULL, false);
+INSERT INTO products VALUES ('LYXOR ETF LEVERAGED FTSE MIB', 'FR0010446658  ', 'EUR', 4, '', 81708, '', NULL, NULL, NULL, 100, 'c', 2, 6, 'LEVMIB.MI', '{1}', '{3}', NULL, false);
 INSERT INTO products VALUES ('LYXOR IBEX DOBLE APALANCADO', 'FR0011042753', 'EUR', 4, '|e_fr_LYXOR|', 79228, '', '', '', '', 100, 'c', 2, 1, 'IBEXA.MC', '{1}', '{3}', 'MC#FR0011042753||es||False', false);
 INSERT INTO products VALUES ('LYXOR IBEX ETF', 'FR0010251744', 'EUR', 4, '|e_fr_LYXOR|', 81357, '', '', '', '', 100, 'c', 0, 1, 'LYXIB.MC', '{1}', '{3}', 'MC#FR0010251744||es||False', false);
 INSERT INTO products VALUES ('LYXOR XBEAR ES50', 'FR0010424143', 'EUR', 4, '|e_fr_LYXOR|', 81092, '', '', '', '', 100, 'p', 2, 3, 'BXX.PA', '{1}', '{3}', 'BXX.PA||fr||False', false);
@@ -8235,10 +8238,10 @@ INSERT INTO globals VALUES (14, 'mem/dividendwithholding', '0.19');
 INSERT INTO globals VALUES (15, 'mem/taxcapitalappreciation', '0.19');
 INSERT INTO globals VALUES (16, 'mem/taxcapitalappreciationbelow', '0.5');
 INSERT INTO globals VALUES (17, 'mem/gainsyear', 'false');
-INSERT INTO globals VALUES (18, 'mem/favorites', '79329, 81680, -33, 81458, 80876, 77199, 81440, 76309, 79374, 81702, 80515, 78687, 81347, 79192, 77529, 80840, 79204, 78327, 78281, 78717, 79142, 81394, 74747, 76113');
+INSERT INTO globals VALUES (18, 'mem/favorites', '79329, 81680, 81458, 80876, 79374, 81702, 80515, 78687, 81347, 79192, 77529, 80840, 79204, 78327, 78281, 78717, 79142, 81394, 74747, 76113, 81709');
 INSERT INTO globals VALUES (19, 'mem/fillfromyear', '2005');
-INSERT INTO globals VALUES (1, 'Version', '201610161057');
-INSERT INTO globals VALUES (20, 'frmSellingPoint/lastgainpercentage', '10');
+INSERT INTO globals VALUES (1, 'Version', '201611020740');
+INSERT INTO globals VALUES (20, 'frmSellingPoint/lastgainpercentage', '2.5');
 INSERT INTO globals VALUES (21, 'wdgAPR/cmbYear', '2012');
 INSERT INTO globals VALUES (6, 'Admin mode', NULL);
 INSERT INTO globals VALUES (7, 'wdgIndexRange/spin', '2.0');
