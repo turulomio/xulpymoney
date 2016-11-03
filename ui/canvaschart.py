@@ -691,7 +691,6 @@ class canvasChartHistoricalBuy(FigureCanvasQTAgg):
             return
 
         percentages2=[0.753, 0.5185, 0.3495, 0.23464]
-        print(percentages2)
         percentagespersonal=[0.777, 0.5225, 0.4035, 0.269]
         percentagesmy=percentagespersonal
 
@@ -736,7 +735,7 @@ class canvasChartHistoricalBuy(FigureCanvasQTAgg):
         self.plot_reference_b3, =self.ax.plot_date(dat, [self.price_b3]*2, '--',  color='red', lw=1) 
         self.plot_reference_a3, =self.ax.plot_date(dat, [self.price_a3]*2, '--',  color='orange', lw=1)  
 
-        self.ax.annotate(xy=(5, 5), xycoords="figure pixels",  s=self.tr("Lines calculated investing: 2500 €, 3500 €, 12000 €, 12000 €"))
+        self.ax.annotate(xy=(5, 5), xycoords="figure pixels",  s=self.tr("Lines calculated investing: 2500 €, 3500 €, 12000 €, 12000 €." + " " + self.tr("Selling percentage: {}.".format(tpc(percentage)))))
         #self.ax.annotate(xy=(5, 5), xycoords="figure pixels",  s=self.tr("Gains percentage: {}. First Purchase price: {}. First Selling price: {}. Second: {}. Third: {}. Forth: {}.".format(tpc(percentage), c(self.price_buy), c(sell.self.buyprice*(1+percentage/Decimal(100))), c(self.buyprice*Decimal(percentagesmy[0])*(1+percentage/Decimal(100))), c(self.buyprice*Decimal(percentagesmy[1])*(1+percentage/Decimal(100))), c(self.buyprice*Decimal(percentagesmy[2])*(1+percentage/Decimal(100))))))
 
     def makeLegend(self):
