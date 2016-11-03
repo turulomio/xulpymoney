@@ -185,7 +185,7 @@ class frmProductReport(QDialog, Ui_frmProductReport):
                 self.tblTPC.setItem(row, 2, qtpc(round(tpc, 2)))    
                 self.tblTPC.setItem(row, 3,  qtpc(round(tpc*365/days, 2)))
                 if self.inversion:
-                    self.grpHistoricos.setTitle(self.tr('Report of historic prices. You have {} shares valued at {}.').format(self.inversion.acciones(), self.product.currency.string(self.inversion.balance())))
+                    self.grpHistoricos.setTitle(self.tr('Report of historic prices. You have {} shares valued at {}.').format(self.inversion.acciones(), self.inversion.balance()))
                     self.tblTPC.setItem(row, 4,  self.product.currency.qtablewidgetitem(self.inversion.acciones()*(self.product.result.basic.last.quote-quote.quote)))
             except:
                 self.tblTPC.setItem(row, 2, qtpc(None))    

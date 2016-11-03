@@ -8,20 +8,20 @@ from canvaschart import canvasChartHistoricalReinvest
 from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT 
 
 class wdgDisReinvest(QWidget, Ui_wdgDisReinvest):
-    def __init__(self, mem, inversion,  parent=None):
+    def __init__(self, mem, inversion,  allProduct=False,  parent=None):
+        """
+            Parameter allProduct true, make study with all active investments  of the product
+        """
         QWidget.__init__(self, parent)
         self.setupUi(self)
-        self.mem=mem
-        self.inversion=inversion
-                
-        if self.inversion.op_actual.length()==0:
-            m=QMessageBox()
-            m.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
-            m.setIcon(QMessageBox.Information)
-            m.setText(self.tr("There aren't shares for this investment"))
-            m.exec_()     
-            return
+        self.mem=mem            
 
+        if allProduct==False:
+            self.inversion=inversion
+        else:
+            self.inversion=self.mem.data.investments_active().investment_merging_current_operations_with_same_product(inversion.product, inversion.account)
+            
+                
         self.txtValorAccion.setText(self.inversion.product.result.basic.last.quote)
         self.txtSimulacion.setText(Decimal(self.mem.settingsdb.value("wdgIndexRange/invertir", "10000")))
         self.tabOpAcHi.setCurrentIndex(1)
@@ -35,6 +35,14 @@ class wdgDisReinvest(QWidget, Ui_wdgDisReinvest):
         self.tblInvestmentsHistoricas.settings(self.mem, "wdgDisReinvest")
         self.tblOperaciones.settings(self.mem, "wdgDisReinvest")
         
+        if self.inversion.op_actual.length()==0:
+            m=QMessageBox()
+            m.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
+            m.setIcon(QMessageBox.Information)
+            m.setText(self.tr("There aren't shares for this investment"))
+            m.exec_()     
+            return
+            
         self.inversion.op_actual.myqtablewidget(self.tblInvestmentsActualAntes)
         self.on_radRe_clicked()
 

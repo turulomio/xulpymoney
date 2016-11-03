@@ -279,23 +279,16 @@ class wdgInvestmentClasses(QWidget, Ui_wdgInvestmentClasses):
         data=[]
         explode=[]
         sumtotal=Money(self.mem, 0, self.mem.localcurrency)
-        #Saca products active
-        s=set([])
-        for i in self.mem.data.investments_active().arr:
-            s.add(i.product)
-        
-        arr=list(s)
-        if self.radCurrent.isChecked():
-            arr=sorted(arr, key=lambda inv: self.mem.data.investments_active().saldo_misma_investment(inv),  reverse=True) 
-        else:
-            arr=sorted(arr, key=lambda inv: self.mem.data.investments_active().invertido_misma_investment(inv),  reverse=True) 
-   
-        for i in arr:
+            
+        #Genera SetInvestments con distinct products
+        invs=self.mem.data.investments_active().setInvestmentsGeneric_merging_investments_with_same_product()
+        invs.order_by_balance()
+        for i in invs.arr:
             labels.append(i.name)
             if self.radCurrent.isChecked():
-                saldo=self.mem.data.investments_active().saldo_misma_investment(i).local()
+                saldo=i.balance().local()
             else:
-                saldo=self.mem.data.investments_active().invertido_misma_investment(i).local()
+                saldo=i.invertido().local()
             data.append(saldo.amount)
             explode.append(0)
             sumtotal=sumtotal+saldo 

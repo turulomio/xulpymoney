@@ -184,7 +184,18 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
         d=QDialog()       
         d.resize(self.mem.settings.value("frmInvestmentReport/qdialog_disreinvest", QSize(1024, 768)))
         d.setWindowTitle(self.tr("Divest / Reinvest simulation"))
-        w=wdgDisReinvest(self.mem, self.inversion, d)
+        w=wdgDisReinvest(self.mem, self.inversion, False, d)
+        lay = QVBoxLayout(d)
+        lay.addWidget(w)
+        d.exec_()
+        self.mem.settings.setValue("frmInvestmentReport/qdialog_disreinvest", d.size())
+        
+    @QtCore.pyqtSlot() 
+    def on_actionDisReinvestProduct_triggered(self):
+        d=QDialog()       
+        d.resize(self.mem.settings.value("frmInvestmentReport/qdialog_disreinvest", QSize(1024, 768)))
+        d.setWindowTitle(self.tr("Divest / Reinvest simulation"))
+        w=wdgDisReinvest(self.mem, self.inversion, True,  d)
         lay = QVBoxLayout(d)
         lay.addWidget(w)
         d.exec_()
@@ -415,6 +426,7 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
             
         menu=QMenu()
         menu.addAction(self.actionDisReinvest)
+        menu.addAction(self.actionDisReinvestProduct)
         menu.addSeparator()
         menu.addAction(self.actionOperationAdd)
         menu.addSeparator()

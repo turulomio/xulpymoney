@@ -108,6 +108,7 @@ class wdgCalculator(QWidget, Ui_wdgCalculator):
         self.product.result.get_basic_and_ohcls()
         d=QDialog(self)     
         d.setWindowTitle(self.tr("Purchase graph"))
+        d.showMaximized()
         w=canvasChartHistoricalBuy(self.mem, d)
         w.load_data(self.product, self.txtFinalPrice.decimal())
         lay = QVBoxLayout(d)
