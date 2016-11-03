@@ -45,7 +45,7 @@ class wdgLastCurrent(QWidget, Ui_wdgLastCurrent):
         d=QDialog()       
         d.resize(self.mem.settings.value("frmInvestmentReport/qdialog_disreinvest", QSize(1024, 768)))
         d.setWindowTitle(self.tr("Divest / Reinvest simulation"))
-        w=wdgDisReinvest(self.mem, self.investments.selected, d)
+        w=wdgDisReinvest(self.mem, self.investments.selected, False,  d)
         price=self.investments.selected.op_actual.last().valor_accion*(1+self.spin.value()/Decimal(100))#Is + because -·-        
         w.txtValorAccion.setText(price)
         lay = QVBoxLayout(d)
@@ -58,7 +58,7 @@ class wdgLastCurrent(QWidget, Ui_wdgLastCurrent):
         d=QDialog()       
         d.resize(self.mem.settings.value("frmInvestmentReport/qdialog_disreinvest", QSize(1024, 768)))
         d.setWindowTitle(self.tr("Divest / Reinvest simulation"))
-        w=wdgDisReinvest(self.mem, self.investments.selected, d)
+        w=wdgDisReinvest(self.mem, self.investments.selected, False,  d)
         lay = QVBoxLayout(d)
         lay.addWidget(w)
         d.exec_()

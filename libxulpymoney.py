@@ -180,14 +180,32 @@ class AccountOperationOfInvestmentOperation:
         cur.close()
 
 
-class SetCommons:
+class SetCommonsGeneric:
+    """Base class to group items without a name neither an id, only objects, only arr, not dic_arr"""
+    def __init__(self):
+        self.arr=[]
+        self.selected=None#Used to select a item in the set. Usefull in tables. Its a item
+
+    def append(self,  obj):
+        self.arr.append(obj)
+
+    def remove(self, obj):
+        self.arr.remove(obj)
+
+    def length(self):
+        return len(self.arr)
+
+    def clean(self):
+        """Deletes all items"""
+        self.arr=[]
+        
+class SetCommons(SetCommonsGeneric):
     """Base clase to create Sets, it needs id and name attributes, as index. It has a list arr and a dics dic_arr to access objects of the set"""
     def __init__(self):
+        SetCommonsGeneric.__init__(self)
         self.dic_arr={}
-        self.arr=[]
         self.id=None
         self.name=None
-        self.selected=None#Used to select a item in the set. Usefull in tables. Its a item
     
     def arr_position(self, id):
         """Returns arr position of the id, useful to select items with unittests"""
@@ -204,8 +222,6 @@ class SetCommons:
         self.arr.remove(obj)
         del self.dic_arr[str(obj.id)]
         
-    def length(self):
-        return len(self.arr)
         
     def find(self, o,  log=False):
         """o is and object with id parameter"""
@@ -322,6 +338,25 @@ class SetSimulationTypes(SetCommons):
         if selected!=None:
                 combo.setCurrentIndex(combo.findData(selected.id))
 
+
+class SetInvestmentsGeneric(SetCommonsGeneric):
+    """
+        Generic class. Investments doesn't hava an id, neither an account
+        
+        Used in DisReinvest , merging investments ....
+    """
+    def __init__(self, mem):
+        SetCommonsGeneric.__init__(self)
+        self.mem=mem
+
+    def order_by_balance(self, fecha=None):
+        """Orders the Set using self.arr"""
+        try:
+            self.arr=sorted(self.arr, key=lambda inv: inv.balance(fecha),  reverse=True) 
+            return True
+        except:
+            return False
+            
 class SetInvestments(SetCommons):
     def __init__(self, mem, cuentas, products, benchmark):
         SetCommons.__init__(self)
@@ -348,13 +383,6 @@ class SetInvestments(SetCommons):
             inv.get_operinversiones()
             self.append(inv)
         cur.close()  
-        
-    def list_distinct_products_id(self):
-        """Función que devuelve una lista con los distintos products_id """
-        resultado=set([])
-        for inv in self.arr:
-            resultado.add(inv.product.id)
-        return list(resultado)
             
     def myqtablewidget(self, table):
         """Esta tabla muestra los money con la moneda local"""
@@ -470,25 +498,75 @@ class SetInvestments(SetCommons):
             return None
         return round(average, 2)
             
-    def saldo_misma_investment(self, product):
-        """Devuelve el balance de todas las inversiones que tienen el mismo product.bolsa
-        product es un objeto Product"""
-        resultado=Money(self.mem, 0, product.currency)
+       
+    def products_distinct(self):
+        """Returns a SetProduct with all distinct products of the Set investments items"""
+        s=set([])
         for i in self.arr:
-            if i.product==product:
-                resultado=resultado+i.balance()
-        return resultado
+            s.add(i.product)
+            
+        r=SetProducts(self.mem)
+        for p in s:
+            r.append(p)        
+        return r
         
-    def invertido_misma_investment(self, product):
-        """Devuelve el balance de todas las inversiones que tienen el mismo product.bolsa
-        product es un objeto Product"""
-        resultado=Money(self.mem, 0, product.currency)
-        for i in self.arr:
-            if i.product==product:
-                resultado=resultado+i.invertido()
-        return resultado
 
-
+    def investment_merging_operations_with_same_product(self,  product,  account=None):
+        """
+            Returns and investment object, with all operations of the invesments with the same product. The merged investments are in the set
+            The investment and the operations are copied objects.
+            
+            Tiene cuenta como None, Active=False y Id=None
+            
+            Account no es necesaria pero para mostrar algunas tablas con los calculos (currency) se necesita por lo que se puede pasar como parametro. Por ejemplo
+            en frmReportInvestment, se pasar´ia la< cuenta asociada ala inversi´on del informe.
+            
+            Realmente es aplicar el m´etodo FIFO  a todas las inversiones.
+            
+        """
+        name=QApplication.translate("Core", "Inverstment merging investments operations of {} (FIFO)".format(product.name))
+        r=Investment(self.mem).init__create(name, 0, account, product, None, False)
+        r.op=SetInvestmentOperationsHomogeneus(self.mem, r)
+        for inv in self.arr: #Recorre las inversion del array
+            if inv.product.id==product.id:
+                for o in inv.op.arr:
+                    io=o.copy(investment=r)
+                    r.op.append(io)
+        r.op.order_by_datetime()
+        (r.op_actual,  r.op_historica)=r.op.calcular() 
+        return r
+    
+    def investment_merging_current_operations_with_same_product(self, product, account=False):
+        """
+            Funci´on que convierte el set actual de inversiones, sacando las del producto pasado como par´ametro
+            Crea una inversi´on nueva cogiendo las  operaciones actuales, junt´andolas , convirtiendolas en operaciones normales 
+            
+            se usa para hacer reinversiones, en las que no se ha tenido cuenta el metodo fifo, para que use las acciones actuales.
+        """
+        name=QApplication.translate("Core", "Investment merging current operations of {}".format(product.name))
+        r=Investment(self.mem).init__create(name, 0, account, product, None, False)       
+        r.op=SetInvestmentOperationsHomogeneus(self.mem, r)
+        for inv in self.arr: #Recorre las inversion del array
+            if inv.product.id==product.id:
+                for o in inv.op_actual.arr:
+                    r.op.append(InvestmentOperation(self.mem).init__create(o.tipooperacion, o.datetime, r, o.acciones, o.importe, o.impuestos, o.comision,  o.valor_accion,  o.comision,  o.show_in_ranges,  o.currency_conversion,  o.id))
+        r.op.order_by_datetime()
+        (r.op_actual,  r.op_historica)=r.op.calcular()             
+        return r
+        
+    def setInvestmentsGeneric_merging_investments_with_same_product(self,  account=None):
+        """
+            Genera un set Investment nuevo , creando invesments aglutinadoras de todas las inversiones con el mismo producto
+            
+            Account no es necesaria pero para mostrar algunas tablas con los calculos (currency) se necesita por lo que se puede pasar como parametro. Por ejemplo
+            en frmReportInvestment, se pasar´ia la< cuenta asociada ala inversi´on del informe.
+            
+        """
+        invs=SetInvestmentsGeneric(self.mem)
+        for product in self.products_distinct().arr:
+            i=self.investment_merging_operations_with_same_product(product)
+            invs.append(i) 
+        return invs
 
     def qcombobox_same_investmentmq(self, combo,  investmentmq):
         """Muestra las inversiones activas que tienen el mq pasado como parametro"""
@@ -682,6 +760,14 @@ class SetInvestments(SetCommons):
         """Orders the Set using self.arr"""
         try:
             self.arr=sorted(self.arr, key=lambda inv: inv.product.estimations_dps.currentYear().percentage(),  reverse=True) 
+            return True
+        except:
+            return False
+            
+    def order_by_balance(self, fecha=None):
+        """Orders the Set using self.arr"""
+        try:
+            self.arr=sorted(self.arr, key=lambda inv: inv.balance(fecha),  reverse=True) 
             return True
         except:
             return False
@@ -1221,7 +1307,6 @@ class SetDividendsHeterogeneus:
         for row in cur:
             inversion=self.mem.data.investments.find_by_id(row['id_inversiones'])
             oc=AccountOperation(self.mem).init__db_query(row['id_opercuentas'])
-            print(oc)
             self.arr.append(Dividend(self.mem).init__db_row(row, inversion, oc, self.mem.conceptos.find_by_id(row['id_conceptos']) ))
         cur.close()      
         
@@ -1580,9 +1665,15 @@ class SetInvestmentOperationsHeterogeneus(SetIO):
         
         (io.inversion.op_actual,  io.inversion.op_historica)=io.inversion.op.calcular()
         io.inversion.actualizar_cuentasoperaciones_asociadas()#Regenera toda la inversión.
-        
 
-        
+    def print_list(self):
+        print ("\n Imprimiendo SIO Heterogéneo",  self)
+        for oia in self.arr:
+            print ("  - ", oia)
+
+    def order_by_datetime(self):       
+        self.arr=sorted(self.arr, key=lambda e: e.datetime,  reverse=False) 
+
     def myqtablewidget(self, tabla):
         """Muestra los resultados en self.mem.localcurrency al ser heterogeneo().local()"""
         self.order_by_datetime()
@@ -1641,19 +1732,21 @@ class SetInvestmentOperationsHomogeneus(SetInvestmentOperationsHeterogeneus):
         """Realiza los cálculos y devuelve dos arrays"""
         sioh=SetInvestmentOperationsHistoricalHomogeneus(self.mem, self.investment)
         sioa=SetInvestmentOperationsCurrentHomogeneus(self.mem, self.investment)       
-        for o in self.arr:      
-#            print ("Despues ",  sioa.acciones(), o)              
+        for o in self.arr:                
             if o.acciones>=0:#Compra
                 sioa.arr.append(InvestmentOperationCurrent(self.mem).init__create(o, o.tipooperacion, o.datetime, o.inversion, o.acciones, o.importe, o.impuestos, o.comision, o.valor_accion,  o.show_in_ranges, o.currency_conversion,  o.id))
             else:#Venta
                 if abs(o.acciones)>sioa.acciones():
-                    print (o.acciones, sioa.acciones(),  o)
-                    print("No puedo vender más acciones que las que tengo. EEEEEEEEEERRRRRRRRRRRROOOOORRRRR")
+                    loggin.critical("No puedo vender más acciones que las que tengo. EEEEEEEEEERRRRRRRRRRRROOOOORRRRR")
                     sys.exit(0)
                 sioa.historizar(o, sioh)
         sioa.get_valor_benchmark(self.mem.data.benchmark)
         return (sioa, sioh)
 
+    def print_list(self):
+        print ("\n Imprimiendo SIO de",  self.investment.name)
+        for oia in self.arr:
+            print ("  - ", oia)
         
     def myqtablewidget(self, tabla, account_currency=False):
         """Section es donde guardar en el config file, coincide con el nombre del formulario en el que está la tabla
@@ -1749,16 +1842,6 @@ class SetInvestmentOperationsCurrentHeterogeneus(SetIO):
             resultado=resultado+o.invertido().local()
         return resultado
         
-#    def isHomogeneous(self):
-#        """Devuelve true si todas las inversiones son de la misma inversion"""
-#        if len(self.arr)==0:
-#            return True
-#        inversion=self.arr[0].inversion
-#        for i in range(1, len(self.arr)):
-#            if self.arr[i].inversion!=inversion:
-#                return False
-#        return True
-
     def last(self):
         """Returns last current operation with valor_accion greater than 0"""
         for o in reversed(self.arr):
@@ -1855,6 +1938,11 @@ class SetInvestmentOperationsCurrentHeterogeneus(SetIO):
             return None
         return invertidoxtae/suminvertido
     
+    
+    def order_by_datetime(self):       
+        self.arr=sorted(self.arr, key=lambda e: e.datetime,  reverse=False) 
+    
+    
     def tpc_total(self, sumpendiente=None, suminvertido=None):
         """Si se pasan por parametros se optimizan los calculos"""
         if sumpendiente==None:
@@ -1914,7 +2002,7 @@ class SetInvestmentOperationsCurrentHeterogeneus(SetIO):
                     accionesventa=Decimal('0')#Sale bucle                    
                     break
         if inicio-self.acciones()-abs(io.acciones)!=Decimal('0'):
-            print ("Error en historizar. diff ", inicio-self.acciones()-abs(io.acciones),  "inicio",  inicio,  "fin", self.acciones(), io)
+            logging.critical ("Error en historizar. diff ", inicio-self.acciones()-abs(io.acciones),  "inicio",  inicio,  "fin", self.acciones(), io)
                 
         
     def print_list(self):
@@ -1968,6 +2056,8 @@ class SetInvestmentOperationsCurrentHomogeneus(SetInvestmentOperationsCurrentHet
             resultado=resultado+o.pendiente(lastquote, account_currency)
         return resultado
         
+        
+
     def myqtablewidget(self,  tabla,  show_accounts=False, quote=None, account_currency=False):
         """Función que rellena una tabla pasada como parámetro con datos procedentes de un array de objetos
         InvestmentOperationCurrent y dos valores de mystocks para rellenar los tpc correspodientes
@@ -3289,7 +3379,6 @@ class InvestmentOperation:
         return self
         
     def init__create(self, tipooperacion, datetime, inversion, acciones, importe, impuestos, comision, valor_accion, comentario, show_in_ranges, currency_conversion,    id=None):
-        print (show_in_ranges, id)
         self.id=id
         self.tipooperacion=tipooperacion
         self.datetime=datetime
@@ -3384,11 +3473,13 @@ class InvestmentOperation:
                 c=AccountOperationOfInvestmentOperation(self.mem).init__create(self.datetime, self.mem.conceptos.find_by_id(38), self.mem.tiposoperaciones.find_by_id(1), -self.comision-self.impuestos, self.comentario, self.inversion.account, self,self.inversion)
                 c.save()
     
-    def copy(self):
-        """Crea una inversion operacion desde otra inversionoepracion. NO es un enlace es un objeto clone"""
-        resultado=InvestmentOperation(self.mem)
-        resultado.init__create(self.tipooperacion, self.datetime, self.inversion, self.acciones, self.importe, self.impuestos, self.comision, self.valor_accion, self.comentario,  self.show_in_ranges, self.currency_conversion, self.id)
-        return resultado
+    def copy(self, investment=None):
+        """
+            Crea una inversion operacion desde otra inversionoepracion. NO es un enlace es un objeto clone
+            Si el parametro investment es pasado usa el objeto investment  en vez de una referencia a self.investmen
+        """
+        inv=self.inversion if investment==None else investment
+        return InvestmentOperation(self.mem).init__create(self.tipooperacion, self.datetime, inv , self.acciones, self.importe, self.impuestos, self.comision, self.valor_accion, self.comentario,  self.show_in_ranges, self.currency_conversion, self.id)
                 
     def comment(self):
         """Función que genera un comentario parseado según el tipo de operación o concepto"""
@@ -3713,6 +3804,10 @@ class Investment:
         self.selling_expiration=selling_expiration
         self.id=id
         return self
+        
+        
+    def copy(self ):
+        return Investment(mem).init__create(self.name, self.venta, self.account, self.product, self.selling_expiration, self.active, self.id)
     
     def save(self):
         """Inserta o actualiza la inversión dependiendo de si id=None o no"""
@@ -3883,9 +3978,6 @@ class Investment:
         if self.venta==0 or self.venta==None or self.product.result.basic.last.quote==None or self.product.result.basic.last.quote==0:
             return 0
         return (self.venta-self.product.result.basic.last.quote)*100/self.product.result.basic.last.quote
-
-        
-
 
 
 class CreditCard:    
