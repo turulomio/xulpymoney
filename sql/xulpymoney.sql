@@ -2,7 +2,7 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 9.6.0
+-- Dumped from database version 9.6.1
 -- Dumped by pg_dump version 9.6.1
 
 SET statement_timeout = 0;
@@ -7847,6 +7847,7 @@ INSERT INTO products VALUES ('UIL Holdings Corp.', NULL, 'USD', 1, NULL, 78739, 
 INSERT INTO products VALUES ('ULRIC DE VARENS', 'FR0000079980', 'EUR', 1, '|EURONEXT|', 81663, NULL, NULL, NULL, NULL, 100, 'c', 0, 3, NULL, NULL, NULL, 'EURONEXT#FR0000079980||fr||False', false);
 INSERT INTO products VALUES ('Ultra Petroleum Corp.', NULL, 'USD', 1, NULL, 77164, NULL, NULL, NULL, NULL, 100, 'c', 0, 2, NULL, NULL, NULL, 'NYSE#UPL||us||False', false);
 INSERT INTO products VALUES ('Ultrasonic AG', 'DE000A1KREX3', 'EUR', 1, '|DEUTSCHEBOERSE|', 74931, NULL, NULL, NULL, NULL, 100, 'c', 0, 5, NULL, NULL, NULL, 'DEUTSCHEBOERSE#DE000A1KREX3||de||False', false);
+INSERT INTO products VALUES ('ULTRA S&P 500 PROSHARES', 'US74347R1077  ', 'USD', 4, '', 81711, '', NULL, NULL, NULL, 100, 'c', 2, 2, 'SSO', '{1}', '{3}', NULL, false);
 INSERT INTO products VALUES ('UMANIS', 'FR0010949388', 'EUR', 1, '|EURONEXT|', 75798, NULL, NULL, NULL, NULL, 100, 'c', 0, 3, NULL, NULL, NULL, 'EURONEXT#FR0010949388||fr||False', false);
 INSERT INTO products VALUES ('UMICORE (D)', 'BE0003884047', 'EUR', 1, '|EURONEXT|', 81275, NULL, NULL, NULL, NULL, 100, 'c', 0, 11, NULL, NULL, NULL, 'EURONEXT#BE0003884047||be||False', false);
 INSERT INTO products VALUES ('UMICORE STRIP (D)', 'BE0005623948', 'EUR', 1, '|EURONEXT|', 80822, NULL, NULL, NULL, NULL, 100, 'c', 0, 11, NULL, NULL, NULL, 'EURONEXT#BE0005623948||be||False', false);
@@ -8238,10 +8239,10 @@ INSERT INTO globals VALUES (14, 'mem/dividendwithholding', '0.19');
 INSERT INTO globals VALUES (15, 'mem/taxcapitalappreciation', '0.19');
 INSERT INTO globals VALUES (16, 'mem/taxcapitalappreciationbelow', '0.5');
 INSERT INTO globals VALUES (17, 'mem/gainsyear', 'false');
-INSERT INTO globals VALUES (18, 'mem/favorites', '79329, 81680, 81458, 80876, 79374, 81702, 80515, 78687, 81347, 79192, 77529, 80840, 79204, 78327, 78281, 78717, 79142, 81394, 74747, 76113, 81709');
+INSERT INTO globals VALUES (18, 'mem/favorites', '79329, 81680, 81458, 80876, 79374, 81702, 80515, 78687, 81347, 79192, 77529, 80840, 79204, 78327, 78281, 78717, 79142, 81394, 74747, 76113, 81709, 79361, 81711');
 INSERT INTO globals VALUES (19, 'mem/fillfromyear', '2005');
-INSERT INTO globals VALUES (1, 'Version', '201611020740');
-INSERT INTO globals VALUES (20, 'frmSellingPoint/lastgainpercentage', '2.5');
+INSERT INTO globals VALUES (1, 'Version', '201611041030');
+INSERT INTO globals VALUES (20, 'frmSellingPoint/lastgainpercentage', '10');
 INSERT INTO globals VALUES (21, 'wdgAPR/cmbYear', '2012');
 INSERT INTO globals VALUES (6, 'Admin mode', NULL);
 INSERT INTO globals VALUES (7, 'wdgIndexRange/spin', '2.0');

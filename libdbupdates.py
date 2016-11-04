@@ -19,7 +19,7 @@ class Update:
     def __init__(self, mem):
         self.mem=mem
         self.dbversion=self.get_database_version()    
-        self.lastcodeupdate=201611020740
+        self.lastcodeupdate=201611041030
 
    
     def get_database_version(self):
@@ -614,10 +614,16 @@ LANGUAGE plpgsql;""")
                     (81709, 'LYXOR ETF LEVERAGED CAC 40', 'FR0010592014  ', 'EUR', 4, '', '', None, None, None, 100, 'c', 2, 3, 'LVC.PA', [1, ],[3, ], None, False ))
             cur.execute("insert into products (id, name,  isin,  currency,  type,  agrupations,   web, address,  phone, mail, percentage, pci,  leveraged, stockmarkets_id, ticker, priority, priorityhistorical , comment,  obsolete) values (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
                     (81710, 'LYXOR ETF LEVERAGED DAX', 'LU0252634307  ', 'EUR', 4, '', '', None, None, None, 100, 'c', 2, 3, 'LVD.PA', [1, ],[3, ], None, False ))
-                    
             cur.close()
             self.mem.con.commit()
             self.set_database_version(201611020740)      
+        if self.dbversion<201611041030:
+            cur=self.mem.con.cursor()
+            cur.execute("insert into products (id, name,  isin,  currency,  type,  agrupations,   web, address,  phone, mail, percentage, pci,  leveraged, stockmarkets_id, ticker, priority, priorityhistorical , comment,  obsolete) values (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
+                    (81711, 'ULTRA S&P 500 PROSHARES', 'US74347R1077  ', 'USD', 4, '', '', None, None, None, 100, 'c', 2, 2, 'SSO', [1, ],[3, ], None, False ))
+            cur.close()
+            self.mem.con.commit()
+            self.set_database_version(201611041030)      
         """       WARNING                    ADD ALWAYS LAST UPDATE CODE                         WARNING
         
         
