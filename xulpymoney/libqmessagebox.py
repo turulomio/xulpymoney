@@ -14,13 +14,6 @@ def qmessagebox_xulpymoney_update_and_superuser():
     m.setIcon(QMessageBox.Information)
     m.setText(QApplication.translate("Core","Xulpymoney needs to be updated. Please login with a superuser role."))
     m.exec_()   
-    
-def qmessagebox_connexion_error(database, server):
-    m=QMessageBox()
-    m.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
-    m.setIcon(QMessageBox.Information)
-    m.setText(QApplication.translate("Core","Error conecting to {} database in {} server").format(database, server))
-    m.exec_()   
 
 def qmessagebox_connexion_inactivity_timeout(minutes):
     m=QMessageBox()
