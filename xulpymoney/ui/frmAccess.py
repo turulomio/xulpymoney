@@ -2,7 +2,8 @@ from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 from Ui_frmAccess import *
-from libxulpymoney import Connection
+from libxulpymoney import Connection, qmessagebox
+import sys
 
 class frmAccess(QDialog, Ui_frmAccess):
     def __init__(self, mem, parent = None, name = None, modal = False):
