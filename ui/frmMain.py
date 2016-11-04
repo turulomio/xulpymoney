@@ -325,7 +325,7 @@ class frmMain(QMainWindow, Ui_frmMain):
         source.txtPass.setFocus()
         source.exec_()
         if source.result()==QDialog.Rejected:             
-            qmessagebox_connexion_error(source.con.db, source.con.server)
+            qmessagebox(self.tr("Error conecting to {} database in {} server").format(source.con.db, source.con.server))
             return
         else:
             if source.con.db.strip()==self.mem.con.db.strip() and source.con.server.strip()==self.mem.con.server.strip() and source.con.port==self.mem.con.port:

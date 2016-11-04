@@ -77,7 +77,7 @@ class frmAccess(QDialog, Ui_frmAccess):
             self.config_save()
             self.accept()
         else:
-            qmessagebox_connexion_error(self.con.db, self.con.server)
+            qmessagebox(self.tr("Error conecting to {} database in {} server").format(self.con.db, self.con.server))
             sys.exit(1)
             self.reject()
 
