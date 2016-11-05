@@ -180,13 +180,13 @@ class frmProductReport(QDialog, Ui_frmProductReport):
             table.setCurrentCell(len(data.arr)-1, 0)
             table.setFocus()
         ## load_historicas
-        if self.tblDaily.rowCount()==0 and index==0:
+        if index==0:
             setTable(self.tblDaily, self.product.result.ohclDaily)
-        elif self.tblWeekly.rowCount()==0 and index==1:
+        elif index==1:
             setTable(self.tblWeekly, self.product.result.ohclWeekly)
-        elif self.tblMonthly.rowCount()==0 and index==2:
+        elif index==2:
             setTable(self.tblMonthly, self.product.result.ohclMonthly)
-        elif self.tblYearly.rowCount()==0 and index==3:
+        elif index==3:
             setTable(self.tblYearly, self.product.result.ohclYearly)
         
     def on_cmdComparationData_released(self):
@@ -293,6 +293,7 @@ class frmProductReport(QDialog, Ui_frmProductReport):
             logging.info("Datos gráficos cargados: {}".format(datetime.datetime.now()-inicio))
             self.load_mensuales()
             logging.info("Datos mensuales cargados: {}".format(datetime.datetime.now()-inicio))
+            self.on_tabHistorical_currentChanged(self.tabHistorical.currentIndex())
 
 
         
