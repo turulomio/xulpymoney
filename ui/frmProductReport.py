@@ -119,6 +119,7 @@ class frmProductReport(QDialog, Ui_frmProductReport):
         self.pseCompare.label.setText(self.tr("Select a product to compare"))
         self.pseCompare.setSelected(self.mem.data.benchmark)
         self.pseCompare.selectionChanged.connect(self.load_comparation)
+        self.pseCompare.showProductButton(False)
         self.cmbCompareTypes.setCurrentIndex(0)
         self.cmbCompareTypes.currentIndexChanged.connect(self.on_my_cmbCompareTypes_currentIndexChanged)
         self.ntbCompare=None
@@ -160,6 +161,33 @@ class frmProductReport(QDialog, Ui_frmProductReport):
 
     def on_my_cmbCompareTypes_currentIndexChanged(self, int):
         self.load_comparation()
+        
+
+    def on_tabHistorical_currentChanged(self, index):
+        def setTable(table, data):
+            table.setRowCount(len(data.arr))
+            table.applySettings()
+            table.clearContents()
+            if len(data.arr)==0:
+                return
+            for punt, d in enumerate(data.arr):
+                table.setItem(punt, 0, qcenter(d.print_time())) 
+                table.setItem(punt, 1, self.product.currency.qtablewidgetitem(d.close,6))
+                table.setItem(punt, 2, self.product.currency.qtablewidgetitem(d.open,6))
+                table.setItem(punt, 3, self.product.currency.qtablewidgetitem(d.high,6))
+                table.setItem(punt, 4, self.product.currency.qtablewidgetitem(d.low,6))
+                table.setItem(punt, 5, qcenter(str(d.datetime())))
+            table.setCurrentCell(len(data.arr)-1, 0)
+            table.setFocus()
+        ## load_historicas
+        if self.tblDaily.rowCount()==0 and index==0:
+            setTable(self.tblDaily, self.product.result.ohclDaily)
+        elif self.tblWeekly.rowCount()==0 and index==1:
+            setTable(self.tblWeekly, self.product.result.ohclWeekly)
+        elif self.tblMonthly.rowCount()==0 and index==2:
+            setTable(self.tblMonthly, self.product.result.ohclMonthly)
+        elif self.tblYearly.rowCount()==0 and index==3:
+            setTable(self.tblYearly, self.product.result.ohclYearly)
         
     def on_cmdComparationData_released(self):
         d=QDialog(self)        
@@ -260,36 +288,13 @@ class frmProductReport(QDialog, Ui_frmProductReport):
             self.product.dps.myqtablewidget(self.tblDPSPaid)            
             inicio=datetime.datetime.now()
             self.load_information()
-            print ("Datos informacion cargados:",  datetime.datetime.now()-inicio)
+            logging.info("Datos informacion cargados: {}".format(datetime.datetime.now()-inicio))
             self.load_graphics()
-            print ("Datos gráficos cargados:",  datetime.datetime.now()-inicio)
-            self.load_historicas()
-            print ("Datos historicos cargados:",  datetime.datetime.now()-inicio)
+            logging.info("Datos gráficos cargados: {}".format(datetime.datetime.now()-inicio))
             self.load_mensuales()
-            print ("Datos mensuales cargados:",  datetime.datetime.now()-inicio)
+            logging.info("Datos mensuales cargados: {}".format(datetime.datetime.now()-inicio))
 
-    def load_historicas(self): 
-        def setTable(table, data):
-            table.setRowCount(len(data.arr))
-            table.applySettings()
-            table.clearContents()
-            if len(data.arr)==0:
-                return
-            for punt, d in enumerate(data.arr):
-                table.setItem(punt, 0, qcenter(d.print_time())) 
-                table.setItem(punt, 1, self.product.currency.qtablewidgetitem(d.close,6))
-                table.setItem(punt, 2, self.product.currency.qtablewidgetitem(d.open,6))
-                table.setItem(punt, 3, self.product.currency.qtablewidgetitem(d.high,6))
-                table.setItem(punt, 4, self.product.currency.qtablewidgetitem(d.low,6))
-                table.setItem(punt, 5, qcenter(str(d.datetime())))
-            table.setCurrentCell(len(data.arr)-1, 0)
-            table.setFocus()
-        ## load_historicas
-        setTable(self.tblDaily, self.product.result.ohclDaily)
-        setTable(self.tblWeekly, self.product.result.ohclWeekly)
-        setTable(self.tblMonthly, self.product.result.ohclMonthly)
-        setTable(self.tblYearly, self.product.result.ohclYearly)
-        
+
         
 
     def load_graphics(self):

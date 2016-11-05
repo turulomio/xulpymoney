@@ -65,6 +65,11 @@ class wdgProductSelector(QWidget):
             self.txt.setToolTip(self.tr("Selected product"))    
             self.selectionChanged.emit()
         
+    def showProductButton(self, boolean):
+        if boolean==True:#Default
+            self.cmdProduct.show()
+        else:
+            self.cmdProduct.hide()
 
 class frmProductSelector(QDialog):
     def __init__(self, parent, mem):
