@@ -3989,7 +3989,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.py" line="512"/>
+        <location filename="../ui/frmProductReport.py" line="517"/>
         <source>{0} quotes have been purged from {1}</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4009,22 +4009,22 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.py" line="606"/>
+        <location filename="../ui/frmProductReport.py" line="611"/>
         <source>Agrupation selection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.py" line="617"/>
+        <location filename="../ui/frmProductReport.py" line="622"/>
         <source>Priority selection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.py" line="630"/>
+        <location filename="../ui/frmProductReport.py" line="635"/>
         <source>Historical data priority selection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.py" line="344"/>
+        <location filename="../ui/frmProductReport.py" line="349"/>
         <source>Daily maximum variance: {} ({})</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4094,7 +4094,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.py" line="363"/>
+        <location filename="../ui/frmProductReport.py" line="368"/>
         <source>Year {}</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4119,47 +4119,47 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.py" line="188"/>
+        <location filename="../ui/frmProductReport.py" line="216"/>
         <source>Report of historic prices. You have {} shares valued at {}.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.py" line="211"/>
+        <location filename="../ui/frmProductReport.py" line="239"/>
         <source>Product prices are updated automatically</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.py" line="213"/>
+        <location filename="../ui/frmProductReport.py" line="241"/>
         <source>Product prices are not updated automatically</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.py" line="544"/>
+        <location filename="../ui/frmProductReport.py" line="549"/>
         <source>You have to add three quotes (last, penultimate and end last year quotes) and current year dividend per share estimation to the new product</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.py" line="553"/>
+        <location filename="../ui/frmProductReport.py" line="558"/>
         <source>Please add the product last quote</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.py" line="561"/>
+        <location filename="../ui/frmProductReport.py" line="566"/>
         <source>Please add the product penultimate quote</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.py" line="568"/>
+        <location filename="../ui/frmProductReport.py" line="573"/>
         <source>Please add the product endlastyear quote</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.py" line="574"/>
+        <location filename="../ui/frmProductReport.py" line="579"/>
         <source>Please add current year dividend per share estimation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.py" line="575"/>
+        <location filename="../ui/frmProductReport.py" line="580"/>
         <source>Product: {0} ({1})</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4199,7 +4199,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.py" line="167"/>
+        <location filename="../ui/frmProductReport.py" line="195"/>
         <source>Comparation data table</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4219,12 +4219,12 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.py" line="139"/>
+        <location filename="../ui/frmProductReport.py" line="140"/>
         <source>You must select a product to compare with.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.py" line="148"/>
+        <location filename="../ui/frmProductReport.py" line="149"/>
         <source>Comparation can&apos;t be made.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4237,32 +4237,32 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>frmProductSelector</name>
     <message>
-        <location filename="../ui/wdgProductSelector.py" line="113"/>
+        <location filename="../ui/wdgProductSelector.py" line="118"/>
         <source>Select a product</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgProductSelector.py" line="114"/>
+        <location filename="../ui/wdgProductSelector.py" line="119"/>
         <source>Product list</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgProductSelector.py" line="116"/>
+        <location filename="../ui/wdgProductSelector.py" line="121"/>
         <source>Found registers</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgProductSelector.py" line="129"/>
+        <location filename="../ui/wdgProductSelector.py" line="134"/>
         <source>Search too wide. You need more than 3 characters</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgProductSelector.py" line="139"/>
+        <location filename="../ui/wdgProductSelector.py" line="144"/>
         <source>Found {0} registers</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgProductSelector.py" line="115"/>
+        <location filename="../ui/wdgProductSelector.py" line="120"/>
         <source>Search by code, ISIN, ticker or product name</source>
         <translation type="unfinished"></translation>
     </message>

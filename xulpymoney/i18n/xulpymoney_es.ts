@@ -3993,7 +3993,7 @@ p, li { white-space: pre-wrap; }
         <translation>Borrar dividendo por acción</translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.py" line="512"/>
+        <location filename="../ui/frmProductReport.py" line="517"/>
         <source>{0} quotes have been purged from {1}</source>
         <translation>{0} cotizaciones han sido purgadas de {1}</translation>
     </message>
@@ -4013,22 +4013,22 @@ p, li { white-space: pre-wrap; }
         <translation>Añadir un nuevo producto</translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.py" line="606"/>
+        <location filename="../ui/frmProductReport.py" line="611"/>
         <source>Agrupation selection</source>
         <translation>Selección de agrupaciones</translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.py" line="617"/>
+        <location filename="../ui/frmProductReport.py" line="622"/>
         <source>Priority selection</source>
         <translation>Selección de prioridades</translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.py" line="630"/>
+        <location filename="../ui/frmProductReport.py" line="635"/>
         <source>Historical data priority selection</source>
         <translation>Selección de prioridades de datos históricos</translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.py" line="344"/>
+        <location filename="../ui/frmProductReport.py" line="349"/>
         <source>Daily maximum variance: {} ({})</source>
         <translation>Variación máxima diaria: {} ({})</translation>
     </message>
@@ -4098,7 +4098,7 @@ p, li { white-space: pre-wrap; }
         <translation>La tabla ha sido calculado con el último precio del mes anterior y el último precio del mes correspondiente</translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.py" line="363"/>
+        <location filename="../ui/frmProductReport.py" line="368"/>
         <source>Year {}</source>
         <translation>Año {}</translation>
     </message>
@@ -4123,47 +4123,47 @@ p, li { white-space: pre-wrap; }
         <translation>Ganancias</translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.py" line="188"/>
+        <location filename="../ui/frmProductReport.py" line="216"/>
         <source>Report of historic prices. You have {} shares valued at {}.</source>
         <translation>Informe de precios históricos. Tiene {} acciones valoradas en {}.</translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.py" line="211"/>
+        <location filename="../ui/frmProductReport.py" line="239"/>
         <source>Product prices are updated automatically</source>
         <translation>Los precios de los productos son actualizados automáticamente</translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.py" line="213"/>
+        <location filename="../ui/frmProductReport.py" line="241"/>
         <source>Product prices are not updated automatically</source>
         <translation>Los precios de los productos no son actualizados automáticamente</translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.py" line="544"/>
+        <location filename="../ui/frmProductReport.py" line="549"/>
         <source>You have to add three quotes (last, penultimate and end last year quotes) and current year dividend per share estimation to the new product</source>
         <translation>Tienes que añadir tres cotizaciones (la última, la penúltima y la del fin del año pasado) y la estimación de dividendo por acción del año actual, al nuevo producto</translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.py" line="553"/>
+        <location filename="../ui/frmProductReport.py" line="558"/>
         <source>Please add the product last quote</source>
         <translation>Por favor, añada la última cotización del producto</translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.py" line="561"/>
+        <location filename="../ui/frmProductReport.py" line="566"/>
         <source>Please add the product penultimate quote</source>
         <translation>Por favor, añada la penúltima cotización del producto</translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.py" line="568"/>
+        <location filename="../ui/frmProductReport.py" line="573"/>
         <source>Please add the product endlastyear quote</source>
         <translation>Por favor, añada la última cotización del año pasado del producto</translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.py" line="574"/>
+        <location filename="../ui/frmProductReport.py" line="579"/>
         <source>Please add current year dividend per share estimation</source>
         <translation>Por favor añada la estimación de dividendo por acción del producto del año actual</translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.py" line="575"/>
+        <location filename="../ui/frmProductReport.py" line="580"/>
         <source>Product: {0} ({1})</source>
         <translation>Producto: {0} ({1})</translation>
     </message>
@@ -4203,7 +4203,7 @@ p, li { white-space: pre-wrap; }
         <translation>Mostrar los datos de la comparación</translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.py" line="167"/>
+        <location filename="../ui/frmProductReport.py" line="195"/>
         <source>Comparation data table</source>
         <translation>Tabla de datos de comparación</translation>
     </message>
@@ -4223,12 +4223,12 @@ p, li { white-space: pre-wrap; }
         <translation>yyyy-MM-dd</translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.py" line="139"/>
+        <location filename="../ui/frmProductReport.py" line="140"/>
         <source>You must select a product to compare with.</source>
         <translation>Debe seleccionar un producto con el que hacer la comparación.</translation>
     </message>
     <message>
-        <location filename="../ui/frmProductReport.py" line="148"/>
+        <location filename="../ui/frmProductReport.py" line="149"/>
         <source>Comparation can&apos;t be made.</source>
         <translation>La comparción no se puede realizar.</translation>
     </message>
@@ -4241,32 +4241,32 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>frmProductSelector</name>
     <message>
-        <location filename="../ui/wdgProductSelector.py" line="113"/>
+        <location filename="../ui/wdgProductSelector.py" line="118"/>
         <source>Select a product</source>
         <translation>Selecciona un producto</translation>
     </message>
     <message>
-        <location filename="../ui/wdgProductSelector.py" line="114"/>
+        <location filename="../ui/wdgProductSelector.py" line="119"/>
         <source>Product list</source>
         <translation>Lista de productos</translation>
     </message>
     <message>
-        <location filename="../ui/wdgProductSelector.py" line="116"/>
+        <location filename="../ui/wdgProductSelector.py" line="121"/>
         <source>Found registers</source>
         <translation>Registros encontrados</translation>
     </message>
     <message>
-        <location filename="../ui/wdgProductSelector.py" line="129"/>
+        <location filename="../ui/wdgProductSelector.py" line="134"/>
         <source>Search too wide. You need more than 3 characters</source>
         <translation>Búsqueda demasiado extensa. Necesita más de 3 caracteres</translation>
     </message>
     <message>
-        <location filename="../ui/wdgProductSelector.py" line="139"/>
+        <location filename="../ui/wdgProductSelector.py" line="144"/>
         <source>Found {0} registers</source>
         <translation>Encontrados {0} registros</translation>
     </message>
     <message>
-        <location filename="../ui/wdgProductSelector.py" line="115"/>
+        <location filename="../ui/wdgProductSelector.py" line="120"/>
         <source>Search by code, ISIN, ticker or product name</source>
         <translation>Buscar por código, ISIN, ticker o nombre de producto</translation>
     </message>
