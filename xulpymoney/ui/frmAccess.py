@@ -80,11 +80,10 @@ class frmAccess(QDialog, Ui_frmAccess):
         else:
             qmessagebox(self.tr("Error conecting to {} database in {} server").format(self.con.db, self.con.server))
             sys.exit(1)
-            self.reject()
 
     @QtCore.pyqtSlot() 
     def on_cmdYN_rejected(self):
-        self.reject()
+        sys.exit(124)
 
 
 
