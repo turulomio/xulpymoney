@@ -84,6 +84,10 @@ class wdgDatetime(QWidget, Ui_wdgDatetime):
         self.updateTooltip()
         self.changed.emit()
         
+        
+    def date(self):
+        return self.teDate.selectedDate().toPyDate()
+        
     def datetime(self):
         #qt only miliseconds
         time=self.teTime.time().toPyTime()

@@ -137,8 +137,8 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
         
         self.on_chkOperaciones_stateChanged(self.chkOperaciones.checkState())
         
-        self.inversion.op_actual.myqtablewidget(self.tblInvestmentCurrent, False)
-        self.inversion.op_historica.myqtablewidget(self.tblInvestmentHistorical )
+        self.inversion.op_actual.myqtablewidget(self.tblInvestmentCurrent, account_currency=False)
+        self.inversion.op_historica.myqtablewidget(self.tblInvestmentHistorical,  account_currency=False )
         if self.inversion.product.currency==self.inversion.account.currency:#Multidivisa
             self.grpCurrentAccountCurrency.hide()
             self.grpHistoricalAccountCurrency.hide()
