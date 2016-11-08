@@ -137,13 +137,13 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
         
         self.on_chkOperaciones_stateChanged(self.chkOperaciones.checkState())
         
-        self.inversion.op_actual.myqtablewidget(self.tblInvestmentCurrent, account_currency=False)
+        self.inversion.op_actual.myqtablewidget(self.tblInvestmentCurrent, self.inversion.product.result.basic.last, account_currency=False)
         self.inversion.op_historica.myqtablewidget(self.tblInvestmentHistorical,  account_currency=False )
         if self.inversion.product.currency==self.inversion.account.currency:#Multidivisa
             self.grpCurrentAccountCurrency.hide()
             self.grpHistoricalAccountCurrency.hide()
         else:
-            self.inversion.op_actual.myqtablewidget(self.tblInvestmentCurrentAccountCurrency, account_currency=True)
+            self.inversion.op_actual.myqtablewidget(self.tblInvestmentCurrentAccountCurrency, self.inversion.product.result.basic.last,  account_currency=True)
             self.inversion.op_historica.myqtablewidget(self.tblInvestmentHistoricalAccountCurrency, account_currency=True )
         
         self.lblAge.setText(self.tr("Current operations average age: {0}".format(days_to_year_month(self.inversion.op_actual.average_age()))))

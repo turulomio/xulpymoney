@@ -1931,10 +1931,11 @@ class SetInvestmentOperationsCurrentHeterogeneus(SetIO):
         tabla.setItem(self.length(), 9, qtpc(self.tpc_total(sumpendiente.amount, suminvertido.amount)))
 
 
-    def pendiente(self, lastquote):
+    def pendiente(self):
+        """Calcula el resultado de pendientes utilizando lastquote como el ultimo de cada operaci´on"""
         resultado=Money(self.mem, 0, self.mem.localcurrency)
         for o in self.arr:
-            resultado=resultado+o.pendiente(lastquote, account_currency=True).local()
+            resultado=resultado+o.pendiente(o.inversion.product.result.basic.last, account_currency=True).local()
         return resultado
     
     def order_by_datetime(self):       
@@ -1944,7 +1945,7 @@ class SetInvestmentOperationsCurrentHeterogeneus(SetIO):
         dias=self.average_age()
         if dias==0:
             dias=1
-        return Decimal(365*self.tpc_total(type)/dias)
+        return Decimal(365*self.tpc_total()/dias)
 
     def tpc_total(self):
         """Como es heterogenous el resultado sera en local"""
@@ -2063,9 +2064,34 @@ class SetInvestmentOperationsCurrentHomogeneus(SetInvestmentOperationsCurrentHet
         for o in self.arr:
             resultado=resultado+o.pendiente(lastquote, account_currency)
         return resultado
-        
-        
 
+    def tpc_tae(self, last,  type=1):
+        dias=self.average_age()
+        if dias==0:
+            dias=1
+        return Decimal(365*self.tpc_total(last,  type)/dias)
+
+    def tpc_total(self, last, type=1):
+        """
+            last is a Money object with investment.product currency
+            type puede ser:
+                1 Da el tanto por  ciento en la currency de la inversi´on
+                2 Da el tanto por  ciento en la currency de la cuenta, por lo que se debe convertir teniendo en cuenta la temporalidad
+                3 Da el tanto por ciento en la currency local, partiendo  de la conversi´on a la currency de la cuenta
+        """
+        if type==1:
+            invertido=self.invertido(False)
+            pendiente=self.pendiente(last, False)
+        elif type==2:
+            invertido=self.invertido(True)
+            pendiente=self.pendiente(last, True)
+        elif type==3:
+            invertido=self.invertido(True)
+            pendiente=self.pendiente(last, True)
+        if invertido.isZero():
+            return None
+        return pendiente.amount*100/invertido.amount
+    
     def myqtablewidget(self,  tabla,  quote=None, account_currency=False):
         """Función que rellena una tabla pasada como parámetro con datos procedentes de un array de objetos
         InvestmentOperationCurrent y dos valores de mystocks para rellenar los tpc correspodientes
@@ -2140,9 +2166,8 @@ class SetInvestmentOperationsCurrentHomogeneus(SetInvestmentOperationsCurrentHet
         tabla.setItem(self.length(), 3, self.invertido(account_currency).qtablewidgetitem())
         tabla.setItem(self.length(), 4, self.balance(quote, account_currency).qtablewidgetitem())
         tabla.setItem(self.length(), 5, self.pendiente(quote, account_currency).qtablewidgetitem())
-        tabla.setItem(self.length(), 7, qtpc(self.tpc_tae()))
-        tabla.setItem(self.length(), 8, qtpc(self.tpc_total(sumpendiente.amount, suminvertido.amount)))
-        return (sumacciones, suminvertido, sumpendiente)
+        tabla.setItem(self.length(), 7, qtpc(self.tpc_tae(quote, type)))
+        tabla.setItem(self.length(), 8, qtpc(self.tpc_total(quote, type)))
 
 class SetInvestmentOperationsHistoricalHeterogeneus(SetIO):       
     """Clase es un array ordenado de objetos newInvestmentOperation"""
@@ -2652,9 +2677,9 @@ class InvestmentOperationCurrent:
         Si se usa  el importe no fuNCIONA PASO CON EL PUNTOI DE VENTA.
         """
         if account_currency==False:
-            return Money(self.mem, self.acciones*self.valor_accion, self.inversion.product.currency)
+            return Money(self.mem, abs(self.acciones*self.valor_accion), self.inversion.product.currency)
         else:
-            return Money(self.mem, self.acciones*self.valor_accion, self.inversion.product.currency).convert_from_factor(self.inversion.account.currency, self.currency_conversion)#Usa el factor del dia de la operacicón
+            return Money(self.mem, abs(self.acciones*self.valor_accion), self.inversion.product.currency).convert_from_factor(self.inversion.account.currency, self.currency_conversion)#Usa el factor del dia de la operacicón
     
     def price(self, account_currency=False):
         if account_currency==False:
@@ -2695,9 +2720,9 @@ class InvestmentOperationCurrent:
             return Money(self.mem, 0, currency)
 
         if account_currency==False:
-            return Money(self.mem, self.acciones*lastquote.quote, self.inversion.product.currency)
+            return Money(self.mem, abs(self.acciones*lastquote.quote), self.inversion.product.currency)
         else:
-            return Money(self.mem, self.acciones*lastquote.quote, self.inversion.product.currency).convert(self.inversion.account.currency, self.mem.localzone.now())#Al ser balance actual usa el datetime actual
+            return Money(self.mem, abs(self.acciones*lastquote.quote), self.inversion.product.currency).convert(self.inversion.account.currency, self.mem.localzone.now())#Al ser balance actual usa el datetime actual
 
     def less_than_a_year(self):
         """Returns True, when datetime of the operation is <= a year"""
