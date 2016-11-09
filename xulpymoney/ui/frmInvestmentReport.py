@@ -88,7 +88,7 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
         if self.inversion.account.currency==self.inversion.product.currency:
             self.grpDividendsAccountCurrency.hide()
         else:
-            self.dividends.myqtablewidget(self.tblDividendsAccountCurrency, account_currency=True)
+            self.dividends.myqtablewidget(self.tblDividendsAccountCurrency, type=2)
         if self.chkHistoricalDividends.checkState()==Qt.Unchecked:
             if len(self.dividends.arr)>0 and len(self.inversion.op_actual.arr)>0:
                 importeinvertido=self.inversion.invertido()
@@ -128,7 +128,7 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
         if self.inversion.product.currency==self.inversion.account.currency:#Multidivisa
             self.grpOperationsAccountCurrency.hide()
         else:
-            self.op.myqtablewidget(self.tblOperationsAccountCurrency, account_currency=True)
+            self.op.myqtablewidget(self.tblOperationsAccountCurrency, type=2)
             
         
     def update_tables(self):             
@@ -137,14 +137,14 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
         
         self.on_chkOperaciones_stateChanged(self.chkOperaciones.checkState())
         
-        self.inversion.op_actual.myqtablewidget(self.tblInvestmentCurrent, self.inversion.product.result.basic.last, account_currency=False)
-        self.inversion.op_historica.myqtablewidget(self.tblInvestmentHistorical,  account_currency=False )
+        self.inversion.op_actual.myqtablewidget(self.tblInvestmentCurrent, self.inversion.product.result.basic.last, type=1)
+        self.inversion.op_historica.myqtablewidget(self.tblInvestmentHistorical,  type=1 )
         if self.inversion.product.currency==self.inversion.account.currency:#Multidivisa
             self.grpCurrentAccountCurrency.hide()
             self.grpHistoricalAccountCurrency.hide()
         else:
-            self.inversion.op_actual.myqtablewidget(self.tblInvestmentCurrentAccountCurrency, self.inversion.product.result.basic.last,  account_currency=True)
-            self.inversion.op_historica.myqtablewidget(self.tblInvestmentHistoricalAccountCurrency, account_currency=True )
+            self.inversion.op_actual.myqtablewidget(self.tblInvestmentCurrentAccountCurrency, self.inversion.product.result.basic.last,  type=2)
+            self.inversion.op_historica.myqtablewidget(self.tblInvestmentHistoricalAccountCurrency, type=2 )
         
         self.lblAge.setText(self.tr("Current operations average age: {0}".format(days_to_year_month(self.inversion.op_actual.average_age()))))
         

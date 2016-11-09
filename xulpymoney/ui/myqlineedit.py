@@ -4,6 +4,7 @@ from PyQt5.QtWidgets import *
 from decimal import Decimal
 
 class myQLineEdit(QLineEdit):
+    doubleClicked=pyqtSignal()
     def __init__(self, parent):
         QWidget.__init__(self, parent)       
 #        self.setValidator(QDoubleValidator(self)) ##Failed to show point from numerical pad
@@ -63,3 +64,8 @@ class myQLineEdit(QLineEdit):
         """This funcion  overrides QLineEdit settext and lets enter numbers, int, float, decimals"""
         super(myQLineEdit, self).setText(str(num))
         
+
+    def mouseDoubleClickEvent(self, event):
+        print("MOUSEDOUBLECLICKEVENT")
+        self.doubleClicked.emit()
+        print("EMITEED")

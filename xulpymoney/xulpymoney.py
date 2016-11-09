@@ -6,15 +6,15 @@ import logging
 #Por defecto se pone WARNING y mostrar´ia ERROR y CRITICAL
 logFormat = "%(asctime)s %(levelname)s %(module)s:%(lineno)d at %(funcName)s. %(message)s"
 dateFormat='%Y%m%d %I%M%S'
-if "DEBUG" in sys.argv:#Show detailed information that can help with program diagnosis and troubleshooting.
+if "DEBUG" in sys.argv:#Show detailed information that can help with program diagnosis and troubleshooting. CODE MARKS
     logging.basicConfig(level=logging.DEBUG, format=logFormat, datefmt=dateFormat)
-elif "INFO" in sys.argv:#Everything is running as expected without any problem.
+elif "INFO" in sys.argv:#Everything is running as expected without any problem. TIME BENCHMARCKS
     logging.basicConfig(level=logging.INFO, format=logFormat, datefmt=dateFormat)
-elif "WARNING" in sys.argv:#The program continues running, but something unexpected happened, which may lead to some problem down the road.
+elif "WARNING" in sys.argv:#The program continues running, but something unexpected happened, which may lead to some problem down the road. THINGS TO DO
     logging.basicConfig(level=logging.WARNING, format=logFormat, datefmt=dateFormat)
-elif "ERROR" in sys.argv:#The program fails to perform a certain function due to a bug.
+elif "ERROR" in sys.argv:#The program fails to perform a certain function due to a bug.  SOMETHING BAD LOGIC
     logging.basicConfig(level=logging.ERROR, format=logFormat, datefmt=dateFormat)
-elif "CRITICAL" in sys.argv:#The program encounters a serious error and may stop running.
+elif "CRITICAL" in sys.argv:#The program encounters a serious error and may stop running. ERRORS
     logging.basicConfig(level=logging.CRITICAL, format=logFormat, datefmt=dateFormat)
 
 if platform.system()=="Windows":
