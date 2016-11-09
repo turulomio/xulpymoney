@@ -28,11 +28,13 @@ class wdgInvestments(QWidget, Ui_wdgInvestments):
             self.tblInvestments.setSaveSettings(True)
             self.tblInvestments.setColumnHidden(8, False)
             
-        r=self.inversiones.myqtablewidget(self.tblInvestments)
-        if r["suminvertido"].isZero():
+        self.inversiones.myqtablewidget(self.tblInvestments)
+        invested=self.inversiones.invested()
+        pendiente=self.inversiones.pendiente()
+        if invested.isZero():
             self.lblTotal.setText(self.tr("There aren't invested assets"))
         else:
-            self.lblTotal.setText(self.tr("Invested assets: {0}. Pending: {1} - {2} = {3} ({4} assets)\nDaily Diff: {5}. Investment average age: {6}").format(r['suminvertido'] , r['sumpositivos'] ,  -r['sumnegativos'],  r['sumpendiente'] , tpc(100*r['sumpendiente'].amount/r['suminvertido'].amount) , r['sumdiario'] , days_to_year_month(self.inversiones.average_age())))
+            self.lblTotal.setText(self.tr("Invested assets: {0}. Pending: {1}{2} = {3} ({4} assets)\nDaily Diff: {5}. Investment average age: {6}").format(invested,self.inversiones.pendiente_positivo(),self.inversiones.pendiente_negativo(),  pendiente,tpc(100*pendiente.amount/invested.amount), self.inversiones.gains_last_day(), days_to_year_month(self.inversiones.average_age())))
 
 
     @QtCore.pyqtSlot() 
