@@ -389,32 +389,33 @@ class SetInvestments(SetCommons):
         table.setRowCount(len(self.arr))
         table.applySettings()
         table.clearContents()
-        d={"sumpendiente":Money(self.mem), "sumdiario":Money(self.mem), "suminvertido":Money(self.mem), "sumpositivos":Money(self.mem), "sumnegativos":Money(self.mem)} #Sera localcurrency
+        
+        type=3
+        
+#        d={"sumpendiente":Money(self.mem), "sumdiario":Money(self.mem), "suminvertido":Money(self.mem), "sumpositivos":Money(self.mem), "sumnegativos":Money(self.mem)} #Sera localcurrency
         for i, inv in enumerate(self.arr):
             table.setItem(i, 0, QTableWidgetItem("{0} ({1})".format(inv.name, inv.account.name)))            
             table.setItem(i, 1, qdatetime(inv.product.result.basic.last.datetime, inv.product.stockmarket.zone))
             table.setItem(i, 2, inv.product.currency.qtablewidgetitem(inv.product.result.basic.last.quote,  6))#Se debería recibir el parametro currency
             
-            diario=inv.diferencia_saldo_diario().local()
-            d["sumdiario"]=d["sumdiario"]+diario
-            table.setItem(i, 3, diario.qtablewidgetitem())
+#            diario=inv.diferencia_saldo_diario().local()
+#            d["sumdiario"]=d["sumdiario"]+diario
+            table.setItem(i, 3, inv.op_actual.gains_last_day(type).qtablewidgetitem())
             table.setItem(i, 4, qtpc(inv.product.result.basic.tpc_diario()))
+            table.setItem(i, 5, inv.balance(None,  type).qtablewidgetitem())
+#            
+#            invertido=inv.invertido().local()
+#            d["suminvertido"]=d["suminvertido"]+invertido
             
-            balance=inv.balance().local()
-            table.setItem(i, 5, balance.qtablewidgetitem())
+#            pendiente=inv.pendiente().local()
+#            if pendiente.isGETZero():
+#                d["sumpositivos"]=d["sumpositivos"]+pendiente
+#            else:
+#                d["sumnegativos"]=d["sumnegativos"]+pendiente
+#            d["sumpendiente"]=d["sumpendiente"]+pendiente
+            table.setItem(i, 6, inv.op_actual.pendiente(inv.product.result.basic.last, type).qtablewidgetitem())
             
-            invertido=inv.invertido().local()
-            d["suminvertido"]=d["suminvertido"]+invertido
-            
-            pendiente=inv.pendiente().local()
-            if pendiente.isGETZero():
-                d["sumpositivos"]=d["sumpositivos"]+pendiente
-            else:
-                d["sumnegativos"]=d["sumnegativos"]+pendiente
-            d["sumpendiente"]=d["sumpendiente"]+pendiente
-            table.setItem(i, 6, pendiente.qtablewidgetitem())
-            
-            tpc_invertido=inv.tpc_invertido()
+            tpc_invertido=inv.op_actual.tpc_total(inv.product.result.basic.last, type)
             table.setItem(i, 7, qtpc(tpc_invertido))
             if self.mem.gainsyear==True and inv.op_actual.less_than_a_year()==True:
                 table.item(i, 7).setIcon(QIcon(":/xulpymoney/new.png"))
@@ -429,7 +430,7 @@ class SetInvestments(SetCommons):
                     table.item(i, 7).setBackground(QColor(255, 148, 148))
                 if (tpc_venta<=5 and tpc_venta>0) or tpc_venta<0:
                     table.item(i, 8).setBackground(QColor(148, 255, 148))
-        return d
+
 
     def myqtablewidget_lastCurrent(self, table,  percentage):
         """
@@ -498,7 +499,42 @@ class SetInvestments(SetCommons):
             return None
         return round(average, 2)
             
-       
+    def gains_last_day(self):
+        """Da el resultado en self.mem.localcurrency"""
+        r=Money(self.mem, 0, self.mem.localcurrency)
+        for inv in self.arr:
+            r=r+inv.op_actual.gains_last_day(type=3)
+        return r 
+
+    def invested(self):
+        """Da el resultado en self.mem.localcurrency"""
+        r=Money(self.mem, 0, self.mem.localcurrency)
+        for inv in self.arr:
+            r=r+inv.invertido(type=3)
+        return r            
+    def pendiente(self):
+        """Da el resultado en self.mem.localcurrency"""
+        r=Money(self.mem, 0, self.mem.localcurrency)
+        for inv in self.arr:
+            r=r+inv.op_actual.pendiente(inv.product.result.basic.last, 3)
+        return r
+    def pendiente_positivo(self):
+        """Da el resultado en self.mem.localcurrency"""
+        r=Money(self.mem, 0, self.mem.localcurrency)
+        for inv in self.arr:
+            pendiente=inv.op_actual.pendiente(inv.product.result.basic.last, 3)
+            if pendiente.isGETZero():
+                r=r+pendiente
+        return r
+    def pendiente_negativo(self):
+        """Da el resultado en self.mem.localcurrency"""
+        r=Money(self.mem, 0, self.mem.localcurrency)
+        for inv in self.arr:
+            pendiente=inv.op_actual.pendiente(inv.product.result.basic.last, 3)
+            if pendiente.isLETZero():
+                r=r+pendiente
+        return r
+
     def products_distinct(self):
         """Returns a SetProduct with all distinct products of the Set investments items"""
         s=set([])
@@ -734,11 +770,12 @@ class SetInvestments(SetCommons):
 
     def order_by_percentage_sellingpoint(self):
         """Orders the Set using self.arr"""
-        try:
-            self.arr=sorted(self.arr, key=lambda inv: ( inv.percentage_to_selling_point(), -inv.tpc_invertido()),  reverse=False) #Ordenado por dos criterios
-            return True
-        except:
-            return False
+#        try:
+#        self.arr=sorted(self.arr, key=lambda inv: ( inv.percentage_to_selling_point(), -inv.op_actual.tpc_total(inv.product.result.basic.last, type=3)),  reverse=False) #Ordenado por dos criterios
+        self.arr=sorted(self.arr, key=lambda inv:  inv.percentage_to_selling_point(), reverse=False) #Ordenado por dos criterios
+        return True
+#        except:
+#            return False
             
     def order_by_percentage_invested(self):
         """Orders the Set using self.arr"""
@@ -1577,50 +1614,65 @@ class SetIO:
         """Remove from array"""
         self.arr.remove(objeto)
                 
-    def clone(self):
-        """Links all items in self. arr to a new set. Linked points the same object"""
-        if self.__class__==SetInvestmentOperationsCurrentHeterogeneus:
-            result=self.__class__(self.mem)
-        else:
-            result=self.__class__(self.mem, self.investment)
-        for a in self.arr:
-            result.append(a)
-        return result
+#    def clone(self):
+#        """Links all items in self. arr to a new set. Linked points the same object"""
+#        if self.__class__==SetInvestmentOperationsCurrentHeterogeneus:
+#            result=self.__class__(self.mem)
+#        else:
+#            result=self.__class__(self.mem, self.investment)
+#        for a in self.arr:
+#            result.append(a)
+#        return result
+#                
+#    def clone_from_datetime(self, dt):
+#        """Función que devuelve otro SetInvestmentOperations con las oper que tienen datetime mayor o igual a la pasada como parametro."""
+#        if self.__class__==SetInvestmentOperationsCurrentHeterogeneus:
+#            result=self.__class__(self.mem)
+#        else:
+#            result=self.__class__(self.mem, self.investment)
+#        if dt==None:
+#            return self.clone()
+#        for a in self.arr:
+#            if a.datetime>=dt:
+#                result.append(a)
+#        return result
                 
-    def clone_from_datetime(self, dt):
+                
+#    def copy(self):
+#        """Copy all items in self. arr. Copy is generate a copy in a diferent memoriy direction"""
+#        if self.__class__==SetInvestmentOperationsCurrentHeterogeneus:
+#            result=self.__class__(self.mem)
+#        else:
+#            result=self.__class__(self.mem, self.investment)
+#        for a in self.arr:
+#            result.append(a.copy())
+#        return result
+                
+    def copy_from_datetime(self, dt=None):
         """Función que devuelve otro SetInvestmentOperations con las oper que tienen datetime mayor o igual a la pasada como parametro."""
         if self.__class__==SetInvestmentOperationsCurrentHeterogeneus:
             result=self.__class__(self.mem)
         else:
             result=self.__class__(self.mem, self.investment)
         if dt==None:
-            return self.clone()
-        for a in self.arr:
-            if a.datetime>=dt:
-                result.append(a)
-        return result
-                
-                
-    def copy(self):
-        """Copy all items in self. arr. Copy is generate a copy in a diferent memoriy direction"""
-        if self.__class__==SetInvestmentOperationsCurrentHeterogeneus:
-            result=self.__class__(self.mem)
-        else:
-            result=self.__class__(self.mem, self.investment)
-        for a in self.arr:
-            result.append(a.clone())
-        return result
-                
-    def copy_from_datetime(self, dt):
-        """Función que devuelve otro SetInvestmentOperations con las oper que tienen datetime mayor o igual a la pasada como parametro."""
-        if self.__class__==SetInvestmentOperationsCurrentHeterogeneus:
-            result=self.__class__(self.mem)
-        else:
-            result=self.__class__(self.mem, self.investment)
-        if dt==None:
+            dt=self.mem.localzone.now()
             return self.copy()
         for a in self.arr:
             if a.datetime>=dt:
+                result.append(a.copy())
+        return result
+        
+    def copy_until_datetime(self, dt=None):
+        """Función que devuelve otro SetInvestmentOperations con las oper que tienen datetime menor que la pasada como parametro."""
+        if self.__class__==SetInvestmentOperationsCurrentHeterogeneus:
+            result=self.__class__(self.mem)
+        else:
+            result=self.__class__(self.mem, self.investment)
+        if dt==None:
+            dt=self.mem.localzone.now()
+            return self.copy()
+        for a in self.arr:
+            if a.datetime<=dt:
                 result.append(a.copy())
         return result
         
@@ -2020,27 +2072,25 @@ class SetInvestmentOperationsCurrentHomogeneus(SetInvestmentOperationsCurrentHet
     
     def average_age(self, type=1):
         """Average age of the current investment operations in days"""
-        currency=self.investment.resultsCurrency(type)
         (sumbalance, sumbalanceage)=(Decimal(0), Decimal(0))
         for o in self.arr:
-            balance=o.balance(o.inversion.product.result.basic.last).convert_from_factor(currency, o.currency_conversion)
+            balance=o.balance(o.inversion.product.result.basic.last, type)
             sumbalance=sumbalance+balance.amount
             sumbalanceage=sumbalanceage+balance.amount*o.age()
         if sumbalance!=Decimal(0):
-            return round(sumbalanceage/sumbalance, 2)
+            return sumbalanceage/sumbalance
         else:
             return Decimal(0)
 
     def average_price(self, type=1):
         """Calcula el precio medio de compra"""
         
+        shares=self.acciones()
         currency=self.investment.resultsCurrency(type)
-        shares=Money(self.mem, 0, currency)
-        sharesxprice=Money(self.mem, 0, currency)
+        sharesxprice=Decimal(0)
         for o in self.arr:
-            shares=shares+Money(self.mem, o.acciones, currency)
-            sharesxprice=sharesxprice+Money(self.mem, o.acciones*o.valor_accion).convert(currency, o.datetime)
-        return Money(self.mem, 0, currency) if shares.isZero() else sharesxprice/shares
+            sharesxprice=sharesxprice+o.acciones*o.price(type).amount
+        return Money(self.mem, 0, currency) if shares==Decimal(0) else Money(self.mem, sharesxprice/shares,  currency)
         
     def invertido(self, type=1):
         """Al ser homegeneo da el resultado en Money del producto"""
@@ -2056,13 +2106,49 @@ class SetInvestmentOperationsCurrentHomogeneus(SetInvestmentOperationsCurrentHet
         resultado=Money(self.mem, 0, currency)
         for o in self.arr:
             resultado=resultado+o.balance(quote, type)
+        return resultado        
+
+    def penultimate(self, type=1):
+        """Al ser homegeneo da el resultado en Money del producto"""
+        currency=self.investment.resultsCurrency(type)
+        resultado=Money(self.mem, 0, currency)
+        for o in self.arr:
+            resultado=resultado+o.penultimate( type)
         return resultado
+        
+        
+    def gains_last_day(self, type=1):
+        """Función que calcula la diferencia de balance entre last y penultimate
+        Necesita haber cargado mq getbasic y operinversionesactual"""
+#        try:
+        return self.balance(self.investment.product.result.basic.last, type)-self.penultimate(type)
+#        except:
+#            logging.error("{} no tenia suficientes quotes en {}".format(function_name(self), self.investment.name))
+#            return Money(self.mem,  0,  self.investment.product.currency)
 
     def pendiente(self, lastquote, type=1):
         currency=self.investment.resultsCurrency(type)
         resultado=Money(self.mem, 0, currency)
         for o in self.arr:
             resultado=resultado+o.pendiente(lastquote, type)
+        return resultado
+        
+    def pendiente_positivo(self, lastquote, type=1):
+        currency=self.investment.resultsCurrency(type)
+        resultado=Money(self.mem, 0, currency)
+        for o in self.arr:
+            pendiente=o.pendiente(lastquote, type)
+            if pendiente.isGETZero():
+                resultado=resultado+pendiente
+        return resultado
+        
+    def pendiente_negativo(self, lastquote, type=1):
+        currency=self.investment.resultsCurrency(type)
+        resultado=Money(self.mem, 0, currency)
+        for o in self.arr:
+            pendiente=o.pendiente(lastquote, type)
+            if pendiente.isLETZero():
+                resultado=resultado+pendiente
         return resultado
 
     def tpc_tae(self, last,  type=1):
@@ -2079,18 +2165,10 @@ class SetInvestmentOperationsCurrentHomogeneus(SetInvestmentOperationsCurrentHet
                 2 Da el tanto por  ciento en la currency de la cuenta, por lo que se debe convertir teniendo en cuenta la temporalidad
                 3 Da el tanto por ciento en la currency local, partiendo  de la conversi´on a la currency de la cuenta
         """
-        if type==1:
-            invertido=self.invertido(False)
-            pendiente=self.pendiente(last, False)
-        elif type==2:
-            invertido=self.invertido(True)
-            pendiente=self.pendiente(last, True)
-        elif type==3:
-            invertido=self.invertido(True)
-            pendiente=self.pendiente(last, True)
+        invertido=self.invertido(type)
         if invertido.isZero():
             return None
-        return pendiente.amount*100/invertido.amount
+        return self.pendiente(last, type).amount*100/invertido.amount
     
     def myqtablewidget(self,  tabla,  quote=None, type=1):
         """Función que rellena una tabla pasada como parámetro con datos procedentes de un array de objetos
@@ -2660,14 +2738,18 @@ class InvestmentOperationCurrent:
         """
         if type==1:
             return Money(self.mem, abs(self.acciones*self.valor_accion), self.inversion.product.currency)
-        else:
+        elif type==2:
             return Money(self.mem, abs(self.acciones*self.valor_accion), self.inversion.product.currency).convert_from_factor(self.inversion.account.currency, self.currency_conversion)#Usa el factor del dia de la operacicón
+        elif type==3:
+            return Money(self.mem, abs(self.acciones*self.valor_accion), self.inversion.product.currency).convert_from_factor(self.inversion.account.currency, self.currency_conversion).local(self.datetime)#Usa el factor del dia de la operacicón
     
     def price(self, type=1):
         if type==1:
             return Money(self.mem, self.valor_accion, self.inversion.product.currency)
         elif type==2:
             return Money(self.mem, self.valor_accion, self.inversion.product.currency).convert_from_factor(self.inversion.account.currency, self.currency_conversion)
+        elif type==3:
+            return Money(self.mem, self.valor_accion, self.inversion.product.currency).convert_from_factor(self.inversion.account.currency, self.currency_conversion).local(self.datetime)
             
     def gross(self, type=1):
         if type==1:
@@ -2678,19 +2760,19 @@ class InvestmentOperationCurrent:
     def net(self, type=1):
         if self.acciones>=Decimal(0):
             return self.gross(type)+self.comission(type)+self.taxes(type)
-        else:
+        elif type==2:
             return self.gross(type)-self.comission(type)-self.taxes(type)
             
     def taxes(self, type=1):
         if type==1:
             return Money(self.mem, self.impuestos, self.inversion.account.currency).convert_from_factor(self.inversion.product.currency, 1/self.currency_conversion)
-        else:
+        elif type==2:
             return Money(self.mem, self.valor_accion, self.inversion.account.currency)
             
     def comission(self, type=1):
         if type==1:
             return Money(self.mem, self.comision, self.inversion.account.currency).convert_from_factor(self.inversion.product.currency, 1/self.currency_conversion)
-        else:
+        elif type==2:
             return Money(self.mem, self.comision, self.inversion.account.currency)
             
     def balance(self,  lastquote, type=1):
@@ -2703,8 +2785,10 @@ class InvestmentOperationCurrent:
 
         if type==1:
             return Money(self.mem, abs(self.acciones*lastquote.quote), self.inversion.product.currency)
-        else:
+        elif type==2:
             return Money(self.mem, abs(self.acciones*lastquote.quote), self.inversion.product.currency).convert(self.inversion.account.currency, self.mem.localzone.now())#Al ser balance actual usa el datetime actual
+        elif type==3:
+            return Money(self.mem, abs(self.acciones*lastquote.quote), self.inversion.product.currency).convert(self.inversion.account.currency, self.mem.localzone.now()).local()#Al ser balance actual usa el datetime actual
 
     def less_than_a_year(self):
         """Returns True, when datetime of the operation is <= a year"""
@@ -2718,7 +2802,25 @@ class InvestmentOperationCurrent:
                 lasquote es un objeto Quote
                 """
         return self.balance(lastquote, type)-self.invertido(type)
+
+    def penultimate(self, type=1):
+        """
+            Función que calcula elbalance en el penultimate ida
+        """
         
+        currency=self.inversion.resultsCurrency(type)
+        penultimate=self.inversion.product.result.basic.penultimate
+        if self.acciones==0 or penultimate.quote==None:#Empty xulpy
+            logging.error("{} no tenia suficientes quotes en {}".format(function_name(self), self.name))
+            return Money(self.mem, 0, currency)
+
+        if type==1:
+            return Money(self.mem, abs(self.acciones*penultimate.quote), self.inversion.product.currency)
+        elif type==2:
+            return Money(self.mem, abs(self.acciones*penultimate.quote), self.inversion.product.currency).convert(self.inversion.account.currency, penultimate.datetime)#Al ser balance actual usa el datetime actual
+        elif type==3:
+            return Money(self.mem, abs(self.acciones*penultimate.quote), self.inversion.product.currency).convert(self.inversion.account.currency, penultimate.datetime).local(penultimate.datetime)
+            
     def tpc_anual(self,  last,  endlastyear, type=1):        
         """
             last is a Money object with investment.product currency
@@ -2754,14 +2856,12 @@ class InvestmentOperationCurrent:
             return 0        
         if self.price().isZero():
             return 0
-            
-        last=self.inversion.quote2money(last, type)
-        return 100*(last-self.price(type)).amount/self.price(type).amount
+        return 100*(self.pendiente(last, type).amount/self.invertido(type).amount)
             
         
     def tpc_tae(self, last, type=1):
-        dias=(datetime.date.today()-self.datetime.date()).days +1 #Account el primer día
-        if dias==0:
+        dias=self.age()
+        if self.age()==0:
             dias=1
         return Decimal(365*self.tpc_total(last, type)/dias)
         
@@ -3894,11 +3994,11 @@ class Investment:
             return None
             
         if type==1:
-            return quote.money()
+            return Money(self.mem, quote.quote, self.product.currency)
         elif type==2:
-            return quote.money(self.account.currency)
+            return Money(self.mem, quote.quote, self.product.currency).convert(self.account.currency, quote.datetime)
         elif type==3:
-            return quote.money(self.account.currency).local(quote.datetime)
+            return  Money(self.mem, quote.quote, self.product.currency).convert(self.account.currency, quote.datetime).local(quote.datetime)
     
     def get_operinversiones(self, date=None):
         """Funci`on que carga un array con objetos inversion operacion y con ellos calcula el set de actual e historicas
@@ -3929,16 +4029,7 @@ class Investment:
             return Money(self.mem, self.acciones()*self.product.estimations_dps.find(year).estimation, self.product.currency)
         except:
             return Money(self.mem, 0, self.product.currency)
-        
-        
-    def diferencia_saldo_diario(self):
-        """Función que calcula la diferencia de balance entre last y penultimate
-        Necesita haber cargado mq getbasic y operinversionesactual"""
-        try:
-            return Money(self.mem, self.acciones()*(self.product.result.basic.last.quote-self.product.result.basic.penultimate.quote), self.product.currency)
-        except:
-            logging.error("{} no tenia suficientes quotes en {}".format(function_name(self), self.name))
-            return Money(self.mem,  0,  self.product.currency)
+
 
     def acciones(self, fecha=None):
         """Función que saca el número de acciones de las self.op_actual"""
@@ -3961,11 +4052,11 @@ class Investment:
         if self.product.currency.id==self.account.currency.id:
             return True
         return False
-        
-    def pendiente(self):
-        """Función que calcula el balance  pendiente de la inversión
-                Necesita haber cargado mq getbasic y operinversionesactual"""
-        return self.balance()-self.invertido()
+#        
+#    def pendiente(self):
+#        """Función que calcula el balance  pendiente de la inversión
+#                Necesita haber cargado mq getbasic y operinversionesactual"""
+#        return self.balance()-self.invertido()
         
     def qmessagebox_inactive(self):
         if self.active==False:
@@ -3989,42 +4080,43 @@ class Investment:
             return QMessageBox.No
         return QMessageBox.Yes
         
-    def balance(self, fecha=None):
+    def balance(self, fecha=None, type=1):
         """Función que calcula el balance de la inversión
             Si el cur es None se calcula el actual 
                 Necesita haber cargado mq getbasic y operinversionesactual"""     
         acciones=self.acciones(fecha)
+        currency=self.resultsCurrency(type)
         if acciones==0 or self.product.result.basic.last.quote==None:#Empty xulpy
-            return Money(self.mem, 0, self.product.currency)
+            return Money(self.mem, 0, currency)
                 
         if fecha==None:
-            return Money(self.mem,  acciones*self.product.result.basic.last.quote, self.product.currency)
+            return self.op_actual.balance(self.product.result.basic.last, type)
         else:
             quote=Quote(self.mem).init__from_query(self.product, day_end_from_date(fecha, self.mem.localzone))
             if quote.datetime==None:
                 print ("Investment balance: {0} ({1}) en {2} no tiene valor".format(self.name, self.product.id, fecha))
                 return Money(self.mem, 0, self.product.currency)
-            return Money(self.mem, acciones*quote.quote, self.product.currency)
+            return Money(self.mem, acciones*self.quote2money(quote, type).amount, currency)
         
-    def invertido(self, date=None):       
+    def invertido(self, date=None, type=1):
         """Función que calcula el balance invertido partiendo de las acciones y el precio de compra
         Necesita haber cargado mq getbasic y operinversionesactual"""
         if date==None or date==datetime.date.today():#Current
-            return self.op_actual.invertido()
+            return self.op_actual.invertido(type)
         else:
             ### 0 Creo una vinversion fake para reutilizar codigo, cargando operinversiones hasta date
-            invfake=Investment(self.mem).init__create(self.name, self.venta, self.account, self.product, self.selling_expiration, self.active, self.id)
-            invfake.active=self.active
-            invfake.get_operinversiones(date)
-            return invfake.op_actual.invertido()
+            invfake=Investment(self.mem).copy()
+            invfake.op.copy_until_datetime(day_end_from_date(date, self.mem.localzone))
+            (self.op_actual,  self.op_historica)=invfake.op.calcular()
+            return invfake.op_actual.invertido(type)
                 
-    def tpc_invertido(self):       
-        """Función que calcula el tpc invertido partiendo de las balance actual y el invertido
-        Necesita haber cargado mq getbasic y operinversionesactual"""
-        invertido=self.invertido().amount
-        if invertido==0:
-            return 0
-        return (self.balance().amount-invertido)*100/invertido
+#    def tpc_invertido(self):       
+#        """Función que calcula el tpc invertido partiendo de las balance actual y el invertido
+#        Necesita haber cargado mq getbasic y operinversionesactual"""
+#        invertido=self.invertido().amount
+#        if invertido==0:
+#            return 0
+#        return (self.balance().amount-invertido)*100/invertido
 
     def percentage_to_selling_point(self):       
         """Función que calcula el tpc venta partiendo de las el last y el valor_venta
@@ -4390,7 +4482,7 @@ class Assets:
         """Versión que se calcula en cliente muy optimizada"""
         resultado=Money(self.mem, 0, self.mem.localcurrency)
         for i in setinversiones.arr:
-            resultado=resultado+i.balance(fecha).local() 
+            resultado=resultado+i.balance(fecha, type=3)
         return resultado
         
     def saldo_todas_inversiones_riesgo_cero(self, setinversiones, fecha=None):
@@ -4401,7 +4493,7 @@ class Assets:
 #        inicio=datetime.datetime.now()
         for inv in setinversiones.arr:
             if inv.product.percentage==0:        
-                resultado=resultado+inv.balance( fecha).local()
+                resultado=resultado+inv.balance( fecha, type=3)
 #        print ("core > Total > saldo_todas_inversiones_riego_cero: {0}".format(datetime.datetime.now()-inicio))
         return resultado
             
@@ -6180,22 +6272,22 @@ class Quote:
     def __repr__(self):
         return "Quote de {0} de fecha {1} vale {2}".format(self.product.name, self.datetime, self.quote)
         
-        
-    def money(self, currency=None):
-        """
-            Returns a Money object 
-            If currency is None, money will have the product currency.id
-            If currency is not None mouney witll be convert to the currency using quote.datetime
-        
-        """
-        if self.quote==None:
-            logging.critical("I can't convert a Quote to a Money object if quote is None. Returning None")
-            return None
-            
-        if currency==None:
-            return Money(self.mem, self.quote, self.product.currency)
-        else:
-            return Money(self.mem, self.quote, self.product.currency).convert(currency, self.datetime)
+#        
+#    def money(self, currency=None):
+#        """
+#            Returns a Money object 
+#            If currency is None, money will have the product currency.id
+#            If currency is not None mouney witll be convert to the currency using quote.datetime
+#        
+#        """
+#        if self.quote==None:
+#            logging.critical("I can't convert a Quote to a Money object if quote is None. Returning None")
+#            return None
+#            
+#        if currency==None:
+#            return Money(self.mem, self.quote, self.product.currency)
+#        else:
+#            return Money(self.mem, self.quote, self.product.currency).convert(currency, self.datetime)
             
 
         

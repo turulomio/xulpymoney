@@ -23,7 +23,10 @@ class frmInvestmentOperationsAdd(QDialog, Ui_frmInvestmentOperationsAdd):
         self.wdg2CCurrencyConversion.setLabel(self.tr("Conversion factor"))
         self.wdg2CPrice.setLabel(self.tr("Price"))
         
-        factor=Money(self.mem, 0, self.inversion.product.currency).conversionFactor(self.inversion.account.currency, self.mem.localzone.now())
+        if self.operinversion==None:
+            factor=Money(self.mem, 0, self.inversion.product.currency).conversionFactor(self.inversion.account.currency, self.mem.localzone.now())
+        else:
+            factor=self.operinversion.currency_conversion
         self.wdg2CCurrencyConversion.set(self.mem, self.inversion.product.currency, self.inversion.account.currency,  factor)
         self.wdg2CCurrencyConversion.setFactorMode(True)
         self.wdg2CTaxes.set(self.mem, self.inversion.product.currency, self.inversion.account.currency,  factor)
@@ -48,8 +51,6 @@ class frmInvestmentOperationsAdd(QDialog, Ui_frmInvestmentOperationsAdd):
             self.wdg2CComission.setTextA(self.operinversion.comision)
             self.wdg2CPrice.setTextA(self.operinversion.valor_accion)
             self.txtAcciones.setText(self.operinversion.acciones)
-
-        print("AQUI")
 
         self.wdg2CTaxes.textChanged.connect(self.on_wdg2CTaxes_mytextChanged)
         self.wdg2CComission.textChanged.connect(self.on_wdg2CComission_mytextChanged)
