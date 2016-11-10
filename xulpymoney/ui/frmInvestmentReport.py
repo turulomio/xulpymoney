@@ -119,7 +119,7 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
             primera=self.inversion.op_actual.datetime_first_operation()
             if primera==None:
                 primera=self.mem.localzone.now()
-            self.op=self.inversion.op.copy_from_datetime(primera)
+            self.op=self.inversion.op.subSet_from_datetime(primera)
         else:
             self.op=self.inversion.op
         self.op.selected=None

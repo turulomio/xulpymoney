@@ -18,7 +18,6 @@ class wdgTwoCurrencyLineEdit(QWidget):
         self.txtA.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)               
         self.txtA.setToolTip(self.tr("Press the search button"))    
         self.txtA.setText(0)
-#        self.txtA.doubleClicked.connect(self.on_txtA_doubleClicked)
         self.horizontalLayout.addWidget(self.txtA)             
     
         self.lblCurrencyA=QLabel(self)
@@ -34,19 +33,14 @@ class wdgTwoCurrencyLineEdit(QWidget):
         
         self.txtB=myQLineEdit(self)
         self.txtB.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)               
-        self.txtB.setToolTip(self.tr("Press the search button"))    
-#        self.txtB.setEnabled(False)
+        self.txtB.setToolTip(self.tr("Press the search button"))
         self.txtB.setText(0)
-#        self.txtB.doubleClicked.connect(self.on_txtB_doubleClicked)
         self.horizontalLayout.addWidget(self.txtB)             
 
         self.lblCurrencyB=QLabel(self)
         self.horizontalLayout.addWidget(self.lblCurrencyB)
         
         self.factormode=False
-
-
-
 
     def setLabel(self, text):
         self.label.setText(text)
@@ -67,12 +61,9 @@ class wdgTwoCurrencyLineEdit(QWidget):
     def on_cmd_released(self):
         self.txtA.textChanged.disconnect()
         self.txtB.textChanged.disconnect()
-        if self.txtA.decimal()==Decimal(1):
-            self.txtB.setText(1)
-            self.txtA.setText(Decimal(1)/self.factor)
-        elif self.txtB.decimal()==Decimal(1):
-            self.txtA.setText(1)
-            self.txtB.setText(self.factor)
+        tmp=self.txtA.decimal()
+        self.txtA.setText(Decimal(1)/self.txtB.decimal())
+        self.txtB.setText(Decimal(1)/tmp)
         self.txtA.textChanged.connect(self.on_txtA_textChanged)
         self.txtB.textChanged.connect(self.on_txtB_textChanged)
     
@@ -100,6 +91,11 @@ class wdgTwoCurrencyLineEdit(QWidget):
         self.txtB.textChanged.connect(self.on_txtB_textChanged)
         
         
+    def isValid(self):
+        if self.txtA.isValid() and self.txtB.isValid():
+            return True
+        return False
+        
     def setTextA(self, text):
         self.txtA.setText(text)
         
@@ -113,6 +109,7 @@ class wdgTwoCurrencyLineEdit(QWidget):
         return self.txtB.decimal()
 
     def on_txtA_textChanged(self, text):
+        myQLineEdit.on_textChanged(self.txtA, text)
         if self.txtA.isValid():
             if self.factormode==True:
                 if self.txtB.decimal()==Decimal(0):
@@ -126,6 +123,7 @@ class wdgTwoCurrencyLineEdit(QWidget):
                 self.txtB.textChanged.connect(self.on_txtB_textChanged)
             
     def on_txtB_textChanged(self, text):
+        myQLineEdit.on_textChanged(self.txtB, text)
         if self.txtB.isValid():
             if self.factormode==True:
                 if self.txtA.decimal()==Decimal(0):

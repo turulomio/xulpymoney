@@ -9,7 +9,7 @@ class myQLineEdit(QLineEdit):
         QWidget.__init__(self, parent)       
 #        self.setValidator(QDoubleValidator(self)) ##Failed to show point from numerical pad
         self.textChanged.connect(self.on_textChanged)
-        self.setMaxLength(15)
+        self.setMaxLength(30)
         
         
     def isValid(self):
