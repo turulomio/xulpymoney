@@ -439,16 +439,17 @@ class SetInvestments(SetCommons):
         table.setRowCount(len(self.arr))
         table.applySettings()
         table.clearContents()
+        type=3
         for i, inv in enumerate(self.arr):
             table.setItem(i, 0, QTableWidgetItem("{0} ({1})".format(inv.name, inv.account.name)))
             table.setItem(i, 1, qdatetime(inv.op_actual.last().datetime, self.mem.localzone))
             table.setItem(i, 2, qright(inv.op_actual.last().acciones))
             table.setItem(i, 3, qright(inv.op_actual.acciones()))
-            table.setItem(i, 4,  inv.balance().qtablewidgetitem())
-            table.setItem(i, 5, inv.pendiente().qtablewidgetitem())
-            lasttpc=inv.op_actual.last().tpc_total(inv.product.result.basic.last.money(), type=2)
+            table.setItem(i, 4,  inv.balance(None, type).qtablewidgetitem())
+            table.setItem(i, 5, inv.op_actual.pendiente(inv.product.result.basic.last, type).qtablewidgetitem())
+            lasttpc=inv.op_actual.last().tpc_total(inv.product.result.basic.last, type=3)
             table.setItem(i, 6, qtpc(lasttpc))
-            table.setItem(i, 7, qtpc(inv.tpc_invertido()))
+            table.setItem(i, 7, qtpc(inv.op_actual.tpc_total(inv.product.result.basic.last, type=3)))
             table.setItem(i, 8, qtpc(inv.percentage_to_selling_point()))
             if lasttpc<=percentage:   
                 table.item(i, 6).setBackground(QColor(255, 148, 148))
@@ -572,6 +573,21 @@ class SetInvestments(SetCommons):
         (r.op_actual,  r.op_historica)=r.op.calcular() 
         return r
     
+    def setInvestmentOperationCurrentHeterogeneous_merging_current_operations_with_same_product(self, product):
+        """
+            Funci´on que convierte el set actual de inversiones, sacando las del producto pasado como par´ametro
+            Crea una inversi´on nueva cogiendo las  operaciones actuales, junt´andolas , convirtiendolas en operaciones normales 
+            
+            se usa para hacer reinversiones, en las que no se ha tenido cuenta el metodo fifo, para que use las acciones actuales.
+        """
+        r=SetInvestmentOperationsCurrentHeterogeneus(self.mem)
+        for inv in self.arr: #Recorre las inversion del array
+            if inv.product.id==product.id:
+                for o in inv.op_actual.arr:
+                    r.append(InvestmentOperation(self.mem).init__create(o.tipooperacion, o.datetime, r, o.acciones, o.importe, o.impuestos, o.comision,  o.valor_accion,  o.comision,  o.show_in_ranges,  o.currency_conversion,  o.id))
+        r.order_by_datetime() 
+        return r
+
     def investment_merging_current_operations_with_same_product(self, product, account=False):
         """
             Funci´on que convierte el set actual de inversiones, sacando las del producto pasado como par´ametro
@@ -754,7 +770,7 @@ class SetInvestments(SetCommons):
     def order_by_percentage_last_operation(self):
         """Orders the Set using self.arr"""
         try:
-            self.arr=sorted(self.arr, key=lambda inv: inv.op_actual.last().tpc_total(inv.product.result.basic.last.money(), type=2),  reverse=True)
+            self.arr=sorted(self.arr, key=lambda inv: inv.op_actual.last().tpc_total(inv.product.result.basic.last, type=3),  reverse=True)
             return True
         except:
             return False
@@ -1656,7 +1672,6 @@ class SetIO:
             result=self.__class__(self.mem, self.investment)
         if dt==None:
             dt=self.mem.localzone.now()
-            return self.copy()
         for a in self.arr:
             if a.datetime>=dt:
                 result.append(a.copy())
@@ -1670,7 +1685,6 @@ class SetIO:
             result=self.__class__(self.mem, self.investment)
         if dt==None:
             dt=self.mem.localzone.now()
-            return self.copy()
         for a in self.arr:
             if a.datetime<=dt:
                 result.append(a.copy())
@@ -1841,8 +1855,8 @@ class SetInvestmentOperationsHomogeneus(SetInvestmentOperationsHeterogeneus):
             tabla.setItem(rownumber, 2, qright(a.acciones))
             tabla.setItem(rownumber, 3, a.price(type).qtablewidgetitem())
             tabla.setItem(rownumber, 4, a.gross(type).qtablewidgetitem())            
-            tabla.setItem(rownumber, 5, a.comission(True).qtablewidgetitem())
-            tabla.setItem(rownumber, 6, a.taxes(True).qtablewidgetitem())
+            tabla.setItem(rownumber, 5, a.comission(type).qtablewidgetitem())
+            tabla.setItem(rownumber, 6, a.taxes(type).qtablewidgetitem())
             tabla.setItem(rownumber, 7, a.net(type).qtablewidgetitem())
             if self.investment.hasSameAccountCurrency()==False:
                 tabla.setItem(rownumber, 8, qright(a.currency_conversion))
@@ -2467,7 +2481,8 @@ class SetInvestmentOperationsHistoricalHomogeneus(SetInvestmentOperationsHistori
         tabla.setHorizontalHeaderItem(9+diff, QTableWidgetItem(QApplication.translate("Core", "Net selling operations" )))
         tabla.setHorizontalHeaderItem(10+diff, QTableWidgetItem(QApplication.translate("Core", "% Net APR" )))
         tabla.setHorizontalHeaderItem(11+diff, QTableWidgetItem(QApplication.translate("Core", "% Net Total" )))
-        #DATA       
+        #DATA    
+                
                 
         currency=self.investment.resultsCurrency(type)
         
@@ -2765,15 +2780,15 @@ class InvestmentOperationCurrent:
             
     def taxes(self, type=1):
         if type==1:
-            return Money(self.mem, self.impuestos, self.inversion.account.currency).convert_from_factor(self.inversion.product.currency, 1/self.currency_conversion)
+            return Money(self.mem, self.impuestos, self.inversion.product.currency)
         elif type==2:
-            return Money(self.mem, self.valor_accion, self.inversion.account.currency)
+            return Money(self.mem, self.impuestos, self.inversion.product.currency).convert_from_factor(self.inversion.account.currency, self.currency_conversion)
             
     def comission(self, type=1):
         if type==1:
-            return Money(self.mem, self.comision, self.inversion.account.currency).convert_from_factor(self.inversion.product.currency, 1/self.currency_conversion)
+            return Money(self.mem, self.comision, self.inversion.product.currency)
         elif type==2:
-            return Money(self.mem, self.comision, self.inversion.account.currency)
+            return Money(self.mem, self.comision, self.inversion.product.currency).convert_from_factor(self.inversion.account.currency, self.currency_conversion)
             
     def balance(self,  lastquote, type=1):
         """Función que calcula el balance actual de la operinversion actual
@@ -3545,15 +3560,15 @@ class InvestmentOperation:
             
     def taxes(self, type=1):
         if type==1:
-            return Money(self.mem, self.impuestos, self.inversion.account.currency).convert_from_factor(self.inversion.product.currency, 1/self.currency_conversion)
+            return Money(self.mem, self.impuestos, self.inversion.product.currency)
         else:
-            return Money(self.mem, self.impuestos, self.inversion.account.currency)
+            return Money(self.mem, self.impuestos, self.inversion.product.currency).convert_from_factor(self.inversion.account.currency, self.currency_conversion)
             
     def comission(self, type=1):
         if type==1:
-            return Money(self.mem, self.comision, self.inversion.account.currency).convert_from_factor(self.inversion.product.currency, 1/self.currency_conversion)
+            return Money(self.mem, self.comision, self.inversion.product.currency)
         else:
-            return Money(self.mem, self.comision, self.inversion.account.currency)
+            return Money(self.mem, self.comision, self.inversion.product.currency).convert_from_factor(self.inversion.account.currency, self.currency_conversion)
 
     def find_by_mem(self, investment, id):
         """
@@ -3926,7 +3941,7 @@ class Investment:
         
         
     def copy(self ):
-        return Investment(mem).init__create(self.name, self.venta, self.account, self.product, self.selling_expiration, self.active, self.id)
+        return Investment(self.mem).init__create(self.name, self.venta, self.account, self.product, self.selling_expiration, self.active, self.id)
     
     def save(self):
         """Inserta o actualiza la inversión dependiendo de si id=None o no"""
