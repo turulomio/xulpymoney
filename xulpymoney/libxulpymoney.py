@@ -1912,7 +1912,14 @@ class SetInvestmentOperationsCurrentHeterogeneus(SetIO):
         if shares.isZero():
             return Money(self.mem)
         return sharesxprice/shares
-            
+
+    def balance(self):
+        """Al ser homegeneo da el resultado en Money del producto"""
+        resultado=Money(self.mem, 0, self.mem.localcurrency)
+        for o in self.arr:
+            resultado=resultado+o.balance(o.inversion.product.result.basic.last, type=3)
+        return resultado        
+        
     def datetime_first_operation(self):
         if len(self.arr)==0:
             return None
@@ -1930,7 +1937,7 @@ class SetInvestmentOperationsCurrentHeterogeneus(SetIO):
         """Al ser heterogeneo da el resultado en Money local"""
         resultado=Money(self.mem, 0, self.mem.localcurrency)
         for o in self.arr:
-            resultado=resultado+o.invertido().local()
+            resultado=resultado+o.invertido(type=3)
         return resultado
         
     def last(self):
@@ -1970,22 +1977,12 @@ class SetInvestmentOperationsCurrentHeterogeneus(SetIO):
         if self.length()==0:
             tabla.setRowCount(0)
             return
+        type=3
             
-        sumsaldo=Money(self.mem, 0, self.mem.localcurrency)
-        sumpendiente=Money(self.mem, 0, self.mem.localcurrency)
-        suminvertido=Money(self.mem, 0, self.mem.localcurrency)
         tabla.applySettings()
         tabla.clearContents()
         tabla.setRowCount(self.length()+1)
-        for rownumber, a in enumerate(self.arr):
-            balance=a.balance(a.inversion.product.result.basic.last).local()
-            pendiente=a.pendiente(a.inversion.product.result.basic.last).local()
-            invertido=a.invertido().local()
-    
-            sumsaldo=sumsaldo+balance
-            sumpendiente=sumpendiente+pendiente
-            suminvertido=suminvertido+invertido
-    
+        for rownumber, a in enumerate(self.arr):        
             tabla.setItem(rownumber, 0, qdatetime(a.datetime, self.mem.localzone))
             if self.mem.gainsyear==True and a.less_than_a_year()==True:
                 tabla.item(rownumber, 0).setIcon(QIcon(":/xulpymoney/new.png"))
@@ -1993,12 +1990,12 @@ class SetInvestmentOperationsCurrentHeterogeneus(SetIO):
             tabla.setItem(rownumber, 2, qleft(a.inversion.account.name))
             tabla.setItem(rownumber, 3, qright("{0:.6f}".format(a.acciones)))
             tabla.setItem(rownumber, 4, a.price().local().qtablewidgetitem())
-            tabla.setItem(rownumber, 5, invertido.qtablewidgetitem())
-            tabla.setItem(rownumber, 6, balance.qtablewidgetitem())
-            tabla.setItem(rownumber, 7, pendiente.qtablewidgetitem())
-            tabla.setItem(rownumber, 8, qtpc(a.tpc_anual(a.inversion.product.result.basic.last.money(), a.inversion.product.result.basic.endlastyear.money(), type=2)))
-            tabla.setItem(rownumber, 9, qtpc(a.tpc_tae(a.inversion.product.result.basic.last.money(), type=2)))
-            tabla.setItem(rownumber, 10, qtpc(a.tpc_total(a.inversion.product.result.basic.last.money(), type=2)))
+            tabla.setItem(rownumber, 5, a.invertido(type).qtablewidgetitem())
+            tabla.setItem(rownumber, 6, a.balance(a.inversion.product.result.basic.last, type).qtablewidgetitem())
+            tabla.setItem(rownumber, 7, a.pendiente(a.inversion.product.result.basic.last, type).qtablewidgetitem())
+            tabla.setItem(rownumber, 8, qtpc(a.tpc_anual(a.inversion.product.result.basic.last, a.inversion.product.result.basic.endlastyear, type=2)))
+            tabla.setItem(rownumber, 9, qtpc(a.tpc_tae(a.inversion.product.result.basic.last, type=2)))
+            tabla.setItem(rownumber, 10, qtpc(a.tpc_total(a.inversion.product.result.basic.last, type=2)))
             if a.referenciaindice==None:
                 tabla.setItem(rownumber, 11, self.mem.data.benchmark.currency.qtablewidgetitem(None))
             else:
@@ -2006,18 +2003,18 @@ class SetInvestmentOperationsCurrentHeterogeneus(SetIO):
 
         tabla.setItem(self.length(), 0, qleft(days_to_year_month(self.average_age())))
         tabla.setItem(self.length(), 0, QTableWidgetItem(("TOTAL")))
-        tabla.setItem(self.length(), 5, suminvertido.qtablewidgetitem())
-        tabla.setItem(self.length(), 6, sumsaldo.qtablewidgetitem())
-        tabla.setItem(self.length(), 7, sumpendiente.qtablewidgetitem())
+        tabla.setItem(self.length(), 5, self.invertido().qtablewidgetitem())
+        tabla.setItem(self.length(), 6, self.balance().qtablewidgetitem())
+        tabla.setItem(self.length(), 7, self.pendiente().qtablewidgetitem())
         tabla.setItem(self.length(), 8, qtpc(self.tpc_tae()))
-        tabla.setItem(self.length(), 9, qtpc(self.tpc_total(sumpendiente.amount, suminvertido.amount)))
+        tabla.setItem(self.length(), 9, qtpc(self.tpc_total()))
 
 
     def pendiente(self):
         """Calcula el resultado de pendientes utilizando lastquote como el ultimo de cada operaci´on"""
         resultado=Money(self.mem, 0, self.mem.localcurrency)
         for o in self.arr:
-            resultado=resultado+o.pendiente(o.inversion.product.result.basic.last, type=2).local()
+            resultado=resultado+o.pendiente(o.inversion.product.result.basic.last, type=3)
         return resultado
     
     def order_by_datetime(self):       
