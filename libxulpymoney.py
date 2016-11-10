@@ -13,6 +13,7 @@ import sys,  codecs,   inspect,  threading, argparse, getpass
 from libqmessagebox import *
 
 from decimal import *
+getcontext().prec=10
 
 version="20160713"
 version_date=datetime.date(2016, 7, 13)
@@ -1629,6 +1630,7 @@ class SetIO:
     def remove(self, objeto):
         """Remove from array"""
         self.arr.remove(objeto)
+        
                 
 #    def clone(self):
 #        """Links all items in self. arr to a new set. Linked points the same object"""
@@ -1663,9 +1665,23 @@ class SetIO:
 #        for a in self.arr:
 #            result.append(a.copy())
 #        return result
-                
+
+
+    def subSet_from_datetime(self, dt=None):
+        """Función que devuelve otro SetInvestmentOperations con las oper que tienen datetime mayor o igual a la pasada como parametro. Las operaciones del array son vinculos a objetos no copiadas como se hace con copy_from"""
+        if self.__class__==SetInvestmentOperationsCurrentHeterogeneus:
+            result=self.__class__(self.mem)
+        else:
+            result=self.__class__(self.mem, self.investment)
+        if dt==None:
+            dt=self.mem.localzone.now()
+        for a in self.arr:
+            if a.datetime>=dt:
+                result.append(a)
+        return result
+        
     def copy_from_datetime(self, dt=None):
-        """Función que devuelve otro SetInvestmentOperations con las oper que tienen datetime mayor o igual a la pasada como parametro."""
+        """Función que devuelve otro SetInvestmentOperations con las oper que tienen datetime mayor o igual a la pasada como parametro tambien copiadas."""
         if self.__class__==SetInvestmentOperationsCurrentHeterogeneus:
             result=self.__class__(self.mem)
         else:
@@ -2069,7 +2085,7 @@ class SetInvestmentOperationsCurrentHeterogeneus(SetIO):
                     accionesventa=Decimal('0')#Sale bucle                    
                     break
         if inicio-self.acciones()-abs(io.acciones)!=Decimal('0'):
-            logging.critical ("Error en historizar. diff ", inicio-self.acciones()-abs(io.acciones),  "inicio",  inicio,  "fin", self.acciones(), io)
+            logging.critical ("Error en historizar. diff {}. Inicio {}. Fin {}. {}".format(inicio-self.acciones()-abs(io.acciones),  inicio,   self.acciones(), io))
                 
         
     def print_list(self):
@@ -2801,9 +2817,9 @@ class InvestmentOperationCurrent:
         if type==1:
             return Money(self.mem, abs(self.acciones*lastquote.quote), self.inversion.product.currency)
         elif type==2:
-            return Money(self.mem, abs(self.acciones*lastquote.quote), self.inversion.product.currency).convert(self.inversion.account.currency, self.mem.localzone.now())#Al ser balance actual usa el datetime actual
+            return Money(self.mem, abs(self.acciones*lastquote.quote), self.inversion.product.currency).convert(self.inversion.account.currency, lastquote.datetime)
         elif type==3:
-            return Money(self.mem, abs(self.acciones*lastquote.quote), self.inversion.product.currency).convert(self.inversion.account.currency, self.mem.localzone.now()).local()#Al ser balance actual usa el datetime actual
+            return Money(self.mem, abs(self.acciones*lastquote.quote), self.inversion.product.currency).convert(self.inversion.account.currency, lastquote.datetime).local(lastquote.datetime)
 
     def less_than_a_year(self):
         """Returns True, when datetime of the operation is <= a year"""
@@ -2826,7 +2842,7 @@ class InvestmentOperationCurrent:
         currency=self.inversion.resultsCurrency(type)
         penultimate=self.inversion.product.result.basic.penultimate
         if self.acciones==0 or penultimate.quote==None:#Empty xulpy
-            logging.error("{} no tenia suficientes quotes en {}".format(function_name(self), self.name))
+            logging.error("{} no tenia suficientes quotes en {}".format(function_name(self), self.inversion.name))
             return Money(self.mem, 0, currency)
 
         if type==1:
@@ -2868,10 +2884,11 @@ class InvestmentOperationCurrent:
                 3 Da el tanto por ciento en la currency local, partiendo  de la conversi´on a la currency de la cuenta
         """
         if last==None:#initiating xulpymoney
-            return 0        
-        if self.price().isZero():
+            return 0       
+        invertido=self.invertido(type)
+        if invertido.isZero():
             return 0
-        return 100*(self.pendiente(last, type).amount/self.invertido(type).amount)
+        return 100*(self.pendiente(last, type).amount/invertido.amount)
             
         
     def tpc_tae(self, last, type=1):
@@ -3595,16 +3612,19 @@ class InvestmentOperation:
         cur.close()
         if self.tipooperacion.id==4:#Compra Acciones
             #Se pone un registro de compra de acciones que resta el balance de la opercuenta
-            c=AccountOperationOfInvestmentOperation(self.mem).init__create(self.datetime, self.mem.conceptos.find_by_id(29), self.tipooperacion, -self.importe*self.currency_conversion-self.comision, self.comentario, self.inversion.account, self,self.inversion)
+            importe=-self.gross(type=2)-self.comission(type=2)
+            c=AccountOperationOfInvestmentOperation(self.mem).init__create(self.datetime, self.mem.conceptos.find_by_id(29), self.tipooperacion, importe.amount, self.comentario, self.inversion.account, self,self.inversion)
             c.save()
         elif self.tipooperacion.id==5:#// Venta Acciones
             #//Se pone un registro de compra de acciones que resta el balance de la opercuenta
-            c=AccountOperationOfInvestmentOperation(self.mem).init__create(self.datetime, self.mem.conceptos.find_by_id(35), self.tipooperacion, self.importe*self.currency_conversion-self.comision-self.impuestos, self.comentario, self.inversion.account, self,self.inversion)
+            importe=self.gross(type=2)-self.comission(type=2)-self.taxes(type=2)
+            c=AccountOperationOfInvestmentOperation(self.mem).init__create(self.datetime, self.mem.conceptos.find_by_id(35), self.tipooperacion, importe.amount, self.comentario, self.inversion.account, self,self.inversion)
             c.save()
         elif self.tipooperacion.id==6:
             #//Si hubiera comisión se añade la comisión.
             if(self.comision!=0):
-                c=AccountOperationOfInvestmentOperation(self.mem).init__create(self.datetime, self.mem.conceptos.find_by_id(38), self.mem.tiposoperaciones.find_by_id(1), -self.comision-self.impuestos, self.comentario, self.inversion.account, self,self.inversion)
+                importe=-self.comission(type=2)-self.taxes(type=2)
+                c=AccountOperationOfInvestmentOperation(self.mem).init__create(self.datetime, self.mem.conceptos.find_by_id(38), self.mem.tiposoperaciones.find_by_id(1), importe.amount, self.comentario, self.inversion.account, self,self.inversion)
                 c.save()
     
     def copy(self, investment=None):
@@ -3641,13 +3661,6 @@ class InvestmentOperation:
         if autocommit==True:
             self.mem.con.commit()
         cur.close()
-
-        
-#    def tpc_anual(self,  last,  endlastyear):
-#        return
-#    
-#    def tpc_total(self,  last):
-#        return
    
 class Bank:
     """Clase que encapsula todas las funciones que se pueden realizar con una Entidad bancaria o banco"""
@@ -5177,7 +5190,12 @@ class Currency:
     def string(self, number,  digits=2):
         if number==None:
             return "None " + self.symbol
-        else:    
+        elif number.__class__==Decimal:   
+             with localcontext() as ctx:
+                ctx.prec = 2   # Perform a high precision calculation
+                number=number
+                return "{} {}".format(number, self.symbol)
+        else:
             return "{0} {1}".format(round(number, digits),self.symbol)
             
     def currencies_exchange(self, cur,  quote, origen, destino):

@@ -63,6 +63,12 @@ class frmInvestmentOperationsAdd(QDialog, Ui_frmInvestmentOperationsAdd):
         self.wdg2CTaxes.set(self.mem, self.inversion.product.currency, self.inversion.account.currency,  factor)
         
     def on_cmd_released(self):        
+        if self.wdg2CComission.isValid() and self.wdg2CCurrencyConversion.isValid() and self.wdg2CPrice.isValid() and self.wdg2CTaxes.isValid()==False:
+            qmessagebox(self.tr("Some fields are wrong"))
+            return
+        
+        
+        
         id_tiposoperaciones=int(self.cmbTiposOperaciones.itemData(self.cmbTiposOperaciones.currentIndex()))
         self.operinversion.tipooperacion=self.mem.tiposoperaciones.find_by_id(id_tiposoperaciones)
         self.operinversion.impuestos=self.wdg2CTaxes.decimalA()
