@@ -119,7 +119,7 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
             primera=self.inversion.op_actual.datetime_first_operation()
             if primera==None:
                 primera=self.mem.localzone.now()
-            self.op=self.inversion.op.clone_from_datetime(primera)
+            self.op=self.inversion.op.copy_from_datetime(primera)
         else:
             self.op=self.inversion.op
         self.op.selected=None
@@ -282,7 +282,7 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
         f=frmSellingPoint(self.mem, self.inversion)
         f.txtPrice.setText(self.txtVenta.text())
         f.exec_()
-        self.txtVenta.setText(str(f.puntoventa))
+        self.txtVenta.setText(str(f.puntoventa.amount))
 
     @QtCore.pyqtSlot() 
     def on_actionOperationDelete_triggered(self):

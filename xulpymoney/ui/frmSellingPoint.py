@@ -56,63 +56,76 @@ class frmSellingPoint(QDialog, Ui_frmSellingPoint):
         self.cmbTPC.setCurrentText("{} %".format(self.mem.settingsdb.value("frmSellingPoint/lastgainpercentage",  5)))
         
     def __calcular(self):    
-        def load_array():
-            if self.chkPonderanAll.checkState()==Qt.Checked:#Ponderan misma inversion
-                for  inv in self.mem.data.investments_active().arr:
-                    if inv.product.id==self.inversion.product.id:
-                        for op in inv.op_actual.arr:
-                            self.operinversiones.append(op)                
-            else:# No ponderan misma inversion
-                self.operinversiones=self.inversion.op_actual.clone()
-                
-            #Quita operaciones menos de un año si a lugar
-            if self.chkGainsTime.checkState()==Qt.Checked:
-                for o in self.operinversiones.arr:
-                    if o.less_than_a_year()==True:
-                        self.operinversiones.remove(o)
-        ###########################
-        self.operinversiones=SetInvestmentOperationsCurrentHomogeneus(self.mem, self.inversion)
-        type=2
-        load_array()
-        self.operinversiones.order_by_datetime()
-        self.operinversiones.myqtablewidget(self.table, self.inversion.product.result.basic.last,  type)
+#        def load_array():
+#            if self.chkPonderanAll.checkState()==Qt.Checked:#Ponderan misma inversion
+#                for  inv in self.mem.data.investments_active().arr:
+#                    if inv.product.id==self.inversion.product.id:
+#                        for op in inv.op_actual.arr:
+#                            self.operinversiones.append(op)                
+#            else:# No ponderan misma inversion
+#                self.operinversiones=self.inversion.op_actual.copy_until_datetime(None)
+#                
+#            #Quita operaciones menos de un año si a lugar
+#            if self.chkGainsTime.checkState()==Qt.Checked:
+#                for o in self.operinversiones.arr:
+#                    if o.less_than_a_year()==True:
+#                        self.operinversiones.remove(o)
+#        ###########################
         
+        if self.chkPonderanAll.checkState()==Qt.Checked:#Results are in self.mem.localcurrency
+            self.operinversiones=self.mem.data.investments_active().setInvestmentOperationCurrentHeterogeneous_merging_current_operations_with_same_product(self.inversion.product)
+            self.operinversiones.myqtablewidget(self.table)
+            suminvertido=self.operinversiones.invertido()
+            sumpendiente=self.operinversiones.pendiente()
+        else:#Results in account currency
+            self.operinversiones=SetInvestmentOperationsCurrentHomogeneus(self.mem, self.inversion)
+            if self.chkGainsTime.checkState()==Qt.Checked:
+                self.operinversiones=self.inversion.op_actual.copy_until_datetime(self.mem.localzone.now()-datetime.timedelta(days=365))
+            else:
+                self.operinversiones=self.inversion.op_actual.copy_until_datetime(None)
+            type=2
+            self.operinversiones.myqtablewidget(self.table, self.inversion.product.result.basic.last,  type)
+            suminvertido=self.operinversiones.invertido(type)
+            sumpendiente=self.operinversiones.pendiente(self.inversion.product.result.basic.last, type)
         sumacciones=self.operinversiones.acciones()
-        suminvertido=self.operinversiones.invertido(type)
-        sumpendiente=self.operinversiones.pendiente(self.inversion.product.result.basic.last, type)
-        if sumacciones==0:
-            self.puntoventa=0
+        
+        if sumacciones==Decimal(0):
+            self.puntoventa=Money(self.mem, 0, self.inversion.account.currency)
         else:
             if self.radTPC.isChecked()==True:
                 tpc=Decimal(self.cmbTPC.currentText().replace(" %", ""))
-                self.puntoventa=round(suminvertido.amount*(1+tpc/100)/sumacciones, 2)
+                self.puntoventa=Money(self.mem, suminvertido.amount*(1+tpc/100)/sumacciones, self.inversion.account.currency)
             elif self.radPrice.isChecked()==True:
                 if self.txtPrice.isValid():#Si hay un numero bien
-                    self.puntoventa=self.txtPrice.decimal()
+                    self.puntoventa=Money(self.mem,  self.txtPrice.decimal(),  self.inversion.account.currency)
                     self.cmd.setEnabled(True)
                 else:
-                    self.puntoventa=Decimal(0)
+                    self.puntoventa=Money(self.mem, 0, self.inversion.account.currency)
                     self.cmd.setEnabled(False)
             elif self.radGain.isChecked()==True:
                 if self.txtGanancia.isValid():#Si hay un numero bien
-                    self.puntoventa=round((self.txtGanancia.decimal()+suminvertido.amount)/sumacciones, 2)
+                    self.puntoventa=Money(self.mem, (self.txtGanancia.decimal()+suminvertido.amount)/sumacciones, self.inversion.account.currency)
                     self.cmd.setEnabled(True)
                 else:
-                    self.puntoventa=Decimal(0)
+                    self.puntoventa=Money(self.mem, 0, self.inversion.account.currency)
                     self.cmd.setEnabled(False)
             elif self.radSMA200.isChecked()==True:
-                self.puntoventa=round(suminvertido.amount*(1+self.tpcsma200/100)/sumacciones, 2)
+                self.puntoventa=Money(self.mem, suminvertido.amount*(1+self.tpcsma200/100)/sumacciones, self.inversion.account.currency)
+
+        if self.inversion.hasSameAccountCurrency()==False:
+            #punto de venta tiene el currency de la acount luego hay que pasarlo al currency de la inversi´on_chkGainsTime_stateChanged
+            self.puntoventa=self.puntoventa.convert(self.inversion.product.currency, self.mem.localzone.now())
 
 
-        quote=Quote(self.mem).init__create(self.inversion.product, self.mem.localzone.now(), self.puntoventa)
-        self.tab.setTabText(1, self.tr("Selling point: {0}".format(self.inversion.product.currency.string(self.puntoventa))) )
+        quote=Quote(self.mem).init__create(self.inversion.product, self.mem.localzone.now(), self.puntoventa.amount)
+        self.tab.setTabText(1, self.tr("Selling point: {0}".format(self.puntoventa)))
         self.tab.setTabText(0, self.tr("Current state: {0}".format(self.inversion.product.currency.string(self.inversion.product.result.basic.last.quote))) )
         self.operinversiones.myqtablewidget(self.tableSP, quote, type) 
         
         if self.chkPonderanAll.checkState()==Qt.Checked:
-            self.cmd.setText(self.tr("Set selling price to all investments  of {0} to gain {1}").format(self.inversion.product.currency.string(self.puntoventa), "MAL"))
+            self.cmd.setText(self.tr("Set selling price to all investments  of {0} to gain {1}").format(self.puntoventa, "MAL"))
         else:
-            self.cmd.setText(self.tr("Set {0} shares selling price to {1} to gain {2}").format(sumacciones, self.inversion.product.currency.string(self.puntoventa), self.operinversiones.pendiente(quote, type)))
+            self.cmd.setText(self.tr("Set {0} shares selling price to {1} to gain {2}").format(sumacciones, self.puntoventa, self.operinversiones.pendiente(quote, type)))
 
     def on_radTPC_clicked(self):
         self.__calcular()
