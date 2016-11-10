@@ -755,7 +755,7 @@ CREATE TABLE operinversiones (
     datetime timestamp with time zone,
     comentario text,
     show_in_ranges boolean DEFAULT true,
-    currency_conversion numeric(10,6) DEFAULT 1 NOT NULL
+    currency_conversion numeric(30,10) DEFAULT 1 NOT NULL
 );
 
 
@@ -772,7 +772,7 @@ COMMENT ON COLUMN operinversiones.divisa IS 'Campo que calcula el cociente entre
 -- Name: COLUMN operinversiones.currency_conversion; Type: COMMENT; Schema: public; Owner: postgres
 --
 
-COMMENT ON COLUMN operinversiones.currency_conversion IS 'Conversión de divisa de la inversión a la de la cuenta. Multiplicando acciones*valor_accion*currency_conversion obtenemos el precio en la divisa de la cuenta de inversion->cuenta. Los impuestos y la comisión van en la divisa de la cuenta y no necesita conversión.';
+COMMENT ON COLUMN operinversiones.currency_conversion IS 'Conversión de divisa de la inversión a la de la cuenta. Multiplicando acciones*valor_accion*currency_conversion obtenemos el precio en la divisa de la cuenta de inversion->cuenta. Todos los campos de operinversiones van en la divisa del producto de la inversión';
 
 
 --
@@ -5857,7 +5857,6 @@ INSERT INTO products VALUES ('LYXOR ETF DAILY SHORTDAX X2 | DAX 30, INDEX', NULL
 INSERT INTO products VALUES ('Lyxor ETF EURO STOXX 50 Daily Leverage', 'FR0010468983', 'EUR', 4, '|e_fr_LYXOR|', 81394, '', '', '', '', 100, 'c', 2, 3, 'LVE.PA', '{1}', '{3}', 'LVE.PA||fr||False', false);
 INSERT INTO products VALUES ('LYXOR ETF LEVDAX | DAX 30, INDEX', 'LU0252634307', 'EUR', 4, '', 81693, '', '', '', '', 100, 'c', 2, 3, 'LVD.PA', '{1}', '{3}', '', false);
 INSERT INTO products VALUES ('LYXOR ETF LEVERAGED CAC 40', 'FR0010592014  ', 'EUR', 4, '', 81709, '', NULL, NULL, NULL, 100, 'c', 2, 3, 'LVC.PA', '{1}', '{3}', NULL, false);
-INSERT INTO products VALUES ('LYXOR ETF LEVERAGED DAX', 'LU0252634307  ', 'EUR', 4, '', 81710, '', NULL, NULL, NULL, 100, 'c', 2, 3, 'LVD.PA', '{1}', '{3}', NULL, false);
 INSERT INTO products VALUES ('LYXOR ETF LEVERAGED FTSE MIB', 'FR0010446658  ', 'EUR', 4, '', 81708, '', NULL, NULL, NULL, 100, 'c', 2, 6, 'LEVMIB.MI', '{1}', '{3}', NULL, false);
 INSERT INTO products VALUES ('LYXOR IBEX DOBLE APALANCADO', 'FR0011042753', 'EUR', 4, '|e_fr_LYXOR|', 79228, '', '', '', '', 100, 'c', 2, 1, 'IBEXA.MC', '{1}', '{3}', 'MC#FR0011042753||es||False', false);
 INSERT INTO products VALUES ('LYXOR IBEX ETF', 'FR0010251744', 'EUR', 4, '|e_fr_LYXOR|', 81357, '', '', '', '', 100, 'c', 0, 1, 'LYXIB.MC', '{1}', '{3}', 'MC#FR0010251744||es||False', false);
@@ -8239,9 +8238,9 @@ INSERT INTO globals VALUES (14, 'mem/dividendwithholding', '0.19');
 INSERT INTO globals VALUES (15, 'mem/taxcapitalappreciation', '0.19');
 INSERT INTO globals VALUES (16, 'mem/taxcapitalappreciationbelow', '0.5');
 INSERT INTO globals VALUES (17, 'mem/gainsyear', 'false');
-INSERT INTO globals VALUES (18, 'mem/favorites', '79329, 81680, 81458, 80876, 79374, 81702, 80515, 78687, 81347, 79192, 77529, 80840, 79204, 78327, 78281, 78717, 79142, 81394, 74747, 76113, 81709, 79361, 81711');
+INSERT INTO globals VALUES (18, 'mem/favorites', '79329, 81680, 81458, 80876, 79374, 81702, 80515, 78687, 81347, 79192, 77529, 80840, 79204, 78327, 78281, 78717, 79142, 81394, 74747, 76113, 81709, 79361, 81711, 81090, 81710');
 INSERT INTO globals VALUES (19, 'mem/fillfromyear', '2005');
-INSERT INTO globals VALUES (1, 'Version', '201611041030');
+INSERT INTO globals VALUES (1, 'Version', '201611101136');
 INSERT INTO globals VALUES (20, 'frmSellingPoint/lastgainpercentage', '10');
 INSERT INTO globals VALUES (21, 'wdgAPR/cmbYear', '2012');
 INSERT INTO globals VALUES (6, 'Admin mode', NULL);
