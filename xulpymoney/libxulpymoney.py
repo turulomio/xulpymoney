@@ -13,7 +13,7 @@ import sys,  codecs,   inspect,  threading, argparse, getpass
 from libqmessagebox import *
 
 from decimal import *
-getcontext().prec=10
+getcontext().prec=20
 
 version="20160713"
 version_date=datetime.date(2016, 7, 13)
@@ -501,6 +501,14 @@ class SetInvestments(SetCommons):
             return None
         return round(average, 2)
             
+    def findInvestmentOperation(self, id):
+        """Busca la IO en el set o dveuleve None"""
+        for inv in self.arr:
+            for o in inv.op.arr:
+                if o.id==id:
+                    return o
+        return None
+            
     def gains_last_day(self):
         """Da el resultado en self.mem.localcurrency"""
         r=Money(self.mem, 0, self.mem.localcurrency)
@@ -972,7 +980,7 @@ class SetProducts(SetCommons):
             table.setItem(i, 1, QTableWidgetItem(p.name.upper()))
             table.item(i, 1).setIcon(p.stockmarket.country.qicon())
             table.setItem(i, 2, QTableWidgetItem(p.isin))   
-            table.setItem(i, 3, qdatetime(p.result.basic.last.datetime, p.stockmarket.zone))#, self.mem.localzone.name)))
+            table.setItem(i, 3, qdatetime(p.result.basic.last.datetime, p.stockmarket.zone))
             table.setItem(i, 4, p.currency.qtablewidgetitem(p.result.basic.last.quote, 6 ))  
 
             table.setItem(i, 5, qtpc(p.result.basic.tpc_diario()))
@@ -1299,7 +1307,7 @@ class SetAccountOperations:
             tabla.setItem(rownumber, 1+diff, qleft(a.concepto.name))
             tabla.setItem(rownumber, 2+diff, self.mem.localcurrency.qtablewidgetitem(a.importe))
             tabla.setItem(rownumber, 3+diff, self.mem.localcurrency.qtablewidgetitem(balance))
-            tabla.setItem(rownumber, 4+diff, qleft(a.comentario))
+            tabla.setItem(rownumber, 4+diff, qleft(Comment(self.mem).setFancy(a.comentario)))
             
     def myqtablewidget_lastmonthbalance(self, table,    account, lastmonthbalance):
         table.applySettings()
@@ -1314,7 +1322,7 @@ class SetAccountOperations:
             table.setItem(i+1, 1, QTableWidgetItem(o.concepto.name))
             table.setItem(i+1, 2, importe.qtablewidgetitem())
             table.setItem(i+1, 3, lastmonthbalance.qtablewidgetitem())
-            table.setItem(i+1, 4, QTableWidgetItem(o.comment()))                   
+            table.setItem(i+1, 4, QTableWidgetItem(Comment(self.mem).setFancy(o.comentario)))                   
 
 class SetCurrencies(SetCommons):
     def __init__(self, mem):
@@ -1428,12 +1436,14 @@ class SetDividendsHomogeneus(SetDividendsHeterogeneus):
         
     def gross(self, type=1):
         """gross amount"""
-        if type==1:
-            r=Money(self.mem, 0, self.investment.product.currency)
-        else:
-            r=Money(self.mem, 0, self.investment.account.currency)
+        r=Money(self.mem, 0, self.investment.resultsCurrency(type))
         for d in self.arr:
             r=r+d.gross(type)
+        return r
+    def net(self, type=1):
+        r=Money(self.mem, 0, self.investment.resultsCurrency(type))
+        for d in self.arr:
+            r=r+d.net(type)
         return r
         
     def myqtablewidget(self, table, type=1):
@@ -2896,6 +2906,92 @@ class InvestmentOperationCurrent:
         
         
 
+class Comment:
+    """Class who controls all comments from opercuentas, operinversiones ..."""
+    def __init__(self, mem):
+        self.code=None
+        self.args=None#Will be a list
+        self.mem=mem
+        
+        
+    def _get(self, string):
+        self.string=string
+        try:
+            number=string2list(self.string)
+            if len(number)==1:
+                self.code=number[0]
+                self.args=[]
+            else:
+                self.code=number[0]
+                self.args=number[1:]
+        except:
+            self.code=-1
+        
+    def validateLength(self, number):
+        if number!=len(self.args):
+            loggingg("Comment {} has not enough parameters".format(self.code))
+            return False
+        return True
+        
+    def getInvestmentOperation(self, id):
+        operinversion=self.mem.data.investments.findInvestmentOperation(id)
+        if operinversion==None:
+            logging.error("I coudn't find operinversion {} for comment {}".format(id, self.code))
+        return operinversion
+        
+    def setEncoded10000(self, operinvestment):
+        """10000;investmentoperation.idSets the coded comment to save in db"""
+#        elif self.concepto.id in (29, 35) and len(c)==5:#{0}|{1}|{2}|{3}".format(row['inversion'], importe, comision, impuestos)
+#            return QApplication.translate("Core","{0[1]}: {0[0]} shares. Amount: {0[2]} {1}. Comission: {0[3]} {1}. Taxes: {0[4]} {1}").format(c, self.account.currency.symbol)
+        return "10000,{}".format(operinvestment.id)
+        
+    def setFancy(self, string):
+        """Sets the comment to show in app"""
+        self._get(string)
+        if self.code==-1:
+            return string
+        if self.code==10000:#Operinversion comment
+            self.validateLength(1)
+            io=self.getInvestmentOperation(self.args[0])
+            if io.inversion.hasSameAccountCurrency():
+                return QApplication.translate("Core","{}: {} shares. Amount: {}. Comission: {}. Taxes: {}").format(io.inversion.name, io.acciones, io.gross(1), io.comission(1), io.taxes(1))
+            else:
+                return QApplication.translate("Core","{}: {} shares. Amount: {} ({}). Comission: {} ({}). Taxes: {} ({})").format(io.inversion.name, io.acciones, io.gross(1), io.gross(2),  io.comission(1), io.comission(2),  io.taxes(1), io.taxes(2))
+                
+        
+        
+        #OPERINVESTMENTS
+                        
+#    def comment(self):
+#        """Función que genera un comentario parseado según el tipo de operación o concepto"""
+#        if self.tipooperacion.id==9:#"Traspaso de valores. Origen"#"{0}|{1}|{2}|{3}".format(self.inversion.name, self.bruto, self.retencion, self.comision)
+#            return QApplication.translate("Core","Traspaso de valores realizado a {0}".format(self.comentario.split("|"), self.account.currency.symbol))
+#        else:
+#            return self.comentario
+#        #OPERACCOUNTS
+#                    c=self.comentario.split("|")
+#        if self.concepto.id in (62, 39, 50, 63, 65) and len(c)==4:#"{0}|{1}|{2}|{3}".format(self.inversion.name, self.bruto, self.retencion, self.comision)
+#            return QApplication.translate("Core","{0[0]}. Gross: {0[1]} {1}. Witholding tax: {0[2]} {1}. Comission: {0[3]} {1}").format(c, self.account.currency.symbol)
+#        elif self.concepto.id in (29, 35) and len(c)==5:#{0}|{1}|{2}|{3}".format(row['inversion'], importe, comision, impuestos)
+#            return QApplication.translate("Core","{0[1]}: {0[0]} shares. Amount: {0[2]} {1}. Comission: {0[3]} {1}. Taxes: {0[4]} {1}").format(c, self.account.currency.symbol)
+#        elif self.concepto.id==40 and len(c)==2:#"{0}|{1}".format(self.selCreditCard.name, len(self.setSelOperCreditCards))
+#            return QApplication.translate("Core","CreditCard: {0[0]}. Made {0[1]} payments").format(c)
+#        elif self.concepto.id==4 and len(c)==3:#Transfer from origin
+#            return QApplication.translate("Core", "Transfer to {0}").format(self.mem.data.accounts.find_by_id(int(c[0])).name)
+#        elif self.concepto.id==5 and len(c)==2:#Transfer received in destiny
+#            return QApplication.translate("Core", "Transfer received from {0}").format(self.mem.data.accounts.find_by_id(int(c[0])).name)
+#        elif self.concepto.id==38 and c[0]=="Transfer":#Comision bancaria por transferencia
+#            return QApplication.translate("Core", "Due to account transfer of {0} from {1}").format(self.mem.localcurrency.string(float(c[1])), self.mem.data.accounts.find_by_id(int(c[2])).name)
+#        else:
+#            return self.comentario 
+        #OPERCREDITCARDS
+#        c=self.comentario.split("|")
+#        if self.concepto.id==67 and c[0]=="Refund":#CreditCardOperation refund
+#            opertarjeta=CreditCardOperation(self.mem).init__db_query(int(c[1]))        
+#            return QApplication.translate("Core", "Refund of {} credit card payment which had an amount of {}. {}").format(str(opertarjeta.datetime)[0:19], opertarjeta.tarjeta.account.currency.string(opertarjeta.importe), c[2])
+#        else:
+
+
 class Concept:
     def __init__(self, mem):
         self.mem=mem
@@ -3024,39 +3120,40 @@ class AccountOperation:
         cur.execute("delete from opercuentas where id_opercuentas=%s", (self.id, ))
         cur.close()
         
-    def comment(self):
-        """Función que genera un comentario parseado según el tipo de operación o concepto
-        
-        Transferencias 4 origen :
-            El comentario en transferencias: other_account|other_operaccount|comission_operaccount|commision
-                - other_account: id_accounts of the other account
-                - other_operaccount: id_opercuentas in order to remove them.
-                - comission_operaccount: comission. Si es 0 es que no hay comision porque también es 0
-        Transferencias 5 destino:
-            El comentario en transferencias destino no tiene comission: other_account|other_operaccount
-                - other_account: id_accounts of the other account
-                - other_operaccount: id_opercuentas in order to remove them.     
-                
-        Comision de Transferencias
-            - Transfer
-            - Amount
-            - Origin account
-        """
-        c=self.comentario.split("|")
-        if self.concepto.id in (62, 39, 50, 63, 65) and len(c)==4:#"{0}|{1}|{2}|{3}".format(self.inversion.name, self.bruto, self.retencion, self.comision)
-            return QApplication.translate("Core","{0[0]}. Gross: {0[1]} {1}. Witholding tax: {0[2]} {1}. Comission: {0[3]} {1}").format(c, self.account.currency.symbol)
-        elif self.concepto.id in (29, 35) and len(c)==5:#{0}|{1}|{2}|{3}".format(row['inversion'], importe, comision, impuestos)
-            return QApplication.translate("Core","{0[1]}: {0[0]} shares. Amount: {0[2]} {1}. Comission: {0[3]} {1}. Taxes: {0[4]} {1}").format(c, self.account.currency.symbol)
-        elif self.concepto.id==40 and len(c)==2:#"{0}|{1}".format(self.selCreditCard.name, len(self.setSelOperCreditCards))
-            return QApplication.translate("Core","CreditCard: {0[0]}. Made {0[1]} payments").format(c)
-        elif self.concepto.id==4 and len(c)==3:#Transfer from origin
-            return QApplication.translate("Core", "Transfer to {0}").format(self.mem.data.accounts.find_by_id(int(c[0])).name)
-        elif self.concepto.id==5 and len(c)==2:#Transfer received in destiny
-            return QApplication.translate("Core", "Transfer received from {0}").format(self.mem.data.accounts.find_by_id(int(c[0])).name)
-        elif self.concepto.id==38 and c[0]=="Transfer":#Comision bancaria por transferencia
-            return QApplication.translate("Core", "Due to account transfer of {0} from {1}").format(self.mem.localcurrency.string(float(c[1])), self.mem.data.accounts.find_by_id(int(c[2])).name)
-        else:
-            return self.comentario 
+#    def comment(self):
+#        """Función que genera un comentario parseado según el tipo de operación o concepto
+#        
+#        Transferencias 4 origen :
+#            El comentario en transferencias: other_account|other_operaccount|comission_operaccount|commision
+#                - other_account: id_accounts of the other account
+#                - other_operaccount: id_opercuentas in order to remove them.
+#                - comission_operaccount: comission. Si es 0 es que no hay comision porque también es 0
+#        Transferencias 5 destino:
+#            El comentario en transferencias destino no tiene comission: other_account|other_operaccount
+#                - other_account: id_accounts of the other account
+#                - other_operaccount: id_opercuentas in order to remove them.     
+#                
+#        Comision de Transferencias
+#            - Transfer
+#            - Amount
+#            - Origin account
+#        """
+##        c=self.comentario.split("|")
+##        if self.concepto.id in (62, 39, 50, 63, 65) and len(c)==4:#"{0}|{1}|{2}|{3}".format(self.inversion.name, self.bruto, self.retencion, self.comision)
+##            return QApplication.translate("Core","{0[0]}. Gross: {0[1]} {1}. Witholding tax: {0[2]} {1}. Comission: {0[3]} {1}").format(c, self.account.currency.symbol)
+##        elif self.concepto.id in (29, 35) and len(c)==5:#{0}|{1}|{2}|{3}".format(row['inversion'], importe, comision, impuestos)
+##            return QApplication.translate("Core","{0[1]}: {0[0]} shares. Amount: {0[2]} {1}. Comission: {0[3]} {1}. Taxes: {0[4]} {1}").format(c, self.account.currency.symbol)
+##        elif self.concepto.id==40 and len(c)==2:#"{0}|{1}".format(self.selCreditCard.name, len(self.setSelOperCreditCards))
+##            return QApplication.translate("Core","CreditCard: {0[0]}. Made {0[1]} payments").format(c)
+##        elif self.concepto.id==4 and len(c)==3:#Transfer from origin
+##            return QApplication.translate("Core", "Transfer to {0}").format(self.mem.data.accounts.find_by_id(int(c[0])).name)
+##        elif self.concepto.id==5 and len(c)==2:#Transfer received in destiny
+##            return QApplication.translate("Core", "Transfer received from {0}").format(self.mem.data.accounts.find_by_id(int(c[0])).name)
+##        elif self.concepto.id==38 and c[0]=="Transfer":#Comision bancaria por transferencia
+##            return QApplication.translate("Core", "Due to account transfer of {0} from {1}").format(self.mem.localcurrency.string(float(c[1])), self.mem.data.accounts.find_by_id(int(c[2])).name)
+##        else:
+#        logging.info("Obsolete comment")
+#        return self.comentario 
         
         
     def es_editable(self):
@@ -3435,29 +3532,39 @@ class Dividend:
     def gross(self, type=1):
         if type==1:
             return Money(self.mem, self.bruto, self.inversion.product.currency)
-        else:
+        elif type==2:
             return Money(self.mem, self.bruto, self.inversion.product.currency).convert_from_factor(self.inversion.account.currency, self.currency_conversion)
+        elif type==3:
+            return Money(self.mem, self.bruto, self.inversion.product.currency).convert_from_factor(self.inversion.account.currency, self.currency_conversion).local(self.fecha)
     def net(self, type=1):
         if type==1:
             return Money(self.mem, self.neto, self.inversion.product.currency)
-        else:
+        elif type==2:
             return Money(self.mem, self.neto, self.inversion.product.currency).convert_from_factor(self.inversion.account.currency, self.currency_conversion)
+        elif type==3:
+            return Money(self.mem, self.neto, self.inversion.product.currency).convert_from_factor(self.inversion.account.currency, self.currency_conversion).local(self.fecha)
     def retention(self, type=1):
         if type==1:
             return Money(self.mem, self.retencion, self.inversion.product.currency)
-        else:
+        elif type==2:
             return Money(self.mem, self.retencion, self.inversion.product.currency).convert_from_factor(self.inversion.account.currency, self.currency_conversion)
+        elif type==3:
+            return Money(self.mem, self.retencion, self.inversion.product.currency).convert_from_factor(self.inversion.account.currency, self.currency_conversion).local(self.fecha)
     def dps(self, type=1):
         "Dividend per share"
         if type==1:
             return Money(self.mem, self.dpa, self.inversion.product.currency)
-        else:
+        elif type==2:
             return Money(self.mem, self.dpa, self.inversion.product.currency).convert_from_factor(self.inversion.account.currency, self.currency_conversion)
+        elif type==3:
+            return Money(self.mem, self.dpa, self.inversion.product.currency).convert_from_factor(self.inversion.account.currency, self.currency_conversion).local(self.fecha)
     def comission(self, type=1):
         if type==1:
-            return Money(self.mem, self.comision, self.inversion.account.currency).convert_from_factor(self.inversion.product.currency, 1/self.currency_conversion)
-        else:
-            return Money(self.mem, self.comision, self.inversion.account.currency)
+            return Money(self.mem, self.comision, self.inversion.product.currency)
+        elif type==2:
+            return Money(self.mem, self.comision, self.inversion.product.currency).convert_from_factor(self.inversion.account.currency, self.currency_conversion)
+        elif type==3:
+            return Money(self.mem, self.comision, self.inversion.product.currency).convert_from_factor(self.inversion.account.currency, self.currency_conversion).local(self.fecha)
             
         
     def neto_antes_impuestos(self):
@@ -3602,7 +3709,7 @@ class InvestmentOperation:
         """Esta función actualiza la tabla opercuentasdeoperinversiones que es una tabla donde 
         se almacenan las opercuentas automaticas por las operaciones con inversiones. Es una tabla 
         que se puede actualizar en cualquier momento con esta función"""
-        self.comentario="{0}|{1}|{2}|{3}|{4}".format(self.acciones, self.inversion.name, self.importe, self.comision, self.impuestos)
+        self.comentario=Comment(self.mem).setEncoded10000(self)
         #/Borra de la tabla opercuentasdeoperinversiones los de la operinversión pasada como par´ametro
         cur=self.mem.con.cursor()
         cur.execute("delete from opercuentasdeoperinversiones where id_operinversiones=%s",(self.id, )) 
@@ -3632,12 +3739,13 @@ class InvestmentOperation:
         inv=self.inversion if investment==None else investment
         return InvestmentOperation(self.mem).init__create(self.tipooperacion, self.datetime, inv , self.acciones, self.importe, self.impuestos, self.comision, self.valor_accion, self.comentario,  self.show_in_ranges, self.currency_conversion, self.id)
                 
-    def comment(self):
-        """Función que genera un comentario parseado según el tipo de operación o concepto"""
-        if self.tipooperacion.id==9:#"Traspaso de valores. Origen"#"{0}|{1}|{2}|{3}".format(self.inversion.name, self.bruto, self.retencion, self.comision)
-            return QApplication.translate("Core","Traspaso de valores realizado a {0}".format(self.comentario.split("|"), self.account.currency.symbol))
-        else:
-            return self.comentario
+#    def comment(self):
+#        """Función que genera un comentario parseado según el tipo de operación o concepto"""
+##        if self.tipooperacion.id==9:#"Traspaso de valores. Origen"#"{0}|{1}|{2}|{3}".format(self.inversion.name, self.bruto, self.retencion, self.comision)
+##            return QApplication.translate("Core","Traspaso de valores realizado a {0}".format(self.comentario.split("|"), self.account.currency.symbol))
+##        else:
+#        logging.info("Obsolete comment")
+#        return self.comentario
 
     def less_than_a_year(self):
         if datetime.date.today()-self.datetime.date()<=datetime.timedelta(days=365):
@@ -4131,18 +4239,10 @@ class Investment:
         else:
             ### 0 Creo una vinversion fake para reutilizar codigo, cargando operinversiones hasta date
             invfake=Investment(self.mem).copy()
-            invfake.op.copy_until_datetime(day_end_from_date(date, self.mem.localzone))
-            (self.op_actual,  self.op_historica)=invfake.op.calcular()
+            invfake.op=self.op.copy_until_datetime(day_end_from_date(date, self.mem.localzone))
+            (invfake.op_actual,  invfake.op_historica)=invfake.op.calcular()
             return invfake.op_actual.invertido(type)
                 
-#    def tpc_invertido(self):       
-#        """Función que calcula el tpc invertido partiendo de las balance actual y el invertido
-#        Necesita haber cargado mq getbasic y operinversionesactual"""
-#        invertido=self.invertido().amount
-#        if invertido==0:
-#            return 0
-#        return (self.balance().amount-invertido)*100/invertido
-
     def percentage_to_selling_point(self):       
         """Función que calcula el tpc venta partiendo de las el last y el valor_venta
         Necesita haber cargado mq getbasic y operinversionesactual"""
@@ -4307,17 +4407,18 @@ class CreditCardOperation:
                 cur.execute("update opertarjetas set datetime=%s, id_conceptos=%s, id_tiposoperaciones=%s, importe=%s, comentario=%s, id_tarjetas=%s, pagado=%s, fechapago=%s, id_opercuentas=%s where id_opertarjetas=%s", (self.datetime, self.concepto.id, self.tipooperacion.id,  self.importe,  self.comentario, self.tarjeta.id, self.pagado, self.fechapago, self.opercuenta.id, self.id))
         cur.close()
         
-    def comment(self):
-        """Función que genera un comentario parseado según el tipo de operación o concepto
-        Opertarjetas refund:
-            El comentario es : "Refund|id_opertarjetas|lastcomment"
-        """
-        c=self.comentario.split("|")
-        if self.concepto.id==67 and c[0]=="Refund":#CreditCardOperation refund
-            opertarjeta=CreditCardOperation(self.mem).init__db_query(int(c[1]))        
-            return QApplication.translate("Core", "Refund of {} credit card payment which had an amount of {}. {}").format(str(opertarjeta.datetime)[0:19], opertarjeta.tarjeta.account.currency.string(opertarjeta.importe), c[2])
-        else:
-            return self.comentario 
+#    def comment(self):
+#        """Función que genera un comentario parseado según el tipo de operación o concepto
+#        Opertarjetas refund:
+#            El comentario es : "Refund|id_opertarjetas|lastcomment"
+#        """
+##        c=self.comentario.split("|")
+##        if self.concepto.id==67 and c[0]=="Refund":#CreditCardOperation refund
+##            opertarjeta=CreditCardOperation(self.mem).init__db_query(int(c[1]))        
+##            return QApplication.translate("Core", "Refund of {} credit card payment which had an amount of {}. {}").format(str(opertarjeta.datetime)[0:19], opertarjeta.tarjeta.account.currency.string(opertarjeta.importe), c[2])
+##        else:
+#        logging.info("obsolete comment")
+#        return self.comentario 
 
 class Order:
     def __init__(self, mem):
@@ -4525,33 +4626,27 @@ class Assets:
     def dividends_neto(self, ano,  mes=None):
         """Dividend cobrado en un año y mes pasado como parámetro, independientemente de si la inversión esta activa o no.
         El 63 es un gasto aunque también este registrado en dividends."""
-        logging.error("DEBE CONTROLAR LA MULTIDIVISA")
-        cur=self.mem.con.cursor()
-        if mes==None:#Calcula en el año
-            cur.execute("select sum(neto) as neto from dividends where id_conceptos not in (63) and date_part('year',fecha) = "+str(ano))
-            resultado=cur.fetchone()[0]
-        else:
-            cur.execute("select sum(neto) as neto from dividends where id_conceptos not in (63) and date_part('year',fecha) = "+str(ano)+" and date_part('month',fecha)= " + str(mes))
-            resultado=cur.fetchone()[0]   
-        if resultado==None:
-            resultado=0
-        cur.close()
-        return Money(self.mem, resultado, self.mem.localcurrency)
+        r=Money(self.mem, 0, self.mem.localcurrency)
+        for inv in self.mem.data.investments.arr:
+            setdiv=SetDividendsHomogeneus(self.mem, inv)
+            if mes==None:#Calcula en el año
+                setdiv.load_from_db("select * from dividends where id_conceptos not in (63) and  date_part('year',fecha)={} and id_inversiones={}".format(ano, inv.id))
+            else:
+                setdiv.load_from_db("select * from dividends where id_conceptos not in (63) and  date_part('year',fecha) ={} and date_part('month',fecha)={} and id_inversiones={}".format(ano, mes, inv.id))
+            r=r+setdiv.net(type=3)
+        return r
 
     def dividends_bruto(self,  ano,  mes=None):
         """Dividend cobrado en un año y mes pasado como parámetro, independientemente de si la inversión esta activa o no"""
-        logging.error("DEBE CONTROLAR LA MULTIDIVISA")
-        cur=self.mem.con.cursor()
-        if mes==None:#Calcula en el año
-            cur.execute("select sum(bruto) as bruto from dividends where id_conceptos not in (63) and  date_part('year',fecha) = "+str(ano))
-            resultado=cur.fetchone()[0]
-        else:
-            cur.execute("select sum(bruto) as bruto from dividends where id_conceptos not in (63) and  date_part('year',fecha) = "+str(ano)+" and date_part('month',fecha)= " + str(mes))
-            resultado=cur.fetchone()[0]   
-        if resultado==None:
-            resultado=0
-        cur.close()
-        return Money(self.mem, resultado, self.mem.localcurrency)
+        r=Money(self.mem, 0, self.mem.localcurrency)
+        for inv in self.mem.data.investments.arr:
+            setdiv=SetDividendsHomogeneus(self.mem, inv)
+            if mes==None:#Calcula en el año
+                setdiv.load_from_db("select * from dividends where id_conceptos not in (63) and  date_part('year',fecha)={} and id_inversiones={}".format(ano, inv.id))
+            else:
+                setdiv.load_from_db("select * from dividends where id_conceptos not in (63) and  date_part('year',fecha) ={} and date_part('month',fecha)={} and id_inversiones={}".format(ano, mes, inv.id))
+            r=r+setdiv.gross(type=3)
+        return r
         
         
     def invested(self, date=None):
@@ -4563,7 +4658,7 @@ class Assets:
         
         r=Money(self.mem, 0, self.mem.localcurrency)
         for inv in array:
-            r=r+inv.invertido(date).local()
+            r=r+inv.invertido(date, type=3)
         return r
         
     def saldo_todas_inversiones_bonds(self, fecha=None):        
@@ -4778,7 +4873,7 @@ class SetCreditCardOperations:
             tabla.setItem(rownumber, 1, qleft(a.concepto.name))
             tabla.setItem(rownumber, 2, self.mem.localcurrency.qtablewidgetitem(a.importe))
             tabla.setItem(rownumber, 3, self.mem.localcurrency.qtablewidgetitem(balance))
-            tabla.setItem(rownumber, 4, qleft(a.comment()))
+            tabla.setItem(rownumber, 4, qleft(Comment(self.mem).setFancy(a.comment())))
 class SetOperationTypes(SetCommons):
     def __init__(self, mem):
         SetCommons.__init__(self)
@@ -5187,11 +5282,6 @@ class Currency:
     def string(self, number,  digits=2):
         if number==None:
             return "None " + self.symbol
-        elif number.__class__==Decimal:   
-             with localcontext() as ctx:
-                ctx.prec = 2   # Perform a high precision calculation
-                number=number
-                return "{} {}".format(number, self.symbol)
         else:
             return "{0} {1}".format(round(number, digits),self.symbol)
             
