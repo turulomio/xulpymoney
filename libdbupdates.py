@@ -19,7 +19,7 @@ class Update:
     def __init__(self, mem):
         self.mem=mem
         self.dbversion=self.get_database_version()    
-        self.lastcodeupdate=201611101136
+        self.lastcodeupdate=201611110750
 
    
     def get_database_version(self):
@@ -50,6 +50,7 @@ class Update:
         """Returns if update must be done"""
         if self.dbversion>self.lastcodeupdate:
             print ("WARNING. DBVEERSION > LAST CODE UPDATE, PLEASE UPDATE LASTCODEUPDATE IN CLASS")
+            return
             
             
         
@@ -633,10 +634,22 @@ LANGUAGE plpgsql;""")
             cur.close()
             self.mem.con.commit()
             self.set_database_version(201611101136)      
+        if self.dbversion<201611110750:
+            cur=self.mem.con.cursor()
+            cur.execute("insert into products (id, name,  isin,  currency,  type,  agrupations,   web, address,  phone, mail, percentage, pci,  leveraged, stockmarkets_id, ticker, priority, priorityhistorical , comment,  obsolete) values (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
+                    (81712, 'PROSHARES ULTRA QQQ', 'US74347R2067  ', 'USD', 4, '', '', None, None, None, 100, 'c', 2, 2, 'QLD', [1, ],[3, ], None, False ))
+            cur.execute("insert into products (id, name,  isin,  currency,  type,  agrupations,   web, address,  phone, mail, percentage, pci,  leveraged, stockmarkets_id, ticker, priority, priorityhistorical , comment,  obsolete) values (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
+                    (81713, 'PROSHARES ULTRA DOW30', 'US74347R3057  ', 'USD', 4, '', '', None, None, None, 100, 'c', 2, 2, 'DDM', [1, ],[3, ], None, False ))
+            cur.execute("insert into products (id, name,  isin,  currency,  type,  agrupations,   web, address,  phone, mail, percentage, pci,  leveraged, stockmarkets_id, ticker, priority, priorityhistorical , comment,  obsolete) values (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
+                    (81714, 'PROSHARES ULTRA RUSSELL2000', 'US74347R3057  ', 'USD', 4, '', '', None, None, None, 100, 'c', 2, 2, 'UWM', [1, ],[3, ], None, False ))
+            cur.close()
+            self.mem.con.commit()
+            self.set_database_version(201611110750)      
+            
+            
+            
+            
         """       WARNING                    ADD ALWAYS LAST UPDATE CODE                         WARNING
-        
-        
         AFTER EXECUTING I MUST RUN SQL UPDATE SCRIPT TO UPDATE FUTURE INSTALLATIONS
-    
     OJO EN LOS REEMPLAZOS MASIVOS PORQUE UN ACTIVE DE PRODUCTS LUEGO PASA A LLAMARSE AUTOUPDATE PERO DEBERA MANTENERSSE EN SU MOMENTO TEMPORAL"""  
         print ("**** Database already updated")
