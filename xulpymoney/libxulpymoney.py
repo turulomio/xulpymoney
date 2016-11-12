@@ -4873,7 +4873,7 @@ class SetCreditCardOperations:
             tabla.setItem(rownumber, 1, qleft(a.concepto.name))
             tabla.setItem(rownumber, 2, self.mem.localcurrency.qtablewidgetitem(a.importe))
             tabla.setItem(rownumber, 3, self.mem.localcurrency.qtablewidgetitem(balance))
-            tabla.setItem(rownumber, 4, qleft(Comment(self.mem).setFancy(a.comment())))
+            tabla.setItem(rownumber, 4, qleft(Comment(self.mem).setFancy(a.comentario)))
 class SetOperationTypes(SetCommons):
     def __init__(self, mem):
         SetCommons.__init__(self)
