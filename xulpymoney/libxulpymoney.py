@@ -340,23 +340,24 @@ class SetSimulationTypes(SetCommons):
                 combo.setCurrentIndex(combo.findData(selected.id))
 
 
-class SetInvestmentsGeneric(SetCommonsGeneric):
-    """
-        Generic class. Investments doesn't hava an id, neither an account
-        
-        Used in DisReinvest , merging investments ....
-    """
-    def __init__(self, mem):
-        SetCommonsGeneric.__init__(self)
-        self.mem=mem
-
-    def order_by_balance(self, fecha=None):
-        """Orders the Set using self.arr"""
-        try:
-            self.arr=sorted(self.arr, key=lambda inv: inv.balance(fecha),  reverse=True) 
-            return True
-        except:
-            return False
+#class SetInvestmentsGeneric(SetCommonsGeneric):
+#    """
+#        Generic class. Investments doesn't hava an id, neither an account
+#        
+#        Used in DisReinvest , merging investments ....
+#    """
+#    def __init__(self, mem):
+#        SetCommonsGeneric.__init__(self)
+#        self.mem=mem
+#
+#    def order_by_balance(self, fecha=None,  type=3):
+#        """Orders the Set using self.arr"""
+##        try:
+#        self.arr=sorted(self.arr, key=lambda inv: inv.balance(fecha,  type),  reverse=True) 
+##            return True
+##        except:
+##            logging.error("SetInvestmentsGeneric can't order by balance")
+##            return False
             
 class SetInvestments(SetCommons):
     def __init__(self, mem, cuentas, products, benchmark):
@@ -557,7 +558,7 @@ class SetInvestments(SetCommons):
         return r
         
 
-    def investment_merging_operations_with_same_product(self,  product,  account=None):
+    def investment_merging_operations_with_same_product(self,  product):
         """
             Returns and investment object, with all operations of the invesments with the same product. The merged investments are in the set
             The investment and the operations are copied objects.
@@ -570,8 +571,10 @@ class SetInvestments(SetCommons):
             Realmente es aplicar el m´etodo FIFO  a todas las inversiones.
             
         """
-        name=QApplication.translate("Core", "Inverstment merging investments operations of {} (FIFO)".format(product.name))
-        r=Investment(self.mem).init__create(name, 0, account, product, None, False)
+        name=QApplication.translate("Core", "Investment merging operations of {} (FIFO)".format(product.name))
+        bank=Bank(self.mem).init__create("Merging bank", True, -1)
+        account=Account(self.mem).init__create("Merging account",  bank, True, "", self.mem.localcurrency, -1)
+        r=Investment(self.mem).init__create(name, None, account, product, None, True, -1)
         r.op=SetInvestmentOperationsHomogeneus(self.mem, r)
         for inv in self.arr: #Recorre las inversion del array
             if inv.product.id==product.id:
@@ -582,30 +585,32 @@ class SetInvestments(SetCommons):
         (r.op_actual,  r.op_historica)=r.op.calcular() 
         return r
     
-    def setInvestmentOperationCurrentHeterogeneous_merging_current_operations_with_same_product(self, product):
-        """
-            Funci´on que convierte el set actual de inversiones, sacando las del producto pasado como par´ametro
-            Crea una inversi´on nueva cogiendo las  operaciones actuales, junt´andolas , convirtiendolas en operaciones normales 
-            
-            se usa para hacer reinversiones, en las que no se ha tenido cuenta el metodo fifo, para que use las acciones actuales.
-        """
-        r=SetInvestmentOperationsCurrentHeterogeneus(self.mem)
-        for inv in self.arr: #Recorre las inversion del array
-            if inv.product.id==product.id:
-                for o in inv.op_actual.arr:
-                    r.append(InvestmentOperation(self.mem).init__create(o.tipooperacion, o.datetime, r, o.acciones, o.importe, o.impuestos, o.comision,  o.valor_accion,  o.comision,  o.show_in_ranges,  o.currency_conversion,  o.id))
-        r.order_by_datetime() 
-        return r
+#    def setInvestmentOperationCurrentHeterogeneous_merging_current_operations_with_same_product(self, product):
+#        """
+#            Funci´on que convierte el set actual de inversiones, sacando las del producto pasado como par´ametro
+#            Crea una inversi´on nueva cogiendo las  operaciones actuales, junt´andolas , convirtiendolas en operaciones normales 
+#            
+#            se usa para hacer reinversiones, en las que se ha tenido cuenta el metodo fifo, para que use las acciones actuales.
+#        """
+#        r=SetInvestmentOperationsCurrentHeterogeneus(self.mem)
+#        for inv in self.arr: #Recorre las inversion del array
+#            if inv.product.id==product.id:
+#                for o in inv.op_actual.arr:
+#                    r.append(InvestmentOperation(self.mem).init__create(o.tipooperacion, o.datetime, r, o.acciones, o.importe, o.impuestos, o.comision,  o.valor_accion,  o.comision,  o.show_in_ranges,  o.currency_conversion,  o.id))
+#        r.order_by_datetime() 
+#        return r
 
-    def investment_merging_current_operations_with_same_product(self, product, account=False):
+    def investment_merging_current_operations_with_same_product(self, product):
         """
             Funci´on que convierte el set actual de inversiones, sacando las del producto pasado como par´ametro
             Crea una inversi´on nueva cogiendo las  operaciones actuales, junt´andolas , convirtiendolas en operaciones normales 
             
             se usa para hacer reinversiones, en las que no se ha tenido cuenta el metodo fifo, para que use las acciones actuales.
         """
-        name=QApplication.translate("Core", "Investment merging current operations of {}".format(product.name))
-        r=Investment(self.mem).init__create(name, 0, account, product, None, False)       
+        name=QApplication.translate("Core", "Investment merging current operations of {} (NOT FIFO)".format(product.name))
+        bank=Bank(self.mem).init__create("Merging bank", True, -1)
+        account=Account(self.mem).init__create("Merging account",  bank, True, "", self.mem.localcurrency, -1)
+        r=Investment(self.mem).init__create(name, None, account, product, None, True, -1)    
         r.op=SetInvestmentOperationsHomogeneus(self.mem, r)
         for inv in self.arr: #Recorre las inversion del array
             if inv.product.id==product.id:
@@ -615,7 +620,7 @@ class SetInvestments(SetCommons):
         (r.op_actual,  r.op_historica)=r.op.calcular()             
         return r
         
-    def setInvestmentsGeneric_merging_investments_with_same_product(self,  account=None):
+    def setInvestments_merging_investments_with_same_product(self):
         """
             Genera un set Investment nuevo , creando invesments aglutinadoras de todas las inversiones con el mismo producto
             
@@ -623,7 +628,7 @@ class SetInvestments(SetCommons):
             en frmReportInvestment, se pasar´ia la< cuenta asociada ala inversi´on del informe.
             
         """
-        invs=SetInvestmentsGeneric(self.mem)
+        invs=SetInvestments(self.mem, None, self.mem.data.products, self.mem.data.benchmark)
         for product in self.products_distinct().arr:
             i=self.investment_merging_operations_with_same_product(product)
             invs.append(i) 
@@ -795,12 +800,11 @@ class SetInvestments(SetCommons):
 
     def order_by_percentage_sellingpoint(self):
         """Orders the Set using self.arr"""
-#        try:
-#        self.arr=sorted(self.arr, key=lambda inv: ( inv.percentage_to_selling_point(), -inv.op_actual.tpc_total(inv.product.result.basic.last, type=3)),  reverse=False) #Ordenado por dos criterios
-        self.arr=sorted(self.arr, key=lambda inv:  inv.percentage_to_selling_point(), reverse=False) #Ordenado por dos criterios
-        return True
-#        except:
-#            return False
+        try:
+            self.arr=sorted(self.arr, key=lambda inv: ( inv.percentage_to_selling_point(), -inv.op_actual.tpc_total(inv.product.result.basic.last, type=3)),  reverse=False) #Ordenado por dos criterios
+            return True
+        except:
+            return False
             
     def order_by_percentage_invested(self):
         """Orders the Set using self.arr"""
@@ -826,12 +830,13 @@ class SetInvestments(SetCommons):
         except:
             return False
             
-    def order_by_balance(self, fecha=None):
+    def order_by_balance(self, fecha=None,  type=3):
         """Orders the Set using self.arr"""
         try:
-            self.arr=sorted(self.arr, key=lambda inv: inv.balance(fecha),  reverse=True) 
+            self.arr=sorted(self.arr, key=lambda inv: inv.balance(fecha, type),  reverse=True) 
             return True
         except:
+            logging.error("SetInvestments can't order by balance")
             return False
         
         
@@ -5202,6 +5207,18 @@ class StockMarket:
         self.closes=row['closes']
         self.zone=self.mem.zones.find_by_name(row['zone'])
         return self
+        
+    def today_closes(self):
+        """
+            Returns a datetime with timezone with the todays stockmarket closes
+        """
+        return dt(datetime.date.today(), self.closes, self.zone)
+
+    def today_starts(self):
+        """
+            Returns a datetime with timezone with the todays stockmarket closes
+        """
+        return dt(datetime.date.today(), self.starts, self.zone)
 
 class Color:
     esc_seq = "\x1b["
@@ -5483,6 +5500,7 @@ class Money:
             return False
         else:
             logging.error("Before lt ordering, please convert to the same currency")
+            sys.exit(1)
         
     def __mul__(self, money):
         """Si las divisas son distintas, queda el resultado con la divisa del primero

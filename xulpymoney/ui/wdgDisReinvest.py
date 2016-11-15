@@ -19,7 +19,7 @@ class wdgDisReinvest(QWidget, Ui_wdgDisReinvest):
         if allProduct==False:
             self.inversion=inversion
         else:
-            self.inversion=self.mem.data.investments_active().investment_merging_current_operations_with_same_product(inversion.product, inversion.account)
+            self.inversion=self.mem.data.investments_active().investment_merging_current_operations_with_same_product(inversion.product)
             
                 
         self.txtValorAccion.setText(self.inversion.product.result.basic.last.quote)
