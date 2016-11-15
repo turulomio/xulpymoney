@@ -55,38 +55,20 @@ class frmSellingPoint(QDialog, Ui_frmSellingPoint):
         
         self.cmbTPC.setCurrentText("{} %".format(self.mem.settingsdb.value("frmSellingPoint/lastgainpercentage",  5)))
         
-    def __calcular(self):    
-#        def load_array():
-#            if self.chkPonderanAll.checkState()==Qt.Checked:#Ponderan misma inversion
-#                for  inv in self.mem.data.investments_active().arr:
-#                    if inv.product.id==self.inversion.product.id:
-#                        for op in inv.op_actual.arr:
-#                            self.operinversiones.append(op)                
-#            else:# No ponderan misma inversion
-#                self.operinversiones=self.inversion.op_actual.copy_until_datetime(None)
-#                
-#            #Quita operaciones menos de un año si a lugar
-#            if self.chkGainsTime.checkState()==Qt.Checked:
-#                for o in self.operinversiones.arr:
-#                    if o.less_than_a_year()==True:
-#                        self.operinversiones.remove(o)
-#        ###########################
-        
+    def __calcular(self):           
+        type=2
         if self.chkPonderanAll.checkState()==Qt.Checked:#Results are in self.mem.localcurrency
-            self.operinversiones=self.mem.data.investments_active().setInvestmentOperationCurrentHeterogeneous_merging_current_operations_with_same_product(self.inversion.product)
+            self.operinversiones=self.mem.data.investments_active().investment_merging_current_operations_with_same_product(self.inversion.product).op_actual
             self.operinversiones.myqtablewidget(self.table)
             suminvertido=self.operinversiones.invertido()
-            sumpendiente=self.operinversiones.pendiente()
         else:#Results in account currency
             self.operinversiones=SetInvestmentOperationsCurrentHomogeneus(self.mem, self.inversion)
             if self.chkGainsTime.checkState()==Qt.Checked:
                 self.operinversiones=self.inversion.op_actual.copy_until_datetime(self.mem.localzone.now()-datetime.timedelta(days=365))
             else:
                 self.operinversiones=self.inversion.op_actual.copy_until_datetime(None)
-            type=2
             self.operinversiones.myqtablewidget(self.table, self.inversion.product.result.basic.last,  type)
             suminvertido=self.operinversiones.invertido(type)
-            sumpendiente=self.operinversiones.pendiente(self.inversion.product.result.basic.last, type)
         sumacciones=self.operinversiones.acciones()
         
         if sumacciones==Decimal(0):
@@ -123,7 +105,7 @@ class frmSellingPoint(QDialog, Ui_frmSellingPoint):
         self.operinversiones.myqtablewidget(self.tableSP, quote, type) 
         
         if self.chkPonderanAll.checkState()==Qt.Checked:
-            self.cmd.setText(self.tr("Set selling price to all investments  of {0} to gain {1}").format(self.puntoventa, "MAL"))
+            self.cmd.setText(self.tr("Set selling price to all investments  of {0} to gain {1}").format(self.puntoventa, self.operinversiones.pendiente(quote, type)))
         else:
             self.cmd.setText(self.tr("Set {0} shares selling price to {1} to gain {2}").format(sumacciones, self.puntoventa, self.operinversiones.pendiente(quote, type)))
 
@@ -158,19 +140,14 @@ class frmSellingPoint(QDialog, Ui_frmSellingPoint):
     @QtCore.pyqtSlot() 
     def on_cmd_released(self):
         if self.chkPonderanAll.checkState()==Qt.Checked:
-            invs=set()#Solo un save por inversion
-            for o in self.operinversiones:
-                if o.inversion not in invs:
-                    invs.add(o.inversion)
-            print (list(invs))
-            for inv in list(invs):
-                inv.venta=self.puntoventa
-                inv.save()
+            for inv in self.mem.data.investments_active().arr:
+                if inv.product.id==self.inversion.product.id:
+                    inv.venta=self.puntoventa.amount
+                    inv.save()
             self.mem.con.commit()
         
         #Save in settings the last selling percentage, if that's the case
         if self.radTPC.isChecked():
             percentage=Decimal(self.cmbTPC.currentText().replace(" %", ""))
             self.mem.settingsdb.setValue("frmSellingPoint/lastgainpercentage", percentage)
-        
         self.done(0)

@@ -281,10 +281,10 @@ class wdgInvestmentClasses(QWidget, Ui_wdgInvestmentClasses):
         sumtotal=Money(self.mem, 0, self.mem.localcurrency)
             
         #Genera SetInvestments con distinct products
-        invs=self.mem.data.investments_active().setInvestmentsGeneric_merging_investments_with_same_product()
+        invs=self.mem.data.investments_active().setInvestments_merging_investments_with_same_product()
         invs.order_by_balance()
         for i in invs.arr:
-            labels.append(i.name)
+            labels.append(i.name.replace("Investment merging operations of ", "").replace(" (FIFO)", ""))
             if self.radCurrent.isChecked():
                 saldo=i.balance().local()
             else:
@@ -296,7 +296,6 @@ class wdgInvestmentClasses(QWidget, Ui_wdgInvestmentClasses):
         labels.append(self.tr("Accounts"))
         data.append(self.accounts.amount)
         explode.append(0.15)            
-        print(data)
         
         if self.radCurrent.isChecked():    
             self.canvasProduct.ax.set_title(self.tr("Investment current balance by product"), fontsize=30, fontweight="bold", y=1.02)   

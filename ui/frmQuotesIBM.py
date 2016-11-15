@@ -13,12 +13,18 @@ class frmQuotesIBM(QDialog, Ui_frmQuotesIBM):
         self.lblInvestment.setText("{0} ({1})".format(self.product.name,  self.product.id))
         self.quote=quote
         
+        for s in self.mem.stockmarkets.arr:
+            print (s.name,    s.today_starts() , "||||||||||||||||", s.today_closes() , "||||||||||||||||", dt_changes_tz(s.today_starts(), self.mem.localzone) , "||||||||||||||||",  dt_changes_tz(s.today_closes(), self.mem.localzone))
+        
+        
+        
         if quote==None:#Insert
             if self.product.type.id in (2, 8):
                 self.chkNone.setCheckState(Qt.Checked)       
             else:
-                if datetime.datetime.now().time()>=self.product.stockmarket.closes:#Si ya ha cerrado la bolsa
-                    self.wdgDT.setCombine(self.mem, datetime.datetime.now().date(), self.product.stockmarket.closes, self.product.stockmarket.zone)
+                if self.mem.localzone.now()>=self.product.stockmarket.today_closes():#Si ya ha cerrado la bolsa
+                    today_closes=dt_changes_tz(s.today_closes(), self.mem.localzone)
+                    self.wdgDT.setCombine(self.mem,  today_closes.date(), today_closes.time(),  self.mem.localzone)
                 else:
                     self.wdgDT.set(self.mem)
         else:#Update
