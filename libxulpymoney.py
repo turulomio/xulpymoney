@@ -4493,8 +4493,8 @@ class Order:
         
     def percentage_from_current_price(self):
         """Calculates percentage from current price to order price"""
-        if self.price!=0:
-            return Decimal(100)*(self.price-self.investment.product.result.basic.last.quote)/self.price
+        if self.investment.product.result.basic.last.quote!=Decimal(0):
+            return Decimal(100)*(self.price-self.investment.product.result.basic.last.quote)/self.investment.product.result.basic.last.quote
         return None
         
 class OperationType:
