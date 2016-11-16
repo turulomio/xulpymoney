@@ -100,7 +100,8 @@ class wdgInvestments(QWidget, Ui_wdgInvestments):
         if self.inversiones.order_by_percentage_daily():
             self.tblInvestments_reload()    
         else:
-            qmessagebox_error_ordering()     
+            qmessagebox_error_ordering()  
+            self.tblInvestments_reload()       
         
     @QtCore.pyqtSlot() 
     def on_actionSortTPCVenta_triggered(self):
@@ -108,6 +109,7 @@ class wdgInvestments(QWidget, Ui_wdgInvestments):
             self.tblInvestments_reload()    
         else:
             qmessagebox_error_ordering()     
+            self.tblInvestments_reload()    
         
     @QtCore.pyqtSlot() 
     def on_actionSortTPC_triggered(self):
@@ -115,6 +117,7 @@ class wdgInvestments(QWidget, Ui_wdgInvestments):
             self.tblInvestments_reload()    
         else:
             qmessagebox_error_ordering()     
+            self.tblInvestments_reload()    
         
     @QtCore.pyqtSlot() 
     def on_actionSortHour_triggered(self):
@@ -122,6 +125,7 @@ class wdgInvestments(QWidget, Ui_wdgInvestments):
             self.tblInvestments_reload()    
         else:
             qmessagebox_error_ordering()     
+            self.tblInvestments_reload()    
         
     @QtCore.pyqtSlot() 
     def on_actionSortName_triggered(self):
@@ -129,6 +133,7 @@ class wdgInvestments(QWidget, Ui_wdgInvestments):
             self.tblInvestments_reload()    
         else:
             qmessagebox_error_ordering()     
+            self.tblInvestments_reload()    
             
     @QtCore.pyqtSlot(int) 
     def on_chkInactivas_stateChanged(self, state):
