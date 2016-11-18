@@ -282,7 +282,7 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
         f=frmSellingPoint(self.mem, self.inversion)
         f.txtPrice.setText(self.txtVenta.text())
         f.exec_()
-        self.txtVenta.setText(str(f.puntoventa.amount))
+        self.txtVenta.setText(str(f.puntoventa.round(6)))
 
     @QtCore.pyqtSlot() 
     def on_actionOperationDelete_triggered(self):

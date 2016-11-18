@@ -281,7 +281,7 @@ class wdgInvestmentClasses(QWidget, Ui_wdgInvestmentClasses):
         sumtotal=Money(self.mem, 0, self.mem.localcurrency)
             
         #Genera SetInvestments con distinct products
-        invs=self.mem.data.investments_active().setInvestments_merging_investments_with_same_product()
+        invs=self.mem.data.investments_active().setInvestments_merging_investments_with_same_product_merging_operations()
         invs.order_by_balance()
         for i in invs.arr:
             labels.append(i.name.replace("Investment merging operations of ", "").replace(" (FIFO)", ""))

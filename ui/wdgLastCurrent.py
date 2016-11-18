@@ -14,11 +14,30 @@ class wdgLastCurrent(QWidget, Ui_wdgLastCurrent):
         QWidget.__init__(self, parent)
         self.setupUi(self)
         self.mem=mem
+        self.investments=None
         self.tblInvestments.settings(self.mem, "wdgLastCurrent")
         self.spin.setValue(int(self.mem.settingsdb.value("wdgLastCurrent/spin", "-25")))
-        self.on_actionSortTPCLast_triggered()
+        self.tblInvestments_reload()
         
     def tblInvestments_reload(self):
+        firsttime=False#Switch to inictializate and default sorting
+        if self.investments==None:
+            firsttime=True
+        
+        if self.chkSameProduct.checkState()==Qt.Unchecked:
+            self.investments=self.mem.data.investments_active()
+        else:
+            self.investments=self.mem.data.investments_active().setInvestments_merging_investments_with_same_product_merging_current_operations()
+            
+    
+            
+#        #Now removes op_actual with no shares
+#        indextoremove=[]
+#        for i in self.investments.arr:
+#            if i.op_actual.acciones()>0:
+#                indextoremove.append(i.id)
+        if firsttime==True:
+            self.on_actionSortTPCLast_triggered()
         self.investments.myqtablewidget_lastCurrent(self.tblInvestments, self.spin.value())
         
     @QtCore.pyqtSlot() 
@@ -69,53 +88,37 @@ class wdgLastCurrent(QWidget, Ui_wdgLastCurrent):
         w=frmProductReport(self.mem, self.investments.selected.product, self.investments.selected, self)
         w.exec_()
         self.tblInvestments_reload()
-   
-    def setInvestments(self):
-        self.investments=SetInvestments(self.mem, self.mem.data.accounts, self.mem.data.products,  self.mem.data.benchmark)
-        for i in self.mem.data.investments_active().arr:
-            if i.op_actual.acciones()>0:
-                self.investments.append(i)
-   
+      
    
     @QtCore.pyqtSlot() 
     def on_actionSortTPCVenta_triggered(self):
-        self.setInvestments()
-        if self.investments.order_by_percentage_sellingpoint():
-            self.tblInvestments_reload()    
-        else:
+        if self.investments.order_by_percentage_sellingpoint()==False:
             qmessagebox_error_ordering()     
+        self.tblInvestments_reload()
         
     @QtCore.pyqtSlot() 
     def on_actionSortTPC_triggered(self):
-        self.setInvestments()
-        if self.investments.order_by_percentage_invested():
-            self.tblInvestments_reload()    
-        else:
+        if self.investments.order_by_percentage_invested()==False:
             qmessagebox_error_ordering()     
+        self.tblInvestments_reload()
         
     @QtCore.pyqtSlot() 
     def on_actionSortHour_triggered(self):
-        self.setInvestments()
-        if self.investments.order_by_datetime_last_operation():
-            self.tblInvestments_reload()    
-        else:
+        if self.investments.order_by_datetime_last_operation()==False:
             qmessagebox_error_ordering()     
+        self.tblInvestments_reload()
         
     @QtCore.pyqtSlot() 
-    def on_actionSortName_triggered(self):
-        self.setInvestments()
-        if self.investments.order_by_name():
-            self.tblInvestments_reload()    
-        else:
+    def on_actionSortName_triggered(self):            
+        if self.investments.order_by_name()==False:
             qmessagebox_error_ordering()     
-            
+        self.tblInvestments_reload()    
+
     @QtCore.pyqtSlot() 
     def on_actionSortTPCLast_triggered(self):
-        self.setInvestments()
-        if self.investments.order_by_percentage_last_operation():
-            self.tblInvestments_reload()    
-        else:
+        if self.investments.order_by_percentage_last_operation()==False:
             qmessagebox_error_ordering()     
+        self.tblInvestments_reload()    
             
 
     def on_tblInvestments_customContextMenuRequested(self,  pos):
@@ -170,3 +173,6 @@ class wdgLastCurrent(QWidget, Ui_wdgLastCurrent):
             m.exec_()     
         else:
             self.on_actionCalculate_triggered()
+
+    def on_chkSameProduct_stateChanged(self, state):
+        self.tblInvestments_reload()

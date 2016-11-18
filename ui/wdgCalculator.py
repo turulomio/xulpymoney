@@ -59,7 +59,7 @@ class wdgCalculator(QWidget, Ui_wdgCalculator):
             self.txtProductPrice.setText(self.product.result.basic.penultimate.quote)
             
         self.txtFinalPrice.textChanged.disconnect()
-        self.txtFinalPrice.setText(self.txtProductPrice.decimal()*Decimal(1+Decimal(self.spnProductPriceVariation.value())*self.txtLeveraged.decimal()/100))
+        self.txtFinalPrice.setText(round(self.txtProductPrice.decimal()*Decimal(1+Decimal(self.spnProductPriceVariation.value())*self.txtLeveraged.decimal()/100), 6))
         self.txtFinalPrice.textChanged.connect(self.on_txtFinalPrice_textChanged)
         
         self.calculate()
@@ -76,7 +76,7 @@ class wdgCalculator(QWidget, Ui_wdgCalculator):
         self.cmbPrice_load()        
         self.txtLeveraged.setText(self.product.leveraged.multiplier)
         self.txtFinalPrice.textChanged.disconnect()
-        self.txtFinalPrice.setText(self.txtProductPrice.decimal()*Decimal(1+Decimal(self.spnProductPriceVariation.value())*self.txtLeveraged.decimal()/100))
+        self.txtFinalPrice.setText(round(self.txtProductPrice.decimal()*Decimal(1+Decimal(self.spnProductPriceVariation.value())*self.txtLeveraged.decimal()/100), 6))
         self.txtFinalPrice.textChanged.connect(self.on_txtFinalPrice_textChanged)
     
         self.calculate()
@@ -84,7 +84,6 @@ class wdgCalculator(QWidget, Ui_wdgCalculator):
     @pyqtSlot(int)  
     def on_cmbInvestments_currentIndexChanged(self, index):
         """To invoke this function you must call self.cmbInvestments.setCurrentIndex()"""
-        print (index)
         if index>=0:#Only enabled if some investment is selected
             self.cmdOrder.setEnabled(True)
         else:

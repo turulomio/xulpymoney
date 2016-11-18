@@ -388,33 +388,17 @@ class SetInvestments(SetCommons):
             
     def myqtablewidget(self, table):
         """Esta tabla muestra los money con la moneda local"""
-        table.setRowCount(len(self.arr))
+        table.setRowCount(self.length()+1)
         table.applySettings()
         table.clearContents()
-        
         type=3
-        
-#        d={"sumpendiente":Money(self.mem), "sumdiario":Money(self.mem), "suminvertido":Money(self.mem), "sumpositivos":Money(self.mem), "sumnegativos":Money(self.mem)} #Sera localcurrency
         for i, inv in enumerate(self.arr):
             table.setItem(i, 0, QTableWidgetItem("{0} ({1})".format(inv.name, inv.account.name)))            
             table.setItem(i, 1, qdatetime(inv.product.result.basic.last.datetime, inv.product.stockmarket.zone))
             table.setItem(i, 2, inv.product.currency.qtablewidgetitem(inv.product.result.basic.last.quote,  6))#Se debería recibir el parametro currency
-            
-#            diario=inv.diferencia_saldo_diario().local()
-#            d["sumdiario"]=d["sumdiario"]+diario
             table.setItem(i, 3, inv.op_actual.gains_last_day(type).qtablewidgetitem())
             table.setItem(i, 4, qtpc(inv.product.result.basic.tpc_diario()))
             table.setItem(i, 5, inv.balance(None,  type).qtablewidgetitem())
-#            
-#            invertido=inv.invertido().local()
-#            d["suminvertido"]=d["suminvertido"]+invertido
-            
-#            pendiente=inv.pendiente().local()
-#            if pendiente.isGETZero():
-#                d["sumpositivos"]=d["sumpositivos"]+pendiente
-#            else:
-#                d["sumnegativos"]=d["sumnegativos"]+pendiente
-#            d["sumpendiente"]=d["sumpendiente"]+pendiente
             table.setItem(i, 6, inv.op_actual.pendiente(inv.product.result.basic.last, type).qtablewidgetitem())
             
             tpc_invertido=inv.op_actual.tpc_total(inv.product.result.basic.last, type)
@@ -432,7 +416,10 @@ class SetInvestments(SetCommons):
                     table.item(i, 7).setBackground(QColor(255, 148, 148))
                 if (tpc_venta<=5 and tpc_venta>0) or tpc_venta<0:
                     table.item(i, 8).setBackground(QColor(148, 255, 148))
-
+#                
+#        table.setItem(self.length(), 0, QTableWidgetItem("Total ( IInvested: {} )".format(self.invested())))
+#        table.setItem(self.length(), 3, self.gains_last_day().qtablewidgetitem())
+#        table.setItem(self.length(), 6, self.pendiente().qtablewidgetitem())
 
     def myqtablewidget_lastCurrent(self, table,  percentage):
         """
@@ -523,6 +510,17 @@ class SetInvestments(SetCommons):
         for inv in self.arr:
             r=r+inv.invertido(type=3)
         return r            
+    
+    def numberWithSameProduct(self, product):
+        """
+            Returns the number of investments with the same product in the array
+        """
+        r=0
+        for inv in self.arr:
+            if inv.product.id==product.id:
+                r=r+1
+        return r
+        
     def pendiente(self):
         """Da el resultado en self.mem.localcurrency"""
         r=Money(self.mem, 0, self.mem.localcurrency)
@@ -620,7 +618,7 @@ class SetInvestments(SetCommons):
         (r.op_actual,  r.op_historica)=r.op.calcular()             
         return r
         
-    def setInvestments_merging_investments_with_same_product(self):
+    def setInvestments_merging_investments_with_same_product_merging_operations(self):
         """
             Genera un set Investment nuevo , creando invesments aglutinadoras de todas las inversiones con el mismo producto
             
@@ -631,6 +629,21 @@ class SetInvestments(SetCommons):
         invs=SetInvestments(self.mem, None, self.mem.data.products, self.mem.data.benchmark)
         for product in self.products_distinct().arr:
             i=self.investment_merging_operations_with_same_product(product)
+            invs.append(i) 
+        return invs
+        
+                
+    def setInvestments_merging_investments_with_same_product_merging_current_operations(self):
+        """
+            Genera un set Investment nuevo , creando invesments aglutinadoras de todas las inversiones con el mismo producto
+            
+            Account no es necesaria pero para mostrar algunas tablas con los calculos (currency) se necesita por lo que se puede pasar como parametro. Por ejemplo
+            en frmReportInvestment, se pasar´ia la< cuenta asociada ala inversi´on del informe.
+            
+        """
+        invs=SetInvestments(self.mem, None, self.mem.data.products, self.mem.data.benchmark)
+        for product in self.products_distinct().arr:
+            i=self.investment_merging_current_operations_with_same_product(product)
             invs.append(i) 
         return invs
 
@@ -5619,6 +5632,8 @@ class Money:
             a.setForeground(QColor(255, 0, 0))
         return a
 
+    def round(self, digits=2):
+        return round(self.amount, digits)
 
 class SetDPS:
     def __init__(self, mem,  product):

@@ -177,6 +177,13 @@
       </widget>
      </item>
      <item>
+      <widget class="QCheckBox" name="chkSameProduct">
+       <property name="text">
+        <string>Merge investments with the same product</string>
+       </property>
+      </widget>
+     </item>
+     <item>
       <widget class="QWidget" name="wdgIBM" native="true"/>
      </item>
     </layout>

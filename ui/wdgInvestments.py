@@ -73,10 +73,16 @@ class wdgInvestments(QWidget, Ui_wdgInvestments):
         w.exec_()
         self.on_chkInactivas_stateChanged(self.chkInactivas.checkState())#Carga la tabla
 
-                
     @QtCore.pyqtSlot() 
     def on_actionProduct_triggered(self):
         w=frmProductReport(self.mem, self.selInvestment.product, self.selInvestment, self)
+        w.exec_()
+        self.on_chkInactivas_stateChanged(self.chkInactivas.checkState())#Carga la tabla
+        
+    @QtCore.pyqtSlot() 
+    def on_actionSameProduct_triggered(self):
+        inv=self.mem.data.investments_active().investment_merging_current_operations_with_same_product(self.selInvestment.product)
+        w=frmProductReport(self.mem, self.selInvestment.product, inv, self)
         w.exec_()
         self.on_chkInactivas_stateChanged(self.chkInactivas.checkState())#Carga la tabla
             
@@ -158,11 +164,16 @@ class wdgInvestments(QWidget, Ui_wdgInvestments):
             self.actionInvestmentReport.setEnabled(True)
             self.actionActive.setEnabled(True)       
             self.actionProduct.setEnabled(True)
+            if self.mem.data.investments_active().numberWithSameProduct(self.selInvestment.product)>1:
+                self.actionSameProduct.setEnabled(True)
+            else:
+                self.actionSameProduct.setEnabled(False)
             self.actionProductPrice.setEnabled(True)
             if self.selInvestment.es_borrable()==True:
                 self.actionInvestmentDelete.setEnabled(True)
             else:
                 self.actionInvestmentDelete.setEnabled(False)
+                
             self.actionProductPriceLastRemove.setEnabled(True)
                 
             if self.selInvestment.active==True:
@@ -176,6 +187,7 @@ class wdgInvestments(QWidget, Ui_wdgInvestments):
         menu.addSeparator()   
         menu.addAction(self.actionInvestmentReport)        
         menu.addAction(self.actionProduct)
+        menu.addAction(self.actionSameProduct)
         menu.addSeparator()
         menu.addAction(self.actionProductPrice)
         menu.addAction(self.actionProductPriceLastRemove)
