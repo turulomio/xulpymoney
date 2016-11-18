@@ -271,6 +271,18 @@
     <string>Remove last product price</string>
    </property>
   </action>
+  <action name="actionSameProduct">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/books.png</normaloff>:/xulpymoney/books.png</iconset>
+   </property>
+   <property name="text">
+    <string>Investments with same product report</string>
+   </property>
+   <property name="toolTip">
+    <string>Investments with same product report</string>
+   </property>
+  </action>
  </widget>
  <customwidgets>
   <customwidget>
