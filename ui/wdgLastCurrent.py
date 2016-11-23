@@ -17,27 +17,9 @@ class wdgLastCurrent(QWidget, Ui_wdgLastCurrent):
         self.investments=None
         self.tblInvestments.settings(self.mem, "wdgLastCurrent")
         self.spin.setValue(int(self.mem.settingsdb.value("wdgLastCurrent/spin", "-25")))
-        self.tblInvestments_reload()
+        self.on_chkSameProduct_stateChanged(Qt.Unchecked)
         
     def tblInvestments_reload(self):
-        firsttime=False#Switch to inictializate and default sorting
-        if self.investments==None:
-            firsttime=True
-        
-        if self.chkSameProduct.checkState()==Qt.Unchecked:
-            self.investments=self.mem.data.investments_active()
-        else:
-            self.investments=self.mem.data.investments_active().setInvestments_merging_investments_with_same_product_merging_current_operations()
-            
-    
-            
-#        #Now removes op_actual with no shares
-#        indextoremove=[]
-#        for i in self.investments.arr:
-#            if i.op_actual.acciones()>0:
-#                indextoremove.append(i.id)
-        if firsttime==True:
-            self.on_actionSortTPCLast_triggered()
         self.investments.myqtablewidget_lastCurrent(self.tblInvestments, self.spin.value())
         
     @QtCore.pyqtSlot() 
@@ -175,4 +157,8 @@ class wdgLastCurrent(QWidget, Ui_wdgLastCurrent):
             self.on_actionCalculate_triggered()
 
     def on_chkSameProduct_stateChanged(self, state):
-        self.tblInvestments_reload()
+        if self.chkSameProduct.checkState()==Qt.Unchecked:
+            self.investments=self.mem.data.investments_active()
+        else:
+            self.investments=self.mem.data.investments_active().setInvestments_merging_investments_with_same_product_merging_current_operations()
+        self.on_actionSortTPCLast_triggered()
