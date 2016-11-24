@@ -262,6 +262,30 @@
     <string>Execute order</string>
    </property>
   </action>
+  <action name="actionShowReinvest">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/gafas.png</normaloff>:/xulpymoney/gafas.png</iconset>
+   </property>
+   <property name="text">
+    <string>Show reinvest simulation</string>
+   </property>
+   <property name="toolTip">
+    <string>Show reinvest simulation</string>
+   </property>
+  </action>
+  <action name="actionShowReinvestSameProduct">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/gafas.png</normaloff>:/xulpymoney/gafas.png</iconset>
+   </property>
+   <property name="text">
+    <string>Show reinvest simulation all investments with same product</string>
+   </property>
+   <property name="toolTip">
+    <string>Show reinvest simulation all investments with same product</string>
+   </property>
+  </action>
  </widget>
  <customwidgets>
   <customwidget>

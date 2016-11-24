@@ -48,6 +48,43 @@ class wdgOrders(QWidget, Ui_wdgOrders):
         self.mem.con.commit()
         self.on_cmbMode_currentIndexChanged(self.cmbMode.currentIndex())
         
+        
+    @QtCore.pyqtSlot()
+    def on_actionShowReinvest_triggered(self):
+        if self.orders.selected.price==None or self.orders.selected.shares==None or self.orders.selected.investment.acciones()==0:
+            qmessagebox(self.tr("This order can't be simulated"))
+            return
+        
+        
+        
+        d=QDialog()       
+        d.resize(self.mem.settings.value("wdgOrders/qdialog_disreinvest", QSize(1024, 768)))
+        d.setWindowTitle(self.tr("Order reinvest simulation"))
+        w=wdgDisReinvest(self.mem, self.orders.selected.investment, False,  d)
+        w.txtValorAccion.setText(self.orders.selected.price)
+        w.txtSimulacion.setText(self.orders.selected.price*self.orders.selected.shares)
+        lay = QVBoxLayout(d)
+        lay.addWidget(w)
+        d.exec_()
+        self.mem.settings.setValue("frmInvestmentReport/qdialog_disreinvest", d.size())
+                
+    @QtCore.pyqtSlot()
+    def on_actionShowReinvestSameProduct_triggered(self):
+        if self.orders.selected.price==None or self.orders.selected.shares==None or self.orders.selected.investment.acciones()==0:
+            qmessagebox(self.tr("This order can't be simulated"))
+            return
+        
+        d=QDialog()       
+        d.resize(self.mem.settings.value("wdgOrders/qdialog_disreinvest", QSize(1024, 768)))
+        d.setWindowTitle(self.tr("Order reinvest simulation with all investments with the same product"))
+        w=wdgDisReinvest(self.mem, self.orders.selected.investment, True,  d)
+        w.txtValorAccion.setText(self.orders.selected.price)
+        w.txtSimulacion.setText(self.orders.selected.price*self.orders.selected.shares)
+        lay = QVBoxLayout(d)
+        lay.addWidget(w)
+        d.exec_()
+        self.mem.settings.setValue("frmInvestmentReport/qdialog_disreinvest", d.size())
+        
     @QtCore.pyqtSlot() 
     def on_actionExecute_triggered(self):
         if self.orders.selected.investment.questionbox_inactive()==QMessageBox.No:#It's not active, after all.
@@ -135,6 +172,8 @@ class wdgOrders(QWidget, Ui_wdgOrders):
             self.actionOrderDelete.setEnabled(False)
             self.actionOrderEdit.setEnabled(False)
             self.actionExecute.setEnabled(False)
+            self.actionShowReinvest.setEnabled(False)
+            self.actionShowReinvestSameProduct.setEnabled(False)
         else:
             self.actionOrderDelete.setEnabled(True)
             self.actionOrderEdit.setEnabled(True)
@@ -143,6 +182,10 @@ class wdgOrders(QWidget, Ui_wdgOrders):
                 self.actionExecute.setText("Execute order")
             else:
                 self.actionExecute.setText("Remove execution time")
+            self.actionShowReinvest.setEnabled(True)
+            self.actionShowReinvestSameProduct.setEnabled(True)
+                
+                
             
         menu=QMenu()
         menu.addAction(self.actionOrderNew)
@@ -151,6 +194,9 @@ class wdgOrders(QWidget, Ui_wdgOrders):
         menu.addAction(self.actionOrderDelete)
         menu.addSeparator()
         menu.addAction(self.actionExecute)        
+        menu.addSeparator()
+        menu.addAction(self.actionShowReinvest)
+        menu.addAction(self.actionShowReinvestSameProduct)
         menu.exec_(self.tblOrders.mapToGlobal(pos))
 
     def on_tblOrders_itemSelectionChanged(self):
