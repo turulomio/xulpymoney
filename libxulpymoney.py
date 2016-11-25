@@ -388,13 +388,13 @@ class SetInvestments(SetCommons):
             
     def myqtablewidget(self, table):
         """Esta tabla muestra los money con la moneda local"""
-        table.setRowCount(self.length()+1)
+        table.setRowCount(self.length())
         table.applySettings()
         table.clearContents()
         type=3
         for i, inv in enumerate(self.arr):
             table.setItem(i, 0, QTableWidgetItem("{0} ({1})".format(inv.name, inv.account.name)))            
-            table.setItem(i, 1, qdatetime(inv.product.result.basic.last.datetime, inv.product.stockmarket.zone))
+            table.setItem(i, 1, qdatetime(inv.product.result.basic.last.datetime, self.mem.localzone))
             table.setItem(i, 2, inv.product.currency.qtablewidgetitem(inv.product.result.basic.last.quote,  6))#Se debería recibir el parametro currency
             table.setItem(i, 3, inv.op_actual.gains_last_day(type).qtablewidgetitem())
             table.setItem(i, 4, qtpc(inv.product.result.basic.tpc_diario()))
@@ -998,7 +998,7 @@ class SetProducts(SetCommons):
             table.setItem(i, 1, QTableWidgetItem(p.name.upper()))
             table.item(i, 1).setIcon(p.stockmarket.country.qicon())
             table.setItem(i, 2, QTableWidgetItem(p.isin))   
-            table.setItem(i, 3, qdatetime(p.result.basic.last.datetime, p.stockmarket.zone))
+            table.setItem(i, 3, qdatetime(p.result.basic.last.datetime, self.mem.localzone))
             table.setItem(i, 4, p.currency.qtablewidgetitem(p.result.basic.last.quote, 6 ))  
 
             table.setItem(i, 5, qtpc(p.result.basic.tpc_diario()))
@@ -1803,7 +1803,7 @@ class SetInvestmentOperationsHeterogeneus(SetIO):
         tabla.clearContents()  
         tabla.setRowCount(self.length())
         for rownumber, a in enumerate(self.arr):
-            tabla.setItem(rownumber, 0, qdatetime(a.datetime, a.inversion.product.stockmarket.zone))
+            tabla.setItem(rownumber, 0, qdatetime(a.datetime, self.mem.localzone))
             if self.mem.gainsyear==True and a.less_than_a_year()==True:
                 tabla.item(rownumber, 0).setIcon(QIcon(":/xulpymoney/new.png"))
         
@@ -1886,7 +1886,7 @@ class SetInvestmentOperationsHomogeneus(SetInvestmentOperationsHeterogeneus):
         tabla.setRowCount(len(self.arr))
         
         for rownumber, a in enumerate(self.arr):
-            tabla.setItem(rownumber, 0, qdatetime(a.datetime, a.inversion.product.stockmarket.zone))
+            tabla.setItem(rownumber, 0, qdatetime(a.datetime, self.mem.localzone))
             if self.mem.gainsyear==True and a.less_than_a_year()==True:
                 tabla.item(rownumber, 0).setIcon(QIcon(":/xulpymoney/new.png"))
                 
@@ -7764,23 +7764,25 @@ def qmessagebox(text):
     m.setText(text)
     m.exec_()   
     
-def qdatetime(dt, zone,  pixmap=True):
-    """dt es un datetime con timezone
-    dt, tiene timezone, 
-    Convierte un datetime a string, teniendo en cuenta los microsehgundos, para ello se convierte a datetime local
-    SE PUEDE OPTIMIZAR
-    No hace falta cambiar antes a dt con local.config, ya que lo hace la función
+def qdatetime(dt, zone):
     """
+        dt es un datetime con timezone, que se mostrara con la zone pasado como parametro
+        Convierte un datetime a string, teniendo en cuenta los microsehgundos, para ello se convierte a datetime local
+    """
+    #print (dt,  dt.__class__,  dt.tzinfo, dt.tzname())
+    if dt.tzname()==None:
+        logging.critical("Datetime should have tzname")
+        sys.exit(178)   
+    
     if dt==None:
         resultado="None"
     else:    
-        dt=dt_changes_tz(dt,  zone)#sE CONVIERTE A LOCAL DE dt_changes_tz 2012-07-11 08:52:31.311368-04:00 2012-07-11 14:52:31.311368+02:00
+        dt=dt_changes_tz(dt,  zone)
         if dt.microsecond==4 :
-            resultado=str(dt.date())
+            resultado="{}-{}-{}".format(dt.year, str(dt.month).zfill(2), str(dt.day).zfill(2))
         else:
-            resultado=str(dt.date())+" "+str(dt.hour).zfill(2)+":"+str(dt.minute).zfill(2)+":"+str(dt.second).zfill(2)
-#        else:
-#            resultado=str(dt.date())+" "+str(dt.hour).zfill(2)+":"+str(dt.minute).zfill(2)   
+            resultado="{}-{}-{} {}:{}:{}".format(dt.year, str(dt.month).zfill(2), str(dt.day).zfill(2), str(dt.hour).zfill(2), str(dt.minute).zfill(2),  str(dt.second).zfill(2))
+
     a=QTableWidgetItem(resultado)
     if dt==None:
         a.setForeground(QColor(0, 0, 255))

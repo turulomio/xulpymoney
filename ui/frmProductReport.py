@@ -260,7 +260,7 @@ class frmProductReport(QDialog, Ui_frmProductReport):
             unasemana=Quote(self.mem).init__from_query(self.product, day_end(now-datetime.timedelta(days=7), self.product.stockmarket.zone))             
             
             self.tblTPC.applySettings()
-            self.tblTPC.setItem(0, 0, qdatetime(self.product.result.basic.last.datetime, self.product.stockmarket.zone))   
+            self.tblTPC.setItem(0, 0, qdatetime(self.product.result.basic.last.datetime, self.mem.localzone))   
             self.tblTPC.setItem(0, 1, self.product.currency.qtablewidgetitem(self.product.result.basic.last.quote,  6))
             
             row_tblTPV(penultimate, 2)
