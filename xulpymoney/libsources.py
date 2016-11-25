@@ -668,6 +668,7 @@ class WorkerYahoo(SourceParsePage):
     def my_load_page(self, setproducts):
         "Overrides SourceParsePage"
         self.url='http://download.finance.yahoo.com/d/quotes.csv?s=' + self.sum_tickers(setproducts) + '&f=sl1d1t1&e=.csv'
+        print(self.url)
 
         web=self.load_page(self.url)
         if web==None:
@@ -682,6 +683,7 @@ class WorkerYahoo(SourceParsePage):
     def my_parse_page(self):
         "Overrides SourceParsePage"
         for i in self.web:
+            print(i)
             try:
                 datos=i[:-2].split(",")#Se quita dos creo que por caracter final linea windeos.
                 product=self.products.find_by_ticker(datos[0][1:-1])
