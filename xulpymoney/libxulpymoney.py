@@ -7856,14 +7856,15 @@ def qdatetime(dt, zone):
         dt es un datetime con timezone, que se mostrara con la zone pasado como parametro
         Convierte un datetime a string, teniendo en cuenta los microsehgundos, para ello se convierte a datetime local
     """
-    #print (dt,  dt.__class__,  dt.tzinfo, dt.tzname())
-    if dt.tzname()==None:
-        logging.critical("Datetime should have tzname")
-        sys.exit(178)   
     
     if dt==None:
         resultado="None"
     else:    
+        
+        #print (dt,  dt.__class__,  dt.tzinfo, dt.tzname())
+        if dt.tzname()==None:
+            logging.critical("Datetime should have tzname")
+            sys.exit(178)   
         dt=dt_changes_tz(dt,  zone)
         if dt.microsecond==4 :
             resultado="{}-{}-{}".format(dt.year, str(dt.month).zfill(2), str(dt.day).zfill(2))
