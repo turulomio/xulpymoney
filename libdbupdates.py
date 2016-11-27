@@ -1,5 +1,4 @@
-from PyQt5.QtCore import *
-from libxulpymoney import *
+from PyQt5.QtWidgets import QApplication
 class Update:
     """DB update system
     Cuando vaya a crear una nueva modificación pondre otro if con menor que current date para uqe se ejecute solo una vez al final, tendra que 
@@ -19,7 +18,7 @@ class Update:
     def __init__(self, mem):
         self.mem=mem
         self.dbversion=self.get_database_version()    
-        self.lastcodeupdate=201611270750
+        self.lastcodeupdate=201611271250
 
    
     def get_database_version(self):
@@ -677,7 +676,17 @@ LANGUAGE plpgsql;""")
                     curcommit.close()
             cur.close()
             self.mem.con.commit()
-            self.set_database_version(201611270750)      
+            self.set_database_version(201611270750)                  
+            
+        if self.dbversion<201611271250:##Updates dividends operaccount comment
+            cur=self.mem.con.cursor()
+            cur.execute("select * from dividends")
+            for row in cur:
+                cur2=self.mem.con.cursor()
+                cur2.execute("update opercuentas set comentario=%s where id_opercuentas=%s", ("10004,{}".format(row['id_dividends']), row['id_opercuentas']))
+            cur.close()
+            self.mem.con.commit()
+            self.set_database_version(201611271250)      
             
             
             
