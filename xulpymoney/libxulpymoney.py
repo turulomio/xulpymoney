@@ -3082,11 +3082,6 @@ class Comment:
 #            return QApplication.translate("Core","{0[1]}: {0[0]} shares. Amount: {0[2]} {1}. Comission: {0[3]} {1}. Taxes: {0[4]} {1}").format(c, self.account.currency.symbol)
 #        elif self.concepto.id==40 and len(c)==2:#"{0}|{1}".format(self.selCreditCard.name, len(self.setSelOperCreditCards))
 #            return QApplication.translate("Core","CreditCard: {0[0]}. Made {0[1]} payments").format(c)
-#        elif self.concepto.id==4 and len(c)==3:#Transfer from origin
-#            return QApplication.translate("Core", "Transfer to {0}").format(self.mem.data.accounts.find_by_id(int(c[0])).name)
-#        elif self.concepto.id==5 and len(c)==2:#Transfer received in destiny
-#            return QApplication.translate("Core", "Transfer received from {0}").format(self.mem.data.accounts.find_by_id(int(c[0])).name)
-#        elif self.concepto.id==38 and c[0]=="Transfer":#Comision bancaria por transferencia
 #            return QApplication.translate("Core", "Due to account transfer of {0} from {1}").format(self.mem.localcurrency.string(float(c[1])), self.mem.data.accounts.find_by_id(int(c[2])).name)
 #        else:
 #            return self.comentario 
