@@ -1,8 +1,7 @@
-from PyQt5.QtCore import *
-from PyQt5.QtGui import *
 
-from Ui_wdgMergeCodes import *
-from libxulpymoney import *
+from PyQt5.QtWidgets import QWidget, QTableWidgetItem
+from Ui_wdgMergeCodes import Ui_wdgMergeCodes
+from libxulpymoney import qcenter, qmessagebox
 
 class wdgMergeCodes(QWidget, Ui_wdgMergeCodes):
     def __init__(self, mem,  origen, destino, parent = None, name = None, modal = False):
@@ -32,7 +31,7 @@ class wdgMergeCodes(QWidget, Ui_wdgMergeCodes):
         cur.execute("select count(*) from quotes where id=%s", (self.destino.id, ))
         self.table.setItem(0, 3, QTableWidgetItem(str(cur.fetchone()[0])))
         cur.execute("select count(*) from dps where id=%s", (self.destino.id, ))
-        self.table.setItem(0, 4, QTableWidgetItem(str(cur.fetc*hone()[0])))
+        self.table.setItem(0, 4, QTableWidgetItem(str(cur.fetchone()[0])))
 
         ##################
         self.table.setItem(1, 0, qcenter(str(self.origen.id)))
@@ -46,11 +45,7 @@ class wdgMergeCodes(QWidget, Ui_wdgMergeCodes):
         cur.close()         
         
         if self.origen.is_deletable()==False:
-            m=QMessageBox()
-            m.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
-            m.setIcon(QMessageBox.Information)
-            m.setText(self.tr("I couldn't do the merge, because product is marked as not removable"))
-            m.exec_()     
+            qmessagebox(self.tr("I couldn't do the merge, because product is marked as not removable"))
             self.cmd.setEnabled(False)
         else:
             self.cmd.setEnabled(True)
@@ -68,9 +63,5 @@ class wdgMergeCodes(QWidget, Ui_wdgMergeCodes):
         cur.execute("delete from dps where id=%s", (self.origen.id, ))
         self.mem.con.commit()
         cur.close()   
-        m=QMessageBox()
-        m.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
-        m.setIcon(QMessageBox.Information)
-        m.setText(self.tr("You have to update Xulpymoney if the deleted product is used in Xulpymoney"))
-        m.exec_()    
+        qmessagebox(self.tr("You have to update Xulpymoney if the deleted product is used in Xulpymoney"))
         self.cmd.setEnabled(False)

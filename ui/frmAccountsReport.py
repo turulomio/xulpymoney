@@ -1,10 +1,12 @@
-from PyQt5.QtCore import *
-from PyQt5.QtGui import *
-from libxulpymoney import *
-from Ui_frmAccountsReport import *
-from frmAccountOperationsAdd import *
-from frmCreditCardsAdd import *
-from frmInvestmentOperationsAdd import *
+import datetime
+from PyQt5.QtCore import Qt, pyqtSlot
+from PyQt5.QtGui import QIcon
+from PyQt5.QtWidgets import QDialog, QMenu,  QMessageBox
+from libxulpymoney import Account, AccountOperation, Assets, Comment, InvestmentOperation, SetAccountOperations,  SetCreditCardOperations,  b2c,  c2b
+from Ui_frmAccountsReport import Ui_frmAccountsReport
+from frmAccountOperationsAdd import frmAccountOperationsAdd
+from frmCreditCardsAdd import frmCreditCardsAdd
+from frmInvestmentOperationsAdd import frmInvestmentOperationsAdd
 
 class frmAccountsReport(QDialog, Ui_frmAccountsReport):
     def __init__(self, mem, account,  parent=None):

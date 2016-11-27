@@ -1,8 +1,8 @@
-from PyQt5.QtCore import *
-from PyQt5.QtGui import *
-from PyQt5.QtWidgets import *
+from PyQt5.QtCore import pyqtSignal, pyqtSlot
+from PyQt5.QtWidgets import QWidget
 import datetime
-from Ui_wdgYearMonth import *
+from Ui_wdgYearMonth import Ui_wdgYearMonth
+from libxulpymoney import function_name, qmessagebox
 
 class wdgYearMonth(QWidget, Ui_wdgYearMonth):
     changed=pyqtSignal()
@@ -45,11 +45,7 @@ class wdgYearMonth(QWidget, Ui_wdgYearMonth):
     def on_cmdNext_pressed(self):
         if self.month==12:
             if self.year==self.lastyear:
-                m=QMessageBox()
-                m.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
-                m.setIcon(QMessageBox.Information)
-                m.setText(self.tr("I can't show the next month"))
-                m.exec_()   
+                qmessagebox(self.tr("I can't show the next month"))
                 return
             self.month=1
             self.year=self.year+1
@@ -60,11 +56,7 @@ class wdgYearMonth(QWidget, Ui_wdgYearMonth):
     def on_cmdPrevious_pressed(self):
         if self.month==1:
             if self.firstyear==self.year:
-                m=QMessageBox()
-                m.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
-                m.setIcon(QMessageBox.Information)
-                m.setText(self.tr("I can't show the previous month"))
-                m.exec_()   
+                qmessagebox(self.tr("I can't show the previous month"))
                 return
             self.month=12
             self.year=self.year-1

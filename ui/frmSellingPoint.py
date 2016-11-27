@@ -1,31 +1,23 @@
-from PyQt5.QtCore import *
-from PyQt5.QtGui import *
-from PyQt5.QtWidgets import *
-from Ui_frmSellingPoint import *
-from libxulpymoney import *
+import datetime
+from PyQt5.QtCore import Qt, pyqtSlot
+from PyQt5.QtWidgets import QDialog
+from Ui_frmSellingPoint import Ui_frmSellingPoint
+from libxulpymoney import Money,  Quote, SetInvestmentOperationsCurrentHomogeneus, qmessagebox,  tpc
 from decimal import Decimal
 
 class frmSellingPoint(QDialog, Ui_frmSellingPoint):
     def __init__(self, mem,  inversion ,   parent=None):
-        QWidget.__init__(self, parent)
+        QDialog.__init__(self, parent)
         self.setupUi(self)
         self.showMaximized()
         self.mem=mem
         self.inversion=inversion
         
         if self.inversion.id==None:
-            m=QMessageBox()
-            m.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
-            m.setIcon(QMessageBox.Information)
-            m.setText(self.tr("You can't set a selling price to a unsaved investment"))
-            m.exec_()     
+            qmessagebox(self.tr("You can't set a selling price to a unsaved investment"))
             return
         if len(self.inversion.op_actual.arr)==0:
-            m=QMessageBox()
-            m.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
-            m.setIcon(QMessageBox.Information)
-            m.setText(self.tr("You don't have shares to sale in this investment"))
-            m.exec_()     
+            qmessagebox(self.tr("You don't have shares to sale in this investment"))
             return
         
         inicio=datetime.datetime.now()

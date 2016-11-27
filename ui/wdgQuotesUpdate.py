@@ -1,7 +1,7 @@
-from PyQt5.QtCore import *
-from PyQt5.QtGui import *
-from Ui_wdgQuotesUpdate import *
-from libsources import *
+from PyQt5.QtCore import Qt, QCoreApplication
+from PyQt5.QtWidgets import QWidget
+from Ui_wdgQuotesUpdate import Ui_wdgQuotesUpdate
+from libsources import WorkerMercadoContinuo, WorkerMorningstar, WorkerYahoo, WorkerYahooHistorical, SetSources
 
 class wdgQuotesUpdate(QWidget, Ui_wdgQuotesUpdate):
     def __init__(self, mem,  parent = None, name = None):

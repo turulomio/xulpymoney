@@ -1,7 +1,7 @@
-from PyQt5.QtCore import *
-from PyQt5.QtGui import *
-from PyQt5.QtWidgets import *
-from Ui_frmAccess import *
+from PyQt5.QtCore import pyqtSlot
+from PyQt5.QtGui import QIcon, QPixmap
+from PyQt5.QtWidgets import QDialog
+from Ui_frmAccess import Ui_frmAccess
 from libxulpymoney import Connection, qmessagebox
 import sys
 
@@ -22,8 +22,8 @@ class frmAccess(QDialog, Ui_frmAccess):
 
 
     def setPixmap(self, qpixmap):
-        icon = QtGui.QIcon()
-        icon.addPixmap(qpixmap, QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon = QIcon()
+        icon.addPixmap(qpixmap, QIcon.Normal, QIcon.Off)
         self.setWindowIcon(icon)        
         
     def setTitle(self, text):

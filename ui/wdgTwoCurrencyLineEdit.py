@@ -1,6 +1,8 @@
-from PyQt5.QtWidgets import QWidget,  QLabel, QHBoxLayout
-#from PyQt5.QtCore import pyqtSlot
-from myqlineedit import *
+from PyQt5.QtWidgets import QWidget,  QLabel, QHBoxLayout, QToolButton
+from PyQt5.QtCore import pyqtSignal, Qt
+from PyQt5.QtGui import QIcon, QPixmap
+from myqlineedit import myQLineEdit
+from decimal import Decimal
 
 class wdgTwoCurrencyLineEdit(QWidget):
     factorChanged=pyqtSignal(Decimal)#Se usa para cargar datos de ordenes en los datos de este formulario

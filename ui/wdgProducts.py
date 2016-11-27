@@ -1,11 +1,12 @@
-from PyQt5.QtCore import *
-from PyQt5.QtGui import *
-from Ui_wdgProducts import *
-from frmProductReport import *
-from libxulpymoney import *
-from frmQuotesIBM import *
-from wdgMergeCodes import *
-from frmEstimationsAdd import *
+from PyQt5.QtCore import pyqtSlot, Qt
+from PyQt5.QtWidgets import QWidget, QDialog, QVBoxLayout, QMenu, QMessageBox
+from Ui_wdgProducts import Ui_wdgProducts
+from frmProductReport import frmProductReport
+from libxulpymoney import SetProducts, SetQuotesAllIntradays, list2string, qmessagebox
+from frmQuotesIBM import frmQuotesIBM
+from wdgMergeCodes import wdgMergeCodes
+from canvaschart import canvasChartHistoricalBuy
+from frmEstimationsAdd import frmEstimationsAdd
 
 class wdgProducts(QWidget, Ui_wdgProducts):
     def __init__(self, mem,  sql,  parent=None):
@@ -53,17 +54,11 @@ class wdgProducts(QWidget, Ui_wdgProducts):
     def on_actionProductDelete_triggered(self):
          
         if self.products.selected[0].is_deletable()==False:
-            m=QMessageBox()
-            m.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
-            m.setText(self.tr("This product can't be removed, because is marked as not romavable"))
-            m.exec_()    
+            qmessagebox(self.tr("This product can't be removed, because is marked as not romavable"))
             return
             
         if self.products.selected[0].is_system()==True:
-            m=QMessageBox()
-            m.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
-            m.setText(self.tr("This product can't be removed, because is a system product"))
-            m.exec_()    
+            qmessagebox(self.tr("This product can't be removed, because is a system product"))
             return
             
         respuesta = QMessageBox.warning(self, self.tr("Xulpymoney"), self.tr("Deleting data from selected product ({0}). If you use manual update mode, data won't be recovered. Do you want to continue?".format(self.products.selected[0].id)), QMessageBox.Ok | QMessageBox.Cancel)
@@ -111,14 +106,14 @@ class wdgProducts(QWidget, Ui_wdgProducts):
         if self.products.order_by_daily_tpc():
             self.products.myqtablewidget(self.tblInvestments)        
         else:
-            qmessagebox(QApplication.translate("Core", "I couldn't order data due to they have null values"))
+            qmessagebox(self.tr("I couldn't order data due to they have null values"))
         
     @pyqtSlot() 
     def on_actionSortTPCAnual_triggered(self):
         if self.products.order_by_annual_tpc():
             self.products.myqtablewidget(self.tblInvestments)        
         else:
-            qmessagebox(QApplication.translate("Core", "I couldn't order data due to they have null values"))
+            qmessagebox(self.tr("I couldn't order data due to they have null values"))
         
     @pyqtSlot() 
     def on_actionSortHour_triggered(self):
@@ -135,7 +130,7 @@ class wdgProducts(QWidget, Ui_wdgProducts):
         if self.products.order_by_dividend():
             self.products.myqtablewidget(self.tblInvestments)        
         else:
-            qmessagebox(QApplication.translate("Core", "I couldn't order data due to they have null values"))     
+            qmessagebox(self.tr("I couldn't order data due to they have null values"))     
         
     def on_txt_returnPressed(self):
         self.on_cmd_pressed()
@@ -145,10 +140,7 @@ class wdgProducts(QWidget, Ui_wdgProducts):
 
     def on_cmd_pressed(self):
         if len(self.txt.text().upper())<=3:            
-            m=QMessageBox()
-            m.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
-            m.setText(self.tr("Search too wide. You need more than 3 characters"))
-            m.exec_()  
+            qmessagebox(self.tr("Search too wide. You need more than 3 characters"))
             return
             
         #Stock exchange Filter
@@ -261,11 +253,7 @@ class wdgProducts(QWidget, Ui_wdgProducts):
         numpurged=all.purge(progress=True)
         if numpurged!=None:#Canceled
             self.mem.con.commit()
-            m=QMessageBox()
-            m.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
-            m.setIcon(QMessageBox.Information)
-            m.setText(self.tr("{0} quotes have been purged from {1}".format(numpurged, self.products.selected[0].name)))
-            m.exec_()    
+            qmessagebox(self.tr("{0} quotes have been purged from {1}".format(numpurged, self.products.selected[0].name)))
         else:
             self.mem.con.rollback()
 

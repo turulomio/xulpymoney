@@ -1,10 +1,9 @@
-from libxulpymoney import *
+from libxulpymoney import Assets, Money
 import math
-from PyQt5.QtCore import *
-from PyQt5.QtGui import *
+import datetime
+from PyQt5.QtWidgets import QSizePolicy, QWidget
 import pylab
-from Ui_wdgInvestmentClasses import *
-from libxulpymoney import *
+from Ui_wdgInvestmentClasses import Ui_wdgInvestmentClasses
 
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg
 from matplotlib.figure import Figure

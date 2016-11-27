@@ -1,10 +1,10 @@
-from PyQt5.QtCore import *
-from PyQt5.QtGui import *
-from Ui_wdgCalculator import *
-from libxulpymoney import *
-from wdgOrdersAdd import *
-from frmInvestmentReport import *
-from frmProductReport import *
+from PyQt5.QtCore import pyqtSlot
+from PyQt5.QtWidgets import QWidget, QDialog, QVBoxLayout
+from Ui_wdgCalculator import Ui_wdgCalculator
+from libxulpymoney import qmessagebox, qtpc
+from wdgOrdersAdd import wdgOrdersAdd
+from canvaschart import canvasChartHistoricalBuy
+from decimal import Decimal
 
 class wdgCalculator(QWidget, Ui_wdgCalculator):
     def __init__(self, mem,  parent=None):
@@ -17,11 +17,7 @@ class wdgCalculator(QWidget, Ui_wdgCalculator):
         self.table.settings(self.mem, "wdgCalculator")
         self.hasProducts=True#Permits to show/hide the widget from external dialog
         if self.mem.data.products.length()==0:
-            m=QMessageBox()
-            m.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
-            m.setIcon(QMessageBox.Information)
-            m.setText(self.tr("You need to create at least one investment"))
-            m.exec_()
+            qmessagebox(self.tr("You need to create at least one investment"))
             self.hasProducts=False        
             self.close()
             return

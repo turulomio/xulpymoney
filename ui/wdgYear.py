@@ -1,8 +1,8 @@
-from PyQt5.QtCore import *
-from PyQt5.QtGui import *
-from PyQt5.QtWidgets import *
+from PyQt5.QtCore import pyqtSignal, pyqtSlot
+from PyQt5.QtWidgets import QWidget
 import datetime
-from Ui_wdgYear import *
+from Ui_wdgYear import Ui_wdgYear
+from libxulpymoney import function_name, qmessagebox
 
 class wdgYear(QWidget, Ui_wdgYear):
     changed=pyqtSignal()
@@ -40,22 +40,14 @@ class wdgYear(QWidget, Ui_wdgYear):
        
     def on_cmdNext_pressed(self):
         if self.year==self.lastyear:
-            m=QMessageBox()
-            m.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
-            m.setIcon(QMessageBox.Information)
-            m.setText(self.tr("I can't show the next year"))
-            m.exec_()   
+            qmessagebox(self.tr("I can't show the next year"))
             return
         self.year=self.year+1
         self.set(self.year)
         
     def on_cmdPrevious_pressed(self):
         if self.firstyear==self.year:
-            m=QMessageBox()
-            m.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
-            m.setIcon(QMessageBox.Information)
-            m.setText(self.tr("I can't show the previous year"))
-            m.exec_()   
+            qmessagebox(self.tr("I can't show the previous year"))
             return
         self.year=self.year-1
         self.set(self.year)

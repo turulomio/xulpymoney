@@ -1,6 +1,6 @@
 from PyQt5.QtWidgets import QWidget, QSpacerItem, QSizePolicy
-from Ui_wdgCuriosities import *
-from wdgCuriosity import *
+from Ui_wdgCuriosities import Ui_wdgCuriosities
+from wdgCuriosity import wdgCuriosity
 from libxulpymoney import Assets,  SetAccountOperations
 from decimal import Decimal
 

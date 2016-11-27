@@ -1,7 +1,6 @@
-from PyQt5.QtCore import *
-from PyQt5.QtGui import *
-from PyQt5.QtWidgets import *
-from libxulpymoney import *
+from PyQt5.QtCore import Qt,  pyqtSlot
+from PyQt5.QtGui import QKeySequence
+from PyQt5.QtWidgets import QApplication, QHeaderView, QTableWidget
 
 class myQTableWidget(QTableWidget):
     def __init__(self, parent):

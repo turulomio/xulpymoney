@@ -1,11 +1,13 @@
-from PyQt5.QtCore import *
-from PyQt5.QtGui import *
-from libxulpymoney import *
-from matplotlib.finance import *
+from PyQt5.QtCore import QMetaObject, Qt,  pyqtSlot
+from PyQt5.QtWidgets import QAction, QApplication, QMenu, QSizePolicy, QWidget
+from libxulpymoney import day_start, str2bool, tpc
+from matplotlib.finance import candlestick2_ohlc,  plot_day_summary_oclh
 from decimal import Decimal
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg
-from matplotlib.dates import MonthLocator, YearLocator, HourLocator,  DateFormatter,  num2date
+from matplotlib.dates import MonthLocator, YearLocator, HourLocator,  DateFormatter, date2num, num2date,  DayLocator
 from matplotlib.figure import Figure
+import pytz
+import datetime
 
 class ChartType:
     lines=0
@@ -691,6 +693,7 @@ class canvasChartHistoricalBuy(FigureCanvasQTAgg):
             return
 
         percentages2=[0.753, 0.5185, 0.3495, 0.23464]
+        print(percentages2)
         percentagespersonal=[0.777, 0.5225, 0.4035, 0.269]
         percentagesmy=percentagespersonal
 
