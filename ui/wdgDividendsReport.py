@@ -1,12 +1,12 @@
-from PyQt5.QtCore import *
-from PyQt5.QtGui import *
-import datetime
-from libxulpymoney import *
-from libqmessagebox import qmessagebox_error_ordering
-from Ui_wdgDividendsReport import *
-from frmInvestmentReport import *
-from frmProductReport import *
-from frmEstimationsAdd import *
+from PyQt5.QtCore import Qt, pyqtSlot
+from PyQt5.QtGui import QIcon
+from PyQt5.QtWidgets import QMenu, QTableWidgetItem, QWidget
+from datetime import date
+from libxulpymoney import Money, qmessagebox, qright, qtpc
+from Ui_wdgDividendsReport import Ui_wdgDividendsReport
+from frmInvestmentReport import frmInvestmentReport
+from frmProductReport import frmProductReport
+from frmEstimationsAdd import frmEstimationsAdd
 
 class wdgDividendsReport(QWidget, Ui_wdgDividendsReport):
     def __init__(self, mem,  parent=None):
@@ -19,7 +19,7 @@ class wdgDividendsReport(QWidget, Ui_wdgDividendsReport):
         
         self.on_chkInactivas_stateChanged(Qt.Unchecked)
 
-    @QtCore.pyqtSlot()  
+    @pyqtSlot()  
     def on_actionEstimationDPSEdit_triggered(self):
         d=frmEstimationsAdd(self.mem, self.selInvestment.product, "dps")
         d.exec_()
@@ -36,14 +36,14 @@ class wdgDividendsReport(QWidget, Ui_wdgDividendsReport):
         
     def load_inversiones(self):    
         if self.inversiones.order_by_dividend()==False:
-            qmessagebox_error_ordering()     
+            qmessagebox(self.tr("I couldn't order data due to they have null values"))     
         
         self.tblInvestments.applySettings()
         self.tblInvestments.clearContents()
         self.tblInvestments.setRowCount(len(self.inversiones.arr));
         sumdiv=Money(self.mem, 0, self.mem.localcurrency)
         for i, inv in enumerate(self.inversiones.arr):
-            if inv.product.estimations_dps.find(datetime.date.today().year)==None:
+            if inv.product.estimations_dps.find(date.today().year)==None:
                 dpa=0
                 tpc=0
                 divestimado=Money(self.mem, 0, self.mem.localcurrency)
@@ -66,14 +66,14 @@ class wdgDividendsReport(QWidget, Ui_wdgDividendsReport):
         self.lblTotal.setText(self.tr("If I keep this investment during a year, I'll get {0}").format( sumdiv))
             
         
-    @QtCore.pyqtSlot() 
+    @pyqtSlot() 
     def on_actionInvestmentReport_triggered(self):
         w=frmInvestmentReport(self.mem, self.selInvestment, self)
         w.exec_()
         self.on_chkInactivas_stateChanged(self.chkInactivas.checkState())
 
             
-    @QtCore.pyqtSlot() 
+    @pyqtSlot() 
     def on_actionProductReport_triggered(self):
         w=frmProductReport(self.mem, self.selInvestment.product, self.selInvestment, self)
         w.exec_()

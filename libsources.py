@@ -144,7 +144,7 @@ class wdgSource(QWidget, Ui_wdgSource):
         self.cmdCancel.setEnabled(False)
         self.source.stopping=True
 
-    @QtCore.pyqtSlot() 
+    @pyqtSlot() 
     def on_actionInserted_triggered(self):
         d=QDialog(self)     
         d.resize(800, 600)
@@ -156,7 +156,7 @@ class wdgSource(QWidget, Ui_wdgSource):
         lay.addWidget(t)
         d.show()
         
-    @QtCore.pyqtSlot() 
+    @pyqtSlot() 
     def on_actionEdited_triggered(self):
         d=QDialog(self)        
         d.resize(800, 600)
@@ -168,7 +168,7 @@ class wdgSource(QWidget, Ui_wdgSource):
         lay.addWidget(t)
         d.show()
         
-    @QtCore.pyqtSlot() 
+    @pyqtSlot() 
     def on_actionIgnored_triggered(self):
         d=QDialog(self)        
         d.resize(800, 600)
@@ -180,7 +180,7 @@ class wdgSource(QWidget, Ui_wdgSource):
         lay.addWidget(t)
         d.show()
         
-    @QtCore.pyqtSlot() 
+    @pyqtSlot() 
     def on_actionErrors_triggered(self):
         d=QDialog(self)        
         d.resize(800, 600)
@@ -192,7 +192,7 @@ class wdgSource(QWidget, Ui_wdgSource):
         lay.addWidget(terrors)
         d.show()
 
-    @QtCore.pyqtSlot() 
+    @pyqtSlot() 
     def on_actionWrong_triggered(self):
         d=QDialog(self)        
         d.resize(800, 600)
@@ -204,7 +204,7 @@ class wdgSource(QWidget, Ui_wdgSource):
         lay.addWidget(t)
         d.show()
         
-    @QtCore.pyqtSlot() 
+    @pyqtSlot() 
     def on_actionProducts_triggered(self):
         d=QDialog(self)        
         d.resize(800, 600)
@@ -215,7 +215,7 @@ class wdgSource(QWidget, Ui_wdgSource):
         lay = QVBoxLayout(d)
         lay.addWidget(t)
         d.show()        
-    @QtCore.pyqtSlot() 
+    @pyqtSlot() 
     def on_actionHTML_triggered(self):
         if os.path.exists("/usr/bin/kwrite"):
             file="/tmp/xulpymoney-weblog-{}.txt".format(self.source.getName())

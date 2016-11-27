@@ -88,20 +88,20 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
         except:
             pass
 
-    @QtCore.pyqtSlot() 
+    @pyqtSlot() 
     def on_actionCreditCardAdd_triggered(self):
         w=frmCreditCardsAdd(self.mem,  self.account,  None, self)
         w.exec_()
         self.on_chkCreditCards_stateChanged(Qt.Unchecked)
         
-    @QtCore.pyqtSlot() 
+    @pyqtSlot() 
     def on_actionCreditCardEdit_triggered(self):
         w=frmCreditCardsAdd(self.mem, self.account,  self.creditcards.selected, self)
         w.exec_()
         self.tblCreditCards.clearSelection()
         self.creditcards_reload()
         
-    @QtCore.pyqtSlot() 
+    @pyqtSlot() 
     def on_actionCreditCardActivate_triggered(self):
         if self.account.qmessagebox_inactive() or self.account.eb.qmessagebox_inactive():
             return
@@ -112,7 +112,7 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
         
         self.creditcards_reload()
                 
-    @QtCore.pyqtSlot() 
+    @pyqtSlot() 
     def on_actionCreditCardDelete_triggered(self):
         if self.creditcards.selected.is_deletable()==False:
             m=QMessageBox()
@@ -191,14 +191,14 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
         self.tblOperaciones.clearSelection()
         self.accountoperations.selected=None
 
-    @QtCore.pyqtSlot() 
+    @pyqtSlot() 
     def on_actionOperationAdd_triggered(self):
         w=frmAccountOperationsAdd(self.mem, self.account)
         w.OperationChanged.connect(self.on_OperationChanged)
         w.exec_()
         self.accountoperations_reload()
 
-    @QtCore.pyqtSlot() 
+    @pyqtSlot() 
     def on_actionTransferDelete_triggered(self):
         """
             Ya est´a validado si es Comment coded 10001,10002,10003
@@ -218,25 +218,25 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
             self.mem.con.commit()
             self.accountoperations_reload()
         
-    @QtCore.pyqtSlot() 
+    @pyqtSlot() 
     def on_actionOperationEdit_triggered(self):
         w=frmAccountOperationsAdd(self.mem, self.account, self.accountoperations.selected)
         w.OperationChanged.connect(self.on_OperationChanged)
         w.exec_()
 
-    @QtCore.pyqtSlot() 
+    @pyqtSlot() 
     def on_actionOperationDelete_triggered(self):
         self.accountoperations.selected.borrar() 
         self.mem.con.commit()         
         self.accountoperations_reload()
 
-    @QtCore.pyqtSlot() 
+    @pyqtSlot() 
     def on_actionCreditCardOperAdd_triggered(self):
         w=frmAccountOperationsAdd(self.mem, self.account, None, self.creditcards.selected)
         w.OperationChanged.connect(self.on_OperationChanged)
         w.exec_()
             
-    @QtCore.pyqtSlot() 
+    @pyqtSlot() 
     def on_actionCreditCardOperEdit_triggered(self):
         #Como es unico
         selOperCreditCard=self.creditcardoperations.selected.arr[0]
@@ -244,7 +244,7 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
         w.OperationChanged.connect(self.on_OperationChanged)
         w.exec_()
 
-    @QtCore.pyqtSlot() 
+    @pyqtSlot() 
     def on_actionCreditCardOperDelete_triggered(self):
         for o in self.creditcardoperations.selected.arr:
             o.borrar()
@@ -252,13 +252,13 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
         self.mem.con.commit()
         self.creditcardoperations_reload()
         
-    @QtCore.pyqtSlot() 
+    @pyqtSlot() 
     def on_actionCreditCardOperRefund_triggered(self):
         w=frmAccountOperationsAdd(self.mem, opertarjeta=self.creditcardoperations.selected.arr[0], refund=True)
         w.OperationChanged.connect(self.on_OperationChanged)
         w.exec_()
             
-    @QtCore.pyqtSlot() 
+    @pyqtSlot() 
     def on_actionInvestmentOperationDelete_triggered(self):
         investmentoperation=InvestmentOperation(self.mem).init__from_accountoperation(self.accountoperations.selected)
         investmentoperation.inversion.op.remove(investmentoperation)
@@ -266,7 +266,7 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
         self.accountoperations_reload()
 
 
-    @QtCore.pyqtSlot() 
+    @pyqtSlot() 
     def on_actionInvestmentOperationEdit_triggered(self):
         investmentoperation=InvestmentOperation(self.mem).init__from_accountoperation(self.accountoperations.selected)
         w=frmInvestmentOperationsAdd(self.mem, investmentoperation.inversion, investmentoperation, self)
@@ -439,7 +439,7 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
         self.creditcardoperations_reload()
         self.tabOpertarjetasDiferidas.setCurrentIndex(0)     
         
-    @QtCore.pyqtSlot(int) 
+    @pyqtSlot(int) 
     def on_cmbFechasPago_currentIndexChanged(self, index):
         if index==-1:#Empty
             self.tblOpertarjetasHistoricas.setRowCount(0)

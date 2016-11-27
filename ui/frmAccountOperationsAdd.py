@@ -1,7 +1,8 @@
-from PyQt5.QtCore import *
-from PyQt5.QtGui import *
-from Ui_frmAccountOperationsAdd import *
-from libxulpymoney import *
+from PyQt5.QtCore import pyqtSignal
+from PyQt5.QtWidgets import QDialog
+from Ui_frmAccountOperationsAdd import Ui_frmAccountOperationsAdd
+from libxulpymoney import  AccountOperation,  CreditCardOperation,  qmessagebox
+from datetime import timedelta
 
 class frmAccountOperationsAdd(QDialog, Ui_frmAccountOperationsAdd):
     OperationChanged=pyqtSignal(int, int, int, int)#(tipoproducto original (0 Account, 1 CreditCard), id_original, tipoproducto final, id_final)
@@ -21,7 +22,7 @@ class frmAccountOperationsAdd(QDialog, Ui_frmAccountOperationsAdd):
             
         Luego usaré el objeto original para la modificación ya que después se sale de este dialogo y si es uno nuevo dejaré origianl a None y usarre uno nuevo que llamaré final
          """
-        QWidget.__init__(self, parent)
+        QDialog.__init__(self, parent)
         self.setupUi(self)
         self.mem=mem
         
@@ -107,27 +108,15 @@ class frmAccountOperationsAdd(QDialog, Ui_frmAccountOperationsAdd):
         tarjeta=self.mem.data.creditcards_active().find_by_id(id_tarjetas)
         
         if not importe:
-            m=QMessageBox()
-            m.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
-            m.setIcon(QMessageBox.Information)
-            m.setText(self.tr("You must set the operation amount"))
-            m.exec_()    
+            qmessagebox(self.tr("You must set the operation amount"))
             return        
         
         if concepto.tipooperacion.id==1 and importe>0:
-            m=QMessageBox()
-            m.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
-            m.setIcon(QMessageBox.Information)
-            m.setText(self.tr("Expenses can not have a positive amount"))
-            m.exec_()    
+            qmessagebox(self.tr("Expenses can not have a positive amount"))
             return
             
         if concepto.tipooperacion.id==2 and importe<0:
-            m=QMessageBox()
-            m.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
-            m.setIcon(QMessageBox.Information)
-            m.setText(self.tr("Incomes can not have a negative amount"))
-            m.exec_()
+            qmessagebox(self.tr("Incomes can not have a negative amount"))
             return
             
         if self.radAccounts.isChecked():#Producto final es un operaccount
@@ -142,7 +131,7 @@ class frmAccountOperationsAdd(QDialog, Ui_frmAccountOperationsAdd):
                 final.save()
                 self.mem.con.commit()        #Se debe hacer el commit antes para que al actualizar con el signal salga todos los datos
                 self.emit_OperationChanged(self.type_and_id(self.original), self.type_and_id(final))
-                self.wdgDT.set(self.mem, self.wdgDT.datetime()+datetime.timedelta(seconds=1), self.wdgDT.zone)
+                self.wdgDT.set(self.mem, self.wdgDT.datetime()+timedelta(seconds=1), self.wdgDT.zone)
                 return
             elif self.original.__class__==CreditCardOperation:#Modificación  de opercreditcard por operaccount hay que borrar opercreditcard
                 final=AccountOperation(self.mem)
@@ -193,7 +182,7 @@ class frmAccountOperationsAdd(QDialog, Ui_frmAccountOperationsAdd):
                 final.save()
                 self.mem.con.commit()
                 self.emit_OperationChanged(self.type_and_id(self.original), self.type_and_id(final))
-                self.wdgDT.set(self.mem, self.wdgDT.datetime()+datetime.timedelta(seconds=1), self.wdgDT.zone)
+                self.wdgDT.set(self.mem, self.wdgDT.datetime()+timedelta(seconds=1), self.wdgDT.zone)
                 return
             elif self.refund==True:#Refun d         
                 refund=CreditCardOperation(self.mem)

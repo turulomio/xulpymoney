@@ -189,7 +189,7 @@ class wdgIndexRange(QWidget, Ui_wdgIndexRange):
         except:
             self.range=None
 
-    @QtCore.pyqtSlot() 
+    @pyqtSlot() 
     def on_actionBottom_triggered(self):        
         d=QDialog(self)        
         d.setFixedSize(850, 850)
@@ -204,7 +204,7 @@ class wdgIndexRange(QWidget, Ui_wdgIndexRange):
         else:
             d.close()
 
-    @QtCore.pyqtSlot() 
+    @pyqtSlot() 
     def on_actionTop_triggered(self):        
         d=QDialog(self)
         d.setFixedSize(850, 850)
@@ -219,7 +219,7 @@ class wdgIndexRange(QWidget, Ui_wdgIndexRange):
         else:
             d.close()
 
-    @QtCore.pyqtSlot() 
+    @pyqtSlot() 
     def on_actionMiddle_triggered(self):        
         d=QDialog(self)        
         d.setFixedSize(850, 850)

@@ -1,8 +1,7 @@
-from PyQt5.QtCore import *
-from PyQt5.QtGui import *
-from Ui_frmQuotesIBM import *
-from libxulpymoney import *
-from wdgDatetime import *
+from PyQt5.QtCore import Qt,  pyqtSlot
+from PyQt5.QtWidgets import QDialog
+from Ui_frmQuotesIBM import Ui_frmQuotesIBM
+from libxulpymoney import Quote, dt, dt_changes_tz, qmessagebox
 
 class frmQuotesIBM(QDialog, Ui_frmQuotesIBM):
     def __init__(self, mem, product,  quote=None,   parent = None):
@@ -50,11 +49,7 @@ class frmQuotesIBM(QDialog, Ui_frmQuotesIBM):
     @pyqtSlot()
     def on_buttonbox_accepted(self):
         if self.txtQuote.decimal()==None:
-            m=QMessageBox()
-            m.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
-            m.setIcon(QMessageBox.Information)
-            m.setText(self.tr("Incorrect data. Try again."))
-            m.exec_()    
+            qmessagebox(self.tr("Incorrect data. Try again."))
             return
         if self.quote==None:#insert              
             if self.chkCanBePurged.checkState()==Qt.Unchecked:#No puede ser purgado

@@ -1,7 +1,7 @@
-from PyQt5.QtCore import *
-from PyQt5.QtGui import *
-from libxulpymoney import *
-from Ui_frmDividendsAdd import *
+from PyQt5.QtWidgets import QDialog,  QWidget
+from decimal import Decimal
+from libxulpymoney import Dividend,  Money,  tpc, qmessagebox
+from Ui_frmDividendsAdd import Ui_frmDividendsAdd
 
 class frmDividendsAdd(QDialog, Ui_frmDividendsAdd):
     def __init__(self, mem, inversion, dividend=None,  parent=None):
@@ -86,26 +86,14 @@ class frmDividendsAdd(QDialog, Ui_frmDividendsAdd):
         tipooperacion=concepto.tipooperacion
                         
         if tipooperacion.id==1 and (self.txtBruto.decimal()>Decimal('0') or self.txtNeto.decimal()>Decimal('0')):
-            m=QMessageBox()
-            m.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
-            m.setIcon(QMessageBox.Information)
-            m.setText(self.tr("Expenses can't have a positive amount"))
-            m.exec_()    
+            qmessagebox(self.tr("Expenses can't have a positive amount"))
             return
             
         if tipooperacion.id==2 and (self.txtBruto.decimal()<Decimal('0') or self.txtNeto.decimal()<Decimal('0')):
-            m=QMessageBox()
-            m.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
-            m.setIcon(QMessageBox.Information)
-            m.setText(self.tr("Incomes can't have a negative amount"))
-            m.exec_()
+            qmessagebox(self.tr("Incomes can't have a negative amount"))
             return
         if self.txtRetencion.decimal()<Decimal('0') or self.txtDPA.decimal()<Decimal('0') or self.txtComision.decimal()<Decimal('0'):
-            m=QMessageBox()
-            m.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
-            m.setIcon(QMessageBox.Information)
-            m.setText(self.tr("Retention, earnings por share and commission must be greater than zero"))
-            m.exec_()    
+            qmessagebox(self.tr("Retention, earnings por share and commission must be greater than zero"))
             return
         
         
@@ -118,12 +106,8 @@ class frmDividendsAdd(QDialog, Ui_frmDividendsAdd):
             self.dividend.fecha=self.wdgDT.datetime()
             self.dividend.comision=self.txtComision.decimal()
             self.dividend.currency_conversion=self.wdgCurrencyConversion.factor
-        except:            
-            m=QMessageBox()
-            m.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
-            m.setIcon(QMessageBox.Information)
-            m.setText(self.tr("Data error. Please check them."))
-            m.exec_()    
+        except:
+            qmessagebox(self.tr("Data error. Please check them."))
             return
 
         

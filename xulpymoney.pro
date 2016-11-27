@@ -1,6 +1,5 @@
 SOURCES         = \
                   libdbupdates.py \
-                  libqmessagebox.py \
                   libsources.py \
                   libxulpymoney.py \
                   libodfgenerator.py \
@@ -100,7 +99,6 @@ SOURCES         = \
                   ui/Ui_wdgSimulationsAdd.py \
                   ui/wdgQuotesUpdate.py \
                   ui/Ui_wdgQuotesUpdate.py \
-                  ui/wdgSource.py \
                   ui/Ui_wdgSource.py \
                   ui/wdgTwoCurrencyLineEdit.py \
                   ui/wdgOrders.py \

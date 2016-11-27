@@ -70,7 +70,7 @@ class frmAccess(QDialog, Ui_frmAccess):
             print ("Error in function make_connection",  self.mem.con)
             return False
     
-    @QtCore.pyqtSlot() 
+    @pyqtSlot() 
     def on_cmdYN_accepted(self):
         self.con.init__create(self.txtUser.text(), self.txtPass.text(), self.txtServer.text(), self.txtPort.text(), self.txtDB.text())
         self.con.connect()
@@ -81,7 +81,7 @@ class frmAccess(QDialog, Ui_frmAccess):
             qmessagebox(self.tr("Error conecting to {} database in {} server").format(self.con.db, self.con.server))
             sys.exit(1)
 
-    @QtCore.pyqtSlot() 
+    @pyqtSlot() 
     def on_cmdYN_rejected(self):
         sys.exit(124)
 

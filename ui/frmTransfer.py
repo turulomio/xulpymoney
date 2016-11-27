@@ -1,12 +1,11 @@
-from PyQt5.QtCore import *
-from PyQt5.QtGui import *
-from Ui_frmTransfer import *
+from PyQt5.QtWidgets import QDialog
+from Ui_frmTransfer import Ui_frmTransfer
 
-from libxulpymoney import *
+from libxulpymoney import qmessagebox,  Account
 
 class frmTransfer(QDialog, Ui_frmTransfer):
     def __init__(self, mem, origen=None, destino=None,   parent=None):
-        QWidget.__init__(self, parent)
+        QDialog.__init__(self, parent)
         self.setupUi(self)
         self.mem=mem
         
@@ -26,18 +25,10 @@ class frmTransfer(QDialog, Ui_frmTransfer):
             importe=abs(self.txtImporte.decimal())
             comision=abs(self.txtComision.decimal())
         except:
-            m=QMessageBox()
-            m.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
-            m.setIcon(QMessageBox.Information)
-            m.setText(self.tr("Error adding data"))
-            m.exec_()             
+            qmessagebox(self.tr("Error adding data"))
             return            
         if id_origen==id_destino:
-            m=QMessageBox()
-            m.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
-            m.setIcon(QMessageBox.Information)
-            m.setText(self.tr("Origin and destiny accounts can't be the same"))
-            m.exec_()             
+            qmessagebox(self.tr("Origin and destiny accounts can't be the same"))
             return 
             
         Account(self.mem).transferencia(self.wdgDT.datetime(),  self.mem.data.accounts_active().find_by_id(id_origen), self.mem.data.accounts_active().find_by_id(id_destino),  importe,  comision)

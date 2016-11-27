@@ -1,7 +1,6 @@
-from libxulpymoney import *
-from PyQt5.QtCore import *
-from PyQt5.QtGui import *
-from Ui_frmDPSAdd import *
+from libxulpymoney import DPS
+from PyQt5.QtWidgets import QDialog
+from Ui_frmDPSAdd import Ui_frmDPSAdd
 
 class frmDPSAdd(QDialog, Ui_frmDPSAdd):
     def __init__(self, mem,  product,   parent=None):

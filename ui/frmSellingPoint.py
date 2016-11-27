@@ -121,7 +121,7 @@ class frmSellingPoint(QDialog, Ui_frmSellingPoint):
     def on_radSMA200_clicked(self):
         self.__calcular()
         
-    @QtCore.pyqtSlot(str) 
+    @pyqtSlot(str) 
     def on_cmbTPC_currentIndexChanged(self, cur):
         self.__calcular()
         
@@ -137,7 +137,7 @@ class frmSellingPoint(QDialog, Ui_frmSellingPoint):
     def on_chkGainsTime_stateChanged(self, state):
         self.__calcular()
 
-    @QtCore.pyqtSlot() 
+    @pyqtSlot() 
     def on_cmd_released(self):
         if self.chkPonderanAll.checkState()==Qt.Checked:
             for inv in self.mem.data.investments_active().arr:

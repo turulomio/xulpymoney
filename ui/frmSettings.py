@@ -1,7 +1,8 @@
-from PyQt5.QtCore import *
-from PyQt5.QtGui import *
-from libxulpymoney import *
-from Ui_frmSettings import *
+from PyQt5.QtCore import pyqtSlot
+from PyQt5.QtWidgets import QDialog
+from libxulpymoney import Product, SetProducts, b2c, c2b
+from decimal import Decimal
+from Ui_frmSettings import Ui_frmSettings
 
 class frmSettings(QDialog, Ui_frmSettings):
     def __init__(self, mem, parent = None, name = None, modal = False):

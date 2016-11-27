@@ -64,7 +64,7 @@ class wdgInvestmentsOperations(QWidget, Ui_wdgInvestmentsOperations):
         self.setCurrent.myqtablewidget(self.tblCurrent)
 
         
-    @QtCore.pyqtSlot(int) 
+    @pyqtSlot(int) 
     def on_cmbFilters_currentIndexChanged(self, index):
         self.load()
         
@@ -95,7 +95,7 @@ class wdgInvestmentsOperations(QWidget, Ui_wdgInvestmentsOperations):
             self.selCurrentOperation=None
             
     
-    @QtCore.pyqtSlot() 
+    @pyqtSlot() 
     def on_actionShowAccount_triggered(self):
         if self.tab.currentIndex()==0:#Operation list
             cuenta=self.selOperation.inversion.account
@@ -105,7 +105,7 @@ class wdgInvestmentsOperations(QWidget, Ui_wdgInvestmentsOperations):
         w.exec_()
         self.load()
         
-    @QtCore.pyqtSlot() 
+    @pyqtSlot() 
     def on_actionShowInvestment_triggered(self):
         if self.tab.currentIndex()==0:#Operation list
             investment=self.selOperation.inversion
@@ -115,7 +115,7 @@ class wdgInvestmentsOperations(QWidget, Ui_wdgInvestmentsOperations):
         w.exec_()
         self.load()
                 
-    @QtCore.pyqtSlot() 
+    @pyqtSlot() 
     def on_actionShowProduct_triggered(self):
         if self.tab.currentIndex()==0:#Operation list
             investment=self.selOperation.inversion
@@ -125,7 +125,7 @@ class wdgInvestmentsOperations(QWidget, Ui_wdgInvestmentsOperations):
         w.exec_()
         self.load()
                 
-    @QtCore.pyqtSlot() 
+    @pyqtSlot() 
     def on_actionRangeReport_triggered(self):
         self.selOperation.show_in_ranges= not self.selOperation.show_in_ranges
         self.selOperation.save()
@@ -134,7 +134,7 @@ class wdgInvestmentsOperations(QWidget, Ui_wdgInvestmentsOperations):
         self.mem.data.investments.find_by_id(self.selOperation.inversion.id).get_operinversiones()
         self.load()
         
-    @QtCore.pyqtSlot() 
+    @pyqtSlot() 
     def on_actionShowInvestmentOperation_triggered(self):
         if self.tab.currentIndex()==0:#Operation list
             operation=self.selOperation

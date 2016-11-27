@@ -1,22 +1,25 @@
-from PyQt5.QtCore import *
-from PyQt5.QtGui import *
-from PyQt5.QtWidgets import *
-import datetime
+from PyQt5.QtCore import QObject,  pyqtSignal,  QTimer,  Qt,  QSettings
+from PyQt5.QtGui import QIcon,  QColor,  QPixmap,  QFont
+from PyQt5.QtWidgets import QTableWidgetItem,  QWidget,  QMessageBox, QApplication, QCheckBox, QHBoxLayout,  qApp,  QProgressDialog
+from datetime import date, timedelta, datetime, time
 import logging
-import time
 import platform
 import io
 import pytz
 import psycopg2
 import psycopg2.extras
-import sys,  codecs,   inspect,  threading, argparse, getpass
-from libqmessagebox import *
+import sys
+import codecs
+import inspect
+import threading
+import argparse
+import getpass
 
-from decimal import *
+from decimal import Decimal, getcontext
 getcontext().prec=20
 
 version="20160713"
-version_date=datetime.date(2016, 7, 13)
+version_date=date(2016, 7, 13)
 class Connection(QObject):
     """Futuro conection object"""
     inactivity_timeout=pyqtSignal()
@@ -44,11 +47,11 @@ class Connection(QObject):
         return self
         
     def _check_inactivity(self):
-        if datetime.datetime.now()-self._lastuse>datetime.timedelta(minutes=self.inactivity_timeout_minutes):
+        if datetime.now()-self._lastuse>timedelta(minutes=self.inactivity_timeout_minutes):
             self.disconnect()
             self._timerlastuse.stop()
             self.inactivity_timeout.emit()
-        print ("Remaining time {}".format(self._lastuse+datetime.timedelta(minutes=self.inactivity_timeout_minutes)-datetime.datetime.now()))
+        print ("Remaining time {}".format(self._lastuse+timedelta(minutes=self.inactivity_timeout_minutes)-datetime.now()))
 
     def cursor(self):
         self.restart_timeout()#Datetime who saves the las use of connection
@@ -56,7 +59,7 @@ class Connection(QObject):
         
     def restart_timeout(self):
         """Resets timeout, usefull in long process without database connections"""
-        self._lastuse=datetime.datetime.now()
+        self._lastuse=datetime.now()
         
     
     def mogrify(self, sql, arr):
@@ -116,7 +119,7 @@ class Connection(QObject):
             print (e.pgcode, e.pgerror)
             return
         self._active=True
-        self.init=datetime.datetime.now()
+        self.init=datetime.now()
         self.restart_timeout()
         self._timerlastuse = QTimer()
         self._timerlastuse.timeout.connect(self._check_inactivity)
@@ -243,11 +246,11 @@ class SetCommons(SetCommonsGeneric):
             
     def find_by_arr(self, id,  log=False):
         """log permite localizar errores en find. Ojo hay veces que hay find fallidos buscados como en UNION
-                inicio=datetime.datetime.now()
+                inicio=datetime.now()
         self.mem.data.products.find_by_id(80230)
-        print (datetime.datetime.now()-inicio)
+        print (datetime.now()-inicio)
         self.mem.agrupations.find_by_arr(80230)
-        print (datetime.datetime.now()-inicio)
+        print (datetime.now()-inicio)
         Always fister find_by_dict
         0:00:00.000473
         0:00:00.000530
@@ -409,7 +412,7 @@ class SetInvestments(SetCommons):
             tpc_venta=inv.percentage_to_selling_point()
             table.setItem(i, 8, qtpc(tpc_venta))
             if inv.selling_expiration!=None:
-                if inv.selling_expiration<datetime.date.today():
+                if inv.selling_expiration<date.today():
                     table.item(i, 8).setIcon(QIcon(":/xulpymoney/alarm_clock.png"))
             if tpc_invertido!=None and tpc_venta!=None:
                 if tpc_invertido<=-50:   
@@ -466,9 +469,9 @@ class SetInvestments(SetCommons):
         table.setRowCount(set.length())
         for i, inv in enumerate(set.arr):
             if inv.selling_expiration!=None:
-                table.setItem(i, 0, qdate(inv.op_actual.last().datetime.date()))
+                table.setItem(i, 0, qdate(inv.op_actual.last().date()))
                 table.setItem(i, 1, qdate(inv.selling_expiration))    
-                if inv.selling_expiration<datetime.date.today():
+                if inv.selling_expiration<date.today():
                     table.item(i, 1).setBackground( QColor(255, 182, 182))       
                 table.setItem(i, 2, qleft(inv.name))
                 table.setItem(i, 3, qleft(inv.account.name))   
@@ -731,6 +734,7 @@ class SetInvestments(SetCommons):
         if origen.product!=destino.product:
             return False
         now=self.mem.localzone.now()
+        currency_conversion=None#ESTA MAL ERA PARA QUE NO SALGAN WARNINGS
 
         if comision!=0:
             op_cuenta=AccountOperation(self.mem).init__create(now.date(), self.mem.conceptos.find_by_id(38), self.mem.tiposoperaciones.find_by_id(1), -comision, "Traspaso de valores", origen.account)
@@ -1513,7 +1517,7 @@ class SetEstimationsDPS:
         self.product=product
     
     def estimacionNula(self, year):
-        return EstimationDPS(self.mem).init__create(self.product, year, datetime.date.today(), "None Estimation", None, None)
+        return EstimationDPS(self.mem).init__create(self.product, year, date.today(), "None Estimation", None, None)
     
     def load_from_db(self):
         del self.arr
@@ -1532,14 +1536,14 @@ class SetEstimationsDPS:
         return self.estimacionNula(year)
             
     def currentYear(self):
-        return self.find(datetime.date.today().year)
+        return self.find(date.today().year)
 
     def dias_sin_actualizar(self):
         """Si no hay datos devuelve 1000"""
         self.sort()
         try:
             ultima=self.arr[len(self.arr)-1].date_estimation
-            return (datetime.date.today()-ultima).days
+            return (date.today()-ultima).days
         except:
             return 1000
 
@@ -1570,7 +1574,7 @@ class SetEstimationsEPS:
         self.product=product
     
     def estimacionNula(self, year):
-        return EstimationEPS(self.mem).init__create(self.product, year, datetime.date.today(), "None Estimation", None, None)
+        return EstimationEPS(self.mem).init__create(self.product, year, date.today(), "None Estimation", None, None)
     
     def load_from_db(self):
         del self.arr
@@ -1589,14 +1593,14 @@ class SetEstimationsEPS:
         return self.estimacionNula(year)
             
     def currentYear(self):
-        return self.find(datetime.date.today().year)
+        return self.find(date.today().year)
 
     def dias_sin_actualizar(self):
-        ultima=datetime.date(1990, 1, 1)
+        ultima=date(1990, 1, 1)
         for k, v in self.dic_arr.items():
             if v.date_estimation>ultima:
                 ultima=v.date_estimation
-        return (datetime.date.today()-ultima).days
+        return (date.today()-ultima).days
         
         
     def sort(self):
@@ -1610,7 +1614,7 @@ class SetEstimationsEPS:
         for i, e in enumerate(self.arr):
             table.setItem(i, 0, qcenter(str(e.year)))
             table.setItem(i, 1, self.product.currency.qtablewidgetitem(e.estimation, 6))       
-            table.setItem(i, 2, qright(e.PER(Quote(self.mem).init__from_query(self.product, day_end_from_date(datetime.date(e.year, 12, 31), self.product.stockmarket.zone))), 2))
+            table.setItem(i, 2, qright(e.PER(Quote(self.mem).init__from_query(self.product, day_end_from_date(date(e.year, 12, 31), self.product.stockmarket.zone))), 2))
             table.setItem(i, 3, qdate(e.date_estimation))
             table.setItem(i, 4, QTableWidgetItem(e.source))
             table.setItem(i, 5, qbool(e.manual)) 
@@ -1648,7 +1652,7 @@ class SetIO:
         if date==None:
             return resultado
         for a in self.arr:
-            if a.datetime.date()>=date:
+            if a.date()>=date:
                 resultado.append(a)
         return resultado
         
@@ -1847,7 +1851,7 @@ class SetInvestmentOperationsHomogeneus(SetInvestmentOperationsHeterogeneus):
                 sioa.arr.append(InvestmentOperationCurrent(self.mem).init__create(o, o.tipooperacion, o.datetime, o.inversion, o.acciones, o.importe, o.impuestos, o.comision, o.valor_accion,  o.show_in_ranges, o.currency_conversion,  o.id))
             else:#Venta
                 if abs(o.acciones)>sioa.acciones():
-                    loggin.critical("No puedo vender más acciones que las que tengo. EEEEEEEEEERRRRRRRRRRRROOOOORRRRR")
+                    logging.critical("No puedo vender más acciones que las que tengo. EEEEEEEEEERRRRRRRRRRRROOOOORRRRR")
                     sys.exit(0)
                 sioa.historizar(o, sioh)
         sioa.get_valor_benchmark(self.mem.data.benchmark)
@@ -2638,7 +2642,7 @@ class InvestmentOperationHistorical:
         
     def less_than_a_year(self):
         """Returns True, when datetime of the operation is <= a year"""
-        if self.fecha_venta-self.fecha_inicio<=datetime.timedelta(days=365):
+        if self.fecha_venta-self.fecha_inicio<=timedelta(days=365):
             return True
         return False
         
@@ -2776,7 +2780,7 @@ class InvestmentOperationCurrent:
                 
     def age(self):
         """Average age of the current investment operations in days"""
-        return (datetime.date.today()-self.datetime.date()).days
+        return (date.today()-self.datetime.date()).days
                 
     def get_referencia_indice(self, indice):
         """Función que devuelve un Quote con la referencia del indice.
@@ -2848,7 +2852,7 @@ class InvestmentOperationCurrent:
 
     def less_than_a_year(self):
         """Returns True, when datetime of the operation is <= a year"""
-        if datetime.date.today()-self.datetime.date()<=datetime.timedelta(days=365):
+        if date.today()-self.datetime.date()<=timedelta(days=365):
             return True
         return False
         
@@ -2890,7 +2894,7 @@ class InvestmentOperationCurrent:
             
         mlast=self.inversion.quote2money(last, type)
         
-        if self.datetime.year==datetime.date.today().year:#Si la operaci´on fue en el año, cuenta desde el dia de la operaci´on, luego su preicio
+        if self.datetime.year==date.today().year:#Si la operaci´on fue en el año, cuenta desde el dia de la operaci´on, luego su preicio
             mendlastyear=self.price(type)
         else:
             mendlastyear=self.inversion.quote2money(endlastyear, type)
@@ -2977,9 +2981,9 @@ class Comment:
         return accountoperation
         
     def setEncoded10000(self, operinvestment):
-        """10000;investmentoperation.idSets the coded comment to save in db"""
-#        elif self.concepto.id in (29, 35) and len(c)==5:#{0}|{1}|{2}|{3}".format(row['inversion'], importe, comision, impuestos)
-#            return QApplication.translate("Core","{0[1]}: {0[0]} shares. Amount: {0[2]} {1}. Comission: {0[3]} {1}. Taxes: {0[4]} {1}").format(c, self.account.currency.symbol)
+        """
+            10000;investmentoperation.idSets the coded comment to save in db
+        """
         return "10000,{}".format(operinvestment.id)
         
     def setEncoded10001(self, operaccountorigin, operaccountdestiny, operaccountorigincomission):
@@ -3131,7 +3135,7 @@ class Concept:
         cur.execute("select datetime from opercuentas where id_conceptos=%s union all select datetime from opertarjetas where id_conceptos=%s order by datetime limit 1", (self.id, self.id))
         res=cur.fetchone()
         if res==None:
-            primerafecha=datetime.date.today()-datetime.timedelta(days=1)
+            primerafecha=date.today()-timedelta(days=1)
         else:
             primerafecha=res['datetime'].date()
         cur.execute("select sum(importe) as suma from opercuentas where id_conceptos=%s union all select sum(importe) as suma from opertarjetas where id_conceptos=%s", (self.id, self.id))
@@ -3141,7 +3145,7 @@ class Concept:
                 continue
             suma=suma+i['suma']
         cur.close()
-        return Decimal(30)*suma/((datetime.date.today()-primerafecha).days+1)
+        return Decimal(30)*suma/((date.today()-primerafecha).days+1)
         
     def mensual(self,   year,  month):  
         """Saca el gasto mensual de este concepto"""
@@ -3421,7 +3425,7 @@ class DBData:
         """
             This method will subsitute load_actives and load_inactives
         """
-        inicio=datetime.datetime.now()
+        inicio=datetime.now()
         self.benchmark=Product(self.mem).init__db(self.mem.settingsdb.value("mem/benchmark", "79329" ))
         self.benchmark.result.basic.load_from_db()
         
@@ -3446,7 +3450,7 @@ class DBData:
             p.result.get_all()
         
         
-        print("Cargando data",  datetime.datetime.now()-inicio)
+        print("Cargando data",  datetime.now()-inicio)
 
 #    def reload_prices(self):
 #        pd= QProgressDialog(QApplication.translate("Core","Reloading {0} product prices from database").format(self.products.length()),None, 0,self.products.length())
@@ -3773,7 +3777,7 @@ class InvestmentOperation:
             id is the invesmentoperation to find
         """
         for i in self.mem.data.investments:
-            if invesment.id==i.id:
+            if investment.id==i.id:
                 found=i.op.find(id)
                 if found!=None:
                     return found
@@ -3823,7 +3827,7 @@ class InvestmentOperation:
 #        return self.comentario
 
     def less_than_a_year(self):
-        if datetime.date.today()-self.datetime.date()<=datetime.timedelta(days=365):
+        if date.today()-self.datetime.date()<=timedelta(days=365):
                 return True
         return False
         
@@ -3943,13 +3947,13 @@ class Account:
         Solo asigna balance al atributo balance si la fecha es actual, es decir la actual
         Parámetros:
             - pg_cursor cur Cursor de base de datos
-            - datetime.date fecha Fecha en la que calcular el balance
+            - date fecha Fecha en la que calcular el balance
         Devuelve:
             - Decimal balance Valor del balance
         """
         cur=self.mem.con.cursor()
         if fecha==None:
-            fecha=datetime.date.today()
+            fecha=date.today()
         cur.execute('select sum(importe) from opercuentas where id_cuentas='+ str(self.id) +" and datetime::date<='"+str(fecha)+"';") 
         res=cur.fetchone()[0]
         cur.close()
@@ -4235,7 +4239,7 @@ class Investment:
                 - El inversiones mq
                 - La estimacion de dividends mq"""
         if year==None:
-            year=datetime.date.today().year
+            year=date.today().year
         try:
             return Money(self.mem, self.acciones()*self.product.estimations_dps.find(year).estimation, self.product.currency)
         except:
@@ -4312,7 +4316,7 @@ class Investment:
     def invertido(self, date=None, type=1):
         """Función que calcula el balance invertido partiendo de las acciones y el precio de compra
         Necesita haber cargado mq getbasic y operinversionesactual"""
-        if date==None or date==datetime.date.today():#Current
+        if date==None or date==date.today():#Current
             return self.op_actual.invertido(type)
         else:
             ### 0 Creo una vinversion fake para reutilizar codigo, cargando operinversiones hasta date
@@ -4528,7 +4532,7 @@ class Order:
         return False
 
     def is_expired(self):
-        if self.expiration<datetime.date.today():
+        if self.expiration<date.today():
             return True
         return False
         
@@ -4594,7 +4598,7 @@ class AnnualTarget:
         cur=self.mem.con.cursor()
         
         if lastyear_assests==None:
-            self.lastyear_assests=Assets(self.mem).saldo_total(self.mem.data.investments,  datetime.date(year-1, 12, 31))
+            self.lastyear_assests=Assets(self.mem).saldo_total(self.mem.data.investments,  date(year-1, 12, 31))
         else:
             self.lastyear_assests=lastyear_assests
         
@@ -4663,7 +4667,7 @@ class Assets:
         sql='select datetime from opercuentas UNION all select datetime from operinversiones UNION all select datetime from opertarjetas order by datetime limit 1;'
         cur.execute(sql)
         if cur.rowcount==0:
-            return datetime.datetime.now()
+            return datetime.now()
         resultado=cur.fetchone()[0]
         cur.close()
         return resultado
@@ -4694,11 +4698,11 @@ class Assets:
         Fecha None calcula  el balance actual
         """
         resultado=Money(self.mem, 0, self.mem.localcurrency)
-#        inicio=datetime.datetime.now()
+#        inicio=datetime.now()
         for inv in setinversiones.arr:
             if inv.product.percentage==0:        
                 resultado=resultado+inv.balance( fecha, type=3)
-#        print ("core > Total > saldo_todas_inversiones_riego_cero: {0}".format(datetime.datetime.now()-inicio))
+#        print ("core > Total > saldo_todas_inversiones_riego_cero: {0}".format(datetime.now()-inicio))
         return resultado
             
     def dividends_neto(self, ano,  mes=None):
@@ -4729,7 +4733,7 @@ class Assets:
         
     def invested(self, date=None):
         """Devuelve el patrimonio invertido en una determinada fecha"""
-        if date==None or date==datetime.date.today():
+        if date==None or date==date.today():
             array=self.mem.data.investments_active().arr #Current and active
         else:
             array=self.mem.data.investments.arr#All, because i don't know witch one was active.
@@ -4744,14 +4748,14 @@ class Assets:
         Fecha None calcula  el balance actual
         """
         resultado=Money(self.mem, 0, self.mem.localcurrency)
-#        inicio=datetime.datetime.now()
+#        inicio=datetime.now()
         for inv in self.mem.data.investments.arr:
             if inv.product.type.id in (7, 9):#public and private bonds        
                 if fecha==None:
                     resultado=resultado+inv.balance().local()
                 else:
                     resultado=resultado+inv.balance( fecha).local()
-#        print ("core > Assets > saldo_todas_inversiones_bonds: {0}".format(datetime.datetime.now()-inicio))
+#        print ("core > Assets > saldo_todas_inversiones_bonds: {0}".format(datetime.now()-inicio))
         return resultado
 
     def patrimonio_riesgo_cero(self, setinversiones, fecha):
@@ -5000,7 +5004,7 @@ class SetOperationTypes(SetCommons):
 
 def mylog(text):
     f=open("/tmp/xulpymoney.log","a")
-    f.write(str(datetime.datetime.now()) + "|" + text + "\n")
+    f.write(str(datetime.now()) + "|" + text + "\n")
     f.close()
     
 def decimal_check(dec):
@@ -5136,8 +5140,8 @@ class SetOrders:
     def order_by_percentage_from_current_price(self):
         try:
             self.arr=sorted(self.arr, key=lambda o:o.percentage_from_current_price(), reverse=True)
-        except:
-            qmessagebox_error_ordering()
+        except:            
+            qmessagebox(QApplication.translate("Core", "I couldn't order data due to they have null values"))
         
     def date_first_db_order(self):
         """First order date. It searches in database not in array"""
@@ -5146,7 +5150,7 @@ class SetOrders:
         r=cur.fetchone()
         cur.close()
         if r==None:#To avoid crashed returns today if null
-            return datetime.date.today()
+            return date.today()
         else:
             return r[0]
         
@@ -5285,13 +5289,13 @@ class StockMarket:
         """
             Returns a datetime with timezone with the todays stockmarket closes
         """
-        return dt(datetime.date.today(), self.closes, self.zone)
+        return dt(date.today(), self.closes, self.zone)
 
     def today_starts(self):
         """
             Returns a datetime with timezone with the todays stockmarket closes
         """
-        return dt(datetime.date.today(), self.starts, self.zone)
+        return dt(date.today(), self.starts, self.zone)
 
 class Color:
     esc_seq = "\x1b["
@@ -5319,17 +5323,17 @@ class Color:
     def resetColor(self, ):
         return self.codes["reset"]
     def ctext(self, color,text):
-        return self.codes[ctext]+text+self.codes["reset"]
+        return self.codes[text]+text+self.codes["reset"]
     def bold(self, text):
         return self.codes["bold"]+text+self.codes["reset"]
     def white(self, text):
-        return bold(text)
+        return self.bold(text)
     def teal(self, text):
         return self.codes["teal"]+text+self.codes["reset"]
     def turquoise(self, text):
         return self.codes["turquoise"]+text+self.codes["reset"]
     def darkteal(self, text):
-        return turquoise(text)
+        return self.turquoise(text)
     def fuchsia(self, text):
         return self.codes["fuchsia"]+text+self.codes["reset"]
     def purple(self, text):
@@ -5347,7 +5351,7 @@ class Color:
     def brown(self, text):
         return self.codes["brown"]+text+self.codes["reset"]
     def darkyellow(self, text):
-        return brown(text)
+        return self.brown(text)
     def red(self, text):
         return self.codes["red"]+text+self.codes["reset"]
     def darkred(self, text):
@@ -5433,7 +5437,7 @@ class ProductComparation:
 
     def myqtablewidget(self, tabla):
         arr=[]#date, product1, product2
-        for i, date in enumerate(self.__commonDates):
+        for i, dat in enumerate(self.__commonDates):
             arr.append((date, self.set1.arr[i].close, self.set2.arr[i].close))
             
         tabla.setColumnCount(3)
@@ -5551,7 +5555,8 @@ class Money:
         else:
             print (self.currency, money.currency )
             logging.error("Before adding, please convert to the same currency")
-            raise MoneyOperationException("MoneyOperationException")
+#            raise MoneyOperationException("MoneyOperationException")
+            raise "MoneyOperationException"
 #            b=money.convert(self.currency)
 #            return Money(self.mem, self.amount+b.amount, self.currency)
             
@@ -5562,7 +5567,7 @@ class Money:
             return Money(self.mem, self.amount-money.amount, self.currency)
         else:
             logging.error("Before substracting, please convert to the same currency")
-            raise MoneyOperationException("MoneyOperationException")
+            raise "MoneyOperationException"
 #            b=money.convert(self.currency)
 #            return Money(self.mem, self.amount-b.amount, self.currency)
         
@@ -5651,12 +5656,12 @@ class Money:
         if self.amount==Decimal(0):
             return Money(self.mem, 0, currency)
             
-        init=datetime.datetime.now()
+        init=datetime.now()
         if dt==None:
             dt=self.mem.localzone.now()
         factor=self.conversionFactor(currency, dt)
         result=Money(self.mem, self.amount*factor, currency)
-        logging.debug("Money conversion. {} to {} at {} took {}".format(self.string(6), result.string(6), dt, datetime.datetime.now()-init))
+        logging.debug("Money conversion. {} to {} at {} took {}".format(self.string(6), result.string(6), dt, datetime.now()-init))
         return result
         
     def conversionFactor(self, currency, dt):
@@ -5670,7 +5675,7 @@ class Money:
         elif self.currency.id=="USD":
             if currency.id=="EUR":
                 return 1/self.mem.data.currencies.find_by_id(74747).result.all.find(dt).quote
-        loggin.critical("No existe factor de conversión")
+        logging.critical("No existe factor de conversión")
         return None
         
     def convert_from_factor(self, currency, factor):
@@ -6057,7 +6062,7 @@ class Product:
         """Returns (True,True,True,True) if product has last and penultimate quotes (last, penultimate, endlastyear, thisyearestimation_dps)"""
         result=QuotesResult(self.mem, self)
         result.get_basic_and_ohcls()
-        dps=EstimationDPS(self.mem).init__from_db(self, datetime.date.today().year)
+        dps=EstimationDPS(self.mem).init__from_db(self, date.today().year)
         print (dps.estimation, dps)
         (last, penultimate, endlastyear, estimation)=(False, False, False, False)
         if result.basic.last: 
@@ -6103,7 +6108,7 @@ class Product:
         self.priority.append(idtochange)
         cur.execute("update products set priority=%s", (str(self.priority)))
         
-    def priorityhistorical_change(self):
+    def priorityhistorical_change(self, cur):
         """Cambia la primera prioridad y la pone en último lugar"""
         idtochange=self.priorityhistorical[0]
         self.priorityhistorical.remove(idtochange)
@@ -6111,7 +6116,7 @@ class Product:
         cur.execute("update products set priorityhistorical=%s", (str(self.priorityhistorical)))
 
     def fecha_ultima_actualizacion_historica(self):
-        resultado=datetime.date(self.mem.fillfromyear, 1, 1)
+        resultado=date(self.mem.fillfromyear, 1, 1)
         cur=self.mem.con.cursor()
         cur.execute("select max(datetime)::date as date from quotes where date_part('microsecond',datetime)=4 and id=%s order by date", (self.id, ))
         if cur.rowcount==1:
@@ -6298,7 +6303,7 @@ class SetQuotesAllIntradays:
                 if pd.wasCanceled():
                     return None
                 QApplication.processEvents()
-            if sqi.date<datetime.date.today()-datetime.timedelta(days=30):
+            if sqi.date<date.today()-timedelta(days=30):
                 counter=counter+sqi.purge()
         return counter
         
@@ -6325,14 +6330,14 @@ class SetQuotesBasic:
             self.endlastyear=triplete[0]
             self.penultimate=triplete[1]
             self.last=triplete[2]
-#            print ("Por triplete {0}".format(str(datetime.datetime.now()-inicio)))
+#            print ("Por triplete {0}".format(str(datetime.now()-inicio)))
         else:
             self.last=Quote(self.mem).init__from_query(self.product,  self.mem.localzone.now())
             if self.last.datetime!=None: #Solo si hay last puede haber penultimate
                 self.penultimate=Quote(self.mem).init__from_query_penultima(self.product, dt_changes_tz(self.last.datetime, self.mem.localzone).date())
             else:
                 self.penultimate=Quote(self.mem).init__create(self.product, None, None)
-            self.endlastyear=Quote(self.mem).init__from_query(self.product,  datetime.datetime(datetime.date.today().year-1, 12, 31, 23, 59, 59, tzinfo=pytz.timezone('UTC')))
+            self.endlastyear=Quote(self.mem).init__from_query(self.product,  datetime(date.today().year-1, 12, 31, 23, 59, 59, tzinfo=pytz.timezone('UTC')))
 
     def tpc_diario(self):
         if self.penultimate==None or self.last==None:
@@ -6362,7 +6367,7 @@ class SetQuotesIntraday(SetQuotes):
         self.date=date
         cur=self.mem.con.cursor()
         iniciodia=day_start_from_date(date, self.product.stockmarket.zone)
-        siguientedia=iniciodia+datetime.timedelta(days=1)
+        siguientedia=iniciodia+timedelta(days=1)
         cur.execute("select * from quotes where id=%s and datetime>=%s and datetime<%s order by datetime", (self.product.id,  iniciodia, siguientedia))
         for row in cur:
             self.append(Quote(self.mem).init__db_row(row,  self.product))
@@ -6591,7 +6596,7 @@ class Quote:
        Devuelve un array de Quote en el que arr[0] es endlastyear, [1] es penultimate y [2] es last
       Si no devuelve tres Quotes devuelve None y deberaá calcularse de otra forma"""
         cur=self.mem.con.cursor()
-        endlastyear=dt(datetime.date(datetime.date.today().year -1, 12, 31), datetime.time(23, 59, 59), self.mem.localzone)
+        endlastyear=dt(date(date.today().year -1, 12, 31), time(23, 59, 59), self.mem.localzone)
         cur.execute("select * from quote (%s, now()) union all select * from penultimate(%s) union all select * from quote(%s,%s) order by datetime", (product.id, product.id, product.id,  endlastyear))
         if cur.rowcount!=3:
             cur.close()
@@ -6682,7 +6687,7 @@ class OHCLMonthly:
         return o
     def datetime(self):
         """Devuelve un datetime usado para dibujar en gráficos, pongo el día 28 para no calcular el último"""
-        return day_end_from_date(datetime.date(self.year, self.month, 28), self.product.stockmarket.zone)
+        return day_end_from_date(date(self.year, self.month, 28), self.product.stockmarket.zone)
         
         
     def delete(self):
@@ -6725,11 +6730,11 @@ class OHCLWeekly:
         
     def datetime(self):
         """Devuelve un datetime usado para dibujar en gráficos, con el último día de la semana"""
-        d = datetime.date(self.year,1,1)
-        d = d - datetime.timedelta(d.weekday())
-        dlt = datetime.timedelta(days = (self.week-1)*7)
+        d = date(self.year,1,1)
+        d = d - timedelta(d.weekday())
+        dlt = timedelta(days = (self.week-1)*7)
 #        return d + dlt,  d + dlt + timedelta(days=6) ## first day, end day
-        lastday= d + dlt + datetime.timedelta(days=6)
+        lastday= d + dlt + timedelta(days=6)
         return day_end_from_date(lastday, self.product.stockmarket.zone)
         
     def print_time(self):
@@ -6767,7 +6772,7 @@ class OHCLYearly:
         return o
     def datetime(self):
         """Devuelve un datetime usado para dibujar en gráficos"""
-        return day_end_from_date(datetime.date(self.year, 12, 31), self.product.stockmarket.zone)
+        return day_end_from_date(date(self.year, 12, 31), self.product.stockmarket.zone)
     def print_time(self):
         return "{0}".format(int(self.year))
     
@@ -6918,10 +6923,10 @@ class SetOHCLDaily(SetOHCL):
             return SetQuotesBasic(self.mem, self.product).init__create(None, None,  None)
         ohcl=self.arr[self.length()-1]#last
         last=Quote(self.mem).init__create(self.product, dt(ohcl.date, self.product.stockmarket.closes,  self.product.stockmarket.zone), ohcl.close)
-        ohcl=self.find(ohcl.date-datetime.timedelta(days=1))#penultimate
+        ohcl=self.find(ohcl.date-timedelta(days=1))#penultimate
         if ohcl!=None:
             penultimate=Quote(self.mem).init__create(self.product, dt(ohcl.date, self.product.stockmarket.closes,  self.product.stockmarket.zone), ohcl.close)
-        ohcl=self.find(datetime.date(datetime.date.today().year-1, 12, 31))#endlastyear
+        ohcl=self.find(date(date.today().year-1, 12, 31))#endlastyear
         if ohcl!=None:
             endlastyear=Quote(self.mem).init__create(self.product, dt(ohcl.date, self.product.stockmarket.closes,  self.product.stockmarket.zone), ohcl.close)        
         return SetQuotesBasic(self.mem, self.product).init__create(last, penultimate, endlastyear)
@@ -7023,7 +7028,7 @@ class QuotesResult:
         
     def get_basic_and_ohcls(self):
         """Tambien sirve para recargar"""
-        inicioall=datetime.datetime.now()
+        inicioall=datetime.now()
         self.ohclDaily.load_from_db("""
             select 
                 id, 
@@ -7082,7 +7087,7 @@ class QuotesResult:
         """.format(self.product.id))
         
         self.basic=self.ohclDaily.setquotesbasic()
-        print ("Datos db cargados:",  datetime.datetime.now()-inicioall)
+        print ("Datos db cargados:",  datetime.now()-inicioall)
 
     def get_all(self):
         """Gets all in a set intradays form"""
@@ -7314,7 +7319,7 @@ class TUpdateData(threading.Thread):
     def run(self):
         print ("TUpdateData started")
         while True:
-            inicio=datetime.datetime.now()
+            inicio=datetime.now()
                             
             self.mem.data.benchmark.result.basic.load_from_db()
             
@@ -7323,7 +7328,7 @@ class TUpdateData(threading.Thread):
                 if self.mem.closing==True:
                     return
                 inv.result.basic.load_from_db()
-            print("TUpdateData loop took", datetime.datetime.now()-inicio)
+            print("TUpdateData loop took", datetime.now()-inicio)
             
             ##Wait loop
             for i in range(60):
@@ -7419,7 +7424,7 @@ class Maintenance:
         
     def show_investments_status(self, date):
         """Shows investments status in a date"""
-        datet=dt(date, datetime.time(22, 00), self.mem.localzone)
+        datet=dt(date, time(22, 00), self.mem.localzone)
         sumbalance=0
         print ("{0:<40s} {1:>15s} {2:>15s} {3:>15s}".format("Investments at {0}".format(date), "Shares", "Price", "Balance"))
         for inv in self.mem.data.investments.arr:
@@ -7513,7 +7518,7 @@ class MemXulpymoney:
         self.settings=QSettings()
         self.settingsdb=SettingsDB(self)
         
-        self.inittime=datetime.datetime.now()#Tiempo arranca el config
+        self.inittime=datetime.now()#Tiempo arranca el config
         self.dbinitdate=None#Fecha de inicio bd.
         self.con=None#Conexión        
         
@@ -7579,7 +7584,7 @@ class MemXulpymoney:
 
     def load_db_data(self):
         """Esto debe ejecutarse una vez establecida la conexión"""
-        inicio=datetime.datetime.now()
+        inicio=datetime.now()
         
         self.currencies=SetCurrencies(self)
         self.currencies.load_all()
@@ -7630,7 +7635,7 @@ class MemXulpymoney:
         self.favorites=string2list(self.settingsdb.value("mem/favorites", ""))
         self.fillfromyear=int(self.settingsdb.value("mem/fillfromyear", "2005"))
         
-        print ("Loading db data took {}".format(datetime.datetime.now()-inicio))
+        print ("Loading db data took {}".format(datetime.now()-inicio))
         
     def save_MemSettingsDB(self):
         self.settingsdb.setValue("mem/localcurrency", self.localcurrency.id)
@@ -7721,7 +7726,7 @@ class Zone:
         return pytz.timezone(self.name)
         
     def now(self):
-        return datetime.datetime.now(pytz.timezone(self.name))
+        return datetime.now(pytz.timezone(self.name))
         
     def __repr__(self):
         return "Zone ({}): {}".format(str(self.id), str(self.name))
@@ -7878,8 +7883,8 @@ def log(tipo, funcion,  mensaje):
     if funcion!="":
         funcion= funcion + " "
     f=codecs.open("/tmp/mystocks.log",  "a", "utf-8-sig")
-    message=str(datetime.datetime.now())[:-7]+" "+ tipo +" " + funcion + mensaje + "\n"
-    printmessage=str(datetime.datetime.now())[:-7]+" "+ Color().green(tipo) + " "+ funcion +  mensaje + "\n"
+    message=str(datetime.now())[:-7]+" "+ tipo +" " + funcion + mensaje + "\n"
+    printmessage=str(datetime.now())[:-7]+" "+ Color().green(tipo) + " "+ funcion +  mensaje + "\n"
     f.write(message)
     print (printmessage[:-1])
     f.close()
@@ -7920,10 +7925,10 @@ def day_start(dattime, zone):
     
 def day_end_from_date(date, zone):
     """Saca cuando acaba el dia de un dattime en una zona concreta"""
-    return dt(date, datetime.time(23, 59, 59), zone)
+    return dt(date, time(23, 59, 59), zone)
     
 def day_start_from_date(date, zone):
-    return dt(date, datetime.time(0, 0, 0), zone)
+    return dt(date, time(0, 0, 0), zone)
     
 def days_to_year_month(days):
     years=days//365
@@ -7947,7 +7952,7 @@ def dt(date, hour, zone):
     """Función que devuleve un datetime con zone info.
     Zone is an object."""
     z=pytz.timezone(zone.name)
-    a=datetime.datetime(date.year,  date.month,  date.day,  hour.hour,  hour.minute,  hour.second, hour.microsecond)
+    a=datetime(date.year,  date.month,  date.day,  hour.hour,  hour.minute,  hour.second, hour.microsecond)
     a=z.localize(a)
     return a
     
