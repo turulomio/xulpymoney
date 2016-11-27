@@ -74,7 +74,7 @@ class wdgConcepts(QWidget, Ui_wdgConcepts):
         self.tblIncomes.setItem(len(self.incomeslist), 2, qtpc(100))    
         self.tblIncomes.setItem(len(self.incomeslist), 3, self.mem.localcurrency.qtablewidgetitem(totalaverageincomes))         
 
-    @QtCore.pyqtSlot() 
+    @pyqtSlot() 
     def on_wdgYM_changed(self):
         self.load_gastos(self.wdgYM.year, self.wdgYM.month)
         self.load_ingresos(self.wdgYM.year,  self.wdgYM.month)

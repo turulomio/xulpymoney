@@ -57,7 +57,7 @@ class wdgConceptsHistorical(QWidget, Ui_wdgConceptsHistorical):
         self.table.setItem(rows, 13, self.mem.localcurrency.qtablewidgetitem(sum(suma)))
 
     
-    @QtCore.pyqtSlot() 
+    @pyqtSlot() 
     def on_actionShowMonth_triggered(self):
         newtab = QWidget()
         horizontalLayout = QHBoxLayout(newtab)
@@ -72,7 +72,7 @@ class wdgConceptsHistorical(QWidget, Ui_wdgConceptsHistorical):
         self.tab.setCurrentWidget(newtab)
 
     
-    @QtCore.pyqtSlot() 
+    @pyqtSlot() 
     def on_actionShowYear_triggered(self):
         newtab = QWidget()
         horizontalLayout = QHBoxLayout(newtab)

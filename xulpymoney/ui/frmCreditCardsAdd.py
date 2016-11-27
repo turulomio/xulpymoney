@@ -1,8 +1,6 @@
-from PyQt5.QtCore import *
-from PyQt5.QtGui import *
-from Ui_frmCreditCardsAdd import *
-from libxulpymoney import *
-from libqmessagebox import qmessagebox_number_invalid
+from PyQt5.QtWidgets import QDialog
+from Ui_frmCreditCardsAdd import Ui_frmCreditCardsAdd
+from libxulpymoney import CreditCard, b2c, c2b, qmessagebox
 
 class frmCreditCardsAdd(QDialog, Ui_frmCreditCardsAdd):
     def __init__(self, mem,  account,  creditcard,  parent=None):
@@ -11,7 +9,7 @@ class frmCreditCardsAdd(QDialog, Ui_frmCreditCardsAdd):
             Si creditcard=None # Insertar
             Si creditcard=reg(CreditCard) #Modificar
         """
-        QWidget.__init__(self, parent)
+        QDialog.__init__(self, parent)
         self.setupUi(self)
         self.mem=mem
         self.account=account
@@ -45,5 +43,5 @@ class frmCreditCardsAdd(QDialog, Ui_frmCreditCardsAdd):
         
             self.done(0)
         else:
-            qmessagebox_number_invalid()
+            qmessagebox(self.tr("You have written and invalid number"))
     

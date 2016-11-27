@@ -1,12 +1,10 @@
-from PyQt5.QtCore import *
-from PyQt5.QtGui import *
-from PyQt5.QtWidgets import *
-from wdgSimulationsAdd import *
+from PyQt5.QtGui import QIcon, QPixmap
+from PyQt5.QtWidgets import QWidget,  QDialog, QVBoxLayout, QMessageBox
+from wdgSimulationsAdd import wdgSimulationsAdd
 import libdbupdates
 import frmMain
-from Ui_wdgSimulations import *
-from libxulpymoney import SetSimulations, MemXulpymoney, version_date
-from libqmessagebox import *
+from Ui_wdgSimulations import Ui_wdgSimulations
+from libxulpymoney import Connection, DBAdmin, SetSimulations, MemXulpymoney, qmessagebox, version_date
 
 class wdgSimulations(QWidget, Ui_wdgSimulations):
     def __init__(self, mem,  parent = None, name = None):
@@ -67,7 +65,7 @@ class wdgSimulations(QWidget, Ui_wdgSimulations):
 
     def on_cmdConnect_released(self):
         if not self.mem.con.is_superuser():
-            qmessagebox_connexion_not_superuser()
+            qmessagebox(self.tr("The role of the user is not an administrator"))
             return
         simcon=Connection().init__create(self.mem.con.user, self.mem.con.password, self.mem.con.server, self.mem.con.port, self.simulations.selected.simulated_db())
         simcon.connect()
@@ -86,7 +84,7 @@ class wdgSimulations(QWidget, Ui_wdgSimulations):
         d.setStyleSheet("QDialog { background-color: rgb(255, 182, 182);  }");        
         d.setWindowTitle(self.tr("Xulpymoney SIMULATED IN {} 2010-{} \xa9").format(self.simulations.selected.simulated_db(),  version_date.year))
         icon = QIcon()
-        icon.addPixmap(QPixmap(":/xulpymoney/replication.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QPixmap(":/xulpymoney/replication.png"), QIcon.Normal, QIcon.Off)
         d.setWindowIcon(icon)
         d.showMaximized()
         lay = QVBoxLayout(d)

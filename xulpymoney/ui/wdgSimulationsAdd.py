@@ -20,7 +20,7 @@ class wdgSimulationsAdd(QWidget, Ui_wdgSimulationsAdd):
     @pyqtSlot()
     def on_buttonbox_accepted(self):
         if self.mem.con.is_superuser()==False:
-            qmessagebox_connexion_not_superuser()
+            qmessagebox(QApplication.translate("Core","The role of the user is not an administrator"))
             self.parent.reject()
             return
         

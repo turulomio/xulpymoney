@@ -392,7 +392,7 @@ class frmProductReport(QDialog, Ui_frmProductReport):
                 current=self.product.result.ohclYearly.arr[i].datetime()
                 self.tblMensuales.setItem(current.year-minyear, 13, qtpc(tpc)) 
 
-    @QtCore.pyqtSlot() 
+    @pyqtSlot() 
     def on_actionDividendXuNew_triggered(self):
         w=frmDividendsAdd(self.mem, self.inversion,  None)
         w.wdgDT.setCombine(self.mem, self.selDPS.date, self.product.stockmarket.closes, self.product.stockmarket.zone)

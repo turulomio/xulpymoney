@@ -70,7 +70,7 @@ class wdgDisReinvest(QWidget, Ui_wdgDisReinvest):
             resultado=Decimal(int(self.txtSimulacion.decimal()/self.txtValorAccion.decimal()))
         return resultado
             
-    @QtCore.pyqtSlot() 
+    @pyqtSlot() 
     def on_radDes_clicked(self):
         self.lblTitulo.setText(self.tr("Divest simulation of {0}").format(self.inversion.name))
         self.lblSimulacion.setText(self.tr("Divest loss to asume"))
@@ -78,7 +78,7 @@ class wdgDisReinvest(QWidget, Ui_wdgDisReinvest):
         self.tabAB.setCurrentIndex(3)
         self.cmdOrder.setEnabled(False)
         
-    @QtCore.pyqtSlot() 
+    @pyqtSlot() 
     def on_radRe_clicked(self):
         self.lblTitulo.setText(self.tr("Reinvest simulation of {0}").format(self.inversion.name))
         self.lblSimulacion.setText(self.tr("Amount to reinvest"))

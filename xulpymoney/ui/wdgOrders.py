@@ -1,7 +1,6 @@
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from libxulpymoney import *
-from libqmessagebox import *
 from wdgOrdersAdd import *
 from Ui_wdgOrders import *
 from frmInvestmentReport import *
@@ -20,7 +19,7 @@ class wdgOrders(QWidget, Ui_wdgOrders):
         self.wdgYear.initiate(self.orders.date_first_db_order().year,  datetime.date.today().year, datetime.date.today().year)
         
         
-    @QtCore.pyqtSlot()  
+    @pyqtSlot()  
     def on_actionOrderNew_triggered(self):
         d=QDialog(self)     
         d.setModal(True)
@@ -31,7 +30,7 @@ class wdgOrders(QWidget, Ui_wdgOrders):
         d.exec_()    
         self.on_cmbMode_currentIndexChanged(self.cmbMode.currentIndex())
     
-    @QtCore.pyqtSlot()  
+    @pyqtSlot()  
     def on_actionOrderEdit_triggered(self):
         d=QDialog(self)     
         d.setModal(True)
@@ -42,14 +41,14 @@ class wdgOrders(QWidget, Ui_wdgOrders):
         d.exec_()
         self.on_cmbMode_currentIndexChanged(self.cmbMode.currentIndex())
         
-    @QtCore.pyqtSlot() 
+    @pyqtSlot() 
     def on_actionOrderDelete_triggered(self):
         self.orders.remove(self.orders.selected)
         self.mem.con.commit()
         self.on_cmbMode_currentIndexChanged(self.cmbMode.currentIndex())
         
         
-    @QtCore.pyqtSlot()
+    @pyqtSlot()
     def on_actionShowReinvest_triggered(self):
         if self.orders.selected.price==None or self.orders.selected.shares==None or self.orders.selected.investment.acciones()==0:
             qmessagebox(self.tr("This order can't be simulated"))
@@ -68,7 +67,7 @@ class wdgOrders(QWidget, Ui_wdgOrders):
         d.exec_()
         self.mem.settings.setValue("frmInvestmentReport/qdialog_disreinvest", d.size())
                 
-    @QtCore.pyqtSlot()
+    @pyqtSlot()
     def on_actionShowReinvestSameProduct_triggered(self):
         if self.orders.selected.price==None or self.orders.selected.shares==None or self.orders.selected.investment.acciones()==0:
             qmessagebox(self.tr("This order can't be simulated"))
@@ -85,7 +84,7 @@ class wdgOrders(QWidget, Ui_wdgOrders):
         d.exec_()
         self.mem.settings.setValue("frmInvestmentReport/qdialog_disreinvest", d.size())
         
-    @QtCore.pyqtSlot() 
+    @pyqtSlot() 
     def on_actionExecute_triggered(self):
         if self.orders.selected.investment.questionbox_inactive()==QMessageBox.No:#It's not active, after all.
             return

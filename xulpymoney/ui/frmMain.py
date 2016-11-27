@@ -1,33 +1,34 @@
-from PyQt5.QtCore import *
-from PyQt5.QtGui import *
-from PyQt5.QtWidgets import *
+from PyQt5.QtCore import pyqtSlot, QProcess, QUrl,  QSize
+from PyQt5.QtGui import QIcon, QDesktopServices
+from PyQt5.QtWidgets import QMainWindow,  QWidget, QLabel, QLineEdit, QMessageBox, QInputDialog, QProgressDialog, QDialog,  QApplication, QVBoxLayout
 import sys
-from Ui_frmMain import *
-from frmAbout import *
-from libxulpymoney import *
+import os
+from Ui_frmMain import Ui_frmMain
+from frmAbout import frmAbout
+from libxulpymoney import version_date,  list2string, qmessagebox,  Product
 from libsources import sync_data
-from frmAccess import *
-from wdgTotal import *
-from wdgDividendsReport import *
-from wdgInvestmentClasses import *
-from wdgAPR import *
-from wdgAccounts import *
-from wdgBanks import *
-from wdgConcepts import *
-from wdgCalculator import *
-from wdgCuriosities import *
-from wdgIndexRange import *
-from wdgInvestments import *
-from wdgInvestmentsOperations import *
-from frmAuxiliarTables import *
-from frmTransfer import *
-from frmSettings import *
-from frmHelp import *
-from wdgOrders import *
-from wdgProducts import *
-from wdgSimulations import *
-from wdgQuotesUpdate import *
-from wdgLastCurrent import *
+from frmAccess import frmAccess
+from wdgTotal import wdgTotal
+from wdgDividendsReport import wdgDividendsReport
+from wdgInvestmentClasses import wdgInvestmentClasses
+from wdgAPR import wdgAPR
+from wdgAccounts import wdgAccounts
+from wdgBanks import wdgBanks
+from wdgConcepts import wdgConcepts
+from wdgCalculator import wdgCalculator
+from wdgCuriosities import wdgCuriosities
+from wdgIndexRange import wdgIndexRange
+from wdgInvestments import wdgInvestments
+from wdgInvestmentsOperations import wdgInvestmentsOperations
+from frmAuxiliarTables import frmAuxiliarTables
+from frmTransfer import frmTransfer
+from frmSettings import frmSettings
+from frmHelp import frmHelp
+from wdgOrders import wdgOrders
+from wdgProducts import wdgProducts
+from wdgSimulations import wdgSimulations
+from wdgQuotesUpdate import wdgQuotesUpdate
+from wdgLastCurrent import wdgLastCurrent
 
 class frmMain(QMainWindow, Ui_frmMain):
     """Clase principal del programa"""
@@ -111,11 +112,11 @@ class frmMain(QMainWindow, Ui_frmMain):
 
     def inactivity_timeout(self):
         self.hide()
-        qmessagebox_connexion_inactivity_timeout(self.mem.con.inactivity_timeout_minutes)
+        qmessagebox(self.tr("Disconnecting due to {} minutes of inactivity.".format(self.mem.con.inactivity_timeout_minutes)))
         self.on_actionExit_triggered()
 
 
-    @QtCore.pyqtSlot()  
+    @pyqtSlot()  
     def on_actionExit_triggered(self):
         self.mem.__del__()
         print ("App correctly closed")
@@ -127,7 +128,7 @@ class frmMain(QMainWindow, Ui_frmMain):
         fr=frmAbout(self.mem, self, "frmabout")
         fr.open()
 
-    @QtCore.pyqtSlot()  
+    @pyqtSlot()  
     def on_actionBanks_triggered(self):
         self.w.close()
         self.w=wdgBanks(self.mem, self)
@@ -135,7 +136,7 @@ class frmMain(QMainWindow, Ui_frmMain):
         self.layout.addWidget(self.w)
         self.w.show()
         
-    @QtCore.pyqtSlot()  
+    @pyqtSlot()  
     def on_actionCalculator_triggered(self):
         d=QDialog(self)        
         d.setFixedSize(850, 850)
@@ -149,7 +150,7 @@ class frmMain(QMainWindow, Ui_frmMain):
         else:
             d.close()
         
-    @QtCore.pyqtSlot()  
+    @pyqtSlot()  
     def on_actionConcepts_triggered(self):
         self.w.close()
         self.w=wdgConcepts(self.mem, self)
@@ -157,7 +158,7 @@ class frmMain(QMainWindow, Ui_frmMain):
         self.layout.addWidget(self.w)
         self.w.show()
         
-    @QtCore.pyqtSlot()  
+    @pyqtSlot()  
     def on_actionAccounts_triggered(self):
         self.w.close()
         self.w=wdgAccounts(self.mem, self)
@@ -165,12 +166,12 @@ class frmMain(QMainWindow, Ui_frmMain):
         self.layout.addWidget(self.w)
         self.w.show()
     
-    @QtCore.pyqtSlot()  
+    @pyqtSlot()  
     def on_actionMemory_triggered(self):        
         self.mem.data.load()
         
         
-    @QtCore.pyqtSlot()  
+    @pyqtSlot()  
     def on_actionDividendsReport_triggered(self):
         self.w.close()
         self.w=wdgDividendsReport(self.mem, self)
@@ -178,7 +179,7 @@ class frmMain(QMainWindow, Ui_frmMain):
         self.layout.addWidget(self.w)
         self.w.show()
         
-    @QtCore.pyqtSlot()  
+    @pyqtSlot()  
     def on_actionInvestmentsClasses_triggered(self):
         self.w.close()
         self.w=wdgInvestmentClasses(self.mem, self)
@@ -186,7 +187,7 @@ class frmMain(QMainWindow, Ui_frmMain):
         self.layout.addWidget(self.w)
         self.w.show()
 
-    @QtCore.pyqtSlot()  
+    @pyqtSlot()  
     def on_actionTotalReport_triggered(self):
         self.w.close()
         self.w=wdgTotal(self.mem, self)
@@ -194,11 +195,11 @@ class frmMain(QMainWindow, Ui_frmMain):
         self.layout.addWidget(self.w)
         self.w.show()
 #
-#    @QtCore.pyqtSlot()  
+#    @pyqtSlot()  
 #    def on_actionReloadPrices_triggered(self):
 #        self.mem.data.reload_prices()
 
-    @QtCore.pyqtSlot()  
+    @pyqtSlot()  
     def on_actionEvolutionReport_triggered(self):
         self.w.close()
         self.w=wdgAPR(self.mem, self)
@@ -206,12 +207,12 @@ class frmMain(QMainWindow, Ui_frmMain):
         self.layout.addWidget(self.w)
         self.w.show()
         
-    @QtCore.pyqtSlot()  
+    @pyqtSlot()  
     def on_actionHelp_triggered(self):
         w=frmHelp(self.mem, self)
         w.exec_()
 
-    @QtCore.pyqtSlot()  
+    @pyqtSlot()  
     def on_actionIndexRange_triggered(self):
         self.w.close()
         self.w=wdgIndexRange(self.mem, self)
@@ -220,38 +221,38 @@ class frmMain(QMainWindow, Ui_frmMain):
         self.w.show()
 
 
-    @QtCore.pyqtSlot()  
+    @pyqtSlot()  
     def on_actionInvestments_triggered(self):
         self.w.close()
         self.w=wdgInvestments(self.mem, self)               
         self.layout.addWidget(self.w)
         self.w.show()
-    @QtCore.pyqtSlot()  
+    @pyqtSlot()  
     def on_actionLastOperation_triggered(self):
         self.w.close()
         self.w=wdgLastCurrent(self.mem, self)               
         self.layout.addWidget(self.w)
         self.w.show()
         
-    @QtCore.pyqtSlot()  
+    @pyqtSlot()  
     def on_actionInvestmentsOperations_triggered(self):
         self.w.close()
         self.w=wdgInvestmentsOperations(self.mem, self)
         self.layout.addWidget(self.w)
         self.w.show()
 
-    @QtCore.pyqtSlot()  
+    @pyqtSlot()  
     def on_actionAuxiliarTables_triggered(self):
         w=frmAuxiliarTables(self.mem, self)
         w.exec_()
         
-    @QtCore.pyqtSlot()  
+    @pyqtSlot()  
     def on_actionSettings_triggered(self):
         w=frmSettings(self.mem, self)
         w.exec_()
         self.retranslateUi(self)
 
-    @QtCore.pyqtSlot()  
+    @pyqtSlot()  
     def on_actionTransfer_triggered(self):
         w=frmTransfer(self.mem, parent=self)
         w.exec_()
@@ -261,14 +262,14 @@ class frmMain(QMainWindow, Ui_frmMain):
 #        self.on_actionExit_triggered()
 ################################
                 
-    @QtCore.pyqtSlot()  
+    @pyqtSlot()  
     def on_actionCAC40_triggered(self):
         self.w.close()
         self.w=wdgProducts(self.mem,  "select * from products where agrupations like '%|CAC|%' and obsolete=false order by name,id")
 
         self.layout.addWidget(self.w)
         self.w.show()                
-    @QtCore.pyqtSlot()  
+    @pyqtSlot()  
     def on_actionActive_triggered(self):
         self.w.close()
         self.w=wdgProducts(self.mem,  "select * from products where obsolete=false order by name")
@@ -276,21 +277,21 @@ class frmMain(QMainWindow, Ui_frmMain):
         self.layout.addWidget(self.w)
         self.w.show()
     
-    @QtCore.pyqtSlot()  
+    @pyqtSlot()  
     def on_actionCuriosities_triggered(self):
         self.w.close()
         self.w=wdgCuriosities(self.mem,  self)
         self.layout.addWidget(self.w)
         self.w.show()
     
-    @QtCore.pyqtSlot()  
+    @pyqtSlot()  
     def on_actionCurrenciesAll_triggered(self):
         self.w.close()
         self.w=wdgProducts(self.mem,  "select * from products where type=6 order by name,id")
 
         self.layout.addWidget(self.w)
         self.w.show()
-    @QtCore.pyqtSlot()  
+    @pyqtSlot()  
     def on_actionDividends_triggered(self):
         """Shows products with current year estimations_dps and with quotes in current year"""
         self.w.close()
@@ -301,7 +302,7 @@ class frmMain(QMainWindow, Ui_frmMain):
         self.w.on_actionSortDividend_triggered()
         self.w.show()
 
-    @QtCore.pyqtSlot()  
+    @pyqtSlot()  
     def on_actionSimulations_triggered(self):
         d=QDialog(self)
         d.resize(self.mem.settings.value("wdgSimulations/qdialog", QSize(1024, 768)))
@@ -313,7 +314,7 @@ class frmMain(QMainWindow, Ui_frmMain):
         self.mem.settings.setValue("wdgSimulations/qdialog", d.size())
     
         
-    @QtCore.pyqtSlot()  
+    @pyqtSlot()  
     def on_actionSyncProducts_triggered(self):
         self.w.hide()
         
@@ -354,7 +355,7 @@ class frmMain(QMainWindow, Ui_frmMain):
             self.mem.data.load()
 
 
-    @QtCore.pyqtSlot()  
+    @pyqtSlot()  
     def on_actionNasdaq100_triggered(self):
         self.w.close()
         self.w=wdgProducts(self.mem,  "select * from products where agrupations like '%|NASDAQ100|%' and obsolete=false  order by name,id")
@@ -362,7 +363,7 @@ class frmMain(QMainWindow, Ui_frmMain):
         self.layout.addWidget(self.w)
         self.w.show()
             
-    @QtCore.pyqtSlot()  
+    @pyqtSlot()  
     def on_actionISINDuplicado_triggered(self):
         self.w.close()
         cur=self.mem.con.cursor()
@@ -379,7 +380,7 @@ class frmMain(QMainWindow, Ui_frmMain):
         self.layout.addWidget(self.w)
         self.w.show()
         
-    @QtCore.pyqtSlot()  
+    @pyqtSlot()  
     def on_actionMC_triggered(self):
         self.w.close()
         self.w=wdgProducts(self.mem, "select * from products where agrupations like '%|MERCADOCONTINUO|%' and obsolete=false  order by name,id")
@@ -388,7 +389,7 @@ class frmMain(QMainWindow, Ui_frmMain):
         self.w.show()
         
 
-    @QtCore.pyqtSlot()  
+    @pyqtSlot()  
     def on_actionETFAll_triggered(self):
         self.w.close()
         self.w=wdgProducts(self.mem,  "select * from products where type=4 and obsolete=false order by name, id")
@@ -396,7 +397,7 @@ class frmMain(QMainWindow, Ui_frmMain):
         self.layout.addWidget(self.w)
         self.w.show()
         
-    @QtCore.pyqtSlot()  
+    @pyqtSlot()  
     def on_actionETFObsolete_triggered(self):
         self.w.close()
         self.w=wdgProducts(self.mem,  "select * from products where type=4 and obsolete=true order by name, id")
@@ -404,7 +405,7 @@ class frmMain(QMainWindow, Ui_frmMain):
         self.layout.addWidget(self.w)
         self.w.show()
         
-    @QtCore.pyqtSlot()  
+    @pyqtSlot()  
     def on_actionEurostoxx50_triggered(self):
         self.w.close()
         self.w=wdgProducts(self.mem,  "select * from products where agrupations like '%|EUROSTOXX|%'  and obsolete=false order by name,id")
@@ -413,7 +414,7 @@ class frmMain(QMainWindow, Ui_frmMain):
         self.w.show()
         
 
-    @QtCore.pyqtSlot()  
+    @pyqtSlot()  
     def on_actionFavorites_triggered(self):
         if len(self.mem.favorites)==0:
             m=QMessageBox()
@@ -429,7 +430,7 @@ class frmMain(QMainWindow, Ui_frmMain):
         self.layout.addWidget(self.w)
         self.w.show()
 
-    @QtCore.pyqtSlot()  
+    @pyqtSlot()  
     def on_actionSharesAll_triggered(self):
         self.w.close()
         self.w=wdgProducts(self.mem,  "select * from products where type=1 and obsolete=false order by name, id")
@@ -437,7 +438,7 @@ class frmMain(QMainWindow, Ui_frmMain):
         self.layout.addWidget(self.w)
         self.w.show()         
         
-    @QtCore.pyqtSlot()  
+    @pyqtSlot()  
     def on_actionSharesObsolete_triggered(self):
         self.w.close()
         self.w=wdgProducts(self.mem,  "select * from products where type=1  and obsolete=true order by name, id")
@@ -445,7 +446,7 @@ class frmMain(QMainWindow, Ui_frmMain):
         self.layout.addWidget(self.w)
         self.w.show()        
         
-    @QtCore.pyqtSlot()  
+    @pyqtSlot()  
     def on_actionWarrantsAll_triggered(self):
         self.w.close()
         self.w=wdgProducts(self.mem,  "select * from products where type=5 and obsolete=false order by name, id")
@@ -453,7 +454,7 @@ class frmMain(QMainWindow, Ui_frmMain):
         self.layout.addWidget(self.w)
         self.w.show()          
         
-    @QtCore.pyqtSlot()  
+    @pyqtSlot()  
     def on_actionWarrantsObsolete_triggered(self):
         self.w.close()
         self.w=wdgProducts(self.mem,  "select * from products where type=5 and obsolete=true order by name, id")
@@ -461,21 +462,21 @@ class frmMain(QMainWindow, Ui_frmMain):
         self.layout.addWidget(self.w)
         self.w.show()          
         
-    @QtCore.pyqtSlot()  
+    @pyqtSlot()  
     def on_actionWarrantsCall_triggered(self):
         self.w.close()
         self.w=wdgProducts(self.mem,  "select * from products where type=5 and pci='c'  and obsolete=false order by name, id")
 
         self.layout.addWidget(self.w)
         self.w.show()              
-    @QtCore.pyqtSlot()  
+    @pyqtSlot()  
     def on_actionWarrantsPut_triggered(self):
         self.w.close()
         self.w=wdgProducts(self.mem,  "select * from products where type=5 and pci='p'  and obsolete=false order by name, id")
 
         self.layout.addWidget(self.w)
         self.w.show()              
-    @QtCore.pyqtSlot()  
+    @pyqtSlot()  
     def on_actionWarrantsInline_triggered(self):
         self.w.close()
         self.w=wdgProducts(self.mem,  "select * from products where type=5 and pci='i'  and obsolete=false order by name, id")
@@ -483,7 +484,7 @@ class frmMain(QMainWindow, Ui_frmMain):
         self.layout.addWidget(self.w)
         self.w.show()      
 
-    @QtCore.pyqtSlot()  
+    @pyqtSlot()  
     def on_actionFundsAll_triggered(self):
         self.w.close()
         self.w=wdgProducts(self.mem,  "select * from products where type=2 and obsolete=false order by name, id")
@@ -491,7 +492,7 @@ class frmMain(QMainWindow, Ui_frmMain):
         self.layout.addWidget(self.w)
         self.w.show()        
         
-    @QtCore.pyqtSlot()  
+    @pyqtSlot()  
     def on_actionFundsObsolete_triggered(self):
         self.w.close()
         self.w=wdgProducts(self.mem,  "select * from products where type=2 and obsolete=true order by name, id")
@@ -499,7 +500,7 @@ class frmMain(QMainWindow, Ui_frmMain):
         self.layout.addWidget(self.w)
         self.w.show()                        
 
-    @QtCore.pyqtSlot()  
+    @pyqtSlot()  
     def on_actionBondsPublic_triggered(self):
         self.w.close()
         self.w=wdgProducts(self.mem,  "select * from products where type=7 and obsolete=false order by name, id")
@@ -507,7 +508,7 @@ class frmMain(QMainWindow, Ui_frmMain):
         self.layout.addWidget(self.w)
         self.w.show()                        
 
-    @QtCore.pyqtSlot()  
+    @pyqtSlot()  
     def on_actionBondsPrivate_triggered(self):
         self.w.close()
         self.w=wdgProducts(self.mem,  "select * from products where type=9 and obsolete=false order by name, id")
@@ -515,7 +516,7 @@ class frmMain(QMainWindow, Ui_frmMain):
         self.layout.addWidget(self.w)
         self.w.show()
 
-    @QtCore.pyqtSlot()  
+    @pyqtSlot()  
     def on_actionPurgeAll_triggered(self):
         """Purga todas las quotes de todas inversión. """
         products=[]
@@ -559,7 +560,7 @@ class frmMain(QMainWindow, Ui_frmMain):
         m.setText(self.tr("{0} quotes have been purged from {1} products".format(counter, len(products))))
         m.exec_()    
         
-    @QtCore.pyqtSlot()  
+    @pyqtSlot()  
     def on_actionBondsAll_triggered(self):
         self.w.close()
         self.w=wdgProducts(self.mem,  "select * from products where type in (7,9) and obsolete=false order by name, id")
@@ -567,7 +568,7 @@ class frmMain(QMainWindow, Ui_frmMain):
         self.layout.addWidget(self.w)
         self.w.show()
         
-    @QtCore.pyqtSlot()  
+    @pyqtSlot()  
     def on_actionBondsObsolete_triggered(self):
         self.w.close()
         self.w=wdgProducts(self.mem,  "select * from products where type in (7,9) and obsolete=true order by name, id")
@@ -577,35 +578,35 @@ class frmMain(QMainWindow, Ui_frmMain):
 
         
 
-    @QtCore.pyqtSlot()  
+    @pyqtSlot()  
     def on_actionIbex35_triggered(self):
         self.w.close()
         self.w=wdgProducts(self.mem,  "select  * from products where agrupations like '%|IBEX|%' and obsolete=false  order by name,id")
         self.layout.addWidget(self.w)
         self.w.show()        
 
-    @QtCore.pyqtSlot()  
+    @pyqtSlot()  
     def on_actionLATIBEX_triggered(self):
         self.w.close()
         self.w=wdgProducts(self.mem,  "select  * from products where agrupations like '%|LATIBEX|%' and obsolete=false order by name,id")
         self.layout.addWidget(self.w)
         self.w.show()
         
-    @QtCore.pyqtSlot()  
+    @pyqtSlot()  
     def on_actionIndexesAll_triggered(self):
         self.w.close()
         self.w=wdgProducts(self.mem,  "select  * from products where type=3 order by stockmarkets_id,name")
         self.layout.addWidget(self.w)
         self.w.show()      
         
-    @QtCore.pyqtSlot()  
+    @pyqtSlot()  
     def on_actionIndexesObsolete_triggered(self):
         self.w.close()
         self.w=wdgProducts(self.mem,  "select  * from products where type=3 and obsolete=true order by stockmarkets_id,name")
         self.layout.addWidget(self.w)
         self.w.show()        
                 
-    @QtCore.pyqtSlot()  
+    @pyqtSlot()  
     def on_actionSP500_triggered(self):
         self.w.close()
         self.w=wdgProducts(self.mem,  "select * from products where agrupations like '%|SP500|%'  and obsolete=false order by name,id")
@@ -613,7 +614,7 @@ class frmMain(QMainWindow, Ui_frmMain):
         self.layout.addWidget(self.w)
         self.w.show()
     
-    @QtCore.pyqtSlot()  
+    @pyqtSlot()  
     def on_actionProductsInvestmentActive_triggered(self):
         self.w.close()
         self.w=wdgProducts(self.mem,  "select * from products where id in (select products_id from inversiones where active=true) order by name")
@@ -621,14 +622,14 @@ class frmMain(QMainWindow, Ui_frmMain):
         self.layout.addWidget(self.w)
         self.w.show()    
         
-    @QtCore.pyqtSlot()  
+    @pyqtSlot()  
     def on_actionProductsInvestmentInactive_triggered(self):
         self.w.close()
         self.w=wdgProducts(self.mem,  "select * from products where id in (select products_id from inversiones where active=false) order by name")
 
         self.layout.addWidget(self.w)
         self.w.show()    
-    @QtCore.pyqtSlot()  
+    @pyqtSlot()  
     def on_actionProductsObsolete_triggered(self):
         self.w.close()
         self.w=wdgProducts(self.mem,  "select * from products where obsolete=true order by name,id")
@@ -636,7 +637,7 @@ class frmMain(QMainWindow, Ui_frmMain):
         self.layout.addWidget(self.w)
         self.w.show()
                 
-    @QtCore.pyqtSlot()  
+    @pyqtSlot()  
     def on_actionProductsAutoUpdate_triggered(self):
         """Tuve muchos problemas alf inal si isin!='' o isin<>'', no muestra los null ni los '" """
         self.w.close()
@@ -654,7 +655,7 @@ class frmMain(QMainWindow, Ui_frmMain):
         self.layout.addWidget(self.w)
         self.w.show()       
     
-    @QtCore.pyqtSlot()  
+    @pyqtSlot()  
     def on_actionProductsNotAutoUpdate_triggered(self):
         self.w.close()
         self.w=wdgProducts(self.mem,  """select * from products where obsolete=false except 
@@ -671,7 +672,7 @@ class frmMain(QMainWindow, Ui_frmMain):
         self.layout.addWidget(self.w)
         self.w.show()            
         
-    @QtCore.pyqtSlot()  
+    @pyqtSlot()  
     def on_actionProductsUser_triggered(self):
         self.w.close()
         self.w=wdgProducts(self.mem,  "select * from products where id<0 order by name, id ")
@@ -679,7 +680,7 @@ class frmMain(QMainWindow, Ui_frmMain):
         self.layout.addWidget(self.w)
         self.w.show()
         
-    @QtCore.pyqtSlot()  
+    @pyqtSlot()  
     def on_actionProductsWithoutISIN_triggered(self):
         self.w.close()
         self.w=wdgProducts(self.mem,  "select * from products  where obsolete=false and (isin is null or isin ='') order by name,id")
@@ -687,14 +688,14 @@ class frmMain(QMainWindow, Ui_frmMain):
         self.layout.addWidget(self.w)
         self.w.show()
 
-    @QtCore.pyqtSlot()  
+    @pyqtSlot()  
     def on_actionTablasAuxiliares_triggered(self):
         w=frmAuxiliarTables(self.mem, self)
         w.tblTipos_reload()
         w.exec_()
 
                 
-    @QtCore.pyqtSlot()  
+    @pyqtSlot()  
     def on_actionXetra_triggered(self):
         self.w.close()
         self.w=wdgProducts(self.mem,  "select * from products where agrupations like '%|DAX|%'  and obsolete=false order by name,id")
@@ -702,7 +703,7 @@ class frmMain(QMainWindow, Ui_frmMain):
         self.layout.addWidget(self.w)
         self.w.show()        
         
-    @QtCore.pyqtSlot()  
+    @pyqtSlot()  
     def on_actionSearch_triggered(self):
         self.w.close()
         self.w=wdgProducts(self.mem,  self.sqlvacio)
@@ -710,14 +711,14 @@ class frmMain(QMainWindow, Ui_frmMain):
         self.layout.addWidget(self.w)
         self.w.show()
         
-    @QtCore.pyqtSlot()  
+    @pyqtSlot()  
     def on_actionOrders_triggered(self):  
         self.w.close()
         self.w=wdgOrders(self.mem, self)
         self.layout.addWidget(self.w)
 
 
-    @QtCore.pyqtSlot()  
+    @pyqtSlot()  
     def on_actionPriceUpdates_triggered(self):  
         self.w.close()
         self.w=wdgQuotesUpdate(self.mem, self)

@@ -480,7 +480,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         if  index==1 and self.canvas.plotted==False: #If has not been plotted, plots it.
             self.on_wyChart_mychanged()
         
-    @QtCore.pyqtSlot() 
+    @pyqtSlot() 
     def on_actionShowIncomes_triggered(self):
         
         newtab = QWidget()
@@ -526,7 +526,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         self.tab.setCurrentWidget(newtab)            
 
        
-    @QtCore.pyqtSlot() 
+    @pyqtSlot() 
     def on_actionShowExpenses_triggered(self):     
         newtab = QWidget()
         horizontalLayout = QHBoxLayout(newtab)
@@ -571,7 +571,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         self.tab.setCurrentWidget(newtab)            
         
         
-    @QtCore.pyqtSlot() 
+    @pyqtSlot() 
     def on_actionShowSellingOperations_triggered(self):
         def show_all():
             newtab = QWidget()
@@ -698,7 +698,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         else:
             show_all()
 
-    @QtCore.pyqtSlot() 
+    @pyqtSlot() 
     def on_actionShowDividends_triggered(self):
         newtab = QWidget()
         horizontalLayout = QHBoxLayout(newtab)
@@ -722,7 +722,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         self.tab.setCurrentWidget(newtab)            
 
 
-    @QtCore.pyqtSlot() 
+    @pyqtSlot() 
     def on_actionShowComissions_triggered(self):
         newtab = QWidget()
         vlayout = QVBoxLayout(newtab)
@@ -810,7 +810,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         self.tab.setCurrentWidget(newtab)        
         
 
-    @QtCore.pyqtSlot() 
+    @pyqtSlot() 
     def on_actionGainsByProductType_triggered(self):
         newtab = QWidget()
         vlayout = QVBoxLayout(newtab)
@@ -868,7 +868,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         self.tab.addTab(newtab, self.tr("Gains by product type of {}").format(self.wyData.year))
         self.tab.setCurrentWidget(newtab)        
             
-    @QtCore.pyqtSlot() 
+    @pyqtSlot() 
     def on_actionShowTaxes_triggered(self):
         newtab = QWidget()
         horizontalLayout = QVBoxLayout(newtab)

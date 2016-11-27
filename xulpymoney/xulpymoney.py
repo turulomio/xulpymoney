@@ -23,11 +23,12 @@ if platform.system()=="Windows":
 else:
     sys.path.append("/usr/lib/xulpymoney")
 
-from PyQt5.QtCore import *
-from PyQt5.QtGui import *
+from PyQt5.QtCore import QTranslator
+from PyQt5.QtWidgets import QApplication
 import libdbupdates
-from libqmessagebox import *
-from frmMain import *
+from libxulpymoney import MemXulpymoney,  qmessagebox
+from frmAccess import frmAccess
+from frmMain import frmMain
 
 app = QApplication(sys.argv)
 app.setOrganizationName("Mariano Muñoz ©")
@@ -52,7 +53,7 @@ if update.need_update()==True:
     if mem.con.is_superuser():
         update.run()
     else:
-        qmessagebox_xulpymoney_update_and_superuser()
+        qmessagebox(QApplication.translate("Core","Xulpymoney needs to be updated. Please login with a superuser role."))
         sys.exit(2)
 
 if "admin" in sys.argv:

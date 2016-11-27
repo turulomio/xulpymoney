@@ -3,7 +3,6 @@ from PyQt5.QtGui import *
 from Ui_wdgProducts import *
 from frmProductReport import *
 from libxulpymoney import *
-from libqmessagebox import *
 from frmQuotesIBM import *
 from wdgMergeCodes import *
 from frmEstimationsAdd import *
@@ -29,7 +28,7 @@ class wdgProducts(QWidget, Ui_wdgProducts):
         self.lblFound.setText(self.tr("Found {0} records".format(self.products.length())))
 
         
-    @QtCore.pyqtSlot()  
+    @pyqtSlot()  
     def on_actionFavorites_triggered(self):      
         if self.products.selected[0].id in self.mem.favorites:
             self.mem.favorites.remove(self.products.selected[0].id)
@@ -45,12 +44,12 @@ class wdgProducts(QWidget, Ui_wdgProducts):
         print ("Favoritos", self.mem.favorites)
         self.mem.save_MemSettingsDB()
 
-    @QtCore.pyqtSlot()  
+    @pyqtSlot()  
     def on_actionIbex35_triggered(self):
         self.build_array("select * from products where agrupations like '%|IBEX|%' and obsolete=False order by name,id")
         self.products.myqtablewidget(self.tblInvestments)       
 
-    @QtCore.pyqtSlot() 
+    @pyqtSlot() 
     def on_actionProductDelete_triggered(self):
          
         if self.products.selected[0].is_deletable()==False:
@@ -81,14 +80,14 @@ class wdgProducts(QWidget, Ui_wdgProducts):
             self.products.myqtablewidget(self.tblInvestments)  
             
 
-    @QtCore.pyqtSlot() 
+    @pyqtSlot() 
     def on_actionProductNew_triggered(self):
         w=frmProductReport(self.mem, None, self)
         w.exec_()        
         self.build_array(self.sql)
         self.products.myqtablewidget(self.tblInvestments)
 
-    @QtCore.pyqtSlot() 
+    @pyqtSlot() 
     def on_actionPurchaseGraphic_triggered(self):
         self.products.selected[0].result.get_basic_and_ohcls()
         d=QDialog(self)     
@@ -100,43 +99,43 @@ class wdgProducts(QWidget, Ui_wdgProducts):
         lay.addWidget(w)
         d.exec_()
         
-    @QtCore.pyqtSlot() 
+    @pyqtSlot() 
     def on_actionProductReport_triggered(self):
         w=frmProductReport(self.mem, self.products.selected[0], None,  self)
         w.exec_()        
         self.build_array(self.sql)
         self.products.myqtablewidget(self.tblInvestments)
         
-    @QtCore.pyqtSlot() 
+    @pyqtSlot() 
     def on_actionSortTPCDiario_triggered(self):
         if self.products.order_by_daily_tpc():
             self.products.myqtablewidget(self.tblInvestments)        
         else:
-            qmessagebox_error_ordering()
+            qmessagebox(QApplication.translate("Core", "I couldn't order data due to they have null values"))
         
-    @QtCore.pyqtSlot() 
+    @pyqtSlot() 
     def on_actionSortTPCAnual_triggered(self):
         if self.products.order_by_annual_tpc():
             self.products.myqtablewidget(self.tblInvestments)        
         else:
-            qmessagebox_error_ordering()
+            qmessagebox(QApplication.translate("Core", "I couldn't order data due to they have null values"))
         
-    @QtCore.pyqtSlot() 
+    @pyqtSlot() 
     def on_actionSortHour_triggered(self):
         self.products.order_by_datetime()
         self.products.myqtablewidget(self.tblInvestments)        
         
-    @QtCore.pyqtSlot() 
+    @pyqtSlot() 
     def on_actionSortName_triggered(self):
         self.products.order_by_upper_name()
         self.products.myqtablewidget(self.tblInvestments)        
         
-    @QtCore.pyqtSlot() 
+    @pyqtSlot() 
     def on_actionSortDividend_triggered(self):
         if self.products.order_by_dividend():
             self.products.myqtablewidget(self.tblInvestments)        
         else:
-            qmessagebox_error_ordering()     
+            qmessagebox(QApplication.translate("Core", "I couldn't order data due to they have null values"))     
         
     def on_txt_returnPressed(self):
         self.on_cmd_pressed()
@@ -233,7 +232,7 @@ class wdgProducts(QWidget, Ui_wdgProducts):
 
         
         
-    @QtCore.pyqtSlot() 
+    @pyqtSlot() 
     def on_actionMergeCodes_triggered(self):
         #Only two checked in custom contest       
         d=QDialog(self)        
@@ -255,7 +254,7 @@ class wdgProducts(QWidget, Ui_wdgProducts):
                 self.products.selected.append(self.products.arr[i.row()])
         print (self.products.selected)
 
-    @QtCore.pyqtSlot()  
+    @pyqtSlot()  
     def on_actionPurge_triggered(self):
         all=SetQuotesAllIntradays(self.mem)
         all.load_from_db(self.products.selected[0])
@@ -270,14 +269,14 @@ class wdgProducts(QWidget, Ui_wdgProducts):
         else:
             self.mem.con.rollback()
 
-    @QtCore.pyqtSlot()  
+    @pyqtSlot()  
     def on_actionQuoteNew_triggered(self):
         w=frmQuotesIBM(self.mem,  self.products.selected[0])
         w.exec_()               
         self.build_array(self.sql)
         self.products.myqtablewidget(self.tblInvestments)  
 
-    @QtCore.pyqtSlot()  
+    @pyqtSlot()  
     def on_actionEstimationDPSNew_triggered(self):
         d=frmEstimationsAdd(self.mem, self.products.selected[0], "dps")
         d.exec_()

@@ -131,13 +131,13 @@ class wdgBanks(QWidget, Ui_wdgBanks):
         menu.addAction(self.actionActive)
         menu.exec_(self.tblEB.mapToGlobal(pos))
         
-    @QtCore.pyqtSlot() 
+    @pyqtSlot() 
     def on_actionAccountReport_triggered(self):
         w=frmAccountsReport(self.mem, self.accounts.selected)
         w.exec_()        
         self.load_cuentas()
 
-    @QtCore.pyqtSlot() 
+    @pyqtSlot() 
     def on_actionInvestmentReport_triggered(self):
         w=frmInvestmentReport(self.mem,   self.investments.selected)
         w.exec_()
@@ -177,7 +177,7 @@ class wdgBanks(QWidget, Ui_wdgBanks):
         menu.addAction(self.actionInvestmentReport)        
         menu.exec_(self.tblInvestments.mapToGlobal(pos))
         
-    @QtCore.pyqtSlot()  
+    @pyqtSlot()  
     def on_actionBankDelete_triggered(self):
         if self.banks.selected.qmessagebox_inactive():
             return        
@@ -192,7 +192,7 @@ class wdgBanks(QWidget, Ui_wdgBanks):
             self.mem.con.commit()  
             self.on_chkActives_stateChanged(self.chkActives.checkState())    
         
-    @QtCore.pyqtSlot()  
+    @pyqtSlot()  
     def on_actionBankAdd_triggered(self):
         tipo=QInputDialog().getText(self,  "Xulpymoney",  self.tr("Add a new bank"))
         if tipo[1]==True:
@@ -207,7 +207,7 @@ class wdgBanks(QWidget, Ui_wdgBanks):
         self.on_chkActives_stateChanged(self.chkActives.checkState())
 
 
-    @QtCore.pyqtSlot()  
+    @pyqtSlot()  
     def on_actionBankEdit_triggered(self):
         tipo=QInputDialog().getText(self,  "Xulpymoney", self.tr("Edit selected bank") , QLineEdit.Normal,   (self.banks.selected.name))       
         if tipo[1]==True:
@@ -220,7 +220,7 @@ class wdgBanks(QWidget, Ui_wdgBanks):
         self.mem.con.commit()
         self.on_chkActives_stateChanged(self.chkActives.checkState())   
         
-    @QtCore.pyqtSlot() 
+    @pyqtSlot() 
     def on_actionActive_triggered(self):
         self.banks.selected.active=not self.banks.selected.active
         self.banks.selected.save()

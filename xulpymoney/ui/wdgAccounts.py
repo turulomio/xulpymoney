@@ -31,19 +31,19 @@ class wdgAccounts(QWidget, Ui_wdgAccounts):
         self.lblTotal.setText(self.tr("Accounts balance: {0}".format(sumsaldos)))
         self.tblAccounts.clearSelection()
         
-    @QtCore.pyqtSlot() 
+    @pyqtSlot() 
     def on_actionAccountReport_triggered(self):
         self.child=self.child=frmAccountsReport(self.mem,   self.selAccount, self)
         self.child.exec_()
         self.on_chkInactivas_stateChanged(self.chkInactivas.checkState())
         
-    @QtCore.pyqtSlot() 
+    @pyqtSlot() 
     def on_actionAccountAdd_triggered(self):
         self.child=frmAccountsReport(self.mem, None)
         self.child.exec_()
         self.on_chkInactivas_stateChanged(self.chkInactivas.checkState())
       
-    @QtCore.pyqtSlot() 
+    @pyqtSlot() 
     def on_actionAccountDelete_triggered(self):
         if self.selAccount.eb.qmessagebox_inactive() or self.selAccount.qmessagebox_inactive():
             return
@@ -97,7 +97,7 @@ class wdgAccounts(QWidget, Ui_wdgAccounts):
         menu.exec_(self.tblAccounts.mapToGlobal(pos))
 
         
-    @QtCore.pyqtSlot() 
+    @pyqtSlot() 
     def on_actionActive_triggered(self):
         if self.selAccount.eb.qmessagebox_inactive()==True:
             return
@@ -116,7 +116,7 @@ class wdgAccounts(QWidget, Ui_wdgAccounts):
         self.on_chkInactivas_stateChanged(self.chkInactivas.checkState())
         self.load_table()
 
-    @QtCore.pyqtSlot()  
+    @pyqtSlot()  
     def on_actionTransfer_triggered(self):
         self.child=frmTransfer(self.mem, self.selAccount)
         self.child.exec_()

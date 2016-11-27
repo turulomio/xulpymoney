@@ -1,13 +1,12 @@
-from libxulpymoney import *
-from libqmessagebox import qmessagebox_error_ordering
-from PyQt5.QtCore import *
-from PyQt5.QtGui import *
-from Ui_wdgLastCurrent import *
-from frmInvestmentReport import *
-from frmQuotesIBM import *
-from frmProductReport import *
-from wdgCalculator import *
-from wdgDisReinvest import *
+from libxulpymoney import Quote, qmessagebox, tpc
+from PyQt5.QtCore import QSize, Qt, pyqtSlot
+from PyQt5.QtWidgets import QDialog, QMenu, QVBoxLayout, QWidget
+from Ui_wdgLastCurrent import Ui_wdgLastCurrent
+from frmInvestmentReport import frmInvestmentReport
+from frmProductReport import frmProductReport
+from wdgCalculator import wdgCalculator
+from wdgDisReinvest import wdgDisReinvest
+from decimal import Decimal
 
 class wdgLastCurrent(QWidget, Ui_wdgLastCurrent):
     def __init__(self, mem,  parent=None):
@@ -22,13 +21,13 @@ class wdgLastCurrent(QWidget, Ui_wdgLastCurrent):
     def tblInvestments_reload(self):
         self.investments.myqtablewidget_lastCurrent(self.tblInvestments, self.spin.value())
         
-    @QtCore.pyqtSlot() 
+    @pyqtSlot() 
     def on_actionInvestmentReport_triggered(self):
         w=frmInvestmentReport(self.mem, self.investments.selected, self)
         w.exec_()
         self.tblInvestments_reload()
         
-    @QtCore.pyqtSlot() 
+    @pyqtSlot() 
     def on_actionCalculate_triggered(self):
         d=QDialog(self)        
         d.setFixedSize(850, 850)
@@ -41,7 +40,7 @@ class wdgLastCurrent(QWidget, Ui_wdgLastCurrent):
         lay.addWidget(w)
         d.show()        
         
-    @QtCore.pyqtSlot() 
+    @pyqtSlot() 
     def on_actionReinvest_triggered(self):
         d=QDialog()       
         d.resize(self.mem.settings.value("frmInvestmentReport/qdialog_disreinvest", QSize(1024, 768)))
@@ -54,7 +53,7 @@ class wdgLastCurrent(QWidget, Ui_wdgLastCurrent):
         d.exec_()
         self.mem.settings.setValue("frmInvestmentReport/qdialog_disreinvest", d.size())        
         
-    @QtCore.pyqtSlot() 
+    @pyqtSlot() 
     def on_actionReinvestCurrent_triggered(self):
         d=QDialog()       
         d.resize(self.mem.settings.value("frmInvestmentReport/qdialog_disreinvest", QSize(1024, 768)))
@@ -65,41 +64,41 @@ class wdgLastCurrent(QWidget, Ui_wdgLastCurrent):
         d.exec_()
         self.mem.settings.setValue("frmInvestmentReport/qdialog_disreinvest", d.size())
                 
-    @QtCore.pyqtSlot() 
+    @pyqtSlot() 
     def on_actionProduct_triggered(self):
         w=frmProductReport(self.mem, self.investments.selected.product, self.investments.selected, self)
         w.exec_()
         self.tblInvestments_reload()
       
    
-    @QtCore.pyqtSlot() 
+    @pyqtSlot() 
     def on_actionSortTPCVenta_triggered(self):
         if self.investments.order_by_percentage_sellingpoint()==False:
-            qmessagebox_error_ordering()     
+            qmessagebox(self.tr("I couldn't order data due to they have null values"))     
         self.tblInvestments_reload()
         
-    @QtCore.pyqtSlot() 
+    @pyqtSlot() 
     def on_actionSortTPC_triggered(self):
         if self.investments.order_by_percentage_invested()==False:
-            qmessagebox_error_ordering()     
+            qmessagebox(self.tr("I couldn't order data due to they have null values"))     
         self.tblInvestments_reload()
         
-    @QtCore.pyqtSlot() 
+    @pyqtSlot() 
     def on_actionSortHour_triggered(self):
         if self.investments.order_by_datetime_last_operation()==False:
-            qmessagebox_error_ordering()     
+            qmessagebox(self.tr("I couldn't order data due to they have null values"))     
         self.tblInvestments_reload()
         
-    @QtCore.pyqtSlot() 
+    @pyqtSlot() 
     def on_actionSortName_triggered(self):            
         if self.investments.order_by_name()==False:
-            qmessagebox_error_ordering()     
+            qmessagebox(self.tr("I couldn't order data due to they have null values"))     
         self.tblInvestments_reload()    
 
-    @QtCore.pyqtSlot() 
+    @pyqtSlot() 
     def on_actionSortTPCLast_triggered(self):
         if self.investments.order_by_percentage_last_operation()==False:
-            qmessagebox_error_ordering()     
+            qmessagebox(self.tr("I couldn't order data due to they have null values"))     
         self.tblInvestments_reload()    
             
 
@@ -141,18 +140,14 @@ class wdgLastCurrent(QWidget, Ui_wdgLastCurrent):
         for i in self.tblInvestments.selectedItems():#itera por cada item no row.
             self.investments.selected=self.investments.arr[i.row()]
 
-    @QtCore.pyqtSlot(int, int) 
+    @pyqtSlot(int, int) 
     def on_tblInvestments_cellDoubleClicked(self, row, column):
         if column==8:#TPC Venta
-            m=QMessageBox()
-            m.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
-            m.setIcon(QMessageBox.Information)
-            m.setText(self.tr("Shares number: {0}").format(self.investments.selected.acciones())+"\n"+
+            qmessagebox(self.tr("Shares number: {0}").format(self.investments.selected.acciones())+"\n"+
                     self.tr("Purchase price average: {0}").format(self.investments.selected.product.currency.string(self.investments.selected.op_actual.average_price()))+"\n"+
                     self.tr("Selling point: {}").format(self.investments.selected.product.currency.string(self.investments.selected.venta))+"\n"+
                     self.tr("Selling all shares you get {}").format(self.investments.selected.product.currency.string(self.investments.selected.op_actual.pendiente(Quote(self.mem).init__create(self.investments.selected.product, self.mem.localzone.now(),  self.investments.selected.venta))))
             )
-            m.exec_()     
         else:
             self.on_actionCalculate_triggered()
 
