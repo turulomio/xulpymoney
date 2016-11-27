@@ -1,6 +1,8 @@
-from PyQt5.QtCore import *
-from PyQt5.QtGui import *
-from myqtablewidget import *
+from PyQt5.QtCore import pyqtSignal, Qt
+from PyQt5.QtGui import QIcon, QPixmap, QFont
+from PyQt5.QtWidgets import QWidget, QDialog, QLabel, QLineEdit, QHBoxLayout, QToolButton, QVBoxLayout, QSizePolicy, QSpacerItem, QAbstractItemView
+from myqtablewidget import myQTableWidget
+from libxulpymoney import SetProducts, qmessagebox
 
 class wdgProductSelector(QWidget):
     """Para usarlo promocionar un qwidget en designer y darle los comportamientos de tamaña que neceseite
@@ -129,10 +131,7 @@ class frmProductSelector(QDialog):
         
     def on_cmd_released(self):
         if len(self.txt.text().upper())<=3:            
-            m=QMessageBox()
-            m.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
-            m.setText(self.tr("Search too wide. You need more than 3 characters"))
-            m.exec_()  
+            qmessagebox(self.tr("Search too wide. You need more than 3 characters"))
             return
 
         self.products.load_from_db("select * from products where id::text like '%"+(self.txt.text().upper())+
@@ -155,4 +154,4 @@ class frmProductSelector(QDialog):
             if i.column()==0:
                 self.products.selected=self.products.arr[i.row()]
 
-from frmProductReport import * ##No dejaba importar por recursivo
+from frmProductReport import frmProductReport

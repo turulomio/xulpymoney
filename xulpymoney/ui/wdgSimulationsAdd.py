@@ -1,8 +1,7 @@
-from PyQt5.QtCore import *
-from PyQt5.QtGui import *
-from PyQt5.QtWidgets import *
-from Ui_wdgSimulationsAdd import *
-from libxulpymoney import Assets,  Simulation,  Connection,  DBAdmin
+from PyQt5.QtCore import pyqtSlot
+from PyQt5.QtWidgets import QWidget
+from Ui_wdgSimulationsAdd import Ui_wdgSimulationsAdd
+from libxulpymoney import Assets,  Simulation,  Connection,  DBAdmin, qmessagebox
 
 class wdgSimulationsAdd(QWidget, Ui_wdgSimulationsAdd):
     def __init__(self, mem,   parent = None, name = None):
@@ -20,7 +19,7 @@ class wdgSimulationsAdd(QWidget, Ui_wdgSimulationsAdd):
     @pyqtSlot()
     def on_buttonbox_accepted(self):
         if self.mem.con.is_superuser()==False:
-            qmessagebox(QApplication.translate("Core","The role of the user is not an administrator"))
+            qmessagebox("The role of the user is not an administrator")
             self.parent.reject()
             return
         

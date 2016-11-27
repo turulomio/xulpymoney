@@ -1,9 +1,12 @@
-from PyQt5.QtCore import *
-from PyQt5.QtGui import *
-from Ui_wdgDisReinvest import *
-from libxulpymoney import *
-from wdgOrdersAdd import *
-from decimal import *
+import datetime
+import logging
+import pytz
+from PyQt5.QtCore import pyqtSlot
+from PyQt5.QtWidgets import QWidget, QDialog, QVBoxLayout
+from Ui_wdgDisReinvest import Ui_wdgDisReinvest
+from libxulpymoney import InvestmentOperation, Quote, qmessagebox,  qtpc
+from wdgOrdersAdd import wdgOrdersAdd
+from decimal import Decimal
 from canvaschart import canvasChartHistoricalReinvest
 from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT 
 
@@ -36,11 +39,7 @@ class wdgDisReinvest(QWidget, Ui_wdgDisReinvest):
         self.tblOperaciones.settings(self.mem, "wdgDisReinvest")
         
         if self.inversion.op_actual.length()==0:
-            m=QMessageBox()
-            m.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
-            m.setIcon(QMessageBox.Information)
-            m.setText(self.tr("There aren't shares for this investment"))
-            m.exec_()     
+            qmessagebox(self.tr("There aren't shares for this investment"))
             return
             
         self.inversion.op_actual.myqtablewidget(self.tblInvestmentsActualAntes)
@@ -100,11 +99,7 @@ class wdgDisReinvest(QWidget, Ui_wdgDisReinvest):
         self.tabAB.setTabText(3, self.tr("Before at {}").format(self.inversion.product.currency.string(self.inversion.product.result.basic.last.quote)))
 
         if self.txtSimulacion.decimal()<=Decimal('0'):
-            m=QMessageBox()
-            m.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
-            m.setIcon(QMessageBox.Information)
-            m.setText(self.tr("Simulation value must be positive"))
-            m.exec_()    
+            qmessagebox(self.tr("Simulation value must be positive"))
             return
             
         valor_accion=self.txtValorAccion.decimal()
@@ -112,11 +107,7 @@ class wdgDisReinvest(QWidget, Ui_wdgDisReinvest):
         comision=self.txtComision.decimal()
         
         if valor_accion==0:
-            m=QMessageBox()
-            m.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
-            m.setIcon(QMessageBox.Information)
-            m.setText(self.tr("Share price can't be 0"))
-            m.exec_()    
+            qmessagebox(self.tr("Share price can't be 0"))
             return
         
         acciones=self.acciones()

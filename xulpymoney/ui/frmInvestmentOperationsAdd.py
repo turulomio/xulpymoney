@@ -1,12 +1,15 @@
-from PyQt5.QtCore import *
-from PyQt5.QtGui import *
-from libxulpymoney import *
-from frmProductReport import *
-from Ui_frmInvestmentOperationsAdd import *
+import datetime
+from PyQt5.QtCore import Qt
+from PyQt5.QtGui import QIcon
+from PyQt5.QtWidgets import QDialog,  QMessageBox
+from libxulpymoney import InvestmentOperation, Money,  qmessagebox
+from frmQuotesIBM import frmQuotesIBM
+from Ui_frmInvestmentOperationsAdd import Ui_frmInvestmentOperationsAdd
+from decimal import Decimal
 
 class frmInvestmentOperationsAdd(QDialog, Ui_frmInvestmentOperationsAdd):
     def __init__(self, mem, inversion, operinversion,   parent=None):
-        QWidget.__init__(self, parent)
+        QDialog.__init__(self, parent)
         self.setupUi(self)
         self.mem=mem
         self.inversion=inversion

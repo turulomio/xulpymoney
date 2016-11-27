@@ -1,15 +1,19 @@
-from PyQt5.QtCore import *
-from PyQt5.QtGui import *
-from Ui_frmProductReport import *
-from myqtablewidget import *
-from libxulpymoney import *
-from frmSelector import *
-from frmDividendsAdd import *
-from frmQuotesIBM import *
-from frmSplit import *
-from frmEstimationsAdd import *
-from frmDPSAdd import *
-from canvaschart import *
+import datetime
+import logging
+import pytz
+from PyQt5.QtCore import Qt,  pyqtSlot
+from PyQt5.QtGui import QColor,  QIcon
+from PyQt5.QtWidgets import QApplication, QDialog,  QMenu, QMessageBox,  QVBoxLayout,  QTableWidgetItem
+from Ui_frmProductReport import Ui_frmProductReport
+from myqtablewidget import myQTableWidget
+from libxulpymoney import Product, ProductComparation,  Quote, SetAgrupations, SetQuotesAllIntradays, SetStockMarkets,  SetCurrencies, SetLeverages, SetPriorities, SetPrioritiesHistorical, SetProductsModes, SetTypes, c2b, day_end, dt, qcenter, qdatetime, qmessagebox, qtpc, tpc
+from frmSelector import frmSelector
+from frmDividendsAdd import frmDividendsAdd
+from frmQuotesIBM import frmQuotesIBM
+from frmSplit import frmSplit
+from frmEstimationsAdd import frmEstimationsAdd
+from frmDPSAdd import frmDPSAdd
+from canvaschart import canvasChartCompare, canvasChartHistorical, canvasChartIntraday
 from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT 
 
 class frmProductReport(QDialog, Ui_frmProductReport):

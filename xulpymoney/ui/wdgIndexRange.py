@@ -1,9 +1,13 @@
-from PyQt5.QtCore import *
-from PyQt5.QtGui import *
-from Ui_wdgIndexRange import *
-from libxulpymoney import *
-from frmProductReport import *
-from wdgCalculator import *
+import datetime
+from PyQt5.QtCore import pyqtSlot
+from PyQt5.QtGui import QColor
+from PyQt5.QtWidgets import QMenu, QWidget, QTableWidgetItem, QDialog, QVBoxLayout
+from Ui_wdgIndexRange import Ui_wdgIndexRange
+from libxulpymoney import Assets, tpc, qcenter
+from frmProductReport import frmProductReport
+from frmQuotesIBM import frmQuotesIBM
+from wdgCalculator import wdgCalculator
+from decimal import Decimal
 
 class Range:
     def __init__(self, product,  bottom , top, price):

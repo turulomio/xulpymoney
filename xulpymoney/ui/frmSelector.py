@@ -1,8 +1,6 @@
-from PyQt5.QtCore import *
-from PyQt5.QtGui import *
-from PyQt5.QtWidgets import *
-from Ui_frmSelector import *
-from libxulpymoney import *
+from PyQt5.QtWidgets import QDialog, QTableWidgetItem
+from Ui_frmSelector import Ui_frmSelector
+from libxulpymoney import qmessagebox
 
 class frmSelector(QDialog, Ui_frmSelector):
     def __init__(self, mem, set,  selectedset, name = None, modal = False  ):
@@ -29,10 +27,8 @@ class frmSelector(QDialog, Ui_frmSelector):
                 self.tblSelected.setItem(i, 0, QTableWidgetItem(str(l.id)))
                 self.tblSelected.setItem(i, 1, QTableWidgetItem(l.name))
             except:
-                m=QMessageBox()
-                m.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
-                m.setText(self.tr("This dialog got unknown selected data ({0}), select it again").format(str(self.selected)))
-                m.exec_()        
+                qmessagebox(self.tr("This dialog got unknown selected data ({0}), select it again").format(str(self.selected)))
+    
                 self.selected=[]
                 self.load_tbl()
                 self.load_tblSelected()

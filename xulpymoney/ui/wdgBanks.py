@@ -1,9 +1,9 @@
-from PyQt5.QtCore import *
-from PyQt5.QtGui import *
-from libxulpymoney import *
-from frmAccountsReport import *
-from frmInvestmentReport import *
-from Ui_wdgBanks import *
+from PyQt5.QtCore import Qt, pyqtSlot
+from PyQt5.QtWidgets import QMenu, QWidget, QTableWidgetItem, QInputDialog, QLineEdit
+from libxulpymoney import Bank, Money, SetAccounts, SetInvestments, wdgBool, qmessagebox
+from frmAccountsReport import frmAccountsReport
+from frmInvestmentReport import frmInvestmentReport
+from Ui_wdgBanks import Ui_wdgBanks
 
 class wdgBanks(QWidget, Ui_wdgBanks):
     def __init__(self, mem,  parent=None):
@@ -182,11 +182,7 @@ class wdgBanks(QWidget, Ui_wdgBanks):
         if self.banks.selected.qmessagebox_inactive():
             return        
         if self.banks.selected.es_borrable()==False:
-            m=QMessageBox()
-            m.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
-            m.setIcon(QMessageBox.Information)
-            m.setText(self.tr("This bank has dependent accounts and it can't be deleted"))
-            m.exec_()
+            qmessagebox(self.tr("This bank has dependent accounts and it can't be deleted"))
         else:
             self.mem.data.banks.delete(self.banks.selected)
             self.mem.con.commit()  

@@ -1,8 +1,10 @@
-from PyQt5.QtCore import *
-from PyQt5.QtGui import *
-from libxulpymoney import *
-from Ui_wdgConcepts import *
-from wdgConceptsHistorical import *
+import datetime
+from PyQt5.QtCore import pyqtSlot
+from PyQt5.QtGui import QColor
+from PyQt5.QtWidgets import QMenu, QWidget, QTableWidgetItem, QHBoxLayout
+from libxulpymoney import Assets, qmessagebox, qtpc
+from Ui_wdgConcepts import Ui_wdgConcepts
+from wdgConceptsHistorical import wdgConceptsHistorical
 
 class wdgConcepts(QWidget, Ui_wdgConcepts):
     def __init__(self, mem,  parent=None):
@@ -120,11 +122,7 @@ class wdgConcepts(QWidget, Ui_wdgConcepts):
     def on_tab_tabCloseRequested(self, index):
         """Only removes dinamic tabs"""
         if index in (0, 1):
-            m=QMessageBox()
-            m.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
-            m.setIcon(QMessageBox.Information)
-            m.setText(self.tr("You can't close this tab"))
-            m.exec_()  
+            qmessagebox(self.tr("You can't close this tab"))
         else:
             self.tab.removeTab(index)
         

@@ -1,8 +1,9 @@
-from PyQt5.QtCore import *
-from PyQt5.QtGui import *
-from Ui_wdgAccounts import *
-from frmTransfer import *
-from frmAccountsReport import *
+from PyQt5.QtCore import Qt, pyqtSlot
+from PyQt5.QtWidgets import QMenu, QTableWidgetItem, QWidget
+from Ui_wdgAccounts import Ui_wdgAccounts
+from frmTransfer import frmTransfer
+from frmAccountsReport import frmAccountsReport
+from libxulpymoney import Money, qmessagebox
 
 class wdgAccounts(QWidget, Ui_wdgAccounts):
     def __init__(self, mem,  parent=None):
@@ -49,11 +50,7 @@ class wdgAccounts(QWidget, Ui_wdgAccounts):
             return
         cur = self.mem.con.cursor()
         if self.selAccount.es_borrable()==False:
-            m=QMessageBox()
-            m.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
-            m.setIcon(QMessageBox.Information)
-            m.setText(self.tr("This account has associated investments, credit cards or operations. It can't be deleted"))
-            m.exec_()
+            qmessagebox(self.tr("This account has associated investments, credit cards or operations. It can't be deleted"))
         else:
             self.selAccount.borrar(cur)
             self.mem.con.commit()

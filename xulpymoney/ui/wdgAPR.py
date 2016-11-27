@@ -1,13 +1,11 @@
-from PyQt5.QtCore import *
-from PyQt5.QtGui import *
-from Ui_wdgAPR import *
-from libxulpymoney import *
-from matplotlib.finance import *
+from PyQt5.QtGui import QIcon
+from PyQt5.QtWidgets import QSizePolicy, QWidget, QProgressDialog
+from Ui_wdgAPR import Ui_wdgAPR
+from libxulpymoney import Assets, Money, qcenter, qtpc
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg
 from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT 
-from matplotlib.dates import *
+from matplotlib.dates import YearLocator, MonthLocator, DateFormatter
 from matplotlib.figure import Figure
-
 import datetime
 
 # Matplotlib Figure object

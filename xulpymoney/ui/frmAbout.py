@@ -1,8 +1,6 @@
-from PyQt5.QtCore import *
-from PyQt5.QtGui import *
-from PyQt5.QtWidgets import *
-from libxulpymoney import *
-from Ui_frmAbout import *
+from PyQt5.QtWidgets import QDialog, QTableWidgetItem
+from libxulpymoney import qcenter
+from Ui_frmAbout import Ui_frmAbout
 
 class frmAbout(QDialog, Ui_frmAbout):
     def __init__(self, mem,  parent = None, name = None, modal = False):

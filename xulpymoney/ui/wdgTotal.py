@@ -1,15 +1,14 @@
-from PyQt5.QtCore import *
-from PyQt5.QtGui import *
-from PyQt5.QtWidgets import *
-from libxulpymoney import *
-
-from matplotlib.finance import *
+from PyQt5.QtCore import pyqtSlot,  Qt
+from PyQt5.QtGui import QIcon, QColor, QFont
+from PyQt5.QtWidgets import QSizePolicy, QWidget, QMenu, QProgressDialog, QVBoxLayout, QHBoxLayout, QAbstractItemView, QTableWidgetItem, QLabel
+from libxulpymoney import AnnualTarget, Assets, Money, SetAccountOperations, SetDividendsHeterogeneus, SetInvestmentOperationsHistoricalHeterogeneus, list2string, none2decimal0, qcenter, qleft, qtpc, qmessagebox
+from myqtablewidget import myQTableWidget
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg
 from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT 
-from matplotlib.dates import *
+from matplotlib.dates import num2date,  YearLocator, MonthLocator, DateFormatter
 from matplotlib.figure import Figure
-
-from Ui_wdgTotal import *
+from decimal import Decimal
+from Ui_wdgTotal import Ui_wdgTotal
 import datetime
 
 # Matplotlib Figure object
@@ -145,7 +144,7 @@ class TotalMonth:
         return self.gains_value
         
     def name(self):
-        return "{}-{}".format(year, month)
+        return "{}-{}".format(self.year, self.month)
         
     def last_day(self):
         date=datetime.date(self.year, self.month, 1)
@@ -626,7 +625,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
             negative=Decimal(0)
             lbl=QLabel(newtab)
             
-            set=SetInvestmentOperationsHistorical(self.mem)
+            set=SetInvestmentOperationsHistoricalHeterogeneus(self.mem)
             for i in self.mem.data.investments.arr:
                 for o in i.op_historica.arr:
                     if self.month==13:#Year
@@ -665,7 +664,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
             negative=Decimal(0)
             lbl=QLabel(newtab)
             
-            set=SetInvestmentOperationsHistorical(self.mem)
+            set=SetInvestmentOperationsHistoricalHeterogeneus(self.mem)
             for i in self.mem.data.investments.arr:
                 for o in i.op_historica.arr:
                     if self.month==13:#Year
@@ -801,7 +800,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
             font.setBold(True)
             font.setWeight(75)
             label.setFont(font)
-            label.setAlignment(QtCore.Qt.AlignCenter)
+            label.setAlignment(Qt.AlignCenter)
             cs=self.mem.localcurrency.string
             label.setText(self.tr("Number of purchase and sale investment operations: {}. Comissions average: {}".format(int(num_operations), cs(sum_investment_comissions/num_operations))))
             vlayout.addWidget(label)
@@ -860,7 +859,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         font.setBold(True)
         font.setWeight(75)
         label.setFont(font)
-        label.setAlignment(QtCore.Qt.AlignCenter)
+        label.setAlignment(Qt.AlignCenter)
         label.setText(self.tr("Gains + Dividends: {} + {} = {}".format(sum_gains, sum_dividens, sum_gains+sum_dividens)))
             
         vlayout.addWidget(table)
@@ -949,11 +948,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
     def on_tab_tabCloseRequested(self, index):
         """Only removes dinamic tabs"""
         if index in (0, 1):
-            m=QMessageBox()
-            m.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
-            m.setIcon(QMessageBox.Information)
-            m.setText(self.tr("You can't close this tab"))
-            m.exec_()  
+            qmessagebox(self.tr("You can't close this tab"))
         else:
             self.tab.setCurrentIndex(0)
             self.tab.removeTab(index)
@@ -968,11 +963,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         elif row==3: #Expenses
             self.on_actionShowExpenses_triggered()
         else:
-            m=QMessageBox()
-            m.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
-            m.setIcon(QMessageBox.Information)
-            m.setText(self.tr("You only can double click in incomes, gains, dividends and expenses.") + "\n\n" + self.tr("Make right click to see comission and tax reports"))
-            m.exec_()   
+            qmessagebox(self.tr("You only can double click in incomes, gains, dividends and expenses.") + "\n\n" + self.tr("Make right click to see comission and tax reports"))
         
     def on_table_customContextMenuRequested(self,  pos):
         menu=QMenu()
