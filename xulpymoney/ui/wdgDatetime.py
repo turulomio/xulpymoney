@@ -1,8 +1,8 @@
-from PyQt5.QtCore import *
-from PyQt5.QtGui import *
+from PyQt5.QtCore import pyqtSignal,  pyqtSlot
+from PyQt5.QtWidgets import QWidget
 import datetime
-from Ui_wdgDatetime import *
-from libxulpymoney import *
+from Ui_wdgDatetime import Ui_wdgDatetime
+from libxulpymoney import dt
 
 class wdgDatetime(QWidget, Ui_wdgDatetime):
     """Usage:
