@@ -415,8 +415,11 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
         self.lblPago.setText(self.mem.localcurrency.string(self.creditcardoperations.selected.balance()))
  
     def on_cmdPago_released(self):
-        comentario="{0}|{1}".format(self.creditcards.selected.name, self.creditcardoperations.selected.length())
-        c=AccountOperation(self.mem).init__create(self.wdgDtPago.datetime(), self.mem.conceptos.find_by_id(40), self.mem.tiposoperaciones.find_by_id(7), self.creditcardoperations.selected.balance(), comentario, self.account)
+#        comentario="{0}|{1}".format(self.creditcards.selected.name, self.creditcardoperations.selected.length())v
+        c=AccountOperation(self.mem).init__create(self.wdgDtPago.datetime(), self.mem.conceptos.find_by_id(40), self.mem.tiposoperaciones.find_by_id(7), self.creditcardoperations.selected.balance(), "Transaction in progress", self.account)
+        c.save()
+        
+        c.comentario=Comment(self.mem).setEncoded10005(self.creditcards.selected, c)
         c.save()
         
         #Modifica el registro y lo pone como pagado y la datetime de pago y añade la opercuenta
