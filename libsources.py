@@ -1,13 +1,16 @@
-from libxulpymoney import *
 import os
 import urllib
 import time
-from PyQt5.QtWebKitWidgets import *
-
-from PyQt5.QtCore import *
-from PyQt5.QtGui import *
-from Ui_wdgSource import *
-from myqtablewidget import *
+import datetime
+import sys
+from PyQt5.QtWebKitWidgets import QWebView
+from PyQt5.QtWidgets import QWidget, QMenu, QDialog, QVBoxLayout, QTableWidgetItem, QTextEdit, QApplication
+from PyQt5.QtCore import QObject, pyqtSignal, pyqtSlot, QCoreApplication, QProcess, QUrl
+from PyQt5.QtGui import QIcon
+from Ui_wdgSource import Ui_wdgSource
+from myqtablewidget import myQTableWidget
+from libxulpymoney import Quote, SetProducts, SetQuotes, ampm_to_24, qleft, b2s, dt, qmessagebox
+from decimal import Decimal
 
 class SourceStatus:
     Loaded=0 #Means Source object has been ccreated
@@ -575,14 +578,14 @@ class WorkerSGWarrants(SourceParsePage):
     def on_load_page(self):
         """Overrided this function because web needs to create a session"""
         #driver = webdriver.HtmlUnitDriver()
-        profile = webdriver.FirefoxProfile()
-        profile.native_events_enabled = True
-        driver = webdriver.Firefox(profile)
-#        driver = webdriver.Remote(desired_capabilities=webdriver.DesiredCapabilities.HTMLUNIT)
-        driver.get('https://es.warrants.com')
-        form=driver.find_element_by_id('id3e9b')
-        form.click()
-        driver.quit()
+#        profile = webdriver.FirefoxProfile()
+#        profile.native_events_enabled = True
+##        driver = webdriver.Firefox(profile)
+##        driver = webdriver.Remote(desired_capabilities=webdriver.DesiredCapabilities.HTMLUNIT)
+#        driver.get('https://es.warrants.com')
+#        form=driver.find_element_by_id('id3e9b')
+#        form.click()
+#        driver.quit()
         sys.exit()
 
     def on_parse_page(self):
@@ -927,9 +930,5 @@ def sync_data(con_source, con_target, progress=None):
     - {} dividend per share estimations
     - {} earnings per share estimations""").format(  products,  quotes, dps, estimation_dps,  estimation_eps)
             
-        m=QMessageBox()
-        m.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
-        m.setIcon(QMessageBox.Information)
-        m.setText(s)
-        m.exec_()        
+        qmessagebox(s)  
 

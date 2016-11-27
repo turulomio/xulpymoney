@@ -470,7 +470,7 @@ class SetInvestments(SetCommons):
         table.setRowCount(set.length())
         for i, inv in enumerate(set.arr):
             if inv.selling_expiration!=None:
-                table.setItem(i, 0, qdate(inv.op_actual.last().date()))
+                table.setItem(i, 0, qdate(inv.op_actual.last().datetime.date()))
                 table.setItem(i, 1, qdate(inv.selling_expiration))    
                 if inv.selling_expiration<datetime.date.today():
                     table.item(i, 1).setBackground( QColor(255, 182, 182))       
