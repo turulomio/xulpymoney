@@ -16,7 +16,7 @@ class wdgLastCurrent(QWidget, Ui_wdgLastCurrent):
         self.investments=None
         self.tblInvestments.settings(self.mem, "wdgLastCurrent")
         self.spin.setValue(int(self.mem.settingsdb.value("wdgLastCurrent/spin", "-25")))
-        self.on_chkSameProduct_stateChanged(Qt.Unchecked)
+        self.on_cmbSameProduct_currentIndexChanged(0)
         
     def tblInvestments_reload(self):
         self.investments.myqtablewidget_lastCurrent(self.tblInvestments, self.spin.value())
@@ -151,9 +151,12 @@ class wdgLastCurrent(QWidget, Ui_wdgLastCurrent):
         else:
             self.on_actionCalculate_triggered()
 
-    def on_chkSameProduct_stateChanged(self, state):
-        if self.chkSameProduct.checkState()==Qt.Unchecked:
+    @pyqtSlot(int)      
+    def on_cmbSameProduct_currentIndexChanged(self, index):
+        if index==0:
             self.investments=self.mem.data.investments_active()
-        else:
+        elif index==1:
             self.investments=self.mem.data.investments_active().setInvestments_merging_investments_with_same_product_merging_current_operations()
+        elif index==2:
+            self.investments=self.mem.data.investments.setInvestments_merging_investments_with_same_product_merging_operations()
         self.on_actionSortTPCLast_triggered()

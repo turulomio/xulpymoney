@@ -434,18 +434,21 @@ class SetInvestments(SetCommons):
         table.clearContents()
         type=3
         for i, inv in enumerate(self.arr):
-            table.setItem(i, 0, QTableWidgetItem("{0} ({1})".format(inv.name, inv.account.name)))
-            table.setItem(i, 1, qdatetime(inv.op_actual.last().datetime, self.mem.localzone))
-            table.setItem(i, 2, qright(inv.op_actual.last().acciones))
-            table.setItem(i, 3, qright(inv.op_actual.acciones()))
-            table.setItem(i, 4,  inv.balance(None, type).qtablewidgetitem())
-            table.setItem(i, 5, inv.op_actual.pendiente(inv.product.result.basic.last, type).qtablewidgetitem())
-            lasttpc=inv.op_actual.last().tpc_total(inv.product.result.basic.last, type=3)
-            table.setItem(i, 6, qtpc(lasttpc))
-            table.setItem(i, 7, qtpc(inv.op_actual.tpc_total(inv.product.result.basic.last, type=3)))
-            table.setItem(i, 8, qtpc(inv.percentage_to_selling_point()))
-            if lasttpc<=percentage:   
-                table.item(i, 6).setBackground(QColor(255, 148, 148))
+            try:
+                table.setItem(i, 0, QTableWidgetItem("{0} ({1})".format(inv.name, inv.account.name)))
+                table.setItem(i, 1, qdatetime(inv.op_actual.last().datetime, self.mem.localzone))
+                table.setItem(i, 2, qright(inv.op_actual.last().acciones))
+                table.setItem(i, 3, qright(inv.op_actual.acciones()))
+                table.setItem(i, 4,  inv.balance(None, type).qtablewidgetitem())
+                table.setItem(i, 5, inv.op_actual.pendiente(inv.product.result.basic.last, type).qtablewidgetitem())
+                lasttpc=inv.op_actual.last().tpc_total(inv.product.result.basic.last, type=3)
+                table.setItem(i, 6, qtpc(lasttpc))
+                table.setItem(i, 7, qtpc(inv.op_actual.tpc_total(inv.product.result.basic.last, type=3)))
+                table.setItem(i, 8, qtpc(inv.percentage_to_selling_point()))
+                if lasttpc<=percentage:   
+                    table.item(i, 6).setBackground(QColor(255, 148, 148))
+            except:
+                logging.error("I couldn't show last of {}".format(inv.name))
 
     def myqtablewidget_sellingpoints(self, table):
         """Crea un set y luego construye la tabla"""
