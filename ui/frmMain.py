@@ -80,6 +80,8 @@ class frmMain(QMainWindow, Ui_frmMain):
                     self.adminmode=False        
                     m.setText(self.tr("Bad 'Admin mode' password. You are logged as a normal user"))
                     m.exec_()   
+          
+        
 
     def actionsEnabled(self, bool):
         self.menuBar.setEnabled(bool)

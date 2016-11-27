@@ -2927,35 +2927,54 @@ class InvestmentOperationCurrent:
 class Comment:
     """Class who controls all comments from opercuentas, operinversiones ..."""
     def __init__(self, mem):
-        self.code=None
-        self.args=None#Will be a list
         self.mem=mem
-        
-        
-    def _get(self, string):
-        self.string=string
+
+    def getCode(self, string):
+        """
+            Obtiene el codigo de un comentario
+        """
+        (code, args)=self.get(string)
+        return code        
+
+    def getArgs(self, string):
+        """
+            Obtiene los argumentos enteros de un comentario
+        """
+        (code, args)=self.get(string)
+        return args
+
+    def get(self, string):
+        """Returns (code,args)"""
+        string=string
         try:
-            number=string2list(self.string)
+            number=string2list(string)
             if len(number)==1:
-                self.code=number[0]
-                self.args=[]
+                code=number[0]
+                args=[]
             else:
-                self.code=number[0]
-                self.args=number[1:]
+                code=number[0]
+                args=number[1:]
+            return(code, args)
         except:
-            self.code=-1
+            return(None, None)
         
-    def validateLength(self, number):
-        if number!=len(self.args):
-            loggingg("Comment {} has not enough parameters".format(self.code))
+    def validateLength(self, number, code, args):
+        if number!=len(args):
+            logging("Comment {} has not enough parameters".format(code))
             return False
         return True
         
-    def getInvestmentOperation(self, id):
+    def getInvestmentOperation(self, id, code):
         operinversion=self.mem.data.investments.findInvestmentOperation(id)
         if operinversion==None:
-            logging.error("I coudn't find operinversion {} for comment {}".format(id, self.code))
+            logging.error("I coudn't find operinversion {} for comment {}".format(id, code))
         return operinversion
+        
+    def getAccountOperation(self, id, code):
+        accountoperation=AccountOperation(self.mem).init__db_query(id)
+        if accountoperation==None:
+            logging.error("I couldn't find accountoperation {} form comment {}".format(id, code))
+        return accountoperation
         
     def setEncoded10000(self, operinvestment):
         """10000;investmentoperation.idSets the coded comment to save in db"""
@@ -2963,19 +2982,63 @@ class Comment:
 #            return QApplication.translate("Core","{0[1]}: {0[0]} shares. Amount: {0[2]} {1}. Comission: {0[3]} {1}. Taxes: {0[4]} {1}").format(c, self.account.currency.symbol)
         return "10000,{}".format(operinvestment.id)
         
+    def setEncoded10001(self, operaccountorigin, operaccountdestiny, operaccountorigincomission):
+        """
+            Usado en una transferencia entre cuentas, es la opercuenta de origen
+        """
+        if operaccountorigincomission==None:
+            operaccountorigincomission_id=-1
+        else:
+            operaccountorigincomission_id=operaccountorigincomission.id
+        return "10001,{},{},{}".format(operaccountorigin.id, operaccountdestiny.id, operaccountorigincomission_id)        
+        
+    def setEncoded10002(self, operaccountorigin, operaccountdestiny, operaccountorigincomission):
+        """
+            Usado en una transferencia entre cuentas, es la opercuenta de destino
+        """
+        if operaccountorigincomission==None:
+            operaccountorigincomission_id=-1
+        else:
+            operaccountorigincomission_id=operaccountorigincomission.id
+        return "10002,{},{},{}".format(operaccountorigin.id, operaccountdestiny.id, operaccountorigincomission_id)        
+        
+    def setEncoded10003(self, operaccountorigin, operaccountdestiny, operaccountorigincomission):
+        """
+            Usado en una transferencia entre cuentas, es la opercuenta de la comisi´on en origen
+        """
+        if operaccountorigincomission==None:
+            operaccountorigincomission_id=-1
+        else:
+            operaccountorigincomission_id=operaccountorigincomission.id
+        return "10003,{},{},{}".format(operaccountorigin.id, operaccountdestiny.id, operaccountorigincomission_id)        
+        
     def setFancy(self, string):
         """Sets the comment to show in app"""
-        self._get(string)
-        if self.code==-1:
+        (code, args)=self.get(string)
+        if code==None:
             return string
-        if self.code==10000:#Operinversion comment
-            self.validateLength(1)
-            io=self.getInvestmentOperation(self.args[0])
+        if code==10000:#Operinversion comment
+            self.validateLength(1, code, args)
+            io=self.getInvestmentOperation(args[0], code)
             if io.inversion.hasSameAccountCurrency():
                 return QApplication.translate("Core","{}: {} shares. Amount: {}. Comission: {}. Taxes: {}").format(io.inversion.name, io.acciones, io.gross(1), io.comission(1), io.taxes(1))
             else:
                 return QApplication.translate("Core","{}: {} shares. Amount: {} ({}). Comission: {} ({}). Taxes: {} ({})").format(io.inversion.name, io.acciones, io.gross(1), io.gross(2),  io.comission(1), io.comission(2),  io.taxes(1), io.taxes(2))
                 
+        elif code==10001:#Operaccount transfer origin
+            self.validateLength(3, code, args)
+            aod=self.getAccountOperation(args[1], code)
+            return QApplication.translate("Core","Transfer to {}").format(aod.account.name)
+        elif code==10002:#Operaccount transfer destiny
+            self.validateLength(3, code, args)
+            aoo=self.getAccountOperation(args[0], code)
+            return QApplication.translate("Core","Transfer received from {}").format(aoo.account.name)
+        elif code==10003:#Operaccount transfer origin comision
+            self.validateLength(3, code, args)
+            aoo=self.getAccountOperation(args[0], code)
+            aod=self.getAccountOperation(args[1], code)
+            return QApplication.translate("Core","Comission transfering {} from {} to {}").format(aoo.account.currency.string(aoo.importe), aoo.account.name, aod.account.name)
+        
         
         
         #OPERINVESTMENTS
@@ -3187,14 +3250,8 @@ class AccountOperation:
             return False
         if self.concepto.id in (29, 35, 39, 40, 50,  62, 63, 65, 66):#div, factur tarj:
             return False
-        c=self.comentario.split("|")
-        if self.concepto.id == 38 and c[0]=="Transfer" and len(c)==3:#Comision bancaria por transferencia
-            return False
-        if self.concepto.id==4 and len(c)==3:#Transferencia origen
-            return False
-        if self.concepto.id==5 and len(c)==2:#Transferencia destino
-            return False
-        
+        if Comment(self.mem).getCode(self.comentario) in (10001, 10002, 10003):
+            return False        
         return True
         
     def save(self):
@@ -3943,20 +4000,23 @@ class Account:
     def transferencia(self, datetime, cuentaorigen, cuentadestino, importe, comision):
         """Si el oc_comision_id es 0 es que no hay comision porque también es 0"""
         #Ojo los comentarios est´an dependientes.
+        oc_comision=None
+        notfinished="Tranfer not fully finished"
         if comision>0:
-            commentcomission="Transfer|{0}|{1}".format(importe, cuentaorigen.id)
-            oc_comision=AccountOperation(self.mem).init__create(datetime, self.mem.conceptos.find_by_id(38), self.mem.tiposoperaciones.find_by_id(1), -comision, commentcomission, cuentaorigen )
-            oc_comision.save()          
-            oc_comision_id=oc_comision.id  
-        else:
-            oc_comision_id=0
-        oc_origen=AccountOperation(self.mem).init__create(datetime, self.mem.conceptos.find_by_id(4), self.mem.tiposoperaciones.find_by_id(3), -importe, "", cuentaorigen )
+            oc_comision=AccountOperation(self.mem).init__create(datetime, self.mem.conceptos.find_by_id(38), self.mem.tiposoperaciones.find_by_id(1), -comision, notfinished, cuentaorigen )
+            oc_comision.save()
+        oc_origen=AccountOperation(self.mem).init__create(datetime, self.mem.conceptos.find_by_id(4), self.mem.tiposoperaciones.find_by_id(3), -importe, notfinished, cuentaorigen )
         oc_origen.save()
-        commentdestino="{0}|{1}".format(cuentaorigen.id, oc_origen.id)
-        oc_destino=AccountOperation(self.mem).init__create(datetime, self.mem.conceptos.find_by_id(5), self.mem.tiposoperaciones.find_by_id(3), importe, commentdestino, cuentadestino )
+        oc_destino=AccountOperation(self.mem).init__create(datetime, self.mem.conceptos.find_by_id(5), self.mem.tiposoperaciones.find_by_id(3), importe, notfinished, cuentadestino )
         oc_destino.save()
-        oc_origen.comentario="{0}|{1}|{2}".format(cuentadestino.id, oc_destino.id, oc_comision_id)
+        
+        oc_origen.comentario=Comment(self.mem).setEncoded10001(oc_origen, oc_destino, oc_comision)
         oc_origen.save()
+        oc_destino.comentario=Comment(self.mem).setEncoded10002(oc_origen, oc_destino, oc_comision)
+        oc_destino.save()
+        if oc_comision!=None:
+            oc_comision.comentario=Comment(self.mem).setEncoded10003(oc_origen, oc_destino, oc_comision)
+            oc_comision.save()
 
     def qmessagebox_inactive(self):
         if self.active==False:

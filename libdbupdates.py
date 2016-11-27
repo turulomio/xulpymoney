@@ -19,7 +19,7 @@ class Update:
     def __init__(self, mem):
         self.mem=mem
         self.dbversion=self.get_database_version()    
-        self.lastcodeupdate=201611110750
+        self.lastcodeupdate=201611270750
 
    
     def get_database_version(self):
@@ -645,6 +645,39 @@ LANGUAGE plpgsql;""")
             cur.close()
             self.mem.con.commit()
             self.set_database_version(201611110750)      
+            
+        if self.dbversion<201611270750:##Transfer comments migration
+            cur=self.mem.con.cursor()
+            cur.execute("select id_opercuentas, comentario from opercuentas where id_tiposoperaciones=3 and comentario like ('%|%') order by datetime")
+            for row in cur:
+                split=row["comentario"].split("|")
+                if len(split)==3:#SOLO ORIGENES
+                    aoo=row
+                    aod=self.mem.con.cursor_one_row("select id_opercuentas, comentario from opercuentas where id_opercuentas=%s", (int(split[1]), ))
+                    aoc=self.mem.con.cursor_one_row("select id_opercuentas, comentario from opercuentas where id_opercuentas=%s", (int(split[2]), ))
+                    print("==================")
+                    
+                    if aoc==None:
+                        operaccountorigincomission_id=-1
+                    else:
+                        operaccountorigincomission_id=aoc["id_opercuentas"]
+                    c1="10001,{},{},{}".format(aoo['id_opercuentas'], aod['id_opercuentas'], operaccountorigincomission_id)        
+                    c2="10002,{},{},{}".format(aoo['id_opercuentas'], aod['id_opercuentas'], operaccountorigincomission_id)        
+                    c3="10003,{},{},{}".format(aoo['id_opercuentas'], aod['id_opercuentas'], operaccountorigincomission_id)        
+                    print ("Origin: {} ==> {}".format(aoo['comentario'], c1))
+                    print("Destiny: {} ==> {}".format(aod['comentario'], c2))
+                    if aoc!=None:
+                        print("Comision: {} ==> {}".format(aoc['comentario'], c3))
+                    
+                    curcommit=self.mem.con.cursor()
+                    curcommit.execute("update opercuentas set comentario='{}' where id_opercuentas={}".format(c1, aoo['id_opercuentas']))
+                    curcommit.execute("update opercuentas set comentario='{}' where id_opercuentas={}".format(c2, aod['id_opercuentas']))
+                    if aoc!=None:
+                        curcommit.execute("update opercuentas set comentario='{}' where id_opercuentas={}".format(c3, aoc['id_opercuentas']))
+                    curcommit.close()
+            cur.close()
+            self.mem.con.commit()
+            self.set_database_version(201611270750)      
             
             
             

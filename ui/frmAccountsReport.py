@@ -200,28 +200,21 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
 
     @QtCore.pyqtSlot() 
     def on_actionTransferDelete_triggered(self):
+        """
+            Ya est´a validado si es Comment coded 10001,10002,10003
+        """
+        args=Comment(self.mem).getArgs(self.accountoperations.selected.comentario)#origin,destiny,comission
+        aoo=AccountOperation(self.mem).init__db_query(args[0])
+        aod=AccountOperation(self.mem).init__db_query(args[1])
 
-        oc_other=AccountOperation(self.mem).init__db_query(int(self.accountoperations.selected.comentario.split("|")[1]))
-        
-        if self.accountoperations.selected.concepto.id==4:#Tranfer origin
-            account_origin=self.account
-            account_destiny=self.mem.data.accounts.find_by_id(int(self.accountoperations.selected.comentario.split("|")[0]))
-            oc_comision_id=int(self.accountoperations.selected.comentario.split("|")[2])
-    
-        if self.accountoperations.selected.concepto.id==5:#Tranfer destiny
-            account_origin=self.mem.data.accounts.find_by_id(int(self.accountoperations.selected.comentario.split("|")[0]))
-            account_destiny=self.account
-            oc_comision_id=int(oc_other.comentario.split("|")[2])
-            
-        message=self.tr("Do you really want to delete transfer from {0} to {1}, with amount {2} and it's commision?").format(account_origin.name, account_destiny.name, self.accountoperations.selected.importe)
+        message=self.tr("Do you really want to delete transfer from {0} to {1}, with amount {2} and it's commision?").format(aoo.account.name, aod.account.name, aoo.importe)
         reply = QMessageBox.question(self, 'Message', message, QMessageBox.Yes, QMessageBox.No)
-            
         if reply == QMessageBox.Yes:
-            if oc_comision_id!=0:
-                oc_comision=AccountOperation(self.mem).init__db_query(oc_comision_id)
-                oc_comision.borrar()
-            self.accountoperations.selected.borrar()
-            oc_other.borrar()
+            if args[2]!=-1:
+                aoc=AccountOperation(self.mem).init__db_query(args[2])
+                aoc.borrar()
+            aoo.borrar()
+            aod.borrar()
             self.mem.con.commit()
             self.accountoperations_reload()
         
@@ -293,7 +286,7 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
                 self.actionOperationDelete.setEnabled(False)
                 self.actionOperationEdit.setEnabled(False)   
                 #Una transferencia bien formada no es editable solo con transfer delete.
-                if (self.accountoperations.selected.concepto.id==4 and len(self.accountoperations.selected.comentario.split("|"))==3) or (self.accountoperations.selected.concepto.id==5 and len(self.accountoperations.selected.comentario.split("|"))==2):#Tranfer origin or Tranfer destine
+                if Comment(self.mem).getCode(self.accountoperations.selected.comentario) in (10001, 10002, 10003):#Account transfers
                     self.actionTransferDelete.setEnabled(True)
                 else:
                     self.actionTransferDelete.setEnabled(False)
