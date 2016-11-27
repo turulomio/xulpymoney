@@ -2984,8 +2984,14 @@ class Comment:
     def getAccountOperation(self, id, code):
         accountoperation=AccountOperation(self.mem).init__db_query(id)
         if accountoperation==None:
-            logging.error("I couldn't find accountoperation {} form comment {}".format(id, code))
+            logging.error("I couldn't find accountoperation {} for comment {}".format(id, code))
         return accountoperation
+        
+    def getCreditCard(self, id, code):
+        creditcard=self.mem.data.creditcards.find_by_id(id)
+        if creditcard==None:
+            logging.error("I couldn't find creditcard {} for comment {}".format(id, code))
+        return creditcard
         
     def setEncoded10000(self, operinvestment):
         """
@@ -3028,6 +3034,14 @@ class Comment:
             Usado en un dividendo para poner comentario a la cuenta asociada
         """
         return "10004,{}".format(dividend.id)        
+                        
+    def setEncoded10005(self, creditcard,  operaccount):
+        """
+            Usado en en comentario que muestra la opercuenta cuando se ha realizado un pago de facturaci´on de tarjeta
+            
+            De la opercuenta se puede sacar el n´umero de pagos incluidos.
+        """
+        return "10005,{},{}".format(creditcard.id, operaccount.id)        
         
     def setFancy(self, string):
         """Sets the comment to show in app"""
@@ -3064,6 +3078,11 @@ class Comment:
                 return QApplication.translate("Core", "From {}. Gross {}. Net {}.").format(investment.name, dividend.gross(1), dividend.net(1))
             else:
                 return QApplication.translate("Core", "From {}. Gross {} ({}). Net {} ({}).").format(investment.name, dividend.gross(1), dividend.gross(2), dividend.net(1), dividend.net(2))
+        elif code==10005:#Facturaci´on de tarjeta diferida
+            self.validateLength(2, code, args)
+            creditcard=self.getCreditCard(args[0], code)
+            number=self.mem.con.cursor_one_field("select count(*) from opertarjetas where id_opercuentas=%s", (args[1], ))
+            return QApplication.translate("Core"," Billing {} movements of {}").format(number, creditcard.name)
         
         
         #OPERINVESTMENTS

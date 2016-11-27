@@ -18,7 +18,7 @@ class Update:
     def __init__(self, mem):
         self.mem=mem
         self.dbversion=self.get_database_version()    
-        self.lastcodeupdate=201611271315
+        self.lastcodeupdate=201611271815
 
    
     def get_database_version(self):
@@ -699,7 +699,18 @@ LANGUAGE plpgsql;""")
                 cur2.close()
             cur.close()
             self.mem.con.commit()
-            self.set_database_version(201611271315)      
+            self.set_database_version(201611271315)    
+            
+        if self.dbversion<201611271815:##Updates dividends operaccount comment
+            cur=self.mem.con.cursor()
+            cur.execute("select distinct(id_opercuentas),id_tarjetas from opertarjetas where fechapago is not null  order by id_opercuentas;")
+            for row in cur:
+                cur2=self.mem.con.cursor()
+                cur2.execute("update opercuentas set comentario=%s where id_opercuentas=%s", ("10005,{},{}".format(row['id_tarjetas'], row['id_opercuentas']), row['id_opercuentas']))
+                cur2.close()
+            cur.close()
+            self.mem.con.commit()
+            self.set_database_version(201611271815)      
             
             
             
