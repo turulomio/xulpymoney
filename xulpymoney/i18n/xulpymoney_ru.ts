@@ -311,7 +311,7 @@
 <context>
     <name>Core</name>
     <message>
-        <location filename="../libsources.py" line="925"/>
+        <location filename="../libsources.py" line="928"/>
         <source>From {} desynchronized products added:
     - {} quotes
     - {} dividends per share
@@ -1127,7 +1127,7 @@ Do you want to activate it?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libsources.py" line="295"/>
+        <location filename="../libsources.py" line="298"/>
         <source>Log</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1175,7 +1175,7 @@ Do you want to activate it?</source>
 <context>
     <name>Source</name>
     <message>
-        <location filename="../libsources.py" line="249"/>
+        <location filename="../libsources.py" line="252"/>
         <source>Source Name unknown</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1183,7 +1183,7 @@ Do you want to activate it?</source>
 <context>
     <name>WorkerMercadoContinuo</name>
     <message>
-        <location filename="../libsources.py" line="453"/>
+        <location filename="../libsources.py" line="456"/>
         <source>Mercado Continuo source</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1191,7 +1191,7 @@ Do you want to activate it?</source>
 <context>
     <name>WorkerMorningstar</name>
     <message>
-        <location filename="../libsources.py" line="517"/>
+        <location filename="../libsources.py" line="520"/>
         <source>Morningstar source</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1199,7 +1199,7 @@ Do you want to activate it?</source>
 <context>
     <name>WorkerSGWarrants</name>
     <message>
-        <location filename="../libsources.py" line="572"/>
+        <location filename="../libsources.py" line="575"/>
         <source>SG Warrants source</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1207,7 +1207,7 @@ Do you want to activate it?</source>
 <context>
     <name>WorkerYahoo</name>
     <message>
-        <location filename="../libsources.py" line="633"/>
+        <location filename="../libsources.py" line="636"/>
         <source>Yahoo source</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1215,7 +1215,7 @@ Do you want to activate it?</source>
 <context>
     <name>WorkerYahooHistorical</name>
     <message>
-        <location filename="../libsources.py" line="755"/>
+        <location filename="../libsources.py" line="758"/>
         <source>Yahoo Historical source</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7105,32 +7105,32 @@ Daily Diff: {5}. Investment average age: {6}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libsources.py" line="151"/>
+        <location filename="../libsources.py" line="154"/>
         <source>Inserted quotes from {}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libsources.py" line="163"/>
+        <location filename="../libsources.py" line="166"/>
         <source>Edited quotes from {}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libsources.py" line="175"/>
+        <location filename="../libsources.py" line="178"/>
         <source>Ignored quotes from {}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libsources.py" line="187"/>
+        <location filename="../libsources.py" line="190"/>
         <source>Errors procesing the source {}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libsources.py" line="199"/>
+        <location filename="../libsources.py" line="202"/>
         <source>Bad prices procesing the source {}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libsources.py" line="211"/>
+        <location filename="../libsources.py" line="214"/>
         <source>Searched products from {}</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7170,37 +7170,37 @@ Daily Diff: {5}. Investment average age: {6}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libsources.py" line="115"/>
+        <location filename="../libsources.py" line="118"/>
         <source>Inserted quotes ({})</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libsources.py" line="116"/>
+        <location filename="../libsources.py" line="119"/>
         <source>Edited quotes ({})</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libsources.py" line="117"/>
+        <location filename="../libsources.py" line="120"/>
         <source>Ignored quotes ({})</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libsources.py" line="118"/>
+        <location filename="../libsources.py" line="121"/>
         <source>Parsing errors ({})</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libsources.py" line="119"/>
+        <location filename="../libsources.py" line="122"/>
         <source>Wrong quotes ({})</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libsources.py" line="120"/>
+        <location filename="../libsources.py" line="123"/>
         <source>Products searched ({})</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libsources.py" line="229"/>
+        <location filename="../libsources.py" line="232"/>
         <source>Showing HTML</source>
         <translation type="unfinished"></translation>
     </message>
