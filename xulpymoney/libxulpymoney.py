@@ -2994,7 +2994,12 @@ class Comment:
         creditcard=self.mem.data.creditcards.find_by_id(id)
         if creditcard==None:
             logging.error("I couldn't find creditcard {} for comment {}".format(id, code))
-        return creditcard
+        return creditcard        
+    def getCreditCardOperation(self, id, code):
+        cco=CreditCardOperation(self.mem).init__db_query(id)
+        if cco==None:
+            logging.error("I couldn't find creditcard operation {} for comment {}".format(id, code))
+        return cco
         
     def setEncoded10000(self, operinvestment):
         """
@@ -3045,6 +3050,11 @@ class Comment:
             De la opercuenta se puede sacar el n´umero de pagos incluidos.
         """
         return "10005,{},{}".format(creditcard.id, operaccount.id)        
+    def setEncoded10006(self, opercreditcardtorefund):
+        """
+            Usado en comentario que muestra la opertarjeta que quiero devolver.
+        """
+        return "10006,{}".format(opercreditcardtorefund.id)        
         
     def setFancy(self, string):
         """Sets the comment to show in app"""
@@ -3086,6 +3096,11 @@ class Comment:
             creditcard=self.getCreditCard(args[0], code)
             number=self.mem.con.cursor_one_field("select count(*) from opertarjetas where id_opercuentas=%s", (args[1], ))
             return QApplication.translate("Core"," Billing {} movements of {}").format(number, creditcard.name)
+        elif code==10006:#Devoluci´on de tarjeta
+            self.validateLength(1, code, args)
+            cco=self.getCreditCardOperation(args[0], code)
+            money=Money(self.mem, cco.importe, cco.tarjeta.account.currency)
+            return QApplication.translate("Core"," Refund of {} payment of which had an amount of {}").format(datetime_string(cco.datetime,  self.mem.localzone), money)
         
         
         #OPERINVESTMENTS
@@ -3094,25 +3109,7 @@ class Comment:
 #        """Función que genera un comentario parseado según el tipo de operación o concepto"""
 #        if self.tipooperacion.id==9:#"Traspaso de valores. Origen"#"{0}|{1}|{2}|{3}".format(self.inversion.name, self.bruto, self.retencion, self.comision)
 #            return QApplication.translate("Core","Traspaso de valores realizado a {0}".format(self.comentario.split("|"), self.account.currency.symbol))
-#        else:
-#            return self.comentario
-#        #OPERACCOUNTS
-#                    c=self.comentario.split("|")
-#        if self.concepto.id in (62, 39, 50, 63, 65) and len(c)==4:#"{0}|{1}|{2}|{3}".format(self.inversion.name, self.bruto, self.retencion, self.comision)
-#            return QApplication.translate("Core","{0[0]}. Gross: {0[1]} {1}. Witholding tax: {0[2]} {1}. Comission: {0[3]} {1}").format(c, self.account.currency.symbol)
-#        elif self.concepto.id in (29, 35) and len(c)==5:#{0}|{1}|{2}|{3}".format(row['inversion'], importe, comision, impuestos)
-#            return QApplication.translate("Core","{0[1]}: {0[0]} shares. Amount: {0[2]} {1}. Comission: {0[3]} {1}. Taxes: {0[4]} {1}").format(c, self.account.currency.symbol)
-#        elif self.concepto.id==40 and len(c)==2:#"{0}|{1}".format(self.selCreditCard.name, len(self.setSelOperCreditCards))
-#            return QApplication.translate("Core","CreditCard: {0[0]}. Made {0[1]} payments").format(c)
-#            return QApplication.translate("Core", "Due to account transfer of {0} from {1}").format(self.mem.localcurrency.string(float(c[1])), self.mem.data.accounts.find_by_id(int(c[2])).name)
-#        else:
-#            return self.comentario 
-        #OPERCREDITCARDS
-#        c=self.comentario.split("|")
-#        if self.concepto.id==67 and c[0]=="Refund":#CreditCardOperation refund
-#            opertarjeta=CreditCardOperation(self.mem).init__db_query(int(c[1]))        
-#            return QApplication.translate("Core", "Refund of {} credit card payment which had an amount of {}. {}").format(str(opertarjeta.datetime)[0:19], opertarjeta.tarjeta.account.currency.string(opertarjeta.importe), c[2])
-#        else:
+
 
 
 class Concept:
@@ -7873,12 +7870,8 @@ def qmessagebox(text):
     m.setText(text)
     m.exec_()   
     
-def qdatetime(dt, zone):
-    """
-        dt es un datetime con timezone, que se mostrara con la zone pasado como parametro
-        Convierte un datetime a string, teniendo en cuenta los microsehgundos, para ello se convierte a datetime local
-    """
     
+def datetime_string(dt, zone):
     if dt==None:
         resultado="None"
     else:    
@@ -7892,8 +7885,14 @@ def qdatetime(dt, zone):
             resultado="{}-{}-{}".format(dt.year, str(dt.month).zfill(2), str(dt.day).zfill(2))
         else:
             resultado="{}-{}-{} {}:{}:{}".format(dt.year, str(dt.month).zfill(2), str(dt.day).zfill(2), str(dt.hour).zfill(2), str(dt.minute).zfill(2),  str(dt.second).zfill(2))
-
-    a=QTableWidgetItem(resultado)
+    return resultado
+    
+def qdatetime(dt, zone):
+    """
+        dt es un datetime con timezone, que se mostrara con la zone pasado como parametro
+        Convierte un datetime a string, teniendo en cuenta los microsehgundos, para ello se convierte a datetime local
+    """
+    a=QTableWidgetItem(datetime_string(dt, zone))
     if dt==None:
         a.setForeground(QColor(0, 0, 255))
     a.setTextAlignment(Qt.AlignVCenter|Qt.AlignRight)

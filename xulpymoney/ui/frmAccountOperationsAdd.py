@@ -1,7 +1,7 @@
 from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtWidgets import QDialog
 from Ui_frmAccountOperationsAdd import Ui_frmAccountOperationsAdd
-from libxulpymoney import  AccountOperation,  CreditCardOperation,  qmessagebox
+from libxulpymoney import  AccountOperation,  Comment, CreditCardOperation,  qmessagebox
 from datetime import timedelta
 
 class frmAccountOperationsAdd(QDialog, Ui_frmAccountOperationsAdd):
@@ -47,6 +47,7 @@ class frmAccountOperationsAdd(QDialog, Ui_frmAccountOperationsAdd):
             self.cmbAccounts.setCurrentIndex(self.cmbAccounts.findData(opertarjeta.tarjeta.account.id))
             self.cmbCreditCards.setCurrentIndex(self.cmbCreditCards.findData(opertarjeta.tarjeta.id))
             self.txtImporte.setText(-opertarjeta.importe)
+            self.txtComentario.setEnabled(False)
         elif opertarjeta!=None:
             self.original=opertarjeta
             self.setWindowTitle(self.tr("Credit card operation update"))
@@ -192,7 +193,7 @@ class frmAccountOperationsAdd(QDialog, Ui_frmAccountOperationsAdd):
                 refund.tipooperacion=concepto.tipooperacion
                 refund.pagado=False
                 refund.importe=importe
-                refund.comentario="Refund|{}|{}".format(self.original.id, self.txtComentario.text())
+                refund.comentario=Comment(self.mem).setEncoded10006(self.original)
                 refund.save()
                 self.mem.con.commit()        #Se debe hacer el commit antes para que al actualizar con el signal salga todos los datos
                 self.emit_OperationChanged(self.type_and_id(self.original), self.type_and_id(refund))
