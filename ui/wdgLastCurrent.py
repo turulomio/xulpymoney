@@ -155,8 +155,11 @@ class wdgLastCurrent(QWidget, Ui_wdgLastCurrent):
     def on_cmbSameProduct_currentIndexChanged(self, index):
         if index==0:
             self.investments=self.mem.data.investments_active()
+            self.on_actionSortTPCLast_triggered()
         elif index==1:
             self.investments=self.mem.data.investments_active().setInvestments_merging_investments_with_same_product_merging_current_operations()
+            self.on_actionSortTPCLast_triggered()
         elif index==2:
             self.investments=self.mem.data.investments.setInvestments_merging_investments_with_same_product_merging_operations()
-        self.on_actionSortTPCLast_triggered()
+            self.investments.order_by_name()
+            self.tblInvestments_reload()
