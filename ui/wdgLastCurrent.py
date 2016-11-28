@@ -1,5 +1,5 @@
 from libxulpymoney import Quote, qmessagebox, tpc
-from PyQt5.QtCore import QSize, Qt, pyqtSlot
+from PyQt5.QtCore import QSize, pyqtSlot
 from PyQt5.QtWidgets import QDialog, QMenu, QVBoxLayout, QWidget
 from Ui_wdgLastCurrent import Ui_wdgLastCurrent
 from frmInvestmentReport import frmInvestmentReport
