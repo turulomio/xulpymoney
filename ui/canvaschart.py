@@ -864,7 +864,6 @@ class canvasChartHistoricalReinvest(FigureCanvasQTAgg):
 
         QMetaObject.connectSlotsByName(self)
         self.setContextMenuPolicy(Qt.CustomContextMenu)
-#        self.customContextMenuRequested.connect(self.on_customContextMenuRequested)
         self.fig.canvas.mpl_connect('scroll_event', self.on_wheelEvent)
 
     def footer(self, date, y): 
@@ -878,12 +877,12 @@ class canvasChartHistoricalReinvest(FigureCanvasQTAgg):
 
     def makeLegend(self):
         if len(self.labels)==0:
-            self.labels.append((self.plot_selling, self.tr("Selling price")))
-            self.labels.append((self.plot_average, self.tr("Average purchase price")))
+            self.labels.append((self.plot_selling, self.tr("Selling price: {}".format(self.inversion.product.currency.string(self.sellprice)))))
+            self.labels.append((self.plot_average, self.tr("Average purchase price: {}".format(self.inversion.op_actual.average_price(type=1)))))
             self.labels.append((self.plot_purchases, self.tr("Purchase point")))
             self.labels.append((self.plot_sales, self.tr("Sales point")))
-            self.labels.append((self.plot_new_average, self.tr("New purchase average")))
-            self.labels.append((self.plot_new_selling, self.tr("New selling reference")))
+            self.labels.append((self.plot_new_selling, self.tr("New selling reference: {}".format(self.inversion.product.currency.string(self.newsellprice)))))
+            self.labels.append((self.plot_new_average, self.tr("New purchase average: {}".format(self.setcurrent.average_price(type=1)))))
 
     def draw_newPurchaseReferences(self):
         percentage=Decimal(self.mem.settingsdb.value("frmSellingPoint/lastgainpercentage",  5))
@@ -891,21 +890,18 @@ class canvasChartHistoricalReinvest(FigureCanvasQTAgg):
         dat.append(self.setcurrent.arr[0].datetime)
         dat.append(datetime.datetime.now())
         avg=self.setcurrent.average_price().amount
-        sellprice=avg*(1+percentage/Decimal(100))
+        self.newsellprice=avg*(1+percentage/Decimal(100))
         
         average.append(avg)
         average.append(avg)
-        sell.append(sellprice)
-        sell.append(sellprice)
+        sell.append(self.newsellprice)
+        sell.append(self.newsellprice)
         self.plot_new_average, =self.ax.plot_date(dat, average, '-',  color='orange')     
         self.plot_new_selling, =self.ax.plot_date(dat, sell, '-',  color='darkblue')          
         
         #Prepare bottom label
-        gains=(sellprice-avg)*self.setcurrent.acciones()
-        reinvestprice=self.setcurrent.arr[self.setcurrent.length()-1].valor_accion
-        percentage_from_current=100*(sellprice-self.inversion.product.result.basic.last.quote)/self.inversion.product.result.basic.last.quote
-        percentage_from_reinvest=100*(sellprice-reinvestprice)/reinvestprice
-        self.ax.annotate(xy=(5, 5), xycoords="figure pixels",  s=self.tr("Gains percentage: {}. Gains: {}. Percentage from reinvest: {}. Percentage from current price: {}".format(tpc(percentage), self.inversion.product.currency.string(gains), tpc(percentage_from_reinvest), tpc(percentage_from_current))))
+        gains=(self.newsellprice-avg)*self.setcurrent.acciones()
+        self.ax.annotate(xy=(5, 5), xycoords="figure pixels",  s=self.tr("Gains percentage: {}. Gains in the new selling reference: {}".format(tpc(percentage), self.inversion.product.currency.string(gains))))
 
         
     @pyqtSlot()
@@ -949,8 +945,9 @@ class canvasChartHistoricalReinvest(FigureCanvasQTAgg):
         buy.append(average)
         buy.append(average)
         percentage=Decimal(self.mem.settingsdb.value("frmSellingPoint/lastgainpercentage",  5))
-        sell.append(average*(1+percentage/Decimal(100)))
-        sell.append(average*(1+percentage/Decimal(100)))
+        self.sellprice=average*(1+percentage/Decimal(100))
+        sell.append(self.sellprice)
+        sell.append(self.sellprice)
         self.plot_average, =self.ax.plot_date(dates, buy, 'r--', color="orange",  tz=pytz.timezone(self.mem.localzone.name))
         self.plot_selling, =self.ax.plot_date(dates, sell, 'r--', color="darkblue",  tz=pytz.timezone(self.mem.localzone.name))
 
@@ -995,6 +992,10 @@ class canvasChartHistoricalReinvest(FigureCanvasQTAgg):
         self.ax.grid(True)
 
     def load_data_reinvest(self,  inversion, setop, setcurrent):
+        """
+            setop es el SetInvestmentOperation simulado
+            segcurrent es SetInvestmentOperationCurrent simulado
+        """
         self.setcurrent=setcurrent
         self.setop=setop
         self.inversion=inversion
