@@ -750,12 +750,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="8029"/>
+        <location filename="../libxulpymoney.py" line="8031"/>
         <source>True</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="8032"/>
+        <location filename="../libxulpymoney.py" line="8034"/>
         <source>False</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1015,7 +1015,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="8000"/>
+        <location filename="../libxulpymoney.py" line="8002"/>
         <source>{} {}, {} {} and {} {}</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1025,32 +1025,32 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="7989"/>
+        <location filename="../libxulpymoney.py" line="7991"/>
         <source>year</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="7991"/>
+        <location filename="../libxulpymoney.py" line="7993"/>
         <source>years</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="7993"/>
+        <location filename="../libxulpymoney.py" line="7995"/>
         <source>month</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="7995"/>
+        <location filename="../libxulpymoney.py" line="7997"/>
         <source>months</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="7997"/>
+        <location filename="../libxulpymoney.py" line="7999"/>
         <source>day</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="7999"/>
+        <location filename="../libxulpymoney.py" line="8001"/>
         <source>days</source>
         <translation type="unfinished"></translation>
     </message>

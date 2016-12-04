@@ -7549,6 +7549,8 @@ class SettingsDB:
             return 20
         elif name=="wdgAPR/cmbYear":
             return 21
+        elif name=="wdgLastCurrent/viewode":
+            return 22
         return None
 
 class MemXulpymoney:
