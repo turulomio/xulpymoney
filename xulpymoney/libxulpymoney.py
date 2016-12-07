@@ -5719,6 +5719,23 @@ class Money:
         logging.critical("No existe factor de conversión")
         return None
         
+    def conversionDatetime(self, currency, dt):
+        """
+            Returns conversion datetime
+        """       
+        if self.currency==currency:
+            return dt
+        
+        if self.currency.id=="EUR":
+            if currency.id=="USD":
+                return self.mem.data.currencies.find_by_id(74747).result.all.find(dt).datetime
+        elif self.currency.id=="USD":
+            if currency.id=="EUR":
+                return 1/self.mem.data.currencies.find_by_id(74747).result.all.find(dt).datetime
+        logging.critical("No existe factor de conversión, por lo que tampoco su datetime")
+        return None
+        
+        
     def convert_from_factor(self, currency, factor):
         """Converts self money to currency, multiplicando el amount del self con el factor y obteniendo la nueva currency pasada como parametro"""
         if self.currency==currency:

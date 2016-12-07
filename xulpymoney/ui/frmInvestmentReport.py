@@ -10,15 +10,15 @@ from frmQuotesIBM import frmQuotesIBM
 from wdgDisReinvest import wdgDisReinvest
 from frmSharesTransfer import frmSharesTransfer
 from frmSplit import frmSplit
-from libxulpymoney import Investment, SetDividendsHomogeneus,  SetInvestmentOperationsHomogeneus,  days_to_year_month, tpc
+from libxulpymoney import Investment, Money, SetDividendsHomogeneus,  SetInvestmentOperationsHomogeneus,  days_to_year_month, tpc
 
 class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
     frmInvestmentOperationsAdd_initiated=pyqtSignal(frmInvestmentOperationsAdd)#Se usa para cargar datos de ordenes en los datos de este formulario
     def __init__(self, mem, inversion=None,  parent=None):
-        """Accounts es un set cuentas"""
-        """TIPOS DE ENTRADAS:        
-         1   : Inserción de Opercuentas
-         2   inversion=x"""
+        """Accounts es un set cuentas
+        TIPOS DE ENTRADAS:        
+         1  Inserción de Opercuentas
+         2  Inversion=x"""
         QDialog.__init__(self, parent)
         QApplication.setOverrideCursor(Qt.WaitCursor)
         self.hide()
@@ -147,6 +147,9 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
             self.grpCurrentAccountCurrency.hide()
             self.grpHistoricalAccountCurrency.hide()
         else:
+            m=Money(self.mem, 1, self.inversion.account.currency)
+            
+            self.grpCurrentAccountCurrency.setTitle(self.tr("Current status in account currency ( {} = {} at {} )").format(m.string(6), m.convert(self.inversion.product.currency, self.mem.localzone.now()).string(6), m.conversionDatetime(self.inversion.product.currency, self.mem.localzone.now())))
             self.inversion.op_actual.myqtablewidget(self.tblInvestmentCurrentAccountCurrency, self.inversion.product.result.basic.last,  type=2)
             self.inversion.op_historica.myqtablewidget(self.tblInvestmentHistoricalAccountCurrency, type=2 )
         
