@@ -71,6 +71,8 @@ class canvasTotal(FigureCanvasQTAgg):
         self.ax.fmt_xdata = DateFormatter('%Y-%m')
         self.ax.format_coord = self.footer  
         self.ax.grid(True)
+        self.ax.set_title(self.tr("Total report"), fontsize=30, fontweight="bold", y=1.02)
+        self.ax.set_ylabel(self.tr("Total Assets ({})".format(self.mem.localcurrency.symbol)))
         self.plot_main, =self.ax.plot_date(self.dates, self.total, '-')
         self.plot_zero, =self.ax.plot_date(self.dates, self.zero, '-')
         self.plot_bonds, =self.ax.plot_date(self.dates, self.bonds, '-')
@@ -81,8 +83,14 @@ class canvasTotal(FigureCanvasQTAgg):
         
     def showLegend(self):
         """Alterna mostrando y desmostrando legend, empieza con sí"""
-        self.makeLegend()
-                
+        del self.labels
+        self.labels=[]
+        last=self.totalgraphic.find(datetime.date.today().year, datetime.date.today().month)
+        self.labels.append((self.plot_main, self.tr("Total assets") + " ( {} )".format(last.total())))
+        self.labels.append((self.plot_zero,self.tr("Zero risk assets") + " ( {} )".format(last.total_zerorisk())))
+        self.labels.append((self.plot_risk,self.tr("Risk assets") + " ( {} )".format(last.total()-last.total_zerorisk()-last.total_bonds())))
+        self.labels.append((self.plot_bonds,self.tr("Bond assets") + " ( {} )".format(last.total_bonds())))
+        
         if self.ax.legend_==None:
             (plots, labels)=zip(*self.labels)
             self.ax.legend(plots, labels, loc="best")
@@ -93,12 +101,6 @@ class canvasTotal(FigureCanvasQTAgg):
         self.showLegend()
         self.draw()
     
-    def makeLegend(self):
-        if len(self.labels)==0:
-            self.labels.append((self.plot_main, self.tr("Total assets")))
-            self.labels.append((self.plot_zero,self.tr("Zero risk assets")))
-            self.labels.append((self.plot_risk,self.tr("Risk assets")))
-            self.labels.append((self.plot_bonds,self.tr("Bond assets")))
 
 
 class TotalMonth:
