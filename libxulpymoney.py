@@ -580,30 +580,31 @@ class SetInvestments(SetCommons):
         bank=Bank(self.mem).init__create("Merging bank", True, -1)
         account=Account(self.mem).init__create("Merging account",  bank, True, "", self.mem.localcurrency, -1)
         r=Investment(self.mem).init__create(name, None, account, product, None, True, -1)
+        r.merge=2
         r.op=SetInvestmentOperationsHomogeneus(self.mem, r)
         for inv in self.arr: #Recorre las inversion del array
             if inv.product.id==product.id:
                 for o in inv.op.arr:
                     io=o.copy(investment=r)
                     r.op.append(io)
+                    
         r.op.order_by_datetime()
         (r.op_actual,  r.op_historica)=r.op.calcular() 
         return r
-    
-#    def setInvestmentOperationCurrentHeterogeneous_merging_current_operations_with_same_product(self, product):
-#        """
-#            Funci´on que convierte el set actual de inversiones, sacando las del producto pasado como par´ametro
-#            Crea una inversi´on nueva cogiendo las  operaciones actuales, junt´andolas , convirtiendolas en operaciones normales 
-#            
-#            se usa para hacer reinversiones, en las que se ha tenido cuenta el metodo fifo, para que use las acciones actuales.
-#        """
-#        r=SetInvestmentOperationsCurrentHeterogeneus(self.mem)
-#        for inv in self.arr: #Recorre las inversion del array
-#            if inv.product.id==product.id:
-#                for o in inv.op_actual.arr:
-#                    r.append(InvestmentOperation(self.mem).init__create(o.tipooperacion, o.datetime, r, o.acciones, o.importe, o.impuestos, o.comision,  o.valor_accion,  o.comision,  o.show_in_ranges,  o.currency_conversion,  o.id))
-#        r.order_by_datetime() 
-#        return r
+
+
+    def setDividends_merging_operation_dividends(self, product):
+        name=QApplication.translate("Core", "Investment merging operations of {} (FIFO)".format(product.name))
+        bank=Bank(self.mem).init__create("Merging bank", True, -1)
+        account=Account(self.mem).init__create("Merging account",  bank, True, "", self.mem.localcurrency, -1)
+        r=Investment(self.mem).init__create(name, None, account, product, None, True, -1)
+        set=SetDividendsHomogeneus(self.mem, r)
+        for inv in self.arr:
+            if inv.product.id==product.id:
+                for d in inv.setDividends_from_operations().arr:
+                    set.append(d)
+        set.sort()
+        return set
 
     def investment_merging_current_operations_with_same_product(self, product):
         """
@@ -616,6 +617,7 @@ class SetInvestments(SetCommons):
         bank=Bank(self.mem).init__create("Merging bank", True, -1)
         account=Account(self.mem).init__create("Merging account",  bank, True, "", self.mem.localcurrency, -1)
         r=Investment(self.mem).init__create(name, None, account, product, None, True, -1)    
+        r.merge=1
         r.op=SetInvestmentOperationsHomogeneus(self.mem, r)
         for inv in self.arr: #Recorre las inversion del array
             if inv.product.id==product.id:
@@ -625,6 +627,21 @@ class SetInvestments(SetCommons):
         (r.op_actual,  r.op_historica)=r.op.calcular()             
         return r
         
+
+    def setDividends_merging_current_operation_dividends(self, product):
+        name=QApplication.translate("Core", "Investment merging current operations of {} (NOT FIFO)".format(product.name))
+        bank=Bank(self.mem).init__create("Merging bank", True, -1)
+        account=Account(self.mem).init__create("Merging account",  bank, True, "", self.mem.localcurrency, -1)
+        r=Investment(self.mem).init__create(name, None, account, product, None, True, -1)    
+        set=SetDividendsHomogeneus(self.mem, r)
+        for inv in self.arr:
+            if inv.product.id==product.id:
+                for d in inv.setDividends_from_current_operations().arr:
+                    set.append(d)
+        set.sort()
+        return set
+
+
     def setInvestments_merging_investments_with_same_product_merging_operations(self):
         """
             Genera un set Investment nuevo , creando invesments aglutinadoras de todas las inversiones con el mismo producto
@@ -638,7 +655,7 @@ class SetInvestments(SetCommons):
             i=self.investment_merging_operations_with_same_product(product)
             invs.append(i) 
         return invs
-        
+
                 
     def setInvestments_merging_investments_with_same_product_merging_current_operations(self):
         """
@@ -653,6 +670,11 @@ class SetInvestments(SetCommons):
             i=self.investment_merging_current_operations_with_same_product(product)
             invs.append(i) 
         return invs
+
+
+
+
+
 
     def qcombobox_same_investmentmq(self, combo,  investmentmq):
         """Muestra las inversiones activas que tienen el mq pasado como parametro"""
@@ -1451,8 +1473,9 @@ class SetDividendsHeterogeneus:
         """Deletes all items"""
         del self.arr 
         self.arr=[]
-        
-        
+
+    def append(self, o):
+        self.arr.append(o)
 
         
 class SetDividendsHomogeneus(SetDividendsHeterogeneus):
@@ -1742,6 +1765,11 @@ class SetIO:
                 result.append(a.copy())
         return result
         
+    def first(self):
+        if self.length()>0:
+            return self.arr[0]
+        return None
+        
     def length(self):
         return len(self.arr)
 
@@ -1956,11 +1984,11 @@ class SetInvestmentOperationsCurrentHeterogeneus(SetIO):
             resultado=resultado+o.balance(o.inversion.product.result.basic.last, type=3)
         return resultado        
         
-    def datetime_first_operation(self):
-        if len(self.arr)==0:
-            return None
-        return self.arr[0].datetime
-        
+#    def datetime_first_operation(self):
+#        if len(self.arr)==0:
+#            return None
+#        return self.arr[0].datetime
+#        
     def acciones(self):
         """Devuelve el número de acciones de la inversión actual"""
         resultado=Decimal(0)
@@ -4169,6 +4197,7 @@ class Investment:
         self.op_actual=None#Es un objeto Setoperinversionesactual
         self.op_historica=None#setoperinversioneshistorica
         self.selling_expiration=None
+        self.merge=0#Used for mergin investments. 0 normal investment, 1 merging current operations, 2 merging operations
 
     def init__create(self, name, venta, cuenta, inversionmq, selling_expiration, active, id=None):
         self.name=name
@@ -4193,6 +4222,25 @@ class Investment:
         else:
             cur.execute("update inversiones set inversion=%s, venta=%s, id_cuentas=%s, active=%s, selling_expiration=%s, products_id=%s where id_inversiones=%s", (self.name, self.venta, self.account.id, self.active, self.selling_expiration,  self.product.id, self.id))
         cur.close()
+
+
+    def setDividends_from_current_operations(self):
+        """
+            Returns a setDividens from the datetime of the first currnt operation
+        """
+        first=self.op_actual.first()
+        set=SetDividendsHomogeneus(self.mem, self)
+        if first!=None:
+            set.load_from_db("select * from dividends where id_inversiones={0} and fecha >='{1}'  order by fecha".format(self.id, first.datetime))
+        return set
+
+    def setDividends_from_operations(self):
+        """
+            Returns a setDividens with all the dividends
+        """
+        set=SetDividendsHomogeneus(self.mem, self)
+        set.load_from_db("select * from dividends where id_inversiones={0} order by fecha".format(self.id ))  
+        return set
 
     def __repr__(self):
         return ("Instancia de Investment: {0} ({1})".format( self.name, self.id))

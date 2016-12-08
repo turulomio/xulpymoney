@@ -96,7 +96,7 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
         if self.chkHistoricalDividends.checkState()==Qt.Unchecked:
             if len(self.dividends.arr)>0 and len(self.inversion.op_actual.arr)>0:
                 importeinvertido=self.inversion.invertido()
-                dias=(datetime.date.today()-self.inversion.op_actual.datetime_first_operation().date()).days+1
+                dias=(datetime.date.today()-self.inversion.op_actual.first().datetime.date()).days+1
                 dtpc=100*sumbruto.amount/importeinvertido.amount
                 dtae=365*dtpc/abs(dias)
             else:
@@ -120,7 +120,7 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
        
     def on_chkOperaciones_stateChanged(self, state):
         if state==Qt.Unchecked:
-            primera=self.inversion.op_actual.datetime_first_operation()
+            primera=self.inversion.op_actual.first().datetime
             if primera==None:
                 primera=self.mem.localzone.now()
             self.op=self.inversion.op.subSet_from_datetime(primera)
@@ -156,7 +156,11 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
         self.lblAge.setText(self.tr("Current operations average age: {0}".format(days_to_year_month(self.inversion.op_actual.average_age()))))
         
         if self.inversion!=None:#We are adding a new investment
-            self.on_chkHistoricalDividends_stateChanged(self.chkHistoricalDividends.checkState())
+            if self.inversion.merge==0:
+                self.on_chkHistoricalDividends_stateChanged(self.chkHistoricalDividends.checkState())
+            else:
+                self.chkHistoricalDividends.setChecked(Qt.Checked)
+                self.chkHistoricalDividends.setEnabled(False)
     
 
     @pyqtSlot() 
@@ -306,17 +310,20 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
         
         
     def on_chkHistoricalDividends_stateChanged(self, state):
-        dtfo=self.inversion.op_actual.datetime_first_operation()
         self.tblDividends.clearSelection()
         self.tblDividendsAccountCurrency.clearSelection()
         self.selDividend=None        
-
-        if state==Qt.Unchecked and dtfo!=None:   
-            self.dividends.load_from_db("select * from dividends where id_inversiones={0} and fecha >='{1}'  order by fecha".format(self.inversion.id, dtfo.date()))
-        elif state==Qt.Checked:
-            self.dividends.load_from_db("select * from dividends where id_inversiones={0} order by fecha".format(self.inversion.id ))  
-        else:
-            self.dividends.clean()
+        if self.inversion.merge==0:
+            if state==Qt.Unchecked:   
+                self.dividends=self.inversion.setDividends_from_current_operations()
+            elif state==Qt.Checked:
+                self.dividends=self.inversion.setDividends_from_operations()
+            else:
+                self.dividends.clean()
+        elif self.inversion.merge==1:
+            self.dividends=self.mem.data.investments_active().setDividends_merging_current_operation_dividends(self.inversion.product)
+        elif self.inversion.merge==2:
+            self.dividends=self.mem.data.investments.setDividends_merging_operation_dividends(self.inversion.product)
         self.load_tabDividends()
 
     def on_cmdISE_released(self):

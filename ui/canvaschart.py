@@ -575,7 +575,7 @@ class canvasChartHistorical(FigureCanvasQTAgg):
         self.inversion=inversion
         if self.inversion!=None:
             if self.inversion.op_actual.length()>0:
-                self.from_dt=day_start(self.inversion.op_actual.datetime_first_operation(), self.mem.localzone)
+                self.from_dt=day_start(self.inversion.op_actual.first().datetime, self.mem.localzone)
         self.sd=SD#Sin descontar dividends, es decir sumará los dividends a las quotes.
         self.mydraw()
 
@@ -1000,7 +1000,7 @@ class canvasChartHistoricalReinvest(FigureCanvasQTAgg):
         self.setop=setop
         self.inversion=inversion
         if self.inversion.op_actual.length()>0:
-            self.from_dt=day_start(self.inversion.op_actual.datetime_first_operation(), self.mem.localzone)
+            self.from_dt=day_start(self.inversion.op_actual.first().datetime, self.mem.localzone)
         self.mydraw()
                 
     def mydraw(self):
