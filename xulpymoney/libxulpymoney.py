@@ -2740,15 +2740,15 @@ class InvestmentOperationHistorical:
 
     def tpc_total_neto(self):
         bruto=self.bruto_compra()
-        if bruto!=0:
-            return 100*(self.consolidado_neto()/bruto).amount
-        return 0
+        if bruto.isZero():
+            return 0
+        return 100*(self.consolidado_neto()/bruto).amount
         
     def tpc_total_bruto(self):
         bruto=self.bruto_compra()
-        if bruto!=0:
-            return 100*(self.consolidado_bruto()/bruto).amount
-        return 0 #Debería ponerse con valor el día de agregación
+        if bruto.isZero():
+            return 0
+        return 100*(self.consolidado_bruto()/bruto).amount
         
     def tpc_tae_neto(self):
         dias=(self.fecha_venta-self.fecha_inicio).days +1 #Account el primer día

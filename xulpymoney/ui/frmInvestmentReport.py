@@ -120,10 +120,12 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
        
     def on_chkOperaciones_stateChanged(self, state):
         if state==Qt.Unchecked:
-            primera=self.inversion.op_actual.first().datetime
-            if primera==None:
-                primera=self.mem.localzone.now()
-            self.op=self.inversion.op.subSet_from_datetime(primera)
+            first=self.inversion.op_actual.first()
+            if first==None:
+                dt=self.mem.localzone.now()
+            else:
+                dt=first.datetime
+            self.op=self.inversion.op.subSet_from_datetime(dt)
         else:
             self.op=self.inversion.op
         self.op.selected=None
