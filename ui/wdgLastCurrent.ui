@@ -200,6 +200,9 @@
        </item>
        <item>
         <widget class="QComboBox" name="cmbSameProduct">
+         <property name="currentIndex">
+          <number>-1</number>
+         </property>
          <property name="sizeAdjustPolicy">
           <enum>QComboBox::AdjustToContents</enum>
          </property>

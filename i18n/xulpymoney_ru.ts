@@ -6393,32 +6393,32 @@ Daily Diff: {5}. Investment average age: {6}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgLastCurrent.ui" line="264"/>
+        <location filename="../ui/wdgLastCurrent.ui" line="267"/>
         <source>% Invested</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgLastCurrent.ui" line="252"/>
+        <location filename="../ui/wdgLastCurrent.ui" line="255"/>
         <source>% Selling point</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgLastCurrent.ui" line="240"/>
+        <location filename="../ui/wdgLastCurrent.ui" line="243"/>
         <source>Investment report</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgLastCurrent.ui" line="276"/>
+        <location filename="../ui/wdgLastCurrent.ui" line="279"/>
         <source>Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgLastCurrent.ui" line="288"/>
+        <location filename="../ui/wdgLastCurrent.ui" line="291"/>
         <source>Time</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgLastCurrent.ui" line="300"/>
+        <location filename="../ui/wdgLastCurrent.ui" line="303"/>
         <source>Product report</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6468,7 +6468,7 @@ Daily Diff: {5}. Investment average age: {6}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgLastCurrent.ui" line="308"/>
+        <location filename="../ui/wdgLastCurrent.ui" line="311"/>
         <source>% Last operation</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6478,12 +6478,12 @@ Daily Diff: {5}. Investment average age: {6}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgLastCurrent.ui" line="320"/>
+        <location filename="../ui/wdgLastCurrent.ui" line="323"/>
         <source>Calculate reinvest price</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgLastCurrent.ui" line="332"/>
+        <location filename="../ui/wdgLastCurrent.ui" line="335"/>
         <source>Reinvest</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6493,7 +6493,7 @@ Daily Diff: {5}. Investment average age: {6}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgLastCurrent.ui" line="344"/>
+        <location filename="../ui/wdgLastCurrent.ui" line="347"/>
         <source>Simulate reinvestment at product current price</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6508,17 +6508,17 @@ Daily Diff: {5}. Investment average age: {6}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgLastCurrent.ui" line="208"/>
+        <location filename="../ui/wdgLastCurrent.ui" line="211"/>
         <source>Show separated investments</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgLastCurrent.ui" line="213"/>
+        <location filename="../ui/wdgLastCurrent.ui" line="216"/>
         <source>Show merging current investment operations (Not FIFO)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgLastCurrent.ui" line="218"/>
+        <location filename="../ui/wdgLastCurrent.ui" line="221"/>
         <source>Show merging investment operations (FIFO)</source>
         <translation type="unfinished"></translation>
     </message>
