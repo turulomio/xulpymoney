@@ -2329,7 +2329,8 @@ class SetInvestmentOperationsHistoricalHeterogeneus(SetIO):
         SetIO.__init__(self, mem)
 
         
-    def consolidado_bruto(self,  year=None,  month=None, type=1):
+    def consolidado_bruto(self,  year=None,  month=None):
+        type=3
         resultado=Money(self.mem, 0, self.mem.localcurrency)
         for o in self.arr:        
             if year==None:#calculo historico
@@ -2343,7 +2344,8 @@ class SetInvestmentOperationsHistoricalHeterogeneus(SetIO):
                         resultado=resultado+o.consolidado_bruto(type)
         return resultado        
         
-    def consolidado_neto(self,  year=None,  month=None, type=1):
+    def consolidado_neto(self,  year=None,  month=None):
+        type=3
         resultado=Money(self.mem, 0, self.mem.localcurrency)
         for o in self.arr:        
             if year==None:#calculo historico
@@ -2357,8 +2359,9 @@ class SetInvestmentOperationsHistoricalHeterogeneus(SetIO):
                         resultado=resultado+o.consolidado_neto(type)
         return resultado
         
-    def consolidado_neto_antes_impuestos(self,  year=None,  month=None, type=1):
+    def consolidado_neto_antes_impuestos(self,  year=None,  month=None):
         resultado=Money(self.mem, 0, self.mem.localcurrency)
+        type=3
         for o in self.arr:        
             if year==None:#calculo historico
                 resultado=resultado+o.consolidado_neto_antes_impuestos(type)
@@ -2375,20 +2378,20 @@ class SetInvestmentOperationsHistoricalHeterogeneus(SetIO):
         """Bruto de todas las compras de la historicas"""
         r=Money(self.mem, 0, self.mem.localcurrency)
         for a in self.arr:
-            r=r+a.bruto_compra().local()
+            r=r+a.bruto_compra(3)
         return r
 
     def gross_sales(self):
         """Bruto de todas las compras de la historicas"""
         r=Money(self.mem, 0,  self.mem.localcurrency)
         for a in self.arr:
-            r=r+a.bruto_venta().local()
+            r=r+a.bruto_venta(3)
         return r
         
     def taxes(self):
         r=Money(self.mem,  0,  self.mem.localcurrency)
         for a in self.arr:
-            r=r+a.taxes().local()
+            r=r+a.taxes(3)
         return r
         
     def tpc_total_neto(self):
@@ -2400,7 +2403,7 @@ class SetInvestmentOperationsHistoricalHeterogeneus(SetIO):
     def comissions(self):
         r=Money(self.mem, 0,  self.mem.localcurrency)
         for a in self.arr:
-            r=r+a.comission().local()
+            r=r+a.comission(3)
         return r
 
     def gross_positive_operations(self):
@@ -2408,7 +2411,7 @@ class SetInvestmentOperationsHistoricalHeterogeneus(SetIO):
         r=Money(self.mem, 0, self.mem.localcurrency)
         for a in self.arr:
             if a.bruto().local().isGETZero():
-                r=r+a.bruto().local()
+                r=r+a.bruto(3)
         return r
     
     def gross_negative_operations(self):
@@ -2416,7 +2419,7 @@ class SetInvestmentOperationsHistoricalHeterogeneus(SetIO):
         r=Money(self.mem, 0, self.mem.localcurrency)
         for a in self.arr:
             if a.bruto().local().isLTZero():
-                r=r+a.bruto().local()
+                r=r+a.bruto(3)
         return r
         
         
@@ -2439,6 +2442,8 @@ class SetInvestmentOperationsHistoricalHeterogeneus(SetIO):
         tabla.setHorizontalHeaderItem(12, QTableWidgetItem(QApplication.translate("Core", "% Net APR" )))
         tabla.setHorizontalHeaderItem(13, QTableWidgetItem(QApplication.translate("Core", "% Net Total" )))
 
+
+        type=3
         tabla.applySettings()
         tabla.clearContents()
         tabla.setRowCount(self.length()+1)
@@ -2449,23 +2454,23 @@ class SetInvestmentOperationsHistoricalHeterogeneus(SetIO):
             tabla.setItem(rownumber, 3,QTableWidgetItem(a.inversion.account.name))
             tabla.setItem(rownumber, 4,QTableWidgetItem(a.tipooperacion.name))
             tabla.setItem(rownumber, 5,qright(a.acciones))
-            tabla.setItem(rownumber, 6,a.bruto_compra().local().qtablewidgetitem())
-            tabla.setItem(rownumber, 7,a.bruto_venta().local().qtablewidgetitem())
-            tabla.setItem(rownumber, 8,a.consolidado_bruto().local().qtablewidgetitem())
-            tabla.setItem(rownumber, 9,a.comission().local().qtablewidgetitem())
-            tabla.setItem(rownumber, 10,a.taxes().local().qtablewidgetitem())
-            tabla.setItem(rownumber, 11,a.consolidado_neto().local().qtablewidgetitem())
+            tabla.setItem(rownumber, 6,a.bruto_compra(type).qtablewidgetitem())
+            tabla.setItem(rownumber, 7,a.bruto_venta(type).qtablewidgetitem())
+            tabla.setItem(rownumber, 8,a.consolidado_bruto(type).qtablewidgetitem())
+            tabla.setItem(rownumber, 9,a.comission(type).qtablewidgetitem())
+            tabla.setItem(rownumber, 10,a.taxes(type).qtablewidgetitem())
+            tabla.setItem(rownumber, 11,a.consolidado_neto(type).qtablewidgetitem())
             tabla.setItem(rownumber, 12,qtpc(a.tpc_tae_neto()))
             tabla.setItem(rownumber, 13,qtpc(a.tpc_total_neto()))
 
         
         tabla.setItem(self.length(), 2,QTableWidgetItem("TOTAL"))
-        tabla.setItem(self.length(), 6,self.gross_purchases().local().qtablewidgetitem())    
-        tabla.setItem(self.length(), 7,self.gross_sales().local().qtablewidgetitem())    
-        tabla.setItem(self.length(), 8,self.consolidado_bruto().local().qtablewidgetitem())    
-        tabla.setItem(self.length(), 8,self.comissions().local().qtablewidgetitem())    
-        tabla.setItem(self.length(), 10,self.taxes().local().qtablewidgetitem())    
-        tabla.setItem(self.length(), 11,self.consolidado_neto().local().qtablewidgetitem())
+        tabla.setItem(self.length(), 6,self.gross_purchases().qtablewidgetitem())    
+        tabla.setItem(self.length(), 7,self.gross_sales().qtablewidgetitem())    
+        tabla.setItem(self.length(), 8,self.consolidado_bruto().qtablewidgetitem())    
+        tabla.setItem(self.length(), 9,self.comissions().qtablewidgetitem())    
+        tabla.setItem(self.length(), 10,self.taxes().qtablewidgetitem())    
+        tabla.setItem(self.length(), 11,self.consolidado_neto().qtablewidgetitem())
         tabla.setItem(self.length(), 13,qtpc(self.tpc_total_neto()))
         tabla.setCurrentCell(self.length(), 5)       
 #        return (sumbruto, sumcomision, sumimpuestos, sumneto)
