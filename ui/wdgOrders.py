@@ -113,9 +113,8 @@ class wdgOrders(QWidget, Ui_wdgOrders):
         else:
             frm.cmbTiposOperaciones.setCurrentIndex(frm.cmbTiposOperaciones.findData(4))#Purchase
         frm.txtAcciones.setText(self.orders.selected.shares)
-        frm.txtValorAccion.setText(self.orders.selected.price)
-        
-        
+        frm.wdg2CPrice.setTextA(self.orders.selected.price)
+
     @pyqtSlot(int)     
     def on_cmbMode_currentIndexChanged(self, index):
         if index==0:#Current
