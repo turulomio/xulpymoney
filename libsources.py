@@ -530,14 +530,11 @@ class WorkerMorningstar(Source):
         
         if product.result.basic.last.datetime.date()==datetime.date.today()-datetime.timedelta(days=1):#if I already got yesterday's price return
             self.log("I already got yesterday's price: {}".format(product.name))
-            print("AA")
             return
 
         #Search morningstar code
         url='http://www.morningstar.es/es/funds/SecuritySearchResults.aspx?search='+product.isin+'&type='
-        print(url)
         mweb=self.load_page(url)
-        print(mweb)
         if mweb==None:
             return
         web=[]
