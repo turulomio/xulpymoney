@@ -99,6 +99,8 @@
     <addaction name="actionInvestmentsOperations"/>
     <addaction name="separator"/>
     <addaction name="actionCalculator"/>
+    <addaction name="separator"/>
+    <addaction name="actionInvestmentRanking"/>
    </widget>
    <widget class="QMenu" name="menuXulpymoney">
     <property name="title">
@@ -1009,10 +1011,22 @@
      <normaloff>:/xulpymoney/curiosity.png</normaloff>:/xulpymoney/curiosity.png</iconset>
    </property>
    <property name="text">
-    <string>Curiosities</string>
+    <string>&amp;Curiosities</string>
    </property>
    <property name="toolTip">
     <string>Curiosities</string>
+   </property>
+  </action>
+  <action name="actionInvestmentRanking">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/crown.png</normaloff>:/xulpymoney/crown.png</iconset>
+   </property>
+   <property name="text">
+    <string>Investment ranking</string>
+   </property>
+   <property name="toolTip">
+    <string>Investment ranking</string>
    </property>
   </action>
  </widget>
