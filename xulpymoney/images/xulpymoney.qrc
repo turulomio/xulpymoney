@@ -1,5 +1,6 @@
 <RCC>
   <qresource prefix="/xulpymoney">
+    <file>crown.png</file>
     <file>curiosity.png</file>
     <file>compare.png</file>
     <file>today.png</file>

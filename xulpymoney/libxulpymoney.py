@@ -450,6 +450,10 @@ class SetInvestments(SetCommons):
             except:
                 logging.error("I couldn't show last of {}".format(inv.name))
 
+
+
+
+
     def myqtablewidget_sellingpoints(self, table):
         """Crea un set y luego construye la tabla"""
         
@@ -760,8 +764,7 @@ class SetInvestments(SetCommons):
         if origen.product!=destino.product:
             return False
         now=self.mem.localzone.now()
-        currency_conversion=None#ESTA MAL ERA PARA QUE NO SALGAN WARNINGS
-
+        currency_conversion=1
         if comision!=0:
             op_cuenta=AccountOperation(self.mem).init__create(now.date(), self.mem.conceptos.find_by_id(38), self.mem.tiposoperaciones.find_by_id(1), -comision, "Traspaso de valores", origen.account)
             op_cuenta.save()           
@@ -2488,18 +2491,18 @@ class SetInvestmentOperationsHistoricalHomogeneus(SetInvestmentOperationsHistori
         SetInvestmentOperationsHistoricalHeterogeneus.__init__(self, mem)
         self.investment=investment
                 
-    def consolidado_bruto(self,  year=None,  month=None):
-        resultado=Money(self.mem, 0, self.investment.product.currency)
+    def consolidado_bruto(self,  year=None,  month=None, type=1):
+        resultado=Money(self.mem, 0, self.investment.resultsCurrency(type))
         for o in self.arr:        
             if year==None:#calculo historico
-                resultado=resultado+o.consolidado_bruto()
+                resultado=resultado+o.consolidado_bruto(type)
             else:                
                 if month==None:#Calculo anual
                     if o.fecha_venta.year==year:
-                        resultado=resultado+o.consolidado_bruto()
+                        resultado=resultado+o.consolidado_bruto(type)
                 else:#Calculo mensual
                     if o.fecha_venta.year==year and o.fecha_venta.month==month:
-                        resultado=resultado+o.consolidado_bruto()
+                        resultado=resultado+o.consolidado_bruto(type)
         return resultado
         
     def consolidado_neto(self,  year=None,  month=None):
@@ -2537,7 +2540,7 @@ class SetInvestmentOperationsHistoricalHomogeneus(SetInvestmentOperationsHistori
         return resultado
     def tpc_total_neto(self):
         bruto=self.bruto_compra()
-        if bruto!=0:
+        if not bruto.isZero():
             return 100*(self.consolidado_neto()/bruto).amount
         return 0    
 
