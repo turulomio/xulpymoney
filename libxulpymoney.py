@@ -589,8 +589,11 @@ class SetInvestments(SetCommons):
         for inv in self.arr: #Recorre las inversion del array
             if inv.product.id==product.id:
                 for o in inv.op.arr:
-                    io=o.copy(investment=r)
-                    r.op.append(io)
+                    #En operations quito los traspasos, ya que fallaban calculos dobles pasadas y en realidad no hace falta porque son transpasos entre mismos productos
+                    #En operations actual no hace falta porque se eliminan los transpasos origen de las operaciones actuales
+                    if o.tipooperacion.id not in (9, 10):
+                        io=o.copy(investment=r)
+                        r.op.append(io)
                     
         r.op.order_by_datetime()
         (r.op_actual,  r.op_historica)=r.op.calcular() 
