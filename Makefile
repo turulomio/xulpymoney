@@ -75,6 +75,7 @@ install:
 	install -m 755 -o root xulpymoney_init.py $(PREFIXBIN)/xulpymoney_init
 	install -m 755 -o root xulpymoney_sync_quotes.py $(PREFIXBIN)/xulpymoney_sync_quotes
 	install -m 755 -o root xulpymoney_simulation_indexrange.py $(PREFIXBIN)/xulpymoney_simulation_indexrange
+	install -m 755 -o root sources/source_morningstar.py $(PREFIXBIN)/xulpymoney_source_morningstar
 	install -m 755 -o root test/xulpymoney_test.py $(PREFIXBIN)/xulpymoney_test
 	install -m 644 -o root ui/*.py libxulpymoney.py libdbupdates.py libsources.py libodfgenerator.py images/*.py  $(PREFIXLIB)
 	install -m 644 -o root i18n/*.qm $(PREFIXLIB)
@@ -89,10 +90,7 @@ install:
 	install -m 644 -o root odf/report.odt $(PREFIXSHARE)
 
 uninstall:
-	rm $(PREFIXBIN)/xulpymoney
-	rm $(PREFIXBIN)/xulpymoney_init
-	rm $(PREFIXBIN)/xulpymoney_simulation_indexrange
-	rm $(PREFIXBIN)/xulpymoney_sync_quotes
+	rm $(PREFIXBIN)/xulpymoney*
 	rm -Rf $(PREFIXLIB)
 	rm -Rf $(PREFIXSHARE)
 	rm -fr $(PREFIXPIXMAPS)/xulpymoney.png

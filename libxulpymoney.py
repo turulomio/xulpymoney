@@ -1,4 +1,4 @@
-from PyQt5.QtCore import QObject,  pyqtSignal,  QTimer,  Qt,  QSettings
+from PyQt5.QtCore import QObject,  pyqtSignal,  QTimer,  Qt,  QSettings, QCoreApplication, QTranslator
 from PyQt5.QtGui import QIcon,  QColor,  QPixmap,  QFont
 from PyQt5.QtWidgets import QTableWidgetItem,  QWidget,  QMessageBox, QApplication, QCheckBox, QHBoxLayout,  qApp,  QProgressDialog
 import datetime
@@ -910,7 +910,7 @@ class SetProducts(SetCommons):
                 return p
         return None                
         
-    def load_from_inversiones_query(self, sql):
+    def load_from_inversiones_query(self, sql, progress=True):
         """sql es una query sobre la tabla inversiones"""
         cur=self.mem.con.cursor()
         cur.execute(sql)#"Select distinct(products_id) from inversiones"
@@ -923,7 +923,7 @@ class SetProducts(SetCommons):
         
         ##Carga los products
         if len(lista)>0:
-            self.load_from_db("select * from products where id in ("+lista+")", progress=True )
+            self.load_from_db("select * from products where id in ("+lista+")", progress )
         
     def load_from_db(self, sql,  progress=False):
         """sql es una query sobre la tabla inversiones
@@ -3489,7 +3489,7 @@ class DBData:
     def __init__(self, mem):
         self.mem=mem
 
-    def load(self):
+    def load(self, progress=True):
         """
             This method will subsitute load_actives and load_inactives
         """
@@ -3507,10 +3507,10 @@ class DBData:
         self.creditcards.load_from_db("select * from tarjetas")
 
         self.products=SetProducts(self.mem)
-        self.products.load_from_inversiones_query("select distinct(products_id) from inversiones")
+        self.products.load_from_inversiones_query("select distinct(products_id) from inversiones", progress)
         
         self.investments=SetInvestments(self.mem, self.accounts, self.products, self.benchmark)
-        self.investments.load_from_db("select * from inversiones", True)
+        self.investments.load_from_db("select * from inversiones", progress)
         
         self.currencies=SetProducts(self.mem)
         self.currencies.load_from_db("select * from products where type=6")
@@ -7647,22 +7647,31 @@ class MemXulpymoney:
         self.frmMain=None #Pointer to mainwidget
         self.closing=False#Used to close threads
         
-    def init__script(self, title):
-        """Script arguments and autoconnect in mem.con, load_db_data"""
+    def init__script(self, title, type):
+        """
+            Script arguments and autoconnect in mem.con, load_db_data
+        """
+        app = QCoreApplication(sys.argv)
+        app.setOrganizationName("Mariano Muñoz ©")
+        app.setOrganizationDomain("turulomio.users.sourceforge.net")
+        app.setApplicationName("Xulpymoney")
+
+        self.setQTranslator(QTranslator(app))
+        self.languages.cambiar(self.language.id)
+
         parser=argparse.ArgumentParser(title)
-        parser.add_argument('-U', '--user', help='Postgresql user', default='postgres')
-        parser.add_argument('-p', '--port', help='Postgresql server port', default=5432)
-        parser.add_argument('-H', '--host', help='Postgresql server address', default='127.0.0.1')
-        parser.add_argument('-d', '--db', help='Postgresql database', default='xulpymoney')
+        parser.add_argument('--user', help='Postgresql user', default='postgres')
+        parser.add_argument('--port', help='Postgresql server port', default=5432)
+        parser.add_argument('--host', help='Postgresql server address', default='127.0.0.1')
+        parser.add_argument('--db', help='Postgresql database', default='xulpymoney')
         args=parser.parse_args()
         password=getpass.getpass()
-        
-        (self.con, err)=self.connect(args.db, args.port, args.user, args.host, password)
-        if self.con==None:
-            print (err)
+        self.con=Connection().init__create(args.user,  password,  args.host, args.port, args.db)
+        self.con.connect()
+        if not self.con.is_active():
+            print (QCoreApplication.translate("Core", "Error connecting to database"))
             sys.exit(255)        
-        
-        self.load_db_data()
+        self.load_db_data(progress=False, load_data=False)
 
 
     def __del__(self):
@@ -7695,7 +7704,7 @@ class MemXulpymoney:
         return resultado
         
 
-    def load_db_data(self):
+    def load_db_data(self, progress=True, load_data=True):
         """Esto debe ejecutarse una vez establecida la conexión"""
         inicio=datetime.datetime.now()
         
@@ -7737,8 +7746,9 @@ class MemXulpymoney:
         self.leverages=SetLeverages(self)
         self.leverages.load_all()
 
-        self.data=DBData(self)
-        self.data.load()
+        if load_data:
+            self.data=DBData(self)
+            self.data.load(progress)
         
         #mem Variables con base de datos
         self.dividendwithholding=Decimal(self.settingsdb.value("mem/dividendwithholding", "0.19"))
