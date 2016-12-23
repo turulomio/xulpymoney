@@ -2264,7 +2264,7 @@ class SetInvestmentOperationsCurrentHomogeneus(SetInvestmentOperationsCurrentHet
         """
         invertido=self.invertido(type)
         if invertido.isZero():
-            return None
+            return 0
         return self.pendiente(last, type).amount*100/invertido.amount
     
     def myqtablewidget(self,  tabla,  quote=None, type=1):
@@ -4269,9 +4269,9 @@ class Investment:
 
     def es_borrable(self):
         """Función que devuelve un booleano si una cuenta es borrable, es decir, que no tenga registros dependientes."""
-        if self.op==None: #No se ha cargado con get_operinversiones
+        if self.op.length()>0:
             return False
-        if len(self.op.arr)>0:
+        if self.setDividends_from_operations().length()>0:
             return False
         return True
         
@@ -4284,9 +4284,10 @@ class Investment:
         for o in self.op.arr:
             o.actualizar_cuentaoperacion_asociada()
             
-    def borrar(self, cur):
-        if self.es_borrable()==True:
-            cur.execute("delete from inversiones where id_inversiones=%s", (self.id, ))
+    def borrar(self):
+        cur=self.mem.con.cursor()
+        cur.execute("delete from inversiones where id_inversiones=%s", (self.id, ))
+        cur.close()
 
     def resultsCurrency(self, type=1 ):
         if type==1:

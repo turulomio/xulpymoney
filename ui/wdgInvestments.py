@@ -51,12 +51,11 @@ class wdgInvestments(QWidget, Ui_wdgInvestments):
             
     @pyqtSlot() 
     def on_actionInvestmentDelete_triggered(self):
-        print("ening")
-        cur = self.mem.con.cursor()
-        self.selInvestment.borrar(cur)
-        self.mem.con.commit()
-        self.mem.data.investments_active().remove(self.selInvestment)
-        cur.close()
+        """
+            on_tblInvestments_customContextMenuRequested validates if it's deletable
+        """
+        self.selInvestment.borrar()
+        self.mem.data.investments.remove(self.selInvestment)
         self.on_chkInactivas_stateChanged(self.chkInactivas.checkState())#Carga la tabla
 
           
