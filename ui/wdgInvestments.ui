@@ -274,13 +274,25 @@
   <action name="actionSameProduct">
    <property name="icon">
     <iconset resource="../images/xulpymoney.qrc">
-     <normaloff>:/xulpymoney/books.png</normaloff>:/xulpymoney/books.png</iconset>
+     <normaloff>:/xulpymoney/bundle.png</normaloff>:/xulpymoney/bundle.png</iconset>
    </property>
    <property name="text">
-    <string>Investments with same product report</string>
+    <string>Same product Investments merging current operations</string>
    </property>
    <property name="toolTip">
-    <string>Investments with same product report</string>
+    <string>Same product Investments merging current operations</string>
+   </property>
+  </action>
+  <action name="actionSameProductFIFO">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/bundle.png</normaloff>:/xulpymoney/bundle.png</iconset>
+   </property>
+   <property name="text">
+    <string>Same product Investments merging operations</string>
+   </property>
+   <property name="toolTip">
+    <string>Same product Investments merging operations</string>
    </property>
   </action>
  </widget>

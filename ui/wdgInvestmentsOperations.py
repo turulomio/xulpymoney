@@ -101,9 +101,9 @@ class wdgInvestmentsOperations(QWidget, Ui_wdgInvestmentsOperations):
     @pyqtSlot() 
     def on_actionShowAccount_triggered(self):
         if self.tab.currentIndex()==0:#Operation list
-            cuenta=self.selOperation.inversion.account
+            cuenta=self.selOperation.investment.account
         else:#Current operation list
-            cuenta=self.selCurrentOperation.inversion.account
+            cuenta=self.selCurrentOperation.investment.account
         w=frmAccountsReport(self.mem, cuenta, self)
         w.exec_()
         self.load()
@@ -111,9 +111,9 @@ class wdgInvestmentsOperations(QWidget, Ui_wdgInvestmentsOperations):
     @pyqtSlot() 
     def on_actionShowInvestment_triggered(self):
         if self.tab.currentIndex()==0:#Operation list
-            investment=self.selOperation.inversion
+            investment=self.selOperation.investment
         else:#Current operation list
-            investment=self.selCurrentOperation.inversion
+            investment=self.selCurrentOperation.investment
         w=frmInvestmentReport(self.mem, investment, self)
         w.exec_()
         self.load()
@@ -121,9 +121,9 @@ class wdgInvestmentsOperations(QWidget, Ui_wdgInvestmentsOperations):
     @pyqtSlot() 
     def on_actionShowProduct_triggered(self):
         if self.tab.currentIndex()==0:#Operation list
-            investment=self.selOperation.inversion
+            investment=self.selOperation.investment
         else:#Current operation list
-            investment=self.selCurrentOperation.inversion
+            investment=self.selCurrentOperation.investment
         w=frmProductReport(self.mem, investment.product, investment, self)
         w.exec_()
         self.load()
@@ -134,7 +134,7 @@ class wdgInvestmentsOperations(QWidget, Ui_wdgInvestmentsOperations):
         self.selOperation.save()
         self.mem.con.commit()
         #self.selOperation doesn't belong to self.mem.data, it's a set of this widget, so I need to reload investment of the self.mem.data
-        self.mem.data.investments.find_by_id(self.selOperation.inversion.id).get_operinversiones()
+        self.mem.data.investments.find_by_id(self.selOperation.investment.id).get_operinversiones()
         self.load()
         
     @pyqtSlot() 
@@ -143,7 +143,7 @@ class wdgInvestmentsOperations(QWidget, Ui_wdgInvestmentsOperations):
             operation=self.selOperation
         else:#Current operation list
             operation=self.selCurrentOperation
-        w=frmInvestmentOperationsAdd(self.mem, operation.inversion, operation, self)
+        w=frmInvestmentOperationsAdd(self.mem, operation.investment, operation, self)
         w.exec_()
         self.load()
         
@@ -154,9 +154,9 @@ class wdgInvestmentsOperations(QWidget, Ui_wdgInvestmentsOperations):
         self.actionShowInvestmentOperation.setEnabled(False)
         self.actionShowProduct.setEnabled(False)
         if self.selOperation!=None:
-            if self.selOperation.inversion.account.active==True:#only enabled if it's active
+            if self.selOperation.investment.account.active==True:#only enabled if it's active
                 self.actionShowAccount.setEnabled(True)
-            if self.selOperation.inversion.active==True:
+            if self.selOperation.investment.active==True:
                 self.actionShowInvestment.setEnabled(True)
                 self.actionShowInvestmentOperation.setEnabled(True)
             self.actionShowProduct.setEnabled(True)

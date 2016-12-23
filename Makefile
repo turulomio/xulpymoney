@@ -30,6 +30,7 @@ compile:
 	pyuic5 ui/wdgAPR.ui > ui/Ui_wdgAPR.py &
 	pyuic5 ui/wdgIndexRange.ui > ui/Ui_wdgIndexRange.py &
 	pyuic5 ui/wdgInvestments.ui > ui/Ui_wdgInvestments.py &
+	pyuic5 ui/wdgInvestmentsRanking.ui > ui/Ui_wdgInvestmentsRanking.py &
 	pyuic5 ui/wdgLastCurrent.ui > ui/Ui_wdgLastCurrent.py &
 	pyuic5 ui/wdgOrders.ui > ui/Ui_wdgOrders.py &
 	pyuic5 ui/wdgOrdersAdd.ui > ui/Ui_wdgOrdersAdd.py &

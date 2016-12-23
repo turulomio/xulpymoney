@@ -13,7 +13,7 @@ class wdgDividendsReport(QWidget, Ui_wdgDividendsReport):
         QWidget.__init__(self, parent)
         self.setupUi(self)
         self.mem=mem
-        self.inversiones=[]
+        self.investmentes=[]
 
         self.tblInvestments.settings(self.mem, "wdgDividendsReport")
         
@@ -29,20 +29,20 @@ class wdgDividendsReport(QWidget, Ui_wdgDividendsReport):
     def on_chkInactivas_stateChanged(self,  state):               
         if state==Qt.Checked:
              
-            self.inversiones=self.mem.data.investments_inactive()
+            self.investmentes=self.mem.data.investments_inactive()
         else:
-            self.inversiones=self.mem.data.investments_active()
+            self.investmentes=self.mem.data.investments_active()
         self.load_inversiones()
         
     def load_inversiones(self):    
-        if self.inversiones.order_by_dividend()==False:
+        if self.investmentes.order_by_dividend()==False:
             qmessagebox(self.tr("I couldn't order data due to they have null values"))     
         
         self.tblInvestments.applySettings()
         self.tblInvestments.clearContents()
-        self.tblInvestments.setRowCount(len(self.inversiones.arr));
+        self.tblInvestments.setRowCount(len(self.investmentes.arr));
         sumdiv=Money(self.mem, 0, self.mem.localcurrency)
-        for i, inv in enumerate(self.inversiones.arr):
+        for i, inv in enumerate(self.investmentes.arr):
             if inv.product.estimations_dps.find(date.today().year)==None:
                 dpa=0
                 tpc=0
@@ -94,6 +94,6 @@ class wdgDividendsReport(QWidget, Ui_wdgDividendsReport):
     def on_tblInvestments_itemSelectionChanged(self):
         self.selInvestment=None
         for i in self.tblInvestments.selectedItems():#itera por cada item no row.
-            self.selInvestment=self.inversiones.arr[i.row()]
+            self.selInvestment=self.investmentes.arr[i.row()]
         print ("Seleccionado: " +  str(self.selInvestment))
 

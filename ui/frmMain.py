@@ -1,12 +1,11 @@
 from PyQt5.QtCore import pyqtSlot, QProcess, QUrl,  QSize
 from PyQt5.QtGui import QIcon, QDesktopServices
-from PyQt5.QtWidgets import QMainWindow,  QWidget, QLabel, QLineEdit, QMessageBox, QInputDialog, QProgressDialog, QDialog,  QApplication, QVBoxLayout,  QTableWidgetItem
+from PyQt5.QtWidgets import QMainWindow,  QWidget, QLabel, QLineEdit, QMessageBox, QInputDialog, QProgressDialog, QDialog,  QApplication, QVBoxLayout
 import sys
 import os
 from Ui_frmMain import Ui_frmMain
 from frmAbout import frmAbout
-from libxulpymoney import version_date,  list2string, qmessagebox,  Product, Money
-from myqtablewidget import myQTableWidget
+from libxulpymoney import version_date,  list2string, qmessagebox,  Product
 from libsources import sync_data
 from frmAccess import frmAccess
 from wdgTotal import wdgTotal
@@ -21,6 +20,7 @@ from wdgCuriosities import wdgCuriosities
 from wdgIndexRange import wdgIndexRange
 from wdgInvestments import wdgInvestments
 from wdgInvestmentsOperations import wdgInvestmentsOperations
+from wdgInvestmentsRanking import wdgInvestmentsRanking
 from frmAuxiliarTables import frmAuxiliarTables
 from frmTransfer import frmTransfer
 from frmSettings import frmSettings
@@ -289,134 +289,24 @@ class frmMain(QMainWindow, Ui_frmMain):
     def on_actionCurrenciesAll_triggered(self):
         self.w.close()
         self.w=wdgProducts(self.mem,  "select * from products where type=6 order by name,id")
-
         self.layout.addWidget(self.w)
         self.w.show()
+
     @pyqtSlot()  
     def on_actionDividends_triggered(self):
         """Shows products with current year estimations_dps and with quotes in current year"""
         self.w.close()
         self.w=wdgProducts(self.mem, "select * from products where id in (select id from estimations_dps where year=date_part('year',now()) and estimation is not null) and id in (select distinct(id) from quotes where date_part('year', datetime)=date_part('year',now()));")
-#        self.w=wdgProducts(self.mem,  "select * from products where id in (select distinct(quotes.id) from quotes, estimations_dps where quotes.id=estimations_dps.id and year={0}  and estimation is not null );".format(datetime.date.today().year))
-        
         self.layout.addWidget(self.w)
         self.w.on_actionSortDividend_triggered()
         self.w.show()
 
     @pyqtSlot()  
     def on_actionInvestmentRanking_triggered(self):
-        d=QDialog(self)
-        d.resize(self.mem.settings.value("frmMain/ranking_dialog", QSize(1024, 768)))
-        d.setWindowTitle(self.tr("Investment ranking"))
-
-        
-        labelf = QLabel(self)
-        labelf.setText(self.tr("Investment ranking FIFO"))
-        
-        tblRankingf=myQTableWidget(self)           
-        tblRankingf.settings(self.mem,"frmMain" , "tblRankingf")
-        tblRankingf.setColumnCount(6)
-        tblRankingf.setHorizontalHeaderItem(0, QTableWidgetItem(QApplication.translate("Core","Investment")))
-        tblRankingf.setHorizontalHeaderItem(1, QTableWidgetItem(QApplication.translate("Core","Current gains")))
-        tblRankingf.setHorizontalHeaderItem(2, QTableWidgetItem(QApplication.translate("Core","Historical gains")))
-        tblRankingf.setHorizontalHeaderItem(3, QTableWidgetItem(QApplication.translate("Core","Gains")))
-        tblRankingf.setHorizontalHeaderItem(4, QTableWidgetItem(QApplication.translate("Core","Dividends")))
-        tblRankingf.setHorizontalHeaderItem(5, QTableWidgetItem(QApplication.translate("Core","Total")))
-
-        set=self.mem.data.investments.setInvestments_merging_investments_with_same_product_merging_operations()
-        tblRankingf.applySettings()
-        tblRankingf.clearContents()
-        tblRankingf.setRowCount(set.length()+1)
-        list=[]
-        sumcurrent=Money(self.mem, 0, self.mem.localcurrency)
-        sumhistorical=Money(self.mem, 0, self.mem.localcurrency)
-        sumdividends=Money(self.mem, 0, self.mem.localcurrency)
-        for i, inv in enumerate(set.arr):
-            gains_current=inv.op_actual.pendiente(inv.product.result.basic.last, type=3)
-            gains_historical=inv.op_historica.consolidado_bruto(type=3)
-            dividends=self.mem.data.investments.setDividends_merging_operation_dividends(inv.product)
-            dividends_gross=dividends.gross(type=3)
-            total=gains_current+gains_historical+dividends_gross
-            sumcurrent=sumcurrent+gains_current
-            sumhistorical=sumhistorical+gains_historical
-            sumdividends=sumdividends+dividends_gross
-            list.append((inv.product, gains_current, gains_historical, dividends_gross, total))
-            
-        list=sorted(list, key=lambda c: c[4],  reverse=True)     
-            
-        for i, l in enumerate(list):
-            tblRankingf.setItem(i, 0, QTableWidgetItem(l[0].name))
-            tblRankingf.setItem(i, 1, l[1].qtablewidgetitem())
-            tblRankingf.setItem(i, 2,  l[2].qtablewidgetitem())
-            tblRankingf.setItem(i, 3,  (l[1]+l[2]).qtablewidgetitem())
-            tblRankingf.setItem(i, 4, l[3].qtablewidgetitem())
-            tblRankingf.setItem(i, 5, l[4].qtablewidgetitem())
-        tblRankingf.setItem(i+1, 0, QTableWidgetItem(self.tr("Total")))
-        tblRankingf.setItem(i+1, 1, sumcurrent.qtablewidgetitem())
-        tblRankingf.setItem(i+1, 2, sumhistorical.qtablewidgetitem())
-        tblRankingf.setItem(i+1, 3, (sumcurrent+sumhistorical).qtablewidgetitem())
-        tblRankingf.setItem(i+1, 4, sumdividends.qtablewidgetitem())
-        tblRankingf.setItem(i+1, 5, (sumcurrent+sumhistorical+sumdividends).qtablewidgetitem())
-        
-        label = QLabel(self)
-        label.setText(self.tr("Investment ranking"))
-        
-        tblRanking=myQTableWidget(self)           
-        tblRanking.settings(self.mem,"frmMain" , "tblRanking")
-        tblRanking.setColumnCount(6)
-        tblRanking.setHorizontalHeaderItem(0, QTableWidgetItem(QApplication.translate("Core","Investment")))
-        tblRanking.setHorizontalHeaderItem(1, QTableWidgetItem(QApplication.translate("Core","Current gains")))
-        tblRanking.setHorizontalHeaderItem(2, QTableWidgetItem(QApplication.translate("Core","Historical gains")))
-        tblRanking.setHorizontalHeaderItem(3, QTableWidgetItem(QApplication.translate("Core","Gains")))
-        tblRanking.setHorizontalHeaderItem(4, QTableWidgetItem(QApplication.translate("Core","Dividends")))
-        tblRanking.setHorizontalHeaderItem(5, QTableWidgetItem(QApplication.translate("Core","Total")))
-
-        tblRanking.applySettings()
-        tblRanking.clearContents()
-        tblRanking.setRowCount(set.length()+1)
-        list=[]
-        sumcurrent=Money(self.mem, 0, self.mem.localcurrency)
-        sumhistorical=Money(self.mem, 0, self.mem.localcurrency)
-        sumdividends=Money(self.mem, 0, self.mem.localcurrency)
-        for product in self.mem.data.investments.products_distinct().arr:
-            current=Money(self.mem, 0, self.mem.localcurrency)
-            historical=Money(self.mem, 0, self.mem.localcurrency)
-            dividends=Money(self.mem, 0, self.mem.localcurrency)
-            
-            for inv in self.mem.data.investments.arr:
-                if inv.product.id==product.id:
-                    current=current+inv.op_actual.pendiente(inv.product.result.basic.last, 3)
-                    historical=historical+inv.op_historica.consolidado_bruto(type=3)
-                    dividends=dividends+inv.setDividends_from_operations().gross(type=3)
-            sumcurrent=sumcurrent+current
-            sumhistorical=sumhistorical+historical
-            sumdividends=sumdividends+dividends
-            list.append((product, current, historical, dividends, current+historical+dividends))
-            
-        list=sorted(list, key=lambda c: c[4],  reverse=True)     
-            
-        for i, l in enumerate(list):
-            tblRanking.setItem(i, 0, QTableWidgetItem(l[0].name))
-            tblRanking.setItem(i, 1, l[1].qtablewidgetitem())
-            tblRanking.setItem(i, 2,  l[2].qtablewidgetitem())
-            tblRanking.setItem(i, 3,  (l[1]+l[2]).qtablewidgetitem())
-            tblRanking.setItem(i, 4, l[3].qtablewidgetitem())
-            tblRanking.setItem(i, 5, l[4].qtablewidgetitem())
-        tblRanking.setItem(i+1, 0, QTableWidgetItem(self.tr("Total")))
-        tblRanking.setItem(i+1, 1, sumcurrent.qtablewidgetitem())
-        tblRanking.setItem(i+1, 2, sumhistorical.qtablewidgetitem())
-        tblRanking.setItem(i+1, 3, (sumcurrent+sumhistorical).qtablewidgetitem())
-        tblRanking.setItem(i+1, 4, sumdividends.qtablewidgetitem())
-        tblRanking.setItem(i+1, 5, (sumcurrent+sumhistorical+sumdividends).qtablewidgetitem())
-
-        
-        lay = QVBoxLayout(d)
-        lay.addWidget(label)
-        lay.addWidget(tblRanking)
-        lay.addWidget(labelf)
-        lay.addWidget(tblRankingf)
-        d.exec_() 
-        self.mem.settings.setValue("frmMain/ranking_dialog", d.size())
+        self.w.close()
+        self.w=wdgInvestmentsRanking(self.mem, self)
+        self.layout.addWidget(self.w)
+        self.w.show()
     
     @pyqtSlot()  
     def on_actionSimulations_triggered(self):
