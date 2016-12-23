@@ -140,8 +140,11 @@ class wdgInvestmentsRanking(QWidget, Ui_wdgInvestmentsRanking):
 
     def on_tblOperations_itemSelectionChanged(self):
         self.selOperations=None
-        for i in self.tblOperations.selectedItems():#itera por cada item no row.
-            self.selOperations=self.listOperations[i.row()][0]
+        try:
+            for i in self.tblOperations.selectedItems():#itera por cada item no row.
+                self.selOperations=self.listOperations[i.row()][0]
+        except:
+            pass
             
             
         
@@ -161,5 +164,8 @@ class wdgInvestmentsRanking(QWidget, Ui_wdgInvestmentsRanking):
 
     def on_tblCurrentOperations_itemSelectionChanged(self):
         self.selCurrentOperations=None
-        for i in self.tblCurrentOperations.selectedItems():#itera por cada item no row.
-            self.selCurrentOperations=self.listCurrentOperations[i.row()][0]
+        try:
+            for i in self.tblCurrentOperations.selectedItems():#itera por cada item no row.
+                self.selCurrentOperations=self.listCurrentOperations[i.row()][0]
+        except:
+            pass
