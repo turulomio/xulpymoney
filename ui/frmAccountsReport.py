@@ -160,7 +160,7 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
         self.accountoperations_reload()
         
     def on_OperationChanged(self, type_initial, id_initial, type_final, id_final):
-        """0 Account 1 CreditCard"""
+        """0 Account 1 CreditCard, -999 new product"""
         print( "on_OperationChanged", type_initial, id_initial, type_final, id_final)
         if type_initial==0 and type_final==0 and id_final==self.account.id:
             self.accountoperations_reload()
@@ -175,10 +175,11 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
                 self.creditcardoperations_reload()
             else:
                 self.creditcards_reload()
-        elif type_initial==-999 and type_final==1 and id_final==self.creditcards.selected.id and self.creditcards.selected.pagodiferido==True:#Si meto una creditcard operation nueva de la tarjeta seleccionada con pago diferido
-            self.creditcardoperations_reload()
-        elif type_initial==-999 and type_final==1 and id_final==self.creditcards.selected.id and self.creditcards.selected.pagodiferido==False:#Si meto una creditcard operation nueva de la tarjeta seleccionada sin pago diferido
-            self.accountoperations_reload()
+        if self.creditcards.selected:#Must be not null
+            if type_initial==-999 and type_final==1 and id_final==self.creditcards.selected.id and self.creditcards.selected.pagodiferido==True:#Si meto una creditcard operation nueva de la tarjeta seleccionada con pago diferido
+                self.creditcardoperations_reload()
+            elif type_initial==-999 and type_final==1 and id_final==self.creditcards.selected.id and self.creditcards.selected.pagodiferido==False:#Si meto una creditcard operation nueva de la tarjeta seleccionada sin pago diferido
+                self.accountoperations_reload()
         elif type_initial==-999 and type_final==0 and id_final==self.account.id:#Opercuenta nueva de la cuenta reportada
             self.accountoperations_reload()
             
