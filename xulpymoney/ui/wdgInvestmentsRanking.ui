@@ -31,11 +31,14 @@
       </widget>
      </item>
      <item>
-      <widget class="QTabWidget" name="tabWidget">
-       <property name="currentIndex">
-        <number>1</number>
+      <widget class="QTabWidget" name="tab">
+       <property name="contextMenuPolicy">
+        <enum>Qt::CustomContextMenu</enum>
        </property>
-       <widget class="QWidget" name="tab">
+       <property name="currentIndex">
+        <number>0</number>
+       </property>
+       <widget class="QWidget" name="tab_">
         <attribute name="icon">
          <iconset resource="../images/xulpymoney.qrc">
           <normaloff>:/xulpymoney/crown.png</normaloff>:/xulpymoney/crown.png</iconset>
@@ -45,7 +48,20 @@
         </attribute>
         <layout class="QHBoxLayout" name="horizontalLayout_3">
          <item>
-          <widget class="myQTableWidget" name="tblCurrentOperations"/>
+          <widget class="myQTableWidget" name="tblCurrentOperations">
+           <property name="contextMenuPolicy">
+            <enum>Qt::CustomContextMenu</enum>
+           </property>
+           <property name="alternatingRowColors">
+            <bool>true</bool>
+           </property>
+           <property name="selectionMode">
+            <enum>QAbstractItemView::SingleSelection</enum>
+           </property>
+           <property name="selectionBehavior">
+            <enum>QAbstractItemView::SelectRows</enum>
+           </property>
+          </widget>
          </item>
         </layout>
        </widget>
@@ -59,7 +75,17 @@
         </attribute>
         <layout class="QHBoxLayout" name="horizontalLayout_2">
          <item>
-          <widget class="myQTableWidget" name="tblOperations"/>
+          <widget class="myQTableWidget" name="tblOperations">
+           <property name="contextMenuPolicy">
+            <enum>Qt::CustomContextMenu</enum>
+           </property>
+           <property name="selectionMode">
+            <enum>QAbstractItemView::SingleSelection</enum>
+           </property>
+           <property name="selectionBehavior">
+            <enum>QAbstractItemView::SelectRows</enum>
+           </property>
+          </widget>
          </item>
         </layout>
        </widget>
@@ -68,64 +94,28 @@
     </layout>
    </item>
   </layout>
-  <action name="actionInvestmentReport">
+  <action name="actionSameProduct">
    <property name="icon">
     <iconset resource="../images/xulpymoney.qrc">
      <normaloff>:/xulpymoney/bundle.png</normaloff>:/xulpymoney/bundle.png</iconset>
    </property>
    <property name="text">
-    <string>Investment report</string>
+    <string>Same product Investments merging current operations</string>
    </property>
    <property name="toolTip">
-    <string>Investment report</string>
+    <string>Same product Investments merging current operations</string>
    </property>
   </action>
-  <action name="actionSortTPCVenta">
+  <action name="actionSameProductFIFO">
    <property name="icon">
-    <iconset>
-     <normaloff>:/xulpmoney/document-preview.png</normaloff>:/xulpmoney/document-preview.png</iconset>
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/bundle.png</normaloff>:/xulpymoney/bundle.png</iconset>
    </property>
    <property name="text">
-    <string>% Selling point</string>
+    <string>Same product Investments merging operations</string>
    </property>
    <property name="toolTip">
-    <string>% Selling point</string>
-   </property>
-  </action>
-  <action name="actionSortTPC">
-   <property name="icon">
-    <iconset>
-     <normaloff>:/xulpmoney/document-preview.png</normaloff>:/xulpmoney/document-preview.png</iconset>
-   </property>
-   <property name="text">
-    <string>% Invested</string>
-   </property>
-   <property name="toolTip">
-    <string>% Invested</string>
-   </property>
-  </action>
-  <action name="actionSortName">
-   <property name="icon">
-    <iconset>
-     <normaloff>:/xulpmoney/document-preview.png</normaloff>:/xulpmoney/document-preview.png</iconset>
-   </property>
-   <property name="text">
-    <string>Name</string>
-   </property>
-   <property name="toolTip">
-    <string>Name</string>
-   </property>
-  </action>
-  <action name="actionSortHour">
-   <property name="icon">
-    <iconset>
-     <normaloff>:/xulpmoney/document-preview.png</normaloff>:/xulpmoney/document-preview.png</iconset>
-   </property>
-   <property name="text">
-    <string>Time</string>
-   </property>
-   <property name="toolTip">
-    <string>Time</string>
+    <string>Same product Investments merging operations</string>
    </property>
   </action>
   <action name="actionProduct">
@@ -138,50 +128,6 @@
    </property>
    <property name="toolTip">
     <string>Product report</string>
-   </property>
-  </action>
-  <action name="actionSortTPCLast">
-   <property name="text">
-    <string>% Last operation</string>
-   </property>
-   <property name="toolTip">
-    <string>% Last operation</string>
-   </property>
-  </action>
-  <action name="actionCalculate">
-   <property name="icon">
-    <iconset resource="../images/xulpymoney.qrc">
-     <normaloff>:/xulpymoney/tools-wizard.png</normaloff>:/xulpymoney/tools-wizard.png</iconset>
-   </property>
-   <property name="text">
-    <string>Calculate reinvest price</string>
-   </property>
-   <property name="toolTip">
-    <string>Calculate reinvest price</string>
-   </property>
-  </action>
-  <action name="actionReinvest">
-   <property name="icon">
-    <iconset resource="../images/xulpymoney.qrc">
-     <normaloff>:/xulpymoney/coins.png</normaloff>:/xulpymoney/coins.png</iconset>
-   </property>
-   <property name="text">
-    <string>Reinvest</string>
-   </property>
-   <property name="toolTip">
-    <string>Reinvest</string>
-   </property>
-  </action>
-  <action name="actionReinvestCurrent">
-   <property name="icon">
-    <iconset resource="../images/xulpymoney.qrc">
-     <normaloff>:/xulpymoney/coins.png</normaloff>:/xulpymoney/coins.png</iconset>
-   </property>
-   <property name="text">
-    <string>Simulate reinvestment at product current price</string>
-   </property>
-   <property name="toolTip">
-    <string>Simulate reinvestment at product current price</string>
    </property>
   </action>
  </widget>
