@@ -12,11 +12,11 @@ class frmInvestmentOperationsAdd(QDialog, Ui_frmInvestmentOperationsAdd):
         QDialog.__init__(self, parent)
         self.setupUi(self)
         self.mem=mem
-        self.inversion=inversion
+        self.investment=inversion
         self.operinversion=operinversion
   
   
-        if self.inversion.hasSameAccountCurrency():
+        if self.investment.hasSameAccountCurrency():
             self.wdg2CCurrencyConversion.hide()
             
   
@@ -27,26 +27,26 @@ class frmInvestmentOperationsAdd(QDialog, Ui_frmInvestmentOperationsAdd):
         self.wdg2CPrice.setLabel(self.tr("Price"))
         
         if self.operinversion==None:
-            factor=Money(self.mem, 0, self.inversion.product.currency).conversionFactor(self.inversion.account.currency, self.mem.localzone.now())
+            factor=Money(self.mem, 0, self.investment.product.currency).conversionFactor(self.investment.account.currency, self.mem.localzone.now())
         else:
             factor=self.operinversion.currency_conversion
-        self.wdg2CCurrencyConversion.set(self.mem, self.inversion.product.currency, self.inversion.account.currency,  factor)
+        self.wdg2CCurrencyConversion.set(self.mem, self.investment.product.currency, self.investment.account.currency,  factor)
         self.wdg2CCurrencyConversion.setFactorMode(True)
-        self.wdg2CTaxes.set(self.mem, self.inversion.product.currency, self.inversion.account.currency,  factor)
-        self.wdg2CPrice.set(self.mem, self.inversion.product.currency, self.inversion.account.currency,  factor)
-        self.wdg2CComission.set(self.mem, self.inversion.product.currency, self.inversion.account.currency,  factor)
+        self.wdg2CTaxes.set(self.mem, self.investment.product.currency, self.investment.account.currency,  factor)
+        self.wdg2CPrice.set(self.mem, self.investment.product.currency, self.investment.account.currency,  factor)
+        self.wdg2CComission.set(self.mem, self.investment.product.currency, self.investment.account.currency,  factor)
         self.wdg2CCurrencyConversion.factorChanged.connect(self.on_wdg2CCurrencyConversion_factorChanged)
         
         if self.operinversion==None:#nuevo movimiento
             self.type=1
             self.operinversion=InvestmentOperation(self.mem)
-            self.operinversion.inversion=self.inversion
-            self.lblTitulo.setText(self.tr("New operation of {}").format(self.inversion.name))
+            self.operinversion.investment=self.investment
+            self.lblTitulo.setText(self.tr("New operation of {}").format(self.investment.name))
             self.mem.tiposoperaciones.qcombobox_investments_operations(self.cmbTiposOperaciones)
             self.wdgDT.set(self.mem)
         else:#editar movimiento
             self.type=2
-            self.lblTitulo.setText(self.tr("{} operation edition").format(self.inversion.name))
+            self.lblTitulo.setText(self.tr("{} operation edition").format(self.investment.name))
             self.mem.tiposoperaciones.qcombobox_investments_operations(self.cmbTiposOperaciones, self.operinversion.tipooperacion)
             self.wdgDT.set(self.mem, self.operinversion.datetime, self.mem.localzone)
             self.txtImporte.setText(self.operinversion.importe)
@@ -61,9 +61,9 @@ class frmInvestmentOperationsAdd(QDialog, Ui_frmInvestmentOperationsAdd):
         
 
     def on_wdg2CCurrencyConversion_factorChanged(self, factor):
-        self.wdg2CComission.set(self.mem, self.inversion.product.currency, self.inversion.account.currency,  factor)
-        self.wdg2CPrice.set(self.mem, self.inversion.product.currency, self.inversion.account.currency,  factor)
-        self.wdg2CTaxes.set(self.mem, self.inversion.product.currency, self.inversion.account.currency,  factor)
+        self.wdg2CComission.set(self.mem, self.investment.product.currency, self.investment.account.currency,  factor)
+        self.wdg2CPrice.set(self.mem, self.investment.product.currency, self.investment.account.currency,  factor)
+        self.wdg2CTaxes.set(self.mem, self.investment.product.currency, self.investment.account.currency,  factor)
         
     def on_cmd_released(self):        
         if self.wdg2CComission.isValid() and self.wdg2CCurrencyConversion.isValid() and self.wdg2CPrice.isValid() and self.wdg2CTaxes.isValid()==False:

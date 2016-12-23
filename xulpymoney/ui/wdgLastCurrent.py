@@ -160,7 +160,7 @@ class wdgLastCurrent(QWidget, Ui_wdgLastCurrent):
             self.investments=self.mem.data.investments_active().setInvestments_merging_investments_with_same_product_merging_current_operations()
             self.on_actionSortTPCLast_triggered()
         elif index==2:
-            self.investments=self.mem.data.investments.setInvestments_merging_investments_with_same_product_merging_operations()
-            self.investments.order_by_name()
+            self.investments=self.mem.data.investments_active().setInvestments_merging_investments_with_same_product_merging_operations()
+            self.on_actionSortTPCLast_triggered()
             self.tblInvestments_reload()
         self.mem.settingsdb.setValue("wdgLastCurrent/viewode", index)

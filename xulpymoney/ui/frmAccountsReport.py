@@ -264,7 +264,7 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
     @pyqtSlot() 
     def on_actionInvestmentOperationDelete_triggered(self):
         investmentoperation=InvestmentOperation(self.mem).init__from_accountoperation(self.accountoperations.selected)
-        investmentoperation.inversion.op.remove(investmentoperation)
+        investmentoperation.investment.op.remove(investmentoperation)
         self.mem.con.commit()     
         self.accountoperations_reload()
 
@@ -272,7 +272,7 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
     @pyqtSlot() 
     def on_actionInvestmentOperationEdit_triggered(self):
         investmentoperation=InvestmentOperation(self.mem).init__from_accountoperation(self.accountoperations.selected)
-        w=frmInvestmentOperationsAdd(self.mem, investmentoperation.inversion, investmentoperation, self)
+        w=frmInvestmentOperationsAdd(self.mem, investmentoperation.investment, investmentoperation, self)
         w.exec_()
         self.accountoperations_reload()
 

@@ -29,7 +29,7 @@ class frmProductReport(QDialog, Ui_frmProductReport):
 
         self.mem=mem
         self.product=product
-        self.inversion=inversion#Used to generate puntos de venta, punto de compra....
+        self.investment=inversion#Used to generate puntos de venta, punto de compra....
         self.setSelIntraday=set([])
         
         self.selDPS=None
@@ -119,7 +119,7 @@ class frmProductReport(QDialog, Ui_frmProductReport):
         self.layHistorical.addWidget(self.canvasHistorical)
         self.layHistorical.addWidget(self.ntbHistorical)
         
-        self.pseCompare.setupUi(self.mem, self.inversion)
+        self.pseCompare.setupUi(self.mem, self.investment)
         self.pseCompare.label.setText(self.tr("Select a product to compare"))
         self.pseCompare.setSelected(self.mem.data.benchmark)
         self.pseCompare.selectionChanged.connect(self.load_comparation)
@@ -216,9 +216,9 @@ class frmProductReport(QDialog, Ui_frmProductReport):
                 days=(datetime.datetime.now(pytz.timezone(self.mem.localzone.name))-quote.datetime).days+1
                 self.tblTPC.setItem(row, 2, qtpc(round(tpc, 2)))    
                 self.tblTPC.setItem(row, 3,  qtpc(round(tpc*365/days, 2)))
-                if self.inversion:
-                    self.grpHistoricos.setTitle(self.tr('Report of historic prices. You have {} shares valued at {}.').format(self.inversion.acciones(), self.inversion.balance()))
-                    self.tblTPC.setItem(row, 4,  self.product.currency.qtablewidgetitem(self.inversion.acciones()*(self.product.result.basic.last.quote-quote.quote)))
+                if self.investment:
+                    self.grpHistoricos.setTitle(self.tr('Report of historic prices. You have {} shares valued at {}.').format(self.investment.acciones(), self.investment.balance()))
+                    self.tblTPC.setItem(row, 4,  self.product.currency.qtablewidgetitem(self.investment.acciones()*(self.product.result.basic.last.quote-quote.quote)))
             except:
                 self.tblTPC.setItem(row, 2, qtpc(None))    
                 self.tblTPC.setItem(row, 3,  qtpc(None))     
@@ -310,7 +310,7 @@ class frmProductReport(QDialog, Ui_frmProductReport):
             self.canvasHistorical.hide()
             self.ntbHistorical.hide()
         else:
-            self.canvasHistorical.load_data(self.product, self.inversion)
+            self.canvasHistorical.load_data(self.product, self.investment)
             self.canvasHistorical.show()
             self.ntbHistorical.show() 
             
@@ -398,9 +398,9 @@ class frmProductReport(QDialog, Ui_frmProductReport):
 
     @pyqtSlot() 
     def on_actionDividendXuNew_triggered(self):
-        w=frmDividendsAdd(self.mem, self.inversion,  None)
+        w=frmDividendsAdd(self.mem, self.investment,  None)
         w.wdgDT.setCombine(self.mem, self.selDPS.date, self.product.stockmarket.closes, self.product.stockmarket.zone)
-        gross=self.selDPS.gross*self.inversion.acciones(self.selDPS.date)
+        gross=self.selDPS.gross*self.investment.acciones(self.selDPS.date)
         w.txtBruto.setText(gross)
         w.txtDPA.setText(self.selDPS.gross)
         w.txtRetencion.setText(gross*self.mem.taxcapitalappreciation)
@@ -788,7 +788,7 @@ class frmProductReport(QDialog, Ui_frmProductReport):
         menu=QMenu()
         menu.addAction(self.actionDPSNew)
         menu.addAction(self.actionDPSDelete)    
-        if self.inversion!=None:
+        if self.investment!=None:
             menu.addSeparator()
             menu.addAction(self.actionDividendXuNew)
         menu.exec_(self.tblDPSPaid.mapToGlobal(pos))

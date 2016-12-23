@@ -409,27 +409,27 @@ class canvasChartHistorical(FigureCanvasQTAgg):
 
     def draw_selling_point(self):
         """Draws an horizontal line with the selling point price"""
-        if self.inversion==None:
+        if self.investment==None:
             return
-        if self.inversion.venta!=0:
+        if self.investment.venta!=0:
             dates=[]
             quotes=[]
             dates.append(self.from_dt-datetime.timedelta(days=7))#To see more margin
             dates.append(datetime.date.today()+datetime.timedelta(days=7))
-            quotes.append(self.inversion.venta)
-            quotes.append(self.inversion.venta)
+            quotes.append(self.investment.venta)
+            quotes.append(self.investment.venta)
             self.plot_selling, =self.ax.plot_date(dates, quotes, 'r--', color="darkblue",  tz=pytz.timezone(self.mem.localzone.name)) #fijarse en selling, podría ser sin ella selling[0]
 
     def draw_investment_operations(self):
         """Draws an horizontal line with the selling point price"""
-        if self.inversion==None:
+        if self.investment==None:
             return
-        if self.inversion.op.length()>0:
+        if self.investment.op.length()>0:
             dates_p=[]#purchase
             quotes_p=[]
             dates_s=[]#sales
             quotes_s=[]
-            for o in self.inversion.op.arr:
+            for o in self.investment.op.arr:
                 if o.datetime>=self.from_dt:
                     if o.acciones>=0:
                         dates_p.append(o.datetime.date())
@@ -442,13 +442,13 @@ class canvasChartHistorical(FigureCanvasQTAgg):
 
     def draw_average_purchase_price(self):
         """Draws an horizontal line with the average purchase price"""
-        if self.inversion==None:
+        if self.investment==None:
             return
         dates=[]
         quotes=[]
         dates.append(self.from_dt-datetime.timedelta(days=7))#To see more margin
         dates.append(datetime.date.today()+datetime.timedelta(days=7))
-        average=self.inversion.op_actual.average_price().amount
+        average=self.investment.op_actual.average_price().amount
         quotes.append(average)
         quotes.append(average)
         self.plot_average, =self.ax.plot_date(dates, quotes, 'r--', color="orange",  tz=pytz.timezone(self.mem.localzone.name))
@@ -572,10 +572,10 @@ class canvasChartHistorical(FigureCanvasQTAgg):
     def load_data(self, product,   inversion=None, SD=False):
         """Debe tener cargado los ohcl, no el all"""
         self.product=product
-        self.inversion=inversion
-        if self.inversion!=None:
-            if self.inversion.op_actual.length()>0:
-                self.from_dt=day_start(self.inversion.op_actual.first().datetime, self.mem.localzone)
+        self.investment=inversion
+        if self.investment!=None:
+            if self.investment.op_actual.length()>0:
+                self.from_dt=day_start(self.investment.op_actual.first().datetime, self.mem.localzone)
         self.sd=SD#Sin descontar dividends, es decir sumará los dividends a las quotes.
         self.mydraw()
 
@@ -870,18 +870,18 @@ class canvasChartHistoricalReinvest(FigureCanvasQTAgg):
         dt=num2date(date)
         dat=dt.date()
         try:
-            return self.tr("{}: {}.".format(dat, self.inversion.product.currency.string(self.setdata.find(dat).close)))
+            return self.tr("{}: {}.".format(dat, self.investment.product.currency.string(self.setdata.find(dat).close)))
         except:
             return "Not found"
 
 
     def makeLegend(self):
         if len(self.labels)==0:
-            self.labels.append((self.plot_selling, self.tr("Selling price: {}".format(self.inversion.product.currency.string(self.sellprice)))))
-            self.labels.append((self.plot_average, self.tr("Average purchase price: {}".format(self.inversion.op_actual.average_price(type=1)))))
+            self.labels.append((self.plot_selling, self.tr("Selling price: {}".format(self.investment.product.currency.string(self.sellprice)))))
+            self.labels.append((self.plot_average, self.tr("Average purchase price: {}".format(self.investment.op_actual.average_price(type=1)))))
             self.labels.append((self.plot_purchases, self.tr("Purchase point")))
             self.labels.append((self.plot_sales, self.tr("Sales point")))
-            self.labels.append((self.plot_new_selling, self.tr("New selling reference: {}".format(self.inversion.product.currency.string(self.newsellprice)))))
+            self.labels.append((self.plot_new_selling, self.tr("New selling reference: {}".format(self.investment.product.currency.string(self.newsellprice)))))
             self.labels.append((self.plot_new_average, self.tr("New purchase average: {}".format(self.setcurrent.average_price(type=1)))))
 
     def draw_newPurchaseReferences(self):
@@ -901,7 +901,7 @@ class canvasChartHistoricalReinvest(FigureCanvasQTAgg):
         
         #Prepare bottom label
         gains=(self.newsellprice-avg)*self.setcurrent.acciones()
-        self.ax.annotate(xy=(5, 5), xycoords="figure pixels",  s=self.tr("Gains percentage: {}. Gains in the new selling reference: {}".format(tpc(percentage), self.inversion.product.currency.string(gains))))
+        self.ax.annotate(xy=(5, 5), xycoords="figure pixels",  s=self.tr("Gains percentage: {}. Gains in the new selling reference: {}".format(tpc(percentage), self.investment.product.currency.string(gains))))
 
         
     @pyqtSlot()
@@ -941,7 +941,7 @@ class canvasChartHistoricalReinvest(FigureCanvasQTAgg):
         (dates, buy, sell)=([], [], [])                
         dates.append(self.from_dt-datetime.timedelta(days=7))#To see more margin
         dates.append(datetime.date.today()+datetime.timedelta(days=7))
-        average=self.inversion.op_actual.average_price().amount
+        average=self.investment.op_actual.average_price().amount
         buy.append(average)
         buy.append(average)
         percentage=Decimal(self.mem.settingsdb.value("frmSellingPoint/lastgainpercentage",  5))
@@ -998,18 +998,18 @@ class canvasChartHistoricalReinvest(FigureCanvasQTAgg):
         """
         self.setcurrent=setcurrent
         self.setop=setop
-        self.inversion=inversion
-        if self.inversion.op_actual.length()>0:
-            self.from_dt=day_start(self.inversion.op_actual.first().datetime, self.mem.localzone)
+        self.investment=inversion
+        if self.investment.op_actual.length()>0:
+            self.from_dt=day_start(self.investment.op_actual.first().datetime, self.mem.localzone)
         self.mydraw()
                 
     def mydraw(self):
-        self.setdata=self.inversion.product.result.ohclDaily
+        self.setdata=self.investment.product.result.ohclDaily
         self.draw_lines_from_ohcl()
         self.draw_investment_operations()
         self.draw_purchaseReferences()
         self.draw_newPurchaseReferences()
-        self.ax.set_ylabel(self.tr("{} quotes ({})".format(self.inversion.product.name, self.inversion.product.currency.symbol)))
+        self.ax.set_ylabel(self.tr("{} quotes ({})".format(self.investment.product.name, self.investment.product.currency.symbol)))
         self.ax.set_title(self.tr("Reinvest graph"), fontsize=30, fontweight="bold", y=1.02)
         self.showLegend() 
         self.draw()
