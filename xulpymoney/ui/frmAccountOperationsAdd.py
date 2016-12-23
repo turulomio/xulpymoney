@@ -86,7 +86,7 @@ class frmAccountOperationsAdd(QDialog, Ui_frmAccountOperationsAdd):
 
 
     def type_and_id(self, product):
-        """0 if account,  1 if credit card. Como no puedo pasar Null por la señal, saco con -999"""
+        """0 if account,  1 if credit card. Como no puedo pasar Null por la señal, saco con -999, es decir cuando sea producto nuevo"""
         if product==None:
             return [-999, -999]
         if product.__class__==AccountOperation:
