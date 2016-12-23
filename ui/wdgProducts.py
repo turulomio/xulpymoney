@@ -168,6 +168,7 @@ class wdgProducts(QWidget, Ui_wdgProducts):
         menu.addAction(self.actionProductDelete)
         menu.addSeparator()
         menu.addAction(self.actionQuoteNew)
+        menu.addAction(self.actionProductPriceLastRemove)
         menu.addAction(self.actionEstimationDPSNew)
         menu.addSeparator()
         menu.addAction(self.actionMergeCodes)
@@ -195,7 +196,6 @@ class wdgProducts(QWidget, Ui_wdgProducts):
         ordenar.addAction(self.actionSortDividend)
         
         #Enabled disabled  
-        
         if len(self.products.selected)==1:
             self.actionMergeCodes.setEnabled(False)
             self.actionProductDelete.setEnabled(True)
@@ -206,6 +206,9 @@ class wdgProducts(QWidget, Ui_wdgProducts):
             self.actionQuoteNew.setEnabled(True)
             self.actionEstimationDPSNew.setEnabled(True)
             self.actionPurge.setEnabled(True)
+            self.actionProductPriceLastRemove.setEnabled(True)
+        elif len(self.products.selected)==2:
+            self.actionMergeCodes.setEnabled(True)
         else:
             self.actionMergeCodes.setEnabled(False)
             self.actionProductDelete.setEnabled(False)
@@ -216,10 +219,7 @@ class wdgProducts(QWidget, Ui_wdgProducts):
             self.actionQuoteNew.setEnabled(False)
             self.actionEstimationDPSNew.setEnabled(False)
             self.actionPurge.setEnabled(False)
-        
-        if len(self.products.selected)==2:
-            self.actionMergeCodes.setEnabled(True)
-            
+            self.actionProductPriceLastRemove.setEnabled(False)
         menu.exec_(self.tblInvestments.mapToGlobal(pos))
 
         
@@ -263,7 +263,15 @@ class wdgProducts(QWidget, Ui_wdgProducts):
         w.exec_()               
         self.build_array(self.sql)
         self.products.myqtablewidget(self.tblInvestments)  
-
+        
+    @pyqtSlot() 
+    def on_actionProductPriceLastRemove_triggered(self):
+        self.products.selected[0].result.basic.last.delete()
+        self.mem.con.commit()
+        self.products.selected[0].result.basic.load_from_db()
+        self.build_array(self.sql)
+        self.products.myqtablewidget(self.tblInvestments)
+        
     @pyqtSlot()  
     def on_actionEstimationDPSNew_triggered(self):
         d=frmEstimationsAdd(self.mem, self.products.selected[0], "dps")
