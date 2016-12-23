@@ -2,7 +2,7 @@ import datetime
 from PyQt5.QtCore import Qt, pyqtSlot
 from PyQt5.QtWidgets import QDialog
 from Ui_frmSellingPoint import Ui_frmSellingPoint
-from libxulpymoney import Money,  Quote, SetInvestmentOperationsCurrentHomogeneus, qmessagebox,  tpc
+from libxulpymoney import Money,  Quote, SetInvestmentOperationsCurrentHomogeneus, qmessagebox
 from decimal import Decimal
 
 class frmSellingPoint(QDialog, Ui_frmSellingPoint):
@@ -20,18 +20,6 @@ class frmSellingPoint(QDialog, Ui_frmSellingPoint):
             qmessagebox(self.tr("You don't have shares to sale in this investment"))
             return
         
-        inicio=datetime.datetime.now()
-        self.mem.data.benchmark.result.get_basic_and_ohcls()
-        print("Load",  datetime.datetime.now()-inicio)
-        setdv=self.mem.data.benchmark.result.ohclDaily.close_to_setdv()
-        print  (setdv.average())
-        self.tpcsma200=setdv.tpc_to_last_sma200(self.mem.data.benchmark.result.basic.last.quote)
-        print("Setdv y sma",  datetime.datetime.now()-inicio)
-        self.txtSMA200.setText(tpc(self.tpcsma200))
-        if self.tpcsma200<Decimal(2.5):
-            self.radSMA200.setEnabled(False)
-        
-        
         self.puntoventa=Decimal(0)#Guarda el resultado de los cálculos
         self.operinversiones=None 
 
@@ -39,8 +27,6 @@ class frmSellingPoint(QDialog, Ui_frmSellingPoint):
             self.chkGainsTime.setCheckState(Qt.Checked)
         else:
             self.chkGainsTime.setEnabled(False)
-
-
 
         self.table.settings(self.mem, "frmSellingPoint")
         self.tableSP.settings(self.mem, "frmSellingPoint")
@@ -83,8 +69,6 @@ class frmSellingPoint(QDialog, Ui_frmSellingPoint):
                 else:
                     self.puntoventa=Money(self.mem, 0, self.inversion.account.currency)
                     self.cmd.setEnabled(False)
-            elif self.radSMA200.isChecked()==True:
-                self.puntoventa=Money(self.mem, suminvertido.amount*(1+self.tpcsma200/100)/sumacciones, self.inversion.account.currency)
 
         if self.inversion.hasSameAccountCurrency()==False:
             #punto de venta tiene el currency de la acount luego hay que pasarlo al currency de la inversi´on_chkGainsTime_stateChanged
@@ -108,9 +92,6 @@ class frmSellingPoint(QDialog, Ui_frmSellingPoint):
         self.__calcular()
         
     def on_radGain_clicked(self):
-        self.__calcular()
-        
-    def on_radSMA200_clicked(self):
         self.__calcular()
         
     @pyqtSlot(str) 

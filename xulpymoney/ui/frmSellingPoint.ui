@@ -10,7 +10,7 @@
     <x>0</x>
     <y>0</y>
     <width>790</width>
-    <height>620</height>
+    <height>596</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -60,7 +60,7 @@
           <item>
            <widget class="QRadioButton" name="radTPC">
             <property name="text">
-             <string>Select a gain percentage</string>
+             <string>Select a &amp;gain percentage</string>
             </property>
             <property name="checked">
              <bool>true</bool>
@@ -116,7 +116,7 @@
           <item>
            <widget class="QRadioButton" name="radGain">
             <property name="text">
-             <string>Select a gain amount</string>
+             <string>Se&amp;lect a gain amount</string>
             </property>
            </widget>
           </item>
@@ -146,7 +146,7 @@
           <item>
            <widget class="QRadioButton" name="radPrice">
             <property name="text">
-             <string>Select a price</string>
+             <string>Selec&amp;t a price</string>
             </property>
            </widget>
           </item>
@@ -163,36 +163,6 @@
             </property>
             <property name="alignment">
              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </item>
-        <item>
-         <layout class="QHBoxLayout" name="horizontalLayout_4">
-          <item>
-           <widget class="QRadioButton" name="radSMA200">
-            <property name="text">
-             <string>Select percentage to benchmark SMA200</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QLineEdit" name="txtSMA200">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="text">
-             <string>10</string>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-            </property>
-            <property name="readOnly">
-             <bool>true</bool>
             </property>
            </widget>
           </item>
@@ -373,22 +343,6 @@
     <hint type="destinationlabel">
      <x>76</x>
      <y>130</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>txtSMA200</sender>
-   <signal>textEdited(QString)</signal>
-   <receiver>radSMA200</receiver>
-   <slot>toggle()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>398</x>
-     <y>156</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>86</x>
-     <y>155</y>
     </hint>
    </hints>
   </connection>

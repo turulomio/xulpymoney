@@ -56,6 +56,7 @@ class wdgInvestments(QWidget, Ui_wdgInvestments):
         """
         self.selInvestment.borrar()
         self.mem.data.investments.remove(self.selInvestment)
+        self.mem.con.commit()
         self.on_chkInactivas_stateChanged(self.chkInactivas.checkState())
 
           
