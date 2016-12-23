@@ -16,7 +16,7 @@ class wdgInvestments(QWidget, Ui_wdgInvestments):
         self.loadedinactive=False
 
         self.tblInvestments.settings(self.mem, "wdgInvestments")
-        self.on_chkInactivas_stateChanged(self.chkInactivas.checkState())#Carga la tabla
+        self.on_chkInactivas_stateChanged(self.chkInactivas.checkState())
     
     def tblInvestments_reload(self):
         """Función que carga la tabla de inversiones con el orden que tenga el arr serl.inversiones"""
@@ -46,7 +46,7 @@ class wdgInvestments(QWidget, Ui_wdgInvestments):
         self.mem.con.commit()     
 
         self.chkInactivas.setCheckState(Qt.Unchecked)
-        self.on_chkInactivas_stateChanged(Qt.Unchecked)#Carga la tabla
+        self.on_chkInactivas_stateChanged(Qt.Unchecked)
 
             
     @pyqtSlot() 
@@ -56,33 +56,33 @@ class wdgInvestments(QWidget, Ui_wdgInvestments):
         """
         self.selInvestment.borrar()
         self.mem.data.investments.remove(self.selInvestment)
-        self.on_chkInactivas_stateChanged(self.chkInactivas.checkState())#Carga la tabla
+        self.on_chkInactivas_stateChanged(self.chkInactivas.checkState())
 
           
     @pyqtSlot() 
     def on_actionInvestmentAdd_triggered(self):
         w=frmInvestmentReport(self.mem,   None, self)
         w.exec_()
-        self.on_chkInactivas_stateChanged(self.chkInactivas.checkState())#Carga la tabla
+        self.on_chkInactivas_stateChanged(self.chkInactivas.checkState())
         
     @pyqtSlot() 
     def on_actionInvestmentReport_triggered(self):
         w=frmInvestmentReport(self.mem, self.selInvestment, self)
         w.exec_()
-        self.on_chkInactivas_stateChanged(self.chkInactivas.checkState())#Carga la tabla
+        self.on_chkInactivas_stateChanged(self.chkInactivas.checkState())
 
     @pyqtSlot() 
     def on_actionProduct_triggered(self):
         w=frmProductReport(self.mem, self.selInvestment.product, self.selInvestment, self)
         w.exec_()
-        self.on_chkInactivas_stateChanged(self.chkInactivas.checkState())#Carga la tabla
+        self.on_chkInactivas_stateChanged(self.chkInactivas.checkState())
         
     @pyqtSlot() 
     def on_actionSameProduct_triggered(self):
         inv=self.mem.data.investments_active().investment_merging_current_operations_with_same_product(self.selInvestment.product)
         w=frmProductReport(self.mem, self.selInvestment.product, inv, self)
         w.exec_()
-        self.on_chkInactivas_stateChanged(self.chkInactivas.checkState())#Carga la tabla
+        self.on_chkInactivas_stateChanged(self.chkInactivas.checkState())
             
             
     @pyqtSlot() 
@@ -90,14 +90,14 @@ class wdgInvestments(QWidget, Ui_wdgInvestments):
         w=frmQuotesIBM(self.mem, self.selInvestment.product,None,  self)
         w.exec_()
         self.selInvestment.product.result.basic.load_from_db()
-        self.on_chkInactivas_stateChanged(self.chkInactivas.checkState())#Carga la tabla
+        self.on_chkInactivas_stateChanged(self.chkInactivas.checkState())
         
     @pyqtSlot() 
     def on_actionProductPriceLastRemove_triggered(self):
         self.selInvestment.product.result.basic.last.delete()
         self.mem.con.commit()
         self.selInvestment.product.result.basic.load_from_db()
-        self.on_chkInactivas_stateChanged(self.chkInactivas.checkState())#Carga la tabla
+        self.on_chkInactivas_stateChanged(self.chkInactivas.checkState())
 
     @pyqtSlot() 
     def on_actionSortTPCDiario_triggered(self):
