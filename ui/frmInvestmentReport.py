@@ -120,6 +120,7 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
             self.op=self.investment.op.subSet_from_datetime(dt)
         else:
             self.op=self.investment.op
+            
         self.op.selected=None
         self.op.myqtablewidget(self.tblOperations)
         
@@ -127,13 +128,17 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
             self.grpOperationsAccountCurrency.hide()
         else:
             self.op.myqtablewidget(self.tblOperationsAccountCurrency, type=2)
-            
-        
+
     def update_tables(self):             
         #Actualiza el indice de referencia porque ha cambiado
         self.investment.op_actual.get_valor_benchmark(self.mem.data.benchmark)
         
-        self.on_chkOperaciones_stateChanged(self.chkOperaciones.checkState())
+        if self.investment.merge==0:
+            self.on_chkOperaciones_stateChanged(self.chkOperaciones.checkState())
+            self.chkOperaciones.setEnabled(True)
+        else:#merge 1 y 2
+            self.chkOperaciones.setChecked(Qt.Checked)
+            self.chkOperaciones.setEnabled(False)
         
         self.investment.op_actual.myqtablewidget(self.tblInvestmentCurrent, self.investment.product.result.basic.last, type=1)
         self.investment.op_historica.myqtablewidget(self.tblInvestmentHistorical,  type=1 )
@@ -152,6 +157,7 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
         if self.investment!=None:#We are adding a new investment
             if self.investment.merge==0:
                 self.on_chkHistoricalDividends_stateChanged(self.chkHistoricalDividends.checkState())
+                self.chkHistoricalDividends.setEnabled(True)
             else:
                 self.chkHistoricalDividends.setChecked(Qt.Checked)
                 self.chkHistoricalDividends.setEnabled(False)
