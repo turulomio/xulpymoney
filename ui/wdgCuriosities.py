@@ -1,8 +1,7 @@
 from PyQt5.QtWidgets import QWidget, QSpacerItem, QSizePolicy
 from Ui_wdgCuriosities import Ui_wdgCuriosities
 from wdgCuriosity import wdgCuriosity
-from libxulpymoney import Assets,  SetAccountOperations
-from decimal import Decimal
+from libxulpymoney import Assets,  Money, SetAccountOperations
 
 class wdgCuriosities(QWidget, Ui_wdgCuriosities):
     def __init__(self, mem,  parent = None):
@@ -21,9 +20,9 @@ class wdgCuriosities(QWidget, Ui_wdgCuriosities):
         c=wdgCuriosity(self.mem)
         c.setTitle(self.tr("Which is the investment I gain more money in the last three years?"))
         selected=None
-        maxgains=Decimal(0)
+        maxgains=Money(self.mem, 0, self.mem.localcurrency)
         for inv in self.mem.data.investments.arr:
-            consolidado=inv.op_historica.consolidado_bruto()
+            consolidado=inv.op_historica.consolidado_bruto(type=3)
             if maxgains<consolidado:
                 maxgains=consolidado
                 selected=inv
@@ -31,7 +30,7 @@ class wdgCuriosities(QWidget, Ui_wdgCuriosities):
         if selected==None:
             c.setText(self.tr("You still hasn't gains"))
         else:
-            c.setText(self.tr("The investment I gain more money is {} in {} ({}). I got {}.".format(selected.name,selected.account.name, selected.account.eb.name, self.mem.localcurrency.string(maxgains))))
+            c.setText(self.tr("The investment I gain more money is {} in {} ({}). I got {}.".format(selected.name,selected.account.name, selected.account.eb.name, maxgains)))
         self.layout.addWidget(c)
 
 

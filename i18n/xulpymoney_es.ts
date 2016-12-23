@@ -5380,77 +5380,77 @@ p, li { white-space: pre-wrap; }
         <translation>Curiosidades de Xulpymoney</translation>
     </message>
     <message>
-        <location filename="../ui/wdgCuriosities.py" line="16"/>
+        <location filename="../ui/wdgCuriosities.py" line="15"/>
         <source>Since when there is data in the database?</source>
         <translation>¿Desde cuando hay información en la base de datos?</translation>
     </message>
     <message>
-        <location filename="../ui/wdgCuriosities.py" line="44"/>
+        <location filename="../ui/wdgCuriosities.py" line="43"/>
         <source>Which is the benchmark highest and lowest price?</source>
         <translation>¿Cuál es el precio más alto y más bajo del índice de referencia?</translation>
     </message>
     <message>
-        <location filename="../ui/wdgCuriosities.py" line="51"/>
+        <location filename="../ui/wdgCuriosities.py" line="50"/>
         <source>How many quotes are there in the database?</source>
         <translation>¿Cuántas cotizaciones hay en la base de datos?</translation>
     </message>
     <message>
-        <location filename="../ui/wdgCuriosities.py" line="56"/>
+        <location filename="../ui/wdgCuriosities.py" line="55"/>
         <source>Which product has the highest quote?</source>
         <translation>¿Qué producto tiene la cotización más alta?</translation>
     </message>
     <message>
-        <location filename="../ui/wdgCuriosities.py" line="63"/>
+        <location filename="../ui/wdgCuriosities.py" line="62"/>
         <source>Which is the amount of the largest account operation?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgCuriosities.py" line="72"/>
+        <location filename="../ui/wdgCuriosities.py" line="71"/>
         <source>Which is the amount of the largest credit card operation?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgCuriosities.py" line="77"/>
+        <location filename="../ui/wdgCuriosities.py" line="76"/>
         <source>Which is the amount of the largest investment operation?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgCuriosities.py" line="32"/>
+        <location filename="../ui/wdgCuriosities.py" line="31"/>
         <source>You still hasn&apos;t gains</source>
         <translation>Todavía no tienes ganancias</translation>
     </message>
     <message>
-        <location filename="../ui/wdgCuriosities.py" line="34"/>
+        <location filename="../ui/wdgCuriosities.py" line="33"/>
         <source>The investment I gain more money is {} in {} ({}). I got {}.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgCuriosities.py" line="22"/>
+        <location filename="../ui/wdgCuriosities.py" line="21"/>
         <source>Which is the investment I gain more money in the last three years?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgCuriosities.py" line="39"/>
+        <location filename="../ui/wdgCuriosities.py" line="38"/>
         <source>Which is the product I gain more money in the last three years?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgCuriosities.py" line="47"/>
+        <location filename="../ui/wdgCuriosities.py" line="46"/>
         <source>Current benchmarck ({}) highest price is {}. It took place at {}. Lowest price is {} and took place at {}.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgCuriosities.py" line="52"/>
+        <location filename="../ui/wdgCuriosities.py" line="51"/>
         <source>There are {} quotes in this Xulpymoney database.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgCuriosities.py" line="68"/>
+        <location filename="../ui/wdgCuriosities.py" line="67"/>
         <source>There are not account operations yet.</source>
         <translation>No hay operaciones en cuenta todavía.</translation>
     </message>
     <message>
-        <location filename="../ui/wdgCuriosities.py" line="66"/>
+        <location filename="../ui/wdgCuriosities.py" line="65"/>
         <source>The largest account operation took place at {}. It&apos;s concept was &apos;{}&apos; and it&apos;s amount was {}.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6258,27 +6258,27 @@ p, li { white-space: pre-wrap; }
         <translation>Borrar inversión</translation>
     </message>
     <message>
-        <location filename="../ui/wdgInvestments.py" line="194"/>
+        <location filename="../ui/wdgInvestments.py" line="195"/>
         <source>Order by</source>
         <translation>Ordenado por</translation>
     </message>
     <message>
-        <location filename="../ui/wdgInvestments.py" line="211"/>
+        <location filename="../ui/wdgInvestments.py" line="212"/>
         <source>Shares number: {0}</source>
         <translation>Número de acciones: {0}</translation>
     </message>
     <message>
-        <location filename="../ui/wdgInvestments.py" line="211"/>
+        <location filename="../ui/wdgInvestments.py" line="212"/>
         <source>Purchase price average: {0}</source>
         <translation>Precio medio de compra: {0}</translation>
     </message>
     <message>
-        <location filename="../ui/wdgInvestments.py" line="211"/>
+        <location filename="../ui/wdgInvestments.py" line="212"/>
         <source>Selling point: {}</source>
         <translation>Punto de venta: {}</translation>
     </message>
     <message>
-        <location filename="../ui/wdgInvestments.py" line="211"/>
+        <location filename="../ui/wdgInvestments.py" line="212"/>
         <source>Selling all shares you get {}</source>
         <translation>Vendiendo todas las acciones consigues {}</translation>
     </message>
@@ -6288,12 +6288,12 @@ p, li { white-space: pre-wrap; }
         <translation>% Invertido</translation>
     </message>
     <message>
-        <location filename="../ui/wdgInvestments.py" line="177"/>
+        <location filename="../ui/wdgInvestments.py" line="178"/>
         <source>Deactivate investment</source>
         <translation>Desactivar inversión</translation>
     </message>
     <message>
-        <location filename="../ui/wdgInvestments.py" line="179"/>
+        <location filename="../ui/wdgInvestments.py" line="180"/>
         <source>Activate investment</source>
         <translation>Activar inversión</translation>
     </message>
@@ -6319,7 +6319,7 @@ Daily Diff: {5}. Investment average age: {6}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgInvestments.py" line="138"/>
+        <location filename="../ui/wdgInvestments.py" line="139"/>
         <source>I couldn&apos;t order data due to they have null values</source>
         <translation>No pudo ordenar los datos debido a que hay valores nulos</translation>
     </message>
