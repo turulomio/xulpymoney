@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS><TS version="2.0" language="es_ES" sourcelanguage="en">
+<!DOCTYPE TS>
+<TS version="2.1" language="es_ES" sourcelanguage="en">
 <context>
     <name>AssetsReport</name>
     <message>
@@ -1190,7 +1191,7 @@ Do you want to activate it?</source>
     <message>
         <location filename="../libxulpymoney.py" line="7586"/>
         <source>Error connecting to database</source>
-        <translation type="unfinished"></translation>
+        <translation>Error al conectar a la base de datos</translation>
     </message>
 </context>
 <context>
@@ -1484,7 +1485,7 @@ Do you want to activate it?</source>
     </message>
     <message>
         <location filename="../ui/canvaschart.py" line="741"/>
-        <source>Lines calculated investing: 2500 &#xe2;&#x82;&#xac;, 3500 &#xe2;&#x82;&#xac;, 12000 &#xe2;&#x82;&#xac;, 12000 &#xe2;&#x82;&#xac;. </source>
+        <source>Lines calculated investing: 2500 â¬, 3500 â¬, 12000 â¬, 12000 â¬. </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1523,27 +1524,27 @@ Do you want to activate it?</source>
     <message>
         <location filename="../ui/canvaschart.py" line="880"/>
         <source>Selling price: {}</source>
-        <translation type="unfinished"></translation>
+        <translation>Precio de venta: {}</translation>
     </message>
     <message>
         <location filename="../ui/canvaschart.py" line="881"/>
         <source>Average purchase price: {}</source>
-        <translation type="unfinished"></translation>
+        <translation>Precio medio de compra: {}</translation>
     </message>
     <message>
         <location filename="../ui/canvaschart.py" line="884"/>
         <source>New selling reference: {}</source>
-        <translation type="unfinished"></translation>
+        <translation>Nueva referencia de venta: {}</translation>
     </message>
     <message>
         <location filename="../ui/canvaschart.py" line="885"/>
         <source>New purchase average: {}</source>
-        <translation type="unfinished"></translation>
+        <translation>Nuevo punto medio de compra: {}</translation>
     </message>
     <message>
         <location filename="../ui/canvaschart.py" line="904"/>
         <source>Gains percentage: {}. Gains in the new selling reference: {}</source>
-        <translation type="unfinished"></translation>
+        <translation>Porcentaje de ganancias: {}. Ganancias que se obtendrán en la nueva referencia de venta: {}</translation>
     </message>
 </context>
 <context>
@@ -1604,12 +1605,12 @@ Do you want to activate it?</source>
     <message>
         <location filename="../ui/wdgTotal.py" line="74"/>
         <source>Total report</source>
-        <translation type="unfinished">Informe total</translation>
+        <translation>Informe total</translation>
     </message>
     <message>
         <location filename="../ui/wdgTotal.py" line="75"/>
         <source>Total Assets ({})</source>
-        <translation type="unfinished"></translation>
+        <translation>Patrimonio total ({})</translation>
     </message>
 </context>
 <context>
@@ -1620,7 +1621,7 @@ Do you want to activate it?</source>
         <translation>TOTAL</translation>
     </message>
 </context>
-<context encoding="UTF-8">
+<context>
     <name>frmAbout</name>
     <message>
         <location filename="../ui/frmAbout.ui" line="111"/>
@@ -1634,12 +1635,12 @@ Do you want to activate it?</source>
     </message>
     <message>
         <location filename="../ui/frmAbout.ui" line="175"/>
-        <source>N&#xc3;&#xba;mero de Deuda p&#xc3;&#xba;blica</source>
+        <source>NÃºmero de Deuda pÃºblica</source>
         <translation></translation>
     </message>
     <message>
         <location filename="../ui/frmAbout.ui" line="180"/>
-        <source>N&#xc3;&#xba;mero de Deuda privada</source>
+        <source>NÃºmero de Deuda privada</source>
         <translation></translation>
     </message>
     <message>
@@ -1687,7 +1688,7 @@ Do you want to activate it?</source>
         <source>Products</source>
         <translation>Productos</translation>
     </message>
-    <message encoding="UTF-8">
+    <message>
         <location filename="../ui/frmAbout.ui" line="117"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
@@ -1956,7 +1957,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../ui/frmAccountsReport.ui" line="542"/>
-        <source>XXXX &#xe2;&#x82;&#xac;</source>
+        <source>XXXX â¬</source>
         <translation>XXXX €</translation>
     </message>
     <message>
@@ -2879,7 +2880,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../ui/frmInvestmentReport.py" line="151"/>
         <source>Current status in account currency ( {} = {} at {} )</source>
-        <translation type="unfinished"></translation>
+        <translation>Situación actual en la divisa de la cuenta ( {} = {} a las {} )</translation>
     </message>
 </context>
 <context>
@@ -3171,7 +3172,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../ui/frmMain.py" line="76"/>
-        <source>Xulpymoney 2010-{0} &#xc2;&#xa9; (Admin mode)</source>
+        <source>Xulpymoney 2010-{0} Â© (Admin mode)</source>
         <translation>Xulpymoney 2010-{0} Â© (Admin mode)</translation>
     </message>
     <message>
@@ -3216,12 +3217,12 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../ui/frmMain.py" line="48"/>
-        <source>Xulpymoney 2010-{0} &#xa9;</source>
+        <source>Xulpymoney 2010-{0} ©</source>
         <translation>Xulpymoney 2010-{0} ©</translation>
     </message>
     <message>
         <location filename="../ui/frmMain.py" line="66"/>
-        <source>Xulpymoney 2010-{0} &#xa9; (Admin mode)</source>
+        <source>Xulpymoney 2010-{0} © (Admin mode)</source>
         <translation>Xulpymoney 2010-{0} © (Admin mode)</translation>
     </message>
     <message>
@@ -3622,12 +3623,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../ui/frmMain.ui" line="1029"/>
         <source>Investment ranking</source>
-        <translation type="unfinished"></translation>
+        <translation>Ranking de inversiones</translation>
     </message>
     <message>
         <location filename="../ui/frmMain.ui" line="1014"/>
         <source>&amp;Curiosities</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Curiosidades</translation>
     </message>
 </context>
 <context>
@@ -4547,17 +4548,17 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../ui/frmSellingPoint.ui" line="63"/>
         <source>Select a &amp;gain percentage</source>
-        <translation type="unfinished"></translation>
+        <translation>Selecciona un porcentaje de &amp;ganancias</translation>
     </message>
     <message>
         <location filename="../ui/frmSellingPoint.ui" line="119"/>
         <source>Se&amp;lect a gain amount</source>
-        <translation type="unfinished"></translation>
+        <translation>Se&amp;lecciona una cantidad a ganar</translation>
     </message>
     <message>
         <location filename="../ui/frmSellingPoint.ui" line="149"/>
         <source>Selec&amp;t a price</source>
-        <translation type="unfinished"></translation>
+        <translation>Seleccio&amp;na un  precio</translation>
     </message>
 </context>
 <context>
@@ -5435,7 +5436,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../ui/Ui_wdgCuriosity.py" line="74"/>
         <source>TextLabel</source>
-        <translation type="unfinished"></translation>
+        <translation>TextLabel</translation>
     </message>
 </context>
 <context>
@@ -6392,32 +6393,32 @@ Daily Diff: {5}. Investment average age: {6}</source>
     <message>
         <location filename="../ui/wdgInvestmentsRanking.py" line="62"/>
         <source>Investment</source>
-        <translation type="unfinished">Inversión</translation>
+        <translation>Inversión</translation>
     </message>
     <message>
         <location filename="../ui/wdgInvestmentsRanking.py" line="63"/>
         <source>Current gains</source>
-        <translation type="unfinished"></translation>
+        <translation>Ganancias actuales</translation>
     </message>
     <message>
         <location filename="../ui/wdgInvestmentsRanking.py" line="64"/>
         <source>Historical gains</source>
-        <translation type="unfinished"></translation>
+        <translation>Ganancias históricas</translation>
     </message>
     <message>
         <location filename="../ui/wdgInvestmentsRanking.py" line="65"/>
         <source>Dividends</source>
-        <translation type="unfinished">Dividendos</translation>
+        <translation>Dividendos</translation>
     </message>
     <message>
         <location filename="../ui/wdgInvestmentsRanking.py" line="98"/>
         <source>Total</source>
-        <translation type="unfinished">Total</translation>
+        <translation>Total</translation>
     </message>
     <message>
         <location filename="../ui/wdgInvestmentsRanking.ui" line="26"/>
         <source>Investments ranking</source>
-        <translation type="unfinished"></translation>
+        <translation>Ranking de inversiones</translation>
     </message>
     <message>
         <location filename="../ui/wdgInvestmentsRanking.ui" line="47"/>
@@ -6432,7 +6433,7 @@ Daily Diff: {5}. Investment average age: {6}</source>
     <message>
         <location filename="../ui/wdgInvestmentsRanking.ui" line="130"/>
         <source>Product report</source>
-        <translation type="unfinished">Informe de producto</translation>
+        <translation>Informe de producto</translation>
     </message>
     <message>
         <location filename="../ui/wdgInvestmentsRanking.ui" line="106"/>
@@ -7190,7 +7191,7 @@ Daily Diff: {5}. Investment average age: {6}</source>
     </message>
     <message>
         <location filename="../ui/wdgSimulations.py" line="85"/>
-        <source>Xulpymoney SIMULATED IN {} 2010-{} &#xa9;</source>
+        <source>Xulpymoney SIMULATED IN {} 2010-{} ©</source>
         <translation>Xulpymoney SIMULATED IN {} 2010-{} ©</translation>
     </message>
     <message>
