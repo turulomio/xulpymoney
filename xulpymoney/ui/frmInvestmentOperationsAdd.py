@@ -80,7 +80,7 @@ class frmInvestmentOperationsAdd(QDialog, Ui_frmInvestmentOperationsAdd):
         self.operinversion.currency_conversion=self.wdg2CCurrencyConversion.factor
         self.operinversion.acciones=self.txtAcciones.decimal()
         if id_tiposoperaciones==5: #Venta
-            self.operinversion.importe=self.txtImporteBruto.decimal()
+#            self.operinversion.importe=self.txtImporteBruto.decimal()
             self.operinversion.show_in_ranges=False
             if self.operinversion.acciones>Decimal('0'):
                 m=QMessageBox()
@@ -90,7 +90,7 @@ class frmInvestmentOperationsAdd(QDialog, Ui_frmInvestmentOperationsAdd):
                 m.exec_()    
                 return        
         elif id_tiposoperaciones==4: #Compra
-            self.operinversion.importe=self.txtImporte.decimal()
+#            self.operinversion.importe=self.txtImporte.decimal()
             if self.operinversion.acciones<0: 
                 m=QMessageBox()
                 m.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
@@ -99,7 +99,7 @@ class frmInvestmentOperationsAdd(QDialog, Ui_frmInvestmentOperationsAdd):
                 m.exec_()    
                 return
         elif id_tiposoperaciones==6: #Añadido    
-            self.operinversion.importe=self.txtImporte.decimal()
+#            self.operinversion.importe=self.txtImporte.decimal()
             if self.operinversion.acciones<0: 
                 m=QMessageBox()
                 m.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
@@ -107,8 +107,8 @@ class frmInvestmentOperationsAdd(QDialog, Ui_frmInvestmentOperationsAdd):
                 m.setText(self.tr("Added shares number must be positive"))
                 m.exec_()    
                 return            
-        elif id_tiposoperaciones==8: #Traspaso fondos
-            self.operinversion.importe=self.txtImporte.decimal()
+#        elif id_tiposoperaciones==8: #Traspaso fondos
+#            self.operinversion.importe=self.txtImporte.decimal()
         
         if self.operinversion.impuestos<Decimal('0') or  self.operinversion.comision<Decimal('0') or self.operinversion.valor_accion<Decimal('0'):            
             m=QMessageBox()
