@@ -201,7 +201,7 @@
        <item>
         <widget class="QComboBox" name="cmbSameProduct">
          <property name="currentIndex">
-          <number>-1</number>
+          <number>0</number>
          </property>
          <property name="sizeAdjustPolicy">
           <enum>QComboBox::AdjustToContents</enum>
@@ -213,12 +213,12 @@
          </item>
          <item>
           <property name="text">
-           <string>Show merging current investment operations (Not FIFO)</string>
+           <string>Show merging current investment operations</string>
           </property>
          </item>
          <item>
           <property name="text">
-           <string>Show merging investment operations (FIFO)</string>
+           <string>Show merging all investment operations</string>
           </property>
          </item>
         </widget>

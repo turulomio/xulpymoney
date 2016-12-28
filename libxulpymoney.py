@@ -580,7 +580,7 @@ class SetInvestments(SetCommons):
             Realmente es aplicar el m´etodo FIFO  a todas las inversiones.
             
         """
-        name=QApplication.translate("Core", "Investment merging operations of {} (FIFO)".format(product.name))
+        name=QApplication.translate("Core", "Virtual investment merging all operations of {}".format(product.name))
         bank=Bank(self.mem).init__create("Merging bank", True, -1)
         account=Account(self.mem).init__create("Merging account",  bank, True, "", self.mem.localcurrency, -1)
         r=Investment(self.mem).init__create(name, None, account, product, None, True, -1)
@@ -601,7 +601,7 @@ class SetInvestments(SetCommons):
 
 
     def setDividends_merging_operation_dividends(self, product):
-        name=QApplication.translate("Core", "Investment merging operations of {} (FIFO)".format(product.name))
+        name=QApplication.translate("Core", "Virtual investment merging all operations of {}".format(product.name))
         bank=Bank(self.mem).init__create("Merging bank", True, -1)
         account=Account(self.mem).init__create("Merging account",  bank, True, "", self.mem.localcurrency, -1)
         r=Investment(self.mem).init__create(name, None, account, product, None, True, -1)
@@ -620,7 +620,7 @@ class SetInvestments(SetCommons):
             
             se usa para hacer reinversiones, en las que no se ha tenido cuenta el metodo fifo, para que use las acciones actuales.
         """
-        name=QApplication.translate("Core", "Investment merging current operations of {} (NOT FIFO)".format(product.name))
+        name=QApplication.translate("Core", "Virtual investment merging current operations of {}".format(product.name))
         bank=Bank(self.mem).init__create("Merging bank", True, -1)
         account=Account(self.mem).init__create("Merging account",  bank, True, "", self.mem.localcurrency, -1)
         r=Investment(self.mem).init__create(name, None, account, product, None, True, -1)    
@@ -629,14 +629,14 @@ class SetInvestments(SetCommons):
         for inv in self.arr: #Recorre las inversion del array
             if inv.product.id==product.id:
                 for o in inv.op_actual.arr:
-                    r.op.append(InvestmentOperation(self.mem).init__create(o.tipooperacion, o.datetime, r, o.acciones, o.importe, o.impuestos, o.comision,  o.valor_accion,  o.comision,  o.show_in_ranges,  o.currency_conversion,  o.id))
+                    r.op.append(InvestmentOperation(self.mem).init__create(o.tipooperacion, o.datetime, r, o.acciones, o.impuestos, o.comision,  o.valor_accion,  o.comision,  o.show_in_ranges,  o.currency_conversion,  o.id))
         r.op.order_by_datetime()
         (r.op_actual,  r.op_historica)=r.op.calcular()             
         return r
         
 
     def setDividends_merging_current_operation_dividends(self, product):
-        name=QApplication.translate("Core", "Investment merging current operations of {} (NOT FIFO)".format(product.name))
+        name=QApplication.translate("Core", "Virtual investment merging current operations of {}".format(product.name))
         bank=Bank(self.mem).init__create("Merging bank", True, -1)
         account=Account(self.mem).init__create("Merging account",  bank, True, "", self.mem.localcurrency, -1)
         r=Investment(self.mem).init__create(name, None, account, product, None, True, -1)    
@@ -1886,7 +1886,7 @@ class SetInvestmentOperationsHomogeneus(SetInvestmentOperationsHeterogeneus):
         sioa=SetInvestmentOperationsCurrentHomogeneus(self.mem, self.investment)       
         for o in self.arr:                
             if o.acciones>=0:#Compra
-                sioa.arr.append(InvestmentOperationCurrent(self.mem).init__create(o, o.tipooperacion, o.datetime, o.investment, o.acciones, o.importe, o.impuestos, o.comision, o.valor_accion,  o.show_in_ranges, o.currency_conversion,  o.id))
+                sioa.arr.append(InvestmentOperationCurrent(self.mem).init__create(o, o.tipooperacion, o.datetime, o.investment, o.acciones, o.impuestos, o.comision, o.valor_accion,  o.show_in_ranges, o.currency_conversion,  o.id))
             else:#Venta
                 if abs(o.acciones)>sioa.acciones():
                     logging.critical("No puedo vender más acciones que las que tengo. EEEEEEEEEERRRRRRRRRRRROOOOORRRRR")
@@ -2133,21 +2133,21 @@ class SetInvestmentOperationsCurrentHeterogeneus(SetIO):
                 if ioa.acciones-accionesventa>Decimal('0'):#>0Se vende todo y se crea un ioa de resto, y se historiza lo restado
                     comisiones=comisiones+io.comision+ioa.comision
                     impuestos=impuestos+io.impuestos+ioa.impuestos
-                    sioh.arr.append(InvestmentOperationHistorical(self.mem).init__create(ioa, io.investment, ioa.datetime.date(), -accionesventa*io.valor_accion, io.tipooperacion, -accionesventa, comisiones, impuestos, io.datetime.date(), ioa.valor_accion, io.valor_accion, ioa.currency_conversion, io.currency_conversion))
-                    self.arr.insert(0, InvestmentOperationCurrent(self.mem).init__create(ioa, ioa.tipooperacion, ioa.datetime, ioa.investment,  ioa.acciones-abs(accionesventa), (ioa.acciones-abs(accionesventa))*ioa.valor_accion,  0, 0, ioa.valor_accion, ioa.show_in_ranges,  ioa.currency_conversion, ioa.id))
+                    sioh.arr.append(InvestmentOperationHistorical(self.mem).init__create(ioa, io.investment, ioa.datetime.date(), io.tipooperacion, -accionesventa, comisiones, impuestos, io.datetime.date(), ioa.valor_accion, io.valor_accion, ioa.currency_conversion, io.currency_conversion))
+                    self.arr.insert(0, InvestmentOperationCurrent(self.mem).init__create(ioa, ioa.tipooperacion, ioa.datetime, ioa.investment,  ioa.acciones-abs(accionesventa), 0, 0, ioa.valor_accion, ioa.show_in_ranges,  ioa.currency_conversion, ioa.id))
                     self.arr.remove(ioa)
                     accionesventa=Decimal('0')#Sale bucle
                     break
                 elif ioa.acciones-accionesventa<Decimal('0'):#<0 Se historiza todo y se restan acciones venta
                     comisiones=comisiones+ioa.comision
                     impuestos=impuestos+ioa.impuestos
-                    sioh.arr.append(InvestmentOperationHistorical(self.mem).init__create(ioa, io.investment, ioa.datetime.date(), -ioa.acciones*io.valor_accion, io.tipooperacion, -ioa.acciones, Decimal('0'), Decimal('0'), io.datetime.date(), ioa.valor_accion, io.valor_accion, ioa.currency_conversion, io.currency_conversion))
+                    sioh.arr.append(InvestmentOperationHistorical(self.mem).init__create(ioa, io.investment, ioa.datetime.date(), io.tipooperacion, -ioa.acciones, Decimal('0'), Decimal('0'), io.datetime.date(), ioa.valor_accion, io.valor_accion, ioa.currency_conversion, io.currency_conversion))
                     accionesventa=accionesventa-ioa.acciones                    
                     self.arr.remove(ioa)
                 elif ioa.acciones-accionesventa==Decimal('0'):#Se historiza todo y se restan acciones venta y se sale
                     comisiones=comisiones+io.comision+ioa.comision
                     impuestos=impuestos+io.impuestos+ioa.impuestos
-                    sioh.arr.append(InvestmentOperationHistorical(self.mem).init__create(ioa, io.investment, ioa.datetime.date(), ioa.acciones*io.valor_accion, io.tipooperacion, -ioa.acciones, comisiones, impuestos, io.datetime.date(), ioa.valor_accion, io.valor_accion, ioa.currency_conversion, io.currency_conversion))
+                    sioh.arr.append(InvestmentOperationHistorical(self.mem).init__create(ioa, io.investment, ioa.datetime.date(),  io.tipooperacion, -ioa.acciones, comisiones, impuestos, io.datetime.date(), ioa.valor_accion, io.valor_accion, ioa.currency_conversion, io.currency_conversion))
                     self.arr.remove(ioa)                    
                     accionesventa=Decimal('0')#Sale bucle                    
                     break
@@ -2666,7 +2666,7 @@ class InvestmentOperationHistorical:
     def __repr__(self):
         return ("IOH {0}. {1} {2}. Acciones: {3}. Valor:{4}. Currency conversion: {5} y {6}".format(self.investment.name,  self.fecha_venta, self.tipooperacion.name,  self.acciones,  self.valor_accion_venta, self.currency_conversion_compra,  self.currency_conversion_venta))
         
-    def init__create(self, operinversion, inversion, fecha_inicio, importe, tipooperacion, acciones,comision,impuestos,fecha_venta,valor_accion_compra,valor_accion_venta, currency_conversion_compra, currency_conversion_venta,  id=None):
+    def init__create(self, operinversion, inversion, fecha_inicio, tipooperacion, acciones,comision,impuestos,fecha_venta,valor_accion_compra,valor_accion_venta, currency_conversion_compra, currency_conversion_venta,  id=None):
         """Genera un objeto con los parametros. id_operinversioneshistoricas es puesto a new"""
         self.id=id
         self.operinversion=operinversion
@@ -2776,7 +2776,7 @@ class InvestmentOperationCurrent:
         self.datetime=None# con tz
         self.investment=None
         self.acciones=None
-        self.importe=None
+#        self.importe=None
         self.impuestos=None
         self.comision=None
         self.valor_accion=None
@@ -2787,7 +2787,7 @@ class InvestmentOperationCurrent:
     def __repr__(self):
         return ("IOA {0}. {1} {2}. Acciones: {3}. Valor:{4}. Currency conversion: {5}".format(self.investment.name,  self.datetime, self.tipooperacion.name,  self.acciones,  self.valor_accion, self.currency_conversion))
         
-    def init__create(self, operinversion, tipooperacion, datetime, inversion, acciones, importe, impuestos, comision, valor_accion, show_in_ranges,  currency_conversion, id=None):
+    def init__create(self, operinversion, tipooperacion, datetime, inversion, acciones,  impuestos, comision, valor_accion, show_in_ranges,  currency_conversion, id=None):
         """Investment es un objeto Investment"""
         self.id=id
         self.operinversion=operinversion
@@ -2795,31 +2795,31 @@ class InvestmentOperationCurrent:
         self.datetime=datetime
         self.investment=inversion
         self.acciones=acciones
-        self.importe=importe
+#        self.importe=importe
         self.impuestos=impuestos
         self.comision=comision
         self.valor_accion=valor_accion
         self.show_in_ranges=show_in_ranges
         self.currency_conversion=currency_conversion
         return self
-                                
-    def init__db_row(self,  row,  inversion,  operinversion, tipooperacion):
-        self.id=row['id_operinversionesactual']
-        self.operinversion=operinversion
-        self.tipooperacion=tipooperacion
-        self.datetime=row['datetime']
-        self.investment=inversion
-        self.acciones=row['acciones']
-        self.importe=row['importe']
-        self.impuestos=row['impuestos']
-        self.comision=row['comision']
-        self.valor_accion=row['valor_accion']
-        self.show_in_ranges=row['show_in_ranges']
-        logging.error("NO SE SI DEBERIA HABER ROW PARA INVESTMENTOPERATIONCURRENT")
-        return self
+#                                
+#    def init__db_row(self,  row,  inversion,  operinversion, tipooperacion):
+#        self.id=row['id_operinversionesactual']
+#        self.operinversion=operinversion
+#        self.tipooperacion=tipooperacion
+#        self.datetime=row['datetime']
+#        self.investment=inversion
+#        self.acciones=row['acciones']
+#        self.importe=row['importe']
+#        self.impuestos=row['impuestos']
+#        self.comision=row['comision']
+#        self.valor_accion=row['valor_accion']
+#        self.show_in_ranges=row['show_in_ranges']
+#        logging.error("NO SE SI DEBERIA HABER ROW PARA INVESTMENTOPERATIONCURRENT")
+#        return self
         
     def copy(self):
-        return self.init__create(self.operinversion, self.tipooperacion, self.datetime, self.investment, self.acciones, self.importe, self.impuestos, self.comision, self.valor_accion, self.show_in_ranges, self.currency_conversion,   self.id)
+        return self.init__create(self.operinversion, self.tipooperacion, self.datetime, self.investment, self.acciones, self.impuestos, self.comision, self.valor_accion, self.show_in_ranges, self.currency_conversion,   self.id)
                 
     def age(self):
         """Average age of the current investment operations in days"""
@@ -3763,7 +3763,7 @@ class InvestmentOperation:
         self.tipooperacion=None
         self.investment=None
         self.acciones=None
-        self.importe=None
+#        self.importe=None
         self.impuestos=None
         self.comision=None
         self.valor_accion=None
@@ -3782,7 +3782,7 @@ class InvestmentOperation:
         self.tipooperacion=tipooperacion
         self.investment=inversion
         self.acciones=row['acciones']
-        self.importe=row['importe']
+#        self.importe=row['importe']
         self.impuestos=row['impuestos']
         self.comision=row['comision']
         self.valor_accion=row['valor_accion']
@@ -3792,13 +3792,13 @@ class InvestmentOperation:
         self.currency_conversion=row['currency_conversion']
         return self
         
-    def init__create(self, tipooperacion, datetime, inversion, acciones, importe, impuestos, comision, valor_accion, comentario, show_in_ranges, currency_conversion,    id=None):
+    def init__create(self, tipooperacion, datetime, inversion, acciones,  impuestos, comision, valor_accion, comentario, show_in_ranges, currency_conversion,    id=None):
         self.id=id
         self.tipooperacion=tipooperacion
         self.datetime=datetime
         self.investment=inversion
         self.acciones=acciones
-        self.importe=importe
+#        self.importe=importe
         self.impuestos=impuestos
         self.comision=comision
         self.valor_accion=valor_accion
@@ -3896,15 +3896,7 @@ class InvestmentOperation:
             Si el parametro investment es pasado usa el objeto investment  en vez de una referencia a self.investmen
         """
         inv=self.investment if investment==None else investment
-        return InvestmentOperation(self.mem).init__create(self.tipooperacion, self.datetime, inv , self.acciones, self.importe, self.impuestos, self.comision, self.valor_accion, self.comentario,  self.show_in_ranges, self.currency_conversion, self.id)
-                
-#    def comment(self):
-#        """Función que genera un comentario parseado según el tipo de operación o concepto"""
-##        if self.tipooperacion.id==9:#"Traspaso de valores. Origen"#"{0}|{1}|{2}|{3}".format(self.investment.name, self.bruto, self.retencion, self.comision)
-##            return QApplication.translate("Core","Traspaso de valores realizado a {0}".format(self.comentario.split("|"), self.account.currency.symbol))
-##        else:
-#        logging.info("Obsolete comment")
-#        return self.comentario
+        return InvestmentOperation(self.mem).init__create(self.tipooperacion, self.datetime, inv , self.acciones, self.impuestos, self.comision, self.valor_accion, self.comentario,  self.show_in_ranges, self.currency_conversion, self.id)
 
     def less_than_a_year(self):
         if datetime.date.today()-self.datetime.date()<=datetime.timedelta(days=365):
@@ -3914,11 +3906,11 @@ class InvestmentOperation:
     def save(self, recalculate=True,  autocommit=True):
         cur=self.mem.con.cursor()
         if self.id==None:#insertar
-            cur.execute("insert into operinversiones(datetime, id_tiposoperaciones,  importe, acciones,  impuestos,  comision,  valor_accion, comentario, show_in_ranges, id_inversiones, currency_conversion) values (%s, %s, %s, %s, %s, %s, %s, %s,%s,%s, %s) returning id_operinversiones", (self.datetime, self.tipooperacion.id, self.importe, self.acciones, self.impuestos, self.comision, self.valor_accion, self.comentario, self.show_in_ranges,  self.investment.id,  self.currency_conversion))
+            cur.execute("insert into operinversiones(datetime, id_tiposoperaciones,  acciones,  impuestos,  comision,  valor_accion, comentario, show_in_ranges, id_inversiones, currency_conversion) values (%s, %s, %s, %s, %s, %s, %s, %s,%s,%s) returning id_operinversiones", (self.datetime, self.tipooperacion.id, self.acciones, self.impuestos, self.comision, self.valor_accion, self.comentario, self.show_in_ranges,  self.investment.id,  self.currency_conversion))
             self.id=cur.fetchone()[0]
             self.investment.op.append(self)
         else:
-            cur.execute("update operinversiones set datetime=%s, id_tiposoperaciones=%s, importe=%s, acciones=%s, impuestos=%s, comision=%s, valor_accion=%s, comentario=%s, id_inversiones=%s, show_in_ranges=%s, currency_conversion=%s where id_operinversiones=%s", (self.datetime, self.tipooperacion.id, self.importe, self.acciones, self.impuestos, self.comision, self.valor_accion, self.comentario, self.investment.id, self.show_in_ranges,  self.currency_conversion,  self.id))
+            cur.execute("update operinversiones set datetime=%s, id_tiposoperaciones=%s, acciones=%s, impuestos=%s, comision=%s, valor_accion=%s, comentario=%s, id_inversiones=%s, show_in_ranges=%s, currency_conversion=%s where id_operinversiones=%s", (self.datetime, self.tipooperacion.id, self.acciones, self.impuestos, self.comision, self.valor_accion, self.comentario, self.investment.id, self.show_in_ranges,  self.currency_conversion,  self.id))
         if recalculate==True:
             (self.investment.op_actual,  self.investment.op_historica)=self.investment.op.calcular()   
             self.actualizar_cuentaoperacion_asociada()

@@ -283,7 +283,7 @@ class wdgInvestmentClasses(QWidget, Ui_wdgInvestmentClasses):
         invs=self.mem.data.investments_active().setInvestments_merging_investments_with_same_product_merging_current_operations()
         invs.order_by_balance()
         for i in invs.arr:
-            labels.append(i.name.replace("Investment merging current operations of ", ""))
+            labels.append(i.name.replace("Virtual investment merging current operations of ", ""))
             if self.radCurrent.isChecked():
                 saldo=i.balance(type=3)
             else:
