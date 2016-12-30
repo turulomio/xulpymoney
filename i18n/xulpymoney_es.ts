@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="es_ES" sourcelanguage="en">
+<!DOCTYPE TS><TS version="2.0" language="es_ES" sourcelanguage="en">
 <context>
     <name>AssetsReport</name>
     <message>
@@ -1485,7 +1484,7 @@ Do you want to activate it?</source>
     </message>
     <message>
         <location filename="../ui/canvaschart.py" line="741"/>
-        <source>Lines calculated investing: 2500 â¬, 3500 â¬, 12000 â¬, 12000 â¬. </source>
+        <source>Lines calculated investing: 2500 &#xe2;&#x82;&#xac;, 3500 &#xe2;&#x82;&#xac;, 12000 &#xe2;&#x82;&#xac;, 12000 &#xe2;&#x82;&#xac;. </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1621,7 +1620,7 @@ Do you want to activate it?</source>
         <translation>TOTAL</translation>
     </message>
 </context>
-<context>
+<context encoding="UTF-8">
     <name>frmAbout</name>
     <message>
         <location filename="../ui/frmAbout.ui" line="111"/>
@@ -1635,12 +1634,12 @@ Do you want to activate it?</source>
     </message>
     <message>
         <location filename="../ui/frmAbout.ui" line="175"/>
-        <source>NÃºmero de Deuda pÃºblica</source>
+        <source>N&#xc3;&#xba;mero de Deuda p&#xc3;&#xba;blica</source>
         <translation></translation>
     </message>
     <message>
         <location filename="../ui/frmAbout.ui" line="180"/>
-        <source>NÃºmero de Deuda privada</source>
+        <source>N&#xc3;&#xba;mero de Deuda privada</source>
         <translation></translation>
     </message>
     <message>
@@ -1688,7 +1687,7 @@ Do you want to activate it?</source>
         <source>Products</source>
         <translation>Productos</translation>
     </message>
-    <message>
+    <message encoding="UTF-8">
         <location filename="../ui/frmAbout.ui" line="117"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
@@ -1957,7 +1956,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../ui/frmAccountsReport.ui" line="542"/>
-        <source>XXXX â¬</source>
+        <source>XXXX &#xe2;&#x82;&#xac;</source>
         <translation>XXXX €</translation>
     </message>
     <message>
@@ -2693,17 +2692,17 @@ p, li { white-space: pre-wrap; }
         <translation>Añadir una nueva inversión</translation>
     </message>
     <message>
-        <location filename="../ui/frmInvestmentReport.py" line="155"/>
+        <location filename="../ui/frmInvestmentReport.py" line="158"/>
         <source>Current operations average age: {0}</source>
         <translation>Media de edad de las operaciones actuales: {0}</translation>
     </message>
     <message>
-        <location filename="../ui/frmInvestmentReport.py" line="221"/>
+        <location filename="../ui/frmInvestmentReport.py" line="224"/>
         <source>Before adding a operation, you must add the current price of the product.</source>
         <translation>Antes de añadir una operación, debe añadir el valor actual del producto.</translation>
     </message>
     <message>
-        <location filename="../ui/frmInvestmentReport.py" line="488"/>
+        <location filename="../ui/frmInvestmentReport.py" line="491"/>
         <source>Selected: {0}</source>
         <translation>Seleccionado: {0}</translation>
     </message>
@@ -2763,37 +2762,37 @@ p, li { white-space: pre-wrap; }
         <translation>% Invertido</translation>
     </message>
     <message>
-        <location filename="../ui/frmInvestmentReport.py" line="102"/>
+        <location filename="../ui/frmInvestmentReport.py" line="105"/>
         <source>Estimation review date: {0}</source>
         <translation>Fecha de revisión de la estimación: {0}</translation>
     </message>
     <message>
-        <location filename="../ui/frmInvestmentReport.py" line="104"/>
+        <location filename="../ui/frmInvestmentReport.py" line="107"/>
         <source>Estimated balance: {0} ({1} after taxes)</source>
         <translation>Saldo estimado: {0} ({1} después de impuestos)</translation>
     </message>
     <message>
-        <location filename="../ui/frmInvestmentReport.py" line="105"/>
+        <location filename="../ui/frmInvestmentReport.py" line="108"/>
         <source>% Invested: {0}</source>
         <translation>% Invertido: {0}</translation>
     </message>
     <message>
-        <location filename="../ui/frmInvestmentReport.py" line="286"/>
+        <location filename="../ui/frmInvestmentReport.py" line="289"/>
         <source>Shares transfer couldn&apos;t be done.</source>
         <translation>El traspaso de acciones no ha podido ser realizado.</translation>
     </message>
     <message>
-        <location filename="../ui/frmInvestmentReport.py" line="103"/>
+        <location filename="../ui/frmInvestmentReport.py" line="106"/>
         <source>Estimated annual dividend is {0} ({1} per share)</source>
         <translation>La estimación anual de dividendo es {0} ({1} por acción)</translation>
     </message>
     <message>
-        <location filename="../ui/frmInvestmentReport.py" line="106"/>
+        <location filename="../ui/frmInvestmentReport.py" line="109"/>
         <source>% APR from invested: {0}</source>
         <translation>% TAE de lo invertido: {0}</translation>
     </message>
     <message>
-        <location filename="../ui/frmInvestmentReport.py" line="208"/>
+        <location filename="../ui/frmInvestmentReport.py" line="211"/>
         <source>Divest / Reinvest simulation</source>
         <translation>Simulación de Desinversión / Reinversión</translation>
     </message>
@@ -2803,7 +2802,7 @@ p, li { white-space: pre-wrap; }
         <translation>TAE</translation>
     </message>
     <message>
-        <location filename="../ui/frmInvestmentReport.py" line="356"/>
+        <location filename="../ui/frmInvestmentReport.py" line="359"/>
         <source>You must select a product to continue.</source>
         <translation>Debe seleccionar un producto para continuar.</translation>
     </message>
@@ -2823,7 +2822,7 @@ p, li { white-space: pre-wrap; }
         <translation>Ocultar en el informe de rangos</translation>
     </message>
     <message>
-        <location filename="../ui/frmInvestmentReport.py" line="484"/>
+        <location filename="../ui/frmInvestmentReport.py" line="487"/>
         <source>Show in range report</source>
         <translation>Mostrar en el informe de rangos</translation>
     </message>
@@ -2878,7 +2877,7 @@ p, li { white-space: pre-wrap; }
         <translation>Desinvertir / Reinvertir todo el producto</translation>
     </message>
     <message>
-        <location filename="../ui/frmInvestmentReport.py" line="151"/>
+        <location filename="../ui/frmInvestmentReport.py" line="154"/>
         <source>Current status in account currency ( {} = {} at {} )</source>
         <translation>Situación actual en la divisa de la cuenta ( {} = {} a las {} )</translation>
     </message>
@@ -3172,7 +3171,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../ui/frmMain.py" line="76"/>
-        <source>Xulpymoney 2010-{0} Â© (Admin mode)</source>
+        <source>Xulpymoney 2010-{0} &#xc2;&#xa9; (Admin mode)</source>
         <translation>Xulpymoney 2010-{0} Â© (Admin mode)</translation>
     </message>
     <message>
@@ -3217,12 +3216,12 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../ui/frmMain.py" line="48"/>
-        <source>Xulpymoney 2010-{0} ©</source>
+        <source>Xulpymoney 2010-{0} &#xa9;</source>
         <translation>Xulpymoney 2010-{0} ©</translation>
     </message>
     <message>
         <location filename="../ui/frmMain.py" line="66"/>
-        <source>Xulpymoney 2010-{0} © (Admin mode)</source>
+        <source>Xulpymoney 2010-{0} &#xa9; (Admin mode)</source>
         <translation>Xulpymoney 2010-{0} © (Admin mode)</translation>
     </message>
     <message>
@@ -7191,7 +7190,7 @@ Daily Diff: {5}. Investment average age: {6}</source>
     </message>
     <message>
         <location filename="../ui/wdgSimulations.py" line="85"/>
-        <source>Xulpymoney SIMULATED IN {} 2010-{} ©</source>
+        <source>Xulpymoney SIMULATED IN {} 2010-{} &#xa9;</source>
         <translation>Xulpymoney SIMULATED IN {} 2010-{} ©</translation>
     </message>
     <message>

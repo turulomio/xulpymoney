@@ -86,10 +86,13 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
         else:
             self.dividends.myqtablewidget(self.tblDividendsAccountCurrency, type=2)
         if self.chkHistoricalDividends.checkState()==Qt.Unchecked:
-            if len(self.dividends.arr)>0 and len(self.investment.op_actual.arr)>0:
+            if self.dividends.length()>0 and self.investment.op_actual.length()>0:
                 importeinvertido=self.investment.invertido()
                 dias=(datetime.date.today()-self.investment.op_actual.first().datetime.date()).days+1
-                dtpc=100*sumbruto.amount/importeinvertido.amount
+                if not importeinvertido.isZero():
+                    dtpc=100*sumbruto.amount/importeinvertido.amount
+                else:
+                    dtpc=0
                 dtae=365*dtpc/abs(dias)
             else:
                 dtpc=0

@@ -122,9 +122,9 @@ class wdgDisReinvest(QWidget, Ui_wdgDisReinvest):
         self.sim_op=self.investment.op.copy_until_datetime(None)
         id_operinversiones=self.sim_op.get_highest_io_id ()+1##Para simular un id_operinversiones real, le asignamos uno
         if self.radDes.isChecked():#DESINVERSION
-            d=InvestmentOperation(self.mem).init__create(self.mem.tiposoperaciones.find_by_id(5), datetime.datetime.now(pytz.timezone(self.mem.localzone.name)), self.investment, -acciones, importe, impuestos, comision, valor_accion, "",  True, currency_conversion,  id_operinversiones)
+            d=InvestmentOperation(self.mem).init__create(self.mem.tiposoperaciones.find_by_id(5), datetime.datetime.now(pytz.timezone(self.mem.localzone.name)), self.investment, -acciones, impuestos, comision, valor_accion, "",  True, currency_conversion,  id_operinversiones)
         else:#REINVERSION
-            d=InvestmentOperation(self.mem).init__create(self.mem.tiposoperaciones.find_by_id(4), datetime.datetime.now(pytz.timezone(self.mem.localzone.name)), self.investment, acciones, importe, impuestos, comision, valor_accion, "",  True, currency_conversion,  id_operinversiones)
+            d=InvestmentOperation(self.mem).init__create(self.mem.tiposoperaciones.find_by_id(4), datetime.datetime.now(pytz.timezone(self.mem.localzone.name)), self.investment, acciones, impuestos, comision, valor_accion, "",  True, currency_conversion,  id_operinversiones)
         self.sim_op.arr.append(d)
 
         (self.sim_opactual, self.sim_ophistorica)=self.sim_op.calcular()

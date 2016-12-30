@@ -2688,17 +2688,17 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmInvestmentReport.py" line="155"/>
+        <location filename="../ui/frmInvestmentReport.py" line="158"/>
         <source>Current operations average age: {0}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmInvestmentReport.py" line="221"/>
+        <location filename="../ui/frmInvestmentReport.py" line="224"/>
         <source>Before adding a operation, you must add the current price of the product.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmInvestmentReport.py" line="488"/>
+        <location filename="../ui/frmInvestmentReport.py" line="491"/>
         <source>Selected: {0}</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2758,37 +2758,37 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmInvestmentReport.py" line="102"/>
+        <location filename="../ui/frmInvestmentReport.py" line="105"/>
         <source>Estimation review date: {0}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmInvestmentReport.py" line="104"/>
+        <location filename="../ui/frmInvestmentReport.py" line="107"/>
         <source>Estimated balance: {0} ({1} after taxes)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmInvestmentReport.py" line="105"/>
+        <location filename="../ui/frmInvestmentReport.py" line="108"/>
         <source>% Invested: {0}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmInvestmentReport.py" line="286"/>
+        <location filename="../ui/frmInvestmentReport.py" line="289"/>
         <source>Shares transfer couldn&apos;t be done.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmInvestmentReport.py" line="103"/>
+        <location filename="../ui/frmInvestmentReport.py" line="106"/>
         <source>Estimated annual dividend is {0} ({1} per share)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmInvestmentReport.py" line="106"/>
+        <location filename="../ui/frmInvestmentReport.py" line="109"/>
         <source>% APR from invested: {0}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmInvestmentReport.py" line="208"/>
+        <location filename="../ui/frmInvestmentReport.py" line="211"/>
         <source>Divest / Reinvest simulation</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2798,7 +2798,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmInvestmentReport.py" line="356"/>
+        <location filename="../ui/frmInvestmentReport.py" line="359"/>
         <source>You must select a product to continue.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2818,7 +2818,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmInvestmentReport.py" line="484"/>
+        <location filename="../ui/frmInvestmentReport.py" line="487"/>
         <source>Show in range report</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2873,7 +2873,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmInvestmentReport.py" line="151"/>
+        <location filename="../ui/frmInvestmentReport.py" line="154"/>
         <source>Current status in account currency ( {} = {} at {} )</source>
         <translation type="unfinished"></translation>
     </message>
