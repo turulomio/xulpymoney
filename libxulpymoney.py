@@ -7558,7 +7558,7 @@ class MemXulpymoney:
         self.frmMain=None #Pointer to mainwidget
         self.closing=False#Used to close threads
         
-    def init__script(self, title, type):
+    def init__script(self, title, type=0):
         """
             Script arguments and autoconnect in mem.con, load_db_data
         """

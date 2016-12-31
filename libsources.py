@@ -2,7 +2,6 @@ import os
 import urllib.request
 import time
 import datetime
-import multiprocessing
 import sys
 from PyQt5.QtWebKitWidgets import QWebView
 from PyQt5.QtWidgets import QWidget, QMenu, QDialog, QVBoxLayout, QTableWidgetItem, QTextEdit, QApplication
@@ -811,12 +810,13 @@ class WorkerYahoo(SourceParsePage):
         """Define  the number of steps of the source run"""
         return len(self.agrupation)*2 +1#CORRECT
 
-class WorkerYahooHistorical(SourceIterateProducts):
+class WorkerYahooHistorical(Source):
     """Clase que recorre las inversiones activas y busca la última  que tiene el microsecond 4. Busca en internet los historicals a partir de esa fecha"""
     def __init__(self, mem, type,  sleep=0):
-        SourceIterateProducts.__init__(self, mem,type, sleep)
-        #SourceIterateProducts.__init__(self, mem,"select * from products where id in (79329,81105)", type, sleep)
+        Source.__init__(self, mem)
         self.setName(self.tr("Yahoo Historical source"))
+        self.type=type
+        self.sleep=sleep
         
     def on_execute_product(self,  id_product):
         """inico y fin son dos dates entre los que conseguir los datos."""
@@ -876,11 +876,35 @@ class WorkerYahooHistorical(SourceIterateProducts):
         else:
             self.sql="select * from products where priorityhistorical[1]=3 and obsolete=false order by name"
         self.setStatus(SourceStatus.Loaded)
-
-
+        
+    def run(self):
+        self.setStatus(SourceStatus.Running)
+        self.products.load_from_db(self.sql)
+        self.next_step()
+        for i,  product in enumerate(self.products.arr): 
+            if self.type==1:
+                stri="{0}: {1}/{2} {3}. Appended: {4}            ".format(self.__class__.__name__, i+1, self.products.length(), product, self.quotes.length()) 
+                sys.stdout.write("\b"*1000+stri)
+                sys.stdout.flush()
+            if self.stopping==True:
+                print ("Stopping")
+                self.quotes.clear()
+                break
+            self.on_execute_product(product.id)
+            self.next_step()
+            time.sleep(self.sleep)#time step
+        print("")
+        self.quotes_save()
+        self.mem.con.commit()
+        self.next_step()
+        
+        self.setStatus(SourceStatus.Finished)
+        
+        
     def steps(self):
         """Define  the number of steps of the source run"""
         return 2+self.products.length() #CORRECT
+
 
 ##################################
 
