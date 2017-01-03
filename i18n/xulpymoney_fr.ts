@@ -311,7 +311,7 @@
 <context>
     <name>Core</name>
     <message>
-        <location filename="../libsources.py" line="1018"/>
+        <location filename="../libsources.py" line="1014"/>
         <source>From {} desynchronized products added:
     - {} quotes
     - {} dividends per share
@@ -1230,7 +1230,7 @@ Do you want to activate it?</source>
 <context>
     <name>WorkerYahooHistorical</name>
     <message>
-        <location filename="../libsources.py" line="819"/>
+        <location filename="../libsources.py" line="818"/>
         <source>Yahoo Historical source</source>
         <translation type="unfinished"></translation>
     </message>

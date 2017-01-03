@@ -110,7 +110,7 @@
         </widget>
        </item>
        <item>
-        <widget class="myQLineEdit" name="txtImporteBruto">
+        <widget class="myQLineEdit" name="txtGross">
          <property name="enabled">
           <bool>false</bool>
          </property>
@@ -137,7 +137,7 @@
         </widget>
        </item>
        <item>
-        <widget class="myQLineEdit" name="txtImporte">
+        <widget class="myQLineEdit" name="txtNet">
          <property name="enabled">
           <bool>false</bool>
          </property>

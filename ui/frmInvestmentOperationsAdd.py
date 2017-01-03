@@ -49,7 +49,7 @@ class frmInvestmentOperationsAdd(QDialog, Ui_frmInvestmentOperationsAdd):
             self.lblTitulo.setText(self.tr("{} operation edition").format(self.investment.name))
             self.mem.tiposoperaciones.qcombobox_investments_operations(self.cmbTiposOperaciones, self.operinversion.tipooperacion)
             self.wdgDT.set(self.mem, self.operinversion.datetime, self.mem.localzone)
-            self.txtImporte.setText(self.operinversion.importe)
+            self.txtNet.setText(self.operinversion.net(type=1))
             self.wdg2CTaxes.setTextA(self.operinversion.impuestos)
             self.wdg2CComission.setTextA(self.operinversion.comision)
             self.wdg2CPrice.setTextA(self.operinversion.valor_accion)
@@ -80,7 +80,7 @@ class frmInvestmentOperationsAdd(QDialog, Ui_frmInvestmentOperationsAdd):
         self.operinversion.currency_conversion=self.wdg2CCurrencyConversion.factor
         self.operinversion.acciones=self.txtAcciones.decimal()
         if id_tiposoperaciones==5: #Venta
-#            self.operinversion.importe=self.txtImporteBruto.decimal()
+#            self.operinversion.importe=self.txtNetBruto.decimal()
             self.operinversion.show_in_ranges=False
             if self.operinversion.acciones>Decimal('0'):
                 m=QMessageBox()
@@ -90,7 +90,7 @@ class frmInvestmentOperationsAdd(QDialog, Ui_frmInvestmentOperationsAdd):
                 m.exec_()    
                 return        
         elif id_tiposoperaciones==4: #Compra
-#            self.operinversion.importe=self.txtImporte.decimal()
+#            self.operinversion.importe=self.txtNet.decimal()
             if self.operinversion.acciones<0: 
                 m=QMessageBox()
                 m.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
@@ -99,7 +99,7 @@ class frmInvestmentOperationsAdd(QDialog, Ui_frmInvestmentOperationsAdd):
                 m.exec_()    
                 return
         elif id_tiposoperaciones==6: #Añadido    
-#            self.operinversion.importe=self.txtImporte.decimal()
+#            self.operinversion.importe=self.txtNet.decimal()
             if self.operinversion.acciones<0: 
                 m=QMessageBox()
                 m.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
@@ -108,7 +108,7 @@ class frmInvestmentOperationsAdd(QDialog, Ui_frmInvestmentOperationsAdd):
                 m.exec_()    
                 return            
 #        elif id_tiposoperaciones==8: #Traspaso fondos
-#            self.operinversion.importe=self.txtImporte.decimal()
+#            self.operinversion.importe=self.txtNet.decimal()
         
         if self.operinversion.impuestos<Decimal('0') or  self.operinversion.comision<Decimal('0') or self.operinversion.valor_accion<Decimal('0'):            
             m=QMessageBox()
@@ -148,16 +148,16 @@ class frmInvestmentOperationsAdd(QDialog, Ui_frmInvestmentOperationsAdd):
         try:
             if id_tiposoperaciones==4:#Compra
                 importe=abs(round(self.txtAcciones.decimal()*self.wdg2CPrice.decimalA(), 2))
-                self.txtImporte.setText(importe)
-                self.txtImporteBruto.setText(importe+self.wdg2CComission.decimalA()+self.wdg2CTaxes.decimalA())
+                self.txtNet.setText(importe+self.wdg2CComission.decimalA()+self.wdg2CTaxes.decimalA())
+                self.txtGross.setText(importe)
             if id_tiposoperaciones==5:#Venta
                 importe=abs(round(self.txtAcciones.decimal()*self.wdg2CPrice.decimalA(), 2))
-                self.txtImporte.setText(importe-self.wdg2CComission.decimalA()-self.wdg2CTaxes.decimalA())
-                self.txtImporteBruto.setText(importe)
+                self.txtNet.setText(importe-self.wdg2CComission.decimalA()-self.wdg2CTaxes.decimalA())
+                self.txtGross.setText(importe)
             if id_tiposoperaciones==8:#Traspaso
                 importe=abs(round(self.txtAcciones.decimal()*self.wdg2CPrice.decimaAl(), 2))
-                self.txtImporte.setText(importe)
-                self.txtImporteBruto.setText(importe+self.wdg2CComission.decimalA()+self.wdg2CTaxes.decimalA())
+                self.txtNet.setText(importe+self.wdg2CComission.decimalA()+self.wdg2CTaxes.decimalA())
+                self.txtGross.setText(importe)
         except:
             pass
 
