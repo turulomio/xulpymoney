@@ -330,27 +330,32 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
         self.load_tabDividends()
 
     def on_cmdISE_released(self):
-        if self.investment.merge==0:
+        if self.investment==None or self.investment.merge==0:
             self.cmdInvestment.setEnabled(True)
+
     def on_txtVenta_textChanged(self):
-        if self.investment.merge==0:
+        if self.investment==None or self.investment.merge==0:
             self.cmdInvestment.setEnabled(True)
+
     def on_txtInvestment_textChanged(self):
-        if self.investment.merge==0:
+        if self.investment==None or self.investment.merge==0:
             self.cmdInvestment.setEnabled(True)
+
     def on_cmbTipoInvestment_currentIndexChanged(self, index):
-        if self.investment.merge==0:
+        if self.investment==None or self.investment.merge==0:
             self.cmdInvestment.setEnabled(True)
+
     def on_calExpiration_selectionChanged(self):
-        if self.investment.merge==0:
+        if self.investment==None or self.investment.merge==0:
             self.cmdInvestment.setEnabled(True)
+
     def on_chkExpiration_stateChanged(self, state):
-        if self.investment.merge==0:
+        if self.investment==None or self.investment.merge==0:
             self.cmdInvestment.setEnabled(True)
-        
+
     def on_cmdToday_released(self):
         self.calExpiration.setSelectedDate(datetime.date.today())
-            
+
     def on_cmdInvestment_released(self):
         if self.ise.selected==None:
             m=QMessageBox()

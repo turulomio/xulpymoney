@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>548</width>
-    <height>410</height>
+    <width>474</width>
+    <height>321</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -23,7 +23,7 @@
   <property name="modal">
    <bool>true</bool>
   </property>
-  <layout class="QHBoxLayout" name="horizontalLayout_9">
+  <layout class="QHBoxLayout" name="horizontalLayout_4">
    <item>
     <layout class="QVBoxLayout" name="verticalLayout">
      <item>
@@ -98,61 +98,28 @@
       <widget class="wdgTwoCurrencyLineEdit" name="wdg2CTaxes" native="true"/>
      </item>
      <item>
-      <widget class="wdgTwoCurrencyLineEdit" name="wdg2CComission" native="true"/>
-     </item>
-     <item>
-      <layout class="QHBoxLayout" name="horizontalLayout">
+      <layout class="QHBoxLayout" name="horizontalLayout_2">
        <item>
-        <widget class="QLabel" name="label_3">
-         <property name="text">
-          <string>Gross amount</string>
-         </property>
-        </widget>
+        <widget class="wdgTwoCurrencyLineEdit" name="wdg2CComission" native="true"/>
        </item>
        <item>
-        <widget class="myQLineEdit" name="txtGross">
-         <property name="enabled">
-          <bool>false</bool>
-         </property>
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
+        <widget class="QToolButton" name="cmdComissionCalculator">
          <property name="text">
-          <string>0</string>
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset resource="../images/xulpymoney.qrc">
+           <normaloff>:/xulpymoney/tools-wizard.png</normaloff>:/xulpymoney/tools-wizard.png</iconset>
          </property>
         </widget>
        </item>
       </layout>
      </item>
      <item>
-      <layout class="QHBoxLayout" name="horizontalLayout_10">
-       <item>
-        <widget class="QLabel" name="label_9">
-         <property name="text">
-          <string>Net amount</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="myQLineEdit" name="txtNet">
-         <property name="enabled">
-          <bool>false</bool>
-         </property>
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="text">
-          <string>0</string>
-         </property>
-        </widget>
-       </item>
-      </layout>
+      <widget class="wdgTwoCurrencyLineEdit" name="wdg2CGross" native="true"/>
+     </item>
+     <item>
+      <widget class="wdgTwoCurrencyLineEdit" name="wdg2CNet" native="true"/>
      </item>
      <item>
       <widget class="QPushButton" name="cmd">
