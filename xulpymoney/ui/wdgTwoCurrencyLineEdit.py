@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QWidget,  QLabel, QHBoxLayout, QToolButton
+from PyQt5.QtWidgets import QWidget,  QLabel, QHBoxLayout, QToolButton, QSizePolicy, QSpacerItem
 from PyQt5.QtCore import pyqtSignal, Qt
 from PyQt5.QtGui import QIcon, QPixmap
 from myqlineedit import myQLineEdit
@@ -10,17 +10,19 @@ class wdgTwoCurrencyLineEdit(QWidget):
     def __init__(self, parent):
         QWidget.__init__(self, parent)
         self.horizontalLayout = QHBoxLayout(self)
-        
+
         self.label = QLabel(self)
         self.label.setText(self.tr("Select a product"))
-        self.horizontalLayout.addWidget(self.label)           
+        self.horizontalLayout.addWidget(self.label)
 
+        spacerItem=QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+        self.horizontalLayout.addItem(spacerItem)
 
-        self.txtA=myQLineEdit(self)                                
-        self.txtA.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)               
-        self.txtA.setToolTip(self.tr("Press the search button"))    
+        self.txtA=myQLineEdit(self)
+        self.txtA.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
+        self.txtA.setToolTip(self.tr("Press the search button"))
         self.txtA.setText(0)
-        self.horizontalLayout.addWidget(self.txtA)             
+        self.horizontalLayout.addWidget(self.txtA)
     
         self.lblCurrencyA=QLabel(self)
         self.horizontalLayout.addWidget(self.lblCurrencyA)          
@@ -43,6 +45,28 @@ class wdgTwoCurrencyLineEdit(QWidget):
         self.horizontalLayout.addWidget(self.lblCurrencyB)
         
         self.factormode=False
+        
+    def setSizeMode(self, type):
+        """
+            type=0 Factor mode True
+            type=1 Factor mode False
+            type=2 Factor Mode False y toolbarbutton
+        """
+        if type==0:
+            pass
+        elif type==1:
+            sizePolicy = QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Fixed)
+            sizePolicy.setHorizontalStretch(0)
+            sizePolicy.setVerticalStretch(0)
+            sizePolicy.setHeightForWidth(self.txtA.sizePolicy().hasHeightForWidth())
+            self.txtA.setSizePolicy(sizePolicy)
+            sizePolicyb = QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Fixed)
+            sizePolicyb.setHorizontalStretch(0)
+            sizePolicyb.setVerticalStretch(0)
+            sizePolicyb.setHeightForWidth(self.txtB.sizePolicy().hasHeightForWidth())
+            self.txtB.setSizePolicy(sizePolicy)
+        elif type==2:
+            pass
 
     def setLabel(self, text):
         self.label.setText(text)
@@ -77,11 +101,11 @@ class wdgTwoCurrencyLineEdit(QWidget):
         self.factor=factor
         self.currencya=currencya
         self.currencyb=currencyb
-        
+
         if self.currencya==self.currencyb:
             self.lblCurrencyB.hide()
             self.txtB.hide()
-        
+
         self.lblCurrencyA.setText(self.currencya.symbol+" ")   
         self.lblCurrencyB.setText(self.currencyb.symbol)
 
@@ -91,22 +115,21 @@ class wdgTwoCurrencyLineEdit(QWidget):
         self.textChanged.emit()
         self.txtA.textChanged.connect(self.on_txtA_textChanged)
         self.txtB.textChanged.connect(self.on_txtB_textChanged)
-        
-        
+
     def isValid(self):
         if self.txtA.isValid() and self.txtB.isValid():
             return True
         return False
-        
+
     def setTextA(self, text):
         self.txtA.setText(text)
-        
+
     def setTextB(self, text):
         self.txtB.setText(text)
-        
+
     def decimalA(self):
         return self.txtA.decimal()
-        
+
     def decimalB(self):
         return self.txtB.decimal()
 
@@ -121,9 +144,9 @@ class wdgTwoCurrencyLineEdit(QWidget):
             else:
                 self.txtB.textChanged.disconnect()
                 self.txtB.setText(self.txtA.decimal()*self.factor)
-                self.textChanged.emit()
                 self.txtB.textChanged.connect(self.on_txtB_textChanged)
-            
+        self.textChanged.emit()
+
     def on_txtB_textChanged(self, text):
         myQLineEdit.on_textChanged(self.txtB, text)
         if self.txtB.isValid():
@@ -135,5 +158,9 @@ class wdgTwoCurrencyLineEdit(QWidget):
             else:
                 self.txtA.textChanged.disconnect()
                 self.txtA.setText(self.txtB.decimal()/self.factor)
-                self.textChanged.emit()
                 self.txtA.textChanged.connect(self.on_txtA_textChanged)
+        self.textChanged.emit()
+
+    def setReadOnly(self, boolean):
+        self.txtA.setReadOnly(boolean)
+        self.txtB.setReadOnly(boolean)

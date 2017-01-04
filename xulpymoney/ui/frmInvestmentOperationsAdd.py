@@ -1,5 +1,5 @@
 import datetime
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, pyqtSlot
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QDialog,  QMessageBox
 from libxulpymoney import InvestmentOperation, Money,  qmessagebox
@@ -14,18 +14,27 @@ class frmInvestmentOperationsAdd(QDialog, Ui_frmInvestmentOperationsAdd):
         self.mem=mem
         self.investment=inversion
         self.operinversion=operinversion
-  
-  
+
         if self.investment.hasSameAccountCurrency():
             self.wdg2CCurrencyConversion.hide()
-            
-  
+
         self.wdgDT.show_microseconds(False)
         self.wdg2CComission.setLabel(self.tr("Comission"))
+        self.wdg2CComission.setSizeMode(2)
         self.wdg2CTaxes.setLabel(self.tr("Taxes"))
+        self.wdg2CTaxes.setSizeMode(1)
         self.wdg2CCurrencyConversion.setLabel(self.tr("Conversion factor"))
+        self.wdg2CCurrencyConversion.setSizeMode(0)
         self.wdg2CPrice.setLabel(self.tr("Price"))
-        
+        self.wdg2CPrice.setSizeMode(1)
+        self.wdg2CGross.setLabel(self.tr("Gross"))
+        self.wdg2CGross.setSizeMode(1)
+        self.wdg2CNet.setLabel(self.tr("Net"))
+        self.wdg2CNet.setSizeMode(1)
+
+        self.wdg2CGross.setReadOnly(True)
+        self.wdg2CNet.setReadOnly(True)
+
         if self.operinversion==None:
             factor=Money(self.mem, 0, self.investment.product.currency).conversionFactor(self.investment.account.currency, self.mem.localzone.now())
         else:
@@ -36,7 +45,7 @@ class frmInvestmentOperationsAdd(QDialog, Ui_frmInvestmentOperationsAdd):
         self.wdg2CPrice.set(self.mem, self.investment.product.currency, self.investment.account.currency,  factor)
         self.wdg2CComission.set(self.mem, self.investment.product.currency, self.investment.account.currency,  factor)
         self.wdg2CCurrencyConversion.factorChanged.connect(self.on_wdg2CCurrencyConversion_factorChanged)
-        
+
         if self.operinversion==None:#nuevo movimiento
             self.type=1
             self.operinversion=InvestmentOperation(self.mem)
@@ -49,7 +58,8 @@ class frmInvestmentOperationsAdd(QDialog, Ui_frmInvestmentOperationsAdd):
             self.lblTitulo.setText(self.tr("{} operation edition").format(self.investment.name))
             self.mem.tiposoperaciones.qcombobox_investments_operations(self.cmbTiposOperaciones, self.operinversion.tipooperacion)
             self.wdgDT.set(self.mem, self.operinversion.datetime, self.mem.localzone)
-            self.txtNet.setText(self.operinversion.net(type=1))
+            self.wdg2CGross.setTextA(self.operinversion.net(type=1))
+            self.wdg2CNet.setTextA(self.operinversion.gross(type=1))
             self.wdg2CTaxes.setTextA(self.operinversion.impuestos)
             self.wdg2CComission.setTextA(self.operinversion.comision)
             self.wdg2CPrice.setTextA(self.operinversion.valor_accion)
@@ -58,20 +68,19 @@ class frmInvestmentOperationsAdd(QDialog, Ui_frmInvestmentOperationsAdd):
         self.wdg2CTaxes.textChanged.connect(self.on_wdg2CTaxes_mytextChanged)
         self.wdg2CComission.textChanged.connect(self.on_wdg2CComission_mytextChanged)
         self.wdg2CPrice.textChanged.connect(self.on_wdg2CPrice_mytextChanged)
-        
 
     def on_wdg2CCurrencyConversion_factorChanged(self, factor):
         self.wdg2CComission.set(self.mem, self.investment.product.currency, self.investment.account.currency,  factor)
         self.wdg2CPrice.set(self.mem, self.investment.product.currency, self.investment.account.currency,  factor)
         self.wdg2CTaxes.set(self.mem, self.investment.product.currency, self.investment.account.currency,  factor)
-        
+        self.wdg2CGross.set(self.mem, self.investment.product.currency, self.investment.account.currency,  factor)
+        self.wdg2CNet.set(self.mem, self.investment.product.currency, self.investment.account.currency,  factor)
+
     def on_cmd_released(self):        
         if self.wdg2CComission.isValid() and self.wdg2CCurrencyConversion.isValid() and self.wdg2CPrice.isValid() and self.wdg2CTaxes.isValid()==False:
             qmessagebox(self.tr("Some fields are wrong"))
             return
-        
-        
-        
+
         id_tiposoperaciones=int(self.cmbTiposOperaciones.itemData(self.cmbTiposOperaciones.currentIndex()))
         self.operinversion.tipooperacion=self.mem.tiposoperaciones.find_by_id(id_tiposoperaciones)
         self.operinversion.impuestos=self.wdg2CTaxes.decimalA()
@@ -141,31 +150,41 @@ class frmInvestmentOperationsAdd(QDialog, Ui_frmInvestmentOperationsAdd):
         else:
             self.wdg2CPrice.setEnabled(True)
         self.on_txtAcciones_textChanged()
-            
+
     def on_txtAcciones_textChanged(self):
         """El importe a grabar en BD cuando es una compra es el importe neto, cuando es una venta es el importe bruto"""
+        print (self.wdg2CPrice.isValid())
+        if self.txtAcciones.isValid() and self.wdg2CPrice.isValid():
+            self.cmdComissionCalculator.setEnabled(True)
+        else:
+            self.cmdComissionCalculator.setEnabled(False)
         id_tiposoperaciones=int(self.cmbTiposOperaciones.itemData(self.cmbTiposOperaciones.currentIndex()))
         try:
             if id_tiposoperaciones==4:#Compra
                 importe=abs(round(self.txtAcciones.decimal()*self.wdg2CPrice.decimalA(), 2))
-                self.txtNet.setText(importe+self.wdg2CComission.decimalA()+self.wdg2CTaxes.decimalA())
-                self.txtGross.setText(importe)
+                self.wdg2CGross.setTextA(importe)
+                self.wdg2CNet.setTextA(importe+self.wdg2CComission.decimalA()+self.wdg2CTaxes.decimalA())
             if id_tiposoperaciones==5:#Venta
                 importe=abs(round(self.txtAcciones.decimal()*self.wdg2CPrice.decimalA(), 2))
-                self.txtNet.setText(importe-self.wdg2CComission.decimalA()-self.wdg2CTaxes.decimalA())
-                self.txtGross.setText(importe)
+                self.wdg2CGross.setTextA(importe)
+                self.wdg2CNet.setTextA(importe-self.wdg2CComission.decimalA()-self.wdg2CTaxes.decimalA())
             if id_tiposoperaciones==8:#Traspaso
                 importe=abs(round(self.txtAcciones.decimal()*self.wdg2CPrice.decimaAl(), 2))
-                self.txtNet.setText(importe+self.wdg2CComission.decimalA()+self.wdg2CTaxes.decimalA())
-                self.txtGross.setText(importe)
+                self.wdg2CGross.setTextA(importe)
+                self.wdg2CNet.setTextA(importe+self.wdg2CComission.decimalA()+self.wdg2CTaxes.decimalA())
         except:
             pass
 
+    @pyqtSlot()
     def on_wdg2CPrice_mytextChanged(self):
         self.on_txtAcciones_textChanged()
-        
+
+    @pyqtSlot()
     def on_wdg2CComission_mytextChanged(self):
         self.on_txtAcciones_textChanged()
-        
+
+    @pyqtSlot()
     def on_wdg2CTaxes_mytextChanged(self):
         self.on_txtAcciones_textChanged()
+
+

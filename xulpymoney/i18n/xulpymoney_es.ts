@@ -2489,82 +2489,72 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>frmInvestmentOperationsAdd</name>
     <message>
-        <location filename="../ui/Ui_frmInvestmentOperationsAdd.py" line="118"/>
+        <location filename="../ui/Ui_frmInvestmentOperationsAdd.py" line="104"/>
         <source>New investment operation</source>
         <translation>Nueva operación de inversión</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_frmInvestmentOperationsAdd.py" line="119"/>
+        <location filename="../ui/Ui_frmInvestmentOperationsAdd.py" line="105"/>
         <source>Operation type</source>
         <translation>Tipo de operación</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_frmInvestmentOperationsAdd.py" line="120"/>
+        <location filename="../ui/Ui_frmInvestmentOperationsAdd.py" line="106"/>
         <source>Number of shares</source>
         <translation>Número de acciones</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_frmInvestmentOperationsAdd.py" line="125"/>
+        <location filename="../ui/Ui_frmInvestmentOperationsAdd.py" line="107"/>
         <source>0</source>
         <translation>0</translation>
     </message>
     <message>
-        <location filename="../ui/frmInvestmentOperationsAdd.py" line="27"/>
+        <location filename="../ui/frmInvestmentOperationsAdd.py" line="28"/>
         <source>Price</source>
         <translation>Valor</translation>
     </message>
     <message>
-        <location filename="../ui/frmInvestmentOperationsAdd.py" line="25"/>
+        <location filename="../ui/frmInvestmentOperationsAdd.py" line="24"/>
         <source>Taxes</source>
         <translation>Impuestos</translation>
     </message>
     <message>
-        <location filename="../ui/frmInvestmentOperationsAdd.py" line="24"/>
+        <location filename="../ui/frmInvestmentOperationsAdd.py" line="22"/>
         <source>Comission</source>
         <translation>Comisión</translation>
     </message>
     <message>
-        <location filename="../ui/Ui_frmInvestmentOperationsAdd.py" line="122"/>
-        <source>Gross amount</source>
-        <translation>Cantidad bruta</translation>
-    </message>
-    <message>
-        <location filename="../ui/Ui_frmInvestmentOperationsAdd.py" line="124"/>
-        <source>Net amount</source>
-        <translation>Cantidad neta</translation>
-    </message>
-    <message>
-        <location filename="../ui/Ui_frmInvestmentOperationsAdd.py" line="126"/>
+        <location filename="../ui/Ui_frmInvestmentOperationsAdd.py" line="108"/>
         <source>Save</source>
         <translation>Grabar</translation>
     </message>
     <message>
-        <location filename="../ui/frmInvestmentOperationsAdd.py" line="44"/>
+        <location filename="../ui/frmInvestmentOperationsAdd.py" line="53"/>
         <source>New operation of {}</source>
         <translation>Nueva operación de {}</translation>
     </message>
     <message>
-        <location filename="../ui/frmInvestmentOperationsAdd.py" line="49"/>
+        <location filename="../ui/frmInvestmentOperationsAdd.py" line="58"/>
         <source>{} operation edition</source>
         <translation>Edición de la operación de {}</translation>
     </message>
     <message>
-        <location filename="../ui/frmInvestmentOperationsAdd.py" line="89"/>
+        <location filename="../ui/frmInvestmentOperationsAdd.py" line="98"/>
         <source>Sale Shares number must be negative</source>
         <translation>El número de acciones en la venta no puede ser negativo</translation>
     </message>
     <message>
-        <location filename="../ui/frmInvestmentOperationsAdd.py" line="98"/>
+        <location filename="../ui/frmInvestmentOperationsAdd.py" line="107"/>
         <source>Purchase shares number must be positive</source>
         <translation>El número de acciones en la compra no puede ser positivo</translation>
     </message>
     <message>
-        <location filename="../ui/frmInvestmentOperationsAdd.py" line="117"/>
+        <location filename="../ui/frmInvestmentOperationsAdd.py" line="126"/>
         <source>Share price, taxes and comission must be positive amounts</source>
         <translation>El precio de la acción, los impuestos y la comisión deben ser cantidades positivas</translation>
     </message>
     <message>
-        <location filename="../ui/frmInvestmentOperationsAdd.py" line="107"/>
+        <location filename="../ui/frmInvestmentOperationsAdd.py" line="116"/>
         <source>Added shares number must be positive</source>
         <translation>El número de acciones añadidas debe ser positivo</translation>
     </message>
@@ -2574,9 +2564,19 @@ p, li { white-space: pre-wrap; }
         <translation>Factor de conversión</translation>
     </message>
     <message>
-        <location filename="../ui/frmInvestmentOperationsAdd.py" line="70"/>
+        <location filename="../ui/frmInvestmentOperationsAdd.py" line="81"/>
         <source>Some fields are wrong</source>
         <translation>Algunos campos son erróneos</translation>
+    </message>
+    <message>
+        <location filename="../ui/frmInvestmentOperationsAdd.py" line="30"/>
+        <source>Gross</source>
+        <translation type="unfinished">Bruto</translation>
+    </message>
+    <message>
+        <location filename="../ui/frmInvestmentOperationsAdd.py" line="32"/>
+        <source>Net</source>
+        <translation type="unfinished">Neto</translation>
     </message>
 </context>
 <context>
@@ -2702,7 +2702,7 @@ p, li { white-space: pre-wrap; }
         <translation>Antes de añadir una operación, debe añadir el valor actual del producto.</translation>
     </message>
     <message>
-        <location filename="../ui/frmInvestmentReport.py" line="491"/>
+        <location filename="../ui/frmInvestmentReport.py" line="496"/>
         <source>Selected: {0}</source>
         <translation>Seleccionado: {0}</translation>
     </message>
@@ -2802,7 +2802,7 @@ p, li { white-space: pre-wrap; }
         <translation>TAE</translation>
     </message>
     <message>
-        <location filename="../ui/frmInvestmentReport.py" line="359"/>
+        <location filename="../ui/frmInvestmentReport.py" line="364"/>
         <source>You must select a product to continue.</source>
         <translation>Debe seleccionar un producto para continuar.</translation>
     </message>
@@ -2822,7 +2822,7 @@ p, li { white-space: pre-wrap; }
         <translation>Ocultar en el informe de rangos</translation>
     </message>
     <message>
-        <location filename="../ui/frmInvestmentReport.py" line="487"/>
+        <location filename="../ui/frmInvestmentReport.py" line="492"/>
         <source>Show in range report</source>
         <translation>Mostrar en el informe de rangos</translation>
     </message>
@@ -7786,7 +7786,7 @@ Daily Diff: {5}. Investment average age: {6}</source>
         <translation>Selecciona un producto</translation>
     </message>
     <message>
-        <location filename="../ui/wdgTwoCurrencyLineEdit.py" line="38"/>
+        <location filename="../ui/wdgTwoCurrencyLineEdit.py" line="40"/>
         <source>Press the search button</source>
         <translation>Pulsa el botón de búsqueda</translation>
     </message>
