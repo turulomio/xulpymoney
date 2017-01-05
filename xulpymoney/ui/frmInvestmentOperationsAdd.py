@@ -1,7 +1,8 @@
 import datetime
 from PyQt5.QtCore import Qt, pyqtSlot
 from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import QDialog,  QMessageBox
+from PyQt5.QtWidgets import QDialog,  QMessageBox, QVBoxLayout
+from wdgTwoCurrencyLineEdit import wdgTwoCurrencyLineEdit
 from libxulpymoney import InvestmentOperation, Money,  qmessagebox
 from frmQuotesIBM import frmQuotesIBM
 from Ui_frmInvestmentOperationsAdd import Ui_frmInvestmentOperationsAdd
@@ -17,20 +18,17 @@ class frmInvestmentOperationsAdd(QDialog, Ui_frmInvestmentOperationsAdd):
 
         if self.investment.hasSameAccountCurrency():
             self.wdg2CCurrencyConversion.hide()
+            
+        self.lblType.setFixedWidth(200)
+        self.lblShares.setFixedWidth(200)
 
         self.wdgDT.show_microseconds(False)
         self.wdg2CComission.setLabel(self.tr("Comission"))
-        self.wdg2CComission.setSizeMode(2)
         self.wdg2CTaxes.setLabel(self.tr("Taxes"))
-        self.wdg2CTaxes.setSizeMode(1)
         self.wdg2CCurrencyConversion.setLabel(self.tr("Conversion factor"))
-        self.wdg2CCurrencyConversion.setSizeMode(0)
         self.wdg2CPrice.setLabel(self.tr("Price"))
-        self.wdg2CPrice.setSizeMode(1)
         self.wdg2CGross.setLabel(self.tr("Gross"))
-        self.wdg2CGross.setSizeMode(1)
         self.wdg2CNet.setLabel(self.tr("Net"))
-        self.wdg2CNet.setSizeMode(1)
 
         self.wdg2CGross.setReadOnly(True)
         self.wdg2CNet.setReadOnly(True)
@@ -75,6 +73,20 @@ class frmInvestmentOperationsAdd(QDialog, Ui_frmInvestmentOperationsAdd):
         self.wdg2CTaxes.set(self.mem, self.investment.product.currency, self.investment.account.currency,  factor)
         self.wdg2CGross.set(self.mem, self.investment.product.currency, self.investment.account.currency,  factor)
         self.wdg2CNet.set(self.mem, self.investment.product.currency, self.investment.account.currency,  factor)
+
+    def on_cmdComissionCalculator_released(self):
+        d=QDialog(self)     
+        d.resize(800, 80)
+        d.setWindowTitle(self.tr("Comission calculator"))
+        d.setWindowIcon(QIcon(":/xulpymoney/tools-wizard.png"))
+        t=wdgTwoCurrencyLineEdit(d)
+        t.label.setWordWrap(True)
+        t.set(self.mem, self.investment.product.currency, self.investment.account.currency, self.wdg2CCurrencyConversion.factor)
+        t.setLabel(self.tr("Please add the final amount annoted in your bank account, then close this window"))
+        lay = QVBoxLayout(d)
+        lay.addWidget(t)
+        d.exec_()
+        self.wdg2CComission.setTextA(t.decimalA()-self.wdg2CPrice.decimalA()*self.txtAcciones.decimal())
 
     def on_cmd_released(self):        
         if self.wdg2CComission.isValid() and self.wdg2CCurrencyConversion.isValid() and self.wdg2CPrice.isValid() and self.wdg2CTaxes.isValid()==False:
@@ -153,7 +165,6 @@ class frmInvestmentOperationsAdd(QDialog, Ui_frmInvestmentOperationsAdd):
 
     def on_txtAcciones_textChanged(self):
         """El importe a grabar en BD cuando es una compra es el importe neto, cuando es una venta es el importe bruto"""
-        print (self.wdg2CPrice.isValid())
         if self.txtAcciones.isValid() and self.wdg2CPrice.isValid():
             self.cmdComissionCalculator.setEnabled(True)
         else:
