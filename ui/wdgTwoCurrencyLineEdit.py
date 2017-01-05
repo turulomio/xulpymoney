@@ -10,6 +10,7 @@ class wdgTwoCurrencyLineEdit(QWidget):
     def __init__(self, parent):
         QWidget.__init__(self, parent)
         self.horizontalLayout = QHBoxLayout(self)
+        self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
 
         self.label = QLabel(self)
         self.label.setText(self.tr("Select a product"))
@@ -44,29 +45,24 @@ class wdgTwoCurrencyLineEdit(QWidget):
         self.lblCurrencyB=QLabel(self)
         self.horizontalLayout.addWidget(self.lblCurrencyB)
         
+        sizePolicy = QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Fixed)
+        sizePolicy.setHorizontalStretch(2)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.txtA.sizePolicy().hasHeightForWidth())
+        self.txtA.setSizePolicy(sizePolicy)
+        sizePolicyb = QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Fixed)
+        sizePolicyb.setHorizontalStretch(2)
+        sizePolicyb.setVerticalStretch(0)
+        sizePolicyb.setHeightForWidth(self.txtB.sizePolicy().hasHeightForWidth())
+        self.txtB.setSizePolicy(sizePolicy)
+        self.setLabelSize(200)
         self.factormode=False
         
-    def setSizeMode(self, type):
+    def setLabelSize(self, size):
         """
-            type=0 Factor mode True
-            type=1 Factor mode False
-            type=2 Factor Mode False y toolbarbutton
+            Sets the label size
         """
-        if type==0:
-            pass
-        elif type==1:
-            sizePolicy = QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Fixed)
-            sizePolicy.setHorizontalStretch(0)
-            sizePolicy.setVerticalStretch(0)
-            sizePolicy.setHeightForWidth(self.txtA.sizePolicy().hasHeightForWidth())
-            self.txtA.setSizePolicy(sizePolicy)
-            sizePolicyb = QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Fixed)
-            sizePolicyb.setHorizontalStretch(0)
-            sizePolicyb.setVerticalStretch(0)
-            sizePolicyb.setHeightForWidth(self.txtB.sizePolicy().hasHeightForWidth())
-            self.txtB.setSizePolicy(sizePolicy)
-        elif type==2:
-            pass
+        self.label.setFixedWidth(size)
 
     def setLabel(self, text):
         self.label.setText(text)

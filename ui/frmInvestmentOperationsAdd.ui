@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>474</width>
-    <height>321</height>
+    <width>719</width>
+    <height>557</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -23,7 +23,7 @@
   <property name="modal">
    <bool>true</bool>
   </property>
-  <layout class="QHBoxLayout" name="horizontalLayout_4">
+  <layout class="QHBoxLayout" name="horizontalLayout">
    <item>
     <layout class="QVBoxLayout" name="verticalLayout">
      <item>
@@ -46,14 +46,40 @@
      <item>
       <layout class="QHBoxLayout" name="horizontalLayout_8">
        <item>
+        <spacer name="horizontalSpacer_2">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
         <widget class="wdgDatetime" name="wdgDT" native="true"/>
+       </item>
+       <item>
+        <spacer name="horizontalSpacer">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
        </item>
       </layout>
      </item>
      <item>
       <layout class="QHBoxLayout" name="horizontalLayout_3">
        <item>
-        <widget class="QLabel" name="label_2">
+        <widget class="QLabel" name="lblType">
          <property name="text">
           <string>Operation type</string>
          </property>
@@ -67,7 +93,7 @@
      <item>
       <layout class="QHBoxLayout" name="horizontalLayout_5">
        <item>
-        <widget class="QLabel" name="label_5">
+        <widget class="QLabel" name="lblShares">
          <property name="text">
           <string>Number of shares</string>
          </property>
@@ -83,6 +109,9 @@
          </property>
          <property name="text">
           <string>0</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
          </property>
         </widget>
        </item>
@@ -104,6 +133,9 @@
        </item>
        <item>
         <widget class="QToolButton" name="cmdComissionCalculator">
+         <property name="toolTip">
+          <string>Comission calculator</string>
+         </property>
          <property name="text">
           <string/>
          </property>
@@ -135,6 +167,7 @@
     </layout>
    </item>
   </layout>
+  <zorder></zorder>
  </widget>
  <customwidgets>
   <customwidget>
