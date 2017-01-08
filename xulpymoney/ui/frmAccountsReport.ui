@@ -49,7 +49,7 @@
      <item>
       <widget class="QTabWidget" name="tab">
        <property name="currentIndex">
-        <number>1</number>
+        <number>0</number>
        </property>
        <widget class="QWidget" name="tabMovimientos">
         <attribute name="icon">
@@ -830,6 +830,18 @@
    </property>
    <property name="toolTip">
     <string>Credit card operation refund</string>
+   </property>
+  </action>
+  <action name="actionConceptReport">
+   <property name="icon">
+    <iconset resource="../images/xulpymoney.qrc">
+     <normaloff>:/xulpymoney/hucha.png</normaloff>:/xulpymoney/hucha.png</iconset>
+   </property>
+   <property name="text">
+    <string>Show concept historical report</string>
+   </property>
+   <property name="toolTip">
+    <string>Show concept historical report</string>
    </property>
   </action>
  </widget>

@@ -311,7 +311,7 @@
 <context>
     <name>Core</name>
     <message>
-        <location filename="../libsources.py" line="1014"/>
+        <location filename="../libsources.py" line="1029"/>
         <source>From {} desynchronized products added:
     - {} quotes
     - {} dividends per share
@@ -750,12 +750,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="8022"/>
+        <location filename="../libxulpymoney.py" line="8030"/>
         <source>True</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="8025"/>
+        <location filename="../libxulpymoney.py" line="8033"/>
         <source>False</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1015,7 +1015,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="7993"/>
+        <location filename="../libxulpymoney.py" line="8001"/>
         <source>{} {}, {} {} and {} {}</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1025,32 +1025,32 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="7982"/>
+        <location filename="../libxulpymoney.py" line="7990"/>
         <source>year</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="7984"/>
+        <location filename="../libxulpymoney.py" line="7992"/>
         <source>years</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="7986"/>
+        <location filename="../libxulpymoney.py" line="7994"/>
         <source>month</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="7988"/>
+        <location filename="../libxulpymoney.py" line="7996"/>
         <source>months</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="7990"/>
+        <location filename="../libxulpymoney.py" line="7998"/>
         <source>day</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="7992"/>
+        <location filename="../libxulpymoney.py" line="8000"/>
         <source>days</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1182,7 +1182,7 @@ Do you want to activate it?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="7586"/>
+        <location filename="../libxulpymoney.py" line="7593"/>
         <source>Error connecting to database</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1214,7 +1214,7 @@ Do you want to activate it?</source>
 <context>
     <name>WorkerSGWarrants</name>
     <message>
-        <location filename="../libsources.py" line="636"/>
+        <location filename="../libsources.py" line="651"/>
         <source>SG Warrants source</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1222,7 +1222,7 @@ Do you want to activate it?</source>
 <context>
     <name>WorkerYahoo</name>
     <message>
-        <location filename="../libsources.py" line="697"/>
+        <location filename="../libsources.py" line="712"/>
         <source>Yahoo source</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1230,7 +1230,7 @@ Do you want to activate it?</source>
 <context>
     <name>WorkerYahooHistorical</name>
     <message>
-        <location filename="../libsources.py" line="818"/>
+        <location filename="../libsources.py" line="833"/>
         <source>Yahoo Historical source</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1979,7 +1979,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmAccountsReport.py" line="213"/>
+        <location filename="../ui/frmAccountsReport.py" line="214"/>
         <source>Do you really want to delete transfer from {0} to {1}, with amount {2} and it&apos;s commision?</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2034,27 +2034,27 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmAccountsReport.py" line="44"/>
+        <location filename="../ui/frmAccountsReport.py" line="45"/>
         <source>New account data</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmAccountsReport.py" line="50"/>
+        <location filename="../ui/frmAccountsReport.py" line="51"/>
         <source>Add a new account</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmAccountsReport.py" line="61"/>
+        <location filename="../ui/frmAccountsReport.py" line="62"/>
         <source>Update account data</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmAccountsReport.py" line="123"/>
+        <location filename="../ui/frmAccountsReport.py" line="124"/>
         <source>I can&apos;t delete the credit card, because it has dependent registers</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmAccountsReport.py" line="466"/>
+        <location filename="../ui/frmAccountsReport.py" line="483"/>
         <source>{0} was made a paid of {1}</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2069,13 +2069,23 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmAccountsReport.py" line="22"/>
+        <location filename="../ui/frmAccountsReport.py" line="23"/>
         <source>Select payment time</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../ui/frmAccountsReport.ui" line="832"/>
         <source>Credit card operation refund</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/frmAccountsReport.py" line="284"/>
+        <source>Historical report of {}</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/frmAccountsReport.ui" line="844"/>
+        <source>Show concept historical report</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2518,7 +2528,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmInvestmentOperationsAdd.ui" line="156"/>
+        <location filename="../ui/frmInvestmentOperationsAdd.ui" line="159"/>
         <source>Save</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2573,7 +2583,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmInvestmentOperationsAdd.py" line="80"/>
+        <location filename="../ui/frmInvestmentOperationsAdd.ui" line="137"/>
         <source>Comission calculator</source>
         <translation type="unfinished"></translation>
     </message>

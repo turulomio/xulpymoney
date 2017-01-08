@@ -522,15 +522,32 @@ class WorkerMorningstar(Source):
         self.setName(self.tr("Morningstar source"))
 #        self.lock=multiprocessing.Lock()
         
-    def on_execute_product(self,  id_product):
-        """inico y fin son dos dates entre los que conseguir los datos."""
-        product=self.products.find_by_id(id_product)
-        print(product.id)
-        
+    def on_execute_product(self,  product):
         if product.result.basic.last.datetime.date()==datetime.date.today()-datetime.timedelta(days=1):#if I already got yesterday's price return
             self.log("I already got yesterday's price: {}".format(product.name))
             return
 
+        web2=self.load_page('http://www.morningstar.es/es/funds/snapshot/snapshot.aspx?id='+product.ticker)
+        if web2==None:
+            return
+        for l in web2.readlines():
+            self.mem.con.restart_timeout()#To avoid connection timeout (long process)
+            l=b2s(l)
+            if l.find("Estadística Rápida")!=-1:
+                datestr=l.split("<br />")[1].split("</span")[0]
+                datarr=datestr.split("/")
+                date=datetime.date(int(datarr[2]), int(datarr[1]), int(datarr[0]))
+                dat=dt(date, product.stockmarket.closes, product.stockmarket.zone)
+                value=Decimal(self.comaporpunto(l.split('line text">')[1].split("</td")[0].split("\xa0")[1]))
+                self.quotes.append(Quote(self.mem).init__create(product, dat, value))
+                return
+        self.log("Error parsing: {}".format(product.name))
+
+    def on_regenerate_product(self,  product, save=False):
+        """
+            save indica su guarda el tiecker calculado
+            returns idmorningstar
+        """       
         #Search morningstar code
         url='http://www.morningstar.es/es/funds/SecuritySearchResults.aspx?search='+product.isin+'&type='
         mweb=self.load_page(url)
@@ -540,33 +557,23 @@ class WorkerMorningstar(Source):
         ##TRansform httpresopone to list to iterate several times
         for line in mweb.readlines():
             web.append(b2s(line))
-        self.toWebLog(web)
             
+        idmorningstar=None
         for i in web: 
             if i.find("searchIsin")!=-1:
-                urlmorningstar=i.split('href="')[1].split('">')[0]
-                url2='http://www.morningstar.es'+urlmorningstar        
-                web2=self.load_page(url2)
-                if web2==None:
-                    return
-                for l in web2.readlines():
-                    l=b2s(l)
-                    if l.find("Estadística Rápida")!=-1:
-                        datestr=l.split("<br />")[1].split("</span")[0]
-                        datarr=datestr.split("/")
-                        date=datetime.date(int(datarr[2]), int(datarr[1]), int(datarr[0]))
-                        dat=dt(date, product.stockmarket.closes, product.stockmarket.zone)
-                        value=Decimal(self.comaporpunto(l.split('line text">')[1].split("</td")[0].split("\xa0")[1]))
-                        self.quotes.append(Quote(self.mem).init__create(product, dat, value))
-                        return
-            self.mem.con.restart_timeout()#To avoid connection timeout (long process)
-        self.log("Error parsing: {}".format(product.name))
+                try:
+                    idmorningstar=i.split('href="')[1].split('">')[0].split("=")[1]
+                except:
+                    self.log("Error parsing: {}".format(product.name))
+        product.ticker=idmorningstar
+        product.save()
+        return idmorningstar
         
     def setSQL(self, useronly):
         if useronly==True:
-            self.sql="select * from products where priorityhistorical[1]=8 and obsolete=false and id in (select distinct(products_id) from inversiones) order by name;"
+            self.sql="select * from products where priorityhistorical[1]=8 and obsolete=false and id in (select distinct(products_id) from inversiones) and ticker is not null order by name;"
         else:
-            self.sql="select * from products where priorityhistorical[1]=8 and obsolete=false order by name;"
+            self.sql="select * from products where priorityhistorical[1]=8 and obsolete=false and ticker is not null order by name;"
         self.setStatus(SourceStatus.Prepared)
 
     def steps(self):
@@ -605,7 +612,7 @@ class WorkerMorningstar(Source):
                 print ("Stopping")
                 self.quotes.clear()
                 break
-            self.on_execute_product(product.id)
+            self.on_execute_product(product)
             self.next_step()
             time.sleep(self.sleep)#time step
         print("")
@@ -616,19 +623,27 @@ class WorkerMorningstar(Source):
         self.next_step()
         
         self.setStatus(SourceStatus.Finished)
-        
-        
-            
 
-    
-#
-#    def on_execute_product(self, id_product):
-#        """This is the function to override. In the overrided function I must add Quotes with self.quotes.append. Will be saved later"""
-#        pass
-
-
+    def regenerate_tickers(self):
+        self.setStatus(SourceStatus.Running)
+        self.products.load_from_db("select * from products where priorityhistorical[1]=8 and obsolete=false order by name;")
+        self.next_step()
+        regenerate=0
+        for i,  product in enumerate(self.products.arr): 
+            stri="{0}: {1}/{2} {3}. Found: {4}            ".format(self.__class__.__name__, i+1, self.products.length(), product,  regenerate) 
+            sys.stdout.write("\b"*1000+stri)
+            sys.stdout.flush()
+            id=self.on_regenerate_product(product, save=True)
+            if id!=None:
+                regenerate=regenerate+1
+            self.next_step()
+            time.sleep(self.sleep)#time step
+        print("")
+        self.mem.con.commit()
+        self.next_step()
         
-        
+        self.setStatus(SourceStatus.Finished)
+
 class WorkerSGWarrants(SourceParsePage):
     """Clase que recorre las inversiones activas y calcula según este la prioridad de la previsión"""
     def __init__(self, mem):

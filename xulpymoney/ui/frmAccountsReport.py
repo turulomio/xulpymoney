@@ -1,12 +1,13 @@
 import datetime
-from PyQt5.QtCore import Qt, pyqtSlot
+from PyQt5.QtCore import Qt, pyqtSlot,  QSize
 from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import QDialog, QMenu,  QMessageBox
+from PyQt5.QtWidgets import QDialog, QMenu,  QMessageBox, QVBoxLayout
 from libxulpymoney import Account, AccountOperation, Assets, Comment, InvestmentOperation, SetAccountOperations,  SetCreditCardOperations,  b2c,  c2b
 from Ui_frmAccountsReport import Ui_frmAccountsReport
 from frmAccountOperationsAdd import frmAccountOperationsAdd
 from frmCreditCardsAdd import frmCreditCardsAdd
 from frmInvestmentOperationsAdd import frmInvestmentOperationsAdd
+from wdgConceptsHistorical import wdgConceptsHistorical
 
 class frmAccountsReport(QDialog, Ui_frmAccountsReport):
     def __init__(self, mem, account,  parent=None):
@@ -275,6 +276,17 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
         w=frmInvestmentOperationsAdd(self.mem, investmentoperation.investment, investmentoperation, self)
         w.exec_()
         self.accountoperations_reload()
+        
+    @pyqtSlot()
+    def on_actionConceptReport_triggered(self):
+        d=QDialog(self)     
+        d.resize(self.mem.settings.value("frmAccountsReport/qdialog_conceptreport", QSize(800, 600)))
+        d.setWindowTitle(self.tr("Historical report of {}").format(self.accountoperations.selected.concepto.name))
+        w = wdgConceptsHistorical(self.mem, self.accountoperations.selected.concepto, d)
+        lay = QVBoxLayout(d)
+        lay.addWidget(w)
+        d.exec_()
+        self.mem.settings.setValue("frmAccountsReport/qdialog_conceptreport", d.size())
 
     def on_tblOperaciones_customContextMenuRequested(self,  pos):      
         if self.account.qmessagebox_inactive() or self.account.eb.qmessagebox_inactive():
@@ -284,6 +296,7 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
             self.actionOperationDelete.setEnabled(False)
             self.actionOperationEdit.setEnabled(False)   
             self.actionTransferDelete.setEnabled(False)
+            self.actionConceptReport.setEnabled(False)
         else:
             if self.accountoperations.selected.es_editable()==False:
                 self.actionOperationDelete.setEnabled(False)
@@ -296,14 +309,18 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
             else: #es editable
                 self.actionOperationDelete.setEnabled(True)    
                 self.actionOperationEdit.setEnabled(True)      
-                self.actionTransferDelete.setEnabled(False)  
+                self.actionTransferDelete.setEnabled(False)
+            self.actionConceptReport.setEnabled(True)
             
         menu=QMenu()
         menu.addAction(self.actionOperationAdd)
         menu.addAction(self.actionOperationEdit)
         menu.addAction(self.actionOperationDelete)
         menu.addSeparator()
+        menu.addAction(self.actionConceptReport)
+        menu.addSeparator()
         menu.addAction(self.actionTransferDelete)
+
         if self.accountoperations.selected!=None:
             if self.accountoperations.selected.concepto.id in [29, 35]:#Shares sale or purchase, allow edit or delete investment operation
                 menu.addSeparator()

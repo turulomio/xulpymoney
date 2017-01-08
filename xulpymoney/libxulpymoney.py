@@ -7561,6 +7561,8 @@ class MemXulpymoney:
     def init__script(self, title, type=0):
         """
             Script arguments and autoconnect in mem.con, load_db_data
+            
+            type==1 #tickers
         """
         app = QCoreApplication(sys.argv)
         app.setOrganizationName("Mariano Muñoz ©")
@@ -7575,6 +7577,11 @@ class MemXulpymoney:
         parser.add_argument('--port', help='Postgresql server port', default=5432)
         parser.add_argument('--host', help='Postgresql server address', default='127.0.0.1')
         parser.add_argument('--db', help='Postgresql database', default='xulpymoney')
+        if type==1:
+            parser.add_argument('--tickers', help='Generate tickers', default=False, action='store_true')
+            
+        
+        
         args=parser.parse_args()
         password=getpass.getpass()
         self.con=Connection().init__create(args.user,  password,  args.host, args.port, args.db)
@@ -7583,6 +7590,7 @@ class MemXulpymoney:
             print (QCoreApplication.translate("Core", "Error connecting to database"))
             sys.exit(255)        
         self.load_db_data(progress=False, load_data=False)
+        return args
 
 
     def __del__(self):
