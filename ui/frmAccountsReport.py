@@ -279,10 +279,15 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
         
     @pyqtSlot()
     def on_actionConceptReport_triggered(self):
+        if self.tab.currentIndex()==0:
+            concepto=self.accountoperations.selected.concepto
+        else:
+            concepto=self.creditcardoperations.selected.first().concepto
+
         d=QDialog(self)     
         d.resize(self.mem.settings.value("frmAccountsReport/qdialog_conceptreport", QSize(800, 600)))
-        d.setWindowTitle(self.tr("Historical report of {}").format(self.accountoperations.selected.concepto.name))
-        w = wdgConceptsHistorical(self.mem, self.accountoperations.selected.concepto, d)
+        d.setWindowTitle(self.tr("Historical report of {}").format(concepto.name))
+        w = wdgConceptsHistorical(self.mem, concepto, d)
         lay = QVBoxLayout(d)
         lay.addWidget(w)
         d.exec_()
@@ -400,6 +405,7 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
             self.actionCreditCardOperDelete.setEnabled(False)
             self.actionCreditCardOperEdit.setEnabled(False)
             self.actionCreditCardOperRefund.setEnabled(False)
+            self.actionConceptReport.setEnabled(False)
         else:
             self.actionCreditCardOperDelete.setEnabled(True)
             self.actionCreditCardOperEdit.setEnabled(True)
@@ -407,11 +413,14 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
                 self.actionCreditCardOperRefund.setEnabled(True)
             else:
                 self.actionCreditCardOperRefund.setEnabled(False)
+            self.actionConceptReport.setEnabled(True)
             
         menu=QMenu()
         menu.addAction(self.actionCreditCardOperAdd)
         menu.addAction(self.actionCreditCardOperEdit)
         menu.addAction(self.actionCreditCardOperDelete)
+        menu.addSeparator()
+        menu.addAction(self.actionConceptReport)
         menu.addSeparator()
         menu.addAction(self.actionCreditCardOperRefund)
         menu.exec_(self.tblCreditCardOpers.mapToGlobal(pos))

@@ -4445,21 +4445,7 @@ class CreditCardOperation:
         self.pagado=None
         self.fechapago=None
         self.opercuenta=None
-        
-        
-#    def __repr__(self):
-#        return """CreditCardOperation ({})
-#    - Datetime: {}
-#    - Concepto: {}
-#    - Tipo de operación: {}
-#    - Importe: {}
-#    - Comentario: {}
-#    - Tarjeta: {} ({})
-#    - Pagado: {}
-#    - Fecha de pago: {}
-#    - Operación de cuenta: {}
-#        """.format(self.id, self.datetime, self.concepto.name, self.tipooperacion.name, self.importe, self.comentario, self.tarjeta.name,  self.tarjeta.id, self.pagado, self.fechapago, self.opercuenta.id)
-#        
+
     def init__create(self, dt,  concepto, tipooperacion, importe, comentario, tarjeta, pagado=None, fechapago=None, opercuenta=None, id_opertarjetas=None):
         """pagado, fechapago y opercuenta solo se rellena cuando se paga"""
         self.id=id_opertarjetas
@@ -4926,6 +4912,12 @@ class SetCreditCardOperations:
     def clear(self):
         del self.arr
         self.arr=[]
+
+    def first(self):
+        if self.length()>0:
+            return self.arr[0]
+        else:
+            return None
 
     def balance(self):
         """Returns the balance of all credit card operations"""
