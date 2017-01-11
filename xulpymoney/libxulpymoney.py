@@ -6638,16 +6638,32 @@ class Quote:
             resultado.append(Quote(self.mem).init__db_row(row, product))
         cur.close()
         return resultado
-
-class OHCLDaily:
-    def __init__(self, mem):
-        self.mem=mem
+        
+class OHCL:
+    def __init__(self,  mem):
         self.product=None
-        self.date=None
+#        self.datetime=datetime
         self.open=None
         self.close=None
         self.high=None
         self.low=None
+        
+    def get_interval(self, ohclposterior):
+        """Calcula el intervalo entre dos ohcl. El posteror es el que se pasa como parámetro"""
+        return ohclposterior.datetime-self.datetime
+        
+        
+
+    def percentage(self, ohcl):
+        """CAlcula el incremento en % en el cierre del ohcl actual y el pasado como parametro. Siendo el pasado como parametro posterior en el tiempo"""
+        try:
+            return Decimal(100)*(ohcl.close-self.close)/self.close
+        except:
+            return None
+class OHCLDaily(OHCL):
+    def __init__(self, mem):
+        OHCL.__init__(self, mem)
+        self.date=None
         
     def init__from_dbrow(self, row, product):
         self.product=product
@@ -6681,16 +6697,12 @@ class OHCLDaily:
         cur.execute("delete from quotes where id=%s and datetime::date=%s", (self.product.id, self.date))
         cur.close()
         
-class OHCLMonthly:
+class OHCLMonthly(OHCL):
     def __init__(self, mem):
-        self.mem=mem
-        self.product=None
+        OHCL.__init__(self, mem)
         self.year=None
         self.month=None
-        self.open=None
-        self.close=None
-        self.high=None
-        self.low=None
+        
     def init__from_dbrow(self, row, product):
         self.product=product
         self.year=int(row['year'])
@@ -6725,16 +6737,11 @@ class OHCLMonthly:
         cur.execute("delete from quotes where id=%s and date_part('month',datetime)=%s and date_part('year',datetime)=%s", (self.product.id, self.month, self.year))
         cur.close()        
                 
-class OHCLWeekly:
+class OHCLWeekly(OHCL):
     def __init__(self, mem):
-        self.mem=mem
-        self.product=None
+        OHCL.__init__(self, mem)
         self.year=None
         self.week=None
-        self.open=None
-        self.close=None
-        self.high=None
-        self.low=None
         
     def init__from_dbrow(self, row, product):
         self.product=product
@@ -6768,15 +6775,11 @@ class OHCLWeekly:
         
     def print_time(self):
         return "{0}-{1}".format(self.year, self.week)
-class OHCLYearly:
+
+class OHCLYearly(OHCL):
     def __init__(self, mem):
-        self.mem=mem
-        self.product=None
+        OHCL.__init__(self, mem)
         self.year=None
-        self.open=None
-        self.close=None
-        self.high=None
-        self.low=None
         
     def __repr__(self):
         return ("OHCLYearly ({}) of product {}".format( self.year, self.product.id))
@@ -6829,10 +6832,13 @@ class SetOHCL:
             self.append(self.itemclass(self.mem).init__from_dbrow(row, self.product))
         cur.close()
         
-        
-    def percentage(self, index):
-        """CAlcula el incremento en % del index del array partiendo de index -1"""
-        return Decimal(100)*(self.arr[index].close-self.arr[index-1].close)/self.arr[index-1].close
+#        
+#    def percentage(self, index):
+#        """CAlcula el incremento en % del index del array partiendo de index -1"""
+#        try:
+#            return Decimal(100)*(self.arr[index].close-self.arr[index-1].close)/self.arr[index-1].close
+#        except:
+#            return None
         
     def first(self):
         """Return first ohcl"""
@@ -6978,10 +6984,54 @@ class SetOHCLYearly(SetOHCL):
         SetOHCL.__init__(self, mem, product)
         self.itemclass=OHCLYearly
         
+
+        
+    def find(self, year):
+        """Returns a OHCLYearly"""
+        for ohcl in self.arr:
+            if ohcl.year==year:
+                return ohcl
+        return None
+        
+    def percentage_by_year(self, year):
+        """
+            Calcula el porcentaje del mes partiendo del punto de cierre del mes anterior
+        """
+        ohcl=self.find(year)
+        lastohcl=self.find(year-1)
+        try:
+            return lastohcl.percentage(ohcl)
+        except:
+            print("Mal year ")
+            return None
+        
 class SetOHCLMonthly(SetOHCL):
     def __init__(self, mem, product):
         SetOHCL.__init__(self, mem, product)
         self.itemclass=OHCLMonthly
+        
+    def find(self, year,  month):
+        for ohcl in self.arr:
+            if ohcl.year==year and ohcl.month==month:
+                return ohcl
+        return None
+        
+        
+    def percentage_by_year_month(self, year, month):
+        """
+            Calcula el porcentaje del mes partiendo del punto de cierre del mes anterior
+        """
+        dat=datetime.date(year, month, 1)
+        last=dat-datetime.timedelta(days=1)
+        ohcl=self.find(year, month)
+        lastohcl=self.find(last.year, last.month)
+        try:
+            return lastohcl.percentage(ohcl)
+        except:
+            print("Mal year month")
+            return None
+        
+    
 
 class SetLanguages(SetCommons):
     def __init__(self, mem):
@@ -7012,19 +7062,7 @@ class SetLanguages(SetCommons):
         logging.info("Language changed to {}".format(id))
         qApp.installTranslator(self.mem.qtranslator)
  
-class OHCL:
-    def __init__(self, product, datetime, open, close, high, low ):
-        self.product=product
-        self.datetime=datetime
-        self.open=open
-        self.close=close
-        self.high=high
-        self.low=low
-        
-    def get_interval(self, ohclposterior):
-        """Calcula el intervalo entre dos ohcl. El posteror es el que se pasa como parámetro"""
-        return ohclposterior.datetime-self.datetime
-        
+
         
 class QuotesResult:
     """Función que consigue resultados de mystocks de un id pasado en el constructor"""
