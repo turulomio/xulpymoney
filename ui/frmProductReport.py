@@ -3,7 +3,7 @@ import logging
 import pytz
 from PyQt5.QtCore import Qt,  pyqtSlot
 from PyQt5.QtGui import QColor,  QIcon
-from PyQt5.QtWidgets import QApplication, QDialog,  QMenu, QMessageBox,  QVBoxLayout,  QTableWidgetItem
+from PyQt5.QtWidgets import QApplication, QDialog,  QMenu, QMessageBox,  QVBoxLayout
 from Ui_frmProductReport import Ui_frmProductReport
 from myqtablewidget import myQTableWidget
 from libxulpymoney import Product, ProductComparation,  Quote, SetAgrupations, SetQuotesAllIntradays, SetStockMarkets,  SetCurrencies, SetLeverages, SetPriorities, SetPrioritiesHistorical, SetProductsModes, SetTypes, c2b, day_end, dt, qcenter, qdatetime, qmessagebox, qtpc, tpc, qleft
@@ -367,40 +367,12 @@ class frmProductReport(QDialog, Ui_frmProductReport):
         rowcount=int(datetime.date.today().year-minyear+1)
         self.tblMensuales.applySettings()
         self.tblMensuales.setRowCount(rowcount)    
-        
-#        #Rellena titulos
-#        for i in range(rowcount):
-#            self.tblMensuales.setItem(i, 0, QTableWidgetItem(self.tr("Year {}").format(int(minyear+i))))
-#        
-#        #Rellena meses
-#        for i in range(len(self.product.result.ohclMonthly.arr)):
-#            if i==0:
-#                continue
-#            if (self.product.result.ohclMonthly.arr[i].datetime()-self.product.result.ohclMonthly.arr[i-1].datetime()).days<=31:
-#                if self.product.result.ohclMonthly.arr[i-1].close==0:
-#                    tpc=0
-#                else:
-#                    tpc=(self.product.result.ohclMonthly.arr[i].close-self.product.result.ohclMonthly.arr[i-1].close)*100/self.product.result.ohclMonthly.arr[i-1].close
-#                current=self.product.result.ohclMonthly.arr[i].datetime()
-#                self.tblMensuales.setItem(current.year-minyear, current.month, qtpc(tpc)) 
-#        
-#        #Rellena años
-#        for i in range(len(self.product.result.ohclYearly.arr)):
-#            if i==0:
-#                continue
-#            if (self.product.result.ohclYearly.arr[i].datetime()-self.product.result.ohclYearly.arr[i-1].datetime()).days<=366:
-#                if self.product.result.ohclYearly.arr[i-1].close==0:
-#                    tpc=0
-#                else:
-#                    tpc=(self.product.result.ohclYearly.arr[i].close-self.product.result.ohclYearly.arr[i-1].close)*100/self.product.result.ohclYearly.arr[i-1].close
-#                current=self.product.result.ohclYearly.arr[i].datetime()
-#                self.tblMensuales.setItem(current.year-minyear, 13, qtpc(tpc)) 
 
-        for i, year in enumerate(range(minyear,  datetime.date.today().year)):
+        for i, year in enumerate(range(minyear,  datetime.date.today().year+1)):
             self.tblMensuales.setItem(i, 0, qleft(year))
             for month in range(1, 13):
-                self.tblMensuales.setItem(i, month, qtpc(self.product.result.ohclMonthly.percentage_by_year_month(year, month)))
-            self.tblMensuales.setItem(i, 13, qtpc(self.product.result.ohclYearly.percentage_by_year(year)))
+                self.tblMensuales.setItem(i, month, self.product.result.ohclMonthly.percentage_by_year_month(year, month).qtablewidgetitem())
+            self.tblMensuales.setItem(i, 13, self.product.result.ohclYearly.percentage_by_year(year).qtablewidgetitem())
 
     @pyqtSlot() 
     def on_actionDividendXuNew_triggered(self):
