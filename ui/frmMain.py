@@ -582,8 +582,6 @@ class frmMain(QMainWindow, Ui_frmMain):
         self.layout.addWidget(self.w)
         self.w.show()
 
-        
-
     @pyqtSlot()  
     def on_actionIbex35_triggered(self):
         self.w.close()

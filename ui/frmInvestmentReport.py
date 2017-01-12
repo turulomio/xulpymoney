@@ -10,7 +10,7 @@ from frmQuotesIBM import frmQuotesIBM
 from wdgDisReinvest import wdgDisReinvest
 from frmSharesTransfer import frmSharesTransfer
 from frmSplit import frmSplit
-from libxulpymoney import Investment, Money, SetDividendsHomogeneus,  SetInvestmentOperationsHomogeneus,  days_to_year_month, tpc
+from libxulpymoney import Investment, Money, SetDividendsHomogeneus,  SetInvestmentOperationsHomogeneus,  days_to_year_month
 
 class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
     frmInvestmentOperationsAdd_initiated=pyqtSignal(frmInvestmentOperationsAdd)#Se usa para cargar datos de ordenes en los datos de este formulario
@@ -103,10 +103,10 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
                 acciones=self.investment.acciones()
                 tpccalculado=100*estimacion.estimation/self.investment.product.result.basic.last.quote
                 self.lblDivFechaRevision.setText(self.tr('Estimation review date: {0}').format(estimacion.date_estimation))
-                self.lblDivAnualEstimado.setText(self.tr("Estimated annual dividend is {0} ({1} per share)").format(tpc(tpccalculado),  self.investment.product.currency.string(estimacion.estimation)))
+                self.lblDivAnualEstimado.setText(self.tr("Estimated annual dividend is {0} % ({1} per share)").format(tpccalculado,  self.investment.product.currency.string(estimacion.estimation)))
                 self.lblDivSaldoEstimado.setText(self.tr("Estimated balance: {0} ({1} after taxes)").format( self.investment.product.currency.string(acciones*estimacion.estimation),  self.investment.product.currency.string(acciones*estimacion.estimation*(1-self.mem.dividendwithholding))))
-            self.lblDivTPC.setText(self.tr("% Invested: {0}").format(tpc(dtpc)))
-            self.lblDivTAE.setText(self.tr("% APR from invested: {0}").format(tpc(dtae)))
+            self.lblDivTPC.setText(self.tr("% Invested: {0} %").format(dtpc))
+            self.lblDivTAE.setText(self.tr("% APR from invested: {0} %").format(dtae))
             self.grpDividendsEstimation.show()
             self.grpDividendsEfectivos.show()
         else:

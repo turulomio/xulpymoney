@@ -1,4 +1,4 @@
-from libxulpymoney import Quote, qmessagebox, tpc
+from libxulpymoney import Quote, qmessagebox
 from PyQt5.QtCore import QSize, pyqtSlot
 from PyQt5.QtWidgets import QDialog, QMenu, QVBoxLayout, QWidget
 from Ui_wdgLastCurrent import Ui_wdgLastCurrent
@@ -111,8 +111,8 @@ class wdgLastCurrent(QWidget, Ui_wdgLastCurrent):
             self.actionProduct.setEnabled(True)
 
 
-        self.actionCalculate.setText("Calculate order at {} since last operation".format(tpc(self.spin.value())))
-        self.actionReinvest.setText("Simulate reinvestment at {} since last operation".format(tpc(self.spin.value())))
+        self.actionCalculate.setText("Calculate order at {} % since last operation".format(self.spin.value()))
+        self.actionReinvest.setText("Simulate reinvestment at {} % since last operation".format(self.spin.value()))
         menu=QMenu()
         menu.addAction(self.actionCalculate)
         menu.addSeparator()

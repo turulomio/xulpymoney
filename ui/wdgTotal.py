@@ -1,7 +1,7 @@
 from PyQt5.QtCore import pyqtSlot,  Qt
 from PyQt5.QtGui import QIcon, QColor, QFont
 from PyQt5.QtWidgets import QSizePolicy, QWidget, QMenu, QProgressDialog, QVBoxLayout, QHBoxLayout, QAbstractItemView, QTableWidgetItem, QLabel
-from libxulpymoney import AnnualTarget, Assets, Money, SetAccountOperations, SetDividendsHeterogeneus, SetInvestmentOperationsHistoricalHeterogeneus, list2string, none2decimal0, qcenter, qleft, qtpc, qmessagebox
+from libxulpymoney import AnnualTarget, Assets, Money, SetAccountOperations, SetDividendsHeterogeneus, SetInvestmentOperationsHistoricalHeterogeneus, list2string, none2decimal0, qcenter, qleft, qmessagebox,  Percentage
 from myqtablewidget import myQTableWidget
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg
 from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT 
@@ -247,10 +247,11 @@ class TotalYear:
         
     def assets_percentage_in_month(self, month):
         """Calculates the percentage of the assets in this month from total last year"""
-        if self.total_last_year==Decimal(0):
-            return None
+#        if self.total_last_year==Decimal(0):
+#            return None
         m=self.find(self.year, month)
-        return 100*((m.total()-self.total_last_year)/self.total_last_year).amount
+#        return 100*((m.total()-self.total_last_year)/self.total_last_year).amount
+        return Percentage(m.total()-self.total_last_year, self.total_last_year)
 
 
 
@@ -362,14 +363,14 @@ class wdgTotal(QWidget, Ui_wdgTotal):
                 self.table.setItem(7, i, m.total_investments().qtablewidgetitem())
                 self.table.setItem(8, i, m.total().qtablewidgetitem())
                 self.table.setItem(9, i, self.setData.difference_with_previous_month(m).qtablewidgetitem())
-                self.table.setItem(11, i, qtpc(self.setData.assets_percentage_in_month(m.month)))
+                self.table.setItem(11, i, self.setData.assets_percentage_in_month(m.month).qtablewidgetitem())
         self.table.setItem(0, 12, self.setData.incomes().qtablewidgetitem())
         self.table.setItem(1, 12, self.setData.gains().qtablewidgetitem())
         self.table.setItem(2, 12, self.setData.dividends().qtablewidgetitem())
         self.table.setItem(3, 12, self.setData.expenses().qtablewidgetitem())
         self.table.setItem(4, 12, self.setData.i_d_g_e().qtablewidgetitem())      
         self.table.setItem(9, 12, self.setData.difference_with_previous_year().qtablewidgetitem())    
-        self.table.setItem(11, 12, qtpc(self.setData.assets_percentage_in_month(12)))        
+        self.table.setItem(11, 12, self.setData.assets_percentage_in_month(12).qtablewidgetitem())
         self.table.setCurrentCell(6, datetime.date.today().month-1)
         s=""
         s=self.tr("This year I've generated {}.").format(self.setData.gains()+self.setData.dividends())

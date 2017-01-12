@@ -1,7 +1,7 @@
 from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtWidgets import QWidget, QDialog, QVBoxLayout
 from Ui_wdgCalculator import Ui_wdgCalculator
-from libxulpymoney import qmessagebox, qtpc
+from libxulpymoney import Percentage, qmessagebox
 from wdgOrdersAdd import wdgOrdersAdd
 from canvaschart import canvasChartHistoricalBuy
 from decimal import Decimal
@@ -135,7 +135,7 @@ class wdgCalculator(QWidget, Ui_wdgCalculator):
             self.table.clearContents()
             self.table.setRowCount(len(porcentages))
             for i, tpc in enumerate(porcentages):        
-                self.table.setItem(i, 0, qtpc(tpc))
+                self.table.setItem(i, 0, Percentage(tpc, 100).qtablewidgetitem())
                 tpcprice= self.txtFinalPrice.decimal()*Decimal(1+tpc/100)
                 self.table.setItem(i, 1, self.product.currency.qtablewidgetitem(tpcprice))       
                 self.table.setItem(i, 2, self.product.currency.qtablewidgetitem(self.txtShares.decimal()*(tpcprice-self.txtFinalPrice.decimal())))
