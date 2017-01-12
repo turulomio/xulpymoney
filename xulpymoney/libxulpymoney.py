@@ -401,7 +401,7 @@ class SetInvestments(SetCommons):
             table.setItem(i, 1, qdatetime(inv.product.result.basic.last.datetime, self.mem.localzone))
             table.setItem(i, 2, inv.product.currency.qtablewidgetitem(inv.product.result.basic.last.quote,  6))#Se debería recibir el parametro currency
             table.setItem(i, 3, inv.op_actual.gains_last_day(type).qtablewidgetitem())
-            table.setItem(i, 4, qtpc(inv.product.result.basic.tpc_diario()))
+            table.setItem(i, 4, inv.product.result.basic.tpc_diario().qtablewidgetitem())
             table.setItem(i, 5, inv.balance(None,  type).qtablewidgetitem())
             table.setItem(i, 6, inv.op_actual.pendiente(inv.product.result.basic.last, type).qtablewidgetitem())
             
@@ -1037,7 +1037,7 @@ class SetProducts(SetCommons):
             table.setItem(i, 3, qdatetime(p.result.basic.last.datetime, self.mem.localzone))
             table.setItem(i, 4, p.currency.qtablewidgetitem(p.result.basic.last.quote, 6 ))  
 
-            table.setItem(i, 5, qtpc(p.result.basic.tpc_diario()))
+            table.setItem(i, 5, p.result.basic.tpc_diario().qtablewidgetitem())
             table.setItem(i, 6, qtpc(p.result.basic.tpc_anual()))           
             if p.estimations_dps.currentYear()==None:
                 table.setItem(i, 7, qtpc(None))
@@ -2401,10 +2401,7 @@ class SetInvestmentOperationsHistoricalHeterogeneus(SetIO):
         return r
         
     def tpc_total_neto(self):
-        bruto=self.gross_purchases()
-        if bruto!=0:
-            return 100*(self.consolidado_neto()/bruto).amount
-        return 0    
+        return Percentage(self.consolidado_neto()/self.gross_purchases())
         
     def comissions(self):
         r=Money(self.mem, 0,  self.mem.localcurrency)
@@ -2467,7 +2464,7 @@ class SetInvestmentOperationsHistoricalHeterogeneus(SetIO):
             tabla.setItem(rownumber, 10,a.taxes(type).qtablewidgetitem())
             tabla.setItem(rownumber, 11,a.consolidado_neto(type).qtablewidgetitem())
             tabla.setItem(rownumber, 12,qtpc(a.tpc_tae_neto()))
-            tabla.setItem(rownumber, 13,qtpc(a.tpc_total_neto()))
+            tabla.setItem(rownumber, 13,a.tpc_total_neto().qtablewidgetitem())
 
         
         tabla.setItem(self.length(), 2,QTableWidgetItem("TOTAL"))
@@ -2477,9 +2474,8 @@ class SetInvestmentOperationsHistoricalHeterogeneus(SetIO):
         tabla.setItem(self.length(), 9,self.comissions().qtablewidgetitem())    
         tabla.setItem(self.length(), 10,self.taxes().qtablewidgetitem())    
         tabla.setItem(self.length(), 11,self.consolidado_neto().qtablewidgetitem())
-        tabla.setItem(self.length(), 13,qtpc(self.tpc_total_neto()))
+        tabla.setItem(self.length(), 13,self.tpc_total_neto().qtablewidgetitem())
         tabla.setCurrentCell(self.length(), 5)       
-#        return (sumbruto, sumcomision, sumimpuestos, sumneto)
     
 
     def order_by_fechaventa(self):
@@ -2542,10 +2538,7 @@ class SetInvestmentOperationsHistoricalHomogeneus(SetInvestmentOperationsHistori
             resultado=resultado+o.bruto_compra()
         return resultado
     def tpc_total_neto(self):
-        bruto=self.bruto_compra()
-        if not bruto.isZero():
-            return 100*(self.consolidado_neto()/bruto).amount
-        return 0    
+        return Percentage(self.consolidado_neto(), self.bruto_compra())
 
     def myqtablewidget(self, tabla, show_accounts=False, type=1):
         """Rellena datos de un array de objetos de InvestmentOperationHistorical, devuelve totales ver código"""
@@ -2631,9 +2624,9 @@ class SetInvestmentOperationsHistoricalHomogeneus(SetInvestmentOperationsHistori
             
             tabla.setItem(rownumber, 9+diff,neto.qtablewidgetitem())
             
-            tabla.setItem(rownumber, 10+diff,qtpc(a.tpc_tae_neto()))
+            tabla.setItem(rownumber, 10+diff, a.tpc_tae_neto().qtablewidgetitem())
             
-            tabla.setItem(rownumber, 11+diff,qtpc(a.tpc_total_neto()))
+            tabla.setItem(rownumber, 11+diff, a.tpc_total_neto().qtablewidgetitem())
         if self.length()>0:
             tabla.setItem(self.length(), 2,QTableWidgetItem("TOTAL"))
             tabla.setItem(self.length(), 4+diff,sumsaldosinicio.qtablewidgetitem())
@@ -2642,7 +2635,7 @@ class SetInvestmentOperationsHistoricalHomogeneus(SetInvestmentOperationsHistori
             tabla.setItem(self.length(), 7+diff,sumcomision.qtablewidgetitem())    
             tabla.setItem(self.length(), 8+diff,sumimpuestos.qtablewidgetitem())    
             tabla.setItem(self.length(), 9+diff,sumneto.qtablewidgetitem())
-            tabla.setItem(self.length(), 11+diff,qtpc(self.tpc_total_neto()))    
+            tabla.setItem(self.length(), 11+diff,self.tpc_total_neto().qtablewidgetitem())
             tabla.setCurrentCell(self.length(), 4+diff)       
         return (sumbruto, sumcomision, sumimpuestos, sumneto)
     
@@ -2750,10 +2743,7 @@ class InvestmentOperationHistorical:
                 return dias/Decimal(365)
 
     def tpc_total_neto(self):
-        bruto=self.bruto_compra()
-        if bruto.isZero():
-            return 0
-        return 100*(self.consolidado_neto()/bruto).amount
+        return Percentage(self.consolidado_neto()/self.bruto_compra())
         
     def tpc_total_bruto(self):
         bruto=self.bruto_compra()
@@ -2765,7 +2755,7 @@ class InvestmentOperationHistorical:
         dias=(self.fecha_venta-self.fecha_inicio).days +1 #Account el primer día
         if dias==0:
             dias=1
-        return Decimal(365*(self.tpc_total_neto()/dias))
+        return self.tpc_total_neto()*365/dias
 
 class InvestmentOperationCurrent:
     def __init__(self, mem):
@@ -6369,11 +6359,7 @@ class SetQuotesBasic:
             self.endlastyear=Quote(self.mem).init__from_query(self.product,  datetime.datetime(datetime.date.today().year-1, 12, 31, 23, 59, 59, tzinfo=pytz.timezone('UTC')))
 
     def tpc_diario(self):
-        if self.penultimate==None or self.last==None:
-            return None
-        if self.penultimate.quote==0 or self.penultimate.quote==None or self.last.quote==None:
-            return None
-        return round((self.last.quote-self.penultimate.quote)*100/self.penultimate.quote, 2)
+        return Percentage(self.last.quote-self.penultimate.quote, self.penultimate.quote)
 
     def tpc_anual(self):
         if self.endlastyear.quote==None or self.endlastyear.quote==0 or self.last.quote==None:
@@ -7161,7 +7147,28 @@ class Percentage:
         
     def __repr__(self):
         return self.string()
-    
+            
+    def __lt__(self, other):
+        if self.value==None or other.value==None:
+            return False
+        if self.value<other.value:
+            return True
+        return False
+        
+    def __mul__(self, value):
+        try:
+            r=self.value*Decimal(value)
+        except:
+            r=None
+        return Percentage(r, 1)
+
+    def __truediv__(self, value):
+        try:
+            r=self.value/Decimal(value)
+        except:
+            r=None
+        return Percentage(r, 1)
+        
     def setValue(self, numerator,  denominator):
         try:
             self.value=Decimal(numerator/denominator)
