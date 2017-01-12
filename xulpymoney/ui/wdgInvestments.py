@@ -1,4 +1,4 @@
-from libxulpymoney import Quote, tpc,  days_to_year_month, qmessagebox
+from libxulpymoney import Percentage, Quote, days_to_year_month, qmessagebox
 from PyQt5.QtCore import Qt,  pyqtSlot
 from PyQt5.QtWidgets import QMenu, QWidget
 from Ui_wdgInvestments import Ui_wdgInvestments
@@ -33,7 +33,13 @@ class wdgInvestments(QWidget, Ui_wdgInvestments):
         if invested.isZero():
             self.lblTotal.setText(self.tr("There aren't invested assets"))
         else:
-            self.lblTotal.setText(self.tr("Invested assets: {0}. Pending: {1}{2} = {3} ({4} assets)\nDaily Diff: {5}. Investment average age: {6}").format(invested,self.investmentes.pendiente_positivo(),self.investmentes.pendiente_negativo(),  pendiente,tpc(100*pendiente.amount/invested.amount), self.investmentes.gains_last_day(), days_to_year_month(self.investmentes.average_age())))
+            self.lblTotal.setText(self.tr("Invested assets: {0}. Pending: {1}{2} = {3} ({4} assets)\nDaily Diff: {5}. Investment average age: {6}").format(
+                            invested,self.investmentes.pendiente_positivo(),
+                            self.investmentes.pendiente_negativo(),  
+                            pendiente, 
+                            Percentage(pendiente, invested),  
+                            self.investmentes.gains_last_day()
+                            , days_to_year_month(self.investmentes.average_age())))
 
 
     @pyqtSlot() 

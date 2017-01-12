@@ -4,7 +4,7 @@ import pytz
 from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtWidgets import QWidget, QDialog, QVBoxLayout
 from Ui_wdgDisReinvest import Ui_wdgDisReinvest
-from libxulpymoney import InvestmentOperation, Quote, qmessagebox,  qtpc
+from libxulpymoney import InvestmentOperation, Quote, qmessagebox
 from wdgOrdersAdd import wdgOrdersAdd
 from decimal import Decimal
 from canvaschart import canvasChartHistoricalReinvest
@@ -184,7 +184,7 @@ class wdgDisReinvest(QWidget, Ui_wdgDisReinvest):
         table.clearContents()
         table.setRowCount(len(porcentages))
         for i, tpc in enumerate(porcentages):        
-            table.setItem(i, 0, qtpc(tpc))
+            table.setItem(i, 0, tpc.qtablewidgetitem())
             tpcprice= averageprice*Decimal(1+tpc/100)
             table.setItem(i, 1, tpcprice.qtablewidgetitem())
             table.setItem(i, 2, ((tpcprice-averageprice)*shares).qtablewidgetitem())

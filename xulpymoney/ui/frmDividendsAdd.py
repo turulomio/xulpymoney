@@ -1,6 +1,6 @@
 from PyQt5.QtWidgets import QDialog,  QWidget
 from decimal import Decimal
-from libxulpymoney import Dividend,  Money,  tpc, qmessagebox
+from libxulpymoney import Dividend,  Money, qmessagebox
 from Ui_frmDividendsAdd import Ui_frmDividendsAdd
 
 class frmDividendsAdd(QDialog, Ui_frmDividendsAdd):
@@ -72,7 +72,7 @@ class frmDividendsAdd(QDialog, Ui_frmDividendsAdd):
                 self.neto=self.txtBruto.decimal()-self.txtRetencion.decimal()-self.txtComision.decimal()
                 self.tpc=100*self.txtRetencion.decimal()/self.txtBruto.decimal()
             self.txtNeto.setText(self.neto)
-            self.lblTPC.setText(self.tr("Withhonding tax retention percentage: {}".format(tpc(self.tpc))))
+            self.lblTPC.setText(self.tr("Withhonding tax retention percentage: {} %".format(self.tpc)))
             self.cmd.setEnabled(True)
         except:
             self.txtNeto.setText(self.tr("Calculation error"))

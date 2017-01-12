@@ -2,7 +2,7 @@ from PyQt5.QtCore import Qt, pyqtSlot
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QMenu, QTableWidgetItem, QWidget
 from datetime import date
-from libxulpymoney import Money, qmessagebox, qright, qtpc
+from libxulpymoney import Money, qmessagebox, qright, Percentage
 from Ui_wdgDividendsReport import Ui_wdgDividendsReport
 from frmInvestmentReport import frmInvestmentReport
 from frmProductReport import frmProductReport
@@ -45,7 +45,7 @@ class wdgDividendsReport(QWidget, Ui_wdgDividendsReport):
         for i, inv in enumerate(self.investmentes.arr):
             if inv.product.estimations_dps.find(date.today().year)==None:
                 dpa=0
-                tpc=0
+                tpc=Percentage()
                 divestimado=Money(self.mem, 0, self.mem.localcurrency)
             else:
                 dpa=inv.product.estimations_dps.currentYear().estimation
@@ -58,7 +58,7 @@ class wdgDividendsReport(QWidget, Ui_wdgDividendsReport):
             self.tblInvestments.setItem(i, 4, qright(inv.acciones()))
             sumdiv=sumdiv+divestimado
             self.tblInvestments.setItem(i, 5, divestimado.qtablewidgetitem())
-            self.tblInvestments.setItem(i, 6, qtpc(tpc))
+            self.tblInvestments.setItem(i, 6, tpc.qtablewidgetitem())
                 
             #Colorea si está desactualizado
             if inv.product.estimations_dps.dias_sin_actualizar()>self.spin.value():

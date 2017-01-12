@@ -3,7 +3,7 @@ from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtGui import QColor
 from PyQt5.QtWidgets import QMenu, QWidget, QTableWidgetItem, QDialog, QVBoxLayout
 from Ui_wdgIndexRange import Ui_wdgIndexRange
-from libxulpymoney import Assets, tpc, qcenter
+from libxulpymoney import Assets, Percentage, qcenter
 from frmProductReport import frmProductReport
 from frmQuotesIBM import frmQuotesIBM
 from wdgCalculator import wdgCalculator
@@ -21,25 +21,25 @@ class Range:
         
     def currentPriceBottomVariation(self):
         """Calcs variation percentage from current price to bottom price"""
-        return  (self.bottom-self.current)*100/self.current
+        return  Percentage(self.bottom-self.current,  self.current)
         
     def currentPriceTopVariation(self):
-        return  (self.top-self.current)*100/self.current
+        return  Percentage(self.top-self.current, self.current)
     
     def currentPriceMiddleVariation(self):
-        return  (self.middle-self.current)*100/self.current
+        return  Percentage(self.middle-self.current, self.current)
         
     def textBottom(self):
         """Used to action text"""
-        return ("Bottom: {0}. Variation: {1}".format(self.product.currency.string(self.bottom), tpc(self.currentPriceBottomVariation())))
+        return ("Bottom: {0}. Variation: {1}".format(self.product.currency.string(self.bottom), self.currentPriceBottomVariation()))
 
     def textMiddle(self):
         """Used to action text"""
-        return ("Middle: {0}. Variation: {1}".format(self.product.currency.string(self.middle), tpc(self.currentPriceMiddleVariation())))
+        return ("Middle: {0}. Variation: {1}".format(self.product.currency.string(self.middle), self.currentPriceMiddleVariation()))
 
     def textTop(self):
         """Used to action text"""
-        return ("Top: {0}. Variation: {1}".format(self.product.currency.string(self.top), tpc(self.currentPriceTopVariation())))
+        return ("Top: {0}. Variation: {1}".format(self.product.currency.string(self.top), self.currentPriceTopVariation()))
 
 class wdgIndexRange(QWidget, Ui_wdgIndexRange):
     def __init__(self,mem, parent=None):
@@ -65,7 +65,7 @@ class wdgIndexRange(QWidget, Ui_wdgIndexRange):
         if self.benchmark:
             self.cmbBenchmarkCurrent.clear() 
             self.cmbBenchmarkCurrent.addItem(self.tr("Benchmark penultimate price ({}) is {}".format(str(self.benchmark.result.basic.penultimate.datetime)[:16], self.benchmark.currency.string(self.benchmark.result.basic.penultimate.quote))))
-            self.cmbBenchmarkCurrent.addItem(self.tr("Benchmark last price ({}) is {}. Last daily variation: {}.".format(str(self.benchmark.result.basic.last.datetime)[:16], self.benchmark.currency.string(self.benchmark.result.basic.last.quote),tpc(self.benchmark.result.basic.tpc_diario()) )))
+            self.cmbBenchmarkCurrent.addItem(self.tr("Benchmark last price ({}) is {}. Last daily variation: {}.".format(str(self.benchmark.result.basic.last.datetime)[:16], self.benchmark.currency.string(self.benchmark.result.basic.last.quote), self.benchmark.result.basic.tpc_diario()) ))
             self.cmbBenchmarkCurrent.setCurrentIndex(1)#Last price
             
     def cmbBenchmarkCurrent_price(self):

@@ -6,7 +6,7 @@ from PyQt5.QtGui import QColor,  QIcon
 from PyQt5.QtWidgets import QApplication, QDialog,  QMenu, QMessageBox,  QVBoxLayout
 from Ui_frmProductReport import Ui_frmProductReport
 from myqtablewidget import myQTableWidget
-from libxulpymoney import Product, ProductComparation,  Quote, SetAgrupations, SetQuotesAllIntradays, SetStockMarkets,  SetCurrencies, SetLeverages, SetPriorities, SetPrioritiesHistorical, SetProductsModes, SetTypes, c2b, day_end, dt, qcenter, qdatetime, qmessagebox, qtpc, tpc, qleft
+from libxulpymoney import Percentage, Product, ProductComparation,  Quote, SetAgrupations, SetQuotesAllIntradays, SetStockMarkets,  SetCurrencies, SetLeverages, SetPriorities, SetPrioritiesHistorical, SetProductsModes, SetTypes, c2b, day_end, dt, qcenter, qdatetime, qmessagebox, qleft
 from frmSelector import frmSelector
 from frmDividendsAdd import frmDividendsAdd
 from frmQuotesIBM import frmQuotesIBM
@@ -212,16 +212,17 @@ class frmProductReport(QDialog, Ui_frmProductReport):
             self.tblTPC.setItem(row, 1, self.product.currency.qtablewidgetitem(quote.quote, 6))
 
             try:
-                tpc=(self.product.result.basic.last.quote-quote.quote)*100/quote.quote
+#                tpc=(self.product.result.basic.last.quote-quote.quote)*100/quote.quote
+                tpc=Percentage(self.product.result.basic.last.quote-quote.quote, quote.quote)
                 days=(datetime.datetime.now(pytz.timezone(self.mem.localzone.name))-quote.datetime).days+1
-                self.tblTPC.setItem(row, 2, qtpc(round(tpc, 2)))    
-                self.tblTPC.setItem(row, 3,  qtpc(round(tpc*365/days, 2)))
+                self.tblTPC.setItem(row, 2, tpc.qtablewidgetitem())
+                self.tblTPC.setItem(row, 3,  (tpc*365/days).qtablewidgetitem())
                 if self.investment:
                     self.grpHistoricos.setTitle(self.tr('Report of historic prices. You have {} shares valued at {}.').format(self.investment.acciones(), self.investment.balance()))
                     self.tblTPC.setItem(row, 4,  self.product.currency.qtablewidgetitem(self.investment.acciones()*(self.product.result.basic.last.quote-quote.quote)))
             except:
-                self.tblTPC.setItem(row, 2, qtpc(None))    
-                self.tblTPC.setItem(row, 3,  qtpc(None))     
+                self.tblTPC.setItem(row, 2, Percentage().qtablewidgetitem())    
+                self.tblTPC.setItem(row, 3,  Percentage().qtablewidgetitem())
                 self.tblTPC.setItem(row, 3,  self.product.currency.qtablewidgetitem(None))     
 
         self.product.agrupations.qcombobox(self.cmbAgrupations)
@@ -343,15 +344,15 @@ class frmProductReport(QDialog, Ui_frmProductReport):
                     self.tblIntradia.setItem(i, 0, qcenter(str(q.datetime)[11:-6]))
                 self.tblIntradia.setItem(i, 1, self.product.currency.qtablewidgetitem(q.quote,6))       
                 if QuoteDayBefore!=None:
-                    tpcq=(q.quote-QuoteDayBefore.close)*100/QuoteDayBefore.close
-                    self.tblIntradia.setItem(i, 2, qtpc(tpcq))    
+                    tpcq=Percentage(q.quote-QuoteDayBefore.close, QuoteDayBefore.close)
+                    self.tblIntradia.setItem(i, 2, tpcq.qtablewidgetitem())
                 else:
-                    self.tblIntradia.setItem(i, 2, qtpc(None))    
+                    self.tblIntradia.setItem(i, 2, Percentage().qtablewidgetitem())    
                 if q==self.product.result.intradia.high():
                     self.tblIntradia.item(i, 1).setBackground(QColor(148, 255, 148))
                 elif q==self.product.result.intradia.low():
                     self.tblIntradia.item(i, 1).setBackground( QColor(255, 148, 148))  
-                self.lblIntradayVariance.setText(self.tr("Daily maximum variance: {} ({})").format(self.product.currency.string(self.product.result.intradia.variance()), tpc(self.product.result.intradia.variance_percentage())))
+                self.lblIntradayVariance.setText(self.tr("Daily maximum variance: {} ({})").format(self.product.currency.string(self.product.result.intradia.variance()), self.product.result.intradia.variance_percentage()))
                 
             self.tblIntradia.setFocus()
             self.tblIntradia.setCurrentCell(len(self.product.result.intradia.arr)-1, 0)

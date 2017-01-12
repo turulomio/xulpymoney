@@ -146,6 +146,109 @@ class Connection(QObject):
                 res=True
         cur.close()
         return res
+class Percentage:
+    def __init__(self, numerator=None, denominator=None):
+        self.value=None
+        self.setValue(self.toDecimal(numerator),self.toDecimal(denominator))
+        
+        
+    def toDecimal(self, o):
+        if o==None:
+            return o
+        if o.__class__==Money:
+            return o.amount
+        elif o.__class__==Decimal:
+            return o
+        elif o.__class__ in ( int, float):
+            return Decimal(o)
+        elif o.__class__==Percentage:
+            return o.value
+        else:
+            print (o.__class__)
+            return None
+        
+    def __repr__(self):
+        return self.string()
+            
+    def __neg__(self):
+        """Devuelve otro money con el amount con signo cambiado"""
+        if self.value==None:
+            return self
+        return Percentage(-self.value, 1)
+        
+    def __lt__(self, other):
+        if self.value==None:
+            value1=Decimal('-Infinity')
+        else:
+            value1=self.value
+        if other.value==None:
+            value2=Decimal('-Infinity')
+        else:
+            value2=other.value
+        if value1<value2:
+            return True
+        return False
+        
+    def __mul__(self, value):
+        if self.value==None or value==None:
+            r=None
+        else:
+            r=self.value*self.toDecimal(value)
+        return Percentage(r, 1)
+
+    def __truediv__(self, value):
+        try:
+            r=self.value/self.toDecimal(value)
+        except:
+            r=None
+        return Percentage(r, 1)
+        
+    def setValue(self, numerator,  denominator):
+        try:
+            self.value=Decimal(numerator/denominator)
+        except:
+            self.value=None
+        
+    def value(self):
+        return self.value
+        
+    def value_100(self):
+        if self.value==None:
+            return None
+        else:
+            return self.value*Decimal(100)
+        
+    def string(self, rnd=2):
+        if self.value==None:
+            return "None %"
+        return "{} %".format(round(self.value_100(), rnd))
+        
+    def qtablewidgetitem(self, rnd=2):
+        a=QTableWidgetItem(self.string(rnd))
+        a.setTextAlignment(Qt.AlignVCenter|Qt.AlignRight)
+        if self.value==None:
+            a.setForeground(QColor(0, 0, 255))
+        elif self.value<0:
+            a.setForeground(QColor(255, 0, 0))
+        return a
+        
+    def isValid(self):
+        if self.value!=None:
+            return True
+        return False
+        
+    def isGETZero(self):
+        if self.value>=0:
+            return True
+        return False
+    def isGTZero(self):
+        if self.value>0:
+            return True
+        return False
+    def isLTZero(self):
+        if self.value<0:
+            return True
+        return False
 
 
 class AccountOperationOfInvestmentOperation:
@@ -406,24 +509,20 @@ class SetInvestments(SetCommons):
             table.setItem(i, 6, inv.op_actual.pendiente(inv.product.result.basic.last, type).qtablewidgetitem())
             
             tpc_invertido=inv.op_actual.tpc_total(inv.product.result.basic.last, type)
-            table.setItem(i, 7, qtpc(tpc_invertido))
+            table.setItem(i, 7, tpc_invertido.qtablewidgetitem())
             if self.mem.gainsyear==True and inv.op_actual.less_than_a_year()==True:
                 table.item(i, 7).setIcon(QIcon(":/xulpymoney/new.png"))
             
             tpc_venta=inv.percentage_to_selling_point()
-            table.setItem(i, 8, qtpc(tpc_venta))
+            table.setItem(i, 8, tpc_venta.qtablewidgetitem())
             if inv.selling_expiration!=None:
                 if inv.selling_expiration<datetime.date.today():
                     table.item(i, 8).setIcon(QIcon(":/xulpymoney/alarm_clock.png"))
-            if tpc_invertido!=None and tpc_venta!=None:
-                if tpc_invertido<=-50:   
+            if tpc_invertido.isValid() and tpc_venta.isValid():
+                if tpc_invertido.value_100()<=-Decimal(50):   
                     table.item(i, 7).setBackground(QColor(255, 148, 148))
-                if (tpc_venta<=5 and tpc_venta>0) or tpc_venta<0:
+                if (tpc_venta.value_100()<=Decimal(5) and tpc_venta.isGTZero()) or tpc_venta.isLTZero():
                     table.item(i, 8).setBackground(QColor(148, 255, 148))
-#                
-#        table.setItem(self.length(), 0, QTableWidgetItem("Total ( IInvested: {} )".format(self.invested())))
-#        table.setItem(self.length(), 3, self.gains_last_day().qtablewidgetitem())
-#        table.setItem(self.length(), 6, self.pendiente().qtablewidgetitem())
 
     def myqtablewidget_lastCurrent(self, table,  percentage):
         """
@@ -442,9 +541,9 @@ class SetInvestments(SetCommons):
                 table.setItem(i, 4,  inv.balance(None, type).qtablewidgetitem())
                 table.setItem(i, 5, inv.op_actual.pendiente(inv.product.result.basic.last, type).qtablewidgetitem())
                 lasttpc=inv.op_actual.last().tpc_total(inv.product.result.basic.last, type=3)
-                table.setItem(i, 6, qtpc(lasttpc))
-                table.setItem(i, 7, qtpc(inv.op_actual.tpc_total(inv.product.result.basic.last, type=3)))
-                table.setItem(i, 8, qtpc(inv.percentage_to_selling_point()))
+                table.setItem(i, 6, lasttpc.qtablewidgetitem())
+                table.setItem(i, 7, inv.op_actual.tpc_total(inv.product.result.basic.last, type=3).qtablewidgetitem())
+                table.setItem(i, 8, inv.percentage_to_selling_point().qtablewidgetitem())
                 if lasttpc<=percentage:   
                     table.item(i, 6).setBackground(QColor(255, 148, 148))
             except:
@@ -485,7 +584,7 @@ class SetInvestments(SetCommons):
                 table.setItem(i, 3, qleft(inv.account.name))   
                 table.setItem(i, 4, qright(inv.acciones()))
                 table.setItem(i, 5, inv.product.currency.qtablewidgetitem(inv.venta))
-                table.setItem(i, 6, qtpc(inv.percentage_to_selling_point()))
+                table.setItem(i, 6, inv.percentage_to_selling_point().qtablewidgetitem())
 
 
     def average_age(self):
@@ -857,8 +956,13 @@ class SetInvestments(SetCommons):
             
     def order_by_percentage_invested(self):
         """Orders the Set using self.arr"""
+#        r=[]
+#        for a in self.arr:
+#            r.append(a.op_actual.tpc_total(a.product.result.basic.last, type=3))
+#        print(r)
+            
         try:
-            self.arr=sorted(self.arr, key=lambda inv: inv.tpc_invertido(),  reverse=True) 
+            self.arr=sorted(self.arr, key=lambda inv: inv.op_actual.tpc_total(inv.product.result.basic.last, type=3),  reverse=True) 
             return True
         except:
             return False
@@ -1038,12 +1142,12 @@ class SetProducts(SetCommons):
             table.setItem(i, 4, p.currency.qtablewidgetitem(p.result.basic.last.quote, 6 ))  
 
             table.setItem(i, 5, p.result.basic.tpc_diario().qtablewidgetitem())
-            table.setItem(i, 6, qtpc(p.result.basic.tpc_anual()))           
+            table.setItem(i, 6, p.result.basic.tpc_anual().qtablewidgetitem())     
             if p.estimations_dps.currentYear()==None:
-                table.setItem(i, 7, qtpc(None))
+                table.setItem(i, 7, Percentage().qtablewidgetitem())
                 table.item(i, 7).setBackground( QColor(255, 182, 182))          
             else:
-                table.setItem(i, 7, qtpc(p.estimations_dps.currentYear().percentage()))  
+                table.setItem(i, 7, p.estimations_dps.currentYear().percentage().qtablewidgetitem())
                 
             if p.has_autoupdate()==True:#Active
                 table.item(i, 4).setIcon(transfer)
@@ -1592,7 +1696,7 @@ class SetEstimationsDPS:
         for i, e in enumerate(self.arr):
             table.setItem(i, 0, qcenter(str(e.year)))
             table.setItem(i, 1, self.product.currency.qtablewidgetitem(e.estimation, 6))       
-            table.setItem(i, 2, qtpc(e.percentage()))
+            table.setItem(i, 2, e.percentage().qtablewidgetitem())
             table.setItem(i, 3, qdate(e.date_estimation))
             table.setItem(i, 4, qleft(e.source))
             table.setItem(i, 5, qbool(e.manual))
@@ -2063,9 +2167,9 @@ class SetInvestmentOperationsCurrentHeterogeneus(SetIO):
             tabla.setItem(rownumber, 5, a.invertido(type).qtablewidgetitem())
             tabla.setItem(rownumber, 6, a.balance(a.investment.product.result.basic.last, type).qtablewidgetitem())
             tabla.setItem(rownumber, 7, a.pendiente(a.investment.product.result.basic.last, type).qtablewidgetitem())
-            tabla.setItem(rownumber, 8, qtpc(a.tpc_anual(a.investment.product.result.basic.last, a.investment.product.result.basic.endlastyear, type=2)))
-            tabla.setItem(rownumber, 9, qtpc(a.tpc_tae(a.investment.product.result.basic.last, type=2)))
-            tabla.setItem(rownumber, 10, qtpc(a.tpc_total(a.investment.product.result.basic.last, type=2)))
+            tabla.setItem(rownumber, 8, a.tpc_anual(a.investment.product.result.basic.last, a.investment.product.result.basic.endlastyear, type=2).qtablewidgetitem())
+            tabla.setItem(rownumber, 9, a.tpc_tae(a.investment.product.result.basic.last, type=2).qtablewidgetitem())
+            tabla.setItem(rownumber, 10, a.tpc_total(a.investment.product.result.basic.last, type=2).qtablewidgetitem())
             if a.referenciaindice==None:
                 tabla.setItem(rownumber, 11, self.mem.data.benchmark.currency.qtablewidgetitem(None))
             else:
@@ -2076,8 +2180,8 @@ class SetInvestmentOperationsCurrentHeterogeneus(SetIO):
         tabla.setItem(self.length(), 5, self.invertido().qtablewidgetitem())
         tabla.setItem(self.length(), 6, self.balance().qtablewidgetitem())
         tabla.setItem(self.length(), 7, self.pendiente().qtablewidgetitem())
-        tabla.setItem(self.length(), 8, qtpc(self.tpc_tae()))
-        tabla.setItem(self.length(), 9, qtpc(self.tpc_total()))
+        tabla.setItem(self.length(), 8, self.tpc_tae().qtablewidgetitem())
+        tabla.setItem(self.length(), 9, self.tpc_total().qtablewidgetitem())
 
 
     def pendiente(self):
@@ -2094,14 +2198,18 @@ class SetInvestmentOperationsCurrentHeterogeneus(SetIO):
         dias=self.average_age()
         if dias==0:
             dias=1
-        return Decimal(365*self.tpc_total()/dias)
+#        return Decimal(365*self.tpc_total()/dias)
+#        return self.tpc_total()*365/dias
+        return Percentage(self.tpc_total()*365, dias)
 
     def tpc_total(self):
         """Como es heterogenous el resultado sera en local"""
-        suminvertido=self.invertido()
-        if suminvertido.isZero():
-            return None
-        return self.pendiente().amount*100/suminvertido.amount
+#        suminvertido=self.invertido()
+#        if suminvertido.isZero():
+#            return None
+#        return self.pendiente().amount*100/suminvertido.amount
+        return Percentage(self.pendiente(), self.invertido())
+        
     
     def get_valor_benchmark(self, indice):
         cur=self.mem.con.cursor()
@@ -2252,7 +2360,9 @@ class SetInvestmentOperationsCurrentHomogeneus(SetInvestmentOperationsCurrentHet
         dias=self.average_age()
         if dias==0:
             dias=1
-        return Decimal(365*self.tpc_total(last,  type)/dias)
+#        return self.tpc_total(last,  type)/dias*365
+#        print (Percentage(self.tpc_total(last, type)))
+        return Percentage(self.tpc_total(last, type)*365, dias)
 
     def tpc_total(self, last, type=1):
         """
@@ -2262,10 +2372,11 @@ class SetInvestmentOperationsCurrentHomogeneus(SetInvestmentOperationsCurrentHet
                 2 Da el tanto por  ciento en la currency de la cuenta, por lo que se debe convertir teniendo en cuenta la temporalidad
                 3 Da el tanto por ciento en la currency local, partiendo  de la conversi´on a la currency de la cuenta
         """
-        invertido=self.invertido(type)
-        if invertido.isZero():
-            return 0
-        return self.pendiente(last, type).amount*100/invertido.amount
+        return Percentage(self.pendiente(last, type), self.invertido(type))
+#        invertido=self.invertido(type)
+#        if invertido.isZero():
+#            return 0
+#        return self.pendiente(last, type).amount*100/invertido.amount
     
     def myqtablewidget(self,  tabla,  quote=None, type=1):
         """Función que rellena una tabla pasada como parámetro con datos procedentes de un array de objetos
@@ -2312,9 +2423,9 @@ class SetInvestmentOperationsCurrentHomogeneus(SetInvestmentOperationsCurrentHet
             tabla.setItem(rownumber, 3, a.invertido(type).qtablewidgetitem())
             tabla.setItem(rownumber, 4, a.balance(quote, type).qtablewidgetitem())
             tabla.setItem(rownumber, 5, a.pendiente(quote, type).qtablewidgetitem())
-            tabla.setItem(rownumber, 6, qtpc(a.tpc_anual(quote, quote_endlastyear, type)))
-            tabla.setItem(rownumber, 7, qtpc(a.tpc_tae(quote, type)))
-            tabla.setItem(rownumber, 8, qtpc(a.tpc_total(quote, type)))
+            tabla.setItem(rownumber, 6, a.tpc_anual(quote, quote_endlastyear, type).qtablewidgetitem())
+            tabla.setItem(rownumber, 7, a.tpc_tae(quote, type).qtablewidgetitem())
+            tabla.setItem(rownumber, 8, a.tpc_total(quote, type).qtablewidgetitem())
             if a.referenciaindice==None:
                 tabla.setItem(rownumber, 9, self.mem.data.benchmark.currency.qtablewidgetitem(None))
             else:
@@ -2326,8 +2437,8 @@ class SetInvestmentOperationsCurrentHomogeneus(SetInvestmentOperationsCurrentHet
         tabla.setItem(self.length(), 3, self.invertido(type).qtablewidgetitem())
         tabla.setItem(self.length(), 4, self.balance(quote, type).qtablewidgetitem())
         tabla.setItem(self.length(), 5, self.pendiente(quote, type).qtablewidgetitem())
-        tabla.setItem(self.length(), 7, qtpc(self.tpc_tae(quote, type)))
-        tabla.setItem(self.length(), 8, qtpc(self.tpc_total(quote, type)))
+        tabla.setItem(self.length(), 7, self.tpc_tae(quote, type).qtablewidgetitem())
+        tabla.setItem(self.length(), 8, self.tpc_total(quote, type).qtablewidgetitem())
 
 class SetInvestmentOperationsHistoricalHeterogeneus(SetIO):       
     """Clase es un array ordenado de objetos newInvestmentOperation"""
@@ -2401,7 +2512,7 @@ class SetInvestmentOperationsHistoricalHeterogeneus(SetIO):
         return r
         
     def tpc_total_neto(self):
-        return Percentage(self.consolidado_neto()/self.gross_purchases())
+        return Percentage(self.consolidado_neto(), self.gross_purchases())
         
     def comissions(self):
         r=Money(self.mem, 0,  self.mem.localcurrency)
@@ -2463,7 +2574,7 @@ class SetInvestmentOperationsHistoricalHeterogeneus(SetIO):
             tabla.setItem(rownumber, 9,a.comission(type).qtablewidgetitem())
             tabla.setItem(rownumber, 10,a.taxes(type).qtablewidgetitem())
             tabla.setItem(rownumber, 11,a.consolidado_neto(type).qtablewidgetitem())
-            tabla.setItem(rownumber, 12,qtpc(a.tpc_tae_neto()))
+            tabla.setItem(rownumber, 12,a.tpc_tae_neto().qtablewidgetitem())
             tabla.setItem(rownumber, 13,a.tpc_total_neto().qtablewidgetitem())
 
         
@@ -2743,19 +2854,21 @@ class InvestmentOperationHistorical:
                 return dias/Decimal(365)
 
     def tpc_total_neto(self):
-        return Percentage(self.consolidado_neto()/self.bruto_compra())
+        return Percentage(self.consolidado_neto(), self.bruto_compra())
         
     def tpc_total_bruto(self):
-        bruto=self.bruto_compra()
-        if bruto.isZero():
-            return 0
-        return 100*(self.consolidado_bruto()/bruto).amount
+        return Percentage(self.consolidado_bruto(), self.bruto_compra())
+#        bruto=self.bruto_compra()
+#        if bruto.isZero():
+#            return 0
+#        return 100*(self.consolidado_bruto()/bruto).amount
         
     def tpc_tae_neto(self):
         dias=(self.fecha_venta-self.fecha_inicio).days +1 #Account el primer día
         if dias==0:
             dias=1
-        return self.tpc_total_neto()*365/dias
+#        return self.tpc_total_neto()*365/dias
+        return Percentage(self.tpc_total_neto()*365, dias)
 
 class InvestmentOperationCurrent:
     def __init__(self, mem):
@@ -2922,8 +3035,8 @@ class InvestmentOperationCurrent:
                 2 Da el tanto por  ciento en la currency de la cuenta, por lo que se debe convertir teniendo en cuenta la temporalidad
                 3 Da el tanto por ciento en la currency local, partiendo  de la conversi´on a la currency de la cuenta
         """
-        if last==None:#initiating xulpymoney
-            return 0
+#        if last==None:#initiating xulpymoney
+#            return 0
             
         mlast=self.investment.quote2money(last, type)
         
@@ -2932,10 +3045,11 @@ class InvestmentOperationCurrent:
         else:
             mendlastyear=self.investment.quote2money(endlastyear, type)
             
-        if mendlastyear.isZero():
-            return 0
-            
-        return 100*(mlast-mendlastyear).amount/mendlastyear.amount
+#        if mendlastyear.isZero():
+#            return 0
+#            
+#        return 100*(mlast-mendlastyear).amount/mendlastyear.amount
+        return Percentage(mlast-mendlastyear, mendlastyear)
     
     def tpc_total(self,  last,  type=1):
         """
@@ -2946,18 +3060,20 @@ class InvestmentOperationCurrent:
                 3 Da el tanto por ciento en la currency local, partiendo  de la conversi´on a la currency de la cuenta
         """
         if last==None:#initiating xulpymoney
-            return 0       
-        invertido=self.invertido(type)
-        if invertido.isZero():
-            return 0
-        return 100*(self.pendiente(last, type).amount/invertido.amount)
+            return Percentage()
+#        invertido=self.invertido(type)
+#        if invertido.isZero():
+#            return 0
+#        return 100*(self.pendiente(last, type).amount/invertido.amount)
+        return Percentage(self.pendiente(last, type), self.invertido(type))
             
         
     def tpc_tae(self, last, type=1):
         dias=self.age()
         if self.age()==0:
             dias=1
-        return Decimal(365*self.tpc_total(last, type)/dias)
+#        return Decimal(365*self.tpc_total(last, type)/dias)
+        return Percentage(self.tpc_total(last, type)*365,  dias)
         
         
 
@@ -4338,9 +4454,9 @@ class Investment:
     def percentage_to_selling_point(self):       
         """Función que calcula el tpc venta partiendo de las el last y el valor_venta
         Necesita haber cargado mq getbasic y operinversionesactual"""
-        if self.venta==0 or self.venta==None or self.product.result.basic.last.quote==None or self.product.result.basic.last.quote==0:
-            return 0
-        return (self.venta-self.product.result.basic.last.quote)*100/self.product.result.basic.last.quote
+        if self.venta==0 or self.venta==None:
+            return Percentage()
+        return Percentage(self.venta-self.product.result.basic.last.quote, self.product.result.basic.last.quote)
 
 
 class CreditCard:    
@@ -4566,9 +4682,7 @@ class Order:
         
     def percentage_from_current_price(self):
         """Calculates percentage from current price to order price"""
-        if self.investment.product.result.basic.last.quote!=Decimal(0):
-            return Decimal(100)*(self.price-self.investment.product.result.basic.last.quote)/self.investment.product.result.basic.last.quote
-        return None
+        return Percentage(self.price-self.investment.product.result.basic.last.quote, self.investment.product.result.basic.last.quote)
         
 class OperationType:
     def __init__(self):
@@ -5179,7 +5293,7 @@ class SetOrders:
             table.setItem(i, 5, p.investment.product.currency.qtablewidgetitem(p.price))
             table.setItem(i, 6, self.mem.localcurrency.qtablewidgetitem(p.amount))   
             if p.is_in_force():
-                table.setItem(i, 7, qtpc(p.percentage_from_current_price()))
+                table.setItem(i, 7, p.percentage_from_current_price().qtablewidgetitem())
             else:
                 table.setItem(i, 7, QTableWidgetItem(""))
             if p.is_executed():
@@ -5929,11 +6043,12 @@ class EstimationDPS:
     def percentage(self):
         """Hay que tener presente que endlastyear (Objeto Quote) es el endlastyear del año actual
         Necesita tener cargado en id el endlastyear """
-        try:
-            return self.estimation*100/self.product.result.basic.last.quote
-        except:
-            return None
-
+        
+#        try:
+#            return self.estimation*100/self.product.result.basic.last.quote
+#        except:
+#            return None
+        return Percentage(self.estimation, self.product.result.basic.last.quote)
 
 
 class Product:
@@ -6363,9 +6478,9 @@ class SetQuotesBasic:
 
     def tpc_anual(self):
         if self.endlastyear.quote==None or self.endlastyear.quote==0 or self.last.quote==None:
-            return None
+            return Percentage()
         else:
-            return round((self.last.quote-self.endlastyear.quote)*100/self.endlastyear.quote, 2)       
+            return Percentage(self.last.quote-self.endlastyear.quote, self.endlastyear.quote)
 
 class SetQuotesIntraday(SetQuotes):
     """Clase que agrupa quotes un una lista arr de una misma inversión y de un mismo día. """
@@ -6491,7 +6606,7 @@ class SetQuotesIntraday(SetQuotes):
         """Gives variance percentage, using the lowest quote to calculate it to see daily volatility only. It's always a positive number"""
         h=self.high().quote
         l=self.low().quote
-        return Decimal(100*(h-l)/l)
+        return Percentage(h-l, l)
 
 class Quote:
     """Un quote no puede estar duplicado en un datetime solo puede haber uno"""
@@ -7140,63 +7255,6 @@ class Leverage:
         return self
         
         
-class Percentage:
-    def __init__(self, numerator=None, denominator=None):
-        self.value=None
-        self.setValue(numerator, denominator)
-        
-    def __repr__(self):
-        return self.string()
-            
-    def __lt__(self, other):
-        if self.value==None or other.value==None:
-            return False
-        if self.value<other.value:
-            return True
-        return False
-        
-    def __mul__(self, value):
-        try:
-            r=self.value*Decimal(value)
-        except:
-            r=None
-        return Percentage(r, 1)
-
-    def __truediv__(self, value):
-        try:
-            r=self.value/Decimal(value)
-        except:
-            r=None
-        return Percentage(r, 1)
-        
-    def setValue(self, numerator,  denominator):
-        try:
-            self.value=Decimal(numerator/denominator)
-        except:
-            self.value=None
-        
-    def value(self):
-        return self.value
-        
-    def value_100(self):
-        if self.value==None:
-            return None
-        else:
-            return self.value*Decimal(100)
-        
-    def string(self, rnd=2):
-        if self.value==None:
-            return "None %"
-        return "{} %".format(round(self.value_100(), rnd))
-        
-    def qtablewidgetitem(self, rnd=2):
-        a=QTableWidgetItem(self.string(rnd))
-        a.setTextAlignment(Qt.AlignVCenter|Qt.AlignRight)
-        if self.value==None:
-            a.setForeground(QColor(0, 0, 255))
-        elif self.value<0:
-            a.setForeground(QColor(255, 0, 0))
-        return a
 
 class Priority:
     def __init__(self):
@@ -8132,27 +8190,27 @@ def qright(string, digits=None):
         pass
     return a
 
-def qtpc(n, rnd=2):
-    print("qtpc deprecated")
-    text= tpc(n, rnd)
-    a=QTableWidgetItem(text)
-    a.setTextAlignment(Qt.AlignVCenter|Qt.AlignRight)
-    if n==None:
-        a.setForeground(QColor(0, 0, 255))
-    elif n<0:
-        a.setForeground(QColor(255, 0, 0))
-    return a
+#def qtpc(n, rnd=2):
+#    print("qtpc deprecated")
+#    text= tpc(n, rnd)
+#    a=QTableWidgetItem(text)
+#    a.setTextAlignment(Qt.AlignVCenter|Qt.AlignRight)
+#    if n==None:
+#        a.setForeground(QColor(0, 0, 255))
+#    elif n<0:
+#        a.setForeground(QColor(255, 0, 0))
+#    return a
 #      
 #def QApplication.translate("Core",s):
 #    return QApplication.translate("Core",  s)
 #    
 
-
-def tpc(n, rnd=2):
-    print("tpc deprecated")
-    if n==None:
-        return "None %"
-    return str(round(n, rnd))+ " %"
+#
+#def tpc(n, rnd=2):
+#    print("tpc deprecated")
+#    if n==None:
+#        return "None %"
+#    return str(round(n, rnd))+ " %"
 
         
 def web2utf8(cadena):

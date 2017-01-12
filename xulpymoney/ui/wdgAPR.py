@@ -1,7 +1,7 @@
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QSizePolicy, QWidget, QProgressDialog
 from Ui_wdgAPR import Ui_wdgAPR
-from libxulpymoney import Assets, Money, qcenter, qtpc
+from libxulpymoney import Assets, Money, qcenter, Percentage
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg
 from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT 
 from matplotlib.dates import YearLocator, MonthLocator, DateFormatter
@@ -167,11 +167,7 @@ class wdgAPR(QWidget, Ui_wdgAPR):
             sumexpenses=sumexpenses+expenses
             sumincomes=sumincomes+incomes
             sumicdg=sumicdg+gi
-            if si.isZero():
-                tae=0
-            else:
-                tae=(sf -si).amount*100/si.amount
-            self.table.setItem(i-anoinicio, 9, qtpc(tae))
+            self.table.setItem(i-anoinicio, 9, Percentage(sf -si, si).qtablewidgetitem())
             lastsaldo=sf
         self.table.setItem(anofinal-anoinicio+1, 0, qcenter((self.tr("TOTAL"))))
         self.table.setItem(anofinal-anoinicio+1, 4, sumincomes.qtablewidgetitem())
@@ -204,10 +200,11 @@ class wdgAPR(QWidget, Ui_wdgAPR):
             self.tblReport.setItem(i-anoinicio, 1, sinvested.qtablewidgetitem())
             self.tblReport.setItem(i-anoinicio, 2, sbalance.qtablewidgetitem())
             self.tblReport.setItem(i-anoinicio, 3, (sbalance-sinvested).qtablewidgetitem())
-            if sinvested.isGTZero():
-                self.tblReport.setItem(i-anoinicio, 4, qtpc(100*(sbalance-sinvested).amount/sinvested.amount))
-            else:
-                self.tblReport.setItem(i-anoinicio, 4,qtpc(None))
+            self.tblReport.setItem(i-anoinicio, 4, Percentage(sbalance-sinvested, sinvested).qtablewidgetitem())
+#            if sinvested.isGTZero():
+#                self.tblReport.setItem(i-anoinicio, 4, Percentage(sbalance-sinvested, sinvested).qtablewidgetitem())
+#            else:
+#                self.tblReport.setItem(i-anoinicio, 4,qtpc(None))
             self.tblReport.setItem(i-anoinicio, 6, gd.qtablewidgetitem())
 
         self.tblReport.setItem(anofinal-anoinicio+1, 0, qcenter((self.tr("TOTAL"))))

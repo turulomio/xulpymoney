@@ -2,7 +2,7 @@ import datetime
 from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtGui import QColor
 from PyQt5.QtWidgets import QMenu, QWidget, QTableWidgetItem, QHBoxLayout
-from libxulpymoney import Assets, qmessagebox, qtpc
+from libxulpymoney import Assets, qmessagebox,  Percentage
 from Ui_wdgConcepts import Ui_wdgConcepts
 from wdgConceptsHistorical import wdgConceptsHistorical
 
@@ -39,7 +39,7 @@ class wdgConcepts(QWidget, Ui_wdgConcepts):
         for i, a in enumerate(self.expenseslist):
             self.tblExpenses.setItem(i, 0, QTableWidgetItem(a[0].name))
             self.tblExpenses.setItem(i, 1, self.mem.localcurrency.qtablewidgetitem(a[1]))
-            self.tblExpenses.setItem(i, 2, qtpc(a[2]))
+            self.tblExpenses.setItem(i, 2, Percentage(a[2], 100).qtablewidgetitem())#tpc
             self.tblExpenses.setItem(i, 3, self.mem.localcurrency.qtablewidgetitem(a[3]))
             
             if a[1]!=0:
@@ -50,7 +50,7 @@ class wdgConcepts(QWidget, Ui_wdgConcepts):
                 
         self.tblExpenses.setItem(len(self.expenseslist), 0, QTableWidgetItem(self.tr('TOTAL')))
         self.tblExpenses.setItem(len(self.expenseslist), 1, self.mem.localcurrency.qtablewidgetitem(totalexpenses))    
-        self.tblExpenses.setItem(len(self.expenseslist), 2, qtpc(100))    
+        self.tblExpenses.setItem(len(self.expenseslist), 2, Percentage(1, 1).qtablewidgetitem())
         self.tblExpenses.setItem(len(self.expenseslist), 3, self.mem.localcurrency.qtablewidgetitem(totalaverageexpenses))       
 
     def load_ingresos(self,  year,  month):
@@ -62,7 +62,7 @@ class wdgConcepts(QWidget, Ui_wdgConcepts):
         for i, a in enumerate(self.incomeslist):
             self.tblIncomes.setItem(i, 0, QTableWidgetItem(a[0].name))
             self.tblIncomes.setItem(i, 1, self.mem.localcurrency.qtablewidgetitem(a[1]))
-            self.tblIncomes.setItem(i, 2, qtpc(a[2]))
+            self.tblIncomes.setItem(i, 2, Percentage(a[2], 100).qtablewidgetitem())#tpc
             self.tblIncomes.setItem(i, 3, self.mem.localcurrency.qtablewidgetitem(a[3]))
             
             if a[1]!=0:
@@ -73,7 +73,7 @@ class wdgConcepts(QWidget, Ui_wdgConcepts):
                 
         self.tblIncomes.setItem(len(self.incomeslist), 0, QTableWidgetItem(self.tr('TOTAL')))
         self.tblIncomes.setItem(len(self.incomeslist), 1, self.mem.localcurrency.qtablewidgetitem(totalincomes))    
-        self.tblIncomes.setItem(len(self.incomeslist), 2, qtpc(100))    
+        self.tblIncomes.setItem(len(self.incomeslist), 2, Percentage(1, 1).qtablewidgetitem())
         self.tblIncomes.setItem(len(self.incomeslist), 3, self.mem.localcurrency.qtablewidgetitem(totalaverageincomes))         
 
     @pyqtSlot() 
