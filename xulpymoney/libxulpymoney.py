@@ -6651,15 +6651,14 @@ class OHCL:
     def get_interval(self, ohclposterior):
         """Calcula el intervalo entre dos ohcl. El posteror es el que se pasa como parámetro"""
         return ohclposterior.datetime-self.datetime
-        
-        
 
     def percentage(self, ohcl):
         """CAlcula el incremento en % en el cierre del ohcl actual y el pasado como parametro. Siendo el pasado como parametro posterior en el tiempo"""
-        try:
-            return Decimal(100)*(ohcl.close-self.close)/self.close
-        except:
-            return None
+        if ohcl:
+            return Percentage(ohcl.close-self.close, self.close)            
+        else:
+            return Percentage()
+
 class OHCLDaily(OHCL):
     def __init__(self, mem):
         OHCL.__init__(self, mem)
@@ -6999,11 +6998,10 @@ class SetOHCLYearly(SetOHCL):
         """
         ohcl=self.find(year)
         lastohcl=self.find(year-1)
-        try:
+        if lastohcl:
             return lastohcl.percentage(ohcl)
-        except:
-            print("Mal year ")
-            return None
+        else:
+            return Percentage()
         
 class SetOHCLMonthly(SetOHCL):
     def __init__(self, mem, product):
@@ -7025,11 +7023,10 @@ class SetOHCLMonthly(SetOHCL):
         last=dat-datetime.timedelta(days=1)
         ohcl=self.find(year, month)
         lastohcl=self.find(last.year, last.month)
-        try:
+        if lastohcl:
             return lastohcl.percentage(ohcl)
-        except:
-            print("Mal year month")
-            return None
+        else:
+            return Percentage()
         
     
 
@@ -7158,16 +7155,42 @@ class Leverage:
         
         
 class Percentage:
-    def __init__(self):
+    def __init__(self, numerator=None, denominator=None):
         self.value=None
+        self.setValue(numerator, denominator)
         
+    def __repr__(self):
+        return self.string()
+    
     def setValue(self, numerator,  denominator):
-        self.value=Decimal(numerator, denominator)
+        try:
+            self.value=Decimal(numerator/denominator)
+        except:
+            self.value=None
         
     def value(self):
         return self.value
         
+    def value_100(self):
+        if self.value==None:
+            return None
+        else:
+            return self.value*Decimal(100)
         
+    def string(self, rnd=2):
+        if self.value==None:
+            return "None %"
+        return "{} %".format(round(self.value_100(), rnd))
+        
+    def qtablewidgetitem(self, rnd=2):
+        a=QTableWidgetItem(self.string(rnd))
+        a.setTextAlignment(Qt.AlignVCenter|Qt.AlignRight)
+        if self.value==None:
+            a.setForeground(QColor(0, 0, 255))
+        elif self.value<0:
+            a.setForeground(QColor(255, 0, 0))
+        return a
+
 class Priority:
     def __init__(self):
         self.id=None
@@ -8103,6 +8126,7 @@ def qright(string, digits=None):
     return a
 
 def qtpc(n, rnd=2):
+    print("qtpc deprecated")
     text= tpc(n, rnd)
     a=QTableWidgetItem(text)
     a.setTextAlignment(Qt.AlignVCenter|Qt.AlignRight)
@@ -8118,6 +8142,7 @@ def qtpc(n, rnd=2):
 
 
 def tpc(n, rnd=2):
+    print("tpc deprecated")
     if n==None:
         return "None %"
     return str(round(n, rnd))+ " %"
