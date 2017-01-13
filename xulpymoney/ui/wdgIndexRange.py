@@ -230,7 +230,7 @@ class wdgIndexRange(QWidget, Ui_wdgIndexRange):
         d.setWindowTitle(self.tr("Investment calculator"))
         w=wdgCalculator(self.mem)
         w.setProduct(self.mem.data.products.find_by_id(int(self.mem.settings.value("wdgCalculator/product", "0"))))
-        w.spnProductPriceVariation.setValue(self.range.currentPriceMiddleVariation())
+        w.spnProductPriceVariation.setValue(self.range.currentPriceMiddleVariation().value_100())
         lay = QVBoxLayout(d)
         lay.addWidget(w)
         if w.hasProducts==True:
