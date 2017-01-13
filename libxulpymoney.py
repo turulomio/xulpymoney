@@ -1605,6 +1605,13 @@ class SetDividendsHomogeneus(SetDividendsHeterogeneus):
             r=r+d.net(type)
         return r
         
+    def percentage_from_invested(self, type=1):
+        return Percentage(self.gross(type), self.investment.invertido(None, type))
+        
+    def percentage_tae_from_invested(self, type=1):
+        dias=(datetime.date.today()-self.investment.op_actual.first().datetime.date()).days+1
+        return Percentage(self.percentage_from_invested(type)*365, dias )
+        
     def myqtablewidget(self, table, type=1):
         """Section es donde guardar en el config file, coincide con el nombre del formulario en el que está la table
         Devuelve sumatorios"""
@@ -6474,7 +6481,10 @@ class SetQuotesBasic:
             self.endlastyear=Quote(self.mem).init__from_query(self.product,  datetime.datetime(datetime.date.today().year-1, 12, 31, 23, 59, 59, tzinfo=pytz.timezone('UTC')))
 
     def tpc_diario(self):
-        return Percentage(self.last.quote-self.penultimate.quote, self.penultimate.quote)
+        if self.last.quote==None or self.penultimate.quote==None:
+            return Percentage()
+        else:
+            return Percentage(self.last.quote-self.penultimate.quote, self.penultimate.quote)
 
     def tpc_anual(self):
         if self.endlastyear.quote==None or self.endlastyear.quote==0 or self.last.quote==None:

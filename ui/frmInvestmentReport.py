@@ -10,7 +10,7 @@ from frmQuotesIBM import frmQuotesIBM
 from wdgDisReinvest import wdgDisReinvest
 from frmSharesTransfer import frmSharesTransfer
 from frmSplit import frmSplit
-from libxulpymoney import Investment, Money, SetDividendsHomogeneus,  SetInvestmentOperationsHomogeneus,  days_to_year_month
+from libxulpymoney import Investment, Money, Percentage, SetDividendsHomogeneus,  SetInvestmentOperationsHomogeneus,  days_to_year_month
 
 class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
     frmInvestmentOperationsAdd_initiated=pyqtSignal(frmInvestmentOperationsAdd)#Se usa para cargar datos de ordenes en los datos de este formulario
@@ -86,27 +86,15 @@ class frmInvestmentReport(QDialog, Ui_frmInvestmentReport):
         else:
             self.dividends.myqtablewidget(self.tblDividendsAccountCurrency, type=2)
         if self.chkHistoricalDividends.checkState()==Qt.Unchecked:
-            if self.dividends.length()>0 and self.investment.op_actual.length()>0:
-                importeinvertido=self.investment.invertido()
-                dias=(datetime.date.today()-self.investment.op_actual.first().datetime.date()).days+1
-                if not importeinvertido.isZero():
-                    dtpc=100*sumbruto.amount/importeinvertido.amount
-                else:
-                    dtpc=0
-                dtae=365*dtpc/abs(dias)
-            else:
-                dtpc=0
-                dtae=0
-            
             estimacion=self.investment.product.estimations_dps.currentYear()
             if estimacion.estimation!=None:
                 acciones=self.investment.acciones()
-                tpccalculado=100*estimacion.estimation/self.investment.product.result.basic.last.quote
+                tpccalculado=Percentage(estimacion.estimation, self.investment.product.result.basic.last.quote)
                 self.lblDivFechaRevision.setText(self.tr('Estimation review date: {0}').format(estimacion.date_estimation))
-                self.lblDivAnualEstimado.setText(self.tr("Estimated annual dividend is {0} % ({1} per share)").format(tpccalculado,  self.investment.product.currency.string(estimacion.estimation)))
+                self.lblDivAnualEstimado.setText(self.tr("Estimated annual dividend is {0} ({1} per share)").format(tpccalculado,  self.investment.product.currency.string(estimacion.estimation)))
                 self.lblDivSaldoEstimado.setText(self.tr("Estimated balance: {0} ({1} after taxes)").format( self.investment.product.currency.string(acciones*estimacion.estimation),  self.investment.product.currency.string(acciones*estimacion.estimation*(1-self.mem.dividendwithholding))))
-            self.lblDivTPC.setText(self.tr("% Invested: {0} %").format(dtpc))
-            self.lblDivTAE.setText(self.tr("% APR from invested: {0} %").format(dtae))
+            self.lblDivTPC.setText(self.tr("% Invested: {}").format(self.dividends.percentage_from_invested(type=1)))
+            self.lblDivTAE.setText(self.tr("% APR from invested: {}").format(self.dividends.percentage_tae_from_invested(type=1)))
             self.grpDividendsEstimation.show()
             self.grpDividendsEfectivos.show()
         else:
