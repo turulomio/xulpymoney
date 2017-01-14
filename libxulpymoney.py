@@ -209,8 +209,6 @@ class Percentage:
         except:
             self.value=None
         
-    def value(self):
-        return self.value
         
     def value_100(self):
         if self.value==None:
@@ -1396,6 +1394,57 @@ IBEX (Informe de d´ias que baja un {}% y luego sube
     % Exito= {}
 """.format(tpc, ibex.result.ohclDaily.length(), bajan, subenfinal, subenfinal/bajan*100))
         
+
+class ReinvestModel:
+    def __init__(self,  mem, amounts,  product, pricepercentage,  gainspercentage):
+        """
+            amounts is an array with all the amounts to invest
+            both percentages are Percentage objetcs
+        """
+        self.mem=mem
+        self.amounts=amounts
+        self.product=product
+        self.pricepercentage=pricepercentage
+        self.gainspercentage=gainspercentage
+        
+        self.investments=[]
+        for i in range(self.length()):
+            bank=Bank(self.mem).init__create("Reinvest model bank", True, -1)
+            account=Account(self.mem).init__create("Reinvest model account",  bank, True, "", self.mem.localcurrency, -1)
+            r=Investment(self.mem).init__create(QApplication.translate("Core", "Reinvest model of {}".format(self.product.name)), None, account, self.product, None, True, -1)    
+            r.merge=1
+            r.op=SetInvestmentOperationsHomogeneus(self.mem, r)
+            lastprice=self.product.result.basic.last.quote
+            for amount in self.amounts[0:i+1]: #Recorre las amounts del array        
+#    def init__create(self, tipooperacion, datetime, inversion, acciones,  impuestos, comision, valor_accion, comentario, show_in_ranges, currency_conversion,    id=None):
+                r.op.append(InvestmentOperation(self.mem).init__create(self.mem.tiposoperaciones.find_by_id(4), self.mem.localzone.now(), r,  int(amount/lastprice), Decimal(0), Decimal(0),  lastprice,  None, False, 1, -1))
+                lastprice=lastprice*(1-pricepercentage.value)
+            r.op.order_by_datetime()
+            (r.op_actual,  r.op_historica)=r.op.calcular()           
+            self.investments.append(r)
+        
+    
+    def length(self):
+        return len(self.amounts)
+        
+    def print(self):
+        """
+            Prints a console report
+        """
+        result=[]
+        for i, inv in enumerate(self.investments):
+            print("Reinvestment {} of {}".format(i, inv.name))
+            print("  + Invested amount: {}".format(inv.op_actual.invertido(type=1)))
+            print("  + Purchase price average  amount: {}".format(inv.op_actual.average_price(type=1)))
+            print("  + Current operations:")
+            for o in inv.op_actual.arr:
+                print("    - {}".format(o))
+            print("  + Selling price: {}".format(inv.op_actual.average_price(type=1)*(1+self.gainspercentage.value)))
+            result.append(1-Percentage(self.product.result.basic.last.quote-inv.op_actual.average_price(type=1).amount, self.product.result.basic.last.quote).value)
+        print("*** Purchase percentage: {} ***".format(result))
+            
+
+
 
 class SetAccountOperations:
     """Clase es un array ordenado de objetos newInvestmentOperation"""
