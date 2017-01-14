@@ -324,7 +324,7 @@
     - {} estimaciones de beneficio por acción</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="7585"/>
+        <location filename="../libxulpymoney.py" line="7594"/>
         <source>Accounts</source>
         <translation>Cuentas</translation>
     </message>
@@ -364,7 +364,7 @@
         <translation>Id</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="6409"/>
+        <location filename="../libxulpymoney.py" line="6418"/>
         <source>Product</source>
         <translation>Producto</translation>
     </message>
@@ -379,7 +379,7 @@
         <translation>Última actualización</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="6410"/>
+        <location filename="../libxulpymoney.py" line="6419"/>
         <source>Price</source>
         <translation>Valor</translation>
     </message>
@@ -424,32 +424,32 @@
         <translation>Finalizando</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="5924"/>
+        <location filename="../libxulpymoney.py" line="5933"/>
         <source>Date</source>
         <translation>Fecha</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="5337"/>
+        <location filename="../libxulpymoney.py" line="5346"/>
         <source>Account</source>
         <translation>Cuenta</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="5116"/>
+        <location filename="../libxulpymoney.py" line="5125"/>
         <source>Concept</source>
         <translation>Concepto</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="5340"/>
+        <location filename="../libxulpymoney.py" line="5349"/>
         <source>Amount</source>
         <translation>Importe</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="5118"/>
+        <location filename="../libxulpymoney.py" line="5127"/>
         <source>Balance</source>
         <translation>Saldo</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="5119"/>
+        <location filename="../libxulpymoney.py" line="5128"/>
         <source>Comment</source>
         <translation>Comentario</translation>
     </message>
@@ -489,7 +489,7 @@
         <translation>Unidades</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="5925"/>
+        <location filename="../libxulpymoney.py" line="5934"/>
         <source>Gross</source>
         <translation>Bruto</translation>
     </message>
@@ -519,7 +519,7 @@
         <translation>Tipo de operación</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="7575"/>
+        <location filename="../libxulpymoney.py" line="7584"/>
         <source>Shares</source>
         <translation>Acciones</translation>
     </message>
@@ -654,7 +654,7 @@
         <translation>Dividendos</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="5145"/>
+        <location filename="../libxulpymoney.py" line="5154"/>
         <source>Credit card billing</source>
         <translation>Facturación de tarjeta de crédito</translation>
     </message>
@@ -734,32 +734,32 @@
         <translation>La tarjeta de crédito está inactiva. Debes activarla primero</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="6408"/>
+        <location filename="../libxulpymoney.py" line="6417"/>
         <source>Date and time</source>
         <translation>Fecha y hora</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="6484"/>
+        <location filename="../libxulpymoney.py" line="6493"/>
         <source>Purging innecesary data</source>
         <translation>Eliminando datos innecesarios</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="6486"/>
+        <location filename="../libxulpymoney.py" line="6495"/>
         <source>Purging quotes</source>
         <translation>Eliminando cotizaciones</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="6493"/>
+        <location filename="../libxulpymoney.py" line="6502"/>
         <source>Purged {0} quotes from {1}</source>
         <translation>Purgadas {0} cotizaciones de {1}</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="8205"/>
+        <location filename="../libxulpymoney.py" line="8214"/>
         <source>True</source>
         <translation>Verdadero</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="8208"/>
+        <location filename="../libxulpymoney.py" line="8217"/>
         <source>False</source>
         <translation>Falso</translation>
     </message>
@@ -769,7 +769,7 @@
         <translation>Xulpymoney necesita ser actualizado. Por favor entre con el rol de superusuario.</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="5319"/>
+        <location filename="../libxulpymoney.py" line="5328"/>
         <source>I couldn&apos;t order data due to they have null values</source>
         <translation>No pudo ordenar los datos debido a que hay valores nulos</translation>
     </message>
@@ -889,127 +889,127 @@
         <translation>Rusia</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="5274"/>
+        <location filename="../libxulpymoney.py" line="5283"/>
         <source>Not leveraged</source>
         <translation>No apalancado</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="5275"/>
+        <location filename="../libxulpymoney.py" line="5284"/>
         <source>Variable leverage (Warrants)</source>
         <translation>Apalancamiento variable (Warrants)</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="5276"/>
+        <location filename="../libxulpymoney.py" line="5285"/>
         <source>Leverage x2</source>
         <translation>Apalancamiento x2</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="5277"/>
+        <location filename="../libxulpymoney.py" line="5286"/>
         <source>Leverage x3</source>
         <translation>Apalancamiento x3</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="5278"/>
+        <location filename="../libxulpymoney.py" line="5287"/>
         <source>Leverage x4</source>
         <translation>Apalancamiento x4</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="5415"/>
+        <location filename="../libxulpymoney.py" line="5424"/>
         <source>Individual. Yahoo historicals</source>
         <translation>Individuales. Históricos de Yahoo</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="5416"/>
+        <location filename="../libxulpymoney.py" line="5425"/>
         <source>Individual. Morningstar funds</source>
         <translation>Individuales. Fondos de inversión de Morningstar</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="7576"/>
+        <location filename="../libxulpymoney.py" line="7585"/>
         <source>Funds</source>
         <translation>Fondos de inversión</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="7577"/>
+        <location filename="../libxulpymoney.py" line="7586"/>
         <source>Indexes</source>
         <translation>Índices</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="7578"/>
+        <location filename="../libxulpymoney.py" line="7587"/>
         <source>ETF</source>
         <translation>ETF</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="7579"/>
+        <location filename="../libxulpymoney.py" line="7588"/>
         <source>Warrants</source>
         <translation>Warrants</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="7580"/>
+        <location filename="../libxulpymoney.py" line="7589"/>
         <source>Currencies</source>
         <translation>Divisas</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="7581"/>
+        <location filename="../libxulpymoney.py" line="7590"/>
         <source>Public Bond</source>
         <translation>Renta fija pública</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="7582"/>
+        <location filename="../libxulpymoney.py" line="7591"/>
         <source>Pension plans</source>
         <translation>Planes de pensiones</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="7583"/>
+        <location filename="../libxulpymoney.py" line="7592"/>
         <source>Private Bond</source>
         <translation>Renta fija privada</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="7584"/>
+        <location filename="../libxulpymoney.py" line="7593"/>
         <source>Deposit</source>
         <translation>Depósitos</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="5139"/>
+        <location filename="../libxulpymoney.py" line="5148"/>
         <source>Expense</source>
         <translation>Gasto</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="5140"/>
+        <location filename="../libxulpymoney.py" line="5149"/>
         <source>Income</source>
         <translation>Ingreso</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="5141"/>
+        <location filename="../libxulpymoney.py" line="5150"/>
         <source>Transfer</source>
         <translation>Transferencia</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="5142"/>
+        <location filename="../libxulpymoney.py" line="5151"/>
         <source>Purchase of shares</source>
         <translation>Compra de acciones</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="5143"/>
+        <location filename="../libxulpymoney.py" line="5152"/>
         <source>Sale of shares</source>
         <translation>Venta de acciones</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="5144"/>
+        <location filename="../libxulpymoney.py" line="5153"/>
         <source>Added of shares</source>
         <translation>Añadido de acciones</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="5146"/>
+        <location filename="../libxulpymoney.py" line="5155"/>
         <source>Transfer of funds</source>
         <translation>Transferencia de fondos de inversión</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="5147"/>
+        <location filename="../libxulpymoney.py" line="5156"/>
         <source>Transfer of shares. Origin</source>
         <translation>Transferencia de acciones. Origen</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="5148"/>
+        <location filename="../libxulpymoney.py" line="5157"/>
         <source>Transfer of shares. Destiny</source>
         <translation>Transferencia de acciones. Destino</translation>
     </message>
@@ -1019,7 +1019,7 @@
         <translation>Cancelar</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="8176"/>
+        <location filename="../libxulpymoney.py" line="8185"/>
         <source>{} {}, {} {} and {} {}</source>
         <translation>{} {}, {} {} y {} {}</translation>
     </message>
@@ -1029,32 +1029,32 @@
         <translation>Pagado con {0}. {1}</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="8165"/>
+        <location filename="../libxulpymoney.py" line="8174"/>
         <source>year</source>
         <translation>año</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="8167"/>
+        <location filename="../libxulpymoney.py" line="8176"/>
         <source>years</source>
         <translation>años</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="8169"/>
+        <location filename="../libxulpymoney.py" line="8178"/>
         <source>month</source>
         <translation>mes</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="8171"/>
+        <location filename="../libxulpymoney.py" line="8180"/>
         <source>months</source>
         <translation>meses</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="8173"/>
+        <location filename="../libxulpymoney.py" line="8182"/>
         <source>day</source>
         <translation>día</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="8175"/>
+        <location filename="../libxulpymoney.py" line="8184"/>
         <source>days</source>
         <translation>días</translation>
     </message>
@@ -1091,17 +1091,17 @@ Total purged in global process: {1}</source>
 Purgadas en total en el proceso global: {1}</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="5336"/>
+        <location filename="../libxulpymoney.py" line="5345"/>
         <source>Investment</source>
         <translation>Inversión</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="5335"/>
+        <location filename="../libxulpymoney.py" line="5344"/>
         <source>Expiration</source>
         <translation>Expiración</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="5342"/>
+        <location filename="../libxulpymoney.py" line="5351"/>
         <source>Executed</source>
         <translation>Ejecutado</translation>
     </message>
@@ -1118,7 +1118,7 @@ Do you want to activate it?</source>
 ¿Quiere activarla?</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="5341"/>
+        <location filename="../libxulpymoney.py" line="5350"/>
         <source>% from current</source>
         <translation>% desde actual</translation>
     </message>
@@ -1188,7 +1188,7 @@ Do you want to activate it?</source>
         <translation>Devolución del pago echo a las {} con un importe de {}</translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="7768"/>
+        <location filename="../libxulpymoney.py" line="7777"/>
         <source>Error connecting to database</source>
         <translation>Error al conectar a la base de datos</translation>
     </message>
@@ -1562,54 +1562,59 @@ Do you want to activate it?</source>
 <context>
     <name>canvasTotal</name>
     <message>
-        <location filename="../ui/wdgTotal.py" line="89"/>
+        <location filename="../ui/wdgTotal.py" line="93"/>
         <source>Total assets</source>
         <translation>Todo el patrimonio</translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="90"/>
+        <location filename="../ui/wdgTotal.py" line="94"/>
         <source>Zero risk assets</source>
         <translation>Patrimonio de riesgo nulo</translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="92"/>
+        <location filename="../ui/wdgTotal.py" line="96"/>
         <source>Bond assets</source>
         <translation>Patrimonio de renta fija</translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="91"/>
+        <location filename="../ui/wdgTotal.py" line="95"/>
         <source>Risk assets</source>
         <translation>Patrimonio con riesgo variable</translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="36"/>
+        <location filename="../ui/wdgTotal.py" line="37"/>
         <source>Date: {}. Total assests {}. Zero risk: {}. Bonds: {}</source>
         <translation>Fecha: {}. Patrimonio total: {}. Patrimonio de riesgo cero: {}. Deuda: {}</translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="46"/>
+        <location filename="../ui/wdgTotal.py" line="47"/>
         <source>Filling report data</source>
         <translation>Rellenando datos del informe</translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="46"/>
+        <location filename="../ui/wdgTotal.py" line="47"/>
         <source>Cancel</source>
         <translation>Cancelar</translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="48"/>
+        <location filename="../ui/wdgTotal.py" line="49"/>
         <source>Calculating data...</source>
         <translation>Calculando datos...</translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="74"/>
+        <location filename="../ui/wdgTotal.py" line="76"/>
         <source>Total report</source>
         <translation>Informe total</translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="75"/>
+        <location filename="../ui/wdgTotal.py" line="77"/>
         <source>Total Assets ({})</source>
         <translation>Patrimonio total ({})</translation>
+    </message>
+    <message>
+        <location filename="../ui/wdgTotal.py" line="92"/>
+        <source>Total without losses assets</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -7463,32 +7468,32 @@ Daily Diff: {5}. Investment average age: {6}</source>
         <translation>Octubre</translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="331"/>
+        <location filename="../ui/wdgTotal.py" line="343"/>
         <source>Data from selected year</source>
         <translation>Datos del año seleccionado</translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="354"/>
+        <location filename="../ui/wdgTotal.py" line="366"/>
         <source>Balance at {0}-12-31: {1}</source>
         <translation>Saldo a {0}-12-31: {1}</translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="514"/>
+        <location filename="../ui/wdgTotal.py" line="526"/>
         <source>Incomes of {0} of {1}</source>
         <translation>Ingresos de {0} de {1}</translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="721"/>
+        <location filename="../ui/wdgTotal.py" line="733"/>
         <source>Dividends of {0} of {1}</source>
         <translation>Dividendos de {0} de {1}</translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="559"/>
+        <location filename="../ui/wdgTotal.py" line="571"/>
         <source>Expenses of {0} of {1}</source>
         <translation>Gastos de {0} de {1}</translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="957"/>
+        <location filename="../ui/wdgTotal.py" line="969"/>
         <source>You can&apos;t close this tab</source>
         <translation>No puedes cerrar esta pestaña</translation>
     </message>
@@ -7528,7 +7533,7 @@ Daily Diff: {5}. Investment average age: {6}</source>
         <translation>Objetivo acumulado</translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="388"/>
+        <location filename="../ui/wdgTotal.py" line="400"/>
         <source>Annual target percentage of total assests balance at {}-12-31 ( {} )</source>
         <translation>Porcentaje del objetivo anual del patrimonio en el día {}-12-31 ( {} )</translation>
     </message>
@@ -7558,47 +7563,47 @@ Daily Diff: {5}. Investment average age: {6}</source>
         <translation>Resultado</translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="452"/>
+        <location filename="../ui/wdgTotal.py" line="464"/>
         <source>Investment taxes are not evaluated in this report</source>
         <translation>No se evalúan los impuestos que el usuario debe pagar por sus inversiones</translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="450"/>
+        <location filename="../ui/wdgTotal.py" line="462"/>
         <source>Total gains are the result of adding dividends to gains</source>
         <translation>Las ganancias totales son el resultado de sumar los dividendos y las ganancias</translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="451"/>
+        <location filename="../ui/wdgTotal.py" line="463"/>
         <source>Difference between total gains and expenses shows if user could cover his expenses with his total gains</source>
         <translation>La diferencia de las ganancias totales y los gastos, muestra si el usuario puede cubrir sus gastos con las ganancias totales generadas</translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="449"/>
+        <location filename="../ui/wdgTotal.py" line="461"/>
         <source>This report shows if the user could retire due to its investments</source>
         <translation>Este informe muestra si el usuario podría dejar de trabajar, dedicándose a invertir</translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="424"/>
+        <location filename="../ui/wdgTotal.py" line="436"/>
         <source>Work</source>
         <translation>Trabajar</translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="427"/>
+        <location filename="../ui/wdgTotal.py" line="439"/>
         <source>Invest</source>
         <translation>Invertir</translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="407"/>
+        <location filename="../ui/wdgTotal.py" line="419"/>
         <source>This report shows if the user reaches the annual and monthly target.</source>
         <translation>Este informe muestra si el usuario alcanza el objetivo mensual y anual.</translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="409"/>
+        <location filename="../ui/wdgTotal.py" line="421"/>
         <source>The cumulative target row shows compliance of the target in the year.</source>
         <translation>En la fila de objetivo acumulado, se puede observar como va el cumplimiento del objetivo en el año.</translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="410"/>
+        <location filename="../ui/wdgTotal.py" line="422"/>
         <source>Green color shows that target has been reached.</source>
         <translation>El color verde muestra que se ha llegado al objetivo.</translation>
     </message>
@@ -7608,32 +7613,32 @@ Daily Diff: {5}. Investment average age: {6}</source>
         <translation>Ganancias totales acumuladas</translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="718"/>
+        <location filename="../ui/wdgTotal.py" line="730"/>
         <source>Dividends of {0}</source>
         <translation>Dividendos de {0}</translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="547"/>
+        <location filename="../ui/wdgTotal.py" line="559"/>
         <source>Expenses of {0}</source>
         <translation>Gastos de {0}</translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="502"/>
+        <location filename="../ui/wdgTotal.py" line="514"/>
         <source>Incomes of {}</source>
         <translation>Ingresos de {0}</translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="598"/>
+        <location filename="../ui/wdgTotal.py" line="610"/>
         <source>Selling operations of {0}</source>
         <translation>Operaciones de venta de {0}</translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="606"/>
+        <location filename="../ui/wdgTotal.py" line="618"/>
         <source>Selling operations of {0} of {1}</source>
         <translation>Operaciones de venta de {0} de {1}</translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="814"/>
+        <location filename="../ui/wdgTotal.py" line="826"/>
         <source>Commision report of {}</source>
         <translation>Informe de comisiones de {}</translation>
     </message>
@@ -7643,77 +7648,77 @@ Daily Diff: {5}. Investment average age: {6}</source>
         <translation>Mostrar comisiones</translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="950"/>
+        <location filename="../ui/wdgTotal.py" line="962"/>
         <source>Taxes report of {}</source>
         <translation>Informe de impuestos de {}</translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="901"/>
+        <location filename="../ui/wdgTotal.py" line="913"/>
         <source>Investment operation retentions</source>
         <translation>Retenciones de las operaciones de inversión</translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="902"/>
+        <location filename="../ui/wdgTotal.py" line="914"/>
         <source>Dividend retentions</source>
         <translation>Retenciones de dividendos</translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="903"/>
+        <location filename="../ui/wdgTotal.py" line="915"/>
         <source>Other paid taxes</source>
         <translation>Otros impuestos pagados</translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="904"/>
+        <location filename="../ui/wdgTotal.py" line="916"/>
         <source>Returned taxes</source>
         <translation>Impuestos devueltos</translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="755"/>
+        <location filename="../ui/wdgTotal.py" line="767"/>
         <source>Bank comissions</source>
         <translation>Comisiones del banco</translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="756"/>
+        <location filename="../ui/wdgTotal.py" line="768"/>
         <source>Custody fees</source>
         <translation>Comisiones de custodia</translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="757"/>
+        <location filename="../ui/wdgTotal.py" line="769"/>
         <source>Invesment operation comissions</source>
         <translation>Comisiones de las operaciones de inversión</translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="695"/>
+        <location filename="../ui/wdgTotal.py" line="707"/>
         <source>Positive gross selling operations: {}. Negative gross selling operations: {}.</source>
         <translation>Bruto de las operaciones positivas de venta: {}. Bruto de las operaciones negativas de venta: {}.</translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="638"/>
+        <location filename="../ui/wdgTotal.py" line="650"/>
         <source>Selling operations of {0}  (Sold after a year)</source>
         <translation>Operaciones de venta de {0} (Vendidas después de un año)</translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="646"/>
+        <location filename="../ui/wdgTotal.py" line="658"/>
         <source>Selling operations of {0} of {1} (Sold after a year)</source>
         <translation>Operaciones de venta de {0} de {1} (Vendidas después de un año)</translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="677"/>
+        <location filename="../ui/wdgTotal.py" line="689"/>
         <source>Selling operations of {0} (Sold before a year)</source>
         <translation>Operaciones de venta de {0} (Vendidas antes de un año)</translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="685"/>
+        <location filename="../ui/wdgTotal.py" line="697"/>
         <source>Selling operations of {0} of {1} (Sold before a year)</source>
         <translation>Operaciones de venta de {0} de {1} (Vendidas antes de un año)</translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="972"/>
+        <location filename="../ui/wdgTotal.py" line="984"/>
         <source>You only can double click in incomes, gains, dividends and expenses.</source>
         <translation>Sólo puedes hacer doble click en ingresos, ganancias, dividendos y gastos.</translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="972"/>
+        <location filename="../ui/wdgTotal.py" line="984"/>
         <source>Make right click to see comission and tax reports</source>
         <translation>Haz click derecho para ver los informes de comisiones e impuestos</translation>
     </message>
@@ -7723,22 +7728,22 @@ Daily Diff: {5}. Investment average age: {6}</source>
         <translation>Mostrar impuestos</translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="377"/>
+        <location filename="../ui/wdgTotal.py" line="389"/>
         <source>This year I&apos;ve generated {}.</source>
         <translation>Este año he generado {}.</translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="380"/>
+        <location filename="../ui/wdgTotal.py" line="392"/>
         <source>Difference between invested amount and current invesment balance: {} - {} = {}</source>
         <translation>La difrencia entre la cantidad invertida y el saldo actual de la inversión es: {} - {} = {}</translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="830"/>
+        <location filename="../ui/wdgTotal.py" line="842"/>
         <source>Brut gains</source>
         <translation>Ganancias brutas</translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="831"/>
+        <location filename="../ui/wdgTotal.py" line="843"/>
         <source>Brut dividends</source>
         <translation>Dividendos brutos</translation>
     </message>
@@ -7748,22 +7753,22 @@ Daily Diff: {5}. Investment average age: {6}</source>
         <translation>Ganancias por tipo de producto</translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="829"/>
+        <location filename="../ui/wdgTotal.py" line="841"/>
         <source>Product type</source>
         <translation>Tipo de producto</translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="873"/>
+        <location filename="../ui/wdgTotal.py" line="885"/>
         <source>Gains by product type of {}</source>
         <translation>Ganancias por el tipo de producto {}</translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="869"/>
+        <location filename="../ui/wdgTotal.py" line="881"/>
         <source>Gains + Dividends: {} + {} = {}</source>
         <translation>Ganancias + Dividendos: {} + {} = {}</translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="811"/>
+        <location filename="../ui/wdgTotal.py" line="823"/>
         <source>Number of purchase and sale investment operations: {}. Comissions average: {}</source>
         <translation>Número de operaciones de inversión de compra/venta: {}. Comisión media: {}</translation>
     </message>

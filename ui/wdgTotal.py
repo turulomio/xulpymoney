@@ -25,6 +25,7 @@ class canvasTotal(FigureCanvasQTAgg):
         self.plot_zero=None
         self.plot_bonds=None
         self.plot_nonzero=None
+        self.plot_no_losses=None
         self.plotted=False#Shown if the graphics has been plotted anytime.
 
     def footer(self, date, y): 
@@ -39,7 +40,7 @@ class canvasTotal(FigureCanvasQTAgg):
             
     def mydraw(self, mem, totalgraphic):
         self.plotted=True
-        (self.dates, self.total, self.zero, self.bonds, self.risk)=([], [], [], [], [])
+        (self.dates, self.total, self.zero, self.bonds, self.risk, self.no_losses)=([], [], [], [], [], [])
         self.totalgraphic=totalgraphic
         self.ax.clear()
         
@@ -60,6 +61,7 @@ class canvasTotal(FigureCanvasQTAgg):
             bonds=m.total_bonds().amount
             self.bonds.append(bonds)
             self.risk.append(total-zero-bonds)
+            self.no_losses.append(m.total_no_losses().amount)
         
         self.ax.xaxis.set_major_locator(YearLocator())    
         self.ax.xaxis.set_minor_locator(MonthLocator())
@@ -77,6 +79,7 @@ class canvasTotal(FigureCanvasQTAgg):
         self.plot_zero, =self.ax.plot_date(self.dates, self.zero, '-')
         self.plot_bonds, =self.ax.plot_date(self.dates, self.bonds, '-')
         self.plot_risk, =self.ax.plot_date(self.dates, self.risk, '-')
+        self.plot_no_losses, =self.ax.plot_date(self.dates, self.no_losses,  '--',  color='orange', lw=1) 
         
         self.showLegend()
         self.draw()        
@@ -86,6 +89,7 @@ class canvasTotal(FigureCanvasQTAgg):
         del self.labels
         self.labels=[]
         last=self.totalgraphic.find(datetime.date.today().year, datetime.date.today().month)
+        self.labels.append((self.plot_no_losses, self.tr("Total without losses assets") + " ( {} )".format(last.total_no_losses())))
         self.labels.append((self.plot_main, self.tr("Total assets") + " ( {} )".format(last.total())))
         self.labels.append((self.plot_zero,self.tr("Zero risk assets") + " ( {} )".format(last.total_zerorisk())))
         self.labels.append((self.plot_risk,self.tr("Risk assets") + " ( {} )".format(last.total()-last.total_zerorisk()-last.total_bonds())))
@@ -110,6 +114,7 @@ class TotalMonth:
         self.year=year
         self.month=month
         self.expenses_value=None
+        self.no_loses_value=None
         self.dividends_value=None
         self.incomes_value=None
         self.gains_value=None
@@ -124,6 +129,7 @@ class TotalMonth:
     def d_g(self):
         """Dividends+gains"""
         return self.gains()+self.dividends()
+
         
     def expenses(self):
         if self.expenses_value==None:
@@ -180,7 +186,13 @@ class TotalMonth:
         if self.total_bonds_value==None:
             self.total_bonds_value=Assets(self.mem).saldo_todas_inversiones_bonds(self.last_day())
         return self.total_bonds_value
-        
+
+    def total_no_losses(self):
+        """
+        """
+        if self.no_loses_value==None:
+            self.no_loses_value=Assets(self.mem).invested(self.last_day())+self.total_accounts()
+        return self.no_loses_value        
 class TotalYear:
     """Set of 12 totalmonths in the same year"""
     def __init__(self, mem, year):

@@ -4858,6 +4858,15 @@ class Assets:
         for i in setinversiones.arr:
             resultado=resultado+i.balance(fecha, type=3)
         return resultado
+#        
+#    def saldo_todas_inversiones_no_losses(self, setinversiones,   fecha):
+#        """
+#            Calcula el valor de las inversiones sin perdidas es decir solo lo invertido
+#        """
+#        resultado=Money(self.mem, 0, self.mem.localcurrency)
+#        for i in setinversiones.arr:
+#            resultado=resultado+i.invertido(fecha, type=3)
+#        return resultado
         
     def saldo_todas_inversiones_riesgo_cero(self, setinversiones, fecha=None):
         """Versión que se calcula en cliente muy optimizada
