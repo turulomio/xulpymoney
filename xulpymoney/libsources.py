@@ -11,6 +11,7 @@ from Ui_wdgSource import Ui_wdgSource
 from myqtablewidget import myQTableWidget
 from libxulpymoney import Quote, SetProducts, SetQuotes, ampm_to_24, qleft, b2s, dt, qmessagebox
 from decimal import Decimal
+from concurrent.futures import ThreadPoolExecutor,  as_completed
 
 class SourceStatus:
     Loaded=0 #Means Source object has been ccreated
@@ -113,6 +114,7 @@ class wdgSource(QWidget, Ui_wdgSource):
             self.cmdRun.setEnabled(False)     
             self.chkUserOnly.setEnabled(False)
         elif status==SourceStatus.Finished:
+            self.grp.setTitle(self.grp.title()+" ({})".format(self.source.timeElapsed()))
             self.cmdCancel.setEnabled(False)
             self.cmdDropDown.setEnabled(True)       
             self.actionInserted.setText(self.tr("Inserted quotes ({})").format(self.source.inserted.length()))
@@ -266,12 +268,22 @@ class Source(QObject):
         self.agrupation=[]#Used if it must bu run several times due to large amounts (Yahoo)
         self.sql=None
         self.weblog=""#Stores all web downloads, to show later in ui to debug
+        self._runningtime=None
+        self._finishedtime=None
         
     def setStatus(self, status):
-        print ("{}: setStatus {}".format(self.getName(), self.getStatus()))
+#        print ("{}: setStatus {}".format(self.getName(), self.getStatus()))
+        if status==SourceStatus.Running:
+            self._runningtime=datetime.datetime.now()
+        if status==SourceStatus.Finished:
+            self._finishedtime=datetime.datetime.now()
         self._status=status
         self.statusChanged.emit(status)
         
+    def timeElapsed(self):
+        """Tiempo transcurrido"""
+        return self._finishedtime-self._runningtime
+    
     def getStatus(self):
         return self._status
         
@@ -523,13 +535,15 @@ class WorkerMorningstar(Source):
 #        self.lock=multiprocessing.Lock()
         
     def on_execute_product(self,  product):
+        quotes=[]
         if product.result.basic.last.datetime.date()==datetime.date.today()-datetime.timedelta(days=1):#if I already got yesterday's price return
             self.log("I already got yesterday's price: {}".format(product.name))
-            return
+            return quotes
 
         web2=self.load_page('http://www.morningstar.es/es/funds/snapshot/snapshot.aspx?id='+product.ticker)
         if web2==None:
-            return
+            return quotes
+
         for l in web2.readlines():
             self.mem.con.restart_timeout()#To avoid connection timeout (long process)
             l=b2s(l)
@@ -539,9 +553,10 @@ class WorkerMorningstar(Source):
                 date=datetime.date(int(datarr[2]), int(datarr[1]), int(datarr[0]))
                 dat=dt(date, product.stockmarket.closes, product.stockmarket.zone)
                 value=Decimal(self.comaporpunto(l.split('line text">')[1].split("</td")[0].split("\xa0")[1]))
-                self.quotes.append(Quote(self.mem).init__create(product, dat, value))
-                return
+                quotes.append(Quote(self.mem).init__create(product, dat, value))
+                return quotes
         self.log("Error parsing: {}".format(product.name))
+        return quotes
 
     def on_regenerate_product(self,  product, save=False):
         """
@@ -579,42 +594,28 @@ class WorkerMorningstar(Source):
     def steps(self):
         """Define  the number of steps of the source run"""
         return 2+ self.products.length()#CORRECT
-
-        
-    def call_back(self, para):
-        self.next_step()
-#        with self.lock:
-        stri="{0}: {1}/{2} {3}. Appended: {4}            ".format(self.__class__.__name__, self.step, self.products.length(), para, self.quotes.length()) 
-        print(stri)
-#        sys.stdout.write("\b"*1000+stri)
-#        sys.stdout.flush()
-        
+  
     def run(self):
         self.setStatus(SourceStatus.Running)
         self.products.load_from_db(self.sql)
         self.next_step()
-        
-#        pool=multiprocessing.Pool(10)
-#        res = pool.apply_async(self.on_execute_product, (self.products.arr[0].id,), callback=self.call_back)      # runs in *only* one process
-##        for p in self.products.arr:
-##            pool.apply_async(self.on_execute_product, [p.id, ],  callback=self.call_back)
-#        pool.close()
-#        print (res.get(timeout=10))              # prints "400"
-#        
-#        
-#        pool.join()
-        for i,  product in enumerate(self.products.arr): 
-            if self.type==1:
-                stri="{0}: {1}/{2} {3}. Appended: {4}            ".format(self.__class__.__name__, i+1, self.products.length(), product, self.quotes.length()) 
-                sys.stdout.write("\b"*1000+stri)
-                sys.stdout.flush()
-            if self.stopping==True:
-                print ("Stopping")
-                self.quotes.clear()
-                break
-            self.on_execute_product(product)
-            self.next_step()
-            time.sleep(self.sleep)#time step
+        futures=[]
+        with ThreadPoolExecutor(max_workers=10) as executor:
+            for i,  product in enumerate(self.products.arr): 
+                futures.append(executor.submit(self.on_execute_product,  product))
+            
+            for i,  future in enumerate(as_completed(futures)):
+                for quote in future.result():
+                    self.quotes.append(quote)
+                    if self.type==1:
+                        stri="{0}: {1}/{2} {3}. Appended: {4}            ".format(self.__class__.__name__, i+1, self.products.length(), product, self.quotes.length()) 
+                        sys.stdout.write("\b"*1000+stri)
+                        sys.stdout.flush()
+                    if self.stopping==True:
+                        print ("Stopping")
+                        self.quotes.clear()
+                        break
+                self.next_step()
         print("")
 
         
@@ -833,19 +834,18 @@ class WorkerYahooHistorical(Source):
         self.type=type
         self.sleep=sleep
         
-    def on_execute_product(self,  id_product):
+    def on_execute_product(self,  product):
         """inico y fin son dos dates entre los que conseguir los datos."""
-        product=self.products.find_by_id(id_product)
-
+        quotes=[]
         ultima=product.fecha_ultima_actualizacion_historica()
         if ultima==datetime.date.today()-datetime.timedelta(days=1):
-            return
+            return quotes
         inicio= ultima+datetime.timedelta(days=1)
         fin= datetime.date.today()
         url='http://ichart.finance.yahoo.com/table.csv?s='+product.ticker+'&a='+str(inicio.month-1)+'&b='+str(inicio.day)+'&c='+str(inicio.year)+'&d='+str(fin.month-1)+'&e='+str(fin.day)+'&f='+str(fin.year)+'&g=d&ignore=.csv'
         mweb=self.load_page(url)
         if mweb==None:
-            return
+            return quotes
         web=[]
         ##TRansform httpresopone to list to iterate several times
         for line in mweb.readlines():
@@ -865,11 +865,12 @@ class WorkerYahooHistorical(Source):
             datetimehigh=(datestart+(dateends-datestart)*2/3)
             datetimelast=dateends+datetime.timedelta(microseconds=4)
 
-            self.quotes.append(Quote(self.mem).init__create(product,datetimelast, Decimal(datos[4])))#closes
-            self.quotes.append(Quote(self.mem).init__create(product,datetimelow, Decimal(datos[3])))#low
-            self.quotes.append(Quote(self.mem).init__create(product,datetimehigh, Decimal(datos[2])))#high
-            self.quotes.append(Quote(self.mem).init__create(product, datetimefirst, Decimal(datos[1])))#open
-        
+            quotes.append(Quote(self.mem).init__create(product,datetimelast, Decimal(datos[4])))#closes
+            quotes.append(Quote(self.mem).init__create(product,datetimelow, Decimal(datos[3])))#low
+            quotes.append(Quote(self.mem).init__create(product,datetimehigh, Decimal(datos[2])))#high
+            quotes.append(Quote(self.mem).init__create(product, datetimefirst, Decimal(datos[1])))#open
+        return quotes
+
     def setSQL(self, useronly):
         self.userinvestmentsonly=useronly
         if self.userinvestmentsonly==True:
@@ -893,28 +894,59 @@ class WorkerYahooHistorical(Source):
         self.setStatus(SourceStatus.Loaded)
         
     def run(self):
+#        self.setStatus(SourceStatus.Running)
+#        self.products.load_from_db(self.sql)
+#        self.next_step()
+#        for i,  product in enumerate(self.products.arr): 
+#            if self.type==1:
+#                stri="{0}: {1}/{2} {3}. Appended: {4}            ".format(self.__class__.__name__, i+1, self.products.length(), product, self.quotes.length()) 
+#                sys.stdout.write("\b"*1000+stri)
+#                sys.stdout.flush()
+#            if self.stopping==True:
+#                print ("Stopping")
+#                self.quotes.clear()
+#                break
+#            self.on_execute_product(product.id)
+#            self.next_step()
+#            time.sleep(self.sleep)#time step
+#        print("")
+#        self.quotes_save()
+#        self.mem.con.commit()
+#        self.next_step()
+#        
+#        self.setStatus(SourceStatus.Finished)
+#        
+        
+        #
         self.setStatus(SourceStatus.Running)
         self.products.load_from_db(self.sql)
         self.next_step()
-        for i,  product in enumerate(self.products.arr): 
-            if self.type==1:
-                stri="{0}: {1}/{2} {3}. Appended: {4}            ".format(self.__class__.__name__, i+1, self.products.length(), product, self.quotes.length()) 
-                sys.stdout.write("\b"*1000+stri)
-                sys.stdout.flush()
-            if self.stopping==True:
-                print ("Stopping")
-                self.quotes.clear()
-                break
-            self.on_execute_product(product.id)
-            self.next_step()
-            time.sleep(self.sleep)#time step
+        futures=[]
+        with ThreadPoolExecutor(max_workers=10) as executor:
+            for i,  product in enumerate(self.products.arr): 
+
+                futures.append(executor.submit(self.on_execute_product,  product))
+            
+            for i,  future in enumerate(as_completed(futures)):
+                for quote in future.result():
+                    self.quotes.append(quote)
+                    if self.type==1:
+                        stri="{0}: {1}/{2} {3}. Appended: {4}            ".format(self.__class__.__name__, i+1, self.products.length(), product, self.quotes.length()) 
+                        sys.stdout.write("\b"*1000+stri)
+                        sys.stdout.flush()
+                    if self.stopping==True:
+                        print ("Stopping")
+                        self.quotes.clear()
+                        break
+                self.next_step()
         print("")
+
+        
         self.quotes_save()
         self.mem.con.commit()
         self.next_step()
         
         self.setStatus(SourceStatus.Finished)
-        
         
     def steps(self):
         """Define  the number of steps of the source run"""

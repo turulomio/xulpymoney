@@ -311,7 +311,7 @@
 <context>
     <name>Core</name>
     <message>
-        <location filename="../libsources.py" line="1029"/>
+        <location filename="../libsources.py" line="1071"/>
         <source>From {} desynchronized products added:
     - {} quotes
     - {} dividends per share
@@ -1133,7 +1133,7 @@ Do you want to activate it?</source>
         <translation>Devolución de tarjeta de crédito</translation>
     </message>
     <message>
-        <location filename="../libsources.py" line="298"/>
+        <location filename="../libsources.py" line="310"/>
         <source>Log</source>
         <translation>Registro</translation>
     </message>
@@ -1196,7 +1196,7 @@ Do you want to activate it?</source>
 <context>
     <name>Source</name>
     <message>
-        <location filename="../libsources.py" line="252"/>
+        <location filename="../libsources.py" line="254"/>
         <source>Source Name unknown</source>
         <translation>Nombre de la fuente desconocido</translation>
     </message>
@@ -1204,7 +1204,7 @@ Do you want to activate it?</source>
 <context>
     <name>WorkerMercadoContinuo</name>
     <message>
-        <location filename="../libsources.py" line="456"/>
+        <location filename="../libsources.py" line="468"/>
         <source>Mercado Continuo source</source>
         <translation>Fuente del Mercado Continuo</translation>
     </message>
@@ -1212,7 +1212,7 @@ Do you want to activate it?</source>
 <context>
     <name>WorkerMorningstar</name>
     <message>
-        <location filename="../libsources.py" line="522"/>
+        <location filename="../libsources.py" line="534"/>
         <source>Morningstar source</source>
         <translation>Fuente de Morningstar</translation>
     </message>
@@ -1220,7 +1220,7 @@ Do you want to activate it?</source>
 <context>
     <name>WorkerSGWarrants</name>
     <message>
-        <location filename="../libsources.py" line="651"/>
+        <location filename="../libsources.py" line="662"/>
         <source>SG Warrants source</source>
         <translation>Fuente de SG Warrants</translation>
     </message>
@@ -1228,7 +1228,7 @@ Do you want to activate it?</source>
 <context>
     <name>WorkerYahoo</name>
     <message>
-        <location filename="../libsources.py" line="712"/>
+        <location filename="../libsources.py" line="723"/>
         <source>Yahoo source</source>
         <translation>Fuente de Yahoo</translation>
     </message>
@@ -1236,7 +1236,7 @@ Do you want to activate it?</source>
 <context>
     <name>WorkerYahooHistorical</name>
     <message>
-        <location filename="../libsources.py" line="833"/>
+        <location filename="../libsources.py" line="844"/>
         <source>Yahoo Historical source</source>
         <translation>Fuente de históricos de Yahoo</translation>
     </message>
@@ -7225,32 +7225,32 @@ Daily Diff: {5}. Investment average age: {6}</source>
         <translation>Progreso de actualización</translation>
     </message>
     <message>
-        <location filename="../libsources.py" line="154"/>
+        <location filename="../libsources.py" line="156"/>
         <source>Inserted quotes from {}</source>
         <translation>Precios insertados desde {}</translation>
     </message>
     <message>
-        <location filename="../libsources.py" line="166"/>
+        <location filename="../libsources.py" line="168"/>
         <source>Edited quotes from {}</source>
         <translation>Precios modificados desde {}</translation>
     </message>
     <message>
-        <location filename="../libsources.py" line="178"/>
+        <location filename="../libsources.py" line="180"/>
         <source>Ignored quotes from {}</source>
         <translation>Precios ignorados desde {}</translation>
     </message>
     <message>
-        <location filename="../libsources.py" line="190"/>
+        <location filename="../libsources.py" line="192"/>
         <source>Errors procesing the source {}</source>
         <translation>Errores procesando la fuente {}</translation>
     </message>
     <message>
-        <location filename="../libsources.py" line="202"/>
+        <location filename="../libsources.py" line="204"/>
         <source>Bad prices procesing the source {}</source>
         <translation>Precios erróneos procesando la fuente {}</translation>
     </message>
     <message>
-        <location filename="../libsources.py" line="214"/>
+        <location filename="../libsources.py" line="216"/>
         <source>Searched products from {}</source>
         <translation>Precios buscados desde {}</translation>
     </message>
@@ -7290,37 +7290,37 @@ Daily Diff: {5}. Investment average age: {6}</source>
         <translation>Cotizaciones insertadas</translation>
     </message>
     <message>
-        <location filename="../libsources.py" line="118"/>
+        <location filename="../libsources.py" line="120"/>
         <source>Inserted quotes ({})</source>
         <translation>Precios insertados ({})</translation>
     </message>
     <message>
-        <location filename="../libsources.py" line="119"/>
+        <location filename="../libsources.py" line="121"/>
         <source>Edited quotes ({})</source>
         <translation>Precios modificados ({})</translation>
     </message>
     <message>
-        <location filename="../libsources.py" line="120"/>
+        <location filename="../libsources.py" line="122"/>
         <source>Ignored quotes ({})</source>
         <translation>Precios ignorados ({})</translation>
     </message>
     <message>
-        <location filename="../libsources.py" line="121"/>
+        <location filename="../libsources.py" line="123"/>
         <source>Parsing errors ({})</source>
         <translation>Error de tratamiento ({})</translation>
     </message>
     <message>
-        <location filename="../libsources.py" line="122"/>
+        <location filename="../libsources.py" line="124"/>
         <source>Wrong quotes ({})</source>
         <translation>Precios erróneos ({})</translation>
     </message>
     <message>
-        <location filename="../libsources.py" line="123"/>
+        <location filename="../libsources.py" line="125"/>
         <source>Products searched ({})</source>
         <translation>Productos buscados ({})</translation>
     </message>
     <message>
-        <location filename="../libsources.py" line="232"/>
+        <location filename="../libsources.py" line="234"/>
         <source>Showing HTML</source>
         <translation>Mostrando HTML</translation>
     </message>
