@@ -4,7 +4,7 @@ from PyQt5.QtWidgets import QMainWindow,  QWidget, QLabel, QMessageBox, QProgres
 import os
 from Ui_frmMain import Ui_frmMain
 from frmAbout import frmAbout
-from libxulpymoney import version_date,  list2string, qmessagebox,  Product
+from libxulpymoney import version_date,  list2string, qmessagebox,  Product, ReinvestModel,  Percentage
 from libsources import sync_data
 from frmAccess import frmAccess
 from wdgTotal import wdgTotal
@@ -54,6 +54,13 @@ class frmMain(QMainWindow, Ui_frmMain):
             self.setWindowTitle(self.tr("Xulpymoney 2010-{0} \xa9").format(version_date.year))
           
         
+#        model=ReinvestModel(mem, [2500, 3500, 12000, 12000], self.mem.data.products.find_by_id(79228), Percentage(1, 3), Percentage(1, 10))
+#        model.print()
+#        model=ReinvestModel(mem, [5000, 7000, 24000, 24000], self.mem.data.products.find_by_id(79228), Percentage(1, 3), Percentage(1, 10))
+#        model.print()
+        a=2500
+        model=ReinvestModel(mem, [a, 2*a, 6*a, 18*a, 54*a], self.mem.data.products.find_by_id(79228), Percentage(1, 3), Percentage(1, 10))
+        model.print()
 
     def actionsEnabled(self, bool):
         self.menuBar.setEnabled(bool)

@@ -57,6 +57,7 @@ if access.result()==QDialog.Accepted:
             qmessagebox(QApplication.translate("Core","Xulpymoney needs to be updated. Please login with a superuser role."))
             sys.exit(2)
 
+
     mem.frmMain = frmMain(mem)
     mem.frmMain.show()
 
