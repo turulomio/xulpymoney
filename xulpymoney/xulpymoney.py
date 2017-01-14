@@ -24,7 +24,7 @@ else:
     sys.path.append("/usr/lib/xulpymoney")
 
 from PyQt5.QtCore import QTranslator
-from PyQt5.QtWidgets import QApplication
+from PyQt5.QtWidgets import QApplication,  QDialog
 import libdbupdates
 from libxulpymoney import MemXulpymoney,  qmessagebox
 from frmAccess import frmAccess
@@ -45,22 +45,19 @@ access.setLabel(QApplication.translate("Core","Please login to the xulpymoney da
 access.config_load()
 access.exec_()
 
-mem.con=access.con
+if access.result()==QDialog.Accepted:
+    mem.con=access.con
 
-##Update database
-update=libdbupdates.Update(mem)
-if update.need_update()==True:
-    if mem.con.is_superuser():
-        update.run()
-    else:
-        qmessagebox(QApplication.translate("Core","Xulpymoney needs to be updated. Please login with a superuser role."))
-        sys.exit(2)
+    ##Update database
+    update=libdbupdates.Update(mem)
+    if update.need_update()==True:
+        if mem.con.is_superuser():
+            update.run()
+        else:
+            qmessagebox(QApplication.translate("Core","Xulpymoney needs to be updated. Please login with a superuser role."))
+            sys.exit(2)
 
-if "admin" in sys.argv:
-    mem.adminmode=True
+    mem.frmMain = frmMain(mem)
+    mem.frmMain.show()
 
-
-mem.frmMain = frmMain(mem)
-mem.frmMain.show()
-
-sys.exit(app.exec_())
+    sys.exit(app.exec_())
