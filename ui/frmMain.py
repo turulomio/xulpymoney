@@ -1,7 +1,6 @@
 from PyQt5.QtCore import pyqtSlot, QProcess, QUrl,  QSize
 from PyQt5.QtGui import QIcon, QDesktopServices
-from PyQt5.QtWidgets import QMainWindow,  QWidget, QLabel, QLineEdit, QMessageBox, QInputDialog, QProgressDialog, QDialog,  QApplication, QVBoxLayout
-import sys
+from PyQt5.QtWidgets import QMainWindow,  QWidget, QLabel, QMessageBox, QProgressDialog, QDialog,  QApplication, QVBoxLayout
 import os
 from Ui_frmMain import Ui_frmMain
 from frmAbout import frmAbout
@@ -32,20 +31,14 @@ from wdgQuotesUpdate import wdgQuotesUpdate
 from wdgLastCurrent import wdgLastCurrent
 
 class frmMain(QMainWindow, Ui_frmMain):
-    """Clase principal del programa"""
     def __init__(self, mem, parent = 0,  flags = False):
-        """mem must be a MemXulpymoney con el parametro mem.con con un objecto Conection activo"""
         QMainWindow.__init__(self, None)
         self.setupUi(self)
         self.showMaximized()
         
         self.mem=mem
-
-
-
         self.mem.con.inactivity_timeout.connect(self.inactivity_timeout)        
         self.sqlvacio="select * from products where id=-999999"
-        self.setWindowTitle(self.tr("Xulpymoney 2010-{0} \xa9").format(version_date.year))
         #print ("Xulpymoney 2010-{0} © €".encode('unicode-escape'))
         
         self.w=QWidget()       
@@ -54,34 +47,11 @@ class frmMain(QMainWindow, Ui_frmMain):
         
         self.mem.load_db_data() ##CARGA TODOS LOS DATOS Y LOS VINCULA       
        
-        ##Admin mode
-        if self.mem.adminmode:
-            m=QMessageBox()
-            m.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
-            m.setIcon(QMessageBox.Information)
-            input=QInputDialog.getText(self,  "Xulpymoney",  self.tr("Please introduce Admin Mode password"), QLineEdit.Password)
-            if input[1]==True:
-                res=self.mem.check_admin_mode(input[0])
-                if res==None:
-                    self.setWindowTitle(self.tr("Xulpymoney 2010-{0} \xa9 (Admin mode)").format(version_date.year))
-                    self.setWindowIcon(self.mem.qicon_admin())
-                    self.update()
-                    self.mem.set_admin_mode(input[0])
-                    self.mem.con.commit()
-                    m.setText(self.tr("You have set the admin mode password. Please login again"))
-                    m.exec_()
-                    self.on_actionExit_triggered()
-                    sys.exit(2)
-                elif res==True:
-                    self.setWindowTitle(self.tr("Xulpymoney 2010-{0} © (Admin mode)").format(version_date.year))
-                    self.setWindowIcon(self.mem.qicon_admin())
-                    self.update()
-                    m.setText(self.tr("You are logged as an administrator"))
-                    m.exec_()   
-                elif res==False:
-                    self.adminmode=False        
-                    m.setText(self.tr("Bad 'Admin mode' password. You are logged as a normal user"))
-                    m.exec_()   
+        if self.mem.con.is_superuser():
+            self.setWindowTitle(self.tr("Xulpymoney 2010-{0} \xa9 (Admin mode)").format(version_date.year))
+            self.setWindowIcon(self.mem.qicon_admin())
+        else:
+            self.setWindowTitle(self.tr("Xulpymoney 2010-{0} \xa9").format(version_date.year))
           
         
 
@@ -91,18 +61,15 @@ class frmMain(QMainWindow, Ui_frmMain):
         
     @pyqtSlot()
     def on_actionGlobalReport_triggered(self):
-         
         import libodfgenerator
         file="AssetsReport.odt"
         doc=libodfgenerator.AssetsReport(self.mem, file, "/usr/share/xulpymoney/report.odt")
-#        os.system("libreoffice --headless --convert-to pdf {}".format(file))
         doc.generate()
         
         
         #Open file
         if os.path.exists("/usr/bin/lowriter"):
             QProcess.startDetached("lowriter", [file, ] )
-#            QProcess.startDetached("okular", [file[:-3]+"pdf", ] )
         elif os.path.exists("/usr/bin/kfmclient"):
             QProcess.startDetached("kfmclient", ["openURL", file] )
         elif os.path.exists("/usr/bin/gnome-open"):
@@ -195,10 +162,6 @@ class frmMain(QMainWindow, Ui_frmMain):
                 
         self.layout.addWidget(self.w)
         self.w.show()
-#
-#    @pyqtSlot()  
-#    def on_actionReloadPrices_triggered(self):
-#        self.mem.data.reload_prices()
 
     @pyqtSlot()  
     def on_actionEvolutionReport_triggered(self):

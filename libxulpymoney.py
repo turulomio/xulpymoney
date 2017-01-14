@@ -7663,9 +7663,7 @@ class SettingsDB:
         return None
 
 class MemXulpymoney:
-    def __init__(self):        
-        self.adminmode=False # from argv
-        
+    def __init__(self):                
         self.qtranslator=None#Residir´a el qtranslator
         self.settings=QSettings()
         self.settingsdb=SettingsDB(self)
@@ -7686,7 +7684,7 @@ class MemXulpymoney:
         self.frmMain=None #Pointer to mainwidget
         self.closing=False#Used to close threads
         
-    def init__script(self, title, type=0):
+    def init__script(self, title, tickers=False, sql=False):
         """
             Script arguments and autoconnect in mem.con, load_db_data
             
@@ -7705,11 +7703,11 @@ class MemXulpymoney:
         parser.add_argument('--port', help='Postgresql server port', default=5432)
         parser.add_argument('--host', help='Postgresql server address', default='127.0.0.1')
         parser.add_argument('--db', help='Postgresql database', default='xulpymoney')
-        if type==1:
+        if tickers:
             parser.add_argument('--tickers', help='Generate tickers', default=False, action='store_true')
-            
-        
-        
+        if sql:
+            parser.add_argument('--sql', help='Generate update sql', default=False, action='store_true')
+
         args=parser.parse_args()
         password=getpass.getpass()
         self.con=Connection().init__create(args.user,  password,  args.host, args.port, args.db)
