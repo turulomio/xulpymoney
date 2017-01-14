@@ -41,6 +41,10 @@ class wdgQuotesUpdate(QWidget, Ui_wdgQuotesUpdate):
         
         for s in self.sources.runners:
             s.ui.on_cmdRun_released()
+#            
+#        with ProcessPoolExecutor(max_workers=4) as e:
+#            for s in self.sources.runners:
+#                e.map(s.ui.on_cmdRun_released)
         
     def on_source_statusChanged(self, status):
         if status==3:#Finished
