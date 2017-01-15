@@ -1,6 +1,11 @@
 from PyQt5.QtCore import Qt,  pyqtSlot
 from PyQt5.QtGui import QKeySequence
 from PyQt5.QtWidgets import QApplication, QHeaderView, QTableWidget
+from libodfgenerator import ODS,  Cell,  letter_add,  number_add
+from odf.table import  TableCell
+from odf.text import P
+from libxulpymoney import Money,  Percentage
+import logging
 
 class myQTableWidget(QTableWidget):
     def __init__(self, parent):
@@ -77,13 +82,40 @@ class myQTableWidget(QTableWidget):
 
     @pyqtSlot()
     def keyPressEvent(self, event):
-        if self._last_height==None:
-            return
-        height=int(self.mem.settings.value("myQTableWidget/rowheight", 24))
-        if  event.matches(QKeySequence.ZoomIn):
+        if  event.matches(QKeySequence.ZoomIn) and self._last_height!=None:
+            height=int(self.mem.settings.value("myQTableWidget/rowheight", 24))
             self.mem.settings.setValue("myQTableWidget/rowheight", height+1)
-        elif  event.matches(QKeySequence.ZoomOut):
+            logging.info("Setting myQTableWidget/rowheight set to {}".format(self.mem.settings.value("myQTableWidget/rowheight", 24)))
+            self.setVerticalHeaderHeight(int(self.mem.settings.value("myQTableWidget/rowheight", 24)))
+        elif  event.matches(QKeySequence.ZoomOut) and self._last_height!=None:
+            height=int(self.mem.settings.value("myQTableWidget/rowheight", 24))
             self.mem.settings.setValue("myQTableWidget/rowheight", height-1)
-        print("Setting myQTableWidget/rowheight set to {}".format(self.mem.settings.value("myQTableWidget/rowheight", 24)))
-        self.setVerticalHeaderHeight(int(self.mem.settings.value("myQTableWidget/rowheight", 24)))
+            ("Setting myQTableWidget/rowheight set to {}".format(self.mem.settings.value("myQTableWidget/rowheight", 24)))
+            self.setVerticalHeaderHeight(int(self.mem.settings.value("myQTableWidget/rowheight", 24)))
+        elif event.matches(QKeySequence.Print):
+            Table2ODS(self.mem,"/home/keko/borrar.ods", self, "My table")
+            
+class Table2ODS(ODS):
+    def __init__(self, mem, filename, table, title):
+        ODS.__init__(self, filename)
+        self.mem=mem
+        sheet=self.createSheet(title, table.rowCount(), table.columnCount())
+        for number in range(table.rowCount()):
+            for letter in range(table.columnCount()):
+                try:
+                    sheet.add(Cell(letter_add("A", letter), number_add("1", number), table.item(number, letter).text()))
+                except:#Not a QTableWidgetItem or NOne
+                    pass
+        self.save()
+
+    def object2odfcell(self, object):
+        if object.__class__==Money:
+            cell = TableCell(valuetype="currency", currency=object.currency.id, value=object.amount)
+        elif object.__class__==Percentage:
+            cell = TableCell(valuetype="currency", currency=object.currency.id, value=object.amount)
+        else:
+            cell = TableCell(valuetype="string")
+            cell.addElement(P(text = object))
+        return cell
+#cell.addElement(P(text=u"$-125.00")) # The current displayed value
 
