@@ -11,7 +11,7 @@ class wdgInvestments(QWidget, Ui_wdgInvestments):
         QWidget.__init__(self, parent)
         self.setupUi(self)
         self.mem=mem
-        self.investmentes=None
+        self.investments=None
         self.selInvestment=None##Apunta a un objeto inversión
         self.loadedinactive=False
 
@@ -19,7 +19,7 @@ class wdgInvestments(QWidget, Ui_wdgInvestments):
         self.on_chkInactivas_stateChanged(self.chkInactivas.checkState())
     
     def tblInvestments_reload(self):
-        """Función que carga la tabla de inversiones con el orden que tenga el arr serl.investmentes"""
+        """Función que carga la tabla de inversiones con el orden que tenga el arr serl.investments"""
         if self.chkInactivas.checkState()==Qt.Checked:
             self.tblInvestments.setSaveSettings(False) #Must be before than hidden, because hide resizes
             self.tblInvestments.setColumnHidden(8, True)
@@ -27,19 +27,19 @@ class wdgInvestments(QWidget, Ui_wdgInvestments):
             self.tblInvestments.setSaveSettings(True)
             self.tblInvestments.setColumnHidden(8, False)
             
-        self.investmentes.myqtablewidget(self.tblInvestments)
-        invested=self.investmentes.invested()
-        pendiente=self.investmentes.pendiente()
+        self.investments.myqtablewidget(self.tblInvestments)
+        invested=self.investments.invested()
+        pendiente=self.investments.pendiente()
         if invested.isZero():
             self.lblTotal.setText(self.tr("There aren't invested assets"))
         else:
             self.lblTotal.setText(self.tr("Invested assets: {0}. Pending: {1}{2} = {3} ({4} assets)\nDaily Diff: {5}. Investment average age: {6}").format(
-                            invested,self.investmentes.pendiente_positivo(),
-                            self.investmentes.pendiente_negativo(),  
+                            invested,self.investments.pendiente_positivo(),
+                            self.investments.pendiente_negativo(),  
                             pendiente, 
                             Percentage(pendiente, invested),  
-                            self.investmentes.gains_last_day()
-                            , days_to_year_month(self.investmentes.average_age())))
+                            self.investments.gains_last_day()
+                            , days_to_year_month(self.investments.average_age())))
 
 
     @pyqtSlot() 
@@ -115,7 +115,7 @@ class wdgInvestments(QWidget, Ui_wdgInvestments):
 
     @pyqtSlot() 
     def on_actionSortTPCDiario_triggered(self):
-        if self.investmentes.order_by_percentage_daily():
+        if self.investments.order_by_percentage_daily():
             self.tblInvestments_reload()    
         else:
             qmessagebox(self.tr("I couldn't order data due to they have null values"))  
@@ -123,7 +123,7 @@ class wdgInvestments(QWidget, Ui_wdgInvestments):
         
     @pyqtSlot() 
     def on_actionSortTPCVenta_triggered(self):
-        if self.investmentes.order_by_percentage_sellingpoint():
+        if self.investments.order_by_percentage_invested() and self.investments.order_by_percentage_sellingpoint():
             self.tblInvestments_reload()    
         else:
             qmessagebox(self.tr("I couldn't order data due to they have null values"))     
@@ -131,7 +131,7 @@ class wdgInvestments(QWidget, Ui_wdgInvestments):
         
     @pyqtSlot() 
     def on_actionSortTPC_triggered(self):
-        if self.investmentes.order_by_percentage_invested():
+        if self.investments.order_by_percentage_invested():
             self.tblInvestments_reload()    
         else:
             qmessagebox(self.tr("I couldn't order data due to they have null values"))     
@@ -139,7 +139,7 @@ class wdgInvestments(QWidget, Ui_wdgInvestments):
         
     @pyqtSlot() 
     def on_actionSortHour_triggered(self):
-        if self.investmentes.order_by_datetime():
+        if self.investments.order_by_datetime():
             self.tblInvestments_reload()    
         else:
             qmessagebox(self.tr("I couldn't order data due to they have null values"))     
@@ -147,7 +147,7 @@ class wdgInvestments(QWidget, Ui_wdgInvestments):
         
     @pyqtSlot() 
     def on_actionSortName_triggered(self):
-        if self.investmentes.order_by_name():
+        if self.investments.order_by_name():
             self.tblInvestments_reload()    
         else:
             qmessagebox(self.tr("I couldn't order data due to they have null values"))     
@@ -156,10 +156,10 @@ class wdgInvestments(QWidget, Ui_wdgInvestments):
     @pyqtSlot(int) 
     def on_chkInactivas_stateChanged(self, state):
         if state==Qt.Unchecked:
-            self.investmentes=self.mem.data.investments_active()
+            self.investments=self.mem.data.investments_active()
             self.on_actionSortTPCVenta_triggered()
         else:
-            self.investmentes=self.mem.data.investments_inactive()
+            self.investments=self.mem.data.investments_inactive()
             self.on_actionSortName_triggered()
         self.tblInvestments.clearSelection()
         self.selInvestment=None   
@@ -222,7 +222,7 @@ class wdgInvestments(QWidget, Ui_wdgInvestments):
     def on_tblInvestments_itemSelectionChanged(self):
         self.selInvestment=None
         for i in self.tblInvestments.selectedItems():#itera por cada item no row.
-            self.selInvestment=self.investmentes.arr[i.row()]
+            self.selInvestment=self.investments.arr[i.row()]
 
     @pyqtSlot(int, int) 
     def on_tblInvestments_cellDoubleClicked(self, row, column):
