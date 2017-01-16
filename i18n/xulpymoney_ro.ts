@@ -4758,6 +4758,19 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
+    <name>myQTableWidget</name>
+    <message>
+        <location filename="../ui/myqtablewidget.py" line="96"/>
+        <source>Save File</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/myqtablewidget.py" line="96"/>
+        <source>Libreoffice calc (*.ods)</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>wdgAPR</name>
     <message>
         <location filename="../ui/Ui_wdgAPR.py" line="167"/>

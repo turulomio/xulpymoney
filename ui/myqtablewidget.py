@@ -1,6 +1,6 @@
 from PyQt5.QtCore import Qt,  pyqtSlot
 from PyQt5.QtGui import QKeySequence
-from PyQt5.QtWidgets import QApplication, QHeaderView, QTableWidget
+from PyQt5.QtWidgets import QApplication, QHeaderView, QTableWidget, QFileDialog
 from libodfgenerator import ODS,  Cell,  letter_add,  number_add
 from odf.table import  TableCell
 from odf.text import P
@@ -93,7 +93,9 @@ class myQTableWidget(QTableWidget):
             ("Setting myQTableWidget/rowheight set to {}".format(self.mem.settings.value("myQTableWidget/rowheight", 24)))
             self.setVerticalHeaderHeight(int(self.mem.settings.value("myQTableWidget/rowheight", 24)))
         elif event.matches(QKeySequence.Print):
-            Table2ODS(self.mem,"/home/keko/borrar.ods", self, "My table")
+            filename = QFileDialog.getSaveFileName(self, self.tr("Save File"), "table.ods", self.tr("Libreoffice calc (*.ods)"))[0]
+            if filename:
+                Table2ODS(self.mem,filename, self, "My table")
             
 class Table2ODS(ODS):
     def __init__(self, mem, filename, table, title):
