@@ -11,20 +11,14 @@
 
 
 from odf.opendocument import OpenDocumentSpreadsheet,  OpenDocumentText,  load
-from odf.style import Style, TextProperties, TableColumnProperties, Map,  TableProperties,  TableCellProperties,  ParagraphProperties
+from odf.style import Style, TextProperties, TableColumnProperties, Map,  TableProperties,  TableCellProperties,  ParagraphProperties,  ListLevelProperties
 from odf.number import  CurrencyStyle, CurrencySymbol,  Number,  Text
-from odf.text import P,  H,  Span
+from odf.text import P,  H,  Span, ListStyle,  ListLevelStyleBullet,  List,  ListItem, ListLevelStyleNumber,  OutlineLevelStyle,  OutlineStyle
 from odf.table import Table, TableColumn, TableRow, TableCell,  TableHeaderRows
 from odf.draw import Frame, Image
 
-#from wdgTotal import wdgTotal
-#from wdgInvestments import wdgInvestments
-#from wdgInvestmentClasses import wdgInvestmentClasses
-#from libxulpymoney import tpc
-
 class ODT():
-    def __init__(self, filename, template=None):    
-#        QObject.__init__(self)
+    def __init__(self, filename, template=None):
         self.filename=filename
         self.doc=OpenDocumentText()
         
@@ -47,20 +41,92 @@ class ODT():
         s.addElement(ParagraphProperties(pagenumber="auto"))
         self.doc.styles.addElement(s)
         
+#        #Header1
+#        #    <style:style style:auto-update="true" style:display-name="Heading 1" style:default-outline-level="1" style:family="paragraph" style:name="Heading_20_1" style:next-style-name="Text_20_body" style:parent-style-name="Heading" style:class="text">
+#      <style:paragraph-properties fo:margin-top="0.423cm" fo:margin-right="0cm" fo:text-align="justify" fo:text-indent="0cm" ns42:contextual-spacing="false" style:writing-mode="page" fo:margin-left="0cm" fo:margin-bottom="0.212cm" style:auto-text-indent="false" style:justify-single-word="false"/>
+#      <style:text-properties style:font-weight-complex="bold" fo:font-size="15pt" style:font-size-asian="130%" style:font-size-complex="130%" fo:font-weight="bold" style:font-weight-asian="bold"/>
+#    </style:style>
+        h1style = Style(name="Heading1", family="paragraph",  autoupdate="true", defaultoutlinelevel="1")
+        h1style.addElement(ParagraphProperties(attributes={"margintop":"0.6cm", "textalign":"justify", "marginbottom":"0.3cm"}))
+        h1style.addElement(TextProperties(attributes={"fontsize": "15pt", "fontweight": "bold"}))
+        self.doc.styles.addElement(h1style)
+        h2style = Style(name="Heading2", family="paragraph",  autoupdate="true", defaultoutlinelevel="2")
+        h2style.addElement(ParagraphProperties(attributes={"margintop":"0.5cm", "textalign":"justify", "marginbottom":"0.25cm"}))
+        h2style.addElement(TextProperties(attributes={"fontsize": "14pt", "fontweight": "bold"}))
+        self.doc.styles.addElement(h2style)
+        out=OutlineStyle(name="Outline")
+        outl=OutlineLevelStyle(level=1, numformat="1", numsuffix="  ")
+        out.addElement(outl)
+        outl=OutlineLevelStyle(level=2, displaylevels="2", numformat="1", numsuffix="  ")
+        out.addElement(outl)
+        self.doc.styles.addElement(out)
+        #Standard
+        #            <style:style style:auto-update="true" style:name="Standard" style:family="paragraph" style:master-page-name="" style:class="text">
+        #      <style:paragraph-properties fo:margin-top="0.199cm" fo:margin-right="0cm" fo:text-align="justify" ns42:contextual-spacing="false" fo:text-indent="1cm" style:page-number="auto" style:writing-mode="page" fo:margin-left="0cm" fo:margin-bottom="0.199cm" style:auto-text-indent="false" style:justify-single-word="false"/>
+        #      <style:text-properties style:font-size-asian="10.5pt"/>
+        #    </style:style>
         
+        standard= Style(name="Standard", family="paragraph",  autoupdate="true")
+        standard.addElement(ParagraphProperties(attributes={"margintop":"0.2cm", "textalign":"justify", "marginbottom":"0.2cm", "textindent":"1cm"}))
+        standard.addElement(TextProperties(attributes={"fontsize": "12pt"}))
+        self.doc.styles.addElement(standard)
+
+
+        
+        liststandard= Style(name="ListStandard", family="paragraph",  autoupdate="true")
+        liststandard.addElement(ParagraphProperties(attributes={"margintop":"0.1cm", "textalign":"justify", "marginbottom":"0.1cm", "textindent":"0cm"}))
+        liststandard.addElement(TextProperties(attributes={"fontsize": "12pt"}))
+        self.doc.styles.addElement(liststandard)
+        
+        # For Bulleted list
+        bulletedliststyle = ListStyle(name="BulletList")
+        level = 1
+        bulletlistproperty = ListLevelStyleBullet(level=str(level), bulletchar=u"•")
+        bulletlistproperty.addElement(ListLevelProperties( minlabelwidth="%fcm" % level))
+        bulletedliststyle.addElement(bulletlistproperty)
+        self.doc.styles.addElement(bulletedliststyle)
+
+        # For numbered list
+        numberedliststyle = ListStyle(name="NumberedList")
+        level = 1
+        numberedlistproperty = ListLevelStyleNumber(level=str(level), numsuffix=".", startvalue=1)
+        numberedlistproperty.addElement(ListLevelProperties(minlabelwidth="%fcm" % (level)))
+        numberedliststyle.addElement(numberedlistproperty)
+        self.doc.styles.addElement(numberedliststyle)
             
         self.seqTables=0#Sequence of tables
         
     def emptyParagraph(self, style="Standard", number=1):
         for i in range(number):
             self.simpleParagraph("",style)
-            
+                
+    def save(self):
+        self.doc.save(self.filename)
+
     def simpleParagraph(self, text, style="Standard"):
         p=P(stylename=style, text=text)
         self.doc.text.addElement(p)
         
+    def list(self, arr, style="BulletList"):
+        l=List(stylename=style)
+        for item in arr:
+            it=ListItem()
+            p=P(stylename="ListStandard", text=item)
+            it.addElement(p)
+            l.addElement(it)
+        self.doc.text.addElement(l)
+                
+    def numberedList(self, arr, style="NumberedList"):
+        l=List(stylename=style)
+        for item in arr:
+            it=ListItem()
+            p=P(stylename="ListStandard", text=item)
+            it.addElement(p)
+            l.addElement(it)
+        self.doc.text.addElement(l)
+
     def header(self, text, level):
-        h=H(outlinelevel=level, stylename="Heading {}".format(level), text=text)
+        h=H(outlinelevel=level, stylename="Heading{}".format(level), text=text)
         self.doc.text.addElement(h)
 
     def table(self, header, orientation,  data, sizes, font):

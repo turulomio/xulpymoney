@@ -764,7 +764,7 @@
         <translation>Falso</translation>
     </message>
     <message>
-        <location filename="../xulpymoney.py" line="57"/>
+        <location filename="../xulpymoney.py" line="68"/>
         <source>Xulpymoney needs to be updated. Please login with a superuser role.</source>
         <translation>Xulpymoney necesita ser actualizado. Por favor entre con el rol de superusuario.</translation>
     </message>
@@ -1059,7 +1059,7 @@
         <translation>días</translation>
     </message>
     <message>
-        <location filename="../xulpymoney.py" line="44"/>
+        <location filename="../xulpymoney.py" line="55"/>
         <source>Please login to the xulpymoney database</source>
         <translation>Por favor, autentíquese en la base de datos de xulpymoney</translation>
     </message>
