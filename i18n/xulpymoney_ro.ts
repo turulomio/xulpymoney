@@ -760,7 +760,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../xulpymoney.py" line="57"/>
+        <location filename="../xulpymoney.py" line="68"/>
         <source>Xulpymoney needs to be updated. Please login with a superuser role.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1055,7 +1055,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../xulpymoney.py" line="44"/>
+        <location filename="../xulpymoney.py" line="55"/>
         <source>Please login to the xulpymoney database</source>
         <translation type="unfinished"></translation>
     </message>
