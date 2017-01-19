@@ -9,7 +9,7 @@ class Update:
         1702                None
     
     El sistema update sql ya tiene globals y  mete la versión de la base de datos del desarrollador, no obstante,
-    El desarrollador deber´a meter por código todos los cambios, ha ser preferible usando objetos.7
+    El desarrollador deberá meter por código todos los cambios, ha ser preferible usando objetos.7
     
     AFTER EXECUTING I MUST RUN SQL UPDATE SCRIPT TO UPDATE FUTURE INSTALLATIONS
     

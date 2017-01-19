@@ -205,7 +205,7 @@ class frmAccountsReport(QDialog, Ui_frmAccountsReport):
     @pyqtSlot() 
     def on_actionTransferDelete_triggered(self):
         """
-            Ya est´a validado si es Comment coded 10001,10002,10003
+            Ya está validado si es Comment coded 10001,10002,10003
         """
         args=Comment(self.mem).getArgs(self.accountoperations.selected.comentario)#origin,destiny,comission
         aoo=AccountOperation(self.mem).init__db_query(args[0])
