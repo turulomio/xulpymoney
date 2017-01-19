@@ -1,21 +1,11 @@
-#from PyQt5.QtCore import QObject
-#import odf
-#import odf.opendocument
-#import odf.style
-#import odf.text
-#import odf.table
-#import odf.draw
-#import odf.meta
-#import odf.dc
-#import os
-
-
 from odf.opendocument import OpenDocumentSpreadsheet,  OpenDocumentText,  load
-from odf.style import Style, TextProperties, TableColumnProperties, Map,  TableProperties,  TableCellProperties,  ParagraphProperties,  ListLevelProperties
+from odf.style import Footer, FooterStyle, HeaderFooterProperties, Style, TextProperties, TableColumnProperties, Map,  TableProperties,  TableCellProperties, PageLayout, PageLayoutProperties, ParagraphProperties,  ListLevelProperties,  MasterPage
 from odf.number import  CurrencyStyle, CurrencySymbol,  Number,  Text
-from odf.text import P,  H,  Span, ListStyle,  ListLevelStyleBullet,  List,  ListItem, ListLevelStyleNumber,  OutlineLevelStyle,  OutlineStyle
+from odf.text import P,  H,  Span, ListStyle,  ListLevelStyleBullet,  List,  ListItem, ListLevelStyleNumber,  OutlineLevelStyle,  OutlineStyle,  PageNumber,  PageCount
 from odf.table import Table, TableColumn, TableRow, TableCell,  TableHeaderRows
 from odf.draw import Frame, Image
+from odf.dc import Creator, Description, Title
+from odf.meta import InitialCreator
 
 class ODT():
     def __init__(self, filename, template=None):
@@ -32,6 +22,26 @@ class ODT():
                 
             for master in templatedoc.masterstyles.childNodes[:]:
                 self.doc.masterstyles.addElement(master)
+                
+#       <style:page-layout style:name="Mpm1">
+#      <style:page-layout-properties fo:page-width="21.001cm" style:print-orientation="portrait" fo:margin-top="2cm"
+#fo:margin-right="2cm" style:writing-mode="lr-tb" style:footnote-max-height="0cm" style:num-format="1" fo:page-height="29.7cm" fo:margin-left="2cm" fo:margin-bottom="2cm">
+#        <style:footnote-sep style:color="#000000" style:width="0.018cm" style:line-style="solid" style:adjustment="left" style:rel-width="25%" style:distance-after-sep="0.101cm" style:distance-before-sep="0.101cm"/>
+#      </style:page-layout-properties>
+#      <style:header-style/>
+#      <style:footer-style>
+#        <style:header-footer-properties fo:min-height="0cm" fo:margin-top="0.499cm"/>
+#      </style:footer-style>
+#    </style:page-layout>
+
+        pagelayout=PageLayout(name="PageLayout")
+        plp=PageLayoutProperties(pagewidth="21cm",  pageheight="29.7cm",  margintop="2cm",  marginright="2cm",  marginleft="2cm",  marginbottom="2cm")
+        fs=FooterStyle()
+        hfp=HeaderFooterProperties(margintop="0.5cm")
+        fs.addElement(hfp)
+        pagelayout.addElement(plp)
+        pagelayout.addElement(fs)
+        self.doc.automaticstyles.addElement(pagelayout)
                 
         #Pagebreak styles horizontal y vertical        
         s = Style(name="PH", family="paragraph",  parentstylename="Standard", masterpagename="Landscape")
@@ -80,22 +90,60 @@ class ODT():
         
         # For Bulleted list
         bulletedliststyle = ListStyle(name="BulletList")
-        level = 1
-        bulletlistproperty = ListLevelStyleBullet(level=str(level), bulletchar=u"•")
-        bulletlistproperty.addElement(ListLevelProperties( minlabelwidth="%fcm" % level))
+        bulletlistproperty = ListLevelStyleBullet(level="1", bulletchar=u"•")
+        bulletlistproperty.addElement(ListLevelProperties( minlabelwidth="1cm"))
         bulletedliststyle.addElement(bulletlistproperty)
         self.doc.styles.addElement(bulletedliststyle)
 
         # For numbered list
         numberedliststyle = ListStyle(name="NumberedList")
-        level = 1
-        numberedlistproperty = ListLevelStyleNumber(level=str(level), numsuffix=".", startvalue=1)
-        numberedlistproperty.addElement(ListLevelProperties(minlabelwidth="%fcm" % (level)))
+        numberedlistproperty = ListLevelStyleNumber(level="1", numsuffix=".", startvalue=1)
+        numberedlistproperty.addElement(ListLevelProperties(minlabelwidth="1cm"))
         numberedliststyle.addElement(numberedlistproperty)
         self.doc.styles.addElement(numberedliststyle)
             
         self.seqTables=0#Sequence of tables
-        
+        #Footer
+#            <style:style style:master-page-name="" style:class="extra" style:auto-update="true" style:parent-style-name="Standard" style:name="Footer" style:family="paragraph">
+#      <style:paragraph-properties fo:text-align="center" fo:text-indent="0cm" style:auto-text-indent="false" fo:margin-left="0cm" style:writing-mode="page" style:justify-single-word="false" text:number-lines="false" text:line-number="0" fo:margin-right="0cm" style:page-number="auto">
+#        <style:tab-stops>
+#          <style:tab-stop style:position="8.5cm" style:type="center"/>
+#          <style:tab-stop style:position="17cm" style:type="right"/>
+#        </style:tab-stops>
+#      </style:paragraph-properties>
+#      <style:text-properties fo:font-size="8pt"/>
+#    </style:style>
+        s= Style(name="Footer", family="paragraph",  autoupdate="true")
+        s.addElement(ParagraphProperties(attributes={"margintop":"0cm", "textalign":"center", "marginbottom":"0cm", "textindent":"0cm"}))
+        s.addElement(TextProperties(attributes={"fontsize": "9pt"}))
+        self.doc.styles.addElement(s)
+
+
+#    <style:master-page style:name="Standard" style:page-layout-name="Mpm1">
+#      <style:footer>
+#        <text:p text:style-name="MP1">Página <text:page-number text:select-page="current">1</text:page-number> de <text:page-count>1</text:page-count></text:p>
+#      </style:footer>
+#    </style:master-page>
+        #Footer
+        foot=MasterPage(name="Standard", pagelayoutname="PageLayout")
+        footer=Footer()
+        p1=P(stylename="Footer",  text="Página ")
+        number=PageNumber(selectpage="current", numformat="1")
+        p2=Span(stylename="Footer",  text=" de  ")
+        count=PageCount(selectpage="current", numformat="1")
+        p1.addElement(number)
+        p1.addElement(p2)
+        p1.addElement(count)      
+        footer.addElement(p1)   
+        foot.addElement(footer)
+        self.doc.masterstyles.addElement(foot)
+
+    def setMetadata(self, title,  description, creator):
+        self.doc.meta.addElement(Title(text=title))
+        self.doc.meta.addElement(Description(text=description))
+        self.doc.meta.addElement(InitialCreator(text=creator))
+        self.doc.meta.addElement(Creator(text=creator))
+
     def emptyParagraph(self, style="Standard", number=1):
         for i in range(number):
             self.simpleParagraph("",style)
@@ -160,7 +208,6 @@ class ODT():
         
         
         #TAble contents style
-        
         s= Style(name="Tabla{}.Heading{}".format(self.seqTables, font), family="paragraph",parentstylename='Table Heading' )
         s.addElement(TextProperties(attributes={'fontsize':"{}pt".format(font), }))
         s.addElement(ParagraphProperties(attributes={'textalign':'center', }))
@@ -175,23 +222,16 @@ class ODT():
         s.addElement(ParagraphProperties(attributes={'textalign':'end', }))
         self.doc.styles.addElement(s)
         
-        
-        
-        
         #Table header style
         s = Style(name="Tabla{}.HeaderCell{}".format(self.seqTables, font), family="paragraph")
         s.addElement(TextProperties(attributes={'fontsize':"{}pt".format(font+1),'fontweight':"bold" }))
         self.doc.styles.addElement(s)
-        
-        
-    
+
         #Table columns
         table = Table(stylename="Tabla{}".format(self.seqTables))
         for i, head in enumerate(header):
             table.addElement(TableColumn(stylename="Tabla{}.{}".format(self.seqTables, chr(65+i))))  
-            
-            
-            
+
         #Header rows
         headerrow=TableHeaderRows()
         tablerow=TableRow()

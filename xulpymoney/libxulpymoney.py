@@ -7,6 +7,7 @@ import time
 import logging
 import platform
 import io
+import os
 import pytz
 import psycopg2
 import psycopg2.extras
@@ -417,7 +418,7 @@ class SetCommons(SetCommonsGeneric):
     def union(self,  set,  *initparams):
         """Returns a new set, with the union comparing id
         initparams son los parametros de iniciación de la clse"""        
-        resultado=self.__class__(*initparams)#Para que coja la clase del objeto que lo invoca SetProduct(self.mem), luego ser´a self.mem
+        resultado=self.__class__(*initparams)#Para que coja la clase del objeto que lo invoca SetProduct(self.mem), luego será self.mem
         for p in self.arr:
             resultado.append(p)
         for p in set.arr:
@@ -713,8 +714,8 @@ class SetInvestments(SetCommons):
 
     def investment_merging_current_operations_with_same_product(self, product):
         """
-            Funci´on que convierte el set actual de inversiones, sacando las del producto pasado como par´ametro
-            Crea una inversi´on nueva cogiendo las  operaciones actuales, junt´andolas , convirtiendolas en operaciones normales 
+            Funci´on que convierte el set actual de inversiones, sacando las del producto pasado como parámetro
+            Crea una inversi´on nueva cogiendo las  operaciones actuales, juntándolas , convirtiendolas en operaciones normales 
             
             se usa para hacer reinversiones, en las que no se ha tenido cuenta el metodo fifo, para que use las acciones actuales.
         """
@@ -1655,8 +1656,11 @@ class SetDividendsHomogeneus(SetDividendsHeterogeneus):
         return Percentage(self.gross(type), self.investment.invertido(None, type))
         
     def percentage_tae_from_invested(self, type=1):
-        dias=(datetime.date.today()-self.investment.op_actual.first().datetime.date()).days+1
-        return Percentage(self.percentage_from_invested(type)*365, dias )
+        try:
+            dias=(datetime.date.today()-self.investment.op_actual.first().datetime.date()).days+1
+            return Percentage(self.percentage_from_invested(type)*365, dias )
+        except:#No first
+            return Percentage()
         
     def myqtablewidget(self, table, type=1):
         """Section es donde guardar en el config file, coincide con el nombre del formulario en el que está la table
@@ -2439,7 +2443,7 @@ class SetInvestmentOperationsCurrentHomogeneus(SetInvestmentOperationsCurrentHet
         
         Parámetros
             - tabla myQTableWidget en la que rellenar los datos
-            - quote, si queremos cargar las operinversiones con un valor determinado se pasar´a la quote correspondiente. Es un Objeto quote
+            - quote, si queremos cargar las operinversiones con un valor determinado se pasará la quote correspondiente. Es un Objeto quote
             - type. Si es Falsa muestra la moneda de la inversión si es verdadera con la currency de la cuentaº
         """
             
@@ -4028,7 +4032,7 @@ class InvestmentOperation:
         se almacenan las opercuentas automaticas por las operaciones con inversiones. Es una tabla 
         que se puede actualizar en cualquier momento con esta función"""
         self.comentario=Comment(self.mem).setEncoded10000(self)
-        #/Borra de la tabla opercuentasdeoperinversiones los de la operinversión pasada como par´ametro
+        #/Borra de la tabla opercuentasdeoperinversiones los de la operinversión pasada como parámetro
         cur=self.mem.con.cursor()
         cur.execute("delete from opercuentasdeoperinversiones where id_operinversiones=%s",(self.id, )) 
         cur.close()
@@ -4234,7 +4238,7 @@ class Account:
 
     def transferencia(self, datetime, cuentaorigen, cuentadestino, importe, comision):
         """Si el oc_comision_id es 0 es que no hay comision porque también es 0"""
-        #Ojo los comentarios est´an dependientes.
+        #Ojo los comentarios están dependientes.
         oc_comision=None
         notfinished="Tranfer not fully finished"
         if comision>0:
@@ -4691,7 +4695,7 @@ class Order:
         return self
         
     def is_in_force(self):
-        "Est´a vigente"
+        "Está vigente"
         if self.is_expired()==False and self.is_executed()==False:
             return True
         return False
@@ -7719,7 +7723,7 @@ class SettingsDB:
 
 class MemXulpymoney:
     def __init__(self):                
-        self.qtranslator=None#Residir´a el qtranslator
+        self.qtranslator=None#Residirá el qtranslator
         self.settings=QSettings()
         self.settingsdb=SettingsDB(self)
         
@@ -7990,19 +7994,20 @@ class SetZones(SetCommons):
             print ("SetCommons ({}) fails finding {}".format(self.__class__.__name__, name))
         return None
 
-
-
-
 class AssetsReport(ODT):
     def __init__(self, mem, filename, template):
-        ODT.__init__(self, mem, filename, template)
+        ODT.__init__(self, filename, template)
+        self.mem=mem
         self.dir=None#Directory in tmp
+        
+    def tr (self, s):
+        return QApplication.translate("Core", s)
         
     def generate(self):
         self.dir='/tmp/AssetsReport-{}'.format(datetime.datetime.now())
         os.makedirs(self.dir)
+        self.setMetadata( self.tr("Assets report"),  self.tr("This is an automatic generated report from Xulpymoney"), "Xulpymoney-{}".format(version))
         self.variables()
-        self.metadata()
         self.cover()
         self.body()
         self.doc.save(self.filename)   
@@ -8028,12 +8033,12 @@ class AssetsReport(ODT):
         self.pageBreak()
         ## Assets
         self.header(self.tr("Assets"), 1)
-        self.simpleParagraph(self.tr("The total assets of the user is {}.").format(c(self.vTotal)))
+        self.simpleParagraph(self.tr("The total assets of the user is {}.").format(self.vTotal))
         if self.vTotalLastYear!=0:
             moreorless="more"
             if self.vTotal-self.vTotalLastYear<0:
                 moreorless="less"
-            self.simpleParagraph(self.tr("It's a {} {} of the total assets at the end of the last year.").format(tpc(100*(self.vTotal-self.vTotalLastYear)/self.vTotalLastYear), moreorless))
+            self.simpleParagraph(self.tr("It's a {} {} of the total assets at the end of the last year.").format(Percentage(self.vTotal-self.vTotalLastYear, self.vTotalLastYear), moreorless))
         
         ### Assets by bank
         self.header(self.tr("Assets by bank"), 2)
@@ -8057,10 +8062,10 @@ class AssetsReport(ODT):
         self.simpleParagraph(self.tr("Assets Balance at {0}-12-31 is {1}".format(setData.year-1, self.mem.localcurrency.string(setData.total_last_year))))
         for i, m in enumerate(setData.arr):
             if m.year<datetime.date.today().year or (m.year==datetime.date.today().year and m.month<=datetime.date.today().month):
-                columns.append([c(m.incomes()), c(m.gains()), c(m.dividends()), c(m.expenses()), c(m.i_d_g_e()), "", c(m.total_accounts()), c(m.total_investments()), c(m.total()),"",  c(setData.difference_with_previous_month(m)),"",  tpc(setData.assets_percentage_in_month(m.month))])
+                columns.append([c(m.incomes()), c(m.gains()), c(m.dividends()), c(m.expenses()), c(m.i_d_g_e()), "", c(m.total_accounts()), c(m.total_investments()), c(m.total()),"",  c(setData.difference_with_previous_month(m)),"",  setData.assets_percentage_in_month(m.month)])
             else:
                 columns.append(["","","","","","","","","", "", "", "", ""])
-        columns.append([c(setData.incomes()), c(setData.gains()), c(setData.dividends()), c(setData.expenses()), c(setData.i_d_g_e()), "", "", "", "", "", c(setData.difference_with_previous_year()), "", tpc(setData.assets_percentage_in_month(12))]) 
+        columns.append([c(setData.incomes()), c(setData.gains()), c(setData.dividends()), c(setData.expenses()), c(setData.i_d_g_e()), "", "", "", "", "", c(setData.difference_with_previous_year()), "", setData.assets_percentage_in_month(12)]) 
         data=zip(*columns)
         
         self.table(   [self.tr("Concept"), self.tr("January"),  self.tr("February"), self.tr("March"), self.tr("April"), self.tr("May"), self.tr("June"), self.tr("July"), self.tr("August"), self.tr("September"), self.tr("October"), self.tr("November"), self.tr("December"), self.tr("Total")], 
@@ -8068,9 +8073,9 @@ class AssetsReport(ODT):
                 
         ## Target
         target=AnnualTarget(self.mem).init__from_db(datetime.date.today().year)
-        self.simpleParagraph(self.tr("The investment system has established a {} year target.").format(tpc(target.percentage))+" " +
+        self.simpleParagraph(self.tr("The investment system has established a {} year target.").format(target.percentage)+" " +
                 self.tr("With this target you will gain {} at the end of the year.").format(c(target.annual_balance())) +" " +
-                self.tr("Up to date you have got  {} (gains + dividends) what represents a {} of the target.").format(c(setData.dividends()+setData.gains()), tpc((setData.gains()+setData.dividends())*100/target.annual_balance())))
+                self.tr("Up to date you have got  {} (gains + dividends) what represents a {} of the target.").format(c(setData.dividends()+setData.gains()), Percentage(setData.gains()+setData.dividends(), target.annual_balance())))
         self.pageBreak()
         ### Assets evolution graphic
         self.header(self.tr("Assets graphical evolution"), 2)
@@ -8115,7 +8120,7 @@ class AssetsReport(ODT):
             else:
                 sumnegativos=sumnegativos+pendiente
             suminvertido=suminvertido+inv.tpc_invertido()
-            arr=("{0} ({1})".format(inv.name, inv.account.name), c(inv.balance()), c(pendiente), tpc(inv.tpc_invertido()), tpc(inv.percentage_to_selling_point()))
+            arr=("{0} ({1})".format(inv.name, inv.account.name), c(inv.balance()), c(pendiente), inv.tpc_invertido(), inv.percentage_to_selling_point())
             data.append(arr)
 
         self.table( [self.tr("Investment"), self.tr("Balance"), self.tr("Gains"), self.tr("% Invested"), self.tr("% Selling point")], ["<", ">", ">", ">", ">"], data, [3, 1, 1, 1,1], 9)       
@@ -8123,7 +8128,7 @@ class AssetsReport(ODT):
         sumpendiente=sumpositivos+sumnegativos
         if suminvertido!=0:
             self.simpleParagraph(self.tr("Sum of all invested assets is {}.").format(c(suminvertido)))
-            self.simpleParagraph(self.tr("Investment gains (positive minus negative results): {} - {} are {}, what represents a {} of total assets.").format( c(sumpositivos),  c(-sumnegativos),  c(sumpendiente), tpc(100*sumpendiente/suminvertido) ))
+            self.simpleParagraph(self.tr("Investment gains (positive minus negative results): {} - {} are {}, what represents a {} of total assets.").format( c(sumpositivos),  c(-sumnegativos),  c(sumpendiente), Percentage(sumpendiente, suminvertido)))
             self.simpleParagraph(self.tr(" Assets average age: {}").format(  days_to_year_month(self.mem.data.investments_active().average_age())))
         else:
             self.simpleParagraph(self.tr("There aren't invested assets"))
@@ -8131,7 +8136,7 @@ class AssetsReport(ODT):
         ### Graphics wdgInvestments clases
         w=wdgInvestmentClasses(self.mem)
         
-        wit=15
+#        wit=15
         self.header(self.tr("Investments group by variable percentage"), 2)
 #        w.canvasTPC.savePixmap("{}/wdgInvestmentsClasses_canvasTPC.png".format(self.dir))
 #        wi, he=w.canvasTPC.savePixmapLegend("{}/wdgInvestmentsClasses_canvasTPC_legend.png".format(self.dir))
@@ -8180,12 +8185,7 @@ class AssetsReport(ODT):
         self.simpleParagraph("")
         
         
-    def metadata(self):
-        self.doc.meta.addElement(odf.dc.Title(text=self.tr("Assets report")))
-        self.doc.meta.addElement(odf.dc.Description(text=self.tr("This is an automatic generated report from Xulpymoney")))
-        creator="Xulpymoney-{}".format(version)
-        self.doc.meta.addElement(odf.meta.InitialCreator(text=creator))
-        self.doc.meta.addElement(odf.dc.Creator(text=creator))
+
 
 ## FUNCTIONS #############################################
 
@@ -8494,3 +8494,6 @@ def function_name(clas):
 #    print (clas.__class__.__name__)
 #    print (clas.__module__)
     return "{0}.{1}".format(clas.__class__.__name__,inspect.stack()[1][3])
+
+from wdgTotal import TotalYear,  wdgTotal
+from wdgInvestmentClasses import wdgInvestmentClasses

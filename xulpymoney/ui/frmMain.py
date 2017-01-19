@@ -4,7 +4,7 @@ from PyQt5.QtWidgets import QMainWindow,  QWidget, QLabel, QMessageBox, QProgres
 import os
 from Ui_frmMain import Ui_frmMain
 from frmAbout import frmAbout
-from libxulpymoney import version_date,  list2string, qmessagebox,  Product, ReinvestModel,  Percentage
+from libxulpymoney import AssetsReport,  version_date,  list2string, qmessagebox,  Product, ReinvestModel,  Percentage
 from libsources import sync_data
 from frmAccess import frmAccess
 from wdgTotal import wdgTotal
@@ -68,9 +68,8 @@ class frmMain(QMainWindow, Ui_frmMain):
         
     @pyqtSlot()
     def on_actionGlobalReport_triggered(self):
-        import libodfgenerator
         file="AssetsReport.odt"
-        doc=libodfgenerator.AssetsReport(self.mem, file, "/usr/share/xulpymoney/report.odt")
+        doc=AssetsReport(self.mem, file, "/usr/share/xulpymoney/report.odt")
         doc.generate()
         
         

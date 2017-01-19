@@ -325,8 +325,8 @@ class wdgTotal(QWidget, Ui_wdgTotal):
 
          
         
-        self.setData=None#Ser´a un TotalYear
-        self.setGraphic=None #Ser´a un TotalGraphic
+        self.setData=None#Será un TotalYear
+        self.setGraphic=None #Será un TotalGraphic
         
         if fechainicio==None: #Base de datos vacía
             self.tab.setEnabled(False)

@@ -69,7 +69,7 @@ class wdgTwoCurrencyLineEdit(QWidget):
         
     def setFactorMode(self, boolean):
         """
-            Este widget esta en factor mode y puede editar ambos textos, el resultado es un factor, que podr´a ser 
+            Este widget esta en factor mode y puede editar ambos textos, el resultado es un factor, que podrá ser 
             usado en otros widgets con setNewFactor
         """
         self.factormode=boolean
