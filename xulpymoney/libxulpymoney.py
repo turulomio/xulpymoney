@@ -1360,10 +1360,9 @@ class SetAccounts(SetCommons):
         
     def balance(self, date=None):
         """Give the sum of all accounts balances in self.arr"""
-        res=Decimal(0)
-        logging.error("NO SE HACE EL MONEY POR SER HETEROGENEO")
+        res=Money(self.mem, 0, self.mem.localcurrency)
         for ac in self.arr:
-            res=res+ac.balance(date)
+            res=res+ac.balance(date,  type=3)
         return res
 
 
@@ -3666,6 +3665,13 @@ class DBData:
         self.benchmark=Product(self.mem).init__db(self.mem.settingsdb.value("mem/benchmark", "79329" ))
         self.benchmark.result.basic.load_from_db()
         
+        
+        self.currencies=SetProducts(self.mem)
+        self.currencies.load_from_db("select * from products where type=6")
+        for p in self.currencies.arr:
+            p.result.get_all()
+        
+        
         self.banks=SetBanks(self.mem)
         self.banks.load_from_db("select * from entidadesbancarias")
 
@@ -3680,11 +3686,6 @@ class DBData:
         
         self.investments=SetInvestments(self.mem, self.accounts, self.products, self.benchmark)
         self.investments.load_from_db("select * from inversiones", progress)
-        
-        self.currencies=SetProducts(self.mem)
-        self.currencies.load_from_db("select * from products where type=6")
-        for p in self.currencies.arr:
-            p.result.get_all()
         
         
         print("Cargando data",  datetime.datetime.now()-inicio)
@@ -4177,7 +4178,7 @@ class Account:
         self.currency=self.mem.currencies.find_by_id(row['currency'])
         return self
     
-    def balance(self,fecha=None):
+    def balance(self,fecha=None, type=3):
         """Función que calcula el balance de una cuenta
         Solo asigna balance al atributo balance si la fecha es actual, es decir la actual
         Parámetros:
@@ -4185,6 +4186,8 @@ class Account:
             - date fecha Fecha en la que calcular el balance
         Devuelve:
             - Decimal balance Valor del balance
+        type=2, account currency
+        type=3 localcurrency
         """
         cur=self.mem.con.cursor()
         if fecha==None:
@@ -4193,8 +4196,15 @@ class Account:
         res=cur.fetchone()[0]
         cur.close()
         if res==None:
-            return Money(self.mem, 0, self.currency)
-        return Money(self.mem, res, self.currency)
+            return Money(self.mem, 0, self.resultsCurrency(type))
+        if type==2:
+            return Money(self.mem, res, self.currency)
+        elif type==3:
+            if fecha==None:
+                dt=self.mem.localzone.now()
+            else:
+                dt=day_end_from_date(fecha, self.mem.localzone)
+            return Money(self.mem, res, self.currency).convert(self.mem.localcurrency, dt)
             
     def init__create(self, name,  eb, activa, numero, currency, id=None):
         self.id=id
@@ -4266,6 +4276,13 @@ class Account:
             m.exec_()    
             return True
         return False
+
+    def resultsCurrency(self, type ):
+        if type==2:
+            return self.account.currency
+        elif type==3:
+            return self.mem.localcurrency
+        logging.critical("Rare account result currency: {}".format(type))
 
 class Investment:
     """Clase que encapsula todas las funciones que se pueden realizar con una Inversión
@@ -8034,9 +8051,9 @@ class AssetsReport(ODT):
         ## Assets
         self.header(self.tr("Assets"), 1)
         self.simpleParagraph(self.tr("The total assets of the user is {}.").format(self.vTotal))
-        if self.vTotalLastYear!=0:
+        if self.vTotalLastYear.isZero()==False:
             moreorless="more"
-            if self.vTotal-self.vTotalLastYear<0:
+            if (self.vTotal-self.vTotalLastYear).isLTZero():
                 moreorless="less"
             self.simpleParagraph(self.tr("It's a {} {} of the total assets at the end of the last year.").format(Percentage(self.vTotal-self.vTotalLastYear, self.vTotalLastYear), moreorless))
         
@@ -8044,13 +8061,13 @@ class AssetsReport(ODT):
         self.header(self.tr("Assets by bank"), 2)
         data=[]
         self.mem.data.banks_active().order_by_name()
-        sumbalances=0
+        sumbalances=Money(self.mem, 0, self.mem.localcurrency)
         for bank in self.mem.data.banks_active().arr:
             balance=bank.balance(self.mem.data.accounts_active(), self.mem.data.investments_active())
             sumbalances=sumbalances+balance
-            data.append((bank.name, c(balance)))
+            data.append((bank.name, balance))
         self.table( [self.tr("Bank"), self.tr("Balance")], ["<", ">"], data, [3, 2], 12)       
-        self.simpleParagraph(self.tr("Sum of all bank balances is {}").format(c(sumbalances)))
+        self.simpleParagraph(self.tr("Sum of all bank balances is {}").format(sumbalances))
         
         self.pageBreak(True)
         ### Assests current year
@@ -8059,13 +8076,13 @@ class AssetsReport(ODT):
         setData=TotalYear(self.mem, datetime.date.today().year)
         columns=[]
         columns.append([self.tr("Incomes"), self.tr("Gains"), self.tr("Dividends"), self.tr("Expenses"), self.tr("I+G+D-E"), "",  self.tr("Accounts"), self.tr("Investments"), self.tr("Total"),"",  self.tr("Monthly difference"), "",  self.tr("% current year")])
-        self.simpleParagraph(self.tr("Assets Balance at {0}-12-31 is {1}".format(setData.year-1, self.mem.localcurrency.string(setData.total_last_year))))
+        self.simpleParagraph(self.tr("Assets Balance at {0}-12-31 is {1}".format(setData.year-1, setData.total_last_year)))
         for i, m in enumerate(setData.arr):
             if m.year<datetime.date.today().year or (m.year==datetime.date.today().year and m.month<=datetime.date.today().month):
-                columns.append([c(m.incomes()), c(m.gains()), c(m.dividends()), c(m.expenses()), c(m.i_d_g_e()), "", c(m.total_accounts()), c(m.total_investments()), c(m.total()),"",  c(setData.difference_with_previous_month(m)),"",  setData.assets_percentage_in_month(m.month)])
+                columns.append([m.incomes(), m.gains(), m.dividends(), m.expenses(), m.i_d_g_e(), "", m.total_accounts(), m.total_investments(), m.total(),"", setData.difference_with_previous_month(m),"",  setData.assets_percentage_in_month(m.month)])
             else:
                 columns.append(["","","","","","","","","", "", "", "", ""])
-        columns.append([c(setData.incomes()), c(setData.gains()), c(setData.dividends()), c(setData.expenses()), c(setData.i_d_g_e()), "", "", "", "", "", c(setData.difference_with_previous_year()), "", setData.assets_percentage_in_month(12)]) 
+        columns.append([setData.incomes(), setData.gains(), setData.dividends(), setData.expenses(), setData.i_d_g_e(), "", "", "", "", "", setData.difference_with_previous_year(), "", setData.assets_percentage_in_month(12)]) 
         data=zip(*columns)
         
         self.table(   [self.tr("Concept"), self.tr("January"),  self.tr("February"), self.tr("March"), self.tr("April"), self.tr("May"), self.tr("June"), self.tr("July"), self.tr("August"), self.tr("September"), self.tr("October"), self.tr("November"), self.tr("December"), self.tr("Total")], 
@@ -8075,7 +8092,7 @@ class AssetsReport(ODT):
         target=AnnualTarget(self.mem).init__from_db(datetime.date.today().year)
         self.simpleParagraph(self.tr("The investment system has established a {} year target.").format(target.percentage)+" " +
                 self.tr("With this target you will gain {} at the end of the year.").format(c(target.annual_balance())) +" " +
-                self.tr("Up to date you have got  {} (gains + dividends) what represents a {} of the target.").format(c(setData.dividends()+setData.gains()), Percentage(setData.gains()+setData.dividends(), target.annual_balance())))
+                self.tr("Up to date you have got  {} (gains + dividends) what represents a {} of the target.").format(setData.dividends()+setData.gains(), Percentage(setData.gains()+setData.dividends(), target.annual_balance())))
         self.pageBreak()
         ### Assets evolution graphic
         self.header(self.tr("Assets graphical evolution"), 2)
@@ -8093,10 +8110,10 @@ class AssetsReport(ODT):
         data=[]
         self.mem.data.accounts_active().order_by_name()
         for account in self.mem.data.accounts_active().arr:
-            data.append((account.name, account.eb.name, c(account.balance())))
+            data.append((account.name, account.eb.name, account.balance()))
         self.table( [self.tr("Account"), self.tr("Bank"),  self.tr("Balance")], ["<","<",  ">"], data, [5,5, 2], 11)       
         
-        self.simpleParagraph(self.tr("Sum of all account balances is {}").format(c(self.mem.data.accounts_active().balance())))
+        self.simpleParagraph(self.tr("Sum of all account balances is {}").format(self.mem.data.accounts_active().balance()))
 
         
         self.pageBreak(True)
@@ -8106,29 +8123,20 @@ class AssetsReport(ODT):
         
         self.header(self.tr("Investments list"), 2)
         self.simpleParagraph(self.tr("Next list is sorted by the distance in percent to the selling point."))
-        sumpendiente=0
-        suminvertido=0
-        sumpositivos=0
-        sumnegativos=0
         data=[]
         self.mem.data.investments_active().order_by_percentage_sellingpoint()
-        for inv in self.mem.data.investments_active().arr:            
-            suminvertido=suminvertido+inv.invertido()
-            pendiente=inv.pendiente()
-            if pendiente>0:
-                sumpositivos=sumpositivos+pendiente
-            else:
-                sumnegativos=sumnegativos+pendiente
-            suminvertido=suminvertido+inv.tpc_invertido()
-            arr=("{0} ({1})".format(inv.name, inv.account.name), c(inv.balance()), c(pendiente), inv.tpc_invertido(), inv.percentage_to_selling_point())
+        for inv in self.mem.data.investments_active().arr: 
+            pendiente=inv.op_actual.pendiente(inv.product.result.basic.last, type=3)
+            arr=("{0} ({1})".format(inv.name, inv.account.name), inv.balance(), pendiente, inv.op_actual.tpc_total(inv.product.result.basic.last), inv.percentage_to_selling_point())
             data.append(arr)
 
         self.table( [self.tr("Investment"), self.tr("Balance"), self.tr("Gains"), self.tr("% Invested"), self.tr("% Selling point")], ["<", ">", ">", ">", ">"], data, [3, 1, 1, 1,1], 9)       
         
-        sumpendiente=sumpositivos+sumnegativos
-        if suminvertido!=0:
-            self.simpleParagraph(self.tr("Sum of all invested assets is {}.").format(c(suminvertido)))
-            self.simpleParagraph(self.tr("Investment gains (positive minus negative results): {} - {} are {}, what represents a {} of total assets.").format( c(sumpositivos),  c(-sumnegativos),  c(sumpendiente), Percentage(sumpendiente, suminvertido)))
+        suminvertido=self.mem.data.investments_active().invested()
+        sumpendiente=self.mem.data.investments_active().pendiente()
+        if suminvertido.isZero()==False:
+            self.simpleParagraph(self.tr("Sum of all invested assets is {}.").format(suminvertido))
+            self.simpleParagraph(self.tr("Investment gains (positive minus negative results): {} - {} are {}, what represents a {} of total assets.").format(self.mem.data.investments_active().pendiente_positivo(), self.mem.data.investments_active().pendiente_negativo(), sumpendiente, Percentage(sumpendiente, suminvertido)))
             self.simpleParagraph(self.tr(" Assets average age: {}").format(  days_to_year_month(self.mem.data.investments_active().average_age())))
         else:
             self.simpleParagraph(self.tr("There aren't invested assets"))
