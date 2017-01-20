@@ -1490,7 +1490,7 @@ Do you want to activate it?</source>
     <message>
         <location filename="../ui/canvaschart.py" line="741"/>
         <source>Selling percentage: {} %.</source>
-        <translation type="unfinished"></translation>
+        <translation>Porcentaje de venta: {} %.</translation>
     </message>
 </context>
 <context>
@@ -1543,7 +1543,7 @@ Do you want to activate it?</source>
     <message>
         <location filename="../ui/canvaschart.py" line="904"/>
         <source>Gains percentage: {} %. Gains in the new selling reference: {}</source>
-        <translation type="unfinished"></translation>
+        <translation>Porcentaje de ganancias: {} %. Ganancias a obtener en la nueva referencia de venta: {}</translation>
     </message>
 </context>
 <context>
@@ -1614,7 +1614,7 @@ Do you want to activate it?</source>
     <message>
         <location filename="../ui/wdgTotal.py" line="92"/>
         <source>Total without losses assets</source>
-        <translation type="unfinished"></translation>
+        <translation>Patrimonio total si no tuviera pérdidas</translation>
     </message>
 </context>
 <context>
@@ -2324,7 +2324,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../ui/frmDividendsAdd.py" line="75"/>
         <source>Withhonding tax retention percentage: {} %</source>
-        <translation type="unfinished"></translation>
+        <translation>Porcentaje de retención de dividendos por impuestos: {} %</translation>
     </message>
 </context>
 <context>
@@ -4769,12 +4769,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../ui/myqtablewidget.py" line="96"/>
         <source>Save File</source>
-        <translation type="unfinished"></translation>
+        <translation>Guardar fichero</translation>
     </message>
     <message>
         <location filename="../ui/myqtablewidget.py" line="96"/>
         <source>Libreoffice calc (*.ods)</source>
-        <translation type="unfinished"></translation>
+        <translation>Libreoffice calc (*.ods)</translation>
     </message>
 </context>
 <context>
@@ -5420,12 +5420,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../ui/wdgCuriosities.py" line="46"/>
         <source>Current benchmarck ({}) highest price is {}. It took place at {}. Lowest price is {} and took place at {}.</source>
-        <translation type="unfinished"></translation>
+        <translation>El precio más alto del actual índice de referencia ({}) es {}. Tuvo su cotización en {}. El precio más bajo es {} y tuvo lugar en {}.</translation>
     </message>
     <message>
         <location filename="../ui/wdgCuriosities.py" line="51"/>
         <source>There are {} quotes in this Xulpymoney database.</source>
-        <translation type="unfinished"></translation>
+        <translation>Hay {} cotizaciones en la base de datos de Xulpymoney.</translation>
     </message>
     <message>
         <location filename="../ui/wdgCuriosities.py" line="67"/>
@@ -5435,7 +5435,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../ui/wdgCuriosities.py" line="65"/>
         <source>The largest account operation took place at {}. It&apos;s concept was &apos;{}&apos; and it&apos;s amount was {}.</source>
-        <translation type="unfinished"></translation>
+        <translation>La operación de cuenta bancaria más alta tuvo lugar en {}. Su concepto fue &apos;{}&apos; y su cantidad {}.</translation>
     </message>
 </context>
 <context>
@@ -5443,7 +5443,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../ui/Ui_wdgCuriosity.py" line="74"/>
         <source>TextLabel</source>
-        <translation type="unfinished"></translation>
+        <translation>TextLabel</translation>
     </message>
 </context>
 <context>
