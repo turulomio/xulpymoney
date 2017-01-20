@@ -1744,12 +1744,12 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmAccess.py" line="21"/>
+        <location filename="../ui/frmAccess.py" line="20"/>
         <source>Xulpymoney - Access</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/frmAccess.py" line="82"/>
+        <location filename="../ui/frmAccess.py" line="81"/>
         <source>Error conecting to {} database in {} server</source>
         <translation type="unfinished"></translation>
     </message>

@@ -134,6 +134,9 @@ if __name__ == '__main__':
     access.txtUser.setText("postgres")
     access.txtPass.setFocus()
     access.exec_()
+    if access==QDialog.Rejected:
+        sys.exit(1)
+    
     dbadmin=DBAdmin(access.con)
     dbadmin.drop_db("xulpymoney_pruebas")
     

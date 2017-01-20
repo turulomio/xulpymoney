@@ -1749,12 +1749,12 @@ p, li { white-space: pre-wrap; }
         <translation>Contraseña</translation>
     </message>
     <message>
-        <location filename="../ui/frmAccess.py" line="21"/>
+        <location filename="../ui/frmAccess.py" line="20"/>
         <source>Xulpymoney - Access</source>
         <translation>Xulpymoney - Acceso</translation>
     </message>
     <message>
-        <location filename="../ui/frmAccess.py" line="82"/>
+        <location filename="../ui/frmAccess.py" line="81"/>
         <source>Error conecting to {} database in {} server</source>
         <translation>Error al conectar a la base de datos {} del servidor {}</translation>
     </message>

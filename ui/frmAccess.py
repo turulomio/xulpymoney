@@ -3,7 +3,6 @@ from PyQt5.QtGui import QIcon, QPixmap
 from PyQt5.QtWidgets import QDialog
 from Ui_frmAccess import Ui_frmAccess
 from libxulpymoney import Connection, qmessagebox
-import sys
 
 class frmAccess(QDialog, Ui_frmAccess):
     def __init__(self, mem, parent = None, name = None, modal = False):
@@ -79,12 +78,11 @@ class frmAccess(QDialog, Ui_frmAccess):
             self.accept()
         else:
             qmessagebox(self.tr("Error conecting to {} database in {} server").format(self.con.db, self.con.server))
-            sys.exit(1)
+            self.reject()
 
     @pyqtSlot() 
     def on_cmdYN_rejected(self):
-        sys.exit(124)
-
+        self.reject()
 
 
 
