@@ -4,7 +4,7 @@ from PyQt5.QtWidgets import QMainWindow,  QWidget, QLabel, QMessageBox, QProgres
 import os
 from Ui_frmMain import Ui_frmMain
 from frmAbout import frmAbout
-from libxulpymoney import AssetsReport,  version_date,  list2string, qmessagebox,  Product, ReinvestModel,  Percentage
+from libxulpymoney import AssetsReport,  version_date,  list2string, qmessagebox,  Product
 from libsources import sync_data
 from frmAccess import frmAccess
 from wdgTotal import wdgTotal
@@ -58,9 +58,9 @@ class frmMain(QMainWindow, Ui_frmMain):
 #        model.print()
 #        model=ReinvestModel(mem, [5000, 7000, 24000, 24000], self.mem.data.products.find_by_id(79228), Percentage(1, 3), Percentage(1, 10))
 #        model.print()
-        a=2500
-        model=ReinvestModel(mem, [a, 2*a, 6*a, 18*a, 54*a], self.mem.data.products.find_by_id(79228), Percentage(1, 3), Percentage(1, 10))
-        model.print()
+#        a=2500
+#        model=ReinvestModel(mem, [a, 2*a, 6*a, 18*a, 54*a], self.mem.data.products.find_by_id(79228), Percentage(1, 3), Percentage(1, 10))
+#        model.print()
 
     def actionsEnabled(self, bool):
         self.menuBar.setEnabled(bool)
@@ -228,10 +228,6 @@ class frmMain(QMainWindow, Ui_frmMain):
         w.exec_()
         self.on_actionAccounts_triggered()
 
-#    def closeEvent(self,  event):
-#        self.on_actionExit_triggered()
-################################
-                
     @pyqtSlot()  
     def on_actionCAC40_triggered(self):
         self.w.close()
@@ -287,8 +283,7 @@ class frmMain(QMainWindow, Ui_frmMain):
         lay.addWidget(w)
         d.exec_() 
         self.mem.settings.setValue("wdgSimulations/qdialog", d.size())
-    
-        
+
     @pyqtSlot()  
     def on_actionSyncProducts_triggered(self):
         self.w.hide()
@@ -328,7 +323,6 @@ class frmMain(QMainWindow, Ui_frmMain):
             sync_data(source.con, self.mem.con, pd)
             
             self.mem.data.load()
-
 
     @pyqtSlot()  
     def on_actionNasdaq100_triggered(self):

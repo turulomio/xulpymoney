@@ -312,6 +312,7 @@ class Sheet:
         self.title=title
         self.columns=columns
         self.rows=rows
+        self.widths=None#Se carga desde ODS.setColumnWidths
         self.arr=[[None for x in range(self.columns)] for y in range(self.rows)]
 
     def caracter2value(self, caracter):
@@ -333,6 +334,9 @@ class Sheet:
     def generate(self, ods):
         # Start the table, and describe the columns
         table = Table(name=self.title)
+        for w in self.widths:
+            tc=TableColumn(stylename="{}_{}".format(id(self), w))
+            table.addElement(tc)
         # Create a column (same as <col> in HTML) Make all cells in column default to currency
 #        table.addElement(TableColumn(stylename=widewidth, defaultcellstylename="ce1"))
         for j in range(self.rows):
@@ -343,7 +347,7 @@ class Sheet:
             for i in range(self.columns):
                 if self.arr[j][i]!=None:
 #                    print (self.arr[i][j])
-                    tr.addElement(ods.object2odfcell(self.arr[j][i].object))
+                    tr.addElement(ods.cell2odfcell(self.arr[j][i]))
                 else:
                     tr.addElement(TableCell())
         ods.doc.spreadsheet.addElement(table)
@@ -355,51 +359,58 @@ class ODS():
         self.doc=OpenDocumentSpreadsheet()
         self.sheets=[]
 
-        # Create a style for the table content. One we can modify
-        # later in the spreadsheet.
-        tablecontents = Style(name="Large number", family="table-cell")
-        tablecontents.addElement(TextProperties(fontfamily="Arial", fontsize="15pt"))
-        self.doc.styles.addElement(tablecontents)
+#    <style:style style:family="table-cell" style:parent-style-name="Default" style:name="HHeaderOrange">
+#      <style:table-cell-properties style:repeat-content="false" ns42:vertical-justify="auto" fo:background-color="#ffcc99" style:text-align-source="fix" fo:border="0.06pt solid #000000"/>
+#      <style:paragraph-properties fo:text-align="center" css3t:text-justify="auto"/>
+#      <style:text-properties fo:font-weight="bold"/>
+#    </style:style>
+        hs=Style(name="HeaderOrange", family="table-cell")
+        hs.addElement(TableCellProperties(backgroundcolor="#ffcc99", border="0.06pt solid #000000"))
+        hs.addElement(TextProperties( fontweight="bold"))
+        hs.addElement(ParagraphProperties(textalign="center"))
+        self.doc.styles.addElement(hs)
+        
+        hs=Style(name="HeaderYellow", family="table-cell")
+        hs.addElement(TableCellProperties(backgroundcolor="#ffff7f", border="0.06pt solid #000000"))
+        hs.addElement(TextProperties(fontweight="bold"))
+        hs.addElement(ParagraphProperties(textalign="left"))
+        self.doc.styles.addElement(hs)        
 
-        # Create automatic styles for the column widths.
-        widewidth = Style(name="co1", family="table-column")
-        widewidth.addElement(TableColumnProperties(columnwidth="2.8cm", breakbefore="auto"))
-        self.doc.automaticstyles.addElement(widewidth)
+        hs=Style(name="TextRight", family="table-cell")
+        hs.addElement(TableCellProperties(border="0.06pt solid #000000"))
+        hs.addElement(ParagraphProperties(textalign="end"))
+        self.doc.styles.addElement(hs)
 
-        # Create the styles for $AUD format currency values
-        ns1 = CurrencyStyle(name="positive-AUD", volatile="true")
-        ns1.addElement(CurrencySymbol(language="en", country="AU", text=u"$"))
-        ns1.addElement(Number(decimalplaces="2", minintegerdigits="1", grouping="true"))
-        self.doc.styles.addElement(ns1)
-
-        # Create the main style.
-        ns2 = CurrencyStyle(name="main-AUD")
-        ns2.addElement(TextProperties(color="#ff0000"))
-        ns2.addElement(Text(text=u"-"))
-        ns2.addElement(CurrencySymbol(language="en", country="AU", text=u"$"))
-        ns2.addElement(Number(decimalplaces="2", minintegerdigits="1", grouping="true"))
-        ns2.addElement(Map(condition="value()>=0", applystylename="positive-AUD"))
-        self.doc.styles.addElement(ns2)
-
-        # Create automatic style for the price cells.
-        moneycontents = Style(name="ce1", family="table-cell", parentstylename=tablecontents, datastylename="main-AUD")
-        self.doc.automaticstyles.addElement(moneycontents)
+        hs=Style(name="TextLeft", family="table-cell")
+        hs.addElement(TableCellProperties(border="0.06pt solid #000000"))
+        hs.addElement(ParagraphProperties(textalign="left"))
+        self.doc.styles.addElement(hs)
 
     def createSheet(self, title, rows, columns):
         s=Sheet(title, rows, columns)
         self.sheets.append(s)
         return s
         
-    def object2odfcell(self, object):
+    def cell2odfcell(self, cell):
         print("Must be overriden")
-#                        c = TableCell(valuetype="currency", currency=object.currency.id, value=object.amount)
+        #c = TableCell(valuetype="currency", currency=object.currency.id, value=object.amount)
+
     def save(self):
         for sheet in self.sheets:
             sheet.generate(self)
         self.doc.save(self.filename)
-
-
-
+        
+    def setColumnWidths(self, sheet, widths):
+        """
+            widths is an int array
+            id es el id del sheet de python
+        """
+        for w in widths:
+            s=Style(name="{}_{}".format(id(sheet), w), family="table-column")
+            s.addElement(TableColumnProperties(columnwidth="{}pt".format(w)))
+            self.doc.automaticstyles.addElement(s)   
+        sheet.widths=widths
+##########################################################################################
 def letter_add(letter, number):
     """Add to columns to letter
     el ord de A=65

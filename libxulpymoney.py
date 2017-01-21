@@ -1541,6 +1541,19 @@ class SetCurrencies(SetCommons):
         self.append(Currency().init__create(QApplication.translate("Core","American Dolar"), '$', 'USD'))
         self.append(Currency().init__create(QApplication.translate("Core","Units"), 'u', 'u'))
 
+    def find_by_symbol(self, symbol,  log=False):
+        """Finds by id"""
+        for c in self.arr:
+            if c.symbol==symbol:
+                return c
+        logging.error("SetCurrencies fails finding {}".format(symbol))
+        return None
+#        try:
+#            return self.dic_arr[str(id)]    
+#        except:
+#            if log:
+#                print ("SetCommons ({}) fails finding {}".format(self.__class__.__name__, id))
+#            return None
 
     def qcombobox(self, combo, selectedcurrency=None):
         """Función que carga en un combo pasado como parámetro las currencies"""

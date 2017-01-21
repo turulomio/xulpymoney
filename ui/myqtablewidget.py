@@ -6,6 +6,7 @@ from odf.table import  TableCell
 from odf.text import P
 from libxulpymoney import Money,  Percentage
 import logging
+from decimal import Decimal
 
 class myQTableWidget(QTableWidget):
     def __init__(self, parent):
@@ -101,23 +102,85 @@ class Table2ODS(ODS):
     def __init__(self, mem, filename, table, title):
         ODS.__init__(self, filename)
         self.mem=mem
-        sheet=self.createSheet(title, table.rowCount(), table.columnCount())
+        numrows=table.rowCount() if table.horizontalHeader().isHidden() else table.rowCount()+1
+        numcolumns=table.columnCount() if table.verticalHeader().isHidden() else table.columnCount()+1
+        sheet=self.createSheet(title, numrows, numcolumns)
+        #Array width
+        widths=[]
+        if not table.verticalHeader().isHidden():
+            widths.append(table.verticalHeader().width())
+        for i in range(table.columnCount()):
+            widths.append(table.columnWidth(i))        
+        self.setColumnWidths(sheet, widths)
+        
+        #firstcontentletter and firstcontentnumber
+        if table.horizontalHeader().isHidden() and not table.verticalHeader().isHidden():
+            firstcontentletter="B"
+            firstcontentnumber="1"
+        elif not table.horizontalHeader().isHidden() and table.verticalHeader().isHidden():
+            firstcontentletter="A"
+            firstcontentnumber="2"
+        elif not table.horizontalHeader().isHidden() and not table.verticalHeader().isHidden():
+            firstcontentletter="B"
+            firstcontentnumber="2"
+        elif table.horizontalHeader().isHidden() and table.verticalHeader().isHidden():
+            firstcontentletter="A"
+            firstcontentnumber="1"
+        #HH
+        if not table.horizontalHeader().isHidden():
+            for letter in range(table.columnCount()):
+                sheet.add(Cell(letter_add(firstcontentletter, letter), "1", table.horizontalHeaderItem(letter).text(), "HeaderOrange"))
+        #VH
+        if not table.verticalHeader().isHidden():
+            for number in range(table.rowCount()):
+                sheet.add(Cell("A", number_add(firstcontentnumber, number), table.verticalHeaderItem(number).text(), "HeaderYellow"))
+        #Items
         for number in range(table.rowCount()):
             for letter in range(table.columnCount()):
                 try:
-                    sheet.add(Cell(letter_add("A", letter), number_add("1", number), table.item(number, letter).text()))
+                    o=self.itemtext2object(table.item(number, letter).text())
+                    sheet.add(Cell(letter_add(firstcontentletter, letter), number_add(firstcontentnumber, number),o, self.object2style(o)))
                 except:#Not a QTableWidgetItem or NOne
                     pass
         self.save()
+        
+    def itemtext2object(self, t):
+        """
+            Convierte t en un Money, Percentage o lo deja como text
+        """
+        if t[-2:]==" %":
+            try:
+                number=Decimal(t.replace(" %", ""))
+                return Percentage(number, 100)
+            except:
+                pass
+        elif t[-2:] in (" €"," $"):
+           try:
+                number=Decimal(t.replace(t[-2:], ""))
+                return Money(self.mem, number, self.mem.currencies.find_by_symbol(t[-1:]))
+           except:
+               pass
+        return t
 
-    def object2odfcell(self, object):
-        if object.__class__==Money:
-            cell = TableCell(valuetype="currency", currency=object.currency.id, value=object.amount)
-        elif object.__class__==Percentage:
-            cell = TableCell(valuetype="currency", currency=object.currency.id, value=object.amount)
+    def object2style(self, o):
+        """
+            Define el style de un objeto
+        """
+        if o.__class__==Money:
+            return "TextRight"
+        elif o.__class__==Percentage:
+            return "TextRight"
         else:
-            cell = TableCell(valuetype="string")
-            cell.addElement(P(text = object))
-        return cell
-#cell.addElement(P(text=u"$-125.00")) # The current displayed value
+            return "TextLeft"
+
+    def cell2odfcell(self, cell):
+        if object.__class__==Money:
+            odfcell = TableCell(valuetype="currency", currency=cell.object.currency.id, value=cell.object.amount, stylename=cell.style)
+#            odfcell.addElement(P(text = cell.object))
+        elif object.__class__==Percentage:
+            odfcell = TableCell(valuetype="percentage", value=cell.object.value, stylename=cell.style)
+        else:
+            odfcell = TableCell(valuetype="string",  stylename=cell.style)
+            odfcell.addElement(P(text = cell.object))
+        return odfcell
 
