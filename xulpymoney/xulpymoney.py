@@ -35,17 +35,17 @@ app.setOrganizationName("Mariano Muñoz ©")
 app.setOrganizationDomain("turulomio.users.sourceforge.net")
 app.setApplicationName("Xulpymoney")
 
-
-from libodfgenerator import ODT
-doc=ODT("prueba.odt")
-doc.header("Hola", 1)
-doc.simpleParagraph("Hola a todos")
-
-doc.list(["Pryueba hola no", "Adios", "Bienvenido"], style="BulletList")
-doc.simpleParagraph("Hola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todos")
-doc.numberedList(["Pryueba hola no", "Adios", "Bienvenido"])
-doc.header("Adios", 2)
-doc.save()
+#
+#from libodfgenerator import ODT
+#doc=ODT("prueba.odt")
+#doc.header("Hola", 1)
+#doc.simpleParagraph("Hola a todos")
+#
+#doc.list(["Pryueba hola no", "Adios", "Bienvenido"], style="BulletList")
+#doc.simpleParagraph("Hola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todos")
+#doc.numberedList(["Pryueba hola no", "Adios", "Bienvenido"])
+#doc.header("Adios", 2)
+#doc.save()
 
 mem=MemXulpymoney()
 mem.setQTranslator(QTranslator(app))
