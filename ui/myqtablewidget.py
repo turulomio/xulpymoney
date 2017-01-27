@@ -100,17 +100,15 @@ class Table2ODS(ODS):
     def __init__(self, mem, filename, table, title):
         ODS.__init__(self, filename)
         self.mem=mem
-        numrows=table.rowCount() if table.horizontalHeader().isHidden() else table.rowCount()+1
-        numcolumns=table.columnCount() if table.verticalHeader().isHidden() else table.columnCount()+1
-        sheet=self.createSheet(title, numrows, numcolumns)
-        sheet.setSplitPosition("A", "2")
-        sheet.setCursorPosition("G", "8")
+#        numrows=table.rowCount() if table.horizontalHeader().isHidden() else table.rowCount()+1
+#        numcolumns=table.columnCount() if table.verticalHeader().isHidden() else table.columnCount()+1
+        sheet=self.createSheet(title)
         #Array width
         widths=[]
         if not table.verticalHeader().isHidden():
-            widths.append(table.verticalHeader().width())
+            widths.append(table.verticalHeader().width()*0.90)
         for i in range(table.columnCount()):
-            widths.append(table.columnWidth(i))        
+            widths.append(table.columnWidth(i)*0.90)
         sheet.setColumnsWidth(widths)
         
         #firstcontentletter and firstcontentnumber
@@ -126,6 +124,7 @@ class Table2ODS(ODS):
         elif table.horizontalHeader().isHidden() and table.verticalHeader().isHidden():
             firstcontentletter="A"
             firstcontentnumber="1"
+        sheet.setSplitPosition(firstcontentletter, firstcontentnumber)
         #HH
         if not table.horizontalHeader().isHidden():
             for letter in range(table.columnCount()):
@@ -133,7 +132,10 @@ class Table2ODS(ODS):
         #VH
         if not table.verticalHeader().isHidden():
             for number in range(table.rowCount()):
-                sheet.add("A", number_add(firstcontentnumber, number), table.verticalHeaderItem(number).text(), "HeaderYellow")
+                try:#Caputuro cuando se numera sin items 1, 2, 3
+                    sheet.add("A", number_add(firstcontentnumber, number), table.verticalHeaderItem(number).text(), "HeaderYellow")
+                except:
+                    pass
         #Items
         for number in range(table.rowCount()):
             for letter in range(table.columnCount()):
@@ -142,6 +144,7 @@ class Table2ODS(ODS):
                     sheet.add(letter_add(firstcontentletter, letter), number_add(firstcontentnumber, number),o, self.object2style(o))
                 except:#Not a QTableWidgetItem or NOne
                     pass
+        sheet.setCursorPosition(firstcontentletter, table.rowCount()+2)
         self.save()
         
     def itemtext2object(self, t):
