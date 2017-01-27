@@ -1,11 +1,14 @@
+import logging
+import sys
 from odf.opendocument import OpenDocumentSpreadsheet,  OpenDocumentText,  load
 from odf.style import Footer, FooterStyle, HeaderFooterProperties, Style, TextProperties, TableColumnProperties, Map,  TableProperties,  TableCellProperties, PageLayout, PageLayoutProperties, ParagraphProperties,  ListLevelProperties,  MasterPage
-from odf.number import  CurrencyStyle, CurrencySymbol,  Number,  Text
+from odf.number import  CurrencyStyle, CurrencySymbol,  Number,  Text,  PercentageStyle
 from odf.text import P,  H,  Span, ListStyle,  ListLevelStyleBullet,  List,  ListItem, ListLevelStyleNumber,  OutlineLevelStyle,  OutlineStyle,  PageNumber,  PageCount
 from odf.table import Table, TableColumn, TableRow, TableCell,  TableHeaderRows
 from odf.draw import Frame, Image
 from odf.dc import Creator, Description, Title
 from odf.meta import InitialCreator
+from decimal import Decimal
 
 class ODT():
     def __init__(self, filename, template=None):
@@ -299,13 +302,29 @@ class ODT():
 
 
 
-class Cell:
+class OdfCell:
     def __init__(self, letter, number, object, style=None):
+        """
+            Object can be OdfMoney,OdfPercentage, String, datetime.date, datetime.datetime, Decimal
+        """
         self.letter=letter
         self.number=number
         self.object=object
         self.style=style
 
+    def generate(self):
+        if self.object.__class__==OdfMoney:
+            odfcell = TableCell(valuetype="currency", currency=self.object.currency, value=self.object.amount, stylename="EuroColor")
+#            odfcell.addElement(P(text = self.object))
+        elif self.object.__class__==OdfPercentage:
+        #tc = TableCell(formula='=AVERAGE(C4:CB62)/2',stylename='pourcent', valuetype='percentage')
+            odfcell = TableCell(valuetype="percentage", value=self.object.value, stylename="Percentage")
+        else:
+            odfcell = TableCell(valuetype="string",  stylename=self.style)
+            odfcell.addElement(P(text = self.object))
+        return odfcell
+        
+        
 
 class Sheet:
     def __init__(self, title, rows,  columns):
@@ -332,25 +351,241 @@ class Sheet:
     def generate(self, ods):
         # Start the table, and describe the columns
         table = Table(name=self.title)
-        for w in self.widths:
+        for w in self.widths:#Create columns
             tc=TableColumn(stylename="{}_{}".format(id(self), w))
             table.addElement(tc)
-        # Create a column (same as <col> in HTML) Make all cells in column default to currency
-#        table.addElement(TableColumn(stylename=widewidth, defaultcellstylename="ce1"))
-        for j in range(self.rows):
-            # Create a row (same as <tr> in HTML)
+        for j in range(self.rows):#Crreate rows
             tr = TableRow()
             table.addElement(tr)
-            # Create a cell with a negative value. It should show as red.
-            for i in range(self.columns):
-                if self.arr[j][i]!=None:
-#                    print (self.arr[i][j])
-                    tr.addElement(ods.cell2odfcell(self.arr[j][i]))
+            for i in range(self.columns):#Create cells
+                cell=self.arr[j][i]
+                if cell!=None:
+                    tr.addElement(cell.generate())
                 else:
                     tr.addElement(TableCell())
         ods.doc.spreadsheet.addElement(table)
+
+class OdfFormula:
+
+    #tc = TableCell(formula='=AVERAGE(C4:CB62)/2',stylename='pourcent', valuetype='percentage')    
+    pass
+
+class OdfMoney:
+    """
+        currency es un ID
+        EUR=Euros
+        USD=Dolares americanosw
+        self.append(Currency().init__create(QApplication.translate("Core","Chinese Yoan"), "¥", 'CNY'))
+        self.append(Currency().init__create(QApplication.translate("Core","Euro"), "€", "EUR"))
+        self.append(Currency().init__create(QApplication.translate("Core","Pound"),"£", 'GBP'))
+        self.append(Currency().init__create(QApplication.translate("Core","Japones Yen"), '¥', "JPY"))
+        self.append(Currency().init__create(QApplication.translate("Core","American Dolar"), '$', 'USD'))
+        self.append(Currency().init__create(QApplication.translate("Core","Units"), 'u', 'u'))
+    """
+    def __init__(self, amount=None,  currency='EUR') :
+        if amount==None:
+            self.amount=Decimal(0)
+        else:
+            self.amount=Decimal(str(amount))
+        if currency==None:
+            self.currency='EUR'
+        else:
+            self.currency=currency
+
+
+    def __add__(self, money):
+        """Si las divisas son distintas, queda el resultado con la divisa del primero"""
+        if self.currency==money.currency:
+            return OdfMoney(self.amount+money.amount, self.currency)
+        else:
+            print (self.currency, money.currency )
+            logging.error("Before adding, please convert to the same currency")
+            raise "OdfMoneyOperationException"
+            
+        
+    def __sub__(self, money):
+        """Si las divisas son distintas, queda el resultado con la divisa del primero"""
+        if self.currency==money.currency:
+            return OdfMoney(self.amount-money.amount, self.currency)
+        else:
+            logging.error("Before substracting, please convert to the same currency")
+            raise "OdfMoneyOperationException"
+        
+    def __lt__(self, money):
+        if self.currency==money.currency:
+            if self.amount < money.amount:
+                return True
+            return False
+        else:
+            logging.error("Before lt ordering, please convert to the same currency")
+            sys.exit(1)
+        
+    def __mul__(self, money):
+        """Si las divisas son distintas, queda el resultado con la divisa del primero
+        En caso de querer multiplicar por un numero debe ser despues
+        money*4
+        """
+        if money.__class__ in (int,  float, Decimal):
+            return OdfMoney(self.amount*money, self.currency)
+        if self.currency==money.currency:
+            return OdfMoney(self.amount*money.amount, self.currency)
+        else:
+            logging.error("Before multiplying, please convert to the same currency")
+            sys.exit(1)
+    
+    def __truediv__(self, money):
+        """Si las divisas son distintas, queda el resultado con la divisa del primero"""
+        if self.currency==money.currency:
+            return OdfMoney(self.amount/money.amount, self.currency)
+        else:
+            logging.error("Before true dividing, please convert to the same currency")
+            sys.exit(1)
+        
+    def __repr__(self):
+        return self.string(2)
+        
+    def string(self,   digits=2):
+        return "{} {}".format(round(self.amount, digits), self.symbol())
+        
+    def symbol(self):
+        if self.currency=="EUR":
+            return "€"
+        elif self.currency=="USD":
+            return "$"
+        
+    def isZero(self):
+        if self.amount==Decimal(0):
+            return True
+        else:
+            return False
+            
+    def isGETZero(self):
+        if self.amount>=Decimal(0):
+            return True
+        else:
+            return False            
+    def isGTZero(self):
+        if self.amount>Decimal(0):
+            return True
+        else:
+            return False
+
+    def isLTZero(self):
+        if self.amount<Decimal(0):
+            return True
+        else:
+            return False
+
+    def isLETZero(self):
+        if self.amount<=Decimal(0):
+            return True
+        else:
+            return False
+            
+    def __neg__(self):
+        """Devuelve otro money con el amount con signo cambiado"""
+        return OdfMoney(-self.amount, self.currency)
+
+    def round(self, digits=2):
+        return round(self.amount, digits)
+
+class OdfPercentage:
+    def __init__(self, numerator=None, denominator=None):
+        self.value=None
+        self.setValue(self.toDecimal(numerator),self.toDecimal(denominator))
+        
+    def odftext(self, rnd):
+        if self.value==None:
+            return "None %"
+        return "{} %".format(str(round(self.value_100()).replace(".", ","), rnd))
+        
+    def toDecimal(self, o):
+        if o==None:
+            return o
+        if o.__class__==OdfMoney:
+            return o.amount
+        elif o.__class__==Decimal:
+            return o
+        elif o.__class__ in ( int, float):
+            return Decimal(o)
+        elif o.__class__==OdfPercentage:
+            return o.value
+        else:
+            print (o.__class__)
+            return None
+        
+    def __repr__(self):
+        return self.string()
+            
+    def __neg__(self):
+        """Devuelve otro money con el amount con signo cambiado"""
+        if self.value==None:
+            return self
+        return OdfPercentage(-self.value, 1)
+        
+    def __lt__(self, other):
+        if self.value==None:
+            value1=Decimal('-Infinity')
+        else:
+            value1=self.value
+        if other.value==None:
+            value2=Decimal('-Infinity')
+        else:
+            value2=other.value
+        if value1<value2:
+            return True
+        return False
+        
+    def __mul__(self, value):
+        if self.value==None or value==None:
+            r=None
+        else:
+            r=self.value*self.toDecimal(value)
+        return OdfPercentage(r, 1)
+
+    def __truediv__(self, value):
+        try:
+            r=self.value/self.toDecimal(value)
+        except:
+            r=None
+        return OdfPercentage(r, 1)
+        
+    def setValue(self, numerator,  denominator):
+        try:
+            self.value=Decimal(numerator/denominator)
+        except:
+            self.value=None
+        
+        
+    def value_100(self):
+        if self.value==None:
+            return None
+        else:
+            return self.value*Decimal(100)
+        
+    def string(self, rnd=2):
+        if self.value==None:
+            return "None %"
+        return "{} %".format(round(self.value_100(), rnd))
         
 
+    def isValid(self):
+        if self.value!=None:
+            return True
+        return False
+        
+    def isGETZero(self):
+        if self.value>=0:
+            return True
+        return False
+    def isGTZero(self):
+        if self.value>0:
+            return True
+        return False
+    def isLTZero(self):
+        if self.value<0:
+            return True
+        return False
 class ODS():
     def __init__(self, filename):
         self.filename=filename
@@ -403,14 +638,23 @@ class ODS():
         moneycontents = Style(name="EuroCell", family="table-cell", parentstylename=tr, datastylename="EuroColor")
         self.doc.automaticstyles.addElement(moneycontents)
         
+        #Percentage
+        nonze = PercentageStyle(name='N11')
+        nonze.addElement(Number(decimalplaces='2', minintegerdigits='1'))
+        nonze.addElement(Text(text='%'))
+        self.doc.automaticstyles.addElement(nonze)
+        pourcent = Style(name='Percentage', family='table-cell', datastylename='N11')
+        pourcent.addElement(ParagraphProperties(textalign='center'))
+        pourcent.addElement(TextProperties(attributes={'fontsize':"10pt",'fontweight':"bold", 'color':"#000000" }))
+        self.doc.automaticstyles.addElement(pourcent)
+        
     def createSheet(self, title, rows, columns):
         s=Sheet(title, rows, columns)
         self.sheets.append(s)
         return s
         
-    def cell2odfcell(self, cell):
-        print("Must be overriden")
-        #c = TableCell(valuetype="currency", currency=object.currency.id, value=object.amount)
+
+
 
     def save(self):
         for sheet in self.sheets:
