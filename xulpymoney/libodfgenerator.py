@@ -676,6 +676,7 @@ class OdfPercentage:
         if self.value<0:
             return True
         return False
+        
 class ODS():
     def __init__(self, filename):
         self.filename=filename
@@ -830,13 +831,13 @@ class ODS():
         return s
         
     def getActiveSheet(self):
-        if self.__activeSheet==None:
+        if self.activeSheet==None:
             return self.sheets[0].title
-        return self.__activeSheet
+        return self.activeSheet
         
     def setActiveSheet(self, value):
         """value is OdfSheet"""
-        self.__activeSheet=value.title
+        self.activeSheet=value.title
 
 
     def save(self):
@@ -951,4 +952,16 @@ if __name__ == "__main__":
     s1.setCursorPosition("D", "6")
     s1.setSplitPosition("B", "2")
     doc.setActiveSheet(s1)
+    doc.save()
+    
+    
+    #ODT#
+    doc=ODT("libodfgenerator.odt")
+    doc.setMetadata("LibODFGenerator example",  "This class documentation", "Mariano Muñoz")
+    doc.header("Hola", 1)
+    doc.simpleParagraph("Hola a todos")
+    doc.list(["Pryueba hola no", "Adios", "Bienvenido"], style="BulletList")
+    doc.simpleParagraph("Hola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todos")
+    doc.numberedList(["Pryueba hola no", "Adios", "Bienvenido"])
+    doc.header("Adios", 2)
     doc.save()
