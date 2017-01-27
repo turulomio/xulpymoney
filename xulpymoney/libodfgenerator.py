@@ -1,8 +1,9 @@
+import datetime
 import logging
 import sys
 from odf.opendocument import OpenDocumentSpreadsheet,  OpenDocumentText,  load
 from odf.style import Footer, FooterStyle, HeaderFooterProperties, Style, TextProperties, TableColumnProperties, Map,  TableProperties,  TableCellProperties, PageLayout, PageLayoutProperties, ParagraphProperties,  ListLevelProperties,  MasterPage
-from odf.number import  CurrencyStyle, CurrencySymbol,  Number,  Text,  PercentageStyle
+from odf.number import  CurrencyStyle, CurrencySymbol,  Number, NumberStyle, Text,  PercentageStyle,  DateStyle, Year, Month, Day, Hours, Minutes, Seconds
 from odf.text import P,  H,  Span, ListStyle,  ListLevelStyleBullet,  List,  ListItem, ListLevelStyleNumber,  OutlineLevelStyle,  OutlineStyle,  PageNumber,  PageCount
 from odf.table import Table, TableColumn, TableRow, TableCell,  TableHeaderRows
 from odf.draw import Frame, Image
@@ -314,13 +315,19 @@ class OdfCell:
 
     def generate(self):
         if self.object.__class__==OdfMoney:
-            odfcell = TableCell(valuetype="currency", currency=self.object.currency, value=self.object.amount, stylename="EuroColor")
-#            odfcell.addElement(P(text = self.object))
+            odfcell = TableCell(valuetype="currency", currency=self.object.currency, value=self.object.amount, stylename="Euro")
         elif self.object.__class__==OdfPercentage:
-        #tc = TableCell(formula='=AVERAGE(C4:CB62)/2',stylename='pourcent', valuetype='percentage')
             odfcell = TableCell(valuetype="percentage", value=self.object.value, stylename="Percentage")
+        elif self.object.__class__==datetime.datetime:
+            odfcell = TableCell(valuetype="date", datevalue=self.object.strftime("%Y-%m-%dT%H:%M:%S"), stylename="Datetime")
+        elif self.object.__class__==datetime.date:
+            odfcell = TableCell(valuetype="date", datevalue=str(self.object), stylename="Date")
+        elif self.object.__class__==Decimal:
+            odfcell= TableCell(valuetype="float", value=self.object,  stylename="Decimal")
+        elif self.object.__class__==int:
+            odfcell= TableCell(valuetype="float", value=self.object, stylename="Entero")
         else:
-            odfcell = TableCell(valuetype="string",  stylename=self.style)
+            odfcell = TableCell(valuetype="string", value=self.object,  stylename=self.style)
             odfcell.addElement(P(text = self.object))
         return odfcell
         
@@ -494,11 +501,6 @@ class OdfPercentage:
         self.value=None
         self.setValue(self.toDecimal(numerator),self.toDecimal(denominator))
         
-    def odftext(self, rnd):
-        if self.value==None:
-            return "None %"
-        return "{} %".format(str(round(self.value_100()).replace(".", ","), rnd))
-        
     def toDecimal(self, o):
         if o==None:
             return o
@@ -621,33 +623,118 @@ class ODS():
         
         # Create the styles for $AUD format currency values
         ns1 = CurrencyStyle(name="EuroBlack", volatile="true")
-        ns1.addElement(CurrencySymbol(language="es", country="ES", text="€"))
         ns1.addElement(Number(decimalplaces="2", minintegerdigits="1", grouping="true"))
+        ns1.addElement(CurrencySymbol(language="es", country="ES", text=" €"))
         self.doc.styles.addElement(ns1)
 
         # Create the main style.
         ns2 = CurrencyStyle(name="EuroColor")
         ns2.addElement(TextProperties(color="#ff0000"))
         ns2.addElement(Text(text="-"))
-        ns2.addElement(CurrencySymbol(language="es", country="ES", text="€"))
         ns2.addElement(Number(decimalplaces="2", minintegerdigits="1", grouping="true"))
+        ns2.addElement(CurrencySymbol(language="es", country="ES", text=" €"))
         ns2.addElement(Map(condition="value()>=0", applystylename="EuroBlack"))
         self.doc.styles.addElement(ns2)
         
         # Create automatic style for the price cells.
-        moneycontents = Style(name="EuroCell", family="table-cell", parentstylename=tr, datastylename="EuroColor")
+        moneycontents = Style(name="Euro", family="table-cell",  datastylename="EuroColor",parentstylename="TextLeft")
         self.doc.automaticstyles.addElement(moneycontents)
         
         #Percentage
-        nonze = PercentageStyle(name='N11')
+        nonze = PercentageStyle(name='PercentageBlack')
+        nonze.addElement(TextProperties(color="#000000"))
         nonze.addElement(Number(decimalplaces='2', minintegerdigits='1'))
-        nonze.addElement(Text(text='%'))
-        self.doc.automaticstyles.addElement(nonze)
-        pourcent = Style(name='Percentage', family='table-cell', datastylename='N11')
-        pourcent.addElement(ParagraphProperties(textalign='center'))
-        pourcent.addElement(TextProperties(attributes={'fontsize':"10pt",'fontweight':"bold", 'color':"#000000" }))
+        nonze.addElement(Text(text=' %'))
+        self.doc.styles.addElement(nonze)
+        
+        nonze2 = PercentageStyle(name='PercentageColor')
+        nonze2.addElement(TextProperties(color="#ff0000"))
+        nonze2.addElement(Text(text="-"))
+        nonze2.addElement(Number(decimalplaces='2', minintegerdigits='1'))
+        nonze2.addElement(Text(text=' %'))
+        nonze2.addElement(Map(condition="value()>=0", applystylename="PercentageBlack"))
+        self.doc.styles.addElement(nonze2)
+        
+        pourcent = Style(name='Percentage', family='table-cell', datastylename='PercentageColor',parentstylename="TextRight")
+#        pourcent.addElement(TableCellProperties(border="0.06pt solid #000000"))
+#        pourcent.addElement(ParagraphProperties(textalign='end'))
+#        pourcent.addElement(TextProperties(attributes={'fontsize':"10pt",'fontweight':"bold", 'color':"#000000" }))
         self.doc.automaticstyles.addElement(pourcent)
         
+        #create custom format in styles.xml
+        date_style = DateStyle(name="DatetimeBlack") #, language="lv", country="LV")
+        date_style.addElement(Year(style="long"))
+        date_style.addElement(Text(text="-"))
+        date_style.addElement(Month(style="long"))
+        date_style.addElement(Text(text="-"))
+        date_style.addElement(Day(style="long"))
+        date_style.addElement(Text(text=" "))
+        date_style.addElement(Hours(style="long"))
+        date_style.addElement(Text(text=":"))
+        date_style.addElement(Minutes(style="long"))
+        date_style.addElement(Text(text=":"))
+        date_style.addElement(Seconds(style="long"))
+        self.doc.styles.addElement(date_style)
+        #link to generated style from content.xml
+        ds = Style(name="Datetime", datastylename="DatetimeBlack",parentstylename="TextLeft", family="table-cell")
+        self.doc.automaticstyles.addElement(ds)
+        
+        
+        #create custom format in styles.xml
+        date_style = DateStyle(name="DateBlack") #, language="lv", country="LV")
+        date_style.addElement(Year(style="long"))
+        date_style.addElement(Text(text="-"))
+        date_style.addElement(Month(style="long"))
+        date_style.addElement(Text(text="-"))
+        date_style.addElement(Day(style="long"))
+        self.doc.styles.addElement(date_style)
+        #link to generated style from content.xml
+        ds = Style(name="Date", datastylename="DateBlack",parentstylename="TextLeft", family="table-cell")
+        self.doc.automaticstyles.addElement(ds)
+
+#    <number:number-style style:volatile="true" style:name="N108P0">
+#      <number:number number:min-integer-digits="1" number:decimal-places="2" ns41:min-decimal-places="2"/>
+#    </number:number-style>
+#    <number:number-style style:name="N108">
+#      <style:text-properties fo:color="#ff0000"/>
+#      <number:text>-</number:text>
+#      <number:number number:min-integer-digits="1" number:decimal-places="2" ns41:min-decimal-places="2"/>
+#      <style:map style:condition="value()&gt;=0" style:apply-style-name="N108P0"/>
+#    </number:number-style>
+        # Create the styles for $AUD format currency values
+        ns1 = NumberStyle(name="EnteroBlack", volatile="true")
+        ns1.addElement(Number(decimalplaces="0", minintegerdigits="1", grouping="true"))
+        self.doc.styles.addElement(ns1)
+
+        # Create the main style.
+        ns2 = NumberStyle(name="EnteroColor")
+        ns2.addElement(TextProperties(color="#ff0000"))
+        ns2.addElement(Text(text="-"))
+        ns2.addElement(Number(decimalplaces="0", minintegerdigits="1", grouping="true"))
+        ns2.addElement(Map(condition="value()>=0", applystylename="EnteroBlack"))
+        self.doc.styles.addElement(ns2)
+        
+        # Create automatic style for the price cells.
+        moneycontents = Style(name="Entero", family="table-cell",  datastylename="EnteroColor",parentstylename="TextRight")
+        self.doc.automaticstyles.addElement(moneycontents)
+
+
+        ns1 = NumberStyle(name="DecimalBlack", volatile="true")
+        ns1.addElement(Number(decimalplaces="2", minintegerdigits="1", grouping="true"))
+        self.doc.styles.addElement(ns1)
+
+        # Create the main style.
+        ns2 = NumberStyle(name="DecimalColor")
+        ns2.addElement(TextProperties(color="#ff0000"))
+        ns2.addElement(Text(text="-"))
+        ns2.addElement(Number(decimalplaces="2", minintegerdigits="1", grouping="true"))
+        ns2.addElement(Map(condition="value()>=0", applystylename="DecimalBlack"))
+        self.doc.styles.addElement(ns2)
+        
+        # Create automatic style for the price cells.
+        moneycontents = Style(name="Decimal", family="table-cell",  datastylename="DecimalColor",parentstylename="TextRight")
+        self.doc.styles.addElement(moneycontents)
+
     def createSheet(self, title, rows, columns):
         s=Sheet(title, rows, columns)
         self.sheets.append(s)
@@ -668,7 +755,7 @@ class ODS():
         """
         for w in widths:
             s=Style(name="{}_{}".format(id(sheet), w), family="table-column")
-            s.addElement(TableColumnProperties(columnwidth="{}pt".format(w)))
+            s.addElement(TableColumnProperties(columnwidth="{}pt".format(w*.95)))
             self.doc.automaticstyles.addElement(s)   
         sheet.widths=widths
 ##########################################################################################

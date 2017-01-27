@@ -2,6 +2,7 @@ from PyQt5.QtCore import Qt,  pyqtSlot
 from PyQt5.QtGui import QKeySequence
 from PyQt5.QtWidgets import QApplication, QHeaderView, QTableWidget, QFileDialog
 from libodfgenerator import ODS,  OdfCell,  letter_add,  number_add,  OdfMoney,  OdfPercentage
+import datetime
 import logging
 from decimal import Decimal
 
@@ -158,6 +159,26 @@ class Table2ODS(ODS):
                 return OdfMoney(number, self.mem.currencies.find_by_symbol(t[-1:]).id)
            except:
                 logging.info("Error converting Money")
+        elif t.find(":")!=-1 and t.find("-")!=-1:
+            try:
+                return datetime.datetime.strptime(t, "%Y-%m-%d %H:%M:%S")
+            except:
+                logging.info("Error convertir datetime {}".format(t))
+        elif t.find("-")!=-1:
+            try:
+                return datetime.datetime.strptime(t, "%Y-%m-%d").date()
+            except:
+                logging.info("Error convertir date {}".format(t))
+        elif t.find(".")!=-1:
+            try:
+                return Decimal(t)
+            except:
+                logging.info("Error convertir Decimal {}".format(t))
+        else:
+            try:
+                return int(t)
+            except:
+                logging.info("Error convertir Integer {}".format(t))
         return t
 
 
