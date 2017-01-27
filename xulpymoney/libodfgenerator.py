@@ -317,14 +317,12 @@ class Sheet:
 
     def caracter2value(self, caracter):
         r=ord(caracter)-65
-#        print("{} -> {}".format(caracter, r))
         return r
 
     def letter2column(self, letters):
         if len(letters)==1:
             return self.caracter2value(letters[0])
-            
-        
+
     def number2row(self, number):
         return int(number)-1
         
@@ -376,16 +374,35 @@ class ODS():
         hs.addElement(ParagraphProperties(textalign="left"))
         self.doc.styles.addElement(hs)        
 
-        hs=Style(name="TextRight", family="table-cell")
-        hs.addElement(TableCellProperties(border="0.06pt solid #000000"))
-        hs.addElement(ParagraphProperties(textalign="end"))
-        self.doc.styles.addElement(hs)
+        tr=Style(name="TextRight", family="table-cell")
+        tr.addElement(TableCellProperties(border="0.06pt solid #000000"))
+        tr.addElement(ParagraphProperties(textalign="end"))
+        self.doc.styles.addElement(tr)
 
         hs=Style(name="TextLeft", family="table-cell")
         hs.addElement(TableCellProperties(border="0.06pt solid #000000"))
         hs.addElement(ParagraphProperties(textalign="left"))
         self.doc.styles.addElement(hs)
+        
+        # Create the styles for $AUD format currency values
+        ns1 = CurrencyStyle(name="EuroBlack", volatile="true")
+        ns1.addElement(CurrencySymbol(language="es", country="ES", text="€"))
+        ns1.addElement(Number(decimalplaces="2", minintegerdigits="1", grouping="true"))
+        self.doc.styles.addElement(ns1)
 
+        # Create the main style.
+        ns2 = CurrencyStyle(name="EuroColor")
+        ns2.addElement(TextProperties(color="#ff0000"))
+        ns2.addElement(Text(text="-"))
+        ns2.addElement(CurrencySymbol(language="es", country="ES", text="€"))
+        ns2.addElement(Number(decimalplaces="2", minintegerdigits="1", grouping="true"))
+        ns2.addElement(Map(condition="value()>=0", applystylename="EuroBlack"))
+        self.doc.styles.addElement(ns2)
+        
+        # Create automatic style for the price cells.
+        moneycontents = Style(name="EuroCell", family="table-cell", parentstylename=tr, datastylename="EuroColor")
+        self.doc.automaticstyles.addElement(moneycontents)
+        
     def createSheet(self, title, rows, columns):
         s=Sheet(title, rows, columns)
         self.sheets.append(s)

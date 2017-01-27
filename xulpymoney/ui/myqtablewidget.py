@@ -167,7 +167,7 @@ class Table2ODS(ODS):
             Define el style de un objeto
         """
         if o.__class__==Money:
-            return "TextRight"
+            return "EuroColor"
         elif o.__class__==Percentage:
             return "TextRight"
         else:
@@ -175,8 +175,8 @@ class Table2ODS(ODS):
 
     def cell2odfcell(self, cell):
         if object.__class__==Money:
-            odfcell = TableCell(valuetype="currency", currency=cell.object.currency.id, value=cell.object.amount, stylename=cell.style)
-#            odfcell.addElement(P(text = cell.object))
+            odfcell = TableCell(valuetype="currency", currency=cell.object.currency.id, value=cell.object.amount)
+            odfcell.addElement(P(text = cell.object))
         elif object.__class__==Percentage:
             odfcell = TableCell(valuetype="percentage", value=cell.object.value, stylename=cell.style)
         else:
