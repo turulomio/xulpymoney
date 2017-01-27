@@ -1,10 +1,7 @@
 from PyQt5.QtCore import Qt,  pyqtSlot
 from PyQt5.QtGui import QKeySequence
 from PyQt5.QtWidgets import QApplication, QHeaderView, QTableWidget, QFileDialog
-from libodfgenerator import ODS,  Cell,  letter_add,  number_add
-from odf.table import  TableCell
-from odf.text import P
-from libxulpymoney import Money,  Percentage
+from libodfgenerator import ODS,  OdfCell,  letter_add,  number_add,  OdfMoney,  OdfPercentage
 import logging
 from decimal import Decimal
 
@@ -129,17 +126,17 @@ class Table2ODS(ODS):
         #HH
         if not table.horizontalHeader().isHidden():
             for letter in range(table.columnCount()):
-                sheet.add(Cell(letter_add(firstcontentletter, letter), "1", table.horizontalHeaderItem(letter).text(), "HeaderOrange"))
+                sheet.add(OdfCell(letter_add(firstcontentletter, letter), "1", table.horizontalHeaderItem(letter).text(), "HeaderOrange"))
         #VH
         if not table.verticalHeader().isHidden():
             for number in range(table.rowCount()):
-                sheet.add(Cell("A", number_add(firstcontentnumber, number), table.verticalHeaderItem(number).text(), "HeaderYellow"))
+                sheet.add(OdfCell("A", number_add(firstcontentnumber, number), table.verticalHeaderItem(number).text(), "HeaderYellow"))
         #Items
         for number in range(table.rowCount()):
             for letter in range(table.columnCount()):
                 try:
                     o=self.itemtext2object(table.item(number, letter).text())
-                    sheet.add(Cell(letter_add(firstcontentletter, letter), number_add(firstcontentnumber, number),o, self.object2style(o)))
+                    sheet.add(OdfCell(letter_add(firstcontentletter, letter), number_add(firstcontentnumber, number),o, self.object2style(o)))
                 except:#Not a QTableWidgetItem or NOne
                     pass
         self.save()
@@ -151,36 +148,26 @@ class Table2ODS(ODS):
         if t[-2:]==" %":
             try:
                 number=Decimal(t.replace(" %", ""))
-                return Percentage(number, 100)
+                return OdfPercentage(number, 100)
             except:
+                logging.info("Error converting percentage")
                 pass
         elif t[-2:] in (" €"," $"):
            try:
                 number=Decimal(t.replace(t[-2:], ""))
-                return Money(self.mem, number, self.mem.currencies.find_by_symbol(t[-1:]))
+                return OdfMoney(number, self.mem.currencies.find_by_symbol(t[-1:]).id)
            except:
-               pass
+                logging.info("Error converting Money")
         return t
+
 
     def object2style(self, o):
         """
             Define el style de un objeto
         """
-        if o.__class__==Money:
+        if o.__class__==OdfMoney:
             return "EuroColor"
-        elif o.__class__==Percentage:
+        elif o.__class__==OdfPercentage:
             return "TextRight"
         else:
             return "TextLeft"
-
-    def cell2odfcell(self, cell):
-        if object.__class__==Money:
-            odfcell = TableCell(valuetype="currency", currency=cell.object.currency.id, value=cell.object.amount)
-            odfcell.addElement(P(text = cell.object))
-        elif object.__class__==Percentage:
-            odfcell = TableCell(valuetype="percentage", value=cell.object.value, stylename=cell.style)
-        else:
-            odfcell = TableCell(valuetype="string",  stylename=cell.style)
-            odfcell.addElement(P(text = cell.object))
-        return odfcell
-
