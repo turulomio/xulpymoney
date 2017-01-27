@@ -322,7 +322,7 @@ class OdfCell:
             odfcell = TableCell(valuetype="date", datevalue=self.object.strftime("%Y-%m-%dT%H:%M:%S"), stylename="Datetime")
         elif self.object.__class__==datetime.date:
             odfcell = TableCell(valuetype="date", datevalue=str(self.object), stylename="Date")
-        elif self.object.__class__==Decimal:
+        elif self.object.__class__ in (Decimal, float):
             odfcell= TableCell(valuetype="float", value=self.object,  stylename="Decimal")
         elif self.object.__class__==int:
             odfcell= TableCell(valuetype="float", value=self.object, stylename="Entero")
@@ -352,8 +352,21 @@ class Sheet:
     def number2row(self, number):
         return int(number)-1
         
-    def add(self, cell): 
+    def addCell(self, cell): 
         self.arr[self.number2row(cell.number)][self.letter2column(cell.letter)]=cell
+        
+    def add(self, letter,number, result, style=None):
+        if result.__class__ in (str, int, float, datetime.datetime, OdfMoney, OdfPercentage, OdfFormula, Decimal):#Un solo valor
+            self.addCell(OdfCell(letter, number, result, style))
+        elif result.__class__ in (list,):#Una lista
+            for i,row in enumerate(result):
+                if row.__class__ in (int, str, float, datetime.datetime):#Una lista de una columna
+                    self.addCell(OdfCell(letter, number_add(number, i), result[i], style))
+                elif row.__class__ in (list, ):#Una lista de varias columnas
+                    for j,column in enumerate(row):
+                        self.addCell(OdfCell(letter_add(letter, j), number_add(number, i), result[i][j], style))
+                else:
+                    print(row.__class__, "ROW CLASS NOT FOUND",  row)
 
     def generate(self, ods):
         # Start the table, and describe the columns
@@ -637,7 +650,7 @@ class ODS():
         self.doc.styles.addElement(ns2)
         
         # Create automatic style for the price cells.
-        moneycontents = Style(name="Euro", family="table-cell",  datastylename="EuroColor",parentstylename="TextLeft")
+        moneycontents = Style(name="Euro", family="table-cell",  datastylename="EuroColor",parentstylename="TextRight")
         self.doc.automaticstyles.addElement(moneycontents)
         
         #Percentage
@@ -716,7 +729,7 @@ class ODS():
         
         # Create automatic style for the price cells.
         moneycontents = Style(name="Entero", family="table-cell",  datastylename="EnteroColor",parentstylename="TextRight")
-        self.doc.automaticstyles.addElement(moneycontents)
+        self.doc.styles.addElement(moneycontents)
 
 
         ns1 = NumberStyle(name="DecimalBlack", volatile="true")
@@ -748,7 +761,7 @@ class ODS():
             sheet.generate(self)
         self.doc.save(self.filename)
         
-    def setColumnWidths(self, sheet, widths):
+    def setColumnsWidth(self, sheet, widths):
         """
             widths is an int array
             id es el id del sheet de python
