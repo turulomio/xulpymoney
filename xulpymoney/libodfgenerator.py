@@ -9,6 +9,7 @@ from odf.table import Table, TableColumn, TableRow, TableCell,  TableHeaderRows
 from odf.draw import Frame, Image
 from odf.dc import Creator, Description, Title
 from odf.meta import InitialCreator
+from odf.config import ConfigItem, ConfigItemMapEntry, ConfigItemMapIndexed, ConfigItemMapNamed,  ConfigItemSet
 from decimal import Decimal
 
 class ODT():
@@ -334,16 +335,40 @@ class OdfCell:
         
 
 class Sheet:
-    def __init__(self, title, rows,  columns):
+    def __init__(self, doc,  title, rows,  columns):
+        self.doc=doc
         self.title=title
         self.columns=columns
         self.rows=rows
         self.widths=None#Se carga desde ODS.setColumnWidths
+        self.horizontalSplitPosition=0#Freeze Panels
+        self.verticalSplitPosition=0
+        self.cursorPositionX=0#Celda active
+        self.cursorPositionY=0
         self.arr=[[None for x in range(self.columns)] for y in range(self.rows)]
 
     def caracter2value(self, caracter):
         r=ord(caracter)-65
         return r
+
+    def setSplitPosition(self, letter, number):
+        self.horizontalSplitPosition=self.letter2column(letter)-1
+        self.verticalSplitPosition=self.number2row(number)-1
+        
+    def setCursorPosition(self, letter, number):
+        self.cursorPositionX=self.letter2column(letter)
+        self.cursorPositionY=self.number2row(number)
+        
+    def setColumnsWidth(self, widths):
+        """
+            widths is an int array
+            id es el id del sheet de python
+        """
+        for w in widths:
+            s=Style(name="{}_{}".format(id(self), w), family="table-column")
+            s.addElement(TableColumnProperties(columnwidth="{}pt".format(w*.95)))
+            self.doc.automaticstyles.addElement(s)   
+        self.widths=widths
 
     def letter2column(self, letters):
         if len(letters)==1:
@@ -749,7 +774,7 @@ class ODS():
         self.doc.styles.addElement(moneycontents)
 
     def createSheet(self, title, rows, columns):
-        s=Sheet(title, rows, columns)
+        s=Sheet(self.doc, title, rows, columns)
         self.sheets.append(s)
         return s
         
@@ -757,20 +782,111 @@ class ODS():
 
 
     def save(self):
+        #config settings information
+        a=ConfigItemSet(name="ooo:view-settings")
+        b=ConfigItemMapIndexed(name="Views")
+        c=ConfigItemMapEntry()
+        d=ConfigItem(name="ViewId", type="string")#value="view1"
+        d.addElement("view1")
+        e=ConfigItemMapNamed(name="Tables")
+        for sheet in self.sheets:
+            f=ConfigItemMapEntry(name=sheet.title)
+#            f.addElement(ConfigItem(type="int", name="CursorPositionX", value=sheet.cursorPositionX))
+#            f.addElement(ConfigItem(type="int", name="CursorPositionY", value=sheet.cursorPositionY))
+            
+            e.addElement(f)
+            
+        a.addElement(b)
+        b.addElement(c)
+        c.addElement(d)
+        d.addElement(e)
+        self.doc.config.addElement(a)
+        
         for sheet in self.sheets:
             sheet.generate(self)
         self.doc.save(self.filename)
+
+    def metadatea(self):
+        pass
         
-    def setColumnsWidth(self, sheet, widths):
-        """
-            widths is an int array
-            id es el id del sheet de python
-        """
-        for w in widths:
-            s=Style(name="{}_{}".format(id(sheet), w), family="table-column")
-            s.addElement(TableColumnProperties(columnwidth="{}pt".format(w*.95)))
-            self.doc.automaticstyles.addElement(s)   
-        sheet.widths=widths
+    def freezePanels(self, cell):
+#          <office:settings>
+#    <config:config-item-set config:name="ooo:view-settings">
+#      <config:config-item config:type="int" config:name="VisibleAreaTop">0</config:config-item>
+#      <config:config-item config:type="int" config:name="VisibleAreaLeft">0</config:config-item>
+#      <config:config-item config:type="int" config:name="VisibleAreaWidth">49231</config:config-item>
+#      <config:config-item config:type="int" config:name="VisibleAreaHeight">68184</config:config-item>
+#      <config:config-item-map-indexed config:name="Views">
+#        <config:config-item-map-entry>
+#          <config:config-item config:type="string" config:name="ViewId">view1</config:config-item>
+#          <config:config-item-map-named config:name="Tables">
+#            <config:config-item-map-entry config:name="My table">
+#              <config:config-item config:type="int" config:name="CursorPositionX">0</config:config-item>
+#              <config:config-item config:type="int" config:name="CursorPositionY">1</config:config-item>
+#              <config:config-item config:type="short" config:name="HorizontalSplitMode">0</config:config-item>
+#              <config:config-item config:type="short" config:name="VerticalSplitMode">2</config:config-item>
+#              <config:config-item config:type="int" config:name="HorizontalSplitPosition">0</config:config-item>
+#              <config:config-item config:type="int" config:name="VerticalSplitPosition">1</config:config-item>
+#              <config:config-item config:type="short" config:name="ActiveSplitRange">2</config:config-item>
+#              <config:config-item config:type="int" config:name="PositionLeft">0</config:config-item>
+#              <config:config-item config:type="int" config:name="PositionRight">0</config:config-item>
+#              <config:config-item config:type="int" config:name="PositionTop">0</config:config-item>
+#              <config:config-item config:type="int" config:name="PositionBottom">1</config:config-item>
+#              <config:config-item config:type="short" config:name="ZoomType">0</config:config-item>
+#              <config:config-item config:type="int" config:name="ZoomValue">100</config:config-item>
+#              <config:config-item config:type="int" config:name="PageViewZoomValue">60</config:config-item>
+#              <config:config-item config:type="boolean" config:name="ShowGrid">true</config:config-item>
+#            </config:config-item-map-entry>
+#            <config:config-item-map-entry config:name="Segunda">
+#              <config:config-item config:type="int" config:name="CursorPositionX">3</config:config-item>
+#              <config:config-item config:type="int" config:name="CursorPositionY">3</config:config-item>
+#              <config:config-item config:type="short" config:name="HorizontalSplitMode">2</config:config-item>
+#              <config:config-item config:type="short" config:name="VerticalSplitMode">2</config:config-item>
+#              <config:config-item config:type="int" config:name="HorizontalSplitPosition">3</config:config-item>
+#              <config:config-item config:type="int" config:name="VerticalSplitPosition">3</config:config-item>
+#              <config:config-item config:type="short" config:name="ActiveSplitRange">3</config:config-item>
+#              <config:config-item config:type="int" config:name="PositionLeft">0</config:config-item>
+#              <config:config-item config:type="int" config:name="PositionRight">3</config:config-item>
+#              <config:config-item config:type="int" config:name="PositionTop">0</config:config-item>
+#              <config:config-item config:type="int" config:name="PositionBottom">3</config:config-item>
+#              <config:config-item config:type="short" config:name="ZoomType">0</config:config-item>
+#              <config:config-item config:type="int" config:name="ZoomValue">100</config:config-item>
+#              <config:config-item config:type="int" config:name="PageViewZoomValue">60</config:config-item>
+#              <config:config-item config:type="boolean" config:name="ShowGrid">true</config:config-item>
+#            </config:config-item-map-entry>
+#          </config:config-item-map-named>
+#          <config:config-item config:type="string" config:name="ActiveTable">Segunda</config:config-item>
+#          <config:config-item config:type="int" config:name="HorizontalScrollbarWidth">1570</config:config-item>
+#          <config:config-item config:type="short" config:name="ZoomType">0</config:config-item>
+#          <config:config-item config:type="int" config:name="ZoomValue">100</config:config-item>
+#          <config:config-item config:type="int" config:name="PageViewZoomValue">60</config:config-item>
+#          <config:config-item config:type="boolean" config:name="ShowPageBreakPreview">false</config:config-item>
+#          <config:config-item config:type="boolean" config:name="ShowZeroValues">true</config:config-item>
+#          <config:config-item config:type="boolean" config:name="ShowNotes">true</config:config-item>
+#          <config:config-item config:type="boolean" config:name="ShowGrid">true</config:config-item>
+#          <config:config-item config:type="long" config:name="GridColor">12632256</config:config-item>
+#          <config:config-item config:type="boolean" config:name="ShowPageBreaks">true</config:config-item>
+#          <config:config-item config:type="boolean" config:name="HasColumnRowHeaders">true</config:config-item>
+#          <config:config-item config:type="boolean" config:name="HasSheetTabs">true</config:config-item>
+#          <config:config-item config:type="boolean" config:name="IsOutlineSymbolsSet">true</config:config-item>
+#          <config:config-item config:type="boolean" config:name="IsValueHighlightingEnabled">false</config:config-item>
+#          <config:config-item config:type="boolean" config:name="IsSnapToRaster">false</config:config-item>
+#          <config:config-item config:type="boolean" config:name="RasterIsVisible">false</config:config-item>
+#          <config:config-item config:type="int" config:name="RasterResolutionX">1000</config:config-item>
+#          <config:config-item config:type="int" config:name="RasterResolutionY">1000</config:config-item>
+#          <config:config-item config:type="int" config:name="RasterSubdivisionX">1</config:config-item>
+#          <config:config-item config:type="int" config:name="RasterSubdivisionY">1</config:config-item>
+#          <config:config-item config:type="boolean" config:name="IsRasterAxisSynchronized">true</config:config-item>
+#        </config:config-item-map-entry>
+#      </config:config-item-map-indexed>
+#    </config:config-item-set>
+        pass
+        
+    def setSelectedCell(self, cell):
+        pass
+        
+    def setDefaultSheet(self):
+        pass
 ##########################################################################################
 def letter_add(letter, number):
     """Add to columns to letter

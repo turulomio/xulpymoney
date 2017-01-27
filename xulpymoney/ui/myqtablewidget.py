@@ -1,7 +1,7 @@
 from PyQt5.QtCore import Qt,  pyqtSlot
 from PyQt5.QtGui import QKeySequence
 from PyQt5.QtWidgets import QApplication, QHeaderView, QTableWidget, QFileDialog
-from libodfgenerator import ODS,  OdfCell,  letter_add,  number_add,  OdfMoney,  OdfPercentage
+from libodfgenerator import ODS,  letter_add,  number_add,  OdfMoney,  OdfPercentage
 import datetime
 import logging
 from decimal import Decimal
@@ -103,13 +103,15 @@ class Table2ODS(ODS):
         numrows=table.rowCount() if table.horizontalHeader().isHidden() else table.rowCount()+1
         numcolumns=table.columnCount() if table.verticalHeader().isHidden() else table.columnCount()+1
         sheet=self.createSheet(title, numrows, numcolumns)
+        sheet.setSplitPosition("A", "2")
+        sheet.setCursorPosition("G", "8")
         #Array width
         widths=[]
         if not table.verticalHeader().isHidden():
             widths.append(table.verticalHeader().width())
         for i in range(table.columnCount()):
             widths.append(table.columnWidth(i))        
-        self.setColumnWidths(sheet, widths)
+        sheet.setColumnsWidth(widths)
         
         #firstcontentletter and firstcontentnumber
         if table.horizontalHeader().isHidden() and not table.verticalHeader().isHidden():
@@ -127,17 +129,17 @@ class Table2ODS(ODS):
         #HH
         if not table.horizontalHeader().isHidden():
             for letter in range(table.columnCount()):
-                sheet.add(OdfCell(letter_add(firstcontentletter, letter), "1", table.horizontalHeaderItem(letter).text(), "HeaderOrange"))
+                sheet.add(letter_add(firstcontentletter, letter), "1", table.horizontalHeaderItem(letter).text(), "HeaderOrange")
         #VH
         if not table.verticalHeader().isHidden():
             for number in range(table.rowCount()):
-                sheet.add(OdfCell("A", number_add(firstcontentnumber, number), table.verticalHeaderItem(number).text(), "HeaderYellow"))
+                sheet.add("A", number_add(firstcontentnumber, number), table.verticalHeaderItem(number).text(), "HeaderYellow")
         #Items
         for number in range(table.rowCount()):
             for letter in range(table.columnCount()):
                 try:
                     o=self.itemtext2object(table.item(number, letter).text())
-                    sheet.add(OdfCell(letter_add(firstcontentletter, letter), number_add(firstcontentnumber, number),o, self.object2style(o)))
+                    sheet.add(letter_add(firstcontentletter, letter), number_add(firstcontentnumber, number),o, self.object2style(o))
                 except:#Not a QTableWidgetItem or NOne
                     pass
         self.save()
