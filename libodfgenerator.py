@@ -334,51 +334,70 @@ class OdfCell:
         
         
 
-class Sheet:
-    def __init__(self, doc,  title, rows,  columns):
+class OdfSheet:
+    def __init__(self, doc,  title):
         self.doc=doc
         self.title=title
-        self.columns=columns
-        self.rows=rows
-        self.widths=None#Se carga desde ODS.setColumnWidths
-        self.horizontalSplitPosition=0#Freeze Panels
-        self.verticalSplitPosition=0
-        self.cursorPositionX=0#Celda active
-        self.cursorPositionY=0
-        self.arr=[[None for x in range(self.columns)] for y in range(self.rows)]
+        self.widths=None
+        self.arr=[]
 
-    def caracter2value(self, caracter):
-        r=ord(caracter)-65
-        return r
 
     def setSplitPosition(self, letter, number):
-        self.horizontalSplitPosition=self.letter2column(letter)-1
-        self.verticalSplitPosition=self.number2row(number)-1
+        """
+                split/freeze vertical (0|1|2) - 1 = split ; 2 = freeze
+
+
+    split/freeze horizontal (0|1|2) - 1 = split ; 2 = freeze
+
+
+    vertical position = in cell if fixed, in screen unit if frozen
+
+
+    horizontal position = in cell if fixed, in screen unit if frozen
+    active zone in the splitted|frozen sheet (0..3 from let to right, top
+to bottom)"""
+        self.horizontalSplitPosition=str(self.letter2column(letter))
+        self.verticalSplitPosition=str(self.number2row(number))
+        self.horizontalSplitMode="0" if self.horizontalSplitPosition=="0" else "2"
+        self.verticalSplitMode="0" if self.verticalSplitPosition=="0" else "2"
+        self.activeSplitRange="2"
+        self.positionTop="0"
+        self.positionBottom="0" if self.verticalSplitPosition=="0" else "1"
+        self.positionLeft="0"
+        self.positionRight="0" if self.horizontalSplitPosition=="0" else "1"
+        
+        
         
     def setCursorPosition(self, letter, number):
+        """
+            Sets the cursor in a Sheet
+        """
         self.cursorPositionX=self.letter2column(letter)
         self.cursorPositionY=self.number2row(number)
         
-    def setColumnsWidth(self, widths):
+    def setColumnsWidth(self, widths, unit="pt"):
         """
             widths is an int array
             id es el id del sheet de python
         """
         for w in widths:
             s=Style(name="{}_{}".format(id(self), w), family="table-column")
-            s.addElement(TableColumnProperties(columnwidth="{}pt".format(w*.95)))
+            s.addElement(TableColumnProperties(columnwidth="{}{}".format(w, unit)))
             self.doc.automaticstyles.addElement(s)   
         self.widths=widths
 
     def letter2column(self, letters):
+        def caracter2value(caracter):
+            return ord(caracter)-65
+        ############################
         if len(letters)==1:
-            return self.caracter2value(letters[0])
+            return caracter2value(letters[0])
 
     def number2row(self, number):
         return int(number)-1
         
     def addCell(self, cell): 
-        self.arr[self.number2row(cell.number)][self.letter2column(cell.letter)]=cell
+        self.arr.append(cell)
         
     def add(self, letter,number, result, style=None):
         if result.__class__ in (str, int, float, datetime.datetime, OdfMoney, OdfPercentage, OdfFormula, Decimal):#Un solo valor
@@ -394,21 +413,52 @@ class Sheet:
                     print(row.__class__, "ROW CLASS NOT FOUND",  row)
 
     def generate(self, ods):
-        # Start the table, and describe the columns
+        # Start the table
+        columns=self.columns()
+        rows=self.rows()
+        grid=[[None for x in range(columns)] for y in range(rows)]
+        for cell in self.arr:
+            grid[self.number2row(cell.number)][self.letter2column(cell.letter)]=cell
+        
         table = Table(name=self.title)
-        for w in self.widths:#Create columns
-            tc=TableColumn(stylename="{}_{}".format(id(self), w))
+        for c in range(columns):#Create columns
+            try:
+                tc=TableColumn(stylename="{}_{}".format(id(self), self.widths[c]))
+            except:
+                tc=TableColumn()
             table.addElement(tc)
-        for j in range(self.rows):#Crreate rows
+        for j in range(rows):#Crreate rows
             tr = TableRow()
             table.addElement(tr)
-            for i in range(self.columns):#Create cells
-                cell=self.arr[j][i]
+            for i in range(columns):#Create cells
+                cell=grid[j][i]
                 if cell!=None:
                     tr.addElement(cell.generate())
                 else:
                     tr.addElement(TableCell())
         ods.doc.spreadsheet.addElement(table)
+
+    def columns(self):
+        """
+            Gets column number
+        """
+        r=0
+        for cell in self.arr:
+            column=self.letter2column(cell.letter)
+            if column>r:
+                r=column
+        return r+1
+
+    def rows(self):
+        """
+            Gets column number
+        """
+        r=0
+        for cell in self.arr:
+            column=self.number2row(cell.number)
+            if column>r:
+                r=column
+        return r+1
 
 class OdfFormula:
 
@@ -631,6 +681,7 @@ class ODS():
         self.filename=filename
         self.doc=OpenDocumentSpreadsheet()
         self.sheets=[]
+        self.activeSheet=None
 
 #    <style:style style:family="table-cell" style:parent-style-name="Default" style:name="HHeaderOrange">
 #      <style:table-cell-properties style:repeat-content="false" ns42:vertical-justify="auto" fo:background-color="#ffcc99" style:text-align-source="fix" fo:border="0.06pt solid #000000"/>
@@ -773,120 +824,93 @@ class ODS():
         moneycontents = Style(name="Decimal", family="table-cell",  datastylename="DecimalColor",parentstylename="TextRight")
         self.doc.styles.addElement(moneycontents)
 
-    def createSheet(self, title, rows, columns):
-        s=Sheet(self.doc, title, rows, columns)
+    def createSheet(self, title):
+        s=OdfSheet(self.doc, title)
         self.sheets.append(s)
         return s
         
-
+    def getActiveSheet(self):
+        if self.__activeSheet==None:
+            return self.sheets[0].title
+        return self.__activeSheet
+        
+    def setActiveSheet(self, value):
+        """value is OdfSheet"""
+        self.__activeSheet=value.title
 
 
     def save(self):
         #config settings information
         a=ConfigItemSet(name="ooo:view-settings")
+        aa=ConfigItem(type="int", name="VisibleAreaTop")
+        aa.addText("0")
+        a.addElement(aa)
+        aa=ConfigItem(type="int", name="VisibleAreaLeft")
+        aa.addText("0")
+        a.addElement(aa)
         b=ConfigItemMapIndexed(name="Views")
         c=ConfigItemMapEntry()
-        d=ConfigItem(name="ViewId", type="string")#value="view1"
-        d.addElement("view1")
+        d=ConfigItem(name="ViewId", type="string")
+        d.addText("view1")#value="view1"
         e=ConfigItemMapNamed(name="Tables")
         for sheet in self.sheets:
             f=ConfigItemMapEntry(name=sheet.title)
-#            f.addElement(ConfigItem(type="int", name="CursorPositionX", value=sheet.cursorPositionX))
-#            f.addElement(ConfigItem(type="int", name="CursorPositionY", value=sheet.cursorPositionY))
-            
+            g=ConfigItem(type="int", name="CursorPositionX")
+            g.addText(sheet.cursorPositionX)
+            f.addElement(g)
+            g=ConfigItem(type="int", name="CursorPositionY")
+            g.addText(sheet.cursorPositionY)
+            f.addElement(g)
+            g=ConfigItem(type="int", name="HorizontalSplitPosition")
+            g.addText(sheet.horizontalSplitPosition)
+            f.addElement(g)
+            g=ConfigItem(type="int", name="VerticalSplitPosition")
+            g.addText(sheet.verticalSplitPosition)
+            f.addElement(g)
+            g=ConfigItem(type="short", name="HorizontalSplitMode")
+            g.addText(sheet.horizontalSplitMode)
+            f.addElement(g)
+            g=ConfigItem(type="short", name="VerticalSplitMode")
+            g.addText(sheet.verticalSplitMode)
+            f.addElement(g)
+            g=ConfigItem(type="short", name="ActiveSplitRange")
+            g.addText(sheet.activeSplitRange)
+            f.addElement(g)
+            g=ConfigItem(type="int", name="PositionLeft")
+            g.addText(sheet.positionLeft)
+            f.addElement(g)
+            g=ConfigItem(type="int", name="PositionRight")
+            g.addText(sheet.positionRight)
+            f.addElement(g)
+            g=ConfigItem(type="int", name="PositionTop")
+            g.addText(sheet.positionTop)
+            f.addElement(g)
+            g=ConfigItem(type="int", name="PositionBottom")
+            g.addText(sheet.positionBottom)
+            f.addElement(g)
             e.addElement(f)
             
         a.addElement(b)
         b.addElement(c)
         c.addElement(d)
-        d.addElement(e)
-        self.doc.config.addElement(a)
+        c.addElement(e)
+
+        h=ConfigItem(type="string", name="ActiveTable")
+        h.addText(self.getActiveSheet())
+        c.addElement(h)
+        self.doc.settings.addElement(a)
         
         for sheet in self.sheets:
             sheet.generate(self)
         self.doc.save(self.filename)
 
-    def metadatea(self):
-        pass
-        
-    def freezePanels(self, cell):
-#          <office:settings>
-#    <config:config-item-set config:name="ooo:view-settings">
-#      <config:config-item config:type="int" config:name="VisibleAreaTop">0</config:config-item>
-#      <config:config-item config:type="int" config:name="VisibleAreaLeft">0</config:config-item>
-#      <config:config-item config:type="int" config:name="VisibleAreaWidth">49231</config:config-item>
-#      <config:config-item config:type="int" config:name="VisibleAreaHeight">68184</config:config-item>
-#      <config:config-item-map-indexed config:name="Views">
-#        <config:config-item-map-entry>
-#          <config:config-item config:type="string" config:name="ViewId">view1</config:config-item>
-#          <config:config-item-map-named config:name="Tables">
-#            <config:config-item-map-entry config:name="My table">
-#              <config:config-item config:type="int" config:name="CursorPositionX">0</config:config-item>
-#              <config:config-item config:type="int" config:name="CursorPositionY">1</config:config-item>
-#              <config:config-item config:type="short" config:name="HorizontalSplitMode">0</config:config-item>
-#              <config:config-item config:type="short" config:name="VerticalSplitMode">2</config:config-item>
-#              <config:config-item config:type="int" config:name="HorizontalSplitPosition">0</config:config-item>
-#              <config:config-item config:type="int" config:name="VerticalSplitPosition">1</config:config-item>
-#              <config:config-item config:type="short" config:name="ActiveSplitRange">2</config:config-item>
-#              <config:config-item config:type="int" config:name="PositionLeft">0</config:config-item>
-#              <config:config-item config:type="int" config:name="PositionRight">0</config:config-item>
-#              <config:config-item config:type="int" config:name="PositionTop">0</config:config-item>
-#              <config:config-item config:type="int" config:name="PositionBottom">1</config:config-item>
-#              <config:config-item config:type="short" config:name="ZoomType">0</config:config-item>
-#              <config:config-item config:type="int" config:name="ZoomValue">100</config:config-item>
-#              <config:config-item config:type="int" config:name="PageViewZoomValue">60</config:config-item>
-#              <config:config-item config:type="boolean" config:name="ShowGrid">true</config:config-item>
-#            </config:config-item-map-entry>
-#            <config:config-item-map-entry config:name="Segunda">
-#              <config:config-item config:type="int" config:name="CursorPositionX">3</config:config-item>
-#              <config:config-item config:type="int" config:name="CursorPositionY">3</config:config-item>
-#              <config:config-item config:type="short" config:name="HorizontalSplitMode">2</config:config-item>
-#              <config:config-item config:type="short" config:name="VerticalSplitMode">2</config:config-item>
-#              <config:config-item config:type="int" config:name="HorizontalSplitPosition">3</config:config-item>
-#              <config:config-item config:type="int" config:name="VerticalSplitPosition">3</config:config-item>
-#              <config:config-item config:type="short" config:name="ActiveSplitRange">3</config:config-item>
-#              <config:config-item config:type="int" config:name="PositionLeft">0</config:config-item>
-#              <config:config-item config:type="int" config:name="PositionRight">3</config:config-item>
-#              <config:config-item config:type="int" config:name="PositionTop">0</config:config-item>
-#              <config:config-item config:type="int" config:name="PositionBottom">3</config:config-item>
-#              <config:config-item config:type="short" config:name="ZoomType">0</config:config-item>
-#              <config:config-item config:type="int" config:name="ZoomValue">100</config:config-item>
-#              <config:config-item config:type="int" config:name="PageViewZoomValue">60</config:config-item>
-#              <config:config-item config:type="boolean" config:name="ShowGrid">true</config:config-item>
-#            </config:config-item-map-entry>
-#          </config:config-item-map-named>
-#          <config:config-item config:type="string" config:name="ActiveTable">Segunda</config:config-item>
-#          <config:config-item config:type="int" config:name="HorizontalScrollbarWidth">1570</config:config-item>
-#          <config:config-item config:type="short" config:name="ZoomType">0</config:config-item>
-#          <config:config-item config:type="int" config:name="ZoomValue">100</config:config-item>
-#          <config:config-item config:type="int" config:name="PageViewZoomValue">60</config:config-item>
-#          <config:config-item config:type="boolean" config:name="ShowPageBreakPreview">false</config:config-item>
-#          <config:config-item config:type="boolean" config:name="ShowZeroValues">true</config:config-item>
-#          <config:config-item config:type="boolean" config:name="ShowNotes">true</config:config-item>
-#          <config:config-item config:type="boolean" config:name="ShowGrid">true</config:config-item>
-#          <config:config-item config:type="long" config:name="GridColor">12632256</config:config-item>
-#          <config:config-item config:type="boolean" config:name="ShowPageBreaks">true</config:config-item>
-#          <config:config-item config:type="boolean" config:name="HasColumnRowHeaders">true</config:config-item>
-#          <config:config-item config:type="boolean" config:name="HasSheetTabs">true</config:config-item>
-#          <config:config-item config:type="boolean" config:name="IsOutlineSymbolsSet">true</config:config-item>
-#          <config:config-item config:type="boolean" config:name="IsValueHighlightingEnabled">false</config:config-item>
-#          <config:config-item config:type="boolean" config:name="IsSnapToRaster">false</config:config-item>
-#          <config:config-item config:type="boolean" config:name="RasterIsVisible">false</config:config-item>
-#          <config:config-item config:type="int" config:name="RasterResolutionX">1000</config:config-item>
-#          <config:config-item config:type="int" config:name="RasterResolutionY">1000</config:config-item>
-#          <config:config-item config:type="int" config:name="RasterSubdivisionX">1</config:config-item>
-#          <config:config-item config:type="int" config:name="RasterSubdivisionY">1</config:config-item>
-#          <config:config-item config:type="boolean" config:name="IsRasterAxisSynchronized">true</config:config-item>
-#        </config:config-item-map-entry>
-#      </config:config-item-map-indexed>
-#    </config:config-item-set>
-        pass
-        
-    def setSelectedCell(self, cell):
-        pass
-        
-    def setDefaultSheet(self):
-        pass
+
+    def setMetadata(self, title,  description, creator):
+        self.doc.meta.addElement(Title(text=title))
+        self.doc.meta.addElement(Description(text=description))
+        self.doc.meta.addElement(InitialCreator(text=creator))
+        self.doc.meta.addElement(Creator(text=creator))
+
 ##########################################################################################
 def letter_add(letter, number):
     """Add to columns to letter
@@ -895,7 +919,6 @@ def letter_add(letter, number):
     
     Z es sumar 24
     """
-    
     maxord=ord(letter)+number
     result=""
     while maxord>90:
@@ -906,3 +929,26 @@ def letter_add(letter, number):
 
 def number_add(letter,number):
     return str(int(letter)+number)
+
+
+if __name__ == "__main__":
+    #ODS
+    doc=ODS("libodfgenerator.ods")
+    doc.setMetadata("LibODFGenerator example",  "This class documentation", "Mariano Muñoz")
+    s1=doc.createSheet("Example")
+    s1.add("A", "1", [["Title", "Value"]], "HeaderOrange")
+    s1.add("A", "2", "Percentage", "TextLeft")
+    s1.add("B", "2",  OdfPercentage(12, 56))
+    s1.setCursorPosition("A", "3")
+    s1.setSplitPosition("A", "2")
+    s1=doc.createSheet("Example 2")
+    s1.add("A", "1", [["Title", "Value"]], "HeaderOrange")
+    s1.add("A", "2", "Currency", "TextLeft")
+    s1.add("B", "2",  OdfMoney(12, "EUR"))
+    s1.add("A", "3", "Datetime", "TextLeft")
+    s1.add("B", "3",  datetime.datetime.now())
+    s1.setColumnsWidth([330, 150])
+    s1.setCursorPosition("D", "6")
+    s1.setSplitPosition("B", "2")
+    doc.setActiveSheet(s1)
+    doc.save()
