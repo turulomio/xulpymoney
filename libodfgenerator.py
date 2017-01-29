@@ -2,7 +2,7 @@ import datetime
 import logging
 import sys
 from odf.opendocument import OpenDocumentSpreadsheet,  OpenDocumentText,  load
-from odf.style import Footer, FooterStyle, HeaderFooterProperties, Style, TextProperties, TableColumnProperties, Map,  TableProperties,  TableCellProperties, PageLayout, PageLayoutProperties, ParagraphProperties,  ListLevelProperties,  MasterPage
+from odf.style import Footer, FooterStyle, GraphicProperties, HeaderFooterProperties, Style, TextProperties, TableColumnProperties, Map,  TableProperties,  TableCellProperties, PageLayout, PageLayoutProperties, ParagraphProperties,  ListLevelProperties,  MasterPage
 from odf.number import  CurrencyStyle, CurrencySymbol,  Number, NumberStyle, Text,  PercentageStyle,  DateStyle, Year, Month, Day, Hours, Minutes, Seconds
 from odf.text import P,  H,  Span, ListStyle,  ListLevelStyleBullet,  List,  ListItem, ListLevelStyleNumber,  OutlineLevelStyle,  OutlineStyle,  PageNumber,  PageCount
 from odf.table import Table, TableColumn, TableRow, TableCell,  TableHeaderRows
@@ -12,11 +12,166 @@ from odf.meta import InitialCreator
 from odf.config import ConfigItem, ConfigItemMapEntry, ConfigItemMapIndexed, ConfigItemMapNamed,  ConfigItemSet
 from decimal import Decimal
 
-class ODT():
-    def __init__(self, filename, template=None):
+class ODF:
+    def __init__(self, filename):
         self.filename=filename
+        self.images={}
+        
+    def setMetadata(self, title,  description, creator):
+        self.doc.meta.addElement(Title(text=title))
+        self.doc.meta.addElement(Description(text=description))
+        self.doc.meta.addElement(InitialCreator(text=creator))
+        self.doc.meta.addElement(Creator(text=creator))
+        
+        
+    def addImage(self, path):
+        self.images[path]=self.doc.addPicture(path)
+        
+class ODT(ODF):
+    def __init__(self, filename, template=None):
+        
+        def styleGraphics():
+#            >
+#    <style:style style:family="graphic" style:name="Graphics">
+#      <style:graphic-properties style:wrap="none" style:vertical-pos="top" style:horizontal-rel="paragraph" style:horizontal-pos="center" svg:x="0cm" style:vertical-rel="paragraph" svg:y="0cm" text:anchor-type="paragraph"/>
+#    </style:style>
+            ga=Style(family="graphic", name="GraphicsParagraph")
+            ga.addElement(GraphicProperties(verticalpos="top", horizontalpos="center", horizontalrel="paragraph",  verticalrel="paragraph", anchortype="paragraph"))
+            self.doc.styles.addElement(ga)
+
+#    <style:style style:family="graphic" style:parent-style-name="Graphics" style:name="fr1">
+#      <style:graphic-properties draw:contrast="0%" fo:clip="rect(0cm 0cm 0cm 0cm)" draw:color-mode="standard" style:mirror="none" draw:gamma="100%" style:horizontal-rel="paragraph" draw:red="0%" draw:luminance="0%" draw:color-inversion="false" style:horizontal-pos="left" draw:blue="0%" draw:image-opacity="100%" draw:green="0%"/>
+#    </style:style>
+            framea=Style(family="graphic", parentstylename="GraphicsParagraph", name="FrameParagraph")
+            self.doc.automaticstyles.addElement(framea)
+            
+        def stylePage():
+    #       <style:page-layout style:name="Mpm1">
+    #      <style:page-layout-properties fo:page-width="21.001cm" style:print-orientation="portrait" fo:margin-top="2cm"
+    #fo:margin-right="2cm" style:writing-mode="lr-tb" style:footnote-max-height="0cm" style:num-format="1" fo:page-height="29.7cm" fo:margin-left="2cm" fo:margin-bottom="2cm">
+    #        <style:footnote-sep style:color="#000000" style:width="0.018cm" style:line-style="solid" style:adjustment="left" style:rel-width="25%" style:distance-after-sep="0.101cm" style:distance-before-sep="0.101cm"/>
+    #      </style:page-layout-properties>
+    #      <style:header-style/>
+    #      <style:footer-style>
+    #        <style:header-footer-properties fo:min-height="0cm" fo:margin-top="0.499cm"/>
+    #      </style:footer-style>
+    #    </style:page-layout>
+
+            pagelayout=PageLayout(name="PageLayout")
+            plp=PageLayoutProperties(pagewidth="21cm",  pageheight="29.7cm",  margintop="2cm",  marginright="2cm",  marginleft="2cm",  marginbottom="2cm")
+            fs=FooterStyle()
+            hfp=HeaderFooterProperties(margintop="0.5cm")
+            fs.addElement(hfp)
+            pagelayout.addElement(plp)
+            pagelayout.addElement(fs)
+            self.doc.automaticstyles.addElement(pagelayout)
+                    
+        def styleParagraphs():
+            #Pagebreak styles horizontal y vertical        
+            s = Style(name="PH", family="paragraph",  parentstylename="Standard", masterpagename="Landscape")
+            s.addElement(ParagraphProperties(pagenumber="auto"))
+            self.doc.styles.addElement(s)
+            s = Style(name="PV", family="paragraph",  parentstylename="Standard", masterpagename="Standard")
+            s.addElement(ParagraphProperties(pagenumber="auto"))
+            self.doc.styles.addElement(s)
+            
+            standard= Style(name="Standard", family="paragraph",  autoupdate="true")
+            standard.addElement(ParagraphProperties(attributes={"margintop":"0.2cm", "textalign":"justify", "marginbottom":"0.2cm", "textindent":"1cm"}))
+            standard.addElement(TextProperties(attributes={"fontsize": "12pt"}))
+            self.doc.styles.addElement(standard)
+
+        def styleHeaders():
+    #        #Header1
+    #        #    <style:style style:auto-update="true" style:display-name="Heading 1" style:default-outline-level="1" style:family="paragraph" style:name="Heading_20_1" style:next-style-name="Text_20_body" style:parent-style-name="Heading" style:class="text">
+    #      <style:paragraph-properties fo:margin-top="0.423cm" fo:margin-right="0cm" fo:text-align="justify" fo:text-indent="0cm" ns42:contextual-spacing="false" style:writing-mode="page" fo:margin-left="0cm" fo:margin-bottom="0.212cm" style:auto-text-indent="false" style:justify-single-word="false"/>
+    #      <style:text-properties style:font-weight-complex="bold" fo:font-size="15pt" style:font-size-asian="130%" style:font-size-complex="130%" fo:font-weight="bold" style:font-weight-asian="bold"/>
+    #    </style:style>
+            h1style = Style(name="Heading1", family="paragraph",  autoupdate="true", defaultoutlinelevel="1")
+            h1style.addElement(ParagraphProperties(attributes={"margintop":"0.6cm", "textalign":"justify", "marginbottom":"0.3cm"}))
+            h1style.addElement(TextProperties(attributes={"fontsize": "15pt", "fontweight": "bold"}))
+            self.doc.styles.addElement(h1style)
+            h2style = Style(name="Heading2", family="paragraph",  autoupdate="true", defaultoutlinelevel="2")
+            h2style.addElement(ParagraphProperties(attributes={"margintop":"0.5cm", "textalign":"justify", "marginbottom":"0.25cm"}))
+            h2style.addElement(TextProperties(attributes={"fontsize": "14pt", "fontweight": "bold"}))
+            self.doc.styles.addElement(h2style)
+            out=OutlineStyle(name="Outline")
+            outl=OutlineLevelStyle(level=1, numformat="1", numsuffix="  ")
+            out.addElement(outl)
+            outl=OutlineLevelStyle(level=2, displaylevels="2", numformat="1", numsuffix="  ")
+            out.addElement(outl)
+            self.doc.styles.addElement(out)
+            #Standard
+            #            <style:style style:auto-update="true" style:name="Standard" style:family="paragraph" style:master-page-name="" style:class="text">
+            #      <style:paragraph-properties fo:margin-top="0.199cm" fo:margin-right="0cm" fo:text-align="justify" ns42:contextual-spacing="false" fo:text-indent="1cm" style:page-number="auto" style:writing-mode="page" fo:margin-left="0cm" fo:margin-bottom="0.199cm" style:auto-text-indent="false" style:justify-single-word="false"/>
+            #      <style:text-properties style:font-size-asian="10.5pt"/>
+            #    </style:style>
+            
+
+        def styleList():
+            liststandard= Style(name="ListStandard", family="paragraph",  autoupdate="true")
+            liststandard.addElement(ParagraphProperties(attributes={"margintop":"0.1cm", "textalign":"justify", "marginbottom":"0.1cm", "textindent":"0cm"}))
+            liststandard.addElement(TextProperties(attributes={"fontsize": "12pt"}))
+            self.doc.styles.addElement(liststandard)
+            
+            # For Bulleted list
+            bulletedliststyle = ListStyle(name="BulletList")
+            bulletlistproperty = ListLevelStyleBullet(level="1", bulletchar=u"•")
+            bulletlistproperty.addElement(ListLevelProperties( minlabelwidth="1cm"))
+            bulletedliststyle.addElement(bulletlistproperty)
+            self.doc.styles.addElement(bulletedliststyle)
+
+            # For numbered list
+            numberedliststyle = ListStyle(name="NumberedList")
+            numberedlistproperty = ListLevelStyleNumber(level="1", numsuffix=".", startvalue=1)
+            numberedlistproperty.addElement(ListLevelProperties(minlabelwidth="1cm"))
+            numberedliststyle.addElement(numberedlistproperty)
+            self.doc.styles.addElement(numberedliststyle)
+        
+        def styleFooter():
+            #Footer
+    #            <style:style style:master-page-name="" style:class="extra" style:auto-update="true" style:parent-style-name="Standard" style:name="Footer" style:family="paragraph">
+    #      <style:paragraph-properties fo:text-align="center" fo:text-indent="0cm" style:auto-text-indent="false" fo:margin-left="0cm" style:writing-mode="page" style:justify-single-word="false" text:number-lines="false" text:line-number="0" fo:margin-right="0cm" style:page-number="auto">
+    #        <style:tab-stops>
+    #          <style:tab-stop style:position="8.5cm" style:type="center"/>
+    #          <style:tab-stop style:position="17cm" style:type="right"/>
+    #        </style:tab-stops>
+    #      </style:paragraph-properties>
+    #      <style:text-properties fo:font-size="8pt"/>
+    #    </style:style>
+            s= Style(name="Footer", family="paragraph",  autoupdate="true")
+            s.addElement(ParagraphProperties(attributes={"margintop":"0cm", "textalign":"center", "marginbottom":"0cm", "textindent":"0cm"}))
+            s.addElement(TextProperties(attributes={"fontsize": "9pt"}))
+            self.doc.styles.addElement(s)
+
+
+    #    <style:master-page style:name="Standard" style:page-layout-name="Mpm1">
+    #      <style:footer>
+    #        <text:p text:style-name="MP1">Página <text:page-number text:select-page="current">1</text:page-number> de <text:page-count>1</text:page-count></text:p>
+    #      </style:footer>
+    #    </style:master-page>
+            #Footer
+        def styleMasterPage():
+            foot=MasterPage(name="Standard", pagelayoutname="PageLayout")
+            footer=Footer()
+            p1=P(stylename="Footer",  text="Página ")
+            number=PageNumber(selectpage="current", numformat="1")
+            p2=Span(stylename="Footer",  text=" de  ")
+            count=PageCount(selectpage="current", numformat="1")
+            p1.addElement(number)
+            p1.addElement(p2)
+            p1.addElement(count)      
+            footer.addElement(p1)   
+            foot.addElement(footer)
+            self.doc.masterstyles.addElement(foot)
+
+        #######################################
+        
+        
+        ODF.__init__(self, filename)
         self.doc=OpenDocumentText()
         
+        self.seqTables=0#Sequence of tables
+        self.seqFrames=0#If a frame is repeated it doesn't show its
         if template!=None:
             templatedoc= load(template)
             for style in templatedoc.styles.childNodes[:]:
@@ -28,126 +183,14 @@ class ODT():
             for master in templatedoc.masterstyles.childNodes[:]:
                 self.doc.masterstyles.addElement(master)
                 
-#       <style:page-layout style:name="Mpm1">
-#      <style:page-layout-properties fo:page-width="21.001cm" style:print-orientation="portrait" fo:margin-top="2cm"
-#fo:margin-right="2cm" style:writing-mode="lr-tb" style:footnote-max-height="0cm" style:num-format="1" fo:page-height="29.7cm" fo:margin-left="2cm" fo:margin-bottom="2cm">
-#        <style:footnote-sep style:color="#000000" style:width="0.018cm" style:line-style="solid" style:adjustment="left" style:rel-width="25%" style:distance-after-sep="0.101cm" style:distance-before-sep="0.101cm"/>
-#      </style:page-layout-properties>
-#      <style:header-style/>
-#      <style:footer-style>
-#        <style:header-footer-properties fo:min-height="0cm" fo:margin-top="0.499cm"/>
-#      </style:footer-style>
-#    </style:page-layout>
 
-        pagelayout=PageLayout(name="PageLayout")
-        plp=PageLayoutProperties(pagewidth="21cm",  pageheight="29.7cm",  margintop="2cm",  marginright="2cm",  marginleft="2cm",  marginbottom="2cm")
-        fs=FooterStyle()
-        hfp=HeaderFooterProperties(margintop="0.5cm")
-        fs.addElement(hfp)
-        pagelayout.addElement(plp)
-        pagelayout.addElement(fs)
-        self.doc.automaticstyles.addElement(pagelayout)
-                
-        #Pagebreak styles horizontal y vertical        
-        s = Style(name="PH", family="paragraph",  parentstylename="Standard", masterpagename="Landscape")
-        s.addElement(ParagraphProperties(pagenumber="auto"))
-        self.doc.styles.addElement(s)
-        s = Style(name="PV", family="paragraph",  parentstylename="Standard", masterpagename="Standard")
-        s.addElement(ParagraphProperties(pagenumber="auto"))
-        self.doc.styles.addElement(s)
-        
-#        #Header1
-#        #    <style:style style:auto-update="true" style:display-name="Heading 1" style:default-outline-level="1" style:family="paragraph" style:name="Heading_20_1" style:next-style-name="Text_20_body" style:parent-style-name="Heading" style:class="text">
-#      <style:paragraph-properties fo:margin-top="0.423cm" fo:margin-right="0cm" fo:text-align="justify" fo:text-indent="0cm" ns42:contextual-spacing="false" style:writing-mode="page" fo:margin-left="0cm" fo:margin-bottom="0.212cm" style:auto-text-indent="false" style:justify-single-word="false"/>
-#      <style:text-properties style:font-weight-complex="bold" fo:font-size="15pt" style:font-size-asian="130%" style:font-size-complex="130%" fo:font-weight="bold" style:font-weight-asian="bold"/>
-#    </style:style>
-        h1style = Style(name="Heading1", family="paragraph",  autoupdate="true", defaultoutlinelevel="1")
-        h1style.addElement(ParagraphProperties(attributes={"margintop":"0.6cm", "textalign":"justify", "marginbottom":"0.3cm"}))
-        h1style.addElement(TextProperties(attributes={"fontsize": "15pt", "fontweight": "bold"}))
-        self.doc.styles.addElement(h1style)
-        h2style = Style(name="Heading2", family="paragraph",  autoupdate="true", defaultoutlinelevel="2")
-        h2style.addElement(ParagraphProperties(attributes={"margintop":"0.5cm", "textalign":"justify", "marginbottom":"0.25cm"}))
-        h2style.addElement(TextProperties(attributes={"fontsize": "14pt", "fontweight": "bold"}))
-        self.doc.styles.addElement(h2style)
-        out=OutlineStyle(name="Outline")
-        outl=OutlineLevelStyle(level=1, numformat="1", numsuffix="  ")
-        out.addElement(outl)
-        outl=OutlineLevelStyle(level=2, displaylevels="2", numformat="1", numsuffix="  ")
-        out.addElement(outl)
-        self.doc.styles.addElement(out)
-        #Standard
-        #            <style:style style:auto-update="true" style:name="Standard" style:family="paragraph" style:master-page-name="" style:class="text">
-        #      <style:paragraph-properties fo:margin-top="0.199cm" fo:margin-right="0cm" fo:text-align="justify" ns42:contextual-spacing="false" fo:text-indent="1cm" style:page-number="auto" style:writing-mode="page" fo:margin-left="0cm" fo:margin-bottom="0.199cm" style:auto-text-indent="false" style:justify-single-word="false"/>
-        #      <style:text-properties style:font-size-asian="10.5pt"/>
-        #    </style:style>
-        
-        standard= Style(name="Standard", family="paragraph",  autoupdate="true")
-        standard.addElement(ParagraphProperties(attributes={"margintop":"0.2cm", "textalign":"justify", "marginbottom":"0.2cm", "textindent":"1cm"}))
-        standard.addElement(TextProperties(attributes={"fontsize": "12pt"}))
-        self.doc.styles.addElement(standard)
-
-
-        
-        liststandard= Style(name="ListStandard", family="paragraph",  autoupdate="true")
-        liststandard.addElement(ParagraphProperties(attributes={"margintop":"0.1cm", "textalign":"justify", "marginbottom":"0.1cm", "textindent":"0cm"}))
-        liststandard.addElement(TextProperties(attributes={"fontsize": "12pt"}))
-        self.doc.styles.addElement(liststandard)
-        
-        # For Bulleted list
-        bulletedliststyle = ListStyle(name="BulletList")
-        bulletlistproperty = ListLevelStyleBullet(level="1", bulletchar=u"•")
-        bulletlistproperty.addElement(ListLevelProperties( minlabelwidth="1cm"))
-        bulletedliststyle.addElement(bulletlistproperty)
-        self.doc.styles.addElement(bulletedliststyle)
-
-        # For numbered list
-        numberedliststyle = ListStyle(name="NumberedList")
-        numberedlistproperty = ListLevelStyleNumber(level="1", numsuffix=".", startvalue=1)
-        numberedlistproperty.addElement(ListLevelProperties(minlabelwidth="1cm"))
-        numberedliststyle.addElement(numberedlistproperty)
-        self.doc.styles.addElement(numberedliststyle)
-            
-        self.seqTables=0#Sequence of tables
-        #Footer
-#            <style:style style:master-page-name="" style:class="extra" style:auto-update="true" style:parent-style-name="Standard" style:name="Footer" style:family="paragraph">
-#      <style:paragraph-properties fo:text-align="center" fo:text-indent="0cm" style:auto-text-indent="false" fo:margin-left="0cm" style:writing-mode="page" style:justify-single-word="false" text:number-lines="false" text:line-number="0" fo:margin-right="0cm" style:page-number="auto">
-#        <style:tab-stops>
-#          <style:tab-stop style:position="8.5cm" style:type="center"/>
-#          <style:tab-stop style:position="17cm" style:type="right"/>
-#        </style:tab-stops>
-#      </style:paragraph-properties>
-#      <style:text-properties fo:font-size="8pt"/>
-#    </style:style>
-        s= Style(name="Footer", family="paragraph",  autoupdate="true")
-        s.addElement(ParagraphProperties(attributes={"margintop":"0cm", "textalign":"center", "marginbottom":"0cm", "textindent":"0cm"}))
-        s.addElement(TextProperties(attributes={"fontsize": "9pt"}))
-        self.doc.styles.addElement(s)
-
-
-#    <style:master-page style:name="Standard" style:page-layout-name="Mpm1">
-#      <style:footer>
-#        <text:p text:style-name="MP1">Página <text:page-number text:select-page="current">1</text:page-number> de <text:page-count>1</text:page-count></text:p>
-#      </style:footer>
-#    </style:master-page>
-        #Footer
-        foot=MasterPage(name="Standard", pagelayoutname="PageLayout")
-        footer=Footer()
-        p1=P(stylename="Footer",  text="Página ")
-        number=PageNumber(selectpage="current", numformat="1")
-        p2=Span(stylename="Footer",  text=" de  ")
-        count=PageCount(selectpage="current", numformat="1")
-        p1.addElement(number)
-        p1.addElement(p2)
-        p1.addElement(count)      
-        footer.addElement(p1)   
-        foot.addElement(footer)
-        self.doc.masterstyles.addElement(foot)
-
-    def setMetadata(self, title,  description, creator):
-        self.doc.meta.addElement(Title(text=title))
-        self.doc.meta.addElement(Description(text=description))
-        self.doc.meta.addElement(InitialCreator(text=creator))
-        self.doc.meta.addElement(Creator(text=creator))
+        stylePage()
+        styleParagraphs()
+        styleFooter()
+        styleMasterPage()
+        styleHeaders()
+        styleList()
+        styleGraphics()
 
     def emptyParagraph(self, style="Standard", number=1):
         for i in range(number):
@@ -276,14 +319,16 @@ class ODT():
         
         self.doc.text.addElement(table)
         
-    def image(self, filename, width, height):
-        p = P(stylename="Illustration")
-        href = self.doc.addPicture(filename)
-        f = Frame(name="filename", anchortype="as-char", width="{}cm".format(width), height="{}cm".format(height)) #, width="2cm", height="2cm", zindex="0")
-        p.addElement(f)
-        img = Image(href=href, type="simple", show="embed", actuate="onLoad")
+    def image(self, href, width, height):
+        """
+            href must bu added before with addImage
+            returns a Frame element
+        """
+        f = Frame(name="Frame_{}".format(self.seqFrames), anchortype="as-char", width="{}cm".format(width), height="{}cm".format(height)) #, width="2cm", height="2cm", zindex="0")
+        img = Image(href=self.images[href], type="simple", show="embed", actuate="onLoad")
         f.addElement(img)
-        self.doc.text.addElement(p)
+        self.seqFrames=self.seqFrames+1
+        return f
 
     def pageBreak(self,  horizontal=False):    
         p=P(stylename="PageBreak")#Is an automatic style
@@ -677,153 +722,173 @@ class OdfPercentage:
             return True
         return False
         
-class ODS():
+    
+
+class ODS(ODF):
     def __init__(self, filename):
-        self.filename=filename
+        def styleHeaders():
+            hs=Style(name="HeaderOrange", family="table-cell")
+            hs.addElement(TableCellProperties(backgroundcolor="#ffcc99", border="0.06pt solid #000000"))
+            hs.addElement(TextProperties( fontweight="bold"))
+            hs.addElement(ParagraphProperties(textalign="center"))
+            self.doc.styles.addElement(hs)
+            
+            hs=Style(name="HeaderYellow", family="table-cell")
+            hs.addElement(TableCellProperties(backgroundcolor="#ffff7f", border="0.06pt solid #000000"))
+            hs.addElement(TextProperties(fontweight="bold"))
+            hs.addElement(ParagraphProperties(textalign="left"))
+            self.doc.styles.addElement(hs)        
+        
+        def styleParagraphs():
+            tr=Style(name="TextRight", family="table-cell")
+            tr.addElement(TableCellProperties(border="0.06pt solid #000000"))
+            tr.addElement(ParagraphProperties(textalign="end"))
+            self.doc.styles.addElement(tr)
+
+            hs=Style(name="TextLeft", family="table-cell")
+            hs.addElement(TableCellProperties(border="0.06pt solid #000000"))
+            hs.addElement(ParagraphProperties(textalign="left"))
+            self.doc.styles.addElement(hs)
+            
+            
+                #    <style:style style:family="table-cell" style:parent-style-name="Default" style:name="HHeaderOrange">
+    #      <style:table-cell-properties style:repeat-content="false" ns42:vertical-justify="auto" fo:background-color="#ffcc99" style:text-align-source="fix" fo:border="0.06pt solid #000000"/>
+    #      <style:paragraph-properties fo:text-align="center" css3t:text-justify="auto"/>
+    #      <style:text-properties fo:font-weight="bold"/>
+    #    </style:style>
+
+        def styleCurrrencies():
+            
+            # Create the styles for $AUD format currency values
+            ns1 = CurrencyStyle(name="EuroBlack", volatile="true")
+            ns1.addElement(Number(decimalplaces="2", minintegerdigits="1", grouping="true"))
+            ns1.addElement(CurrencySymbol(language="es", country="ES", text=" €"))
+            self.doc.styles.addElement(ns1)
+
+            # Create the main style.
+            ns2 = CurrencyStyle(name="EuroColor")
+            ns2.addElement(TextProperties(color="#ff0000"))
+            ns2.addElement(Text(text="-"))
+            ns2.addElement(Number(decimalplaces="2", minintegerdigits="1", grouping="true"))
+            ns2.addElement(CurrencySymbol(language="es", country="ES", text=" €"))
+            ns2.addElement(Map(condition="value()>=0", applystylename="EuroBlack"))
+            self.doc.styles.addElement(ns2)
+            
+            # Create automatic style for the price cells.
+            moneycontents = Style(name="Euro", family="table-cell",  datastylename="EuroColor",parentstylename="TextRight")
+            self.doc.automaticstyles.addElement(moneycontents)
+            
+        def stylePercentages():
+            #Percentage
+            nonze = PercentageStyle(name='PercentageBlack')
+            nonze.addElement(TextProperties(color="#000000"))
+            nonze.addElement(Number(decimalplaces='2', minintegerdigits='1'))
+            nonze.addElement(Text(text=' %'))
+            self.doc.styles.addElement(nonze)
+            
+            nonze2 = PercentageStyle(name='PercentageColor')
+            nonze2.addElement(TextProperties(color="#ff0000"))
+            nonze2.addElement(Text(text="-"))
+            nonze2.addElement(Number(decimalplaces='2', minintegerdigits='1'))
+            nonze2.addElement(Text(text=' %'))
+            nonze2.addElement(Map(condition="value()>=0", applystylename="PercentageBlack"))
+            self.doc.styles.addElement(nonze2)
+            
+            pourcent = Style(name='Percentage', family='table-cell', datastylename='PercentageColor',parentstylename="TextRight")
+    #        pourcent.addElement(TableCellProperties(border="0.06pt solid #000000"))
+    #        pourcent.addElement(ParagraphProperties(textalign='end'))
+    #        pourcent.addElement(TextProperties(attributes={'fontsize':"10pt",'fontweight':"bold", 'color':"#000000" }))
+            self.doc.automaticstyles.addElement(pourcent)
+            
+        def styleDatetimes():
+            #create custom format in styles.xml
+            date_style = DateStyle(name="DatetimeBlack") #, language="lv", country="LV")
+            date_style.addElement(Year(style="long"))
+            date_style.addElement(Text(text="-"))
+            date_style.addElement(Month(style="long"))
+            date_style.addElement(Text(text="-"))
+            date_style.addElement(Day(style="long"))
+            date_style.addElement(Text(text=" "))
+            date_style.addElement(Hours(style="long"))
+            date_style.addElement(Text(text=":"))
+            date_style.addElement(Minutes(style="long"))
+            date_style.addElement(Text(text=":"))
+            date_style.addElement(Seconds(style="long"))
+            self.doc.styles.addElement(date_style)
+            #link to generated style from content.xml
+            ds = Style(name="Datetime", datastylename="DatetimeBlack",parentstylename="TextLeft", family="table-cell")
+            self.doc.automaticstyles.addElement(ds)
+            
+            
+            #create custom format in styles.xml
+            date_style = DateStyle(name="DateBlack") #, language="lv", country="LV")
+            date_style.addElement(Year(style="long"))
+            date_style.addElement(Text(text="-"))
+            date_style.addElement(Month(style="long"))
+            date_style.addElement(Text(text="-"))
+            date_style.addElement(Day(style="long"))
+            self.doc.styles.addElement(date_style)
+            #link to generated style from content.xml
+            ds = Style(name="Date", datastylename="DateBlack",parentstylename="TextLeft", family="table-cell")
+            self.doc.automaticstyles.addElement(ds)
+
+    #    <number:number-style style:volatile="true" style:name="N108P0">
+    #      <number:number number:min-integer-digits="1" number:decimal-places="2" ns41:min-decimal-places="2"/>
+    #    </number:number-style>
+    #    <number:number-style style:name="N108">
+    #      <style:text-properties fo:color="#ff0000"/>
+    #      <number:text>-</number:text>
+    #      <number:number number:min-integer-digits="1" number:decimal-places="2" ns41:min-decimal-places="2"/>
+    #      <style:map style:condition="value()&gt;=0" style:apply-style-name="N108P0"/>
+    #    </number:number-style>
+            # Create the styles for $AUD format currency values
+        def styleNumbers():
+            ns1 = NumberStyle(name="EnteroBlack", volatile="true")
+            ns1.addElement(Number(decimalplaces="0", minintegerdigits="1", grouping="true"))
+            self.doc.styles.addElement(ns1)
+
+            # Create the main style.
+            ns2 = NumberStyle(name="EnteroColor")
+            ns2.addElement(TextProperties(color="#ff0000"))
+            ns2.addElement(Text(text="-"))
+            ns2.addElement(Number(decimalplaces="0", minintegerdigits="1", grouping="true"))
+            ns2.addElement(Map(condition="value()>=0", applystylename="EnteroBlack"))
+            self.doc.styles.addElement(ns2)
+            
+            # Create automatic style for the price cells.
+            moneycontents = Style(name="Entero", family="table-cell",  datastylename="EnteroColor",parentstylename="TextRight")
+            self.doc.styles.addElement(moneycontents)
+
+
+            ns1 = NumberStyle(name="DecimalBlack", volatile="true")
+            ns1.addElement(Number(decimalplaces="2", minintegerdigits="1", grouping="true"))
+            self.doc.styles.addElement(ns1)
+
+            # Create the main style.
+            ns2 = NumberStyle(name="DecimalColor")
+            ns2.addElement(TextProperties(color="#ff0000"))
+            ns2.addElement(Text(text="-"))
+            ns2.addElement(Number(decimalplaces="2", minintegerdigits="1", grouping="true"))
+            ns2.addElement(Map(condition="value()>=0", applystylename="DecimalBlack"))
+            self.doc.styles.addElement(ns2)
+            
+            # Create automatic style for the price cells.
+            moneycontents = Style(name="Decimal", family="table-cell",  datastylename="DecimalColor",parentstylename="TextRight")
+            self.doc.styles.addElement(moneycontents)
+
+        ##################################################
+        ODF.__init__(self, filename)
         self.doc=OpenDocumentSpreadsheet()
         self.sheets=[]
         self.activeSheet=None
-
-#    <style:style style:family="table-cell" style:parent-style-name="Default" style:name="HHeaderOrange">
-#      <style:table-cell-properties style:repeat-content="false" ns42:vertical-justify="auto" fo:background-color="#ffcc99" style:text-align-source="fix" fo:border="0.06pt solid #000000"/>
-#      <style:paragraph-properties fo:text-align="center" css3t:text-justify="auto"/>
-#      <style:text-properties fo:font-weight="bold"/>
-#    </style:style>
-        hs=Style(name="HeaderOrange", family="table-cell")
-        hs.addElement(TableCellProperties(backgroundcolor="#ffcc99", border="0.06pt solid #000000"))
-        hs.addElement(TextProperties( fontweight="bold"))
-        hs.addElement(ParagraphProperties(textalign="center"))
-        self.doc.styles.addElement(hs)
-        
-        hs=Style(name="HeaderYellow", family="table-cell")
-        hs.addElement(TableCellProperties(backgroundcolor="#ffff7f", border="0.06pt solid #000000"))
-        hs.addElement(TextProperties(fontweight="bold"))
-        hs.addElement(ParagraphProperties(textalign="left"))
-        self.doc.styles.addElement(hs)        
-
-        tr=Style(name="TextRight", family="table-cell")
-        tr.addElement(TableCellProperties(border="0.06pt solid #000000"))
-        tr.addElement(ParagraphProperties(textalign="end"))
-        self.doc.styles.addElement(tr)
-
-        hs=Style(name="TextLeft", family="table-cell")
-        hs.addElement(TableCellProperties(border="0.06pt solid #000000"))
-        hs.addElement(ParagraphProperties(textalign="left"))
-        self.doc.styles.addElement(hs)
-        
-        # Create the styles for $AUD format currency values
-        ns1 = CurrencyStyle(name="EuroBlack", volatile="true")
-        ns1.addElement(Number(decimalplaces="2", minintegerdigits="1", grouping="true"))
-        ns1.addElement(CurrencySymbol(language="es", country="ES", text=" €"))
-        self.doc.styles.addElement(ns1)
-
-        # Create the main style.
-        ns2 = CurrencyStyle(name="EuroColor")
-        ns2.addElement(TextProperties(color="#ff0000"))
-        ns2.addElement(Text(text="-"))
-        ns2.addElement(Number(decimalplaces="2", minintegerdigits="1", grouping="true"))
-        ns2.addElement(CurrencySymbol(language="es", country="ES", text=" €"))
-        ns2.addElement(Map(condition="value()>=0", applystylename="EuroBlack"))
-        self.doc.styles.addElement(ns2)
-        
-        # Create automatic style for the price cells.
-        moneycontents = Style(name="Euro", family="table-cell",  datastylename="EuroColor",parentstylename="TextRight")
-        self.doc.automaticstyles.addElement(moneycontents)
-        
-        #Percentage
-        nonze = PercentageStyle(name='PercentageBlack')
-        nonze.addElement(TextProperties(color="#000000"))
-        nonze.addElement(Number(decimalplaces='2', minintegerdigits='1'))
-        nonze.addElement(Text(text=' %'))
-        self.doc.styles.addElement(nonze)
-        
-        nonze2 = PercentageStyle(name='PercentageColor')
-        nonze2.addElement(TextProperties(color="#ff0000"))
-        nonze2.addElement(Text(text="-"))
-        nonze2.addElement(Number(decimalplaces='2', minintegerdigits='1'))
-        nonze2.addElement(Text(text=' %'))
-        nonze2.addElement(Map(condition="value()>=0", applystylename="PercentageBlack"))
-        self.doc.styles.addElement(nonze2)
-        
-        pourcent = Style(name='Percentage', family='table-cell', datastylename='PercentageColor',parentstylename="TextRight")
-#        pourcent.addElement(TableCellProperties(border="0.06pt solid #000000"))
-#        pourcent.addElement(ParagraphProperties(textalign='end'))
-#        pourcent.addElement(TextProperties(attributes={'fontsize':"10pt",'fontweight':"bold", 'color':"#000000" }))
-        self.doc.automaticstyles.addElement(pourcent)
-        
-        #create custom format in styles.xml
-        date_style = DateStyle(name="DatetimeBlack") #, language="lv", country="LV")
-        date_style.addElement(Year(style="long"))
-        date_style.addElement(Text(text="-"))
-        date_style.addElement(Month(style="long"))
-        date_style.addElement(Text(text="-"))
-        date_style.addElement(Day(style="long"))
-        date_style.addElement(Text(text=" "))
-        date_style.addElement(Hours(style="long"))
-        date_style.addElement(Text(text=":"))
-        date_style.addElement(Minutes(style="long"))
-        date_style.addElement(Text(text=":"))
-        date_style.addElement(Seconds(style="long"))
-        self.doc.styles.addElement(date_style)
-        #link to generated style from content.xml
-        ds = Style(name="Datetime", datastylename="DatetimeBlack",parentstylename="TextLeft", family="table-cell")
-        self.doc.automaticstyles.addElement(ds)
-        
-        
-        #create custom format in styles.xml
-        date_style = DateStyle(name="DateBlack") #, language="lv", country="LV")
-        date_style.addElement(Year(style="long"))
-        date_style.addElement(Text(text="-"))
-        date_style.addElement(Month(style="long"))
-        date_style.addElement(Text(text="-"))
-        date_style.addElement(Day(style="long"))
-        self.doc.styles.addElement(date_style)
-        #link to generated style from content.xml
-        ds = Style(name="Date", datastylename="DateBlack",parentstylename="TextLeft", family="table-cell")
-        self.doc.automaticstyles.addElement(ds)
-
-#    <number:number-style style:volatile="true" style:name="N108P0">
-#      <number:number number:min-integer-digits="1" number:decimal-places="2" ns41:min-decimal-places="2"/>
-#    </number:number-style>
-#    <number:number-style style:name="N108">
-#      <style:text-properties fo:color="#ff0000"/>
-#      <number:text>-</number:text>
-#      <number:number number:min-integer-digits="1" number:decimal-places="2" ns41:min-decimal-places="2"/>
-#      <style:map style:condition="value()&gt;=0" style:apply-style-name="N108P0"/>
-#    </number:number-style>
-        # Create the styles for $AUD format currency values
-        ns1 = NumberStyle(name="EnteroBlack", volatile="true")
-        ns1.addElement(Number(decimalplaces="0", minintegerdigits="1", grouping="true"))
-        self.doc.styles.addElement(ns1)
-
-        # Create the main style.
-        ns2 = NumberStyle(name="EnteroColor")
-        ns2.addElement(TextProperties(color="#ff0000"))
-        ns2.addElement(Text(text="-"))
-        ns2.addElement(Number(decimalplaces="0", minintegerdigits="1", grouping="true"))
-        ns2.addElement(Map(condition="value()>=0", applystylename="EnteroBlack"))
-        self.doc.styles.addElement(ns2)
-        
-        # Create automatic style for the price cells.
-        moneycontents = Style(name="Entero", family="table-cell",  datastylename="EnteroColor",parentstylename="TextRight")
-        self.doc.styles.addElement(moneycontents)
+        styleHeaders()
+        styleParagraphs()
+        styleCurrrencies()
+        styleDatetimes()
+        stylePercentages()
+        styleNumbers()
 
 
-        ns1 = NumberStyle(name="DecimalBlack", volatile="true")
-        ns1.addElement(Number(decimalplaces="2", minintegerdigits="1", grouping="true"))
-        self.doc.styles.addElement(ns1)
-
-        # Create the main style.
-        ns2 = NumberStyle(name="DecimalColor")
-        ns2.addElement(TextProperties(color="#ff0000"))
-        ns2.addElement(Text(text="-"))
-        ns2.addElement(Number(decimalplaces="2", minintegerdigits="1", grouping="true"))
-        ns2.addElement(Map(condition="value()>=0", applystylename="DecimalBlack"))
-        self.doc.styles.addElement(ns2)
-        
-        # Create automatic style for the price cells.
-        moneycontents = Style(name="Decimal", family="table-cell",  datastylename="DecimalColor",parentstylename="TextRight")
-        self.doc.styles.addElement(moneycontents)
 
     def createSheet(self, title):
         s=OdfSheet(self.doc, title)
@@ -905,13 +970,6 @@ class ODS():
             sheet.generate(self)
         self.doc.save(self.filename)
 
-
-    def setMetadata(self, title,  description, creator):
-        self.doc.meta.addElement(Title(text=title))
-        self.doc.meta.addElement(Description(text=description))
-        self.doc.meta.addElement(InitialCreator(text=creator))
-        self.doc.meta.addElement(Creator(text=creator))
-
 ##########################################################################################
 def letter_add(letter, number):
     """Add to columns to letter
@@ -964,4 +1022,16 @@ if __name__ == "__main__":
     doc.simpleParagraph("Hola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todosHola a todos")
     doc.numberedList(["Pryueba hola no", "Adios", "Bienvenido"])
     doc.header("Adios", 2)
+    doc.addImage("images/crown.png")
+    p = P(stylename="Standard")
+    p.addText("Este es un ejemplo de imagen as char: ")
+    p.addElement(doc.image("images/crown.png", "3cm", "3cm"))
+    p.addText(". Ahora sigo escribiendo sin problemas.")
+    doc.doc.text.addElement(p)
+    doc.simpleParagraph("Como ves puedo repetirla mil veces sin que me aumente el tamaño del fichero, porque uso referencias")
+    p=P(stylename="Standard")
+    for i in range(1000):
+        p.addElement(doc.image("images/crown.png", "4cm", "4cm"))
+    p.addText(". Se acab´o.")
+    doc.doc.text.addElement(p)
     doc.save()
