@@ -5103,6 +5103,17 @@ class SetCreditCards(SetCommons):
                 s.arr.append(t)
         return s
 
+    def qcombobox(self, combo,  selected=None):
+        """Load set items in a comobo using id and name
+        Selected is and object
+        It sorts by name the arr""" 
+        self.order_by_name()
+        combo.clear()
+        for a in self.arr:
+            combo.addItem("{} ({})".format(a.name, a.numero), a.id)
+
+        if selected!=None:
+            combo.setCurrentIndex(combo.findData(selected.id))
 class SetCreditCardOperations:
     def __init__(self, mem):
         self.mem=mem
@@ -7200,6 +7211,8 @@ class SetOHCLYearly(SetOHCL):
         lastohcl=self.find(year-1)
         if lastohcl:
             return lastohcl.percentage(ohcl)
+        if ohcl:
+            return Percentage((ohcl.close-ohcl.open), ohcl.open)
         else:
             return Percentage()
         
