@@ -1,15 +1,16 @@
 import datetime
 import logging
 import sys
-from odf.opendocument import OpenDocumentSpreadsheet,  OpenDocumentText,  load
+from odf.opendocument import OpenDocumentSpreadsheet,  OpenDocumentText,  load,  __version__
 from odf.style import Footer, FooterStyle, GraphicProperties, HeaderFooterProperties, Style, TextProperties, TableColumnProperties, Map,  TableProperties,  TableCellProperties, PageLayout, PageLayoutProperties, ParagraphProperties,  ListLevelProperties,  MasterPage
 from odf.number import  CurrencyStyle, CurrencySymbol,  Number, NumberStyle, Text,  PercentageStyle,  DateStyle, Year, Month, Day, Hours, Minutes, Seconds
 from odf.text import P,  H,  Span, ListStyle,  ListLevelStyleBullet,  List,  ListItem, ListLevelStyleNumber,  OutlineLevelStyle,  OutlineStyle,  PageNumber,  PageCount
 from odf.table import Table, TableColumn, TableRow, TableCell,  TableHeaderRows
 from odf.draw import Frame, Image
-from odf.dc import Creator, Description, Title
+from odf.dc import Creator, Description, Title, Date
 from odf.meta import InitialCreator
 from odf.config import ConfigItem, ConfigItemMapEntry, ConfigItemMapIndexed, ConfigItemMapNamed,  ConfigItemSet
+from odf.office import Annotation
 from decimal import Decimal
 
 class ODF:
@@ -358,6 +359,9 @@ class OdfCell:
         self.number=number
         self.object=object
         self.style=style
+        self.spannedColumns=1
+        self.spannedRows=1
+        self.comment=None
 
     def generate(self):
         if self.object.__class__==OdfMoney:
@@ -375,9 +379,27 @@ class OdfCell:
         else:
             odfcell = TableCell(valuetype="string", value=self.object,  stylename=self.style)
             odfcell.addElement(P(text = self.object))
+        if self.spannedRows!=1 or self.spannedColumns!=1:
+            odfcell.setAttribute("numberrowsspanned", str(self.spannedRows))
+            odfcell.setAttribute("numbercolumnsspanned", str(self.spannedColumns))
+        if self.comment!=None:
+            a=Annotation(textstylename="TextRight")
+            d=Date()
+            d.addText(datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%S"))
+            a.addElement(d)
+            a.addElement(P(stylename="TextRight", text=self.comment))
+            odfcell.addElement(a)
+            
         return odfcell
         
+    def setSpanning(self, columns, rows):
+        """Siempre es de izquierda a derecha y de arriba a abajo
+        Si es 1 no hay spanning"""
+        self.spannedColumns=columns
+        self.spannedRows=rows
         
+    def setComment(self, comment):
+        self.comment=comment
 
 class OdfSheet:
     def __init__(self, doc,  title):
@@ -390,14 +412,8 @@ class OdfSheet:
     def setSplitPosition(self, letter, number):
         """
                 split/freeze vertical (0|1|2) - 1 = split ; 2 = freeze
-
-
     split/freeze horizontal (0|1|2) - 1 = split ; 2 = freeze
-
-
     vertical position = in cell if fixed, in screen unit if frozen
-
-
     horizontal position = in cell if fixed, in screen unit if frozen
     active zone in the splitted|frozen sheet (0..3 from let to right, top
 to bottom)"""
@@ -410,16 +426,14 @@ to bottom)"""
         self.positionBottom="0" if self.verticalSplitPosition=="0" else "1"
         self.positionLeft="0"
         self.positionRight="0" if self.horizontalSplitPosition=="0" else "1"
-        
-        
-        
+
     def setCursorPosition(self, letter, number):
         """
             Sets the cursor in a Sheet
         """
         self.cursorPositionX=self.letter2column(letter)
         self.cursorPositionY=self.number2row(number)
-        
+
     def setColumnsWidth(self, widths, unit="pt"):
         """
             widths is an int array
@@ -443,6 +457,13 @@ to bottom)"""
         
     def addCell(self, cell): 
         self.arr.append(cell)
+        
+    def getCell(self, letter, number):
+        """Returns a cell in arr"""
+        for c in self.arr:
+            if c.letter==letter  and c.number==number:
+                return c
+        return None
         
     def add(self, letter,number, result, style=None):
         if result.__class__ in (str, int, float, datetime.datetime, OdfMoney, OdfPercentage, OdfFormula, Decimal):#Un solo valor
@@ -905,6 +926,7 @@ class ODS(ODF):
         self.activeSheet=value.title
 
 
+        
     def save(self):
         #config settings information
         a=ConfigItemSet(name="ooo:view-settings")
@@ -989,6 +1011,9 @@ def letter_add(letter, number):
 def number_add(letter,number):
     return str(int(letter)+number)
 
+def ODFPYversion():
+    return __version__.split("/")[1]
+
 
 if __name__ == "__main__":
     #ODS
@@ -1009,6 +1034,10 @@ if __name__ == "__main__":
     s1.setColumnsWidth([330, 150])
     s1.setCursorPosition("D", "6")
     s1.setSplitPosition("B", "2")
+    cell=OdfCell("B", "10", "Celda con OdfCell", "HeaderYellow")
+    cell.setComment("Comentario")
+    cell.setSpanning(2, 2)
+    s1.addCell(cell)
     doc.setActiveSheet(s1)
     doc.save()
     
