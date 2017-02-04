@@ -14,6 +14,9 @@ call c:\Python34\Lib\site-packages\PyQt5\pyuic5.bat ui/wdgCalculator.ui -o ui/Ui
 call c:\Python34\Lib\site-packages\PyQt5\pyuic5.bat ui/wdgConcepts.ui -o ui/Ui_wdgConcepts.py &
 call c:\Python34\Lib\site-packages\PyQt5\pyuic5.bat ui/wdgConceptsHistorical.ui -o ui/Ui_wdgConceptsHistorical.py &
 call c:\Python34\Lib\site-packages\PyQt5\pyuic5.bat ui/wdgAccounts.ui -o ui/Ui_wdgAccounts.py &
+call c:\Python34\Lib\site-packages\PyQt5\pyuic5.bat ui/wdgCuriosity.ui -o ui/Ui_wdgCuriosity.py &
+call c:\Python34\Lib\site-packages\PyQt5\pyuic5.bat ui/wdgCuriosities.ui -o ui/Ui_wdgCuriosities.py &
+call c:\Python34\Lib\site-packages\PyQt5\pyuic5.bat ui/wdgInvestmentsRanking.ui -o ui/Ui_wdgInvestmentsRanking.py &
 call c:\Python34\Lib\site-packages\PyQt5\pyuic5.bat ui/wdgDisReinvest.ui -o ui/Ui_wdgDisReinvest.py &
 call c:\Python34\Lib\site-packages\PyQt5\pyuic5.bat ui/frmAccountsReport.ui -o ui/Ui_frmAccountsReport.py &
 call c:\Python34\Lib\site-packages\PyQt5\pyuic5.bat ui/wdgInvestmentClasses.ui -o ui/Ui_wdgInvestmentClasses.py &
