@@ -1,4 +1,5 @@
 from PyQt5.QtCore import QMetaObject, Qt,  pyqtSlot
+from PyQt5.QtGui import QPainter
 from PyQt5.QtWidgets import QAction, QApplication, QMenu, QSizePolicy, QWidget
 from libxulpymoney import day_start, str2bool
 from matplotlib.finance import candlestick2_ohlc,  plot_day_summary_oclh
@@ -9,6 +10,56 @@ from matplotlib.figure import Figure
 import pytz
 import datetime
 
+from PyQt5.QtChart import QChart,  QLineSeries, QChartView, QValueAxis, QDateTimeAxis
+
+
+
+class VCTemporalSeries(QChartView):
+    def __init__(self):
+        QChartView.__init__(self)
+        self.chart=QChart()
+        self.chart.setAnimationOptions(QChart.AllAnimations);
+        self.chart.layout().setContentsMargins(0,0,0,0);
+
+#        #Axis cration
+        self.axisX=QDateTimeAxis()
+        self.axisX.setTickCount(15);
+        self.axisX.setFormat("yyyy-MM");
+        
+        self.axisY = QValueAxis()
+        self.axisY.setLabelFormat("%i")
+
+        self.setRenderHint(QPainter.Antialiasing);
+        self.setRubberBand(QChartView.VerticalRubberBand)
+        
+        self.series=[]
+        self.maxy=0
+        self.miny=0
+
+    def appendSeries(self, name):
+        ls=QLineSeries()
+        ls.setName(name)
+        self.series.append(ls)
+        return ls
+        
+    def appendData(self, ls, x, y):
+        ls.append(x, y)
+        if y>self.maxy:
+            self.maxy=y
+        if y<self.miny:
+            self.miny=y
+        
+    def display(self):
+        self.setChart(self.chart)
+        self.chart.addAxis(self.axisY, Qt.AlignLeft);
+        self.chart.addAxis(self.axisX, Qt.AlignBottom);
+        for s in self.series:
+            self.chart.addSeries(s)
+            s.attachAxis(self.axisX)
+            s.attachAxis(self.axisY)
+        self.axisY.setRange(self.miny, self.maxy)
+        self.repaint()
+        
 class ChartType:
     lines=0
     ohcl=1

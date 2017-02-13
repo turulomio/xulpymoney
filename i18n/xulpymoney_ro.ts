@@ -750,12 +750,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="8442"/>
+        <location filename="../libxulpymoney.py" line="8453"/>
         <source>True</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="8445"/>
+        <location filename="../libxulpymoney.py" line="8456"/>
         <source>False</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1015,7 +1015,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="8413"/>
+        <location filename="../libxulpymoney.py" line="8424"/>
         <source>{} {}, {} {} and {} {}</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1025,32 +1025,32 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="8402"/>
+        <location filename="../libxulpymoney.py" line="8413"/>
         <source>year</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="8404"/>
+        <location filename="../libxulpymoney.py" line="8415"/>
         <source>years</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="8406"/>
+        <location filename="../libxulpymoney.py" line="8417"/>
         <source>month</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="8408"/>
+        <location filename="../libxulpymoney.py" line="8419"/>
         <source>months</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="8410"/>
+        <location filename="../libxulpymoney.py" line="8421"/>
         <source>day</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libxulpymoney.py" line="8412"/>
+        <location filename="../libxulpymoney.py" line="8423"/>
         <source>days</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1261,37 +1261,37 @@ Do you want to activate it?</source>
 <context>
     <name>canvasChartCompare</name>
     <message>
-        <location filename="../ui/canvaschart.py" line="99"/>
+        <location filename="../ui/canvaschart.py" line="150"/>
         <source>{}. {}: {}, {}: {}.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/canvaschart.py" line="119"/>
+        <location filename="../ui/canvaschart.py" line="170"/>
         <source>{} quotes ({})</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/canvaschart.py" line="123"/>
+        <location filename="../ui/canvaschart.py" line="174"/>
         <source>Comparing products with percentage evolution</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/canvaschart.py" line="130"/>
+        <location filename="../ui/canvaschart.py" line="181"/>
         <source>Comparing products with percentage evolution considering leverage multiplier</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/canvaschart.py" line="117"/>
+        <location filename="../ui/canvaschart.py" line="168"/>
         <source>Comparing products with a scattering</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/canvaschart.py" line="121"/>
+        <location filename="../ui/canvaschart.py" line="172"/>
         <source>Blue circles are older quotes and red ones are newer.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/canvaschart.py" line="106"/>
+        <location filename="../ui/canvaschart.py" line="157"/>
         <source>Comparing product quotes</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1299,87 +1299,87 @@ Do you want to activate it?</source>
 <context>
     <name>canvasChartHistorical</name>
     <message>
-        <location filename="../ui/canvaschart.py" line="304"/>
+        <location filename="../ui/canvaschart.py" line="355"/>
         <source>Selling price</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/canvaschart.py" line="305"/>
+        <location filename="../ui/canvaschart.py" line="356"/>
         <source>Average purchase price</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/canvaschart.py" line="204"/>
+        <location filename="../ui/canvaschart.py" line="255"/>
         <source>1 day</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/canvaschart.py" line="208"/>
+        <location filename="../ui/canvaschart.py" line="259"/>
         <source>1 week</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/canvaschart.py" line="212"/>
+        <location filename="../ui/canvaschart.py" line="263"/>
         <source>1 month</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/canvaschart.py" line="216"/>
+        <location filename="../ui/canvaschart.py" line="267"/>
         <source>1 year</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/canvaschart.py" line="302"/>
+        <location filename="../ui/canvaschart.py" line="353"/>
         <source>SMA200</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/canvaschart.py" line="303"/>
+        <location filename="../ui/canvaschart.py" line="354"/>
         <source>SMA50</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/canvaschart.py" line="465"/>
+        <location filename="../ui/canvaschart.py" line="516"/>
         <source>Lines</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/canvaschart.py" line="471"/>
+        <location filename="../ui/canvaschart.py" line="522"/>
         <source>Candles</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/canvaschart.py" line="306"/>
+        <location filename="../ui/canvaschart.py" line="357"/>
         <source>Purchase point</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/canvaschart.py" line="307"/>
+        <location filename="../ui/canvaschart.py" line="358"/>
         <source>Sales point</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/canvaschart.py" line="221"/>
+        <location filename="../ui/canvaschart.py" line="272"/>
         <source>Simple moving average 50</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/canvaschart.py" line="225"/>
+        <location filename="../ui/canvaschart.py" line="276"/>
         <source>Simple moving average 200</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/canvaschart.py" line="333"/>
+        <location filename="../ui/canvaschart.py" line="384"/>
         <source>{} quotes ({})</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/canvaschart.py" line="242"/>
+        <location filename="../ui/canvaschart.py" line="293"/>
         <source>{}: {}.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/canvaschart.py" line="334"/>
+        <location filename="../ui/canvaschart.py" line="385"/>
         <source>Historical graph</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1387,102 +1387,102 @@ Do you want to activate it?</source>
 <context>
     <name>canvasChartHistoricalBuy</name>
     <message>
-        <location filename="../ui/canvaschart.py" line="611"/>
+        <location filename="../ui/canvaschart.py" line="662"/>
         <source>Simple moving average 50</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/canvaschart.py" line="615"/>
+        <location filename="../ui/canvaschart.py" line="666"/>
         <source>Simple moving average 200</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/canvaschart.py" line="632"/>
+        <location filename="../ui/canvaschart.py" line="683"/>
         <source>{}: {}.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/canvaschart.py" line="747"/>
+        <location filename="../ui/canvaschart.py" line="798"/>
         <source>SMA200</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/canvaschart.py" line="748"/>
+        <location filename="../ui/canvaschart.py" line="799"/>
         <source>SMA50</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/canvaschart.py" line="682"/>
+        <location filename="../ui/canvaschart.py" line="733"/>
         <source>{} quotes ({})</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/canvaschart.py" line="683"/>
+        <location filename="../ui/canvaschart.py" line="734"/>
         <source>Historical graph</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/canvaschart.py" line="750"/>
+        <location filename="../ui/canvaschart.py" line="801"/>
         <source>Purchase reference ({})</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/canvaschart.py" line="749"/>
+        <location filename="../ui/canvaschart.py" line="800"/>
         <source>Sell reference ({})</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/canvaschart.py" line="751"/>
+        <location filename="../ui/canvaschart.py" line="802"/>
         <source>First reinvestment selling point ({})</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/canvaschart.py" line="753"/>
+        <location filename="../ui/canvaschart.py" line="804"/>
         <source>First reinvestment purchase point ({})</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/canvaschart.py" line="752"/>
+        <location filename="../ui/canvaschart.py" line="803"/>
         <source>First reinvestment average purchase point ({})</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/canvaschart.py" line="754"/>
+        <location filename="../ui/canvaschart.py" line="805"/>
         <source>Second reinvestment selling point ({})</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/canvaschart.py" line="756"/>
+        <location filename="../ui/canvaschart.py" line="807"/>
         <source>Second reinvestment purchase point ({})</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/canvaschart.py" line="755"/>
+        <location filename="../ui/canvaschart.py" line="806"/>
         <source>Second reinvestment average purchase point ({})</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/canvaschart.py" line="757"/>
+        <location filename="../ui/canvaschart.py" line="808"/>
         <source>Third reinvestment selling point ({})</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/canvaschart.py" line="759"/>
+        <location filename="../ui/canvaschart.py" line="810"/>
         <source>Third reinvestment purchase point ({})</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/canvaschart.py" line="758"/>
+        <location filename="../ui/canvaschart.py" line="809"/>
         <source>Third reinvestment average purchase point ({})</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/canvaschart.py" line="741"/>
+        <location filename="../ui/canvaschart.py" line="792"/>
         <source>Lines calculated investing: 2500 &#xe2;&#x82;&#xac;, 3500 &#xe2;&#x82;&#xac;, 12000 &#xe2;&#x82;&#xac;, 12000 &#xe2;&#x82;&#xac;. </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/canvaschart.py" line="741"/>
+        <location filename="../ui/canvaschart.py" line="792"/>
         <source>Selling percentage: {} %.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1490,52 +1490,52 @@ Do you want to activate it?</source>
 <context>
     <name>canvasChartHistoricalReinvest</name>
     <message>
-        <location filename="../ui/canvaschart.py" line="873"/>
+        <location filename="../ui/canvaschart.py" line="924"/>
         <source>{}: {}.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/canvaschart.py" line="882"/>
+        <location filename="../ui/canvaschart.py" line="933"/>
         <source>Purchase point</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/canvaschart.py" line="883"/>
+        <location filename="../ui/canvaschart.py" line="934"/>
         <source>Sales point</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/canvaschart.py" line="1012"/>
+        <location filename="../ui/canvaschart.py" line="1063"/>
         <source>{} quotes ({})</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/canvaschart.py" line="1013"/>
+        <location filename="../ui/canvaschart.py" line="1064"/>
         <source>Reinvest graph</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/canvaschart.py" line="880"/>
+        <location filename="../ui/canvaschart.py" line="931"/>
         <source>Selling price: {}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/canvaschart.py" line="881"/>
+        <location filename="../ui/canvaschart.py" line="932"/>
         <source>Average purchase price: {}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/canvaschart.py" line="884"/>
+        <location filename="../ui/canvaschart.py" line="935"/>
         <source>New selling reference: {}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/canvaschart.py" line="885"/>
+        <location filename="../ui/canvaschart.py" line="936"/>
         <source>New purchase average: {}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/canvaschart.py" line="904"/>
+        <location filename="../ui/canvaschart.py" line="955"/>
         <source>Gains percentage: {} %. Gains in the new selling reference: {}</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1543,71 +1543,13 @@ Do you want to activate it?</source>
 <context>
     <name>canvasChartIntraday</name>
     <message>
-        <location filename="../ui/canvaschart.py" line="68"/>
+        <location filename="../ui/canvaschart.py" line="119"/>
         <source>{} quotes ({})</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/canvaschart.py" line="48"/>
+        <location filename="../ui/canvaschart.py" line="99"/>
         <source>Intraday graph</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>canvasTotal</name>
-    <message>
-        <location filename="../ui/wdgTotal.py" line="93"/>
-        <source>Total assets</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ui/wdgTotal.py" line="94"/>
-        <source>Zero risk assets</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ui/wdgTotal.py" line="96"/>
-        <source>Bond assets</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ui/wdgTotal.py" line="95"/>
-        <source>Risk assets</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ui/wdgTotal.py" line="37"/>
-        <source>Date: {}. Total assests {}. Zero risk: {}. Bonds: {}</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ui/wdgTotal.py" line="47"/>
-        <source>Filling report data</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ui/wdgTotal.py" line="47"/>
-        <source>Cancel</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ui/wdgTotal.py" line="49"/>
-        <source>Calculating data...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ui/wdgTotal.py" line="76"/>
-        <source>Total report</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ui/wdgTotal.py" line="77"/>
-        <source>Total Assets ({})</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ui/wdgTotal.py" line="92"/>
-        <source>Total without losses assets</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -7472,7 +7414,7 @@ Daily Diff: {5}. Investment average age: {6}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="343"/>
+        <location filename="../ui/wdgTotal.py" line="342"/>
         <source>Data from selected year</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7482,22 +7424,22 @@ Daily Diff: {5}. Investment average age: {6}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="526"/>
+        <location filename="../ui/wdgTotal.py" line="564"/>
         <source>Incomes of {0} of {1}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="733"/>
+        <location filename="../ui/wdgTotal.py" line="771"/>
         <source>Dividends of {0} of {1}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="571"/>
+        <location filename="../ui/wdgTotal.py" line="609"/>
         <source>Expenses of {0} of {1}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="969"/>
+        <location filename="../ui/wdgTotal.py" line="1007"/>
         <source>You can&apos;t close this tab</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7617,32 +7559,32 @@ Daily Diff: {5}. Investment average age: {6}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="730"/>
+        <location filename="../ui/wdgTotal.py" line="768"/>
         <source>Dividends of {0}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="559"/>
+        <location filename="../ui/wdgTotal.py" line="597"/>
         <source>Expenses of {0}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="514"/>
+        <location filename="../ui/wdgTotal.py" line="552"/>
         <source>Incomes of {}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="610"/>
+        <location filename="../ui/wdgTotal.py" line="648"/>
         <source>Selling operations of {0}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="618"/>
+        <location filename="../ui/wdgTotal.py" line="656"/>
         <source>Selling operations of {0} of {1}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="826"/>
+        <location filename="../ui/wdgTotal.py" line="864"/>
         <source>Commision report of {}</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7652,77 +7594,77 @@ Daily Diff: {5}. Investment average age: {6}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="962"/>
+        <location filename="../ui/wdgTotal.py" line="1000"/>
         <source>Taxes report of {}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="913"/>
+        <location filename="../ui/wdgTotal.py" line="951"/>
         <source>Investment operation retentions</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="914"/>
+        <location filename="../ui/wdgTotal.py" line="952"/>
         <source>Dividend retentions</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="915"/>
+        <location filename="../ui/wdgTotal.py" line="953"/>
         <source>Other paid taxes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="916"/>
+        <location filename="../ui/wdgTotal.py" line="954"/>
         <source>Returned taxes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="767"/>
+        <location filename="../ui/wdgTotal.py" line="805"/>
         <source>Bank comissions</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="768"/>
+        <location filename="../ui/wdgTotal.py" line="806"/>
         <source>Custody fees</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="769"/>
+        <location filename="../ui/wdgTotal.py" line="807"/>
         <source>Invesment operation comissions</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="707"/>
+        <location filename="../ui/wdgTotal.py" line="745"/>
         <source>Positive gross selling operations: {}. Negative gross selling operations: {}.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="650"/>
+        <location filename="../ui/wdgTotal.py" line="688"/>
         <source>Selling operations of {0}  (Sold after a year)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="658"/>
+        <location filename="../ui/wdgTotal.py" line="696"/>
         <source>Selling operations of {0} of {1} (Sold after a year)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="689"/>
+        <location filename="../ui/wdgTotal.py" line="727"/>
         <source>Selling operations of {0} (Sold before a year)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="697"/>
+        <location filename="../ui/wdgTotal.py" line="735"/>
         <source>Selling operations of {0} of {1} (Sold before a year)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="984"/>
+        <location filename="../ui/wdgTotal.py" line="1022"/>
         <source>You only can double click in incomes, gains, dividends and expenses.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="984"/>
+        <location filename="../ui/wdgTotal.py" line="1022"/>
         <source>Make right click to see comission and tax reports</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7742,12 +7684,12 @@ Daily Diff: {5}. Investment average age: {6}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="842"/>
+        <location filename="../ui/wdgTotal.py" line="880"/>
         <source>Brut gains</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="843"/>
+        <location filename="../ui/wdgTotal.py" line="881"/>
         <source>Brut dividends</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7757,23 +7699,63 @@ Daily Diff: {5}. Investment average age: {6}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="841"/>
+        <location filename="../ui/wdgTotal.py" line="879"/>
         <source>Product type</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="885"/>
+        <location filename="../ui/wdgTotal.py" line="923"/>
         <source>Gains by product type of {}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="881"/>
+        <location filename="../ui/wdgTotal.py" line="919"/>
         <source>Gains + Dividends: {} + {} = {}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/wdgTotal.py" line="823"/>
+        <location filename="../ui/wdgTotal.py" line="861"/>
         <source>Number of purchase and sale investment operations: {}. Comissions average: {}</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/wdgTotal.py" line="484"/>
+        <source>Total without losses assets</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/wdgTotal.py" line="485"/>
+        <source>Total assets</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/wdgTotal.py" line="486"/>
+        <source>Zero risk assets</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/wdgTotal.py" line="487"/>
+        <source>Bonds</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/wdgTotal.py" line="488"/>
+        <source>Risk assets</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/wdgTotal.py" line="491"/>
+        <source>Filling report data</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/wdgTotal.py" line="491"/>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/wdgTotal.py" line="493"/>
+        <source>Calculating data...</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
