@@ -8284,6 +8284,17 @@ def qmessagebox(text):
     m.exec_()   
     
     
+def date2epochms(d):
+    """Puede ser dateime o date"""
+    if d.__class__==datetime.date:
+        return (datetime.datetime(d.year, d.month, d.day, 23, 59, 59, 999999)-datetime.datetime(1970, 1, 1, 0, 0)).total_seconds()*1000
+    elif d.__class__==datetime.datetime:
+        return (d-datetime.datetime(1970, 1, 1, 0, 0)).total_seconds()*1000
+    logging.critical("{} can't ve converted to epochms".format(d.__class__))
+    
+    
+    
+    
 def datetime_string(dt, zone):
     if dt==None:
         resultado="None"
