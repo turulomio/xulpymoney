@@ -9,102 +9,6 @@ from Ui_wdgTotal import Ui_wdgTotal
 import datetime
 
 
-#
-## Matplotlib Figure object
-#class canvasTotal(FigureCanvasQTAgg):
-#    def __init__(self, mem, parent):
-#        self.mem=mem
-#        self.fig = Figure()
-#        FigureCanvasQTAgg.__init__(self, self.fig)
-#        FigureCanvasQTAgg.setSizePolicy(self,QSizePolicy.Expanding, QSizePolicy.Expanding)
-#        FigureCanvasQTAgg.updateGeometry(self)
-#        self.ax = self.fig.add_subplot(111)
-#        self.labels=[]
-#        self.plot_main=None
-#        self.plot_zero=None
-#        self.plot_bonds=None
-#        self.plot_nonzero=None
-#        self.plot_no_losses=None
-#        self.plotted=False#Shown if the graphics has been plotted anytime.
-#
-#    def footer(self, date, y): 
-#        try:
-#            dt=num2date(date)
-#            lastday=self.totalgraphic.find(dt.year, dt.month).last_day()#Need last day of a month to show
-#            index=self.dates.index(lastday)
-#            c=self.mem.localcurrency.string
-#            return self.tr("Date: {}. Total assests {}. Zero risk: {}. Bonds: {}".format(lastday, c(self.total[index]), c(self.zero[index]), c(self.bonds[index])))
-#        except:
-#            return "Not found"
-#            
-#    def mydraw(self, mem, totalgraphic):
-#        self.plotted=True
-#        (self.dates, self.total, self.zero, self.bonds, self.risk, self.no_losses)=([], [], [], [], [], [])
-#        self.totalgraphic=totalgraphic
-#        self.ax.clear()
-#        
-#        progress = QProgressDialog(self.tr("Filling report data"), self.tr("Cancel"), 0,self.totalgraphic.length())
-#        progress.setModal(True)
-#        progress.setWindowTitle(self.tr("Calculating data..."))
-#        progress.setWindowIcon(QIcon(":/xulpymoney/coins.png"))
-#        
-#        for m in self.totalgraphic.arr:
-#            if progress.wasCanceled():
-#                break
-#            progress.setValue(progress.value()+1)
-#            self.dates.append(m.last_day())
-#            total=m.total().amount
-#            self.total.append(total)
-#            zero=m.total_zerorisk().amount
-#            self.zero.append(zero)
-#            bonds=m.total_bonds().amount
-#            self.bonds.append(bonds)
-#            self.risk.append(total-zero-bonds)
-#            self.no_losses.append(m.total_no_losses().amount)
-#        
-#        self.ax.xaxis.set_major_locator(YearLocator())    
-#        self.ax.xaxis.set_minor_locator(MonthLocator())
-#        self.ax.xaxis.set_major_formatter( DateFormatter('%Y'))        
-#        self.ax.xaxis.set_minor_formatter( DateFormatter(''))                   
-#        self.ax.autoscale_view()
-#        
-#        # format the coords message box
-#        self.ax.fmt_xdata = DateFormatter('%Y-%m')
-#        self.ax.format_coord = self.footer  
-#        self.ax.grid(True)
-#        self.ax.set_title(self.tr("Total report"), fontsize=30, fontweight="bold", y=1.02)
-#        self.ax.set_ylabel(self.tr("Total Assets ({})".format(self.mem.localcurrency.symbol)))
-#        self.plot_main, =self.ax.plot_date(self.dates, self.total, '-')
-#        self.plot_zero, =self.ax.plot_date(self.dates, self.zero, '-')
-#        self.plot_bonds, =self.ax.plot_date(self.dates, self.bonds, '-')
-#        self.plot_risk, =self.ax.plot_date(self.dates, self.risk, '-')
-#        self.plot_no_losses, =self.ax.plot_date(self.dates, self.no_losses,  '--',  color='orange', lw=1) 
-#        
-#        self.showLegend()
-#        self.draw()        
-#        
-#    def showLegend(self):
-#        """Alterna mostrando y desmostrando legend, empieza con sí"""
-#        del self.labels
-#        self.labels=[]
-#        last=self.totalgraphic.find(datetime.date.today().year, datetime.date.today().month)
-#        self.labels.append((self.plot_no_losses, self.tr("Total without losses assets") + " ( {} )".format(last.total_no_losses())))
-#        self.labels.append((self.plot_main, self.tr("Total assets") + " ( {} )".format(last.total())))
-#        self.labels.append((self.plot_zero,self.tr("Zero risk assets") + " ( {} )".format(last.total_zerorisk())))
-#        self.labels.append((self.plot_risk,self.tr("Risk assets") + " ( {} )".format(last.total()-last.total_zerorisk()-last.total_bonds())))
-#        self.labels.append((self.plot_bonds,self.tr("Bond assets") + " ( {} )".format(last.total_bonds())))
-#        
-#        if self.ax.legend_==None:
-#            (plots, labels)=zip(*self.labels)
-#            self.ax.legend(plots, labels, loc="best")
-#        else:
-#            self.ax.legend_=None
-#
-#    def mouseReleaseEvent(self,  event):
-#        self.showLegend()
-#        self.draw()
-#    
-
 
 class TotalMonth:
     """All values are calculated in last day of the month"""
@@ -481,7 +385,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
         lsNoLoses=self.view.appendSeries(self.tr("Total without losses assets")+": {}".format(last.total_no_losses()))
         lsMain=self.view.appendSeries(self.tr("Total assets")+": {}".format(last.total()))
         lsZero=self.view.appendSeries(self.tr("Zero risk assets")+": {}".format(last.total_zerorisk()))
-        lsBonds=self.view.appendSeries(self.tr("Bonds")+": {}".format(last.total_bonds()))
+        lsBonds=self.view.appendSeries(self.tr("Bond assets")+": {}".format(last.total_bonds()))
         lsRisk=self.view.appendSeries(self.tr("Risk assets")+": {}".format(last.total()-last.total_zerorisk()-last.total_bonds()))
                 
         
@@ -504,12 +408,6 @@ class wdgTotal(QWidget, Ui_wdgTotal):
             self.view.appendData(lsNoLoses, epoch, m.total_no_losses().amount)
         self.view.display()
         
-#        self.labels.append((self.plot_no_losses, self.tr("Total without losses assets") + " ( {} )".format(last.total_no_losses())))
-#        self.labels.append((self.plot_main, self.tr("Total assets") + " ( {} )".format(last.total())))
-#        self.labels.append((self.plot_zero,self.tr("Zero risk assets") + " ( {} )".format(last.total_zerorisk())))
-#        self.labels.append((self.plot_risk,self.tr("Risk assets") + " ( {} )".format(last.total()-last.total_zerorisk()-last.total_bonds())))
-#        self.labels.append((self.plot_bonds,self.tr("Bond assets") + " ( {} )".format(last.total_bonds())))
-#        
         self.tabGraphTotal.addWidget(self.view)
         
         print ("wdgTotal > load_graphic: {0}".format(datetime.datetime.now()-inicio))

@@ -1,7 +1,7 @@
 from PyQt5.QtCore import QMetaObject, Qt,  pyqtSlot
-from PyQt5.QtGui import QPainter
+from PyQt5.QtGui import QPainter, QFont
 from PyQt5.QtWidgets import QAction, QApplication, QMenu, QSizePolicy, QWidget
-from libxulpymoney import day_start, str2bool
+from libxulpymoney import day_start, str2bool,  Percentage
 from matplotlib.finance import candlestick2_ohlc,  plot_day_summary_oclh
 from decimal import Decimal
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg
@@ -10,7 +10,7 @@ from matplotlib.figure import Figure
 import pytz
 import datetime
 
-from PyQt5.QtChart import QChart,  QLineSeries, QChartView, QValueAxis, QDateTimeAxis
+from PyQt5.QtChart import QChart,  QLineSeries, QChartView, QValueAxis, QDateTimeAxis,  QPieSeries
 
 
 
@@ -36,19 +36,117 @@ class VCTemporalSeries(QChartView):
         self.maxy=0
         self.miny=0
 
-    def appendSeries(self, name):
+    def appendSeries(self, name,  currency=None):
+        """
+            currency is a Currency object
+        """
+        self.currency=currency
         ls=QLineSeries()
         ls.setName(name)
         self.series.append(ls)
         return ls
         
     def appendData(self, ls, x, y):
+        
         ls.append(x, y)
         if y>self.maxy:
             self.maxy=y
         if y<self.miny:
             self.miny=y
         
+    def display(self):
+        self.setChart(self.chart)
+        self.chart.addAxis(self.axisY, Qt.AlignLeft);
+        self.chart.addAxis(self.axisX, Qt.AlignBottom);
+        for s in self.series:
+            self.chart.addSeries(s)
+            s.attachAxis(self.axisX)
+            s.attachAxis(self.axisY)
+        self.axisY.setRange(self.miny, self.maxy)
+        self.repaint()
+
+class VCPie(QChartView):
+    def __init__(self):
+        QChartView.__init__(self)
+        self.setRenderHint(QPainter.Antialiasing)
+        self.clear()
+        
+    def setCurrency(self, currency):
+        """
+            currency is a Currency Object
+        """
+        self.currency=currency
+
+    def appendData(self, name, value,  exploded=False):
+        slice=self.serie.append(name, value)
+        slice.setExploded(exploded)
+        slice.setLabelVisible()
+        
+    def display(self):
+        tooltip=""
+        c=self.currency.string
+        for slice in self.serie.slices():
+            tooltip=tooltip+"{}: {} ({})\n".format(slice.label(), c(slice.value()), Percentage(slice.percentage(), 1)).upper()
+            slice.setLabel("{}: {}".format(slice.label(), Percentage(slice.percentage(), 1)).upper())
+        tooltip=tooltip+"Total: {}".format(c(self.serie.sum())).upper()
+        self.setChart(self.chart)
+        self.chart.addSeries(self.serie)
+        
+        self.setToolTip(tooltip)
+        self.repaint()
+        
+    def clear(self):
+        self.chart=QChart()
+        font=QFont()
+        font.setBold(True)
+        font.setPointSize(12)
+        self.chart.setTitleFont(font)
+        self.chart.layout().setContentsMargins(0,0,0,0);
+        self.chart.setAnimationOptions(QChart.AllAnimations);
+        self.serie=QPieSeries()
+        self.serie.setPieStartAngle(90)
+        self.serie.setPieEndAngle(450)
+        
+class VCCandlestick(QChartView):
+    def __init__(self):
+        QChartView.__init__(self)
+        self.chart=QChart()
+        self.chart.setAnimationOptions(QChart.AllAnimations);
+        self.chart.layout().setContentsMargins(0,0,0,0);
+
+#        #Axis cration
+        self.axisX=QDateTimeAxis()
+        self.axisX.setTickCount(15);
+        self.axisX.setFormat("yyyy-MM");
+        
+        self.axisY = QValueAxis()
+        self.axisY.setLabelFormat("%i")
+
+        self.setRenderHint(QPainter.Antialiasing);
+        self.setRubberBand(QChartView.VerticalRubberBand)
+        
+        self.series=[]
+        self.maxy=0
+        self.miny=0
+
+    def appendSeries(self, name):
+#        ls=QCandlestickSeries()
+#        ls.setName(name)
+#        ls.setIncreasingColor(QColor(Qt.green));
+#        ls.setDecreasingColor(QColor(Qt.red));
+#        self.series.append(ls)
+#        return ls
+        pass    
+        
+    def appendData(self, ls, ohcl):
+#        set=QCandlestickSet(ohcl.open, ohcl.high, ohcl.low, ohcl.close,  date2epochms(ohcl.datetime()))
+#        ls.append(set)
+#        if ohcl.high>self.maxy:
+#            self.maxy=ohcl.high
+#        if ohcl.low<self.miny:
+#            self.miny=ohcl.low
+        pass
+
     def display(self):
         self.setChart(self.chart)
         self.chart.addAxis(self.axisY, Qt.AlignLeft);

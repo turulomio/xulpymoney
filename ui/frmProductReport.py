@@ -315,6 +315,12 @@ class frmProductReport(QDialog, Ui_frmProductReport):
             self.canvasHistorical.show()
             self.ntbHistorical.show() 
             
+#            view=VCCandlestick()
+#            view.appendSeries(self.product.name)
+#            for ohcl in self.product.result.ohclDaily.arr:
+#                view.appendData(ohcl)
+#            view.display()
+            
         #Canvas Intradia
         if len(self.product.result.intradia.arr)<2:
             self.canvasIntraday.hide()
