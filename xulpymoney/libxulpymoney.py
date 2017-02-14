@@ -7868,6 +7868,7 @@ class MemXulpymoney:
         self.zones=SetZones(self)
         self.zones.load_all()
         self.localzone=self.zones.find_by_name(self.settingsdb.value("mem/localzone", "Europe/Madrid"))
+        print(self.localzone.now(),  self.localzone.now().utcoffset(),  self.localzone.now().tzinfo)
         
         self.tiposoperaciones=SetOperationTypes(self)
         self.tiposoperaciones.load()
@@ -8016,6 +8017,7 @@ class SetZones(SetCommons):
         self.append(Zone(self.mem).init__create(7,'America/New_York', self.mem.countries.find_by_id("us")))
         self.append(Zone(self.mem).init__create(8,'Europe/Paris', self.mem.countries.find_by_id("fr")))
         self.append(Zone(self.mem).init__create(9,'Asia/Hong_Kong', self.mem.countries.find_by_id("cn")))
+        self.append(Zone(self.mem).init__create(10,'UTC', self.mem.countries.find_by_id("es")))
 
     def qcombobox(self, combo, zone=None):
         """Carga entidades bancarias en combo"""
@@ -8250,6 +8252,16 @@ def dt_changes_tz(dt,  tztarjet):
     tarjet=tzt.normalize(dt.astimezone(tzt))
     return tarjet
 
+        
+def dt_changes_tz_with_pytz(dt,  tzname):
+    """Cambia el zoneinfo del dt a tztarjet. El dt del parametre tiene un zoneinfo"""
+    if dt==None:
+        return None
+    tzt=pytz.timezone(tzname)
+    tarjet=tzt.normalize(dt.astimezone(tzt))
+    return tarjet
+
+
 
 def status_insert(cur,  source,  process):
         cur.execute('insert into status (source, process) values (%s,%s);', (source,  process))
@@ -8283,16 +8295,42 @@ def qmessagebox(text):
     m.setText(text)
     m.exec_()   
     
+def dtaware2utc(dtaware):
+    """
+date -u -R
+Tue, 14 Feb 2017 20:11:04 +0000
+ date  -R
+Tue, 14 Feb 2017 21:11:08 +0100
+"""
+    pass
     
-def date2epochms(d):
-    """Puede ser dateime o date"""
-    if d.__class__==datetime.date:
-        return (datetime.datetime(d.year, d.month, d.day, 23, 59, 59, 999999)-datetime.datetime(1970, 1, 1, 0, 0)).total_seconds()*1000
-    elif d.__class__==datetime.datetime:
-        return (d-datetime.datetime(1970, 1, 1, 0, 0)).total_seconds()*1000
+def utc2dtaware(dt, utfoffset):
+    pass
+    
+def aware2epochms(d):
+    """
+        Puede ser dateime o date
+        Si viene con zona datetime zone aware, se convierte a UTC y se da el valor en UTC
+        return datetime.datetime.now(pytz.timezone(self.name))
+    """
+#    if d.__class__==datetime.date:
+#        return (datetime.datetime(d.year, d.month, d.day, 23, 59, 59, 999999)-datetime.datetime(1970, 1, 1, 0, 0)).total_seconds()*1000
+    if d.__class__==datetime.datetime:
+        if d.tzname()==None:#unaware datetine
+#            return (d-datetime.datetime(1970, 1, 1, 0, 0)).total_seconds()*1000
+            logging.critical("Must be aware")
+        else:#aware dateime changed to unawar
+#            return (dt_changes_tz(d, Zone(10, "UTC", "es")).replace(tzinfo=None)-datetime.datetime(1970, 1, 1, 0, 0)).total_seconds()*1000
+            utc=dt_changes_tz_with_pytz(d, 'UTC')
+            return utc.timestamp()*1000
     logging.critical("{} can't ve converted to epochms".format(d.__class__))
     
-    
+def epochms2aware(n):
+    """Return a UTC date"""
+    utc_unaware=datetime.datetime.utcfromtimestamp(n/1000)
+    utc_aware=utc_unaware.replace(tzinfo=pytz.timezone('UTC'))
+    return utc_aware
+
     
     
 def datetime_string(dt, zone):

@@ -1,7 +1,7 @@
 from PyQt5.QtCore import pyqtSlot,  Qt
 from PyQt5.QtGui import QIcon, QColor, QFont
 from PyQt5.QtWidgets import  QWidget, QMenu, QProgressDialog, QVBoxLayout, QHBoxLayout, QAbstractItemView, QTableWidgetItem, QLabel
-from libxulpymoney import AnnualTarget, Assets, Money, SetAccountOperations, SetDividendsHeterogeneus, SetInvestmentOperationsHistoricalHeterogeneus, list2string, none2decimal0, qcenter, qleft, qmessagebox,  Percentage, date2epochms
+from libxulpymoney import AnnualTarget, Assets, Money, SetAccountOperations, SetDividendsHeterogeneus, SetInvestmentOperationsHistoricalHeterogeneus, list2string, none2decimal0, qcenter, qleft, qmessagebox,  Percentage, aware2epochms
 from myqtablewidget import myQTableWidget
 from decimal import Decimal
 from canvaschart import VCTemporalSeries
@@ -397,7 +397,7 @@ class wdgTotal(QWidget, Ui_wdgTotal):
             if progress.wasCanceled():
                 break
             progress.setValue(progress.value()+1)
-            epoch=date2epochms(m.last_day())
+            epoch=aware2epochms(m.last_day())
             total=m.total().amount
             zero=m.total_zerorisk().amount
             bonds=m.total_bonds().amount
