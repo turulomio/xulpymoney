@@ -60,7 +60,6 @@ compile:
 	pyuic5 ui/wdgYearMonth.ui > ui/Ui_wdgYearMonth.py &
 	pyuic5 ui/wdgYear.ui > ui/Ui_wdgYear.py &
 	sleep 2
-	wait
 install:
 	install -o root -d $(PREFIXBIN)
 	install -o root -d $(PREFIXLIB)
