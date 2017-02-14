@@ -1,7 +1,7 @@
 from PyQt5.QtCore import QMetaObject, Qt,  pyqtSlot
 from PyQt5.QtGui import QPainter, QFont
 from PyQt5.QtWidgets import QAction, QApplication, QMenu, QSizePolicy, QWidget
-from libxulpymoney import day_start, str2bool,  Percentage
+from libxulpymoney import day_start, str2bool,  Percentage, epochms2aware
 from matplotlib.finance import candlestick2_ohlc,  plot_day_summary_oclh
 from decimal import Decimal
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg
@@ -17,24 +17,57 @@ from PyQt5.QtChart import QChart,  QLineSeries, QChartView, QValueAxis, QDateTim
 class VCTemporalSeries(QChartView):
     def __init__(self):
         QChartView.__init__(self)
-        self.chart=QChart()
+        self.clear()
+
+    def setAxisFormat(self, axis,  min, max, type, zone=None):
+        """
+            type=0 #Value
+            type=1 # Datetime
+            
+            if zone=None remains in UTC, zone is a zone object.
+        """
+        if type==0:
+            if max-min<=0.01:
+                axis.setLabelFormat("%.4f")
+            elif max-min<=1:
+                axis.setLabelFormat("%.2f")
+            else:
+                axis.setLabelFormat("%i")
+        elif type==1:
+            max=epochms2aware(max)#UTC aware
+            min=epochms2aware(min)
+#            max=dt(max.date(), max.time(), Zone(10, "UTC", "es"))#UTC with zone
+#            max=dt_changes_tz(max, zone)#Changed to zone
+            print(max, min, max-min)
+            if max-min<datetime.timedelta(days=1):
+                axis.setFormat("hh:mm")
+            else:
+                axis.setFormat("yyyy-MMM")
+
+
+    def clear(self):
+        self.chart=QChart()        
         self.chart.setAnimationOptions(QChart.AllAnimations);
         self.chart.layout().setContentsMargins(0,0,0,0);
 
 #        #Axis cration
         self.axisX=QDateTimeAxis()
         self.axisX.setTickCount(15);
-        self.axisX.setFormat("yyyy-MM");
         
         self.axisY = QValueAxis()
-        self.axisY.setLabelFormat("%i")
 
         self.setRenderHint(QPainter.Antialiasing);
         self.setRubberBand(QChartView.VerticalRubberBand)
         
         self.series=[]
-        self.maxy=0
-        self.miny=0
+        self.maxx=None
+        self.maxy=None
+        self.minx=None
+        self.miny=None
+        font=QFont()
+        font.setBold(True)
+        font.setPointSize(12)
+        self.chart.setTitleFont(font)
 
     def appendSeries(self, name,  currency=None):
         """
@@ -47,15 +80,29 @@ class VCTemporalSeries(QChartView):
         return ls
         
     def appendData(self, ls, x, y):
-        
         ls.append(x, y)
+        
+        if ls.count()==1:#Gives first maxy and miny
+            self.maxy=y
+            self.miny=y
+            self.maxx=x
+            self.minx=x
+            
         if y>self.maxy:
             self.maxy=y
         if y<self.miny:
             self.miny=y
+        if x>self.maxx:
+            self.maxx=x
+        if x<self.minx:
+            self.minx=x
+        
+        
         
     def display(self):
         self.setChart(self.chart)
+        self.setAxisFormat(self.axisX, self.minx, self.maxx, 1)
+        self.setAxisFormat(self.axisY, self.miny, self.maxy, 0)
         self.chart.addAxis(self.axisY, Qt.AlignLeft);
         self.chart.addAxis(self.axisX, Qt.AlignBottom);
         for s in self.series:
@@ -139,7 +186,7 @@ class VCCandlestick(QChartView):
         pass    
         
     def appendData(self, ls, ohcl):
-#        set=QCandlestickSet(ohcl.open, ohcl.high, ohcl.low, ohcl.close,  date2epochms(ohcl.datetime()))
+#        set=QCandlestickSet(ohcl.open, ohcl.high, ohcl.low, ohcl.close,  aware2epochms(ohcl.datetime()))
 #        ls.append(set)
 #        if ohcl.high>self.maxy:
 #            self.maxy=ohcl.high
@@ -179,47 +226,47 @@ class canvas(FigureCanvasQTAgg):
         FigureCanvasQTAgg.updateGeometry(self)        
 
 
-class canvasChartIntraday(FigureCanvasQTAgg):
-    def __init__(self, mem,  parent):
-        # setup Matplotlib Figure and Axis
-        self.fig = Figure()
-        FigureCanvasQTAgg.__init__(self, self.fig)
-        # we define the widget as expandable
-        FigureCanvasQTAgg.setSizePolicy(self,QSizePolicy.Expanding, QSizePolicy.Expanding)
-        # notify the system of updated policy
-        FigureCanvasQTAgg.updateGeometry(self)        
-        
-        self.ax = self.fig.add_subplot(111)
-        
-        self.mem=mem
-
-    def get_locators(self):
-        self.ax.set_title(self.tr("Intraday graph"), fontsize=30, fontweight="bold", y=1.02)
-        self.ax.xaxis.set_major_locator(HourLocator(interval=1 , tz=pytz.timezone(self.mem.localzone.name)))
-        self.ax.xaxis.set_minor_locator(HourLocator(interval=1 , tz=pytz.timezone(self.mem.localzone.name)))
-        self.ax.xaxis.set_major_formatter(DateFormatter('%H:%M'))    
-        self.ax.fmt_xdata=DateFormatter('%H:%M')        
-
-        self.ax.fmt_ydata = self.price  
-        self.ax.grid(True)
-
-    def updateData(self, product, setquotesintraday):
-        """Loads a SetQuotesIntraday"""
-        self.product=product
-        self.setquotesintraday=setquotesintraday
-        
-        if self.setquotesintraday.length()<2:
-            return
-
-        self.ax.clear()
-        self.get_locators()
-        self.ax.plot_date(self.setquotesintraday.datetimes(), self.setquotesintraday.quotes(), '-',  tz=pytz.timezone(self.mem.localzone.name),  label=self.product.name)        
-        self.ax.set_ylabel(self.tr("{} quotes ({})".format(self.product.name, self.product.currency.symbol)))
-        self.ax.set_xlabel("{}".format(self.setquotesintraday.date))
-        self.draw()
-        
-    def price(self, x): 
-        return self.product.currency.string(x)
+#class canvasChartIntraday(FigureCanvasQTAgg):
+#    def __init__(self, mem,  parent):
+#        # setup Matplotlib Figure and Axis
+#        self.fig = Figure()
+#        FigureCanvasQTAgg.__init__(self, self.fig)
+#        # we define the widget as expandable
+#        FigureCanvasQTAgg.setSizePolicy(self,QSizePolicy.Expanding, QSizePolicy.Expanding)
+#        # notify the system of updated policy
+#        FigureCanvasQTAgg.updateGeometry(self)        
+#        
+#        self.ax = self.fig.add_subplot(111)
+#        
+#        self.mem=mem
+#
+#    def get_locators(self):
+#        self.ax.set_title(self.tr("Intraday graph"), fontsize=30, fontweight="bold", y=1.02)
+#        self.ax.xaxis.set_major_locator(HourLocator(interval=1 , tz=pytz.timezone(self.mem.localzone.name)))
+#        self.ax.xaxis.set_minor_locator(HourLocator(interval=1 , tz=pytz.timezone(self.mem.localzone.name)))
+#        self.ax.xaxis.set_major_formatter(DateFormatter('%H:%M'))    
+#        self.ax.fmt_xdata=DateFormatter('%H:%M')        
+#
+#        self.ax.fmt_ydata = self.price  
+#        self.ax.grid(True)
+#
+#    def updateData(self, product, setquotesintraday):
+#        """Loads a SetQuotesIntraday"""
+#        self.product=product
+#        self.setquotesintraday=setquotesintraday
+#        
+#        if self.setquotesintraday.length()<2:
+#            return
+#
+#        self.ax.clear()
+#        self.get_locators()
+#        self.ax.plot_date(self.setquotesintraday.datetimes(), self.setquotesintraday.quotes(), '-',  tz=pytz.timezone(self.mem.localzone.name),  label=self.product.name)        
+#        self.ax.set_ylabel(self.tr("{} quotes ({})".format(self.product.name, self.product.currency.symbol)))
+#        self.ax.set_xlabel("{}".format(self.setquotesintraday.date))
+#        self.draw()
+#        
+#    def price(self, x): 
+#        return self.product.currency.string(x)
 
 class canvasChartCompare(FigureCanvasQTAgg):
     def __init__(self, mem,   productcomparation, type,  parent):

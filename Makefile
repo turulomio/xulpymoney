@@ -59,11 +59,8 @@ compile:
 	pyuic5 ui/wdgMergeCodes.ui > ui/Ui_wdgMergeCodes.py &
 	pyuic5 ui/wdgYearMonth.ui > ui/Ui_wdgYearMonth.py &
 	pyuic5 ui/wdgYear.ui > ui/Ui_wdgYear.py &
-	sleep 1
+	sleep 2
 	wait
-	pylupdate5 -noobsolete -verbose  xulpymoney.pro
-	lrelease xulpymoney.pro
-
 install:
 	install -o root -d $(PREFIXBIN)
 	install -o root -d $(PREFIXLIB)
@@ -82,11 +79,8 @@ install:
 	install -m 644 -o root ui/*.py libxulpymoney.py libdbupdates.py libsources.py libodfgenerator.py images/*.py  $(PREFIXLIB)
 	install -m 644 -o root i18n/*.qm $(PREFIXLIB)
 	install -m 644 -o root sources/*.py $(PREFIXLIB)
-
-
 	install -m 644 -o root xulpymoney.desktop $(PREFIXAPPLICATIONS)
 	install -m 644 -o root images/coins.png $(PREFIXPIXMAPS)/xulpymoney.png
-
 	install -m 644 -o root GPL-3.txt CHANGELOG.txt AUTHORS.txt RELEASES.txt $(PREFIXSHARE)
 	install -m 644 -o root sql/xulpymoney.sql $(PREFIXSHARE)/sql
 	install -m 644 -o root odf/report.odt $(PREFIXSHARE)
@@ -97,3 +91,9 @@ uninstall:
 	rm -Rf $(PREFIXSHARE)
 	rm -fr $(PREFIXPIXMAPS)/xulpymoney.png
 	rm -fr $(PREFIXAPPLICATIONS)/xulpymoney.desktop
+
+help:
+	install -o root -d $(PREFIXLIB)
+	pylupdate5 -noobsolete -verbose  xulpymoney.pro
+	lrelease xulpymoney.pro
+	install -m 644 -o root i18n/*.qm $(PREFIXLIB)

@@ -6,14 +6,14 @@ from PyQt5.QtGui import QColor,  QIcon
 from PyQt5.QtWidgets import QApplication, QDialog,  QMenu, QMessageBox,  QVBoxLayout
 from Ui_frmProductReport import Ui_frmProductReport
 from myqtablewidget import myQTableWidget
-from libxulpymoney import Percentage, Product, ProductComparation,  Quote, SetAgrupations, SetQuotesAllIntradays, SetStockMarkets,  SetCurrencies, SetLeverages, SetPriorities, SetPrioritiesHistorical, SetProductsModes, SetTypes, c2b, day_end, dt, qcenter, qdatetime, qmessagebox, qleft
+from libxulpymoney import Percentage, Product, ProductComparation,  Quote, SetAgrupations, SetQuotesAllIntradays, SetStockMarkets,  SetCurrencies, SetLeverages, SetPriorities, SetPrioritiesHistorical, SetProductsModes, SetTypes, c2b, day_end, dt, qcenter, qdatetime, qmessagebox, qleft, aware2epochms
 from frmSelector import frmSelector
 from frmDividendsAdd import frmDividendsAdd
 from frmQuotesIBM import frmQuotesIBM
 from frmSplit import frmSplit
 from frmEstimationsAdd import frmEstimationsAdd
 from frmDPSAdd import frmDPSAdd
-from canvaschart import canvasChartCompare, canvasChartHistorical, canvasChartIntraday
+from canvaschart import canvasChartCompare, canvasChartHistorical, VCTemporalSeries
 from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT 
 
 class frmProductReport(QDialog, Ui_frmProductReport):
@@ -107,12 +107,9 @@ class frmProductReport(QDialog, Ui_frmProductReport):
             types=SetTypes(mem)
             types.append(self.product.type)
             types.qcombobox(self.cmbTipo)
-            
-
-        self.canvasIntraday=canvasChartIntraday( self.mem, self)
-        self.ntbIntraday = NavigationToolbar2QT(self.canvasIntraday, self)
-        self.layIntraday.addWidget(self.canvasIntraday)
-        self.layIntraday.addWidget(self.ntbIntraday)
+        
+        self.viewIntraday=VCTemporalSeries()
+        self.layIntraday.addWidget(self.viewIntraday)
         
         self.canvasHistorical=canvasChartHistorical( self.mem, self)
         self.ntbHistorical=NavigationToolbar2QT(self.canvasHistorical, self)
@@ -323,12 +320,16 @@ class frmProductReport(QDialog, Ui_frmProductReport):
             
         #Canvas Intradia
         if len(self.product.result.intradia.arr)<2:
-            self.canvasIntraday.hide()
-            self.ntbIntraday.hide()
+            self.viewIntraday.hide()
         else:
-            self.canvasIntraday.updateData(self.product,  self.product.result.intradia)
-            self.canvasIntraday.show()
-            self.ntbIntraday.show()       
+            self.viewIntraday.show()
+            self.viewIntraday.clear()
+            self.viewIntraday.chart.setTitle(self.tr("Intraday graph"))
+            ls=self.viewIntraday.appendSeries(self.product.name.upper(), self.product.currency)
+            for quote in self.product.result.intradia.arr:
+                self.viewIntraday.appendData(ls, aware2epochms(quote.datetime), quote.quote)
+            self.viewIntraday.display()
+        
         
         #tblIntradia
         if len(self.product.result.intradia.arr)==0:
