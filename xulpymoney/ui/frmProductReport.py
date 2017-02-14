@@ -6,7 +6,7 @@ from PyQt5.QtGui import QColor,  QIcon
 from PyQt5.QtWidgets import QApplication, QDialog,  QMenu, QMessageBox,  QVBoxLayout
 from Ui_frmProductReport import Ui_frmProductReport
 from myqtablewidget import myQTableWidget
-from libxulpymoney import Percentage, Product, ProductComparation,  Quote, SetAgrupations, SetQuotesAllIntradays, SetStockMarkets,  SetCurrencies, SetLeverages, SetPriorities, SetPrioritiesHistorical, SetProductsModes, SetTypes, c2b, day_end, dt, qcenter, qdatetime, qmessagebox, qleft, aware2epochms
+from libxulpymoney import Percentage, Product, ProductComparation,  Quote, SetAgrupations, SetQuotesAllIntradays, SetStockMarkets,  SetCurrencies, SetLeverages, SetPriorities, SetPrioritiesHistorical, SetProductsModes, SetTypes, c2b, day_end, dt, qcenter, qdatetime, qmessagebox, qleft
 from frmSelector import frmSelector
 from frmDividendsAdd import frmDividendsAdd
 from frmQuotesIBM import frmQuotesIBM
@@ -327,7 +327,7 @@ class frmProductReport(QDialog, Ui_frmProductReport):
             self.viewIntraday.chart.setTitle(self.tr("Intraday graph"))
             ls=self.viewIntraday.appendSeries(self.product.name.upper(), self.product.currency)
             for quote in self.product.result.intradia.arr:
-                self.viewIntraday.appendData(ls, aware2epochms(quote.datetime), quote.quote)
+                self.viewIntraday.appendData(ls, quote.datetime, quote.quote)
             self.viewIntraday.display()
         
         

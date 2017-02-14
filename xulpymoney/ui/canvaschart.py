@@ -1,11 +1,11 @@
 from PyQt5.QtCore import QMetaObject, Qt,  pyqtSlot
 from PyQt5.QtGui import QPainter, QFont
 from PyQt5.QtWidgets import QAction, QApplication, QMenu, QSizePolicy, QWidget
-from libxulpymoney import day_start, str2bool,  Percentage, epochms2aware
+from libxulpymoney import day_start, str2bool,  Percentage, epochms2aware, aware2epochms
 from matplotlib.finance import candlestick2_ohlc,  plot_day_summary_oclh
 from decimal import Decimal
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg
-from matplotlib.dates import MonthLocator, YearLocator, HourLocator,  DateFormatter, date2num, num2date,  DayLocator
+from matplotlib.dates import MonthLocator, YearLocator,   DateFormatter, date2num, num2date,  DayLocator
 from matplotlib.figure import Figure
 import pytz
 import datetime
@@ -36,8 +36,6 @@ class VCTemporalSeries(QChartView):
         elif type==1:
             max=epochms2aware(max)#UTC aware
             min=epochms2aware(min)
-#            max=dt(max.date(), max.time(), Zone(10, "UTC", "es"))#UTC with zone
-#            max=dt_changes_tz(max, zone)#Changed to zone
             print(max, min, max-min)
             if max-min<datetime.timedelta(days=1):
                 axis.setFormat("hh:mm")
@@ -80,6 +78,10 @@ class VCTemporalSeries(QChartView):
         return ls
         
     def appendData(self, ls, x, y):
+        """
+            x is a datetime zone aware
+        """
+        x=aware2epochms(x)
         ls.append(x, y)
         
         if ls.count()==1:#Gives first maxy and miny
