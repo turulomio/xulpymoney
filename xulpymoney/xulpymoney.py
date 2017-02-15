@@ -6,7 +6,7 @@ import signal
 from colorama import init,  Style, Fore
 
 def signal_handler(signal, frame):
-        logging.warning(Style.BRIGHT+Fore.RED+app.translate("devicesinlan","You pressed 'Ctrl+C', exiting..."))
+        logging.warning(Style.BRIGHT+Fore.RED+app.translate("Core","You pressed 'Ctrl+C', exiting..."))
         sys.exit(0)
 ######################
 init(autoreset=True)
