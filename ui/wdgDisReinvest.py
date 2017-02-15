@@ -4,7 +4,7 @@ import pytz
 from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtWidgets import QWidget, QDialog, QVBoxLayout
 from Ui_wdgDisReinvest import Ui_wdgDisReinvest
-from libxulpymoney import InvestmentOperation, Percentage,  Quote, qmessagebox
+from libxulpymoney import InvestmentOperation, Money, Percentage,  Quote, qmessagebox
 from wdgOrdersAdd import wdgOrdersAdd
 from decimal import Decimal
 from canvaschart import canvasChartHistoricalReinvest
@@ -46,23 +46,23 @@ class wdgDisReinvest(QWidget, Ui_wdgDisReinvest):
         self.on_radRe_clicked()
 
     def acciones(self):
-        resultado=0
+        resultado=Decimal(0)
         
         if self.radDes.isChecked():#DESINVERSION
-            perdida=self.txtSimulacion.decimal()#Va disminuyendo con las distintas operaciones
+            perdida=Money(self.mem, self.txtSimulacion.decimal(),self.investment.product.currency)#Va disminuyendo con las distintas operaciones
             q=Quote(self.mem).init__create(self.investment.product, datetime.datetime.now(pytz.timezone(self.mem.localzone.name)), self.txtValorAccion.decimal())
             for rec in self.investment.op_actual.arr:
                 pendiente=rec.pendiente(q)
-                if perdida+pendiente==0:
-                    resultado=resultado+Decimal(str(rec.acciones))
+                if (perdida+pendiente).isZero():
+                    resultado=resultado+rec.acciones
                     break
-                elif perdida+pendiente>0:
-                    resultado=resultado+Decimal(str(rec.acciones))
+                elif (perdida+pendiente).isGTZero():
+                    resultado=resultado+rec.acciones
                     perdida=perdida+pendiente
-                elif perdida+pendiente<0:
+                elif (perdida+pendiente).isLTZero():
                     # Si de tantas acciones queda pendiente "pendiente"
                     # X                                queda la perdida
-                    acciones=abs(int(perdida*rec.acciones/pendiente))
+                    acciones=abs(int(perdida.amount*rec.acciones/pendiente.amount))
                     resultado=resultado+Decimal(acciones)#Se resta porque se debe calcular antes de quitarse el pendiente
                     break
         else:#REINVERSION
