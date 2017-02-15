@@ -544,14 +544,10 @@ class SetInvestments(SetCommons):
                 table.setItem(i, 6, lasttpc.qtablewidgetitem())
                 table.setItem(i, 7, inv.op_actual.tpc_total(inv.product.result.basic.last, type=3).qtablewidgetitem())
                 table.setItem(i, 8, inv.percentage_to_selling_point().qtablewidgetitem())
-                if lasttpc<=percentage:   
+                if lasttpc<Percentage(percentage, 1):   
                     table.item(i, 6).setBackground(QColor(255, 148, 148))
             except:
                 logging.error("I couldn't show last of {}".format(inv.name))
-
-
-
-
 
     def myqtablewidget_sellingpoints(self, table):
         """Crea un set y luego construye la tabla"""
